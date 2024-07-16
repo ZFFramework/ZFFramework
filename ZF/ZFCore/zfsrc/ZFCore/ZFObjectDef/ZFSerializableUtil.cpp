@@ -85,8 +85,8 @@ zfstring checkAttribute(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredAttribute
         ) {
-    zfiterator it = serializableData.attrIterFind(desiredAttribute);
-    if(!serializableData.attrIterValid(it)) {
+    zfiter it = serializableData.attrIterFind(desiredAttribute);
+    if(!it) {
         return zfnull;
     }
     serializableData.attrIterResolveMark(it);
@@ -173,10 +173,7 @@ static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(
         }
 
         zfbool hasUnresolvedAttribute = zffalse;
-        for(zfiterator it = serializableData.attrIter();
-                serializableData.attrIterValid(it);
-                serializableData.attrIterNext(it)
-                ) {
+        for(zfiter it = serializableData.attrIter(); it; ++it) {
             if(!serializableData.attrIterResolved(it)) {
                 if(!hasUnresolvedAttribute) {
                     hasUnresolvedAttribute = zftrue;

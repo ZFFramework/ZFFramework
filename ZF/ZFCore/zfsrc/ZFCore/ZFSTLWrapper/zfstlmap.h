@@ -21,58 +21,67 @@
 template<typename T_Key, typename T_Value, typename T_Compare = zfstl::less<T_Key> >
 class zfimplmap : public zfstlmap<T_Key, T_Value, T_Compare> {
 private:
-    static void _ZFP_d(void *data) {
-        delete ((typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *)data);
-    }
-    static void *_ZFP_c(void *data) {
-        return new typename zfimplmap<T_Key, T_Value, T_Compare>::iterator(
-            *(typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *)data);
-    }
+    zfclassNotPOD _Iter : zfextend zfiter::Impl {
+    public:
+        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator it;
+        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator end;
+    public:
+        zfoverride
+        virtual zfbool valid(void) {
+            return it != end;
+        }
+        zfoverride
+        virtual void next(void) {
+            ++it;
+        }
+        zfoverride
+        virtual Impl *copy(void) {
+            _Iter *ret = zfpoolNew(_Iter);
+            ret->it = it;
+            ret->end = end;
+            return ret;
+        }
+        zfoverride
+        virtual void destroy(void) {
+            zfpoolDelete(this);
+        }
+        zfoverride
+        virtual zfbool isEqual(ZF_IN Impl *d) {
+            _Iter *t = (_Iter *)d;
+            return it == t->it;
+        }
+    };
 
 public:
-    zffinal inline zfiterator iter(void) {
-        return zfiterator(
-            new typename zfimplmap<T_Key, T_Value, T_Compare>::iterator(this->begin()),
-            _ZFP_d,
-            _ZFP_c);
+    zffinal inline zfiter iter(void) {
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = this->begin();
+        impl->end = this->end();
+        return zfiter(impl);
     }
 
-    zffinal inline zfiterator iterFind(ZF_IN T_Key const &key) {
-        return zfiterator(
-            new typename zfimplmap<T_Key, T_Value, T_Compare>::iterator(this->find(key)),
-            _ZFP_d,
-            _ZFP_c);
+    zffinal inline zfiter iterFind(ZF_IN T_Key const &key) {
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = this->find(key);
+        impl->end = this->end();
+        return zfiter(impl);
     }
 
-    zffinal inline zfbool iterValid(ZF_IN const zfiterator &it) {
-        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *data = it.data<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *>();
-        return (data && *data != this->end());
+    zffinal inline T_Key const &iterKey(ZF_IN const zfiter &it) {
+        return it.impl<_Iter *>()->it->first;
     }
-
-    zffinal inline void iterNext(ZF_IN_OUT zfiterator &it) {
-        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *data = it.data<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *>();
-        ++(*data);
-    }
-
-    zffinal inline T_Key const &iterKey(ZF_IN const zfiterator &it) {
-        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *data = it.data<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *>();
-        return (*data)->first;
-    }
-    zffinal inline T_Value const &iterValue(ZF_IN const zfiterator &it) {
-        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *data = it.data<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *>();
-        return (*data)->second;
+    zffinal inline T_Value &iterValue(ZF_IN const zfiter &it) {
+        return it.impl<_Iter *>()->it->second;
     }
 
     zffinal inline void iterValue(
-            ZF_IN_OUT zfiterator &it
+            ZF_IN_OUT zfiter &it
             , ZF_IN T_Value const &newValue
             ) {
-        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *data = it.data<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *>();
-        (*data)->second = newValue;
+        it.impl<_Iter *>()->it->second = newValue;
     }
-    zffinal inline void iterRemove(ZF_IN_OUT zfiterator &it) {
-        typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *data = it.data<typename zfimplmap<T_Key, T_Value, T_Compare>::iterator *>();
-        this->erase((*data)++);
+    zffinal inline void iterRemove(ZF_IN_OUT zfiter &it) {
+        this->erase((it.impl<_Iter *>()->it)++);
     }
 
     zffinal inline void iterAdd(

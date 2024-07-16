@@ -62,7 +62,7 @@ zfbool ZFSerializable::serializeFromData(
 
     // property with wrappedValuePreferStringConverter
     {
-        for(zfiterator it = serializableData.attrIter(); serializableData.attrIterValid(it); serializableData.attrIterNext(it)) {
+        for(zfiter it = serializableData.attrIter(); it; ++it) {
             zfstring name = serializableData.attrIterKey(it);
             if(serializableData.attrIterResolved(it)) {
                 continue;

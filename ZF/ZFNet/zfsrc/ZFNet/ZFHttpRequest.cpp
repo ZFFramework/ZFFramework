@@ -125,37 +125,27 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfindex, headerCount) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerCount(d->nativeTask);
 }
 
-ZFMETHOD_DEFINE_0(ZFHttpRequest, zfiterator, headerIter) {
+ZFMETHOD_DEFINE_0(ZFHttpRequest, zfiter, headerIter) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIter(d->nativeTask);
 }
-ZFMETHOD_DEFINE_1(ZFHttpRequest, zfbool, headerIterValid
-        , ZFMP_IN(const zfiterator &, it)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIterValid(d->nativeTask, it);
-}
-ZFMETHOD_DEFINE_1(ZFHttpRequest, void, headerIterNext
-        , ZFMP_IN_OUT(zfiterator &, it)
-        ) {
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIterNext(d->nativeTask, it);
-}
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfstring, headerIterKey
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIterKey(d->nativeTask, it);
 }
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfstring, headerIterValue
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIterValue(d->nativeTask, it);
 }
 ZFMETHOD_DEFINE_2(ZFHttpRequest, void, headerIterValue
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(const zfchar *, value)
         ) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIterValue(d->nativeTask, it, value);
 }
 ZFMETHOD_DEFINE_1(ZFHttpRequest, void, headerIterRemove
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         ) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerIterRemove(d->nativeTask, it);
 }
@@ -237,7 +227,7 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo) {
     zfstring ret;
     ret.capacity(10 * this->headerCount());
-    for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
+    for(zfiter it = this->headerIter(); it; ++it) {
         zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     return ret;
@@ -245,7 +235,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo) {
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, contentInfo) {
     zfstring ret;
     ret.capacity(this->body().textLength() + 10 * this->headerCount());
-    for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
+    for(zfiter it = this->headerIter(); it; ++it) {
         zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     if(this->headerCount() > 0) {
@@ -315,26 +305,16 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, zfindex, headerCount) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeaderCount(d->nativeTask);
 }
 
-ZFMETHOD_DEFINE_0(ZFHttpResponse, zfiterator, headerIter) {
+ZFMETHOD_DEFINE_0(ZFHttpResponse, zfiter, headerIter) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeaderIter(d->nativeTask);
 }
-ZFMETHOD_DEFINE_1(ZFHttpResponse, zfbool, headerIterValid
-        , ZFMP_IN(const zfiterator &, it)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeaderIterValid(d->nativeTask, it);
-}
-ZFMETHOD_DEFINE_1(ZFHttpResponse, void, headerIterNext
-        , ZFMP_IN_OUT(zfiterator &, it)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeaderIterNext(d->nativeTask, it);
-}
 ZFMETHOD_DEFINE_1(ZFHttpResponse, zfstring, headerIterKey
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeaderIterKey(d->nativeTask, it);
 }
 ZFMETHOD_DEFINE_1(ZFHttpResponse, zfstring, headerIterValue
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeaderIterValue(d->nativeTask, it);
 }
@@ -359,7 +339,7 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFJson, bodyJson) {
 ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, headerInfo) {
     zfstring ret;
     ret.capacity(10 * this->headerCount());
-    for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
+    for(zfiter it = this->headerIter(); it; ++it) {
         zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     return ret;
@@ -367,7 +347,7 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, headerInfo) {
 ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, contentInfo) {
     zfstring ret;
     ret.capacity(this->body().textLength() + 10 * this->headerCount());
-    for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
+    for(zfiter it = this->headerIter(); it; ++it) {
         zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     if(this->headerCount() > 0) {
@@ -443,7 +423,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlParamSet
         , ZFMP_IN_OUT(zfstring &, url)
         , ZFMP_IN(const ZFJson &, params)
         ) {
-    for(zfiterator it = params.attrIter(); params.attrIterValid(it); params.attrIterNext(it)) {
+    for(zfiter it = params.attrIter(); it; ++it) {
         zfstring key = params.attrIterKey(it);
         ZFJson valueHolder = params.attrIterValue(it);
         if(valueHolder.type() != ZFJsonType::e_JsonValue) {

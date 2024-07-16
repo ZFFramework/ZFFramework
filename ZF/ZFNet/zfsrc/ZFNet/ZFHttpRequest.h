@@ -62,22 +62,14 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextend ZFObject {
     ZFMETHOD_DECLARE_0(zfindex, headerCount)
 
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_0(zfiterator, headerIter)
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfbool, headerIterValid
-            , ZFMP_IN(const zfiterator &, it)
-            )
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(void, headerIterNext
-            , ZFMP_IN_OUT(zfiterator &, it)
-            )
+    ZFMETHOD_DECLARE_0(zfiter, headerIter)
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_1(zfstring, headerIterKey
-            , ZFMP_IN(const zfiterator &, it)
+            , ZFMP_IN(const zfiter &, it)
             )
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_1(zfstring, headerIterValue
-            , ZFMP_IN(const zfiterator &, it)
+            , ZFMP_IN(const zfiter &, it)
             )
 
     // ============================================================
@@ -207,31 +199,23 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     ZFMETHOD_DECLARE_0(zfindex, headerCount)
 
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_0(zfiterator, headerIter)
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfbool, headerIterValid
-            , ZFMP_IN(const zfiterator &, it)
-            )
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(void, headerIterNext
-            , ZFMP_IN_OUT(zfiterator &, it)
-            )
+    ZFMETHOD_DECLARE_0(zfiter, headerIter)
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_1(zfstring, headerIterKey
-            , ZFMP_IN(const zfiterator &, it)
+            , ZFMP_IN(const zfiter &, it)
             )
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_1(zfstring, headerIterValue
-            , ZFMP_IN(const zfiterator &, it)
+            , ZFMP_IN(const zfiter &, it)
             )
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_2(void, headerIterValue
-            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN_OUT(zfiter &, it)
             , ZFMP_IN(const zfchar *, value)
             )
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_1(void, headerIterRemove
-            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN_OUT(zfiter &, it)
             )
 
     // ============================================================

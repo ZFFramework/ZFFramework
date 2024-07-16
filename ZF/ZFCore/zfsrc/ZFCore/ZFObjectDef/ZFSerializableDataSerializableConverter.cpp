@@ -410,10 +410,7 @@ zfbool ZFSerializableDataToZfsd(
 
     // attributes
     if(serializableData.attrCount() > 0) {
-        for(zfiterator it = serializableData.attrIter();
-                serializableData.attrIterValid(it);
-                serializableData.attrIterNext(it)
-                ) {
+        for(zfiter it = serializableData.attrIter(); it; ++it) {
             result += _ZFP_ZFSD_Space;
             zfCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
             result += _ZFP_ZFSD_AttrAssign;
@@ -475,10 +472,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
 
     // attributes
     if(serializableData.attrCount() > 0) {
-        for(zfiterator it = serializableData.attrIter();
-                serializableData.attrIterValid(it);
-                serializableData.attrIterNext(it)
-                ) {
+        for(zfiter it = serializableData.attrIter(); it; ++it) {
             if(needBreak) {
                 result += '\n';
                 _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel + 1);

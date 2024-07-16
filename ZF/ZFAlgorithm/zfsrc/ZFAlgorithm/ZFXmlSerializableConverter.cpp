@@ -33,7 +33,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
     }
     serializableData.itemClass(xmlElement.name());
 
-    for(zfiterator it = xmlElement.attrIter(); xmlElement.attrIterValid(it); xmlElement.attrIterNext(it)) {
+    for(zfiter it = xmlElement.attrIter(); it; ++it) {
         serializableData.attr(xmlElement.attrIterKey(it), xmlElement.attrIterValue(it));
     }
 
@@ -91,10 +91,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
     ZFXml ret(ZFXmlType::e_XmlElement);
     ret.name(serializableData.itemClass());
 
-    for(zfiterator it = serializableData.attrIter();
-            serializableData.attrIterValid(it);
-            serializableData.attrIterNext(it)
-            ) {
+    for(zfiter it = serializableData.attrIter(); it; ++it) {
         ret.attr(serializableData.attrIterKey(it),
             serializableData.attrIterValue(it));
     }

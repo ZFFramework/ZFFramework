@@ -100,52 +100,34 @@ public:
         return (zfindex)task.request.allHTTPHeaderFields.count;
     }
 
-    virtual zfiterator headerIter(ZF_IN void *nativeTask) {
+    virtual zfiter headerIter(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         return ZFImpl_sys_iOS_NSDictionaryIter(task.request.allHTTPHeaderFields);
     }
-    virtual zfbool headerIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_NSDictionaryIterValid(task.request.allHTTPHeaderFields, it);
-    }
-    virtual void headerIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        ZFImpl_sys_iOS_NSDictionaryIterNext(task.request.allHTTPHeaderFields, it);
-    }
     virtual zfstring headerIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterKey(task.request.allHTTPHeaderFields, it));
+        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterKey(it));
     }
     virtual zfstring headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterValue(task.request.allHTTPHeaderFields, it));
+        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterValue(it));
     }
     virtual void headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             , ZF_IN const zfchar *value
             ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        ZFImpl_sys_iOS_NSDictionaryIterValue(task.request.allHTTPHeaderFields, it, ZFImpl_sys_iOS_zfstringToNSString(value));
+        ZFImpl_sys_iOS_NSDictionaryIterValue(it, ZFImpl_sys_iOS_zfstringToNSString(value));
     }
     virtual void headerIterRemove(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        ZFImpl_sys_iOS_NSDictionaryIterRemove(task.request.allHTTPHeaderFields, it);
+        ZFImpl_sys_iOS_NSDictionaryIterRemove(it);
     }
 
     virtual void body(
@@ -219,37 +201,21 @@ public:
         return (zfindex)task.response.allHeaderFields.count;
     }
 
-    virtual zfiterator responseHeaderIter(ZF_IN void *nativeTask) {
+    virtual zfiter responseHeaderIter(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         return ZFImpl_sys_iOS_NSDictionaryIter(task.response.allHeaderFields);
     }
-    virtual zfbool responseHeaderIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_NSDictionaryIterValid(task.response.allHeaderFields, it);
-    }
-    virtual void responseHeaderIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        ZFImpl_sys_iOS_NSDictionaryIterNext(task.response.allHeaderFields, it);
-    }
     virtual zfstring responseHeaderIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterKey(task.response.allHeaderFields, it));
+        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterKey(it));
     }
     virtual zfstring responseHeaderIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterValue(task.response.allHeaderFields, it));
+        return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterValue(it));
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_sys_iOS)
 

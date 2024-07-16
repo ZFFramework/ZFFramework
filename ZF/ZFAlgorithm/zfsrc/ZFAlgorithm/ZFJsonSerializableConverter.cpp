@@ -43,7 +43,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
     }
 
     ZFJson elementJsonArray;
-    for(zfiterator jsonItemIt = jsonObject.attrIter(); jsonObject.attrIterValid(jsonItemIt); jsonObject.attrIterNext(jsonItemIt)) {
+    for(zfiter jsonItemIt = jsonObject.attrIter(); jsonItemIt; ++jsonItemIt) {
         zfstring key = jsonObject.attrIterKey(jsonItemIt);
         ZFJson jsonItem = jsonObject.attrIterValue(jsonItemIt);
         if(*key == _ZFP_ZFJsonSerializeKey_classPrefix) {
@@ -140,10 +140,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFSerializableDataToJson
 
     ZFJson ret(ZFJsonType::e_JsonObject);
 
-    for(zfiterator it = serializableData.attrIter();
-            serializableData.attrIterValid(it);
-            serializableData.attrIterNext(it)
-            ) {
+    for(zfiter it = serializableData.attrIter(); it; ++it) {
         ret.attr(serializableData.attrIterKey(it),
             serializableData.attrIterValue(it));
     }

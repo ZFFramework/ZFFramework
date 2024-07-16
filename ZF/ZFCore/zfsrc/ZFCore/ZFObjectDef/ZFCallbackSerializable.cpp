@@ -73,7 +73,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             }
 
             const ZFSerializableData &customData = *(v.callbackSerializeCustomData());
-            for(zfiterator it = customData.attrIter(); customData.attrIterValid(it); customData.attrIterNext(it)) {
+            for(zfiter it = customData.attrIter(); it; ++it) {
                 serializableData.attr(customData.attrIterKey(it), customData.attrIterValue(it));
             }
             for(zfindex i = 0; i < customData.childCount(); ++i) {

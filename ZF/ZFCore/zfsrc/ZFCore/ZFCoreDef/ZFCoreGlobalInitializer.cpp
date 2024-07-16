@@ -628,8 +628,8 @@ static void _ZFP_GI_dataUnregister(
     zfstring key;
     _ZFP_GI_keyForName(key, name, level);
 
-    zfiterator it = dataMap.iterFind(key);
-    if(!dataMap.iterValid(it)) {
+    zfiter it = dataMap.iterFind(key);
+    if(!it) {
         zfCoreCriticalShouldNotGoHere();
         return;
     }

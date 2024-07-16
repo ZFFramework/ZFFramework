@@ -8,7 +8,7 @@
 
 #include "ZFCorePointer.h"
 #include "ZFCoreArray.h"
-#include "ZFIterator.h"
+#include "zfiter.h"
 #include "ZFToken.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -165,7 +165,7 @@ public:
     template<typename T_Element>
     void allValueT(ZF_IN_OUT ZFCoreArray<T_Element> &ret) const {
         ret.capacity(ret.count() + this->count());
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
+        for(zfiter it = this->iter(); it; ++it) {
             ret.add(this->iterValue<T_Element>(it));
         }
     }
@@ -183,40 +183,34 @@ public:
     // ============================================================
     // iterator access
 public:
-    /** @brief see #zfiterator */
-    zffinal zfiterator iter(void) const;
+    /** @brief see #zfiter */
+    zffinal zfiter iter(void) const;
 
-    /** @brief see #zfiterator */
-    zffinal zfiterator iterFind(ZF_IN const zfstring &key) const;
+    /** @brief see #zfiter */
+    zffinal zfiter iterFind(ZF_IN const zfstring &key) const;
 
-    /** @brief see #zfiterator */
-    zffinal zfbool iterValid(ZF_IN const zfiterator &it) const;
+    /** @brief see #zfiter */
+    zffinal zfstring iterKey(ZF_IN const zfiter &it) const;
+    /** @brief see #zfiter */
+    zffinal ZFCorePointerBase *iterValue(ZF_IN const zfiter &it) const;
 
-    /** @brief see #zfiterator */
-    zffinal void iterNext(ZF_IN_OUT zfiterator &it) const;
-
-    /** @brief see #zfiterator */
-    zffinal zfstring iterKey(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zffinal ZFCorePointerBase *iterValue(ZF_IN const zfiterator &it) const;
-
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     zffinal void iterValue(
-            ZF_IN_OUT zfiterator &it
+            ZF_IN_OUT zfiter &it
             , ZF_IN const ZFCorePointerBase &newValue
             );
-    /** @brief see #zfiterator */
-    zffinal void iterRemove(ZF_IN_OUT zfiterator &it);
+    /** @brief see #zfiter */
+    zffinal void iterRemove(ZF_IN_OUT zfiter &it);
 
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     zffinal void iterAdd(
             ZF_IN const zfstring &key
             , ZF_IN const ZFCorePointerBase &value
             );
 
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     template<typename T_Element>
-    T_Element iterValue(ZF_IN const zfiterator &it) const {
+    T_Element iterValue(ZF_IN const zfiter &it) const {
         ZFCorePointerBase *t = this->iterValue(it);
         if(t != zfnull) {
             return t->pointerValueT<T_Element>();

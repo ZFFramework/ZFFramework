@@ -252,33 +252,29 @@ public:
      */
     zffinal void attrRemoveAll(void);
 
-    /** @brief see #zfiterator */
-    zffinal zfiterator attrIterFind(ZF_IN const zfstring &name) const;
-    /** @brief see #zfiterator */
-    zffinal zfiterator attrIter(void) const;
-    /** @brief see #zfiterator */
-    zffinal zfbool attrIterValid(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zffinal void attrIterNext(ZF_IN_OUT zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zffinal zfstring attrIterKey(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zffinal zfstring attrIterValue(ZF_IN const zfiterator &it) const;
+    /** @brief see #zfiter */
+    zffinal zfiter attrIterFind(ZF_IN const zfstring &name) const;
+    /** @brief see #zfiter */
+    zffinal zfiter attrIter(void) const;
+    /** @brief see #zfiter */
+    zffinal zfstring attrIterKey(ZF_IN const zfiter &it) const;
+    /** @brief see #zfiter */
+    zffinal zfstring attrIterValue(ZF_IN const zfiter &it) const;
 
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     zffinal void attrIterValue(
-            ZF_IN_OUT zfiterator &it
+            ZF_IN_OUT zfiter &it
             , ZF_IN const zfstring &value
             );
-    /** @brief see #zfiterator */
-    zffinal void attrIterRemove(ZF_IN_OUT zfiterator &it);
+    /** @brief see #zfiter */
+    zffinal void attrIterRemove(ZF_IN_OUT zfiter &it);
 
-    /** @brief see #zfiterator */
-    zffinal zfbool attrIterResolved(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zffinal void attrIterResolveMark(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zffinal void attrIterResolveUnmark(ZF_IN const zfiterator &it) const;
+    /** @brief see #zfiter */
+    zffinal zfbool attrIterResolved(ZF_IN const zfiter &it) const;
+    /** @brief see #zfiter */
+    zffinal void attrIterResolveMark(ZF_IN const zfiter &it) const;
+    /** @brief see #zfiter */
+    zffinal void attrIterResolveUnmark(ZF_IN const zfiter &it) const;
 
     // ============================================================
     // element

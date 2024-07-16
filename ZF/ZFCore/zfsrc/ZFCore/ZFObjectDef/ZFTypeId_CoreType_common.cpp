@@ -537,7 +537,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFuncAddrType, ZFFuncAddrType)
 
 // ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(zfiterator, zfiterator)
+ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(zfiter, zfiter)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFBuffer, ZFBuffer)

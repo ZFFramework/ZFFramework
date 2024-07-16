@@ -54,43 +54,25 @@ extern ZFLIB_ZF_impl zfstring ZFImpl_sys_iOS_objectInfo(
 
 // ============================================================
 /** @brief util to supply iterator access for NSDictionary */
-extern ZFLIB_ZF_impl zfiterator ZFImpl_sys_iOS_NSDictionaryIter(ZF_IN NSDictionary *dict);
+extern ZFLIB_ZF_impl zfiter ZFImpl_sys_iOS_NSDictionaryIter(ZF_IN NSDictionary *dict);
 /** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
-extern ZFLIB_ZF_impl zfiterator ZFImpl_sys_iOS_NSDictionaryIterFind(
+extern ZFLIB_ZF_impl zfiter ZFImpl_sys_iOS_NSDictionaryIterFind(
         ZF_IN NSDictionary *dict
         , ZF_IN id key
         );
 /** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
-extern ZFLIB_ZF_impl zfbool ZFImpl_sys_iOS_NSDictionaryIterValid(
-        ZF_IN NSDictionary *dict
-        , ZF_IN const zfiterator &it
-        );
-/** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
-extern ZFLIB_ZF_impl void ZFImpl_sys_iOS_NSDictionaryIterNext(
-        ZF_IN NSDictionary *dict
-        , ZF_IN_OUT zfiterator &it
-        );
-/** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
 extern ZFLIB_ZF_impl id ZFImpl_sys_iOS_NSDictionaryIterKey(
-        ZF_IN NSDictionary *dict
-        , ZF_IN const zfiterator &it
+        ZF_IN const zfiter &it
         );
 /** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
-extern ZFLIB_ZF_impl id ZFImpl_sys_iOS_NSDictionaryIterValue(
-        ZF_IN NSDictionary *dict
-        , ZF_IN const zfiterator &it
-        );
+extern ZFLIB_ZF_impl id ZFImpl_sys_iOS_NSDictionaryIterValue(ZF_IN const zfiter &it);
 /** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
 extern ZFLIB_ZF_impl void ZFImpl_sys_iOS_NSDictionaryIterValue(
-        ZF_IN NSDictionary *dict
-        , ZF_IN_OUT zfiterator &it
+        ZF_IN_OUT zfiter &it
         , ZF_IN id value
         );
 /** @brief see #ZFImpl_sys_iOS_NSDictionaryIter */
-extern ZFLIB_ZF_impl void ZFImpl_sys_iOS_NSDictionaryIterRemove(
-        ZF_IN NSDictionary *dict
-        , ZF_IN_OUT zfiterator &it
-        );
+extern ZFLIB_ZF_impl void ZFImpl_sys_iOS_NSDictionaryIterRemove(ZF_IN_OUT zfiter &it);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS

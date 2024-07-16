@@ -1,18 +1,9 @@
 #include "ZFImpl_sys_iOS_ZF_impl.h"
 
-#include "ZFCore/zfstringW.h"
-
 #if ZF_ENV_sys_iOS
 
 #include <objc/runtime.h>
 #include <UIKit/UIKit.h>
-
-@interface _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData : NSObject
-@property(nonatomic, strong) NSArray *allKeys;
-@property(nonatomic, assign) NSUInteger index;
-@end
-@implementation _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData
-@end
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -100,92 +91,96 @@ zfstring ZFImpl_sys_iOS_objectInfo(
 }
 
 // ============================================================
-static void _ZFP_ZFImpl_sys_iOS_NSDictionaryIter_delete(ZF_IN void *data) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge_transfer _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)data;
-    impl = nil;
-}
-static void *_ZFP_ZFImpl_sys_iOS_NSDictionaryIter_copy(ZF_IN void *data) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *implSrc = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)data;
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = [_ZFP_ZFImpl_sys_iOS_NSDictionaryIterData new];
-    impl.allKeys = implSrc.allKeys;
-    impl.index = implSrc.index;
-    return (__bridge_retained void *)impl;
-}
+zfclassNotPOD _ZFP_ZFImpl_sys_iOS_NSDictionaryIter : zfextend zfiter::Impl {
+public:
+    NSDictionary *m;
+    NSUInteger index;
+public:
+    zfoverride
+    virtual zfbool valid(void) {
+        return m && index < m.allKeys.count;
+    }
+    zfoverride
+    virtual void next(void) {
+        ++index;
+        if(index >= m.allKeys.count) {
+            index = NSUIntegerMax;
+        }
+    }
+    zfoverride
+    virtual Impl *copy(void) {
+        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *ret = zfpoolNew(_ZFP_ZFImpl_sys_iOS_NSDictionaryIter);
+        ret->m = m;
+        ret->index = index;
+        return ret;
+    }
+    zfoverride
+    virtual void destroy(void) {
+        zfpoolDelete(this);
+    }
+    zfoverride
+    virtual zfbool isEqual(ZF_IN Impl *d) {
+        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *t = (_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *)d;
+        return (m == t->m && (
+                    index == t->index
+                    || (index >= m.allKeys.count && t->index >= t->m.allKeys.count)
+                    ));
+    }
+};
 
-zfiterator ZFImpl_sys_iOS_NSDictionaryIter(ZF_IN NSDictionary *dict) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = [_ZFP_ZFImpl_sys_iOS_NSDictionaryIterData new];
-    impl.allKeys = dict.allKeys;
-    return zfiterator(
-        (__bridge_retained void *)impl,
-        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter_delete,
-        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter_copy);
+zfiter ZFImpl_sys_iOS_NSDictionaryIter(ZF_IN NSDictionary *dict) {
+    _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = zfpoolNew(_ZFP_ZFImpl_sys_iOS_NSDictionaryIter);
+    impl->m = dict;
+    impl->index = 0;
+    return zfiter(impl);
 }
-zfiterator ZFImpl_sys_iOS_NSDictionaryIterFind(
+zfiter ZFImpl_sys_iOS_NSDictionaryIterFind(
         ZF_IN NSDictionary *dict
         , ZF_IN id key
         ) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = [_ZFP_ZFImpl_sys_iOS_NSDictionaryIterData new];
-    impl.allKeys = dict.allKeys;
-    impl.index = [impl.allKeys indexOfObject:key];
-    return zfiterator(
-        (__bridge_retained void *)impl,
-        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter_delete,
-        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter_copy);
+    NSUInteger index = [dict.allKeys indexOfObject:key];
+    if(index < dict.allKeys.count) {
+        _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = zfpoolNew(_ZFP_ZFImpl_sys_iOS_NSDictionaryIter);
+        impl->m = dict;
+        impl->index = index;
+        return zfiter(impl);
+    }
+    else {
+        return zfnull;
+    }
 }
-zfbool ZFImpl_sys_iOS_NSDictionaryIterValid(
-        ZF_IN NSDictionary *dict
-        , ZF_IN const zfiterator &it
-        ) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)it.data();
-    return impl.index < impl.allKeys.count;
+id ZFImpl_sys_iOS_NSDictionaryIterKey(ZF_IN const zfiter &it) {
+    _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = it.impl<_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *>();
+    return [impl->m.allKeys objectAtIndex:impl->index];
 }
-void ZFImpl_sys_iOS_NSDictionaryIterNext(
-        ZF_IN NSDictionary *dict
-        , ZF_IN_OUT zfiterator &it
-        ) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)it.data();
-    impl.index += 1;
-}
-id ZFImpl_sys_iOS_NSDictionaryIterKey(
-        ZF_IN NSDictionary *dict
-        , ZF_IN const zfiterator &it
-        ) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)it.data();
-    return [impl.allKeys objectAtIndex:impl.index];
-}
-id ZFImpl_sys_iOS_NSDictionaryIterValue(
-        ZF_IN NSDictionary *dict
-        , ZF_IN const zfiterator &it
-        ) {
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)it.data();
-    id key = [impl.allKeys objectAtIndex:impl.index];
-    return [dict objectForKey:key];
+id ZFImpl_sys_iOS_NSDictionaryIterValue(ZF_IN const zfiter &it) {
+    _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = it.impl<_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *>();
+    id key = [impl->m.allKeys objectAtIndex:impl->index];
+    return [impl->m objectForKey:key];
 }
 void ZFImpl_sys_iOS_NSDictionaryIterValue(
-        ZF_IN NSDictionary *dict
-        , ZF_IN_OUT zfiterator &it
+        ZF_IN_OUT zfiter &it
         , ZF_IN id value
         ) {
-    if(![dict isKindOfClass:[NSMutableDictionary class]]) {
+    _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = it.impl<_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *>();
+    if(![impl->m isKindOfClass:[NSMutableDictionary class]]) {
+        zfCoreCriticalShouldNotGoHere();
         return;
     }
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)it.data();
-    id key = [impl.allKeys objectAtIndex:impl.index];
+    id key = [impl->m.allKeys objectAtIndex:impl->index];
     if(key != nil && value != nil) {
-        [((NSMutableDictionary *)dict) setObject:value forKey:key];
+        [((NSMutableDictionary *)(impl->m)) setObject:value forKey:key];
     }
 }
-void ZFImpl_sys_iOS_NSDictionaryIterRemove(
-        ZF_IN NSDictionary *dict
-        , ZF_IN_OUT zfiterator &it
-        ) {
-    if(![dict isKindOfClass:[NSMutableDictionary class]]) {
+void ZFImpl_sys_iOS_NSDictionaryIterRemove(ZF_IN_OUT zfiter &it) {
+    _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = it.impl<_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *>();
+    if(![impl->m isKindOfClass:[NSMutableDictionary class]]) {
+        zfCoreCriticalShouldNotGoHere();
         return;
     }
-    _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *impl = (__bridge _ZFP_ZFImpl_sys_iOS_NSDictionaryIterData *)it.data();
-    id key = [impl.allKeys objectAtIndex:impl.index];
+    id key = [impl->m.allKeys objectAtIndex:impl->index];
     if(key != nil) {
-        [((NSMutableDictionary *)dict) removeObjectForKey:key];
+        [((NSMutableDictionary *)impl->m) removeObjectForKey:key];
     }
 }
 

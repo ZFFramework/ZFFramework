@@ -267,7 +267,7 @@ ZFXml ZFXml::copy(void) const {
             break;
         case ZFXmlType::e_XmlElement:
             ret.name(this->name());
-            for(zfiterator it = this->attrIter(); this->attrIterValid(it); this->attrIterNext(it)) {
+            for(zfiter it = this->attrIter(); it; ++it) {
                 ret.attr(this->attrIterKey(it), this->attrIterValue(it));
             }
             for(zfindex i = 0; i < this->childCount(); ++i) {
@@ -287,7 +287,7 @@ ZFXml ZFXml::copy(void) const {
             }
             break;
         case ZFXmlType::e_XmlDeclaration:
-            for(zfiterator it = this->attrIter(); this->attrIterValid(it); this->attrIterNext(it)) {
+            for(zfiter it = this->attrIter(); it; ++it) {
                 ret.attr(this->attrIterKey(it), this->attrIterValue(it));
             }
             break;
@@ -348,36 +348,28 @@ ZFXml &ZFXml::attrRemoveAll(void) {
     return *this;
 }
 
-zfiterator ZFXml::attrIter(void) const {
-    return d ? d->attrMap.iter() : zfiteratorInvalid();
+zfiter ZFXml::attrIter(void) const {
+    return d ? d->attrMap.iter() : zfnull;
 }
-zfiterator ZFXml::attrIterFind(ZF_IN const zfstring &key) const {
-    return d ? d->attrMap.iterFind(key) : zfiteratorInvalid();
+zfiter ZFXml::attrIterFind(ZF_IN const zfstring &key) const {
+    return d ? d->attrMap.iterFind(key) : zfnull;
 }
-zfbool ZFXml::attrIterValid(ZF_IN const zfiterator &it) const {
-    return d ? d->attrMap.iterValid(it) : zffalse;
-}
-void ZFXml::attrIterNext(ZF_IN_OUT zfiterator &it) const {
-    if(d) {
-        d->attrMap.iterNext(it);
-    }
-}
-zfstring ZFXml::attrIterKey(ZF_IN const zfiterator &it) const {
+zfstring ZFXml::attrIterKey(ZF_IN const zfiter &it) const {
     return d ? d->attrMap.iterKey(it) : zfnull;
 }
-zfstring ZFXml::attrIterValue(ZF_IN const zfiterator &it) const {
+zfstring ZFXml::attrIterValue(ZF_IN const zfiter &it) const {
     return d ? d->attrMap.iterValue(it) : zfnull;
 }
 
 void ZFXml::attrIterValue(
-        ZF_IN_OUT zfiterator &it
+        ZF_IN_OUT zfiter &it
         , ZF_IN const zfstring &value
         ) {
     if(d) {
         d->attrMap.iterValue(it, value);
     }
 }
-void ZFXml::attrIterRemove(ZF_IN_OUT zfiterator &it) {
+void ZFXml::attrIterRemove(ZF_IN_OUT zfiter &it) {
     if(d) {
         d->attrMap.iterRemove(it);
     }
@@ -539,28 +531,22 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, attrRemove
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml &, attrRemoveAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfiterator, attrIter)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfiterator, attrIterFind
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfiter, attrIter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfiter, attrIterFind
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfbool, attrIterValid
-        , ZFMP_IN(const zfiterator &, it)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, attrIterNext
-        , ZFMP_IN_OUT(zfiterator &, it)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, attrIterKey
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, attrIterValue
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, void, attrIterValue
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(const zfstring &, value)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, attrIterRemove
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfindex, childCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, childAt
@@ -766,7 +752,7 @@ static void _ZFP_ZFXmlToOutput_XmlAttribute(
         , ZF_IN zfindex siblingIndex
         ) {
     zfindex attrIndex = 0;
-    for(zfiterator it = xmlItem.attrIter(); xmlItem.attrIterValid(it); xmlItem.attrIterNext(it), ++attrIndex) {
+    for(zfiter it = xmlItem.attrIter(); it; ++it, ++attrIndex) {
         if(token.xmlElementAttributeCountBeforeAddNewLine == 0
                 || (token.xmlElementAttributeCountBeforeAddNewLine != zfindexMax()
                     && attrIndex > 0

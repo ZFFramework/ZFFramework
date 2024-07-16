@@ -142,65 +142,68 @@ public:
         return (zfindex)nativeTaskTmp->headers.size();
     }
 
-    static void _ZFP_headerIter_d(void *data) {
-        zfdelete((httplib::Headers::iterator *)data);
-    }
-    static void *_ZFP_headerIter_c(void *data) {
-        return zfnew(httplib::Headers::iterator, *(httplib::Headers::iterator *)data);
-    }
-
-    virtual zfiterator headerIter(ZF_IN void *nativeTask) {
+    zfclassNotPOD _Iter : zfextend zfiter::Impl {
+    public:
+        httplib::Headers::iterator it;
+        httplib::Headers::iterator end;
+    public:
+        zfoverride
+        virtual zfbool valid(void) {
+            return it != end;
+        }
+        zfoverride
+        virtual void next(void) {
+            ++it;
+        }
+        zfoverride
+        virtual Impl *copy(void) {
+            _Iter *ret = zfpoolNew(_Iter);
+            ret->it = it;
+            ret->end = end;
+            return ret;
+        }
+        zfoverride
+        virtual void destroy(void) {
+            zfpoolDelete(this);
+        }
+        zfoverride
+        virtual zfbool isEqual(ZF_IN Impl *d) {
+            _Iter *t = (_Iter *)d;
+            return it == t->it;
+        }
+    };
+    virtual zfiter headerIter(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        return zfiterator(
-                zfnew(httplib::Headers::iterator, nativeTaskTmp->headers.begin()),
-                _ZFP_headerIter_d,
-                _ZFP_headerIter_c
-            );
-    }
-    virtual zfbool headerIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) {
-        NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        return (data && *data != nativeTaskTmp->headers.end());
-    }
-    virtual void headerIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        ++(*data);
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = nativeTaskTmp->headers.begin();
+        impl->end = nativeTaskTmp->headers.end();
+        return zfiter(impl);
     }
     virtual zfstring headerIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        return (*data)->first.c_str();
+        return it.impl<_Iter *>()->it->first.c_str();
     }
     virtual zfstring headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        return (*data)->second.c_str();
+        return it.impl<_Iter *>()->it->second.c_str();
     }
     virtual void headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             , ZF_IN const zfchar *value
             ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        (*data)->second = value;
+        it.impl<_Iter *>()->it->second = value;
     }
     virtual void headerIterRemove(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        nativeTaskTmp->headers.erase(*data);
+        nativeTaskTmp->headers.erase((it.impl<_Iter *>()->it)++);
     }
 
     virtual void body(
@@ -331,42 +334,24 @@ public:
         return nativeTaskTmp->responseHeaders.size();
     }
 
-    virtual zfiterator responseHeaderIter(ZF_IN void *nativeTask) {
+    virtual zfiter responseHeaderIter(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        return zfiterator(
-                zfnew(httplib::Headers::iterator, nativeTaskTmp->responseHeaders.begin()),
-                _ZFP_headerIter_d,
-                _ZFP_headerIter_c
-            );
-    }
-    virtual zfbool responseHeaderIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) {
-        NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        return (data && *data != nativeTaskTmp->responseHeaders.end());
-    }
-    virtual void responseHeaderIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        ++(*data);
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = nativeTaskTmp->responseHeaders.begin();
+        impl->end = nativeTaskTmp->responseHeaders.end();
+        return zfiter(impl);
     }
     virtual zfstring responseHeaderIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        return (*data)->first.c_str();
+        return it.impl<_Iter *>()->it->first.c_str();
     }
     virtual zfstring responseHeaderIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        httplib::Headers::iterator *data = it.data<httplib::Headers::iterator *>();
-        return (*data)->second.c_str();
+        return it.impl<_Iter *>()->it->second.c_str();
     }
 
 public:

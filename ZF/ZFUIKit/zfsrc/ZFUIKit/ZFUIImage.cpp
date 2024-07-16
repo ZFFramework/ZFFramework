@@ -240,7 +240,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
                 }
 
                 const ZFSerializableData &imageData = *(this->imageSerializableData());
-                for(zfiterator it = imageData.attrIter(); imageData.attrIterValid(it); imageData.attrIterNext(it)) {
+                for(zfiter it = imageData.attrIter(); it; ++it) {
                     serializableData.attr(imageData.attrIterKey(it), imageData.attrIterValue(it));
                 }
                 for(zfindex i = 0; i < imageData.childCount(); ++i) {

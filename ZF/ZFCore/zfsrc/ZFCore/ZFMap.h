@@ -104,46 +104,36 @@ public:
     // ============================================================
     // ZFIterable
 public:
-    /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_0(zfiterator, iter)
+    /** @brief see #zfiter */
+    ZFMETHOD_DECLARE_0(zfiter, iter)
 
-    /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(zfiterator, iterFind
+    /** @brief see #zfiter */
+    ZFMETHOD_DECLARE_1(zfiter, iterFind
             , ZFMP_IN(ZFObject *, key)
             )
 
-    /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(zfbool, iterValid
-            , ZFMP_IN(const zfiterator &, it)
-            )
-
-    /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(void, iterNext
-            , ZFMP_IN_OUT(zfiterator &, it)
-            )
-
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     ZFMETHOD_DECLARE_1(zfany, iterKey
-            , ZFMP_IN(const zfiterator &, it)
+            , ZFMP_IN(const zfiter &, it)
             )
 
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     ZFMETHOD_DECLARE_1(zfany, iterValue
-            , ZFMP_IN(const zfiterator &, it)
+            , ZFMP_IN(const zfiter &, it)
             )
 
 public:
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     ZFMETHOD_DECLARE_2(void, iterValue
-            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN_OUT(zfiter &, it)
             , ZFMP_IN(ZFObject *, value)
             )
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     ZFMETHOD_DECLARE_1(void, iterRemove
-            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN_OUT(zfiter &, it)
             )
 
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     ZFMETHOD_DECLARE_2(void, iterAdd
             , ZFMP_IN(ZFObject *, key)
             , ZFMP_IN(ZFObject *, value)

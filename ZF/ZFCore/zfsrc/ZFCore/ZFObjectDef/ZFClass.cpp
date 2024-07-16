@@ -1338,8 +1338,8 @@ void ZFClass::_ZFP_ZFClassUnregister(
         cls->d->classDynamicRegisterObjectInstanceMap.clear();
     }
 
-    zfiterator itClass = _ZFP_ZFClassMap.iterFind(cls->classNameFull());
-    if(!_ZFP_ZFClassMap.iterValid(itClass)) {
+    zfiter itClass = _ZFP_ZFClassMap.iterFind(cls->classNameFull());
+    if(!itClass) {
         zfCoreCriticalShouldNotGoHere();
         return;
     }
@@ -1685,7 +1685,7 @@ void ZFClassGetAllT(
     }
     else {
         const ZFCoreMap &m = _ZFP_ZFClassMap;
-        for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it)) {
+        for(zfiter it = m.iter(); it; ++it) {
             ZFClass *v = m.iterValue<ZFClass *>(it);
             if(classFilter->filterCheckActive(v)) {
                 ret.add(v);

@@ -53,7 +53,7 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
     }
 
     zfbool changed = zffalse;
-    for(zfiterator it = another->iter(); another->iterValid(it); another->iterNext(it)) {
+    for(zfiter it = another->iter(); it; ++it) {
         ZFObject *obj = another->iterValue(it);
         if(!d->isContain(obj)) {
             changed = zftrue;
@@ -70,8 +70,8 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
 ZFMETHOD_DEFINE_1(ZFSet, void, removeElement
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    zfiterator it = d->iterFind(obj);
-    if(d->iterValid(it)) {
+    zfiter it = d->iterFind(obj);
+    if(it) {
         zfauto key = d->iterKey(it);
         d->iterRemove(it);
         this->contentOnRemove(key);
@@ -82,7 +82,7 @@ ZFMETHOD_DEFINE_0(ZFSet, void, removeAll) {
     if(!d->isEmpty()) {
         ZFCoreArray<zfauto> tmp;
         tmp.capacity(d->count());
-        for(zfiterator it = d->iter(); d->iterValid(it); d->iterNext(it)) {
+        for(zfiter it = d->iter(); it; ++it) {
             tmp.add(d->iterValue(it));
         }
         d->removeAll();
@@ -95,36 +95,24 @@ ZFMETHOD_DEFINE_0(ZFSet, void, removeAll) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFSet, zfiterator, iter) {
+ZFMETHOD_DEFINE_0(ZFSet, zfiter, iter) {
     return d->iter();
 }
 
-ZFMETHOD_DEFINE_1(ZFSet, zfiterator, iterFind
+ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterFind
         , ZFMP_IN(ZFObject *, key)
         ) {
     return d->iterFind(key);
 }
 
-ZFMETHOD_DEFINE_1(ZFSet, zfbool, iterValid
-        , ZFMP_IN(const zfiterator &, it)
-        ) {
-    return d->iterValid(it);
-}
-
-ZFMETHOD_DEFINE_1(ZFSet, void, iterNext
-        , ZFMP_IN_OUT(zfiterator &, it)
-        ) {
-    d->iterNext(it);
-}
-
 ZFMETHOD_DEFINE_1(ZFSet, zfany, iterValue
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return d->iterValue(it);
 }
 
 ZFMETHOD_DEFINE_2(ZFSet, void, iterValue
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
     zfRetain(value);
@@ -133,7 +121,7 @@ ZFMETHOD_DEFINE_2(ZFSet, void, iterValue
     zfRelease(value);
 }
 ZFMETHOD_DEFINE_1(ZFSet, void, iterRemove
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         ) {
     zfauto key = d->iterKey(it);
     if(key != zfnull) {
@@ -149,7 +137,7 @@ ZFMETHOD_DEFINE_1(ZFSet, void, iterAdd
 }
 ZFMETHOD_DEFINE_2(ZFSet, void, iterAdd
         , ZFMP_IN(ZFObject *, value)
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         ) {
     this->add(value);
 }

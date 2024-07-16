@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief iterable, see #zfiterator
+ * @brief iterable, see #zfiter
  */
 zfinterface ZFLIB_ZFCore ZFIterable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFIterable, ZFInterface)
@@ -22,49 +22,34 @@ public:
      */
     virtual zfindex count(void) zfpurevirtual;
     /**
-     * @brief return a iter, see #zfiterator
+     * @brief return a iter, see #zfiter
      */
-    virtual zfiterator iter(void) zfpurevirtual;
+    virtual zfiter iter(void) zfpurevirtual;
 
     /**
      * @brief find element
      */
-    virtual zfiterator iterFind(ZF_IN ZFObject *element) zfpurevirtual;
+    virtual zfiter iterFind(ZF_IN ZFObject *element) zfpurevirtual;
 
     /**
-     * @brief true if the iter is valid, see #zfiterator
-     *
-     * you may access value by #iterValue,
-     * or move to next by #iterNext
-     */
-    virtual zfbool iterValid(ZF_IN const zfiterator &it) zfpurevirtual;
-
-    /**
-     * @brief move to next, see #zfiterator
+     * @brief get value by iter, see #zfiter
      *
      * iter must be valid
      */
-    virtual void iterNext(ZF_IN_OUT zfiterator &it) zfpurevirtual;
-
-    /**
-     * @brief get value by iter, see #zfiterator
-     *
-     * iter must be valid
-     */
-    virtual zfany iterValue(ZF_IN const zfiterator &it) zfpurevirtual;
+    virtual zfany iterValue(ZF_IN const zfiter &it) zfpurevirtual;
 
 public:
     /**
-     * @brief set value at iter, see #zfiterator
+     * @brief set value at iter, see #zfiter
      */
     virtual void iterValue(
-            ZF_IN_OUT zfiterator &it
+            ZF_IN_OUT zfiter &it
             , ZF_IN ZFObject *value
             ) zfpurevirtual;
     /**
-     * @brief remove value at iter, see #zfiterator
+     * @brief remove value at iter, see #zfiter
      */
-    virtual void iterRemove(ZF_IN_OUT zfiterator &it) zfpurevirtual;
+    virtual void iterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
     /**
      * @brief remove all contents of this iterable
      */
@@ -76,30 +61,30 @@ public:
     virtual void iterAdd(ZF_IN ZFObject *value) zfpurevirtual;
     /**
      * @brief add value before iter,
-     *   see #zfiterator
+     *   see #zfiter
      */
     virtual void iterAdd(
             ZF_IN ZFObject *value
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             ) zfpurevirtual;
 };
 
 // ============================================================
 /**
- * @brief iterable that with key value pair, see #zfiterator
+ * @brief iterable that with key value pair, see #zfiter
  */
 zfinterface ZFLIB_ZFCore ZFIterableKeyValue : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFIterableKeyValue, ZFInterface)
 
 public:
     /**
-     * @brief get key value pair with iter, see #zfiterator
+     * @brief get key value pair with iter, see #zfiter
      */
-    virtual zfany iterKey(ZF_IN const zfiterator &it) zfpurevirtual;
+    virtual zfany iterKey(ZF_IN const zfiter &it) zfpurevirtual;
 
 public:
     /**
-     * @brief add key value to tail, see #zfiterator
+     * @brief add key value to tail, see #zfiter
      *
      * for most key value container,
      * this is same as set key with value

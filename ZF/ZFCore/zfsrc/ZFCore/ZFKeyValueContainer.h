@@ -26,7 +26,7 @@ zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
  *
  * to go through all the contents, you should:
  * @code
- *   for(zfiterator it = container->iter(); container->iterValid(it); container->iterNext(it)) {
+ *   for(zfiter it = container->iter(); it; ++it) {
  *       if(condition) {
  *           // safe to remove since keys and values is a copy of the contents
  *           // however, you must not access the removed elements after remove
@@ -94,7 +94,7 @@ public:
     virtual void iterAdd(ZF_IN ZFObject *value) {zfCoreCriticalNotSupported();}
     virtual void iterAdd(
             ZF_IN ZFObject *value
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             ) {
         zfCoreCriticalNotSupported();
     }

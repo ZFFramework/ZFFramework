@@ -206,26 +206,22 @@ public:
     ZFXml &attrRemoveAll(void);
 
 public:
-    /** @brief see #zfiterator */
-    zfiterator attrIter(void) const;
-    /** @brief see #zfiterator */
-    zfiterator attrIterFind(ZF_IN const zfstring &key) const;
-    /** @brief see #zfiterator */
-    zfbool attrIterValid(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    void attrIterNext(ZF_IN_OUT zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zfstring attrIterKey(ZF_IN const zfiterator &it) const;
-    /** @brief see #zfiterator */
-    zfstring attrIterValue(ZF_IN const zfiterator &it) const;
+    /** @brief see #zfiter */
+    zfiter attrIter(void) const;
+    /** @brief see #zfiter */
+    zfiter attrIterFind(ZF_IN const zfstring &key) const;
+    /** @brief see #zfiter */
+    zfstring attrIterKey(ZF_IN const zfiter &it) const;
+    /** @brief see #zfiter */
+    zfstring attrIterValue(ZF_IN const zfiter &it) const;
 
-    /** @brief see #zfiterator */
+    /** @brief see #zfiter */
     void attrIterValue(
-            ZF_IN_OUT zfiterator &it
+            ZF_IN_OUT zfiter &it
             , ZF_IN const zfstring &value
             );
-    /** @brief see #zfiterator */
-    void attrIterRemove(ZF_IN_OUT zfiterator &it);
+    /** @brief see #zfiter */
+    void attrIterRemove(ZF_IN_OUT zfiter &it);
 
     // ============================================================
 public:

@@ -382,8 +382,6 @@ ZFEXPORT_VAR_READONLY_DEFINE(zfindex, zfindexMax, zfindexMax())
 ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetInvalid, zftimetInvalid())
 ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityInvalid, zfidentityInvalid())
 
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfiterator, zfiteratorInvalid)
-
 ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeZero)
 ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeMax)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFIndexRange, ZFIndexRangeMake

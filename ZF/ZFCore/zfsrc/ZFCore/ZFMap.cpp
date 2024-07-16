@@ -119,7 +119,7 @@ ZFMETHOD_DEFINE_1(ZFMap, void, addFrom
 
     ZFObject *key = zfnull;
     ZFObject *value = zfnull;
-    for(zfiterator it = another->iter(); another->iterValid(it); another->iterNext(it)) {
+    for(zfiter it = another->iter(); it; ++it) {
         key = another->iterKey(it);
         value = another->iterValue(it);
 
@@ -225,39 +225,28 @@ ZFMETHOD_DEFINE_0(ZFMap, void, removeAll) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFMap, zfiterator, iter) {
+ZFMETHOD_DEFINE_0(ZFMap, zfiter, iter) {
     return d->data.iter();
 }
-ZFMETHOD_DEFINE_1(ZFMap, zfiterator, iterFind
+ZFMETHOD_DEFINE_1(ZFMap, zfiter, iterFind
         , ZFMP_IN(ZFObject *, key)
         ) {
     return d->data.iterFind(key);
 }
 
-ZFMETHOD_DEFINE_1(ZFMap, zfbool, iterValid
-        , ZFMP_IN(const zfiterator &, it)
-        ) {
-    return d->data.iterValid(it);
-}
-
-ZFMETHOD_DEFINE_1(ZFMap, void, iterNext
-        , ZFMP_IN_OUT(zfiterator &, it)
-        ) {
-    d->data.iterNext(it);
-}
 ZFMETHOD_DEFINE_1(ZFMap, zfany, iterKey
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return d->data.iterKey(it);
 }
 ZFMETHOD_DEFINE_1(ZFMap, zfany, iterValue
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
     return d->data.iterValue(it);
 }
 
 ZFMETHOD_DEFINE_2(ZFMap, void, iterValue
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
     ZFObject *key = d->data.iterKey(it);
@@ -270,7 +259,7 @@ ZFMETHOD_DEFINE_2(ZFMap, void, iterValue
     zfRelease(old);
 }
 ZFMETHOD_DEFINE_1(ZFMap, void, iterRemove
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         ) {
     ZFObject *key = d->data.iterKey(it);
     ZFObject *value = d->data.iterValue(it);

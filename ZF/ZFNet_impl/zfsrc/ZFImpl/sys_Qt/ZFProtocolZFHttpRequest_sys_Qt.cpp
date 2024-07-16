@@ -4,6 +4,7 @@
 #if ZF_ENV_sys_Qt
 
 #include <QObject>
+#include <QByteArray>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -194,75 +195,73 @@ public:
         return task->rawHeaderList->size();
     }
 
-    virtual zfiterator headerIter(ZF_IN void *nativeTask) {
+    zfclassNotPOD _Iter : zfextend zfiter::Impl {
+    public:
+        QList<QByteArray>::Iterator it;
+        QList<QByteArray>::Iterator end;
+    public:
+        zfoverride
+        virtual zfbool valid(void) {
+            return it != end;
+        }
+        zfoverride
+        virtual void next(void) {
+            ++it;
+        }
+        zfoverride
+        virtual Impl *copy(void) {
+            _Iter *ret = zfpoolNew(_Iter);
+            ret->it = it;
+            ret->end = end;
+            return ret;
+        }
+        zfoverride
+        virtual void destroy(void) {
+            zfpoolDelete(this);
+        }
+        zfoverride
+        virtual zfbool isEqual(ZF_IN Impl *d) {
+            _Iter *t = (_Iter *)d;
+            return it == t->it;
+        }
+    };
+    virtual zfiter headerIter(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         if(task->rawHeaderList == NULL) {
             task->rawHeaderList = new QList<QByteArray>(task->request.rawHeaderList());
         }
-        return zfiterator((void *)new QList<QByteArray>::Iterator(task->rawHeaderList->begin()), _ZFP_iterDelete, _ZFP_iterCopy);
-    }
-    virtual zfbool headerIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) {
-        _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        return task->rawHeaderList != NULL && nativeIt != NULL && *nativeIt != task->rawHeaderList->end();
-    }
-    virtual void headerIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) {
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            ++(*nativeIt);
-        }
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = task->rawHeaderList->begin();
+        impl->end = task->rawHeaderList->end();
+        return zfiter(impl);
     }
     virtual zfstring headerIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            return (*nativeIt)->data();
-        }
-        else {
-            return "";
-        }
+        return it.impl<_Iter *>()->it->data();
     }
     virtual zfstring headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            return task->request.rawHeader((*nativeIt)->data()).data();
-        }
-        else {
-            return "";
-        }
+        return task->request.rawHeader(it.impl<_Iter *>()->it->data()).data();
     }
     virtual void headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             , ZF_IN const zfchar *value
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            task->request.setRawHeader((*nativeIt)->data(), value);
-        }
+        task->request.setRawHeader(it.impl<_Iter *>()->it->data(), value);
     }
     virtual void headerIterRemove(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            task->request.setRawHeader((*nativeIt)->data(), NULL);
-        }
+        task->request.setRawHeader(it.impl<_Iter *>()->it->data(), NULL);
     }
 
     virtual void body(
@@ -338,58 +337,25 @@ public:
         return task->responseRawHeaderList.size();
     }
 
-    virtual zfiterator responseHeaderIter(ZF_IN void *nativeTask) {
+    virtual zfiter responseHeaderIter(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        return zfiterator((void *)new QList<QByteArray>::Iterator(task->responseRawHeaderList.begin()), _ZFP_iterDelete, _ZFP_iterCopy);
-    }
-    virtual zfbool responseHeaderIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) {
-        _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        return task->response != NULL && nativeIt != NULL && (*nativeIt) != task->responseRawHeaderList.end();
-    }
-    virtual void responseHeaderIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) {
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            ++(*nativeIt);
-        }
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = task->responseRawHeaderList.begin();
+        impl->end = task->responseRawHeaderList.end();
+        return zfiter(impl);
     }
     virtual zfstring responseHeaderIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL) {
-            return (*nativeIt)->data();
-        }
-        else {
-            return "";
-        }
+        return it.impl<_Iter *>()->it->data();
     }
     virtual zfstring responseHeaderIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        QList<QByteArray>::Iterator *nativeIt = it.data<QList<QByteArray>::Iterator *>();
-        if(nativeIt != NULL && task->response != NULL) {
-            return task->response->rawHeader((*nativeIt)->data()).data();
-        }
-        else {
-            return "";
-        }
-    }
-private:
-    static void _ZFP_iterDelete(void *data) {
-        delete (QList<QByteArray>::Iterator *)data;
-    }
-    static void *_ZFP_iterCopy(void *data) {
-        return new QList<QByteArray>::Iterator(*(QList<QByteArray>::Iterator *)data);
+        return task->response->rawHeader(it.impl<_Iter *>()->it->data()).data();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_sys_Qt)
 

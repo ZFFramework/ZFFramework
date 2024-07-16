@@ -9,8 +9,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,48 +18,38 @@ public final class ZFHttpRequest {
     public long zfjniPointerOwnerZFHttpRequest = 0;
     public long zfjniPointerOwnerZFHttpResponse = 0;
     public HttpURLConnection connection = null;
-    public Map<String, List<String>> sendHeader = null;
-    public List<String> recvHeader = null;
+    public Map<String, String> sendHeaderCache = null;
+    public Map<String, String> recvHeaderCache = null;
     public boolean running = true;
 
-    private void _sendHeaderUpdate() {
-        if (this.sendHeader != null || this.connection == null) {
-            return;
+    private String _join(List<String> l) {
+        StringBuilder sb = new StringBuilder();
+        for (String v : l) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(v);
         }
-        this.sendHeader = this.connection.getRequestProperties();
+        return sb.toString();
     }
 
-    private String _sendHeaderValue(String key) {
-        this._sendHeaderUpdate();
-        List<String> values = this.sendHeader.get(key);
-        if (values != null) {
-            StringBuilder sb = new StringBuilder();
-            for (String value : values) {
-                if (sb.length() > 0) {
-                    sb.append(",");
-                }
-                sb.append(value);
-            }
-            return sb.toString();
+    private void _sendHeaderUpdate() {
+        if (this.sendHeaderCache != null || this.connection == null) {
+            return;
         }
-        return null;
+        this.sendHeaderCache = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : this.connection.getRequestProperties().entrySet()) {
+            this.sendHeaderCache.put(entry.getKey(), _join(entry.getValue()));
+        }
     }
 
     private void _recvHeaderUpdate() {
-        if (this.recvHeader != null) {
+        if (this.recvHeaderCache != null || this.connection == null) {
             return;
         }
-        this.recvHeader = new ArrayList<>();
-        if (this.connection == null) {
-            return;
-        }
-
-        int count = this.connection.getHeaderFields().size();
-        for (int i = 0; i < count; ++i) {
-            String key = this.connection.getHeaderFieldKey(i);
-            if (key != null) {
-                this.recvHeader.add(key);
-            }
+        this.recvHeaderCache = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : this.connection.getHeaderFields().entrySet()) {
+            this.recvHeaderCache.put(entry.getKey(), _join(entry.getValue()));
         }
     }
 
@@ -122,7 +111,7 @@ public final class ZFHttpRequest {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         if (task.connection != null) {
             task.connection.addRequestProperty(key, value);
-            task.sendHeader = null;
+            task.sendHeaderCache = null;
         }
     }
 
@@ -131,93 +120,30 @@ public final class ZFHttpRequest {
         if (task.connection != null) {
             if (task.connection.getRequestProperty(key) != null) {
                 task.connection.setRequestProperty(key, "");
-                task.sendHeader = null;
+                task.sendHeaderCache = null;
             }
         }
     }
 
     public static String native_header(Object nativeTask, String key) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        return task._sendHeaderValue(key);
+        task._sendHeaderUpdate();
+        return task.sendHeaderCache.get(key);
     }
 
     public static int native_headerCount(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         if (task.connection != null) {
             task._sendHeaderUpdate();
-            return task.sendHeader.size();
+            return task.sendHeaderCache.size();
         }
         return 0;
     }
 
-    private static class NativeIterator {
-        public Iterator<String> it = null;
-        public String key = null;
-    }
-
-    public static Object native_headerIter(Object nativeTask) {
+    public static Object native_headerMap(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            task._sendHeaderUpdate();
-            NativeIterator it = new NativeIterator();
-            it.it = task.sendHeader.keySet().iterator();
-            if (it.it.hasNext()) {
-                it.key = it.it.next();
-            }
-            return it;
-        }
-        return null;
-    }
-
-    public static boolean native_headerIterValid(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        return it != null && it.it != null && (it.it.hasNext() || it.key != null);
-    }
-
-    public static void native_headerIterNext(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        if (it != null) {
-            if (it.it != null && it.it.hasNext()) {
-                it.key = it.it.next();
-            } else {
-                it.key = null;
-            }
-        }
-    }
-
-    public static String native_headerIterKey(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        return it != null ? it.key : null;
-    }
-
-    public static String native_headerIterValue(Object nativeTask, Object nativeIt) {
-        ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            task._sendHeaderUpdate();
-            NativeIterator it = (NativeIterator) nativeIt;
-            if (it != null && it.key != null) {
-                return task._sendHeaderValue(it.key);
-            }
-        }
-        return null;
-    }
-
-    public static void native_headerIterValue(Object nativeTask, Object nativeIt, String value) {
-        ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            NativeIterator it = (NativeIterator) nativeIt;
-            if (it != null && it.key != null) {
-                task.connection.setRequestProperty(it.key, value);
-                task.sendHeader = null;
-            }
-        }
-    }
-
-    public static void native_headerIterRemove(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        if (it != null && it.it != null) {
-            it.it.remove();
-        }
+        task._sendHeaderUpdate();
+        return task.sendHeaderCache;
     }
 
     public static void native_request(Object nativeTask, Object nativeInput) {
@@ -345,59 +271,20 @@ public final class ZFHttpRequest {
     // for response
     public static String native_responseHeader(Object nativeTask, String key) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            return task.connection.getHeaderField(key);
-        }
-        return null;
+        task._recvHeaderUpdate();
+        return task.recvHeaderCache.get(key);
     }
 
     public static int native_responseHeaderCount(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         task._recvHeaderUpdate();
-        return task.recvHeader.size();
+        return task.recvHeaderCache.size();
     }
 
-    public static Object native_responseHeaderIter(Object nativeTask) {
+    public static Object native_responseHeaderMap(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         task._recvHeaderUpdate();
-        NativeIterator it = new NativeIterator();
-        it.it = task.recvHeader.iterator();
-        if (it.it.hasNext()) {
-            it.key = it.it.next();
-        }
-        return it;
-    }
-
-    public static boolean native_responseHeaderIterValid(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        return it != null && it.it != null && (it.it.hasNext() || it.key != null);
-    }
-
-    public static void native_responseHeaderIterNext(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        if (it != null) {
-            if (it.it != null && it.it.hasNext()) {
-                it.key = it.it.next();
-            } else {
-                it.key = null;
-            }
-        }
-    }
-
-    public static String native_responseHeaderIterKey(Object nativeTask, Object nativeIt) {
-        NativeIterator it = (NativeIterator) nativeIt;
-        return it != null ? it.key : null;
-    }
-
-    public static String native_responseHeaderIterValue(Object nativeTask, Object nativeIt) {
-        ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            NativeIterator it = (NativeIterator) nativeIt;
-            if (it != null && it.key != null) {
-                return task.connection.getHeaderField(it.key);
-            }
-        }
-        return null;
+        return task.recvHeaderCache;
     }
 
 }

@@ -84,41 +84,27 @@ public:
     /**
      * @brief http header access
      */
-    virtual zfiterator headerIter(ZF_IN void *nativeTask) zfpurevirtual;
-    /**
-     * @brief http header access
-     */
-    virtual zfbool headerIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) zfpurevirtual;
-    /**
-     * @brief http header access
-     */
-    virtual void headerIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) zfpurevirtual;
+    virtual zfiter headerIter(ZF_IN void *nativeTask) zfpurevirtual;
     /**
      * @brief http header access
      */
     virtual zfstring headerIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) zfpurevirtual;
     /**
      * @brief http header access
      */
     virtual zfstring headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) zfpurevirtual;
     /**
      * @brief http header access
      */
     virtual void headerIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             , ZF_IN const zfchar *value
             ) zfpurevirtual;
     /**
@@ -126,7 +112,7 @@ public:
      */
     virtual void headerIterRemove(
             ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
+            , ZF_IN_OUT zfiter &it
             ) zfpurevirtual;
 
     /**
@@ -185,34 +171,20 @@ public:
     /**
      * @brief response header access
      */
-    virtual zfiterator responseHeaderIter(ZF_IN void *nativeTask) zfpurevirtual;
-    /**
-     * @brief response header access
-     */
-    virtual zfbool responseHeaderIterValid(
-            ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
-            ) zfpurevirtual;
-    /**
-     * @brief response header access
-     */
-    virtual void responseHeaderIterNext(
-            ZF_IN void *nativeTask
-            , ZF_IN_OUT zfiterator &it
-            ) zfpurevirtual;
+    virtual zfiter responseHeaderIter(ZF_IN void *nativeTask) zfpurevirtual;
     /**
      * @brief response header access
      */
     virtual zfstring responseHeaderIterKey(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) zfpurevirtual;
     /**
      * @brief response header access
      */
     virtual zfstring responseHeaderIterValue(
             ZF_IN void *nativeTask
-            , ZF_IN const zfiterator &it
+            , ZF_IN const zfiter &it
             ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFHttpRequest)
 

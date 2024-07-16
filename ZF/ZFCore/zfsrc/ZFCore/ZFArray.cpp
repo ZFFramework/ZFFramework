@@ -126,7 +126,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
         return;
     }
     ZFObject *obj = zfnull;
-    for(zfiterator it = another->iter(); another->iterValid(it); another->iterNext(it)) {
+    for(zfiter it = another->iter(); it; ++it) {
         obj = another->iterValue(it);
         zfRetain(obj);
         d->data.push_back(obj);
@@ -418,78 +418,80 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
 }
 
 // ============================================================
-static void _ZFP_ZFArray_iterDeleteCallback(ZF_IN void *data) {
-    zfdelete((zfindex *)data);
-}
-static void *_ZFP_ZFArray_iterCopyCallback(ZF_IN void *data) {
-    return zfnew(zfindex, *(zfindex *)data);
-}
-
-ZFMETHOD_DEFINE_1(ZFArray, zfiterator, iterForIndex
+zfclassNotPOD _ZFP_ZFArrayIter : zfextend zfiter::Impl {
+public:
+    zfindex index;
+    ZFArray *owner;
+public:
+    zfoverride
+    virtual zfbool valid(void) {
+        return index < owner->count();
+    }
+    zfoverride
+    virtual void next(void) {
+        ++index;
+        if(index >= owner->count()) {
+            index = zfindexMax();
+        }
+    }
+    zfoverride
+    virtual Impl *copy(void) {
+        _ZFP_ZFArrayIter *ret = zfpoolNew(_ZFP_ZFArrayIter);
+        ret->index = index;
+        ret->owner = owner;
+        return ret;
+    }
+    zfoverride
+    virtual void destroy(void) {
+        zfpoolDelete(this);
+    }
+    zfoverride
+    virtual zfbool isEqual(ZF_IN Impl *d) {
+        _ZFP_ZFArrayIter *t = (_ZFP_ZFArrayIter *)d;
+        return (owner == t->owner && (
+                    index == t->index
+                    || (index >= owner->count() && t->index >= t->owner->count())
+                    ));
+    }
+};
+ZFMETHOD_DEFINE_1(ZFArray, zfiter, iterForIndex
         , ZFMP_IN(zfindex, index)
         ) {
-    return zfiterator(zfnew(zfindex, index),
-        _ZFP_ZFArray_iterDeleteCallback,
-        _ZFP_ZFArray_iterCopyCallback);
+    _ZFP_ZFArrayIter *impl = zfpoolNew(_ZFP_ZFArrayIter);
+    impl->owner = this;
+    impl->index = index;
+    return zfiter(impl);
 }
 
-ZFMETHOD_DEFINE_0(ZFArray, zfiterator, iter) {
-    return zfiterator(zfnew(zfindex, 0),
-        _ZFP_ZFArray_iterDeleteCallback,
-        _ZFP_ZFArray_iterCopyCallback);
+ZFMETHOD_DEFINE_0(ZFArray, zfiter, iter) {
+    _ZFP_ZFArrayIter *impl = zfpoolNew(_ZFP_ZFArrayIter);
+    impl->owner = this;
+    impl->index = 0;
+    return zfiter(impl);
 }
 
-ZFMETHOD_DEFINE_1(ZFArray, zfiterator, iterFind
+ZFMETHOD_DEFINE_1(ZFArray, zfiter, iterFind
         , ZFMP_IN(ZFObject *, element)
         ) {
     return this->iterForIndex(this->find(element));
 }
 
-ZFMETHOD_DEFINE_1(ZFArray, zfbool, iterValid
-        , ZFMP_IN(const zfiterator &, it)
-        ) {
-    zfindex *index = it.data<zfindex *>();
-    return (index != zfnull && *index < d->data.size());
-}
-
-ZFMETHOD_DEFINE_1(ZFArray, void, iterNext
-        , ZFMP_IN_OUT(zfiterator &, it)
-        ) {
-    zfindex *index = it.data<zfindex *>();
-    if(index != zfnull && *index < d->data.size()) {
-        ++(*index);
-    }
-}
-
 ZFMETHOD_DEFINE_1(ZFArray, zfany, iterValue
-        , ZFMP_IN(const zfiterator &, it)
+        , ZFMP_IN(const zfiter &, it)
         ) {
-    zfindex *index = it.data<zfindex *>();
-    if(index != zfnull && *index < d->data.size()) {
-        return d->data[*index];
-    }
-    return zfnull;
+    return this->get(it.impl<_ZFP_ZFArrayIter *>()->index);
 }
 
 ZFMETHOD_DEFINE_2(ZFArray, void, iterValue
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    zfindex *index = it.data<zfindex *>();
-    if(index != zfnull && *index < d->data.size()) {
-        this->set(*index, value);
-    }
+    this->set(it.impl<_ZFP_ZFArrayIter *>()->index, value);
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, iterRemove
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         ) {
-    zfindex *index = it.data<zfindex *>();
-    if(index != zfnull && *index < d->data.size()) {
-        this->remove(*index);
-        if(*index >= (zfindex)(d->data.size())) {
-            *index = (zfindex)(d->data.size()) - 1;
-        }
-    }
+    this->remove(it.impl<_ZFP_ZFArrayIter *>()->index);
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, iterAdd
         , ZFMP_IN(ZFObject *, value)
@@ -498,11 +500,11 @@ ZFMETHOD_DEFINE_1(ZFArray, void, iterAdd
 }
 ZFMETHOD_DEFINE_2(ZFArray, void, iterAdd
         , ZFMP_IN(ZFObject *, value)
-        , ZFMP_IN_OUT(zfiterator &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         ) {
-    zfindex *index = it.data<zfindex *>();
-    if(index != zfnull && *index < d->data.size()) {
-        this->add(value, (*index)++);
+    if(it) {
+        _ZFP_ZFArrayIter *impl = it.impl<_ZFP_ZFArrayIter *>();
+        this->add(value, (impl->index)++);
     }
     else {
         this->add(value);

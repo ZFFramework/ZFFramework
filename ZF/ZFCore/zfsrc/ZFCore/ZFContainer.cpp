@@ -15,8 +15,8 @@ ZFMETHOD_DEFINE_3(ZFContainer, void, objectInfoOfContentT
         ) {
     zfindex count = 0;
     ret += token.tokenLeft;
-    zfiterator it = this->iter();
-    for(; this->iterValid(it) && count < maxCount; ++count, this->iterNext(it)) {
+    zfiter it = this->iter();
+    for(; it && count < maxCount; ++count, ++it) {
         if(count > 0) {
             ret += token.tokenSeparator;
         }
@@ -43,7 +43,7 @@ ZFMETHOD_DEFINE_2(ZFContainer, zfstring, objectInfoOfContent
 
 zfbool ZFContainer::serializableOnCheck(void) {
     if(!zfsuperI(ZFSerializable)::serializableOnCheck()) {return zffalse;}
-    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
+    for(zfiter it = this->iter(); it; ++it) {
         if(!ZFObjectIsSerializable(this->iterValue(it))) {
             return zffalse;
         }
@@ -91,7 +91,7 @@ zfbool ZFContainer::serializableOnSerializeToData(
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     if(ref == zfnull) {
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
+        for(zfiter it = this->iter(); it; ++it) {
             ZFSerializableData elementData;
             if(!ZFObjectToDataT(elementData, this->iterValue(it), outErrorHint)) {
                 return zffalse;
@@ -120,7 +120,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
     }
 
     if(ref->count() == 0) {
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
+        for(zfiter it = this->iter(); it; ++it) {
             ZFObject *element = this->iterValue(it);
             ZFSerializableData elementData;
             if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
@@ -135,10 +135,10 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
     ZFContainer *tmp = this->classData()->newInstance();
     zfblockedRelease(tmp);
     tmp->addFrom(ref);
-    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
+    for(zfiter it = this->iter(); it; ++it) {
         ZFObject *element = this->iterValue(it);
-        zfiterator itTmp = tmp->iterFind(element);
-        if(ref->iterValid(itTmp)) {
+        zfiter itTmp = tmp->iterFind(element);
+        if(itTmp) {
             tmp->iterRemove(itTmp);
             continue;
         }
@@ -177,8 +177,8 @@ void ZFContainer::objectOnDeallocPrepare(void) {
 zfidentity ZFContainer::objectHash(void) {
     ZFObject *first = zfnull;
     {
-        zfiterator it = this->iter();
-        if(this->iterValid(it)) {
+        zfiter it = this->iter();
+        if(it) {
             first = this->iterValue(it);
         }
     }
@@ -199,10 +199,7 @@ ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
             ) {
         return ZFCompareUncomparable;
     }
-    for(zfiterator it = this->iter(), itRef = another->iter();
-            this->iterValid(it);
-            this->iterNext(it), another->iterNext(itRef)
-            ) {
+    for(zfiter it = this->iter(), itRef = another->iter(); it; ++it, ++itRef) {
         if(ZFObjectCompare(this->iterValue(it), another->iterValue(itRef)) != ZFCompareEqual) {
             return ZFCompareUncomparable;
         }

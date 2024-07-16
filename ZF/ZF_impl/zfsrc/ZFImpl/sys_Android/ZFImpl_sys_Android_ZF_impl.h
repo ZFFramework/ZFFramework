@@ -250,6 +250,7 @@ ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFImpl_sys_Android_ZF_impl_h_
 
 #include "ZFImpl_sys_Android_ZFAndroidInput.h"
+#include "ZFImpl_sys_Android_ZFAndroidMapIter.h"
 #include "ZFImpl_sys_Android_ZFAndroidOutput.h"
 #include "ZFImpl_sys_Android_ZFInputWrapper.h"
 #include "ZFImpl_sys_Android_ZFOutputWrapper.h"

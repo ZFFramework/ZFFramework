@@ -87,10 +87,7 @@ void ZFCoreMap::objectInfoOfContentT(
     zfindex count = 0;
     ret += token.tokenLeft;
     if(!this->isEmpty()) {
-        for(zfiterator it = this->iter();
-                this->iterValid(it) && count < maxCount;
-                this->iterNext(it), ++count
-                ) {
+        for(zfiter it = this->iter(); it && count < maxCount; ++it, ++count) {
             if(count > 0) {
                 ret += token.tokenSeparator;
             }
@@ -156,7 +153,7 @@ zfbool ZFCoreMap::isContain(ZF_IN const zfstring &key) const {
 
 void ZFCoreMap::addFrom(ZF_IN const ZFCoreMap &ref) {
     if(d != ref.d && !ref.isEmpty()) {
-        for(zfiterator it = ref.iter(); this->iterValid(it); this->iterNext(it)) {
+        for(zfiter it = ref.iter(); it; ++it) {
             this->set(this->iterKey(it), *(this->iterValue(it)));
         }
     }
@@ -218,38 +215,30 @@ void ZFCoreMap::removeAll(void) {
 
 // ============================================================
 // iterator
-zfiterator ZFCoreMap::iter(void) const {
+zfiter ZFCoreMap::iter(void) const {
     return d->m.iter();
 }
 
-zfiterator ZFCoreMap::iterFind(ZF_IN const zfstring &key) const {
+zfiter ZFCoreMap::iterFind(ZF_IN const zfstring &key) const {
     return d->m.iterFind(key);
 }
 
-zfbool ZFCoreMap::iterValid(ZF_IN const zfiterator &it) const {
-    return d->m.iterValid(it);
-}
-
-void ZFCoreMap::iterNext(ZF_IN_OUT zfiterator &it) const {
-    d->m.iterNext(it);
-}
-
-zfstring ZFCoreMap::iterKey(ZF_IN const zfiterator &it) const {
+zfstring ZFCoreMap::iterKey(ZF_IN const zfiter &it) const {
     return d->m.iterKey(it);
 }
-ZFCorePointerBase *ZFCoreMap::iterValue(ZF_IN const zfiterator &it) const {
+ZFCorePointerBase *ZFCoreMap::iterValue(ZF_IN const zfiter &it) const {
     return d->m.iterValue(it);
 }
 
 void ZFCoreMap::iterValue(
-        ZF_IN_OUT zfiterator &it
+        ZF_IN_OUT zfiter &it
         , ZF_IN const ZFCorePointerBase &newValue
         ) {
     ZFCorePointerBase *old = d->m.iterValue(it);
     d->m.iterValue(it, newValue.refNew());
     old->refDelete();
 }
-void ZFCoreMap::iterRemove(ZF_IN_OUT zfiterator &it) {
+void ZFCoreMap::iterRemove(ZF_IN_OUT zfiter &it) {
     ZFCorePointerBase *old = d->m.iterValue(it);
     d->m.iterRemove(it);
     old->refDelete();
