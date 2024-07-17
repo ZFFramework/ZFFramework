@@ -124,7 +124,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         return false
     end
     local configFile = ZFInputForFile(CONFIG_FILE_PATH)
-    if not configFile:callbackValid() then
+    if not configFile:valid() then
         zfLogTrim('config file not exist: %s', CONFIG_FILE_PATH)
         return false
     end

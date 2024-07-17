@@ -416,7 +416,7 @@ static const ZFUIAlignFlags &_ZFP_ZFUIAlignMask(void) {
         );
     return _alignMask;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFUIAlignIsValid
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFUIAlignValid
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         ) {
     return (
@@ -441,7 +441,7 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApply
         , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginZero())
         ) {
     ret = ZFUIRectZero();
-    if(!ZFUIAlignIsValid(align)) {
+    if(!ZFUIAlignValid(align)) {
         return;
     }
     ret.width = itemSize.width;
@@ -490,7 +490,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIAlignApply
 ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetX
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         ) {
-    if(!ZFUIAlignIsValid(align)) {
+    if(!ZFUIAlignValid(align)) {
         return ZFUIAlign::e_Center;
     }
 
@@ -511,7 +511,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetX
 ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetY
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         ) {
-    if(!ZFUIAlignIsValid(align)) {
+    if(!ZFUIAlignValid(align)) {
         return ZFUIAlign::e_Center;
     }
 

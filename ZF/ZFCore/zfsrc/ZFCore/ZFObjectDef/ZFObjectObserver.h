@@ -31,7 +31,7 @@ ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFListener, ZFCallback)
 public:
     /** @brief see #ZFListener */
     inline zfbool execute(void) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             ZFArgs zfargs;
             ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
             return zftrue;
@@ -42,7 +42,7 @@ public:
     }
     /** @brief see #ZFListener */
     inline zfbool execute(ZF_IN const ZFArgs &zfargs) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
             return zftrue;
         }
@@ -52,7 +52,7 @@ public:
     }
     /** @brief see #ZFListener */
     inline zfbool operator () (void) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             ZFArgs zfargs;
             ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
             return zftrue;
@@ -63,7 +63,7 @@ public:
     }
     /** @brief see #ZFListener */
     inline zfbool operator () (ZF_IN const ZFArgs &zfargs) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
             return zftrue;
         }

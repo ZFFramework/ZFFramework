@@ -270,7 +270,7 @@ public:
             ) {
 #if _ZFP_ZFTimeImpl_default_largeTimeSupport
         zfmemset(&tv, 0, sizeof(ZFTimeValue));
-        if(!this->timeInfoIsValid(ti)) {
+        if(!this->timeInfoValid(ti)) {
             return zffalse;
         }
 
@@ -355,8 +355,8 @@ public:
         }
         return dayOfYear;
     }
-    virtual zfbool timeInfoIsValid(ZF_IN const ZFTimeInfo &ti) {
-        return this->timeInfoIsValid(
+    virtual zfbool timeInfoValid(ZF_IN const ZFTimeInfo &ti) {
+        return this->timeInfoValid(
             ti.year,
             ti.month,
             ti.day,
@@ -366,7 +366,7 @@ public:
             ti.miliSecond,
             ti.microSecond);
     }
-    virtual zfbool timeInfoIsValid(
+    virtual zfbool timeInfoValid(
             ZF_IN zfint year
             , ZF_IN zfuint month
             , ZF_IN zfuint day

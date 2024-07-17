@@ -20,6 +20,9 @@ public:
     ZFUdpAddr(ZF_IN const ZFUdpAddr &ref);
     ~ZFUdpAddr(void);
     ZFUdpAddr &operator = (ZF_IN const ZFUdpAddr &ref);
+    inline operator zfbool (void) const {
+        return this->valid();
+    }
     /** @endcond */
 
 public:

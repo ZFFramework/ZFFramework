@@ -41,7 +41,7 @@ public:
             ZF_OUT void *buf
             , ZF_IN zfindex count
             ) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
         }
         else {
@@ -53,7 +53,7 @@ public:
             ZF_OUT void *buf
             , ZF_IN zfindex count
             ) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
         }
         else {

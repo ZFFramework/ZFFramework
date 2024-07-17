@@ -94,7 +94,7 @@ zfclassFwd _ZFP_ZFCallbackPrivate;
  * to execute callback, use #executeExact similar to ZFMethod::execute,
  * while you have no need to take care of the owner object
  * @warning before execute, you must check whether the callback is valid
- *   (by #callbackValid or `cb != zfnull` or `!cb`), otherwise, assert fail
+ *   (by #valid or `cb != zfnull` or `!cb`), otherwise, assert fail
  * @warning while execute, similar to ZFMethod,
  *   you must explicitly assign the ReturnType
  *   and each ParamType for the template param
@@ -115,7 +115,7 @@ public:
     zfbool operator != (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) != ZFCompareEqual);}
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return (d == zfnull);}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return (d != zfnull);}
-    operator bool (void) const {return this->callbackValid();}
+    operator bool (void) const {return this->valid();}
     static ZFCallback _ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbackMethod);
     static ZFCallback _ZFP_ZFCallbackCreateMemberMethod(
             ZF_IN ZFObject *callbackOwnerObject
@@ -239,7 +239,7 @@ public:
     /**
      * @brief return true if callback is valid
      */
-    zffinal inline zfbool callbackValid(void) const {
+    zffinal inline zfbool valid(void) const {
         return (this->callbackType() != ZFCallbackTypeDummy);
     }
 

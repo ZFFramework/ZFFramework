@@ -999,7 +999,7 @@ ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignFlags)
  *   "Left, LeftEdge, Right, RightEdge" could only exist at most one,
  *   "Top, TopEdge, Bottom, BottomEdge" could only exist at most one
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIAlignIsValid
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIAlignValid
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         )
 /**

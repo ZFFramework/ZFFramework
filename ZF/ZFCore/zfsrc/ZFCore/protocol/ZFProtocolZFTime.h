@@ -69,11 +69,11 @@ public:
     /**
      * @brief true if time info is valid
      */
-    virtual zfbool timeInfoIsValid(ZF_IN const ZFTimeInfo &ti) zfpurevirtual;
+    virtual zfbool timeInfoValid(ZF_IN const ZFTimeInfo &ti) zfpurevirtual;
     /**
      * @brief true if time info is valid
      */
-    virtual zfbool timeInfoIsValid(
+    virtual zfbool timeInfoValid(
             ZF_IN zfint year
             , ZF_IN zfuint month
             , ZF_IN zfuint day

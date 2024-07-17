@@ -37,6 +37,7 @@
 #include "ZFObjectDef/ZFMethodFuncDeclare.h"
 #include "ZFObjectDef/ZFMethodFuncUserRegister.h"
 #include "ZFObjectDef/ZFMethodGenericInvoker.h"
+#include "ZFObjectDef/ZFMethodInterfaceDeclare.h"
 #include "ZFObjectDef/ZFMethodSerializable.h"
 #include "ZFObjectDef/ZFMethodUserRegister.h"
 #include "ZFObjectDef/ZFNull.h"

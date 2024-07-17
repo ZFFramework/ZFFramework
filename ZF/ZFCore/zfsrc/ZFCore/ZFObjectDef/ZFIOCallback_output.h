@@ -41,7 +41,7 @@ public:
             ZF_IN const void *src
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
         }
         else {
@@ -53,7 +53,7 @@ public:
             ZF_IN const void *src
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) const {
-        if(this->callbackValid()) {
+        if(this->valid()) {
             return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
         }
         else {
