@@ -1410,6 +1410,13 @@ void ZFClass::_ZFP_ZFClass_interfaceRegister(
         if(clsTmp != ZFInterface::ClassData()) {
             d->implementedInterface.add(clsTmp);
             d->interfaceCastMap[clsTmp] = callbackTmp;
+
+            while(clsTmp->classParent() != zfnull) {
+                clsTmp = clsTmp->classParent();
+                if(clsTmp != zfnull && clsTmp != ZFInterface::ClassData() && clsTmp->classIsInterface()) {
+                    d->interfaceCastMap[clsTmp] = callbackTmp;
+                }
+            }
         }
         clsTmp = va_arg(vaList, const ZFClass *);
         if(clsTmp == zfnull) {
