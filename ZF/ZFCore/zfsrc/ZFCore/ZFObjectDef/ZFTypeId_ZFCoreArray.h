@@ -297,6 +297,17 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
+    void swap(ZF_IN v_ZFCoreArray *ref) {
+        zfCoreAssertWithMessageTrim(zftrue
+                && this->elementType != zfnull
+                && ref->elementType != zfnull
+                && zfstringIsEqual(this->elementType->typeId(), ref->elementType->typeId())
+                , "swap with different element type, this: %s, other: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , ref->elementType ? ref->elementType->typeId() : zfnull
+                );
+        this->zfv->genericSwap(*(ref->zfv));
+    }
     void copyFrom(ZF_IN v_ZFCoreArray *ref) {
         if(this->elementType != zfnull
                 && ref != zfnull
@@ -394,6 +405,36 @@ public:
         }
         this->zfv->genericAddFrom(*(ref->zfv));
     }
+    zfindex find(ZF_IN ZFObject *e) {
+        zfauto t = _ZFP_elementTypeCheck(e);
+        if(!t) {
+            return zfindexMax();
+        }
+        void *v = this->elementType->genericAccess(t);
+        zfCoreAssertWithMessageTrim(v != zfnull
+                , "find with different element type, desired: %s, got: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , e ? e->classData()->classNameFull() : zfnull
+                );
+        zfindex ret = this->zfv->genericFind(v);
+        this->elementType->genericAccessFinish(t, v);
+        return ret;
+    }
+    zfindex findReversely(ZF_IN ZFObject *e) {
+        zfauto t = _ZFP_elementTypeCheck(e);
+        if(!t) {
+            return zfindexMax();
+        }
+        void *v = this->elementType->genericAccess(t);
+        zfCoreAssertWithMessageTrim(v != zfnull
+                , "find with different element type, desired: %s, got: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , e ? e->classData()->classNameFull() : zfnull
+                );
+        zfindex ret = this->zfv->genericFindReversely(v);
+        this->elementType->genericAccessFinish(t, v);
+        return ret;
+    }
     void remove(ZF_IN zfindex index) {
         if(this->zfv != zfnull) {
             this->zfv->remove(index);
@@ -481,6 +522,25 @@ public:
     }
     zfbool isEmpty(void) {
         return this->zfv == zfnull || this->zfv->isEmpty();
+    }
+    zfbool isContain(ZF_IN ZFObject *e) {
+        return this->find(e) != zfindexMax();
+    }
+    void sort(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) {
+        if(this->zfv) {
+            this->zfv->sort(start, count);
+        }
+    }
+    void sortReversely(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) {
+        if(this->zfv) {
+            this->zfv->sortReversely(start, count);
+        }
     }
     /** @endcond */
 

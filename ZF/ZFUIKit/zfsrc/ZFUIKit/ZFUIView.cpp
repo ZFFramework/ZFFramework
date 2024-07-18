@@ -463,7 +463,7 @@ public:
             ) {
         return layer.views.find(view);
     }
-    zfbool childArrayIsTheSame(
+    zfbool childArrayIsEqual(
             ZF_IN ZFUIView *view0
             , ZF_IN ZFUIView *view1
             , ZF_IN ZFUIViewChildLayerEnum childLayer
@@ -881,7 +881,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
             }
         }
         else {
-            if(!d->childArrayIsTheSame(this, ref, ZFUIViewChildLayer::e_Normal)) {
+            if(!d->childArrayIsEqual(this, ref, ZFUIViewChildLayer::e_Normal)) {
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "child mismatch, this: %s, ref: %s",
                     this->objectInfoOfInstance(), ref->objectInfoOfInstance());
@@ -1144,10 +1144,10 @@ ZFCompareResult ZFUIView::objectCompare(ZF_IN ZFObject *anotherObj) {
         }
     }
     if(!ZFClassUtil::allPropertyIsEqual(this, another)
-            || !d->childArrayIsTheSame(this, another, ZFUIViewChildLayer::e_InternalImpl)
-            || !d->childArrayIsTheSame(this, another, ZFUIViewChildLayer::e_InternalBg)
-            || !d->childArrayIsTheSame(this, another, ZFUIViewChildLayer::e_InternalFg)
-            || !d->childArrayIsTheSame(this, another, ZFUIViewChildLayer::e_Normal)
+            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_InternalImpl)
+            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_InternalBg)
+            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_InternalFg)
+            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_Normal)
             ) {
         return ZFCompareUncomparable;
     }

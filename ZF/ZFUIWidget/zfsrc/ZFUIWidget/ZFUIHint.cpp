@@ -181,7 +181,7 @@ public:
         ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->hintWindow()->windowOwnerSysWindow());
         zfRetain(this->pimplOwner);
         zfblockedRelease(this->pimplOwner);
-        hintList->removeElement(this->pimplOwner, ZFComparerCheckEqual);
+        hintList->removeElement(this->pimplOwner);
         this->pimplOwner->hintOnHide();
         this->pimplOwner->hintWindow()->windowHide();
         if(!hintList->isEmpty()) {
@@ -285,7 +285,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hintHide) {
             zfRetain(this);
             zfblockedRelease(this);
             ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->hintWindow()->windowOwnerSysWindow());
-            hintList->removeElement(this, ZFComparerCheckEqual);
+            hintList->removeElement(this);
             zfRelease(this);
         }
         else {
@@ -341,7 +341,7 @@ void ZFUIHint::objectOnInit(void) {
         ZFArray *hintListOld = _ZFP_ZFUIHint_hintListForWrite(sysWindowOld);
         ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->hintWindow()->windowOwnerSysWindow());
         hintListNew->add(hint);
-        hintListOld->removeElement(hint, ZFComparerCheckEqual);
+        hintListOld->removeElement(hint);
         if(!hintListOld->isEmpty()) {
             ZFUIHint *hint = hintListOld->getFirst();
             if(hint->hintDelaying()) {

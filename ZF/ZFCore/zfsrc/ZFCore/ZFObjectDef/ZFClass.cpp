@@ -1587,7 +1587,7 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
         it->first->d->propertyInitStepMap[property][this] = zftrue;
     }
 }
-zfbool ZFClass::_ZFP_ZFClass_propertyInitStepIsTheSame(
+zfbool ZFClass::_ZFP_ZFClass_propertyInitStepIsEqual(
         ZF_IN const ZFProperty *property
         , ZF_IN const ZFClass *refClass
         ) const {

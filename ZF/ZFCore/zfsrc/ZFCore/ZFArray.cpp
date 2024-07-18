@@ -39,7 +39,7 @@ ZFMETHOD_DEFINE_0(ZFArray, zfbool, isEmpty) {
 }
 ZFMETHOD_DEFINE_2(ZFArray, zfbool, isContain
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
         ) {
     return (this->find(obj, comparer) != zfindexMax());
 }
@@ -66,7 +66,7 @@ ZFMETHOD_DEFINE_0(ZFArray, zfany, getLast) {
 }
 ZFMETHOD_DEFINE_2(ZFArray, zfindex, find
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
         ) {
     if(comparer == zfnull) {
         return zfindexMax();
@@ -80,7 +80,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, find
 }
 ZFMETHOD_DEFINE_2(ZFArray, zfindex, findReversely
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
         ) {
     if(comparer == zfnull) {
         return zfindexMax();
@@ -389,7 +389,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
 ZFMETHOD_DEFINE_3(ZFArray, void, sort
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
         ) {
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSort<ZFObject *>(
@@ -404,7 +404,7 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sort
 ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
         ) {
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSortReversely<ZFObject *>(

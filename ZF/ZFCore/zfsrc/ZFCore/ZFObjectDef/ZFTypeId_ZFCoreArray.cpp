@@ -267,6 +267,9 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
 , ZFMP_IN(const zfstring &, elementTypeId)
 )
 
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, swap
+        , ZFMP_IN(v_ZFCoreArray *, ref)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, copyFrom
         , ZFMP_IN(v_ZFCoreArray *, ref)
         )
@@ -294,6 +297,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, add
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, addFrom
         , ZFMP_IN(v_ZFCoreArray *, ref)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, find
+        , ZFMP_IN(ZFObject *, e)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, findReversely
+        , ZFMP_IN(ZFObject *, e)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, remove
         , ZFMP_IN(zfindex, index)
         )
@@ -319,6 +328,17 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, getFirst)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, getLast)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfindex, count)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfbool, isEmpty)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, isContain
+        , ZFMP_IN(ZFObject *, e)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, sort
+        , ZFMP_IN_OPT(zfindex, start, 0)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, sortReversely
+        , ZFMP_IN_OPT(zfindex, start, 0)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 

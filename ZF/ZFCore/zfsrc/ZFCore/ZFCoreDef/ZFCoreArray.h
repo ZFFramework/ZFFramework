@@ -266,12 +266,30 @@ public:
      * @brief true if empty
      */
     virtual zfbool isEmpty(void) const zfpurevirtual;
+    /**
+     * @brief sort
+     */
+    virtual void sort(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) zfpurevirtual;
+    /**
+     * @brief sort reversely
+     */
+    virtual void sortReversely(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) zfpurevirtual;
 
 public:
     /** @brief generic version */
     virtual void genericSwap(ZF_IN_OUT ZFCoreArrayBase &ref) zfpurevirtual;
     /** @brief generic version */
     virtual void genericCopyFrom(ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
+    /** @brief generic version */
+    virtual zfindex genericFind(ZF_IN const void *e) zfpurevirtual;
+    /** @brief generic version */
+    virtual zfindex genericFindReversely(ZF_IN const void *e) zfpurevirtual;
     /** @brief generic version */
     virtual void genericAdd(ZF_IN const void *e) zfpurevirtual;
     /** @brief generic version */
@@ -401,7 +419,7 @@ public:
      */
     ZFCompareResult objectCompare(
             ZF_IN const ZFCoreArray<T_Element> &ref
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {
         if(this->count() != ref.count()) {
             return ZFCompareUncomparable;
@@ -548,7 +566,7 @@ public:
      */
     zfindex find(
             ZF_IN T_Element const &e
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
             if(comparer(*p, e) == ZFCompareEqual) {
@@ -562,7 +580,7 @@ public:
      */
     zfindex findReversely(
             ZF_IN T_Element const &e
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {
         if(d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
@@ -611,7 +629,7 @@ public:
      */
     zfbool removeElement(
             ZF_IN T_Element const &e
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) {
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
             if(comparer(*p, e) == ZFCompareEqual) {
@@ -642,7 +660,7 @@ public:
      */
     zfbool removeElementReversely(
             ZF_IN T_Element const &e
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) {
         if(d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
@@ -677,7 +695,7 @@ public:
      */
     zfindex removeElementAll(
             ZF_IN T_Element const &e
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) {
         zfindex removedCount = 0;
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
@@ -898,15 +916,35 @@ public:
     virtual zfindex count(void) const {return (zfindex)d->count;}
     zfoverride
     virtual zfbool isEmpty(void) const {return (d->count == 0);}
+    virtual zfbool isContain(
+            ZF_IN T_Element const &e
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
+            ) const {
+        return this->find(e, comparer) != zfindexMax();
+    }
 
 public:
+    zfoverride
+    virtual void sort(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) {
+        this->sort(start, count, ZFComparerDefault);
+    }
+    zfoverride
+    virtual void sortReversely(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) {
+        this->sortReversely(start, count, ZFComparerDefault);
+    }
     /**
      * @brief sort element
      */
     void sort(
-            ZF_IN_OPT zfindex start = 0
-            , ZF_IN_OPT zfindex count = zfindexMax()
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer elementComparer = ZFComparerDefault
+            ZF_IN zfindex start
+            , ZF_IN zfindex count
+            , ZF_IN typename ZFComparer<T_Element>::Comparer elementComparer
             ) {
         if(!this->isEmpty() && start + 1 < this->count() && count > 1) {
             zfmSort<T_Element>(
@@ -920,9 +958,9 @@ public:
      * @brief sort element
      */
     void sortReversely(
-            ZF_IN_OPT zfindex start = 0
-            , ZF_IN_OPT zfindex count = zfindexMax()
-            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer elementComparer = ZFComparerDefault
+            ZF_IN zfindex start
+            , ZF_IN zfindex count
+            , ZF_IN typename ZFComparer<T_Element>::Comparer elementComparer
             ) {
         if(!this->isEmpty() && start + 1 < this->count() && count > 1) {
             zfmSortReversely<T_Element>(
@@ -938,6 +976,10 @@ public:
     virtual void genericSwap(ZF_IN_OUT ZFCoreArrayBase &ref) {this->swap((ZFCoreArray<T_Element> &)ref);}
     zfoverride
     virtual void genericCopyFrom(ZF_IN const ZFCoreArrayBase &ref) {this->copyFrom((const ZFCoreArray<T_Element> &)ref);}
+    zfoverride
+    virtual zfindex genericFind(ZF_IN const void *e) {return this->find(*(const T_Element *)e);}
+    zfoverride
+    virtual zfindex genericFindReversely(ZF_IN const void *e) {return this->findReversely(*(const T_Element *)e);}
     zfoverride
     virtual void genericAdd(ZF_IN const void *e) {this->add(*(const T_Element *)e);}
     zfoverride

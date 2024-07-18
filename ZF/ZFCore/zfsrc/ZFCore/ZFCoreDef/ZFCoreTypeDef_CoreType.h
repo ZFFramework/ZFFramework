@@ -34,6 +34,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief type for zfnull, can be used for function overload
  * @def zfnull
  * @brief same as NULL, defined for future use
+ * @def zfnullAsInt
+ * @brief whether zfnull is defined as int
  */
 #if 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
     #ifndef zfnullT
@@ -42,6 +44,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #ifndef zfnull
         #define zfnull nullptr
     #endif
+    #define zfnullAsInt 0
 #else // backward capacity
     #ifndef zfnullT
         #define zfnullT int
@@ -49,6 +52,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #ifndef zfnull
         #define zfnull 0
     #endif
+    #define zfnullAsInt 1
 #endif
 
 // ============================================================

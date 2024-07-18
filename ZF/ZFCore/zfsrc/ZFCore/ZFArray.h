@@ -34,7 +34,7 @@ public:
      */
     ZFMETHOD_DECLARE_2(zfbool, isContain
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
             )
 
     /**
@@ -59,14 +59,14 @@ public:
      */
     ZFMETHOD_DECLARE_2(zfindex, find
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
             )
     /**
      * @brief find element, compared by #ZFObject::objectCompare by default
      */
     ZFMETHOD_DECLARE_2(zfindex, findReversely
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
             )
 
 public:
@@ -174,7 +174,7 @@ public:
     ZFMETHOD_DECLARE_3(void, sort
             , ZFMP_IN_OPT(zfindex, start, 0)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
             )
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
@@ -182,7 +182,7 @@ public:
     ZFMETHOD_DECLARE_3(void, sortReversely
             , ZFMP_IN_OPT(zfindex, start, 0)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
             )
 
     // ============================================================

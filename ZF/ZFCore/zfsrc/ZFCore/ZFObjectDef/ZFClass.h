@@ -681,7 +681,7 @@ public:
     void _ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *property) const;
     void _ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const;
     void _ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *property) const;
-    zfbool _ZFP_ZFClass_propertyInitStepIsTheSame(
+    zfbool _ZFP_ZFClass_propertyInitStepIsEqual(
             ZF_IN const ZFProperty *property
             , ZF_IN const ZFClass *refClass
             ) const;

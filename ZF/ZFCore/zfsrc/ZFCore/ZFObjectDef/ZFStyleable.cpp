@@ -48,7 +48,7 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
         if(!anotherCls->classIsTypeOf(property->propertyOwnerClass())) {
             continue;
         }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsTheSame(property, anotherCls)
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
                 || property->callbackIsValueAccessed(property, anotherStyleableObject)
                 ) {
             this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeNormal);
@@ -59,7 +59,7 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
         if(!anotherCls->classIsTypeOf(property->propertyOwnerClass())) {
             continue;
         }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsTheSame(property, anotherCls)
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
                 || property->callbackIsValueAccessed(property, anotherStyleableObject)
                 ) {
             this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeStyleable);
@@ -70,7 +70,7 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
         if(!anotherCls->classIsTypeOf(property->propertyOwnerClass())) {
             continue;
         }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsTheSame(property, anotherCls)
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
                 || property->callbackIsValueAccessed(property, anotherStyleableObject)
                 ) {
             this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeCopyable);
