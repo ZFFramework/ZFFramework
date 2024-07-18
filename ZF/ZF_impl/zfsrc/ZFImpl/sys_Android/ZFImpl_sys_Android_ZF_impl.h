@@ -89,6 +89,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_ROOT_JNI_NAME "com.ZFFramework.Android"
 
 // usually used when declare JNI method
+// note: when class name contains `_`, it must be replaced with `_1`
 #define ZFImpl_sys_Android_JNI_ID(clsId) ZFM_CAT(ZFM_CAT(ZFImpl_sys_Android_ROOT_JNI_ID, _), clsId)
 // usually used when find class
 #define ZFImpl_sys_Android_JNI_NAME(clsName) ZFImpl_sys_Android_ROOT_JNI_NAME "." ZFM_TOSTRING(clsName)

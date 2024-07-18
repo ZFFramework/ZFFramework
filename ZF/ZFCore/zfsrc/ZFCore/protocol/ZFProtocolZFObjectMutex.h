@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief register impl for #ZFObjectMutexImplSet
  */
 #define ZFOBJECT_MUTEX_IMPL_DEFINE(registerSig, protocolLevel, setupAction) \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(_ZFP_OMI_##registerSig, ZFLevelZFFrameworkStatic) { \
+    ZF_STATIC_REGISTER_INIT(_ZFP_OMI_##registerSig) { \
         _protocolLevel = protocolLevel; \
         if(_ZFP_ZFObjectMutexImplRegistered == zfnull || _protocolLevel > *_ZFP_ZFObjectMutexImplRegistered) { \
             _ZFP_ZFObjectMutexImplRegistered = &_protocolLevel; \
@@ -23,14 +23,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
         } \
     } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(_ZFP_OMI_##registerSig) { \
+    ZF_STATIC_REGISTER_DESTROY(_ZFP_OMI_##registerSig) { \
         if(&_protocolLevel == _ZFP_ZFObjectMutexImplRegistered) { \
             _ZFP_ZFObjectMutexImplRegistered = zfnull; \
             ZFObjectMutexImplSet(); \
         } \
     } \
     ZFProtocolLevelEnum _protocolLevel; \
-    ZF_GLOBAL_INITIALIZER_END(_ZFP_OMI_##registerSig)
+    ZF_STATIC_REGISTER_END(_ZFP_OMI_##registerSig)
 
 extern ZFLIB_ZFCore ZFProtocolLevelEnum *_ZFP_ZFObjectMutexImplRegistered;
 
