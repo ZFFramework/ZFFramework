@@ -5,7 +5,8 @@
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
-#define _ZFP_ZFObjectPrivate_DEBUG 0
+// #define _ZFP_ZFObjectPrivate_DEBUG 1
+
 #if _ZFP_ZFObjectPrivate_DEBUG
 #include "ZFCore/ZFTimer.h"
 static zfindex _ZFP_ZFObjectAllocCount = 0;

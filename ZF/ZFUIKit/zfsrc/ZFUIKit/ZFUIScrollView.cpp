@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFUIScrollView_DEBUG_logEvent 0
+// #define _ZFP_ZFUIScrollView_DEBUG_logEvent 1
 
 ZFENUM_DEFINE(ZFUIScrollViewState)
 

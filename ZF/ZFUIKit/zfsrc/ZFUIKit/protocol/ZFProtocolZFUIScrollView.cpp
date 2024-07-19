@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFProtocolZFUIScrollView_DEBUG 1
+// #define _ZFP_ZFProtocolZFUIScrollView_DEBUG 1
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFUIScrollView)
 

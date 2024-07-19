@@ -4,7 +4,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFSerializableUtil)
 
-#define _ZFP_ZFSerializableUtil_DEBUG 0
+// #define _ZFP_ZFSerializableUtil_DEBUG 1
 
 #if _ZFP_ZFSerializableUtil_DEBUG
 static void _ZFP_ZFSerializableUtilDebugAction(void) {

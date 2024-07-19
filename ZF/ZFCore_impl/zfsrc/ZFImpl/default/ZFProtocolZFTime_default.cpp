@@ -18,7 +18,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFTimeImpl_default_largeTimeSupport 1
+// #define _ZFP_ZFTimeImpl_default_largeTimeSupport 1
 
 // ============================================================
 // common define

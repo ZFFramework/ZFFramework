@@ -5,7 +5,8 @@
 #include "ZFCoreMap.h"
 #include "ZFCoreStringConvert.h"
 
-#define _ZFP_ZFCoreGlobalInitializer_DEBUG 0
+// #define _ZFP_ZFCoreGlobalInitializer_DEBUG 1
+
 #if _ZFP_ZFCoreGlobalInitializer_DEBUG
     #include "ZFCore/ZFCoreDef/zfimplLog.h"
     #define _ZFP_ZFCoreGlobalInitializer_log(fmt, ...) \

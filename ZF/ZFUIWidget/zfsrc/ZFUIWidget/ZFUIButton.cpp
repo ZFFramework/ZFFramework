@@ -3,7 +3,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFUIButton_DEBUG 0
+// #define _ZFP_ZFUIButton_DEBUG 1
+
 #if _ZFP_ZFUIButton_DEBUG
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...) \
         zfLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLOG_HEADER_STRING;

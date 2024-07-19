@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFDI_CACHE_ENABLE 0
+// #define _ZFP_ZFDI_CACHE_ENABLE 1
 
 typedef zfstlmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
 

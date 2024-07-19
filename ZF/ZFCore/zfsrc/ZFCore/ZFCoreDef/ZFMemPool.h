@@ -20,7 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #endif
 #endif
 
-#define _ZFP_ZFMEMPOOL_DEBUG 0
+// #define _ZFP_ZFMEMPOOL_DEBUG 1
 
 // ============================================================
 /**
@@ -44,15 +44,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #define zfpoolDeclareFriend()
 #endif
 
+#if ZF_ENV_ZFMEMPOOL_ENABLE
 // ============================================================
 // impl
 template<int N>
 zfclassNotPOD _ZFP_MP_SA { // Size Align
 public:
     enum {
-        _A = (N <= sizeof(zfuint) * 4 ? sizeof(zfuint) * 2 : sizeof(zfuint) * 8),
+        _A = (N <= sizeof(const void *) * 4 ? sizeof(const void *) : sizeof(const void *) * 4),
         V = ((N % _A) == 0 ? N : ((N / _A) + 1) * _A),
-        M = (N <= sizeof(const void *) * 4 ? 32 : N <= sizeof(const void *) * 8 ? 8 : 4),
+        M = (N <= sizeof(const void *) * 4 ? 8 : N <= sizeof(const void *) * 8 ? 4 : 2),
     };
 };
 template<int N>
@@ -133,9 +134,40 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
 
 // ============================================================
 #if _ZFP_ZFMEMPOOL_DEBUG
+    zfclassNotPOD _ZFP_MP_State {
+    public:
+        typedef zfindex (*Fn)(void);
+        const char *name;
+        Fn sizeGetter;
+        Fn countGetter;
+    public:
+        static _ZFP_MP_State *&d(void) {
+            static _ZFP_MP_State *d = zfnull;
+            return d;
+        }
+        static zfindex &c(void) {
+            static zfindex c = 0;
+            return c;
+        }
+    };
     template<typename T_Type>
     zfclassNotPOD _ZFP_MP_ObjDebug {
     public:
+        static zfbool reg(const char *name) {
+            static zfbool flag = zffalse;
+            if(!flag) {
+                flag = zftrue;
+                _ZFP_MP_State *&d = _ZFP_MP_State::d();
+                zfindex &c = _ZFP_MP_State::c();
+                ++c;
+                d = (_ZFP_MP_State *)zfrealloc(d, sizeof(_ZFP_MP_State) * c);
+                _ZFP_MP_State &p = d[c - 1];
+                p.name = name;
+                p.countGetter = countGetter;
+                p.sizeGetter = sizeGetter;
+            }
+            return zftrue;
+        }
         static T_Type *a(T_Type *obj) {
             if(obj) {
                 zfCoreMutexLocker();
@@ -182,6 +214,13 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
             static Item *d = zfnull;
             return d;
         }
+    private:
+        static zfindex sizeGetter(void) {
+            return (zfindex)sizeof(T_Type);
+        }
+        static zfindex countGetter(void) {
+            return pEnd() - p();
+        }
     };
     template<typename T_Type>
     inline void _ZFP_MP_ObjDebugDelete(ZF_IN T_Type *obj) {
@@ -195,9 +234,25 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
 
     #undef zfpoolNew
     #undef zfpoolDelete
-    #define zfpoolNew(T_Type, ...) _ZFP_MP_ObjDebug<T_Type >::a(zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__))
+    #define zfpoolNew(T_Type, ...) _ZFP_MP_ObjDebug<T_Type >::a(( \
+            _ZFP_MP_ObjDebug<T_Type>::reg(#T_Type) \
+            , zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__) \
+            ))
     #define zfpoolDelete(obj) _ZFP_MP_ObjDebugDelete(obj)
-#endif
+
+    inline void _ZFP_MP_statePrint(void) {
+        _ZFP_MP_State *d = _ZFP_MP_State::d();
+        _ZFP_MP_State *dEnd = d + _ZFP_MP_State::c();
+        for( ; d < dEnd; ++d) {
+            printf("%4d %4d %s\n"
+                    , (int)d->sizeGetter()
+                    , (int)d->countGetter()
+                    , d->name
+                    );
+        }
+    }
+#endif // #if _ZFP_ZFMEMPOOL_DEBUG
+#endif // #if ZF_ENV_ZFMEMPOOL_ENABLE
 
 ZF_NAMESPACE_GLOBAL_END
 

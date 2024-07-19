@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // internal test
-#define _ZFP_ZFSYNCHRONIZE_LOG_ENABLE 0
+// #define _ZFP_ZFSYNCHRONIZE_LOG_ENABLE 1
 
 // ============================================================
 /**

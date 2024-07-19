@@ -24,7 +24,11 @@ cd "$_OLD_DIR"
 _OLD_DIR=$(pwd)
 mkdir -p "$_TMP_PATH" >/dev/null 2>&1
 cd "$_TMP_PATH"
-cmake "$_PROJ_PATH" -DCMAKE_BUILD_TYPE=${_CONFIG}
+if test "x-$CMAKE_CXX_FLAGS" = "x-" ; then
+    cmake "$_PROJ_PATH" -DCMAKE_BUILD_TYPE=${_CONFIG}
+else
+    cmake "$_PROJ_PATH" -DCMAKE_BUILD_TYPE=${_CONFIG} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+fi
 make -j4
 _RESULT="$?"
 cd "$_OLD_DIR"

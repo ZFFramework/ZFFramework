@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG 0
+// #define _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG 1
 
 // ============================================================
 ZFSTYLE_DEFAULT_DEFINE(ZFUIOnScreenKeyboardAutoFitLayout)

@@ -5,7 +5,8 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
 
-#define _ZFP_ZFThreadCleanup_DEBUG 0
+// #define _ZFP_ZFThreadCleanup_DEBUG 1
+
 #if _ZFP_ZFThreadCleanup_DEBUG
 #include "ZFTime.h"
 #endif

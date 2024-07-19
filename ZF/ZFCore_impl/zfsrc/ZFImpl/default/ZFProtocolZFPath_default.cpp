@@ -4,7 +4,9 @@
 
 #include "ZFImpl/ZFImpl_env.h"
 
-#define _ZFP_ZFPathImpl_default_whereami 1
+#ifndef _ZFP_ZFPathImpl_default_whereami
+    #define _ZFP_ZFPathImpl_default_whereami 1
+#endif
 
 #if _ZFP_ZFPathImpl_default_whereami
     #define WHEREAMI_H
