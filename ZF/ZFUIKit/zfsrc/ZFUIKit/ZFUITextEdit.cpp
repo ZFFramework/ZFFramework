@@ -140,7 +140,7 @@ void ZFUITextEdit::objectOnInit(void) {
     d->pimplOwner = this;
 
     zfCoreAssert(this->nativeImplView() == zfnull);
-    zfclassNotPOD _ZFP_ZFUITextEdit_nativeImplViewDestroy {
+    zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
                 ZF_IN zfanyT<ZFUIView> const &view
@@ -153,7 +153,7 @@ void ZFUITextEdit::objectOnInit(void) {
     void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
         nativeImplView,
-        _ZFP_ZFUITextEdit_nativeImplViewDestroy::action,
+        NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 
     ZFUIView *textPlaceHolderTmp = this->textPlaceHolder();

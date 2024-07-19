@@ -77,7 +77,7 @@ void ZFUITextView::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     zfCoreAssert(this->nativeImplView() == zfnull);
-    zfclassNotPOD _ZFP_ZFUITextView_nativeImplViewDestroy {
+    zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
                 ZF_IN zfanyT<ZFUIView> const &view
@@ -90,7 +90,7 @@ void ZFUITextView::objectOnInit(void) {
     void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
         nativeImplView,
-        _ZFP_ZFUITextView_nativeImplViewDestroy::action,
+        NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 }
 void ZFUITextView::objectOnDealloc(void) {

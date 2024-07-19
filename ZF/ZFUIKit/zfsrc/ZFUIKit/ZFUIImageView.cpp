@@ -91,7 +91,7 @@ void ZFUIImageView::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     zfCoreAssert(this->nativeImplView() == zfnull);
-    zfclassNotPOD _ZFP_ZFUIImageView_nativeImplViewDestroy {
+    zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
                 ZF_IN zfanyT<ZFUIView> const &view
@@ -104,7 +104,7 @@ void ZFUIImageView::objectOnInit(void) {
     void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
         nativeImplView,
-        _ZFP_ZFUIImageView_nativeImplViewDestroy::action,
+        NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 }
 void ZFUIImageView::objectOnDealloc(void) {

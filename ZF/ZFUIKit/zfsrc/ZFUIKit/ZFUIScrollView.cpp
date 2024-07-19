@@ -607,7 +607,7 @@ void ZFUIScrollView::objectOnInit(void) {
     this->scrollThumbHorizontalOnInit();
     this->scrollThumbVerticalOnInit();
 
-    zfclassNotPOD _ZFP_ZFUIScrollView_nativeImplViewDestroy {
+    zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
                 ZF_IN zfanyT<ZFUIView> const &view
@@ -620,7 +620,7 @@ void ZFUIScrollView::objectOnInit(void) {
     void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
         nativeImplView,
-        _ZFP_ZFUIScrollView_nativeImplViewDestroy::action,
+        NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 }
 void ZFUIScrollView::objectOnDealloc(void) {

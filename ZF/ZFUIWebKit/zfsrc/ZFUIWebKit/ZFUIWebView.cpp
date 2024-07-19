@@ -50,7 +50,7 @@ void ZFUIWebView::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     zfCoreAssert(this->nativeImplView() == zfnull);
-    zfclassNotPOD _ZFP_ZFUIWebView_nativeImplViewDestroy {
+    zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
                 ZF_IN zfanyT<ZFUIView> const &view
@@ -63,7 +63,7 @@ void ZFUIWebView::objectOnInit(void) {
     void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
         nativeImplView,
-        _ZFP_ZFUIWebView_nativeImplViewDestroy::action,
+        NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 }
 void ZFUIWebView::objectOnDealloc(void) {

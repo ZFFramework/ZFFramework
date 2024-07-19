@@ -18,7 +18,7 @@ void ZFUIDrawableView::objectOnInit(void) {
     zfsuper::objectOnInit();
     this->_drawing = zffalse;
 
-    zfclassNotPOD _ZFP_ZFUIDrawableView_nativeImplViewDestroy {
+    zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
                 ZF_IN zfanyT<ZFUIView> const &view
@@ -31,7 +31,7 @@ void ZFUIDrawableView::objectOnInit(void) {
     void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIDrawForView)->nativeDrawableViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
         nativeImplView,
-        _ZFP_ZFUIDrawableView_nativeImplViewDestroy::action,
+        NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 }
 
