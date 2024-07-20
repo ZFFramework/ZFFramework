@@ -312,7 +312,14 @@ public:
         tm.tm_min = ti.minute;
         tm.tm_sec = ti.second;
         tv.sec = (zftimet)mktime(&tm);
-        tv.sec += tm.tm_gmtoff;
+        #if ZF_ENV_sys_Windows
+            TIME_ZONE_INFORMATION tzInfo;
+            if(GetTimeZoneInformation(&tzInfo) != TIME_ZONE_ID_INVALID) {
+                tv.sec += -tzInfo.Bias * zftimetOneMinute;
+            }
+        #else
+            tv.sec += tm.tm_gmtoff;
+        #endif
         tv.usec = ti.miliSecond * 1000 + ti.microSecond;
 #endif
         return zftrue;
