@@ -156,15 +156,18 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
         static zfbool reg(const char *name) {
             static zfbool flag = zffalse;
             if(!flag) {
-                flag = zftrue;
-                _ZFP_MP_State *&d = _ZFP_MP_State::d();
-                zfindex &c = _ZFP_MP_State::c();
-                ++c;
-                d = (_ZFP_MP_State *)zfrealloc(d, sizeof(_ZFP_MP_State) * c);
-                _ZFP_MP_State &p = d[c - 1];
-                p.name = name;
-                p.countGetter = countGetter;
-                p.sizeGetter = sizeGetter;
+                zfCoreMutexLocker();
+                if(!flag) {
+                    flag = zftrue;
+                    _ZFP_MP_State *&d = _ZFP_MP_State::d();
+                    zfindex &c = _ZFP_MP_State::c();
+                    ++c;
+                    d = (_ZFP_MP_State *)zfrealloc(d, sizeof(_ZFP_MP_State) * c);
+                    _ZFP_MP_State &p = d[c - 1];
+                    p.name = name;
+                    p.countGetter = countGetter;
+                    p.sizeGetter = sizeGetter;
+                }
             }
             return zftrue;
         }
@@ -192,7 +195,7 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
                 Item *&pEnd_ = pEnd();
                 for(Item *t = p_; t != pEnd_; ++t) {
                     if(*t == obj) {
-                        zfmemmove(t, t + 1, pEnd_ - (t + 1));
+                        zfmemmove(t, t + 1, (pEnd_ - (t + 1)) * sizeof(Item));
                         --pEnd_;
                         break;
                     }

@@ -109,10 +109,10 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferOwner, zfindex, onOutput
         , ZFMP_IN(zfindex, count)
         ) {
     if(count == zfindexMax()) {
-        count = zfslen((const zfchar *)s) * sizeof(zfchar);
+        count = zfslen((const zfchar *)s);
     }
-    this->buf.bufferCapacity(this->curPos + count);
-    zfmemcpy(this->buf.bufferT<zfbyte *>() + this->curPos, s, count);
+    this->buf.bufferCapacity(this->curPos + count * sizeof(zfchar));
+    zfmemcpy(this->buf.bufferT<zfbyte *>() + this->curPos, s, count * sizeof(zfchar));
     this->curPos += count;
     if(this->curPos > this->buf.bufferSize()) {
         this->buf.bufferSize(this->curPos);

@@ -118,7 +118,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfindex, onInput
     }
     else {
         count = zfmMin(count, d->ioBuf.length() - d->inputIndex);
-        zfmemcpy(buf, d->ioBuf.cString() + d->inputIndex, count);
+        zfmemcpy(buf, d->ioBuf.cString() + d->inputIndex, count * sizeof(zfchar));
         d->inputIndex += count;
         return count;
     }

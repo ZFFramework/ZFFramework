@@ -253,7 +253,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferOwner, zfindex, onInput
         return this->buffer.bufferSize() - this->p;
     }
     count = zfmMin(count, this->buffer.bufferSize() - this->p);
-    zfmemcpy(buf, this->buffer.buffer(), count);
+    zfmemcpy(buf, this->buffer.buffer(), count * sizeof(zfchar));
     this->p += count;
     return count;
 }
@@ -325,7 +325,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, onInput
     if(p + count > pEnd) {
         count = pEnd - p;
     }
-    zfmemcpy(buf, p, count);
+    zfmemcpy(buf, p, count * sizeof(zfchar));
     p += count;
     return count;
 }

@@ -169,7 +169,7 @@ public:
     /** \n */ \
     inline zfidentity prefix##YourIdName(void) { \
         static _ZFP_ZFIdMapHolder d( \
-                zfstr("%s.%s", ZF_NAMESPACE_CURRENT(), ZFM_TOSTRING(prefix##YourIdName)) \
+                zfstr("%s.%s", ZF_NAMESPACE_CURRENT() ? ZF_NAMESPACE_CURRENT() : "", ZFM_TOSTRING(prefix##YourIdName)) \
                 , zfnull \
                 , ZF_NAMESPACE_CURRENT() \
                 , ZFM_TOSTRING(prefix##YourIdName) \
