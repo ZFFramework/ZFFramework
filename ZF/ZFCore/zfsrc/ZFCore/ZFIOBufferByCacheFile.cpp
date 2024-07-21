@@ -98,7 +98,7 @@ ZFOBJECT_REGISTER(ZFIOBufferByCacheFile)
 
 void ZFIOBufferByCacheFile::objectOnInit(void) {
     zfsuper::objectOnInit();
-    _ZFP_ZFIOBufferByCacheFile *d = zfpoolNew(_ZFP_ZFIOBufferByCacheFile);
+    d = zfpoolNew(_ZFP_ZFIOBufferByCacheFile);
 
     zfobj<_ZFP_ZFIOBufferByCacheFile_input> iOwner;
     iOwner->d = d;

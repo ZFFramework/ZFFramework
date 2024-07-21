@@ -685,11 +685,7 @@ public:
 
 public:
     // general
-    zfbool _ZFP_ZFMethodNeedInit;
     zfuint _ZFP_ZFMethod_refCount;
-    const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
-    ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
-    zfstring _ZFP_ZFMethod_methodInternalId;
 
     zfbool _ZFP_ZFMethod_methodIsInternal;
     zfbool _ZFP_ZFMethod_methodIsInternalPrivate;
@@ -697,6 +693,11 @@ public:
     zfbool _ZFP_ZFMethod_methodIsDynamicRegister;
     ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
     ZFObject *_ZFP_ZFMethod_methodDynamicRegisterUserData;
+
+    const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
+    ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
+    zfstring _ZFP_ZFMethod_methodInternalId;
+
     ZFFuncAddrType _ZFP_ZFMethod_invoker;
     ZFFuncAddrType _ZFP_ZFMethod_invokerOrig;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;

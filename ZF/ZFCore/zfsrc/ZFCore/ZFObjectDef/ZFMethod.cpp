@@ -121,17 +121,16 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace)
 }
 
 ZFMethod::ZFMethod(void)
-: _ZFP_ZFMethodNeedInit(zftrue)
-, _ZFP_ZFMethod_refCount(1)
-, _ZFP_ZFMethod_methodAliasFrom(zfnull)
-, _ZFP_ZFMethod_methodAliasTo()
-, _ZFP_ZFMethod_methodInternalId(zfnull)
+: _ZFP_ZFMethod_refCount(1)
 , _ZFP_ZFMethod_methodIsInternal(zffalse)
 , _ZFP_ZFMethod_methodIsInternalPrivate(zffalse)
 , _ZFP_ZFMethod_methodIsUserRegister(zffalse)
 , _ZFP_ZFMethod_methodIsDynamicRegister(zffalse)
 , _ZFP_ZFMethod_methodUserRegisterUserData(zfnull)
 , _ZFP_ZFMethod_methodDynamicRegisterUserData(zfnull)
+, _ZFP_ZFMethod_methodAliasFrom(zfnull)
+, _ZFP_ZFMethod_methodAliasTo()
+, _ZFP_ZFMethod_methodInternalId(zfnull)
 , _ZFP_ZFMethod_invoker(zfnull)
 , _ZFP_ZFMethod_invokerOrig(zfnull)
 , _ZFP_ZFMethod_methodGenericInvoker(zfnull)
@@ -526,10 +525,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
     }
     else {
         method = _ZFP_ZFMethodInstanceAccess(methodInternalId);
-    }
 
-    if(method->_ZFP_ZFMethodNeedInit) {
-        method->_ZFP_ZFMethodNeedInit = zffalse;
         method->_ZFP_ZFMethod_init(methodIsUserRegister
                 , methodIsDynamicRegister
                 , methodDynamicRegisterUserData

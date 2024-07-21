@@ -80,7 +80,7 @@ ZFOBJECT_REGISTER(ZFIOBufferByMemory)
 
 void ZFIOBufferByMemory::objectOnInit(void) {
     zfsuper::objectOnInit();
-    _ZFP_ZFIOBufferByMemory *d = zfpoolNew(_ZFP_ZFIOBufferByMemory);
+    d = zfpoolNew(_ZFP_ZFIOBufferByMemory);
 
     zfobj<_ZFP_ZFIOBufferByMemory_input> iOwner;
     iOwner->d = d;

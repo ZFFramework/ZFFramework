@@ -179,10 +179,10 @@ public:
     }
 public:
     zfuint _ZFP_ZFProperty_refCount;
-    zfstring _ZFP_ZFProperty_propertyInternalId;
     zfbool _ZFP_ZFPropertyNeedInit;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
+    zfstring _ZFP_ZFProperty_propertyInternalId;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper;
     const ZFClass *_ZFP_ZFProperty_propertyOwnerClass;
