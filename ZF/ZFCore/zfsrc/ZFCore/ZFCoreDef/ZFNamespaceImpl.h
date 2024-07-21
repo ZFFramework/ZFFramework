@@ -64,7 +64,6 @@ public:
  * @brief skip "zf." in "zf.NS0.NS1.funcName"
  *
  * things to skip:
- * -  dot at head ("." in ".NS0")
  * -  #ZF_NAMESPACE_GLOBAL_NAME
  * -  #ZF_NAMESPACE_GLOBAL_ABBR_NAME
  *

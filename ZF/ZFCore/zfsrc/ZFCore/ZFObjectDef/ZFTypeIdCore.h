@@ -189,7 +189,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZF_STATIC_REGISTER_INIT(PropMtdReg_##TypeName) { \
         ZFMethodFuncUserRegister_4(method_FromDataT, { \
                 return TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, zftext(ZFM_TOSTRING(TypeName##FromDataT)) \
+            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromDataT)) \
             , ZFMP_OUT(Type &, v) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
@@ -197,27 +197,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ); \
         ZFMethodFuncUserRegister_3(method_FromData, { \
                 return TypeName##FromData(serializableData, outErrorHint, outErrorPos); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, Type, zftext(ZFM_TOSTRING(TypeName##FromData)) \
+            }, ZF_NAMESPACE_CURRENT(), Type, zftext(ZFM_TOSTRING(TypeName##FromData)) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
         ZFMethodFuncUserRegister_3(method_ToDataT, { \
                 return TypeName##ToDataT(serializableData, v, outErrorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, zftext(ZFM_TOSTRING(TypeName##ToDataT)) \
+            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##ToDataT)) \
             , ZFMP_OUT(ZFSerializableData &, serializableData) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_2(method_ToData, { \
                 return TypeName##ToData(v, outErrorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, ZFSerializableData, zftext(ZFM_TOSTRING(TypeName##ToData)) \
+            }, ZF_NAMESPACE_CURRENT(), ZFSerializableData, zftext(ZFM_TOSTRING(TypeName##ToData)) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_4(method_FromStringT, { \
                 return TypeName##FromStringT(v, src, srcLen, errorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, zftext(ZFM_TOSTRING(TypeName##FromStringT)) \
+            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromStringT)) \
             , ZFMP_OUT(Type &, v) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
@@ -225,21 +225,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ); \
         ZFMethodFuncUserRegister_3(method_FromString, { \
                 return TypeName##FromString(src, srcLen, errorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, Type, zftext(ZFM_TOSTRING(TypeName##FromString)) \
+            }, ZF_NAMESPACE_CURRENT(), Type, zftext(ZFM_TOSTRING(TypeName##FromString)) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_3(method_ToStringT, { \
                 return TypeName##ToStringT(s, v, errorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, zftext(ZFM_TOSTRING(TypeName##ToStringT)) \
+            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##ToStringT)) \
             , ZFMP_OUT(zfstring &, s) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_2(method_ToString, { \
                 return TypeName##ToString(v, errorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfstring, zftext(ZFM_TOSTRING(TypeName##ToString)) \
+            }, ZF_NAMESPACE_CURRENT(), zfstring, zftext(ZFM_TOSTRING(TypeName##ToString)) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \

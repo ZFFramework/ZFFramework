@@ -15,7 +15,7 @@ typedef void (*_ZFP_SI_Destructor)(ZF_IN void *p);
 zfclassLikePOD ZFLIB_ZFCore _ZFP_SI_Holder {
 public:
     _ZFP_SI_Holder(
-            ZF_IN const zfchar *name
+            ZF_IN const zfstring &name
             , ZF_IN _ZFP_SI_Constructor constructor
             , ZF_IN _ZFP_SI_Destructor destructor
             );

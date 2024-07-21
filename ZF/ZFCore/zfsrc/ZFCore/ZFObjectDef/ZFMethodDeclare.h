@@ -299,7 +299,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ) \
         }; \
     private: \
-        static ReturnType _ZFP_MtdI_##MethodName##_##RegSig( \
+        static ReturnType _ZFP_MtdI_##MethodName( \
                 ZF_IN const ZFMethod *invokerMethod, \
                 ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
@@ -336,7 +336,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                     , zffalse \
                     , zfnull \
-                    , reinterpret_cast<ZFFuncAddrType>(&zfself::_ZFP_MtdI_##MethodName##_##RegSig) \
+                    , reinterpret_cast<ZFFuncAddrType>((ReturnType (*)( \
+                            ZF_IN const ZFMethod *invokerMethod, \
+                            ZF_IN zfany const &invokerObject \
+                            ParamExpandOrEmpty0(ZFM_COMMA() ParamType0) \
+                            ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
+                            ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
+                            ParamExpandOrEmpty3(ZFM_COMMA() ParamType3) \
+                            ParamExpandOrEmpty4(ZFM_COMMA() ParamType4) \
+                            ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
+                            ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
+                            ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
+                            ))&zfself::_ZFP_MtdI_##MethodName) \
                     , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdH_##MethodName##_##RegSig) \
                     , ZFMethodType_ \
                     , zfself::ClassData() \
@@ -456,7 +467,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
         /** @cond ZFPrivateDoc */ /* required to make Doxygen doc placed at right pos */ \
     private: \
-        static ReturnType _ZFP_MtdI_##MethodName##_##RegSig( \
+        static ReturnType _ZFP_MtdI_##MethodName( \
                 ZF_IN const ZFMethod *invokerMethod, \
                 ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
@@ -478,18 +489,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ParamExpandOrEmpty6(ZFM_COMMA() param6) \
                     ParamExpandOrEmpty7(ZFM_COMMA() param7) \
                 ); \
-        } \
-        static inline ZFFuncAddrType _ZFP_MtdS_I_##MethodName(void (*)( \
-                ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
-                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
-                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
-                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3) \
-                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4) \
-                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
-                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
-                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-                )) { \
-            return reinterpret_cast<ZFFuncAddrType>(&zfself::_ZFP_MtdI_##MethodName##_##RegSig); \
         } \
         static inline ZFMethodPrivilegeType _ZFP_MtdS_P_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
@@ -608,7 +607,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                 , zffalse \
                 , zfnull \
-                , zfself::_ZFP_MtdS_I_##MethodName(_dummy) \
+                , reinterpret_cast<ZFFuncAddrType>((ReturnType (*)( \
+                        ZF_IN const ZFMethod *invokerMethod, \
+                        ZF_IN zfany const &invokerObject \
+                        ParamExpandOrEmpty0(ZFM_COMMA() ParamType0) \
+                        ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
+                        ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
+                        ParamExpandOrEmpty3(ZFM_COMMA() ParamType3) \
+                        ParamExpandOrEmpty4(ZFM_COMMA() ParamType4) \
+                        ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
+                        ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
+                        ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
+                        ))&zfself::_ZFP_MtdI_##MethodName) \
                 , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig) \
                 , zfself::_ZFP_MtdS_T_##MethodName(_dummy) \
                 , zfself::ClassData() \

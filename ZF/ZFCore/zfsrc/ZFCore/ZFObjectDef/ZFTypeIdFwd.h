@@ -237,7 +237,7 @@ public:
             zfnew(ZFTypeId<_ZFP_PropTypeW2_##TypeName>)); \
         ZFMethodFuncUserRegister_0(dummy, { \
                 return ZFTypeId_##TypeName(); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
+            }, ZF_NAMESPACE_CURRENT(), const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
     } \
     ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
@@ -360,16 +360,16 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         v_##TypeName::ClassData()->_ZFP_ZFClass_autoRegister(); \
         ZFMethodUserRegister_1(setterMethod, { \
                 invokerObject->to<v_##TypeName *>()->zfv = value; \
-            }, v_##TypeName::ClassData(), void, "zfv" \
+            }, v_##TypeName::ClassData(), void, zftext("zfv") \
             , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, value) \
             ); \
         ZFMethodUserRegister_0(getterMethod, { \
                 return invokerObject->to<v_##TypeName *>()->zfv; \
-            }, v_##TypeName::ClassData(), _ZFP_PropTypeW_##TypeName const &, "zfv"); \
+            }, v_##TypeName::ClassData(), _ZFP_PropTypeW_##TypeName const &, zftext("zfv")); \
     } \
     ZF_STATIC_REGISTER_DESTROY(TypeIdReg_##TypeName) { \
-        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent("zfv", ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId())); \
-        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent("zfv", zfnull)); \
+        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId())); \
+        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(TypeIdReg_##TypeName)
 

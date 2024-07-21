@@ -11,14 +11,6 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
     if(zfstringIsEmpty(ns)) {
         return zfnull;
     }
-    else if(zfsncmp(ns, ".", 1) == 0) {
-        if(ns[1] == '\0') {
-            return zfnull;
-        }
-        else {
-            return ns + 1;
-        }
-    }
     else if(zfsncmp(ns, namePrefix, namePrefix.length()) == 0) {
         if(ns[namePrefix.length()] == '\0') {
             return zfnull;
@@ -121,6 +113,7 @@ zfstring _ZFP_ZFNamespaceRegister(
     }
     zfCoreMutexLocker();
     zfstring ns;
+    parent = ZFNamespaceSkipGlobal(parent);
     if(parent != zfnull) {
         ns += parent;
         ns += ".";

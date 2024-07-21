@@ -30,7 +30,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  *           .onInit(callback)
  *           .onDealloc(callback)
  *       .classEnd()
- *       .NSBegin([methodNamespace])
+ *       .NSBegin(methodNamespace)
  *           .event(eventName)
  *           .method(returnTypeId, methodName, ZFMP()
  *               .mp(paramTypeId0 [, paramName0, paramDefault0])

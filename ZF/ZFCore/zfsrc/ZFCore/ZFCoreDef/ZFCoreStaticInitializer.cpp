@@ -39,7 +39,7 @@ public:
     }
 public:
     void *instanceAccess(
-            ZF_IN const zfchar *name
+            ZF_IN const zfstring &name
             , ZF_IN _ZFP_SI_Constructor constructor
             , ZF_IN _ZFP_SI_Destructor destructor
             ) {
@@ -79,7 +79,7 @@ static _ZFP_SI_Data &_ZFP_SI_data(void) {
 }
 
 _ZFP_SI_Holder::_ZFP_SI_Holder(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN _ZFP_SI_Constructor constructor
         , ZF_IN _ZFP_SI_Destructor destructor
         )

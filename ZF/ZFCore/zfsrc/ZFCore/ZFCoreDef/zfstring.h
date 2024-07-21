@@ -600,17 +600,11 @@ public:
      */
     static zft_zfstring<T_Char> shared(
             ZF_IN const T_Char *sLiteral
-            , ZF_IN_OPT zfindex length = zfindexMax()
             ) {
-        if(sLiteral == zfnull || *sLiteral == '\0' || length == 0) {
-            return zft_zfstring<T_Char>();
-        }
-        else {
-            _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
-            d->d.ptr = sLiteral;
-            d->length = (zfuint)(length == zfindexMax() ? _ZFP_zfstring_len(sLiteral) : length);
-            return zft_zfstring<T_Char>(d);
-        }
+        _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
+        d->d.ptr = sLiteral;
+        d->length = (zfuint)_ZFP_zfstring_len(sLiteral);
+        return zft_zfstring<T_Char>(d);
     }
 private:
     explicit zft_zfstring(ZF_IN _ZFP_zfstringD<T_Char> *d)

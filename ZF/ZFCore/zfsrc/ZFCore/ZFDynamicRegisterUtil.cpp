@@ -816,8 +816,8 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
     const ZFClass *cls = zfnull;
     zfstring NS;
     if(scope == zfnull) {
-        idName += ZF_NAMESPACE_GLOBAL_NAME;
-        NS = zftext(ZF_NAMESPACE_GLOBAL_NAME);
+        NS = zftext("ZFGlobalEvent");
+        idName += NS;
     }
     else if(scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS) {
         idName += *(scope->d.NS);
@@ -1201,7 +1201,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDealloc
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin
-        , ZFMP_IN_OPT(const zfstring &, methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
+        , ZFMP_IN(const zfstring &, methodNamespace)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, NSEnd)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, enumBegin
