@@ -189,8 +189,7 @@ public:
     zfstring methodParamTypeId[ZFMETHOD_MAX_PARAM];
     zfstring methodParamTypeName[ZFMETHOD_MAX_PARAM];
     zfstring methodParamName[ZFMETHOD_MAX_PARAM];
-    ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback[ZFMETHOD_MAX_PARAM];
-    zfauto methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
+    ZFListener methodParamDefaultValueCallback[ZFMETHOD_MAX_PARAM];
 
 public:
     _ZFP_ZFMethodDynamicRegisterParamPrivate(void)
@@ -210,7 +209,6 @@ public:
     , methodParamTypeName()
     , methodParamName()
     , methodParamDefaultValueCallback()
-    , methodParamDefaultValue()
     {
     }
 };
@@ -300,7 +298,7 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
         ZF_IN const zfstring &methodParamTypeId
         , ZF_IN_OPT const zfstring &methodParamTypeName /* = zfnull */
         , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
-        , ZF_IN_OPT ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback /* = zfnull */
+        , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
         ) {
     zfCoreAssert(d->methodParamCount < ZFMETHOD_MAX_PARAM);
     if(methodParamTypeId != zfnull) {
@@ -315,22 +313,6 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
         d->methodParamDefaultValueCallback[d->methodParamCount] = methodParamDefaultValueCallback;
         ++(d->methodParamCount);
     }
-    return *this;
-}
-static zfauto _ZFP_ZFMethodDynamicRegisterParamDefaultGetter(
-        ZF_IN const ZFMethod *invokerMethod
-        , ZF_IN zfindex paramIndex
-        ) {
-    return invokerMethod->_ZFP_ZFMethod_paramDefaultValueList[paramIndex];
-}
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAddWithDefault(
-        ZF_IN const zfstring &methodParamTypeId
-        , ZF_IN_OPT const zfstring &methodParamTypeName /* = zfnull */
-        , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
-        , ZF_IN_OPT ZFObject *methodParamDefaultValue /* = zfnull */
-        ) {
-    d->methodParamDefaultValue[d->methodParamCount] = methodParamDefaultValue;
-    this->methodParamAdd(methodParamTypeId, methodParamTypeName, methodParamName, _ZFP_ZFMethodDynamicRegisterParamDefaultGetter);
     return *this;
 }
 zfindex ZFMethodDynamicRegisterParam::methodParamCount(void) const {
@@ -355,11 +337,8 @@ const zfstring &ZFMethodDynamicRegisterParam::methodParamTypeNameAt(ZF_IN zfinde
 const zfstring &ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamName[index] : zfstring::Empty());
 }
-ZFMethodParamDefaultValueCallback ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
-    return (index < d->methodParamCount ? d->methodParamDefaultValueCallback[index] : zfnull);
-}
-zfany ZFMethodDynamicRegisterParam::methodParamDefaultValueAt(ZF_IN zfindex index) const {
-    return (index < d->methodParamCount ? d->methodParamDefaultValue[index].toObject() : zfnull);
+const ZFListener &ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
+    return (index < d->methodParamCount ? d->methodParamDefaultValueCallback[index] : _ZFP_ZFMethod_paramDefaultValueCallbackDummy());
 }
 
 ZFMethodDynamicRegisterParam::ZFMethodDynamicRegisterParam(void)
@@ -451,14 +430,14 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
             ret += this->methodParamNameAt(i);
 
-            if(this->methodParamDefaultValueAt(i) != zfnull) {
-                ret += " = ";
-                this->methodParamDefaultValueAt(i)->objectInfoT(ret);
-            }
-            else if(this->methodParamDefaultValueCallbackAt(i) != zfnull) {
-                ret += " = func(";
-                zfsFromPointerT(ret, (const void *)this->methodParamDefaultValueCallbackAt(i));
-                ret += ")";
+            if(this->methodParamDefaultValueCallbackAt(i) != zfnull) {
+                ZFArgs zfargs;
+                zfargs.result(ZFMethodGenericInvokerDefaultParam());
+                this->methodParamDefaultValueCallbackAt(i).execute(zfargs);
+                if(zfargs.result() != ZFMethodGenericInvokerDefaultParam()) {
+                    ret += " = ";
+                    ZFObjectInfoT(ret, zfargs.result());
+                }
             }
         }
     }
@@ -474,14 +453,14 @@ public:
     zfindex methodParamCount;
     zfstring methodParamTypeId[ZFMETHOD_MAX_PARAM];
     zfstring methodParamName[ZFMETHOD_MAX_PARAM];
-    zfauto methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
+    ZFListener methodParamDefaultValueCallback[ZFMETHOD_MAX_PARAM];
 public:
     _ZFP_ZFMPPrivate(void)
     : refCount(1)
     , methodParamCount(0)
     , methodParamTypeId()
     , methodParamName()
-    , methodParamDefaultValue()
+    , methodParamDefaultValueCallback()
     {
     }
 };
@@ -489,12 +468,12 @@ public:
 ZFMP &ZFMP::mp(
         ZF_IN const zfstring &methodParamTypeId
         , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
-        , ZF_IN_OPT ZFObject *methodParamDefaultValue /* = ZFMethodGenericInvokerDefaultParam() */
+        , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
         ) {
     zfCoreAssert(d->methodParamCount <= ZFMETHOD_MAX_PARAM);
     d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
     d->methodParamName[d->methodParamCount] = methodParamName;
-    d->methodParamDefaultValue[d->methodParamCount] = methodParamDefaultValue;
+    d->methodParamDefaultValueCallback[d->methodParamCount] = methodParamDefaultValueCallback;
     ++(d->methodParamCount);
     return *this;
 }
@@ -508,8 +487,8 @@ const zfstring &ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const {
 const zfstring &ZFMP::methodParamNameAt(ZF_IN zfindex index) const {
     return d->methodParamName[index];
 }
-zfany ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const {
-    return d->methodParamDefaultValue[index];
+const ZFListener &ZFMP::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
+    return d->methodParamDefaultValueCallback[index];
 }
 
 ZFMP::ZFMP(void)
@@ -551,9 +530,12 @@ void ZFMP::methodParamListInfoT(ZF_IN_OUT zfstring &ret) const {
         else {
             ret += d->methodParamName[i];
         }
-        if(d->methodParamDefaultValue[i] != ZFMethodGenericInvokerDefaultParam()) {
+        ZFArgs zfargs;
+        zfargs.result(ZFMethodGenericInvokerDefaultParam());
+        d->methodParamDefaultValueCallback[i].execute(zfargs);
+        if(zfargs.result() != ZFMethodGenericInvokerDefaultParam()) {
             ret += " = ";
-            ZFObjectInfoT(ret, d->methodParamDefaultValue[i]);
+            ZFObjectInfoT(ret, zfargs.result());
         }
     }
 }

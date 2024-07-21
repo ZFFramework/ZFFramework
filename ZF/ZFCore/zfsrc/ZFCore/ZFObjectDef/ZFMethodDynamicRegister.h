@@ -161,14 +161,7 @@ public:
             ZF_IN const zfstring &methodParamTypeId
             , ZF_IN_OPT const zfstring &methodParamTypeName = zfnull
             , ZF_IN_OPT const zfstring &methodParamName = zfnull
-            , ZF_IN_OPT ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback = zfnull
-            );
-    /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodParamAddWithDefault(
-            ZF_IN const zfstring &methodParamTypeId
-            , ZF_IN_OPT const zfstring &methodParamTypeName = zfnull
-            , ZF_IN_OPT const zfstring &methodParamName = zfnull
-            , ZF_IN_OPT ZFObject *methodParamDefaultValue = zfnull
+            , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
             );
     /** @brief see #ZFMethodDynamicRegister */
     zfindex methodParamCount(void) const;
@@ -179,9 +172,7 @@ public:
     /** @brief see #ZFMethodDynamicRegister */
     const zfstring &methodParamNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFMethodDynamicRegister */
-    zfany methodParamDefaultValueAt(ZF_IN zfindex index) const;
+    const ZFListener &methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
 
 public:
     /** @brief see #objectInfo */
@@ -216,7 +207,7 @@ public:
     ZFMP &mp(
             ZF_IN const zfstring &methodParamTypeId
             , ZF_IN_OPT const zfstring &methodParamName = zfnull
-            , ZF_IN_OPT ZFObject *methodParamDefaultValue = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
             );
 
 public:
@@ -227,7 +218,7 @@ public:
     /** @brief util for #ZFDynamic::method */
     const zfstring &methodParamNameAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
-    zfany methodParamDefaultValueAt(ZF_IN zfindex index) const;
+    const ZFListener &methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
 
 
 public:

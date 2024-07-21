@@ -246,9 +246,6 @@ ZFEXPORT_ENUM_DEFINE(ZFMethodType
         )
 
 // ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
-
-// ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFArgs, ZFArgs)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, zfidentity, eventId)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, void, sender
@@ -470,13 +467,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethodDynamicRegisterParam, void, 
         , ZFMP_IN(const zfstring &, methodParamTypeId)
         , ZFMP_IN_OPT(const zfstring &, methodParamTypeName, zfnull)
         , ZFMP_IN_OPT(const zfstring &, methodParamName, zfnull)
-        , ZFMP_IN_OPT(ZFMethodParamDefaultValueCallback, methodParamDefaultValueCallback, zfnull)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethodDynamicRegisterParam, void, methodParamAddWithDefault
-        , ZFMP_IN(const zfstring &, methodParamTypeId)
-        , ZFMP_IN_OPT(const zfstring &, methodParamTypeName, zfnull)
-        , ZFMP_IN_OPT(const zfstring &, methodParamName, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, methodParamDefaultValue, zfnull)
+        , ZFMP_IN_OPT(const ZFListener &, methodParamDefaultValueCallback, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, zfindex, methodParamCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, const zfstring &, methodParamTypeIdAt
@@ -488,7 +479,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, const 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, const zfstring &, methodParamNameAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, ZFMethodParamDefaultValueCallback, methodParamDefaultValueCallbackAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, const ZFListener &, methodParamDefaultValueCallbackAt
         , ZFMP_IN(zfindex, index)
         )
 
@@ -497,7 +488,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMP, ZFMP)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFMP, ZFMP &, mp
         , ZFMP_IN(const zfstring &, methodParamTypeId)
         , ZFMP_IN_OPT(const zfstring &, methodParamName, zfnull)
-        , ZFMP_IN_OPT(ZFObject *, methodParamDefaultValue, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(const ZFListener &, methodParamDefaultValue, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMP, zfindex, methodParamCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfstring &, methodParamTypeIdAt
@@ -506,7 +497,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfstring &, methodParamT
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfstring &, methodParamNameAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, zfany, methodParamDefaultValueAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const ZFListener &, methodParamDefaultValueCallbackAt
         , ZFMP_IN(zfindex, index)
         )
 

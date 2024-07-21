@@ -179,7 +179,6 @@ public:
     }
 public:
     zfuint _ZFP_ZFProperty_refCount;
-    zfbool _ZFP_ZFPropertyNeedInit;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
     zfstring _ZFP_ZFProperty_propertyInternalId;

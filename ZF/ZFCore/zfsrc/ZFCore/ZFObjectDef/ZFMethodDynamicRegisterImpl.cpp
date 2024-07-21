@@ -179,10 +179,6 @@ const ZFMethod *ZFMethodDynamicRegister(
             , param.methodReturnTypeName()
             , mp
         );
-    method->_ZFP_ZFMethod_paramDefaultValueList.capacity(param.methodParamCount());
-    for(zfindex i = 0; i < param.methodParamCount(); ++i) {
-        method->_ZFP_ZFMethod_paramDefaultValueList.add(param.methodParamDefaultValueAt(i));
-    }
     _ZFP_ZFMethodDynRegData()[method] = zftrue;
     _ZFP_ZFNamespaceRegister(zfnull, ZFNamespaceSkipGlobal(method->methodNamespace()));
     return method;
@@ -205,19 +201,11 @@ const ZFMethod *ZFMethodDynamicRegister(
     p.methodType(methodType);
     p.methodPrivilegeType(methodPrivilegeType);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
-        if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
-            p.methodParamAdd(
-                methodParam.methodParamTypeIdAt(i),
-                zfnull,
-                methodParam.methodParamNameAt(i));
-        }
-        else {
-            p.methodParamAddWithDefault(
-                methodParam.methodParamTypeIdAt(i),
-                zfnull,
-                methodParam.methodParamNameAt(i),
-                methodParam.methodParamDefaultValueAt(i));
-        }
+        p.methodParamAdd(
+            methodParam.methodParamTypeIdAt(i),
+            zfnull,
+            methodParam.methodParamNameAt(i),
+            methodParam.methodParamDefaultValueCallbackAt(i));
     }
     p.methodOwnerClass(methodOwnerClass);
     return ZFMethodDynamicRegister(p, errorHint);
@@ -239,19 +227,11 @@ const ZFMethod *ZFMethodDynamicRegister(
     p.methodType(methodType);
     p.methodPrivilegeType(methodPrivilegeType);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
-        if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
-            p.methodParamAdd(
-                methodParam.methodParamTypeIdAt(i),
-                zfnull,
-                methodParam.methodParamNameAt(i));
-        }
-        else {
-            p.methodParamAddWithDefault(
-                methodParam.methodParamTypeIdAt(i),
-                zfnull,
-                methodParam.methodParamNameAt(i),
-                methodParam.methodParamDefaultValueAt(i));
-        }
+        p.methodParamAdd(
+            methodParam.methodParamTypeIdAt(i),
+            zfnull,
+            methodParam.methodParamNameAt(i),
+            methodParam.methodParamDefaultValueCallbackAt(i));
     }
     const ZFClass *cls = ZFClass::classForName(methodNamespace);
     if(cls != zfnull) {

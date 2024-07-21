@@ -868,19 +868,11 @@ ZFDynamic &ZFDynamic::method(
     p.methodType(methodType);
     p.methodPrivilegeType(methodPrivilegeType);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
-        if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
-            p.methodParamAdd(
-                methodParam.methodParamTypeIdAt(i),
-                zfnull,
-                methodParam.methodParamNameAt(i));
-        }
-        else {
-            p.methodParamAddWithDefault(
-                methodParam.methodParamTypeIdAt(i),
-                zfnull,
-                methodParam.methodParamNameAt(i),
-                methodParam.methodParamDefaultValueAt(i));
-        }
+        p.methodParamAdd(
+            methodParam.methodParamTypeIdAt(i),
+            zfnull,
+            methodParam.methodParamNameAt(i),
+            methodParam.methodParamDefaultValueCallbackAt(i));
     }
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope != zfnull) {

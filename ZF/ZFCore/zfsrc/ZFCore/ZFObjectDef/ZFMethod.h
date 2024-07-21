@@ -59,10 +59,10 @@ zfclassFwd ZFClass;
     /** @brief see #ZFMethod */ \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
     inline T_ReturnType execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
-        if(this->_ZFP_ZFMethod_invoker) { \
+        if(this->methodInvoker()) { \
             return reinterpret_cast< \
                     T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
-                    >(this->_ZFP_ZFMethod_invoker) \
+                    >(this->methodInvoker()) \
                 (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
         } \
         else { \
@@ -76,7 +76,7 @@ zfclassFwd ZFClass;
     inline T_ReturnType _ZFP_execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
         return reinterpret_cast< \
                 T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
-                >(this->_ZFP_ZFMethod_invoker) \
+                >(this->methodInvoker()) \
             (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
     }
 
@@ -123,45 +123,33 @@ zfclassFwd ZFClass;
 #define _ZFP_ZFMP_DUMMY() \
     _ZFP_MtdM_EMPTY, ParamType, paramName, _ZFP_MtdM_EMPTY, _ZFP_ZFMethodNoDefaultParam
 
-/**
- * @brief callback to access method param's default value,
- *   for method generic invoker
- */
-typedef zfauto (*ZFMethodParamDefaultValueCallback)(
-        ZF_IN const ZFMethod *invokerMethod
-        , ZF_IN zfindex paramIndex
-        );
-
 // ============================================================
+zfclassFwd ZFListener;
+extern ZFLIB_ZFCore const ZFListener &_ZFP_ZFMethod_paramDefaultValueCallbackDummy(void);
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFMethodMP {
 public:
     zfuint paramCount;
     ZFSigName paramTypeId[ZFMETHOD_MAX_PARAM];
     ZFSigName paramTypeName[ZFMETHOD_MAX_PARAM];
     ZFSigName paramName[ZFMETHOD_MAX_PARAM];
-    ZFMethodParamDefaultValueCallback paramDefaultValueAccess[ZFMETHOD_MAX_PARAM];
+    ZFListener *paramDefaultValueCallback[ZFMETHOD_MAX_PARAM];
 public:
     _ZFP_ZFMethodMP &add(
             ZF_IN const zfstring &paramTypeId
             , ZF_IN const zfstring &paramTypeName
             , ZF_IN const zfstring &paramName
-            , ZF_IN ZFMethodParamDefaultValueCallback paramDefaultValueAccess
-            ) {
-        this->paramTypeId[this->paramCount] = paramTypeId;
-        this->paramTypeName[this->paramCount] = paramTypeName;
-        this->paramName[this->paramCount] = paramName;
-        this->paramDefaultValueAccess[this->paramCount] = paramDefaultValueAccess;
-        ++this->paramCount;
-        return *this;
-    }
+            , ZF_IN const ZFListener &paramDefaultValueCallback
+            );
 public:
     _ZFP_ZFMethodMP(void) : paramCount(0) {
     }
+    ~_ZFP_ZFMethodMP(void);
 private:
     _ZFP_ZFMethodMP(ZF_IN const _ZFP_ZFMethodMP &ref);
 };
 
 // ============================================================
+zfclassFwd _ZFP_ZFMethodPrivateExt;
 /**
  * @brief reflectable method for ZFObject
  *
@@ -315,13 +303,9 @@ public:
     // general
 public:
     /** @brief see #ZFMethodAlias */
-    inline const ZFMethod *methodAliasFrom(void) const {
-        return this->_ZFP_ZFMethod_methodAliasFrom;
-    }
+    const ZFMethod *methodAliasFrom(void) const;
     /** @brief see #ZFMethodAlias */
-    inline const ZFCoreArray<const ZFMethod *> &methodAliasTo(void) const {
-        return this->_ZFP_ZFMethod_methodAliasTo;
-    }
+    const ZFCoreArray<const ZFMethod *> &methodAliasTo(void) const;
 
     /**
      * @brief internal method id, for debug use only
@@ -412,41 +396,30 @@ public:
      */
     inline const zfstring &methodParamTypeIdAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
-        return this->_ZFP_ZFMethod_paramTypeIdList[index];
+        return this->_ZFP_ZFMethod_paramTypeIdList()[index];
     }
     /**
      * @brief get the method's param type name at index, usually for debug use
      */
     inline const zfstring &methodParamTypeNameAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
-        return this->_ZFP_ZFMethod_paramTypeNameList[index];
+        return this->_ZFP_ZFMethod_paramTypeNameList()[index];
     }
     /**
      * @brief get the method's param name at index, usually for debug use
      */
     inline const zfstring &methodParamNameAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
-        return this->_ZFP_ZFMethod_paramNameList[index];
+        return this->_ZFP_ZFMethod_paramNameList()[index];
     }
     /**
      * @brief get the method param's default value access callback
      */
-    inline ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
-        zfCoreAssert(index < this->methodParamCount());
-        return this->_ZFP_ZFMethod_paramDefaultValueCallbackList[index];
-    }
+    const ZFListener &methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
     /**
      * @brief get the method's param default value at index, null if no default param
      */
-    inline zfauto methodParamDefaultValueAt(ZF_IN zfindex index) const {
-        zfCoreAssert(index < this->methodParamCount());
-        if(index < this->methodParamDefaultBeginIndex()) {
-            return zfnull;
-        }
-        else {
-            return this->_ZFP_ZFMethod_paramDefaultValueCallbackList[index](this, index);
-        }
-    }
+    zfauto methodParamDefaultValueAt(ZF_IN zfindex index) const;
     /**
      * @brief return the first default param's index, or #zfindexMax if no default param
      */
@@ -507,9 +480,7 @@ public:
     /**
      * @brief see #methodInvoker
      */
-    inline ZFFuncAddrType methodInvokerOrig(void) const {
-        return this->_ZFP_ZFMethod_invokerOrig;
-    }
+    ZFFuncAddrType methodInvokerOrig(void) const;
 
     /**
      * @brief generic invoker for advanced reflection
@@ -582,9 +553,7 @@ public:
     /**
      * @brief see #methodGenericInvoker
      */
-    inline ZFMethodGenericInvoker methodGenericInvokerOrig(void) const {
-        return this->_ZFP_ZFMethod_methodGenericInvokerOrig;
-    }
+    ZFMethodGenericInvoker methodGenericInvokerOrig(void) const;
 
     /**
      * @brief change default impl for #methodGenericInvoker
@@ -684,6 +653,17 @@ public:
     }
 
 public:
+    inline ZFSigName *_ZFP_ZFMethod_paramTypeIdList(void) const {
+        return _ZFP_ZFMethod_paramBuf;
+    }
+    inline ZFSigName *_ZFP_ZFMethod_paramTypeNameList(void) const {
+        return _ZFP_ZFMethod_paramBuf + ZFMETHOD_MAX_PARAM;
+    }
+    inline ZFSigName *_ZFP_ZFMethod_paramNameList(void) const {
+        return _ZFP_ZFMethod_paramBuf + ZFMETHOD_MAX_PARAM + _ZFP_ZFMethod_paramCount;
+    }
+
+public:
     // general
     zfuint _ZFP_ZFMethod_refCount;
 
@@ -694,25 +674,18 @@ public:
     ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
     ZFObject *_ZFP_ZFMethod_methodDynamicRegisterUserData;
 
-    const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
-    ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
     zfstring _ZFP_ZFMethod_methodInternalId;
+    _ZFP_ZFMethodPrivateExt *_ZFP_ZFMethod_ext;
 
     ZFFuncAddrType _ZFP_ZFMethod_invoker;
-    ZFFuncAddrType _ZFP_ZFMethod_invokerOrig;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
-    ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrig;
     ZFSigName _ZFP_ZFMethod_methodName;
     ZFSigName _ZFP_ZFMethod_returnTypeId;
     ZFSigName _ZFP_ZFMethod_returnTypeName;
     zfuint _ZFP_ZFMethod_paramCount;
     zfuint _ZFP_ZFMethod_paramCountMin;
     ZFSigName *_ZFP_ZFMethod_paramBuf;
-    ZFSigName *_ZFP_ZFMethod_paramTypeIdList;
-    ZFSigName *_ZFP_ZFMethod_paramTypeNameList;
-    ZFSigName *_ZFP_ZFMethod_paramNameList;
-    ZFMethodParamDefaultValueCallback *_ZFP_ZFMethod_paramDefaultValueCallbackList;
-    ZFCoreArray<zfauto> _ZFP_ZFMethod_paramDefaultValueList;
+    ZFListener *_ZFP_ZFMethod_paramDefaultValueCallbackList;
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type

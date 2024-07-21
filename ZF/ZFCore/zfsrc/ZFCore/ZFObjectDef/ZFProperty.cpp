@@ -38,7 +38,6 @@ ZFProperty::ZFProperty(void)
 , callbackUserRegisterInitValueSetup(zfnull)
 , callbackDynamicRegisterInitValueGetter(zfnull)
 , _ZFP_ZFProperty_refCount(1)
-, _ZFP_ZFPropertyNeedInit(zftrue)
 , _ZFP_ZFProperty_propertyIsUserRegister(zffalse)
 , _ZFP_ZFProperty_propertyIsDynamicRegister(zffalse)
 , _ZFP_ZFProperty_propertyInternalId(zfnull)
@@ -220,10 +219,9 @@ ZFProperty *_ZFP_ZFPropertyRegister(
             propertyOwnerClass->classNameFull(),
             name);
     }
-    propertyInfo = _ZFP_ZFPropertyInstanceAccess(propertyInternalId);
+    else {
+        propertyInfo = _ZFP_ZFPropertyInstanceAccess(propertyInternalId);
 
-    if(propertyInfo->_ZFP_ZFPropertyNeedInit) {
-        propertyInfo->_ZFP_ZFPropertyNeedInit = zffalse;
         propertyInfo->_ZFP_ZFPropertyInit(
             propertyIsUserRegister,
             propertyIsDynamicRegister,

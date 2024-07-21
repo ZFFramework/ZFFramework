@@ -135,13 +135,10 @@ public:
     }
 };
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_ACCESS_EXPAND(N, DefaultExpandOrEmpty, ParamType, param) \
-    _ZFP_MtdGIPA<_TR##N, _T##N>(param).a(DefaultExpandOrEmpty(pDef##N(invokerMethod, N)))
+    _ZFP_MtdGIPA<_TR##N, _T##N>(param).a(DefaultExpandOrEmpty(pDef##N()))
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(N, DefaultExpandOrEmpty, ParamType, DefaultValueFix) \
     DefaultExpandOrEmpty( \
-        static zfauto pDef##N( \
-                ZF_IN const ZFMethod *invokerMethod \
-                , ZF_IN zfindex index \
-                ) { \
+        static zfauto pDef##N(void) { \
             zftValue<zftTraits<ParamType>::TrNoRef> paramDefault; \
             zfauto ret; \
             ZFTypeId<zftTraits<ParamType>::TrNoRef>::ValueStore( \
@@ -291,7 +288,7 @@ public:
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(owner) \
     owner::GI
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(owner, DefaultExpandOrEmpty, N) \
-    (NULL DefaultExpandOrEmpty(ZFM_EMPTY(), owner::pDef##N))
+    ZFListener(DefaultExpandOrEmpty(ZFCallbackForFunc(owner::pDef##N)))
 
 // ============================================================
 extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(ZFMETHOD_GENERIC_INVOKER_PARAMS);

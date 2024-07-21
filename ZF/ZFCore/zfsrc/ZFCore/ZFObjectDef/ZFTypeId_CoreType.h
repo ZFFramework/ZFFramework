@@ -539,8 +539,6 @@ ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {ZFMethodPrivilegeTypeToStringT(s, v);})
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodType, ZFMethodType)
 ZFOUTPUT_TYPE(ZFMethodType, {ZFMethodTypeToStringT(s, v);})
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
-
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFArgs, ZFArgs)
 ZFOUTPUT_TYPE(ZFArgs, {v.objectInfoT(s);})
 
