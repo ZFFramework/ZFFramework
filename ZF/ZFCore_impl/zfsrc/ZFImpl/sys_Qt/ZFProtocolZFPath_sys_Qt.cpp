@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_Qt_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFPath.h"
-#include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_Qt
 #include <QCoreApplication>

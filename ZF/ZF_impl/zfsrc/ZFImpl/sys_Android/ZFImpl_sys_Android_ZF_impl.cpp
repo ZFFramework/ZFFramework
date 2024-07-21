@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_Android_ZF_impl.h"
 #include "ZFCore/ZFObject.h"
-#include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_Android
 

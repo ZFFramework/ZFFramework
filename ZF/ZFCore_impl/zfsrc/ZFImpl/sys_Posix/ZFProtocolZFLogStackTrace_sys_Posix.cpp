@@ -1,7 +1,6 @@
 #include "ZFImpl_sys_Posix_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFLogStackTrace.h"
 #include "ZFCore/ZFLog_StackTrace.h"
-#include "ZFCore/zfstringW.h"
 
 #include "ZFImpl/ZFImpl_env.h"
 

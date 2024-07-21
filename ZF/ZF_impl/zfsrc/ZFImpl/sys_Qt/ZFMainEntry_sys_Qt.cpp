@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_Qt_ZF_impl.h"
 #include "ZFCore/ZFMainEntry.h"
-#include "ZFCore/zfstringW.h"
 #include "ZFCore/protocol/ZFProtocolZFMainEntry.h"
 
 #include "ZFMainEntry_sys_Qt.h"

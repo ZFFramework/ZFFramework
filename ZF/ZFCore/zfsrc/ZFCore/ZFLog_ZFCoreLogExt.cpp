@@ -1,7 +1,6 @@
 #include "ZFLog.h"
 #include "ZFLog_StackTrace.h"
 #include "ZFImplOutput.h"
-#include "zfstringW.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

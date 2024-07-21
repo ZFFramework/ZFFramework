@@ -1,5 +1,4 @@
 #include "ZFImpl_sys_Qt_ZF_impl.h"
-#include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_Qt
 #include <string>

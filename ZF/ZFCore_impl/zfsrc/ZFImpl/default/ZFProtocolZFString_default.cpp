@@ -97,9 +97,6 @@ public:
                 return zffalse;
         }
     }
-    virtual zfindex wordCountOfUTF8(ZF_IN const zfchar *utf8String) {
-        return UTFCodeUtil::UTF8GetWordCount(utf8String);
-    }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFStringImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -39,11 +39,6 @@ public:
             , ZF_IN const void *s
             , ZF_IN ZFStringEncodingEnum srcEncoding
             ) zfpurevirtual;
-
-    /**
-     * @brief see #zfstringWordCountOfUTF8
-     */
-    virtual zfindex wordCountOfUTF8(ZF_IN const zfchar *utf8String) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFString)
 
 ZF_NAMESPACE_GLOBAL_END

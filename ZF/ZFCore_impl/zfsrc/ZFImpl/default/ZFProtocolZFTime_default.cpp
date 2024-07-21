@@ -259,8 +259,8 @@ public:
         ti.hour = tm->tm_hour;
         ti.minute = tm->tm_min;
         ti.second = tm->tm_sec;
-        ti.miliSecond = tv.usec / 1000;
-        ti.microSecond = tv.usec % 1000;
+        ti.miliSecond = (zfuint)(tv.usec / 1000);
+        ti.microSecond = (zfuint)(tv.usec % 1000);
 #endif
         return zftrue;
     }

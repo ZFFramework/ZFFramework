@@ -1,4 +1,5 @@
 #include "ZFProtocolZFXml.h"
+#include "ZFCore/zfstringW.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

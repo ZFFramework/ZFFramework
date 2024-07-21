@@ -127,11 +127,6 @@ inline zfstringW zfstringToUTF16BE(
     return ret;
 }
 
-/**
- * @brief get utf8 string's logical word count or -1 if invalid letter exist
- */
-extern ZFLIB_ZFCore zfindex zfstringWordCountOfUTF8(ZF_IN const zfchar *utf8String);
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_zfstringW_h_
 

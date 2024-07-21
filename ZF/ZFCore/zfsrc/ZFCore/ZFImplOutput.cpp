@@ -1,8 +1,6 @@
 #include "ZFImplOutput.h"
 #include "protocol/ZFProtocolZFImplOutput.h"
 
-#include "zfstringW.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

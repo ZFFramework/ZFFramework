@@ -33,10 +33,5 @@ zfbool zfstringToUTF16BE(
     return ZFPROTOCOL_ACCESS(ZFString)->toUTF16BE(result, s, srcEncoding);
 }
 
-zfindex zfstringWordCountOfUTF8(ZF_IN const zfchar *utf8String) {
-    if(utf8String == zfnull) {return 0;}
-    return ZFPROTOCOL_ACCESS(ZFString)->wordCountOfUTF8(utf8String);
-}
-
 ZF_NAMESPACE_GLOBAL_END
 
