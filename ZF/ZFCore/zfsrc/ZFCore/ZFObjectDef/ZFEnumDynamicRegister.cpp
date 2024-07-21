@@ -65,7 +65,7 @@ public:
     }
 public:
     zfoverride
-    virtual const zfchar *wrappedValueTypeId(void) {
+    virtual const zfstring &wrappedValueTypeId(void) {
         return _ZFP_ZFEnumDataRef()->ownerClass->classNameFull();
     }
 private:
@@ -87,7 +87,7 @@ public:
         return zftrue;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return this->enumClass->classNameFull();
     }
     zfoverride

@@ -228,7 +228,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
             static _ZFP_ZFProtocolData &_ZFP_ZFProtocolDataRef(void) { \
                 static _ZFP_ZFProtocolData &_d = _ZFP_ZFProtocolImplDataRegister( \
                     zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
-                    #ModuleName, \
+                    zftext(#ModuleName), \
                     zfself::_ZFP_ZFProtocolTryAccessCallbackFunc, \
                     zfself::_ZFP_ZFProtocolOptional()); \
                 return _d; \
@@ -533,7 +533,7 @@ private:
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplRegister( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
-                    #ImplementationName, \
+                    zftext(#ImplementationName), \
                     implLevel); \
                 static _ZFP_ZFProtocolImplRegisterHolder _holder( \
                     zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
@@ -543,7 +543,7 @@ private:
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
-                    #ImplementationName, \
+                    zftext(#ImplementationName), \
                     implLevel); \
             }
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_BEGIN(ImplementationName, ImplementationClass, ModuleName, implLevel) \

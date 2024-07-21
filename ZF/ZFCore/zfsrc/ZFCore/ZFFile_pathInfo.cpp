@@ -443,7 +443,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFPathInfoSize
 
 // ============================================================
 void _ZFP_ZFPathInfoRegister(
-        ZF_IN const zfchar *pathType
+        ZF_IN const zfstring &pathType
         , ZF_IN const ZFPathInfoImpl &data
         ) {
     zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
@@ -475,7 +475,7 @@ void _ZFP_ZFPathInfoRegister(
         );
     m[pathType] = data;
 }
-void _ZFP_ZFPathInfoUnregister(ZF_IN const zfchar *pathType) {
+void _ZFP_ZFPathInfoUnregister(ZF_IN const zfstring &pathType) {
     zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
     m.erase(pathType);
 }

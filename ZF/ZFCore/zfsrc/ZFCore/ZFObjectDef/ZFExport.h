@@ -15,18 +15,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         ZFMethodFuncUserRegister_1(setterMethod, { \
                     (Name)(v); \
                 }, ZF_NAMESPACE_CURRENT(), \
-                void, #Name \
+                void, zftext(#Name) \
                 , ZFMP_IN(Type const &, v) \
                 ); \
         ZFMethodFuncUserRegister_0(getterMethod, { \
                     return (Name)(); \
                 }, ZF_NAMESPACE_CURRENT(), \
-                Type &, #Name \
+                Type &, zftext(#Name) \
                 ); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ExportV_##Name) { \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), #Name, ZFTypeId<Type>::TypeId())); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), #Name, zfnull)); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), zftext(#Name), ZFTypeId<Type>::TypeId())); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), zftext(#Name), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(ExportV_##Name)
 #define _ZFP_ZFEXPORT_VAR_DEFINE_READONLY(Type, Name) \
@@ -34,11 +34,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         ZFMethodFuncUserRegister_0(getterMethod, { \
                     return (Name)(); \
                 }, ZF_NAMESPACE_CURRENT(), \
-                Type const &, #Name \
+                Type const &, zftext(#Name) \
                 ); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ExportV_##Name) { \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), #Name, zfnull)); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), zftext(#Name), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(ExportV_##Name)
 
@@ -151,23 +151,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZF_STATIC_REGISTER_INIT(ExportVar_##Name) { \
         ZFMethodFuncUserRegister_1(setterMethod, { \
                 Name = v; \
-            }, ZF_NAMESPACE_CURRENT(), void, #Name \
+            }, ZF_NAMESPACE_CURRENT(), void, zftext(#Name) \
             , ZFMP_IN(Type const &, v) \
             ); \
         ZFMethodFuncUserRegister_0(getterMethod, { \
                 return Name; \
-            }, ZF_NAMESPACE_CURRENT(), Type const &, #Name \
+            }, ZF_NAMESPACE_CURRENT(), Type const &, zftext(#Name) \
             ); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ExportVar_##Name) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName( \
                     ZF_NAMESPACE_CURRENT() \
-                    , #Name \
+                    , zftext(#Name) \
                     , ZFTypeId<Type>::TypeId() \
                 )); \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName( \
                     ZF_NAMESPACE_CURRENT() \
-                    , #Name \
+                    , zftext(#Name) \
                     , zfnull \
                 )); \
     } \
@@ -177,13 +177,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZF_STATIC_REGISTER_INIT(ExportVar_##Name) { \
         ZFMethodFuncUserRegister_0(getterMethod, { \
                 return Name; \
-            }, ZF_NAMESPACE_CURRENT(), Type const &, #Name \
+            }, ZF_NAMESPACE_CURRENT(), Type const &, zftext(#Name) \
             ); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ExportVar_##Name) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName( \
                     ZF_NAMESPACE_CURRENT() \
-                    , #Name \
+                    , zftext(#Name) \
                     , zfnull \
                 )); \
     } \
@@ -222,7 +222,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     { \
         ZFMethodFuncUserRegister_0(resultMethod, { \
                 return v; \
-            }, ZF_NAMESPACE_CURRENT(), _EnumName, #v); \
+            }, ZF_NAMESPACE_CURRENT(), _EnumName, zftext(#v)); \
         m.add(resultMethod); \
     }
 

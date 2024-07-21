@@ -119,7 +119,7 @@ public:
                     zfstr("%s.%s", zfself::ClassData()->classNameFull(), ZFM_TOSTRING(prefix##YourIdName)) \
                     , zfself::ClassData() \
                     , zfnull \
-                    , ZFM_TOSTRING(prefix##YourIdName) \
+                    , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
                 ); \
             return *(d.idValue); \
         }
@@ -172,7 +172,7 @@ public:
                 zfstr("%s.%s", ZF_NAMESPACE_CURRENT() ? ZF_NAMESPACE_CURRENT() : "", ZFM_TOSTRING(prefix##YourIdName)) \
                 , zfnull \
                 , ZF_NAMESPACE_CURRENT() \
-                , ZFM_TOSTRING(prefix##YourIdName) \
+                , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
             ); \
         return *(d.idValue); \
     }

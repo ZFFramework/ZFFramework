@@ -261,7 +261,7 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return ZFTypeId<zfweak>::TypeId();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -272,7 +272,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride

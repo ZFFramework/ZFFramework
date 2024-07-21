@@ -116,7 +116,7 @@ void ZFImpl_ZFLua_implPathInfoSetup(
     }
 }
 void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
-        ZF_IN const zfchar *luaFuncName
+        ZF_IN const zfstring &luaFuncName
         , ZF_IN const zfchar *luaFuncBody
         ) {
     zfCoreMutexLocker();
@@ -131,7 +131,7 @@ void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
         d->luaFuncNameList.add(it->first);
     }
 }
-void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName) {
+void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfstring &luaFuncName) {
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
     d->pathInfoMap.erase(luaFuncName);

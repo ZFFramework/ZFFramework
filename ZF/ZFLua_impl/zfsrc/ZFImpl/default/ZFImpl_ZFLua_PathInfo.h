@@ -64,18 +64,18 @@ extern ZFLIB_ZFLua_impl const ZFCoreArray<zfstring> &ZFImpl_ZFLua_implPathInfoLi
 /** @see #ZFImpl_ZFLua_implPathInfoSetup */
 #define ZFImpl_ZFLua_implPathInfo_DEFINE(luaFunc, luaFuncBody) \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfo_##luaFunc, ZFLevelZFFrameworkNormal) { \
-        _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZFM_TOSTRING(luaFunc), (luaFuncBody)); \
+        _ZFP_ZFImpl_ZFLua_implPathInfoRegister(zftext(ZFM_TOSTRING(luaFunc)), (luaFuncBody)); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfo_##luaFunc) { \
-        _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZFM_TOSTRING(luaFunc)); \
+        _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(zftext(ZFM_TOSTRING(luaFunc))); \
     } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implPathInfo_##luaFunc)
 
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
-        ZF_IN const zfchar *luaFuncName
+        ZF_IN const zfstring &luaFuncName
         , ZF_IN const zfchar *luaFuncBody
         );
-extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName);
+extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfstring &luaFuncName);
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -64,9 +64,13 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
     }
 
     // ensure init order
-    _ZFP_ZFSigNameCache();
-    _ZFP_ZFSigNameIdMap();
-    _ZFP_ZFSigNameIdUnusedMap();
+    static zfbool dummy = (
+            (void)_ZFP_ZFSigNameCache(),
+            (void)_ZFP_ZFSigNameIdMap(),
+            (void)_ZFP_ZFSigNameIdUnusedMap(),
+            zffalse
+            );
+    ZFUNUSED(dummy);
 
     _ZFP_ZFSigNameMapType::iterator it = _ZFP_ZFSigNameMap().find(s);
     if(it != _ZFP_ZFSigNameMap().end()) {
@@ -149,7 +153,7 @@ zfbool ZFSigName::isEmpty(void) const {
 }
 
 const zfchar *ZFSigName::cString(void) const {
-    return d ? d->s : "";
+    return d ? d->s.cString() : "";
 }
 
 zfindex ZFSigName::length(void) const {

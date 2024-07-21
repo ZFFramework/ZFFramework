@@ -160,8 +160,9 @@ public:
         }
     }
     zfoverride
-    virtual const zfchar *wrappedValueTypeId(void) {
-        return ZFTypeId_ZFCoreArray();
+    virtual const zfstring &wrappedValueTypeId(void) {
+        static ZFSigName d(ZFTypeId_ZFCoreArray());
+        return d;
     }
     zfoverride
     virtual void *wrappedValue(void) {return this->zfv;}
@@ -581,8 +582,9 @@ public:
         TypeIdRegistered = ZFTypeId<T_Type>::TypeIdRegistered,
         TypeIdSerializable = ZFTypeId<T_Type>::TypeIdSerializable,
     };
-    static inline const zfchar *TypeId(void) {
-        return ZFTypeId_ZFCoreArray();
+    static inline const zfstring &TypeId(void) {
+        static ZFSigName d(ZFTypeId_ZFCoreArray());
+        return d;
     }
     static inline const ZFClass *TypeIdClass(void) {
         return v_ZFCoreArray::ClassData();
@@ -592,7 +594,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride

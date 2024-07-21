@@ -25,8 +25,9 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 0,
     };
-    static inline const zfchar *TypeId(void) {
-        return ZFTypeId_void();
+    static inline const zfstring &TypeId(void) {
+        static ZFSigName d(ZFTypeId_void());
+        return d;
     }
     virtual const ZFClass *TypeIdClass(void) const {
         return zfnull;
@@ -36,7 +37,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride
@@ -166,7 +167,7 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return zftTraits<T_Type>::TrType::ClassData()->classNameFull();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -177,7 +178,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride
@@ -314,7 +315,7 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return ZFObject::ClassData()->classNameFull();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -325,7 +326,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride
@@ -414,7 +415,7 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return ZFTypeId<T_ZFObject *>::TypeId();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -425,7 +426,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride
@@ -519,7 +520,7 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return ZFObject::ClassData()->classNameFull();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -530,7 +531,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride
@@ -636,7 +637,7 @@ public:
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return ZFTypeId<T_ZFObject *>::TypeId();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -647,7 +648,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride
@@ -748,7 +749,7 @@ public:
         TypeIdRegistered = ZFTypeId<T_Type_>::TypeIdRegistered,
         TypeIdSerializable = ZFTypeId<T_Type_>::TypeIdSerializable,
     };
-    static inline const zfchar *TypeId(void) {
+    static inline const zfstring &TypeId(void) {
         return ZFTypeId<T_Type_>::TypeId();
     }
     static inline const ZFClass *TypeIdClass(void) {
@@ -759,7 +760,7 @@ public:
         return TypeIdSerializable;
     }
     zfoverride
-    virtual const zfchar *typeId(void) const {
+    virtual const zfstring &typeId(void) const {
         return TypeId();
     }
     zfoverride

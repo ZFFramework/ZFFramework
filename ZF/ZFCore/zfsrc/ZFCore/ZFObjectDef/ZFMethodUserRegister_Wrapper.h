@@ -32,27 +32,27 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv) {
 #define ZFMethodUserRegisterForWrapperVarReadonly(getterMethod, WrapperClass, VarType, VarName) \
     ZFMethodUserRegister_0(getterMethod, { \
             return (VarType const &)(_ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName); \
-        }, WrapperClass::ClassData(), VarType const &, #VarName)
+        }, WrapperClass::ClassData(), VarType const &, zftext(#VarName))
 /** @brief see #ZFMethodUserRegister_0 */
 #define ZFMethodUserRegisterForWrapperVar(setterMethod, getterMethod, WrapperClass, VarType, VarName) \
     ZFMethodUserRegister_1(setterMethod, { \
             _ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName = param0; \
-        }, WrapperClass::ClassData(), void, #VarName \
+        }, WrapperClass::ClassData(), void, zftext(#VarName) \
         , ZFMP_IN(VarType const &, param0) \
         ); \
     ZFMethodUserRegister_0(getterMethod, { \
             return (VarType const &)(_ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName); \
-        }, WrapperClass::ClassData(), VarType const &, #VarName)
+        }, WrapperClass::ClassData(), VarType const &, zftext(#VarName))
 
 /** @brief see #ZFMethodUserRegister_0 */
 #define ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(WrapperClass, VarType, VarName) \
     ZF_STATIC_REGISTER_INIT(MtdUR_##WrapperClass##_##VarName) { \
         ZFMethodUserRegister_0(getterMethod, { \
                 return (VarType const &)(_ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName); \
-            }, WrapperClass::ClassData(), VarType const &, #VarName); \
+            }, WrapperClass::ClassData(), VarType const &, zftext(#VarName)); \
     } \
     ZF_STATIC_REGISTER_DESTROY(MtdUR_##WrapperClass##_##VarName) { \
-        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(#VarName, zfnull)); \
+        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(zftext(#VarName), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdUR_##WrapperClass##_##VarName)
 /** @brief see #ZFMethodUserRegister_0 */
@@ -60,16 +60,16 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv) {
     ZF_STATIC_REGISTER_INIT(MtdUR_##WrapperClass##_##VarName) { \
         ZFMethodUserRegister_1(setterMethod, { \
                 _ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName = param0; \
-            }, WrapperClass::ClassData(), void, #VarName \
+            }, WrapperClass::ClassData(), void, zftext(#VarName) \
             , ZFMP_IN(VarType const &, param0) \
             ); \
         ZFMethodUserRegister_0(getterMethod, { \
                 return (VarType const &)(_ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName); \
-            }, WrapperClass::ClassData(), VarType const &, #VarName); \
+            }, WrapperClass::ClassData(), VarType const &, zftext(#VarName)); \
     } \
     ZF_STATIC_REGISTER_DESTROY(MtdUR_##WrapperClass##_##VarName) { \
-        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(#VarName, ZFTypeId<VarType>::TypeId())); \
-        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(#VarName, zfnull)); \
+        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(zftext(#VarName), ZFTypeId<VarType>::TypeId())); \
+        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(zftext(#VarName), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdUR_##WrapperClass##_##VarName)
 
@@ -78,28 +78,28 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv) {
 #define ZFMethodUserRegisterForWrapperSetterGetter(setterMethod, getterMethod, WrapperClass, VarType, VarName) \
     ZFMethodUserRegister_1(setterMethod, { \
             _ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName(param0); \
-        }, WrapperClass::ClassData(), void, #VarName \
+        }, WrapperClass::ClassData(), void, zftext(#VarName) \
         , ZFMP_IN(VarType const &, param0) \
         ); \
     ZFMethodUserRegister_0(getterMethod, { \
             return (VarType const &)(_ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName()); \
-        }, WrapperClass::ClassData(), VarType const &, #VarName)
+        }, WrapperClass::ClassData(), VarType const &, zftext(#VarName))
 
 /** @brief see #ZFMethodUserRegister_0 */
 #define ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(WrapperClass, VarType, VarName) \
     ZF_STATIC_REGISTER_INIT(MtdUR_##WrapperClass##_##VarName) { \
         ZFMethodUserRegister_1(setterMethod, { \
                 _ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName(param0); \
-            }, WrapperClass::ClassData(), void, #VarName \
+            }, WrapperClass::ClassData(), void, zftext(#VarName) \
             , ZFMP_IN(VarType const &, param0) \
             ); \
         ZFMethodUserRegister_0(getterMethod, { \
                 return (VarType const &)(_ZFP_MtdUR_zfv(invokerObject->to<WrapperClass *>()->zfv).VarName()); \
-            }, WrapperClass::ClassData(), VarType const &, #VarName); \
+            }, WrapperClass::ClassData(), VarType const &, zftext(#VarName)); \
     } \
     ZF_STATIC_REGISTER_DESTROY(MtdUR_##WrapperClass##_##VarName) { \
-        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(#VarName, ZFTypeId<VarType>::TypeId())); \
-        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(#VarName, zfnull)); \
+        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(zftext(#VarName), ZFTypeId<VarType>::TypeId())); \
+        ZFMethodUserUnregister(WrapperClass::ClassData()->methodForNameIgnoreParent(zftext(#VarName), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdUR_##WrapperClass##_##VarName)
 
@@ -130,7 +130,7 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv) {
                 ); \
         }, WrapperClass::ClassData(), \
         public, ZFMethodTypeVirtual, \
-        ReturnType, #methodName \
+        ReturnType, zftext(#methodName) \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
         , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \
@@ -205,7 +205,7 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv) {
                 ); \
         }, WrapperClass::ClassData(), \
         public, ZFMethodTypeStatic, \
-        ReturnType, #methodName \
+        ReturnType, zftext(#methodName) \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
         , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \

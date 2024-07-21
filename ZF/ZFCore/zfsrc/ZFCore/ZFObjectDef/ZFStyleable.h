@@ -524,10 +524,10 @@ extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
     _ZFP_ZFSTYLE_DECODER_DEFINE(registerSig, decodeAction, ##__VA_ARGS__)
 #define _ZFP_ZFSTYLE_DECODER_DEFINE(registerSig, decodeAction, ...) \
     ZF_STATIC_REGISTER_INIT(ZFStyleDecoder_##registerSig) { \
-        _ZFP_ZFStyleDecoderRegister(#registerSig, zfself::_ZFP_decode); \
+        _ZFP_ZFStyleDecoderRegister(zftext(#registerSig), zfself::_ZFP_decode); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ZFStyleDecoder_##registerSig) { \
-        _ZFP_ZFStyleDecoderUnregister(#registerSig); \
+        _ZFP_ZFStyleDecoderUnregister(zftext(#registerSig)); \
     } \
     static zfbool _ZFP_decode( \
             ZF_OUT zfauto &ret \

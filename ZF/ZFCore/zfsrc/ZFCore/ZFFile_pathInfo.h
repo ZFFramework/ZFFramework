@@ -356,10 +356,10 @@ public:
 };
 
 extern ZFLIB_ZFCore void _ZFP_ZFPathInfoRegister(
-        ZF_IN const zfchar *pathType
+        ZF_IN const zfstring &pathType
         , ZF_IN const ZFPathInfoImpl &data
         );
-extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfchar *pathType);
+extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfstring &pathType);
 
 /**
  * @brief register pathType for generic file processing

@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
         }; \
-        static inline const zfchar *TypeId(void) { \
+        static inline const zfstring &TypeId(void) { \
             return ZFTypeId_##EnumName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
@@ -32,7 +32,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const { \
+        virtual const zfstring &typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
@@ -158,7 +158,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             s += EnumName::EnumNameForValue(v); \
             return zftrue; \
         }) \
-    const zfchar *EnumName::wrappedValueTypeId(void) { \
+    const zfstring &EnumName::wrappedValueTypeId(void) { \
         return ZFTypeId_##EnumName(); \
     }
 
@@ -175,7 +175,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }) \
     public: \
         zfoverride \
-        virtual const zfchar *wrappedValueTypeId(void) { \
+        virtual const zfstring &wrappedValueTypeId(void) { \
             return ZFTypeId_##EnumFlagsName(); \
         } \
     public: \
@@ -192,7 +192,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
         }; \
-        static inline const zfchar *TypeId(void) { \
+        static inline const zfstring &TypeId(void) { \
             return ZFTypeId_##EnumFlagsName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
@@ -203,7 +203,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const { \
+        virtual const zfstring &typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \

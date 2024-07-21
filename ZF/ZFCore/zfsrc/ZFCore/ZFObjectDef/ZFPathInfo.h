@@ -63,15 +63,16 @@ public:
  * @brief see #ZFPathInfo
  */
 #define ZFPATHTYPE_DECLARE(ZFLIB_, pathType) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_, const zfchar *, ZFPathType_##pathType) { \
-        return ZFM_TOSTRING(pathType); \
+    ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_, const zfstring &, ZFPathType_##pathType) { \
+        static zfstring ret = zftext(ZFM_TOSTRING(pathType)); \
+        return ret; \
     }
 
 /**
  * @brief see #ZFPathInfo
  */
 #define ZFPATHTYPE_DEFINE(pathType) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_0(const zfchar *, ZFPathType_##pathType)
+    ZFMETHOD_FUNC_INLINE_DEFINE_0(const zfstring &, ZFPathType_##pathType)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -75,8 +75,8 @@ public:
 template<typename T_Char>
 zfclassLikePOD _ZFP_zfstringH {
 public:
-    _ZFP_zfstringH(void) : d(zfnew(_ZFP_zfstringD<T_Char>)) {}
-    ~_ZFP_zfstringH(void) {zfdelete(d);}
+    _ZFP_zfstringH(void) : d(zfpoolNew(_ZFP_zfstringD<T_Char>)) {}
+    ~_ZFP_zfstringH(void) {zfpoolDelete(d);}
 public:
     _ZFP_zfstringD<T_Char> *d;
 };
@@ -101,10 +101,6 @@ public:
         zfCoreMutexLocker();
         d = s.d;
         ++(d->refCount);
-        if(d->capacity == 0 && d->length) {
-            // zftext got retained, deep copy for safe
-            _prepareWrite(d->length);
-        }
     }
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, ZF_IN zfindex len)

@@ -1218,9 +1218,9 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         classNamespaceTmp = outer->classNameFull();
     }
 
-    const zfchar *classNameTmp = className;
+    zfstring classNameTmp = className;
     if(zfsncmp(classNameTmp, "v_", 2) == 0) {
-        classNameTmp += 2;
+        classNameTmp.remove(0, 2);
     }
 
     // method data holder is required during _ZFP_ZFClassUnregister,
@@ -1232,8 +1232,11 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     if(classNamespaceTmp != zfnull) {
         classNameFull += classNamespaceTmp;
         classNameFull += ".";
+        classNameFull += classNameTmp;
     }
-    classNameFull += classNameTmp;
+    else {
+        classNameFull = classNameTmp;
+    }
 
     ZFCorePointerBase *d = _ZFP_ZFClassMap.get(classNameFull);
     ZFClass *cls = zfnull;
@@ -1312,7 +1315,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         ZFMethodUserRegisterDetail_0(resultMethod, {
                 return invokerMethod->methodOwnerClass();
             }, cls, public, ZFMethodTypeStatic,
-            const ZFClass *, "ClassData");
+            const ZFClass *, zftext("ClassData"));
 
         // notify
         _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, cls, zfnull, zfnull);

@@ -14,27 +14,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFMethodUserRegisterForZFObjectVarReadonly(getterMethod, ownerClassSig, VarType, VarName) \
     ZFMethodUserRegister_0(getterMethod, { \
             return (VarType const &)(invokerObject->to<ownerClassSig *>()->VarName); \
-        }, ownerClassSig::ClassData(), VarType const &, #VarName)
+        }, ownerClassSig::ClassData(), VarType const &, zftext(#VarName))
 /** @brief see #ZFMethodUserRegister_0 */
 #define ZFMethodUserRegisterForZFObjectVar(setterMethod, getterMethod, ownerClassSig, VarType, VarName) \
     ZFMethodUserRegister_1(setterMethod, { \
             invokerObject->to<ownerClassSig *>()->VarName = param0; \
-        }, ownerClassSig::ClassData(), void, #VarName \
+        }, ownerClassSig::ClassData(), void, zftext(#VarName) \
         , ZFMP_IN(VarType const &, param0) \
         ); \
     ZFMethodUserRegister_0(getterMethod, { \
             return (VarType const &)(invokerObject->to<ownerClassSig *>()->VarName); \
-        }, ownerClassSig::ClassData(), VarType const &, #VarName)
+        }, ownerClassSig::ClassData(), VarType const &, zftext(#VarName))
 
 /** @brief see #ZFMethodUserRegister_0 */
 #define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR_READONLY(ownerClassSig, VarType, VarName) \
     ZF_STATIC_REGISTER_INIT(MtdUR_##ownerClassSig##_##VarName) { \
         ZFMethodUserRegister_0(getterMethod, { \
                 return (VarType const &)(invokerObject->to<ownerClassSig *>()->VarName); \
-            }, ownerClassSig::ClassData(), VarType const &, #VarName); \
+            }, ownerClassSig::ClassData(), VarType const &, zftext(#VarName)); \
     } \
     ZF_STATIC_REGISTER_DESTROY(MtdUR_##ownerClassSig##_##VarName) { \
-        ZFMethodUserUnregister(ownerClassSig::ClassData()->methodForNameIgnoreParent(#VarName, zfnull)); \
+        ZFMethodUserUnregister(ownerClassSig::ClassData()->methodForNameIgnoreParent(zftext(#VarName), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdUR_##ownerClassSig##_##VarName)
 /** @brief see #ZFMethodUserRegister_0 */
@@ -42,16 +42,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZF_STATIC_REGISTER_INIT(MtdUR_##ownerClassSig##_##VarName) { \
         ZFMethodUserRegister_1(setterMethod, { \
                 invokerObject->to<ownerClassSig *>()->VarName = param0; \
-            }, ownerClassSig::ClassData(), void, #VarName \
+            }, ownerClassSig::ClassData(), void, zftext(#VarName) \
             , ZFMP_IN(VarType const &, param0) \
             ); \
         ZFMethodUserRegister_0(getterMethod, { \
                 return (VarType const &)(invokerObject->to<ownerClassSig *>()->VarName); \
-            }, ownerClassSig::ClassData(), VarType const &, #VarName); \
+            }, ownerClassSig::ClassData(), VarType const &, zftext(#VarName)); \
     } \
     ZF_STATIC_REGISTER_DESTROY(MtdUR_##ownerClassSig##_##VarName) { \
-        ZFMethodUserUnregister(ownerClassSig::ClassData()->methodForNameIgnoreParent(#VarName, ZFTypeId<VarType>::TypeId())); \
-        ZFMethodUserUnregister(ownerClassSig::ClassData()->methodForNameIgnoreParent(#VarName, zfnull)); \
+        ZFMethodUserUnregister(ownerClassSig::ClassData()->methodForNameIgnoreParent(zftext(#VarName), ZFTypeId<VarType>::TypeId())); \
+        ZFMethodUserUnregister(ownerClassSig::ClassData()->methodForNameIgnoreParent(zftext(#VarName), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdUR_##ownerClassSig##_##VarName)
 
@@ -83,7 +83,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ); \
         }, ownerClass, \
         public, ZFMethodTypeVirtual, \
-        ReturnType, #methodName \
+        ReturnType, zftext(#methodName) \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
         , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \

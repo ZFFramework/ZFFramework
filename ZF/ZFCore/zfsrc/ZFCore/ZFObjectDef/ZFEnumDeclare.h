@@ -113,7 +113,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, Name)
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_VALUE_REGISTER(Value) \
-    _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, #Value)
+    _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, zftext(#Value))
 
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_END(ZFLIB_, EnumName) \
@@ -319,7 +319,7 @@ public:
         } \
     public: \
         zfoverride \
-        virtual const zfchar *wrappedValueTypeId(void); \
+        virtual const zfstring &wrappedValueTypeId(void); \
     }; \
     /** @brief same as @ref EnumName##Enum, see @ref EnumName */ \
     typedef EnumName::ZFEnumType EnumName##Enum; \

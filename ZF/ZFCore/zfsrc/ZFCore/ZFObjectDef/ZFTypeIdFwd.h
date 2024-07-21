@@ -34,7 +34,7 @@ public:
     /**
      * @brief the type id
      */
-    virtual const zfchar *typeId(void) const zfpurevirtual;
+    virtual const zfstring &typeId(void) const zfpurevirtual;
     /**
      * @brief return the proper wrapper type class if available
      *
@@ -145,7 +145,7 @@ public:
     /**
      * @brief get type id, or return #ZFTypeId_none if not registered
      */
-    static const zfchar *TypeId(void);
+    static const zfstring &TypeId(void);
 
     /**
      * @brief store the value to wrapper object
@@ -227,7 +227,7 @@ public:
  * @brief manually register a custom type id
  *
  * you must have these things available before register:
- * -  `const zfchar *ZFTypeId_YourTypeName()`
+ * -  `const zfstring &ZFTypeId_YourTypeName()`
  * -  specialization for `ZFTypeId<YourType>`
  */
 #define ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
@@ -237,7 +237,7 @@ public:
             zfnew(ZFTypeId<_ZFP_PropTypeW2_##TypeName>)); \
         ZFMethodFuncUserRegister_0(dummy, { \
                 return ZFTypeId_##TypeName(); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, const zfchar *, ZFM_TOSTRING(ZFTypeId_##TypeName)); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
     } \
     ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
@@ -283,7 +283,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfoverride \
         virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref); \
         zfoverride \
-        virtual const zfchar *wrappedValueTypeId(void); \
+        virtual const zfstring &wrappedValueTypeId(void); \
         zfoverride \
         virtual void *wrappedValue(void) {return &(this->zfv);} \
         zfoverride \
@@ -353,7 +353,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             this->zfv = refTmp->zfv; \
         } \
     } \
-    const zfchar *v_##TypeName::wrappedValueTypeId(void) { \
+    const zfstring &v_##TypeName::wrappedValueTypeId(void) { \
         return ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId(); \
     } \
     ZF_STATIC_REGISTER_INIT(TypeIdReg_##TypeName) { \
@@ -472,7 +472,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
         }; \
-        static inline const zfchar *TypeId(void) { \
+        static inline const zfstring &TypeId(void) { \
             return ZFTypeId_##TypeName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
@@ -483,7 +483,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const { \
+        virtual const zfstring &typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
@@ -574,7 +574,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             TypeIdRegistered = 1, \
             TypeIdSerializable = 0, \
         }; \
-        static inline const zfchar *TypeId(void) { \
+        static inline const zfstring &TypeId(void) { \
             return ZFTypeId_##TypeName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
@@ -585,7 +585,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const { \
+        virtual const zfstring &typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
@@ -681,8 +681,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             TypeIdRegistered = 1, \
             TypeIdSerializable = 0, \
         }; \
-        static inline const zfchar *TypeId(void) { \
-            return ZFTypeId_none(); \
+        static inline const zfstring &TypeId(void) { \
+            static ZFSigName d(ZFTypeId_none()); \
+            return d; \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
@@ -732,7 +733,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             TypeIdRegistered = ZFTypeId<AliasToType>::TypeIdRegistered, \
             TypeIdSerializable = ZFTypeId<AliasToType>::TypeIdSerializable, \
         }; \
-        static inline const zfchar *TypeId(void) { \
+        static inline const zfstring &TypeId(void) { \
             return ZFTypeId<AliasToType>::TypeId(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
@@ -743,7 +744,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const { \
+        virtual const zfstring &typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
