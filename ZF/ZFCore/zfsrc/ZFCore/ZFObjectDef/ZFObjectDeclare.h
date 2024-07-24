@@ -266,7 +266,7 @@ public:
       ZFMP_0 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_1( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         )
@@ -294,7 +294,7 @@ public:
     , ZFMP_1 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_2( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -328,7 +328,7 @@ public:
     , ZFMP_2 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_3( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -368,7 +368,7 @@ public:
     , ZFMP_3 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_4( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -414,7 +414,7 @@ public:
     , ZFMP_4 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_5( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -466,7 +466,7 @@ public:
     , ZFMP_5 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_6( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -524,7 +524,7 @@ public:
     , ZFMP_6 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_7( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -588,7 +588,7 @@ public:
     , ZFMP_7 \
     ) \
     ZFMETHOD_DECLARE_DETAIL_8( \
-        protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \

@@ -190,13 +190,13 @@ public:
     GetterAccessType: \
         /** \n access singleton instance */ \
         ZFMETHOD_DECLARE_DETAIL_0( \
-            GetterAccessType, ZFMethodTypeStatic, G, \
+            GetterAccessType, ZFMethodTypeStatic, \
             AccessTypeName *, accessMethodName \
             ) \
     SetterAccessType: \
         /** @brief see @ref accessMethodName */ \
         ZFMETHOD_DECLARE_DETAIL_1( \
-            SetterAccessType, ZFMethodTypeStatic, S, \
+            SetterAccessType, ZFMethodTypeStatic, \
             void, accessMethodName \
             , ZFMP_IN(AccessTypeName *, param0) \
             ) \

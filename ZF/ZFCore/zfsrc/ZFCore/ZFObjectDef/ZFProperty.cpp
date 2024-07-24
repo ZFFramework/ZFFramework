@@ -219,9 +219,9 @@ ZFProperty *_ZFP_ZFPropertyRegister(
             propertyOwnerClass->classNameFull(),
             name);
     }
-    else {
-        propertyInfo = _ZFP_ZFPropertyInstanceAccess(propertyInternalId);
+    propertyInfo = _ZFP_ZFPropertyInstanceAccess(propertyInternalId);
 
+    if(propertyInfo->_ZFP_ZFProperty_name == zfnull) {
         propertyInfo->_ZFP_ZFPropertyInit(
             propertyIsUserRegister,
             propertyIsDynamicRegister,

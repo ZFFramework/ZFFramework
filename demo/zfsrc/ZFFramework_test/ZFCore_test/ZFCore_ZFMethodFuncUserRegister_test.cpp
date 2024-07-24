@@ -18,7 +18,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_1(method, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic"
                 , ZFMP_IN(zfstring const &, param0)
                 );
@@ -26,14 +26,14 @@ protected:
             ZFMethodFuncUserRegisterDetail_0(method0, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic0"
                 );
 
             ZFMethodFuncUserRegisterDetail_1(method1, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic1"
                 , ZFMP_IN(zfstring const &, param0)
                 );
@@ -41,7 +41,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_2(method2, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic2"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)
@@ -50,7 +50,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_3(method3, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic3"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)
@@ -60,7 +60,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_4(method4, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic4"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)
@@ -71,7 +71,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_5(method5, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic5"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)
@@ -83,7 +83,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_6(method6, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic6"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)
@@ -96,7 +96,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_7(method7, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic7"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)
@@ -110,7 +110,7 @@ protected:
             ZFMethodFuncUserRegisterDetail_8(method8, {
                     zfLog();
                     return "returnValue";
-                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
+                }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic8"
                 , ZFMP_IN(zfstring const &, param0)
                 , ZFMP_IN(zfstring const &, param1)

@@ -454,7 +454,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFMETHOD_DECLARE(...) \
     _ZFP_MtdD_EXPAND(_ZFP_ZFMETHOD_DECLARE_(__VA_ARGS__))
 #define _ZFP_ZFMETHOD_DECLARE_( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, pureVirtualOrNot, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, pureVirtualOrNot, \
         ReturnType, MethodName \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
@@ -711,7 +711,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFMETHOD_DECLARE_0(ReturnType, MethodName \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -726,7 +726,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFMETHOD_DECLARE_STATIC_0(ReturnType, MethodName \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -741,7 +741,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFMETHOD_DECLARE_PROTECTED_0(ReturnType, MethodName \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -754,11 +754,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_0( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -873,7 +873,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_0 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
@@ -889,7 +889,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_0 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
@@ -905,7 +905,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_0 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
@@ -918,12 +918,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_1( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
@@ -1045,7 +1045,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_1 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1062,7 +1062,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_1 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1079,7 +1079,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_1 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1092,13 +1092,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_2( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1227,7 +1227,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_2 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1245,7 +1245,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_2 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1263,7 +1263,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_2 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1276,14 +1276,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_3( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1419,7 +1419,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1438,7 +1438,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1457,7 +1457,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1470,7 +1470,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_4( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -1478,7 +1478,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1621,7 +1621,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1641,7 +1641,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1661,7 +1661,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1674,7 +1674,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_5( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -1683,7 +1683,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1833,7 +1833,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1854,7 +1854,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1875,7 +1875,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -1888,7 +1888,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_6( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -1898,7 +1898,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2055,7 +2055,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2077,7 +2077,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2099,7 +2099,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2112,7 +2112,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_7( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -2123,7 +2123,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2287,7 +2287,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_7 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2310,7 +2310,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_7 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        public, ZFMethodTypeStatic, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2333,7 +2333,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_7 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, ZF_CALLER_LINE, \
+        protected, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -2346,7 +2346,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_DECLARE_DETAIL_8( \
-    PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
+    PublicOrProtectedOrPrivate, ZFMethodType_, \
     ReturnType, MethodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -2358,7 +2358,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_7 \
     ) \
     _ZFP_ZFMETHOD_DECLARE( \
-        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, RegSig, \
+        PublicOrProtectedOrPrivate, ZFMethodType_, _ZFP_ZFMETHOD_DECLARE_notPureVirtual, \
         ReturnType, MethodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \

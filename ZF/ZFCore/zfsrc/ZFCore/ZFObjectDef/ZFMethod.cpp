@@ -108,7 +108,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
 
     // update param count
     for(zfuint i = 0; i < mp.paramCount; ++i) {
-        if(mp.paramDefaultValueCallback[i] != zfnull) {
+        if(*(mp.paramDefaultValueCallback[i]) != zfnull) {
             _ZFP_ZFMethod_paramDefaultBeginIndex = (zfuint)i;
             break;
         }
@@ -621,27 +621,29 @@ ZFMethod *_ZFP_ZFMethodRegister(
     else {
         method = _ZFP_ZFMethodInstanceAccess(methodInternalId);
 
-        method->_ZFP_ZFMethod_init(methodIsUserRegister
-                , methodIsDynamicRegister
-                , methodDynamicRegisterUserData
-                , methodInvoker
-                , methodGenericInvoker
-                , methodType
-                , methodName
-                , returnTypeId
-                , returnTypeName
-                , mp
-            );
+        if(method->_ZFP_ZFMethod_methodName == zfnull) {
+            method->_ZFP_ZFMethod_init(methodIsUserRegister
+                    , methodIsDynamicRegister
+                    , methodDynamicRegisterUserData
+                    , methodInvoker
+                    , methodGenericInvoker
+                    , methodType
+                    , methodName
+                    , returnTypeId
+                    , returnTypeName
+                    , mp
+                );
 
-        if(methodOwnerClass != zfnull) {
-            method->_ZFP_ZFMethod_initClassMemberType(methodOwnerClass, methodPrivilegeType);
-            methodOwnerClass->_ZFP_ZFClass_methodRegister(method);
-            _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
-        }
-        else {
-            method->_ZFP_ZFMethod_initFuncType(methodNamespaceTmp);
-            _ZFP_ZFMethodFuncRegister(method);
-            _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
+            if(methodOwnerClass != zfnull) {
+                method->_ZFP_ZFMethod_initClassMemberType(methodOwnerClass, methodPrivilegeType);
+                methodOwnerClass->_ZFP_ZFClass_methodRegister(method);
+                _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
+            }
+            else {
+                method->_ZFP_ZFMethod_initFuncType(methodNamespaceTmp);
+                _ZFP_ZFMethodFuncRegister(method);
+                _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
+            }
         }
     }
 

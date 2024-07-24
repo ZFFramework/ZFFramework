@@ -187,7 +187,7 @@ zfclassFwd _ZFP_ZFMethodPrivateExt;
  * to walk through it, let's take a example:
  * @code
  *   ZFMETHOD_DECLARE_DETAIL_2(
- *       PublicOrProtectedOrPrivate, ZFMethodType_, RegSig,
+ *       PublicOrProtectedOrPrivate, ZFMethodType_,
  *       ReturnType, MethodName
  *       , ZFMP_IN(ParamType0, param0)
  *       , ZFMP_IN_OPT(ParamType1, param1, DefaultValue1)
