@@ -517,7 +517,6 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .methodPrivilegeType(param.propertySetterType())
                 .methodName(param.propertyName())
                 .methodReturnTypeId(ZFTypeId_void())
-                .methodReturnTypeName("void")
                 .methodParamAdd(
                     param.propertyTypeId(),
                     zfstr("%s const &", param.propertyTypeName()))
@@ -536,7 +535,6 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .methodPrivilegeType(param.propertyGetterType())
                 .methodName(param.propertyName())
                 .methodReturnTypeId(param.propertyTypeId())
-                .methodReturnTypeName(zfstr("%s const &", param.propertyTypeName()))
             , &errorHintTmp);
         if(getterMethod == zfnull) {
             zfstringAppend(errorHint,

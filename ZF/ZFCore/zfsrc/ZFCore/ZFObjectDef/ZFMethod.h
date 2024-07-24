@@ -130,13 +130,11 @@ zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFMethodMP {
 public:
     zfuint paramCount;
     ZFSigName paramTypeId[ZFMETHOD_MAX_PARAM];
-    ZFSigName paramTypeName[ZFMETHOD_MAX_PARAM];
     ZFSigName paramName[ZFMETHOD_MAX_PARAM];
     ZFListener *paramDefaultValueCallback[ZFMETHOD_MAX_PARAM];
 public:
     _ZFP_ZFMethodMP &add(
             ZF_IN const zfstring &paramTypeId
-            , ZF_IN const zfstring &paramTypeName
             , ZF_IN const zfstring &paramName
             , ZF_IN const ZFListener &paramDefaultValueCallback
             );
@@ -264,7 +262,6 @@ public:
             , ZF_IN ZFMethodType methodType
             , ZF_IN const zfstring &methodName
             , ZF_IN const zfstring &returnTypeId
-            , ZF_IN const zfstring &returnTypeName
             , ZF_IN const _ZFP_ZFMethodMP &mp
             );
     void _ZFP_ZFMethod_initClassMemberType(
@@ -354,12 +351,6 @@ public:
     inline const zfstring &methodReturnTypeId(void) const {
         return this->_ZFP_ZFMethod_returnTypeId;
     }
-    /**
-     * @brief get the method's return value's type name
-     */
-    inline const zfstring &methodReturnTypeName(void) const {
-        return this->_ZFP_ZFMethod_returnTypeName ? this->_ZFP_ZFMethod_returnTypeName : this->_ZFP_ZFMethod_returnTypeId;
-    }
 
     /**
      * @brief get the method's param num
@@ -397,13 +388,6 @@ public:
     inline const zfstring &methodParamTypeIdAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramTypeIdList()[index];
-    }
-    /**
-     * @brief get the method's param type name at index, usually for debug use
-     */
-    inline const zfstring &methodParamTypeNameAt(ZF_IN zfindex index) const {
-        zfCoreAssert(index < this->methodParamCount());
-        return this->_ZFP_ZFMethod_paramTypeNameList()[index];
     }
     /**
      * @brief get the method's param name at index, usually for debug use
@@ -656,11 +640,8 @@ public:
     inline ZFSigName *_ZFP_ZFMethod_paramTypeIdList(void) const {
         return _ZFP_ZFMethod_paramBuf;
     }
-    inline ZFSigName *_ZFP_ZFMethod_paramTypeNameList(void) const {
-        return _ZFP_ZFMethod_paramBuf + ZFMETHOD_MAX_PARAM;
-    }
     inline ZFSigName *_ZFP_ZFMethod_paramNameList(void) const {
-        return _ZFP_ZFMethod_paramBuf + ZFMETHOD_MAX_PARAM + _ZFP_ZFMethod_paramCount;
+        return _ZFP_ZFMethod_paramBuf + ZFMETHOD_MAX_PARAM;
     }
 
 public:
@@ -681,7 +662,6 @@ public:
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
     ZFSigName _ZFP_ZFMethod_methodName;
     ZFSigName _ZFP_ZFMethod_returnTypeId;
-    ZFSigName _ZFP_ZFMethod_returnTypeName;
     zfuint _ZFP_ZFMethod_paramCount;
     zfuint _ZFP_ZFMethod_paramCountMin;
     ZFSigName *_ZFP_ZFMethod_paramBuf;
@@ -712,7 +692,6 @@ extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
-        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         );
 extern ZFLIB_ZFCore void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
@@ -731,7 +710,6 @@ public:
             , ZF_IN const zfstring &methodNamespace
             , ZF_IN const zfstring &methodName
             , ZF_IN const zfstring &returnTypeId
-            , ZF_IN const zfstring &returnTypeName
             , ZF_IN const _ZFP_ZFMethodMP &mp
             );
     ~_ZFP_ZFMethodRegisterHolder(void);

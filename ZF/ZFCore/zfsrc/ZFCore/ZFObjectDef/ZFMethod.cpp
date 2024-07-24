@@ -19,12 +19,10 @@ const ZFListener &_ZFP_ZFMethod_paramDefaultValueCallbackDummy(void) {
 }
 _ZFP_ZFMethodMP &_ZFP_ZFMethodMP::add(
         ZF_IN const zfstring &paramTypeId
-        , ZF_IN const zfstring &paramTypeName
         , ZF_IN const zfstring &paramName
         , ZF_IN const ZFListener &paramDefaultValueCallback
         ) {
     this->paramTypeId[this->paramCount] = paramTypeId;
-    this->paramTypeName[this->paramCount] = paramTypeName;
     this->paramName[this->paramCount] = paramName;
     this->paramDefaultValueCallback[this->paramCount] = zfpoolNew(ZFListener, paramDefaultValueCallback);
     ++this->paramCount;
@@ -90,7 +88,6 @@ void ZFMethod::_ZFP_ZFMethod_init(
         , ZF_IN ZFMethodType methodType
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
-        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
     zfCoreAssert(methodGenericInvoker != zfnull);
@@ -104,7 +101,6 @@ void ZFMethod::_ZFP_ZFMethod_init(
     this->_ZFP_ZFMethod_methodType = methodType;
     this->_ZFP_ZFMethod_methodName = methodName;
     this->_ZFP_ZFMethod_returnTypeId = returnTypeId;
-    this->_ZFP_ZFMethod_returnTypeName = returnTypeName;
 
     // update param count
     for(zfuint i = 0; i < mp.paramCount; ++i) {
@@ -126,12 +122,10 @@ void ZFMethod::_ZFP_ZFMethod_init(
         _ZFP_ZFMethod_paramBuf = (ZFSigName *)zfmalloc((ZFMETHOD_MAX_PARAM + mp.paramCount * 2) * sizeof(ZFSigName));
 
         ZFSigName *paramTypeIdList = _ZFP_ZFMethod_paramBuf;
-        ZFSigName *paramTypeNameList = paramTypeIdList + ZFMETHOD_MAX_PARAM;
-        ZFSigName *paramNameList = paramTypeNameList + mp.paramCount;
+        ZFSigName *paramNameList = paramTypeIdList + mp.paramCount;
 
         for(zfuint i = 0; i < mp.paramCount; ++i) {
             zfnewPlacement(paramTypeIdList + i, ZFSigName, mp.paramTypeId[i]);
-            zfnewPlacement(paramTypeNameList + i, ZFSigName, mp.paramTypeName[i]);
             zfnewPlacement(paramNameList + i, ZFSigName, mp.paramName[i]);
         }
         for(zfuint i = mp.paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
@@ -195,7 +189,6 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_methodGenericInvoker(zfnull)
 , _ZFP_ZFMethod_methodName(zfnull)
 , _ZFP_ZFMethod_returnTypeId(zfnull)
-, _ZFP_ZFMethod_returnTypeName(zfnull)
 , _ZFP_ZFMethod_paramCount(0)
 , _ZFP_ZFMethod_paramCountMin(0)
 , _ZFP_ZFMethod_paramBuf(zfnull)
@@ -217,7 +210,6 @@ ZFMethod::~ZFMethod(void) {
     }
 
     // paramTypeIdList : ZFMETHOD_MAX_PARAM, fixed length for performance
-    // paramTypeNameList : paramCount
     // paramNameList : paramCount
     if(_ZFP_ZFMethod_paramBuf != zfnull) {
         for(zfindex i = 0, count = ZFMETHOD_MAX_PARAM + methodParamCount() * 2; i < count; ++i) {
@@ -258,7 +250,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         ret += "virtual ";
     }
 
-    ret += this->methodReturnTypeName();
+    ret += this->methodReturnTypeId();
     ret += " ";
 
     if(this->methodIsFunctionType()) {
@@ -280,7 +272,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
             if(i != 0) {
                 ret += ", ";
             }
-            ret += this->methodParamTypeNameAt(i);
+            ret += this->methodParamTypeIdAt(i);
             ret += " ";
             ret += this->methodParamNameAt(i);
             if(i >= this->methodParamDefaultBeginIndex()) {
@@ -533,7 +525,6 @@ ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
-        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
     zfCoreMutexLocker();
@@ -544,7 +535,6 @@ ZFMethod *_ZFP_ZFMethodRegister(
     zfCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespaceTmp));
     zfCoreAssert(methodName != zfnull && *methodName != '\0');
     zfCoreAssert(returnTypeId != zfnull && *returnTypeId != '\0');
-    zfCoreAssert(returnTypeName != zfnull && *returnTypeName != '\0');
 
     ZFMethod *method = zfnull;
 
@@ -605,7 +595,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
         zfbool isRedefine = ((zfindex)mp.paramCount == method->methodParamCount());
         if(!isRedefine) {
             for(zfuint i = 0; i < mp.paramCount; ++i) {
-                if(!zfstringIsEqual(mp.paramTypeName[i], method->methodParamTypeNameAt(i))) {
+                if(!zfstringIsEqual(mp.paramTypeId[i], method->methodParamTypeIdAt(i))) {
                     isRedefine = zftrue;
                     break;
                 }
@@ -630,7 +620,6 @@ ZFMethod *_ZFP_ZFMethodRegister(
                     , methodType
                     , methodName
                     , returnTypeId
-                    , returnTypeName
                     , mp
                 );
 
@@ -689,7 +678,6 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
         , ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
-        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         )
 : method(zfnull)
@@ -705,7 +693,6 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
             , methodNamespace
             , methodName
             , returnTypeId
-            , returnTypeName
             , mp
         );
 }
@@ -830,7 +817,6 @@ const ZFMethod *ZFMethodAlias(
     for(zfindex i = 0; i < method->methodParamCount(); ++i) {
         mp.add(
                 method->methodParamTypeIdAt(i)
-                , method->methodParamTypeNameAt(i)
                 , method->methodParamNameAt(i)
                 , method->methodParamDefaultValueCallbackAt(i)
                 );
@@ -847,7 +833,6 @@ const ZFMethod *ZFMethodAlias(
             , method->methodNamespace()
             , aliasName
             , method->methodReturnTypeId()
-            , method->methodReturnTypeName()
             , mp
             );
     if(ret == zfnull) {

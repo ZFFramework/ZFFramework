@@ -158,7 +158,6 @@ const ZFMethod *ZFMethodDynamicRegister(
     for(zfindex i = 0; i < param.methodParamCount(); ++i) {
         mp.add(
                 param.methodParamTypeIdAt(i)
-                , param.methodParamTypeNameAt(i)
                 , param.methodParamNameAt(i)
                 , param.methodParamDefaultValueCallbackAt(i)
                 );
@@ -176,7 +175,6 @@ const ZFMethod *ZFMethodDynamicRegister(
             , param.methodNamespace()
             , param.methodName()
             , param.methodReturnTypeId()
-            , param.methodReturnTypeName()
             , mp
         );
     _ZFP_ZFMethodDynRegData()[method] = zftrue;
@@ -203,7 +201,6 @@ const ZFMethod *ZFMethodDynamicRegister(
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
         p.methodParamAdd(
             methodParam.methodParamTypeIdAt(i),
-            zfnull,
             methodParam.methodParamNameAt(i),
             methodParam.methodParamDefaultValueCallbackAt(i));
     }
@@ -229,7 +226,6 @@ const ZFMethod *ZFMethodDynamicRegister(
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
         p.methodParamAdd(
             methodParam.methodParamTypeIdAt(i),
-            zfnull,
             methodParam.methodParamNameAt(i),
             methodParam.methodParamDefaultValueCallbackAt(i));
     }

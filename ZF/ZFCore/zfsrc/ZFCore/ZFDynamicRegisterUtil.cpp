@@ -870,7 +870,6 @@ ZFDynamic &ZFDynamic::method(
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
         p.methodParamAdd(
             methodParam.methodParamTypeIdAt(i),
-            zfnull,
             methodParam.methodParamNameAt(i),
             methodParam.methodParamDefaultValueCallbackAt(i));
     }

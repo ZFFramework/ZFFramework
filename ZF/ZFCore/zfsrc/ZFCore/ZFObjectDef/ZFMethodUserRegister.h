@@ -39,53 +39,44 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , zfnull \
         , methodNameString \
         , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \
-        , zftext(#ReturnType) \
         , _ZFP_ZFMethodMP() \
         ParamExpandOrEmpty0(.add( \
                 ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
-                , zftext(#ParamType0) \
                 , zftext(#param0) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty0, 0) \
                 )) \
         ParamExpandOrEmpty1(.add( \
                 ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
-                , zftext(#ParamType1) \
                 , zftext(#param1) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty1, 1) \
                 )) \
         ParamExpandOrEmpty2(.add( \
                 ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
-                , zftext(#ParamType2) \
                 , zftext(#param2) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty2, 2) \
                 )) \
         ParamExpandOrEmpty3(.add( \
                 ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
-                , zftext(#ParamType3) \
                 , zftext(#param3) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty3, 3) \
                 )) \
         ParamExpandOrEmpty4(.add( \
                 ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
-                , zftext(#ParamType4) \
                 , zftext(#param4) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty4, 4) \
                 )) \
         ParamExpandOrEmpty5(.add( \
                 ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
-                , zftext(#ParamType5) \
                 , zftext(#param5) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty5, 5) \
                 )) \
         ParamExpandOrEmpty6(.add( \
                 ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
-                , zftext(#ParamType6) \
                 , zftext(#param6) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty6, 6) \
                 )) \
         ParamExpandOrEmpty7(.add( \
                 ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
-                , zftext(#ParamType7) \
                 , zftext(#param7) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty7, 7) \
                 )) \

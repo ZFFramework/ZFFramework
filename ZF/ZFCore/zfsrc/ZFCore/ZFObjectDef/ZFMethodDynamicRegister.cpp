@@ -184,10 +184,8 @@ public:
     ZFMethodPrivilegeType methodPrivilegeType;
     zfstring methodName;
     zfstring methodReturnTypeId;
-    zfstring methodReturnTypeName;
     zfindex methodParamCount;
     zfstring methodParamTypeId[ZFMETHOD_MAX_PARAM];
-    zfstring methodParamTypeName[ZFMETHOD_MAX_PARAM];
     zfstring methodParamName[ZFMETHOD_MAX_PARAM];
     ZFListener methodParamDefaultValueCallback[ZFMETHOD_MAX_PARAM];
 
@@ -203,10 +201,8 @@ public:
     , methodPrivilegeType(ZFMethodPrivilegeTypePublic)
     , methodName()
     , methodReturnTypeId(ZFTypeId_void())
-    , methodReturnTypeName()
     , methodParamCount(0)
     , methodParamTypeId()
-    , methodParamTypeName()
     , methodParamName()
     , methodParamDefaultValueCallback()
     {
@@ -286,24 +282,14 @@ const zfstring &ZFMethodDynamicRegisterParam::methodReturnTypeId(void) const {
     return d->methodReturnTypeId;
 }
 
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodReturnTypeName(ZF_IN const zfstring &methodReturnTypeName) {
-    d->methodReturnTypeName = methodReturnTypeName;
-    return *this;
-}
-const zfstring &ZFMethodDynamicRegisterParam::methodReturnTypeName(void) const {
-    return d->methodReturnTypeName ? d->methodReturnTypeName : d->methodReturnTypeId;
-}
-
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
         ZF_IN const zfstring &methodParamTypeId
-        , ZF_IN_OPT const zfstring &methodParamTypeName /* = zfnull */
         , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
         , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
         ) {
     zfCoreAssert(d->methodParamCount < ZFMETHOD_MAX_PARAM);
     if(methodParamTypeId != zfnull) {
         d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
-        d->methodParamTypeName[d->methodParamCount] = methodParamTypeName;
         if(!zfstringIsEmpty(methodParamName)) {
             d->methodParamName[d->methodParamCount] = methodParamName;
         }
@@ -320,19 +306,6 @@ zfindex ZFMethodDynamicRegisterParam::methodParamCount(void) const {
 }
 const zfstring &ZFMethodDynamicRegisterParam::methodParamTypeIdAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamTypeId[index] : zfstring::Empty());
-}
-const zfstring &ZFMethodDynamicRegisterParam::methodParamTypeNameAt(ZF_IN zfindex index) const {
-    if(index < d->methodParamCount) {
-        if(d->methodParamTypeName[index].isEmpty()) {
-            return d->methodParamTypeId[index];
-        }
-        else {
-            return d->methodParamTypeName[index];
-        }
-    }
-    else {
-        return zfstring::Empty();
-    }
 }
 const zfstring &ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamName[index] : zfstring::Empty());
@@ -388,11 +361,7 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
             break;
     }
 
-    if(!zfstringIsEmpty(this->methodReturnTypeName())) {
-        ret += this->methodReturnTypeName();
-        ret += " ";
-    }
-    else if(!zfstringIsEmpty(this->methodReturnTypeId())) {
+    if(!zfstringIsEmpty(this->methodReturnTypeId())) {
         ret += this->methodReturnTypeId();
         ret += " ";
     }
@@ -419,11 +388,7 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
             if(i > 0) {
                 ret += ", ";
             }
-            if(!zfstringIsEmpty(this->methodParamTypeNameAt(i))) {
-                ret += this->methodParamTypeNameAt(i);
-                ret += " ";
-            }
-            else if(!zfstringIsEmpty(this->methodParamTypeIdAt(i))) {
+            if(!zfstringIsEmpty(this->methodParamTypeIdAt(i))) {
                 ret += this->methodParamTypeIdAt(i);
                 ret += " ";
             }
