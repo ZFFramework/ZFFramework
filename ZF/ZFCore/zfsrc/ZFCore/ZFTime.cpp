@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeValueToStringFriendlyT
         ) {
     ZFTimeInfo ti;
     if(ZFTime::timeInfoFromTimeValue(ti, v)) {
-        if(ti.year != 0) {
+        if(ti.year != 1970) {
             zfstringAppend(s, "%02s-", ti.year);
         }
         if(!s.isEmpty() || ti.month != 0 || ti.day != 0) {

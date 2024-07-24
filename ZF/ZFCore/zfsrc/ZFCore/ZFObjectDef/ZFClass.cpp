@@ -1720,10 +1720,9 @@ void _ZFP_ZFClassDataChangeNotify(
         , ZF_IN const ZFMethod *changedMethod
         , ZF_IN_OPT const zfstring &name /* = zfnull */
         ) {
-    zfCoreMutexLocker();
     (void)ZFClassDataChangeObserver(); // ensure init order
     (void)ZFGlobalObserver(); // ensure init order
-    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) == ZFFrameworkStateAvailable) {
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkPostStatic) == ZFFrameworkStateAvailable) {
         if(changedProperty != zfnull) {
             changedProperty->propertyOwnerClass()->_ZFP_ZFClass_classDataChangeNotify();
         }

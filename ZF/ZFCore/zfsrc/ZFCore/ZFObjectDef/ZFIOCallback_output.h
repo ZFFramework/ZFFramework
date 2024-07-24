@@ -74,17 +74,39 @@ public:
         }
         return *this;
     }
-public:
-    /** @cond ZFPrivateDoc */
-    template<typename T>
-    inline const ZFOutput &operator << (ZF_IN T const &v) const {
-        zfstring s;
-        zftToString(s, v);
-        output(s.cString(), s.length() * sizeof(zfchar));
-        return *this;
-    }
-    /** @endcond */
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
+
+/** @cond ZFPrivateDoc */
+template<typename T>
+inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN T const &v) {
+    zfstring s;
+    zftToString(s, v);
+    o.output(s.cString(), s.length() * sizeof(zfchar));
+    return o;
+}
+inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN zfstring const &s) {
+    o.output(s.cString(), s.length() * sizeof(zfchar));
+    return o;
+}
+inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN const zfchar * const &s) {
+    if(s == zfnull) {
+        o.output(ZFTOKEN_zfnull);
+    }
+    else {
+        o.output(s);
+    }
+    return o;
+}
+inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN zfchar * const &s) {
+    if(s == zfnull) {
+        o.output(ZFTOKEN_zfnull);
+    }
+    else {
+        o.output(s);
+    }
+    return o;
+}
+/** @endcond */
 
 // ============================================================
 // common output callbacks

@@ -61,6 +61,9 @@ inline ZFObject *_ZFP_zfanyCast(ZF_IN T_Type const &obj) {
     typedef typename zftTraits<T_Type>::TrType T_TypeTmp;
     return _ZFP_zfanyCastH<T_Type, zftIsZFObject(T_TypeTmp) || zftIsZFObjectType(T_TypeTmp)>::c(obj);
 }
+inline ZFObject *_ZFP_zfanyCast(ZF_IN ZFObject * const &obj) {
+    return obj;
+}
 
 // ============================================================
 // for impl

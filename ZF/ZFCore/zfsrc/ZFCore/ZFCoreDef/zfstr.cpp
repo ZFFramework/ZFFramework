@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassLikePOD _ZFP_zfstrFlag {
+zfclassLikePOD _ZFP_zfstrOption {
 public:
     enum {
         AlignLeft = 1,
@@ -13,16 +13,16 @@ public:
 
 public:
     zfflags flags;
-    zfindex width;
-    zfindex precision; // zfindexMax if none
+    zfuint width;
+    zfint precision; // -1 if none
     zfchar positiveToken; // `+` or `-` or ` `, or `\0` if none
     zfbool success;
 
 public:
-    _ZFP_zfstrFlag(void)
+    _ZFP_zfstrOption(void)
     : flags(0)
     , width(0)
-    , precision(zfindexMax())
+    , precision(-1)
     , positiveToken('\0')
     , success(zftrue)
     {
@@ -33,7 +33,7 @@ public:
         return (zffalse
                 || flags != 0
                 || width != 0
-                || precision != zfindexMax()
+                || precision != -1
                 || positiveToken != '\0'
                 );
     }
@@ -41,17 +41,20 @@ public:
 
 static void _ZFP_zfstringAppendAction(
         ZF_IN_OUT zfstring &s
-        , ZF_IN_OUT _ZFP_zfstrFlag &flags
+        , ZF_IN_OUT _ZFP_zfstrOption &option
         , ZF_IN_OUT const zfchar *&p
-        , ZF_IN const zfchar *param
+        , ZF_IN const void *param
+        , ZF_IN _ZFP_zfstrFn Fn
         ) {
     switch(*p) {
-        case 'b':
+        case 'b': {
+            zfstring tmp;
+            Fn(tmp, param);
             if(zffalse
-                    || zfstringIsEmpty(param)
-                    || zfstringIsEqual(param, ZFTOKEN_zfnull)
-                    || zfstringIsEqual(param, "0")
-                    || zfstringIsEqual(param, ZFTOKEN_zfbool_zffalse)
+                    || zfstringIsEmpty(tmp)
+                    || zfstringIsEqual(tmp, ZFTOKEN_zfnull)
+                    || zfstringIsEqual(tmp, "0")
+                    || zfstringIsEqual(tmp, ZFTOKEN_zfbool_zffalse)
                     ) {
                 s += ZFTOKEN_zfbool_zffalse;
             }
@@ -59,105 +62,110 @@ static void _ZFP_zfstringAppendAction(
                 s += ZFTOKEN_zfbool_zftrue;
             }
             break;
+        }
         case 'z':
             if(*(p+1) == 'i') {
                 ++p;
-                s += param;
+                Fn(s, param);
             }
             else {
-                flags.success = zffalse;
+                option.success = zffalse;
             }
             break;
         case 'd':
-        case 'i': {
-            zfint v = 0;
-            if(flags.hasFlag() && zfsToIntT(v, param)) {
-                if(v < 0) {
-                    flags.positiveToken = '-';
-                    v = -v;
+        case 'i':
+            if(option.hasFlag()) {
+                zfstring tmp;
+                Fn(tmp, param);
+                zfint v = 0;
+                if(zfsToIntT(v, tmp)) {
+                    if(v < 0) {
+                        option.positiveToken = '-';
+                        v = -v;
+                    }
+                    zfsFromIntT(s, v);
                 }
-                zfsFromIntT(s, v);
+                else {
+                    s += tmp;
+                }
             }
             else {
-                s += param;
+                Fn(s, param);
             }
             break;
-        }
         case 'u':
-            s += param;
+            Fn(s, param);
             break;
         case 'o': {
+            zfstring tmp;
+            Fn(tmp, param);
             zfuint v = 0;
-            if(zfsToIntT(v, param, zfindexMax(), 10, zffalse)) {
+            if(zfsToIntT(v, tmp, zfindexMax(), 10, zffalse)) {
                 zfsFromIntT(s, v, 8);
             }
             else {
-                s += param;
+                s += tmp;
             }
             break;
         }
-        case 'x': {
-            zfuint v = 0;
-            if(zfsToIntT(v, param, zfindexMax(), 10, zffalse)) {
-                zfsFromIntT(s, v, 16, zffalse);
-            }
-            else {
-                s += param;
-            }
-            break;
-        }
+        case 'x':
         case 'X': {
+            zfstring tmp;
+            Fn(tmp, param);
             zfuint v = 0;
-            if(zfsToIntT(v, param, zfindexMax(), 10, zffalse)) {
-                zfsFromIntT(s, v, 16, zftrue);
+            if(zfsToIntT(v, tmp, zfindexMax(), 10, zffalse)) {
+                zfsFromIntT(s, v, 16, *p == 'X');
             }
             else {
-                s += param;
+                s += tmp;
             }
             break;
         }
-        case 'f': {
-            zffloat v = 0;
-            if(flags.hasFlag() && zfsToFloatT(v, param)) {
-                if(v < 0) {
-                    flags.positiveToken = '-';
-                    v = -v;
+        case 'f':
+            if(option.hasFlag()) {
+                zfstring tmp;
+                Fn(tmp, param);
+                zffloat v = 0;
+                if(zfsToFloatT(v, tmp)) {
+                    if(v < 0) {
+                        option.positiveToken = '-';
+                        v = -v;
+                    }
+                    zfsFromFloatT(s, v);
                 }
-                zfsFromFloatT(s, v);
+                else {
+                    s += tmp;
+                }
             }
             else {
-                s += param;
+                Fn(s, param);
             }
             break;
-        }
         case 'p':
-            s += param;
+            Fn(s, param);
             break;
         case 'c':
         case 'C':
-            s += param;
+            Fn(s, param);
             break;
         case 's':
-        case 'S': {
-            if(!zfstringIsEqual(param, ZFTOKEN_zfnull)) {
-                if(flags.precision != zfindexMax()) {
-                    zfindex len = zfslen(param);
-                    if(flags.precision < len) {
-                        len = flags.precision;
-                    }
-                    s.append(param, len);
+        case 'S':
+            if(option.precision != -1) {
+                zfstring tmp;
+                Fn(tmp, param);
+                if(!zfstringIsEqual(tmp, ZFTOKEN_zfnull)) {
+                    s.append(tmp, zfmMin((zfindex)option.precision, tmp.length()));
                 }
                 else {
-                    s.append(param);
+                    s += ZFTOKEN_zfnull;
                 }
             }
             else {
-                s += ZFTOKEN_zfnull;
+                Fn(s, param);
             }
-        }
             break;
         default:
-            flags.success = zffalse;
+            option.success = zffalse;
             break;
     }
     ++p;
@@ -166,8 +174,9 @@ static void _ZFP_zfstringAppendAction(
 void _ZFP_zfstringAppend(
         ZF_IN_OUT zfstring &s
         , ZF_IN const zfchar *fmt
-        , ZF_IN const zfstring *param
         , ZF_IN zfindex paramCount
+        , ZF_IN const void * const *param
+        , ZF_IN _ZFP_zfstrFn *Fn
         ) {
     if(fmt == zfnull || *fmt == '\0') {
         return;
@@ -189,99 +198,105 @@ void _ZFP_zfstringAppend(
         }
 
         const zfchar *savedPos = p;
-        _ZFP_zfstrFlag flags;
+        _ZFP_zfstrOption option;
         do {
             while(*p == '-' || *p == '0' || *p == '+' || *p == ' ') {
                 if(*p == '-') {
-                    if(ZFBitTest(flags.flags, _ZFP_zfstrFlag::AlignLeft)) {flags.success = zffalse; break;}
-                    else {ZFBitSet(flags.flags, _ZFP_zfstrFlag::AlignLeft);}
+                    if(ZFBitTest(option.flags, _ZFP_zfstrOption::AlignLeft)) {option.success = zffalse; break;}
+                    else {ZFBitSet(option.flags, _ZFP_zfstrOption::AlignLeft);}
                 }
                 else if(*p == '0') {
-                    if(ZFBitTest(flags.flags, _ZFP_zfstrFlag::LeadingZero)) {flags.success = zffalse; break;}
-                    else {ZFBitSet(flags.flags, _ZFP_zfstrFlag::LeadingZero);}
+                    if(ZFBitTest(option.flags, _ZFP_zfstrOption::LeadingZero)) {option.success = zffalse; break;}
+                    else {ZFBitSet(option.flags, _ZFP_zfstrOption::LeadingZero);}
                 }
                 else if(*p == '+') {
-                    if(flags.positiveToken != '\0') {flags.success = zffalse; break;}
-                    else {flags.positiveToken = '+';}
+                    if(option.positiveToken != '\0') {option.success = zffalse; break;}
+                    else {option.positiveToken = '+';}
                 }
                 else if(*p == ' ') {
-                    if(flags.positiveToken != '\0') {flags.success = zffalse; break;}
-                    else {flags.positiveToken = ' ';}
+                    if(option.positiveToken != '\0') {option.success = zffalse; break;}
+                    else {option.positiveToken = ' ';}
                 }
                 ++p;
             }
-            if(!flags.success) {break;}
+            if(!option.success) {break;}
 
             while(*p >= '0' && *p <= '9') {
-                flags.width = flags.width * 10 + (*p - '0');
+                option.width = option.width * 10 + (*p - '0');
                 ++p;
             }
             if(*p == '.') {
                 ++p;
-                flags.precision = 0;
+                option.precision = 0;
                 while(*p >= '0' && *p <= '9') {
-                    flags.precision = flags.precision * 10 + (*p - '0');
+                    option.precision = option.precision * 10 + (*p - '0');
                     ++p;
                 }
             }
         } while(zffalse);
-        if(!flags.success) {
+        if(!option.success) {
             s += '%';
             p = savedPos;
             continue;
         }
-        if(!flags.hasFlag()) {
-            _ZFP_zfstringAppendAction(s, flags, p, paramIndex < paramCount ? param[paramIndex].cString() : "");
+        if(!option.hasFlag()) {
+            _ZFP_zfstringAppendAction(s, option, p
+                    , paramIndex < paramCount ? param[paramIndex] : (const void *)&(zfstring::Empty())
+                    , paramIndex < paramCount ? Fn[paramIndex] : _ZFP_zfstrIvk<zfstring>
+                    );
             ++paramIndex;
             continue;
         }
 
         zfstring tmp;
-        _ZFP_zfstringAppendAction(tmp, flags, p, paramIndex < paramCount ? param[paramIndex].cString() : "");
+        _ZFP_zfstringAppendAction(tmp, option, p
+                , paramIndex < paramCount ? param[paramIndex] : (const void *)&(zfstring::Empty())
+                , paramIndex < paramCount ? Fn[paramIndex] : _ZFP_zfstrIvk<zfstring>
+                );
         ++paramIndex;
 
-        if(flags.precision != zfindexMax()) {
+        if(option.precision != -1) {
             zfindex pos = zfstringFind(tmp, '.');
             if(pos != zfindexMax()) {
-                zfindex decimalLen = tmp.length() - pos - 1;
-                if(decimalLen > flags.precision) {
-                    zfindex newLen = pos + flags.precision + 1;
+                zfint decimalLen = (zfint)tmp.length() - pos - 1;
+                if(decimalLen > option.precision) {
+                    zfindex newLen = pos + option.precision + 1;
                     if(tmp[newLen] >= '5') {
                         tmp[newLen - 1] = tmp[newLen - 1] + 1;
                     }
                     tmp.remove(newLen);
                 }
-                else if(decimalLen < flags.precision) {
-                    for(zfindex i = decimalLen; i < flags.precision; ++i) {
+                else if(decimalLen < option.precision) {
+                    for(zfint i = decimalLen; i < option.precision; ++i) {
                         tmp += '0';
                     }
                 }
             }
         }
 
-        if(flags.positiveToken != '\0') {
-            ++flags.width;
+        if(option.positiveToken != '\0') {
+            ++option.width;
         }
 
-        if(ZFBitTest(flags.flags, _ZFP_zfstrFlag::AlignLeft)) {
-            zfindex writtenLen = 0;
-            if(flags.positiveToken != '\0') {
-                s += flags.positiveToken;
+        if(ZFBitTest(option.flags, _ZFP_zfstrOption::AlignLeft)) {
+            zfuint writtenLen = 0;
+            if(option.positiveToken != '\0') {
+                s += option.positiveToken;
                 ++writtenLen;
             }
             s += tmp;
-            writtenLen += tmp.length();
-            for(zfindex i = writtenLen; i < flags.width; ++i) {
+            writtenLen += (zfuint)tmp.length();
+            for(zfuint i = writtenLen; i < option.width; ++i) {
                 s += ' ';
             }
         }
         else {
-            zfindex leftTokenLen = ((flags.positiveToken == '\0') ? 0 : 1);
-            if(flags.width > tmp.length() + leftTokenLen) {
-                zfindex spaceLen = flags.width - tmp.length() - leftTokenLen;
-                if(ZFBitTest(flags.flags, _ZFP_zfstrFlag::LeadingZero)) {
-                    if(flags.positiveToken != '\0') {
-                        s += flags.positiveToken;
+            zfindex leftTokenLen = ((option.positiveToken == '\0') ? 0 : 1);
+            if((zfindex)option.width > tmp.length() + leftTokenLen) {
+                zfindex spaceLen = option.width - tmp.length() - leftTokenLen;
+                if(ZFBitTest(option.flags, _ZFP_zfstrOption::LeadingZero)) {
+                    if(option.positiveToken != '\0') {
+                        s += option.positiveToken;
                     }
                     for(zfindex i = 0; i < spaceLen; ++i) {
                         s += '0';
@@ -291,15 +306,15 @@ void _ZFP_zfstringAppend(
                     for(zfindex i = 0; i < spaceLen; ++i) {
                         s += ' ';
                     }
-                    if(flags.positiveToken != '\0') {
-                        s += flags.positiveToken;
+                    if(option.positiveToken != '\0') {
+                        s += option.positiveToken;
                     }
                 }
                 s += tmp;
             }
             else {
-                if(flags.positiveToken != '\0') {
-                    s += flags.positiveToken;
+                if(option.positiveToken != '\0') {
+                    s += option.positiveToken;
                 }
                 s += tmp;
             }

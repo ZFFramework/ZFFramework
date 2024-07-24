@@ -433,12 +433,14 @@ public:
             if(len == zfindexMax()) {
                 len = _ZFP_zfstring_len(s);
             }
-            zfindex lenTmp = this->length();
-            _prepareWrite(lenTmp + len);
-            d->length = (zfuint)(lenTmp + len);
-            zfmemmove(d->d.buf + insertAt + len, d->d.buf + insertAt, (lenTmp - insertAt) * sizeof(T_Char));
-            zfmemcpy(d->d.buf + insertAt, s, len * sizeof(T_Char));
-            d->d.buf[d->length] = '\0';
+            if(len > 0) {
+                zfindex lenTmp = this->length();
+                _prepareWrite(lenTmp + len);
+                d->length = (zfuint)(lenTmp + len);
+                zfmemmove(d->d.buf + insertAt + len, d->d.buf + insertAt, (lenTmp - insertAt) * sizeof(T_Char));
+                zfmemcpy(d->d.buf + insertAt, s, len * sizeof(T_Char));
+                d->d.buf[d->length] = '\0';
+            }
         }
         return *this;
     }
@@ -653,7 +655,7 @@ private:
             d = zfpoolNew(_ZFP_zfstringD<T_Char>);
             d->length = dTmp->length;
             d->d.buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
-            if(dTmp->d.ptr && keepContents) {
+            if(dTmp->length > 0 && keepContents) {
                 zfmemcpy(d->d.buf, dTmp->d.ptr, (dTmp->length + 1) * sizeof(T_Char));
             }
             else {
