@@ -1,6 +1,7 @@
 package com.ZFFramework.Android.ZFCore_impl;
 
 import android.os.Handler;
+import android.os.Looper;
 
 public final class ZFThread {
     // ============================================================
@@ -27,7 +28,7 @@ public final class ZFThread {
         }
     }
 
-    private static Handler _mainThreadHandler = new Handler();
+    private static Handler _mainThreadHandler = new Handler(Looper.getMainLooper());
 
     protected static Object native_executeInMainThread(int executeDataId) {
         _MainThreadRunnable taskData = new _MainThreadRunnable(executeDataId);

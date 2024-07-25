@@ -1,10 +1,10 @@
 
 package com.ZFFramework.Android.ZFUIKit_impl;
 
-import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
 import android.graphics.Camera;
 import android.graphics.Matrix;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +12,8 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
+
+import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,16 +33,19 @@ public class ZFAnimationNativeView {
         public long zfjniPointerOwnerZFAnimationNativeView = 0;
 
         private NativeAnimationListener _animationListener = null;
+
         public void nativeAnimationListener(NativeAnimationListener listener) {
-            if(this._animationListener != null) {
+            if (this._animationListener != null) {
                 this._animationListener.nativeAniDetach();
             }
             this._animationListener = listener;
             super.setAnimationListener(listener);
         }
+
         public NativeAnimationListener nativeAnimationListener() {
             return _animationListener;
         }
+
         @Deprecated
         @Override
         public void setAnimationListener(AnimationListener listener) {
@@ -81,8 +86,8 @@ public class ZFAnimationNativeView {
 
         public boolean hasRotate() {
             return (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0
-                || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
-                || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
+                    || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
+                    || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
         }
 
         public void nativeAnimationReset() {
@@ -125,22 +130,22 @@ public class ZFAnimationNativeView {
             m_centerY = height / 2;
 
             _hasScale = (this.aniScaleXFrom != 1 || this.aniScaleXTo != 1
-                || this.aniScaleYFrom != 1 || this.aniScaleYTo != 1
-                || this.aniScaleZFrom != 1 || this.aniScaleZTo != 1);
+                    || this.aniScaleYFrom != 1 || this.aniScaleYTo != 1
+                    || this.aniScaleZFrom != 1 || this.aniScaleZTo != 1);
             _hasTranslate = (this.aniTranslateXFrom != 0 || this.aniTranslateXTo != 0
-                || this.aniTranslateYFrom != 0 || this.aniTranslateYTo != 0
-                || this.aniTranslateZFrom != 0 || this.aniTranslateZTo != 0);
+                    || this.aniTranslateYFrom != 0 || this.aniTranslateYTo != 0
+                    || this.aniTranslateZFrom != 0 || this.aniTranslateZTo != 0);
             _hasTranslatePixel = (this.aniTranslatePixelXFrom != 0 || this.aniTranslatePixelXTo != 0
-                || this.aniTranslatePixelYFrom != 0 || this.aniTranslatePixelYTo != 0
-                || this.aniTranslatePixelZFrom != 0 || this.aniTranslatePixelZTo != 0);
+                    || this.aniTranslatePixelYFrom != 0 || this.aniTranslatePixelYTo != 0
+                    || this.aniTranslatePixelZFrom != 0 || this.aniTranslatePixelZTo != 0);
             _hasRotate = (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0
-                || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
-                || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
+                    || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
+                    || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
         }
 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
-            if(this._animationListener == null) {
+            if (this._animationListener == null) {
                 return;
             }
 
@@ -150,22 +155,22 @@ public class ZFAnimationNativeView {
             matrix.postTranslate(-m_centerX, -m_centerY);
 
             // scale
-            if(_hasScale) {
+            if (_hasScale) {
                 matrix.postScale(
-                    this.aniScaleXFrom + (this.aniScaleXTo - this.aniScaleXFrom) * interpolatedTime,
-                    this.aniScaleYFrom + (this.aniScaleYTo - this.aniScaleYFrom) * interpolatedTime);
+                        this.aniScaleXFrom + (this.aniScaleXTo - this.aniScaleXFrom) * interpolatedTime,
+                        this.aniScaleYFrom + (this.aniScaleYTo - this.aniScaleYFrom) * interpolatedTime);
             }
 
             // rotate
-            if(_hasRotate) {
+            if (_hasRotate) {
                 m_camera.save();
-                if(this.aniRotateXFrom != 0 || this.aniRotateXTo != 0) {
+                if (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0) {
                     m_camera.rotateX(this.aniRotateXFrom + (this.aniRotateXTo - this.aniRotateXFrom) * interpolatedTime);
                 }
-                if(this.aniRotateYFrom != 0 || this.aniRotateYTo != 0) {
+                if (this.aniRotateYFrom != 0 || this.aniRotateYTo != 0) {
                     m_camera.rotateY(-(this.aniRotateYFrom + (this.aniRotateYTo - this.aniRotateYFrom) * interpolatedTime));
                 }
-                if(this.aniRotateZFrom != 0 || this.aniRotateZTo != 0) {
+                if (this.aniRotateZFrom != 0 || this.aniRotateZTo != 0) {
                     m_camera.rotateZ(-(this.aniRotateZFrom + (this.aniRotateZTo - this.aniRotateZFrom) * interpolatedTime));
                 }
                 m_camera.getMatrix(m_matrix);
@@ -174,19 +179,19 @@ public class ZFAnimationNativeView {
             }
 
             // translate
-            if(_hasTranslate) {
+            if (_hasTranslate) {
                 matrix.postTranslate(
-                    m_width * (this.aniTranslateXFrom + (this.aniTranslateXTo - this.aniTranslateXFrom) * interpolatedTime),
-                    m_height * (this.aniTranslateYFrom + (this.aniTranslateYTo - this.aniTranslateYFrom) * interpolatedTime));
+                        m_width * (this.aniTranslateXFrom + (this.aniTranslateXTo - this.aniTranslateXFrom) * interpolatedTime),
+                        m_height * (this.aniTranslateYFrom + (this.aniTranslateYTo - this.aniTranslateYFrom) * interpolatedTime));
             }
-            if(_hasTranslatePixel) {
+            if (_hasTranslatePixel) {
                 matrix.postTranslate(
-                    (this.aniTranslatePixelXFrom + (this.aniTranslatePixelXTo - this.aniTranslatePixelXFrom) * interpolatedTime),
-                    (this.aniTranslatePixelYFrom + (this.aniTranslatePixelYTo - this.aniTranslatePixelYFrom) * interpolatedTime));
+                        (this.aniTranslatePixelXFrom + (this.aniTranslatePixelXTo - this.aniTranslatePixelXFrom) * interpolatedTime),
+                        (this.aniTranslatePixelYFrom + (this.aniTranslatePixelYTo - this.aniTranslatePixelYFrom) * interpolatedTime));
             }
 
             // alpha
-            if(this.aniAlphaFrom != this.aniAlphaTo) {
+            if (this.aniAlphaFrom != this.aniAlphaTo) {
                 t.setAlpha(t.getAlpha() * (this.aniAlphaFrom + (this.aniAlphaTo - this.aniAlphaFrom) * interpolatedTime));
             }
 
@@ -217,7 +222,7 @@ public class ZFAnimationNativeView {
         }
 
         public void nativeAniDetach() {
-            if(this._owner != null) {
+            if (this._owner != null) {
                 View ownerViewTmp = this._ownerView;
                 this._owner = null;
                 this._ownerView = null;
@@ -229,17 +234,20 @@ public class ZFAnimationNativeView {
         @Override
         public void onAnimationStart(Animation animation) {
         }
-        private static Handler _stopDelay = new Handler() {
+
+        private static Handler _stopDelay = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                ((NativeAnimationListener)msg.obj).doStop();
+                ((NativeAnimationListener) msg.obj).doStop();
             }
         };
+
         @Override
         public void onAnimationEnd(Animation animation) {
             _stopDelay.sendMessageDelayed(Message.obtain(_stopDelay, 0, this), 0);
         }
+
         @Override
         public void onAnimationRepeat(Animation animation) {
         }
@@ -247,13 +255,14 @@ public class ZFAnimationNativeView {
         @Override
         public void onViewAttachedToWindow(View v) {
         }
+
         @Override
         public void onViewDetachedFromWindow(View v) {
             this.doStop();
         }
 
         private void doStop() {
-            if(this._owner != null) {
+            if (this._owner != null) {
                 long ownerTmp = this._owner.zfjniPointerOwnerZFAnimationNativeView;
                 this.nativeAniDetach();
                 ZFAnimationNativeView.native_notifyAniStop(ownerTmp);
@@ -261,48 +270,49 @@ public class ZFAnimationNativeView {
         }
     }
 
-    private static Map<View, List<NativeAnimation> > _anis = new HashMap<View, List<NativeAnimation> >();
+    private static Map<View, List<NativeAnimation>> _anis = new HashMap<View, List<NativeAnimation>>();
 
     public static Object native_nativeAniCreate(long zfjniPointerOwnerZFAnimationNativeView) {
         return new NativeAnimation(zfjniPointerOwnerZFAnimationNativeView);
     }
+
     public static void native_nativeAniDestroy(Object nativeAnimation) {
     }
+
     public static void native_nativeAniStart(Object nativeAnimation,
                                              Object nativeView) {
-        NativeAnimation nativeAnimationTmp = (NativeAnimation)nativeAnimation;
-        View nativeViewTmp = (View)nativeView;
+        NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
+        View nativeViewTmp = (View) nativeView;
         nativeAnimationTmp.nativeAnimationListener(new NativeAnimationListener(nativeAnimationTmp, nativeViewTmp));
 
         AnimationSet as = null;
         boolean asNeedStart = false;
-        if(nativeViewTmp.getAnimation() != null && nativeViewTmp.getAnimation() instanceof AnimationSet) {
-            as = (AnimationSet)nativeViewTmp.getAnimation();
-        }
-        else {
+        if (nativeViewTmp.getAnimation() != null && nativeViewTmp.getAnimation() instanceof AnimationSet) {
+            as = (AnimationSet) nativeViewTmp.getAnimation();
+        } else {
             as = new AnimationSet(false);
             asNeedStart = true;
         }
 
         List<NativeAnimation> attached = _anis.get(nativeViewTmp);
-        if(attached == null) {
+        if (attached == null) {
             attached = new ArrayList<NativeAnimation>();
             _anis.put(nativeViewTmp, attached);
         }
         attached.add(nativeAnimationTmp);
         as.addAnimation(nativeAnimationTmp);
 
-        if(asNeedStart) {
+        if (asNeedStart) {
             nativeViewTmp.startAnimation(as);
         }
 
         // rotate must be placed at head
         // otherwise, rotation after scale/translate would have wrong center axis
-        ArrayList<Animation> al = (ArrayList<Animation>)as.getAnimations();
-        if(al.size() > 1) {
-            for(int i = 0; i < al.size(); ++i) {
-                if(al.get(i) instanceof  NativeAnimation
-                    && ((NativeAnimation)al.get(i)).hasRotate()) {
+        ArrayList<Animation> al = (ArrayList<Animation>) as.getAnimations();
+        if (al.size() > 1) {
+            for (int i = 0; i < al.size(); ++i) {
+                if (al.get(i) instanceof NativeAnimation
+                        && ((NativeAnimation) al.get(i)).hasRotate()) {
                     _anisCache.add(al.remove(i));
                     --i;
                 }
@@ -311,51 +321,51 @@ public class ZFAnimationNativeView {
             _anisCache.clear();
         }
     }
+
     private static ArrayList<Animation> _anisCache = new ArrayList<Animation>();
+
     public static void native_nativeAniStop(Object nativeAnimation,
                                             Object nativeView) {
-        NativeAnimation nativeAnimationTmp = (NativeAnimation)nativeAnimation;
+        NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
         nativeAnimationTmp.nativeAnimationListener(null);
-        View nativeViewTmp = (View)nativeView;
+        View nativeViewTmp = (View) nativeView;
 
         List<NativeAnimation> attached = _anis.get(nativeViewTmp);
-        if(attached == null) {
+        if (attached == null) {
             nativeViewTmp.setAnimation(null);
             return;
         }
         attached.remove(nativeAnimationTmp);
-        if(attached.isEmpty()) {
+        if (attached.isEmpty()) {
             _anis.remove(nativeViewTmp);
             nativeViewTmp.setAnimation(null);
         }
     }
+
     private static native void native_notifyAniStop(long zfjniPointerOwnerZFAnimationNativeView);
 
     private static _CurveLinear _curveLinear = new _CurveLinear();
     private static _CurveEaseIn _curveEaseIn = new _CurveEaseIn();
     private static _CurveEaseOut _curveEaseOut = new _CurveEaseOut();
     private static _CurveEaseInOut _curveEaseInOut = new _CurveEaseInOut();
+
     public static void native_setup(
             Object nativeAnimation
             , int aniCurve
             , int aniDuration
-            ) {
-        NativeAnimation nativeAnimationTmp = (NativeAnimation)nativeAnimation;
+    ) {
+        NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
         nativeAnimationTmp.nativeAnimationReset();
 
-        if(aniCurve == ZFAnimationNativeViewCurve.e_Linear) {
+        if (aniCurve == ZFAnimationNativeViewCurve.e_Linear) {
             nativeAnimationTmp.setInterpolator(_curveLinear);
-        }
-        else if(aniCurve == ZFAnimationNativeViewCurve.e_EaseInOut) {
+        } else if (aniCurve == ZFAnimationNativeViewCurve.e_EaseInOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseInOut);
-        }
-        else if(aniCurve == ZFAnimationNativeViewCurve.e_EaseIn) {
+        } else if (aniCurve == ZFAnimationNativeViewCurve.e_EaseIn) {
             nativeAnimationTmp.setInterpolator(_curveEaseIn);
-        }
-        else if(aniCurve == ZFAnimationNativeViewCurve.e_EaseOut) {
+        } else if (aniCurve == ZFAnimationNativeViewCurve.e_EaseOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseOut);
-        }
-        else {
+        } else {
             ZFAndroidLog.shouldNotGoHere();
         }
 
@@ -371,8 +381,9 @@ public class ZFAnimationNativeView {
             }
             return ret;
         */
-        return (float)Math.pow(x, n);
+        return (float) Math.pow(x, n);
     }
+
     private static float _curve(float x,
                                 float y0,
                                 float y1,
@@ -380,18 +391,18 @@ public class ZFAnimationNativeView {
                                 float y3,
                                 float y4,
                                 float y5,
-                                float y6)
-    {
-        return (float)(0
-            +      y0              * _pow(1-x, 6)
-            + 6  * y1 * x          * _pow(1-x, 5)
-            + 15 * y2 * _pow(x, 2) * _pow(1-x, 4)
-            + 20 * y3 * _pow(x, 3) * _pow(1-x, 3)
-            + 15 * y4 * _pow(x, 4) * _pow(1-x, 2)
-            + 6  * y5 * _pow(x, 5) * (1-x)
-            +      y6 * _pow(x, 6)
-            );
+                                float y6) {
+        return (float) (0
+                + y0 * _pow(1 - x, 6)
+                + 6 * y1 * x * _pow(1 - x, 5)
+                + 15 * y2 * _pow(x, 2) * _pow(1 - x, 4)
+                + 20 * y3 * _pow(x, 3) * _pow(1 - x, 3)
+                + 15 * y4 * _pow(x, 4) * _pow(1 - x, 2)
+                + 6 * y5 * _pow(x, 5) * (1 - x)
+                + y6 * _pow(x, 6)
+        );
     }
+
     private static float _curve(float x,
                                 float y0,
                                 float y1,
@@ -408,26 +419,25 @@ public class ZFAnimationNativeView {
                                 float y12,
                                 float y13,
                                 float y14,
-                                float y15)
-    {
-        return (float)(0
-            +        y0                * _pow(1-x, 15)
-            + 15   * y1  * x           * _pow(1-x, 14)
-            + 105  * y2  * _pow(x, 2)  * _pow(1-x, 13)
-            + 455  * y3  * _pow(x, 3)  * _pow(1-x, 12)
-            + 1365 * y4  * _pow(x, 4)  * _pow(1-x, 11)
-            + 3003 * y5  * _pow(x, 5)  * _pow(1-x, 10)
-            + 5005 * y6  * _pow(x, 6)  * _pow(1-x, 9)
-            + 6435 * y7  * _pow(x, 7)  * _pow(1-x, 8)
-            + 6435 * y8  * _pow(x, 8)  * _pow(1-x, 7)
-            + 5005 * y9  * _pow(x, 9)  * _pow(1-x, 6)
-            + 3003 * y10 * _pow(x, 10) * _pow(1-x, 5)
-            + 1365 * y11 * _pow(x, 11) * _pow(1-x, 4)
-            + 455  * y12 * _pow(x, 12) * _pow(1-x, 3)
-            + 105  * y13 * _pow(x, 13) * _pow(1-x, 2)
-            + 15   * y14 * _pow(x, 14) * (1-x)
-            +        y15 * _pow(x, 15)
-            );
+                                float y15) {
+        return (float) (0
+                + y0 * _pow(1 - x, 15)
+                + 15 * y1 * x * _pow(1 - x, 14)
+                + 105 * y2 * _pow(x, 2) * _pow(1 - x, 13)
+                + 455 * y3 * _pow(x, 3) * _pow(1 - x, 12)
+                + 1365 * y4 * _pow(x, 4) * _pow(1 - x, 11)
+                + 3003 * y5 * _pow(x, 5) * _pow(1 - x, 10)
+                + 5005 * y6 * _pow(x, 6) * _pow(1 - x, 9)
+                + 6435 * y7 * _pow(x, 7) * _pow(1 - x, 8)
+                + 6435 * y8 * _pow(x, 8) * _pow(1 - x, 7)
+                + 5005 * y9 * _pow(x, 9) * _pow(1 - x, 6)
+                + 3003 * y10 * _pow(x, 10) * _pow(1 - x, 5)
+                + 1365 * y11 * _pow(x, 11) * _pow(1 - x, 4)
+                + 455 * y12 * _pow(x, 12) * _pow(1 - x, 3)
+                + 105 * y13 * _pow(x, 13) * _pow(1 - x, 2)
+                + 15 * y14 * _pow(x, 14) * (1 - x)
+                + y15 * _pow(x, 15)
+        );
     }
 
     // ============================================================
@@ -447,9 +457,10 @@ public class ZFAnimationNativeView {
         private static final float y4 = 0.020f;
         private static final float y5 = 0.025f;
         private static final float y6 = 1.000f;
+
         @Override
         public float getInterpolation(float time) {
-            return (float)_curve((float)time, y0, y1, y2, y3, y4, y5, y6);
+            return (float) _curve((float) time, y0, y1, y2, y3, y4, y5, y6);
         }
     }
 
@@ -462,9 +473,10 @@ public class ZFAnimationNativeView {
         private static final float y4 = 0.990f;
         private static final float y5 = 0.995f;
         private static final float y6 = 1.000f;
+
         @Override
         public float getInterpolation(float time) {
-            return (float)_curve((float)time, y0, y1, y2, y3, y4, y5, y6);
+            return (float) _curve((float) time, y0, y1, y2, y3, y4, y5, y6);
         }
     }
 
@@ -486,9 +498,10 @@ public class ZFAnimationNativeView {
         private static final float y13 = 0.990f;
         private static final float y14 = 0.995f;
         private static final float y15 = 1.000f;
+
         @Override
         public float getInterpolation(float time) {
-            return (float)_curve((float)time, y0, y1, y2, y3, y4, y5, y6, y7, y8, y9, y10, y11, y12, y13, y14, y15);
+            return (float) _curve((float) time, y0, y1, y2, y3, y4, y5, y6, y7, y8, y9, y10, y11, y12, y13, y14, y15);
         }
     }
 }

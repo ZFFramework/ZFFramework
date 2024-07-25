@@ -2,6 +2,7 @@ package com.ZFFramework.Android.ZFUIKit_impl;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -62,7 +63,7 @@ public class ZFUIScrollView extends ZFUIView {
     private boolean _scrollAnimating = false;
     private int _scrollAniTaskId = 0;
     private int _recommendTimerInterval = 15;
-    private static Handler _scrollAniTimerHandler = new Handler() {
+    private static Handler _scrollAniTimerHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -770,7 +771,7 @@ public class ZFUIScrollView extends ZFUIView {
         // mouse down timeout
         private int _dragMouseDownTimeoutTaskId = 0;
         private static final int _dragMouseDownTimeoutDelay = 200;
-        private static Handler _dragMouseDownTimeoutHandler = new Handler() {
+        private static Handler _dragMouseDownTimeoutHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);

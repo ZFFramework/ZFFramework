@@ -5,6 +5,7 @@ import android.app.Application;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -76,7 +77,7 @@ public class ZFUIOnScreenKeyboardState {
 
     private static Map<Window, _WindowData> _keyboardState = new HashMap<Window, _WindowData>();
 
-    private static Handler _keyboardStateUpdater = new Handler() {
+    private static Handler _keyboardStateUpdater = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
