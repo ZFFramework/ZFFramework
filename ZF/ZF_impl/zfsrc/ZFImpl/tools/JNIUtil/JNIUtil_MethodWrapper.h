@@ -10,13 +10,56 @@
 
 #if NEED_JNIUTIL
 
+// debug
+// #define JNIUtilWrap_Enable 1
+#if JNIUtilWrap_Enable
+    #ifndef _JNIUtilWrapPrint
+        #include <jni.h>
+        #include <android/log.h>
+        #define _JNIUtilWrapPrint(fmt, ...) \
+            ((void)__android_log_print(ANDROID_LOG_ERROR, "JNILog", fmt, ##__VA_ARGS__))
+    #endif
+
+    inline const char *_JNIUtilMacro_fileToName(const char *callerFile) {
+        for(const char *p = callerFile; *p; ++p) {
+            if(*p == '/' || *p == '\\') {
+                callerFile = p + 1;
+            }
+        }
+        return callerFile;
+    }
+
+    template<typename T>
+    T const &_JNIUtilWrap_Created(T const &obj, const char *callerFile, const char *callerFunction, int callerLine, const char *actionName) {
+        _JNIUtilWrapPrint("JNI Created   : %p [%s %s %d] %s", obj, _JNIUtilMacro_fileToName(callerFile), callerFunction, callerLine, actionName);
+        return obj;
+    }
+    template<typename T>
+    T const &_JNIUtilWrap_Released(T const &obj, const char *callerFile, const char *callerFunction, int callerLine, const char *actionName) {
+        _JNIUtilWrapPrint("JNI Released  : %p [%s %s %d] %s", obj, _JNIUtilMacro_fileToName(callerFile), callerFunction, callerLine, actionName);
+        return obj;
+    }
+    inline void _JNIUtilWrap_FuncCalled(const char *callerFile, const char *callerFunction, int callerLine, const char *actionName) {
+        _JNIUtilWrapPrint("JNI FuncCalled: [%s %s %d] %s", _JNIUtilMacro_fileToName(callerFile), callerFunction, callerLine, actionName);
+    }
+    inline void _JNIUtilWrap_CallbackCalled(const char *callerFile, const char *callerFunction, int callerLine, const char *actionName) {
+        _JNIUtilWrapPrint("JNI Callback  : [%s %s %d] %s", _JNIUtilMacro_fileToName(callerFile), callerFunction, callerLine, actionName);
+    }
+
+    #define JNIUtilWrap_Created(obj, callerFile, callerFunction, callerLine, actionName) \
+        _JNIUtilWrap_Created(obj, callerFile, callerFunction, callerLine, actionName)
+    #define JNIUtilWrap_Released(obj, callerFile, callerFunction, callerLine, actionName) \
+        _JNIUtilWrap_Released(obj, callerFile, callerFunction, callerLine, actionName)
+    #define JNIUtilWrap_FuncCalled(callerFile, callerFunction, callerLine, actionName) \
+        _JNIUtilWrap_FuncCalled(callerFile, callerFunction, callerLine, actionName)
+    #define JNIUtilWrap_CallbackCalled(callerFile, callerFunction, callerLine, actionName) \
+        _JNIUtilWrap_CallbackCalled(callerFile, callerFunction, callerLine, actionName)
+#endif
+
 namespace JNIUtil {
 
 // ============================================================
 // expand actions
-#ifndef JNIUtilWrap_Enable
-    #define JNIUtilWrap_Enable 0
-#endif
 #ifndef JNIUtilWrap_Created
     #define JNIUtilWrap_Created(obj, callerFile, callerFunction, callerLine, actionName) obj
 #endif
@@ -27,7 +70,7 @@ namespace JNIUtil {
     #define JNIUtilWrap_FuncCalled(callerFile, callerFunction, callerLine, actionName) NULL
 #endif
 #ifndef JNIUtilWrap_CallbackCalled
-    #define JNIUtilWrap_CallbackCalled(className, actionName)
+    #define JNIUtilWrap_CallbackCalled(callerFile, callerFunction, callerLine, actionName)
 #endif
 
 // ============================================================
@@ -35,13 +78,15 @@ namespace JNIUtil {
 #undef JNI_METHOD_DECLARE_BEGIN
 #define JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ...) \
     _JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ##__VA_ARGS__) { \
-        JNIUtilWrap_CallbackCalled(_JNIUtilMacro_toString(OwnerClassId), _JNIUtilMacro_toString(MethodName))
+        JNIUtilWrap_CallbackCalled(__FILE__, __FUNCTION__, __LINE__, _JNIUtilMacro_toString(OwnerClassId) "::" _JNIUtilMacro_toString(MethodName));
 #undef JNI_METHOD_DECLARE_END
 #define JNI_METHOD_DECLARE_END() \
     }
 
-#undef JNIConvertPointerToJNIType
-#define JNIConvertPointerToJNIType(jniEnv, p) JNIUtilWrap_Created(_JNIConvertPointerToJNIType(jniEnv, p), __FILE__, __FUNCTION__, __LINE__, "JNIConvertPointerToJNIType")
+#if !JNIPointerUseLong
+    #undef JNIConvertPointerToJNIType
+    #define JNIConvertPointerToJNIType(jniEnv, p) JNIUtilWrap_Created(_JNIConvertPointerToJNIType(jniEnv, p), __FILE__, __FUNCTION__, __LINE__, "JNIConvertPointerToJNIType")
+#endif
 
 /** @cond ZFPrivateDoc */
 namespace JNIUtilMethodWrapperPrivate {
