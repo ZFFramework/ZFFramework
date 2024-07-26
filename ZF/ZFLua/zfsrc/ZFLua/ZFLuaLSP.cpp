@@ -181,7 +181,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         return;
     }
     clsMap.erase(cls);
-    if(cls != zfnull) {
+    if(cls->classParent() != zfnull) {
         _ZFP_ZFLuaLSPGenFile_class(output, luaKeywords, clsMap, cls->classParent());
     }
 
