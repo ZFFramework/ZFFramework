@@ -6,8 +6,7 @@
 #include "ZFImpl/ZFImpl_env.h"
 
 #if ZF_ENV_sys_Windows
-    #include <Fileapi.h>
-    #include <wchar.h>
+    #include <Windows.h>
 #else // #if ZF_ENV_sys_Windows
     #include <unistd.h>
     #include <dirent.h>

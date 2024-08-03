@@ -5,8 +5,7 @@
 #include "ZFImpl/ZFImpl_env.h"
 
 #if ZF_ENV_sys_Windows
-    #include <Processthreadsapi.h>
-    #include <Synchapi.h>
+    #include <Windows.h>
 #else // #if ZF_ENV_sys_Windows
     #include <pthread.h>
     #include <unistd.h>

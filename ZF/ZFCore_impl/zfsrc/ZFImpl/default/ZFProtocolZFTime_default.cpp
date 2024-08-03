@@ -6,8 +6,7 @@
 
 #include <ctime>
 #if ZF_ENV_sys_Windows
-    #include <Sysinfoapi.h>
-    #include <Timezoneapi.h>
+    #include <Windows.h>
 #elif __APPLE__
     #include <sys/time.h>
     #include <mach/mach.h>

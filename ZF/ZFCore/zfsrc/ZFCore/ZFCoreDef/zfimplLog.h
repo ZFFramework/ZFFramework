@@ -31,7 +31,7 @@
 #ifndef zfimplTimestamp
     #include <ctime>
     #if defined(_WIN32) || defined(WIN32)
-        #include <Sysinfoapi.h>
+        #include <Windows.h>
     #elif __APPLE__
         #include <sys/time.h>
         #include <mach/mach.h>
@@ -64,7 +64,7 @@
     #include <cstdio>
     #include <cstdlib>
     #if defined(_WIN32) || defined(WIN32)
-        #include <Sysinfoapi.h>
+        #include <Windows.h>
     #elif __APPLE__
         #include <sys/time.h>
         #include <mach/mach.h>
