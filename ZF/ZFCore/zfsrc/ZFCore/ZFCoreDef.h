@@ -40,6 +40,7 @@
 #include "ZFCoreDef/ZFSigName.h"
 #include "ZFCoreDef/ZFToken.h"
 #include "ZFCoreDef/ZFVersion.h"
+#include "ZFCoreDef/zfimplLog.h"
 #include "ZFCoreDef/zfiter.h"
 #include "ZFCoreDef/zfstr.h"
 #include "ZFCoreDef/zfstr_CoreType.h"

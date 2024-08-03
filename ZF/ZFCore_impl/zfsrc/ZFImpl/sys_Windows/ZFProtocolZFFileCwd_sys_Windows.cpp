@@ -3,7 +3,8 @@
 #include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_Windows
-#include <Windows.h>
+#include <Direct.h>
+#include <wchar.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

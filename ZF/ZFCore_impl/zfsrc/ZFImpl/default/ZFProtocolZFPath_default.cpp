@@ -19,7 +19,8 @@
     #include "../../../zf3rd/_repo/whereami/src/whereami.c"
 #else
     #if ZF_ENV_sys_Windows
-        #include <Windows.h>
+        #include <Libloaderapi.h>
+        #include <wchar.h>
     #else // #if ZF_ENV_sys_Windows
         #include <unistd.h>
     #endif // #if ZF_ENV_sys_Windows #else

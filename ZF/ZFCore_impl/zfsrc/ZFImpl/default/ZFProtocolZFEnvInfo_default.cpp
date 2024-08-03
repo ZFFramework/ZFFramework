@@ -9,7 +9,7 @@
 #endif
 
 #if ZF_ENV_sys_Windows
-    #include <Windows.h>
+    #include <Sysinfoapi.h>
 #endif
 
 #if ZF_ENV_sys_Posix

@@ -2,7 +2,7 @@
 #include "ZFCore/protocol/ZFProtocolZFSemaphore.h"
 
 #if ZF_ENV_sys_Windows
-#include <Windows.h>
+#include <Synchapi.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
