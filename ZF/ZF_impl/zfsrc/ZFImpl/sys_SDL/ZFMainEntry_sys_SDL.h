@@ -77,7 +77,6 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(
  * @endcode
  */
 #define ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(name, level) \
-    ZFIDMAP_GLOBAL_DETAIL(_ZFP_SDLEvent, name) \
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(_ZFP_SDLEvent, name) \
     static zfbool _ZFP_SDLEventH_##name(ZF_IN SDL_Event *sdlEvent); \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(SDLEventReg_##name, ZFLevelZFFrameworkStatic) { \

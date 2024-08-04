@@ -119,11 +119,12 @@ void ZFImpl_ZFLua_classDataChange(
         ZF_IN lua_State *L
         , ZF_IN const ZFClassDataChangeData &data
         ) {
+    _ZFP_ZFImpl_ZFLua_invokeTimeLogger("cls change %s", data.objectInfo().cString());
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
-    for(zfindex i = 0; i < d->setupAttach.count(); ++i) {
-        d->setupAttach[i](L);
+    for(zfindex i = 0; i < d->setupClassDataChange.count(); ++i) {
+        d->setupClassDataChange[i](L, data);
     }
 }
 
@@ -209,7 +210,7 @@ zfbool ZFImpl_ZFLua_execute(
     _ZFP_ZFImpl_ZFLua_invokeTimeLogger("execute %d: %s"
             , (int)(bufLen == zfindexMax() ? zfslen(buf) : bufLen)
             , zfstringReplace(
-                zfstring(buf, zfmMin<zfindex>(bufLen == zfindexMax() ? zfslen(buf) : bufLen, 64))
+                zfstring(buf, zfmMin<zfindex>(bufLen == zfindexMax() ? zfslen(buf) : bufLen, 128))
                 , "\n", "\\n"
                 ).cString()
             );

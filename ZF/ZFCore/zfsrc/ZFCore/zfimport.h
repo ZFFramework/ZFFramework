@@ -17,7 +17,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * notified during #zfimport\n
  * param0 is a #v_ZFInput holds the item being load
  */
-ZFEVENT_GLOBAL(ImportBegin)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ImportBegin)
 /**
  * @brief see #ZFObject::observerNotify
  *
@@ -25,7 +25,7 @@ ZFEVENT_GLOBAL(ImportBegin)
  * param0 is a #v_ZFInput holds the item being load,
  * param1 is a #ZFObject holds the load result
  */
-ZFEVENT_GLOBAL(ImportEnd)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ImportEnd)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**

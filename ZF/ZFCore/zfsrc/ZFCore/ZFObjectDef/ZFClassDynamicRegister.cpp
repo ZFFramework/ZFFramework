@@ -67,7 +67,6 @@ const ZFClass *ZFClassDynamicRegister(
         zffalse,
         zftrue,
         classDynamicRegisterUserData);
-    cls->_ZFP_ZFClass_autoRegister();
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
     const zfchar *classNamespace = ZFNamespaceSkipGlobal(cls->classNamespace());
     if(!zfstringIsEmpty(classNamespace) && ZFClass::classForName(classNamespace) == zfnull) {

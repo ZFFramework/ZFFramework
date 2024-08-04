@@ -146,6 +146,9 @@ public:
                 (paramDefault.zfv DefaultValueFix())); \
             return ret; \
         } \
+        static void pDefGI##N(ZF_IN const ZFArgs &zfargs) { \
+            zfargs.result(pDef##N()); \
+        } \
     )
 
 // ============================================================
@@ -288,7 +291,7 @@ public:
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(owner) \
     owner::GI
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(owner, DefaultExpandOrEmpty, N) \
-    ZFListener(DefaultExpandOrEmpty(ZFCallbackForFunc(owner::pDef##N)))
+    ZFListener(DefaultExpandOrEmpty(ZFCallbackForFunc(owner::pDefGI##N)))
 
 // ============================================================
 extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(ZFMETHOD_GENERIC_INVOKER_PARAMS);

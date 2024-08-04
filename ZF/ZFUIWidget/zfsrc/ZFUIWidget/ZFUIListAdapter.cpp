@@ -5,6 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIListAdapter)
 
+ZFEVENT_REGISTER(ZFUIListAdapter, ListAdapterOnReload)
 ZFEVENT_REGISTER(ZFUIListAdapter, ListCellOnUpdate)
 ZFEVENT_REGISTER(ZFUIListAdapter, ListCellCacheOnRecycle)
 

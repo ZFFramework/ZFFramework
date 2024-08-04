@@ -116,6 +116,8 @@ public:
 // ZFUIImage
 ZFOBJECT_REGISTER(ZFUIImage)
 
+ZFEVENT_REGISTER(ZFUIImage, ImageScaleOnChange)
+
 zfbool ZFUIImage::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */

@@ -318,7 +318,7 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   // in header files
  *   ZF_NAMESPACE_BEGIN(YourNamespace)
  *   / ** @brief you can add doxygen docs here * /
- *   ZFEVENT_GLOBAL(YourEvent)
+ *   ZFEVENT_GLOBAL(ZFLIB_APP, YourEvent)
  *   ZF_NAMESPACE_END(YourNamespace)
  *
  *   ZFEVENT_GLOBAL_REGISTER(YourNamespace, YourEvent)
@@ -329,8 +329,8 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  * unlike #ZFEVENT, this macro would declare event outside of class scope,
  * typically you should use #ZFEVENT_GLOBAL which have "ZFGlobalEvent" as namespace
  */
-#define ZFEVENT_GLOBAL(YourEvent) \
-    ZFIDMAP_GLOBAL_DETAIL(Event, YourEvent)
+#define ZFEVENT_GLOBAL(ZFLIB_, YourEvent) \
+    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Event, YourEvent)
 
 /** @brief see #ZFEVENT */
 #define ZFEVENT_GLOBAL_REGISTER(YourEvent) \

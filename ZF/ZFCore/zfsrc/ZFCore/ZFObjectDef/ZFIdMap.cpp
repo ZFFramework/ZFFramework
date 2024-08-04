@@ -30,6 +30,7 @@ _ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(
             .methodName(methodName)
             .methodGenericInvoker(_ZFP_IdMap_GI::GI)
             .methodDynamicRegisterUserData(zfobj<v_zfidentity>(*idValue))
+            .zfunsafe_disableChecker(zftrue)
             );
 }
 _ZFP_ZFIdMapHolder::~_ZFP_ZFIdMapHolder(void) {

@@ -68,24 +68,32 @@
     #include <stdio.h>
     class _ZFP_zfimplInvokeTimeLogger {
     public:
-        _ZFP_zfimplInvokeTimeLogger(const char *hint, ...)
-        : _lastTime(zfimplTimestamp())
+        _ZFP_zfimplInvokeTimeLogger(int cond, const char *hint, ...)
+        : _cond(cond)
         {
             va_list vaList;
             va_start(vaList, hint);
             vsnprintf(_hint, sizeof(_hint), hint, vaList);
             va_end(vaList);
+
+            _lastTime = zfimplTimestamp();
         }
         ~_ZFP_zfimplInvokeTimeLogger(void)
         {
-            zfimplLog("%4d : %s", (int)(zfimplTimestamp() - _lastTime), _hint);
+            int cost = (int)(zfimplTimestamp() - _lastTime);
+            if(cost >= _cond) {
+                zfimplLog("%4d : %s", (int)(zfimplTimestamp() - _lastTime), _hint);
+            }
         }
     private:
         char _hint[512];
         long long _lastTime;
+        int _cond;
     };
     #define zfimplInvokeTimeLogger(hint, ...) \
-        _ZFP_zfimplInvokeTimeLogger zfimplUniqueName(ivkTime)(hint, ##__VA_ARGS__)
+        _ZFP_zfimplInvokeTimeLogger zfimplUniqueName(ivkTime)(0, hint, ##__VA_ARGS__)
+    #define zfimplInvokeTimeLoggerWithCost(cost, hint, ...) \
+        _ZFP_zfimplInvokeTimeLogger zfimplUniqueName(ivkTime)(cost, hint, ##__VA_ARGS__)
 #endif
 
 // ============================================================

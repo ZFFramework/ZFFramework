@@ -33,13 +33,13 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *
  * notified when about to start test case, see #ZFTestCaseRunAllStart
  */
-ZFEVENT_GLOBAL(TestCaseRunAllOnStart)
+ZFEVENT_GLOBAL(ZFLIB_ZFUtility, TestCaseRunAllOnStart)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified when about to stop test case, see #ZFTestCaseRunAllStop
  */
-ZFEVENT_GLOBAL(TestCaseRunAllOnStop)
+ZFEVENT_GLOBAL(ZFLIB_ZFUtility, TestCaseRunAllOnStop)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**

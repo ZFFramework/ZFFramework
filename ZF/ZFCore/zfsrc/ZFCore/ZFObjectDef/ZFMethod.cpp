@@ -88,7 +88,7 @@ ZFMethodGenericInvoker ZFMethod::methodGenericInvokerOrig(void) const {
 void ZFMethod::methodUserRegisterUserData(ZF_IN ZFObject *methodUserRegisterUserData) const {
     zfCoreAssertWithMessage(this->methodIsUserRegister(),
         "methodUserRegisterUserData can only be changed for user registered method");
-    zfRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserRegisterUserData, methodUserRegisterUserData);
+    zfRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserData, methodUserRegisterUserData);
 }
 
 void ZFMethod::_ZFP_ZFMethod_init(
@@ -105,12 +105,11 @@ void ZFMethod::_ZFP_ZFMethod_init(
     zfCoreAssert(methodGenericInvoker != zfnull);
 
     this->_ZFP_ZFMethod_methodIsUserRegister = methodIsUserRegister;
-    this->_ZFP_ZFMethod_methodUserRegisterUserData = zfnull;
     this->_ZFP_ZFMethod_methodIsDynamicRegister = methodIsDynamicRegister;
-    this->_ZFP_ZFMethod_methodDynamicRegisterUserData = zfRetain(methodDynamicRegisterUserData);
+    this->_ZFP_ZFMethod_methodUserData = zfRetain(methodDynamicRegisterUserData);
     this->_ZFP_ZFMethod_invoker = invoker;
     this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
-    this->_ZFP_ZFMethod_methodType = methodType;
+    this->_ZFP_ZFMethod_methodType = (unsigned short)methodType;
     this->_ZFP_ZFMethod_methodName = methodName;
     this->_ZFP_ZFMethod_returnTypeId = returnTypeId;
 
@@ -173,7 +172,7 @@ void ZFMethod::_ZFP_ZFMethod_initClassMemberType(
         , ZF_IN ZFMethodPrivilegeType privilegeType
         ) {
     this->_ZFP_ZFMethod_methodOwnerClass = methodOwnerClass;
-    this->_ZFP_ZFMethod_privilegeType = privilegeType;
+    this->_ZFP_ZFMethod_privilegeType = (unsigned short)privilegeType;
 }
 void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace) {
     if(!zfstringIsEmpty(methodNamespace)
@@ -184,7 +183,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace)
     }
 
     this->_ZFP_ZFMethod_methodOwnerClass = zfnull;
-    this->_ZFP_ZFMethod_privilegeType = ZFMethodPrivilegeTypePublic;
+    this->_ZFP_ZFMethod_privilegeType = (unsigned short)ZFMethodPrivilegeTypePublic;
 }
 
 ZFMethod::ZFMethod(void)
@@ -193,8 +192,7 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_methodIsInternalPrivate(zffalse)
 , _ZFP_ZFMethod_methodIsUserRegister(zffalse)
 , _ZFP_ZFMethod_methodIsDynamicRegister(zffalse)
-, _ZFP_ZFMethod_methodUserRegisterUserData(zfnull)
-, _ZFP_ZFMethod_methodDynamicRegisterUserData(zfnull)
+, _ZFP_ZFMethod_methodUserData(zfnull)
 , _ZFP_ZFMethod_methodInternalId(zfnull)
 , _ZFP_ZFMethod_ext(zfnull)
 , _ZFP_ZFMethod_invoker(zfnull)
@@ -208,14 +206,13 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_paramDefaultBeginIndex((zfuint)-1)
 , _ZFP_ZFMethod_methodOwnerClass(zfnull)
 , _ZFP_ZFMethod_methodOwnerProperty(zfnull)
-, _ZFP_ZFMethod_privilegeType(ZFMethodPrivilegeTypePublic)
-, _ZFP_ZFMethod_methodType(ZFMethodTypeNormal)
+, _ZFP_ZFMethod_privilegeType((unsigned short)ZFMethodPrivilegeTypePublic)
+, _ZFP_ZFMethod_methodType((unsigned short)ZFMethodTypeNormal)
 , _ZFP_ZFMethod_methodNamespace(zfnull)
 {
 }
 ZFMethod::~ZFMethod(void) {
-    zfRelease(this->_ZFP_ZFMethod_methodUserRegisterUserData);
-    zfRelease(this->_ZFP_ZFMethod_methodDynamicRegisterUserData);
+    zfRelease(this->_ZFP_ZFMethod_methodUserData);
 
     if(_ZFP_ZFMethod_ext) {
         zfpoolDelete(_ZFP_ZFMethod_ext);
@@ -539,7 +536,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN const zfstring &returnTypeId
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
-    _ZFP_ZFMethod_invokeTimeLogger("register: %s::%s"
+    _ZFP_ZFMethod_invokeTimeLogger("reg: %s::%s"
             , methodOwnerClass ? methodOwnerClass->className().cString() : methodNamespace ? methodNamespace.cString() : ""
             , methodName.cString()
             );
@@ -655,7 +652,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
     return method;
 }
 void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
-    _ZFP_ZFMethod_invokeTimeLogger("unregister: %s", method->methodName().cString());
+    _ZFP_ZFMethod_invokeTimeLogger("unreg: %s", method->methodName().cString());
     zfCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
     _ZFP_ZFMethodMapType::iterator it = m.find(method->methodInternalId());

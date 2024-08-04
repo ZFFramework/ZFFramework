@@ -71,8 +71,13 @@ typedef zfstlmap<ZFSigName, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
 
 zfclassNotPOD _ZFP_ZFClassPrivate {
 public:
-    zfuint refCount;
     ZFClass *pimplOwner;
+    zfuint refCount;
+
+    zfbool needAutoRegister;
+    zfbool needRegisterImplementedInterface;
+    zfbool needFinalInit;
+
     zfbool classIsDynamicRegister;
     zfauto classDynamicRegisterUserData;
     zfstlmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
@@ -81,9 +86,6 @@ public:
     _ZFP_ZFObjectDestructor destructor;
 
 public:
-    zfbool needAutoRegister;
-    zfbool needRegisterImplementedInterface;
-    zfbool needFinalInit;
     ZFCoreArray<const ZFClass *> implementedInterface;
     ZFCoreArray<const ZFClass *> ZFImplementDynamicList; // for ZFImplementDynamicRegister
     _ZFP_ZFClassMethodMapType methodMap; // method of this cls only
@@ -197,16 +199,16 @@ public:
 
 public:
     _ZFP_ZFClassPrivate(void)
-    : refCount(1)
-    , pimplOwner(zfnull)
+    : pimplOwner(zfnull)
+    , refCount(1)
+    , needAutoRegister(zftrue)
+    , needRegisterImplementedInterface(zftrue)
+    , needFinalInit(zftrue)
     , classIsDynamicRegister(zffalse)
     , classDynamicRegisterUserData()
     , classDynamicRegisterObjectInstanceMap()
     , constructor(zfnull)
     , destructor(zfnull)
-    , needAutoRegister(zftrue)
-    , needRegisterImplementedInterface(zftrue)
-    , needFinalInit(zftrue)
     , implementedInterface()
     , ZFImplementDynamicList()
     , methodMap()
@@ -361,6 +363,7 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
         return;
     }
     cls->d->methodAndPropertyCacheNeedUpdate = zffalse;
+    cls->_ZFP_ZFClass_autoRegister();
     _ZFP_ZFClassMethodMapType &methodMapCache = cls->d->methodMapCache;
     _ZFP_ZFClassPropertyMapType &propertyMapCache = cls->d->propertyMapCache;
     methodMapCache.clear();
@@ -1191,7 +1194,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN zfbool classIsDynamicRegister
         , ZF_IN ZFObject *classDynamicRegisterUserData
         ) {
-    _ZFP_ZFClass_invokeTimeLogger("register: %s", className.cString());
+    _ZFP_ZFClass_invokeTimeLogger("reg: %s", className.cString());
     zfCoreMutexLocker();
     const zfchar *classNamespaceTmp = classNamespace;
     if(outer != zfnull) {
@@ -1300,7 +1303,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     return cls;
 }
 void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
-    _ZFP_ZFClass_invokeTimeLogger("unregister: %s", cls->className().cString());
+    _ZFP_ZFClass_invokeTimeLogger("unreg: %s", cls->className().cString());
     zfCoreMutexLocker();
 
     if(cls->classIsDynamicRegister()) {
@@ -1355,11 +1358,11 @@ void ZFClass::_ZFP_ZFClass_autoRegister(void) const {
     zfCoreMutexLocker();
     if(d->needAutoRegister) {
         d->needAutoRegister = zffalse;
-        _ZFP_ZFClass_invokeTimeLogger("autoRegister: %s", this->className().cString());
 
         // create dummy instance to ensure static init of the object would take effect
         // including method and property register
         if(d->constructor != zfnull) {
+            _ZFP_ZFClass_invokeTimeLogger("autoReg: %s", this->className().cString());
             d->destructor(d->constructor());
         }
     }
@@ -1549,6 +1552,8 @@ void ZFClass::_ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *prop
     }
 }
 void ZFClass::_ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const {
+    d->needAutoRegister = zffalse;
+
     // access getter to ensure property value created
     for(zfstlmap<const ZFProperty *, zfbool>::iterator it = d->propertyAutoInitMap.begin(); it != d->propertyAutoInitMap.end(); ++it) {
         const ZFProperty *property = it->first;
@@ -1692,7 +1697,7 @@ void _ZFP_ZFClassDataChangeNotify(
     (void)ZFClassDataChangeObserver(); // ensure init order
     (void)ZFGlobalObserver(); // ensure init order
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkPostStatic) == ZFFrameworkStateAvailable) {
-        _ZFP_ZFClass_invokeTimeLogger("data change notify: %s %s %s %s"
+        _ZFP_ZFClass_invokeTimeLogger("cls change notify: %s %s %s %s"
                 , ZFClassDataChangeTypeToString(changeType).cString()
                 , changedClass ? changedClass->className().cString() : ZFTOKEN_zfnull
                 , changedProperty ? changedProperty->propertyName().cString() : ZFTOKEN_zfnull

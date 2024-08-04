@@ -66,42 +66,42 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyStart
  */
-ZFEVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyStart)
+ZFEVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyStart)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyStop
  */
-ZFEVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyStop)
+ZFEVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyStop)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyPause
  */
-ZFEVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyPause)
+ZFEVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyPause)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyResume
  */
-ZFEVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyResume)
+ZFEVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyResume)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when a view is blinked
  */
-ZFEVENT_GLOBAL(ViewBlinkWhenFocusViewBlinkOn)
+ZFEVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusViewBlinkOn)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when a view is blinked
  */
-ZFEVENT_GLOBAL(ViewBlinkWhenFocusViewBlinkOff)
+ZFEVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusViewBlinkOff)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

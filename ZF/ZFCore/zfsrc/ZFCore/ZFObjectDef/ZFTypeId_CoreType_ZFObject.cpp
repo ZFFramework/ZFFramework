@@ -474,6 +474,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, const 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, const ZFListener &, methodParamDefaultValueCallbackAt
         , ZFMP_IN(zfindex, index)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, ZFMethodDynamicRegisterParam &, zfunsafe_disableChecker
+        , ZFMP_IN(zfbool, disableChecker)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, zfbool, zfunsafe_disableChecker)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMP, ZFMP)
@@ -532,6 +536,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void
         , ZFMP_IN(ZFMethodPrivilegeType, propertyGetterType)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFMethodPrivilegeType, propertyGetterType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam &, zfunsafe_disableChecker
+        , ZFMP_IN(zfbool, disableChecker)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, zfbool, zfunsafe_disableChecker)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFComparer_ZFObject, ZFComparer<ZFObject *>::Comparer)

@@ -320,7 +320,7 @@ public:
      * @brief store impl state for #ZFMethodUserRegister_0
      */
     inline zfany methodUserRegisterUserData(void) const {
-        return this->_ZFP_ZFMethod_methodUserRegisterUserData;
+        return this->_ZFP_ZFMethod_methodIsUserRegister ? this->_ZFP_ZFMethod_methodUserData : zfnull;
     }
     /**
      * @brief store impl state for #ZFMethodUserRegister_0
@@ -336,7 +336,7 @@ public:
      * @brief see #ZFMethodDynamicRegister
      */
     inline zfany methodDynamicRegisterUserData(void) const {
-        return this->_ZFP_ZFMethod_methodDynamicRegisterUserData;
+        return this->_ZFP_ZFMethod_methodIsDynamicRegister ? this->_ZFP_ZFMethod_methodUserData : zfnull;
     }
     /**
      * @brief get the method's name
@@ -566,27 +566,27 @@ public:
      * @brief get the method's access type
      */
     inline ZFMethodPrivilegeType methodPrivilegeType(void) const {
-        return this->_ZFP_ZFMethod_privilegeType;
+        return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType;
     }
     /** @brief util to check whether #methodPrivilegeType is #ZFMethodPrivilegeTypePublic */
-    inline zfbool methodIsPublic(void) const {return this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypePublic;}
+    inline zfbool methodIsPublic(void) const {return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypePublic;}
     /** @brief util to check whether #methodPrivilegeType is #ZFMethodPrivilegeTypeProtected */
-    inline zfbool methodIsProtected(void) const {return this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypeProtected;}
+    inline zfbool methodIsProtected(void) const {return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypeProtected;}
     /** @brief util to check whether #methodPrivilegeType is #ZFMethodPrivilegeTypePrivate */
-    inline zfbool methodIsPrivate(void) const {return this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypePrivate;}
+    inline zfbool methodIsPrivate(void) const {return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypePrivate;}
 
     /**
      * @brief method type
      */
     inline ZFMethodType methodType(void) const {
-        return this->_ZFP_ZFMethod_methodType;
+        return (ZFMethodType)this->_ZFP_ZFMethod_methodType;
     }
     /** @brief util to check whether #methodType is #ZFMethodTypeNormal */
-    inline zfbool methodIsNormal(void) const {return this->_ZFP_ZFMethod_methodType == ZFMethodTypeNormal;}
+    inline zfbool methodIsNormal(void) const {return (ZFMethodType)this->_ZFP_ZFMethod_methodType == ZFMethodTypeNormal;}
     /** @brief util to check whether #methodType is #ZFMethodTypeStatic */
-    inline zfbool methodIsStatic(void) const {return this->_ZFP_ZFMethod_methodType == ZFMethodTypeStatic;}
+    inline zfbool methodIsStatic(void) const {return (ZFMethodType)this->_ZFP_ZFMethod_methodType == ZFMethodTypeStatic;}
     /** @brief util to check whether #methodType is #ZFMethodTypeVirtual */
-    inline zfbool methodIsVirtual(void) const {return this->_ZFP_ZFMethod_methodType == ZFMethodTypeVirtual;}
+    inline zfbool methodIsVirtual(void) const {return (ZFMethodType)this->_ZFP_ZFMethod_methodType == ZFMethodTypeVirtual;}
 
     // ============================================================
     // func type
@@ -652,8 +652,7 @@ public:
     zfbool _ZFP_ZFMethod_methodIsInternalPrivate;
     zfbool _ZFP_ZFMethod_methodIsUserRegister;
     zfbool _ZFP_ZFMethod_methodIsDynamicRegister;
-    ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
-    ZFObject *_ZFP_ZFMethod_methodDynamicRegisterUserData;
+    zfany _ZFP_ZFMethod_methodUserData;
 
     zfstring _ZFP_ZFMethod_methodInternalId;
     _ZFP_ZFMethodPrivateExt *_ZFP_ZFMethod_ext;
@@ -669,10 +668,10 @@ public:
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type
+    unsigned short /* ZFMethodPrivilegeType */ _ZFP_ZFMethod_privilegeType;
+    unsigned short /* ZFMethodType */ _ZFP_ZFMethod_methodType;
     const ZFClass *_ZFP_ZFMethod_methodOwnerClass;
     const ZFProperty *_ZFP_ZFMethod_methodOwnerProperty;
-    ZFMethodPrivilegeType _ZFP_ZFMethod_privilegeType;
-    ZFMethodType _ZFP_ZFMethod_methodType;
 
     // for func type
     ZFSigName _ZFP_ZFMethod_methodNamespace;

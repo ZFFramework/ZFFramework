@@ -465,12 +465,14 @@ const ZFProperty *ZFPropertyDynamicRegister(
         }
     }
 
-    const ZFProperty *existProperty = param.propertyOwnerClass()->propertyForName(param.propertyName());
-    if(existProperty != zfnull) {
-        zfstringAppend(errorHint,
-            "property with same name already exists: %s",
-            existProperty);
-        return zfnull;
+    if(!param.zfunsafe_disableChecker()) {
+        const ZFProperty *existProperty = param.propertyOwnerClass()->propertyForName(param.propertyName());
+        if(existProperty != zfnull) {
+            zfstringAppend(errorHint,
+                "property with same name already exists: %s",
+                existProperty);
+            return zfnull;
+        }
     }
 
     zfobj<_ZFP_I_PropDynRegData> userDataWrapper;

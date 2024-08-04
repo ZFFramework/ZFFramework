@@ -357,7 +357,6 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         return ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId(); \
     } \
     ZF_STATIC_REGISTER_INIT(TypeIdReg_##TypeName) { \
-        v_##TypeName::ClassData()->_ZFP_ZFClass_autoRegister(); \
         ZFMethodUserRegister_1(setterMethod, { \
                 invokerObject->to<v_##TypeName *>()->zfv = value; \
             }, v_##TypeName::ClassData(), void, zftext("zfv") \

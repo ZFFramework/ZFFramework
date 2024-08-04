@@ -3,6 +3,18 @@
 
 #include "../ZFSTLWrapper/zfstlhashmap.h"
 
+// #define _ZFP_ZFProperty_DEBUG 1
+
+#if _ZFP_ZFProperty_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFProperty_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLogger("[ZFProp] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFProperty_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -188,6 +200,7 @@ ZFProperty *_ZFP_ZFPropertyRegister(
         , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
         , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
         ) {
+    _ZFP_ZFProperty_invokeTimeLogger("reg: %s::%s", propertyOwnerClass->className().cString(), name.cString());
     zfCoreMutexLocker();
     ZFProperty *propertyInfo = zfnull;
 
@@ -250,6 +263,7 @@ ZFProperty *_ZFP_ZFPropertyRegister(
     return propertyInfo;
 }
 void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo) {
+    _ZFP_ZFProperty_invokeTimeLogger("unreg: %s::%s", propertyInfo->propertyOwnerClass()->className().cString(), propertyInfo->propertyName().cString());
     zfCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInfo->propertyInternalId());

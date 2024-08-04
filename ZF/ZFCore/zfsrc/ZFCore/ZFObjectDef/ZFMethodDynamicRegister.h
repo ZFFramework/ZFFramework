@@ -166,6 +166,12 @@ public:
     const ZFListener &methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
 
 public:
+    /** @brief see #ZFMethodDynamicRegister */
+    ZFMethodDynamicRegisterParam &zfunsafe_disableChecker(ZF_IN zfbool disableChecker);
+    /** @brief see #ZFMethodDynamicRegister */
+    zfbool zfunsafe_disableChecker(void) const;
+
+public:
     /** @brief see #objectInfo */
     zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */

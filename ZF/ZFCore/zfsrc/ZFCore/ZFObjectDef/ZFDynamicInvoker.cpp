@@ -5,6 +5,18 @@
 
 #include "../ZFSTLWrapper/zfstlmap.h" // for ZFDI_invoke param convert backup
 
+// #define _ZFP_ZFDI_DEBUG 1
+
+#if _ZFP_ZFDI_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFDI_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLoggerWithCost(2, "[ZFDI] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFDI_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // #define _ZFP_ZFDI_CACHE_ENABLE 1
@@ -22,32 +34,32 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
 
 // ============================================================
 #if _ZFP_ZFDI_CACHE_ENABLE
-static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
-typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFDI_MethodMapCache;
-static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
+    static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
+    typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFDI_MethodMapCache;
+    static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {
-    zfCoreMutexLocker();
-    this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
-    ZFClassDataChangeObserver().observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
-
-    _ZFP_ZFDI_methodMapCache.clear();
-    _ZFP_ZFDI_cacheEnable = zftrue;
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache) {
-    zfCoreMutexLocker();
-    _ZFP_ZFDI_cacheEnable = zffalse;
-    _ZFP_ZFDI_methodMapCache.clear();
-    ZFClassDataChangeObserver().observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
-}
-private:
-    ZFListener classDataChangeListener;
-    static void classDataChange(ZF_IN const ZFArgs &zfargs) {
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {
         zfCoreMutexLocker();
+        this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
+        ZFClassDataChangeObserver().observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+
         _ZFP_ZFDI_methodMapCache.clear();
+        _ZFP_ZFDI_cacheEnable = zftrue;
     }
-ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
-#endif
+    ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache) {
+        zfCoreMutexLocker();
+        _ZFP_ZFDI_cacheEnable = zffalse;
+        _ZFP_ZFDI_methodMapCache.clear();
+        ZFClassDataChangeObserver().observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+    }
+    private:
+        ZFListener classDataChangeListener;
+        static void classDataChange(ZF_IN const ZFArgs &zfargs) {
+            zfCoreMutexLocker();
+            _ZFP_ZFDI_methodMapCache.clear();
+        }
+    ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
+#endif // #if _ZFP_ZFDI_CACHE_ENABLE
 
 // ============================================================
 ZFCoreArray<ZFOutput> &ZFDI_errorCallbacks(void) {
@@ -205,11 +217,14 @@ static zfbool _ZFP_ZFDI_invoke(
             if(obj != zfnull) {
                 key += obj->classData()->classNameFull();
                 key += ':';
+                key += name;
             }
-            key += name;
+            else {
+                key = name;
+            }
             _ZFP_ZFDI_methodMapCache[key].addFrom(methodList);
         }
-#endif
+#endif // #if _ZFP_ZFDI_CACHE_ENABLE
         return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr);
     }
 }
@@ -222,6 +237,11 @@ zfbool ZFDI_invoke(
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
+    _ZFP_ZFDI_invokeTimeLogger("ivk: %s::%s"
+            , obj ? obj->classData()->classNameFull().cString() : ""
+            , name.cString()
+            );
+
     if(obj != zfnull) {
         obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     }
@@ -233,8 +253,11 @@ zfbool ZFDI_invoke(
         if(obj != zfnull) {
             key += obj->classData()->classNameFull();
             key += ':';
+            key += name;
         }
-        key += name;
+        else {
+            key = name;
+        }
         _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
         if(it != _ZFP_ZFDI_methodMapCache.end()) {
             ZFCoreArray<const ZFMethod *> methodList = it->second;
@@ -246,7 +269,7 @@ zfbool ZFDI_invoke(
             zfCoreMutexUnlock();
         }
     }
-#endif
+#endif // #if _ZFP_ZFDI_CACHE_ENABLE
 
     ZFCoreArray<const ZFMethod *> methodList;
 

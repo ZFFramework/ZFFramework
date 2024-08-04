@@ -175,6 +175,7 @@ void ZFMethodInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
 zfclassNotPOD _ZFP_ZFMethodDynamicRegisterParamPrivate {
 public:
     zfuint refCount;
+    zfbool zfunsafe_disableChecker;
     zfauto methodDynamicRegisterUserData;
     const ZFClass *methodOwnerClass;
     zfstring methodNamespace;
@@ -192,6 +193,7 @@ public:
 public:
     _ZFP_ZFMethodDynamicRegisterParamPrivate(void)
     : refCount(1)
+    , zfunsafe_disableChecker(zffalse)
     , methodDynamicRegisterUserData()
     , methodOwnerClass(zfnull)
     , methodNamespace()
@@ -312,6 +314,14 @@ const zfstring &ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex in
 }
 const ZFListener &ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamDefaultValueCallback[index] : _ZFP_ZFMethod_paramDefaultValueCallbackDummy());
+}
+
+ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::zfunsafe_disableChecker(ZF_IN zfbool disableChecker) {
+    d->zfunsafe_disableChecker = disableChecker;
+    return *this;
+}
+zfbool ZFMethodDynamicRegisterParam::zfunsafe_disableChecker(void) const {
+    return d->zfunsafe_disableChecker;
 }
 
 ZFMethodDynamicRegisterParam::ZFMethodDynamicRegisterParam(void)

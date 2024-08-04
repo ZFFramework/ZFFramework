@@ -111,15 +111,7 @@ public:
 #define ZFIDMAP_DETAIL(prefix, YourIdName) \
     public: \
         /** \n */ \
-        static zfidentity prefix##YourIdName(void) { \
-            static _ZFP_ZFIdMapHolder d( \
-                    zfstr("%s.%s", zfself::ClassData()->classNameFull(), ZFM_TOSTRING(prefix##YourIdName)) \
-                    , zfself::ClassData() \
-                    , zfnull \
-                    , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
-                ); \
-            return *(d.idValue); \
-        }
+        static zfidentity prefix##YourIdName(void);
 
 /**
  * @brief auto register version of #ZFIDMAP
@@ -159,26 +151,27 @@ public:
  * @endcode
  * unlike #ZFIDMAP, this macro would declare id outside of class scope
  */
-#define ZFIDMAP_GLOBAL(YourIdName) \
-    ZFIDMAP_GLOBAL_DETAIL(Id, YourIdName)
+#define ZFIDMAP_GLOBAL(ZFLIB_, YourIdName) \
+    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Id, YourIdName)
 /** @brief see #ZFIDMAP_GLOBAL */
-#define ZFIDMAP_GLOBAL_DETAIL(prefix, YourIdName) \
+#define ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, prefix, YourIdName) \
     /** \n */ \
-    inline zfidentity prefix##YourIdName(void) { \
-        static _ZFP_ZFIdMapHolder d( \
-                zfstr("%s.%s", ZF_NAMESPACE_CURRENT() ? ZF_NAMESPACE_CURRENT() : "", ZFM_TOSTRING(prefix##YourIdName)) \
-                , zfnull \
-                , ZF_NAMESPACE_CURRENT() \
-                , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
-            ); \
-        return *(d.idValue); \
-    }
+    extern ZFLIB_ zfidentity prefix##YourIdName(void);
 
 /** @brief see #ZFIDMAP */
 #define ZFIDMAP_REGISTER(Scope, YourIdName) \
     ZFIDMAP_REGISTER_DETAIL(Scope, Id, YourIdName)
 /** @brief see #ZFIDMAP */
 #define ZFIDMAP_REGISTER_DETAIL(Scope, prefix, YourIdName) \
+    zfidentity Scope::prefix##YourIdName(void) { \
+        static _ZFP_ZFIdMapHolder d( \
+                zfstr("%s.%s", zfself::ClassData()->classNameFull(), ZFM_TOSTRING(prefix##YourIdName)) \
+                , zfself::ClassData() \
+                , zfnull \
+                , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
+            ); \
+        return *(d.idValue); \
+    } \
     ZF_STATIC_REGISTER_INIT(ZFIdMap_##Scope##_##YourIdName) { \
         (void)Scope::prefix##YourIdName(); \
     } \
@@ -189,6 +182,15 @@ public:
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(Id, YourIdName)
 /** @brief see #ZFIDMAP */
 #define ZFIDMAP_GLOBAL_REGISTER_DETAIL(prefix, YourIdName) \
+    zfidentity prefix##YourIdName(void) { \
+        static _ZFP_ZFIdMapHolder d( \
+                zfstr("%s.%s", ZF_NAMESPACE_CURRENT() ? ZF_NAMESPACE_CURRENT() : "", ZFM_TOSTRING(prefix##YourIdName)) \
+                , zfnull \
+                , ZF_NAMESPACE_CURRENT() \
+                , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
+            ); \
+        return *(d.idValue); \
+    } \
     ZF_STATIC_REGISTER_INIT(ZFIdMap_##YourIdName) { \
         (void)prefix##YourIdName(); \
     } \

@@ -6,6 +6,9 @@ ZFOBJECT_REGISTER(ZFUIKit_test_Window)
 ZFOBJECT_REGISTER(ZFUIKit_test_Button)
 ZFOBJECT_REGISTER(ZFUIKit_test_ListView)
 
+ZFOBJECT_REGISTER(ZFUIKit_test_SettingData)
+ZFEVENT_REGISTER(ZFUIKit_test_SettingData, SettingOnChange)
+
 void ZFUIKit_test_prepareTestWindow(
         ZF_OUT ZFUIWindow *&window
         , ZF_OUT ZFUIView *&container

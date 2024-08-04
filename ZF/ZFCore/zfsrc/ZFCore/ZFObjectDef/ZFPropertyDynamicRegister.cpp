@@ -7,6 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFPropertyDynamicRegisterParamPrivate {
 public:
     zfuint refCount;
+    zfbool zfunsafe_disableChecker;
     zfauto propertyDynamicRegisterUserData;
     const ZFClass *propertyOwnerClass;
     zfstring propertyTypeId;
@@ -26,6 +27,7 @@ public:
 public:
     _ZFP_ZFPropertyDynamicRegisterParamPrivate(void)
     : refCount(1)
+    , zfunsafe_disableChecker(zffalse)
     , propertyDynamicRegisterUserData(zfnull)
     , propertyOwnerClass()
     , propertyTypeId()
@@ -148,6 +150,14 @@ ZFPropertyCallbackIsInitValue ZFPropertyDynamicRegisterParam::propertyCustomImpl
 }
 ZFPropertyCallbackValueReset ZFPropertyDynamicRegisterParam::propertyCustomImplCallbackValueReset(void) const {
     return d->propertyCustomImplCallbackValueReset;
+}
+
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::zfunsafe_disableChecker(ZF_IN zfbool disableChecker) {
+    d->zfunsafe_disableChecker = disableChecker;
+    return *this;
+}
+zfbool ZFPropertyDynamicRegisterParam::zfunsafe_disableChecker(void) const {
+    return d->zfunsafe_disableChecker;
 }
 
 // ============================================================

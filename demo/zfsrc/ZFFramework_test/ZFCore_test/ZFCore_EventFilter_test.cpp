@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFEVENT_GLOBAL(ZFCore_EventFilter_test)
+ZFEVENT_GLOBAL(ZFLIB_APP, ZFCore_EventFilter_test)
 ZFEVENT_GLOBAL_REGISTER(ZFCore_EventFilter_test)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 

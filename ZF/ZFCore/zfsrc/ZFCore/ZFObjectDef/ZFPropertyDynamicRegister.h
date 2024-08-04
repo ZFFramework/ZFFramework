@@ -109,6 +109,12 @@ public:
     ZFPropertyCallbackValueReset propertyCustomImplCallbackValueReset(void) const;
 
 public:
+    /** @brief see #ZFPropertyDynamicRegister */
+    ZFPropertyDynamicRegisterParam &zfunsafe_disableChecker(ZF_IN zfbool disableChecker);
+    /** @brief see #ZFPropertyDynamicRegister */
+    zfbool zfunsafe_disableChecker(void) const;
+
+public:
     /** @brief see #objectInfo */
     zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */

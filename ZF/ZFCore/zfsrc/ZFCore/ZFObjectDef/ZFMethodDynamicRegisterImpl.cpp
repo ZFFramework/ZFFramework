@@ -118,39 +118,42 @@ const ZFMethod *ZFMethodDynamicRegister(
             break;
         }
     }
-    const ZFMethod *existMethod = zfnull;
-    if(param.methodOwnerClass() != zfnull) {
-        existMethod = param.methodOwnerClass()->methodForNameIgnoreParent(
-                param.methodName()
-                , param.methodParamTypeIdAt(0)
-                , param.methodParamTypeIdAt(1)
-                , param.methodParamTypeIdAt(2)
-                , param.methodParamTypeIdAt(3)
-                , param.methodParamTypeIdAt(4)
-                , param.methodParamTypeIdAt(5)
-                , param.methodParamTypeIdAt(6)
-                , param.methodParamTypeIdAt(7)
-            );
-    }
-    else {
-        existMethod = ZFMethodFuncForName(
-                param.methodNamespace()
-                , param.methodName()
-                , param.methodParamTypeIdAt(0)
-                , param.methodParamTypeIdAt(1)
-                , param.methodParamTypeIdAt(2)
-                , param.methodParamTypeIdAt(3)
-                , param.methodParamTypeIdAt(4)
-                , param.methodParamTypeIdAt(5)
-                , param.methodParamTypeIdAt(6)
-                , param.methodParamTypeIdAt(7)
-            );
-    }
-    if(existMethod != zfnull) {
-        zfstringAppend(errorHint,
-            "method with same sig already exists: %s",
-            existMethod);
-        return zfnull;
+
+    if(!param.zfunsafe_disableChecker()) {
+        const ZFMethod *existMethod = zfnull;
+        if(param.methodOwnerClass() != zfnull) {
+            existMethod = param.methodOwnerClass()->methodForNameIgnoreParent(
+                    param.methodName()
+                    , param.methodParamTypeIdAt(0)
+                    , param.methodParamTypeIdAt(1)
+                    , param.methodParamTypeIdAt(2)
+                    , param.methodParamTypeIdAt(3)
+                    , param.methodParamTypeIdAt(4)
+                    , param.methodParamTypeIdAt(5)
+                    , param.methodParamTypeIdAt(6)
+                    , param.methodParamTypeIdAt(7)
+                );
+        }
+        else {
+            existMethod = ZFMethodFuncForName(
+                    param.methodNamespace()
+                    , param.methodName()
+                    , param.methodParamTypeIdAt(0)
+                    , param.methodParamTypeIdAt(1)
+                    , param.methodParamTypeIdAt(2)
+                    , param.methodParamTypeIdAt(3)
+                    , param.methodParamTypeIdAt(4)
+                    , param.methodParamTypeIdAt(5)
+                    , param.methodParamTypeIdAt(6)
+                    , param.methodParamTypeIdAt(7)
+                );
+        }
+        if(existMethod != zfnull) {
+            zfstringAppend(errorHint,
+                "method with same sig already exists: %s",
+                existMethod);
+            return zfnull;
+        }
     }
 
     zfCoreMutexLocker();
