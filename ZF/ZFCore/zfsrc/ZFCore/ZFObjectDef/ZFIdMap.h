@@ -33,7 +33,6 @@ extern ZFLIB_ZFCore zfstring ZFIdMapNameForId(ZF_IN zfidentity idValue);
  * note: can be found only if:
  * -  declared with #ZFIDMAP_INLINE
  * -  registered by #ZFIDMAP_REGISTER series
- * -  ever accessed
  */
 extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfstring &idName);
 
@@ -41,7 +40,7 @@ extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfstring &idName);
  * @brief see #ZFIDMAP
  *
  * get all registered id data, for debug use only
- * @note can be found only if accessed or registered by #ZFIDMAP_REGISTER
+ * @note can be found only if registered by #ZFIDMAP_REGISTER
  */
 extern ZFLIB_ZFCore void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
@@ -131,7 +130,15 @@ public:
             } \
         } _ZFP_IdMap_##prefix##YourIdName; \
     public: \
-        ZFIDMAP_DETAIL(prefix, YourIdName)
+        static zfidentity prefix##YourIdName(void) { \
+            static _ZFP_ZFIdMapHolder d( \
+                    zfstr("%s.%s", zfself::ClassData()->classNameFull(), ZFM_TOSTRING(prefix##YourIdName)) \
+                    , zfself::ClassData() \
+                    , zfnull \
+                    , zftext(ZFM_TOSTRING(prefix##YourIdName)) \
+                ); \
+            return *(d.idValue); \
+        }
 
 /**
  * @brief declare an id in global scope, see #ZFIDMAP
