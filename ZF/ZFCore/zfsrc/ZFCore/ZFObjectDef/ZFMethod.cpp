@@ -11,6 +11,18 @@
 
 #include "../ZFSTLWrapper/zfstlhashmap.h"
 
+// #define _ZFP_ZFMethod_DEBUG 1
+
+#if _ZFP_ZFMethod_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFMethod_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLogger("[ZFMtd] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFMethod_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 const ZFListener &_ZFP_ZFMethod_paramDefaultValueCallbackDummy(void) {
@@ -527,6 +539,10 @@ ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN const zfstring &returnTypeId
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
+    _ZFP_ZFMethod_invokeTimeLogger("register: %s::%s"
+            , methodOwnerClass ? methodOwnerClass->className().cString() : methodNamespace ? methodNamespace.cString() : ""
+            , methodName.cString()
+            );
     zfCoreMutexLocker();
     const zfchar *methodNamespaceTmp = methodNamespace;
     methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespaceTmp);
@@ -639,6 +655,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
     return method;
 }
 void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
+    _ZFP_ZFMethod_invokeTimeLogger("unregister: %s", method->methodName().cString());
     zfCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
     _ZFP_ZFMethodMapType::iterator it = m.find(method->methodInternalId());

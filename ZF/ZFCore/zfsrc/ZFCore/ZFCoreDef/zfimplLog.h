@@ -27,6 +27,12 @@
     #endif
 #endif
 
+#ifndef zfimplUniqueName
+    #define zfimplUniqueName(name) _ZFP_zfimplUniqueName2(name, __LINE__)
+    #define _ZFP_zfimplUniqueName2(name, line) _ZFP_zfimplUniqueName3(name, line)
+    #define _ZFP_zfimplUniqueName3(name, line) _ZFP_uniq_##name##_##line
+#endif
+
 // ============================================================
 #ifndef zfimplTimestamp
     #include <ctime>
@@ -56,6 +62,30 @@
         #endif
     }
     #define zfimplTimestamp() _ZFP_zfimplTimestamp()
+#endif
+
+#ifndef zfimplInvokeTimeLogger
+    #include <stdio.h>
+    class _ZFP_zfimplInvokeTimeLogger {
+    public:
+        _ZFP_zfimplInvokeTimeLogger(const char *hint, ...)
+        : _lastTime(zfimplTimestamp())
+        {
+            va_list vaList;
+            va_start(vaList, hint);
+            vsnprintf(_hint, sizeof(_hint), hint, vaList);
+            va_end(vaList);
+        }
+        ~_ZFP_zfimplInvokeTimeLogger(void)
+        {
+            zfimplLog("%4d : %s", (int)(zfimplTimestamp() - _lastTime), _hint);
+        }
+    private:
+        char _hint[512];
+        long long _lastTime;
+    };
+    #define zfimplInvokeTimeLogger(hint, ...) \
+        _ZFP_zfimplInvokeTimeLogger zfimplUniqueName(ivkTime)(hint, ##__VA_ARGS__)
 #endif
 
 // ============================================================

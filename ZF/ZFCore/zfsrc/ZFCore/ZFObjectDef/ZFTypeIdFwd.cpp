@@ -77,6 +77,7 @@ private:
         }
     }
 };
+ZFOBJECT_REGISTER(_ZFP_I_PropAliasHolder)
 
 void _ZFP_PropAliasAttach(
         ZF_IN ZFObject *obj

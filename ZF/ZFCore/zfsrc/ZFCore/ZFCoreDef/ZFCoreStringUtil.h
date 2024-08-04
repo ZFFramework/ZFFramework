@@ -433,19 +433,21 @@ inline zfindex zfstringFindLastNotOf(
 }
 // ============================================================
 // zfstringReplace
-/** @brief replace string, return replaced count */
-extern ZFLIB_ZFCore zfindex zfstringReplace(
-        ZF_IN_OUT zfstring &s
+/** @brief replace string */
+extern ZFLIB_ZFCore zfstring zfstringReplace(
+        ZF_IN const zfchar *src
         , ZF_IN const zfchar *replaceFrom
         , ZF_IN const zfchar *replaceTo
         , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_OUT_OPT zfindex *replacedCount = zfnull
         );
-/** @brief replace string, return replaced count */
-extern ZFLIB_ZFCore zfindex zfstringReplaceReversely(
-        ZF_IN_OUT zfstring &s
+/** @brief replace string */
+extern ZFLIB_ZFCore zfstring zfstringReplaceReversely(
+        ZF_IN const zfchar *src
         , ZF_IN const zfchar *replaceFrom
         , ZF_IN const zfchar *replaceTo
         , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_OUT_OPT zfindex *replacedCount = zfnull
         );
 
 // ============================================================

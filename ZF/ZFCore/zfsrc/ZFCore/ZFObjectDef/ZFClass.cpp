@@ -6,6 +6,18 @@
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
+// #define _ZFP_ZFClass_DEBUG 1
+
+#if _ZFP_ZFClass_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFClass_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLogger("[ZFCls] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFClass_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -60,32 +72,6 @@ typedef zfstlmap<ZFSigName, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
 zfclassNotPOD _ZFP_ZFClassPrivate {
 public:
     zfuint refCount;
-    /*
-     * here's a memo for ZFCoreLibDestroyFlag:
-     *
-     * ZFFramework is designed as plugin type framework,
-     * which can be load dynamically
-     *
-     * it's all right for most case if use
-     * ZF_GLOBAL_INITIALIZER_INIT/ZF_STATIC_INITIALIZER_INIT,
-     * however, for core meta-object types (class map, method map, etc),
-     * it require additional register and unregister steps
-     * to ensure initialize and destroy order
-     *
-     * here's a typical case of the questions mentioned above:
-     *
-     * * libraries that depends on ZFFramework needs to be load and unload at runtime
-     *
-     *   at this case, we need some static holder object, to unregister class map from ZFFramework,
-     *   during the library being unloaded
-     *
-     * * ZFFramework would be unloaded before app's destruction,
-     *   this is typical if under Qt using QLibrary
-     *
-     *   at this case, simply use static holder object would cause crash during app's destruction,
-     *   since ZFFramework already unloaded when the holder object try to unregister class map
-     */
-    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
     ZFClass *pimplOwner;
     zfbool classIsDynamicRegister;
     zfauto classDynamicRegisterUserData;
@@ -212,7 +198,6 @@ public:
 public:
     _ZFP_ZFClassPrivate(void)
     : refCount(1)
-    , ZFCoreLibDestroyFlag()
     , pimplOwner(zfnull)
     , classIsDynamicRegister(zffalse)
     , classDynamicRegisterUserData()
@@ -245,11 +230,6 @@ public:
     , methodMapCache()
     , propertyMapCache()
     {
-    }
-    ~_ZFP_ZFClassPrivate(void) {
-        for(zfindex i = 0; i < this->ZFCoreLibDestroyFlag.count(); ++i) {
-            *(this->ZFCoreLibDestroyFlag[i]) = zftrue;
-        }
     }
 
 public:
@@ -1198,8 +1178,7 @@ ZFClass::~ZFClass(void) {
 }
 
 ZFClass *ZFClass::_ZFP_ZFClassRegister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfstring &classNamespace
+        ZF_IN const zfstring &classNamespace
         , ZF_IN const zfstring &className
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
@@ -1212,6 +1191,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN zfbool classIsDynamicRegister
         , ZF_IN ZFObject *classDynamicRegisterUserData
         ) {
+    _ZFP_ZFClass_invokeTimeLogger("register: %s", className.cString());
     zfCoreMutexLocker();
     const zfchar *classNamespaceTmp = classNamespace;
     if(outer != zfnull) {
@@ -1253,10 +1233,6 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         needFinalInit = zftrue;
         cls = zfnew(ZFClass);
         _ZFP_ZFClassMap.set(classNameFull, ZFCorePointerForObject<ZFClass *>(cls));
-
-        if(ZFCoreLibDestroyFlag) {
-            cls->d->ZFCoreLibDestroyFlag.add(ZFCoreLibDestroyFlag);
-        }
 
         cls->d->classIsDynamicRegister = classIsDynamicRegister;
         cls->d->classDynamicRegisterUserData = classDynamicRegisterUserData;
@@ -1323,13 +1299,8 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
 
     return cls;
 }
-void ZFClass::_ZFP_ZFClassUnregister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const ZFClass *cls
-        ) {
-    if(ZFCoreLibDestroyFlag && *ZFCoreLibDestroyFlag) {
-        return;
-    }
+void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
+    _ZFP_ZFClass_invokeTimeLogger("unregister: %s", cls->className().cString());
     zfCoreMutexLocker();
 
     if(cls->classIsDynamicRegister()) {
@@ -1350,7 +1321,6 @@ void ZFClass::_ZFP_ZFClassUnregister(
     _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, cls, zfnull, zfnull);
 
     _ZFP_ZFClassPrivate *d = cls->d;
-    d->ZFCoreLibDestroyFlag.removeElement(ZFCoreLibDestroyFlag);
     --(d->refCount);
     if(d->refCount != 0) {
         return;
@@ -1385,6 +1355,7 @@ void ZFClass::_ZFP_ZFClass_autoRegister(void) const {
     zfCoreMutexLocker();
     if(d->needAutoRegister) {
         d->needAutoRegister = zffalse;
+        _ZFP_ZFClass_invokeTimeLogger("autoRegister: %s", this->className().cString());
 
         // create dummy instance to ensure static init of the object would take effect
         // including method and property register
@@ -1662,11 +1633,9 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
         , ZF_IN_OPT zfbool classIsDynamicRegister /* = zffalse */
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         )
-: ZFCoreLibDestroyFlag(zffalse)
-, cls(zfnull)
+: cls(zfnull)
 {
     cls = ZFClass::_ZFP_ZFClassRegister(
-        &ZFCoreLibDestroyFlag,
         classNamespace,
         className,
         parent,
@@ -1681,7 +1650,7 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
         classDynamicRegisterUserData);
 }
 _ZFP_ZFClassRegisterHolder::~_ZFP_ZFClassRegisterHolder(void) {
-    ZFClass::_ZFP_ZFClassUnregister(&ZFCoreLibDestroyFlag, this->cls);
+    ZFClass::_ZFP_ZFClassUnregister(this->cls);
 }
 
 // ============================================================
@@ -1723,6 +1692,12 @@ void _ZFP_ZFClassDataChangeNotify(
     (void)ZFClassDataChangeObserver(); // ensure init order
     (void)ZFGlobalObserver(); // ensure init order
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkPostStatic) == ZFFrameworkStateAvailable) {
+        _ZFP_ZFClass_invokeTimeLogger("data change notify: %s %s %s %s"
+                , ZFClassDataChangeTypeToString(changeType).cString()
+                , changedClass ? changedClass->className().cString() : ZFTOKEN_zfnull
+                , changedProperty ? changedProperty->propertyName().cString() : ZFTOKEN_zfnull
+                , changedMethod ? changedMethod->objectInfo().cString() : ZFTOKEN_zfnull
+                );
         if(changedProperty != zfnull) {
             changedProperty->propertyOwnerClass()->_ZFP_ZFClass_classDataChangeNotify();
         }

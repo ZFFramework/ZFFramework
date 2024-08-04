@@ -191,12 +191,11 @@ public:
     ZFProtocol *implInstance;
 };
 extern ZFLIB_ZFCore _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfchar *protocolName
+        ZF_IN const zfchar *protocolName
         , ZF_IN _ZFP_ZFProtocolTryAccessCallback implTryAccessCallback
         , ZF_IN zfbool protocolOptional
         );
-extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplDataUnregister(zfbool *ZFCoreLibDestroyFlag, const zfchar *protocolName);
+extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplDataUnregister(const zfchar *protocolName);
 extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
 
 // ============================================================
@@ -221,13 +220,8 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 return #ModuleName; \
             } \
         public: \
-            static zfbool *_ZFP_ZFProtocolZFCoreLibDestroyFlag(void) { \
-                static zfbool ZFCoreLibDestroyFlag = zffalse; \
-                return &ZFCoreLibDestroyFlag; \
-            } \
             static _ZFP_ZFProtocolData &_ZFP_ZFProtocolDataRef(void) { \
                 static _ZFP_ZFProtocolData &_d = _ZFP_ZFProtocolImplDataRegister( \
-                    zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
                     zftext(#ModuleName), \
                     zfself::_ZFP_ZFProtocolTryAccessCallbackFunc, \
                     zfself::_ZFP_ZFProtocolOptional()); \
@@ -485,21 +479,14 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
 typedef void (*_ZFP_ZFProtocolImplRegisterHolderClearCallback)(void);
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFProtocolImplRegisterHolder {
 public:
-    _ZFP_ZFProtocolImplRegisterHolder(
-            ZF_IN zfbool *ZFCoreLibDestroyFlag
-            , ZF_IN _ZFP_ZFProtocolImplRegisterHolderClearCallback callback
-            )
-    : ZFCoreLibDestroyFlag(ZFCoreLibDestroyFlag)
-    , callback(callback)
+    _ZFP_ZFProtocolImplRegisterHolder(ZF_IN _ZFP_ZFProtocolImplRegisterHolderClearCallback callback)
+    : callback(callback)
     {
     }
     ~_ZFP_ZFProtocolImplRegisterHolder(void) {
-        if(!*(this->ZFCoreLibDestroyFlag)) {
-            this->callback();
-        }
+        this->callback();
     }
 private:
-    zfbool *ZFCoreLibDestroyFlag;
     _ZFP_ZFProtocolImplRegisterHolderClearCallback callback;
 };
 // ============================================================
@@ -527,7 +514,7 @@ private:
                 if(ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolDataRef().implConstructor == &ImplementationClass::_ZFP_##ImplementationClass##_ctor) { \
                     ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default); \
                 } \
-                _ZFP_ZFProtocolImplDataUnregister(zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), #ModuleName); \
+                _ZFP_ZFProtocolImplDataUnregister(#ModuleName); \
             } \
             static void _ZFP_ZFProtocolRegister(void) { \
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplRegister( \
@@ -535,9 +522,7 @@ private:
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
                     zftext(#ImplementationName), \
                     implLevel); \
-                static _ZFP_ZFProtocolImplRegisterHolder _holder( \
-                    zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
-                    &ImplementationClass::_ZFP_ZFProtocolUnregister); \
+                static _ZFP_ZFProtocolImplRegisterHolder _holder(&ImplementationClass::_ZFP_ZFProtocolUnregister); \
             } \
             static void _ZFP_ZFProtocolChange(void) { \
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange( \

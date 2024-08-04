@@ -21,10 +21,7 @@ static zfstring _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(
 }
 
 static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const ZFClass *cls) {
-    zfstring ret;
-    ret += cls->classNameFull();
-    zfstringReplace(ret, ".", "_");
-    return ret;
+    return zfstringReplace(cls->classNameFull(), ".", "_");
 }
 static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId) {
     const ZFClass *cls = ZFClass::classForName(typeId);
@@ -35,8 +32,7 @@ static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId) {
     if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull) {
         zfstring ret;
         ret += "_";
-        ret += typeId;
-        zfstringReplace(ret, ".", "_");
+        ret += zfstringReplace(typeId, ".", "_");
         return ret;
     }
     return _ZFP_ZFLuaLSPGenFile_typeIdToSig(typeInfo->typeIdClass());

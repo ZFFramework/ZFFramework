@@ -19,7 +19,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFClassDynamicRegisterAutoRemove) {
         zfstlmap<const ZFClass *, zfbool> t;
         t.swap(m);
         for(zfstlmap<const ZFClass *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
-            ZFClass::_ZFP_ZFClassUnregister(zfnull, it->first);
+            ZFClass::_ZFP_ZFClassUnregister(it->first);
         }
     }
 }
@@ -55,7 +55,6 @@ const ZFClass *ZFClassDynamicRegister(
     }
     zfindex dotPos = zfstringFindReversely(classNameFull, zfindexMax(), ".");
     cls = ZFClass::_ZFP_ZFClassRegister(
-        zfnull,
         dotPos == zfindexMax() ? zfnull : zfstring(classNameFull, dotPos).cString(),
         dotPos == zfindexMax() ? classNameFull : zfstring(classNameFull + dotPos + 1),
         parent,
@@ -88,7 +87,7 @@ void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls) {
     _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(cls->classNamespace()));
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.erase(cls);
     cls->classTagRemoveAll();
-    ZFClass::_ZFP_ZFClassUnregister(zfnull, cls);
+    ZFClass::_ZFP_ZFClassUnregister(cls);
 }
 
 // ============================================================

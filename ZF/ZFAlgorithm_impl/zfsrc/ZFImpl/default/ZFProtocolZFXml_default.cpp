@@ -50,8 +50,7 @@ private:
                     else {
                         tmp += buf.bufferT<zfchar *>() + offset;
                     }
-                    zfstringReplace(tmp, "\n", "\\n");
-                    *errorHint += tmp;
+                    *errorHint += zfstringReplace(tmp, "\n", "\\n");
                 }
             }
             return zfnull;

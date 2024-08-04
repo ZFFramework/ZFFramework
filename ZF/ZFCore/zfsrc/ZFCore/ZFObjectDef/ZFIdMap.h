@@ -14,13 +14,11 @@ zfclassFwd ZFClass;
 
 // ============================================================
 extern ZFLIB_ZFCore const zfidentity *_ZFP_ZFIdMapRegister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfstring &idName
+        ZF_IN const zfstring &idName
         , ZF_IN_OPT zfbool isDynamicRegister = zffalse
         );
 extern ZFLIB_ZFCore void _ZFP_ZFIdMapUnregister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN zfidentity idValue
+        ZF_IN zfidentity idValue
         , ZF_IN_OPT zfbool isDynamicRegister = zffalse
         );
 /**
@@ -75,7 +73,6 @@ public:
     ~_ZFP_ZFIdMapHolder(void);
 
 public:
-    zfbool ZFCoreLibDestroyFlag;
     const zfidentity *idValue;
 };
 /**

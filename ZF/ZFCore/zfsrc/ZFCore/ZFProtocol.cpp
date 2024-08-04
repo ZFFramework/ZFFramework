@@ -14,14 +14,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevelEnum, pro
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplPlatformHint)
 
 // ============================================================
-zfclassLikePOD _ZFP_ZFProtocolDataPrivateData {
-public:
-    _ZFP_ZFProtocolData data;
-    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
-};
 ZF_STATIC_INITIALIZER_INIT(ZFProtocolDataHolder) {
 }
-ZFCoreMap implDataMap; // _ZFP_ZFProtocolDataPrivateData *
+ZFCoreMap implDataMap; // _ZFP_ZFProtocolData *
 ZF_STATIC_INITIALIZER_END(ZFProtocolDataHolder)
 #define _ZFP_ZFProtocolDataMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFProtocolDataHolder)->implDataMap)
 
@@ -33,13 +28,13 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFProtocolImplCleanup_protocolOnDeallocPre
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDeallocPrepare) {
     ZFCoreMap &implDataMap = _ZFP_ZFProtocolDataMap;
-    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolData *> allValue;
     implDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
-        _ZFP_ZFProtocolDataPrivateData *dataHolder = allValue[i];
-        if(dataHolder->data.implInstance != zfnull) {
-            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDeallocPrepare;
-            dataHolder->data.implInstance->protocolOnDeallocPrepare();
+        _ZFP_ZFProtocolData *dataHolder = allValue[i];
+        if(dataHolder->implInstance != zfnull) {
+            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDeallocPrepare;
+            dataHolder->implInstance->protocolOnDeallocPrepare();
         }
     }
 }
@@ -49,15 +44,15 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFProtocolImplCleanup_protocolOnDealloc, Z
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDealloc) {
     ZFCoreMap &implDataMap = _ZFP_ZFProtocolDataMap;
-    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolData *> allValue;
     implDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
-        _ZFP_ZFProtocolDataPrivateData *dataHolder = allValue[i];
-        if(dataHolder->data.implInstance != zfnull) {
-            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDealloc;
-            dataHolder->data.implInstance->protocolOnDealloc();
-            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit;
-            dataHolder->data.implCleanupCallback(&(dataHolder->data));
+        _ZFP_ZFProtocolData *dataHolder = allValue[i];
+        if(dataHolder->implInstance != zfnull) {
+            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDealloc;
+            dataHolder->implInstance->protocolOnDealloc();
+            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit;
+            dataHolder->implCleanupCallback(dataHolder);
         }
     }
 }
@@ -65,33 +60,26 @@ ZF_GLOBAL_INITIALIZER_END(ZFProtocolImplCleanup_protocolOnDealloc)
 
 // ============================================================
 _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfchar *protocolName
+        ZF_IN const zfchar *protocolName
         , ZF_IN _ZFP_ZFProtocolTryAccessCallback implTryAccessCallback
         , ZF_IN zfbool protocolOptional
         ) {
-    _ZFP_ZFProtocolDataPrivateData *dataHolder = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolDataPrivateData *>(protocolName);
+    _ZFP_ZFProtocolData *dataHolder = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolData *>(protocolName);
     if(dataHolder == zfnull) {
-        dataHolder = zfnew(_ZFP_ZFProtocolDataPrivateData);
-        dataHolder->data.protocolName = protocolName;
-        dataHolder->data.protocolOptional = protocolOptional;
-        dataHolder->data.implTryAccessCallback = implTryAccessCallback;
-        dataHolder->data.implConstructor = zfnull;
-        dataHolder->data.implLevel = ZFProtocolLevel::e_Default;
-        dataHolder->data.implCleanupCallback = zfnull;
-        dataHolder->data.implInstance = zfnull;
-        _ZFP_ZFProtocolDataMap.set(protocolName, ZFCorePointerForObject<_ZFP_ZFProtocolDataPrivateData *>(dataHolder));
+        dataHolder = zfnew(_ZFP_ZFProtocolData);
+        dataHolder->protocolName = protocolName;
+        dataHolder->protocolOptional = protocolOptional;
+        dataHolder->implTryAccessCallback = implTryAccessCallback;
+        dataHolder->implConstructor = zfnull;
+        dataHolder->implLevel = ZFProtocolLevel::e_Default;
+        dataHolder->implCleanupCallback = zfnull;
+        dataHolder->implInstance = zfnull;
+        _ZFP_ZFProtocolDataMap.set(protocolName, ZFCorePointerForObject<_ZFP_ZFProtocolData *>(dataHolder));
     }
 
-    dataHolder->ZFCoreLibDestroyFlag.add(ZFCoreLibDestroyFlag);
-
-    return dataHolder->data;
+    return *dataHolder;
 }
-void _ZFP_ZFProtocolImplDataUnregister(zfbool *ZFCoreLibDestroyFlag, const zfchar *protocolName) {
-    _ZFP_ZFProtocolDataPrivateData *dataHolder = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolDataPrivateData *>(protocolName);
-    if(dataHolder != zfnull) {
-        dataHolder->ZFCoreLibDestroyFlag.removeElement(ZFCoreLibDestroyFlag);
-    }
+void _ZFP_ZFProtocolImplDataUnregister(const zfchar *protocolName) {
 }
 void _ZFP_ZFProtocolImplAccess(void) {
     // access to ensure init order
@@ -109,16 +97,15 @@ ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolForName
         , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
         ) {
     zfCoreMutexLocker();
-    _ZFP_ZFProtocolDataPrivateData *data = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolDataPrivateData *>(name);
+    _ZFP_ZFProtocolData *data = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolData *>(name);
     if(data != zfnull) {
-        _ZFP_ZFProtocolData &implData = data->data;
-        if(implData.implInstance == zfnull) {
-            implData.implTryAccessCallback();
+        if(data->implInstance == zfnull) {
+            data->implTryAccessCallback();
         }
-        if(implData.implInstance != zfnull
-                && (zfstringIsEmpty(desiredImpl) || zfstringIsEqual(desiredImpl, implData.implInstance->protocolImplPlatformHint()))
+        if(data->implInstance != zfnull
+                && (zfstringIsEmpty(desiredImpl) || zfstringIsEqual(desiredImpl, data->implInstance->protocolImplPlatformHint()))
                 ) {
-            return implData.implInstance;
+            return data->implInstance;
         }
     }
     return zfnull;
@@ -166,11 +153,11 @@ static void _ZFP_ZFProtocolImplInfoCopy(
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll) {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
-    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolData *> allValue;
     _ZFP_ZFProtocolDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         ZFProtocolImplInfo data;
-        _ZFP_ZFProtocolImplInfoCopy(data, allValue[i]->data);
+        _ZFP_ZFProtocolImplInfoCopy(data, *(allValue[i]));
         ret.add(data);
     }
 
@@ -179,11 +166,11 @@ ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllImplemented) {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
-    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolData *> allValue;
     _ZFP_ZFProtocolDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         ZFProtocolImplInfo data;
-        _ZFP_ZFProtocolData &implData = allValue[i]->data;
+        _ZFP_ZFProtocolData &implData = *(allValue[i]);
         if(implData.implTryAccessCallback() != zfnull) {
             _ZFP_ZFProtocolImplInfoCopy(data, implData);
             ret.add(data);
@@ -195,11 +182,11 @@ ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllNotImplemented) {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
-    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolData *> allValue;
     _ZFP_ZFProtocolDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         ZFProtocolImplInfo data;
-        _ZFP_ZFProtocolData &implData = allValue[i]->data;
+        _ZFP_ZFProtocolData &implData = *(allValue[i]);
         if(implData.implTryAccessCallback() == zfnull) {
             _ZFP_ZFProtocolImplInfoCopy(data, implData);
             ret.add(data);

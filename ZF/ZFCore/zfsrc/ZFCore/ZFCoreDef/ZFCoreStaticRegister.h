@@ -7,6 +7,18 @@
 
 #include "ZFCoreTypeDef.h"
 
+// #define _ZFP_ZFCoreStaticRegister_DEBUG 1
+
+#if _ZFP_ZFCoreStaticRegister_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFCoreStaticRegister_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLogger("[ZFSR] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFCoreStaticRegister_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -55,6 +67,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }; \
     static _ZFP_SR_##Name _ZFP_SRI_##Name; \
     /** @endcond */
+
+#if _ZFP_ZFCoreStaticRegister_DEBUG
+    #undef ZF_STATIC_REGISTER_INIT
+    #undef ZF_STATIC_REGISTER_DESTROY
+    #undef ZF_STATIC_REGISTER_END
+
+    #define ZF_STATIC_REGISTER_INIT(Name) \
+        /** @cond ZFPrivateDoc */ \
+        zfclassNotPOD _ZFP_SR_##Name { \
+        protected: \
+            typedef _ZFP_SR_##Name zfself; \
+        public: \
+            _ZFP_SR_##Name(void) { \
+                _ZFP_ZFCoreStaticRegister_invokeTimeLogger("reg: %s", #Name); \
+                _ZFP_SR_Reg(); \
+            } \
+            void _ZFP_SR_Reg(void)
+    #define ZF_STATIC_REGISTER_DESTROY(Name) \
+            ~_ZFP_SR_##Name(void) { \
+                _ZFP_ZFCoreStaticRegister_invokeTimeLogger("unreg: %s", #Name); \
+                _ZFP_SR_Unreg(); \
+            } \
+            void _ZFP_SR_Unreg(void)
+    #define ZF_STATIC_REGISTER_END(Name) \
+        }; \
+        static _ZFP_SR_##Name _ZFP_SRI_##Name; \
+        /** @endcond */
+#endif
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCoreStaticRegister_h_

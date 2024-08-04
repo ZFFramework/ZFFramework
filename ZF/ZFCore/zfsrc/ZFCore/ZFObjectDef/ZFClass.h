@@ -627,8 +627,7 @@ public:
     // private
 public:
     static ZFClass *_ZFP_ZFClassRegister(
-            ZF_IN zfbool *ZFCoreLibDestroyFlag
-            , ZF_IN const zfstring &classNamespace
+            ZF_IN const zfstring &classNamespace
             , ZF_IN const zfstring &className
             , ZF_IN const ZFClass *parent
             , ZF_IN const ZFClass *outer
@@ -641,10 +640,7 @@ public:
             , ZF_IN zfbool classIsDynamicRegister
             , ZF_IN ZFObject *classDynamicRegisterUserData
             );
-    static void _ZFP_ZFClassUnregister(
-            ZF_IN zfbool *ZFCoreLibDestroyFlag
-            , ZF_IN const ZFClass *cls
-            );
+    static void _ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls);
     /** @cond ZFPrivateDoc */
     ZFClass(void);
     ~ZFClass(void);
@@ -738,7 +734,6 @@ public:
             );
     ~_ZFP_ZFClassRegisterHolder(void);
 public:
-    zfbool ZFCoreLibDestroyFlag;
     ZFClass *cls;
 };
 

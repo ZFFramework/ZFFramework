@@ -297,17 +297,19 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastNotOf
         , ZFMP_IN(zfchar, find)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplace
-        , ZFMP_IN_OUT(zfstring &, s)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfstring, zfstringReplace
+        , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfchar *, replaceFrom)
         , ZFMP_IN(const zfchar *, replaceTo)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        , ZFMP_OUT_OPT(zfindex *, replacedCount, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplaceReversely
-        , ZFMP_IN_OUT(zfstring &, s)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfstring, zfstringReplaceReversely
+        , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfchar *, replaceFrom)
         , ZFMP_IN(const zfchar *, replaceTo)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        , ZFMP_OUT_OPT(zfindex *, replacedCount, zfnull)
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfstringSplitT

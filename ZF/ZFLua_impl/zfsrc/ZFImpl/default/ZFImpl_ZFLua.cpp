@@ -2,6 +2,18 @@
 
 #include "ZFImpl_ZFLua_ZFCallbackForLua.h"
 
+// #define _ZFP_ZFImpl_ZFLua_DEBUG 1
+
+#if _ZFP_ZFImpl_ZFLua_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFImpl_ZFLua_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLogger("[ZFLuaImpl] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFImpl_ZFLua_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 void *ZFImpl_ZFLua_luaStateOpen(void) {
@@ -194,6 +206,13 @@ zfbool ZFImpl_ZFLua_execute(
         , ZF_OUT_OPT zfstring *errHint /* = zfnull */
         , ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */
         ) {
+    _ZFP_ZFImpl_ZFLua_invokeTimeLogger("execute %d: %s"
+            , (int)(bufLen == zfindexMax() ? zfslen(buf) : bufLen)
+            , zfstringReplace(
+                zfstring(buf, zfmMin<zfindex>(bufLen == zfindexMax() ? zfslen(buf) : bufLen, 64))
+                , "\n", "\\n"
+                ).cString()
+            );
     ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
 
     int luaStackNum = lua_gettop(L);

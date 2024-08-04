@@ -13,8 +13,7 @@ _ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(
         , ZF_IN const zfstring &ownerNamespace
         , ZF_IN const zfstring &methodName
 )
-: ZFCoreLibDestroyFlag(zffalse)
-, idValue(_ZFP_ZFIdMapRegister(&ZFCoreLibDestroyFlag, idName))
+: idValue(_ZFP_ZFIdMapRegister(idName))
 {
     zfclassNotPOD _ZFP_IdMap_GI {
     public:
@@ -45,7 +44,7 @@ _ZFP_ZFIdMapHolder::~_ZFP_ZFIdMapHolder(void) {
             ZFMethodDynamicUnregister(method);
         }
     }
-    _ZFP_ZFIdMapUnregister(&ZFCoreLibDestroyFlag, *idValue);
+    _ZFP_ZFIdMapUnregister(*idValue);
 }
 
 // ============================================================
@@ -55,7 +54,6 @@ public:
     zfidentity idValue;
     zfstring idName;
     zfbool isDynamicRegister;
-    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
 
 public:
     _ZFP_ZFIdMapData(void)
@@ -63,13 +61,7 @@ public:
     , idValue(zfidentityInvalid())
     , idName()
     , isDynamicRegister(zffalse)
-    , ZFCoreLibDestroyFlag()
     {
-    }
-    ~_ZFP_ZFIdMapData(void) {
-        for(zfindex i = 0; i < this->ZFCoreLibDestroyFlag.count(); ++i) {
-            *(this->ZFCoreLibDestroyFlag[i]) = zftrue;
-        }
     }
 };
 typedef zfstlmap<zfidentity, _ZFP_ZFIdMapData *> _ZFP_ZFIdMapDataIdMapType;
@@ -88,8 +80,7 @@ static _ZFP_ZFIdMapModuleData &_ZFP_ZFIdMapModuleDataRef(void) {
 }
 
 const zfidentity *_ZFP_ZFIdMapRegister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfstring &idName
+        ZF_IN const zfstring &idName
         , ZF_IN_OPT zfbool isDynamicRegister /* = zffalse */
         ) {
     if(zfstringIsEmpty(idName)) {
@@ -121,20 +112,12 @@ const zfidentity *_ZFP_ZFIdMapRegister(
         dataIdMap[data->idValue] = data;
         dataNameMap[data->idName] = data;
     }
-    if(ZFCoreLibDestroyFlag != zfnull) {
-        data->ZFCoreLibDestroyFlag.add(ZFCoreLibDestroyFlag);
-    }
-
     return &(data->idValue);
 }
 void _ZFP_ZFIdMapUnregister(
-        ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN zfidentity idValue
+        ZF_IN zfidentity idValue
         , ZF_IN_OPT zfbool isDynamicRegister /* = zffalse */
         ) {
-    if(ZFCoreLibDestroyFlag != zfnull && *ZFCoreLibDestroyFlag) {
-        return;
-    }
     zfCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     _ZFP_ZFIdMapDataIdMapType &dataIdMap = moduleData.dataIdMap;
@@ -154,7 +137,6 @@ void _ZFP_ZFIdMapUnregister(
             data->idValue,
             data->idName);
     }
-    data->ZFCoreLibDestroyFlag.removeElement(ZFCoreLibDestroyFlag);
     --(data->refCount);
     if(data->refCount == 0) {
         dataIdMap.erase(data->idValue);
@@ -200,10 +182,10 @@ void ZFIdMapGetAll(
 }
 
 zfidentity ZFIdMapDynamicRegister(ZF_IN const zfstring &idName) {
-    return *_ZFP_ZFIdMapRegister(zfnull, idName, zftrue);
+    return *_ZFP_ZFIdMapRegister(idName, zftrue);
 }
 void ZFIdMapDynamicUnregister(ZF_IN zfidentity idValue) {
-    _ZFP_ZFIdMapUnregister(zfnull, idValue, zftrue);
+    _ZFP_ZFIdMapUnregister(idValue, zftrue);
 }
 
 ZF_NAMESPACE_GLOBAL_END

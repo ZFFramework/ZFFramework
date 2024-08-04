@@ -139,6 +139,8 @@ public:
 // ZFThread
 ZFOBJECT_REGISTER(ZFThread)
 
+ZFEVENT_REGISTER(ZFThread, ThreadOnRegister)
+ZFEVENT_REGISTER(ZFThread, ThreadOnUnregister)
 ZFEVENT_REGISTER(ZFThread, ThreadOnStart)
 ZFEVENT_REGISTER(ZFThread, ThreadOnStop)
 ZFEVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)

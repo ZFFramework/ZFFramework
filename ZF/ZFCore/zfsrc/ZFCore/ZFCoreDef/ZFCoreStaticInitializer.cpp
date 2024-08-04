@@ -3,6 +3,18 @@
 #include "ZFCoreMutex.h"
 #include "ZFCorePointer.h"
 
+// #define _ZFP_ZFCoreStaticInitializer_DEBUG 1
+
+#if _ZFP_ZFCoreStaticInitializer_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFCoreStaticInitializer_invokeTimeLogger(fmt, ...) \
+        zfimplInvokeTimeLogger("[ZFSI] " fmt \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFCoreStaticInitializer_invokeTimeLogger(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassLikePOD _ZFP_SI_ItemData {
@@ -21,6 +33,7 @@ public:
     }
     ~_ZFP_SI_ItemData(void) {
         if(this->instance != zfnull) {
+            _ZFP_ZFCoreStaticInitializer_invokeTimeLogger("destroy: %s", name.cString());
             this->destructor(this->instance);
         }
     }
@@ -43,6 +56,7 @@ public:
             , ZF_IN _ZFP_SI_Constructor constructor
             , ZF_IN _ZFP_SI_Destructor destructor
             ) {
+        _ZFP_ZFCoreStaticInitializer_invokeTimeLogger("create: %s", name.cString());
         zfCoreMutexLocker();
         for(zfindex i = 0; i < this->datas.count(); ++i) {
             if(this->datas[i]->name.compare(name) == 0) {

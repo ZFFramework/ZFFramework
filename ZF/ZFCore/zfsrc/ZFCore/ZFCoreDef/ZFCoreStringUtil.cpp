@@ -242,44 +242,63 @@ zfindex zfstringFindLastNotOf(
     }
     return zfindexMax();
 }
-zfindex zfstringReplace(
-        ZF_IN_OUT zfstring &s
+zfstring zfstringReplace(
+        ZF_IN const zfchar *src
         , ZF_IN const zfchar *replaceFrom
         , ZF_IN const zfchar *replaceTo
         , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        , ZF_OUT_OPT zfindex *replacedCount /* = zfnull */
         ) {
-    zfindex replacedCount = 0;
+    zfindex srcLen = zfslen(src);
+    zfindex replacedCountTmp = 0;
     zfindex replaceFromLen = zfslen(replaceFrom);
     zfindex replaceToLen = zfslen(replaceTo);
-    zfindex pos = 0;
-    zfindex posStart = pos;
-    while(maxCount == zfindexMax() || replacedCount < maxCount) {
-        pos = zfstringFind(s + posStart, s.length() - posStart, replaceFrom, replaceFromLen);
+    zfindex posStart = 0;
+    zfstring ret;
+    while(maxCount == zfindexMax() || replacedCountTmp < maxCount) {
+        zfindex pos = zfstringFind(src + posStart, srcLen - posStart, replaceFrom, replaceFromLen);
         if(pos == zfindexMax()) {break;}
-        s.replace(posStart + pos, replaceFromLen, replaceTo);
-        posStart = posStart + pos + replaceToLen;
-        ++replacedCount;
+        ret.append(src + posStart, pos);
+        ret.append(replaceTo, replaceToLen);
+        posStart += pos + replaceFromLen;
+        ++replacedCountTmp;
     }
-    return replacedCount;
+    if(posStart < srcLen) {
+        ret.append(src + posStart, srcLen - posStart);
+    }
+    if(replacedCount != zfnull) {
+        *replacedCount = replacedCountTmp;
+    }
+    return ret;
 }
-zfindex zfstringReplaceReversely(
-        ZF_IN_OUT zfstring &s
+zfstring zfstringReplaceReversely(
+        ZF_IN const zfchar *src
         , ZF_IN const zfchar *replaceFrom
         , ZF_IN const zfchar *replaceTo
         , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        , ZF_OUT_OPT zfindex *replacedCount /* = zfnull */
         ) {
-    zfindex replacedCount = 0;
+    zfindex srcLen = zfslen(src);
+    zfindex replacedCountTmp = 0;
     zfindex replaceFromLen = zfslen(replaceFrom);
-    zfindex pos = s.length();
-    zfindex posStart = pos;
-    while(maxCount == zfindexMax() || replacedCount < maxCount) {
-        pos = zfstringFindReversely(s, posStart, replaceFrom, replaceFromLen);
+    zfindex replaceToLen = zfslen(replaceTo);
+    zfindex posStart = srcLen;
+    zfstring ret;
+    while(maxCount == zfindexMax() || replacedCountTmp < maxCount) {
+        zfindex pos = zfstringFindReversely(src, posStart, replaceFrom, replaceFromLen);
         if(pos == zfindexMax()) {break;}
-        s.replace(pos, replaceFromLen, replaceTo);
+        ret.insert(0, src + pos + replaceFromLen, posStart - pos - replaceFromLen);
+        ret.insert(0, replaceTo, replaceToLen);
         posStart = pos;
-        ++replacedCount;
+        ++replacedCountTmp;
     }
-    return replacedCount;
+    if(posStart > 0) {
+        ret.insert(0, src, posStart);
+    }
+    if(replacedCount != zfnull) {
+        *replacedCount = replacedCountTmp;
+    }
+    return ret;
 }
 
 // ============================================================
