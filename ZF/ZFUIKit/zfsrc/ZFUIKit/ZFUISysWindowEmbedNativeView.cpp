@@ -41,6 +41,7 @@ public:
         sysWindowToFinish->nativeWindowEmbedImplDestroy();
     }
 };
+ZFOBJECT_REGISTER(_ZFP_ZFUISysWindowEmbedNativeViewImpl)
 
 // ============================================================
 ZFMETHOD_DEFINE_1(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView

@@ -14,6 +14,7 @@ public:
     ZFListener finishCallback;
     zfautoT<ZFThread> callerThread;
 };
+ZFOBJECT_REGISTER(_ZFP_I_zfasyncTaskData)
 
 typedef zfstlmap<zfidentity, zfautoT<_ZFP_I_zfasyncTaskData> > _ZFP_zfasyncTaskMap;
 
