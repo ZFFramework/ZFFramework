@@ -2,13 +2,13 @@
 #include "ZFObjectImpl.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *> > _ZFP_ZFMethodFuncNameMapType;
-typedef zfstlmap<ZFSigName, _ZFP_ZFMethodFuncNameMapType> _ZFP_ZFMethodFuncMapType;
+typedef zfstlhashmap<ZFSigName, zfstlvector<const ZFMethod *>, ZFSigName_zfstlHash, ZFSigName_zfstlEqual> _ZFP_ZFMethodFuncNameMapType;
+typedef zfstlhashmap<ZFSigName, _ZFP_ZFMethodFuncNameMapType, ZFSigName_zfstlHash, ZFSigName_zfstlEqual> _ZFP_ZFMethodFuncMapType;
 static _ZFP_ZFMethodFuncMapType &_ZFP_ZFMethodFuncMap(void) {
      static _ZFP_ZFMethodFuncMapType m;
      return m;

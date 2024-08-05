@@ -1,24 +1,26 @@
 #include "ZFTypeIdDynamicRegister.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+typedef zfstlhashmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFTypeIdDynamicMapType;
+
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTypeIdDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
-zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > m;
+_ZFP_ZFTypeIdDynamicMapType m;
 ZF_GLOBAL_INITIALIZER_END(ZFTypeIdDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTypeIdDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFTypeIdDynamicRegisterAutoRemove) {
-    zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder)->m;
+    _ZFP_ZFTypeIdDynamicMapType &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder)->m;
     if(!m.empty()) {
-        zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > t;
+        _ZFP_ZFTypeIdDynamicMapType t;
         t.swap(m);
-        for(zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = t.begin(); it != t.end(); ++it) {
+        for(_ZFP_ZFTypeIdDynamicMapType::iterator it = t.begin(); it != t.end(); ++it) {
             _ZFP_ZFTypeInfoUnregister(it->first);
         }
     }
@@ -68,7 +70,7 @@ zfbool ZFTypeIdDynamicRegister(
 void ZFTypeIdDynamicUnregister(ZF_IN const zfstring &typeIdName) {
     if(!zfstringIsEmpty(typeIdName)) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
-        zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = d->m.find(typeIdName);
+        _ZFP_ZFTypeIdDynamicMapType::iterator it = d->m.find(typeIdName);
         if(it != d->m.end()) {
             ZFMethodDynamicUnregister(ZFMethodFuncForName(zfnull,
                 zfstr("ZFTypeId_%s", typeIdName)));

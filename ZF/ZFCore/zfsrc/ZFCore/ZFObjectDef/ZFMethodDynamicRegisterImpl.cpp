@@ -3,12 +3,14 @@
 #include "ZFObjectImpl.h"
 #include "ZFMethodFuncDeclare.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static zfstlmap<const ZFMethod *, zfbool> &_ZFP_ZFMethodDynRegData(void) {
-    static zfstlmap<const ZFMethod *, zfbool> d;
+typedef zfstlhashmap<const ZFMethod *, zfbool, zfpointer_zfstlHash<const ZFMethod *>, zfpointer_zfstlEqual<const ZFMethod *> > _ZFP_ZFMethodDynRegMapType;
+
+static _ZFP_ZFMethodDynRegMapType &_ZFP_ZFMethodDynRegData(void) {
+    static _ZFP_ZFMethodDynRegMapType d;
     return d;
 }
 
@@ -16,9 +18,9 @@ static zfstlmap<const ZFMethod *, zfbool> &_ZFP_ZFMethodDynRegData(void) {
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove) {
-    zfstlmap<const ZFMethod *, zfbool> t;
+    _ZFP_ZFMethodDynRegMapType t;
     t.swap(_ZFP_ZFMethodDynRegData());
-    for(zfstlmap<const ZFMethod *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
+    for(_ZFP_ZFMethodDynRegMapType::iterator it = t.begin(); it != t.end(); ++it) {
         _ZFP_ZFMethodUnregister(it->first);
     }
 }

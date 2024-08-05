@@ -2,7 +2,7 @@
 #include "ZFObjectImpl.h"
 #include "ZFCore/ZFObjectDef/ZFMethodDynamicRegisterExtra.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -65,8 +65,8 @@ public:
     {
     }
 };
-typedef zfstlmap<zfidentity, _ZFP_ZFIdMapData *> _ZFP_ZFIdMapDataIdMapType;
-typedef zfstlmap<zfstring, _ZFP_ZFIdMapData *> _ZFP_ZFIdMapDataNameMapType;
+typedef zfstlhashmap<zfidentity, _ZFP_ZFIdMapData *, zfpod_zfstlHash<zfidentity>, zfpod_zfstlEqual<zfidentity> > _ZFP_ZFIdMapDataIdMapType;
+typedef zfstlhashmap<zfstring, _ZFP_ZFIdMapData *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFIdMapDataNameMapType;
 
 zfclassLikePOD _ZFP_ZFIdMapModuleData {
 public:

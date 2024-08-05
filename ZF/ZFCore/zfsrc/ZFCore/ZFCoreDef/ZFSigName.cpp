@@ -1,9 +1,7 @@
 #include "ZFSigName.h"
 #include "zfstr.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
 #include "../ZFSTLWrapper/zfstlhashmap.h"
-#include "../ZFSTLWrapper/zfstlstring.h"
 #include "../ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -17,7 +15,7 @@ public:
 };
 
 typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;
-typedef zfstlmap<zfidentity, zfbool> _ZFP_ZFSigNameIdMapType;
+typedef zfstlhashmap<zfidentity, zfbool, zfpod_zfstlHash<zfidentity>, zfpod_zfstlEqual<zfidentity> > _ZFP_ZFSigNameIdMapType;
 typedef zfstldeque<_ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameCacheType;
 
 static zfidentity &_ZFP_ZFSigNameId(void) {

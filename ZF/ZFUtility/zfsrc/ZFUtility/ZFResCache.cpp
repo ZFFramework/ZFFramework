@@ -1,7 +1,5 @@
 #include "ZFResCache.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFResCache)

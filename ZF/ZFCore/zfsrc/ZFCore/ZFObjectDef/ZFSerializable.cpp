@@ -3,8 +3,6 @@
 #include "ZFSerializableDataSerializableConverter.h"
 #include "ZFPropertyUtil.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

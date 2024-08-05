@@ -84,6 +84,32 @@ public:
     /** @endcond */
 };
 
+/**
+ * @brief key comparer by string comparation, used in STL
+ */
+template<typename T_Pointer>
+zfclassNotPOD ZFLIB_ZFCore zfpointer_zfstlLess {
+public:
+    /** @cond ZFPrivateDoc */
+    inline zfbool operator () (T_Pointer const &k1, T_Pointer const &k2) const {
+        return (const zfbyte *)k1 < (const zfbyte *)k2;
+    }
+    /** @endcond */
+};
+
+/**
+ * @brief key comparer by string comparation, used in STL
+ */
+template<typename T_POD>
+zfclassNotPOD ZFLIB_ZFCore zfpod_zfstlLess {
+public:
+    /** @cond ZFPrivateDoc */
+    inline zfbool operator () (T_POD const &k1, T_POD const &k2) const {
+        return zfcmpPOD(k1, k2) < 0;
+    }
+    /** @endcond */
+};
+
 // ============================================================
 /**
  * @brief key hasher by string value hash, used in STL
@@ -145,6 +171,19 @@ public:
     /** @endcond */
 };
 
+/**
+ * @brief key hasher by pointer value hash, used in STL
+ */
+template<typename T_POD>
+zfclassNotPOD zfpod_zfstlHash {
+public:
+    /** @cond ZFPrivateDoc */
+    zfstlsize operator () (T_POD const &v) const {
+        return (zfstlsize)zfidentityCalcPOD(v);
+    }
+    /** @endcond */
+};
+
 // ============================================================
 /**
  * @brief key comparer by string comparation, used in STL
@@ -202,6 +241,19 @@ public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (T_Pointer const &k1, T_Pointer const &k2) const {
         return (k1 == k2);
+    }
+    /** @endcond */
+};
+
+/**
+ * @brief key comparer by pointer value comparation, used in STL
+ */
+template<typename T_POD>
+zfclassNotPOD zfpod_zfstlEqual {
+public:
+    /** @cond ZFPrivateDoc */
+    inline zfbool operator () (T_POD const &k1, T_POD const &k2) const {
+        return zfcmpPOD(k1, k2) == 0;
     }
     /** @endcond */
 };
