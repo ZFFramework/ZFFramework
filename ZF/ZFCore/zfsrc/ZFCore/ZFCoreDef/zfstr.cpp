@@ -258,7 +258,7 @@ void _ZFP_zfstringAppend(
         if(option.precision != -1) {
             zfindex pos = zfstringFind(tmp, '.');
             if(pos != zfindexMax()) {
-                zfint decimalLen = (zfint)tmp.length() - pos - 1;
+                zfint decimalLen = (zfint)(tmp.length() - pos - 1);
                 if(decimalLen > option.precision) {
                     zfindex newLen = pos + option.precision + 1;
                     if(tmp[newLen] >= '5') {
