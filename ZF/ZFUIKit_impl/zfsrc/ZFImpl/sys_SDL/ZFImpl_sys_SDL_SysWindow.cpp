@@ -120,18 +120,18 @@ void ZFImpl_sys_SDL_SysWindow::renderStart(void) {
         return;
     }
     d->renderStarted = zftrue;
-    ZFGlobalTimerAttach(d->renderCallback, ZFLevelZFFrameworkPostNormal);
+    ZFGlobalTimerAttachOnce(d->renderCallback, ZFLevelZFFrameworkPostNormal);
 }
 void ZFImpl_sys_SDL_SysWindow::renderStop(void) {
     if(!d->renderStarted) {
         return;
     }
     d->renderStarted = zffalse;
-    ZFGlobalTimerDetach(d->renderCallback);
 }
 
 void ZFImpl_sys_SDL_SysWindow::renderRequest(void) {
     d->renderRequested = zftrue;
+    ZFGlobalTimerAttachOnce(d->renderCallback, ZFLevelZFFrameworkPostNormal);
 }
 
 void ZFImpl_sys_SDL_SysWindow::layoutRequest(void) {

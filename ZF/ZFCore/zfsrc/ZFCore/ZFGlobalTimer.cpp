@@ -2,6 +2,18 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclass _ZFP_I_ZFGlobalTimer : zfextend ZFTimer {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFGlobalTimer, ZFTimer)
+protected:
+    virtual inline void timerOnActivate(void) {
+        zfsuper::timerOnActivate();
+        if(!this->observerHasAdd(zfself::EventTimerOnActivate())) {
+            this->timerStop();
+        }
+    }
+};
+ZFOBJECT_REGISTER(_ZFP_I_ZFGlobalTimer)
+
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFGlobalTimerDataHolder, ZFLevelZFFrameworkHigh) {
     this->globalTimer = zfnull;
@@ -17,7 +29,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFGlobalTimerDataHolder) {
 }
 zftimet globalTimerIntervalDefault;
 zftimet globalTimerInterval;
-ZFTimer *globalTimer;
+_ZFP_I_ZFGlobalTimer *globalTimer;
 zfbool globalTimerManualStep;
 void checkCleanup(void) {
     if(!this->globalTimer->observerHasAdd(ZFTimer::EventTimerOnActivate())) {
@@ -44,7 +56,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttach
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
-        d->globalTimer = zfAlloc(ZFTimer);
+        d->globalTimer = zfAlloc(_ZFP_I_ZFGlobalTimer);
         d->globalTimer->timerInterval(ZFGlobalTimerInterval());
     }
     if(!d->globalTimer->timerStarted() && !d->globalTimerManualStep) {
@@ -63,7 +75,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
-        d->globalTimer = zfAlloc(ZFTimer);
+        d->globalTimer = zfAlloc(_ZFP_I_ZFGlobalTimer);
         d->globalTimer->timerInterval(ZFGlobalTimerInterval());
     }
     if(!d->globalTimer->timerStarted() && !d->globalTimerManualStep) {

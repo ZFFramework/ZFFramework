@@ -6,9 +6,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if _ZFP_ZFUIButton_DEBUG
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...) \
-        zfLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLOG_HEADER_STRING;
+        zfLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLogHeader(ZFCallerInfoMake());
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName) \
-        zfLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLOG_HEADER_STRING;
+        zfLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLogHeader(ZFCallerInfoMake());
 #else
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...)
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName)
@@ -66,6 +66,7 @@ public:
 
 public:
     void buttonStateUpdate(ZF_IN zfbool highlighted) {
+        ZFUIButtonStateEnum buttonStateOld = this->buttonState;
         this->buttonHighlightedFlag = highlighted;
         if(this->enableFlag) {
             if(this->buttonHighlightedFlag) {
@@ -75,8 +76,15 @@ public:
                 else {
                     this->buttonState = ZFUIButtonState::e_Highlighted;
                 }
-                _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnHighlighted)
-                this->pimplOwner->buttonStateOnUpdate();
+                if(buttonStateOld != this->buttonState) {
+                    if(this->pimplOwner->checked()) {
+                        _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnCheckedHighlighted)
+                    }
+                    else {
+                        _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnHighlighted)
+                    }
+                    this->pimplOwner->buttonStateOnUpdate();
+                }
             }
             else {
                 if(this->pimplOwner->checked()) {
@@ -85,14 +93,23 @@ public:
                 else {
                     this->buttonState = ZFUIButtonState::e_Normal;
                 }
-                _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnNormal)
-                this->pimplOwner->buttonStateOnUpdate();
+                if(buttonStateOld != this->buttonState) {
+                    if(this->pimplOwner->checked()) {
+                        _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnChecked)
+                    }
+                    else {
+                        _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnNormal)
+                    }
+                    this->pimplOwner->buttonStateOnUpdate();
+                }
             }
         }
         else {
-            this->buttonState = ZFUIButtonState::e_Disabled;
-            _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnDisabled)
-            this->pimplOwner->buttonStateOnUpdate();
+            if(buttonStateOld != this->buttonState) {
+                this->buttonState = ZFUIButtonState::e_Disabled;
+                _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnDisabled)
+                this->pimplOwner->buttonStateOnUpdate();
+            }
         }
     }
     void viewEventOnMouseEvent(ZF_IN ZFUIMouseEvent *mouseEvent) {
