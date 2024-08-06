@@ -108,6 +108,10 @@ public:
         gettimeofday(&timev, zfnull);
         t.tv_sec = (time_t)(timev.tv_sec + (miliSecs / 1000));
         t.tv_nsec = (time_t)(timev.tv_usec * 1000 + (miliSecs % 1000) * 1000 * 1000);
+        if(t.tv_nsec >= 1000000000LL) {
+            t.tv_sec += (t.tv_nsec / 1000000000LL);
+            t.tv_nsec = (t.tv_nsec % 1000000000LL);
+        }
         return (pthread_cond_timedwait(&(semaphoreToken->sema), &(semaphoreToken->semaLocker), &t) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFSemaphoreImpl_sys_Posix)
