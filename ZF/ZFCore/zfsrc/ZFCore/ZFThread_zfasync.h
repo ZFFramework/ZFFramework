@@ -41,6 +41,43 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel
         , ZFMP_IN(const zfauto &, taskId)
         )
 
+// ============================================================
+zfclassFwd _ZFP_ZFThreadPoolPrivate;
+/**
+ * @brief thread pool util, internal impl of #zfasync
+ */
+zfclass ZFLIB_ZFCore ZFThreadPool : zfextend ZFObject {
+    ZFOBJECT_DECLARE(ZFThreadPool, ZFObject)
+    ZFOBJECT_SINGLETON_DECLARE_DETAIL(private, public, ZFThreadPool, instance)
+
+    /** @brief max thread */
+    ZFPROPERTY_ASSIGN(zfuint, maxThread, 8)
+
+    /** @brief see #zfasync */
+    ZFMETHOD_DECLARE_2(zfauto, start
+            , ZFMP_IN(const ZFListener &, callback)
+            , ZFMP_IN(const ZFListener &, finishCallback)
+            )
+    /** @brief see #zfasyncCancel */
+    ZFMETHOD_DECLARE_1(void, stop
+            , ZFMP_IN(const zfauto &, taskId)
+            )
+
+    /**
+     * @brief cancel all task and wait, called automatically before dealloc
+     */
+    ZFMETHOD_DECLARE_0(void, removeAllAndWait)
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void);
+    zfoverride
+    virtual void objectOnDealloc(void);
+
+private:
+    _ZFP_ZFThreadPoolPrivate *d;
+};
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFThread_zfasync_h_
 

@@ -1,4 +1,5 @@
 #include "zfimplLog.h"
+#include <cstdarg>
 
 // ============================================================
 #include <ctime>
@@ -60,14 +61,6 @@ _ZFP_zfimplInvokeTimeLogger::~_ZFP_zfimplInvokeTimeLogger(void) {
     // need -lrt for Posix
     #include <sys/time.h>
 #endif
-_ZFP_zfimplTimeStr::_ZFP_zfimplTimeStr(void) : buf((char *)malloc(32)) {
-    buf[0] = '\0';
-}
-_ZFP_zfimplTimeStr::~_ZFP_zfimplTimeStr(void) {
-    if(buf) {
-        free(buf);
-    }
-}
 _ZFP_zfimplTimeStr _ZFP_zfimplTime(void) {
     #if defined(_WIN32) || defined(WIN32)
         union {
@@ -89,7 +82,7 @@ _ZFP_zfimplTimeStr _ZFP_zfimplTime(void) {
     if(tm == NULL) {
         return ret;
     }
-    snprintf(ret.buf, 32, "%02d:%02d:%02d.%03d"
+    snprintf(ret.buf, sizeof(ret.buf), "%02d:%02d:%02d.%03d"
             , (int)tm->tm_hour
             , (int)tm->tm_min
             , (int)tm->tm_sec

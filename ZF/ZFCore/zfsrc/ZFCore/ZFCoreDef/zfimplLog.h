@@ -61,14 +61,11 @@ private:
 
 // ============================================================
 #ifndef zfimplTime
-    #define zfimplTime() (_ZFP_zfimplTime().buf)
+    #define zfimplTime() ((const char *)_ZFP_zfimplTime().buf)
 #endif
 class ZFLIB_ZFCore _ZFP_zfimplTimeStr {
 public:
-    char *buf;
-public:
-    _ZFP_zfimplTimeStr(void);
-    ~_ZFP_zfimplTimeStr(void);
+    char buf[32];
 };
 extern ZFLIB_ZFCore _ZFP_zfimplTimeStr _ZFP_zfimplTime(void);
 

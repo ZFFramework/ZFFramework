@@ -4,8 +4,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_I_zfasyncTaskData : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_zfasyncTaskData, ZFObject)
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
+        , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        ) {
+    return ZFThreadPool::instance()->start(callback, finishCallback);
+}
+ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel
+        , ZFMP_IN(const zfauto &, taskId)
+        ) {
+    ZFThreadPool::instance()->stop(taskId);
+}
+
+// ============================================================
+ZFOBJECT_REGISTER(ZFThreadPool)
+ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFThreadPool, instance, ZFLevelZFFrameworkEssential)
+
+zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFThreadPoolTaskData, ZFObject)
 public:
     ZFArgs zfargs;
     zfidentity taskId;
@@ -14,52 +30,49 @@ public:
     ZFListener finishCallback;
     zfautoT<ZFThread> callerThread;
 };
-ZFOBJECT_REGISTER(_ZFP_I_zfasyncTaskData)
+ZFOBJECT_REGISTER(_ZFP_I_ZFThreadPoolTaskData)
 
-typedef zfstlmap<zfidentity, zfautoT<_ZFP_I_zfasyncTaskData> > _ZFP_zfasyncTaskMap;
+typedef zfstlmap<zfidentity, zfautoT<_ZFP_I_ZFThreadPoolTaskData> > _ZFP_ZFThreadPoolTaskMap;
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkHigh) {
-    this->maxThread = 8;
-    this->threadScheduleCallback = ZFCallbackForFunc(zfself::_ZFP_runThread);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
-    do {
-        zfCoreMutexLock();
-        while(!this->taskList.isEmpty()) {
-            zfasyncCancel(this->taskList.getLast());
-        }
-        if(this->threadPool.isEmpty()) {
-            zfCoreMutexUnlock();
-            break;
-        }
-        zfautoT<ZFThread> runThread = this->threadPool.removeAndGet(0);
-        zfCoreMutexUnlock();
-
-        runThread->threadStop();
-        runThread->taskQueueCleanup();
-        runThread->sleepCancel();
-        runThread->threadWait();
-    } while(zftrue);
-}
+zfclassNotPOD _ZFP_ZFThreadPoolPrivate {
 public:
-    zfuint maxThread;
+    zfuint refCount;
     ZFCoreArray<zfautoT<ZFThread> > threadPool;
     zfidentity taskIdCur;
-    _ZFP_zfasyncTaskMap taskMap;
-    ZFCoreArray<_ZFP_I_zfasyncTaskData *> taskList;
+    _ZFP_ZFThreadPoolTaskMap taskMap;
+    ZFCoreArray<_ZFP_I_ZFThreadPoolTaskData *> taskList;
     ZFListener threadScheduleCallback;
+
 public:
-    static void _ZFP_runThread(ZF_IN const ZFArgs &zfargs) {
+    _ZFP_ZFThreadPoolPrivate(void)
+    : refCount(1)
+    , threadPool()
+    , taskIdCur(0)
+    , taskMap()
+    , taskList()
+    , threadScheduleCallback()
+    {
+        _ZFP_ZFThreadPoolPrivate *d = this;
+        ZFLISTENER_1(wrap
+                , _ZFP_ZFThreadPoolPrivate *, d
+                ) {
+            _ZFP_runThread(d);
+        }
+        ZFLISTENER_END()
+        this->threadScheduleCallback = wrap;
+    }
+
+public:
+    static void _ZFP_runThread(ZF_IN _ZFP_ZFThreadPoolPrivate *d) {
         do {
             zfCoreMutexLock();
             ZFThread *runThread = ZFThread::currentThread();
             if(runThread == zfnull) {
                 zfCoreMutexUnlock();
-                return;
+                break;
             }
 
-            ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-            zfautoT<_ZFP_I_zfasyncTaskData> taskData;
+            zfautoT<_ZFP_I_ZFThreadPoolTaskData> taskData;
             for(zfindex i = 0; i < d->taskList.count(); ++i) {
                 if(d->taskList[i]->callerThread != runThread) {
                     taskData = d->taskList.removeAndGet(i);
@@ -69,7 +82,7 @@ public:
             }
             if(taskData == zfnull) {
                 zfCoreMutexUnlock();
-                return;
+                break;
             }
             zfCoreMutexUnlock();
 
@@ -79,33 +92,44 @@ public:
             zfCoreMutexLock();
             taskData->result = taskData->zfargs.result();
             if(taskData->zfargs.param0() == zfnull) {
-                d->taskCleanup(taskData);
+                _ZFP_taskCleanup(taskData);
                 zfCoreMutexUnlock();
                 continue;
             }
             if(!taskData->finishCallback) {
-                d->taskCleanup(taskData);
+                _ZFP_taskCleanup(taskData);
                 zfCoreMutexUnlock();
                 continue;
             }
+            ++(d->refCount);
             zfCoreMutexUnlock();
-
-            ZFLISTENER_1(notifyFinish
-                    , zfautoT<_ZFP_I_zfasyncTaskData>, taskData
+            ZFLISTENER_2(notifyFinish
+                    , _ZFP_ZFThreadPoolPrivate *, d
+                    , zfautoT<_ZFP_I_ZFThreadPoolTaskData>, taskData
                     ) {
-                ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_notifyFinish(zfargs, taskData);
+                _ZFP_notifyFinish(d, taskData);
+                zfCoreMutexLocker();
+                --(d->refCount);
+                if(d->refCount == 0) {
+                    zfpoolDelete(d);
+                }
             } ZFLISTENER_END()
             ZFThread::executeInThread(ZFThread::mainThread(), notifyFinish);
         } while(zftrue);
+
+        zfCoreMutexLocker();
+        --(d->refCount);
+        if(d->refCount == 0) {
+            zfpoolDelete(d);
+        }
     }
     static void _ZFP_notifyFinish(
-            ZF_IN const ZFArgs &zfargs
-            , ZF_IN _ZFP_I_zfasyncTaskData *taskData
+            ZF_IN _ZFP_ZFThreadPoolPrivate *d
+            , ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData
             ) {
         zfCoreMutexLock();
-        ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
         if(taskData->zfargs.param0() == zfnull) {
-            d->taskCleanup(taskData);
+            _ZFP_taskCleanup(taskData);
             zfCoreMutexUnlock();
             return;
         }
@@ -116,36 +140,44 @@ public:
             );
 
         zfCoreMutexLock();
-        d->taskCleanup(taskData);
+        _ZFP_taskCleanup(taskData);
         zfCoreMutexUnlock();
     }
-    void taskCleanup(ZF_IN _ZFP_I_zfasyncTaskData *taskData) {
+    static void _ZFP_taskCleanup(ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData) {
         taskData->taskId = zfidentityInvalid();
         taskData->callback = zfnull;
         taskData->result = zfnull;
         taskData->finishCallback = zfnull;
         taskData->callerThread = zfnull;
     }
-ZF_GLOBAL_INITIALIZER_END(zfasyncDataHolder)
+};
 
-// ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
-            , ZFMP_IN(const ZFListener &, callback)
-            , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-            ) {
+void ZFThreadPool::objectOnInit(void) {
+    zfsuper::objectOnInit();
+    d = zfpoolNew(_ZFP_ZFThreadPoolPrivate);
+}
+void ZFThreadPool::objectOnDealloc(void) {
+    this->removeAllAndWait();
+    zfpoolDelete(d);
+    zfsuper::objectOnDealloc();
+}
+
+ZFMETHOD_DEFINE_2(ZFThreadPool, zfauto, start
+        , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN(const ZFListener &, finishCallback)
+        ) {
     if(!callback) {
         return zfnull;
     }
 
     zfCoreMutexLocker();
-    ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
     do {
         ++(d->taskIdCur);
         if(d->taskIdCur == zfidentityInvalid()) {
             d->taskIdCur = 0;
         }
     } while(d->taskMap.find(d->taskIdCur) != d->taskMap.end());
-    zfobj<_ZFP_I_zfasyncTaskData> taskData;
+    zfobj<_ZFP_I_ZFThreadPoolTaskData> taskData;
     taskData->taskId = d->taskIdCur;
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;
@@ -161,11 +193,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
             threadPool->taskQueueAdd(d->threadScheduleCallback);
         }
     }
-    while(d->threadPool.count() < d->maxThread && taskCount > 0) {
+    while(d->threadPool.count() < this->maxThread() && taskCount > 0) {
         --taskCount;
         zfobj<ZFThread> threadPool;
         d->threadPool.add(threadPool);
-        threadPool->threadName("zfasync pool");
+        threadPool->threadName(zfstr("ZFThreadPool:%s:%s", (const void *)this, (const void *)threadPool.toObject()));
         threadPool->taskQueueInit();
         threadPool->threadStart();
         threadPool->taskQueueAdd(d->threadScheduleCallback);
@@ -173,21 +205,39 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
 
     return taskData;
 }
-
-ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel
-            , ZFMP_IN(const zfauto &, taskId)
-            ) {
+ZFMETHOD_DEFINE_1(ZFThreadPool, void, stop
+        , ZFMP_IN(const zfauto &, taskId)
+        ) {
     zfCoreMutexLocker();
-    _ZFP_I_zfasyncTaskData *taskData = taskId;
+    _ZFP_I_ZFThreadPoolTaskData *taskData = taskId;
     if(taskData == zfnull || taskData->taskId == zfidentityInvalid()) {
         return;
     }
-    ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
     d->taskMap.erase(taskData->taskId);
     d->taskList.removeElement(taskData);
 
     taskData->zfargs.param0(zfnull);
     taskData->taskId = zfidentityInvalid();
+}
+
+ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAllAndWait) {
+    do {
+        zfCoreMutexLock();
+        while(!d->taskList.isEmpty()) {
+            this->stop(d->taskList.getLast());
+        }
+        if(d->threadPool.isEmpty()) {
+            zfCoreMutexUnlock();
+            break;
+        }
+        zfautoT<ZFThread> runThread = d->threadPool.removeAndGet(0);
+        zfCoreMutexUnlock();
+
+        runThread->threadStop();
+        runThread->taskQueueCleanup();
+        runThread->sleepCancel();
+        runThread->threadWait();
+    } while(zftrue);
 }
 
 ZF_NAMESPACE_GLOBAL_END
