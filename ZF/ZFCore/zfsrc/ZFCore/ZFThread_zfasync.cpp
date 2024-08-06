@@ -56,6 +56,9 @@ public:
         ZFLISTENER_1(wrap
                 , _ZFP_ZFThreadPoolPrivate *, d
                 ) {
+            zfCoreMutexLock();
+            ++(d->refCount);
+            zfCoreMutexUnlock();
             _ZFP_runThread(d);
         }
         ZFLISTENER_END()
@@ -108,6 +111,7 @@ public:
                     , zfautoT<_ZFP_I_ZFThreadPoolTaskData>, taskData
                     ) {
                 _ZFP_notifyFinish(d, taskData);
+
                 zfCoreMutexLocker();
                 --(d->refCount);
                 if(d->refCount == 0) {
@@ -157,8 +161,12 @@ void ZFThreadPool::objectOnInit(void) {
     d = zfpoolNew(_ZFP_ZFThreadPoolPrivate);
 }
 void ZFThreadPool::objectOnDealloc(void) {
-    this->removeAllAndWait();
-    zfpoolDelete(d);
+    this->removeAll();
+
+    --(d->refCount);
+    if(d->refCount == 0) {
+        zfpoolDelete(d);
+    }
     zfsuper::objectOnDealloc();
 }
 
@@ -220,7 +228,7 @@ ZFMETHOD_DEFINE_1(ZFThreadPool, void, stop
     taskData->taskId = zfidentityInvalid();
 }
 
-ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAllAndWait) {
+ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAll) {
     do {
         zfCoreMutexLock();
         while(!d->taskList.isEmpty()) {
@@ -236,7 +244,6 @@ ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAllAndWait) {
         runThread->threadStop();
         runThread->taskQueueCleanup();
         runThread->sleepCancel();
-        runThread->threadWait();
     } while(zftrue);
 }
 

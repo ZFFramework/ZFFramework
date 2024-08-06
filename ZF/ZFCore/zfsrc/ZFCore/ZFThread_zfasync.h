@@ -64,9 +64,9 @@ zfclass ZFLIB_ZFCore ZFThreadPool : zfextend ZFObject {
             )
 
     /**
-     * @brief cancel all task and wait, called automatically before dealloc
+     * @brief cancel all task, called automatically before dealloc
      */
-    ZFMETHOD_DECLARE_0(void, removeAllAndWait)
+    ZFMETHOD_DECLARE_0(void, removeAll)
 
 protected:
     zfoverride
