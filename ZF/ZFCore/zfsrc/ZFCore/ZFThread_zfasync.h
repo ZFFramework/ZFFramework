@@ -72,7 +72,7 @@ protected:
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
-    virtual void objectOnDealloc(void);
+    virtual void objectOnDeallocPrepare(void);
 
 private:
     _ZFP_ZFThreadPoolPrivate *d;

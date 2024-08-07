@@ -24,7 +24,7 @@ void ZFImpl_ZFLua_luaStateClose(ZF_IN lua_State *L) {
 }
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateGlobalHolder, ZFLevelZFFrameworkEssential) {
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateGlobalHolder, ZFLevelZFFrameworkStatic) {
 }
 ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupAttach;
 ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupDetach;

@@ -31,9 +31,10 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
         zfblockedRelease(zfRetain(zfThread));
         zfCoreAssert(zfThread->threadStarted());
         zfCoreMutexUnlock();
+        zfThread->threadStop();
         zfThread->taskQueueCleanup();
+        zfThread->sleepCancel();
         _ZFP_ZFThread_log("global threadWait begin: %s", ZFObjectInfo(zfThread).cString());
-        zfThread->taskQueueCleanup();
         zfThread->threadWait();
         _ZFP_ZFThread_log("global threadWait end: %s", ZFObjectInfo(zfThread).cString());
     }
@@ -133,6 +134,7 @@ ZFEVENT_REGISTER(ZFThread, ThreadOnRegister)
 ZFEVENT_REGISTER(ZFThread, ThreadOnUnregister)
 ZFEVENT_REGISTER(ZFThread, ThreadOnStart)
 ZFEVENT_REGISTER(ZFThread, ThreadOnStop)
+ZFEVENT_REGISTER(ZFThread, ThreadOnStopRequested)
 ZFEVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)
 
 ZFMETHOD_DEFINE_1(ZFThread, void *, nativeThreadRegister
@@ -340,6 +342,7 @@ ZFMETHOD_DEFINE_0(ZFThread, void, threadStop) {
         return;
     }
     d->stopRequestedFlag = zftrue;
+    this->threadOnStopRequested();
 }
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, threadStopRequested) {
     return d->stopRequestedFlag;

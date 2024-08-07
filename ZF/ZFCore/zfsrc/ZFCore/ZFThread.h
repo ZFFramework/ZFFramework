@@ -56,6 +56,12 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * called when #threadStop called
+     */
+    ZFEVENT(ThreadOnStopRequested)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called when all of #taskQueueCount finished
      */
     ZFEVENT(ThreadTaskQueueOnFinish)
@@ -318,6 +324,10 @@ protected:
     /** @brief see #EventThreadOnStop */
     virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs) {
         this->observerNotify(ZFThread::EventThreadOnStop(), zfargs.param0(), zfargs.param1());
+    }
+    /** @brief see #EventThreadOnStopRequested */
+    virtual inline void threadOnStopRequested(void) {
+        this->observerNotify(ZFThread::EventThreadOnStopRequested());
     }
     /** @brief see #EventThreadTaskQueueOnFinish */
     virtual inline void threadTaskQueueOnFinish(void) {
