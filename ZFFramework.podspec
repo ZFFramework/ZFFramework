@@ -45,6 +45,7 @@ for ZF_MODULE_NAME list, please refer to https://github.com/ZFFramework/ZFFramew
           sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFLua_impl.mm ZF/ZFLua_impl/zfsrc
           sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFNet.mm ZF/ZFNet/zfsrc
           sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFNet_impl.mm ZF/ZFNet_impl/zfsrc
+          sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFUIExt.mm ZF/ZFUIExt/zfsrc
           sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFUIKit.mm ZF/ZFUIKit/zfsrc
           sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFUIKit_impl.mm ZF/ZFUIKit_impl/zfsrc
           sh tools/common/unity_build.sh _tmp/cocoapods/zfgensrc_ZFUIWebKit.mm ZF/ZFUIWebKit/zfsrc
@@ -83,6 +84,7 @@ for ZF_MODULE_NAME list, please refer to https://github.com/ZFFramework/ZFFramew
   ZFAddModule(s, 'ZFAlgorithm',       [ 'ZFCore', ],                                                                 lambda {|ss| })
   ZFAddModule(s, 'ZFUtility',         [ 'ZFCore', ],                                                                 lambda {|ss| })
   ZFAddModule(s, 'ZFLua',             [ 'ZFCore', ],                                                                 lambda {|ss| })
+  ZFAddModule(s, 'ZFUIExt',           [ 'ZFCore', 'ZFAlgorithm', 'ZFUtility', 'ZFUIKit', 'ZFUIWidget', 'ZFNet', ],   lambda {|ss| })
   ZFAddModule(s, 'ZFUIKit',           [ 'ZFCore', 'ZFAlgorithm', 'ZFUtility', ],                                     lambda {|ss| })
   ZFAddModule(s, 'ZFUIWidget',        [ 'ZFCore', 'ZFAlgorithm', 'ZFUtility', 'ZFUIKit', ],                          lambda {|ss| })
   ZFAddModule(s, 'ZFUIWebKit',        [ 'ZFCore', 'ZFAlgorithm', 'ZFUtility', 'ZFUIKit', ],                          lambda {|ss| })

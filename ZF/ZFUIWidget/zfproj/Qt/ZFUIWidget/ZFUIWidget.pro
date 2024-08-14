@@ -88,7 +88,6 @@ $$ZFAddLib(0, ZFCore)
 $$ZFAddLib(0, ZFAlgorithm)
 $$ZFAddLib(0, ZFUtility)
 $$ZFAddLib(0, ZFUIKit)
-$$ZFAddLib(0, ZFNet)
 
 
 # ======================================================================

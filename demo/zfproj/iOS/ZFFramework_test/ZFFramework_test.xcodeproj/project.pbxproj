@@ -22,6 +22,7 @@
 		5AD62590FCBED9C00949DDFDAFD129D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0EB20273DFFC54E3E2B05F6BA13015 /* Foundation.framework */; };
 		708CAF6061584D2D9E8E12C40BF8F1A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 28085A588F52B61C8C8901A1DDD06AC1 /* main.m */; };
 		7152C93BD08C4EDB5CCF545B18A1A6BA /* ZFNet_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */; };
+		718AA2A43AAF98C2AACC74943A2C9BBF /* ZFUIExt.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BF84536DA9FF3CF3EE60E6C803C524 /* ZFUIExt.xcframework */; };
 		7978EADE23C4EF15B96506A4AF0CDAB2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E96AC3B662FD2F9BBE9FA0548335E2 /* QuartzCore.framework */; };
 		7AFFB7A7412D4A9588C815CE4CD4EAAD /* ZFUIWebKit_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */; };
 		8C685169DF0F9CAEA05119F61AA2CC7D /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */; };
@@ -63,6 +64,7 @@
 		92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWebKit_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWebKit_impl.xcframework; sourceTree = "<group>"; };
 		9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFNet_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFNet_impl.xcframework; sourceTree = "<group>"; };
 		ACA60027D62B88AEAE715B00485C4449 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B0BF84536DA9FF3CF3EE60E6C803C524 /* ZFUIExt.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIExt.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIExt.xcframework; sourceTree = "<group>"; };
 		D6BB508B5C240484B578BAA4D4509AFA /* ZF_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZF_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZF_impl.xcframework; sourceTree = "<group>"; };
 		D9FBB9DE01E47F0D050ADC723ACCB396 /* ZFUIWidget.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWidget.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWidget.xcframework; sourceTree = "<group>"; };
 		E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -89,6 +91,7 @@
 				1D0CEF841C8AA78DC287F441ACB2927A /* ZFLua_impl.xcframework in Frameworks */,
 				485FC82907F8E83FB15A478F5CC32FB6 /* ZFNet.xcframework in Frameworks */,
 				7152C93BD08C4EDB5CCF545B18A1A6BA /* ZFNet_impl.xcframework in Frameworks */,
+				718AA2A43AAF98C2AACC74943A2C9BBF /* ZFUIExt.xcframework in Frameworks */,
 				BB45B76571AE6F30BD19F3C39E629509 /* ZFUIKit.xcframework in Frameworks */,
 				8DDA23BA83C17DBF7693CF6AB19F9BF4 /* ZFUIKit_impl.xcframework in Frameworks */,
 				51D0A1583161EE95BE8FCBFC42FF991F /* ZFUIWebKit.xcframework in Frameworks */,
@@ -145,6 +148,7 @@
 				5AA16659CF2EA1C663F5B13BE2351C4A /* ZFLua_impl.xcframework */,
 				2B9ADD17F0C1EEF07ED88DC15721B251 /* ZFNet.xcframework */,
 				9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */,
+				B0BF84536DA9FF3CF3EE60E6C803C524 /* ZFUIExt.xcframework */,
 				7A86DAE671D5A32BA66B8DE555ACB72F /* ZFUIKit.xcframework */,
 				5CA36B1D2B30F162E8BEB57385E64B93 /* ZFUIKit_impl.xcframework */,
 				17CD1259AF6B3F1C63D193F321377836 /* ZFUIWebKit.xcframework */,

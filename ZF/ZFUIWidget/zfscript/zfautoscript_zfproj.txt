@@ -9,5 +9,4 @@ ZF_LIB += ZFCore
 ZF_LIB += ZFAlgorithm
 ZF_LIB += ZFUtility
 ZF_LIB += ZFUIKit
-ZF_LIB += ZFNet
 

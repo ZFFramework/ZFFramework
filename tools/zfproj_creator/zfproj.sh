@@ -84,6 +84,7 @@ elif test "x-$CONFIG_FILE_PATH" = "x--app" || test "x-$CONFIG_FILE_PATH" = "x--l
         echo "# ZF_LIB += ZFUtility"
         echo "# ZF_LIB += ZFUIKit"
         echo "# ZF_LIB += ZFUIWidget"
+        echo "# ZF_LIB += ZFUIExt"
         echo "# ZF_LIB += ZFLua"
         echo "# ZF_LIB += ZFUIWebKit"
         echo "# ZF_LIB += ZFNet"

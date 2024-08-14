@@ -5,6 +5,7 @@
 -I../ZFFramework/ZF/ZFUtility/zfsrc
 -I../ZFFramework/ZF/ZFUIKit/zfsrc
 -I../ZFFramework/ZF/ZFUIWidget/zfsrc
+-I../ZFFramework/ZF/ZFUIExt/zfsrc
 -I../ZFFramework/ZF/ZFLua/zfsrc
 -I../ZFFramework/ZF/ZFUIWebKit/zfsrc
 -I../ZFFramework/ZF/ZFNet/zfsrc

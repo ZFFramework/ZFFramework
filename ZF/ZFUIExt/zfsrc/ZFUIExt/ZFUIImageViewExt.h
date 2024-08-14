@@ -6,13 +6,13 @@
 #ifndef _ZFI_ZFUIImageViewExt_h_
 #define _ZFI_ZFUIImageViewExt_h_
 
-#include "ZFUIWidgetDef.h"
+#include "ZFUIExtDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
  * @brief util extension for #ZFUIImageView, see #ZFCLASS_EXTEND
  */
-zfclass ZFLIB_ZFUIWidget ZFUIImageViewExt : zfextend ZFObject {
+zfclass ZFLIB_ZFUIExt ZFUIImageViewExt : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIImageViewExt, ZFObject)
 
 public:

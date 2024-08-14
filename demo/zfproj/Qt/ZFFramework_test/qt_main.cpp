@@ -6,6 +6,7 @@ int main(int argc, char **argv) {
     ZFImpl_sys_Qt_requireLib(ZFUtility)
     ZFImpl_sys_Qt_requireLib(ZFUIKit)
     ZFImpl_sys_Qt_requireLib(ZFUIWidget)
+    ZFImpl_sys_Qt_requireLib(ZFUIExt)
     ZFImpl_sys_Qt_requireLib(ZFLua)
     ZFImpl_sys_Qt_requireLib(ZFUIWebKit)
     ZFImpl_sys_Qt_requireLib(ZFNet)
