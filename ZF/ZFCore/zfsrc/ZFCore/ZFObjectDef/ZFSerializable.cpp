@@ -279,7 +279,7 @@ zfbool ZFSerializable::serializeToData(
     return zftrue;
 }
 
-zffinal zfbool ZFSerializable::serializeFromString(
+zfbool ZFSerializable::serializeFromString(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -293,7 +293,7 @@ zffinal zfbool ZFSerializable::serializeFromString(
     }
     return this->serializableOnSerializeFromString(src, srcLen, errorHint);
 }
-zffinal zfbool ZFSerializable::serializeToString(
+zfbool ZFSerializable::serializeToString(
         ZF_IN_OUT zfstring &ret
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {

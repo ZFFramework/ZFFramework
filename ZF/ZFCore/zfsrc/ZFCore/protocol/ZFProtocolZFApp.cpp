@@ -7,8 +7,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_REGISTER(ZFApp)
 
 void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
-    ZFFrameworkCleanup();
-    exit(appExitCode);
+    ZFLISTENER_1(action
+            , zfint, appExitCode
+            ) {
+        ZFFrameworkCleanup();
+        exit(appExitCode);
+    } ZFLISTENER_END()
+    ZFTimerOnce(0, action);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void) {
     ZFLISTENER(action) {

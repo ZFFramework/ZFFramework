@@ -251,6 +251,10 @@ public:
 
     static void classParentCacheUpdate(ZF_IN const ZFClass *cls);
     static void methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls);
+    static void methodCacheRemove(ZF_IN const ZFClass *cls, ZF_IN const ZFMethod *method);
+    static void methodCacheRemoveAction(ZF_IN const ZFClass *cls, ZF_IN const ZFMethod *method);
+    static void propertyCacheRemove(ZF_IN const ZFClass *cls, ZF_IN const ZFProperty *zfproperty);
+    static void propertyCacheRemoveAction(ZF_IN const ZFClass *cls, ZF_IN const ZFProperty *zfproperty);
 };
 
 void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
@@ -355,7 +359,10 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
 }
 
 void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls) {
-    if(!cls->d->methodAndPropertyCacheNeedUpdate) {
+    if(!cls->d->methodAndPropertyCacheNeedUpdate
+            || ZFFrameworkStateCheck() == ZFFrameworkStateCleanupRunning
+            || ZFFrameworkStateCheck() == ZFFrameworkStateNotAvailable
+            ) {
         return;
     }
     zfCoreMutexLocker();
@@ -399,6 +406,37 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
             propertyMapCache[it->first] = it->second;
         }
     } while(!toCheck.isEmpty());
+}
+
+void _ZFP_ZFClassPrivate::methodCacheRemove(ZF_IN const ZFClass *cls, ZF_IN const ZFMethod *method) {
+    methodCacheRemoveAction(cls, method);
+    for(zfstlmap<const ZFClass *, zfbool>::iterator childIt = cls->d->allChildren.begin(); childIt != cls->d->allChildren.end(); ++childIt) {
+        methodCacheRemoveAction(childIt->first, method);
+    }
+}
+void _ZFP_ZFClassPrivate::methodCacheRemoveAction(ZF_IN const ZFClass *cls, ZF_IN const ZFMethod *method) {
+    _ZFP_ZFClassMethodMapType::iterator itName = cls->d->methodMapCache.find(method->methodName());
+    if(itName != cls->d->methodMapCache.end()) {
+        zfstlvector<const ZFMethod *> &l = itName->second;
+        for(zfstlvector<const ZFMethod *>::iterator itList = l.begin(); itList != l.end(); ++itList) {
+            if(method == *itList) {
+                l.erase(itList);
+                if(l.empty()) {
+                    cls->d->methodMapCache.erase(itName);
+                }
+                break;
+            }
+        }
+    }
+}
+void _ZFP_ZFClassPrivate::propertyCacheRemove(ZF_IN const ZFClass *cls, ZF_IN const ZFProperty *zfproperty) {
+    propertyCacheRemoveAction(cls, zfproperty);
+    for(zfstlmap<const ZFClass *, zfbool>::iterator childIt = cls->d->allChildren.begin(); childIt != cls->d->allChildren.end(); ++childIt) {
+        propertyCacheRemoveAction(childIt->first, zfproperty);
+    }
+}
+void _ZFP_ZFClassPrivate::propertyCacheRemoveAction(ZF_IN const ZFClass *cls, ZF_IN const ZFProperty *zfproperty) {
+    cls->d->propertyMapCache.erase(zfproperty->propertyName());
 }
 
 // ============================================================
@@ -1488,29 +1526,29 @@ void ZFClass::_ZFP_ZFClass_methodUnregister(ZF_IN const ZFMethod *method) const 
     _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(method->methodName());
     if(itName != d->methodMap.end()) {
         zfstlvector<const ZFMethod *> &l = itName->second;
-        for(zfstlsize i = 0; i < l.size(); ++i) {
-            if(method == l[i]) {
-                d->methodAndPropertyCacheNeedUpdate = zftrue;
-                l.erase(l.begin() + i);
+        for(zfstlvector<const ZFMethod *>::iterator itList = l.begin(); itList != l.end(); ++itList) {
+            if(method == *itList) {
+                l.erase(itList);
                 if(l.empty()) {
                     d->methodMap.erase(itName);
-                    break;
                 }
                 d->methodList.removeElement(method);
+                break;
             }
         }
+        _ZFP_ZFClassPrivate::methodCacheRemove(this, method);
     }
 }
 
 void ZFClass::_ZFP_ZFClass_propertyRegister(ZF_IN const ZFProperty *zfproperty) const {
     d->propertyMap[zfproperty->propertyName()] = zfproperty;
     d->propertyList.add(zfproperty);
-    d->methodAndPropertyCacheNeedUpdate = zftrue;
 }
 void ZFClass::_ZFP_ZFClass_propertyUnregister(ZF_IN const ZFProperty *zfproperty) const {
     d->propertyMap.erase(zfproperty->propertyName());
     d->propertyList.removeElement(zfproperty);
-    d->methodAndPropertyCacheNeedUpdate = zftrue;
+    d->propertyMapCache.erase(zfproperty->propertyName());
+    _ZFP_ZFClassPrivate::propertyCacheRemove(this, zfproperty);
 }
 
 void ZFClass::_ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *property) const {
