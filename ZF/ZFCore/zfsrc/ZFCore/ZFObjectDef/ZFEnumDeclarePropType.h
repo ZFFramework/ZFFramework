@@ -85,7 +85,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         template<typename T_Access> \
         zfclassNotPOD Value<T_Access, 1> { \
         private: \
-             typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
+            typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (zfcast(EnumName *, obj) != zfnull); \
@@ -96,14 +96,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 _ZFP_PropAliasAttach(obj, holder \
-                    , zfstr("%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *holder; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfstr("%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
@@ -275,14 +275,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 _ZFP_PropAliasAttach(obj, holder \
-                    , zfstr("%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *holder; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfstr("%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #EnumName, zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \

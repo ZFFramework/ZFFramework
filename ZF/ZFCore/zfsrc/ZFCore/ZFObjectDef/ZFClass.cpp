@@ -650,8 +650,13 @@ void ZFClass::objectInfoOfInheritTreeT(ZF_IN_OUT zfstring &ret) const {
 }
 
 zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
-    zfstlmap<const ZFClass *, zfbool> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
-    return p.find(cls) != p.end();
+    if(this == cls) {
+        return zftrue;
+    }
+    else {
+        zfstlmap<const ZFClass *, zfbool> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
+        return p.find(cls) != p.end();
+    }
 }
 
 zfbool ZFClass::classIsDynamicRegister(void) const {

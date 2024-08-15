@@ -213,7 +213,7 @@ public:
             }
             T_Type *holder = zfnew(T_Type, zfcast(T_Type, obj));
             _ZFP_PropAliasAttach(obj, holder,
-                zfstr("%s:%s",
+                zfstr("_ZFP_PropAlias:%s:%s",
                     zftTraits<T_Type>::TrType::ClassData()->classNameFull(),
                     zftTraits<T_Access>::ModifierName()),
                 _ZFP_PropAliasOnDetach);
@@ -224,7 +224,7 @@ public:
                 return;
             }
             _ZFP_PropAliasDetach(obj,
-                zfstr("%s:%s",
+                zfstr("_ZFP_PropAlias:%s:%s",
                     zftTraits<T_Type>::TrType::ClassData()->classNameFull(),
                     zftTraits<T_Access>::ModifierName())
                 );
@@ -254,7 +254,7 @@ public:
             _TrNoRef *holder = zfnew(_TrNoRef);
             *holder = zfcast(T_Type, obj);
             _ZFP_PropAliasAttach(obj, holder,
-                zfstr("%s:%s",
+                zfstr("_ZFP_PropAlias:%s:%s",
                     _ZFP_T_ZFObject::ClassData()->classNameFull(),
                     zftTraits<T_Access>::ModifierName()),
                 _ZFP_PropAliasOnDetach);
@@ -265,7 +265,7 @@ public:
                 return;
             }
             _ZFP_PropAliasDetach(obj,
-                zfstr("%s:%s",
+                zfstr("_ZFP_PropAlias:%s:%s",
                     _ZFP_T_ZFObject::ClassData()->classNameFull(),
                     zftTraits<T_Access>::ModifierName())
                 );

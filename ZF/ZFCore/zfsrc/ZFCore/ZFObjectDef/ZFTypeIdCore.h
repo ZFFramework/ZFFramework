@@ -723,7 +723,13 @@ ZFV::operator T_Type & (void) const {
             , ZFTypeId<T_Type_>::TypeId()
             , _ZFP_obj
             );
-    return *(T_Type_ *)w->wrappedValue();
+    zfauto v = _ZFP_obj;
+    zfCoreAssertWithMessageTrim(ZFTypeId<T_Type_>::template Value<T_Type &>::zfvAccessAvailable(v)
+            , "unable to access %s ref from object: %s"
+            , ZFTypeId<T_Type_>::TypeId()
+            , _ZFP_obj
+            );
+    return ZFTypeId<T_Type_>::template Value<T_Type &>::zfvAccess(v);
 }
 /** @endcond */
 

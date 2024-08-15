@@ -196,6 +196,8 @@ public:
      *   the temp object would be cleared during zfvAccessFinish,
      *   and the impl value would be copied back to original value during zfvAccessFinish,
      *   thus, the reflection performance of aliased type may be much worse than original type
+     * -  when access aliased type as return value,
+     *   the zfvAccessFinish won't be called until the original holder object deallocated
      */
     template<typename T_Access = T_Type>
     zfclassNotPOD Value {
@@ -805,14 +807,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
-                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *v; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
@@ -845,14 +847,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 _TrNoRef *p = zfnew(_TrNoRef); \
                 *p = v; \
                 _ZFP_PropAliasAttach(obj, p \
-                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *p; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
@@ -882,12 +884,12 @@ typedef void (*_ZFP_PropAliasDetachCallback)(
 extern ZFLIB_ZFCore void _ZFP_PropAliasAttach(
         ZF_IN ZFObject *obj
         , ZF_IN void *v
-        , ZF_IN const zfstring &typeName
+        , ZF_IN const zfstring &tagKey
         , ZF_IN _ZFP_PropAliasDetachCallback detachCallback
         );
 extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(
         ZF_IN ZFObject *obj
-        , ZF_IN const zfstring &typeName
+        , ZF_IN const zfstring &tagKey
         );
 
 ZF_NAMESPACE_GLOBAL_END
