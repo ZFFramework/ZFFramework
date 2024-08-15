@@ -840,6 +840,9 @@ zfindex ZFClass::dynamicInterfaceCount(void) const {
 const ZFClass *ZFClass::dynamicInterfaceAt(ZF_IN zfindex index) const {
     return d->ZFImplementDynamicList.get(index);
 }
+zfbool ZFClass::dynamicImplementOf(ZF_IN const ZFClass *parent) const {
+    return d->ZFImplementDynamicCache.find(parent) != d->ZFImplementDynamicCache.end();
+}
 
 // ============================================================
 // ZFMethod

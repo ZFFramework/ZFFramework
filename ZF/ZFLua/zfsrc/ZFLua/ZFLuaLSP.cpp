@@ -235,9 +235,12 @@ static void _ZFP_ZFLuaLSPGenFile_class(
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
         if(!m->methodIsPublic() || m->methodIsInternal()
-                || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
                 || zfstringIsEqual(m->methodName(), "objectOnInit")
                 || luaKeywords.find(m->methodName()) != luaKeywords.end()
+                || (m->methodOwnerClass() != cls
+                    && !m->methodOwnerClass()->classIsInterface()
+                    && !cls->dynamicImplementOf(m->methodOwnerClass())
+                    )
                 ) {
             continue;
         }

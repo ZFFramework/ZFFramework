@@ -382,6 +382,10 @@ public:
      * @brief get dynamic interface registered by #ZFImplementDynamicRegister, see #implementedInterfaceAt
      */
     const ZFClass *dynamicInterfaceAt(ZF_IN zfindex index) const;
+    /**
+     * @brief true if this class dynamic implement specified parent by #ZFImplementDynamicRegister
+     */
+    zfbool dynamicImplementOf(ZF_IN const ZFClass *parent) const;
 
     // ============================================================
     // ZFMethod

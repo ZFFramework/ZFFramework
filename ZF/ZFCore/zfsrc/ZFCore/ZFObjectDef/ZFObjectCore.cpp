@@ -566,21 +566,22 @@ void ZFObject::objectOnDealloc(void) {
             d->mutexImpl = zfnull;
         }
 
-        if(d->objectTagMap) {
-            if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
+        if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
+            if(d->objectTagMap) {
                 zfpoolDelete(d->objectTagMap);
             }
-        }
-
-        if(d->observerHolder) {
-            zfpoolDelete(d->observerHolder);
-        }
-
-        if(d->objectHolder) {
-            if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
-                d->objectHolder->objectHolded(zfnull);
+            if(d->observerHolder) {
+                zfpoolDelete(d->observerHolder);
             }
-            zfRelease(d->objectHolder);
+            if(d->objectHolder) {
+                d->objectHolder->objectHolded(zfnull);
+                zfRelease(d->objectHolder);
+            }
+        }
+        else {
+            if(d->objectHolder) {
+                zfRelease(d->objectHolder);
+            }
         }
 
         zfpoolDelete(d);
@@ -652,27 +653,27 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
     else {
         _ZFP_ZFObjectPrivate *dObj = zfpoolNew(_ZFP_ZFObjectPrivate);
         dObj->ZFImplementDynamicOwner = this;
-        zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
-        d->ZFImplementDynamicHolder[clsToImplement] = holder;
 
         // alias internal data to owner
-        holder->d->objectHolder = zfRetain(this->objectHolder());
-        holder->d->observerHolder = zfpoolNew(ZFObserver, this->observerHolder());
+        dObj->objectHolder = zfRetain(this->objectHolder());
+        dObj->observerHolder = zfpoolNew(ZFObserver, this->observerHolder());
         if(d->objectTagMap == zfnull) {
             d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
         }
-        if(holder->d->objectTagMap != zfnull) {
-            for(_ZFP_ZFObjectTagMapType::iterator it = holder->d->objectTagMap->begin(); it != holder->d->objectTagMap->end(); ++it) {
+        if(dObj->objectTagMap != zfnull) {
+            for(_ZFP_ZFObjectTagMapType::iterator it = dObj->objectTagMap->begin(); it != dObj->objectTagMap->end(); ++it) {
                 (*(d->objectTagMap))[it->first] = it->second;
             }
-            _ZFP_ZFObjectTagMapType *tmp = holder->d->objectTagMap;
-            holder->d->objectTagMap = d->objectTagMap;
+            _ZFP_ZFObjectTagMapType *tmp = dObj->objectTagMap;
+            dObj->objectTagMap = d->objectTagMap;
             zfpoolDelete(tmp);
         }
         else {
-            holder->d->objectTagMap = d->objectTagMap;
+            dObj->objectTagMap = d->objectTagMap;
         }
 
+        zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
+        d->ZFImplementDynamicHolder[clsToImplement] = holder;
         return holder;
     }
 }
