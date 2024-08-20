@@ -117,7 +117,6 @@ public:
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_default_ThreadMapType::const_iterator it = _ZFP_ZFThreadImpl_default_threadMap.find(nativeCurrentThread);
         if(it == _ZFP_ZFThreadImpl_default_threadMap.end()) {
-            zfCoreLogTrim("current thread is null, make sure the thread is started or registered by ZFThread");
             return zfnull;
         }
         return it->second;

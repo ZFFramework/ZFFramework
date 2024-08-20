@@ -20,8 +20,8 @@ public:
     zfclassNotPOD _Token {
     public:
         enum {
-            ChunkSize = 65536,
-            ChunkCacheCount = 8,
+            ChunkSize = 1 * 1024 * 1024,
+            ChunkCacheCount = 4,
             ChunkRetry = 1,
         };
 

@@ -540,6 +540,7 @@ protected:
     }
 
 public:
+    void *_ZFP_ZFObjectMutexImpl(void);
     void _ZFP_ZFObjectLock(void);
     void _ZFP_ZFObjectUnlock(void);
     zfbool _ZFP_ZFObjectTryLock(void);

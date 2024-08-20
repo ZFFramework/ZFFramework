@@ -1,0 +1,82 @@
+/**
+ * @file ZFThread_zfasyncIO.h
+ * @brief thread utility
+ */
+
+#ifndef _ZFI_ZFThread_zfasyncIO_h_
+#define _ZFI_ZFThread_zfasyncIO_h_
+
+#include "ZFThreadPool.h"
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+/**
+ * @brief util to perform IO in #ZFThreadPoolForIO
+ *
+ * callback would run in new thread,
+ * finishCallback would run in #ZFThread::mainThread\n
+ * \n
+ * for the callback:
+ * -  #ZFArgs::sender is the taskId returned from #zfasyncIO
+ * -  #ZFArgs::param0 is a #ZFObject holds running task id,
+ *   it's set to null if canceled by #zfasyncCancel,
+ *   you may check it during thread running
+ * -  #ZFArgs::result can be set to store the callback's result,
+ *   which would passed to finishCallback as #ZFArgs::param0
+ *
+ * for the finishCallback:
+ * -  #ZFArgs::sender is the taskId returned from #zfasyncIO
+ * -  #ZFArgs::result is the result object passed from callback
+ *
+ * when #zfasyncCancel called after this method,
+ * the callback may or may not be canceled,
+ * but finishCallback would be canceled
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfasyncIOCustom
+        , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        )
+
+/**
+ * @brief util to perform IO in #ZFThreadPoolForIO
+ *
+ * for the finishCallback:
+ * -  #ZFArgs::sender is the taskId returned from #zfasyncIO
+ * -  #ZFArgs::result is a #v_zfbool indicates IO result
+ *
+ * when #zfasyncCancel called after this method,
+ * the callback may or may not be canceled,
+ * but finishCallback would be canceled
+ */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfauto, zfasyncIO
+        , ZFMP_IN(ZF_IN const ZFOutput &, output)
+        , ZFMP_IN(ZF_IN const ZFInput &, input)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        )
+
+/**
+ * @brief try to cancel the task or finishCallback started by #zfasyncIO
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncIOCancel
+        , ZFMP_IN(const zfauto &, taskId)
+        )
+
+// ============================================================
+/**
+ * @brief the thread pool for #zfasyncIO
+ */
+zfclass ZFLIB_ZFCore ZFThreadPoolForIO : zfextend ZFThreadPool {
+    ZFOBJECT_DECLARE(ZFThreadPoolForIO, ZFThreadPool)
+    ZFOBJECT_SINGLETON_DECLARE(ZFThreadPoolForIO, instance)
+
+    ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(zfuint, maxThread)
+
+    /**
+     * @brief when input size greater than this,
+     *   try to split task to different thread
+     */
+    ZFPROPERTY_ASSIGN(zfindex, blockSize, 5 * 1024 * 1024)
+};
+
+ZF_NAMESPACE_GLOBAL_END
+#endif // #ifndef _ZFI_ZFThread_zfasyncIO_h_
+

@@ -428,6 +428,9 @@ void ZFObject::observerOnRemove(ZF_IN zfidentity eventId) {
     }
 }
 
+void *ZFObject::_ZFP_ZFObjectMutexImpl(void) {
+    return d ? d->mutexImpl : zfnull;
+}
 void ZFObject::_ZFP_ZFObjectLock(void) {
     if(d && d->mutexImpl) {
         _ZFP_ZFObjectMutexImplLock(d->mutexImpl);
