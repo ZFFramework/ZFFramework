@@ -370,6 +370,9 @@ public:
 private:
     _ZFP_ZFCallbackPrivate *d;
 };
+ZFCOMPARER_DEFAULT_DECLARE(ZFCallback, ZFCallback, {
+    return v0 == v1 ? ZFCompareEqual : ZFCompareUncomparable;
+})
 
 // ============================================================
 // ZFCallback create

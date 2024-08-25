@@ -156,12 +156,13 @@ zfbool ZFSerializable::serializeFromData(
     serializableData.resolveMark();
 
     // dynamic
-    const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeFromData");
-    if(dynamicMethod != zfnull
-            && !dynamicMethod->execute<zfbool, const ZFSerializableData &, zfstring *, ZFSerializableData *>(
-                this->toObject(), serializableData, outErrorHint, outErrorPos)
-                ) {
-        return zffalse;
+    ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnSerializeFromData");
+    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+        if(!dynamicMethod[i]->execute<zfbool, const ZFSerializableData &, zfstring *, ZFSerializableData *>(
+                    this->toObject(), serializableData, outErrorHint, outErrorPos)
+                    ) {
+            return zffalse;
+        }
     }
 
     // check whether all resoved
@@ -208,17 +209,7 @@ zfbool ZFSerializable::serializeToData(
         const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &allProperty = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             _ZFP_ZFSerializable_PropertyTypeData *data = allProperty[i];
-
-            ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
-            const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnCheckPropertyType");
-            if(dynamicMethod != zfnull) {
-                propertyType = dynamicMethod->execute<ZFSerializablePropertyType, const ZFProperty *>(this->toObject(), data->property);
-            }
-            if(propertyType == ZFSerializablePropertyTypeUnspecified) {
-                propertyType = data->propertyType;
-            }
-
-            switch(propertyType) {
+            switch(data->propertyType) {
                 case ZFSerializablePropertyTypeSerializable:
                     if(styleable != zfnull) {
                         const zfstring &styleKey = styleable->styleKeyForProperty(data->property);
@@ -268,12 +259,13 @@ zfbool ZFSerializable::serializeToData(
     serializableData.itemClass(this->classData()->classNameFull());
 
     // dynamic
-    const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeToData");
-    if(dynamicMethod != zfnull
-            && !dynamicMethod->execute<zfbool, ZFSerializableData &, ZFSerializable *, zfstring *>(
-                this->toObject(), serializableData, referencedObject, outErrorHint)
-                ) {
-        return zffalse;
+    ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnSerializeToData");
+    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+        if(!dynamicMethod[i]->execute<zfbool, ZFSerializableData &, ZFSerializable *, zfstring *>(
+                    this->toObject(), serializableData, referencedObject, outErrorHint)
+                    ) {
+            return zffalse;
+        }
     }
 
     return zftrue;
@@ -341,7 +333,24 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
 
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             const ZFProperty *property = allProperty[i];
-            switch(this->serializableOnCheckPropertyType(property)) {
+
+            ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
+            ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnCheckPropertyType");
+            for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->execute<ZFSerializablePropertyType, const ZFProperty *>(this->toObject(), property);
+                if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
+                    propertyType = propertyTypeTmp;
+                    break;
+                }
+                else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
+                    propertyType = propertyTypeTmp;
+                }
+            }
+            if(propertyType == ZFSerializablePropertyTypeUnspecified) {
+                propertyType = this->serializableOnCheckPropertyType(property);
+            }
+
+            switch(propertyType) {
                 case ZFSerializablePropertyTypeUnspecified:
                     break;
                 case ZFSerializablePropertyTypeNotSerializable:

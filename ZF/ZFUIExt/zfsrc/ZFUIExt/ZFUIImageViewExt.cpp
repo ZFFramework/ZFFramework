@@ -36,8 +36,9 @@ void ZFUIImageViewExt::imageOnLoad(ZF_IN const ZFInput &src) {
 ZFMETHOD_DEFINE_1(ZFUIImageViewExt, ZFSerializablePropertyType, serializableOnCheckPropertyType
         , ZFMP_IN(const ZFProperty *, property)
         ) {
-    if(property == ZFPropertyAccess(ZFUIImageView, image)
-            && (this->imageUrl() || this->imageSrc())
+    if(zffalse
+            || property == ZFPropertyAccess(ZFUIImageViewExt, imageUrl)
+            || property == ZFPropertyAccess(ZFUIImageViewExt, imageSrc)
             ) {
         return ZFSerializablePropertyTypeNotSerializable;
     }
