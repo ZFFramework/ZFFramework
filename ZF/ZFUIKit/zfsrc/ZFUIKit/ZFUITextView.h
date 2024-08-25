@@ -42,15 +42,15 @@ public:
      *   when the view isn't big enough to hold current text,
      *   #ZFUIGlobalStyle::textSizeTiny by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeAutoChangeMinSize, ZFUIGlobalStyle::DefaultStyle()->textSizeTiny())
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSizeAutoChangeMinSize)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeAutoMin, ZFUIGlobalStyle::DefaultStyle()->textSizeTiny())
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSizeAutoMin)
     /**
-     * @brief if not 0 and larger than #textSizeAutoChangeMinSize,
+     * @brief if not 0 and larger than #textSizeAutoMin,
      *   auto increase text size when the view is bigger than current text need,
      *   0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeAutoChangeMaxSize, 0)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSizeAutoChangeMaxSize)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeAutoMax, 0)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSizeAutoMax)
 
     /**
      * @brief single line or not, true by default
@@ -103,7 +103,7 @@ protected:
      * @brief we would update text settings when scale changed
      */
     zfoverride
-    virtual void UIScaleOnChange(void);
+    virtual void UIScaleOnUpdate(void);
     /**
      * @brief we would measure according text size
      */

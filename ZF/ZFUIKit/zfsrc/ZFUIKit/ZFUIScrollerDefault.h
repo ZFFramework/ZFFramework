@@ -25,16 +25,16 @@ protected:
 
 public:
     zfoverride
-    virtual void scrollOwnerSizeChanged(ZF_IN zffloat ownerSize);
+    virtual void scrollOwnerSizeOnUpdate(ZF_IN zffloat ownerSize);
     zfoverride
-    virtual void scrollBounceChanged(
+    virtual void scrollBounceOnUpdate(
             ZF_IN zfbool scrollBounce
             , ZF_IN zfbool scrollBounceAlways
             );
     zfoverride
-    virtual void scrollAlignToPageChanged(ZF_IN zfbool scrollAlignToPage);
+    virtual void scrollAlignToPageOnUpdate(ZF_IN zfbool scrollAlignToPage);
     zfoverride
-    virtual void scrollContentChanged(
+    virtual void scrollContentOnUpdate(
             ZF_IN zffloat contentOffset
             , ZF_IN zffloat contentSize
             );

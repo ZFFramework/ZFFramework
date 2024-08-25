@@ -44,11 +44,11 @@ public:
      * @brief called when owner scroll view's size changed,
      *   you should fix content frame to match bounds if necessary
      */
-    virtual void scrollOwnerSizeChanged(ZF_IN zffloat ownerSize) zfpurevirtual;
+    virtual void scrollOwnerSizeOnUpdate(ZF_IN zffloat ownerSize) zfpurevirtual;
     /**
      * @brief whether use bounce
      */
-    virtual void scrollBounceChanged(
+    virtual void scrollBounceOnUpdate(
             ZF_IN zfbool scrollBounce
             , ZF_IN zfbool scrollBounceAlways
             ) zfpurevirtual;
@@ -56,13 +56,13 @@ public:
     /**
      * @brief whether align to page
      */
-    virtual void scrollAlignToPageChanged(ZF_IN zfbool scrollAlignToPage) zfpurevirtual;
+    virtual void scrollAlignToPageOnUpdate(ZF_IN zfbool scrollAlignToPage) zfpurevirtual;
 
     /**
      * @brief used to update scroll content,
      *   you should keep or update previous scroll animation if necessary
      */
-    virtual void scrollContentChanged(
+    virtual void scrollContentOnUpdate(
             ZF_IN zffloat contentOffset
             , ZF_IN zffloat contentSize
             ) zfpurevirtual;

@@ -36,10 +36,10 @@ protected:
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("notify change style");
-        ZFStyleChangeBegin();
+        ZFStyleUpdateBegin();
         ZFStyleSet("ZFCore_ZFStyle_test", zfobj<v_zfstring>());
         ZFStyleSet("ZFCore_ZFStyle_test", zfnull);
-        ZFStyleChangeEnd();
+        ZFStyleUpdateEnd();
 
         this->testCaseStop();
     }

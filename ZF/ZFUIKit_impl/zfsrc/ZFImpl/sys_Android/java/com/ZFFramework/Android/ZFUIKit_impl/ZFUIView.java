@@ -72,7 +72,7 @@ public class ZFUIView extends ViewGroup {
             nativeViewTmp.addView(nativeViewTmp.nativeImplView, virtualIndex);
         }
 
-        ZFUIViewFocus.ZFUIViewImplChanged(nativeViewTmp, nativeImplViewOld, nativeImplViewNew);
+        ZFUIViewFocus.ZFUIViewImplUpdate(nativeViewTmp, nativeImplViewOld, nativeImplViewNew);
     }
 
     public static void native_nativeImplViewFrame(Object nativeView,

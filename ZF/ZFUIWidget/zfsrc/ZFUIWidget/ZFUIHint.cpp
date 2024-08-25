@@ -333,7 +333,7 @@ void ZFUIHint::objectOnInit(void) {
     d->hintWindow->viewUIEnableTree(zffalse);
 
     ZFUIHint *hint = this;
-    ZFLISTENER_1(hintWindowChanged
+    ZFLISTENER_1(hintWindowOnUpdate
             , ZFUIHint *, hint
             ) {
         zfCoreAssertWithMessage(!hint->hintShowing(), "you must not change ZFUIHint's window while it's showing or delaying");
@@ -355,7 +355,7 @@ void ZFUIHint::objectOnInit(void) {
             }
         }
     } ZFLISTENER_END()
-    d->hintWindow->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnChange(), hintWindowChanged);
+    d->hintWindow->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnUpdate(), hintWindowOnUpdate);
 
     ZFLISTENER_1(hintWindowOnLayoutPrepare
             , ZFUIHint *, hint

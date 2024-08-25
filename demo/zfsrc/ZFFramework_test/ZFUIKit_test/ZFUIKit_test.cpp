@@ -7,7 +7,7 @@ ZFOBJECT_REGISTER(ZFUIKit_test_Button)
 ZFOBJECT_REGISTER(ZFUIKit_test_ListView)
 
 ZFOBJECT_REGISTER(ZFUIKit_test_SettingData)
-ZFEVENT_REGISTER(ZFUIKit_test_SettingData, SettingOnChange)
+ZFEVENT_REGISTER(ZFUIKit_test_SettingData, SettingOnUpdate)
 
 void ZFUIKit_test_prepareTestWindow(
         ZF_OUT ZFUIWindow *&window
@@ -83,7 +83,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
         } ZFLISTENER_END()
         button->observerAdd(ZFUIButton::EventButtonOnClick(), onButtonClick);
 
-        ZFLISTENER_2(settingOnChange
+        ZFLISTENER_2(settingOnUpdate
                 , ZFUIKit_test_SettingData *, setting
                 , ZFUIButtonBasic *, button
                 ) {
@@ -94,7 +94,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
                 );
             button->label()->text(buttonText->zfv);
         } ZFLISTENER_END()
-        setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnChange(), settingOnChange);
+        setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnUpdate(), settingOnUpdate);
 
         zfobj<v_zfstring> buttonText;
         setting->buttonTextGetter().execute(ZFArgs()

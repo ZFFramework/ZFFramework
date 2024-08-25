@@ -639,12 +639,12 @@ ZFMethod *_ZFP_ZFMethodRegister(
             if(methodOwnerClass != zfnull) {
                 method->_ZFP_ZFMethod_initClassMemberType(methodOwnerClass, methodPrivilegeType);
                 methodOwnerClass->_ZFP_ZFClass_methodRegister(method);
-                _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
+                _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeAttach, zfnull, zfnull, method);
             }
             else {
                 method->_ZFP_ZFMethod_initFuncType(methodNamespaceTmp);
                 _ZFP_ZFMethodFuncRegister(method);
-                _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
+                _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeAttach, zfnull, zfnull, method);
             }
         }
     }
@@ -675,7 +675,7 @@ void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
             v->methodOwnerClass()->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_methodUnregister(v);
         }
     }
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, zfnull, zfnull, v);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeDetach, zfnull, zfnull, v);
 
     zfdelete(v);
 }

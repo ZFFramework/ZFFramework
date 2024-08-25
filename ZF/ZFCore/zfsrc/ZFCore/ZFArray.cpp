@@ -107,7 +107,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
     d->data.insert(d->data.begin() + indexAddTo, obj);
 
     this->contentOnAdd(obj);
-    this->contentOnChange();
+    this->contentOnUpdate();
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, add
         , ZFMP_IN(ZFObject *, obj)
@@ -117,7 +117,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, add
     d->data.push_back(obj);
 
     this->contentOnAdd(obj);
-    this->contentOnChange();
+    this->contentOnUpdate();
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
         , ZFMP_IN(ZFContainer *, another)
@@ -133,7 +133,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
         this->contentOnAdd(obj);
     }
     if(obj != zfnull) {
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 
@@ -149,7 +149,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
 
     this->contentOnRemove(old);
     this->contentOnAdd(obj);
-    this->contentOnChange();
+    this->contentOnUpdate();
 
     zfRelease(old);
 }
@@ -165,7 +165,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElement
                 zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
-                this->contentOnChange();
+                this->contentOnUpdate();
                 return zftrue;
             }
             else {
@@ -187,7 +187,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
                 zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
-                this->contentOnChange();
+                this->contentOnUpdate();
                 return zftrue;
             }
             else {
@@ -208,7 +208,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElementRevsersely
                 zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
-                this->contentOnChange();
+                this->contentOnUpdate();
                 return zftrue;
             }
         }
@@ -227,7 +227,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementRevsersely
                 zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
-                this->contentOnChange();
+                this->contentOnUpdate();
                 return zftrue;
             }
         }
@@ -254,7 +254,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfindex, removeElementAll
         }
     }
     if(removedCount > 0) {
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
     return removedCount;
 }
@@ -279,7 +279,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, removeElementAll
         }
     }
     if(removedCount > 0) {
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
     return removedCount;
 }
@@ -298,7 +298,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         zfRelease(tmp);
 
         this->contentOnRemove(tmp);
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
     else if(count > 1) {
         if(count > this->count() - index) {
@@ -314,7 +314,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         }
 
         if(!tmp.empty()) {
-            this->contentOnChange();
+            this->contentOnUpdate();
         }
     }
 }
@@ -325,7 +325,7 @@ ZFMETHOD_DEFINE_0(ZFArray, void, removeFirst) {
         zfRelease(tmp);
 
         this->contentOnRemove(tmp);
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_0(ZFArray, void, removeLast) {
@@ -335,7 +335,7 @@ ZFMETHOD_DEFINE_0(ZFArray, void, removeLast) {
         zfRelease(tmp);
 
         this->contentOnRemove(tmp);
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_0(ZFArray, void, removeAll) {
@@ -343,7 +343,7 @@ ZFMETHOD_DEFINE_0(ZFArray, void, removeAll) {
         zfstldeque<ZFObject *> tmp;
         tmp.swap(d->data);
 
-        this->contentOnChange();
+        this->contentOnUpdate();
 
         for(zfstldeque<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
             this->contentOnRemove(*it);
@@ -383,7 +383,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
     }
     d->data[toIndexOrIndexMax] = t;
 
-    this->contentOnChange();
+    this->contentOnUpdate();
 }
 
 ZFMETHOD_DEFINE_3(ZFArray, void, sort
@@ -398,7 +398,7 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sort
             (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1),
             comparer);
 
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
@@ -413,7 +413,7 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
             (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1),
             comparer);
 
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 

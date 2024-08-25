@@ -60,7 +60,7 @@ protected:
     zfoverride
     virtual void internalViewOnLayout(ZF_IN const ZFUIRect &bounds);
     zfoverride
-    virtual void textOnChange(ZF_IN const zfstring &oldText);
+    virtual void textOnUpdate(ZF_IN const zfstring &oldText);
 };
 
 ZF_NAMESPACE_GLOBAL_END

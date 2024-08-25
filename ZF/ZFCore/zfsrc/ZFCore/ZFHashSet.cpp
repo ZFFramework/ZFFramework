@@ -42,7 +42,7 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, add
     if(!d->isContain(obj)) {
         d->set(obj, ZFNull());
         this->contentOnAdd(obj);
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_1(ZFHashSet, void, addFrom
@@ -63,7 +63,7 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, addFrom
     }
 
     if(changed) {
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 
@@ -75,7 +75,7 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, removeElement
         zfauto key = d->iterKey(it);
         d->iterRemove(it);
         this->contentOnRemove(key);
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_0(ZFHashSet, void, removeAll) {
@@ -90,7 +90,7 @@ ZFMETHOD_DEFINE_0(ZFHashSet, void, removeAll) {
         for(zfindex i = 0; i < tmp.count(); ++i) {
             this->contentOnRemove(tmp[i]);
         }
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 
@@ -127,7 +127,7 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, iterRemove
     if(key != zfnull) {
         d->iterRemove(it);
         this->contentOnRemove(key);
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_1(ZFHashSet, void, iterAdd

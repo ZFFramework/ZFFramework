@@ -498,13 +498,13 @@ ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToStringT
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClassDataChangeType, ZFClassDataChangeType)
-ZFOUTPUT_TYPE(ZFClassDataChangeType, {ZFClassDataChangeTypeToStringT(s, v);})
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClassDataUpdateType, ZFClassDataUpdateType)
+ZFOUTPUT_TYPE(ZFClassDataUpdateType, {ZFClassDataUpdateTypeToStringT(s, v);})
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassDataChangeData, ZFClassDataChangeData)
-ZFOUTPUT_TYPE(ZFClassDataChangeData, {v.objectInfoT(s);})
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassDataUpdateData, ZFClassDataUpdateData)
+ZFOUTPUT_TYPE(ZFClassDataUpdateData, {v.objectInfoT(s);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE

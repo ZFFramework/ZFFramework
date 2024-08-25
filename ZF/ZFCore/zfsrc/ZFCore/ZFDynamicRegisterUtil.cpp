@@ -602,25 +602,25 @@ ZFDynamic &ZFDynamic::classCanAllocPublic(ZF_IN zfbool value) {
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDynamicClassEventDataHolder, ZFLevelZFFrameworkEssential) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder) {
-    if(this->classOnChangeListener) {
-        ZFClassDataChangeObserver().observerRemove(
-            ZFGlobalEvent::EventClassDataChange(),
-            this->classOnChangeListener);
+    if(this->classOnUpdateListener) {
+        ZFClassDataUpdateObserver().observerRemove(
+            ZFGlobalEvent::EventClassDataUpdate(),
+            this->classOnUpdateListener);
     }
 }
 zfstlmap<const ZFClass *, zfstlmap<zfidentity, zfstldeque<ZFListener> > > classEventMap;
-ZFListener classOnChangeListener;
-void classOnChangeCheckAttach(void) {
-    if(!this->classOnChangeListener) {
-        this->classOnChangeListener = ZFCallbackForFunc(zfself::classOnChange);
-        ZFClassDataChangeObserver().observerAdd(
-            ZFGlobalEvent::EventClassDataChange(),
-            this->classOnChangeListener);
+ZFListener classOnUpdateListener;
+void classOnUpdateCheckAttach(void) {
+    if(!this->classOnUpdateListener) {
+        this->classOnUpdateListener = ZFCallbackForFunc(zfself::classOnUpdate);
+        ZFClassDataUpdateObserver().observerAdd(
+            ZFGlobalEvent::EventClassDataUpdate(),
+            this->classOnUpdateListener);
     }
 }
-static void classOnChange(ZF_IN const ZFArgs &zfargs) {
-    ZFClassDataChangeData const &data = zfargs.param0().zfv();
-    if(data.changeType == ZFClassDataChangeTypeDetach && data.changedClass != zfnull) {
+static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
+    ZFClassDataUpdateData const &data = zfargs.param0().zfv();
+    if(data.changeType == ZFClassDataUpdateTypeDetach && data.changedClass != zfnull) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
         d->classEventMap.erase(data.changedClass);
     }
@@ -675,7 +675,7 @@ ZFDynamic &ZFDynamic::on(
     else {
         it->second[eventId].push_back(callback);
     }
-    g->classOnChangeCheckAttach();
+    g->classOnUpdateCheckAttach();
     return *this;
 }
 

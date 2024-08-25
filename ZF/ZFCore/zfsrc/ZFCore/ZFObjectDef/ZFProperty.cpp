@@ -257,7 +257,7 @@ ZFProperty *_ZFP_ZFPropertyRegister(
         propertyInfo->_ZFP_ZFProperty_callbackDealloc = callbackDealloc;
 
         propertyOwnerClass->_ZFP_ZFClass_propertyRegister(propertyInfo);
-        _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, propertyInfo, zfnull);
+        _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeAttach, zfnull, propertyInfo, zfnull);
     }
 
     return propertyInfo;
@@ -287,7 +287,7 @@ void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo) {
     v->propertyOwnerClass()->_ZFP_ZFClass_propertyUnregister(v);
     zfRetainChange(v->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_propertyDynamicRegisterUserData, zfnull);
 
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, zfnull, v, zfnull);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeDetach, zfnull, v, zfnull);
 
     zfdelete(v);
 }

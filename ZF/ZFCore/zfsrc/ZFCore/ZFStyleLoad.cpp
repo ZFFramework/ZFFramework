@@ -69,7 +69,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
     if(fileImpl == zfnull) {
         return zffalse;
     }
-    ZFStyleChangeBlock();
+    ZFStyleUpdateBlock();
 
     if(!fileImpl->callbackIsDir(pathInfo.pathData)) {
         zfstring fileName;
@@ -97,7 +97,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         ) {
     if(serializableData.childCount() > 0) {
-        ZFStyleChangeBlock();
+        ZFStyleUpdateBlock();
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
             const ZFSerializableData &child = serializableData.childAt(i);
             zfstring styleKey = ZFSerializableUtil::checkPropertyName(child);
@@ -118,7 +118,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
         , ZFMP_IN(ZFStyleList *, styleList)
         ) {
     if(styleList != zfnull && styleList->itemCount() > 0) {
-        ZFStyleChangeBlock();
+        ZFStyleUpdateBlock();
         for(zfindex i = 0; i < styleList->itemCount(); ++i) {
             _ZFP_ZFStyleLoad_ZFStyleSet(styleList->itemKeyAt(i), styleList->itemValueAt(i));
         }

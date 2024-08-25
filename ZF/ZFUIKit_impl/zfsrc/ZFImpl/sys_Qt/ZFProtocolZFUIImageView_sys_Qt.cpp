@@ -86,7 +86,7 @@ public:
         _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)imageView->nativeImplView();
         nativeImplView->update();
     }
-    virtual void imageNinePatchChanged(
+    virtual void imageNinePatchOnUpdate(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN zffloat imageScale
             , ZF_IN const ZFUIMargin &imageNinePatch

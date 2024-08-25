@@ -16,7 +16,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test) {
             zfLogTrim() << "[ZFUIOnScreenKeyboardState] state changed: " << zfargs.sender();
         } ZFLISTENER_END()
         ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender());
-        state->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), action);
+        state->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(), action);
         _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData task;
         task.state = state;
         task.callback = action;
@@ -32,7 +32,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test) {
         for(zfindex i = taskList.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
             if(task.state == state) {
-                state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), task.callback);
+                state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(), task.callback);
                 taskList.remove(i);
             }
         }
@@ -46,7 +46,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardState_test) {
 
     for(zfindex i = 0; i < taskList.count(); ++i) {
         _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
-        task.state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), task.callback);
+        task.state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(), task.callback);
         taskList.remove(i);
     }
     taskList.removeAll();

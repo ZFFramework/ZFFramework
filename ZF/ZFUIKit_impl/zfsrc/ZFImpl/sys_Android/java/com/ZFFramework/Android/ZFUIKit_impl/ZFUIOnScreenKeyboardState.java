@@ -85,7 +85,7 @@ public class ZFUIOnScreenKeyboardState {
             _WindowData windowData = _keyboardState.get(window);
             if (windowData != null) {
                 windowData.keyboardStateDelaying = false;
-                ZFUIOnScreenKeyboardState.notifyKeyboardStateOnChange(window);
+                ZFUIOnScreenKeyboardState.notifyKeyboardStateOnUpdate(window);
             }
         }
     };
@@ -170,7 +170,7 @@ public class ZFUIOnScreenKeyboardState {
      * @brief for special conditions, such as ZFFramework's view tree was embeded to native view,
      * you should manually notify keyboard changing state
      */
-    public static void notifyKeyboardStateOnChange(Window window) {
+    public static void notifyKeyboardStateOnUpdate(Window window) {
         if (window == null) {
             _keyboardFrame[0] = 0;
             _keyboardFrame[1] = 0;
@@ -183,7 +183,7 @@ public class ZFUIOnScreenKeyboardState {
             int old = _keyboardFrame[3];
             keyboardFrameUpdate(window, _keyboardFrame);
             if (_keyboardFrame[3] != old) {
-                ZFUIOnScreenKeyboardState.native_notifyKeyboardStateOnChange();
+                ZFUIOnScreenKeyboardState.native_notifyKeyboardStateOnUpdate();
             }
         } else if (windowData.keyboardStateDelaying) {
             System.arraycopy(windowData.keyboardFrame, 0, _keyboardFrame, 0, 4);
@@ -192,7 +192,7 @@ public class ZFUIOnScreenKeyboardState {
             keyboardFrameUpdate(window, windowData.keyboardFrame);
             System.arraycopy(windowData.keyboardFrame, 0, _keyboardFrame, 0, 4);
             if (_keyboardFrame[3] != old) {
-                ZFUIOnScreenKeyboardState.native_notifyKeyboardStateOnChange();
+                ZFUIOnScreenKeyboardState.native_notifyKeyboardStateOnUpdate();
             }
         }
     }
@@ -207,5 +207,5 @@ public class ZFUIOnScreenKeyboardState {
         outKeyboardFrame[3] = screenSize.height - rect.bottom;
     }
 
-    private static native void native_notifyKeyboardStateOnChange();
+    private static native void native_notifyKeyboardStateOnUpdate();
 }

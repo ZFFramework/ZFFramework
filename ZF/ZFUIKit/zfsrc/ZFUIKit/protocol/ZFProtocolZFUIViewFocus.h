@@ -79,18 +79,18 @@ public:
     /**
      * @brief implementations must notify when view's focus state changed (both obtain or resign)
      */
-    zffinal void notifyViewFocusChanged(ZF_IN ZFUIView *view) {
-        view->_ZFP_ZFUIView_viewFocusOnChange();
+    zffinal void notifyViewFocusUpdate(ZF_IN ZFUIView *view) {
+        view->_ZFP_ZFUIView_viewFocusOnUpdate();
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIViewFocus)
 
 /**
- * @brief convenient method to call notifyViewFocusChanged of optional protocol ZFUIViewFocus
+ * @brief convenient method to call notifyViewFocusUpdate of optional protocol ZFUIViewFocus
  */
-inline void ZFProtocolZFUIViewFocus_notifyViewFocusChanged(ZF_IN ZFUIView *view) {
+inline void ZFProtocolZFUIViewFocus_notifyViewFocusUpdate(ZF_IN ZFUIView *view) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     if(impl != zfnull) {
-        impl->notifyViewFocusChanged(view);
+        impl->notifyViewFocusUpdate(view);
     }
 }
 

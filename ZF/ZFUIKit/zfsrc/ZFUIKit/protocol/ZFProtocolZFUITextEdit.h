@@ -121,26 +121,26 @@ public:
     /**
      * @brief implementation must notify to check whether text should change
      */
-    zffinal zfbool notifyCheckTextShouldChange(
+    zffinal zfbool notifyCheckTextShouldUpdate(
             ZF_IN ZFUITextEdit *textEdit
             , ZF_IN const zfstring &newValue
             ) {
-        return textEdit->textShouldChange(newValue);
+        return textEdit->textShouldUpdate(newValue);
     }
     /**
      * @brief implementation must notify when text changed
      */
-    zffinal void notifyTextChange(
+    zffinal void notifyTextUpdate(
             ZF_IN ZFUITextEdit *textEdit
             , ZF_IN const zfstring &newValue
             ) {
-        textEdit->_ZFP_ZFUITextEdit_textNotifyChange(newValue);
+        textEdit->_ZFP_ZFUITextEdit_textNotifyUpdate(newValue);
     }
     /**
      * @brief implementation must notify when text select range changed
      */
-    zffinal void notifyTextSelectRangeChange(ZF_IN ZFUITextEdit *textEdit) {
-        textEdit->_ZFP_ZFUITextEdit_textSelectRangeNotifyChange();
+    zffinal void notifyTextSelectRangeOnUpdate(ZF_IN ZFUITextEdit *textEdit) {
+        textEdit->_ZFP_ZFUITextEdit_textSelectRangeNotifyUpdate();
     }
     /**
      * @brief implementation must notify when text changed

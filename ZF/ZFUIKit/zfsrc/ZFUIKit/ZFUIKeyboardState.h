@@ -24,7 +24,7 @@ public:
      *
      * called when pressed key changed
      */
-    ZFEVENT(KeyPressedOnChange)
+    ZFEVENT(KeyPressedOnUpdate)
 
 public:
     /**

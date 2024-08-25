@@ -28,7 +28,7 @@ public:
      */
     zffloat listVisibleCellOffset;
     zfbool listVisibleCellOffsetNeedUpdate;
-    zfbool listReloadByChangeListOrientation;
+    zfbool listReloadByUpdateListOrientation;
 
     /*
      * used by scrollListCellToHead/Tail
@@ -57,7 +57,7 @@ public:
     , listVisibleCellIndexRange(ZFIndexRangeZero())
     , listVisibleCellOffset(0)
     , listVisibleCellOffsetNeedUpdate(zftrue)
-    , listReloadByChangeListOrientation(zftrue)
+    , listReloadByUpdateListOrientation(zftrue)
     , scrollListCellIndex(zfindexMax())
     , scrollListCellOffset(0)
     , scrollListCellToHead(zftrue)
@@ -918,7 +918,7 @@ public:
             this->scrollContentFrameOverrideFlag = zffalse;
             this->listReloadRequested = zffalse;
             this->listQuickReloadRequested = zffalse;
-            this->pimplOwner->listVisibleCellOnChange();
+            this->pimplOwner->listVisibleCellOnUpdate();
             return;
         }
 
@@ -966,7 +966,7 @@ public:
                     0,
                     zfmMax(totalSize, this->pimplOwner->scrollArea().width),
                     this->pimplOwner->scrollArea().height);
-                if(this->listReloadByChangeListOrientation) {
+                if(this->listReloadByUpdateListOrientation) {
                     if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Left) {
                         scrollContentFrameNew.x = 0;
                     }
@@ -984,7 +984,7 @@ public:
                     this->pimplOwner->scrollContentFrame().y,
                     this->pimplOwner->scrollArea().width,
                     zfmMax(totalSize, this->pimplOwner->scrollArea().height));
-                if(this->listReloadByChangeListOrientation) {
+                if(this->listReloadByUpdateListOrientation) {
                     if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Top) {
                         scrollContentFrameNew.y = 0;
                     }
@@ -1034,8 +1034,8 @@ public:
 
         this->listReloadRequested = zffalse;
         this->listQuickReloadRequested = zffalse;
-        this->listReloadByChangeListOrientation = zffalse;
-        this->pimplOwner->listVisibleCellOnChange();
+        this->listReloadByUpdateListOrientation = zffalse;
+        this->pimplOwner->listVisibleCellOnUpdate();
 
         // fix content range
         ZFUIRect scrollContentFrame = this->pimplOwner->scrollContentFrame();
@@ -1215,7 +1215,7 @@ ZFOBJECT_REGISTER(ZFUIListView)
 
 ZFEVENT_REGISTER(ZFUIListView, ListCellOnAttach)
 ZFEVENT_REGISTER(ZFUIListView, ListCellOnDetach)
-ZFEVENT_REGISTER(ZFUIListView, ListVisibleCellOnChange)
+ZFEVENT_REGISTER(ZFUIListView, ListVisibleCellOnUpdate)
 
 #define _ZFP_ZFUIListView_listAdapterHolderTag "_ZFP_ZFUIListView_listAdapterHolderTag"
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfanyT<ZFUIListAdapter>, listAdapter) {
@@ -1243,7 +1243,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listAdapterAutoRetain
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIOrientationEnum, listOrientation) {
     if(this->listOrientation() != propertyValueOld) {
         d->listBounceUpdate();
-        d->listReloadByChangeListOrientation = zftrue;
+        d->listReloadByUpdateListOrientation = zftrue;
         this->listReload();
     }
 }
@@ -1397,15 +1397,15 @@ void ZFUIListView::viewChildOnRemove(
     zfsuper::viewChildOnRemove(child, layer);
 }
 
-void ZFUIListView::scrollAreaOnChange(void) {
-    zfsuper::scrollAreaOnChange();
+void ZFUIListView::scrollAreaOnUpdate(void) {
+    zfsuper::scrollAreaOnUpdate();
     if(!d->listQuickReloadRequested) {
         d->listQuickReloadRequested = zftrue;
     }
     d->listAdaptertingUpdate();
 }
-void ZFUIListView::scrollContentFrameOnChange(void) {
-    zfsuper::scrollContentFrameOnChange();
+void ZFUIListView::scrollContentFrameOnUpdate(void) {
+    zfsuper::scrollContentFrameOnUpdate();
     if(d->scrollContentFrameOverrideFlag) {
         return;
     }
@@ -1434,7 +1434,7 @@ void ZFUIListView::scrollContentFrameOnChange(void) {
     }
 
     if(d->cellNeedUpdate) {
-        this->listVisibleCellOnChange();
+        this->listVisibleCellOnUpdate();
     }
 }
 void ZFUIListView::scrollOnScrolledByUser(void) {
@@ -1507,7 +1507,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt
     d->updateTailCellAfterIndex(index, cellOldFrame);
 
     // finally notify visible cell changed
-    this->listVisibleCellOnChange();
+    this->listVisibleCellOnUpdate();
 
     zfRelease(cellOld);
 }
@@ -1554,8 +1554,8 @@ ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToTail
     d->scrollListCellCheckUpdate();
 }
 
-void ZFUIListView::listVisibleCellOnChange(void) {
-    this->observerNotify(ZFUIListView::EventListVisibleCellOnChange());
+void ZFUIListView::listVisibleCellOnUpdate(void) {
+    this->observerNotify(ZFUIListView::EventListVisibleCellOnUpdate());
 
     if(!this->scrollOverride()) {
         d->scrollListCellCheckUpdate();

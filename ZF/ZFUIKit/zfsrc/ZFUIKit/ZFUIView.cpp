@@ -53,10 +53,10 @@ public:
         stateFlag_layoutRequestedRecursively = 1 << 2,
         stateFlag_layouting = 1 << 3,
         stateFlag_viewFrameOverrideFlag = 1 << 4,
-        stateFlag_UIScaleChanged = 1 << 5,
+        stateFlag_UIScaleOnUpdate = 1 << 5,
         stateFlag_viewTransformUpdate = 1 << 6,
         stateFlag_viewTransformModified = 1 << 7,
-        stateFlag_observerHasAddFlag_viewChildOnChange = 1 << 8,
+        stateFlag_observerHasAddFlag_viewChildOnUpdate = 1 << 8,
         stateFlag_observerHasAddFlag_viewChildOnAdd = 1 << 9,
         stateFlag_observerHasAddFlag_viewChildOnRemove = 1 << 10,
         stateFlag_observerHasAddFlag_viewOnAddToParent = 1 << 11,
@@ -136,7 +136,7 @@ public:
         ZFUIRect nativeImplViewFrame = ZFUIRectZero();
         view->nativeImplViewOnLayout(nativeImplViewFrame, bounds, view->nativeImplViewMargin());
         if(view->d->nativeImplViewFrame != nativeImplViewFrame
-                || ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged)
+                || ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)
                 ) {
             view->d->nativeImplViewFrame = nativeImplViewFrame;
             if(view->d->nativeImplView != zfnull) {
@@ -164,7 +164,7 @@ public:
 
         ZFBitUnset(this->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting);
     }
-    void layoutParamChange(
+    void layoutParamUpdate(
             ZF_IN ZFUIView *owner
             , ZF_IN ZFUILayoutParam *newLayoutParam
             ) {
@@ -179,11 +179,11 @@ public:
 
         if(newLayoutParam) {
             newLayoutParam->observerAdd(
-                ZFUILayoutParam::EventLayoutParamOnChange(),
+                ZFUILayoutParam::EventLayoutParamOnUpdate(),
                 owner->d->layoutParamOnUpdate);
         }
         if(this->layoutParam) {
-            this->layoutParam->observerRemove(ZFUILayoutParam::EventLayoutParamOnChange(), owner->d->layoutParamOnUpdate);
+            this->layoutParam->observerRemove(ZFUILayoutParam::EventLayoutParamOnUpdate(), owner->d->layoutParamOnUpdate);
         }
         this->layoutParam = newLayoutParam;
     }
@@ -241,7 +241,7 @@ public:
         }
     }
     static void UIScaleUpdateRecursively(ZF_IN ZFUIView *child) {
-        ZFBitSet(child->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged);
+        ZFBitSet(child->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate);
         child->d->UIScaleFixed = child->d->UIScaleInherited * child->UIScale() * child->d->UIScaleForImpl;
         for(zfindex i = child->d->layerInternalImpl.views.count() - 1; i != zfindexMax(); --i) {
             UIScaleUpdateCheck(child, child->d->layerInternalImpl.views.get(i));
@@ -256,7 +256,7 @@ public:
             UIScaleUpdateCheck(child, child->childAt(i));
         }
         child->layoutRequest();
-        child->UIScaleOnChange();
+        child->UIScaleOnUpdate();
     }
     static void UIScaleUpdateCheck(
             ZF_IN ZFUIView *parent
@@ -303,7 +303,7 @@ public:
             }
         }
         layoutParam = layoutParamTmp;
-        view->_ZFP_ZFUIView_parentChanged(owner, layoutParam, childLayer);
+        view->_ZFP_ZFUIView_parentOnUpdate(owner, layoutParam, childLayer);
         if(atIndex == zfindexMax()) {
             atIndex = layer.views.count();
         }
@@ -316,7 +316,7 @@ public:
         UIScaleUpdateCheck(owner, view);
         owner->viewChildOnAdd(view, childLayer);
         view->viewOnAddToParent(owner);
-        owner->viewChildOnChange();
+        owner->viewChildOnUpdate();
 
         return layoutParam;
     }
@@ -339,7 +339,7 @@ public:
             ) {
         zfautoT<ZFUIView> child = layer.views.get(index);
 
-        child->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        child->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
         layer.views.remove(index);
         owner->implChildOnRemove(child, this->viewLayerPrevCount(layer) + index, childLayer, index);
 
@@ -347,7 +347,7 @@ public:
 
         owner->viewChildOnRemove(child, childLayer);
         child->viewOnRemoveFromParent(owner);
-        owner->viewChildOnChange();
+        owner->viewChildOnUpdate();
     }
     void childRemoveAll(
             ZF_IN ZFUIView *owner
@@ -365,7 +365,7 @@ public:
 
         zfindex prevLayerCount = this->viewLayerPrevCount(layer);
         for(zfindex i = tmp.count() - 1; i != zfindexMax(); --i) {
-            tmp[i]->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+            tmp[i]->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
             owner->implChildOnRemove(tmp[i], prevLayerCount + i, childLayer, i);
         }
 
@@ -375,7 +375,7 @@ public:
             child->viewOnRemoveFromParent(owner);
         }
 
-        owner->viewChildOnChange();
+        owner->viewChildOnUpdate();
     }
     void childMove(
             ZF_IN ZFUIView *owner
@@ -406,7 +406,7 @@ public:
         owner->implChildOnRemove(child, prevLayerCount + fromIndex, childLayer, fromIndex);
         owner->implChildOnAdd(child, prevLayerCount + toIndexOrIndexMax, childLayer, toIndexOrIndexMax);
 
-        owner->viewChildOnChange();
+        owner->viewChildOnUpdate();
     }
     void childMove(
             ZF_IN ZFUIView *owner
@@ -438,14 +438,14 @@ public:
         owner->implChildOnAdd(toReplace, fixedIndex, childLayer, atIndex);
 
         UIScaleUpdateCheck(owner, toReplace);
-        toReplace->_ZFP_ZFUIView_parentChanged(owner, old->layoutParam(), childLayer);
-        old->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        toReplace->_ZFP_ZFUIView_parentOnUpdate(owner, old->layoutParam(), childLayer);
+        old->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
 
         owner->viewChildOnRemove(old, childLayer);
         old->viewOnRemoveFromParent(owner);
         owner->viewChildOnAdd(toReplace, childLayer);
         toReplace->viewOnAddToParent(owner);
-        owner->viewChildOnChange();
+        owner->viewChildOnUpdate();
     }
 
     zfindex childCount(ZF_IN _ZFP_ZFUIViewLayerData &layer) {
@@ -692,7 +692,7 @@ public:
 
 static zfuint _ZFP_ZFUIView_stateFlags = 0;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIView_stateFlags, ZFLevelZFFrameworkStatic) {
-    ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnChange(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnChange);
+    ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnUpdate(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate);
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnAdd(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd);
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnRemove(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnRemove);
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewOnAddToParent(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewOnAddToParent);
@@ -700,7 +700,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIView_stateFlags, ZFLevelZFFrameworkSta
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewLayoutOnLayoutRequest(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_layoutOnLayoutRequest);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIView_stateFlags) {
-    ZFGlobalObserver().observerHasAddStateDetach(ZFUIView::EventViewChildOnChange(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnChange);
+    ZFGlobalObserver().observerHasAddStateDetach(ZFUIView::EventViewChildOnUpdate(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate);
     ZFGlobalObserver().observerHasAddStateDetach(ZFUIView::EventViewChildOnAdd(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd);
     ZFGlobalObserver().observerHasAddStateDetach(ZFUIView::EventViewChildOnRemove(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnRemove);
     ZFGlobalObserver().observerHasAddStateDetach(ZFUIView::EventViewOnAddToParent(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewOnAddToParent);
@@ -713,13 +713,13 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIView_stateFlags)
 // ZFUIView
 ZFOBJECT_REGISTER(ZFUIView)
 
-ZFEVENT_REGISTER(ZFUIView, ViewChildOnChange)
+ZFEVENT_REGISTER(ZFUIView, ViewChildOnUpdate)
 ZFEVENT_REGISTER(ZFUIView, ViewChildOnAdd)
 ZFEVENT_REGISTER(ZFUIView, ViewChildOnRemove)
 ZFEVENT_REGISTER(ZFUIView, ViewOnAddToParent)
 ZFEVENT_REGISTER(ZFUIView, ViewOnRemoveFromParent)
-ZFEVENT_REGISTER(ZFUIView, UIScaleOnChange)
-ZFEVENT_REGISTER(ZFUIView, ViewFocusOnChange)
+ZFEVENT_REGISTER(ZFUIView, UIScaleOnUpdate)
+ZFEVENT_REGISTER(ZFUIView, ViewFocusOnUpdate)
 ZFEVENT_REGISTER(ZFUIView, ViewOnEvent)
 ZFEVENT_REGISTER(ZFUIView, ViewLayoutOnLayoutRequest)
 ZFEVENT_REGISTER(ZFUIView, ViewLayoutOnMeasureFinish)
@@ -747,7 +747,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
     if(this->serializableOnCheckNeedSerializeChildren()) {
         this->childRemoveAll();
     }
-    d->layoutParamChange(this, zfnull);
+    d->layoutParamUpdate(this, zfnull);
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
@@ -793,7 +793,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
                 return zffalse;
             }
 
-            d->layoutParamChange(this, layoutParam);
+            d->layoutParamUpdate(this, layoutParam);
         }
         else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalImplView)) {
             if(!d->serializeInternalViewFromCategoryData(this,
@@ -1073,7 +1073,7 @@ void ZFUIView::objectOnDealloc(void) {
     }
     d->nativeView = zfnull;
 
-    d->layoutParamChange(this, zfnull);
+    d->layoutParamUpdate(this, zfnull);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -1089,25 +1089,25 @@ void ZFUIView::objectOnDeallocPrepare(void) {
 
     for(zfindex i = layerNormal.count() - 1; i != zfindexMax(); --i) {
         zfautoT<ZFUIView> child = layerNormal[i];
-        child->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        child->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
         this->viewChildOnRemove(child, ZFUIViewChildLayer::e_Normal);
         child->viewOnRemoveFromParent(this);
     }
     for(zfindex i = layerInternalFg.count() - 1; i != zfindexMax(); --i) {
         zfautoT<ZFUIView> child = layerInternalFg[i];
-        child->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        child->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
         this->viewChildOnRemove(child, ZFUIViewChildLayer::e_InternalFg);
         child->viewOnRemoveFromParent(this);
     }
     for(zfindex i = layerInternalBg.count() - 1; i != zfindexMax(); --i) {
         zfautoT<ZFUIView> child = layerInternalBg[i];
-        child->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        child->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
         this->viewChildOnRemove(child, ZFUIViewChildLayer::e_InternalBg);
         child->viewOnRemoveFromParent(this);
     }
     for(zfindex i = layerInternalImpl.count() - 1; i != zfindexMax(); --i) {
         zfautoT<ZFUIView> child = layerInternalImpl[i];
-        child->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        child->_ZFP_ZFUIView_parentOnUpdate(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
         this->viewChildOnRemove(child, ZFUIViewChildLayer::e_InternalImpl);
         child->viewOnRemoveFromParent(this);
     }
@@ -1116,7 +1116,7 @@ void ZFUIView::objectOnDeallocPrepare(void) {
     layerInternalFg.removeAll();
     layerInternalBg.removeAll();
     layerInternalImpl.removeAll();
-    this->viewChildOnChange();
+    this->viewChildOnUpdate();
 
     zfsuper::objectOnDeallocPrepare();
 }
@@ -1250,7 +1250,7 @@ void ZFUIView::implChildOnRemoveAllForDealloc(void) {
 
 // ============================================================
 // parent
-void ZFUIView::_ZFP_ZFUIView_parentChanged(
+void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
         ZF_IN ZFUIView *viewParent
         , ZF_IN ZFUILayoutParam *layoutParam
         , ZF_IN ZFUIViewChildLayerEnum viewLayer
@@ -1266,7 +1266,7 @@ void ZFUIView::_ZFP_ZFUIView_parentChanged(
     if(layoutParam != zfnull) {
         // only change layoutParam if not null
         // keep old one for performance
-        d->layoutParamChange(this, layoutParam);
+        d->layoutParamUpdate(this, layoutParam);
     }
     else {
         this->serializableRefLayoutParam(zfnull);
@@ -1378,8 +1378,8 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, UIScaleForPixel) {
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, UIScaleFixed) {
     return d->UIScaleFixed;
 }
-void ZFUIView::UIScaleOnChange(void) {
-    this->observerNotify(ZFUIView::EventUIScaleOnChange());
+void ZFUIView::UIScaleOnUpdate(void) {
+    this->observerNotify(ZFUIView::EventUIScaleOnUpdate());
 }
 
 // ============================================================
@@ -1402,10 +1402,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, layoutParam
     if(this->viewParent() != zfnull && layoutParam != zfnull && !layoutParam->classData()->classIsTypeOf(this->layoutParamClass())) {
         zfautoT<ZFUILayoutParam> layoutParamTmp = this->layoutParamCreate();
         layoutParamTmp->styleableCopyFrom(layoutParam);
-        d->layoutParamChange(this, layoutParamTmp);
+        d->layoutParamUpdate(this, layoutParamTmp);
     }
     else {
-        d->layoutParamChange(this, layoutParam);
+        d->layoutParamUpdate(this, layoutParam);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUILayoutParam>, layoutParam) {
@@ -1526,7 +1526,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
         if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)) {
             d->layoutAction(this, ZFUIRectGetBounds(d->viewFrame));
         }
-        if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged)) {
+        if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
             // size not changed but point changed, notify impl to move the view is enough
             d->viewFrameUpdateForImpl(this);
         }
@@ -1537,7 +1537,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
                 || d->viewFrame.height != viewFrame.height
                 ) {
             d->viewFrameUpdate(viewFrame);
-            if(d->viewFrame != d->viewFramePrev || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged)) {
+            if(d->viewFrame != d->viewFramePrev || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
                 d->viewFrameUpdateForImpl(this);
             }
 
@@ -1545,7 +1545,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
 
             d->layoutAction(this, bounds);
         }
-        else if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged)) {
+        else if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
             d->viewFrameUpdate(viewFrame);
             // size not changed but point changed, notify impl to move the view is enough
             d->viewFrameUpdateForImpl(this);
@@ -1553,7 +1553,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
     }
     ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested);
     ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequestedRecursively);
-    ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged);
+    ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, const ZFUIRect &, viewFramePrev) {
     return d->viewFramePrev;
@@ -1800,11 +1800,11 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, childRawArray) {
 
 // ============================================================
 // events
-void ZFUIView::viewChildOnChange(void) {
-    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnChange)
-            || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnChange)
+void ZFUIView::viewChildOnUpdate(void) {
+    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate)
+            || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate)
             ) {
-        this->observerNotify(ZFUIView::EventViewChildOnChange());
+        this->observerNotify(ZFUIView::EventViewChildOnUpdate());
     }
 }
 void ZFUIView::viewChildOnAdd(
@@ -2049,8 +2049,8 @@ void ZFUIView::observerOnAdd(ZF_IN zfidentity eventId) {
     if(eventId == ZFUIView::EventViewLayoutOnLayoutRequest()) {
         ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_layoutOnLayoutRequest);
     }
-    else if(eventId == ZFUIView::EventViewChildOnChange()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnChange);
+    else if(eventId == ZFUIView::EventViewChildOnUpdate()) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate);
     }
     else if(eventId == ZFUIView::EventViewChildOnAdd()) {
         ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd);
@@ -2070,8 +2070,8 @@ void ZFUIView::observerOnRemove(ZF_IN zfidentity eventId) {
     if(eventId == ZFUIView::EventViewLayoutOnLayoutRequest()) {
         ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_layoutOnLayoutRequest);
     }
-    else if(eventId == ZFUIView::EventViewChildOnChange()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnChange);
+    else if(eventId == ZFUIView::EventViewChildOnUpdate()) {
+        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate);
     }
     else if(eventId == ZFUIView::EventViewChildOnAdd()) {
         ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd);

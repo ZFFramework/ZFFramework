@@ -83,8 +83,8 @@ public:
      * @brief implementations must notify when web load start or stop
      *   (both success or fail)
      */
-    zffinal void notifyWebLoadStateChanged(ZF_IN ZFUIWebView *webView) {
-        webView->_ZFP_ZFUIWebView_notifyWebLoadStateChanged();
+    zffinal void notifyWebLoadStateOnUpdate(ZF_IN ZFUIWebView *webView) {
+        webView->_ZFP_ZFUIWebView_notifyWebLoadStateOnUpdate();
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIWebView)
 

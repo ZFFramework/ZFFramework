@@ -221,7 +221,7 @@ public:
      * param1 is a #v_zfindex which shows the previous checked button index
      * (may be #zfindexMax if nothing checked previously)
      */
-    ZFEVENT(ButtonTabOnChange)
+    ZFEVENT(ButtonTabOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -247,11 +247,11 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, buttonTabChecked)
 
 public:
-    zffinal inline void _ZFP_ZFUIButtonGroup_buttonTabOnChange(
+    zffinal inline void _ZFP_ZFUIButtonGroup_buttonTabOnUpdate(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndexPrev
             ) {
-        this->buttonTabOnChange(button, buttonIndexPrev);
+        this->buttonTabOnUpdate(button, buttonIndexPrev);
     }
     zffinal inline void _ZFP_ZFUIButtonGroup_buttonTabOnClickChecked(
             ZF_IN ZFUIButton *button
@@ -260,14 +260,14 @@ public:
         this->buttonTabOnClickChecked(button, buttonIndex);
     }
 protected:
-    /** @brief see #EventButtonTabOnChange */
-    virtual inline void buttonTabOnChange(
+    /** @brief see #EventButtonTabOnUpdate */
+    virtual inline void buttonTabOnUpdate(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndexPrev
             ) {
         this->toObject()->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::EventButtonTabOnChange(),
+            ZFUIButtonGroup::EventButtonTabOnUpdate(),
             this->toObject(),
             zfobj<v_zfindex>(buttonIndexPrev));
     }

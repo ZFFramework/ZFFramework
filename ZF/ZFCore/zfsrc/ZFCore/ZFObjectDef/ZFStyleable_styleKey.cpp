@@ -13,21 +13,21 @@ zfclass _ZFP_ZFStyleKeyHolder : zfextend ZFObject {
 public:
     zfstring styleKey;
     zfstlmap<zfstring, zfstring> stylePropertyKeyMap;
-    ZFListener styleOnChangeListener;
-    ZFListener stylePropertyOnChangeListener;
+    ZFListener styleOnUpdateListener;
+    ZFListener stylePropertyOnUpdateListener;
 public:
-    static void styleOnChange(
+    static void styleOnUpdate(
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFStyleable *owner
             );
-    static void stylePropertyOnChange(
+    static void stylePropertyOnUpdate(
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFStyleable *owner
             );
 };
 
 // ============================================================
-void _ZFP_ZFStyleKeyHolder::styleOnChange(
+void _ZFP_ZFStyleKeyHolder::styleOnUpdate(
         ZF_IN const ZFArgs &zfargs
         , ZF_IN ZFStyleable *owner
         ) {
@@ -50,8 +50,8 @@ void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
         if(holder != zfnull) {
             holder->styleKey = styleKey;
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventZFStyleOnChange(),
-                holder->styleOnChangeListener);
+                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                holder->styleOnUpdateListener);
         }
     }
     else {
@@ -61,22 +61,22 @@ void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
             this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className(), holder);
         }
         if(holder->styleKey == zfnull) {
-            if(!holder->styleOnChangeListener) {
+            if(!holder->styleOnUpdateListener) {
                 ZFStyleable *owner = this;
-                ZFLISTENER_1(styleOnChange
+                ZFLISTENER_1(styleOnUpdate
                         , ZFStyleable *, owner
                         ) {
-                    _ZFP_ZFStyleKeyHolder::styleOnChange(zfargs, owner);
+                    _ZFP_ZFStyleKeyHolder::styleOnUpdate(zfargs, owner);
                 } ZFLISTENER_END()
-                holder->styleOnChangeListener = styleOnChange;
+                holder->styleOnUpdateListener = styleOnUpdate;
             }
             ZFGlobalObserver().observerAdd(
-                ZFGlobalEvent::EventZFStyleOnChange(),
-                holder->styleOnChangeListener);
+                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                holder->styleOnUpdateListener);
         }
         holder->styleKey = styleKey;
         ZFArgs zfargs;
-        _ZFP_ZFStyleKeyHolder::styleOnChange(zfargs, this);
+        _ZFP_ZFStyleKeyHolder::styleOnUpdate(zfargs, this);
 
         if(holder->styleKey == zfnull) {
             v_zfstring *param0 = zfunsafe_zfAlloc(v_zfstring);
@@ -127,7 +127,7 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         return setterMethod->methodGenericInvoker()(retDummy, zfnull, propertyOwner, setterMethod, 1, paramDummy);
     }
 }
-void _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(
+void _ZFP_ZFStyleKeyHolder::stylePropertyOnUpdate(
         ZF_IN const ZFArgs &zfargs
         , ZF_IN ZFStyleable *owner
         ) {
@@ -154,8 +154,8 @@ void ZFStyleable::styleKeyForProperty(
             holder->stylePropertyKeyMap.erase(propertyName);
             if(holder->stylePropertyKeyMap.empty()) {
                 ZFGlobalObserver().observerRemove(
-                    ZFGlobalEvent::EventZFStyleOnChange(),
-                    holder->stylePropertyOnChangeListener);
+                    ZFGlobalEvent::EventZFStyleOnUpdate(),
+                    holder->stylePropertyOnUpdateListener);
             }
         }
     }
@@ -168,25 +168,25 @@ void ZFStyleable::styleKeyForProperty(
         zfbool oldEmpty = holder->stylePropertyKeyMap.empty();
         holder->stylePropertyKeyMap[propertyName] = styleKey;
         if(oldEmpty) {
-            if(!holder->stylePropertyOnChangeListener) {
+            if(!holder->stylePropertyOnUpdateListener) {
                 ZFStyleable *owner = this;
-                ZFLISTENER_1(stylePropertyOnChange
+                ZFLISTENER_1(stylePropertyOnUpdate
                         , ZFStyleable *, owner
                         ) {
-                    _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(zfargs, owner);
+                    _ZFP_ZFStyleKeyHolder::stylePropertyOnUpdate(zfargs, owner);
                 } ZFLISTENER_END()
-                holder->stylePropertyOnChangeListener = stylePropertyOnChange;
+                holder->stylePropertyOnUpdateListener = stylePropertyOnUpdate;
             }
             ZFGlobalObserver().observerAdd(
-                ZFGlobalEvent::EventZFStyleOnChange(),
-                holder->stylePropertyOnChangeListener);
+                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                holder->stylePropertyOnUpdateListener);
         }
         if(!_ZFP_ZFStylePropertyCopy(this->toObject(), propertyName, styleKey)) {
             holder->stylePropertyKeyMap.erase(propertyName);
             if(holder->stylePropertyKeyMap.empty()) {
                 ZFGlobalObserver().observerRemove(
-                    ZFGlobalEvent::EventZFStyleOnChange(),
-                    holder->stylePropertyOnChangeListener);
+                    ZFGlobalEvent::EventZFStyleOnUpdate(),
+                    holder->stylePropertyOnUpdateListener);
             }
             v_zfstring *param0 = zfunsafe_zfAlloc(v_zfstring);
             param0->zfv = propertyName;
@@ -227,14 +227,14 @@ ZFINTERFACE_ON_DEALLOC_DEFINE(ZFStyleable) {
     if(holder) {
         if(holder->styleKey != zfnull) {
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventZFStyleOnChange(),
-                holder->styleOnChangeListener);
+                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                holder->styleOnUpdateListener);
             holder->styleKey = zfnull;
         }
         if(!holder->stylePropertyKeyMap.empty()) {
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventZFStyleOnChange(),
-                holder->stylePropertyOnChangeListener);
+                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                holder->stylePropertyOnUpdateListener);
         }
     }
 }

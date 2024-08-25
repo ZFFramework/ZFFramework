@@ -13,9 +13,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #ZFFrameworkInit */
-typedef void (*ZFFrameworkStateChangeCallback)(void);
-extern ZFLIB_ZFCore ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void);
-extern ZFLIB_ZFCore ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void);
+typedef void (*ZFFrameworkStateUpdateCallback)(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFFrameworkStateUpdateCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFFrameworkStateUpdateCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void);
 /** @brief called when #ZFFrameworkInit finished */
 #define ZFFrameworkInitFinishCallbacks _ZFP_ZFFrameworkInitFinishCallbacks()
 /** @brief called when #ZFFrameworkInit finished */

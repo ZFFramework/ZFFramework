@@ -57,26 +57,26 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L);
 /**
  * @brief called when class data changed, for each lua state of each thread
  */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataChange(
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataUpdate(
         ZF_IN lua_State *L
-        , ZF_IN const ZFClassDataChangeData &data
+        , ZF_IN const ZFClassDataUpdateData &data
         );
 
 // ============================================================
 typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupCallback)(ZF_IN_OUT lua_State *L);
-typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange)(
+typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate)(
         ZF_IN_OUT lua_State *L
-        , ZF_IN const ZFClassDataChangeData &data
+        , ZF_IN const ZFClassDataUpdateData &data
         );
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         );
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         );
 
 /**
@@ -92,19 +92,19 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
  *           //   void implSetupDetach(ZF_IN_OUT lua_State *L);
  *       }, {
  *           // your own class data change action, callback proto type:
- *           //   void implSetupClassDataChange(
+ *           //   void implSetupClassDataUpdate(
  *           //           ZF_IN_OUT lua_State *L
- *           //           , ZF_IN const ZFClassDataChangeData &data
+ *           //           , ZF_IN const ZFClassDataUpdateData &data
  *           //           );
  *       })
  * @endcode
  */
-#define ZFImpl_ZFLua_implSetupCallback_DEFINE(SetupSig, setupAttachAction, setupDetachAction, setupClassDataChange) \
+#define ZFImpl_ZFLua_implSetupCallback_DEFINE(SetupSig, setupAttachAction, setupDetachAction, setupClassDataUpdate) \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implSetupAction_##SetupSig, ZFLevelZFFrameworkLow) { \
-        _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataChange); \
+        _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataUpdate); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implSetupAction_##SetupSig) { \
-        _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataChange); \
+        _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataUpdate); \
     } \
     public: \
         static void implSetupAttach(ZF_IN_OUT lua_State *L) { \
@@ -113,11 +113,11 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         static void implSetupDetach(ZF_IN_OUT lua_State *L) { \
             setupDetachAction \
         } \
-        static void implSetupClassDataChange( \
+        static void implSetupClassDataUpdate( \
                 ZF_IN_OUT lua_State *L \
-                , ZF_IN const ZFClassDataChangeData &data \
+                , ZF_IN const ZFClassDataUpdateData &data \
                 ) { \
-            setupClassDataChange \
+            setupClassDataUpdate \
         } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implSetupAction_##SetupSig)
 

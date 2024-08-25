@@ -19,7 +19,7 @@ public:
     ZFUISysWindow *modalWindowOwner;
     zfautoT<ZFUISysWindow> modalWindowShowing;
     zfautoT<ZFUILayoutParam> sysWindowLayoutParam;
-    ZFListener sysWindowLayoutParamOnChangeListener;
+    ZFListener sysWindowLayoutParamOnUpdateListener;
     zfbool nativeWindowCreated;
     zfbool nativeWindowResumed;
     ZFUISize sysWindowSize;
@@ -34,7 +34,7 @@ public:
     , modalWindowOwner(zfnull)
     , modalWindowShowing(zfnull)
     , sysWindowLayoutParam(zfnull)
-    , sysWindowLayoutParamOnChangeListener()
+    , sysWindowLayoutParamOnUpdateListener()
     , nativeWindowCreated(zffalse)
     , nativeWindowResumed(zffalse)
     , sysWindowSize()
@@ -182,13 +182,13 @@ void ZFUISysWindow::objectOnInitFinish(void) {
     ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnInit(this);
 
     ZFUISysWindow *owner = this;
-    ZFLISTENER_1(sysWindowLayoutParamOnChange
+    ZFLISTENER_1(sysWindowLayoutParamOnUpdate
             , ZFUISysWindow *, owner
             ) {
         owner->_ZFP_ZFUISysWindow_sysWindowLayoutUpdate();
     } ZFLISTENER_END()
-    d->sysWindowLayoutParamOnChangeListener = sysWindowLayoutParamOnChange;
-    d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnChange(), d->sysWindowLayoutParamOnChangeListener);
+    d->sysWindowLayoutParamOnUpdateListener = sysWindowLayoutParamOnUpdate;
+    d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnUpdate(), d->sysWindowLayoutParamOnUpdateListener);
 }
 void ZFUISysWindow::objectOnDeallocPrepare(void) {
     if(d->nativeWindowResumed) {
@@ -353,7 +353,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onCreate(ZF_IN void *nativeWindow) {
 
     this->observerNotify(ZFUISysWindow::EventSysWindowOnCreate());
 
-    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnChange(this);
+    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void) {
     if(d->nativeWindowResumed) {
@@ -424,10 +424,10 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void) {
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_sysWindowLayoutUpdate(void) {
     if(this->nativeWindowEmbedImpl() != zfnull) {
-        this->nativeWindowEmbedImpl()->sysWindowLayoutParamOnChange(this);
+        this->nativeWindowEmbedImpl()->sysWindowLayoutParamOnUpdate(this);
     }
     else {
-        ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnChange(this);
+        ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
     }
 }
 

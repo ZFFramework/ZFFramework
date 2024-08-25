@@ -27,7 +27,7 @@ public final class ZFUIImageView extends ImageView {
         nativeImageViewTmp.invalidate();
     }
 
-    public static void native_imageNinePatchChanged(Object nativeImageView,
+    public static void native_imageNinePatchOnUpdate(Object nativeImageView,
                                                     float imageScale,
                                                     int ninePatch_left,
                                                     int ninePatch_top,

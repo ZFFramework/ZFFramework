@@ -58,13 +58,13 @@ public:
             (jobject)imageView->nativeImplView(),
             (jobject)(image == zfnull) ? zfnull : image->nativeImage());
     }
-    virtual void imageNinePatchChanged(
+    virtual void imageNinePatchOnUpdate(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN zffloat imageScale
             , ZF_IN const ZFUIMargin &imageNinePatch
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), "native_imageNinePatchChanged",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), "native_imageNinePatchOnUpdate",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())

@@ -23,10 +23,10 @@ protected:
 
         this->prepareSettingButton(window, testView);
 
-        ZFLISTENER(loadStateOnChange) {
-            zfLogTrim() << "webLoadingOnChange " << zfargs.sender()->to<ZFUIWebView *>()->webLoading();
+        ZFLISTENER(loadStateOnUpdate) {
+            zfLogTrim() << "webLoadingOnUpdate " << zfargs.sender()->to<ZFUIWebView *>()->webLoading();
         } ZFLISTENER_END()
-        testView->observerAdd(ZFUIWebView::EventWebLoadStateOnChange(), loadStateOnChange);
+        testView->observerAdd(ZFUIWebView::EventWebLoadStateOnUpdate(), loadStateOnUpdate);
 
         testView->webLoadUrl("http://www.baidu.com");
     }

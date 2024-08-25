@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFKeyValueContainer)
 
-ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnChange)
+ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnUpdate)
 ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnAdd)
 ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnRemove)
 

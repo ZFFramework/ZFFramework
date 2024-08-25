@@ -30,8 +30,8 @@ public:
     , textEditInputMethodHintsSaved(this->inputMethodHints())
     , textEditTextSaved()
     {
-        this->connect(this, SIGNAL(textChanged(QString)), this, SLOT(_ZFP_textChanged(QString)));
-        this->connect(this, SIGNAL(cursorPositionChanged(int,int)), this, SLOT(_ZFP_textSelectRangeOnChange(int,int)));
+        this->connect(this, SIGNAL(textChanged(QString)), this, SLOT(_ZFP_textOnUpdate(QString)));
+        this->connect(this, SIGNAL(cursorPositiOnChanged(int,int)), this, SLOT(_ZFP_textSelectRangeOnUpdate(int,int)));
         this->_ZFP_textColor(ZFUIColorBlack());
         this->setFrame(false);
         this->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -75,7 +75,7 @@ public:
             return;
         }
         int cursor = this->cursorPosition();
-        if(ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(this->ownerZFUITextEdit, text)) {
+        if(ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldUpdate(this->ownerZFUITextEdit, text)) {
             int positionSaved = this->cursorPosition();
             int textLengthOld = this->text().length();
             this->textEditTextSaved = text;
@@ -91,7 +91,7 @@ public:
             this->setCursorPosition(cursor);
         }
         if(needNotify) {
-            ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(this->ownerZFUITextEdit, text);
+            ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextUpdate(this->ownerZFUITextEdit, text);
         }
     }
 
@@ -139,7 +139,7 @@ public:
         return ret;
     }
 public slots:
-    void _ZFP_textChanged(const QString &text) {
+    void _ZFP_textOnUpdate(const QString &text) {
         if(this->textEditEventOverrideFlag > 0) {
             return;
         }
@@ -147,8 +147,8 @@ public slots:
         this->_ZFP_text(ZFImpl_sys_Qt_zfstringFromQString(text), zftrue);
         --(this->textEditEventOverrideFlag);
     }
-    void _ZFP_textSelectRangeOnChange(int posOld, int posNew) {
-        ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeChange(this->ownerZFUITextEdit);
+    void _ZFP_textSelectRangeOnUpdate(int posOld, int posNew) {
+        ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeOnUpdate(this->ownerZFUITextEdit);
     }
 };
 

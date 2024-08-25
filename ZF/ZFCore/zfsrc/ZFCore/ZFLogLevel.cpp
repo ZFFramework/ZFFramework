@@ -6,7 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFENUM_DEFINE(ZFLogLevel)
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFEVENT_GLOBAL_REGISTER(LogLevelOnChange)
+ZFEVENT_GLOBAL_REGISTER(LogLevelOnUpdate)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 static ZFLogLevelEnum _ZFP_ZFLogLevelGlobal = ZFLogLevel::EnumDefault();
@@ -16,7 +16,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLogLevelDefault
     _ZFP_ZFLogLevelGlobal = level;
     ZFLogHeaderDefault_logCaller(ZFLogLevelIsActive(ZFLogLevel::e_Verbose));
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) == ZFFrameworkStateAvailable) {
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLogLevelOnChange());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLogLevelOnUpdate());
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFLogLevelEnum, ZFLogLevelDefault) {

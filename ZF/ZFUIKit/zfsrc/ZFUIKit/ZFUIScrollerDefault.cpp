@@ -272,7 +272,7 @@ public:
         this->aniByPointStartTime = this->aniLastTime;
         this->aniByPointStopTime = this->aniByPointStartTime + duration;
     }
-    void aniByPointScrollOwnerSizeChanged(void) {
+    void aniByPointScrollOwnerSizeOnUpdate(void) {
         if(this->calcBounceHeadFromContentOffset(this->aniByPointStartPos) > _ZFP_ZFUIScrollerDefault_scrollAniBounceMax) {
             this->aniByPointStartPos = this->calcContentOffsetFromBounceHead(_ZFP_ZFUIScrollerDefault_scrollAniBounceMax);
         }
@@ -290,7 +290,7 @@ public:
 
     // ============================================================
     // aniBySpeed logic
-    void aniBySpeedScrollOwnerSizeChanged(void) {
+    void aniBySpeedScrollOwnerSizeOnUpdate(void) {
         // nothing to do
     }
     void aniBySpeedCalcSpeed(void) {
@@ -503,15 +503,15 @@ void ZFUIScrollerDefault::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFUIScrollerDefault::scrollOwnerSizeChanged(ZF_IN zffloat ownerSize) {
+void ZFUIScrollerDefault::scrollOwnerSizeOnUpdate(ZF_IN zffloat ownerSize) {
     d->ownerSize = ownerSize;
     d->contentBounceTailFixUpdate();
 
     if(d->aniState == _ZFP_ZFUIScrollerDefaultPrivateAniStateByPoint) {
-        d->aniByPointScrollOwnerSizeChanged();
+        d->aniByPointScrollOwnerSizeOnUpdate();
     }
     else if(d->aniState == _ZFP_ZFUIScrollerDefaultPrivateAniStateBySpeed) {
-        d->aniBySpeedScrollOwnerSizeChanged();
+        d->aniBySpeedScrollOwnerSizeOnUpdate();
     }
     else {
         if(d->calcBounceHeadFromContentOffset(d->contentOffset) > 0) {
@@ -523,7 +523,7 @@ void ZFUIScrollerDefault::scrollOwnerSizeChanged(ZF_IN zffloat ownerSize) {
     }
     d->scrollAlignToPageCheckUpdate();
 }
-void ZFUIScrollerDefault::scrollBounceChanged(
+void ZFUIScrollerDefault::scrollBounceOnUpdate(
         ZF_IN zfbool scrollBounce
         , ZF_IN zfbool scrollBounceAlways
         ) {
@@ -531,12 +531,12 @@ void ZFUIScrollerDefault::scrollBounceChanged(
     d->scrollBounceAlways = scrollBounceAlways;
 }
 
-void ZFUIScrollerDefault::scrollAlignToPageChanged(ZF_IN zfbool scrollAlignToPage) {
+void ZFUIScrollerDefault::scrollAlignToPageOnUpdate(ZF_IN zfbool scrollAlignToPage) {
     d->scrollAlignToPage = scrollAlignToPage;
     d->scrollAlignToPageCheckUpdate();
 }
 
-void ZFUIScrollerDefault::scrollContentChanged(
+void ZFUIScrollerDefault::scrollContentOnUpdate(
         ZF_IN zffloat contentOffset
         , ZF_IN zffloat contentSize
         ) {

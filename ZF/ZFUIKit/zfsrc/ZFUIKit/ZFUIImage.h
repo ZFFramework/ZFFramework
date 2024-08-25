@@ -107,7 +107,7 @@ zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextend ZFStyleableObject {
      *
      * called when #imageScale or #ZFUIImage::imageScale changed
      */
-    ZFEVENT(ImageScaleOnChange)
+    ZFEVENT(ImageScaleOnUpdate)
 
 protected:
     zfoverride
@@ -196,11 +196,11 @@ public:
     ZFMETHOD_DECLARE_0(void *, nativeImage)
 
 public:
-    zffinal void _ZFP_ZFUIImage_imageScaleOnChange(void);
+    zffinal void _ZFP_ZFUIImage_imageScaleOnUpdate(void);
 protected:
-    /** @brief see #EventImageScaleOnChange */
-    virtual void imageScaleOnChange(void) {
-        this->observerNotify(ZFUIImage::EventImageScaleOnChange());
+    /** @brief see #EventImageScaleOnUpdate */
+    virtual void imageScaleOnUpdate(void) {
+        this->observerNotify(ZFUIImage::EventImageScaleOnUpdate());
     }
 
     // ============================================================

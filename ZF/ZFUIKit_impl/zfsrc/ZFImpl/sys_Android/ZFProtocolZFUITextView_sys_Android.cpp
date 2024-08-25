@@ -105,15 +105,15 @@ public:
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSizeAutoChangeMinSize(
+    virtual void textSizeAutoMin(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMinSize
+            , ZF_IN zffloat textSizeAutoMin
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSizeAutoChangeMaxSize(
+    virtual void textSizeAutoMax(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMaxSize
+            , ZF_IN zffloat textSizeAutoMax
             ) {
         // changed during layoutNativeTextView
     }
@@ -190,12 +190,12 @@ public:
             , ZF_IN const ZFUISize &viewSize
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_textSizeAutoChangeCurrentValue",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_textSizeAuto_update",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        zffloat fixedTextSize = this->calcTextSizeAutoChange(textView, viewSize);
+        zffloat fixedTextSize = this->calcTextSizeAuto(textView, viewSize);
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), jmId,
             (jobject)textView->nativeImplView(),
             (jint)fixedTextSize);

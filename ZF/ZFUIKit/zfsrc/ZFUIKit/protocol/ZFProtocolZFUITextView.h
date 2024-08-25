@@ -59,14 +59,14 @@ public:
             , ZF_IN zffloat textSize
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
-    virtual void textSizeAutoChangeMinSize(
+    virtual void textSizeAutoMin(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMinSize
+            , ZF_IN zffloat textSizeAutoMin
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
-    virtual void textSizeAutoChangeMaxSize(
+    virtual void textSizeAutoMax(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMaxSize
+            , ZF_IN zffloat textSizeAutoMax
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
     virtual void textSingleLine(
@@ -118,15 +118,15 @@ public:
      * loop to measure and calculate proper text size,
      * may have performance issues
      */
-    zffloat calcTextSizeAutoChange(
+    zffloat calcTextSizeAuto(
             ZF_IN ZFUITextView *textView
             , ZF_IN const ZFUISize &sizeHint
             ) {
         zffloat curTextSize = textView->textSize();
         ZFUISize curSize = this->measureNativeTextView(textView, sizeHint, ZFUISizeApplyScale(curTextSize, textView->UIScaleFixed()));
 
-        if(textView->textSizeAutoChangeMaxSize() > 0) {
-            while(curTextSize < textView->textSizeAutoChangeMaxSize()
+        if(textView->textSizeAutoMax() > 0) {
+            while(curTextSize < textView->textSizeAutoMax()
                     && ((sizeHint.width <= 0 || curSize.width < sizeHint.width)
                         && (sizeHint.height <= 0 || curSize.height < sizeHint.height))
                         ) {
@@ -135,8 +135,8 @@ public:
             }
         }
 
-        if(textView->textSizeAutoChangeMinSize() > 0) {
-            while(curTextSize > textView->textSizeAutoChangeMinSize()
+        if(textView->textSizeAutoMin() > 0) {
+            while(curTextSize > textView->textSizeAutoMin()
                     && ((sizeHint.width > 0 && curSize.width > sizeHint.width)
                         || (sizeHint.height > 0 && curSize.height > sizeHint.height))
                         ) {

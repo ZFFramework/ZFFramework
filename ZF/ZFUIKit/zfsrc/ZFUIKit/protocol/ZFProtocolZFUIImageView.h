@@ -50,7 +50,7 @@ public:
      * you should take care of the actual scale logic manually
      * @note size is in pixel unit, you may revert it according imageScale
      */
-    virtual void imageNinePatchChanged(
+    virtual void imageNinePatchOnUpdate(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN zffloat imageScale
             , ZF_IN const ZFUIMargin &imageNinePatch

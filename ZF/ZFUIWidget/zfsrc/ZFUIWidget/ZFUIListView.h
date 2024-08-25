@@ -55,7 +55,7 @@ public:
      * param0 is the list cell
      * @note you must not access #listVisibleCell or #listVisibleCellIndexRange
      *   during this event,
-     *   you can only access them during #EventListVisibleCellOnChange
+     *   you can only access them during #EventListVisibleCellOnUpdate
      */
     ZFEVENT(ListCellOnAttach)
     /**
@@ -65,7 +65,7 @@ public:
      * param0 is the list cell
      * @note you must not access #listVisibleCell or #listVisibleCellIndexRange
      *   during this event,
-     *   you can only access them during #EventListVisibleCellOnChange
+     *   you can only access them during #EventListVisibleCellOnUpdate
      */
     ZFEVENT(ListCellOnDetach)
     /**
@@ -73,7 +73,7 @@ public:
      *
      * called when list visible cell changed
      */
-    ZFEVENT(ListVisibleCellOnChange)
+    ZFEVENT(ListVisibleCellOnUpdate)
 
 public:
     // ============================================================
@@ -185,9 +185,9 @@ protected:
             );
 
     zfoverride
-    virtual void scrollAreaOnChange(void);
+    virtual void scrollAreaOnUpdate(void);
     zfoverride
-    virtual void scrollContentFrameOnChange(void);
+    virtual void scrollContentFrameOnUpdate(void);
 
 protected:
     zfoverride
@@ -272,8 +272,8 @@ protected:
     virtual inline void cellOnDetach(ZF_IN ZFUIListCell *cell) {
         this->observerNotify(ZFUIListView::EventListCellOnDetach(), cell);
     }
-    /** @brief see #EventListVisibleCellOnChange */
-    virtual void listVisibleCellOnChange(void);
+    /** @brief see #EventListVisibleCellOnUpdate */
+    virtual void listVisibleCellOnUpdate(void);
 
 private:
     _ZFP_ZFUIListViewPrivate *d;

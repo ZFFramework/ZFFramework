@@ -84,7 +84,7 @@ public:
      * null to clear current focused view,
      * do nothing if view and all of its parents are not focusable
      */
-    void viewFocusChange(ZF_IN ZFImpl_sys_SDL_View *view);
+    void viewFocus(ZF_IN ZFImpl_sys_SDL_View *view);
 
     /**
      * @brief access mouse state

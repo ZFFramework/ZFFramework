@@ -27,7 +27,7 @@ public:
      * called when load start or stop,
      * new state can be checked by #webLoading
      */
-    ZFEVENT(WebLoadStateOnChange)
+    ZFEVENT(WebLoadStateOnUpdate)
 
 public:
     // ============================================================
@@ -84,8 +84,8 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, webGoForwardAvailable)
 
 public:
-    zffinal void _ZFP_ZFUIWebView_notifyWebLoadStateChanged(void) {
-        this->webLoadStateOnChange();
+    zffinal void _ZFP_ZFUIWebView_notifyWebLoadStateOnUpdate(void) {
+        this->webLoadStateOnUpdate();
     }
 
 protected:
@@ -97,9 +97,9 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
 protected:
-    /** @brief see #EventWebLoadStateOnChange */
-    virtual inline void webLoadStateOnChange(void) {
-        this->observerNotify(ZFUIWebView::EventWebLoadStateOnChange());
+    /** @brief see #EventWebLoadStateOnUpdate */
+    virtual inline void webLoadStateOnUpdate(void) {
+        this->observerNotify(ZFUIWebView::EventWebLoadStateOnUpdate());
     }
 };
 

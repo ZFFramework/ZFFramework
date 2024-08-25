@@ -27,12 +27,12 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
                 ) {
             ZFCoreArray<lua_State *> stateList;
             stateList.add(L);
-            if(data.changeType == ZFClassDataChangeTypeAttach) {
+            if(data.changeType == ZFClassDataUpdateTypeAttach) {
                 ZFImpl_ZFLua_implSetupScope(
                     stateList,
                     ZFCoreArrayCreate(zfstring, data.changedClass->className()));
             }
-            else if(data.changeType == ZFClassDataChangeTypeClassAliasAttach) {
+            else if(data.changeType == ZFClassDataUpdateTypeClassAliasAttach) {
                 ZFImpl_ZFLua_implSetupScope(
                     stateList,
                     ZFCoreArrayCreate(zfstring, data.name));

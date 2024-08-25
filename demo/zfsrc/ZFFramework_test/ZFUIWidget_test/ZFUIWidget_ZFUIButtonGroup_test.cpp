@@ -32,7 +32,7 @@ protected:
                 << ", checked:" << zfargs.param1();
         } ZFLISTENER_END()
         layout->observerAdd(ZFUIButtonGroup::EventButtonTabOnClickChecked(), buttonGroupAction);
-        layout->observerAdd(ZFUIButtonGroup::EventButtonTabOnChange(), buttonGroupAction);
+        layout->observerAdd(ZFUIButtonGroup::EventButtonTabOnUpdate(), buttonGroupAction);
     }
 
 private:

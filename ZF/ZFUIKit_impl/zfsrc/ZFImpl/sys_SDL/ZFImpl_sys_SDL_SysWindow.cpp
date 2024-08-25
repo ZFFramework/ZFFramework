@@ -140,7 +140,7 @@ void ZFImpl_sys_SDL_SysWindow::layoutRequest(void) {
 }
 
 // ============================================================
-void ZFImpl_sys_SDL_SysWindow::viewFocusChange(ZF_IN ZFImpl_sys_SDL_View *view) {
+void ZFImpl_sys_SDL_SysWindow::viewFocus(ZF_IN ZFImpl_sys_SDL_View *view) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *focusImpl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     zfCoreAssert(focusImpl != zfnull);
     if(view == zfnull) {
@@ -149,7 +149,7 @@ void ZFImpl_sys_SDL_SysWindow::viewFocusChange(ZF_IN ZFImpl_sys_SDL_View *view) 
             this->viewFocused = zfnull;
             if(owner != zfnull) {
                 if(focusImpl != zfnull) {
-                    focusImpl->notifyViewFocusChanged(owner);
+                    focusImpl->notifyViewFocusUpdate(owner);
                 }
             }
         }
@@ -167,10 +167,10 @@ void ZFImpl_sys_SDL_SysWindow::viewFocusChange(ZF_IN ZFImpl_sys_SDL_View *view) 
     ZFUIView *focusNew = view->ownerZFUIView;
     this->viewFocused = view;
     if(focusOld != zfnull) {
-        focusImpl->notifyViewFocusChanged(focusOld);
+        focusImpl->notifyViewFocusUpdate(focusOld);
     }
     if(focusNew != zfnull) {
-        focusImpl->notifyViewFocusChanged(focusNew);
+        focusImpl->notifyViewFocusUpdate(focusNew);
     }
 }
 

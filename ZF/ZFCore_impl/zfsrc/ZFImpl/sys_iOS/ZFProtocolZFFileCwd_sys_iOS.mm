@@ -14,7 +14,7 @@ public:
         ZFImpl_sys_iOS_zfstringFromNSString(_pathForCwd, [NSFileManager defaultManager].currentDirectoryPath);
         return _pathForCwd;
     }
-    virtual zfbool pathForCwdChange(ZF_IN const zfstring &pathForCwd) {
+    virtual zfbool pathForCwd(ZF_IN const zfstring &pathForCwd) {
         return ([[NSFileManager defaultManager] changeCurrentDirectoryPath:ZFImpl_sys_iOS_zfstringToNSString(pathForCwd)] == YES);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_iOS)

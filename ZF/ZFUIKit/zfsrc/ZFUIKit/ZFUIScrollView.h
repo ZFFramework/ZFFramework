@@ -79,13 +79,13 @@ public:
      *
      * called when #scrollArea changed
      */
-    ZFEVENT(ScrollAreaOnChange)
+    ZFEVENT(ScrollAreaOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #scrollContentFrame changed
      */
-    ZFEVENT(ScrollContentFrameOnChange)
+    ZFEVENT(ScrollContentFrameOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -522,13 +522,13 @@ protected:
     virtual inline void scrollOnScrollEnd(void) {
         this->observerNotify(ZFUIScrollView::EventScrollOnScrollEnd());
     }
-    /** @brief see #EventScrollAreaOnChange */
-    virtual inline void scrollAreaOnChange(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollAreaOnChange());
+    /** @brief see #EventScrollAreaOnUpdate */
+    virtual inline void scrollAreaOnUpdate(void) {
+        this->observerNotify(ZFUIScrollView::EventScrollAreaOnUpdate());
     }
-    /** @brief see #EventScrollContentFrameOnChange */
-    virtual inline void scrollContentFrameOnChange(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollContentFrameOnChange());
+    /** @brief see #EventScrollContentFrameOnUpdate */
+    virtual inline void scrollContentFrameOnUpdate(void) {
+        this->observerNotify(ZFUIScrollView::EventScrollContentFrameOnUpdate());
     }
     /** @brief see #EventScrollAutoScrollOnStart */
     virtual inline void scrollAutoScrollOnStart(void) {

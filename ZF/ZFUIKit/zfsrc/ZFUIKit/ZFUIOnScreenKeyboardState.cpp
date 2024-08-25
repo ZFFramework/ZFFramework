@@ -6,7 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIOnScreenKeyboardState)
 
-ZFEVENT_REGISTER(ZFUIOnScreenKeyboardState, KeyboardStateOnChange)
+ZFEVENT_REGISTER(ZFUIOnScreenKeyboardState, KeyboardStateOnUpdate)
 
 ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, instanceForSysWindow
         , ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull)

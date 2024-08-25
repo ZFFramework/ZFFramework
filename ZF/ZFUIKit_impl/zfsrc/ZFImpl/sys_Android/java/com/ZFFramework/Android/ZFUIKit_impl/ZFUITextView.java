@@ -124,8 +124,8 @@ public final class ZFUITextView extends TextView {
         return (int) (nativeTextViewTmp.getTextSize());
     }
 
-    public static void native_textSizeAutoChangeCurrentValue(Object nativeTextView,
-                                                             int textSizeCurrent) {
+    public static void native_textSizeAuto_update(Object nativeTextView,
+                                                  int textSizeCurrent) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         nativeTextViewTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeCurrent);
     }

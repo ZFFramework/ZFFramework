@@ -362,12 +362,12 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  *   obj->styleKey("MyStyle/MyStyleObject");
  *
  *   // change style
- *   ZFStyleChangeBegin();
+ *   ZFStyleUpdateBegin();
  *       ZFStyleSet("MyStyle/MyStyleObject", xxx);
- *       ZFStyleChangeBegin(); // can be embeded, but must be paired
+ *       ZFStyleUpdateBegin(); // can be embeded, but must be paired
  *           ZFStyleSet("xxx", xxx);
- *       ZFStyleChangeEnd();
- *   ZFStyleChangeEnd();
+ *       ZFStyleUpdateEnd();
+ *   ZFStyleUpdateEnd();
  *
  *   // use ZFStyleLoad is recommended
  *   ZFStyleLoad(xxx);
@@ -452,23 +452,23 @@ extern ZFLIB_ZFCore void ZFStyleRemoveAll(void);
 /**
  * @brief see #ZFStyleSet
  */
-extern ZFLIB_ZFCore void ZFStyleChangeBegin();
+extern ZFLIB_ZFCore void ZFStyleUpdateBegin();
 /**
  * @brief see #ZFStyleSet
  */
-extern ZFLIB_ZFCore void ZFStyleChangeEnd();
+extern ZFLIB_ZFCore void ZFStyleUpdateEnd();
 
 /**
- * @brief util macro to call #ZFStyleChangeBegin/#ZFStyleChangeEnd
+ * @brief util macro to call #ZFStyleUpdateBegin/#ZFStyleUpdateEnd
  */
-#define ZFStyleChangeBlock() _ZFP_ZFStyleChangeBlock ZFUniqueName(_ZFP_ZFStyleChangeBlock)
-zfclassLikePOD _ZFP_ZFStyleChangeBlock {
+#define ZFStyleUpdateBlock() _ZFP_ZFStyleUpdateBlock ZFUniqueName(_ZFP_ZFStyleUpdateBlock)
+zfclassLikePOD _ZFP_ZFStyleUpdateBlock {
 public:
-    _ZFP_ZFStyleChangeBlock(void) {
-        ZFStyleChangeBegin();
+    _ZFP_ZFStyleUpdateBlock(void) {
+        ZFStyleUpdateBegin();
     }
-    ~_ZFP_ZFStyleChangeBlock(void) {
-        ZFStyleChangeEnd();
+    ~_ZFP_ZFStyleUpdateBlock(void) {
+        ZFStyleUpdateEnd();
     }
 };
 
@@ -476,9 +476,9 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 /**
  * @brief see #ZFObject::observerNotify
  *
- * notified when #ZFStyleChangeEnd
+ * notified when #ZFStyleUpdateEnd
  */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnChange)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnUpdate)
 /**
  * @brief see #ZFObject::observerNotify
  *

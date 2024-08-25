@@ -79,7 +79,7 @@ zfclass ZFUIKit_test_SettingData : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIKit_test_SettingData, ZFObject)
 
 public:
-    ZFEVENT(SettingOnChange)
+    ZFEVENT(SettingOnUpdate)
 
 public:
     /**
@@ -90,7 +90,7 @@ public:
 
 public:
     zffinal void settingUpdate(void) {
-        this->observerNotify(zfself::EventSettingOnChange());
+        this->observerNotify(zfself::EventSettingOnUpdate());
     }
 
 protected:

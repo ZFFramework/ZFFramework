@@ -23,12 +23,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void) {
-    static ZFCoreArray<ZFFrameworkStateChangeCallback> d;
+ZFCoreArray<ZFFrameworkStateUpdateCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void) {
+    static ZFCoreArray<ZFFrameworkStateUpdateCallback> d;
     return d;
 }
-ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void) {
-    static ZFCoreArray<ZFFrameworkStateChangeCallback> d;
+ZFCoreArray<ZFFrameworkStateUpdateCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void) {
+    static ZFCoreArray<ZFFrameworkStateUpdateCallback> d;
     return d;
 }
 
@@ -369,7 +369,7 @@ void ZFFrameworkInit(void) {
         d.state = ZFFrameworkStateAvailable;
 
         _ZFP_ZFCoreGlobalInitializer_log("init notify callback");
-        ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkInitFinishCallbacks;
+        ZFCoreArray<ZFFrameworkStateUpdateCallback> &m = ZFFrameworkInitFinishCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
@@ -405,7 +405,7 @@ void ZFFrameworkCleanup(void) {
         d.state = ZFFrameworkStateCleanupRunning;
 
         _ZFP_ZFCoreGlobalInitializer_log("cleanup notify callback");
-        ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
+        ZFCoreArray<ZFFrameworkStateUpdateCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }

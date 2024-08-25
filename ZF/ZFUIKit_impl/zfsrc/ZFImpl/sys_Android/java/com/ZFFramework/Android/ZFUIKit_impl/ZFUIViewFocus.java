@@ -33,11 +33,11 @@ public class ZFUIViewFocus {
             }
             if(tmp != null && tmp.zfjniPointerOwnerZFUIView != 0) {
                 _focusedView = new WeakReference<ZFUIView>(tmp);
-                ZFUIViewFocus.native_notifyViewFocusChanged(tmp.zfjniPointerOwnerZFUIView);
+                ZFUIViewFocus.native_notifyViewFocusUpdate(tmp.zfjniPointerOwnerZFUIView);
             }
         }
     };
-    public static void ZFUIViewImplChanged(ZFUIView view, View implViewOld, View implViewNew) {
+    public static void ZFUIViewImplUpdate(ZFUIView view, View implViewOld, View implViewNew) {
         if(implViewOld != null) {
             implViewOld.setOnFocusChangeListener(null);
         }
@@ -108,5 +108,5 @@ public class ZFUIViewFocus {
         }
     }
 
-    public static native void native_notifyViewFocusChanged(long zfjniPointerOwnerZFUIView);
+    public static native void native_notifyViewFocusUpdate(long zfjniPointerOwnerZFUIView);
 }

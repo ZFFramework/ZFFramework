@@ -237,8 +237,8 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, name) {d->needUpdate = tr
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, fromValue) {d->needUpdate = true;}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, toValue) {d->needUpdate = true;}
 
-void ZFAniForGeneric::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
-    zfsuper::aniImplTargetOnChange(aniTargetOld);
+void ZFAniForGeneric::aniImplTargetOnUpdate(ZF_IN ZFObject *aniTargetOld) {
+    zfsuper::aniImplTargetOnUpdate(aniTargetOld);
     d->needUpdate = zftrue;
 }
 zfbool ZFAniForGeneric::aniImplCheckValid(void) {

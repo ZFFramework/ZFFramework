@@ -103,7 +103,7 @@ public:
      * called when child added or removed or order changed,
      * may be normal child or internal child
      */
-    ZFEVENT(ViewChildOnChange)
+    ZFEVENT(ViewChildOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -138,13 +138,13 @@ public:
      *
      * called when this view or parent view's #UIScale or #UIScaleFixed changed
      */
-    ZFEVENT(UIScaleOnChange)
+    ZFEVENT(UIScaleOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when view's focus state changed, both obtain or resign
      */
-    ZFEVENT(ViewFocusOnChange)
+    ZFEVENT(ViewFocusOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -600,23 +600,23 @@ public:
     ZFMETHOD_DECLARE_1(void, viewFocusRequest
             , ZFMP_IN(zfbool, viewFocus)
             )
-    zffinal void _ZFP_ZFUIView_viewFocusOnChange(void) {
-        this->viewFocusOnChange();
+    zffinal void _ZFP_ZFUIView_viewFocusOnUpdate(void) {
+        this->viewFocusOnUpdate();
     }
     /**
      * @brief recursively to find focused child, take care of performance
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, viewFocusFind)
 protected:
-    /** @brief see #EventViewFocusOnChange */
-    virtual inline void viewFocusOnChange(void) {
-        this->observerNotify(ZFUIView::EventViewFocusOnChange());
+    /** @brief see #EventViewFocusOnUpdate */
+    virtual inline void viewFocusOnUpdate(void) {
+        this->observerNotify(ZFUIView::EventViewFocusOnUpdate());
     }
 
     // ============================================================
     // parent
 public:
-    zffinal void _ZFP_ZFUIView_parentChanged(
+    zffinal void _ZFP_ZFUIView_parentOnUpdate(
             ZF_IN ZFUIView *parentView
             , ZF_IN ZFUILayoutParam *layoutParam
             , ZF_IN ZFUIViewChildLayerEnum viewLayer
@@ -676,7 +676,7 @@ public:
      * \n
      * since scale may affect impl's pixel size,
      * size-related property should be flushed manually while scale changed,
-     * subclass should override #UIScaleOnChange to update them,
+     * subclass should override #UIScaleOnUpdate to update them,
      * which would be called if #UIScaleFixed really changed
      * \n
      * #UIScale usually used for scale for entire view tree,
@@ -700,9 +700,9 @@ protected:
     /**
      * @brief see #UIScale, ensured called only when scale value actually changed
      *
-     * after this method, #EventUIScaleOnChange would be fired
+     * after this method, #EventUIScaleOnUpdate would be fired
      */
-    virtual void UIScaleOnChange(void);
+    virtual void UIScaleOnUpdate(void);
 
     // ============================================================
     // layout logic
@@ -965,8 +965,8 @@ public:
     // ============================================================
     // events
 protected:
-    /** @brief see #EventViewChildOnChange */
-    virtual void viewChildOnChange(void);
+    /** @brief see #EventViewChildOnUpdate */
+    virtual void viewChildOnUpdate(void);
     /** @brief see #EventViewChildOnAdd */
     virtual void viewChildOnAdd(
             ZF_IN ZFUIView *child

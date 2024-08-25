@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFContainer)
 
-ZFEVENT_REGISTER(ZFContainer, ContentOnChange)
+ZFEVENT_REGISTER(ZFContainer, ContentOnUpdate)
 ZFEVENT_REGISTER(ZFContainer, ContentOnAdd)
 ZFEVENT_REGISTER(ZFContainer, ContentOnRemove)
 

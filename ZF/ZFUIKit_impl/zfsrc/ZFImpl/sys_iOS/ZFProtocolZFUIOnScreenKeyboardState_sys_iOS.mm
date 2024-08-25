@@ -6,7 +6,7 @@
 @interface _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS : NSObject
 @property (nonatomic, assign) zfbool keyboardShowing;
 @property (nonatomic, assign) ZFUIRect keyboardFrame;
-- (void)_keyboardOnChange:(NSNotification *)aNotification;
+- (void)_keyboardOnUpdate:(NSNotification *)aNotification;
 @end
 static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance = nil;
 @implementation _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS
@@ -16,14 +16,14 @@ static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStat
         self.keyboardShowing = zffalse;
         self.keyboardFrame = ZFUIRectZero();
 
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_keyboardOnChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_keyboardOnUpdate:) name:UIKeyboardWillChangeFrameNotification object:nil];
     }
     return self;
 }
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (void)_keyboardOnChange:(NSNotification *)aNotification {
+- (void)_keyboardOnUpdate:(NSNotification *)aNotification {
     CGRect rect = [[aNotification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     ZFUIRect keyboardFrameNew = ZFImpl_sys_iOS_ZFUIRectFromCGRect(rect);
 
@@ -34,7 +34,7 @@ static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStat
 
         ZFPROTOCOL_INTERFACE_CLASS(ZFUIOnScreenKeyboardState) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIOnScreenKeyboardState);
         if(impl != zfnull && ZFUISysWindow::mainWindowAttached()) {
-            impl->notifyKeyboardStateOnChange(ZFUIOnScreenKeyboardState::instanceForSysWindow());
+            impl->notifyKeyboardStateOnUpdate(ZFUIOnScreenKeyboardState::instanceForSysWindow());
         }
     }
 }

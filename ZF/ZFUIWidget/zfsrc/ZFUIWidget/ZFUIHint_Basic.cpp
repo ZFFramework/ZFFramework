@@ -19,7 +19,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUITextView>, labelNorma
     ZFUITextView *value = propertyValue;
     value->textColor(ZFUIColorWhite());
     value->textSingleLine(zffalse);
-    value->textSizeAutoChangeMinSize(0);
+    value->textSizeAutoMin(0);
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroundNormal) {
     ZFUIImageView *value = propertyValue;

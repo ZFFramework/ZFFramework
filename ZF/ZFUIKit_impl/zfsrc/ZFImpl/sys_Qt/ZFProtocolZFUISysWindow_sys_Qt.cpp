@@ -174,7 +174,7 @@ public:
         sysWindow->sysWindowLayoutParam()->layoutAlign(ZFUIAlign::e_Center);
         sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeMake(480, 640));
     }
-    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {
             return;
         }

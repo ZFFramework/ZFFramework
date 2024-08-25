@@ -21,11 +21,11 @@ public:
         ZFImpl_ZFLua_luaStateDetach((lua_State *)L);
     }
 
-    virtual void classDataChange(
+    virtual void classDataUpdate(
             ZF_IN void *L
-            , ZF_IN const ZFClassDataChangeData &data
+            , ZF_IN const ZFClassDataUpdateData &data
             ) {
-        ZFImpl_ZFLua_classDataChange((lua_State *)L, data);
+        ZFImpl_ZFLua_classDataUpdate((lua_State *)L, data);
     }
 
     virtual zfbool luaExecute(

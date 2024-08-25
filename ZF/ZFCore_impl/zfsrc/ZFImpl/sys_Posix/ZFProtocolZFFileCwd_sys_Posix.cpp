@@ -18,7 +18,7 @@ public:
             return zfnull;
         }
     }
-    virtual zfbool pathForCwdChange(ZF_IN const zfstring &pathForCwd) {
+    virtual zfbool pathForCwd(ZF_IN const zfstring &pathForCwd) {
         return (chdir(pathForCwd) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_Posix)

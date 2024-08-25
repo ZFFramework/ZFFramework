@@ -125,15 +125,15 @@ public:
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSizeAutoChangeMinSize(
+    virtual void textSizeAutoMin(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMinSize
+            , ZF_IN zffloat textSizeAutoMin
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSizeAutoChangeMaxSize(
+    virtual void textSizeAutoMax(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMaxSize
+            , ZF_IN zffloat textSizeAutoMax
             ) {
         // changed during layoutNativeTextView
     }
@@ -209,7 +209,7 @@ public:
             , ZF_IN const ZFUISize &viewSize
             ) {
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
-        zffloat fixedTextSize = this->calcTextSizeAutoChange(textView, viewSize);
+        zffloat fixedTextSize = this->calcTextSizeAuto(textView, viewSize);
         nativeImplView->_ZFP_textSize(fixedTextSize);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_Qt)

@@ -18,7 +18,7 @@ public:
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
         if(!viewFocusable && nativeView->sysWindow != zfnull && nativeView->sysWindow->viewFocused == nativeView) {
-            nativeView->sysWindow->viewFocusChange(zfnull);
+            nativeView->sysWindow->viewFocus(zfnull);
         }
     }
     virtual zfbool viewFocused(ZF_IN ZFUIView *view) {
@@ -44,7 +44,7 @@ public:
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
         if(nativeView->sysWindow != zfnull) {
-            nativeView->sysWindow->viewFocusChange(nativeView);
+            nativeView->sysWindow->viewFocus(nativeView);
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewFocusImpl_sys_SDL)

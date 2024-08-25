@@ -40,7 +40,7 @@
  *   yourObj->styleKey("your_skin_key");
  * @endcode
  * this code register yourObj to #ZFStyleSet,
- * once the skin value associated with "your_skin_key" has changed by #ZFStyleChangeEnd,
+ * once the skin value associated with "your_skin_key" has changed by #ZFStyleUpdateEnd,
  * yourObj would be notified and copy style from it automatically\n
  * \n
  * for non-ZFStyleable property, you may also attach to style

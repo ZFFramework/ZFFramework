@@ -67,12 +67,12 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewFocusImpl_sys_Android)
 ZF_NAMESPACE_GLOBAL_END
 
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIViewFocus
-        , void, native_1notifyViewFocusChanged
+        , void, native_1notifyViewFocusUpdate
         , JNIPointer zfjniPointerOwnerZFUIView
         ) {
     ZFUIView *view = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView);
     if(!ZFBitTest(view->objectInstanceState(), ZFObjectInstanceStateOnDealloc)) {
-        ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusChanged(view);
+        ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusUpdate(view);
     }
 }
 JNI_METHOD_DECLARE_END()

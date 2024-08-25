@@ -47,7 +47,7 @@ public:
     /**
      * @brief implementations must notify when keyboard's showing state or frame changed
      */
-    zffinal void notifyKeyboardStateOnChange(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
+    zffinal void notifyKeyboardStateOnUpdate(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         zffloat scale = keyboardState->keyboardOwnerSysWindow()->rootView()->UIScaleFixed();
         zfbool keyboardShowingNew = this->keyboardShowing(keyboardState);
         ZFUIRect keyboardFrameNew = ZFUIRectApplyScaleReversely(this->keyboardFrame(keyboardState), scale);
@@ -59,7 +59,7 @@ public:
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFramePrev = keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame;
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame = keyboardFrameNew;
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardShowing = this->keyboardShowing(keyboardState);
-        keyboardState->observerNotify(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange());
+        keyboardState->observerNotify(ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate());
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIOnScreenKeyboardState)
 

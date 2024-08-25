@@ -15,25 +15,25 @@ public:
     zfbool scrollEnableFlag;
     ZFUIView *autoFitFocusedView;
     ZFUIMargin autoFitMargin;
-    ZFListener onScreenKeyboardStateOnChangeListener;
-    ZFListener viewFocusOnChangeListener;
+    ZFListener onScreenKeyboardStateOnUpdateListener;
+    ZFListener viewFocusOnUpdateListener;
     zfbool autoFitFocusedViewNeedUpdate;
 
 public:
     void autoFitEnable(ZF_IN zfbool value) {
-        if(!this->onScreenKeyboardStateOnChangeListener) {
-            ZFLISTENER_1(onScreenKeyboardStateOnChange
+        if(!this->onScreenKeyboardStateOnUpdateListener) {
+            ZFLISTENER_1(onScreenKeyboardStateOnUpdate
                     , ZFUIOnScreenKeyboardAutoFitLayout *, pimplOwner
                     ) {
-                _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::onScreenKeyboardStateOnChange(zfargs, pimplOwner);
+                _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::onScreenKeyboardStateOnUpdate(zfargs, pimplOwner);
             } ZFLISTENER_END()
-            this->onScreenKeyboardStateOnChangeListener = onScreenKeyboardStateOnChange;
+            this->onScreenKeyboardStateOnUpdateListener = onScreenKeyboardStateOnUpdate;
         }
 
         if(value) {
             ZFGlobalObserver().observerAdd(
-                ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(),
-                this->onScreenKeyboardStateOnChangeListener);
+                ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(),
+                this->onScreenKeyboardStateOnUpdateListener);
 
             this->pimplOwner->layoutRequest();
         }
@@ -41,8 +41,8 @@ public:
             this->scrollEnableFlag = zffalse;
             this->pimplOwner->scrollEnable(this->scrollEnableFlag && this->pimplOwner->autoFitScrollEnable());
             ZFGlobalObserver().observerRemove(
-                ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(),
-                this->onScreenKeyboardStateOnChangeListener);
+                ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(),
+                this->onScreenKeyboardStateOnUpdateListener);
 
             this->pimplOwner->scrollContentFrame(ZFUIRectGetBounds(this->pimplOwner->viewFrame()));
             if(this->autoFitMargin == ZFUIMarginZero() || this->pimplOwner->layoutParam() == zfnull) {
@@ -56,24 +56,24 @@ public:
         }
     }
     void autoFitFocusedViewToVisible(ZF_IN zfbool value) {
-        if(!this->viewFocusOnChangeListener) {
-            ZFLISTENER_1(viewFocusOnChange
+        if(!this->viewFocusOnUpdateListener) {
+            ZFLISTENER_1(viewFocusOnUpdate
                     , ZFUIOnScreenKeyboardAutoFitLayout *, pimplOwner
                     ) {
-                _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::viewFocusOnChange(zfargs, pimplOwner);
+                _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::viewFocusOnUpdate(zfargs, pimplOwner);
             } ZFLISTENER_END()
-            this->viewFocusOnChangeListener = viewFocusOnChange;
+            this->viewFocusOnUpdateListener = viewFocusOnUpdate;
         }
 
         if(value) {
             ZFGlobalObserver().observerAdd(
-                ZFUIView::EventViewFocusOnChange(),
-                this->viewFocusOnChangeListener);
+                ZFUIView::EventViewFocusOnUpdate(),
+                this->viewFocusOnUpdateListener);
         }
         else {
             ZFGlobalObserver().observerRemove(
-                ZFUIView::EventViewFocusOnChange(),
-                this->viewFocusOnChangeListener);
+                ZFUIView::EventViewFocusOnUpdate(),
+                this->viewFocusOnUpdateListener);
             #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
                 zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] focused view changed to " << (void *)zfnull;
             #endif
@@ -128,7 +128,7 @@ public:
     }
 
 public:
-    static void onScreenKeyboardStateOnChange(
+    static void onScreenKeyboardStateOnUpdate(
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout
             ) {
@@ -152,7 +152,7 @@ public:
             layout->scrollContentFrame(ZFUIRectGetBounds(layout->viewFrame()));
         }
     }
-    static void viewFocusOnChange(
+    static void viewFocusOnUpdate(
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout
             ) {
@@ -188,8 +188,8 @@ public:
     , scrollEnableFlag(zffalse)
     , autoFitFocusedView(zfnull)
     , autoFitMargin(ZFUIMarginZero())
-    , onScreenKeyboardStateOnChangeListener()
-    , viewFocusOnChangeListener()
+    , onScreenKeyboardStateOnUpdateListener()
+    , viewFocusOnUpdateListener()
     , autoFitFocusedViewNeedUpdate(zffalse)
     {
     }

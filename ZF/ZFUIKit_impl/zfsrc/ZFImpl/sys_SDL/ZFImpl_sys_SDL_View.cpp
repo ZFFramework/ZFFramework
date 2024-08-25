@@ -17,7 +17,7 @@ void ZFImpl_sys_SDL_View::sysWindowAttach(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWin
 void ZFImpl_sys_SDL_View::sysWindowDetach(void) {
     if(this->sysWindow != zfnull) {
         if(this->sysWindow->viewFocused == this) {
-            this->sysWindow->viewFocusChange(zfnull);
+            this->sysWindow->viewFocus(zfnull);
         }
         this->sysWindow = zfnull;
     }
@@ -157,8 +157,8 @@ void ZFImpl_sys_SDL_View::render(
         return;
     }
     if(!this->renderCacheValid) {
-        ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetChanged, renderer, this->renderCache);
-        if(!renderTargetChanged) {
+        ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetNew, renderer, this->renderCache);
+        if(!renderTargetNew) {
             _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
             return;
         }

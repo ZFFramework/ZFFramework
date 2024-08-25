@@ -135,7 +135,7 @@ public:
      * (#ZFObject::EventObjectPropertyValueOnUpdate),
      * you may also notify it manually to show the layout param changed
      */
-    ZFEVENT(LayoutParamOnChange)
+    ZFEVENT(LayoutParamOnUpdate)
 
 
 public:
@@ -436,13 +436,13 @@ protected:
             ) {
         zfsuper::objectPropertyValueOnUpdate(property, oldValue);
         if(oldValue != zfnull) {
-            this->layoutParamOnChange();
+            this->layoutParamOnUpdate();
         }
     }
 protected:
-    /** @brief see #EventLayoutParamOnChange */
-    virtual inline void layoutParamOnChange(void) {
-        this->observerNotify(ZFUILayoutParam::EventLayoutParamOnChange());
+    /** @brief see #EventLayoutParamOnUpdate */
+    virtual inline void layoutParamOnUpdate(void) {
+        this->observerNotify(ZFUILayoutParam::EventLayoutParamOnUpdate());
     }
 };
 

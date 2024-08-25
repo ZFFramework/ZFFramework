@@ -100,6 +100,10 @@ void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event) {
             zfCoreCriticalShouldNotGoHere();
             return;
     }
+    ZFPROTOCOL_INTERFACE_CLASS(ZFUIKeyboardState) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIKeyboardState);
+    if(impl != zfnull) {
+        impl->notifyKeyPressedOnUpdate();
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

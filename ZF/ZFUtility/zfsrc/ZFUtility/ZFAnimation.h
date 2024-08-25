@@ -179,7 +179,7 @@ public:
 
 protected:
     /** @brief called when #aniTarget changed */
-    virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {}
+    virtual void aniImplTargetOnUpdate(ZF_IN ZFObject *aniTargetOld) {}
     /**
      * @brief called to check whether the animation is currently valid,
      *   an invalid animation is ensured can't be started

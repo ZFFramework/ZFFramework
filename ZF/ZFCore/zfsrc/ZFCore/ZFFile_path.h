@@ -22,7 +22,7 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForCwd)
  *
  * return false if failed
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathForCwdChange
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathForCwd
         , ZFMP_IN(const zfstring &, path)
         )
 /**
@@ -59,7 +59,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForSettingOnChange)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForSettingOnUpdate)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -86,7 +86,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageOnChange)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageOnUpdate)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -113,7 +113,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageSharedOnChange)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageSharedOnUpdate)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -144,7 +144,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheOnChange)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheOnUpdate)
 /**
  * @brief see #ZFObject::observerNotify
  *

@@ -88,7 +88,7 @@ public:
         nativeImplView.ownerZFUIImage = image;
         [nativeImplView updateImageWithNinePatch];
     }
-    virtual void imageNinePatchChanged(
+    virtual void imageNinePatchOnUpdate(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN zffloat imageScale
             , ZF_IN const ZFUIMargin &imageNinePatch

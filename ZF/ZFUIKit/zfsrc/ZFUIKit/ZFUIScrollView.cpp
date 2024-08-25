@@ -121,7 +121,7 @@ public:
         ZFUIRectApplyMargin(newValue, newValue, this->scrollAreaMargin);
         if(newValue != this->scrollArea) {
             this->scrollArea = newValue;
-            this->pimplOwner->scrollAreaOnChange();
+            this->pimplOwner->scrollAreaOnUpdate();
         }
     }
 
@@ -132,20 +132,20 @@ public:
     }
 
 public:
-    void scrollBounceChanged(void) {
+    void scrollBounceOnUpdate(void) {
         ZFPROTOCOL_ACCESS(ZFUIScrollView)->scrollBounce(this->pimplOwner,
             this->pimplOwner->scrollBounceHorizontal(),
             this->pimplOwner->scrollBounceVertical(),
             this->pimplOwner->scrollBounceHorizontalAlways(),
             this->pimplOwner->scrollBounceVerticalAlways());
-        this->xScroll->scrollBounceChanged(this->pimplOwner->scrollBounceHorizontal(), this->pimplOwner->scrollBounceHorizontalAlways());
-        this->yScroll->scrollBounceChanged(this->pimplOwner->scrollBounceVertical(), this->pimplOwner->scrollBounceVerticalAlways());
+        this->xScroll->scrollBounceOnUpdate(this->pimplOwner->scrollBounceHorizontal(), this->pimplOwner->scrollBounceHorizontalAlways());
+        this->yScroll->scrollBounceOnUpdate(this->pimplOwner->scrollBounceVertical(), this->pimplOwner->scrollBounceVerticalAlways());
     }
 
 public:
-    void scrollAlignToPageChanged(void) {
-        this->xScroll->scrollAlignToPageChanged(this->pimplOwner->scrollAlignToPageHorizontal());
-        this->yScroll->scrollAlignToPageChanged(this->pimplOwner->scrollAlignToPageVertical());
+    void scrollAlignToPageOnUpdate(void) {
+        this->xScroll->scrollAlignToPageOnUpdate(this->pimplOwner->scrollAlignToPageHorizontal());
+        this->yScroll->scrollAlignToPageOnUpdate(this->pimplOwner->scrollAlignToPageVertical());
     }
 
 public:
@@ -315,7 +315,7 @@ private:
         this->scrollContentFrameOverrideFlag = zffalse;
         this->scrollContentFrameUpdateForImpl();
 
-        this->notifyScrollContentFrameOnChange();
+        this->notifyScrollContentFrameOnUpdate();
         this->scrollThumbNeedUpdate = zftrue;
     }
 
@@ -443,8 +443,8 @@ private:
             this->scrollThumbUpdate();
         }
     }
-    void notifyScrollContentFrameOnChange(void) {
-        this->pimplOwner->scrollContentFrameOnChange();
+    void notifyScrollContentFrameOnUpdate(void) {
+        this->pimplOwner->scrollContentFrameOnUpdate();
     }
     void notifyScrollAutoScrollOnStart(void) {
         if(!this->autoScrollStartFlag) {
@@ -535,8 +535,8 @@ ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnDragEnd)
 ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScrollBegin)
 ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScroll)
 ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScrollEnd)
-ZFEVENT_REGISTER(ZFUIScrollView, ScrollAreaOnChange)
-ZFEVENT_REGISTER(ZFUIScrollView, ScrollContentFrameOnChange)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollAreaOnUpdate)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollContentFrameOnUpdate)
 ZFEVENT_REGISTER(ZFUIScrollView, ScrollAutoScrollOnStart)
 ZFEVENT_REGISTER(ZFUIScrollView, ScrollAutoScrollOnStop)
 ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScrolledByUser)
@@ -547,33 +547,33 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollEnable) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->scrollEnable(this, this->scrollEnable());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollBounceHorizontal) {
-    d->scrollBounceChanged();
+    d->scrollBounceOnUpdate();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollBounceVertical) {
-    d->scrollBounceChanged();
+    d->scrollBounceOnUpdate();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollBounceHorizontalAlways) {
-    d->scrollBounceChanged();
+    d->scrollBounceOnUpdate();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollBounceVerticalAlways) {
-    d->scrollBounceChanged();
+    d->scrollBounceOnUpdate();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollAlignToPageHorizontal) {
-    d->scrollAlignToPageChanged();
+    d->scrollAlignToPageOnUpdate();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollAlignToPageVertical) {
-    d->scrollAlignToPageChanged();
+    d->scrollAlignToPageOnUpdate();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, ZFUIRect, scrollContentFrame) {
     if(d->xScroll->scrollContentOffset() != propertyValue.x
             || d->xScroll->scrollContentSize() != propertyValue.width
             ) {
-        d->xScroll->scrollContentChanged(propertyValue.x, propertyValue.width);
+        d->xScroll->scrollContentOnUpdate(propertyValue.x, propertyValue.width);
     }
     if(d->yScroll->scrollContentOffset() != propertyValue.y
             || d->yScroll->scrollContentSize() != propertyValue.height
             ) {
-        d->yScroll->scrollContentChanged(propertyValue.y, propertyValue.height);
+        d->yScroll->scrollContentOnUpdate(propertyValue.y, propertyValue.height);
     }
     if(!d->scrollContentFrameOverrideFlag) {
         d->xScroll->scrollWithoutAnimation(propertyValue.x);
@@ -719,8 +719,8 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
     if(xScrollOwnerSize != d->xScroll->scrollOwnerSize()
             || yScrollOwnerSize != d->yScroll->scrollOwnerSize()
             ) {
-        d->xScroll->scrollOwnerSizeChanged(xScrollOwnerSize);
-        d->yScroll->scrollOwnerSizeChanged(yScrollOwnerSize);
+        d->xScroll->scrollOwnerSizeOnUpdate(xScrollOwnerSize);
+        d->yScroll->scrollOwnerSizeOnUpdate(yScrollOwnerSize);
         d->scrollerUpdate();
 
         zfweakT<zfself> scrollView = this;
@@ -1050,8 +1050,8 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameAnimated
 ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameUpdate
         , ZFMP_IN(const ZFUIRect &, scrollContentFrame)
         ) {
-    d->xScroll->scrollContentChanged(scrollContentFrame.x, scrollContentFrame.width);
-    d->yScroll->scrollContentChanged(scrollContentFrame.y, scrollContentFrame.height);
+    d->xScroll->scrollContentOnUpdate(scrollContentFrame.x, scrollContentFrame.width);
+    d->yScroll->scrollContentOnUpdate(scrollContentFrame.y, scrollContentFrame.height);
     d->scrollerUpdate();
 }
 ZFMETHOD_DEFINE_2(ZFUIScrollView, void, scrollByPoint

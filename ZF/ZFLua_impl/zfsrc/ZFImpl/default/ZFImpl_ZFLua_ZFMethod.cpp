@@ -77,7 +77,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         ZFImpl_ZFLua_implSetupScope(luaStateList, scopeNameList);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
-        if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach) {
+        if(data.changedMethod != zfnull && data.changeType == ZFClassDataUpdateTypeAttach) {
             if(data.changedMethod->methodIsFunctionType()) {
                 ZFCoreArray<lua_State *> stateList;
                 stateList.add(L);

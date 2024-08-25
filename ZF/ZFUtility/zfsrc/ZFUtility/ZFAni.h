@@ -116,7 +116,7 @@ public:
 
 protected:
     zfoverride
-    virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld);
+    virtual void aniImplTargetOnUpdate(ZF_IN ZFObject *aniTargetOld);
     zfoverride
     virtual zfbool aniImplCheckValid(void);
     zfoverride

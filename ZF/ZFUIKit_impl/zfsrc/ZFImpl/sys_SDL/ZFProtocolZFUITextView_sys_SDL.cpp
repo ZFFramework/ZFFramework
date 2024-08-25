@@ -97,16 +97,16 @@ public:
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSizeAutoChangeMinSize(
+    virtual void textSizeAutoMin(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMinSize
+            , ZF_IN zffloat textSizeAutoMin
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSizeAutoChangeMaxSize(
+    virtual void textSizeAutoMax(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zffloat textSizeAutoChangeMaxSize
+            , ZF_IN zffloat textSizeAutoMax
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
@@ -153,7 +153,7 @@ public:
             , ZF_IN const ZFUISize &viewSize
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
-        zffloat textSizeCurrent = this->calcTextSizeAutoChange(textView, viewSize);
+        zffloat textSizeCurrent = this->calcTextSizeAuto(textView, viewSize);
         textView->objectTag("_ZFP_ZFImpl_sys_SDL_textSize", zfobj<v_zffloat>(textSizeCurrent));
     }
 
@@ -261,7 +261,7 @@ private:
         {
             v_zffloat *tmp = owner->objectTag("_ZFP_ZFImpl_sys_SDL_textSize");
             if(tmp == zfnull) {
-                textSizeCurrent = ZFPROTOCOL_ACCESS(ZFUITextView)->calcTextSizeAutoChange(owner, ZFUIRectGetSize(targetRectTmp));
+                textSizeCurrent = ZFPROTOCOL_ACCESS(ZFUITextView)->calcTextSizeAuto(owner, ZFUIRectGetSize(targetRectTmp));
                 owner->objectTag("_ZFP_ZFImpl_sys_SDL_textSize", zfobj<v_zffloat>(textSizeCurrent));
             }
             else {

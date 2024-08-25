@@ -407,7 +407,7 @@ public:
     /**
      * @brief called when window layout param changed
      */
-    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
     }
 
     /**

@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIKeyboardState)
 
-ZFEVENT_REGISTER(ZFUIKeyboardState, KeyPressedOnChange)
+ZFEVENT_REGISTER(ZFUIKeyboardState, KeyPressedOnUpdate)
 
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFUIKeyboardState, instance, ZFLevelZFFrameworkHigh)
 

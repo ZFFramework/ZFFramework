@@ -179,7 +179,7 @@
 }
 @end
 
-static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativeImplView) {
+static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusUpdate(ZF_IN UIView *nativeImplView) {
     _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = nil;
     if([nativeImplView isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]]) {
         nativeView = (_ZFP_ZFUIViewImpl_sys_iOS_View *)nativeImplView;
@@ -192,7 +192,7 @@ static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativ
     }
 
     if(nativeView._ZFP_ownerZFUIView != zfnull) {
-        ZFProtocolZFUIViewFocus_notifyViewFocusChanged(nativeView._ZFP_ownerZFUIView);
+        ZFProtocolZFUIViewFocus_notifyViewFocusUpdate(nativeView._ZFP_ownerZFUIView);
     }
 }
 
@@ -201,7 +201,7 @@ static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativ
     BOOL old = self.isFirstResponder;
     BOOL ret = [self _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_becomeFirstResponder];
     if(!old && self.isFirstResponder && [self isKindOfClass:[UIView class]]) {
-        _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged((UIView *)self);
+        _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusUpdate((UIView *)self);
     }
     return ret;
 }
@@ -209,7 +209,7 @@ static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativ
     BOOL old = self.isFirstResponder;
     BOOL ret = [self _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_resignFirstResponder];
     if(old && !self.isFirstResponder && [self isKindOfClass:[UIView class]]) {
-        _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged((UIView *)self);
+        _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusUpdate((UIView *)self);
     }
     return ret;
 }

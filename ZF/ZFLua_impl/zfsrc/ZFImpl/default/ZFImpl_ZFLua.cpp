@@ -28,7 +28,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateGlobalHolder, ZFLevel
 }
 ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupAttach;
 ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupDetach;
-ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange> setupClassDataChange;
+ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate> setupClassDataUpdate;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
 void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
@@ -115,16 +115,16 @@ void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L) {
     }
 }
 
-void ZFImpl_ZFLua_classDataChange(
+void ZFImpl_ZFLua_classDataUpdate(
         ZF_IN lua_State *L
-        , ZF_IN const ZFClassDataChangeData &data
+        , ZF_IN const ZFClassDataUpdateData &data
         ) {
     _ZFP_ZFImpl_ZFLua_invokeTimeLogger("cls change %s", data.objectInfo().cString());
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
-    for(zfindex i = 0; i < d->setupClassDataChange.count(); ++i) {
-        d->setupClassDataChange[i](L, data);
+    for(zfindex i = 0; i < d->setupClassDataUpdate.count(); ++i) {
+        d->setupClassDataUpdate[i](L, data);
     }
 }
 
@@ -132,7 +132,7 @@ void ZFImpl_ZFLua_classDataChange(
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         ) {
     zfCoreMutexLocker();
 
@@ -140,12 +140,12 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
     d->setupAttach.add(setupAttachCallback);
     d->setupDetach.add(setupDetachCallback);
-    d->setupClassDataChange.add(setupClassDataChange);
+    d->setupClassDataUpdate.add(setupClassDataUpdate);
 }
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         ) {
     zfCoreMutexLocker();
 
@@ -153,7 +153,7 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
     d->setupAttach.removeElement(setupAttachCallback);
     d->setupDetach.removeElement(setupDetachCallback);
-    d->setupClassDataChange.removeElement(setupClassDataChange);
+    d->setupClassDataUpdate.removeElement(setupClassDataUpdate);
 }
 
 // ============================================================

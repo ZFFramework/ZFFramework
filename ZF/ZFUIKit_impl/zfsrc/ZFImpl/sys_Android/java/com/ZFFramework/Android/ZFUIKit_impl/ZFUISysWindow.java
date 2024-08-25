@@ -90,7 +90,7 @@ public final class ZFUISysWindow extends Activity {
         ((ZFUISysWindow) nativeWindow).finish();
     }
 
-    public static void native_sysWindowLayoutParamOnChange(Object nativeWindow) {
+    public static void native_sysWindowLayoutParamOnUpdate(Object nativeWindow) {
         ZFUISysWindow nativeWindowTmp = (ZFUISysWindow) nativeWindow;
         nativeWindowTmp._containerView.requestLayout();
     }

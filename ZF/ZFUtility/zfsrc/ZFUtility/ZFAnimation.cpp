@@ -60,7 +60,7 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, aniTarget
     ZFObjectHolder *aniTargetHolderTmp = d->aniTargetHolder;
     zfblockedRelease(aniTargetHolderTmp);
     d->aniTargetHolder = aniTarget ? zfRetain(aniTarget->objectHolder()) : zfnull;
-    this->aniImplTargetOnChange(aniTargetHolderTmp ? aniTargetHolderTmp->objectHolded().toObject() : zfnull);
+    this->aniImplTargetOnUpdate(aniTargetHolderTmp ? aniTargetHolderTmp->objectHolded().toObject() : zfnull);
     zfRetainChange(d->aniTargetHolder, aniTarget ? aniTarget->objectHolder() : zfnull);
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfany, aniTarget) {

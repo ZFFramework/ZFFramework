@@ -11,35 +11,35 @@
 @property (nonatomic, assign) ZFPROTOCOL_INTERFACE_CLASS(ZFUIWebView) *_ZFP_impl;
 @end
 @implementation _ZFP_ZFUIWebViewImpl_sys_iOS_View
-- (void)_notifyStateChange:(WKWebView *)webView {
+- (void)_notifyStateOnUpdate:(WKWebView *)webView {
     if(self._ZFP_webLoadingSaved != webView.loading) {
         self._ZFP_webLoadingSaved = webView.loading;
-        self._ZFP_impl->notifyWebLoadStateChanged(self._ZFP_ownerZFUIWebView);
+        self._ZFP_impl->notifyWebLoadStateOnUpdate(self._ZFP_ownerZFUIWebView);
     }
 }
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 - (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 - (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(WKNavigation *)navigation {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 - (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView {
-    [self _notifyStateChange:webView];
+    [self _notifyStateOnUpdate:webView];
 }
 
 - (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)())completionHandler {

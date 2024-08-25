@@ -48,7 +48,7 @@ public:
     zffloat imageScaleFixed;
     ZFUISize imageSizeFixed;
     ZFUISize imageSize;
-    ZFListener globalImageScaleOnChangeListener;
+    ZFListener globalImageScaleOnUpdateListener;
 
 public:
     zfstring serializableType;
@@ -104,7 +104,7 @@ public:
     , imageSize(ZFUISizeZero())
     , serializableType(zfnull)
     , serializableData(zfnull)
-    , globalImageScaleOnChangeListener()
+    , globalImageScaleOnUpdateListener()
     {
     }
     ~_ZFP_ZFUIImagePrivate(void) {
@@ -116,7 +116,7 @@ public:
 // ZFUIImage
 ZFOBJECT_REGISTER(ZFUIImage)
 
-ZFEVENT_REGISTER(ZFUIImage, ImageScaleOnChange)
+ZFEVENT_REGISTER(ZFUIImage, ImageScaleOnUpdate)
 
 zfbool ZFUIImage::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
@@ -277,11 +277,11 @@ void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImage, zffloat, imageScale) {
     d->imageSizeUpdate();
-    this->imageScaleOnChange();
+    this->imageScaleOnUpdate();
 }
-void ZFUIImage::_ZFP_ZFUIImage_imageScaleOnChange(void) {
+void ZFUIImage::_ZFP_ZFUIImage_imageScaleOnUpdate(void) {
     d->imageSizeUpdate();
-    this->imageScaleOnChange();
+    this->imageScaleOnUpdate();
 }
 
 ZFMETHOD_DEFINE_0(ZFUIImage, zffloat const &, imageScaleFixed) {
@@ -313,23 +313,23 @@ void ZFUIImage::objectOnInitFinish(void) {
     zfsuper::objectOnInitFinish();
 
     ZFUIImage *owner = this;
-    ZFLISTENER_1(globalImageScaleOnChange
+    ZFLISTENER_1(globalImageScaleOnUpdate
             , ZFUIImage *, owner
             ) {
         const ZFProperty *const &property = zfargs.param0().zfv();
         if(property == ZFPropertyAccess(ZFUIGlobalStyle, imageScale)) {
-            owner->_ZFP_ZFUIImage_imageScaleOnChange();
+            owner->_ZFP_ZFUIImage_imageScaleOnUpdate();
         }
     } ZFLISTENER_END()
-    d->globalImageScaleOnChangeListener = globalImageScaleOnChange;
+    d->globalImageScaleOnUpdateListener = globalImageScaleOnUpdate;
     ZFUIGlobalStyle::DefaultStyle()->observerAdd(
         ZFObject::EventObjectPropertyValueOnUpdate(),
-        d->globalImageScaleOnChangeListener);
+        d->globalImageScaleOnUpdateListener);
 }
 void ZFUIImage::objectOnDeallocPrepare(void) {
     ZFUIGlobalStyle::DefaultStyle()->observerRemove(
         ZFObject::EventObjectPropertyValueOnUpdate(),
-        d->globalImageScaleOnChangeListener);
+        d->globalImageScaleOnUpdateListener);
     zfsuper::objectOnDeallocPrepare();
 }
 

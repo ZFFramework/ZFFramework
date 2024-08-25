@@ -11,21 +11,21 @@ public:
     ZFUIImageView *iconView;
     ZFUIImageView *backgroundView;
 
-    ZFListener labelNormalChangedListener;
-    ZFListener labelHighlightedChangedListener;
-    ZFListener labelCheckedChangedListener;
-    ZFListener labelCheckedHighlightedChangedListener;
-    ZFListener labelDisabledChangedListener;
-    ZFListener iconNormalChangedListener;
-    ZFListener iconHighlightedChangedListener;
-    ZFListener iconCheckedChangedListener;
-    ZFListener iconCheckedHighlightedChangedListener;
-    ZFListener iconDisabledChangedListener;
-    ZFListener backgroundNormalChangedListener;
-    ZFListener backgroundHighlightedChangedListener;
-    ZFListener backgroundCheckedChangedListener;
-    ZFListener backgroundCheckedHighlightedChangedListener;
-    ZFListener backgroundDisabledChangedListener;
+    ZFListener labelNormalOnUpdateListener;
+    ZFListener labelHighlightedOnUpdateListener;
+    ZFListener labelCheckedOnUpdateListener;
+    ZFListener labelCheckedHighlightedOnUpdateListener;
+    ZFListener labelDisabledOnUpdateListener;
+    ZFListener iconNormalOnUpdateListener;
+    ZFListener iconHighlightedOnUpdateListener;
+    ZFListener iconCheckedOnUpdateListener;
+    ZFListener iconCheckedHighlightedOnUpdateListener;
+    ZFListener iconDisabledOnUpdateListener;
+    ZFListener backgroundNormalOnUpdateListener;
+    ZFListener backgroundHighlightedOnUpdateListener;
+    ZFListener backgroundCheckedOnUpdateListener;
+    ZFListener backgroundCheckedHighlightedOnUpdateListener;
+    ZFListener backgroundDisabledOnUpdateListener;
 
 public:
     _ZFP_ZFUIButtonBasicPrivate(void)
@@ -34,21 +34,21 @@ public:
     , iconView(zfnull)
     , backgroundView(zfnull)
 
-    , labelNormalChangedListener()
-    , labelHighlightedChangedListener()
-    , labelCheckedChangedListener()
-    , labelCheckedHighlightedChangedListener()
-    , labelDisabledChangedListener()
-    , iconNormalChangedListener()
-    , iconHighlightedChangedListener()
-    , iconCheckedChangedListener()
-    , iconCheckedHighlightedChangedListener()
-    , iconDisabledChangedListener()
-    , backgroundNormalChangedListener()
-    , backgroundHighlightedChangedListener()
-    , backgroundCheckedChangedListener()
-    , backgroundCheckedHighlightedChangedListener()
-    , backgroundDisabledChangedListener()
+    , labelNormalOnUpdateListener()
+    , labelHighlightedOnUpdateListener()
+    , labelCheckedOnUpdateListener()
+    , labelCheckedHighlightedOnUpdateListener()
+    , labelDisabledOnUpdateListener()
+    , iconNormalOnUpdateListener()
+    , iconHighlightedOnUpdateListener()
+    , iconCheckedOnUpdateListener()
+    , iconCheckedHighlightedOnUpdateListener()
+    , iconDisabledOnUpdateListener()
+    , backgroundNormalOnUpdateListener()
+    , backgroundHighlightedOnUpdateListener()
+    , backgroundCheckedOnUpdateListener()
+    , backgroundCheckedHighlightedOnUpdateListener()
+    , backgroundDisabledOnUpdateListener()
     {
     }
 
@@ -153,7 +153,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
 
 #define _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(T_Type, T_Component, T_State, CkClass, CkProp) \
     ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) { \
-        if(!d->T_Component##T_State##ChangedListener) { \
+        if(!d->T_Component##T_State##OnUpdateListener) { \
             ZFUIButtonBasic *button = this; \
             ZFLISTENER_1(callback \
                     , ZFUIButtonBasic *, button \
@@ -167,16 +167,16 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
                     button->d->T_Component##ViewUpdate(); \
                 } \
             } ZFLISTENER_END() \
-            d->T_Component##T_State##ChangedListener = callback; \
+            d->T_Component##T_State##OnUpdateListener = callback; \
         } \
         this->T_Component##T_State()->toObject()->observerAdd( \
             ZFObject::EventObjectPropertyValueOnUpdate(), \
-            d->T_Component##T_State##ChangedListener); \
+            d->T_Component##T_State##OnUpdateListener); \
     } \
     ZFPROPERTY_ON_DETACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) { \
         this->T_Component##T_State()->toObject()->observerRemove( \
             ZFObject::EventObjectPropertyValueOnUpdate(), \
-            d->T_Component##T_State##ChangedListener); \
+            d->T_Component##T_State##OnUpdateListener); \
     }
 
 _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, Normal, ZFUITextView, text)

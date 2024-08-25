@@ -53,7 +53,7 @@ ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnCreate)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnResume)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnPause)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnDestroy)
-ZFEVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnChange)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnUpdate)
 
 // ============================================================
 // _ZFP_ZFUIPageManagerPrivate
@@ -516,15 +516,15 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, managerUIBlocked
     if(value) {
         ++d->managerUIBlocked;
         if(d->managerUIBlocked == 1) {
-            this->managerUIBlockedOnChange();
-            this->observerNotify(ZFUIPageManager::EventManagerUIBlockedOnChange());
+            this->managerUIBlockedOnUpdate();
+            this->observerNotify(ZFUIPageManager::EventManagerUIBlockedOnUpdate());
         }
     }
     else {
         --d->managerUIBlocked;
         if(d->managerUIBlocked == 0) {
-            this->managerUIBlockedOnChange();
-            this->observerNotify(ZFUIPageManager::EventManagerUIBlockedOnChange());
+            this->managerUIBlockedOnUpdate();
+            this->observerNotify(ZFUIPageManager::EventManagerUIBlockedOnUpdate());
         }
     }
 }

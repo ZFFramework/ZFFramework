@@ -40,11 +40,11 @@ public:
 public slots:
     void _ZFP_webLoadOnStart(void) {
         _ZFP_loading = zftrue;
-        _ZFP_impl->notifyWebLoadStateChanged(_ZFP_ownerZFUIWebView);
+        _ZFP_impl->notifyWebLoadStateOnUpdate(_ZFP_ownerZFUIWebView);
     }
     void _ZFP_webLoadOnStop(bool success) {
         _ZFP_loading = zffalse;
-        _ZFP_impl->notifyWebLoadStateChanged(_ZFP_ownerZFUIWebView);
+        _ZFP_impl->notifyWebLoadStateOnUpdate(_ZFP_ownerZFUIWebView);
     }
 };
 

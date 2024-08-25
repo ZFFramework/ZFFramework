@@ -83,7 +83,7 @@ public:
      * notified when window's windowOwnerSysWindow changed,
      * param0 is the old value
      */
-    ZFEVENT(WindowOwnerSysWindowOnChange)
+    ZFEVENT(WindowOwnerSysWindowOnUpdate)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -177,9 +177,9 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, windowOwnerSysWindow)
 protected:
-    /** @brief see #EventWindowOwnerSysWindowOnChange */
-    virtual inline void windowOwnerSysWindowOnChange(ZF_IN ZFUISysWindow *oldSysWindow) {
-        this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnChange(), oldSysWindow);
+    /** @brief see #EventWindowOwnerSysWindowOnUpdate */
+    virtual inline void windowOwnerSysWindowOnUpdate(ZF_IN ZFUISysWindow *oldSysWindow) {
+        this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnUpdate(), oldSysWindow);
     }
 
 public:

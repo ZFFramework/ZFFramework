@@ -28,9 +28,9 @@ public:
     virtual void luaStateDetach(ZF_IN void *L) zfpurevirtual;
 
     /** @brief called when class or method changed, ensured called in proper thread with proper mutex */
-    virtual void classDataChange(
+    virtual void classDataUpdate(
             ZF_IN void *L
-            , ZF_IN const ZFClassDataChangeData &data
+            , ZF_IN const ZFClassDataUpdateData &data
             ) zfpurevirtual;
 
     /**

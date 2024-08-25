@@ -140,7 +140,7 @@ ZFMETHOD_DEFINE_1(ZFMap, void, addFrom
     }
 
     if(key != zfnull) {
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 
@@ -171,7 +171,7 @@ ZFMETHOD_DEFINE_2(ZFMap, void, set
         (d->data)[key] = value;
     }
 
-    this->contentOnChange();
+    this->contentOnUpdate();
 }
 
 ZFMETHOD_DEFINE_1(ZFMap, void, remove
@@ -187,7 +187,7 @@ ZFMETHOD_DEFINE_1(ZFMap, void, remove
             zfRelease(tmpKey);
             zfRelease(tmpValue);
 
-            this->contentOnChange();
+            this->contentOnUpdate();
         }
     }
 }
@@ -202,7 +202,7 @@ ZFMETHOD_DEFINE_1(ZFMap, zfauto, removeAndGet
             d->data.erase(it);
 
             this->contentOnRemove(tmpKey, tmpValue);
-            this->contentOnChange();
+            this->contentOnUpdate();
 
             zfRelease(tmpKey);
             zfblockedRelease(tmpValue);
@@ -220,7 +220,7 @@ ZFMETHOD_DEFINE_0(ZFMap, void, removeAll) {
             zfRelease(it->first);
             zfRelease(it->second);
         }
-        this->contentOnChange();
+        this->contentOnUpdate();
     }
 }
 
@@ -255,7 +255,7 @@ ZFMETHOD_DEFINE_2(ZFMap, void, iterValue
     this->contentOnRemove(key, old);
     d->data.iterValue(it, value);
     this->contentOnAdd(key, value);
-    this->contentOnChange();
+    this->contentOnUpdate();
     zfRelease(old);
 }
 ZFMETHOD_DEFINE_1(ZFMap, void, iterRemove
@@ -265,7 +265,7 @@ ZFMETHOD_DEFINE_1(ZFMap, void, iterRemove
     ZFObject *value = d->data.iterValue(it);
     d->data.iterRemove(it);
     this->contentOnRemove(key, value);
-    this->contentOnChange();
+    this->contentOnUpdate();
     zfRelease(key);
     zfRelease(value);
 }

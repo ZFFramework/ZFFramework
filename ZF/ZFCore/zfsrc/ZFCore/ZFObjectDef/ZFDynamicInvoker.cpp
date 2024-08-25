@@ -40,8 +40,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
 
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {
         zfCoreMutexLocker();
-        this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
-        ZFClassDataChangeObserver().observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+        this->classDataUpdateListener = ZFCallbackForFunc(zfself::classDataUpdate);
+        ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
 
         _ZFP_ZFDI_methodMapCache.clear();
         _ZFP_ZFDI_cacheEnable = zftrue;
@@ -50,11 +50,11 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
         zfCoreMutexLocker();
         _ZFP_ZFDI_cacheEnable = zffalse;
         _ZFP_ZFDI_methodMapCache.clear();
-        ZFClassDataChangeObserver().observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+        ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
     }
     private:
-        ZFListener classDataChangeListener;
-        static void classDataChange(ZF_IN const ZFArgs &zfargs) {
+        ZFListener classDataUpdateListener;
+        static void classDataUpdate(ZF_IN const ZFArgs &zfargs) {
             zfCoreMutexLocker();
             _ZFP_ZFDI_methodMapCache.clear();
         }

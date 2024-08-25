@@ -105,8 +105,8 @@ void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
         textEditClearButton->layoutMeasuredSize(),
         margin));
 }
-void ZFUITextEditWidget::textOnChange(ZF_IN const zfstring &oldText) {
-    zfsuper::textOnChange(oldText);
+void ZFUITextEditWidget::textOnUpdate(ZF_IN const zfstring &oldText) {
+    zfsuper::textOnUpdate(oldText);
     _ZFP_ZFUITextEditWidget_updateClearButton(this);
 }
 

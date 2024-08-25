@@ -223,24 +223,24 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 // ============================================================
 // notify update metadata when class data changed
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoUpdate, ZFLevelZFFrameworkNormal) {
-    this->classDataOnChangeListener = ZFCallbackForFunc(zfself::classDataOnChange);
-    ZFClassDataChangeObserver().observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataOnChangeListener);
+    this->classDataOnUpdateListener = ZFCallbackForFunc(zfself::classDataOnUpdate);
+    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), this->classDataOnUpdateListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoUpdate) {
-    ZFClassDataChangeObserver().observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataOnChangeListener);
+    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataOnUpdateListener);
 }
 public:
-    ZFListener classDataOnChangeListener;
-    static void classDataOnChange(ZF_IN const ZFArgs &zfargs) {
+    ZFListener classDataOnUpdateListener;
+    static void classDataOnUpdate(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
-        v_ZFClassDataChangeData *changed = zfargs.param0();
+        v_ZFClassDataUpdateData *changed = zfargs.param0();
 
         ZFCoreArray<void *> stateList;
         ZFCoreArray<ZFThread *> threadList;
         ZFLuaStateListForAllThread(stateList, threadList);
         ZFPROTOCOL_INTERFACE_CLASS(ZFLua) *impl = ZFPROTOCOL_ACCESS(ZFLua);
         for(zfindex i = 0; i < stateList.count(); ++i) {
-            impl->classDataChange(stateList[i], changed->zfv);
+            impl->classDataUpdate(stateList[i], changed->zfv);
         }
     }
 ZF_GLOBAL_INITIALIZER_END(ZFLuaStateAutoUpdate)

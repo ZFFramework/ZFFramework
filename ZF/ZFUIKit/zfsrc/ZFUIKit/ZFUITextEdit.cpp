@@ -19,8 +19,8 @@ zfclassNotPOD _ZFP_ZFUITextEditPrivate {
 public:
     ZFUITextEdit *pimplOwner;
     zfbool textEditing;
-    zfbool textChangedByImplFlag;
-    zfbool textSelectRangeChangedByImplFlag;
+    zfbool textUpdateByImplFlag;
+    zfbool textSelectRangeUpdateByImplFlag;
 
 public:
     void updateSizeRelatedProperty(void) {
@@ -31,8 +31,8 @@ public:
     _ZFP_ZFUITextEditPrivate(void)
     : pimplOwner(zfnull)
     , textEditing(zffalse)
-    , textChangedByImplFlag(zffalse)
-    , textSelectRangeChangedByImplFlag(zffalse)
+    , textUpdateByImplFlag(zffalse)
+    , textSelectRangeUpdateByImplFlag(zffalse)
     {
     }
 };
@@ -43,8 +43,8 @@ ZFOBJECT_REGISTER(ZFUITextEdit)
 
 ZFEVENT_REGISTER(ZFUITextEdit, TextOnEditBegin)
 ZFEVENT_REGISTER(ZFUITextEdit, TextOnEditEnd)
-ZFEVENT_REGISTER(ZFUITextEdit, TextOnChangeCheck)
-ZFEVENT_REGISTER(ZFUITextEdit, TextOnChange)
+ZFEVENT_REGISTER(ZFUITextEdit, TextOnUpdateCheck)
+ZFEVENT_REGISTER(ZFUITextEdit, TextOnUpdate)
 ZFEVENT_REGISTER(ZFUITextEdit, TextOnReturnClick)
 ZFEVENT_REGISTER(ZFUITextEdit, TextOnEditConfirm)
 
@@ -74,7 +74,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfanyT<ZFUITextView>, textPlaceHolder) {
     textPlaceHolder->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfanyT<ZFRegExp>, textEditFilter) {
-    if(!this->text().isEmpty() && !this->textShouldChange(this->text())) {
+    if(!this->text().isEmpty() && !this->textShouldUpdate(this->text())) {
         this->text("");
     }
 }
@@ -88,8 +88,8 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
-    if(d->textSelectRangeChangedByImplFlag) {
-        d->textSelectRangeChangedByImplFlag = zffalse;
+    if(d->textSelectRangeUpdateByImplFlag) {
+        d->textSelectRangeUpdateByImplFlag = zffalse;
     }
     else {
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSelectRange(this, this->textSelectRange());
@@ -97,13 +97,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
 }
 
 ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, zfstring, text) {
-    if(!this->textShouldChange(propertyValue)) {
+    if(!this->textShouldUpdate(propertyValue)) {
         propertyValue = propertyValueOld;
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
-    if(d->textChangedByImplFlag) {
-        d->textChangedByImplFlag = zffalse;
+    if(d->textUpdateByImplFlag) {
+        d->textUpdateByImplFlag = zffalse;
     }
     else {
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->text(this, this->text());
@@ -235,23 +235,23 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyEndEdit(void) {
     d->textEditing = zffalse;
     this->textOnEditEnd();
 }
-void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyChange(ZF_IN const zfstring &newText) {
+void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyUpdate(ZF_IN const zfstring &newText) {
     zfstring oldText = this->text();
 
-    d->textChangedByImplFlag = zftrue;
+    d->textUpdateByImplFlag = zftrue;
     this->text(newText);
 
-    this->textOnChange(oldText);
+    this->textOnUpdate(oldText);
 }
-void ZFUITextEdit::_ZFP_ZFUITextEdit_textSelectRangeNotifyChange(void) {
-    if(d->textSelectRangeChangedByImplFlag) {
+void ZFUITextEdit::_ZFP_ZFUITextEdit_textSelectRangeNotifyUpdate(void) {
+    if(d->textSelectRangeUpdateByImplFlag) {
         return;
     }
 
     ZFIndexRange tmp = ZFIndexRangeZero();
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSelectRange(this, tmp);
 
-    d->textSelectRangeChangedByImplFlag = zftrue;
+    d->textSelectRangeUpdateByImplFlag = zftrue;
     this->textSelectRange(tmp);
 }
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
@@ -296,12 +296,12 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
             return;
     }
 }
-ZFMETHOD_DEFINE_1(ZFUITextEdit, zfbool, textShouldChange
+ZFMETHOD_DEFINE_1(ZFUITextEdit, zfbool, textShouldUpdate
         , ZFMP_IN(const zfstring &, newText)
         ) {
-    zfbool shouldChange = zftrue;
-    this->textOnChangeCheck(newText, shouldChange);
-    if(!shouldChange && newText != zfnull && *newText != '\0') {
+    zfbool shouldUpdate = zftrue;
+    this->textOnUpdateCheck(newText, shouldUpdate);
+    if(!shouldUpdate && newText != zfnull && *newText != '\0') {
         return zffalse;
     }
     else {
@@ -324,30 +324,30 @@ void ZFUITextEdit::textOnEditBegin(void) {
 void ZFUITextEdit::textOnEditEnd(void) {
     this->observerNotify(ZFUITextEdit::EventTextOnEditEnd());
 }
-void ZFUITextEdit::textOnChangeCheck(
+void ZFUITextEdit::textOnUpdateCheck(
         ZF_IN const zfstring &newText
-        , ZF_IN_OUT zfbool &shouldChange
+        , ZF_IN_OUT zfbool &shouldUpdate
         ) {
-    shouldChange = zftrue;
+    shouldUpdate = zftrue;
     if(newText != zfnull && *newText != '\0' && this->textEditFilter() != zfnull) {
         ZFRegExpResult regexpResult;
         this->textEditFilter()->find(regexpResult, newText);
         if(!regexpResult.matched) {
-            shouldChange = zffalse;
+            shouldUpdate = zffalse;
             return;
         }
     }
 
-    if(this->observerHasAdd(ZFUITextEdit::EventTextOnChangeCheck())) {
-        zfobj<v_zfbool> t(shouldChange);
-        this->observerNotify(ZFUITextEdit::EventTextOnChangeCheck(), zfobj<v_zfstring>(newText), t);
-        shouldChange = t->zfv;
+    if(this->observerHasAdd(ZFUITextEdit::EventTextOnUpdateCheck())) {
+        zfobj<v_zfbool> t(shouldUpdate);
+        this->observerNotify(ZFUITextEdit::EventTextOnUpdateCheck(), zfobj<v_zfstring>(newText), t);
+        shouldUpdate = t->zfv;
     }
 }
-void ZFUITextEdit::textOnChange(ZF_IN const zfstring &oldText) {
-    if(this->observerHasAdd(ZFUITextEdit::EventTextOnChange())) {
+void ZFUITextEdit::textOnUpdate(ZF_IN const zfstring &oldText) {
+    if(this->observerHasAdd(ZFUITextEdit::EventTextOnUpdate())) {
         zfobj<v_zfstring> oldTextTmp(oldText);
-        this->observerNotify(ZFUITextEdit::EventTextOnChange(), oldTextTmp);
+        this->observerNotify(ZFUITextEdit::EventTextOnUpdate(), oldTextTmp);
     }
 }
 void ZFUITextEdit::textOnReturnClick(void) {
@@ -360,8 +360,8 @@ ZFMETHOD_DEFINE_0(ZFUITextEdit, void, textEditNotifyConfirm) {
     this->textOnEditConfirm();
 }
 
-void ZFUITextEdit::UIScaleOnChange(void) {
-    zfsuper::UIScaleOnChange();
+void ZFUITextEdit::UIScaleOnUpdate(void) {
+    zfsuper::UIScaleOnUpdate();
     d->updateSizeRelatedProperty();
 }
 void ZFUITextEdit::layoutOnMeasure(
@@ -390,8 +390,8 @@ void ZFUITextEdit::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
             break;
     }
 }
-void ZFUITextEdit::viewFocusOnChange(void) {
-    zfsuper::viewFocusOnChange();
+void ZFUITextEdit::viewFocusOnUpdate(void) {
+    zfsuper::viewFocusOnUpdate();
     if(!this->viewFocused() && this->textEditConfirmWhenLostFocus()) {
         this->textEditNotifyConfirm();
     }

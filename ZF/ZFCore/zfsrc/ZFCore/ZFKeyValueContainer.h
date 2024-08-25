@@ -66,7 +66,7 @@ public:
      *
      * called when element added or removed or order changed
      */
-    ZFEVENT(ContentOnChange)
+    ZFEVENT(ContentOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -120,9 +120,9 @@ public:
             )
 
 protected:
-    /** @brief see #EventContentOnChange */
-    virtual inline void contentOnChange(void) {
-        this->observerNotify(ZFKeyValueContainer::EventContentOnChange());
+    /** @brief see #EventContentOnUpdate */
+    virtual inline void contentOnUpdate(void) {
+        this->observerNotify(ZFKeyValueContainer::EventContentOnUpdate());
     }
     /** @brief see #EventContentOnAdd */
     virtual inline void contentOnAdd(

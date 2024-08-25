@@ -157,8 +157,8 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
     ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
 
     SDL_Renderer *sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
-    ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetChanged, sdlRenderer, sdlTexture);
-    return renderTargetChanged
+    ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetNew, sdlRenderer, sdlTexture);
+    return renderTargetNew
         && SDL_RenderReadPixels(sdlRenderer, zfnull, sdlSurface->format->format, sdlSurface->pixels, sdlSurface->pitch) == 0
         && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
         ;

@@ -113,14 +113,14 @@ public:
      *   and store result to param1,
      *   you may change the value to modify the filter result
      */
-    ZFEVENT(TextOnChangeCheck)
+    ZFEVENT(TextOnUpdateCheck)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when text changed,
      * param0 is the old text (as #v_zfstring)
      */
-    ZFEVENT(TextOnChange)
+    ZFEVENT(TextOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -232,8 +232,8 @@ public:
 public:
     zffinal void _ZFP_ZFUITextEdit_textNotifyBeginEdit(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyEndEdit(void);
-    zffinal void _ZFP_ZFUITextEdit_textNotifyChange(ZF_IN const zfstring &newText);
-    zffinal void _ZFP_ZFUITextEdit_textSelectRangeNotifyChange(void);
+    zffinal void _ZFP_ZFUITextEdit_textNotifyUpdate(ZF_IN const zfstring &newText);
+    zffinal void _ZFP_ZFUITextEdit_textSelectRangeNotifyUpdate(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyReturnClicked(void);
     /**
      * @brief whether text should change
@@ -241,7 +241,7 @@ public:
      * by default, this method would check according to #ZFUITextEdit::textEditFilter,
      * and null or empty string would always treated as allowed for safe
      */
-    ZFMETHOD_DECLARE_1(zfbool, textShouldChange
+    ZFMETHOD_DECLARE_1(zfbool, textShouldUpdate
             , ZFMP_IN(const zfstring &, newText)
             )
     /**
@@ -262,13 +262,13 @@ protected:
     virtual void textOnEditBegin(void);
     /** @brief see #EventTextOnEditEnd */
     virtual void textOnEditEnd(void);
-    /** @brief see #EventTextOnChangeCheck */
-    virtual void textOnChangeCheck(
+    /** @brief see #EventTextOnUpdateCheck */
+    virtual void textOnUpdateCheck(
             ZF_IN const zfstring &newText
-            , ZF_IN_OUT zfbool &shouldChange
+            , ZF_IN_OUT zfbool &shouldUpdate
             );
-    /** @brief see #EventTextOnChange */
-    virtual void textOnChange(ZF_IN const zfstring &oldText);
+    /** @brief see #EventTextOnUpdate */
+    virtual void textOnUpdate(ZF_IN const zfstring &oldText);
     /** @brief see #EventTextOnReturnClick */
     virtual void textOnReturnClick(void);
     /** @brief see #EventTextOnEditConfirm */
@@ -284,7 +284,7 @@ protected:
      * @brief text edit view would update text settings when scale changed
      */
     zfoverride
-    virtual void UIScaleOnChange(void);
+    virtual void UIScaleOnUpdate(void);
     /**
      * @brief text edit view would measure according text size
      */
@@ -301,7 +301,7 @@ protected:
     zfoverride
     virtual void viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent);
     zfoverride
-    virtual void viewFocusOnChange(void);
+    virtual void viewFocusOnUpdate(void);
 
     zfoverride
     virtual zfbool internalViewShouldLayout(ZF_IN ZFUIView *internalView);

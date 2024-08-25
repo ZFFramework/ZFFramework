@@ -51,13 +51,13 @@ protected:
             case QEvent::FocusIn:
                 if(this->ownerZFUIView != _lastFocused) {
                     _lastFocused = this->ownerZFUIView;
-                    ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusChanged(this->ownerZFUIView);
+                    ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusUpdate(this->ownerZFUIView);
                 }
                 break;
             case QEvent::FocusOut:
                 if(this->ownerZFUIView == _lastFocused) {
                     _lastFocused = zfnull;
-                    ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusChanged(this->ownerZFUIView);
+                    ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusUpdate(this->ownerZFUIView);
                 }
                 break;
             default:

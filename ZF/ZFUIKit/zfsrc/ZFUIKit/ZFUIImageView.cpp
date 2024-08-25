@@ -20,20 +20,20 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
     if(this->image() != zfnull) {
         if(!this->imageUpdateListener) {
             ZFUIImageView *owner = this;
-            ZFLISTENER_1(imageNinePatchChanged
+            ZFLISTENER_1(imageNinePatchOnUpdate
                     , ZFUIImageView *, owner
                     ) {
                 const ZFProperty *const &property = zfargs.param0().zfv();
                 if(property == ZFPropertyAccess(ZFUIImage, imageNinePatch)
                         || property == ZFPropertyAccess(ZFUIImage, imageScale)) {
                     ZFUIImage *image = owner->image();
-                    ZFPROTOCOL_ACCESS(ZFUIImageView)->imageNinePatchChanged(
+                    ZFPROTOCOL_ACCESS(ZFUIImageView)->imageNinePatchOnUpdate(
                         owner,
                         image->imageScaleFixed(),
                         ZFUIMarginApplyScale(image->imageNinePatch(), image->imageScaleFixed()));
                 }
             } ZFLISTENER_END()
-            this->imageUpdateListener = imageNinePatchChanged;
+            this->imageUpdateListener = imageNinePatchOnUpdate;
         }
         this->image()->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(), this->imageUpdateListener);
     }
@@ -44,7 +44,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
             : zfnull);
     ZFUIImage *image = this->image();
     if(image != zfnull) {
-        ZFPROTOCOL_ACCESS(ZFUIImageView)->imageNinePatchChanged(
+        ZFPROTOCOL_ACCESS(ZFUIImageView)->imageNinePatchOnUpdate(
             this,
             image->imageScaleFixed(),
             ZFUIMarginApplyScale(image->imageNinePatch(), image->imageScaleFixed()));

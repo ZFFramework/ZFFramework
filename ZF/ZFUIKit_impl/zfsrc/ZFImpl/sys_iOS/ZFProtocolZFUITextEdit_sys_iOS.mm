@@ -12,7 +12,7 @@
 @property (nonatomic, strong) NSString *fontName;
 @property (nonatomic, assign) zffloat textSize;
 
-- (void)_textFieldTextChanged:(UITextField *)textField;
+- (void)_textFieldTextOnUpdate:(UITextField *)textField;
 @end
 
 @implementation _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit
@@ -28,13 +28,13 @@
     self.fontName = [UIFont systemFontOfSize:[UIFont systemFontSize]].fontName;
 
     self.delegate = self;
-    [self addTarget:self action:@selector(_textFieldTextChanged:) forControlEvents:UIControlEventEditingChanged];
+    [self addTarget:self action:@selector(_textFieldTextOnUpdate:) forControlEvents:UIControlEventEditingChanged];
 
     return self;
 }
 - (void)dealloc {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self removeTarget:self action:@selector(_textFieldTextChanged:) forControlEvents:UIControlEventEditingChanged];
+    [self removeTarget:self action:@selector(_textFieldTextOnUpdate:) forControlEvents:UIControlEventEditingChanged];
     self.fontName = nil;
 }
 
@@ -48,15 +48,15 @@
 
 - (void)setSelectedTextRange:(UITextRange *)selectedTextRange ZFImpl_sys_iOS_overrideProperty {
     [super setSelectedTextRange:selectedTextRange];
-    [self _ZFP_textSelectRangeNotifyChange];
+    [self _ZFP_textSelectRangeNotifyUpdate];
 }
-- (void)_ZFP_textSelectRangeNotifyChange {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeChange(self.ownerZFUITextEdit);
+- (void)_ZFP_textSelectRangeNotifyUpdate {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeOnUpdate(self.ownerZFUITextEdit);
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextEditBegin(self.ownerZFUITextEdit);
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeChange(self.ownerZFUITextEdit);
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeOnUpdate(self.ownerZFUITextEdit);
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextEditEnd(self.ownerZFUITextEdit);
@@ -66,7 +66,7 @@
     return YES;
 }
 
-- (void)_textFieldTextChanged:(UITextField *)textField {
+- (void)_textFieldTextOnUpdate:(UITextField *)textField {
     if(self.textOverrideFlag) {
         return;
     }
@@ -84,15 +84,15 @@
         return;
     }
 
-    if(!ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(self.ownerZFUITextEdit, text)) {
+    if(!ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldUpdate(self.ownerZFUITextEdit, text)) {
         self.textOverrideFlag = zftrue;
         textField.text = [NSString stringWithUTF8String:text.cString()];
         self.textOverrideFlag = zffalse;
         return;
     }
     self.lastText = text;
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(self.ownerZFUITextEdit, self.lastText);
-    [self _ZFP_textSelectRangeNotifyChange];
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextUpdate(self.ownerZFUITextEdit, self.lastText);
+    [self _ZFP_textSelectRangeNotifyUpdate];
 }
 @end
 

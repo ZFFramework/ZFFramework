@@ -7,8 +7,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static void _ZFP_ZFUITextView_updateSizeRelatedProperty(ZF_IN ZFUITextView *owner) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUITextView) *impl = ZFPROTOCOL_ACCESS(ZFUITextView);
     impl->textSize(owner, ZFUISizeApplyScale(owner->textSize(), owner->UIScaleFixed()));
-    impl->textSizeAutoChangeMinSize(owner, ZFUISizeApplyScale(owner->textSizeAutoChangeMinSize(), owner->UIScaleFixed()));
-    impl->textSizeAutoChangeMaxSize(owner, ZFUISizeApplyScale(owner->textSizeAutoChangeMaxSize(), owner->UIScaleFixed()));
+    impl->textSizeAutoMin(owner, ZFUISizeApplyScale(owner->textSizeAutoMin(), owner->UIScaleFixed()));
+    impl->textSizeAutoMax(owner, ZFUISizeApplyScale(owner->textSizeAutoMax(), owner->UIScaleFixed()));
 }
 
 // ============================================================
@@ -48,15 +48,15 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSize) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoChangeMinSize) {
-    ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeAutoChangeMinSize(this, ZFUISizeApplyScale(this->textSizeAutoChangeMinSize(), this->UIScaleFixed()));
-    if(this->textSizeAutoChangeMinSize() != propertyValueOld) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoMin) {
+    ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeAutoMin(this, ZFUISizeApplyScale(this->textSizeAutoMin(), this->UIScaleFixed()));
+    if(this->textSizeAutoMin() != propertyValueOld) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoChangeMaxSize) {
-    ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeAutoChangeMaxSize(this, ZFUISizeApplyScale(this->textSizeAutoChangeMaxSize(), this->UIScaleFixed()));
-    if(this->textSizeAutoChangeMaxSize() != propertyValueOld) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoMax) {
+    ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeAutoMax(this, ZFUISizeApplyScale(this->textSizeAutoMax(), this->UIScaleFixed()));
+    if(this->textSizeAutoMax() != propertyValueOld) {
         this->layoutRequest();
     }
 }
@@ -131,8 +131,8 @@ ZFMETHOD_DEFINE_0(ZFUITextView, zffloat, textSizeCurrent) {
     return ZFUISizeApplyScaleReversely(ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeCurrent(this), this->UIScaleFixed());
 }
 
-void ZFUITextView::UIScaleOnChange(void) {
-    zfsuper::UIScaleOnChange();
+void ZFUITextView::UIScaleOnUpdate(void) {
+    zfsuper::UIScaleOnUpdate();
     _ZFP_ZFUITextView_updateSizeRelatedProperty(this);
 }
 void ZFUITextView::layoutOnMeasure(

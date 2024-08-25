@@ -129,33 +129,33 @@ ZFM_CLASS_HAS_MEMBER_DECLARE(ObjCk, _ZFP_zftIsZFInterface, void (*F)(void))
 ZFM_CLASS_HAS_MEMBER_DECLARE(ObjTCk, toObject, ZFObject *(T::*F)(void) const)
 
 // ============================================================
-/** @brief type for #ZFGlobalEvent::EventClassDataChange */
+/** @brief type for #ZFGlobalEvent::EventClassDataUpdate */
 typedef enum {
-    ZFClassDataChangeTypeAttach, /**< @brief attach */
-    ZFClassDataChangeTypeDetach, /**< @brief detach */
-    ZFClassDataChangeTypeClassAliasAttach, /**< @brief #ZFClass::classAliasTo attach */
-    ZFClassDataChangeTypeClassAliasDetach, /**< @brief #ZFClass::classAliasTo detach */
-} ZFClassDataChangeType;
+    ZFClassDataUpdateTypeAttach, /**< @brief attach */
+    ZFClassDataUpdateTypeDetach, /**< @brief detach */
+    ZFClassDataUpdateTypeClassAliasAttach, /**< @brief #ZFClass::classAliasTo attach */
+    ZFClassDataUpdateTypeClassAliasDetach, /**< @brief #ZFClass::classAliasTo detach */
+} ZFClassDataUpdateType;
 /** @brief string tokens */
-#define ZFTOKEN_ZFClassDataChangeTypeAttach "Attach"
+#define ZFTOKEN_ZFClassDataUpdateTypeAttach "Attach"
 /** @brief string tokens */
-#define ZFTOKEN_ZFClassDataChangeTypeDetach "Detach"
+#define ZFTOKEN_ZFClassDataUpdateTypeDetach "Detach"
 /** @brief string tokens */
-#define ZFTOKEN_ZFClassDataChangeTypeClassAliasAttach "ClassAliasAttach"
+#define ZFTOKEN_ZFClassDataUpdateTypeClassAliasAttach "ClassAliasAttach"
 /** @brief string tokens */
-#define ZFTOKEN_ZFClassDataChangeTypeClassAliasDetach "ClassAliasDetach"
+#define ZFTOKEN_ZFClassDataUpdateTypeClassAliasDetach "ClassAliasDetach"
 
-/** @brief data holder for #ZFGlobalEvent::EventClassDataChange */
-zfclassPOD ZFLIB_ZFCore ZFClassDataChangeData {
+/** @brief data holder for #ZFGlobalEvent::EventClassDataUpdate */
+zfclassPOD ZFLIB_ZFCore ZFClassDataUpdateData {
 public:
-    ZFClassDataChangeType changeType; /**< @brief change type */
+    ZFClassDataUpdateType changeType; /**< @brief change type */
     const ZFClass *changedClass; /**< @brief changed class */
     const ZFProperty *changedProperty; /**< @brief changed property */
     const ZFMethod *changedMethod; /**< @brief changed method */
     /**
      * @brief extra data
      *
-     * for ZFClassDataChangeTypeClassAliasAttach / ZFClassDataChangeTypeClassAliasDetach,
+     * for ZFClassDataUpdateTypeClassAliasAttach / ZFClassDataUpdateTypeClassAliasDetach,
      * it's the aliased class name
      */
     zfstring name;
@@ -170,8 +170,8 @@ public:
         return ret;
     }
 };
-extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
-        ZF_IN ZFClassDataChangeType changeType
+extern ZFLIB_ZFCore void _ZFP_ZFClassDataUpdateNotify(
+        ZF_IN ZFClassDataUpdateType changeType
         , ZF_IN const ZFClass *changedClass
         , ZF_IN const ZFProperty *changedProperty
         , ZF_IN const ZFMethod *changedMethod

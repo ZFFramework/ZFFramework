@@ -164,7 +164,7 @@ _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getProperty
         this->classData()->classTag(
             _ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull(),
             holderTmp);
-        this->ClassData()->classDataChangeAutoRemoveTagAdd(_ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
+        this->ClassData()->classDataUpdateAutoRemoveTagAdd(_ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
     }
     return holder;
 }
@@ -198,11 +198,11 @@ public:
 };
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleDefaultApplyAutoCopyDataHolder, ZFLevelZFFrameworkEssential) {
     this->styleOnDeallocListener = ZFCallbackForFunc(zfself::styleOnDealloc);
-    this->defaultStyleOnChangeListener = ZFCallbackForFunc(zfself::defaultStyleOnChange);
+    this->defaultStyleOnUpdateListener = ZFCallbackForFunc(zfself::defaultStyleOnUpdate);
 }
 public:
     ZFListener styleOnDeallocListener;
-    ZFListener defaultStyleOnChangeListener;
+    ZFListener defaultStyleOnUpdateListener;
 public:
     static void styleOnDealloc(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
@@ -218,10 +218,10 @@ public:
         if(taskData->styles.isEmpty()) {
             defaultStyle->objectTagRemove(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
             defaultStyle->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(),
-                ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnChangeListener);
+                ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnUpdateListener);
         }
     }
-    static void defaultStyleOnChange(ZF_IN const ZFArgs &zfargs) {
+    static void defaultStyleOnUpdate(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
 
         const ZFProperty *const &property = zfargs.param0().zfv();
@@ -250,7 +250,7 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
                 zfRelease(taskData);
 
                 defaultStyle->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(),
-                    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnChangeListener);
+                    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnUpdateListener);
             }
             taskData->styles.add(style->toObject()->objectHolder());
             style->toObject()->observerAdd(ZFObject::EventObjectBeforeDealloc(),
@@ -261,7 +261,7 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
 
 // ============================================================
 // style holder
-static zfbool _ZFP_ZFStyleChangeFlag = zffalse;
+static zfbool _ZFP_ZFStyleUpdateFlag = zffalse;
 static zfstlmap<zfstring, zfauto> &_ZFP_ZFStyleHolder(void) {
     static zfstlmap<zfstring, zfauto> d;
     return d;
@@ -301,7 +301,7 @@ void ZFStyleSet(
         ) {
     if(styleKey && styleValue) {
         zfCoreMutexLock();
-        _ZFP_ZFStyleChangeFlag = zftrue;
+        _ZFP_ZFStyleUpdateFlag = zftrue;
         _ZFP_ZFStyleHolder()[styleKey] = styleValue;
         zfCoreMutexUnlock();
     }
@@ -343,36 +343,36 @@ void ZFStyleGetAll(
 void ZFStyleRemoveAll(void) {
     zfCoreMutexLock();
     zfstlmap<zfstring, zfauto> d;
-    _ZFP_ZFStyleChangeFlag = zftrue;
+    _ZFP_ZFStyleUpdateFlag = zftrue;
     d.swap(_ZFP_ZFStyleHolder());
     zfCoreMutexUnlock();
 }
 
-static zfint _ZFP_ZFStyleChangeBeginFlag = 0;
-void ZFStyleChangeBegin() {
+static zfint _ZFP_ZFStyleUpdateBeginFlag = 0;
+void ZFStyleUpdateBegin() {
     zfCoreMutexLock();
-    ++_ZFP_ZFStyleChangeBeginFlag;
-    if(_ZFP_ZFStyleChangeBeginFlag == 1) {
-        _ZFP_ZFStyleChangeFlag = zffalse;
+    ++_ZFP_ZFStyleUpdateBeginFlag;
+    if(_ZFP_ZFStyleUpdateBeginFlag == 1) {
+        _ZFP_ZFStyleUpdateFlag = zffalse;
     }
     zfCoreMutexUnlock();
 }
-void ZFStyleChangeEnd() {
-    zfCoreAssertWithMessageTrim(_ZFP_ZFStyleChangeBeginFlag != 0,
-        "ZFStyleChangeBegin/ZFStyleChangeEnd not paired");
+void ZFStyleUpdateEnd() {
+    zfCoreAssertWithMessageTrim(_ZFP_ZFStyleUpdateBeginFlag != 0,
+        "ZFStyleUpdateBegin/ZFStyleUpdateEnd not paired");
 
     zfCoreMutexLock();
-    --_ZFP_ZFStyleChangeBeginFlag;
-    zfbool needNotify = (_ZFP_ZFStyleChangeBeginFlag == 0 && _ZFP_ZFStyleChangeFlag);
+    --_ZFP_ZFStyleUpdateBeginFlag;
+    zfbool needNotify = (_ZFP_ZFStyleUpdateBeginFlag == 0 && _ZFP_ZFStyleUpdateFlag);
     zfCoreMutexUnlock();
 
     if(needNotify) {
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFStyleOnChange());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFStyleOnUpdate());
     }
 }
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFEVENT_GLOBAL_REGISTER(ZFStyleOnChange)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleOnUpdate)
 ZFEVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
@@ -456,8 +456,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll
         , ZFMP_IN_OUT(ZFCoreArray<ZFStyleable *>, styleValue)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleRemoveAll)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleChangeBegin)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleChangeEnd)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateBegin)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateEnd)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

@@ -137,7 +137,7 @@ public:
     // ============================================================
     // class data change observer
 public:
-    void _ZFP_ZFClass_classDataChangeNotify(void) const;
+    void _ZFP_ZFClass_classDataUpdateNotify(void) const;
     /**
      * @brief auto remove #classTagRemove when class meta data changed
      *
@@ -149,11 +149,11 @@ public:
      * this method is useful if you cached some data by #classTag
      * according to class's method or property list,
      * and want to update it again if meta data changed\n
-     * see also #ZFClassDataChangeObserver
+     * see also #ZFClassDataUpdateObserver
      */
-    void classDataChangeAutoRemoveTagAdd(ZF_IN const zfstring &tag) const;
-    /** @brief see #classDataChangeAutoRemoveTagAdd */
-    void classDataChangeAutoRemoveTagRemove(ZF_IN const zfstring &tag) const;
+    void classDataUpdateAutoRemoveTagAdd(ZF_IN const zfstring &tag) const;
+    /** @brief see #classDataUpdateAutoRemoveTagAdd */
+    void classDataUpdateAutoRemoveTagRemove(ZF_IN const zfstring &tag) const;
 
     // ============================================================
     // class info
@@ -762,10 +762,10 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 /**
  * @brief see #ZFObject::observerNotify
  *
- * notified when any class data changed, notified to #ZFClassDataChangeObserver,
+ * notified when any class data changed, notified to #ZFClassDataUpdateObserver,
  *   see #ZFObject::observerNotify
  *
- * param0 is a #v_ZFClassDataChangeData\n
+ * param0 is a #v_ZFClassDataUpdateData\n
  * called when:
  * -  class registered or unregistered
  * -  class's property registered or unregistered (including user registered property)
@@ -773,9 +773,9 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *
  *
  * \n
- * for each event call, #ZFClassDataChangeData::changedClass,
- * #ZFClassDataChangeData::changedProperty
- * and #ZFClassDataChangeData::changedMethod
+ * for each event call, #ZFClassDataUpdateData::changedClass,
+ * #ZFClassDataUpdateData::changedProperty
+ * and #ZFClassDataUpdateData::changedMethod
  * are ensured only one not null\n
  * \n
  * \n
@@ -786,18 +786,18 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *   but must not manually notify this event\n
  *   also, take care of performance
  */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ClassDataChange)
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ClassDataUpdate)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-extern ZFLIB_ZFCore ZFObserver &_ZFP_ZFClassDataChangeObserverRef(void);
+extern ZFLIB_ZFCore ZFObserver &_ZFP_ZFClassDataUpdateObserverRef(void);
 /**
- * @brief see #ZFGlobalEvent::EventClassDataChange
+ * @brief see #ZFGlobalEvent::EventClassDataUpdate
  *
  * @warning app code can add observer to this event,
  *   but must not manually notify this event\n
  *   also, take care of performance
  */
-#define ZFClassDataChangeObserver() (_ZFP_ZFClassDataChangeObserverRef())
+#define ZFClassDataUpdateObserver() (_ZFP_ZFClassDataUpdateObserverRef())
 
 // ============================================================
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFCoreCriticalClassNotTypeOf {

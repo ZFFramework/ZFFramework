@@ -28,7 +28,7 @@ public:
 // ZFUIWindow
 ZFOBJECT_REGISTER(ZFUIWindow)
 
-ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnChange)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnUpdate)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOnShow)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOnHide)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnResume)
@@ -91,7 +91,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, void, windowOwnerSysWindow
         if(!(oldSysWindow == windowOwnerSysWindow
                     || (oldSysWindow == zfnull && ZFUISysWindow::mainWindowAttached() && windowOwnerSysWindow == ZFUISysWindow::mainWindow()))
                     ) {
-            this->windowOwnerSysWindowOnChange(oldSysWindow);
+            this->windowOwnerSysWindowOnUpdate(oldSysWindow);
         }
     }
 }

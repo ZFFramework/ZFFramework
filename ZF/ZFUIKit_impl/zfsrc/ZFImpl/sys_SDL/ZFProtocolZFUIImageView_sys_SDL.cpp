@@ -39,7 +39,7 @@ public:
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void imageNinePatchChanged(
+    virtual void imageNinePatchOnUpdate(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN zffloat imageScale
             , ZF_IN const ZFUIMargin &imageNinePatch

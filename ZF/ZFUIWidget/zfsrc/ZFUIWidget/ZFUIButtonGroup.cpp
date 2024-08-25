@@ -8,7 +8,7 @@ ZFOBJECT_REGISTER(ZFUIButtonGroup)
 
 ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonOnAdd)
 ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonOnRemove)
-ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnChange)
+ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnUpdate)
 ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnClickChecked)
 
 // ============================================================
@@ -93,7 +93,7 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(
             if(buttonIndex == buttonGroup->buttonTabChecked()) {
                 if(buttonGroup->buttonTabAllowUnchecked()) {
                     buttonGroup->buttonTabChecked(zfindexMax());
-                    buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndex);
+                    buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnUpdate(button, buttonIndex);
                 }
                 else {
                     button->checked(zftrue);
@@ -103,7 +103,7 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(
             else {
                 zfindex buttonIndexPrev = buttonGroup->buttonTabChecked();
                 buttonGroup->buttonTabChecked(buttonIndex);
-                buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndexPrev);
+                buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnUpdate(button, buttonIndexPrev);
             }
         } ZFLISTENER_END()
         buttonGroup->_ZFP_buttonOnClick = buttonOnClick;

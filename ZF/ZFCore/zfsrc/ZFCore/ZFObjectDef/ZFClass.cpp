@@ -114,7 +114,7 @@ public:
     _ZFP_ZFClassTagMapType classTagMap;
 
 public:
-    zfstlmap<zfstring, zfbool> classDataChangeAutoRemoveTagList;
+    zfstlmap<zfstring, zfbool> classDataUpdateAutoRemoveTagList;
 
 public:
     zfstlmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
@@ -218,7 +218,7 @@ public:
     , propertyAutoInitMap()
     , propertyInitStepMap()
     , classTagMap()
-    , classDataChangeAutoRemoveTagList()
+    , classDataUpdateAutoRemoveTagList()
     , allParent()
     , allChildren()
     , interfaceCastMap()
@@ -553,21 +553,21 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const {
 
 // ============================================================
 // class data change observer
-void ZFClass::_ZFP_ZFClass_classDataChangeNotify(void) const {
-    if(!d->classDataChangeAutoRemoveTagList.empty()) {
-        zfstlmap<zfstring, zfbool> t = d->classDataChangeAutoRemoveTagList;
+void ZFClass::_ZFP_ZFClass_classDataUpdateNotify(void) const {
+    if(!d->classDataUpdateAutoRemoveTagList.empty()) {
+        zfstlmap<zfstring, zfbool> t = d->classDataUpdateAutoRemoveTagList;
         for(zfstlmap<zfstring, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
             this->classTagRemove(it->first);
         }
     }
 }
-void ZFClass::classDataChangeAutoRemoveTagAdd(ZF_IN const zfstring &tag) const {
+void ZFClass::classDataUpdateAutoRemoveTagAdd(ZF_IN const zfstring &tag) const {
     zfCoreAssert(tag != zfnull);
-    d->classDataChangeAutoRemoveTagList[tag] = zftrue;
+    d->classDataUpdateAutoRemoveTagList[tag] = zftrue;
 }
-void ZFClass::classDataChangeAutoRemoveTagRemove(ZF_IN const zfstring &tag) const {
+void ZFClass::classDataUpdateAutoRemoveTagRemove(ZF_IN const zfstring &tag) const {
     zfCoreAssert(tag != zfnull);
-    d->classDataChangeAutoRemoveTagList.erase(tag);
+    d->classDataUpdateAutoRemoveTagList.erase(tag);
 }
 
 // ============================================================
@@ -1343,7 +1343,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
             const ZFClass *, zftext("ClassData"));
 
         // notify
-        _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, cls, zfnull, zfnull);
+        _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeAttach, cls, zfnull, zfnull);
     }
 
     return cls;
@@ -1367,7 +1367,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
         return;
     }
 
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, cls, zfnull, zfnull);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeDetach, cls, zfnull, zfnull);
 
     _ZFP_ZFClassPrivate *d = cls->d;
     --(d->refCount);
@@ -1699,45 +1699,45 @@ void ZFClassGetAllT(
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFEVENT_GLOBAL_REGISTER(ClassDataChange)
+ZFEVENT_GLOBAL_REGISTER(ClassDataUpdate)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFObserver &_ZFP_ZFClassDataChangeObserverRef(void) {
+ZFObserver &_ZFP_ZFClassDataUpdateObserverRef(void) {
     static ZFObserver d;
     return d;
 }
-void _ZFP_ZFClassDataChangeNotify(
-        ZF_IN ZFClassDataChangeType changeType
+void _ZFP_ZFClassDataUpdateNotify(
+        ZF_IN ZFClassDataUpdateType changeType
         , ZF_IN const ZFClass *changedClass
         , ZF_IN const ZFProperty *changedProperty
         , ZF_IN const ZFMethod *changedMethod
         , ZF_IN_OPT const zfstring &name /* = zfnull */
         ) {
-    (void)ZFClassDataChangeObserver(); // ensure init order
+    (void)ZFClassDataUpdateObserver(); // ensure init order
     (void)ZFGlobalObserver(); // ensure init order
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkPostStatic) == ZFFrameworkStateAvailable) {
         _ZFP_ZFClass_invokeTimeLogger("cls change notify: %s %s %s %s"
-                , ZFClassDataChangeTypeToString(changeType).cString()
+                , ZFClassDataUpdateTypeToString(changeType).cString()
                 , changedClass ? changedClass->className().cString() : ZFTOKEN_zfnull
                 , changedProperty ? changedProperty->propertyName().cString() : ZFTOKEN_zfnull
                 , changedMethod ? changedMethod->objectInfo().cString() : ZFTOKEN_zfnull
                 );
         if(changedProperty != zfnull) {
-            changedProperty->propertyOwnerClass()->_ZFP_ZFClass_classDataChangeNotify();
+            changedProperty->propertyOwnerClass()->_ZFP_ZFClass_classDataUpdateNotify();
         }
         else if(changedMethod != zfnull) {
             if(changedMethod->methodOwnerClass() != zfnull) {
-                changedMethod->methodOwnerClass()->_ZFP_ZFClass_classDataChangeNotify();
+                changedMethod->methodOwnerClass()->_ZFP_ZFClass_classDataUpdateNotify();
             }
         }
 
-        v_ZFClassDataChangeData *holder = zfunsafe_zfAlloc(v_ZFClassDataChangeData);
+        v_ZFClassDataUpdateData *holder = zfunsafe_zfAlloc(v_ZFClassDataUpdateData);
         holder->zfv.changeType = changeType;
         holder->zfv.changedClass = changedClass;
         holder->zfv.changedProperty = changedProperty;
         holder->zfv.changedMethod = changedMethod;
         holder->zfv.name = name;
-        ZFClassDataChangeObserver().observerNotify(ZFGlobalEvent::EventClassDataChange(), holder);
+        ZFClassDataUpdateObserver().observerNotify(ZFGlobalEvent::EventClassDataUpdate(), holder);
         zfunsafe_zfRelease(holder);
     }
 }
@@ -1763,7 +1763,7 @@ void ZFClassAlias(
     _ZFP_ZFClassMap.set(aliasNameFull, ZFCorePointerForPointerRef<const ZFClass *>(cls));
     cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.add(aliasName);
 
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeClassAliasAttach, cls, zfnull, zfnull, aliasName);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasAttach, cls, zfnull, zfnull, aliasName);
 }
 void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
@@ -1786,7 +1786,7 @@ void ZFClassAliasRemove(
     _ZFP_ZFClassMap.remove(aliasNameFull);
     cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.remove(index);
 
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeClassAliasDetach, cls, zfnull, zfnull, aliasName);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasDetach, cls, zfnull, zfnull, aliasName);
 }
 
 ZF_NAMESPACE_GLOBAL_END

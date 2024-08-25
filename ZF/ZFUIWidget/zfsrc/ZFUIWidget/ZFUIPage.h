@@ -313,10 +313,10 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when #managerUIBlockedOnChange,
+     * called when #managerUIBlockedOnUpdate,
      * see #managerUIBlocked
      */
-    ZFEVENT(ManagerUIBlockedOnChange)
+    ZFEVENT(ManagerUIBlockedOnUpdate)
 
     // ============================================================
     // manager creation
@@ -422,8 +422,8 @@ public:
     /** @brief see #managerUIBlocked */
     ZFMETHOD_DECLARE_0(zfindex, managerUIBlockedCount)
 protected:
-    /** @brief see #EventManagerUIBlockedOnChange */
-    virtual inline void managerUIBlockedOnChange(void) {}
+    /** @brief see #EventManagerUIBlockedOnUpdate */
+    virtual inline void managerUIBlockedOnUpdate(void) {}
 
     // ============================================================
     // page access

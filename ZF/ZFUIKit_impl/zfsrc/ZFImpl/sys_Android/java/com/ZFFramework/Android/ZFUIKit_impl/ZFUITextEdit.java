@@ -34,7 +34,7 @@ public final class ZFUITextEdit extends EditText {
 
     public static void native_nativeTextEditDestroy(Object nativeTextEdit) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        nativeTextEditTmp.removeTextChangedListener(nativeTextEditTmp._textWatcher);
+        nativeTextEditTmp.removeTextOnUpdateListener(nativeTextEditTmp._textWatcher);
         nativeTextEditTmp._textWatcher = null;
         nativeTextEditTmp.setText(null);
         nativeTextEditTmp.setOnEditorActionListener(null);
@@ -207,13 +207,13 @@ public final class ZFUITextEdit extends EditText {
     }
 
     // ============================================================
-    private static native boolean native_notifyCheckTextShouldChange(long zfjniPointerOwnerZFUITextEdit,
+    private static native boolean native_notifyCheckTextShouldUpdate(long zfjniPointerOwnerZFUITextEdit,
                                                                      Object newString);
 
-    private static native void native_notifyTextChange(long zfjniPointerOwnerZFUITextEdit,
+    private static native void native_notifyTextUpdate(long zfjniPointerOwnerZFUITextEdit,
                                                        Object newString);
 
-    private static native void native_notifyTextSelectRangeChange(long zfjniPointerOwnerZFUITextEdit);
+    private static native void native_notifyTextSelectRangeOnUpdate(long zfjniPointerOwnerZFUITextEdit);
 
     private static native void native_notifyTextReturnClicked(long zfjniPointerOwnerZFUITextEdit);
 
@@ -230,7 +230,7 @@ public final class ZFUITextEdit extends EditText {
         super.setSelection(start, stop);
         --_ZFP_textSelectRangeUpdateFlag;
         if (_ZFP_textSelectRangeUpdateFlag == 0) {
-            ZFUITextEdit.native_notifyTextSelectRangeChange(this.zfjniPointerOwnerZFUITextEdit);
+            ZFUITextEdit.native_notifyTextSelectRangeOnUpdate(this.zfjniPointerOwnerZFUITextEdit);
         }
     }
 
@@ -240,7 +240,7 @@ public final class ZFUITextEdit extends EditText {
         super.setSelection(index);
         --_ZFP_textSelectRangeUpdateFlag;
         if (_ZFP_textSelectRangeUpdateFlag == 0) {
-            ZFUITextEdit.native_notifyTextSelectRangeChange(this.zfjniPointerOwnerZFUITextEdit);
+            ZFUITextEdit.native_notifyTextSelectRangeOnUpdate(this.zfjniPointerOwnerZFUITextEdit);
         }
     }
 
@@ -298,12 +298,12 @@ public final class ZFUITextEdit extends EditText {
                 ZFUITextEdit.native_notifyTextReturnClicked(this.owner.get().zfjniPointerOwnerZFUITextEdit);
                 return;
             }
-            if (!ZFUITextEdit.native_notifyCheckTextShouldChange(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString)) {
+            if (!ZFUITextEdit.native_notifyCheckTextShouldUpdate(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString)) {
                 this.overrided = true;
                 this.owner.get().setText(this.savedString);
                 this.overrided = false;
             } else {
-                ZFUITextEdit.native_notifyTextChange(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString);
+                ZFUITextEdit.native_notifyTextUpdate(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString);
             }
         }
     }
@@ -325,7 +325,7 @@ public final class ZFUITextEdit extends EditText {
         this.setLines(1);
 
         _textWatcher = new _TextWatcher(this);
-        this.addTextChangedListener(_textWatcher);
+        this.addTextOnUpdateListener(_textWatcher);
 
         this.setOnKeyListener(new OnKeyListener() {
             @Override
