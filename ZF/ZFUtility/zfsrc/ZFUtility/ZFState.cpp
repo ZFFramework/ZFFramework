@@ -80,7 +80,7 @@ public:
         ZFLISTENER_1(loadFinish
                 , zfautoT<ZFState>, owner
                 ) {
-            ZFValueHolder *holder = zfargs.result();
+            ZFValueHolder *holder = zfargs.param0();
             _ZFP_ZFStateListType &lNew = holder->holdedDataRef<_ZFP_ZFStateListType &>();
             ZFState::Private *d = owner->d;
             {

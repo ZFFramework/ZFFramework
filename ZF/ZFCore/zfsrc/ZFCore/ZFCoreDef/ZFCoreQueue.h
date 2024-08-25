@@ -74,7 +74,7 @@ public:
                 infoGetter(ret, *p);
             }
             else {
-                zftToString(ret, *p);
+                zftToStringT(ret, *p);
             }
             ret += token.tokenValueRight;
         }

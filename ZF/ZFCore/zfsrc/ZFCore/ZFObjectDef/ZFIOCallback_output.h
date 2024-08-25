@@ -80,7 +80,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 template<typename T>
 inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN T const &v) {
     zfstring s;
-    zftToString(s, v);
+    zftToStringT(s, v);
     o.output(s.cString(), s.length() * sizeof(zfchar));
     return o;
 }

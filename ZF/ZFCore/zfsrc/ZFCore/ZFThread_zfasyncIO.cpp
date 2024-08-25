@@ -49,7 +49,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, zfasyncIO
     if(!input || !output) {
         finishCallback.execute(ZFArgs()
                 .sender(zfnull)
-                .result(zfobj<v_zfbool>(zffalse))
+                .param0(zfobj<v_zfbool>(zffalse))
                 );
         return zfnull;
     }
@@ -84,13 +84,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, zfasyncIO
             , zfautoT<_ZFP_I_zfasyncIOTask>, task
             , ZFListener, finishCallback
             ) {
-        zfbool success = zfargs.result().zfv();
+        zfbool success = zfargs.param0().zfv();
         _ZFP_zfasyncIO_log("task stop %s: %s", success ? "success" : "fail", task->input.callbackId().cString());
         if(!success) {
             zfasyncIOCancel(task);
             finishCallback.execute(ZFArgs()
                     .sender(task)
-                    .result(zfobj<v_zfbool>(zffalse))
+                    .param0(zfobj<v_zfbool>(zffalse))
                     );
             return;
         }
@@ -98,7 +98,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, zfasyncIO
         if(task->blockTask.isEmpty()) {
             finishCallback.execute(ZFArgs()
                     .sender(task)
-                    .result(zfobj<v_zfbool>(zftrue))
+                    .param0(zfobj<v_zfbool>(zftrue))
                     );
         }
     } ZFLISTENER_END()

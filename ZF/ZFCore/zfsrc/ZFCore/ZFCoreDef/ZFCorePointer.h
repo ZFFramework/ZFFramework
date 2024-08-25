@@ -292,7 +292,7 @@ public:
             infoGetter(ret, d->pointerValue);
         }
         else {
-            zftToString(ret, d->pointerValue);
+            zftToStringT(ret, d->pointerValue);
         }
     }
 

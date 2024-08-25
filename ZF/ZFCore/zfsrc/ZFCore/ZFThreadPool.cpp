@@ -165,7 +165,7 @@ public:
 
         taskData->finishCallback.execute(ZFArgs()
                 .sender(taskData)
-                .result(taskData->result)
+                .param0(taskData->result)
             );
 
         zfCoreMutexLock();

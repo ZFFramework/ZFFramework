@@ -11,30 +11,22 @@ class _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView : public QGraphicsWidget {
     Q_OBJECT
 
 public:
-    ZFUIImageView *_ZFP_owner;
-    zffloat _ZFP_imageScale;
-    ZFUIMargin _ZFP_imageNinePatchScaled;
-
-public:
-    _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView(ZF_IN ZFUIImageView *owner)
-    : QGraphicsWidget()
-    , _ZFP_owner(owner)
-    , _ZFP_imageScale(1)
-    , _ZFP_imageNinePatchScaled(ZFUIMarginZero())
-    {
-    }
+    ZFUIImage *_ZFP_image;
 
 protected:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) {
         QGraphicsWidget::paint(painter, option, widget);
-        if(_ZFP_owner == zfnull || _ZFP_owner->image() == zfnull || _ZFP_owner->image()->nativeImage() == zfnull) {
+        if(_ZFP_image == zfnull || _ZFP_image->nativeImage() == zfnull) {
             return;
         }
 
-        QImage *image = (QImage *)_ZFP_owner->image()->nativeImage();
+        zffloat imageScaleFixed = _ZFP_image->imageScaleFixed();
+        ZFUIMargin imageNinePatchScaled = ZFUIMarginApplyScale(_ZFP_image->imageNinePatch(), imageScaleFixed);
+
+        QImage *image = (QImage *)_ZFP_image->nativeImage();
         painter->setRenderHint(QPainter::SmoothPixmapTransform);
         QRectF bounds(QPointF(), this->geometry().size());
-        if(_ZFP_imageNinePatchScaled == ZFUIMarginZero()) {
+        if(imageNinePatchScaled == ZFUIMarginZero()) {
             painter->drawImage(bounds, *image);
             return;
         }
@@ -43,8 +35,8 @@ protected:
         zfmemset(drawDatas, 0, sizeof(drawDatas));
         zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
                 drawDatas,
-                ZFUISizeApplyScaleReversely(ZFImpl_sys_Qt_ZFUISizeFromQSize(image->size()), _ZFP_imageScale),
-                _ZFP_imageNinePatchScaled,
+                ZFUISizeApplyScaleReversely(ZFImpl_sys_Qt_ZFUISizeFromQSize(image->size()), imageScaleFixed),
+                imageNinePatchScaled,
                 ZFImpl_sys_Qt_ZFUISizeFromQSizeF(bounds.size()));
 
         for(zfindex i = 0; i < drawDatasCount; ++i) {
@@ -52,7 +44,7 @@ protected:
             painter->drawImage(
                 ZFImpl_sys_Qt_ZFUIRectToQRect(drawData.dst),
                 *image,
-                ZFImpl_sys_Qt_ZFUIRectToQRect(ZFUIRectApplyScale(drawData.src, _ZFP_imageScale)));
+                ZFImpl_sys_Qt_ZFUIRectToQRect(ZFUIRectApplyScale(drawData.src, imageScaleFixed)));
         }
     }
 };
@@ -70,7 +62,7 @@ public:
             ZF_IN ZFUIImageView *imageView
             , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
-        return new _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView(imageView);
+        return new _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView();
     }
     virtual void nativeImageViewDestroy(
             ZF_IN ZFUIImageView *imageView
@@ -84,16 +76,7 @@ public:
             , ZF_IN ZFUIImage *image
             ) {
         _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)imageView->nativeImplView();
-        nativeImplView->update();
-    }
-    virtual void imageNinePatchOnUpdate(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN zffloat imageScale
-            , ZF_IN const ZFUIMargin &imageNinePatch
-            ) {
-        _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)imageView->nativeImplView();
-        nativeImplView->_ZFP_imageScale = imageScale;
-        nativeImplView->_ZFP_imageNinePatchScaled = ZFUIMarginApplyScaleReversely(imageNinePatch, imageScale);
+        nativeImplView->_ZFP_image = image;
         nativeImplView->update();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_Qt)

@@ -129,7 +129,7 @@ public:
             s += ZFTOKEN_zfnull;
         }
         else {
-            zftToString(s, *v);
+            zftToStringT(s, *v);
         }
     }
 };
@@ -144,7 +144,7 @@ public:
             s += ZFTOKEN_zfnull;
         }
         else {
-            zftToString(s, *v);
+            zftToStringT(s, *v);
         }
     }
 };

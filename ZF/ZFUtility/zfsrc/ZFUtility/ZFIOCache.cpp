@@ -339,6 +339,9 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOCacheLoad
         taskId->owner = task;
         task->load();
     }
+    else {
+        taskId->owner->callbackList.add(callback);
+    }
     return taskId;
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFIOCacheLoadCancel

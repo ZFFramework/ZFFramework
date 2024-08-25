@@ -147,10 +147,14 @@ ZFMETHOD_FUNC_DEFINE_4(void, drawImage
         , ZFMP_IN_OPT(const ZFUIRect &, imageFramePixel, ZFUIRectZero())
         , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
         ) {
-    if(image != zfnull && image->nativeImage() != zfnull) {
-        ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, image,
+    if(image == zfnull) {
+        return;
+    }
+    zfautoT<ZFUIImage> imageState = image->imageState();
+    if(imageState != zfnull && imageState->nativeImage() != zfnull) {
+        ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
         imageFramePixel == ZFUIRectZero()
-            ? ZFUIRectMake(ZFUIPointZero(), image->imageSizeFixed())
+            ? ZFUIRectMake(ZFUIPointZero(), imageState->imageSizeFixed())
             : imageFramePixel,
         targetFramePixel == ZFUIRectZero()
             ? ZFUIRectMake(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)

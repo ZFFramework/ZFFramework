@@ -84,7 +84,7 @@ typedef void (*_ZFP_zfstrFn)(ZF_IN_OUT zfstring &s, ZF_IN const void *p);
 
 template<typename P>
 void _ZFP_zfstrIvk(ZF_IN_OUT zfstring &s, ZF_IN const void *p) {
-    zftToString(s, *(const P *)p);
+    zftToStringT(s, *(const P *)p);
 }
 
 extern ZFLIB_ZFCore void _ZFP_zfstringAppend(

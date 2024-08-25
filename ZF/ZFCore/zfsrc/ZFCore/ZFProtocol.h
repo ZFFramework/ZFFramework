@@ -536,7 +536,7 @@ private:
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass) \
     }; \
-    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (ZFProtocol const &)v);}) \
+    ZFOUTPUT_TYPE(ImplementationClass, {zftToStringT(s, (ZFProtocol const &)v);}) \
     ZF_STATIC_REGISTER_INIT(ZFPImplReg_##ImplementationClass) { \
         ImplementationClass::_ZFP_ZFProtocolRegister(); \
     } \

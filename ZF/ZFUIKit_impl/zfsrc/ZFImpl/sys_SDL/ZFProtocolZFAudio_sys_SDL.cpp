@@ -137,7 +137,7 @@ public:
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
             nativeAudio->loadTaskId = zfnull;
 
-            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.result();
+            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
             nativeAudio->impl = implHolder;
             owner->notifyAudioOnLoad(audio, implHolder->impl() != zfnull, implHolder->errorHint());
         } ZFLISTENER_END()

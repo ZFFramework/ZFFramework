@@ -88,14 +88,6 @@ public:
         nativeImplView.ownerZFUIImage = image;
         [nativeImplView updateImageWithNinePatch];
     }
-    virtual void imageNinePatchOnUpdate(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN zffloat imageScale
-            , ZF_IN const ZFUIMargin &imageNinePatch
-            ) {
-        _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *nativeImplView = (__bridge _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *)imageView->nativeImplView();
-        [nativeImplView updateImageWithNinePatch];
-    }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END

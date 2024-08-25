@@ -21,19 +21,14 @@ public final class ZFUIImageView extends ImageView {
     }
 
     public static void native_image(Object nativeImageView,
-                                    Object nativeImage) {
+                                    Object nativeImage,
+                                    float imageScale,
+                                    int ninePatch_left,
+                                    int ninePatch_top,
+                                    int ninePatch_right,
+                                    int ninePatch_bottom) {
         ZFUIImageView nativeImageViewTmp = (ZFUIImageView) nativeImageView;
         nativeImageViewTmp.setImageDrawable((Drawable) nativeImage);
-        nativeImageViewTmp.invalidate();
-    }
-
-    public static void native_imageNinePatchOnUpdate(Object nativeImageView,
-                                                    float imageScale,
-                                                    int ninePatch_left,
-                                                    int ninePatch_top,
-                                                    int ninePatch_right,
-                                                    int ninePatch_bottom) {
-        ZFUIImageView nativeImageViewTmp = (ZFUIImageView) nativeImageView;
         nativeImageViewTmp._imageScale = imageScale;
         nativeImageViewTmp._ninePatchLeft = ninePatch_left;
         nativeImageViewTmp._ninePatchTop = ninePatch_top;

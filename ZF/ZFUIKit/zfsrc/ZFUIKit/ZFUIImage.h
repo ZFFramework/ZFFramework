@@ -105,9 +105,16 @@ zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextend ZFStyleableObject {
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when #imageScale or #ZFUIImage::imageScale changed
+     * called when #imageScaleFixed changed
      */
     ZFEVENT(ImageScaleOnUpdate)
+
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called when #imageState changed
+     */
+    ZFEVENT(ImageStateOnUpdate)
 
 protected:
     zfoverride
@@ -169,6 +176,45 @@ public:
     ZFMETHOD_DECLARE_0(const ZFUISize &, imageSizeFixed)
 
     // ============================================================
+    // image state
+public:
+    /**
+     * @brief stateful image logic, for impl only
+     *
+     * used to implement stateful image, for example:
+     * -  animated image
+     * -  dynamic loading image
+     *
+     * how it works:
+     * -# as for normal image, the #imageState would return the ZFUIImage itself as default
+     * -# impl can return a dummy placeholder ZFUIImage object,
+     *   supplying #imageStateImpl as actual impl
+     * -# each time the image would be displayed,
+     *   #imageState would be called to obtain actual image
+     * -# impl can also use #imageStateUpdate to schedule update to update display
+     */
+    ZFMETHOD_DECLARE_1(zfautoT<ZFUIImage>, imageState
+            , ZFMP_IN_OPT(ZFObject *, owner, zfnull)
+            )
+    /** @brief see #imageState */
+    ZFMETHOD_DECLARE_0(void, imageStateUpdate)
+    /**
+     * @brief see #imageState
+     *
+     * imageStateImpl's sender would be the owner ZFUIImage,
+     * param0 would be the owner object,
+     * and impl must set #ZFArgs::result to result ZFUIImage\n
+     * \n
+     * note: the #imageScale and #imageNinePatch won't be copied automatically,
+     * it depends on impl
+     */
+    ZFMETHOD_DECLARE_0(const ZFListener &, imageStateImpl)
+    /** @brief see #imageState */
+    ZFMETHOD_DECLARE_1(void, imageStateImpl
+            , ZFMP_IN(const ZFListener &, impl)
+            )
+
+    // ============================================================
     // other
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFUIImageLoadXxx series")
 protected:
@@ -188,6 +234,11 @@ protected:
 protected:
     zfoverride
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    zfoverride
+    virtual void objectPropertyValueOnUpdate(
+            ZF_IN const ZFProperty *property
+            , ZF_IN const void *oldValue
+            );
 
 public:
     /**
@@ -201,6 +252,11 @@ protected:
     /** @brief see #EventImageScaleOnUpdate */
     virtual void imageScaleOnUpdate(void) {
         this->observerNotify(ZFUIImage::EventImageScaleOnUpdate());
+    }
+
+    /** @brief see #EventImageStateOnUpdate */
+    virtual void imageStateOnUpdate(void) {
+        this->observerNotify(ZFUIImage::EventImageStateOnUpdate());
     }
 
     // ============================================================

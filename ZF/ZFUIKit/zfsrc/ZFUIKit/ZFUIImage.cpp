@@ -49,6 +49,7 @@ public:
     ZFUISize imageSizeFixed;
     ZFUISize imageSize;
     ZFListener globalImageScaleOnUpdateListener;
+    ZFListener imageStateImpl;
 
 public:
     zfstring serializableType;
@@ -93,6 +94,7 @@ public:
         if(another->serializableData != zfnull) {
             this->serializableData = zfnew(ZFSerializableData, *(another->serializableData));
         }
+        this->imageStateImpl = another->imageStateImpl;
     }
 
 public:
@@ -102,6 +104,7 @@ public:
     , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle()->imageScale())
     , imageSizeFixed(ZFUISizeZero())
     , imageSize(ZFUISizeZero())
+    , imageStateImpl()
     , serializableType(zfnull)
     , serializableData(zfnull)
     , globalImageScaleOnUpdateListener()
@@ -117,6 +120,7 @@ public:
 ZFOBJECT_REGISTER(ZFUIImage)
 
 ZFEVENT_REGISTER(ZFUIImage, ImageScaleOnUpdate)
+ZFEVENT_REGISTER(ZFUIImage, ImageStateOnUpdate)
 
 zfbool ZFUIImage::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
@@ -127,7 +131,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
 
     // style
     if(this->styleKey() != zfnull) {
-        if(d->nativeImage == zfnull) {
+        if(d->nativeImage == zfnull && d->imageStateImpl == zfnull) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "unable to load image from style \"%s\"",
                 this->styleKey());
@@ -193,10 +197,10 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     }
 
     // check
-    if(d->nativeImage == zfnull) {
+    if(d->nativeImage == zfnull && d->imageStateImpl == zfnull) {
         d->imageSizeFixed = ZFUISizeZero();
         d->imageSize = ZFUISizeZero();
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "nativeImage not set");
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "nativeImage or imageStateImpl not set");
         return zffalse;
     }
 
@@ -214,8 +218,8 @@ zfbool ZFUIImage::serializableOnSerializeToData(
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     // check
-    if(d->nativeImage == zfnull) {
-        ZFSerializableUtilErrorOccurred(outErrorHint, "serialize an image whose nativeImage not set");
+    if(d->nativeImage == zfnull && d->imageStateImpl == zfnull) {
+        ZFSerializableUtilErrorOccurred(outErrorHint, "serialize an image whose nativeImage and imageStateImpl not set");
         return zffalse;
     }
 
@@ -295,6 +299,38 @@ ZFMETHOD_DEFINE_0(ZFUIImage, const ZFUISize &, imageSizeFixed) {
     return d->imageSizeFixed;
 }
 
+// ============================================================
+ZFMETHOD_DEFINE_1(ZFUIImage, zfautoT<ZFUIImage>, imageState
+        , ZFMP_IN(ZFObject *, owner)
+        ) {
+    if(d->imageStateImpl) {
+        ZFArgs zfargs;
+        d->imageStateImpl.execute(zfargs
+                .sender(this)
+                .param0(owner)
+                );
+        return zfargs.result();
+    }
+    else {
+        return this;
+    }
+}
+ZFMETHOD_DEFINE_0(ZFUIImage, void, imageStateUpdate) {
+    this->imageStateOnUpdate();
+}
+ZFMETHOD_DEFINE_0(ZFUIImage, const ZFListener &, imageStateImpl) {
+    return d->imageStateImpl;
+}
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
+        , ZFMP_IN(const ZFListener &, impl)
+        ) {
+    if(d->imageStateImpl != impl) {
+        d->imageStateImpl = impl;
+        this->imageStateUpdate();
+    }
+}
+
+// ============================================================
 void ZFUIImage::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIImagePrivate);
@@ -334,7 +370,10 @@ void ZFUIImage::objectOnDeallocPrepare(void) {
 }
 
 zfidentity ZFUIImage::objectHash(void) {
-    return zfidentityCalcPointer(d->nativeImage);
+    return zfidentityHash(
+            zfidentityCalcPointer(d->nativeImage)
+            , d->imageStateImpl.callbackHash()
+            );
 }
 ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
@@ -342,6 +381,7 @@ ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(d->nativeImage == another->d->nativeImage
+            && d->imageStateImpl == another->d->imageStateImpl
             && this->imageNinePatch() == another->imageNinePatch()
             && zfstringIsEqual(d->serializableType, another->d->serializableType)
             && ((d->serializableData == zfnull && another->d->serializableData == zfnull)
@@ -356,6 +396,16 @@ void ZFUIImage::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     ret += " ";
     ZFUISizeToStringT(ret, this->imageSize());
+}
+
+void ZFUIImage::objectPropertyValueOnUpdate(
+        ZF_IN const ZFProperty *property
+        , ZF_IN const void *oldValue
+        ) {
+    zfsuper::objectPropertyValueOnUpdate(property, oldValue);
+    if(property->propertyOwnerClass() == ZFUIImage::ClassData()) {
+        this->imageStateUpdate();
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFUIImage, void *, nativeImage) {

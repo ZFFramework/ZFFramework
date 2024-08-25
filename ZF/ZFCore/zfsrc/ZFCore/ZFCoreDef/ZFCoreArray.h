@@ -460,7 +460,7 @@ public:
                 infoGetter(ret, this->get(count));
             }
             else {
-                zftToString(ret, this->get(count));
+                zftToStringT(ret, this->get(count));
             }
             ret += token.tokenValueRight;
         }

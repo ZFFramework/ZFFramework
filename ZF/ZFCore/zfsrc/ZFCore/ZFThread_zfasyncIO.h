@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * for the finishCallback:
  * -  #ZFArgs::sender is the taskId returned from #zfasyncIO
- * -  #ZFArgs::result is the result object passed from callback
+ * -  #ZFArgs::param0 is the result object passed from callback
  *
  * when #zfasyncCancel called after this method,
  * the callback may or may not be canceled,
@@ -41,7 +41,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfasyncIOCustom
  *
  * for the finishCallback:
  * -  #ZFArgs::sender is the taskId returned from #zfasyncIO
- * -  #ZFArgs::result is a #v_zfbool indicates IO result
+ * -  #ZFArgs::param0 is a #v_zfbool indicates IO result
  *
  * when #zfasyncCancel called after this method,
  * the callback may or may not be canceled,

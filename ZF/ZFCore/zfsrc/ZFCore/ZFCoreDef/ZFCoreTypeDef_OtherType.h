@@ -158,18 +158,18 @@ public:
 
 // ============================================================
 /**
- * @brief string if the content info not available, see #zftToString
+ * @brief string if the content info not available, see #zftToStringT
  */
 #define ZFTOKEN_zftToStringNotAvailable "NA"
 
 /**
- * @brief proto type for obtain object info, see #zftToString
+ * @brief proto type for obtain object info, see #zftToStringT
  */
 template<typename T_Type>
 zfclassNotPOD ZFCoreInfoGetter {
 public:
     /**
-     * @brief proto type for obtain object info, see #zftToString
+     * @brief proto type for obtain object info, see #zftToStringT
      */
     typedef void (*InfoGetter)(
             ZF_IN_OUT zfstring &ret
@@ -195,18 +195,25 @@ public:
  * before accessing this method,
  * or supply your own specialization manually with this proto type:
  * @code
- *   void zftToString(
+ *   void zftToStringT(
  *           ZF_IN_OUT zfstring &s
  *           , ZF_IN YourType const &v
  *           );
  * @endcode
  */
 template<typename T_Type>
-inline void zftToString(
+inline void zftToStringT(
         ZF_IN_OUT zfstring &s
         , ZF_IN T_Type const &v
         ) {
     _ZFP_zftToStringFallback<T_Type>::a(s, v);
+}
+/** @brief see #zftToStringT */
+template<typename T_Type>
+inline zfstring zftToString(ZF_IN T_Type const &v) {
+    zfstring s;
+    zftToStringT(s, v);
+    return s;
 }
 
 /**
@@ -215,7 +222,7 @@ inline void zftToString(
  *
  * proto type:
  * @code
- *   void zftToString(
+ *   void zftToStringT(
  *           ZF_IN_OUT zfstring &s
  *           , ZF_IN YourType const &v
  *           );
@@ -231,12 +238,12 @@ inline void zftToString(
  * @endcode
  * or, use the declared method:
  * @code
- *   zftToString(s, v);
+ *   zftToStringT(s, v);
  * @endcode
  */
 #define ZFOUTPUT_TYPE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
-    inline void zftToString( \
+    inline void zftToStringT( \
             ZF_IN_OUT zfstring &s \
             , T_Type const &v \
             ) { \
@@ -259,7 +266,7 @@ inline void zftToString(
  */
 #define ZFOUTPUT_TYPE_DECLARE(ZFLIB_, T_Type) \
     /** @cond ZFPrivateDoc */ \
-    extern ZFLIB_ void zftToString( \
+    extern ZFLIB_ void zftToStringT( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN T_Type const &v \
             ); \
@@ -267,7 +274,7 @@ inline void zftToString(
 /** @brief see #ZFOUTPUT_TYPE_DECLARE */
 #define ZFOUTPUT_TYPE_DEFINE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
-    void zftToString( \
+    void zftToStringT( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN T_Type const &v \
             ) { \
@@ -278,7 +285,7 @@ inline void zftToString(
 #define ZFOUTPUT_TYPE_TEMPLATE(T_typenameList, T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
     template<T_typenameList> \
-    inline void zftToString( \
+    inline void zftToStringT( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN T_Type const &v \
             ) { \

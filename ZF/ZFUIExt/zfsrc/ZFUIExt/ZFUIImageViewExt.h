@@ -44,19 +44,6 @@ protected:
     ZFMETHOD_DECLARE_PROTECTED_1(ZFSerializablePropertyType, serializableOnCheckPropertyType
             , ZFMP_IN(const ZFProperty *, property)
             )
-
-protected:
-    zfoverride
-    virtual void objectOnDeallocPrepare(void) {
-        if(_taskId) {
-            ZFUIImageLoadCancel(_taskId);
-            _taskId = zfnull;
-        }
-        zfsuper::objectOnDeallocPrepare();
-    }
-
-private:
-    zfauto _taskId;
 };
 
 ZF_NAMESPACE_GLOBAL_END

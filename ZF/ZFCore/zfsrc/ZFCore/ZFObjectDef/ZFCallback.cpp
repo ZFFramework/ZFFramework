@@ -196,29 +196,34 @@ zfindex ZFCallback::objectRetainCount(void) const {
 }
 
 void ZFCallback::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    switch(this->callbackType()) {
-        case ZFCallbackTypeDummy:
-            ret += "ZFCallbackNull";
-            break;
-        case ZFCallbackTypeMethod:
-        case ZFCallbackTypeMemberMethod:
-            this->callbackMethod()->objectInfoT(ret);
-            break;
-        case ZFCallbackTypeRawFunction:
-            ret += ZFTOKEN_ZFObjectInfoLeft;
-            ret += "ZFCallback func: ";
-            zfsFromPointerT(ret, reinterpret_cast<const void *>(this->callbackRawFunction()));
-            ret += ZFTOKEN_ZFObjectInfoRight;
-            break;
-        case ZFCallbackTypeLambda:
-            ret += ZFTOKEN_ZFObjectInfoLeft;
-            ret += "ZFCallback lambda: ";
-            zfsFromPointerT(ret, reinterpret_cast<const void *>(this->callbackLambdaInvoker()));
-            ret += ZFTOKEN_ZFObjectInfoRight;
-            break;
-        default:
-            zfCoreCriticalShouldNotGoHere();
-            break;
+    if(this->callbackId()) {
+        ret += this->callbackId();
+    }
+    else {
+        switch(this->callbackType()) {
+            case ZFCallbackTypeDummy:
+                ret += "ZFCallbackNull";
+                break;
+            case ZFCallbackTypeMethod:
+            case ZFCallbackTypeMemberMethod:
+                this->callbackMethod()->objectInfoT(ret);
+                break;
+            case ZFCallbackTypeRawFunction:
+                ret += ZFTOKEN_ZFObjectInfoLeft;
+                ret += "ZFCallback func: ";
+                zfsFromPointerT(ret, reinterpret_cast<const void *>(this->callbackRawFunction()));
+                ret += ZFTOKEN_ZFObjectInfoRight;
+                break;
+            case ZFCallbackTypeLambda:
+                ret += ZFTOKEN_ZFObjectInfoLeft;
+                ret += "ZFCallback lambda: ";
+                zfsFromPointerT(ret, reinterpret_cast<const void *>(this->callbackLambdaInvoker()));
+                ret += ZFTOKEN_ZFObjectInfoRight;
+                break;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                break;
+        }
     }
 }
 
@@ -248,6 +253,10 @@ void ZFCallback::callbackId(ZF_IN const zfstring &callbackId) {
 }
 const zfstring &ZFCallback::callbackId(void) const {
     return (d && d->ext ? d->ext->callbackId : zfstring::Empty());
+}
+
+zfidentity ZFCallback::callbackHash(void) const {
+    return zfidentityCalcPointer(d);
 }
 
 void ZFCallback::callbackTag(
@@ -498,6 +507,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackId
         , ZFMP_IN(const zfstring &, callbackId)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfstring, callbackId)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfidentity, callbackHash)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTag
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFObject *, tag)

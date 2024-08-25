@@ -14,6 +14,7 @@
 #include "ZFUIKit/ZFUIEvent.h"
 #include "ZFUIKit/ZFUIGlobalStyle.h"
 #include "ZFUIKit/ZFUIImage.h"
+#include "ZFUIKit/ZFUIImageAsync.h"
 #include "ZFUIKit/ZFUIImageCache.h"
 #include "ZFUIKit/ZFUIImageIO.h"
 #include "ZFUIKit/ZFUIImageView.h"

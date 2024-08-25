@@ -53,34 +53,36 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
-            ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), jmId,
-            (jobject)imageView->nativeImplView(),
-            (jobject)(image == zfnull) ? zfnull : image->nativeImage());
-    }
-    virtual void imageNinePatchOnUpdate(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN zffloat imageScale
-            , ZF_IN const ZFUIMargin &imageNinePatch
-            ) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), "native_imageNinePatchOnUpdate",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), jmId,
-            (jobject)imageView->nativeImplView()
-            , (jfloat)imageScale
-            , (jint)imageNinePatch.left
-            , (jint)imageNinePatch.top
-            , (jint)imageNinePatch.right
-            , (jint)imageNinePatch.bottom
-            );
+        if(image == zfnull) {
+            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), jmId
+                , (jobject)imageView->nativeImplView()
+                , (jobject)NULL
+                , (jfloat)1
+                , (jint)0
+                , (jint)0
+                , (jint)0
+                , (jint)0
+                );
+        }
+        else {
+            zffloat imageScaleFixed = image->imageScaleFixed();
+            ZFUIMargin imageNinePatchScaled = ZFUIMarginApplyScale(image->imageNinePatch(), image->imageScaleFixed());
+            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), jmId
+                , (jobject)imageView->nativeImplView()
+                , (jobject)image->nativeImage()
+                , (jfloat)imageScaleFixed
+                , (jint)imageNinePatchScaled.left
+                , (jint)imageNinePatchScaled.top
+                , (jint)imageNinePatchScaled.right
+                , (jint)imageNinePatchScaled.bottom
+                );
+        }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_Android)
 

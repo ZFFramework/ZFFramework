@@ -39,14 +39,6 @@ public:
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void imageNinePatchOnUpdate(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN zffloat imageScale
-            , ZF_IN const ZFUIMargin &imageNinePatch
-            ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
-        nativeView->renderRequest();
-    }
 
 private:
     static zfbool renderCallback(
@@ -60,7 +52,11 @@ private:
         if(owner == zfnull || owner->image() == zfnull) {
             return zffalse;
         }
-        SDL_Surface *nativeImage = (SDL_Surface *)owner->image()->nativeImage();
+        zfautoT<ZFUIImage> imageState = owner->image()->imageState(owner);
+        if(imageState == zfnull) {
+            return zffalse;
+        }
+        SDL_Surface *nativeImage = (SDL_Surface *)imageState->nativeImage();
         if(nativeImage == zfnull) {
             return zffalse;
         }
@@ -74,7 +70,7 @@ private:
         if(treeAlpha != 1) {
             SDL_SetTextureAlphaMod(sdlTexture, treeAlpha * 255);
         }
-        if(owner->image()->imageNinePatch() == ZFUIMarginZero()) {
+        if(imageState->imageNinePatch() == ZFUIMarginZero()) {
             SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);
         }
         else {
@@ -83,7 +79,7 @@ private:
             zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
                 drawDatas,
                 ZFUISizeMake((zffloat)nativeImage->w, (zffloat)nativeImage->h),
-                ZFUIMarginApplyScale(owner->image()->imageNinePatch(), owner->image()->imageScaleFixed()),
+                ZFUIMarginApplyScale(imageState->imageNinePatch(), imageState->imageScaleFixed()),
                 ZFUISizeMake((zffloat)targetRect.w, (zffloat)targetRect.h));
 
             SDL_Rect srcRect;

@@ -183,7 +183,7 @@ public:
         }
         else {
             zfstring info;
-            zftToString(info, retTmp);
+            zftToStringT(info, retTmp);
             _ZFP_MtdGIRetError(errorHint,
                 ZFTypeId<T_ReturnTypeTmp>::TypeId(),
                 info);

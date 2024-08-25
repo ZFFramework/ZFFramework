@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * for the finishCallback:
  * -  #ZFArgs::sender is the taskId returned from #zfasync
- * -  #ZFArgs::result is the result object passed from callback
+ * -  #ZFArgs::param0 is the result object passed from callback
  *
  * when #zfasyncCancel called after this method,
  * the callback may or may not be canceled,

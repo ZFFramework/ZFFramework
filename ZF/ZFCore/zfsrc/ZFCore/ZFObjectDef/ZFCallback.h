@@ -195,6 +195,11 @@ public:
     zffinal const zfstring &callbackId(void) const;
 
     /**
+     * @brief hash of the callback
+     */
+    zffinal zfidentity callbackHash(void) const;
+
+    /**
      * @brief retain and store a autoreleased object attached to this callback,
      *   or set null to remove
      *

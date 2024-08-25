@@ -347,7 +347,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         return d; \
     } \
     void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) { \
-        zftToString(ret, this->zfv); \
+        zftToStringT(ret, this->zfv); \
     } \
     void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
         zfself *refTmp = zfcast(zfself *, ref); \
