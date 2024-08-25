@@ -625,11 +625,18 @@ protected:
         if((ref == zfnull && !this->wrappedValueIsInit())
                 || (ref != zfnull && this->objectCompare(ref) != ZFCompareEqual)
                 ) {
-            zfstring valueString;
-            if(!this->wrappedValueToString(valueString, outErrorHint)) {
-                return zffalse;
+            if(this->wrappedValuePreferStringConverter()) {
+                zfstring valueString;
+                if(!this->wrappedValueToString(valueString, outErrorHint)) {
+                    return zffalse;
+                }
+                serializableData.propertyValue(valueString);
             }
-            serializableData.propertyValue(valueString);
+            else {
+                if(!this->wrappedValueToData(serializableData, outErrorHint)) {
+                    return zffalse;
+                }
+            }
         }
 
         return zftrue;

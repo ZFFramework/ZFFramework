@@ -371,7 +371,6 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
         this->classData()->classTag(
             _ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull(),
             holderTmp);
-        this->classData()->classDataUpdateAutoRemoveTagAdd(_ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull());
     }
     return holder;
 }

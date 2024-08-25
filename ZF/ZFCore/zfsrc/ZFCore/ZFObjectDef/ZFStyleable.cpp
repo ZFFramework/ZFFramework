@@ -164,7 +164,6 @@ _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getProperty
         this->classData()->classTag(
             _ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull(),
             holderTmp);
-        this->ClassData()->classDataUpdateAutoRemoveTagAdd(_ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
     }
     return holder;
 }

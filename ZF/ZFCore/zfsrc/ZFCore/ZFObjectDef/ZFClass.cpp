@@ -114,9 +114,6 @@ public:
     _ZFP_ZFClassTagMapType classTagMap;
 
 public:
-    zfstlmap<zfstring, zfbool> classDataUpdateAutoRemoveTagList;
-
-public:
     zfstlmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
     zfstlmap<const ZFClass *, zfbool> allChildren; // all children excluding self
 
@@ -218,7 +215,6 @@ public:
     , propertyAutoInitMap()
     , propertyInitStepMap()
     , classTagMap()
-    , classDataUpdateAutoRemoveTagList()
     , allParent()
     , allChildren()
     , interfaceCastMap()
@@ -549,25 +545,6 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const {
             data.observer.execute(zfargs);
         }
     }
-}
-
-// ============================================================
-// class data change observer
-void ZFClass::_ZFP_ZFClass_classDataUpdateNotify(void) const {
-    if(!d->classDataUpdateAutoRemoveTagList.empty()) {
-        zfstlmap<zfstring, zfbool> t = d->classDataUpdateAutoRemoveTagList;
-        for(zfstlmap<zfstring, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
-            this->classTagRemove(it->first);
-        }
-    }
-}
-void ZFClass::classDataUpdateAutoRemoveTagAdd(ZF_IN const zfstring &tag) const {
-    zfCoreAssert(tag != zfnull);
-    d->classDataUpdateAutoRemoveTagList[tag] = zftrue;
-}
-void ZFClass::classDataUpdateAutoRemoveTagRemove(ZF_IN const zfstring &tag) const {
-    zfCoreAssert(tag != zfnull);
-    d->classDataUpdateAutoRemoveTagList.erase(tag);
 }
 
 // ============================================================
@@ -1723,11 +1700,11 @@ void _ZFP_ZFClassDataUpdateNotify(
                 , changedMethod ? changedMethod->objectInfo().cString() : ZFTOKEN_zfnull
                 );
         if(changedProperty != zfnull) {
-            changedProperty->propertyOwnerClass()->_ZFP_ZFClass_classDataUpdateNotify();
+            changedProperty->propertyOwnerClass()->classTagRemoveAll();
         }
         else if(changedMethod != zfnull) {
             if(changedMethod->methodOwnerClass() != zfnull) {
-                changedMethod->methodOwnerClass()->_ZFP_ZFClass_classDataUpdateNotify();
+                changedMethod->methodOwnerClass()->classTagRemoveAll();
             }
         }
 

@@ -135,27 +135,6 @@ public:
     void _ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const;
 
     // ============================================================
-    // class data change observer
-public:
-    void _ZFP_ZFClass_classDataUpdateNotify(void) const;
-    /**
-     * @brief auto remove #classTagRemove when class meta data changed
-     *
-     * class meta data would change if:
-     * -  method register or unregistered
-     * -  property register or unregistered
-     *
-     *
-     * this method is useful if you cached some data by #classTag
-     * according to class's method or property list,
-     * and want to update it again if meta data changed\n
-     * see also #ZFClassDataUpdateObserver
-     */
-    void classDataUpdateAutoRemoveTagAdd(ZF_IN const zfstring &tag) const;
-    /** @brief see #classDataUpdateAutoRemoveTagAdd */
-    void classDataUpdateAutoRemoveTagRemove(ZF_IN const zfstring &tag) const;
-
-    // ============================================================
     // class info
 public:
     /** @brief see #objectInfo */
@@ -588,11 +567,11 @@ public:
     /**
      * @brief set a classTag for the class, internal use only
      *
-     * @note this method is not thread-safe
      * @note all classTags would be removed during #ZFFrameworkCleanup
      *   as #ZFLevelZFFrameworkHigh and #ZFLevelZFFrameworkEssential,
      *   you must ensure the classTag is safe to be deleted at this time
      * @note usually used to store meta-data for performance use only
+     * @note all tag would be cleared during #ZFGlobalEvent::EventClassDataUpdate
      */
     void classTag(
             ZF_IN const zfstring &key
