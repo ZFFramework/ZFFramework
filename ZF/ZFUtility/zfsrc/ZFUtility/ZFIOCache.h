@@ -72,16 +72,10 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
  * and should set #ZFArgs::result to non null object as result,
  * which would passed to callback
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfauto, ZFIOCacheLoad
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFTaskId>, ZFIOCacheLoad
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN(const ZFListener &, callback)
         , ZFMP_IN(const ZFListener &, loadImpl)
-        )
-/**
- * @brief cancel load task of #ZFIOCacheLoad
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFIOCacheLoadCancel
-        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

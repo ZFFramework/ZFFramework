@@ -1,0 +1,13 @@
+#include "ZFTaskId.h"
+#include "ZFObjectImpl.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+ZFOBJECT_REGISTER(ZFTaskId)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTaskId, void, stop)
+
+void ZFTaskId::stop(void) {
+}
+
+ZF_NAMESPACE_GLOBAL_END
+

@@ -73,7 +73,7 @@ public:
 public:
     zfclassNotPOD NativeAudio {
     public:
-        zfauto loadTaskId;
+        zfautoT<ZFTaskId> loadTaskId;
         zfautoT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> impl;
         int channel;
         zftimet position_resumeTime;
@@ -210,7 +210,7 @@ public:
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         if(nativeAudio->loadTaskId) {
-            zfasyncCancel(nativeAudio->loadTaskId);
+            nativeAudio->loadTaskId->stop();
             nativeAudio->loadTaskId = zfnull;
         }
     }

@@ -128,15 +128,17 @@ public:
             _localCacheCallback = zfnull;
         }
 
-        zfasyncCancel(_implTask);
-        _implTask = zfnull;
+        if(_implTask) {
+            _implTask->stop();
+            _implTask = zfnull;
+        }
         _result = zfnull;
         _resultType = ZFResultType::e_Cancel;
         _implFinishAction();
     }
 private:
     zfstring _callbackId;
-    zfauto _implTask;
+    zfautoT<ZFTaskId> _implTask;
     zfauto _result;
     ZFResultTypeEnum _resultType;
     ZFListener _localCacheCallback;
@@ -289,14 +291,24 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFIOCacheLoadTaskAutoClean) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFIOCacheLoadTaskAutoClean)
 
-zfclass _ZFP_I_ZFIOCacheLoadTaskId : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFIOCacheLoadTaskId, ZFObject)
+zfclass _ZFP_I_ZFIOCacheLoadTaskId : zfextend ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFIOCacheLoadTaskId, ZFTaskId)
 public:
     zfautoT<_ZFP_I_ZFIOCacheLoadTask> owner;
     ZFListener callback;
+public:
+    zfoverride
+    virtual void stop(void) {
+        if(this->owner) {
+            this->owner->callbackList.removeElement(this->callback);
+        }
+        this->owner = zfnull;
+        this->callback = zfnull;
+        zfsuper::stop();
+    }
 };
 
-ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOCacheLoad
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN(const ZFListener &, callback)
         , ZFMP_IN(const ZFListener &, loadImpl)
@@ -343,18 +355,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOCacheLoad
         taskId->owner->callbackList.add(callback);
     }
     return taskId;
-}
-ZFMETHOD_FUNC_DEFINE_1(void, ZFIOCacheLoadCancel
-        , ZFMP_IN(const zfauto &, taskId)
-        ) {
-    _ZFP_I_ZFIOCacheLoadTaskId *taskIdTmp = taskId;
-    if(taskIdTmp) {
-        if(taskIdTmp->owner) {
-            taskIdTmp->owner->callbackList.removeElement(taskIdTmp->callback);
-        }
-        taskIdTmp->owner = zfnull;
-        taskIdTmp->callback = zfnull;
-    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

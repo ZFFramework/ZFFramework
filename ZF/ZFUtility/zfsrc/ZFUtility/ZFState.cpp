@@ -19,17 +19,17 @@ public:
     _ZFP_ZFStateListType::iterator listIt;
 };
 
-zfclassNotPOD ZFState::Private {
+zfclassNotPOD _ZFP_ZFStatePrivate {
 public:
     ZFCoreArray<ZFListener> *loadQueue; // null when ready
     _ZFP_ZFStateMapType pending;
     _ZFP_ZFStateMapType m;
     _ZFP_ZFStateListType l; // latest item at head
-    zfauto taskId; // taskId for load or save
+    zfautoT<ZFTaskId> taskId; // taskId for load or save
     zfautoT<ZFTimer> delayId; // taskId for delay save
 
 public:
-    Private(void)
+    _ZFP_ZFStatePrivate(void)
     : loadQueue(zfpoolNew(ZFCoreArray<ZFListener>))
     , pending()
     , m()
@@ -38,7 +38,7 @@ public:
     , delayId()
     {
     }
-    ~Private(void) {
+    ~_ZFP_ZFStatePrivate(void) {
         this->taskCleanup();
         if(this->loadQueue) {
             zfpoolDelete(this->loadQueue);
@@ -65,7 +65,7 @@ public:
         }
     }
     void loadCheck(ZF_IN ZFState *owner) {
-        if(this->taskId) {
+        if(this->taskId || this->loadQueue == zfnull) {
             return;
         }
         ZFLISTENER_1(loadAsync
@@ -82,7 +82,7 @@ public:
                 ) {
             ZFValueHolder *holder = zfargs.param0();
             _ZFP_ZFStateListType &lNew = holder->holdedDataRef<_ZFP_ZFStateListType &>();
-            ZFState::Private *d = owner->d;
+            _ZFP_ZFStatePrivate *d = owner->d;
             {
                 zfsynchronize(owner);
                 for(_ZFP_ZFStateListType::iterator itNew = lNew.begin(); itNew != lNew.end(); ++itNew) {
@@ -123,12 +123,12 @@ public:
         ZFLISTENER_1(onSaveDelay
                 , zfautoT<ZFState>, owner
                 ) {
-            ZFState::Private *d = owner->d;
+            _ZFP_ZFStatePrivate *d = owner->d;
             d->delayId = zfnull;
             ZFLISTENER_1(saveAsync
                     , zfautoT<ZFState>, owner
                     ) {
-                ZFState::Private *d = owner->d;
+                _ZFP_ZFStatePrivate *d = owner->d;
                 zfsynchronizeLock(owner);
                 _ZFP_ZFStateListType lTmp = d->l;
                 zfsynchronizeUnlock(owner);
@@ -137,7 +137,7 @@ public:
             ZFLISTENER_1(saveFinish
                     , zfautoT<ZFState>, owner
                     ) {
-                ZFState::Private *d = owner->d;
+                _ZFP_ZFStatePrivate *d = owner->d;
                 d->taskId = zfnull;
             } ZFLISTENER_END()
             d->taskId = zfasync(saveAsync, saveFinish);
@@ -150,7 +150,7 @@ public:
             this->delayId = zfnull;
         }
         if(this->taskId) {
-            zfasyncCancel(this->taskId);
+            this->taskId->stop();
             this->taskId = zfnull;
         }
     }
@@ -244,7 +244,7 @@ private:
 
 void ZFState::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfpoolNew(ZFState::Private);
+    d = zfpoolNew(_ZFP_ZFStatePrivate);
 }
 void ZFState::objectOnDealloc(void) {
     zfpoolDelete(d);
@@ -268,29 +268,43 @@ ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileFixed) {
 ZFMETHOD_DEFINE_0(ZFState, zfbool, ready) {
     return d->loadQueue == zfnull;
 }
-ZFMETHOD_DEFINE_1(ZFState, zfauto, load
+
+zfclass _ZFP_I_ZFStateLoadTaskId : zfextend ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFStateLoadTaskId, ZFTaskId)
+public:
+    _ZFP_ZFStatePrivate *d;
+    ZFListener callback;
+public:
+    virtual void stop(void) {
+        if(d && d->loadQueue && this->callback) {
+            d->loadQueue->removeElement(this->callback);
+            this->callback = zfnull;
+        }
+        zfsuper::stop();
+    }
+};
+ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, load
         , ZFMP_IN(const ZFListener &, callback)
         ) {
-    zfauto taskId;
-    if(callback) {
-        if(this->ready()) {
-            callback.execute();
-        }
-        else {
-            taskId = zfobj<v_ZFListener>(callback);
-            d->loadQueue->add(callback);
-        }
+    if(!callback) {
+        d->loadCheck(this);
+        return zfnull;
     }
-    d->loadCheck(this);
+    else if(this->ready()) {
+        callback.execute();
+        return zfnull;
+    }
+
+    zfobj<_ZFP_I_ZFStateLoadTaskId> taskId;
+    taskId->callback = callback;
+    ZFLISTENER_1(callbackWrap
+            , zfautoT<_ZFP_I_ZFStateLoadTaskId>, taskId
+            ) {
+        taskId->d = zfnull;
+        taskId->callback = zfnull;
+    } ZFLISTENER_END()
+    d->loadQueue->add(callbackWrap);
     return taskId;
-}
-ZFMETHOD_DEFINE_1(ZFState, void, loadCancel
-        , ZFMP_IN(const zfauto &, taskId)
-        ) {
-    v_ZFListener *task = taskId;
-    if(task && task->zfv) {
-        d->loadQueue->removeElement(task->zfv);
-    }
 }
 
 ZFMETHOD_DEFINE_2(ZFState, void, set
@@ -392,7 +406,7 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
         return zfnull;
     }
 }
-ZFMETHOD_DEFINE_2(ZFState, zfauto, getAsync
+ZFMETHOD_DEFINE_2(ZFState, zfautoT<ZFTaskId>, getAsync
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const ZFListener &, callback)
         ) {
@@ -422,11 +436,6 @@ ZFMETHOD_DEFINE_2(ZFState, zfauto, getAsync
                 );
     } ZFLISTENER_END()
     return this->load(action);
-}
-ZFMETHOD_DEFINE_1(ZFState, void, getAsyncCancel
-        , ZFMP_IN(const zfauto &, taskId)
-        ) {
-    this->loadCancel(taskId);
 }
 
 ZFMETHOD_DEFINE_0(ZFState, ZFCoreArray<zfstring>, allKey) {

@@ -33,11 +33,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief object instance state for ZFObject
  */
 typedef enum {
-    ZFObjectInstanceStateOnInit = 0x01, /**< @brief object is under #ZFObject::objectOnInit */
-    ZFObjectInstanceStateOnInitFinish = 0x03, /**< @brief object is under #ZFObject::objectOnInitFinish */
-    ZFObjectInstanceStateIdle = 0, /**< @brief object is constructed successfully */
-    ZFObjectInstanceStateOnDeallocPrepare = 0x30, /**< @brief object is under #ZFObject::objectOnDeallocPrepare */
-    ZFObjectInstanceStateOnDealloc = 0x10, /**< @brief object is under #ZFObject::objectOnDealloc */
+    ZFObjectInstanceStateOnInit, /**< @brief object is under #ZFObject::objectOnInit */
+    ZFObjectInstanceStateOnInitFinish, /**< @brief object is under #ZFObject::objectOnInitFinish */
+    ZFObjectInstanceStateIdle, /**< @brief object is constructed successfully */
+    ZFObjectInstanceStateOnDeallocPrepare, /**< @brief object is under #ZFObject::objectOnDeallocPrepare */
+    ZFObjectInstanceStateOnDealloc, /**< @brief object is under #ZFObject::objectOnDealloc */
 } ZFObjectInstanceState;
 /** @brief string tokens */
 #define ZFTOKEN_ZFObjectInstanceStateOnInit "OnInit"
@@ -659,9 +659,11 @@ public:
     /**
      * @brief object instance's state
      */
-    zffinal inline ZFObjectInstanceState objectInstanceState(void) {
-        return _objectInstanceState;
-    }
+    zffinal zfbool objectInstanceStateCheck(ZF_IN ZFObjectInstanceState state);
+    /** @brief util method to check whether #ZFObjectInstanceStateOnInit or #ZFObjectInstanceStateOnInitFinish running */
+    zffinal zfbool objectInitRunning(void);
+    /** @brief util method to check whether #ZFObjectInstanceStateOnDeallocPrepare or #ZFObjectInstanceStateOnDealloc running */
+    zffinal zfbool objectDeallocRunning(void);
 
 public:
     /**
@@ -729,7 +731,6 @@ public:
     const ZFClass *_ZFP_ZFObject_classDynamic;
 private:
     _ZFP_ZFObjectPrivate *d;
-    ZFObjectInstanceState _objectInstanceState;
     zfuint _objectRetainCount;
     zfuint _stateFlags;
 protected:
@@ -737,7 +738,6 @@ protected:
     ZFObject(void)
     : _ZFP_ZFObject_classDynamic(zfnull)
     , d(zfnull)
-    , _objectInstanceState(ZFObjectInstanceStateOnInit)
     , _objectRetainCount(1)
     , _stateFlags(0)
     {

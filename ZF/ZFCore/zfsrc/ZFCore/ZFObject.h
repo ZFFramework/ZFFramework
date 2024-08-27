@@ -70,6 +70,7 @@
 #include "ZFObjectDef/ZFSerializableDataSerializableConverter.h"
 #include "ZFObjectDef/ZFSerializableUtil.h"
 #include "ZFObjectDef/ZFStyleable.h"
+#include "ZFObjectDef/ZFTaskId.h"
 #include "ZFObjectDef/ZFTypeId.h"
 #include "ZFObjectDef/ZFTypeIdDynamicRegister.h"
 #include "ZFObjectDef/ZFValueHolder.h"

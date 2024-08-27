@@ -93,7 +93,7 @@ public:
                 ) {
             return;
         }
-        if(this->observerOwner && ZFBitTest(this->observerOwner->objectInstanceState(), ZFObjectInstanceStateOnDealloc)) {
+        if(this->observerOwner && this->observerOwner->objectDeallocRunning()) {
             zfCoreCriticalMessageTrim("[ZFObject] you must not add observer while object is deallocating, class: %s, event: %s",
                 this->observerOwner->classData()->classNameFull(),
                 ZFEventNameForId(eventId));

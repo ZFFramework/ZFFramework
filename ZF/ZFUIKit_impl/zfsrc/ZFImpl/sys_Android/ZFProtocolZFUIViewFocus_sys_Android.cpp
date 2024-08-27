@@ -71,7 +71,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIViewFocus
         , JNIPointer zfjniPointerOwnerZFUIView
         ) {
     ZFUIView *view = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView);
-    if(!ZFBitTest(view->objectInstanceState(), ZFObjectInstanceStateOnDealloc)) {
+    if(!view->objectDeallocRunning()) {
         ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusUpdate(view);
     }
 }

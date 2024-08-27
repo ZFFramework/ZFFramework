@@ -16,15 +16,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * param1 would be a #ZFResultType indicates load result\n
  * use #ZFIOCache to config cache logic
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfauto, ZFUIImageLoad
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFTaskId>, ZFUIImageLoad
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN(const ZFListener &, callback)
-        )
-/**
- * @brief cancel load task of #ZFUIImageLoad
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIImageLoadCancel
-        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

@@ -10,6 +10,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclassFwd _ZFP_ZFStatePrivate;
 /**
  * @brief util to store local state
  */
@@ -56,14 +57,8 @@ public:
     /**
      * @brief load and add callback to queue which would called if #ready
      */
-    ZFMETHOD_DECLARE_1(zfauto, load
+    ZFMETHOD_DECLARE_1(zfautoT<ZFTaskId>, load
             , ZFMP_IN(const ZFListener &, callback)
-            )
-    /**
-     * @brief remove callback added by #load
-     */
-    ZFMETHOD_DECLARE_1(void, loadCancel
-            , ZFMP_IN(const zfauto &, taskId)
             )
 
     /**
@@ -95,15 +90,9 @@ public:
      *
      * callback's param0 would be the result value if exists
      */
-    ZFMETHOD_DECLARE_2(zfauto, getAsync
+    ZFMETHOD_DECLARE_2(zfautoT<ZFTaskId>, getAsync
             , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(const ZFListener &, callback)
-            )
-    /**
-     * @brief cancel task started by #getAsync
-     */
-    ZFMETHOD_DECLARE_1(void, getAsyncCancel
-            , ZFMP_IN(const zfauto &, taskId)
             )
 
     /**
@@ -118,8 +107,8 @@ protected:
     virtual void objectOnDealloc(void);
 
 private:
-    zfclassFwd Private;
-    Private *d;
+    _ZFP_ZFStatePrivate *d;
+    friend zfclassFwd _ZFP_ZFStatePrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END

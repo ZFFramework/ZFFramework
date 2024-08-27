@@ -8,7 +8,7 @@
 @interface _ZFP_ZFAudioImpl_sys_iOS_Audio : NSObject<AVAudioPlayerDelegate>
 @property (nonatomic, assign) ZFAudio *owner;
 @property (nonatomic, strong) AVAudioPlayer *audio;
-@property (nonatomic, assign) zfauto loadTaskId;
+@property (nonatomic, assign) zfautoT<ZFTaskId> loadTaskId;
 @end
 @implementation _ZFP_ZFAudioImpl_sys_iOS_Audio
 - (instancetype)init {
@@ -154,7 +154,7 @@ public:
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         if(nativeAudio.loadTaskId) {
-            zfasyncCancel(nativeAudio.loadTaskId);
+            nativeAudio.loadTaskId->stop();
             nativeAudio.loadTaskId = zfnull;
         }
         [nativeAudio audioDetach];

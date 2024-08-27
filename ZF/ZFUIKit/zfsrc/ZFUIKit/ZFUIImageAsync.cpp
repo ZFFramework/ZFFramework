@@ -20,13 +20,13 @@ zfclass _ZFP_I_ZFUIImageAsyncTask : zfextend ZFObject {
 public:
     zfautoT<ZFUIImage> imageFail;
     zfautoT<ZFUIImage> imageLoading;
-    zfauto imageLoadTask;
+    zfautoT<ZFTaskId> imageLoadTask;
     zfautoT<ZFUIImage> imageLoaded;
 protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void) {
         if(this->imageLoadTask) {
-            ZFUIImageLoadCancel(this->imageLoadTask);
+            this->imageLoadTask->stop();
             this->imageLoadTask = zfnull;
         }
         zfsuper::objectOnDeallocPrepare();

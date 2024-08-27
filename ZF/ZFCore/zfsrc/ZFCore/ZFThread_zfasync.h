@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * for the callback:
  * -  #ZFArgs::sender is the taskId returned from #zfasync
  * -  #ZFArgs::param0 is a #ZFObject holds running task id,
- *   it's set to null if canceled by #zfasyncCancel,
+ *   it's set to null if canceled,
  *   you may check it during thread running
  * -  #ZFArgs::result can be set to store the callback's result,
  *   which would passed to finishCallback as #ZFArgs::param0
@@ -27,20 +27,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  #ZFArgs::sender is the taskId returned from #zfasync
  * -  #ZFArgs::param0 is the result object passed from callback
  *
- * when #zfasyncCancel called after this method,
+ * when #ZFTaskId::stop called after this method,
  * the callback may or may not be canceled,
  * but finishCallback would be canceled
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfasync
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTaskId>, zfasync
         , ZFMP_IN(const ZFListener &, callback)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-        )
-
-/**
- * @brief try to cancel the task or finishCallback started by #zfasync
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel
-        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

@@ -1,6 +1,7 @@
 #include "ZFThreadPool.h"
 
 #include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstllist.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -8,27 +9,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECT_REGISTER(ZFThreadPool)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFThreadPool, instance, ZFLevelZFFrameworkEssential)
 
-zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFThreadPoolTaskData, ZFObject)
+zfclassFwd _ZFP_I_ZFThreadPoolTaskData;
+typedef zfstlmap<_ZFP_I_ZFThreadPoolTaskData *, zfbool> _ZFP_ZFThreadPoolTaskMapType;
+typedef zfstllist<_ZFP_I_ZFThreadPoolTaskData *> _ZFP_ZFThreadPoolTaskListType;
+
+zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFThreadPoolTaskData, ZFTaskId)
 public:
-    ZFArgs zfargs;
-    zfidentity taskId;
+    _ZFP_ZFThreadPoolPrivate *owner;
+    _ZFP_ZFThreadPoolTaskMapType::iterator mapIt;
+    _ZFP_ZFThreadPoolTaskListType::iterator listIt;
+    ZFArgs zfargsForTask;
     ZFListener callback;
     zfauto result;
     ZFListener finishCallback;
     zfautoT<ZFThread> callerThread;
+public:
+    zfoverride
+    virtual void stop(void);
 };
 ZFOBJECT_REGISTER(_ZFP_I_ZFThreadPoolTaskData)
-
-typedef zfstlmap<zfidentity, zfautoT<_ZFP_I_ZFThreadPoolTaskData> > _ZFP_ZFThreadPoolTaskMap;
 
 zfclassNotPOD _ZFP_ZFThreadPoolPrivate {
 public:
     zfuint refCount;
     ZFCoreArray<zfautoT<ZFThread> > threadPool;
-    zfidentity taskIdCur;
-    _ZFP_ZFThreadPoolTaskMap taskMap;
-    ZFCoreArray<_ZFP_I_ZFThreadPoolTaskData *> taskList;
+    _ZFP_ZFThreadPoolTaskMapType taskMap; // manually retained _ZFP_I_ZFThreadPoolTaskData
+    _ZFP_ZFThreadPoolTaskListType taskList;
     ZFListener threadOnRun; // null after removeAll, to indicate exit of thread pool
     ZFListener threadOnStopRequested;
 
@@ -36,7 +43,6 @@ public:
     _ZFP_ZFThreadPoolPrivate(void)
     : refCount(1)
     , threadPool()
-    , taskIdCur(0)
     , taskMap()
     , taskList()
     , threadOnRun()
@@ -61,16 +67,10 @@ public:
     }
 
 public:
-    void stop(ZF_IN const zfauto &taskId) {
-        _ZFP_I_ZFThreadPoolTaskData *taskData = taskId;
-        if(taskData == zfnull || taskData->taskId == zfidentityInvalid()) {
-            return;
-        }
-        this->taskMap.erase(taskData->taskId);
-        this->taskList.removeElement(taskData);
-
-        taskData->zfargs.param0(zfnull);
-        taskData->taskId = zfidentityInvalid();
+    void stop(ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData) {
+        this->taskMap.erase(taskData->mapIt);
+        this->taskList.erase(taskData->listIt);
+        _ZFP_taskCleanup(taskData);
     }
 
 public:
@@ -86,11 +86,13 @@ public:
                 break;
             }
 
-            zfautoT<_ZFP_I_ZFThreadPoolTaskData> taskData;
-            for(zfindex i = 0; i < d->taskList.count(); ++i) {
-                if(d->taskList[i]->callerThread != runThread) {
-                    taskData = d->taskList.removeAndGet(i);
-                    d->taskMap.erase(taskData->taskId);
+            _ZFP_I_ZFThreadPoolTaskData *taskData = zfnull;
+            for(_ZFP_ZFThreadPoolTaskListType::iterator it = d->taskList.begin(); it != d->taskList.end(); ++it) {
+                if((*it)->callerThread != runThread) {
+                    taskData = *it;
+                    taskData->owner = zfnull;
+                    d->taskList.erase(taskData->listIt);
+                    d->taskMap.erase(taskData->mapIt);
                     break;
                 }
             }
@@ -100,7 +102,7 @@ public:
                 zfCoreMutexUnlock();
                 break;
             }
-            taskData->zfargs
+            taskData->zfargsForTask
                 .sender(taskData)
                 .param0(taskData)
                 ;
@@ -108,12 +110,12 @@ public:
             ownerThread->objectTag(runningTaskKey, taskData);
             zfCoreMutexUnlock();
 
-            taskData->callback.execute(taskData->zfargs);
+            taskData->callback.execute(taskData->zfargsForTask);
 
             zfCoreMutexLock();
             ownerThread->objectTag(runningTaskKey, zfnull);
-            taskData->result = taskData->zfargs.result();
-            if(taskData->zfargs.param0() == zfnull
+            taskData->result = taskData->zfargsForTask.result();
+            if(taskData->zfargsForTask.param0() == zfnull
                     || d->threadOnRun == zfnull
                     ) {
                 _ZFP_taskCleanup(taskData);
@@ -153,14 +155,14 @@ public:
             , ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData
             ) {
         zfCoreMutexLock();
-        if(taskData->zfargs.param0() == zfnull
+        taskData->owner = zfnull;
+        if(taskData->zfargsForTask.param0() == zfnull
                 || d->threadOnRun == zfnull
                 ) {
             _ZFP_taskCleanup(taskData);
             zfCoreMutexUnlock();
             return;
         }
-        taskData->taskId = zfidentityInvalid();
         zfCoreMutexUnlock();
 
         taskData->finishCallback.execute(ZFArgs()
@@ -173,11 +175,11 @@ public:
         zfCoreMutexUnlock();
     }
     static void _ZFP_taskCleanup(ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData) {
-        taskData->taskId = zfidentityInvalid();
         taskData->callback = zfnull;
         taskData->result = zfnull;
         taskData->finishCallback = zfnull;
         taskData->callerThread = zfnull;
+        zfunsafe_zfRelease(taskData);
     }
     static void _ZFP_threadOnStopRequested(
             ZF_IN ZFThread *ownerThread
@@ -192,6 +194,15 @@ public:
     }
 };
 
+void _ZFP_I_ZFThreadPoolTaskData::stop(void) {
+    if(this->owner != zfnull) {
+        this->owner->stop(this);
+        this->owner = zfnull;
+    }
+    this->zfargsForTask.param0(zfnull);
+    zfsuper::stop();
+}
+
 void ZFThreadPool::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfnull;
@@ -201,7 +212,7 @@ void ZFThreadPool::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFMETHOD_DEFINE_2(ZFThreadPool, zfauto, start
+ZFMETHOD_DEFINE_2(ZFThreadPool, zfautoT<ZFTaskId>, start
         , ZFMP_IN(const ZFListener &, callback)
         , ZFMP_IN(const ZFListener &, finishCallback)
         ) {
@@ -214,21 +225,17 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfauto, start
         d = zfpoolNew(_ZFP_ZFThreadPoolPrivate);
     }
 
-    do {
-        ++(d->taskIdCur);
-        if(d->taskIdCur == zfidentityInvalid()) {
-            d->taskIdCur = 0;
-        }
-    } while(d->taskMap.find(d->taskIdCur) != d->taskMap.end());
-    zfobj<_ZFP_I_ZFThreadPoolTaskData> taskData;
-    taskData->taskId = d->taskIdCur;
+    _ZFP_I_ZFThreadPoolTaskData *taskData = zfunsafe_zfAlloc(_ZFP_I_ZFThreadPoolTaskData);
+    taskData->owner = d;
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;
     taskData->callerThread = ZFThread::currentThread();
-    d->taskMap[d->taskIdCur] = taskData;
-    d->taskList.add(taskData);
+    taskData->mapIt = d->taskMap.insert(zfstlpair<_ZFP_I_ZFThreadPoolTaskData *, zfbool>(taskData, zftrue)).first;
+    d->taskList.push_back(taskData);
+    taskData->listIt = d->taskList.end();
+    --(taskData->listIt);
 
-    zfindex taskCount = d->taskList.count();
+    zfindex taskCount = (zfindex)d->taskList.size();
     for(zfindex i = 0; i < d->threadPool.count() && taskCount > 0; ++i) {
         ZFThread *threadPool = d->threadPool[i];
         if(threadPool->taskQueueCount() == 0 && !threadPool->taskQueueRunning()) {
@@ -251,14 +258,6 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfauto, start
 
     return taskData;
 }
-ZFMETHOD_DEFINE_1(ZFThreadPool, void, stop
-        , ZFMP_IN(const zfauto &, taskId)
-        ) {
-    zfCoreMutexLocker();
-    if(d != zfnull) {
-        return d->stop(taskId);
-    }
-}
 
 ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAll) {
     if(d == zfnull) {
@@ -266,8 +265,8 @@ ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAll) {
     }
     do {
         zfCoreMutexLock();
-        while(!d->taskList.isEmpty()) {
-            this->stop(d->taskList.getLast());
+        while(!d->taskList.empty()) {
+            (*(d->taskList.begin()))->stop();
         }
         if(d->threadPool.isEmpty()) {
             zfCoreMutexUnlock();

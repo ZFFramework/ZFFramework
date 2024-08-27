@@ -23,13 +23,9 @@ zfclass ZFLIB_ZFCore ZFThreadPool : zfextend ZFObject {
     ZFPROPERTY_ASSIGN(zfuint, maxThread, 8)
 
     /** @brief see #zfasync */
-    ZFMETHOD_DECLARE_2(zfauto, start
+    ZFMETHOD_DECLARE_2(zfautoT<ZFTaskId>, start
             , ZFMP_IN(const ZFListener &, callback)
             , ZFMP_IN(const ZFListener &, finishCallback)
-            )
-    /** @brief see #zfasyncCancel */
-    ZFMETHOD_DECLARE_1(void, stop
-            , ZFMP_IN(const zfauto &, taskId)
             )
 
     /**
