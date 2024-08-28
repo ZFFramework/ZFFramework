@@ -21,16 +21,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class ZFAnimationNativeView {
+public class ZFAniForNative {
     protected static class NativeAnimation extends Animation {
-        public NativeAnimation(long zfjniPointerOwnerZFAnimationNativeView) {
+        public NativeAnimation(long zfjniPointerOwnerZFAniForNative) {
             this.setFillEnabled(true);
             this.setFillBefore(true);
             this.setFillAfter(true);
-            this.zfjniPointerOwnerZFAnimationNativeView = zfjniPointerOwnerZFAnimationNativeView;
+            this.zfjniPointerOwnerZFAniForNative = zfjniPointerOwnerZFAniForNative;
         }
 
-        public long zfjniPointerOwnerZFAnimationNativeView = 0;
+        public long zfjniPointerOwnerZFAniForNative = 0;
 
         private NativeAnimationListener _animationListener = null;
 
@@ -263,17 +263,17 @@ public class ZFAnimationNativeView {
 
         private void doStop() {
             if (this._owner != null) {
-                long ownerTmp = this._owner.zfjniPointerOwnerZFAnimationNativeView;
+                long ownerTmp = this._owner.zfjniPointerOwnerZFAniForNative;
                 this.nativeAniDetach();
-                ZFAnimationNativeView.native_notifyAniStop(ownerTmp);
+                ZFAniForNative.native_notifyAniStop(ownerTmp);
             }
         }
     }
 
     private static Map<View, List<NativeAnimation>> _anis = new HashMap<View, List<NativeAnimation>>();
 
-    public static Object native_nativeAniCreate(long zfjniPointerOwnerZFAnimationNativeView) {
-        return new NativeAnimation(zfjniPointerOwnerZFAnimationNativeView);
+    public static Object native_nativeAniCreate(long zfjniPointerOwnerZFAniForNative) {
+        return new NativeAnimation(zfjniPointerOwnerZFAniForNative);
     }
 
     public static void native_nativeAniDestroy(Object nativeAnimation) {
@@ -342,7 +342,7 @@ public class ZFAnimationNativeView {
         }
     }
 
-    private static native void native_notifyAniStop(long zfjniPointerOwnerZFAnimationNativeView);
+    private static native void native_notifyAniStop(long zfjniPointerOwnerZFAniForNative);
 
     private static _CurveLinear _curveLinear = new _CurveLinear();
     private static _CurveEaseIn _curveEaseIn = new _CurveEaseIn();
@@ -357,13 +357,13 @@ public class ZFAnimationNativeView {
         NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
         nativeAnimationTmp.nativeAnimationReset();
 
-        if (aniCurve == ZFAnimationNativeViewCurve.e_Linear) {
+        if (aniCurve == ZFAniForNativeCurve.e_Linear) {
             nativeAnimationTmp.setInterpolator(_curveLinear);
-        } else if (aniCurve == ZFAnimationNativeViewCurve.e_EaseInOut) {
+        } else if (aniCurve == ZFAniForNativeCurve.e_EaseInOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseInOut);
-        } else if (aniCurve == ZFAnimationNativeViewCurve.e_EaseIn) {
+        } else if (aniCurve == ZFAniForNativeCurve.e_EaseIn) {
             nativeAnimationTmp.setInterpolator(_curveEaseIn);
-        } else if (aniCurve == ZFAnimationNativeViewCurve.e_EaseOut) {
+        } else if (aniCurve == ZFAniForNativeCurve.e_EaseOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseOut);
         } else {
             ZFAndroidLog.shouldNotGoHere();

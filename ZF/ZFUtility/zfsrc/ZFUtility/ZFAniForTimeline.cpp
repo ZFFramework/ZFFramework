@@ -1,10 +1,10 @@
-#include "ZFAnimationTimeLine.h"
+#include "ZFAniForTimeline.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// _ZFP_ZFAnimationTimeLinePrivate
-zfclassNotPOD _ZFP_ZFAnimationTimeLinePrivate {
+// _ZFP_ZFAniForTimelinePrivate
+zfclassNotPOD _ZFP_ZFAniForTimelinePrivate {
 public:
     zfbool isGlobalTimer;
 
@@ -15,7 +15,7 @@ public:
     ZFTimer *builtinTimer;
     zftimet builtinTimerStartTime;
 public:
-    _ZFP_ZFAnimationTimeLinePrivate(void)
+    _ZFP_ZFAniForTimelinePrivate(void)
     : isGlobalTimer(zffalse)
     , globalTimerTask()
     , globalTimerFrameCount(0)
@@ -24,21 +24,21 @@ public:
     , builtinTimerStartTime(0)
     {
     }
-    ~_ZFP_ZFAnimationTimeLinePrivate(void) {
+    ~_ZFP_ZFAniForTimelinePrivate(void) {
         zfRetainChange(this->builtinTimer, zfnull);
     }
 
 public:
-    static void doStart(ZF_IN ZFAnimationTimeLine *owner) {
+    static void doStart(ZF_IN ZFAniForTimeline *owner) {
         if(owner->aniInterval() == 0) {
             owner->d->isGlobalTimer = zftrue;
             owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
             owner->d->globalTimerFrameIndex = 0;
 
             ZFLISTENER_1(globalTimerOnActivate
-                    , ZFAnimationTimeLine *, owner
+                    , ZFAniForTimeline *, owner
                     ) {
-                _ZFP_ZFAnimationTimeLinePrivate::globalTimerOnActivate(zfargs, owner);
+                _ZFP_ZFAniForTimelinePrivate::globalTimerOnActivate(zfargs, owner);
             } ZFLISTENER_END()
             owner->d->globalTimerTask = globalTimerOnActivate;
             ZFGlobalTimerAttach(owner->d->globalTimerTask);
@@ -49,9 +49,9 @@ public:
                 owner->d->builtinTimer = zfAlloc(ZFTimer);
 
                 ZFLISTENER_1(builtinTimerOnActivate
-                        , ZFAnimationTimeLine *, owner
+                        , ZFAniForTimeline *, owner
                         ) {
-                    _ZFP_ZFAnimationTimeLinePrivate::builtinTimerOnActivate(zfargs, owner);
+                    _ZFP_ZFAniForTimelinePrivate::builtinTimerOnActivate(zfargs, owner);
                 } ZFLISTENER_END()
                 owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
@@ -61,7 +61,7 @@ public:
         }
         _update(owner, 0);
     }
-    static void doStop(ZF_IN ZFAnimationTimeLine *owner) {
+    static void doStop(ZF_IN ZFAniForTimeline *owner) {
         if(owner->d->isGlobalTimer) {
             ZFGlobalTimerDetach(owner->d->globalTimerTask);
             owner->d->globalTimerTask = zfnull;
@@ -74,7 +74,7 @@ public:
 private:
     static void globalTimerOnActivate(
             ZF_IN const ZFArgs &zfargs
-            , ZF_IN ZFAnimationTimeLine *owner
+            , ZF_IN ZFAniForTimeline *owner
             ) {
         ++(owner->d->globalTimerFrameIndex);
         zffloat progress = 1;
@@ -89,7 +89,7 @@ private:
     }
     static void builtinTimerOnActivate(
             ZF_IN const ZFArgs &zfargs
-            , ZF_IN ZFAnimationTimeLine *owner
+            , ZF_IN ZFAniForTimeline *owner
             ) {
         zftimet curTime = ZFTime::timestamp();
         zffloat progress = ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / owner->aniDurationFixed();
@@ -100,7 +100,7 @@ private:
         }
     }
     static void _update(
-            ZF_IN ZFAnimationTimeLine *owner
+            ZF_IN ZFAniForTimeline *owner
             , ZF_IN zffloat progress
             ) {
         if(progress < 0) {progress = 0;}
@@ -108,34 +108,34 @@ private:
         if(owner->aniCurve() != zfnull) {
             progress = owner->aniCurve()->progressUpdate(progress);
         }
-        owner->aniTimeLineOnUpdate(progress);
+        owner->aniTimelineOnUpdate(progress);
     }
 };
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFAnimationTimeLine)
+ZFOBJECT_REGISTER(ZFAniForTimeline)
 
-ZFEVENT_REGISTER(ZFAnimationTimeLine, AniTimeLineOnUpdate)
+ZFEVENT_REGISTER(ZFAniForTimeline, AniTimelineOnUpdate)
 
 // ============================================================
 // object
-void ZFAnimationTimeLine::objectOnInit(void) {
+void ZFAniForTimeline::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfpoolNew(_ZFP_ZFAnimationTimeLinePrivate);
+    d = zfpoolNew(_ZFP_ZFAniForTimelinePrivate);
 }
-void ZFAnimationTimeLine::objectOnDealloc(void) {
+void ZFAniForTimeline::objectOnDealloc(void) {
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
 
-zfidentity ZFAnimationTimeLine::objectHash(void) {
+zfidentity ZFAniForTimeline::objectHash(void) {
     return zfidentityHash(zfsuper::objectHash()
         , this->aniInterval()
         , (this->aniCurve() ? this->aniCurve()->objectHash() : (zfidentity)0)
         );
 }
-ZFCompareResult ZFAnimationTimeLine::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFAniForTimeline::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(anotherObj == this) {return ZFCompareEqual;}
     if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
             && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
@@ -147,18 +147,18 @@ ZFCompareResult ZFAnimationTimeLine::objectCompare(ZF_IN ZFObject *anotherObj) {
 
 // ============================================================
 // start stop
-void ZFAnimationTimeLine::aniImplStart(void) {
+void ZFAniForTimeline::aniImplStart(void) {
     zfsuper::aniImplStart();
-    _ZFP_ZFAnimationTimeLinePrivate::doStart(this);
+    _ZFP_ZFAniForTimelinePrivate::doStart(this);
 }
-void ZFAnimationTimeLine::aniImplStop(void) {
-    _ZFP_ZFAnimationTimeLinePrivate::doStop(this);
+void ZFAniForTimeline::aniImplStop(void) {
+    _ZFP_ZFAniForTimelinePrivate::doStop(this);
     zfsuper::aniImplStop();
 }
 
-void ZFAnimationTimeLine::aniTimeLineOnUpdate(ZF_IN zffloat progress) {
+void ZFAniForTimeline::aniTimelineOnUpdate(ZF_IN zffloat progress) {
     this->observerNotify(
-        ZFAnimationTimeLine::EventAniTimeLineOnUpdate(),
+        ZFAniForTimeline::EventAniTimelineOnUpdate(),
         zfobj<v_zffloat>(progress));
 }
 

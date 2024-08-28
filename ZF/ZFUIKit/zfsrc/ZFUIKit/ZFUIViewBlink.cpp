@@ -1,8 +1,8 @@
 #include "ZFUIViewBlink.h"
 #include "ZFUIImageView.h"
-#include "ZFAnimationNativeView.h"
+#include "ZFAniForNative.h"
 
-#include "ZFUIKit/protocol/ZFProtocolZFAnimationNativeView.h"
+#include "ZFUIKit/protocol/ZFProtocolZFAniForNative.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIImageIO.h"
 
@@ -134,8 +134,8 @@ static void _ZFP_ZFUIViewBlinkDoOn(
     }
 
     zfautoT<ZFAnimation> ani;
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView)) {
-        zfobj<ZFAnimationNativeView> tmp;
+    if(ZFPROTOCOL_IS_AVAILABLE(ZFAniForNative)) {
+        zfobj<ZFAniForNative> tmp;
         ani = tmp;
         tmp->aniAlphaTo(0);
     }

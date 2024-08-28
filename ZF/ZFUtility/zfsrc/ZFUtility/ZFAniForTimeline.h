@@ -1,32 +1,32 @@
 /**
- * @file ZFAnimationTimeLine.h
+ * @file ZFAniForTimeline.h
  * @brief abstract animation based on time line
  */
 
-#ifndef _ZFI_ZFAnimationTimeLine_h_
-#define _ZFI_ZFAnimationTimeLine_h_
+#ifndef _ZFI_ZFAniForTimeline_h_
+#define _ZFI_ZFAniForTimeline_h_
 
 #include "ZFAnimation.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassFwd _ZFP_ZFAnimationTimeLinePrivate;
+zfclassFwd _ZFP_ZFAniForTimelinePrivate;
 /**
  * @brief animation based on time line
  *
  * this is a dummy animation holder which do nothing by default,
  * you should either:
  * -  supply subclass and implement actual animation by overriding
- *   #aniTimeLineOnUpdate
- * -  attach observer to #EventAniTimeLineOnUpdate
+ *   #aniTimelineOnUpdate
+ * -  attach observer to #EventAniTimelineOnUpdate
  *
  * serializable data:
  * @code
- *   <ZFAnimationTimeLine />
+ *   <ZFAniForTimeline />
  * @endcode
  */
-zfclass ZFLIB_ZFUtility ZFAnimationTimeLine : zfextend ZFAnimation {
-    ZFOBJECT_DECLARE(ZFAnimationTimeLine, ZFAnimation)
+zfclass ZFLIB_ZFUtility ZFAniForTimeline : zfextend ZFAnimation {
+    ZFOBJECT_DECLARE(ZFAniForTimeline, ZFAnimation)
 
 public:
     // ============================================================
@@ -36,7 +36,7 @@ public:
      *
      * param0 is a float #v_zffloat containing current time line progress
      */
-    ZFEVENT(AniTimeLineOnUpdate)
+    ZFEVENT(AniTimelineOnUpdate)
 
     // ============================================================
     // object
@@ -60,7 +60,7 @@ public:
      */
     ZFPROPERTY_RETAIN(zfanyT<ZFCurve>, aniCurve)
     /**
-     * @brief interval to update time line, in miliseconds, -1 by default
+     * @brief interval to update time line, in miliseconds, 0 by default
      *
      * -  when set to 0, we would use special logic to achieve global time line control:
      *   -# calculate frame count by #aniDurationFixed/#ZFGlobalTimerIntervalDefault
@@ -72,7 +72,7 @@ public:
      * -  when set to -1, it's always treated as #ZFGlobalTimerIntervalDefault when used
      * -  for other positive value, we use it as specified timer interval
      */
-    ZFPROPERTY_ASSIGN(zftimet, aniInterval, -1)
+    ZFPROPERTY_ASSIGN(zftimet, aniInterval, 0)
 
     // ============================================================
     // start stop
@@ -90,19 +90,19 @@ protected:
      * which typically has value in range [0, 1] as base value,
      * but may exceeds the range for bounce curve
      */
-    virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress);
+    virtual void aniTimelineOnUpdate(ZF_IN zffloat progress);
 
 protected:
     zfoverride
     virtual zfbool serializableOnCheck(void) {
-        return this->classData() != ZFAnimationTimeLine::ClassData();
+        return this->classData() != ZFAniForTimeline::ClassData();
     }
 
 private:
-    _ZFP_ZFAnimationTimeLinePrivate *d;
-    friend zfclassFwd _ZFP_ZFAnimationTimeLinePrivate;
+    _ZFP_ZFAniForTimelinePrivate *d;
+    friend zfclassFwd _ZFP_ZFAniForTimelinePrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFAnimationTimeLine_h_
+#endif // #ifndef _ZFI_ZFAniForTimeline_h_
 

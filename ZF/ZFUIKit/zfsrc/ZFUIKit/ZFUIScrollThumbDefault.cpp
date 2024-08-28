@@ -1,16 +1,16 @@
 #include "ZFUIScrollThumbDefault.h"
 #include "ZFUIWindow.h"
-#include "ZFAnimationNativeView.h"
+#include "ZFAniForNative.h"
 
-#include "ZFUIKit/protocol/ZFProtocolZFAnimationNativeView.h"
+#include "ZFUIKit/protocol/ZFProtocolZFAniForNative.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFSTYLE_DEFAULT_DEFINE(ZFUIScrollThumbDefault)
 
 // ============================================================
-zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextend ZFAnimationTimeLine {
-    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, ZFAnimationTimeLine)
+zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextend ZFAniForTimeline {
+    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, ZFAniForTimeline)
 
 private:
     ZFUIImageView *thumbView;
@@ -27,15 +27,15 @@ protected:
 
 protected:
     zfoverride
-    virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress) {
-        zfsuper::aniTimeLineOnUpdate(progress);
+    virtual void aniTimelineOnUpdate(ZF_IN zffloat progress) {
+        zfsuper::aniTimelineOnUpdate(progress);
         if(this->thumbView->viewVisible()) {
             this->thumbView->viewAlpha(1 - progress);
         }
     }
 };
-zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView : zfextend ZFAnimationNativeView {
-    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, ZFAnimationNativeView)
+zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView : zfextend ZFAniForNative {
+    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, ZFAniForNative)
 
 protected:
     virtual void objectOnInit(ZF_IN ZFUIImageView *thumbView) {
@@ -95,7 +95,7 @@ void ZFUIScrollThumbDefault::objectOnInit(void) {
 
     d->thumbView = zfAlloc(ZFUIImageView);
 
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView)) {
+    if(ZFPROTOCOL_IS_AVAILABLE(ZFAniForNative)) {
         d->thumbHideAni = zfAlloc(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, d->thumbView);
     }
     else {

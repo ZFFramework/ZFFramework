@@ -2,15 +2,15 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFAnimationNativeView_multiple_test : zfextend ZFFramework_test_TestCase {
-    ZFOBJECT_DECLARE(ZFUIKit_ZFAnimationNativeView_multiple_test, ZFFramework_test_TestCase)
+zfclass ZFUIKit_ZFAniForNative_multiple_test : zfextend ZFFramework_test_TestCase {
+    ZFOBJECT_DECLARE(ZFUIKit_ZFAniForNative_multiple_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
-        ZFFramework_test_protocolCheck(ZFAnimationNativeView);
+        ZFFramework_test_protocolCheck(ZFAniForNative);
         ZFFramework_test_asyncTestCheck();
 
         ZFUIWindow *window = zfnull;
@@ -28,12 +28,12 @@ protected:
             zfobj<ZFAniGroup> aniGroup;
             aniGroup->aniTarget(view);
 
-            zfobj<ZFAnimationNativeView> ani0;
+            zfobj<ZFAniForNative> ani0;
             aniGroup->child(ani0);
             ani0->aniTranslateXTo(1);
             ani0->aniDuration(3000);
 
-            zfobj<ZFAnimationNativeView> ani1;
+            zfobj<ZFAniForNative> ani1;
             aniGroup->child(ani1);
             ani1->aniRotateZTo(180);
             ani1->aniDuration(3000);
@@ -46,7 +46,7 @@ protected:
         container->childAdd(startButton)->c_alignRightTop();
     }
 };
-ZFOBJECT_REGISTER(ZFUIKit_ZFAnimationNativeView_multiple_test)
+ZFOBJECT_REGISTER(ZFUIKit_ZFAniForNative_multiple_test)
 
 ZF_NAMESPACE_GLOBAL_END
 

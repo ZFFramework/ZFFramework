@@ -1,5 +1,5 @@
 #include "ZFImpl_sys_Qt_ZFUIKit_impl.h"
-#include "ZFUIKit/protocol/ZFProtocolZFAnimationNativeView.h"
+#include "ZFUIKit/protocol/ZFProtocolZFAniForNative.h"
 
 #if ZF_ENV_sys_Qt
 
@@ -8,14 +8,14 @@
 #include <QGraphicsWidget>
 #include <QTransform>
 
-class _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani : public QAbstractAnimation {
+class _ZFP_ZFAniForNativeImpl_sys_Qt_Ani : public QAbstractAnimation {
     Q_OBJECT
 
 public:
     typedef zffloat (*CurveFunc)(ZF_IN zffloat progress);
 
 public:
-    ZFAnimationNativeView *ownerZFAnimation;
+    ZFAniForNative *ownerZFAnimation;
 
     // for ani impl
     ZFUIView *aniTarget;
@@ -30,7 +30,7 @@ public:
     qreal alphaOrig;
 
 public:
-    _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani(ZF_IN ZFAnimationNativeView *ownerZFAnimation)
+    _ZFP_ZFAniForNativeImpl_sys_Qt_Ani(ZF_IN ZFAniForNative *ownerZFAnimation)
     : QAbstractAnimation()
     , ownerZFAnimation(ownerZFAnimation)
     , aniTarget(NULL)
@@ -44,14 +44,14 @@ public:
     {
         this->connect(this, SIGNAL(finished()), this, SLOT(nativeAniOnStop()));
     }
-    ~_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani(void) {
+    ~_ZFP_ZFAniForNativeImpl_sys_Qt_Ani(void) {
         this->disconnect(this, SIGNAL(finished()), this, SLOT(nativeAniOnStop()));
     }
 
 public slots:
     void nativeAniOnStop(void) {
         if(this->ownerZFAnimation->aniRunning()) {
-            ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->notifyAniStop(this->ownerZFAnimation);
+            ZFPROTOCOL_ACCESS(ZFAniForNative)->notifyAniStop(this->ownerZFAnimation);
         }
     }
 
@@ -86,7 +86,7 @@ protected:
 
 public:
     void aniOnProgress(void) {
-        ZFAnimationNativeView *ani = this->ownerZFAnimation;
+        ZFAniForNative *ani = this->ownerZFAnimation;
         zffloat progress = this->aniProgress;
 
         if(this->alphaEffect != NULL) {
@@ -160,16 +160,16 @@ public:
     void nativeAniStart(void) {
         this->aniProgress = 0;
         switch(this->ownerZFAnimation->aniCurve()) {
-            case ZFAnimationNativeViewCurve::e_Linear:
+            case ZFAniForNativeCurve::e_Linear:
                 this->aniCurveFunc = _aniCurveFuncLinear;
                 break;
-            case ZFAnimationNativeViewCurve::e_EaseIn:
+            case ZFAniForNativeCurve::e_EaseIn:
                 this->aniCurveFunc = _aniCurveFuncEaseIn;
                 break;
-            case ZFAnimationNativeViewCurve::e_EaseOut:
+            case ZFAniForNativeCurve::e_EaseOut:
                 this->aniCurveFunc = _aniCurveFuncEaseOut;
                 break;
-            case ZFAnimationNativeViewCurve::e_EaseInOut:
+            case ZFAniForNativeCurve::e_EaseInOut:
                 this->aniCurveFunc = _aniCurveFuncEaseInOut;
                 break;
             default:
@@ -231,39 +231,39 @@ private:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAnimationNativeViewImpl_sys_Qt, ZFAnimationNativeView, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_Qt, ZFAniForNative, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QAbstractAnimation")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani) {
-        return new _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani(ani);
+    virtual void *nativeAniCreate(ZF_IN ZFAniForNative *ani) {
+        return new _ZFP_ZFAniForNativeImpl_sys_Qt_Ani(ani);
     }
     virtual void nativeAniDestroy(
-            ZF_IN ZFAnimationNativeView *ani
+            ZF_IN ZFAniForNative *ani
             , ZF_IN void *nativeAni
             ) {
-        _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *nativeAniTmp = (_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *)nativeAni;
+        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAniTmp = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)nativeAni;
         nativeAniTmp->deleteLater();
     }
 
     virtual void nativeAniStart(
-            ZF_IN ZFAnimationNativeView *ani
+            ZF_IN ZFAniForNative *ani
             , ZF_IN zffloat nativeAniScale
             ) {
-        _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *)ani->nativeAnimation();
+        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAnimation();
         nativeAni->nativeAniScale = nativeAniScale;
         nativeAni->nativeAniStart();
     }
-    virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
-        _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *)ani->nativeAnimation();
+    virtual void nativeAniStop(ZF_IN ZFAniForNative *ani) {
+        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAnimation();
         nativeAni->nativeAniStop();
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFAnimationNativeViewImpl_sys_Qt)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFAniForNativeImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 
-#include "ZFProtocolZFAnimationNativeView_sys_Qt.moc"
+#include "ZFProtocolZFAniForNative_sys_Qt.moc"
 #endif // #if ZF_ENV_sys_Qt
 

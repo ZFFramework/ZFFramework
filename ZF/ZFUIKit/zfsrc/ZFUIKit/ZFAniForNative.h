@@ -1,10 +1,10 @@
 /**
- * @file ZFAnimationNativeView.h
+ * @file ZFAniForNative.h
  * @brief native animation
  */
 
-#ifndef _ZFI_ZFAnimationNativeView_h_
-#define _ZFI_ZFAnimationNativeView_h_
+#ifndef _ZFI_ZFAniForNative_h_
+#define _ZFI_ZFAniForNative_h_
 
 #include "ZFUIView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief native animation's curve
  */
-ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFAnimationNativeViewCurve)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFAniForNativeCurve)
     ZFENUM_VALUE(Linear) /**< @brief linear */
     ZFENUM_VALUE(EaseIn) /**< @brief slow to fast */
     ZFENUM_VALUE(EaseOut) /**< @brief fast to slow */
@@ -22,10 +22,10 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(EaseIn)
     ZFENUM_VALUE_REGISTER(EaseOut)
     ZFENUM_VALUE_REGISTER(EaseInOut)
-ZFENUM_END(ZFLIB_ZFUIKit, ZFAnimationNativeViewCurve)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFAniForNativeCurve)
 
 // ============================================================
-zfclassFwd _ZFP_ZFAnimationNativeViewPrivate;
+zfclassFwd _ZFP_ZFAniForNativePrivate;
 /**
  * @brief animation using native implementation
  *
@@ -33,8 +33,8 @@ zfclassFwd _ZFP_ZFAnimationNativeViewPrivate;
  * but may work incorrectly with local transform
  * (such as #ZFUIView::viewRotateZ)
  */
-zfclass ZFLIB_ZFUIKit ZFAnimationNativeView : zfextend ZFAnimation {
-    ZFOBJECT_DECLARE(ZFAnimationNativeView, ZFAnimation)
+zfclass ZFLIB_ZFUIKit ZFAniForNative : zfextend ZFAnimation {
+    ZFOBJECT_DECLARE(ZFAniForNative, ZFAnimation)
 
 protected:
     zfoverride
@@ -67,9 +67,9 @@ public:
     ZFPROPERTY_ASSIGN(zfbool, aniTargetAutoDisable, zftrue)
 
     /**
-     * @brief animation's curve, #ZFAnimationNativeViewCurve::e_Linear by default
+     * @brief animation's curve, #ZFAniForNativeCurve::e_Linear by default
      */
-    ZFPROPERTY_ASSIGN(ZFAnimationNativeViewCurveEnum, aniCurve, ZFAnimationNativeViewCurve::e_Linear)
+    ZFPROPERTY_ASSIGN(ZFAniForNativeCurveEnum, aniCurve, ZFAniForNativeCurve::e_Linear)
 
     /**
      * @brief alpha from, 1 by default
@@ -220,14 +220,14 @@ protected:
     zfoverride
     virtual void aniImplStop(void);
 public:
-    zffinal void _ZFP_ZFAnimationNativeView_notifyStop(void) {
+    zffinal void _ZFP_ZFAniForNative_notifyStop(void) {
         this->aniImplNotifyStop();
     }
 
 private:
-    _ZFP_ZFAnimationNativeViewPrivate *d;
+    _ZFP_ZFAniForNativePrivate *d;
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFAnimationNativeView_h_
+#endif // #ifndef _ZFI_ZFAniForNative_h_
 

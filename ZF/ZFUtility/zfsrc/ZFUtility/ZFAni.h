@@ -6,12 +6,12 @@
 #ifndef _ZFI_ZFAni_h_
 #define _ZFI_ZFAni_h_
 
-#include "ZFAnimationTimeLine.h"
+#include "ZFAniForTimeline.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief util to start a #ZFAnimationTimeLine based animation quickly
+ * @brief util to start a #ZFAniForTimeline based animation quickly
  *
  * usage:
  * @code
@@ -24,14 +24,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  * aniImpl's param0 is #v_zffloat that holds progress
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAniForTimeline>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const ZFListener &, aniImpl)
         )
 
 // ============================================================
 /**
- * @brief util to start property animation based on #ZFAnimationTimeLine
+ * @brief util to start property animation based on #ZFAniForTimeline
  *
  * usage:
  * @code
@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
  *     #ZFTYPEID_PROGRESS_DEFINE
  *   -  v_zfstring or ZFDI_WrapperBase that can be serialized by #ZFSerializable::serializeFromString
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAniForTimeline>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
@@ -60,8 +60,8 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
 // ============================================================
 // utils for impl
 /** @brief util for custom ani */
-zfclass ZFLIB_ZFUtility ZFAniForImpl : zfextend ZFAnimationTimeLine {
-    ZFOBJECT_DECLARE(ZFAniForImpl, ZFAnimationTimeLine)
+zfclass ZFLIB_ZFUtility ZFAniForImpl : zfextend ZFAniForTimeline {
+    ZFOBJECT_DECLARE(ZFAniForImpl, ZFAniForTimeline)
 public:
     /**
      * @brief the custom ani callback
@@ -72,7 +72,7 @@ public:
     ZFPROPERTY_ASSIGN(ZFListener, aniImpl)
 protected:
     zfoverride
-    virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress) {
+    virtual void aniTimelineOnUpdate(ZF_IN zffloat progress) {
         if(this->aniImpl()) {
             this->_ZFP_progressHolder->zfv = progress;
             this->aniImpl().execute(ZFArgs()
@@ -97,8 +97,8 @@ private:
 
 zfclassFwd _ZFP_ZFAniForGenericPrivate;
 /** @brief util for #ZFAni */
-zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextend ZFAnimationTimeLine {
-    ZFOBJECT_DECLARE(ZFAniForGeneric, ZFAnimationTimeLine)
+zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextend ZFAniForTimeline {
+    ZFOBJECT_DECLARE(ZFAniForGeneric, ZFAniForTimeline)
 public:
     /** @brief name of property to animate, see #ZFAni */
     ZFPROPERTY_ASSIGN(zfstring, name)
@@ -124,7 +124,7 @@ protected:
     zfoverride
     virtual void aniImplStop(void);
     zfoverride
-    virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress);
+    virtual void aniTimelineOnUpdate(ZF_IN zffloat progress);
     zfoverride
     virtual void objectOnInit(void);
     zfoverride

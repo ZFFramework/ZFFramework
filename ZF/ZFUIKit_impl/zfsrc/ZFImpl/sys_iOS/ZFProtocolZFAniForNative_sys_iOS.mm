@@ -1,29 +1,29 @@
 #include "ZFImpl_sys_iOS_ZFUIKit_impl.h"
-#include "ZFUIKit/protocol/ZFProtocolZFAnimationNativeView.h"
+#include "ZFUIKit/protocol/ZFProtocolZFAniForNative.h"
 
 #if ZF_ENV_sys_iOS
 
 #import <QuartzCore/QuartzCore.h>
 
-@class _ZFP_ZFAnimationNativeViewImpl_sys_iOS_AniDelegate;
+@class _ZFP_ZFAniForNativeImpl_sys_iOS_AniDelegate;
 
-@interface _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani : CAAnimationGroup
-@property (nonatomic, assign) ZFAnimationNativeView *ownerAni;
+@interface _ZFP_ZFAniForNativeImpl_sys_iOS_Ani : CAAnimationGroup
+@property (nonatomic, assign) ZFAniForNative *ownerAni;
 @property (nonatomic, assign) zffloat nativeAniScale;
 - (void)nativeAniStart;
 - (void)nativeAniStop;
 
-@property (nonatomic, strong) _ZFP_ZFAnimationNativeViewImpl_sys_iOS_AniDelegate *_nativeAniDelegate;
+@property (nonatomic, strong) _ZFP_ZFAniForNativeImpl_sys_iOS_AniDelegate *_nativeAniDelegate;
 @property (nonatomic, strong) NSString *_nativeAniKey;
 - (void)_nativeAniOnStart:(zfidentity)aniId;
 - (void)_nativeAniOnStop:(zfidentity)aniId finished:(BOOL)finished;
 @end
 
-@interface _ZFP_ZFAnimationNativeViewImpl_sys_iOS_AniDelegate : NSObject<CAAnimationDelegate>
-@property (nonatomic, weak) _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *owner;
+@interface _ZFP_ZFAniForNativeImpl_sys_iOS_AniDelegate : NSObject<CAAnimationDelegate>
+@property (nonatomic, weak) _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *owner;
 @property (nonatomic, assign) zfidentity aniId;
 @end
-@implementation _ZFP_ZFAnimationNativeViewImpl_sys_iOS_AniDelegate
+@implementation _ZFP_ZFAniForNativeImpl_sys_iOS_AniDelegate
 - (void)animationDidStart:(CAAnimation *)anim {
     [self.owner _nativeAniOnStart:self.aniId];
 }
@@ -32,7 +32,7 @@
 }
 @end
 
-@implementation _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani
+@implementation _ZFP_ZFAniForNativeImpl_sys_iOS_Ani
 - (instancetype)init {
     self = [super init];
     if(self) {
@@ -53,16 +53,16 @@
     UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
     CAMediaTimingFunction *nativeCurve = nil;
     switch(self.ownerAni->aniCurve()) {
-        case ZFAnimationNativeViewCurve::e_Linear:
+        case ZFAniForNativeCurve::e_Linear:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
             break;
-        case ZFAnimationNativeViewCurve::e_EaseIn:
+        case ZFAniForNativeCurve::e_EaseIn:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
             break;
-        case ZFAnimationNativeViewCurve::e_EaseOut:
+        case ZFAniForNativeCurve::e_EaseOut:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
             break;
-        case ZFAnimationNativeViewCurve::e_EaseInOut:
+        case ZFAniForNativeCurve::e_EaseInOut:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             break;
         default:
@@ -139,7 +139,7 @@
     self.duration = nativeDuration;
     self.timingFunction = nativeCurve;
 
-    self._nativeAniDelegate = [_ZFP_ZFAnimationNativeViewImpl_sys_iOS_AniDelegate new];
+    self._nativeAniDelegate = [_ZFP_ZFAniForNativeImpl_sys_iOS_AniDelegate new];
     self._nativeAniDelegate.owner = self;
     self._nativeAniDelegate.aniId = self.ownerAni->aniId();
     self.delegate = self._nativeAniDelegate;
@@ -160,26 +160,26 @@
         self.delegate = nil;
         UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
         [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
-        ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->notifyAniStop(self.ownerAni);
+        ZFPROTOCOL_ACCESS(ZFAniForNative)->notifyAniStop(self.ownerAni);
     }
 }
 @end
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAnimationNativeViewImpl_sys_iOS, ZFAnimationNativeView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_iOS, ZFAniForNative, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:CAAnimation")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani) {
-        _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *nativeAni = [_ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani new];
+    virtual void *nativeAniCreate(ZF_IN ZFAniForNative *ani) {
+        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = [_ZFP_ZFAniForNativeImpl_sys_iOS_Ani new];
         nativeAni.ownerAni = ani;
         return (__bridge_retained void *)nativeAni;
     }
     virtual void nativeAniDestroy(
-            ZF_IN ZFAnimationNativeView *ani
+            ZF_IN ZFAniForNative *ani
             , ZF_IN void *nativeAni
             ) {
         NSObject *tmp = (__bridge_transfer NSObject *)nativeAni;
@@ -187,18 +187,18 @@ public:
     }
 
     virtual void nativeAniStart(
-            ZF_IN ZFAnimationNativeView *ani
+            ZF_IN ZFAniForNative *ani
             , ZF_IN zffloat nativeAniScale
             ) {
-        _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *)ani->nativeAnimation();
+        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *)ani->nativeAnimation();
         nativeAni.nativeAniScale = nativeAniScale;
         [nativeAni nativeAniStart];
     }
-    virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
-        _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *)ani->nativeAnimation();
+    virtual void nativeAniStop(ZF_IN ZFAniForNative *ani) {
+        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *)ani->nativeAnimation();
         [nativeAni nativeAniStop];
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFAnimationNativeViewImpl_sys_iOS)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFAniForNativeImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 
