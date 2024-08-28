@@ -136,6 +136,7 @@ zfidentity ZFAnimationTimeLine::objectHash(void) {
         );
 }
 ZFCompareResult ZFAnimationTimeLine::objectCompare(ZF_IN ZFObject *anotherObj) {
+    if(anotherObj == this) {return ZFCompareEqual;}
     if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
             && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
             ) {

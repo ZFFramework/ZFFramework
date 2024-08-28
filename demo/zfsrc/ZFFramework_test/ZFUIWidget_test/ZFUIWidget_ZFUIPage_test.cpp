@@ -137,7 +137,6 @@ protected:
                     pageManager->pageAniOverride(
                             zfobj<ZFAniGroup>()
                             ->c_child("viewScaleX", zfobj<v_zffloat>(0.8f), zfobj<v_zffloat>(1))
-                            ->c_child("viewScaleX", zfobj<v_zffloat>(0.8f), zfobj<v_zffloat>(1))
                             ->c_child("viewScaleY", zfobj<v_zffloat>(0.8f), zfobj<v_zffloat>(1))
                             ->c_child("viewAlpha", zfobj<v_zffloat>(0.5f), zfobj<v_zffloat>(1))
                             ,

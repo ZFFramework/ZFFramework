@@ -77,21 +77,20 @@ public:
             , ZF_IN zfindex virtualIndex
             , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
-        if(!nativeImplViewRequireVirtualIndex) {
-            return;
-        }
-
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_nativeImplView",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
+                .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jobject)nativeImplView,
-            (jint)virtualIndex);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jobject)nativeImplView
+            , (jint)virtualIndex
+            , (jboolean)nativeImplViewRequireVirtualIndex
+            );
     }
     virtual void nativeImplViewFrame(
             ZF_IN ZFUIView *view

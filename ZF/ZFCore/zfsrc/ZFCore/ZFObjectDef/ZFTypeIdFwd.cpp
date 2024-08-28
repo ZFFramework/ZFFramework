@@ -105,9 +105,8 @@ void _ZFP_PropAliasAttach(
     //     3.2. crash due to obj got retained during dealloc
     //
     // it's designed safe to retain during EventObjectBeforeDealloc, but not during objectOnDealloc
-    ZFLISTENER_3(ownerOnDealloc
+    ZFLISTENER_2(ownerOnDealloc
             , ZFObject *, obj
-            , _ZFP_I_PropAliasHolder *, d
             , zfstring, tagKey
             ) {
         obj->objectTagRemove(tagKey);

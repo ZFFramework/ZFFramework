@@ -69,16 +69,12 @@ public:
             , ZF_IN zfindex virtualIndex
             , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
-        if(!nativeImplViewRequireVirtualIndex) {
-            return;
-        }
-
         // support, but recommended to use ZFImpl_sys_SDL_View::renderImpls instead
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
         if(nativeImplViewOld != zfnull) {
             nativeView->childDetach(virtualIndex);
         }
-        if(nativeImplView != zfnull) {
+        if(nativeImplViewRequireVirtualIndex && nativeImplView != zfnull) {
             ZFImpl_sys_SDL_View *nativeImplViewTmp = (ZFImpl_sys_SDL_View *)nativeImplView;
             nativeView->childAttach(virtualIndex, nativeImplViewTmp);
         }

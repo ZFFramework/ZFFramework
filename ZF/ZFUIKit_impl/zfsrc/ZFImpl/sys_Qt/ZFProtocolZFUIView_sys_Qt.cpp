@@ -369,10 +369,6 @@ public:
             , ZF_IN zfindex virtualIndex
             , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
-        if(!nativeImplViewRequireVirtualIndex) {
-            return;
-        }
-
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = (_ZFP_ZFUIViewImpl_sys_Qt_View *)view->nativeView();
         QGraphicsWidget *v = (QGraphicsWidget *)nativeImplView;
 
@@ -380,15 +376,14 @@ public:
             nativeView->_ZFP_layoutProxy->childRemoveAt(virtualIndex);
         }
         nativeView->_ZFP_nativeImplView = v;
-        if(nativeView->_ZFP_nativeImplView != zfnull) {
+
+        if(nativeImplViewRequireVirtualIndex && nativeView->_ZFP_nativeImplView != zfnull) {
             nativeView->_ZFP_layoutProxy->childAdd(nativeView->_ZFP_nativeImplView, virtualIndex);
+            nativeView->_ZFP_focusProxyToken = _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_attach(
+                view, nativeView, nativeView->_ZFP_nativeImplView, nativeView->_ZFP_focusProxyToken);
+            _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusable(nativeView->_ZFP_focusProxyToken, view->viewFocusable());
+            this->_updateNativeImplViewMouseSetting(view);
         }
-
-        nativeView->_ZFP_focusProxyToken = _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_attach(
-            view, nativeView, nativeView->_ZFP_nativeImplView, nativeView->_ZFP_focusProxyToken);
-        _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusable(nativeView->_ZFP_focusProxyToken, view->viewFocusable());
-
-        this->_updateNativeImplViewMouseSetting(view);
     }
     virtual void nativeImplViewFrame(
             ZF_IN ZFUIView *view

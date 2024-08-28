@@ -1,5 +1,4 @@
 #include "ZFUIImageCache.h"
-#include "ZFUIImageIO.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

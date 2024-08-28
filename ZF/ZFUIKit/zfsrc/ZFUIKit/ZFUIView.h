@@ -441,12 +441,6 @@ protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void);
 
-public:
-    zfoverride
-    virtual zfidentity objectHash(void);
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
-
 protected:
     zfoverride
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);

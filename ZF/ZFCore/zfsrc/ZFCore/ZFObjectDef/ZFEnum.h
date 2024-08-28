@@ -186,14 +186,6 @@ public:
         return _ZFP_ZFEnum_value;
     }
     /**
-     * @brief get the enum value and cast to desired type,
-     *   you must ensure it's not #ZFEnumInvalid
-     */
-    template<typename T_EnumType>
-    inline T_EnumType enumValue(void) {
-        return (T_EnumType)_ZFP_ZFEnum_value;
-    }
-    /**
      * @brief get current value's name, or ZFEnumNameInvalid if invalid
      *
      * return invalid if holds flags value,

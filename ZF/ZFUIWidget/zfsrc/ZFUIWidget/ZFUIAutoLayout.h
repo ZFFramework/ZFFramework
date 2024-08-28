@@ -192,10 +192,6 @@ public:
             , ZFMP_IN(zffloat, offset)
             )
 
-public:
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
-
 protected:
     zfoverride
     virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);

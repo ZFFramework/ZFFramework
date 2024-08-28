@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFUIImageAsync_h_
 #define _ZFI_ZFUIImageAsync_h_
 
-#include "ZFUIImage.h"
+#include "ZFUIWidgetDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -17,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# loading image in background, by #ZFUIImageLoad
  * -# notify impl to redraw, by #ZFUIImage::imageStateUpdate
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageAsync
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN_OPT(ZFUIImage *, imageFail, zfnull)
         , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)

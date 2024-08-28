@@ -44,8 +44,7 @@ static void _ZFP_ZFUIImageAsyncImpl(
     task->imageFail = imageFail;
     task->imageLoading = imageLoading;
 
-    ZFLISTENER_2(imageStateImpl
-            , ZFUIImage *, holder
+    ZFLISTENER_1(imageStateImpl
             , zfautoT<_ZFP_I_ZFUIImageAsyncTask>, task
             ) {
         if(task->imageLoaded) {

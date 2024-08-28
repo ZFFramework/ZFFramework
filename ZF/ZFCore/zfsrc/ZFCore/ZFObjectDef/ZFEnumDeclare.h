@@ -318,6 +318,11 @@ public:
             return (EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumDefault; \
         } \
     public: \
+        /** @brief util method to access original enum value */ \
+        zffinal zfself::ZFEnumType enumValueOrig(void) { \
+            return (zfself::ZFEnumType)this->enumValue(); \
+        } \
+    public: \
         zfoverride \
         virtual const zfstring &wrappedValueTypeId(void); \
     }; \

@@ -1121,39 +1121,6 @@ void ZFUIView::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-zfidentity ZFUIView::objectHash(void) {
-    zfidentity hash = zfidentityHash(zfidentityCalcString(this->classData()->classNameFull()) , this->childCount());
-    for(zfindex i = 0; i < this->childCount(); ++i) {
-        hash = zfidentityHash(hash, this->childAt(i)->objectHash());
-    }
-    return hash;
-}
-ZFCompareResult ZFUIView::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareEqual;}
-    zfself *another = zfcast(zfself *, anotherObj);
-    if(another == zfnull) {return ZFCompareUncomparable;}
-
-    if(this->childCount() != another->childCount()) {
-        return ZFCompareUncomparable;
-    }
-    if(ZFObjectCompare(d->layoutParam, another->d->layoutParam) != ZFCompareEqual) {
-        if((d->layoutParam == zfnull || ZFObjectCompare(d->layoutParam, d->serializableRefLayoutParam) == ZFCompareEqual)
-                != (another->d->layoutParam == zfnull || ZFObjectCompare(another->d->layoutParam, another->d->serializableRefLayoutParam) == ZFCompareEqual)
-                ) {
-            return ZFCompareUncomparable;
-        }
-    }
-    if(!ZFClassUtil::allPropertyIsEqual(this, another)
-            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_InternalImpl)
-            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_InternalBg)
-            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_InternalFg)
-            || !d->childArrayIsEqual(this, another, ZFUIViewChildLayer::e_Normal)
-            ) {
-        return ZFCompareUncomparable;
-    }
-    return ZFCompareEqual;
-}
-
 void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
 

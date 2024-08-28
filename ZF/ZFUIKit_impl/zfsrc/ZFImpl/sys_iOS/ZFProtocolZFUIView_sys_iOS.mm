@@ -309,16 +309,13 @@ public:
             , ZF_IN zfindex virtualIndex
             , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
-        if(!nativeImplViewRequireVirtualIndex) {
-            return;
-        }
-
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         if(nativeView._ZFP_nativeImplView != nil) {
             [nativeView._ZFP_nativeImplView removeFromSuperview];
         }
         nativeView._ZFP_nativeImplView = (__bridge UIView *)nativeImplView;
-        if(nativeView._ZFP_nativeImplView != nil) {
+
+        if(nativeImplViewRequireVirtualIndex && nativeView._ZFP_nativeImplView != nil) {
             [nativeView insertSubview:nativeView._ZFP_nativeImplView atIndex:virtualIndex];
         }
     }

@@ -57,9 +57,7 @@ zfidentity ZFAnimationNativeView::objectHash(void) {
         );
 }
 ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(zfsuper::ZFObject::objectCompare(anotherObj) != ZFCompareEqual) {
-        return ZFCompareUncomparable;
-    }
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 

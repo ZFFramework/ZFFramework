@@ -60,7 +60,8 @@ public class ZFUIView extends ViewGroup {
 
     public static void native_nativeImplView(Object nativeView,
                                              Object nativeImplView,
-                                             int virtualIndex) {
+                                             int virtualIndex,
+                                             boolean nativeImplViewRequireVirtualIndex) {
         ZFUIView nativeViewTmp = (ZFUIView) nativeView;
         View nativeImplViewOld = nativeViewTmp.nativeImplView;
         View nativeImplViewNew = (View) nativeImplView;
@@ -68,7 +69,7 @@ public class ZFUIView extends ViewGroup {
             nativeViewTmp.removeView(nativeViewTmp.nativeImplView);
         }
         nativeViewTmp.nativeImplView = nativeImplViewNew;
-        if (nativeViewTmp.nativeImplView != null) {
+        if (nativeImplViewRequireVirtualIndex && nativeViewTmp.nativeImplView != null) {
             nativeViewTmp.addView(nativeViewTmp.nativeImplView, virtualIndex);
         }
 

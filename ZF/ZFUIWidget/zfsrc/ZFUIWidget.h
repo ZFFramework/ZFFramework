@@ -17,6 +17,8 @@
 #include "ZFUIWidget/ZFUIFlowLayout.h"
 #include "ZFUIWidget/ZFUIHint.h"
 #include "ZFUIWidget/ZFUIHint_Basic.h"
+#include "ZFUIWidget/ZFUIImageAsync.h"
+#include "ZFUIWidget/ZFUIImageCache.h"
 #include "ZFUIWidget/ZFUILinearLayout.h"
 #include "ZFUIWidget/ZFUIListAdapter.h"
 #include "ZFUIWidget/ZFUIListAdapterArray.h"

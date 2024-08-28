@@ -329,19 +329,6 @@ void ZFAniGroup::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-zfidentity ZFAniGroup::objectHash(void) {
-    return d->childDatas->objectHash();
-}
-ZFCompareResult ZFAniGroup::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(zfsuper::objectCompare(anotherObj) != ZFCompareEqual) {
-        return ZFCompareUncomparable;
-    }
-    zfself *another = zfcast(zfself *, anotherObj);
-    if(another == zfnull) {return ZFCompareUncomparable;}
-
-    return ZFObjectCompare(d->childDatas, another->d->childDatas);
-}
-
 // ============================================================
 // child animation control
 ZFMETHOD_DEFINE_2(ZFAniGroup, void, child
