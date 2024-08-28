@@ -30,7 +30,7 @@ public:
 
     /**
      * @brief return true if contains the object,
-     *   compared by #ZFObject::objectCompare
+     *   compared by instance compare
      */
     ZFMETHOD_DECLARE_1(zfbool, isContain
             , ZFMP_IN(ZFObject *, obj)

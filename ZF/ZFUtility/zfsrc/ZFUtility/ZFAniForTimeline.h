@@ -78,6 +78,10 @@ public:
     // start stop
 protected:
     zfoverride
+    virtual void aniImplDelay(void);
+    zfoverride
+    virtual void aniImplDelayCancel(void);
+    zfoverride
     virtual void aniImplStart(void);
     zfoverride
     virtual void aniImplStop(void);
@@ -91,12 +95,6 @@ protected:
      * but may exceeds the range for bounce curve
      */
     virtual void aniTimelineOnUpdate(ZF_IN zffloat progress);
-
-protected:
-    zfoverride
-    virtual zfbool serializableOnCheck(void) {
-        return this->classData() != ZFAniForTimeline::ClassData();
-    }
 
 private:
     _ZFP_ZFAniForTimelinePrivate *d;

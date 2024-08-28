@@ -30,7 +30,7 @@ public:
 
     /**
      * @brief return true if contains the object,
-     *   compared by #ZFObject::objectCompare by default
+     *   compared by instance compare by default
      */
     ZFMETHOD_DECLARE_2(zfbool, isContain
             , ZFMP_IN(ZFObject *, obj)
@@ -55,14 +55,14 @@ public:
     ZFMETHOD_DECLARE_0(zfany, getLast)
 
     /**
-     * @brief find element, compared by #ZFObject::objectCompare by default
+     * @brief find element, compared by instance compare by default
      */
     ZFMETHOD_DECLARE_2(zfindex, find
             , ZFMP_IN(ZFObject *, obj)
             , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
             )
     /**
-     * @brief find element, compared by #ZFObject::objectCompare by default
+     * @brief find element, compared by instance compare by default
      */
     ZFMETHOD_DECLARE_2(zfindex, findReversely
             , ZFMP_IN(ZFObject *, obj)

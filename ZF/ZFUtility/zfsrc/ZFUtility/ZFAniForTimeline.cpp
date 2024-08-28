@@ -147,6 +147,42 @@ ZFCompareResult ZFAniForTimeline::objectCompare(ZF_IN ZFObject *anotherObj) {
 
 // ============================================================
 // start stop
+void ZFAniForTimeline::aniImplDelay(void) {
+    d->isGlobalTimer = (this->aniInterval() == 0);
+    if(!d->isGlobalTimer) {
+        zfsuper::aniImplDelay();
+        return;
+    }
+    d->globalTimerFrameCount = (zfuint)zfmRound(this->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
+    if(d->globalTimerFrameCount == 0) {
+        d->globalTimerTask = zfnull;
+        this->aniImplDelayNotifyFinish();
+        return;
+    }
+    d->globalTimerFrameIndex = 0;
+    ZFAniForTimeline *owner = this;
+    ZFLISTENER_1(globalTimerOnActivate
+            , ZFAniForTimeline *, owner
+            ) {
+        ++(owner->d->globalTimerFrameIndex);
+        if(owner->d->globalTimerFrameIndex >= owner->d->globalTimerFrameCount) {
+            owner->aniImplDelayNotifyFinish();
+        }
+    } ZFLISTENER_END()
+    d->globalTimerTask = globalTimerOnActivate;
+    ZFGlobalTimerAttach(owner->d->globalTimerTask);
+}
+void ZFAniForTimeline::aniImplDelayCancel(void) {
+    if(!d->isGlobalTimer) {
+        zfsuper::aniImplDelayCancel();
+        return;
+    }
+    if(d->globalTimerTask) {
+        ZFGlobalTimerDetach(d->globalTimerTask);
+        d->globalTimerTask = zfnull;
+    }
+}
+
 void ZFAniForTimeline::aniImplStart(void) {
     zfsuper::aniImplStart();
     _ZFP_ZFAniForTimelinePrivate::doStart(this);

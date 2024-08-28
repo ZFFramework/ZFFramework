@@ -111,10 +111,10 @@ public:
 
 // ============================================================
 ZFCOMPARER_DEFAULT_DECLARE(zfany, zfany, {
-        return ZFObjectCompare(v0, v1);
+        return v0.toObject() == v1.toObject() ? ZFCompareEqual : ZFCompareUncomparable;
     })
 ZFCOMPARER_DEFAULT_DECLARE(zfauto, zfauto, {
-        return ZFObjectCompare(v0, v1);
+        return v0.toObject() == v1.toObject() ? ZFCompareEqual : ZFCompareUncomparable;
     })
 
 ZF_NAMESPACE_GLOBAL_END
