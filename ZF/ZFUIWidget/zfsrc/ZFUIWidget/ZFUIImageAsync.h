@@ -15,11 +15,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * how it works:
  * -# return a dummy holder image
  * -# loading image in background, by #ZFUIImageLoad
- * -# notify impl to redraw, by #ZFUIImage::imageStateUpdate
+ * -# notify impl to redraw, by #ZFUIImage::imageStateImplNotifyUpdate
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
         , ZFMP_IN(const ZFInput &, src)
-        , ZFMP_IN_OPT(ZFUIImage *, imageFail, zfnull)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
         , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
         )
 
@@ -30,7 +30,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
  * @code
  *   <ZFUIImage imageType="async">
  *       <ZFCallback category="imageData" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
- *       <ZFUIImage category="imageFail" ... /> // load fail image
+ *       <ZFUIImage category="imageLoadFail" ... /> // load fail image
  *       <ZFUIImage category="imageLoading" ... /> // loading image
  *   </ZFUIImage>
  * @endcode
@@ -40,7 +40,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImageIO_async_imageData "imageData"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_async_imageFail "imageFail"
+#define ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail "imageLoadFail"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImageIO_async_imageLoading "imageLoading"
 

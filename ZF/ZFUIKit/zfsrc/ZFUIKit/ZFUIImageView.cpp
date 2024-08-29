@@ -1,5 +1,4 @@
 #include "ZFUIImageView.h"
-#include "protocol/ZFProtocolZFUIView.h"
 #include "protocol/ZFProtocolZFUIImageView.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -18,22 +17,27 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIImageView, zfbool, viewUIEnableTree) {
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
     if(this->image() != zfnull) {
-        if(!this->imageUpdateListener) {
+        if(!this->imageStateOnUpdateListener) {
             ZFUIImageView *owner = this;
-            ZFLISTENER_1(imageOnUpdate
+            ZFUISize sizeSaved = ZFUISizeZero();
+            ZFLISTENER_2(imageStateOnUpdate
                     , ZFUIImageView *, owner
+                    , ZFUISize, sizeSaved
                     ) {
-                if(owner->image() != zfnull) {
-                    ZFPROTOCOL_ACCESS(ZFUIImageView)->image(owner, owner->image()->imageState(owner));
-                }
-                else {
-                    ZFPROTOCOL_ACCESS(ZFUIImageView)->image(owner, zfnull);
+                zfautoT<ZFUIImage> imageNew = owner->image() ? owner->image()->imageState() : zfnull;
+                ZFUISize sizeNew = imageNew ? imageNew->imageSize() : ZFUISizeZero();
+                ZFPROTOCOL_ACCESS(ZFUIImageView)->image(owner, imageNew);
+                ZFUILayoutParam *lp = owner->layoutParam();
+                if(lp && (zffalse
+                            || (lp->sizeParam().width == ZFUISizeType::e_Wrap && sizeNew.width != sizeSaved.width)
+                            || (lp->sizeParam().height == ZFUISizeType::e_Wrap && sizeNew.height != sizeSaved.height)
+                            )) {
+                    owner->layoutRequest();
                 }
             } ZFLISTENER_END()
-            this->imageUpdateListener = imageOnUpdate;
+            this->imageStateOnUpdateListener = imageStateOnUpdate;
         }
-        this->image()->observerAdd(ZFUIImage::EventImageStateOnUpdate(), this->imageUpdateListener);
-        ZFPROTOCOL_ACCESS(ZFUIImageView)->image(this, this->image()->imageState(this));
+        this->image()->imageStateAttach(this->imageStateOnUpdateListener);
     }
     else {
         ZFPROTOCOL_ACCESS(ZFUIImageView)->image(this, zfnull);
@@ -41,11 +45,12 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
     this->layoutRequest();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
-    if(this->image() != zfnull) {
-        if(this->imageUpdateListener) {
-            this->image()->observerRemove(ZFUIImage::EventImageStateOnUpdate(), this->imageUpdateListener);
-        }
+    if(this->image() != zfnull && this->imageStateOnUpdateListener) {
+        this->image()->imageStateDetach(this->imageStateOnUpdateListener);
     }
+}
+ZFMETHOD_DEFINE_0(ZFUIImageView, zfautoT<ZFUIImage>, imageState) {
+    return this->image() ? this->image()->imageState() : zfnull;
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIContentScaleTypeEnum, imageScaleType) {
     if(propertyValue != propertyValueOld) {
@@ -61,7 +66,8 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIMargin, imageMargin) {
 ZFMETHOD_DEFINE_1(ZFUIImageView, void, measureImageView
         , ZFMP_OUT(ZFUISize &, ret)
         ) {
-    ret = ((this->image() != zfnull) ? this->image()->imageSize() : ZFUISizeZero());
+    zfautoT<ZFUIImage> imageState = (this->image() ? this->image()->imageState() : zfnull);
+    ret = (imageState ? imageState->imageSize() : ZFUISizeZero());
     ZFUISizeApplyMarginReversely(ret, ret, this->imageMargin());
 }
 

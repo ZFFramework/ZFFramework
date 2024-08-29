@@ -50,6 +50,8 @@ public:
     ZFUISize imageSize;
     ZFListener globalImageScaleOnUpdateListener;
     ZFListener imageStateImpl;
+    zfautoT<ZFUIImage> imageState;
+    ZFCoreArray<ZFListener> imageStateObservers;
 
 public:
     zfstring serializableType;
@@ -95,6 +97,8 @@ public:
             this->serializableData = zfnew(ZFSerializableData, *(another->serializableData));
         }
         this->imageStateImpl = another->imageStateImpl;
+        this->imageState = zfnull;
+        this->imageStateObservers.removeAll();
     }
 
 public:
@@ -105,6 +109,8 @@ public:
     , imageSizeFixed(ZFUISizeZero())
     , imageSize(ZFUISizeZero())
     , imageStateImpl()
+    , imageState()
+    , imageStateObservers()
     , serializableType(zfnull)
     , serializableData(zfnull)
     , globalImageScaleOnUpdateListener()
@@ -300,23 +306,61 @@ ZFMETHOD_DEFINE_0(ZFUIImage, const ZFUISize &, imageSizeFixed) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFUIImage, zfautoT<ZFUIImage>, imageState
-        , ZFMP_IN(ZFObject *, owner)
-        ) {
+ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageState) {
     if(d->imageStateImpl) {
-        ZFArgs zfargs;
-        d->imageStateImpl.execute(zfargs
-                .sender(this)
-                .param0(owner)
-                );
-        return zfargs.result();
+        return d->imageState;
     }
     else {
         return this;
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIImage, void, imageStateUpdate) {
-    this->imageStateOnUpdate();
+ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageStateForceUpdate) {
+    if(d->imageStateImpl) {
+        if(d->imageStateObservers.isEmpty()) {
+            ZFLISTENER_0(dummy) {
+            } ZFLISTENER_END()
+            this->imageStateAttach(dummy);
+            zfautoT<ZFUIImage> ret = d->imageState;
+            this->imageStateDetach(dummy);
+            return ret;
+        }
+        else {
+            return d->imageState;
+        }
+    }
+    else {
+        return this;
+    }
+}
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateAttach
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    d->imageStateObservers.add(callback);
+    if(d->imageStateObservers.count() == 1) {
+        d->imageStateImpl.execute(ZFArgs()
+                .sender(this)
+                .param0(zfobj<v_zfbool>(zftrue))
+                );
+    }
+    else {
+        callback.execute(ZFArgs()
+                .sender(this)
+                );
+    }
+}
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateDetach
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    if(!d->imageStateObservers.isEmpty()) {
+        d->imageStateObservers.removeElement(callback);
+        if(d->imageStateObservers.isEmpty()) {
+            d->imageStateImpl.execute(ZFArgs()
+                    .sender(this)
+                    .param0(zfobj<v_zfbool>(zffalse))
+                    );
+            d->imageState = zfnull;
+        }
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIImage, const ZFListener &, imageStateImpl) {
     return d->imageStateImpl;
@@ -324,9 +368,38 @@ ZFMETHOD_DEFINE_0(ZFUIImage, const ZFListener &, imageStateImpl) {
 ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
         , ZFMP_IN(const ZFListener &, impl)
         ) {
-    if(d->imageStateImpl != impl) {
+    if(d->imageStateImpl == impl) {
+        return;
+    }
+    if(d->imageStateImpl) {
+        if(!d->imageStateObservers.isEmpty()) {
+            d->imageStateImpl.execute(ZFArgs()
+                    .sender(this)
+                    .param0(zfobj<v_zfbool>(zffalse))
+                    );
+        }
+        d->imageStateImpl = zfnull;
+        d->imageState = zfnull;
+    }
+    if(impl) {
         d->imageStateImpl = impl;
-        this->imageStateUpdate();
+        d->imageStateImpl.execute(ZFArgs()
+                .sender(this)
+                .param0(zfobj<v_zfbool>(zftrue))
+                );
+    }
+}
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImplNotifyUpdate
+        , ZFMP_IN(ZFUIImage *, imageState)
+        ) {
+    if(d->imageStateImpl) {
+        d->imageState = imageState;
+        ZFArgs zfargsHolder;
+        zfargsHolder.sender(this);
+        for(zfindex i = 0; i < d->imageStateObservers.count(); ++i) {
+            d->imageStateObservers[i].execute(zfargsHolder);
+        }
+        this->imageStateOnUpdate();
     }
 }
 
@@ -404,7 +477,7 @@ void ZFUIImage::objectPropertyValueOnUpdate(
         ) {
     zfsuper::objectPropertyValueOnUpdate(property, oldValue);
     if(property->propertyOwnerClass() == ZFUIImage::ClassData()) {
-        this->imageStateUpdate();
+        this->imageStateImplNotifyUpdate(this->imageState());
     }
 }
 

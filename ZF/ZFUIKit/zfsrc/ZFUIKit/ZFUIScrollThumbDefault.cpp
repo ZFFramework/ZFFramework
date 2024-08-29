@@ -176,11 +176,11 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void) {
         d->thumbView->viewAlpha(1);
     }
 
-    if(d->thumbView->image() == zfnull) {
+    if(d->thumbView->imageState() == zfnull) {
         d->thumbView->viewVisible(zffalse);
     }
     else {
-        ZFUISize imageSize = d->thumbView->image()->imageSize();
+        ZFUISize imageSize = d->thumbView->imageState()->imageSize();
         zffloat pos = 0;
         zffloat size = 0;
         zffloat sizeRange = 0;

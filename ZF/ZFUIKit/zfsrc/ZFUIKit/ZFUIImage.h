@@ -179,39 +179,61 @@ public:
     // image state
 public:
     /**
-     * @brief stateful image logic, for impl only
+     * @brief return current image state
      *
      * used to implement stateful image, for example:
      * -  animated image
      * -  dynamic loading image
      *
      * how it works:
-     * -# as for normal image, the #imageState would return the ZFUIImage itself as default
-     * -# impl can return a dummy placeholder ZFUIImage object,
+     * -# as for normal image, the #imageState would return the ZFUIImage itself
+     * -# impl may create a dummy placeholder ZFUIImage object,
      *   supplying #imageStateImpl as actual impl
-     * -# each time the image would be displayed,
-     *   #imageState would be called to obtain actual image
-     * -# impl can also use #imageStateUpdate to schedule update to update display
-     */
-    ZFMETHOD_DECLARE_1(zfautoT<ZFUIImage>, imageState
-            , ZFMP_IN_OPT(ZFObject *, owner, zfnull)
-            )
-    /** @brief see #imageState */
-    ZFMETHOD_DECLARE_0(void, imageStateUpdate)
-    /**
-     * @brief see #imageState
      *
-     * imageStateImpl's sender would be the owner ZFUIImage,
-     * param0 would be the owner object,
-     * and impl must set #ZFArgs::result to result ZFUIImage\n
-     * \n
-     * note: the #imageScale and #imageNinePatch won't be copied automatically,
-     * it depends on impl
+     * note: valid only when any observer attached by #imageStateAttach,
+     * to explicitly obtain latest state, use #imageStateForceUpdate
      */
-    ZFMETHOD_DECLARE_0(const ZFListener &, imageStateImpl)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage>, imageState)
     /** @brief see #imageState */
+    ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage>, imageStateForceUpdate)
+
+    /**
+     * @brief for impl to attach image state update observer
+     *
+     * callback would be called when first time attached,
+     * and each time if #imageState updated,
+     * sender would be the original owner ZFUIImage\n
+     * \n
+     * note: when no longer used, impl must call #imageStateDetach to cleanup
+     */
+    ZFMETHOD_DECLARE_1(void, imageStateAttach
+            , ZFMP_IN(const ZFListener &, callback)
+            )
+    /** @brief see #imageStateAttach */
+    ZFMETHOD_DECLARE_1(void, imageStateDetach
+            , ZFMP_IN(const ZFListener &, callback)
+            )
+    /**
+     * @brief for impl to implement stateful image logic
+     *
+     * there are different ways to call the impl:
+     * -  when first observer attached:
+     *   -  sender would be the owner ZFUIImage object
+     *   -  param0 would be a #v_zfbool as true
+     *   -  impl must notify owner ZFUIImage's imageStateImplNotifyUpdate,
+     *     immediately and each time needs to update
+     * -  when all observer detached:
+     *   -  sender would be the owner ZFUIImage object
+     *   -  param0 would be a #v_zfbool as false
+     */
     ZFMETHOD_DECLARE_1(void, imageStateImpl
             , ZFMP_IN(const ZFListener &, impl)
+            )
+    /** @brief see #imageStateImpl */
+    ZFMETHOD_DECLARE_0(const ZFListener &, imageStateImpl)
+    /** @brief see #imageStateImpl */
+    ZFMETHOD_DECLARE_1(void, imageStateImplNotifyUpdate
+            , ZFMP_IN(ZFUIImage *, imageState)
             )
 
     // ============================================================
@@ -291,6 +313,7 @@ public:
 
 private:
     _ZFP_ZFUIImagePrivate *d;
+    friend zfclassFwd _ZFP_ZFUIImagePrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END

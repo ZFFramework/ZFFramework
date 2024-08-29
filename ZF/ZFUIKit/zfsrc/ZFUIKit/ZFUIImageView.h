@@ -33,6 +33,11 @@ public:
     ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImage>, image)
 
     /**
+     * @brief util method to access #ZFUIImage::imageState
+     */
+    ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage>, imageState)
+
+    /**
      * @brief image scale type, fill by default
      */
     ZFPROPERTY_ASSIGN(ZFUIContentScaleTypeEnum, imageScaleType, ZFUIContentScaleType::EnumDefault())
@@ -84,7 +89,7 @@ protected:
             , ZF_IN const ZFUISizeParam &sizeParam
             );
 private:
-    ZFListener imageUpdateListener;
+    ZFListener imageStateOnUpdateListener;
 };
 
 ZF_NAMESPACE_GLOBAL_END

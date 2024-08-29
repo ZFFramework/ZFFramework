@@ -59,7 +59,7 @@ void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &na
 
     ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView();
     if(textEditBackgroundView->viewVisible()) {
-        ZFUIImage *image = textEditBackgroundView->image();
+        ZFUIImage *image = textEditBackgroundView->imageState();
         if(image != zfnull) {
             ZFUIMarginInc(nativeImplViewMargin, nativeImplViewMargin, image->imageNinePatch());
         }
@@ -94,7 +94,7 @@ void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     ZFUIMargin margin = ZFUIMarginZero();
     ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView();
     if(textEditBackgroundView->viewVisible()) {
-        ZFUIImage *image = textEditBackgroundView->image();
+        ZFUIImage *image = textEditBackgroundView->imageState();
         if(image != zfnull) {
             margin = image->imageNinePatch();
         }

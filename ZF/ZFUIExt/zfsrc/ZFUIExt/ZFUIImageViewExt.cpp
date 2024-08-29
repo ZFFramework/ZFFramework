@@ -24,11 +24,11 @@ void ZFUIImageViewExt::imageOnLoad(ZF_IN const ZFInput &src) {
     }
     if(!src) {
         if(owner->image() == zfnull) {
-            owner->image(this->imageFail());
+            owner->image(this->imageLoadFail());
         }
     }
     else {
-        owner->image(ZFUIImageAsync(src, this->imageFail(), this->imageLoading()));
+        owner->image(ZFUIImageAsync(src, this->imageLoadFail(), this->imageLoading()));
     }
 }
 

@@ -150,7 +150,7 @@ ZFMETHOD_FUNC_DEFINE_4(void, drawImage
     if(image == zfnull) {
         return;
     }
-    zfautoT<ZFUIImage> imageState = image->imageState();
+    zfautoT<ZFUIImage> imageState = image->imageStateForceUpdate();
     if(imageState != zfnull && imageState->nativeImage() != zfnull) {
         ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
         imageFramePixel == ZFUIRectZero()

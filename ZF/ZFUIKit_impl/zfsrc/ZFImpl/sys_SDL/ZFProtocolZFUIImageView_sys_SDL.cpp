@@ -49,10 +49,10 @@ private:
             , ZF_IN zffloat treeAlpha
             ) {
         ZFUIImageView *owner = zfcast(ZFUIImageView *, nativeView->ownerZFUIView);
-        if(owner == zfnull || owner->image() == zfnull) {
+        if(owner == zfnull) {
             return zffalse;
         }
-        zfautoT<ZFUIImage> imageState = owner->image()->imageState(owner);
+        zfautoT<ZFUIImage> imageState = owner->imageState();
         if(imageState == zfnull) {
             return zffalse;
         }

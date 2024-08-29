@@ -1759,7 +1759,7 @@ public:
 #define _ZFP_ZFLAMBDA_END() \
                 } \
             } \
-        } _ZPF_Lbd_p(_ZFP_Lbd_v); \
+        } _ZFP_Lbd_p(_ZFP_Lbd_v); \
     }
 
 // ============================================================

@@ -18,16 +18,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass _ZFP_I_ZFUIImageAsyncTask : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFUIImageAsyncTask, ZFObject)
 public:
-    zfautoT<ZFUIImage> imageFail;
+    zfautoT<ZFTaskId> imageLoadTaskId;
+    zfautoT<ZFUIImage> imageLoadFail;
     zfautoT<ZFUIImage> imageLoading;
-    zfautoT<ZFTaskId> imageLoadTask;
     zfautoT<ZFUIImage> imageLoaded;
 protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void) {
-        if(this->imageLoadTask) {
-            this->imageLoadTask->stop();
-            this->imageLoadTask = zfnull;
+        if(this->imageLoadTaskId) {
+            this->imageLoadTaskId->stop();
+            this->imageLoadTaskId = zfnull;
         }
         zfsuper::objectOnDeallocPrepare();
     }
@@ -36,28 +36,29 @@ protected:
 static void _ZFP_ZFUIImageAsyncImpl(
         ZFUIImage *holder
         , const ZFInput &src
-        , ZFUIImage *imageFail = zfnull
+        , ZFUIImage *imageLoadFail = zfnull
         , ZFUIImage *imageLoading = zfnull
         ) {
-    _ZFP_ZFUIImageAsync_log("%p load begin: %s %s %s", holder, zftToString(src).cString(), zftToString(imageFail).cString(), zftToString(imageLoading).cString());
+    _ZFP_ZFUIImageAsync_log("%p load begin: %s %s %s", holder, zftToString(src).cString(), zftToString(imageLoadFail).cString(), zftToString(imageLoading).cString());
     zfobj<_ZFP_I_ZFUIImageAsyncTask> task;
-    task->imageFail = imageFail;
+    task->imageLoadFail = imageLoadFail;
     task->imageLoading = imageLoading;
 
     ZFLISTENER_1(imageStateImpl
             , zfautoT<_ZFP_I_ZFUIImageAsyncTask>, task
             ) {
-        if(task->imageLoaded) {
-            _ZFP_ZFUIImageAsync_log("%p state loaded: %s", holder, zftToString(task->imageLoaded).cString());
-            zfargs.result(task->imageLoaded);
-        }
-        else if(task->imageLoadTask) {
-            _ZFP_ZFUIImageAsync_log("%p state loading: %s", holder, zftToString(task->imageLoading).cString());
-            zfargs.result(task->imageLoading);
-        }
-        else {
-            _ZFP_ZFUIImageAsync_log("%p state fail: %s", holder, zftToString(task->imageFail).cString());
-            zfargs.result(task->imageFail);
+        v_zfbool *state = zfargs.param0();
+        if(state->zfv) {
+            ZFUIImage *owner = zfargs.sender();
+            if(task->imageLoaded) {
+                owner->imageStateImplNotifyUpdate(task->imageLoaded);
+            }
+            else if(task->imageLoadTaskId) {
+                owner->imageStateImplNotifyUpdate(task->imageLoading);
+            }
+            else {
+                owner->imageStateImplNotifyUpdate(task->imageLoadFail);
+            }
         }
     } ZFLISTENER_END()
     holder->imageStateImpl(imageStateImpl);
@@ -67,13 +68,13 @@ static void _ZFP_ZFUIImageAsyncImpl(
             , zfweakT<_ZFP_I_ZFUIImageAsyncTask>, task
             ) {
         if(task) {
-            task->imageLoadTask = zfnull;
+            task->imageLoadTaskId = zfnull;
             task->imageLoaded = zfargs.param0();
-            holder->imageStateUpdate();
+            holder->imageStateImplNotifyUpdate(task->imageLoaded ? task->imageLoaded : task->imageLoadFail);
         }
         _ZFP_ZFUIImageAsync_log("%p load end: %s", holder, zftToString(zfargs.param0()).cString());
     } ZFLISTENER_END()
-    task->imageLoadTask = ZFUIImageLoad(src, loadOnFinish);
+    task->imageLoadTaskId = ZFUIImageLoad(src, loadOnFinish);
 
     if(src.callbackSerializeCustomDisabled()) {
         return;
@@ -89,13 +90,13 @@ static void _ZFP_ZFUIImageAsyncImpl(
         srcData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageData);
         data.childAdd(srcData);
     }
-    if(imageFail) {
-        ZFSerializableData imageFailData;
-        if(!ZFObjectToDataT(imageFailData, imageFail)) {
+    if(imageLoadFail) {
+        ZFSerializableData imageLoadFailData;
+        if(!ZFObjectToDataT(imageLoadFailData, imageLoadFail)) {
             return;
         }
-        imageFailData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageFail);
-        data.childAdd(imageFailData);
+        imageLoadFailData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail);
+        data.childAdd(imageLoadFailData);
     }
     if(imageLoading) {
         ZFSerializableData imageLoadingData;
@@ -112,14 +113,14 @@ static void _ZFP_ZFUIImageAsyncImpl(
 }
 ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFUIImage>, ZFUIImageAsync
         , ZFMP_IN(const ZFInput &, src)
-        , ZFMP_IN_OPT(ZFUIImage *, imageFail, zfnull)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
         , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
         ) {
     if(!src) {
         return zfnull;
     }
     zfautoT<ZFUIImage> holder = ZFUIImage::ClassData()->newInstance();
-    _ZFP_ZFUIImageAsyncImpl(holder, src, imageFail, imageLoading);
+    _ZFP_ZFUIImageAsyncImpl(holder, src, imageLoadFail, imageLoading);
     return holder;
 }
 
@@ -134,9 +135,9 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_async) {
             "invalid callback");
         return zffalse;
     }
-    zfauto imageFail;
+    zfauto imageLoadFail;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIImageIO_async_imageFail, ZFObject, imageFail, {
+            check, ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail, ZFObject, imageLoadFail, {
                 return zffalse;
             });
     zfauto imageLoading;
@@ -144,7 +145,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_async) {
             check, ZFSerializableKeyword_ZFUIImageIO_async_imageLoading, ZFObject, imageLoading, {
                 return zffalse;
             });
-    _ZFP_ZFUIImageAsyncImpl(ret, input, imageFail, imageLoading);
+    _ZFP_ZFUIImageAsyncImpl(ret, input, imageLoadFail, imageLoading);
     return zftrue;
 }
 

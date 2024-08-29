@@ -23,7 +23,7 @@ public:
     /**
      * @brief the image to show while #imageUrl load failed
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, imageFail)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, imageLoadFail)
 
     /**
      * @brief async load image from url, by #ZFUIImageLoad
