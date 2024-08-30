@@ -32,10 +32,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   open a file for append or create new if not exist, for read/write
  */
 ZFENUM_BEGIN(ZFLIB_ZFCore, ZFFileOpenOption)
-    ZFENUM_VALUE_WITH_INIT(Create, 1) /**< @brief create for read write */
-    ZFENUM_VALUE_WITH_INIT(Read, 2) /**< @brief readonly */
-    ZFENUM_VALUE_WITH_INIT(Write, 4) /**< @brief write only */
-    ZFENUM_VALUE_WITH_INIT(Append, 8) /**< @brief append only */
+    ZFENUM_VALUE_WITH_INIT(Create, 1 << 0) /**< @brief create for read write */
+    ZFENUM_VALUE_WITH_INIT(Read, 1 << 1) /**< @brief readonly */
+    ZFENUM_VALUE_WITH_INIT(Write, 1 << 2) /**< @brief write only */
+    ZFENUM_VALUE_WITH_INIT(Append, 1 << 3) /**< @brief append only */
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Create)
     ZFENUM_VALUE_REGISTER(Read)

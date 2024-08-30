@@ -25,7 +25,7 @@ ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFRegExpOption)
     /**
      * @brief ignore case
      */
-    ZFENUM_VALUE_WITH_INIT(IgnoreCase, 1)
+    ZFENUM_VALUE_WITH_INIT(IgnoreCase, 1 << 0)
     /**
      * @brief single line mode
      *
@@ -34,7 +34,7 @@ ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFRegExpOption)
      * otherwise,
      * '.' doesn't match '\\n' (while '\\r' is also matched)
      */
-    ZFENUM_VALUE_WITH_INIT(SingleLine, 2)
+    ZFENUM_VALUE_WITH_INIT(SingleLine, 1 << 1)
     /**
      * @brief multi line mode
      *
@@ -45,7 +45,7 @@ ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFRegExpOption)
      * '^' matches string's begin only,
      * '$' matches string's end only
      */
-    ZFENUM_VALUE_WITH_INIT(MultiLine, 4)
+    ZFENUM_VALUE_WITH_INIT(MultiLine, 1 << 2)
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(None)
     ZFENUM_VALUE_REGISTER(IgnoreCase)

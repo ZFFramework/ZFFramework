@@ -501,15 +501,15 @@ protected:
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUITransform)
     ZFENUM_VALUE_WITH_INIT(Unavailable, 0) /**< @brief no transform support */
 
-    ZFENUM_VALUE_WITH_INIT(TranslateX, 1) /**< @brief support translate */
-    ZFENUM_VALUE_WITH_INIT(TranslateY, 2) /**< @brief support translate */
-    ZFENUM_VALUE_WITH_INIT(TranslateZ, 4) /**< @brief support translate */
-    ZFENUM_VALUE_WITH_INIT(ScaleX, 8) /**< @brief support scale */
-    ZFENUM_VALUE_WITH_INIT(ScaleY, 16) /**< @brief support scale */
-    ZFENUM_VALUE_WITH_INIT(ScaleZ, 32) /**< @brief support scale */
-    ZFENUM_VALUE_WITH_INIT(RotateX, 64) /**< @brief support rotate */
-    ZFENUM_VALUE_WITH_INIT(RotateY, 128) /**< @brief support rotate */
-    ZFENUM_VALUE_WITH_INIT(RotateZ, 256) /**< @brief support rotate */
+    ZFENUM_VALUE_WITH_INIT(TranslateX, 1 << 0) /**< @brief support translate */
+    ZFENUM_VALUE_WITH_INIT(TranslateY, 1 << 1) /**< @brief support translate */
+    ZFENUM_VALUE_WITH_INIT(TranslateZ, 1 << 2) /**< @brief support translate */
+    ZFENUM_VALUE_WITH_INIT(ScaleX, 1 << 3) /**< @brief support scale */
+    ZFENUM_VALUE_WITH_INIT(ScaleY, 1 << 4) /**< @brief support scale */
+    ZFENUM_VALUE_WITH_INIT(ScaleZ, 1 << 5) /**< @brief support scale */
+    ZFENUM_VALUE_WITH_INIT(RotateX, 1 << 6) /**< @brief support rotate */
+    ZFENUM_VALUE_WITH_INIT(RotateY, 1 << 7) /**< @brief support rotate */
+    ZFENUM_VALUE_WITH_INIT(RotateZ, 1 << 8) /**< @brief support rotate */
 
     /**
      * @brief support basic 2D transform

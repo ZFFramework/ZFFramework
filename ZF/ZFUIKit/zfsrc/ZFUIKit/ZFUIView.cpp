@@ -55,15 +55,29 @@ public:
         stateFlag_layoutRequestedRecursively = 1 << 2,
         stateFlag_layouting = 1 << 3,
         stateFlag_viewFrameOverrideFlag = 1 << 4,
-        stateFlag_UIScaleOnUpdate = 1 << 5,
-        stateFlag_viewTransformUpdate = 1 << 6,
-        stateFlag_viewTransformModified = 1 << 7,
-        stateFlag_observerHasAddFlag_viewChildOnUpdate = 1 << 8,
-        stateFlag_observerHasAddFlag_viewChildOnAdd = 1 << 9,
-        stateFlag_observerHasAddFlag_viewChildOnRemove = 1 << 10,
-        stateFlag_observerHasAddFlag_viewOnAddToParent = 1 << 11,
-        stateFlag_observerHasAddFlag_viewOnRemoveFromParent = 1 << 12,
-        stateFlag_observerHasAddFlag_layoutOnLayoutRequest = 1 << 13,
+        stateFlag_viewFrameOverride_x = 1 << 5,
+        stateFlag_viewFrameOverride_y = 1 << 6,
+        stateFlag_viewFrameOverride_width = 1 << 7,
+        stateFlag_viewFrameOverride_height = 1 << 8,
+        stateFlag_viewFrameOverride_centerX = 1 << 9,
+        stateFlag_viewFrameOverride_centerY = 1 << 10,
+        stateFlag_viewFrameOverride_mask = 0
+            | stateFlag_viewFrameOverride_x
+            | stateFlag_viewFrameOverride_y
+            | stateFlag_viewFrameOverride_width
+            | stateFlag_viewFrameOverride_height
+            | stateFlag_viewFrameOverride_centerX
+            | stateFlag_viewFrameOverride_centerY
+            ,
+        stateFlag_UIScaleOnUpdate = 1 << 11,
+        stateFlag_viewTransformUpdate = 1 << 12,
+        stateFlag_viewTransformModified = 1 << 13,
+        stateFlag_observerHasAddFlag_viewChildOnUpdate = 1 << 14,
+        stateFlag_observerHasAddFlag_viewChildOnAdd = 1 << 15,
+        stateFlag_observerHasAddFlag_viewChildOnRemove = 1 << 16,
+        stateFlag_observerHasAddFlag_viewOnAddToParent = 1 << 17,
+        stateFlag_observerHasAddFlag_viewOnRemoveFromParent = 1 << 18,
+        stateFlag_observerHasAddFlag_layoutOnLayoutRequest = 1 << 19,
     };
     zfuint stateFlag;
 
@@ -187,6 +201,44 @@ public:
             this->layoutParam->observerRemove(ZFUILayoutParam::EventLayoutParamOnUpdate(), owner->d->layoutParamOnUpdate);
         }
         this->layoutParam = newLayoutParam;
+    }
+    // return whether still keep in override state, or false to clear override state
+    zfbool viewFrameOverrideFix(
+            ZF_IN ZFUIView *owner
+            , ZF_IN const ZFUIRect &viewFrameNew
+            ) {
+        ZFUIPoint viewCenter = ZFUIRectGetCenter(this->viewFrame);
+
+        if(!ZFBitTest(this->stateFlag, stateFlag_viewFrameOverride_width)) {
+            this->viewFrame.width = viewFrameNew.width;
+            this->viewFramePrev.width = viewFrameNew.width;
+        }
+        if(ZFBitTest(this->stateFlag, stateFlag_viewFrameOverride_centerX)) {
+            this->viewFrame.x = viewCenter.x - this->viewFrame.width / 2;
+        }
+        else if(!ZFBitTest(this->stateFlag, stateFlag_viewFrameOverride_x)) {
+            this->viewFrame.x = viewFrameNew.x;
+            this->viewFramePrev.x = viewFrameNew.x;
+        }
+
+        if(!ZFBitTest(this->stateFlag, stateFlag_viewFrameOverride_height)) {
+            this->viewFrame.height = viewFrameNew.height;
+            this->viewFramePrev.height = viewFrameNew.height;
+        }
+        if(ZFBitTest(this->stateFlag, stateFlag_viewFrameOverride_centerY)) {
+            this->viewFrame.y = viewCenter.y - this->viewFrame.height / 2;
+        }
+        else if(!ZFBitTest(this->stateFlag, stateFlag_viewFrameOverride_y)) {
+            this->viewFrame.y = viewFrameNew.y;
+            this->viewFramePrev.y = viewFrameNew.y;
+        }
+
+        if(this->viewFrame == this->viewFramePrev) {
+            owner->viewFrameReset();
+            return zffalse;
+        }
+
+        return zftrue;
     }
     void viewFrameUpdate(ZF_IN const ZFUIRect &viewFrame) {
         if(!ZFBitTest(this->stateFlag, stateFlag_viewFrameOverrideFlag)) {
@@ -1396,7 +1448,10 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
         , ZFMP_IN(const ZFUISize &, sizeHint)
         , ZFMP_IN(const ZFUISizeParam &, sizeParam)
         ) {
-    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
+    if(zftrue
+            && ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)
+            && ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_height)
+            ) {
         d->measureResult->measuredSize.width = d->viewFrame.width;
         d->measureResult->measuredSize.height = d->viewFrame.height;
         return d->measureResult->measuredSize;
@@ -1405,9 +1460,13 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
             || d->measureResult->sizeHint != sizeHint
             || d->measureResult->sizeParam != sizeParam
+            || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)
+            || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_height)
             ) {
         if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
                 && d->measureResult->sizeParam == sizeParam
+                && !ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)
+                && !ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_height)
                 ) {
             // if all these cond matchs, result is ensured not changed
             // * prev measure with wrap, and result a size less than size hint
@@ -1462,6 +1521,13 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
 
         ZFUILayoutParam::sizeHintApply(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHint, sizeParam);
         ZFUISizeApplyRange(d->measureResult->measuredSize, d->measureResult->measuredSize, this->viewSizeMin(), this->viewSizeMax());
+
+        if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)) {
+            d->measureResult->measuredSize.width = d->viewFrame.width;
+        }
+        if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_height)) {
+            d->measureResult->measuredSize.height = d->viewFrame.height;
+        }
     }
     return d->measureResult->measuredSize;
 }
@@ -1481,11 +1547,17 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
         if(d->viewFrame != viewFrame) {
             if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
                 ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+                if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask)) {
+                    ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask);
+                }
                 d->viewFramePrev = d->viewFrame;
             }
-            else if(viewFrame == d->viewFramePrev) {
-                // viewFrame restored to prev, considered as user canceled viewFrame override
-                ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+            else {
+                if(viewFrame == d->viewFramePrev) {
+                    // viewFrame restored to prev, considered as user canceled viewFrame override
+                    this->viewFrameReset();
+                    d->measureResult->sizeHint = ZFUISizeInvalid();
+                }
             }
             d->viewFrameUpdate(viewFrame);
             if(d->viewFrame.width != d->viewFramePrev.width
@@ -1500,7 +1572,9 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
     }
     // else, changed by parent layout step
 
-    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) { // user has set viewFrame, ignore parent layout logic
+    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)
+            && d->viewFrameOverrideFix(this, viewFrame)
+            ) { // user has set viewFrame, ignore parent layout logic
         if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)) {
             d->layoutAction(this, ZFUIRectGetBounds(d->viewFrame));
         }
@@ -1533,9 +1607,15 @@ ZFMETHOD_DEFINE_0(ZFUIView, const ZFUIRect &, viewFramePrev) {
     return d->viewFramePrev;
 }
 
+ZFMETHOD_DEFINE_0(ZFUIView, zfbool, viewFrameOverrided) {
+    return ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+}
+
 ZFMETHOD_DEFINE_0(ZFUIView, void, viewFrameReset) {
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag
+                | _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask
+                );
         if(this->viewParent() != zfnull) {
             this->viewParent()->layoutRequest();
         }
@@ -1548,9 +1628,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewX) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewX
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
-    ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.x = propertyValue;
-    this->viewFrame(viewFrame);
+    if(propertyValue != this->viewFrame().x) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_x);
+        ZFUIRect viewFrame = this->viewFrame();
+        viewFrame.x = propertyValue;
+        this->viewFrame(viewFrame);
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewY) {
     return this->viewFrame().y;
@@ -1558,9 +1641,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewY) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewY
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
-    ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.y = propertyValue;
-    this->viewFrame(viewFrame);
+    if(propertyValue != this->viewFrame().y) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_y);
+        ZFUIRect viewFrame = this->viewFrame();
+        viewFrame.y = propertyValue;
+        this->viewFrame(viewFrame);
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewWidth) {
     return this->viewFrame().width;
@@ -1568,9 +1654,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewWidth) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewWidth
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
-    ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.width = propertyValue;
-    this->viewFrame(viewFrame);
+    if(propertyValue != this->viewFrame().width) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width);
+        ZFUIRect viewFrame = this->viewFrame();
+        viewFrame.width = propertyValue;
+        this->viewFrame(viewFrame);
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewHeight) {
     return this->viewFrame().height;
@@ -1578,9 +1667,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewHeight) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewHeight
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
-    ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.height = propertyValue;
-    this->viewFrame(viewFrame);
+    if(propertyValue != this->viewFrame().height) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_height);
+        ZFUIRect viewFrame = this->viewFrame();
+        viewFrame.height = propertyValue;
+        this->viewFrame(viewFrame);
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterX) {
     return ZFUIRectGetCenterX(this->viewFrame());
@@ -1588,9 +1680,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterX) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterX
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
-    ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.x = propertyValue - viewFrame.width / 2;
-    this->viewFrame(viewFrame);
+    if(propertyValue != ZFUIRectGetCenterX(this->viewFrame())) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_centerX);
+        ZFUIRect viewFrame = this->viewFrame();
+        viewFrame.x = propertyValue - viewFrame.width / 2;
+        this->viewFrame(viewFrame);
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterY) {
     return ZFUIRectGetCenterY(this->viewFrame());
@@ -1598,9 +1693,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterY) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterY
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
-    ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.y = propertyValue - viewFrame.height / 2;
-    this->viewFrame(viewFrame);
+    if(propertyValue != ZFUIRectGetCenterY(this->viewFrame())) {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_centerY);
+        ZFUIRect viewFrame = this->viewFrame();
+        viewFrame.y = propertyValue - viewFrame.height / 2;
+        this->viewFrame(viewFrame);
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFUIView, void, layoutIfNeed) {

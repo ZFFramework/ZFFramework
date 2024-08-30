@@ -15,22 +15,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * higher priority ensured to have smaller value
  */
 typedef enum {
-    ZFLevelZFFrameworkStatic        = 0, /**< @brief ZFFramework static, for non-ZFObject-related meta data or global instance */
-    ZFLevelZFFrameworkEssential     = 1, /**< @brief ZFFramework essential, for ZFObject-related meta data, or essential global instance */
-    ZFLevelZFFrameworkHigh          = 2, /**< @brief ZFFramework high, for global instance */
-    ZFLevelZFFrameworkNormal        = 3, /**< @brief ZFFramework, for logic initialization */
-    ZFLevelZFFrameworkLow           = 4, /**< @brief ZFFramework low */
+    ZFLevelZFFrameworkStatic, /**< @brief ZFFramework static, for non-ZFObject-related meta data or global instance */
+    ZFLevelZFFrameworkEssential, /**< @brief ZFFramework essential, for ZFObject-related meta data, or essential global instance */
+    ZFLevelZFFrameworkHigh, /**< @brief ZFFramework high, for global instance */
+    ZFLevelZFFrameworkNormal, /**< @brief ZFFramework, for logic initialization */
+    ZFLevelZFFrameworkLow, /**< @brief ZFFramework low */
 
-    ZFLevelAppEssential             = 5, /**< @brief app essential */
-    ZFLevelAppHigh                  = 6, /**< @brief app high */
-    ZFLevelAppNormal                = 7, /**< @brief app */
-    ZFLevelAppLow                   = 8, /**< @brief app low */
+    ZFLevelAppEssential, /**< @brief app essential */
+    ZFLevelAppHigh, /**< @brief app high */
+    ZFLevelAppNormal, /**< @brief app */
+    ZFLevelAppLow, /**< @brief app low */
 
-    ZFLevelZFFrameworkPostLow       = 9, /**< @brief ZFFramework post low */
-    ZFLevelZFFrameworkPostNormal    = 10, /**< @brief ZFFramework post normal */
-    ZFLevelZFFrameworkPostHigh      = 11, /**< @brief ZFFramework post high */
-    ZFLevelZFFrameworkPostEssential = 12, /**< @brief ZFFramework post essential */
-    ZFLevelZFFrameworkPostStatic    = 13, /**< @brief ZFFramework post static */
+    ZFLevelZFFrameworkPostLow, /**< @brief ZFFramework post low */
+    ZFLevelZFFrameworkPostNormal, /**< @brief ZFFramework post normal */
+    ZFLevelZFFrameworkPostHigh, /**< @brief ZFFramework post high */
+    ZFLevelZFFrameworkPostEssential, /**< @brief ZFFramework post essential */
+    ZFLevelZFFrameworkPostStatic, /**< @brief ZFFramework post static */
 } ZFLevel;
 
 /** @brief string tokens */

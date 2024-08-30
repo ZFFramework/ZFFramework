@@ -17,8 +17,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief filter type
  */
 typedef enum {
-    ZFFilterTypeInclude = 1,
-    ZFFilterTypeExclude = 2,
+    ZFFilterTypeInclude,
+    ZFFilterTypeExclude,
 } ZFFilterType;
 /** @brief string tokens */
 #define ZFTOKEN_ZFFilterTypeInclude "Include"

@@ -306,6 +306,9 @@ public:
     /** @brief previous #viewFrame */
     ZFMETHOD_DECLARE_0(const ZFUIRect &, viewFramePrev)
 
+    /** @brief true if #viewFrame changed by user, use #viewFrameReset to reset */
+    ZFMETHOD_DECLARE_0(zfbool, viewFrameOverrided)
+
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(void, viewFrameReset)
 
