@@ -38,7 +38,10 @@ public:
 
     zfautoT<ZFUIViewMeasureResult> measureResult;
     ZFUIRect viewFrame;
-    ZFUIRect viewFramePrev;
+    ZFUIRect viewFramePrev; // also used to store state of user override of viewFrame,
+                            // when viewFrame changed back to viewFramePrev,
+                            // it's considered user has canceled viewFrame override,
+                            // see also stateFlag_viewFrameOverrideFlag
     ZFUIRect nativeImplViewFrame;
     _ZFP_ZFUIViewLayerData layerInternalImpl;
     _ZFP_ZFUIViewLayerData layerInternalBg;
@@ -186,7 +189,9 @@ public:
         this->layoutParam = newLayoutParam;
     }
     void viewFrameUpdate(ZF_IN const ZFUIRect &viewFrame) {
-        this->viewFramePrev = this->viewFrame;
+        if(!ZFBitTest(this->stateFlag, stateFlag_viewFrameOverrideFlag)) {
+            this->viewFramePrev = this->viewFrame;
+        }
         this->viewFrame = viewFrame;
         if(this->viewFrame.width < 0) {
             this->viewFrame.width = 0;
@@ -1221,7 +1226,9 @@ void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
         ) {
     if(viewParent == zfnull) {
         d->viewParent = zfnull;
-        d->viewFramePrev = ZFUIRectZero();
+        if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
+            d->viewFramePrev = ZFUIRectZero();
+        }
     }
     else {
         d->viewParent = viewParent;
@@ -1472,7 +1479,14 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
             && (d->viewParent == zfnull || !ZFBitTest(d->viewParent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting))
             ) { // changed by user or animation
         if(d->viewFrame != viewFrame) {
-            ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+            if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
+                ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+                d->viewFramePrev = d->viewFrame;
+            }
+            else if(viewFrame == d->viewFramePrev) {
+                // viewFrame restored to prev, considered as user canceled viewFrame override
+                ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+            }
             d->viewFrameUpdate(viewFrame);
             if(d->viewFrame.width != d->viewFramePrev.width
                     || d->viewFrame.height != d->viewFramePrev.height
@@ -1490,10 +1504,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
         if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)) {
             d->layoutAction(this, ZFUIRectGetBounds(d->viewFrame));
         }
-        if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
-            // size not changed but point changed, notify impl to move the view is enough
-            d->viewFrameUpdateForImpl(this);
-        }
+        d->viewFrameUpdateForImpl(this);
     }
     else {
         if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
@@ -1511,7 +1522,6 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
         }
         else if(d->viewFrame != viewFrame || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleOnUpdate)) {
             d->viewFrameUpdate(viewFrame);
-            // size not changed but point changed, notify impl to move the view is enough
             d->viewFrameUpdateForImpl(this);
         }
     }
