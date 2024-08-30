@@ -310,37 +310,37 @@ public:
     ZFMETHOD_DECLARE_0(void, viewFrameReset)
 
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat const &, viewX)
+    ZFMETHOD_DECLARE_0(zffloat, viewX)
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_1(void, viewX
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat const &, viewY)
+    ZFMETHOD_DECLARE_0(zffloat, viewY)
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_1(void, viewY
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat const &, viewWidth)
+    ZFMETHOD_DECLARE_0(zffloat, viewWidth)
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_1(void, viewWidth
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat const &, viewHeight)
+    ZFMETHOD_DECLARE_0(zffloat, viewHeight)
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_1(void, viewHeight
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat const &, viewCenterX)
+    ZFMETHOD_DECLARE_0(zffloat, viewCenterX)
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_1(void, viewCenterX
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat const &, viewCenterY)
+    ZFMETHOD_DECLARE_0(zffloat, viewCenterY)
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_1(void, viewCenterY
             , ZFMP_IN(zffloat const &, propertyValue)

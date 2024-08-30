@@ -873,6 +873,22 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIRectGetCenter
     return ret;
 }
 /**
+ * @brief get center point of the rect
+ */
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zffloat, ZFUIRectGetCenterX
+        , ZFMP_IN(const ZFUIRect &, rect)
+        ) {
+    return rect.x + rect.width / 2;
+}
+/**
+ * @brief get center point of the rect
+ */
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zffloat, ZFUIRectGetCenterY
+        , ZFMP_IN(const ZFUIRect &, rect)
+        ) {
+    return rect.y + rect.height / 2;
+}
+/**
  * @brief get left edge of the rect
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zffloat, ZFUIRectGetLeft

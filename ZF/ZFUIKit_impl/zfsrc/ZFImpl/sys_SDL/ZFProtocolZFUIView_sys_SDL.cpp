@@ -89,7 +89,7 @@ public:
             nativeImplView->rect.y = rect.y;
             nativeImplView->rect.w = rect.width;
             nativeImplView->rect.h = rect.height;
-            nativeImplView->renderRequest();
+            nativeImplView->layoutRequest();
         }
     }
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
@@ -175,6 +175,7 @@ public:
         nativeView->rect.y = (int)rect.y;
         nativeView->rect.w = (int)rect.width;
         nativeView->rect.h = (int)rect.height;
+        nativeView->layoutRequest();
     }
 
     virtual void layoutRequest(ZF_IN ZFUIView *view) {

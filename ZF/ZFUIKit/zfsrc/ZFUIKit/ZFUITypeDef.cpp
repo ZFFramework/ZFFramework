@@ -340,6 +340,12 @@ ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIRect, ZFUIRectGetBounds
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIPoint, ZFUIRectGetCenter
         , ZFMP_IN(const ZFUIRect &, rect)
         )
+ZFMETHOD_FUNC_INLINE_DEFINE_1(zffloat, ZFUIRectGetCenterX
+        , ZFMP_IN(const ZFUIRect &, rect)
+        )
+ZFMETHOD_FUNC_INLINE_DEFINE_1(zffloat, ZFUIRectGetCenterY
+        , ZFMP_IN(const ZFUIRect &, rect)
+        )
 ZFMETHOD_FUNC_INLINE_DEFINE_1(zffloat, ZFUIRectGetLeft
         , ZFMP_IN(const ZFUIRect &, rect)
         )
@@ -421,15 +427,15 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFUIAlignValid
         ) {
     return (
             ZFBitGet(align, ~(_ZFP_ZFUIAlignMask())) == 0
-            && ((zffloat)ZFBitTest(align, ZFUIAlign::e_LeftEdge)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_Left)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_RightEdge)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_Right)
+            && ((zfuint)ZFBitTest(align, ZFUIAlign::e_LeftEdge)
+                + (zfuint)ZFBitTest(align, ZFUIAlign::e_Left)
+                + (zfuint)ZFBitTest(align, ZFUIAlign::e_RightEdge)
+                + (zfuint)ZFBitTest(align, ZFUIAlign::e_Right)
                 ) <= 1
-            && ((zffloat)ZFBitTest(align, ZFUIAlign::e_TopEdge)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_Top)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_BottomEdge)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_Bottom)
+            && ((zfuint)ZFBitTest(align, ZFUIAlign::e_TopEdge)
+                + (zfuint)ZFBitTest(align, ZFUIAlign::e_Top)
+                + (zfuint)ZFBitTest(align, ZFUIAlign::e_BottomEdge)
+                + (zfuint)ZFBitTest(align, ZFUIAlign::e_Bottom)
                 ) <= 1
         );
 }

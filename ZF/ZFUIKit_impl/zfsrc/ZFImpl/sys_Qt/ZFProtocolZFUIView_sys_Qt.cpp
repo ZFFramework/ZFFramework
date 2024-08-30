@@ -392,6 +392,7 @@ public:
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = (_ZFP_ZFUIViewImpl_sys_Qt_View *)view->nativeView();
         QRectF frame = ZFImpl_sys_Qt_ZFUIRectToQRectF(rect);
         ZFImpl_sys_Qt_BaseView::ForceGeometry(nativeView->_ZFP_nativeImplView, frame);
+        nativeView->_ZFP_layoutProxy->invalidate();
     }
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
         return 1;
@@ -500,6 +501,7 @@ public:
         QRectF frame = ZFImpl_sys_Qt_ZFUIRectToQRectF(rect);
         nativeViewTmp->_ZFP_layoutProxy->_ZFP_layoutedSize = frame.size();
         ZFImpl_sys_Qt_BaseView::ForceGeometry(nativeViewTmp, frame);
+        nativeViewTmp->_ZFP_layoutProxy->invalidate();
     }
 
     virtual void layoutRequest(ZF_IN ZFUIView *view) {

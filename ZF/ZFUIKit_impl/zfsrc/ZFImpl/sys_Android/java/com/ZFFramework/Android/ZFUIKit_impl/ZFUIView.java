@@ -86,6 +86,7 @@ public class ZFUIView extends ViewGroup {
         nativeViewTmp.nativeImplViewFrame_y = nativeImplViewFrame_y;
         nativeViewTmp.nativeImplViewFrame_width = nativeImplViewFrame_width;
         nativeViewTmp.nativeImplViewFrame_height = nativeImplViewFrame_height;
+        nativeViewTmp.requestLayout();
     }
 
     public static float native_UIScaleForImpl(Object nativeView) {

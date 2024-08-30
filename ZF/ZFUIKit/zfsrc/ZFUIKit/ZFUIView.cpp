@@ -39,7 +39,6 @@ public:
     zfautoT<ZFUIViewMeasureResult> measureResult;
     ZFUIRect viewFrame;
     ZFUIRect viewFramePrev;
-    ZFUIPoint viewCenter;
     ZFUIRect nativeImplViewFrame;
     _ZFP_ZFUIViewLayerData layerInternalImpl;
     _ZFP_ZFUIViewLayerData layerInternalBg;
@@ -83,7 +82,6 @@ public:
     , measureResult(zfnull)
     , viewFrame(ZFUIRectZero())
     , viewFramePrev(ZFUIRectZero())
-    , viewCenter(ZFUIPointZero())
     , nativeImplViewFrame(ZFUIRectZero())
     , layerInternalImpl()
     , layerInternalBg()
@@ -196,8 +194,6 @@ public:
         if(this->viewFrame.height < 0) {
             this->viewFrame.height = 0;
         }
-        this->viewCenter.x = this->viewFrame.x + this->viewFrame.width / 2;
-        this->viewCenter.y = this->viewFrame.y + this->viewFrame.height / 2;
     }
     void viewFrameUpdateForImpl(ZF_IN ZFUIView *view) {
         if(view->UIScale() == 1 || view->UIScale() == 0 || view->viewParent() == zfnull) {
@@ -207,11 +203,12 @@ public:
                 );
         }
         else {
+            ZFUIPoint viewCenter = ZFUIRectGetCenter(this->viewFrame);
             ZFPROTOCOL_ACCESS(ZFUIView)->viewFrame(
                     view,
                     ZFUIRectMake(
-                            this->viewCenter.x * this->UIScaleInherited * this->UIScaleForImpl - this->viewFrame.width * this->UIScaleFixed / 2,
-                            this->viewCenter.y * this->UIScaleInherited * this->UIScaleForImpl - this->viewFrame.height * this->UIScaleFixed / 2,
+                            viewCenter.x * this->UIScaleInherited * this->UIScaleForImpl - this->viewFrame.width * this->UIScaleFixed / 2,
+                            viewCenter.y * this->UIScaleInherited * this->UIScaleForImpl - this->viewFrame.height * this->UIScaleFixed / 2,
                             this->viewFrame.width * this->UIScaleFixed,
                             this->viewFrame.height * this->UIScaleFixed
                         )
@@ -1535,7 +1532,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, void, viewFrameReset) {
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat const &, viewX) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewX) {
     return this->viewFrame().x;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewX
@@ -1545,7 +1542,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewX
     viewFrame.x = propertyValue;
     this->viewFrame(viewFrame);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat const &, viewY) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewY) {
     return this->viewFrame().y;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewY
@@ -1555,7 +1552,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewY
     viewFrame.y = propertyValue;
     this->viewFrame(viewFrame);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat const &, viewWidth) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewWidth) {
     return this->viewFrame().width;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewWidth
@@ -1565,7 +1562,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewWidth
     viewFrame.width = propertyValue;
     this->viewFrame(viewFrame);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat const &, viewHeight) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewHeight) {
     return this->viewFrame().height;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewHeight
@@ -1575,8 +1572,8 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewHeight
     viewFrame.height = propertyValue;
     this->viewFrame(viewFrame);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat const &, viewCenterX) {
-    return d->viewCenter.x;
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterX) {
+    return ZFUIRectGetCenterX(this->viewFrame());
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterX
         , ZFMP_IN(zffloat const &, propertyValue)
@@ -1585,8 +1582,8 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterX
     viewFrame.x = propertyValue - viewFrame.width / 2;
     this->viewFrame(viewFrame);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat const &, viewCenterY) {
-    return d->viewCenter.y;
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterY) {
+    return ZFUIRectGetCenterY(this->viewFrame());
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterY
         , ZFMP_IN(zffloat const &, propertyValue)

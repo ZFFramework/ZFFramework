@@ -11,11 +11,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief macro to detect whether bit is set, zftrue only if all the bits in bit is set
- *
- * note that test by 0 is always zftrue
+ * @brief macro to detect whether bit is set, zftrue any one of test bit has set
  */
-#define ZFBitTest(var, bit) (((var) & (bit)) == (bit))
+#define ZFBitTest(var, bit) (((var) & (bit)) != 0)
+/**
+ * @brief macro to detect whether bit is set, zftrue only if all the bits in bit is set
+ */
+#define ZFBitTestAll(var, bit) (((var) & (bit)) == (bit))
 /**
  * @brief macro to get the value at bit
  */
