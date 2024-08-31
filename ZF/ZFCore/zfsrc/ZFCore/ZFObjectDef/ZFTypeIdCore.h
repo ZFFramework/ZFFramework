@@ -664,7 +664,7 @@ protected:
  * @brief register Type's progress update logic
  *
  * a progress update means,
- * the type can be changed by timeline by supply a "from/to" value range\n
+ * the type can be changed by timer by supply a "from/to" value range\n
  * for example, an float type with range "[0.5, 3.0]" and progress "0.3",
  * would result "0.5 + (3.0 - 0.5) * 0.3", which is 1.25\n
  * this is useful to make a property change with animation\n

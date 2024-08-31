@@ -11,7 +11,7 @@ zfclassNotPOD _ZFP_ZFTimerPrivate {
 public:
     void *nativeTimer;
     zfbool timerStarted;
-    zfindex timerActivatedCount;
+    zfuint timerActivatedCount;
     void *timerThreadToken;
 
 public:
@@ -113,7 +113,7 @@ ZFMETHOD_DEFINE_0(ZFTimer, zfbool, timerStarted) {
 }
 
 ZFMETHOD_DEFINE_0(ZFTimer, zfindex, timerActivatedCount) {
-    return d->timerActivatedCount;
+    return (zfindex)d->timerActivatedCount;
 }
 
 void ZFTimer::_ZFP_ZFTimer_timerOnStart(void) {

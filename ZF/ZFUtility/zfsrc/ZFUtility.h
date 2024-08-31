@@ -7,7 +7,7 @@
 #define _ZFI_ZFUtility_h_
 
 #include "ZFUtility/ZFAni.h"
-#include "ZFUtility/ZFAniForTimeline.h"
+#include "ZFUtility/ZFAniForTimer.h"
 #include "ZFUtility/ZFAniGroup.h"
 #include "ZFUtility/ZFAnimation.h"
 #include "ZFUtility/ZFCache.h"

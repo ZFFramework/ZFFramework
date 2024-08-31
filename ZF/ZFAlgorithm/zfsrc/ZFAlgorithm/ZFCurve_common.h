@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief ease in time line, see #ZFCurve
+ * @brief ease in curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveEaseIn : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveEaseIn, ZFCurve)
@@ -25,7 +25,7 @@ protected:
 
 // ============================================================
 /**
- * @brief ease out time line, see #ZFCurve
+ * @brief ease out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveEaseOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveEaseOut, ZFCurve)
@@ -39,7 +39,7 @@ protected:
 
 // ============================================================
 /**
- * @brief ease in and out time line, see #ZFCurve
+ * @brief ease in and out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveEaseInOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveEaseInOut, ZFCurve)
@@ -53,7 +53,7 @@ protected:
 
 // ============================================================
 /**
- * @brief bounce in time line, see #ZFCurve
+ * @brief bounce in curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveBounceIn : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveBounceIn, ZFCurve)
@@ -67,7 +67,7 @@ protected:
 
 // ============================================================
 /**
- * @brief bounce out time line, see #ZFCurve
+ * @brief bounce out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveBounceOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveBounceOut, ZFCurve)
@@ -81,7 +81,7 @@ protected:
 
 // ============================================================
 /**
- * @brief bounce in and out time line, see #ZFCurve
+ * @brief bounce in and out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveBounceInOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveBounceInOut, ZFCurve)
@@ -95,7 +95,7 @@ protected:
 
 // ============================================================
 /**
- * @brief loop time line, see #ZFCurve
+ * @brief loop curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoop : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoop, ZFCurve)
@@ -116,7 +116,7 @@ protected:
     }
 };
 /**
- * @brief loop with linear time line, see #ZFCurve
+ * @brief loop with linear curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopLinear : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopLinear, ZFCurve)
@@ -128,7 +128,7 @@ protected:
     }
 };
 /**
- * @brief loop with ease in time line, see #ZFCurve
+ * @brief loop with ease in curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseIn : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopEaseIn, ZFCurve)
@@ -140,7 +140,7 @@ protected:
     }
 };
 /**
- * @brief loop with ease out time line, see #ZFCurve
+ * @brief loop with ease out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopEaseOut, ZFCurve)
@@ -152,7 +152,7 @@ protected:
     }
 };
 /**
- * @brief loop with ease in and out time line, see #ZFCurve
+ * @brief loop with ease in and out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseInOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopEaseInOut, ZFCurve)
@@ -164,7 +164,7 @@ protected:
     }
 };
 /**
- * @brief loop with bounce in time line, see #ZFCurve
+ * @brief loop with bounce in curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceIn : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopBounceIn, ZFCurve)
@@ -176,7 +176,7 @@ protected:
     }
 };
 /**
- * @brief loop with bounce out time line, see #ZFCurve
+ * @brief loop with bounce out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopBounceOut, ZFCurve)
@@ -188,7 +188,7 @@ protected:
     }
 };
 /**
- * @brief loop with bounce in and out time line, see #ZFCurve
+ * @brief loop with bounce in and out curve, see #ZFCurve
  */
 zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceInOut : zfextend ZFCurve {
     ZFOBJECT_DECLARE(ZFCurveLoopBounceInOut, ZFCurve)

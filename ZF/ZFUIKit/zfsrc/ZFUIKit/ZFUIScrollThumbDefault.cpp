@@ -9,8 +9,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFSTYLE_DEFAULT_DEFINE(ZFUIScrollThumbDefault)
 
 // ============================================================
-zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextend ZFAniForTimeline {
-    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, ZFAniForTimeline)
+zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextend ZFAniForTimer {
+    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, ZFAniForTimer)
 
 private:
     ZFUIImageView *thumbView;
@@ -27,8 +27,8 @@ protected:
 
 protected:
     zfoverride
-    virtual void aniTimelineOnUpdate(ZF_IN zffloat progress) {
-        zfsuper::aniTimelineOnUpdate(progress);
+    virtual void aniTimerOnUpdate(ZF_IN zffloat progress) {
+        zfsuper::aniTimerOnUpdate(progress);
         if(this->thumbView->viewVisible()) {
             this->thumbView->viewAlpha(1 - progress);
         }

@@ -486,7 +486,7 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childCurve
         , ZFMP_IN(ZFCurve *, aniCurve)
         ) {
     if(this->childCount() > 0) {
-        ZFAniForTimeline *child = this->childAt(this->childCount() - 1);
+        ZFAniForTimer *child = this->childAt(this->childCount() - 1);
         if(child != zfnull) {
             child->aniCurve(aniCurve);
         }

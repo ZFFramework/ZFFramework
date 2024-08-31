@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAniForTimeline>, ZFAni
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const ZFListener &, aniImpl)
         ) {
@@ -16,7 +16,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAniForTimeline>, ZFAni
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAniForTimeline>, ZFAni
+ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
@@ -253,7 +253,7 @@ void ZFAniForGeneric::aniImplStop(void) {
     zfsuper::aniImplStop();
     d->valueSavedRestore();
 }
-void ZFAniForGeneric::aniTimelineOnUpdate(ZF_IN zffloat progress) {
+void ZFAniForGeneric::aniTimerOnUpdate(ZF_IN zffloat progress) {
     d->update(progress);
 }
 void ZFAniForGeneric::objectOnInit(void) {
