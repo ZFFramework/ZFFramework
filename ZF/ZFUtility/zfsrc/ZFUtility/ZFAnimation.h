@@ -184,8 +184,8 @@ protected:
      * @brief called to check whether the animation is currently valid,
      *   an invalid animation is ensured can't be started
      *
-     * by default, this method would only check animation's duration,
-     * for common case, you should check whether the target is valid
+     * by default, this method checks nothing,
+     * for common case, impl may check whether the target is valid
      */
     virtual zfbool aniImplCheckValid(void) {
         return zftrue;

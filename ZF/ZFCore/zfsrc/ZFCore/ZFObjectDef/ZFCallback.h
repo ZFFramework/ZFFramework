@@ -56,11 +56,13 @@ extern ZFLIB_ZFCore void _ZFP_ZFCallback_executeNullCallback(void);
             case ZFCallbackTypeRawFunction: \
                 return ((T_ReturnType (*)(ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_EMPTY, ZFM_COMMA)))(this->callbackRawFunction())) \
                     (ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_EMPTY, ZFM_COMMA)); \
-            case ZFCallbackTypeLambda: \
+            case ZFCallbackTypeLambda: { \
+                ZFCallback holder_(*this); \
                 return ((T_ReturnType (*)(void * ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)))(this->callbackLambdaInvoker()))( \
                         this->callbackLambdaImpl() \
                         ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA) \
                     ); \
+            } \
             case ZFCallbackTypeDummy: \
             default: \
                 _ZFP_ZFCallback_executeNullCallback(); \

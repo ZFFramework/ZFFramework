@@ -6,7 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // _ZFP_ZFAniForTimerPrivate
 zfclassNotPOD _ZFP_ZFAniForTimerPrivate {
 public:
-    zfbool isGlobalTimer;
+    zfbool useGlobalTimer;
 
     ZFListener globalTimerTask;
     zfuint globalTimerFrameCount;
@@ -16,7 +16,7 @@ public:
     zftimet builtinTimerStartTime;
 public:
     _ZFP_ZFAniForTimerPrivate(void)
-    : isGlobalTimer(zffalse)
+    : useGlobalTimer(zffalse)
     , globalTimerTask()
     , globalTimerFrameCount(0)
     , globalTimerFrameIndex(0)
@@ -31,27 +31,27 @@ public:
 public:
     static void doStart(ZF_IN ZFAniForTimer *owner) {
         if(owner->aniInterval() == 0) {
-            owner->d->isGlobalTimer = zftrue;
+            owner->d->useGlobalTimer = zftrue;
             owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
             owner->d->globalTimerFrameIndex = 0;
 
             ZFLISTENER_1(globalTimerOnActivate
                     , ZFAniForTimer *, owner
                     ) {
-                _ZFP_ZFAniForTimerPrivate::globalTimerOnActivate(zfargs, owner);
+                _ZFP_ZFAniForTimerPrivate::globalTimerOnActivate(owner);
             } ZFLISTENER_END()
             owner->d->globalTimerTask = globalTimerOnActivate;
             ZFGlobalTimerAttach(owner->d->globalTimerTask);
         }
         else {
-            owner->d->isGlobalTimer = zffalse;
+            owner->d->useGlobalTimer = zffalse;
             if(owner->d->builtinTimer == zfnull) {
                 owner->d->builtinTimer = zfAlloc(ZFTimer);
 
                 ZFLISTENER_1(builtinTimerOnActivate
                         , ZFAniForTimer *, owner
                         ) {
-                    _ZFP_ZFAniForTimerPrivate::builtinTimerOnActivate(zfargs, owner);
+                    _ZFP_ZFAniForTimerPrivate::builtinTimerOnActivate(owner);
                 } ZFLISTENER_END()
                 owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
@@ -62,7 +62,7 @@ public:
         _update(owner, 0);
     }
     static void doStop(ZF_IN ZFAniForTimer *owner) {
-        if(owner->d->isGlobalTimer) {
+        if(owner->d->useGlobalTimer) {
             ZFGlobalTimerDetach(owner->d->globalTimerTask);
             owner->d->globalTimerTask = zfnull;
         }
@@ -72,10 +72,7 @@ public:
     }
 
 private:
-    static void globalTimerOnActivate(
-            ZF_IN const ZFArgs &zfargs
-            , ZF_IN ZFAniForTimer *owner
-            ) {
+    static void globalTimerOnActivate(ZF_IN ZFAniForTimer *owner) {
         ++(owner->d->globalTimerFrameIndex);
         zffloat progress = 1;
         if(owner->d->globalTimerFrameIndex < owner->d->globalTimerFrameCount) {
@@ -83,19 +80,14 @@ private:
         }
         _update(owner, progress);
         if(owner->d->globalTimerFrameIndex >= owner->d->globalTimerFrameCount) {
-            doStop(owner);
             owner->aniImplNotifyStop();
         }
     }
-    static void builtinTimerOnActivate(
-            ZF_IN const ZFArgs &zfargs
-            , ZF_IN ZFAniForTimer *owner
-            ) {
+    static void builtinTimerOnActivate(ZF_IN ZFAniForTimer *owner) {
         zftimet curTime = ZFTime::timestamp();
         zffloat progress = ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / owner->aniDurationFixed();
         _update(owner, progress);
         if(curTime - owner->d->builtinTimerStartTime >= owner->aniDurationFixed()) {
-            doStop(owner);
             owner->aniImplNotifyStop();
         }
     }
@@ -129,31 +121,15 @@ void ZFAniForTimer::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-zfidentity ZFAniForTimer::objectHash(void) {
-    return zfidentityHash(zfsuper::objectHash()
-        , this->aniInterval()
-        , (this->aniCurve() ? this->aniCurve()->objectHash() : (zfidentity)0)
-        );
-}
-ZFCompareResult ZFAniForTimer::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(anotherObj == this) {return ZFCompareEqual;}
-    if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
-            && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
-            ) {
-        return ZFCompareEqual;
-    }
-    return ZFCompareUncomparable;
-}
-
 // ============================================================
 // start stop
 void ZFAniForTimer::aniImplDelay(void) {
-    d->isGlobalTimer = (this->aniInterval() == 0);
-    if(!d->isGlobalTimer) {
+    d->useGlobalTimer = (this->aniInterval() == 0);
+    if(!d->useGlobalTimer) {
         zfsuper::aniImplDelay();
         return;
     }
-    d->globalTimerFrameCount = (zfuint)zfmRound(this->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
+    d->globalTimerFrameCount = (zfuint)zfmRound(this->aniDelay() / ZFGlobalTimerIntervalDefault());
     if(d->globalTimerFrameCount == 0) {
         d->globalTimerTask = zfnull;
         this->aniImplDelayNotifyFinish();
@@ -166,6 +142,8 @@ void ZFAniForTimer::aniImplDelay(void) {
             ) {
         ++(owner->d->globalTimerFrameIndex);
         if(owner->d->globalTimerFrameIndex >= owner->d->globalTimerFrameCount) {
+            ZFGlobalTimerDetach(owner->d->globalTimerTask);
+            owner->d->globalTimerTask = zfnull;
             owner->aniImplDelayNotifyFinish();
         }
     } ZFLISTENER_END()
@@ -173,7 +151,7 @@ void ZFAniForTimer::aniImplDelay(void) {
     ZFGlobalTimerAttach(owner->d->globalTimerTask);
 }
 void ZFAniForTimer::aniImplDelayCancel(void) {
-    if(!d->isGlobalTimer) {
+    if(!d->useGlobalTimer) {
         zfsuper::aniImplDelayCancel();
         return;
     }

@@ -34,7 +34,7 @@ public final class ZFUITextEdit extends EditText {
 
     public static void native_nativeTextEditDestroy(Object nativeTextEdit) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        nativeTextEditTmp.removeTextOnUpdateListener(nativeTextEditTmp._textWatcher);
+        nativeTextEditTmp.removeTextChangedListener(nativeTextEditTmp._textWatcher);
         nativeTextEditTmp._textWatcher = null;
         nativeTextEditTmp.setText(null);
         nativeTextEditTmp.setOnEditorActionListener(null);
@@ -325,7 +325,7 @@ public final class ZFUITextEdit extends EditText {
         this.setLines(1);
 
         _textWatcher = new _TextWatcher(this);
-        this.addTextOnUpdateListener(_textWatcher);
+        this.addTextChangedListener(_textWatcher);
 
         this.setOnKeyListener(new OnKeyListener() {
             @Override

@@ -4,11 +4,31 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass _ZFP_I_ZFGlobalTimer : zfextend ZFTimer {
     ZFOBJECT_DECLARE(_ZFP_I_ZFGlobalTimer, ZFTimer)
+
+private:
+    zfbool _ZFP_stopFlag;
+
 protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+        _ZFP_stopFlag = zffalse;
+    }
+
+    zfoverride
     virtual inline void timerOnActivate(void) {
         zfsuper::timerOnActivate();
         if(!this->observerHasAdd(zfself::EventTimerOnActivate())) {
-            this->timerStop();
+            if(_ZFP_stopFlag) {
+                _ZFP_stopFlag = zffalse;
+                this->timerStop();
+            }
+            else {
+                _ZFP_stopFlag = zftrue;
+            }
+        }
+        else {
+            _ZFP_stopFlag = zffalse;
         }
     }
 };

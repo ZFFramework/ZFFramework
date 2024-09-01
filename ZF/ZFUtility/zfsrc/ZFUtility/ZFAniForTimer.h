@@ -46,12 +46,6 @@ protected:
     zfoverride
     virtual void objectOnDealloc(void);
 
-public:
-    zfoverride
-    virtual zfidentity objectHash(void);
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
-
     // ============================================================
     // property
 public:
