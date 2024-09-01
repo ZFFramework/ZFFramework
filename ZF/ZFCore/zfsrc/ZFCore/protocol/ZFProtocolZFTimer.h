@@ -29,7 +29,10 @@ public:
     /**
      * @brief start timer
      */
-    virtual void timerStart(ZF_IN ZFTimer *timer) zfpurevirtual;
+    virtual void timerStart(
+            ZF_IN ZFTimer *timer
+            , ZF_IN zfidentity timerImplId
+            ) zfpurevirtual;
     /**
      * @brief stop the timer
      */
@@ -38,23 +41,13 @@ public:
     // ============================================================
     // callbacks that implementations must notify
     /**
-     * @brief must be called in timer thread when timer thread started
-     *   (can be called only once for one timer, before first time fire the timer)
-     */
-    zffinal void notifyTimerStart(ZF_IN ZFTimer *timer) {
-        timer->_ZFP_ZFTimer_timerOnStart();
-    }
-    /**
      * @brief must be called to notify timer event
      */
-    zffinal void notifyTimerActivate(ZF_IN ZFTimer *timer) {
-        timer->_ZFP_ZFTimer_timerOnActivate();
-    }
-    /**
-     * @brief must be called when timer thread is about to stop
-     */
-    zffinal void notifyTimerStop(ZF_IN ZFTimer *timer) {
-        timer->_ZFP_ZFTimer_timerOnStop();
+    zffinal void notifyTimerActivate(
+            ZF_IN ZFTimer *timer
+            , ZF_IN zfidentity timerImplId
+            ) {
+        timer->_ZFP_ZFTimer_timerOnActivate(timerImplId);
     }
 ZFPROTOCOL_INTERFACE_END(ZFTimer)
 

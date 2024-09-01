@@ -25,7 +25,6 @@ zfclass ZFLIB_ZFCore ZFTimer : zfextend ZFObject {
     ZFALLOC_CACHE_RELEASE({
             cache->timerStop();
             cache->timerInterval(1000);
-            cache->timerDelay(0);
         })
 
     // ============================================================
@@ -49,8 +48,8 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when timer stopped, ensured in the same thread that stop the timer
-     * @note timer start and stop event is not ensured paired
+     * called when timer stopped
+     * @note on what thread this event is fired depends on impl
      */
     ZFEVENT(TimerOnStop)
 
@@ -61,9 +60,8 @@ protected:
      * you may change them after timer created,
      * but you must not if timer is started
      */
-    ZFOBJECT_ON_INIT_DECLARE_2(
+    ZFOBJECT_ON_INIT_DECLARE_1(
             ZFMP_IN(zftimet, timerInterval)
-            , ZFMP_IN_OPT(zftimet, timerDelay, 0)
             )
     zfoverride
     virtual void objectOnInit(void);
@@ -84,15 +82,6 @@ public:
      */
     ZFPROPERTY_ASSIGN(zftimet, timerInterval, 1000)
     ZFPROPERTY_ON_VERIFY_DECLARE(zftimet, timerInterval)
-
-    /**
-     * @brief timer's delay when start a timer in mili seconds, default is 0
-     *
-     * if delay is less than 10, it's treated as 0\n
-     * else, first timer event would be fired after (timerDelay + timerInterval)
-     */
-    ZFPROPERTY_ASSIGN(zftimet, timerDelay, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zftimet, timerDelay)
 
     /**
      * @brief whether timer activate on main thread, true by default
@@ -120,10 +109,11 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfindex, timerActivatedCount)
 
+    /** @brief internal timer id for impl only */
+    zfidentity timerImplId(void);
+
 public:
-    zffinal void _ZFP_ZFTimer_timerOnStart(void);
-    zffinal void _ZFP_ZFTimer_timerOnActivate(void);
-    zffinal void _ZFP_ZFTimer_timerOnStop(void);
+    zffinal void _ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId);
 protected:
     /** @brief see #EventTimerOnStart */
     virtual inline void timerOnStart(void) {

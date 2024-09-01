@@ -5,30 +5,40 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass _ZFP_I_ZFGlobalTimer : zfextend ZFTimer {
     ZFOBJECT_DECLARE(_ZFP_I_ZFGlobalTimer, ZFTimer)
 
+public:
+    zfbool hasTimerObserver(void) {
+        return ZFBitTest(_ZFP_stateFlag, stateFlag_observerHasAdd);
+    }
+
 private:
-    zfbool _ZFP_stopFlag;
+    enum {
+        stateFlag_observerHasAdd = 1 << 0,
+        stateFlag_pendingStop = 1 << 1,
+    };
+    zfuint _ZFP_stateFlag;
 
 protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        _ZFP_stopFlag = zffalse;
+        _ZFP_stateFlag = 0;
+        this->observerHolder().observerHasAddStateAttach(zfself::EventTimerOnActivate(), &_ZFP_stateFlag, stateFlag_observerHasAdd);
     }
 
     zfoverride
     virtual inline void timerOnActivate(void) {
         zfsuper::timerOnActivate();
-        if(!this->observerHasAdd(zfself::EventTimerOnActivate())) {
-            if(_ZFP_stopFlag) {
-                _ZFP_stopFlag = zffalse;
+        if(!ZFBitTest(_ZFP_stateFlag, stateFlag_observerHasAdd)) {
+            if(ZFBitTest(_ZFP_stateFlag, stateFlag_pendingStop)) {
+                ZFBitUnset(_ZFP_stateFlag, stateFlag_pendingStop);
                 this->timerStop();
             }
             else {
-                _ZFP_stopFlag = zftrue;
+                ZFBitSet(_ZFP_stateFlag, stateFlag_pendingStop);
             }
         }
         else {
-            _ZFP_stopFlag = zffalse;
+            ZFBitUnset(_ZFP_stateFlag, stateFlag_pendingStop);
         }
     }
 };
@@ -52,7 +62,7 @@ zftimet globalTimerInterval;
 _ZFP_I_ZFGlobalTimer *globalTimer;
 zfbool globalTimerManualStep;
 void checkCleanup(void) {
-    if(!this->globalTimer->observerHasAdd(ZFTimer::EventTimerOnActivate())) {
+    if(!this->globalTimer->hasTimerObserver()) {
         this->globalTimer->timerStop();
     }
 }
@@ -172,7 +182,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStepCancel) {
     }
     d->globalTimerManualStep = zffalse;
     if(d->globalTimer != zfnull) {
-        if(d->globalTimer->observerHasAdd(ZFTimer::EventTimerOnActivate())) {
+        if(d->globalTimer->hasTimerObserver()) {
             d->globalTimer->timerInterval(ZFGlobalTimerInterval());
             d->globalTimer->timerStart();
         }

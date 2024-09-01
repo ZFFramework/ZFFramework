@@ -100,6 +100,7 @@ ZFEVENT_REGISTER(ZFObject, ObjectPropertyValueOnUpdate)
 
 static zfuint _ZFP_ZFObject_stateFlags = 0;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObject_stateFlags, ZFLevelZFFrameworkStatic) {
+    _ZFP_ZFObject_stateFlags = 0;
     ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectBeforeAlloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
     ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectAfterAlloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
     ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectBeforeDealloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);

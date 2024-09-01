@@ -24,12 +24,6 @@ public final class ZFTimer {
             super.handleMessage(msg);
             ZFTimerTask timerTask = (ZFTimerTask) msg.obj;
             if (timerTask._running) {
-                if (timerTask._firstTime) {
-                    timerTask._firstTime = false;
-                    ZFTimer.native_notifyTimerStart(timerTask._zfjniPointerToken);
-                }
-            }
-            if (timerTask._running) {
                 ZFTimer.native_notifyTimerActivate(timerTask._zfjniPointerToken);
             }
         }
@@ -38,7 +32,6 @@ public final class ZFTimer {
     private static Handler _mainThreadCallback = new _MainThreadHandler();
 
     protected static class ZFTimerTask extends TimerTask {
-        protected boolean _firstTime = true;
         protected boolean _running = true;
         protected long _zfjniPointerToken = 0;
 
@@ -55,20 +48,17 @@ public final class ZFTimer {
 
         @Override
         public boolean cancel() {
-            if (_running) {
-                ZFTimer.native_notifyTimerStop(_zfjniPointerToken);
-            }
             _running = false;
             _zfjniPointerToken = 0;
             return super.cancel();
         }
     }
 
-    protected static void native_timerStart(Object nativeTimer, long zfjniPointerToken, long timerDelay, long timerInterval) {
+    protected static void native_timerStart(Object nativeTimer, long zfjniPointerToken, long timerInterval) {
         ZFTimer holder = (ZFTimer) nativeTimer;
         holder.timer = new Timer();
         holder.timerTask = new ZFTimerTask(zfjniPointerToken);
-        holder.timer.schedule(holder.timerTask, timerDelay + timerInterval, timerInterval);
+        holder.timer.schedule(holder.timerTask, timerInterval, timerInterval);
     }
 
     protected static void native_timerStop(Object nativeTimer) {
@@ -80,9 +70,6 @@ public final class ZFTimer {
         holder.timerTask = null;
     }
 
-    protected native static void native_notifyTimerStart(long zfjniPointerToken);
-
     protected native static void native_notifyTimerActivate(long zfjniPointerToken);
 
-    protected native static void native_notifyTimerStop(long zfjniPointerToken);
 }

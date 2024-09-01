@@ -13,10 +13,8 @@
 
 // private
 @property (nonatomic, strong) NSTimer *_timer;
-@property (nonatomic, assign) BOOL _timerNotifiedFlag;
 @property (nonatomic, assign) zfint _timerTaskId;
 - (zfbool)_timerOwnerIsTaskIdValid:(NSNumber *)savedTimerTaskId;
-- (void)_timerOwnerOnTimerDelay:(NSNumber *)savedTimerTaskId;
 - (void)_timerOwnerOnTimerEvent:(NSTimer *)timer;
 @end
 @implementation _ZFP_ZFTimerImpl_sys_iOS_TimerOwner
@@ -27,18 +25,11 @@
 - (void)startTimer {
     [self stopTimer];
 
-    self._timerNotifiedFlag = NO;
     self._selfHolder = self;
     NSNumber *taskId = [NSNumber numberWithInt:self._timerTaskId];
-    if(self.ownerZFTimer->timerDelay() > 0) {
-        zftimet timerDelay = self.ownerZFTimer->timerDelay();
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self performSelector:@selector(_timerOwnerOnTimerDelay:) withObject:taskId afterDelay:timerDelay];
-        });
-    }
-    else {
-        [self _timerOwnerOnTimerDelay:taskId];
-    }
+    self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->timerInterval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:taskId repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:self._timer forMode:NSRunLoopCommonModes];
+    self._selfHolder = nil;
 }
 - (void)stopTimer {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -46,38 +37,16 @@
     if(self._timer != nil) {
         [self._timer invalidate];
         self._timer = nil;
-        if(self._timerNotifiedFlag) {
-            self._timerNotifiedFlag = NO;
-            self.impl->notifyTimerStop(self.ownerZFTimer);
-        }
     }
 }
 - (zfbool)_timerOwnerIsTaskIdValid:(NSNumber *)savedTimerTaskId {
     return (savedTimerTaskId != nil && self._timerTaskId == [savedTimerTaskId intValue]);
 }
-- (void)_timerOwnerOnTimerDelay:(NSNumber *)taskId {
-    if(![self _timerOwnerIsTaskIdValid:taskId]) {
-        return;
-    }
-    self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->timerInterval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:taskId repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:self._timer forMode:NSRunLoopCommonModes];
-    self._selfHolder = nil;
-}
 - (void)_timerOwnerOnTimerEvent:(NSTimer *)timer {
     NSNumber *taskId = (NSNumber *)[timer userInfo];
-    if(![self _timerOwnerIsTaskIdValid:taskId]) {
-        return;
+    if([self _timerOwnerIsTaskIdValid:taskId]) {
+        self.impl->notifyTimerActivate(self.ownerZFTimer);
     }
-
-    if(!self._timerNotifiedFlag) {
-        self.impl->notifyTimerStart(self.ownerZFTimer);
-        self._timerNotifiedFlag = YES;
-    }
-
-    if(![self _timerOwnerIsTaskIdValid:taskId]) {
-        return;
-    }
-    self.impl->notifyTimerActivate(self.ownerZFTimer);
 }
 @end
 

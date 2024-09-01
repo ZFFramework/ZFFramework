@@ -1,5 +1,7 @@
 #include "ZFAniForFrame.h"
 
+// #define _ZFP_ZFAniForFrame_DEBUG_noGlobalTimer 1
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -41,6 +43,7 @@ public:
 
         zftimet frameDuration = owner->d->frames[0];
 
+#if !_ZFP_ZFAniForFrame_DEBUG_noGlobalTimer
         if(owner->useGlobalTimer()) {
             owner->d->useGlobalTimer = zftrue;
             owner->d->frameIndex = 0;
@@ -55,7 +58,9 @@ public:
             owner->d->globalTimerTask = globalTimerOnActivate;
             ZFGlobalTimerAttach(owner->d->globalTimerTask);
         }
-        else {
+        else
+#endif
+        {
             owner->d->useGlobalTimer = zffalse;
             owner->d->frameIndex = 0;
             builtinTimerNext(owner);
@@ -227,7 +232,11 @@ zftimet ZFAniForFrame::aniDurationFixed(void) {
 }
 
 void ZFAniForFrame::aniImplDelay(void) {
+#if !_ZFP_ZFAniForFrame_DEBUG_noGlobalTimer
     d->useGlobalTimer = (this->useGlobalTimer());
+#else
+    d->useGlobalTimer = zffalse;
+#endif
     if(!d->useGlobalTimer) {
         zfsuper::aniImplDelay();
         return;

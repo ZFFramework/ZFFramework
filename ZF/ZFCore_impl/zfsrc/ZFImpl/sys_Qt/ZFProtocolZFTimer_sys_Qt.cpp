@@ -13,54 +13,27 @@ public:
     : QTimer()
     , impl(zfnull)
     , ownerZFTimer(zfnull)
-    , delaying(zffalse)
-    , firstTime(zftrue)
     {
     }
 public:
     ZFPROTOCOL_INTERFACE_CLASS(ZFTimer) *impl;
     ZFTimer *ownerZFTimer;
-    zfbool delaying;
-    zfbool firstTime;
 
 public:
     void timerStart(void) {
-        if(this->ownerZFTimer->timerDelay() > 0) {
-            this->delaying = zftrue;
-            this->setSingleShot(true);
-            this->setInterval(this->ownerZFTimer->timerDelay());
-            this->start();
-            return;
-        }
-        this->delaying = zffalse;
-        this->timerDoStart();
-    }
-    void timerStop(void) {
-        this->disconnect();
-        this->stop();
-        this->impl->notifyTimerStop(this->ownerZFTimer);
-    }
-private:
-    void timerDoStart(void) {
-        this->delaying = zffalse;
         this->setSingleShot(false);
-        this->firstTime = zftrue;
 
         this->setInterval(this->ownerZFTimer->timerInterval());
         connect(this, SIGNAL(timeout()), this, SLOT(timerOnActivate()), Qt::DirectConnection);
         this->start();
     }
+    void timerStop(void) {
+        this->disconnect();
+        this->stop();
+    }
 
 public slots:
     void timerOnActivate(void) {
-        if(this->delaying) {
-            this->timerDoStart();
-            return;
-        }
-        if(this->firstTime) {
-            this->firstTime = zffalse;
-            this->impl->notifyTimerStart(this->ownerZFTimer);
-        }
         this->impl->notifyTimerActivate(this->ownerZFTimer);
     }
 };

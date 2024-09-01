@@ -746,6 +746,7 @@ public:
 
 static zfuint _ZFP_ZFUIView_stateFlags = 0;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIView_stateFlags, ZFLevelZFFrameworkStatic) {
+    _ZFP_ZFUIView_stateFlags = 0;
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnUpdate(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnUpdate);
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnAdd(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd);
     ZFGlobalObserver().observerHasAddStateAttach(ZFUIView::EventViewChildOnRemove(), &_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnRemove);
