@@ -140,7 +140,7 @@ zfbool ZFAniForFrame::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
     this->frameRemoveAll();
-    zfstring framesStr = ZFSerializableUtil::checkAttribute(serializableData, "frames");
+    zfstring framesStr = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFAniForFrame_frames);
     ZFCoreArray<zftimet> frames;
     if(!zfCoreDataPairSplitInt(
                 frames
@@ -175,7 +175,7 @@ zfbool ZFAniForFrame::serializableOnSerializeToData(
         }
         zftimetToStringT(framesStr, d->frames[i]);
     }
-    serializableData.attr("frames", framesStr);
+    serializableData.attr(ZFSerializableKeyword_ZFAniForFrame_frames, framesStr);
     return zftrue;
 }
 

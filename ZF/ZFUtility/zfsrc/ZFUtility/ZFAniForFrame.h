@@ -9,6 +9,9 @@
 #include "ZFAnimation.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFAniForFrame_frames "frames"
+
 // ============================================================
 zfclassFwd _ZFP_ZFAniForFramePrivate;
 /**
