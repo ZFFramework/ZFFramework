@@ -32,7 +32,10 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, nativeTimerTmp);
     }
 
-    virtual void timerStart(ZF_IN ZFTimer *timer) {
+    virtual void timerStart(
+            ZF_IN ZFTimer *timer
+            , ZF_IN zfidentity timerImplId
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFTimer(), "native_timerStart",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
@@ -41,10 +44,12 @@ public:
                 .add(JNIType::S_long())
                 .add(JNIType::S_long())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFTimer(), jmId,
-            (jobject)timer->nativeTimer(),
-            JNIConvertZFObjectToJNIType(jniEnv, timer),
-            (jlong)timer->timerInterval());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFTimer(), jmId
+            , (jobject)timer->nativeTimer()
+            , JNIConvertZFObjectToJNIType(jniEnv, timer)
+            , (jlong)timer->timerInterval()
+            , (jlong)timerImplId
+            );
     }
     virtual void timerStop(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -61,9 +66,10 @@ ZF_NAMESPACE_GLOBAL_END
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer
         , void, native_1notifyTimerActivate
         , JNIPointer zfjniPointerToken
+        , jlong timerImplId
         ) {
     ZFTimer *timer = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerToken);
-    ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(timer);
+    ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(timer, timerImplId);
 }
 JNI_METHOD_DECLARE_END()
 #endif // #if ZF_ENV_sys_Android

@@ -8,13 +8,11 @@
 @property (nonatomic, assign) ZFTimer *ownerZFTimer;
 @property (nonatomic, strong) id _selfHolder;
 
-- (void)startTimer;
+- (void)startTimer:(NSNumber *)timerImplId;
 - (void)stopTimer;
 
 // private
 @property (nonatomic, strong) NSTimer *_timer;
-@property (nonatomic, assign) zfint _timerTaskId;
-- (zfbool)_timerOwnerIsTaskIdValid:(NSNumber *)savedTimerTaskId;
 - (void)_timerOwnerOnTimerEvent:(NSTimer *)timer;
 @end
 @implementation _ZFP_ZFTimerImpl_sys_iOS_TimerOwner
@@ -22,31 +20,24 @@
     return self._timer;
 }
 
-- (void)startTimer {
+- (void)startTimer:(NSNumber *)timerImplId {
     [self stopTimer];
 
     self._selfHolder = self;
-    NSNumber *taskId = [NSNumber numberWithInt:self._timerTaskId];
-    self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->timerInterval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:taskId repeats:YES];
+    self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->timerInterval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:timerImplId repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self._timer forMode:NSRunLoopCommonModes];
     self._selfHolder = nil;
 }
 - (void)stopTimer {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    self._timerTaskId = self._timerTaskId + 1;
     if(self._timer != nil) {
         [self._timer invalidate];
         self._timer = nil;
     }
 }
-- (zfbool)_timerOwnerIsTaskIdValid:(NSNumber *)savedTimerTaskId {
-    return (savedTimerTaskId != nil && self._timerTaskId == [savedTimerTaskId intValue]);
-}
 - (void)_timerOwnerOnTimerEvent:(NSTimer *)timer {
-    NSNumber *taskId = (NSNumber *)[timer userInfo];
-    if([self _timerOwnerIsTaskIdValid:taskId]) {
-        self.impl->notifyTimerActivate(self.ownerZFTimer);
-    }
+    NSNumber *timerImplId = (NSNumber *)[timer userInfo];
+    self.impl->notifyTimerActivate(self.ownerZFTimer, (zfidentity)[timerImplId longLongValue]);
 }
 @end
 
@@ -68,9 +59,12 @@ public:
         _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *tmp = (__bridge_transfer _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)nativeTimer;
         tmp = nil;
     }
-    virtual void timerStart(ZF_IN ZFTimer *timer) {
+    virtual void timerStart(
+            ZF_IN ZFTimer *timer
+            , ZF_IN zfidentity timerImplId
+            ) {
         _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *timerOwner = (__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer();
-        [timerOwner startTimer];
+        [timerOwner startTimer:[NSNumber numberWithLongLong:(long long)timerImplId]];
     }
     virtual void timerStop(ZF_IN ZFTimer *timer) {
         [(__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer() stopTimer];

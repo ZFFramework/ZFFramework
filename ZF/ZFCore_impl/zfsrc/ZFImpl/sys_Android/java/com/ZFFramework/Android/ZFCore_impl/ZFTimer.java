@@ -24,7 +24,7 @@ public final class ZFTimer {
             super.handleMessage(msg);
             ZFTimerTask timerTask = (ZFTimerTask) msg.obj;
             if (timerTask._running) {
-                ZFTimer.native_notifyTimerActivate(timerTask._zfjniPointerToken);
+                ZFTimer.native_notifyTimerActivate(timerTask._zfjniPointerToken, timerTask._timerImplId);
             }
         }
     }
@@ -34,6 +34,7 @@ public final class ZFTimer {
     protected static class ZFTimerTask extends TimerTask {
         protected boolean _running = true;
         protected long _zfjniPointerToken = 0;
+        protected long _timerImplId = 0;
 
         public ZFTimerTask(long zfjniPointerToken) {
             _zfjniPointerToken = zfjniPointerToken;
@@ -54,10 +55,11 @@ public final class ZFTimer {
         }
     }
 
-    protected static void native_timerStart(Object nativeTimer, long zfjniPointerToken, long timerInterval) {
+    protected static void native_timerStart(Object nativeTimer, long zfjniPointerToken, long timerInterval, long timerImplId) {
         ZFTimer holder = (ZFTimer) nativeTimer;
         holder.timer = new Timer();
         holder.timerTask = new ZFTimerTask(zfjniPointerToken);
+        holder.timerTask._timerImplId = timerImplId;
         holder.timer.schedule(holder.timerTask, timerInterval, timerInterval);
     }
 
@@ -70,6 +72,6 @@ public final class ZFTimer {
         holder.timerTask = null;
     }
 
-    protected native static void native_notifyTimerActivate(long zfjniPointerToken);
+    protected native static void native_notifyTimerActivate(long zfjniPointerToken, long timerImplId);
 
 }

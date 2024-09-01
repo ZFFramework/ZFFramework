@@ -13,14 +13,17 @@ public:
     : QTimer()
     , impl(zfnull)
     , ownerZFTimer(zfnull)
+    , timerImplId(zfidentityInvalid())
     {
     }
 public:
     ZFPROTOCOL_INTERFACE_CLASS(ZFTimer) *impl;
     ZFTimer *ownerZFTimer;
+    zfidentity timerImplId;
 
 public:
-    void timerStart(void) {
+    void timerStart(ZF_IN zfidentity timerImplId) {
+        this->timerImplId = timerImplId;
         this->setSingleShot(false);
 
         this->setInterval(this->ownerZFTimer->timerInterval());
@@ -34,7 +37,7 @@ public:
 
 public slots:
     void timerOnActivate(void) {
-        this->impl->notifyTimerActivate(this->ownerZFTimer);
+        this->impl->notifyTimerActivate(this->ownerZFTimer, this->timerImplId);
     }
 };
 
@@ -56,9 +59,12 @@ public:
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimerTmp = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)nativeTimer;
         zfdelete(nativeTimerTmp);
     }
-    virtual void timerStart(ZF_IN ZFTimer *timer) {
+    virtual void timerStart(
+            ZF_IN ZFTimer *timer
+            , ZF_IN zfidentity timerImplId
+            ) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
-        nativeTimer->timerStart();
+        nativeTimer->timerStart(timerImplId);
     }
     virtual void timerStop(ZF_IN ZFTimer *timer) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
