@@ -86,14 +86,14 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfauto, methodInvoke
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFMethod, zfauto, methodInvoke
         , ZFMP_IN(ZFObject *, ownerObjOrNull)
         , ZFMP_IN(ZFObject *, param0)
-        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethod, zfauto, methodInvokeDetail
         , ZFMP_IN(ZFObject *, ownerObjOrNull)

@@ -5,23 +5,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /* ZFMETHOD_MAX_PARAM */
 
 // ============================================================
-zfclass _ZFP_I_ZFMethodGenericInvokerDefaultParamType : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFMethodGenericInvokerDefaultParamType, ZFObject)
+zfclass _ZFP_I_ZFMP_DEF_Type : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFMP_DEF_Type, ZFObject)
 };
-ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef = zfnull;
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodGenericInvokerDefaultParamInit, ZFLevelZFFrameworkEssential) {
-    _ZFP_ZFMethodGenericInvokerDefaultParamRef = zfAlloc(_ZFP_I_ZFMethodGenericInvokerDefaultParamType);
-    _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef = _ZFP_ZFMethodGenericInvokerDefaultParamRef;
+ZFObject *_ZFP_ZFMP_DEF = zfnull;
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMP_DEF_Init, ZFLevelZFFrameworkEssential) {
+    _ZFP_ZFMP_DEF = zfAlloc(_ZFP_I_ZFMP_DEF_Type);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodGenericInvokerDefaultParamInit) {
-    zfRelease(_ZFP_ZFMethodGenericInvokerDefaultParamRef);
-    _ZFP_ZFMethodGenericInvokerDefaultParamRef = zfnull;
-
-    _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef = zfnull;
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFMP_DEF_Init) {
+    zfRelease(_ZFP_ZFMP_DEF);
+    _ZFP_ZFMP_DEF = zfnull;
 }
-ZF_GLOBAL_INITIALIZER_END(ZFMethodGenericInvokerDefaultParamInit)
-
-zfauto _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
+ZF_GLOBAL_INITIALIZER_END(ZFMP_DEF_Init)
 
 // ============================================================
 static void _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch(
@@ -224,8 +219,8 @@ zfbool _ZFP_MtdGIParamCheck(
         , ZF_IN const zfchar *paramType
         , ZF_IN ZFObject *param
         ) {
-    if((param != ZFMethodGenericInvokerDefaultParam() && !zfvAccessAvailable)
-            || (param == ZFMethodGenericInvokerDefaultParam() && paramIndex < invokerMethod->methodParamDefaultBeginIndex())
+    if((param != ZFMP_DEF() && !zfvAccessAvailable)
+            || (param == ZFMP_DEF() && paramIndex < invokerMethod->methodParamDefaultBeginIndex())
             ) {
         if(errorHint != zfnull) {
             zfstringAppend(errorHint,
@@ -295,7 +290,7 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_0({return ZFMethodGenericInvokerDefaultParam();}, ZFObject *, ZFMethodGenericInvokerDefaultParam)
+ZFMETHOD_FUNC_USER_REGISTER_0({return ZFMP_DEF();}, ZFObject *, ZFMP_DEF)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

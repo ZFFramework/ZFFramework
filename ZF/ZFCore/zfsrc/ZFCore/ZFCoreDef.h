@@ -36,6 +36,7 @@
 #include "ZFCoreDef/ZFIdentityUtil.h"
 #include "ZFCoreDef/ZFLevel.h"
 #include "ZFCoreDef/ZFMemPool.h"
+#include "ZFCoreDef/ZFNamespace.h"
 #include "ZFCoreDef/ZFNamespaceImpl.h"
 #include "ZFCoreDef/ZFSigName.h"
 #include "ZFCoreDef/ZFToken.h"

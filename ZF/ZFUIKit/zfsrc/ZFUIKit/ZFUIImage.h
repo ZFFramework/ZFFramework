@@ -47,6 +47,13 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfst
  *       return zftrue;
  *   }
  * @endcode
+ *
+ * when image loaded or serialized successfully,
+ * impl may store these serializable datas to the image:
+ * -  #ZFUIImage::imageSerializableType : the type registered by ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
+ * -  #ZFUIImage::imageSerializableData or #ZFUIImage::imageSerializableDataGetter :
+ *   actual serializable data,
+ *   or a callback to obtain (store result to #ZFArgs::result) the serializable data
  */
 #define ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, typeName) \
     static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
@@ -294,22 +301,18 @@ public:
             , ZF_IN_OPT zfbool retainNativeImage = zftrue
             );
 
-    /**
-     * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
-     */
+    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
     virtual void imageSerializableType(ZF_IN const zfstring &typeName);
-    /**
-     * @brief see #imageSerializableType
-     */
+    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
     virtual const zfstring &imageSerializableType(void);
-    /**
-     * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
-     */
-    virtual void imageSerializableData(ZF_IN const ZFSerializableData *serializableData);
-    /**
-     * @brief see #imageSerializableData
-     */
-    virtual const ZFSerializableData *imageSerializableData(void);
+    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
+    virtual void imageSerializableData(ZF_IN const ZFSerializableData &serializableData);
+    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
+    virtual const ZFSerializableData &imageSerializableData(void);
+    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
+    virtual void imageSerializableDataGetter(ZF_IN const ZFListener &impl);
+    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
+    virtual const ZFListener &imageSerializableDataGetter(void);
 
 private:
     _ZFP_ZFUIImagePrivate *d;

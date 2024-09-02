@@ -4,6 +4,10 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) {
+    return zfnull;
+}
+
 // ============================================================
 const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
     static zfstring namePrefix = zftext(ZF_NAMESPACE_GLOBAL_NAME);

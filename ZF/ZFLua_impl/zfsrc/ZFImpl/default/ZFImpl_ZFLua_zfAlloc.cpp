@@ -16,14 +16,14 @@ zfbool ZFImpl_ZFLua_zfAlloc(
     }
 
     zfauto paramList[ZFMETHOD_MAX_PARAM] = {
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
     };
     for(int i = 0; i < paramCount; ++i) {
         if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, errorHint)) {
@@ -57,14 +57,14 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
     }
 
     zfauto paramList[ZFMETHOD_MAX_PARAM] = {
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
     };
     for(int i = 0; i < paramCount; ++i) {
         if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i)) {

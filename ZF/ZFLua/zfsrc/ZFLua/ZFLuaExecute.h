@@ -176,27 +176,27 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, zfauto, ZFLuaExecute
 ZFMETHOD_FUNC_DECLARE_8(ZFLIB_ZFLua, zfauto, ZFLuaExecute
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_IN(ZFObject *, param0)
-        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         )
 /** @brief see #ZFLuaExecute */
 ZFMETHOD_FUNC_DECLARE_8(ZFLIB_ZFLua, zfauto, ZFLuaExecute
         , ZFMP_IN(const zfchar *, buf)
         , ZFMP_IN(ZFObject *, param0)
-        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         )
 /** @brief see #ZFLuaExecute */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail

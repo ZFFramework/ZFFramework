@@ -62,6 +62,7 @@ zfclassPOD ZFLIB_ZFCore zfany {
 public:
     zfany(void) : _ZFP_obj(zfnull) {}
     zfany(ZF_IN zfany const &obj) : _ZFP_obj(obj._ZFP_obj) {}
+    zfany(ZF_IN ZFObject *obj) : _ZFP_obj(obj) {}
     template<typename T_ZFObject>
     zfany(ZF_IN T_ZFObject const &obj) : _ZFP_obj(_ZFP_zfanyCast(obj)) {}
 
@@ -147,6 +148,7 @@ public:
     zfanyT(void) : zfany() {}
     zfanyT(ZF_IN zfany const &obj) : zfany(obj) {}
     zfanyT(ZF_IN zfanyT<T_ZFObjectBase> const &obj) : zfany((zfany const &)obj) {}
+    zfanyT(ZF_IN ZFObject *obj) : zfany(obj) {}
     template<typename T_ZFObject>
     zfanyT(ZF_IN T_ZFObject const &obj) : zfany(obj) {}
 

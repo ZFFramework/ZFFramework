@@ -113,14 +113,14 @@ extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
  */
 extern ZFLIB_ZFCore void ZFDI_paramInfo(
         ZF_IN_OUT zfstring &ret
-        , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param0 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
         , ZF_IN_OPT zfindex paramCount = zfindexMax()
         );
 
@@ -130,7 +130,7 @@ inline zfindex ZFDI_paramCount(
         , ZF_IN_OPT zfindex paramListCount = zfindexMax()
         ) {
     zfindex paramCount = 0;
-    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMethodGenericInvokerDefaultParam()) {
+    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMP_DEF()) {
         ++paramCount;
     }
     return paramCount;
@@ -141,7 +141,7 @@ inline zfindex ZFDI_paramCount(
         , ZF_IN_OPT zfindex paramListCount = zfindexMax()
         ) {
     zfindex paramCount = 0;
-    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMethodGenericInvokerDefaultParam()) {
+    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMP_DEF()) {
         ++paramCount;
     }
     return paramCount;
@@ -164,7 +164,7 @@ inline zfindex ZFDI_paramCount(
  * params can be:
  * -  #ZFObject type for ZFObject type
  * -  #ZFTypeIdWrapper for non-ZFObject type
- * -  #ZFMethodGenericInvokerDefaultParam for default param
+ * -  #ZFMP_DEF for default param
  * -  #ZFDI_WrapperBase (or #v_zfstring when convStr=true), we will try to convert to desired type if possible
  *
  *
@@ -254,13 +254,13 @@ extern ZFLIB_ZFCore zfauto ZFInvoke(
 extern ZFLIB_ZFCore zfauto ZFInvoke(
         ZF_IN const zfstring &name
         , ZF_IN ZFObject *param0
-        , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
         );
 /** @brief see #ZFInvoke */
 extern ZFLIB_ZFCore zfauto ZFInvokeDetail(

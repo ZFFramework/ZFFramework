@@ -306,20 +306,20 @@ public:
      *   if it's user registered (#ZFMETHOD_USER_REGISTER_1 series),
      *   #ZFObject::objectOnInit would be called before invoke the method
      *   to prevent logic error
-     * @note if all params are #ZFMethodGenericInvokerDefaultParam, this method would call
+     * @note if all params are #ZFMP_DEF, this method would call
      *   original #ZFObject::objectOnInit instead (same as #newInstance)
      *
      * see also #ZFObjectTagKeyword_newInstanceGenericFailed
      */
     zfauto newInstance(
             ZF_IN ZFObject *param0
-            , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
             ) const;
     /** @brief see #newInstance */
     zfauto newInstanceDetail(

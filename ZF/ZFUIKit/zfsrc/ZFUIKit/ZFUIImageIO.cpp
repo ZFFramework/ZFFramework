@@ -113,7 +113,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageFromInput
             customData.childAdd(inputData);
 
             image->imageSerializableType(ZFUIImageSerializeType_input);
-            image->imageSerializableData(&customData);
+            image->imageSerializableData(customData);
         }
     }
     return ret;
@@ -209,7 +209,7 @@ static zfbool _ZFP_ZFUIImageInFrame(
             refData.category(ZFSerializableKeyword_ZFUIImageIO_ref);
             data.childAdd(refData);
             ret->imageSerializableType(ZFUIImageSerializeType_ref);
-            ret->imageSerializableData(&data);
+            ret->imageSerializableData(data);
         }
     }
 
@@ -314,7 +314,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIImage>, ZFUIImageFromColor
                 });
     }
     image->imageSerializableType(ZFUIImageSerializeType_color);
-    image->imageSerializableData(&imageData);
+    image->imageSerializableData(imageData);
 
     return ret;
 }

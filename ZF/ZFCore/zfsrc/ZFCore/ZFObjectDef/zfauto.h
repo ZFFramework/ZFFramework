@@ -13,6 +13,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // zfauto
 /** @cond ZFPrivateDoc */
+inline zfauto::zfauto(ZF_IN ZFObject *p)
+: _ZFP_obj(zfRetain(p))
+{
+}
+
 template<typename T_ZFObject>
 zfauto::zfauto(ZF_IN T_ZFObject const &p)
 : _ZFP_obj(zfRetain(_ZFP_zfanyCast(p)))

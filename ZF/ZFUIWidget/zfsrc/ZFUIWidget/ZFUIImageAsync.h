@@ -29,7 +29,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
  * serializable data:
  * @code
  *   <ZFUIImage imageType="async">
- *       <ZFCallback category="imageData" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ *       <ZFCallback category="imageSrc" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
  *       <ZFUIImage category="imageLoadFail" ... /> // load fail image
  *       <ZFUIImage category="imageLoading" ... /> // loading image
  *   </ZFUIImage>
@@ -38,7 +38,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
 #define ZFUIImageSerializeType_async "async"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_async_imageData "imageData"
+#define ZFSerializableKeyword_ZFUIImageIO_async_imageSrc "imageSrc"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail "imageLoadFail"
 /** @brief keyword for serialize */

@@ -36,6 +36,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore zfauto {
 public:
     zfauto(void) : _ZFP_obj(zfnull) {}
     zfauto(ZF_IN zfauto const &obj);
+    zfauto(ZF_IN ZFObject *obj);
     template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject const &obj);
     zffinal ~zfauto(void);
@@ -126,6 +127,7 @@ public:
     zfautoT(void) : zfauto() {}
     zfautoT(ZF_IN zfauto const &obj) : zfauto(obj) {}
     zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto((zfauto const &)obj) {}
+    zfautoT(ZF_IN ZFObject *obj) : zfauto(obj) {}
     template<typename T_ZFObject>
     zfautoT(ZF_IN T_ZFObject const &obj) : zfauto(obj) {}
 

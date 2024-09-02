@@ -518,13 +518,13 @@ public:
     zfauto methodInvoke(
             ZF_IN ZFObject *ownerObjOrNull
             , ZF_IN ZFObject *param0
-            , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
             ) const;
     /** @brief see #methodInvoke */
     zfauto methodInvokeDetail(

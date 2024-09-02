@@ -158,7 +158,7 @@ void ZFMethodInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
     ret += "(";
     for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
         const zfauto &param = this->paramAt(i);
-        if(!param || param == ZFMethodGenericInvokerDefaultParam()) {
+        if(!param || param == ZFMP_DEF()) {
             break;
         }
         if(i > 0) {
@@ -407,9 +407,9 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
             if(this->methodParamDefaultValueCallbackAt(i) != zfnull) {
                 ZFArgs zfargs;
-                zfargs.result(ZFMethodGenericInvokerDefaultParam());
+                zfargs.result(ZFMP_DEF());
                 this->methodParamDefaultValueCallbackAt(i).execute(zfargs);
-                if(zfargs.result() != ZFMethodGenericInvokerDefaultParam()) {
+                if(zfargs.result() != ZFMP_DEF()) {
                     ret += " = ";
                     ZFObjectInfoT(ret, zfargs.result());
                 }
@@ -506,9 +506,9 @@ void ZFMP::methodParamListInfoT(ZF_IN_OUT zfstring &ret) const {
             ret += d->methodParamName[i];
         }
         ZFArgs zfargs;
-        zfargs.result(ZFMethodGenericInvokerDefaultParam());
+        zfargs.result(ZFMP_DEF());
         d->methodParamDefaultValueCallback[i].execute(zfargs);
-        if(zfargs.result() != ZFMethodGenericInvokerDefaultParam()) {
+        if(zfargs.result() != ZFMP_DEF()) {
             ret += " = ";
             ZFObjectInfoT(ret, zfargs.result());
         }

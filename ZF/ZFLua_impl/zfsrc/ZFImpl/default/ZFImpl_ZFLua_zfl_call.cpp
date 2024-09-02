@@ -45,14 +45,14 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     }
 
     zfauto paramList[ZFMETHOD_MAX_PARAM] = {
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
-        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
+        ZFMP_DEF(),
     };
 
     if(ZFLogLevelIsActive(ZFLogLevel::e_Debug)) {

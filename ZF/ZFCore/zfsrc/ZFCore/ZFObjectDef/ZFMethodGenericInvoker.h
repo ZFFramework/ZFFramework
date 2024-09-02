@@ -40,17 +40,11 @@ typedef zfbool (*ZFMethodGenericInvoker)(
     , ZF_IN zfindex paramCount \
     , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
 
-extern ZFLIB_ZFCore ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef;
+extern ZFLIB_ZFCore ZFObject *_ZFP_ZFMP_DEF;
 /**
  * @brief mark the object as default param
  */
-#define ZFMethodGenericInvokerDefaultParam() ((ZFObject * const &)_ZFP_ZFMethodGenericInvokerDefaultParamRef)
-
-extern ZFLIB_ZFCore zfauto _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
-/**
- * @brief holder of #ZFMethodGenericInvokerDefaultParam
- */
-#define ZFMethodGenericInvokerDefaultParamHolder() ((zfauto const &)_ZFP_ZFMethodGenericInvokerDefaultParamHolderRef)
+#define ZFMP_DEF() ((ZFObject * const &)_ZFP_ZFMP_DEF)
 
 /**
  * @brief util method for #ZFMethodGenericInvoker to check whether all param type match
@@ -124,7 +118,7 @@ public:
 public:
     explicit _ZFP_MtdGIPA(ZF_IN_OUT zfauto &obj) : obj(obj) {}
     T_Access a(ZF_IN_OPT ZFObject *pDef = zfnull) {
-        if(this->obj == ZFMethodGenericInvokerDefaultParam()) {
+        if(this->obj == ZFMP_DEF()) {
             this->obj = pDef;
         }
         return ZFTypeId<T_Type>::template Value<T_Access>::zfvAccess(this->obj);
@@ -318,14 +312,14 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
             ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA) \
             ) { \
         zfauto _p[ZFMETHOD_MAX_PARAM] = { \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
-            ZFMethodGenericInvokerDefaultParamHolder(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
+            ZFMP_DEF(), \
         }; \
         ZFM_REPEAT(N, _ZFP_ZFMethodGenericInvoke_REPEAT1, ZFM_EMPTY, ZFM_EMPTY) \
         zfauto _ret; \

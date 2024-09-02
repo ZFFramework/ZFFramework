@@ -54,6 +54,7 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
     zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
+    zfweak(ZF_IN ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->objectHolder()) : zfnull) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
@@ -200,6 +201,7 @@ public:
     zfweakT(void) : zfweak() {}
     zfweakT(ZF_IN zfweak const &obj) : zfweak(obj) {}
     zfweakT(ZF_IN zfweakT<T_ZFObjectBase> const &obj) : zfweak((zfweak const &)obj) {}
+    zfweakT(ZF_IN ZFObject *obj) : zfweak(obj) {}
     template<typename T_ZFObject>
     zfweakT(ZF_IN T_ZFObject const &obj) : zfweak(obj) {}
 

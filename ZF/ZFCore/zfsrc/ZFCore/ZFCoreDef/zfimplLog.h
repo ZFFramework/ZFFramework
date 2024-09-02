@@ -6,7 +6,7 @@
 #ifndef _ZFI_zfimplLog_h_
 #define _ZFI_zfimplLog_h_
 
-#include "ZFCoreEnvDef.h"
+#include "ZFNamespace.h"
 
 /** @cond ZFPrivateDoc */
 

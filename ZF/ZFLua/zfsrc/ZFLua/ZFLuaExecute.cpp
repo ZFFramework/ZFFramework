@@ -18,51 +18,51 @@ ZFMETHOD_FUNC_DEFINE_1(zfauto, ZFLuaExecute
 
 ZFMETHOD_FUNC_DEFINE_8(zfauto, ZFLuaExecute
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_IN_OPT(ZFObject *, param0, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param0, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         ) {
     ZFCoreArray<zfauto> params;
     do {
-        if(param0 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param0);}
-        if(param1 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param1);}
-        if(param2 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param2);}
-        if(param3 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param3);}
-        if(param4 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param4);}
-        if(param5 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param5);}
-        if(param6 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param6);}
-        // if(param7 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param7);}
+        if(param0 == ZFMP_DEF()) {break;} else {params.add(param0);}
+        if(param1 == ZFMP_DEF()) {break;} else {params.add(param1);}
+        if(param2 == ZFMP_DEF()) {break;} else {params.add(param2);}
+        if(param3 == ZFMP_DEF()) {break;} else {params.add(param3);}
+        if(param4 == ZFMP_DEF()) {break;} else {params.add(param4);}
+        if(param5 == ZFMP_DEF()) {break;} else {params.add(param5);}
+        if(param6 == ZFMP_DEF()) {break;} else {params.add(param6);}
+        // if(param7 == ZFMP_DEF()) {break;} else {params.add(param7);}
     } while(zffalse);
     return ZFLuaExecuteDetail(input, params);
 }
 ZFMETHOD_FUNC_DEFINE_8(zfauto, ZFLuaExecute
         , ZFMP_IN(const zfchar *, buf)
-        , ZFMP_IN_OPT(ZFObject *, param0, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
-        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param0, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         ) {
     ZFCoreArray<zfauto> params;
     do {
-        if(param0 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param0);}
-        if(param1 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param1);}
-        if(param2 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param2);}
-        if(param3 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param3);}
-        if(param4 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param4);}
-        if(param5 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param5);}
-        if(param6 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param6);}
-        // if(param7 == ZFMethodGenericInvokerDefaultParam()) {break;} else {params.add(param7);}
+        if(param0 == ZFMP_DEF()) {break;} else {params.add(param0);}
+        if(param1 == ZFMP_DEF()) {break;} else {params.add(param1);}
+        if(param2 == ZFMP_DEF()) {break;} else {params.add(param2);}
+        if(param3 == ZFMP_DEF()) {break;} else {params.add(param3);}
+        if(param4 == ZFMP_DEF()) {break;} else {params.add(param4);}
+        if(param5 == ZFMP_DEF()) {break;} else {params.add(param5);}
+        if(param6 == ZFMP_DEF()) {break;} else {params.add(param6);}
+        // if(param7 == ZFMP_DEF()) {break;} else {params.add(param7);}
     } while(zffalse);
     return ZFLuaExecuteDetail(buf, params);
 }
