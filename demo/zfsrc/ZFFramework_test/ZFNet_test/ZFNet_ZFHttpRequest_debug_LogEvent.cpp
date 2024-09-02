@@ -11,7 +11,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFNet_ZFHttpRequest_debug_LogEvent) {
 
     ZFLISTENER(onRecv) {
         ZFHttpResponse *recv = zfargs.param0();
-        ZFResultTypeEnum const &resultType = zfargs.param1().zfv();
+        ZFResultTypeEnum resultType = zfargs.param1().to<ZFResultType *>()->zfv();
         zfLogTrim("[ZFHttpRequest] recv %s: %s", resultType, recv);
     } ZFLISTENER_END()
 

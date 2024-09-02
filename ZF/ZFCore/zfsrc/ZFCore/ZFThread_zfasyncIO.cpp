@@ -95,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
             , zfautoT<_ZFP_I_zfasyncIOTask>, task
             , ZFListener, finishCallback
             ) {
-        zfbool success = zfargs.param0().zfv();
+        zfbool success = zfargs.param0().to<v_zfbool *>()->zfv;
         _ZFP_zfasyncIO_log("task stop %s: %s", success ? "success" : "fail", task->input.callbackId().cString());
         if(!success) {
             task->stop();

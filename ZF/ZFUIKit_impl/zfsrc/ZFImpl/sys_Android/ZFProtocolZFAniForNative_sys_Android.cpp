@@ -25,8 +25,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId,
-            JNIConvertZFObjectToJNIType(jniEnv, ani));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId
+            , JNIConvertZFObjectToJNIType(jniEnv, ani)
+            );
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
@@ -56,9 +57,10 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         this->nativeAniSetup(ani, nativeAniScale);
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId,
-            (jobject)ani->nativeAnimation(),
-            (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId
+            , (jobject)ani->nativeAnimation()
+            , (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView()
+            );
     }
     virtual void nativeAniStop(ZF_IN ZFAniForNative *ani) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -67,9 +69,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId,
-            (jobject)ani->nativeAnimation(),
-            (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId
+            , (jobject)ani->nativeAnimation()
+            , (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView()
+            );
     }
 
 private:

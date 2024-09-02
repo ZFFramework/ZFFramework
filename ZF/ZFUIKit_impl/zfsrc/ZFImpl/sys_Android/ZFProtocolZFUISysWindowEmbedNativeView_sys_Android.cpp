@@ -28,9 +28,9 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         parent = (void *)JNIUtilNewGlobalRef(jniEnv, (jobject)parent);
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), jmId,
-            (jobject)parent,
-            (jobject)child
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), jmId
+            , (jobject)parent
+            , (jobject)child
             );
     }
     virtual void nativeViewRemove(
@@ -44,9 +44,9 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), jmId,
-            (jobject)parent,
-            (jobject)child
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), jmId
+            , (jobject)parent
+            , (jobject)child
             );
         JNIUtilDeleteGlobalRef(jniEnv, (jobject)parent);
     }

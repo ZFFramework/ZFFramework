@@ -32,8 +32,9 @@ public:
                 JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                     .add(JNIPointerJNIType)
                 ).c_str());
-            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-                JNIConvertZFObjectToJNIType(jniEnv, this->_mainWindow));
+            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+                , JNIConvertZFObjectToJNIType(jniEnv, this->_mainWindow)
+                );
         }
         return this->_mainWindow;
     }
@@ -66,9 +67,9 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        nativeParentView = (void *)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindow->nativeWindow(),
-            (jobject)sysWindow->rootView()->nativeView()
+        nativeParentView = (void *)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindow->nativeWindow()
+            , (jobject)sysWindow->rootView()->nativeView()
             );
     }
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
@@ -81,9 +82,9 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindow->nativeWindow(),
-            (jobject)sysWindow->rootView()->nativeView()
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindow->nativeWindow()
+            , (jobject)sysWindow->rootView()->nativeView()
             );
     }
 
@@ -99,9 +100,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIPointerJNIType)
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindowOwner->nativeWindow(),
-            JNIConvertZFObjectToJNIType(jniEnv, modalWindow));
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindowOwner->nativeWindow()
+            , JNIConvertZFObjectToJNIType(jniEnv, modalWindow)
+            );
 
         return modalWindow;
     }
@@ -117,8 +119,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindowToFinish->nativeWindow());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindowToFinish->nativeWindow()
+            );
     }
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
@@ -132,8 +135,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindow->nativeWindow());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindow->nativeWindow()
+            );
     }
 
     virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
@@ -145,8 +149,9 @@ public:
             JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jint ret = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindow->nativeWindow());
+        jint ret = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindow->nativeWindow()
+            );
         return (ZFUIOrientationEnum)ret;
     }
     virtual void sysWindowOrientationFlags(
@@ -162,9 +167,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId,
-            (jobject)sysWindow->nativeWindow(),
-            (jint)flags);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
+            , (jobject)sysWindow->nativeWindow()
+            , (jint)flags
+            );
     }
 
 private:

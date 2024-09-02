@@ -40,9 +40,10 @@ static _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType _ZFP_ZFThreadImpl_sys_An
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_currentThread",
         JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
         ).c_str());
-    _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType ret = JNIUtilCallStaticLongMethod(jniEnv,
-        ZFImpl_sys_Android_jclassZFThread(),
-        jmId);
+    _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType ret = JNIUtilCallStaticLongMethod(jniEnv
+        , ZFImpl_sys_Android_jclassZFThread()
+        , jmId
+        );
     return ret;
 }
 
@@ -133,10 +134,11 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
 
-        jobject nativeToken = JNIUtilCallStaticObjectMethod(jniEnv,
-            ZFImpl_sys_Android_jclassZFThread(),
-            jmId,
-            curId);
+        jobject nativeToken = JNIUtilCallStaticObjectMethod(jniEnv
+            , ZFImpl_sys_Android_jclassZFThread()
+            , jmId
+            , curId
+            );
         return JNIUtilNewGlobalRef(jniEnv, nativeToken);
     }
     virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
@@ -170,10 +172,11 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
 
-        jobject nativeToken = JNIUtilCallStaticObjectMethod(jniEnv,
-            ZFImpl_sys_Android_jclassZFThread(),
-            jmId,
-            curId);
+        jobject nativeToken = JNIUtilCallStaticObjectMethod(jniEnv
+            , ZFImpl_sys_Android_jclassZFThread()
+            , jmId
+            , curId
+            );
         return JNIUtilNewGlobalRef(jniEnv, nativeToken);
     }
     virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken) {

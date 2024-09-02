@@ -680,21 +680,6 @@ public:
     virtual zfbool objectIsInternalPrivate(void);
 
 public:
-    /**
-     * @brief see #ZFV
-     */
-    inline ZFV zfv(void) {
-        return ZFV(this);
-    }
-    /**
-     * @brief see #ZFV
-     */
-    template<typename T_Type>
-    inline T_Type &zfv(void) {
-        return (T_Type &)ZFV(this);
-    }
-
-public:
     zffinal void _ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property);
     zffinal void _ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *property);
     zffinal inline void _ZFP_ZFObject_objectPropertyValueOnUpdate(

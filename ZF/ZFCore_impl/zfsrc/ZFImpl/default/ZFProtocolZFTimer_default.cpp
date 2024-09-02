@@ -39,7 +39,7 @@ public:
             ) {
         zfRetain(this);
         zfblockedRelease(this);
-        zfidentity const &curId = zfargs.param0().zfv();
+        zfidentity curId = zfargs.param0().to<v_zfidentity *>()->zfv;
         ZFThread *curThread = ZFThread::currentThread();
 
         // start

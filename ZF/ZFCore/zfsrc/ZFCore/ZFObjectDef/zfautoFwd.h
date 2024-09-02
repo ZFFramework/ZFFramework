@@ -97,20 +97,6 @@ public:
     template<typename T_ZFObject>
     inline T_ZFObject to(void) const;
 
-    /**
-     * @brief see #ZFV
-     */
-    inline ZFV zfv(void) const {
-        return ZFV(this->toObject());
-    }
-    /**
-     * @brief see #ZFV
-     */
-    template<typename T_Type>
-    inline T_Type &zfv(void) const {
-        return (T_Type &)ZFV(this->toObject());
-    }
-
 private:
     zfany _ZFP_obj;
 };

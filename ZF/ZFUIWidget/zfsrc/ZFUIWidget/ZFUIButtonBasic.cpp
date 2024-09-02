@@ -158,7 +158,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
             ZFLISTENER_1(callback \
                     , ZFUIButtonBasic *, button \
                     ) { \
-                const ZFProperty *const &property = zfargs.param0().zfv(); \
+                const ZFProperty *property = zfargs.param0().to<v_ZFProperty *>()->zfv; \
                 button->d->T_Component##ViewPrepare(); \
                 if(button->buttonState() == ZFUIButtonState::e_##T_State) { \
                     ZFPropertyCopy(property, button->T_Component##View()->toObject(), zfargs.sender()); \

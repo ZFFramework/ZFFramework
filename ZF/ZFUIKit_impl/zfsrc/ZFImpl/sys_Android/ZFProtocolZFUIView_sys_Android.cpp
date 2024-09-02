@@ -32,8 +32,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)nativeView);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)nativeView
+            );
         return zftrue;
     }
     virtual void nativeViewCacheOnRestore(
@@ -46,9 +47,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIPointerJNIType)
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)nativeView,
-            JNIConvertZFObjectToJNIType(jniEnv, view));
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)nativeView
+            , JNIConvertZFObjectToJNIType(jniEnv, view)
+            );
     }
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -56,8 +58,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            JNIConvertZFObjectToJNIType(jniEnv, view));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , JNIConvertZFObjectToJNIType(jniEnv, view)
+            );
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
@@ -105,12 +108,13 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jint)rect.x,
-            (jint)rect.y,
-            (jint)rect.width,
-            (jint)rect.height);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jint)rect.x
+            , (jint)rect.y
+            , (jint)rect.width
+            , (jint)rect.height
+            );
     }
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -118,8 +122,9 @@ public:
             JNIGetMethodSig(JNIType::S_float(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)nativeView);
+        return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)nativeView
+            );
     }
     virtual zffloat UIScaleForPixel(ZF_IN void *nativeView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -127,8 +132,9 @@ public:
             JNIGetMethodSig(JNIType::S_float(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)nativeView);
+        return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)nativeView
+            );
     }
 
     // ============================================================
@@ -144,9 +150,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jboolean)viewVisible);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jboolean)viewVisible
+            );
     }
     virtual void viewAlpha(
             ZF_IN ZFUIView *view
@@ -158,9 +165,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jfloat)viewAlpha);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jfloat)viewAlpha
+            );
     }
     virtual void viewUIEnable(
             ZF_IN ZFUIView *view
@@ -172,9 +180,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jboolean)viewUIEnable);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jboolean)viewUIEnable
+            );
     }
     virtual void viewUIEnableTree(
             ZF_IN ZFUIView *view
@@ -186,9 +195,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jboolean)viewUIEnableTree);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jboolean)viewUIEnableTree
+            );
     }
     virtual void viewBackgroundColor(
             ZF_IN ZFUIView *view
@@ -200,9 +210,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            ZFImpl_sys_Android_ZFUIColorToColor(viewBackgroundColor));
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , ZFImpl_sys_Android_ZFUIColorToColor(viewBackgroundColor)
+            );
     }
 
 public:
@@ -222,12 +233,13 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)parent->nativeView(),
-            (jobject)child->nativeView(),
-            (jint)virtualIndex,
-            (jint)childLayer,
-            (jint)childLayerIndex);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)parent->nativeView()
+            , (jobject)child->nativeView()
+            , (jint)virtualIndex
+            , (jint)childLayer
+            , (jint)childLayerIndex
+            );
     }
     virtual void childRemove(
             ZF_IN ZFUIView *parent
@@ -244,11 +256,12 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)parent->nativeView(),
-            (jint)virtualIndex,
-            (jint)childLayer,
-            (jint)childLayerIndex);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)parent->nativeView()
+            , (jint)virtualIndex
+            , (jint)childLayer
+            , (jint)childLayerIndex
+            );
     }
     virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -256,8 +269,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)parent->nativeView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)parent->nativeView()
+            );
     }
 
 public:
@@ -274,12 +288,13 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView(),
-            (jint)rect.x,
-            (jint)rect.y,
-            (jint)rect.width,
-            (jint)rect.height);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            , (jint)rect.x
+            , (jint)rect.y
+            , (jint)rect.width
+            , (jint)rect.height
+            );
     }
 
     virtual void layoutRequest(ZF_IN ZFUIView *view) {
@@ -288,8 +303,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)view->nativeView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)view->nativeView()
+            );
     }
 
     virtual void measureNativeView(
@@ -304,10 +320,11 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId,
-            (jobject)nativeView,
-            (jint)sizeHint.width,
-            (jint)sizeHint.height);
+        jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
+            , (jobject)nativeView
+            , (jint)sizeHint.width
+            , (jint)sizeHint.height
+            );
         jint *jarrSize = JNIUtilGetIntArrayElements(jniEnv, jobjSize, NULL);
         ret.width = (zffloat)jarrSize[0];
         ret.height = (zffloat)jarrSize[1];

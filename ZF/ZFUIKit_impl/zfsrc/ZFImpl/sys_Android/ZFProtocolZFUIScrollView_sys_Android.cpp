@@ -22,8 +22,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            JNIConvertZFObjectToJNIType(jniEnv, view));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , JNIConvertZFObjectToJNIType(jniEnv, view)
+            );
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
@@ -50,9 +51,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)scrollView->nativeImplView(),
-            (jboolean)scrollEnable);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)scrollView->nativeImplView()
+            , (jboolean)scrollEnable
+            );
     }
     virtual void scrollBounce(
             ZF_IN ZFUIScrollView *scrollView
@@ -70,12 +72,13 @@ public:
                 .add(JNIType::S_boolean())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)scrollView->nativeImplView(),
-            (jboolean)scrollBounceHorizontal,
-            (jboolean)scrollBounceVertical,
-            (jboolean)scrollBounceHorizontalAlways,
-            (jboolean)scrollBounceVerticalAlways);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)scrollView->nativeImplView()
+            , (jboolean)scrollBounceHorizontal
+            , (jboolean)scrollBounceVertical
+            , (jboolean)scrollBounceHorizontalAlways
+            , (jboolean)scrollBounceVerticalAlways
+            );
     }
     virtual void scrollContentFrame(
             ZF_IN ZFUIScrollView *scrollView
@@ -90,12 +93,13 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)scrollView->nativeImplView(),
-            (jint)frame.x,
-            (jint)frame.y,
-            (jint)frame.width,
-            (jint)frame.height);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)scrollView->nativeImplView()
+            , (jint)frame.x
+            , (jint)frame.y
+            , (jint)frame.width
+            , (jint)frame.height
+            );
     }
     virtual zftimet scrollAnimationStart(
             ZF_IN ZFUIScrollView *scrollView
@@ -107,9 +111,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)scrollView->nativeImplView(),
-            (jint)(zfuint)recommendTimerInterval);
+        return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)scrollView->nativeImplView()
+            , (jint)(zfuint)recommendTimerInterval
+            );
     }
     virtual void scrollAnimationStop(ZF_IN ZFUIScrollView *scrollView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -117,8 +122,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)scrollView->nativeImplView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)scrollView->nativeImplView()
+            );
     }
 
 public:
@@ -134,10 +140,11 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)parent->nativeImplView(),
-            (jobject)child->nativeView(),
-            (jint)atIndex);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)parent->nativeImplView()
+            , (jobject)child->nativeView()
+            , (jint)atIndex
+            );
     }
     virtual void scrollChildRemove(
             ZF_IN ZFUIScrollView *parent
@@ -150,9 +157,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)parent->nativeImplView(),
-            (jint)atIndex);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)parent->nativeImplView()
+            , (jint)atIndex
+            );
     }
     virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -160,8 +168,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId,
-            (jobject)parent->nativeImplView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
+            , (jobject)parent->nativeImplView()
+            );
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIScrollViewImpl_sys_Android)
 

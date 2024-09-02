@@ -40,8 +40,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), jmId,
-            JNIConvertZFObjectToJNIType(jniEnv, drawableView));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), jmId
+            , JNIConvertZFObjectToJNIType(jniEnv, drawableView)
+            );
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
@@ -63,8 +64,8 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), jmId,
-            (jobject)drawableView->nativeImplView()
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), jmId
+            , (jobject)drawableView->nativeImplView()
             );
     }
 
@@ -75,8 +76,8 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject canvas = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), jmId,
-            (jobject)token.target.to<ZFUIDrawableView *>()->nativeImplView()
+        jobject canvas = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), jmId
+            , (jobject)token.target.to<ZFUIDrawableView *>()->nativeImplView()
             );
         if(canvas == NULL) {
             return zffalse;

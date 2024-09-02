@@ -29,11 +29,12 @@ public:
                 .add(JNIType::S_int()).add(JNIType::S_int())
                 .add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId,
-            imageScale,
-            (jobject)nativeImage,
-            (jint)newSize.width, (jint)newSize.height,
-            (jint)ninePatch.left, (jint)ninePatch.top, (jint)ninePatch.right, (jint)ninePatch.bottom);
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId
+            , imageScale
+            , (jobject)nativeImage
+            , (jint)newSize.width, (jint)newSize.height
+            , (jint)ninePatch.left, (jint)ninePatch.top, (jint)ninePatch.right, (jint)ninePatch.bottom
+            );
         JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
@@ -49,10 +50,11 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId,
-            imageScale,
-            (jobject)nativeImage,
-            (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height);
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId
+            , imageScale
+            , (jobject)nativeImage
+            , (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height
+            );
         JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
@@ -67,9 +69,11 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId,
-            ZFImpl_sys_Android_ZFUIColorToColor(color),
-            (jint)size.width, (jint)size.height);
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId
+            , ZFImpl_sys_Android_ZFUIColorToColor(color)
+            , (jint)size.width
+            , (jint)size.height
+            );
         JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }

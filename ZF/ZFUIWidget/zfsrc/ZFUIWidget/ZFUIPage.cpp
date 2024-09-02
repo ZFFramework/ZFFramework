@@ -152,10 +152,10 @@ public:
                 return;
             }
             ZFUIPage *resumePage = owner->pageList.getLast();
-            pageOnResume(resumePage, resumeReason->enumValueOrig(), pausePage);
+            pageOnResume(resumePage, resumeReason->zfv(), pausePage);
             pageAniUpdate(
-                    resumePage, resumeReason->enumValueOrig()
-                    , pausePage, pauseReason->enumValueOrig()
+                    resumePage, resumeReason->zfv()
+                    , pausePage, pauseReason->zfv()
                     );
         } ZFLISTENER_END()
         this->scheduleResumeTaskId = zfpost(action);

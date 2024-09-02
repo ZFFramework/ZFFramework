@@ -319,7 +319,7 @@ public:
         } \
     public: \
         /** @brief util method to access original enum value */ \
-        zffinal zfself::ZFEnumType enumValueOrig(void) { \
+        zffinal zfself::ZFEnumType zfv(void) { \
             return (zfself::ZFEnumType)this->enumValue(); \
         } \
     public: \

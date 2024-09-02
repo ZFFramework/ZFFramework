@@ -123,11 +123,12 @@ public:
                 .add(JNIType::S_boolean())
                 .add(JNIType::S_boolean())
             ).c_str());
-        jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId,
-            JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed)),
-            JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath)),
-            isRecursive,
-            isForce);
+        jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId
+            , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed))
+            , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath))
+            , isRecursive
+            , isForce
+            );
         if(errPosJ == NULL) {
             return zftrue;
         }

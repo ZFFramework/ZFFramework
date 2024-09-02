@@ -719,27 +719,6 @@ protected:
             ret = (Type)(from + (Type)((to - from) * progress)); \
         })
 
-// ============================================================
-/** @cond ZFPrivateDoc */
-template<typename T_Type>
-ZFV::operator T_Type & (void) const {
-    ZFTypeIdWrapper *w = zfcast(ZFTypeIdWrapper *, _ZFP_obj);
-    typedef typename zftTraits<T_Type &>::TrNoRef T_Type_;
-    zfCoreAssertWithMessageTrim(w != zfnull && w->classData()->classIsTypeOf(ZFTypeId<T_Type_>::TypeIdClass())
-            , "unable to access %s from object: %s"
-            , ZFTypeId<T_Type_>::TypeId()
-            , _ZFP_obj
-            );
-    zfauto v = _ZFP_obj;
-    zfCoreAssertWithMessageTrim(ZFTypeId<T_Type_>::template Value<T_Type &>::zfvAccessAvailable(v)
-            , "unable to access %s ref from object: %s"
-            , ZFTypeId<T_Type_>::TypeId()
-            , _ZFP_obj
-            );
-    return ZFTypeId<T_Type_>::template Value<T_Type &>::zfvAccess(v);
-}
-/** @endcond */
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeIdCore_h_
 

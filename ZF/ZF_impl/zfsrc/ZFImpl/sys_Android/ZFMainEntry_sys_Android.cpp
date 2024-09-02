@@ -57,9 +57,7 @@ JNIGlobalRef ZFImpl_sys_Android_app(void) {
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFMainEntry(), "native_app",
         JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
-    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
-        ZFImpl_sys_Android_jclassZFMainEntry(),
-        jmId);
+    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFMainEntry(), jmId);
     JNIGlobalRef ret(tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
     return ret;
@@ -69,9 +67,7 @@ JNIGlobalRef ZFImpl_sys_Android_appContext(void) {
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFMainEntry(), "native_appContext",
         JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
-    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
-        ZFImpl_sys_Android_jclassZFMainEntry(),
-        jmId);
+    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFMainEntry(), jmId);
     JNIGlobalRef ret(tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
     return ret;
@@ -81,9 +77,7 @@ JNIGlobalRef ZFImpl_sys_Android_assetManager(void) {
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFMainEntry(), "native_assetManager",
         JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
-    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
-        ZFImpl_sys_Android_jclassZFMainEntry(),
-        jmId);
+    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFMainEntry(), jmId);
     JNIGlobalRef ret(tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
     return ret;

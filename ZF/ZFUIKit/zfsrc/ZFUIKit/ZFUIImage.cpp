@@ -437,7 +437,7 @@ void ZFUIImage::objectOnInitFinish(void) {
     ZFLISTENER_1(globalImageScaleOnUpdate
             , ZFUIImage *, owner
             ) {
-        const ZFProperty *const &property = zfargs.param0().zfv();
+        const ZFProperty *property = zfargs.param0().to<v_ZFProperty *>()->zfv;
         if(property == ZFPropertyAccess(ZFUIGlobalStyle, imageScale)) {
             owner->_ZFP_ZFUIImage_imageScaleOnUpdate();
         }

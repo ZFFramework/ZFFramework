@@ -58,7 +58,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(target->viewWidth() * (1 - progress));
@@ -67,7 +67,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
             }
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(-target->viewWidth() * progress);
@@ -78,7 +78,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         else { // ZFUIPageResumeReason::e_FromBackground
             if(page != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(-target->viewWidth() * (1 - progress));
@@ -87,7 +87,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
             }
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(target->viewWidth() * progress);
@@ -100,7 +100,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         if(resumeOrPauseReason->enumValue() == ZFUIPagePauseReason::e_ToBackground) {
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(target->viewWidth() * (1 - progress));
@@ -109,7 +109,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
             }
             if(page != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(-target->viewWidth() * progress);
@@ -120,7 +120,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         else { // ZFUIPagePauseReason::e_BeforeDestroy
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(-target->viewWidth() * (1 - progress));
@@ -129,7 +129,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
             }
             if(page != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateX(target->viewWidth() * progress);
@@ -152,7 +152,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
         if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateY(-target->viewHeight() * (1 - progress));
@@ -171,7 +171,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
             }
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateY(target->viewHeight() * progress);
@@ -184,7 +184,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
         if(resumeOrPauseReason->enumValue() == ZFUIPagePauseReason::e_ToBackground) {
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateY(-target->viewHeight() * (1 - progress));
@@ -203,7 +203,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
             }
             if(page != zfnull) {
                 ZFLISTENER(impl) {
-                    zffloat const &progress = zfargs.param0().zfv();
+                    zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
                     ZFUIView *target = ani->aniTarget();
                     target->viewTranslateY(target->viewHeight() * progress);

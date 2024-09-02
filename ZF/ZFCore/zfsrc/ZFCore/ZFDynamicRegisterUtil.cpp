@@ -619,7 +619,7 @@ void classOnUpdateCheckAttach(void) {
     }
 }
 static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
-    ZFClassDataUpdateData const &data = zfargs.param0().zfv();
+    ZFClassDataUpdateData const &data = zfargs.param0().to<v_ZFClassDataUpdateData *>()->zfv;
     if(data.changeType == ZFClassDataUpdateTypeDetach && data.changedClass != zfnull) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
         d->classEventMap.erase(data.changedClass);
@@ -1145,7 +1145,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_3(ZFDynamic, v_ZFDynamic, void, e
         , ZFMP_IN_OPT(zfbool, exportInternal, zffalse)
         )
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        ZFDynamic &v = invokerObject.zfv();
+        ZFDynamic &v = invokerObject.to<v_ZFDynamic *>()->zfv;
         v.regTag(regTag);
     }, v_ZFDynamic
     , ZFMP_IN(const zfstring &, regTag)

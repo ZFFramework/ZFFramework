@@ -28,8 +28,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewCapture(), jmId,
-            (jobject)view->nativeView());
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewCapture(), jmId
+            , (jobject)view->nativeView()
+            );
         image->nativeImage(tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return zftrue;

@@ -18,8 +18,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImage(), jmId,
-            ZFImpl_sys_Android_ZFInputWrapperFromZFInput(inputCallback));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImage(), jmId
+            , ZFImpl_sys_Android_ZFInputWrapperFromZFInput(inputCallback)
+            );
         if(tmp == NULL) {
             return zfnull;
         }

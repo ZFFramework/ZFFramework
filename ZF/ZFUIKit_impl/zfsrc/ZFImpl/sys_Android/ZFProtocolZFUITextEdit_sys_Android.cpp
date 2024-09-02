@@ -22,8 +22,9 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            JNIConvertZFObjectToJNIType(jniEnv, textEdit));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , JNIConvertZFObjectToJNIType(jniEnv, textEdit)
+            );
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
@@ -55,9 +56,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jboolean)textEditEnable);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jboolean)textEditEnable
+            );
     }
     virtual void textEditSecure(
             ZF_IN ZFUITextEdit *textEdit
@@ -69,9 +71,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jboolean)textEditSecured);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jboolean)textEditSecured
+            );
     }
     virtual void textEditKeyboardType(
             ZF_IN ZFUITextEdit *textEdit
@@ -83,9 +86,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)textEditKeyboardType);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)textEditKeyboardType
+            );
     }
     virtual void textEditKeyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
@@ -97,9 +101,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)textEditKeyboardReturnType);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)textEditKeyboardReturnType
+            );
     }
 
     virtual void textSelectRange(
@@ -115,10 +120,12 @@ public:
             JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        textSelectRange.start = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId_start,
-            (jobject)textEdit->nativeImplView());
-        textSelectRange.count = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId_count,
-            (jobject)textEdit->nativeImplView());
+        textSelectRange.start = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId_start
+            , (jobject)textEdit->nativeImplView()
+            );
+        textSelectRange.count = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId_count
+            , (jobject)textEdit->nativeImplView()
+            );
     }
     virtual void textSelectRange(
             ZF_IN ZFUITextEdit *textEdit
@@ -131,10 +138,11 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)textSelectRange.start,
-            (jint)textSelectRange.count);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)textSelectRange.start
+            , (jint)textSelectRange.count
+            );
     }
 
 public:
@@ -148,9 +156,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jobject)ZFImpl_sys_Android_zfstringToString(text));
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jobject)ZFImpl_sys_Android_zfstringToString(text)
+            );
     }
     virtual void textAppearance(
             ZF_IN ZFUITextEdit *textEdit
@@ -162,9 +171,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)textAppearance);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)textAppearance
+            );
     }
     virtual void textAlign(
             ZF_IN ZFUITextEdit *textEdit
@@ -176,9 +186,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)textAlign);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)textAlign
+            );
     }
     virtual void textColor(
             ZF_IN ZFUITextEdit *textEdit
@@ -190,9 +201,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            ZFImpl_sys_Android_ZFUIColorToColor(textColor));
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , ZFImpl_sys_Android_ZFUIColorToColor(textColor)
+            );
     }
     virtual void textSize(
             ZF_IN ZFUITextEdit *textEdit
@@ -204,9 +216,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)textSize);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)textSize
+            );
     }
 
     // ============================================================
@@ -225,11 +238,12 @@ public:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView(),
-            (jint)sizeHint.width,
-            (jint)sizeHint.height,
-            (jint)textSize);
+        jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            , (jint)sizeHint.width
+            , (jint)sizeHint.height
+            , (jint)textSize
+            );
         jint *jarrSize = JNIUtilGetIntArrayElements(jniEnv, jobjSize, NULL);
         ZFUISize ret = ZFUISizeMake((zffloat)jarrSize[0], (zffloat)jarrSize[1]);
         JNIUtilReleaseIntArrayElements(jniEnv, jobjSize, jarrSize, JNI_ABORT);
@@ -246,8 +260,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            );
     }
     virtual void textEditEnd(ZF_IN ZFUITextEdit *textEdit) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -255,8 +270,9 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId,
-            (jobject)textEdit->nativeImplView());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId
+            , (jobject)textEdit->nativeImplView()
+            );
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextEditImpl_sys_Android)
 
