@@ -229,7 +229,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
         return zffalse;
     }
 
-    if(this->imageSerializableType() != zfnull) { // custom serialize
+    if(this->imageSerializableType() || this->imageSerializableDataGetter()) { // custom serialize
         if(ref != zfnull
                 && zfstringIsEqual(this->imageSerializableType(), ref->imageSerializableType())
                 && this->imageSerializableData().objectCompare(ref->imageSerializableData()) == ZFCompareEqual
@@ -253,6 +253,17 @@ zfbool ZFUIImage::serializableOnSerializeToData(
                     v_ZFSerializableData *tmp = zfargsDataGetter.result();
                     if(tmp != zfnull) {
                         imageData = tmp->zfv;
+                    }
+                    else {
+                        v_zfstring *errorHint = zfargsDataGetter.result();
+                        if(errorHint != zfnull) {
+                            ZFSerializableUtilErrorOccurred(outErrorHint,
+                                "unable to serialize as type \"%s\" : %s"
+                                , this->imageSerializableType()
+                                , errorHint->zfv
+                                );
+                            return zffalse;
+                        }
                     }
                 }
                 else {
@@ -395,10 +406,12 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
     }
     if(impl) {
         d->imageStateImpl = impl;
-        d->imageStateImpl.execute(ZFArgs()
-                .sender(this)
-                .param0(zfobj<v_zfbool>(zftrue))
-                );
+        if(!d->imageStateObservers.isEmpty()) {
+            d->imageStateImpl.execute(ZFArgs()
+                    .sender(this)
+                    .param0(zfobj<v_zfbool>(zftrue))
+                    );
+        }
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImplNotifyUpdate
@@ -448,6 +461,10 @@ void ZFUIImage::objectOnInitFinish(void) {
         d->globalImageScaleOnUpdateListener);
 }
 void ZFUIImage::objectOnDeallocPrepare(void) {
+    zfCoreAssertWithMessageTrim(d->imageStateObservers.isEmpty()
+            , "%s dealloc while imageState observer still exists, have you forgot imageStateDetach?"
+            , this
+            );
     ZFUIGlobalStyle::DefaultStyle()->observerRemove(
         ZFObject::EventObjectPropertyValueOnUpdate(),
         d->globalImageScaleOnUpdateListener);

@@ -80,34 +80,41 @@ static void _ZFP_ZFUIImageAsyncImpl(
         return;
     }
 
-    // serializez logic
-    ZFSerializableData data;
-    {
-        ZFSerializableData srcData;
-        if(!ZFCallbackToDataT(srcData, src)) {
-            return;
-        }
-        srcData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageSrc);
-        data.childAdd(srcData);
+    // serialize logic
+    ZFSerializableData srcData;
+    if(!ZFCallbackToDataT(srcData, src)) {
+        return;
     }
-    if(imageLoadFail) {
-        ZFSerializableData imageLoadFailData;
-        if(!ZFObjectToDataT(imageLoadFailData, imageLoadFail)) {
-            return;
+    ZFLISTENER_3(serializeImpl
+            , ZFSerializableData, srcData
+            , zfautoT<ZFUIImage>, imageLoadFail
+            , zfautoT<ZFUIImage>, imageLoading
+            ) {
+        ZFSerializableData data;
+        {
+            srcData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageSrc);
+            data.childAdd(srcData);
         }
-        imageLoadFailData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail);
-        data.childAdd(imageLoadFailData);
-    }
-    if(imageLoading) {
-        ZFSerializableData imageLoadingData;
-        if(!ZFObjectToDataT(imageLoadingData, imageLoading)) {
-            return;
+        if(imageLoadFail) {
+            ZFSerializableData imageLoadFailData;
+            if(!ZFObjectToDataT(imageLoadFailData, imageLoadFail)) {
+                return;
+            }
+            imageLoadFailData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail);
+            data.childAdd(imageLoadFailData);
         }
-        imageLoadingData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoading);
-        data.childAdd(imageLoadingData);
-    }
+        if(imageLoading) {
+            ZFSerializableData imageLoadingData;
+            if(!ZFObjectToDataT(imageLoadingData, imageLoading)) {
+                return;
+            }
+            imageLoadingData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoading);
+            data.childAdd(imageLoadingData);
+        }
+        zfargs.result(zfobj<v_ZFSerializableData>(data));
+    } ZFLISTENER_END()
     holder->imageSerializableType(ZFUIImageSerializeType_async);
-    holder->imageSerializableData(data);
+    holder->imageSerializableDataGetter(serializeImpl);
 
     return;
 }

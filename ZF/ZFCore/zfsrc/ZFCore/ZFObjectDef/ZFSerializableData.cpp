@@ -36,9 +36,9 @@ typedef zfstlmap<zfstring, zfauto> _ZFP_ZFSerializableDataTagMapType;
 zfclassNotPOD _ZFP_ZFSerializableDataPrivate {
 public:
     zfuint refCount;
+    zfbool resolved;
     _ZFP_ZFSerializableDataPrivate *serializableDataParent;
     zfstring classNameFull;
-    zfbool resolved;
     ZFPathInfo *pathInfo;
     _ZFP_ZFSerializableDataAttributeMapType attributes;
     zfstldeque<ZFSerializableData> elements;
@@ -61,9 +61,9 @@ public:
 public:
     _ZFP_ZFSerializableDataPrivate(void)
     : refCount(1)
+    , resolved(zffalse)
     , serializableDataParent(zfnull)
     , classNameFull()
-    , resolved(zffalse)
     , pathInfo(zfnull)
     , attributes()
     , elements()
@@ -455,7 +455,10 @@ void ZFSerializableData::childAdd(ZF_IN const ZFSerializableData &element) {
         d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
     zfCoreAssertWithMessage(d != element.d, "adding self is not allowed");
-    zfCoreAssertWithMessage(d->serializableDataParent == zfnull, "adding a data which already has parent");
+    if(element.d == zfnull) {
+        const_cast<ZFSerializableData &>(element).d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
+    zfCoreAssertWithMessage(element.d->serializableDataParent == zfnull, "adding a data which already has parent");
     d->elements.push_back(element);
     element.d->serializableDataParent = d;
 }
@@ -467,7 +470,10 @@ void ZFSerializableData::childAdd(
         d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
     zfCoreAssertWithMessage(d != element.d, "adding self is not allowed");
-    zfCoreAssertWithMessage(d->serializableDataParent == zfnull, "adding a data which already has parent");
+    if(element.d == zfnull) {
+        const_cast<ZFSerializableData &>(element).d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
+    zfCoreAssertWithMessage(element.d->serializableDataParent == zfnull, "adding a data which already has parent");
     if(atIndex == zfindexMax()) {
         atIndex = (zfindex)d->elements.size();
     }
@@ -489,6 +495,9 @@ void ZFSerializableData::childReplace(
     }
     d->elements[(zfstlsize)index].d->serializableDataParent = zfnull;
     d->elements[(zfstlsize)index] = element;
+    if(element.d == zfnull) {
+        const_cast<ZFSerializableData &>(element).d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     element.d->serializableDataParent = d;
 }
 

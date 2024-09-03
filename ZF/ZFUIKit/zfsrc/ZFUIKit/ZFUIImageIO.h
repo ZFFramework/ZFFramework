@@ -87,7 +87,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageScale
 #define ZFUIImageSerializeType_ref "ref"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ref "ref"
+#define ZFSerializableKeyword_ZFUIImageIO_ref_ref "ref"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImageIO_ref_refFrame "refFrame"
 
@@ -130,7 +130,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromNativeIm
 #define ZFUIImageSerializeType_color "color"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_color "color"
+#define ZFSerializableKeyword_ZFUIImageIO_color_color "color"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImageIO_color_size "size"
 

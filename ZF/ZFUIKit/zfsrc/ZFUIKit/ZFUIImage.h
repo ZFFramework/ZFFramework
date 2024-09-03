@@ -309,9 +309,14 @@ public:
     virtual void imageSerializableData(ZF_IN const ZFSerializableData &serializableData);
     /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
     virtual const ZFSerializableData &imageSerializableData(void);
-    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
+    /**
+     * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
+     *
+     * impl should store the result ZFSerializableData to #ZFArgs::result,
+     * or store a #v_zfstring containing error hint
+     */
     virtual void imageSerializableDataGetter(ZF_IN const ZFListener &impl);
-    /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
+    /**@brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
     virtual const ZFListener &imageSerializableDataGetter(void);
 
 private:

@@ -16,6 +16,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# return a dummy holder image
  * -# loading image in background, by #ZFUIImageLoad
  * -# notify impl to redraw, by #ZFUIImage::imageStateImplNotifyUpdate
+ *
+ * @note the imageLoadFail and imageLoading would be retained by the returned image object
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
         , ZFMP_IN(const ZFInput &, src)

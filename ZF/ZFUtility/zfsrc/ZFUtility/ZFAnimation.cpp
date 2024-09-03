@@ -19,9 +19,9 @@ public:
     zfbool aniRunning;
     zfbool aniDelaying;
     zfbool aniImplStartFlag;
+    zfbool aniStoppedByUser;
     zfautoT<ZFTimer> aniDelayTimer;
     zfautoT<ZFTimer> aniDummyTimer;
-    zfbool aniStoppedByUser;
     zfidentity aniId;
     zfindex aniLoopCur;
 
@@ -31,9 +31,9 @@ public:
     , aniRunning(zffalse)
     , aniDelaying(zffalse)
     , aniImplStartFlag(zffalse)
+    , aniStoppedByUser(zffalse)
     , aniDelayTimer()
     , aniDummyTimer()
-    , aniStoppedByUser(zffalse)
     , aniId(zfidentityInvalid())
     , aniLoopCur(0)
     {
@@ -247,18 +247,20 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = Z
     d->aniImplStartFlag = zffalse;
     this->aniImplStop();
 
-    ++(d->aniLoopCur);
-    if(this->aniLoop() == zfindexMax() || d->aniLoopCur <= this->aniLoop()) {
-        this->aniOnLoop();
-        if(this->aniDelay() > 0) {
-            d->aniDelaying = zftrue;
-            this->aniImplDelay();
+    if(!d->aniStoppedByUser) {
+        ++(d->aniLoopCur);
+        if(this->aniLoop() == zfindexMax() || d->aniLoopCur <= this->aniLoop()) {
+            this->aniOnLoop();
+            if(this->aniDelay() > 0) {
+                d->aniDelaying = zftrue;
+                this->aniImplDelay();
+            }
+            else {
+                d->aniImplStartFlag = zftrue;
+                this->aniImplStart();
+            }
+            return;
         }
-        else {
-            d->aniImplStartFlag = zftrue;
-            this->aniImplStart();
-        }
-        return;
     }
 
     d->aniRunning = zffalse;

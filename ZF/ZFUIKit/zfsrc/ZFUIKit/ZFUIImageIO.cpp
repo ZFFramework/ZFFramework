@@ -199,14 +199,14 @@ static zfbool _ZFP_ZFUIImageInFrame(
     ret->nativeImage(nativeImage, zffalse);
 
     // only store custom type for performance
-    if(storeSerializableData && image->imageSerializableType() != zfnull) {
+    if(storeSerializableData && (image->imageSerializableType() || image->imageSerializableDataGetter())) {
         ZFSerializableData data;
         data.itemClass(ZFSerializableKeyword_node);
         ZFSerializableData refData;
         zfstring frameString;
         if(image->serializeToData(refData) && ZFUIRectToStringT(frameString, frame)) {
             data.attr(ZFSerializableKeyword_ZFUIImageIO_ref_refFrame, frameString);
-            refData.category(ZFSerializableKeyword_ZFUIImageIO_ref);
+            refData.category(ZFSerializableKeyword_ZFUIImageIO_ref_ref);
             data.childAdd(refData);
             ret->imageSerializableType(ZFUIImageSerializeType_ref);
             ret->imageSerializableData(data);
@@ -220,7 +220,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ref, ZFUIImageSerializeType_ref) {
 
     zfautoT<ZFUIImage> ref;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFUIImageIO_ref, ZFObject, ref, {
+            require, ZFSerializableKeyword_ZFUIImageIO_ref_ref, ZFObject, ref, {
                 return zffalse;
             });
     if(ref == zfnull) {
@@ -268,7 +268,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIImage>, ZFUIImageFromNativeImage
 ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(color, ZFUIImageSerializeType_color) {
     ZFUIColor color = ZFUIColorZero();
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIImageIO_color, ZFUIColor, color, {
+            check, ZFSerializableKeyword_ZFUIImageIO_color_color, ZFUIColor, color, {
                 return zffalse;
             });
 
@@ -304,7 +304,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIImage>, ZFUIImageFromColor
     imageData.itemClass(ZFSerializableKeyword_node);
     {
         ZFSerializableUtilSerializeAttributeToDataNoRef(imageData, zfnull,
-                ZFSerializableKeyword_ZFUIImageIO_color, ZFUIColor, color, ZFUIColorZero(), {
+                ZFSerializableKeyword_ZFUIImageIO_color_color, ZFUIColor, color, ZFUIColorZero(), {
                     return zfnull;
                 });
 
