@@ -387,13 +387,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onResume(void) {
 
     d->nativeWindowResumed = zftrue;
     this->observerNotify(ZFUISysWindow::EventSysWindowOnResume());
-
-    for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i) {
-        ZFUIWindow *window = this->rootView()->childAt(i);
-        if(window != zfnull) {
-            window->windowOwnerSysWindowOnResume();
-        }
-    }
+    this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zftrue);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void) {
     if(!d->nativeWindowResumed) {
@@ -402,13 +396,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void) {
 
     d->nativeWindowResumed = zffalse;
     this->observerNotify(ZFUISysWindow::EventSysWindowOnPause());
-
-    for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i) {
-        ZFUIWindow *window = this->rootView()->childAt(i);
-        if(window != zfnull) {
-            window->windowOwnerSysWindowOnPause();
-        }
-    }
+    this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zffalse);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void) {
     zfCoreAssertWithMessage(d->nativeWindowCreated, "window not created");

@@ -101,18 +101,6 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * notified when #ZFUISysWindow::EventSysWindowOnResume
-     */
-    ZFEVENT(WindowOwnerSysWindowOnResume)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * notified when #ZFUISysWindow::EventSysWindowOnPause
-     */
-    ZFEVENT(WindowOwnerSysWindowOnPause)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
      * notified when #ZFUISysWindow::EventSysWindowOnRotate
      */
     ZFEVENT(WindowOwnerSysWindowOnRotate)
@@ -225,14 +213,6 @@ protected:
         this->observerNotify(ZFUIWindow::EventWindowOnHide());
     }
 
-    /** @brief see #EventWindowOwnerSysWindowOnResume */
-    virtual inline void windowOwnerSysWindowOnResume(void) {
-        this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnResume());
-    }
-    /** @brief see #EventWindowOwnerSysWindowOnPause */
-    virtual inline void windowOwnerSysWindowOnPause(void) {
-        this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnPause());
-    }
     /** @brief see #EventWindowOwnerSysWindowOnRotate */
     virtual inline void windowOwnerSysWindowOnRotate(void) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnRotate());

@@ -88,8 +88,14 @@ protected:
             , ZF_IN const ZFUISize &sizeHint
             , ZF_IN const ZFUISizeParam &sizeParam
             );
+
+    zfoverride
+    virtual void viewTreeVisibleOnUpdate(void);
+
 private:
-    ZFListener imageStateOnUpdateListener;
+    ZFListener _ZFP_imageStateOnUpdateListener;
+    void _ZFP_imageStateAttach(void);
+    void _ZFP_imageStateDetach(void);
 };
 
 ZF_NAMESPACE_GLOBAL_END

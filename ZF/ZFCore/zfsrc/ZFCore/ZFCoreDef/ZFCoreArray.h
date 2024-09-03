@@ -170,7 +170,7 @@ public:
      * @brief delete reference
      */
     virtual void refDelete(void) {
-        zfdelete(this);
+        zfpoolDelete(this);
     }
     /**
      * @brief get the impl
@@ -337,25 +337,27 @@ public:
     /**
      * @brief main constructor
      */
-    ZFCoreArray(void) {
-        d = zfnew(_ZFP_ZFCoreArrayPrivate<T_Element>);
-    }
+    ZFCoreArray(void) : d(zfnull) {}
     /**
      * @brief construct from another array
      */
     ZFCoreArray(ZF_IN const ZFCoreArray<T_Element> &ref)
     : d(ref.d)
     {
-        ++(d->refCount);
+        if(d) {
+            ++(d->refCount);
+        }
     }
     virtual ~ZFCoreArray(void) {
-        --(d->refCount);
-        if(d->refCount == 0) {
-            zfdelete(d);
+        if(d) {
+            --(d->refCount);
+            if(d->refCount == 0) {
+                zfpoolDelete(d);
+            }
         }
     }
     zfoverride
-    virtual ZFCoreArrayBase *refNew(void) const {return zfnew(ZFCoreArray<T_Element>, *this);}
+    virtual ZFCoreArrayBase *refNew(void) const {return zfpoolNew(ZFCoreArray<T_Element>, *this);}
     zfoverride
     virtual void *refImpl(void) const {return d;}
     /**
@@ -364,10 +366,14 @@ public:
     ZFCoreArray<T_Element> &operator = (ZF_IN const ZFCoreArray<T_Element> &ref) {
         _ZFP_ZFCoreArrayPrivate<T_Element> *dTmp = d;
         d = ref.d;
-        ++(ref.d->refCount);
-        --(dTmp->refCount);
-        if(dTmp->refCount == 0) {
-            zfdelete(dTmp);
+        if(d) {
+            ++(d->refCount);
+        }
+        if(dTmp) {
+            --(dTmp->refCount);
+            if(dTmp->refCount == 0) {
+                zfpoolDelete(dTmp);
+            }
         }
         return *this;
     }
@@ -401,19 +407,21 @@ public:
      */
     void copyFrom(ZF_IN const ZFCoreArray<T_Element> &ref) {
         if(d != ref.d) {
-            if(d->buf) {
+            if(d && d->buf) {
                 _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
                 d->count = 0;
             }
-            _capacityRequire(ref.count());
-            _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf());
-            d->count = (zfuint)ref.count();
+            if(ref.d) {
+                _capacityRequire(ref.count());
+                _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf());
+                d->count = (zfuint)ref.count();
+            }
         }
     }
     /**
      * @brief get retain count
      */
-    zfindex objectRetainCount(void) const {return d->refCount;}
+    zfindex objectRetainCount(void) const {return d ? d->refCount : 0;}
     /**
      * @brief compare by content
      */
@@ -498,7 +506,7 @@ public:
     }
     zfoverride
     virtual zfindex capacity(void) const {
-        return (zfindex)d->capacity;
+        return (zfindex)(d ? d->capacity : 0);
     }
 
 public:
@@ -541,7 +549,7 @@ public:
         if(src == zfnull || count == 0) {
             return;
         }
-        if(src < d->buf || src >= d->buf + d->capacity) {
+        if(d == zfnull || src < d->buf || src >= d->buf + d->capacity) {
             _capacityRequire(this->count() + count);
             _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + d->count + count, src);
             d->count += (zfuint)count;
@@ -558,7 +566,9 @@ public:
      * @brief add from another array
      */
     void addFrom(ZF_IN const ZFCoreArray<T_Element> &ref) {
-        this->addFrom(ref.arrayBuf(), ref.count());
+        if(d != ref.d) {
+            this->addFrom(ref.arrayBuf(), ref.count());
+        }
     }
 
     /**
@@ -568,9 +578,11 @@ public:
             ZF_IN T_Element const &e
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {
-        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareEqual) {
-                return (p - d->buf);
+        if(d) {
+            for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
+                if(comparer(*p, e) == ZFCompareEqual) {
+                    return (p - d->buf);
+                }
             }
         }
         return zfindexMax();
@@ -582,7 +594,7 @@ public:
             ZF_IN T_Element const &e
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {
-        if(d->buf) {
+        if(d && d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
                 if(comparer(*p, e) == ZFCompareEqual) {
                     return (p - d->buf);
@@ -599,9 +611,11 @@ public:
             ZF_IN T_Another const &e
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) const {
-        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareEqual) {
-                return (p - d->buf);
+        if(d) {
+            for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
+                if(comparer(*p, e) == ZFCompareEqual) {
+                    return (p - d->buf);
+                }
             }
         }
         return zfindexMax();
@@ -614,7 +628,7 @@ public:
             ZF_IN T_Another const &e
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) const {
-        if(d->buf) {
+        if(d && d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
                 if(comparer(*p, e) == ZFCompareEqual) {
                     return (p - d->buf);
@@ -631,10 +645,12 @@ public:
             ZF_IN T_Element const &e
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) {
-        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareEqual) {
-                this->remove(p - d->buf);
-                return zftrue;
+        if(d) {
+            for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
+                if(comparer(*p, e) == ZFCompareEqual) {
+                    this->remove(p - d->buf);
+                    return zftrue;
+                }
             }
         }
         return zffalse;
@@ -647,10 +663,12 @@ public:
             ZF_IN T_Another const &e
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) {
-        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareEqual) {
-                this->remove(p - d->buf);
-                return zftrue;
+        if(d) {
+            for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
+                if(comparer(*p, e) == ZFCompareEqual) {
+                    this->remove(p - d->buf);
+                    return zftrue;
+                }
             }
         }
         return zffalse;
@@ -662,7 +680,7 @@ public:
             ZF_IN T_Element const &e
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) {
-        if(d->buf) {
+        if(d && d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
                 if(comparer(*p, e) == ZFCompareEqual) {
                     this->remove(p - d->buf);
@@ -680,7 +698,7 @@ public:
             ZF_IN T_Another const &e
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) {
-        if(d->buf) {
+        if(d && d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
                 if(comparer(*p, e) == ZFCompareEqual) {
                     this->remove(p - d->buf);
@@ -698,11 +716,13 @@ public:
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) {
         zfindex removedCount = 0;
-        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareEqual) {
-                ++removedCount;
-                this->remove(p - d->buf);
-                --p;
+        if(d) {
+            for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
+                if(comparer(*p, e) == ZFCompareEqual) {
+                    ++removedCount;
+                    this->remove(p - d->buf);
+                    --p;
+                }
             }
         }
         return removedCount;
@@ -716,11 +736,13 @@ public:
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) {
         zfindex removedCount = 0;
-        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareEqual) {
-                ++removedCount;
-                this->remove(p - d->buf);
-                --p;
+        if(d) {
+            for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
+                if(comparer(*p, e) == ZFCompareEqual) {
+                    ++removedCount;
+                    this->remove(p - d->buf);
+                    --p;
+                }
             }
         }
         return removedCount;
@@ -797,8 +819,10 @@ public:
     }
     zfoverride
     virtual void removeAll(void) {
-        _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
-        d->count = 0;
+        if(d && d->count != 0) {
+            _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
+            d->count = 0;
+        }
     }
 
     zfoverride
@@ -906,16 +930,16 @@ public:
      * @warning the returned pointer may changed after modify the array
      * @warning return null if current capacity is 0
      */
-    T_Element *arrayBuf(void) {return d->buf;}
+    T_Element *arrayBuf(void) {return d ? d->buf : zfnull;}
     /**
      * @brief see #arrayBuf
      */
-    const T_Element *arrayBuf(void) const {return d->buf;}
+    const T_Element *arrayBuf(void) const {return d ? d->buf : zfnull;}
 
     zfoverride
-    virtual zfindex count(void) const {return (zfindex)d->count;}
+    virtual zfindex count(void) const {return (zfindex)(d ? d->count : 0);}
     zfoverride
-    virtual zfbool isEmpty(void) const {return (d->count == 0);}
+    virtual zfbool isEmpty(void) const {return (d == zfnull || d->count == 0);}
     virtual zfbool isContain(
             ZF_IN T_Element const &e
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
@@ -1023,13 +1047,19 @@ private:
     }
     void _capacityDoChange(ZF_IN zfindex capacity) {
         if(capacity == 0) {
-            _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
-            zffree(d->buf);
-            d->buf = zfnull;
-            d->capacity = 0;
-            d->count = 0;
+            if(d) {
+                _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
+                zffree(d->buf);
+                d->buf = zfnull;
+                d->capacity = 0;
+                d->count = 0;
+            }
         }
         else {
+            if(d == zfnull) {
+                d = zfpoolNew(_ZFP_ZFCoreArrayPrivate<T_Element>);
+            }
+
             T_Element *oldBuf = d->buf;
             zfuint oldCount = d->count;
 

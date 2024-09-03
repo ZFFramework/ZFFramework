@@ -100,6 +100,18 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * called when #viewTreeInWindow changed
+     */
+    ZFEVENT(ViewTreeInWindowOnUpdate)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called when #viewTreeVisible changed
+     */
+    ZFEVENT(ViewTreeVisibleOnUpdate)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called when child added or removed or order changed,
      * may be normal child or internal child
      */
@@ -249,6 +261,21 @@ public:
      */
     ZFPROPERTY_ASSIGN(zfbool, viewVisible, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewVisible)
+
+    /**
+     * @brief true if added to ZFUISysWindow
+     *
+     * see #EventViewTreeInWindowOnUpdate
+     */
+    ZFMETHOD_DECLARE_0(zfbool, viewTreeInWindow)
+    /**
+     * @brief true only if added to ZFUISysWindow and all of parents are visible
+     *
+     * see #EventViewTreeVisibleOnUpdate
+     */
+    ZFMETHOD_DECLARE_0(zfbool, viewTreeVisible)
+
+    zffinal void _ZFP_ZFUIView_viewTreeInWindow(ZF_IN zfbool viewTreeInWindow);
 
     /**
      * @brief view's alpha, 1 by default
@@ -962,6 +989,10 @@ public:
     // ============================================================
     // events
 protected:
+    /** @brief see #EventViewTreeInWindowOnUpdate */
+    virtual void viewTreeInWindowOnUpdate(void);
+    /** @brief see #EventViewTreeVisibleOnUpdate */
+    virtual void viewTreeVisibleOnUpdate(void);
     /** @brief see #EventViewChildOnUpdate */
     virtual void viewChildOnUpdate(void);
     /** @brief see #EventViewChildOnAdd */

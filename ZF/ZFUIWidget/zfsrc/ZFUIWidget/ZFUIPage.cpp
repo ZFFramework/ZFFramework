@@ -496,19 +496,19 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
 
     ZFUIPageManager *owner = this;
 
-    ZFLISTENER_1(onShow
+    ZFLISTENER_2(viewTreeVisibleOnUpdate
+            , ZFUIWindow *, window
             , ZFUIPageManager *, owner
             ) {
-        if(!owner->managerResumed()) {
-            owner->managerResume();
+        if(window->viewTreeVisible()) {
+            if(!owner->managerResumed()) {
+                owner->managerResume();
+            }
         }
-    } ZFLISTENER_END()
-
-    ZFLISTENER_1(onHide
-            , ZFUIPageManager *, owner
-            ) {
-        if(owner->managerResumed()) {
-            owner->managerOnPause();
+        else {
+            if(owner->managerResumed()) {
+                owner->managerOnPause();
+            }
         }
     } ZFLISTENER_END()
 
@@ -519,8 +519,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
     } ZFLISTENER_END()
 
     ZFObserverGroup(this, window)
-        .observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnResume(), onShow)
-        .observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnPause(), onHide)
+        .observerAdd(ZFUIWindow::EventViewTreeVisibleOnUpdate(), viewTreeVisibleOnUpdate)
         .observerAdd(ZFUIWindow::EventObjectBeforeDealloc(), onDestroy)
         ;
 

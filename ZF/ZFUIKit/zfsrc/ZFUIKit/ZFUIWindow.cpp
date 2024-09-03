@@ -31,8 +31,6 @@ ZFOBJECT_REGISTER(ZFUIWindow)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnUpdate)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOnShow)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOnHide)
-ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnResume)
-ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnPause)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnRotate)
 
 ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
