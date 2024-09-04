@@ -36,7 +36,6 @@ public:
     static void doStart(ZF_IN ZFAniForFrame *owner) {
         if(owner->d->frames.isEmpty()) {
             owner->d->frameIndex = (zfuint)-1;
-            owner->aniFrameOnUpdate(zfindexMax());
             owner->aniImplNotifyStop();
             return;
         }
@@ -91,7 +90,6 @@ private:
             owner->aniFrameOnUpdate(owner->d->frameIndex);
         }
         else {
-            owner->aniFrameOnUpdate(zfindexMax());
             owner->aniImplNotifyStop();
         }
     }
@@ -110,7 +108,6 @@ private:
             builtinTimerNext(owner);
         }
         else {
-            owner->aniFrameOnUpdate(zfindexMax());
             owner->aniImplNotifyStop();
         }
     }

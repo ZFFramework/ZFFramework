@@ -135,7 +135,6 @@ protected:
      * this method would be called:
      * -  with 0 index when animation started
      * -  with 1~(frameCount-1) index when frame updated
-     * -  with zfindexMax when animation stopped
      */
     virtual void aniFrameOnUpdate(ZF_IN zfindex frameIndex);
 

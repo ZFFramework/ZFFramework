@@ -12,6 +12,7 @@ public:
     zfidentity timerImplId;
     SDL_TimerID nativeTimerId;
     ZFListener timerMainThreadListener;
+    zfautoT<ZFSemaphore> timerMainThreadSema;
 };
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_SDL, ZFTimer, ZFProtocolLevel::e_SystemHigh)
@@ -49,10 +50,15 @@ private:
                         , zfautoT<_ZFP_I_ZFTimerImpl_sys_SDL_TimerData>, nativeTimer
                         ) {
                     ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(nativeTimer->timer, nativeTimer->timerImplId);
+                    nativeTimer->timerMainThreadSema->lockAndBroadcast();
                 } ZFLISTENER_END()
                 nativeTimer->timerMainThreadListener = mainThreadCallback;
             }
+            if(!nativeTimer->timerMainThreadSema) {
+                nativeTimer->timerMainThreadSema = zfobj<ZFSemaphore>();
+            }
             zfpost(nativeTimer->timerMainThreadListener);
+            nativeTimer->timerMainThreadSema->lockAndWait();
         }
         else {
             ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(nativeTimer->timer, nativeTimer->timerImplId);
