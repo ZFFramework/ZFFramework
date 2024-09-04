@@ -138,7 +138,7 @@ public:
         ZFUIRect rect;
         ZFUILayoutParam::layoutParamApply(
                 rect
-                , ZFUIRectMake(sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h)
+                , ZFUIRectCreate(sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h)
                 , sysWindow->rootView()
                 , sysWindow->sysWindowLayoutParam()
             );

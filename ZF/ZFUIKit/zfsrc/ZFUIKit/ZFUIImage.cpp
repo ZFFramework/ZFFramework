@@ -54,13 +54,18 @@ public:
     ZFCoreArray<ZFListener> imageStateObservers;
 
 public:
-    zfstring imageSerializableType;
-    ZFSerializableData imageSerializableData;
-    ZFListener imageSerializableDataGetter;
+    zfstring imageSerializeType;
+    ZFSerializableData imageSerializeData;
+    ZFListener imageSerializeDataGetter;
 
 public:
     void imageSizeUpdate(void) {
-        this->imageScaleFixed = this->pimplOwner->imageScale() * ZFUIGlobalStyle::DefaultStyle()->imageScale();
+        if(ZFUIGlobalStyle::DefaultStyle()) {
+            this->imageScaleFixed = this->pimplOwner->imageScale() * ZFUIGlobalStyle::DefaultStyle()->imageScale();
+        }
+        else {
+            this->imageScaleFixed = this->pimplOwner->imageScale();
+        }
         if(this->nativeImage != zfnull) {
             this->imageSizeFixed = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageSize(this->nativeImage);
             this->imageSize = ZFUISizeApplyScaleReversely(this->imageSizeFixed, this->imageScaleFixed);
@@ -86,17 +91,17 @@ public:
         }
         this->imageSizeFixed = ZFUISizeZero();
         this->imageSize = ZFUISizeZero();
-        this->imageSerializableType = zfnull;
-        this->imageSerializableData = zfnull;
-        this->imageSerializableDataGetter = zfnull;
+        this->imageSerializeType = zfnull;
+        this->imageSerializeData = zfnull;
+        this->imageSerializeDataGetter = zfnull;
 
         if(another->nativeImage != zfnull) {
             this->nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(another->nativeImage);
         }
         this->imageSizeUpdate();
-        this->imageSerializableType = another->imageSerializableType;
-        this->imageSerializableData = another->imageSerializableData;
-        this->imageSerializableDataGetter = another->imageSerializableDataGetter;
+        this->imageSerializeType = another->imageSerializeType;
+        this->imageSerializeData = another->imageSerializeData;
+        this->imageSerializeDataGetter = another->imageSerializeDataGetter;
         this->imageStateImpl = another->imageStateImpl;
         this->imageState = zfnull;
         this->imageStateObservers.removeAll();
@@ -106,15 +111,15 @@ public:
     _ZFP_ZFUIImagePrivate(void)
     : pimplOwner(zfnull)
     , nativeImage(zfnull)
-    , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle()->imageScale())
+    , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle() ? ZFUIGlobalStyle::DefaultStyle()->imageScale() : 1)
     , imageSizeFixed(ZFUISizeZero())
     , imageSize(ZFUISizeZero())
     , imageStateImpl()
     , imageState()
     , imageStateObservers()
-    , imageSerializableType(zfnull)
-    , imageSerializableData(zfnull)
-    , imageSerializableDataGetter(zfnull)
+    , imageSerializeType(zfnull)
+    , imageSerializeData(zfnull)
+    , imageSerializeDataGetter(zfnull)
     , globalImageScaleOnUpdateListener()
     {
     }
@@ -209,9 +214,9 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
         return zffalse;
     }
 
-    this->imageSerializableType(typeName);
-    this->imageSerializableData(imageData);
-    this->imageSerializableDataGetter(zfnull);
+    this->imageSerializeType(typeName);
+    this->imageSerializeData(imageData);
+    this->imageSerializeDataGetter(zfnull);
 
     return zftrue;
 }
@@ -229,27 +234,27 @@ zfbool ZFUIImage::serializableOnSerializeToData(
         return zffalse;
     }
 
-    if(this->imageSerializableType() || this->imageSerializableDataGetter()) { // custom serialize
+    if(this->imageSerializeType() || this->imageSerializeDataGetter()) { // custom serialize
         if(ref != zfnull
-                && zfstringIsEqual(this->imageSerializableType(), ref->imageSerializableType())
-                && this->imageSerializableData().objectCompare(ref->imageSerializableData()) == ZFCompareEqual
-                && this->imageSerializableDataGetter() == ref->imageSerializableDataGetter()
+                && zfstringIsEqual(this->imageSerializeType(), ref->imageSerializeType())
+                && this->imageSerializeData().objectCompare(ref->imageSerializeData()) == ZFCompareEqual
+                && this->imageSerializeDataGetter() == ref->imageSerializeDataGetter()
                 ) {
             // all match, skip
         }
         else {
             // imageType
             ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-                    ZFSerializableKeyword_ZFUIImage_imageType, zfstring, this->imageSerializableType(), ref->imageSerializableType(), "", {
+                    ZFSerializableKeyword_ZFUIImage_imageType, zfstring, this->imageSerializeType(), ref->imageSerializeType(), "", {
                         return zffalse;
                     });
 
             { // data
                 ZFSerializableData imageData;
-                if(this->imageSerializableDataGetter()) {
+                if(this->imageSerializeDataGetter()) {
                     ZFArgs zfargsDataGetter;
                     zfargsDataGetter.sender(this);
-                    this->imageSerializableDataGetter().execute(zfargsDataGetter);
+                    this->imageSerializeDataGetter().execute(zfargsDataGetter);
                     v_ZFSerializableData *tmp = zfargsDataGetter.result();
                     if(tmp != zfnull) {
                         imageData = tmp->zfv;
@@ -259,7 +264,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
                         if(errorHint != zfnull) {
                             ZFSerializableUtilErrorOccurred(outErrorHint,
                                 "unable to serialize as type \"%s\" : %s"
-                                , this->imageSerializableType()
+                                , this->imageSerializeType()
                                 , errorHint->zfv
                                 );
                             return zffalse;
@@ -267,12 +272,12 @@ zfbool ZFUIImage::serializableOnSerializeToData(
                     }
                 }
                 else {
-                    imageData = this->imageSerializableData();
+                    imageData = this->imageSerializeData();
                 }
 
                 if(imageData == zfnull) {
                     ZFSerializableUtilErrorOccurred(outErrorHint,
-                        "missing image data for type: \"%s\"", this->imageSerializableType());
+                        "missing image data for type: \"%s\"", this->imageSerializeType());
                     return zffalse;
                 }
                 for(zfiter it = imageData.attrIter(); it; ++it) {
@@ -465,9 +470,11 @@ void ZFUIImage::objectOnDeallocPrepare(void) {
             , "%s dealloc while imageState observer still exists, have you forgot imageStateDetach?"
             , this
             );
-    ZFUIGlobalStyle::DefaultStyle()->observerRemove(
-        ZFObject::EventObjectPropertyValueOnUpdate(),
-        d->globalImageScaleOnUpdateListener);
+    if(ZFUIGlobalStyle::DefaultStyle()) {
+        ZFUIGlobalStyle::DefaultStyle()->observerRemove(
+            ZFObject::EventObjectPropertyValueOnUpdate(),
+            d->globalImageScaleOnUpdateListener);
+    }
     zfsuper::objectOnDeallocPrepare();
 }
 
@@ -485,9 +492,9 @@ ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(d->nativeImage == another->d->nativeImage
             && d->imageStateImpl == another->d->imageStateImpl
             && this->imageNinePatch() == another->imageNinePatch()
-            && zfstringIsEqual(d->imageSerializableType, another->d->imageSerializableType)
-            && d->imageSerializableData.objectCompare(another->d->imageSerializableData) == ZFCompareEqual
-            && d->imageSerializableDataGetter == another->d->imageSerializableDataGetter
+            && zfstringIsEqual(d->imageSerializeType, another->d->imageSerializeType)
+            && d->imageSerializeData.objectCompare(another->d->imageSerializeData) == ZFCompareEqual
+            && d->imageSerializeDataGetter == another->d->imageSerializeDataGetter
             ) {
         return ZFCompareEqual;
     }
@@ -513,9 +520,9 @@ ZFMETHOD_DEFINE_0(ZFUIImage, void *, nativeImage) {
     return d->nativeImage;
 }
 
-void ZFUIImage::nativeImage(
-        ZF_IN void *nativeImage
-        , ZF_IN_OPT zfbool retainNativeImage /* = zftrue */
+ZFMETHOD_DEFINE_2(ZFUIImage, void, nativeImage
+        , ZFMP_IN(void *, nativeImage)
+        , ZFMP_IN_OPT(zfbool, retainNativeImage, zftrue)
         ) {
     void *toRelease = d->nativeImage;
 
@@ -537,23 +544,29 @@ void ZFUIImage::nativeImage(
     }
 }
 
-void ZFUIImage::imageSerializableType(ZF_IN const zfstring &typeName) {
-    d->imageSerializableType = typeName;
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageSerializeType
+        , ZFMP_IN(const zfstring &, typeName)
+        ) {
+    d->imageSerializeType = typeName;
 }
-const zfstring &ZFUIImage::imageSerializableType(void) {
-    return d->imageSerializableType;
+ZFMETHOD_DEFINE_0(ZFUIImage, const zfstring &, imageSerializeType) {
+    return d->imageSerializeType;
 }
-void ZFUIImage::imageSerializableData(ZF_IN const ZFSerializableData &serializableData) {
-    d->imageSerializableData = serializableData;
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageSerializeData
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        ) {
+    d->imageSerializeData = serializableData;
 }
-const ZFSerializableData &ZFUIImage::imageSerializableData(void) {
-    return d->imageSerializableData;
+ZFMETHOD_DEFINE_0(ZFUIImage, const ZFSerializableData &, imageSerializeData) {
+    return d->imageSerializeData;
 }
-void ZFUIImage::imageSerializableDataGetter(ZF_IN const ZFListener &impl) {
-    d->imageSerializableDataGetter = impl;
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageSerializeDataGetter
+        , ZFMP_IN(const ZFListener &, impl)
+        ) {
+    d->imageSerializeDataGetter = impl;
 }
-const ZFListener &ZFUIImage::imageSerializableDataGetter(void) {
-    return d->imageSerializableDataGetter;
+ZFMETHOD_DEFINE_0(ZFUIImage, const ZFListener &, imageSerializeDataGetter) {
+    return d->imageSerializeDataGetter;
 }
 
 ZF_NAMESPACE_GLOBAL_END

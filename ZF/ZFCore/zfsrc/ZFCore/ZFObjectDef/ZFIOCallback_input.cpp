@@ -13,8 +13,8 @@ static zfindex _ZFP_ZFInputDummy(
 }
 ZFInput ZFInputDummy(void) {
     ZFInput ret = ZFCallbackForFunc(_ZFP_ZFInputDummy);
-    ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputDummy);
-    ret.callbackSerializeCustomData(ZFSerializableData());
+    ret.callbackSerializeType(ZFCallbackSerializeType_ZFInputDummy);
+    ret.callbackSerializeData(ZFSerializableData());
     return ret;
 }
 
@@ -136,7 +136,7 @@ ZFInput ZFInputForInputInRange(
         ret.callbackId(zfstr("ZFInputForInputInRange[%s, %s]:%s", start, count, inputCallback.callbackId()));
     }
 
-    if(!inputCallback.callbackSerializeCustomDisabled()) {
+    if(!inputCallback.callbackSerializeDisable()) {
         ZFSerializableData inputData;
         if(ZFCallbackToDataT(inputData, inputCallback)) {
             ZFSerializableData customData;
@@ -153,14 +153,14 @@ ZFInput ZFInputForInputInRange(
                 customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, zfboolToString(autoRestorePos));
             }
 
-            ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForInputInRange);
-            ret.callbackSerializeCustomData(customData);
+            ret.callbackSerializeType(ZFCallbackSerializeType_ZFInputForInputInRange);
+            ret.callbackSerializeData(customData);
         }
     }
 
     return ret;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeCustomType_ZFInputForInputInRange) {
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeType_ZFInputForInputInRange) {
     ZFCallback input;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFInputForInputInRange_input, ZFCallback, input, {
@@ -192,7 +192,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerial
 
 // ============================================================
 // ZFInputForBuffer serialization
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeCustomType_ZFInputForBuffer) {
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeType_ZFInputForBuffer) {
     zfstring buf = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFInputForBuffer_buf);
     if(buf == zfnull) {
         ret = ZFInputForBufferUnsafe(zfnull, 0, zftrue);
@@ -213,8 +213,8 @@ static void _ZFP_ZFInputForBuffer_serialize(
     zfCoreDataEncode(bufEncoded, (const zfchar *)src, srcLen);
     ZFSerializableData customData;
     customData.attr(ZFSerializableKeyword_ZFInputForBuffer_buf, bufEncoded);
-    ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForBuffer);
-    ret.callbackSerializeCustomData(customData);
+    ret.callbackSerializeType(ZFCallbackSerializeType_ZFInputForBuffer);
+    ret.callbackSerializeData(customData);
 }
 
 // ============================================================

@@ -118,7 +118,7 @@ ZFOutput _ZFP_zfLog(
         , ZF_IN_OPT const zfchar *text /* = zfnull */
         ) {
     ZFOutput ret;
-    ret.callbackSerializeCustomDisable(zftrue);
+    ret.callbackSerializeDisable(zftrue);
     ZFOutputForFormatT(ret, ZFCallbackForFunc(_ZFP_zfLogOnOutput), _ZFP_ZFLogFormatHolder);
 
     if(header != zfnull) {

@@ -25,8 +25,8 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(zffloat, ZFUISizeApplyScaleReversely
 
 // ============================================================
 // ZFUIPoint
-ZFEXPORT_VAR_READONLY_DEFINE(ZFUIPoint, ZFUIPointZero, ZFUIPointMake(0, 0))
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointMake
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUIPoint, ZFUIPointZero, ZFUIPointCreate(0, 0))
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)
         )
@@ -73,17 +73,17 @@ ZFTYPEID_PROGRESS_DEFINE(ZFUIPoint, ZFUIPoint, {
 
 // ============================================================
 // ZFUIMargin
-ZFEXPORT_VAR_READONLY_DEFINE(ZFUIMargin, ZFUIMarginZero, ZFUIMarginMake(0, 0, 0, 0))
-ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIMargin, ZFUIMarginMake
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUIMargin, ZFUIMarginZero, ZFUIMarginCreate(0, 0, 0, 0))
+ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIMargin, ZFUIMarginCreate
         , ZFMP_IN(zffloat const &, left)
         , ZFMP_IN(zffloat const &, top)
         , ZFMP_IN(zffloat const &, right)
         , ZFMP_IN(zffloat const &, bottom)
         )
-ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIMargin, ZFUIMarginMake
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIMargin, ZFUIMarginCreate
         , ZFMP_IN(zffloat const &, margin)
         )
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIMargin, ZFUIMarginMake
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIMargin, ZFUIMarginCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)
         )
@@ -160,13 +160,13 @@ ZFTYPEID_PROGRESS_DEFINE(ZFUIMargin, ZFUIMargin, {
 
 // ============================================================
 // ZFUISize
-ZFEXPORT_VAR_READONLY_DEFINE(ZFUISize, ZFUISizeZero, ZFUISizeMake(0, 0))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFUISize, ZFUISizeInvalid, ZFUISizeMake(-1, -1))
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISize, ZFUISizeMake
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUISize, ZFUISizeZero, ZFUISizeCreate(0, 0))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUISize, ZFUISizeInvalid, ZFUISizeCreate(-1, -1))
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISize, ZFUISizeCreate
         , ZFMP_IN(zffloat const &, width)
         , ZFMP_IN(zffloat const &, height)
         )
-ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUISize, ZFUISizeMake
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUISize, ZFUISizeCreate
         , ZFMP_IN(zffloat const &, v)
         )
 ZFMETHOD_FUNC_INLINE_DEFINE_4(void, ZFUISizeApplyRange
@@ -212,13 +212,13 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUISizeApplyAspectRatio
         ret = size;
     }
     else if(refSize.height < 0 || size.width * refSize.height > size.height * refSize.width) {
-        ret = ZFUISizeMake(
+        ret = ZFUISizeCreate(
             refSize.width,
             size.height * refSize.width / size.width
         );
     }
     else {
-        ret = ZFUISizeMake(
+        ret = ZFUISizeCreate(
             size.width * refSize.height / size.height,
             refSize.height
         );
@@ -272,14 +272,14 @@ ZFTYPEID_PROGRESS_DEFINE(ZFUISize, ZFUISize, {
 
 // ============================================================
 // ZFUIRect
-ZFEXPORT_VAR_READONLY_DEFINE(ZFUIRect, ZFUIRectZero, ZFUIRectMake(0, 0, 0, 0))
-ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIRectMake
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUIRect, ZFUIRectZero, ZFUIRectCreate(0, 0, 0, 0))
+ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIRectCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)
         , ZFMP_IN(zffloat const &, w)
         , ZFMP_IN(zffloat const &, h)
         )
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIRect, ZFUIRectMake
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIRect, ZFUIRectCreate
         , ZFMP_IN(const ZFUIPoint &, point)
         , ZFMP_IN(const ZFUISize &, size)
         )
@@ -538,7 +538,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetY
 
 // ============================================================
 // ZFUIColor
-ZFEXPORT_VAR_READONLY_DEFINE(ZFUIColor, ZFUIColorZero, ZFUIColorMake(0, 0, 0, 0))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFUIColor, ZFUIColorZero, ZFUIColorCreate(0, 0, 0, 0))
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIColor, ZFUIColor, {
         zft_ZFUIColor c = 0;
         zfbool success = zffalse;
@@ -660,7 +660,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIColor, ZFUIColor, {
     })
 
 ZFTYPEID_PROGRESS_DEFINE(ZFUIColor, ZFUIColor, {
-        ret = ZFUIColorMake(
+        ret = ZFUIColorCreate(
             ZFUIColorGetR(from) + (zffloat)((ZFUIColorGetR(to) - ZFUIColorGetR(from)) * progress),
             ZFUIColorGetG(from) + (zffloat)((ZFUIColorGetG(to) - ZFUIColorGetG(from)) * progress),
             ZFUIColorGetB(from) + (zffloat)((ZFUIColorGetB(to) - ZFUIColorGetB(from)) * progress),
@@ -673,7 +673,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(zfbool, ZFUIColorIsEqual
         , ZFMP_IN(ZFUIColor const &, v1)
         )
 
-ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIColor, ZFUIColorMake
+ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIColor, ZFUIColorCreate
         , ZFMP_IN(zffloat, r)
         , ZFMP_IN(zffloat, g)
         , ZFMP_IN(zffloat, b)
@@ -771,7 +771,7 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillX(
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
         ) {
-    ret = ZFUIAlignApply(ZFUIAlign::e_Center, bounds, ZFUISizeMake(
+    ret = ZFUIAlignApply(ZFUIAlign::e_Center, bounds, ZFUISizeCreate(
         bounds.width,
         bounds.width * contentSize.height / contentSize.width
         ));
@@ -781,7 +781,7 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillY(
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
         ) {
-    ret = ZFUIAlignApply(ZFUIAlign::e_Center, bounds, ZFUISizeMake(
+    ret = ZFUIAlignApply(ZFUIAlign::e_Center, bounds, ZFUISizeCreate(
         contentSize.width * bounds.height / contentSize.height,
         bounds.height
         ));

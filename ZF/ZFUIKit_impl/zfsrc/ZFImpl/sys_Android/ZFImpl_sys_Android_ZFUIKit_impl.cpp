@@ -175,7 +175,7 @@ void ZFImpl_sys_Android_ZFUIColorFromColorT(
         ZF_OUT ZFUIColor &ret
         , ZF_IN jint jColor
         ) {
-    ret = ZFUIColorMake(
+    ret = ZFUIColorCreate(
             (zfuint)((jColor >> 16) & 0xFF) / 255.0f,
             (zfuint)((jColor >> 8) & 0xFF) / 255.0f,
             (zfuint)((jColor >> 0) & 0xFF) / 255.0f,

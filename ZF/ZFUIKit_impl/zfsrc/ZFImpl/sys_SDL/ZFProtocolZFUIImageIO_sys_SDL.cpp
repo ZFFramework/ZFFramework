@@ -32,7 +32,7 @@ public:
         zfmemset(drawDatas, 0, sizeof(drawDatas));
         zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
             drawDatas,
-            ZFUISizeMake((zffloat)nativeImageOld->w, (zffloat)nativeImageOld->h),
+            ZFUISizeCreate((zffloat)nativeImageOld->w, (zffloat)nativeImageOld->h),
             ninePatch,
             newSize);
 

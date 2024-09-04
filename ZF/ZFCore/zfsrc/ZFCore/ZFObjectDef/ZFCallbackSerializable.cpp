@@ -20,11 +20,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
                 if(!serializeCallback(v, serializableData, outErrorHint, outErrorPos)) {
                     return zffalse;
                 }
-                v.callbackSerializeCustomType(customType);
+                v.callbackSerializeType(customType);
                 ZFSerializableData customDataTmp = serializableData.copy();
                 customDataTmp.category(zfnull);
                 customDataTmp.propertyName(zfnull);
-                v.callbackSerializeCustomData(customDataTmp);
+                v.callbackSerializeData(customDataTmp);
 
                 serializableData.resolveMark();
                 return zftrue;
@@ -61,18 +61,18 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         serializableData.resolveMark();
         return zftrue;
     }, {
-        if(v.callbackSerializeCustomType() != zfnull) {
-            if(v.callbackSerializeCustomDisabled()) {
+        if(v.callbackSerializeType() != zfnull) {
+            if(v.callbackSerializeDisable()) {
                 ZFSerializableUtilErrorOccurred(outErrorHint, "callback was marked as not serializable");
                 return zffalse;
             }
 
-            if(v.callbackSerializeCustomData() == zfnull) {
+            if(v.callbackSerializeData() == zfnull) {
                 ZFSerializableUtilErrorOccurred(outErrorHint, "missing callback serialize custom data");
                 return zffalse;
             }
 
-            const ZFSerializableData &customData = *(v.callbackSerializeCustomData());
+            const ZFSerializableData &customData = v.callbackSerializeData();
             for(zfiter it = customData.attrIter(); it; ++it) {
                 serializableData.attr(customData.attrIterKey(it), customData.attrIterValue(it));
             }
@@ -81,7 +81,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             }
 
             serializableData.itemClass(ZFTypeId_ZFCallback());
-            serializableData.attr(ZFSerializableKeyword_ZFCallback_callbackType, v.callbackSerializeCustomType());
+            serializableData.attr(ZFSerializableKeyword_ZFCallback_callbackType, v.callbackSerializeType());
             return zftrue;
         }
 

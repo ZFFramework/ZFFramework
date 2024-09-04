@@ -5,9 +5,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFTimeValue
-ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeValue, ZFTimeValueZero, ZFTimeValueMake(0, 0))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeValue, ZFTimeValueZero, ZFTimeValueCreate(0, 0))
 
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFTimeValue, ZFTimeValueMake
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFTimeValue, ZFTimeValueCreate
         , ZFMP_IN(zftimet, sec)
         , ZFMP_IN(zftimet, usec)
         )
@@ -251,9 +251,9 @@ ZFTYPEID_PROGRESS_DEFINE(ZFTimeValue, ZFTimeValue, {
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTimeInfo, ZFTimeInfo)
 ZFOUTPUT_TYPE_DEFINE(ZFTimeInfo, {ZFTimeInfoToStringT(s, v);})
 
-ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeInfo, ZFTimeInfoZero, ZFTimeInfoMake(0, 0, 0, 0, 0, 0, 0, 0))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeInfo, ZFTimeInfoZero, ZFTimeInfoCreate(0, 0, 0, 0, 0, 0, 0, 0))
 
-ZFMETHOD_FUNC_INLINE_DEFINE_8(ZFTimeInfo, ZFTimeInfoMake
+ZFMETHOD_FUNC_INLINE_DEFINE_8(ZFTimeInfo, ZFTimeInfoCreate
         , ZFMP_IN(zfint const &, year)
         , ZFMP_IN(zfuint const &, month)
         , ZFMP_IN(zfuint const &, day)
@@ -448,7 +448,7 @@ zfbool ZFTime::timeInfoToTimeValue(
         ) {
     return _ZFP_ZFTimeImpl->timeInfoToTimeValue(
         tv,
-        ZFTimeInfoMake(year, month, day, hour, minute, second, miliSecond, microSecond));
+        ZFTimeInfoCreate(year, month, day, hour, minute, second, miliSecond, microSecond));
 }
 
 ZFMETHOD_DEFINE_0(ZFTime, const ZFTimeValue &, timeZoneLocal) {
@@ -552,7 +552,7 @@ zfbool ZFTime::timeInfo(
         , ZF_IN zfuint microSecond
         , ZF_IN_OPT const ZFTimeValue &tz /* = ZFTime::timeZoneLocal() */
         ) {
-    return d->timeInfo(ZFTimeInfoMake(year, month, day, hour, minute, second, miliSecond, microSecond), tz);
+    return d->timeInfo(ZFTimeInfoCreate(year, month, day, hour, minute, second, miliSecond, microSecond), tz);
 }
 ZFMETHOD_DEFINE_2(ZFTime, zfbool, timeInfo
         , ZFMP_IN(const ZFTimeInfo &, ti)

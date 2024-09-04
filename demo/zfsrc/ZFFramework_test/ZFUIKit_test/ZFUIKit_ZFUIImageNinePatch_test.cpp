@@ -21,7 +21,7 @@ protected:
         zfobj<ZFUIImageView> imageView;
         container->childAdd(imageView)->c_alignCenter();
         imageView->image(zfRes("test_normal.png").to<ZFCopyable *>()->copy());
-        imageView->image()->imageNinePatch(ZFUIMarginMake(
+        imageView->image()->imageNinePatch(ZFUIMarginCreate(
             imageView->image()->imageSize().width / 2,
             imageView->image()->imageSize().height / 2));
 

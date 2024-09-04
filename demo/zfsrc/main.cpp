@@ -170,8 +170,8 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
 
             zfobj<ZFUIView> separator;
             containerView->childAdd(separator);
-            separator->viewSizeMin(ZFUISizeMake(0, 5));
-            separator->viewSizeMax(ZFUISizeMake(-1, 5));
+            separator->viewSizeMin(ZFUISizeCreate(0, 5));
+            separator->viewSizeMax(ZFUISizeCreate(-1, 5));
             separator->viewBackgroundColor(ZFUIColorGray());
         }
 

@@ -147,7 +147,7 @@ inline void ZFImpl_sys_SDL_ZFUIColorFromSDL_ColorT(
         ZF_OUT ZFUIColor &ret
         , ZF_IN const SDL_Color sdlColor
         ) {
-    ret = ZFUIColorMake(
+    ret = ZFUIColorCreate(
             (zffloat)sdlColor.r / 0xFF,
             (zffloat)sdlColor.g / 0xFF,
             (zffloat)sdlColor.b / 0xFF,

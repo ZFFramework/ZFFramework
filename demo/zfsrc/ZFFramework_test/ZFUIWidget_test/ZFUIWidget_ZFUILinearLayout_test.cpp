@@ -68,9 +68,9 @@ private:
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUILinearLayout, layoutChildMargin),
             ZFCoreArrayCreate(ZFUIMargin
                 , ZFUIMarginZero()
-                , ZFUIMarginMake(8)
-                , ZFUIMarginMake(12)
-                , ZFUIMarginMake(24)
+                , ZFUIMarginCreate(8)
+                , ZFUIMarginCreate(12)
+                , ZFUIMarginCreate(24)
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUILinearLayout, layoutChildSpace),

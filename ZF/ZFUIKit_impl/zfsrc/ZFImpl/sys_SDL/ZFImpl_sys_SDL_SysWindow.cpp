@@ -49,7 +49,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRender, ZFLevelZFFrameworkPostNormal)
         if(d->sysWindow->rootView != zfnull && d->sysWindow->rootView->ownerZFUIView != zfnull) {
             int w, h;
             SDL_GetWindowSize(d->sysWindow->sdlWindow, &w, &h);
-            impl->notifyLayoutView(d->sysWindow->rootView->ownerZFUIView, ZFUIRectMake(0, 0, w, h));
+            impl->notifyLayoutView(d->sysWindow->rootView->ownerZFUIView, ZFUIRectCreate(0, 0, w, h));
         }
     }
     if(d->renderRequested) {

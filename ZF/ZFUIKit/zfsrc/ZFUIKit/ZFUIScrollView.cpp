@@ -305,7 +305,7 @@ public:
     }
 private:
     void scrollContentFrameUpdate(void) {
-        ZFUIRect frame = ZFUIRectMake(
+        ZFUIRect frame = ZFUIRectCreate(
             this->xScroll->scrollContentOffset(),
             this->yScroll->scrollContentOffset(),
             this->xScroll->scrollContentSize(),
@@ -734,7 +734,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
             if(focusedChild != zfnull) {
                 scrollView->scrollChildToVisible(
                     focusedChild,
-                    ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()),
+                    ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()),
                     zffalse);
             }
         } ZFLISTENER_END()
@@ -890,7 +890,7 @@ ZFMETHOD_DEFINE_0(ZFUIScrollView, void, scrollToFitRange) {
 }
 ZFMETHOD_DEFINE_3(ZFUIScrollView, void, scrollChildToVisible
         , ZFMP_IN(ZFUIView *, child)
-        , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
+        , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
         , ZFMP_IN_OPT(zfbool, scrollWithAni, zftrue)
         ) {
     if(child == zfnull) {
@@ -1033,7 +1033,7 @@ ZFMETHOD_DEFINE_0(ZFUIScrollView, zffloat, scrollContentOffsetBottom) {
 ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameAnimated
         , ZFMP_IN(const ZFUIRect &, scrollContentFrame)
         ) {
-    this->scrollContentFrameUpdate(ZFUIRectMake(
+    this->scrollContentFrameUpdate(ZFUIRectCreate(
         this->scrollContentFrame().x,
         this->scrollContentFrame().y,
         scrollContentFrame.width,
@@ -1073,7 +1073,7 @@ ZFMETHOD_DEFINE_2(ZFUIScrollView, void, scrollByPoint
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIScrollView, ZFUIPoint, scrollByPointEndPoint) {
-    return ZFUIPointMake(d->xScroll->scrollByPointEndPoint(), d->yScroll->scrollByPointEndPoint());
+    return ZFUIPointCreate(d->xScroll->scrollByPointEndPoint(), d->yScroll->scrollByPointEndPoint());
 }
 ZFMETHOD_DEFINE_2(ZFUIScrollView, void, scrollBySpeed
         , ZFMP_IN(zffloat, xSpeedInPixelsPerSecond)
@@ -1096,11 +1096,11 @@ ZFMETHOD_DEFINE_0(ZFUIScrollView, zffloat, scrollBySpeedCurrentSpeedY) {
     return d->yScroll->scrollBySpeedCurrentSpeed();
 }
 ZFMETHOD_DEFINE_0(ZFUIScrollView, ZFUIPoint, scrollBySpeedEndPointPredicted) {
-    return ZFUIPointMake(d->xScroll->scrollBySpeedEndPointPredicted(), d->yScroll->scrollBySpeedEndPointPredicted());
+    return ZFUIPointCreate(d->xScroll->scrollBySpeedEndPointPredicted(), d->yScroll->scrollBySpeedEndPointPredicted());
 }
 
 ZFMETHOD_DEFINE_0(ZFUIScrollView, ZFUIPoint, scrollEndPointPredicted) {
-    return ZFUIPointMake(d->xScroll->scrollEndPointPredicted(), d->yScroll->scrollEndPointPredicted());
+    return ZFUIPointCreate(d->xScroll->scrollEndPointPredicted(), d->yScroll->scrollEndPointPredicted());
 }
 
 ZFMETHOD_DEFINE_1(ZFUIScrollView, void, autoScrollStartX

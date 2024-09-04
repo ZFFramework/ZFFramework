@@ -137,7 +137,7 @@ protected:
 #define ZFTestCaseAssertWithMessage(cond, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput(zfstr("%s " fmt, ZFCallerInfoMake(), ##__VA_ARGS__)); \
+            this->testCaseOutput(zfstr("%s " fmt, ZFCallerInfoCreate(), ##__VA_ARGS__)); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \
         } \

@@ -74,7 +74,7 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, zfbool, ZFLogHeaderDefault_logCaller)
  * @endcode
  * and they would be reset to default state after each zfLog call
  */
-#define zfLog(...) _ZFP_zfLog((ZFLogHeader ? ZFLogHeader(ZFCallerInfoMake()).cString() : zfnull), zfstr(__VA_ARGS__))
+#define zfLog(...) _ZFP_zfLog((ZFLogHeader ? ZFLogHeader(ZFCallerInfoCreate()).cString() : zfnull), zfstr(__VA_ARGS__))
 
 /** @brief see #zfLog */
 #define zfLogTrim(...) _ZFP_zfLog(zfnull, zfstr(__VA_ARGS__))

@@ -360,14 +360,14 @@ void zfstringSplitIndexT(
             while(p < srcEnd) {
                 if(zfsncmp(p, separator, len) == 0) {
                     if(p > src || keepEmpty) {
-                        ret.add(ZFIndexRangeMake(src - srcOrig, p - src));
+                        ret.add(ZFIndexRangeCreate(src - srcOrig, p - src));
                         src = p;
                     }
                     p += len;
                     src = p;
 
                     if(p == srcEnd && keepEmpty) {
-                        ret.add(ZFIndexRangeMake(srcEnd - srcOrig, 0));
+                        ret.add(ZFIndexRangeCreate(srcEnd - srcOrig, 0));
                     }
                 }
                 else {
@@ -375,16 +375,16 @@ void zfstringSplitIndexT(
                 }
             }
             if(p > src) {
-                ret.add(ZFIndexRangeMake(src - srcOrig, p - src));
+                ret.add(ZFIndexRangeCreate(src - srcOrig, p - src));
             }
         }
         else if(*src || keepEmpty) {
-            ret.add(ZFIndexRangeMake(src - srcOrig, srcEnd - src));
+            ret.add(ZFIndexRangeCreate(src - srcOrig, srcEnd - src));
         }
     }
     else if(src != zfnull) {
         if(*src || keepEmpty) {
-            ret.add(ZFIndexRangeMake(0, zfslen(src)));
+            ret.add(ZFIndexRangeCreate(0, zfslen(src)));
         }
     }
 }

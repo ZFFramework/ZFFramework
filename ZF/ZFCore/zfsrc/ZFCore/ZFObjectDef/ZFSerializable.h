@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFSerializable_h_
 #define _ZFI_ZFSerializable_h_
 
-#include "ZFSerializableData.h"
+#include "ZFObjectCore.h"
 #include "ZFIOCallback.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 

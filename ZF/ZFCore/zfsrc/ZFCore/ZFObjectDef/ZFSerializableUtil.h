@@ -78,7 +78,7 @@ extern ZFLIB_ZFCore zfstring requireAttribute(
  * @brief util to check whether the serializable data contains desired element,
  *   auto mark name as resolved
  */
-extern ZFLIB_ZFCore const ZFSerializableData *checkElementByName(
+extern ZFLIB_ZFCore ZFSerializableData checkElementByName(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementName
         );
@@ -86,7 +86,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *checkElementByName(
  * @brief see #checkElementByName, output error hint if failed,
  *   auto mark name as resolved
  */
-extern ZFLIB_ZFCore const ZFSerializableData *requireElementByName(
+extern ZFLIB_ZFCore ZFSerializableData requireElementByName(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementName
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
@@ -97,7 +97,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *requireElementByName(
  * @brief util to check whether the serializable data contains desired element,
  *   auto mark category as resolved
  */
-extern ZFLIB_ZFCore const ZFSerializableData *checkElementByCategory(
+extern ZFLIB_ZFCore ZFSerializableData checkElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementCategory
         );
@@ -105,7 +105,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *checkElementByCategory(
  * @brief see #checkElementByCategory, output error hint if failed,
  *   auto mark category as resolved
  */
-extern ZFLIB_ZFCore const ZFSerializableData *requireElementByCategory(
+extern ZFLIB_ZFCore ZFSerializableData requireElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementCategory
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
@@ -243,10 +243,10 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 #define ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos, \
     check_or_require, key, TypeName, value, failAction) \
     do { \
-        const ZFSerializableData *valueData = ZFSerializableUtil::check_or_require##ElementByCategory(serializableData, key \
+        ZFSerializableData valueData = ZFSerializableUtil::check_or_require##ElementByCategory(serializableData, key \
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
         if(valueData != zfnull) { \
-            if(!TypeName##FromDataT(value, *valueData, outErrorHint, outErrorPos)) { \
+            if(!TypeName##FromDataT(value, valueData, outErrorHint, outErrorPos)) { \
                 failAction \
             } \
         } \

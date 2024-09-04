@@ -35,7 +35,7 @@ zfbool ZFImpl_sys_iOS_UIColorToARGB(
             rgbColorSpace,
             kCGImageAlphaNoneSkipLast);
         CGContextSetFillColorWithColor(context, [color CGColor]);
-        CGContextFillRect(context, CGRectMake(0, 0, 1, 1));
+        CGContextFillRect(context, CGRectCreate(0, 0, 1, 1));
         CGContextRelease(context);
         CGColorSpaceRelease(rgbColorSpace);
         for (zfindex i = 0; i < 4; ++i) {

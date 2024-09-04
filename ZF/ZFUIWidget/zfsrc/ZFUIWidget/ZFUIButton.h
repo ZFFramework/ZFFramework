@@ -140,7 +140,7 @@ public:
      * so that button is easier to be clicked,
      * and a positive value would reduce the button area
      */
-    ZFPROPERTY_ASSIGN(ZFUIMargin, buttonClickTolerance, ZFUIMarginMake(- ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
+    ZFPROPERTY_ASSIGN(ZFUIMargin, buttonClickTolerance, ZFUIMarginCreate(- ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
     /**
      * @brief if two click event's interval smaller than this value,
      *   the second one would be ignored,

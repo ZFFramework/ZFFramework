@@ -428,24 +428,18 @@ void ZFSerializableData::attrIterRemove(ZF_IN_OUT zfiter &it) {
 }
 
 zfbool ZFSerializableData::attrIterResolved(ZF_IN const zfiter &it) const {
-    if(ZFSerializableDataResolveCheckEnable) {
-        if(it) {
-            return d->attributes.iterValue(it).resolved;
-        }
+    if(it) {
+        return d->attributes.iterValue(it).resolved;
     }
     return zffalse;
 }
 void ZFSerializableData::attrIterResolveMark(ZF_IN const zfiter &it) const {
-    if(ZFSerializableDataResolveCheckEnable) {
-        if(it) {
-            d->attributes.iterValue(it).resolved = zftrue;
-        }
+    if(it) {
+        d->attributes.iterValue(it).resolved = zftrue;
     }
 }
 void ZFSerializableData::attrIterResolveUnmark(ZF_IN const zfiter &it) const {
-    if(ZFSerializableDataResolveCheckEnable) {
-        d->attributes.iterValue(it).resolved = zffalse;
-    }
+    d->attributes.iterValue(it).resolved = zffalse;
 }
 
 // ============================================================
@@ -548,21 +542,21 @@ void ZFSerializableData::childRemoveAll(void) {
 // ============================================================
 // resolved state
 zfbool ZFSerializableData::resolved(void) const {
-    return ZFSerializableDataResolveCheckEnable && (d == zfnull || d->resolved);
+    return (d == zfnull || d->resolved);
 }
 void ZFSerializableData::resolveMark(void) const {
-    if(d && ZFSerializableDataResolveCheckEnable) {
+    if(d) {
         d->resolved = zftrue;
     }
 }
 void ZFSerializableData::resolveUnmark(void) const {
-    if(d && ZFSerializableDataResolveCheckEnable) {
+    if(d) {
         d->resolved = zffalse;
     }
 }
 
 zfbool ZFSerializableData::resolvedAttribute(ZF_IN const zfstring &name) const {
-    if(d && ZFSerializableDataResolveCheckEnable && name != zfnull) {
+    if(d && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             return it->second.resolved;
@@ -571,7 +565,7 @@ zfbool ZFSerializableData::resolvedAttribute(ZF_IN const zfstring &name) const {
     return zffalse;
 }
 void ZFSerializableData::resolveAttributeMark(ZF_IN const zfstring &name) const {
-    if(d && ZFSerializableDataResolveCheckEnable && name != zfnull) {
+    if(d && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             it->second.resolved = zftrue;
@@ -579,7 +573,7 @@ void ZFSerializableData::resolveAttributeMark(ZF_IN const zfstring &name) const 
     }
 }
 void ZFSerializableData::resolveAttributeUnmark(ZF_IN const zfstring &name) const {
-    if(d && ZFSerializableDataResolveCheckEnable && name != zfnull) {
+    if(d && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             it->second.resolved = zffalse;
@@ -588,22 +582,22 @@ void ZFSerializableData::resolveAttributeUnmark(ZF_IN const zfstring &name) cons
 }
 
 zfbool ZFSerializableData::resolvedAll(
-        ZF_OUT_OPT const ZFSerializableData **firstNotResolvedElement /* = zfnull */
+        ZF_OUT_OPT ZFSerializableData *firstNotResolvedElement /* = zfnull */
         , ZF_OUT_OPT zfstring *firstNotResolvedAttribute /* = zfnull */
         ) const {
-    if(d == zfnull || !ZFSerializableDataResolveCheckEnable) {
+    if(d == zfnull) {
         return zftrue;
     }
     if(!this->resolved()) {
         if(firstNotResolvedElement != zfnull) {
-            *firstNotResolvedElement = this;
+            *firstNotResolvedElement = *this;
         }
         return zffalse;
     }
     for(_ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.begin(); it != d->attributes.end(); ++it) {
         if(!it->second.resolved) {
             if(firstNotResolvedElement != zfnull) {
-                *firstNotResolvedElement = this;
+                *firstNotResolvedElement = *this;
             }
             if(firstNotResolvedAttribute != zfnull) {
                 *firstNotResolvedAttribute += it->first;
@@ -619,7 +613,7 @@ zfbool ZFSerializableData::resolvedAll(
     return zftrue;
 }
 void ZFSerializableData::resolveMarkAll(void) const {
-    if(d && ZFSerializableDataResolveCheckEnable) {
+    if(d) {
         this->resolveMark();
         this->resolveAttributeMarkAll();
         for(zfindex i = 0; i < this->childCount(); ++i) {
@@ -628,7 +622,7 @@ void ZFSerializableData::resolveMarkAll(void) const {
     }
 }
 void ZFSerializableData::resolveUnmarkAll(void) const {
-    if(d && ZFSerializableDataResolveCheckEnable) {
+    if(d) {
         this->resolveUnmark();
         this->resolveAttributeUnmarkAll();
         for(zfindex i = 0; i < this->childCount(); ++i) {
@@ -637,14 +631,14 @@ void ZFSerializableData::resolveUnmarkAll(void) const {
     }
 }
 void ZFSerializableData::resolveAttributeMarkAll(void) const {
-    if(d && ZFSerializableDataResolveCheckEnable) {
+    if(d) {
         for(_ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.begin(); it != d->attributes.end(); ++it) {
             it->second.resolved = zftrue;
         }
     }
 }
 void ZFSerializableData::resolveAttributeUnmarkAll(void) const {
-    if(d && ZFSerializableDataResolveCheckEnable) {
+    if(d) {
         for(_ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.begin(); it != d->attributes.end(); ++it) {
             it->second.resolved = zftrue;
         }

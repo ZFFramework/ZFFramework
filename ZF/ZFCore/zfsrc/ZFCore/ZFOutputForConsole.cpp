@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeCustomType_ZFOutputForConsole) {
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeType_ZFOutputForConsole) {
     ret = ZFOutputForConsole();
     serializableData.resolveMark();
     return ret;
@@ -26,8 +26,8 @@ static zfindex _ZFP_ZFOutputForConsoleFunction(
 }
 static ZFOutput _ZFP_ZFOutputForConsole_create(void) {
     ZFOutput ret = ZFCallbackForFunc(_ZFP_ZFOutputForConsoleFunction);
-    ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForConsole);
-    ret.callbackSerializeCustomData(ZFSerializableData());
+    ret.callbackSerializeType(ZFCallbackSerializeType_ZFOutputForConsole);
+    ret.callbackSerializeData(ZFSerializableData());
     return ret;
 }
 

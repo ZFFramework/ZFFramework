@@ -204,7 +204,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow
         ) {
     ZFUIRect result = ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyMeasureWindow(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUISysWindow),
-        ZFUIRectMake(0, 0, refWidth, refHeight),
+        ZFUIRectCreate(0, 0, refWidth, refHeight),
         ZFUIMarginZero());
     jint buf[] = {(jint)result.x, (jint)result.y, (jint)result.width, (jint)result.height};
     JNIUtilSetIntArrayRegion(jniEnv, resultRect, 0, 4, buf);

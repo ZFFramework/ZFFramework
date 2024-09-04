@@ -13,8 +13,8 @@ static zfindex _ZFP_ZFOutputDummy(
 }
 ZFOutput ZFOutputDummy(void) {
     ZFOutput ret = ZFCallbackForFunc(_ZFP_ZFOutputDummy);
-    ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputDummy);
-    ret.callbackSerializeCustomData(ZFSerializableData());
+    ret.callbackSerializeType(ZFCallbackSerializeType_ZFOutputDummy);
+    ret.callbackSerializeData(ZFSerializableData());
     return ret;
 }
 

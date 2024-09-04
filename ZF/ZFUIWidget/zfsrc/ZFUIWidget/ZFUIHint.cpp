@@ -326,10 +326,10 @@ void ZFUIHint::objectOnInit(void) {
 
     d->hintWindow = zfAlloc(_ZFP_ZFUIHintWindow);
     d->hintWindow->windowLevel(ZFUIWindowLevel::e_ZFFrameworkFgHighest);
-    d->hintWindow->viewSizeMin(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
+    d->hintWindow->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
     d->hintWindow->windowLayoutParam()->layoutAlign(ZFUIAlign::e_Center);
     d->hintWindow->windowLayoutParam()->sizeParam(ZFUISizeParamWrapWrap());
-    d->hintWindow->windowLayoutParam()->layoutMargin(ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
+    d->hintWindow->windowLayoutParam()->layoutMargin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     d->hintWindow->viewUIEnableTree(zffalse);
 
     ZFUIHint *hint = this;

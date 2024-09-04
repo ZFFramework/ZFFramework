@@ -81,7 +81,7 @@ extern ZFLIB_ZFCore const ZFIndexRange _ZFP_ZFIndexRangeMax;
 /**
  * @brief make a ZFIndexRange
  */
-inline ZFIndexRange ZFIndexRangeMake(
+inline ZFIndexRange ZFIndexRangeCreate(
         ZF_IN zfindex start
         , ZF_IN zfindex count
         ) {

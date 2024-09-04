@@ -90,7 +90,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointZero)
 /**
  * @brief make a ZFUIPoint
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointMake
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)
         ) {
@@ -179,7 +179,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginZero)
 /**
  * @brief make a margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginMake
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginCreate
         , ZFMP_IN(zffloat const &, left)
         , ZFMP_IN(zffloat const &, top)
         , ZFMP_IN(zffloat const &, right)
@@ -191,7 +191,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginMake
 /**
  * @brief make a margin with all sides set to margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginMake
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginCreate
         , ZFMP_IN(zffloat const &, margin)
         ) {
     ZFUIMargin ret = {margin, margin, margin, margin};
@@ -200,7 +200,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginMake
 /**
  * @brief make a margin with left/right to x and top/bottom to y
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginMake
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)
         ) {
@@ -436,7 +436,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeInvalid)
 /**
  * @brief make a ZFUISize
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeMake
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeCreate
         , ZFMP_IN(zffloat const &, width)
         , ZFMP_IN(zffloat const &, height)
         ) {
@@ -446,7 +446,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeMake
 /**
  * @brief make a ZFUISize
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeMake
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeCreate
         , ZFMP_IN(zffloat const &, v)
         ) {
     ZFUISize ret = {v, v};
@@ -645,7 +645,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectZero)
 /**
  * @brief make a ZFUIRect
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectMake
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectCreate
         , ZFMP_IN(zffloat const &, x)
         , ZFMP_IN(zffloat const &, y)
         , ZFMP_IN(zffloat const &, w)
@@ -657,7 +657,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectMake
 /**
  * @brief make a ZFUIRect
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectMake
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectCreate
         , ZFMP_IN(const ZFUIPoint &, point)
         , ZFMP_IN(const ZFUISize &, size)
         ) {
@@ -1162,7 +1162,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIColorIsEqual
 /**
  * @brief make a color
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorMake
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorCreate
         , ZFMP_IN(zffloat, r)
         , ZFMP_IN(zffloat, g)
         , ZFMP_IN(zffloat, b)
@@ -1304,7 +1304,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIColor &, ZFUIColorSetB
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorRandom
         , ZFMP_IN_OPT(zffloat, alpha, 1.0f)
         ) {
-    return ZFUIColorMake(zfmRand(0xFF) / (zft_zffloat)0xFF, zfmRand(0xFF) / (zft_zffloat)0xFF, zfmRand(0xFF) / (zft_zffloat)0xFF, alpha);
+    return ZFUIColorCreate(zfmRand(0xFF) / (zft_zffloat)0xFF, zfmRand(0xFF) / (zft_zffloat)0xFF, zfmRand(0xFF) / (zft_zffloat)0xFF, alpha);
 }
 
 // ============================================================

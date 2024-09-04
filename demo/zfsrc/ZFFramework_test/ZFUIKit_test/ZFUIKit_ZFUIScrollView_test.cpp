@@ -22,15 +22,15 @@ protected:
         scrollView->viewBackgroundColor(ZFUIColorRed());
 
         this->setupScrollListener(scrollView);
-        this->setupScrollContent(scrollView, ZFUISizeMake(120), ZFUISizeMake(60), ZFUISizeMake(10));
+        this->setupScrollContent(scrollView, ZFUISizeCreate(120), ZFUISizeCreate(60), ZFUISizeCreate(10));
 
 #if 1 // test embeded scroll view
         zfobj<ZFUIScrollView> embededScrollView;
         scrollView->childAdd(embededScrollView)->c_sizeFill(200, 100)->c_margin(80);
-        embededScrollView->viewBackgroundColor(ZFUIColorMake(0, 0, 1, 0.75f));
+        embededScrollView->viewBackgroundColor(ZFUIColorCreate(0, 0, 1, 0.75f));
 
         this->setupScrollListener(embededScrollView);
-        this->setupScrollContent(embededScrollView, ZFUISizeMake(60), ZFUISizeMake(30), ZFUISizeMake(10));
+        this->setupScrollContent(embededScrollView, ZFUISizeCreate(60), ZFUISizeCreate(30), ZFUISizeCreate(10));
 #endif
 
         this->prepareSettingButton(window, scrollView);
@@ -77,7 +77,7 @@ private:
             , ZF_IN const ZFUISize &itemCount
             , ZF_IN_OPT const ZFUIMargin &contentMargin = ZFUIMarginZero()
             ) {
-        scrollView->scrollContentFrame(ZFUIRectMake(
+        scrollView->scrollContentFrame(ZFUIRectCreate(
             0,
             0,
             ZFUIMarginGetWidth(contentMargin) + itemSize.width + (itemSize.width + itemSpace.width) * itemCount.width,
@@ -203,7 +203,7 @@ private:
                     scrollView->scrollAreaMarginRemove(scrollView->scrollAreaMargin());
                 }
                 else {
-                    scrollView->scrollAreaMarginAdd(ZFUIMarginMake(20));
+                    scrollView->scrollAreaMarginAdd(ZFUIMarginCreate(20));
                 }
             } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);

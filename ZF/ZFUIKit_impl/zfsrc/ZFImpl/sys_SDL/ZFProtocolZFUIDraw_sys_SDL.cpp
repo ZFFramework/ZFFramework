@@ -178,7 +178,7 @@ public:
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
-        ZFUIColor color = ZFUIColorMake(0, 0, 0, 0);
+        ZFUIColor color = ZFUIColorCreate(0, 0, 0, 0);
         Uint8 rOld, gOld, bOld, aOld;
         SDL_GetRenderDrawColor(drawImpl->sdlRenderer, &rOld, &gOld, &bOld, &aOld);
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer

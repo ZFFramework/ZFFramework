@@ -32,7 +32,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
     #define zfsynchronize(obj) \
         _ZFP_zfsynchronizeContainerWithLog ZFUniqueName(zfsynchronize_holder)(obj \
-            , ZFCallerInfoMake())
+            , ZFCallerInfoCreate())
 #else
     #define zfsynchronize(obj) \
         _ZFP_zfsynchronizeContainer ZFUniqueName(zfsynchronize_holder)(obj)
@@ -53,7 +53,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
     #define zfsynchronizeLock(obj) _ZFP_zfsynchronizeLockWithLog(obj \
-        , ZFCallerInfoMake())
+        , ZFCallerInfoCreate())
 #else
     #define zfsynchronizeLock(obj) _ZFP_zfsynchronizeLock(obj)
 #endif
@@ -63,7 +63,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
     #define zfsynchronizeUnlock(obj) _ZFP_zfsynchronizeUnlockWithLog(obj \
-        , ZFCallerInfoMake())
+        , ZFCallerInfoCreate())
 #else
     #define zfsynchronizeUnlock(obj) _ZFP_zfsynchronizeUnlock(obj)
 #endif

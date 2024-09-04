@@ -142,7 +142,7 @@ ZFOUTPUT_TYPE(ZFCallerInfo, v.objectInfoT(s);)
 /**
  * @brief util macro to make #ZFCallerInfo
  */
-#define ZFCallerInfoMake() \
+#define ZFCallerInfoCreate() \
     ZFCallerInfo()._ZFP_callerInfo(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
 
 extern ZFLIB_ZFCore const ZFCallerInfo &_ZFP_ZFCallerInfoEmpty(void);

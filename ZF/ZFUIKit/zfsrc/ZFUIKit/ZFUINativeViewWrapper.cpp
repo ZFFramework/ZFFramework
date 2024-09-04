@@ -29,7 +29,7 @@ ZFMETHOD_DEFINE_2(ZFUINativeViewWrapper, void, measureNativeView
         ret,
         this->nativeImplView(),
         ZFUISizeApplyScale(
-            ZFUILayoutParam::sizeHintOffset(sizeHint, ZFUISizeMake(
+            ZFUILayoutParam::sizeHintOffset(sizeHint, ZFUISizeCreate(
                     0 - ZFUIMarginGetWidth(nativeImplViewMargin),
                     0 - ZFUIMarginGetHeight(nativeImplViewMargin)
                 )),

@@ -78,9 +78,9 @@ private:
             zfmemset(drawDatas, 0, sizeof(drawDatas));
             zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
                 drawDatas,
-                ZFUISizeMake((zffloat)nativeImage->w, (zffloat)nativeImage->h),
+                ZFUISizeCreate((zffloat)nativeImage->w, (zffloat)nativeImage->h),
                 ZFUIMarginApplyScale(imageState->imageNinePatch(), imageState->imageScaleFixed()),
-                ZFUISizeMake((zffloat)targetRect.w, (zffloat)targetRect.h));
+                ZFUISizeCreate((zffloat)targetRect.w, (zffloat)targetRect.h));
 
             SDL_Rect srcRect;
             SDL_Rect dstRect;

@@ -308,7 +308,7 @@ public:
         QFontMetrics fm(font);
         QRect rect = fm.boundingRect(nativeImplView->text());
         int padding = 8;
-        return ZFUISizeMake(rect.width() + padding, rect.height() + padding);
+        return ZFUISizeCreate(rect.width() + padding, rect.height() + padding);
     }
 
 public:

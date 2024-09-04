@@ -68,7 +68,7 @@ zfbool ZFNamespaceSplit(
     while(p < pEnd) {
         if(zfsncmp(p, ".", 1) == 0) {
             if(p > pL) {
-                ret.add(ZFIndexRangeMake(pL - src, p - pL));
+                ret.add(ZFIndexRangeCreate(pL - src, p - pL));
             }
             p = pL = p + 1;
             hasAdd = zftrue;
@@ -79,7 +79,7 @@ zfbool ZFNamespaceSplit(
         }
     }
     if(p > pL) {
-        ret.add(ZFIndexRangeMake(pL - src, p - pL));
+        ret.add(ZFIndexRangeCreate(pL - src, p - pL));
     }
     else {
         if(!hasAdd) {

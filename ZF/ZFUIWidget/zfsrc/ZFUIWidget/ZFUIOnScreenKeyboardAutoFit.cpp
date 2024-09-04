@@ -258,7 +258,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnMeasure(
             ) {
     ret = ZFUISizeZero();
     ZFUISize sizeHintTmp = ZFUILayoutParam::sizeHintOffset(sizeHint,
-        ZFUISizeMake(ZFUIMarginGetWidth(d->autoFitMargin), ZFUIMarginGetHeight(d->autoFitMargin)));
+        ZFUISizeCreate(ZFUIMarginGetWidth(d->autoFitMargin), ZFUIMarginGetHeight(d->autoFitMargin)));
     for(zfindex i = 0; i < this->childCount(); ++i) {
         ZFUIView *child = this->childAt(i);
         child->layoutMeasure(sizeHintTmp, child->layoutParam()->sizeParam());

@@ -202,9 +202,9 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void) {
             pos += this->scrollView()->nativeImplViewMargin().left;
             if(size != 0) {
                 viewVisibleNew = zftrue;
-                d->thumbView->layoutParam()->layoutMargin(ZFUIMarginMake(
+                d->thumbView->layoutParam()->layoutMargin(ZFUIMarginCreate(
                     pos, 0, 0, this->scrollView()->nativeImplViewMargin().bottom));
-                d->thumbView->layoutParam()->sizeHint(ZFUISizeMake(size, imageSize.height));
+                d->thumbView->layoutParam()->sizeHint(ZFUISizeCreate(size, imageSize.height));
             }
         }
         else {
@@ -223,9 +223,9 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void) {
             pos += this->scrollView()->nativeImplViewMargin().top;
             if(size != 0) {
                 viewVisibleNew = zftrue;
-                d->thumbView->layoutParam()->layoutMargin(ZFUIMarginMake(
+                d->thumbView->layoutParam()->layoutMargin(ZFUIMarginCreate(
                     0, pos, this->scrollView()->nativeImplViewMargin().right, 0));
-                d->thumbView->layoutParam()->sizeHint(ZFUISizeMake(imageSize.width, size));
+                d->thumbView->layoutParam()->sizeHint(ZFUISizeCreate(imageSize.width, size));
             }
         }
 

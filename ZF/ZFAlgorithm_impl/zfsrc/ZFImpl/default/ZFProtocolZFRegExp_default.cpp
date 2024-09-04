@@ -101,7 +101,7 @@ private:
             ) {
         result.matched = (regexpResult.IsMatched() != 0);
         if(regexpResult.GetEnd() > regexpResult.GetStart()) {
-            result.matchedRange = ZFIndexRangeMake(regexpResult.GetStart(), regexpResult.GetEnd() - regexpResult.GetStart());
+            result.matchedRange = ZFIndexRangeCreate(regexpResult.GetStart(), regexpResult.GetEnd() - regexpResult.GetStart());
         }
         else {
             result.matchedRange = ZFIndexRangeZero();

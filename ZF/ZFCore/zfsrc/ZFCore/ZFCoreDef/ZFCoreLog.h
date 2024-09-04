@@ -72,7 +72,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreLog(
  * @warning this method is not thread safe
  * @see zfCoreLogOutputCallback, zfCoreCriticalError
  */
-#define zfCoreLog(format, ...) _ZFP_zfCoreLog(ZFCallerInfoMake(), zfstr(format, ##__VA_ARGS__))
+#define zfCoreLog(format, ...) _ZFP_zfCoreLog(ZFCallerInfoCreate(), zfstr(format, ##__VA_ARGS__))
 
 /**
  * @brief log without header info, see #zfCoreLog
@@ -122,7 +122,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &call
  * this is useful to redirect #zfCoreLog by #zfCoreLogOutputCallback,
  * to save critical error messages to proper location
  */
-#define zfCoreCriticalErrorPrepare() _ZFP_zfCoreCriticalErrorPrepare(ZFCallerInfoMake())
+#define zfCoreCriticalErrorPrepare() _ZFP_zfCoreCriticalErrorPrepare(ZFCallerInfoCreate())
 /** @brief see #zfCoreCriticalErrorPrepare */
 #define zfCoreCriticalErrorPrepareDetail(callerInfo) _ZFP_zfCoreCriticalErrorPrepare(callerInfo)
 
@@ -132,7 +132,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &call
  * @warning this function is for internal use,
  *   calling this method would cause app to be terminated
  */
-#define zfCoreCriticalError() _ZFP_zfCoreCriticalError(ZFCallerInfoMake())
+#define zfCoreCriticalError() _ZFP_zfCoreCriticalError(ZFCallerInfoCreate())
 /** @brief see #zfCoreCriticalError */
 #define zfCoreCriticalErrorDetail(callerInfo) _ZFP_zfCoreCriticalError(callerInfo)
 

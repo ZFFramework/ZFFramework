@@ -43,7 +43,7 @@ public:
             , ZF_IN const ZFUISize &size
             ) {
         CGSize tmpSize = ZFImpl_sys_iOS_ZFUISizeToCGSize(size);
-        CGRect rect = CGRectMake(0.0f, 0.0f, tmpSize.width, tmpSize.height);
+        CGRect rect = CGRectCreate(0.0f, 0.0f, tmpSize.width, tmpSize.height);
         UIGraphicsBeginImageContext(rect.size);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetFillColorWithColor(context, [ZFImpl_sys_iOS_ZFUIColorToUIColor(color) CGColor]);
@@ -65,7 +65,7 @@ private:
         if(image.scale == 0) {
             return nil;
         }
-        ZFUISize srcSize = ZFUISizeMake(image.size.width * image.scale, image.size.height * image.scale);
+        ZFUISize srcSize = ZFUISizeCreate(image.size.width * image.scale, image.size.height * image.scale);
         zfbool sizeChanged = (scaleToSize != srcSize);
         if([image respondsToSelector:@selector(resizableImageWithCapInsets:resizingMode:)]) {
             if(sizeChanged && (scaleUseNinePatch != ZFUIMarginZero())) {
@@ -110,10 +110,10 @@ private:
             , ZF_IN UIImage *image
             , ZF_IN const ZFUISize &scaleToSize
             ) {
-        CGSize tmpSize = CGSizeMake((scaleToSize.width == 0) ? image.size.width * image.scale : (CGFloat)scaleToSize.width,
+        CGSize tmpSize = CGSizeCreate((scaleToSize.width == 0) ? image.size.width * image.scale : (CGFloat)scaleToSize.width,
                                     (scaleToSize.height == 0) ? image.size.height * image.scale : (CGFloat)scaleToSize.height);
         UIGraphicsBeginImageContext(tmpSize);
-        [image drawInRect:CGRectMake(0, 0, tmpSize.width, tmpSize.height)];
+        [image drawInRect:CGRectCreate(0, 0, tmpSize.width, tmpSize.height)];
         UIImage *imageTmp = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return [UIImage imageWithCGImage:imageTmp.CGImage scale:imageScale orientation:UIImageOrientationUp];

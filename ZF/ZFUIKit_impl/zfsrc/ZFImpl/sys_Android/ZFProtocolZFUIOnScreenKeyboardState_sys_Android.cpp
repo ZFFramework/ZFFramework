@@ -25,7 +25,7 @@ public:
             ).c_str());
         jintArray jobjRect = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIOnScreenKeyboardState(), jmId);
         jint *jarrRect = JNIUtilGetIntArrayElements(jniEnv, jobjRect, NULL);
-        ZFUIRect ret = ZFUIRectMake((zffloat)jarrRect[0], (zffloat)jarrRect[1], (zffloat)jarrRect[2], (zffloat)jarrRect[3]);
+        ZFUIRect ret = ZFUIRectCreate((zffloat)jarrRect[0], (zffloat)jarrRect[1], (zffloat)jarrRect[2], (zffloat)jarrRect[3]);
         JNIUtilReleaseIntArrayElements(jniEnv, jobjRect, jarrRect, JNI_ABORT);
         JNIUtilDeleteLocalRef(jniEnv, jobjRect);
         return ret;

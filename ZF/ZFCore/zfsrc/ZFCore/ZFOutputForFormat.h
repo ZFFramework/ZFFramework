@@ -93,7 +93,7 @@ public:
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFOutputForFormat "ZFOutputForFormat"
+#define ZFCallbackSerializeType_ZFOutputForFormat "ZFOutputForFormat"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFOutputForFormat_output "output"
 /** @brief keyword for serialize */
@@ -119,9 +119,9 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForFormatT
  * -  the result output is serializable if both the
  *   original output and the format object are serializable
  * -  serialization may cause performance issue,
- *   you may use #ZFOutputForFormatT and ##ZFCallbackSerializeCustomTypeDisable
+ *   you may use #ZFOutputForFormatT and #ZFCallback::callbackSerializeDisable
  *   to disable the default serialization step,
- *   see #ZFCallbackSerializeCustomType_ZFInputForPathInfo for more info
+ *   see #ZFCallbackSerializeType_ZFInputForPathInfo for more info
  * -  if output success, the original output size would be returned,
  *   instead of the formated size
  */

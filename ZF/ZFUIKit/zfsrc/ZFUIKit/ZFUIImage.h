@@ -50,8 +50,8 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfst
  *
  * when image loaded or serialized successfully,
  * impl may store these serializable datas to the image:
- * -  #ZFUIImage::imageSerializableType : the type registered by ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
- * -  #ZFUIImage::imageSerializableData or #ZFUIImage::imageSerializableDataGetter :
+ * -  #ZFUIImage::imageSerializeType : the type registered by ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
+ * -  #ZFUIImage::imageSerializeData or #ZFUIImage::imageSerializeDataGetter :
  *   actual serializable data,
  *   or a callback to obtain (store result to #ZFArgs::result) the serializable data
  */
@@ -296,28 +296,35 @@ public:
      *
      * the image would be retained, actual retain logic is depending on the implementation
      */
-    virtual void nativeImage(
-            ZF_IN void *nativeImage
-            , ZF_IN_OPT zfbool retainNativeImage = zftrue
-            );
+    ZFMETHOD_DECLARE_2(void, nativeImage
+            , ZFMP_IN(void *, nativeImage)
+            , ZFMP_IN_OPT(zfbool, retainNativeImage, zftrue)
+            )
 
+public:
     /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
-    virtual void imageSerializableType(ZF_IN const zfstring &typeName);
+    ZFMETHOD_DECLARE_1(void, imageSerializeType
+            , ZFMP_IN(const zfstring &, typeName)
+            )
     /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
-    virtual const zfstring &imageSerializableType(void);
+    ZFMETHOD_DECLARE_0(const zfstring &, imageSerializeType)
     /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
-    virtual void imageSerializableData(ZF_IN const ZFSerializableData &serializableData);
+    ZFMETHOD_DECLARE_1(void, imageSerializeData
+            , ZFMP_IN(const ZFSerializableData &, serializableData)
+            )
     /** @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
-    virtual const ZFSerializableData &imageSerializableData(void);
+    ZFMETHOD_DECLARE_0(const ZFSerializableData &, imageSerializeData)
     /**
      * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
      *
      * impl should store the result ZFSerializableData to #ZFArgs::result,
      * or store a #v_zfstring containing error hint
      */
-    virtual void imageSerializableDataGetter(ZF_IN const ZFListener &impl);
+    ZFMETHOD_DECLARE_1(void, imageSerializeDataGetter
+            , ZFMP_IN(const ZFListener &, impl)
+            )
     /**@brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
-    virtual const ZFListener &imageSerializableDataGetter(void);
+    ZFMETHOD_DECLARE_0(const ZFListener &, imageSerializeDataGetter)
 
 private:
     _ZFP_ZFUIImagePrivate *d;

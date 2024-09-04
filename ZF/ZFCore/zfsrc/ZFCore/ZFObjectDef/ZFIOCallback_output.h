@@ -120,7 +120,7 @@ inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN zfchar * 
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFOutputDummy "ZFOutputDummy"
+#define ZFCallbackSerializeType_ZFOutputDummy "ZFOutputDummy"
 /**
  * @brief a dummy output that always output nothing with success state
  */

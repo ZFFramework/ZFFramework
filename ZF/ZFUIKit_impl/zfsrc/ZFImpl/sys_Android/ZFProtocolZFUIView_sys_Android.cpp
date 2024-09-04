@@ -347,7 +347,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
         ) {
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyLayoutView(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),
-        ZFUIRectMake((zffloat)rect_x, (zffloat)rect_y, (zffloat)rect_width, (zffloat)rect_height));
+        ZFUIRectCreate((zffloat)rect_x, (zffloat)rect_y, (zffloat)rect_width, (zffloat)rect_height));
 }
 JNI_METHOD_DECLARE_END()
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
@@ -362,7 +362,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     event->eventResolved(zffalse);
     event->mouseId = mouseId;
     event->mouseAction = (ZFUIMouseActionEnum)mouseAction;
-    event->mousePoint = ZFUIPointMake(mousePointX, mousePointY);
+    event->mousePoint = ZFUIPointCreate(mousePointX, mousePointY);
     event->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),

@@ -30,13 +30,13 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
     switch(updateParam.listOrientation) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
-            separatorView->layoutParam()->sizeHint(ZFUISizeMake(owner->separatorSize(), -1));
-            separatorView->layoutParam()->layoutMargin(ZFUIMarginMake(0, owner->separatorMargin().top, 0, owner->separatorMargin().bottom));
+            separatorView->layoutParam()->sizeHint(ZFUISizeCreate(owner->separatorSize(), -1));
+            separatorView->layoutParam()->layoutMargin(ZFUIMarginCreate(0, owner->separatorMargin().top, 0, owner->separatorMargin().bottom));
             break;
         case ZFUIOrientation::e_Top:
         case ZFUIOrientation::e_Bottom:
-            separatorView->layoutParam()->sizeHint(ZFUISizeMake(-1, owner->separatorSize()));
-            separatorView->layoutParam()->layoutMargin(ZFUIMarginMake(owner->separatorMargin().left, 0, owner->separatorMargin().right, 0));
+            separatorView->layoutParam()->sizeHint(ZFUISizeCreate(-1, owner->separatorSize()));
+            separatorView->layoutParam()->layoutMargin(ZFUIMarginCreate(owner->separatorMargin().left, 0, owner->separatorMargin().right, 0));
             break;
         default:
             zfCoreCriticalShouldNotGoHere();

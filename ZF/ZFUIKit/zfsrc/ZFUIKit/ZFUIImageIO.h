@@ -33,6 +33,10 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromInput
         )
 /**
  * @brief save image to file
+ *
+ * @note save #ZFUIImage::nativeImage to file,
+ *   the #ZFUIImage::imageStateImpl is not processed,
+ *   you may use #ZFObjectToData to serialize the image object
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput
         , ZFMP_OUT(const ZFOutput &, outputCallback)
@@ -94,12 +98,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageScale
 /**
  * @brief clip an exist image and sharing low level data if possible
  * @note this method has no cache logic
- * @note frame is ensured in pixel for this method,
- *   see #ZFUIImage::imageScale for more info
+ * @note see #ZFUIImage::imageScale for more info
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageInFrame
         , ZFMP_IN(ZFUIImage *, image)
-        , ZFMP_IN(const ZFUIRect &, framePixel)
+        , ZFMP_IN(const ZFUIRect &, frame)
         )
 
 // ============================================================
@@ -137,12 +140,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromNativeIm
 /**
  * @brief load image from color
  *
- * invalid size is automatically convert to 1 pixel
+ * invalid size is automatically convert to 1
  * @note this method has no cache logic
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromColor
         , ZFMP_IN(const ZFUIColor &, color)
-        , ZFMP_IN_OPT(const ZFUISize &, sizePixel, ZFUISizeZero())
+        , ZFMP_IN_OPT(const ZFUISize &, size, ZFUISizeZero())
         )
 
 ZF_NAMESPACE_GLOBAL_END

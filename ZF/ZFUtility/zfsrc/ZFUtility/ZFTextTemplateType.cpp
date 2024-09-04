@@ -558,13 +558,13 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             return zffalse;
         }
 
-        const ZFSerializableData *element = zfnull;
+        ZFSerializableData element;
 
         v.replaceDataRemoveAll();
         element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFTextTemplateParam_replace);
         if(element != zfnull) {
-            for(zfindex i = 0; i < element->childCount(); ++i) {
-                const ZFSerializableData &item = element->childAt(i);
+            for(zfindex i = 0; i < element.childCount(); ++i) {
+                const ZFSerializableData &item = element.childAt(i);
                 zfstring key = item.propertyName();
                 if(key == zfnull) {
                     ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, item, "missing item name");
@@ -577,14 +577,14 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 }
                 v.replaceDataAdd(key, value);
             }
-            element->resolveMark();
+            element.resolveMark();
         }
 
         v.enableDataRemoveAll();
         element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFTextTemplateParam_enable);
         if(element != zfnull) {
-            for(zfindex i = 0; i < element->childCount(); ++i) {
-                const ZFSerializableData &item = element->childAt(i);
+            for(zfindex i = 0; i < element.childCount(); ++i) {
+                const ZFSerializableData &item = element.childAt(i);
                 zfstring key = item.propertyName();
                 if(key == zfnull) {
                     ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, item, "missing item name");
@@ -597,7 +597,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 }
                 v.enableDataAdd(key, value);
             }
-            element->resolveMark();
+            element.resolveMark();
         }
 
         zfbool enableDataDefault = zffalse;
@@ -610,8 +610,8 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
         v.indexDataRemoveAll();
         element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFTextTemplateParam_index);
         if(element != zfnull) {
-            for(zfindex i = 0; i < element->childCount(); ++i) {
-                const ZFSerializableData &item = element->childAt(i);
+            for(zfindex i = 0; i < element.childCount(); ++i) {
+                const ZFSerializableData &item = element.childAt(i);
                 zfstring key = item.propertyName();
                 if(key == zfnull) {
                     ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, item, "missing item name");
@@ -624,7 +624,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 }
                 v.indexDataAdd(key, value);
             }
-            element->resolveMark();
+            element.resolveMark();
         }
 
         ZFTextTemplateIndexData indexDataDefault;

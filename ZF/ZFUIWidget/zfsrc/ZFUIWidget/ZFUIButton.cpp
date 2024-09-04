@@ -6,9 +6,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if _ZFP_ZFUIButton_DEBUG
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...) \
-        zfLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLogHeader(ZFCallerInfoMake());
+        zfLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLogHeader(ZFCallerInfoCreate());
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName) \
-        zfLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLogHeader(ZFCallerInfoMake());
+        zfLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLogHeader(ZFCallerInfoCreate());
 #else
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...)
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName)
@@ -276,7 +276,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButton, zfbool, viewFocusable) {
     propertyValue = zftrue;
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButton, ZFUISize, viewSizeMin) {
-    propertyValue = ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton());
+    propertyValue = ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton());
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, enable) {

@@ -119,7 +119,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFInputDummy "ZFInputDummy"
+#define ZFCallbackSerializeType_ZFInputDummy "ZFInputDummy"
 /**
  * @brief a dummy input that always read zero byte with success state
  */
@@ -142,7 +142,7 @@ extern ZFLIB_ZFCore ZFInput ZFInputDummy(void);
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFInputForInputInRange "ZFInputForInputInRange"
+#define ZFCallbackSerializeType_ZFInputForInputInRange "ZFInputForInputInRange"
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFInputForInputInRange_input "input"
@@ -185,7 +185,7 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFInputForBuffer "ZFInputForBuffer"
+#define ZFCallbackSerializeType_ZFInputForBuffer "ZFInputForBuffer"
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFInputForBuffer_buf "buf"

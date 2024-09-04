@@ -106,7 +106,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
         ) {
     zffloat parentMarginX = ZFUIMarginGetWidth(parent->layoutChildMargin());
     zffloat parentMarginY = ZFUIMarginGetHeight(parent->layoutChildMargin());
-    ZFUISize ret = ZFUISizeMake(parentMarginX, 0);
+    ZFUISize ret = ZFUISizeCreate(parentMarginX, 0);
     if(fixedSize != zfnull) {
         *fixedSize = parentMarginX;
     }
@@ -124,7 +124,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->layoutMargin());
         zffloat marginY = ZFUIMarginGetHeight(layoutParam->layoutMargin());
         child->layoutMeasure(
-            ZFUISizeMake(
+            ZFUISizeCreate(
                 ZFUILayoutParam::sizeHintMerge(
                     layoutParam->sizeHint().width,
                     ZFUILayoutParam::sizeHintOffset(sizeHint.width, 0 - parentMarginX - marginX)),
@@ -151,7 +151,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
         ) {
     zffloat parentMarginX = ZFUIMarginGetWidth(parent->layoutChildMargin());
     zffloat parentMarginY = ZFUIMarginGetHeight(parent->layoutChildMargin());
-    ZFUISize ret = ZFUISizeMake(0, parentMarginY);
+    ZFUISize ret = ZFUISizeCreate(0, parentMarginY);
     if(fixedSize != zfnull) {
         *fixedSize = parentMarginY;
     }
@@ -169,7 +169,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->layoutMargin());
         zffloat marginY = ZFUIMarginGetHeight(layoutParam->layoutMargin());
         child->layoutMeasure(
-            ZFUISizeMake(
+            ZFUISizeCreate(
                 ZFUILayoutParam::sizeHintMerge(
                     layoutParam->sizeHint().width,
                     ZFUILayoutParam::sizeHintOffset(sizeHint.width, 0 - parentMarginX - marginX)),
@@ -222,14 +222,14 @@ static void _ZFP_ZFUILinearLayout_layoutHorizontal(
         }
         child->viewFrame(ZFUIAlignApply(
             layoutParam->layoutAlign(),
-            ZFUIRectMake(
+            ZFUIRectCreate(
                 positiveDirection
                     ? usedSize + prevSpace
                     : size.width - usedSize - prevSpace - childSize,
                 parent->layoutChildMargin().top,
                 childSize,
                 size.height - ZFUIMarginGetHeight(parent->layoutChildMargin())),
-            ZFUISizeMake(
+            ZFUISizeCreate(
                 childSize - ZFUIMarginGetWidth(layoutParam->layoutMargin()),
                 layoutParam->sizeParam().height == ZFUISizeType::e_Fill
                     ? size.height - ZFUIMarginGetHeight(parent->layoutChildMargin())
@@ -269,14 +269,14 @@ static void _ZFP_ZFUILinearLayout_layoutVertical(
         }
         child->viewFrame(ZFUIAlignApply(
             layoutParam->layoutAlign(),
-            ZFUIRectMake(
+            ZFUIRectCreate(
                 parent->layoutChildMargin().left,
                 positiveDirection
                     ? usedSize + prevSpace
                     : size.height - usedSize - prevSpace - childSize,
                 size.width - ZFUIMarginGetWidth(parent->layoutChildMargin()),
                 childSize),
-            ZFUISizeMake(
+            ZFUISizeCreate(
                 layoutParam->sizeParam().width == ZFUISizeType::e_Fill
                     ? size.width - ZFUIMarginGetWidth(parent->layoutChildMargin())
                     : child->layoutMeasuredSize().width,

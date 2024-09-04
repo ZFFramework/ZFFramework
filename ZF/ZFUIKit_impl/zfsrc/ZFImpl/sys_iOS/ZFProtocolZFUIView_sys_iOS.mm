@@ -423,7 +423,7 @@ public:
             , ZF_IN void *nativeView
             , ZF_IN const ZFUISize &sizeHint
             ) {
-        ret = ZFUISizeMake(zfmMax(sizeHint.width, (zffloat)0), zfmMax(sizeHint.height, (zffloat)0));
+        ret = ZFUISizeCreate(zfmMax(sizeHint.width, (zffloat)0), zfmMax(sizeHint.height, (zffloat)0));
         ZFImpl_sys_iOS_ZFUISizeFromCGSizeT(ret,
             [(__bridge UIView *)nativeView sizeThatFits:ZFImpl_sys_iOS_ZFUISizeToCGSize(ret)]);
     }

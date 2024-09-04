@@ -221,7 +221,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkInitSetting, ZFLevelZFFramewo
         ZFUIViewBlinkImageDefault(zfRes("ZFUIKit/ZFUIViewBlinkImage.xml"));
     }
     else if(ZFPROTOCOL_IS_AVAILABLE(ZFUIImageIO)) {
-        ZFUIViewBlinkImageDefault(ZFUIImageFromColor(ZFUIColorMake(1, 0, 0)));
+        ZFUIViewBlinkImageDefault(ZFUIImageFromColor(ZFUIColorCreate(1, 0, 0)));
     }
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewBlinkInitSetting) {

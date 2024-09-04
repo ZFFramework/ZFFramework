@@ -187,7 +187,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
         ) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragBegin(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIScrollView),
-        ZFUIPointMake(mousePosX, mousePosY), (zftimet)mouseTime);
+        ZFUIPointCreate(mousePosX, mousePosY), (zftimet)mouseTime);
 }
 JNI_METHOD_DECLARE_END()
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
@@ -199,7 +199,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
         ) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIScrollView),
-        ZFUIPointMake(mousePosX, mousePosY), (zftimet)mouseTime);
+        ZFUIPointCreate(mousePosX, mousePosY), (zftimet)mouseTime);
 }
 JNI_METHOD_DECLARE_END()
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView

@@ -318,7 +318,7 @@ public:
             ZFUIPoint viewCenter = ZFUIRectGetCenter(this->viewFrame);
             ZFPROTOCOL_ACCESS(ZFUIView)->viewFrame(
                     view,
-                    ZFUIRectMake(
+                    ZFUIRectCreate(
                             viewCenter.x * this->UIScaleInherited * this->UIScaleForImpl - this->viewFrame.width * this->UIScaleFixed / 2,
                             viewCenter.y * this->UIScaleInherited * this->UIScaleForImpl - this->viewFrame.height * this->UIScaleFixed / 2,
                             this->viewFrame.width * this->UIScaleFixed,

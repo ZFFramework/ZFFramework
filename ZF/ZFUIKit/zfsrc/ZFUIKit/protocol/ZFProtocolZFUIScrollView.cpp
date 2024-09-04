@@ -531,7 +531,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseDown(ZF_IN void *nativeMo
             this->processingChild = zfnull;
         }
         this->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateDragging;
-        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragBegin(this->pimplOwner->scrollView, ZFUIPointMake(x, y), this->pimplOwner->implProtocol->nativeTime());
+        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragBegin(this->pimplOwner->scrollView, ZFUIPointCreate(x, y), this->pimplOwner->implProtocol->nativeTime());
         return;
     }
 
@@ -552,7 +552,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMo
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
     if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging) {
-        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(this->pimplOwner->scrollView, ZFUIPointMake(x, y), this->pimplOwner->implProtocol->nativeTime());
+        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(this->pimplOwner->scrollView, ZFUIPointCreate(x, y), this->pimplOwner->implProtocol->nativeTime());
         return;
     }
     else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored) {
@@ -623,8 +623,8 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMo
 
         ZFUIPoint mouseDownPos = this->mouseEventPos(this->mouseDownSaved);
         this->mouseDownCleanup();
-        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragBegin(this->pimplOwner->scrollView, ZFUIPointMake(mouseDownPos.x, mouseDownPos.y), this->pimplOwner->implProtocol->nativeTime());
-        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(this->pimplOwner->scrollView, ZFUIPointMake(x, y), this->pimplOwner->implProtocol->nativeTime());
+        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragBegin(this->pimplOwner->scrollView, ZFUIPointCreate(mouseDownPos.x, mouseDownPos.y), this->pimplOwner->implProtocol->nativeTime());
+        ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(this->pimplOwner->scrollView, ZFUIPointCreate(x, y), this->pimplOwner->implProtocol->nativeTime());
     }
 }
 void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseUp(ZF_IN void *nativeMouseEvent) {

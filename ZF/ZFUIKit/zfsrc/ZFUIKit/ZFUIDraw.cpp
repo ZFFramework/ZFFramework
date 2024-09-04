@@ -48,7 +48,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, beginForView
     ZFUIDrawToken *token = zfpoolNew(ZFUIDrawToken,
         ZFUIDrawToken::TypeView,
         view,
-        ZFUISizeMake(
+        ZFUISizeCreate(
             ZFUISizeApplyScale(view->viewFrame().width, view->UIScaleFixed()),
             ZFUISizeApplyScale(view->viewFrame().height, view->UIScaleFixed()))
         );
@@ -124,7 +124,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, drawClear
         ) {
     ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context,
         targetFramePixel == ZFUIRectZero()
-            ? ZFUIRectMake(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
+            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
             : targetFramePixel
         );
 }
@@ -136,7 +136,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, drawColor
         ) {
     ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context, color,
         targetFramePixel == ZFUIRectZero()
-            ? ZFUIRectMake(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
+            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
             : targetFramePixel
         );
 }
@@ -154,10 +154,10 @@ ZFMETHOD_FUNC_DEFINE_4(void, drawImage
     if(imageState != zfnull && imageState->nativeImage() != zfnull) {
         ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
         imageFramePixel == ZFUIRectZero()
-            ? ZFUIRectMake(ZFUIPointZero(), imageState->imageSizeFixed())
+            ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
             : imageFramePixel,
         targetFramePixel == ZFUIRectZero()
-            ? ZFUIRectMake(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
+            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
             : targetFramePixel
         );
     }

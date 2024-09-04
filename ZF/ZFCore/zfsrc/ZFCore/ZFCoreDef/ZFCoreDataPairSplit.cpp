@@ -112,7 +112,7 @@ zfbool zfCoreDataPairSplitString(
         }
 
         // save item
-        outData.add(ZFIndexRangeMake(p - src, pl - p));
+        outData.add(ZFIndexRangeCreate(p - src, pl - p));
         ++count;
 
         // end item

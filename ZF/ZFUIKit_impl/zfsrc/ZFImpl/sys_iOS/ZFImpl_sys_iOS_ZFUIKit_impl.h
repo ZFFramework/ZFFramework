@@ -133,7 +133,7 @@ inline void ZFImpl_sys_iOS_ZFUIColorFromUIColorT(
         ) {
     zffloat argb[4] = {0};
     ZFImpl_sys_iOS_UIColorToARGB(argb, uiColor);
-    ret = ZFUIColorMake(argb[1], argb[2], argb[3], argb[0]);
+    ret = ZFUIColorCreate(argb[1], argb[2], argb[3], argb[0]);
 }
 inline ZFUIColor ZFImpl_sys_iOS_ZFUIColorFromUIColor(ZF_IN UIColor *uiColor) {
     ZFUIColor ret = ZFUIColorZero();

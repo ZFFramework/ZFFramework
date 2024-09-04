@@ -44,7 +44,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueZero)
 /**
  * @brief make a time value
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueMake
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueCreate
         , ZFMP_IN(zftimet, sec)
         , ZFMP_IN(zftimet, usec)
         ) {
@@ -289,7 +289,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfoZero)
 /**
  * @brief make a time info, you should make sure value is valid
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_8(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfoMake
+ZFMETHOD_FUNC_INLINE_DECLARE_8(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfoCreate
         , ZFMP_IN(zfint const &, year)
         , ZFMP_IN(zfuint const &, month)
         , ZFMP_IN(zfuint const &, day)

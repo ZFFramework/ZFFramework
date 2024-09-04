@@ -70,7 +70,7 @@ public:
 
     virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage) {
         SDL_Surface *nativeImageTmp = (SDL_Surface *)nativeImage;
-        return ZFUISizeMake((zffloat)nativeImageTmp->w, (zffloat)nativeImageTmp->h);
+        return ZFUISizeCreate((zffloat)nativeImageTmp->w, (zffloat)nativeImageTmp->h);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageImpl_sys_SDL)
 

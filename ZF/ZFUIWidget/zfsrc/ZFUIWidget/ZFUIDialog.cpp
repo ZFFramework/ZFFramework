@@ -9,7 +9,7 @@ ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator = ZFUIDialogDefaultLayoutPar
 zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void) {
     zfobj<ZFUILayoutParam> lp;
     lp->layoutAlign(ZFUIAlign::e_Center);
-    lp->layoutMargin(ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
+    lp->layoutMargin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     return lp;
 }
 ZFObjectCreator ZFUIDialogDefaultAniShowCreator = ZFUIDialogDefaultAniShowCreatorDefault;

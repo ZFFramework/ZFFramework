@@ -6,7 +6,9 @@
 #ifndef _ZFI_ZFSerializableData_h_
 #define _ZFI_ZFSerializableData_h_
 
-#include "ZFObjectCore.h"
+#include "zfany.h"
+#include "zfautoFwd.h"
+#include "ZFPathInfo.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -395,7 +397,7 @@ public:
      * @brief see #resolved, check whether self and all attribute and child element resolved
      */
     zffinal zfbool resolvedAll(
-            ZF_OUT_OPT const ZFSerializableData **firstNotResolvedElement = zfnull
+            ZF_OUT_OPT ZFSerializableData *firstNotResolvedElement = zfnull
             , ZF_OUT_OPT zfstring *firstNotResolvedAttribute = zfnull
             ) const;
     /**

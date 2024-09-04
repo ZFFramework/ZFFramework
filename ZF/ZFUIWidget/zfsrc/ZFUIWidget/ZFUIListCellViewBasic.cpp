@@ -21,7 +21,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIListCellViewBasic)
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
     zfobj<ZFUIImageView> cellIcon;
     propertyValue = cellIcon;
-    cellIcon->viewSizeMax(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
+    cellIcon->viewSizeMax(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
     this->cellIconContainer()->childAdd(this->cellIcon())->c_alignCenter();

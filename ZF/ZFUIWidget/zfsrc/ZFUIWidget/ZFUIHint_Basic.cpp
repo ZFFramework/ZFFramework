@@ -10,7 +10,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfbool, viewUIEnableTree) {
     propertyValue = zffalse;
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUISize, viewSizeMin) {
-    propertyValue = ZFUISizeMake(
+    propertyValue = ZFUISizeCreate(
         ZFUIGlobalStyle::DefaultStyle()->itemSizeButtonWidth(),
         ZFUIGlobalStyle::DefaultStyle()->itemSizeButton());
 }
@@ -26,7 +26,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroun
     value->image(zfRes("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintMake
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintCreate
         , ZFMP_IN(const zfstring &, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {

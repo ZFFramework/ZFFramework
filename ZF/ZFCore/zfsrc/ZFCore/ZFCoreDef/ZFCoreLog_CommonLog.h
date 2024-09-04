@@ -26,7 +26,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
  *
  * log only, see also #zfCoreCriticalMessage
  */
-#define zfCoreLogCriticalMessage(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoMake(), zfstr(fmt, ##__VA_ARGS__))
+#define zfCoreLogCriticalMessage(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoCreate(), zfstr(fmt, ##__VA_ARGS__))
 
 /** @brief see #zfCoreLogCriticalMessage */
 #define zfCoreLogCriticalMessageTrim(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoEmpty(), zfstr(fmt, ##__VA_ARGS__))
@@ -56,7 +56,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
 /**
  * @brief print a critical error message and abort
  */
-#define zfCoreCriticalMessage(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoMake(), zfstr(fmt, ##__VA_ARGS__))
+#define zfCoreCriticalMessage(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoCreate(), zfstr(fmt, ##__VA_ARGS__))
 
 /** @brief see #zfCoreCriticalMessage */
 #define zfCoreCriticalMessageTrim(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoEmpty(), zfstr(fmt, ##__VA_ARGS__))
@@ -100,7 +100,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
  * @brief log that likes "[file function (line)] index i out of range [0, n)"
  */
 #define zfCoreCriticalIndexOutOfRange(index, range) \
-    zfCoreCriticalIndexOutOfRangeDetail(ZFCallerInfoMake(), index, range)
+    zfCoreCriticalIndexOutOfRangeDetail(ZFCallerInfoCreate(), index, range)
 /**
  * @brief see #zfCoreCriticalIndexOutOfRange
  */
@@ -115,7 +115,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
  * @brief log that likes "[file function (line)] should not go here"
  */
 #define zfCoreCriticalShouldNotGoHere() \
-    zfCoreCriticalShouldNotGoHereDetail(ZFCallerInfoMake())
+    zfCoreCriticalShouldNotGoHereDetail(ZFCallerInfoCreate())
 /**
  * @brief see #zfCoreCriticalShouldNotGoHere
  */
@@ -127,7 +127,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
  * @brief log that likes "[file function (line)] not supported"
  */
 #define zfCoreCriticalNotSupported() \
-    zfCoreCriticalNotSupportedDetail(ZFCallerInfoMake())
+    zfCoreCriticalNotSupportedDetail(ZFCallerInfoCreate())
 /**
  * @brief see #zfCoreCriticalNotSupported
  */

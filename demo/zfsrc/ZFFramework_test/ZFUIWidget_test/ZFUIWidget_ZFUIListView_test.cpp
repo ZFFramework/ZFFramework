@@ -37,7 +37,7 @@ public:
             tmp->cellLabelSub()->text(zfstr("sub %s", atIndex));
         }
         if(zfmRand(3) == 0) {
-            tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeMake(40)));
+            tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeCreate(40)));
         }
         tmp->viewBackgroundColor(ZFUIColorRandom());
     }
@@ -232,7 +232,7 @@ private:
                     listView->scrollAreaMarginRemove(listView->scrollAreaMargin());
                 }
                 else {
-                    listView->scrollAreaMarginAdd(ZFUIMarginMake(20));
+                    listView->scrollAreaMarginAdd(ZFUIMarginCreate(20));
                 }
             } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);

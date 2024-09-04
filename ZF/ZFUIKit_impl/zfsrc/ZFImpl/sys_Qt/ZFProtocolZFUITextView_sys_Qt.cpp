@@ -196,7 +196,7 @@ public:
         nativeImplView->setMaximumSize(maximumSizeSaved);
         nativeImplView->setGeometry(geometrySaved);
 
-        return ZFUISizeMake(ret.width(), ret.height());
+        return ZFUISizeCreate(ret.width(), ret.height());
     }
 
     virtual zffloat textSizeCurrent(ZF_IN ZFUITextView *textView) {

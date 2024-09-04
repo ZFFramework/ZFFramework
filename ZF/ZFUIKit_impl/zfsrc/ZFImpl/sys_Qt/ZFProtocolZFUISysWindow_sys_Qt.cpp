@@ -16,7 +16,7 @@ static void _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(
     QRect screenRect = QGuiApplication::screens().at(0)->geometry();
     ZFUIRect frame = ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyMeasureWindow(
             sysWindow,
-            ZFUIRectMake(0, 0, screenRect.width(), screenRect.height()),
+            ZFUIRectCreate(0, 0, screenRect.width(), screenRect.height()),
             ZFUIMarginZero()
         );
     if(nativeWindow->scene() != NULL) {
@@ -172,7 +172,7 @@ public:
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
         // centered by default
         sysWindow->sysWindowLayoutParam()->layoutAlign(ZFUIAlign::e_Center);
-        sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeMake(480, 640));
+        sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(480, 640));
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {

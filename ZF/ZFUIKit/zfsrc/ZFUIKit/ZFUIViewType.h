@@ -63,7 +63,7 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUISizeParam)
 /**
  * @brief make a ZFUISizeParam
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamCreate
         , ZFMP_IN(ZFUISizeTypeEnum const &, width)
         , ZFMP_IN(ZFUISizeTypeEnum const &, height)
         ) {
@@ -73,7 +73,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake
 /**
  * @brief make a ZFUISizeParam
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamCreate
         , ZFMP_IN(ZFUISizeTypeEnum const &, v)
         ) {
     ZFUISizeParam ret = {v, v};
@@ -81,23 +81,23 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake
 }
 
 /**
- * @brief #ZFUISizeParamMake(#ZFUISizeType::e_Wrap, #ZFUISizeType::e_Wrap)
+ * @brief #ZFUISizeParamCreate(#ZFUISizeType::e_Wrap, #ZFUISizeType::e_Wrap)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamZero)
 /**
- * @brief #ZFUISizeParamMake(#ZFUISizeType::e_Wrap, #ZFUISizeType::e_Wrap)
+ * @brief #ZFUISizeParamCreate(#ZFUISizeType::e_Wrap, #ZFUISizeType::e_Wrap)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamWrapWrap)
 /**
- * @brief #ZFUISizeParamMake(#ZFUISizeType::e_Wrap, #ZFUISizeType::e_Fill)
+ * @brief #ZFUISizeParamCreate(#ZFUISizeType::e_Wrap, #ZFUISizeType::e_Fill)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamWrapFill)
 /**
- * @brief #ZFUISizeParamMake(#ZFUISizeType::e_Fill, #ZFUISizeType::e_Wrap)
+ * @brief #ZFUISizeParamCreate(#ZFUISizeType::e_Fill, #ZFUISizeType::e_Wrap)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamFillWrap)
 /**
- * @brief #ZFUISizeParamMake(#ZFUISizeType::e_Fill, #ZFUISizeType::e_Fill)
+ * @brief #ZFUISizeParamCreate(#ZFUISizeType::e_Fill, #ZFUISizeType::e_Fill)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamFillFill)
 

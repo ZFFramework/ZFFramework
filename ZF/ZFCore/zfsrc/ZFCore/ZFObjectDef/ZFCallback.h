@@ -8,9 +8,7 @@
 
 #include "ZFMethod.h"
 #include "ZFObjectCast.h"
-#include "zfany.h"
-#include "zfautoFwd.h"
-#include "ZFPathInfo.h"
+#include "ZFSerializableData.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -74,15 +72,6 @@ typedef void (*_ZFP_ZFCallbackLambdaDeleteCallback)(void *);
 
 // ============================================================
 // ZFCallback
-/**
- * @brief explicit disable callback serialization
- *
- * manually set to #ZFCallback::callbackSerializeCustomType before create the callback\n
- * serializing would cause additional data storage and processing,
- * explicitly disable serialization may improve performance for some case
- */
-#define ZFCallbackSerializeCustomTypeDisable "-"
-
 zfclassFwd ZFSerializableData;
 zfclassFwd _ZFP_ZFCallbackPrivate;
 /**
@@ -302,12 +291,12 @@ public:
      */
     zffinal void callbackInfoCopy(ZF_IN const ZFCallback &src) {
         this->callbackId(src.callbackId());
-        if(src.callbackSerializeCustomDisabled()) {
-            this->callbackSerializeCustomDisable(zftrue);
+        if(src.callbackSerializeDisable()) {
+            this->callbackSerializeDisable(zftrue);
         }
         else {
-            this->callbackSerializeCustomType(src.callbackSerializeCustomType());
-            this->callbackSerializeCustomData(src.callbackSerializeCustomData());
+            this->callbackSerializeType(src.callbackSerializeType());
+            this->callbackSerializeData(src.callbackSerializeData());
         }
         this->pathInfo(src.pathInfo());
     }
@@ -318,40 +307,34 @@ public:
     /**
      * @brief see #ZFTypeId_ZFCallback
      *
-     * you may set to #ZFCallbackSerializeCustomTypeDisable to explicitly
+     * you may set to #ZFSerializeDisable to explicitly
      * disable callback serialization
      */
-    zffinal void callbackSerializeCustomType(ZF_IN const zfstring &customType);
+    zffinal void callbackSerializeType(ZF_IN const zfstring &customType);
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal const zfstring &callbackSerializeCustomType(void) const;
+    zffinal const zfstring &callbackSerializeType(void) const;
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal void callbackSerializeCustomData(ZF_IN const ZFSerializableData *customData);
+    zffinal void callbackSerializeData(ZF_IN const ZFSerializableData &customData);
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal void callbackSerializeCustomData(ZF_IN const ZFSerializableData &customData) {
-        this->callbackSerializeCustomData(&customData);
-    }
-    /**
-     * @brief see #ZFTypeId_ZFCallback
-     */
-    zffinal const ZFSerializableData *callbackSerializeCustomData(void) const;
+    zffinal ZFSerializableData callbackSerializeData(void) const;
 
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal void callbackSerializeCustomDisable(ZF_IN zfbool disable) {
-        this->callbackSerializeCustomType(disable ? ZFCallbackSerializeCustomTypeDisable : zfnull);
+    zffinal void callbackSerializeDisable(ZF_IN zfbool disable) {
+        this->callbackSerializeType(disable ? ZFSerializeDisable : zfnull);
     }
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal zfbool callbackSerializeCustomDisabled(void) const {
-        return zfstringIsEqual(this->callbackSerializeCustomType(), ZFCallbackSerializeCustomTypeDisable);
+    zffinal zfbool callbackSerializeDisable(void) const {
+        return zfstringIsEqual(this->callbackSerializeType(), ZFSerializeDisable);
     }
 
     // ============================================================

@@ -30,7 +30,7 @@ public:
             , (jobject)view->nativeView()
             );
         jint *jarrRect = JNIUtilGetIntArrayElements(jniEnv, jobjRect, NULL);
-        rect = ZFUIRectMake((zffloat)jarrRect[0], (zffloat)jarrRect[1], (zffloat)jarrRect[2], (zffloat)jarrRect[3]);
+        rect = ZFUIRectCreate((zffloat)jarrRect[0], (zffloat)jarrRect[1], (zffloat)jarrRect[2], (zffloat)jarrRect[3]);
         JNIUtilReleaseIntArrayElements(jniEnv, jobjRect, jarrRect, JNI_ABORT);
         JNIUtilDeleteLocalRef(jniEnv, jobjRect);
     }

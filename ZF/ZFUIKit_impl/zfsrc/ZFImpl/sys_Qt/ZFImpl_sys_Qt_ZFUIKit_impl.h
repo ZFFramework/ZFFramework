@@ -206,7 +206,7 @@ inline void ZFImpl_sys_Qt_ZFUIColorFromQColorT(
         ZF_OUT ZFUIColor &ret
         , ZF_IN const QColor qColor
         ) {
-    ret = ZFUIColorMake(
+    ret = ZFUIColorCreate(
             (zffloat)qColor.redF(),
             (zffloat)qColor.greenF(),
             (zffloat)qColor.blueF(),

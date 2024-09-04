@@ -13,11 +13,11 @@ public:
         ZFUIDraw::antialiasing(context, zftrue);
         ZFUIDraw::drawColor(context,
             ZFUIColorBlue(),
-            ZFUIRectMake(0, 0, ownerSizePixel.width / 2, ownerSizePixel.height / 2));
+            ZFUIRectCreate(0, 0, ownerSizePixel.width / 2, ownerSizePixel.height / 2));
         ZFUIDraw::drawImage(context,
             zfRes("test_normal.png"),
             ZFUIRectZero(),
-            ZFUIRectMake(ownerSizePixel.width / 2, ownerSizePixel.height / 2, ownerSizePixel.width / 2, ownerSizePixel.height / 2));
+            ZFUIRectCreate(ownerSizePixel.width / 2, ownerSizePixel.height / 2, ownerSizePixel.width / 2, ownerSizePixel.height / 2));
     }
 
 protected:
@@ -54,10 +54,10 @@ protected:
 
         zfobj<ZFUIImageView> view1;
         container->childAdd(view1)->c_sizeFill(100, 100)->c_alignRight();
-        void *context = ZFUIDraw::beginForImage(ZFUISizeApplyScale(ZFUISizeMake(100), view1->UIScaleFixed()));
+        void *context = ZFUIDraw::beginForImage(ZFUISizeApplyScale(ZFUISizeCreate(100), view1->UIScaleFixed()));
         ZFUIKit_ZFUIDraw_test_DrawableView::testDraw(
             context,
-            ZFUISizeApplyScale(ZFUISizeMake(100), view1->UIScaleFixed()));
+            ZFUISizeApplyScale(ZFUISizeCreate(100), view1->UIScaleFixed()));
         zfautoT<ZFUIImage> image = ZFUIDraw::endForImage(context);
         view1->image(image);
 

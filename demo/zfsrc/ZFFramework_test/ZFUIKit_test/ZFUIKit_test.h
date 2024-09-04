@@ -49,7 +49,7 @@ protected:
 
         zffloat contentHeight = 0;
         zffloat space = 4;
-        ZFUISize childMeasureSizeHint = ZFUISizeMake(this->scrollArea().width, -1);
+        ZFUISize childMeasureSizeHint = ZFUISizeCreate(this->scrollArea().width, -1);
         ZFUISizeParam childMeasureSizeParam = ZFUISizeParamFillWrap();
 
         for(zfindex i = 0; i < this->childCount(); ++i) {
@@ -57,13 +57,13 @@ protected:
 
             ZFUIView *child = this->childAt(i);
             child->layoutMeasure(childMeasureSizeHint, childMeasureSizeParam);
-            child->layoutParam()->layoutMargin(ZFUIMarginMake(0, contentHeight, 0, 0));
+            child->layoutParam()->layoutMargin(ZFUIMarginCreate(0, contentHeight, 0, 0));
 
             contentHeight += child->layoutMeasuredSize().height;
         }
         contentHeight += space;
 
-        this->scrollContentFrameUpdate(ZFUIRectMake(
+        this->scrollContentFrameUpdate(ZFUIRectCreate(
             this->scrollContentFrame().x, this->scrollContentFrame().y,
             this->scrollArea().width, contentHeight));
     }

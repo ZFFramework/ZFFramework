@@ -136,7 +136,7 @@ public:
             ) {
         int w, h;
         if(zfself::measureNativeTextView(w, h, textView, textView->text(), textView->text().length(), sizeHint.width, textSize)) {
-            return ZFUISizeMake((zffloat)w, (zffloat)h);
+            return ZFUISizeCreate((zffloat)w, (zffloat)h);
         }
         else {
             return ZFUISizeZero();

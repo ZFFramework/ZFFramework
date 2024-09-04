@@ -36,7 +36,7 @@ extern ZFLIB_ZFLua void _ZFP_ZFLuaErrorOccurred(
  * @brief util method to notify #ZFLuaErrorCallbacks
  */
 #define ZFLuaErrorOccurred(fmt, ...) \
-    ZFLuaErrorOccurredDetail(ZFCallerInfoMake(), fmt, ##__VA_ARGS__)
+    ZFLuaErrorOccurredDetail(ZFCallerInfoCreate(), fmt, ##__VA_ARGS__)
 /**
  * @brief util method to notify #ZFLuaErrorCallbacks
  */

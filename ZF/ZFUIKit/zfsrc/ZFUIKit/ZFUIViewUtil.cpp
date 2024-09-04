@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     ZFCoreArray<zfautoT<ZFUIView> > childList = view->internalFgViewArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
-        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(
+        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointCreate(
                 pos.x - child->viewFrame().x,
                 pos.y - child->viewFrame().y
             ),
@@ -66,7 +66,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     childList = view->childArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
-        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(
+        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointCreate(
                 pos.x - (child->viewFrame().x + layoutChildOffset.x),
                 pos.y - (child->viewFrame().y + layoutChildOffset.y)
             ),
@@ -81,7 +81,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     childList = view->internalBgViewArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
-        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(
+        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointCreate(
                 pos.x - child->viewFrame().x,
                 pos.y - child->viewFrame().y
             ),

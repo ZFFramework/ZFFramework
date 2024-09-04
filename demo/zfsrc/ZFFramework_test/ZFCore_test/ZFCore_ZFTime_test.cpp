@@ -81,7 +81,7 @@ protected:
         this->testCaseOutput("zero time:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t2));
 
-        zfobj<ZFTime> t3(ZFTimeInfoMake(
+        zfobj<ZFTime> t3(ZFTimeInfoCreate(
                     t->timeInfoYear(),
                     t->timeInfoMonth(),
                     t->timeInfoDay(),
@@ -94,7 +94,7 @@ protected:
         this->testCaseOutput("create a ZFTime:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t3));
 
-        zfobj<ZFTime> t4(ZFTimeInfoMake(
+        zfobj<ZFTime> t4(ZFTimeInfoCreate(
                     t->timeInfoYear() - 300,
                     t->timeInfoMonth(),
                     t->timeInfoDay(),
@@ -107,7 +107,7 @@ protected:
         this->testCaseOutput("time before 1970:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t4));
 
-        zfobj<ZFTime> t5(ZFTimeInfoMake(
+        zfobj<ZFTime> t5(ZFTimeInfoCreate(
                     t->timeInfoYear() - 3000,
                     t->timeInfoMonth(),
                     t->timeInfoDay(),
@@ -120,7 +120,7 @@ protected:
         this->testCaseOutput("time before 0000:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t5));
 
-        zfobj<ZFTime> t6(ZFTimeInfoMake(
+        zfobj<ZFTime> t6(ZFTimeInfoCreate(
                     t->timeInfoYear() + 3000,
                     t->timeInfoMonth(),
                     t->timeInfoDay(),

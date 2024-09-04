@@ -12,15 +12,15 @@ void ZFUIListCellView::objectOnInitFinish(void) {
 
     this->internalBgViewAdd(this->cellIconContainer());
     this->cellIconContainer()->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-    this->cellIconContainer()->layoutParam()->layoutMargin(ZFUIMarginMake(itemMargin, itemMargin, 0, itemMargin));
+    this->cellIconContainer()->layoutParam()->layoutMargin(ZFUIMarginCreate(itemMargin, itemMargin, 0, itemMargin));
 
     this->internalBgViewAdd(this->cellCenterContainer());
     this->cellCenterContainer()->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-    this->cellCenterContainer()->layoutParam()->layoutMargin(ZFUIMarginMake(itemMargin));
+    this->cellCenterContainer()->layoutParam()->layoutMargin(ZFUIMarginCreate(itemMargin));
 
     this->internalBgViewAdd(this->cellAccessoryContainer());
     this->cellAccessoryContainer()->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-    this->cellAccessoryContainer()->layoutParam()->layoutMargin(ZFUIMarginMake(0, itemMargin, itemMargin, itemMargin));
+    this->cellAccessoryContainer()->layoutParam()->layoutMargin(ZFUIMarginCreate(0, itemMargin, itemMargin, itemMargin));
 }
 
 static void _ZFP_ZFUIListCellView_measureContent(

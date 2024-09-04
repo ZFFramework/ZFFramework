@@ -193,7 +193,7 @@ public:
             nativeViewTmp->sdlMeasureCallback(ret, nativeViewTmp, sizeHint);
         }
         else {
-            ret = ZFUISizeMake(zfmMax(sizeHint.width, (zffloat)0), zfmMax(sizeHint.height, (zffloat)0));
+            ret = ZFUISizeCreate(zfmMax(sizeHint.width, (zffloat)0), zfmMax(sizeHint.height, (zffloat)0));
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_SDL)

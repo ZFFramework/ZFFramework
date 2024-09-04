@@ -191,6 +191,14 @@ public:
     }
 };
 
+/**
+ * @brief special string to explicit disable serialization for impl
+ *
+ * serializing would cause additional data storage and processing,
+ * explicitly disable serialization may improve performance for some case
+ */
+#define ZFSerializeDisable "-"
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFObjectClassTypeFwd_h_

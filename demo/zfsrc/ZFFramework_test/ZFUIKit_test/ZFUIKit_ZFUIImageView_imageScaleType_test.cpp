@@ -15,7 +15,7 @@ protected:
         this->viewBackgroundColor(ZFUIColorYellow());
 
         zfauto imageSmall = zfRes("test_normal.png");
-        zfauto imageLarge = ZFUIImageScale(imageSmall, ZFUISizeMake(600));
+        zfauto imageLarge = ZFUIImageScale(imageSmall, ZFUISizeCreate(600));
 
         this->childAdd(this->imageViewSmall());
         this->imageViewSmall()->image(imageSmall);
@@ -30,15 +30,15 @@ protected:
         zfsuper::layoutOnLayout(bounds);
         if(bounds.height >= bounds.width) {
             this->imageViewSmall()->viewFrame(ZFUIRectApplyMargin(
-                ZFUIRectMake(0, 0, bounds.width, bounds.height / 2),
-                ZFUIMarginMake(5)));
+                ZFUIRectCreate(0, 0, bounds.width, bounds.height / 2),
+                ZFUIMarginCreate(5)));
             this->imageViewLarge()->viewFrame(ZFUIRectApplyMargin(
-                ZFUIRectMake(0, bounds.height / 2, bounds.width, bounds.height / 2),
-                ZFUIMarginMake(5)));
+                ZFUIRectCreate(0, bounds.height / 2, bounds.width, bounds.height / 2),
+                ZFUIMarginCreate(5)));
         }
         else {
-            this->imageViewSmall()->viewFrame(ZFUIRectMake(0, 0, bounds.width, bounds.height / 2));
-            this->imageViewLarge()->viewFrame(ZFUIRectMake(bounds.width / 2, 0, bounds.width, bounds.height / 2));
+            this->imageViewSmall()->viewFrame(ZFUIRectCreate(0, 0, bounds.width, bounds.height / 2));
+            this->imageViewLarge()->viewFrame(ZFUIRectCreate(bounds.width / 2, 0, bounds.width, bounds.height / 2));
         }
     }
 };

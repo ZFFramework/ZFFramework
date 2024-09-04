@@ -106,7 +106,7 @@ zfstring requireAttribute(
     return ret;
 }
 
-const ZFSerializableData *checkElementByName(
+ZFSerializableData checkElementByName(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementName
         ) {
@@ -115,15 +115,15 @@ const ZFSerializableData *checkElementByName(
         return zfnull;
     }
     serializableData.childAt(index).resolvePropertyNameMark();
-    return &(serializableData.childAt(index));
+    return serializableData.childAt(index);
 }
-const ZFSerializableData *requireElementByName(
+ZFSerializableData requireElementByName(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementName
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    const ZFSerializableData *ret = checkElementByName(serializableData, desiredElementName);
+    ZFSerializableData ret = checkElementByName(serializableData, desiredElementName);
     if(ret == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing element with name \"%s\"",
@@ -132,7 +132,7 @@ const ZFSerializableData *requireElementByName(
     return ret;
 }
 
-const ZFSerializableData *checkElementByCategory(
+ZFSerializableData checkElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementCategory
         ) {
@@ -141,15 +141,15 @@ const ZFSerializableData *checkElementByCategory(
         return zfnull;
     }
     serializableData.childAt(index).resolveCategoryMark();
-    return &(serializableData.childAt(index));
+    return serializableData.childAt(index);
 }
-const ZFSerializableData *requireElementByCategory(
+ZFSerializableData requireElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN const zfstring &desiredElementCategory
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    const ZFSerializableData *ret = checkElementByCategory(serializableData, desiredElementCategory);
+    ZFSerializableData ret = checkElementByCategory(serializableData, desiredElementCategory);
     if(ret == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing element with category \"%s\"",

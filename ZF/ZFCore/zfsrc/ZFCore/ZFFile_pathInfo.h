@@ -496,7 +496,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocal
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFInputForPathInfo "ZFInputForPathInfo"
+#define ZFCallbackSerializeType_ZFInputForPathInfo "ZFInputForPathInfo"
 
 /**
  * @brief util to create a file input callback
@@ -532,7 +532,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoStringT
  * @brief see #ZFInputForPathInfo
  *
  * this method is designed for performance for further impl, by:
- * -  allow set #ZFCallbackSerializeCustomTypeDisable
+ * -  allow set #ZFCallback::callbackSerializeDisable
  * -  less extra copy on pathInfo
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
@@ -557,7 +557,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFOutputForPathInfo "ZFOutputForPathInfo"
+#define ZFCallbackSerializeType_ZFOutputForPathInfo "ZFOutputForPathInfo"
 
 /**
  * @brief util to create a file output callback
@@ -593,7 +593,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoStringT
  * @brief see #ZFOutputForPathInfo
  *
  * this method is designed for performance for further impl, by:
- * -  allow set #ZFCallbackSerializeCustomTypeDisable
+ * -  allow set #ZFCallback::callbackSerializeDisable
  * -  less extra copy on pathInfo
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
@@ -618,7 +618,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFInputForLocal "ZFInputForLocal"
+#define ZFCallbackSerializeType_ZFInputForLocal "ZFInputForLocal"
 
 /**
  * @brief util to create a file input callback
@@ -681,7 +681,7 @@ inline zfbool ZFInputForLocalT(
  *   </ZFCallback>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFOutputForLocal "ZFOutputForLocal"
+#define ZFCallbackSerializeType_ZFOutputForLocal "ZFOutputForLocal"
 
 /**
  * @brief util to create a file output callback

@@ -20,7 +20,7 @@ protected:
         this->pageView()->childAdd(this->_titleView())->c_widthFill();
         this->_titleView()->viewBackgroundColor(ZFUIColorRandom());
         this->_titleView()->layoutOrientation(ZFUIOrientation::e_Left);
-        this->_titleView()->viewSizeMin(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton()));
+        this->_titleView()->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton()));
 
         this->_titleView()->childAdd(this->_titleLeftView())->c_layoutWeight(1);
         this->_titleLeftView()->label()->text("back");
@@ -159,8 +159,8 @@ protected:
             zffloat r = zfmRand(255) / 255.0f;
             zffloat g = zfmRand(255) / 255.0f;
             zffloat b = zfmRand(255) / 255.0f;
-            button->backgroundNormal()->image(ZFUIImageFromColor(ZFUIColorMake(r, g, b, 0.25f)));
-            button->backgroundHighlighted()->image(ZFUIImageFromColor(ZFUIColorMake(r, g, b)));
+            button->backgroundNormal()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b, 0.25f)));
+            button->backgroundHighlighted()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b)));
         }
         this->_buttonLayout()->childAt(0)->to<ZFUIButton *>()->simulateClick();
     }

@@ -310,7 +310,7 @@ private:
             }
             return zftrue;
         }
-        ZFCoreArray<zfstring> dirToMake;
+        ZFCoreArray<zfstring> dirToCreate;
         if(!excludeLastLevel) {
             if(this->fileIsExist(pathTmp)) {
                 if(!this->fileIsDir(pathTmp)) {
@@ -319,7 +319,7 @@ private:
                 }
                 return zftrue;
             }
-            dirToMake.add(pathTmp);
+            dirToCreate.add(pathTmp);
         }
         pathTmp.remove(indexL);
         do {
@@ -330,7 +330,7 @@ private:
                 }
                 break;
             }
-            dirToMake.add(pathTmp);
+            dirToCreate.add(pathTmp);
             if(indexL == zfindexMax()) {
                 break;
             }
@@ -339,8 +339,8 @@ private:
                 pathTmp.remove(indexL);
             }
         } while(zftrue);
-        for(zfindex i = dirToMake.count() - 1; i != zfindexMax(); --i) {
-            if(!this->makeDir(dirToMake[i], errPos)) {
+        for(zfindex i = dirToCreate.count() - 1; i != zfindexMax(); --i) {
+            if(!this->makeDir(dirToCreate[i], errPos)) {
                 return zffalse;
             }
         }

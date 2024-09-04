@@ -52,7 +52,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfbool, viewFocusable) {
     propertyValue = zftrue;
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, ZFUISize, viewSizeMin) {
-    propertyValue = ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeControl());
+    propertyValue = ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeControl());
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, textEditEnable) {
@@ -205,7 +205,7 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, measureTextEdit
         ) {
     const ZFUIMargin &nativeImplViewMargin = this->nativeImplViewMargin();
     ZFUISizeApplyScaleReversely(ret, ZFPROTOCOL_ACCESS(ZFUITextEdit)->measureNativeTextEdit(this,
-        ZFUISizeApplyScale(ZFUILayoutParam::sizeHintOffset(sizeHint, ZFUISizeMake(
+        ZFUISizeApplyScale(ZFUILayoutParam::sizeHintOffset(sizeHint, ZFUISizeCreate(
                     0 - ZFUIMarginGetWidth(nativeImplViewMargin),
                     0 - ZFUIMarginGetHeight(nativeImplViewMargin)
                 )),

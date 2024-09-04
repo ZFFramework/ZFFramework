@@ -32,7 +32,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
             return zffalse;
         }
 
-        const ZFSerializableData *element = zfnull;
+        ZFSerializableData element;
 
         v.matched = zffalse;
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
