@@ -684,7 +684,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT
 
     return ret;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeType_ZFInputForPathInfo) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeType_ZFInputForPathInfo) {
     ZFPathInfo pathInfo;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo, {
@@ -852,7 +852,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT
 
     return ret;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeType_ZFOutputForPathInfo) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeType_ZFOutputForPathInfo) {
     ZFPathInfo pathInfo;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo, {
@@ -924,7 +924,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalT
 
     return zftrue;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeType_ZFInputForLocal) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeType_ZFInputForLocal) {
     const ZFPathInfo *pathInfo = serializableData.pathInfoCheck();
     if(pathInfo == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -1011,7 +1011,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT
 
     return zftrue;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOutputForLocal) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOutputForLocal) {
     const ZFPathInfo *pathInfo = serializableData.pathInfoCheck();
     if(pathInfo == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,

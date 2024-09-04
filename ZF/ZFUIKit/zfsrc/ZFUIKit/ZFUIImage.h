@@ -326,6 +326,13 @@ public:
     /**@brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE */
     ZFMETHOD_DECLARE_0(const ZFListener &, imageSerializeDataGetter)
 
+    /**@brief see #ZFSerializeDisable */
+    ZFMETHOD_DECLARE_1(void, imageSerializeDisable
+            , ZFMP_IN(zfbool, disable)
+            )
+    /**@brief see #ZFSerializeDisable */
+    ZFMETHOD_DECLARE_0(zfbool, imageSerializeDisable)
+
 private:
     _ZFP_ZFUIImagePrivate *d;
     friend zfclassFwd _ZFP_ZFUIImagePrivate;

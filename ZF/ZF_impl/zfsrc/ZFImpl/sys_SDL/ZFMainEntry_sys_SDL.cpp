@@ -245,6 +245,11 @@ void ZFImpl_sys_SDL_userEventHandlerRemove(
 }
 
 // ============================================================
+static Uint32 _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_PIXELFORMAT_ARGB8888;
+Uint32 ZFImpl_sys_SDL_PixelFormatPreferred(void) {
+    return _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred;
+}
+
 zfbool ZFImpl_sys_SDL_embed = zffalse;
 
 void ZFImpl_sys_SDL_embedInit(ZF_IN SDL_Window *window) {
@@ -254,6 +259,7 @@ void ZFImpl_sys_SDL_embedInit(ZF_IN SDL_Window *window) {
     zfCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow == zfnull);
     _ZFP_ZFImpl_sys_SDL_mainWindow = window;
     _ZFP_ZFImpl_sys_SDL_mainRenderer = renderer;
+    _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetWindowPixelFormat(window);
 }
 void ZFImpl_sys_SDL_embedCleanup(void) {
     zfCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow != zfnull);

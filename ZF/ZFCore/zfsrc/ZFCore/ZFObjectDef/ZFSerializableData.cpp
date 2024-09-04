@@ -678,13 +678,5 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
     return ZFCompareEqual;
 }
 
-zfbool ZFSerializableData::isEmpty(void) const {
-    return d == zfnull || (
-        d->classNameFull.isEmpty()
-        && d->attributes.empty()
-        && d->elements.empty()
-        );
-}
-
 ZF_NAMESPACE_GLOBAL_END
 

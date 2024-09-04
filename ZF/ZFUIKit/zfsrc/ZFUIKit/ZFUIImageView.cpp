@@ -85,6 +85,12 @@ void ZFUIImageView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     if(this->image() != zfnull) {
         ret += " ";
         this->image()->objectInfoT(ret);
+
+        zfautoT<ZFUIImage> imageState = this->image()->imageState();
+        if(imageState != zfnull && imageState != this->image()) {
+            ret += " => ";
+            imageState->objectInfoT(ret);
+        }
     }
 }
 

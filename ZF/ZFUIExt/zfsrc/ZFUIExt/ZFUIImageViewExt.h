@@ -37,9 +37,39 @@ public:
     ZFPROPERTY_ASSIGN(ZFInput, imageSrc)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFInput, imageSrc)
 
+public:
+    /**
+     * @brief animated image from url, see #ZFUIImageAniLoad
+     */
+    ZFPROPERTY_ASSIGN(zfstring, imageAniUrl)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, imageAniUrl)
+
+    /**
+     * @brief animated image from input, see #ZFUIImageAniLoad
+     */
+    ZFPROPERTY_ASSIGN(ZFInput, imageAniSrc)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFInput, imageAniSrc)
+
+    /**
+     * @brief animated image from url, see #ZFUIImageAni
+     */
+    ZFMETHOD_DECLARE_4(void, imageAniUrl
+            , ZFMP_IN(const zfchar *, url)
+            , ZFMP_IN(const ZFUISize &, frameSize)
+            , ZFMP_IN(zfindex, frameCount)
+            , ZFMP_IN_OPT(zftimet, frameDuration, 0)
+            )
+    /**
+     * @brief animated image from input, see #ZFUIImageAni
+     */
+    ZFMETHOD_DECLARE_4(void, imageAniSrc
+            , ZFMP_IN(const ZFInput &, src)
+            , ZFMP_IN(const ZFUISize &, frameSize)
+            , ZFMP_IN(zfindex, frameCount)
+            , ZFMP_IN_OPT(zftimet, frameDuration, 0)
+            )
+
 protected:
-    /** @brief called to load image */
-    virtual void imageOnLoad(ZF_IN const ZFInput &src);
     /** @brief when #imageUrl or #imageSrc set, #ZFUIImageView::image would be ignored from serialize */
     ZFMETHOD_DECLARE_PROTECTED_1(ZFSerializablePropertyType, serializableOnCheckPropertyType
             , ZFMP_IN(const ZFProperty *, property)

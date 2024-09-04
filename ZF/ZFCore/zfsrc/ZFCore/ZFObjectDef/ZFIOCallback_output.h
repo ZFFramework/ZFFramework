@@ -111,7 +111,7 @@ inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN zfchar * 
 // ============================================================
 // common output callbacks
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code

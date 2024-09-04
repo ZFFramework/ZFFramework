@@ -75,28 +75,14 @@ zffinal zfclassLikePOD ZFLIB_ZFCore ZFSerializableData {
 public:
     /** @cond ZFPrivateDoc */
     ZFSerializableData(ZF_IN _ZFP_ZFSerializableDataPrivate *d);
-    /** @endcond */
-    /**
-     * @brief construct an empty data
-     */
     ZFSerializableData(void);
-    /**
-     * @brief retain from another ref
-     */
     ZFSerializableData(ZF_IN const ZFSerializableData &ref);
-    /**
-     * @brief retain from another ref
-     */
     ZFSerializableData &operator = (ZF_IN const ZFSerializableData &ref);
-    /**
-     * @brief true if same ref
-     */
     zfbool operator == (ZF_IN const ZFSerializableData &ref) const;
-    /**
-     * @brief true if not same ref
-     */
     inline zfbool operator != (ZF_IN const ZFSerializableData &ref) const {return !this->operator == (ref);}
+    inline operator bool (void) const {return this->valid();}
     ~ZFSerializableData(void);
+    /** @endcond */
 
 public:
     /**
@@ -441,9 +427,9 @@ public:
 
 public:
     /**
-     * @brief true if the data contains nothing
+     * @brief whether the data is valid
      */
-    zffinal zfbool isEmpty(void) const;
+    inline zfbool valid(void) const {return d;}
 
 private:
     _ZFP_ZFSerializableDataPrivate *d;

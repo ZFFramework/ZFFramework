@@ -170,7 +170,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForFormat
     return ret;
 }
 
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeType_ZFOutputForFormat) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeType_ZFOutputForFormat) {
     ZFOutput output;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFOutputForFormat_output, ZFCallback, output, {

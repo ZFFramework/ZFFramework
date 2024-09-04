@@ -69,11 +69,12 @@ ZFMETHOD_FUNC_DEFINE_1(void, endForView
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void *, beginForImage
-        , ZFMP_IN(const ZFUISize &, imageSizePixel)
+        , ZFMP_IN(const ZFUISize &, imageSize)
         ) {
-    if(imageSizePixel.width <= 0 || imageSizePixel.height <= 0) {
+    if(imageSize.width <= 0 || imageSize.height <= 0) {
         return zfnull;
     }
+    ZFUISize imageSizePixel = ZFUISizeApplyScale(imageSize, ZFUIGlobalStyle::DefaultStyle()->imageScale());
     ZFUIDrawToken *token = zfpoolNew(ZFUIDrawToken,
         ZFUIDrawToken::TypeImage,
         ZFUIImage::ClassData()->newInstance(),
@@ -120,32 +121,32 @@ ZFMETHOD_FUNC_DEFINE_2(void, antialiasing
 // draw api
 ZFMETHOD_FUNC_DEFINE_2(void, drawClear
         , ZFMP_IN(void *, context)
-        , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
     ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context,
-        targetFramePixel == ZFUIRectZero()
+        targetFrame == ZFUIRectZero()
             ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : targetFramePixel
+            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
         );
 }
 
 ZFMETHOD_FUNC_DEFINE_3(void, drawColor
         , ZFMP_IN(void *, context)
         , ZFMP_IN(const ZFUIColor &, color)
-        , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
     ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context, color,
-        targetFramePixel == ZFUIRectZero()
+        targetFrame == ZFUIRectZero()
             ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : targetFramePixel
+            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
         );
 }
 
 ZFMETHOD_FUNC_DEFINE_4(void, drawImage
         , ZFMP_IN(void *, context)
         , ZFMP_IN(ZFUIImage *, image)
-        , ZFMP_IN_OPT(const ZFUIRect &, imageFramePixel, ZFUIRectZero())
-        , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, imageFrame, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
     if(image == zfnull) {
         return;
@@ -153,12 +154,12 @@ ZFMETHOD_FUNC_DEFINE_4(void, drawImage
     zfautoT<ZFUIImage> imageState = image->imageStateForceUpdate();
     if(imageState != zfnull && imageState->nativeImage() != zfnull) {
         ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
-        imageFramePixel == ZFUIRectZero()
+        imageFrame == ZFUIRectZero()
             ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
-            : imageFramePixel,
-        targetFramePixel == ZFUIRectZero()
+            : ZFUIRectApplyScale(imageFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale()),
+        targetFrame == ZFUIRectZero()
             ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : targetFramePixel
+            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
         );
     }
 }

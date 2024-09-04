@@ -83,7 +83,7 @@ public:
 
 // ============================================================
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code

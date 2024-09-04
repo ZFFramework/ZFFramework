@@ -74,7 +74,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, endForView
 
 /** @brief see #ZFUIDraw::beginForView */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void *, beginForImage
-        , ZFMP_IN(const ZFUISize &, imageSizePixel)
+        , ZFMP_IN(const ZFUISize &, imageSize)
         )
 /** @brief see #ZFUIDraw::beginForView */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, endForImage
@@ -98,22 +98,22 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, antialiasing
 /** @brief see #ZFUIDraw::beginForView */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, drawClear
         , ZFMP_IN(void *, context)
-        , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         )
 
 /** @brief see #ZFUIDraw::beginForView */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, drawColor
         , ZFMP_IN(void *, context)
         , ZFMP_IN(const ZFUIColor &, color)
-        , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         )
 
 /** @brief see #ZFUIDraw::beginForView */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, void, drawImage
         , ZFMP_IN(void *, context)
         , ZFMP_IN(ZFUIImage *, image)
-        , ZFMP_IN_OPT(const ZFUIRect &, imageFramePixel, ZFUIRectZero())
-        , ZFMP_IN_OPT(const ZFUIRect &, targetFramePixel, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, imageFrame, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         )
 
 ZF_NAMESPACE_END(ZFUIDraw)

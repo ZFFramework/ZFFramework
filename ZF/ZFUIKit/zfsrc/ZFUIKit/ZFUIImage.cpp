@@ -569,5 +569,14 @@ ZFMETHOD_DEFINE_0(ZFUIImage, const ZFListener &, imageSerializeDataGetter) {
     return d->imageSerializeDataGetter;
 }
 
+ZFMETHOD_DEFINE_1(ZFUIImage, void, imageSerializeDisable
+        , ZFMP_IN(zfbool, disable)
+        ) {
+    this->imageSerializeType(ZFSerializeDisable);
+}
+ZFMETHOD_DEFINE_0(ZFUIImage, zfbool, imageSerializeDisable) {
+    return zfstringIsEqual(this->imageSerializeType(), ZFSerializeDisable);
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

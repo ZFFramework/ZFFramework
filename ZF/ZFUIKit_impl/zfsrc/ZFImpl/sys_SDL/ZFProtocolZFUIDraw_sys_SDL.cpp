@@ -119,7 +119,7 @@ public:
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUISize &imageSizePixel
             ) {
-        SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, (int)imageSizePixel.width, (int)imageSizePixel.height, 0, SDL_PIXELFORMAT_ARGB8888);
+        SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, (int)imageSizePixel.width, (int)imageSizePixel.height, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
         if(nativeImage == zfnull) {
             return zffalse;
         }

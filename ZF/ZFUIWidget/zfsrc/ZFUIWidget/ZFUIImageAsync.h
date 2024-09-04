@@ -24,6 +24,13 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
         , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
         , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
         )
+/** @brief see #ZFUIImageAsync */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAsyncT
+        , ZFMP_IN_OUT(ZFUIImage *, ret)
+        , ZFMP_IN(const ZFInput &, src)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
+        )
 
 /**
  * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
@@ -31,7 +38,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAsync
  * serializable data:
  * @code
  *   <ZFUIImage imageType="async">
- *       <ZFCallback category="imageSrc" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ *       <ZFCallback category="imageSrc" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *       <ZFUIImage category="imageLoadFail" ... /> // load fail image
  *       <ZFUIImage category="imageLoading" ... /> // loading image
  *   </ZFUIImage>

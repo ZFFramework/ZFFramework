@@ -110,7 +110,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 // ============================================================
 // ZFInputDummy
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code
@@ -128,7 +128,7 @@ extern ZFLIB_ZFCore ZFInput ZFInputDummy(void);
 // ============================================================
 // ZFInputForInputInRange
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code
@@ -174,7 +174,7 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(
 // ============================================================
 // ZFInputForBuffer
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code

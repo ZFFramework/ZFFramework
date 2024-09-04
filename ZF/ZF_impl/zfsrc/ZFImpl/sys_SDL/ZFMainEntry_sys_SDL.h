@@ -24,6 +24,11 @@ extern ZFLIB_ZF_impl SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void);
 extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
 
 /**
+ * @brief get preferred pixel format for sdl surface
+ */
+extern ZFLIB_ZF_impl Uint32 ZFImpl_sys_SDL_PixelFormatPreferred(void);
+
+/**
  * @brief event handler for sdl event loop
  *
  * return true if the event was handled and should not be processed further

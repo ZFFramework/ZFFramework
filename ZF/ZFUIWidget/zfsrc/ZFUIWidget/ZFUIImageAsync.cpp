@@ -33,11 +33,27 @@ protected:
     }
 };
 
-static void _ZFP_ZFUIImageAsyncImpl(
-        ZFUIImage *holder
-        , const ZFInput &src
-        , ZFUIImage *imageLoadFail = zfnull
-        , ZFUIImage *imageLoading = zfnull
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFUIImage>, ZFUIImageAsync
+        , ZFMP_IN(const ZFInput &, src)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
+        ) {
+    if(!src) {
+        return zfnull;
+    }
+    zfautoT<ZFUIImage> holder = ZFUIImage::ClassData()->newInstance();
+    if(ZFUIImageAsyncT(holder, src, imageLoadFail, imageLoading)) {
+        return holder;
+    }
+    else {
+        return zfnull;
+    }
+}
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
+        , ZFMP_IN_OUT(ZFUIImage *, ret)
+        , ZFMP_IN(const ZFInput &, src)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
+        , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
         ) {
     _ZFP_ZFUIImageAsync_log("%p load begin: %s %s %s", holder, zftToString(src).cString(), zftToString(imageLoadFail).cString(), zftToString(imageLoading).cString());
     zfobj<_ZFP_I_ZFUIImageAsyncTask> task;
@@ -61,26 +77,28 @@ static void _ZFP_ZFUIImageAsyncImpl(
             }
         }
     } ZFLISTENER_END()
-    holder->imageStateImpl(imageStateImpl);
+    ret->imageStateImpl(imageStateImpl);
 
     ZFLISTENER_2(loadOnFinish
-            , ZFUIImage *, holder
+            , ZFUIImage *, ret
             , zfweakT<_ZFP_I_ZFUIImageAsyncTask>, task
             ) {
         if(task) {
             task->imageLoadTaskId = zfnull;
             task->imageLoaded = zfargs.param0();
-            holder->imageStateImplNotifyUpdate(task->imageLoaded ? task->imageLoaded : task->imageLoadFail);
+            ret->imageStateImplNotifyUpdate(task->imageLoaded ? task->imageLoaded : task->imageLoadFail);
         }
         _ZFP_ZFUIImageAsync_log("%p load end: %s", holder, zftToString(zfargs.param0()).cString());
     } ZFLISTENER_END()
     task->imageLoadTaskId = ZFUIImageLoad(src, loadOnFinish);
 
-    if(!src.callbackSerializeDisable()) {
+    if(!src.callbackSerializeDisable()
+            && !ret->imageSerializeDisable()
+            ) {
         // serialize logic
         ZFSerializableData srcData;
         if(!ZFCallbackToDataT(srcData, src)) {
-            return;
+            return zftrue;
         }
         ZFLISTENER_3(serializeImpl
                 , ZFSerializableData, srcData
@@ -110,21 +128,10 @@ static void _ZFP_ZFUIImageAsyncImpl(
             }
             zfargs.result(zfobj<v_ZFSerializableData>(data));
         } ZFLISTENER_END()
-        holder->imageSerializeType(ZFUIImageSerializeType_async);
-        holder->imageSerializeDataGetter(serializeImpl);
+        ret->imageSerializeType(ZFUIImageSerializeType_async);
+        ret->imageSerializeDataGetter(serializeImpl);
     }
-}
-ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFUIImage>, ZFUIImageAsync
-        , ZFMP_IN(const ZFInput &, src)
-        , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
-        , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
-        ) {
-    if(!src) {
-        return zfnull;
-    }
-    zfautoT<ZFUIImage> holder = ZFUIImage::ClassData()->newInstance();
-    _ZFP_ZFUIImageAsyncImpl(holder, src, imageLoadFail, imageLoading);
-    return holder;
+    return zftrue;
 }
 
 ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_async) {
@@ -148,8 +155,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_async) {
             check, ZFSerializableKeyword_ZFUIImageIO_async_imageLoading, ZFObject, imageLoading, {
                 return zffalse;
             });
-    _ZFP_ZFUIImageAsyncImpl(ret, input, imageLoadFail, imageLoading);
-    return zftrue;
+    return ZFUIImageAsyncT(ret, input, imageLoadFail, imageLoading);
 }
 
 ZF_NAMESPACE_GLOBAL_END

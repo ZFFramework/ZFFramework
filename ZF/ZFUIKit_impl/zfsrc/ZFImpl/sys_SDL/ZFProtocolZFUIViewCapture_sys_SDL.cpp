@@ -19,7 +19,7 @@ public:
             , ZF_IN_OUT ZFUIImage *image
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
-        SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, nativeView->rect.w, nativeView->rect.h, 0, SDL_PIXELFORMAT_ARGB8888);
+        SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, nativeView->rect.w, nativeView->rect.h, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
         SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(nativeImage);
         SDL_Rect rect;
         rect.x = 0;

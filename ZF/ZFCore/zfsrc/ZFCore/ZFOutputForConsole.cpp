@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeType_ZFOutputForConsole) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeType_ZFOutputForConsole) {
     ret = ZFOutputForConsole();
     serializableData.resolveMark();
     return ret;

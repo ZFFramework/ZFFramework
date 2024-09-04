@@ -31,7 +31,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * \n
  * ADVANCED:\n
  * you may also supply your own serialize logic by registering
- * with #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE,
+ * with #ZFCALLBACK_SERIALIZE_TYPE_DEFINE,
  * serializable data:
  * @code
  *   <ZFCallback callbackType="yourType" customAttr="customValue" >
@@ -77,7 +77,7 @@ extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerial
  * usage:
  * @code
  *   // in cpp file
- *   ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(registerSig, yourTypeName) {
+ *   ZFCALLBACK_SERIALIZE_TYPE_DEFINE(registerSig, yourTypeName) {
  *       // serialize callback from data
  *       // proto type:
  *       //   zfbool action(
@@ -90,7 +90,7 @@ extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerial
  *   }
  * @endcode
  */
-#define ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(registerSig, type) \
+#define ZFCALLBACK_SERIALIZE_TYPE_DEFINE(registerSig, type) \
     static zfbool _ZFP_ZFCallbackSerializeCustom_##registerSig(ZF_IN_OUT ZFCallback &ret, \
                                                                ZF_IN const ZFSerializableData &serializableData, \
                                                                ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \

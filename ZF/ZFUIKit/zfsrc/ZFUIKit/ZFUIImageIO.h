@@ -31,6 +31,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToBase64
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromInput
         , ZFMP_IN(const ZFInput &, inputCallback)
         )
+/** @brief see #ZFUIImageFromInput */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageFromInputT
+        , ZFMP_IN_OUT(ZFUIImage *, ret)
+        , ZFMP_IN(const ZFInput &, inputCallback)
+        )
 /**
  * @brief save image to file
  *
@@ -49,7 +54,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput
  * serializable data:
  * @code
  *   <ZFUIImage imageType="input">
- *       <ZFCallback category="imageData" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ *       <ZFCallback category="imageData" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *   </ZFUIImage>
  * @endcode
  */
@@ -104,6 +109,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageInFrame
         , ZFMP_IN(ZFUIImage *, image)
         , ZFMP_IN(const ZFUIRect &, frame)
         )
+/** @brief see #ZFUIImageInFrame */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, zfbool, ZFUIImageInFrameT
+        , ZFMP_IN_OUT(ZFUIImage *, ret)
+        , ZFMP_IN(ZFUIImage *, image)
+        , ZFMP_IN(const ZFUIRect &, frame)
+        )
 
 // ============================================================
 // ZFUIImageFromNativeImage
@@ -144,6 +155,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromNativeIm
  * @note this method has no cache logic
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromColor
+        , ZFMP_IN(const ZFUIColor &, color)
+        , ZFMP_IN_OPT(const ZFUISize &, size, ZFUISizeZero())
+        )
+/** @brief see #ZFUIImageFromColor */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, zfbool, ZFUIImageFromColorT
+        , ZFMP_IN_OUT(ZFUIImage *, ret)
         , ZFMP_IN(const ZFUIColor &, color)
         , ZFMP_IN_OPT(const ZFUISize &, size, ZFUISizeZero())
         )

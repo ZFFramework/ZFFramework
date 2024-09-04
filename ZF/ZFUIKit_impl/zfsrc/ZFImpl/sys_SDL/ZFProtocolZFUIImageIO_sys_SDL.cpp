@@ -58,7 +58,7 @@ public:
             , ZF_IN const ZFUIRect &frameInImage
             ) {
         SDL_Surface *nativeImageOld = (SDL_Surface *)nativeImage;
-        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)frameInImage.width, (int)frameInImage.height, 0, nativeImageOld->format->format);
+        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)frameInImage.width, (int)frameInImage.height, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
         if(nativeImageNew != zfnull) {
             SDL_Rect srcRect;
             srcRect.x = (int)frameInImage.x;
@@ -74,7 +74,7 @@ public:
             , ZF_IN const ZFUIColor &color
             , ZF_IN const ZFUISize &size
             ) {
-        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)size.width, (int)size.height, 0, SDL_PIXELFORMAT_ARGB8888);
+        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)size.width, (int)size.height, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
         if(nativeImageNew != zfnull) {
             SDL_FillRect(nativeImageNew, zfnull, SDL_MapRGBA(nativeImageNew->format
                 , (Uint8)(ZFUIColorGetR(color) * 0xFF)

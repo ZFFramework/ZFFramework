@@ -8,16 +8,16 @@ zfclass ZFUIKit_ZFUIDraw_test_DrawableView : zfextend ZFUIDrawableView {
 public:
     static void testDraw(
             ZF_IN void *context
-            , ZF_IN const ZFUISize &ownerSizePixel
+            , ZF_IN const ZFUISize &ownerSize
             ) {
         ZFUIDraw::antialiasing(context, zftrue);
         ZFUIDraw::drawColor(context,
             ZFUIColorBlue(),
-            ZFUIRectCreate(0, 0, ownerSizePixel.width / 2, ownerSizePixel.height / 2));
+            ZFUIRectCreate(0, 0, ownerSize.width, ownerSize.height));
         ZFUIDraw::drawImage(context,
             zfRes("test_normal.png"),
             ZFUIRectZero(),
-            ZFUIRectCreate(ownerSizePixel.width / 2, ownerSizePixel.height / 2, ownerSizePixel.width / 2, ownerSizePixel.height / 2));
+            ZFUIRectCreate(ownerSize.width, ownerSize.height, ownerSize.width, ownerSize.height));
     }
 
 protected:

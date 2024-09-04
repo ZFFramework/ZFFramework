@@ -484,7 +484,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocal
 // ============================================================
 // ZFInputForPathInfo
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code
@@ -545,7 +545,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
 // ============================================================
 // ZFOutputForPathInfo
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code
@@ -606,7 +606,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
 // ============================================================
 // ZFInputForLocal
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code
@@ -669,7 +669,7 @@ inline zfbool ZFInputForLocalT(
 // ============================================================
 // ZFOutputForLocal
 /**
- * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ * @brief see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *
  * serializable data:
  * @code

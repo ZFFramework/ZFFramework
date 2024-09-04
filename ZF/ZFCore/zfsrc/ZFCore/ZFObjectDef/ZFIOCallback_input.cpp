@@ -160,7 +160,7 @@ ZFInput ZFInputForInputInRange(
 
     return ret;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeType_ZFInputForInputInRange) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeType_ZFInputForInputInRange) {
     ZFCallback input;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFInputForInputInRange_input, ZFCallback, input, {
@@ -192,7 +192,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerial
 
 // ============================================================
 // ZFInputForBuffer serialization
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeType_ZFInputForBuffer) {
+ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeType_ZFInputForBuffer) {
     zfstring buf = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFInputForBuffer_buf);
     if(buf == zfnull) {
         ret = ZFInputForBufferUnsafe(zfnull, 0, zftrue);
