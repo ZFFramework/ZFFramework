@@ -37,7 +37,7 @@
 }
 - (void)_timerOwnerOnTimerEvent:(NSTimer *)timer {
     NSNumber *timerImplId = (NSNumber *)[timer userInfo];
-    self.impl->notifyTimerActivate(self.ownerZFTimer, (zfidentity)[timerImplId longLongValue]);
+    self.impl->notifyTimerActivate(self.ownerZFTimer, (zfidentity)[timerImplId longValue]);
 }
 @end
 
@@ -64,7 +64,7 @@ public:
             , ZF_IN zfidentity timerImplId
             ) {
         _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *timerOwner = (__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer();
-        [timerOwner startTimer:[NSNumber numberWithLongLong:(long long)timerImplId]];
+        [timerOwner startTimer:[NSNumber numberWithLong:(long)timerImplId]];
     }
     virtual void timerStop(ZF_IN ZFTimer *timer) {
         [(__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer() stopTimer];

@@ -58,18 +58,6 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
 
 // ============================================================
 /**
- * @brief util for impl to check the file's ext from path data
- */
-extern ZFLIB_ZFCore const zfchar *ZFObjectIOImplCheckFileExt(ZF_IN const ZFPathInfo &pathInfo);
-/**
- * @brief util for impl to check whether the path data is a file path with desiredFileExt
- */
-extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
-        ZF_IN const ZFPathInfo &pathInfo
-        , ZF_IN const zfstring &desiredFileExt
-        );
-
-/**
  * @brief see #ZFObjectIOLoad
  *
  * usage:

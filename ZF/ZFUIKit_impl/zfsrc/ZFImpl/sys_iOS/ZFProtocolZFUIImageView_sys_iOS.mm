@@ -29,7 +29,7 @@
     else {
         UIImage *nativeImage = (__bridge UIImage *)self.ownerZFUIImage->nativeImage();
         UIImage *tmpImage = [UIImage imageWithCGImage:nativeImage.CGImage scale:nativeImage.scale orientation:UIImageOrientationUp];
-        UIEdgeInsets ninePatch = UIEdgeInsetsCreate(
+        UIEdgeInsets ninePatch = UIEdgeInsetsMake(
             self.ownerZFUIImage->imageNinePatch().top,
             self.ownerZFUIImage->imageNinePatch().left,
             self.ownerZFUIImage->imageNinePatch().bottom,

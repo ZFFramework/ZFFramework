@@ -391,38 +391,17 @@ void zfstringSplitIndexT(
 
 // ============================================================
 // other
-void zfstringToLowerT(
-        ZF_IN_OUT zfstring &ret
-        , ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
-        ) {
-    if(zfstringIsEmpty(src)) {
-        return;
-    }
-    ;
-    for(const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen); src < srcEnd; ++src) {
-        if(*src >= 'A' && *src <= 'Z') {
-            ret += (zfchar)(*src + 32);
-        }
-        else {
-            ret += *src;
+void zfstringToLowerT(ZF_IN_OUT zfstring &ret) {
+    for(zfindex i = 0; i < ret.length(); i += zfcharGetSize(ret + i)) {
+        if(ret.get(i) >= 'A' && ret.get(i) <= 'Z') {
+            ret.set(i, ret.get(i) + 32);
         }
     }
 }
-void zfstringToUpperT(
-        ZF_IN_OUT zfstring &ret
-        , ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
-        ) {
-    if(zfstringIsEmpty(src)) {
-        return;
-    }
-    for(const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen); src < srcEnd; ++src) {
-        if(*src >= 'a' && *src <= 'z') {
-            ret += (zfchar)(*src - 32);
-        }
-        else {
-            ret += *src;
+void zfstringToUpperT(ZF_IN_OUT zfstring &ret) {
+    for(zfindex i = 0; i < ret.length(); i += zfcharGetSize(ret + i)) {
+        if(ret.get(i) >= 'a' && ret.get(i) <= 'z') {
+            ret.set(i, ret.get(i) - 32);
         }
     }
 }

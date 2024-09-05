@@ -53,15 +53,15 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput
  *
  * serializable data:
  * @code
- *   <ZFUIImage imageType="input">
+ *   <ZFUIImage imageType="ZFUIImageFromInput">
  *       <ZFCallback category="imageData" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_TYPE_DEFINE
  *   </ZFUIImage>
  * @endcode
  */
-#define ZFUIImageSerializeType_input "input"
+#define ZFUIImageSerializeType_ZFUIImageFromInput "ZFUIImageFromInput"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_input_imageData "imageData"
+#define ZFSerializableKeyword_ZFUIImageFromInput_imageData "imageData"
 
 // ============================================================
 // ZFUIImageScale
@@ -86,19 +86,19 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageScale
  * serializable data:
  * @code
  *   <ZFUIImage
- *       imageType="ref"
+ *       imageType="ZFUIImageInFrame"
  *       refFrame="ZFUIRect"
  *   >
  *       <ZFUIImage category="ref" ... />
  *   </ZFUIImage>
  * @endcode
  */
-#define ZFUIImageSerializeType_ref "ref"
+#define ZFUIImageSerializeType_ZFUIImageInFrame "ZFUIImageInFrame"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ref_ref "ref"
+#define ZFSerializableKeyword_ZFUIImageInFrame_ref "ref"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ref_refFrame "refFrame"
+#define ZFSerializableKeyword_ZFUIImageInFrame_refFrame "refFrame"
 
 /**
  * @brief clip an exist image and sharing low level data if possible
@@ -134,19 +134,19 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIImageFromNativeIm
  * serializable data:
  * @code
  *   <ZFUIImage
- *       imageType="color"
+ *       imageType="ZFUIImageFromColor"
  *       color="ZFUIColor" // optional, transparent by default
  *       size="ZFUISize" // optional, (1, 1) by default
  *   >
  *   </ZFUIImage>
  * @endcode
  */
-#define ZFUIImageSerializeType_color "color"
+#define ZFUIImageSerializeType_ZFUIImageFromColor "ZFUIImageFromColor"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_color_color "color"
+#define ZFSerializableKeyword_ZFUIImageFromColor_color "color"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_color_size "size"
+#define ZFSerializableKeyword_ZFUIImageFromColor_size "size"
 
 /**
  * @brief load image from color

@@ -43,7 +43,7 @@ public:
             , ZF_IN const ZFUISize &size
             ) {
         CGSize tmpSize = ZFImpl_sys_iOS_ZFUISizeToCGSize(size);
-        CGRect rect = CGRectCreate(0.0f, 0.0f, tmpSize.width, tmpSize.height);
+        CGRect rect = CGRectMake(0.0f, 0.0f, tmpSize.width, tmpSize.height);
         UIGraphicsBeginImageContext(rect.size);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextSetFillColorWithColor(context, [ZFImpl_sys_iOS_ZFUIColorToUIColor(color) CGColor]);
@@ -110,10 +110,10 @@ private:
             , ZF_IN UIImage *image
             , ZF_IN const ZFUISize &scaleToSize
             ) {
-        CGSize tmpSize = CGSizeCreate((scaleToSize.width == 0) ? image.size.width * image.scale : (CGFloat)scaleToSize.width,
+        CGSize tmpSize = CGSizeMake((scaleToSize.width == 0) ? image.size.width * image.scale : (CGFloat)scaleToSize.width,
                                     (scaleToSize.height == 0) ? image.size.height * image.scale : (CGFloat)scaleToSize.height);
         UIGraphicsBeginImageContext(tmpSize);
-        [image drawInRect:CGRectCreate(0, 0, tmpSize.width, tmpSize.height)];
+        [image drawInRect:CGRectMake(0, 0, tmpSize.width, tmpSize.height)];
         UIImage *imageTmp = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         return [UIImage imageWithCGImage:imageTmp.CGImage scale:imageScale orientation:UIImageOrientationUp];

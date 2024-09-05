@@ -107,7 +107,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
                 ) {
             ZFSerializableData data;
             {
-                srcData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageSrc);
+                srcData.category(ZFSerializableKeyword_ZFUIImageAsync_imageSrc);
                 data.childAdd(srcData);
             }
             if(imageLoadFail) {
@@ -115,7 +115,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
                 if(!ZFObjectToDataT(imageLoadFailData, imageLoadFail)) {
                     return;
                 }
-                imageLoadFailData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail);
+                imageLoadFailData.category(ZFSerializableKeyword_ZFUIImageAsync_imageLoadFail);
                 data.childAdd(imageLoadFailData);
             }
             if(imageLoading) {
@@ -123,21 +123,21 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
                 if(!ZFObjectToDataT(imageLoadingData, imageLoading)) {
                     return;
                 }
-                imageLoadingData.category(ZFSerializableKeyword_ZFUIImageIO_async_imageLoading);
+                imageLoadingData.category(ZFSerializableKeyword_ZFUIImageAsync_imageLoading);
                 data.childAdd(imageLoadingData);
             }
             zfargs.result(zfobj<v_ZFSerializableData>(data));
         } ZFLISTENER_END()
-        ret->imageSerializeType(ZFUIImageSerializeType_async);
+        ret->imageSerializeType(ZFUIImageSerializeType_ZFUIImageAsync);
         ret->imageSerializeDataGetter(serializeImpl);
     }
     return zftrue;
 }
 
-ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_async) {
+ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_ZFUIImageAsync) {
     ZFCallback input;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFUIImageIO_async_imageSrc, ZFCallback, input, {
+            require, ZFSerializableKeyword_ZFUIImageAsync_imageSrc, ZFCallback, input, {
                 return zffalse;
             });
     if(!input) {
@@ -147,12 +147,12 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(async, ZFUIImageSerializeType_async) {
     }
     zfauto imageLoadFail;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIImageIO_async_imageLoadFail, ZFObject, imageLoadFail, {
+            check, ZFSerializableKeyword_ZFUIImageAsync_imageLoadFail, ZFObject, imageLoadFail, {
                 return zffalse;
             });
     zfauto imageLoading;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIImageIO_async_imageLoading, ZFObject, imageLoading, {
+            check, ZFSerializableKeyword_ZFUIImageAsync_imageLoading, ZFObject, imageLoading, {
                 return zffalse;
             });
     return ZFUIImageAsyncT(ret, input, imageLoadFail, imageLoading);

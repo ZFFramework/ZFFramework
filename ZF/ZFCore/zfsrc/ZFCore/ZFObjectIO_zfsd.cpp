@@ -1,9 +1,15 @@
 #include "ZFObjectIO_zfsd.h"
+#include "ZFFile_pathInfo.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(zfsd, {
-        return ZFObjectIOImplCheck(pathInfo, "zfsd");
+        zfstring fileExt;
+        if(!ZFPathInfoToFileExt(pathInfo, fileExt)) {
+            return zffalse;
+        }
+        zfstringToLowerT(fileExt);
+        return fileExt == "zfsd";
     }, {
         return ZFObjectFromZfsd(ret, input, outErrorHint);
     }, {

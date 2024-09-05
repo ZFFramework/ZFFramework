@@ -311,9 +311,9 @@ public:
 ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN(const ZFListener &, callback)
-        , ZFMP_IN(const ZFListener &, loadImpl)
+        , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
         ) {
-    if(!src || !loadImpl) {
+    if(!src) {
         if(callback) {
             callback.execute(ZFArgs()
                     .param0(zfnull)
@@ -344,7 +344,15 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
     if(taskId->owner == zfnull) {
         zfobj<_ZFP_I_ZFIOCacheLoadTask> task;
         task->src = src;
-        task->loadImpl = loadImpl;
+        if(loadImpl) {
+            task->loadImpl = loadImpl;
+        }
+        else {
+            ZFLISTENER_0(loadImplWrap) {
+                zfargs.result(ZFObjectIOLoad(zfargs.param0().to<v_ZFInput *>()->zfv));
+            } ZFLISTENER_END()
+            task->loadImpl = loadImplWrap;
+        }
         if(callback) {
             task->callbackList.add(callback);
         }

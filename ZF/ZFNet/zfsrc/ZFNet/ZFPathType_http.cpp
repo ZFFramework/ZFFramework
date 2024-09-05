@@ -133,7 +133,16 @@ public:
             ZF_IN const zfchar *pathData
             , ZF_IN_OUT zfstring &fileName
             ) {
-        return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
+        zfindex lenSaved = fileName.length();
+        if(!ZFPathInfoCallbackToFileNameDefault(pathData, fileName)) {
+            return zffalse;
+        }
+        zfindex pos = zfstringFindReversely(fileName + lenSaved, "?");
+        if(pos != zfindexMax()) {
+            pos += lenSaved;
+            fileName.remove(pos, fileName.length() - pos);
+        }
+        return zftrue;
     }
     static zfbool callbackToChild(
             ZF_IN const zfchar *pathData

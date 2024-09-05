@@ -75,7 +75,7 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFTaskId>, ZFIOCacheLoad
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN(const ZFListener &, callback)
-        , ZFMP_IN(const ZFListener &, loadImpl)
+        , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
         )
 
 ZF_NAMESPACE_GLOBAL_END

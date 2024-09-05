@@ -339,19 +339,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToLower
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToLowerT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfstringToLowerT
         , ZFMP_IN_OUT(zfstring &, ret)
-        , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToUpper
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToUpperT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfstringToUpperT
         , ZFMP_IN_OUT(zfstring &, ret)
-        , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 
 // ============================================================

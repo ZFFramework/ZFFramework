@@ -189,6 +189,36 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoToFileName
         return data->callbackToFileName(pathInfo.pathData, fileName);
     }
 }
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoToFileExt
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OUT(zfstring &, fileExt)
+        ) {
+    zfstring fileName;
+    if(!ZFPathInfoToFileName(pathInfo, fileName)) {
+        return zffalse;
+    }
+    zfindex pos = zfstringFindReversely(fileName, ".");
+    if(pos != zfindexMax()) {
+        ++pos;
+        fileExt.append(fileName + pos, fileName.length() - pos);
+    }
+    return zftrue;
+}
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoToFileNameWithoutExt
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OUT(zfstring &, fileNameWithoutExt)
+        ) {
+    zfindex lenSaved = fileNameWithoutExt.length();
+    if(!ZFPathInfoToFileName(pathInfo, fileNameWithoutExt)) {
+        return zffalse;
+    }
+    zfindex pos = zfstringFindReversely(fileNameWithoutExt + lenSaved, ".");
+    if(pos != zfindexMax()) {
+        pos += lenSaved;
+        fileNameWithoutExt.remove(pos, fileNameWithoutExt.length() - pos);
+    }
+    return zftrue;
+}
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoToChild
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OUT(zfstring &, pathDataChild)

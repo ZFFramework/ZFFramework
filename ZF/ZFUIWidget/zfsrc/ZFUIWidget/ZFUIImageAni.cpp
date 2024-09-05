@@ -169,9 +169,9 @@ public:
             ZFSerializableData containerData;
             data.childAdd(containerData);
             containerData.itemClass(ZFSerializableKeyword_node);
-            containerData.category(ZFSerializableKeyword_ZFUIImageIO_ani_images);
+            containerData.category(ZFSerializableKeyword_ZFUIImageAni_images);
             if(duration != 0) {
-                containerData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(duration));
+                containerData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(duration));
             }
 
             zfstring outErrorHint;
@@ -183,12 +183,12 @@ public:
                     return;
                 }
                 if(frameDurations && i < frameDurations->count()) {
-                    imageData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(frameDurations->get(i)->to<v_zftimet *>()->zfv));
+                    imageData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(frameDurations->get(i)->to<v_zftimet *>()->zfv));
                 }
             }
             zfargs.result(zfobj<v_ZFSerializableData>(data));
         } ZFLISTENER_END()
-        holder->imageSerializeType(ZFUIImageSerializeType_ani);
+        holder->imageSerializeType(ZFUIImageSerializeType_ZFUIImageAni);
         holder->imageSerializeDataGetter(serializeImpl);
     }
     void serializeImpl(
@@ -213,20 +213,20 @@ public:
                 zfargs.result(zfobj<v_zfstring>(outErrorHint));
                 return;
             }
-            refData.category(ZFSerializableKeyword_ZFUIImageIO_ani_ref);
+            refData.category(ZFSerializableKeyword_ZFUIImageAni_ref);
 
             ZFSerializableData nodeData;
             data.childAdd(nodeData);
             nodeData.itemClass(ZFSerializableKeyword_node);
-            nodeData.category(ZFSerializableKeyword_ZFUIImageIO_ani_split);
-            nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_size, ZFUISizeToString(frameSize));
-            nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_count, zfindexToString(frameCount));
+            nodeData.category(ZFSerializableKeyword_ZFUIImageAni_split);
+            nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_size, ZFUISizeToString(frameSize));
+            nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_count, zfindexToString(frameCount));
             if(frameDuration != 0) {
-                nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(frameDuration));
+                nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(frameDuration));
             }
             zfargs.result(zfobj<v_ZFSerializableData>(data));
         } ZFLISTENER_END()
-        holder->imageSerializeType(ZFUIImageSerializeType_ani);
+        holder->imageSerializeType(ZFUIImageSerializeType_ZFUIImageAni);
         holder->imageSerializeDataGetter(serializeImpl);
     }
     void serializeImpl(
@@ -249,20 +249,20 @@ public:
                     zfstring outErrorHint;
 
                     data.childAdd(refSrcData);
-                    refSrcData.category(ZFSerializableKeyword_ZFUIImageIO_ani_refSrc);
+                    refSrcData.category(ZFSerializableKeyword_ZFUIImageAni_refSrc);
 
                     ZFSerializableData nodeData;
                     data.childAdd(nodeData);
                     nodeData.itemClass(ZFSerializableKeyword_node);
-                    nodeData.category(ZFSerializableKeyword_ZFUIImageIO_ani_split);
-                    nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_size, ZFUISizeToString(frameSize));
-                    nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_count, zfindexToString(frameCount));
+                    nodeData.category(ZFSerializableKeyword_ZFUIImageAni_split);
+                    nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_size, ZFUISizeToString(frameSize));
+                    nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_count, zfindexToString(frameCount));
                     if(frameDuration != 0) {
-                        nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(frameDuration));
+                        nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(frameDuration));
                     }
                     zfargs.result(zfobj<v_ZFSerializableData>(data));
                 } ZFLISTENER_END()
-                holder->imageSerializeType(ZFUIImageSerializeType_ani);
+                holder->imageSerializeType(ZFUIImageSerializeType_ZFUIImageAni);
                 holder->imageSerializeDataGetter(serializeImpl);
             }
         }
@@ -289,30 +289,30 @@ public:
                 zfargs.result(zfobj<v_zfstring>(outErrorHint));
                 return;
             }
-            refData.category(ZFSerializableKeyword_ZFUIImageIO_ani_ref);
+            refData.category(ZFSerializableKeyword_ZFUIImageAni_ref);
 
             ZFSerializableData nodeData;
             data.childAdd(nodeData);
             nodeData.itemClass(ZFSerializableKeyword_node);
-            nodeData.category(ZFSerializableKeyword_ZFUIImageIO_ani_frames);
+            nodeData.category(ZFSerializableKeyword_ZFUIImageAni_frames);
             if(duration != 0) {
-                nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(duration));
+                nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(duration));
             }
             for(zfindex i = 0; i < frameRects->count(); ++i) {
                 ZFSerializableData frameData;
                 frameData.itemClass(ZFSerializableKeyword_node);
 
                 v_ZFUIRect *rect = frameRects->get(i);
-                frameData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_rect, ZFUIRectToString(rect->zfv));
+                frameData.attr(ZFSerializableKeyword_ZFUIImageAni_rect, ZFUIRectToString(rect->zfv));
 
                 v_zftimet *frameDuration = (frameDurations && i < frameDurations->count() ? frameDurations->get(i) : zfnull);
                 if(frameDuration != zfnull && frameDuration->zfv != duration) {
-                    frameData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(frameDuration->zfv));
+                    frameData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(frameDuration->zfv));
                 }
             }
             zfargs.result(zfobj<v_ZFSerializableData>(data));
         } ZFLISTENER_END()
-        holder->imageSerializeType(ZFUIImageSerializeType_ani);
+        holder->imageSerializeType(ZFUIImageSerializeType_ZFUIImageAni);
         holder->imageSerializeDataGetter(serializeImpl);
     }
     void serializeImpl(
@@ -336,14 +336,14 @@ public:
                     zfstring outErrorHint;
 
                     data.childAdd(refSrcData);
-                    refSrcData.category(ZFSerializableKeyword_ZFUIImageIO_ani_refSrc);
+                    refSrcData.category(ZFSerializableKeyword_ZFUIImageAni_refSrc);
 
                     ZFSerializableData nodeData;
                     data.childAdd(nodeData);
                     nodeData.itemClass(ZFSerializableKeyword_node);
-                    nodeData.category(ZFSerializableKeyword_ZFUIImageIO_ani_frames);
+                    nodeData.category(ZFSerializableKeyword_ZFUIImageAni_frames);
                     if(duration != 0) {
-                        nodeData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(duration));
+                        nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(duration));
                     }
                     for(zfindex i = 0; i < frameRects->count(); ++i) {
                         ZFSerializableData frameData;
@@ -351,16 +351,16 @@ public:
                         frameData.itemClass(ZFSerializableKeyword_node);
 
                         v_ZFUIRect *rect = frameRects->get(i);
-                        frameData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_rect, ZFUIRectToString(rect->zfv));
+                        frameData.attr(ZFSerializableKeyword_ZFUIImageAni_rect, ZFUIRectToString(rect->zfv));
 
                         v_zftimet *frameDuration = (frameDurations && i < frameDurations->count() ? frameDurations->get(i) : zfnull);
                         if(frameDuration != zfnull && frameDuration->zfv != duration) {
-                            frameData.attr(ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimetToString(frameDuration->zfv));
+                            frameData.attr(ZFSerializableKeyword_ZFUIImageAni_duration, zftimetToString(frameDuration->zfv));
                         }
                     }
                     zfargs.result(zfobj<v_ZFSerializableData>(data));
                 } ZFLISTENER_END()
-                holder->imageSerializeType(ZFUIImageSerializeType_ani);
+                holder->imageSerializeType(ZFUIImageSerializeType_ZFUIImageAni);
                 holder->imageSerializeDataGetter(serializeImpl);
             }
         }
@@ -596,11 +596,11 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFUIImageAniT
 }
 
 // ============================================================
-ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
+ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
     ZFSerializableData refData;
 
     // images
-    refData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_ani_images);
+    refData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_images);
     if(refData != zfnull) {
         refData.resolveMark();
 
@@ -610,7 +610,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
         zfbool hasSpecDuration = zffalse;
 
         ZFSerializableUtilSerializeAttributeFromData(refData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimet, duration, {
+                check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, duration, {
                     return zffalse;
                 });
         for(zfindex i = 0; i < refData.childCount(); ++i) {
@@ -618,7 +618,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
 
             zftimet frameDuration = duration;
             ZFSerializableUtilSerializeAttributeFromData(frameData, outErrorHint, outErrorPos,
-                    check, ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimet, frameDuration, {
+                    check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                         return zffalse;
                     });
 
@@ -650,11 +650,11 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
     }
 
     // ref or refSrc
-    refData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_ani_ref);
-    ZFSerializableData refSrcData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_ani_refSrc);
+    refData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_ref);
+    ZFSerializableData refSrcData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_refSrc);
     if(refData != zfnull || refSrcData != zfnull) {
-        ZFSerializableData splitData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_ani_split);
-        ZFSerializableData framesData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_ani_frames);
+        ZFSerializableData splitData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_split);
+        ZFSerializableData framesData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageAni_frames);
         if(splitData == zfnull && framesData == zfnull) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, refData
                     , "missing split or frames node"
@@ -682,15 +682,15 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
             zftimet frameDuration = 0;
 
             ZFSerializableUtilSerializeAttributeFromData(splitData, outErrorHint, outErrorPos,
-                    require, ZFSerializableKeyword_ZFUIImageIO_ani_size, ZFUISize, frameSize, {
+                    require, ZFSerializableKeyword_ZFUIImageAni_size, ZFUISize, frameSize, {
                         return zffalse;
                     });
             ZFSerializableUtilSerializeAttributeFromData(splitData, outErrorHint, outErrorPos,
-                    require, ZFSerializableKeyword_ZFUIImageIO_ani_count, zfindex, frameCount, {
+                    require, ZFSerializableKeyword_ZFUIImageAni_count, zfindex, frameCount, {
                         return zffalse;
                     });
             ZFSerializableUtilSerializeAttributeFromData(splitData, outErrorHint, outErrorPos,
-                    check, ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimet, frameDuration, {
+                    check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                         return zffalse;
                     });
             ret->imageSerializeDisable(zftrue);
@@ -710,7 +710,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
             zfbool hasSpecDuration = zffalse;
 
             ZFSerializableUtilSerializeAttributeFromData(framesData, outErrorHint, outErrorPos,
-                    check, ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimet, duration, {
+                    check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, duration, {
                         return zffalse;
                     });
 
@@ -720,11 +720,11 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ani) {
                 ZFUIRect frameRect = ZFUIRectZero();
                 zftimet frameDuration = duration;
                 ZFSerializableUtilSerializeAttributeFromData(nodeData, outErrorHint, outErrorPos,
-                        require, ZFSerializableKeyword_ZFUIImageIO_ani_rect, ZFUIRect, frameRect, {
+                        require, ZFSerializableKeyword_ZFUIImageAni_rect, ZFUIRect, frameRect, {
                             return zffalse;
                         });
                 ZFSerializableUtilSerializeAttributeFromData(nodeData, outErrorHint, outErrorPos,
-                        check, ZFSerializableKeyword_ZFUIImageIO_ani_duration, zftimet, frameDuration, {
+                        check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                             return zffalse;
                         });
                 frameRects->add(zfobj<v_ZFUIRect>(frameRect));
@@ -871,9 +871,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         return zffalse;
     }
 
-    zfstring magic;
+    zfstring fileName;
+    if(!ZFPathInfoToFileNameWithoutExt(dst, fileName)) {
+        return zffalse;
+    }
     if(frameDuration != 0) {
-        zfstringAppend(magic, "-(%sx%s-%s-%s)"
+        zfstringAppend(fileName, "-(%sx%s-%s-%s)"
                 , frameSize.width
                 , frameSize.height
                 , frameCount
@@ -881,23 +884,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
                 );
     }
     else {
-        zfstringAppend(magic, "-(%sx%s-%s)"
+        zfstringAppend(fileName, "-(%sx%s-%s)"
                 , frameSize.width
                 , frameSize.height
                 , frameCount
                 );
     }
-
-    zfstring fileName;
-    if(!pathInfoImpl->callbackToFileName(dst.pathData, fileName)) {
+    zfstring fileExt;
+    if(!ZFPathInfoToFileExt(dst, fileExt)) {
         return zffalse;
     }
-    zfindex dotPos = zfstringFindReversely(fileName, ".");
-    if(dotPos == zfindexMax()) {
-        fileName += magic;
-    }
-    else {
-        fileName.insert(dotPos, magic);
+    if(!fileExt) {
+        fileName += ".";
+        fileName += fileExt;
     }
 
     zfstring pathData;

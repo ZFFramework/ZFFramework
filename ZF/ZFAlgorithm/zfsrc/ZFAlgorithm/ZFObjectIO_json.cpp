@@ -4,7 +4,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(json, {
-        return ZFObjectIOImplCheck(pathInfo, "json");
+        zfstring fileExt;
+        if(!ZFPathInfoToFileExt(pathInfo, fileExt)) {
+            return zffalse;
+        }
+        zfstringToLowerT(fileExt);
+        return fileExt == "json";
     }, {
         return ZFObjectFromJson(ret, input, outErrorHint);
     }, {

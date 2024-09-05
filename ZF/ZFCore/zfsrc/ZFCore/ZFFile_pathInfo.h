@@ -195,6 +195,16 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoToFileName
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OUT(zfstring &, fileName)
         )
+/** @brief see #ZFPathInfoToFileName */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoToFileExt
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OUT(zfstring &, fileExt)
+        )
+/** @brief see #ZFPathInfoToFileName */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoToFileNameWithoutExt
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OUT(zfstring &, fileNameWithoutExt)
+        )
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoToChild
         , ZFMP_IN(const ZFPathInfo &, pathInfo)

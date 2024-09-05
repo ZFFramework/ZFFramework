@@ -108,7 +108,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAniT
  *
  * serializable data:
  * @code
- *   <ZFUIImage imageType="ani">
+ *   <ZFUIImage imageType="ZFUIImageAni">
  *
  *       // type 1 : each image frame
  *       <node category="images" duration="123" >
@@ -135,26 +135,26 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAniT
  *   </ZFUIImage>
  * @endcode
  */
-#define ZFUIImageSerializeType_ani "ani"
+#define ZFUIImageSerializeType_ZFUIImageAni "ZFUIImageAni"
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_images "images"
+#define ZFSerializableKeyword_ZFUIImageAni_images "images"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_ref "ref"
+#define ZFSerializableKeyword_ZFUIImageAni_ref "ref"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_refSrc "refSrc"
+#define ZFSerializableKeyword_ZFUIImageAni_refSrc "refSrc"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_split "split"
+#define ZFSerializableKeyword_ZFUIImageAni_split "split"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_frames "frames"
+#define ZFSerializableKeyword_ZFUIImageAni_frames "frames"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_size "size"
+#define ZFSerializableKeyword_ZFUIImageAni_size "size"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_count "count"
+#define ZFSerializableKeyword_ZFUIImageAni_count "count"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_duration "duration"
+#define ZFSerializableKeyword_ZFUIImageAni_duration "duration"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ani_rect "rect"
+#define ZFSerializableKeyword_ZFUIImageAni_rect "rect"
 
 // ============================================================
 /**

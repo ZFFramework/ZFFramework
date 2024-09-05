@@ -3,7 +3,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(lua, {
-        return ZFObjectIOImplCheck(pathInfo, "lua");
+        zfstring fileExt;
+        if(!ZFPathInfoToFileExt(pathInfo, fileExt)) {
+            return zffalse;
+        }
+        zfstringToLowerT(fileExt);
+        return fileExt == "lua";
     }, {
         ret = ZFLuaExecute(input);
         return input;

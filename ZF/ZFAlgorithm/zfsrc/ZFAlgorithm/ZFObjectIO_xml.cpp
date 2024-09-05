@@ -4,7 +4,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(xml, {
-        return ZFObjectIOImplCheck(pathInfo, "xml");
+        zfstring fileExt;
+        if(!ZFPathInfoToFileExt(pathInfo, fileExt)) {
+            return zffalse;
+        }
+        zfstringToLowerT(fileExt);
+        return fileExt == "xml";
     }, {
         return ZFObjectFromXml(ret, input, outErrorHint);
     }, {
