@@ -37,7 +37,7 @@
 }
 - (void)_timerOwnerOnTimerEvent:(NSTimer *)timer {
     NSNumber *timerImplId = (NSNumber *)[timer userInfo];
-    self.impl->notifyTimerActivate(self.ownerZFTimer, (zfidentity)[timerImplId longValue]);
+    self.impl->notifyTimerActivate(self.ownerZFTimer, (zft_zfidentity)[timerImplId longValue]);
 }
 @end
 
