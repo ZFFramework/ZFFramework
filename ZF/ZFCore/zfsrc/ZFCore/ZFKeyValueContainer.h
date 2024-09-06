@@ -190,9 +190,7 @@ public:
     }
 
     zfoverride
-    virtual zfidentity objectHash(void);
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj);
 };
 
 ZF_NAMESPACE_GLOBAL_END

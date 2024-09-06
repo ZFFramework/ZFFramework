@@ -204,8 +204,10 @@ void ZFRegExp::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 
 zfidentity ZFRegExp::objectHash(void) {
     ZFRegExpOptionFlags flag = this->options();
-    return zfidentityHash(zfidentityCalcString(this->pattern()),
-                         zfidentityCalcPOD(flag));
+    return zfidentityHash(
+            zfidentityCalcString(this->pattern())
+            , zfidentityCalcPOD(flag)
+            );
 }
 ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}

@@ -198,13 +198,6 @@ public:
             _ZFP_ZFEnumMax = ((zfuint)-1), \
         } ZFEnumType; \
     public: \
-        zfoverride \
-        virtual zfidentity objectHash(void) { \
-            return zfidentityHash( \
-                zfidentityCalcString(zfself::ClassData()->classNameFull()), \
-                zfidentityCalcPOD(this->enumValue())); \
-        } \
-    public: \
         /** @brief get the count of enum value */ \
         static zfindex EnumCount(void) { \
             return zfself::_ZFP_ZFEnumDataRef()->enumCount(); \

@@ -423,12 +423,21 @@ public:
      */
     zfindex objectRetainCount(void) const {return d ? d->refCount : 0;}
     /**
+     * @brief compare by instance
+     */
+    ZFCompareResult objectCompare(ZF_IN const ZFCoreArray<T_Element> &ref) const {
+        return d == ref.d ? ZFCompareEqual : ZFCompareUncomparable;
+    }
+    /**
      * @brief compare by content
      */
-    ZFCompareResult objectCompare(
+    ZFCompareResult objectValueCompare(
             ZF_IN const ZFCoreArray<T_Element> &ref
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {
+        if(d == ref.d) {
+            return ZFCompareEqual;
+        }
         if(this->count() != ref.count()) {
             return ZFCompareUncomparable;
         }

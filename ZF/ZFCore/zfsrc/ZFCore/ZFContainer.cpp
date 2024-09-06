@@ -174,22 +174,7 @@ void ZFContainer::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-zfidentity ZFContainer::objectHash(void) {
-    ZFObject *first = zfnull;
-    {
-        zfiter it = this->iter();
-        if(it) {
-            first = this->iterValue(it);
-        }
-    }
-    if(first != zfnull) {
-        return zfidentityHash(this->count(), first->objectHash());
-    }
-    else {
-        return 0;
-    }
-}
-ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFContainer::objectValueCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

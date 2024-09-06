@@ -257,9 +257,7 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
     zfoverride
-    virtual zfidentity objectHash(void);
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj);
 protected:
     zfoverride
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);

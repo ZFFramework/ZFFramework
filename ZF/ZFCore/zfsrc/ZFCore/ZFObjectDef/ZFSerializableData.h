@@ -417,13 +417,19 @@ public:
         return ret;
     }
     /**
-     * @brief compare another serializable data
+     * @brief compare by instance
+     */
+    zffinal ZFCompareResult objectCompare(ZF_IN const ZFSerializableData &another) const {
+        return d == another.d ? ZFCompareEqual : ZFCompareUncomparable;
+    }
+    /**
+     * @brief compare another serializable data by contents
      *
      * if two data considered as same,
      * attribute's order have no need to be same,
      * but child element's order must be same
      */
-    zffinal ZFCompareResult objectCompare(ZF_IN const ZFSerializableData &another) const;
+    zffinal ZFCompareResult objectValueCompare(ZF_IN const ZFSerializableData &another) const;
 
 public:
     /**

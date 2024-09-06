@@ -40,23 +40,7 @@ void ZFAniForNative::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsFromPointerT(ret, this->nativeAnimation());
     ZFClassUtil::objectPropertyInfo(ret, this);
 }
-zfidentity ZFAniForNative::objectHash(void) {
-    // no need to hash everything, for performance
-    return zfidentityHash(zfsuper::objectHash()
-            , this->aniCurve()
-            , this->aniAlphaTo()
-            , this->aniScaleXTo()
-            , this->aniScaleYTo()
-            , this->aniTranslateXTo()
-            , this->aniTranslateYTo()
-            , this->aniTranslatePixelXTo()
-            , this->aniTranslatePixelYTo()
-            , this->aniRotateXTo()
-            , this->aniRotateYTo()
-            , this->aniRotateZTo()
-        );
-}
-ZFCompareResult ZFAniForNative::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFAniForNative::objectValueCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

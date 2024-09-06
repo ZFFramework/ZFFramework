@@ -280,6 +280,8 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfoverride \
         virtual void objectInfoT(ZF_IN_OUT zfstring &ret); \
         zfoverride \
+        virtual zfidentity objectHash(void); \
+        zfoverride \
         virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj); \
     public: \
         zfoverride \
@@ -441,6 +443,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type) \
+    zfidentity v_##TypeName::objectHash(void) { \
+        return zfidentityCalcPointer(&(this->zfv)); \
+    } \
     ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
         ZFTypeIdWrapper *t = zfcast(ZFTypeIdWrapper *, anotherObj); \
         if(t == zfnull || !zfstringIsEqual(this->wrappedValueTypeId(), t->wrappedValueTypeId())) { \
@@ -455,8 +460,11 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \
+    zfidentity v_##TypeName::objectHash(void) { \
+        return zfidentityCalcPointer(this); \
+    } \
     ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
-        return ZFCompareUncomparable; \
+        return this == anotherObj ? ZFCompareEqual : ZFCompareUncomparable; \
     } \
     zfbool v_##TypeName::wrappedValueIsInit(void) { \
         return zffalse; \

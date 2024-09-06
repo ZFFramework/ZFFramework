@@ -79,6 +79,10 @@ public:
     zfoverride
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 
+    zfoverride
+    virtual inline zfidentity objectHash(void) {
+        return zfidentityCalcPOD(this->enumValue());
+    }
     /**
      * @brief compare result of two enum values as int,
      *   or return ZFCompareUncomparable if any of them are ZFEnumInvalid

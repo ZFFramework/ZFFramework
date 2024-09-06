@@ -252,18 +252,7 @@ void ZFKeyValueContainer::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-zfidentity ZFKeyValueContainer::objectHash(void) {
-    zfiter it = this->iter();
-    if(it) {
-        return (zfidentity)(~((zft_zfidentity)this->count()
-            | ((ZFObjectHash(this->iterKey(it)) << 16) & 0x00FF0000)
-            | ((ZFObjectHash(this->iterValue(it)) << 24) & 0xFF000000)));
-    }
-    else {
-        return 0;
-    }
-}
-ZFCompareResult ZFKeyValueContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFKeyValueContainer::objectValueCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

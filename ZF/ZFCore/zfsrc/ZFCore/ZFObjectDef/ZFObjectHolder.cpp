@@ -21,11 +21,10 @@ zfidentity ZFObjectHolder::objectHash(void) {
     return ZFObjectHash(this->_ZFP_objectHolded);
 }
 ZFCompareResult ZFObjectHolder::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
-    if(another == zfnull) {return ZFCompareUncomparable;}
+    if(anotherObj != zfnull && another == zfnull) {return ZFCompareUncomparable;}
 
-    return ZFObjectCompare(this->_ZFP_objectHolded, another->_ZFP_objectHolded);
+    return ZFObjectCompare(this->_ZFP_objectHolded, another ? another->_ZFP_objectHolded : zfnull);
 }
 
 ZF_NAMESPACE_GLOBAL_END

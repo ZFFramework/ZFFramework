@@ -285,7 +285,12 @@ public:
     zffinal ZFObjectHolder *objectHolder(void);
 
     /** @brief see #objectInfoOfInstance */
-    virtual void objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret);
+    virtual inline void objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret) {
+        ret += this->classData()->classNameFull();
+        ret += "(";
+        zfsFromPointerT(ret, this);
+        ret += ")";
+    }
     /**
      * @brief return a short string describe the object instance
      *
@@ -300,7 +305,11 @@ public:
     }
 
     /** @brief see #objectInfo */
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    virtual inline void objectInfoT(ZF_IN_OUT zfstring &ret) {
+        ret += ZFTOKEN_ZFObjectInfoLeft;
+        this->objectInfoOnAppend(ret);
+        ret += ZFTOKEN_ZFObjectInfoRight;
+    }
     /** @brief return object info */
     virtual inline zfstring objectInfo(void) {
         zfstring ret;
@@ -312,31 +321,50 @@ protected:
     /**
      * @brief called by #objectInfoT to append object info as a chain
      */
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+        this->objectInfoOfInstanceT(ret);
+    }
 
 public:
     /**
      * @brief get hash of this object
      *
-     * by default, this method would return a hash value of the instance's pointer\n
-     * \n
-     * if you override this method, you must ensure
-     * two objects have same hash if they are regarded as same
-     * (i.e. #objectCompare return #ZFCompareEqual)\n
-     * this method may or may not be called frequently,
-     * you should always try to make the implementation
-     * have good performance
+     * by default, return a hash value of the instance pointer
+     *
+     * @warning if you override this method, you must ensure
+     *   two objects have same hash if they are regarded as same
+     *   (i.e. #objectCompare return #ZFCompareEqual)
+     * @note this method may or may not be called frequently,
+     *   (for example, store as key of #ZFMap may cause frequently call),
+     *   you should always try to make the implementation
+     *   have good performance
      */
-    virtual zfidentity objectHash(void);
+    virtual inline zfidentity objectHash(void) {
+        return zfidentityCalcPointer(this);
+    }
     /**
      * @brief compare with anotherObj
-     * @return ZFCompareEqual if this == anotherObj\n
-     *         ZFCompareUncomparable otherwise
+     *
+     * by default, compare by instance pointer\n
+     * it's recommended to override this method only for objects that only contains value types,
+     * for example, #v_zfstring, #v_zfindex, etc,
+     * for other complex type,
+     * it's recommended to override #objectValueCompare instead
+     *
      * @warning if your override #objectCompare,
      *   you must also override #objectHash,
      *   and follow the rules described in #objectHash
      */
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    virtual inline ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        return ((this == anotherObj) ? ZFCompareEqual : ZFCompareUncomparable);
+    }
+    /**
+     * @brief explicitly compare object by logical value, see #objectCompare
+     */
+    virtual inline ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj) {
+        return this->objectCompare(anotherObj);
+    }
+
     /** @brief util to #objectCompare */
     virtual zfbool equalTo(ZF_IN ZFObject *anotherObj) {
         return this->objectCompare(anotherObj) == ZFCompareEqual;

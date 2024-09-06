@@ -419,7 +419,7 @@ while ((1)) ; do
         fileName=${f##*[/\\]}
         # condition
         while ((1)) ; do
-            exist=`grep -o "\{ZFTT_C_[a-zA-Z_0-9]\+\}" "$f" | uniq`
+            exist=`grep -o '{ZFTT_C_[a-zA-Z_0-9]\+}' "$f" | uniq`
             if test "x-$exist" = "x-" ; then
                 break
             fi
@@ -450,7 +450,7 @@ while ((1)) ; do
         done
         # replace
         while ((1)) ; do
-            exist=`grep -o "\{ZFTT_R_[a-zA-Z_0-9]\+\}" "$f" | uniq`
+            exist=`grep -o '{ZFTT_R_[a-zA-Z_0-9]\+}' "$f" | uniq`
             if test "x-$exist" = "x-" ; then
                 break
             fi

@@ -410,11 +410,7 @@ public:
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void) {
-        return zfidentityCalcString(this->classData()->classNameFull());
-    }
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
                 && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
                 ) {

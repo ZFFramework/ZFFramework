@@ -478,13 +478,7 @@ void ZFUIImage::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-zfidentity ZFUIImage::objectHash(void) {
-    return zfidentityHash(
-            zfidentityCalcPointer(d->nativeImage)
-            , d->imageStateImpl.callbackHash()
-            );
-}
-ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFUIImage::objectValueCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

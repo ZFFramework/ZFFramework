@@ -125,27 +125,6 @@ ZFObjectHolder *ZFObject::objectHolder(void) {
     return d->objectHolder;
 }
 
-void ZFObject::objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret) {
-    ret += this->classData()->classNameFull();
-    ret += "(";
-    zfsFromPointerT(ret, this);
-    ret += ")";
-}
-void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    ret += ZFTOKEN_ZFObjectInfoLeft;
-    this->objectInfoOnAppend(ret);
-    ret += ZFTOKEN_ZFObjectInfoRight;
-}
-void ZFObject::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    this->objectInfoOfInstanceT(ret);
-}
-zfidentity ZFObject::objectHash(void) {
-    return zfidentityCalcPointer(this);
-}
-ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
-    return ((this == anotherObj) ? ZFCompareEqual : ZFCompareUncomparable);
-}
-
 /* ZFMETHOD_MAX_PARAM */
 zfauto ZFObject::invoke(
         ZF_IN const zfstring &methodName
@@ -734,6 +713,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectInfoT
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfstring, objectInfo)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfidentity, objectHash)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectCompare
+        , ZFMP_IN(ZFObject *, anotherObj)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectValueCompare
         , ZFMP_IN(ZFObject *, anotherObj)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfbool, equalTo

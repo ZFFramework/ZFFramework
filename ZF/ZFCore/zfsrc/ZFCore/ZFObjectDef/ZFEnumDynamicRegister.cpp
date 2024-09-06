@@ -21,13 +21,6 @@ zfclass _ZFP_I_ZFEnumDynamic : zfextend ZFEnum {
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void) {
-        return zfidentityHash(
-            zfidentityCalcString(zfself::ClassData()->classNameFull()),
-            zfidentityCalcPOD(this->enumValue()));
-    }
-public:
-    zfoverride
     virtual zfindex enumCount(void) {
         return _ZFP_ZFEnumDataRef()->enumCount();
     }

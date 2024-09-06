@@ -174,7 +174,7 @@ ZFOUTPUT_TYPE(zfweak, {
 })
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfweak, zfweak)
 ZFCOMPARER_DEFAULT_DECLARE(zfweak, zfweak, {
-        return v0.toObject() == v1.toObject() ? ZFCompareEqual : ZFCompareUncomparable;
+        return ZFObjectCompare(v0.toObject(), v1.toObject());
     })
 
 // ============================================================

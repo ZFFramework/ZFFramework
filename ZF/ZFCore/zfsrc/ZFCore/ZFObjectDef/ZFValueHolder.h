@@ -105,9 +105,7 @@ protected:
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 public:
     zfoverride
-    virtual zfidentity objectHash(void);
-    zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj);
 };
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueHolderType {
 public:

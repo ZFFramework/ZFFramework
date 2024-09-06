@@ -118,6 +118,10 @@ public:
     }
 
     zfoverride
+    virtual zfidentity objectHash(void) {
+        return zfidentityCalcPointer(this->zfv ? this->zfv->refImpl() : zfnull);
+    }
+    zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
         zfself *t = zfcast(zfself *, anotherObj);
         if(t != zfnull
