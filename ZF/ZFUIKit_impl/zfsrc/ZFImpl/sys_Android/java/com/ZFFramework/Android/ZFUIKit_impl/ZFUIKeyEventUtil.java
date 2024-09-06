@@ -69,7 +69,7 @@ public class ZFUIKeyEventUtil {
     private void _pressedKeyCancel() {
         for (int i = 0; i < _pressedKeyId.size(); ++i) {
             _impl.onKey(
-                    (int) _pressedKeyId.get(i),
+                    _pressedKeyId.get(i),
                     ZFUIKeyAction.e_KeyCancel,
                     ZFUIKeyCode.keyCodeFromKeyCodeRaw(_pressedKeyCode.get(i)),
                     _pressedKeyCode.get(i)

@@ -60,7 +60,7 @@ public final class ZFTimer {
         holder.timer = new Timer();
         holder.timerTask = new ZFTimerTask(zfjniPointerToken);
         holder.timerTask._timerImplId = timerImplId;
-        holder.timer.schedule(holder.timerTask, timerInterval, timerInterval);
+        holder.timer.schedule(holder.timerTask, 0, timerInterval > 0 ? timerInterval : 1);
     }
 
     protected static void native_timerStop(Object nativeTimer) {

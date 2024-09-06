@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
+import com.ZFFramework.Android.NativeUtil.ZFObject;
 import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
 
 /*
@@ -52,6 +53,21 @@ public final class ZFUISysWindow extends Activity {
         }
     }
 
+    public static boolean nativeWindowNotifyKeyEvent(String sysWindowName, int keyCode, KeyEvent event) {
+        long zfjniPointerSysWindow = ZFObject.invoke(sysWindowName != null ? sysWindowName : "ZFUISysWindow.mainWindow");
+        if (zfjniPointerSysWindow != 0) {
+            return native_notifyKeyEvent(zfjniPointerSysWindow
+                    , (int) event.getDownTime()
+                    , ZFUIKeyAction.keyActionFromKeyActionRaw(event.getAction())
+                    , ZFUIKeyCode.keyCodeFromKeyCodeRaw(keyCode)
+                    , keyCode
+            );
+        } else {
+            return false;
+        }
+    }
+
+    // ============================================================
     private static final String _key_isMainWindow = "isMainWindow";
     private static final String _key_zfjniPointerOwnerZFUISysWindow = "zfjniPointerOwnerZFUISysWindow";
     private boolean _isMainWindow = false;
@@ -302,18 +318,14 @@ public final class ZFUISysWindow extends Activity {
         }
     }
 
-    private ZFUIKeyEventUtil _keyEventImpl = new ZFUIKeyEventUtil(new ZFUIKeyEventUtil.Impl() {
+    private final ZFUIKeyEventUtil _keyEventImpl = new ZFUIKeyEventUtil(new ZFUIKeyEventUtil.Impl() {
         @Override
         public boolean onKey(int keyId, int keyAction, int keyCode, int keyCodeRaw) {
-            if (_zfjniPointerOwnerZFUISysWindow != 0
-                    && ZFUIView.native_notifyUIEvent_key(
-                    _zfjniPointerOwnerZFUISysWindow,
-                    keyId,
-                    keyAction,
-                    keyCode,
-                    keyCodeRaw)
-            ) {
-                return true;
+            if (_zfjniPointerOwnerZFUISysWindow != 0) {
+                return (
+                        ZFUIView.native_notifyUIEvent_key(_zfjniPointerOwnerZFUISysWindow, keyId, keyAction, keyCode, keyCodeRaw)
+                                || native_notifyKeyEvent(_zfjniPointerOwnerZFUISysWindow, keyId, keyAction, keyCode, keyCodeRaw)
+                );
             }
             return false;
         }
