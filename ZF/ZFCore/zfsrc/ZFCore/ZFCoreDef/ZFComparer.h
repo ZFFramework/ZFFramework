@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 namespace _ZFP_ZFComparer {
-#if defined(__GNUC__) && (__GNUC__ >= 110000)
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnonnull"
 #endif
@@ -92,7 +92,7 @@ namespace _ZFP_ZFComparer {
     };
 #endif
 
-#if defined(__GNUC__) && (__GNUC__ >= 110000)
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
 }
