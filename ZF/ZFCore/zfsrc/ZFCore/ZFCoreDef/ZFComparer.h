@@ -12,6 +12,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 namespace _ZFP_ZFComparer {
+#if defined(__GNUC__) && (__GNUC__ >= 110000)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnonnull"
+#endif
+
     class No { bool b[2]; };
     template<typename T, typename Arg> No operator == (const T &, const Arg &);
     template<typename T, typename Arg> No operator < (const T &, const Arg &);
@@ -85,6 +90,10 @@ namespace _ZFP_ZFComparer {
             Value = 0,
         };
     };
+#endif
+
+#if defined(__GNUC__) && (__GNUC__ >= 110000)
+#pragma GCC diagnostic pop
 #endif
 }
 
