@@ -115,6 +115,10 @@ public:
     inline Impl *impl(void) const {
         return d;
     }
+    /**
+     * @brief implementations may use this method to access data passed from constructor,
+     *   see #zfiter
+     */
     template<typename T_Impl>
     inline T_Impl impl(void) const {
         return (T_Impl)d;

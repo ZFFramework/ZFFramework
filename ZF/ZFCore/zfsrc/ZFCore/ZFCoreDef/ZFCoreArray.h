@@ -949,6 +949,7 @@ public:
     virtual zfindex count(void) const {return (zfindex)(d ? d->count : 0);}
     zfoverride
     virtual zfbool isEmpty(void) const {return (d == zfnull || d->count == 0);}
+    /** @brief true if contains element */
     virtual zfbool isContain(
             ZF_IN T_Element const &e
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
