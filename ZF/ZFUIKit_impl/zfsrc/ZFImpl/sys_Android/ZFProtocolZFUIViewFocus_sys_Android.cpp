@@ -29,7 +29,7 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewFocus(), jmId
             , (jobject)view->nativeView()
-            , viewFocusable
+            , (jboolean)viewFocusable
             );
     }
     virtual zfbool viewFocused(ZF_IN ZFUIView *view) {
@@ -61,7 +61,7 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewFocus(), jmId
             , (jobject)view->nativeView()
-            , viewFocus
+            , (jboolean)viewFocus
             );
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewFocusImpl_sys_Android)

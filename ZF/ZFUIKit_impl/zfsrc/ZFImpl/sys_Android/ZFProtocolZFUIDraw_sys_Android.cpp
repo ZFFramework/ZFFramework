@@ -183,7 +183,7 @@ public:
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDraw(), jmId
             , nativeToken->canvas
-            , antialiasing
+            , (jboolean)antialiasing
             );
     }
 

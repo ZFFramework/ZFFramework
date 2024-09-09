@@ -126,8 +126,8 @@ public:
         jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId
             , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed))
             , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath))
-            , isRecursive
-            , isForce
+            , (jboolean)isRecursive
+            , (jboolean)isForce
             );
         if(errPosJ == NULL) {
             return zftrue;

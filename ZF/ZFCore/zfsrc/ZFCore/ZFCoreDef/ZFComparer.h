@@ -18,8 +18,8 @@ namespace _ZFP_ZFComparer {
 #endif
 
     class No { bool b[2]; };
-    template<typename T, typename Arg> No operator == (const T &, const Arg &);
-    template<typename T, typename Arg> No operator < (const T &, const Arg &);
+    template<typename T, typename Arg> No operator == (T, Arg);
+    template<typename T, typename Arg> No operator < (T, Arg);
 
     bool _ck(...);
     No &_ck(const No &);

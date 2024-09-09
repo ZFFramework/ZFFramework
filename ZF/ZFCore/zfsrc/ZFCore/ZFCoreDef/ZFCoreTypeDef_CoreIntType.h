@@ -108,12 +108,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         inline bool operator <= (const D &t_) const {return (t <= t_.t);} \
         inline bool operator >  (const D &t_) const {return (t >  t_.t);} \
         inline bool operator >= (const D &t_) const {return (t >= t_.t);} \
-        template<typename T2> inline bool operator == (const T2 &t_) const {return (t == t_);} \
-        template<typename T2> inline bool operator != (const T2 &t_) const {return (t != t_);} \
-        template<typename T2> inline bool operator <  (const T2 &t_) const {return (t <  t_);} \
-        template<typename T2> inline bool operator <= (const T2 &t_) const {return (t <= t_);} \
-        template<typename T2> inline bool operator >  (const T2 &t_) const {return (t >  t_);} \
-        template<typename T2> inline bool operator >= (const T2 &t_) const {return (t >= t_);} \
+        inline bool operator == (const T &t_) const {return (t == t_);} \
+        inline bool operator != (const T &t_) const {return (t != t_);} \
+        inline bool operator <  (const T &t_) const {return (t <  t_);} \
+        inline bool operator <= (const T &t_) const {return (t <= t_);} \
+        inline bool operator >  (const T &t_) const {return (t >  t_);} \
+        inline bool operator >= (const T &t_) const {return (t >= t_);} \
+        inline bool operator == (int t_) const {return (t == t_);} \
+        inline bool operator != (int t_) const {return (t != t_);} \
+        inline bool operator <  (int t_) const {return (t <  t_);} \
+        inline bool operator <= (int t_) const {return (t <= t_);} \
+        inline bool operator >  (int t_) const {return (t >  t_);} \
+        inline bool operator >= (int t_) const {return (t >= t_);} \
     }; \
     /** @endcond */ \
     typedef _zft_##D D; \
@@ -162,12 +168,18 @@ public:
         inline bool operator <= (const D &t_) const {return (t < t_.t + epsilon);} \
         inline bool operator >  (const D &t_) const {return (t > t_.t + epsilon);} \
         inline bool operator >= (const D &t_) const {return (t > t_.t - epsilon);} \
-        template<typename T2> inline bool operator == (const T2 &t_) const {return (t > t_ - epsilon && t < t_ + epsilon);} \
-        template<typename T2> inline bool operator != (const T2 &t_) const {return (t <= t_ - epsilon || t >= t_ + epsilon);} \
-        template<typename T2> inline bool operator <  (const T2 &t_) const {return (t < t_ - epsilon);} \
-        template<typename T2> inline bool operator <= (const T2 &t_) const {return (t < t_ + epsilon);} \
-        template<typename T2> inline bool operator >  (const T2 &t_) const {return (t > t_ + epsilon);} \
-        template<typename T2> inline bool operator >= (const T2 &t_) const {return (t > t_ - epsilon);} \
+        inline bool operator == (const T &t_) const {return (t > t_ - epsilon && t < t_ + epsilon);} \
+        inline bool operator != (const T &t_) const {return (t <= t_ - epsilon || t >= t_ + epsilon);} \
+        inline bool operator <  (const T &t_) const {return (t <= t_ - epsilon);} \
+        inline bool operator <= (const T &t_) const {return (t < t_ + epsilon);} \
+        inline bool operator >  (const T &t_) const {return (t > t_ + epsilon);} \
+        inline bool operator >= (const T &t_) const {return (t > t_ - epsilon);} \
+        inline bool operator == (int t_) const {return (t > t_ - epsilon && t < t_ + epsilon);} \
+        inline bool operator != (int t_) const {return (t <= t_ - epsilon || t >= t_ + epsilon);} \
+        inline bool operator <  (int t_) const {return (t <= t_ - epsilon);} \
+        inline bool operator <= (int t_) const {return (t < t_ + epsilon);} \
+        inline bool operator >  (int t_) const {return (t > t_ + epsilon);} \
+        inline bool operator >= (int t_) const {return (t > t_ - epsilon);} \
     }; \
     /** @endcond */ \
     typedef _zft_##D D; \

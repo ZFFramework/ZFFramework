@@ -79,7 +79,7 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(url)
-                , (int)task->request->timeout()
+                , (jint)task->request->timeout()
             );
     }
 

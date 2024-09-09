@@ -106,7 +106,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoop : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        time = (time < 0.5f ? 2 * time : 2 * (1 - time));
+        time = (time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
         if(this->curve()) {
             return this->curve()->progressUpdate(time);
         }
@@ -124,7 +124,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopLinear : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return (time < 0.5f ? 2 * time : 2 * (1 - time));
+        return (time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 /**
@@ -136,7 +136,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseIn : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return ZFBezierEaseIn().y_by_x(time < 0.5f ? 2 * time : 2 * (1 - time));
+        return ZFBezierEaseIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 /**
@@ -148,7 +148,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseOut : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return ZFBezierEaseOut().y_by_x(time < 0.5f ? 2 * time : 2 * (1 - time));
+        return ZFBezierEaseOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 /**
@@ -160,7 +160,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopEaseInOut : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return ZFBezierEaseInOut().y_by_x(time < 0.5f ? 2 * time : 2 * (1 - time));
+        return ZFBezierEaseInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 /**
@@ -172,7 +172,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceIn : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return ZFBezierBounceIn().y_by_x(time < 0.5f ? 2 * time : 2 * (1 - time));
+        return ZFBezierBounceIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 /**
@@ -184,7 +184,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceOut : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return ZFBezierBounceOut().y_by_x(time < 0.5f ? 2 * time : 2 * (1 - time));
+        return ZFBezierBounceOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 /**
@@ -196,7 +196,7 @@ zfclass ZFLIB_ZFAlgorithm ZFCurveLoopBounceInOut : zfextend ZFCurve {
 protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
-        return ZFBezierBounceInOut().y_by_x(time < 0.5f ? 2 * time : 2 * (1 - time));
+        return ZFBezierBounceInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
 };
 
