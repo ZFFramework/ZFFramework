@@ -72,38 +72,6 @@ inline T_Number zfmApplyProgress(
 }
 
 // ============================================================
-/** @brief float epsilon */
-#define zffloatEpsilon ((zffloat)1.192092896e-07)
-/** @brief double epsilon */
-#define zfdoubleEpsilon ((zfdouble)2.2204460492503131e-016)
-/** @brief longdouble epsilon */
-#define zflongdoubleEpsilon ((zflongdouble)2.2204460492503131e-016)
-
-/** @brief template version of #zffloatEpsilon */
-template<typename T_zffloat>
-zfclassNotPOD zffloatEpsilonT {
-public:
-    /** @brief template version of #zffloatEpsilon */
-    static inline T_zffloat v(void) {return zffloatEpsilon;}
-};
-/** @cond ZFPrivateDoc */
-template<>
-zfclassNotPOD zffloatEpsilonT<zffloat> {
-public:
-    static inline zffloat v(void) {return zffloatEpsilon;}
-};
-template<>
-zfclassNotPOD zffloatEpsilonT<zfdouble> {
-public:
-    static inline zfdouble v(void) {return zfdoubleEpsilon;}
-};
-template<>
-zfclassNotPOD zffloatEpsilonT<zflongdouble> {
-public:
-    static inline zflongdouble v(void) {return zflongdoubleEpsilon;}
-};
-/** @endcond */
-
 // round float
 /** @brief util method to round up/down or round a float value */
 template<typename T_zffloat>

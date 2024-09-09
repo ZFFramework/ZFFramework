@@ -111,7 +111,7 @@ public:
     _ZFP_ZFUIImagePrivate(void)
     : pimplOwner(zfnull)
     , nativeImage(zfnull)
-    , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle() ? ZFUIGlobalStyle::DefaultStyle()->imageScale() : 1)
+    , imageScaleFixed(ZFUIGlobalStyle::DefaultStyle() ? ZFUIGlobalStyle::DefaultStyle()->imageScale() : (zffloat)1)
     , imageSizeFixed(ZFUISizeZero())
     , imageSize(ZFUISizeZero())
     , imageStateImpl()

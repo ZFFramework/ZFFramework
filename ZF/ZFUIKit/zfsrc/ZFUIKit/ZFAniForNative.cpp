@@ -108,7 +108,7 @@ void ZFAniForNative::aniImplStart(void) {
     zfsuper::aniImplStart();
     ZFUIView *aniTarget = this->aniTarget();
     ZFPROTOCOL_ACCESS(ZFAniForNative)->nativeAniStart(this,
-        aniTarget != zfnull ? aniTarget->UIScaleFixed() : 1.0f);
+        aniTarget != zfnull ? aniTarget->UIScaleFixed() : (zffloat)1);
     zfanyT<ZFUIView> parent = aniTarget;
     while(parent->viewParent() != zfnull) {
         parent = parent->viewParent();

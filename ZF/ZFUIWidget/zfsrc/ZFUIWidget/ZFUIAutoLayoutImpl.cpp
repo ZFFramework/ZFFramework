@@ -312,7 +312,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
     ZFUIView *target = this->targetForLayout(rule, parent);
 
     zffloat &_childSize = xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height;
-    zffloat weight = (rule.weight() > 0 ? rule.weight() : 1);
+    zffloat weight = (rule.weight() > 0 ? rule.weight() : (zffloat)1);
     if(rule.targetPos() == ZFUIAutoLayoutPos::e_Width) {
         if(target == parent) {
             _childSize = zfmMax(_childSize, (zffloat)(_parentWidth * weight + rule.offset()));

@@ -153,7 +153,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
-        zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceX() : 0);
+        zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceX() : (zffloat)0);
         totalWeight += layoutParam->layoutWeight();
 
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->layoutMargin());
@@ -172,7 +172,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
             break;
         }
         lineSize.width += prevSpace + child->layoutMeasuredSize().width + marginX;
-        lineSize.height = zfmMax(lineSize.height, child->layoutMeasuredSize().height + marginY);
+        lineSize.height = zfmMax<zffloat>(lineSize.height, child->layoutMeasuredSize().height + marginY);
         fixedSize += prevSpace + marginX;
         if(layoutParam->layoutWeight() == 0) {
             fixedSize += child->layoutMeasuredSize().width;
@@ -202,7 +202,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
-        zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceY() : 0);
+        zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceY() : (zffloat)0);
         totalWeight += layoutParam->layoutWeight();
 
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->layoutMargin());
@@ -220,7 +220,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
             childIndexStop = i;
             break;
         }
-        lineSize.width = zfmMax(lineSize.width, child->layoutMeasuredSize().width + marginX);
+        lineSize.width = zfmMax<zffloat>(lineSize.width, child->layoutMeasuredSize().width + marginX);
         lineSize.height += prevSpace + child->layoutMeasuredSize().height + marginY;
         fixedSize += prevSpace + marginY;
         if(layoutParam->layoutWeight() == 0) {
@@ -252,13 +252,13 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(
     for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
         zffloat fixedSize = 0;
         zffloat totalWeight = 0;
-        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceY() : 0);
+        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceY() : (zffloat)0);
         ZFUISize lineSizeHint = ZFUISizeCreate(
             sizeHintTmp.width,
             ZFUILayoutParam::sizeHintOffset(sizeHintTmp.height, 0 - prevLineSpace - ret.height));
         ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureHorizontalLine(
             parent, lineSizeHint, childIndex, childIndex, fixedSize, totalWeight);
-        ret.width = zfmMax(ret.width, lineSize.width + parentMarginX);
+        ret.width = zfmMax<zffloat>(ret.width, lineSize.width + parentMarginX);
         ret.height += prevLineSpace + lineSize.height;
     }
     return ret;
@@ -277,14 +277,14 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(
     for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
         zffloat fixedSize = 0;
         zffloat totalWeight = 0;
-        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceX() : 0);
+        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceX() : (zffloat)0);
         ZFUISize lineSizeHint = ZFUISizeCreate(
             ZFUILayoutParam::sizeHintOffset(sizeHintTmp.width, 0 - prevLineSpace - ret.width),
             sizeHintTmp.width);
         ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureVerticalLine(
             parent, lineSizeHint, childIndex, childIndex, fixedSize, totalWeight);
         ret.width += prevLineSpace + lineSize.width;
-        ret.height = zfmMax(ret.height, lineSize.height + parentMarginY);
+        ret.height = zfmMax<zffloat>(ret.height, lineSize.height + parentMarginY);
     }
     return ret;
 }
@@ -304,7 +304,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
     for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
         zffloat fixedSize = 0;
         zffloat totalWeight = 0;
-        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceY() : 0);
+        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceY() : (zffloat)0);
         zfindex childIndexStart = childIndex;
         ZFUISize lineSizeHint = ZFUISizeCreate(
             size.width - parentMarginX,
@@ -320,7 +320,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
             if(!child->viewVisible() && !layoutParam->reserveSpace()) {
                 continue ;
             }
-            zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceX() : 0);
+            zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceX() : (zffloat)0);
             zffloat childSize = 0;
             if(layoutParam->layoutWeight() > 0) {
                 childSize = layoutParam->layoutWeight() * flexibleSize / totalWeight;
@@ -364,7 +364,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
     for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
         zffloat fixedSize = 0;
         zffloat totalWeight = 0;
-        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceX() : 0);
+        zffloat prevLineSpace = (lineIndex > 0 ? parent->layoutChildSpaceX() : (zffloat)0);
         zfindex childIndexStart = childIndex;
         ZFUISize lineSizeHint = ZFUISizeCreate(
             size.width - lineSizeUsed - lineTailMargin,
@@ -380,7 +380,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
             if(!child->viewVisible() && !layoutParam->reserveSpace()) {
                 continue ;
             }
-            zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceY() : 0);
+            zffloat prevSpace = (i > childIndexStart ? parent->layoutChildSpaceY() : (zffloat)0);
             zffloat childSize = 0;
             if(layoutParam->layoutWeight() > 0) {
                 childSize = layoutParam->layoutWeight() * flexibleSize / totalWeight;

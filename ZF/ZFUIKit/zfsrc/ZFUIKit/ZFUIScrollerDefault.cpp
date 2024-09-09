@@ -334,7 +334,7 @@ public:
         zfbool bounceAtTail = (this->calcBounceTailFromContentOffset(this->contentOffset) > 0);
         if(bounceAtHead || bounceAtTail) {
             zfbool bounceAway = ((bounceAtHead && this->aniBySpeedCurSpeed > 0) || (bounceAtTail && this->aniBySpeedCurSpeed < 0));
-            zffloat a = (bounceAway ? -_ZFP_ZFUIScrollerDefault_aniBySpeedSpeedMaxNormal : _ZFP_ZFUIScrollerDefault_aniBySpeedSpeedMaxNormal);
+            zffloat a = (bounceAway ? (zffloat)-_ZFP_ZFUIScrollerDefault_aniBySpeedSpeedMaxNormal : _ZFP_ZFUIScrollerDefault_aniBySpeedSpeedMaxNormal);
             zffloat bounceOffset = this->calcBounceFromContentOffset(this->contentOffset, bounceAtHead);
             if(bounceAway) {
                 v = zfmMin(v, _ZFP_ZFUIScrollerDefault_aniBySpeedSpeedMaxBounce);
@@ -438,7 +438,7 @@ private:
             , ZF_IN zftimet t
             , ZF_IN zffloat a
             ) {
-        return (zffloat)((long)v * t / 1000 + (long)a * t * t / 1000 / 1000 / 2);
+        return (zffloat)(v * t / 1000 + a * t * t / 1000 / 1000 / 2);
     }
     zftimet aniBySpeed_calcTime(
             ZF_IN zffloat v
@@ -586,12 +586,12 @@ void ZFUIScrollerDefault::scrollBySpeed(ZF_IN zffloat speed) {
     d->scrollAlignToPageCheckUpdate();
 }
 zffloat ZFUIScrollerDefault::scrollBySpeedCurrentSpeed(void) {
-    return (d->aniState == _ZFP_ZFUIScrollerDefaultPrivateAniStateBySpeed ? d->aniBySpeedCurSpeed : 0);
+    return (d->aniState == _ZFP_ZFUIScrollerDefaultPrivateAniStateBySpeed ? d->aniBySpeedCurSpeed : (zffloat)0);
 }
 zffloat ZFUIScrollerDefault::scrollBySpeedEndPointPredicted(void) {
     return (d->aniState == _ZFP_ZFUIScrollerDefaultPrivateAniStateBySpeed
         ? d->anibySpeedEndPointPredicted()
-        : 0);
+        : (zffloat)0);
 }
 
 zfbool ZFUIScrollerDefault::scrollRequireFocus(void) {

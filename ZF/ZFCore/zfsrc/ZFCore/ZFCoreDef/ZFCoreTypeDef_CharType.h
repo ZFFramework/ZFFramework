@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief char wrapper */
-ZFT_INT_WEAK(_ZFT_t_zfchar, zfchar);
+ZFT_INT_WEAK(_ZFT_t_zfchar, zfchar)
 
 // ============================================================
 /**

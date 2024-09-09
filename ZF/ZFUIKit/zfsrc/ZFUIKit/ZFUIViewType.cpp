@@ -372,7 +372,7 @@ ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffset
         ret = ((sizeHint >= 0) ? sizeHint + offset : -1);
     }
     else {
-        ret = ((sizeHint >= 0) ? zfmMax((zffloat)0, sizeHint + offset) : -1);
+        ret = ((sizeHint >= 0) ? zfmMax<zffloat>(0, sizeHint + offset) : (zffloat)-1);
     }
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, zffloat, sizeHintOffset

@@ -25,8 +25,8 @@ void ZFUIViewLayout::layoutOnMeasure(
         }
         child->layoutMeasure(sizeHintTmp, child->layoutParam()->sizeParam());
 
-        ret.width = zfmMax(ret.width, child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->layoutMargin()));
-        ret.height = zfmMax(ret.height, child->layoutMeasuredSize().height + ZFUIMarginGetHeight(child->layoutParam()->layoutMargin()));
+        ret.width = zfmMax<zffloat>(ret.width, child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->layoutMargin()));
+        ret.height = zfmMax<zffloat>(ret.height, child->layoutMeasuredSize().height + ZFUIMarginGetHeight(child->layoutParam()->layoutMargin()));
     }
 }
 

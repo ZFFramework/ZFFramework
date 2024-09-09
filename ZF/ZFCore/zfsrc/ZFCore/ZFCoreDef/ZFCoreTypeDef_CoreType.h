@@ -59,7 +59,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief bool type
  */
-ZFT_INT_WEAK(_ZFT_t_zfbool, zfbool);
+ZFT_INT_WEAK(_ZFT_t_zfbool, zfbool)
 /**
  * @brief bool true type
  */
@@ -120,33 +120,33 @@ ZFT_INT_WEAK(_ZFT_t_zfindex, zfindex)
 /**
  * @brief same as int, see #zfindex
  */
-ZFT_INT_WEAK(_ZFT_t_zfint, zfint);
+ZFT_INT_WEAK(_ZFT_t_zfint, zfint)
 /**
  * @brief same as unsigned int, see #zfindex
  */
-ZFT_INT_WEAK(_ZFT_t_zfuint, zfuint);
+ZFT_INT_WEAK(_ZFT_t_zfuint, zfuint)
 
 // ============================================================
 /**
  * @brief same as float, see #zfindex
  */
-ZFT_INT_WEAK(_ZFT_t_zffloat, zffloat);
+ZFT_FLOAT_STRONG(_ZFT_t_zffloat, zffloat, zffloatEpsilon)
 
 /**
  * @brief same as double, see #zfindex
  */
-ZFT_INT_STRONG(double, zfdouble)
+ZFT_FLOAT_STRONG(double, zfdouble, zfdoubleEpsilon)
 
 /**
  * @brief same as long double, see #zfindex
  */
-ZFT_INT_STRONG(long double, zflongdouble)
+ZFT_FLOAT_STRONG(long double, zflongdouble, zflongdoubleEpsilon)
 
 // ============================================================
 /**
  * @brief 8-bit unsigned value, see #zfindex
  */
-ZFT_INT_WEAK(_ZFT_t_zfbyte, zfbyte);
+ZFT_INT_WEAK(_ZFT_t_zfbyte, zfbyte)
 
 // ============================================================
 /**

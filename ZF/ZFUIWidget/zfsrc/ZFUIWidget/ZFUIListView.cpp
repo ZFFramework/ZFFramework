@@ -291,10 +291,10 @@ public:
         switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left: {
                 zffloat offset = cellFrame.x + cellFrame.width;
-                zffloat offsetEnd = zfmMax(
+                zffloat offsetEnd = zfmMax<zffloat>(
                     -scrollContentFrame.x - scrollMargin.left,
-                    (zffloat)0);
-                zffloat offsetBegin = zfmMin(
+                    0);
+                zffloat offsetBegin = zfmMin<zffloat>(
                     offsetEnd + viewFrame.width,
                     scrollContentFrame.width);
                 // remove cells exceeds visible range
@@ -351,10 +351,10 @@ public:
                 break;
             case ZFUIOrientation::e_Top: {
                 zffloat offset = cellFrame.y + cellFrame.height;
-                zffloat offsetEnd = zfmMax(
+                zffloat offsetEnd = zfmMax<zffloat>(
                     -scrollContentFrame.y - scrollMargin.top,
-                    (zffloat)0);
-                zffloat offsetBegin = zfmMin(
+                    0);
+                zffloat offsetBegin = zfmMin<zffloat>(
                     offsetEnd + viewFrame.height,
                     scrollContentFrame.height);
                 // remove cells exceeds visible range
@@ -411,12 +411,12 @@ public:
                 break;
             case ZFUIOrientation::e_Right: {
                 zffloat offset = cellFrame.x;
-                zffloat offsetEnd = zfmMin(
+                zffloat offsetEnd = zfmMin<zffloat>(
                     -scrollContentFrame.x + viewFrame.width - scrollMargin.left,
                     scrollContentFrame.width);
-                zffloat offsetBegin = zfmMax(
+                zffloat offsetBegin = zfmMax<zffloat>(
                     offsetEnd - viewFrame.width,
-                    (zffloat)0);
+                    0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index) {
                     if(offset > offsetEnd) {
@@ -465,12 +465,12 @@ public:
                 break;
             case ZFUIOrientation::e_Bottom: {
                 zffloat offset = cellFrame.y;
-                zffloat offsetEnd = zfmMin(
+                zffloat offsetEnd = zfmMin<zffloat>(
                     -scrollContentFrame.y + viewFrame.height - scrollMargin.top,
                     scrollContentFrame.height);
-                zffloat offsetBegin = zfmMax(
+                zffloat offsetBegin = zfmMax<zffloat>(
                     offsetEnd - viewFrame.height,
-                    (zffloat)0);
+                    0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index) {
                     if(offset > offsetEnd) {
@@ -540,12 +540,12 @@ public:
         switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left: {
                 zffloat offset = cellFrame.x;
-                zffloat offsetEnd = zfmMin(
+                zffloat offsetEnd = zfmMin<zffloat>(
                     -scrollContentFrame.x + viewFrame.width - scrollMargin.left,
                     scrollContentFrame.width);
-                zffloat offsetBegin = zfmMax(
+                zffloat offsetBegin = zfmMax<zffloat>(
                     offsetEnd - viewFrame.width,
-                    (zffloat)0);
+                    0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index) {
                     if(offset > offsetEnd) {
@@ -601,12 +601,12 @@ public:
                 break;
             case ZFUIOrientation::e_Top: {
                 zffloat offset = cellFrame.y;
-                zffloat offsetEnd = zfmMin(
+                zffloat offsetEnd = zfmMin<zffloat>(
                     -scrollContentFrame.y + viewFrame.height - scrollMargin.top,
                     scrollContentFrame.height);
-                zffloat offsetBegin = zfmMax(
+                zffloat offsetBegin = zfmMax<zffloat>(
                     offsetEnd - viewFrame.height,
-                    (zffloat)0);
+                    0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index) {
                     if(offset > offsetEnd) {
@@ -662,10 +662,10 @@ public:
                 break;
             case ZFUIOrientation::e_Right: {
                 zffloat offset = cellFrame.x + cellFrame.width;
-                zffloat offsetEnd = zfmMax(
+                zffloat offsetEnd = zfmMax<zffloat>(
                     -scrollContentFrame.x - scrollMargin.left,
-                    (zffloat)0);
-                zffloat offsetBegin = zfmMin(
+                    0);
+                zffloat offsetBegin = zfmMin<zffloat>(
                     offsetEnd + viewFrame.width,
                     scrollContentFrame.width);
                 // remove cells exceeds visible range
@@ -719,10 +719,10 @@ public:
                 break;
             case ZFUIOrientation::e_Bottom: {
                 zffloat offset = cellFrame.y + cellFrame.height;
-                zffloat offsetEnd = zfmMax(
+                zffloat offsetEnd = zfmMax<zffloat>(
                     -scrollContentFrame.y - scrollMargin.top,
-                    (zffloat)0);
-                zffloat offsetBegin = zfmMin(
+                    0);
+                zffloat offsetBegin = zfmMin<zffloat>(
                     offsetEnd + viewFrame.height,
                     scrollContentFrame.height);
                 // remove cells exceeds visible range
