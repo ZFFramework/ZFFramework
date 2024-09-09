@@ -186,8 +186,8 @@ public:
         nativeImplView->_ZFP_textSize(textSize);
         nativeImplView->setMinimumSize(0, 0);
         nativeImplView->setMaximumSize(
-            (sizeHint.width <= 0) ? 30000 : sizeHint.width,
-            (sizeHint.height <= 0) ? 30000 : sizeHint.height);
+            (sizeHint.width <= 0) ? (zffloat)30000 : sizeHint.width,
+            (sizeHint.height <= 0) ? (zffloat)30000 : sizeHint.height);
         nativeImplView->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         QSize ret = nativeImplView->minimumSizeHint();
 
