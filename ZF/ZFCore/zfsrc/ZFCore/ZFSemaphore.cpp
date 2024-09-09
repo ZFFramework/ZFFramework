@@ -82,14 +82,7 @@ ZFMETHOD_DEFINE_1(ZFSemaphore, zfbool, lockAndWait
         ) {
     zfRetain(this);
     d->impl->semaphoreLock(this);
-    zfbool ret;
-    if(miliSecs == zfindexMax()) {
-        ret = zftrue;
-        d->impl->semaphoreWait(this);
-    }
-    else {
-        ret = d->impl->semaphoreWait(this, miliSecs);
-    }
+    zfbool ret = d->impl->semaphoreWait(this, miliSecs);
     d->impl->semaphoreUnlock(this);
     zfRelease(this);
     return ret;

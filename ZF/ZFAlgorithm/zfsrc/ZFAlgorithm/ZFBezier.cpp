@@ -53,7 +53,7 @@ zffloat ZFBezier::t_by_x(ZF_IN zffloat x) const {
             return t2;
         }
         d2 = ((3.0f * ax * t2 + 2.0f * bx) * t2 + cx);
-        if(zfmAbs(d2) < 1e-6) {
+        if(zfmAbs(d2) < zffloatEpsilon) {
             break;
         }
         t2 = t2 - x2 / d2;
@@ -100,7 +100,7 @@ zffloat ZFBezier::t_by_y(ZF_IN zffloat y) const {
             return t2;
         }
         d2 = ((3.0f * ay * t2 + 2.0f * by) * t2 + cy);
-        if(zfmAbs(d2) < 1e-6) {
+        if(zfmAbs(d2) < zffloatEpsilon) {
             break;
         }
         t2 = t2 - y2 / d2;
