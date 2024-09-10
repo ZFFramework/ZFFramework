@@ -38,15 +38,15 @@ public:
 
     ZFUIScroller *xScroll;
     zfbool xScrollEnable;
+    zfbool xScrollAniTimerStarted;
     zffloat xScrollDragPrevPos;
     zffloat xScrollDragCurPos;
-    zfbool xScrollAniTimerStarted;
 
     ZFUIScroller *yScroll;
     zfbool yScrollEnable;
+    zfbool yScrollAniTimerStarted;
     zffloat yScrollDragPrevPos;
     zffloat yScrollDragCurPos;
-    zfbool yScrollAniTimerStarted;
 
     ZFCoreQueuePOD<_ZFP_ZFUIScrollViewAction> scrollerActions;
     zfbool scrollerActionRunning;
@@ -65,7 +65,7 @@ public:
     zffloat autoScrollSpeedY;
     zfbool autoScrollStartFlag;
 
-    zffloat scrollOverrideFlag;
+    zfuint scrollOverrideFlag;
 
     ZFUIRect scrollContentFrameCache;
 
@@ -78,14 +78,14 @@ protected:
     , scrollAniLastTime(0)
     , xScroll(zfnull)
     , xScrollEnable(zftrue)
+    , xScrollAniTimerStarted(zffalse)
     , xScrollDragPrevPos(0)
     , xScrollDragCurPos(0)
-    , xScrollAniTimerStarted(zffalse)
     , yScroll(zfnull)
     , yScrollEnable(zftrue)
+    , yScrollAniTimerStarted(zffalse)
     , yScrollDragPrevPos(0)
     , yScrollDragCurPos(0)
-    , yScrollAniTimerStarted(zffalse)
     , scrollerActions()
     , scrollerActionRunning(zffalse)
     , scrollThumbNeedUpdate(zftrue)

@@ -174,6 +174,10 @@ public:
         inline bool operator <= (const int &t_) const {return (t < t_ + epsilon);} \
         inline bool operator >  (const int &t_) const {return (t > t_ + epsilon);} \
         inline bool operator >= (const int &t_) const {return (t > t_ - epsilon);} \
+        inline D & operator ++ (void) {t += 1; return *this;} \
+        inline D operator ++ (int) {D t_(t); t += 1; return t_;} \
+        inline D & operator -- (void) {t -= 1; return *this;} \
+        inline D operator -- (int) {D t_(t); t -= 1; return t_;} \
     }; \
     /** @endcond */ \
     typedef _zft_##D D; \
