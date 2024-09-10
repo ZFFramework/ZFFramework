@@ -520,8 +520,8 @@ public:
         QSizeF maxSizeSaved = nativeViewTmp->maximumSize();
         nativeViewTmp->setMinimumSize(0, 0);
         nativeViewTmp->setMaximumSize(
-                sizeHint.width >= 0 ? sizeHint.width : QWIDGETSIZE_MAX,
-                sizeHint.height >= 0 ? sizeHint.height : QWIDGETSIZE_MAX
+                sizeHint.width >= 0 ? sizeHint.width : (zffloat)QWIDGETSIZE_MAX,
+                sizeHint.height >= 0 ? sizeHint.height : (zffloat)QWIDGETSIZE_MAX
             );
         QSizeF t = nativeViewTmp->effectiveSizeHint(Qt::MinimumDescent);
         nativeViewTmp->setMinimumSize(minSizeSaved);
