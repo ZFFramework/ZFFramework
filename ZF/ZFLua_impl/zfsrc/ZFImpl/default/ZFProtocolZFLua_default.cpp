@@ -30,7 +30,7 @@ public:
 
     virtual zfbool luaExecute(
             ZF_IN void *L
-            , ZF_IN const ZFPathInfo *pathInfoOrNull
+            , ZF_IN const ZFPathInfo &pathInfoOrNull
             , ZF_IN const ZFInput &input
             , ZF_OUT_OPT zfauto *luaResult = zfnull
             , ZF_IN_OPT const ZFCoreArray<zfauto> *luaParams = zfnull

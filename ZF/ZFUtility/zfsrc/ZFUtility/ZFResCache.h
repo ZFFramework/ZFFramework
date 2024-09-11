@@ -34,7 +34,7 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextend ZFCache {
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
         , ZFMP_IN(const zfchar *, resFilePath)
-        , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         )
 /**
  * @brief load resource by #ZFObjectIOLoad with specified input

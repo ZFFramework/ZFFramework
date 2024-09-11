@@ -34,8 +34,8 @@ ZF_GLOBAL_INITIALIZER_END(ZFObjectIO_image_imageExtDefault)
 
 // ============================================================
 ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
-        zfstring fileExt;
-        if(!ZFPathInfoToFileExt(pathInfo, fileExt)) {
+        zfstring fileExt = ZFFileExtOf(ZFPathInfoToFileName(pathInfo));
+        if(!fileExt) {
             return zffalse;
         }
         zfstringToLowerT(fileExt);

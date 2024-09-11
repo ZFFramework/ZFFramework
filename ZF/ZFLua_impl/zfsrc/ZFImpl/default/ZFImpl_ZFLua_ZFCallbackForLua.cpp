@@ -492,7 +492,7 @@ public:
             int luaLocalFuncIndex = lua_gettop(L) + 1;
             {
                 zfstring code;
-                ZFImpl_ZFLua_implPathInfoSetup(L, code, &(this->pathInfo), zffalse);
+                ZFImpl_ZFLua_implPathInfoSetup(L, code, this->pathInfo, zffalse);
                 int error = luaL_loadbuffer(L, code.cString(), code.length(), zfnull);
                 zfCoreAssert(error == 0);
                 error = lua_pcall(L, 0, (int)luaLocalFuncNameList.count(), 0);

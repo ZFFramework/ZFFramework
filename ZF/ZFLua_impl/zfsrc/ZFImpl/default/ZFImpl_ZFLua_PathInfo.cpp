@@ -47,7 +47,7 @@ static void _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(
 void ZFImpl_ZFLua_implPathInfoSetup(
         ZF_IN lua_State *L
         , ZF_OUT zfstring &ret
-        , ZF_IN const ZFPathInfo *pathInfo
+        , ZF_IN const ZFPathInfo &pathInfo
         , ZF_IN_OPT zfbool localMode /* = zftrue */
         ) {
     zfCoreMutexLocker();
@@ -104,14 +104,14 @@ void ZFImpl_ZFLua_implPathInfoSetup(
         ret += "return ";
     }
 
-    if(pathInfo == zfnull || pathInfo->isEmpty()) {
+    if(pathInfo == zfnull) {
         ret += "_ZFP_l(nil);";
     }
     else {
         ret += "_ZFP_l(ZFPathInfo('";
-        _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo->pathType);
+        _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo.pathType());
         ret += ZFSerializableKeyword_ZFPathInfo_separator;
-        _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo->pathData);
+        _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo.pathData());
         ret += "'));";
     }
 }

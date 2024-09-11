@@ -74,7 +74,7 @@ zfbool ZFObjectIOLoadT(
     for(zfstlsize i = l.size() - 1; i != (zfstlsize)-1; --i) {
         _ZFP_ZFObjectIOData *d = l[i];
         zfCoreMutexUnlock();
-        if(l[i]->checker(*input.pathInfo())) {
+        if(l[i]->checker(input.pathInfo())) {
             if(l[i]->fromInput(ret, input, outErrorHint)) {
                 zfCoreMutexLock();
                 // move to tail for better search performance
@@ -119,7 +119,7 @@ zfbool ZFObjectIOSave(
     for(zfstlsize i = l.size() - 1; i != (zfstlsize)-1; --i) {
         _ZFP_ZFObjectIOData *d = l[i];
         zfCoreMutexUnlock();
-        if(l[i]->checker(*output.pathInfo())) {
+        if(l[i]->checker(output.pathInfo())) {
             if(l[i]->toOutput(output, obj, outErrorHint)) {
                 zfCoreMutexLock();
                 // move to tail for better search performance

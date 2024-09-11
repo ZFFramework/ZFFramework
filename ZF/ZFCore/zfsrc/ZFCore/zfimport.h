@@ -65,7 +65,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfimport
         , ZFMP_IN(const zfchar *, path)
-        , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         )
 
 /** @brief remove the cache created by #zfimport */

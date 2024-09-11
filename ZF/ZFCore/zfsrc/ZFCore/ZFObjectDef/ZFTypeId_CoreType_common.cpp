@@ -879,26 +879,32 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {
             }
             return zffalse;
         }
-        v.pathType.assign(src, p - src);
+        v.pathType(zfstring(src, p - src));
         ++p;
-        v.pathData.assign(p, srcEnd - p);
+        v.pathData(zfstring(p, srcEnd - p));
         return zftrue;
     }, {
-        s += v.pathType;
+        s += v.pathType();
         s += ZFSerializableKeyword_ZFPathInfo_separator[0];
-        s += v.pathData;
+        s += v.pathData();
         return zftrue;
     })
 ZFOBJECT_ON_INIT_USER_REGISTER_2({
         ZFPathInfo &zfv = invokerObject.to<v_ZFPathInfo *>()->zfv;
-        zfv.pathType = pathType;
-        zfv.pathData = pathData;
+        zfv.pathType(pathType);
+        zfv.pathData(pathData);
     }, v_ZFPathInfo
     , ZFMP_IN(const zfchar *, pathType)
     , ZFMP_IN(const zfchar *, pathData)
     )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFPathInfo, zfstring, pathType)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFPathInfo, zfstring, pathData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPathInfo, ZFPathInfo &, pathType
+        , ZFMP_IN(const zfstring &, pathType)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, const zfstring &, pathType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPathInfo, ZFPathInfo &, pathData
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, const zfstring &, pathData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, zfbool, isEmpty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, void, removeAll)
 

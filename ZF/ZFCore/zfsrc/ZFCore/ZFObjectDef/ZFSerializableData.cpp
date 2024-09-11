@@ -1,6 +1,5 @@
 #include "ZFSerializableData.h"
 #include "ZFObjectImpl.h"
-#include "ZFSerializableUtil.h"
 #include "ZFSerializableDataSerializableConverter.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
@@ -39,7 +38,7 @@ public:
     zfbool resolved;
     _ZFP_ZFSerializableDataPrivate *serializableDataParent;
     zfstring classNameFull;
-    ZFPathInfo *pathInfo;
+    ZFPathInfo pathInfo;
     _ZFP_ZFSerializableDataAttributeMapType attributes;
     zfstldeque<ZFSerializableData> elements;
     _ZFP_ZFSerializableDataTagMapType serializableDataTagMap;
@@ -76,8 +75,6 @@ public:
                 this->elements[i].d->serializableDataParent = zfnull;
             }
         }
-
-        zfpoolDelete(this->pathInfo);
     }
 };
 
@@ -136,22 +133,7 @@ void ZFSerializableData::copyFrom(ZF_IN const ZFSerializableData &ref) {
 
     d->classNameFull = ref.d->classNameFull;
     d->attributes = ref.d->attributes;
-
-    if(d->pathInfo == zfnull) {
-        if(ref.d->pathInfo != zfnull) {
-            d->pathInfo = zfpoolNew(ZFPathInfo, *(ref.d->pathInfo));
-        }
-    }
-    else {
-        if(ref.d->pathInfo == zfnull) {
-            zfpoolDelete(d->pathInfo);
-            d->pathInfo = zfnull;
-        }
-        else {
-            *(d->pathInfo) = *(ref.d->pathInfo);
-        }
-    }
-
+    d->pathInfo = ref.d->pathInfo;
     d->serializableDataTagMap = ref.d->serializableDataTagMap;
 
     this->childRemoveAll();
@@ -166,55 +148,26 @@ zfindex ZFSerializableData::objectRetainCount(void) const {
 
 // ============================================================
 // local path logic
-const ZFPathInfo *ZFSerializableData::pathInfo(void) const {
+ZFPathInfo ZFSerializableData::pathInfo(void) const {
     return d ? d->pathInfo : zfnull;
 }
-void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo *pathInfo) {
-    if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
-    }
-    if(pathInfo != zfnull && !pathInfo->isEmpty()) {
-        if(d->pathInfo == zfnull) {
-            d->pathInfo = zfpoolNew(ZFPathInfo, *pathInfo);
+void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo &pathInfo) {
+    if(pathInfo) {
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
         }
-        else {
-            *(d->pathInfo) = *pathInfo;
-        }
+        d->pathInfo = pathInfo;
     }
     else {
-        if(d->pathInfo != zfnull) {
-            zfpoolDelete(d->pathInfo);
+        if(d) {
             d->pathInfo = zfnull;
         }
     }
 }
-void ZFSerializableData::pathInfo(
-        ZF_IN const zfstring &pathType
-        , ZF_IN const zfstring &pathData
-        ) {
-    if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
-    }
-    if(!zfstringIsEmpty(pathType) || !zfstringIsEmpty(pathData)) {
-        if(d->pathInfo == zfnull) {
-            d->pathInfo = zfpoolNew(ZFPathInfo, pathType, pathData);
-        }
-        else {
-            d->pathInfo->pathType = pathType;
-            d->pathInfo->pathData = pathData;
-        }
-    }
-    else {
-        if(d->pathInfo != zfnull) {
-            zfpoolDelete(d->pathInfo);
-            d->pathInfo = zfnull;
-        }
-    }
-}
-const ZFPathInfo *ZFSerializableData::pathInfoCheck(void) const {
+ZFPathInfo ZFSerializableData::pathInfoCheck(void) const {
     _ZFP_ZFSerializableDataPrivate *check = d;
     while(check != zfnull) {
-        if(check->pathInfo != zfnull && !check->pathInfo->isEmpty()) {
+        if(check->pathInfo) {
             return check->pathInfo;
         }
         check = check->serializableDataParent;

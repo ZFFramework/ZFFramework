@@ -54,6 +54,12 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
      * @brief return a fixed path info of #localCachePathInfo
      */
     ZFMETHOD_DECLARE_0(ZFPathInfo, localCachePathInfoFixed)
+    /**
+     * @brief util method to get a cache file under #localCachePathInfo
+     */
+    ZFMETHOD_DECLARE_1(ZFPathInfo, localCachePathInfoForChild
+            , ZFMP_IN(const zfchar *, childPath)
+            )
 
     ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(zfindex, cacheMaxSize)
 };

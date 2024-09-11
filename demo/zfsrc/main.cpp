@@ -223,8 +223,8 @@ ZFMAIN_PARAM_DISPATCH(LuaRunner) {
     const ZFCoreArray<zfstring> &appParams = ZFApp::appParams();
     ZFPathInfo pathInfo;
     if(!ZFPathInfoFromStringT(pathInfo, appParams[0])) {
-        pathInfo.pathType = ZFPathType_file();
-        pathInfo.pathData = appParams[0];
+        pathInfo.pathType(ZFPathType_file());
+        pathInfo.pathData(appParams[0]);
     }
     ZFCoreArray<zfauto> luaParams;
     for(zfindex i = 1; i < appParams.count(); ++i) {

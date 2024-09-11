@@ -10,6 +10,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclassFwd _ZFP_ZFPathInfoPrivate;
 /**
  * @brief path related info storage for impl,
  *   actual meaning of the info depends on impl
@@ -33,30 +34,40 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFPathInfo {
 public:
-    zfstring pathType; /**< @brief path type, normal file or res file, etc */
-    zfstring pathData; /**< @brief path value, such as local relative path or http url, etc */
+    /** @brief path type, normal file or res file, etc */
+    ZFPathInfo &pathType(ZF_IN const zfstring &pathType);
+    /** @brief path type, normal file or res file, etc */
+    const zfstring &pathType(void) const;
 
-public:
-    /** @cond ZFPrivateDoc */
-    ZFPathInfo(void) : pathType(), pathData() {}
-    ZFPathInfo(ZF_IN const zfnullT &dummy) : pathType(), pathData() {}
-    ZFPathInfo(ZF_IN const ZFPathInfo &pathInfo) : pathType(pathInfo.pathType), pathData(pathInfo.pathData) {}
-    ZFPathInfo(ZF_IN const zfchar *pathInfoString);
-    ZFPathInfo(ZF_IN const zfstring &pathType, ZF_IN const zfstring &pathData) : pathType(pathType), pathData(pathData) {}
-    ZFPathInfo &operator = (ZF_IN const ZFPathInfo &pathInfo) {this->pathType = pathInfo.pathType; this->pathData = pathInfo.pathData; return *this;}
-    ZFPathInfo &operator = (ZF_IN const zfnullT &dummy) {this->pathType = zfnull; this->pathData = zfnull; return *this;}
-    zfbool operator == (ZF_IN const ZFPathInfo &pathInfo) const {return (this->pathType == pathInfo.pathType && this->pathData == pathInfo.pathData);}
-    zfbool operator != (ZF_IN const ZFPathInfo &pathInfo) const {return !this->operator == (pathInfo);}
-    zfbool operator == (ZF_IN const zfnullT &dummy) const {return (this->pathType == zfnull && this->pathData == zfnull);}
-    zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->operator == (dummy);}
-    operator zfbool (void) const {return !this->isEmpty();}
-    /** @endcond */
+    /** @brief path value, such as local relative path or http url, etc */
+    ZFPathInfo &pathData(ZF_IN const zfstring &pathData);
+    /** @brief path value, such as local relative path or http url, etc */
+    const zfstring &pathData(void) const;
 
 public:
     /** @brief true if #pathType and #pathData is both empty */
-    zfbool isEmpty(void) const {return this->pathType.isEmpty() && this->pathData.isEmpty();}
+    zfbool isEmpty(void) const;
     /** @brief util to remove #pathType and #pathData */
-    void removeAll(void) {this->pathType.removeAll(); this->pathData.removeAll();}
+    void removeAll(void);
+
+public:
+    /** @cond ZFPrivateDoc */
+    ZFPathInfo(void);
+    ZFPathInfo(ZF_IN const zfnullT &dummy);
+    ZFPathInfo(ZF_IN const ZFPathInfo &ref);
+    ZFPathInfo(ZF_IN const zfchar *pathInfoString);
+    ZFPathInfo(ZF_IN const zfstring &pathType, ZF_IN const zfstring &pathData);
+    ~ZFPathInfo(void);
+    ZFPathInfo &operator = (ZF_IN const ZFPathInfo &ref);
+    ZFPathInfo &operator = (ZF_IN const zfnullT &dummy);
+    zfbool operator == (ZF_IN const ZFPathInfo &ref) const;
+    zfbool operator != (ZF_IN const ZFPathInfo &ref) const {return !this->operator == (ref);}
+    zfbool operator == (ZF_IN const zfnullT &dummy) const {return this->isEmpty();}
+    zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->isEmpty();}
+    inline operator zfbool (void) const {return !this->isEmpty();}
+    /** @endcond */
+private:
+    _ZFP_ZFPathInfoPrivate *d;
 };
 
 /**

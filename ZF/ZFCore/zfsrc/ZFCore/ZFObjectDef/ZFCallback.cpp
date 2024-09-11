@@ -20,7 +20,7 @@ public:
 
     zfstring serializableCustomType;
     ZFSerializableData callbackSerializeData;
-    ZFPathInfo *pathInfo;
+    ZFPathInfo pathInfo;
 
 public:
     _ZFP_ZFCallbackPrivateExt(void)
@@ -28,7 +28,7 @@ public:
     , callbackTagMap()
     , serializableCustomType()
     , callbackSerializeData()
-    , pathInfo(zfnull)
+    , pathInfo()
     {
     }
 };
@@ -77,9 +77,6 @@ public:
             zfRelease(d.memberType.callbackOwnerObject);
         }
         if(ext) {
-            if(ext->pathInfo) {
-                zfpoolDelete(ext->pathInfo);
-            }
             zfpoolDelete(ext);
         }
         if(callbackType == ZFCallbackTypeLambda && d.lambdaType.callbackLambdaImplDestroy) {
@@ -423,55 +420,22 @@ ZFSerializableData ZFCallback::callbackSerializeData(void) const {
     return (d && d->ext ? d->ext->callbackSerializeData : zfnull);
 }
 
-const ZFPathInfo *ZFCallback::pathInfo(void) const {
+ZFPathInfo ZFCallback::pathInfo(void) const {
     return (d && d->ext ? d->ext->pathInfo : zfnull);
 }
-void ZFCallback::pathInfo(ZF_IN const ZFPathInfo *pathInfo) {
+void ZFCallback::pathInfo(ZF_IN const ZFPathInfo &pathInfo) {
     zfCoreMutexLocker();
-    if(pathInfo && !pathInfo->isEmpty()) {
+    if(pathInfo) {
         if(d == zfnull) {
             d = zfpoolNew(_ZFP_ZFCallbackPrivate);
         }
         if(d->ext == zfnull) {
             d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
         }
-        if(d->ext->pathInfo == zfnull) {
-            d->ext->pathInfo = zfpoolNew(ZFPathInfo, *pathInfo);
-        }
-        else {
-            *(d->ext->pathInfo) = *pathInfo;
-        }
+        d->ext->pathInfo = pathInfo;
     }
     else {
-        if(d && d->ext && d->ext->pathInfo) {
-            zfpoolDelete(d->ext->pathInfo);
-            d->ext->pathInfo = zfnull;
-        }
-    }
-}
-void ZFCallback::pathInfo(
-        ZF_IN const zfstring &pathType
-        , ZF_IN const zfstring &pathData
-        ) {
-    zfCoreMutexLocker();
-    if(!zfstringIsEmpty(pathType) || !zfstringIsEmpty(pathData)) {
-        if(d == zfnull) {
-            d = zfpoolNew(_ZFP_ZFCallbackPrivate);
-        }
-        if(d->ext == zfnull) {
-            d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
-        }
-        if(d->ext->pathInfo == zfnull) {
-            d->ext->pathInfo = zfpoolNew(ZFPathInfo, pathType, pathData);
-        }
-        else {
-            d->ext->pathInfo->pathType = pathType;
-            d->ext->pathInfo->pathData = pathData;
-        }
-    }
-    else {
-        if(d && d->ext && d->ext->pathInfo) {
-            zfpoolDelete(d->ext->pathInfo);
+        if(d && d->ext) {
             d->ext->pathInfo = zfnull;
         }
     }
@@ -539,13 +503,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackSerializeD
         , ZFMP_IN(zfbool, disable)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfbool, callbackSerializeDisable)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, const ZFPathInfo *, pathInfo)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, ZFPathInfo, pathInfo)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, pathInfo
-        , ZFMP_IN(const ZFPathInfo *, pathInfo)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, pathInfo
-        , ZFMP_IN(const zfstring &, pathType)
-        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCallback, ZFCallbackForMethod

@@ -69,7 +69,7 @@ ZFMETHOD_FUNC_DEFINE_8(zfauto, ZFLuaExecute
 
 // ============================================================
 static zfbool _ZFP_ZFLuaExecute(
-        ZF_IN const ZFPathInfo *pathInfoOrNull
+        ZF_IN const ZFPathInfo &pathInfoOrNull
         , ZF_IN const ZFInput &input
         , ZF_IN zfauto *luaResult
         , ZF_IN const ZFCoreArray<zfauto> *luaParams

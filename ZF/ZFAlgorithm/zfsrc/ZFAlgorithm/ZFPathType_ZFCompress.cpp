@@ -120,12 +120,12 @@ private:
     }
 
     static _TaskData *_taskCreate(
-            ZF_OUT const zfchar *&pathData
+            ZF_OUT zfstring &pathData
             , ZF_IN_OUT const zfchar *pathDataOrig
             , ZF_IN _TaskType taskType
             ) {
         zfstring compressFilePathInfo;
-        if(!ZFPathInfoChainParse(compressFilePathInfo, pathData, pathDataOrig)) {
+        if(!ZFPathInfoChainDecodeString(pathDataOrig, compressFilePathInfo, &pathData)) {
             return zfnull;
         }
 
@@ -157,10 +157,10 @@ private:
         }
 
         if(taskType == _TaskTypeCompress) {
-            taskData->taskToken = ZFCompressBegin(ZFOutputForPathInfoString(taskData->compressFilePathInfo));
+            taskData->taskToken = ZFCompressBegin(ZFOutputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)));
         }
         else {
-            taskData->taskToken = ZFDecompressBegin(ZFInputForPathInfoString(taskData->compressFilePathInfo));
+            taskData->taskToken = ZFDecompressBegin(ZFInputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)));
         }
         zfCoreMutexLocker();
         if(taskData->taskToken == zfnull) {
@@ -189,13 +189,10 @@ private:
 
 public:
     static zfbool callbackIsExist(ZF_IN const zfchar *pathData) {
-        const zfchar *relPath = zfnull;
+        zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeDecompress);
         if(taskData == zfnull) {
             return zffalse;
-        }
-        while(*relPath == '/') {
-            ++relPath;
         }
         if(zfstringIsEmpty(relPath)) {
             return zftrue;
@@ -206,67 +203,81 @@ public:
         return exist;
     }
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
-        const zfchar *relPath = zfnull;
+        zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeDecompress);
         if(taskData == zfnull) {
             return zffalse;
-        }
-        while(*relPath == '/') {
-            ++relPath;
         }
         if(zfstringIsEmpty(relPath)) {
             return zftrue;
         }
         zfbool isDir = ZFDecompressContentIsDir(taskData->taskToken, ZFDecompressContentIndex(taskData->taskToken,
-                relPath[zfslen(relPath) - 1] == '/' ? relPath : zfstr("%s/", relPath).cString()
+                relPath[relPath.length() - 1] == '/' ? relPath : zfstr("%s/", relPath)
             ));
         _taskIdle(taskData);
         return isDir;
     }
-    static zfbool callbackToFileName(
+    static zfstring callbackToFileName(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &fileName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
+        return ZFPathInfoCallbackToFileNameDefault(pathData, success);
     }
-    static zfbool callbackToChild(
+    static zfstring callbackToChild(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataChild
             , ZF_IN const zfchar *childName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        zfindex pathDataLen = zfslen(pathData);
-        if(pathDataLen <= 0) {
-            return zffalse;
+        if(zfstringIsEmpty(pathData)) {
+            if(success) {
+                *success = zffalse;
+            }
+            return zfnull;
         }
 
-        if(!(pathData >= pathDataChild.cString() && pathData < pathDataChild.cString() + pathDataChild.length())) {
-            pathDataChild += pathData;
+        zfstring ret;
+        ret += pathData;
+        if(ret[ret.length() - 1] != '|') {
+            ret += '/';
         }
-        if(pathData[pathDataLen - 1] != '|') {
-            pathDataChild += '/';
+        ret += childName;
+        if(success) {
+            *success = zftrue;
         }
-        pathDataChild += childName;
-
-        return zftrue;
+        return ret;
     }
-    static zfbool callbackToParent(
+    static zfstring callbackToParent(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataParent
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
         zfstring compressFilePathInfo;
-        const zfchar *pathDataTmp = zfnull;
-        if(!ZFPathInfoChainParse(compressFilePathInfo, pathDataTmp, pathData)) {
-            return zffalse;
+        zfstring pathDataTmp;
+        if(!ZFPathInfoChainDecodeString(pathData, compressFilePathInfo, &pathDataTmp)) {
+            if(success) {
+                *success = zffalse;
+            }
+            return zfnull;
         }
-        zfCoreDataEncode(pathDataParent, compressFilePathInfo, compressFilePathInfo.length(), ZFPathInfoChainCharMap());
-        return ZFPathInfoCallbackToParentDefault(pathDataTmp, pathDataParent);
+        zfstring ret;
+        zfCoreDataEncode(ret, compressFilePathInfo, compressFilePathInfo.length(), ZFPathInfoChainCharMap());
+        zfbool successTmp = zftrue;
+        ret += ZFPathInfoCallbackToParentDefault(pathDataTmp, &successTmp);
+        if(success) {
+            *success = successTmp;
+        }
+        if(successTmp) {
+            return ret;
+        }
+        else {
+            return zfnull;
+        }
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool autoMakeParent
             , ZF_OUT_OPT zfstring *errPos
             ) {
-        const zfchar *relPath = zfnull;
+        zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeCompress);
         if(taskData == zfnull) {
             return zffalse;
@@ -281,7 +292,7 @@ public:
             , ZF_IN_OPT zfbool isForce
             , ZF_IN_OPT zfstring *errPos
             ) {
-        const zfchar *relPath = zfnull;
+        zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeCompress);
         if(taskData == zfnull) {
             return zffalse;
@@ -295,9 +306,9 @@ public:
             , ZF_IN const zfchar *pathDataTo
             , ZF_IN_OPT zfbool isForce
             ) {
-        const zfchar *relPathFrom = zfnull;
+        zfstring relPathFrom;
         _TaskData *taskDataFrom = _taskCreate(relPathFrom, pathDataFrom, _TaskTypeCompress);
-        const zfchar *relPathTo = zfnull;
+        zfstring relPathTo;
         _TaskData *taskDataTo = _taskCreate(relPathTo, pathDataTo, _TaskTypeCompress);
         zfbool ret = zffalse;
         if(taskDataFrom != zfnull && taskDataTo != zfnull) {
@@ -315,7 +326,7 @@ public:
             ZF_IN_OUT ZFFileFindData &fd
             , ZF_IN const zfchar *pathData
             ) {
-        const zfchar *relPath = zfnull;
+        zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeDecompress);
         if(taskData == zfnull) {
             return zffalse;
@@ -352,7 +363,7 @@ public:
             , ZF_IN_OPT zfbool autoCreateParent
             ) {
         if(flag == ZFFileOpenOption::e_Read) {
-            const zfchar *relPath = zfnull;
+            zfstring relPath;
             _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeDecompress);
             if(taskData == zfnull) {
                 return zfnull;
@@ -367,7 +378,7 @@ public:
             return d;
         }
         else {
-            const zfchar *relPath = zfnull;
+            zfstring relPath;
             _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeCompress);
             if(taskData == zfnull) {
                 return zfnull;
@@ -489,78 +500,28 @@ ZFPATHTYPE_FILEIO_REGISTER(ZFCompress, ZFPathType_ZFCompress()
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompressFile
-        , ZFMP_IN(const zfchar *, compressFilePathInfo)
-        , ZFMP_IN(const zfchar *, relPath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
-        ) {
-    zfstring pathData;
-    if(ZFPathInfoVerify(compressFilePathInfo)) {
-        zfCoreDataEncode(pathData, compressFilePathInfo, zfindexMax(), ZFPathInfoChainCharMap());
-    }
-    else {
-        pathData += ZFPathType_file();
-        pathData += ZFSerializableKeyword_ZFPathInfo_separator;
-        zfCoreDataEncode(pathData, compressFilePathInfo, zfindexMax(), ZFPathInfoChainCharMap());
-    }
-    pathData += '|';
-    pathData += relPath;
-
-    ZFInput ret;
-    ZFInputForPathInfoT(ret, ZFPathType_ZFCompress(), pathData, flags);
-    return ret;
-}
-ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompressFile
         , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
         , ZFMP_IN(const zfchar *, relPath)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
         ) {
-    zfstring pathData;
-    pathData += compressFilePathInfo.pathType;
-    pathData += ZFSerializableKeyword_ZFPathInfo_separator;
-    zfCoreDataEncode(pathData, compressFilePathInfo.pathData, zfindexMax(), ZFPathInfoChainCharMap());
-    pathData += '|';
-    pathData += relPath;
-
     ZFInput ret;
-    ZFInputForPathInfoT(ret, ZFPathType_ZFCompress(), pathData, flags);
+    ZFInputForPathInfoT(ret, ZFPathInfo(
+                ZFPathType_ZFCompress()
+                , ZFPathInfoChainEncode(compressFilePathInfo, relPath)
+                ), flags);
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompressFile
-        , ZFMP_IN(const zfchar *, compressFilePathInfo)
-        , ZFMP_IN(const zfchar *, relPath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
-        ) {
-    zfstring pathData;
-    if(ZFPathInfoVerify(compressFilePathInfo)) {
-        zfCoreDataEncode(pathData, compressFilePathInfo, zfindexMax(), ZFPathInfoChainCharMap());
-    }
-    else {
-        pathData += ZFPathType_file();
-        pathData += ZFSerializableKeyword_ZFPathInfo_separator;
-        zfCoreDataEncode(pathData, compressFilePathInfo, zfindexMax(), ZFPathInfoChainCharMap());
-    }
-    pathData += '|';
-    pathData += relPath;
-
-    ZFOutput ret;
-    ZFOutputForPathInfoT(ret, ZFPathType_ZFCompress(), pathData, flags);
-    return ret;
-}
 ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompressFile
         , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
         , ZFMP_IN(const zfchar *, relPath)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
         ) {
-    zfstring pathData;
-    pathData += compressFilePathInfo.pathType;
-    pathData += ZFSerializableKeyword_ZFPathInfo_separator;
-    zfCoreDataEncode(pathData, compressFilePathInfo.pathData, zfindexMax(), ZFPathInfoChainCharMap());
-    pathData += '|';
-    pathData += relPath;
-
     ZFOutput ret;
-    ZFOutputForPathInfoT(ret, ZFPathType_ZFCompress(), pathData, flags);
+    ZFOutputForPathInfoT(ret, ZFPathInfo(
+                ZFPathType_ZFCompress()
+                , ZFPathInfoChainEncode(compressFilePathInfo, relPath)
+                ), flags);
     return ret;
 }
 

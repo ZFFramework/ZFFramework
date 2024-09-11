@@ -51,7 +51,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implPathInfoSetup(
         ZF_IN lua_State *L
         , ZF_OUT zfstring &ret
-        , ZF_IN const ZFPathInfo *pathInfo
+        , ZF_IN const ZFPathInfo &pathInfo
         , ZF_IN_OPT zfbool localMode = zftrue
         );
 

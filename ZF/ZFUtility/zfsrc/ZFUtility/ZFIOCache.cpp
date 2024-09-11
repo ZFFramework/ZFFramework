@@ -11,6 +11,13 @@ ZFMETHOD_DEFINE_0(ZFIOCache, ZFPathInfo, localCachePathInfoFixed) {
         : ZFPathInfo(ZFPathType_cachePath(), "ZFIOCache")
         ;
 }
+ZFMETHOD_DEFINE_1(ZFIOCache, ZFPathInfo, localCachePathInfoForChild
+        , ZFMP_IN(const zfchar *, childPath)
+        ) {
+    ZFPathInfo parent = this->localCachePathInfoFixed();
+    ZFPathInfo ret(parent.pathType(), ZFPathInfoToChild(parent, childPath));
+    return ret;
+}
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFIOCache, zfindex, cacheMaxSize) {
     propertyValue = 20;
@@ -36,8 +43,8 @@ public:
         ZFLISTENER_1(run
                 , zfself *, d
                 ) {
-            ZFPathInfo pathInfo = ZFIOCache::instance()->localCachePathInfoFixed();
-            const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
+            const ZFPathInfo pathInfo = ZFIOCache::instance()->localCachePathInfoFixed();
+            const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
             if(impl == zfnull) {
                 return;
             }
@@ -46,27 +53,24 @@ public:
             ZFFileFindData fd;
             zfobj<ZFRegExp> pattern("^[0-9a-fA-F]{32}_[0-9]+$");
             d->localCacheList.removeAll();
-            if(impl->callbackFindFirst(fd, pathInfo.pathData)) {
+            if(impl->implFindFirst(fd, pathInfo.pathData())) {
                 do {
-                    zfstring childPath;
-                    if(!impl->callbackToChild(pathInfo.pathData, childPath, fd.fileName())) {
-                        continue;
-                    }
+                    zfstring childPath = impl->implToChild(pathInfo.pathData(), fd.fileName());
                     if(ZFRegExpFind(fd.fileName(), pattern) == ZFIndexRangeZero()) {
-                        impl->callbackRemove(childPath, zffalse, zftrue, zfnull);
+                        impl->implRemove(childPath, zffalse, zftrue, zfnull);
                         continue;
                     }
                     _ZFP_ZFIOCacheData cacheData;
                     zftimetFromStringT(cacheData.cacheTime, childPath + 32 + 1);
                     if(curTime - cacheData.cacheTime >= cacheTimeMax) {
-                        impl->callbackRemove(childPath, zffalse, zftrue, zfnull);
+                        impl->implRemove(childPath, zffalse, zftrue, zfnull);
                         continue;
                     }
-                    cacheData.pathInfo.pathType = pathInfo.pathType;
-                    cacheData.pathInfo.pathData = childPath;
+                    cacheData.pathInfo.pathType(pathInfo.pathType());
+                    cacheData.pathInfo.pathData(childPath);
                     d->localCacheList.add(cacheData);
-                } while(impl->callbackFindNext(fd));
-                impl->callbackFindClose(fd);
+                } while(impl->implFindNext(fd));
+                impl->implFindClose(fd);
             }
         } ZFLISTENER_END()
         ZFLISTENER_1(finish
@@ -185,10 +189,10 @@ public:
         if(!_implTask) {
             return;
         }
-        const ZFPathInfo *srcPathInfo = this->src.pathInfo();
+        const ZFPathInfo srcPathInfo = this->src.pathInfo();
         zfbool localCache = (zftrue
                 && srcPathInfo != zfnull
-                && !ZFIOCache::instance()->localCacheExclude()->isContain(zfobj<v_zfstring>(srcPathInfo->pathType))
+                && !ZFIOCache::instance()->localCacheExclude()->isContain(zfobj<v_zfstring>(srcPathInfo.pathType()))
                 );
         if(_callbackId == zfnull || !localCache) {
             _loadImplAction(this->src);
@@ -199,8 +203,7 @@ public:
         }
         zfstring localName = ZFMd5(_callbackId);
         zftimet curTime = ZFTime::currentTime();
-        ZFPathInfo localPathInfo = ZFIOCache::instance()->localCachePathInfoFixed();
-        ZFPathInfoToChild(localPathInfo, zfstr("%s_%s", ZFMd5(_callbackId), curTime));
+        ZFPathInfo localPathInfo = ZFIOCache::instance()->localCachePathInfoForChild(zfstr("%s_%s", ZFMd5(_callbackId), curTime));
 
         // try load from local cache file
         {

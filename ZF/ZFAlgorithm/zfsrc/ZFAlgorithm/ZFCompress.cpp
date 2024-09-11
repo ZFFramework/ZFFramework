@@ -223,8 +223,8 @@ static zfbool _ZFP_ZFCompressDir(
         , ZF_IN const zfchar *parentPathInZip
         ) {
     // prepare param
-    zfstring inputName;
-    if(!fileImpl.callbackToFileName(pathData, inputName)) {
+    zfstring inputName = fileImpl.implToFileName(pathData);
+    if(!inputName) {
         return zffalse;
     }
 
@@ -236,14 +236,11 @@ static zfbool _ZFP_ZFCompressDir(
 
     if(!filePathInZip.isEmpty()) {
         // file
-        if(fileImpl.callbackIsExist(pathData)
-                && !fileImpl.callbackIsDir(pathData)
+        if(fileImpl.implIsExist(pathData)
+                && !fileImpl.implIsDir(pathData)
                 ) {
             ZFInput inputRaw;
-            if(!ZFInputForPathInfoT(inputRaw,
-                        pathType, pathData,
-                        ZFFileOpenOption::e_Read
-                        )) {
+            if(!ZFInputForPathInfoT(inputRaw, ZFPathInfo(pathType, pathData), ZFFileOpenOption::e_Read)) {
                 return zffalse;
             }
             return ZFCompressContent(compressToken, inputRaw, filePathInZip);
@@ -258,10 +255,10 @@ static zfbool _ZFP_ZFCompressDir(
     // dir
     ZFFileFindData fd;
     zfbool success = zftrue;
-    if(fileImpl.callbackFindFirst(fd, pathData)) {
+    if(fileImpl.implFindFirst(fd, pathData)) {
         do {
-            zfstring pathDataChild;
-            if(!fileImpl.callbackToChild(pathData, pathDataChild, fd.fileName())) {
+            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.fileName());
+            if(!pathDataChild) {
                 success = zffalse;
                 break;
             }
@@ -269,8 +266,8 @@ static zfbool _ZFP_ZFCompressDir(
                 success = zffalse;
                 break;
             }
-        } while(fileImpl.callbackFindNext(fd));
-        fileImpl.callbackFindClose(fd);
+        } while(fileImpl.implFindNext(fd));
+        fileImpl.implFindClose(fd);
     }
     return success;
 }
@@ -279,7 +276,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressDir
         , ZFMP_IN(const ZFPathInfo &, inputPathInfo)
         , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
         ) {
-    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(inputPathInfo.pathType);
+    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(inputPathInfo.pathType());
     if(fileImpl == zfnull) {
         return zffalse;
     }
@@ -290,7 +287,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressDir
     }
 
     zfbool success = zftrue;
-    success &= _ZFP_ZFCompressDir(compressToken, *fileImpl, inputPathInfo.pathType, inputPathInfo.pathData, "");
+    success &= _ZFP_ZFCompressDir(compressToken, *fileImpl, inputPathInfo.pathType(), inputPathInfo.pathData(), "");
     success &= ZFCompressEnd(compressToken);
     return success;
 }
@@ -298,7 +295,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
         , ZFMP_IN(const ZFPathInfo &, outputPathInfo)
         , ZFMP_IN_OUT(const ZFInput &, inputZip)
         ) {
-    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(outputPathInfo.pathType);
+    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(outputPathInfo.pathType());
     if(fileImpl == zfnull) {
         return zffalse;
     }
@@ -318,14 +315,14 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
                 break;
             }
 
-            zfstring outputPath;
-            if(!fileImpl->callbackToChild(outputPathInfo.pathData, outputPath, filePathInZip)) {
+            zfstring outputPath = fileImpl->implToChild(outputPathInfo.pathData(), filePathInZip);
+            if(!outputPath) {
                 success = zffalse;
                 break;
             }
 
             if(!filePathInZip.isEmpty() && filePathInZip[filePathInZip.length() - 1] == '/') {
-                if(!fileImpl->callbackPathCreate(outputPath, zftrue, zfnull)) {
+                if(!fileImpl->implPathCreate(outputPath, zftrue, zfnull)) {
                     success = zffalse;
                     break;
                 }
@@ -333,7 +330,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
             }
 
             ZFOutput outputRaw;
-            if(!ZFOutputForPathInfoT(outputRaw, outputPathInfo.pathType, outputPath)) {
+            if(!ZFOutputForPathInfoT(outputRaw, ZFPathInfo(outputPathInfo.pathType(), outputPath))) {
                 success = zffalse;
                 break;
             }

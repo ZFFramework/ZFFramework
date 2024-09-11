@@ -34,7 +34,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFResExtPathDataHolder)
 ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
-    if(pathInfo.pathType.isEmpty()) {
+    if(pathInfo.pathType().isEmpty()) {
         return;
     }
     zfCoreMutexLocker();
@@ -43,7 +43,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd
 ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
-    if(pathInfo.pathType.isEmpty()) {
+    if(pathInfo.pathType().isEmpty()) {
         return;
     }
     zfCoreMutexLocker();
@@ -59,14 +59,18 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
     zfCoreMutexLock();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
-        ZFPathInfo t = l[i];
+        const ZFPathInfo t = l[i];
         zfCoreMutexUnlock();
-        ZFPathInfoToChild(t, t.pathData, resPath);
-        if(ZFPathInfoIsExist(t)) {
-            zfCoreMutexLocker();
-            resExtPath = (l[i]);
-            return zftrue;
+
+        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
+        if(impl) {
+            if(impl->implIsExist(impl->implToChild(t.pathData(), resPath))) {
+                zfCoreMutexLocker();
+                resExtPath = t;
+                return zftrue;
+            }
         }
+
         zfCoreMutexLock();
     }
     zfCoreMutexUnlock();
@@ -75,8 +79,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
 zfclassNotPOD _ZFP_ZFResExtKeyCmp {
 public:
     inline zfbool operator () (ZFPathInfo const &k1, ZFPathInfo const &k2) const {
-        zfint t = k1.pathType.compare(k2.pathType);
-        return (t < 0 || (t == 0 && k1.pathData.compare(k2.pathData) < 0));
+        zfint t = k1.pathType().compare(k2.pathType());
+        return (t < 0 || (t == 0 && k1.pathData().compare(k2.pathData()) < 0));
     }
 };
 typedef zfstlmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyCmp> _ZFP_ZFResExtMap;
@@ -92,14 +96,18 @@ static zfbool _ZFP_ZFResExtPathCheck(
             continue;
         }
         m[l[i]] = zftrue;
-        ZFPathInfo t = l[i];
+        const ZFPathInfo t = l[i];
         zfCoreMutexUnlock();
-        ZFPathInfoToChild(t, t.pathData, resPath);
-        if(ZFPathInfoIsExist(t)) {
-            zfCoreMutexLocker();
-            resExtPath = (l[i]);
-            return zftrue;
+
+        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
+        if(impl) {
+            if(impl->implIsExist(impl->implToChild(t.pathData(), resPath))) {
+                zfCoreMutexLocker();
+                resExtPath = l[i];
+                return zftrue;
+            }
         }
+
         zfCoreMutexLock();
     }
     zfCoreMutexUnlock();
@@ -123,7 +131,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
         ) {
     ZFPathInfo resExtPath;
     if(ZFResExtPathCheck(resExtPath, resPath)) {
-        ZFPathInfoToChild(resExtPath, resExtPath.pathData, resPath);
+        resExtPath.pathData(ZFPathInfoToChild(resExtPath, resPath));
         return ZFPathInfoIsDir(resExtPath);
     }
     else {
@@ -147,7 +155,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
             isForce,
             errPos != zfnull ? &errPosTmp : zfnull);
         if(errPos != zfnull && !ret) {
-            *errPos += errPosTmp.pathData;
+            *errPos += errPosTmp.pathData();
         }
         return ret;
     }
@@ -200,8 +208,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
     implUserData->resPathSaved = resPath;
 
     if(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, resPath, implUserData->resExtResolved)) {
-        ZFPathInfo resPathTmp = implUserData->resExtPath;
-        ZFPathInfoToChild(resPathTmp, resPathTmp.pathData, resPath);
+        ZFPathInfo resPathTmp(implUserData->resExtPath.pathType(), ZFPathInfoToChild(implUserData->resExtPath, resPath));
         if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
             implUserData->resExtItemResolved[implUserData->resExtFd.fileName()] = zftrue;
             implUserData->copyToFd(fd.impl());
@@ -231,7 +238,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
         ) {
     _ZFP_ZFResFindData *implUserData = (_ZFP_ZFResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
 
-    if(!implUserData->resExtPath.pathType.isEmpty()) {
+    if(!implUserData->resExtPath.pathType().isEmpty()) {
         while(ZFPathInfoFindNext(implUserData->resExtPath, implUserData->resExtFd)) {
             if(implUserData->resExtItemResolved.find(implUserData->resExtFd.fileName()) != implUserData->resExtItemResolved.end()) {
                 continue;
@@ -244,8 +251,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
 
         // try next resExtPath
         while(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, implUserData->resPathSaved, implUserData->resExtResolved)) {
-            ZFPathInfo resPathTmp = implUserData->resExtPath;
-            ZFPathInfoToChild(resPathTmp, resPathTmp.pathData, implUserData->resPathSaved);
+            ZFPathInfo resPathTmp(implUserData->resExtPath.pathType(), ZFPathInfoToChild(implUserData->resExtPath, implUserData->resPathSaved));
             if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
                 do {
                     if(implUserData->resExtItemResolved.find(implUserData->resExtFd.fileName()) != implUserData->resExtItemResolved.end()) {
@@ -286,7 +292,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResFindClose
         ) {
     _ZFP_ZFResFindData *implUserData = (_ZFP_ZFResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
 
-    if(!implUserData->resExtPath.pathType.isEmpty()) {
+    if(!implUserData->resExtPath.pathType().isEmpty()) {
         ZFPathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
         implUserData->resExtPath.removeAll();
     }
@@ -306,7 +312,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
 
     _ZFP_ZFFileTokenForRes *ret = zfnew(_ZFP_ZFFileTokenForRes);
     if(ZFResExtPathCheck(ret->resExtPath, resPath)) {
-        ZFPathInfoToChild(ret->resExtPath, ret->resExtPath.pathData, resPath);
+        ret->resExtPath.pathData(ZFPathInfoToChild(ret->resExtPath, resPath));
         ret->fd = ZFPathInfoOpen(ret->resExtPath, ZFFileOpenOption::e_Read);
     }
     else {
@@ -327,7 +333,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     zfblockedDelete(resToken);
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         return ZFPROTOCOL_ACCESS(ZFRes)->resClose(resToken->fd);
     }
     else {
@@ -342,7 +348,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResTell
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         return ZFPROTOCOL_ACCESS(ZFRes)->resTell(resToken->fd);
     }
     else {
@@ -359,7 +365,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFResSeek
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         return ZFPROTOCOL_ACCESS(ZFRes)->resSeek(resToken->fd, byteSize, position);
     }
     else {
@@ -375,7 +381,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFResRead
         return 0;
     }
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         if(buf == zfnull) {
             ZFPROTOCOL_INTERFACE_CLASS(ZFRes) *impl = ZFPROTOCOL_ACCESS(ZFRes);
             zfindex curPos = impl->resTell(resToken->fd);
@@ -416,7 +422,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsEof
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         return ZFPROTOCOL_ACCESS(ZFRes)->resIsEof(resToken->fd);
     }
     else {
@@ -431,7 +437,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsError
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         return ZFPROTOCOL_ACCESS(ZFRes)->resIsError(resToken->fd);
     }
     else {
@@ -447,7 +453,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResSize
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType.isEmpty()) {
+    if(resToken->resExtPath.pathType().isEmpty()) {
         ZFPROTOCOL_INTERFACE_CLASS(ZFRes) *impl = ZFPROTOCOL_ACCESS(ZFRes);
         zfindex saved = impl->resTell(resToken->fd);
         impl->resSeek(resToken->fd, 0, ZFSeekPosEnd);

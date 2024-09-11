@@ -4,8 +4,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(json, {
-        zfstring fileExt;
-        if(!ZFPathInfoToFileExt(pathInfo, fileExt)) {
+        zfstring fileExt = ZFFileExtOf(ZFPathInfoToFileName(pathInfo));
+        if(!fileExt) {
             return zffalse;
         }
         zfstringToLowerT(fileExt);

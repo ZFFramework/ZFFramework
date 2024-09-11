@@ -54,12 +54,12 @@ static void _ZFP_zfimportDir(
         , ZF_IN const ZFPathInfo &pathInfoRoot
         , ZF_IN const zfchar *path
         ) {
-    zfstring pathData;
-    if(!impl.callbackToChild(pathInfoRoot.pathData, pathData, path)) {
+    zfstring pathData = impl.implToChild(pathInfoRoot.pathData(), path);
+    if(!pathData) {
         return;
     }
     ZFFileFindData fd;
-    if(impl.callbackFindFirst(fd, pathData)) {
+    if(impl.implFindFirst(fd, pathData)) {
         do {
             zfstring relPath;
             zfstringAppend(relPath, "%s/%s", path, fd.fileName());
@@ -74,21 +74,21 @@ static void _ZFP_zfimportDir(
                     ret->set(key, obj != zfnull ? obj.toObject() : ZFNull());
                 }
             }
-        } while(impl.callbackFindNext(fd));
-        impl.callbackFindClose(fd);
+        } while(impl.implFindNext(fd));
+        impl.implFindClose(fd);
     }
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         , ZFMP_IN(const zfchar *, path)
-        , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         ) {
     zfstring pathFormated;
     if(!ZFPathFormat(pathFormated, path)) {
         return zfnull;
     }
 
-    if(pathInfo == zfnull || pathInfo->isEmpty()) {
+    if(pathInfo == zfnull) {
         if(ZFResIsDir(pathFormated)) {
             const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(ZFPathType_res());
             if(impl == zfnull) {
@@ -109,25 +109,24 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         }
     }
     else {
-        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo->pathType);
+        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
         if(impl == zfnull) {
             return zfnull;
         }
         zfstring pathData;
-        if(!impl->callbackIsDir(pathInfo->pathData)) {
-            impl->callbackToParent(pathInfo->pathData, pathData);
-            if(!impl->callbackToChild(pathData, pathData, pathFormated)) {
-                return zfnull;
-            }
+        if(!impl->implIsDir(pathInfo.pathData())) {
+            pathData = impl->implToParent(pathInfo.pathData());
+            pathData = impl->implToChild(pathData, pathFormated);
         }
         else {
-            if(!impl->callbackToChild(pathInfo->pathData, pathData, pathFormated)) {
-                return zfnull;
-            }
+            pathData = impl->implToChild(pathInfo.pathData(), pathFormated);
         }
-        if(impl->callbackIsDir(pathData)) {
+        if(!pathData) {
+            return zfnull;
+        }
+        if(impl->implIsDir(pathData)) {
             zfobj<ZFMap> ret;
-            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(pathInfo->pathType, pathData), "");
+            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(pathInfo.pathType(), pathData), "");
             return ret;
         }
         else {

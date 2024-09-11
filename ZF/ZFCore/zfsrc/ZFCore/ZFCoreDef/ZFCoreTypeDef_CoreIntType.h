@@ -155,25 +155,25 @@ public:
         template<typename T2> inline D &operator = (const T2 &t_) {t = t_; return *this;} \
         inline operator const T & (void) const {return t;} \
         inline operator T & (void) {return t;} \
-        inline bool operator ! (void) const {return (t > -epsilon && t < epsilon);} \
-        inline bool operator == (const D &t_) const {return (t > t_.t - epsilon && t < t_.t + epsilon);} \
-        inline bool operator != (const D &t_) const {return (t <= t_.t - epsilon || t >= t_.t + epsilon);} \
-        inline bool operator <  (const D &t_) const {return (t <= t_.t - epsilon);} \
-        inline bool operator <= (const D &t_) const {return (t < t_.t + epsilon);} \
+        inline bool operator ! (void) const {return (t >= -epsilon && t <= epsilon);} \
+        inline bool operator == (const D &t_) const {return (t >= t_.t - epsilon && t <= t_.t + epsilon);} \
+        inline bool operator != (const D &t_) const {return (t < t_.t - epsilon || t > t_.t + epsilon);} \
+        inline bool operator <  (const D &t_) const {return (t < t_.t - epsilon);} \
+        inline bool operator <= (const D &t_) const {return (t <= t_.t + epsilon);} \
         inline bool operator >  (const D &t_) const {return (t > t_.t + epsilon);} \
-        inline bool operator >= (const D &t_) const {return (t > t_.t - epsilon);} \
-        inline bool operator == (const T &t_) const {return (t > t_ - epsilon && t < t_ + epsilon);} \
-        inline bool operator != (const T &t_) const {return (t <= t_ - epsilon || t >= t_ + epsilon);} \
-        inline bool operator <  (const T &t_) const {return (t <= t_ - epsilon);} \
-        inline bool operator <= (const T &t_) const {return (t < t_ + epsilon);} \
+        inline bool operator >= (const D &t_) const {return (t >= t_.t - epsilon);} \
+        inline bool operator == (const T &t_) const {return (t >= t_ - epsilon && t <= t_ + epsilon);} \
+        inline bool operator != (const T &t_) const {return (t < t_ - epsilon || t > t_ + epsilon);} \
+        inline bool operator <  (const T &t_) const {return (t < t_ - epsilon);} \
+        inline bool operator <= (const T &t_) const {return (t <= t_ + epsilon);} \
         inline bool operator >  (const T &t_) const {return (t > t_ + epsilon);} \
-        inline bool operator >= (const T &t_) const {return (t > t_ - epsilon);} \
-        inline bool operator == (const int &t_) const {return (t > t_ - epsilon && t < t_ + epsilon);} \
-        inline bool operator != (const int &t_) const {return (t <= t_ - epsilon || t >= t_ + epsilon);} \
-        inline bool operator <  (const int &t_) const {return (t <= t_ - epsilon);} \
-        inline bool operator <= (const int &t_) const {return (t < t_ + epsilon);} \
+        inline bool operator >= (const T &t_) const {return (t >= t_ - epsilon);} \
+        inline bool operator == (const int &t_) const {return (t >= t_ - epsilon && t <= t_ + epsilon);} \
+        inline bool operator != (const int &t_) const {return (t < t_ - epsilon || t > t_ + epsilon);} \
+        inline bool operator <  (const int &t_) const {return (t < t_ - epsilon);} \
+        inline bool operator <= (const int &t_) const {return (t <= t_ + epsilon);} \
         inline bool operator >  (const int &t_) const {return (t > t_ + epsilon);} \
-        inline bool operator >= (const int &t_) const {return (t > t_ - epsilon);} \
+        inline bool operator >= (const int &t_) const {return (t >= t_ - epsilon);} \
         inline D & operator ++ (void) {t += 1; return *this;} \
         inline D operator ++ (int) {D t_(t); t += 1; return t_;} \
         inline D & operator -- (void) {t -= 1; return *this;} \

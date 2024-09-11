@@ -34,7 +34,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
         ) {
     ZFInput ret;
-    ZFInputForPathInfoT(ret, ZFPathType_file(), filePath, flags);
+    ZFInputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), filePath), flags);
     return ret;
 }
 
@@ -54,7 +54,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
         ) {
     ZFOutput ret;
-    ZFOutputForPathInfoT(ret, ZFPathType_file(), filePath, flags);
+    ZFOutputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), filePath), flags);
     return ret;
 }
 
@@ -102,24 +102,24 @@ public:
         T_Holder::pathConvert(pathDataAbs, pathData);
         return ZFFileIsDir(pathDataAbs);
     }
-    static zfbool callbackToFileName(
+    static zfstring callbackToFileName(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &fileName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
+        return ZFPathInfoCallbackToFileNameDefault(pathData, success);
     }
-    static zfbool callbackToChild(
+    static zfstring callbackToChild(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataChild
             , ZF_IN const zfchar *childName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
+        return ZFPathInfoCallbackToChildDefault(pathData, childName, success);
     }
-    static zfbool callbackToParent(
+    static zfstring callbackToParent(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataParent
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToParentDefault(pathData, pathDataParent);
+        return ZFPathInfoCallbackToParentDefault(pathData, success);
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData

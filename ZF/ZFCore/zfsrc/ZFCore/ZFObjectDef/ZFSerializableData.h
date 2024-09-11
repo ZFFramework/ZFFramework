@@ -109,18 +109,13 @@ public:
     /**
      * @brief used for impl to store path related info, see #ZFPathInfo
      */
-    zffinal const ZFPathInfo *pathInfo(void) const;
+    zffinal ZFPathInfo pathInfo(void) const;
     /** @brief see #pathInfo */
-    zffinal void pathInfo(ZF_IN const ZFPathInfo *pathInfo);
-    /** @brief see #pathInfo */
-    zffinal void pathInfo(
-            ZF_IN const zfstring &pathType
-            , ZF_IN const zfstring &pathData
-            );
+    zffinal void pathInfo(ZF_IN const ZFPathInfo &pathInfo);
     /**
      * @brief recursively check path info from child to parent
      */
-    zffinal const ZFPathInfo *pathInfoCheck(void) const;
+    zffinal ZFPathInfo pathInfoCheck(void) const;
 
     // ============================================================
     // parent

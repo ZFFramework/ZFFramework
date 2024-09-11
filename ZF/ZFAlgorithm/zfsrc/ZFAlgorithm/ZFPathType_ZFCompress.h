@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   ZFCompress:http:http://abc.com/some/path/to/a.zip|inner/path/to/content.txt
  * @endcode
  *
- * see #ZFPathInfoChainParse for more info
+ * see #ZFPathInfoChainDecode for more info
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFAlgorithm, ZFCompress)
 

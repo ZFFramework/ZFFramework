@@ -23,7 +23,7 @@ static void _ZFP_ZFStyleLoadImpl(
         , ZF_IN const zfstring &relativePath
         ) {
     ZFFileFindData fd;
-    if(fileImpl.callbackFindFirst(fd, pathData)) {
+    if(fileImpl.implFindFirst(fd, pathData)) {
         do {
             if(*fd.fileName() == '.' || *fd.fileName() == '_'
                     || zfstringFind(fd.fileName(), zfindexMax(), "._.") != zfindexMax()
@@ -37,8 +37,7 @@ static void _ZFP_ZFStyleLoadImpl(
             }
             relativePathTmp += fd.fileName();
 
-            zfstring pathDataChild;
-            fileImpl.callbackToChild(pathData, pathDataChild, fd.fileName());
+            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.fileName());
             if(fd.fileIsDir()) {
                 if(dirNameFilter != zfnull && !dirNameFilter->filterCheckActive(fd.fileName())) {
                     continue;
@@ -55,8 +54,8 @@ static void _ZFP_ZFStyleLoadImpl(
                     _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
                 }
             }
-        } while(fileImpl.callbackFindNext(fd));
-        fileImpl.callbackFindClose(fd);
+        } while(fileImpl.implFindNext(fd));
+        fileImpl.implFindClose(fd);
     }
 }
 
@@ -65,15 +64,15 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
         , ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull)
         , ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull)
         ) {
-    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(fileImpl == zfnull) {
         return zffalse;
     }
     ZFStyleUpdateBlock();
 
-    if(!fileImpl->callbackIsDir(pathInfo.pathData)) {
-        zfstring fileName;
-        if(!fileImpl->callbackToFileName(pathInfo.pathData, fileName)) {
+    if(!fileImpl->implIsDir(pathInfo.pathData())) {
+        zfstring fileName = fileImpl->implToFileName(pathInfo.pathData());
+        if(!fileName) {
             return zffalse;
         }
         if(fileNameFilter != zfnull && !fileNameFilter->filterCheckActive(fileName)) {
@@ -88,7 +87,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
         return zftrue;
     }
 
-    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType, pathInfo.pathData, fileNameFilter, dirNameFilter, zfnull);
+    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType(), pathInfo.pathData(), fileNameFilter, dirNameFilter, zfnull);
     return zftrue;
 }
 

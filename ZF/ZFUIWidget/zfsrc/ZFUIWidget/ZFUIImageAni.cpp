@@ -757,13 +757,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageAniLoad
         return zfnull;
     }
 
-    zfstring fileName;
-    if(!input.pathInfo() && ZFPathInfoToFileName(*input.pathInfo(), fileName)) {
-        // done
-    }
-    else {
-        fileName = input.callbackId();
-    }
+    zfstring fileName = (input.pathInfo()
+            ? ZFPathInfoToFileName(input.pathInfo())
+            : input.callbackId()
+            );
 
     // path/test-(40x30-10).png
     // path/test-(40x30-10-33).png
@@ -803,7 +800,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
     if(images == zfnull || images->isEmpty()) {
         return zffalse;
     }
-    const ZFPathInfoImpl *pathInfoImpl = ZFPathInfoImplForPathType(dst.pathType);
+    const ZFPathInfoImpl *pathInfoImpl = ZFPathInfoImplForPathType(dst.pathType());
     if(pathInfoImpl == zfnull) {
         return zffalse;
     }
@@ -871,8 +868,8 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         return zffalse;
     }
 
-    zfstring fileName;
-    if(!ZFPathInfoToFileNameWithoutExt(dst, fileName)) {
+    zfstring fileName = ZFFileNameOfWithoutExt(ZFPathInfoToFileName(dst));
+    if(!fileName) {
         return zffalse;
     }
     if(frameDuration != 0) {
@@ -890,8 +887,8 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
                 , frameCount
                 );
     }
-    zfstring fileExt;
-    if(!ZFPathInfoToFileExt(dst, fileExt)) {
+    zfstring fileExt = ZFFileExtOf(pathInfoImpl->implToFileName(dst.pathData()));
+    if(!fileExt) {
         return zffalse;
     }
     if(!fileExt) {
@@ -899,15 +896,14 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         fileName += fileExt;
     }
 
-    zfstring pathData;
-    if(!pathInfoImpl->callbackToParent(dst.pathData, pathData)
-            || !pathInfoImpl->callbackToChild(pathData, pathData, fileName)
-            ) {
+    zfstring pathData = pathInfoImpl->implToParent(dst.pathData());
+    pathData = pathInfoImpl->implToChild(pathData, fileName);
+    if(!pathData) {
         return zffalse;
     }
     ZFOutput output;
     output.callbackSerializeDisable();
-    if(!ZFOutputForPathInfoT(output, dst.pathType, pathData)) {
+    if(!ZFOutputForPathInfoT(output, ZFPathInfo(dst.pathType(), pathData))) {
         return zffalse;
     }
     if(!ZFUIImageToOutput(output, holder)) {

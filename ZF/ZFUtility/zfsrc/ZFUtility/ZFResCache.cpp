@@ -19,10 +19,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFResCacheAutoCleanup)
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
         , ZFMP_IN(const zfchar *, resFilePath)
-        , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         ) {
     ZFInput input;
-    if(pathInfo == zfnull || pathInfo->isEmpty()) {
+    if(pathInfo == zfnull) {
         input = ZFInputForRes(resFilePath);
     }
     else {

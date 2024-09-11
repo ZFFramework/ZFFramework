@@ -146,7 +146,7 @@ typedef enum {
 #define ZFTOKEN_ZFClassDataUpdateTypeClassAliasDetach "ClassAliasDetach"
 
 /** @brief data holder for #ZFGlobalEvent::EventClassDataUpdate */
-zfclassPOD ZFLIB_ZFCore ZFClassDataUpdateData {
+zfclassLikePOD ZFLIB_ZFCore ZFClassDataUpdateData {
 public:
     ZFClassDataUpdateType changeType; /**< @brief change type */
     const ZFClass *changedClass; /**< @brief changed class */

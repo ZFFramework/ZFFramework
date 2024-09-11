@@ -129,33 +129,32 @@ public:
                 );
         return recv->success() && zfstringIsEqual(recv->header("Content-Type"), "text/html");
     }
-    static zfbool callbackToFileName(
+    static zfstring callbackToFileName(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &fileName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        zfindex lenSaved = fileName.length();
-        if(!ZFPathInfoCallbackToFileNameDefault(pathData, fileName)) {
-            return zffalse;
-        }
-        zfindex pos = zfstringFindReversely(fileName + lenSaved, "?");
+        zfstring ret = ZFPathInfoCallbackToFileNameDefault(pathData, success);
+        zfindex pos = zfstringFindReversely(ret, "?");
         if(pos != zfindexMax()) {
-            pos += lenSaved;
-            fileName.remove(pos, fileName.length() - pos);
+            ret.remove(pos);
         }
-        return zftrue;
+        if(success) {
+            *success = zftrue;
+        }
+        return ret;
     }
-    static zfbool callbackToChild(
+    static zfstring callbackToChild(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataChild
             , ZF_IN const zfchar *childName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
+        return ZFPathInfoCallbackToChildDefault(pathData, childName, success);
     }
-    static zfbool callbackToParent(
+    static zfstring callbackToParent(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataParent
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToParentDefault(pathData, pathDataParent);
+        return ZFPathInfoCallbackToParentDefault(pathData, success);
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData

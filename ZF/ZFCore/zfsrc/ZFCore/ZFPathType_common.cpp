@@ -82,24 +82,33 @@ public:
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
         return zffalse;
     }
-    static zfbool callbackToFileName(
+    static zfstring callbackToFileName(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &fileName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return zffalse;
+        if(success) {
+            *success = zffalse;
+        }
+        return zfnull;
     }
-    static zfbool callbackToChild(
+    static zfstring callbackToChild(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataChild
             , ZF_IN const zfchar *childName
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return zffalse;
+        if(success) {
+            *success = zffalse;
+        }
+        return zfnull;
     }
-    static zfbool callbackToParent(
+    static zfstring callbackToParent(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OUT zfstring &pathDataParent
+            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return zffalse;
+        if(success) {
+            *success = zffalse;
+        }
+        return zfnull;
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData

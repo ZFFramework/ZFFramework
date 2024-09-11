@@ -371,7 +371,7 @@ static void _ZFP_ZFFileTreePrint(
         , ZF_IN ZFPathInfoImpl const &fileImpl
         ) {
     ZFFileFindData fd;
-    if(fileImpl.callbackFindFirst(fd, pathData)) {
+    if(fileImpl.implFindFirst(fd, pathData)) {
         do {
             if(headToken != zfnull) {
                 outputCallback << headToken;
@@ -384,8 +384,8 @@ static void _ZFP_ZFFileTreePrint(
 
             if(fd.fileIsDir()) {
                 outputCallback << fd.fileName() << "/\n";
-                zfstring pathDataChild;
-                if(fileImpl.callbackToChild(pathData, pathDataChild, fd.fileName())) {
+                zfstring pathDataChild = fileImpl.implToChild(pathData, fd.fileName());
+                if(pathDataChild) {
                     _ZFP_ZFFileTreePrint(pathDataChild, outputCallback, headToken, indentToken, indentLevel + 1, fileImpl);
                 }
             }
@@ -393,8 +393,8 @@ static void _ZFP_ZFFileTreePrint(
                 outputCallback << fd.fileName();
                 outputCallback << "\n";
             }
-        } while(fileImpl.callbackFindNext(fd));
-        fileImpl.callbackFindClose(fd);
+        } while(fileImpl.implFindNext(fd));
+        fileImpl.implFindClose(fd);
     }
 }
 
@@ -404,13 +404,9 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFPathInfoTreePrint
         , ZFMP_IN_OPT(const zfchar *, headToken, zfnull)
         , ZFMP_IN_OPT(const zfchar *, indentToken, "  ")
         ) {
-    const ZFPathInfoImpl *data = ZFPathInfoImplForPathType(pathInfo.pathType);
-    if(data != zfnull
-            && data->callbackFindFirst
-            && data->callbackFindNext
-            && data->callbackFindClose
-            ) {
-        _ZFP_ZFFileTreePrint(pathInfo.pathData, outputCallback, headToken, indentToken, 0, *data);
+    const ZFPathInfoImpl *data = ZFPathInfoImplForPathType(pathInfo.pathType());
+    if(data != zfnull) {
+        _ZFP_ZFFileTreePrint(pathInfo.pathData(), outputCallback, headToken, indentToken, 0, *data);
     }
 }
 
@@ -424,9 +420,10 @@ public:
             , ZF_IN v_ZFPathInfo *pathInfo
             ) {
         zfobj<v_ZFFileFindData> fd;
-        if(impl.callbackFindFirst(fd->zfv, pathInfo->zfv.pathData)) {
+        if(impl.implFindFirst(fd->zfv, pathInfo->zfv.pathData())) {
             do {
-                if(!impl.callbackToChild(pathInfo->zfv.pathData, pathInfo->zfv.pathData, fd->zfv.fileName())) {
+                pathInfo->zfv.pathData(impl.implToChild(pathInfo->zfv.pathData(), fd->zfv.fileName()));
+                if(!pathInfo->zfv.pathData()) {
                     return zffalse;
                 }
 
@@ -440,11 +437,12 @@ public:
                     action(impl, fileCallback, pathInfo);
                 }
 
-                if(!impl.callbackToParent(pathInfo->zfv.pathData, pathInfo->zfv.pathData)) {
+                pathInfo->zfv.pathData(impl.implToParent(pathInfo->zfv.pathData()));
+                if(!pathInfo->zfv.pathData()) {
                     return zffalse;
                 }
-            } while(impl.callbackFindNext(fd->zfv));
-            impl.callbackFindClose(fd->zfv);
+            } while(impl.implFindNext(fd->zfv));
+            impl.implFindClose(fd->zfv);
         }
         return zftrue;
     }
@@ -454,7 +452,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEach
         , ZFMP_IN(const ZFListener &, fileCallback)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         ) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
         return zffalse;
     }
@@ -472,7 +470,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachFile
         , ZFMP_IN(const ZFListener &, fileCallback)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         ) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
         return zffalse;
     }
@@ -489,7 +487,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachDir
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFListener &, fileCallback)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
         return zffalse;
     }

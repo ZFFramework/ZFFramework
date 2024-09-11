@@ -35,10 +35,10 @@ if ZF_ROOT_PATH:pathType() ~= ZFPathType_file() then
     zfLogTrim('only support from file')
     return
 end
-ZFPathInfoToParent(ZF_ROOT_PATH)
+ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
 local WORK_DIR = ZF_ROOT_PATH:pathData()
-ZFPathInfoToParent(ZF_ROOT_PATH)
-ZFPathInfoToParent(ZF_ROOT_PATH)
+ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
+ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
 ZF_ROOT_PATH = ZF_ROOT_PATH:pathData()
 
 local _PY = nil
