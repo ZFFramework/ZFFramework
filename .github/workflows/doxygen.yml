@@ -17,22 +17,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup Doxygen tmp dir
+    - name: ZFSetup
       run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
         mkdir -p ./_tmp
 
-    - name: Setup Doxygen
+    - name: ZF gen doc
       uses: mattnotmitt/doxygen-action@edge
       with:
         working-directory: master/ZF_docs/Doxygen
         doxyfile-path: ./Doxyfile
 
-    - name: ZFSetup
-      run: |
-        chmod +x ./zfsetup.sh
-        ./zfsetup.sh
-
-    - name: ZF doxygen
+    - name: ZF upload
       run: |
         if [ $(basename $(dirname $(git remote get-url origin)) .git) = "ZFFramework" ]; then
         chmod +x ../ZFFramework/master/ZF_CI/doc.sh
