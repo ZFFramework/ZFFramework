@@ -120,10 +120,6 @@ public:
 
 protected:
     zfoverride
-    virtual void aniImplDelay(void);
-    zfoverride
-    virtual void aniImplDelayCancel(void);
-    zfoverride
     virtual void aniImplStart(void);
     zfoverride
     virtual void aniImplStop(void);

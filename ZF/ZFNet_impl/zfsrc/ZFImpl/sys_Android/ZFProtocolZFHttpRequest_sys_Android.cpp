@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFHttpRequestImpl_sys_Android_Task {
 public:
-    v_zfbool *running;
+    zfobj<v_zfbool> running;
     ZFHttpRequest *request;
     ZFBuffer body;
     jobject nativeTask;
@@ -37,7 +37,7 @@ public:
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = zfnew(_ZFP_ZFHttpRequestImpl_sys_Android_Task);
-        task->running = zfAlloc(v_zfbool, zftrue);
+        task->running->zfv = zftrue;
         task->request = request;
         task->nativeTask = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , JNIConvertZFObjectToJNIType(jniEnv, request)
@@ -57,7 +57,6 @@ public:
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
         zfCoreMutexLocker();
         task->running->zfv = zffalse;
-        zfRelease(task->running);
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId, (jobject)task->nativeTask);
         JNIUtilDeleteGlobalRef(jniEnv, (jobject)task->nativeTask);
         zfdelete(task);

@@ -29,6 +29,12 @@ ZFMETHOD_DEFINE_0(ZFUIPage, zfbool, pageResumed) {
     return _ZFP_ZFUIPage_pageResumed;
 }
 
+ZFMETHOD_DEFINE_1(ZFUIPage, void, pageCreate
+        , ZFMP_IN(ZFUIPage *, page)
+        ) {
+    this->pageManager()->pageCreate(page);
+}
+
 ZFMETHOD_DEFINE_0(ZFUIPage, void, pageResume) {
     this->pageManager()->pageResume(this);
 }

@@ -161,7 +161,7 @@ public:
     /**
      * @brief return true if contain the specified value
      */
-    virtual zfbool enumContainValue(ZF_IN zfuint value) zfpurevirtual;
+    virtual zfbool enumValueContain(ZF_IN zfuint value) zfpurevirtual;
 
     /**
      * @brief get the value with specified name, or ZFEnumInvalid if not exist
@@ -206,7 +206,7 @@ public:
      * must be the enum's value or ZFEnumInvalid
      */
     virtual void enumValue(ZF_IN zfuint const &value) {
-        if(!this->enumIsFlags() && !this->enumContainValue(value)) {
+        if(!this->enumIsFlags() && !this->enumValueContain(value)) {
             _ZFP_ZFEnum_value = ZFEnumInvalid();
             return;
         }

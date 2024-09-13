@@ -82,7 +82,7 @@ const zfstring &_ZFP_ZFEnumData::enumNameAt(ZF_IN zfindex index) const {
         return d->nl[index];
     }
 }
-zfbool _ZFP_ZFEnumData::enumContainValue(ZF_IN zfuint value) const {
+zfbool _ZFP_ZFEnumData::enumValueContain(ZF_IN zfuint value) const {
     return (d->valueMap.find(value) != d->valueMap.end());
 }
 zfuint _ZFP_ZFEnumData::enumValueForName(ZF_IN const zfstring &name) const {
@@ -174,9 +174,9 @@ void _ZFP_ZFEnumMethodReg(
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumContainValue(value);
+                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumValueContain(value);
             }, d->ownerClass, public, ZFMethodTypeStatic,
-            zfbool, zftext("EnumContainValue"),
+            zfbool, zftext("EnumValueContain"),
             ZFMP_IN(zfuint, value));
         ret.add(resultMethod);
     }

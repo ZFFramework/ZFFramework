@@ -173,10 +173,6 @@ public:
             , ZFMP_IN(ZFObject *, aniTarget)
             )
     /** @brief util to set last child's property */
-    ZFMETHOD_DECLARE_1(void, childDelay
-            , ZFMP_IN(zftimet, aniDelay)
-            )
-    /** @brief util to set last child's property */
     ZFMETHOD_DECLARE_1(void, childDuration
             , ZFMP_IN(zftimet, aniDuration)
             )
@@ -209,6 +205,31 @@ public:
     /** @brief util to attach observer */
     ZFMETHOD_DECLARE_1(void, childOnStop
             , ZFMP_IN(const ZFListener &, cb)
+            )
+
+    // ============================================================
+    // util
+public:
+    /**
+     * @brief util to add a dummy child animation to wait specified duration
+     */
+    ZFMETHOD_DECLARE_1(void, wait
+            , ZFMP_IN(zftimet, duration)
+            )
+    /**
+     * @brief util to attach callback to animation group
+     *
+     * -  when cancelImpl not specified:
+     *   call runImpl and stop the step
+     * -  when cancelImpl specified:
+     *   -  runImpl would be called with #ZFTaskId as #ZFArgs::param0,
+     *     runImpl must call #ZFTaskId::stop
+     *     to indicates step finish
+     *   -  cancelImpl would be called when owner animation group canceled
+     */
+    ZFMETHOD_DECLARE_2(void, step
+            , ZFMP_IN(const ZFListener &, runImpl)
+            , ZFMP_IN_OPT(const ZFListener &, cancelImpl, zfnull)
             )
 
     // ============================================================
@@ -260,14 +281,6 @@ private:
  */
 zfclass ZFLIB_ZFUtility ZFAniQueue : zfextend ZFAniGroup {
     ZFOBJECT_DECLARE(ZFAniQueue, ZFAniGroup)
-
-public:
-    /**
-     * @brief util to add a dummy child animation to wait specified duration
-     */
-    ZFMETHOD_DECLARE_1(void, wait
-            , ZFMP_IN(zftimet, duration)
-            )
 
 protected:
     zfoverride

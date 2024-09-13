@@ -66,10 +66,6 @@ public:
     // property
 public:
     /**
-     * @brief animation's delay in miliseconds, 0 by default
-     */
-    ZFPROPERTY_ASSIGN(zftimet, aniDelay)
-    /**
      * @brief animation's duration in miliseconds, 0 to use #ZFAnimationDurationDefault, 0 by default
      */
     ZFPROPERTY_ASSIGN(zftimet, aniDuration)
@@ -119,10 +115,6 @@ public:
      * @brief true if the animation is running (or delaying)
      */
     ZFMETHOD_DECLARE_0(zfbool, aniRunning)
-    /**
-     * @brief true if the animation is delaying
-     */
-    ZFMETHOD_DECLARE_0(zfbool, aniDelaying)
     /**
      * @brief stop the animation or do nothing if not started
      */
@@ -192,30 +184,10 @@ protected:
     }
 
 public:
-    zffinal void _ZFP_ZFAnimation_aniImplDelayNotifyFinish(void);
     zffinal void _ZFP_ZFAnimation_aniReadyStart(void);
     zffinal void _ZFP_ZFAnimation_aniReadyStop(void);
     zffinal void _ZFP_ZFAnimation_aniDummyNotifyStop(void);
 protected:
-    /**
-     * @brief for subclass to achieve delay logic
-     *
-     * by default, this method would implement delay by #ZFTimerOnce,
-     * you may override and supply your own implementation without call super,
-     * if you do, you must override or call all of these methods:
-     * -  aniImplDelay: to achieve delay
-     * -  aniImplDelayCancel: to achieve delay cancel
-     * -  aniImplDelayNotifyFinish: to notify delay finished
-     */
-    virtual void aniImplDelay(void);
-    /**
-     * @brief see #aniImplDelay
-     */
-    virtual void aniImplDelayCancel(void);
-    /**
-     * @brief see #aniImplDelay
-     */
-    zffinal void aniImplDelayNotifyFinish(void);
     /**
      * @brief for subclass to achieve actual animation
      */

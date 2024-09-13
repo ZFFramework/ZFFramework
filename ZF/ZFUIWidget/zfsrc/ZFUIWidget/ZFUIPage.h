@@ -182,6 +182,10 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, pageResumed)
 
 public:
+    /** @brief util to #ZFUIPageManager::pageCreate */
+    ZFMETHOD_DECLARE_1(void, pageCreate
+            , ZFMP_IN(ZFUIPage *, page)
+            )
     /** @brief util to #ZFUIPageManager::pageResume */
     ZFMETHOD_DECLARE_0(void, pageResume)
     /** @brief util to #ZFUIPageManager::pageDestroy */

@@ -157,7 +157,7 @@ public:
     zfindex enumIndexForValue(ZF_IN zfuint value) const;
     zfuint enumValueAt(ZF_IN zfindex index) const;
     const zfstring &enumNameAt(ZF_IN zfindex index) const;
-    zfbool enumContainValue(ZF_IN zfuint value) const;
+    zfbool enumValueContain(ZF_IN zfuint value) const;
     zfuint enumValueForName(ZF_IN const zfstring &name) const;
     const zfstring &enumNameForValue(ZF_IN zfuint value) const;
 private:
@@ -215,8 +215,8 @@ public:
             return zfself::_ZFP_ZFEnumDataRef()->enumNameAt(index); \
         } \
         /** @brief return true if contain the specified value */ \
-        static zfbool EnumContainValue(ZF_IN zfuint value) { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumContainValue(value); \
+        static zfbool EnumValueContain(ZF_IN zfuint value) { \
+            return zfself::_ZFP_ZFEnumDataRef()->enumValueContain(value); \
         } \
         /** @brief get value with name, or ZFEnumInvalid if not exist */ \
         static zfuint EnumValueForName(ZF_IN const zfstring &name) { \
@@ -253,8 +253,8 @@ public:
             return zfself::EnumNameAt(index); \
         } \
         zfoverride \
-        virtual zfbool enumContainValue(ZF_IN zfuint value) { \
-            return zfself::EnumContainValue(value); \
+        virtual zfbool enumValueContain(ZF_IN zfuint value) { \
+            return zfself::EnumValueContain(value); \
         } \
         zfoverride \
         virtual zfuint enumValueForName(ZF_IN const zfstring &name) { \

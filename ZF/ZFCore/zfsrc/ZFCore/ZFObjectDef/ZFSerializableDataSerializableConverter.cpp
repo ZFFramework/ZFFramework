@@ -477,7 +477,9 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
                 result += '\n';
                 _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel + 1);
             }
-            result += _ZFP_ZFSD_Space;
+            else {
+                result += _ZFP_ZFSD_Space;
+            }
             zfCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
             result += _ZFP_ZFSD_AttrAssign;
             _ZFP_ZFSD_AttrValueEncode(result, serializableData.attrIterValue(it));

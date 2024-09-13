@@ -17,10 +17,8 @@ zfclassNotPOD _ZFP_ZFAnimationPrivate {
 public:
     ZFObjectHolder *aniTargetHolder;
     zfbool aniRunning;
-    zfbool aniDelaying;
     zfbool aniImplStartFlag;
     zfbool aniStoppedByUser;
-    zfautoT<ZFTimer> aniDelayTimer;
     zfautoT<ZFTimer> aniDummyTimer;
     zfidentity aniId;
     zfindex aniLoopCur;
@@ -29,10 +27,8 @@ public:
     _ZFP_ZFAnimationPrivate(void)
     : aniTargetHolder(zfnull)
     , aniRunning(zffalse)
-    , aniDelaying(zffalse)
     , aniImplStartFlag(zffalse)
     , aniStoppedByUser(zffalse)
-    , aniDelayTimer()
     , aniDummyTimer()
     , aniId(zfidentityInvalid())
     , aniLoopCur(0)
@@ -82,25 +78,14 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStart) {
     zfRetain(this);
     zfRetain(this->aniTarget());
 
-    d->aniRunning = zftrue;
-    d->aniDelaying = zffalse;
     ++(d->aniId);
-
-    if(this->aniDelay() > 0) {
-        d->aniDelaying = zftrue;
-        this->aniImplDelay();
-    }
-    else {
-        d->aniImplStartFlag = zftrue;
-        this->aniImplStart();
-    }
+    d->aniRunning = zftrue;
+    d->aniImplStartFlag = zftrue;
+    this->aniImplStart();
     this->aniOnStart();
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniRunning) {
     return d->aniRunning;
-}
-ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniDelaying) {
-    return d->aniDelaying;
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStop) {
     if(!(d->aniRunning)) {
@@ -108,10 +93,6 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStop) {
     }
     d->aniStoppedByUser = zftrue;
     ++(d->aniId);
-    if(d->aniDelaying) {
-        d->aniDelaying = zffalse;
-        this->aniImplDelayCancel();
-    }
     this->aniImplNotifyStop(ZFResultType::e_Cancel);
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniStoppedByUser) {
@@ -156,9 +137,6 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStop
     this->observerAdd(zfself::EventAniOnStop(), cb);
 }
 
-void ZFAnimation::_ZFP_ZFAnimation_aniImplDelayNotifyFinish() {
-    this->aniImplDelayNotifyFinish();
-}
 void ZFAnimation::_ZFP_ZFAnimation_aniReadyStart(void) {
     if(this->aniTarget() != zfnull) {
         _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
@@ -186,32 +164,6 @@ void ZFAnimation::_ZFP_ZFAnimation_aniReadyStop(void) {
 void ZFAnimation::_ZFP_ZFAnimation_aniDummyNotifyStop(void) {
     d->aniDummyTimer = zfnull;
     this->aniImplNotifyStop();
-}
-void ZFAnimation::aniImplDelay(void) {
-    ZFAnimation *owner = this;
-    ZFLISTENER_1(delayOnFinish
-            , ZFAnimation *, owner
-            ) {
-        owner->_ZFP_ZFAnimation_aniImplDelayNotifyFinish();
-    } ZFLISTENER_END()
-    d->aniDelayTimer = ZFTimerOnce(
-        this->aniDelay(),
-        delayOnFinish);
-    this->aniOnDelayBegin();
-}
-void ZFAnimation::aniImplDelayCancel(void) {
-    if(d->aniDelayTimer != zfnull) {
-        d->aniDelayTimer->timerStop();
-        d->aniDelayTimer = zfnull;
-        this->aniOnDelayEnd(ZFResultType::e_Cancel);
-    }
-}
-void ZFAnimation::aniImplDelayNotifyFinish(void) {
-    zfCoreAssertWithMessage(d->aniDelaying, "notify delay finish an animation which not delaying");
-    this->aniOnDelayEnd(ZFResultType::e_Success);
-    d->aniDelaying = zffalse;
-    d->aniImplStartFlag = zftrue;
-    this->aniImplStart();
 }
 
 void ZFAnimation::aniImplStart(void) {
@@ -251,14 +203,8 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = Z
         ++(d->aniLoopCur);
         if(this->aniLoop() == zfindexMax() || d->aniLoopCur <= this->aniLoop()) {
             this->aniOnLoop();
-            if(this->aniDelay() > 0) {
-                d->aniDelaying = zftrue;
-                this->aniImplDelay();
-            }
-            else {
-                d->aniImplStartFlag = zftrue;
-                this->aniImplStart();
-            }
+            d->aniImplStartFlag = zftrue;
+            this->aniImplStart();
             return;
         }
     }

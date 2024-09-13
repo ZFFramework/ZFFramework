@@ -8,8 +8,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFEVENT_GLOBAL_REGISTER(ImportBegin)
-ZFEVENT_GLOBAL_REGISTER(ImportEnd)
+ZFEVENT_GLOBAL_REGISTER(ZFImportBegin)
+ZFEVENT_GLOBAL_REGISTER(ZFImportEnd)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 typedef zfstlmap<zfstring, zfauto> _ZFP_zfimportCacheMapType;
@@ -37,9 +37,9 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
 
     zfobj<v_ZFInput> inputHolder;
     inputHolder->zfv = input;
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportBegin(), inputHolder);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFImportBegin(), inputHolder);
     zfbool success = ZFObjectIOLoadT(ret, input);
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportEnd(), inputHolder, ret);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFImportEnd(), inputHolder, ret);
 
     if(success && input.callbackId() != zfnull) {
         zfCoreMutexLocker();

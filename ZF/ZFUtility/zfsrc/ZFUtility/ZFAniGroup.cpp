@@ -202,7 +202,6 @@ zftimet ZFAniGroup::aniDurationFixed(void) {
             if(this->autoUpdateDuration()) {
                 ani->aniDuration(this->aniDuration());
             }
-            ret += ani->aniDelay();
             ret += ani->aniDurationFixed();
         }
     }
@@ -212,7 +211,7 @@ zftimet ZFAniGroup::aniDurationFixed(void) {
             if(this->autoUpdateDuration()) {
                 ani->aniDuration(this->aniDuration());
             }
-            ret = zfmMax<zftimet>(ret, ani->aniDelay() + ani->aniDurationFixed());
+            ret = zfmMax<zftimet>(ret, ani->aniDurationFixed());
         }
     }
     if(ret == 0) {
@@ -459,14 +458,6 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childTarget
         this->childTargetAt(this->childCount() - 1, aniTarget);
     }
 }
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, childDelay
-        , ZFMP_IN(zftimet, aniDelay)
-        ) {
-    if(this->childCount() > 0) {
-        ZFAnimation *child = this->childAt(this->childCount() - 1);
-        child->aniDelay(aniDelay);
-    }
-}
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, childDuration
         , ZFMP_IN(zftimet, aniDuration)
         ) {
@@ -535,13 +526,65 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnStop
 }
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFAniQueue)
-
-ZFMETHOD_DEFINE_1(ZFAniQueue, void, wait
+ZFMETHOD_DEFINE_1(ZFAniGroup, void, wait
         , ZFMP_IN(zftimet, duration)
         ) {
     this->child(zfobj<ZFAnimation>()->c_aniDuration(duration));
 }
+zfclass _ZFP_I_ZFAniGroupStep : zfextend ZFAnimation {
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFAniGroupStep, ZFAnimation)
+protected:
+    _ZFP_I_ZFAniGroupStep(void) : runImpl(), cancelImpl(), needCancel(zffalse) {}
+public:
+    ZFListener runImpl;
+    ZFListener cancelImpl;
+    zfbool needCancel;
+protected:
+    zfoverride
+    virtual void aniImplStart(void) {
+        zfsuper::aniImplStart();
+        if(this->cancelImpl) {
+            zfself *owner = this;
+            ZFLISTENER_1(implStop
+                    , zfweakT<zfself>, owner
+                    ) {
+                owner->needCancel = zffalse;
+                owner->aniImplNotifyStop();
+            } ZFLISTENER_END()
+            this->needCancel = zftrue;
+            this->runImpl.execute(ZFArgs()
+                    .sender(this)
+                    .param0(zfobj<ZFTaskIdBasic>(implStop))
+                    );
+        }
+        else {
+            this->runImpl.execute(ZFArgs().sender(this));
+            this->aniImplNotifyStop();
+        }
+    }
+    zfoverride
+    virtual void aniImplStop(void) {
+        if(this->needCancel) {
+            this->needCancel = zffalse;
+            this->cancelImpl.execute(ZFArgs().sender(this));
+        }
+        zfsuper::aniImplStop();
+    }
+};
+ZFMETHOD_DEFINE_2(ZFAniGroup, void, step
+        , ZFMP_IN(const ZFListener &, runImpl)
+        , ZFMP_IN_OPT(const ZFListener &, cancelImpl, zfnull)
+        ) {
+    if(runImpl) {
+        zfobj<_ZFP_I_ZFAniGroupStep> step;
+        step->runImpl = runImpl;
+        step->cancelImpl = cancelImpl;
+        this->child(step);
+    }
+}
+
+// ============================================================
+ZFOBJECT_REGISTER(ZFAniQueue)
 
 ZF_NAMESPACE_GLOBAL_END
 

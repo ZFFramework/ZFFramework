@@ -45,8 +45,8 @@ public:
         return _ZFP_ZFEnumDataRef()->enumNameAt(index);
     }
     zfoverride
-    virtual zfbool enumContainValue(ZF_IN zfuint value) {
-        return _ZFP_ZFEnumDataRef()->enumContainValue(value);
+    virtual zfbool enumValueContain(ZF_IN zfuint value) {
+        return _ZFP_ZFEnumDataRef()->enumValueContain(value);
     }
     zfoverride
     virtual zfuint enumValueForName(ZF_IN const zfstring &name) {

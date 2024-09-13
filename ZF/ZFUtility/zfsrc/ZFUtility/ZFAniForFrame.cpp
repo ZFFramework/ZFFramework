@@ -228,48 +228,6 @@ zftimet ZFAniForFrame::aniDurationFixed(void) {
     return d->aniDurationFixed;
 }
 
-void ZFAniForFrame::aniImplDelay(void) {
-#if !_ZFP_ZFAniForFrame_DEBUG_noGlobalTimer
-    d->useGlobalTimer = (this->useGlobalTimer());
-#else
-    d->useGlobalTimer = zffalse;
-#endif
-    if(!d->useGlobalTimer) {
-        zfsuper::aniImplDelay();
-        return;
-    }
-    d->globalTimerFrameCount = (zfuint)zfmRound(this->aniDelay() / ZFGlobalTimerIntervalDefault());
-    if(d->globalTimerFrameCount == 0) {
-        d->globalTimerTask = zfnull;
-        this->aniImplDelayNotifyFinish();
-        return;
-    }
-    d->globalTimerFrameIndex = 0;
-    ZFAniForFrame *owner = this;
-    ZFLISTENER_1(globalTimerOnActivate
-            , ZFAniForFrame *, owner
-            ) {
-        ++(owner->d->globalTimerFrameIndex);
-        if(owner->d->globalTimerFrameIndex >= owner->d->globalTimerFrameCount) {
-            ZFGlobalTimerDetach(owner->d->globalTimerTask);
-            owner->d->globalTimerTask = zfnull;
-            owner->aniImplDelayNotifyFinish();
-        }
-    } ZFLISTENER_END()
-    d->globalTimerTask = globalTimerOnActivate;
-    ZFGlobalTimerAttach(owner->d->globalTimerTask);
-}
-void ZFAniForFrame::aniImplDelayCancel(void) {
-    if(!d->useGlobalTimer) {
-        zfsuper::aniImplDelayCancel();
-        return;
-    }
-    if(d->globalTimerTask) {
-        ZFGlobalTimerDetach(d->globalTimerTask);
-        d->globalTimerTask = zfnull;
-    }
-}
-
 void ZFAniForFrame::aniImplStart(void) {
     zfsuper::aniImplStart();
     _ZFP_ZFAniForFramePrivate::doStart(this);
