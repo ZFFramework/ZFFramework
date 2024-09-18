@@ -86,7 +86,7 @@ public:
             , ZF_IN ZFLevel observerLevel
             , ZF_IN zfbool once
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
 
         if(eventId == zfidentityInvalid()
                 || !observer
@@ -94,7 +94,7 @@ public:
             return;
         }
         if(this->observerOwner && this->observerOwner->objectDeallocRunning()) {
-            zfCoreCriticalMessageTrim("[ZFObject] you must not add observer while object is deallocating, class: %s, event: %s",
+            ZFCoreCriticalMessageTrim("[ZFObject] you must not add observer while object is deallocating, class: %s, event: %s",
                 this->observerOwner->classData()->classNameFull(),
                 ZFEventNameForId(eventId));
             return;
@@ -241,7 +241,7 @@ void ZFObserver::observerRemove(
         ZF_IN zfidentity eventId
         , ZF_IN const ZFListener &callback
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
     if(it != d->observerMap.end()) {
@@ -265,7 +265,7 @@ void ZFObserver::observerRemove(
     }
 }
 void ZFObserver::observerRemoveAll(ZF_IN zfidentity eventId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
     if(it == d->observerMap.end()) {
         return;
@@ -291,7 +291,7 @@ void ZFObserver::observerRemoveAll(void) {
         return;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstlmap<zfidentity, _ZFP_ZFObserverData *> tmp;
     tmp.swap(d->observerMap);
     d->observerMap.clear();
@@ -349,7 +349,7 @@ void ZFObserver::observerNotifyWithSender(
         return;
     }
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfstldeque<_ZFP_ZFObserverData *> toNotify;
     _ZFP_ZFObserverData *toDelete = zfnull;
 
@@ -365,7 +365,7 @@ void ZFObserver::observerNotifyWithSender(
         d->observerOwner->observerOnEvent(zfargs);
         ZFGlobalObserver().d->observerNotifyPrepare(toNotify, toDelete, eventId, d->observerOwner);
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 
     if(!toNotify.empty()) {
         for(zfstlsize i = 0; i < toNotify.size() && !zfargs.eventFiltered(); ++i) {
@@ -375,13 +375,13 @@ void ZFObserver::observerNotifyWithSender(
     }
 
     if(toDelete != zfnull) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         do {
             _ZFP_ZFObserverData *t = toDelete;
             toDelete = toDelete->pNext;
             zfpoolDelete(t);
         } while(toDelete != zfnull);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
 }
 
@@ -413,7 +413,7 @@ void ZFObserver::observerHasAddStateDetach(
 }
 
 void ZFObserver::objectInfoT(ZF_OUT zfstring &ret) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ret += "<ZFObserver";
 
     if(d->observerOwner != zfnull) {

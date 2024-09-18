@@ -61,7 +61,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForImplOwner, zfindex, onInput
                 .param1(this->_countCache)
                 .result(this->_resultCache)
             );
-        zfCoreAssert(this->_resultCache->zfv <= this->_bufCache->zfv.length());
+        ZFCoreAssert(this->_resultCache->zfv <= this->_bufCache->zfv.length());
         zfmemcpy(buf, this->_bufCache->zfv.cString(), this->_resultCache->zfv);
         return this->_resultCache->zfv;
     }

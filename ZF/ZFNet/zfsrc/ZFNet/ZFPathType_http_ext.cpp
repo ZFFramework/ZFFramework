@@ -54,14 +54,14 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
         if(*(urlEnd - 1) == '/') {
             if(zfstringFind(url, urlEnd - url - 1, '/') == zfindexMax()) {
                 zfstring result;
-                zfCoreDataDecode(result, url, urlEnd - url - 1);
+                ZFCoreDataDecode(result, url, urlEnd - url - 1);
                 impl->dirs.add(result);
             }
         }
         else {
             if(zfstringFind(url, urlEnd - url, '/') == zfindexMax()) {
                 zfstring result;
-                zfCoreDataDecode(result, url, urlEnd - url);
+                ZFCoreDataDecode(result, url, urlEnd - url);
                 impl->files.add(result);
             }
         }

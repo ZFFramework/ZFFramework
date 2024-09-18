@@ -57,7 +57,7 @@ public:
             , ZF_IN _ZFP_SI_Destructor destructor
             ) {
         _ZFP_ZFCoreStaticInitializer_invokeTimeLogger("create: %s", name.cString());
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         for(zfindex i = 0; i < this->datas.count(); ++i) {
             if(this->datas[i]->name.compare(name) == 0) {
                 ++(this->datas[i]->refCount);
@@ -72,7 +72,7 @@ public:
         return item->instance;
     }
     void instanceCleanup(ZF_IN void *instance) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         for(zfindex i = 0; i < this->datas.count(); ++i) {
             if(this->datas[i]->instance == instance) {
                 --(this->datas[i]->refCount);

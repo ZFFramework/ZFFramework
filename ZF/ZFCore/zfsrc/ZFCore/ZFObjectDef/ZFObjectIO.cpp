@@ -23,12 +23,12 @@ void _ZFP_ZFObjectIORegister(
         , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
         , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstldeque<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
     for(zfstlsize i = 0; i < l.size(); ++i) {
         _ZFP_ZFObjectIOData *item = l[i];
         if(item->checker == checker && item->fromInput == fromInput && item->toOutput == toOutput) {
-            zfCoreCriticalMessageTrim("[ZFObjectIO] \"%s\" already registered",
+            ZFCoreCriticalMessageTrim("[ZFObjectIO] \"%s\" already registered",
                 registerSig);
             return;
         }
@@ -46,7 +46,7 @@ void _ZFP_ZFObjectIOUnregister(
         , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
         , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstldeque<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
     for(zfstlsize i = 0; i < l.size(); ++i) {
         _ZFP_ZFObjectIOData *item = l[i];
@@ -69,29 +69,29 @@ zfbool ZFObjectIOLoadT(
         return zffalse;
     }
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfstldeque<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
     for(zfstlsize i = l.size() - 1; i != (zfstlsize)-1; --i) {
         _ZFP_ZFObjectIOData *d = l[i];
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         if(l[i]->checker(input.pathInfo())) {
             if(l[i]->fromInput(ret, input, outErrorHint)) {
-                zfCoreMutexLock();
+                ZFCoreMutexLock();
                 // move to tail for better search performance
                 if(i != l.size() - 1) {
                     l.erase(l.begin() + i);
                     l.push_back(d);
                 }
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 return zftrue;
             }
             else {
                 zfstringAppend(outErrorHint, "\n");
             }
         }
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", input.pathInfo());
     return zffalse;
 }
@@ -114,29 +114,29 @@ zfbool ZFObjectIOSave(
         return zffalse;
     }
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfstldeque<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
     for(zfstlsize i = l.size() - 1; i != (zfstlsize)-1; --i) {
         _ZFP_ZFObjectIOData *d = l[i];
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         if(l[i]->checker(output.pathInfo())) {
             if(l[i]->toOutput(output, obj, outErrorHint)) {
-                zfCoreMutexLock();
+                ZFCoreMutexLock();
                 // move to tail for better search performance
                 if(i != l.size() - 1) {
                     l.erase(l.begin() + i);
                     l.push_back(d);
                 }
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 return zftrue;
             }
             else {
                 zfstringAppend(outErrorHint, "\n");
             }
         }
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", 
         output.pathInfo());
     return zffalse;

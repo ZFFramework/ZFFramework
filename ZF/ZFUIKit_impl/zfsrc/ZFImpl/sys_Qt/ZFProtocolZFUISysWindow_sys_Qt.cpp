@@ -50,7 +50,7 @@ protected:
             case QEvent::WindowDeactivate:
                 ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnPause(owner);
                 #if ZF_ENV_DEBUG && 0
-                    zfLogTrim() << ZFImpl_sys_Qt_viewTreePrint(ZFImpl_sys_Qt_rootWindow());
+                    ZFLogTrim() << ZFImpl_sys_Qt_viewTreePrint(ZFImpl_sys_Qt_rootWindow());
                 #endif
                 break;
             default:
@@ -126,7 +126,7 @@ public:
         QGraphicsWidget *nativeWindow = (QGraphicsWidget *)sysWindow->nativeWindow();
 
         QGraphicsWidget *nativeRootView = (QGraphicsWidget *)sysWindow->rootView()->nativeView();
-        zfCoreAssertWithMessageTrim(nativeWindow->layout() != NULL,
+        ZFCoreAssertWithMessageTrim(nativeWindow->layout() != NULL,
             "[ZFUISysWindow] window's QGraphicsWidget::layout not set");
         ZFImpl_sys_Qt_BaseLayout *l = (ZFImpl_sys_Qt_BaseLayout *)(nativeWindow->layout());
         l->childAdd(nativeRootView);

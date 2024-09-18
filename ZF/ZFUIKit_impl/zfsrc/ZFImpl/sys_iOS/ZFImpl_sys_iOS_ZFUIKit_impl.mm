@@ -159,7 +159,7 @@ ZF_NAMESPACE_GLOBAL_END
             ZFUISysWindow *sysWindow = zfargs.sender();
             zfstring s;
             ZFImpl_sys_iOS_viewTreePrintT(s, (__bridge UIView *)sysWindow->rootView()->nativeView());
-            zfLogTrim() << s;
+            ZFLogTrim() << s;
         } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(

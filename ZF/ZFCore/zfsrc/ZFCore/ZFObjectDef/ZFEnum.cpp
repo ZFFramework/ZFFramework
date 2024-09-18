@@ -225,7 +225,7 @@ public:
             const ZFMethod *enumCountMethod = enumClass->methodForName("EnumCount");
             const ZFMethod *enumValueAtMethod = enumClass->methodForName("EnumValueAt");
             const ZFMethod *enumNameAtMethod = enumClass->methodForName("EnumNameAt");
-            zfCoreAssert(enumCountMethod != zfnull && enumValueAtMethod != zfnull && enumNameAtMethod != zfnull);
+            ZFCoreAssert(enumCountMethod != zfnull && enumValueAtMethod != zfnull && enumNameAtMethod != zfnull);
 
             ret = zfAlloc(_ZFP_I_ZFEnum_stringConverterDataHolder);
             enumClass->classTag(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull(), ret);
@@ -261,7 +261,7 @@ zfbool zfflagsToStringT(
         , ZF_OUT_OPT zfflags *notConverted /* = zfnull */
         , ZF_IN_OPT zfchar separatorToken /* = '|' */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(enumClass != zfnull && enumClass->classIsTypeOf(ZFEnum::ClassData())) {
         _ZFP_I_ZFEnum_stringConverterDataHolder *d = _ZFP_I_ZFEnum_stringConverterDataHolder::setup(enumClass);
         return zfflagsToStringT(ret,
@@ -284,7 +284,7 @@ zfbool zfflagsFromStringT(
         , ZF_IN_OPT zfchar separatorToken /* = '|' */
         , ZF_OUT_OPT const zfchar **outErrorPos /* = zfnull */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(enumClass != zfnull && enumClass->classIsTypeOf(ZFEnum::ClassData())) {
         _ZFP_I_ZFEnum_stringConverterDataHolder *d = _ZFP_I_ZFEnum_stringConverterDataHolder::setup(enumClass);
         return zfflagsFromStringT(

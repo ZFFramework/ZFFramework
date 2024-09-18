@@ -15,7 +15,7 @@ public:
             ZFUIColorBlue(),
             ZFUIRectCreate(0, 0, ownerSize.width, ownerSize.height));
         ZFUIDraw::drawImage(context,
-            zfRes("test_normal.png"),
+            zfres("test_normal.png"),
             ZFUIRectZero(),
             ZFUIRectCreate(ownerSize.width, ownerSize.height, ownerSize.width, ownerSize.height));
     }

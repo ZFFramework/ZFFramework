@@ -43,13 +43,13 @@ protected:
         ZFJsonFromStringT(json, src);
 
         this->testCaseOutput("ZFJson parse from string, result:");
-        zfLogTrim() << ZFJsonToString(json);
+        ZFLogTrim() << ZFJsonToString(json);
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFJson add element");
         json.attr("testJsonKey", "testJsonValue");
         this->testCaseOutput("ZFJson add element, result:");
-        zfLogTrim() << ZFJsonToString(json);
+        ZFLogTrim() << ZFJsonToString(json);
 
         this->performanceTest(json);
 

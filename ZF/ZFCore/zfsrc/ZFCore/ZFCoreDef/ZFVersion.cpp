@@ -4,13 +4,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void zfVersionGet(
+void ZFVersionGet(
         ZF_OUT zfstring &ret
         , ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         ) {
     ZFCoreArray<ZFIndexRange> pos;
-    if(*version != '\0' && !zfCoreDataPairSplitString(pos, zfindexMax(), version, zfindexMax(), ".", zfnull, zfnull)) {
+    if(*version != '\0' && !ZFCoreDataPairSplitString(pos, zfindexMax(), version, zfindexMax(), ".", zfnull, zfnull)) {
         return;
     }
     if(pos.count() <= subVersionIndex) {
@@ -18,21 +18,21 @@ void zfVersionGet(
     }
     ret.append(version + pos[subVersionIndex].start, pos[subVersionIndex].count);
 }
-void zfVersionGetInt(
+void ZFVersionGetInt(
         ZF_OUT zfuint &ret
         , ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         ) {
-    ret = zfsToInt(zfVersionGet(version, subVersionIndex));
+    ret = zfsToInt(ZFVersionGet(version, subVersionIndex));
 }
-void zfVersionSet(
+void ZFVersionSet(
         ZF_IN_OUT zfstring &version
         , ZF_IN zfindex subVersionIndex
         , ZF_IN const zfchar *subVersion
         , ZF_IN_OPT const zfchar *emptySubVersion /* = "0" */
         ) {
     ZFCoreArray<ZFIndexRange> pos;
-    if(!version.isEmpty() && !zfCoreDataPairSplitString(pos, zfindexMax(), version, zfindexMax(), ".", zfnull, zfnull)) {
+    if(!version.isEmpty() && !ZFCoreDataPairSplitString(pos, zfindexMax(), version, zfindexMax(), ".", zfnull, zfnull)) {
         return;
     }
 
@@ -50,13 +50,13 @@ void zfVersionSet(
         version.replace(pos[subVersionIndex].start, pos[subVersionIndex].count, subVersion);
     }
 }
-void zfVersionSetInt(
+void ZFVersionSetInt(
         ZF_IN_OUT zfstring &version
         , ZF_IN zfindex subVersionIndex
         , ZF_IN zfuint subVersion
         , ZF_IN_OPT const zfchar *emptySubVersion /* = "0" */
         ) {
-    zfVersionSet(version, subVersionIndex, zfsFromInt(subVersion), emptySubVersion);
+    ZFVersionSet(version, subVersionIndex, zfsFromInt(subVersion), emptySubVersion);
 }
 
 ZFCompareResult _ZFP_ZFComparerForVersion(
@@ -72,15 +72,15 @@ ZFCompareResult _ZFP_ZFComparerForVersion(
     }
     return ZFComparerDefault(n0, n1);
 }
-ZFCompareResult zfVersionCompare(
+ZFCompareResult ZFVersionCompare(
         ZF_IN const zfchar *version0
         , ZF_IN const zfchar *version1
         , ZF_IN_OPT ZFComparer<const zfchar *>::Comparer subVersionComparer /* = ZFComparerForVersion */
         ) {
     ZFCoreArray<ZFIndexRange> pos0;
     ZFCoreArray<ZFIndexRange> pos1;
-    if(!zfCoreDataPairSplitString(pos0, zfindexMax(), version0, zfindexMax(), ".", zfnull, zfnull)
-            || !zfCoreDataPairSplitString(pos1, zfindexMax(), version1, zfindexMax(), ".", zfnull, zfnull)
+    if(!ZFCoreDataPairSplitString(pos0, zfindexMax(), version0, zfindexMax(), ".", zfnull, zfnull)
+            || !ZFCoreDataPairSplitString(pos1, zfindexMax(), version1, zfindexMax(), ".", zfnull, zfnull)
             ) {
         return ZFCompareUncomparable;
     }
@@ -100,7 +100,7 @@ ZFCompareResult zfVersionCompare(
             case ZFCompareEqual:
                 continue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return ZFCompareUncomparable;
         }
     }

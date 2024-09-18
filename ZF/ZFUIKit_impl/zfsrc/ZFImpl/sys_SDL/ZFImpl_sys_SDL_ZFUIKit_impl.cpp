@@ -55,7 +55,7 @@ ZF_NAMESPACE_GLOBAL_END
             ZFUISysWindow *sysWindow = zfargs.sender();
             zfstring s;
             ZFImpl_sys_SDL_viewTreePrintT(s, (ZFImpl_sys_SDL_View *)sysWindow->rootView()->nativeView());
-            zfLogTrim() << s;
+            ZFLogTrim() << s;
         } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(

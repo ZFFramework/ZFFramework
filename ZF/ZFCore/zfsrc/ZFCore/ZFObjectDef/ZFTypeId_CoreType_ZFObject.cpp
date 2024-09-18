@@ -49,7 +49,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClassDataUpdateType, ZFClassDataUpdateType
                 s += ZFTOKEN_ZFClassDataUpdateTypeClassAliasDetach;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -130,7 +130,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterForZFClassType, ZFFilterForZFClassTy
                 s += ZFTOKEN_ZFFilterForZFClassTypeExcludeParentOf;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -184,7 +184,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodPrivilegeType, ZFMethodPrivilegeType
                 s += ZFTOKEN_ZFMethodPrivilegeTypePrivate;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -235,7 +235,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodType, ZFMethodType, {
                 s += ZFTOKEN_ZFMethodTypeVirtual;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -599,7 +599,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFObjectInstanceState, ZFObjectInstanceState
                 s += ZFTOKEN_ZFObjectInstanceStateOnDealloc;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -663,7 +663,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallbackType, ZFCallbackType, {
                 s += ZFTOKEN_ZFCallbackTypeLambda;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -713,7 +713,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSerializablePropertyType, ZFSerializablePr
                 s += ZFTOKEN_ZFSerializablePropertyTypeEmbeded;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })

@@ -112,23 +112,23 @@ static void _ZFP_ZFSigNameDetach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
 ZFSigName::ZFSigName(void) : d(zfnull) {
 }
 ZFSigName::ZFSigName(ZF_IN const ZFSigName &ref) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     d = ref.d;
     if(d) {
         ++(d->refCount);
     }
 }
 ZFSigName::ZFSigName(ZF_IN const zfstring &s) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     d = _ZFP_ZFSigNameAttach(s);
 }
 ZFSigName::ZFSigName(ZF_IN const zfchar *s) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     d = _ZFP_ZFSigNameAttach(s);
 }
 ZFSigName::~ZFSigName(void) {
     if(d) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFSigNameDetach(d);
     }
 }
@@ -136,7 +136,7 @@ ZFSigName::~ZFSigName(void) {
 zfidentity ZFSigName::sigId(void) const {
     if(d) {
         if(d->sigId == zfidentityInvalid()) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             _ZFP_ZFSigIdAttach(d);
         }
         return d->sigId;
@@ -172,7 +172,7 @@ ZFSigName::operator const zfstring & (void) const {
 }
 
 ZFSigName &ZFSigName::operator = (ZF_IN const ZFSigName &ref) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(d != ref.d) {
         _ZFP_ZFSigNamePrivate *dTmp = d;
         d = ref.d;
@@ -186,7 +186,7 @@ ZFSigName &ZFSigName::operator = (ZF_IN const ZFSigName &ref) {
     return *this;
 }
 ZFSigName &ZFSigName::operator = (ZF_IN const zfstring &s) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFSigNamePrivate *dTmp = d;
     d = _ZFP_ZFSigNameAttach(s);
     if(dTmp) {
@@ -195,7 +195,7 @@ ZFSigName &ZFSigName::operator = (ZF_IN const zfstring &s) {
     return *this;
 }
 ZFSigName &ZFSigName::operator = (ZF_IN const zfchar *s) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFSigNamePrivate *dTmp = d;
     d = _ZFP_ZFSigNameAttach(s);
     if(dTmp) {
@@ -206,7 +206,7 @@ ZFSigName &ZFSigName::operator = (ZF_IN const zfchar *s) {
 
 // ============================================================
 void ZFSigNameInfo(ZF_OUT zfstring &ret) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFSigNameMapType &m = _ZFP_ZFSigNameMap();
     for(_ZFP_ZFSigNameMapType::iterator it = m.begin(); it != m.end(); ++it) {
         ret += it->first;

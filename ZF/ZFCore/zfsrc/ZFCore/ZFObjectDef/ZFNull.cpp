@@ -30,7 +30,7 @@ public:
         ZF_IN const zfstring &key
         , ZF_IN ZFObject *tag
         ) {
-        zfCoreCriticalMessageTrim("setting tag to ZFNull is not allowed, key: %s", key);
+        ZFCoreCriticalMessageTrim("setting tag to ZFNull is not allowed, key: %s", key);
     }
 
 private:

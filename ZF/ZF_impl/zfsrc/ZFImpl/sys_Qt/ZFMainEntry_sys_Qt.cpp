@@ -209,7 +209,7 @@ int ZFMainEntry_sys_Qt_attach(
     _ZFP_ZFImpl_sys_Qt_rootWindowInstance = rootWindow;
     ZFFrameworkInit();
 
-    zfCoreAssert(rootWindow != NULL && rootWindow->layout() != NULL);
+    ZFCoreAssert(rootWindow != NULL && rootWindow->layout() != NULL);
 
     ZFCoreArray<zfstring> params;
     for(int i = 1; i < argc; ++i) {

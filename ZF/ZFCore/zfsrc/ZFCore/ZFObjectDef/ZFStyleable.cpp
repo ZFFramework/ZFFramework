@@ -130,13 +130,13 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
             break;
         case ZFStyleable::PropertyTypeNotStyleable:
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
 
 _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getPropertyTypeHolder(void) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->classData()->classTag(_ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
     if(holder == zfnull) {
         zfobj<_ZFP_I_ZFStyleable_PropertyTypeHolder> holderTmp;
@@ -178,7 +178,7 @@ ZFCoreMap instanceDataMap; // _ZFP_ZFStyleableDefaultPointerHolder *
 ZF_STATIC_INITIALIZER_END(ZFStyleableDefaultStyleDataHolder)
 
 _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
     ZFCorePointerBase *v = m.get(name);
     if(v == zfnull) {
@@ -204,13 +204,13 @@ public:
     ZFListener defaultStyleOnUpdateListener;
 public:
     static void styleOnDealloc(ZF_IN const ZFArgs &zfargs) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
 
         ZFObject *defaultStyle = zfargs.sender()->to<ZFStyleable *>()->defaultStyle();
-        zfCoreAssert(defaultStyle != zfnull);
+        ZFCoreAssert(defaultStyle != zfnull);
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle
             ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
-        zfCoreAssert(taskData != zfnull);
+        ZFCoreAssert(taskData != zfnull);
 
         taskData->styles.removeElement(zfargs.sender()->objectHolder());
 
@@ -221,7 +221,7 @@ public:
         }
     }
     static void defaultStyleOnUpdate(ZF_IN const ZFArgs &zfargs) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
 
         const ZFProperty *property = zfargs.param0().to<v_ZFProperty *>()->zfv;
         ZFObject *defaultStyle = zfargs.sender();
@@ -237,7 +237,7 @@ public:
 ZF_GLOBAL_INITIALIZER_END(ZFStyleDefaultApplyAutoCopyDataHolder)
 
 void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(style != zfnull && !style->styleableIsDefaultStyle()) {
         ZFObject *defaultStyle = style->defaultStyle();
         if(defaultStyle != zfnull) {
@@ -280,16 +280,16 @@ void _ZFP_ZFStyleDecoderRegister(
         ZF_IN const zfstring &registerSig
         , ZF_IN _ZFP_ZFStyleDecoder decoder
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
-    zfCoreAssert(registerSig != zfnull && decoder != zfnull);
-    zfCoreAssertWithMessageTrim(m.find(registerSig) == m.end(),
+    ZFCoreAssert(registerSig != zfnull && decoder != zfnull);
+    ZFCoreAssertWithMessageTrim(m.find(registerSig) == m.end(),
         "[ZFSTYLE_DECODER_DEFINE] %s already registered",
         registerSig);
     m[registerSig] = decoder;
 }
 void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfstring &registerSig) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
     m.erase(registerSig);
 }
@@ -299,10 +299,10 @@ void ZFStyleSet(
         , ZF_IN ZFStyleable *styleValue
         ) {
     if(styleKey && styleValue) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         _ZFP_ZFStyleUpdateFlag = zftrue;
         _ZFP_ZFStyleHolder()[styleKey] = styleValue;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
 }
 zfauto ZFStyleGet(ZF_IN const zfstring &styleKey) {
@@ -310,7 +310,7 @@ zfauto ZFStyleGet(ZF_IN const zfstring &styleKey) {
         return zfnull;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfauto ret;
     zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
     for(zfstlmap<zfstring, _ZFP_ZFStyleDecoder>::iterator it = m.begin(); it != m.end(); ++it) {
@@ -332,7 +332,7 @@ void ZFStyleGetAll(
         ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
         , ZF_IN_OUT ZFCoreArray<ZFStyleable *> &styleValue
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstlmap<zfstring, zfauto> &d = _ZFP_ZFStyleHolder();
     for(zfstlmap<zfstring, zfauto>::iterator it = d.begin(); it != d.end(); ++it) {
         styleKey.add(it->first);
@@ -340,30 +340,30 @@ void ZFStyleGetAll(
     }
 }
 void ZFStyleRemoveAll(void) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfstlmap<zfstring, zfauto> d;
     _ZFP_ZFStyleUpdateFlag = zftrue;
     d.swap(_ZFP_ZFStyleHolder());
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 }
 
 static zfint _ZFP_ZFStyleUpdateBeginFlag = 0;
 void ZFStyleUpdateBegin() {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     ++_ZFP_ZFStyleUpdateBeginFlag;
     if(_ZFP_ZFStyleUpdateBeginFlag == 1) {
         _ZFP_ZFStyleUpdateFlag = zffalse;
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 }
 void ZFStyleUpdateEnd() {
-    zfCoreAssertWithMessageTrim(_ZFP_ZFStyleUpdateBeginFlag != 0,
+    ZFCoreAssertWithMessageTrim(_ZFP_ZFStyleUpdateBeginFlag != 0,
         "ZFStyleUpdateBegin/ZFStyleUpdateEnd not paired");
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     --_ZFP_ZFStyleUpdateBeginFlag;
     zfbool needNotify = (_ZFP_ZFStyleUpdateBeginFlag == 0 && _ZFP_ZFStyleUpdateFlag);
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 
     if(needNotify) {
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFStyleOnUpdate());
@@ -394,13 +394,13 @@ private:
         zfstring const &propertyName = zfargs.param0().to<v_zfstring *>()->zfv;
         zfstring const &styleKey = zfargs.param1().to<v_zfstring *>()->zfv;
         if(zfstringIsEmpty(propertyName)) {
-            zfCoreCriticalMessageTrim(
+            ZFCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\"",
                     zfargs.sender()->objectInfoOfInstance(),
                     styleKey);
         }
         else {
-            zfCoreCriticalMessageTrim(
+            ZFCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\" for property \"%s\"",
                     zfargs.sender()->objectInfoOfInstance(),
                     styleKey,

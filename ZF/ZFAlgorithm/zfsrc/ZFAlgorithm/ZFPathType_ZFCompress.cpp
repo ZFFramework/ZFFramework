@@ -68,7 +68,7 @@ public:
         ZFCoreArray<_TaskData *> toCleanup;
 
         {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             _taskIdleTimer() = zfnull;
 
             _TaskMap &m = _taskMap();
@@ -93,7 +93,7 @@ private:
         return d;
     }
     static void _taskIdle(ZF_IN _TaskData *taskData) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         --(taskData->ioCount);
         if(taskData->ioCount != 0) {
             return;
@@ -105,7 +105,7 @@ private:
             } ZFLISTENER_END();
             timer = ZFTimerOnce(100, delay);
             ZFLISTENER(delayOnStop) {
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 _taskIdleTimer() = zfnull;
             } ZFLISTENER_END();
             timer->observerAdd(ZFTimer::EventTimerOnStop(), delayOnStop);
@@ -132,7 +132,7 @@ private:
         _TaskData *taskData = zfnull;
         _TaskMap &m = _taskMap();
         {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             _TaskMap::iterator it = m.find(compressFilePathInfo.cString());
             if(it != m.end()) {
                 if(it->second->taskType != taskType) {
@@ -141,9 +141,9 @@ private:
                     }
                     _TaskData *toCleanup = it->second;
                     m.erase(it);
-                    zfCoreMutexUnlock();
+                    ZFCoreMutexUnlock();
                     zfdelete(toCleanup);
-                    zfCoreMutexLock();
+                    ZFCoreMutexLock();
                 }
                 else {
                     ++(it->second->ioCount);
@@ -162,7 +162,7 @@ private:
         else {
             taskData->taskToken = ZFDecompressBegin(ZFInputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)));
         }
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(taskData->taskToken == zfnull) {
             _taskRelease(taskData);
             return zfnull;
@@ -173,17 +173,17 @@ private:
     }
 
     static void _taskRelease(ZF_IN _TaskData *taskData) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         --(taskData->ioCount);
         if(taskData->ioCount == 0) {
             _TaskMap &m = _taskMap();
             m.erase(taskData->compressFilePathInfo.cString());
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
 
             zfdelete(taskData);
         }
         else {
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
         }
     }
 
@@ -259,7 +259,7 @@ public:
             return zfnull;
         }
         zfstring ret;
-        zfCoreDataEncode(ret, compressFilePathInfo, compressFilePathInfo.length(), ZFPathInfoChainCharMap());
+        ZFCoreDataEncode(ret, compressFilePathInfo, compressFilePathInfo.length(), ZFPathInfoChainCharMap());
         zfbool successTmp = zftrue;
         ret += ZFPathInfoCallbackToParentDefault(pathDataTmp, &successTmp);
         if(success) {

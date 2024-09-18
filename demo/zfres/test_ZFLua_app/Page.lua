@@ -11,7 +11,7 @@ return function(zfargs)
 
     _ZFP_ZFLua_app_test_setupPage = function(page)
             page:observerAdd(ZFUIPage.EventPageOnCreate(), function(zfargs)
-                    zfLog("page onCreate");
+                    ZFLog("page onCreate");
                     local page = zfargs:sender();
 
                     local pageView = ZFUIButtonBasic();
@@ -27,7 +27,7 @@ return function(zfargs)
                         end);
                 end);
             page:observerAdd(ZFUIPage.EventPageAniOnPrepare(), function(zfargs)
-                    zfLog("page aniOnPrepare");
+                    ZFLog("page aniOnPrepare");
                     ZFUIPageAniPrepareForSlide(zfargs:sender(), zfargs:param0(), zfargs:param1());
                 end);
             return page;

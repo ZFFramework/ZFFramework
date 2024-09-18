@@ -267,7 +267,7 @@ public:
                 font.setItalic(true);
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         nativeImplView->setFont(font);

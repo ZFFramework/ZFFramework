@@ -68,7 +68,7 @@ static ZFCoreArray<ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZF
             return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkPostEssential)->instances;
 
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_AppLow)->instances;
     }
 }
@@ -113,7 +113,7 @@ ZFCoreMap singletonInstanceMap; // _ZFP_ZFClassSingletonPointerHolder *
 ZF_STATIC_INITIALIZER_END(ZFClassSingletonInstanceRefHolder)
 
 _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassSingletonInstanceRefHolder)->singletonInstanceMap;
     ZFCorePointerBase *v = m.get(sig);
     if(v == zfnull) {

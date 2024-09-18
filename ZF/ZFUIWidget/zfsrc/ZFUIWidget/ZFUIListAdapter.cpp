@@ -43,7 +43,7 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
             case ZFUIOrientation::e_Bottom:
                 return this->listContainerSize().height;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return -1;
         }
     }

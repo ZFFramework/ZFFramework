@@ -32,7 +32,7 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextend ZFCache {
  * when pathInfo is specified, the resFilePath can be relative path to pathInfo,
  * at this case, the pathInfo must be well formed
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfres
         , ZFMP_IN(const zfchar *, resFilePath)
         , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         )
@@ -41,7 +41,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
  *
  * automatically cache result in #ZFResCache with #ZFCallback::callbackId as cache key
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfauto, zfRes
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfauto, zfres
         , ZFMP_IN(const ZFInput &, input)
         )
 /**
@@ -51,7 +51,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfauto, zfRes
  * loadImpl's sender is the source ZFInput,
  * and must set #ZFArgs::result if load success
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfres
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_IN(const ZFListener &, loadImpl)
         )

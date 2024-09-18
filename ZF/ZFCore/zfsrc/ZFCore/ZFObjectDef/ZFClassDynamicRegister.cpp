@@ -79,7 +79,7 @@ void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls) {
         return;
     }
     if(!cls->classIsDynamicRegister()) {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
             "[ZFClassDynamicRegister] unregistering class %s that is not dyanmiac registered",
             cls);
     }

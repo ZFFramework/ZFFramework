@@ -345,7 +345,7 @@ public:
                 + this->layerNormal.count();
         }
         else {
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return 0;
         }
     }
@@ -387,10 +387,10 @@ public:
             , ZF_IN ZFUILayoutParam *layoutParam
             , ZF_IN zfindex atIndex
             ) {
-        zfCoreAssertWithMessageTrim(!owner->objectDeallocRunning(),
+        ZFCoreAssertWithMessageTrim(!owner->objectDeallocRunning(),
                 "[ZFUIView] add child during parent's dealloc is not allowed");
-        zfCoreAssertWithMessageTrim(child != zfnull, "[ZFUIView] add null child");
-        zfCoreAssertWithMessageTrim(child->viewParent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
+        ZFCoreAssertWithMessageTrim(child != zfnull, "[ZFUIView] add null child");
+        ZFCoreAssertWithMessageTrim(child->viewParent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
         zfblockedRelease(zfRetain(child));
 
         if(this->serializableRefLayoutParamCache == zfnull) {
@@ -498,11 +498,11 @@ public:
             toIndexOrIndexMax = this->childCount(layer) - 1;
         }
         if(fromIndex >= this->childCount(layer)) {
-            zfCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
+            ZFCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
             return;
         }
         if(toIndexOrIndexMax >= this->childCount(layer)) {
-            zfCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
+            ZFCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
             return;
         }
         if(fromIndex == toIndexOrIndexMax) {
@@ -537,9 +537,9 @@ public:
             , ZF_IN zfindex atIndex
             , ZF_IN ZFUIView *toReplace
             ) {
-        zfCoreAssert(atIndex < layer.count());
-        zfCoreAssert(toReplace != zfnull);
-        zfCoreAssert(toReplace->viewParent() == zfnull);
+        ZFCoreAssert(atIndex < layer.count());
+        ZFCoreAssert(toReplace != zfnull);
+        ZFCoreAssert(toReplace->viewParent() == zfnull);
 
         zfautoT<ZFUIView> old = layer[atIndex];
         layer[atIndex] = toReplace;
@@ -598,7 +598,7 @@ public:
                 children1 = &(view1->d->layerInternalFg);
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
 
@@ -652,7 +652,7 @@ public:
         const ZFCoreArray<zfautoT<ZFUIView> > *views = zfnull;
         switch(childLayer) {
             case ZFUIViewChildLayer::e_Normal:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
             case ZFUIViewChildLayer::e_InternalImpl:
                 views = &(this->layerInternalImpl);
@@ -664,7 +664,7 @@ public:
                 views = &(this->layerInternalFg);
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
         for(zfindex i = views->count() - 1; i != zfindexMax(); --i) {
@@ -678,7 +678,7 @@ public:
             owner->internalViewAutoSerializeTagAdd(internalViewTmp->viewId());
             switch(childLayer) {
                 case ZFUIViewChildLayer::e_Normal:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     break;
                 case ZFUIViewChildLayer::e_InternalImpl:
                     owner->internalImplViewAdd(internalViewTmp);
@@ -690,7 +690,7 @@ public:
                     owner->internalFgViewAdd(internalViewTmp);
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return zffalse;
             }
         }
@@ -710,7 +710,7 @@ public:
         const zfchar *categoryTag = zfnull;
         switch(childLayer) {
             case ZFUIViewChildLayer::e_Normal:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
             case ZFUIViewChildLayer::e_InternalImpl:
                 views = &(this->layerInternalImpl);
@@ -734,7 +734,7 @@ public:
                 categoryTag = ZFSerializableKeyword_ZFUIView_internalFgView;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
         if(ref == zfnull || viewsRef->count() == 0) {
@@ -1399,7 +1399,7 @@ void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(
         ZF_IN ZFUIView *view
         , ZF_IN void *nativeParentView
         ) {
-    zfCoreAssert(view != zfnull);
+    ZFCoreAssert(view != zfnull);
 
     zfRetain(view);
     zffloat UIScaleForImpl = ZFPROTOCOL_ACCESS(ZFUIView)->UIScaleForImpl(nativeParentView != zfnull ? nativeParentView : view->nativeView());
@@ -1409,7 +1409,7 @@ void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(
     }
 }
 void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyRemove(ZF_IN ZFUIView *view) {
-    zfCoreAssert(view != zfnull);
+    ZFCoreAssert(view != zfnull);
     zfRelease(view);
 }
 
@@ -1466,7 +1466,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, void, viewRemoveFromParent) {
                 this->viewParent()->internalFgViewRemove(this);
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }

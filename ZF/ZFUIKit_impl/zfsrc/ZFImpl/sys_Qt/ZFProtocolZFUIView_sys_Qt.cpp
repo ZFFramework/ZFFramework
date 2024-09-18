@@ -125,7 +125,7 @@ public:
         this->setAcceptTouchEvents(true);
     }
     ~_ZFP_ZFUIViewImpl_sys_Qt_View(void) {
-        zfCoreAssert(this->_ZFP_nativeImplView == zfnull);
+        ZFCoreAssert(this->_ZFP_nativeImplView == zfnull);
     }
 
 public:

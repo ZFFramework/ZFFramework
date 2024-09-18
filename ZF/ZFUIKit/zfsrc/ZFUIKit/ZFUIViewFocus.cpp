@@ -460,7 +460,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
                     _ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed = zffalse;
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     break;
             }
             keyEvent->eventResolved(zftrue);

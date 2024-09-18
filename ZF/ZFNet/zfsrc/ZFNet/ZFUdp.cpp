@@ -155,7 +155,7 @@ ZFMETHOD_DEFINE_1(ZFUdp, zfbool, open
         return zffalse;
     }
     if(port != 0) {
-        zfCoreAssert(d->port != 0);
+        ZFCoreAssert(d->port != 0);
     }
     return zftrue;
 }
@@ -265,7 +265,7 @@ ZFMETHOD_DEFINE_4(ZFUdp, zfindex, recv
         , ZFMP_IN_OPT(zftimet, timeout, -1)
         ) {
     if(!this->valid()) {
-        zfLog("calling recv() before open() successfully");
+        ZFLog("calling recv() before open() successfully");
         return 0;
     }
     if(maxSize == zfindexMax()) {
@@ -292,7 +292,7 @@ ZFMETHOD_DEFINE_4(ZFUdp, zfindex, recv
         , ZFMP_IN_OPT(zftimet, timeout, -1)
         ) {
     if(!this->valid()) {
-        zfLog("calling recv() before open() successfully");
+        ZFLog("calling recv() before open() successfully");
         return 0;
     }
     if(maxSize == zfindexMax()) {

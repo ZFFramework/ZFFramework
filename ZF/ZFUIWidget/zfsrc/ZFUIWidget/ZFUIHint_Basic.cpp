@@ -23,7 +23,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUITextView>, labelNorma
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroundNormal) {
     ZFUIImageView *value = propertyValue;
-    value->image(zfRes("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
+    value->image(zfres("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintCreate

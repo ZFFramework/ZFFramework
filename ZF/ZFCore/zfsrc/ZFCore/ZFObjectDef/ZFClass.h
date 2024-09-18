@@ -793,15 +793,15 @@ public:
 /**
  * @brief log that likes "[file function (line)] class xxx not type of xxx"
  */
-#define zfCoreCriticalClassNotTypeOf(cls, desired) \
-    zfCoreCriticalMessage("class %s not type of %s", \
+#define ZFCoreCriticalClassNotTypeOf(cls, desired) \
+    ZFCoreCriticalMessage("class %s not type of %s", \
         _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls), \
         _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired))
 /**
- * @brief see #zfCoreCriticalClassNotTypeOf
+ * @brief see #ZFCoreCriticalClassNotTypeOf
  */
-#define zfCoreCriticalClassNotTypeOfDetail(callerInfo, cls, desired) \
-    zfCoreCriticalMessageDetail(callerInfo, "class %s not type of %s", \
+#define ZFCoreCriticalClassNotTypeOfDetail(callerInfo, cls, desired) \
+    ZFCoreCriticalMessageDetail(callerInfo, "class %s not type of %s", \
         _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls), \
         _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired))
 
@@ -818,7 +818,7 @@ public:
  *
  *   // the aliased class is exactly same of the original,
  *   // so the reflected class name still prints "ZFObject"
- *   zfLogTrim() << ZFClass::classForName("MyObject")->className();
+ *   ZFLogTrim() << ZFClass::classForName("MyObject")->className();
  * @endcode
  * @see ZFMethodAlias
  */

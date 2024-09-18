@@ -113,7 +113,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
                     "lambda function is not supported");
                 return zffalse;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
 
@@ -137,8 +137,8 @@ void _ZFP_ZFCallbackSerializeCustomTypeRegister(
         , ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback
         ) {
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
-    zfCoreAssert(!zfstringIsEmpty(customType) && serializeCallback != zfnull);
-    zfCoreAssertWithMessage(m.find(customType) == m.end(), "custom callback serialize type \"%s\" already registered", customType);
+    ZFCoreAssert(!zfstringIsEmpty(customType) && serializeCallback != zfnull);
+    ZFCoreAssertWithMessage(m.find(customType) == m.end(), "custom callback serialize type \"%s\" already registered", customType);
 
     m[customType] = serializeCallback;
 }

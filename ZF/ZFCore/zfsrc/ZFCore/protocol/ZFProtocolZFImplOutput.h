@@ -1,7 +1,7 @@
 /**
  * @file ZFProtocolZFImplOutput.h
  * @brief protocol for output logs,
- *   used by zfCoreLog, ZFLog, etc,
+ *   used by ZFCoreLog, ZFLog, etc,
  *   as default output callback
  */
 
@@ -18,7 +18,7 @@ ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFImplOutput)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
     /**
-     * @brief output callback for zfCoreLog,
+     * @brief output callback for ZFCoreLog,
      *   usually as critical error messages
      *
      * within this method,

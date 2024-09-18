@@ -39,11 +39,11 @@ void _ZFP_ZFEnumData::add(
         , ZF_IN zfuint value
         , ZF_IN const zfstring &name
         ) {
-    zfCoreAssert(value != ZFEnumInvalid());
-    zfCoreAssert(!zfstringIsEmpty(name));
+    ZFCoreAssert(value != ZFEnumInvalid());
+    ZFCoreAssert(!zfstringIsEmpty(name));
     _ZFP_ZFEnumDataPrivate::ValueMapType::iterator it = d->valueMap.find(value);
     if(it != d->valueMap.end()) {
-        zfCoreAssertWithMessageTrim(isEnableDuplicateValue,
+        ZFCoreAssertWithMessageTrim(isEnableDuplicateValue,
             "[ZFEnum] duplicate value %s (new: %s, old: %s) when define %s",
             value,
             name,
@@ -105,7 +105,7 @@ const zfstring &_ZFP_ZFEnumData::enumNameForValue(ZF_IN zfuint value) const {
 }
 
 _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataMap.get<_ZFP_ZFEnumData *>(ownerClass->classNameFull());
     if(d != zfnull) {
         return d;

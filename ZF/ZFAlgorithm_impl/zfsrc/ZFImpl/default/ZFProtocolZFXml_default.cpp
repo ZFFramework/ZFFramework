@@ -77,7 +77,7 @@ private:
         while(implXmlChild != zfnull) {
             switch(implXmlChild.type()) {
                 case pugi::node_document:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return;
                 case pugi::node_element: {
                     ZFXml zfXmlChild(ZFXmlType::e_XmlElement);
@@ -139,7 +139,7 @@ private:
                     break;
                 }
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return;
             }
 

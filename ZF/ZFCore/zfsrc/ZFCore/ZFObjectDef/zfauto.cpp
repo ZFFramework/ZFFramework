@@ -13,9 +13,9 @@ zfauto::~zfauto(void) {
 }
 
 zfauto &zfauto::operator = (ZF_IN zfauto const &p) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     this->zfunsafe_assign(_ZFP_zfanyCast(p));
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     return *this;
 }
 

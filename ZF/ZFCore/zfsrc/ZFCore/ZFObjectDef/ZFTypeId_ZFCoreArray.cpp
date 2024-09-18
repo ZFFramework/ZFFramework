@@ -11,13 +11,13 @@ zfbool _ZFP_ZFCoreArrayFromStringT(
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     ZFCoreArray<ZFIndexRange> pos;
-    if(!zfCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
+    if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
         return zffalse;
     }
     if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         for(zfindex i = 0; i < pos.count(); ++i) {
             zfstring elementString;
-            zfCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
+            ZFCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
             zfauto e = elementType->typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
             if(eTmp == zfnull || !eTmp->wrappedValueFromString(elementString, elementString.length(), errorHint)) {
@@ -34,7 +34,7 @@ zfbool _ZFP_ZFCoreArrayFromStringT(
     else {
         for(zfindex i = 0; i < pos.count(); ++i) {
             zfstring elementString;
-            zfCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
+            ZFCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
             zfauto e = elementType->typeIdClass()->newInstance();
             ZFSerializable *eTmp = e;
             if(eTmp == zfnull || !eTmp->serializeFromString(elementString, elementString.length(), errorHint)) {
@@ -74,7 +74,7 @@ zfbool _ZFP_ZFCoreArrayToStringT(
             if(!eTmp->wrappedValueToString(elementString, errorHint)) {
                 return zffalse;
             }
-            zfCoreDataEncode(s, elementString.cString(), elementString.length());
+            ZFCoreDataEncode(s, elementString.cString(), elementString.length());
         }
     }
     else {
@@ -94,7 +94,7 @@ zfbool _ZFP_ZFCoreArrayToStringT(
             if(!eTmp->serializeToString(elementString, errorHint)) {
                 return zffalse;
             }
-            zfCoreDataEncode(s, elementString.cString(), elementString.length());
+            ZFCoreDataEncode(s, elementString.cString(), elementString.length());
         }
     }
     s += "]";

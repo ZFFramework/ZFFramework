@@ -139,7 +139,7 @@ void ZFUITextEdit::objectOnInit(void) {
     d = zfpoolNew(_ZFP_ZFUITextEditPrivate);
     d->pimplOwner = this;
 
-    zfCoreAssert(this->nativeImplView() == zfnull);
+    ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(
@@ -159,10 +159,10 @@ void ZFUITextEdit::objectOnInit(void) {
     ZFUIView *textPlaceHolderTmp = this->textPlaceHolder();
     if(textPlaceHolderTmp == zfnull) {
         if(this->textPlaceHolder() != zfnull) {
-            zfCoreCriticalClassNotTypeOf(this->textPlaceHolder()->classData(), ZFUIView::ClassData());
+            ZFCoreCriticalClassNotTypeOf(this->textPlaceHolder()->classData(), ZFUIView::ClassData());
         }
         else {
-            zfCoreCriticalMessage("textPlaceHolder must not be null");
+            ZFCoreCriticalMessage("textPlaceHolder must not be null");
         }
         return;
     }
@@ -292,7 +292,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
         }
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }

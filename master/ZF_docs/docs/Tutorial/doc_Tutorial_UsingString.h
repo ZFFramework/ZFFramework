@@ -14,19 +14,19 @@
  *   const zfchar *cStyle = "C-style string";
  *   zfchar cStyle2[32] = {0};
  *   zfscpy(cString2, "copied C-style string");
- *   zfLog() << cStyle << " " << cStyle2;
+ *   ZFLog() << cStyle << " " << cStyle2;
  *
  *   // common C++-style string, high performance yet easy to use
  *   zfstring cppStyle("C++-style string");
  *   zfstring cppStyle2;
  *   cppStyle2 = "copied C++-style string"
- *   zfLog() << cppStyle << " " << cppStyle2.cString();
+ *   ZFLog() << cppStyle << " " << cppStyle2.cString();
  *
  *   // string container as object type
  *   zfobj<v_zfstring> zfStyle("object-style string");
  *   zfobj<v_zfstring> zfStyle2;
  *   zfStyle2->zfv = "copied object-style string";
- *   zfLog() << zfStyle << " " << zfStyle2->zfv;
+ *   ZFLog() << zfStyle << " " << zfStyle2->zfv;
  * @endcode
  * \n
  * by default, all strings in ZFFramework use UTF-8 as string encoding

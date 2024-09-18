@@ -7,12 +7,12 @@ void ZFMethodUserUnregister(ZF_IN const ZFMethod *method) {
     if(method == zfnull) {
         return;
     }
-    zfCoreMutexLocker();
-    zfCoreAssertWithMessageTrim(method->methodIsUserRegister(),
+    ZFCoreMutexLocker();
+    ZFCoreAssertWithMessageTrim(method->methodIsUserRegister(),
             "[ZFMethodUserUnregister] method %s is not user registered",
             method
         );
-    zfCoreAssertWithMessageTrim(!method->methodIsFunctionType(),
+    ZFCoreAssertWithMessageTrim(!method->methodIsFunctionType(),
             "[ZFMethodUserUnregister] method %s is not class member type",
             method
         );

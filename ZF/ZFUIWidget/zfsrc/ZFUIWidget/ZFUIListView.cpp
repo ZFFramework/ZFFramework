@@ -93,7 +93,7 @@ public:
                     this->pimplOwner->scrollBounceHorizontalAlways(zffalse);
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return;
             }
         }
@@ -145,15 +145,15 @@ public:
     zfautoT<ZFUIListCell> cellLoadAt(ZF_IN zfindex index) {
         zfautoT<ZFUIListCell> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull) {
-            zfCoreAssertWithMessage(ret != zfnull, "list cell %s not type of %s",
+            ZFCoreAssertWithMessage(ret != zfnull, "list cell %s not type of %s",
                 ret->classData()->classNameFull(),
                 ZFUIListCell::ClassData()->classNameFull());
             return ret;
         }
         ret = this->listAdapter->cellAt(index);
-        zfCoreAssertWithMessage(ret != zfnull, "cellAt must return a %s", ZFUIListCell::ClassData()->classNameFull());
+        ZFCoreAssertWithMessage(ret != zfnull, "cellAt must return a %s", ZFUIListCell::ClassData()->classNameFull());
         ZFUIListCell *cell = ret;
-        zfCoreAssertWithMessage(cell != zfnull, "list cell %s not type of %s",
+        ZFCoreAssertWithMessage(cell != zfnull, "list cell %s not type of %s",
             ret->classData()->classNameFull(),
             ZFUIListCell::ClassData()->classNameFull());
         return ret;
@@ -213,7 +213,7 @@ public:
                         ).height;
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     break;
             }
         }
@@ -518,7 +518,7 @@ public:
             }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
 
@@ -775,7 +775,7 @@ public:
             }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
 
@@ -818,7 +818,7 @@ public:
                     cellSize));
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }
@@ -870,7 +870,7 @@ public:
                 }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return ZFUIRectZero();
         }
         return ret;
@@ -890,7 +890,7 @@ public:
                         scrollContentFrame.width = this->pimplOwner->scrollArea().width;
                         break;
                     default:
-                        zfCoreCriticalShouldNotGoHere();
+                        ZFCoreCriticalShouldNotGoHere();
                         return;
                 }
                 if(scrollContentFrame != this->pimplOwner->scrollContentFrame()) {
@@ -941,7 +941,7 @@ public:
                         cellSizeHint = this->listAdapter->listContainerSize().height;
                         break;
                     default:
-                        zfCoreCriticalShouldNotGoHere();
+                        ZFCoreCriticalShouldNotGoHere();
                         break;
                 }
             }
@@ -996,7 +996,7 @@ public:
             }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
         this->scrollContentFrameOverrideFlag = zffalse;
@@ -1125,7 +1125,7 @@ public:
                 }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }
@@ -1196,7 +1196,7 @@ private:
                 posY = this->pimplOwner->scrollArea().height - pos - scrollContentFrame.height;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
         if(animated) {
@@ -1383,7 +1383,7 @@ void ZFUIListView::viewChildOnAdd(
         , ZF_IN ZFUIViewChildLayerEnum layer
         ) {
     if(layer == ZFUIViewChildLayer::e_Normal) {
-        zfCoreAssertWithMessage(d->childAddOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not add child to a list view");
+        ZFCoreAssertWithMessage(d->childAddOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not add child to a list view");
     }
     zfsuper::viewChildOnAdd(child, layer);
 }
@@ -1392,7 +1392,7 @@ void ZFUIListView::viewChildOnRemove(
         , ZF_IN ZFUIViewChildLayerEnum layer
         ) {
     if(layer == ZFUIViewChildLayer::e_Normal) {
-        zfCoreAssertWithMessage(d->childAddOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not remove child from a list view");
+        ZFCoreAssertWithMessage(d->childAddOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not remove child from a list view");
     }
     zfsuper::viewChildOnRemove(child, layer);
 }
@@ -1501,7 +1501,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt
             cellOldFrame.height = cellNewSize;
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
     d->updateTailCellAfterIndex(index, cellOldFrame);

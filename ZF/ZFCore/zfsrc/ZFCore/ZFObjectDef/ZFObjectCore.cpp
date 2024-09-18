@@ -15,7 +15,7 @@ static zfindex _ZFP_ZFObjectPrivateAllocCount = 0;
 static zfindex _ZFP_ZFObjectPrivateCount = 0;
 ZF_GLOBAL_INITIALIZER_INIT(ZFObjectCount) {
     ZFLISTENER(action) {
-        zfCoreLogTrim("[ZFObjectCount] %s/%s %s/%s"
+        ZFCoreLogTrim("[ZFObjectCount] %s/%s %s/%s"
                 , _ZFP_ZFObjectCount
                 , _ZFP_ZFObjectAllocCount
                 , _ZFP_ZFObjectPrivateCount
@@ -149,7 +149,7 @@ zfauto ZFObject::invoke(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = ZFMETHOD_MAX_PARAM;
     do {
@@ -162,7 +162,7 @@ zfauto ZFObject::invoke(
         if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(ZFDI_invoke(ret, zfnull, this, methodName, paramCount, paramList, zftrue)) {
         return ret;
@@ -177,7 +177,7 @@ zfauto ZFObject::invokeDetail(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
     for(zfindex i = 0; i < paramCount; ++i) {
@@ -186,7 +186,7 @@ zfauto ZFObject::invokeDetail(
     for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
         paramList[i].zfunsafe_assign(ZFMP_DEF());
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(ZFDI_invoke(ret, errorHint, this, methodName, paramCount, paramList, zftrue)) {
         if(success != zfnull) {*success = zftrue;}
@@ -205,9 +205,9 @@ void ZFObject::objectTag(
         ZF_IN const zfstring &key
         , ZF_IN ZFObject *tag
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(tag != zfnull && this->objectDeallocRunning()) {
-        zfCoreCriticalMessageTrim("[ZFObject] you must not set tag while object is deallocating, class: %s, tag: %s",
+        ZFCoreCriticalMessageTrim("[ZFObject] you must not set tag while object is deallocating, class: %s, tag: %s",
             this->classData()->classNameFull(),
             key);
         return;
@@ -242,7 +242,7 @@ void ZFObject::objectTag(
 }
 zfany ZFObject::objectTag(ZF_IN const zfstring &key) {
     if(key != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(d && d->objectTagMap) {
             _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap->find(key);
             if(it != d->objectTagMap->end()) {
@@ -256,7 +256,7 @@ void ZFObject::objectTagGetAllKeyValue(
         ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(d && d->objectTagMap) {
         _ZFP_ZFObjectTagMapType &m = *(d->objectTagMap);
         allKey.capacity(allKey.count() + m.size());
@@ -269,7 +269,7 @@ void ZFObject::objectTagGetAllKeyValue(
 }
 zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfstring &key) {
     if(key != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(d && d->objectTagMap) {
             _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap->find(key);
             if(it != d->objectTagMap->end()) {
@@ -284,7 +284,7 @@ zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfstring &key) {
 }
 void ZFObject::objectTagRemoveAll(void) {
     if(d && d->objectTagMap && !d->objectTagMap->empty()) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFObjectTagMapType tmp;
         tmp.swap(*(d->objectTagMap));
     }
@@ -421,7 +421,7 @@ void ZFObject::_ZFP_ZFObjectLock(void) {
         _ZFP_ZFObjectMutexImplLock(d->mutexImpl);
     }
     else {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         if(d == zfnull) {
             d = zfpoolNew(_ZFP_ZFObjectPrivate);
         }
@@ -430,7 +430,7 @@ void ZFObject::_ZFP_ZFObjectLock(void) {
                 d->mutexImpl = _ZFP_ZFObjectMutexImplInit();
             }
         }
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         if(d->mutexImpl) {
             _ZFP_ZFObjectMutexImplLock(d->mutexImpl);
         }
@@ -446,13 +446,13 @@ zfbool ZFObject::_ZFP_ZFObjectTryLock(void) {
         return _ZFP_ZFObjectMutexImplTryLock(d->mutexImpl);
     }
     else {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         if(_ZFP_ZFObjectMutexImplInit) {
             if(d->mutexImpl == zfnull) {
                 d->mutexImpl = _ZFP_ZFObjectMutexImplInit();
             }
         }
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         if(d->mutexImpl) {
             return _ZFP_ZFObjectMutexImplTryLock(d->mutexImpl);
         }
@@ -592,7 +592,7 @@ zfbool ZFObject::objectInstanceStateCheck(ZF_IN ZFObjectInstanceState state) {
         case ZFObjectInstanceStateOnDealloc:
             return ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc);
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zffalse;
     }
 }

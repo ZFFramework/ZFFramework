@@ -190,7 +190,7 @@ zfclassFwd ZFObjectHolder;
  *     }
  *   @endcode
  *   for advanced mutable operation, use ZFMutex instead\n
- *   for global mutable operation, use #zfCoreMutexLock instead
+ *   for global mutable operation, use #ZFCoreMutexLock instead
  *
  * \n
  * ADVANCED:\n
@@ -669,7 +669,7 @@ protected:
      * usually you should not override this method
      */
     virtual inline void objectOnRetain(void) {
-        zfCoreAssertWithMessageTrim(_objectRetainCount > 0,
+        ZFCoreAssertWithMessageTrim(_objectRetainCount > 0,
             "[ZFObject] retain an object while deallocating: %s", this->objectInfoOfInstance());
         ++_objectRetainCount;
     }

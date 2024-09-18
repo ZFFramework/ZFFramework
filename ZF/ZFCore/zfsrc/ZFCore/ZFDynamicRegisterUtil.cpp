@@ -295,7 +295,7 @@ public:
 public:
     void removeAll(void) {
         if(!this->allImpl.isEmpty()) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             ZFCoreArray<_ZFP_ZFDynamicPrivate *> allImpl = this->allImpl;
             this->allImpl = ZFCoreArray<_ZFP_ZFDynamicPrivate *>();
             for(zfindex i = allImpl.count() - 1; i != zfindexMax(); --i) {
@@ -310,7 +310,7 @@ public:
 ZF_STATIC_INITIALIZER_END(ZFDynamicDataHolder)
 
 void _ZFP_ZFDynamicPrivate::attachGlobal(void) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ++this->refCount;
     ZF_STATIC_INITIALIZER_INSTANCE(ZFDynamicDataHolder)->allImpl.add(this);
 }
@@ -461,7 +461,7 @@ const zfstring &ZFDynamic::regTag(void) const {
 }
 
 void ZFDynamic::removeAll(void) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     d->removeAll();
 }
 
@@ -847,7 +847,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
             .methodName(zfstr("Event%s", eventName))
             .methodReturnTypeId(ZFTypeId_zfidentity())
         );
-    zfCoreAssert(method != zfnull);
+    ZFCoreAssert(method != zfnull);
     d->allMethod.add(method);
 
     return *this;

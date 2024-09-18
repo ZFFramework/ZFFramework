@@ -10,64 +10,64 @@ public:
 
 public:
     ZFMETHOD_INLINE_0(void, methodNormal) {
-        zfLog();
+        ZFLog();
     }
     ZFMETHOD_DECLARE_0(void, methodDefinedInCppFile)
     ZFMETHOD_INLINE_0(void, methodOverrided) {
-        zfLog();
+        ZFLog();
     }
     ZFMETHOD_INLINE_DETAIL_0(protected, ZFMethodTypeVirtual, ZF_CALLER_LINE,
             void, methodProtected
             ) {
-        zfLog();
+        ZFLog();
     }
     ZFMETHOD_INLINE_DETAIL_0(private, ZFMethodTypeVirtual, ZF_CALLER_LINE,
             void, methodPrivate
             ) {
-        zfLog();
+        ZFLog();
     }
     ZFMETHOD_INLINE_DETAIL_0(public, ZFMethodTypeStatic, ZF_CALLER_LINE,
             void, methodStatic
             ) {
-        zfLog();
+        ZFLog();
     }
     ZFMETHOD_INLINE_1(void, methodOverloaded
             , ZFMP_IN(zfint, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
     ZFMETHOD_INLINE_1(void, methodOverloaded
             , ZFMP_IN(zffloat, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
     ZFMETHOD_INLINE_1(void, methodForDefaultParam
             , ZFMP_IN_OPT(const zfstring &, param0, "DefaultParam")
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
     ZFMETHOD_INLINE_0(zfstring &, methodReturnReference) {
-        zfLog();
+        ZFLog();
         return this->s;
     }
     ZFMETHOD_INLINE_1(void, methodParamIsReference
             , ZFMP_IN(zfstring &, param0)
             ) {
-        zfLog();
+        ZFLog();
         param0 = "newString";
     }
     ZFMETHOD_INLINE_2(void, methodFor2Param
             , ZFMP_IN(const zfchar *, param0)
             , ZFMP_IN(const zfchar *, param1)
             ) {
-        zfLog() << param0 << " " << param1;
+        ZFLog() << param0 << " " << param1;
     }
     ZFMETHOD_INLINE_3(void, methodFor3Param
             , ZFMP_IN(const zfchar *, param0)
             , ZFMP_IN(const zfchar *, param1)
             , ZFMP_IN(const zfchar *, param2)
             ) {
-        zfLog() << param0 << " " << param1 << " " << param2;
+        ZFLog() << param0 << " " << param1 << " " << param2;
     }
     ZFMETHOD_INLINE_4(void, methodFor4Param
             , ZFMP_IN(const zfchar *, param0)
@@ -75,7 +75,7 @@ public:
             , ZFMP_IN(const zfchar *, param2)
             , ZFMP_IN(const zfchar *, param3)
             ) {
-        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3;
+        ZFLog() << param0 << " " << param1 << " " << param2 << " " << param3;
     }
     ZFMETHOD_INLINE_5(void, methodFor5Param
             , ZFMP_IN(const zfchar *, param0)
@@ -84,7 +84,7 @@ public:
             , ZFMP_IN(const zfchar *, param3)
             , ZFMP_IN(const zfchar *, param4)
             ) {
-        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4;
+        ZFLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4;
     }
     ZFMETHOD_INLINE_6(void, methodFor6Param
             , ZFMP_IN(const zfchar *, param0)
@@ -94,7 +94,7 @@ public:
             , ZFMP_IN(const zfchar *, param4)
             , ZFMP_IN(const zfchar *, param5)
             ) {
-        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5;
+        ZFLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5;
     }
     ZFMETHOD_INLINE_7(void, methodFor7Param
             , ZFMP_IN(const zfchar *, param0)
@@ -105,7 +105,7 @@ public:
             , ZFMP_IN(const zfchar *, param5)
             , ZFMP_IN(const zfchar *, param6)
             ) {
-        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5 << " " << param6;
+        ZFLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5 << " " << param6;
     }
     ZFMETHOD_INLINE_8(void, methodFor8Param
             , ZFMP_IN(const zfchar *, param0)
@@ -117,14 +117,14 @@ public:
             , ZFMP_IN(const zfchar *, param6)
             , ZFMP_IN(const zfchar *, param7)
             ) {
-        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5 << " " << param6 << " " << param7;
+        ZFLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5 << " " << param6 << " " << param7;
     }
 };
 #if 0 // if opened, all method should be registered statically
     ZFOBJECT_REGISTER(_ZFP_ZFCore_ZFMethod_test_TestBase)
 #endif
 ZFMETHOD_DEFINE_0(_ZFP_ZFCore_ZFMethod_test_TestBase, void, methodDefinedInCppFile) {
-    zfLog();
+    ZFLog();
 }
 
 // ============================================================
@@ -134,11 +134,11 @@ zfclass _ZFP_ZFCore_ZFMethod_test_TestChild : zfextend _ZFP_ZFCore_ZFMethod_test
 public:
     ZFMETHOD_INLINE_0(void, methodOverrided) {
         zfsuper::methodOverrided();
-        zfLog();
+        ZFLog();
     }
 
     ZFMETHOD_INLINE_0(void, methodInChild) {
-        zfLog();
+        ZFLog();
     }
 };
 #if 0 // if opened, all method should be registered statically

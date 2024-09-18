@@ -164,7 +164,7 @@ void ZFImpl_sys_iOS_NSDictionaryIterValue(
         ) {
     _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = it.impl<_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *>();
     if(![impl->m isKindOfClass:[NSMutableDictionary class]]) {
-        zfCoreCriticalShouldNotGoHere();
+        ZFCoreCriticalShouldNotGoHere();
         return;
     }
     id key = [impl->m.allKeys objectAtIndex:impl->index];
@@ -175,7 +175,7 @@ void ZFImpl_sys_iOS_NSDictionaryIterValue(
 void ZFImpl_sys_iOS_NSDictionaryIterRemove(ZF_IN_OUT zfiter &it) {
     _ZFP_ZFImpl_sys_iOS_NSDictionaryIter *impl = it.impl<_ZFP_ZFImpl_sys_iOS_NSDictionaryIter *>();
     if(![impl->m isKindOfClass:[NSMutableDictionary class]]) {
-        zfCoreCriticalShouldNotGoHere();
+        ZFCoreCriticalShouldNotGoHere();
         return;
     }
     id key = [impl->m.allKeys objectAtIndex:impl->index];

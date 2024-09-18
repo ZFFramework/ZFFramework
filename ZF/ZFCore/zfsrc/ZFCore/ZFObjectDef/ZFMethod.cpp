@@ -86,7 +86,7 @@ ZFMethodGenericInvoker ZFMethod::methodGenericInvokerOrig(void) const {
 
 // ============================================================
 void ZFMethod::methodUserRegisterUserData(ZF_IN ZFObject *methodUserRegisterUserData) const {
-    zfCoreAssertWithMessage(this->methodIsUserRegister(),
+    ZFCoreAssertWithMessage(this->methodIsUserRegister(),
         "methodUserRegisterUserData can only be changed for user registered method");
     zfRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserData, methodUserRegisterUserData);
 }
@@ -102,7 +102,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
         , ZF_IN const zfstring &returnTypeId
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
-    zfCoreAssert(methodGenericInvoker != zfnull);
+    ZFCoreAssert(methodGenericInvoker != zfnull);
 
     this->_ZFP_ZFMethod_methodIsUserRegister = methodIsUserRegister;
     this->_ZFP_ZFMethod_methodIsDynamicRegister = methodIsDynamicRegister;
@@ -248,7 +248,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
             ret += ": ";
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 
@@ -368,7 +368,7 @@ zfauto ZFMethod::methodInvoke(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) const {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = ZFMETHOD_MAX_PARAM;
     do {
@@ -381,7 +381,7 @@ zfauto ZFMethod::methodInvoke(
         if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(this->methodGenericInvoker()(ret, zfnull, ownerObjOrNull, this, paramCount, paramList)) {
         return ret;
@@ -396,7 +396,7 @@ zfauto ZFMethod::methodInvokeDetail(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) const {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
     for(zfindex i = 0; i < paramCount; ++i) {
@@ -405,7 +405,7 @@ zfauto ZFMethod::methodInvokeDetail(
     for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
         paramList[i].zfunsafe_assign(ZFMP_DEF());
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(this->methodGenericInvoker()(ret, errorHint, ownerObjOrNull, this, paramCount, paramList)) {
         if(success != zfnull) {*success = zftrue;}
@@ -418,11 +418,11 @@ zfauto ZFMethod::methodInvokeDetail(
 }
 
 const ZFListener &ZFMethod::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
-    zfCoreAssert(index < this->methodParamCount());
+    ZFCoreAssert(index < this->methodParamCount());
     return this->_ZFP_ZFMethod_paramDefaultValueCallbackList[index];
 }
 zfauto ZFMethod::methodParamDefaultValueAt(ZF_IN zfindex index) const {
-    zfCoreAssert(index < this->methodParamCount());
+    ZFCoreAssert(index < this->methodParamCount());
     if(index < this->methodParamDefaultBeginIndex()) {
         return zfnull;
     }
@@ -435,7 +435,7 @@ zfauto ZFMethod::methodParamDefaultValueAt(ZF_IN zfindex index) const {
 }
 
 void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericInvoker) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
     if(methodGenericInvoker != zfnull) {
         if(_ZFP_ZFMethod_ext == zfnull) {
@@ -454,7 +454,7 @@ void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericIn
 }
 
 void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
     if(methodInvoker != zfnull) {
         if(_ZFP_ZFMethod_ext == zfnull) {
@@ -506,7 +506,7 @@ static void _ZFP_ZFMethodInstanceSig(
 }
 
 static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfstring &methodInternalId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
     _ZFP_ZFMethodMapType::iterator it = m.find(methodInternalId);
     if(it != m.end()) {
@@ -540,14 +540,14 @@ ZFMethod *_ZFP_ZFMethodRegister(
             , methodOwnerClass ? methodOwnerClass->className().cString() : methodNamespace ? methodNamespace.cString() : ""
             , methodName.cString()
             );
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     const zfchar *methodNamespaceTmp = methodNamespace;
     methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespaceTmp);
 
-    zfCoreAssert(methodGenericInvoker != zfnull);
-    zfCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespaceTmp));
-    zfCoreAssert(methodName != zfnull && *methodName != '\0');
-    zfCoreAssert(returnTypeId != zfnull && *returnTypeId != '\0');
+    ZFCoreAssert(methodGenericInvoker != zfnull);
+    ZFCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespaceTmp));
+    ZFCoreAssert(methodName != zfnull && *methodName != '\0');
+    ZFCoreAssert(returnTypeId != zfnull && *returnTypeId != '\0');
 
     ZFMethod *method = zfnull;
 
@@ -572,14 +572,14 @@ ZFMethod *_ZFP_ZFMethodRegister(
         method = it->second;
         if(method->methodIsUserRegister()) {
             if(methodOwnerClass != zfnull) {
-                zfCoreCriticalMessageTrim(
+                ZFCoreCriticalMessageTrim(
                     "[ZFMethodUserRegister] registering a method that already registered, class: %s, methodName: %s, methodInternalId: %s",
                     methodOwnerClass->classNameFull(),
                     methodName,
                     methodInternalId);
             }
             else {
-                zfCoreCriticalMessageTrim(
+                ZFCoreCriticalMessageTrim(
                     "[ZFMethodFuncUserRegister] registering a method that already registered, namespace: %s, methodName: %s, methodInternalId: %s",
                     methodNamespaceTmp,
                     methodName,
@@ -588,14 +588,14 @@ ZFMethod *_ZFP_ZFMethodRegister(
         }
         else if(method->methodIsDynamicRegister()) {
             if(methodOwnerClass != zfnull) {
-                zfCoreCriticalMessageTrim(
+                ZFCoreCriticalMessageTrim(
                     "[ZFMethodDynamicRegister] registering a method that already registered, class: %s, methodName: %s, methodInternalId: %s",
                     methodOwnerClass->classNameFull(),
                     methodName,
                     methodInternalId);
             }
             else {
-                zfCoreCriticalMessageTrim(
+                ZFCoreCriticalMessageTrim(
                     "[ZFMethodDynamicRegister] registering a method that already registered, namespace: %s, methodName: %s, methodInternalId: %s",
                     methodNamespaceTmp,
                     methodName,
@@ -614,7 +614,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
                 }
             }
         }
-        zfCoreAssertWithMessageTrim(!isRedefine,
+        ZFCoreAssertWithMessageTrim(!isRedefine,
             "[ZFMethod] redefine of method: %s, existing: %s",
             methodInternalId,
             method);
@@ -653,7 +653,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
 }
 void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
     _ZFP_ZFMethod_invokeTimeLogger("unreg: %s", method->methodName().cString());
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
     _ZFP_ZFMethodMapType::iterator it = m.find(method->methodInternalId());
     if(it == m.end()) {
@@ -719,7 +719,7 @@ void ZFMethodGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
         , ZF_IN_OPT const ZFFilterForZFMethod *methodFilter /* = zfnull */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
     if(methodFilter != zfnull) {
         for(_ZFP_ZFMethodMapType::iterator it = m.begin(); it != m.end(); ++it) {
@@ -808,7 +808,7 @@ const ZFMethod *ZFMethodAlias(
         ZF_IN const ZFMethod *method
         , ZF_IN const zfstring &aliasName
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(method == zfnull || zfstringIsEmpty(aliasName)) {
         return zfnull;
     }
@@ -885,7 +885,7 @@ static void _ZFP_ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
     _ZFP_ZFMethodUnregister(aliasMethod);
 }
 void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFMethodAliasRemove(aliasMethod);
 }
 

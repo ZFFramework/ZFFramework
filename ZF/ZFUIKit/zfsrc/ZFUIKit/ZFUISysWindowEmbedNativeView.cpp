@@ -77,7 +77,7 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNative
         , ZFMP_IN(const zfstring &, sysWindowName)
         ) {
     if(!zfstringIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull) {
-        zfCoreLog("window \"%s\" already registered", sysWindowName);
+        ZFCoreLog("window \"%s\" already registered", sysWindowName);
         return zfnull;
     }
 

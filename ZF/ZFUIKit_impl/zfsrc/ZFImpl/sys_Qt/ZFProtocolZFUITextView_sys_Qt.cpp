@@ -100,7 +100,7 @@ public:
                 font.setItalic(true);
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         nativeImplView->setFont(font);
@@ -160,7 +160,7 @@ public:
             case ZFUITextTruncateMode::e_Tail:
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
 #endif

@@ -8,23 +8,23 @@ zfclass _ZFP_ZFLua_gc_test_Object : zfextend ZFObject {
 protected:
     zfoverride
     virtual void objectOnInit(void) {
-        zfLog() << (void *)this;
+        ZFLog() << (void *)this;
         zfsuper::objectOnInit();
     }
     zfoverride
     virtual void objectOnDealloc(void) {
-        zfLog() << (void *)this;
+        ZFLog() << (void *)this;
         zfsuper::objectOnDealloc();
     }
     zfoverride
     virtual void objectOnRetain(void) {
         zfsuper::objectOnRetain();
-        zfLog() << (void *)this << " " << this->objectRetainCount();
+        ZFLog() << (void *)this << " " << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void) {
         zfsuper::objectOnRelease();
-        zfLog() << (void *)this << " " << this->objectRetainCount();
+        ZFLog() << (void *)this << " " << this->objectRetainCount();
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_gc_test_Object)
@@ -38,33 +38,33 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
 
-        zfLogTrim() << "normal begin";
+        ZFLogTrim() << "normal begin";
         ZFLuaExecute(
                 "local obj = _ZFP_ZFLua_gc_test_Object();\n"
             );
-        zfLogTrim() << "normal gc begin";
+        ZFLogTrim() << "normal gc begin";
         ZFLuaGCImmediately();
-        zfLogTrim() << "normal gc end";
-        zfLogTrim() << "normal end";
+        ZFLogTrim() << "normal gc end";
+        ZFLogTrim() << "normal end";
 
-        zfLogTrim() << "============================================================";
-        zfLogTrim() << "note:";
-        zfLogTrim() << "    if compiled without cpp exception,";
-        zfLogTrim() << "    cpp object would leak when lua exception occurred";
-        zfLogTrim() << "============================================================";
-        zfLogTrim() << "lua exception begin";
+        ZFLogTrim() << "============================================================";
+        ZFLogTrim() << "note:";
+        ZFLogTrim() << "    if compiled without cpp exception,";
+        ZFLogTrim() << "    cpp object would leak when lua exception occurred";
+        ZFLogTrim() << "============================================================";
+        ZFLogTrim() << "lua exception begin";
         #if ZF_ENV_ZFLUA_USE_EXCEPTION
             ZFLuaExecute(
                     "local obj = _ZFP_ZFLua_gc_test_Object();\n"
                     "ZFObject.notExistFunc(obj);\n"
                 );
-            zfLogTrim() << "lua exception gc begin";
+            ZFLogTrim() << "lua exception gc begin";
             ZFLuaGCImmediately();
-            zfLogTrim() << "lua exception gc end";
+            ZFLogTrim() << "lua exception gc end";
         #else
-            zfLogTrim() << "lua exception disabled";
+            ZFLogTrim() << "lua exception disabled";
         #endif
-        zfLogTrim() << "lua exception end";
+        ZFLogTrim() << "lua exception end";
 
         this->testCaseStop();
     }

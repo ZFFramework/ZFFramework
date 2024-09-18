@@ -199,7 +199,7 @@ protected:
         this->_ZFP_ZFUIPage_pageCreated = zftrue;
         zfautoT<ZFUIView> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
         this->_ZFP_ZFUIPage_pageView = pageView;
-        zfCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
+        ZFCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
         zfRetain(this->_ZFP_ZFUIPage_pageView);
     }
     /** @brief see #ZFUIPage */

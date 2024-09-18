@@ -394,7 +394,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlEncodeT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
-    zfCoreDataEncode(ret, src);
+    ZFCoreDataEncode(ret, src);
 }
 
 ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFUrlDecode
@@ -408,7 +408,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlDecodeT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
-    zfCoreDataDecode(ret, src);
+    ZFCoreDataDecode(ret, src);
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFUrlForParam
@@ -520,7 +520,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
         ) {
     zftimet curTime = ZFTime::currentTime();
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFHttpHeadCacheMapType::iterator cacheIt = _ZFP_ZFHttpHeadCacheMap.find(url);
         if(cacheIt != _ZFP_ZFHttpHeadCacheMap.end()) {
             _ZFP_ZFHttpHeadCache *cache = cacheIt->second;
@@ -568,7 +568,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
         return recv;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFHttpHeadCache *cache = zfnew(_ZFP_ZFHttpHeadCache);
     cache->url = url;
     cache->cache = recv;
@@ -593,7 +593,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
     return recv;
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFHttpHeadCacheClear) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(_ZFP_ZFHttpHeadCacheFirst != zfnull) {
         _ZFP_ZFHttpHeadCacheFirst = zfnull;
         _ZFP_ZFHttpHeadCacheLast = zfnull;

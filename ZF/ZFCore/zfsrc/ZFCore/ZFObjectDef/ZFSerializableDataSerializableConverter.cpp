@@ -271,7 +271,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
             serializableData.itemClass(zfnull);
         }
         else {
-            zfCoreDataDecode(decodedTmp, pLeft, pRight - pLeft);
+            ZFCoreDataDecode(decodedTmp, pLeft, pRight - pLeft);
             serializableData.itemClass(decodedTmp);
             decodedTmp.removeAll();
         }
@@ -302,7 +302,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
                 zfcharSkipSpaceAndEndl(encodedData, srcEnd);
 
                 zfstring attributeName;
-                zfCoreDataDecode(attributeName, pLeft, pRight - pLeft);
+                ZFCoreDataDecode(attributeName, pLeft, pRight - pLeft);
 
                 // value
                 if(!_ZFP_ZFSD_AttrValueDecode(decodedTmp, encodedData, srcEnd)) {break;}
@@ -405,14 +405,14 @@ zfbool ZFSerializableDataToZfsd(
         result += _ZFP_ZFSD_NullClass;
     }
     else {
-        zfCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+        ZFCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
     }
 
     // attributes
     if(serializableData.attrCount() > 0) {
         for(zfiter it = serializableData.attrIter(); it; ++it) {
             result += _ZFP_ZFSD_Space;
-            zfCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+            ZFCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
             result += _ZFP_ZFSD_AttrAssign;
             _ZFP_ZFSD_AttrValueEncode(result, serializableData.attrIterValue(it));
         }
@@ -465,7 +465,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
         result += _ZFP_ZFSD_NullClass;
     }
     else {
-        zfCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+        ZFCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
     }
 
     zfbool needBreak = (serializableData.attrCount() > 3);
@@ -480,7 +480,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
             else {
                 result += _ZFP_ZFSD_Space;
             }
-            zfCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+            ZFCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
             result += _ZFP_ZFSD_AttrAssign;
             _ZFP_ZFSD_AttrValueEncode(result, serializableData.attrIterValue(it));
         }

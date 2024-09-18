@@ -49,7 +49,7 @@ public:
         lua_pushvalue(this->ownerL, luaStackOffset);
         this->luaFunc = luaL_ref(this->ownerL, LUA_REGISTRYINDEX);
         if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             ZFThread *curThread = ZFThread::currentThread();
             if(curThread != zfnull) {
                 this->ownerThread = curThread->objectHolder();
@@ -67,11 +67,11 @@ public:
         }
 
         if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             if(this->ownerThread != zfnull && this->ownerThread->objectHolded() != zfnull) {
                 ZFThread *curThread = ZFThread::currentThread();
                 if(curThread != zfnull && curThread != this->ownerThread->objectHolded()) {
-                    zfCoreCriticalMessageTrim(
+                    ZFCoreCriticalMessageTrim(
                         "[ZFCallbackForLua] can not execute in different thread");
                     return;
                 }
@@ -80,7 +80,7 @@ public:
 
         lua_rawgeti(this->ownerL, LUA_REGISTRYINDEX, luaFunc);
         if(!lua_isfunction(this->ownerL, -1)) {
-            zfCoreCriticalMessageTrim(
+            ZFCoreCriticalMessageTrim(
                 "[ZFCallbackForLua] invalid function: %s",
                 ZFImpl_ZFLua_luaObjectInfo(this->ownerL, -1, zftrue));
             return;
@@ -154,7 +154,7 @@ public:
                 zffree(v.v.stringValue);
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
     }
@@ -468,14 +468,14 @@ public:
         zfstring logTag = this->logTag();
 
         { // stack from empty to [func, zfargs]
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 2);
 
             // restore function, stack: [func]
             this->funcReaderDone = zffalse;
             int loadError = lua_load(L, _funcReader, this, logTag.cString(), "b");
             if(loadError != LUA_OK) {
-                zfCoreCriticalMessageTrim(
+                ZFCoreCriticalMessageTrim(
                     "[%s] unable to load function",
                     logTag);
                 return;
@@ -494,16 +494,16 @@ public:
                 zfstring code;
                 ZFImpl_ZFLua_implPathInfoSetup(L, code, this->pathInfo, zffalse);
                 int error = luaL_loadbuffer(L, code.cString(), code.length(), zfnull);
-                zfCoreAssert(error == 0);
+                ZFCoreAssert(error == 0);
                 error = lua_pcall(L, 0, (int)luaLocalFuncNameList.count(), 0);
-                zfCoreAssert(error == 0);
+                ZFCoreAssert(error == 0);
             }
 
             // restore upvalue
             for(zfindex i = 0; i < this->upvalues.count(); ++i) {
                 const ValueHolder &v = this->upvalues[i];
                 if(!_ZFP_ZFCallbackForLua_toUpvalue(v, L, luaFuncIndex, luaLocalFuncNameList, luaLocalFuncIndex)) {
-                    zfCoreCriticalMessageTrim("[%s] unable to restore upvalue: %s",
+                    ZFCoreCriticalMessageTrim("[%s] unable to restore upvalue: %s",
                         logTag,
                         valueHolderInfo(v));
                     return;
@@ -516,7 +516,7 @@ public:
             // save func cache
             ZFCorePointerForObject<_ZFP_ZFCallbackForLua_SyncMode *> funcCache(zfnew(_ZFP_ZFCallbackForLua_SyncMode));
             if(!funcCache->setup(L, -2, zfnull)) {
-                zfCoreCriticalMessageTrim("[%s] unable to store function cache",
+                ZFCoreCriticalMessageTrim("[%s] unable to store function cache",
                     logTag);
                 return;
             }
@@ -561,7 +561,7 @@ public:
 
 public:
     void _cleanup(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         this->syncMode.removeAll();
         this->asyncMode.removeAll();
     }
@@ -579,7 +579,7 @@ ZFOBJECT_REGISTER(_ZFP_I_ZFCallbackForLuaCallback)
 ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, luaStateOnDetach
         , ZFMP_IN(const ZFArgs &, zfargs)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     v_zfptr *L = zfargs.param0();
     this->syncMode.luaStateOnDetach((lua_State *)const_cast<void *>(L->zfv));
     this->asyncMode.luaStateOnDetach((lua_State *)const_cast<void *>(L->zfv));
@@ -613,7 +613,7 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(
         return zffalse;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
 
     zfobj<_ZFP_I_ZFCallbackForLuaCallback> callbackOwner;

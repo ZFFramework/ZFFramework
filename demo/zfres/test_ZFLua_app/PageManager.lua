@@ -1,7 +1,7 @@
 local pm = ZFUIPageManager();
 
 pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
-        zfLog("manager onCreate");
+        ZFLog("manager onCreate");
         local pm = zfargs:sender();
         local pmHolder = pm:objectHolder();
 

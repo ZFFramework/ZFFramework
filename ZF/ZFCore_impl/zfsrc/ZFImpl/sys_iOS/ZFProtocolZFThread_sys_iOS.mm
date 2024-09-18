@@ -69,21 +69,21 @@ public:
         zfsuper::protocolOnDealloc();
     }
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId();
         zfbool exist = (_ZFP_ZFThreadImpl_sys_iOS_threadMap.find(*token) != _ZFP_ZFThreadImpl_sys_iOS_threadMap.end());
-        zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
+        ZFCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_iOS_threadMap[*token] = ownerZFThread;
         return (void *)token;
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_threadMap.erase(_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId());
         zfdelete((_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *)token);
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_sys_iOS_threadMap.find(
             *(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *)token);
         if(it != _ZFP_ZFThreadImpl_sys_iOS_threadMap.end()) {
@@ -92,11 +92,11 @@ public:
         return zfnull;
     }
     virtual ZFThread *mainThread(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         return _ZFP_ZFThreadImpl_sys_iOS_mainThreadInstance;
     }
     virtual ZFThread *currentThread(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType::const_iterator it =
             _ZFP_ZFThreadImpl_sys_iOS_threadMap.find(_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId());
         if(it == _ZFP_ZFThreadImpl_sys_iOS_threadMap.end()) {

@@ -316,7 +316,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(
                     zfstringAppend(fmt, "%%-%ss", indexDataState->indexData->indexWidth);
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return;
             }
         }
@@ -327,7 +327,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(
                 indexDataState->indexData->indexUpperCase
             ));
 
-        zfCoreAssertWithMessage(indexDataState->indexData->indexOffset, "indexOffset must not be 0");
+        ZFCoreAssertWithMessage(indexDataState->indexData->indexOffset, "indexOffset must not be 0");
         indexDataState->indexCur += indexDataState->indexData->indexOffset;
     }
 

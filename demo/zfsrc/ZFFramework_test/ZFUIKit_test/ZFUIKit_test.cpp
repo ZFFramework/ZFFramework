@@ -66,8 +66,8 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
     window->childAdd(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
     for(zfindex i = 0; i < settings->count(); ++i) {
         ZFUIKit_test_SettingData *setting = settings->get(i);
-        zfCoreAssert(setting->buttonTextGetter());
-        zfCoreAssert(setting->buttonClickListener());
+        ZFCoreAssert(setting->buttonTextGetter());
+        ZFCoreAssert(setting->buttonClickListener());
 
         zfobj<ZFUIKit_test_Button> button;
         listView->childAdd(button);
@@ -122,8 +122,8 @@ void ZFUIKit_test_prepareSettingForProperty(
         , ZF_IN const ZFProperty *property
         , ZF_IN const ZFListener &nextCallback
         ) {
-    zfCoreAssert(settings != zfnull);
-    zfCoreAssert(nextCallback);
+    ZFCoreAssert(settings != zfnull);
+    ZFCoreAssert(nextCallback);
 
     ZFLISTENER_2(buttonTextGetter
             , ZFObject *, obj
@@ -146,10 +146,10 @@ void ZFUIKit_test_prepareSettingForBoolProperty(
         , ZF_IN ZFObject *obj
         , ZF_IN const ZFProperty *property
         ) {
-    zfCoreAssert(settings != zfnull);
-    zfCoreAssert(obj != zfnull && property != zfnull);
-    zfCoreAssert(obj->classData()->classIsTypeOf(property->propertyOwnerClass()));
-    zfCoreAssert(zfstringIsEqual(property->propertyTypeId(), ZFTypeId_zfbool()));
+    ZFCoreAssert(settings != zfnull);
+    ZFCoreAssert(obj != zfnull && property != zfnull);
+    ZFCoreAssert(obj->classData()->classIsTypeOf(property->propertyOwnerClass()));
+    ZFCoreAssert(zfstringIsEqual(property->propertyTypeId(), ZFTypeId_zfbool()));
 
     zfbool value = property->getterMethod()->execute<zfbool const &>(obj);
     ZFUIKit_test_prepareSettingForNormalProperty(settings, obj, zfbool, property, ZFCoreArrayCreate(zfbool, value, !value));
@@ -159,8 +159,8 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFUIView *view
         ) {
-    zfCoreAssert(settings != zfnull);
-    zfCoreAssert(view != zfnull);
+    ZFCoreAssert(settings != zfnull);
+    ZFCoreAssert(view != zfnull);
 
     ZFLISTENER(buttonTextGetter) {
         v_zfstring *text = zfargs.param0();

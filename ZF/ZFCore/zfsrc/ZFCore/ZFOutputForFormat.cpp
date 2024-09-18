@@ -258,7 +258,7 @@ void ZFOutputFormatBasic::format(
             }
             return;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
     if(_ZFP_outputCount == 0) {

@@ -70,7 +70,7 @@ void ZFUIFlowLayout::layoutOnMeasure(
             ret = _ZFP_ZFUIFlowLayout_measureVertical(this, sizeHint);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
@@ -94,7 +94,7 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
             _ZFP_ZFUIFlowLayout_layoutVertical(this, ZFUIRectGetSize(bounds));
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
@@ -113,7 +113,7 @@ ZFUIOrientationEnum _ZFP_ZFUIFlowLayout_layoutOrientationSecondary(ZF_IN ZFUIFlo
                 case ZFUIOrientation::e_Bottom:
                     return parent->layoutOrientationSecondary();
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return ZFUIOrientation::e_Left;
             }
         case ZFUIOrientation::e_Top:
@@ -126,11 +126,11 @@ ZFUIOrientationEnum _ZFP_ZFUIFlowLayout_layoutOrientationSecondary(ZF_IN ZFUIFlo
                 case ZFUIOrientation::e_Bottom:
                     return ZFUIOrientation::e_Left;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return ZFUIOrientation::e_Left;
             }
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return ZFUIOrientation::e_Left;
     }
 }

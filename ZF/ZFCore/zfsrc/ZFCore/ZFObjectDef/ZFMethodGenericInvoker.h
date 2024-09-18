@@ -170,7 +170,7 @@ public:
             , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             ) {
         T_ReturnType retTmp = invoke(invokerMethod, invokerObject, paramList);
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         typedef typename zftTraits<T_ReturnType>::TrNoRef T_ReturnTypeTmp;
         if(ZFTypeId<T_ReturnTypeTmp>::ValueStore(ret, retTmp)) {
             return zftrue;

@@ -140,7 +140,7 @@ ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(_ZFP_I_ZFLuaStateHolder, instance, ZFLevelZ
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoClean, ZFLevelZFFrameworkEssential) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoClean) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFCoreArray<void *> stateList;
     ZFCoreArray<ZFThread *> threadList;
     ZFLuaStateListForAllThread(stateList, threadList);
@@ -152,7 +152,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFLuaStateAutoClean)
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaState) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LInit();
 }
 
@@ -160,20 +160,20 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateChange
         , ZFMP_IN(void *, L)
         ) {
     if(L != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LChange(L, zffalse);
     }
 }
 
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<void *>, ZFLuaStateList) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LList;
 }
 ZFMETHOD_FUNC_DEFINE_2(void, ZFLuaStateListForAllThread
         , ZFMP_OUT(ZFCoreArray<void *>, luaStateList)
         , ZFMP_OUT(ZFCoreArray<ZFThread *>, threadList)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFCoreArray<_ZFP_I_ZFLuaStateHolder *> &d = _ZFP_I_ZFLuaStateHolder::attachList();
 
     for(zfindex iHolder = 0; iHolder < d.count(); ++iHolder) {
@@ -186,13 +186,13 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFLuaStateListForAllThread
 }
 
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaStateOpen) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     return ZFPROTOCOL_ACCESS(ZFLua)->luaStateOpen();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateClose
         , ZFMP_IN(void *, L)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFPROTOCOL_ACCESS(ZFLua)->luaGC(L);
     ZFPROTOCOL_ACCESS(ZFLua)->luaStateClose(L);
 }
@@ -201,7 +201,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateAttach
         , ZFMP_IN(void *, L)
         ) {
     if(L != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LAttach(L);
     }
 }
@@ -209,7 +209,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateDetach
         , ZFMP_IN(void *, L)
         ) {
     if(L != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LDetach(L);
     }
 }
@@ -232,7 +232,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoUpdate) {
 public:
     ZFListener classDataOnUpdateListener;
     static void classDataOnUpdate(ZF_IN const ZFArgs &zfargs) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         v_ZFClassDataUpdateData *changed = zfargs.param0();
 
         ZFCoreArray<void *> stateList;

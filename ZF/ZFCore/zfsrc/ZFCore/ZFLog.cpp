@@ -36,7 +36,7 @@ void ZFLogFormat::format(
             }
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 }
@@ -103,7 +103,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogHeaderInit) {
 ZF_GLOBAL_INITIALIZER_END(ZFLogHeaderInit)
 
 // ============================================================
-static zfindex _ZFP_zfLogOnOutput(
+static zfindex _ZFP_ZFLogOnOutput(
         ZF_IN const void *src
         , ZF_IN zfindex size
         ) {
@@ -113,13 +113,13 @@ static zfindex _ZFP_zfLogOnOutput(
     ZFOutputDefault().execute(src, size);
     return size;
 }
-ZFOutput _ZFP_zfLog(
+ZFOutput _ZFP_ZFLog(
         ZF_IN const zfchar *header
         , ZF_IN_OPT const zfchar *text /* = zfnull */
         ) {
     ZFOutput ret;
     ret.callbackSerializeDisable(zftrue);
-    ZFOutputForFormatT(ret, ZFCallbackForFunc(_ZFP_zfLogOnOutput), _ZFP_ZFLogFormatHolder);
+    ZFOutputForFormatT(ret, ZFCallbackForFunc(_ZFP_ZFLogOnOutput), _ZFP_ZFLogFormatHolder);
 
     if(header != zfnull) {
         ret << header;
@@ -133,7 +133,7 @@ ZFOutput _ZFP_zfLog(
 
 // ============================================================
 // other convenient method
-zfstring _ZFP_zfLogCurTimeString(void) {
+zfstring _ZFP_ZFLogCurTimeString(void) {
     zfstring s;
     ZFTimeInfo ti = ZFTime::currentTimeInfo();
     zfstringAppend(s,
@@ -144,8 +144,8 @@ zfstring _ZFP_zfLogCurTimeString(void) {
         ti.miliSecond);
     return s;
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, zfLogCurTimeString) {
-    return _ZFP_zfLogCurTimeString();
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFLogCurTimeString) {
+    return _ZFP_ZFLogCurTimeString();
 }
 
 ZF_NAMESPACE_GLOBAL_END

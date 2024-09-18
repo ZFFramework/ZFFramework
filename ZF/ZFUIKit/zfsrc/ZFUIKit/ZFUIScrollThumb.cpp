@@ -107,7 +107,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIScrollThumbHorizontalClass
         , ZFMP_IN(const ZFClass *, cls)
         ) {
     if(cls != zfnull && !cls->classIsTypeOf(ZFUIScrollThumb::ClassData())) {
-        zfCoreLog("class %s not type of %s",
+        ZFCoreLog("class %s not type of %s",
             cls->classNameFull(),
             ZFUIScrollThumb::ClassData()->classNameFull());
         return;
@@ -126,7 +126,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIScrollThumbVerticalClass
         , ZFMP_IN(const ZFClass *, cls)
         ) {
     if(cls != zfnull && !cls->classIsTypeOf(ZFUIScrollThumb::ClassData())) {
-        zfCoreLog("class %s not type of %s",
+        ZFCoreLog("class %s not type of %s",
             cls->classNameFull(),
             ZFUIScrollThumb::ClassData()->classNameFull());
         return;

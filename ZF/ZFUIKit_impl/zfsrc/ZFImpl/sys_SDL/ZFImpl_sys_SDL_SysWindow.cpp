@@ -142,7 +142,7 @@ void ZFImpl_sys_SDL_SysWindow::layoutRequest(void) {
 // ============================================================
 void ZFImpl_sys_SDL_SysWindow::viewFocus(ZF_IN ZFImpl_sys_SDL_View *view) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *focusImpl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
-    zfCoreAssert(focusImpl != zfnull);
+    ZFCoreAssert(focusImpl != zfnull);
     if(view == zfnull) {
         if(this->viewFocused != zfnull) {
             ZFUIView *owner = this->viewFocused->ownerZFUIView;

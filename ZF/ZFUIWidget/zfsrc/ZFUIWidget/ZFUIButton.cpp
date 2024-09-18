@@ -6,9 +6,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if _ZFP_ZFUIButton_DEBUG
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...) \
-        zfLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLogHeader(ZFCallerInfoCreate());
+        ZFLogTrim() << "[ZFUIButton] " << zfstr(fmt, ##__VA_ARGS__) << " " << ZFLogHeader(ZFCallerInfoCreate());
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName) \
-        zfLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLogHeader(ZFCallerInfoCreate());
+        ZFLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLogHeader(ZFCallerInfoCreate());
 #else
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...)
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName)
@@ -140,7 +140,7 @@ public:
             case ZFUIMouseAction::e_MouseHoverExit:
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         mouseEvent->eventResolved(zftrue);
@@ -220,7 +220,7 @@ private:
             case ZFUIMouseAction::e_MouseHoverExit:
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         _ZFP_ZFUIButton_DEBUG_LOG("process  end  %s", mouseEvent)
@@ -318,7 +318,7 @@ ZFMETHOD_DEFINE_0(ZFUIButton, void, buttonClickIntervalReset) {
 ZFMETHOD_DEFINE_1(ZFUIButton, void, simulateClick
         , ZFMP_IN_OPT(ZFUIEvent *, event, zfnull)
         ) {
-    zfCoreAssert(ZFThread::currentThread() == ZFThread::mainThread());
+    ZFCoreAssert(ZFThread::currentThread() == ZFThread::mainThread());
     d->buttonHighlightedFlag = zffalse;
     if(this->checkable()) {
         this->checked(!this->checked());
@@ -378,7 +378,7 @@ void ZFUIButton::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
                     d->buttonStateUpdate(zffalse);
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     break;
             }
             keyEvent->eventResolved(zftrue);

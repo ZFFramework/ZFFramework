@@ -118,7 +118,7 @@ inline T_ZFObject const &_ZFP_zfRetain(ZF_IN T_ZFObject const &obj) {
  * @brief retain an object, see #ZFObject
  */
 #define zfRetain(obj) \
-    (zfCoreMutexLockerHolder(), zfunsafe_zfRetain(obj))
+    (ZFCoreMutexLockerHolder(), zfunsafe_zfRetain(obj))
 /** @brief no lock version of #zfRetain, use with caution */
 #define zfunsafe_zfRetain(obj) \
     _ZFP_zfRetain(obj)
@@ -138,7 +138,7 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
  * @brief release an object, see #ZFObject
  */
 #define zfRelease(obj) \
-    (zfCoreMutexLockerHolder(), zfunsafe_zfRelease(obj))
+    (ZFCoreMutexLockerHolder(), zfunsafe_zfRelease(obj))
 /** @brief no lock version of #zfRelease, use with caution */
 #define zfunsafe_zfRelease(obj) \
     _ZFP_zfRelease(obj)
@@ -312,11 +312,11 @@ T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
  */
 #define zfRetainChange(property, propertyValue) \
     do { \
-        zfCoreMutexLock(); \
+        ZFCoreMutexLock(); \
         ZFObject *_ZFP_zfRetainChangeTmpValue = zfcast(ZFObject *, property); \
         zfunsafe_zfRetain(property = propertyValue); \
         zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
-        zfCoreMutexUnlock(); \
+        ZFCoreMutexUnlock(); \
     } while(zffalse)
 /** @brief no lock version of #zfRetainChange, use with caution */
 #define zfunsafe_zfRetainChange(property, propertyValue) \

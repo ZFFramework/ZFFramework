@@ -17,22 +17,22 @@ void _ZFP_ZFUIImageSerializeTypeRegister(
         ZF_IN const zfstring &name
         , ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
-    zfCoreAssert(name != zfnull && fromCallback != zfnull);
-    zfCoreAssertWithMessageTrim(m.find(name) == m.end(),
+    ZFCoreAssert(name != zfnull && fromCallback != zfnull);
+    ZFCoreAssertWithMessageTrim(m.find(name) == m.end(),
         "[ZFUIIMAGE_SERIALIZE_TYPE_DEFINE] %s already registered",
         name);
     m[name] = fromCallback;
 }
 void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfstring &name) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     m.erase(name);
 }
 
 void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     for(_ZFP_ZFUIImageSerializeDataMapType::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);
@@ -179,7 +179,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
             });
     _ZFP_ZFUIImageSerializeFromCallback fromCallback = zfnull;
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
         _ZFP_ZFUIImageSerializeDataMapType::iterator it = m.find(typeName);
         if(it != m.end()) {
@@ -466,7 +466,7 @@ void ZFUIImage::objectOnInitFinish(void) {
         d->globalImageScaleOnUpdateListener);
 }
 void ZFUIImage::objectOnDeallocPrepare(void) {
-    zfCoreAssertWithMessageTrim(d->imageStateObservers.isEmpty()
+    ZFCoreAssertWithMessageTrim(d->imageStateObservers.isEmpty()
             , "%s dealloc while imageState observer still exists, have you forgot imageStateDetach?"
             , this
             );

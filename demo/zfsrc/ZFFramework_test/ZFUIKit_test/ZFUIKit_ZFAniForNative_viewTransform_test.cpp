@@ -21,7 +21,7 @@ protected:
         container->childAdd(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeCreate(80, 60));
         view->viewBackgroundColor(ZFUIColorRandom());
-        view->image(zfRes("test_normal.png"));
+        view->image(zfres("test_normal.png"));
         view->viewScaleX(1.5f);
         view->viewScaleY(0.5f);
         view->viewRotateZ(40);

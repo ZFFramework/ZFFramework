@@ -7,7 +7,7 @@ zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextend ZFStyleableObject {
 
     ZFPROPERTY_ASSIGN(zfint, myProperty)
     ZFPROPERTY_ON_ATTACH_INLINE(zfint, myProperty) {
-        zfLog() << propertyValue;
+        ZFLog() << propertyValue;
     }
 };
 

@@ -176,7 +176,7 @@ zfbool ZFMethodSigSplit(
         ) {
     ret.removeAll();
     ret.add(ZFIndexRangeZero()); // add placeholder for method scope
-    if(!zfCoreDataPairSplitString(
+    if(!ZFCoreDataPairSplitString(
                 ret,
                 zfHint("desiredCountOrIndexMax")zfindexMax(),
                 src, srcLen,

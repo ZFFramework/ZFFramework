@@ -12,7 +12,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardState_test) {
 private:
     ZFListener keyPressedOnUpdateListener;
     static void keyPressedOnUpdate(ZF_IN const ZFArgs &zfargs) {
-        zfLogTrim() << "[ZFUIKeyboardState] " << zfargs.sender();
+        ZFLogTrim() << "[ZFUIKeyboardState] " << zfargs.sender();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardState_test)
 

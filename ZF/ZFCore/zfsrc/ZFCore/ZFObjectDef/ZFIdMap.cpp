@@ -85,10 +85,10 @@ const zfidentity *_ZFP_ZFIdMapRegister(
         , ZF_IN_OPT zfbool isDynamicRegister /* = zffalse */
         ) {
     if(zfstringIsEmpty(idName)) {
-        zfCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] empty name");
+        ZFCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] empty name");
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     _ZFP_ZFIdMapDataIdMapType &dataIdMap = moduleData.dataIdMap;
     _ZFP_ZFIdMapDataNameMapType &dataNameMap = moduleData.dataNameMap;
@@ -100,7 +100,7 @@ const zfidentity *_ZFP_ZFIdMapRegister(
     }
     if(data != zfnull) {
         if(isDynamicRegister) {
-            zfCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] already registered: %s", idName);
+            ZFCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] already registered: %s", idName);
         }
         ++(data->refCount);
     }
@@ -119,7 +119,7 @@ void _ZFP_ZFIdMapUnregister(
         ZF_IN zfidentity idValue
         , ZF_IN_OPT zfbool isDynamicRegister /* = zffalse */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     _ZFP_ZFIdMapDataIdMapType &dataIdMap = moduleData.dataIdMap;
     _ZFP_ZFIdMapDataNameMapType &dataNameMap = moduleData.dataNameMap;
@@ -127,13 +127,13 @@ void _ZFP_ZFIdMapUnregister(
     _ZFP_ZFIdMapDataIdMapType::iterator it = dataIdMap.find(idValue);
     if(it == dataIdMap.end()) {
         if(!isDynamicRegister) {
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
         }
         return;
     }
     _ZFP_ZFIdMapData *data = it->second;
     if(!data->isDynamicRegister && isDynamicRegister) {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
             "[ZFIdMapDynamicUnregister] unregister %s(%s) which is not dynamic registered",
             data->idValue,
             data->idName);
@@ -146,7 +146,7 @@ void _ZFP_ZFIdMapUnregister(
     }
 }
 zfstring ZFIdMapNameForId(ZF_IN zfidentity idValue) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     _ZFP_ZFIdMapDataIdMapType &dataIdMap = moduleData.dataIdMap;
 
@@ -157,7 +157,7 @@ zfstring ZFIdMapNameForId(ZF_IN zfidentity idValue) {
     return zfnull;
 }
 zfidentity ZFIdMapIdForName(ZF_IN const zfstring &idName) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
     _ZFP_ZFIdMapDataNameMapType &dataNameMap = moduleData.dataNameMap;
 
@@ -171,7 +171,7 @@ void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
         , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
 
     idValues.capacity(idValues.count() + moduleData.dataIdMap.size());

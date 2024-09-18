@@ -12,7 +12,7 @@ typedef zfstlhashmap<zfstring, ZFTypeInfo *, zfstring_zfstlHash, zfstring_zfstlE
 ZF_STATIC_INITIALIZER_INIT(ZFTypeInfoHolder) {
 }
 ZF_STATIC_INITIALIZER_DESTROY(ZFTypeInfoHolder) {
-    zfCoreAssert(m.empty());
+    ZFCoreAssert(m.empty());
 }
 _ZFP_ZFTypeInfoMapType m;
 ZF_STATIC_INITIALIZER_END(ZFTypeInfoHolder)
@@ -21,22 +21,22 @@ void _ZFP_ZFTypeInfoRegister(
         ZF_IN const zfstring &typeId
         , ZF_IN ZFTypeInfo *typeIdData
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFTypeInfoMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFTypeInfoHolder)->m;
-    zfCoreAssert(m.find(typeId) == m.end());
+    ZFCoreAssert(m.find(typeId) == m.end());
     m[typeIdData->typeId()] = typeIdData;
 }
 ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfstring &typeId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFTypeInfoMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFTypeInfoHolder)->m;
     _ZFP_ZFTypeInfoMapType::iterator it = m.find(typeId);
-    zfCoreAssert(it != m.end());
+    ZFCoreAssert(it != m.end());
     ZFTypeInfo *t = it->second;
     m.erase(it);
     return t;
 }
 const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfstring &typeId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFTypeInfoMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFTypeInfoHolder)->m;
     _ZFP_ZFTypeInfoMapType::iterator it = m.find(typeId);
     if(it != m.end()) {
@@ -47,7 +47,7 @@ const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfstring &typeId) {
     }
 }
 void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInfo *> &ret) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFTypeInfoMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFTypeInfoHolder)->m;
     for(_ZFP_ZFTypeInfoMapType::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->second);

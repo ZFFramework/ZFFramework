@@ -38,7 +38,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFMAIN_ENTRY() \
     static void _ZFMain(void); \
     ZF_STATIC_REGISTER_INIT(ZFMainEntryRegister) { \
-        zfCoreAssertWithMessageTrim(_ZFP_ZFMainFunc() == zfnull, "ZFMAIN_ENTRY already registered"); \
+        ZFCoreAssertWithMessageTrim(_ZFP_ZFMainFunc() == zfnull, "ZFMAIN_ENTRY already registered"); \
         _ZFP_ZFMainFunc() = _ZFMain; \
     } \
     ZF_STATIC_REGISTER_END(ZFMainEntryRegister) \

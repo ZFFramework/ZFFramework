@@ -91,21 +91,21 @@ public:
     /** @brief construct an empty string */
     zft_zfstring(void)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
     }
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = s.d;
         ++(d->refCount);
     }
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, ZF_IN zfindex len)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
         this->assign(s.cString(), len);
@@ -113,7 +113,7 @@ public:
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, ZF_IN zfindex pos, ZF_IN zfindex len)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
         if(pos < s.length()) {
@@ -126,7 +126,7 @@ public:
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const T_Char *s)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
         if(s) {
@@ -136,7 +136,7 @@ public:
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
         if(s) {
@@ -146,7 +146,7 @@ public:
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const T_Char *s, ZF_IN zfindex pos, ZF_IN zfindex len)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
         if(s) {
@@ -156,12 +156,12 @@ public:
     /** @brief construct empty string */
     zft_zfstring(ZF_IN const zfnullT &dummy)
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
     }
     ~zft_zfstring(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(d->refCount == 1) {
             if(d->capacity) {
                 zffree(d->d.buf);
@@ -180,7 +180,7 @@ public:
     }
 public:
     inline zft_zfstring<T_Char> &operator = (ZF_IN const zft_zfstring<T_Char> &s) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_zfstringD<T_Char> *dTmp = d;
         d = s.d;
         ++(d->refCount);
@@ -284,7 +284,7 @@ public:
      *   designed for performance
      */
     void swap(ZF_IN_OUT zft_zfstring<T_Char> &ref) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_zfstringD<T_Char> *dTmp = d;
         d = ref.d;
         ref.d = dTmp;
@@ -540,7 +540,7 @@ public:
     /** @brief remove all content of the string */
     inline void removeAll(void) {
         if(!this->isEmpty()) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             if(d->refCount == 1) {
                 if(d->capacity >= 64) {
                     zffree(d->d.buf);
@@ -634,7 +634,7 @@ private:
     }
     void _capacityChange(ZF_IN zfindex capacity, zfbool keepContents) {
         _capacityOptimize(capacity);
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(d->refCount == 1) {
             if(d->capacity > 0) {
                 d->d.buf = (T_Char *)zfrealloc(d->d.buf, capacity * sizeof(T_Char));

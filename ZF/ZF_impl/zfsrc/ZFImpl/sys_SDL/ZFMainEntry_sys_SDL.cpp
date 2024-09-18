@@ -36,7 +36,7 @@ private:
     ZFListener afterListener;
 private:
     static void before(ZF_IN zfself *d) {
-        zfCoreAssert(d->builtinWindow == zfnull);
+        ZFCoreAssert(d->builtinWindow == zfnull);
 
         if(ZFImpl_sys_SDL_embed) {
             return;
@@ -46,19 +46,19 @@ private:
             if(SDL_Init(sdlInitFlag) == 0) {break;}
             zfstring errorHint = SDL_GetError();
 
-            // zfCoreLogTrim("[ZFMainEntry_sys_SDL] try init without audio");
+            // ZFCoreLogTrim("[ZFMainEntry_sys_SDL] try init without audio");
             // sdlInitFlag &= (~SDL_INIT_AUDIO);
             // if(SDL_Init(sdlInitFlag) == 0) {break;}
             // zfstringAppend(errorHint, "\n    init without audio: %s", (const zfchar *)SDL_GetError());
 
-            zfCoreCriticalMessage("SDL init failed: %s", errorHint);
+            ZFCoreCriticalMessage("SDL init failed: %s", errorHint);
             return;
         } while(zffalse);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
         d->builtinWindow = ZFImpl_sys_SDL_CreateWindow();
         if(d->builtinWindow == zfnull) {
-            zfCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
+            ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
             return;
         }
         d->builtinRenderer = SDL_CreateRenderer(d->builtinWindow, -1, 0
@@ -68,7 +68,7 @@ private:
         if(d->builtinRenderer == zfnull) {
             SDL_DestroyWindow(d->builtinWindow);
             d->builtinWindow = zfnull;
-            zfCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
+            ZFCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
             return;
         }
         SDL_SetRenderDrawBlendMode(d->builtinRenderer, SDL_BLENDMODE_BLEND);
@@ -77,7 +77,7 @@ private:
     }
     static void after(ZF_IN const ZFArgs &zfargs) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
-        zfCoreAssert(d->builtinWindow != zfnull);
+        ZFCoreAssert(d->builtinWindow != zfnull);
 
         zfbool quitFlag = zffalse;
         SDL_Event event;
@@ -132,7 +132,7 @@ SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
         SDL_GetDisplayUsableBounds(windowDisplay, &client);
         SDL_Rect screen;
         SDL_GetDisplayBounds(windowDisplay, &screen);
-        zfCoreLogTrim("SDL window created, display: %s, window: (%s, %s), client: (%s, %s, %s, %s), screen: (%s, %s, %s, %s)"
+        ZFCoreLogTrim("SDL window created, display: %s, window: (%s, %s), client: (%s, %s, %s, %s), screen: (%s, %s, %s, %s)"
                 , windowDisplay
                 , windowW, windowH
                 , client.x, client.y, client.w, client.h
@@ -159,8 +159,8 @@ void ZFImpl_sys_SDL_eventHandlerAdd(
         , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
         , ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */
         ) {
-    zfCoreMutexLocker();
-    zfCoreAssert(eventHandler != zfnull);
+    ZFCoreMutexLocker();
+    ZFCoreAssert(eventHandler != zfnull);
     zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> *list = zfnull;
     _ZFP_ZFImpl_sys_SDL_EventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_EventHandlerMap.find(type);
     if(it == _ZFP_ZFImpl_sys_SDL_EventHandlerMap.end()) {
@@ -185,7 +185,7 @@ void ZFImpl_sys_SDL_eventHandlerRemove(
         ZF_IN Uint32 type
         , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(eventHandler != zfnull) {
         _ZFP_ZFImpl_sys_SDL_EventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_EventHandlerMap.find(type);
         if(it != _ZFP_ZFImpl_sys_SDL_EventHandlerMap.end()) {
@@ -204,8 +204,8 @@ void ZFImpl_sys_SDL_userEventHandlerAdd(
         , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
         , ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */
         ) {
-    zfCoreMutexLocker();
-    zfCoreAssert(eventHandler != zfnull);
+    ZFCoreMutexLocker();
+    ZFCoreAssert(eventHandler != zfnull);
     zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> *list = zfnull;
     _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEventCode);
     if(it == _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end()) {
@@ -230,7 +230,7 @@ void ZFImpl_sys_SDL_userEventHandlerRemove(
         ZF_IN Sint32 userEventCode
         , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(eventHandler != zfnull) {
         _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEventCode);
         if(it != _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end()) {
@@ -253,16 +253,16 @@ Uint32 ZFImpl_sys_SDL_PixelFormatPreferred(void) {
 zfbool ZFImpl_sys_SDL_embed = zffalse;
 
 void ZFImpl_sys_SDL_embedInit(ZF_IN SDL_Window *window) {
-    zfCoreAssert(window != zfnull);
+    ZFCoreAssert(window != zfnull);
     SDL_Renderer *renderer = SDL_GetRenderer(window);
-    zfCoreAssert(renderer != zfnull);
-    zfCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow == zfnull);
+    ZFCoreAssert(renderer != zfnull);
+    ZFCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow == zfnull);
     _ZFP_ZFImpl_sys_SDL_mainWindow = window;
     _ZFP_ZFImpl_sys_SDL_mainRenderer = renderer;
     _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetWindowPixelFormat(window);
 }
 void ZFImpl_sys_SDL_embedCleanup(void) {
-    zfCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow != zfnull);
+    ZFCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow != zfnull);
     _ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
     _ZFP_ZFImpl_sys_SDL_mainRenderer = zfnull;
 }

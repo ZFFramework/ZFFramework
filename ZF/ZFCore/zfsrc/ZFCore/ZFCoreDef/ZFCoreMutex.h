@@ -20,7 +20,7 @@ extern ZFLIB_ZFCore ZFCoreMutexImplCallbackLock _ZFP_ZFCoreMutexImplLock;
 extern ZFLIB_ZFCore ZFCoreMutexImplCallbackUnlock _ZFP_ZFCoreMutexImplUnlock;
 
 /**
- * @brief #zfCoreMutexLock's implementation, change with caution
+ * @brief #ZFCoreMutexLock's implementation, change with caution
  */
 inline void ZFCoreMutexImplSet(
         ZF_IN void *implObject
@@ -48,14 +48,14 @@ inline zfbool ZFCoreMutexImplAvailable(void) {return (_ZFP_ZFCoreMutexImplObject
  *
  * you may change it at run time by changing #ZFCoreMutexImplSet
  */
-#define zfCoreMutexLock() \
+#define ZFCoreMutexLock() \
     do { \
         if(_ZFP_ZFCoreMutexImplObject) { \
             _ZFP_ZFCoreMutexImplLock(_ZFP_ZFCoreMutexImplObject); \
         } \
     } while(zffalse)
-/** @brief see #zfCoreMutexLock */
-#define zfCoreMutexUnlock() \
+/** @brief see #ZFCoreMutexLock */
+#define ZFCoreMutexUnlock() \
     do { \
         if(_ZFP_ZFCoreMutexImplObject) { \
             _ZFP_ZFCoreMutexImplUnlock(_ZFP_ZFCoreMutexImplObject); \
@@ -63,16 +63,16 @@ inline zfbool ZFCoreMutexImplAvailable(void) {return (_ZFP_ZFCoreMutexImplObject
     } while(zffalse)
 
 /**
- * @brief see #zfCoreMutexLocker
+ * @brief see #ZFCoreMutexLocker
  */
-zfclassLikePOD ZFLIB_ZFCore zfCoreMutexLockerHolder {
+zfclassLikePOD ZFLIB_ZFCore ZFCoreMutexLockerHolder {
 public:
     /** @cond ZFPrivateDoc */
-    zfCoreMutexLockerHolder(void) {
-        zfCoreMutexLock();
+    ZFCoreMutexLockerHolder(void) {
+        ZFCoreMutexLock();
     }
-    ~zfCoreMutexLockerHolder(void) {
-        zfCoreMutexUnlock();
+    ~ZFCoreMutexLockerHolder(void) {
+        ZFCoreMutexUnlock();
     }
     /** @endcond */
 };
@@ -82,25 +82,25 @@ public:
  * usage:
  * @code
  *   {
- *       zfCoreMutexLocker(); // lock
+ *       ZFCoreMutexLocker(); // lock
  *       if(...) return; // safe to return
  *   } // unlock after block
  * @endcode
  *
- * you may also use the helper #zfCoreMutexLockerHolder
+ * you may also use the helper #ZFCoreMutexLockerHolder
  * @code
- *   Type var = (zfCoreMutexLockerHolder(), yourFuncSynced());
+ *   Type var = (ZFCoreMutexLockerHolder(), yourFuncSynced());
  * @endcode
  */
-#define zfCoreMutexLocker() zfCoreMutexLockerHolder _ZFP_ZFCoreMutexLocker_hold
+#define ZFCoreMutexLocker() ZFCoreMutexLockerHolder _ZFP_ZFCoreMutexLocker_hold
 
 #if 0
-    #undef zfCoreMutexLock
-    #define zfCoreMutexLock()
-    #undef zfCoreMutexUnlock
-    #define zfCoreMutexUnlock()
-    #undef zfCoreMutexLocker
-    #define zfCoreMutexLocker()
+    #undef ZFCoreMutexLock
+    #define ZFCoreMutexLock()
+    #undef ZFCoreMutexUnlock
+    #define ZFCoreMutexUnlock()
+    #undef ZFCoreMutexLocker
+    #define ZFCoreMutexLocker()
 #endif
 
 ZF_NAMESPACE_GLOBAL_END

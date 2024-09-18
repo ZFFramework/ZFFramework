@@ -89,7 +89,7 @@ public:
                 flags = MZ_BEST_COMPRESSION;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
         return this->compressAdd(*zip, inputRaw, filePathInZip, flags);

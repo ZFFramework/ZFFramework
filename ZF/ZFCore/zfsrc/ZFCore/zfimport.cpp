@@ -27,7 +27,7 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
     }
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
     if(input.callbackId() != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(input.callbackId());
         if(it != cacheMap.end()) {
             ret = it->second;
@@ -42,7 +42,7 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFImportEnd(), inputHolder, ret);
 
     if(success && input.callbackId() != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         cacheMap[input.callbackId()] = ret;
     }
 
@@ -147,7 +147,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove
     if(callbackId == zfnull) {
         return zfnull;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
     _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(callbackId);
     if(it != cacheMap.end()) {
@@ -161,15 +161,15 @@ ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove
 }
 
 ZFMETHOD_FUNC_DEFINE_0(void, zfimportCacheRemoveAll) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
     if(cacheMap.empty()) {
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
     else {
         _ZFP_zfimportCacheMapType tmp;
         tmp.swap(cacheMap);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
 }
 

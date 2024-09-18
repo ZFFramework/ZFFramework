@@ -180,7 +180,7 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(
  * @code
  *   <ZFCallback
  *       callbackType="ZFInputForBuffer"
- *       buf="xxx" // optional, the buffer contents encoded by zfCoreDataEncode
+ *       buf="xxx" // optional, the buffer contents encoded by ZFCoreDataEncode
  *   >
  *   </ZFCallback>
  * @endcode

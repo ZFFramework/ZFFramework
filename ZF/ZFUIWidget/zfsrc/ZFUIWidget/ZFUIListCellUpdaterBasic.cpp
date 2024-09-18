@@ -39,7 +39,7 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
             separatorView->layoutParam()->layoutMargin(ZFUIMarginCreate(owner->separatorMargin().left, 0, owner->separatorMargin().right, 0));
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zfnull;
     }
     return separatorView;
@@ -65,7 +65,7 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
                     separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return;
             }
         }
@@ -92,7 +92,7 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
             separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }

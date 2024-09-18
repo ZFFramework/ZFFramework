@@ -16,33 +16,33 @@ ZFEXPORT_VAR_READONLY_DEFINE(zfint, ZF_ENV_ZFVERSION_MINOR, ZF_ENV_ZFVERSION_MIN
 ZFEXPORT_VAR_READONLY_DEFINE(const zfchar *, ZF_ENV_ZFVERSION, ZF_ENV_ZFVERSION())
 
 // ============================================================
-// zfCoreArgSplit
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, zfCoreArgSplit
+// ZFCoreArgSplit
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFCoreArgSplit
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, result)
         , ZFMP_IN(const zfchar *, cmdLine)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<zfstring>, zfCoreArgSplit
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<zfstring>, ZFCoreArgSplit
         , ZFMP_IN(const zfchar *, cmdLine)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, zfCoreArgMerge
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFCoreArgMerge
         , ZFMP_OUT(zfstring &, result)
         , ZFMP_IN(const ZFCoreArray<zfstring> &, argList)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, zfCoreArgMerge
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFCoreArgMerge
         , ZFMP_IN(const ZFCoreArray<zfstring> &, argList)
         )
 
 // ============================================================
-// zfCoreDataEncode
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, zfCoreDataEncodeCharMapDefault)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(void, zfCoreDataEncode
+// ZFCoreDataEncode
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFCoreDataEncodeCharMapDefault)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(void, ZFCoreDataEncode
         , ZFMP_OUT(zfstring &, result)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
-        , ZFMP_IN_OPT(const zfchar *, charMap, zfCoreDataEncodeCharMapDefault())
+        , ZFMP_IN_OPT(const zfchar *, charMap, ZFCoreDataEncodeCharMapDefault())
         , ZFMP_IN_OPT(zfchar, escapeToken, '%')
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfCoreDataDecode
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, ZFCoreDataDecode
         , ZFMP_OUT(zfstring &, result)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
@@ -50,8 +50,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfCoreDataDecode
         )
 
 // ============================================================
-// zfCoreDataPairSplit
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitString
+// ZFCoreDataPairSplit
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, ZFCoreDataPairSplitString
         , ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, outData)
         , ZFMP_IN(zfindex, desiredCountOrIndexMax)
         , ZFMP_IN(const zfchar *, src)
@@ -61,7 +61,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitString
         , ZFMP_IN_OPT(const zfchar *, rightTokens, ")")
         , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitInt
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, ZFCoreDataPairSplitInt
         , ZFMP_IN_OUT(ZFCoreArray<zfint> &, outData)
         , ZFMP_IN(zfindex, desiredCountOrIndexMax)
         , ZFMP_IN(const zfchar *, src)
@@ -71,7 +71,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitInt
         , ZFMP_IN_OPT(const zfchar *, rightTokens, ")")
         , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitFloat
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, ZFCoreDataPairSplitFloat
         , ZFMP_IN_OUT(ZFCoreArray<zffloat> &, outData)
         , ZFMP_IN(zfindex, desiredCountOrIndexMax)
         , ZFMP_IN(const zfchar *, src)
@@ -458,38 +458,38 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmRand
         )
 
 // ============================================================
-// zfVersion
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfVersionGet
+// ZFVersion
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFVersionGet
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, version)
         , ZFMP_IN(zfindex, subVersionIndex)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfVersionGet
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFVersionGet
         , ZFMP_IN(const zfchar *, version)
         , ZFMP_IN(zfindex, subVersionIndex)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfVersionGetInt
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFVersionGetInt
         , ZFMP_OUT(zfuint &, ret)
         , ZFMP_IN(const zfchar *, version)
         , ZFMP_IN(zfindex, subVersionIndex)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfVersionGetInt
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, ZFVersionGetInt
         , ZFMP_IN(const zfchar *, version)
         , ZFMP_IN(zfindex, subVersionIndex)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfVersionSet
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, ZFVersionSet
         , ZFMP_IN_OUT(zfstring &, version)
         , ZFMP_IN(zfindex, subVersionIndex)
         , ZFMP_IN(const zfchar *, subVersion)
         , ZFMP_IN_OPT(const zfchar *, emptySubVersion, "0")
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfVersionSetInt
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, ZFVersionSetInt
         , ZFMP_IN_OUT(zfstring &, version)
         , ZFMP_IN(zfindex, subVersionIndex)
         , ZFMP_IN(zfuint, subVersion)
         , ZFMP_IN_OPT(const zfchar *, emptySubVersion, "0")
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, zfVersionCompare
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFVersionCompare
         , ZFMP_IN(const zfchar *, version0)
         , ZFMP_IN(const zfchar *, version1)
         )

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief mutex used by #zfLog,
+ * @brief mutex used by #ZFLog,
  *   you may use this lock to prevent your log actions from being interrupted
  *
  * note, the mutex would be initialized only after #ZFLevelZFFrameworkEssential
@@ -23,7 +23,7 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFMutex *, ZFLogMutex)
 /** @brief see #ZFLogHeader */
 typedef zfstring (*ZFLogHeaderFunc)(ZF_IN const ZFCallerInfo &callerInfo);
 /**
- * @brief callback to obtain log header for #zfLog
+ * @brief callback to obtain log header for #ZFLog
  *
  * set to #ZFLogHeaderDefault at #ZFLevelZFFrameworkStatic,
  * set to null to disable header info\n
@@ -49,12 +49,12 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, zfbool, ZFLogHeaderDefault_logCaller)
  * typical usage:
  * @code
  *   // output anything with ZFLogHeader
- *   zfLog() << anything;
- *   zfLog("formated: %s", someText);
+ *   ZFLog() << anything;
+ *   ZFLog("formated: %s", someText);
  *
  *   // or, trim version without ZFLogHeader
- *   zfLogTrim() << anything;
- *   zfLogTrim("formated: %s", someText);
+ *   ZFLogTrim() << anything;
+ *   ZFLogTrim("formated: %s", someText);
  * @endcode
  *
  * ZFLog is actually an output callback,
@@ -72,28 +72,28 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, zfbool, ZFLogHeaderDefault_logCaller)
  *   zfanyT<ZFLogFormat> fmt = ZFOutputFormat::getFormat(output);
  *   fmt->autoEndl(xxx);
  * @endcode
- * and they would be reset to default state after each zfLog call
+ * and they would be reset to default state after each ZFLog call
  */
-#define zfLog(...) _ZFP_zfLog((ZFLogHeader ? ZFLogHeader(ZFCallerInfoCreate()).cString() : zfnull), zfstr(__VA_ARGS__))
+#define ZFLog(...) _ZFP_ZFLog((ZFLogHeader ? ZFLogHeader(ZFCallerInfoCreate()).cString() : zfnull), zfstr(__VA_ARGS__))
 
-/** @brief see #zfLog */
-#define zfLogTrim(...) _ZFP_zfLog(zfnull, zfstr(__VA_ARGS__))
+/** @brief see #ZFLog */
+#define ZFLogTrim(...) _ZFP_ZFLog(zfnull, zfstr(__VA_ARGS__))
 
-extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(
+extern ZFLIB_ZFCore ZFOutput _ZFP_ZFLog(
         ZF_IN const zfchar *header
         , ZF_IN_OPT const zfchar *text = zfnull
         );
 
 // ============================================================
 /**
- * @brief output format for #zfLog
+ * @brief output format for #ZFLog
  */
 zfclass ZFLIB_ZFCore ZFLogFormat : zfextend ZFObject, zfimplement ZFOutputFormat {
     ZFOBJECT_DECLARE(ZFLogFormat, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFOutputFormat)
 
 public:
-    /** @brief whether auto append endl for each #zfLog call */
+    /** @brief whether auto append endl for each #ZFLog call */
     ZFPROPERTY_ASSIGN(zfbool, autoEndl, zftrue)
 
 protected:
@@ -119,14 +119,14 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFLogFormat *, ZFLogFormatDefault)
 
 // ============================================================
 // other convenient method
-extern ZFLIB_ZFCore zfstring _ZFP_zfLogCurTimeString(void);
+extern ZFLIB_ZFCore zfstring _ZFP_ZFLogCurTimeString(void);
 /** @cond ZFPrivateDoc */
-#define zfLogCurTimeString() _ZFP_zfLogCurTimeString()
+#define ZFLogCurTimeString() _ZFP_ZFLogCurTimeString()
 /** @endcond */
 /**
  * @brief get a string contains current time with format HH:mm:ss.SSS
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, zfLogCurTimeString)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFLogCurTimeString)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLog_h_

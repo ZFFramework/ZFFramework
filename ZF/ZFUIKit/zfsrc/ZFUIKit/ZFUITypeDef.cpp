@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointApplyScaleReversely
         )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIPoint, ZFUIPoint, {
         ZFCoreArray<zffloat> buf;
-        if(!zfCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
+        if(!ZFCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }
@@ -131,7 +131,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIMargin, ZFUIMarginDec
         )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIMargin, ZFUIMargin, {
         ZFCoreArray<zffloat> buf;
-        if(!zfCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
+        if(!ZFCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }
@@ -249,7 +249,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISize, ZFUISizeApplyMarginReversely
 
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISize, ZFUISize, {
         ZFCoreArray<zffloat> buf;
-        if(!zfCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
+        if(!ZFCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }
@@ -378,7 +378,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIRect, ZFUIRectApplyMarginReversely
         )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIRect, ZFUIRect, {
         ZFCoreArray<zffloat> buf;
-        if(!zfCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
+        if(!ZFCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }
@@ -860,7 +860,7 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFUIContentScaleTypeApply
             }
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 }

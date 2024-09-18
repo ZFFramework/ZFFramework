@@ -36,7 +36,7 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnDetach;
     }
 
-    zfCoreCriticalShouldNotGoHere();
+    ZFCoreCriticalShouldNotGoHere();
     return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
 }
 void _ZFP_ZFPropertyLifeCycleRegister(

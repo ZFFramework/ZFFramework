@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool zfCoreDataPairSplitString(
+zfbool ZFCoreDataPairSplitString(
         ZF_IN_OUT ZFCoreArray<ZFIndexRange> &outData
         , ZF_IN zfindex desiredCountOrIndexMax
         , ZF_IN const zfchar *src

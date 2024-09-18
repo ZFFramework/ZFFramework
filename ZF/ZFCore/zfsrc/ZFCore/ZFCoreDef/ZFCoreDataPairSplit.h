@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if leftToken has been set, then rightToken must also be set with same order\n
  * if rightToken not set, src can only be stopped by reach end
  */
-extern ZFLIB_ZFCore zfbool zfCoreDataPairSplitString(
+extern ZFLIB_ZFCore zfbool ZFCoreDataPairSplitString(
         ZF_IN_OUT ZFCoreArray<ZFIndexRange> &outData
         , ZF_IN zfindex desiredCountOrIndexMax
         , ZF_IN const zfchar *src
@@ -39,10 +39,10 @@ extern ZFLIB_ZFCore zfbool zfCoreDataPairSplitString(
         );
 
 /**
- * @brief split data to int array format, see #zfCoreDataPairSplitString
+ * @brief split data to int array format, see #ZFCoreDataPairSplitString
  */
 template<typename T_int>
-zfbool zfCoreDataPairSplitInt(
+zfbool ZFCoreDataPairSplitInt(
         ZF_IN_OUT ZFCoreArray<T_int> &outData
         , ZF_IN zfindex desiredCountOrIndexMax
         , ZF_IN const zfchar *src
@@ -54,7 +54,7 @@ zfbool zfCoreDataPairSplitInt(
         , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     ZFCoreArray<ZFIndexRange> splited;
-    if(!zfCoreDataPairSplitString(
+    if(!ZFCoreDataPairSplitString(
                 splited,
                 desiredCountOrIndexMax,
                 src, srcLen,
@@ -76,10 +76,10 @@ zfbool zfCoreDataPairSplitInt(
 }
 
 /**
- * @brief split data to float array format, see #zfCoreDataPairSplitString
+ * @brief split data to float array format, see #ZFCoreDataPairSplitString
  */
 template<typename T_float>
-zfbool zfCoreDataPairSplitFloat(
+zfbool ZFCoreDataPairSplitFloat(
         ZF_IN_OUT ZFCoreArray<T_float> &outData
         , ZF_IN zfindex desiredCountOrIndexMax
         , ZF_IN const zfchar *src
@@ -91,7 +91,7 @@ zfbool zfCoreDataPairSplitFloat(
         , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     ZFCoreArray<ZFIndexRange> splited;
-    if(!zfCoreDataPairSplitString(
+    if(!ZFCoreDataPairSplitString(
                 splited,
                 desiredCountOrIndexMax,
                 src, srcLen,

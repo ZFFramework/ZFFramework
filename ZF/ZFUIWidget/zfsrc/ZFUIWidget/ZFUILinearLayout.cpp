@@ -67,7 +67,7 @@ void ZFUILinearLayout::layoutOnMeasure(
             ret = _ZFP_ZFUILinearLayout_measureVertical(this, sizeHint);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
@@ -91,7 +91,7 @@ void ZFUILinearLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
             _ZFP_ZFUILinearLayout_layoutVertical(this, ZFUIRectGetSize(bounds));
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }

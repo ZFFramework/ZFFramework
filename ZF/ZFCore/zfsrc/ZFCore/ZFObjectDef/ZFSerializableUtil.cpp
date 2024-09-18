@@ -8,7 +8,7 @@ ZF_NAMESPACE_BEGIN(ZFSerializableUtil)
 
 #if _ZFP_ZFSerializableUtil_DEBUG
 static void _ZFP_ZFSerializableUtilDebugAction(void) {
-    zfCoreCriticalMessageTrim("[ZFSerializableUtil] errorOccurred");
+    ZFCoreCriticalMessageTrim("[ZFSerializableUtil] errorOccurred");
 }
 #endif
 

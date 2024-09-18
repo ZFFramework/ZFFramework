@@ -58,7 +58,7 @@ ZFOBJECT_ON_INIT_DEFINE_1(ZFUIImageView
 void ZFUIImageView::objectOnInit(void) {
     zfsuper::objectOnInit();
 
-    zfCoreAssert(this->nativeImplView() == zfnull);
+    ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(

@@ -22,7 +22,7 @@ protected:
         container->childAdd(view)->c_sizeFill();
 
         // encode image to binary and load it again to test
-        zfauto imageHolder = zfRes("test_normal.png");
+        zfauto imageHolder = zfres("test_normal.png");
         zfobj<ZFIOBufferByMemory> io;
         ZFUIImageToOutput(io->output(), imageHolder);
         zfauto imageNew = ZFUIImageFromInput(io->input());

@@ -125,7 +125,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
                 outputCallback.execute(" fg ");
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
 
@@ -155,7 +155,7 @@ void ZFUIViewTreePrintInfoGetterForClass(
         ZF_IN const ZFClass *viewClass
         , ZF_IN const ZFListener &viewInfoGetter
         ) {
-    zfCoreAssert(viewClass != zfnull && viewClass->classIsTypeOf(ZFUIView::ClassData()));
+    ZFCoreAssert(viewClass != zfnull && viewClass->classIsTypeOf(ZFUIView::ClassData()));
     ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
     if(viewInfoGetter == zfnull) {
         for(zfindex i = 0; i < datas.count(); ++i) {

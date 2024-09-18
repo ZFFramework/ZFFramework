@@ -80,22 +80,22 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Android, ZFThread, ZFProtocolLe
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Thread")
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_sys_Android_getNativeThreadId();
-        zfCoreAssertWithMessage(_ZFP_ZFThreadImpl_sys_Android_threadMap.find(*token) == _ZFP_ZFThreadImpl_sys_Android_threadMap.end(),
+        ZFCoreAssertWithMessage(_ZFP_ZFThreadImpl_sys_Android_threadMap.find(*token) == _ZFP_ZFThreadImpl_sys_Android_threadMap.end(),
             "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_Android_threadMap[*token] = ownerZFThread;
         return (void *)token;
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *threadId = (_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token;
         _ZFP_ZFThreadImpl_sys_Android_threadMap.erase(*threadId);
         zfdelete((_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token);
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_sys_Android_threadMap.find(
             *(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token);
         if(it != _ZFP_ZFThreadImpl_sys_Android_threadMap.end()) {
@@ -105,11 +105,11 @@ public:
     }
 
     virtual ZFThread *mainThread(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         return _ZFP_ZFThreadImpl_sys_Android_mainThreadInstance;
     }
     virtual ZFThread *currentThread(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_ThreadMapType::const_iterator it =
             _ZFP_ZFThreadImpl_sys_Android_threadMap.find(_ZFP_ZFThreadImpl_sys_Android_getNativeThreadId());
         if(it == _ZFP_ZFThreadImpl_sys_Android_threadMap.end()) {
@@ -119,14 +119,14 @@ public:
     }
 
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
             runnable,
             zfnull);
         _ZFP_ZFThreadImpl_sys_Android_updateExecuteId();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType curId = _ZFP_ZFThreadImpl_sys_Android_executeId;
         _ZFP_ZFThreadImpl_sys_Android_executeDataMap[curId] = d;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInMainThread",
@@ -157,14 +157,14 @@ public:
             ZF_IN const ZFListener &runnable
             , ZF_IN const ZFListener &runnableCleanup
             ) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
             runnable,
             runnableCleanup);
         _ZFP_ZFThreadImpl_sys_Android_updateExecuteId();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType curId = _ZFP_ZFThreadImpl_sys_Android_executeId;
         _ZFP_ZFThreadImpl_sys_Android_executeDataMap[curId] = d;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInNewThread",
@@ -196,10 +196,10 @@ ZF_NAMESPACE_GLOBAL_END
 
 // ============================================================
 static _ZFP_ZFThreadImpl_sys_Android_ExecuteData *_ZFP_ZFThreadImpl_sys_Android_getExecuteData(_ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType executeDataId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFThreadImpl_sys_Android_ExecuteDataMapType::iterator it = _ZFP_ZFThreadImpl_sys_Android_executeDataMap.find(executeDataId);
     if(it == _ZFP_ZFThreadImpl_sys_Android_executeDataMap.end()) {
-        zfCoreCriticalShouldNotGoHere();
+        ZFCoreCriticalShouldNotGoHere();
         return zfnull;
     }
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = it->second;

@@ -401,11 +401,11 @@ void ZFSerializableData::childAdd(ZF_IN const ZFSerializableData &element) {
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
-    zfCoreAssertWithMessage(d != element.d, "adding self is not allowed");
+    ZFCoreAssertWithMessage(d != element.d, "adding self is not allowed");
     if(element.d == zfnull) {
         const_cast<ZFSerializableData &>(element).d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
-    zfCoreAssertWithMessage(element.d->serializableDataParent == zfnull, "adding a data which already has parent");
+    ZFCoreAssertWithMessage(element.d->serializableDataParent == zfnull, "adding a data which already has parent");
     d->elements.push_back(element);
     element.d->serializableDataParent = d;
 }
@@ -416,16 +416,16 @@ void ZFSerializableData::childAdd(
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
-    zfCoreAssertWithMessage(d != element.d, "adding self is not allowed");
+    ZFCoreAssertWithMessage(d != element.d, "adding self is not allowed");
     if(element.d == zfnull) {
         const_cast<ZFSerializableData &>(element).d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
-    zfCoreAssertWithMessage(element.d->serializableDataParent == zfnull, "adding a data which already has parent");
+    ZFCoreAssertWithMessage(element.d->serializableDataParent == zfnull, "adding a data which already has parent");
     if(atIndex == zfindexMax()) {
         atIndex = (zfindex)d->elements.size();
     }
     if(atIndex > (zfindex)d->elements.size()) {
-        zfCoreCriticalIndexOutOfRange(atIndex, (zfindex)(d->elements.size() + 1));
+        ZFCoreCriticalIndexOutOfRange(atIndex, (zfindex)(d->elements.size() + 1));
         return;
     }
 

@@ -6,26 +6,26 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent) {
     ZFLISTENER(aniOnAlloc) {
         if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData())) {
-            zfLogTrim() << zfLogCurTimeString() << " " << zfargs.sender() << " alloc";
+            ZFLogTrim() << ZFLogCurTimeString() << " " << zfargs.sender() << " alloc";
         }
     } ZFLISTENER_END()
 
     ZFLISTENER(aniOnDealloc) {
         if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData())) {
-            zfLogTrim() << zfLogCurTimeString() << " " << zfargs.sender() << " dealloc";
+            ZFLogTrim() << ZFLogCurTimeString() << " " << zfargs.sender() << " dealloc";
         }
     } ZFLISTENER_END()
 
     ZFLISTENER(aniOnStart) {
-        zfLogTrim() << zfLogCurTimeString() << " " << zfargs.sender() << " start";
+        ZFLogTrim() << ZFLogCurTimeString() << " " << zfargs.sender() << " start";
     } ZFLISTENER_END()
 
     ZFLISTENER(aniOnLoop) {
-        zfLogTrim() << zfLogCurTimeString() << " " << zfargs.sender() << " loop";
+        ZFLogTrim() << ZFLogCurTimeString() << " " << zfargs.sender() << " loop";
     } ZFLISTENER_END()
 
     ZFLISTENER(aniOnStop) {
-        zfLogTrim() << zfLogCurTimeString() << " " << zfargs.sender() << " stop";
+        ZFLogTrim() << ZFLogCurTimeString() << " " << zfargs.sender() << " stop";
     } ZFLISTENER_END()
 
     ZFObserverGroup(this->taskOwner, ZFGlobalObserver())

@@ -17,7 +17,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFResCacheAutoCleanup) {
 ZF_GLOBAL_INITIALIZER_END(ZFResCacheAutoCleanup)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfres
         , ZFMP_IN(const zfchar *, resFilePath)
         , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         ) {
@@ -28,9 +28,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
     else {
         input = ZFInputForLocal(resFilePath, pathInfo);
     }
-    return zfRes(input);
+    return zfres(input);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfauto, zfRes
+ZFMETHOD_FUNC_DEFINE_1(zfauto, zfres
         , ZFMP_IN(const ZFInput &, input)
         ) {
     if(!input) {
@@ -51,7 +51,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfauto, zfRes
     }
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfres
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_IN(const ZFListener &, loadImpl)
         ) {

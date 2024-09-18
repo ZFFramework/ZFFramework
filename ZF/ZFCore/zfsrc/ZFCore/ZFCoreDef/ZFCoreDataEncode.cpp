@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256] = {
+const zfchar _ZFP_ZFCoreDataEncodeCharMapDefault[256] = {
     // 0x00 ~ 0x0F
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     // 0x10 ~ 0x1F
@@ -37,11 +37,11 @@ const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-void zfCoreDataEncode(
+void ZFCoreDataEncode(
         ZF_OUT zfstring &result
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
-        , ZF_IN_OPT const zfchar *charMap /* = zfCoreDataEncodeCharMapDefault() */
+        , ZF_IN_OPT const zfchar *charMap /* = ZFCoreDataEncodeCharMapDefault() */
         , ZF_IN_OPT zfchar escapeToken /* = '%' */
         ) {
     if(src == zfnull) {return;}
@@ -64,7 +64,7 @@ void zfCoreDataEncode(
         ++src;
     }
 }
-void zfCoreDataDecode(
+void ZFCoreDataDecode(
         ZF_OUT zfstring &result
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */

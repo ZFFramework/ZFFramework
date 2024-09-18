@@ -35,7 +35,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ObjCacheDataHolder) {
 ZF_GLOBAL_INITIALIZER_END(ObjCacheDataHolder)
 
 void zfAllocCacheRemoveAll(void) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFCoreArray<ZFObject *> toRelease;
     ZFCoreArray<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {

@@ -2,7 +2,7 @@
  * @file ZFCoreLog.h
  * @brief internal log utility
  *
- * used internally, you should use zfLog instead
+ * used internally, you should use ZFLog instead
  */
 
 #ifndef _ZFI_ZFCoreLog_h_
@@ -15,7 +15,7 @@
  * @brief same as assert defined for future use
  *
  * active only if ZF_ENV_DEBUG is zftrue
- * @see zfCoreAssert
+ * @see ZFCoreAssert
  */
 #if ZF_ENV_DEBUG
     #include <cassert>
@@ -34,28 +34,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief output callback for zfCoreLog
+ * @brief output callback for ZFCoreLog
  */
 typedef void (*ZFCoreLogOutputCallbackType)(ZF_IN const zfchar *s);
 extern ZFLIB_ZFCore void _ZFP_ZFCoreLogOutputCallbackDefault(ZF_IN const zfchar *s);
 /**
- * @brief default output callback for zfCoreLog
+ * @brief default output callback for ZFCoreLog
  */
 #define ZFCoreLogOutputCallbackDefault _ZFP_ZFCoreLogOutputCallbackDefault
 
 /**
- * @brief set the output callback for zfCoreLog
+ * @brief set the output callback for ZFCoreLog
  * @warning within the callback, you must not access any other ZFFramework's module,
  *   otherwise dead lock may be occurred
  */
-extern ZFLIB_ZFCore void zfCoreLogOutputCallback(ZF_IN ZFCoreLogOutputCallbackType callback);
+extern ZFLIB_ZFCore void ZFCoreLogOutputCallback(ZF_IN ZFCoreLogOutputCallbackType callback);
 /**
- * @brief get the output callback for zfCoreLog
+ * @brief get the output callback for ZFCoreLog
  */
-extern ZFLIB_ZFCore ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void);
+extern ZFLIB_ZFCore ZFCoreLogOutputCallbackType ZFCoreLogOutputCallback(void);
 
 // ============================================================
-extern ZFLIB_ZFCore void _ZFP_zfCoreLog(
+extern ZFLIB_ZFCore void _ZFP_ZFCoreLog(
         ZF_IN const ZFCallerInfo &callerInfo
         , ZF_IN const zfchar *text
         );
@@ -70,61 +70,61 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreLog(
  *   usually to output critical error messages,
  *   you should not use other log method in your app
  * @warning this method is not thread safe
- * @see zfCoreLogOutputCallback, zfCoreCriticalError
+ * @see ZFCoreLogOutputCallback, ZFCoreCriticalError
  */
-#define zfCoreLog(format, ...) _ZFP_zfCoreLog(ZFCallerInfoCreate(), zfstr(format, ##__VA_ARGS__))
+#define ZFCoreLog(format, ...) _ZFP_ZFCoreLog(ZFCallerInfoCreate(), zfstr(format, ##__VA_ARGS__))
 
 /**
- * @brief log without header info, see #zfCoreLog
+ * @brief log without header info, see #ZFCoreLog
  */
-#define zfCoreLogTrim(format, ...) _ZFP_zfCoreLog(ZFCallerInfoEmpty(), zfstr(format, ##__VA_ARGS__))
+#define ZFCoreLogTrim(format, ...) _ZFP_ZFCoreLog(ZFCallerInfoEmpty(), zfstr(format, ##__VA_ARGS__))
 
 /**
- * @brief log with custom header info, see #zfCoreLog
+ * @brief log with custom header info, see #ZFCoreLog
  */
-#define zfCoreLogDetail(callerInfo, format, ...) _ZFP_zfCoreLog(callerInfo, zfstr(format, ##__VA_ARGS__))
+#define ZFCoreLogDetail(callerInfo, format, ...) _ZFP_ZFCoreLog(callerInfo, zfstr(format, ##__VA_ARGS__))
 
 // ============================================================
 /**
- * @brief callback which would be called if zfCoreCriticalError is called
+ * @brief callback which would be called if ZFCoreCriticalError is called
  */
 typedef void (*ZFCoreCriticalErrorCallback)(ZF_IN const ZFCallerInfo &callerInfo);
 
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZFLIB_ZFCore void zfCoreCriticalErrorPrepareCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void ZFCoreCriticalErrorPrepareCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZFLIB_ZFCore void zfCoreCriticalErrorPrepareCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void ZFCoreCriticalErrorPrepareCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
 
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZFLIB_ZFCore void zfCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void ZFCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZFLIB_ZFCore void zfCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void ZFCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
 
-extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo);
-extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_ZFCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_ZFCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo);
 /**
- * @brief ready to output critical error, see #zfCoreCriticalError
+ * @brief ready to output critical error, see #ZFCoreCriticalError
  *
  * usage:
  * @code
- *   zfCoreCriticalErrorPrepare();
- *   zfCoreLog(xxx);
- *   zfCoreCriticalError();
+ *   ZFCoreCriticalErrorPrepare();
+ *   ZFCoreLog(xxx);
+ *   ZFCoreCriticalError();
  * @endcode
- * this is useful to redirect #zfCoreLog by #zfCoreLogOutputCallback,
+ * this is useful to redirect #ZFCoreLog by #ZFCoreLogOutputCallback,
  * to save critical error messages to proper location
  */
-#define zfCoreCriticalErrorPrepare() _ZFP_zfCoreCriticalErrorPrepare(ZFCallerInfoCreate())
-/** @brief see #zfCoreCriticalErrorPrepare */
-#define zfCoreCriticalErrorPrepareDetail(callerInfo) _ZFP_zfCoreCriticalErrorPrepare(callerInfo)
+#define ZFCoreCriticalErrorPrepare() _ZFP_ZFCoreCriticalErrorPrepare(ZFCallerInfoCreate())
+/** @brief see #ZFCoreCriticalErrorPrepare */
+#define ZFCoreCriticalErrorPrepareDetail(callerInfo) _ZFP_ZFCoreCriticalErrorPrepare(callerInfo)
 
 /**
  * @brief used when error occurred, to terminate the application
@@ -132,9 +132,9 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &call
  * @warning this function is for internal use,
  *   calling this method would cause app to be terminated
  */
-#define zfCoreCriticalError() _ZFP_zfCoreCriticalError(ZFCallerInfoCreate())
-/** @brief see #zfCoreCriticalError */
-#define zfCoreCriticalErrorDetail(callerInfo) _ZFP_zfCoreCriticalError(callerInfo)
+#define ZFCoreCriticalError() _ZFP_ZFCoreCriticalError(ZFCallerInfoCreate())
+/** @brief see #ZFCoreCriticalError */
+#define ZFCoreCriticalErrorDetail(callerInfo) _ZFP_ZFCoreCriticalError(callerInfo)
 
 ZF_NAMESPACE_GLOBAL_END
 

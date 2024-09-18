@@ -20,7 +20,7 @@ zfclassFwd _ZFP_ZFIdentityGeneratorPrivate;
  * used to generate an unused identity
  * @warning this class is not thread-safe,
  *   you must achieve thread-safe manually,
- *   such as #zfCoreMutexLock
+ *   such as #ZFCoreMutexLock
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFIdentityGenerator {
 public:

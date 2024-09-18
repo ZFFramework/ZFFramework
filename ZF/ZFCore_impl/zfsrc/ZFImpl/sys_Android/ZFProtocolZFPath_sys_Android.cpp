@@ -15,7 +15,7 @@ public:
         if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
             zfindex pos = zfstringFindReversely(this->_pathForModuleFile, '/');
-            zfCoreAssert(pos != zfindexMax());
+            ZFCoreAssert(pos != zfindexMax());
             this->_pathForModule.assign(this->_pathForModuleFile, pos);
         }
         return this->_pathForModule;
@@ -28,7 +28,7 @@ public:
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForModuleFile, path);
-            zfCoreAssert(!this->_pathForModuleFile.isEmpty());
+            ZFCoreAssert(!this->_pathForModuleFile.isEmpty());
         }
         return this->_pathForModuleFile;
     }
@@ -41,7 +41,7 @@ public:
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForSetting, path);
-            zfCoreAssert(!this->_pathForSetting.isEmpty());
+            ZFCoreAssert(!this->_pathForSetting.isEmpty());
         }
         return this->_pathForSetting;
     }
@@ -57,7 +57,7 @@ public:
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForStorage, path);
-            zfCoreAssert(!this->_pathForStorage.isEmpty());
+            ZFCoreAssert(!this->_pathForStorage.isEmpty());
         }
         return this->_pathForStorage;
     }
@@ -73,7 +73,7 @@ public:
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForStorageShared, path);
-            zfCoreAssert(!this->_pathForStorageShared.isEmpty());
+            ZFCoreAssert(!this->_pathForStorageShared.isEmpty());
         }
         return this->_pathForStorageShared;
     }
@@ -89,7 +89,7 @@ public:
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForCache, path);
-            zfCoreAssert(!this->_pathForCache.isEmpty());
+            ZFCoreAssert(!this->_pathForCache.isEmpty());
         }
         return this->_pathForCache;
     }

@@ -38,7 +38,7 @@ ZFMETHOD_DEFINE_1(ZFSet, zfbool, isContain
 ZFMETHOD_DEFINE_1(ZFSet, void, add
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    zfCoreAssertWithMessage(obj != zfnull, "insert null object");
+    ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     if(!d->isContain(obj)) {
         d->set(obj, ZFNull());
         this->contentOnAdd(obj);

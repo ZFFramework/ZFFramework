@@ -118,15 +118,15 @@ public:
                 owner->_loadAction();
             } ZFLISTENER_END()
             _localCacheCallback = tmp;
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             d->localCacheCallback.add(_localCacheCallback);
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             d->localCacheLoad();
         }
     }
     void loadCancel(void) {
         if(_localCacheCallback) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             ZF_GLOBAL_INITIALIZER_CLASS(ZFIOCacheLoadTaskMap) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFIOCacheLoadTaskMap);
             d->localCacheCallback.removeElement(_localCacheCallback);
             _localCacheCallback = zfnull;
@@ -258,18 +258,18 @@ public:
         // add cache and limit cache size
         {
             ZF_GLOBAL_INITIALIZER_CLASS(ZFIOCacheLoadTaskMap) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFIOCacheLoadTaskMap);
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             _ZFP_ZFIOCacheData cacheData;
             cacheData.pathInfo = localPathInfo;
             cacheData.cacheTime = curTime;
             d->localCacheList.add(cacheData);
             while(d->localCacheList.count() > ZFIOCache::instance()->localCacheMaxSize()) {
                 _ZFP_ZFIOCacheData toRemove = d->localCacheList.removeAndGet(0);
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 ZFPathInfoRemove(toRemove.pathInfo);
-                zfCoreMutexLock();
+                ZFCoreMutexLock();
             }
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
         }
     }
     ZFMETHOD_INLINE_1(void, _implFinish

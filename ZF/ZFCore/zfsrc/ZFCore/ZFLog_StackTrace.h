@@ -10,23 +10,23 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief true if #zfLogStackTrace and #zfLogCallerInfo is available
+ * @brief true if #ZFLogStackTrace and #ZFLogCallerInfo is available
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfbool, zfLogStackTraceAvailable)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfbool, ZFLogStackTraceAvailable)
 
 /**
  * @brief get the function call stack
  *
  * output may be different depending on the OS and implementation
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, zfLogStackTrace
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFLogStackTrace
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN_OPT(const zfchar *, prefix, zfnull)
         , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
         , ZFMP_IN_OPT(zfindex, maxLevel, 20)
         )
-/** @brief see #zfLogStackTrace */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfstring, zfLogStackTrace
+/** @brief see #ZFLogStackTrace */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfstring, ZFLogStackTrace
         , ZFMP_IN_OPT(const zfchar *, prefix, zfnull)
         , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
         , ZFMP_IN_OPT(zfindex, maxLevel, 20)
@@ -35,14 +35,14 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfstring, zfLogStackTrace
 /**
  * @brief get the caller's info
  *
- * see #zfLogStackTrace for how to make it available
+ * see #ZFLogStackTrace for how to make it available
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, zfLogCallerInfo
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFLogCallerInfo
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
         )
-/** @brief see zfLogCallerInfo */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, zfLogCallerInfo
+/** @brief see ZFLogCallerInfo */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFLogCallerInfo
         , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
         )
 

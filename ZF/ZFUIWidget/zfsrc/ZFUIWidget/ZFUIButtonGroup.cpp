@@ -24,7 +24,7 @@ static void _ZFP_ZFUIButtonGroup_setup_common(
                 ) {
             ZFUIButton *button = zfargs.sender();
             zfindex buttonIndex = buttonGroup->buttonFind(button);
-            zfCoreAssert(buttonIndex != zfindexMax());
+            ZFCoreAssert(buttonIndex != zfindexMax());
             buttonGroup->_ZFP_ZFUIButtonGroup_buttonGroupOnEvent(button, buttonIndex, zfargs.eventId());
         } ZFLISTENER_END()
         buttonGroup->_ZFP_buttonOnEvent = buttonEvent;
@@ -89,7 +89,7 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(
                 ) {
             ZFUIButton *button = zfargs.sender();
             zfindex buttonIndex = buttonGroup->buttonFind(button);
-            zfCoreAssert(buttonIndex != zfindexMax());
+            ZFCoreAssert(buttonIndex != zfindexMax());
             if(buttonIndex == buttonGroup->buttonTabChecked()) {
                 if(buttonGroup->buttonTabAllowUnchecked()) {
                     buttonGroup->buttonTabChecked(zfindexMax());
@@ -162,7 +162,7 @@ static void _ZFP_ZFUIButtonGroup_setup(
             _ZFP_ZFUIButtonGroup_setup_Tab(buttonGroup, button, buttonIndex);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
@@ -178,7 +178,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup(
             _ZFP_ZFUIButtonGroup_cleanup_Tab(buttonGroup, button);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
@@ -216,7 +216,7 @@ ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd
         atIndex = this->buttonCount();
     }
     else if(atIndex >= this->buttonCount()) {
-        zfCoreCriticalIndexOutOfRange(atIndex, this->buttonCount());
+        ZFCoreCriticalIndexOutOfRange(atIndex, this->buttonCount());
         return;
     }
     this->_ZFP_buttons->add(button, atIndex);
@@ -235,7 +235,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt
         return;
     }
     if(buttonIndex >= this->buttonCount()) {
-        zfCoreCriticalIndexOutOfRange(buttonIndex, this->buttonCount());
+        ZFCoreCriticalIndexOutOfRange(buttonIndex, this->buttonCount());
         return;
     }
     ZFUIButton *button = this->buttonAt(buttonIndex);

@@ -395,7 +395,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                 }
 
                 if(mouseState.viewHover != zfnull && mouseState.viewHover->ownerZFUIView != zfnull) {
-                    zfCoreAssert(mouseState.mouseId != zfidentityInvalid());
+                    ZFCoreAssert(mouseState.mouseId != zfidentityInvalid());
                     zfobj<ZFUIMouseEvent> event;
                     event->mouseId = mouseState.mouseId;
                     event->mouseAction = ZFUIMouseAction::e_MouseHover;
@@ -478,12 +478,12 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
             break;
         }
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 }
 void ZFImpl_sys_SDL_View::dispatchWheelEvent(ZF_IN SDL_Event *sdlEvent) {
-    zfCoreAssert(sdlEvent->type == SDL_MOUSEWHEEL);
+    ZFCoreAssert(sdlEvent->type == SDL_MOUSEWHEEL);
     ZFUIView *target = zfnull;
     {
         ZFImpl_sys_SDL_View *sdlView = this->mouseTestGlobal(sdlEvent->wheel.mouseX, sdlEvent->wheel.mouseY);
@@ -532,7 +532,7 @@ void ZFImpl_sys_SDL_View::dispatchKeyEvent(ZF_IN SDL_Event *sdlEvent) {
             event->keyAction = ZFUIKeyAction::e_KeyUp;
         }
         else {
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
         }
         event->keyCode = ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw((SDL_KeyCode)sdlEvent->key.keysym.sym);
         event->keyCodeRaw = sdlEvent->key.keysym.sym;

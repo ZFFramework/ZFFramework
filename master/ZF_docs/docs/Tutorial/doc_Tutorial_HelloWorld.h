@@ -10,14 +10,14 @@
  *   // declare app's main entry
  *   ZFMAIN_ENTRY() {
  *       // well, hello world to ZFFramework
- *       zfLog() << "hello world";
+ *       ZFLog() << "hello world";
  *   }
  * @endcode
  *
  * ZFFramework would be started from #ZFMAIN_ENTRY,
  * you may write any C++ compatible code here\n
  * in this example,
- * we just output "hello world" to zfLog,
+ * we just output "hello world" to ZFLog,
  * which would output to a proper console by default
  */
 

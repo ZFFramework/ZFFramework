@@ -10,9 +10,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZFLIB_ZFCore const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256];
+extern ZFLIB_ZFCore const zfchar _ZFP_ZFCoreDataEncodeCharMapDefault[256];
 /**
- * @brief see #zfCoreDataEncode, default is all numbers and all lower and upper letters
+ * @brief see #ZFCoreDataEncode, default is all numbers and all lower and upper letters
  *
  * here's a list of contents:
  * @code
@@ -50,7 +50,7 @@ extern ZFLIB_ZFCore const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256];
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
  * @endcode
  */
-#define zfCoreDataEncodeCharMapDefault() _ZFP_zfCoreDataEncodeCharMapDefault
+#define ZFCoreDataEncodeCharMapDefault() _ZFP_ZFCoreDataEncodeCharMapDefault
 
 /**
  * @brief util to encode data to printable string
@@ -60,17 +60,17 @@ extern ZFLIB_ZFCore const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256];
  * zero element means the char isn't printable and non-zero means printable\n
  * not printable chars would be escaped by escapeToken
  */
-extern ZFLIB_ZFCore void zfCoreDataEncode(
+extern ZFLIB_ZFCore void ZFCoreDataEncode(
         ZF_OUT zfstring &result
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
-        , ZF_IN_OPT const zfchar *charMap = zfCoreDataEncodeCharMapDefault()
+        , ZF_IN_OPT const zfchar *charMap = ZFCoreDataEncodeCharMapDefault()
         , ZF_IN_OPT zfchar escapeToken = '%'
         );
 /**
- * @brief see #zfCoreDataEncode
+ * @brief see #ZFCoreDataEncode
  */
-extern ZFLIB_ZFCore void zfCoreDataDecode(
+extern ZFLIB_ZFCore void ZFCoreDataDecode(
         ZF_OUT zfstring &result
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()

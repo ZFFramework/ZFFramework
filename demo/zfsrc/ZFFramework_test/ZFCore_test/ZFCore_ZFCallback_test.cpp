@@ -6,16 +6,16 @@ zfclass _ZFP_ZFCore_ZFCallback_test_Class : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFCallback_test_Class, ZFObject)
 
     ZFMETHOD_INLINE_0(void, classMember) {
-        zfLog();
+        ZFLog();
     }
 
     ZFMETHOD_INLINE_STATIC_0(void, classStaticMember) {
-        zfLog();
+        ZFLog();
     }
 };
 
 static void _ZFP_ZFCore_ZFCallback_test_StaticFunction(void) {
-    zfLog();
+    ZFLog();
 }
 
 zfclass ZFCore_ZFCallback_test : zfextend ZFFramework_test_TestCase {
@@ -41,7 +41,7 @@ protected:
                 , void
                 , ZFMP_IN(const zfstring &, param)
                 ) {
-            zfLog() << param;
+            ZFLog() << param;
         } ZFLAMBDA_END()
         this->testCaseOutputSeparator();
         this->testCaseOutput(zfstr("try execute %s", localCallback.objectInfo()));

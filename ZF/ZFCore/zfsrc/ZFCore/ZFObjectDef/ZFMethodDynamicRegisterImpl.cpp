@@ -158,7 +158,7 @@ const ZFMethod *ZFMethodDynamicRegister(
         }
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFMethodMP mp;
     for(zfindex i = 0; i < param.methodParamCount(); ++i) {
         mp.add(
@@ -246,8 +246,8 @@ const ZFMethod *ZFMethodDynamicRegister(
 
 void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method) {
     if(method != zfnull) {
-        zfCoreAssert(method->methodIsDynamicRegister());
-        zfCoreMutexLocker();
+        ZFCoreAssert(method->methodIsDynamicRegister());
+        ZFCoreMutexLocker();
         _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(method->methodNamespace()));
         _ZFP_ZFMethodDynRegData().erase(method);
         _ZFP_ZFMethodUnregister(method);

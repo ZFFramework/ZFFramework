@@ -47,7 +47,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfany, get
         , ZFMP_IN(zfindex, index)
         ) {
     if(index >= d->data.size()) {
-        zfCoreCriticalIndexOutOfRange(index, d->data.size());
+        ZFCoreCriticalIndexOutOfRange(index, d->data.size());
         return zfnull;
     }
     return d->data[index];
@@ -100,9 +100,9 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
         indexAddTo = this->count();;
     }
     else if(indexAddTo > this->count()) {
-        zfCoreCriticalIndexOutOfRange(indexAddTo, this->count());
+        ZFCoreCriticalIndexOutOfRange(indexAddTo, this->count());
     }
-    zfCoreAssertWithMessage(obj != zfnull, "insert null object");
+    ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfRetain(obj);
     d->data.insert(d->data.begin() + indexAddTo, obj);
 
@@ -112,7 +112,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
 ZFMETHOD_DEFINE_1(ZFArray, void, add
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    zfCoreAssertWithMessage(obj != zfnull, "insert null object");
+    ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfRetain(obj);
     d->data.push_back(obj);
 
@@ -141,7 +141,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN(ZFObject *, obj)
         ) {
-    zfCoreAssertWithMessage(obj != zfnull, "set null object");
+    ZFCoreAssertWithMessage(obj != zfnull, "set null object");
     zfRetain(obj);
 
     ZFObject *old = d->data[index];
@@ -289,7 +289,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         , ZFMP_IN_OPT(zfindex, count, 1)
         ) {
     if(index >= this->count()) {
-        zfCoreCriticalIndexOutOfRange(index, this->count());
+        ZFCoreCriticalIndexOutOfRange(index, this->count());
         return;
     }
     if(count == 1) {
@@ -357,14 +357,14 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
         , ZFMP_IN(zfindex, toIndexOrIndexMax)
         ) {
     if(fromIndex >= (zfindex)d->data.size()) {
-        zfCoreCriticalIndexOutOfRange(fromIndex, (zfindex)d->data.size());
+        ZFCoreCriticalIndexOutOfRange(fromIndex, (zfindex)d->data.size());
         return;
     }
     if(toIndexOrIndexMax == zfindexMax()) {
         toIndexOrIndexMax = (zfindex)(d->data.size() - 1);
     }
     if(toIndexOrIndexMax >= (zfindex)d->data.size()) {
-        zfCoreCriticalIndexOutOfRange(toIndexOrIndexMax, (zfindex)d->data.size());
+        ZFCoreCriticalIndexOutOfRange(toIndexOrIndexMax, (zfindex)d->data.size());
         return;
     }
     if(fromIndex == toIndexOrIndexMax) {

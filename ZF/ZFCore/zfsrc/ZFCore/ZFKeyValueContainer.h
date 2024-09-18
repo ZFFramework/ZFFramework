@@ -91,12 +91,12 @@ public:
     virtual void addFrom(ZF_IN ZFKeyValueContainer *another) zfpurevirtual;
 
     /** @cond ZFPrivateDoc */
-    virtual void iterAdd(ZF_IN ZFObject *value) {zfCoreCriticalNotSupported();}
+    virtual void iterAdd(ZF_IN ZFObject *value) {ZFCoreCriticalNotSupported();}
     virtual void iterAdd(
             ZF_IN ZFObject *value
             , ZF_IN_OUT zfiter &it
             ) {
-        zfCoreCriticalNotSupported();
+        ZFCoreCriticalNotSupported();
     }
     virtual void iterAdd(
             ZF_IN ZFObject *key

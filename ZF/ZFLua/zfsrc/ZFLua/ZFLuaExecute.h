@@ -152,9 +152,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     util method for #ZFLuaExecute + #ZFInputForLocal,
  *     useful to load local resource or class definition
  * -  debug helper
- *   -  "zfLog(fmt, ...)"
- *     or zfLogTrim(fmt, ...)\n
- *     use zfstringAppend then output to zfLog
+ *   -  "ZFLog(fmt, ...)"
+ *     or ZFLogTrim(fmt, ...)\n
+ *     use zfstringAppend then output to ZFLog
  *   -  "zfl_tableInfo(v)"
  *     or "zfl_tableInfoPrint(v)"\n
  *     return string that represents the table

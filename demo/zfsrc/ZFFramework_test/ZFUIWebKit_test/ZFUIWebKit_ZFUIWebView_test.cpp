@@ -24,7 +24,7 @@ protected:
         this->prepareSettingButton(window, testView);
 
         ZFLISTENER(loadStateOnUpdate) {
-            zfLogTrim() << "webLoadingOnUpdate " << zfargs.sender()->to<ZFUIWebView *>()->webLoading();
+            ZFLogTrim() << "webLoadingOnUpdate " << zfargs.sender()->to<ZFUIWebView *>()->webLoading();
         } ZFLISTENER_END()
         testView->observerAdd(ZFUIWebView::EventWebLoadStateOnUpdate(), loadStateOnUpdate);
 

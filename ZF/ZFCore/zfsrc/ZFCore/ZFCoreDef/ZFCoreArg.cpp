@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void zfCoreArgSplit(
+void ZFCoreArgSplit(
         ZF_IN_OUT ZFCoreArray<zfstring> &result
         , ZF_IN const zfchar *cmdLine
         ) {
@@ -76,13 +76,13 @@ void zfCoreArgSplit(
         result.add(arg);
     }
 }
-ZFCoreArray<zfstring> zfCoreArgSplit(ZF_IN const zfchar *cmdLine) {
+ZFCoreArray<zfstring> ZFCoreArgSplit(ZF_IN const zfchar *cmdLine) {
     ZFCoreArray<zfstring> result;
-    zfCoreArgSplit(result, cmdLine);
+    ZFCoreArgSplit(result, cmdLine);
     return result;
 }
 
-void zfCoreArgMerge(
+void ZFCoreArgMerge(
         ZF_OUT zfstring &result
         , ZF_IN const ZFCoreArray<zfstring> &argList
         ) {
@@ -118,9 +118,9 @@ void zfCoreArgMerge(
         }
     }
 }
-zfstring zfCoreArgMerge(ZF_IN const ZFCoreArray<zfstring> &argList) {
+zfstring ZFCoreArgMerge(ZF_IN const ZFCoreArray<zfstring> &argList) {
     zfstring result;
-    zfCoreArgMerge(result, argList);
+    ZFCoreArgMerge(result, argList);
     return result;
 }
 

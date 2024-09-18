@@ -97,7 +97,7 @@ private:
                 return jsonObject;
             }
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zfnull;
         }
     }

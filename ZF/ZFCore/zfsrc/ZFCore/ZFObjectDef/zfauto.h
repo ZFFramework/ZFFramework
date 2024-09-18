@@ -26,9 +26,9 @@ zfauto::zfauto(ZF_IN T_ZFObject const &p)
 
 template<typename T_ZFObject>
 zfauto &zfauto::operator = (ZF_IN T_ZFObject const &p) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     this->zfunsafe_assign(_ZFP_zfanyCast(p));
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     return *this;
 }
 template<typename T_ZFObject>

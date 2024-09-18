@@ -55,7 +55,7 @@ public:
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         task->running->zfv = zffalse;
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId, (jobject)task->nativeTask);
         JNIUtilDeleteGlobalRef(jniEnv, (jobject)task->nativeTask);
@@ -243,16 +243,16 @@ public:
                     .add(JNIType::S_object_Object())
                 ).c_str());
 
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             if(!running->zfv) {
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 return;
             }
             jobject nativeTask = (jobject)task->nativeTask;
             jobject nativeInput = task->body.bufferSize() > 0
                 ? ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForBuffer(task->body))
                 : NULL;
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
 
             JNIUtilCallStaticVoidMethod(JNIGetJNIEnv(), ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                     , nativeTask

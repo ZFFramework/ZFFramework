@@ -34,7 +34,7 @@ public:
         if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
             zfindex pos = zfstringFindReversely(this->_pathForModuleFile, '/');
-            zfCoreAssert(pos != zfindexMax());
+            ZFCoreAssert(pos != zfindexMax());
             this->_pathForModule.assign(this->_pathForModuleFile, pos);
         }
         return this->_pathForModule;
@@ -70,7 +70,7 @@ public:
                 #endif // #if ZF_ENV_sys_Windows #else
             #endif
             zfbool result = ZFPathFormat(this->_pathForModuleFile, tmp);
-            zfCoreAssert(result);
+            ZFCoreAssert(result);
         }
         return this->_pathForModuleFile;
     }

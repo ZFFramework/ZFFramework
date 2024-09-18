@@ -141,7 +141,7 @@ zfbool ZFSerializable::serializeFromData(
                 case ZFSerializablePropertyTypeNotSerializable:
                 case ZFSerializablePropertyTypeUnspecified:
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return zffalse;
             }
         }
@@ -170,7 +170,7 @@ zfbool ZFSerializable::serializeFromData(
         zfstring tmp;
         if(ZFSerializableUtil::printResolveStatus(serializableData, ZFOutputForString(tmp))) {
             #if ZF_ENV_DEBUG
-                zfCoreCriticalMessageTrim(tmp);
+                ZFCoreCriticalMessageTrim(tmp);
             #endif
         }
     }
@@ -245,7 +245,7 @@ zfbool ZFSerializable::serializeToData(
                     break;
                 case ZFSerializablePropertyTypeUnspecified:
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return zffalse;
             }
         }
@@ -300,7 +300,7 @@ zfbool ZFSerializable::serializeToString(
 }
 
 _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_getPropertyTypeHolder(void) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_I_ZFSerializablePropertyTypeHolder *holder = this->classData()->classTag(_ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull());
     if(holder == zfnull) {
         zfobj<_ZFP_I_ZFSerializablePropertyTypeHolder> holderTmp;
@@ -362,7 +362,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
                     holderTmp->addData(property, ZFSerializablePropertyTypeEmbeded);
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return zfnull;
             }
         }

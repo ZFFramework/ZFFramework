@@ -9,19 +9,19 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        zfLogTrim("base::objectOnInit()");
+        ZFLogTrim("base::objectOnInit()");
     }
     zfoverride
     virtual void objectOnInitFinish(void) {
         zfsuper::objectOnInitFinish();
-        zfLogTrim("base::objectOnInitFinish()");
+        ZFLogTrim("base::objectOnInitFinish()");
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFMethod_order_test_Object)
 
 ZF_GLOBAL_INITIALIZER_INIT(ZFCore_ZFMethod_order_test_ObjectReg) {
     ZFLISTENER(onInit) {
-        zfLogTrim("DynReg::onInit()");
+        ZFLogTrim("DynReg::onInit()");
     } ZFLISTENER_END()
     ZFDynamic()
         .classBegin(ZFCore_ZFMethod_order_test_Object::ClassData())
@@ -29,7 +29,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFCore_ZFMethod_order_test_ObjectReg) {
         .classEnd();
 
     ZFLISTENER(objectOnInitImpl) {
-        zfLogTrim("DynReg::objectOnInit(const zfchar *)");
+        ZFLogTrim("DynReg::objectOnInit(const zfchar *)");
     } ZFLISTENER_END()
     ZFObjectOnInitDynamicRegister(
             ZFCore_ZFMethod_order_test_Object::ClassData()
@@ -41,7 +41,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFCore_ZFMethod_order_test_ObjectReg) {
 ZF_GLOBAL_INITIALIZER_END(ZFCore_ZFMethod_order_test_ObjectReg)
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        zfLogTrim("UserReg::objectOnInit(int)");
+        ZFLogTrim("UserReg::objectOnInit(int)");
     }, ZFCore_ZFMethod_order_test_Object
     , ZFMP_IN(zfint, p0)
     )

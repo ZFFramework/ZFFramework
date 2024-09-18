@@ -210,11 +210,11 @@ private:
             if(!zftimetFromStringT(data->cacheTime, line + pos[0].start, pos[0].count)) {
                 continue;
             }
-            zfCoreDataDecode(data->key, line + pos[1].start, pos[1].count);
+            ZFCoreDataDecode(data->key, line + pos[1].start, pos[1].count);
             if(data->key.isEmpty()) {
                 continue;
             }
-            zfCoreDataDecode(data->value, line + pos[2].start, pos[2].count);
+            ZFCoreDataDecode(data->value, line + pos[2].start, pos[2].count);
             if(data->value.isEmpty()) {
                 continue;
             }
@@ -234,9 +234,9 @@ private:
             _ZFP_ZFStateData *data = *it;
             zftimetToStringT(line, data->cacheTime);
             line += ":";
-            zfCoreDataEncode(line, data->key);
+            ZFCoreDataEncode(line, data->key);
             line += ":";
-            zfCoreDataEncode(line, data->value);
+            ZFCoreDataEncode(line, data->value);
             output << line;
         }
     }

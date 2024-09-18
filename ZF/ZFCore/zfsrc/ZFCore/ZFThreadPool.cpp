@@ -79,10 +79,10 @@ public:
             , ZF_IN _ZFP_ZFThreadPoolPrivate *d
             ) {
         do {
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             ZFThread *runThread = ZFThread::currentThread();
             if(runThread == zfnull) {
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 break;
             }
 
@@ -99,7 +99,7 @@ public:
             if(taskData == zfnull
                     || d->threadOnRun == zfnull
                     ) {
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 break;
             }
             taskData->zfargsForTask
@@ -108,34 +108,34 @@ public:
                 ;
             zfstring runningTaskKey = zftext("_ZFP_ZFThreadPoolRunning");
             ownerThread->objectTag(runningTaskKey, taskData);
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
 
             taskData->callback.execute(taskData->zfargsForTask);
 
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             ownerThread->objectTag(runningTaskKey, zfnull);
             taskData->result = taskData->zfargsForTask.result();
             if(taskData->zfargsForTask.param0() == zfnull
                     || d->threadOnRun == zfnull
                     ) {
                 _ZFP_taskCleanup(taskData);
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 continue;
             }
             if(!taskData->finishCallback) {
                 _ZFP_taskCleanup(taskData);
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 continue;
             }
             ++(d->refCount);
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             ZFLISTENER_2(notifyFinish
                     , _ZFP_ZFThreadPoolPrivate *, d
                     , zfautoT<_ZFP_I_ZFThreadPoolTaskData>, taskData
                     ) {
                 _ZFP_notifyFinish(d, taskData);
 
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 --(d->refCount);
                 if(d->refCount == 0) {
                     zfpoolDelete(d);
@@ -144,7 +144,7 @@ public:
             ZFThread::executeInThread(ZFThread::mainThread(), notifyFinish);
         } while(zftrue);
 
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         --(d->refCount);
         if(d->refCount == 0) {
             zfpoolDelete(d);
@@ -154,25 +154,25 @@ public:
             ZF_IN _ZFP_ZFThreadPoolPrivate *d
             , ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData
             ) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         taskData->owner = zfnull;
         if(taskData->zfargsForTask.param0() == zfnull
                 || d->threadOnRun == zfnull
                 ) {
             _ZFP_taskCleanup(taskData);
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             return;
         }
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         taskData->finishCallback.execute(ZFArgs()
                 .sender(taskData)
                 .param0(taskData->result)
             );
 
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         _ZFP_taskCleanup(taskData);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
     static void _ZFP_taskCleanup(ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData) {
         taskData->callback = zfnull;
@@ -185,7 +185,7 @@ public:
             ZF_IN ZFThread *ownerThread
             , ZF_IN _ZFP_ZFThreadPoolPrivate *d
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring runningTaskKey = zftext("_ZFP_ZFThreadPoolRunning");
         zfauto taskData = ownerThread->objectTagRemoveAndGet(runningTaskKey);
         if(taskData) {
@@ -220,7 +220,7 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfautoT<ZFTaskId>, start
         return zfnull;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFThreadPoolPrivate);
     }
@@ -264,23 +264,23 @@ ZFMETHOD_DEFINE_0(ZFThreadPool, void, removeAll) {
         return;
     }
     do {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         while(!d->taskList.empty()) {
             (*(d->taskList.begin()))->stop();
         }
         if(d->threadPool.isEmpty()) {
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             break;
         }
         zfautoT<ZFThread> runThread = d->threadPool.removeAndGet(0);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         runThread->threadStop();
         runThread->taskQueueCleanup();
         runThread->sleepCancel();
     } while(zftrue);
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     d->threadOnRun = zfnull;
     --(d->refCount);
     if(d->refCount == 0) {

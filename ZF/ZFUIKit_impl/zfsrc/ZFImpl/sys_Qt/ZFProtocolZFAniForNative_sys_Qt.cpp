@@ -173,7 +173,7 @@ public:
                 this->aniCurveFunc = _aniCurveFuncEaseInOut;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         this->aniTarget = this->ownerZFAnimation->aniTarget()->to<ZFUIView *>();

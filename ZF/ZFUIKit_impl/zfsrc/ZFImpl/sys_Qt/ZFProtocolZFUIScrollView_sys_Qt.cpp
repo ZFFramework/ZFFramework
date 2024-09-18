@@ -153,7 +153,7 @@ public:
     ~_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView(void) {
         QApplication::instance()->removeEventFilter(this);
 
-        zfCoreAssert(_ZFP_scrollViewBgViewCount == 0);
+        ZFCoreAssert(_ZFP_scrollViewBgViewCount == 0);
         _ZFP_layoutProxy->childRemove(0);
         delete _ZFP_scrollViewContentView;
     }
@@ -286,7 +286,7 @@ public:
                     type = QEvent::GraphicsSceneMouseRelease;
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return zfnull;
             }
         }

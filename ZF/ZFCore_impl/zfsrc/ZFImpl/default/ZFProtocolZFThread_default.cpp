@@ -91,7 +91,7 @@ public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
         _ZFP_ZFThreadImpl_default_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_default_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_default_getNativeThreadId();
-        zfCoreAssertWithMessage(_ZFP_ZFThreadImpl_default_threadMap.find(*token) == _ZFP_ZFThreadImpl_default_threadMap.end(),
+        ZFCoreAssertWithMessage(_ZFP_ZFThreadImpl_default_threadMap.find(*token) == _ZFP_ZFThreadImpl_default_threadMap.end(),
             "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_default_threadMap[*token] = ownerZFThread;
         return (void *)token;
@@ -114,7 +114,7 @@ public:
     virtual ZFThread *currentThread(void) {
         _ZFP_ZFThreadImpl_default_NativeThreadIdType nativeCurrentThread = _ZFP_ZFThreadImpl_default_getNativeThreadId();
 
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_default_ThreadMapType::const_iterator it = _ZFP_ZFThreadImpl_default_threadMap.find(nativeCurrentThread);
         if(it == _ZFP_ZFThreadImpl_default_threadMap.end()) {
             return zfnull;
@@ -127,7 +127,7 @@ public:
     }
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
         if(ZFMainThreadTaskImplGetExecute() == zfnull) {
-            zfCoreCriticalMessageTrim("[ZFThread] executeInMainThread not available");
+            ZFCoreCriticalMessageTrim("[ZFThread] executeInMainThread not available");
             return zfnull;
         }
         return ZFMainThreadTaskImplGetExecute()(runnable);

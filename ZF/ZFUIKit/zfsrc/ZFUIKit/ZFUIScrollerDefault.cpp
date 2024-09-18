@@ -575,7 +575,7 @@ zffloat ZFUIScrollerDefault::scrollEndPointPredicted(void) {
         case _ZFP_ZFUIScrollerDefaultPrivateAniStateBySpeed:
             return d->anibySpeedEndPointPredicted();
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return 0;
     }
 }
@@ -695,10 +695,10 @@ void ZFUIScrollerDefault::scrollAniOnUpdate(ZF_IN zftimet time) {
             d->aniBySpeedUpdate(time);
             break;
         case _ZFP_ZFUIScrollerDefaultPrivateAniStateIdle:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 }

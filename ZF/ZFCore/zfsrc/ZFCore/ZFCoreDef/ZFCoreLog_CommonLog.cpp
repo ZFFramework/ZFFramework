@@ -2,21 +2,21 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void _ZFP_zfCoreLogCriticalMessage(
+void _ZFP_ZFCoreLogCriticalMessage(
         ZF_IN const ZFCallerInfo &callerInfo
         , ZF_IN const zfchar *text
         ) {
-    zfCoreLogTrim("============================================================");
-    zfCoreLogDetail(callerInfo, "| %s", text);
-    zfCoreLogTrim("============================================================");
+    ZFCoreLogTrim("============================================================");
+    ZFCoreLogDetail(callerInfo, "| %s", text);
+    ZFCoreLogTrim("============================================================");
 }
-void _ZFP_zfCoreCritical(
+void _ZFP_ZFCoreCritical(
         ZF_IN const ZFCallerInfo &callerInfo
         , ZF_IN const zfchar *text
         ) {
-    zfCoreCriticalErrorPrepareDetail(callerInfo);
-    zfCoreLogCriticalMessageDetail(callerInfo, text);
-    zfCoreCriticalErrorDetail(callerInfo);
+    ZFCoreCriticalErrorPrepareDetail(callerInfo);
+    ZFCoreLogCriticalMessageDetail(callerInfo, text);
+    ZFCoreCriticalErrorDetail(callerInfo);
 }
 
 ZF_NAMESPACE_GLOBAL_END

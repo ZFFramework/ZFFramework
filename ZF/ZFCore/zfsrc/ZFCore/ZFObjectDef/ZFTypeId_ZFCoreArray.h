@@ -172,8 +172,8 @@ public:
     virtual void *wrappedValue(void) {return this->zfv;}
     zfoverride
     virtual void wrappedValue(ZF_IN const void *v) {
-        zfCoreAssertWithMessageTrim(this->elementType != zfnull, "changing wrappedValue without explicit element type");
-        zfCoreAssert(v != zfnull);
+        ZFCoreAssertWithMessageTrim(this->elementType != zfnull, "changing wrappedValue without explicit element type");
+        ZFCoreAssert(v != zfnull);
         const ZFCoreArrayBase *vTmp = (const ZFCoreArrayBase *)v;
         ZFCoreArrayBase *old = this->zfv;
         this->zfv = vTmp->refNew();
@@ -202,7 +202,7 @@ public:
     }
     zfoverride
     virtual void wrappedValueCopy(ZF_IN void *v) {
-        zfCoreAssertWithMessageTrim(this->elementType != zfnull, "wrappedValueCopy without explicit element type");
+        ZFCoreAssertWithMessageTrim(this->elementType != zfnull, "wrappedValueCopy without explicit element type");
         *(ZFCoreArrayBase *)v = *this->zfv;
     }
 public:
@@ -303,7 +303,7 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     void swap(ZF_IN v_ZFCoreArray *ref) {
-        zfCoreAssertWithMessageTrim(zftrue
+        ZFCoreAssertWithMessageTrim(zftrue
                 && this->elementType != zfnull
                 && ref->elementType != zfnull
                 && zfstringIsEqual(this->elementType->typeId(), ref->elementType->typeId())
@@ -372,7 +372,7 @@ public:
             return;
         }
         void *v = this->elementType->genericAccess(t);
-        zfCoreAssertWithMessageTrim(v != zfnull
+        ZFCoreAssertWithMessageTrim(v != zfnull
                 , "add with different element type, desired: %s, got: %s"
                 , this->elementType ? this->elementType->typeId() : zfnull
                 , e ? e->classData()->classNameFull() : zfnull
@@ -389,11 +389,11 @@ public:
             return;
         }
         if(index > this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
+            ZFCoreCriticalIndexOutOfRange(index, this->count() + 1);
             return;
         }
         void *v = this->elementType->genericAccess(t);
-        zfCoreAssertWithMessageTrim(v != zfnull
+        ZFCoreAssertWithMessageTrim(v != zfnull
                 , "add with different element type, desired: %s, got: %s"
                 , this->elementType ? this->elementType->typeId() : zfnull
                 , e ? e->classData()->classNameFull() : zfnull
@@ -416,7 +416,7 @@ public:
             return zfindexMax();
         }
         void *v = this->elementType->genericAccess(t);
-        zfCoreAssertWithMessageTrim(v != zfnull
+        ZFCoreAssertWithMessageTrim(v != zfnull
                 , "find with different element type, desired: %s, got: %s"
                 , this->elementType ? this->elementType->typeId() : zfnull
                 , e ? e->classData()->classNameFull() : zfnull
@@ -431,7 +431,7 @@ public:
             return zfindexMax();
         }
         void *v = this->elementType->genericAccess(t);
-        zfCoreAssertWithMessageTrim(v != zfnull
+        ZFCoreAssertWithMessageTrim(v != zfnull
                 , "find with different element type, desired: %s, got: %s"
                 , this->elementType ? this->elementType->typeId() : zfnull
                 , e ? e->classData()->classNameFull() : zfnull
@@ -485,7 +485,7 @@ public:
             return;
         }
         void *v = this->elementType->genericAccess(t);
-        zfCoreAssertWithMessageTrim(v != zfnull
+        ZFCoreAssertWithMessageTrim(v != zfnull
                 , "add with different element type, desired: %s, got: %s"
                 , this->elementType ? this->elementType->typeId() : zfnull
                 , e ? e->classData()->classNameFull() : zfnull
@@ -503,7 +503,7 @@ public:
     }
     zfauto getFirst(void) {
         if(this->zfv == zfnull || this->count() == 0) {
-            zfCoreCriticalIndexOutOfRange(0, this->count());
+            ZFCoreCriticalIndexOutOfRange(0, this->count());
         }
         zfauto t;
         this->elementType->genericValueStore(t, this->zfv->genericGet(0));
@@ -511,7 +511,7 @@ public:
     }
     zfauto getLast(void) {
         if(this->zfv == zfnull || this->count() == 0) {
-            zfCoreCriticalIndexOutOfRange(0, this->count());
+            ZFCoreCriticalIndexOutOfRange(0, this->count());
         }
         zfauto t;
         this->elementType->genericValueStore(t, this->zfv->genericGet(this->count() - 1));
@@ -609,11 +609,11 @@ public:
             ZF_OUT zfauto &obj
             , ZF_IN ZFCoreArray<T_Type> const &v
             ) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         v_ZFCoreArray *holder = zfunsafe_zfAlloc(v_ZFCoreArray, v);
         obj = holder;
         zfunsafe_zfRelease(holder);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         return zftrue;
     }
     template<typename T_Access = ZFCoreArray<T_Type>

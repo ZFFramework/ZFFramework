@@ -18,35 +18,35 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * check 0 as subVersionIndex from "a.b.c" would result "a"\n
  * check 4 as subVersionIndex from "a.b.c" would result an empty string
  */
-extern ZFLIB_ZFCore void zfVersionGet(
+extern ZFLIB_ZFCore void ZFVersionGet(
         ZF_OUT zfstring &ret
         , ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         );
-/** @brief see #zfVersionGet */
-inline zfstring zfVersionGet(
+/** @brief see #ZFVersionGet */
+inline zfstring ZFVersionGet(
         ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         ) {
     zfstring ret;
-    zfVersionGet(ret, version, subVersionIndex);
+    ZFVersionGet(ret, version, subVersionIndex);
     return ret;
 }
 /**
- * @brief util method to get int version value of #zfVersionGet
+ * @brief util method to get int version value of #ZFVersionGet
  */
-extern ZFLIB_ZFCore void zfVersionGetInt(
+extern ZFLIB_ZFCore void ZFVersionGetInt(
         ZF_OUT zfuint &ret
         , ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         );
-/** @brief see #zfVersionGetInt */
-inline zfuint zfVersionGetInt(
+/** @brief see #ZFVersionGetInt */
+inline zfuint ZFVersionGetInt(
         ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         ) {
     zfuint ret = 0;
-    zfVersionGetInt(ret, version, subVersionIndex);
+    ZFVersionGetInt(ret, version, subVersionIndex);
     return ret;
 }
 /**
@@ -56,16 +56,16 @@ inline zfuint zfVersionGetInt(
  * set "c" to 0 as subVersionIndex to "a.b" would result "c.b"\n
  * set "d" to 4 as subVersionIndex to "a.b" would result "a.b.0.d"
  */
-extern ZFLIB_ZFCore void zfVersionSet(
+extern ZFLIB_ZFCore void ZFVersionSet(
         ZF_IN_OUT zfstring &version
         , ZF_IN zfindex subVersionIndex
         , ZF_IN const zfchar *subVersion
         , ZF_IN_OPT const zfchar *emptySubVersion = "0"
         );
 /**
- * @brief util method to set int version value of #zfVersionSet
+ * @brief util method to set int version value of #ZFVersionSet
  */
-extern ZFLIB_ZFCore void zfVersionSetInt(
+extern ZFLIB_ZFCore void ZFVersionSetInt(
         ZF_IN_OUT zfstring &version
         , ZF_IN zfindex subVersionIndex
         , ZF_IN zfuint subVersion
@@ -91,7 +91,7 @@ extern ZFLIB_ZFCore ZFCompareResult _ZFP_ZFComparerForVersion(
  * while comparing a version which has subversion,
  * a version would always treated as smaller if it has no sub version
  */
-extern ZFLIB_ZFCore ZFCompareResult zfVersionCompare(
+extern ZFLIB_ZFCore ZFCompareResult ZFVersionCompare(
         ZF_IN const zfchar *version0
         , ZF_IN const zfchar *version1
         , ZF_IN_OPT ZFComparer<const zfchar *>::Comparer subVersionComparer = ZFComparerForVersion
@@ -100,7 +100,7 @@ extern ZFLIB_ZFCore ZFCompareResult zfVersionCompare(
 // ============================================================
 // version index
 /**
- * @brief pre-defined subVersionIndex for #zfVersionSet and #zfVersionGet
+ * @brief pre-defined subVersionIndex for #ZFVersionSet and #ZFVersionGet
  *
  * a typical version would looks like:
  * @code

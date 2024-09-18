@@ -3,13 +3,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE 1
+#define _ZFP_ZFImpl_ZFLua_ZFLog_DEBUG_ENABLE 1
 
-static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L) {
-    ZFOutput o = zfLogTrim();
+static int _ZFP_ZFImpl_ZFLua_ZFLog(ZF_IN lua_State *L) {
+    ZFOutput o = ZFLogTrim();
 
     if(ZFLogHeaderDefault_logTime()) {
-        o << zfLogCurTimeString() << " ";
+        o << ZFLogCurTimeString() << " ";
     }
 
     zfstring s;
@@ -19,8 +19,8 @@ static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L) {
     return 0;
 }
 
-static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L) {
-    ZFOutput o = zfLogTrim();
+static int _ZFP_ZFImpl_ZFLua_ZFLogTrim(ZF_IN lua_State *L) {
+    ZFOutput o = ZFLogTrim();
 
     zfstring s;
     if(ZFImpl_ZFLua_zfstringAppend(L, s)) {
@@ -30,30 +30,30 @@ static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L) {
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfLog, ZFM_EXPAND({
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLog", _ZFP_ZFImpl_ZFLua_zfLog);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogTrim", _ZFP_ZFImpl_ZFLua_zfLogTrim);
+ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFLog, ZFM_EXPAND({
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "ZFLog", _ZFP_ZFImpl_ZFLua_ZFLog);
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "ZFLogTrim", _ZFP_ZFImpl_ZFLua_ZFLogTrim);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
     }))
 
-#if _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE
-    ZFImpl_ZFLua_implPathInfo_DEFINE(zfLog,
+#if _ZFP_ZFImpl_ZFLua_ZFLog_DEBUG_ENABLE
+    ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLog,
             "function (f, ...)"
             "  if ZFLogHeaderDefault_logCaller() then"
-            "    return _G['zfLog']('[' .. tostring(zfl_l or 'unknown') .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
+            "    return _G['ZFLog']('[' .. tostring(zfl_l or 'unknown') .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
             "  else"
-            "    return _G['zfLog'](f or '', ...);"
+            "    return _G['ZFLog'](f or '', ...);"
             "  end;"
             "end"
         )
 #else
-    ZFImpl_ZFLua_implPathInfo_DEFINE(zfLog,
+    ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLog,
             "function (f, ...)"
             "  if ZFLogHeaderDefault_logCaller() then"
-            "    return _G['zfLog']('[' .. tostring(zfl_l or 'unknown') .. '] ' .. (f or ''), ...);"
+            "    return _G['ZFLog']('[' .. tostring(zfl_l or 'unknown') .. '] ' .. (f or ''), ...);"
             "  else"
-            "    return _G['zfLog'](f or '', ...);"
+            "    return _G['ZFLog'](f or '', ...);"
             "  end;"
             "end"
         )

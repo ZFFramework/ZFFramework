@@ -139,7 +139,7 @@ zfbool ZFAniForFrame::serializableOnSerializeFromData(
     this->frameRemoveAll();
     zfstring framesStr = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFAniForFrame_frames);
     ZFCoreArray<zftimet> frames;
-    if(!zfCoreDataPairSplitInt(
+    if(!ZFCoreDataPairSplitInt(
                 frames
                 , zfindexMax()
                 , framesStr
@@ -181,14 +181,14 @@ zfbool ZFAniForFrame::serializableOnSerializeToData(
 ZFMETHOD_DEFINE_1(ZFAniForFrame, void, frame
         , ZFMP_IN(zftimet, duration)
         ) {
-    zfCoreAssert(!this->aniRunning());
+    ZFCoreAssert(!this->aniRunning());
     d->aniDurationFixed = -1;
     d->frames.add(duration);
 }
 ZFMETHOD_DEFINE_1(ZFAniForFrame, void, frames
         , ZFMP_IN(const ZFCoreArray<zftimet> &, frames)
         ) {
-    zfCoreAssert(!this->aniRunning());
+    ZFCoreAssert(!this->aniRunning());
     d->aniDurationFixed = -1;
     d->frames.addFrom(frames);
 }

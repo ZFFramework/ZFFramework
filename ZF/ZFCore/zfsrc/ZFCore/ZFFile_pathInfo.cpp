@@ -425,10 +425,10 @@ void _ZFP_ZFPathInfoRegister(
         , ZF_IN const ZFPathInfoImpl &impl
         ) {
     zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
-    zfCoreAssertWithMessage(m.find(pathType) == m.end(),
+    ZFCoreAssertWithMessage(m.find(pathType) == m.end(),
         "pathType \"%s\" already registered",
         pathType);
-    zfCoreAssert(zftrue
+    ZFCoreAssert(zftrue
             && impl.callbackIsExist != zfnull
             && impl.callbackIsDir != zfnull
             && impl.callbackToFileName != zfnull
@@ -1070,7 +1070,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoChainDecodeString
         return zffalse;
     }
     chainPathInfoString.capacity(pos);
-    zfCoreDataDecode(chainPathInfoString, pathDataOrig, pos);
+    ZFCoreDataDecode(chainPathInfoString, pathDataOrig, pos);
     if(pathData) {
         *pathData += pathDataOrig + pos + 1;
     }
@@ -1083,7 +1083,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFPathInfoChainEncode
     zfstring pathDataOrig;
     pathDataOrig += chainPathInfo.pathType();
     pathDataOrig += ZFSerializableKeyword_ZFPathInfo_separator;
-    zfCoreDataEncode(pathDataOrig, chainPathInfo.pathData(), chainPathInfo.pathData().length(), ZFPathInfoChainCharMap());
+    ZFCoreDataEncode(pathDataOrig, chainPathInfo.pathData(), chainPathInfo.pathData().length(), ZFPathInfoChainCharMap());
     pathDataOrig += '|';
     pathDataOrig += pathData;
     return pathDataOrig;

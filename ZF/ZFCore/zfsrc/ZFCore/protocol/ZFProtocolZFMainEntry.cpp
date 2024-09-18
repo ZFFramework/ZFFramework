@@ -19,7 +19,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic
             func();
         }
         else {
-            zfCoreLogTrim("ZFMAIN_ENTRY not set");
+            ZFCoreLogTrim("ZFMAIN_ENTRY not set");
         }
     } ZFLISTENER_END()
     this->callback = action;

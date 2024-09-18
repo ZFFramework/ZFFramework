@@ -188,7 +188,7 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         cls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(className).c_str());
-        zfCoreAssertWithMessage(cls != NULL, "no class named: %s, for jclass: %s", className, funcName);
+        ZFCoreAssertWithMessage(cls != NULL, "no class named: %s, for jclass: %s", className, funcName);
         JNIBlockedDeleteLocalRef(cls);
         cls = (jclass)JNIUtilNewGlobalRef(jniEnv, cls);
     }

@@ -202,7 +202,7 @@ ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {
         return zftrue;
     }, {
         ZFCoreArray<zffloat> tmp;
-        if(!zfCoreDataPairSplitFloat(tmp, 4, src, srcLen)) {
+        if(!ZFCoreDataPairSplitFloat(tmp, 4, src, srcLen)) {
             return zffalse;
         }
         v.controlPoint(tmp[0], tmp[1], tmp[2], tmp[3]);

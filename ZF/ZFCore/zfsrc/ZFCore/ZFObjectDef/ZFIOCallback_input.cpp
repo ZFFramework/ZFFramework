@@ -199,7 +199,7 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeType_ZFInp
     }
     else {
         zfstring bufDecoded;
-        zfCoreDataDecode(bufDecoded, buf);
+        ZFCoreDataDecode(bufDecoded, buf);
         ret = ZFInputForBuffer(bufDecoded.cString(), bufDecoded.length());
     }
     return zftrue;
@@ -210,7 +210,7 @@ static void _ZFP_ZFInputForBuffer_serialize(
         , ZF_IN zfindex srcLen
         ) {
     zfstring bufEncoded;
-    zfCoreDataEncode(bufEncoded, (const zfchar *)src, srcLen);
+    ZFCoreDataEncode(bufEncoded, (const zfchar *)src, srcLen);
     ZFSerializableData customData;
     customData.attr(ZFSerializableKeyword_ZFInputForBuffer_buf, bufEncoded);
     ret.callbackSerializeType(ZFCallbackSerializeType_ZFInputForBuffer);

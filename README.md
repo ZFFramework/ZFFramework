@@ -51,7 +51,7 @@ this piece of code shows how to show a hello world on UI and log output
 #include "ZFUIWidget.h" // for common UI module
 ZFMAIN_ENTRY() { // app starts from here
     // show a hello world to log output
-    zfLog() << "hello wolrd";
+    ZFLog() << "hello wolrd";
 
     // show a window (full screen by default)
     zfobj<ZFUIWindow> window;
@@ -68,7 +68,7 @@ ZFMAIN_ENTRY() { // app starts from here
     button->label()->text("click me");
     button->onClick([](const ZFArgs &zfargs) {
         ZFUIButtonBasic *button = zfargs.sender();
-        zfLogTrim() << "button clicked: " << button;
+        ZFLogTrim() << "button clicked: " << button;
     });
 }
 ```
@@ -80,7 +80,7 @@ this piece of code shows equivalent lua code to use ZFFramework,
 <b>all the lua bindings are automatically done by reflection!</b>
 
 ```lua
-zfLog('hello world')
+ZFLog('hello world')
 
 local window = ZFUIWindow()
 window:windowShow()
@@ -94,7 +94,7 @@ window:childAdd(button):alignBottom():margin(40)
 button:label():text('click me')
 button:onClick(
     function (zfargs)
-        zfLog('button clicked: %s', zfargs:sender())
+        ZFLog('button clicked: %s', zfargs:sender())
     end)
 ```
 
@@ -112,7 +112,7 @@ ZFMAIN_ENTRY() {
                 .mp("zfstring", "testParam0")
                 , [](const ZFArgs &zfargs) {
                     ZFMethodInvokeData *m = zfargs.param0();
-                    zfLogTrim() << m->invokerMethod << " called, param0: " << m->param0;
+                    ZFLogTrim() << m->invokerMethod << " called, param0: " << m->param0;
                 })
         .classEnd();
 
@@ -124,7 +124,7 @@ ZFMAIN_ENTRY() {
         "            , function(zfargs)\n"
         "                local m = zfargs:param0()\n"
         "                m:callSuper()\n"
-        "                zfLogTrim('%s called, param0: %s', m:invokerMethod(), m:param0())\n"
+        "                ZFLogTrim('%s called, param0: %s', m:invokerMethod(), m:param0())\n"
         "            end)\n"
         "    :classEnd()\n"
         "\n"
@@ -152,7 +152,7 @@ chain http file and zip file, and R/W contents in the zip file just like normal 
 #include "ZFCore.h"
 ZFMAIN_ENTRY() {
     ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
-    ZFInputRead(zfLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
+    ZFInputRead(ZFLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
     ZFPathInfoTreePrint(ZFPathInfo("res:"));
 }
 ```
@@ -162,7 +162,7 @@ abstract R/W
 ```cpp
 #include "ZFCore.h"
 ZFMAIN_ENTRY() {
-    ZFInputRead(zfLogTrim(), ZFInputForHttp("http://xxx.xxx/xxx.json"));
+    ZFInputRead(ZFLogTrim(), ZFInputForHttp("http://xxx.xxx/xxx.json"));
     zfauto obj = ZFObjectFromJson(ZFInputForHttp("http://xxx.xxx/xxx.json"))
 }
 ```

@@ -96,7 +96,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolForName
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFProtocolData *data = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolData *>(name);
     if(data != zfnull) {
         if(data->implInstance == zfnull) {

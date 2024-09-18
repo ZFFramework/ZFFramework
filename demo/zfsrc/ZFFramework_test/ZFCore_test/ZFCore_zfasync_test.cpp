@@ -16,13 +16,13 @@ protected:
         ZFTestCase *testCase = this;
 
         ZFLISTENER_0(thread1) {
-            zfLog() << "thread1: " << ZFThread::currentThread();
+            ZFLog() << "thread1: " << ZFThread::currentThread();
 
             ZFLISTENER_0(thread2) {
-                zfLog() << "thread2: " << ZFThread::currentThread();
+                ZFLog() << "thread2: " << ZFThread::currentThread();
             } ZFLISTENER_END()
             ZFLISTENER_0(thread2OnStop) {
-                zfLog() << "thread2 stop: " << ZFThread::currentThread();
+                ZFLog() << "thread2 stop: " << ZFThread::currentThread();
             } ZFLISTENER_END()
             zfasync(thread2, thread2OnStop);
         } ZFLISTENER_END()
@@ -30,15 +30,15 @@ protected:
         ZFLISTENER_1(thread1OnStop
                 , ZFTestCase *, testCase
                 ) {
-            zfLog() << "thread1 stop: " << ZFThread::currentThread();
+            ZFLog() << "thread1 stop: " << ZFThread::currentThread();
 
             ZFLISTENER_0(thread3) {
-                zfLog() << "thread3: " << ZFThread::currentThread();
+                ZFLog() << "thread3: " << ZFThread::currentThread();
             } ZFLISTENER_END()
             ZFLISTENER_1(thread3OnStop
                     , ZFTestCase *, testCase
                     ) {
-                zfLog() << "thread3 stop: " << ZFThread::currentThread();
+                ZFLog() << "thread3 stop: " << ZFThread::currentThread();
 
                 testCase->testCaseStop();
             } ZFLISTENER_END()

@@ -23,14 +23,14 @@ void _ZFP_ZFCoreLogOutputCallbackDefault(ZF_IN const zfchar *s) {
     fprintf(stderr, "%s", s);
 }
 
-void zfCoreLogOutputCallback(ZF_IN_OPT ZFCoreLogOutputCallbackType callback) {
+void ZFCoreLogOutputCallback(ZF_IN_OPT ZFCoreLogOutputCallbackType callback) {
     _ZFP_ZFCoreLogOutputCallback = callback;
 }
-ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void) {
+ZFCoreLogOutputCallbackType ZFCoreLogOutputCallback(void) {
     return _ZFP_ZFCoreLogOutputCallback;
 }
 
-void _ZFP_zfCoreLog(
+void _ZFP_ZFCoreLog(
         ZF_IN const ZFCallerInfo &callerInfo
         , ZF_IN const zfchar *text
         ) {
@@ -49,29 +49,29 @@ void _ZFP_zfCoreLog(
     _ZFP_ZFCoreLogOutputCallback(s);
 }
 
-void zfCoreCriticalErrorCallbackPrepareAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
+void ZFCoreCriticalErrorCallbackPrepareAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
     if(callback != zfnull) {
         _ZFP_ZFCoreCriticalErrorPrepareCallbacks.add(callback);
     }
 }
-void zfCoreCriticalErrorCallbackPrepareRemove(ZF_IN ZFCoreCriticalErrorCallback callback) {
+void ZFCoreCriticalErrorCallbackPrepareRemove(ZF_IN ZFCoreCriticalErrorCallback callback) {
     _ZFP_ZFCoreCriticalErrorPrepareCallbacks.removeElement(callback);
 }
-void zfCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
+void ZFCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
     if(callback != zfnull) {
         _ZFP_ZFCoreCriticalErrorCallbacks.add(callback);
     }
 }
-void zfCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback) {
+void ZFCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback) {
     _ZFP_ZFCoreCriticalErrorCallbacks.removeElement(callback);
 }
-void _ZFP_zfCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo) {
+void _ZFP_ZFCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo) {
     const ZFCoreArray<ZFCoreCriticalErrorCallback> &criticalErrorCallbacks = _ZFP_ZFCoreCriticalErrorPrepareCallbacks;
     for(zfindex i = 0; i < criticalErrorCallbacks.count(); ++i) {
         criticalErrorCallbacks[i](callerInfo);
     }
 }
-void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo) {
+void _ZFP_ZFCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo) {
     const ZFCoreArray<ZFCoreCriticalErrorCallback> &criticalErrorCallbacks = _ZFP_ZFCoreCriticalErrorCallbacks;
     for(zfindex i = 0; i < criticalErrorCallbacks.count(); ++i) {
         criticalErrorCallbacks[i](callerInfo);

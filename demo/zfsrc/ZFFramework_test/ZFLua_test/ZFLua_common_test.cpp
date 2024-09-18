@@ -8,30 +8,30 @@ zfclass _ZFP_ZFLua_common_test_Object : zfextend ZFObject {
 protected:
     zfoverride
     virtual void objectOnInit(void) {
-        zfLog() << (void *)this;
+        ZFLog() << (void *)this;
         zfsuper::objectOnInit();
     }
     zfoverride
     virtual void objectOnDealloc(void) {
-        zfLog() << (void *)this;
+        ZFLog() << (void *)this;
         zfsuper::objectOnDealloc();
     }
     zfoverride
     virtual void objectOnRetain(void) {
         zfsuper::objectOnRetain();
-        zfLog() << (void *)this << " " << this->objectRetainCount();
+        ZFLog() << (void *)this << " " << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void) {
         zfsuper::objectOnRelease();
-        zfLog() << (void *)this << " " << this->objectRetainCount();
+        ZFLog() << (void *)this << " " << this->objectRetainCount();
     }
 
 public:
     ZFMETHOD_INLINE_1(zfstring, myMethod
             , ZFMP_IN(const zfchar *, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
         zfstring ret = param0;
         ret += "(modified)";
         return ret;
@@ -39,7 +39,7 @@ public:
     ZFMETHOD_INLINE_STATIC_1(zfstring &, MyMethod
             , ZFMP_IN(zfstring &, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
         param0 += "(modified)";
         return param0;
     }
@@ -47,22 +47,22 @@ public:
     ZFMETHOD_INLINE_1(void, myMethodOverload
             , ZFMP_IN(const zfchar *, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
     ZFMETHOD_INLINE_1(void, myMethodOverload
             , ZFMP_IN(zfbool, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
     ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload
             , ZFMP_IN(const zfchar *, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
     ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload
             , ZFMP_IN(zfbool, param0)
             ) {
-        zfLog() << param0;
+        ZFLog() << param0;
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_common_test_Object)
@@ -83,8 +83,8 @@ protected:
                     "print('========================================')\n"
                     "print('print by print():')\n"
                     "print(obj)\n"
-                    "print('print by zfLog():')\n"
-                    "zfLog('%s', obj)\n"
+                    "print('print by ZFLog():')\n"
+                    "ZFLog('%s', obj)\n"
                     "print('========================================')\n"
                     "print('enum convert:')\n"
                     "print(ZFFileOpenOption.e_Create())\n"

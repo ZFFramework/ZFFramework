@@ -34,7 +34,7 @@ public:
                 return zftrue;
             }
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     }
@@ -62,7 +62,7 @@ public:
                 return zftrue;
             }
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     }
@@ -93,7 +93,7 @@ public:
                 result += (const zfcharW *)s;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     }

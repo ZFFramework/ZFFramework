@@ -214,7 +214,7 @@ public:
      * @brief take element at head of the queue, assert fail if empty
      */
     inline T_POD &take(void) {
-        zfCoreAssertWithMessage(_pHead != _pTail, "take from an empty queue");
+        ZFCoreAssertWithMessage(_pHead != _pTail, "take from an empty queue");
         T_POD *ret = _pHead;
         _loopNext(_pHead);
         return *ret;
@@ -224,7 +224,7 @@ public:
      * @brief take element at tail of the queue, assert fail if empty
      */
     inline T_POD &takeLast(void) {
-        zfCoreAssertWithMessage(_pHead != _pTail, "take from an empty queue");
+        ZFCoreAssertWithMessage(_pHead != _pTail, "take from an empty queue");
         if(_pTail == _bufHead) {
             _pTail = _bufTail - 1;
         }

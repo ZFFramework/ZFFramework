@@ -37,7 +37,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
 
 static zfbool _ZFP_ZFObjectOnInitGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     ZFValueHolder *valueHolder = invokerMethod->methodDynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
-    zfCoreAssert(valueHolder != zfnull);
+    ZFCoreAssert(valueHolder != zfnull);
     invokerObject->_ZFP_ZFObject_objectOnInit();
     ZFMethodGenericInvoker methodGI = *valueHolder->holdedDataPointer<ZFMethodGenericInvoker *>();
     return methodGI(

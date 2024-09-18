@@ -337,7 +337,7 @@ ZFMETHOD_DEFINE_2(ZFAniGroup, void, child
     if(ani == zfnull) {
         return;
     }
-    zfCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
+    ZFCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
     zfobj<_ZFP_ZFAniGroupChildData> childData;
     childData->child(ani);
     d->childDatas->add(childData, index);
@@ -354,11 +354,11 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, zfanyT<ZFAnimation>, childAt
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, childRemoveAt
         , ZFMP_IN(zfindex, index)
         ) {
-    zfCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
+    ZFCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
     d->childDatas->remove(index);
 }
 ZFMETHOD_DEFINE_0(ZFAniGroup, void, childRemoveAll) {
-    zfCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
+    ZFCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
     d->childDatas->removeAll();
 }
 

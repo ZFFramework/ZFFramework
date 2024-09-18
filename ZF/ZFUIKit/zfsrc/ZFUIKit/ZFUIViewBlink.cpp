@@ -218,7 +218,7 @@ ZFEXPORT_VAR_DEFINE(zfautoT<ZFUIImage>, ZFUIViewBlinkImageDefault, zfnull)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkInitSetting, ZFLevelZFFrameworkNormal) {
     (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder);
     if(ZFPROTOCOL_IS_AVAILABLE(ZFUIImage)) {
-        ZFUIViewBlinkImageDefault(zfRes("ZFUIKit/ZFUIViewBlinkImage.xml"));
+        ZFUIViewBlinkImageDefault(zfres("ZFUIKit/ZFUIViewBlinkImage.xml"));
     }
     else if(ZFPROTOCOL_IS_AVAILABLE(ZFUIImageIO)) {
         ZFUIViewBlinkImageDefault(ZFUIImageFromColor(ZFUIColorCreate(1, 0, 0)));

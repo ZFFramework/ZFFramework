@@ -83,7 +83,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttach
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkHigh) != ZFFrameworkStateAvailable || !timerCallback) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
         d->globalTimer = zfAlloc(_ZFP_I_ZFGlobalTimer);
@@ -102,7 +102,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkHigh) != ZFFrameworkStateAvailable || !timerCallback) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
         d->globalTimer = zfAlloc(_ZFP_I_ZFGlobalTimer);
@@ -117,7 +117,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetach
         , ZFMP_IN(const ZFListener &, timerCallback)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
         return;
@@ -126,7 +126,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetach
     d->checkCleanup();
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerDetachAll) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
         return;
@@ -142,7 +142,7 @@ ZFMETHOD_FUNC_DEFINE_0(zftimet const &, ZFGlobalTimerIntervalDefault) {
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerIntervalDefault
         , ZFMP_IN(zftimet const &, timerIntervalDefault)
         ) {
-    zfCoreAssert(timerIntervalDefault > 0);
+    ZFCoreAssert(timerIntervalDefault > 0);
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder)->globalTimerIntervalDefault = timerIntervalDefault;
 }
 ZFMETHOD_FUNC_DEFINE_0(zftimet const &, ZFGlobalTimerInterval) {
@@ -151,8 +151,8 @@ ZFMETHOD_FUNC_DEFINE_0(zftimet const &, ZFGlobalTimerInterval) {
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerInterval
         , ZFMP_IN(zftimet const &, timerInterval)
         ) {
-    zfCoreAssert(timerInterval > 0);
-    zfCoreMutexLocker();
+    ZFCoreAssert(timerInterval > 0);
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimerInterval != timerInterval) {
         d->globalTimerInterval = timerInterval;
@@ -166,7 +166,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerInterval
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStep) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     d->globalTimerManualStep = zftrue;
     if(d->globalTimer != zfnull) {
@@ -175,7 +175,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStep) {
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStepCancel) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(!d->globalTimerManualStep) {
         return;

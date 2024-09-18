@@ -39,12 +39,12 @@ protected:
         zfauto obj = cls->newInstance();
 
         obj->invoke("testProp", zfobj<v_zfstring>("testValue"));
-        zfLog() << obj->invoke("testProp");
-        zfLog() << obj->invoke("testMethod", zfobj<v_zfstring>("testParam"));
+        ZFLog() << obj->invoke("testProp");
+        ZFLog() << obj->invoke("testMethod", zfobj<v_zfstring>("testParam"));
 
         const ZFMethod *method = ZFMethodForName("ZFDynamicTestNS", "testMethod");
-        zfLog() << method;
-        zfLog() << method->methodInvoke(zfnull, zfobj<v_zfstring>("testParam"));
+        ZFLog() << method;
+        ZFLog() << method->methodInvoke(zfnull, zfobj<v_zfstring>("testParam"));
 
         d.removeAll();
         this->testCaseStop();

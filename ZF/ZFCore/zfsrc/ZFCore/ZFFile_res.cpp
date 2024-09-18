@@ -37,7 +37,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd
     if(pathInfo.pathType().isEmpty()) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFResExtPathList.add(pathInfo);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove
@@ -46,7 +46,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove
     if(pathInfo.pathType().isEmpty()) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFResExtPathList.removeElement(pathInfo);
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFPathInfo>, ZFResExtPathList) {
@@ -56,24 +56,24 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
         , ZFMP_OUT(ZFPathInfo &, resExtPath)
         , ZFMP_IN(const zfchar *, resPath)
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
         const ZFPathInfo t = l[i];
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
         if(impl) {
             if(impl->implIsExist(impl->implToChild(t.pathData(), resPath))) {
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 resExtPath = t;
                 return zftrue;
             }
         }
 
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     return zffalse;
 }
 zfclassNotPOD _ZFP_ZFResExtKeyCmp {
@@ -89,7 +89,7 @@ static zfbool _ZFP_ZFResExtPathCheck(
         , ZF_IN const zfchar *resPath
         , ZF_IN_OUT _ZFP_ZFResExtMap &m
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
         if(m.find(l[i]) != m.end()) {
@@ -97,20 +97,20 @@ static zfbool _ZFP_ZFResExtPathCheck(
         }
         m[l[i]] = zftrue;
         const ZFPathInfo t = l[i];
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
         if(impl) {
             if(impl->implIsExist(impl->implToChild(t.pathData(), resPath))) {
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 resExtPath = l[i];
                 return zftrue;
             }
         }
 
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     return zffalse;
 }
 

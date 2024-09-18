@@ -189,7 +189,7 @@ public:
                 return this->dataLevelZFFrameworkPostStatic;
 
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return this->dataLevelAppLow;
         }
     }
@@ -227,7 +227,7 @@ public:
                 return this->dataMapLevelZFFrameworkPostStatic;
 
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return this->dataMapLevelAppLow;
         }
     }
@@ -286,7 +286,7 @@ void ZFFrameworkInit(void) {
     static _ZFP_ZFFrameworkAutoCleanupHolder _holder;
     zfbool mutexAvailable = ZFCoreMutexImplAvailable();
     if(mutexAvailable) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
 
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
@@ -394,7 +394,7 @@ void ZFFrameworkInit(void) {
     }
 
     if(mutexAvailable) {
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
     _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkInit end");
 }
@@ -488,7 +488,7 @@ void ZFFrameworkCleanup(void) {
 }
 
 void ZFFrameworkAssertInit(void) {
-    zfCoreAssertWithMessage(ZFFrameworkStateCheck() == ZFFrameworkStateAvailable, "ZFFramework hasn't been initialized");
+    ZFCoreAssertWithMessage(ZFFrameworkStateCheck() == ZFFrameworkStateAvailable, "ZFFramework hasn't been initialized");
 }
 ZFFrameworkState ZFFrameworkStateCheck(void) {
     return _ZFP_GI_dataContainerInstance.state;
@@ -527,7 +527,7 @@ ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level) {
             return _ZFP_GI_dataContainerInstance.stateZFFrameworkPostStatic;
 
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return _ZFP_GI_dataContainerInstance.stateAppLow;
     }
 }
@@ -549,7 +549,7 @@ static void _ZFP_GI_dataRegister(
 
     _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(name);
     if(data != zfnull) {
-        zfCoreAssert(level == data->level);
+        ZFCoreAssert(level == data->level);
         ++(data->refCount);
     }
     else {
@@ -570,7 +570,7 @@ static void _ZFP_GI_dataRegister(
         case ZFFrameworkStateInitRunning:
             // static register during init processing,
             // may unable to detect dependency
-            zfCoreCriticalMessageTrim(
+            ZFCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s attached during init processing, which is not allowed",
                 name);
             break;
@@ -581,12 +581,12 @@ static void _ZFP_GI_dataRegister(
         case ZFFrameworkStateCleanupRunning:
             // static register during cleanup processing,
             // may cause wrong cleanup order
-            zfCoreCriticalMessageTrim(
+            ZFCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s attached during cleanup processing, which is not allowed",
                 name);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }
@@ -600,7 +600,7 @@ static void _ZFP_GI_dataUnregister(
 
     zfiter it = dataMap.iterFind(name);
     if(!it) {
-        zfCoreCriticalShouldNotGoHere();
+        ZFCoreCriticalShouldNotGoHere();
         return;
     }
     _ZFP_GI_Data *data = dataMap.iterValue<_ZFP_GI_Data *>(it);
@@ -622,10 +622,10 @@ static void **_ZFP_GI_instanceAccess(
         , ZF_IN ZFLevel level
         ) {
     static void *dummy = zfnull;
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     if(ZFFrameworkStateCheck(level) == ZFFrameworkStateCleanupRunning) {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
             "try to reenter global initializer during ZFFrameworkCleanup, name: %s, "
             "typically due to invalid global initializer dependency",
             name);
@@ -637,7 +637,7 @@ static void **_ZFP_GI_instanceAccess(
 
     _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(name);
     if(data == zfnull) {
-        zfCoreCriticalShouldNotGoHere();
+        ZFCoreCriticalShouldNotGoHere();
         return &dummy;
     }
 
@@ -660,7 +660,7 @@ static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(ZFCoreArray<_ZFP_GI_Data *> &
 }
 void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data) {
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkStatic) == ZFFrameworkStateNotAvailable) {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s accessed before ZFFrameworkInit"
             , data->name);
         return;
@@ -715,7 +715,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data) {
     } while(zffalse);
     if(dependency != zfnull) {
         // dependency hasn't initialized
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s depends on or level lower than %s"
                 ", while it hasn't been initialized or already deallocated"
                 ", typically because of invalid dependency or invalid access"

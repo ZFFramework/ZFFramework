@@ -39,7 +39,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
     static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         this->classDataUpdateListener = ZFCallbackForFunc(zfself::classDataUpdate);
         ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
 
@@ -47,7 +47,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
         _ZFP_ZFDI_cacheEnable = zftrue;
     }
     ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFDI_cacheEnable = zffalse;
         _ZFP_ZFDI_methodMapCache.clear();
         ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
@@ -55,7 +55,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
     private:
         ZFListener classDataUpdateListener;
         static void classDataUpdate(ZF_IN const ZFArgs &zfargs) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             _ZFP_ZFDI_methodMapCache.clear();
         }
     ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
@@ -212,7 +212,7 @@ static zfbool _ZFP_ZFDI_invoke(
     else {
 #if _ZFP_ZFDI_CACHE_ENABLE
         if(_ZFP_ZFDI_cacheEnable) {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             zfstring key;
             if(obj != zfnull) {
                 key += obj->classData()->classNameFull();
@@ -248,7 +248,7 @@ zfbool ZFDI_invoke(
     _ZFP_ZFDI_errorPrepare();
 #if _ZFP_ZFDI_CACHE_ENABLE
     if(_ZFP_ZFDI_cacheEnable) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         zfstring key;
         if(obj != zfnull) {
             key += obj->classData()->classNameFull();
@@ -261,12 +261,12 @@ zfbool ZFDI_invoke(
         _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
         if(it != _ZFP_ZFDI_methodMapCache.end()) {
             ZFCoreArray<const ZFMethod *> methodList = it->second;
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr)
                 || _ZFP_ZFDI_errorOccurred();
         }
         else {
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
         }
     }
 #endif // #if _ZFP_ZFDI_CACHE_ENABLE
@@ -715,7 +715,7 @@ zfauto ZFInvoke(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = ZFMETHOD_MAX_PARAM;
     do {
@@ -728,7 +728,7 @@ zfauto ZFInvoke(
         if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(ZFDI_invoke(ret, zfnull, zfnull, name, paramCount, paramList, zftrue)) {
         return ret;
@@ -743,7 +743,7 @@ zfauto ZFInvokeDetail(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
     for(zfindex i = 0; i < paramCount; ++i) {
@@ -752,7 +752,7 @@ zfauto ZFInvokeDetail(
     for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
         paramList[i].zfunsafe_assign(ZFMP_DEF());
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList, zftrue)) {
         if(success != zfnull) {*success = zftrue;}

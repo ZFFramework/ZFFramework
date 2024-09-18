@@ -10,7 +10,7 @@ ZFEVENT_REGISTER(ZFTestCase, TestCaseOnProgress)
 ZFEVENT_REGISTER(ZFTestCase, TestCaseOnStop)
 
 void ZFTestCase::objectOnDeallocPrepare(void) {
-    zfCoreAssert(!this->testCaseIsRunning());
+    ZFCoreAssert(!this->testCaseIsRunning());
     zfsuper::objectOnDeallocPrepare();
 }
 

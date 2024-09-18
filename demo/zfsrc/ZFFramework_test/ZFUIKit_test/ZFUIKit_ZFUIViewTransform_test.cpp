@@ -19,7 +19,7 @@ protected:
 
         zfobj<ZFUIImageView> view;
         container->childAdd(view)->c_sizeFill(100, 100)->c_alignTop()->c_margin(0, 100, 0, 0);
-        view->image(zfRes("test_normal.png"));
+        view->image(zfres("test_normal.png"));
 
         zffloat margin = 120;
 

@@ -195,7 +195,7 @@ static void _ZFP_ZFJsonToOutput_output(
             _ZFP_ZFJsonToOutput_output_JsonArray(output, item, token, indentLevel);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 }
@@ -241,7 +241,7 @@ public:
                 }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
     }
@@ -359,7 +359,7 @@ ZFJson ZFJson::copy(void) const {
             }
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
     return ret;
@@ -401,7 +401,7 @@ ZFJson &ZFJson::merge(ZF_IN const ZFJson &other) {
             }
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
     return *this;
@@ -413,7 +413,7 @@ ZFJson &ZFJson::value(ZF_IN const zfstring &value) {
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonValue);
     }
-    zfCoreAssert(this->type() == ZFJsonType::e_JsonValue);
+    ZFCoreAssert(this->type() == ZFJsonType::e_JsonValue);
     if(d->d.value == zfnull) {
         d->d.value = zfnew(zfstring, value);
     }
@@ -456,7 +456,7 @@ ZFJson &ZFJson::attr(
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonObject);
     }
-    zfCoreAssert(this->type() == ZFJsonType::e_JsonObject);
+    ZFCoreAssert(this->type() == ZFJsonType::e_JsonObject);
     if(item) {
         if(d->d.attrMap == zfnull) {
             d->d.attrMap = zfnew(_ZFP_ZFJsonPrivate::AttrMap);
@@ -543,7 +543,7 @@ void ZFJson::attrIterValue(
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonObject);
     }
-    zfCoreAssert(this->type() == ZFJsonType::e_JsonObject);
+    ZFCoreAssert(this->type() == ZFJsonType::e_JsonObject);
     if(!item) {
         this->attrIterRemove(it);
     }
@@ -591,7 +591,7 @@ ZFJson &ZFJson::childAdd(
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonArray);
     }
-    zfCoreAssert(this->type() == ZFJsonType::e_JsonArray);
+    ZFCoreAssert(this->type() == ZFJsonType::e_JsonArray);
     if(d->d.childList == zfnull) {
         d->d.childList = zfnew(_ZFP_ZFJsonPrivate::ChildList);
     }
@@ -599,10 +599,10 @@ ZFJson &ZFJson::childAdd(
         index = this->childCount();
     }
     else if(index > this->childCount()) {
-        zfCoreCriticalIndexOutOfRange(index, this->childCount());
+        ZFCoreCriticalIndexOutOfRange(index, this->childCount());
         return *this;
     }
-    zfCoreAssertWithMessage(item, "add null object");
+    ZFCoreAssertWithMessage(item, "add null object");
     d->d.childList->insert(d->d.childList->begin() + index, item);
     return *this;
 }

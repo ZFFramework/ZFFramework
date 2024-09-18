@@ -503,12 +503,12 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
                 ) { \
-            zfCoreMutexLock(); \
+            ZFCoreMutexLock(); \
             v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
             t->zfv = v; \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
-            zfCoreMutexUnlock(); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         template<typename T_Access = _ZFP_PropTypeW_##TypeName \
@@ -605,12 +605,12 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
                 ) { \
-            zfCoreMutexLock(); \
+            ZFCoreMutexLock(); \
             v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
             t->zfv = v; \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
-            zfCoreMutexUnlock(); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         template<typename T_Access = _ZFP_PropTypeW_##TypeName \

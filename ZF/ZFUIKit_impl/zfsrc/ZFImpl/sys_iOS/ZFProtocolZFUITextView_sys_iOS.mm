@@ -90,7 +90,7 @@ public:
             }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         nativeImplView.font = [UIFont fontWithName:nativeImplView.fontName size:nativeImplView.textSize];
@@ -164,7 +164,7 @@ public:
                 nativeImplView.lineBreakMode = NSLineBreakByTruncatingTail;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }

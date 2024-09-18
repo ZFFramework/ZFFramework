@@ -226,7 +226,7 @@ private:
     zfanyT<YourStyle> YourStyle::DefaultStyle(void) { \
         static _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(#YourStyle); \
         if(holder->d == zfnull) { \
-            zfCoreMutexLocker(); \
+            ZFCoreMutexLocker(); \
             if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
                 return zfnull; \
             } \

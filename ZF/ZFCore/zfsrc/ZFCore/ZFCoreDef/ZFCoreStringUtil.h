@@ -521,13 +521,13 @@ inline zfstring zfstringToUpper(
  *           , "222"
  *           )) {
  *       case 0:
- *           zfLog("case 111");
+ *           ZFLog("case 111");
  *           break;
  *       case 1:
- *           zfLog("case 222");
+ *           ZFLog("case 222");
  *           break;
  *       default:
- *           zfLog("default");
+ *           ZFLog("default");
  *           break;
  *   }
  * @endcode

@@ -6,7 +6,7 @@ static void _ZFP_ZFUIAutoLayout_posAttach(
         ZF_IN ZFUIAutoLayoutParam *lp
         , ZF_IN ZFUIAutoLayoutPosEnum pos
         ) {
-    zfCoreAssertWithMessageTrim(lp->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing pos rule");
+    ZFCoreAssertWithMessageTrim(lp->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing pos rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
     if(d.posReset) {
         d.posReset = zffalse;
@@ -20,7 +20,7 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
         , ZF_IN ZFUIView *target
         , ZF_IN ZFUIAutoLayoutPosEnum targetPos
         ) {
-    zfCoreAssertWithMessageTrim(lp->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing target rule");
+    ZFCoreAssertWithMessageTrim(lp->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing target rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
     ZFUIAutoLayout *parent = lp->ownerParent();
     if(target == zfnull) {
@@ -37,7 +37,7 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
             rule.targetPos(targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPosEnum)i : targetPos);
         }
     }
-    zfCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
+    ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
     d.posReset = zftrue;
     parent->layoutRequest();
 }
@@ -155,7 +155,7 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParent) {
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, weight
         , ZFMP_IN(zffloat, weight)
         ) {
-    zfCoreAssertWithMessageTrim(this->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing weight rule");
+    ZFCoreAssertWithMessageTrim(this->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing weight rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = _ZFP_AL_d;
     zfbool posAttached = zffalse;
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
@@ -167,14 +167,14 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, weight
             rule.weight(weight);
         }
     }
-    zfCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
+    ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
     d.posReset = zftrue;
     this->ownerParent()->layoutRequest();
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, offset
         , ZFMP_IN(zffloat, offset)
         ) {
-    zfCoreAssertWithMessageTrim(this->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing offset rule");
+    ZFCoreAssertWithMessageTrim(this->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing offset rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = _ZFP_AL_d;
     zfbool posAttached = zffalse;
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
@@ -186,7 +186,7 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, offset
             rule.offset(offset);
         }
     }
-    zfCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
+    ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
     d.posReset = zftrue;
     this->ownerParent()->layoutRequest();
 }

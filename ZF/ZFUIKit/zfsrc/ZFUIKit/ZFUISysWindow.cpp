@@ -99,9 +99,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowMainWindowCleanup) {
 ZF_GLOBAL_INITIALIZER_END(ZFUISysWindowMainWindowCleanup)
 
 void ZFUISysWindow::mainWindowRegister(ZF_IN ZFUISysWindow *window) {
-    zfCoreAssertWithMessage(_ZFP_ZFUISysWindow_mainWindow == zfnull,
+    ZFCoreAssertWithMessage(_ZFP_ZFUISysWindow_mainWindow == zfnull,
         "[ZFUISysWindow] mainWindowRegister must be called before accessing mainWindow");
-    zfCoreAssertWithMessage(window != zfnull,
+    ZFCoreAssertWithMessage(window != zfnull,
         "[ZFUISysWindow] mainWindowRegister called with null window");
 
     zfblockedRelease(_ZFP_ZFUISysWindow_mainWindowRegistered);
@@ -279,7 +279,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, const ZFUIOrientationFlags &, sysWindowOrientat
 }
 
 ZFMETHOD_DEFINE_0(ZFUISysWindow, zfautoT<ZFUISysWindow>, modalWindowShow) {
-    zfCoreAssertWithMessage(d->modalWindowShowing == zfnull, "already has a showing modal window, you must finish it first");
+    ZFCoreAssertWithMessage(d->modalWindowShowing == zfnull, "already has a showing modal window, you must finish it first");
 
     zfautoT<ZFUISysWindow> modalWindow;
     if(d->embedImpl != zfnull) {
@@ -289,14 +289,14 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, zfautoT<ZFUISysWindow>, modalWindowShow) {
         modalWindow = ZFPROTOCOL_ACCESS(ZFUISysWindow)->modalWindowShow(this);
     }
 
-    zfCoreAssertWithMessage(modalWindow != zfnull, "modalWindowShow not available on embeded window");
+    ZFCoreAssertWithMessage(modalWindow != zfnull, "modalWindowShow not available on embeded window");
 
     d->modalWindowShowing = modalWindow;
     d->modalWindowShowing->d->modalWindowOwner = this;
     return modalWindow;
 }
 ZFMETHOD_DEFINE_0(ZFUISysWindow, void, modalWindowFinish) {
-    zfCoreAssertWithMessage(d->modalWindowOwner != zfnull, "not a modal window");
+    ZFCoreAssertWithMessage(d->modalWindowOwner != zfnull, "not a modal window");
 
     if(d->embedImpl != zfnull) {
         d->embedImpl->modalWindowFinish(d->modalWindowOwner, this);
@@ -335,7 +335,7 @@ ZFUIRect ZFUISysWindow::_ZFP_ZFUISysWindow_measureWindow(ZF_IN const ZFUIRect &r
     return ZFUIRectApplyScale(ret, this->rootView()->UIScaleForImpl());
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onCreate(ZF_IN void *nativeWindow) {
-    zfCoreAssertWithMessage(!d->nativeWindowCreated, "window already created");
+    ZFCoreAssertWithMessage(!d->nativeWindowCreated, "window already created");
 
     d->nativeWindow = nativeWindow;
     d->nativeWindowCreated = zftrue;
@@ -380,7 +380,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void) {
     }
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onResume(void) {
-    zfCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
+    ZFCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
     if(d->nativeWindowResumed) {
         return;
     }
@@ -399,8 +399,8 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void) {
     this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zffalse);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void) {
-    zfCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
-    zfCoreAssertWithMessage(d->nativeWindowResumed, "window not resumed");
+    ZFCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
+    ZFCoreAssertWithMessage(d->nativeWindowResumed, "window not resumed");
     this->observerNotify(ZFUISysWindow::EventSysWindowOnRotate());
 
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i) {

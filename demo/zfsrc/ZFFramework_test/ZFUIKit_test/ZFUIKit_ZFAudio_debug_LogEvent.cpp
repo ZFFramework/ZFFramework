@@ -23,7 +23,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFAudio_debug_LogEvent) {
 private:
     ZFListener onEventListener;
     static void onEvent(ZF_IN const ZFArgs &zfargs) {
-        zfLogTrim()
+        ZFLogTrim()
             << zfargs.sender()
             << ZFEventNameForId(zfargs.eventId())
             << zfargs.param0()
@@ -57,7 +57,7 @@ private:
                     ) {
                 for(zfindex i = 0; i < playing.count(); ++i) {
                     ZFAudio *audio = playing[i];
-                    zfLogTrim() << audio;
+                    ZFLogTrim() << audio;
                 }
             } ZFLISTENER_END()
             timer = ZFTimerStart(1000, onTimer);

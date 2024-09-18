@@ -14,7 +14,7 @@ protected:
         zfsuper::objectOnInit();
         this->viewBackgroundColor(ZFUIColorYellow());
 
-        zfauto imageSmall = zfRes("test_normal.png");
+        zfauto imageSmall = zfres("test_normal.png");
         zfauto imageLarge = ZFUIImageScale(imageSmall, ZFUISizeCreate(600));
 
         this->childAdd(this->imageViewSmall());
@@ -71,7 +71,7 @@ protected:
 private:
     static void _nextValue(ZF_IN_OUT ZFUIContentScaleTypeEnum &value) {
         zfindex index = ZFUIContentScaleType::EnumIndexForValue(value);
-        zfCoreAssert(index != zfindexMax());
+        ZFCoreAssert(index != zfindexMax());
         ++index;
         if(index >= ZFUIContentScaleType::EnumCount()) {
             index = 0;

@@ -34,7 +34,7 @@ protected:
         ZFXmlFromStringT(doc, src);
 
         this->testCaseOutput("ZFXml parse from string, result:");
-        zfLogTrim() << ZFXmlToString(doc);
+        ZFLogTrim() << ZFXmlToString(doc);
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFXml add element");
@@ -42,7 +42,7 @@ protected:
         element.name("testElement");
         doc.childAdd(element);
         this->testCaseOutput("ZFXml add element, result:");
-        zfLogTrim() << ZFXmlToString(doc);
+        ZFLogTrim() << ZFXmlToString(doc);
 
         this->performanceTest(doc);
 

@@ -65,7 +65,7 @@ public:
                 return ZFBuffer();
             }
             {
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 zfstlmap<zfindex, ZFBuffer>::iterator it = chunkCache.find(chunkPos);
                 if(it != chunkCache.end()) {
                     chunkCacheFIFO.removeElement(chunkPos);
@@ -83,7 +83,7 @@ public:
                 send->header("Range", zfstr("bytes=%s-%s", chunkPos, chunkEnd - 1));
                 zfautoT<ZFHttpResponse> recv = send->requestSync();
                 if(recv != zfnull && recv->success() && recv->body().bufferSize() == chunkEnd - chunkPos) {
-                    zfCoreMutexLocker();
+                    ZFCoreMutexLocker();
                     ZFBuffer ret;
                     ret.bufferSwap(recv->body());
                     chunkCache[chunkPos] = ret;

@@ -12,7 +12,7 @@ public:
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageFromInputCacheHolder, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageFromInputCacheHolder) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     while(!this->cache.isEmpty()) {
         _ZFP_ZFUIImageFromInputCacheData cacheData = this->cache.removeFirstAndGet();
         ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(cacheData.nativeImage);
@@ -27,7 +27,7 @@ static void *_ZFP_ZFUIImageFromInput(ZF_IN const ZFInput &input) {
         return ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(input);
     }
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIImageFromInputCacheHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIImageFromInputCacheHolder);
     for(zfindex i = 0; i < d->cache.count(); ++i) {
         if(zfstringIsEqual(d->cache[i].inputId, input.callbackId())) {
@@ -35,18 +35,18 @@ static void *_ZFP_ZFUIImageFromInput(ZF_IN const ZFInput &input) {
             if(i != d->cache.count() - 1) {
                 d->cache.add(d->cache.removeAndGet(i));
             }
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             return nativeImage;
         }
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(input);
     if(nativeImage == zfnull) {
         return zfnull;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFUIImageFromInputCacheData cacheData;
     cacheData.inputId = input.callbackId();
     cacheData.nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(nativeImage);

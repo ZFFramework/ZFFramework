@@ -386,14 +386,14 @@ public:
      * @brief get the method's param type id at index
      */
     inline const zfstring &methodParamTypeIdAt(ZF_IN zfindex index) const {
-        zfCoreAssert(index < this->methodParamCount());
+        ZFCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramTypeIdList()[index];
     }
     /**
      * @brief get the method's param name at index, usually for debug use
      */
     inline const zfstring &methodParamNameAt(ZF_IN zfindex index) const {
-        zfCoreAssert(index < this->methodParamCount());
+        ZFCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramNameList()[index];
     }
     /**
@@ -794,12 +794,12 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodForNameGetAll(
  *   };
  *   ZFOBJECT_REGISTER(MyClass)
  *   ZFMETHOD_DEFINE_0(MyClass, void, foo) {
- *       zfLogTrim() << "foo()";
+ *       ZFLogTrim() << "foo()";
  *   }
  *
  *   ZFMethodAlias(ZFMethodAccess(MyClass, foo), "bar");
- *   zfLogTrim() << MyClass::ClassData()->methodForName("foo");
- *   zfLogTrim() << MyClass::ClassData()->methodForName("bar");
+ *   ZFLogTrim() << MyClass::ClassData()->methodForName("foo");
+ *   ZFLogTrim() << MyClass::ClassData()->methodForName("bar");
  *   zfobj<MyClass> obj;
  *   obj->invoke("foo");
  *   obj->invoke("bar");

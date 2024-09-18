@@ -168,7 +168,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFUIViewBlinkWhenFocusAutoApplyPause) {
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFUIViewBlinkWhenFocusAutoApplyResume) {
-    zfCoreAssert(_ZFP_ZFUIViewBlinkWhenFocus_paused > 0);
+    ZFCoreAssert(_ZFP_ZFUIViewBlinkWhenFocus_paused > 0);
     --_ZFP_ZFUIViewBlinkWhenFocus_paused;
     if(_ZFP_ZFUIViewBlinkWhenFocus_paused == 0) {
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventViewBlinkWhenFocusAutoApplyResume());

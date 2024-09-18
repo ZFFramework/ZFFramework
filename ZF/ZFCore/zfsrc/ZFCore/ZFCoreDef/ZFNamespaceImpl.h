@@ -71,7 +71,7 @@ public:
  */
 extern ZFLIB_ZFCore const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns);
 /**
- * @brief util to split namespace components, similar to #zfCoreDataPairSplitString
+ * @brief util to split namespace components, similar to #ZFCoreDataPairSplitString
  *
  * if success, ret ensured to have at least one element even if the namespace is empty,
  * at this case, the only one element would be #ZFIndexRangeZero

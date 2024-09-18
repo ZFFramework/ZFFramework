@@ -45,9 +45,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       text0 = "text_0";
  *       text1 = "text_1";
  *   } ZFLISTENER_END()
- *   zfLogTrim() << text0 << " " << text1;
+ *   ZFLogTrim() << text0 << " " << text1;
  *   yourListener.execute();
- *   zfLogTrim() << text0 << " " << text1;
+ *   ZFLogTrim() << text0 << " " << text1;
  * @endcode
  */
 #define ZFLISTENER(name \

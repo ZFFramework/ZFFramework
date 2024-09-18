@@ -538,7 +538,7 @@ public:
             index = this->count();
         }
         else if(index > this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
+            ZFCoreCriticalIndexOutOfRange(index, this->count() + 1);
             return;
         }
         _capacityRequire(this->count() + 1);
@@ -760,7 +760,7 @@ public:
     zfoverride
     virtual void remove(ZF_IN zfindex index) {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
             return;
         }
         _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1);
@@ -773,7 +773,7 @@ public:
             , ZF_IN zfindex count
             ) {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
             return;
         }
         if(count > this->count() - index) {
@@ -788,7 +788,7 @@ public:
      */
     T_Element removeAndGet(ZF_IN zfindex index) {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
         }
         T_Element t = *(d->buf + index);
         this->remove(index);
@@ -805,7 +805,7 @@ public:
      *   or assert fail if empty
      */
     T_Element removeFirstAndGet(void) {
-        zfCoreAssertWithMessage(!this->isEmpty(), "removeFirstAndGet an empty array");
+        ZFCoreAssertWithMessage(!this->isEmpty(), "removeFirstAndGet an empty array");
         T_Element t = *(d->buf);
         this->remove(0);
         return t;
@@ -821,7 +821,7 @@ public:
      *   or assert fail if empty
      */
     T_Element removeLastAndGet(void) {
-        zfCoreAssertWithMessage(!this->isEmpty(), "removeLastAndGet an empty array");
+        ZFCoreAssertWithMessage(!this->isEmpty(), "removeLastAndGet an empty array");
         T_Element t = *(d->buf + d->count - 1);
         this->remove(this->count() - 1);
         return t;
@@ -840,14 +840,14 @@ public:
             , ZF_IN zfindex toIndexOrIndexMax
             ) {
         if(fromIndex >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(fromIndex, this->count());
+            ZFCoreCriticalIndexOutOfRange(fromIndex, this->count());
             return;
         }
         if(toIndexOrIndexMax == zfindexMax()) {
             toIndexOrIndexMax = this->count() - 1;
         }
         if(toIndexOrIndexMax >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(toIndexOrIndexMax, this->count());
+            ZFCoreCriticalIndexOutOfRange(toIndexOrIndexMax, this->count());
             return;
         }
         if(fromIndex == toIndexOrIndexMax) {
@@ -872,7 +872,7 @@ public:
             , ZF_IN T_Element const &e
             ) {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
         }
         d->buf[index] = e;
     }
@@ -883,7 +883,7 @@ public:
      */
     T_Element &get(ZF_IN zfindex index) {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
         }
         return d->buf[index];
     }
@@ -892,7 +892,7 @@ public:
      */
     T_Element const &get(ZF_IN zfindex index) const {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
         }
         return d->buf[index];
     }
@@ -901,7 +901,7 @@ public:
      */
     T_Element &operator [] (ZF_IN zfindex index) {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
         }
         return d->buf[index];
     }
@@ -910,7 +910,7 @@ public:
      */
     T_Element const &operator [] (ZF_IN zfindex index) const {
         if(index >= this->count()) {
-            zfCoreCriticalIndexOutOfRange(index, this->count());
+            ZFCoreCriticalIndexOutOfRange(index, this->count());
         }
         return d->buf[index];
     }
@@ -919,7 +919,7 @@ public:
      */
     T_Element const &getFirst(void) const {
         if(this->count() == 0) {
-            zfCoreCriticalIndexOutOfRange(0, this->count());
+            ZFCoreCriticalIndexOutOfRange(0, this->count());
         }
         return *(d->buf);
     }
@@ -928,7 +928,7 @@ public:
      */
     T_Element const &getLast(void) const {
         if(this->count() == 0) {
-            zfCoreCriticalIndexOutOfRange(0, this->count());
+            ZFCoreCriticalIndexOutOfRange(0, this->count());
         }
         return *(d->buf + d->count - 1);
     }

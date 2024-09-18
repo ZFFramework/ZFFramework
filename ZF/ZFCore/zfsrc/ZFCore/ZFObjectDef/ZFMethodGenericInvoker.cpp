@@ -266,19 +266,19 @@ void _ZFP_ZFMethodGenericInvokeError(
         , ZF_IN_OPT const zfchar *errorHint /* = zfnull */
         ) {
     if(pos >= 0) {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
             "[ZFMethodDynamicRegister] method %s unable to convert param %s",
             method,
             pos);
     }
     else if(pos == -1) {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
             "[ZFMethodDynamicRegister] method %s unable to perform generic invoker, reason: %s",
             method,
             errorHint);
     }
     else {
-        zfCoreCriticalMessageTrim(
+        ZFCoreCriticalMessageTrim(
             "[ZFMethodDynamicRegister] method %s unable to convert return value",
             method);
     }

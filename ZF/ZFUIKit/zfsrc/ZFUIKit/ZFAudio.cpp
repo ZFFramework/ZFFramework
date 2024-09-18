@@ -109,7 +109,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
     else {
-        zfLogTrim() << this << " start called before load success";
+        ZFLogTrim() << this << " start called before load success";
     }
 }
 
@@ -242,7 +242,7 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(
         ZF_IN ZFResultTypeEnum result
         , ZF_IN v_zfstring *errorHint
         ) {
-    zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag));
+    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag));
     ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
     if(result == ZFResultType::e_Success) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
@@ -264,7 +264,7 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ZF_IN ZFResultTypeEnum result
         , ZF_IN v_zfstring *errorHint
         ) {
-    zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
+    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
     if(result != ZFResultType::e_Cancel) {
         ++d->looped;
     }
@@ -285,7 +285,7 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
     }
 }
 void ZFAudio::_ZFP_ZFAudio_OnResume(void) {
-    zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
+    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
     if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnResume();
@@ -296,7 +296,7 @@ void ZFAudio::_ZFP_ZFAudio_OnResume(void) {
     }
 }
 void ZFAudio::_ZFP_ZFAudio_OnPause(void) {
-    zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
+    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnPause();

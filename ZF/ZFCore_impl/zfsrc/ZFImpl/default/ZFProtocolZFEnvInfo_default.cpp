@@ -61,9 +61,9 @@ public:
             GetVersionEx(&osvi);
 
             zfstring tmp;
-            zfVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMajorVersion);
-            zfVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMinorVersion);
-            zfVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwBuildNumber);
+            ZFVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMajorVersion);
+            ZFVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMinorVersion);
+            ZFVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwBuildNumber);
             ret += tmp;
             return;
         }

@@ -147,7 +147,7 @@ public:
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = zfnew(_ZFP_ZFProtocolZFRes_sys_Android_FileToken);
         d->assetManagerHolder = ZFImpl_sys_Android_assetManager();
         d->assetManager = AAssetManager_fromJava(jniEnv, d->assetManagerHolder);
-        zfCoreAssert(d->assetManager != zfnull);
+        ZFCoreAssert(d->assetManager != zfnull);
 
         zfstring absPath;
         this->resPathFormat(absPath, resPath);
@@ -210,7 +210,7 @@ public:
                 seekPos = SEEK_END;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
         return (AAsset_seek(d->token, seekSize, seekPos) != -1);

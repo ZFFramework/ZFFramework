@@ -25,12 +25,12 @@ static ZFCoreArray<ZFThread *> _ZFP_ZFThread_allThread;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThread_allThreadCleanup, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     while(!_ZFP_ZFThread_allThread.isEmpty()) {
         ZFThread *zfThread = _ZFP_ZFThread_allThread.getLast();
         zfblockedRelease(zfRetain(zfThread));
-        zfCoreAssert(zfThread->threadStarted());
-        zfCoreMutexUnlock();
+        ZFCoreAssert(zfThread->threadStarted());
+        ZFCoreMutexUnlock();
         zfThread->threadStop();
         zfThread->taskQueueCleanup();
         zfThread->sleepCancel();
@@ -110,7 +110,7 @@ public:
             ZF_IN_OPT ZFObject *param0 = zfnull
             , ZF_IN_OPT ZFObject *param1 = zfnull
             ) {
-        zfCoreLogTrim("you must not start a user registered thread");
+        ZFCoreLogTrim("you must not start a user registered thread");
     }
     zfoverride
     virtual zfbool threadStarted(void) {
@@ -122,7 +122,7 @@ public:
     }
     zfoverride
     virtual void threadStop(void) {
-        zfCoreLogTrim("you must not stop a user registered thread");
+        ZFCoreLogTrim("you must not stop a user registered thread");
     }
 };
 
@@ -140,9 +140,9 @@ ZFEVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)
 ZFMETHOD_DEFINE_1(ZFThread, void *, nativeThreadRegister
         , ZFMP_IN(const zfstring &, threadName)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFThread *zfThread = ZFThread::currentThread();
-    zfCoreAssert(zfThread == zfnull);
+    ZFCoreAssert(zfThread == zfnull);
 
     zfThread = zfAlloc(_ZFP_I_ZFThreadNativeRegisterThread);
     zfThread->threadName(threadName);
@@ -158,9 +158,9 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister
         return;
     }
     ZFThread *zfThread = ZFPROTOCOL_ACCESS(ZFThread)->threadForToken(token);
-    zfCoreAssert(zfThread != zfnull);
+    ZFCoreAssert(zfThread != zfnull);
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     while(!zfThread->d->taskQueue.empty()) {
         ZFListener task = *(zfThread->d->taskQueue.begin());
         zfThread->d->taskQueue.pop_front();
@@ -168,20 +168,20 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister
             continue;
         }
         zfThread->d->taskQueueRunning = zftrue;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         task.execute(ZFArgs()
                 .sender(zfThread)
             );
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         zfThread->d->taskQueueRunning = zffalse;
         zfThread->d->autoReleasePool->poolDrain();
     }
     zfThread->taskQueueCleanup();
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 
     zfThread->d->threadWaitSema->lockAndBroadcast();
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfThread->threadOnUnregister();
     _ZFP_ZFThread_allThread.removeElement(zfThread);
     ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(token);
@@ -189,11 +189,11 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister
 }
 
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, implAvailable) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     return ZFPROTOCOL_IS_AVAILABLE(ZFThread);
 }
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, implMainThreadTaskAvailable) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFPROTOCOL_INTERFACE_CLASS(ZFThread) *impl = ZFPROTOCOL_TRY_ACCESS(ZFThread);
     if(impl == zfnull) {
         return zffalse;
@@ -215,11 +215,11 @@ ZFMETHOD_DEFINE_1(ZFThread, zfbool, sleep
         , ZFMP_IN(zftimet, miliSecs)
         ) {
     ZFThread *cur = ZFThread::currentThread();
-    zfCoreAssertWithMessageTrim(cur, "ZFThread::sleep() depends on current thread registered");
-    zfCoreAssert(cur->d->sleepToken == zfnull);
+    ZFCoreAssertWithMessageTrim(cur, "ZFThread::sleep() depends on current thread registered");
+    ZFCoreAssert(cur->d->sleepToken == zfnull);
     ZFPROTOCOL_INTERFACE_CLASS(ZFThread) *impl = ZFPROTOCOL_ACCESS(ZFThread);
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         cur->d->sleepToken = impl->sleepTokenCreate();
         if(cur->d->sleepToken == zfnull) {
             return zffalse;
@@ -227,7 +227,7 @@ ZFMETHOD_DEFINE_1(ZFThread, zfbool, sleep
     }
     zfbool ret = impl->sleep(cur->d->sleepToken, miliSecs);
     {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         impl->sleepTokenDestroy(cur->d->sleepToken);
         cur->d->sleepToken = zfnull;
     }
@@ -303,12 +303,12 @@ ZFMETHOD_DEFINE_2(ZFThread, void, threadStart
         , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
         , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(d->startFlag) {
         return;
     }
     if(d->stopRequestedFlag) {
-        zfCoreLogTrim("threadStop has called, you should not start it again");
+        ZFCoreLogTrim("threadStop has called, you should not start it again");
         return;
     }
     d->startFlag = zftrue;
@@ -337,7 +337,7 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, threadRunning) {
     return d->runningFlag;
 }
 ZFMETHOD_DEFINE_0(ZFThread, void, threadStop) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(!d->startFlag) {
         return;
     }
@@ -349,14 +349,14 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, threadStopRequested) {
 }
 
 ZFMETHOD_DEFINE_0(ZFThread, void, threadWait) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     d->threadWaitSema->semaphoreLock();
     if(!d->startFlag) {
         d->threadWaitSema->semaphoreUnlock();
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         return;
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     _ZFP_ZFThread_log("threadWait begin %s", ZFObjectInfo(this).cString());
     d->threadWaitSema->semaphoreWait();
     d->threadWaitSema->semaphoreUnlock();
@@ -365,14 +365,14 @@ ZFMETHOD_DEFINE_0(ZFThread, void, threadWait) {
 ZFMETHOD_DEFINE_1(ZFThread, zfbool, threadWait
         , ZFMP_IN(zftimet, miliSecs)
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     d->threadWaitSema->semaphoreLock();
     if(!d->startFlag) {
         d->threadWaitSema->semaphoreUnlock();
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         return zftrue;
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     _ZFP_ZFThread_log("threadWait begin %s", ZFObjectInfo(this).cString());
     zfbool ret = d->threadWaitSema->semaphoreWait(miliSecs);
     d->threadWaitSema->semaphoreUnlock();
@@ -406,7 +406,7 @@ ZFMETHOD_DEFINE_0(ZFThread, void, taskQueueInit) {
     if(this->isMainThread()) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(d->taskQueueInitFlag) {
         return;
     }
@@ -418,12 +418,12 @@ ZFMETHOD_DEFINE_0(ZFThread, void, taskQueueCleanup) {
     if(this->isMainThread()) {
         return;
     }
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     if(!d->taskQueueInitFlag) {
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         return;
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     d->taskQueueInitFlag = zffalse;
     d->taskQueueSema->lockAndBroadcast();
     zfunsafe_zfRelease(this);
@@ -432,7 +432,7 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, taskQueueAvailable) {
     return (this->isMainThread() || d->taskQueueInitFlag);
 }
 ZFMETHOD_DEFINE_0(ZFThread, zfindex, taskQueueCount) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     return (zfindex)d->taskQueue.size();
 }
 ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd
@@ -441,7 +441,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd
     if(!task) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     if(this->isMainThread()) {
         d->taskQueue.push_back(task);
@@ -463,7 +463,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd
             d->taskQueueSema->lockAndBroadcast();
         }
         else {
-            zfCoreLogTrim("taskQueueAdd() called without taskQueueInit(), thread: %s", this);
+            ZFCoreLogTrim("taskQueueAdd() called without taskQueueInit(), thread: %s", this);
             ZFThread::mainThread()->taskQueueAdd(task);
         }
     }
@@ -471,7 +471,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd
 ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueRemove
         , ZFMP_IN(const ZFListener &, task)
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     for(zfstllist<ZFListener>::iterator it = d->taskQueue.begin(); it != d->taskQueue.end(); ++it) {
         if(*it == task) {
             d->taskQueue.erase(it);
@@ -490,14 +490,14 @@ void _ZFP_ZFThreadPrivate::threadCallback(
         , ZF_IN ZFObject *param0
         , ZF_IN ZFObject *param1
         ) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     _ZFP_ZFThreadPrivate *d = zfThread->d;
     d->runningFlag = zftrue;
 
     void *nativeThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(zfThread);
     _ZFP_ZFThread_allThread.add(zfThread);
     zfThread->threadOnRegister();
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 
     _ZFP_ZFThread_log("executeInNewThread enter %s", ZFObjectInfo(zfThread).cString());
 
@@ -513,23 +513,23 @@ void _ZFP_ZFThreadPrivate::threadCallback(
     if(!d->stopRequestedFlag) {
         zfThread->threadOnRun(zfargsTmp);
     }
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     if(zfThread->threadRunnable()) {
         ZFListener tmp = zfThread->threadRunnable();
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         tmp.execute(zfargsTmp);
     }
     else {
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
 
     do {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         d->taskQueueRunning = zffalse;
         d->autoReleasePool->poolDrain();
 
         if(!d->taskQueueInitFlag) {
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             break;
         }
         if(d->taskQueue.empty()) {
@@ -537,10 +537,10 @@ void _ZFP_ZFThreadPrivate::threadCallback(
             d->taskQueueSema->semaphoreLock();
             if(!d->taskQueue.empty()) {
                 d->taskQueueSema->semaphoreUnlock();
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 continue;
             }
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             _ZFP_ZFThread_log("taskWait begin: %s", ZFObjectInfo(zfThread).cString());
             d->taskQueueSema->semaphoreWait();
             _ZFP_ZFThread_log("taskWait end: %s", ZFObjectInfo(zfThread).cString());
@@ -552,7 +552,7 @@ void _ZFP_ZFThreadPrivate::threadCallback(
         d->taskQueue.pop_front();
 
         d->taskQueueRunning = zftrue;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         if(task) {
             task.execute(ZFArgs()
                     .sender(zfThread)
@@ -562,16 +562,16 @@ void _ZFP_ZFThreadPrivate::threadCallback(
 
     zfThread->threadOnStop(zfargsTmp);
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfThread->threadOnUnregister();
     _ZFP_ZFThread_allThread.removeElement(zfThread);
     ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(nativeThreadToken);
     d->runningFlag = zffalse;
     d->startFlag = zffalse;
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 }
 void _ZFP_ZFThreadPrivate::threadCleanupCallback(ZF_IN ZFThread *zfThread) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     _ZFP_ZFThreadPrivate *d = zfThread->d;
 
@@ -591,22 +591,22 @@ void _ZFP_ZFThreadPrivate::mainThreadCallback(ZF_IN ZFThread *zfThread) {
     _ZFP_ZFThreadPrivate *d = zfThread->d;
 
     _ZFP_ZFThread_log("executeInMainThread enter %s", ZFObjectInfo(zfThread).cString());
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     d->mainThreadTaskRunning = zffalse;
     if(d->mainThreadToken != zfnull) {
         _ZFP_ZFThread_log("executeInMainThread cleanup by run %s", ZFObjectInfo(zfThread).cString());
         ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(d->mainThreadToken);
         d->mainThreadToken = zfnull;
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 
     do {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         d->taskQueueRunning = zffalse;
         d->autoReleasePool->poolDrain();
 
         if(d->taskQueue.empty()) {
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             _ZFP_ZFThread_log("executeInMainThread exit %s", ZFObjectInfo(zfThread).cString());
             break;
         }
@@ -615,7 +615,7 @@ void _ZFP_ZFThreadPrivate::mainThreadCallback(ZF_IN ZFThread *zfThread) {
         d->taskQueue.pop_front();
 
         d->taskQueueRunning = zftrue;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         if(task) {
             task.execute(ZFArgs()

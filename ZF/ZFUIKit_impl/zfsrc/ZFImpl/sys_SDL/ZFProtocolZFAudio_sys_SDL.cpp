@@ -317,29 +317,29 @@ private:
 
 private:
     static void _implOnFinish(int channel) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         zfself *d = (zfself *)ZFPROTOCOL_ACCESS(ZFAudio);
         zfstlmap<zfidentity, zfautoT<ZFAudio> >::iterator it = d->_implPlaying.find(channel);
         if(it == d->_implPlaying.end()) {
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             return;
         }
         zfautoT<ZFAudio> audio = it->second;
         d->_implPlaying.erase(it);
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->channel = -1;
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         d->notifyAudioOnStop(audio, zftrue, zfnull);
     }
     void _implAttach(ZF_IN ZFAudio *audio) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        zfCoreAssert(nativeAudio->channel != -1);
+        ZFCoreAssert(nativeAudio->channel != -1);
         _implPlaying[nativeAudio->channel] = audio;
     }
     void _implDetach(ZF_IN ZFAudio *audio) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         _implPlaying.erase(nativeAudio->channel);
     }

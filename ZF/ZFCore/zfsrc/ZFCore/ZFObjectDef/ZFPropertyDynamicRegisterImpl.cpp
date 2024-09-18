@@ -48,7 +48,7 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
         case ZFPropertyLifeCycleOnDetach:
             return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnDetach;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
     }
 }
@@ -89,7 +89,7 @@ public:
     }
     void objectDetach(ZF_IN ZFObject *obj) {
         zfstlmap<ZFObject *, zfbool>::iterator it = this->_objAttached.find(obj);
-        zfCoreAssert(it != this->_objAttached.end());
+        ZFCoreAssert(it != this->_objAttached.end());
         this->_objAttached.erase(it);
         this->objectDetachAction(obj);
     }
@@ -165,7 +165,7 @@ public:
             , ZF_IN_OUT ZFObject *propertyValueHolder
             , ZF_IN ZFObject *propertyValueOldHolder
             ) {
-        zfCoreAssert(propertyValueOldHolder != zfnull);
+        ZFCoreAssert(propertyValueOldHolder != zfnull);
 
         zfbool isReadonly = _ZFP_ZFPropertyLifeCycleIsReadonly(lifeCycle);
         zfauto valueHolder;
@@ -579,8 +579,8 @@ const ZFProperty *ZFPropertyDynamicRegister(
 }
 void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property) {
     if(property != zfnull) {
-        zfCoreAssert(property->propertyIsDynamicRegister());
-        zfCoreMutexLocker();
+        ZFCoreAssert(property->propertyIsDynamicRegister());
+        ZFCoreMutexLocker();
         zfblockedRelease(property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m.erase(property);
         _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);

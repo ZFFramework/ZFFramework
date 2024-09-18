@@ -15,7 +15,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIScrollerClass
         , ZFMP_IN(const ZFClass *, cls)
         ) {
     if(cls != zfnull && !cls->classIsTypeOf(ZFUIScroller::ClassData())) {
-        zfCoreLog("class %s not type of %s",
+        ZFCoreLog("class %s not type of %s",
             cls->classNameFull(),
             ZFUIScroller::ClassData()->classNameFull());
         return;

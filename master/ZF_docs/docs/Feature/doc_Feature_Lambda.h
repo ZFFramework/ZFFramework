@@ -20,9 +20,9 @@
  *   zfobj<ZFUIButton> btn;
  *   btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);
  *
- *   zfLogTrim() << "before invoke: " << refCapture << valueCapture;
+ *   ZFLogTrim() << "before invoke: " << refCapture << valueCapture;
  *   btn->simulateClick();
- *   zfLogTrim() << "after invoke: " << refCapture << valueCapture;
+ *   ZFLogTrim() << "after invoke: " << refCapture << valueCapture;
  *
  *   // output:
  *   //   before invoke: (0, 0, 0, 0) (0, 0, 0, 0)

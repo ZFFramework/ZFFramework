@@ -95,7 +95,7 @@ zfbool zfflagsFromStringT(
     ZFCoreArray<ZFIndexRange> pos;
     zfstring separatorTokens;
     separatorTokens += separatorToken;
-    if(!zfCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, separatorTokens, zfnull, zfnull, zffalse, outErrorPos)) {
+    if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, separatorTokens, zfnull, zfnull, zffalse, outErrorPos)) {
         return zffalse;
     }
     ret = 0;

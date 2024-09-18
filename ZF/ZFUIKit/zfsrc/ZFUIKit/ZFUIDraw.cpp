@@ -62,7 +62,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, endForView
         , ZFMP_IN(void *, context)
         ) {
     ZFUIDrawToken *token = (ZFUIDrawToken *)context;
-    zfCoreAssertWithMessage(token->type == ZFUIDrawToken::TypeView,
+    ZFCoreAssertWithMessage(token->type == ZFUIDrawToken::TypeView,
         "ZFUIDraw::endForView called with a mismatch context");
     ZFPROTOCOL_ACCESS(ZFUIDrawForView)->endForView(*token);
     zfpoolDelete(token);
@@ -89,7 +89,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, endForImage
         , ZFMP_IN(void *, context)
         ) {
     ZFUIDrawToken *token = (ZFUIDrawToken *)context;
-    zfCoreAssertWithMessage(token->type == ZFUIDrawToken::TypeImage,
+    ZFCoreAssertWithMessage(token->type == ZFUIDrawToken::TypeImage,
         "ZFUIDraw::endForImage called with a mismatch context");
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIDrawForImage)->endForImage(*token);
     zfautoT<ZFUIImage> ret = token->target;

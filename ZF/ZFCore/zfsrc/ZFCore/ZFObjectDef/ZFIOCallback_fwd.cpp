@@ -20,7 +20,7 @@ zfindex ZFIOCallbackCalcFSeek(
         case ZFSeekPosEnd:
             return ((offset + seekByteSize > length) ? offset : (length - seekByteSize));
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zfindexMax();
     }
 }

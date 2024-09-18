@@ -27,7 +27,7 @@ protected:
                 "end)\n"
                 "return window\n"
             );
-        zfCoreAssert(result != zfnull);
+        ZFCoreAssert(result != zfnull);
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(windowOnHide

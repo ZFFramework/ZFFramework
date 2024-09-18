@@ -606,7 +606,7 @@ public:
             sFlag = "rb";
         }
         else {
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zfnull;
         }
 
@@ -667,7 +667,7 @@ public:
                 tmpPos = SEEK_END;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
         return (fseek((FILE *)token, seekSize, tmpPos) == 0);

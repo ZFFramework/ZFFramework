@@ -20,7 +20,7 @@
  *       }
  *   };
  *   static void testListener1(ZF_IN const ZFArgs &zfargs) {
- *       zfLog()
+ *       ZFLog()
  *           << zfargs.sender() // should be MyObject
  *           << zfargs.param0() // should be myParam0 passed from observerNotify
  *           << zfargs.param1() // should be myParam1 passed from observerNotify
@@ -30,7 +30,7 @@
  *           ZF_IN const ZFArgs &zfargs
  *           , ZF_IN v_zfstring *myUserData
  *           ) {
- *       zfLog()
+ *       ZFLog()
  *           << zfargs.sender() // should be MyObject
  *           << zfargs.param0() // should be myParam0 passed from observerNotify
  *           << zfargs.param1() // should be myParam1 passed from observerNotify

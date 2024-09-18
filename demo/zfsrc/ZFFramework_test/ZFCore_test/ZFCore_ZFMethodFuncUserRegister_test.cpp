@@ -16,7 +16,7 @@ protected:
             this->testCaseOutput("try execute dynamically registered method");
 
             ZFMethodFuncUserRegisterDetail_1(method, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic"
@@ -24,14 +24,14 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_0(method0, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic0"
                 );
 
             ZFMethodFuncUserRegisterDetail_1(method1, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic1"
@@ -39,7 +39,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_2(method2, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic2"
@@ -48,7 +48,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_3(method3, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic3"
@@ -58,7 +58,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_4(method4, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic4"
@@ -69,7 +69,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_5(method5, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic5"
@@ -81,7 +81,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_6(method6, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic6"
@@ -94,7 +94,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_7(method7, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic7"
@@ -108,7 +108,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_8(method8, {
-                    zfLog();
+                    ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic8"
@@ -128,7 +128,7 @@ protected:
 
             ZFMethodFuncUserUnregister(ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic"));
 
-            zfLogTrim() << "after unregister, method: "
+            ZFLogTrim() << "after unregister, method: "
                 << ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic");
 
             this->testCaseOutput("all list:");
@@ -175,7 +175,7 @@ ZFOBJECT_REGISTER(ZFCore_ZFMethodFuncUserRegister_test)
 ZF_NAMESPACE_BEGIN(ZFCore_ZFMethodFuncUserRegister_testNamespace)
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic
@@ -183,14 +183,14 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_0({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic0
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic1
@@ -198,7 +198,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_2({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic2
@@ -207,7 +207,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_2({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic3
@@ -217,7 +217,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_4({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic4
@@ -228,7 +228,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_4({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic5
@@ -240,7 +240,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic6
@@ -253,7 +253,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic7
@@ -267,7 +267,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_8({
-        zfLog();
+        ZFLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic8

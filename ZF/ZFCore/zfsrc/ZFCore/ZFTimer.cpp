@@ -33,16 +33,16 @@ static ZFCoreArray<ZFTimer *> &_ZFP_ZFTimerList(void) {
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTimerList, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFTimerList) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     ZFCoreArray<ZFTimer *> &d = _ZFP_ZFTimerList();
     while(!d.isEmpty()) {
         ZFTimer *timer = d.removeLastAndGet();
         zfblockedRelease(zfRetain(timer));
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         timer->timerStop();
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 }
 ZF_GLOBAL_INITIALIZER_END(ZFTimerList)
 
@@ -82,8 +82,8 @@ ZFMETHOD_DEFINE_0(ZFTimer, void *, nativeTimer) {
 }
 
 ZFPROPERTY_ON_VERIFY_DEFINE(ZFTimer, zftimet, timerInterval) {
-    zfCoreAssert(!this->timerStarted());
-    zfCoreAssert(this->timerInterval() >= 0);
+    ZFCoreAssert(!this->timerStarted());
+    ZFCoreAssert(this->timerInterval() >= 0);
 }
 
 ZFMETHOD_DEFINE_0(ZFTimer, void, timerStart) {
@@ -103,9 +103,9 @@ ZFMETHOD_DEFINE_0(ZFTimer, void, timerStop) {
         ++(d->timerImplId);
         ZFPROTOCOL_ACCESS(ZFTimer)->timerStop(this);
 
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         _ZFP_ZFTimerList().removeElement(this);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         this->timerOnStop();
         if(d->timerThreadToken != zfnull) {
             ZFThread::nativeThreadUnregister(d->timerThreadToken);
@@ -135,10 +135,10 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
     zfRetain(this);
     zfblockedRelease(this);
 
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     if(d->timerActivatedCount == 0) {
         _ZFP_ZFTimerList().add(this);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
 
         if(ZFThread::currentThread() == zfnull) {
             d->timerThreadToken = ZFThread::nativeThreadRegister("timer thread");
@@ -148,7 +148,7 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
     }
     else {
         ++(d->timerActivatedCount);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
 
     {

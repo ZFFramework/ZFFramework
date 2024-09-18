@@ -49,7 +49,7 @@ ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, webGoForwardAvailable) {
 void ZFUIWebView::objectOnInit(void) {
     zfsuper::objectOnInit();
 
-    zfCoreAssert(this->nativeImplView() == zfnull);
+    ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
     public:
         static void action(

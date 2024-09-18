@@ -513,7 +513,7 @@ public:
             ZF_IN lua_State *L
             , ZF_IN const zfchar *text
             ) {
-        zfCoreAssert(this->errorHint == zfnull);
+        ZFCoreAssert(this->errorHint == zfnull);
         this->errorHint = zfnew(zfstring);
         *(this->errorHint) += text;
         return 0;
@@ -542,7 +542,7 @@ public:
     }
     ~_ZFP_ZFLuaStackChecker(void) {
         int cur = lua_gettop(L);
-        zfCoreAssertWithMessageTrim(
+        ZFCoreAssertWithMessageTrim(
             cur == stackSaved + stackChange,
             "[ZFLua] stack messed up: %s(%s) => %s",
             stackSaved, stackChange, cur);

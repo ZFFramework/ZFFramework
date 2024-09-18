@@ -15,12 +15,12 @@ ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArray<zfautoT<ZFUIWindow> > &, windo
 }
 
 void ZFUIRootView::viewOnAddToParent(ZF_IN ZFUIView *parent) {
-    zfCoreCriticalMessage(
+    ZFCoreCriticalMessage(
         "you must not add ZFUIRootView to another parent, parent: %s",
         parent);
 }
 void ZFUIRootView::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
-    zfCoreCriticalMessage(
+    ZFCoreCriticalMessage(
         "you must not add ZFUIRootView to another parent, parent: %s",
         parent);
 }

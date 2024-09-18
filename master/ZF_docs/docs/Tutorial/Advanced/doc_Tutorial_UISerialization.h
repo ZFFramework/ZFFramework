@@ -13,13 +13,13 @@
  *   ZFSerializableData data = ZFObjectToData(parent);
  *   zfstring xmlString;
  *   ZFSerializableDataToXml(ZFOutputForString(xmlString), data);
- *   zfLogTrim() << "serialized data:";
- *   zfLogTrim() << xmlString;
+ *   ZFLogTrim() << "serialized data:";
+ *   ZFLogTrim() << xmlString;
  *
  *   ZFSerializableData dataNew = ZFSerializableDataFromXml(ZFInputForString(xmlString));
  *   zfauto objNew = ZFObjectFromData(dataNew);
- *   zfLogTrim() << "re-serialized object:";
- *   zfLogTrim() << objNew;
+ *   ZFLogTrim() << "re-serialized object:";
+ *   ZFLogTrim() << objNew;
  * @endcode
  * which would output these:
  * @code

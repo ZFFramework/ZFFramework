@@ -32,8 +32,8 @@ ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate> setupClassDataUpdate;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
 void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
-    zfCoreAssert(L != zfnull);
-    zfCoreMutexLocker();
+    ZFCoreAssert(L != zfnull);
+    ZFCoreMutexLocker();
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
@@ -104,7 +104,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     }
 }
 void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
@@ -120,7 +120,7 @@ void ZFImpl_ZFLua_classDataUpdate(
         , ZF_IN const ZFClassDataUpdateData &data
         ) {
     _ZFP_ZFImpl_ZFLua_invokeTimeLogger("cls change %s", data.objectInfo().cString());
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
     for(zfindex i = 0; i < d->setupClassDataUpdate.count(); ++i) {
@@ -134,7 +134,7 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
@@ -147,7 +147,7 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);

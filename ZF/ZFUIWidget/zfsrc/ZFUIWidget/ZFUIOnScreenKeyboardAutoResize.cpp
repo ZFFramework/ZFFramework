@@ -95,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart
         return;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = zfany(window->objectTag(
         _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
@@ -117,7 +117,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop
         return;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = zfany(window->objectTag(
         _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
@@ -135,7 +135,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardAutoResizeDataHolder, ZFLevelZFFrameworkEssential) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardAutoResizeDataHolder) {
-    zfCoreAssertWithMessageTrim(this->windowList.isEmpty(),
+    ZFCoreAssertWithMessageTrim(this->windowList.isEmpty(),
         "ZFUIOnScreenKeyboardAutoResizeStart/ZFUIOnScreenKeyboardAutoResizeStop mismatch, have you forgot to stop?");
 }
 public:

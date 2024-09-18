@@ -45,7 +45,7 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
             , ZFMP_IN(zfuint, port)
             ) {
     if(d->type == ZFTcpType::e_ServerAccept) {
-        zfLog("calling open() on tcp returned by accept()");
+        ZFLog("calling open() on tcp returned by accept()");
         return zffalse;
     }
 
@@ -111,12 +111,12 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo
 ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp>, accept) {
     switch(d->type) {
         case ZFTcpType::e_Invalid:
-            zfLog("calling accept() before open() successfully");
+            ZFLog("calling accept() before open() successfully");
             return zfnull;
         case ZFTcpType::e_Server:
             break;
         default:
-            zfLog("calling accept() on non server type socket");
+            ZFLog("calling accept() on non server type socket");
             return zfnull;
     }
 
@@ -138,10 +138,10 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
             ) {
     switch(d->type) {
         case ZFTcpType::e_Invalid:
-            zfLog("calling send() on invalid socket");
+            ZFLog("calling send() on invalid socket");
             return zffalse;
         case ZFTcpType::e_Server:
-            zfLog("calling send() on server socket");
+            ZFLog("calling send() on server socket");
             return zffalse;
         default:
             break;
@@ -173,10 +173,10 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
             ) {
     switch(d->type) {
         case ZFTcpType::e_Invalid:
-            zfLog("calling recv() before open() successfully");
+            ZFLog("calling recv() before open() successfully");
             return 0;
         case ZFTcpType::e_Server:
-            zfLog("calling recv() on server type socket");
+            ZFLog("calling recv() on server type socket");
             return 0;
         default:
             break;
@@ -197,10 +197,10 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
             ) {
     switch(d->type) {
         case ZFTcpType::e_Invalid:
-            zfLog("calling recv() before open() successfully");
+            ZFLog("calling recv() before open() successfully");
             return 0;
         case ZFTcpType::e_Server:
-            zfLog("calling recv() on server type socket");
+            ZFLog("calling recv() on server type socket");
             return 0;
         default:
             break;

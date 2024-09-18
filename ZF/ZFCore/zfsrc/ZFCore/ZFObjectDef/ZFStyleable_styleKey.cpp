@@ -31,10 +31,10 @@ void _ZFP_ZFStyleKeyHolder::styleOnUpdate(
         ZF_IN const ZFArgs &zfargs
         , ZF_IN ZFStyleable *owner
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfauto style = ZFStyleGet(owner->styleKey());
     if(style != zfnull) {
-        zfCoreAssertWithMessageTrim(style->classData()->classIsTypeOf(owner->classData())
+        ZFCoreAssertWithMessageTrim(style->classData()->classIsTypeOf(owner->classData())
             || owner->classData()->classIsTypeOf(style->classData()),
             "[ZFStyle] applying style from incorrect type, to object: %s, from style: %s",
             owner->toObject()->objectInfoOfInstance(),
@@ -44,7 +44,7 @@ void _ZFP_ZFStyleKeyHolder::styleOnUpdate(
     }
 }
 void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(styleKey == zfnull) {
         if(holder != zfnull) {
@@ -131,7 +131,7 @@ void _ZFP_ZFStyleKeyHolder::stylePropertyOnUpdate(
         ZF_IN const ZFArgs &zfargs
         , ZF_IN ZFStyleable *owner
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFStyleKeyHolder *holder = owner->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(holder != zfnull) {
         zfstlmap<zfstring, zfstring> &m = holder->stylePropertyKeyMap;
@@ -147,7 +147,7 @@ void ZFStyleable::styleKeyForProperty(
     if(propertyName == zfnull) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(styleKey == zfnull) {
         if(holder != zfnull) {
@@ -206,7 +206,7 @@ const zfstring &ZFStyleable::styleKeyForProperty(ZF_IN const zfstring &propertyN
     if(propertyName == zfnull) {
         return zfstring::Empty();
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(holder != zfnull) {
         zfstlmap<zfstring, zfstring>::iterator it = holder->stylePropertyKeyMap.find(propertyName);

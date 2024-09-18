@@ -247,7 +247,7 @@ public:
         // microSecond
         ti.microSecond = (zfuint)(usecTmp % 1000);
 #else
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         time_t t = (time_t)tv.sec;
         struct tm *tm = gmtime(&t);
         if(tm == NULL) {

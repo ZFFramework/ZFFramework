@@ -390,10 +390,10 @@ static void _ZFP_ZFLuaLSPGenFile_spec(
 
         << "---@param v_zfstring\n"
         << "---@return v_ZFOutput\n"
-        << "function zfLog(fmt, ...) end\n"
+        << "function ZFLog(fmt, ...) end\n"
         << "---@param v_zfstring\n"
         << "---@return v_ZFOutput\n"
-        << "function zfLogTrim(fmt, ...) end\n"
+        << "function ZFLogTrim(fmt, ...) end\n"
 
         << "---@return v_zfstring\n"
         << "function zfl_tableInfo(tbl) end\n"

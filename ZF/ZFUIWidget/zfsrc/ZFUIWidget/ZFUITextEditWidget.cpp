@@ -10,12 +10,12 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUITextEditWidget)
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIImageView>, textEditBackgroundView) {
     zfobj<ZFUIImageView> textEditBackgroundView;
     propertyValue = textEditBackgroundView;
-    textEditBackgroundView->image(zfRes("ZFUIWidget/ZFUITextEditWidget_background.xml"));
+    textEditBackgroundView->image(zfres("ZFUIWidget/ZFUITextEditWidget_background.xml"));
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIButtonBasic>, textEditClearButton) {
     zfobj<ZFUIButtonBasic> textEditClearButton;
     propertyValue = textEditClearButton;
-    textEditClearButton->icon()->image(zfRes("ZFUIWidget/ZFUITextEditWidget_clearButton.xml"));
+    textEditClearButton->icon()->image(zfres("ZFUIWidget/ZFUITextEditWidget_clearButton.xml"));
     textEditClearButton->viewSizeMin(ZFUISizeZero());
     textEditClearButton->viewVisible(zffalse);
 }

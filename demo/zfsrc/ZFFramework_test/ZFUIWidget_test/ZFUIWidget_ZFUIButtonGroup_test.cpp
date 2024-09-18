@@ -26,7 +26,7 @@ protected:
         this->prepareSettingButton(window, layout);
 
         ZFLISTENER(buttonGroupAction) {
-            zfLogTrim()
+            ZFLogTrim()
                 << zfargs.sender()
                 << ZFEventNameForId(zfargs.eventId())
                 << ", checked:" << zfargs.param1();

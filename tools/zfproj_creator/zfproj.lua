@@ -15,24 +15,24 @@
 local args = {...}
 
 local function printUsage()
-    zfLogTrim('usage: (as lua functions)')
-    zfLogTrim('  zfproj_init(ZF_TYPE[app/lib/impl], PROJ_NAME, DST_PATH)')
-    zfLogTrim('  zfproj_creator(CONFIG_FILE_PATH [, DST_PATH])')
-    zfLogTrim('  zfproj_recursive(SRC_DIR [, DST_DIR])')
-    zfLogTrim('usage: (as lua cmdline)')
-    zfLogTrim('  ZFLoader zfproj.lua -app/-lib/-impl PROJ_NAME OUTPUT_PATH')
-    zfLogTrim('  ZFLoader zfproj.lua CONFIG_FILE_PATH [ZF_OUTPUT]')
-    zfLogTrim('  ZFLoader zfproj.lua -r SRC_DIR [DST_DIR]')
-    zfLogTrim('the "private" template dir must be in the same dir of zfproj.lua')
+    ZFLogTrim('usage: (as lua functions)')
+    ZFLogTrim('  zfproj_init(ZF_TYPE[app/lib/impl], PROJ_NAME, DST_PATH)')
+    ZFLogTrim('  zfproj_creator(CONFIG_FILE_PATH [, DST_PATH])')
+    ZFLogTrim('  zfproj_recursive(SRC_DIR [, DST_DIR])')
+    ZFLogTrim('usage: (as lua cmdline)')
+    ZFLogTrim('  ZFLoader zfproj.lua -app/-lib/-impl PROJ_NAME OUTPUT_PATH')
+    ZFLogTrim('  ZFLoader zfproj.lua CONFIG_FILE_PATH [ZF_OUTPUT]')
+    ZFLogTrim('  ZFLoader zfproj.lua -r SRC_DIR [DST_DIR]')
+    ZFLogTrim('the "private" template dir must be in the same dir of zfproj.lua')
 end
 
 local ZF_ROOT_PATH = ZFLocalPathInfo()
 if ZF_ROOT_PATH == zfnull then
-    zfLogTrim('unable to obtain local path info')
+    ZFLogTrim('unable to obtain local path info')
     return
 end
 if ZF_ROOT_PATH:pathType() ~= ZFPathType_file() then
-    zfLogTrim('only support from file')
+    ZFLogTrim('only support from file')
     return
 end
 ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
@@ -113,9 +113,9 @@ function zfproj_init(ZF_TYPE, PROJ_NAME, DST_PATH)
     o:output("\n")
     o:callbackClear()
 
-    zfLogTrim('config file created: ' .. CONFIG_FILE_PATH)
-    zfLogTrim('    use zfproj_recursive("' .. DST_PATH .. '", DST_DIR) to create entire project folder structure')
-    zfLogTrim('    or use zfproj_recursive("' .. DST_PATH .. '") to update existing proejct inplace')
+    ZFLogTrim('config file created: ' .. CONFIG_FILE_PATH)
+    ZFLogTrim('    use zfproj_recursive("' .. DST_PATH .. '", DST_DIR) to create entire project folder structure')
+    ZFLogTrim('    or use zfproj_recursive("' .. DST_PATH .. '") to update existing proejct inplace')
 end
 
 function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
@@ -126,7 +126,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
     local configFile = ZFInputForFile(CONFIG_FILE_PATH)
     if not configFile:valid() then
-        zfLogTrim('config file not exist: %s', CONFIG_FILE_PATH)
+        ZFLogTrim('config file not exist: %s', CONFIG_FILE_PATH)
         return false
     end
 
@@ -163,15 +163,15 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         line:removeAll()
     end
 
-    zfLogTrim('============================================================')
-    zfLogTrim('generating project from config: ' .. CONFIG_FILE_PATH)
-    zfLogTrim('============================================================')
+    ZFLogTrim('============================================================')
+    ZFLogTrim('generating project from config: ' .. CONFIG_FILE_PATH)
+    ZFLogTrim('============================================================')
 
     -- parse config to text template params
     local param = ZFTextTemplateParam()
 
     if zfstringIsEmpty(config:get('ZF_NAME')) then
-        zfLogTrim('ZF_NAME not set')
+        ZFLogTrim('ZF_NAME not set')
         return false
     end
     param:replaceDataAdd('proj_name', config:get('ZF_NAME'))
@@ -181,7 +181,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         config:set('ZF_INPLACE_SRC', '')
     else
         if zfstringIsEmpty(config:get('ZF_OUTPUT')) then
-            zfLogTrim('ZF_OUTPUT not set')
+            ZFLogTrim('ZF_OUTPUT not set')
             return false
         end
         DST_PATH = ZFPathParentOf(CONFIG_FILE_PATH) .. '/' .. config:get('ZF_OUTPUT')
@@ -194,7 +194,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     elseif zfstringIsEqual(config:get('ZF_TYPE'), 'impl') then
         param:enableDataAdd('impl_proj', zftrue)
     else
-        zfLogTrim('ZF_TYPE not set')
+        ZFLogTrim('ZF_TYPE not set')
         return false
     end
 
@@ -294,7 +294,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
                 else
                     value = c
                 end
-                zfLogTrim('    ZFTT_C_' .. ZF_TYPE .. '_require_' .. i .. ' = %s', value)
+                ZFLogTrim('    ZFTT_C_' .. ZF_TYPE .. '_require_' .. i .. ' = %s', value)
             end
         end
         local function printEnableData(key)
@@ -305,7 +305,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             else
                 value = '0'
             end
-            zfLogTrim('    ZFTT_C_%s = %s', key, value)
+            ZFLogTrim('    ZFTT_C_%s = %s', key, value)
         end
         local function printReplaceData(key)
             local c = param:replaceData(key)
@@ -315,9 +315,9 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             else
                 value = c
             end
-            zfLogTrim('    ZFTT_R_%s = %s', key, value)
+            ZFLogTrim('    ZFTT_R_%s = %s', key, value)
         end
-        zfLogTrim('config:')
+        ZFLogTrim('config:')
         printEnableData('app_proj')
         printEnableData('lib_proj')
         printEnableData('impl_proj')
@@ -332,7 +332,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
 
     -- tmp dir
-    zfLogTrim('copying files...')
+    ZFLogTrim('copying files...')
     local _TMP_DIR = ZF_ROOT_PATH .. '/_tmp/_zfproj_tmp_' .. config:get('ZF_NAME')
     ZFFileRemove(_TMP_DIR)
     local _TMP_DIR_SRC = nil
@@ -396,12 +396,12 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
 
     -- xUnique if necessary
     if not zfstringIsEmpty(_PY) then
-        zfLogTrim('unique iOS project...')
+        ZFLogTrim('unique iOS project...')
         os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj_recursive.sh" "' .. _TMP_DIR .. '"')
     end
 
     -- finally sync to dst
-    zfLogTrim('sync to target')
+    ZFLogTrim('sync to target')
     local _TMP_DIR_FORMATED = zfstring()
     ZFPathFormat(_TMP_DIR_FORMATED, _TMP_DIR .. '/' .. config:get('ZF_INPLACE_SRC'))
     ZFPathInfoForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_FORMATED), function(zfargs)

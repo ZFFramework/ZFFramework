@@ -16,7 +16,7 @@ protected:
         {
             zfobj<ZFUdp> server;
             ZFLISTENER(serverOnDealloc) {
-                zfLogTrim() << "server dealloc";
+                ZFLogTrim() << "server dealloc";
             } ZFLISTENER_END()
             server->observerAdd(ZFObject::EventObjectBeforeDealloc(), serverOnDealloc);
 
@@ -34,7 +34,7 @@ protected:
                 while(server->valid()) {
                     zfindex recvSize = server->recv(recvAddr, buf, 4096);
                     if(recvSize > 0) {
-                        zfLog() << "server recv: " << buf.text();
+                        ZFLog() << "server recv: " << buf.text();
                         server->send(recvAddr, "server reply");
                         break;
                     }
@@ -47,7 +47,7 @@ protected:
         {
             zfobj<ZFUdp> client;
             ZFLISTENER(clientOnDealloc) {
-                zfLogTrim() << "client dealloc";
+                ZFLogTrim() << "client dealloc";
             } ZFLISTENER_END()
             client->observerAdd(ZFObject::EventObjectBeforeDealloc(), clientOnDealloc);
 
@@ -66,7 +66,7 @@ protected:
                 while(client->valid()) {
                     zfindex recvSize = client->recv(hostAddr, buf);
                     if(recvSize > 0) {
-                        zfLog() << "client recv: " << buf.text();
+                        ZFLog() << "client recv: " << buf.text();
 
                         testCase->testCaseStop();
                         break;

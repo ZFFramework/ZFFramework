@@ -6,14 +6,14 @@
  *   zfclass ExistClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(ExistClass, ZFObject, ZFCore_ZFImplementDynamicRegister_test)
  *       ZFMETHOD_INLINE_0(void, funcInExistClass) {
- *           zfLogTrim("funcInExistClass: %s, cast to AttachClass: %s", this, zfcast(AttachClass *, this));
+ *           ZFLogTrim("funcInExistClass: %s, cast to AttachClass: %s", this, zfcast(AttachClass *, this));
  *       }
  *   };
  *
  *   zfclass AttachClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(AttachClass, ZFObject, ZFCore_ZFImplementDynamicRegister_test)
  *       ZFMETHOD_INLINE_0(void, funcInAttachClass) {
- *           zfLogTrim("funcInAttachClass: %s, cast to ExistClass: %s", this, zfcast(ExistClass *, this));
+ *           ZFLogTrim("funcInAttachClass: %s, cast to ExistClass: %s", this, zfcast(ExistClass *, this));
  *       }
  *   };
  *

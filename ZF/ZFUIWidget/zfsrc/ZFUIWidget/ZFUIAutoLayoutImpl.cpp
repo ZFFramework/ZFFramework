@@ -168,7 +168,7 @@ void ZFUIAutoLayout::viewChildOnAdd(
     zfsuper::viewChildOnAdd(child, layer);
     if(layer == ZFUIViewChildLayer::e_Normal) {
         ZFUIAutoLayoutParam *layoutParam = child->layoutParam();
-        zfCoreAssertWithMessageTrim(
+        ZFCoreAssertWithMessageTrim(
             layoutParam->_ZFP_AL_d.ownerParent == zfnull,
             "[ZFUIAutoLayout] layout param %s already attached to %s",
             child->layoutParam(),
@@ -248,7 +248,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
         ) {
     zfbool *&_layouting = (xAxis ? _layoutingX : _layoutingY);
     zfbool *&_layoutFinish = (xAxis ? _layoutFinishX : _layoutFinishY);
-    zfCoreAssertWithMessageTrim(!_layouting[childIndex],
+    ZFCoreAssertWithMessageTrim(!_layouting[childIndex],
         "[ZFUIAutoLayout] recursive rule detected, first on: %s, at index: %s",
         parent->childAt(childIndex)->objectInfoOfInstance(),
         childIndex);
@@ -300,7 +300,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
 
     zfbool *&_layouting = xAxis ? _layoutingWidth : _layoutingHeight;
     zfbool *&_layoutFinish = xAxis ? _layoutFinishWidth : _layoutFinishHeight;
-    zfCoreAssertWithMessageTrim(!_layouting[childIndex],
+    ZFCoreAssertWithMessageTrim(!_layouting[childIndex],
         "[ZFUIAutoLayout] recursive rule detected, first on: %s, at index: %s",
         parent->childAt(childIndex)->objectInfoOfInstance(),
         childIndex);

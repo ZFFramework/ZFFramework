@@ -19,7 +19,7 @@ protected:
         ZFLISTENER_1(hintOnHide
                 , ZFTestCase *, testCase
                 ) {
-            zfLog();
+            ZFLog();
             testCase->testCaseStop();
         } ZFLISTENER_END()
 #else

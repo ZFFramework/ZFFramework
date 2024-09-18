@@ -17,7 +17,7 @@ ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFLogStackTrace)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
     /**
-     * @see #zfLogStackTrace
+     * @see #ZFLogStackTrace
      */
     virtual void stackTrace(
             ZF_IN_OUT zfstring &ret
@@ -27,7 +27,7 @@ public:
             ) zfpurevirtual;
 
     /**
-     * @see #zfLogCallerInfo
+     * @see #ZFLogCallerInfo
      */
     virtual void callerInfo(
             ZF_IN_OUT zfstring &ret

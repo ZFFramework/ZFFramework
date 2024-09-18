@@ -35,7 +35,7 @@ zfautoT<ZFTimer> gcTask;
 zfstlmap<void *, zfbool> m;
 ZFListener luaStateOnDetachListener;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
     m.erase(const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv));
 }
@@ -44,18 +44,18 @@ ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFArgs &zfargs) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
     zfstlmap<void *, zfbool> &m = d->m;
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     d->gcTask = zfnull;
     while(!m.empty()) {
         zfstlmap<void *, zfbool>::iterator it = m.begin();
         void *L = it->first;
         m.erase(it);
 
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         ZFLuaGCImmediately(L);
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
         , ZFMP_IN_OPT(void *, L, zfnull)
@@ -68,7 +68,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
         return;
     }
 
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
     zfstlmap<void *, zfbool> &m = d->m;
     if(m.find(L) == m.end()) {

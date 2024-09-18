@@ -329,7 +329,7 @@ public:
                     case ZFFilterCallbackResultNotActive:
                         return zffalse;
                     default:
-                        zfCoreCriticalShouldNotGoHere();
+                        ZFCoreCriticalShouldNotGoHere();
                         break;
                 }
             }
@@ -351,7 +351,7 @@ private:
                 ret += "exclude ";
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
         zfsFromPointerT(ret, &(v.element));
@@ -429,7 +429,7 @@ protected:
                     }
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     return zffalse;
             }
         }

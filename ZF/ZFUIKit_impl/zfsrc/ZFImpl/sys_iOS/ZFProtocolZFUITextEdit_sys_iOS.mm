@@ -153,7 +153,7 @@ public:
                 nativeImplView.keyboardType = UIKeyboardTypeNumberPad;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }
@@ -182,7 +182,7 @@ public:
                 nativeImplView.returnKeyType = UIReturnKeySend;
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }
@@ -239,7 +239,7 @@ public:
                 nativeImplView.fontName = @"Helvetica-BoldOblique";
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return;
         }
     }

@@ -225,7 +225,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
                 s += ZFTOKEN_ZFCompareGreater;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -284,7 +284,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
                 s += ZFTOKEN_ZFSeekPosEnd;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -299,7 +299,7 @@ ZFEXPORT_ENUM_DEFINE(ZFSeekPos
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
         v = ZFIndexRangeZero();
         ZFCoreArray<zfindex> pair;
-        if(!zfCoreDataPairSplitInt(pair, 2, src, srcLen)) {
+        if(!ZFCoreDataPairSplitInt(pair, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }
@@ -700,7 +700,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
                 s += ZFTOKEN_ZFFilterTypeExclude;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -746,7 +746,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
                 s += ZFTOKEN_ZFFilterCallbackResultNotActive;
                 return zftrue;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
@@ -973,8 +973,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, tokenValueRight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, tokenEtc)
 
-ZFMETHOD_FUNC_USER_REGISTER_0({zfCoreMutexLock();}, void, zfCoreMutexLock)
-ZFMETHOD_FUNC_USER_REGISTER_0({zfCoreMutexUnlock();}, void, zfCoreMutexUnlock)
+ZFMETHOD_FUNC_USER_REGISTER_0({ZFCoreMutexLock();}, void, ZFCoreMutexLock)
+ZFMETHOD_FUNC_USER_REGISTER_0({ZFCoreMutexUnlock();}, void, ZFCoreMutexUnlock)
 
 ZF_NAMESPACE_GLOBAL_END
 

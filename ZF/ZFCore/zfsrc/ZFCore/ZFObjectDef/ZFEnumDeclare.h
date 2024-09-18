@@ -271,7 +271,7 @@ public:
             return d.d; \
         } \
         static const _ZFP_ZFEnumData *_ZFP_ZFEnumDataInit(void) { \
-            zfCoreMutexLocker(); \
+            ZFCoreMutexLocker(); \
             _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataAccess(zfself::ClassData()); \
             if(d->needInitFlag) { \
                 d->needInitFlag = zffalse; \

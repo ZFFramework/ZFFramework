@@ -115,7 +115,7 @@ zfstring _ZFP_ZFNamespaceRegister(
     if(child == zfnull) {
         return "";
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstring ns;
     parent = ZFNamespaceSkipGlobal(parent);
     if(parent != zfnull) {
@@ -146,7 +146,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
     if(ns == zfnull) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstring nsTmp = ns;
     ZFCoreArray<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, nsTmp, nsTmp.length());
@@ -174,7 +174,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
 }
 
 void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
     toCheck.add(&_ZFP_ZFNamespaceMap());
     do {
@@ -193,7 +193,7 @@ void ZFNamespaceGetAllT(
         , ZF_IN const zfchar *parent
         , ZF_IN_OPT zfbool recursive /* = zffalse */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     parent = ZFNamespaceSkipGlobal(parent);
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
     if(parent != zfnull) {

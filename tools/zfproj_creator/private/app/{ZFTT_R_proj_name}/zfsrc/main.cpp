@@ -18,6 +18,6 @@ static void myTestCode(void) {
     textView->text("hello world\n\nhello ZFFramework");
     textView->textSingleLine(zffalse);
 
-    zfLogTrim() << "welcome to ZFFramework";
+    ZFLogTrim() << "welcome to ZFFramework";
 }
 

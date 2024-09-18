@@ -95,7 +95,7 @@ public:
             LeaveCriticalSection(&(mutex->mutexParamLocker));
 
             // current thread doesn't lock, it's a error state
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
         }
     }

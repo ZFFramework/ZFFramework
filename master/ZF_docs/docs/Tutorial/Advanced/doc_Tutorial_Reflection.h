@@ -20,7 +20,7 @@
  *   MyObject *myObj = obj;
  *
  *   // also, you may access class's info by ZFClass's method
- *   zfLog() << "class name: " << cls->className();
+ *   ZFLog() << "class name: " << cls->className();
  * @endcode
  *
  * @section DocTag_Tutorial_Reflection_Method Reflect method

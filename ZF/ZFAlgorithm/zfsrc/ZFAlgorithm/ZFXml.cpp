@@ -129,9 +129,9 @@ public:
 };
 
 #define _ZFP_ZFXmlAssertCanHaveAttribute(item) \
-    zfCoreAssert((item).type() == ZFXmlType::e_XmlElement || (item).type() == ZFXmlType::e_XmlDeclaration)
+    ZFCoreAssert((item).type() == ZFXmlType::e_XmlElement || (item).type() == ZFXmlType::e_XmlDeclaration)
 #define _ZFP_ZFXmlAssertCanHaveChild(item) \
-    zfCoreAssert((item).type() == ZFXmlType::e_XmlElement || (item).type() == ZFXmlType::e_XmlDocument)
+    ZFCoreAssert((item).type() == ZFXmlType::e_XmlElement || (item).type() == ZFXmlType::e_XmlDocument)
 
 // ============================================================
 // ZFXml
@@ -395,7 +395,7 @@ ZFXml &ZFXml::childAdd(
     switch(item.type()) {
         case ZFXmlType::e_XmlNull:
         case ZFXmlType::e_XmlDocument:
-            zfCoreCriticalMessage("%s can not be added to %s"
+            ZFCoreCriticalMessage("%s can not be added to %s"
                     , item.type()
                     , this->type()
                 );
@@ -404,7 +404,7 @@ ZFXml &ZFXml::childAdd(
         case ZFXmlType::e_XmlDocType:
         case ZFXmlType::e_XmlPI:
             if(this->type() != ZFXmlType::e_XmlDocument) {
-                zfCoreCriticalMessage("%s can not be added to %s"
+                ZFCoreCriticalMessage("%s can not be added to %s"
                         , item.type()
                         , this->type()
                     );
@@ -417,10 +417,10 @@ ZFXml &ZFXml::childAdd(
         index = this->childCount();
     }
     else if(index > (zfindex)d->childList.size()) {
-        zfCoreCriticalIndexOutOfRange(index, (zfindex)d->childList.size());
+        ZFCoreCriticalIndexOutOfRange(index, (zfindex)d->childList.size());
         return *this;
     }
-    zfCoreAssertWithMessage(item, "add null object");
+    ZFCoreAssertWithMessage(item, "add null object");
     d->childList.insert(d->childList.begin() + index, item);
     return *this;
 }
@@ -469,7 +469,7 @@ ZFXml ZFXml::childElementAt(ZF_IN zfindex index) const {
 
 // ============================================================
 void ZFXml::CDATA(ZF_IN zfbool CDATA) {
-    zfCoreAssert(this->type() == ZFXmlType::e_XmlText);
+    ZFCoreAssert(this->type() == ZFXmlType::e_XmlText);
     d->CDATA = CDATA;
 }
 zfbool ZFXml::CDATA(void) const {
@@ -935,7 +935,7 @@ static void _ZFP_ZFXmlToOutput(
         ) {
     switch(xmlItem.type()) {
         case ZFXmlType::e_XmlNull:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
         case ZFXmlType::e_XmlElement:
             _ZFP_ZFXmlToOutput_XmlElement(output, xmlParent, xmlItem, token, depth, siblingIndex);
@@ -961,7 +961,7 @@ static void _ZFP_ZFXmlToOutput(
             _ZFP_ZFXmlToOutput_XmlPI(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             break;
     }
 }

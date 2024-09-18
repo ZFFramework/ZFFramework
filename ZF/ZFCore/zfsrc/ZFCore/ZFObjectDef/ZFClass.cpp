@@ -361,7 +361,7 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
             ) {
         return;
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(!cls->d->methodAndPropertyCacheNeedUpdate) {
         return;
     }
@@ -504,7 +504,7 @@ void ZFClass::instanceObserverAdd(
     d->instanceObserverDoAdd(data, observeAllChildType);
 }
 void ZFClass::instanceObserverRemove(ZF_IN const ZFListener &observer) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     for(zfstlsize i = 0; i < d->instanceObserver.size(); ++i) {
         _ZFP_ZFClassPrivate::InstanceObserverData *data = d->instanceObserver[i];
         if(data->observer == observer) {
@@ -515,7 +515,7 @@ void ZFClass::instanceObserverRemove(ZF_IN const ZFListener &observer) const {
     }
 }
 void ZFClass::instanceObserverRemoveByOwner(ZF_IN ZFObject *owner) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     for(zfstlsize i = 0; i < d->instanceObserver.size(); ++i) {
         _ZFP_ZFClassPrivate::InstanceObserverData *data = d->instanceObserver[i];
         if(data->owner == owner) {
@@ -526,7 +526,7 @@ void ZFClass::instanceObserverRemoveByOwner(ZF_IN ZFObject *owner) const {
     }
 }
 void ZFClass::instanceObserverRemoveAll(void) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     while(!d->instanceObserver.empty()) {
         _ZFP_ZFClassPrivate::InstanceObserverData *data = d->instanceObserver[0];
         d->instanceObserverDoRemove(data);
@@ -644,7 +644,7 @@ zfany ZFClass::classDynamicRegisterUserData(void) const {
 }
 
 zfauto ZFClass::newInstance(void) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFObject *obj = zfnull;
     if(d->objectAllocWithCacheCallback) {
         obj = d->objectAllocWithCacheCallback();
@@ -662,7 +662,7 @@ zfauto ZFClass::newInstance(void) const {
     return ret;
 }
 zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFObject *obj = zfnull;
     if(d->objectAllocWithCacheCallback) {
         obj = d->objectAllocWithCacheCallback();
@@ -692,7 +692,7 @@ zfauto ZFClass::newInstance(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) const {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = ZFMETHOD_MAX_PARAM;
     do {
@@ -705,7 +705,7 @@ zfauto ZFClass::newInstance(
         if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(ZFDI_alloc(ret, zfnull, this, paramCount, paramList, zftrue)) {
         return ret;
@@ -719,7 +719,7 @@ zfauto ZFClass::newInstanceDetail(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) const {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
     for(zfindex i = 0; i < paramCount; ++i) {
@@ -728,7 +728,7 @@ zfauto ZFClass::newInstanceDetail(
     for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
         paramList[i].zfunsafe_assign(ZFMP_DEF());
     }
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     zfauto ret;
     if(ZFDI_alloc(ret, errorHint, this, paramCount, paramList, zftrue)) {
         if(success != zfnull) {*success = zftrue;}
@@ -741,7 +741,7 @@ zfauto ZFClass::newInstanceDetail(
 }
 
 void *ZFClass::newInstanceGenericBegin(void) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     return d->objectConstruct();
 }
 zfbool ZFClass::newInstanceGenericCheck(
@@ -760,7 +760,7 @@ zfbool ZFClass::newInstanceGenericCheck(
     zfauto methodRetDummy;
     zfbool ret = objectOnInitMethod->methodGenericInvoker()(methodRetDummy, errorHint, obj, objectOnInitMethod, paramCount, paramList);
     if(!ret && obj->d) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         // since objectOnInit already called,
         // we must ensure init and destroy the object,
         // then recreate the token
@@ -769,7 +769,7 @@ zfbool ZFClass::newInstanceGenericCheck(
         token = d->objectConstruct();
     }
     else if(ret && obj->d && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         ret = zffalse;
         if(errorHint != zfnull) {
             v_zfstring *error = obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed);
@@ -830,7 +830,7 @@ zfindex ZFClass::methodCount(void) const {
 const ZFMethod *ZFClass::methodAt(ZF_IN zfindex index) const {
     _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
     if(index >= d->methodList.count()) {
-        zfCoreCriticalIndexOutOfRange(index, this->methodCount());
+        ZFCoreCriticalIndexOutOfRange(index, this->methodCount());
         return zfnull;
     }
     return d->methodList[index];
@@ -984,7 +984,7 @@ zfindex ZFClass::propertyCount(void) const {
 const ZFProperty *ZFClass::propertyAt(ZF_IN zfindex index) const {
     _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
     if(index >= d->propertyList.count()) {
-        zfCoreCriticalIndexOutOfRange(index, this->propertyCount());
+        ZFCoreCriticalIndexOutOfRange(index, this->propertyCount());
         return zfnull;
     }
     return d->propertyList.get(index);
@@ -1107,7 +1107,7 @@ void ZFClass::classTag(
         // must not store any new tags during cleanup
         abort();
     }
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFClassTagMapType &m = d->classTagMap;
     _ZFP_ZFClassTagMapType::iterator it = m.find(key);
     if(it == m.end()) {
@@ -1128,7 +1128,7 @@ void ZFClass::classTag(
 }
 zfany ZFClass::classTag(ZF_IN const zfstring &key) const {
     if(key != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFClassTagMapType::iterator it = d->classTagMap.find(key);
         if(it != d->classTagMap.end()) {
             return it->second;
@@ -1150,7 +1150,7 @@ void ZFClass::classTagGetAllKeyValue(
 }
 zfauto ZFClass::classTagRemoveAndGet(ZF_IN const zfstring &key) const {
     if(key != zfnull) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFClassTagMapType &m = d->classTagMap;
         _ZFP_ZFClassTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
@@ -1218,7 +1218,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN ZFObject *classDynamicRegisterUserData
         ) {
     _ZFP_ZFClass_invokeTimeLogger("reg: %s", className.cString());
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     const zfchar *classNamespaceTmp = classNamespace;
     if(outer != zfnull) {
         classNamespaceTmp = outer->classNameFull();
@@ -1250,7 +1250,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     if(d != zfnull) {
         cls = d->pointerValueT<ZFClass *>();
         if(cls->classIsInterface() != classIsInterface || cls->classParent() != parent) {
-            zfCoreCriticalMessageTrim("[ZFClass] register a class that already registered: %s", classNameTmp);
+            ZFCoreCriticalMessageTrim("[ZFClass] register a class that already registered: %s", classNameTmp);
             return zfnull;
         }
         ++(cls->d->refCount);
@@ -1327,7 +1327,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
 }
 void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
     _ZFP_ZFClass_invokeTimeLogger("unreg: %s", cls->className().cString());
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     if(cls->classIsDynamicRegister()) {
         // remove all dynamic registered class info,
@@ -1340,7 +1340,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
 
     zfiter itClass = _ZFP_ZFClassMap.iterFind(cls->classNameFull());
     if(!itClass) {
-        zfCoreCriticalShouldNotGoHere();
+        ZFCoreCriticalShouldNotGoHere();
         return;
     }
 
@@ -1379,7 +1379,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
 }
 
 void ZFClass::_ZFP_ZFClass_autoRegister(void) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(d->needAutoRegister) {
         d->needAutoRegister = zffalse;
 
@@ -1459,15 +1459,15 @@ ZFObject *ZFClass::_ZFP_ZFClass_objectCast(
 
 zfbool ZFClass::_ZFP_ZFClass_ZFImplementDynamicRegister(ZF_IN const ZFClass *clsToImplement) const {
     if(this->classIsTypeOf(clsToImplement)) {
-        zfCoreLogTrim("[ZFImplementDynamicRegister] cls %s already type of %s", this, clsToImplement);
+        ZFCoreLogTrim("[ZFImplementDynamicRegister] cls %s already type of %s", this, clsToImplement);
         return zffalse;
     }
     if(this->classIsAbstract()) {
-        zfCoreLogTrim("[ZFImplementDynamicRegister] cls must not abstract: %s", this);
+        ZFCoreLogTrim("[ZFImplementDynamicRegister] cls must not abstract: %s", this);
         return zffalse;
     }
     if(clsToImplement->classIsAbstract()) {
-        zfCoreLogTrim("[ZFImplementDynamicRegister] clsToImplement must not abstract: %s", clsToImplement);
+        ZFCoreLogTrim("[ZFImplementDynamicRegister] clsToImplement must not abstract: %s", clsToImplement);
         return zffalse;
     }
     d->ZFImplementDynamicList.add(clsToImplement);
@@ -1659,7 +1659,7 @@ void ZFClassGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret
         , ZF_IN_OPT const ZFFilterForZFClass *classFilter /* = zfnull */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(classFilter == zfnull) {
         _ZFP_ZFClassMap.allValueT(ret);
     }
@@ -1724,7 +1724,7 @@ void ZFClassAlias(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfstring &aliasName
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
 
     if(cls == zfnull || zfstringIsEmpty(aliasName)
         || cls->classAliasTo().find(aliasName) != zfindexMax()
@@ -1746,7 +1746,7 @@ void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfstring &aliasName
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     if(cls == zfnull || zfstringIsEmpty(aliasName)) {
         return;
     }

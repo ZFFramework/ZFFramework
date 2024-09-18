@@ -27,12 +27,12 @@ public:
     /**
      * @brief horizontal scroll thumb image, null to hide it
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, scrollThumbImageHorizontal, zfRes("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, scrollThumbImageHorizontal, zfres("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
     ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, scrollThumbImageHorizontal)
     /**
      * @brief vertical scroll thumb image, null to hide it
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, scrollThumbImageVertical, zfRes("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, scrollThumbImageVertical, zfres("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
     ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, scrollThumbImageVertical)
 
     /**

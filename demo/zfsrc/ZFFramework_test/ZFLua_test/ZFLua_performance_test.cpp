@@ -48,7 +48,7 @@ static int _ZFP_ZFLua_performance_test_begin(lua_State *L) {
 }
 static int _ZFP_ZFLua_performance_test_end(lua_State *L) {
     ZFCoreStatistic::invokeTimeLogEnd("ZFLua_performance_test");
-    zfLogTrim() << "[ZFLua_performance_test]" << lua_tostring(L, 1)
+    ZFLogTrim() << "[ZFLua_performance_test]" << lua_tostring(L, 1)
         << ZFTimeValueToStringFriendly(ZFCoreStatistic::invokeTimeGetTotalTime("ZFLua_performance_test"));
     ZFCoreStatistic::invokeTimeRemove("ZFLua_performance_test");
     return 0;

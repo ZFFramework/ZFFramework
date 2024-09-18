@@ -248,7 +248,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                 if(_d.implConstructor != zfnull) { \
                     if(_d.implLevel == implLevel) { \
-                        zfCoreCriticalMessageTrim("only one implementation is allowed for protocol \"%s\", while we have: \"%s\", \"%s\"", \
+                        ZFCoreCriticalMessageTrim("only one implementation is allowed for protocol \"%s\", while we have: \"%s\", \"%s\"", \
                             #ModuleName, \
                             _d.implName, \
                             implName); \
@@ -256,14 +256,14 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     } \
                     else if(_d.implLevel > implLevel) { \
                         /* \
-                        zfCoreLogTrim("ignore implementation \"%s\" while having \"%s\" for protocol \"%s\"", \
+                        ZFCoreLogTrim("ignore implementation \"%s\" while having \"%s\" for protocol \"%s\"", \
                             implName, _d.implName, #ModuleName); \
                          */ \
                         return; \
                     } \
                     else { \
                         /* \
-                        zfCoreLogTrim("reset implementation for protocol \"%s\", old: \"%s\", new: \"%s\"", \
+                        ZFCoreLogTrim("reset implementation for protocol \"%s\", old: \"%s\", new: \"%s\"", \
                             #ModuleName, _d.implName, implName); \
                          */ \
                     } \
@@ -328,7 +328,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                     _d.implInstance = zfself::_ZFP_ZFProtocolNewInstance(); \
                     if(_d.implInstance == zfnull) { \
-                        zfCoreCriticalMessageTrim("no implementation for protocol \"%s\"", \
+                        ZFCoreCriticalMessageTrim("no implementation for protocol \"%s\"", \
                             #ModuleName); \
                         return zfnull; \
                     } \
@@ -336,7 +336,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     const zfchar *mismatchProtocolName = zfnull; \
                     ZFProtocol *mismatchImpl = zfnull; \
                     if(!_d.implInstance->_ZFP_ZFProtocol_checkImplDependency(desiredImplPlatformHint, mismatchProtocolName, mismatchImpl)) { \
-                        zfCoreCriticalErrorPrepare(); \
+                        ZFCoreCriticalErrorPrepare(); \
                         zfstring err; \
                         zfstringAppend(err, "(%s)%s depends on (%s)\"%s\"", \
                             _d.implInstance->protocolName(), \
@@ -350,8 +350,8 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                             zfstringAppend(err, " but it's implementation \"%s\" mismatch", \
                                 mismatchImpl->protocolImplPlatformHint()); \
                         } \
-                        zfCoreLogTrim(err); \
-                        zfCoreCriticalError(); \
+                        ZFCoreLogTrim(err); \
+                        ZFCoreCriticalError(); \
                         zfdelete(_d.implInstance); \
                         _d.implInstance = zfnull; \
                         return zfnull; \

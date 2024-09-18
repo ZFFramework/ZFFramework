@@ -115,7 +115,7 @@ template<typename T_Type>
 zfclassNotPOD _ZFP_MP_Obj {
 public:
     static void *pNew(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         return _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pNew();
     }
     static void pDel(ZF_IN T_Type *obj) {
@@ -126,9 +126,9 @@ public:
 template<typename T_Type>
 inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
     if(obj) {
-        zfCoreMutexLock();
+        ZFCoreMutexLock();
         _ZFP_MP_Obj<T_Type>::pDel(obj);
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
     }
 }
 
@@ -156,7 +156,7 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
         static zfbool reg(const char *name) {
             static zfbool flag = zffalse;
             if(!flag) {
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 if(!flag) {
                     flag = zftrue;
                     _ZFP_MP_State *&d = _ZFP_MP_State::d();
@@ -173,7 +173,7 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
         }
         static T_Type *a(T_Type *obj) {
             if(obj) {
-                zfCoreMutexLocker();
+                ZFCoreMutexLocker();
                 Item *&p_ = p();
                 Item *&pEnd_ = pEnd();
                 Item *&cEnd_ = cEnd();
@@ -228,10 +228,10 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
     template<typename T_Type>
     inline void _ZFP_MP_ObjDebugDelete(ZF_IN T_Type *obj) {
         if(obj) {
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             _ZFP_MP_ObjDebug<T_Type>::d(obj);
             _ZFP_MP_Obj<T_Type>::pDel(obj);
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
         }
     }
 

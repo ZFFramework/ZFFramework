@@ -13,67 +13,67 @@ protected:
         ZFFramework_test_protocolCheck(ZFThread);
         ZFFramework_test_asyncTestCheck();
 
-        zfLogTrim("============================================================");
-        zfLogTrim("ZFThread");
+        ZFLogTrim("============================================================");
+        ZFLogTrim("ZFThread");
         zfautoT<ZFThread> thread;
 
 #if 1
-        zfLogTrim("execute main and thread without lock (async):");
+        ZFLogTrim("execute main and thread without lock (async):");
         ZFLISTENER(asyncFunc) {
-            zfLogTrim("async thread begin");
+            ZFLogTrim("async thread begin");
             for(zfindex i = 0; i < 5; ++i) {
                 for(zfindex j = 0; j < 10; ++j) {
-                    zfLogTrim("  async thread: %s %s", i, j);
+                    ZFLogTrim("  async thread: %s %s", i, j);
                     ZFThread::sleep((zftimet)20);
                 }
                 ZFThread::sleep((zftimet)300);
             }
-            zfLogTrim("async thread end");
+            ZFLogTrim("async thread end");
         } ZFLISTENER_END()
         thread = zfobj<ZFThread>(asyncFunc);
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i) {
             for(zfindex j = 0; j < 10; ++j) {
-                zfLogTrim("  main: %s %s", i, j);
+                ZFLogTrim("  main: %s %s", i, j);
                 ZFThread::sleep((zftimet)20);
             }
             ZFThread::sleep((zftimet)190);
         }
-        zfLogTrim("main thread wait async thread begin");
+        ZFLogTrim("main thread wait async thread begin");
         thread->threadWait();
-        zfLogTrim("main thread wait async thread complete");
+        ZFLogTrim("main thread wait async thread complete");
 #endif
 
 #if 1
-        zfLogTrim("============================================================");
-        zfLogTrim("execute main and thread with lock (sync):");
+        ZFLogTrim("============================================================");
+        ZFLogTrim("execute main and thread with lock (sync):");
         ZFLISTENER(syncFunc) {
-            zfLogTrim("sync thread begin");
+            ZFLogTrim("sync thread begin");
             for(zfindex i = 0; i < 5; ++i) {
-                zfCoreMutexLock();
+                ZFCoreMutexLock();
                 for(zfindex j = 0; j < 10; ++j) {
-                    zfLogTrim("  sync thread: %s %s", i, j);
+                    ZFLogTrim("  sync thread: %s %s", i, j);
                     ZFThread::sleep((zftimet)20);
                 }
-                zfCoreMutexUnlock();
+                ZFCoreMutexUnlock();
                 ZFThread::sleep((zftimet)200);
             }
-            zfLogTrim("sync thread end");
+            ZFLogTrim("sync thread end");
         } ZFLISTENER_END()
         thread = zfobj<ZFThread>(syncFunc);
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i) {
-            zfCoreMutexLock();
+            ZFCoreMutexLock();
             for(zfindex j = 0; j < 10; ++j) {
-                zfLogTrim("  main:   %s %s", i, j);
+                ZFLogTrim("  main:   %s %s", i, j);
                 ZFThread::sleep((zftimet)20);
             }
-            zfCoreMutexUnlock();
+            ZFCoreMutexUnlock();
             ZFThread::sleep((zftimet)190);
         }
-        zfLogTrim("main thread wait sync thread begin");
+        ZFLogTrim("main thread wait sync thread begin");
         thread->threadWait();
-        zfLogTrim("main thread wait sync thread complete");
+        ZFLogTrim("main thread wait sync thread complete");
 #endif
 
         this->testCaseStop();

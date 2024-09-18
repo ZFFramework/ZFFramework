@@ -17,10 +17,10 @@ _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(
 , callerInfo(callerInfo)
 {
     if(obj == zfnull) {
-        zfCoreCriticalErrorPrepare();
+        ZFCoreCriticalErrorPrepare();
         _ZFP_zfsynchronizeLog(callerInfo,
             "try synchronize a null object");
-        zfCoreCriticalError();
+        ZFCoreCriticalError();
         return;
     }
     _ZFP_zfsynchronizeLog(callerInfo,
@@ -47,10 +47,10 @@ void _ZFP_zfsynchronizeLockWithLog(
         , ZF_IN const ZFCallerInfo &callerInfo
         ) {
     if(obj == zfnull) {
-        zfCoreCriticalErrorPrepare();
+        ZFCoreCriticalErrorPrepare();
         _ZFP_zfsynchronizeLog(callerInfo,
             "try lock a null object");
-        zfCoreCriticalError();
+        ZFCoreCriticalError();
         return;
     }
 
@@ -68,10 +68,10 @@ void _ZFP_zfsynchronizeUnlockWithLog(
         , ZF_IN const ZFCallerInfo &callerInfo
         ) {
     if(obj == zfnull) {
-        zfCoreCriticalErrorPrepare();
+        ZFCoreCriticalErrorPrepare();
         _ZFP_zfsynchronizeLog(callerInfo,
             "try unlock a null object");
-        zfCoreCriticalError();
+        ZFCoreCriticalError();
         return;
     }
 

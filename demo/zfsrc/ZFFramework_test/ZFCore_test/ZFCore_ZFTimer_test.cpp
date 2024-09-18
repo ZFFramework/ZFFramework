@@ -23,7 +23,7 @@ protected:
                 , ZFTestCase *, owner
                 ) {
             ZFTimer *timer = zfargs.sender();
-            zfLogTrim("timer event, current thread: %s", ZFThread::currentThread());
+            ZFLogTrim("timer event, current thread: %s", ZFThread::currentThread());
             if(timer->timerActivatedCount() >= 3) {
                 timer->timerStop();
 

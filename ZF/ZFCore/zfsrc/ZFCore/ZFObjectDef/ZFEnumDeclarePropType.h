@@ -43,22 +43,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN zfuint const &v \
                 ) { \
-            zfCoreMutexLock(); \
+            ZFCoreMutexLock(); \
             EnumName *t = zfunsafe_zfAlloc(EnumName, v); \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
-            zfCoreMutexUnlock(); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
                 , ZF_IN EnumName##Enum const &v \
                 ) { \
-            zfCoreMutexLock(); \
+            ZFCoreMutexLock(); \
             EnumName *t = zfunsafe_zfAlloc(EnumName, v); \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
-            zfCoreMutexUnlock(); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         template<typename T_Access = EnumName##Enum \
@@ -214,12 +214,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN zfuint const &v \
                 ) { \
-            zfCoreMutexLock(); \
+            ZFCoreMutexLock(); \
             v_##EnumFlagsName *t = zfunsafe_zfAlloc(v_##EnumFlagsName); \
             t->zfv = v; \
             obj = t; \
             zfunsafe_zfRelease(t); \
-            zfCoreMutexUnlock(); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         static zfbool ValueStore( \

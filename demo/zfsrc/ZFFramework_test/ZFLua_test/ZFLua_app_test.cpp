@@ -16,7 +16,7 @@ protected:
 
         zfauto luaResult = ZFLuaExecute(ZFInputForRes("test_ZFLua_app/main.lua"));
         ZFUIPageManager *pm = luaResult;
-        zfCoreAssert(pm != zfnull);
+        ZFCoreAssert(pm != zfnull);
         pm->observerAdd(
             ZFUIPageManager::EventManagerOnDestroy(),
             ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, managerOnDestroy)));

@@ -105,7 +105,7 @@ public:
      * @brief access all thread,
      *   #mainThread is not included
      *
-     * use with caution, use with #zfCoreMutexLock
+     * use with caution, use with #ZFCoreMutexLock
      */
     ZFMETHOD_DECLARE_STATIC_0(const ZFCoreArray<ZFThread *> &, allThread)
 

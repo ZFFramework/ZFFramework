@@ -12,7 +12,7 @@ static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(
 }
 
 void ZFObjectIO_image_imageExtAdd(ZF_IN const zfstring &imageExt) {
-    zfCoreAssert(!zfstringIsEmpty(imageExt));
+    ZFCoreAssert(!zfstringIsEmpty(imageExt));
     _ZFP_ZFObjectIO_image_imageExtMap()[imageExt] = zftrue;
 }
 void ZFObjectIO_image_imageExtRemove(ZF_IN const zfstring &imageExt) {

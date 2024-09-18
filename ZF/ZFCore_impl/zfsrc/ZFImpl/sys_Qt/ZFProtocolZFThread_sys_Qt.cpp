@@ -105,23 +105,23 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Qt, ZFThread, ZFProtocolLevel::
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QThread")
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *token = new _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType();
         *token = _ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId();
         zfbool exist = (_ZFP_ZFThreadImpl_sys_Qt_threadMap.find(*token) != _ZFP_ZFThreadImpl_sys_Qt_threadMap.end());
-        zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
+        ZFCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_Qt_threadMap[*token] = ownerZFThread;
         return (void *)token;
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
         {
-            zfCoreMutexLocker();
+            ZFCoreMutexLocker();
             _ZFP_ZFThreadImpl_sys_Qt_threadMap.erase(_ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId());
         }
         delete (_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *)token;
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_sys_Qt_threadMap.find(
             *(_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *)token);
         if(it != _ZFP_ZFThreadImpl_sys_Qt_threadMap.end()) {
@@ -130,11 +130,11 @@ public:
         return zfnull;
     }
     virtual ZFThread *mainThread(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         return _ZFP_ZFThreadImpl_sys_Qt_mainThreadInstance;
     }
     virtual ZFThread *currentThread(void) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType::const_iterator it =
             _ZFP_ZFThreadImpl_sys_Qt_threadMap.find(_ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId());
         if(it == _ZFP_ZFThreadImpl_sys_Qt_threadMap.end()) {

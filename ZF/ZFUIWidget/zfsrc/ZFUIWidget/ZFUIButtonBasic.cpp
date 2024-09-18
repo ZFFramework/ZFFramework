@@ -56,14 +56,14 @@ public:
     void labelViewPrepare(void) {
         if(this->labelView == zfnull) {
             this->labelView = zfRetain(this->pimplOwner->buttonLabelClass()->newInstance());
-            zfCoreAssert(this->labelView != zfnull);
+            ZFCoreAssert(this->labelView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->labelView);
         }
     }
     void iconViewPrepare(void) {
         if(this->iconView == zfnull) {
             this->iconView = zfRetain(this->pimplOwner->buttonIconClass()->newInstance());
-            zfCoreAssert(this->iconView != zfnull);
+            ZFCoreAssert(this->iconView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->iconView);
 
             if(this->labelView != zfnull) {
@@ -75,7 +75,7 @@ public:
     void backgroundViewPrepare(void) {
         if(this->backgroundView == zfnull) {
             this->backgroundView = zfRetain(this->pimplOwner->buttonBackgroundClass()->newInstance());
-            zfCoreAssert(this->backgroundView != zfnull);
+            ZFCoreAssert(this->backgroundView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->backgroundView);
 
             if(this->iconView != zfnull) {
@@ -273,7 +273,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUITextView>, label
         case ZFUIButtonState::e_Disabled:
             return this->labelDisabled();
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zfnull;
     }
 }
@@ -292,7 +292,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, icon
         case ZFUIButtonState::e_Disabled:
             return this->iconDisabled();
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zfnull;
     }
 }
@@ -311,7 +311,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, background
         case ZFUIButtonState::e_Disabled:
             return this->backgroundDisabled();
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return zfnull;
     }
 }
@@ -406,7 +406,7 @@ void ZFUIButtonBasic::layoutOnMeasure(
             contentSize.height = iconSize.height + contentSpace + labelSize.height;
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 
@@ -502,7 +502,7 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
             }
             break;
         default:
-            zfCoreCriticalShouldNotGoHere();
+            ZFCoreCriticalShouldNotGoHere();
             return;
     }
 }

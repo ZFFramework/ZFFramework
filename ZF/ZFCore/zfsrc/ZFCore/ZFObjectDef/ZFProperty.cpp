@@ -119,7 +119,7 @@ void ZFPropertyGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret
         , ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter /* = zfnull */
         ) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     if(propertyFilter != zfnull) {
         for(_ZFP_ZFPropertyMapType::iterator it = m.begin(); it != m.end(); ++it) {
@@ -152,7 +152,7 @@ static void _ZFP_ZFPropertyInstanceSig(
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfstring &propertyInternalId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInternalId);
     if(it != m.end()) {
@@ -163,7 +163,7 @@ static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfstring &propertyInt
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfstring &propertyInternalId) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInternalId);
     if(it != m.end()) {
@@ -201,18 +201,18 @@ ZFProperty *_ZFP_ZFPropertyRegister(
         , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
         ) {
     _ZFP_ZFProperty_invokeTimeLogger("reg: %s::%s", propertyOwnerClass->className().cString(), name.cString());
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFProperty *propertyInfo = zfnull;
 
-    zfCoreAssert(propertyOwnerClass != zfnull);
-    zfCoreAssert(name != zfnull && *name != '\0');
-    zfCoreAssert(typeName != zfnull && *typeName != '\0');
-    zfCoreAssert(typeIdName != zfnull && *typeIdName != '\0');
-    zfCoreAssert(setterMethod != zfnull);
-    zfCoreAssert(getterMethod != zfnull);
-    zfCoreAssert(callbackIsValueAccessed != zfnull);
-    zfCoreAssert(callbackIsInitValue != zfnull);
-    zfCoreAssert(callbackValueReset != zfnull);
+    ZFCoreAssert(propertyOwnerClass != zfnull);
+    ZFCoreAssert(name != zfnull && *name != '\0');
+    ZFCoreAssert(typeName != zfnull && *typeName != '\0');
+    ZFCoreAssert(typeIdName != zfnull && *typeIdName != '\0');
+    ZFCoreAssert(setterMethod != zfnull);
+    ZFCoreAssert(getterMethod != zfnull);
+    ZFCoreAssert(callbackIsValueAccessed != zfnull);
+    ZFCoreAssert(callbackIsInitValue != zfnull);
+    ZFCoreAssert(callbackValueReset != zfnull);
 
     zfstring propertyInternalId;
     ZFSigName nameHolder = name;
@@ -220,14 +220,14 @@ ZFProperty *_ZFP_ZFPropertyRegister(
 
     if(propertyIsUserRegister) {
         propertyInfo = _ZFP_ZFPropertyInstanceFind(propertyInternalId);
-        zfCoreAssertWithMessageTrim(propertyInfo == zfnull,
+        ZFCoreAssertWithMessageTrim(propertyInfo == zfnull,
             "[ZFPropertyUserRegister] registering a property that already registered, class: %s, propertyName: %s",
             propertyOwnerClass->classNameFull(),
             name);
     }
     else if(propertyIsDynamicRegister) {
         propertyInfo = _ZFP_ZFPropertyInstanceFind(propertyInternalId);
-        zfCoreAssertWithMessageTrim(propertyInfo == zfnull,
+        ZFCoreAssertWithMessageTrim(propertyInfo == zfnull,
             "[ZFPropertyDynamicRegister] registering a property that already registered, class: %s, propertyName: %s",
             propertyOwnerClass->classNameFull(),
             name);
@@ -264,7 +264,7 @@ ZFProperty *_ZFP_ZFPropertyRegister(
 }
 void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo) {
     _ZFP_ZFProperty_invokeTimeLogger("unreg: %s::%s", propertyInfo->propertyOwnerClass()->className().cString(), propertyInfo->propertyName().cString());
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInfo->propertyInternalId());
     if(it == m.end()) {

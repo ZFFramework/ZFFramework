@@ -67,7 +67,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(
  *   //   zfbool eventHandler(SDL_Event *sdlEvent);
  *   ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(YourEvent, ZFLevelAppNormal) {
  *       // the event
- *       zfLogTrim() << sdlEvent->user.code;
+ *       ZFLogTrim() << sdlEvent->user.code;
  *       return zftrue;
  *   }
  *

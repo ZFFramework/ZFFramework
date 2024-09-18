@@ -58,7 +58,7 @@ public:
             , ZF_IN ZFObject *ownerObj
             , ZF_IN T_Type const &v
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIRetain_";
         key += method->methodName();
         const ZFProperty *property = method->methodOwnerClass()->propertyForName(
@@ -104,7 +104,7 @@ public:
             , ZF_IN zfany const &ownerObj
             , ZF_OUT_OPT zfauto *outInitValue
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(!callbackIsValueAccessed(property, ownerObj)) {
             return zftrue;
         }
@@ -132,7 +132,7 @@ public:
             ZF_IN const ZFProperty *property
             , ZF_IN zfany const &ownerObj
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         ownerObj->objectTagRemove(key);
@@ -142,7 +142,7 @@ private:
             ZF_IN const ZFProperty *property
             , ZF_IN ZFObject *ownerObj
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
@@ -181,7 +181,7 @@ public:
             , ZF_IN ZFObject *ownerObj
             , ZF_IN T_Type const &v
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += method->methodName();
         const ZFProperty *property = method->methodOwnerClass()->propertyForName(
@@ -226,7 +226,7 @@ public:
             , ZF_IN zfany const &ownerObj
             , ZF_OUT_OPT zfauto *outInitValue
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         if(!callbackIsValueAccessed(property, ownerObj)) {
             return zftrue;
         }
@@ -244,7 +244,7 @@ public:
             ZF_IN const ZFProperty *property
             , ZF_IN zfany const &ownerObj
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         ownerObj->objectTagRemove(key);
@@ -254,7 +254,7 @@ private:
             ZF_IN const ZFProperty *property
             , ZF_IN ZFObject *ownerObj
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
@@ -387,7 +387,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
     ) \
     const ZFProperty *resultProperty = zfnull; \
     { \
-        zfCoreMutexLocker(); \
+        ZFCoreMutexLocker(); \
         const ZFClass *_ownerClass = ownerClass; \
         zfstring _propertyName(propertyNameString); \
         \
@@ -510,7 +510,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *           , myCallbackValueReset
  *           );
  *       _property = resultProperty;
- *       zfLogTrim() << resultProperty;
+ *       ZFLogTrim() << resultProperty;
  *   }
  *   ZF_GLOBAL_INITIALIZER_DESTROY(MyPropertyRegister) {
  *       ZFPropertyUserUnregister(_property);

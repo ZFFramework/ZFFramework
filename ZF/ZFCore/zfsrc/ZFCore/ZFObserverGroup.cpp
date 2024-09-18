@@ -292,7 +292,7 @@ private:
     void detach(ZF_IN _ZFP_ZFObserverGroupTaskData *task) {
         if(task->owner != zfnull) {
             _TaskMap::iterator it = this->ownerMap.find(task->owner);
-            zfCoreAssert(it != this->ownerMap.end());
+            ZFCoreAssert(it != this->ownerMap.end());
             if(it->second == task) {
                 if(task->ownerMapNext == zfnull) {
                     this->ownerMap.erase(it);
@@ -313,7 +313,7 @@ private:
 
         if(task->target != zfnull) {
             _TaskMap::iterator it = this->targetMap.find(task->target);
-            zfCoreAssert(it != this->targetMap.end());
+            ZFCoreAssert(it != this->targetMap.end());
             if(it->second == task) {
                 if(task->targetMapNext == zfnull) {
                     this->targetMap.erase(it);
@@ -346,7 +346,7 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAdd(
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFObject *owner = d->owner != zfnull ? d->owner->objectHolded().toObject() : zfnull;
     ZFObject *target = d->target != zfnull ? d->target->objectHolded().toObject() : zfnull;
     if(target == zfnull && d->targetObserver == zfnull) {
@@ -366,7 +366,7 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) const {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     ZFObject *owner = d->owner != zfnull ? d->owner->objectHolded().toObject() : zfnull;
     ZFObject *target = d->target != zfnull ? d->target->objectHolded().toObject() : zfnull;
     if(target == zfnull && d->targetObserver == zfnull) {
@@ -421,7 +421,7 @@ void ZFObserverGroupHolder::_ZFP_update(
         ZF_IN ZFObject *owner
         , ZF_IN const ZFObserver &target
         ) {
-    zfCoreAssert(owner != zfnull);
+    ZFCoreAssert(owner != zfnull);
 
     zfRetainChange(d->owner, owner->objectHolder());
     zfRetainChange(d->target, zfnull);
@@ -436,7 +436,7 @@ void ZFObserverGroupHolder::_ZFP_update(
         ZF_IN ZFObject *owner
         , ZF_IN ZFObject *target
         ) {
-    zfCoreAssert(owner != zfnull);
+    ZFCoreAssert(owner != zfnull);
 
     if(target != zfnull) {
         zfRetainChange(d->owner, owner->objectHolder());

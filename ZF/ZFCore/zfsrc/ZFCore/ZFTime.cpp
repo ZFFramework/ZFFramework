@@ -76,7 +76,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFTimeValueDiv
         , ZFMP_IN(const ZFTimeValue &, tv)
         , ZFMP_IN(zfindex, v)
         ) {
-    zfCoreAssertWithMessage(v != 0, "divided by 0");
+    ZFCoreAssertWithMessage(v != 0, "divided by 0");
     result.usec = tv.usec / v;
     result.sec = tv.sec / v;
     result.usec += (zft_zftimet)(((zft_zflongdouble)tv.sec / v - result.sec) * 1000000LL);
@@ -221,7 +221,7 @@ void operator /= (
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFTimeValue, ZFTimeValue, {
         ZFCoreArray<zftimet> tmp;
-        if(!zfCoreDataPairSplitInt(tmp, 2, src, srcLen)) {
+        if(!ZFCoreDataPairSplitInt(tmp, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }

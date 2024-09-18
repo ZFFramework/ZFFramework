@@ -13,16 +13,16 @@ static zfstllist<ZFListener> _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue;
 
 static void _ZFP_ZFImpl_sys_SDL_MainThreadRunNext(void);
 static void *_ZFP_ZFImpl_sys_SDL_MainThreadExecute(ZF_IN const ZFListener &runnable) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.push_back(runnable);
     zfstllist<ZFListener>::iterator it = _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.end();
     --it;
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();
     return new zfstllist<ZFListener>::iterator(it);
 }
 static void _ZFP_ZFImpl_sys_SDL_MainThreadCleanup(ZF_IN void *nativeToken) {
-    zfCoreMutexLocker();
+    ZFCoreMutexLocker();
     zfstllist<ZFListener>::iterator *it = (zfstllist<ZFListener>::iterator *)nativeToken;
     _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.erase(*it);
     delete it;
@@ -35,13 +35,13 @@ ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_MainThreadImpl)
 
 // ============================================================
 ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal) {
-    zfCoreMutexLock();
+    ZFCoreMutexLock();
     if(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty()) {
-        zfCoreMutexUnlock();
+        ZFCoreMutexUnlock();
         return zftrue;
     }
     ZFListener runnable = *(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.begin());
-    zfCoreMutexUnlock();
+    ZFCoreMutexUnlock();
     runnable.execute();
     if(!_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty()) {
         _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();

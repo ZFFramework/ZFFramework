@@ -799,7 +799,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT
  * chained path info format: 'pathType1:pathType2:pathData2|pathData1'\n
  * or, if recursively chained: 'pathType1:pathType2:pathType3:pathData3%7cpathData2|pathData1'\n
  * note if the chained path info contains the special '|' char, it must be escaped by '%7c',
- * or use #zfCoreDataEncode with #ZFPathInfoChainCharMap\n
+ * or use #ZFCoreDataEncode with #ZFPathInfoChainCharMap\n
  * \n
  * typical case:
  * @code

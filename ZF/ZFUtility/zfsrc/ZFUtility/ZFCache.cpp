@@ -24,7 +24,7 @@ public:
             ZF_IN ZFCache *objectCache
             , ZF_IN zfbool autoTrim
             ) {
-        zfCoreMutexLocker();
+        ZFCoreMutexLocker();
 
         if(autoTrim) {
             this->attachedObject[objectCache] = zftrue;

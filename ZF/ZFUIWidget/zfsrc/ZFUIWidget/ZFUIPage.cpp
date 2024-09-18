@@ -290,14 +290,14 @@ public:
                     }
                     break;
                 default:
-                    zfCoreCriticalShouldNotGoHere();
+                    ZFCoreCriticalShouldNotGoHere();
                     break;
             }
 
             manager->d->resumeAni = resumePage ? resumePage->pageAni() : zfnull;
             manager->d->pauseAni = pausePage ? pausePage->pageAni() : zfnull;
         }
-        zfCoreAssertWithMessageTrim(!(manager->d->resumeAni != zfnull && manager->d->resumeAni == manager->d->pauseAni),
+        ZFCoreAssertWithMessageTrim(!(manager->d->resumeAni != zfnull && manager->d->resumeAni == manager->d->pauseAni),
             "[ZFUIPage] same ani instance is not allowed");
 
         pageAniOnStart(manager, resumePage, resumeReason, pausePage, pauseReason);
@@ -410,8 +410,8 @@ void ZFUIPageManager::managerOnCreate(void) {
     zfautoT<ZFUIView> pageContainer = (this->pageContainerClass() != zfnull ? this->pageContainerClass() : ZFUIView::ClassData())->newInstance();
     d->managerContainer = managerContainer;
     d->pageContainer = pageContainer;
-    zfCoreAssertWithMessage(d->managerContainer != zfnull, "managerContainerClass must be type of %s", ZFUIView::ClassData()->className());
-    zfCoreAssertWithMessage(d->pageContainer != zfnull, "pageContainerClass must be type of %s", ZFUIView::ClassData()->className());
+    ZFCoreAssertWithMessage(d->managerContainer != zfnull, "managerContainerClass must be type of %s", ZFUIView::ClassData()->className());
+    ZFCoreAssertWithMessage(d->pageContainer != zfnull, "pageContainerClass must be type of %s", ZFUIView::ClassData()->className());
     zfRetain(d->managerContainer);
     zfRetain(d->pageContainer);
 
@@ -425,15 +425,15 @@ void ZFUIPageManager::managerOnDestroy(void) {
 // ============================================================
 // manager creation
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerCreate) {
-    zfCoreAssert(!d->managerCreated);
+    ZFCoreAssert(!d->managerCreated);
     zfRetain(this);
     d->managerCreated = zftrue;
     this->managerOnCreate();
     this->observerNotify(ZFUIPageManager::EventManagerOnCreate());
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerResume) {
-    zfCoreAssert(d->managerCreated);
-    zfCoreAssert(!d->managerResumed);
+    ZFCoreAssert(d->managerCreated);
+    ZFCoreAssert(!d->managerResumed);
     d->managerResumed = zftrue;
     this->managerOnResume();
     this->observerNotify(ZFUIPageManager::EventManagerOnResume());
@@ -443,7 +443,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerResume) {
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause) {
-    zfCoreAssert(d->managerResumed);
+    ZFCoreAssert(d->managerResumed);
 
     ZFUIPage *page = this->pageForeground();
     if(page != zfnull) {
@@ -455,7 +455,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause) {
     this->observerNotify(ZFUIPageManager::EventManagerOnPause());
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
-    zfCoreAssert(d->managerCreated);
+    ZFCoreAssert(d->managerCreated);
     d->managerDestroyRunning = zftrue;
     if(d->managerResumed) {
         this->managerPause();
@@ -639,8 +639,8 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageCreate
             , ZFUIPageManager *, pm
             , ZFUIPage *, page
             ) {
-        zfCoreAssert(page->_ZFP_ZFUIPage_pageManager == zfnull);
-        zfCoreAssert(pm->d->pageMoveFlag == 0);
+        ZFCoreAssert(page->_ZFP_ZFUIPage_pageManager == zfnull);
+        ZFCoreAssert(pm->d->pageMoveFlag == 0);
 
         ZFUIPage *resumePage = page;
         ZFUIPage *pausePage = pm->pageForeground();
@@ -726,7 +726,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageDestroy
             , ZFUIPageManager *, pm
             , zfindex, pageIndex
             ) {
-        zfCoreAssert(pm->d->pageMoveFlag == 0);
+        ZFCoreAssert(pm->d->pageMoveFlag == 0);
         if(pageIndex >= pm->d->pageList.count()) {
             return;
         }

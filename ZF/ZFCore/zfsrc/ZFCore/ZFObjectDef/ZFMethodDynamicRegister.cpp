@@ -31,9 +31,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFMethodInvokeData, ZFMethodInvokeDat
         )
 
 zfauto ZFMethodInvokeData::callSuper(void) {
-    zfCoreAssertWithMessage(invokerMethod->methodIsDynamicRegister(),
+    ZFCoreAssertWithMessage(invokerMethod->methodIsDynamicRegister(),
         "ZFMethodInvokeData::callSuper() only works for dynamic registered method");
-    zfCoreAssertWithMessage(invokerMethod->methodOwnerClass() != zfnull && invokerMethod->methodType() == ZFMethodTypeVirtual,
+    ZFCoreAssertWithMessage(invokerMethod->methodOwnerClass() != zfnull && invokerMethod->methodType() == ZFMethodTypeVirtual,
         "ZFMethodInvokeData::callSuper() only works for class virtual method");
 
     ZFCoreQueuePOD<const ZFClass *> toCheck;
@@ -90,7 +90,7 @@ const zfauto &ZFMethodInvokeData::paramAt(ZF_IN zfindex index) {
         case 6: return this->param6;
         case 7: return this->param7;
         default:
-            zfCoreCriticalIndexOutOfRange(index, 8);
+            ZFCoreCriticalIndexOutOfRange(index, 8);
             return this->param7;
     } /* ZFMETHOD_MAX_PARAM */
 }
@@ -108,7 +108,7 @@ ZFMethodInvokeData *ZFMethodInvokeData::paramSet(
         case 6: this->param6 = param; break;
         case 7: this->param7 = param; break;
         default:
-            zfCoreCriticalIndexOutOfRange(index, 8);
+            ZFCoreCriticalIndexOutOfRange(index, 8);
             break;
     } /* ZFMETHOD_MAX_PARAM */
     return this;
@@ -289,7 +289,7 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
         , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
         , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
         ) {
-    zfCoreAssert(d->methodParamCount < ZFMETHOD_MAX_PARAM);
+    ZFCoreAssert(d->methodParamCount < ZFMETHOD_MAX_PARAM);
     if(methodParamTypeId != zfnull) {
         d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
         if(!zfstringIsEmpty(methodParamName)) {
@@ -445,7 +445,7 @@ ZFMP &ZFMP::mp(
         , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
         , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
         ) {
-    zfCoreAssert(d->methodParamCount <= ZFMETHOD_MAX_PARAM);
+    ZFCoreAssert(d->methodParamCount <= ZFMETHOD_MAX_PARAM);
     d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
     d->methodParamName[d->methodParamCount] = methodParamName;
     d->methodParamDefaultValueCallback[d->methodParamCount] = methodParamDefaultValueCallback;

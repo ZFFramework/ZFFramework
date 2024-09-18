@@ -13,7 +13,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewFocusState_test) {
 private:
     ZFListener listener;
     static void viewFocusOnUpdate(ZF_IN const ZFArgs &zfargs) {
-        zfLogTrim() << "[ZFUIViewFocus]"
+        ZFLogTrim() << "[ZFUIViewFocus]"
             << zfargs.sender()
             << " changed to " << zfargs.sender()->to<ZFUIView *>()->viewFocused();
     }

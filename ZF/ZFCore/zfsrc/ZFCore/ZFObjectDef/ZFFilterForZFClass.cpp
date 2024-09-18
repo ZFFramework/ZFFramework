@@ -99,7 +99,7 @@ zfbool ZFFilterForZFClass::filterCheckActive(ZF_IN const ZFClass * const &e) con
             case ZFFilterCallbackResultNotActive:
                 return zffalse;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 break;
         }
     }
@@ -141,7 +141,7 @@ zfbool ZFFilterForZFClass::filterCheckActive(ZF_IN const ZFClass * const &e) con
                 }
                 break;
             default:
-                zfCoreCriticalShouldNotGoHere();
+                ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     }

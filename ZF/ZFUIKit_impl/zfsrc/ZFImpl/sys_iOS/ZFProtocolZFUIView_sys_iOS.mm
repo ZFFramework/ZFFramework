@@ -35,7 +35,7 @@
     return self;
 }
 - (void)dealloc {
-    zfCoreAssert(self._ZFP_nativeImplView == nil);
+    ZFCoreAssert(self._ZFP_nativeImplView == nil);
 }
 
 // ============================================================

@@ -6,13 +6,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT(ZFNet_ZFHttpRequest_debug_LogEvent) {
     ZFLISTENER(onSend) {
         ZFHttpRequest *send = zfargs.sender();
-        zfLogTrim("[ZFHttpRequest] send: %s", send);
+        ZFLogTrim("[ZFHttpRequest] send: %s", send);
     } ZFLISTENER_END()
 
     ZFLISTENER(onRecv) {
         ZFHttpResponse *recv = zfargs.param0();
         ZFResultTypeEnum resultType = zfargs.param1().to<ZFResultType *>()->zfv();
-        zfLogTrim("[ZFHttpRequest] recv %s: %s", resultType, recv);
+        ZFLogTrim("[ZFHttpRequest] recv %s: %s", resultType, recv);
     } ZFLISTENER_END()
 
     ZFObserverGroup(this->taskOwner, ZFGlobalObserver())

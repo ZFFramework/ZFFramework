@@ -9,10 +9,10 @@ static void _ZFP_ZFOutputDefault_ZFCoreLogExt(ZF_IN const zfchar *s) {
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFOutputDefault_ZFCoreLogExt, ZFLevelZFFrameworkEssential) {
-    zfCoreLogOutputCallback(_ZFP_ZFOutputDefault_ZFCoreLogExt);
+    ZFCoreLogOutputCallback(_ZFP_ZFOutputDefault_ZFCoreLogExt);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFOutputDefault_ZFCoreLogExt) {
-    zfCoreLogOutputCallback(ZFCoreLogOutputCallbackDefault);
+    ZFCoreLogOutputCallback(ZFCoreLogOutputCallbackDefault);
 }
 ZF_GLOBAL_INITIALIZER_END(ZFOutputDefault_ZFCoreLogExt)
 

@@ -19,16 +19,16 @@ public:
 
     // custom callback
     ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFObject>, propertyRetain) {
-        zfLog();
+        ZFLog();
     }
     ZFPROPERTY_ON_VERIFY_INLINE(zfanyT<ZFObject>, propertyRetain) {
-        zfLog();
+        ZFLog();
     }
     ZFPROPERTY_ON_ATTACH_INLINE(zfanyT<ZFObject>, propertyRetain) {
-        zfLog();
+        ZFLog();
     }
     ZFPROPERTY_ON_DETACH_INLINE(zfanyT<ZFObject>, propertyRetain) {
-        zfLog();
+        ZFLog();
     }
 
     ZFPROPERTY_ON_INIT_DECLARE(zfstring, propertyAssign)
@@ -37,16 +37,16 @@ public:
     ZFPROPERTY_ON_DETACH_DECLARE(zfstring, propertyAssign)
 };
 ZFPROPERTY_ON_INIT_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
-    zfLog();
+    ZFLog();
 }
 ZFPROPERTY_ON_VERIFY_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
-    zfLog();
+    ZFLog();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
-    zfLog();
+    ZFLog();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
-    zfLog();
+    ZFLog();
 }
 
 zfclass _ZFP_ZFCore_ZFProperty_test_TestChild: zfextend _ZFP_ZFCore_ZFProperty_test_TestBase {
@@ -72,7 +72,7 @@ protected:
 
             // property list
             const ZFClass *clsTmp = p->classData();
-            ZFOutput log = zfLog();
+            ZFOutput log = ZFLog();
             zfanyT<ZFLogFormat> fmt = ZFOutputFormat::getFormat(log);
             fmt->autoEndl(zffalse);
             log << "list: ";
@@ -86,42 +86,42 @@ protected:
 
             // reflect
             p->propertyAssign("oldValue");
-            zfLog() << "before: " << p->propertyAssign();
+            ZFLog() << "before: " << p->propertyAssign();
             p->classData()->propertySetterForName("propertyAssign")->execute<void, zfstring const &>(p, "newValue");
-            zfLog() << "after: " << p->propertyAssign();
-            zfLog() << "access by reflect: " << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
+            ZFLog() << "after: " << p->propertyAssign();
+            ZFLog() << "access by reflect: " << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
 
             // retain
-            zfLogTrim();
-            zfLogTrim() << "retain";
+            ZFLogTrim();
+            ZFLogTrim() << "retain";
 
             p->propertyRetain(zfobj<ZFObject>());
-            zfLog() << p->propertyRetain();
+            ZFLog() << p->propertyRetain();
 
 #if 0 // this should not compile
             p->propertyRetainReadonly(zfobj<ZFObject>());
 #endif
-            zfLog() << p->propertyRetainReadonly();
+            ZFLog() << p->propertyRetainReadonly();
 
             // assign
-            zfLogTrim();
-            zfLogTrim() << "assign";
+            ZFLogTrim();
+            ZFLogTrim() << "assign";
 
             p->propertyAssign(zfstring());
-            zfLog() << p->propertyAssign();
+            ZFLog() << p->propertyAssign();
 
 #if 0 // this should not compile
             p->propertyAssignReadonly(zfstring());
 #endif
-            zfLog() << p->propertyAssignReadonly();
+            ZFLog() << p->propertyAssignReadonly();
 
             // weak
             {
                 zfobj<ZFObject> value;
                 p->propertyWeak(value);
-                zfLog() << p->propertyWeak();
+                ZFLog() << p->propertyWeak();
             }
-            zfLog() << p->propertyWeak();
+            ZFLog() << p->propertyWeak();
 
             // copy
             this->testCaseOutputSeparator();
@@ -131,13 +131,13 @@ protected:
             pBase->propertyAssign("string set in another");
             ZFPropertyCopyAll(pChild, pBase);
             this->testCaseOutputSeparator();
-            zfLogTrim() << "after copy: " << pChild->propertyAssign();
+            ZFLogTrim() << "after copy: " << pChild->propertyAssign();
 
             this->testCaseOutputSeparator();
             this->testCaseOutput("copy by ZFPropertyCopyAll");
             pChild->propertyAssign("");
             ZFPropertyCopyAll(pChild, pBase);
-            zfLogTrim() << "after copy: " << pChild->propertyAssign();
+            ZFLogTrim() << "after copy: " << pChild->propertyAssign();
         }
 
         this->testCaseStop();

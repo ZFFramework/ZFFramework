@@ -9,21 +9,21 @@ ZFMETHOD_FUNC_DEFINE_0(void, TestCaseRunner) {
 
     ZFLISTENER(testOnFail) {
         ZFResultTypeEnum resultType = zfargs.param0().to<ZFResultType *>()->zfv();
-        zfCoreAssertWithMessageTrim(resultType != ZFResultType::e_Fail, "[TestCaseRunner] test failed: %s", zfargs.sender());
+        ZFCoreAssertWithMessageTrim(resultType != ZFResultType::e_Fail, "[TestCaseRunner] test failed: %s", zfargs.sender());
     } ZFLISTENER_END()
     ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFTestCase::EventTestCaseOnStop(), testOnFail);
 
     ZFLISTENER_1(testOnFinish
             , zfauto, owner
             ) {
-        zfLogTrim("[TestCaseRunner] stop");
+        ZFLogTrim("[TestCaseRunner] stop");
         ZFObserverGroupRemove(owner);
         ZFApp::appExit();
     } ZFLISTENER_END()
     ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFGlobalEvent::EventTestCaseRunAllOnStop(), testOnFinish);
 
     ZFFramework_test_asyncTestAvailable(zffalse);
-    zfLogTrim("[TestCaseRunner] start");
+    ZFLogTrim("[TestCaseRunner] start");
     ZFTestCaseRunAllStart();
 }
 

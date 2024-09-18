@@ -102,7 +102,7 @@ public:
         if(holder->d == newInstance) { \
             return; \
         } \
-        zfCoreMutexLocker(); \
+        ZFCoreMutexLocker(); \
         ZFCorePointerBase *&cleanerRef = OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(); \
         ZFCorePointerBase *cleanerOld = cleanerRef; \
         ZFCorePointerBase *cleanerNew = zfnull; \
