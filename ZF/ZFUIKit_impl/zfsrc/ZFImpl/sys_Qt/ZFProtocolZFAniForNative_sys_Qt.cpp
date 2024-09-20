@@ -126,16 +126,8 @@ public:
                 || ani->aniTranslateYFrom() != 0 || ani->aniTranslateYTo() != 0
                 ) {
             transform.translate(
-                zfmApplyProgress(ani->aniTranslateXFrom(), ani->aniTranslateXTo(), progress) * width * this->nativeAniScale,
-                zfmApplyProgress(ani->aniTranslateYFrom(), ani->aniTranslateYTo(), progress) * height * this->nativeAniScale
-                );
-        }
-        if(ani->aniTranslatePixelXFrom() != 0 || ani->aniTranslatePixelXTo() != 0
-                || ani->aniTranslatePixelYFrom() != 0 || ani->aniTranslatePixelYTo() != 0
-                ) {
-            transform.translate(
-                zfmApplyProgress(ani->aniTranslatePixelXFrom(), ani->aniTranslatePixelXTo(), progress) * this->nativeAniScale,
-                zfmApplyProgress(ani->aniTranslatePixelYFrom(), ani->aniTranslatePixelYTo(), progress) * this->nativeAniScale
+                zfmApplyProgress(ani->aniTranslateXFrom(), ani->aniTranslateXTo(), progress) * this->nativeAniScale,
+                zfmApplyProgress(ani->aniTranslateYFrom(), ani->aniTranslateYTo(), progress) * this->nativeAniScale
                 );
         }
 

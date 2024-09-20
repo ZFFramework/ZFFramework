@@ -73,22 +73,19 @@
     NSMutableArray *nativeAnimations = [NSMutableArray array];
 
     {
-        CGFloat refWidth = aniTarget.frame.size.width;
-        CGFloat refHeight = aniTarget.frame.size.height;
-        CGFloat refZ = zfmMin(refWidth, refHeight);
         CATransform3D transformFrom = CATransform3DIdentity;
         CATransform3D transformTo = CATransform3DIdentity;
 
         transformFrom = CATransform3DTranslate(
             transformFrom,
-            refWidth * self.ownerAni->aniTranslateXFrom() + self.ownerAni->aniTranslatePixelXFrom() * self.nativeAniScale,
-            refHeight * self.ownerAni->aniTranslateYFrom() + self.ownerAni->aniTranslatePixelYFrom() * self.nativeAniScale,
-            refZ * self.ownerAni->aniTranslateZFrom() + self.ownerAni->aniTranslatePixelZFrom() * self.nativeAniScale);
+            self.ownerAni->aniTranslateXFrom() * self.nativeAniScale,
+            self.ownerAni->aniTranslateYFrom() * self.nativeAniScale,
+            self.ownerAni->aniTranslateZFrom() * self.nativeAniScale);
         transformTo = CATransform3DTranslate(
             transformTo,
-            refWidth * self.ownerAni->aniTranslateXTo() + self.ownerAni->aniTranslatePixelXTo() * self.nativeAniScale,
-            refHeight * self.ownerAni->aniTranslateYTo() + self.ownerAni->aniTranslatePixelYTo() * self.nativeAniScale,
-            refZ * self.ownerAni->aniTranslateZTo() + self.ownerAni->aniTranslatePixelZTo() * self.nativeAniScale);
+            self.ownerAni->aniTranslateXTo() * self.nativeAniScale,
+            self.ownerAni->aniTranslateYTo() * self.nativeAniScale,
+            self.ownerAni->aniTranslateZTo() * self.nativeAniScale);
 
         if(self.ownerAni->aniRotateXFrom() != 0) {
             transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateXFrom() * M_PI / 180, 1, 0, 0);

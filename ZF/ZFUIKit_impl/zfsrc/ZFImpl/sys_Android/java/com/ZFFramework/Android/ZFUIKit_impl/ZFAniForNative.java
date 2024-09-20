@@ -62,20 +62,13 @@ public class ZFAniForNative {
         public float aniScaleYTo = 1;
         public float aniScaleZFrom = 1;
         public float aniScaleZTo = 1;
-        // translate by view size's percent
-        public float aniTranslateXFrom = 0;
-        public float aniTranslateXTo = 0;
-        public float aniTranslateYFrom = 0;
-        public float aniTranslateYTo = 0;
-        public float aniTranslateZFrom = 0;
-        public float aniTranslateZTo = 0;
-        // translate by pixel
-        public int aniTranslatePixelXFrom = 0;
-        public int aniTranslatePixelXTo = 0;
-        public int aniTranslatePixelYFrom = 0;
-        public int aniTranslatePixelYTo = 0;
-        public int aniTranslatePixelZFrom = 0;
-        public int aniTranslatePixelZTo = 0;
+        // translate
+        public int aniTranslateXFrom = 0;
+        public int aniTranslateXTo = 0;
+        public int aniTranslateYFrom = 0;
+        public int aniTranslateYTo = 0;
+        public int aniTranslateZFrom = 0;
+        public int aniTranslateZTo = 0;
         // rotate
         public float aniRotateXFrom = 0;
         public float aniRotateXTo = 0;
@@ -99,16 +92,11 @@ public class ZFAniForNative {
             this.aniScaleXTo = 1;
             this.aniScaleYFrom = 1;
             this.aniScaleYTo = 1;
-            // translate by view size's percent
+            // translate
             this.aniTranslateXFrom = 0;
             this.aniTranslateXTo = 0;
             this.aniTranslateYFrom = 0;
             this.aniTranslateYTo = 0;
-            // translate by pixel
-            this.aniTranslatePixelXFrom = 0;
-            this.aniTranslatePixelXTo = 0;
-            this.aniTranslatePixelYFrom = 0;
-            this.aniTranslatePixelYTo = 0;
             // rotate
             this.aniRotateXFrom = 0;
             this.aniRotateXTo = 0;
@@ -135,9 +123,6 @@ public class ZFAniForNative {
             _hasTranslate = (this.aniTranslateXFrom != 0 || this.aniTranslateXTo != 0
                     || this.aniTranslateYFrom != 0 || this.aniTranslateYTo != 0
                     || this.aniTranslateZFrom != 0 || this.aniTranslateZTo != 0);
-            _hasTranslatePixel = (this.aniTranslatePixelXFrom != 0 || this.aniTranslatePixelXTo != 0
-                    || this.aniTranslatePixelYFrom != 0 || this.aniTranslatePixelYTo != 0
-                    || this.aniTranslatePixelZFrom != 0 || this.aniTranslatePixelZTo != 0);
             _hasRotate = (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0
                     || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
                     || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
@@ -181,13 +166,8 @@ public class ZFAniForNative {
             // translate
             if (_hasTranslate) {
                 matrix.postTranslate(
-                        m_width * (this.aniTranslateXFrom + (this.aniTranslateXTo - this.aniTranslateXFrom) * interpolatedTime),
-                        m_height * (this.aniTranslateYFrom + (this.aniTranslateYTo - this.aniTranslateYFrom) * interpolatedTime));
-            }
-            if (_hasTranslatePixel) {
-                matrix.postTranslate(
-                        (this.aniTranslatePixelXFrom + (this.aniTranslatePixelXTo - this.aniTranslatePixelXFrom) * interpolatedTime),
-                        (this.aniTranslatePixelYFrom + (this.aniTranslatePixelYTo - this.aniTranslatePixelYFrom) * interpolatedTime));
+                        (this.aniTranslateXFrom + (this.aniTranslateXTo - this.aniTranslateXFrom) * interpolatedTime),
+                        (this.aniTranslateYFrom + (this.aniTranslateYTo - this.aniTranslateYFrom) * interpolatedTime));
             }
 
             // alpha
@@ -205,7 +185,6 @@ public class ZFAniForNative {
         private int m_centerY = 0;
         private boolean _hasScale = false;
         private boolean _hasTranslate = false;
-        private boolean _hasTranslatePixel = false;
         private boolean _hasRotate = false;
         private static Matrix m_matrix = new Matrix();
         private static Camera m_camera = new Camera();

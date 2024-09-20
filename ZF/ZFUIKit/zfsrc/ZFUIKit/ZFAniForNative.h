@@ -105,77 +105,28 @@ public:
 
     /**
      * @brief translate x from, 0 by default
-     *
-     * this value is relative to target view's size
      */
     ZFPROPERTY_ASSIGN(zffloat, aniTranslateXFrom, 0)
     /**
      * @brief translate x to, 0 by default
-     *
-     * this value is relative to target view's size
      */
     ZFPROPERTY_ASSIGN(zffloat, aniTranslateXTo, 0)
     /**
      * @brief translate y from, 0 by default
-     *
-     * this value is relative to target view's size
      */
     ZFPROPERTY_ASSIGN(zffloat, aniTranslateYFrom, 0)
     /**
      * @brief translate y to, 0 by default
-     *
-     * this value is relative to target view's size
      */
     ZFPROPERTY_ASSIGN(zffloat, aniTranslateYTo, 0)
     /**
      * @brief translate y from, 0 by default
-     *
-     * this value is relative to target view's size
      */
     ZFPROPERTY_ASSIGN(zffloat, aniTranslateZFrom, 0)
     /**
      * @brief translate y to, 0 by default
-     *
-     * this value is relative to target view's size
      */
     ZFPROPERTY_ASSIGN(zffloat, aniTranslateZTo, 0)
-
-    /**
-     * @brief translate x from, 0 by default
-     *
-     * this value is absolute pixel size
-     */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelXFrom, 0)
-    /**
-     * @brief translate x to, 0 by default
-     *
-     * this value is absolute pixel size
-     */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelXTo, 0)
-    /**
-     * @brief translate y from, 0 by default
-     *
-     * this value is absolute pixel size
-     */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelYFrom, 0)
-    /**
-     * @brief translate y to, 0 by default
-     *
-     * this value is absolute pixel size
-     */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelYTo, 0)
-    /**
-     * @brief translate y from, 0 by default
-     *
-     * this value is absolute pixel size
-     */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelZFrom, 0)
-    /**
-     * @brief translate y to, 0 by default
-     *
-     * this value is absolute pixel size
-     */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelZTo, 0)
 
     /**
      * @brief rotate x from, 0 by default

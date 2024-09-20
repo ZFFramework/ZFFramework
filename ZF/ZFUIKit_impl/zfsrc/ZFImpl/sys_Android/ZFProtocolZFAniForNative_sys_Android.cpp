@@ -131,56 +131,30 @@ private:
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleZTo());
         }
         // ============================================================
-        // translate by view size's percent
+        // translate
         if(ani->aniTranslateXFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateXFrom", JNIType::S_float().getId());
-            JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateXFrom());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateXFrom", JNIType::S_int().getId());
+            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslateXFrom() * nativeAniScale));
         }
         if(ani->aniTranslateXTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateXTo", JNIType::S_float().getId());
-            JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateXTo());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateXTo", JNIType::S_int().getId());
+            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslateXTo() * nativeAniScale));
         }
         if(ani->aniTranslateYFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateYFrom", JNIType::S_float().getId());
-            JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateYFrom());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateYFrom", JNIType::S_int().getId());
+            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslateYFrom() * nativeAniScale));
         }
         if(ani->aniTranslateYTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateYTo", JNIType::S_float().getId());
-            JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateYTo());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateYTo", JNIType::S_int().getId());
+            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslateYTo() * nativeAniScale));
         }
         if(ani->aniTranslateZFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateZFrom", JNIType::S_float().getId());
-            JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateZFrom());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateZFrom", JNIType::S_int().getId());
+            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslateZFrom() * nativeAniScale));
         }
         if(ani->aniTranslateZTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateZTo", JNIType::S_float().getId());
-            JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateZTo());
-        }
-        // ============================================================
-        // translate by pixel
-        if(ani->aniTranslatePixelXFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslatePixelXFrom", JNIType::S_int().getId());
-            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelXFrom() * nativeAniScale));
-        }
-        if(ani->aniTranslatePixelXTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslatePixelXTo", JNIType::S_int().getId());
-            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelXTo() * nativeAniScale));
-        }
-        if(ani->aniTranslatePixelYFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslatePixelYFrom", JNIType::S_int().getId());
-            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelYFrom() * nativeAniScale));
-        }
-        if(ani->aniTranslatePixelYTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslatePixelYTo", JNIType::S_int().getId());
-            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelYTo() * nativeAniScale));
-        }
-        if(ani->aniTranslatePixelZFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslatePixelZFrom", JNIType::S_int().getId());
-            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelZFrom() * nativeAniScale));
-        }
-        if(ani->aniTranslatePixelZTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslatePixelZTo", JNIType::S_int().getId());
-            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelZTo() * nativeAniScale));
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation(), "aniTranslateZTo", JNIType::S_int().getId());
+            JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslateZTo() * nativeAniScale));
         }
         // ============================================================
         // rotate

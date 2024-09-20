@@ -30,7 +30,7 @@ protected:
 
             zfobj<ZFAniForNative> ani0;
             aniGroup->child(ani0);
-            ani0->aniTranslateXTo(1);
+            ani0->aniTranslateXTo(view->viewWidth());
             ani0->aniDuration(3000);
 
             zfobj<ZFAniForNative> ani1;

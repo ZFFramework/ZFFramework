@@ -41,7 +41,6 @@ public:
      * -  aniAlpha (zffloat)
      * -  aniScaleX/Y/Z (zffloat)
      * -  aniTranslateX/Y/Z (zffloat)
-     * -  aniTranslatePixelX/Y/Z (zffloat)
      * -  aniRotateX/Y/Z (zffloat)
      *
      * @note more than one ani may added to same view,
