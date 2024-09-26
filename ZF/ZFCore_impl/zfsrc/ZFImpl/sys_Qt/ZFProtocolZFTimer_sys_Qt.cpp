@@ -22,7 +22,7 @@ public:
     zfidentity timerImplId;
 
 public:
-    void start(ZF_IN zfidentity timerImplId) {
+    void _ZFP_start(ZF_IN zfidentity timerImplId) {
         this->timerImplId = timerImplId;
         this->setSingleShot(false);
 
@@ -30,7 +30,7 @@ public:
         connect(this, SIGNAL(timeout()), this, SLOT(timerOnActivate()), Qt::DirectConnection);
         this->start();
     }
-    void stop(void) {
+    void _ZFP_stop(void) {
         this->disconnect();
         this->stop();
     }
@@ -64,11 +64,11 @@ public:
             , ZF_IN zfidentity timerImplId
             ) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
-        nativeTimer->start(timerImplId);
+        nativeTimer->_ZFP_start(timerImplId);
     }
     virtual void stop(ZF_IN ZFTimer *timer) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
-        nativeTimer->stop();
+        nativeTimer->_ZFP_stop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_sys_Qt)
 
