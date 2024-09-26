@@ -29,14 +29,14 @@ public:
     /**
      * @brief start timer
      */
-    virtual void timerStart(
+    virtual void start(
             ZF_IN ZFTimer *timer
             , ZF_IN zfidentity timerImplId
             ) zfpurevirtual;
     /**
      * @brief stop the timer
      */
-    virtual void timerStop(ZF_IN ZFTimer *timer) zfpurevirtual;
+    virtual void stop(ZF_IN ZFTimer *timer) zfpurevirtual;
 
     // ============================================================
     // callbacks that implementations must notify

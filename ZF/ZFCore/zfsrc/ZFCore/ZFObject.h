@@ -10,7 +10,6 @@
 #include "ZFObjectDef/ZFCallback.h"
 #include "ZFObjectDef/ZFCallbackSerializable.h"
 #include "ZFObjectDef/ZFCallback_lambda.h"
-#include "ZFObjectDef/ZFCallback_template.h"
 #include "ZFObjectDef/ZFClass.h"
 #include "ZFObjectDef/ZFClassDynamicRegister.h"
 #include "ZFObjectDef/ZFClassSerializable.h"

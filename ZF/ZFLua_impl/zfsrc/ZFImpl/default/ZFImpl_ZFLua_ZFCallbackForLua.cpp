@@ -226,7 +226,7 @@ public:
 private:
     static int _funcWriter(lua_State *L, const void *p, size_t sz, void *ud) {
         zfself *owner = (zfself *)ud;
-        owner->func.bufferAppend(p, (zfindex)sz);
+        owner->func.append(p, (zfindex)sz);
         return 0;
     }
     static const char *_funcReader(lua_State *L, void *data, size_t *size) {

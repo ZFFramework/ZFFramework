@@ -26,6 +26,22 @@ public:
             , ZF_IN const ZFListener &observer
             , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
             ) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal inline const ZFObserverGroupHolder &on(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            ) const {
+        return this->observerAdd(eventId, observer, observerLevel);
+    }
+    /** @brief see #ZFObserverGroup */
+    zffinal inline const ZFObserverGroupHolder &once(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            ) const {
+        return this->observerAddForOnce(eventId, observer, observerLevel);
+    }
 
 public:
     /** @brief see #objectInfo */

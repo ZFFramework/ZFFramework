@@ -28,53 +28,53 @@ ZFOBJECT_REGISTER(ZFUIAutoLayoutParam)
 
 static void _ZFP_ZFUIAutoLayoutAlignApply(
         ZF_IN ZFUIAutoLayoutParam *lp
-        , ZF_IN const ZFUIAlignFlags &layoutAlign
-        , ZF_IN const ZFUIMargin &layoutMargin
+        , ZF_IN const ZFUIAlignFlags &align
+        , ZF_IN const ZFUIMargin &margin
         ) {
-    if(ZFBitTest(layoutAlign, ZFUIAlign::e_Left)) {
-        lp->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.left);
+    if(ZFBitTest(align, ZFUIAlign::e_Left)) {
+        lp->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.left);
     }
-    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_Right)) {
-        lp->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.right);
+    else if(ZFBitTest(align, ZFUIAlign::e_Right)) {
+        lp->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.right);
     }
-    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_LeftEdge)) {
-        lp->c_right()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.right);
+    else if(ZFBitTest(align, ZFUIAlign::e_LeftEdge)) {
+        lp->c_right()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.right);
     }
-    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_RightEdge)) {
-        lp->c_left()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.left);
+    else if(ZFBitTest(align, ZFUIAlign::e_RightEdge)) {
+        lp->c_left()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.left);
     }
     else {
         lp
-            ->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.left)
-            ->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.right)
+            ->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.left)
+            ->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.right)
             ;
     }
 
-    if(ZFBitTest(layoutAlign, ZFUIAlign::e_Top)) {
-        lp->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.top);
+    if(ZFBitTest(align, ZFUIAlign::e_Top)) {
+        lp->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.top);
     }
-    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_Bottom)) {
-        lp->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.bottom);
+    else if(ZFBitTest(align, ZFUIAlign::e_Bottom)) {
+        lp->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.bottom);
     }
-    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_TopEdge)) {
-        lp->c_bottom()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.bottom);
+    else if(ZFBitTest(align, ZFUIAlign::e_TopEdge)) {
+        lp->c_bottom()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.bottom);
     }
-    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_BottomEdge)) {
-        lp->c_top()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.top);
+    else if(ZFBitTest(align, ZFUIAlign::e_BottomEdge)) {
+        lp->c_top()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.top);
     }
     else {
         lp
-            ->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.top)
-            ->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.bottom)
+            ->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.top)
+            ->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.bottom)
             ;
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, layoutAlign) {
-    _ZFP_ZFUIAutoLayoutAlignApply(this, propertyValue, this->layoutMargin());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, align) {
+    _ZFP_ZFUIAutoLayoutAlignApply(this, propertyValue, this->margin());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIMargin, layoutMargin) {
-    _ZFP_ZFUIAutoLayoutAlignApply(this, this->layoutAlign(), propertyValue);
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIMargin, margin) {
+    _ZFP_ZFUIAutoLayoutAlignApply(this, this->align(), propertyValue);
 }
 
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, zfanyT<ZFUIAutoLayout>, ownerParent) {
@@ -92,8 +92,8 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, zfanyT<ZFUIView>, ownerChild) {
 
 ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
     if(zffalse
-        || property == ZFPropertyAccess(zfself, layoutAlign)
-        || property == ZFPropertyAccess(zfself, layoutMargin)
+        || property == ZFPropertyAccess(zfself, align)
+        || property == ZFPropertyAccess(zfself, margin)
     ) {
         return ZFSerializablePropertyTypeNotSerializable;
     }
@@ -123,7 +123,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ZFUIAutoLayoutPosEnum pos = ZFUIAutoLayoutPos::e_None;
 
         // pos
-        ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
                 require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPos, pos, {
                     return zffalse;
                 });
@@ -145,7 +145,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         // target/targetPos
         {
-            zfstring value = ZFSerializableUtil::requireAttribute(
+            zfstring value = ZFSerializableUtil::requireAttr(
                 element, ZFSerializableKeyword_ZFUIAutoLayoutParam_target, outErrorHint, outErrorPos);
             if(value == zfnull) {
                 return zffalse;
@@ -167,7 +167,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         // weight
         zffloat weight = 0;
-        ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
                 check, ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, weight, {
                     return zffalse;
                 });
@@ -175,7 +175,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         // offset
         zffloat offset = 0;
-        ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
                 check, ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, offset, {
                     return zffalse;
                 });
@@ -218,22 +218,34 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         }
 
         // weight
-        ZFSerializableUtilSerializeAttributeToDataNoRef(element, outErrorHint,
+        ZFSerializableUtilSerializeAttrToDataNoRef(element, outErrorHint,
                 ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, rule.weight(), 0, {
                     return zffalse;
                 });
 
         // offset
-        ZFSerializableUtilSerializeAttributeToDataNoRef(element, outErrorHint,
+        ZFSerializableUtilSerializeAttrToDataNoRef(element, outErrorHint,
                 ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, rule.offset(), 0, {
                     return zffalse;
                 });
 
         element.itemClass(ZFSerializableKeyword_ZFUIAutoLayoutParam_rule);
-        serializableData.childAdd(element);
+        serializableData.child(element);
     }
 
     return zftrue;
+}
+
+void ZFUIAutoLayoutParam::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+    zfsuper::styleableOnCopyFrom(anotherStyleable);
+    // not implemented yet
+}
+ZFCompareResult ZFUIAutoLayoutParam::objectValueCompare(ZF_IN ZFObject *anotherObj) {
+    if(zfsuper::objectValueCompare(anotherObj) != ZFCompareEqual) {
+        return ZFCompareUncomparable;
+    }
+    // not implemented yet
+    return ZFCompareUncomparable;
 }
 
 // ============================================================
@@ -241,11 +253,11 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoLayout)
 ZFOBJECT_REGISTER(ZFUIAutoLayout)
 
-ZFMETHOD_DEFINE_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, childAdd
+ZFMETHOD_DEFINE_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, child
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return this->childAddWithParam(view, zfnull, atIndex);
+    return this->childWithParam(view, zfnull, atIndex);
 }
 
 zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
@@ -290,7 +302,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         return zftrue;
     }
     rule.target(zfnull);
-    if(!zfstringIsEmpty(targetId)) {
+    if(targetId) {
         if(targetId[0] == '@') {
             rule.target(parent->childFindById(targetId + 1, zfHint("findRecursively")zffalse));
         }
@@ -316,7 +328,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
         , ZF_IN ZFUIView *child
         ) {
     ZFUIView *target = rule.target();
-    if(target == zfnull || (target != parent && rule.target()->viewParent() != parent)) {
+    if(target == zfnull || (target != parent && rule.target()->parent() != parent)) {
         return zffalse;
     }
     if(target == parent) {

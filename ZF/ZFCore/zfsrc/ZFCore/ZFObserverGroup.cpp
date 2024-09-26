@@ -474,6 +474,16 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObser
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, on
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, once
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup

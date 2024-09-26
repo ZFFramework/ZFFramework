@@ -20,7 +20,7 @@ void ZFPropertyCopyAll(
     const ZFClass *srcClass = srcObj->classData();
     for(zfindex i = 0; i < allProperty.count(); ++i) {
         const ZFProperty *property = allProperty.get(i);
-        if(!srcClass->classIsTypeOf(property->propertyOwnerClass())) {
+        if(!srcClass->classIsTypeOf(property->ownerClass())) {
             continue;
         }
         ZFPropertyCopy(property, dstObj, srcObj);

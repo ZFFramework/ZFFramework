@@ -5,7 +5,7 @@ return function(zfargs)
     pm:observerAdd(ZFUIPage.EventPageOnResume(), function(zfargs)
             local page = zfargs:sender();
             local pm = page:pageManager();
-            pm:objectTag("leftButton"):viewVisible(pm:pageCount() > 1);
+            pm:objectTag("leftButton"):visible(pm:pageCount() > 1);
             pm:objectTag("centerButton"):label():text(page:objectInfoOfInstance());
         end);
 
@@ -15,10 +15,10 @@ return function(zfargs)
                     local page = zfargs:sender();
 
                     local pageView = ZFUIButtonBasic();
-                    page:pageView():childAdd(pageView):sizeFill();
+                    page:pageView():child(pageView):sizeFill();
 
                     pageView:label():text(page:objectInfoOfInstance());
-                    pageView:viewBackgroundColor(ZFUIColorRandom());
+                    pageView:backgroundColor(ZFUIColorRandom());
 
                     local pageHolder = page:objectHolder();
                     pageView:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)

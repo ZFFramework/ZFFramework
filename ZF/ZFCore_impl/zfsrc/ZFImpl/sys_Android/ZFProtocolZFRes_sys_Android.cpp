@@ -296,7 +296,7 @@ public:
         jstring jsPath = (jstring)JNIUtilGetObjectArrayElement(jniEnv, d->files, d->curFileIndex);
         ++d->curFileIndex;
         const char *sName = JNIUtilGetStringUTFChars(jniEnv, jsPath, zfnull);
-        fd.fileName = sName;
+        fd.name = sName;
         JNIUtilReleaseStringUTFChars(jniEnv, jsPath, sName);
 
         zfstring absPath = this->zfresPrefix;
@@ -305,20 +305,20 @@ public:
             absPath += d->parentPath;
             absPath += '/';
         }
-        absPath += fd.fileName;
+        absPath += fd.name;
 
         AAsset *asset = AAssetManager_open(
             AAssetManager_fromJava(jniEnv, ZFImpl_sys_Android_assetManager()),
             absPath.cString(),
             AASSET_MODE_STREAMING);
         if(asset == zfnull) {
-            fd.fileIsDir = zftrue;
+            fd.isDir = zftrue;
         }
         else {
             AAsset_close(asset);
-            fd.fileIsDir = zffalse;
-            if(zfstringFindReversely(fd.fileName, this->zfresPostfix) == fd.fileName.length() - this->zfresPostfixLen) {
-                fd.fileName.remove(fd.fileName.length() - this->zfresPostfixLen);
+            fd.isDir = zffalse;
+            if(zfstringFindReversely(fd.name, this->zfresPostfix) == fd.name.length() - this->zfresPostfixLen) {
+                fd.name.remove(fd.name.length() - this->zfresPostfixLen);
             }
         }
 

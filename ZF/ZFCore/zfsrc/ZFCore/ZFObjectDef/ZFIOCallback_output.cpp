@@ -111,11 +111,11 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferOwner, zfindex, onOutput
     if(count == zfindexMax()) {
         count = zfslen((const zfchar *)s);
     }
-    this->buf.bufferCapacity(this->curPos + count * sizeof(zfchar));
+    this->buf.capacity(this->curPos + count * sizeof(zfchar));
     zfmemcpy(this->buf.bufferT<zfbyte *>() + this->curPos, s, count * sizeof(zfchar));
     this->curPos += count;
-    if(this->curPos > this->buf.bufferSize()) {
-        this->buf.bufferSize(this->curPos);
+    if(this->curPos > this->buf.length()) {
+        this->buf.length(this->curPos);
     }
     return count;
 }
@@ -123,19 +123,19 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
         , ZFMP_IN(ZFSeekPos, pos)
         ) {
-    this->curPos = ZFIOCallbackCalcFSeek(this->savedLength, this->buf.bufferSize(), this->curPos, byteSize, pos);
+    this->curPos = ZFIOCallbackCalcFSeek(this->savedLength, this->buf.length(), this->curPos, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferOwner, zfindex, ioTell) {
-    return ((this->buf.bufferSize() >= this->savedLength) ? (this->buf.bufferSize() - this->savedLength) : zfindexMax());
+    return ((this->buf.length() >= this->savedLength) ? (this->buf.length() - this->savedLength) : zfindexMax());
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferOwner, zfindex, ioSize) {
-    return this->buf.bufferSize();
+    return this->buf.length();
 }
 ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf) {
     _ZFP_I_ZFOutputForBufferOwner *owner = zfAlloc(_ZFP_I_ZFOutputForBufferOwner);
     owner->buf = buf;
-    owner->savedLength = buf.bufferSize();
+    owner->savedLength = buf.length();
     owner->curPos = owner->savedLength;
     ZFOutput ret = ZFCallbackForMemberMethod(
         owner, ZFMethodAccess(_ZFP_I_ZFOutputForBufferOwner, onOutput));

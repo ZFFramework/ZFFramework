@@ -52,7 +52,7 @@ zfbool ZFFilterForZFObject::filterOnCheckActive(ZF_IN ZFObject * const &e) const
     if(!zfsuper::filterOnCheckActive(e)) {
         return zffalse;
     }
-    return this->classFilter.filterCheckActive(e ? e->classData() : zfnull);
+    return this->classFilter.filterPassed(e ? e->classData() : zfnull);
 }
 
 ZF_NAMESPACE_GLOBAL_END

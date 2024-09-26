@@ -25,16 +25,16 @@ zfbool ZFXmlOutputToken::operator == (ZF_IN ZFXmlOutputToken const &ref) const {
             && this->xmlElementEndTagRight == ref.xmlElementEndTagRight
             && this->xmlElementSingleTagLeft == ref.xmlElementSingleTagLeft
             && this->xmlElementSingleTagRight == ref.xmlElementSingleTagRight
-            && this->xmlAttributeEqualTag == ref.xmlAttributeEqualTag
-            && this->xmlAttributeQuoteTagLeft == ref.xmlAttributeQuoteTagLeft
-            && this->xmlAttributeQuoteTagRight == ref.xmlAttributeQuoteTagRight
+            && this->xmlAttrEqualTag == ref.xmlAttrEqualTag
+            && this->xmlAttrQuoteTagLeft == ref.xmlAttrQuoteTagLeft
+            && this->xmlAttrQuoteTagRight == ref.xmlAttrQuoteTagRight
             && this->xmlTextCDATATagLeft == ref.xmlTextCDATATagLeft
             && this->xmlTextCDATATagRight == ref.xmlTextCDATATagRight
             && this->xmlCommentTagLeft == ref.xmlCommentTagLeft
             && this->xmlCommentTagRight == ref.xmlCommentTagRight
 
             && this->xmlGlobalLineBeginToken == ref.xmlGlobalLineBeginToken
-            && this->xmlElementAttributeCountBeforeAddNewLine == ref.xmlElementAttributeCountBeforeAddNewLine
+            && this->xmlElementAttrCountBeforeAddNewLine == ref.xmlElementAttrCountBeforeAddNewLine
             && this->xmlElementAddNewLineAtHeadIfNotSingleLine == ref.xmlElementAddNewLineAtHeadIfNotSingleLine
             && this->xmlElementTrimTagIfNoChildren == ref.xmlElementTrimTagIfNoChildren
             && this->xmlElementEndTagAtSameLineIfNoChildElement == ref.xmlElementEndTagAtSameLineIfNoChildElement
@@ -55,16 +55,16 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementE
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementEndTagRight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementSingleTagLeft)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementSingleTagRight)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeEqualTag)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeQuoteTagLeft)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeQuoteTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttrEqualTag)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttrQuoteTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttrQuoteTagRight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlTextCDATATagLeft)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlTextCDATATagRight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlCommentTagLeft)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlCommentTagRight)
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlGlobalLineBeginToken)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfindex, xmlElementAttributeCountBeforeAddNewLine)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfindex, xmlElementAttrCountBeforeAddNewLine)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementAddNewLineAtHeadIfNotSingleLine)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementTrimTagIfNoChildren)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementEndTagAtSameLineIfNoChildElement)
@@ -74,7 +74,7 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDefault, ZFXmlOut
 
 static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenTrimInit(void) {
     static ZFXmlOutputToken d;
-    d.xmlElementAttributeCountBeforeAddNewLine = zfindexMax();
+    d.xmlElementAttrCountBeforeAddNewLine = zfindexMax();
     d.xmlElementTrimTagIfNoChildren = zftrue;
     d.xmlNewLineToken.removeAll();
     d.xmlIndentToken.removeAll();
@@ -85,7 +85,7 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenTrim, _ZFP_ZFXmlO
 static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenDetailedInit(void) {
     static ZFXmlOutputToken d;
     d.xmlElementAddNewLineAtHeadIfNotSingleLine = zftrue;
-    d.xmlElementAttributeCountBeforeAddNewLine = 1;
+    d.xmlElementAttrCountBeforeAddNewLine = 1;
     d.xmlElementEndTagAtSameLineIfNoChildElement = zftrue;
     return d;
 }
@@ -93,14 +93,14 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDetailed, _ZFP_ZF
 
 // ============================================================
 /*
- * XmlNull
- * XmlElement : attr, child, name
- * XmlText : value
- * XmlComment : value
- * XmlDocument : child
- * XmlDeclaration : attr
- * XmlDocType : value
- * XmlPI : name, value
+ * Null
+ * Element : attr, child, name
+ * Text : value
+ * Comment : value
+ * Document : child
+ * Declaration : attr
+ * DocType : value
+ * PI : name, value
  */
 zfclassNotPOD _ZFP_ZFXmlPrivate {
 public:
@@ -128,10 +128,10 @@ public:
     }
 };
 
-#define _ZFP_ZFXmlAssertCanHaveAttribute(item) \
-    ZFCoreAssert((item).type() == ZFXmlType::e_XmlElement || (item).type() == ZFXmlType::e_XmlDeclaration)
+#define _ZFP_ZFXmlAssertCanHaveAttr(item) \
+    ZFCoreAssert((item).type() == ZFXmlType::e_Element || (item).type() == ZFXmlType::e_Declaration)
 #define _ZFP_ZFXmlAssertCanHaveChild(item) \
-    ZFCoreAssert((item).type() == ZFXmlType::e_XmlElement || (item).type() == ZFXmlType::e_XmlDocument)
+    ZFCoreAssert((item).type() == ZFXmlType::e_Element || (item).type() == ZFXmlType::e_Document)
 
 // ============================================================
 // ZFXml
@@ -144,7 +144,7 @@ ZFXml::ZFXml(ZF_IN _ZFP_ZFXmlPrivate *ref)
 }
 
 ZFXml::ZFXml(void)
-: d(zfnew(_ZFP_ZFXmlPrivate, ZFXmlType::e_XmlElement))
+: d(zfnew(_ZFP_ZFXmlPrivate, ZFXmlType::e_Element))
 {
 }
 ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
@@ -152,7 +152,7 @@ ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
 {
 }
 ZFXml::ZFXml(ZF_IN ZFXmlTypeEnum type) {
-    if(type != ZFXmlType::e_XmlNull) {
+    if(type != ZFXmlType::e_Null) {
         d = zfnew(_ZFP_ZFXmlPrivate, type);
     }
     else {
@@ -214,7 +214,7 @@ zfindex ZFXml::objectRetainCount(void) const {
 
 // ============================================================
 void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum type) {
-    if(type != ZFXmlType::e_XmlNull) {
+    if(type != ZFXmlType::e_Null) {
         if(d) {
             d->type = type;
         }
@@ -224,13 +224,13 @@ void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum type) {
     }
 }
 ZFXmlTypeEnum ZFXml::type(void) const {
-    return d ? d->type : ZFXmlType::e_XmlNull;
+    return d ? d->type : ZFXmlType::e_Null;
 }
 
 ZFXml &ZFXml::name(ZF_IN const zfstring &name) {
     switch(this->type()) {
-        case ZFXmlType::e_XmlPI:
-        case ZFXmlType::e_XmlElement:
+        case ZFXmlType::e_PI:
+        case ZFXmlType::e_Element:
             d->name = name;
             break;
         default:
@@ -244,10 +244,10 @@ const zfstring &ZFXml::name(void) const {
 
 ZFXml &ZFXml::value(ZF_IN const zfstring &value) {
     switch(this->type()) {
-        case ZFXmlType::e_XmlDocType:
-        case ZFXmlType::e_XmlPI:
-        case ZFXmlType::e_XmlText:
-        case ZFXmlType::e_XmlComment:
+        case ZFXmlType::e_DocType:
+        case ZFXmlType::e_PI:
+        case ZFXmlType::e_Text:
+        case ZFXmlType::e_Comment:
             d->value = value;
             break;
         default:
@@ -263,38 +263,38 @@ const zfstring &ZFXml::value(void) const {
 ZFXml ZFXml::copy(void) const {
     ZFXml ret(this->type());
     switch(this->type()) {
-        case ZFXmlType::e_XmlNull:
+        case ZFXmlType::e_Null:
             break;
-        case ZFXmlType::e_XmlElement:
+        case ZFXmlType::e_Element:
             ret.name(this->name());
             for(zfiter it = this->attrIter(); it; ++it) {
                 ret.attr(this->attrIterKey(it), this->attrIterValue(it));
             }
             for(zfindex i = 0; i < this->childCount(); ++i) {
-                ret.childAdd(this->childAt(i).copy());
+                ret.child(this->childAt(i).copy());
             }
             break;
-        case ZFXmlType::e_XmlText:
+        case ZFXmlType::e_Text:
             ret.value(this->value());
             ret.CDATA(this->CDATA());
             break;
-        case ZFXmlType::e_XmlComment:
+        case ZFXmlType::e_Comment:
             ret.value(this->value());
             break;
-        case ZFXmlType::e_XmlDocument:
+        case ZFXmlType::e_Document:
             for(zfindex i = 0; i < this->childCount(); ++i) {
-                ret.childAdd(this->childAt(i).copy());
+                ret.child(this->childAt(i).copy());
             }
             break;
-        case ZFXmlType::e_XmlDeclaration:
+        case ZFXmlType::e_Declaration:
             for(zfiter it = this->attrIter(); it; ++it) {
                 ret.attr(this->attrIterKey(it), this->attrIterValue(it));
             }
             break;
-        case ZFXmlType::e_XmlDocType:
+        case ZFXmlType::e_DocType:
             ret.value(this->value());
             break;
-        case ZFXmlType::e_XmlPI:
+        case ZFXmlType::e_PI:
             ret.name(this->name());
             ret.value(this->value());
             break;
@@ -312,8 +312,8 @@ ZFXml &ZFXml::attr(
         ZF_IN const zfstring &key
         , ZF_IN const zfstring &value
         ) {
-    if(!zfstringIsEmpty(key)) {
-        _ZFP_ZFXmlAssertCanHaveAttribute(*this);
+    if(key) {
+        _ZFP_ZFXmlAssertCanHaveAttr(*this);
         if(value == zfnull) {
             d->attrMap.erase(key);
         }
@@ -387,23 +387,23 @@ ZFXml ZFXml::childAt(ZF_IN zfindex index) const {
         return zfnull;
     }
 }
-ZFXml &ZFXml::childAdd(
+ZFXml &ZFXml::child(
         ZF_IN const ZFXml &item
         , ZF_IN_OPT zfindex index /* = zfindexMax() */
         ) {
     _ZFP_ZFXmlAssertCanHaveChild(*this);
     switch(item.type()) {
-        case ZFXmlType::e_XmlNull:
-        case ZFXmlType::e_XmlDocument:
+        case ZFXmlType::e_Null:
+        case ZFXmlType::e_Document:
             ZFCoreCriticalMessage("%s can not be added to %s"
                     , item.type()
                     , this->type()
                 );
             break;
-        case ZFXmlType::e_XmlDeclaration:
-        case ZFXmlType::e_XmlDocType:
-        case ZFXmlType::e_XmlPI:
-            if(this->type() != ZFXmlType::e_XmlDocument) {
+        case ZFXmlType::e_Declaration:
+        case ZFXmlType::e_DocType:
+        case ZFXmlType::e_PI:
+            if(this->type() != ZFXmlType::e_Document) {
                 ZFCoreCriticalMessage("%s can not be added to %s"
                         , item.type()
                         , this->type()
@@ -450,7 +450,7 @@ zfindex ZFXml::childFind(ZF_IN const ZFXml &item) const {
 ZFXml ZFXml::childElement(void) const {
     for(zfindex i = 0; i < this->childCount(); ++i) {
         ZFXml child = this->childAt(i);
-        if(child.type() == ZFXmlType::e_XmlElement) {
+        if(child.type() == ZFXmlType::e_Element) {
             return child;
         }
     }
@@ -459,7 +459,7 @@ ZFXml ZFXml::childElement(void) const {
 
 ZFXml ZFXml::childElementAt(ZF_IN zfindex index) const {
     ZFXml child = this->childAt(index);
-    if(child.type() == ZFXmlType::e_XmlElement) {
+    if(child.type() == ZFXmlType::e_Element) {
         return child;
     }
     else {
@@ -469,7 +469,7 @@ ZFXml ZFXml::childElementAt(ZF_IN zfindex index) const {
 
 // ============================================================
 void ZFXml::CDATA(ZF_IN zfbool CDATA) {
-    ZFCoreAssert(this->type() == ZFXmlType::e_XmlText);
+    ZFCoreAssert(this->type() == ZFXmlType::e_Text);
     d->CDATA = CDATA;
 }
 zfbool ZFXml::CDATA(void) const {
@@ -552,7 +552,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfindex, childCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, childAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml &, childAdd
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml &, child
         , ZFMP_IN(const ZFXml &, item)
         , ZFMP_IN_OPT(zfindex, index, zfindexMax())
         )
@@ -576,34 +576,34 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, CDATA)
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlElement
         , ZFMP_IN(const zfstring &, name)
         ) {
-    return ZFXml(ZFXmlType::e_XmlElement).name(name);
+    return ZFXml(ZFXmlType::e_Element).name(name);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlText
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_XmlText).value(value);
+    return ZFXml(ZFXmlType::e_Text).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlComment
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_XmlComment).value(value);
+    return ZFXml(ZFXmlType::e_Comment).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDocument) {
-    return ZFXml(ZFXmlType::e_XmlDocument);
+    return ZFXml(ZFXmlType::e_Document);
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDeclaration) {
-    return ZFXml(ZFXmlType::e_XmlDeclaration);
+    return ZFXml(ZFXmlType::e_Declaration);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlDocType
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_XmlDocType).value(value);
+    return ZFXml(ZFXmlType::e_DocType).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlPI
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_XmlPI).name(name).value(value);
+    return ZFXml(ZFXmlType::e_PI).name(name).value(value);
 }
 
 // ============================================================
@@ -710,17 +710,17 @@ static void _ZFP_ZFXmlOutputIndent(
         }
     }
 }
-static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(
+static zfbool _ZFP_ZFXmlOutputElementAttrNeedNewLine(
         ZF_IN const ZFXml &element
         , ZF_IN const ZFXmlOutputToken &token
         ) {
     if(!element) {
         return zffalse;
     }
-    if(token.xmlElementAttributeCountBeforeAddNewLine == zfindexMax()) {
+    if(token.xmlElementAttrCountBeforeAddNewLine == zfindexMax()) {
         return zffalse;
     }
-    return element.attrCount() > token.xmlElementAttributeCountBeforeAddNewLine;
+    return element.attrCount() > token.xmlElementAttrCountBeforeAddNewLine;
 }
 static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(
         ZF_IN const ZFXml &xmlItem
@@ -730,7 +730,7 @@ static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(
         return zftrue;
     }
     for(zfindex i = 0; i < xmlItem.childCount(); ++i) {
-        if(xmlItem.childAt(i).type() != ZFXmlType::e_XmlText) {
+        if(xmlItem.childAt(i).type() != ZFXmlType::e_Text) {
             return zftrue;
         }
     }
@@ -743,7 +743,7 @@ static zfbool _ZFP_ZFXmlOutputElementUseSingleTag(
     return (token.xmlElementTrimTagIfNoChildren && element.childCount() == 0);
 }
 
-static void _ZFP_ZFXmlToOutput_XmlAttribute(
+static void _ZFP_ZFXmlToOutput_Attr(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -753,10 +753,10 @@ static void _ZFP_ZFXmlToOutput_XmlAttribute(
         ) {
     zfindex attrIndex = 0;
     for(zfiter it = xmlItem.attrIter(); it; ++it, ++attrIndex) {
-        if(token.xmlElementAttributeCountBeforeAddNewLine == 0
-                || (token.xmlElementAttributeCountBeforeAddNewLine != zfindexMax()
+        if(token.xmlElementAttrCountBeforeAddNewLine == 0
+                || (token.xmlElementAttrCountBeforeAddNewLine != zfindexMax()
                     && attrIndex > 0
-                    && (attrIndex % token.xmlElementAttributeCountBeforeAddNewLine) == 0)
+                    && (attrIndex % token.xmlElementAttrCountBeforeAddNewLine) == 0)
                     ) {
             _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
             _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
@@ -767,14 +767,14 @@ static void _ZFP_ZFXmlToOutput_XmlAttribute(
         }
 
         _ZFP_ZFXmlOutput(output, xmlItem.attrIterKey(it));
-        _ZFP_ZFXmlOutput(output, token.xmlAttributeEqualTag);
+        _ZFP_ZFXmlOutput(output, token.xmlAttrEqualTag);
 
-        _ZFP_ZFXmlOutput(output, token.xmlAttributeQuoteTagLeft);
+        _ZFP_ZFXmlOutput(output, token.xmlAttrQuoteTagLeft);
         _ZFP_ZFXmlOutputEncoded(output, xmlItem.attrIterValue(it));
-        _ZFP_ZFXmlOutput(output, token.xmlAttributeQuoteTagRight);
+        _ZFP_ZFXmlOutput(output, token.xmlAttrQuoteTagRight);
     }
 }
-static void _ZFP_ZFXmlToOutput_XmlElement(
+static void _ZFP_ZFXmlToOutput_Element(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -788,7 +788,7 @@ static void _ZFP_ZFXmlToOutput_XmlElement(
     }
     _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
     if((depth > 0 && siblingIndex > 0) && token.xmlElementAddNewLineAtHeadIfNotSingleLine
-            && (_ZFP_ZFXmlOutputElementAttributeNeedNewLine(xmlItem, token)
+            && (_ZFP_ZFXmlOutputElementAttrNeedNewLine(xmlItem, token)
                 || _ZFP_ZFXmlOutputElementChildNeedNewLine(xmlItem, token))
                 ) {
         _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
@@ -804,7 +804,7 @@ static void _ZFP_ZFXmlToOutput_XmlElement(
     _ZFP_ZFXmlOutput(output, xmlItem.name());
 
     // attribute
-    _ZFP_ZFXmlToOutput_XmlAttribute(output, xmlParent, xmlItem, token, depth + 1, siblingIndex);
+    _ZFP_ZFXmlToOutput_Attr(output, xmlParent, xmlItem, token, depth + 1, siblingIndex);
 
     // element tag end
     if(_ZFP_ZFXmlOutputElementUseSingleTag(xmlItem, token)) {
@@ -825,7 +825,7 @@ static void _ZFP_ZFXmlToOutput_XmlElement(
     // element end
     if(!_ZFP_ZFXmlOutputElementUseSingleTag(xmlItem, token)) {
         if(_ZFP_ZFXmlOutputElementChildNeedNewLine(xmlItem, token)
-                || _ZFP_ZFXmlOutputElementAttributeNeedNewLine(xmlItem, token)
+                || _ZFP_ZFXmlOutputElementAttrNeedNewLine(xmlItem, token)
                 ) {
             _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
             _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
@@ -836,7 +836,7 @@ static void _ZFP_ZFXmlToOutput_XmlElement(
         _ZFP_ZFXmlOutput(output, token.xmlElementEndTagRight);
     }
 }
-static void _ZFP_ZFXmlToOutput_XmlText(
+static void _ZFP_ZFXmlToOutput_Text(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -853,7 +853,7 @@ static void _ZFP_ZFXmlToOutput_XmlText(
         _ZFP_ZFXmlOutputEncoded(output, xmlItem.value());
     }
 }
-static void _ZFP_ZFXmlToOutput_XmlComment(
+static void _ZFP_ZFXmlToOutput_Comment(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -871,7 +871,7 @@ static void _ZFP_ZFXmlToOutput_XmlComment(
     _ZFP_ZFXmlOutput(output, xmlItem.value());
     _ZFP_ZFXmlOutput(output, token.xmlCommentTagRight);
 }
-static void _ZFP_ZFXmlToOutput_XmlDeclaration(
+static void _ZFP_ZFXmlToOutput_Declaration(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -885,10 +885,10 @@ static void _ZFP_ZFXmlToOutput_XmlDeclaration(
     _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
     _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
     _ZFP_ZFXmlOutput(output, token.xmlDeclarationTagLeft);
-    _ZFP_ZFXmlToOutput_XmlAttribute(output, xmlParent, xmlItem, token, depth + 1, siblingIndex);
+    _ZFP_ZFXmlToOutput_Attr(output, xmlParent, xmlItem, token, depth + 1, siblingIndex);
     _ZFP_ZFXmlOutput(output, token.xmlDeclarationTagRight);
 }
-static void _ZFP_ZFXmlToOutput_XmlDocType(
+static void _ZFP_ZFXmlToOutput_DocType(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -906,7 +906,7 @@ static void _ZFP_ZFXmlToOutput_XmlDocType(
     _ZFP_ZFXmlOutput(output, xmlItem.value());
     _ZFP_ZFXmlOutput(output, token.xmlDocTypeTagRight);
 }
-static void _ZFP_ZFXmlToOutput_XmlPI(
+static void _ZFP_ZFXmlToOutput_PI(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFXml &xmlParent
         , ZF_IN const ZFXml &xmlItem
@@ -934,31 +934,31 @@ static void _ZFP_ZFXmlToOutput(
         , ZF_IN zfindex siblingIndex
         ) {
     switch(xmlItem.type()) {
-        case ZFXmlType::e_XmlNull:
+        case ZFXmlType::e_Null:
             ZFCoreCriticalShouldNotGoHere();
             break;
-        case ZFXmlType::e_XmlElement:
-            _ZFP_ZFXmlToOutput_XmlElement(output, xmlParent, xmlItem, token, depth, siblingIndex);
+        case ZFXmlType::e_Element:
+            _ZFP_ZFXmlToOutput_Element(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_XmlText:
-            _ZFP_ZFXmlToOutput_XmlText(output, xmlParent, xmlItem, token, depth, siblingIndex);
+        case ZFXmlType::e_Text:
+            _ZFP_ZFXmlToOutput_Text(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_XmlComment:
-            _ZFP_ZFXmlToOutput_XmlComment(output, xmlParent, xmlItem, token, depth, siblingIndex);
+        case ZFXmlType::e_Comment:
+            _ZFP_ZFXmlToOutput_Comment(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_XmlDocument:
+        case ZFXmlType::e_Document:
             for(zfindex i = 0; i < xmlItem.childCount(); ++i) {
                 _ZFP_ZFXmlToOutput(output, xmlItem, xmlItem.childAt(i), token, depth, i);
             }
             break;
-        case ZFXmlType::e_XmlDeclaration:
-            _ZFP_ZFXmlToOutput_XmlDeclaration(output, xmlParent, xmlItem, token, depth, siblingIndex);
+        case ZFXmlType::e_Declaration:
+            _ZFP_ZFXmlToOutput_Declaration(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_XmlDocType:
-            _ZFP_ZFXmlToOutput_XmlDocType(output, xmlParent, xmlItem, token, depth, siblingIndex);
+        case ZFXmlType::e_DocType:
+            _ZFP_ZFXmlToOutput_DocType(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_XmlPI:
-            _ZFP_ZFXmlToOutput_XmlPI(output, xmlParent, xmlItem, token, depth, siblingIndex);
+        case ZFXmlType::e_PI:
+            _ZFP_ZFXmlToOutput_PI(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
         default:
             ZFCoreCriticalShouldNotGoHere();

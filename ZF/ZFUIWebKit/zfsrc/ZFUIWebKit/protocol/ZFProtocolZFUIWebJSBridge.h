@@ -28,10 +28,10 @@ public:
             ) zfpurevirtual;
 
 public:
-    /** @brief see #ZFUIWebJSBridge::webMessageSend */
-    virtual ZFJson webMessageSend(
+    /** @brief see #ZFUIWebJSBridge::send */
+    virtual ZFJson send(
             ZF_IN ZFUIWebJSBridge *webJSBridge
-            , ZF_IN_OUT ZFJson &messageSend
+            , ZF_IN_OUT ZFJson &send
             ) zfpurevirtual;
 
     // ============================================================
@@ -42,9 +42,9 @@ public:
      */
     zffinal ZFJson notifyWebMessageRecv(
             ZF_IN ZFUIWebJSBridge *webJSBridge
-            , ZF_IN_OUT ZFJson &messageRecv
+            , ZF_IN_OUT ZFJson &recv
             ) {
-        return webJSBridge->_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(messageRecv);
+        return webJSBridge->_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(recv);
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIWebJSBridge)
 

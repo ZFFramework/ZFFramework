@@ -20,7 +20,7 @@ public:
     ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback;
     ZFUIMargin nativeImplViewMargin;
 
-    ZFUIView *viewParent;
+    ZFUIView *parent;
     ZFUIViewChildLayerEnum viewLayer;
     zfautoT<ZFUILayoutParam> layoutParam;
     zfautoT<ZFUILayoutParam> serializableRefLayoutParam;
@@ -51,7 +51,7 @@ public:
         stateFlag_layoutRequestedRecursively = 1 << 2,
         stateFlag_layouting = 1 << 3,
         stateFlag_viewTreeInWindow = 1 << 4,
-        stateFlag_viewTreeVisibleInternal = 1 << 5, // this flag detects viewVisible only, without checking viewTreeInWindow
+        stateFlag_viewTreeVisibleInternal = 1 << 5, // this flag detects visible only, without checking viewTreeInWindow
         stateFlag_viewFrameOverrideFlag = 1 << 6,
         stateFlag_viewFrameOverride_x = 1 << 7,
         stateFlag_viewFrameOverride_y = 1 << 8,
@@ -87,7 +87,7 @@ public:
     , nativeImplView(zfnull)
     , nativeImplViewDeleteCallback(zfnull)
     , nativeImplViewMargin(ZFUIMarginZero())
-    , viewParent(zfnull)
+    , parent(zfnull)
     , viewLayer(ZFUIViewChildLayer::e_Normal)
     , layoutParam(zfnull)
     , serializableRefLayoutParam(zfnull)
@@ -152,19 +152,19 @@ public:
             ) {
         for(zfindex i = 0; i < owner->d->layerInternalImpl.count(); ++i) {
             ZFUIView *v = owner->d->layerInternalImpl[i];
-            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->viewVisible());
+            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->visible());
         }
         for(zfindex i = 0; i < owner->d->layerInternalBg.count(); ++i) {
             ZFUIView *v = owner->d->layerInternalBg[i];
-            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->viewVisible());
+            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->visible());
         }
         for(zfindex i = 0; i < owner->d->layerNormal.count(); ++i) {
             ZFUIView *v = owner->d->layerNormal[i];
-            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->viewVisible());
+            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->visible());
         }
         for(zfindex i = 0; i < owner->d->layerInternalFg.count(); ++i) {
             ZFUIView *v = owner->d->layerInternalFg[i];
-            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->viewVisible());
+            v->d->viewTreeVisibleUpdate(v, viewTreeInWindow, viewTreeVisibleInternal && v->visible());
         }
     }
     void layoutRequest(
@@ -181,7 +181,7 @@ public:
                         view->layoutOnLayoutRequest();
                         impl->layoutRequest(view);
                     }
-                    view = view->viewParent();
+                    view = view->parent();
                 } while(view != zfnull && !ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequestedRecursively));
             }
         }
@@ -308,7 +308,7 @@ public:
         }
     }
     void viewFrameUpdateForImpl(ZF_IN ZFUIView *view) {
-        if(view->UIScale() == 1 || view->UIScale() == 0 || view->viewParent() == zfnull) {
+        if(view->UIScale() == 1 || view->UIScale() == 0 || view->parent() == zfnull) {
             ZFPROTOCOL_ACCESS(ZFUIView)->viewFrame(
                     view,
                     ZFUIRectApplyScale(this->viewFrame, view->UIScaleFixed())
@@ -379,7 +379,7 @@ public:
         child->d->UIScaleForImpl = parent->d->UIScaleForImpl;
         UIScaleUpdateRecursively(child);
     }
-    ZFUILayoutParam *childAdd(
+    ZFUILayoutParam *child(
             ZF_IN ZFUIView *owner
             , ZF_IN ZFUIViewChildLayerEnum childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
@@ -390,7 +390,7 @@ public:
         ZFCoreAssertWithMessageTrim(!owner->objectDeallocRunning(),
                 "[ZFUIView] add child during parent's dealloc is not allowed");
         ZFCoreAssertWithMessageTrim(child != zfnull, "[ZFUIView] add null child");
-        ZFCoreAssertWithMessageTrim(child->viewParent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
+        ZFCoreAssertWithMessageTrim(child->parent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
         zfblockedRelease(zfRetain(child));
 
         if(this->serializableRefLayoutParamCache == zfnull) {
@@ -539,7 +539,7 @@ public:
             ) {
         ZFCoreAssert(atIndex < layer.count());
         ZFCoreAssert(toReplace != zfnull);
-        ZFCoreAssert(toReplace->viewParent() == zfnull);
+        ZFCoreAssert(toReplace->parent() == zfnull);
 
         zfautoT<ZFUIView> old = layer[atIndex];
         layer[atIndex] = toReplace;
@@ -750,7 +750,7 @@ public:
                     return zffalse;
                 }
                 childData.category(categoryTag);
-                serializableData.childAdd(childData);
+                serializableData.child(childData);
             }
         }
         else {
@@ -776,7 +776,7 @@ public:
                     return zffalse;
                 }
                 childData.category(categoryTag);
-                serializableData.childAdd(childData);
+                serializableData.child(childData);
             }
         }
         return zftrue;
@@ -889,7 +889,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
                 return zffalse;
             }
             ZFUIView *child = element;
-            this->childAddWithParam(child, child->layoutParam());
+            this->childWithParam(child, child->layoutParam());
 
             categoryData.resolveMark();
         }
@@ -954,7 +954,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     // layoutParam
-    if(d->layoutParam != zfnull && this->viewParent() != zfnull) {
+    if(d->layoutParam != zfnull && this->parent() != zfnull) {
         ZFUILayoutParam *refLayoutParam = ((ref == zfnull) ? zfnull : ref->d->layoutParam);
         if(refLayoutParam == zfnull) {
             refLayoutParam = d->serializableRefLayoutParam;
@@ -966,7 +966,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
             }
             if(categoryData.attrCount() > 0 || categoryData.childCount() > 0) {
                 categoryData.category(ZFSerializableKeyword_ZFUIView_layoutParam);
-                serializableData.childAdd(categoryData);
+                serializableData.child(categoryData);
             }
         }
     }
@@ -994,7 +994,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
                     return zffalse;
                 }
                 childData.category(ZFSerializableKeyword_ZFUIView_child);
-                serializableData.childAdd(childData);
+                serializableData.child(childData);
             }
         }
         else {
@@ -1011,14 +1011,14 @@ zfbool ZFUIView::serializableOnSerializeToData(
 
 // ============================================================
 // properties
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewVisible) {
-    if(this->viewVisible() != propertyValueOld) {
-        ZFPROTOCOL_ACCESS(ZFUIView)->viewVisible(this, this->viewVisible());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, visible) {
+    if(this->visible() != propertyValueOld) {
+        ZFPROTOCOL_ACCESS(ZFUIView)->visible(this, this->visible());
         d->viewTreeVisibleUpdate(
                 this
                 , this->viewTreeInWindow()
-                , this->viewVisible() && (this->viewParent()
-                    ? ZFBitTest(this->viewParent()->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal)
+                , this->visible() && (this->parent()
+                    ? ZFBitTest(this->parent()->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal)
                     : zftrue)
                 );
         this->layoutRequest();
@@ -1038,18 +1038,18 @@ void ZFUIView::_ZFP_ZFUIView_viewTreeInWindow(ZF_IN zfbool viewTreeInWindow) {
             , ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal)
             );
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewAlpha) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, alpha) {
     propertyValue = zfmApplyRange<zffloat>(propertyValue, 0, 1);
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewAlpha) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, alpha) {
     if(propertyValue != propertyValueOld) {
-        ZFPROTOCOL_ACCESS(ZFUIView)->viewAlpha(this, this->viewAlpha());
+        ZFPROTOCOL_ACCESS(ZFUIView)->alpha(this, this->alpha());
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewFocusable) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, focusable) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     if(impl != zfnull) {
-        impl->viewFocusable(this, this->viewFocusable());
+        impl->focusable(this, this->focusable());
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewUIEnable) {
@@ -1058,8 +1058,8 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewUIEnable) {
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewUIEnableTree) {
     ZFPROTOCOL_ACCESS(ZFUIView)->viewUIEnableTree(this, this->viewUIEnableTree());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewMouseHoverEventEnable) {
-    ZFPROTOCOL_ACCESS(ZFUIView)->viewMouseHoverEventEnable(this, this->viewMouseHoverEventEnable());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, mouseHoverEnable) {
+    ZFPROTOCOL_ACCESS(ZFUIView)->mouseHoverEnable(this, this->mouseHoverEnable());
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizePrefer) {
@@ -1077,31 +1077,31 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizeMax) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUIColor, viewBackgroundColor) {
-    ZFPROTOCOL_ACCESS(ZFUIView)->viewBackgroundColor(this, this->viewBackgroundColor());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUIColor, backgroundColor) {
+    ZFPROTOCOL_ACCESS(ZFUIView)->backgroundColor(this, this->backgroundColor());
 }
 
-ZFMETHOD_DEFINE_0(ZFUIView, ZFUITransformFlags, viewTransformAvailable) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFUITransformFlags, transformAvailable) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewTransform) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewTransform);
-    return impl ? impl->viewTransformAvailable() : ZFUITransform::e_Unavailable;
+    return impl ? impl->transformAvailable() : ZFUITransform::e_Unavailable;
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateX) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, translateX) {
     if(propertyValue != propertyValueOld) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateY) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, translateY) {
     if(propertyValue != propertyValueOld) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateZ) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, translateZ) {
     if(propertyValue != propertyValueOld) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleX) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleX) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }
@@ -1109,7 +1109,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleX) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleY) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleY) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }
@@ -1117,7 +1117,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleY) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleZ) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleZ) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }
@@ -1125,7 +1125,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleZ) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateX) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateX) {
     while(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1136,7 +1136,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateX) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateY) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateY) {
     while(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1147,7 +1147,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateY) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateZ) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateZ) {
     while(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1220,10 +1220,14 @@ void ZFUIView::objectOnDeallocPrepare(void) {
     // directly remove all children, better performance
     this->implChildOnRemoveAllForDealloc();
 
-    ZFCoreArray<zfautoT<ZFUIView> > &layerNormal = d->layerNormal;
-    ZFCoreArray<zfautoT<ZFUIView> > &layerInternalFg = d->layerInternalFg;
-    ZFCoreArray<zfautoT<ZFUIView> > &layerInternalBg = d->layerInternalBg;
-    ZFCoreArray<zfautoT<ZFUIView> > &layerInternalImpl = d->layerInternalImpl;
+    ZFCoreArray<zfautoT<ZFUIView> > layerNormal;
+    ZFCoreArray<zfautoT<ZFUIView> > layerInternalFg;
+    ZFCoreArray<zfautoT<ZFUIView> > layerInternalBg;
+    ZFCoreArray<zfautoT<ZFUIView> > layerInternalImpl;
+    d->layerNormal.swap(layerNormal);
+    d->layerInternalFg.swap(layerInternalFg);
+    d->layerInternalBg.swap(layerInternalBg);
+    d->layerInternalImpl.swap(layerInternalImpl);
 
     for(zfindex i = layerNormal.count() - 1; i != zfindexMax(); --i) {
         zfautoT<ZFUIView> child = layerNormal[i];
@@ -1272,7 +1276,7 @@ void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfstringAppend(ret, "(UIScale:%s)", this->UIScale());
     }
 
-    if(!this->viewVisible()) {
+    if(!this->visible()) {
         ret += " Hidden";
     }
 
@@ -1339,7 +1343,7 @@ void ZFUIView::implChildOnAdd(
         , ZF_IN ZFUIViewChildLayerEnum childLayer
         , ZF_IN zfindex childLayerIndex
         ) {
-    ZFPROTOCOL_ACCESS(ZFUIView)->childAdd(this, child, virtualIndex, childLayer, childLayerIndex);
+    ZFPROTOCOL_ACCESS(ZFUIView)->child(this, child, virtualIndex, childLayer, childLayerIndex);
 }
 void ZFUIView::implChildOnRemove(
         ZF_IN ZFUIView *child
@@ -1356,18 +1360,18 @@ void ZFUIView::implChildOnRemoveAllForDealloc(void) {
 // ============================================================
 // parent
 void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
-        ZF_IN ZFUIView *viewParent
+        ZF_IN ZFUIView *parent
         , ZF_IN ZFUILayoutParam *layoutParam
         , ZF_IN ZFUIViewChildLayerEnum viewLayer
         ) {
-    if(viewParent == zfnull) {
-        d->viewParent = zfnull;
+    if(parent == zfnull) {
+        d->parent = zfnull;
         if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
             d->viewFramePrev = ZFUIRectZero();
         }
     }
     else {
-        d->viewParent = viewParent;
+        d->parent = parent;
     }
 
     if(layoutParam != zfnull) {
@@ -1381,15 +1385,15 @@ void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
 
     d->viewLayer = viewLayer;
 
-    if(viewParent) {
+    if(parent) {
         d->viewTreeVisibleUpdate(
                 this
-                , viewParent->viewTreeInWindow()
-                , this->viewVisible() && ZFBitTest(viewParent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal)
+                , parent->viewTreeInWindow()
+                , this->visible() && ZFBitTest(parent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal)
                 );
     }
     else {
-        d->viewTreeVisibleUpdate(this, zffalse, this->viewVisible());
+        d->viewTreeVisibleUpdate(this, zffalse, this->visible());
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, void *, nativeView) {
@@ -1415,55 +1419,55 @@ void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyRemove(ZF_IN ZFUIView *view) {
 
 // ============================================================
 // view focus
-ZFMETHOD_DEFINE_0(ZFUIView, zfbool, viewFocused) {
+ZFMETHOD_DEFINE_0(ZFUIView, zfbool, focused) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     if(impl != zfnull) {
-        return impl->viewFocused(this);
+        return impl->focused(this);
     }
     else {
         return zffalse;
     }
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewFocusRequest
-        , ZFMP_IN(zfbool, viewFocus)
+ZFMETHOD_DEFINE_1(ZFUIView, void, focusRequest
+        , ZFMP_IN(zfbool, focus)
         ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     if(impl != zfnull) {
-        if(!viewFocus || this->viewFocusable()) {
-            impl->viewFocusRequest(this, viewFocus);
+        if(!focus || this->focusable()) {
+            impl->focusRequest(this, focus);
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUIView>, viewFocusFind) {
+ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUIView>, focusFind) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     if(impl == zfnull) {
         return zfnull;
     }
     else {
-        return impl->viewFocusFind(this);
+        return impl->focusFind(this);
     }
 }
 
 // ============================================================
 // parent
-ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUIView>, viewParent) {
-    return d->viewParent;
+ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUIView>, parent) {
+    return d->parent;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIView, void, viewRemoveFromParent) {
-    if(this->viewParent() != zfnull) {
+ZFMETHOD_DEFINE_0(ZFUIView, void, removeFromParent) {
+    if(this->parent() != zfnull) {
         switch(this->viewLayer()) {
             case ZFUIViewChildLayer::e_Normal:
-                this->viewParent()->childRemove(this);
+                this->parent()->childRemove(this);
                 break;
             case ZFUIViewChildLayer::e_InternalImpl:
-                this->viewParent()->internalImplViewRemove(this);
+                this->parent()->internalImplViewRemove(this);
                 break;
             case ZFUIViewChildLayer::e_InternalBg:
-                this->viewParent()->internalBgViewRemove(this);
+                this->parent()->internalBgViewRemove(this);
                 break;
             case ZFUIViewChildLayer::e_InternalFg:
-                this->viewParent()->internalFgViewRemove(this);
+                this->parent()->internalFgViewRemove(this);
                 break;
             default:
                 ZFCoreCriticalShouldNotGoHere();
@@ -1517,7 +1521,7 @@ const ZFClass *ZFUIView::layoutParamClass(void) {
 ZFMETHOD_DEFINE_1(ZFUIView, void, layoutParam
         , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         ) {
-    if(this->viewParent() != zfnull && layoutParam != zfnull && !layoutParam->classData()->classIsTypeOf(this->layoutParamClass())) {
+    if(this->parent() != zfnull && layoutParam != zfnull && !layoutParam->classData()->classIsTypeOf(this->layoutParamClass())) {
         zfautoT<ZFUILayoutParam> layoutParamTmp = this->layoutParamCreate();
         layoutParamTmp->styleableCopyFrom(layoutParam);
         d->layoutParamUpdate(this, layoutParamTmp);
@@ -1637,7 +1641,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFrame
         , ZFMP_IN(ZFUIRect const &, viewFrame)
         ) {
     if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)
-            && (d->viewParent == zfnull || !ZFBitTest(d->viewParent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting))
+            && (d->parent == zfnull || !ZFBitTest(d->parent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting))
             ) { // changed by user or animation
         if(d->viewFrame != viewFrame) {
             if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
@@ -1711,16 +1715,16 @@ ZFMETHOD_DEFINE_0(ZFUIView, void, viewFrameReset) {
         ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag
                 | _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask
                 );
-        if(this->viewParent() != zfnull) {
-            this->viewParent()->layoutRequest();
+        if(this->parent() != zfnull) {
+            this->parent()->layoutRequest();
         }
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewX) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, x) {
     return this->viewFrame().x;
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewX
+ZFMETHOD_DEFINE_1(ZFUIView, void, x
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
     if(propertyValue != this->viewFrame().x) {
@@ -1730,10 +1734,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewX
         this->viewFrame(viewFrame);
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewY) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, y) {
     return this->viewFrame().y;
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewY
+ZFMETHOD_DEFINE_1(ZFUIView, void, y
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
     if(propertyValue != this->viewFrame().y) {
@@ -1743,10 +1747,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewY
         this->viewFrame(viewFrame);
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewWidth) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, width) {
     return this->viewFrame().width;
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewWidth
+ZFMETHOD_DEFINE_1(ZFUIView, void, width
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
     if(propertyValue != this->viewFrame().width) {
@@ -1756,10 +1760,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewWidth
         this->viewFrame(viewFrame);
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewHeight) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, height) {
     return this->viewFrame().height;
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewHeight
+ZFMETHOD_DEFINE_1(ZFUIView, void, height
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
     if(propertyValue != this->viewFrame().height) {
@@ -1769,10 +1773,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewHeight
         this->viewFrame(viewFrame);
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterX) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, centerX) {
     return ZFUIRectGetCenterX(this->viewFrame());
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterX
+ZFMETHOD_DEFINE_1(ZFUIView, void, centerX
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
     if(propertyValue != ZFUIRectGetCenterX(this->viewFrame())) {
@@ -1782,10 +1786,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterX
         this->viewFrame(viewFrame);
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zffloat, viewCenterY) {
+ZFMETHOD_DEFINE_0(ZFUIView, zffloat, centerY) {
     return ZFUIRectGetCenterY(this->viewFrame());
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterY
+ZFMETHOD_DEFINE_1(ZFUIView, void, centerY
         , ZFMP_IN(zffloat const &, propertyValue)
         ) {
     if(propertyValue != ZFUIRectGetCenterY(this->viewFrame())) {
@@ -1886,15 +1890,15 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindById
     return zfnull;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childAddWithParam
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childWithParam
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return d->childAdd(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, view, layoutParam, atIndex);
+    return d->child(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, view, layoutParam, atIndex);
 }
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, childAdd
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, child
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
@@ -2032,7 +2036,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalImplViewAdd
         , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
         , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
         ) {
-    return d->childAdd(this, ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->child(this, ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalImplViewRemove
         , ZFMP_IN(ZFUIView *, view)
@@ -2048,7 +2052,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalBgViewAdd
         , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
         , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
         ) {
-    return d->childAdd(this, ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->child(this, ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalBgViewRemove
         , ZFMP_IN(ZFUIView *, view)
@@ -2064,7 +2068,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalFgViewAdd
         , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
         , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
         ) {
-    return d->childAdd(this, ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->child(this, ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalFgViewRemove
         , ZFMP_IN(ZFUIView *, view)
@@ -2080,18 +2084,16 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, internalFgViewArray
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd
         , ZFMP_IN(const zfstring &, tag)
         ) {
-    if(zfstringIsEmpty(tag)) {
-        return;
+    if(tag) {
+        d->internalViewAutoSerializeTags[tag] = zftrue;
     }
-    d->internalViewAutoSerializeTags[tag] = zftrue;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove
         , ZFMP_IN(const zfstring &, tag)
         ) {
-    if(zfstringIsEmpty(tag)) {
-        return;
+    if(tag) {
+        d->internalViewAutoSerializeTags.erase(tag);
     }
-    d->internalViewAutoSerializeTags.erase(tag);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, void, internalViewAutoSerializeTagRemoveAll) {
     d->internalViewAutoSerializeTags.clear();
@@ -2170,30 +2172,30 @@ void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
     else if(eventClass->classIsTypeOf(ZFUIKeyEvent::ClassData())) {
         ZFUIKeyEvent *eventTmp = zfcast(ZFUIKeyEvent *, event);
         this->viewEventOnKeyEvent(eventTmp);
-        ZFUIView *view = this->viewParent();
+        ZFUIView *view = this->parent();
         while(view != zfnull && !event->eventResolved()) {
             view->viewEventOnKeyEvent(eventTmp);
-            view = view->viewParent();
+            view = view->parent();
         }
     }
     else if(eventClass->classIsTypeOf(ZFUIWheelEvent::ClassData())) {
         ZFUIWheelEvent *eventTmp = zfcast(ZFUIWheelEvent *, event);
         this->viewEventOnWheelEvent(eventTmp);
-        ZFUIView *view = this->viewParent();
+        ZFUIView *view = this->parent();
         while(view != zfnull && !event->eventResolved()) {
             view->viewEventOnWheelEvent(eventTmp);
-            view = view->viewParent();
+            view = view->parent();
         }
     }
 }
 
 void ZFUIView::viewEventOnMouseEvent(ZF_IN ZFUIMouseEvent *mouseEvent) {
     if(this->viewUIEnable()) {
-        if(mouseEvent->mouseAction == ZFUIMouseAction::e_MouseUp
-                && this->viewFocusable()
-                && this->viewFocusObtainWhenClick()
+        if(mouseEvent->mouseAction == ZFUIMouseAction::e_Up
+                && this->focusable()
+                && this->focusObtainWhenClick()
                 ) {
-            this->viewFocusRequest(zftrue);
+            this->focusRequest(zftrue);
         }
         mouseEvent->eventResolved(zftrue);
     }
@@ -2221,7 +2223,7 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     for(zfindex i = 0; i < ref->childCount(); ++i) {
         zfautoT<ZFUIView> child = ref->childAt(i)->copy();
         zfautoT<ZFUILayoutParam> childLayoutParam = ref->childAt(i)->layoutParam()->copy();
-        this->childAddWithParam(child, childLayoutParam);
+        this->childWithParam(child, childLayoutParam);
     }
 }
 

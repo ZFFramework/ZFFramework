@@ -79,7 +79,7 @@ public:
             case ZFCompressLevel::e_GoodSpeed:
                 flags = 3;
                 break;
-            case ZFCompressLevel::e_DefaultCompress:
+            case ZFCompressLevel::e_Normal:
                 flags = MZ_DEFAULT_LEVEL;
                 break;
             case ZFCompressLevel::e_GoodCompress:
@@ -139,7 +139,7 @@ public:
                 zffree(zip);
                 return zfnull;
             }
-            inputSize = pOpaque->zipBuffer.bufferSize();
+            inputSize = pOpaque->zipBuffer.length();
             zip->m_pIO_opaque = pOpaque;
             zip->m_pRead = _readFuncForBuffer;
         }
@@ -228,7 +228,7 @@ private:
         if(inputSize == zfindexMax()) {
             ZFBuffer buffer;
             ZFInputRead(buffer, input);
-            return mz_zip_writer_add_mem(&zip, filePath, buffer.buffer(), buffer.bufferSize(), flags);
+            return mz_zip_writer_add_mem(&zip, filePath, buffer.buffer(), buffer.length(), flags);
         }
 
         mz_zip_archive *pZip = &zip;
@@ -409,11 +409,11 @@ private:
     }
     static size_t _readFuncForBuffer(void *pOpaque, mz_uint64 file_ofs, void *pBuf, size_t n) {
         ZFBuffer &buffer = ((_DecompressToken *)pOpaque)->zipBuffer;
-        if((zfindex)file_ofs >= buffer.bufferSize()) {
+        if((zfindex)file_ofs >= buffer.length()) {
             return 0;
         }
-        else if((zfindex)(file_ofs + n) >= buffer.bufferSize()) {
-            zfindex len = buffer.bufferSize() - (zfindex)file_ofs;
+        else if((zfindex)(file_ofs + n) >= buffer.length()) {
+            zfindex len = buffer.length() - (zfindex)file_ofs;
             zfmemcpy(pBuf, buffer.bufferT<zfbyte *>() + file_ofs, len);
             return (size_t)len;
         }

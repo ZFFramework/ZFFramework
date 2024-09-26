@@ -17,9 +17,9 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIButtonGroupBasic> layout;
-        container->childAdd(layout)->c_margin(40);
-        layout->buttonGroupType(ZFUIButtonGroupType::e_Tab);
-        layout->layoutOrientation(ZFUIOrientation::e_Top);
+        container->child(layout)->c_margin(40);
+        layout->type(ZFUIButtonGroupType::e_Tab);
+        layout->orientation(ZFUIOrientation::e_Top);
 
         this->prepareChildren(layout);
 
@@ -39,7 +39,7 @@ private:
     void prepareChildren(ZF_IN ZFUIButtonGroup *layout) {
         for(zfindex i = 0; i < 4; ++i) {
             zfobj<ZFUIButtonRatio> child;
-            layout->buttonAdd(child);
+            layout->button(child);
             child->label()->text(zfstr("btn %s", i));
         }
     }

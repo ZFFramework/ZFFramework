@@ -174,7 +174,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         ZFLogTrim('ZF_NAME not set')
         return false
     end
-    param:replaceDataAdd('proj_name', config:get('ZF_NAME'))
+    param:replaceData('proj_name', config:get('ZF_NAME'))
 
     if not zfstringIsEmpty(DST_PATH) then
         config:set('ZF_INPLACE', '')
@@ -188,11 +188,11 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
 
     if zfstringIsEqual(config:get('ZF_TYPE'), 'app') then
-        param:enableDataAdd('app_proj', zftrue)
+        param:enableData('app_proj', zftrue)
     elseif zfstringIsEqual(config:get('ZF_TYPE'), 'lib') then
-        param:enableDataAdd('lib_proj', zftrue)
+        param:enableData('lib_proj', zftrue)
     elseif zfstringIsEqual(config:get('ZF_TYPE'), 'impl') then
-        param:enableDataAdd('impl_proj', zftrue)
+        param:enableData('impl_proj', zftrue)
     else
         ZFLogTrim('ZF_TYPE not set')
         return false
@@ -203,8 +203,8 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local libIndex = 0
         while libIndex < ZF_LIB:count() do
             local lib = ZF_LIB:get(libIndex)
-            param:enableDataAdd('lib_require_' .. libIndex, zftrue)
-            param:replaceDataAdd('lib_name_' .. libIndex, lib)
+            param:enableData('lib_require_' .. libIndex, zftrue)
+            param:replaceData('lib_name_' .. libIndex, lib)
             libIndex = libIndex + 1
         end
     end
@@ -213,22 +213,22 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local implIndex = 0
         while implIndex < ZF_IMPL:count() do
             local impl = ZF_IMPL:get(implIndex)
-            param:enableDataAdd('impl_require_' .. implIndex, zftrue)
-            param:replaceDataAdd('impl_name_' .. implIndex, impl)
+            param:enableData('impl_require_' .. implIndex, zftrue)
+            param:replaceData('impl_name_' .. implIndex, impl)
             implIndex = implIndex + 1
 
             local _HAS_UIKit = (zfstringFind(impl, 'UI') ~= zfindexMax())
             if _HAS_UIKit then
-                param:enableDataAdd('needUIKit', zftrue)
+                param:enableData('needUIKit', zftrue)
             end
             local _HAS_UIWebKit = (zfstringFind(impl, 'UIWeb') ~= zfindexMax())
             if _HAS_UIWebKit then
-                param:enableDataAdd('needUIKit', zftrue)
-                param:enableDataAdd('needUIWebKit', zftrue)
+                param:enableData('needUIKit', zftrue)
+                param:enableData('needUIWebKit', zftrue)
             end
             local _HAS_Net = (zfstringFind(impl, 'Net') ~= zfindexMax())
             if _HAS_Net then
-                param:enableDataAdd('needNet', zftrue)
+                param:enableData('needNet', zftrue)
             end
         end
     end
@@ -245,9 +245,9 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local libExtIndex = 0
         while libExtIndex < ZF_LIB_EXT:count() do
             local libExt = ZF_LIB_EXT:get(libExtIndex)
-            param:enableDataAdd('lib_ext_require_' .. libExtIndex, zftrue)
-            param:replaceDataAdd('lib_ext_git_' .. libExtIndex, libExt)
-            param:replaceDataAdd('lib_ext_name_' .. libExtIndex, getExtName(libExt))
+            param:enableData('lib_ext_require_' .. libExtIndex, zftrue)
+            param:replaceData('lib_ext_git_' .. libExtIndex, libExt)
+            param:replaceData('lib_ext_name_' .. libExtIndex, getExtName(libExt))
             libExtIndex = libExtIndex + 1
         end
     end
@@ -256,28 +256,28 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local implExtIndex = 0
         while implExtIndex < ZF_IMPL_EXT:count() do
             local implExt = ZF_IMPL_EXT:get(implExtIndex)
-            param:enableDataAdd('impl_ext_require_' .. implExtIndex, zftrue)
-            param:replaceDataAdd('impl_ext_git_' .. implExtIndex, implExt)
-            param:replaceDataAdd('impl_ext_name_' .. implExtIndex, getExtName(implExt))
+            param:enableData('impl_ext_require_' .. implExtIndex, zftrue)
+            param:replaceData('impl_ext_git_' .. implExtIndex, implExt)
+            param:replaceData('impl_ext_name_' .. implExtIndex, getExtName(implExt))
             implExtIndex = implExtIndex + 1
         end
     end
     if zfstringIsEqual(config:get('ZF_TYPE'), 'impl') then
         if zfstringIsEqual(config:get('ZF_NAME'), 'ZF_impl') then
-            param:enableDataAdd('needUIKit', zftrue)
+            param:enableData('needUIKit', zftrue)
         end
         local _HAS_UIKit = (zfstringFind(config:get('ZF_NAME'), 'UI') ~= zfindexMax())
         if _HAS_UIKit then
-            param:enableDataAdd('needUIKit', zftrue)
+            param:enableData('needUIKit', zftrue)
         end
         local _HAS_UIWebKit = (zfstringFind(config:get('ZF_NAME'), 'UIWeb') ~= zfindexMax())
         if _HAS_UIWebKit then
-            param:enableDataAdd('needUIKit', zftrue)
-            param:enableDataAdd('needUIWebKit', zftrue)
+            param:enableData('needUIKit', zftrue)
+            param:enableData('needUIWebKit', zftrue)
         end
         local _HAS_Net = (zfstringFind(config:get('ZF_NAME'), 'Net') ~= zfindexMax())
         if _HAS_Net then
-            param:enableDataAdd('needNet', zftrue)
+            param:enableData('needNet', zftrue)
         end
     end
     if zftrue then
@@ -446,7 +446,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         ---@type v_ZFFileFindData
         local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), SRC_DIR_FORMATED:length(), zfindexMax())
-        local filtered = (not zfstringIsEqual(fd:fileName(), 'zfautoscript_zfproj.txt'))
+        local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         if not filtered then
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
                 if ZFRegExpFind(relPath, ZF_EXCLUDE_FILE_TMP:get(i)) ~= ZFIndexRangeZero() then

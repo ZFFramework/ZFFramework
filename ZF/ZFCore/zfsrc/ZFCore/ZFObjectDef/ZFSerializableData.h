@@ -80,6 +80,8 @@ public:
     ZFSerializableData &operator = (ZF_IN const ZFSerializableData &ref);
     zfbool operator == (ZF_IN const ZFSerializableData &ref) const;
     inline zfbool operator != (ZF_IN const ZFSerializableData &ref) const {return !this->operator == (ref);}
+    inline zfbool operator == (ZF_IN const zfnullT &dummy) const {return !this->valid();}
+    inline zfbool operator != (ZF_IN const zfnullT &dummy) const {return this->valid();}
     inline operator bool (void) const {return this->valid();}
     ~ZFSerializableData(void);
     /** @endcond */
@@ -267,13 +269,13 @@ public:
      *
      * note this method won't check duplicate data with same name
      */
-    zffinal void childAdd(ZF_IN const ZFSerializableData &element);
+    zffinal void child(ZF_IN const ZFSerializableData &element);
     /**
      * @brief add child element
      *
      * note this method won't check duplicate data with same name
      */
-    zffinal void childAdd(
+    zffinal void child(
             ZF_IN const ZFSerializableData &element
             , ZF_IN zfindex atIndex
             );
@@ -329,49 +331,49 @@ public:
     zffinal void resolveUnmark(void) const;
 
     /** @brief see #resolved */
-    zffinal zfbool resolvedAttribute(ZF_IN const zfstring &name) const;
+    zffinal zfbool resolvedAttr(ZF_IN const zfstring &name) const;
     /** @brief see #resolved */
-    zffinal void resolveAttributeMark(ZF_IN const zfstring &name) const;
+    zffinal void resolveAttrMark(ZF_IN const zfstring &name) const;
     /** @brief see #resolved */
-    zffinal void resolveAttributeUnmark(ZF_IN const zfstring &name) const;
+    zffinal void resolveAttrUnmark(ZF_IN const zfstring &name) const;
 
     /** @brief see #resolved */
     zffinal zfbool resolvedPropertyName(void) const {
-        return this->resolvedAttribute(ZFSerializableKeyword_prop);
+        return this->resolvedAttr(ZFSerializableKeyword_prop);
     }
     /** @brief see #resolved */
     zffinal void resolvePropertyNameMark(void) const {
-        this->resolveAttributeMark(ZFSerializableKeyword_prop);
+        this->resolveAttrMark(ZFSerializableKeyword_prop);
     }
     /** @brief see #resolved */
     zffinal void resolvePropertyNameUnmark(void) const {
-        this->resolveAttributeUnmark(ZFSerializableKeyword_prop);
+        this->resolveAttrUnmark(ZFSerializableKeyword_prop);
     }
 
     /** @brief see #resolved */
     zffinal zfbool resolvedPropertyValue(void) const {
-        return this->resolvedAttribute(ZFSerializableKeyword_value);
+        return this->resolvedAttr(ZFSerializableKeyword_value);
     }
     /** @brief see #resolved */
     zffinal void resolvePropertyValueMark(void) const {
-        this->resolveAttributeMark(ZFSerializableKeyword_value);
+        this->resolveAttrMark(ZFSerializableKeyword_value);
     }
     /** @brief see #resolved */
     zffinal void resolvePropertyValueUnmark(void) const {
-        this->resolveAttributeUnmark(ZFSerializableKeyword_value);
+        this->resolveAttrUnmark(ZFSerializableKeyword_value);
     }
 
     /** @brief see #resolved */
     zffinal zfbool resolvedCategory(void) const {
-        return this->resolvedAttribute(ZFSerializableKeyword_category);
+        return this->resolvedAttr(ZFSerializableKeyword_category);
     }
     /** @brief see #resolved */
     zffinal void resolveCategoryMark(void) const {
-        this->resolveAttributeMark(ZFSerializableKeyword_category);
+        this->resolveAttrMark(ZFSerializableKeyword_category);
     }
     /** @brief see #resolved */
     zffinal void resolveCategoryUnmark(void) const {
-        this->resolveAttributeUnmark(ZFSerializableKeyword_category);
+        this->resolveAttrUnmark(ZFSerializableKeyword_category);
     }
 
     /**
@@ -379,7 +381,7 @@ public:
      */
     zffinal zfbool resolvedAll(
             ZF_OUT_OPT ZFSerializableData *firstNotResolvedElement = zfnull
-            , ZF_OUT_OPT zfstring *firstNotResolvedAttribute = zfnull
+            , ZF_OUT_OPT zfstring *firstNotResolvedAttr = zfnull
             ) const;
     /**
      * @brief see #resolved, mark self and all attribute and child element
@@ -392,11 +394,11 @@ public:
     /**
      * @brief see #resolved, mark all attribute
      */
-    zffinal void resolveAttributeMarkAll(void) const;
+    zffinal void resolveAttrMarkAll(void) const;
     /**
      * @brief see #resolved, unmark all attribute
      */
-    zffinal void resolveAttributeUnmarkAll(void) const;
+    zffinal void resolveAttrUnmarkAll(void) const;
 
     // ============================================================
     // other functions

@@ -18,8 +18,8 @@ public:
     zfanyT<ZFUIListCell> cell; /**< @brief the cell */
     zfindex cellIndex; /**< @brief cell's index */
     zfindex cellCount; /**< @brief cell's total count */
-    ZFUIOrientationEnum listOrientation; /**< @brief owner list container's orientation */
-    ZFUISize listContainerSize; /**< @brief owner list container's size */
+    ZFUIOrientationEnum orientation; /**< @brief owner list container's orientation */
+    ZFUISize containerSize; /**< @brief owner list container's size */
     zffloat cellSizeHint; /**< @brief list cell's size hint */
 };
 ZFCORE_POD_DECLARE(ZFUIListCellUpdaterParam)

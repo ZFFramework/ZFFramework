@@ -30,7 +30,7 @@ public:
         for(zfindex i = 0; i < 16; ++i) {
             zfstring v = zfstr("v%s", i);
             zfself::ClassData()->propertyForName(v)
-                ->setterMethod()->execute<void, zfstring const &>(this, v);
+                ->setterMethod()->executeExact<void, zfstring const &>(this, v);
         }
         this->vObj(zfobj<_ZFP_ZFUISerializePerformance_test_TestObject>());
         this->vObj()->v0("dummy");
@@ -55,17 +55,17 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIView> outputViewContainer;
-        container->childAdd(outputViewContainer)->c_sizeFill()->c_margin(0, 50, 0, 0);
-        outputViewContainer->viewBackgroundColor(ZFUIColorBlack());
+        container->child(outputViewContainer)->c_sizeFill()->c_margin(0, 50, 0, 0);
+        outputViewContainer->backgroundColor(ZFUIColorBlack());
 
         zfobj<ZFUITextView> outputView;
-        outputViewContainer->childAdd(outputView)->c_widthFill();
-        outputView->textSingleLine(zffalse);
+        outputViewContainer->child(outputView)->c_widthFill();
+        outputView->singleLine(zffalse);
         outputView->textColor(ZFUIColorWhite());
         outputView->text("press start");
 
         zfobj<ZFUIKit_test_Button> startButton;
-        container->childAdd(startButton)->c_alignTop();
+        container->child(startButton)->c_alignTop();
         startButton->label()->text("start");
 
         zfself *owner = this;
@@ -155,7 +155,7 @@ public:
         switch(this->testObjectType) {
             case 0: {
                 zfobj<ZFUIKit_test_Button> v;
-                v->background()->viewBackgroundColor(ZFUIColorRandom());
+                v->background()->backgroundColor(ZFUIColorRandom());
                 return v;
             }
             case 1: {

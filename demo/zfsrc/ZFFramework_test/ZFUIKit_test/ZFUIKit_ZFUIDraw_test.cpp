@@ -47,13 +47,13 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        container->viewBackgroundColor(ZFUIColorRandom(1));
+        container->backgroundColor(ZFUIColorRandom(1));
 
         zfobj<ZFUIKit_ZFUIDraw_test_DrawableView> view0;
-        container->childAdd(view0)->c_sizeFill(100, 100)->c_alignLeft();
+        container->child(view0)->c_sizeFill(100, 100)->c_alignLeft();
 
         zfobj<ZFUIImageView> view1;
-        container->childAdd(view1)->c_sizeFill(100, 100)->c_alignRight();
+        container->child(view1)->c_sizeFill(100, 100)->c_alignRight();
         void *context = ZFUIDraw::beginForImage(ZFUISizeApplyScale(ZFUISizeCreate(100), view1->UIScaleFixed()));
         ZFUIKit_ZFUIDraw_test_DrawableView::testDraw(
             context,

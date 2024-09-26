@@ -3,8 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAniForTimer>, ZFAni
-        , ZFMP_IN(ZFObject *, target)
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(const ZFListener &, aniImpl)
         ) {
     if(!aniImpl) {
@@ -16,14 +15,12 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAniForTimer>, ZFAni
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAniForTimer>, ZFAni
-        , ZFMP_IN(ZFObject *, target)
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         ) {
     zfobj<ZFAniForGeneric> ani;
-    ani->aniTarget(target);
     ani->name(name);
     ani->fromValue(from);
     ani->toValue(to);
@@ -35,7 +32,7 @@ zfclassNotPOD _ZFP_ZFAniForGenericPrivate {
 public:
     zfbool needUpdate;
 private:
-    zfauto _aniTarget;
+    zfauto _target;
     const ZFMethod *_setterMethod;
     const ZFMethod *_getterMethod;
     zfauto _valueSaved;
@@ -46,7 +43,7 @@ private:
 public:
     _ZFP_ZFAniForGenericPrivate(void)
     : needUpdate(zftrue)
-    , _aniTarget(zfnull)
+    , _target(zfnull)
     , _setterMethod(zfnull)
     , _getterMethod(zfnull)
     , _valueSaved()
@@ -58,7 +55,7 @@ public:
     }
 public:
     zfbool checkSetup(
-            ZF_IN ZFObject *aniTarget
+            ZF_IN ZFObject *target
             , ZF_IN const zfstring &name
             , ZF_IN ZFObject *from
             , ZF_IN ZFObject *to
@@ -66,10 +63,10 @@ public:
         if(!this->needUpdate) {
             return zftrue;
         }
-        if(!this->_prepare(aniTarget, name)) {
+        if(!this->_prepare(target, name)) {
             return zffalse;
         }
-        zfstring typeId = _getterMethod->methodReturnTypeId();
+        zfstring typeId = _getterMethod->returnTypeId();
         const ZFClass *typeClass = ZFClass::classForName(typeId);
         if(typeClass == zfnull) {
             const ZFTypeInfo *typeInfo = (typeClass == zfnull ? ZFTypeInfoForName(typeId) : zfnull);
@@ -86,7 +83,7 @@ public:
     }
     void update(ZF_IN zffloat progress) {
         if(_from == zfnull) {
-            _from = _getterMethod->methodInvoke(_aniTarget);
+            _from = _getterMethod->methodInvoke(_target);
             if(_from == zfnull) {
                 return;
             }
@@ -95,7 +92,7 @@ public:
             }
         }
         if(_to == zfnull) {
-            _to = _getterMethod->methodInvoke(_aniTarget);
+            _to = _getterMethod->methodInvoke(_target);
             if(_to == zfnull) {
                 return;
             }
@@ -106,11 +103,11 @@ public:
 
         if(_typeInfo != zfnull) {
             if(_valueHolder != zfnull && _valueHolder->progressUpdate(_from, _to, progress)) {
-                _setterMethod->methodInvoke(_aniTarget, _valueHolder);
+                _setterMethod->methodInvoke(_target, _valueHolder);
             }
         }
         else {
-            zfauto valueHolder = _getterMethod->methodInvoke(_aniTarget);
+            zfauto valueHolder = _getterMethod->methodInvoke(_target);
             ZFProgressable *value = valueHolder;
             if(value != zfnull) {
                 value->progressUpdate(_from, _to, progress);
@@ -122,38 +119,38 @@ public:
             _valueSaved = zfnull;
             return;
         }
-        _valueSaved = _getterMethod->methodInvoke(_aniTarget);
+        _valueSaved = _getterMethod->methodInvoke(_target);
     }
     void valueSavedRestore(void) {
         if(_valueSaved == zfnull || _typeInfo == zfnull) {
             return;
         }
-        _setterMethod->methodInvoke(_aniTarget, _valueSaved);
+        _setterMethod->methodInvoke(_target, _valueSaved);
     }
 private:
     zfbool _prepare(
-            ZF_IN ZFObject *aniTarget
+            ZF_IN ZFObject *target
             , ZF_IN const zfstring &name
             ) {
-        if(aniTarget == zfnull) {
+        if(target == zfnull) {
             return zffalse;
         }
-        const ZFProperty *prop = aniTarget->classData()->propertyForName(name);
+        const ZFProperty *prop = target->classData()->propertyForName(name);
         if(prop != zfnull) {
             _setterMethod = prop->setterMethod();
             _getterMethod = prop->getterMethod();
         }
         else {
-            _setterMethod = aniTarget->classData()->propertySetterForName(name);
-            _getterMethod = aniTarget->classData()->propertyGetterForName(name);
+            _setterMethod = target->classData()->propertySetterForName(name);
+            _getterMethod = target->classData()->propertyGetterForName(name);
         }
-        if(_setterMethod != zfnull && !_setterMethod->methodIsPublic()) {
+        if(_setterMethod != zfnull && !_setterMethod->isPublic()) {
             _setterMethod = zfnull;
         }
-        if(_getterMethod != zfnull && _getterMethod->methodIsPrivate()) {
+        if(_getterMethod != zfnull && _getterMethod->isPrivate()) {
             _getterMethod = zfnull;
         }
-        _aniTarget = aniTarget;
+        _target = target;
         return (_getterMethod != zfnull);
     }
     static zfbool _convert(
@@ -185,7 +182,7 @@ private:
         dst = typeClass->newInstance();
         if(!zfstringIsEmpty(s)) {
             if(typeClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-                if(!dst.to<ZFTypeIdWrapper *>()->wrappedValueFromString(s)) {
+                if(!dst.to<ZFTypeIdWrapper *>()->zfvFromString(s)) {
                     return zffalse;
                 }
             }
@@ -203,19 +200,19 @@ private:
         if(_from == zfnull && _to == zfnull) {
             return zffalse;
         }
-        if(_getterMethod->methodInvoke(_aniTarget) == zfnull) {
+        if(_getterMethod->methodInvoke(_target) == zfnull) {
             return zffalse;
         }
 
         if(_setterMethod == zfnull) { // ani by getter only
-            if(ZFClass::classForName(_getterMethod->methodReturnTypeId()) == zfnull
-                    || zfcast(ZFProgressable *, _getterMethod->methodInvoke(_aniTarget)) == zfnull
+            if(ZFClass::classForName(_getterMethod->returnTypeId()) == zfnull
+                    || zfcast(ZFProgressable *, _getterMethod->methodInvoke(_target)) == zfnull
                     ) { // ani by getter only valid for retain property
                 return zffalse;
             }
         }
         else { // ani by getter>change>setter
-            _typeInfo = ZFTypeInfoForName(_getterMethod->methodReturnTypeId());
+            _typeInfo = ZFTypeInfoForName(_getterMethod->returnTypeId());
             if(_typeInfo == zfnull
                 || _typeInfo->typeIdClass() == zfnull
                 || _typeInfo->typeIdClass()->classIsAbstract()
@@ -237,13 +234,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, name) {d->needUpdate = tr
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, fromValue) {d->needUpdate = true;}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, toValue) {d->needUpdate = true;}
 
-void ZFAniForGeneric::aniImplTargetOnUpdate(ZF_IN ZFObject *aniTargetOld) {
-    zfsuper::aniImplTargetOnUpdate(aniTargetOld);
+void ZFAniForGeneric::aniImplTargetOnUpdate(ZF_IN ZFObject *targetOld) {
+    zfsuper::aniImplTargetOnUpdate(targetOld);
     d->needUpdate = zftrue;
 }
 zfbool ZFAniForGeneric::aniImplCheckValid(void) {
     if(!zfsuper::aniImplCheckValid()) {return zffalse;}
-    return d->checkSetup(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
+    return d->checkSetup(this->target(), this->name(), this->fromValue(), this->toValue());
 }
 void ZFAniForGeneric::aniImplStart(void) {
     d->valueSavedUpdate();

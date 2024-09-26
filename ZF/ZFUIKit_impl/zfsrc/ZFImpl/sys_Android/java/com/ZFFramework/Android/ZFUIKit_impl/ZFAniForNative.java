@@ -53,57 +53,57 @@ public class ZFAniForNative {
         }
 
         // alpha
-        public float aniAlphaFrom = 1;
-        public float aniAlphaTo = 1;
+        public float alphaFrom = 1;
+        public float alphaTo = 1;
         // scale
-        public float aniScaleXFrom = 1;
-        public float aniScaleXTo = 1;
-        public float aniScaleYFrom = 1;
-        public float aniScaleYTo = 1;
-        public float aniScaleZFrom = 1;
-        public float aniScaleZTo = 1;
+        public float scaleXFrom = 1;
+        public float scaleXTo = 1;
+        public float scaleYFrom = 1;
+        public float scaleYTo = 1;
+        public float scaleZFrom = 1;
+        public float scaleZTo = 1;
         // translate
-        public int aniTranslateXFrom = 0;
-        public int aniTranslateXTo = 0;
-        public int aniTranslateYFrom = 0;
-        public int aniTranslateYTo = 0;
-        public int aniTranslateZFrom = 0;
-        public int aniTranslateZTo = 0;
+        public int translateXFrom = 0;
+        public int translateXTo = 0;
+        public int translateYFrom = 0;
+        public int translateYTo = 0;
+        public int translateZFrom = 0;
+        public int translateZTo = 0;
         // rotate
-        public float aniRotateXFrom = 0;
-        public float aniRotateXTo = 0;
-        public float aniRotateYFrom = 0;
-        public float aniRotateYTo = 0;
-        public float aniRotateZFrom = 0;
-        public float aniRotateZTo = 0;
+        public float rotateXFrom = 0;
+        public float rotateXTo = 0;
+        public float rotateYFrom = 0;
+        public float rotateYTo = 0;
+        public float rotateZFrom = 0;
+        public float rotateZTo = 0;
 
         public boolean hasRotate() {
-            return (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0
-                    || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
-                    || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
+            return (this.rotateXFrom != 0 || this.rotateXTo != 0
+                    || this.rotateYFrom != 0 || this.rotateYTo != 0
+                    || this.rotateZFrom != 0 || this.rotateZTo != 0);
         }
 
         public void nativeAnimationReset() {
             // alpha
-            this.aniAlphaFrom = 1;
-            this.aniAlphaTo = 1;
+            this.alphaFrom = 1;
+            this.alphaTo = 1;
             // scale
-            this.aniScaleXFrom = 1;
-            this.aniScaleXTo = 1;
-            this.aniScaleYFrom = 1;
-            this.aniScaleYTo = 1;
+            this.scaleXFrom = 1;
+            this.scaleXTo = 1;
+            this.scaleYFrom = 1;
+            this.scaleYTo = 1;
             // translate
-            this.aniTranslateXFrom = 0;
-            this.aniTranslateXTo = 0;
-            this.aniTranslateYFrom = 0;
-            this.aniTranslateYTo = 0;
+            this.translateXFrom = 0;
+            this.translateXTo = 0;
+            this.translateYFrom = 0;
+            this.translateYTo = 0;
             // rotate
-            this.aniRotateXFrom = 0;
-            this.aniRotateXTo = 0;
-            this.aniRotateYFrom = 0;
-            this.aniRotateYTo = 0;
-            this.aniRotateZFrom = 0;
-            this.aniRotateZTo = 0;
+            this.rotateXFrom = 0;
+            this.rotateXTo = 0;
+            this.rotateYFrom = 0;
+            this.rotateYTo = 0;
+            this.rotateZFrom = 0;
+            this.rotateZTo = 0;
         }
 
         @Override
@@ -117,15 +117,15 @@ public class ZFAniForNative {
             m_centerX = width / 2;
             m_centerY = height / 2;
 
-            _hasScale = (this.aniScaleXFrom != 1 || this.aniScaleXTo != 1
-                    || this.aniScaleYFrom != 1 || this.aniScaleYTo != 1
-                    || this.aniScaleZFrom != 1 || this.aniScaleZTo != 1);
-            _hasTranslate = (this.aniTranslateXFrom != 0 || this.aniTranslateXTo != 0
-                    || this.aniTranslateYFrom != 0 || this.aniTranslateYTo != 0
-                    || this.aniTranslateZFrom != 0 || this.aniTranslateZTo != 0);
-            _hasRotate = (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0
-                    || this.aniRotateYFrom != 0 || this.aniRotateYTo != 0
-                    || this.aniRotateZFrom != 0 || this.aniRotateZTo != 0);
+            _hasScale = (this.scaleXFrom != 1 || this.scaleXTo != 1
+                    || this.scaleYFrom != 1 || this.scaleYTo != 1
+                    || this.scaleZFrom != 1 || this.scaleZTo != 1);
+            _hasTranslate = (this.translateXFrom != 0 || this.translateXTo != 0
+                    || this.translateYFrom != 0 || this.translateYTo != 0
+                    || this.translateZFrom != 0 || this.translateZTo != 0);
+            _hasRotate = (this.rotateXFrom != 0 || this.rotateXTo != 0
+                    || this.rotateYFrom != 0 || this.rotateYTo != 0
+                    || this.rotateZFrom != 0 || this.rotateZTo != 0);
         }
 
         @Override
@@ -142,21 +142,21 @@ public class ZFAniForNative {
             // scale
             if (_hasScale) {
                 matrix.postScale(
-                        this.aniScaleXFrom + (this.aniScaleXTo - this.aniScaleXFrom) * interpolatedTime,
-                        this.aniScaleYFrom + (this.aniScaleYTo - this.aniScaleYFrom) * interpolatedTime);
+                        this.scaleXFrom + (this.scaleXTo - this.scaleXFrom) * interpolatedTime,
+                        this.scaleYFrom + (this.scaleYTo - this.scaleYFrom) * interpolatedTime);
             }
 
             // rotate
             if (_hasRotate) {
                 m_camera.save();
-                if (this.aniRotateXFrom != 0 || this.aniRotateXTo != 0) {
-                    m_camera.rotateX(this.aniRotateXFrom + (this.aniRotateXTo - this.aniRotateXFrom) * interpolatedTime);
+                if (this.rotateXFrom != 0 || this.rotateXTo != 0) {
+                    m_camera.rotateX(this.rotateXFrom + (this.rotateXTo - this.rotateXFrom) * interpolatedTime);
                 }
-                if (this.aniRotateYFrom != 0 || this.aniRotateYTo != 0) {
-                    m_camera.rotateY(-(this.aniRotateYFrom + (this.aniRotateYTo - this.aniRotateYFrom) * interpolatedTime));
+                if (this.rotateYFrom != 0 || this.rotateYTo != 0) {
+                    m_camera.rotateY(-(this.rotateYFrom + (this.rotateYTo - this.rotateYFrom) * interpolatedTime));
                 }
-                if (this.aniRotateZFrom != 0 || this.aniRotateZTo != 0) {
-                    m_camera.rotateZ(-(this.aniRotateZFrom + (this.aniRotateZTo - this.aniRotateZFrom) * interpolatedTime));
+                if (this.rotateZFrom != 0 || this.rotateZTo != 0) {
+                    m_camera.rotateZ(-(this.rotateZFrom + (this.rotateZTo - this.rotateZFrom) * interpolatedTime));
                 }
                 m_camera.getMatrix(m_matrix);
                 m_camera.restore();
@@ -166,13 +166,13 @@ public class ZFAniForNative {
             // translate
             if (_hasTranslate) {
                 matrix.postTranslate(
-                        (this.aniTranslateXFrom + (this.aniTranslateXTo - this.aniTranslateXFrom) * interpolatedTime),
-                        (this.aniTranslateYFrom + (this.aniTranslateYTo - this.aniTranslateYFrom) * interpolatedTime));
+                        (this.translateXFrom + (this.translateXTo - this.translateXFrom) * interpolatedTime),
+                        (this.translateYFrom + (this.translateYTo - this.translateYFrom) * interpolatedTime));
             }
 
             // alpha
-            if (this.aniAlphaFrom != this.aniAlphaTo) {
-                t.setAlpha(t.getAlpha() * (this.aniAlphaFrom + (this.aniAlphaTo - this.aniAlphaFrom) * interpolatedTime));
+            if (this.alphaFrom != this.alphaTo) {
+                t.setAlpha(t.getAlpha() * (this.alphaFrom + (this.alphaTo - this.alphaFrom) * interpolatedTime));
             }
 
             // restore coordinate axis
@@ -330,25 +330,25 @@ public class ZFAniForNative {
 
     public static void native_setup(
             Object nativeAnimation
-            , int aniCurve
-            , int aniDuration
+            , int curve
+            , int duration
     ) {
         NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
         nativeAnimationTmp.nativeAnimationReset();
 
-        if (aniCurve == ZFAniForNativeCurve.e_Linear) {
+        if (curve == ZFAniForNativeCurve.e_Linear) {
             nativeAnimationTmp.setInterpolator(_curveLinear);
-        } else if (aniCurve == ZFAniForNativeCurve.e_EaseInOut) {
+        } else if (curve == ZFAniForNativeCurve.e_EaseInOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseInOut);
-        } else if (aniCurve == ZFAniForNativeCurve.e_EaseIn) {
+        } else if (curve == ZFAniForNativeCurve.e_EaseIn) {
             nativeAnimationTmp.setInterpolator(_curveEaseIn);
-        } else if (aniCurve == ZFAniForNativeCurve.e_EaseOut) {
+        } else if (curve == ZFAniForNativeCurve.e_EaseOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseOut);
         } else {
             ZFAndroidLog.shouldNotGoHere();
         }
 
-        nativeAnimationTmp.setDuration(aniDuration);
+        nativeAnimationTmp.setDuration(duration);
     }
 
     // ============================================================

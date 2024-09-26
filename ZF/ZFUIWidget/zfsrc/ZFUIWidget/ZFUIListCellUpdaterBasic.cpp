@@ -26,17 +26,17 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
     }
 
     updateParam.cell->internalFgViewAdd(separatorView);
-    separatorView->viewBackgroundColor(owner->separatorColor());
-    switch(updateParam.listOrientation) {
+    separatorView->backgroundColor(owner->separatorColor());
+    switch(updateParam.orientation) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
             separatorView->layoutParam()->sizeHint(ZFUISizeCreate(owner->separatorSize(), -1));
-            separatorView->layoutParam()->layoutMargin(ZFUIMarginCreate(0, owner->separatorMargin().top, 0, owner->separatorMargin().bottom));
+            separatorView->layoutParam()->margin(ZFUIMarginCreate(0, owner->separatorMargin().top, 0, owner->separatorMargin().bottom));
             break;
         case ZFUIOrientation::e_Top:
         case ZFUIOrientation::e_Bottom:
             separatorView->layoutParam()->sizeHint(ZFUISizeCreate(-1, owner->separatorSize()));
-            separatorView->layoutParam()->layoutMargin(ZFUIMarginCreate(owner->separatorMargin().left, 0, owner->separatorMargin().right, 0));
+            separatorView->layoutParam()->margin(ZFUIMarginCreate(owner->separatorMargin().left, 0, owner->separatorMargin().right, 0));
             break;
         default:
             ZFCoreCriticalShouldNotGoHere();
@@ -51,18 +51,18 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
         if(this->separatorIncludingHead()) {
             ZFUIView *separatorView = _ZFP_ZFUIListCellUpdaterBasic_setupSeparator(this, updateParam);
             updateParam.cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head, separatorView);
-            switch(updateParam.listOrientation) {
+            switch(updateParam.orientation) {
                 case ZFUIOrientation::e_Left:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Left);
+                    separatorView->layoutParam()->align(ZFUIAlign::e_Left);
                     break;
                 case ZFUIOrientation::e_Right:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Right);
+                    separatorView->layoutParam()->align(ZFUIAlign::e_Right);
                     break;
                 case ZFUIOrientation::e_Top:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
+                    separatorView->layoutParam()->align(ZFUIAlign::e_Top);
                     break;
                 case ZFUIOrientation::e_Bottom:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
+                    separatorView->layoutParam()->align(ZFUIAlign::e_Bottom);
                     break;
                 default:
                     ZFCoreCriticalShouldNotGoHere();
@@ -78,18 +78,18 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
 
     ZFUIView *separatorView = _ZFP_ZFUIListCellUpdaterBasic_setupSeparator(this, updateParam);
     updateParam.cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator, separatorView);
-    switch(updateParam.listOrientation) {
+    switch(updateParam.orientation) {
         case ZFUIOrientation::e_Left:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Right);
+            separatorView->layoutParam()->align(ZFUIAlign::e_Right);
             break;
         case ZFUIOrientation::e_Right:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Left);
+            separatorView->layoutParam()->align(ZFUIAlign::e_Left);
             break;
         case ZFUIOrientation::e_Top:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
+            separatorView->layoutParam()->align(ZFUIAlign::e_Bottom);
             break;
         case ZFUIOrientation::e_Bottom:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
+            separatorView->layoutParam()->align(ZFUIAlign::e_Top);
             break;
         default:
             ZFCoreCriticalShouldNotGoHere();

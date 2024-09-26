@@ -10,7 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
     ZFOBJECT_DECLARE(ZFUIKit_test_Window, ZFUIWindow)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, viewBackgroundColor) {
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, backgroundColor) {
         propertyValue = ZFUIColorWhite();
     }
 };
@@ -19,10 +19,10 @@ zfclass ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
     ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, backgroundNormal) {
-        propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorGreen());
+        propertyValue.to<ZFUIImageView *>()->backgroundColor(ZFUIColorGreen());
     }
     ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, backgroundHighlighted) {
-        propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorBlue());
+        propertyValue.to<ZFUIImageView *>()->backgroundColor(ZFUIColorBlue());
     }
 };
 
@@ -41,7 +41,7 @@ protected:
         zfsuper::layoutParamOnUpdate(layoutParam);
 
         layoutParam->sizeParam(ZFUISizeParamFillWrap());
-        layoutParam->layoutAlign(ZFUIAlign::e_Top);
+        layoutParam->align(ZFUIAlign::e_Top);
     }
     zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
@@ -57,7 +57,7 @@ protected:
 
             ZFUIView *child = this->childAt(i);
             child->layoutMeasure(childMeasureSizeHint, childMeasureSizeParam);
-            child->layoutParam()->layoutMargin(ZFUIMarginCreate(0, contentHeight, 0, 0));
+            child->layoutParam()->margin(ZFUIMarginCreate(0, contentHeight, 0, 0));
 
             contentHeight += child->layoutMeasuredSize().height;
         }
@@ -164,7 +164,7 @@ protected:
             if(holder->index >= propertyValues.count()) { \
                 holder->index = 0; \
             } \
-            holder->property->setterMethod()->execute<void, PropertyType const &>( \
+            holder->property->setterMethod()->executeExact<void, PropertyType const &>( \
                 holder->obj, propertyValues[holder->index]); \
         } ZFLISTENER_END() \
         ZFUIKit_test_prepareSettingForProperty(settings, taskData->obj, taskData->property, nextCallback); \

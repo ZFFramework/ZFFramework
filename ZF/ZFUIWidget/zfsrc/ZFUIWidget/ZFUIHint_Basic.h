@@ -30,7 +30,7 @@ public:
  * @brief make a hint with text
  *
  * the hint would:
- * -  #ZFUIHintContentBasic as the #ZFUIHint::hintContent
+ * -  #ZFUIHintContentBasic as the #ZFUIHint::content
  * -  have an alpha change animation as the hint's show and hide animation
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint>, ZFUIHintCreate
@@ -45,7 +45,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint>, ZFUIHintShow
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
     zfautoT<ZFUIHint> hint = ZFUIHintCreate(text, icon);
-    hint->hintShow();
+    hint->show();
     return hint;
 }
 

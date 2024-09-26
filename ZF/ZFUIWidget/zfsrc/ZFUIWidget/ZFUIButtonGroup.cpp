@@ -154,7 +154,7 @@ static void _ZFP_ZFUIButtonGroup_setup(
         , ZF_IN ZFUIButton *button
         , ZF_IN zfindex buttonIndex
         ) {
-    switch(buttonGroup->buttonGroupType()) {
+    switch(buttonGroup->type()) {
         case ZFUIButtonGroupType::e_Normal:
             _ZFP_ZFUIButtonGroup_setup_Normal(buttonGroup, button, buttonIndex);
             break;
@@ -170,7 +170,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup(
         ZF_IN ZFUIButtonGroup *buttonGroup
         , ZF_IN ZFUIButton *button
         ) {
-    switch(buttonGroup->buttonGroupType()) {
+    switch(buttonGroup->type()) {
         case ZFUIButtonGroupType::e_Normal:
             _ZFP_ZFUIButtonGroup_cleanup_Normal(buttonGroup, button);
             break;
@@ -183,8 +183,8 @@ static void _ZFP_ZFUIButtonGroup_cleanup(
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, ZFUIButtonGroupTypeEnum, buttonGroupType) {
-    if(this->buttonGroupType() == propertyValueOld) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, ZFUIButtonGroupTypeEnum, type) {
+    if(this->type() == propertyValueOld) {
         return;
     }
     for(zfindex i = 0; i < this->buttonCount(); ++i) {
@@ -208,7 +208,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, zfanyT<ZFUIButton>, buttonAt
         ) {
     return this->_ZFP_buttons->get(buttonIndex);
 }
-ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd
+ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, button
         , ZFMP_IN(ZFUIButton *, button)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {

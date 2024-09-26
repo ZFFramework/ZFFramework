@@ -40,7 +40,7 @@ protected:
                     ) {
                 ZFLog() << "thread3 stop: " << ZFThread::currentThread();
 
-                testCase->testCaseStop();
+                testCase->stop();
             } ZFLISTENER_END()
             zfasync(thread3, thread3OnStop);
         } ZFLISTENER_END()

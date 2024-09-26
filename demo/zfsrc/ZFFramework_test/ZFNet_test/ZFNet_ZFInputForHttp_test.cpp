@@ -13,7 +13,7 @@ protected:
 
         ZFInputRead(ZFOutputDefault(), ZFInputForHttp("https://bing.com"));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFNet_ZFInputForHttp_test)

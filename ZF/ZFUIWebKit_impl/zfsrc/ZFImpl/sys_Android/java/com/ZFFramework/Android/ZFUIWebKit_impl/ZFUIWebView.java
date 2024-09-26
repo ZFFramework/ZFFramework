@@ -20,16 +20,16 @@ public final class ZFUIWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if (_owner.get()._ZFP_webLoading) {
+            if (_owner.get()._ZFP_loading) {
                 _owner.get()._ZFP_webRedirect = true;
             }
-            _owner.get()._ZFP_webLoading = true;
+            _owner.get()._ZFP_loading = true;
             return super.shouldOverrideUrlLoading(view, request);
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap facIcon) {
-            _owner.get()._ZFP_webLoading = true;
+            _owner.get()._ZFP_loading = true;
             if (_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView != 0) {
                 ZFUIWebView.native_ZFUIWebView_notifyWebLoadStateOnUpdate(_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView);
             }
@@ -38,10 +38,10 @@ public final class ZFUIWebView extends WebView {
         @Override
         public void onPageFinished(WebView view, String url) {
             if (!_owner.get()._ZFP_webRedirect) {
-                _owner.get()._ZFP_webLoading = false;
+                _owner.get()._ZFP_loading = false;
             }
 
-            if (!_owner.get()._ZFP_webLoading && !_owner.get()._ZFP_webRedirect) {
+            if (!_owner.get()._ZFP_loading && !_owner.get()._ZFP_webRedirect) {
                 if (_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView != 0) {
                     ZFUIWebView.native_ZFUIWebView_notifyWebLoadStateOnUpdate(_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView);
                 }
@@ -63,39 +63,39 @@ public final class ZFUIWebView extends WebView {
         nativeWebViewTmp._ZFP_zfjniPointerOwnerZFUIWebView = 0;
     }
 
-    public static void native_webLoadUrl(Object nativeWebView, Object url) {
+    public static void native_loadUrl(Object nativeWebView, Object url) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
         nativeWebViewTmp.loadUrl((String) url);
     }
 
-    public static void native_webLoadHtml(Object nativeWebView, Object html, Object baseUrl) {
+    public static void native_loadHtml(Object nativeWebView, Object html, Object baseUrl) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
         nativeWebViewTmp.loadDataWithBaseURL((String) baseUrl, (String) html, null, "utf-8", null);
     }
 
-    public static void native_webReload(Object nativeWebView) {
+    public static void native_reload(Object nativeWebView) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
         nativeWebViewTmp.reload();
     }
 
-    public static void native_webLoadStop(Object nativeWebView) {
+    public static void native_loadStop(Object nativeWebView) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
         nativeWebViewTmp.stopLoading();
     }
 
-    public static void native_webGoBack(Object nativeWebView) {
+    public static void native_goBack(Object nativeWebView) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
         nativeWebViewTmp.goBack();
     }
 
-    public static void native_webGoForward(Object nativeWebView) {
+    public static void native_goForward(Object nativeWebView) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
         nativeWebViewTmp.goForward();
     }
 
-    public static boolean native_webLoading(Object nativeWebView) {
+    public static boolean native_loading(Object nativeWebView) {
         ZFUIWebView nativeWebViewTmp = (ZFUIWebView) nativeWebView;
-        return nativeWebViewTmp._ZFP_webLoading;
+        return nativeWebViewTmp._ZFP_loading;
     }
 
     // ============================================================
@@ -103,7 +103,7 @@ public final class ZFUIWebView extends WebView {
 
     // ============================================================
     public long _ZFP_zfjniPointerOwnerZFUIWebView = 0;
-    public boolean _ZFP_webLoading = false;
+    public boolean _ZFP_loading = false;
     public boolean _ZFP_webRedirect = false;
 
     public ZFUIWebView(Context context) {

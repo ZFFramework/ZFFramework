@@ -187,7 +187,7 @@ public:
      *
      * note this method won't check duplicated data for performance
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &filterAdd(
+    virtual ZFFilterBase<T_Public, T_Internal> &filter(
             ZF_IN T_Public const &e
             , ZF_IN_OPT ZFFilterType filterType = ZFFilterTypeExclude
             ) {
@@ -315,7 +315,7 @@ public:
     /**
      * @brief return true if e is not filtered by this filter, see #ZFFilterType
      */
-    virtual zfbool filterCheckActive(ZF_IN T_Public const &e) const {
+    virtual zfbool filterPassed(ZF_IN T_Public const &e) const {
         if(!this->filterOnCheckValid(e)) {
             return zffalse;
         }
@@ -376,7 +376,7 @@ protected:
     /**
      * @brief return true if element is valid for a filter
      *
-     * if false, won't be added to content by #filterAdd or compared by #filterOnCheckEqual
+     * if false, won't be added to content by #filter or compared by #filterOnCheckEqual
      */
     virtual zfbool filterOnCheckValid(ZF_IN T_Public const &e) const {
         return zftrue;
@@ -409,7 +409,7 @@ protected:
             , ZF_IN T_Public const &e2
             ) const zfpurevirtual;
     /**
-     * @brief called by #filterCheckActive to check whether the element is filtered out
+     * @brief called by #filterPassed to check whether the element is filtered out
      */
     virtual zfbool filterOnCheckActive(ZF_IN T_Public const &e) const {
         zfbool hasIncludeMode = zffalse;

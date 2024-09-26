@@ -472,7 +472,7 @@ const ZFClass *ZFClass::classForName(
         , ZF_IN const zfstring &classNamespace
         ) {
     const zfchar *classNamespaceTmp = ZFNamespaceSkipGlobal(classNamespace);
-    if(!zfstringIsEmpty(classNamespaceTmp)) {
+    if(classNamespaceTmp) {
         zfstring classNameFull;
         classNameFull += classNamespaceTmp;
         classNameFull += ".";
@@ -751,7 +751,7 @@ zfbool ZFClass::newInstanceGenericCheck(
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */) const {
     if(objectOnInitMethod == zfnull
-            // || !this->classIsTypeOf(objectOnInitMethod->methodOwnerClass())
+            // || !this->classIsTypeOf(objectOnInitMethod->ownerClass())
             // || !zfstringIsEqual(objectOnInitMethod->methodName(), "objectOnInit")
             ) {
         return zffalse;
@@ -846,14 +846,14 @@ void ZFClass::methodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) const 
 /* ZFMETHOD_MAX_PARAM */
 const ZFMethod *ZFClass::methodForNameIgnoreParent(
         ZF_IN const zfstring &methodName
-        , ZF_IN const zfchar *methodParamTypeId0
-        , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId3 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId4 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId5 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId6 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId7 /* = zfnull */
+        , ZF_IN const zfchar *paramTypeId0
+        , ZF_IN_OPT const zfchar *paramTypeId1 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId2 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId3 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId4 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId5 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId6 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId7 /* = zfnull */
         ) const {
     if(methodName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
@@ -862,15 +862,15 @@ const ZFMethod *ZFClass::methodForNameIgnoreParent(
             zfstlvector<const ZFMethod *> &l = itName->second;
             for(zfstlsize i = 0; i < l.size(); ++i) {
                 const ZFMethod *m = l[i];
-                if(m->methodParamTypeIdIsMatch(
-                            methodParamTypeId0
-                            , methodParamTypeId1
-                            , methodParamTypeId2
-                            , methodParamTypeId3
-                            , methodParamTypeId4
-                            , methodParamTypeId5
-                            , methodParamTypeId6
-                            , methodParamTypeId7
+                if(m->paramTypeIdIsMatch(
+                            paramTypeId0
+                            , paramTypeId1
+                            , paramTypeId2
+                            , paramTypeId3
+                            , paramTypeId4
+                            , paramTypeId5
+                            , paramTypeId6
+                            , paramTypeId7
                             )) {
                     return m;
                 }
@@ -887,7 +887,7 @@ const ZFMethod *ZFClass::methodForNameIgnoreParent(ZF_IN const zfstring &methodN
             zfstlvector<const ZFMethod *> const &l = itName->second;
             if(l.size() > 1) {
                 for(zfstlsize i = 0; i < l.size(); ++i) {
-                    if(l[i]->methodParamCountMin() == 0) {
+                    if(l[i]->paramCountMin() == 0) {
                         return l[i];
                     }
                 }
@@ -911,14 +911,14 @@ void ZFClass::methodForNameIgnoreParentGetAllT(
 }
 const ZFMethod *ZFClass::methodForName(
         ZF_IN const zfstring &methodName
-        , ZF_IN const zfchar *methodParamTypeId0
-        , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId3 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId4 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId5 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId6 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId7 /* = zfnull */
+        , ZF_IN const zfchar *paramTypeId0
+        , ZF_IN_OPT const zfchar *paramTypeId1 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId2 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId3 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId4 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId5 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId6 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId7 /* = zfnull */
         ) const {
     if(methodName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
@@ -927,15 +927,15 @@ const ZFMethod *ZFClass::methodForName(
             zfstlvector<const ZFMethod *> &l = itName->second;
             for(zfstlsize i = 0; i < l.size(); ++i) {
                 const ZFMethod *m = l[i];
-                if(m->methodParamTypeIdIsMatch(
-                            methodParamTypeId0
-                            , methodParamTypeId1
-                            , methodParamTypeId2
-                            , methodParamTypeId3
-                            , methodParamTypeId4
-                            , methodParamTypeId5
-                            , methodParamTypeId6
-                            , methodParamTypeId7
+                if(m->paramTypeIdIsMatch(
+                            paramTypeId0
+                            , paramTypeId1
+                            , paramTypeId2
+                            , paramTypeId3
+                            , paramTypeId4
+                            , paramTypeId5
+                            , paramTypeId6
+                            , paramTypeId7
                             )) {
                     return m;
                 }
@@ -952,7 +952,7 @@ const ZFMethod *ZFClass::methodForName(ZF_IN const zfstring &methodName) const {
             zfstlvector<const ZFMethod *> const &l = itName->second;
             if(l.size() > 1) {
                 for(zfstlsize i = 0; i < l.size(); ++i) {
-                    if(l[i]->methodParamCountMin() == 0) {
+                    if(l[i]->paramCountMin() == 0) {
                         return l[i];
                     }
                 }
@@ -1030,7 +1030,7 @@ const ZFMethod *ZFClass::propertySetterForNameIgnoreParent(ZF_IN const zfstring 
             zfstlvector<const ZFMethod *> &l = itName->second;
             for(zfstlsize i = 0; i < l.size(); ++i) {
                 const ZFMethod *m = l[i];
-                if(m->methodParamCountMin() == 1) {
+                if(m->paramCountMin() == 1) {
                     return m;
                 }
             }
@@ -1046,7 +1046,7 @@ const ZFMethod *ZFClass::propertySetterForName(ZF_IN const zfstring &propertyNam
             zfstlvector<const ZFMethod *> &l = itName->second;
             for(zfstlsize i = 0; i < l.size(); ++i) {
                 const ZFMethod *m = l[i];
-                if(m->methodParamCountMin() == 1) {
+                if(m->paramCountMin() == 1) {
                     return m;
                 }
             }
@@ -1062,7 +1062,7 @@ const ZFMethod *ZFClass::propertyGetterForNameIgnoreParent(ZF_IN const zfstring 
             zfstlvector<const ZFMethod *> &l = itName->second;
             for(zfstlsize i = 0; i < l.size(); ++i) {
                 const ZFMethod *m = l[i];
-                if(m->methodParamCountMin() == 0) {
+                if(m->paramCountMin() == 0) {
                     return m;
                 }
             }
@@ -1078,7 +1078,7 @@ const ZFMethod *ZFClass::propertyGetterForName(ZF_IN const zfstring &propertyNam
             zfstlvector<const ZFMethod *> &l = itName->second;
             for(zfstlsize i = 0; i < l.size(); ++i) {
                 const ZFMethod *m = l[i];
-                if(m->methodParamCountMin() == 0) {
+                if(m->paramCountMin() == 0) {
                     return m;
                 }
             }
@@ -1315,7 +1315,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         // to reduce output executable size and runtime memory usage,
         // unregistered during class unregister
         ZFMethodUserRegisterDetail_0(resultMethod, {
-                return invokerMethod->methodOwnerClass();
+                return invokerMethod->ownerClass();
             }, cls, public, ZFMethodTypeStatic,
             const ZFClass *, zftext("ClassData"));
 
@@ -1537,7 +1537,7 @@ void ZFClass::_ZFP_ZFClass_propertyUnregister(ZF_IN const ZFProperty *zfproperty
 }
 
 void ZFClass::_ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *property) const {
-    if(property->propertyOwnerClass() == this) {
+    if(property->ownerClass() == this) {
         return;
     }
 
@@ -1559,7 +1559,7 @@ void ZFClass::_ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const {
     }
 }
 void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *property) const {
-    if(property->propertyOwnerClass() == this) {
+    if(property->ownerClass() == this) {
         return;
     }
 
@@ -1667,7 +1667,7 @@ void ZFClassGetAllT(
         const ZFCoreMap &m = _ZFP_ZFClassMap;
         for(zfiter it = m.iter(); it; ++it) {
             ZFClass *v = m.iterValue<ZFClass *>(it);
-            if(classFilter->filterCheckActive(v)) {
+            if(classFilter->filterPassed(v)) {
                 ret.add(v);
             }
         }
@@ -1700,11 +1700,11 @@ void _ZFP_ZFClassDataUpdateNotify(
                 , changedMethod ? changedMethod->objectInfo().cString() : ZFTOKEN_zfnull
                 );
         if(changedProperty != zfnull) {
-            changedProperty->propertyOwnerClass()->classTagRemoveAll();
+            changedProperty->ownerClass()->classTagRemoveAll();
         }
         else if(changedMethod != zfnull) {
-            if(changedMethod->methodOwnerClass() != zfnull) {
-                changedMethod->methodOwnerClass()->classTagRemoveAll();
+            if(changedMethod->ownerClass() != zfnull) {
+                changedMethod->ownerClass()->classTagRemoveAll();
             }
         }
 
@@ -1726,7 +1726,7 @@ void ZFClassAlias(
         ) {
     ZFCoreMutexLocker();
 
-    if(cls == zfnull || zfstringIsEmpty(aliasName)
+    if(cls == zfnull || !aliasName
         || cls->classAliasTo().find(aliasName) != zfindexMax()
         || ZFClass::classForName(aliasName, cls->classNamespace()) != zfnull
     ) {
@@ -1747,7 +1747,7 @@ void ZFClassAliasRemove(
         , ZF_IN const zfstring &aliasName
         ) {
     ZFCoreMutexLocker();
-    if(cls == zfnull || zfstringIsEmpty(aliasName)) {
+    if(cls == zfnull || !aliasName) {
         return;
     }
     zfindex index = cls->classAliasTo().find(aliasName);

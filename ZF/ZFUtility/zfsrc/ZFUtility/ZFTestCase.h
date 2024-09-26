@@ -15,10 +15,10 @@ zfclassFwd _ZFP_ZFTestCasePrivate;
  *
  * to use, declare a subclass of #ZFTestCase,
  * and override test methods to supply your own test steps,
- * and finally notify end by #testCaseStop\n
+ * and finally notify end by #stop\n
  * all test cases can be started automatically by invoking #ZFTestCaseRunAllStart,
  * or you may manually start one by creating new instance of a test case,
- * and call #testCaseStart on it
+ * and call #start on it
  * @note automatically test case run depends on #ZFClass's class map,
  *   see #ZFOBJECT_REGISTER for more info
  */
@@ -30,7 +30,7 @@ public:
      * @brief called when output something
      *
      * param0 is a #v_zfstring holds the output,
-     * notified when #testCaseOutput called
+     * notified when #output called
      */
     ZFEVENT(TestCaseOnOutput)
     /**
@@ -42,7 +42,7 @@ public:
     /**
      * @brief called when test progress
      *
-     * param0 is the param passed from #testCaseProgress
+     * param0 is the param passed from #notifyProgress
      */
     ZFEVENT(TestCaseOnProgress)
     /**
@@ -81,26 +81,26 @@ public:
     /**
      * @brief whether test is running
      */
-    ZFMETHOD_DECLARE_0(zfbool, testCaseIsRunning)
+    ZFMETHOD_DECLARE_0(zfbool, started)
 
     /**
      * @brief output something for the test case,
      *   used to debug
      */
-    zffinal void testCaseOutput(ZF_IN const zfchar *info);
+    zffinal void output(ZF_IN const zfchar *info);
     /**
      * @brief manually start a test case
      *
      * do nothing if already begun,
      * automatically retain this object during test,
-     * and release it after #testCaseStop
+     * and release it after #stop
      */
-    ZFMETHOD_DECLARE_0(void, testCaseStart)
+    ZFMETHOD_DECLARE_0(void, start)
     /**
      * @brief called to notify progress,
      *   do nothing if not running
      */
-    ZFMETHOD_DECLARE_1(void, testCaseProgress
+    ZFMETHOD_DECLARE_1(void, notifyProgress
             , ZFMP_IN_OPT(ZFObject *, progress, zfnull)
             )
     /**
@@ -109,20 +109,20 @@ public:
      *
      * @warning you must not access this object after calling this method
      */
-    ZFMETHOD_DECLARE_1(void, testCaseStop
+    ZFMETHOD_DECLARE_1(void, stop
             , ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success)
             )
 
 private:
-    zfbool _testCaseIsRunning;
+    zfbool _started;
 protected:
-    ZFTestCase(void) : _testCaseIsRunning(zffalse) {}
+    ZFTestCase(void) : _started(zffalse) {}
 };
 
 /**
  * @brief util macro to assert within test case
  *
- * upon assert fail, finish the test case by #ZFTestCase::testCaseStop
+ * upon assert fail, finish the test case by #ZFTestCase::stop
  */
 #define ZFTestCaseAssert(cond) \
     ZFTestCaseAssertWithMessage(cond, "test failed: %s", #cond)
@@ -137,8 +137,8 @@ protected:
 #define ZFTestCaseAssertWithMessage(cond, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput(zfstr("%s " fmt, ZFCallerInfoCreate(), ##__VA_ARGS__)); \
-            this->testCaseStop(ZFResultType::e_Fail); \
+            this->output(zfstr("%s " fmt, ZFCallerInfoCreate(), ##__VA_ARGS__)); \
+            this->stop(ZFResultType::e_Fail); \
             return; \
         } \
     } while(zffalse)
@@ -146,8 +146,8 @@ protected:
 #define ZFTestCaseAssertWithMessageTrim(cond, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput(zfstr(fmt, ##__VA_ARGS__)); \
-            this->testCaseStop(ZFResultType::e_Fail); \
+            this->output(zfstr(fmt, ##__VA_ARGS__)); \
+            this->stop(ZFResultType::e_Fail); \
             return; \
         } \
     } while(zffalse)
@@ -155,8 +155,8 @@ protected:
 #define ZFTestCaseAssertWithMessageDetail(cond, callerInfo, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput(zfstr("%s " fmt, callerInfo, fmt, ##__VA_ARGS__)); \
-            this->testCaseStop(ZFResultType::e_Fail); \
+            this->output(zfstr("%s " fmt, callerInfo, fmt, ##__VA_ARGS__)); \
+            this->stop(ZFResultType::e_Fail); \
             return; \
         } \
     } while(zffalse)

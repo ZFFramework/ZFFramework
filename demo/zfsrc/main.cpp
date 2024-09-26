@@ -75,10 +75,10 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
 }
 static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void) {
     zfobj<ZFUIWindow> window;
-    window->windowShow();
+    window->show();
 
     zfobj<ZFUIKit_test_ListView> containerView;
-    window->childAdd(containerView)->c_sizeFill();
+    window->child(containerView)->c_sizeFill();
 
     ZFUIViewFocusNextMove(window);
     return containerView;
@@ -141,7 +141,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         , ZF_IN ZFCoreArray<const ZFClass *> const &testCases
         ) {
     zfobj<ZFUIKit_test_Button> button;
-    containerView->childAdd(button);
+    containerView->child(button);
 
     zfobj<_ZFP_ZFFramework_test_TestCaseSubModuleData> subModuleData;
     subModuleData->subModuleName = subModuleName;
@@ -151,28 +151,28 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
             , zfautoT<_ZFP_ZFFramework_test_TestCaseSubModuleData>, subModuleData
             ) {
         zfobj<ZFUIWindow> subModuleWindow;
-        subModuleWindow->viewBackgroundColor(ZFUIColorWhite());
-        subModuleWindow->windowShow();
+        subModuleWindow->backgroundColor(ZFUIColorWhite());
+        subModuleWindow->show();
         zfobj<ZFUIKit_test_ListView> containerView;
-        subModuleWindow->childAdd(containerView)->c_sizeFill();
+        subModuleWindow->child(containerView)->c_sizeFill();
 
         {
             zfobj<ZFUIKit_test_Button> closeButton;
-            containerView->childAdd(closeButton);
+            containerView->child(closeButton);
             closeButton->label()->text("back");
             ZFLISTENER_1(closeButtonOnClick
                     , ZFUIWindow *, subModuleWindow
                     ) {
-                subModuleWindow->windowHide();
+                subModuleWindow->hide();
             } ZFLISTENER_END()
             closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), closeButtonOnClick);
-            closeButton->background()->viewBackgroundColor(ZFUIColorRed());
+            closeButton->background()->backgroundColor(ZFUIColorRed());
 
             zfobj<ZFUIView> separator;
-            containerView->childAdd(separator);
+            containerView->child(separator);
             separator->viewSizeMin(ZFUISizeCreate(0, 5));
             separator->viewSizeMax(ZFUISizeCreate(-1, 5));
-            separator->viewBackgroundColor(ZFUIColorGray());
+            separator->backgroundColor(ZFUIColorGray());
         }
 
         for(zfindex i = 0; i < subModuleData->testCases.count(); ++i) {
@@ -189,7 +189,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
         , ZF_IN const ZFClass *testCase
         ) {
     zfobj<ZFUIKit_test_Button> button;
-    containerView->childAdd(button);
+    containerView->child(button);
 
     ZFLISTENER_2(onClickButton
             , const ZFClass *, testCase

@@ -11,22 +11,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 /*
  * all types:
- *     XmlNull
- *     XmlElement
- *     XmlText
- *     XmlComment
- *     XmlDocument
- *     XmlDeclaration
- *     XmlDocType
- *     XmlPI
+ *     Null
+ *     Element
+ *     Text
+ *     Comment
+ *     Document
+ *     Declaration
+ *     DocType
+ *     PI
  * has name:
- *     XmlElement, XmlPI
+ *     Element, PI
  * has value:
- *     XmlText, XmlComment, XmlDocType, XmlPI
+ *     Text, Comment, DocType, PI
  * has attribute:
- *     XmlElement, XmlDeclaration
+ *     Element, Declaration
  * has child:
- *     XmlElement, XmlDocument
+ *     Element, Document
  *
  * a typical xml to test:
     <?xml type="declaration"?>
@@ -55,23 +55,23 @@ zfclassFwd ZFXml;
  * @brief xml item type
  */
 ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFXmlType)
-    ZFENUM_VALUE(XmlNull)
-    ZFENUM_VALUE(XmlElement)
-    ZFENUM_VALUE(XmlText)
-    ZFENUM_VALUE(XmlComment)
-    ZFENUM_VALUE(XmlDocument)
-    ZFENUM_VALUE(XmlDeclaration)
-    ZFENUM_VALUE(XmlDocType)
-    ZFENUM_VALUE(XmlPI)
+    ZFENUM_VALUE(Null)
+    ZFENUM_VALUE(Element)
+    ZFENUM_VALUE(Text)
+    ZFENUM_VALUE(Comment)
+    ZFENUM_VALUE(Document)
+    ZFENUM_VALUE(Declaration)
+    ZFENUM_VALUE(DocType)
+    ZFENUM_VALUE(PI)
 ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(XmlNull)
-    ZFENUM_VALUE_REGISTER(XmlElement)
-    ZFENUM_VALUE_REGISTER(XmlText)
-    ZFENUM_VALUE_REGISTER(XmlComment)
-    ZFENUM_VALUE_REGISTER(XmlDocument)
-    ZFENUM_VALUE_REGISTER(XmlDeclaration)
-    ZFENUM_VALUE_REGISTER(XmlDocType)
-    ZFENUM_VALUE_REGISTER(XmlPI)
+    ZFENUM_VALUE_REGISTER(Null)
+    ZFENUM_VALUE_REGISTER(Element)
+    ZFENUM_VALUE_REGISTER(Text)
+    ZFENUM_VALUE_REGISTER(Comment)
+    ZFENUM_VALUE_REGISTER(Document)
+    ZFENUM_VALUE_REGISTER(Declaration)
+    ZFENUM_VALUE_REGISTER(DocType)
+    ZFENUM_VALUE_REGISTER(PI)
 ZFENUM_END(ZFLIB_ZFAlgorithm, ZFXmlType)
 
 // ============================================================
@@ -123,10 +123,10 @@ public:
      */
     ZFXmlTypeEnum type(void) const;
     /**
-     * @brief true if #type is #ZFXmlType::e_XmlNull
+     * @brief true if #type is #ZFXmlType::e_Null
      */
     inline zfbool valid(void) const {
-        return (this->type() != ZFXmlType::e_XmlNull);
+        return (this->type() != ZFXmlType::e_Null);
     }
 
 public:
@@ -134,13 +134,13 @@ public:
      * @brief name of the node
      *
      * what name stands for depends on the node type:
-     * -  XmlDocument: always null
-     * -  XmlDeclaration: always null
-     * -  XmlDocType: always null
-     * -  XmlPI: pi's name
-     * -  XmlElement: tag name
-     * -  XmlText: always null
-     * -  XmlComment: always null
+     * -  Document: always null
+     * -  Declaration: always null
+     * -  DocType: always null
+     * -  PI: pi's name
+     * -  Element: tag name
+     * -  Text: always null
+     * -  Comment: always null
      */
     ZFXml &name(ZF_IN const zfstring &name);
     /**
@@ -152,13 +152,13 @@ public:
      * @brief value of the node
      *
      * what value stands for depends on the node type:
-     * -  XmlDocument: always null
-     * -  XmlDeclaration: always null
-     * -  XmlDocType: the DOCTYPE without tags
-     * -  XmlPI: the processing instruction's content
-     * -  XmlElement: always null
-     * -  XmlText: the text itself without tags if CDATA
-     * -  XmlComment: the comment itself without tags
+     * -  Document: always null
+     * -  Declaration: always null
+     * -  DocType: the DOCTYPE without tags
+     * -  PI: the processing instruction's content
+     * -  Element: always null
+     * -  Text: the text itself without tags if CDATA
+     * -  Comment: the comment itself without tags
      */
     ZFXml &value(ZF_IN const zfstring &value);
     /**
@@ -236,7 +236,7 @@ public:
     /**
      * @brief add child at index
      */
-    ZFXml &childAdd(
+    ZFXml &child(
             ZF_IN const ZFXml &item
             , ZF_IN_OPT zfindex index = zfindexMax()
             );
@@ -265,7 +265,7 @@ public:
     // ============================================================
 public:
     /**
-     * @brief CDATA or not, for #ZFXmlType::e_XmlText
+     * @brief CDATA or not, for #ZFXmlType::e_Text
      */
     void CDATA(ZF_IN zfbool CDATA);
     /**
@@ -342,9 +342,9 @@ public:
     zfstring xmlElementEndTagRight; /**< @brief ">" by default */
     zfstring xmlElementSingleTagLeft; /**< @brief "<" by default */
     zfstring xmlElementSingleTagRight; /**< @brief "/>" by default */
-    zfstring xmlAttributeEqualTag; /**< @brief "=" by default */
-    zfstring xmlAttributeQuoteTagLeft; /**< @brief "\"" by default */
-    zfstring xmlAttributeQuoteTagRight; /**< @brief "\"" by default */
+    zfstring xmlAttrEqualTag; /**< @brief "=" by default */
+    zfstring xmlAttrQuoteTagLeft; /**< @brief "\"" by default */
+    zfstring xmlAttrQuoteTagRight; /**< @brief "\"" by default */
     zfstring xmlTextCDATATagLeft; /**< @brief "<![CDATA[" by default */
     zfstring xmlTextCDATATagRight; /**< @brief "]]>" by default */
     zfstring xmlCommentTagLeft; /**< @brief "<!--" by default */
@@ -363,7 +363,7 @@ public:
      * if 0, add before every attributes,
      * if 1, add before every attributes except first one
      */
-    zfindex xmlElementAttributeCountBeforeAddNewLine;
+    zfindex xmlElementAttrCountBeforeAddNewLine;
     /**
      * @brief add new line before entering a element if the element isn't single line, zffalse by default
      */
@@ -395,15 +395,15 @@ public:
     , xmlElementEndTagRight(">")
     , xmlElementSingleTagLeft("<")
     , xmlElementSingleTagRight("/>")
-    , xmlAttributeEqualTag("=")
-    , xmlAttributeQuoteTagLeft("\"")
-    , xmlAttributeQuoteTagRight("\"")
+    , xmlAttrEqualTag("=")
+    , xmlAttrQuoteTagLeft("\"")
+    , xmlAttrQuoteTagRight("\"")
     , xmlTextCDATATagLeft("<![CDATA[")
     , xmlTextCDATATagRight("]]>")
     , xmlCommentTagLeft("<!--")
     , xmlCommentTagRight("-->")
     , xmlGlobalLineBeginToken()
-    , xmlElementAttributeCountBeforeAddNewLine(3)
+    , xmlElementAttrCountBeforeAddNewLine(3)
     , xmlElementAddNewLineAtHeadIfNotSingleLine(zffalse)
     , xmlElementTrimTagIfNoChildren(zftrue)
     , xmlElementEndTagAtSameLineIfNoChildElement(zftrue)

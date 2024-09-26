@@ -398,6 +398,23 @@ public:
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
+    virtual zfbool invokeT(
+            ZF_OUT zfauto &ret
+            , ZF_OUT_OPT zfstring *errorHint
+            , ZF_IN const zfstring &methodName
+            , ZF_IN_OPT ZFObject *param0 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
+            , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
+            );
+    /**
+     * @brief util method to perform #ZFDI_invoke,
+     *   do nothing if fail
+     */
     virtual zfauto invokeDetail(
             ZF_IN const zfstring &methodName
             , ZF_IN const ZFCoreArray<zfauto> &params
@@ -549,6 +566,24 @@ public:
      * same with calling the observerHolder's proper method
      */
     zffinal ZFObserver &observerHolder(void);
+
+public:
+    /** @brief util to #observerAdd */
+    zffinal inline void on(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            ) {
+        this->observerAdd(eventId, observer, observerLevel);
+    }
+    /** @brief util to #observerAddForOnce */
+    zffinal void once(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            ) {
+        this->observerAddForOnce(eventId, observer, observerLevel);
+    }
 
 protected:
     /**

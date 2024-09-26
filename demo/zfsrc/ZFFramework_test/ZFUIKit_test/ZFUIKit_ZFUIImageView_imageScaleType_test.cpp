@@ -12,18 +12,18 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->viewBackgroundColor(ZFUIColorYellow());
+        this->backgroundColor(ZFUIColorYellow());
 
         zfauto imageSmall = zfres("test_normal.png");
         zfauto imageLarge = ZFUIImageScale(imageSmall, ZFUISizeCreate(600));
 
-        this->childAdd(this->imageViewSmall());
+        this->child(this->imageViewSmall());
         this->imageViewSmall()->image(imageSmall);
-        this->imageViewSmall()->viewBackgroundColor(ZFUIColorRed());
+        this->imageViewSmall()->backgroundColor(ZFUIColorRed());
 
-        this->childAdd(this->imageViewLarge());
+        this->child(this->imageViewLarge());
         this->imageViewLarge()->image(imageLarge);
-        this->imageViewLarge()->viewBackgroundColor(ZFUIColorBlue());
+        this->imageViewLarge()->backgroundColor(ZFUIColorBlue());
     }
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
@@ -60,7 +60,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIKit_ZFUIImageView_imageScaleType_test_Container> layout;
-        container->childAdd(layout)->c_sizeFill();
+        container->child(layout)->c_sizeFill();
 
         zfobj<ZFArray> imageViews;
         imageViews->add(layout->imageViewSmall());

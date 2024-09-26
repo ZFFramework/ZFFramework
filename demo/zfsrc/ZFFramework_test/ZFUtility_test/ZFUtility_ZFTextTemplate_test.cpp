@@ -10,8 +10,8 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFTextTemplate");
+        this->outputSeparator();
+        this->output("ZFTextTemplate");
 
         const zfchar *src =
             "========== test replace begin ==========\n"
@@ -45,17 +45,17 @@ protected:
 
         zfstring buf;
         ZFTextTemplateParam param;
-        param.replaceDataAdd("replace_exist", "_replace_exist_");
-        param.enableDataAdd("enableif_true", zftrue);
+        param.replaceData("replace_exist", "_replace_exist_");
+        param.enableData("enableif_true", zftrue);
         ZFTextTemplateApply(param, ZFOutputForString(buf), src);
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput(zfstr("src:\n%s", src));
+        this->outputSeparator();
+        this->output(zfstr("src:\n%s", src));
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput(zfstr("applied:\n%s", buf));
+        this->outputSeparator();
+        this->output(zfstr("applied:\n%s", buf));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFUtility_ZFTextTemplate_test)

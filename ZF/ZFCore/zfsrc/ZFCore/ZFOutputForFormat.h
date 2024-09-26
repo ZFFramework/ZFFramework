@@ -147,7 +147,7 @@ public:
     ZFPROPERTY_ASSIGN(zfstring, linePostfix)
     /** @brief contents write after entire output */
     ZFPROPERTY_ASSIGN(zfstring, outputPostfix)
-    /** @brief contents write after entire output */
+    /** @brief whether ignore tail endl */
     ZFPROPERTY_ASSIGN(zfbool, removeEndl)
 
 protected:

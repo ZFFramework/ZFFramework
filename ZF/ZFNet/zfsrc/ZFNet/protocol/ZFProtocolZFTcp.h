@@ -19,7 +19,7 @@ public:
     /** @brief see #ZFTcp::open */
     virtual void *open(
             ZF_IN ZFTcp *owner
-            , ZF_IN const zfchar *host
+            , ZF_IN const zfstring &host
             , ZF_IN zfuint port
             ) zfpurevirtual;
     /** @brief see #ZFTcp::close */

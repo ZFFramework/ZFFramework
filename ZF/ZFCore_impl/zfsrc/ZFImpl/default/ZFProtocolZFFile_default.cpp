@@ -27,7 +27,7 @@ public:
             return (access(path, F_OK) != -1);
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    virtual zfbool fileIsDir(ZF_IN const zfchar *path) {
+    virtual zfbool isDir(ZF_IN const zfchar *path) {
         #if ZF_ENV_sys_Windows
             return ((GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString())
                 & FILE_ATTRIBUTE_DIRECTORY) != 0);
@@ -69,13 +69,13 @@ private:
             zfself::SetErrPos(errPos, srcPath);
             return zffalse;
         }
-        zfbool srcIsDir = this->fileIsDir(srcPath);
+        zfbool srcIsDir = this->isDir(srcPath);
         if(srcIsDir && !isRecursive) {
             zfself::SetErrPos(errPos, srcPath);
             return zffalse;
         }
         zfbool dstExist = this->fileIsExist(dstPath);
-        zfbool dstIsDir = this->fileIsDir(dstPath);
+        zfbool dstIsDir = this->isDir(dstPath);
         if(dstExist && srcIsDir != dstIsDir) {
             zfself::SetErrPos(errPos, dstPath);
             return zffalse;
@@ -129,7 +129,7 @@ public:
             , ZF_IN_OPT zfstring *errPos = zfnull
             ) {
         if(!this->fileIsExist(path)) {return zftrue;}
-        if(this->fileIsDir(path)) {
+        if(this->isDir(path)) {
             if(!isRecursive) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
@@ -152,14 +152,14 @@ public:
         WIN32_FIND_DATAW fd;
         HANDLE hFind;
         void setup(ZFFileFindData::Impl &zfd) {
-            zfd.fileName.removeAll();
-            zfstringToUTF8(zfd.fileName, fd.cFileName, ZFStringEncoding::e_UTF16);
+            zfd.name.removeAll();
+            zfstringToUTF8(zfd.name, fd.cFileName, ZFStringEncoding::e_UTF16);
 
             zfstring filePath = this->parentPath;
             filePath += '/';
-            filePath += zfd.fileName;
+            filePath += zfd.name;
 
-            zfd.fileIsDir = ZFFileIsDir(filePath);
+            zfd.isDir = ZFFileIsDir(filePath);
         }
     #else // #if ZF_ENV_sys_Windows
         _ZFP_ZFFileNativeFd(void) {
@@ -171,13 +171,13 @@ public:
         struct dirent *pDirent;
         struct stat fStat;
         void setup(ZFFileFindData::Impl &zfd) {
-            zfd.fileName = pDirent->d_name;
+            zfd.name = pDirent->d_name;
 
             zfstring filePath = this->parentPath;
             filePath += '/';
-            filePath += zfd.fileName;
+            filePath += zfd.name;
 
-            zfd.fileIsDir = ZFFileIsDir(filePath);
+            zfd.isDir = ZFFileIsDir(filePath);
         }
     #endif // #if ZF_ENV_sys_Windows #else
     };
@@ -215,8 +215,8 @@ public:
         #endif // #if ZF_ENV_sys_Windows #else
         } while(zffalse);
         if(success) {
-            while(zfstringIsEqual(fd.fileName, ".")
-                    || zfstringIsEqual(fd.fileName, "..")
+            while(zfstringIsEqual(fd.name, ".")
+                    || zfstringIsEqual(fd.name, "..")
                     ) {
                 if(!this->fileFindNext(fd)) {
                     this->fileFindClose(fd);
@@ -240,8 +240,8 @@ public:
             if(nativeFd->pDirent == zfnull) {return zffalse;}
             nativeFd->setup(fd);
         #endif // #if ZF_ENV_sys_Windows #else
-        if(zfstringIsEqual(fd.fileName, ".")
-                || zfstringIsEqual(fd.fileName, "..")
+        if(zfstringIsEqual(fd.name, ".")
+                || zfstringIsEqual(fd.name, "..")
                 ) {
             return this->fileFindNext(fd);
         }
@@ -278,7 +278,7 @@ private:
             , ZF_IN_OPT zfstring *errPos
             ) {
         if(this->fileIsExist(path)) {
-            if(!this->fileIsDir(path)) {
+            if(!this->isDir(path)) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
@@ -313,7 +313,7 @@ private:
         ZFCoreArray<zfstring> dirToCreate;
         if(!excludeLastLevel) {
             if(this->fileIsExist(pathTmp)) {
-                if(!this->fileIsDir(pathTmp)) {
+                if(!this->isDir(pathTmp)) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
@@ -324,7 +324,7 @@ private:
         pathTmp.remove(indexL);
         do {
             if(this->fileIsExist(pathTmp)) {
-                if(!this->fileIsDir(pathTmp)) {
+                if(!this->isDir(pathTmp)) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
@@ -456,13 +456,13 @@ private:
                     zfstring srcTmp;
                     srcTmp += srcDir;
                     srcTmp += '/';
-                    srcTmp += fd.fileName;
+                    srcTmp += fd.name;
 
                     zfstring dstTmp;
                     dstTmp += dstDir;
                     dstTmp += '/';
-                    dstTmp += fd.fileName;
-                    if(this->fileIsDir(srcTmp)) {
+                    dstTmp += fd.name;
+                    if(this->isDir(srcTmp)) {
                         stacksDirSrc.add(srcTmp);
                         stacksDirDst.add(dstTmp);
                     }
@@ -537,8 +537,8 @@ private:
                     zfstring filePath;
                     filePath += dirPath;
                     filePath += '/';
-                    filePath += fd.fileName;
-                    if(this->fileIsDir(filePath)) {
+                    filePath += fd.name;
+                    if(this->isDir(filePath)) {
                         dirsToCheck.add(filePath);
                     }
                     else {

@@ -16,25 +16,25 @@ void ZFUIKit_test_prepareTestWindow(
         ) {
     window = zfAlloc(ZFUIKit_test_Window);
     zfblockedRelease(window);
-    window->windowShow();
+    window->show();
 
     // close button
     zfobj<ZFUIKit_test_Button> closeButton;
-    window->childAdd(closeButton)->c_alignRightTop();
+    window->child(closeButton)->c_alignRightTop();
     closeButton->label()->text("close");
     ZFLISTENER_2(onClickCloseButton
             , ZFTestCase *, testCaseToStop
             , ZFUIWindow *, window
             ) {
-        testCaseToStop->testCaseStop();
-        window->windowHide();
+        testCaseToStop->stop();
+        window->hide();
     } ZFLISTENER_END()
     closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
 
     // container
     container = zfAlloc(ZFUIView);
     zfblockedRelease(container);
-    window->childAdd(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
+    window->child(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
 }
 
 zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
@@ -44,33 +44,33 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
 
     zfobj<ZFUIKit_test_Window> window;
     settingsButton->objectTag("setting window", window);
-    window->viewAlpha(0.8f);
+    window->alpha(0.8f);
     ZFLISTENER_1(onClickSetting
             , ZFUIWindow *, window
             ) {
-        window->windowShow();
+        window->show();
     } ZFLISTENER_END()
     settingsButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickSetting);
 
     zfobj<ZFUIKit_test_Button> closeButton;
-    window->childAdd(closeButton)->c_alignTop();
+    window->child(closeButton)->c_alignTop();
     closeButton->label()->text("done");
     ZFLISTENER_1(onClickCloseButton
             , ZFUIWindow *, window
             ) {
-        window->windowHide();
+        window->hide();
     } ZFLISTENER_END()
     closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
 
     zfobj<ZFUIKit_test_ListView> listView;
-    window->childAdd(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
+    window->child(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
     for(zfindex i = 0; i < settings->count(); ++i) {
         ZFUIKit_test_SettingData *setting = settings->get(i);
         ZFCoreAssert(setting->buttonTextGetter());
         ZFCoreAssert(setting->buttonClickListener());
 
         zfobj<ZFUIKit_test_Button> button;
-        listView->childAdd(button);
+        listView->child(button);
         ZFLISTENER_1(onButtonClick
                 , ZFUIKit_test_SettingData *, setting
                 ) {
@@ -113,7 +113,7 @@ void ZFUIKit_test_prepareSettingButtonWithTestWindow(
         ) {
     zfauto buttonHolder = ZFUIKit_test_prepareSettingButton(settings);
     ZFUIButton *button = buttonHolder;
-    window->childAdd(button)->c_alignTop();
+    window->child(button)->c_alignTop();
 }
 
 void ZFUIKit_test_prepareSettingForProperty(
@@ -148,10 +148,10 @@ void ZFUIKit_test_prepareSettingForBoolProperty(
         ) {
     ZFCoreAssert(settings != zfnull);
     ZFCoreAssert(obj != zfnull && property != zfnull);
-    ZFCoreAssert(obj->classData()->classIsTypeOf(property->propertyOwnerClass()));
+    ZFCoreAssert(obj->classData()->classIsTypeOf(property->ownerClass()));
     ZFCoreAssert(zfstringIsEqual(property->propertyTypeId(), ZFTypeId_zfbool()));
 
-    zfbool value = property->getterMethod()->execute<zfbool const &>(obj);
+    zfbool value = property->getterMethod()->executeExact<zfbool const &>(obj);
     ZFUIKit_test_prepareSettingForNormalProperty(settings, obj, zfbool, property, ZFCoreArrayCreate(zfbool, value, !value));
 }
 

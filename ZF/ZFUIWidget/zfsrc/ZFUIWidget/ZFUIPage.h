@@ -374,7 +374,7 @@ public:
      *   simply call #managerDestroy
      */
     ZFMETHOD_DECLARE_1(ZFUIWindow *, managerCreateForWindow
-            , ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull)
+            , ZFMP_IN_OPT(ZFUISysWindow *, ownerSysWindow, zfnull)
             )
     /** @brief valid only for #managerCreateForWindow */
     ZFMETHOD_DECLARE_0(ZFUIWindow *, managerOwnerWindow)

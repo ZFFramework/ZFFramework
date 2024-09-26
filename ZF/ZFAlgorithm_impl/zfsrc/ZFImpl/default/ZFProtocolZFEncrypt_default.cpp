@@ -25,7 +25,7 @@ public:
             if(inputBuf.buffer() == zfnull) {
                 return zffalse;
             }
-            zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputBuf.bufferSize(), 16));
+            zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputBuf.length(), 16));
             output.execute(sizeCheck.cString(), sizeCheck.length() * sizeof(zfchar));
             return ZFBase64Encode(output, ZFInputForBuffer(inputBuf), zfnull, this->tableForKey(key));
         }

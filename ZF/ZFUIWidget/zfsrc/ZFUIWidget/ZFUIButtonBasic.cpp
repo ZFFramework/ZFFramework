@@ -359,17 +359,17 @@ void ZFUIButtonBasic::layoutOnMeasure(
     }
 
     ZFUISize labelSize = ZFUISizeZero();
-    if(d->labelView != zfnull && d->labelView->viewVisible() && !d->labelView->text().isEmpty()) {
+    if(d->labelView != zfnull && d->labelView->visible() && !d->labelView->text().isEmpty()) {
         labelSize = d->labelView->layoutMeasure(sizeHintTmp, ZFUISizeParamWrapWrap());
     }
 
     ZFUISize iconSize = ZFUISizeZero();
-    if(d->iconView != zfnull && d->iconView->viewVisible() && d->iconView->imageState() != zfnull) {
+    if(d->iconView != zfnull && d->iconView->visible() && d->iconView->imageState() != zfnull) {
         iconSize = d->iconView->layoutMeasure(sizeHintTmp, ZFUISizeParamWrapWrap());
     }
 
     ZFUISize backgroundSize = ZFUISizeZero();
-    if(d->backgroundView != zfnull && d->backgroundView->viewVisible() && d->backgroundView->imageState() != zfnull) {
+    if(d->backgroundView != zfnull && d->backgroundView->visible() && d->backgroundView->imageState() != zfnull) {
         ZFUISize sizeHintBg = sizeHint;
         if(sizeHintBg.width >= 0) {
             sizeHintBg.width -= this->contentMargin().left + this->contentMargin().right;
@@ -435,12 +435,12 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     ZFUISize sizeHint = ZFUISizeApplyMargin(ZFUIRectGetSize(bounds), this->contentMargin());
 
     ZFUISize labelSize = ZFUISizeZero();
-    if(d->labelView != zfnull && d->labelView->viewVisible() && !d->labelView->text().isEmpty()) {
+    if(d->labelView != zfnull && d->labelView->visible() && !d->labelView->text().isEmpty()) {
         labelSize = d->labelView->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());
     }
 
     ZFUISize iconSize = ZFUISizeZero();
-    if(d->iconView != zfnull && d->iconView->viewVisible() && d->iconView->imageState() != zfnull) {
+    if(d->iconView != zfnull && d->iconView->visible() && d->iconView->imageState() != zfnull) {
         iconSize = d->iconView->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());
     }
 

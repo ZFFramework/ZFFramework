@@ -82,10 +82,10 @@ public:
                 zfobj<ZFHttpRequest> send(url, ZFHttpMethod::e_GET);
                 send->header("Range", zfstr("bytes=%s-%s", chunkPos, chunkEnd - 1));
                 zfautoT<ZFHttpResponse> recv = send->requestSync();
-                if(recv != zfnull && recv->success() && recv->body().bufferSize() == chunkEnd - chunkPos) {
+                if(recv != zfnull && recv->success() && recv->body().length() == chunkEnd - chunkPos) {
                     ZFCoreMutexLocker();
                     ZFBuffer ret;
-                    ret.bufferSwap(recv->body());
+                    ret.swap(recv->body());
                     chunkCache[chunkPos] = ret;
                     chunkCacheFIFO.removeElement(chunkPos);
                     chunkCacheFIFO.add(chunkPos);
@@ -248,7 +248,7 @@ public:
         while(p < pEnd) {
             zfindex chunkPos = d->chunkAlign(p);
             ZFBuffer chunk = d->chunkLoad(chunkPos);
-            if(chunk.bufferSize() == 0) {
+            if(chunk.length() == 0) {
                 break;
             }
             zfindex sizeToRead = pEnd > chunkPos + _Token::ChunkSize

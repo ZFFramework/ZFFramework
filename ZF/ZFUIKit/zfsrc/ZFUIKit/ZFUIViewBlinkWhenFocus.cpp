@@ -84,8 +84,8 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusOnUpdate(ZF_IN const ZFArgs &zfargs
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusDataHolder);
 
-    if(view->viewFocused()) {
-        if(!ZFUIViewBlinkWhenFocusFilter().filterCheckActive(view)) {
+    if(view->focused()) {
+        if(!ZFUIViewBlinkWhenFocusFilter().filterPassed(view)) {
             return;
         }
         d->focusedViews.add(view);
@@ -108,10 +108,10 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFArgs &zfargs) {
     }
 
     ZFUIMouseEvent *event = zfargs.param0();
-    if(event == zfnull || event->mouseAction != ZFUIMouseAction::e_MouseDown) {
+    if(event == zfnull || event->mouseAction != ZFUIMouseAction::e_Down) {
         return;
     }
-    if(!ZFUIViewBlinkWhenFocusFilter().filterCheckActive(view)) {
+    if(!ZFUIViewBlinkWhenFocusFilter().filterPassed(view)) {
         return;
     }
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusDataHolder);
@@ -216,13 +216,13 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime
         d->delayTimer = zfAlloc(ZFTimer);
         d->delayTimer->observerAdd(ZFTimer::EventTimerOnActivate(), d->doStopListener);
     }
-    d->delayTimer->timerStop();
+    d->delayTimer->stop();
 
     d->endTime = endTime;
-    d->delayTimer->timerInterval(time);
+    d->delayTimer->interval(time);
     ZFUIViewBlinkWhenFocusAutoApplyPause();
     d->started = zftrue;
-    d->delayTimer->timerStart();
+    d->delayTimer->start();
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder);
@@ -230,7 +230,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel) 
         return;
     }
     d->started = zffalse;
-    d->delayTimer->timerStop();
+    d->delayTimer->stop();
     ZFUIViewBlinkWhenFocusAutoApplyResume();
 }
 

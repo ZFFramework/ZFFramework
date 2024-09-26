@@ -52,7 +52,7 @@ public:
 
     virtual void url(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         task.request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(url)]];
@@ -72,8 +72,8 @@ public:
 
     virtual void header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         [task.request addValue:ZFImpl_sys_iOS_zfstringToNSString(value) forHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)];
@@ -81,7 +81,7 @@ public:
 
     virtual void headerRemove(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         [task.request setValue:nil forHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)];
@@ -89,7 +89,7 @@ public:
 
     virtual zfstring header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         return ZFImpl_sys_iOS_zfstringFromNSString([task.request valueForHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)]);
@@ -119,7 +119,7 @@ public:
     virtual void headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             ) {
         ZFImpl_sys_iOS_NSDictionaryIterValue(it, ZFImpl_sys_iOS_zfstringToNSString(value));
     }
@@ -190,7 +190,7 @@ public:
 public:
     virtual zfstring responseHeader(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         return ZFImpl_sys_iOS_zfstringFromNSString([task.response.allHeaderFields objectForKey:ZFImpl_sys_iOS_zfstringToNSString(key)]);

@@ -18,9 +18,9 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
     }
     for(zfindex i = 0; i < methodList.count(); ++i) {
         const ZFMethod *method = methodList[i];
-        if(!method->methodIsFunctionType()
-            || !zfstringIsEmpty(method->methodNamespace())
-            || method->methodIsInternalPrivate()
+        if(!method->isFuncType()
+            || method->methodNamespace()
+            || method->isInternalPrivate()
         ) {
             continue;
         }
@@ -53,7 +53,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
                 allMethod);
             for(zfindex i = 0; i < allMethod.count(); ++i) {
                 const ZFMethod *method = allMethod[i];
-                if(!zfstringIsEmpty(method->methodNamespace())) {
+                if(method->methodNamespace()) {
                     zfindex dotPos = zfstringFind(method->methodNamespace(), zfindexMax(), ".");
                     if(dotPos == zfindexMax()) {
                         methodNamespaceList[method->methodNamespace()] = zftrue;
@@ -78,7 +78,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
         if(data.changedMethod != zfnull && data.changeType == ZFClassDataUpdateTypeAttach) {
-            if(data.changedMethod->methodIsFunctionType()) {
+            if(data.changedMethod->isFuncType()) {
                 ZFCoreArray<lua_State *> stateList;
                 stateList.add(L);
                 ZFImpl_ZFLua_implSetupScope(

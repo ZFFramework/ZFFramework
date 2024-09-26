@@ -11,11 +11,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTcpImpl_sys_SDL, ZFTcp, ZFProtocolLevel::e_Sys
 public:
     virtual void *open(
             ZF_IN ZFTcp *owner
-            , ZF_IN const zfchar *host
+            , ZF_IN const zfstring &host
             , ZF_IN zfuint port
             ) {
         IPaddress sdlIp;
-        if(0 != SDLNet_ResolveHost(&sdlIp, host, (Uint16)port)) {
+        if(0 != SDLNet_ResolveHost(&sdlIp, host ? host.cString() : NULL, (Uint16)port)) {
             return zfnull;
         }
         return SDLNet_TCP_Open(&sdlIp);

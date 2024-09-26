@@ -40,7 +40,7 @@ static void _ZFP_ZFUIRootView_layoutParamApply(
         , ZF_IN ZFUILayoutParam *lp
         , ZF_IN const ZFUIMargin &sysWindowMargin
         ) {
-    ZFUIMargin totalMargin = ZFUIMarginInc(lp->layoutMargin(), sysWindowMargin);
+    ZFUIMargin totalMargin = ZFUIMarginInc(lp->margin(), sysWindowMargin);
     ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, totalMargin));
     if(refSizeTmp.width < 0) {
         refSizeTmp.width = 0;
@@ -58,7 +58,7 @@ static void _ZFP_ZFUIRootView_layoutParamApply(
     child->layoutMeasure(refSizeTmp, lp->sizeParam());
     ZFUIAlignApply(
             ret,
-            lp->layoutAlign(),
+            lp->align(),
             rect,
             child->layoutMeasuredSize(),
             totalMargin
@@ -83,7 +83,7 @@ void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
             bounds,
             child,
             child->layoutParam(),
-            window->windowOwnerSysWindow()->sysWindowMargin());
+            window->ownerSysWindow()->sysWindowMargin());
         child->viewFrame(result);
     }
 }

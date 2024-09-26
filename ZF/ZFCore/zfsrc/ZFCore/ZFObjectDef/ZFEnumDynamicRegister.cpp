@@ -58,7 +58,7 @@ public:
     }
 public:
     zfoverride
-    virtual const zfstring &wrappedValueTypeId(void) {
+    virtual const zfstring &zfvTypeId(void) {
         return _ZFP_ZFEnumDataRef()->ownerClass->classNameFull();
     }
 private:
@@ -124,15 +124,15 @@ static ZFEnum *_ZFP_ZFEnumDynamic_e(
         ) {
     const zfchar *enumName = invokerMethod->methodName() + zfslen("e_");
     zfstring tagKey = zfstr("_ZFP_EnumDyn_%s", enumName);
-    ZFEnum *ret = invokerMethod->methodOwnerClass()->classTag(tagKey);
+    ZFEnum *ret = invokerMethod->ownerClass()->classTag(tagKey);
     if(ret != zfnull) {
         return ret;
     }
-    const _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass());
-    zfauto retHolder = invokerMethod->methodOwnerClass()->newInstance();
+    const _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataFind(invokerMethod->ownerClass());
+    zfauto retHolder = invokerMethod->ownerClass()->newInstance();
     ret = retHolder;
     ret->_ZFP_enumValue(d->enumValueForName(enumName));
-    invokerMethod->methodOwnerClass()->classTag(tagKey, retHolder);
+    invokerMethod->ownerClass()->classTag(tagKey, retHolder);
     return ret;
 }
 const ZFClass *ZFEnumDynamicRegister(

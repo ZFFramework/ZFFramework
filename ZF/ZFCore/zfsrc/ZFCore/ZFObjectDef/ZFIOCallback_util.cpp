@@ -247,12 +247,12 @@ zfindex ZFInputRead(
             else {
                 toRead = size - read;
             }
-            ret.bufferCapacity(ret.bufferSize() + toRead);
-            readCount = input.execute(ret.bufferT<zfbyte *>() + ret.bufferSize(), toRead);
+            ret.capacity(ret.length() + toRead);
+            readCount = input.execute(ret.bufferT<zfbyte *>() + ret.length(), toRead);
             read += readCount;
-            ret.bufferSize(ret.bufferSize() + readCount);
+            ret.length(ret.length() + readCount);
             if(readCount < toRead) {
-                *(zfchar *)(ret.bufferT<zfbyte *>() + ret.bufferSize()) = '\0';
+                *(zfchar *)(ret.bufferT<zfbyte *>() + ret.length()) = '\0';
                 break;
             }
         } while(zftrue);
@@ -334,7 +334,7 @@ zfindex ZFInputReadLine(
             if(*c == '\n') {
                 return count;
             }
-            output.bufferAppend(c, readCount * sizeof(zfchar));
+            output.append(c, readCount * sizeof(zfchar));
             ++count;
         }
     } while(zftrue);

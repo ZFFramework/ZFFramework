@@ -147,7 +147,7 @@ protected:
             ZFLuaGC();
         }
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFLua_metatable_test)

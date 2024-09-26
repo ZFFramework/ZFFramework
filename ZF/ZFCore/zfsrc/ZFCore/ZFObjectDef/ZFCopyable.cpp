@@ -31,6 +31,10 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCopyable, void, copyFrom
         , ZFMP_IN(ZFObject *, anotherObj)
         )
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFObjectCopy
+        , ZFMP_IN(ZFObject *, obj)
+        )
+
 ZF_NAMESPACE_GLOBAL_END
 #endif
 

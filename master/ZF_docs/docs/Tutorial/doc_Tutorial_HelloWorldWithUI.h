@@ -11,17 +11,17 @@
  *       // typically we will start UI by creating a ZFUIWindow
  *       zfobj<ZFUIWindow> window;
  *       // show the window
- *       window->windowShow();
+ *       window->show();
  *
  *       // create a text view and set text content
  *       zfobj<ZFUITextView> textView;
  *       textView->text("hello world");
  *
  *       // add to window
- *       window->childAdd(textView);
+ *       window->child(textView);
  *
  *       // make it center in window
- *       textView->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+ *       textView->layoutParam()->align(ZFUIAlign::e_Center);
  *   }
  * @endcode
  */

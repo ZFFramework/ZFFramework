@@ -357,14 +357,14 @@ zfbool ZFTime::serializableOnSerializeFromData(
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     ZFTimeValue timeValue = ZFTimeValueZero();
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
             check, ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, timeValue, {
                 return zffalse;
             });
     this->timeValue(timeValue);
 
     ZFTimeValue timeZone = ZFTime::timeZoneLocal();
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
             check, ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, timeZone, {
                 return zffalse;
             });
@@ -380,12 +380,12 @@ zfbool ZFTime::serializableOnSerializeToData(
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
-    ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, this->timeValue(), ref->timeValue(), ZFTimeValueZero(), {
                 return zffalse;
             });
 
-    ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, this->timeZone(), ref->timeZone(), ZFTime::timeZoneLocal(), {
                 return zffalse;
             });
@@ -491,14 +491,14 @@ void ZFTime::objectOnDealloc(void) {
 
 void ZFTime::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfstringAppend(ret, "%04s-%02s-%02s %02s:%02s:%02s.%03s %03s",
-        this->timeInfoYear(),
-        this->timeInfoMonth() + 1,
-        this->timeInfoDay() + 1,
-        this->timeInfoHour(),
-        this->timeInfoMinute(),
-        this->timeInfoSecond(),
-        this->timeInfoMiliSecond(),
-        this->timeInfoMicroSecond());
+        this->year(),
+        this->month() + 1,
+        this->day() + 1,
+        this->hour(),
+        this->minute(),
+        this->second(),
+        this->miliSecond(),
+        this->microSecond());
 }
 
 zfclassPOD _ZFP_ZFTime_hash {
@@ -564,34 +564,34 @@ ZFMETHOD_DEFINE_0(ZFTime, const ZFTimeInfo &, timeInfo) {
     return d->ti;
 }
 
-ZFMETHOD_DEFINE_0(ZFTime, zfint, timeInfoYear) {
+ZFMETHOD_DEFINE_0(ZFTime, zfint, year) {
     return d->ti.year;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoMonth) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, month) {
     return d->ti.month;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoDay) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, day) {
     return d->ti.day;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoDayOfWeek) {
-    return _ZFP_ZFTimeImpl->timeInfoDayOfWeek(d->tvAppliedTimeZone, d->ti);
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, dayOfWeek) {
+    return _ZFP_ZFTimeImpl->dayOfWeek(d->tvAppliedTimeZone, d->ti);
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoDayOfYear) {
-    return _ZFP_ZFTimeImpl->timeInfoDayOfYear(d->tvAppliedTimeZone, d->ti);
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, dayOfYear) {
+    return _ZFP_ZFTimeImpl->dayOfYear(d->tvAppliedTimeZone, d->ti);
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoHour) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, hour) {
     return d->ti.hour;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoMinute) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, minute) {
     return d->ti.minute;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoSecond) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, second) {
     return d->ti.second;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoMiliSecond) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, miliSecond) {
     return d->ti.miliSecond;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zfuint, timeInfoMicroSecond) {
+ZFMETHOD_DEFINE_0(ZFTime, zfuint, microSecond) {
     return d->ti.microSecond;
 }
 

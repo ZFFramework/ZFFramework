@@ -31,7 +31,7 @@ zfclassFwd _ZFP_ZFAniForNativePrivate;
  *
  * native animation usually has better performance,
  * but may work incorrectly with local transform
- * (such as #ZFUIView::viewRotateZ)
+ * (such as #ZFUIView::rotateZ)
  */
 zfclass ZFLIB_ZFUIKit ZFAniForNative : zfextend ZFAnimation {
     ZFOBJECT_DECLARE(ZFAniForNative, ZFAnimation)
@@ -60,98 +60,98 @@ public:
     // property
 public:
     /**
-     * @brief whether automatically disable #ZFAnimation::aniTarget while animating, true by default
+     * @brief whether automatically disable #ZFAnimation::target while animating, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, aniTargetAutoDisable, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, targetAutoDisable, zftrue)
 
     /**
      * @brief animation's curve, #ZFAniForNativeCurve::e_Linear by default
      */
-    ZFPROPERTY_ASSIGN(ZFAniForNativeCurveEnum, aniCurve, ZFAniForNativeCurve::e_Linear)
+    ZFPROPERTY_ASSIGN(ZFAniForNativeCurveEnum, curve, ZFAniForNativeCurve::e_Linear)
 
     /**
      * @brief alpha from, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniAlphaFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, alphaFrom, 1.0f)
     /**
      * @brief alpha to, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniAlphaTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, alphaTo, 1.0f)
 
     /**
      * @brief scale x from, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniScaleXFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, scaleXFrom, 1.0f)
     /**
      * @brief scale x to, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniScaleXTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, scaleXTo, 1.0f)
     /**
      * @brief scale y from, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniScaleYFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, scaleYFrom, 1.0f)
     /**
      * @brief scale y to, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniScaleYTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, scaleYTo, 1.0f)
     /**
      * @brief scale y from, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniScaleZFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, scaleZFrom, 1.0f)
     /**
      * @brief scale y to, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniScaleZTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, scaleZTo, 1.0f)
 
     /**
      * @brief translate x from, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslateXFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, translateXFrom, 0)
     /**
      * @brief translate x to, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslateXTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, translateXTo, 0)
     /**
      * @brief translate y from, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslateYFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, translateYFrom, 0)
     /**
      * @brief translate y to, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslateYTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, translateYTo, 0)
     /**
      * @brief translate y from, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslateZFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, translateZFrom, 0)
     /**
      * @brief translate y to, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniTranslateZTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, translateZTo, 0)
 
     /**
      * @brief rotate x from, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniRotateXFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, rotateXFrom, 0)
     /**
      * @brief rotate x to, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniRotateXTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, rotateXTo, 0)
     /**
      * @brief rotate y from, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniRotateYFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, rotateYFrom, 0)
     /**
      * @brief rotate y to, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniRotateYTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, rotateYTo, 0)
     /**
      * @brief rotate z from, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniRotateZFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, rotateZFrom, 0)
     /**
      * @brief rotate z to, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, aniRotateZTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, rotateZTo, 0)
 
     // ============================================================
     // start stop

@@ -129,7 +129,7 @@ public:
         ZFCoreAssertWithMessageTrim(nativeWindow->layout() != NULL,
             "[ZFUISysWindow] window's QGraphicsWidget::layout not set");
         ZFImpl_sys_Qt_BaseLayout *l = (ZFImpl_sys_Qt_BaseLayout *)(nativeWindow->layout());
-        l->childAdd(nativeRootView);
+        l->child(nativeRootView);
         nativeParentView = (void *)nativeWindow;
     }
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
@@ -171,7 +171,7 @@ public:
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
         // centered by default
-        sysWindow->sysWindowLayoutParam()->layoutAlign(ZFUIAlign::e_Center);
+        sysWindow->sysWindowLayoutParam()->align(ZFUIAlign::e_Center);
         sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(480, 640));
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {

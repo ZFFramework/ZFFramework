@@ -167,14 +167,6 @@ public:
      * @brief hint text color
      */
     ZFPROPERTY_ASSIGN(ZFUIColor, textColorHint, ZFUIColorGrayLight())
-    /**
-     * @brief link text color
-     */
-    ZFPROPERTY_ASSIGN(ZFUIColor, textColorLink, ZFUIColorBlue())
-    /**
-     * @brief visited link text color
-     */
-    ZFPROPERTY_ASSIGN(ZFUIColor, textColorLinkVisited, ZFUIColorMagenta())
 
     // ============================================================
     // control

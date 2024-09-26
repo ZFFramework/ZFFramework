@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       p2.get()->add(xxx);
  *   }
  *   p2.set(xxx);
- *   if(p2.valid()) {
+ *   if(p2.objectValid()) {
  *       p2.get()->add(xxx);
  *   }
  * @endcode
@@ -42,7 +42,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       p2:get():add(xxx);
  *   }
  *   p2:set(xxx);
- *   if(p2:valid()) {
+ *   if(p2:objectValid()) {
  *       p2:get():add(xxx);
  *   }
  * @endcode
@@ -107,7 +107,7 @@ public:
     /**
      * @brief true if the holded object is not null
      */
-    inline zfbool valid(void) const {
+    inline zfbool objectValid(void) const {
         return this->toObject() != zfnull;
     }
 

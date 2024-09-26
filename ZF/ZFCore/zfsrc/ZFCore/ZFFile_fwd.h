@@ -66,14 +66,14 @@ public:
     /**
      * @brief return file name of file
      */
-    const zfstring &fileName(void) const {
-        return this->impl().fileName;
+    const zfstring &name(void) const {
+        return this->impl().name;
     }
     /**
      * @brief return true if is a directory
      */
-    zfbool fileIsDir(void) const {
-        return this->impl().fileIsDir;
+    zfbool isDir(void) const {
+        return this->impl().isDir;
     }
 
 public:
@@ -90,14 +90,14 @@ public:
     /** @brief for impl to achieve custom find logic */
     zffinal zfclassNotPOD Impl {
     public:
-        zfstring fileName; /**< @brief file path */
-        zfbool fileIsDir; /**< @brief whether directory */
+        zfstring name; /**< @brief file path */
+        zfbool isDir; /**< @brief whether directory */
         void *nativeFd; /**< @brief for impl to store native find data */
     public:
         /** @cond ZFPrivateDoc */
         Impl(void)
-        : fileName()
-        , fileIsDir(zffalse)
+        : name()
+        , isDir(zffalse)
         , nativeFd(zfnull)
         {
         }

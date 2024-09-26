@@ -114,7 +114,7 @@ public:
      */
     ZFMETHOD_DECLARE_2(void, childTargetAt
             , ZFMP_IN(zfindex , index)
-            , ZFMP_IN(zfany, aniTarget)
+            , ZFMP_IN(zfany, target)
             )
 
     /**
@@ -128,72 +128,44 @@ public:
      */
     ZFMETHOD_DECLARE_2(void, childDurationAt
             , ZFMP_IN(zfindex , index)
-            , ZFMP_IN(zftimet, aniDuration)
+            , ZFMP_IN(zftimet, duration)
             )
 
     // ============================================================
     // property
 public:
     /**
-     * @brief whether update all children's aniTarget, true by default
+     * @brief whether update all children's target, true by default
      *
-     * when true, child's aniTarget would be set to group's state,
+     * when true, child's target would be set to group's state,
      * unless #childTargetAt was set
      */
     ZFPROPERTY_ASSIGN(zfbool, autoUpdateTarget, zftrue)
     /**
-     * @brief whether update all children's aniDuration, true by default
+     * @brief whether update all children's duration, true by default
      *
-     * when true, child's aniDuration would be set to group's state,
+     * when true, child's duration would be set to group's state,
      * unless #childTargetAt was set
      */
     ZFPROPERTY_ASSIGN(zfbool, autoUpdateDuration, zftrue)
 
 public:
     zfoverride
-    virtual zftimet aniDurationFixed(void);
+    virtual zftimet durationFixed(void);
 
     // ============================================================
     // util for chained call
 public:
-    /** @brief util to add child animation */
-    ZFMETHOD_DECLARE_3(void, child
-            , ZFMP_IN(const zfstring &, name)
-            , ZFMP_IN(ZFObject *, from)
-            , ZFMP_IN(ZFObject *, to)
-            )
-    /** @brief util to add child animation */
-    ZFMETHOD_DECLARE_1(void, childImpl
-            , ZFMP_IN(const ZFListener &, aniImpl)
-            )
-
-public:
     /** @brief util to set last child's property */
     ZFMETHOD_DECLARE_1(void, childTarget
-            , ZFMP_IN(ZFObject *, aniTarget)
+            , ZFMP_IN(ZFObject *, target)
             )
     /** @brief util to set last child's property */
     ZFMETHOD_DECLARE_1(void, childDuration
-            , ZFMP_IN(zftimet, aniDuration)
-            )
-    /** @brief util to set last child's property */
-    ZFMETHOD_DECLARE_1(void, childLoop
-            , ZFMP_IN(zfindex, aniLoop)
-            )
-    /** @brief util to set last child's property */
-    ZFMETHOD_DECLARE_1(void, childCurve
-            , ZFMP_IN(ZFCurve *, aniCurve)
+            , ZFMP_IN(zftimet, duration)
             )
 
 public:
-    /** @brief util to attach observer */
-    ZFMETHOD_DECLARE_1(void, childOnDelayBegin
-            , ZFMP_IN(const ZFListener &, cb)
-            )
-    /** @brief util to attach observer */
-    ZFMETHOD_DECLARE_1(void, childOnDelayEnd
-            , ZFMP_IN(const ZFListener &, cb)
-            )
     /** @brief util to attach observer */
     ZFMETHOD_DECLARE_1(void, childOnStart
             , ZFMP_IN(const ZFListener &, cb)

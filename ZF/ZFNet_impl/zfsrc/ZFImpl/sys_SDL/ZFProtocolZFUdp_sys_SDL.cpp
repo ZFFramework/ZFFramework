@@ -24,11 +24,11 @@ public:
 
 public:
     virtual void *hostResolve(
-            ZF_IN const zfchar *host
+            ZF_IN const zfstring &host
             , ZF_IN zfuint port
             ) {
         IPaddress *hostAddr = zfnew(IPaddress);
-        SDLNet_ResolveHost(hostAddr, host, (Uint16)port);
+        SDLNet_ResolveHost(hostAddr, host ? host.cString() : NULL, (Uint16)port);
         return hostAddr;
     }
     virtual void hostRelease(ZF_IN void *hostAddr) {

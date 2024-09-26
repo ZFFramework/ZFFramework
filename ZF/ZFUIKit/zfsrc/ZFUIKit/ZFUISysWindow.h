@@ -306,7 +306,7 @@ public:
     /**
      * @brief get self's current showing modal window
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, modalWindowShowingWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, modalWindowShowing)
     /**
      * @brief get self's owner if self is a showing modal window
      */

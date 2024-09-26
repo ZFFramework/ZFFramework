@@ -10,17 +10,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFTimerPrivate {
 public:
     void *nativeTimer;
-    zfbool timerStarted;
+    zfbool started;
     unsigned short timerImplId;
-    zfuint timerActivatedCount;
+    zfuint activatedCount;
     void *timerThreadToken;
 
 public:
     _ZFP_ZFTimerPrivate(void)
     : nativeTimer(zfnull)
-    , timerStarted(zffalse)
+    , started(zffalse)
     , timerImplId(0)
-    , timerActivatedCount(0)
+    , activatedCount(0)
     , timerThreadToken(zfnull)
     {
     }
@@ -39,7 +39,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFTimerList) {
         ZFTimer *timer = d.removeLastAndGet();
         zfblockedRelease(zfRetain(timer));
         ZFCoreMutexUnlock();
-        timer->timerStop();
+        timer->stop();
         ZFCoreMutexLock();
     }
     ZFCoreMutexUnlock();
@@ -55,10 +55,10 @@ ZFEVENT_REGISTER(ZFTimer, TimerOnActivate)
 ZFEVENT_REGISTER(ZFTimer, TimerOnStop)
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFTimer
-        , ZFMP_IN(zftimet, timerInterval)
+        , ZFMP_IN(zftimet, interval)
         ) {
     this->objectOnInit();
-    zfself::timerInterval(timerInterval);
+    zfself::interval(interval);
 }
 void ZFTimer::objectOnInit(void) {
     zfsuper::objectOnInit();
@@ -73,7 +73,7 @@ void ZFTimer::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 void ZFTimer::objectOnDeallocPrepare(void) {
-    this->timerStop();
+    this->stop();
     zfsuper::objectOnDeallocPrepare();
 }
 
@@ -81,27 +81,27 @@ ZFMETHOD_DEFINE_0(ZFTimer, void *, nativeTimer) {
     return d->nativeTimer;
 }
 
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFTimer, zftimet, timerInterval) {
-    ZFCoreAssert(!this->timerStarted());
-    ZFCoreAssert(this->timerInterval() >= 0);
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFTimer, zftimet, interval) {
+    ZFCoreAssert(!this->started());
+    ZFCoreAssert(this->interval() >= 0);
 }
 
-ZFMETHOD_DEFINE_0(ZFTimer, void, timerStart) {
-    if(d->timerStarted) {
+ZFMETHOD_DEFINE_0(ZFTimer, void, start) {
+    if(d->started) {
         return;
     }
-    d->timerStarted = zftrue;
+    d->started = zftrue;
 
     zfRetain(this);
 
-    d->timerActivatedCount = 0;
-    ZFPROTOCOL_ACCESS(ZFTimer)->timerStart(this, (zfidentity)d->timerImplId);
+    d->activatedCount = 0;
+    ZFPROTOCOL_ACCESS(ZFTimer)->start(this, (zfidentity)d->timerImplId);
 }
-ZFMETHOD_DEFINE_0(ZFTimer, void, timerStop) {
-    if(d->timerStarted) {
-        d->timerStarted = zffalse;
+ZFMETHOD_DEFINE_0(ZFTimer, void, stop) {
+    if(d->started) {
+        d->started = zffalse;
         ++(d->timerImplId);
-        ZFPROTOCOL_ACCESS(ZFTimer)->timerStop(this);
+        ZFPROTOCOL_ACCESS(ZFTimer)->stop(this);
 
         ZFCoreMutexLock();
         _ZFP_ZFTimerList().removeElement(this);
@@ -115,12 +115,12 @@ ZFMETHOD_DEFINE_0(ZFTimer, void, timerStop) {
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFTimer, zfbool, timerStarted) {
-    return d->timerStarted;
+ZFMETHOD_DEFINE_0(ZFTimer, zfbool, started) {
+    return d->started;
 }
 
-ZFMETHOD_DEFINE_0(ZFTimer, zfindex, timerActivatedCount) {
-    return (zfindex)d->timerActivatedCount;
+ZFMETHOD_DEFINE_0(ZFTimer, zfindex, activatedCount) {
+    return (zfindex)d->activatedCount;
 }
 
 zfidentity ZFTimer::timerImplId(void) {
@@ -136,7 +136,7 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
     zfblockedRelease(this);
 
     ZFCoreMutexLock();
-    if(d->timerActivatedCount == 0) {
+    if(d->activatedCount == 0) {
         _ZFP_ZFTimerList().add(this);
         ZFCoreMutexUnlock();
 
@@ -144,10 +144,10 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
             d->timerThreadToken = ZFThread::nativeThreadRegister("timer thread");
         }
         this->timerOnStart();
-        ++(d->timerActivatedCount);
+        ++(d->activatedCount);
     }
     else {
-        ++(d->timerActivatedCount);
+        ++(d->activatedCount);
         ZFCoreMutexUnlock();
     }
 
@@ -158,13 +158,13 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer>, ZFTimerStart
-        , ZFMP_IN(zftimet, timerInterval)
+        , ZFMP_IN(zftimet, interval)
         , ZFMP_IN(const ZFListener &, timerCallback)
         ) {
     zfobj<ZFTimer> ret;
-    ret->timerInterval(timerInterval);
+    ret->interval(interval);
     ret->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback);
-    ret->timerStart();
+    ret->start();
     return ret;
 }
 
@@ -173,18 +173,18 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer>, ZFTimerOnce
         , ZFMP_IN(const ZFListener &, timerCallback)
         ) {
     zfobj<ZFTimer> ret;
-    ret->timerInterval(delay);
+    ret->interval(delay);
 
     ZFLISTENER_2(implThreadCallback
             , zfautoT<ZFTimer>, ret
             , ZFListener, timerCallback
             ) {
-        if(ret->timerStarted()) {
+        if(ret->started()) {
             timerCallback.execute(ZFArgs()
                     .sender(ret)
                 );
         }
-        ret->timerStop();
+        ret->stop();
     } ZFLISTENER_END()
 
     zfautoT<ZFThread> currentThread = ZFThread::currentThread();
@@ -196,7 +196,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer>, ZFTimerOnce
     } ZFLISTENER_END()
     ret->observerAddForOnce(ZFTimer::EventTimerOnActivate(), timerOnActivate);
 
-    ret->timerStart();
+    ret->start();
     return ret;
 }
 

@@ -49,7 +49,7 @@ public class ZFUIView extends ViewGroup {
         nativeViewTmp.setClickable(true);
         nativeViewTmp.setBackgroundColor(Color.TRANSPARENT);
 
-        ZFUIViewFocus.native_viewFocusable(nativeView, false);
+        ZFUIViewFocus.native_focusable(nativeView, false);
     }
 
     public static Object native_nativeViewCreate(long zfjniPointerOwnerZFUIView) {
@@ -97,14 +97,14 @@ public class ZFUIView extends ViewGroup {
         return ZFAndroidUI.screenDensity(((View) nativeView).getContext());
     }
 
-    public static void native_viewVisible(Object nativeView,
-                                          boolean viewVisible) {
-        ((ZFUIView) nativeView).setVisibility(viewVisible ? View.VISIBLE : View.GONE);
+    public static void native_visible(Object nativeView,
+                                          boolean visible) {
+        ((ZFUIView) nativeView).setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    public static void native_viewAlpha(Object nativeView,
-                                        float viewAlpha) {
-        ((ZFUIView) nativeView).setAlpha(viewAlpha);
+    public static void native_alpha(Object nativeView,
+                                        float alpha) {
+        ((ZFUIView) nativeView).setAlpha(alpha);
     }
 
     public static void native_viewUIEnable(Object nativeView,
@@ -119,12 +119,12 @@ public class ZFUIView extends ViewGroup {
         nativeViewTmp.setClickable(viewUIEnableTree);
     }
 
-    public static void native_viewBackgroundColor(Object nativeView,
-                                                  int viewBackgroundColor) {
-        ((ZFUIView) nativeView).setBackgroundColor(viewBackgroundColor);
+    public static void native_backgroundColor(Object nativeView,
+                                                  int backgroundColor) {
+        ((ZFUIView) nativeView).setBackgroundColor(backgroundColor);
     }
 
-    public static void native_childAdd(Object nativeView,
+    public static void native_child(Object nativeView,
                                        Object nativeChild,
                                        int virtualIndex,
                                        int childLayer,
@@ -296,21 +296,21 @@ public class ZFUIView extends ViewGroup {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action = ZFUIMouseAction.e_MouseDown;
+        int action = ZFUIMouseAction.e_Down;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
-                action = ZFUIMouseAction.e_MouseDown;
+                action = ZFUIMouseAction.e_Down;
                 break;
             case MotionEvent.ACTION_MOVE:
-                action = ZFUIMouseAction.e_MouseMove;
+                action = ZFUIMouseAction.e_Move;
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                action = ZFUIMouseAction.e_MouseUp;
+                action = ZFUIMouseAction.e_Up;
                 break;
             case MotionEvent.ACTION_CANCEL:
-                action = ZFUIMouseAction.e_MouseCancel;
+                action = ZFUIMouseAction.e_Cancel;
                 break;
             default:
                 return true;

@@ -22,15 +22,15 @@ public:
     zfidentity timerImplId;
 
 public:
-    void timerStart(ZF_IN zfidentity timerImplId) {
+    void start(ZF_IN zfidentity timerImplId) {
         this->timerImplId = timerImplId;
         this->setSingleShot(false);
 
-        this->setInterval(this->ownerZFTimer->timerInterval());
+        this->setInterval(this->ownerZFTimer->interval());
         connect(this, SIGNAL(timeout()), this, SLOT(timerOnActivate()), Qt::DirectConnection);
         this->start();
     }
-    void timerStop(void) {
+    void stop(void) {
         this->disconnect();
         this->stop();
     }
@@ -59,16 +59,16 @@ public:
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimerTmp = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)nativeTimer;
         zfdelete(nativeTimerTmp);
     }
-    virtual void timerStart(
+    virtual void start(
             ZF_IN ZFTimer *timer
             , ZF_IN zfidentity timerImplId
             ) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
-        nativeTimer->timerStart(timerImplId);
+        nativeTimer->start(timerImplId);
     }
-    virtual void timerStop(ZF_IN ZFTimer *timer) {
+    virtual void stop(ZF_IN ZFTimer *timer) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
-        nativeTimer->timerStop();
+        nativeTimer->stop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_sys_Qt)
 

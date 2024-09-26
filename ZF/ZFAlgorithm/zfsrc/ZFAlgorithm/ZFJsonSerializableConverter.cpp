@@ -42,31 +42,31 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
         return zffalse;
     }
 
-    ZFJson elementJsonArray;
+    ZFJson elementArray;
     for(zfiter jsonItemIt = jsonObject.attrIter(); jsonItemIt; ++jsonItemIt) {
         zfstring key = jsonObject.attrIterKey(jsonItemIt);
         ZFJson jsonItem = jsonObject.attrIterValue(jsonItemIt);
         if(*key == _ZFP_ZFJsonSerializeKey_classPrefix) {
             serializableData.itemClass(key + 1);
 
-            if(jsonItem.type() != ZFJsonType::e_JsonArray) {
+            if(jsonItem.type() != ZFJsonType::e_Array) {
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "json item %s not type of %s",
                     jsonItem,
-                    ZFJsonType::EnumNameForValue(ZFJsonType::e_JsonArray));
+                    ZFJsonType::EnumNameForValue(ZFJsonType::e_Array));
                 if(outErrorPos != zfnull) {
                     *outErrorPos = jsonItem;
                 }
                 return zffalse;
             }
-            elementJsonArray = jsonItem;
+            elementArray = jsonItem;
         }
         else {
-            if(jsonItem.type() != ZFJsonType::e_JsonValue) {
+            if(jsonItem.type() != ZFJsonType::e_Value) {
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "json item %s not type of %s",
                     jsonItem,
-                    ZFJsonType::EnumNameForValue(ZFJsonType::e_JsonValue));
+                    ZFJsonType::EnumNameForValue(ZFJsonType::e_Value));
                 if(outErrorPos != zfnull) {
                     *outErrorPos = jsonItem;
                 }
@@ -84,13 +84,13 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
         return zffalse;
     }
 
-    if(elementJsonArray) {
-        for(zfindex i = 0; i < elementJsonArray.childCount(); ++i) {
+    if(elementArray) {
+        for(zfindex i = 0; i < elementArray.childCount(); ++i) {
             ZFSerializableData childData;
-            if(!_ZFP_ZFSerializableDataFromJson(childData, elementJsonArray.childAt(i), outErrorHint, outErrorPos)) {
+            if(!_ZFP_ZFSerializableDataFromJson(childData, elementArray.childAt(i), outErrorHint, outErrorPos)) {
                 return zffalse;
             }
-            serializableData.childAdd(childData);
+            serializableData.child(childData);
         }
     }
 
@@ -138,25 +138,25 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFSerializableDataToJson
         return zfnull;
     }
 
-    ZFJson ret(ZFJsonType::e_JsonObject);
+    ZFJson ret(ZFJsonType::e_Object);
 
     for(zfiter it = serializableData.attrIter(); it; ++it) {
         ret.attr(serializableData.attrIterKey(it),
             serializableData.attrIterValue(it));
     }
 
-    ZFJson elementJsonArray(ZFJsonType::e_JsonArray);
+    ZFJson elementArray(ZFJsonType::e_Array);
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         ZFJson child = ZFSerializableDataToJson(serializableData.childAt(i), outErrorHint, outErrorPos);
-        if(child.type() == ZFJsonType::e_JsonNull) {
+        if(child.type() == ZFJsonType::e_Null) {
             return zfnull;
         }
-        elementJsonArray.childAdd(child);
+        elementArray.child(child);
     }
     zfstring t;
     t += _ZFP_ZFJsonSerializeKey_classPrefix;
     t += serializableData.itemClass();
-    ret.attr(t, elementJsonArray);
+    ret.attr(t, elementArray);
 
     return ret;
 }

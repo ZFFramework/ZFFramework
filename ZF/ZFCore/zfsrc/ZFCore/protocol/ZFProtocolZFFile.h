@@ -22,7 +22,7 @@ public:
     /**
      * @brief see #ZFFileIsDir
      */
-    virtual zfbool fileIsDir(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual zfbool isDir(ZF_IN const zfchar *path) zfpurevirtual;
 
     /**
      * @brief see #ZFPathCreate

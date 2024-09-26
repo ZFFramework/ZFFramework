@@ -128,12 +128,12 @@ protected:
             filter.customFilterCallbackAdd(_Holder::filter);
         }
         ZFMethodFuncGetAllT(methods, &filter);
-        this->testCaseOutput(methods.objectInfoOfContent(
+        this->output(methods.objectInfoOfContent(
                 zfindexMax(),
                 ZFTokenForContainerPlainList()
             ));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFMethodFunc_test)

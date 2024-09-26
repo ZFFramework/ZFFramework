@@ -49,18 +49,18 @@ public class ZFUIViewFocus {
             }
         }
     }
-    public static void native_viewFocusable(Object nativeView, boolean viewFocusable) {
+    public static void native_focusable(Object nativeView, boolean focusable) {
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         View target = nativeViewTmp;
         if(nativeViewTmp.nativeImplView != null) {
             target = nativeViewTmp.nativeImplView;
         }
 
-        nativeViewTmp.setFocusable(viewFocusable);
-        nativeViewTmp.setFocusableInTouchMode(viewFocusable);
-        target.setFocusable(viewFocusable);
-        target.setFocusableInTouchMode(viewFocusable);
-        if(viewFocusable) {
+        nativeViewTmp.setFocusable(focusable);
+        nativeViewTmp.setFocusableInTouchMode(focusable);
+        target.setFocusable(focusable);
+        target.setFocusableInTouchMode(focusable);
+        if(focusable) {
             nativeViewTmp.setOnFocusChangeListener(_onFocusChangeListener);
             target.setOnFocusChangeListener(_onFocusChangeListener);
         }
@@ -69,12 +69,12 @@ public class ZFUIViewFocus {
             target.setOnFocusChangeListener(null);
         }
     }
-    public static boolean native_viewFocused(Object nativeView) {
+    public static boolean native_focused(Object nativeView) {
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         return (nativeViewTmp.isFocused()
             || (nativeViewTmp.nativeImplView != null && nativeViewTmp.nativeImplView.isFocused()));
     }
-    public static long native_viewFocusFind(Object nativeView) {
+    public static long native_focusFind(Object nativeView) {
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         View child = nativeViewTmp.findFocus();
         if(child == null) {
@@ -93,14 +93,14 @@ public class ZFUIViewFocus {
         }
         return 0;
     }
-    public static void native_viewFocusRequest(Object nativeView, boolean viewFocus) {
+    public static void native_focusRequest(Object nativeView, boolean focus) {
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         View target = nativeViewTmp;
         if(nativeViewTmp.nativeImplView != null && nativeViewTmp.nativeImplView.isFocusable()) {
             target = nativeViewTmp.nativeImplView;
         }
 
-        if(viewFocus) {
+        if(focus) {
             target.requestFocus();
         }
         else {

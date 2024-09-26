@@ -153,7 +153,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     }
 
     // imageBin
-    zfstring imageBin = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
+    zfstring imageBin = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
     if(imageBin != zfnull) {
         zfobj<ZFIOBufferByCacheFile> io;
         if(!ZFBase64Decode(io->output(), ZFInputForString(imageBin))) {
@@ -173,7 +173,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
 
     // imageType
     const zfchar *typeName = zfnull;
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFUIImage_imageType, zfstring, typeName, {
                 return zffalse;
             });
@@ -244,7 +244,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
         }
         else {
             // imageType
-            ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
+            ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
                     ZFSerializableKeyword_ZFUIImage_imageType, zfstring, this->imageSerializeType(), ref->imageSerializeType(), "", {
                         return zffalse;
                     });
@@ -284,7 +284,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
                     serializableData.attr(imageData.attrIterKey(it), imageData.attrIterValue(it));
                 }
                 for(zfindex i = 0; i < imageData.childCount(); ++i) {
-                    serializableData.childAdd(imageData.childAt(i).copy());
+                    serializableData.child(imageData.childAt(i).copy());
                 }
             }
         }
@@ -505,7 +505,7 @@ void ZFUIImage::objectPropertyValueOnUpdate(
         , ZF_IN const void *oldValue
         ) {
     zfsuper::objectPropertyValueOnUpdate(property, oldValue);
-    if(property->propertyOwnerClass() == ZFUIImage::ClassData()) {
+    if(property->ownerClass() == ZFUIImage::ClassData()) {
         this->imageStateImplNotifyUpdate(this->imageState());
     }
 }

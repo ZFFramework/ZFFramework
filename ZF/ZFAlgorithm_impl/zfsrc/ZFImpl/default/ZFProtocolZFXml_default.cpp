@@ -34,14 +34,14 @@ private:
             return zfnull;
         }
         pugi::xml_document implXmlDoc;
-        pugi::xml_parse_result implResult = implXmlDoc.load_buffer_inplace(buf.buffer(), buf.bufferSize(), pugi::parse_full);
+        pugi::xml_parse_result implResult = implXmlDoc.load_buffer_inplace(buf.buffer(), buf.length(), pugi::parse_full);
         if(implResult.status != pugi::status_ok) {
             if(errorHint) {
                 *errorHint += implResult.description();
                 zfindex offset = (zfindex)implResult.offset;
-                if(offset >= 0 && offset < buf.bufferSize()) {
+                if(offset >= 0 && offset < buf.length()) {
                     *errorHint += ", at: ";
-                    zfindex len = buf.bufferSize() - offset;
+                    zfindex len = buf.length() - offset;
                     zfstring tmp;
                     if(len >= 128) {
                         tmp.append(buf.bufferT<zfchar *>() + offset, 32);
@@ -55,18 +55,18 @@ private:
             }
             return zfnull;
         }
-        ZFXml doc(ZFXmlType::e_XmlDocument);
+        ZFXml doc(ZFXmlType::e_Document);
         this->translateChildren(implXmlDoc, doc);
         return doc;
     }
-    void translateAttribute(
+    void translateAttr(
             ZF_IN const pugi::xml_node &implXmlItem
             , ZF_OUT ZFXml &zfXmlItem
             ) {
-        pugi::xml_attribute implXmlAttribute = implXmlItem.first_attribute();
-        while(implXmlAttribute) {
-            zfXmlItem.attr(implXmlAttribute.name(), implXmlAttribute.value());
-            implXmlAttribute = implXmlAttribute.next_attribute();
+        pugi::xml_attribute implAttr = implXmlItem.first_attribute();
+        while(implAttr) {
+            zfXmlItem.attr(implAttr.name(), implAttr.value());
+            implAttr = implAttr.next_attribute();
         }
     }
     void translateChildren(
@@ -80,62 +80,62 @@ private:
                     ZFCoreCriticalShouldNotGoHere();
                     return;
                 case pugi::node_element: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlElement);
-                    this->translateAttribute(implXmlChild, zfXmlChild);
+                    ZFXml zfXmlChild(ZFXmlType::e_Element);
+                    this->translateAttr(implXmlChild, zfXmlChild);
                     this->translateChildren(implXmlChild, zfXmlChild);
 
                     zfXmlChild.name(implXmlChild.name());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 case pugi::node_pcdata: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlText);
+                    ZFXml zfXmlChild(ZFXmlType::e_Text);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 case pugi::node_cdata: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlText);
+                    ZFXml zfXmlChild(ZFXmlType::e_Text);
                     zfXmlChild.CDATA(zftrue);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 case pugi::node_comment: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlComment);
+                    ZFXml zfXmlChild(ZFXmlType::e_Comment);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 case pugi::node_declaration: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlDeclaration);
-                    this->translateAttribute(implXmlChild, zfXmlChild);
+                    ZFXml zfXmlChild(ZFXmlType::e_Declaration);
+                    this->translateAttr(implXmlChild, zfXmlChild);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 case pugi::node_doctype: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlDocType);
+                    ZFXml zfXmlChild(ZFXmlType::e_DocType);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 case pugi::node_pi: {
-                    ZFXml zfXmlChild(ZFXmlType::e_XmlPI);
+                    ZFXml zfXmlChild(ZFXmlType::e_PI);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
-                    zfXmlItem.childAdd(zfXmlChild);
+                    zfXmlItem.child(zfXmlChild);
                     break;
                 }
                 default:

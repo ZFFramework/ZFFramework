@@ -47,19 +47,19 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFSerializable: normal serializable object");
+        this->outputSeparator();
+        this->output("ZFSerializable: normal serializable object");
         this->test(this->obj);
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFSerializable: inherit serializable object");
+        this->outputSeparator();
+        this->output("ZFSerializable: inherit serializable object");
         this->test(this->objChild);
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFSerializable: serializable object that contains another serializable object");
+        this->outputSeparator();
+        this->output("ZFSerializable: serializable object that contains another serializable object");
         this->test(this->objContainer);
 
-        this->testCaseStop();
+        this->stop();
     }
 protected:
     virtual void objectOnInit(void) {
@@ -100,19 +100,19 @@ private:
     void test(ZFSerializable *serializableObj) {
         zfstring encodedData;
 
-        this->testCaseOutput(zfstr("object:\n%s\n", serializableObj));
+        this->output(zfstr("object:\n%s\n", serializableObj));
 
         {
             ZFSerializableData serializableData;
             ZFObjectToDataT(serializableData, serializableObj->toObject());
             ZFSerializableDataToZfsd(encodedData, serializableData);
-            this->testCaseOutput(zfstr("encodedData:\n%s\n", encodedData));
+            this->output(zfstr("encodedData:\n%s\n", encodedData));
         }
 
         {
             ZFSerializableData serializableData;
             serializableObj->serializeToData(serializableData);
-            this->testCaseOutput(zfstr("serializableData:\n%s\n", serializableData));
+            this->output(zfstr("serializableData:\n%s\n", serializableData));
         }
 
         {
@@ -120,7 +120,7 @@ private:
             ZFSerializableDataFromZfsd(serializableData, encodedData);
             zfauto newSerializableObj;
             ZFObjectFromDataT(newSerializableObj, serializableData);
-            this->testCaseOutput(zfstr("re-serialize from encodedData, result:\n%s\n", newSerializableObj));
+            this->output(zfstr("re-serialize from encodedData, result:\n%s\n", newSerializableObj));
         }
     }
 };

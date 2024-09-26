@@ -139,48 +139,48 @@ zfclass ZFLIB_ZFAlgorithm ZFBase64 : zfextend ZFObject, zfimplement ZFSerializab
 
 public:
     /** @brief see #ZFBase64TableDefault */
-    ZFPROPERTY_ASSIGN(zfstring, base64Table, ZFBase64TableDefault())
+    ZFPROPERTY_ASSIGN(zfstring, table, ZFBase64TableDefault())
     /** @brief see #ZFBase64PadDefault */
-    ZFPROPERTY_ASSIGN(zfchar, base64Pad, ZFBase64PadDefault())
+    ZFPROPERTY_ASSIGN(zfchar, pad, ZFBase64PadDefault())
     /** @brief see #ZFBase64LineBreakPosNone */
-    ZFPROPERTY_ASSIGN(zfindex, base64LineBreakPos, ZFBase64LineBreakPosNone())
+    ZFPROPERTY_ASSIGN(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
 
 public:
     /** @brief see #ZFBase64EncodeCalcSize */
-    ZFMETHOD_DECLARE_1(zfindex, base64EncodeCalcSize
+    ZFMETHOD_DECLARE_1(zfindex, encodeCalcSize
             , ZFMP_IN(zfindex, srcLen)
             )
     /** @brief see #ZFBase64Encode */
-    virtual inline zfbool base64Encode(
+    virtual inline zfbool encode(
             ZF_OUT zfchar *buf
             , ZF_IN const void *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfindex *outResultSize = zfnull
             ) {
-        return ZFBase64Encode(buf, src, srcLen, outResultSize, this->base64Table(), this->base64Pad(), this->base64LineBreakPos());
+        return ZFBase64Encode(buf, src, srcLen, outResultSize, this->table(), this->pad(), this->lineBreakPos());
     }
     /** @brief see #ZFBase64Encode */
-    ZFMETHOD_DECLARE_3(zfbool, base64Encode
+    ZFMETHOD_DECLARE_3(zfbool, encode
             , ZFMP_IN_OUT(const ZFOutput &, output)
             , ZFMP_IN(const ZFInput &, input)
             , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
             )
 public:
     /** @brief see #ZFBase64DecodeCalcSize */
-    ZFMETHOD_DECLARE_1(zfindex, base64DecodeCalcSize
+    ZFMETHOD_DECLARE_1(zfindex, decodeCalcSize
             , ZFMP_IN(zfindex, srcLen)
             )
     /** @brief see #ZFBase64Decode */
-    virtual inline zfbool base64Decode(
+    virtual inline zfbool decode(
             ZF_OUT void *buf
             , ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfindex *outResultSize = zfnull
             ) {
-        return ZFBase64Decode(buf, src, srcLen, outResultSize, this->base64Table(), this->base64Pad());
+        return ZFBase64Decode(buf, src, srcLen, outResultSize, this->table(), this->pad());
     }
     /** @brief see #ZFBase64Decode */
-    ZFMETHOD_DECLARE_3(zfbool, base64Decode
+    ZFMETHOD_DECLARE_3(zfbool, decode
             , ZFMP_IN_OUT(const ZFOutput &, output)
             , ZFMP_IN(const ZFInput &, input)
             , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)

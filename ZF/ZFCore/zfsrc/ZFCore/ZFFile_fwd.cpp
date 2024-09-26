@@ -68,13 +68,13 @@ ZFFileFindData::~ZFFileFindData(void) {
 }
 
 void ZFFileFindData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    if(this->fileIsDir()) {
+    if(this->isDir()) {
         ret += "(dir)";
     }
     else {
         ret += "(file)";
     }
-    ret += this->fileName();
+    ret += this->name();
 }
 
 ZFFileFindData::Impl &ZFFileFindData::impl(void) const {
@@ -93,7 +93,7 @@ void ZFFileFindData::implAttach(
     ZFCoreAssertWithMessage(d->implName.isEmpty(),
         "have you forgot to close find? current module: %s",
         d->implName);
-    ZFCoreAssert(!zfstringIsEmpty(implName));
+    ZFCoreAssert(implName);
     d->implName = implName;
     d->implUserData = implUserData;
 }
@@ -113,7 +113,7 @@ void ZFFileFindData::implTag(
         ZF_IN const zfstring &key
         , ZF_IN ZFObject *value
         ) const {
-    if(zfstringIsEmpty(key)) {
+    if(!key) {
         return;
     }
     if(value == zfnull) {
@@ -129,7 +129,7 @@ void ZFFileFindData::implTag(
     }
 }
 zfany ZFFileFindData::implTag(ZF_IN const zfstring &key) const {
-    if(zfstringIsEmpty(key) || d->implTagMap) {
+    if(!key || d->implTagMap) {
         return zfnull;
     }
     else {
@@ -145,8 +145,8 @@ zfany ZFFileFindData::implTag(ZF_IN const zfstring &key) const {
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFileFindData, ZFFileFindData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, fileName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfbool, fileIsDir)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, name)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfbool, isDir)
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, implName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, void *, implUserData)

@@ -17,8 +17,8 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIFlowLayout> layout;
-        container->childAdd(layout)->c_margin(40, 40 + ZFUIGlobalStyle::DefaultStyle()->itemSizeButton(), 40, 40);
-        layout->viewBackgroundColor(ZFUIColorRed());
+        container->child(layout)->c_margin(40, 40 + ZFUIGlobalStyle::DefaultStyle()->itemSizeButton(), 40, 40);
+        layout->backgroundColor(ZFUIColorRed());
 
         this->prepareAddRemoveButton(container, layout);
 
@@ -28,13 +28,13 @@ protected:
 private:
     void prepareAddRemoveButton(ZFUIView *container, ZFUIView *layout) {
         zfobj<ZFUIKit_test_Button> addButton;
-        container->childAdd(addButton);
+        container->child(addButton);
         ZFLISTENER_1(addButtonOnClick
                 , ZFUIView *, layout
                 ) {
             zfobj<ZFUITextView> view;
-            layout->childAdd(view);
-            view->viewBackgroundColor(ZFUIColorRandom());
+            layout->child(view);
+            view->backgroundColor(ZFUIColorRandom());
             zfindex textLength = zfmRand(1, 10);
             textLength = layout->childCount() + 1;
             zfstring text;
@@ -49,7 +49,7 @@ private:
         addButton->label()->text("add");
 
         zfobj<ZFUIKit_test_Button> removeButton;
-        container->childAdd(removeButton)->c_margin(70, 0, 0, 0);
+        container->child(removeButton)->c_margin(70, 0, 0, 0);
         ZFLISTENER_1(removeButtonOnClick
                 , ZFUIView *, layout
                 ) {
@@ -68,7 +68,7 @@ private:
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, layoutOrientationMain),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, orientationMain),
             ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
@@ -76,7 +76,7 @@ private:
                 , ZFUIOrientation::e_Top
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, layoutOrientationSecondary),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, orientationSecondary),
             ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
@@ -84,7 +84,7 @@ private:
                 , ZFUIOrientation::e_Top
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUIFlowLayout, layoutChildMargin),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUIFlowLayout, childMargin),
             ZFCoreArrayCreate(ZFUIMargin
                 , ZFUIMarginZero()
                 , ZFUIMarginCreate(8)
@@ -92,7 +92,7 @@ private:
                 , ZFUIMarginCreate(24)
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUIFlowLayout, layoutChildSpaceX),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUIFlowLayout, childSpaceX),
             ZFCoreArrayCreate(zffloat
                 , 0
                 , 8
@@ -100,7 +100,7 @@ private:
                 , 24
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUIFlowLayout, layoutChildSpaceY),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUIFlowLayout, childSpaceY),
             ZFCoreArrayCreate(zffloat
                 , 0
                 , 8

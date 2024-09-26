@@ -146,7 +146,7 @@ public:
     }
     void taskCleanup(void) {
         if(this->delayId) {
-            this->delayId->timerStop();
+            this->delayId->stop();
             this->delayId = zfnull;
         }
         if(this->taskId) {
@@ -311,7 +311,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)
         ) {
-    if(zfstringIsEmpty(key)) {
+    if(!key) {
         return;
     }
     if(this->ready()) {
@@ -319,7 +319,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
             zfsynchronize(this);
             _ZFP_ZFStateMapType::iterator it = d->m.find(key);
             if(it != d->m.end()) {
-                if(zfstringIsEmpty(value)) {
+                if(!value) {
                     d->l.erase(it->second->listIt);
                     d->m.erase(it);
                 }
@@ -332,7 +332,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
                 }
             }
             else {
-                if(!zfstringIsEmpty(value)) {
+                if(value) {
                     ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
                     data->cacheTime = ZFTime::currentTime();
                     data->key = key;
@@ -394,7 +394,7 @@ ZFMETHOD_DEFINE_0(ZFState, void, removeAll) {
 ZFMETHOD_DEFINE_1(ZFState, zfstring, get
         , ZFMP_IN(const zfstring &, key)
         ) {
-    if(zfstringIsEmpty(key)) {
+    if(!key) {
         return zfnull;
     }
     zfsynchronize(this);
@@ -410,7 +410,7 @@ ZFMETHOD_DEFINE_2(ZFState, zfautoT<ZFTaskId>, getAsync
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const ZFListener &, callback)
         ) {
-    if(zfstringIsEmpty(key)) {
+    if(!key) {
         callback.execute(ZFArgs()
                 .sender(this)
                 .param0(zfnull)

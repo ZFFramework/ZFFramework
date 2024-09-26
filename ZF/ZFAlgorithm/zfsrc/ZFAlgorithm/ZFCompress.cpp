@@ -257,7 +257,7 @@ static zfbool _ZFP_ZFCompressDir(
     zfbool success = zftrue;
     if(fileImpl.implFindFirst(fd, pathData)) {
         do {
-            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.fileName());
+            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
             if(!pathDataChild) {
                 success = zffalse;
                 break;

@@ -50,9 +50,9 @@
     self._nativeAniKey = nil;
 }
 - (void)nativeAniStart {
-    UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
+    UIView *target = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->target())->nativeView();
     CAMediaTimingFunction *nativeCurve = nil;
-    switch(self.ownerAni->aniCurve()) {
+    switch(self.ownerAni->curve()) {
         case ZFAniForNativeCurve::e_Linear:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
             break;
@@ -69,7 +69,7 @@
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
             break;
     }
-    NSTimeInterval nativeDuration = (NSTimeInterval)self.ownerAni->aniDurationFixed() / 1000;
+    NSTimeInterval nativeDuration = (NSTimeInterval)self.ownerAni->durationFixed() / 1000;
     NSMutableArray *nativeAnimations = [NSMutableArray array];
 
     {
@@ -78,39 +78,39 @@
 
         transformFrom = CATransform3DTranslate(
             transformFrom,
-            self.ownerAni->aniTranslateXFrom() * self.nativeAniScale,
-            self.ownerAni->aniTranslateYFrom() * self.nativeAniScale,
-            self.ownerAni->aniTranslateZFrom() * self.nativeAniScale);
+            self.ownerAni->translateXFrom() * self.nativeAniScale,
+            self.ownerAni->translateYFrom() * self.nativeAniScale,
+            self.ownerAni->translateZFrom() * self.nativeAniScale);
         transformTo = CATransform3DTranslate(
             transformTo,
-            self.ownerAni->aniTranslateXTo() * self.nativeAniScale,
-            self.ownerAni->aniTranslateYTo() * self.nativeAniScale,
-            self.ownerAni->aniTranslateZTo() * self.nativeAniScale);
+            self.ownerAni->translateXTo() * self.nativeAniScale,
+            self.ownerAni->translateYTo() * self.nativeAniScale,
+            self.ownerAni->translateZTo() * self.nativeAniScale);
 
-        if(self.ownerAni->aniRotateXFrom() != 0) {
-            transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateXFrom() * M_PI / 180, 1, 0, 0);
+        if(self.ownerAni->rotateXFrom() != 0) {
+            transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->rotateXFrom() * M_PI / 180, 1, 0, 0);
         }
-        if(self.ownerAni->aniRotateYFrom() != 0) {
-            transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateYFrom() * M_PI / 180, 0, 1, 0);
+        if(self.ownerAni->rotateYFrom() != 0) {
+            transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->rotateYFrom() * M_PI / 180, 0, 1, 0);
         }
-        if(self.ownerAni->aniRotateZFrom() != 0) {
-            transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateZFrom() * M_PI / 180, 0, 0, 1);
+        if(self.ownerAni->rotateZFrom() != 0) {
+            transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->rotateZFrom() * M_PI / 180, 0, 0, 1);
         }
-        if(self.ownerAni->aniRotateXTo() != 0) {
-            transformTo = CATransform3DRotate(transformTo, self.ownerAni->aniRotateXTo() * M_PI / 180, 1, 0, 0);
+        if(self.ownerAni->rotateXTo() != 0) {
+            transformTo = CATransform3DRotate(transformTo, self.ownerAni->rotateXTo() * M_PI / 180, 1, 0, 0);
         }
-        if(self.ownerAni->aniRotateYTo() != 0) {
-            transformTo = CATransform3DRotate(transformTo, self.ownerAni->aniRotateYTo() * M_PI / 180, 0, 1, 0);
+        if(self.ownerAni->rotateYTo() != 0) {
+            transformTo = CATransform3DRotate(transformTo, self.ownerAni->rotateYTo() * M_PI / 180, 0, 1, 0);
         }
-        if(self.ownerAni->aniRotateZTo() != 0) {
-            transformTo = CATransform3DRotate(transformTo, self.ownerAni->aniRotateZTo() * M_PI / 180, 0, 0, 1);
+        if(self.ownerAni->rotateZTo() != 0) {
+            transformTo = CATransform3DRotate(transformTo, self.ownerAni->rotateZTo() * M_PI / 180, 0, 0, 1);
         }
 
-        if(self.ownerAni->aniScaleXFrom() != 1 || self.ownerAni->aniScaleYFrom() != 1) {
-            transformFrom = CATransform3DScale(transformFrom, self.ownerAni->aniScaleXFrom(), self.ownerAni->aniScaleYFrom(), 1);
+        if(self.ownerAni->scaleXFrom() != 1 || self.ownerAni->scaleYFrom() != 1) {
+            transformFrom = CATransform3DScale(transformFrom, self.ownerAni->scaleXFrom(), self.ownerAni->scaleYFrom(), 1);
         }
-        if(self.ownerAni->aniScaleXTo() != 1 || self.ownerAni->aniScaleYTo() != 1) {
-            transformTo = CATransform3DScale(transformTo, self.ownerAni->aniScaleXTo(), self.ownerAni->aniScaleYTo(), 1);
+        if(self.ownerAni->scaleXTo() != 1 || self.ownerAni->scaleYTo() != 1) {
+            transformTo = CATransform3DScale(transformTo, self.ownerAni->scaleXTo(), self.ownerAni->scaleYTo(), 1);
         }
 
         CABasicAnimation *nativeTransformAni = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -120,11 +120,11 @@
         nativeTransformAni.additive = YES;
     }
 
-    if(self.ownerAni->aniAlphaFrom() != 1 || self.ownerAni->aniAlphaTo() != 1) {
+    if(self.ownerAni->alphaFrom() != 1 || self.ownerAni->alphaTo() != 1) {
         CABasicAnimation *nativeAlphaAni = [CABasicAnimation animationWithKeyPath:@"opacity"];
         [nativeAnimations addObject:nativeAlphaAni];
-        nativeAlphaAni.fromValue = [NSNumber numberWithFloat:self.ownerAni->aniAlphaFrom()];
-        nativeAlphaAni.toValue = [NSNumber numberWithFloat:self.ownerAni->aniAlphaTo()];
+        nativeAlphaAni.fromValue = [NSNumber numberWithFloat:self.ownerAni->alphaFrom()];
+        nativeAlphaAni.toValue = [NSNumber numberWithFloat:self.ownerAni->alphaTo()];
     }
 
     for(NSUInteger i = 0; i < [nativeAnimations count]; ++i) {
@@ -140,11 +140,11 @@
     self._nativeAniDelegate.owner = self;
     self._nativeAniDelegate.aniId = self.ownerAni->aniId();
     self.delegate = self._nativeAniDelegate;
-    [aniTarget.layer addAnimation:self forKey:self._nativeAniKey];
+    [target.layer addAnimation:self forKey:self._nativeAniKey];
 }
 - (void)nativeAniStop {
-    UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
-    [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
+    UIView *target = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->target())->nativeView();
+    [target.layer removeAnimationForKey:self._nativeAniKey];
     self._nativeAniDelegate.owner = nil;
     self._nativeAniDelegate = nil;
     self.delegate = nil;
@@ -155,8 +155,8 @@
 - (void)_nativeAniOnStop:(zfidentity)aniId finished:(BOOL)finished {
     if(aniId == self.ownerAni->aniId()) {
         self.delegate = nil;
-        UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
-        [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
+        UIView *target = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->target())->nativeView();
+        [target.layer removeAnimationForKey:self._nativeAniKey];
         ZFPROTOCOL_ACCESS(ZFAniForNative)->notifyAniStop(self.ownerAni);
     }
 }

@@ -25,7 +25,7 @@ public:
      * @brief the data
      *
      * the data must store strings that can be converted by:
-     * -  #ZFTypeIdWrapper::wrappedValueFromString
+     * -  #ZFTypeIdWrapper::zfvFromString
      * -  #ZFSerializeFromString
      */
     virtual void zfv(ZF_IN const zfchar *zfv) zfpurevirtual;
@@ -254,6 +254,20 @@ extern ZFLIB_ZFCore zfauto ZFInvoke(
 extern ZFLIB_ZFCore zfauto ZFInvoke(
         ZF_IN const zfstring &name
         , ZF_IN ZFObject *param0
+        , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
+        , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
+        );
+/** @brief see #ZFInvoke */
+extern ZFLIB_ZFCore zfbool ZFInvokeT(
+        ZF_OUT zfauto &ret
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN const zfstring &name
+        , ZF_IN_OPT ZFObject *param0 = ZFMP_DEF()
         , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
         , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
         , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()

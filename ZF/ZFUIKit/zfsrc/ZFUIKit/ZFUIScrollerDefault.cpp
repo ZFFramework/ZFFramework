@@ -181,7 +181,9 @@ public:
     }
 
     void scrollAniNotifyStart(void) {
-        this->aniLastTime = this->pimplOwner->scrollAniStartCallback.execute();
+        ZFArgs zfargs;
+        this->pimplOwner->scrollAniStartCallback.execute(zfargs);
+        this->aniLastTime = zfargs.result().to<v_zftimet *>()->zfv;
     }
     void scrollAniNotifyStop(void) {
         this->scrollRequireFocus = zffalse;

@@ -42,9 +42,9 @@ private:
             if(errorHint) {
                 *errorHint += rapidjson::GetParseError_En(implJsonDoc.GetParseError());
                 zfindex offset = (zfindex)implJsonDoc.GetErrorOffset();
-                if(offset >= 0 && offset < buf.bufferSize()) {
+                if(offset >= 0 && offset < buf.length()) {
                     *errorHint += ", at: ";
-                    zfindex len = buf.bufferSize() - offset;
+                    zfindex len = buf.length() - offset;
                     zfstring tmp;
                     if(len >= 128) {
                         tmp.append(buf.bufferT<zfchar *>() + offset, 32);
@@ -69,24 +69,24 @@ private:
             case rapidjson::kTrueType:
             case rapidjson::kStringType:
             case rapidjson::kNumberType: {
-                ZFJson value(ZFJsonType::e_JsonValue);
+                ZFJson value(ZFJsonType::e_Value);
                 const char *implString = implJsonItem.GetString();
                 value.value(zfstring(implString, implJsonItem.GetStringLength()));
                 return value;
             }
             case rapidjson::kArrayType: {
-                ZFJson jsonArray(ZFJsonType::e_JsonArray);
+                ZFJson jsonArray(ZFJsonType::e_Array);
                 for(rapidjson::Value::ConstValueIterator it = implJsonItem.Begin(); it != implJsonItem.End(); ++it) {
                     ZFJson jsonChild = this->jsonConvert(*it);
                     if(!jsonChild) {
                         return zfnull;
                     }
-                    jsonArray.childAdd(jsonChild);
+                    jsonArray.child(jsonChild);
                 }
                 return jsonArray;
             }
             case rapidjson::kObjectType: {
-                ZFJson jsonObject(ZFJsonType::e_JsonObject);
+                ZFJson jsonObject(ZFJsonType::e_Object);
                 for(rapidjson::Value::ConstMemberIterator it = implJsonItem.MemberBegin(); it != implJsonItem.MemberEnd(); ++it) {
                     ZFJson jsonChild = this->jsonConvert(it->value);
                     if(!jsonChild) {

@@ -84,14 +84,14 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
 zfbool _ZFP_ZFPathType_http_FindNext(ZF_IN_OUT ZFFileFindData &fd) {
     _ZFP_ZFPathType_http_FindData *impl = (_ZFP_ZFPathType_http_FindData *)fd.implUserData();
     if(impl->index < impl->dirs.count()) {
-        fd.impl().fileIsDir = zftrue;
-        fd.impl().fileName = impl->dirs[impl->index];
+        fd.impl().isDir = zftrue;
+        fd.impl().name = impl->dirs[impl->index];
         ++(impl->index);
         return zftrue;
     }
     else if(impl->index < impl->dirs.count() + impl->files.count()) {
-        fd.impl().fileIsDir = zffalse;
-        fd.impl().fileName = impl->files[impl->index - impl->dirs.count()];
+        fd.impl().isDir = zffalse;
+        fd.impl().name = impl->files[impl->index - impl->dirs.count()];
         ++(impl->index);
         return zftrue;
     }

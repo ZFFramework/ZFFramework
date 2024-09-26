@@ -40,6 +40,19 @@ protected:
     }
 };
 
+/**
+ * @brief util to copy as #ZFCopyable or return null if not available
+ */
+inline zfauto ZFObjectCopy(ZF_IN ZFObject *obj) {
+    ZFCopyable *t = zfcast(ZFCopyable *, obj);
+    if(t) {
+        return t->copy();
+    }
+    else {
+        return zfnull;
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCopyable_h_
 

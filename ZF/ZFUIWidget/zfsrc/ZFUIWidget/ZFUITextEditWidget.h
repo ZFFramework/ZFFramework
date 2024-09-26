@@ -27,22 +27,22 @@ public:
      *
      * note, image's nine patch would be added to #ZFUIView::nativeImplViewMargin
      */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, textEditBackgroundView, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, textEditBackgroundView)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundView, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundView)
 
     /**
      * @brief the clear button
      *
      * note, the clear button's size would be added to #ZFUIView::nativeImplViewMargin
      */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIButtonBasic>, textEditClearButton, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIButtonBasic>, textEditClearButton)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIButtonBasic>, clearButton, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIButtonBasic>, clearButton)
 
     /**
      * @brief whether automatically show or hide clear button, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, textEditClearButtonAutoEnable, zffalse)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textEditClearButtonAutoEnable)
+    ZFPROPERTY_ASSIGN(zfbool, clearButtonAutoEnable, zffalse)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, clearButtonAutoEnable)
 
 protected:
     zfoverride

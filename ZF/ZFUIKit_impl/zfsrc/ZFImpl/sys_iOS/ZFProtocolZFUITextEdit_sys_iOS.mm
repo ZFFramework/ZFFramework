@@ -48,9 +48,9 @@
 
 - (void)setSelectedTextRange:(UITextRange *)selectedTextRange ZFImpl_sys_iOS_overrideProperty {
     [super setSelectedTextRange:selectedTextRange];
-    [self _ZFP_textSelectRangeNotifyUpdate];
+    [self _ZFP_selectedRangeNotifyUpdate];
 }
-- (void)_ZFP_textSelectRangeNotifyUpdate {
+- (void)_ZFP_selectedRangeNotifyUpdate {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeOnUpdate(self.ownerZFUITextEdit);
 }
 
@@ -92,7 +92,7 @@
     }
     self.lastText = text;
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextUpdate(self.ownerZFUITextEdit, self.lastText);
-    [self _ZFP_textSelectRangeNotifyUpdate];
+    [self _ZFP_selectedRangeNotifyUpdate];
 }
 @end
 
@@ -120,26 +120,26 @@ public:
 // ============================================================
 // properties
 public:
-    virtual void textEditEnable(
+    virtual void editEnable(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN zfbool textEditEnable
+            , ZF_IN zfbool editEnable
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        nativeImplView.enabled = textEditEnable;
+        nativeImplView.enabled = editEnable;
     }
     virtual void textEditSecure(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN zfbool textEditSecured
+            , ZF_IN zfbool editSecured
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        nativeImplView.secureTextEntry = textEditSecured;
+        nativeImplView.secureTextEntry = editSecured;
     }
-    virtual void textEditKeyboardType(
+    virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum textEditKeyboardType
+            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        switch(textEditKeyboardType) {
+        switch(keyboardType) {
             case ZFUITextEditKeyboardType::e_Normal:
                 nativeImplView.keyboardType = UIKeyboardTypeDefault;
                 break;
@@ -157,12 +157,12 @@ public:
                 return;
         }
     }
-    virtual void textEditKeyboardReturnType(
+    virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum textEditKeyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        switch(textEditKeyboardReturnType) {
+        switch(keyboardReturnType) {
             case ZFUITextEditKeyboardReturnType::e_Normal:
                 nativeImplView.returnKeyType = UIReturnKeyDefault;
                 break;
@@ -187,28 +187,28 @@ public:
         }
     }
 
-    virtual void textSelectRange(
+    virtual void selectedRange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT ZFIndexRange &textSelectRange
+            , ZF_OUT ZFIndexRange &selectedRange
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         UITextRange *rangeImpl = nativeImplView.selectedTextRange;
         if(rangeImpl == nil) {
-            textSelectRange = ZFIndexRangeZero();
+            selectedRange = ZFIndexRangeZero();
             return;
         }
         NSInteger start = [nativeImplView offsetFromPosition:nativeImplView.beginningOfDocument toPosition:rangeImpl.start];
         NSInteger end = [nativeImplView offsetFromPosition:nativeImplView.beginningOfDocument toPosition:rangeImpl.end];
-        textSelectRange.start = start;
-        textSelectRange.count = end - start;
+        selectedRange.start = start;
+        selectedRange.count = end - start;
     }
-    virtual void textSelectRange(
+    virtual void selectedRange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const ZFIndexRange &textSelectRange
+            , ZF_IN const ZFIndexRange &selectedRange
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        UITextPosition *start = [nativeImplView positionFromPosition:nativeImplView.beginningOfDocument offset:textSelectRange.start];
-        UITextPosition *end = [nativeImplView positionFromPosition:start offset:textSelectRange.count];
+        UITextPosition *start = [nativeImplView positionFromPosition:nativeImplView.beginningOfDocument offset:selectedRange.start];
+        UITextPosition *end = [nativeImplView positionFromPosition:start offset:selectedRange.count];
         [nativeImplView setSelectedTextRange:[nativeImplView textRangeFromPosition:start toPosition:end]];
     }
 
@@ -300,11 +300,11 @@ public:
     }
 
 public:
-    virtual void textEditBegin(ZF_IN ZFUITextEdit *textEdit) {
+    virtual void editBegin(ZF_IN ZFUITextEdit *textEdit) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         [nativeImplView becomeFirstResponder];
     }
-    virtual void textEditEnd(ZF_IN ZFUITextEdit *textEdit) {
+    virtual void editEnd(ZF_IN ZFUITextEdit *textEdit) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         [nativeImplView resignFirstResponder];
     }

@@ -73,7 +73,7 @@ protected:
         ZFLogTrim() << ZFTypeId<zfany>::Value<const zfany * &>::zfvAccess(v);
         ZFLogTrim() << ZFTypeId<zfany>::Value<const zfany * const &>::zfvAccess(v);
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFTypeId_test)

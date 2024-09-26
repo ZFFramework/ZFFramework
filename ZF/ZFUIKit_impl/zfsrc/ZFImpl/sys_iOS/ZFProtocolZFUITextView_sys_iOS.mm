@@ -138,12 +138,12 @@ public:
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSingleLine(
+    virtual void singleLine(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zfbool textSingleLine
+            , ZF_IN zfbool singleLine
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
-        nativeImplView.numberOfLines = (textSingleLine ? 1 : 0);
+        nativeImplView.numberOfLines = (singleLine ? 1 : 0);
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView

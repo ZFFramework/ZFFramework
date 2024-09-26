@@ -81,27 +81,27 @@ zfstring requireItemClass(
     return ret;
 }
 
-zfstring checkAttribute(
+zfstring checkAttr(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfstring &desiredAttribute
+        , ZF_IN const zfstring &desiredAttr
         ) {
-    zfiter it = serializableData.attrIterFind(desiredAttribute);
+    zfiter it = serializableData.attrIterFind(desiredAttr);
     if(!it) {
         return zfnull;
     }
     serializableData.attrIterResolveMark(it);
     return serializableData.attrIterValue(it);
 }
-zfstring requireAttribute(
+zfstring requireAttr(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfstring &desiredAttribute
+        , ZF_IN const zfstring &desiredAttr
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    zfstring ret = checkAttribute(serializableData, desiredAttribute);
+    zfstring ret = checkAttr(serializableData, desiredAttr);
     if(ret == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-            "missing attribute \"%s\"", desiredAttribute);
+            "missing attribute \"%s\"", desiredAttr);
     }
     return ret;
 }
@@ -172,11 +172,11 @@ static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(
             outputCallback << "(unresolved)";
         }
 
-        zfbool hasUnresolvedAttribute = zffalse;
+        zfbool hasUnresolvedAttr = zffalse;
         for(zfiter it = serializableData.attrIter(); it; ++it) {
             if(!serializableData.attrIterResolved(it)) {
-                if(!hasUnresolvedAttribute) {
-                    hasUnresolvedAttribute = zftrue;
+                if(!hasUnresolvedAttr) {
+                    hasUnresolvedAttr = zftrue;
                     outputCallback << " < ";
                 }
                 else {
@@ -188,7 +188,7 @@ static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(
                     << serializableData.attrIterValue(it);
             }
         }
-        if(hasUnresolvedAttribute) {
+        if(hasUnresolvedAttr) {
             outputCallback << " >";
         }
 

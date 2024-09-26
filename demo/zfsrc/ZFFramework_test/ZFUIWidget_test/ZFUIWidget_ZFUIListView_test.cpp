@@ -39,7 +39,7 @@ public:
         if(zfmRand(3) == 0) {
             tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeCreate(40)));
         }
-        tmp->viewBackgroundColor(ZFUIColorRandom());
+        tmp->backgroundColor(ZFUIColorRandom());
     }
 
     #if 1 // whether use cache
@@ -69,8 +69,8 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIListView> listView;
-        container->childAdd(listView)->c_sizeFill()->c_margin(40);
-        listView->viewBackgroundColor(ZFUIColorRed());
+        container->child(listView)->c_sizeFill()->c_margin(40);
+        listView->backgroundColor(ZFUIColorRed());
         listView->listAdapter(this->listAdapter());
         {
             zfobj<ZFUIListCellUpdaterBasic> cellUpdater;
@@ -128,7 +128,7 @@ private:
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVertical));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceHorizontalAlways));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVerticalAlways));
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIListView, listOrientation),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIListView, orientation),
             ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Top
                 , ZFUIOrientation::e_Left
@@ -193,22 +193,22 @@ private:
                     ) {
                 zfbool toHead = (zfmRand(2) == 0);
                 zfindex toIndex = zfmRand(listView->listAdapter()->cellCount());
-                zffloat toOffset = (ZFUIOrientationIsHorizontal(listView->listOrientation())
+                zffloat toOffset = (ZFUIOrientationIsHorizontal(listView->orientation())
                     ? zfmRand((zfint)listView->viewFrame().width)
                     : zfmRand((zfint)listView->viewFrame().height));
                 zfbool animated = (zfmRand(5) != 0);
                 ZFUIHintShow(zfstr("%s\nindex: %s\noffset: %s\nanimated: %s",
-                            toHead ? "scrollListCellToHead" : "scrollListCellToTail",
+                            toHead ? "scrollCellToHead" : "scrollCellToTail",
                             toIndex, toOffset, animated));
                 if(toHead) {
-                    listView->scrollListCellToHead(toIndex, toOffset, animated);
+                    listView->scrollCellToHead(toIndex, toOffset, animated);
                 }
                 else {
-                    listView->scrollListCellToTail(toIndex, toOffset, animated);
+                    listView->scrollCellToTail(toIndex, toOffset, animated);
                 }
             } ZFLISTENER_END()
             zfobj<ZFUIKit_test_Button> randomScrollButton;
-            window->childAdd(randomScrollButton);
+            window->child(randomScrollButton);
             randomScrollButton->label()->text("random scroll");
             randomScrollButton->observerAdd(ZFUIButton::EventButtonOnClick(), buttonClickListener);
         }

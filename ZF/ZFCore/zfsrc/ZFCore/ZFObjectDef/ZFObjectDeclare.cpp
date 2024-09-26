@@ -10,7 +10,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         , ZF_IN const ZFListener &methodImpl
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    if(methodParam.methodParamCount() <= 0) {
+    if(methodParam.paramCount() <= 0) {
         zfstringAppend(errorHint, "dynamic objectOnInit must take at least 1 param");
         return zfnull;
     }
@@ -36,7 +36,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
 }
 
 static zfbool _ZFP_ZFObjectOnInitGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    ZFValueHolder *valueHolder = invokerMethod->methodDynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
+    ZFValueHolder *valueHolder = invokerMethod->dynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
     ZFCoreAssert(valueHolder != zfnull);
     invokerObject->_ZFP_ZFObject_objectOnInit();
     ZFMethodGenericInvoker methodGI = *valueHolder->holdedDataPointer<ZFMethodGenericInvoker *>();
@@ -54,15 +54,15 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         , ZF_IN const ZFMethodDynamicRegisterParam &param
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    if(param.methodParamCount() <= 0) {
+    if(param.paramCount() <= 0) {
         zfstringAppend(errorHint, "dynamic objectOnInit must take at least 1 param");
         return zfnull;
     }
 
     ZFMethodDynamicRegisterParam paramTmp = param;
-    paramTmp.methodOwnerClass(cls);
+    paramTmp.ownerClass(cls);
     paramTmp.methodName("objectOnInit");
-    paramTmp.methodReturnTypeId(ZFTypeId_void());
+    paramTmp.returnTypeId(ZFTypeId_void());
     paramTmp.methodType(ZFMethodTypeVirtual);
     paramTmp.methodPrivilegeType(ZFMethodPrivilegeTypeProtected);
 
@@ -88,10 +88,10 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     ZFMethodGenericInvoker methodGISaved = paramTmp.methodGenericInvoker();
     paramTmp.methodGenericInvoker(_ZFP_ZFObjectOnInitGI);
 
-    zfauto userData = param.methodDynamicRegisterUserData();
+    zfauto userData = param.dynamicRegisterUserData();
     if(userData == zfnull) {
         userData = zfobj<ZFObject>();
-        paramTmp.methodDynamicRegisterUserData(userData);
+        paramTmp.dynamicRegisterUserData(userData);
     }
     ZFMethodGenericInvoker *methodGI = (ZFMethodGenericInvoker *)zfmalloc(sizeof(ZFMethodGenericInvoker));
     *methodGI = methodGISaved;

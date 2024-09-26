@@ -37,11 +37,11 @@ public:
      *   you should apply scale manually by nativeAniScale
      *
      * here's a list of things you need to implement:
-     * -  aniCurve (ZFAniForNativeCurveEnum)
+     * -  curve (ZFAniForNativeCurveEnum)
      * -  aniAlpha (zffloat)
-     * -  aniScaleX/Y/Z (zffloat)
-     * -  aniTranslateX/Y/Z (zffloat)
-     * -  aniRotateX/Y/Z (zffloat)
+     * -  scaleX/Y/Z (zffloat)
+     * -  translateX/Y/Z (zffloat)
+     * -  rotateX/Y/Z (zffloat)
      *
      * @note more than one ani may added to same view,
      *   you must also implement this logic

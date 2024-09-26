@@ -142,26 +142,26 @@ void ZFEnum::wrappedValue(ZF_IN const void *v) {
 void ZFEnum::wrappedValueCopy(ZF_IN void *v) {
     *(zfuint *)v = this->_ZFP_ZFEnum_value; /* ZFTAG_TRICKS: EnumReinterpretCast */
 }
-void ZFEnum::wrappedValueReset(void) {
+void ZFEnum::zfvReset(void) {
     this->_ZFP_ZFEnum_value = ZFEnumInvalid();
 }
-zfbool ZFEnum::wrappedValueIsInit(void) {
+zfbool ZFEnum::zfvIsInit(void) {
     return (this->_ZFP_ZFEnum_value == ZFEnumInvalid());
 }
-zfbool ZFEnum::wrappedValueFromData(
+zfbool ZFEnum::zfvFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
     return this->serializeFromData(serializableData, outErrorHint, outErrorPos);
 }
-zfbool ZFEnum::wrappedValueToData(
+zfbool ZFEnum::zfvToData(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     return this->serializeToData(serializableData, outErrorHint);
 }
-zfbool ZFEnum::wrappedValueFromString(
+zfbool ZFEnum::zfvFromString(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -195,7 +195,7 @@ zfbool ZFEnum::wrappedValueFromString(
         }
     }
 }
-zfbool ZFEnum::wrappedValueToString(
+zfbool ZFEnum::zfvToString(
         ZF_IN_OUT zfstring &s
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
@@ -216,6 +216,7 @@ zfclass _ZFP_I_ZFEnum_stringConverterDataHolder : zfextend ZFObject {
 public:
     zfindex enumCount;
     zfflags *flagList;
+    zfstring *nameListHolder;
     const zfchar **nameList;
 
 public:
@@ -231,12 +232,28 @@ public:
             enumClass->classTag(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull(), ret);
             zfRelease(ret);
 
-            ret->enumCount = enumCountMethod->execute<zfindex>(zfnull);
-            ret->flagList = (zfflags *)zfmalloc(sizeof(zfflags) * ret->enumCount);
-            ret->nameList = (const zfchar **)zfmalloc(sizeof(const zfchar *) * ret->enumCount);
+            ret->enumCount = enumCountMethod->methodInvoke().to<v_zfindex *>()->zfv;
+            ZFCoreAssert(ret->enumCount > 0);
+
+            zfbyte *buf = (zfbyte *)zfmalloc((0
+                        + sizeof(zfflags)
+                        + sizeof(zfstring)
+                        + sizeof(const zfchar *)
+                        ) * ret->enumCount);
+
+            ret->flagList = (zfflags *)buf;
+            buf += sizeof(zfflags) * ret->enumCount;
+
+            ret->nameListHolder = (zfstring *)buf;
+            buf += sizeof(zfstring) * ret->enumCount;
+
+            ret->nameList = (const zfchar **)buf;
+
             for(zfindex i = 0; i < ret->enumCount; ++i) {
-                ret->flagList[i] = enumValueAtMethod->execute<zfuint, zfindex>(zfnull, i);
-                ret->nameList[i] = enumNameAtMethod->execute<const zfchar *, zfindex>(zfnull, i);
+                zfobj<v_zfindex> iHolder(i);
+                ret->flagList[i] = enumValueAtMethod->methodInvoke(zfnull, iHolder).to<v_zfuint *>()->zfv;
+                zfnewPlacement(ret->nameListHolder + i, zfstring, enumNameAtMethod->methodInvoke(zfnull, iHolder).to<v_zfstring *>()->zfv);
+                ret->nameList[i] = ret->nameListHolder[i];
             }
         }
         return ret;
@@ -245,10 +262,10 @@ public:
 protected:
     zfoverride
     virtual void objectOnDealloc(void) {
-        zffree(this->flagList);
-        this->flagList = zfnull;
-        zffree(this->nameList);
-        this->nameList = zfnull;
+        for(zfindex i = 0; i < this->enumCount; ++i) {
+            zfdeletePlacement(this->nameListHolder + i);
+        }
+        zffree((zfbyte *)this->flagList);
         zfsuper::objectOnDealloc();
     }
 };

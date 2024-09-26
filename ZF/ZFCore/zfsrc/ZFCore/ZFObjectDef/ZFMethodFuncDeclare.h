@@ -30,14 +30,14 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
         ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
-        , ZF_IN_OPT const zfchar *methodParamTypeId0
-        , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId0
+        , ZF_IN_OPT const zfchar *paramTypeId1 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId2 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId3 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId4 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId5 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId6 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId7 = zfnull
         );
 /**
  * @brief see #ZFMethodFuncForName

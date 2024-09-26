@@ -42,7 +42,7 @@ protected:
             ZFAudio *audio = audios[iAudio];
 
             zfobj<ZFUITextView> stateLabel;
-            container->childAdd(stateLabel)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
+            container->child(stateLabel)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             stateLabel->textAlign(ZFUIAlign::e_Center);
             ZFLISTENER_2(stateOnUpdate
@@ -60,7 +60,7 @@ protected:
             ZFListener(stateOnUpdate).execute();
 
             zfobj<ZFUIKit_test_Button> loadBtn;
-            container->childAdd(loadBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
+            container->child(loadBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             loadBtn->label()->text("load");
             ZFLISTENER_1(loadOnClick
@@ -71,7 +71,7 @@ protected:
             loadBtn->onClick(loadOnClick);
 
             zfobj<ZFUIKit_test_Button> startBtn;
-            container->childAdd(startBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
+            container->child(startBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             startBtn->label()->text("start");
             ZFLISTENER_1(startOnClick
@@ -82,7 +82,7 @@ protected:
             startBtn->onClick(startOnClick);
 
             zfobj<ZFUIKit_test_Button> stopBtn;
-            container->childAdd(stopBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
+            container->child(stopBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             stopBtn->label()->text("stop");
             ZFLISTENER_1(stopOnClick
@@ -93,7 +93,7 @@ protected:
             stopBtn->onClick(stopOnClick);
 
             zfobj<ZFUIKit_test_Button> pauseBtn;
-            container->childAdd(pauseBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
+            container->child(pauseBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             pauseBtn->label()->text("pause");
             ZFLISTENER_1(pauseOnClick
@@ -104,7 +104,7 @@ protected:
             pauseBtn->onClick(pauseOnClick);
 
             zfobj<ZFUIKit_test_Button> resumeBtn;
-            container->childAdd(resumeBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
+            container->child(resumeBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             resumeBtn->label()->text("resume");
             ZFLISTENER_1(resumeOnClick

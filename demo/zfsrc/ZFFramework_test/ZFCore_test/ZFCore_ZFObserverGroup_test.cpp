@@ -40,7 +40,7 @@ protected:
             .observerAdd(zfself::EventZFObserverGroupTest1(), observer)
             ;
 
-        this->testCaseOutput("before remove, all observer should be called");
+        this->output("before remove, all observer should be called");
         testObserver0->observerNotify(zfself::EventZFObserverGroupTest0());
         testObserver0->observerNotify(zfself::EventZFObserverGroupTest1());
         testObserver1.observerNotify(zfself::EventZFObserverGroupTest0());
@@ -50,19 +50,19 @@ protected:
         testObserver3->observerNotify(zfself::EventZFObserverGroupTest0());
         testObserver3->observerNotify(zfself::EventZFObserverGroupTest1());
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
         zfRelease(owner);
-        this->testCaseOutput("owner released, all related observer should be removed");
+        this->output("owner released, all related observer should be removed");
         testObserver3->observerNotify(zfself::EventZFObserverGroupTest0());
         testObserver3->observerNotify(zfself::EventZFObserverGroupTest1());
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
         zfRelease(testObserver2);
-        this->testCaseOutput("target released, all related observer should be removed");
+        this->output("target released, all related observer should be removed");
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
         ZFObserverGroupRemove(this);
-        this->testCaseOutput("after remove, all observer should be removed");
+        this->output("after remove, all observer should be removed");
         testObserver0->observerNotify(zfself::EventZFObserverGroupTest0());
         testObserver0->observerNotify(zfself::EventZFObserverGroupTest1());
         testObserver1.observerNotify(zfself::EventZFObserverGroupTest0());
@@ -70,7 +70,7 @@ protected:
         testObserver3->observerNotify(zfself::EventZFObserverGroupTest0());
         testObserver3->observerNotify(zfself::EventZFObserverGroupTest1());
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFObserverGroup_test)

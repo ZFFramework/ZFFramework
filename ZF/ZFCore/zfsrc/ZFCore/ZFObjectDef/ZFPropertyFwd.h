@@ -95,7 +95,7 @@ typedef void (*_ZFP_PropLifeCycleWrapper)(
         );
 zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData {
 public:
-    const ZFClass *propertyOwnerClass;
+    const ZFClass *ownerClass;
     _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper;
     zfauto propertyLifeCycleUserData;
 };

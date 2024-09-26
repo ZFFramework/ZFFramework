@@ -4,16 +4,16 @@ import android.view.View;
 
 public class ZFUIViewTransform {
     public static void native_viewTransform(Object nativeView,
-                                            float viewTranslateX,
-                                            float viewTranslateY,
-                                            float viewScaleX,
-                                            float viewScaleY,
-                                            float viewRotateZ) {
+                                            float translateX,
+                                            float translateY,
+                                            float scaleX,
+                                            float scaleY,
+                                            float rotateZ) {
         View nativeViewTmp = (View) nativeView;
-        nativeViewTmp.setTranslationX(viewTranslateX);
-        nativeViewTmp.setTranslationY(viewTranslateY);
-        nativeViewTmp.setScaleX(viewScaleX);
-        nativeViewTmp.setScaleY(viewScaleY);
-        nativeViewTmp.setRotation(viewRotateZ);
+        nativeViewTmp.setTranslationX(translateX);
+        nativeViewTmp.setTranslationY(translateY);
+        nativeViewTmp.setScaleX(scaleX);
+        nativeViewTmp.setScaleY(scaleY);
+        nativeViewTmp.setRotation(rotateZ);
     }
 }

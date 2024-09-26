@@ -55,18 +55,18 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutput("plain alloc");
+        this->output("plain alloc");
         zfobj<ZFCore_ZFMethod_order_test_Object> o0;
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("alloc with string param");
+        this->outputSeparator();
+        this->output("alloc with string param");
         ZFCore_ZFMethod_order_test_Object::ClassData()->newInstance(zfobj<v_zfstring>("param"));
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("alloc with int param");
+        this->outputSeparator();
+        this->output("alloc with int param");
         ZFCore_ZFMethod_order_test_Object::ClassData()->newInstance(zfobj<v_zfint>(123));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFMethod_order_test)

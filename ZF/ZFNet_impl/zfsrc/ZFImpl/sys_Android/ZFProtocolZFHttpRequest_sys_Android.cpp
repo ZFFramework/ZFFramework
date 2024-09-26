@@ -64,7 +64,7 @@ public:
 
     virtual void url(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_url",
@@ -102,8 +102,8 @@ public:
 
     virtual void header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_header",
@@ -123,7 +123,7 @@ public:
 
     virtual void headerRemove(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_headerRemove",
@@ -141,7 +141,7 @@ public:
 
     virtual zfstring header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_header",
@@ -205,7 +205,7 @@ public:
     virtual void headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             ) {
         ZFImpl_sys_Android_MapIterValue(it, ZFImpl_sys_Android_zfstringToString(value));
     }
@@ -222,7 +222,7 @@ public:
             , ZF_IN zfindex byteSize
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
-        task->body.bufferAppend(buffer, byteSize);
+        task->body.append(buffer, byteSize);
     }
     virtual ZFBuffer body(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -249,7 +249,7 @@ public:
                 return;
             }
             jobject nativeTask = (jobject)task->nativeTask;
-            jobject nativeInput = task->body.bufferSize() > 0
+            jobject nativeInput = task->body.length() > 0
                 ? ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForBuffer(task->body))
                 : NULL;
             ZFCoreMutexUnlock();
@@ -280,7 +280,7 @@ public:
 public:
     virtual zfstring responseHeader(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_responseHeader",

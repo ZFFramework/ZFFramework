@@ -153,7 +153,7 @@ ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMemberMethod(
     ZFCoreAssertWithMessageTrim(callbackMethod->methodType() != ZFMethodTypeStatic,
         "[ZFCallback] method \"%s\" is not class member type",
         callbackMethod);
-    ZFCoreAssertWithMessageTrim(callbackOwnerObject->classData()->classIsTypeOf(callbackMethod->methodOwnerClass()),
+    ZFCoreAssertWithMessageTrim(callbackOwnerObject->classData()->classIsTypeOf(callbackMethod->ownerClass()),
         "[ZFCallback] object %s has no such method \"%s\"",
         callbackOwnerObject->objectInfoOfInstance(),
         callbackMethod);
@@ -417,11 +417,11 @@ void ZFCallback::callbackSerializeData(ZF_IN const ZFSerializableData &customDat
     }
 }
 ZFSerializableData ZFCallback::callbackSerializeData(void) const {
-    return (d && d->ext ? d->ext->callbackSerializeData : zfnull);
+    return (d && d->ext ? d->ext->callbackSerializeData : ZFSerializableData());
 }
 
 ZFPathInfo ZFCallback::pathInfo(void) const {
-    return (d && d->ext ? d->ext->pathInfo : zfnull);
+    return (d && d->ext ? d->ext->pathInfo : ZFPathInfo());
 }
 void ZFCallback::pathInfo(ZF_IN const ZFPathInfo &pathInfo) {
     ZFCoreMutexLocker();

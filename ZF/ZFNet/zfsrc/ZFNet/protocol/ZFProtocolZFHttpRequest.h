@@ -40,7 +40,7 @@ public:
      */
     virtual void url(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) zfpurevirtual;
 
     /**
@@ -56,8 +56,8 @@ public:
      */
     virtual void header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             ) zfpurevirtual;
 
     /**
@@ -65,7 +65,7 @@ public:
      */
     virtual void headerRemove(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) zfpurevirtual;
 
     /**
@@ -73,7 +73,7 @@ public:
      */
     virtual zfstring header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) zfpurevirtual;
 
     /**
@@ -105,7 +105,7 @@ public:
     virtual void headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             ) zfpurevirtual;
     /**
      * @brief http header access
@@ -160,7 +160,7 @@ public:
      */
     virtual zfstring responseHeader(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) zfpurevirtual;
 
     /**

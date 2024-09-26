@@ -137,12 +137,12 @@ public:
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSingleLine(
+    virtual void singleLine(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zfbool textSingleLine
+            , ZF_IN zfbool singleLine
             ) {
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
-        nativeImplView->setWordWrap(!textSingleLine);
+        nativeImplView->setWordWrap(!singleLine);
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView

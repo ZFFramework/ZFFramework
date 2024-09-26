@@ -310,7 +310,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, void, modalWindowFinish) {
 
     zfRelease(this);
 }
-ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, modalWindowShowingWindow) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, modalWindowShowing) {
     return d->modalWindowShowing;
 }
 ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, modalWindowOwner) {
@@ -406,7 +406,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void) {
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i) {
         ZFUIWindow *window = this->rootView()->childAt(i);
         if(window != zfnull) {
-            window->windowOwnerSysWindowOnRotate();
+            window->ownerSysWindowOnRotate();
         }
     }
 }

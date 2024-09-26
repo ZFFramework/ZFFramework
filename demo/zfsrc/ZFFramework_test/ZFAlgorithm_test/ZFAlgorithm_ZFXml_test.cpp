@@ -11,8 +11,8 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFXml);
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFXml");
+        this->outputSeparator();
+        this->output("ZFXml");
 
         const zfchar *src =
             "<?xml type=\"declaration\"?>"
@@ -28,25 +28,25 @@ protected:
             "</element0>"
             ;
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFXml parse from string:");
+        this->outputSeparator();
+        this->output("ZFXml parse from string:");
         ZFXml doc;
         ZFXmlFromStringT(doc, src);
 
-        this->testCaseOutput("ZFXml parse from string, result:");
+        this->output("ZFXml parse from string, result:");
         ZFLogTrim() << ZFXmlToString(doc);
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFXml add element");
-        ZFXml element(ZFXmlType::e_XmlElement);
+        this->outputSeparator();
+        this->output("ZFXml add element");
+        ZFXml element(ZFXmlType::e_Element);
         element.name("testElement");
-        doc.childAdd(element);
-        this->testCaseOutput("ZFXml add element, result:");
+        doc.child(element);
+        this->output("ZFXml add element, result:");
         ZFLogTrim() << ZFXmlToString(doc);
 
         this->performanceTest(doc);
 
-        this->testCaseStop();
+        this->stop();
     }
 private:
     void performanceTest(ZF_IN const ZFXml &xmlItem) {
@@ -68,24 +68,24 @@ private:
         ZFCoreStatistic::invokeTimeLogEnd("ZFXmlPerformance_test_fromData");
         ZFXml xmlItemNew = ZFXmlFromInput(ZFInputForString(xmlString));
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
 
         ZFTimeValue toDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFXmlPerformance_test_toData");
-        this->testCaseOutput(zfstr("serialize to data %s times cost %s seconds"
+        this->output(zfstr("serialize to data %s times cost %s seconds"
                     , toDataTimes
                     , ZFTimeValueToStringFriendly(toDataUsedTime)
                     ));
 
         ZFTimeValue fromDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFXmlPerformance_test_fromData");
-        this->testCaseOutput(zfstr("serialize from data %s times cost %s seconds"
+        this->output(zfstr("serialize from data %s times cost %s seconds"
                     , fromDataTimes
                     , ZFTimeValueToStringFriendly(fromDataUsedTime)
                     ));
 
         #if 0
-            this->testCaseOutputSeparator();
-            this->testCaseOutput(zfstr("content: %s", xmlString));
-            this->testCaseOutput(zfstr("newly: %s", xmlItemNew));
+            this->outputSeparator();
+            this->output(zfstr("content: %s", xmlString));
+            this->output(zfstr("newly: %s", xmlItemNew));
         #endif
 
         ZFCoreStatistic::invokeTimeRemove("ZFXmlPerformance_test_toData");

@@ -18,18 +18,18 @@ _ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(
     zfclassNotPOD _ZFP_IdMap_GI {
     public:
         static zfbool GI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-            ret = invokerMethod->methodDynamicRegisterUserData();
+            ret = invokerMethod->dynamicRegisterUserData();
             return zftrue;
         }
     };
     ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
-            .methodOwnerClass(ownerClass)
+            .ownerClass(ownerClass)
             .methodNamespace(ownerNamespace)
             .methodType(ZFMethodTypeStatic)
-            .methodReturnTypeId(ZFTypeId_zfidentity())
+            .returnTypeId(ZFTypeId_zfidentity())
             .methodName(methodName)
             .methodGenericInvoker(_ZFP_IdMap_GI::GI)
-            .methodDynamicRegisterUserData(zfobj<v_zfidentity>(*idValue))
+            .dynamicRegisterUserData(zfobj<v_zfidentity>(*idValue))
             .zfunsafe_disableChecker(zftrue)
             );
 }
@@ -84,7 +84,7 @@ const zfidentity *_ZFP_ZFIdMapRegister(
         ZF_IN const zfstring &idName
         , ZF_IN_OPT zfbool isDynamicRegister /* = zffalse */
         ) {
-    if(zfstringIsEmpty(idName)) {
+    if(!idName) {
         ZFCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] empty name");
     }
 

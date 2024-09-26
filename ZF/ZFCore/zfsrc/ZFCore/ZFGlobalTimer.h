@@ -48,13 +48,13 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFGlobalTimerDetachAll)
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zftimet const &, ZFGlobalTimerIntervalDefault)
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerIntervalDefault
-        , ZFMP_IN(zftimet const &, timerIntervalDefault)
+        , ZFMP_IN(zftimet const &, intervalDefault)
         )
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zftimet const &, ZFGlobalTimerInterval)
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerInterval
-        , ZFMP_IN(zftimet const &, timerInterval)
+        , ZFMP_IN(zftimet const &, interval)
         )
 
 // ============================================================

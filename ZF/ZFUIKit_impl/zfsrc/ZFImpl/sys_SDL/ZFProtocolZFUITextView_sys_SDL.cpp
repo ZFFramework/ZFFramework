@@ -111,9 +111,9 @@ public:
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSingleLine(
+    virtual void singleLine(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zfbool textSingleLine
+            , ZF_IN zfbool singleLine
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
@@ -176,7 +176,7 @@ private:
         if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0) {
             return zffalse;
         }
-        if(widthHint <= 0 || w <= widthHint || textView->textSingleLine()) {
+        if(widthHint <= 0 || w <= widthHint || textView->singleLine()) {
             h = zfmMax(h, lineSkip);
             return zftrue;
         }
@@ -270,7 +270,7 @@ private:
         }
 
         SDL_Surface *sdlSurface = zfnull;
-        if(owner->textSingleLine() || owner->textTruncateMode() != ZFUITextTruncateMode::e_Disable) {
+        if(owner->singleLine() || owner->textTruncateMode() != ZFUITextTruncateMode::e_Disable) {
             sdlSurface = renderWrapped(owner, targetRect, sdlFont, textSizeCurrent);
         }
         else {
@@ -371,11 +371,11 @@ private:
             , ZF_IN TTF_Font *sdlFont
             , ZF_IN zffloat textSizeCurrent
             ) {
-        zfbool textSingleLine = owner->textSingleLine();
+        zfbool singleLine = owner->singleLine();
         ZFUITextTruncateModeEnum textTruncateMode = owner->textTruncateMode();
         SDL_Color textColor = ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor());
         if(textTruncateMode == ZFUITextTruncateMode::e_Disable) {
-            if(textSingleLine) {
+            if(singleLine) {
                 return TTF_RenderUTF8_Blended(sdlFont, owner->text(), textColor);
             }
             else {
@@ -384,7 +384,7 @@ private:
         }
 
         int w, h;
-        if(textSingleLine) {
+        if(singleLine) {
             if(TTF_SizeUTF8(sdlFont, owner->text(), &w, &h) != 0) {
                 return zfnull;
             }
@@ -429,7 +429,7 @@ private:
             if(p + strip < text.length()) {
                 textNew.append(text + p + strip, text.length() - p - strip);
             }
-            if(textSingleLine) {
+            if(singleLine) {
                 if(TTF_SizeUTF8(sdlFont, textNew, &w, &h) != 0) {
                     return zfnull;
                 }

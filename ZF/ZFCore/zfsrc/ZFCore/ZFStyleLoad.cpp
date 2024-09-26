@@ -25,8 +25,8 @@ static void _ZFP_ZFStyleLoadImpl(
     ZFFileFindData fd;
     if(fileImpl.implFindFirst(fd, pathData)) {
         do {
-            if(*fd.fileName() == '.' || *fd.fileName() == '_'
-                    || zfstringFind(fd.fileName(), zfindexMax(), "._.") != zfindexMax()
+            if(*fd.name() == '.' || *fd.name() == '_'
+                    || zfstringFind(fd.name(), zfindexMax(), "._.") != zfindexMax()
                     ) {
                 continue;
             }
@@ -35,17 +35,17 @@ static void _ZFP_ZFStyleLoadImpl(
             if(!relativePathTmp.isEmpty()) {
                 relativePathTmp += '/';
             }
-            relativePathTmp += fd.fileName();
+            relativePathTmp += fd.name();
 
-            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.fileName());
-            if(fd.fileIsDir()) {
-                if(dirNameFilter != zfnull && !dirNameFilter->filterCheckActive(fd.fileName())) {
+            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
+            if(fd.isDir()) {
+                if(dirNameFilter != zfnull && !dirNameFilter->filterPassed(fd.name())) {
                     continue;
                 }
                 _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, fileNameFilter, dirNameFilter, relativePathTmp);
             }
             else {
-                if(fileNameFilter != zfnull && !fileNameFilter->filterCheckActive(fd.fileName())) {
+                if(fileNameFilter != zfnull && !fileNameFilter->filterPassed(fd.name())) {
                     continue;
                 }
                 zfauto styleValue;
@@ -75,7 +75,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
         if(!fileName) {
             return zffalse;
         }
-        if(fileNameFilter != zfnull && !fileNameFilter->filterCheckActive(fileName)) {
+        if(fileNameFilter != zfnull && !fileNameFilter->filterPassed(fileName)) {
             return zftrue;
         }
         zfauto styleValue;
@@ -236,7 +236,7 @@ zfbool ZFStyleList::serializableOnSerializeToData(
             return zffalse;
         }
         elementData.propertyName(d->keyList[i]);
-        serializableData.childAdd(elementData);
+        serializableData.child(elementData);
     }
     return zftrue;
 }

@@ -378,7 +378,7 @@ zfbool ZFDI_invoke(
             if(errorHintTmp != zfnull && !_errorHintTmp.isEmpty()) {
                 _errorHintTmp += "\n    ";
             }
-            if(!method->methodIsPublic()) {
+            if(!method->isPublic()) {
                 if(errorHintTmp != zfnull) {
                     zfstringAppend(_errorHintTmp, "can not invoke %s method: %s",
                         method->methodPrivilegeType(),
@@ -386,12 +386,12 @@ zfbool ZFDI_invoke(
                 }
                 break;
             }
-            if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount()) {
+            if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
                 if(errorHintTmp != zfnull) {
                     zfstringAppend(_errorHintTmp, "expect %s param, got %s",
-                        ((method->methodParamCountMin() == method->methodParamCount())
-                            ? zfindexToString(method->methodParamCount())
-                            : zfstr("%s~%s", method->methodParamCountMin(), method->methodParamCount())),
+                        ((method->paramCountMin() == method->paramCount())
+                            ? zfindexToString(method->paramCount())
+                            : zfstr("%s~%s", method->paramCountMin(), method->paramCount())),
                         paramCount);
                 }
                 continue;
@@ -410,8 +410,8 @@ zfbool ZFDI_invoke(
                 else if(convStr) {
                     v_zfstring *holder = paramList[iParam];
                     if(holder != zfnull
-                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
-                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
+                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
+                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFTypeId_zfstring())
                             ) {
                         s = holder->zfv;
                         if(s == zfnull) {
@@ -422,7 +422,7 @@ zfbool ZFDI_invoke(
                 if(s != zfnull) {
                     zfauto paramTmp;
                     if(!ZFDI_objectFromString(
-                                paramTmp, method->methodParamTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
+                                paramTmp, method->paramTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
                                 ) {
                         paramConvertSuccess = zffalse;
                         break;
@@ -436,7 +436,7 @@ zfbool ZFDI_invoke(
                 continue;
             }
             if(method->methodGenericInvoker()(ret, errorHintTmp, obj, method, paramCount, paramList)) {
-                if(zfstringIsEqual(method->methodReturnTypeId(), ZFTypeId_void())) {
+                if(zfstringIsEqual(method->returnTypeId(), ZFTypeId_void())) {
                     ret = obj;
                 }
                 return zftrue;
@@ -545,12 +545,12 @@ zfbool ZFDI_alloc(
             if(!_errorHintTmp.isEmpty()) {
                 _errorHintTmp += "\n    ";
             }
-            if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount()) {
+            if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
                 if(errorHintTmp != zfnull) {
                     zfstringAppend(_errorHintTmp, "expect %s param, got %s",
-                        ((method->methodParamCountMin() == method->methodParamCount())
-                            ? zfindexToString(method->methodParamCount())
-                            : zfstr("%s~%s", method->methodParamCountMin(), method->methodParamCount())),
+                        ((method->paramCountMin() == method->paramCount())
+                            ? zfindexToString(method->paramCount())
+                            : zfstr("%s~%s", method->paramCountMin(), method->paramCount())),
                         paramCount);
                 }
                 continue;
@@ -569,8 +569,8 @@ zfbool ZFDI_alloc(
                 else if(convStr) {
                     v_zfstring *holder = paramList[iParam];
                     if(holder != zfnull
-                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
-                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
+                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
+                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFTypeId_zfstring())
                             ) {
                         s = holder->zfv;
                         if(s == zfnull) {
@@ -581,7 +581,7 @@ zfbool ZFDI_alloc(
                 if(s != zfnull) {
                     zfauto paramTmp;
                     if(!ZFDI_objectFromString(
-                                paramTmp, method->methodParamTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
+                                paramTmp, method->paramTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
                                 ) {
                         paramConvertSuccess = zffalse;
                         break;
@@ -649,7 +649,7 @@ zfbool ZFDI_objectFromString(
     else if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         ret = cls->newInstance();
         ZFTypeIdWrapper *wrapper = ret;
-        if(wrapper != zfnull && wrapper->wrappedValueFromString(src, srcLen)) {
+        if(wrapper != zfnull && wrapper->zfvFromString(src, srcLen)) {
             return zftrue;
         }
         else {
@@ -737,6 +737,35 @@ zfauto ZFInvoke(
         return zfnull;
     }
 }
+zfbool ZFInvokeT(
+        ZF_OUT zfauto &ret
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN const zfstring &name
+        , ZF_IN_OPT ZFObject *param0 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param1 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param2 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param3 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param4 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param5 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
+        ) {
+    ZFCoreMutexLock();
+    zfauto paramList[ZFMETHOD_MAX_PARAM];
+    zfindex paramCount = ZFMETHOD_MAX_PARAM;
+    do {
+        if(param0 == ZFMP_DEF()) {paramCount = 0; break;} else {paramList[0].zfunsafe_assign(param0);}
+        if(param1 == ZFMP_DEF()) {paramCount = 1; break;} else {paramList[1].zfunsafe_assign(param1);}
+        if(param2 == ZFMP_DEF()) {paramCount = 2; break;} else {paramList[2].zfunsafe_assign(param2);}
+        if(param3 == ZFMP_DEF()) {paramCount = 3; break;} else {paramList[3].zfunsafe_assign(param3);}
+        if(param4 == ZFMP_DEF()) {paramCount = 4; break;} else {paramList[4].zfunsafe_assign(param4);}
+        if(param5 == ZFMP_DEF()) {paramCount = 5; break;} else {paramList[5].zfunsafe_assign(param5);}
+        if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
+        if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
+    } while(zffalse);
+    ZFCoreMutexUnlock();
+    return ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList, zftrue);
+}
 zfauto ZFInvokeDetail(
         ZF_IN const zfstring &name
         , ZF_IN const ZFCoreArray<zfauto> &params
@@ -784,6 +813,20 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvoke
         , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
         , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         /* ZFMETHOD_MAX_PARAM */
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, ZFInvokeT
+        , ZFMP_OUT(zfauto &, ret)
+        , ZFMP_OUT(zfstring *, errorHint)
+        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN_OPT(ZFObject *, param0, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        /* ZFMETHOD_MAX_PARAM */
+        // , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        // , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
         // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeDetail

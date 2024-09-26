@@ -38,7 +38,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
     do {
         const ZFMethod *method = ZFMethodForName(rawEnumNamespaceT, rawEnumValueNameT);
         if(method == zfnull) {break;}
-        ret = method->execute<zfuint>(zfnull);
+        ret = method->methodInvoke().to<v_zfuint *>()->zfv;
     } while(zffalse);
     if(rawEnumNamespaceT != zfnull) {
         JNIUtilReleaseStringUTFChars(jniEnv, rawEnumNamespace, rawEnumNamespaceT);
@@ -58,7 +58,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
         if(cls == zfnull || !cls->classIsTypeOf(ZFEnum::ClassData())) {break;}
         const ZFMethod *method = cls->methodForName("EnumDefault");
         if(method == zfnull) {break;}
-        ret = method->execute<zfuint>(zfnull);
+        ret = method->methodInvoke().to<v_zfuint *>()->zfv;
     } while(zffalse);
     JNIUtilReleaseStringUTFChars(jniEnv, enumClassName, enumClassNameT);
     return (jint)ret;
@@ -77,7 +77,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
         if(cls == zfnull || !cls->classIsTypeOf(ZFEnum::ClassData())) {break;}
         const ZFMethod *method = cls->methodForName("EnumValueForName");
         if(method == zfnull) {break;}
-        ret = method->execute<zfuint, const zfstring &>(zfnull, enumValueNameT);
+        ret = method->methodInvoke(zfnull, zfobj<v_zfstring>(enumValueNameT)).to<v_zfuint *>()->zfv;
     } while(zffalse);
     JNIUtilReleaseStringUTFChars(jniEnv, enumClassName, enumClassNameT);
     JNIUtilReleaseStringUTFChars(jniEnv, enumValueName, enumValueNameT);
@@ -90,13 +90,13 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
         , jint enumValue
         ) {
     const char *enumClassNameT = JNIUtilGetStringUTFChars(jniEnv, enumClassName, zfnull);
-    const zfchar *ret = ZFEnumNameInvalid();
+    zfstring ret = ZFEnumNameInvalid();
     do {
         const ZFClass *cls = ZFClass::classForName(enumClassNameT);
         if(cls == zfnull || !cls->classIsTypeOf(ZFEnum::ClassData())) {break;}
         const ZFMethod *method = cls->methodForName("EnumNameForValue");
         if(method == zfnull) {break;}
-        ret = method->execute<const zfstring &, zfuint>(zfnull, (zfuint)enumValue);
+        ret = method->methodInvoke(zfnull, zfobj<v_zfuint>(enumValue)).to<v_zfstring *>()->zfv;
     } while(zffalse);
     JNIUtilReleaseStringUTFChars(jniEnv, enumClassName, enumClassNameT);
     return JNIUtilNewStringUTF(jniEnv, ret);

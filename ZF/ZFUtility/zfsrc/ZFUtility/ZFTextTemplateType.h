@@ -140,7 +140,7 @@ zfclassLikePOD ZFLIB_ZFUtility ZFTextTemplateParam {
 public:
     // ============================================================
     /** @brief see #ZFTextTemplateApply */
-    void replaceDataAdd(
+    void replaceData(
             ZF_IN const zfstring &key
             , ZF_IN const zfstring &value
             );
@@ -166,7 +166,7 @@ public:
     zfbool enableDataDefault(void) const;
 
     /** @brief see #ZFTextTemplateApply */
-    void enableDataAdd(
+    void enableData(
             ZF_IN const zfstring &key
             , ZF_IN zfbool value
             );
@@ -194,7 +194,7 @@ public:
     const ZFTextTemplateIndexData &indexDataDefault(void) const;
 
     /** @brief see #ZFTextTemplateApply */
-    void indexDataAdd(
+    void indexData(
             ZF_IN const zfstring &key
             , ZF_IN const ZFTextTemplateIndexData &value
             );

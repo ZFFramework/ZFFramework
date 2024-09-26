@@ -149,7 +149,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_concat_action(
         zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
         ZFTypeIdWrapper *wrapper = param;
         if(wrapper != zfnull) {
-            if(wrapper->wrappedValueToString(v)) {
+            if(wrapper->zfvToString(v)) {
                 return zftrue;
             }
         }
@@ -214,7 +214,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
             }
             else {
                 ZFTypeIdWrapper *t = v2;
-                if(t != zfnull && t->wrappedValueIsInit()) {
+                if(t != zfnull && t->zfvIsInit()) {
                     ret = ZFCompareEqual;
                 }
                 else {
@@ -225,7 +225,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
         else {
             if(v2 == zfnull) {
                 ZFTypeIdWrapper *t = v1;
-                if(t != zfnull && t->wrappedValueIsInit()) {
+                if(t != zfnull && t->zfvIsInit()) {
                     ret = ZFCompareEqual;
                 }
                 else {
@@ -440,13 +440,13 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
 
     if(paramClass0->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass0->newInstance();
-        ret->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
+        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>(n));
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
     if(paramClass1->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass1->newInstance();
-        ret->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
+        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>(n));
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }

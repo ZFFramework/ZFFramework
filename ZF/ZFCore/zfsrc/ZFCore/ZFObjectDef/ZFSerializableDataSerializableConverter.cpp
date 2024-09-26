@@ -301,15 +301,15 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
                 ++encodedData;
                 zfcharSkipSpaceAndEndl(encodedData, srcEnd);
 
-                zfstring attributeName;
-                ZFCoreDataDecode(attributeName, pLeft, pRight - pLeft);
+                zfstring attrName;
+                ZFCoreDataDecode(attrName, pLeft, pRight - pLeft);
 
                 // value
                 if(!_ZFP_ZFSD_AttrValueDecode(decodedTmp, encodedData, srcEnd)) {break;}
 
                 // save
-                if(!attributeName.isEmpty() && !decodedTmp.isEmpty()) {
-                    serializableData.attr(attributeName, decodedTmp);
+                if(!attrName.isEmpty() && !decodedTmp.isEmpty()) {
+                    serializableData.attr(attrName, decodedTmp);
                 }
                 decodedTmp.removeAll();
 
@@ -335,7 +335,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
                 if(!_ZFP_ZFSerializableDataFromZfsd(element, encodedData, srcEnd - encodedData, outErrorHint)) {
                     return zffalse;
                 }
-                serializableData.childAdd(element);
+                serializableData.child(element);
             }
             if(!ret) {break;}
             ret = zffalse;

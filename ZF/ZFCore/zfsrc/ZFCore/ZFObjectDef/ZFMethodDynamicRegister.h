@@ -55,8 +55,8 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
  * @brief util to #ZFMethodDynamicRegister
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
-        ZF_IN const ZFClass *methodOwnerClass
-        , ZF_IN const zfstring &methodReturnTypeId
+        ZF_IN const ZFClass *ownerClass
+        , ZF_IN const zfstring &returnTypeId
         , ZF_IN const zfstring &methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
@@ -69,7 +69,7 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
         ZF_IN const zfstring &methodNamespace
-        , ZF_IN const zfstring &methodReturnTypeId
+        , ZF_IN const zfstring &returnTypeId
         , ZF_IN const zfstring &methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
@@ -89,27 +89,27 @@ zfclassFwd _ZFP_ZFMethodDynamicRegisterParamPrivate;
  * @brief param for #ZFMethodDynamicRegister
  *
  * required:
- * -  methodOwnerClass or methodNamespace
+ * -  ownerClass or methodNamespace
  * -  methodGenericInvoker or methodImpl
  * -  methodName
  *
  * optional:
- * -  methodDynamicRegisterUserData, null by default
+ * -  dynamicRegisterUserData, null by default
  * -  methodType, #ZFMethodTypeVirtual by default, auto fallback to #ZFMethodTypeStatic for function type method
  * -  methodPrivilegeType, #ZFMethodPrivilegeTypePublic by default
- * -  methodReturnTypeId, #ZFTypeId_void by default
+ * -  returnTypeId, #ZFTypeId_void by default
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFMethodDynamicRegisterParam {
 public:
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodDynamicRegisterUserData(ZF_IN ZFObject *methodDynamicRegisterUserData);
+    ZFMethodDynamicRegisterParam &dynamicRegisterUserData(ZF_IN ZFObject *dynamicRegisterUserData);
     /** @brief see #ZFMethodDynamicRegister */
-    zfany methodDynamicRegisterUserData(void) const;
+    zfany dynamicRegisterUserData(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodOwnerClass(ZF_IN const ZFClass *methodOwnerClass);
+    ZFMethodDynamicRegisterParam &ownerClass(ZF_IN const ZFClass *ownerClass);
     /** @brief see #ZFMethodDynamicRegister */
-    const ZFClass *methodOwnerClass(void) const;
+    const ZFClass *ownerClass(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodDynamicRegisterParam &methodNamespace(ZF_IN const zfstring &methodNamespace);
@@ -146,24 +146,24 @@ public:
     const zfstring &methodName(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodReturnTypeId(ZF_IN const zfstring &methodReturnTypeId);
+    ZFMethodDynamicRegisterParam &returnTypeId(ZF_IN const zfstring &returnTypeId);
     /** @brief see #ZFMethodDynamicRegister */
-    const zfstring &methodReturnTypeId(void) const;
+    const zfstring &returnTypeId(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodParamAdd(
-            ZF_IN const zfstring &methodParamTypeId
-            , ZF_IN_OPT const zfstring &methodParamName = zfnull
-            , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
+    ZFMethodDynamicRegisterParam &methodParam(
+            ZF_IN const zfstring &paramTypeId
+            , ZF_IN_OPT const zfstring &paramName = zfnull
+            , ZF_IN_OPT const ZFListener &paramDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
             );
     /** @brief see #ZFMethodDynamicRegister */
-    zfindex methodParamCount(void) const;
+    zfindex paramCount(void) const;
     /** @brief see #ZFMethodDynamicRegister */
-    const zfstring &methodParamTypeIdAt(ZF_IN zfindex index) const;
+    const zfstring &paramTypeIdAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    const zfstring &methodParamNameAt(ZF_IN zfindex index) const;
+    const zfstring &paramNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    const ZFListener &methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
+    const ZFListener &paramDefaultValueCallbackAt(ZF_IN zfindex index) const;
 
 public:
     /** @brief see #ZFMethodDynamicRegister */
@@ -202,20 +202,20 @@ zfclassLikePOD ZFLIB_ZFCore ZFMP {
 public:
     /** @brief util for #ZFDynamic::method */
     ZFMP &mp(
-            ZF_IN const zfstring &methodParamTypeId
-            , ZF_IN_OPT const zfstring &methodParamName = zfnull
-            , ZF_IN_OPT const ZFListener &methodParamDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
+            ZF_IN const zfstring &paramTypeId
+            , ZF_IN_OPT const zfstring &paramName = zfnull
+            , ZF_IN_OPT const ZFListener &paramDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
             );
 
 public:
     /** @brief util for #ZFDynamic::method */
-    zfindex methodParamCount(void) const;
+    zfindex paramCount(void) const;
     /** @brief util for #ZFDynamic::method */
-    const zfstring &methodParamTypeIdAt(ZF_IN zfindex index) const;
+    const zfstring &paramTypeIdAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
-    const zfstring &methodParamNameAt(ZF_IN zfindex index) const;
+    const zfstring &paramNameAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
-    const ZFListener &methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
+    const ZFListener &paramDefaultValueCallbackAt(ZF_IN zfindex index) const;
 
 
 public:

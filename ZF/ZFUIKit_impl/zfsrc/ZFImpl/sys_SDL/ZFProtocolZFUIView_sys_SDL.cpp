@@ -20,7 +20,7 @@ public:
             , ZF_IN zffloat treeAlpha
             ) {
         if(nativeView->ownerZFUIView != zfnull) {
-            ZFUIColor bg = nativeView->ownerZFUIView->viewBackgroundColor();
+            ZFUIColor bg = nativeView->ownerZFUIView->backgroundColor();
             if(ZFUIColorGetA(bg) != 0) {
                 Uint8 rOld, gOld, bOld, aOld;
                 SDL_GetRenderDrawColor(renderer, &rOld, &gOld, &bOld, &aOld);
@@ -102,16 +102,16 @@ public:
     // ============================================================
     // properties
 public:
-    virtual void viewVisible(
+    virtual void visible(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewVisible
+            , ZF_IN zfbool visible
             ) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
         nativeViewTmp->renderRequest();
     }
-    virtual void viewAlpha(
+    virtual void alpha(
             ZF_IN ZFUIView *view
-            , ZF_IN zffloat viewAlpha
+            , ZF_IN zffloat alpha
             ) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
         nativeViewTmp->renderRequest();
@@ -128,16 +128,16 @@ public:
             ) {
         // nothing to do
     }
-    virtual void viewBackgroundColor(
+    virtual void backgroundColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &viewBackgroundColor
+            , ZF_IN const ZFUIColor &backgroundColor
             ) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
         nativeViewTmp->renderRequest();
     }
 
 public:
-    virtual void childAdd(
+    virtual void child(
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
@@ -162,7 +162,23 @@ public:
     }
     virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent) {
         ZFImpl_sys_SDL_View *nativeParent = (ZFImpl_sys_SDL_View *)parent->nativeView();
-        nativeParent->children.removeAll();
+        ZFImpl_sys_SDL_View *nativeImplView = (ZFImpl_sys_SDL_View *)parent->nativeImplView();
+        if(!(
+                    nativeParent->children.isEmpty()
+                    || (nativeImplView != NULL && nativeParent->children.count() == 1)
+                    )) {
+            for(zfindex i = 0; i < nativeParent->children.count(); ++i) {
+                ZFImpl_sys_SDL_View *nativeChild = nativeParent->children[i];
+                if(nativeChild != nativeImplView) {
+                    nativeChild->parent = zfnull;
+                    if(nativeChild->sysWindow != zfnull) {
+                        nativeChild->sysWindowDetach();
+                    }
+                }
+            }
+            nativeParent->children.removeAll();
+            nativeParent->children.add(nativeImplView);
+        }
     }
 
 public:

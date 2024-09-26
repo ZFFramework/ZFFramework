@@ -61,7 +61,7 @@ public:
 
     void _ZFP_notifyCancel() {
         if(this->timeoutTimer != zfnull) {
-            this->timeoutTimer->timerStop();
+            this->timeoutTimer->stop();
             this->timeoutTimer = zfnull;
         }
         if(this->response != NULL) {
@@ -77,7 +77,7 @@ public slots:
             return;
         }
         if(this->timeoutTimer != zfnull) {
-            this->timeoutTimer->timerStop();
+            this->timeoutTimer->stop();
             this->timeoutTimer = zfnull;
         }
 
@@ -97,10 +97,10 @@ public slots:
             ZFBuffer &body = this->ownerResponse->body();
             const zfint bufSize = 256;
             do {
-                body.bufferCapacity(body.bufferSize() + bufSize);
-                zfint read = (zfint)nativeResponse->read((char *)body.buffer() + body.bufferSize(), (qint64)bufSize);
+                body.capacity(body.length() + bufSize);
+                zfint read = (zfint)nativeResponse->read((char *)body.buffer() + body.length(), (qint64)bufSize);
                 if(read > 0) {
-                    body.bufferSize(body.bufferSize() + read);
+                    body.length(body.length() + read);
                 }
                 if(read < bufSize) {
                     body.text()[body.textLength()] = '\0';
@@ -140,7 +140,7 @@ public:
 
     virtual void url(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->request.setUrl(QUrl(url));
@@ -156,8 +156,8 @@ public:
 
     virtual void header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->request.setRawHeader(key, value);
@@ -169,7 +169,7 @@ public:
 
     virtual void headerRemove(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->request.setRawHeader(key, QByteArray());
@@ -181,7 +181,7 @@ public:
 
     virtual zfstring header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         return task->request.rawHeader(key).data();
@@ -251,7 +251,7 @@ public:
     virtual void headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->request.setRawHeader(it.impl<_Iter *>()->it->data(), value);
@@ -323,7 +323,7 @@ public:
 public:
     virtual zfstring responseHeader(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         if(task->response == NULL) {

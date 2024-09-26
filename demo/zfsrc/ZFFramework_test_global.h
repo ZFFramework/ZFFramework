@@ -19,7 +19,7 @@ protected:
     virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult);
 
 public:
-    virtual void testCaseOutputSeparator(void);
+    virtual void outputSeparator(void);
     virtual const zfstring &testCaseTmpPath(void);
     virtual zfstring testCaseUseTmpFile(ZF_IN const zfchar *fileName);
     virtual void testCaseAddFileToRemove(ZF_IN const zfchar *filePath);
@@ -34,8 +34,8 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_APP, zfbool, ZFFramework_test_asyncTestAvailable)
 #define ZFFramework_test_protocolCheck(ProtocolName) \
     do { \
         if(!ZFProtocolIsAvailable(#ProtocolName)) { \
-            this->testCaseOutput(#ProtocolName " not available, skip test case"); \
-            this->testCaseStop(); \
+            this->output(#ProtocolName " not available, skip test case"); \
+            this->stop(); \
             return; \
         } \
     } while(zffalse)
@@ -43,12 +43,12 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_APP, zfbool, ZFFramework_test_asyncTestAvailable)
 #define ZFFramework_test_asyncTestCheck() \
     do { \
         if(!ZFThread::implMainThreadTaskAvailable() || !ZFFramework_test_asyncTestAvailable()) { \
-            this->testCaseOutput(zfstr("%s not available, skip test case" \
+            this->output(zfstr("%s not available, skip test case" \
                         , !ZFThread::implMainThreadTaskAvailable() \
                             ? "ZFThread::implMainThreadTaskAvailable()" \
                             : "ZFFramework_test_asyncTestAvailable()" \
                         )); \
-            this->testCaseStop(); \
+            this->stop(); \
             return; \
         } \
     } while(zffalse)

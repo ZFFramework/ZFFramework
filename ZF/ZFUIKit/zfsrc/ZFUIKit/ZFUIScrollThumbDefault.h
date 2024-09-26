@@ -27,31 +27,31 @@ public:
     /**
      * @brief horizontal scroll thumb image, null to hide it
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, scrollThumbImageHorizontal, zfres("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, scrollThumbImageHorizontal)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, thumbImageHorizontal, zfres("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, thumbImageHorizontal)
     /**
      * @brief vertical scroll thumb image, null to hide it
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, scrollThumbImageVertical, zfres("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, scrollThumbImageVertical)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, thumbImageVertical, zfres("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, thumbImageVertical)
 
     /**
      * @brief delay to auto hide, #ZFAnimationDurationDefault by default
      */
-    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDelayHorizontal, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDelayHorizontal, ZFAnimationDurationDefault())
     /**
      * @brief delay to auto hide, #ZFAnimationDurationDefault by default
      */
-    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDelayVertical, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDelayVertical, ZFAnimationDurationDefault())
 
     /**
      * @brief time to auto hide, #ZFAnimationDurationDefault by default, 0 means never hide
      */
-    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDurationHorizontal, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDurationHorizontal, ZFAnimationDurationDefault())
     /**
      * @brief time to auto hide, #ZFAnimationDurationDefault by default, 0 means never hide
      */
-    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDurationVertical, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDurationVertical, ZFAnimationDurationDefault())
 
 protected:
     zfoverride

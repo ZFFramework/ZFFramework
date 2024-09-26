@@ -18,115 +18,115 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIImageView> view;
-        container->childAdd(view)->c_sizeFill(100, 100)->c_alignTop()->c_margin(0, 100, 0, 0);
+        container->child(view)->c_sizeFill(100, 100)->c_alignTop()->c_margin(0, 100, 0, 0);
         view->image(zfres("test_normal.png"));
 
         zffloat margin = 120;
 
-        // viewTranslateX
-        zfobj<ZFUIKit_test_Button> viewTranslateXDec;
-        window->childAdd(viewTranslateXDec)->c_alignBottom()->c_margin(0, 0, margin, 200);
-        viewTranslateXDec->label()->text("viewTranslateX -");
-        ZFLISTENER_1(viewTranslateXOnDec
+        // translateX
+        zfobj<ZFUIKit_test_Button> translateXDec;
+        window->child(translateXDec)->c_alignBottom()->c_margin(0, 0, margin, 200);
+        translateXDec->label()->text("translateX -");
+        ZFLISTENER_1(translateXOnDec
                 , ZFUIImageView *, view
                 ) {
-            view->viewTranslateX(view->viewTranslateX() - 10);
+            view->translateX(view->translateX() - 10);
         } ZFLISTENER_END()
-        viewTranslateXDec->onClick(viewTranslateXOnDec);
+        translateXDec->onClick(translateXOnDec);
 
-        zfobj<ZFUIKit_test_Button> viewTranslateXInc;
-        window->childAdd(viewTranslateXInc)->c_alignBottom()->c_margin(margin, 0, 0, 200);
-        viewTranslateXInc->label()->text("viewTranslateX +");
-        ZFLISTENER_1(viewTranslateXOnInc
+        zfobj<ZFUIKit_test_Button> translateXInc;
+        window->child(translateXInc)->c_alignBottom()->c_margin(margin, 0, 0, 200);
+        translateXInc->label()->text("translateX +");
+        ZFLISTENER_1(translateXOnInc
                 , ZFUIImageView *, view
                 ) {
-            view->viewTranslateX(view->viewTranslateX() + 10);
+            view->translateX(view->translateX() + 10);
         } ZFLISTENER_END()
-        viewTranslateXInc->onClick(viewTranslateXOnInc);
+        translateXInc->onClick(translateXOnInc);
 
-        // viewTranslateY
-        zfobj<ZFUIKit_test_Button> viewTranslateYDec;
-        window->childAdd(viewTranslateYDec)->c_alignBottom()->c_margin(0, 0, margin, 150);
-        viewTranslateYDec->label()->text("viewTranslateY -");
-        ZFLISTENER_1(viewTranslateYOnDec
+        // translateY
+        zfobj<ZFUIKit_test_Button> translateYDec;
+        window->child(translateYDec)->c_alignBottom()->c_margin(0, 0, margin, 150);
+        translateYDec->label()->text("translateY -");
+        ZFLISTENER_1(translateYOnDec
                 , ZFUIImageView *, view
                 ) {
-            view->viewTranslateY(view->viewTranslateY() - 10);
+            view->translateY(view->translateY() - 10);
         } ZFLISTENER_END()
-        viewTranslateYDec->onClick(viewTranslateYOnDec);
+        translateYDec->onClick(translateYOnDec);
 
-        zfobj<ZFUIKit_test_Button> viewTranslateYInc;
-        window->childAdd(viewTranslateYInc)->c_alignBottom()->c_margin(margin, 0, 0, 150);
-        viewTranslateYInc->label()->text("viewTranslateY +");
-        ZFLISTENER_1(viewTranslateYOnInc
+        zfobj<ZFUIKit_test_Button> translateYInc;
+        window->child(translateYInc)->c_alignBottom()->c_margin(margin, 0, 0, 150);
+        translateYInc->label()->text("translateY +");
+        ZFLISTENER_1(translateYOnInc
                 , ZFUIImageView *, view
                 ) {
-            view->viewTranslateY(view->viewTranslateY() + 10);
+            view->translateY(view->translateY() + 10);
         } ZFLISTENER_END()
-        viewTranslateYInc->onClick(viewTranslateYOnInc);
+        translateYInc->onClick(translateYOnInc);
 
-        // viewScaleX
-        zfobj<ZFUIKit_test_Button> viewScaleXDec;
-        window->childAdd(viewScaleXDec)->c_alignBottom()->c_margin(0, 0, margin, 100);
-        viewScaleXDec->label()->text("viewScaleX -");
-        ZFLISTENER_1(viewScaleXOnDec
+        // scaleX
+        zfobj<ZFUIKit_test_Button> scaleXDec;
+        window->child(scaleXDec)->c_alignBottom()->c_margin(0, 0, margin, 100);
+        scaleXDec->label()->text("scaleX -");
+        ZFLISTENER_1(scaleXOnDec
                 , ZFUIImageView *, view
                 ) {
-            view->viewScaleX(view->viewScaleX() - 0.1f);
+            view->scaleX(view->scaleX() - 0.1f);
         } ZFLISTENER_END()
-        viewScaleXDec->onClick(viewScaleXOnDec);
+        scaleXDec->onClick(scaleXOnDec);
 
-        zfobj<ZFUIKit_test_Button> viewScaleXInc;
-        window->childAdd(viewScaleXInc)->c_alignBottom()->c_margin(margin, 0, 0, 100);
-        viewScaleXInc->label()->text("viewScaleX +");
-        ZFLISTENER_1(viewScaleXOnInc
+        zfobj<ZFUIKit_test_Button> scaleXInc;
+        window->child(scaleXInc)->c_alignBottom()->c_margin(margin, 0, 0, 100);
+        scaleXInc->label()->text("scaleX +");
+        ZFLISTENER_1(scaleXOnInc
                 , ZFUIImageView *, view
                 ) {
-            view->viewScaleX(view->viewScaleX() + 0.1f);
+            view->scaleX(view->scaleX() + 0.1f);
         } ZFLISTENER_END()
-        viewScaleXInc->onClick(viewScaleXOnInc);
+        scaleXInc->onClick(scaleXOnInc);
 
-        // viewScaleY
-        zfobj<ZFUIKit_test_Button> viewScaleYDec;
-        window->childAdd(viewScaleYDec)->c_alignBottom()->c_margin(0, 0, margin, 50);
-        viewScaleYDec->label()->text("viewScaleY -");
-        ZFLISTENER_1(viewScaleYOnDec
+        // scaleY
+        zfobj<ZFUIKit_test_Button> scaleYDec;
+        window->child(scaleYDec)->c_alignBottom()->c_margin(0, 0, margin, 50);
+        scaleYDec->label()->text("scaleY -");
+        ZFLISTENER_1(scaleYOnDec
                 , ZFUIImageView *, view
                 ) {
-            view->viewScaleY(view->viewScaleY() - 0.1f);
+            view->scaleY(view->scaleY() - 0.1f);
         } ZFLISTENER_END()
-        viewScaleYDec->onClick(viewScaleYOnDec);
+        scaleYDec->onClick(scaleYOnDec);
 
-        zfobj<ZFUIKit_test_Button> viewScaleYInc;
-        window->childAdd(viewScaleYInc)->c_alignBottom()->c_margin(margin, 0, 0, 50);
-        viewScaleYInc->label()->text("viewScaleY +");
-        ZFLISTENER_1(viewScaleYOnInc
+        zfobj<ZFUIKit_test_Button> scaleYInc;
+        window->child(scaleYInc)->c_alignBottom()->c_margin(margin, 0, 0, 50);
+        scaleYInc->label()->text("scaleY +");
+        ZFLISTENER_1(scaleYOnInc
                 , ZFUIImageView *, view
                 ) {
-            view->viewScaleY(view->viewScaleY() + 0.1f);
+            view->scaleY(view->scaleY() + 0.1f);
         } ZFLISTENER_END()
-        viewScaleYInc->onClick(viewScaleYOnInc);
+        scaleYInc->onClick(scaleYOnInc);
 
-        // viewRotateZ
-        zfobj<ZFUIKit_test_Button> viewRotateZDec;
-        window->childAdd(viewRotateZDec)->c_alignBottom()->c_margin(0, 0, margin, 0);
-        viewRotateZDec->label()->text("viewRotateZ -");
-        ZFLISTENER_1(viewRotateZOnDec
+        // rotateZ
+        zfobj<ZFUIKit_test_Button> rotateZDec;
+        window->child(rotateZDec)->c_alignBottom()->c_margin(0, 0, margin, 0);
+        rotateZDec->label()->text("rotateZ -");
+        ZFLISTENER_1(rotateZOnDec
                 , ZFUIImageView *, view
                 ) {
-            view->viewRotateZ(view->viewRotateZ() - 10);
+            view->rotateZ(view->rotateZ() - 10);
         } ZFLISTENER_END()
-        viewRotateZDec->onClick(viewRotateZOnDec);
+        rotateZDec->onClick(rotateZOnDec);
 
-        zfobj<ZFUIKit_test_Button> viewRotateZInc;
-        window->childAdd(viewRotateZInc)->c_alignBottom()->c_margin(margin, 0, 0, 0);
-        viewRotateZInc->label()->text("viewRotateZ +");
-        ZFLISTENER_1(viewRotateZOnInc
+        zfobj<ZFUIKit_test_Button> rotateZInc;
+        window->child(rotateZInc)->c_alignBottom()->c_margin(margin, 0, 0, 0);
+        rotateZInc->label()->text("rotateZ +");
+        ZFLISTENER_1(rotateZOnInc
                 , ZFUIImageView *, view
                 ) {
-            view->viewRotateZ(view->viewRotateZ() + 10);
+            view->rotateZ(view->rotateZ() + 10);
         } ZFLISTENER_END()
-        viewRotateZInc->onClick(viewRotateZOnInc);
+        rotateZInc->onClick(rotateZOnInc);
     }
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFUIViewTransform_test)

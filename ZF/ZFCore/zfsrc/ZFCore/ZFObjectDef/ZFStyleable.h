@@ -110,8 +110,7 @@ protected:
      * @brief for subclass to achieve custom style copy step,
      *   called by #styleableCopyFrom, see #ZFStyleable
      */
-    virtual inline void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
-    }
+    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
 
 private:
     zffinal _ZFP_I_ZFStyleable_PropertyTypeHolder *_ZFP_ZFStyleable_getPropertyTypeHolder(void);

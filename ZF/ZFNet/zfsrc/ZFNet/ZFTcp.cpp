@@ -41,7 +41,7 @@ void ZFTcp::objectOnDeallocPrepare(void) {
 }
 
 ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             ) {
     if(d->type == ZFTcpType::e_ServerAccept) {
@@ -50,8 +50,7 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
     }
 
     this->close();
-    if(zfstringIsEmpty(host)) {
-        host = zfnull;
+    if(!host) {
         d->host = "localhost";
         d->type = ZFTcpType::e_Server;
     }
@@ -157,14 +156,14 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
 ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
             , ZFMP_IN(const ZFBuffer &, data)
             ) {
-    return this->send(data.buffer(), data.bufferSize());
+    return this->send(data.buffer(), data.length());
 }
 ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
             , ZFMP_IN(const ZFInput &, input)
             ) {
     ZFBuffer buf;
     ZFInputRead(buf, input);
-    return this->send(buf.buffer(), buf.bufferSize());
+    return this->send(buf.buffer(), buf.length());
 }
 ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
             , ZFMP_IN_OUT(ZFBuffer &, data)
@@ -184,10 +183,10 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
     if(maxSize == zfindexMax()) {
         maxSize = 4096;
     }
-    data.bufferCapacity(data.bufferSize() + maxSize);
-    zfindex recvSize = ZFPROTOCOL_ACCESS(ZFTcp)->recv(this, d->nativeSocket, data.bufferT<zfbyte *>() + data.bufferSize(), maxSize, timeout);
-    data.bufferSize(data.bufferSize() + recvSize);
-    data.bufferT<zfchar *>()[data.bufferSize() / sizeof(zfchar)] = '\0';
+    data.capacity(data.length() + maxSize);
+    zfindex recvSize = ZFPROTOCOL_ACCESS(ZFTcp)->recv(this, d->nativeSocket, data.bufferT<zfbyte *>() + data.length(), maxSize, timeout);
+    data.length(data.length() + recvSize);
+    data.bufferT<zfchar *>()[data.length() / sizeof(zfchar)] = '\0';
     return recvSize;
 }
 ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv

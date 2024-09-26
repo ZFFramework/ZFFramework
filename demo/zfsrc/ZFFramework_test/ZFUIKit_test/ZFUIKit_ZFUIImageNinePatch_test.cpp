@@ -19,7 +19,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIImageView> imageView;
-        container->childAdd(imageView)->c_alignCenter();
+        container->child(imageView)->c_alignCenter();
         imageView->image(zfres("test_normal.png").to<ZFCopyable *>()->copy());
         imageView->image()->imageNinePatch(ZFUIMarginCreate(
             imageView->image()->imageSize().width / 2,

@@ -62,8 +62,8 @@ static void _ZFP_zfimportDir(
     if(impl.implFindFirst(fd, pathData)) {
         do {
             zfstring relPath;
-            zfstringAppend(relPath, "%s/%s", path, fd.fileName());
-            if(fd.fileIsDir()) {
+            zfstringAppend(relPath, "%s/%s", path, fd.name());
+            if(fd.isDir()) {
                 _ZFP_zfimportDir(ret, impl, pathInfoRoot, relPath);
             }
             else {

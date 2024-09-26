@@ -28,7 +28,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
         ZFGlobalEvent::EventLuaStateOnDetach(),
         this->luaStateOnDetachListener);
     if(this->gcTask != zfnull) {
-        this->gcTask->timerStop();
+        this->gcTask->stop();
     }
 }
 zfautoT<ZFTimer> gcTask;

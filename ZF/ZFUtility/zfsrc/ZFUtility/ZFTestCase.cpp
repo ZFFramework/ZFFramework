@@ -10,32 +10,32 @@ ZFEVENT_REGISTER(ZFTestCase, TestCaseOnProgress)
 ZFEVENT_REGISTER(ZFTestCase, TestCaseOnStop)
 
 void ZFTestCase::objectOnDeallocPrepare(void) {
-    ZFCoreAssert(!this->testCaseIsRunning());
+    ZFCoreAssert(!this->started());
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFMETHOD_DEFINE_0(ZFTestCase, zfbool, testCaseIsRunning) {
-    return this->_testCaseIsRunning;
+ZFMETHOD_DEFINE_0(ZFTestCase, zfbool, started) {
+    return this->_started;
 }
-void ZFTestCase::testCaseOutput(ZF_IN const zfchar *info) {
+void ZFTestCase::output(ZF_IN const zfchar *info) {
     this->testCaseOnOutput(info);
 }
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTestCase, void, testCaseOutput
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTestCase, void, output
         , ZFMP_IN(const zfchar *, info)
         )
-ZFMETHOD_DEFINE_0(ZFTestCase, void, testCaseStart) {
-    if(this->_testCaseIsRunning) {
+ZFMETHOD_DEFINE_0(ZFTestCase, void, start) {
+    if(this->_started) {
         return;
     }
-    this->_testCaseIsRunning = zftrue;
+    this->_started = zftrue;
     zfRetain(this);
     this->testCaseOnStart();
 }
 
-ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseProgress
+ZFMETHOD_DEFINE_1(ZFTestCase, void, notifyProgress
         , ZFMP_IN_OPT(ZFObject *, progress, zfnull)
         ) {
-    if(!this->_testCaseIsRunning) {
+    if(!this->_started) {
         return;
     }
     this->testCaseOnProgress(progress);
@@ -43,13 +43,13 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseProgress
     zfRelease(progress);
 }
 
-ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseStop
+ZFMETHOD_DEFINE_1(ZFTestCase, void, stop
         , ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success)
         ) {
-    if(!this->_testCaseIsRunning) {
+    if(!this->_started) {
         return;
     }
-    this->_testCaseIsRunning = zffalse;
+    this->_started = zffalse;
     this->testCaseOnStop(testCaseResult);
 }
 

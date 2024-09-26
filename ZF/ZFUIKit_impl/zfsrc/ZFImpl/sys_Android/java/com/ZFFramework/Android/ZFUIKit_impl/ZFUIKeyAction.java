@@ -6,21 +6,21 @@ import android.view.KeyEvent;
 import com.ZFFramework.Android.ZF_impl.ZFEnum;
 
 public class ZFUIKeyAction {
-    public static final int e_KeyDown = ZFEnum.eAssert("ZFUIKeyAction", "KeyDown");
-    public static final int e_KeyRepeat = ZFEnum.eAssert("ZFUIKeyAction", "KeyRepeat");
-    public static final int e_KeyUp = ZFEnum.eAssert("ZFUIKeyAction", "KeyUp");
-    public static final int e_KeyCancel = ZFEnum.eAssert("ZFUIKeyAction", "KeyCancel");
+    public static final int e_Down = ZFEnum.eAssert("ZFUIKeyAction", "Down");
+    public static final int e_Repeat = ZFEnum.eAssert("ZFUIKeyAction", "Repeat");
+    public static final int e_Up = ZFEnum.eAssert("ZFUIKeyAction", "Up");
+    public static final int e_Cancel = ZFEnum.eAssert("ZFUIKeyAction", "Cancel");
 
     public static int keyActionFromKeyActionRaw(int keyActionRaw) {
         switch (keyActionRaw) {
             case KeyEvent.ACTION_DOWN:
-                return ZFUIKeyAction.e_KeyDown;
+                return ZFUIKeyAction.e_Down;
             case KeyEvent.ACTION_MULTIPLE:
-                return ZFUIKeyAction.e_KeyRepeat;
+                return ZFUIKeyAction.e_Repeat;
             case KeyEvent.ACTION_UP:
-                return ZFUIKeyAction.e_KeyUp;
+                return ZFUIKeyAction.e_Up;
             default:
-                return ZFUIKeyAction.e_KeyCancel;
+                return ZFUIKeyAction.e_Cancel;
         }
     }
 }

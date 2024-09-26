@@ -89,8 +89,8 @@ public:
     /**
      * @brief button group's type, see #ZFUIButtonGroupType::e_Normal for more info
      */
-    ZFPROPERTY_ASSIGN(ZFUIButtonGroupTypeEnum, buttonGroupType, ZFUIButtonGroupType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIButtonGroupTypeEnum, buttonGroupType)
+    ZFPROPERTY_ASSIGN(ZFUIButtonGroupTypeEnum, type, ZFUIButtonGroupType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIButtonGroupTypeEnum, type)
 
 public:
     /**
@@ -112,10 +112,10 @@ public:
     /**
      * @brief add button
      *
-     * newly added button's setting would be changed according #buttonGroupType,
+     * newly added button's setting would be changed according #type,
      * before #buttonOnAdd
      */
-    ZFMETHOD_DECLARE_2(void, buttonAdd
+    ZFMETHOD_DECLARE_2(void, button
             , ZFMP_IN(ZFUIButton *, button)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
@@ -312,7 +312,7 @@ protected:
                     "item %s not type of %s", buttons->get(i), ZFUIButton::ClassData()->className());
                 return zffalse;
             }
-            this->buttonAdd(button);
+            this->button(button);
         }
         return zftrue;
     }

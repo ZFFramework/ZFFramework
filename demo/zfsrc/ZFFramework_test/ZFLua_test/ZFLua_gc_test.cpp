@@ -66,7 +66,7 @@ protected:
         #endif
         ZFLogTrim() << "lua exception end";
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFLua_gc_test)

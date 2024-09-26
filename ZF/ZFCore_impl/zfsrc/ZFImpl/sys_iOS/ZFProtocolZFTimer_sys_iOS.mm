@@ -24,7 +24,7 @@
     [self stopTimer];
 
     self._selfHolder = self;
-    self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->timerInterval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:timerImplId repeats:YES];
+    self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->interval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:timerImplId repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self._timer forMode:NSRunLoopCommonModes];
     self._selfHolder = nil;
 }
@@ -59,14 +59,14 @@ public:
         _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *tmp = (__bridge_transfer _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)nativeTimer;
         tmp = nil;
     }
-    virtual void timerStart(
+    virtual void start(
             ZF_IN ZFTimer *timer
             , ZF_IN zfidentity timerImplId
             ) {
         _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *timerOwner = (__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer();
         [timerOwner startTimer:[NSNumber numberWithLong:(long)timerImplId]];
     }
-    virtual void timerStop(ZF_IN ZFTimer *timer) {
+    virtual void stop(ZF_IN ZFTimer *timer) {
         [(__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer() stopTimer];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_sys_iOS)

@@ -26,7 +26,7 @@ protected:
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->childAdd(button, buttonIndex);
+        this->child(button, buttonIndex);
         zfsuperI(ZFUIButtonGroup)::buttonOnAdd(button, buttonIndex);
     }
     zfoverride

@@ -64,7 +64,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove) {
         tmp.swap(m);
         for(zfstlmap<zfstring, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
             const ZFMethod *method = ZFMethodFuncForName(zfnull, it->first);
-            if(method != zfnull && method->methodIsUserRegister()) {
+            if(method != zfnull && method->isUserRegister()) {
                 ZFMethodFuncUserUnregister(method);
             }
         }
@@ -76,20 +76,20 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNative
         , ZFMP_IN(void *, nativeParent)
         , ZFMP_IN(const zfstring &, sysWindowName)
         ) {
-    if(!zfstringIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull) {
+    if(sysWindowName && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull) {
         ZFCoreLog("window \"%s\" already registered", sysWindowName);
         return zfnull;
     }
 
     zfautoT<ZFUISysWindow> sysWindow = ZFUISysWindow::nativeWindowEmbedNativeView(nativeParent);
-    if(sysWindow == zfnull || zfstringIsEmpty(sysWindowName)) {
+    if(sysWindow == zfnull || !sysWindowName) {
         return sysWindow;
     }
 
     ZFMethodFuncUserRegister_0(method, {
-            return invokerMethod->methodUserRegisterUserData();
+            return invokerMethod->userRegisterUserData();
         }, "", ZFUISysWindow *, sysWindowName);
-    method->methodUserRegisterUserData(sysWindow);
+    method->userRegisterUserData(sysWindow);
 
     // auto clean
     ZFLISTENER_1(sysWindowOnDealloc
@@ -106,7 +106,7 @@ ZFMETHOD_DEFINE_1(ZFUISysWindow, void, nativeWindowEmbedNativeViewCleanup
         , ZFMP_IN(const zfstring &, sysWindowName)
         ) {
     const ZFMethod *method = ZFMethodFuncForName(zfnull, sysWindowName);
-    if(method != zfnull && method->methodIsUserRegister()) {
+    if(method != zfnull && method->isUserRegister()) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUISysWindowEmbedNativeViewAutoRemove)->m.erase(sysWindowName);
         ZFMethodFuncUserUnregister(method);
     }

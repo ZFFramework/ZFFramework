@@ -317,7 +317,7 @@ public:
         } \
     public: \
         zfoverride \
-        virtual const zfstring &wrappedValueTypeId(void); \
+        virtual const zfstring &zfvTypeId(void); \
     }; \
     /** @brief same as @ref EnumName##Enum, see @ref EnumName */ \
     typedef EnumName::ZFEnumType EnumName##Enum; \

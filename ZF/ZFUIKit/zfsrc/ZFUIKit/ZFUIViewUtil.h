@@ -24,7 +24,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewRoot
  *
  * true if view equals to this view
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, viewIsChildOf
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, isChildOf
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIView *, parentToCheck)
         )
@@ -34,7 +34,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, viewIsChildOf
  *
  * may be invalid if layout step not finished
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewChildAt
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewAtPos
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(const ZFUIPoint &, pos)
         , ZFMP_IN_OPT(zfbool, filterDisabledView, zffalse)
@@ -52,12 +52,12 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewChildAt
  * however, result may be invalid if view's parent contains #ZFUINativeViewWrapper\n
  * this method would calculate rect depends on #ZFUIView::layoutChildOffset recursively
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, viewRectToParent
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, viewRectToParentT
         , ZFMP_OUT(ZFUIRect &, rect)
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIView *, parent)
         )
-/** @brief see #viewRectToParent */
+/** @brief see #viewRectToParentT */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, viewRectToParent
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIView *, parent)

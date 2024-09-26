@@ -55,15 +55,15 @@ public final class ZFTimer {
         }
     }
 
-    protected static void native_timerStart(Object nativeTimer, long zfjniPointerToken, long timerInterval, long timerImplId) {
+    protected static void native_start(Object nativeTimer, long zfjniPointerToken, long interval, long timerImplId) {
         ZFTimer holder = (ZFTimer) nativeTimer;
         holder.timer = new Timer();
         holder.timerTask = new ZFTimerTask(zfjniPointerToken);
         holder.timerTask._timerImplId = timerImplId;
-        holder.timer.schedule(holder.timerTask, 0, timerInterval > 0 ? timerInterval : 1);
+        holder.timer.schedule(holder.timerTask, 0, interval > 0 ? interval : 1);
     }
 
-    protected static void native_timerStop(Object nativeTimer) {
+    protected static void native_stop(Object nativeTimer) {
         ZFTimer holder = (ZFTimer) nativeTimer;
         holder.timerTask.cancel();
         holder.timer.cancel();

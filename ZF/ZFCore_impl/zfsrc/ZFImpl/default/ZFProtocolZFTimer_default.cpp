@@ -21,13 +21,13 @@ protected:
     }
 
 public:
-    zffinal void timerStart(ZF_IN zfidentity timerImplId) {
+    zffinal void start(ZF_IN zfidentity timerImplId) {
         zfRetain(this);
         this->timerThread = zfAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
         this->timerThread->threadName("ZFTimerImpl_default");
         this->timerThread->threadStart(zfobj<v_zfidentity>(this->timer->timerImplId()));
     }
-    zffinal void timerStop(void) {
+    zffinal void stop(void) {
         this->timerThread->threadStop();
         zfRelease(this->timerThread);
         zfRelease(this);
@@ -47,7 +47,7 @@ public:
         if(curId != this->timer->timerImplId() || curThread->threadStopRequested()) {return;}
 
         // timer
-        if(this->timer->timerActivateOnMainThread()) {
+        if(this->timer->activateOnMainThread()) {
             zfself *owner = this;
             ZFLISTENER_2(timerMainThread
                     , zfautoT<zfself>, owner
@@ -56,7 +56,7 @@ public:
                 owner->_ZFP_timerMainThread(curId);
             } ZFLISTENER_END()
             while(curId == this->timer->timerImplId() && !curThread->threadStopRequested()) {
-                ZFThread::sleep(this->timer->timerInterval());
+                ZFThread::sleep(this->timer->interval());
                 if(this->timer->timerImplId() == curId && !curThread->threadStopRequested()) {
                     ZFThread::mainThread()->taskQueueAdd(timerMainThread);
                 }
@@ -64,7 +64,7 @@ public:
         }
         else {
             while(curId == this->timer->timerImplId() && !curThread->threadStopRequested()) {
-                ZFThread::sleep(this->timer->timerInterval());
+                ZFThread::sleep(this->timer->interval());
                 if(this->timer->timerImplId() == curId && !curThread->threadStopRequested()) {
                     this->impl->notifyTimerActivate(this->timer, curId);
                 }
@@ -97,18 +97,18 @@ public:
         _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)nativeTimer;
         zfRelease(token);
     }
-    virtual void timerStart(
+    virtual void start(
             ZF_IN ZFTimer *timer
             , ZF_IN zfidentity timerImplId
             ) {
         _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)timer->nativeTimer();
         token->impl = this;
         token->timer = timer;
-        token->timerStart(timerImplId);
+        token->start(timerImplId);
     }
-    virtual void timerStop(ZF_IN ZFTimer *timer) {
+    virtual void stop(ZF_IN ZFTimer *timer) {
         _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)timer->nativeTimer();
-        token->timerStop();
+        token->stop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_default)
 

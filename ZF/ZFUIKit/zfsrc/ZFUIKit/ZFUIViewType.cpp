@@ -135,97 +135,97 @@ ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, heightWrap
 }
 
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignCenter) {
-    this->layoutAlign(ZFUIAlign::e_Center);
+    this->align(ZFUIAlign::e_Center);
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignLeft) {
-    this->layoutAlign(ZFUIAlign::e_Left);
+    this->align(ZFUIAlign::e_Left);
 }
 ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, alignLeft
         , ZFMP_IN(zffloat, marginLeft)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Left);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(marginLeft, m.top, m.right, m.bottom));
+    this->align(ZFUIAlign::e_Left);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(marginLeft, m.top, m.right, m.bottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignTop) {
-    this->layoutAlign(ZFUIAlign::e_Top);
+    this->align(ZFUIAlign::e_Top);
 }
 ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, alignTop
         , ZFMP_IN(zffloat, marginTop)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Top);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(m.left, marginTop, m.right, m.bottom));
+    this->align(ZFUIAlign::e_Top);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(m.left, marginTop, m.right, m.bottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignRight) {
-    this->layoutAlign(ZFUIAlign::e_Right);
+    this->align(ZFUIAlign::e_Right);
 }
 ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, alignRight
         , ZFMP_IN(zffloat, marginRight)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Right);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(m.left, m.top, marginRight, m.bottom));
+    this->align(ZFUIAlign::e_Right);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(m.left, m.top, marginRight, m.bottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignBottom) {
-    this->layoutAlign(ZFUIAlign::e_Bottom);
+    this->align(ZFUIAlign::e_Bottom);
 }
 ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, alignBottom
         , ZFMP_IN(zffloat, marginBottom)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Bottom);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(m.left, m.top, m.right, marginBottom));
+    this->align(ZFUIAlign::e_Bottom);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(m.left, m.top, m.right, marginBottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignLeftTop) {
-    this->layoutAlign(ZFUIAlign::e_Left | ZFUIAlign::e_Top);
+    this->align(ZFUIAlign::e_Left | ZFUIAlign::e_Top);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, void, alignLeftTop
         , ZFMP_IN(zffloat, marginLeft)
         , ZFMP_IN(zffloat, marginTop)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Left | ZFUIAlign::e_Top);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(marginLeft, marginTop, m.right, m.bottom));
+    this->align(ZFUIAlign::e_Left | ZFUIAlign::e_Top);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(marginLeft, marginTop, m.right, m.bottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignLeftBottom) {
-    this->layoutAlign(ZFUIAlign::e_Left | ZFUIAlign::e_Bottom);
+    this->align(ZFUIAlign::e_Left | ZFUIAlign::e_Bottom);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, void, alignLeftBottom
         , ZFMP_IN(zffloat, marginLeft)
         , ZFMP_IN(zffloat, marginBottom)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Left | ZFUIAlign::e_Bottom);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(marginLeft, m.top, m.right, marginBottom));
+    this->align(ZFUIAlign::e_Left | ZFUIAlign::e_Bottom);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(marginLeft, m.top, m.right, marginBottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignRightTop) {
-    this->layoutAlign(ZFUIAlign::e_Right | ZFUIAlign::e_Top);
+    this->align(ZFUIAlign::e_Right | ZFUIAlign::e_Top);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, void, alignRightTop
         , ZFMP_IN(zffloat, marginRight)
         , ZFMP_IN(zffloat, marginTop)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Right | ZFUIAlign::e_Top);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(m.left, marginTop, marginRight, m.bottom));
+    this->align(ZFUIAlign::e_Right | ZFUIAlign::e_Top);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(m.left, marginTop, marginRight, m.bottom));
 }
 ZFMETHOD_DEFINE_0(ZFUILayoutParam, void, alignRightBottom) {
-    this->layoutAlign(ZFUIAlign::e_Right | ZFUIAlign::e_Bottom);
+    this->align(ZFUIAlign::e_Right | ZFUIAlign::e_Bottom);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, void, alignRightBottom
         , ZFMP_IN(zffloat, marginRight)
         , ZFMP_IN(zffloat, marginBottom)
         ) {
-    this->layoutAlign(ZFUIAlign::e_Right | ZFUIAlign::e_Bottom);
-    const ZFUIMargin &m = this->layoutMargin();
-    this->layoutMargin(ZFUIMarginCreate(m.left, m.top, marginRight, marginBottom));
+    this->align(ZFUIAlign::e_Right | ZFUIAlign::e_Bottom);
+    const ZFUIMargin &m = this->margin();
+    this->margin(ZFUIMarginCreate(m.left, m.top, marginRight, marginBottom));
 }
 
 ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, margin
         , ZFMP_IN(zffloat, margin)
         ) {
-    this->layoutMargin(ZFUIMarginCreate(margin));
+    this->margin(ZFUIMarginCreate(margin));
 }
 ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, margin
         , ZFMP_IN(zffloat, left)
@@ -233,7 +233,7 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, margin
         , ZFMP_IN(zffloat, right)
         , ZFMP_IN(zffloat, bottom)
         ) {
-    this->layoutMargin(ZFUIMarginCreate(left, top, right, bottom));
+    this->margin(ZFUIMarginCreate(left, top, right, bottom));
 }
 
 // ============================================================
@@ -243,7 +243,7 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, layoutParamApply
         , ZFMP_IN(ZFUIView *, child)
         , ZFMP_IN(ZFUILayoutParam *, lp)
         ) {
-    ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, lp->layoutMargin()));
+    ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, lp->margin()));
     if(refSizeTmp.width < 0) {
         refSizeTmp.width = 0;
     }
@@ -258,7 +258,7 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, layoutParamApply
     }
 
     child->layoutMeasure(refSizeTmp, lp->sizeParam());
-    ZFUIAlignApply(ret, lp->layoutAlign(), rect, child->layoutMeasuredSize(), lp->layoutMargin());
+    ZFUIAlignApply(ret, lp->align(), rect, child->layoutMeasuredSize(), lp->margin());
 }
 ZFMETHOD_DEFINE_3(ZFUILayoutParam, ZFUIRect, layoutParamApply
         , ZFMP_IN(const ZFUIRect &, rect)

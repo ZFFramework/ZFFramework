@@ -53,7 +53,7 @@ public:
      *
      * called when list cell attached to this list view,
      * param0 is the list cell
-     * @note you must not access #listVisibleCell or #listVisibleCellIndexRange
+     * @note you must not access #visibleCells or #visibleCellRange
      *   during this event,
      *   you can only access them during #EventListVisibleCellOnUpdate
      */
@@ -63,7 +63,7 @@ public:
      *
      * called when list cell detached from this list view,
      * param0 is the list cell
-     * @note you must not access #listVisibleCell or #listVisibleCellIndexRange
+     * @note you must not access #visibleCells or #visibleCellRange
      *   during this event,
      *   you can only access them during #EventListVisibleCellOnUpdate
      */
@@ -114,15 +114,15 @@ public:
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, listOrientation, ZFUIOrientation::e_Top)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, listOrientation)
+    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientation, ZFUIOrientation::e_Top)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientation)
 
     /**
-     * @brief whether auto update #ZFUIScrollView::scrollBounceVertical series according to #listOrientation,
+     * @brief whether auto update #ZFUIScrollView::scrollBounceVertical series according to #orientation,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, listBounce, zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, listBounce)
+    ZFPROPERTY_ASSIGN(zfbool, bounceable, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, bounceable)
 
     // ============================================================
     // override
@@ -204,38 +204,38 @@ public:
      * @note this method would only schedule an update step,
      * when it would be reloaded is not ensured\n
      * @note this method would reload the entire list,
-     *   use #listReloadCellAt for performance
+     *   use #reloadCellAt for performance
      */
-    ZFMETHOD_DECLARE_0(void, listReload)
+    ZFMETHOD_DECLARE_0(void, reload)
     /**
      * @brief true if list need reload
      */
-    ZFMETHOD_DECLARE_0(zfbool, listReloadRequested)
+    ZFMETHOD_DECLARE_0(zfbool, reloadRequested)
     /**
      * @brief reload cell at index immediately, do nothing if index not in visible range
-     *   or #listReloadRequested
+     *   or #reloadRequested
      *
      * this method would have higher performance if you want to update specified cell only
      */
-    ZFMETHOD_DECLARE_1(void, listReloadCellAt
+    ZFMETHOD_DECLARE_1(void, reloadCellAt
             , ZFMP_IN(zfindex, index)
             )
 
 public:
     /**
-     * @brief return a list of current visible cells, valid only if #listReloadRequested is not true
+     * @brief return a list of current visible cells, valid only if #reloadRequested is not true
      *
      * returned value should not be stored,
      * since visible cell may change frequently
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIListCell *>, listVisibleCell)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIListCell *>, visibleCells)
     /**
-     * @brief return first visible cell's index, valid only if #listReloadRequested is not true
+     * @brief return first visible cell's index, valid only if #reloadRequested is not true
      *
      * index is ordered by #ZFUIListAdapter,
      * so first cell may positioned at bottom according to layout orientation
      */
-    ZFMETHOD_DECLARE_0(const ZFIndexRange &, listVisibleCellIndexRange)
+    ZFMETHOD_DECLARE_0(const ZFIndexRange &, visibleCellRange)
 
 public:
     /**
@@ -247,15 +247,15 @@ public:
      *   you should prevent doing other load logic during scroll events,
      *   otherwise, dead loop may occurred
      */
-    ZFMETHOD_DECLARE_3(void, scrollListCellToHead
+    ZFMETHOD_DECLARE_3(void, scrollCellToHead
             , ZFMP_IN(zfindex, cellIndex)
             , ZFMP_IN_OPT(zffloat, offset, 0)
             , ZFMP_IN_OPT(zfbool, animated, zftrue)
             )
     /**
-     * @brief scroll cell to bottom, see #scrollListCellToHead
+     * @brief scroll cell to bottom, see #scrollCellToHead
      */
-    ZFMETHOD_DECLARE_3(void, scrollListCellToTail
+    ZFMETHOD_DECLARE_3(void, scrollCellToTail
             , ZFMP_IN(zfindex, cellIndex)
             , ZFMP_IN_OPT(zffloat, offset, 0)
             , ZFMP_IN_OPT(zfbool, animated, zftrue)
@@ -273,7 +273,7 @@ protected:
         this->observerNotify(ZFUIListView::EventListCellOnDetach(), cell);
     }
     /** @brief see #EventListVisibleCellOnUpdate */
-    virtual void listVisibleCellOnUpdate(void);
+    virtual void visibleCellsOnUpdate(void);
 
 private:
     _ZFP_ZFUIListViewPrivate *d;

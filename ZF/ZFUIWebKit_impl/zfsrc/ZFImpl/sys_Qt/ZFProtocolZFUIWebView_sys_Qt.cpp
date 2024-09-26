@@ -30,19 +30,19 @@ public:
     , _ZFP_impl(impl)
     , _ZFP_loading(zffalse)
     {
-        this->connect(this, SIGNAL(loadStarted()), this, SLOT(_ZFP_webLoadOnStart()));
-        this->connect(this, SIGNAL(loadFinished(bool)), this, SLOT(_ZFP_webLoadOnStop(bool)));
+        this->connect(this, SIGNAL(loadStarted()), this, SLOT(_ZFP_loadOnStart()));
+        this->connect(this, SIGNAL(loadFinished(bool)), this, SLOT(_ZFP_loadOnStop(bool)));
     }
     ~_ZFP_ZFUIWebViewImpl_sys_Qt_View(void) {
         this->disconnect();
     }
 
 public slots:
-    void _ZFP_webLoadOnStart(void) {
+    void _ZFP_loadOnStart(void) {
         _ZFP_loading = zftrue;
         _ZFP_impl->notifyWebLoadStateOnUpdate(_ZFP_ownerZFUIWebView);
     }
-    void _ZFP_webLoadOnStop(bool success) {
+    void _ZFP_loadOnStop(bool success) {
         _ZFP_loading = zffalse;
         _ZFP_impl->notifyWebLoadStateOnUpdate(_ZFP_ownerZFUIWebView);
     }
@@ -67,7 +67,7 @@ public:
         nativeWebViewTmp->deleteLater();
     }
 
-    virtual void webLoadUrl(
+    virtual void loadUrl(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *url
             ) {
@@ -75,7 +75,7 @@ public:
         nativeWebView->load(QUrl(QString::fromUtf8(url)));
         nativeWebView->show();
     }
-    virtual void webLoadHtml(
+    virtual void loadHtml(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *html
             , ZF_IN_OPT const zfchar *baseUrl = zfnull
@@ -88,33 +88,33 @@ public:
                                );
         nativeWebView->show();
     }
-    virtual void webReload(ZF_IN ZFUIWebView *webView) {
+    virtual void reload(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->reload();
     }
-    virtual void webLoadStop(ZF_IN ZFUIWebView *webView) {
+    virtual void loadStop(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->stop();
     }
 
-    virtual void webGoBack(ZF_IN ZFUIWebView *webView) {
+    virtual void goBack(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->back();
     }
-    virtual void webGoForward(ZF_IN ZFUIWebView *webView) {
+    virtual void goForward(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->forward();
     }
 
-    virtual zfbool webLoading(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool loading(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         return nativeWebView->_ZFP_loading;
     }
-    virtual zfbool webGoBackAvailable(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool goBackAvailable(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         return nativeWebView->history()->canGoBack();
     }
-    virtual zfbool webGoForwardAvailable(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool goForwardAvailable(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         return nativeWebView->history()->canGoForward();
     }

@@ -28,37 +28,37 @@ protected:
         const ZFClass *cls = _ZFP_ZFCore_ZFPropertyDynamic_test_Object::ClassData();
 
         const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
-                .methodOwnerClass(cls)
+                .ownerClass(cls)
                 .methodGenericInvoker(_setterGI)
                 .methodType(ZFMethodTypeNormal)
                 .methodName("myProp")
-                .methodParamAdd(ZFTypeId_zfint(), "zfint const &")
+                .methodParam(ZFTypeId_zfint(), "zfint const &")
             );
         const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
-                .methodOwnerClass(cls)
+                .ownerClass(cls)
                 .methodGenericInvoker(_getterGI)
                 .methodType(ZFMethodTypeNormal)
                 .methodName("myProp")
-                .methodReturnTypeId(ZFTypeId_zfint())
+                .returnTypeId(ZFTypeId_zfint())
             );
 
         const ZFProperty *property = ZFPropertyDynamicRegister(ZFPropertyDynamicRegisterParam()
-                .propertyOwnerClass(cls)
+                .ownerClass(cls)
                 .propertyTypeId(ZFTypeId_zfint())
                 .propertyName("myProp")
                 .propertyCustomImpl(setterMethod, getterMethod, _callbackIsValueAccessed, _callbackIsInitValue, _callbackValueReset)
             );
 
-        this->testCaseOutput(zfstr("property: %s", property));
+        this->output(zfstr("property: %s", property));
 
         zfobj<_ZFP_ZFCore_ZFPropertyDynamic_test_Object> obj;
         obj->myProp(123);
-        this->testCaseOutput(zfstr("obj: %s", obj));
+        this->output(zfstr("obj: %s", obj));
 
         ZFPropertyDynamicUnregister(property);
         ZFMethodDynamicUnregister(setterMethod);
         ZFMethodDynamicUnregister(getterMethod);
-        this->testCaseStop();
+        this->stop();
     }
 private:
     static const zfchar *_valueKey(void) {

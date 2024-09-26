@@ -8,8 +8,8 @@ zfclassNotPOD _ZFP_ZFPropertyDynamicRegisterParamPrivate {
 public:
     zfuint refCount;
     zfbool zfunsafe_disableChecker;
-    zfauto propertyDynamicRegisterUserData;
-    const ZFClass *propertyOwnerClass;
+    zfauto dynamicRegisterUserData;
+    const ZFClass *ownerClass;
     zfstring propertyTypeId;
     zfstring propertyTypeName;
     zfstring propertyName;
@@ -28,8 +28,8 @@ public:
     _ZFP_ZFPropertyDynamicRegisterParamPrivate(void)
     : refCount(1)
     , zfunsafe_disableChecker(zffalse)
-    , propertyDynamicRegisterUserData(zfnull)
-    , propertyOwnerClass()
+    , dynamicRegisterUserData(zfnull)
+    , ownerClass()
     , propertyTypeId()
     , propertyTypeName()
     , propertyName()
@@ -48,20 +48,20 @@ public:
 };
 
 // ============================================================
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyDynamicRegisterUserData(ZF_IN ZFObject *propertyDynamicRegisterUserData) {
-    d->propertyDynamicRegisterUserData = propertyDynamicRegisterUserData;
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::dynamicRegisterUserData(ZF_IN ZFObject *dynamicRegisterUserData) {
+    d->dynamicRegisterUserData = dynamicRegisterUserData;
     return *this;
 }
-zfany ZFPropertyDynamicRegisterParam::propertyDynamicRegisterUserData(void) const {
-    return d->propertyDynamicRegisterUserData;
+zfany ZFPropertyDynamicRegisterParam::dynamicRegisterUserData(void) const {
+    return d->dynamicRegisterUserData;
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyOwnerClass(ZF_IN const ZFClass *propertyOwnerClass) {
-    d->propertyOwnerClass = propertyOwnerClass;
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::ownerClass(ZF_IN const ZFClass *ownerClass) {
+    d->ownerClass = ownerClass;
     return *this;
 }
-const ZFClass *ZFPropertyDynamicRegisterParam::propertyOwnerClass(void) const {
-    return d->propertyOwnerClass;
+const ZFClass *ZFPropertyDynamicRegisterParam::ownerClass(void) const {
+    return d->ownerClass;
 }
 
 ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyTypeId(ZF_IN const zfstring &propertyTypeId) {
@@ -196,17 +196,17 @@ void ZFPropertyDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const 
         ret += this->propertyClassOfRetainProperty()->classNameFull();
         ret += " ";
     }
-    else if(!zfstringIsEmpty(this->propertyTypeName())) {
+    else if(this->propertyTypeName()) {
         ret += this->propertyTypeName();
         ret += " ";
     }
-    else if(!zfstringIsEmpty(this->propertyTypeId())) {
+    else if(this->propertyTypeId()) {
         ret += this->propertyTypeId();
         ret += " ";
     }
 
-    if(this->propertyOwnerClass() != zfnull) {
-        ret += this->propertyOwnerClass()->classNameFull();
+    if(this->ownerClass() != zfnull) {
+        ret += this->ownerClass()->classNameFull();
         ret += "::";
     }
 

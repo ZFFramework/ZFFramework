@@ -15,7 +15,7 @@ class _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit : public QLineEdit {
 public:
     ZFUITextEdit *ownerZFUITextEdit;
     zfindex textEditEventOverrideFlag;
-    zfbool textEditSecured;
+    zfbool editSecured;
     QLineEdit::EchoMode textEditEchoModeSaved;
     Qt::InputMethodHints textEditInputMethodHintsSaved;
     zfstring textEditTextSaved;
@@ -25,13 +25,13 @@ public:
     : QLineEdit()
     , ownerZFUITextEdit(ownerZFUITextEdit)
     , textEditEventOverrideFlag(0)
-    , textEditSecured(zffalse)
+    , editSecured(zffalse)
     , textEditEchoModeSaved(this->echoMode())
     , textEditInputMethodHintsSaved(this->inputMethodHints())
     , textEditTextSaved()
     {
         this->connect(this, SIGNAL(textChanged(QString)), this, SLOT(_ZFP_textOnUpdate(QString)));
-        this->connect(this, SIGNAL(cursorPositiOnChanged(int,int)), this, SLOT(_ZFP_textSelectRangeOnUpdate(int,int)));
+        this->connect(this, SIGNAL(cursorPositiOnChanged(int,int)), this, SLOT(_ZFP_selectedRangeOnUpdate(int,int)));
         this->_ZFP_textColor(ZFUIColorBlack());
         this->setFrame(false);
         this->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -53,12 +53,12 @@ public:
         palette.setColor(QPalette::Text, ZFImpl_sys_Qt_ZFUIColorToQColor(v));
         this->setPalette(palette);
     }
-    void _ZFP_textEditSecured(ZF_IN zfbool textEditSecured) {
-        if(this->textEditSecured == textEditSecured) {
+    void _ZFP_editSecured(ZF_IN zfbool editSecured) {
+        if(this->editSecured == editSecured) {
             return;
         }
-        this->textEditSecured = textEditSecured;
-        if(this->textEditSecured) {
+        this->editSecured = editSecured;
+        if(this->editSecured) {
             this->textEditEchoModeSaved = this->echoMode();
             this->textEditInputMethodHintsSaved = this->inputMethodHints();
 
@@ -147,7 +147,7 @@ public slots:
         this->_ZFP_text(ZFImpl_sys_Qt_zfstringFromQString(text), zftrue);
         --(this->textEditEventOverrideFlag);
     }
-    void _ZFP_textSelectRangeOnUpdate(int posOld, int posNew) {
+    void _ZFP_selectedRangeOnUpdate(int posOld, int posNew) {
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeOnUpdate(this->ownerZFUITextEdit);
     }
 };
@@ -181,57 +181,57 @@ private:
 // ============================================================
 // properties
 public:
-    virtual void textEditEnable(
+    virtual void editEnable(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN zfbool textEditEnable
+            , ZF_IN zfbool editEnable
             ) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
-        nativeImplView->setReadOnly(!textEditEnable);
+        nativeImplView->setReadOnly(!editEnable);
     }
     virtual void textEditSecure(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN zfbool textEditSecured
+            , ZF_IN zfbool editSecured
             ) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
-        nativeImplView->_ZFP_textEditSecured(textEditSecured);
+        nativeImplView->_ZFP_editSecured(editSecured);
     }
-    virtual void textEditKeyboardType(
+    virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum textEditKeyboardType
+            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
             ) {
         // not supported
     }
-    virtual void textEditKeyboardReturnType(
+    virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum textEditKeyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
             ) {
         // not supported
     }
 
-    virtual void textSelectRange(
+    virtual void selectedRange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT ZFIndexRange &textSelectRange
+            , ZF_OUT ZFIndexRange &selectedRange
             ) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         if(nativeImplView->hasSelectedText()) {
-            textSelectRange.start = nativeImplView->selectionStart();
-            textSelectRange.count = nativeImplView->selectedText().length();
+            selectedRange.start = nativeImplView->selectionStart();
+            selectedRange.count = nativeImplView->selectedText().length();
         }
         else {
-            textSelectRange.start = nativeImplView->cursorPosition();
-            textSelectRange.count = 0;
+            selectedRange.start = nativeImplView->cursorPosition();
+            selectedRange.count = 0;
         }
     }
-    virtual void textSelectRange(
+    virtual void selectedRange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const ZFIndexRange &textSelectRange
+            , ZF_IN const ZFIndexRange &selectedRange
             ) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
-        if(textSelectRange.count != 0) {
-            nativeImplView->setSelection(textSelectRange.start, textSelectRange.count);
+        if(selectedRange.count != 0) {
+            nativeImplView->setSelection(selectedRange.start, selectedRange.count);
         }
         else {
-            nativeImplView->setCursorPosition(textSelectRange.start);
+            nativeImplView->setCursorPosition(selectedRange.start);
         }
     }
 
@@ -312,11 +312,11 @@ public:
     }
 
 public:
-    virtual void textEditBegin(ZF_IN ZFUITextEdit *textEdit) {
+    virtual void editBegin(ZF_IN ZFUITextEdit *textEdit) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         nativeImplView->setFocus();
     }
-    virtual void textEditEnd(ZF_IN ZFUITextEdit *textEdit) {
+    virtual void editEnd(ZF_IN ZFUITextEdit *textEdit) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         nativeImplView->clearFocus();
     }

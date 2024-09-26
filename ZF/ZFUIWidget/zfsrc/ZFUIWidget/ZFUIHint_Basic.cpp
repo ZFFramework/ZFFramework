@@ -18,7 +18,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUISize, viewSizeMin) {
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUITextView>, labelNormal) {
     ZFUITextView *value = propertyValue;
     value->textColor(ZFUIColorWhite());
-    value->textSingleLine(zffalse);
+    value->singleLine(zffalse);
     value->textSizeAutoMin(0);
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroundNormal) {
@@ -32,13 +32,13 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintCreate
         ) {
     zfobj<ZFUIHint> hint;
 
-    hint->hintAniShow(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
-    hint->hintAniHide(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
+    hint->aniShow(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+    hint->aniHide(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
 
-    zfobj<ZFUIHintContentBasic> hintContent;
-    hint->hintContent(hintContent);
-    hintContent->label()->text(text);
-    hintContent->icon()->image(icon);
+    zfobj<ZFUIHintContentBasic> content;
+    hint->content(content);
+    content->label()->text(text);
+    content->icon()->image(icon);
 
     return hint;
 }

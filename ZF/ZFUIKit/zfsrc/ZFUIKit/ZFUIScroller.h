@@ -32,12 +32,14 @@ zfinterface ZFLIB_ZFUIKit ZFUIScroller : zfextend ZFInterface {
 public:
     /**
      * @brief used to start scroll animation's timer
+     *
+     * impl must return a #v_zftimet (stored in #ZFArgs::result) to indicates current timestamp
      */
-    ZFCallbackT<zftimet> scrollAniStartCallback;
+    ZFListener scrollAniStartCallback;
     /**
      * @brief used to stop scroll animation's timer
      */
-    ZFCallbackT<void> scrollAniStopCallback;
+    ZFListener scrollAniStopCallback;
 
 public:
     /**

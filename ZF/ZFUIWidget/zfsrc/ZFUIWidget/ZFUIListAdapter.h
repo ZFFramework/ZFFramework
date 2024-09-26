@@ -50,20 +50,20 @@ public:
     // ============================================================
     // owner state
 private:
-    ZFUIOrientationEnum _ZFP_ZFUIListAdapter_listOrientation;
+    ZFUIOrientationEnum _ZFP_ZFUIListAdapter_orientation;
 public:
     /**
      * @brief list's orientation
      */
-    ZFMETHOD_DECLARE_0(ZFUIOrientationEnum, listOrientation)
+    ZFMETHOD_DECLARE_0(ZFUIOrientationEnum, orientation)
 
 private:
-    ZFUISize _ZFP_ZFUIListAdapter_listContainerSize;
+    ZFUISize _ZFP_ZFUIListAdapter_containerSize;
 public:
     /**
      * @brief list container's size
      */
-    ZFMETHOD_DECLARE_0(const ZFUISize &, listContainerSize)
+    ZFMETHOD_DECLARE_0(const ZFUISize &, containerSize)
 
 public:
     /**
@@ -72,13 +72,13 @@ public:
      *   #ZFUIGlobalStyle::itemSizeListCell by default
      *
      * setting #cellSizeFill would override this property,
-     * and use #listContainerSize to layout each cell
+     * and use #containerSize to layout each cell
      */
     ZFPROPERTY_ASSIGN(zffloat, cellSizeHint, ZFUIGlobalStyle::DefaultStyle()->itemSizeListCell())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, cellSizeHint)
 
     /**
-     * @brief if #cellSizeHint not set, whether fill cell size to #listContainerSize,
+     * @brief if #cellSizeHint not set, whether fill cell size to #containerSize,
      *   false by default
      *
      * this property is useful when combined with #ZFUIScrollView::scrollAlignToPageHorizontal series

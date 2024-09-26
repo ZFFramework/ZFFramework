@@ -28,8 +28,8 @@ void ZFFramework_test_TestCase::testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseRe
     zfsuper::testCaseOnStop(testCaseResult);
 }
 
-void ZFFramework_test_TestCase::testCaseOutputSeparator(void) {
-    this->testCaseOutput("----------------------------------------");
+void ZFFramework_test_TestCase::outputSeparator(void) {
+    this->output("----------------------------------------");
 }
 const zfstring &ZFFramework_test_TestCase::testCaseTmpPath(void) {
     return this->_testCaseTmpPath;

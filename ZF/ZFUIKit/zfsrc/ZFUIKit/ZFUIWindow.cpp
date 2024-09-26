@@ -11,13 +11,13 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIWindow)
 // _ZFP_ZFUIWindowPrivate
 zfclassNotPOD _ZFP_ZFUIWindowPrivate {
 public:
-    ZFUISysWindow *windowOwnerSysWindow;
+    ZFUISysWindow *ownerSysWindow;
     ZFUILayoutParam *windowLayoutParam;
     zfbool windowRemoveOverrideFlag;
 
 public:
     _ZFP_ZFUIWindowPrivate(void)
-    : windowOwnerSysWindow(zfnull)
+    : ownerSysWindow(zfnull)
     , windowLayoutParam(zfnull)
     , windowRemoveOverrideFlag(zffalse)
     {
@@ -37,7 +37,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
         , ZFMP_IN(ZFUIView *, forView)
         ) {
     while(forView != zfnull && !forView->classData()->classIsTypeOf(ZFUIWindow::ClassData())) {
-        forView = forView->viewParent();
+        forView = forView->parent();
     }
     return forView;
 }
@@ -46,15 +46,15 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUISysWindow>, sysWindowForView
         , ZFMP_IN(ZFUIView *, view)
         ) {
     zfanyT<ZFUIWindow> window = ZFUIWindow::windowForView(view);
-    return ((window != zfnull) ? window->windowOwnerSysWindow() : zfnull);
+    return ((window != zfnull) ? window->ownerSysWindow() : zfnull);
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIWindow
-        , ZFMP_IN(ZFUISysWindow *, windowOwnerSysWindow)
+        , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
         ) {
     this->objectOnInit();
-    if(windowOwnerSysWindow != zfnull) {
-        this->windowOwnerSysWindow(windowOwnerSysWindow);
+    if(ownerSysWindow != zfnull) {
+        this->ownerSysWindow(ownerSysWindow);
     }
 }
 
@@ -74,39 +74,39 @@ void ZFUIWindow::objectOnDealloc(void) {
 // ============================================================
 // properties
 ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIWindow, ZFUIWindowLevelEnum, windowLevel) {
-    ZFCoreAssertWithMessage(!this->windowShowing(), "you must not change window level while it's showing");
+    ZFCoreAssertWithMessage(!this->showing(), "you must not change window level while it's showing");
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWindow, void, windowOwnerSysWindow
-        , ZFMP_IN(ZFUISysWindow *, windowOwnerSysWindow)
+ZFMETHOD_DEFINE_1(ZFUIWindow, void, ownerSysWindow
+        , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
         ) {
-    if(d->windowOwnerSysWindow != windowOwnerSysWindow) {
-        ZFCoreAssertWithMessage(!this->windowShowing(), "you must not change window's owner while it's showing");
-        ZFCoreAssertWithMessage(windowOwnerSysWindow != zfnull, "null owner sys window");
+    if(d->ownerSysWindow != ownerSysWindow) {
+        ZFCoreAssertWithMessage(!this->showing(), "you must not change window's owner while it's showing");
+        ZFCoreAssertWithMessage(ownerSysWindow != zfnull, "null owner sys window");
 
-        ZFUISysWindow *oldSysWindow = d->windowOwnerSysWindow;
-        d->windowOwnerSysWindow = windowOwnerSysWindow;
-        if(!(oldSysWindow == windowOwnerSysWindow
-                    || (oldSysWindow == zfnull && ZFUISysWindow::mainWindowAttached() && windowOwnerSysWindow == ZFUISysWindow::mainWindow()))
+        ZFUISysWindow *oldSysWindow = d->ownerSysWindow;
+        d->ownerSysWindow = ownerSysWindow;
+        if(!(oldSysWindow == ownerSysWindow
+                    || (oldSysWindow == zfnull && ZFUISysWindow::mainWindowAttached() && ownerSysWindow == ZFUISysWindow::mainWindow()))
                     ) {
-            this->windowOwnerSysWindowOnUpdate(oldSysWindow);
+            this->ownerSysWindowOnUpdate(oldSysWindow);
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUISysWindow>, windowOwnerSysWindow) {
-    if(d->windowOwnerSysWindow == zfnull) {
-        d->windowOwnerSysWindow = ZFUISysWindow::keyWindow();
+ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUISysWindow>, ownerSysWindow) {
+    if(d->ownerSysWindow == zfnull) {
+        d->ownerSysWindow = ZFUISysWindow::keyWindow();
     }
-    return d->windowOwnerSysWindow;
+    return d->ownerSysWindow;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowShow) {
-    if(this->windowShowing()) {
+ZFMETHOD_DEFINE_0(ZFUIWindow, void, show) {
+    if(this->showing()) {
         return;
     }
     zfindex windowIndex = 0;
     zfindex addToIndex = 0;
-    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
     for(zfindex i = 0; i < tmpArray.count(); ++i) {
         ZFUIWindow *tmpWindow = tmpArray[i];
         if(tmpWindow != zfnull) {
@@ -119,34 +119,34 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowShow) {
             }
         }
     }
-    this->windowOwnerSysWindow()->rootView()->childAddWithParam(this, d->windowLayoutParam, addToIndex);
-    this->windowOwnerSysWindow()->rootView()->_ZFP_ZFUIRootView_windowList.add(this, windowIndex);
+    this->ownerSysWindow()->rootView()->childWithParam(this, d->windowLayoutParam, addToIndex);
+    this->ownerSysWindow()->rootView()->_ZFP_ZFUIRootView_windowList.add(this, windowIndex);
 }
-ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowHide) {
-    if(!this->windowShowing()) {
+ZFMETHOD_DEFINE_0(ZFUIWindow, void, hide) {
+    if(!this->showing()) {
         return;
     }
 
     zfRetain(this);
-    ZFUIRootView *rootView = this->viewParent();
+    ZFUIRootView *rootView = this->parent();
     if(rootView != zfnull) {
         rootView->_ZFP_ZFUIRootView_windowList.removeElement(this);
     }
     d->windowRemoveOverrideFlag = zftrue;
-    this->viewRemoveFromParent();
+    this->removeFromParent();
     d->windowRemoveOverrideFlag = zffalse;
     zfRelease(this);
 }
-ZFMETHOD_DEFINE_0(ZFUIWindow, zfbool, windowShowing) {
-    return (this->viewParent() != zfnull);
+ZFMETHOD_DEFINE_0(ZFUIWindow, zfbool, showing) {
+    return (this->parent() != zfnull);
 }
 
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
-    if(!this->windowShowing()) {
+    if(!this->showing()) {
         return;
     }
 
-    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
     ZFUIWindowLevelEnum selfWindowLevel = this->windowLevel();
     zfindex topIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
@@ -163,15 +163,15 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
         }
     }
     if(topIndex != selfIndex && topIndex != zfindexMax() && selfIndex != zfindexMax()) {
-        this->windowOwnerSysWindow()->rootView()->childMove(selfIndex, topIndex);
+        this->ownerSysWindow()->rootView()->childMove(selfIndex, topIndex);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
-    if(!this->windowShowing()) {
+    if(!this->showing()) {
         return;
     }
 
-    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
     ZFUIWindowLevelEnum selfWindowLevel = this->windowLevel();
     zfindex bottomIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
@@ -188,7 +188,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
         }
     }
     if(bottomIndex != selfIndex && bottomIndex != zfindexMax() && selfIndex != zfindexMax()) {
-        this->windowOwnerSysWindow()->rootView()->childMove(selfIndex, bottomIndex);
+        this->ownerSysWindow()->rootView()->childMove(selfIndex, bottomIndex);
     }
 }
 
@@ -211,7 +211,7 @@ void ZFUIWindow::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
         this->windowOnHide();
     }
     else {
-        this->windowHide();
+        this->hide();
     }
 }
 

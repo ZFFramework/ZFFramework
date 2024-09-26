@@ -41,7 +41,7 @@ const ZFClass *ZFClassDynamicRegister(
             parent);
         return zfnull;
     }
-    if(zfstringIsEmpty(classNameFull)) {
+    if(!classNameFull) {
         zfstringAppend(errorHint, "null classNameFull");
         return zfnull;
     }
@@ -69,7 +69,7 @@ const ZFClass *ZFClassDynamicRegister(
         classDynamicRegisterUserData);
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
     const zfchar *classNamespace = ZFNamespaceSkipGlobal(cls->classNamespace());
-    if(!zfstringIsEmpty(classNamespace) && ZFClass::classForName(classNamespace) == zfnull) {
+    if(classNamespace && ZFClass::classForName(classNamespace) == zfnull) {
         _ZFP_ZFNamespaceRegister(zfnull, classNamespace);
     }
     return cls;

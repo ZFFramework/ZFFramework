@@ -141,7 +141,7 @@ ZFInput ZFInputForInputInRange(
         if(ZFCallbackToDataT(inputData, inputCallback)) {
             ZFSerializableData customData;
             inputData.category(ZFSerializableKeyword_ZFInputForInputInRange_input);
-            customData.childAdd(inputData);
+            customData.child(inputData);
 
             if(start != 0) {
                 customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_start, zfindexToString(start));
@@ -168,19 +168,19 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeType
             });
 
     zfindex start = 0;
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, check,
             ZFSerializableKeyword_ZFInputForInputInRange_start, zfindex, start, {
                 return zffalse;
             });
 
     zfindex count = zfindexMax();
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, check,
             ZFSerializableKeyword_ZFInputForInputInRange_count, zfindex, count, {
                 return zffalse;
             });
 
     zfbool autoRestorePos = zftrue;
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos, check,
             ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, zfbool, autoRestorePos, {
                 return zffalse;
             });
@@ -193,7 +193,7 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeType
 // ============================================================
 // ZFInputForBuffer serialization
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeType_ZFInputForBuffer) {
-    zfstring buf = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFInputForBuffer_buf);
+    zfstring buf = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFInputForBuffer_buf);
     if(buf == zfnull) {
         ret = ZFInputForBufferUnsafe(zfnull, 0, zftrue);
     }
@@ -246,13 +246,13 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferOwner, zfindex, onInput
         , ZFMP_IN(void *, buf)
         , ZFMP_IN(zfindex, count)
         ) {
-    if(this->buffer.bufferSize() <= this->p) {
+    if(this->buffer.length() <= this->p) {
         return 0;
     }
     if(buf == zfnull) {
-        return this->buffer.bufferSize() - this->p;
+        return this->buffer.length() - this->p;
     }
-    count = zfmMin(count, this->buffer.bufferSize() - this->p);
+    count = zfmMin(count, this->buffer.length() - this->p);
     zfmemcpy(buf, this->buffer.buffer(), count * sizeof(zfchar));
     this->p += count;
     return count;
@@ -261,14 +261,14 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
         , ZFMP_IN(ZFSeekPos, pos)
         ) {
-    p = ZFIOCallbackCalcFSeek(0, this->buffer.bufferSize(), p, byteSize, pos);
+    p = ZFIOCallbackCalcFSeek(0, this->buffer.length(), p, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferOwner, zfindex, ioTell) {
     return p;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferOwner, zfindex, ioSize) {
-    return this->buffer.bufferSize();
+    return this->buffer.length();
 }
 ZFInput ZFInputForBuffer(
         ZF_IN const ZFBuffer &buffer
@@ -281,7 +281,7 @@ ZFInput ZFInputForBuffer(
         owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferOwner, onInput));
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
     if(serializable) {
-        _ZFP_ZFInputForBuffer_serialize(ret, buffer.buffer(), buffer.bufferSize());
+        _ZFP_ZFInputForBuffer_serialize(ret, buffer.buffer(), buffer.length());
     }
     return ret;
 }
@@ -359,7 +359,7 @@ static ZFInput _ZFP_ZFInputForBuffer(
         zfobj<v_ZFBuffer> buf;
         buf->zfv.bufferCopy(src, count * sizeof(zfchar));
         owner->pStart = (const zfbyte *)buf->zfv.buffer();
-        owner->pEnd = owner->pStart + buf->zfv.bufferSize();
+        owner->pEnd = owner->pStart + buf->zfv.length();
         owner->p = owner->pStart;
         ZFInput ret = ZFCallbackForMemberMethod(
             owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferUnsafeOwner, onInput));

@@ -39,10 +39,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForAlpha
     }
 
     if(alphaInPage != zfnull) {
-        alphaInPage->pageAni(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+        alphaInPage->pageAni(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
     }
     if(alphaOutPage != zfnull) {
-        alphaOutPage->pageAni(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
+        alphaOutPage->pageAni(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
     }
     return zftrue;
 }
@@ -60,19 +60,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(target->viewWidth() * (1 - progress));
+                    ZFUIView *target = ani->target();
+                    target->translateX(target->width() * (1 - progress));
                 } ZFLISTENER_END()
-                page->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(-target->viewWidth() * progress);
+                    ZFUIView *target = ani->target();
+                    target->translateX(-target->width() * progress);
                 } ZFLISTENER_END()
-                siblingPage->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
         }
         else { // ZFUIPageResumeReason::e_FromBackground
@@ -80,19 +80,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(-target->viewWidth() * (1 - progress));
+                    ZFUIView *target = ani->target();
+                    target->translateX(-target->width() * (1 - progress));
                 } ZFLISTENER_END()
-                page->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(target->viewWidth() * progress);
+                    ZFUIView *target = ani->target();
+                    target->translateX(target->width() * progress);
                 } ZFLISTENER_END()
-                siblingPage->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
         }
     }
@@ -102,19 +102,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(target->viewWidth() * (1 - progress));
+                    ZFUIView *target = ani->target();
+                    target->translateX(target->width() * (1 - progress));
                 } ZFLISTENER_END()
-                siblingPage->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
             if(page != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(-target->viewWidth() * progress);
+                    ZFUIView *target = ani->target();
+                    target->translateX(-target->width() * progress);
                 } ZFLISTENER_END()
-                page->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
         }
         else { // ZFUIPagePauseReason::e_BeforeDestroy
@@ -122,19 +122,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(-target->viewWidth() * (1 - progress));
+                    ZFUIView *target = ani->target();
+                    target->translateX(-target->width() * (1 - progress));
                 } ZFLISTENER_END()
-                siblingPage->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
             if(page != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateX(target->viewWidth() * progress);
+                    ZFUIView *target = ani->target();
+                    target->translateX(target->width() * progress);
                 } ZFLISTENER_END()
-                page->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
         }
     }
@@ -154,10 +154,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateY(-target->viewHeight() * (1 - progress));
+                    ZFUIView *target = ani->target();
+                    target->translateY(-target->height() * (1 - progress));
                 } ZFLISTENER_END()
-                page->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
             if(siblingPage != zfnull) {
                 zfobj<ZFAnimation> requestOutAni;
@@ -173,10 +173,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateY(target->viewHeight() * progress);
+                    ZFUIView *target = ani->target();
+                    target->translateY(target->height() * progress);
                 } ZFLISTENER_END()
-                siblingPage->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseIn>()));
+                siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseIn>()));
             }
         }
     }
@@ -186,10 +186,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateY(-target->viewHeight() * (1 - progress));
+                    ZFUIView *target = ani->target();
+                    target->translateY(-target->height() * (1 - progress));
                 } ZFLISTENER_END()
-                siblingPage->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseOut>()));
+                siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
             if(page != zfnull) {
                 zfobj<ZFAnimation> requestOutAni;
@@ -205,10 +205,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
                     ZFAnimation *ani = zfargs.sender();
-                    ZFUIView *target = ani->aniTarget();
-                    target->viewTranslateY(target->viewHeight() * progress);
+                    ZFUIView *target = ani->target();
+                    target->translateY(target->height() * progress);
                 } ZFLISTENER_END()
-                page->pageAni(ZFAni(zfnull, impl)->c_aniCurve(zfobj<ZFCurveEaseIn>()));
+                page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseIn>()));
             }
         }
     }

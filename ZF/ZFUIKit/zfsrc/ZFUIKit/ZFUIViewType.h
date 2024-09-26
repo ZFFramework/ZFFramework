@@ -151,11 +151,11 @@ public:
     /**
      * @brief see #ZFUILayoutParam, default is (ZFUIAlign::e_Left | ZFUIAlign::e_Top)
      */
-    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, layoutAlign, ZFUIAlign::e_Left | ZFUIAlign::e_Top)
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, align, ZFUIAlign::e_Left | ZFUIAlign::e_Top)
     /**
      * @brief see #ZFUILayoutParam, default is (0, 0, 0, 0)
      */
-    ZFPROPERTY_ASSIGN(ZFUIMargin, layoutMargin, ZFUIMarginZero())
+    ZFPROPERTY_ASSIGN(ZFUIMargin, margin, ZFUIMarginZero())
 
 public:
     // ============================================================
@@ -217,66 +217,66 @@ public:
             , ZFMP_IN(zffloat, height)
             )
 
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignCenter)
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignLeft)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_1(void, alignLeft
             , ZFMP_IN(zffloat, marginLeft)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignTop)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_1(void, alignTop
             , ZFMP_IN(zffloat, marginTop)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignRight)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_1(void, alignRight
             , ZFMP_IN(zffloat, marginRight)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignBottom)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_1(void, alignBottom
             , ZFMP_IN(zffloat, marginBottom)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignLeftTop)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_2(void, alignLeftTop
             , ZFMP_IN(zffloat, marginLeft)
             , ZFMP_IN(zffloat, marginTop)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignLeftBottom)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_2(void, alignLeftBottom
             , ZFMP_IN(zffloat, marginLeft)
             , ZFMP_IN(zffloat, marginBottom)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignRightTop)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_2(void, alignRightTop
             , ZFMP_IN(zffloat, marginRight)
             , ZFMP_IN(zffloat, marginTop)
             )
-    /** @brief util to set #layoutAlign */
+    /** @brief util to set #align */
     ZFMETHOD_DECLARE_0(void, alignRightBottom)
-    /** @brief util to set #layoutAlign and #layoutMargin */
+    /** @brief util to set #align and #margin */
     ZFMETHOD_DECLARE_2(void, alignRightBottom
             , ZFMP_IN(zffloat, marginRight)
             , ZFMP_IN(zffloat, marginBottom)
             )
 
-    /** @brief util to set #layoutMargin */
+    /** @brief util to set #margin */
     ZFMETHOD_DECLARE_1(void, margin
             , ZFMP_IN(zffloat, margin)
             )
-    /** @brief util to set #layoutMargin */
+    /** @brief util to set #margin */
     ZFMETHOD_DECLARE_4(void, margin
             , ZFMP_IN(zffloat, left)
             , ZFMP_IN(zffloat, top)
@@ -447,7 +447,7 @@ protected:
  * @brief view layer for ZFUIView
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
-    ZFENUM_VALUE(Normal) /**< @brief added by #ZFUIView::childAdd */
+    ZFENUM_VALUE(Normal) /**< @brief added by #ZFUIView::child */
     ZFENUM_VALUE(InternalImpl) /**< @brief added by #ZFUIView::internalImplViewAdd */
     ZFENUM_VALUE(InternalBg) /**< @brief added by #ZFUIView::internalBgViewAdd */
     ZFENUM_VALUE(InternalFg) /**< @brief added by #ZFUIView::internalFgViewAdd */

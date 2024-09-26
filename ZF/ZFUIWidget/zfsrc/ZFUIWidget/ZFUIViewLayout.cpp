@@ -12,21 +12,21 @@ void ZFUIViewLayout::layoutOnMeasure(
         ZFUIView *child = this->childAt(i);
         ZFUISize sizeHintTmp = sizeHint;
         if(sizeHintTmp.width >= 0) {
-            sizeHintTmp.width -= ZFUIMarginGetWidth(child->layoutParam()->layoutMargin());
+            sizeHintTmp.width -= ZFUIMarginGetWidth(child->layoutParam()->margin());
             if(sizeHintTmp.width < 0) {
                 sizeHintTmp.width = 0;
             }
         }
         if(sizeHintTmp.height >= 0) {
-            sizeHintTmp.height -= ZFUIMarginGetHeight(child->layoutParam()->layoutMargin());
+            sizeHintTmp.height -= ZFUIMarginGetHeight(child->layoutParam()->margin());
             if(sizeHintTmp.height < 0) {
                 sizeHintTmp.height = 0;
             }
         }
         child->layoutMeasure(sizeHintTmp, child->layoutParam()->sizeParam());
 
-        ret.width = zfmMax<zffloat>(ret.width, child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->layoutMargin()));
-        ret.height = zfmMax<zffloat>(ret.height, child->layoutMeasuredSize().height + ZFUIMarginGetHeight(child->layoutParam()->layoutMargin()));
+        ret.width = zfmMax<zffloat>(ret.width, child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->margin()));
+        ret.height = zfmMax<zffloat>(ret.height, child->layoutMeasuredSize().height + ZFUIMarginGetHeight(child->layoutParam()->margin()));
     }
 }
 

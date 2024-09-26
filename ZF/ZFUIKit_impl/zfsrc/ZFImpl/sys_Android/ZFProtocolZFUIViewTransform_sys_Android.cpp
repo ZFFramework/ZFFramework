@@ -16,7 +16,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Android, ZFUIViewTrans
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual ZFUITransformFlags viewTransformAvailable(void) {
+    virtual ZFUITransformFlags transformAvailable(void) {
         return ZFUITransform::e_Transform2D;
     }
 
@@ -33,11 +33,11 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewTransform(), jmId
             , (jobject)view->nativeView()
-            , (jfloat)(view->viewTranslateX() * view->UIScaleFixed())
-            , (jfloat)(view->viewTranslateY() * view->UIScaleFixed())
-            , (jfloat)view->viewScaleX()
-            , (jfloat)view->viewScaleY()
-            , (jfloat)view->viewRotateZ()
+            , (jfloat)(view->translateX() * view->UIScaleFixed())
+            , (jfloat)(view->translateY() * view->UIScaleFixed())
+            , (jfloat)view->scaleX()
+            , (jfloat)view->scaleY()
+            , (jfloat)view->rotateZ()
             );
     }
     virtual void viewTransformReset(ZF_IN ZFUIView *view) {

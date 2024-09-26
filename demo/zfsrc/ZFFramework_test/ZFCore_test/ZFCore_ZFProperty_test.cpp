@@ -65,8 +65,8 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFProperty");
+        this->outputSeparator();
+        this->output("ZFProperty");
         {
             zfobj<_ZFP_ZFCore_ZFProperty_test_TestChild> p;
 
@@ -87,9 +87,9 @@ protected:
             // reflect
             p->propertyAssign("oldValue");
             ZFLog() << "before: " << p->propertyAssign();
-            p->classData()->propertySetterForName("propertyAssign")->execute<void, zfstring const &>(p, "newValue");
+            p->classData()->propertySetterForName("propertyAssign")->executeExact<void, zfstring const &>(p, "newValue");
             ZFLog() << "after: " << p->propertyAssign();
-            ZFLog() << "access by reflect: " << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
+            ZFLog() << "access by reflect: " << p->classData()->propertyGetterForName("propertyAssign")->executeExact<zfstring const &>(p);
 
             // retain
             ZFLogTrim();
@@ -124,23 +124,23 @@ protected:
             ZFLog() << p->propertyWeak();
 
             // copy
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("copy propertis");
+            this->outputSeparator();
+            this->output("copy propertis");
             zfobj<_ZFP_ZFCore_ZFProperty_test_TestBase> pBase;
             zfobj<_ZFP_ZFCore_ZFProperty_test_TestChild> pChild;
             pBase->propertyAssign("string set in another");
             ZFPropertyCopyAll(pChild, pBase);
-            this->testCaseOutputSeparator();
+            this->outputSeparator();
             ZFLogTrim() << "after copy: " << pChild->propertyAssign();
 
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("copy by ZFPropertyCopyAll");
+            this->outputSeparator();
+            this->output("copy by ZFPropertyCopyAll");
             pChild->propertyAssign("");
             ZFPropertyCopyAll(pChild, pBase);
             ZFLogTrim() << "after copy: " << pChild->propertyAssign();
         }
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFProperty_test)

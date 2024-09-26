@@ -108,7 +108,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
             ZFSerializableData data;
             {
                 srcData.category(ZFSerializableKeyword_ZFUIImageAsync_imageSrc);
-                data.childAdd(srcData);
+                data.child(srcData);
             }
             if(imageLoadFail) {
                 ZFSerializableData imageLoadFailData;
@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
                     return;
                 }
                 imageLoadFailData.category(ZFSerializableKeyword_ZFUIImageAsync_imageLoadFail);
-                data.childAdd(imageLoadFailData);
+                data.child(imageLoadFailData);
             }
             if(imageLoading) {
                 ZFSerializableData imageLoadingData;
@@ -124,7 +124,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
                     return;
                 }
                 imageLoadingData.category(ZFSerializableKeyword_ZFUIImageAsync_imageLoading);
-                data.childAdd(imageLoadingData);
+                data.child(imageLoadingData);
             }
             zfargs.result(zfobj<v_ZFSerializableData>(data));
         } ZFLISTENER_END()

@@ -75,7 +75,7 @@ ZFImpl_sys_SDL_SysWindow::ZFImpl_sys_SDL_SysWindow(void)
 , sdlWindow(zfnull)
 , sdlRenderer(zfnull)
 , rootView(zfnull)
-, viewFocused(zfnull)
+, focused(zfnull)
 , mouseIdGen()
 {
     allWindow().add(this);
@@ -140,13 +140,13 @@ void ZFImpl_sys_SDL_SysWindow::layoutRequest(void) {
 }
 
 // ============================================================
-void ZFImpl_sys_SDL_SysWindow::viewFocus(ZF_IN ZFImpl_sys_SDL_View *view) {
+void ZFImpl_sys_SDL_SysWindow::focus(ZF_IN ZFImpl_sys_SDL_View *view) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *focusImpl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     ZFCoreAssert(focusImpl != zfnull);
     if(view == zfnull) {
-        if(this->viewFocused != zfnull) {
-            ZFUIView *owner = this->viewFocused->ownerZFUIView;
-            this->viewFocused = zfnull;
+        if(this->focused != zfnull) {
+            ZFUIView *owner = this->focused->ownerZFUIView;
+            this->focused = zfnull;
             if(owner != zfnull) {
                 if(focusImpl != zfnull) {
                     focusImpl->notifyViewFocusUpdate(owner);
@@ -156,16 +156,16 @@ void ZFImpl_sys_SDL_SysWindow::viewFocus(ZF_IN ZFImpl_sys_SDL_View *view) {
         return;
     }
 
-    while(view != zfnull && (view->ownerZFUIView == zfnull || !view->ownerZFUIView->viewFocusable())) {
+    while(view != zfnull && (view->ownerZFUIView == zfnull || !view->ownerZFUIView->focusable())) {
         view = view->parent;
     }
-    if(view == zfnull || view == this->viewFocused) {
+    if(view == zfnull || view == this->focused) {
         return;
     }
 
-    ZFUIView *focusOld = (this->viewFocused != zfnull ? this->viewFocused->ownerZFUIView : zfnull);
+    ZFUIView *focusOld = (this->focused != zfnull ? this->focused->ownerZFUIView : zfnull);
     ZFUIView *focusNew = view->ownerZFUIView;
-    this->viewFocused = view;
+    this->focused = view;
     if(focusOld != zfnull) {
         focusImpl->notifyViewFocusUpdate(focusOld);
     }

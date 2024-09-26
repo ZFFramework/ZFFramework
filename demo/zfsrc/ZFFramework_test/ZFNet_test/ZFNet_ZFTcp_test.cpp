@@ -22,10 +22,10 @@ protected:
             } ZFLISTENER_END()
             server->observerAdd(ZFObject::EventObjectBeforeDealloc(), serverOnDealloc);
 
-            this->testCaseOutput("server start");
+            this->output("server start");
             zfbool serverOpenSuccess = server->open(zfnull, zfmRand(1025, 65536));
             ZFTestCaseAssert(serverOpenSuccess);
-            this->testCaseOutput(zfstr("server start success: %s", server));
+            this->output(zfstr("server start success: %s", server));
             serverPort = server->port();
 
             ZFLISTENER_1(serverRecvThread
@@ -37,7 +37,7 @@ protected:
                     zfautoT<ZFTcp> conn = server->accept();
                     if(conn != zfnull)
                     {
-                        buf.bufferSize(0);
+                        buf.length(0);
                         conn->recv(buf, 4096);
                         ZFLog() << "server recv: " << buf.text();
 
@@ -57,10 +57,10 @@ protected:
             } ZFLISTENER_END()
             client->observerAdd(ZFObject::EventObjectBeforeDealloc(), clientOnDealloc);
 
-            this->testCaseOutput("client start");
+            this->output("client start");
             zfbool clientOpenSuccess = client->open("localhost", serverPort);
             ZFTestCaseAssert(clientOpenSuccess);
-            this->testCaseOutput(zfstr("client start success: %s", client));
+            this->output(zfstr("client start success: %s", client));
 
             ZFTestCase *testCase = this;
             ZFLISTENER_2(clientRecvThread
@@ -70,11 +70,11 @@ protected:
                 ZFBuffer buf;
                 while(client->valid())
                 {
-                    buf.bufferSize(0);
+                    buf.length(0);
                     client->recv(buf);
                     ZFLog() << "client recv: " << buf.text();
 
-                    testCase->testCaseStop();
+                    testCase->stop();
                     break;
                 }
             } ZFLISTENER_END()

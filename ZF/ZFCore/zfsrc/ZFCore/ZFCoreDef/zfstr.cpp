@@ -51,7 +51,7 @@ static void _ZFP_zfstringAppendAction(
             zfstring tmp;
             Fn(tmp, param);
             if(zffalse
-                    || zfstringIsEmpty(tmp)
+                    || !tmp
                     || zfstringIsEqual(tmp, ZFTOKEN_zfnull)
                     || zfstringIsEqual(tmp, "0")
                     || zfstringIsEqual(tmp, ZFTOKEN_zfbool_zffalse)

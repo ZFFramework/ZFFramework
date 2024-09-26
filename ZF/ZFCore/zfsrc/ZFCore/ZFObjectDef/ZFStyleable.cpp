@@ -30,59 +30,14 @@ public:
 
 // ============================================================
 void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
-    if(anotherStyleable == zfnull) {
-        return;
+    if(anotherStyleable != zfnull) {
+        this->styleableOnCopyFrom(anotherStyleable);
     }
-    if(this->styleKey() == zfnull) {
-        this->styleKey(anotherStyleable->styleKey());
-    }
-
-    _ZFP_I_ZFStyleable_PropertyTypeHolder *holderTmp = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
-    const ZFClass *thisCls = this->classData();
-    const ZFClass *anotherCls = anotherStyleable->classData();
-    ZFObject *anotherStyleableObject = anotherStyleable->toObject();;
-    const ZFProperty *property = zfnull;
-
-    for(zfindex i = holderTmp->normalProperty.count() - 1; i != zfindexMax(); --i) {
-        property = holderTmp->normalProperty[i];
-        if(!anotherCls->classIsTypeOf(property->propertyOwnerClass())) {
-            continue;
-        }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
-                || property->callbackIsValueAccessed(property, anotherStyleableObject)
-                ) {
-            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeNormal);
-        }
-    }
-    for(zfindex i = holderTmp->styleableProperty.count() - 1; i != zfindexMax(); --i) {
-        property = holderTmp->styleableProperty[i];
-        if(!anotherCls->classIsTypeOf(property->propertyOwnerClass())) {
-            continue;
-        }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
-                || property->callbackIsValueAccessed(property, anotherStyleableObject)
-                ) {
-            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeStyleable);
-        }
-    }
-    for(zfindex i = holderTmp->copyableProperty.count() - 1; i != zfindexMax(); --i) {
-        property = holderTmp->copyableProperty[i];
-        if(!anotherCls->classIsTypeOf(property->propertyOwnerClass())) {
-            continue;
-        }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
-                || property->callbackIsValueAccessed(property, anotherStyleableObject)
-                ) {
-            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeCopyable);
-        }
-    }
-
-    this->styleableOnCopyFrom(anotherStyleable);
 }
 ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
-    if(property->propertyIsRetainProperty()
-            && property->setterMethod()->methodIsPrivate()
-            && !property->getterMethod()->methodIsPrivate()
+    if(property->isRetainProperty()
+            && property->setterMethod()->isPrivate()
+            && !property->getterMethod()->isPrivate()
             ) {
         if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())) {
             return ZFStyleable::PropertyTypeStyleable;
@@ -91,8 +46,8 @@ ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const 
             return ZFStyleable::PropertyTypeCopyable;
         }
     }
-    if(property->setterMethod()->methodIsPrivate()
-            || property->getterMethod()->methodIsPrivate()
+    if(property->setterMethod()->isPrivate()
+            || property->getterMethod()->isPrivate()
             ) {
         return ZFStyleable::PropertyTypeNotStyleable;
     }
@@ -166,6 +121,52 @@ _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getProperty
             holderTmp);
     }
     return holder;
+}
+
+void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+    if(this->styleKey() == zfnull) {
+        this->styleKey(anotherStyleable->styleKey());
+    }
+
+    _ZFP_I_ZFStyleable_PropertyTypeHolder *holderTmp = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
+    const ZFClass *thisCls = this->classData();
+    const ZFClass *anotherCls = anotherStyleable->classData();
+    ZFObject *anotherStyleableObject = anotherStyleable->toObject();;
+    const ZFProperty *property = zfnull;
+
+    for(zfindex i = holderTmp->normalProperty.count() - 1; i != zfindexMax(); --i) {
+        property = holderTmp->normalProperty[i];
+        if(!anotherCls->classIsTypeOf(property->ownerClass())) {
+            continue;
+        }
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
+                || property->callbackIsValueAccessed(property, anotherStyleableObject)
+                ) {
+            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeNormal);
+        }
+    }
+    for(zfindex i = holderTmp->styleableProperty.count() - 1; i != zfindexMax(); --i) {
+        property = holderTmp->styleableProperty[i];
+        if(!anotherCls->classIsTypeOf(property->ownerClass())) {
+            continue;
+        }
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
+                || property->callbackIsValueAccessed(property, anotherStyleableObject)
+                ) {
+            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeStyleable);
+        }
+    }
+    for(zfindex i = holderTmp->copyableProperty.count() - 1; i != zfindexMax(); --i) {
+        property = holderTmp->copyableProperty[i];
+        if(!anotherCls->classIsTypeOf(property->ownerClass())) {
+            continue;
+        }
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
+                || property->callbackIsValueAccessed(property, anotherStyleableObject)
+                ) {
+            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeCopyable);
+        }
+    }
 }
 
 // ============================================================
@@ -393,7 +394,7 @@ private:
         if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return;}
         zfstring const &propertyName = zfargs.param0().to<v_zfstring *>()->zfv;
         zfstring const &styleKey = zfargs.param1().to<v_zfstring *>()->zfv;
-        if(zfstringIsEmpty(propertyName)) {
+        if(!propertyName) {
             ZFCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\"",
                     zfargs.sender()->objectInfoOfInstance(),

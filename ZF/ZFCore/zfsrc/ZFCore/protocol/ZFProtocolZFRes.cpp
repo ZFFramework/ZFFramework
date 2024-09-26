@@ -108,8 +108,8 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindFirst(
         zfdelete(normalFd);
         return zffalse;
     }
-    fd.fileName = normalFd->fileName;
-    fd.fileIsDir = normalFd->fileIsDir;
+    fd.name = normalFd->name;
+    fd.isDir = normalFd->isDir;
     fd.nativeFd = normalFd;
     return zftrue;
 }
@@ -118,8 +118,8 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFFileFindData::
     if(!ZFPROTOCOL_ACCESS(ZFFile)->fileFindNext(*normalFd)) {
         return zffalse;
     }
-    fd.fileName = normalFd->fileName;
-    fd.fileIsDir = normalFd->fileIsDir;
+    fd.name = normalFd->name;
+    fd.isDir = normalFd->isDir;
     return zftrue;
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {

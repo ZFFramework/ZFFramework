@@ -42,17 +42,17 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFUIListCellUpdaterParam, ZFUIListCellUpdaterParam)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zfanyT<ZFUIListCell>, cell)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zfindex, cellIndex)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zfindex, cellCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUIOrientationEnum, listOrientation)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUISize, listContainerSize)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUIOrientationEnum, orientation)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUISize, containerSize)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zffloat, cellSizeHint)
 
 ZFOUTPUT_TYPE_DEFINE(ZFUIListCellUpdaterParam, {
-    zfstringAppend(s, "<ZFUIListCellUpdaterParam cell:%s cellIndex:%s cellCount:%s listOrientation:%s listContainerSize:%s cellSizeHint:%s>"
+    zfstringAppend(s, "<ZFUIListCellUpdaterParam cell:%s cellIndex:%s cellCount:%s orientation:%s containerSize:%s cellSizeHint:%s>"
             , v.cell
             , v.cellIndex
             , v.cellCount
-            , v.listOrientation
-            , v.listContainerSize
+            , v.orientation
+            , v.containerSize
             , v.cellSizeHint
             );
 })

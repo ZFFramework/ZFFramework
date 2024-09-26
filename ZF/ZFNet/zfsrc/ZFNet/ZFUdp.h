@@ -102,7 +102,7 @@ public:
      * @brief resolve host for #send
      */
     ZFMETHOD_DECLARE_2(ZFUdpAddr, hostResolve
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             )
 
@@ -165,7 +165,7 @@ public:
      *   call in new thread if necessary
      */
     ZFMETHOD_DECLARE_4(zfbool, send
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             , ZFMP_IN(const void *, data)
             , ZFMP_IN(zfindex, size)
@@ -178,7 +178,7 @@ public:
      *   call in new thread if necessary
      */
     ZFMETHOD_DECLARE_4(zfbool, send
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             , ZFMP_IN(const zfchar *, data)
             , ZFMP_IN_OPT(zfindex, size, zfindexMax())
@@ -191,7 +191,7 @@ public:
      *   call in new thread if necessary
      */
     ZFMETHOD_DECLARE_3(zfbool, send
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             , ZFMP_IN(const ZFBuffer &, data)
             )
@@ -203,7 +203,7 @@ public:
      *   call in new thread if necessary
      */
     ZFMETHOD_DECLARE_3(zfbool, send
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             , ZFMP_IN(const ZFInput &, input)
             )

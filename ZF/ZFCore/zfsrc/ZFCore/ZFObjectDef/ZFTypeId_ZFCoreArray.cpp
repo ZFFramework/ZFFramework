@@ -20,7 +20,7 @@ zfbool _ZFP_ZFCoreArrayFromStringT(
             ZFCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
             zfauto e = elementType->typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
-            if(eTmp == zfnull || !eTmp->wrappedValueFromString(elementString, elementString.length(), errorHint)) {
+            if(eTmp == zfnull || !eTmp->zfvFromString(elementString, elementString.length(), errorHint)) {
                 return zffalse;
             }
             void *eGeneric = elementType->genericAccess(e);
@@ -71,7 +71,7 @@ zfbool _ZFP_ZFCoreArrayToStringT(
                 return zffalse;
             }
             zfstring elementString;
-            if(!eTmp->wrappedValueToString(elementString, errorHint)) {
+            if(!eTmp->zfvToString(elementString, errorHint)) {
                 return zffalse;
             }
             ZFCoreDataEncode(s, elementString.cString(), elementString.length());
@@ -119,7 +119,7 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
             }
             zfauto e = elementType->typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
-            if(eTmp == zfnull || !eTmp->wrappedValueFromData(element, outErrorHint, outErrorPos)) {
+            if(eTmp == zfnull || !eTmp->zfvFromData(element, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
             void *eGeneric = elementType->genericAccess(e);
@@ -169,10 +169,10 @@ zfbool _ZFP_ZFCoreArrayToDataT(
                 return zffalse;
             }
             ZFSerializableData element;
-            if(!eTmp->wrappedValueToData(element, outErrorHint)) {
+            if(!eTmp->zfvToData(element, outErrorHint)) {
                 return zffalse;
             }
-            serializableData.childAdd(element);
+            serializableData.child(element);
         }
     }
     else {
@@ -189,7 +189,7 @@ zfbool _ZFP_ZFCoreArrayToDataT(
             if(!eTmp->serializeToData(element, outErrorHint)) {
                 return zffalse;
             }
-            serializableData.childAdd(element);
+            serializableData.child(element);
         }
     }
     return zftrue;
@@ -228,7 +228,7 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
     if(this->elementType == zfnull) {
         ZFTypeIdWrapper *v = zfcast(ZFTypeIdWrapper *, element);
         if(v != zfnull) {
-            if(!this->elementTypeInit(v->wrappedValueTypeId())) {
+            if(!this->elementTypeInit(v->zfvTypeId())) {
                 return zfnull;
             }
         }
@@ -251,7 +251,7 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
         zfauto ret = this->elementType->typeIdClass()->newInstance();
         ZFTypeIdWrapper *retTmp = ret;
         v_zfstring *src = zfcast(v_zfstring *, element);
-        if(retTmp->wrappedValueFromString(src->zfv, src->zfv.length())) {
+        if(retTmp->zfvFromString(src->zfv, src->zfv.length())) {
             return ret;
         }
     }

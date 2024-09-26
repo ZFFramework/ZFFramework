@@ -17,18 +17,18 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIOnScreenKeyboardAutoFitLayout> layout;
-        container->childAdd(layout)->c_sizeFill();
+        container->child(layout)->c_sizeFill();
         this->prepareSettingButton(window, layout);
 
-        layout->viewBackgroundColor(ZFUIColorGreen());
+        layout->backgroundColor(ZFUIColorGreen());
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextEdit> view;
-            layout->childAdd(view)->c_widthFill()->c_margin(10);
-            view->viewBackgroundColor(ZFUIColorRandom());
+            layout->child(view)->c_widthFill()->c_margin(10);
+            view->backgroundColor(ZFUIColorRandom());
         }
-        layout->childAt(0)->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
-        layout->childAt(1)->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-        layout->childAt(2)->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
+        layout->childAt(0)->layoutParam()->align(ZFUIAlign::e_Top);
+        layout->childAt(1)->layoutParam()->align(ZFUIAlign::e_Center);
+        layout->childAt(2)->layoutParam()->align(ZFUIAlign::e_Bottom);
     }
 
 private:

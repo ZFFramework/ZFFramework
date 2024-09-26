@@ -40,7 +40,7 @@ void _ZFP_ZFEnumData::add(
         , ZF_IN const zfstring &name
         ) {
     ZFCoreAssert(value != ZFEnumInvalid());
-    ZFCoreAssert(!zfstringIsEmpty(name));
+    ZFCoreAssert(name);
     _ZFP_ZFEnumDataPrivate::ValueMapType::iterator it = d->valueMap.find(value);
     if(it != d->valueMap.end()) {
         ZFCoreAssertWithMessageTrim(isEnableDuplicateValue,
@@ -86,7 +86,7 @@ zfbool _ZFP_ZFEnumData::enumValueContain(ZF_IN zfuint value) const {
     return (d->valueMap.find(value) != d->valueMap.end());
 }
 zfuint _ZFP_ZFEnumData::enumValueForName(ZF_IN const zfstring &name) const {
-    if(!zfstringIsEmpty(name)) {
+    if(name) {
         _ZFP_ZFEnumDataPrivate::NameMapType::iterator it = d->nameMap.find(name);
         if(it != d->nameMap.end()) {
             return it->second;
@@ -129,28 +129,28 @@ void _ZFP_ZFEnumMethodReg(
         ) {
     {
         ZFMethodUserRegisterDetail_0(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumIsFlags;
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumIsFlags;
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfbool, zftext("EnumIsFlags"));
         ret.add(resultMethod);
     }
     {
         ZFMethodUserRegisterDetail_0(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumDefault;
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumDefault;
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfuint, zftext("EnumDefault"));
         ret.add(resultMethod);
     }
     {
         ZFMethodUserRegisterDetail_0(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumCount();
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumCount();
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfindex, zftext("EnumCount"));
         ret.add(resultMethod);
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumIndexForValue(value);
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumIndexForValue(value);
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfindex, zftext("EnumIndexForValue"),
             ZFMP_IN(zfuint, value));
@@ -158,7 +158,7 @@ void _ZFP_ZFEnumMethodReg(
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumValueAt(index);
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumValueAt(index);
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfuint, zftext("EnumValueAt"),
             ZFMP_IN(zfindex, index));
@@ -166,7 +166,7 @@ void _ZFP_ZFEnumMethodReg(
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumNameAt(index);
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumNameAt(index);
             }, d->ownerClass, public, ZFMethodTypeStatic,
             const zfstring &, zftext("EnumNameAt"),
             ZFMP_IN(zfindex, index));
@@ -174,7 +174,7 @@ void _ZFP_ZFEnumMethodReg(
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumValueContain(value);
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumValueContain(value);
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfbool, zftext("EnumValueContain"),
             ZFMP_IN(zfuint, value));
@@ -182,7 +182,7 @@ void _ZFP_ZFEnumMethodReg(
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumValueForName(name);
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumValueForName(name);
             }, d->ownerClass, public, ZFMethodTypeStatic,
             zfuint, zftext("EnumValueForName"),
             ZFMP_IN(const zfstring &, name));
@@ -190,7 +190,7 @@ void _ZFP_ZFEnumMethodReg(
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumNameForValue(value);
+                return _ZFP_ZFEnumDataFind(invokerMethod->ownerClass())->enumNameForValue(value);
             }, d->ownerClass, public, ZFMethodTypeStatic,
             const zfstring &, zftext("EnumNameForValue"),
             ZFMP_IN(zfuint, value));

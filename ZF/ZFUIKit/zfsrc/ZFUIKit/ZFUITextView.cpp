@@ -60,9 +60,9 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoMax) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfbool, textSingleLine) {
-    ZFPROTOCOL_ACCESS(ZFUITextView)->textSingleLine(this, this->textSingleLine());
-    if(this->textSingleLine() != propertyValueOld) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfbool, singleLine) {
+    ZFPROTOCOL_ACCESS(ZFUITextView)->singleLine(this, this->singleLine());
+    if(this->singleLine() != propertyValueOld) {
         this->layoutRequest();
     }
 }

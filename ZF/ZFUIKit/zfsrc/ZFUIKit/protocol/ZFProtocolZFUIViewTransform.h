@@ -16,10 +16,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIViewTransform)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
-    /** @brief see #ZFUIView::viewTransformAvailable */
-    virtual ZFUITransformFlags viewTransformAvailable(void) zfpurevirtual;
+    /** @brief see #ZFUIView::transformAvailable */
+    virtual ZFUITransformFlags transformAvailable(void) zfpurevirtual;
 
-    /** @brief see #ZFUIView::viewTransformAvailable */
+    /** @brief see #ZFUIView::transformAvailable */
     virtual void viewTransform(ZF_IN ZFUIView *view) zfpurevirtual;
 
     /**
@@ -28,32 +28,32 @@ public:
      *   before view's deallocation
      */
     virtual void viewTransformReset(ZF_IN ZFUIView *view) {
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateX), view)) {
-            view->viewTranslateX(0);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, translateX), view)) {
+            view->translateX(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateY), view)) {
-            view->viewTranslateY(0);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, translateY), view)) {
+            view->translateY(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateZ), view)) {
-            view->viewTranslateZ(0);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, translateZ), view)) {
+            view->translateZ(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleX), view)) {
-            view->viewScaleX(1);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, scaleX), view)) {
+            view->scaleX(1);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleY), view)) {
-            view->viewScaleY(1);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, scaleY), view)) {
+            view->scaleY(1);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleZ), view)) {
-            view->viewScaleZ(1);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, scaleZ), view)) {
+            view->scaleZ(1);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateX), view)) {
-            view->viewRotateX(0);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, rotateX), view)) {
+            view->rotateX(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateY), view)) {
-            view->viewRotateY(0);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, rotateY), view)) {
+            view->rotateY(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateZ), view)) {
-            view->viewRotateZ(0);
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, rotateZ), view)) {
+            view->rotateZ(0);
         }
         this->viewTransform(view);
     }

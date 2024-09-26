@@ -152,9 +152,9 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(
             }
 
             keyData.category(ZFSerializableKeyword_ZFKeyValueContainer_key);
-            serializableData.childAdd(keyData);
+            serializableData.child(keyData);
             valueData.category(ZFSerializableKeyword_ZFKeyValueContainer_value);
-            serializableData.childAdd(valueData);
+            serializableData.child(valueData);
         }
     }
     else {
@@ -190,9 +190,9 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
             }
 
             keyData.category(ZFSerializableKeyword_ZFKeyValueContainer_key);
-            serializableData.childAdd(keyData);
+            serializableData.child(keyData);
             valueData.category(ZFSerializableKeyword_ZFKeyValueContainer_value);
-            serializableData.childAdd(valueData);
+            serializableData.child(valueData);
         }
         return zftrue;
     }
@@ -224,9 +224,9 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         }
 
         keyData.category(ZFSerializableKeyword_ZFKeyValueContainer_key);
-        serializableData.childAdd(keyData);
+        serializableData.child(keyData);
         valueData.category(ZFSerializableKeyword_ZFKeyValueContainer_value);
-        serializableData.childAdd(valueData);
+        serializableData.child(valueData);
     }
 
     if(tmp->count() > 0) {

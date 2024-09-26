@@ -47,7 +47,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFCallback_executeNullCallback(void);
         switch(this->callbackType()) { \
             case ZFCallbackTypeMethod: \
             case ZFCallbackTypeMemberMethod: \
-                return this->callbackMethod()->execute<T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)>( \
+                return this->callbackMethod()->executeExact<T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)>( \
                         this->callbackOwnerObject() \
                         ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA) \
                     ); \

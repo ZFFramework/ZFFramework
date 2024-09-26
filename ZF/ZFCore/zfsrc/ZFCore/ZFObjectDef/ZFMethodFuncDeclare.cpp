@@ -66,7 +66,7 @@ const ZFMethod *ZFMethodFuncForName(
         zfstlvector<const ZFMethod *> const &l = itName->second;
         if(l.size() > 1) {
             for(zfstlsize i = 0; i < l.size(); ++i) {
-                if(l[i]->methodParamCountMin() == 0) {
+                if(l[i]->paramCountMin() == 0) {
                     return l[i];
                 }
             }
@@ -77,14 +77,14 @@ const ZFMethod *ZFMethodFuncForName(
 const ZFMethod *ZFMethodFuncForName(
         ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
-        , ZF_IN_OPT const zfchar *methodParamTypeId0
-        , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId3 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId4 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId5 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId6 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId7 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId0
+        , ZF_IN_OPT const zfchar *paramTypeId1 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId2 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId3 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId4 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId5 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId6 /* = zfnull */
+        , ZF_IN_OPT const zfchar *paramTypeId7 /* = zfnull */
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
@@ -104,15 +104,15 @@ const ZFMethod *ZFMethodFuncForName(
     zfstlvector<const ZFMethod *> &l = itName->second;
     for(zfstlsize i = 0; i < l.size(); ++i) {
         const ZFMethod *m = l[i];
-        if(m->methodParamTypeIdIsMatch(
-                  methodParamTypeId0
-                , methodParamTypeId1
-                , methodParamTypeId2
-                , methodParamTypeId3
-                , methodParamTypeId4
-                , methodParamTypeId5
-                , methodParamTypeId6
-                , methodParamTypeId7
+        if(m->paramTypeIdIsMatch(
+                  paramTypeId0
+                , paramTypeId1
+                , paramTypeId2
+                , paramTypeId3
+                , paramTypeId4
+                , paramTypeId5
+                , paramTypeId6
+                , paramTypeId7
                 )) {
             return m;
         }
@@ -161,7 +161,7 @@ void ZFMethodFuncGetAllT(
             }
             else {
                 for(zfstlsize i = 0; i < itName->second.size(); ++i) {
-                    if(filter->filterCheckActive(itName->second[i])) {
+                    if(filter->filterPassed(itName->second[i])) {
                         ret.add(itName->second[i]);
                     }
                 }
@@ -183,15 +183,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodFuncForName
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodFuncForName
         , ZFMP_IN(const zfstring &, methodNamespace)
         , ZFMP_IN(const zfstring &, methodName)
-        , ZFMP_IN(const zfchar *, methodParamTypeId0)
-        , ZFMP_IN_OPT(const zfchar *, methodParamTypeId1, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, methodParamTypeId2, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, methodParamTypeId3, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, methodParamTypeId4, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, methodParamTypeId5, zfnull)
+        , ZFMP_IN(const zfchar *, paramTypeId0)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId1, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId2, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId3, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId4, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId5, zfnull)
         /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(const zfchar *, methodParamTypeId6, zfnull)
-        // , ZFMP_IN_OPT(const zfchar *, methodParamTypeId7, zfnull)
+        // , ZFMP_IN_OPT(const zfchar *, paramTypeId6, zfnull)
+        // , ZFMP_IN_OPT(const zfchar *, paramTypeId7, zfnull)
     )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFMethodFuncForNameGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)

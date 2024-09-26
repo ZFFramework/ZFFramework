@@ -11,25 +11,25 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFPath);
 
-        this->testCaseOutput("ZFPathForModule:");
-        this->testCaseOutput(ZFPathForModule());
+        this->output("ZFPathForModule:");
+        this->output(ZFPathForModule());
 
-        this->testCaseOutput("ZFPathForModuleFile:");
-        this->testCaseOutput(ZFPathForModuleFile());
+        this->output("ZFPathForModuleFile:");
+        this->output(ZFPathForModuleFile());
 
-        this->testCaseOutput("ZFPathForSetting:");
-        this->testCaseOutput(ZFPathForSetting());
+        this->output("ZFPathForSetting:");
+        this->output(ZFPathForSetting());
 
-        this->testCaseOutput("ZFPathForStorage:");
-        this->testCaseOutput(ZFPathForStorage());
+        this->output("ZFPathForStorage:");
+        this->output(ZFPathForStorage());
 
-        this->testCaseOutput("ZFPathForStorageShared:");
-        this->testCaseOutput(ZFPathForStorageShared());
+        this->output("ZFPathForStorageShared:");
+        this->output(ZFPathForStorageShared());
 
-        this->testCaseOutput("ZFPathForCache:");
-        this->testCaseOutput(ZFPathForCache());
+        this->output("ZFPathForCache:");
+        this->output(ZFPathForCache());
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFPath_test)

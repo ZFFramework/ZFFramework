@@ -18,15 +18,15 @@ protected:
 
         ZFUIOnScreenKeyboardAutoResizeStart(window);
 
-        container->viewBackgroundColor(ZFUIColorGreen());
+        container->backgroundColor(ZFUIColorGreen());
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextEdit> view;
-            container->childAdd(view)->c_widthFill()->c_margin(10);
-            view->viewBackgroundColor(ZFUIColorRandom());
+            container->child(view)->c_widthFill()->c_margin(10);
+            view->backgroundColor(ZFUIColorRandom());
         }
-        container->childAt(0)->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
-        container->childAt(1)->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-        container->childAt(2)->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
+        container->childAt(0)->layoutParam()->align(ZFUIAlign::e_Top);
+        container->childAt(1)->layoutParam()->align(ZFUIAlign::e_Center);
+        container->childAt(2)->layoutParam()->align(ZFUIAlign::e_Bottom);
     }
 };
 ZFOBJECT_REGISTER(ZFUIWidget_ZFUIOnScreenKeyboardAutoResize_test)

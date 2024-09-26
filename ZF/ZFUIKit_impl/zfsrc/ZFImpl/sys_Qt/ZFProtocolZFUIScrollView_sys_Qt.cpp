@@ -145,7 +145,7 @@ public:
         this->setAcceptTouchEvents(true);
 
         _ZFP_scrollViewContentView = new _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollContainer();
-        _ZFP_layoutProxy->childAdd(_ZFP_scrollViewContentView, 0);
+        _ZFP_layoutProxy->child(_ZFP_scrollViewContentView, 0);
         _ZFP_scrollViewContentView->setLayout(_ZFP_scrollViewContentViewLayoutProxy);
 
         QApplication::instance()->installEventFilter(this);
@@ -171,22 +171,22 @@ protected:
         if(child == zfnull || child->window() != this->window()) {
             return false;
         }
-        ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_MouseCancel;
+        ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel;
         switch(event->type()) {
             case QEvent::GraphicsSceneMousePress:
             case QEvent::GraphicsSceneMouseDoubleClick:
                 ZFImpl_sys_Qt_QObjectTag(obj, "_ZFP_ZFImpl_ZFUIScrollView_sys_Qt_mouseDownTag", QVariant::fromValue(zftrue));
-                mouseAction = ZFUIMouseAction::e_MouseDown;
+                mouseAction = ZFUIMouseAction::e_Down;
                 break;
             case QEvent::GraphicsSceneMouseMove:
                 if(!ZFImpl_sys_Qt_QObjectTag(obj, "_ZFP_ZFImpl_ZFUIScrollView_sys_Qt_mouseDownTag").isValid()) {
                     return false;
                 }
-                mouseAction = ZFUIMouseAction::e_MouseMove;
+                mouseAction = ZFUIMouseAction::e_Move;
                 break;
             case QEvent::GraphicsSceneMouseRelease:
                 ZFImpl_sys_Qt_QObjectTag(obj, "_ZFP_ZFImpl_ZFUIScrollView_sys_Qt_mouseDownTag", QVariant());
-                mouseAction = ZFUIMouseAction::e_MouseUp;
+                mouseAction = ZFUIMouseAction::e_Up;
                 break;
             default:
                 return false;
@@ -267,22 +267,22 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_MouseCancel
+            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel
             ) {
         QGraphicsSceneMouseEvent *e = (QGraphicsSceneMouseEvent *)nativeMouseEvent;
         QEvent::Type type = e->type();
         if(changeMouseAction) {
             switch(mouseAction) {
-                case ZFUIMouseAction::e_MouseDown:
+                case ZFUIMouseAction::e_Down:
                     type = QEvent::GraphicsSceneMousePress;
                     break;
-                case ZFUIMouseAction::e_MouseMove:
+                case ZFUIMouseAction::e_Move:
                     type = QEvent::GraphicsSceneMouseMove;
                     break;
-                case ZFUIMouseAction::e_MouseUp:
+                case ZFUIMouseAction::e_Up:
                     type = QEvent::GraphicsSceneMouseRelease;
                     break;
-                case ZFUIMouseAction::e_MouseCancel:
+                case ZFUIMouseAction::e_Cancel:
                     type = QEvent::GraphicsSceneMouseRelease;
                     break;
                 default:
@@ -291,7 +291,7 @@ public:
             }
         }
         QGraphicsSceneMouseEvent *ret = _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventClone(e, type, e->pos());
-        if(changeMouseAction && mouseAction == ZFUIMouseAction::e_MouseCancel) {
+        if(changeMouseAction && mouseAction == ZFUIMouseAction::e_Cancel) {
             _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventTagAccess(ret)->cancelFlag = zftrue;
         }
         return ret;
@@ -561,7 +561,7 @@ public:
             , ZF_IN zfindex atIndex
             ) {
         _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *)parent->nativeImplView();
-        nativeScrollView->_ZFP_scrollViewContentViewLayoutProxy->childAdd((QGraphicsWidget *)child->nativeView(), atIndex);
+        nativeScrollView->_ZFP_scrollViewContentViewLayoutProxy->child((QGraphicsWidget *)child->nativeView(), atIndex);
     }
     virtual void scrollChildRemove(
             ZF_IN ZFUIScrollView *parent

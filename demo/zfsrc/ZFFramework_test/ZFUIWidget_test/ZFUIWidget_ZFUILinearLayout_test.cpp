@@ -17,8 +17,8 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUILinearLayout> layout;
-        container->childAdd(layout)->c_margin(40);
-        layout->viewBackgroundColor(ZFUIColorRed());
+        container->child(layout)->c_margin(40);
+        layout->backgroundColor(ZFUIColorRed());
 
         this->prepareChildren(layout);
 
@@ -29,24 +29,24 @@ private:
     void prepareChildren(ZF_IN ZFUILinearLayout *layout) {
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextView> child;
-            layout->childAdd(child);
+            layout->child(child);
             child->text(zfstr("text %s", i));
             child->textAlign(ZFUIAlign::e_Center);
-            child->viewBackgroundColor(ZFUIColorRandom());
+            child->backgroundColor(ZFUIColorRandom());
         }
 
-        layout->childAt(1)->layoutParam().to<ZFUILinearLayoutParam *>()->layoutWeight(1);
-        layout->childAt(2)->layoutParam().to<ZFUILinearLayoutParam *>()->layoutWeight(2);
+        layout->childAt(1)->layoutParam().to<ZFUILinearLayoutParam *>()->weight(1);
+        layout->childAt(2)->layoutParam().to<ZFUILinearLayoutParam *>()->weight(2);
 
         zfobj<ZFUILinearLayout> l;
-        layout->childAdd(l);
-        l->layoutOrientation(ZFUIOrientation::e_Bottom);
+        layout->child(l);
+        l->orientation(ZFUIOrientation::e_Bottom);
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextView> child;
-            l->childAdd(child);
+            l->child(child);
             child->text(zfstr("text %s", 3 + i));
             child->textAlign(ZFUIAlign::e_Center);
-            child->viewBackgroundColor(ZFUIColorRandom());
+            child->backgroundColor(ZFUIColorRandom());
         }
     }
     void prepareSettingButton(
@@ -57,7 +57,7 @@ private:
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUILinearLayout, layoutOrientation),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUILinearLayout, orientation),
             ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
@@ -65,7 +65,7 @@ private:
                 , ZFUIOrientation::e_Top
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUILinearLayout, layoutChildMargin),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUILinearLayout, childMargin),
             ZFCoreArrayCreate(ZFUIMargin
                 , ZFUIMarginZero()
                 , ZFUIMarginCreate(8)
@@ -73,7 +73,7 @@ private:
                 , ZFUIMarginCreate(24)
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUILinearLayout, layoutChildSpace),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUILinearLayout, childSpace),
             ZFCoreArrayCreate(zffloat
                 , 0
                 , 8

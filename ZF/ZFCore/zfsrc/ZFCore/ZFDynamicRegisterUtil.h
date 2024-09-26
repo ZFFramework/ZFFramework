@@ -26,7 +26,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  *               , methodImpl
  *           )
  *           .property(typeIdOrRetainClass, propertyName [, propertyInitValue])
- *           .on(ZFObject::EventObjectAfterAlloc(), callback)
+ *           .onEvent(ZFObject::EventObjectAfterAlloc(), callback)
  *           .onInit(callback)
  *           .onDealloc(callback)
  *       .classEnd()
@@ -143,18 +143,18 @@ public:
     ZFDynamic &classCanAllocPublic(ZF_IN zfbool value);
 
     /** @brief see #ZFDynamic */
-    ZFDynamic &on(
+    ZFDynamic &onEvent(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &callback
             , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
-        return this->on(ZFObject::EventObjectBeforeAlloc(), callback, ZFLevelZFFrameworkStatic);
+        return this->onEvent(ZFObject::EventObjectBeforeAlloc(), callback, ZFLevelZFFrameworkStatic);
     }
     /** @brief see #ZFDynamic */
     ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
-        return this->on(ZFObject::EventObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
+        return this->onEvent(ZFObject::EventObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
     }
 
 public:
@@ -206,7 +206,7 @@ public:
      * @endcode
      */
     ZFDynamic &method(
-            ZF_IN const zfstring &methodReturnTypeId
+            ZF_IN const zfstring &returnTypeId
             , ZF_IN const zfstring &methodName
             , ZF_IN const ZFMP &methodParam
             , ZF_IN const ZFListener &methodImpl

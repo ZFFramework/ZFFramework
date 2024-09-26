@@ -13,15 +13,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief key action for ZFUIKeyCode
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIKeyAction)
-    ZFENUM_VALUE(KeyDown)      /**< @brief key down */
-    ZFENUM_VALUE(KeyRepeat)    /**< @brief key repeat */
-    ZFENUM_VALUE(KeyUp)        /**< @brief key up */
-    ZFENUM_VALUE(KeyCancel)    /**< @brief key cancel */
+    ZFENUM_VALUE(Down)      /**< @brief key down */
+    ZFENUM_VALUE(Repeat)    /**< @brief key repeat */
+    ZFENUM_VALUE(Up)        /**< @brief key up */
+    ZFENUM_VALUE(Cancel)    /**< @brief key cancel */
 ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(KeyDown)
-    ZFENUM_VALUE_REGISTER(KeyRepeat)
-    ZFENUM_VALUE_REGISTER(KeyUp)
-    ZFENUM_VALUE_REGISTER(KeyCancel)
+    ZFENUM_VALUE_REGISTER(Down)
+    ZFENUM_VALUE_REGISTER(Repeat)
+    ZFENUM_VALUE_REGISTER(Up)
+    ZFENUM_VALUE_REGISTER(Cancel)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIKeyAction)
 
 // ============================================================

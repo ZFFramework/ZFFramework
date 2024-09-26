@@ -64,10 +64,10 @@ public final class ZFUITextView extends TextView {
         nativeTextViewTmp.setTextColor(textColor);
     }
 
-    public static void native_textSingleLine(Object nativeTextView,
-                                             boolean textSingleLine) {
+    public static void native_singleLine(Object nativeTextView,
+                                             boolean singleLine) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
-        nativeTextViewTmp.setSingleLine(textSingleLine);
+        nativeTextViewTmp.setSingleLine(singleLine);
     }
 
     public static void native_textTruncateMode(Object nativeTextView,

@@ -29,7 +29,9 @@ namespace _ZFP_ZFComparer {
 
     template <class _Tp> struct _is_reference        {public: enum {Value = 0}; };
     template <class _Tp> struct _is_reference<_Tp&>  {public: enum {Value = 1}; };
+    #if defined(__cplusplus) && (__cplusplus >= 201103L)
     template <class _Tp> struct _is_reference<_Tp&&> {public: enum {Value = 1}; };
+    #endif
 
     template <class _Tp> struct _is_const            {public: enum {Value = 0}; };
     template <class _Tp> struct _is_const<_Tp const> {public: enum {Value = 1}; };
@@ -228,6 +230,26 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
         , ZF_IN T_Comparable1 const &v1
         ) {
     return ZFComparerDefaultHolder<T_Comparable0, T_Comparable1>::comparer(v0, v1);
+}
+template<typename T_Comparable>
+inline ZFCompareResult _ZFP_ZFComparerDefault(
+        ZF_IN T_Comparable const &v0
+        , ZF_IN zfnullT const &v1
+        ) {
+    return (v0 == zfnull) ? ZFCompareEqual : ZFCompareUncomparable;
+}
+template<typename T_Comparable>
+inline ZFCompareResult _ZFP_ZFComparerDefault(
+        ZF_IN zfnullT const &v0
+        , ZF_IN T_Comparable const &v1
+        ) {
+    return (v1 == zfnull) ? ZFCompareEqual : ZFCompareUncomparable;
+}
+inline ZFCompareResult _ZFP_ZFComparerDefault(
+        ZF_IN zfnullT const &v0
+        , ZF_IN zfnullT const &v1
+        ) {
+    return ZFComparerDefaultHolder<zfnullT, zfnullT>::comparer(v0, v1);
 }
 /**
  * @brief default comparer for common types, see #ZFComparer

@@ -12,9 +12,9 @@ protected:
         ZFFramework_test_protocolCheck(ZFTimer);
         ZFFramework_test_asyncTestCheck();
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFTimer");
-        this->testCaseOutput(zfstr("current thread: %s", ZFThread::currentThread()->objectInfo()));
+        this->outputSeparator();
+        this->output("ZFTimer");
+        this->output(zfstr("current thread: %s", ZFThread::currentThread()->objectInfo()));
 
         zfobj<ZFTimer> timer;
 
@@ -24,30 +24,30 @@ protected:
                 ) {
             ZFTimer *timer = zfargs.sender();
             ZFLogTrim("timer event, current thread: %s", ZFThread::currentThread());
-            if(timer->timerActivatedCount() >= 3) {
-                timer->timerStop();
+            if(timer->activatedCount() >= 3) {
+                timer->stop();
 
                 ZFLISTENER_1(action
                         , ZFTestCase *, owner
                         ) {
-                    owner->testCaseStop();
+                    owner->stop();
                 } ZFLISTENER_END()
                 ZFThread::mainThread()->taskQueueAdd(action);
             }
         } ZFLISTENER_END()
         timer->observerAdd(ZFTimer::EventTimerOnActivate(), timerOnActivate);
-        timer->timerInterval((zftimet)1000);
-        timer->timerStart();
+        timer->interval((zftimet)1000);
+        timer->start();
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(timerOnce
                 , zfautoT<ZFTestCase>, testCase
                 ) {
-            testCase->testCaseOutput(zfstr("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo()));
+            testCase->output(zfstr("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo()));
         } ZFLISTENER_END()
-        testCase->testCaseOutput("timerOnce start");
+        testCase->output("timerOnce start");
         ZFTimerOnce(500, timerOnce);
-        testCase->testCaseOutput("timerOnce stop");
+        testCase->output("timerOnce stop");
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFTimer_test)

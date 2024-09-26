@@ -69,7 +69,7 @@ private:
 
         playing.removeElement(audio);
         if(playing.isEmpty()) {
-            timer->timerStop();
+            timer->stop();
             timer = zfnull;
         }
     }

@@ -108,7 +108,7 @@ public:
      * param1 is a #v_zfbool
      * shows whether the text should change,
      * set to false to show the text should not be changed\n
-     * @note if #ZFUITextEdit::textEditFilter has been set,
+     * @note if #ZFUITextEdit::editFilter has been set,
      *   it would be checked first
      *   and store result to param1,
      *   you may change the value to modify the filter result
@@ -131,46 +131,46 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * util event fired when return clicked or focus lost,
-     * or, you may manually notify it by #textEditNotifyConfirm
+     * or, you may manually notify it by #editConfirm
      */
     ZFEVENT(TextOnEditConfirm)
 
 public:
     // ============================================================
     // properties
-    ZFPROPERTY_ON_INIT_DECLARE(zfbool, viewFocusable)
+    ZFPROPERTY_ON_INIT_DECLARE(zfbool, focusable)
     ZFPROPERTY_ON_INIT_DECLARE(ZFUISize, viewSizeMin)
 
 public:
     /**
      * @brief whether the text is editable, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, textEditEnable, zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textEditEnable)
+    ZFPROPERTY_ASSIGN(zfbool, editEnable, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, editEnable)
     /**
      * @brief whether the text is secured, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, textEditSecured)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textEditSecured)
+    ZFPROPERTY_ASSIGN(zfbool, editSecured)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, editSecured)
     /**
      * @brief keyboard hint, see #ZFUITextEditKeyboardType, #ZFUITextEditKeyboardType::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardTypeEnum, textEditKeyboardType, ZFUITextEditKeyboardType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardTypeEnum, textEditKeyboardType)
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardTypeEnum, keyboardType, ZFUITextEditKeyboardType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardTypeEnum, keyboardType)
     /**
      * @brief keyboard hint, see #ZFUITextEditKeyboardReturnType, #ZFUITextEditKeyboardReturnType::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType, ZFUITextEditKeyboardReturnType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType)
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnTypeEnum, keyboardReturnType, ZFUITextEditKeyboardReturnType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardReturnTypeEnum, keyboardReturnType)
     /**
      * @brief action to perform when click return, see #ZFUITextEditKeyboardReturnAction, #ZFUITextEditKeyboardReturnAction::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnActionEnum, textEditKeyboardReturnAction, ZFUITextEditKeyboardReturnAction::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnActionEnum, keyboardReturnAction, ZFUITextEditKeyboardReturnAction::EnumDefault())
     /**
      * @brief text place holder
      */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUITextView>, textPlaceHolder, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUITextView>, textPlaceHolder)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUITextView>, placeholder, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUITextView>, placeholder)
 
     /**
      * @brief text filter, null by default
@@ -181,20 +181,20 @@ public:
      *   text would be replaced to null
      * @note null or empty text would always treated as match for safe
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFRegExp>, textEditFilter)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFRegExp>, textEditFilter)
+    ZFPROPERTY_RETAIN(zfanyT<ZFRegExp>, editFilter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFRegExp>, editFilter)
 
     /**
      * @brief text edit's cursor position
      */
-    ZFPROPERTY_ASSIGN(ZFIndexRange, textSelectRange, ZFIndexRangeZero())
-    ZFPROPERTY_ON_VERIFY_DECLARE(ZFIndexRange, textSelectRange)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFIndexRange, textSelectRange)
+    ZFPROPERTY_ASSIGN(ZFIndexRange, selectedRange, ZFIndexRangeZero())
+    ZFPROPERTY_ON_VERIFY_DECLARE(ZFIndexRange, selectedRange)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFIndexRange, selectedRange)
 
     /**
-     * @brief whether #textEditNotifyConfirm when lost focus, true by default
+     * @brief whether #editConfirm when lost focus, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, textEditConfirmWhenLostFocus, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, confirmWhenLostFocus, zftrue)
 
 public:
     ZFPROPERTY_ON_VERIFY_DECLARE(zfstring, text)
@@ -233,12 +233,12 @@ public:
     zffinal void _ZFP_ZFUITextEdit_textNotifyBeginEdit(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyEndEdit(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyUpdate(ZF_IN const zfstring &newText);
-    zffinal void _ZFP_ZFUITextEdit_textSelectRangeNotifyUpdate(void);
+    zffinal void _ZFP_ZFUITextEdit_selectedRangeNotifyUpdate(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyReturnClicked(void);
     /**
      * @brief whether text should change
      *
-     * by default, this method would check according to #ZFUITextEdit::textEditFilter,
+     * by default, this method would check according to #ZFUITextEdit::editFilter,
      * and null or empty string would always treated as allowed for safe
      */
     ZFMETHOD_DECLARE_1(zfbool, textShouldUpdate
@@ -247,15 +247,15 @@ public:
     /**
      * @brief manually start edit
      */
-    ZFMETHOD_DECLARE_0(void, textEditBegin)
+    ZFMETHOD_DECLARE_0(void, editBegin)
     /**
      * @brief manually start edit
      */
-    ZFMETHOD_DECLARE_0(void, textEditEnd)
+    ZFMETHOD_DECLARE_0(void, editEnd)
     /**
      * @brief true if editing text, typically keyboard is showing
      */
-    ZFMETHOD_DECLARE_0(zfbool, textEditing)
+    ZFMETHOD_DECLARE_0(zfbool, editing)
 
 protected:
     /** @brief see #EventTextOnEditBegin */
@@ -275,7 +275,7 @@ protected:
     virtual void textOnEditConfirm(void);
 public:
     /** @brief see #EventTextOnEditConfirm */
-    ZFMETHOD_DECLARE_0(void, textEditNotifyConfirm)
+    ZFMETHOD_DECLARE_0(void, editConfirm)
 
     // ============================================================
     // override
@@ -301,7 +301,7 @@ protected:
     zfoverride
     virtual void viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent);
     zfoverride
-    virtual void viewFocusOnUpdate(void);
+    virtual void focusOnUpdate(void);
 
     zfoverride
     virtual zfbool internalViewShouldLayout(ZF_IN ZFUIView *internalView);

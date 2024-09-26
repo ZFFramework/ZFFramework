@@ -11,10 +11,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 /*
  * all types:
- *     JsonNull
- *     JsonValue
- *     JsonObject
- *     JsonArray
+ *     Null
+ *     Value
+ *     Object
+ *     Array
  *
  * here is a typical json data:
     "{"
@@ -45,15 +45,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief json item type
  */
 ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFJsonType)
-    ZFENUM_VALUE(JsonNull)
-    ZFENUM_VALUE(JsonValue)
-    ZFENUM_VALUE(JsonObject)
-    ZFENUM_VALUE(JsonArray)
+    ZFENUM_VALUE(Null)
+    ZFENUM_VALUE(Value)
+    ZFENUM_VALUE(Object)
+    ZFENUM_VALUE(Array)
 ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(JsonNull)
-    ZFENUM_VALUE_REGISTER(JsonValue)
-    ZFENUM_VALUE_REGISTER(JsonObject)
-    ZFENUM_VALUE_REGISTER(JsonArray)
+    ZFENUM_VALUE_REGISTER(Null)
+    ZFENUM_VALUE_REGISTER(Value)
+    ZFENUM_VALUE_REGISTER(Object)
+    ZFENUM_VALUE_REGISTER(Array)
 ZFENUM_END(ZFLIB_ZFAlgorithm, ZFJsonType)
 
 // ============================================================
@@ -200,10 +200,10 @@ public:
      */
     ZFJsonTypeEnum type(void) const;
     /**
-     * @brief true if #type is not #ZFJsonType::e_JsonNull
+     * @brief true if #type is not #ZFJsonType::e_Null
      */
     inline zfbool valid(void) const {
-        return (this->type() != ZFJsonType::e_JsonNull);
+        return (this->type() != ZFJsonType::e_Null);
     }
 
     /**
@@ -226,7 +226,7 @@ public:
     // for value type
 public:
     /**
-     * @brief value of the node, valid only for #ZFJsonType::e_JsonValue type
+     * @brief value of the node, valid only for #ZFJsonType::e_Value type
      */
     ZFJson &value(ZF_IN const zfstring &value);
     /**
@@ -238,39 +238,39 @@ public:
     // for object type
 public:
     /**
-     * @brief json item count, valid only for #ZFJsonType::e_JsonObject
+     * @brief json item count, valid only for #ZFJsonType::e_Object
      */
     zfindex attrCount(void) const;
 
     /**
-     * @brief set json item for key, valid only for #ZFJsonType::e_JsonObject
+     * @brief set json item for key, valid only for #ZFJsonType::e_Object
      */
     ZFJson &attr(
             ZF_IN const zfstring &key
             , ZF_IN const zfstring &value
             );
     /**
-     * @brief set json item for key, valid only for #ZFJsonType::e_JsonObject
+     * @brief set json item for key, valid only for #ZFJsonType::e_Object
      */
     ZFJson &attr(
             ZF_IN const zfstring &key
             , ZF_IN const ZFJson &item
             );
     /**
-     * @brief get json item for key, valid only for #ZFJsonType::e_JsonObject
+     * @brief get json item for key, valid only for #ZFJsonType::e_Object
      */
     ZFJson attr(ZF_IN const zfstring &key) const;
     /**
-     * @brief util method to access json value, valid only for #ZFJsonType::e_JsonObject
+     * @brief util method to access json value, valid only for #ZFJsonType::e_Object
      */
     zfstring attrValue(ZF_IN const zfstring &key) const;
 
     /**
-     * @brief remove json item, valid only for #ZFJsonType::e_JsonObject
+     * @brief remove json item, valid only for #ZFJsonType::e_Object
      */
     ZFJson &attrRemove(ZF_IN const zfstring &key);
     /**
-     * @brief remove all json item, valid only for #ZFJsonType::e_JsonObject
+     * @brief remove all json item, valid only for #ZFJsonType::e_Object
      */
     ZFJson &attrRemoveAll(void);
 
@@ -296,38 +296,38 @@ public:
     // for array type
 public:
     /**
-     * @brief json child count, valid only for #ZFJsonType::e_JsonArray
+     * @brief json child count, valid only for #ZFJsonType::e_Array
      */
     zfindex childCount(void) const;
     /**
-     * @brief get json child at index, valid only for #ZFJsonType::e_JsonArray
+     * @brief get json child at index, valid only for #ZFJsonType::e_Array
      */
     ZFJson childAt(ZF_IN zfindex index) const;
 
     /**
-     * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
+     * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_Array
      */
-    ZFJson &childAdd(
+    ZFJson &child(
             ZF_IN const zfstring &value
             , ZF_IN_OPT zfindex index = zfindexMax()
             );
     /**
-     * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
+     * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_Array
      */
-    ZFJson &childAdd(
+    ZFJson &child(
             ZF_IN const ZFJson &item
             , ZF_IN_OPT zfindex index = zfindexMax()
             );
     /**
-     * @brief remove json child at index, valid only for #ZFJsonType::e_JsonArray
+     * @brief remove json child at index, valid only for #ZFJsonType::e_Array
      */
     ZFJson &childRemoveAt(ZF_IN zfindex index);
     /**
-     * @brief remove all json child, valid only for #ZFJsonType::e_JsonArray
+     * @brief remove all json child, valid only for #ZFJsonType::e_Array
      */
     ZFJson &childRemoveAll(void);
     /**
-     * @brief find json child, valid only for #ZFJsonType::e_JsonArray
+     * @brief find json child, valid only for #ZFJsonType::e_Array
      */
     zfindex childFind(ZF_IN const ZFJson &item) const;
 

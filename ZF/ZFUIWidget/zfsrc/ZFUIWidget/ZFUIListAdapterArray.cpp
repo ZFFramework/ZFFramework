@@ -55,7 +55,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
                 return zffalse;
             }
             cellData.category(ZFSerializableKeyword_ZFUIListAdapterArray_cell);
-            serializableData.childAdd(cellData);
+            serializableData.child(cellData);
         }
     }
     else {

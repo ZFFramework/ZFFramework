@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if 1
 ZF_GLOBAL_INITIALIZER_INIT(ZFUIViewFocusState_test) {
-    this->listener = ZFCallbackForFunc(zfself::viewFocusOnUpdate);
+    this->listener = ZFCallbackForFunc(zfself::focusOnUpdate);
     ZFGlobalObserver().observerAdd(ZFUIView::EventViewFocusOnUpdate(), this->listener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewFocusState_test) {
@@ -12,10 +12,10 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewFocusState_test) {
 }
 private:
     ZFListener listener;
-    static void viewFocusOnUpdate(ZF_IN const ZFArgs &zfargs) {
+    static void focusOnUpdate(ZF_IN const ZFArgs &zfargs) {
         ZFLogTrim() << "[ZFUIViewFocus]"
             << zfargs.sender()
-            << " changed to " << zfargs.sender()->to<ZFUIView *>()->viewFocused();
+            << " changed to " << zfargs.sender()->to<ZFUIView *>()->focused();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewFocusState_test)
 #endif

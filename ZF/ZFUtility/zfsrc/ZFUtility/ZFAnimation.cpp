@@ -15,23 +15,23 @@ public:
 // _ZFP_ZFAnimationPrivate
 zfclassNotPOD _ZFP_ZFAnimationPrivate {
 public:
-    ZFObjectHolder *aniTargetHolder;
-    zfbool aniRunning;
+    ZFObjectHolder *targetHolder;
+    zfbool started;
     zfbool aniImplStartFlag;
-    zfbool aniStoppedByUser;
+    zfbool stoppedByUser;
     zfautoT<ZFTimer> aniDummyTimer;
     zfidentity aniId;
-    zfindex aniLoopCur;
+    zfindex loopCur;
 
 public:
     _ZFP_ZFAnimationPrivate(void)
-    : aniTargetHolder(zfnull)
-    , aniRunning(zffalse)
+    : targetHolder(zfnull)
+    , started(zffalse)
     , aniImplStartFlag(zffalse)
-    , aniStoppedByUser(zffalse)
+    , stoppedByUser(zffalse)
     , aniDummyTimer()
     , aniId(zfidentityInvalid())
-    , aniLoopCur(0)
+    , loopCur(0)
     {
     }
 };
@@ -39,88 +39,76 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAnimation)
 
-ZFEVENT_REGISTER(ZFAnimation, AniOnDelayBegin)
-ZFEVENT_REGISTER(ZFAnimation, AniOnDelayEnd)
 ZFEVENT_REGISTER(ZFAnimation, AniOnStart)
 ZFEVENT_REGISTER(ZFAnimation, AniOnLoop)
 ZFEVENT_REGISTER(ZFAnimation, AniOnStop)
 
-ZFMETHOD_DEFINE_0(ZFAnimation, zftimet, aniDurationFixed) {
-    return (this->aniDuration() > 0 ? this->aniDuration() : ZFAnimationDurationDefault());
+ZFMETHOD_DEFINE_0(ZFAnimation, zftimet, durationFixed) {
+    return (this->duration() > 0 ? this->duration() : ZFAnimationDurationDefault());
 }
 
-ZFMETHOD_DEFINE_1(ZFAnimation, void, aniTarget
-        , ZFMP_IN(ZFObject *, aniTarget)
+ZFMETHOD_DEFINE_1(ZFAnimation, void, target
+        , ZFMP_IN(ZFObject *, target)
         ) {
-    ZFCoreAssertWithMessage(!d->aniRunning, "change animation's target while animation is running");
-    ZFObjectHolder *aniTargetHolderTmp = d->aniTargetHolder;
-    zfblockedRelease(aniTargetHolderTmp);
-    d->aniTargetHolder = aniTarget ? zfRetain(aniTarget->objectHolder()) : zfnull;
-    this->aniImplTargetOnUpdate(aniTargetHolderTmp ? aniTargetHolderTmp->objectHolded().toObject() : zfnull);
-    zfRetainChange(d->aniTargetHolder, aniTarget ? aniTarget->objectHolder() : zfnull);
+    ZFCoreAssertWithMessage(!d->started, "change animation's target while animation is running");
+    ZFObjectHolder *targetHolderTmp = d->targetHolder;
+    zfblockedRelease(targetHolderTmp);
+    d->targetHolder = target ? zfRetain(target->objectHolder()) : zfnull;
+    this->aniImplTargetOnUpdate(targetHolderTmp ? targetHolderTmp->objectHolded().toObject() : zfnull);
+    zfRetainChange(d->targetHolder, target ? target->objectHolder() : zfnull);
 }
-ZFMETHOD_DEFINE_0(ZFAnimation, zfany, aniTarget) {
-    return d->aniTargetHolder ? d->aniTargetHolder->objectHolded().toObject() : zfnull;
+ZFMETHOD_DEFINE_0(ZFAnimation, zfany, target) {
+    return d->targetHolder ? d->targetHolder->objectHolded().toObject() : zfnull;
 }
 
-ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStart) {
-    this->aniStop();
+ZFMETHOD_DEFINE_0(ZFAnimation, void, start) {
+    this->stop();
     this->_ZFP_ZFAnimation_aniReadyStart();
 
-    d->aniStoppedByUser = zffalse;
-    d->aniLoopCur = 0;
-    if(!this->aniValid()) {
+    d->stoppedByUser = zffalse;
+    d->loopCur = 0;
+    if(!this->valid()) {
         this->aniOnStart();
         this->aniOnStop(ZFResultType::e_Fail);
         return;
     }
 
     zfRetain(this);
-    zfRetain(this->aniTarget());
+    zfRetain(this->target());
 
     ++(d->aniId);
-    d->aniRunning = zftrue;
+    d->started = zftrue;
     d->aniImplStartFlag = zftrue;
     this->aniImplStart();
     this->aniOnStart();
 }
-ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniRunning) {
-    return d->aniRunning;
+ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, started) {
+    return d->started;
 }
-ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStop) {
-    if(!(d->aniRunning)) {
+ZFMETHOD_DEFINE_0(ZFAnimation, void, stop) {
+    if(!(d->started)) {
         return;
     }
-    d->aniStoppedByUser = zftrue;
+    d->stoppedByUser = zftrue;
     ++(d->aniId);
     this->aniImplNotifyStop(ZFResultType::e_Cancel);
 }
-ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniStoppedByUser) {
-    return d->aniStoppedByUser;
+ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, stoppedByUser) {
+    return d->stoppedByUser;
 }
 
 ZFMETHOD_DEFINE_0(ZFAnimation, zfidentity, aniId) {
     return d->aniId;
 }
 
-ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniValid) {
+ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, valid) {
     return this->aniImplCheckValid();
 }
 
-ZFMETHOD_DEFINE_0(ZFAnimation, zfindex, aniLoopCur) {
-    return d->aniLoopCur;
+ZFMETHOD_DEFINE_0(ZFAnimation, zfindex, loopCur) {
+    return d->loopCur;
 }
 
-ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnDelayBegin
-        , ZFMP_IN(const ZFListener &, cb)
-        ) {
-    this->observerAdd(zfself::EventAniOnDelayBegin(), cb);
-}
-ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnDelayEnd
-        , ZFMP_IN(const ZFListener &, cb)
-        ) {
-    this->observerAdd(zfself::EventAniOnDelayEnd(), cb);
-}
 ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStart
         , ZFMP_IN(const ZFListener &, cb)
         ) {
@@ -138,24 +126,24 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStop
 }
 
 void ZFAnimation::_ZFP_ZFAnimation_aniReadyStart(void) {
-    if(this->aniTarget() != zfnull) {
-        _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
+    if(this->target() != zfnull) {
+        _ZFP_I_ZFAnimationAniList *aniList = this->target()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
         if(aniList == zfnull) {
             aniList = zfAlloc(_ZFP_I_ZFAnimationAniList);
-            this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull(), aniList);
+            this->target()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull(), aniList);
             zfRelease(aniList);
         }
-        if(this->aniAutoStopPrev()) {
+        if(this->autoStopPrev()) {
             while(!aniList->aniList.isEmpty()) {
-                aniList->aniList.getFirst()->aniStop();
+                aniList->aniList.getFirst()->stop();
             }
         }
         aniList->aniList.add(this);
     }
 }
 void ZFAnimation::_ZFP_ZFAnimation_aniReadyStop(void) {
-    if(this->aniTarget() != zfnull) {
-        _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
+    if(this->target() != zfnull) {
+        _ZFP_I_ZFAnimationAniList *aniList = this->target()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
         if(aniList != zfnull) {
             aniList->aniList.removeElement(this);
         }
@@ -176,32 +164,32 @@ void ZFAnimation::aniImplStart(void) {
             owner->_ZFP_ZFAnimation_aniDummyNotifyStop();
         } ZFLISTENER_END()
         d->aniDummyTimer = ZFTimerOnce(
-            this->aniDurationFixed(),
+            this->durationFixed(),
             dummyOnFinish);
     }
 }
 void ZFAnimation::aniImplStop(void) {
     if(this->classData() == ZFAnimation::ClassData()) {
         if(d->aniDummyTimer != zfnull) {
-            d->aniDummyTimer->timerStop();
+            d->aniDummyTimer->stop();
             d->aniDummyTimer = zfnull;
         }
     }
 }
 
 void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = ZFResultType::e_Success */) {
-    if(!d->aniRunning || !d->aniImplStartFlag) {
+    if(!d->started || !d->aniImplStartFlag) {
         return;
     }
     this->_ZFP_ZFAnimation_aniReadyStop();
-    ZFObject *aniTargetToRelease = this->aniTarget();
+    ZFObject *targetToRelease = this->target();
 
     d->aniImplStartFlag = zffalse;
     this->aniImplStop();
 
-    if(!d->aniStoppedByUser) {
-        ++(d->aniLoopCur);
-        if(this->aniLoop() == zfindexMax() || d->aniLoopCur <= this->aniLoop()) {
+    if(!d->stoppedByUser) {
+        ++(d->loopCur);
+        if(this->loop() == zfindexMax() || d->loopCur <= this->loop()) {
             this->aniOnLoop();
             d->aniImplStartFlag = zftrue;
             this->aniImplStart();
@@ -209,18 +197,18 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = Z
         }
     }
 
-    d->aniRunning = zffalse;
+    d->started = zffalse;
     this->aniOnStop(resultType);
 
-    zfRelease(aniTargetToRelease);
+    zfRelease(targetToRelease);
     zfRelease(this);
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAnimation
-        , ZFMP_IN(ZFObject *, aniTarget)
+        , ZFMP_IN(ZFObject *, target)
         ) {
     this->objectOnInit();
-    this->aniTarget(aniTarget);
+    this->target(target);
 }
 
 void ZFAnimation::objectOnInit(void) {
@@ -228,13 +216,13 @@ void ZFAnimation::objectOnInit(void) {
     d = zfpoolNew(_ZFP_ZFAnimationPrivate);
 }
 void ZFAnimation::objectOnDealloc(void) {
-    zfRetainChange(d->aniTargetHolder, zfnull);
+    zfRetainChange(d->targetHolder, zfnull);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
 void ZFAnimation::objectOnDeallocPrepare(void) {
-    this->aniStop();
+    this->stop();
     zfsuper::objectOnDeallocPrepare();
 }
 

@@ -19,8 +19,8 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
         return zfnull;
     }
     ZFTestCase *testCase = testCaseTmp;
-    testCase->testCaseStart();
-    return testCase->testCaseIsRunning() ? testCase : zfnull;
+    testCase->start();
+    return testCase->started() ? testCase : zfnull;
 }
 ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
         , ZFMP_IN(const zfstring &, classNameFull)
@@ -42,7 +42,7 @@ public:
     void testCaseList(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret) {
         this->testCaseListPrepare(ret);
     }
-    void testCaseStart(ZF_IN_OPT const ZFCoreArray<const ZFClass *> *toStart = zfnull) {
+    void start(ZF_IN_OPT const ZFCoreArray<const ZFClass *> *toStart = zfnull) {
         if(this->running) {
             return;
         }
@@ -54,7 +54,7 @@ public:
 
         this->testCaseRunNext();
     }
-    void testCaseStop(void) {
+    void stop(void) {
         if(!this->running) {
             return;
         }
@@ -65,7 +65,7 @@ public:
 
         if(toStop != zfnull) {
             toStop->observerRemove(ZFTestCase::EventTestCaseOnStop(), this->testCaseFinishListener);
-            toStop->testCaseStop(ZFResultType::e_Cancel);
+            toStop->stop(ZFResultType::e_Cancel);
         }
 
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventTestCaseRunAllOnStop());
@@ -81,7 +81,7 @@ public:
         }
 
         if(this->testCases.isEmpty()) {
-            this->testCaseStop();
+            this->stop();
             return;
         }
 
@@ -126,10 +126,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFTestCaseRunAllHolder)
 ZFMETHOD_FUNC_DEFINE_1(void, ZFTestCaseRunAllStart
         , ZFMP_IN_OPT(const ZFCoreArray<const ZFClass *> *, toStart, zfnull)
         ) {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseStart(toStart);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->start(toStart);
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFTestCaseRunAllStop) {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseStop();
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->stop();
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFTestCaseGetAllT

@@ -16,7 +16,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
         }
         return zffalse;
     }
-    if(xmlElement.type() != ZFXmlType::e_XmlElement) {
+    if(xmlElement.type() != ZFXmlType::e_Element) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "param not type of xml element");
         if(outErrorPos != zfnull) {
             *outErrorPos = xmlElement;
@@ -42,7 +42,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
         if(!_ZFP_ZFSerializableDataFromXml(childData, xmlElement.childAt(i), outErrorHint, outErrorPos)) {
             return zffalse;
         }
-        serializableData.childAdd(childData);
+        serializableData.child(childData);
     }
     return zftrue;
 }
@@ -76,7 +76,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml
         , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
         ) {
     xmlElement = ZFSerializableDataToXml(serializableData, outErrorHint, outErrorPos);
-    return (xmlElement.type() != ZFXmlType::e_XmlNull);
+    return (xmlElement.type() != ZFXmlType::e_Null);
 }
 ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
         , ZFMP_IN(const ZFSerializableData &, serializableData)
@@ -88,7 +88,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
         return zfnull;
     }
 
-    ZFXml ret(ZFXmlType::e_XmlElement);
+    ZFXml ret(ZFXmlType::e_Element);
     ret.name(serializableData.itemClass());
 
     for(zfiter it = serializableData.attrIter(); it; ++it) {
@@ -98,10 +98,10 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         ZFXml child = ZFSerializableDataToXml(serializableData.childAt(i), outErrorHint, outErrorPos);
-        if(child.type() == ZFXmlType::e_XmlNull) {
+        if(child.type() == ZFXmlType::e_Null) {
             return zfnull;
         }
-        ret.childAdd(child);
+        ret.child(child);
     }
 
     return ret;

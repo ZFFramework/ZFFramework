@@ -27,16 +27,16 @@ void allClassParentT(
     }
     else {
         while(cls != zfnull) {
-            if(filter->filterCheckActive(cls)) {
+            if(filter->filterPassed(cls)) {
                 ret.add(cls);
             }
             for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
-                if(filter->filterCheckActive(cls->dynamicInterfaceAt(i))) {
+                if(filter->filterPassed(cls->dynamicInterfaceAt(i))) {
                     ret.add(cls->dynamicInterfaceAt(i));
                 }
             }
             for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
-                if(filter->filterCheckActive(cls->implementedInterfaceAt(i))) {
+                if(filter->filterPassed(cls->implementedInterfaceAt(i))) {
                     ret.add(cls->implementedInterfaceAt(i));
                 }
             }
@@ -54,7 +54,7 @@ void allMethodT(
     for(zfindex i = 0; i < allClassParent.count(); ++i) {
         const ZFClass *cls = allClassParent.get(i);
         for(zfindex j = 0; j < cls->methodCount(); ++j) {
-            if(filter == zfnull || filter->filterCheckActive(cls->methodAt(j))) {
+            if(filter == zfnull || filter->filterPassed(cls->methodAt(j))) {
                 ret.add(cls->methodAt(j));
             }
         }
@@ -70,7 +70,7 @@ void allPropertyT(
     for(zfindex i = 0; i < allClassParent.count(); ++i) {
         const ZFClass *cls = allClassParent.get(i);
         for(zfindex j = 0; j < cls->propertyCount(); ++j) {
-            if(filter == zfnull || filter->filterCheckActive(cls->propertyAt(j))) {
+            if(filter == zfnull || filter->filterPassed(cls->propertyAt(j))) {
                 ret.add(cls->propertyAt(j));
             }
         }
@@ -93,7 +93,7 @@ zfbool allPropertyIsEqual(
 
     ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(cls0, filter);
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
-        if(cls1->classIsTypeOf(allProperty[i]->propertyOwnerClass())
+        if(cls1->classIsTypeOf(allProperty[i]->ownerClass())
                 && ZFPropertyCompare(allProperty[i], obj0, obj1) != ZFCompareEqual
                 ) {
             return zffalse;

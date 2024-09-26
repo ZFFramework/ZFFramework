@@ -70,7 +70,7 @@ protected:
         ZFLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstr("%s/dirNotExist", testPath)));
         ZFLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstr("%s/dirExist/fileNotExist", testPath)));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFFileIO_test)

@@ -17,23 +17,23 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIAutoLayout> layout;
-        container->childAdd(layout)->c_sizeFill()->c_margin(40);
-        layout->viewBackgroundColor(ZFUIColorRed());
+        container->child(layout)->c_sizeFill()->c_margin(40);
+        layout->backgroundColor(ZFUIColorRed());
 
         ZFCoreArray<zfauto> v;
         for(zfindex i = 0; i < 5; ++i) {
             zfobj<ZFUITextView> t;
             v.add(t);
             t->text(zfstr("text %s", i));
-            t->viewBackgroundColor(ZFUIColorRandom());
+            t->backgroundColor(ZFUIColorRandom());
         }
 
-        layout->childAdd(v[0])->c_left()->c_toParentLeft()->c_right()->c_toLeft(v[1]);
-        layout->childAdd(v[1])->c_left()->c_toRight(v[0])->c_right()->c_toLeft(v[2]);
-        layout->childAdd(v[2])->c_left()->c_toRight(v[1])->c_right()->c_toParentRight();
+        layout->child(v[0])->c_left()->c_toParentLeft()->c_right()->c_toLeft(v[1]);
+        layout->child(v[1])->c_left()->c_toRight(v[0])->c_right()->c_toLeft(v[2]);
+        layout->child(v[2])->c_left()->c_toRight(v[1])->c_right()->c_toParentRight();
 
-        layout->childAdd(v[3])->c_right()->c_toLeft(v[1])->c_bottom()->c_toTop(v[1])->c_height()->c_toWidth(v[1])->c_weight(2);
-        layout->childAdd(v[4])->c_left()->c_toRight(v[1])->c_top()->c_toBottom(v[1])->c_height()->c_toWidth(v[1])->c_weight(3);
+        layout->child(v[3])->c_right()->c_toLeft(v[1])->c_bottom()->c_toTop(v[1])->c_height()->c_toWidth(v[1])->c_weight(2);
+        layout->child(v[4])->c_left()->c_toRight(v[1])->c_top()->c_toBottom(v[1])->c_height()->c_toWidth(v[1])->c_weight(3);
 
         this->prepareSettingButton(window, layout);
     }

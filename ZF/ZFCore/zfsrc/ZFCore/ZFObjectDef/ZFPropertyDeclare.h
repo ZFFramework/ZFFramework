@@ -770,13 +770,13 @@ public:
 extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleRegister(
         ZF_IN const zfchar *lifeCycleName
         , ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *propertyOwnerClass
+        , ZF_IN const ZFClass *ownerClass
         , ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper
         );
 extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleUnregister(
         ZF_IN const zfchar *lifeCycleName
         , ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *propertyOwnerClass
+        , ZF_IN const ZFClass *ownerClass
         );
 extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_init_retain(
         ZF_IN const ZFProperty *property

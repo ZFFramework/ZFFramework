@@ -106,7 +106,7 @@ protected:
                 "_ZFP_ZFLua_performance_test_end('ZFLua f4():');\n"
             );
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFLua_performance_test)

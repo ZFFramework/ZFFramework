@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief layout param for #ZFUILinearLayout
  *
  * for #ZFUILinearLayout,
- * #ZFUILayoutParam::layoutAlign and #ZFUILayoutParam::layoutMargin
+ * #ZFUILayoutParam::align and #ZFUILayoutParam::margin
  * would be relative to sibling child,
  * instead of the container view
  */
@@ -38,14 +38,14 @@ zfclass ZFLIB_ZFUIWidget ZFUILinearLayoutParam : zfextend ZFUILayoutParam {
      * -  child1 = parentSize * 4 / 9
      * -  child2 = parentSize * 3 / 9
      */
-    ZFPROPERTY_ASSIGN(zffloat, layoutWeight)
+    ZFPROPERTY_ASSIGN(zffloat, weight)
 
     /**
      * @brief whether reserve space if child is not visible, false by default
      */
     ZFPROPERTY_ASSIGN(zfbool, reserveSpace)
 
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIAlignFlags, layoutAlign)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIAlignFlags, align)
 };
 
 // ============================================================
@@ -66,26 +66,26 @@ public:
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, layoutOrientation, ZFUIOrientation::e_Left)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, layoutOrientation)
+    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientation, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientation)
 
     /**
      * @brief extra margin independent from children's layout param's margin, #ZFUIMarginZero by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIMargin, layoutChildMargin)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, layoutChildMargin)
+    ZFPROPERTY_ASSIGN(ZFUIMargin, childMargin)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, childMargin)
 
     /**
      * @brief extra space between each child independent from children's layout param, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, layoutChildSpace)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, layoutChildSpace)
+    ZFPROPERTY_ASSIGN(zffloat, childSpace)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, childSpace)
 
     // ============================================================
     // override ZFUIView
 public:
-    /** @brief util method for #childAddWithParam */
-    ZFMETHOD_DECLARE_2(zfanyT<ZFUILinearLayoutParam>, childAdd
+    /** @brief util method for #childWithParam */
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUILinearLayoutParam>, child
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )

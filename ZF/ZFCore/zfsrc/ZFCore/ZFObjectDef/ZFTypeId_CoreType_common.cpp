@@ -543,18 +543,18 @@ ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(zfiter, zfiter)
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFBuffer, ZFBuffer)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void, bufferFree)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, bufferGiveUp)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferSwap
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, swap
         , ZFMP_IN_OUT(ZFBuffer &, buf)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBuffer, void, zfunsafe_bufferChange
         , ZFMP_IN(void *, buffer)
-        , ZFMP_IN(zfindex, bufferCapacity)
-        , ZFMP_IN(zfindex, bufferSize)
-        , ZFMP_IN(zfbool, bufferAutoFree)
+        , ZFMP_IN(zfindex, capacity)
+        , ZFMP_IN(zfindex, length)
+        , ZFMP_IN(zfbool, autoFree)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy
         , ZFMP_IN(const void *, buffer)
-        , ZFMP_IN(zfindex, bufferSize)
+        , ZFMP_IN(zfindex, length)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCopy
         , ZFMP_IN(const zfstring &, s)
@@ -563,29 +563,29 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy
         , ZFMP_IN(const zfchar *, s)
         , ZFMP_IN_OPT(zfindex, length, zfindexMax())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferAppend
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, append
         , ZFMP_IN(const zfstring &, s)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferAppend
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, append
         , ZFMP_IN(const void *, buffer)
-        , ZFMP_IN(zfindex, bufferSize)
+        , ZFMP_IN(zfindex, length)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferAppend
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, append
         , ZFMP_IN(const zfchar *, s)
         , ZFMP_IN_OPT(zfindex, length, zfindexMax())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCapacity
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, capacity
         , ZFMP_IN(zfindex, capacity)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, bufferCapacity)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferSize
-        , ZFMP_IN(zfindex, bufferSize)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, capacity)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, length
+        , ZFMP_IN(zfindex, length)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, bufferSize)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, length)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, buffer)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, const zfchar *, text)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, textLength)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfbool, bufferAutoFree)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfbool, autoFree)
 
 // ============================================================
 // ZFCallerInfo
@@ -761,7 +761,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForNumber, ZFFilterForNumber)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, void, copyFrom
         , ZFMP_IN(ZFFilterForNumber const &, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForNumber, void, filterAdd
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForNumber, void, filter
         , ZFMP_IN(zfint const &, e)
         , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
         )
@@ -780,7 +780,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfint, filterElem
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, ZFFilterType, filterTypeAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfbool, filterCheckActive
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfbool, filterPassed
         , ZFMP_IN(zfint const &, e)
         )
 
@@ -789,7 +789,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForIndex, ZFFilterForIndex)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, void, copyFrom
         , ZFMP_IN(ZFFilterForIndex const &, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIndex, void, filterAdd
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIndex, void, filter
         , ZFMP_IN(zfindex const &, e)
         , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
         )
@@ -808,7 +808,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfindex, filterEle
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, ZFFilterType, filterTypeAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfbool, filterCheckActive
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfbool, filterPassed
         , ZFMP_IN(zfindex const &, e)
         )
 
@@ -817,7 +817,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForIdentity, ZFFilterForIdentity)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, void, copyFrom
         , ZFMP_IN(ZFFilterForIdentity const &, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIdentity, void, filterAdd
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIdentity, void, filter
         , ZFMP_IN(zfidentity const &, e)
         , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
         )
@@ -836,7 +836,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfidentity, fil
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, ZFFilterType, filterTypeAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfbool, filterCheckActive
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfbool, filterPassed
         , ZFMP_IN(zfidentity const &, e)
         )
 
@@ -845,7 +845,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForString, ZFFilterForString)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, void, copyFrom
         , ZFMP_IN(ZFFilterForString const &, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForString, void, filterAdd
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForString, void, filter
         , ZFMP_IN(const zfchar *, e)
         , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
         )
@@ -864,7 +864,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, const zfchar *, f
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, ZFFilterType, filterTypeAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, zfbool, filterCheckActive
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, zfbool, filterPassed
         , ZFMP_IN(const zfchar *, e)
         )
 
@@ -910,12 +910,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, void, removeAll)
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTokenForContainer, ZFTokenForContainer, {
-        v.tokenLeft = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenLeft);
-        v.tokenRight = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenRight);
-        v.tokenSeparator = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenSeparator);
-        v.tokenValueLeft = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenValueLeft);
-        v.tokenValueRight = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenValueRight);
-        v.tokenEtc = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenEtc);
+        v.tokenLeft = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenLeft);
+        v.tokenRight = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenRight);
+        v.tokenSeparator = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenSeparator);
+        v.tokenValueLeft = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenValueLeft);
+        v.tokenValueRight = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenValueRight);
+        v.tokenEtc = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForContainer_tokenEtc);
         return zftrue;
     }, {
         if(!v.tokenLeft.isEmpty()) {serializableData.attr(ZFSerializableKeyword_ZFTokenForContainer_tokenLeft, v.tokenLeft);}
@@ -935,17 +935,17 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForContainer, zfstring, tokenEtc
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainer, {
-        v.tokenLeft = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenLeft);
-        v.tokenRight = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenRight);
-        v.tokenSeparator = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenSeparator);
-        v.tokenPairLeft = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenPairLeft);
-        v.tokenPairRight = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenPairRight);
-        v.tokenPairSeparator = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenPairSeparator);
-        v.tokenKeyLeft = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenKeyLeft);
-        v.tokenKeyRight = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenKeyRight);
-        v.tokenValueLeft = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenValueLeft);
-        v.tokenValueRight = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenValueRight);
-        v.tokenEtc = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenEtc);
+        v.tokenLeft = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenLeft);
+        v.tokenRight = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenRight);
+        v.tokenSeparator = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenSeparator);
+        v.tokenPairLeft = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenPairLeft);
+        v.tokenPairRight = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenPairRight);
+        v.tokenPairSeparator = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenPairSeparator);
+        v.tokenKeyLeft = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenKeyLeft);
+        v.tokenKeyRight = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenKeyRight);
+        v.tokenValueLeft = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenValueLeft);
+        v.tokenValueRight = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenValueRight);
+        v.tokenEtc = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenEtc);
         return zftrue;
     }, {
         if(!v.tokenLeft.isEmpty()) {serializableData.attr(ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenLeft, v.tokenLeft);}

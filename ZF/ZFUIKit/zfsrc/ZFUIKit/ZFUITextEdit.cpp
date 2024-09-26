@@ -18,9 +18,9 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUITextEdit)
 zfclassNotPOD _ZFP_ZFUITextEditPrivate {
 public:
     ZFUITextEdit *pimplOwner;
-    zfbool textEditing;
+    zfbool editing;
     zfbool textUpdateByImplFlag;
-    zfbool textSelectRangeUpdateByImplFlag;
+    zfbool selectedRangeUpdateByImplFlag;
 
 public:
     void updateSizeRelatedProperty(void) {
@@ -30,9 +30,9 @@ public:
 public:
     _ZFP_ZFUITextEditPrivate(void)
     : pimplOwner(zfnull)
-    , textEditing(zffalse)
+    , editing(zffalse)
     , textUpdateByImplFlag(zffalse)
-    , textSelectRangeUpdateByImplFlag(zffalse)
+    , selectedRangeUpdateByImplFlag(zffalse)
     {
     }
 };
@@ -48,37 +48,37 @@ ZFEVENT_REGISTER(ZFUITextEdit, TextOnUpdate)
 ZFEVENT_REGISTER(ZFUITextEdit, TextOnReturnClick)
 ZFEVENT_REGISTER(ZFUITextEdit, TextOnEditConfirm)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfbool, viewFocusable) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfbool, focusable) {
     propertyValue = zftrue;
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, ZFUISize, viewSizeMin) {
     propertyValue = ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeControl());
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, textEditEnable) {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditEnable(this, this->textEditEnable());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, editEnable) {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->editEnable(this, this->editEnable());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, textEditSecured) {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditSecure(this, this->textEditSecured());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, editSecured) {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditSecure(this, this->editSecured());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardTypeEnum, textEditKeyboardType) {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditKeyboardType(this, this->textEditKeyboardType());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardTypeEnum, keyboardType) {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->keyboardType(this, this->keyboardType());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType) {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditKeyboardReturnType(this, this->textEditKeyboardReturnType());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardReturnTypeEnum, keyboardReturnType) {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->keyboardReturnType(this, this->keyboardReturnType());
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfanyT<ZFUITextView>, textPlaceHolder) {
-    zfobj<ZFUITextView> textPlaceHolder;
-    propertyValue = textPlaceHolder;
-    textPlaceHolder->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorHint());
-    textPlaceHolder->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
+ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfanyT<ZFUITextView>, placeholder) {
+    zfobj<ZFUITextView> placeholder;
+    propertyValue = placeholder;
+    placeholder->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorHint());
+    placeholder->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfanyT<ZFRegExp>, textEditFilter) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfanyT<ZFRegExp>, editFilter) {
     if(!this->text().isEmpty() && !this->textShouldUpdate(this->text())) {
         this->text("");
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, ZFIndexRange, selectedRange) {
     zfindex textLength = this->text().length();
     if(propertyValue.start >= textLength) {
         propertyValue = ZFIndexRangeZero();
@@ -87,12 +87,12 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
         propertyValue.count = textLength - propertyValue.start;
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
-    if(d->textSelectRangeUpdateByImplFlag) {
-        d->textSelectRangeUpdateByImplFlag = zffalse;
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFIndexRange, selectedRange) {
+    if(d->selectedRangeUpdateByImplFlag) {
+        d->selectedRangeUpdateByImplFlag = zffalse;
     }
     else {
-        ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSelectRange(this, this->textSelectRange());
+        ZFPROTOCOL_ACCESS(ZFUITextEdit)->selectedRange(this, this->selectedRange());
     }
 }
 
@@ -109,7 +109,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->text(this, this->text());
     }
     if(propertyValueOld.compare(this->text()) != 0) {
-        this->textPlaceHolder()->viewVisible(this->text().isEmpty());
+        this->placeholder()->visible(this->text().isEmpty());
         this->layoutRequest();
     }
 }
@@ -122,7 +122,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextAppearanceEnum, textAppearance
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUIAlignFlags, textAlign) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textAlign(this, this->textAlign());
-    this->textPlaceHolder()->textAlign(this->textAlign());
+    this->placeholder()->textAlign(this->textAlign());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUIColor, textColor) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textColor(this, this->textColor());
@@ -156,19 +156,19 @@ void ZFUITextEdit::objectOnInit(void) {
         NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 
-    ZFUIView *textPlaceHolderTmp = this->textPlaceHolder();
-    if(textPlaceHolderTmp == zfnull) {
-        if(this->textPlaceHolder() != zfnull) {
-            ZFCoreCriticalClassNotTypeOf(this->textPlaceHolder()->classData(), ZFUIView::ClassData());
+    ZFUIView *placeholderTmp = this->placeholder();
+    if(placeholderTmp == zfnull) {
+        if(this->placeholder() != zfnull) {
+            ZFCoreCriticalClassNotTypeOf(this->placeholder()->classData(), ZFUIView::ClassData());
         }
         else {
-            ZFCoreCriticalMessage("textPlaceHolder must not be null");
+            ZFCoreCriticalMessage("placeholder must not be null");
         }
         return;
     }
-    this->internalImplViewAdd(textPlaceHolderTmp);
-    textPlaceHolderTmp->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-    textPlaceHolderTmp->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
+    this->internalImplViewAdd(placeholderTmp);
+    placeholderTmp->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+    placeholderTmp->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
 }
 void ZFUITextEdit::objectOnDealloc(void) {
     zfpoolDelete(d);
@@ -183,18 +183,18 @@ void ZFUITextEdit::objectOnInitFinish(void) {
 void ZFUITextEdit::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
 
-    if(!this->textPlaceHolder()->text().isEmpty()) {
-        zfstringAppend(ret, " (%s)", this->textPlaceHolder()->text());
+    if(!this->placeholder()->text().isEmpty()) {
+        zfstringAppend(ret, " (%s)", this->placeholder()->text());
     }
 
-    if(this->textEditSecured()) {
+    if(this->editSecured()) {
         ret += " EditSecured";
     }
     else if(!this->text().isEmpty()) {
         zfstringAppend(ret, " \"%s\"", this->text());
     }
 
-    if(!this->textEditEnable()) {
+    if(!this->editEnable()) {
         ret += " EditDisabled";
     }
 }
@@ -212,11 +212,11 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, measureTextEdit
             this->UIScaleFixed()),
         ZFUISizeApplyScale(this->textSize(), this->UIScaleFixed())),
         this->UIScaleFixed());
-    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUITextEdit, textPlaceHolder), this)
-            && !this->textPlaceHolder()->text().isEmpty()
+    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUITextEdit, placeholder), this)
+            && !this->placeholder()->text().isEmpty()
             ) {
         ZFUISize hintSize = ZFUISizeZero();
-        this->textPlaceHolder()->measureTextView(hintSize);
+        this->placeholder()->measureTextView(hintSize);
         if(ret.width < hintSize.width) {
             ret.width = hintSize.width;
         }
@@ -228,11 +228,11 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, measureTextEdit
 }
 
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyBeginEdit(void) {
-    d->textEditing = zftrue;
+    d->editing = zftrue;
     this->textOnEditBegin();
 }
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyEndEdit(void) {
-    d->textEditing = zffalse;
+    d->editing = zffalse;
     this->textOnEditEnd();
 }
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyUpdate(ZF_IN const zfstring &newText) {
@@ -243,51 +243,51 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyUpdate(ZF_IN const zfstring &newT
 
     this->textOnUpdate(oldText);
 }
-void ZFUITextEdit::_ZFP_ZFUITextEdit_textSelectRangeNotifyUpdate(void) {
-    if(d->textSelectRangeUpdateByImplFlag) {
+void ZFUITextEdit::_ZFP_ZFUITextEdit_selectedRangeNotifyUpdate(void) {
+    if(d->selectedRangeUpdateByImplFlag) {
         return;
     }
 
     ZFIndexRange tmp = ZFIndexRangeZero();
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSelectRange(this, tmp);
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->selectedRange(this, tmp);
 
-    d->textSelectRangeUpdateByImplFlag = zftrue;
-    this->textSelectRange(tmp);
+    d->selectedRangeUpdateByImplFlag = zftrue;
+    this->selectedRange(tmp);
 }
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
     this->textOnReturnClick();
 
-    switch(this->textEditKeyboardReturnAction()) {
+    switch(this->keyboardReturnAction()) {
         case ZFUITextEditKeyboardReturnAction::e_None:
             break;
         case ZFUITextEditKeyboardReturnAction::e_Confirm:
-            this->textEditNotifyConfirm();
+            this->editConfirm();
             break;
         case ZFUITextEditKeyboardReturnAction::e_FocusNext:
-            if(!this->viewFocused() || !this->textEditConfirmWhenLostFocus()) {
-                this->textEditNotifyConfirm();
+            if(!this->focused() || !this->confirmWhenLostFocus()) {
+                this->editConfirm();
             }
-            if(this->viewFocused()) {
+            if(this->focused()) {
                 zfanyT<ZFUIView> next = ZFUIViewFocusNextFind(this);
                 if(next == zfnull) {
-                    this->textEditEnd();
+                    this->editEnd();
                 }
                 else {
                     ZFUITextEdit *nextTmp = next;
                     if(nextTmp != zfnull) {
-                        nextTmp->textEditBegin();
+                        nextTmp->editBegin();
                     }
                     else {
-                        next->viewFocusRequest(zftrue);
+                        next->focusRequest(zftrue);
                     }
                 }
             }
             break;
         case ZFUITextEditKeyboardReturnAction::e_HideKeyboard: {
-            this->textEditNotifyConfirm();
+            this->editConfirm();
             ZFUIOnScreenKeyboardState *keyboardState = ZFUIOnScreenKeyboardState::instanceForView(this);
-            if(keyboardState != zfnull && keyboardState->keyboardShowing() && this->textEditing()) {
-                this->textEditEnd();
+            if(keyboardState != zfnull && keyboardState->keyboardShowing() && this->editing()) {
+                this->editEnd();
             }
         }
             break;
@@ -308,14 +308,14 @@ ZFMETHOD_DEFINE_1(ZFUITextEdit, zfbool, textShouldUpdate
         return zftrue;
     }
 }
-ZFMETHOD_DEFINE_0(ZFUITextEdit, void, textEditBegin) {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditBegin(this);
+ZFMETHOD_DEFINE_0(ZFUITextEdit, void, editBegin) {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->editBegin(this);
 }
-ZFMETHOD_DEFINE_0(ZFUITextEdit, void, textEditEnd) {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditEnd(this);
+ZFMETHOD_DEFINE_0(ZFUITextEdit, void, editEnd) {
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->editEnd(this);
 }
-ZFMETHOD_DEFINE_0(ZFUITextEdit, zfbool, textEditing) {
-    return d->textEditing;
+ZFMETHOD_DEFINE_0(ZFUITextEdit, zfbool, editing) {
+    return d->editing;
 }
 
 void ZFUITextEdit::textOnEditBegin(void) {
@@ -329,9 +329,9 @@ void ZFUITextEdit::textOnUpdateCheck(
         , ZF_IN_OUT zfbool &shouldUpdate
         ) {
     shouldUpdate = zftrue;
-    if(newText != zfnull && *newText != '\0' && this->textEditFilter() != zfnull) {
+    if(newText != zfnull && *newText != '\0' && this->editFilter() != zfnull) {
         ZFRegExpResult regexpResult;
-        this->textEditFilter()->find(regexpResult, newText);
+        this->editFilter()->find(regexpResult, newText);
         if(!regexpResult.matched) {
             shouldUpdate = zffalse;
             return;
@@ -356,7 +356,7 @@ void ZFUITextEdit::textOnReturnClick(void) {
 void ZFUITextEdit::textOnEditConfirm(void) {
     this->observerNotify(ZFUITextEdit::EventTextOnEditConfirm());
 }
-ZFMETHOD_DEFINE_0(ZFUITextEdit, void, textEditNotifyConfirm) {
+ZFMETHOD_DEFINE_0(ZFUITextEdit, void, editConfirm) {
     this->textOnEditConfirm();
 }
 
@@ -390,15 +390,15 @@ void ZFUITextEdit::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
             break;
     }
 }
-void ZFUITextEdit::viewFocusOnUpdate(void) {
-    zfsuper::viewFocusOnUpdate();
-    if(!this->viewFocused() && this->textEditConfirmWhenLostFocus()) {
-        this->textEditNotifyConfirm();
+void ZFUITextEdit::focusOnUpdate(void) {
+    zfsuper::focusOnUpdate();
+    if(!this->focused() && this->confirmWhenLostFocus()) {
+        this->editConfirm();
     }
 }
 
 zfbool ZFUITextEdit::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
-    if(internalView == this->textPlaceHolder()) {
+    if(internalView == this->placeholder()) {
         return zffalse;
     }
     else {
@@ -408,10 +408,10 @@ zfbool ZFUITextEdit::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
 void ZFUITextEdit::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);
 
-    ZFUITextView *textPlaceHolder = this->textPlaceHolder();
-    textPlaceHolder->viewFrame(ZFUIRectApplyMargin(
+    ZFUITextView *placeholder = this->placeholder();
+    placeholder->viewFrame(ZFUIRectApplyMargin(
             bounds,
-            ZFUIMarginInc(this->nativeImplViewMargin(), textPlaceHolder->layoutParam()->layoutMargin())
+            ZFUIMarginInc(this->nativeImplViewMargin(), placeholder->layoutParam()->margin())
         ));
 }
 

@@ -42,37 +42,37 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
 void _ZFP_ZFPropertyLifeCycleRegister(
         ZF_IN const zfchar *lifeCycleName
         , ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *propertyOwnerClass
+        , ZF_IN const ZFClass *ownerClass
         , ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper
         ) {
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycleName, property);
     zfindex index = d.count();
     for(zfindex i = 0; i < d.count(); ++i) {
-        if(d[i].propertyOwnerClass == propertyOwnerClass) {
+        if(d[i].ownerClass == ownerClass) {
             d[i].propertyLifeCycleWrapper = propertyLifeCycleWrapper;
             return;
         }
-        else if(d[i].propertyOwnerClass->classIsTypeOf(propertyOwnerClass)) {
+        else if(d[i].ownerClass->classIsTypeOf(ownerClass)) {
             index = i;
             break;
         }
-        else if(propertyOwnerClass->classIsTypeOf(d[i].propertyOwnerClass)) {
+        else if(ownerClass->classIsTypeOf(d[i].ownerClass)) {
             index = i + 1;
         }
     }
     _ZFP_PropLifeCycleData data;
-    data.propertyOwnerClass = propertyOwnerClass;
+    data.ownerClass = ownerClass;
     data.propertyLifeCycleWrapper = propertyLifeCycleWrapper;
     d.add(data, index);
 }
 void _ZFP_ZFPropertyLifeCycleUnregister(
         ZF_IN const zfchar *lifeCycleName
         , ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *propertyOwnerClass
+        , ZF_IN const ZFClass *ownerClass
         ) {
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycleName, property);
     for(zfindex i = 0; i < d.count(); ++i) {
-        if(d[i].propertyOwnerClass == propertyOwnerClass) {
+        if(d[i].ownerClass == ownerClass) {
             d.remove(i);
             break;
         }
@@ -90,7 +90,7 @@ static void _ZFP_ZFPropertyLifeCycleCallAction(
     if(subclassFirst) {
         for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
             const _ZFP_PropLifeCycleData &p = d[i];
-            if(propertyOwnerObject->classData()->classIsTypeOf(p.propertyOwnerClass)) {
+            if(propertyOwnerObject->classData()->classIsTypeOf(p.ownerClass)) {
                 p.propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p.propertyLifeCycleUserData);
             }
         }
@@ -98,7 +98,7 @@ static void _ZFP_ZFPropertyLifeCycleCallAction(
     else {
         for(zfindex i = 0, iEnd = d.count(); i < iEnd; ++i) {
             const _ZFP_PropLifeCycleData &p = d[i];
-            if(propertyOwnerObject->classData()->classIsTypeOf(p.propertyOwnerClass)) {
+            if(propertyOwnerObject->classData()->classIsTypeOf(p.ownerClass)) {
                 p.propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p.propertyLifeCycleUserData);
             }
         }

@@ -45,7 +45,7 @@ public:
      *   use #send or #recv to communicate with remote host
      */
     ZFMETHOD_DECLARE_2(zfbool, open
-            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             )
     /**

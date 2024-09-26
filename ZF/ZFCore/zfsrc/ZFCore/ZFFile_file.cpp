@@ -20,7 +20,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsDir
     if(path == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsDir(path);
+    return ZFPROTOCOL_ACCESS(ZFFile)->isDir(path);
 }
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathCreate

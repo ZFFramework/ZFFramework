@@ -76,7 +76,7 @@ protected:
         ZFLogTrim("main thread wait sync thread complete");
 #endif
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFThread_test)

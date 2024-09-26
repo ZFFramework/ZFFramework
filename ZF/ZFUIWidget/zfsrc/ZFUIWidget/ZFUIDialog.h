@@ -14,68 +14,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief callback to create default layout param for #ZFUIDialog::dialogLayoutParam
- *
- * this value would be initialized to #ZFUIDialogDefaultLayoutParamCreatorDefault
- * during #ZFFrameworkInit as level #ZFLevelZFFrameworkLow
- */
-extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator;
-/**
- * @brief see #ZFUIDialogDefaultLayoutParamCreator
+ * @brief default layout param for #ZFUIDialog::layoutParam
  *
  * by default, the layout param would be:
- * -  have #ZFUIAlign::e_Center as #ZFUILayoutParam::layoutAlign
- * -  have #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::layoutMargin
+ * -  have #ZFUIAlign::e_Center as #ZFUILayoutParam::align
+ * -  have #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::margin
  */
-extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void);
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogDefaultLayoutParamCreator)
 /**
- * @brief util method to call #ZFUIDialogDefaultLayoutParamCreator
- */
-inline zfauto ZFUIDialogDefaultLayoutParam(void) {
-    return ((ZFUIDialogDefaultLayoutParamCreator != zfnull) ? ZFUIDialogDefaultLayoutParamCreator() : ZFUIDialogDefaultLayoutParamCreatorDefault());
-}
-
-/**
- * @brief callback to create default show animation for #ZFUIDialog
- *
- * this value would be initialized to #ZFUIDialogDefaultAniShowCreatorDefault
- * during #ZFFrameworkInit as level #ZFLevelZFFrameworkLow
- */
-extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniShowCreator;
-/**
- * @brief see #ZFUIDialogDefaultAniShowCreator
+ * @brief default animation for #ZFUIDialog::aniShow
  *
  * by default, the animation would be #ZFAniForGeneric
  * with alpha change
  */
-extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultAniShowCreatorDefault(void);
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogDefaultAniShowCreator)
 /**
- * @brief util method to call #ZFUIDialogDefaultAniShowCreator
- */
-inline zfauto ZFUIDialogDefaultAniShow(void) {
-    return ((ZFUIDialogDefaultAniShowCreator != zfnull) ? ZFUIDialogDefaultAniShowCreator() : ZFUIDialogDefaultAniShowCreatorDefault());
-}
-
-/**
- * @brief callback to create default hide animation for #ZFUIDialog
- *
- * this value would be initialized to #ZFUIDialogDefaultAniHideCreatorDefault
- * during #ZFFrameworkInit as level #ZFLevelZFFrameworkLow
- */
-extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniHideCreator;
-/**
- * @brief see #ZFUIDialogDefaultAniHideCreator
+ * @brief default animation for #ZFUIDialog::aniHide
  *
  * by default, the animation would be #ZFAniForGeneric
  * with alpha change
  */
-extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultAniHideCreatorDefault(void);
-/**
- * @brief util method to call #ZFUIDialogDefaultAniHideCreator
- */
-inline zfauto ZFUIDialogDefaultAniHide(void) {
-    return ((ZFUIDialogDefaultAniHideCreator != zfnull) ? ZFUIDialogDefaultAniHideCreator() : ZFUIDialogDefaultAniHideCreatorDefault());
-}
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogDefaultAniHideCreator)
 
 // ============================================================
 // ZFUIDialog
@@ -83,7 +42,7 @@ zfclassFwd _ZFP_I_ZFUIDialogPrivate;
 /**
  * @brief basic dialog
  *
- * note, all dialog would be forced to hide (by #ZFUIDialog::dialogHideForce)
+ * note, all dialog would be forced to hide (by #ZFUIDialog::hideImmediately)
  * during #ZFFrameworkCleanup's #ZFLevelZFFrameworkLow step
  * for safe resource cleanup
  */
@@ -148,55 +107,55 @@ public:
     ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoDim, zftrue)
 
     /**
-     * @brief dialog's layout param, created by #ZFUIDialogDefaultLayoutParamCreator by default
+     * @brief dialog's layout param
      */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUILayoutParam>, dialogLayoutParam, ZFUIDialogDefaultLayoutParamCreator())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUILayoutParam>, layoutParam, ZFObjectCreator(ZFUIDialogDefaultLayoutParamCreator()))
 
     /**
-     * @brief dialog's show animation, #ZFUIDialogDefaultAniShowCreator by default
+     * @brief dialog's show animation
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, dialogAniShow, ZFUIDialogDefaultAniShowCreator())
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniShow, ZFObjectCreator(ZFUIDialogDefaultAniShowCreator()))
 
     /**
-     * @brief dialog's hide animation, #ZFUIDialogDefaultAniHideCreator by default
+     * @brief dialog's hide animation
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, dialogAniHide, ZFUIDialogDefaultAniHideCreator())
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniHide, ZFObjectCreator(ZFUIDialogDefaultAniHideCreator()))
 
     /**
      * @brief dialog's background image
      *
      * note that the #ZFUIImage::imageNinePatch would be used as dialog content's margin
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, dialogBackgroundImage, zfres("ZFUIWidget/ZFUIDialog_background.xml"))
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, dialogBackgroundImage)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, backgroundImage, zfres("ZFUIWidget/ZFUIDialog_background.xml"))
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, backgroundImage)
 
     /**
      * @brief whether automatically focus to dialog content, true by default
      *
      * focus would be done by #dialogFocusOnUpdate
      */
-    ZFPROPERTY_ASSIGN(zfbool, dialogFocusAutomatically, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, autoFocus, zftrue)
 
     /**
      * @brief whether hide when touched outside of the dialog, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, dialogHideWhenTouchOutside)
+    ZFPROPERTY_ASSIGN(zfbool, hideWhenTouchOutside)
 
     /**
      * @brief whether hide when clicked back or esc key, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, dialogHideWhenClickBack)
+    ZFPROPERTY_ASSIGN(zfbool, hideWhenClickBack)
 
     /**
      * @brief dialog content, null by default
      *
      * note that this content would be saved when serializing the dialog,
-     * subclass should use #ZFUIDialog::dialogInternalContainer to achieve additional logic,
+     * subclass should use #ZFUIDialog::dialogContainer to achieve additional logic,
      * which is internal view and won't be serialized
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, dialogView)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, dialogView)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, dialogView)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, content)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, content)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, content)
 
     /**
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
@@ -220,15 +179,15 @@ public:
     /**
      * @brief true if dialog is showing
      */
-    ZFMETHOD_DECLARE_0(zfbool, dialogShowing)
+    ZFMETHOD_DECLARE_0(zfbool, showing)
     /**
      * @brief show the dialog
      */
-    ZFMETHOD_DECLARE_0(void, dialogShow)
+    ZFMETHOD_DECLARE_0(void, show)
     /**
      * @brief hide the dialog
      */
-    ZFMETHOD_DECLARE_0(void, dialogHide)
+    ZFMETHOD_DECLARE_0(void, hide)
     /**
      * @brief stop any animation and hide the dialog immediately,
      *   usually used to destroy a dialog immediately
@@ -236,12 +195,12 @@ public:
      * this method would be called for all showing dialog
      * during #ZFFrameworkCleanup, see #ZFUIDialog for more info
      */
-    ZFMETHOD_DECLARE_0(void, dialogHideForce)
+    ZFMETHOD_DECLARE_0(void, hideImmediately)
     /**
      * @brief util method to attach click listener to specified button,
      *   which would simply hide the dialog
      */
-    ZFMETHOD_DECLARE_1(void, dialogApplyAutoHide
+    ZFMETHOD_DECLARE_1(void, autoHideForButton
             , ZFMP_IN(ZFUIButton *, button)
             )
 
@@ -255,18 +214,18 @@ public:
 
 protected:
     /**
-     * @brief the dialog content container which hold the #ZFUIDialog::dialogView
+     * @brief the dialog content container which hold the #ZFUIDialog::content
      *
-     * the #ZFUIDialog::dialogView is ensured te be added to this container as normal view\n
+     * the #ZFUIDialog::content is ensured te be added to this container as normal view\n
      * \n
      * for subclass to achieve additional logic,
      * you should add your own impl views to this container as normal view
      */
-    ZFMETHOD_DECLARE_0(ZFUIView *, dialogInternalContainer)
+    ZFMETHOD_DECLARE_0(ZFUIView *, dialogContainer)
     /**
-     * @brief the dialog background container which hold the #ZFUIDialog::dialogBackgroundImage
+     * @brief the dialog background container which hold the #ZFUIDialog::backgroundImage
      */
-    ZFMETHOD_DECLARE_0(ZFUIView *, dialogInternalBackgroundContainer)
+    ZFMETHOD_DECLARE_0(ZFUIView *, dialogBackgroundContainer)
 
 protected:
     /** @brief see #EventDialogBeforeShow */
@@ -291,7 +250,7 @@ protected:
      * return the view to focus, or null if nothing need to be focused\n
      * by default, dialog would try to find first focusable view to focus by #ZFUIViewFocusNextMove\n
      * you may override this method to supply custom focus logic\n
-     * note, this method won't be called if #dialogFocusAutomatically not set
+     * note, this method won't be called if #autoFocus not set
      */
     virtual zfanyT<ZFUIView> dialogFocusOnUpdate(void);
 

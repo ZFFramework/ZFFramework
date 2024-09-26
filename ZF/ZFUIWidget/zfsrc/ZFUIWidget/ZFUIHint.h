@@ -64,7 +64,7 @@ public:
 
 public:
     /**
-     * @brief the window to hold the #hintContent
+     * @brief the window to hold the #content
      *
      * by default, the window would:
      * -  have #ZFUIWindowLevel::e_ZFFrameworkFgHighest as #ZFUIWindow::windowLevel
@@ -72,8 +72,8 @@ public:
      * -  have #ZFUIGlobalStyle::itemSizeText as #ZFUIView::viewSizeMin
      * -  have #ZFUIWindow::windowLayoutParam as:
      *   -  #ZFUISizeParamWrapWrap as #ZFUILayoutParam::sizeParam
-     *   -  #ZFUIAlign::e_Center as #ZFUILayoutParam::layoutAlign
-     *   -  #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::layoutMargin
+     *   -  #ZFUIAlign::e_Center as #ZFUILayoutParam::align
+     *   -  #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::margin
      *
      * you should update the layout param of the hint window instead of the hint view,
      * and the hint view would be layouted according the hintWindow's layout param
@@ -84,27 +84,27 @@ public:
     /**
      * @brief the actual hint view
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, hintContent)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, hintContent)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, hintContent)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, content)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, content)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, content)
 
     /**
      * @brief hint duration in miliseconds, 0 to use #ZFUIHintDurationDefault, 0 by default
      *
-     * @note show and hide animation won't be included in #hintDuration
+     * @note show and hide animation won't be included in #duration
      */
-    ZFPROPERTY_ASSIGN(zftimet, hintDuration)
-    /** @brief util method to #hintDuration */
-    ZFMETHOD_DECLARE_0(zftimet, hintDurationFixed)
+    ZFPROPERTY_ASSIGN(zftimet, duration)
+    /** @brief util method to #duration */
+    ZFMETHOD_DECLARE_0(zftimet, durationFixed)
 
     /**
      * @brief the animation to show the hint, null by default
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, hintAniShow)
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniShow)
     /**
      * @brief the animation to hide the hint, null by default
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, hintAniHide)
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniHide)
 
     /**
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
@@ -122,25 +122,25 @@ public:
      * the hint object would be retained when show,
      * and would be released automatically after hide
      */
-    ZFMETHOD_DECLARE_0(void, hintShow)
+    ZFMETHOD_DECLARE_0(void, show)
     /**
      * @brief hide the hint with animation,
      *   do nothing if not showing,
      *   cancel show task if delaying
      */
-    ZFMETHOD_DECLARE_0(void, hintHide)
+    ZFMETHOD_DECLARE_0(void, hide)
     /**
-     * @brief whether the hint is showing or delaying, see #hintDelaying
+     * @brief whether the hint is showing or delaying, see #delaying
      */
-    ZFMETHOD_DECLARE_0(zfbool, hintShowing)
+    ZFMETHOD_DECLARE_0(zfbool, showing)
     /**
-     * @brief whether the hint is delaying, see #hintShowing
+     * @brief whether the hint is delaying, see #showing
      */
-    ZFMETHOD_DECLARE_0(zfbool, hintDelaying)
+    ZFMETHOD_DECLARE_0(zfbool, delaying)
     /**
      * @brief return the animation if animating, or null if not
      */
-    ZFMETHOD_DECLARE_0(ZFAnimation *, hintAnimating)
+    ZFMETHOD_DECLARE_0(ZFAnimation *, started)
 
 protected:
     /** @brief see #ZFUIHint::EventHintOnInit */
@@ -164,9 +164,9 @@ protected:
     zfoverride
     virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
-        if(this->hintContent() != zfnull) {
+        if(this->content() != zfnull) {
             ret += ", content: ";
-            this->hintContent()->objectInfoT(ret);
+            this->content()->objectInfoT(ret);
         }
     }
 

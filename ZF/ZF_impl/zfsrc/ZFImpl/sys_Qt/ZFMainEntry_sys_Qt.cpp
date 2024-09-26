@@ -86,7 +86,7 @@ zfindex ZFImpl_sys_Qt_BaseLayout::childCount(void) const {
 QGraphicsWidget *ZFImpl_sys_Qt_BaseLayout::childAt(ZF_IN zfindex index) const {
     return this->children[index];
 }
-void ZFImpl_sys_Qt_BaseLayout::childAdd(
+void ZFImpl_sys_Qt_BaseLayout::child(
         ZF_IN QGraphicsWidget *item
         , ZF_IN_OPT zfindex index /* = zfindexMax() */
         ) {

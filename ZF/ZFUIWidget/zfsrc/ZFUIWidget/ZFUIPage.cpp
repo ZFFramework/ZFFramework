@@ -237,15 +237,15 @@ public:
             pausePage->pageAni(zfnull);
             manager = pausePage->pageManager();
         }
-        if(resumePage != zfnull && resumePage->pageView()->viewParent() == zfnull) {
-            resumePage->pageManager()->pageContainer()->childAdd(resumePage->pageView())->c_sizeFill();
+        if(resumePage != zfnull && resumePage->pageView()->parent() == zfnull) {
+            resumePage->pageManager()->pageContainer()->child(resumePage->pageView())->c_sizeFill();
         }
 
         if(manager->d->resumeAni != zfnull) {
-            manager->d->resumeAni->aniStop();
+            manager->d->resumeAni->stop();
         }
         if(manager->d->pauseAni != zfnull) {
-            manager->d->pauseAni->aniStop();
+            manager->d->pauseAni->stop();
         }
 
         if(manager->d->managerDestroyRunning) {
@@ -308,7 +308,7 @@ public:
 
         if(pausePage != zfnull) {
             if(manager->d->pauseAni != zfnull) {
-                manager->d->pauseAni->aniTarget(pausePage->pageView());
+                manager->d->pauseAni->target(pausePage->pageView());
                 ZFLISTENER_4(aniOnStop
                         , ZFUIPage *, pausePage
                         , ZFUIPagePauseReasonEnum, pauseReason
@@ -321,12 +321,12 @@ public:
                 manager->d->pauseAni->observerAddForOnce(
                     ZFAnimation::EventAniOnStop(),
                     aniOnStop);
-                manager->d->pauseAni->aniStart();
+                manager->d->pauseAni->start();
             }
         }
 
         if(manager->d->resumeAni != zfnull) {
-            manager->d->resumeAni->aniTarget(resumePage->pageView());
+            manager->d->resumeAni->target(resumePage->pageView());
             ZFLISTENER_4(aniOnStop
                     , ZFUIPage *, resumePage
                     , ZFUIPageResumeReasonEnum, resumeReason
@@ -339,7 +339,7 @@ public:
             manager->d->resumeAni->observerAddForOnce(
                 ZFAnimation::EventAniOnStop(),
                 aniOnStop);
-            manager->d->resumeAni->aniStart();
+            manager->d->resumeAni->start();
         }
     }
     static void pageAniOnStart(
@@ -415,7 +415,7 @@ void ZFUIPageManager::managerOnCreate(void) {
     zfRetain(d->managerContainer);
     zfRetain(d->pageContainer);
 
-    d->managerContainer->childAdd(d->pageContainer)->c_sizeFill();
+    d->managerContainer->child(d->pageContainer)->c_sizeFill();
 }
 void ZFUIPageManager::managerOnDestroy(void) {
     zfRetainChange(d->pageContainer, zfnull);
@@ -471,8 +471,8 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
         ZFUIWindow *managerOwnerWindowTmp = d->managerOwnerWindow;
         d->managerOwnerWindow = zfnull;
         ZFObserverGroupRemove(this);
-        if(managerOwnerWindowTmp->windowShowing()) {
-            managerOwnerWindowTmp->windowHide();
+        if(managerOwnerWindowTmp->showing()) {
+            managerOwnerWindowTmp->hide();
         }
     }
 
@@ -492,13 +492,13 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerResumed) {
 }
 
 ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
-        , ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull)
+        , ZFMP_IN_OPT(ZFUISysWindow *, ownerSysWindow, zfnull)
         ) {
-    zfobj<ZFUIWindow> window(windowOwnerSysWindow);
+    zfobj<ZFUIWindow> window(ownerSysWindow);
     d->managerOwnerWindow = window;
 
     this->managerCreate();
-    window->childAdd(this->managerContainer())->c_sizeFill();
+    window->child(this->managerContainer())->c_sizeFill();
 
     ZFUIPageManager *owner = this;
 
@@ -529,8 +529,8 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
         .observerAdd(ZFUIWindow::EventObjectBeforeDealloc(), onDestroy)
         ;
 
-    window->windowShow();
-    if(window->windowOwnerSysWindow()->nativeWindowIsResumed()) {
+    window->show();
+    if(window->ownerSysWindow()->nativeWindowIsResumed()) {
         this->managerResume();
     }
     return d->managerOwnerWindow;

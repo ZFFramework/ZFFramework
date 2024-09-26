@@ -172,7 +172,7 @@ public:
      *   zfclass v_YourType : zfextend ZFTypeIdWrapper {
      *       ZFOBJECT_DECLARE(v_YourType, ZFTypeIdWrapper)
      *       ZFALLOC_CACHE_RELEASE({
-     *           cache->wrappedValueReset();
+     *           cache->zfvReset();
      *       })
      *   public:
      *       YourType zfv;
@@ -261,7 +261,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     zfclass ZFLIB_ v_##TypeName : zfextend ZFTypeIdWrapper { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper) \
         ZFALLOC_CACHE_RELEASE({ \
-            cache->wrappedValueReset(); \
+            cache->zfvReset(); \
         }) \
     public: \
         /** @brief the value, see #ZFTypeId::Value */ \
@@ -287,7 +287,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfoverride \
         virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref); \
         zfoverride \
-        virtual const zfstring &wrappedValueTypeId(void); \
+        virtual const zfstring &zfvTypeId(void); \
         zfoverride \
         virtual void *wrappedValue(void) {return &(this->zfv);} \
         zfoverride \
@@ -296,33 +296,33 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         virtual void wrappedValueCopy(ZF_IN void *v) {*(_ZFP_PropTypeW_##TypeName *)v = this->zfv;} \
     public: \
         zfoverride \
-        virtual void wrappedValueReset(void) { \
+        virtual void zfvReset(void) { \
             this->zfv = zftValue<_ZFP_PropTypeW_##TypeName>().zfv; \
         } \
         zfoverride \
-        virtual zfbool wrappedValueIsInit(void); \
+        virtual zfbool zfvIsInit(void); \
     public: \
         zfoverride \
         virtual zfbool wrappedValuePreferStringConverter(void); \
         zfoverride \
-        virtual zfbool wrappedValueFromData( \
+        virtual zfbool zfvFromData( \
                 ZF_IN const ZFSerializableData &serializableData \
                 , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
                 , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
                 ); \
         zfoverride \
-        virtual zfbool wrappedValueToData( \
+        virtual zfbool zfvToData( \
                 ZF_OUT ZFSerializableData &serializableData \
                 , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
                 ); \
         zfoverride \
-        virtual zfbool wrappedValueFromString( \
+        virtual zfbool zfvFromString( \
                 ZF_IN const zfchar *src \
                 , ZF_IN_OPT zfindex srcLen = zfindexMax() \
                 , ZF_OUT_OPT zfstring *errorHint = zfnull \
                 ); \
         zfoverride \
-        virtual zfbool wrappedValueToString( \
+        virtual zfbool zfvToString( \
                 ZF_IN_OUT zfstring &s \
                 , ZF_OUT_OPT zfstring *errorHint = zfnull \
                 ); \
@@ -357,7 +357,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             this->zfv = refTmp->zfv; \
         } \
     } \
-    const zfstring &v_##TypeName::wrappedValueTypeId(void) { \
+    const zfstring &v_##TypeName::zfvTypeId(void) { \
         return ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId(); \
     } \
     ZF_STATIC_REGISTER_INIT(TypeIdReg_##TypeName) { \
@@ -380,27 +380,27 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
         return preferStringConverter; \
     } \
-    zfbool v_##TypeName::wrappedValueFromData( \
+    zfbool v_##TypeName::zfvFromData( \
             ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
             ) { \
         return TypeName##FromDataT(this->zfv, serializableData, outErrorHint, outErrorPos); \
     } \
-    zfbool v_##TypeName::wrappedValueToData( \
+    zfbool v_##TypeName::zfvToData( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
         return TypeName##ToDataT(serializableData, this->zfv, outErrorHint); \
     } \
-    zfbool v_##TypeName::wrappedValueFromString( \
+    zfbool v_##TypeName::zfvFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         return TypeName##FromStringT(this->zfv, src, srcLen, errorHint); \
     } \
-    zfbool v_##TypeName::wrappedValueToString( \
+    zfbool v_##TypeName::zfvToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
@@ -411,7 +411,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueFromData( \
+    zfbool v_##TypeName::zfvFromData( \
             ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
@@ -420,7 +420,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             "registered type %s is not serializable", #TypeName); \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueToData( \
+    zfbool v_##TypeName::zfvToData( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
@@ -428,14 +428,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             "registered type %s is not serializable", #TypeName); \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueFromString( \
+    zfbool v_##TypeName::zfvFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueToString( \
+    zfbool v_##TypeName::zfvToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
@@ -448,14 +448,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     } \
     ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
         ZFTypeIdWrapper *t = zfcast(ZFTypeIdWrapper *, anotherObj); \
-        if(t == zfnull || !zfstringIsEqual(this->wrappedValueTypeId(), t->wrappedValueTypeId())) { \
+        if(t == zfnull || !zfstringIsEqual(this->zfvTypeId(), t->zfvTypeId())) { \
             return ZFCompareUncomparable; \
         } \
         else { \
             return ZFComparerDefault(this->zfv, *(_ZFP_PropTypeW_##TypeName *)t->wrappedValue()); \
         } \
     } \
-    zfbool v_##TypeName::wrappedValueIsInit(void) { \
+    zfbool v_##TypeName::zfvIsInit(void) { \
         return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropTypeW_##TypeName>().zfv) == ZFCompareEqual); \
     }
 
@@ -466,7 +466,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
         return this == anotherObj ? ZFCompareEqual : ZFCompareUncomparable; \
     } \
-    zfbool v_##TypeName::wrappedValueIsInit(void) { \
+    zfbool v_##TypeName::zfvIsInit(void) { \
         return zffalse; \
     }
 

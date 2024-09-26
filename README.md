@@ -55,16 +55,16 @@ ZFMAIN_ENTRY() { // app starts from here
 
     // show a window (full screen by default)
     zfobj<ZFUIWindow> window;
-    window->windowShow();
+    window->show();
 
     // show a hello world as a text view
     zfobj<ZFUITextView> textView;
-    window->childAdd(textView)->c_alignTop()->c_margin(40);
+    window->child(textView)->c_alignTop()->c_margin(40);
     textView->text("hello world");
 
     // button and click (as observer)
     zfobj<ZFUIButtonBasic> button;
-    window->childAdd(button)->c_alignBottom()->c_margin(40);
+    window->child(button)->c_alignBottom()->c_margin(40);
     button->label()->text("click me");
     button->onClick([](const ZFArgs &zfargs) {
         ZFUIButtonBasic *button = zfargs.sender();
@@ -83,14 +83,14 @@ this piece of code shows equivalent lua code to use ZFFramework,
 ZFLog('hello world')
 
 local window = ZFUIWindow()
-window:windowShow()
+window:show()
 
 local textView = zfAlloc('ZFUITextView')
-window:childAdd(textView):alignTop():margin(40)
+window:child(textView):alignTop():margin(40)
 textView:text('hello wolrd')
 
 local button = ZFUIButtonBasic.ClassData():newInstance()
-window:childAdd(button):alignBottom():margin(40)
+window:child(button):alignBottom():margin(40)
 button:label():text('click me')
 button:onClick(
     function (zfargs)

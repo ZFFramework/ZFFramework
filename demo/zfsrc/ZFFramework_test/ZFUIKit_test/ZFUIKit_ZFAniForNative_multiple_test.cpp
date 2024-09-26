@@ -18,32 +18,32 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIView> view;
-        container->childAdd(view)->c_alignCenter();
+        container->child(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeCreate(80, 60));
-        view->viewBackgroundColor(ZFUIColorRandom());
+        view->backgroundColor(ZFUIColorRandom());
 
         ZFLISTENER_1(startOnClick
                 , ZFUIView *, view
                 ) {
             zfobj<ZFAniGroup> aniGroup;
-            aniGroup->aniTarget(view);
+            aniGroup->target(view);
 
             zfobj<ZFAniForNative> ani0;
             aniGroup->child(ani0);
-            ani0->aniTranslateXTo(view->viewWidth());
-            ani0->aniDuration(3000);
+            ani0->translateXTo(view->width());
+            ani0->duration(3000);
 
             zfobj<ZFAniForNative> ani1;
             aniGroup->child(ani1);
-            ani1->aniRotateZTo(180);
-            ani1->aniDuration(3000);
+            ani1->rotateZTo(180);
+            ani1->duration(3000);
 
-            aniGroup->aniStart();
+            aniGroup->start();
         } ZFLISTENER_END()
         zfobj<ZFUIKit_test_Button> startButton;
         startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
-        container->childAdd(startButton)->c_alignRightTop();
+        container->child(startButton)->c_alignRightTop();
     }
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFAniForNative_multiple_test)

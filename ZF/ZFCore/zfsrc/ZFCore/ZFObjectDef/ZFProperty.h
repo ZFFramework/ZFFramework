@@ -45,26 +45,26 @@ public:
     /**
      * @brief internal property id, for debug use only
      */
-    inline const zfstring &propertyInternalId(void) const {
-        return this->_ZFP_ZFProperty_propertyInternalId;
+    inline const zfstring &propertyId(void) const {
+        return this->_ZFP_ZFProperty_propertyId;
     }
     /**
      * @brief true if this property is registered by #ZFPropertyUserRegisterRetain
      */
-    inline zfbool propertyIsUserRegister(void) const {
-        return this->_ZFP_ZFProperty_propertyIsUserRegister;
+    inline zfbool isUserRegister(void) const {
+        return this->_ZFP_ZFProperty_isUserRegister;
     }
     /**
      * @brief true if this property is registered by #ZFPropertyDynamicRegister
      */
-    inline zfbool propertyIsDynamicRegister(void) const {
-        return this->_ZFP_ZFProperty_propertyIsDynamicRegister;
+    inline zfbool isDynamicRegister(void) const {
+        return this->_ZFP_ZFProperty_isDynamicRegister;
     }
     /**
      * @brief see #ZFPropertyDynamicRegister
      */
-    inline zfany propertyDynamicRegisterUserData(void) const {
-        return this->_ZFP_ZFProperty_propertyDynamicRegisterUserData;
+    inline zfany dynamicRegisterUserData(void) const {
+        return this->_ZFP_ZFProperty_dynamicRegisterUserData;
     }
     /**
      * @brief true if the property is serializable
@@ -81,8 +81,8 @@ public:
     /**
      * @brief get the property's owner class
      */
-    inline const ZFClass *propertyOwnerClass(void) const {
-        return this->_ZFP_ZFProperty_propertyOwnerClass;
+    inline const ZFClass *ownerClass(void) const {
+        return this->_ZFP_ZFProperty_ownerClass;
     }
     /**
      * @brief name for the property
@@ -131,7 +131,7 @@ public:
      * note that bool property is also a assign property,
      * it also have a getter method named "propertyName"
      */
-    inline zfbool propertyIsRetainProperty(void) const {
+    inline zfbool isRetainProperty(void) const {
         return (this->_ZFP_ZFProperty_propertyClassOfRetainProperty != zfnull);
     }
     /**
@@ -161,10 +161,10 @@ public:
     ~ZFProperty(void);
     /** @endcond */
     void _ZFP_ZFPropertyInit(
-            ZF_IN zfbool propertyIsUserRegister
-            , ZF_IN zfbool propertyIsDynamicRegister
-            , ZF_IN ZFObject *propertyDynamicRegisterUserData
-            , ZF_IN const ZFClass *propertyOwnerClass
+            ZF_IN zfbool isUserRegister
+            , ZF_IN zfbool isDynamicRegister
+            , ZF_IN ZFObject *dynamicRegisterUserData
+            , ZF_IN const ZFClass *ownerClass
             , ZF_IN const zfstring &name
             , ZF_IN const zfstring &typeName
             , ZF_IN const zfstring &typeIdName
@@ -179,12 +179,12 @@ public:
     }
 public:
     zfuint _ZFP_ZFProperty_refCount;
-    zfbool _ZFP_ZFProperty_propertyIsUserRegister;
-    zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
-    zfstring _ZFP_ZFProperty_propertyInternalId;
-    ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
-    ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper;
-    const ZFClass *_ZFP_ZFProperty_propertyOwnerClass;
+    zfbool _ZFP_ZFProperty_isUserRegister;
+    zfbool _ZFP_ZFProperty_isDynamicRegister;
+    zfstring _ZFP_ZFProperty_propertyId;
+    ZFObject *_ZFP_ZFProperty_dynamicRegisterUserData;
+    ZFObject *_ZFP_ZFProperty_dynamicRegisterUserDataWrapper;
+    const ZFClass *_ZFP_ZFProperty_ownerClass;
     ZFSigName _ZFP_ZFProperty_name;
     ZFSigName _ZFP_ZFProperty_typeName;
     ZFSigName _ZFP_ZFProperty_typeId;
@@ -219,10 +219,10 @@ inline ZFCoreArray<const ZFProperty *> ZFPropertyGetAll(ZF_IN_OPT const ZFFilter
 
 // ============================================================
 extern ZFLIB_ZFCore ZFProperty *_ZFP_ZFPropertyRegister(
-        ZF_IN zfbool propertyIsUserRegister
-        , ZF_IN zfbool propertyIsDynamicRegister
-        , ZF_IN ZFObject *propertyDynamicRegisterUserData
-        , ZF_IN const ZFClass *propertyOwnerClass
+        ZF_IN zfbool isUserRegister
+        , ZF_IN zfbool isDynamicRegister
+        , ZF_IN ZFObject *dynamicRegisterUserData
+        , ZF_IN const ZFClass *ownerClass
         , ZF_IN const zfstring &name
         , ZF_IN const zfstring &typeName
         , ZF_IN const zfstring &typeIdName
@@ -244,10 +244,10 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *prope
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFPropertyRegisterHolder {
 public:
     _ZFP_ZFPropertyRegisterHolder(
-            ZF_IN zfbool propertyIsUserRegister
-            , ZF_IN zfbool propertyIsDynamicRegister
-            , ZF_IN ZFObject *propertyDynamicRegisterUserData
-            , ZF_IN const ZFClass *propertyOwnerClass
+            ZF_IN zfbool isUserRegister
+            , ZF_IN zfbool isDynamicRegister
+            , ZF_IN ZFObject *dynamicRegisterUserData
+            , ZF_IN const ZFClass *ownerClass
             , ZF_IN const zfstring &name
             , ZF_IN const zfstring &typeName
             , ZF_IN const zfstring &typeIdName
@@ -265,10 +265,10 @@ public:
             , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
             )
     : propertyInfo(_ZFP_ZFPropertyRegister(
-        propertyIsUserRegister
-        , propertyIsDynamicRegister
-        , propertyDynamicRegisterUserData
-        , propertyOwnerClass
+        isUserRegister
+        , isDynamicRegister
+        , dynamicRegisterUserData
+        , ownerClass
         , name
         , typeName
         , typeIdName

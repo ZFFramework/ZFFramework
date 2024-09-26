@@ -17,7 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUITextView> view;
-        container->childAdd(view)->c_alignCenter();
+        container->child(view)->c_alignCenter();
         view->text("test text");
 
         this->prepareSettingButton(window);

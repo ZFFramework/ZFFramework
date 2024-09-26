@@ -233,29 +233,29 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Decode
 // ============================================================
 ZFOBJECT_REGISTER(ZFBase64)
 
-ZFMETHOD_DEFINE_1(ZFBase64, zfindex, base64EncodeCalcSize
+ZFMETHOD_DEFINE_1(ZFBase64, zfindex, encodeCalcSize
         , ZFMP_IN(zfindex, srcLen)
         ) {
-    return ZFBase64EncodeCalcSize(srcLen, this->base64LineBreakPos());
+    return ZFBase64EncodeCalcSize(srcLen, this->lineBreakPos());
 }
-ZFMETHOD_DEFINE_3(ZFBase64, zfbool, base64Encode
+ZFMETHOD_DEFINE_3(ZFBase64, zfbool, encode
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
         ) {
-    return ZFBase64Encode(output, input, outResultSize, this->base64Table(), this->base64Pad(), this->base64LineBreakPos());
+    return ZFBase64Encode(output, input, outResultSize, this->table(), this->pad(), this->lineBreakPos());
 }
-ZFMETHOD_DEFINE_1(ZFBase64, zfindex, base64DecodeCalcSize
+ZFMETHOD_DEFINE_1(ZFBase64, zfindex, decodeCalcSize
         , ZFMP_IN(zfindex, srcLen)
         ) {
-    return ZFBase64DecodeCalcSize(srcLen, this->base64LineBreakPos());
+    return ZFBase64DecodeCalcSize(srcLen, this->lineBreakPos());
 }
-ZFMETHOD_DEFINE_3(ZFBase64, zfbool, base64Decode
+ZFMETHOD_DEFINE_3(ZFBase64, zfbool, decode
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
         ) {
-    return ZFBase64Decode(output, input, outResultSize, this->base64Table(), this->base64Pad());
+    return ZFBase64Decode(output, input, outResultSize, this->table(), this->pad());
 }
 
 ZF_NAMESPACE_GLOBAL_END

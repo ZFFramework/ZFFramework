@@ -43,12 +43,12 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, nativeWebViewTmp);
     }
 
-    virtual void webLoadUrl(
+    virtual void loadUrl(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *url
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webLoadUrl",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_loadUrl",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
@@ -60,13 +60,13 @@ public:
             , urlTmp
             );
     }
-    virtual void webLoadHtml(
+    virtual void loadHtml(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *html
             , ZF_IN_OPT const zfchar *baseUrl = zfnull
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webLoadHtml",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_loadHtml",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
@@ -82,9 +82,9 @@ public:
             , baseUrlTmp
             );
     }
-    virtual void webReload(ZF_IN ZFUIWebView *webView) {
+    virtual void reload(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webReload",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_reload",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
@@ -92,30 +92,9 @@ public:
             , (jobject)webView->nativeImplView()
             );
     }
-    virtual void webLoadStop(ZF_IN ZFUIWebView *webView) {
+    virtual void loadStop(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webLoadStop",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_object_Object())
-            ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId
-            , (jobject)webView->nativeImplView()
-            );
-    }
-
-    virtual void webGoBack(ZF_IN ZFUIWebView *webView) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webGoBack",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_object_Object())
-            ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId
-            , (jobject)webView->nativeImplView()
-            );
-    }
-    virtual void webGoForward(ZF_IN ZFUIWebView *webView) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webGoForward",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_loadStop",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
@@ -124,9 +103,30 @@ public:
             );
     }
 
-    virtual zfbool webLoading(ZF_IN ZFUIWebView *webView) {
+    virtual void goBack(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webLoading",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_goBack",
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+            ).c_str());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId
+            , (jobject)webView->nativeImplView()
+            );
+    }
+    virtual void goForward(ZF_IN ZFUIWebView *webView) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_goForward",
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+            ).c_str());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId
+            , (jobject)webView->nativeImplView()
+            );
+    }
+
+    virtual zfbool loading(ZF_IN ZFUIWebView *webView) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_loading",
             JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
@@ -134,9 +134,9 @@ public:
             , (jobject)webView->nativeImplView()
             );
     }
-    virtual zfbool webGoBackAvailable(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool goBackAvailable(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webGoBackAvailable",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_goBackAvailable",
             JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
@@ -144,9 +144,9 @@ public:
             , (jobject)webView->nativeImplView()
             );
     }
-    virtual zfbool webGoForwardAvailable(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool goForwardAvailable(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_webGoForwardAvailable",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_goForwardAvailable",
             JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());

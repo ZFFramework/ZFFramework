@@ -20,29 +20,29 @@ protected:
 
         {
             ZFRegExpResult result;
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("find:");
+            this->outputSeparator();
+            this->output("find:");
             regexp->find(result, stringFrom);
-            this->testCaseOutput(zfstr("  pattern    : %s", patternFrom));
-            this->testCaseOutput(zfstr("  string     : %s", stringFrom));
-            this->testCaseOutput(zfstr("  result     : %s", result));
-            this->testCaseOutput(zfstr("  named group: %s", regexp->namedGroupIndexForName("n0")));
+            this->output(zfstr("  pattern    : %s", patternFrom));
+            this->output(zfstr("  string     : %s", stringFrom));
+            this->output(zfstr("  result     : %s", result));
+            this->output(zfstr("  named group: %s", regexp->namedGroupIndexForName("n0")));
         }
 
         {
             ZFRegExpResult result;
             zfstring stringTo;
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("replace:");
+            this->outputSeparator();
+            this->output("replace:");
             regexp->replace(stringTo, result, patternTo, stringFrom);
-            this->testCaseOutput(zfstr("  pattern from: %s", patternFrom));
-            this->testCaseOutput(zfstr("  pattern to  : %s", patternTo));
-            this->testCaseOutput(zfstr("  string  from: %s", stringFrom));
-            this->testCaseOutput(zfstr("  string  to  : %s", stringTo));
-            this->testCaseOutput(zfstr("  match result: %s", result));
-            this->testCaseOutput(zfstr("  named group: %s", regexp->namedGroupIndexForName("n0")));
+            this->output(zfstr("  pattern from: %s", patternFrom));
+            this->output(zfstr("  pattern to  : %s", patternTo));
+            this->output(zfstr("  string  from: %s", stringFrom));
+            this->output(zfstr("  string  to  : %s", stringTo));
+            this->output(zfstr("  match result: %s", result));
+            this->output(zfstr("  named group: %s", regexp->namedGroupIndexForName("n0")));
         }
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFAlgorithm_ZFRegExp_test)

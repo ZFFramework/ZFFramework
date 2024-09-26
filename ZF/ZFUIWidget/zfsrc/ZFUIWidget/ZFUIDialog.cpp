@@ -5,30 +5,34 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator = ZFUIDialogDefaultLayoutParamCreatorDefault;
-zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void) {
-    zfobj<ZFUILayoutParam> lp;
-    lp->layoutAlign(ZFUIAlign::e_Center);
-    lp->layoutMargin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
-    return lp;
-}
-ZFObjectCreator ZFUIDialogDefaultAniShowCreator = ZFUIDialogDefaultAniShowCreatorDefault;
-zfauto ZFUIDialogDefaultAniShowCreatorDefault(void) {
-    return ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1));
-}
-ZFObjectCreator ZFUIDialogDefaultAniHideCreator = ZFUIDialogDefaultAniHideCreatorDefault;
-zfauto ZFUIDialogDefaultAniHideCreatorDefault(void) {
-    return ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
-}
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogDefaultLayoutParamCreator, zfnull)
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogDefaultAniShowCreator, zfnull)
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogDefaultAniHideCreator, zfnull)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultCreatorReset, ZFLevelZFFrameworkNormal) {
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultConfig, ZFLevelZFFrameworkHigh) {
+    {
+        ZFLISTENER(impl) {
+            zfobj<ZFUILayoutParam> lp;
+            lp->align(ZFUIAlign::e_Center);
+            lp->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
+            zfargs.result(lp);
+        } ZFLISTENER_END()
+        ZFUIDialogDefaultLayoutParamCreator(impl);
+    }
+    {
+        ZFLISTENER(impl) {
+            zfargs.result(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+        } ZFLISTENER_END()
+        ZFUIDialogDefaultAniShowCreator(impl);
+    }
+    {
+        ZFLISTENER(impl) {
+            zfargs.result(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
+        } ZFLISTENER_END()
+        ZFUIDialogDefaultAniHideCreator(impl);
+    }
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIDialogDefaultCreatorReset) {
-    ZFUIDialogDefaultLayoutParamCreator = ZFUIDialogDefaultLayoutParamCreatorDefault;
-    ZFUIDialogDefaultAniShowCreator = ZFUIDialogDefaultAniShowCreatorDefault;
-    ZFUIDialogDefaultAniHideCreator = ZFUIDialogDefaultAniHideCreatorDefault;
-}
-ZF_GLOBAL_INITIALIZER_END(ZFUIDialogDefaultCreatorReset)
+ZF_GLOBAL_INITIALIZER_END(ZFUIDialogDefaultConfig)
 
 // ============================================================
 // ZFUIDialog
@@ -41,8 +45,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIDialogAllDialog) {
     ZFCoreArray<ZFUIDialog *> tmp;
     tmp.copyFrom(this->allDialog);
     for(zfindex i = 0; i < tmp.count(); ++i) {
-        if(tmp[i]->dialogShowing()) {
-            tmp[i]->dialogHideForce();
+        if(tmp[i]->showing()) {
+            tmp[i]->hideImmediately();
         }
     }
 }
@@ -57,8 +61,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIDialogAutoHide) {
     ZFCoreArray<ZFUIDialog *> tmp;
     tmp.copyFrom(_ZFP_ZFUIDialogAllDialog);
     for(zfindex i = 0; i < tmp.count(); ++i) {
-        if(tmp[i]->dialogShowing()) {
-            tmp[i]->dialogHideForce();
+        if(tmp[i]->showing()) {
+            tmp[i]->hideImmediately();
         }
     }
 }
@@ -74,8 +78,8 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAutoHide)
  *   dialogClickMask (internal bg, focused if dialogContainer has no focusable child)
  *   _ZFP_ZFUIDialogContentHolder (Ui disable, supply layout logic)
  *   ^ dialogBg
- *     ^ dialogContainer (dialogInternalContainer)
- *       ^ dialogView
+ *     ^ dialogContainer (dialogContainer)
+ *       ^ content
  *         subclass impl views
  */
 zfclass _ZFP_I_ZFUIDialogPrivate : zfextend ZFUIWindow {
@@ -102,7 +106,7 @@ protected:
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
         if(this->pimplOwner->sysWindowMarginShouldApply()) {
-            zfsuper::layoutOnLayout(ZFUIRectApplyMargin(bounds, this->windowOwnerSysWindow()->sysWindowMargin()));
+            zfsuper::layoutOnLayout(ZFUIRectApplyMargin(bounds, this->ownerSysWindow()->sysWindowMargin()));
         }
         else {
             zfsuper::layoutOnLayout(bounds);
@@ -110,18 +114,18 @@ protected:
     }
 
 public:
-    void aniStop(void) {
+    void stop(void) {
         if(this->dialogWindowAniShow != zfnull) {
-            this->dialogWindowAniShow->aniStop();
+            this->dialogWindowAniShow->stop();
         }
         if(this->dialogWindowAniHide != zfnull) {
-            this->dialogWindowAniHide->aniStop();
+            this->dialogWindowAniHide->stop();
         }
-        if(this->pimplOwner->dialogAniShow() != zfnull) {
-            this->pimplOwner->dialogAniShow()->aniStop();
+        if(this->pimplOwner->aniShow() != zfnull) {
+            this->pimplOwner->aniShow()->stop();
         }
-        if(this->pimplOwner->dialogAniHide() != zfnull) {
-            this->pimplOwner->dialogAniHide()->aniStop();
+        if(this->pimplOwner->aniHide() != zfnull) {
+            this->pimplOwner->aniHide()->stop();
         }
     }
 
@@ -129,35 +133,35 @@ public:
     ZFMETHOD_INLINE_1(void, dialogClickMaskOnClick
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        if(this->pimplOwner->dialogHideWhenTouchOutside()) {
-            this->pimplOwner->dialogHide();
+        if(this->pimplOwner->hideWhenTouchOutside()) {
+            this->pimplOwner->hide();
         }
     }
     ZFMETHOD_INLINE_1(void, aniShowOnStop
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        if(!this->dialogWindowAniShow->aniRunning()
-                && !this->dialogWindowAniHide->aniRunning()
-                && (this->pimplOwner->dialogAniShow() == zfnull || !this->pimplOwner->dialogAniShow()->aniRunning())
-                && (this->pimplOwner->dialogAniHide() == zfnull || !this->pimplOwner->dialogAniHide()->aniRunning())
+        if(!this->dialogWindowAniShow->started()
+                && !this->dialogWindowAniHide->started()
+                && (this->pimplOwner->aniShow() == zfnull || !this->pimplOwner->aniShow()->started())
+                && (this->pimplOwner->aniHide() == zfnull || !this->pimplOwner->aniHide()->started())
                 ) {
             this->viewUIEnableTree(zftrue);
             ZFUIViewBlinkWhenFocusAutoApplyPause();
-            if(this->pimplOwner->dialogFocusAutomatically()) {
+            if(this->pimplOwner->autoFocus()) {
                 zfanyT<ZFUIView> v = this->pimplOwner->dialogFocusOnUpdate();
                 if(this->pimplOwner->observerHasAdd(ZFUIDialog::EventDialogFocusOnUpdate())) {
                     zfobj<ZFObjectHolder> param0(v);
                     this->pimplOwner->observerNotify(ZFUIDialog::EventDialogFocusOnUpdate(), param0);
                 }
                 if(v != zfnull) {
-                    v->viewFocusRequest(zftrue);
+                    v->focusRequest(zftrue);
                 }
                 else {
-                    this->dialogClickMask->viewFocusRequest(zftrue);
+                    this->dialogClickMask->focusRequest(zftrue);
                 }
             }
             else {
-                this->dialogClickMask->viewFocusRequest(zftrue);
+                this->dialogClickMask->focusRequest(zftrue);
             }
             ZFUIViewBlinkWhenFocusAutoApplyResume();
             this->pimplOwner->dialogAfterShow();
@@ -166,13 +170,13 @@ public:
     ZFMETHOD_INLINE_1(void, aniHideOnStop
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        if(!this->dialogWindowAniShow->aniRunning()
-                && !this->dialogWindowAniHide->aniRunning()
-                && (this->pimplOwner->dialogAniShow() == zfnull || !this->pimplOwner->dialogAniShow()->aniRunning())
-                && (this->pimplOwner->dialogAniHide() == zfnull || !this->pimplOwner->dialogAniHide()->aniRunning())
+        if(!this->dialogWindowAniShow->started()
+                && !this->dialogWindowAniHide->started()
+                && (this->pimplOwner->aniShow() == zfnull || !this->pimplOwner->aniShow()->started())
+                && (this->pimplOwner->aniHide() == zfnull || !this->pimplOwner->aniHide()->started())
                 ) {
             this->viewUIEnableTree(zftrue);
-            this->windowHide();
+            this->hide();
             this->pimplOwner->dialogAfterHide();
             zfRelease(this->pimplOwner);
         }
@@ -180,29 +184,41 @@ public:
 
 public:
     void layoutDialogPrepare(ZF_IN const ZFUIRect &bounds) {
-        if(this->pimplOwner->dialogBackgroundImage() != zfnull) {
-            this->dialogContainer->layoutParam()->layoutMargin(this->pimplOwner->dialogBackgroundImage()->imageNinePatch());
+        if(this->pimplOwner->backgroundImage() != zfnull) {
+            this->dialogContainer->layoutParam()->margin(this->pimplOwner->backgroundImage()->imageNinePatch());
         }
     }
     void layoutDialog(ZF_IN const ZFUIRect &bounds) {
-        ZFUIMargin dialogMargin = this->pimplOwner->dialogLayoutParam()->layoutMargin();
-        const ZFUIMargin &contentMargin = this->dialogContainer->layoutParam()->layoutMargin();
+        ZFUIMargin margin;
+        ZFUISizeParam sizeParam;
+        ZFUIAlignFlags align;
+        if(this->pimplOwner->layoutParam()) {
+            margin = this->pimplOwner->layoutParam()->margin();
+            sizeParam = this->pimplOwner->layoutParam()->sizeParam();
+            align = this->pimplOwner->layoutParam()->align();
+        }
+        else {
+            margin = ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin());
+            sizeParam = ZFUISizeParamWrapWrap();
+            align = ZFUIAlign::e_Center;
+        }
+        const ZFUIMargin &contentMargin = this->dialogContainer->layoutParam()->margin();
 
-        ZFUIMargin totalMargin = ZFUIMarginInc(dialogMargin, contentMargin);
+        ZFUIMargin totalMargin = ZFUIMarginInc(margin, contentMargin);
 
         this->dialogContainer->layoutMeasure(
             ZFUISizeApplyMargin(ZFUIRectGetSize(bounds), totalMargin),
-            this->pimplOwner->dialogLayoutParam()->sizeParam());
+            sizeParam);
         ZFUISize dialogContainerSize = this->dialogContainer->layoutMeasuredSize();
 
         ZFUISize dialogBgSize = dialogContainerSize;
         dialogBgSize.width += ZFUIMarginGetWidth(contentMargin);
         dialogBgSize.height += ZFUIMarginGetHeight(contentMargin);
         this->dialogBg->viewFrame(ZFUIAlignApply(
-            this->pimplOwner->dialogLayoutParam()->layoutAlign(),
+            align,
             bounds,
             dialogBgSize,
-            dialogMargin));
+            margin));
     }
 
     // event handle
@@ -212,8 +228,8 @@ protected:
         // dialog would always resolve key event
         keyEvent->eventResolved(zftrue);
 
-        if(!this->pimplOwner->dialogHideWhenClickBack()
-                || keyEvent->keyAction != ZFUIKeyAction::e_KeyUp
+        if(!this->pimplOwner->hideWhenClickBack()
+                || keyEvent->keyAction != ZFUIKeyAction::e_Up
                 ) {
             return;
         }
@@ -221,7 +237,7 @@ protected:
         switch(keyEvent->keyCode) {
             case ZFUIKeyCode::e_kPhoneBack:
             case ZFUIKeyCode::e_kEsc:
-                this->pimplOwner->dialogHide();
+                this->pimplOwner->hide();
                 break;
             default:
                 break;
@@ -262,19 +278,19 @@ ZFEVENT_REGISTER(ZFUIDialog, DialogAfterHide)
 ZFEVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, dialogWindowColor) {
-    d->dialogWindowBg->viewBackgroundColor(this->dialogWindowColor());
+    d->dialogWindowBg->backgroundColor(this->dialogWindowColor());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIImage>, dialogBackgroundImage) {
-    d->dialogBg->image(this->dialogBackgroundImage());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIImage>, backgroundImage) {
+    d->dialogBg->image(this->backgroundImage());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, dialogView) {
-    if(this->dialogView() != zfnull) {
-        d->dialogContainer->childAdd(this->dialogView())->c_alignCenter();
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, content) {
+    if(this->content() != zfnull) {
+        d->dialogContainer->child(this->content())->c_alignCenter();
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, dialogView) {
-    if(this->dialogView() != zfnull) {
-        d->dialogContainer->childRemove(this->dialogView());
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, content) {
+    if(this->content() != zfnull) {
+        d->dialogContainer->childRemove(this->content());
     }
 }
 
@@ -295,16 +311,16 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIOnScreenKeyboardAutoFitLayout *, dialogWindowA
     return d->dialogContainer;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIDialog, zfbool, dialogShowing) {
-    return d->windowShowing();
+ZFMETHOD_DEFINE_0(ZFUIDialog, zfbool, showing) {
+    return d->showing();
 }
-ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogShow) {
-    if(d->windowShowing()) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, void, show) {
+    if(d->showing()) {
         return;
     }
     zfRetain(this);
-    d->aniStop();
-    d->windowShow();
+    d->stop();
+    d->show();
 
     if(this->dialogWindowAutoResize()) {
         ZFUIOnScreenKeyboardAutoResizeStart(this->dialogWindow());
@@ -313,26 +329,26 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogShow) {
     d->viewUIEnableTree(zffalse);
     this->dialogBeforeShow();
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
-        d->dialogWindowAniShow->aniTarget(d->dialogWindowBg);
+        d->dialogWindowAniShow->target(d->dialogWindowBg);
         d->dialogWindowAniShow->observerAddForOnce(
             ZFAnimation::EventAniOnStop(),
             d->aniShowOnStopListener);
-        d->dialogWindowAniShow->aniStart();
+        d->dialogWindowAniShow->start();
     }
-    if(this->dialogAniShow() != zfnull) {
-        this->dialogAniShow()->aniTarget(d->dialogBg);
-        this->dialogAniShow()->observerAddForOnce(
+    if(this->aniShow() != zfnull) {
+        this->aniShow()->target(d->dialogBg);
+        this->aniShow()->observerAddForOnce(
             ZFAnimation::EventAniOnStop(),
             d->aniShowOnStopListener);
-        this->dialogAniShow()->aniStart();
+        this->aniShow()->start();
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogHide) {
-    if(!d->windowShowing()) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, void, hide) {
+    if(!d->showing()) {
         return;
     }
-    d->aniStop();
-    if(!d->windowShowing()) {
+    d->stop();
+    if(!d->showing()) {
         return;
     }
 
@@ -343,34 +359,34 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogHide) {
     d->viewUIEnableTree(zffalse);
     this->dialogBeforeHide();
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
-        d->dialogWindowAniHide->aniTarget(d->dialogWindowBg);
+        d->dialogWindowAniHide->target(d->dialogWindowBg);
         d->dialogWindowAniHide->observerAddForOnce(
             ZFAnimation::EventAniOnStop(),
             d->aniHideOnStopListener);
-        d->dialogWindowAniHide->aniStart();
+        d->dialogWindowAniHide->start();
     }
-    if(this->dialogAniHide() != zfnull) {
-        this->dialogAniHide()->aniTarget(d->dialogBg);
-        this->dialogAniHide()->observerAddForOnce(
+    if(this->aniHide() != zfnull) {
+        this->aniHide()->target(d->dialogBg);
+        this->aniHide()->observerAddForOnce(
             ZFAnimation::EventAniOnStop(),
             d->aniHideOnStopListener);
-        this->dialogAniHide()->aniStart();
+        this->aniHide()->start();
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogHideForce) {
-    if(d->windowShowing()) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, void, hideImmediately) {
+    if(d->showing()) {
         zfRetain(this);
-        d->aniStop();
-        if(d->windowShowing()) {
+        d->stop();
+        if(d->showing()) {
             this->dialogBeforeHide();
-            d->windowHide();
+            d->hide();
             this->dialogAfterHide();
         }
         zfRelease(this);
     }
 }
 
-ZFMETHOD_DEFINE_1(ZFUIDialog, void, dialogApplyAutoHide
+ZFMETHOD_DEFINE_1(ZFUIDialog, void, autoHideForButton
         , ZFMP_IN(ZFUIButton *, button)
         ) {
     if(button == zfnull) {
@@ -380,7 +396,7 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, dialogApplyAutoHide
     ZFLISTENER_1(buttonOnClick
             , ZFUIDialog *, owner
             ) {
-        owner->dialogHide();
+        owner->hide();
     } ZFLISTENER_END()
     button->observerAdd(
             ZFUIButton::EventButtonOnClick(),
@@ -393,15 +409,15 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIWindow *, dialogWindow) {
     return d;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIView *, dialogInternalContainer) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIView *, dialogContainer) {
     return d->dialogContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIView *, dialogInternalBackgroundContainer) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIView *, dialogBackgroundContainer) {
     return d->dialogBg;
 }
 
 zfanyT<ZFUIView> ZFUIDialog::dialogFocusOnUpdate(void) {
-    return ZFUIViewFocusNextMove(this->dialogInternalContainer(),
+    return ZFUIViewFocusNextMove(this->dialogContainer(),
         ZFUIViewFocusNextParam().focusDirection(ZFUIOrientation::e_Left | ZFUIOrientation::e_Top));
 }
 
@@ -419,26 +435,26 @@ void ZFUIDialog::objectOnInit(void) {
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
 
     zfobj<_ZFP_ZFUIDialogContentHolder> dialogContentHolder;
-    d->childAdd(dialogContentHolder)->c_sizeFill();
+    d->child(dialogContentHolder)->c_sizeFill();
     dialogContentHolder->pimplOwner = d;
     dialogContentHolder->viewUIEnable(zffalse);
 
     d->dialogBg = zfAlloc(ZFUIImageView);
-    dialogContentHolder->childAdd(d->dialogBg);
+    dialogContentHolder->child(d->dialogBg);
     d->dialogBg->viewUIEnableTree(zftrue);
     d->dialogBg->viewUIEnable(zftrue);
 
     d->dialogContainer = zfAlloc(ZFUIOnScreenKeyboardAutoFitLayout);
-    d->dialogBg->childAdd(d->dialogContainer)->c_sizeFill();
+    d->dialogBg->child(d->dialogContainer)->c_sizeFill();
 
-    d->dialogWindowAniShow = zfRetain(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
-    d->dialogWindowAniHide = zfRetain(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
+    d->dialogWindowAniShow = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+    d->dialogWindowAniHide = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
 
     d->aniShowOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniShowOnStop));
     d->aniHideOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniHideOnStop));
 
-    d->dialogWindowBg->viewBackgroundColor(this->dialogWindowColor());
-    d->dialogBg->image(this->dialogBackgroundImage());
+    d->dialogWindowBg->backgroundColor(this->dialogWindowColor());
+    d->dialogBg->image(this->backgroundImage());
 
     _ZFP_ZFUIDialogAllDialog.add(this);
 }

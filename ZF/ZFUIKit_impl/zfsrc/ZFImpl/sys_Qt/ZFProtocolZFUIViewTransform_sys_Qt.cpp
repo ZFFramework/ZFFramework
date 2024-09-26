@@ -15,7 +15,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Qt, ZFUIViewTransform,
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual ZFUITransformFlags viewTransformAvailable(void) {
+    virtual ZFUITransformFlags transformAvailable(void) {
         return ZFUITransform::e_Transform2D;
     }
 
@@ -23,17 +23,17 @@ public:
         QGraphicsWidget *nativeView = (QGraphicsWidget *)view->nativeView();
         QTransform t;
         t.translate(nativeView->geometry().width() / 2, nativeView->geometry().height() / 2);
-        if(view->viewTranslateX() != 0 || view->viewTranslateY() != 0) {
+        if(view->translateX() != 0 || view->translateY() != 0) {
             t.translate(
-                    view->viewTranslateX() * view->UIScaleFixed(),
-                    view->viewTranslateY() * view->UIScaleFixed()
+                    view->translateX() * view->UIScaleFixed(),
+                    view->translateY() * view->UIScaleFixed()
                 );
         }
-        if(view->viewRotateZ() != 0) {
-            t.rotate(view->viewRotateZ());
+        if(view->rotateZ() != 0) {
+            t.rotate(view->rotateZ());
         }
-        if(view->viewScaleX() != 1 || view->viewScaleY() != 1) {
-            t.scale(view->viewScaleX(), view->viewScaleY());
+        if(view->scaleX() != 1 || view->scaleY() != 1) {
+            t.scale(view->scaleX(), view->scaleY());
         }
         t.translate(-nativeView->geometry().width() / 2, -nativeView->geometry().height() / 2);
         nativeView->setTransform(t);

@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFAniForFramePrivate {
 public:
     ZFCoreArray<zftimet> frames;
-    zftimet aniDurationFixed;
+    zftimet durationFixed;
     zfuint frameIndex;
 
     zfbool useGlobalTimer;
@@ -22,7 +22,7 @@ public:
 public:
     _ZFP_ZFAniForFramePrivate(void)
     : frames()
-    , aniDurationFixed(-1)
+    , durationFixed(-1)
     , frameIndex((zfuint)(-1))
     , useGlobalTimer(zffalse)
     , globalTimerTask()
@@ -72,7 +72,7 @@ public:
             owner->d->globalTimerTask = zfnull;
         }
         else {
-            owner->d->builtinTimer->timerStop();
+            owner->d->builtinTimer->stop();
             owner->d->builtinTimer = zfnull;
         }
     }
@@ -137,7 +137,7 @@ zfbool ZFAniForFrame::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
     this->frameRemoveAll();
-    zfstring framesStr = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFAniForFrame_frames);
+    zfstring framesStr = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFAniForFrame_frames);
     ZFCoreArray<zftimet> frames;
     if(!ZFCoreDataPairSplitInt(
                 frames
@@ -181,15 +181,15 @@ zfbool ZFAniForFrame::serializableOnSerializeToData(
 ZFMETHOD_DEFINE_1(ZFAniForFrame, void, frame
         , ZFMP_IN(zftimet, duration)
         ) {
-    ZFCoreAssert(!this->aniRunning());
-    d->aniDurationFixed = -1;
+    ZFCoreAssert(!this->started());
+    d->durationFixed = -1;
     d->frames.add(duration);
 }
 ZFMETHOD_DEFINE_1(ZFAniForFrame, void, frames
         , ZFMP_IN(const ZFCoreArray<zftimet> &, frames)
         ) {
-    ZFCoreAssert(!this->aniRunning());
-    d->aniDurationFixed = -1;
+    ZFCoreAssert(!this->started());
+    d->durationFixed = -1;
     d->frames.addFrom(frames);
 }
 
@@ -204,11 +204,11 @@ ZFMETHOD_DEFINE_1(ZFAniForFrame, zftimet, frameAt
 ZFMETHOD_DEFINE_1(ZFAniForFrame, void, frameRemoveAt
         , ZFMP_IN(zfindex, index)
         ) {
-    d->aniDurationFixed = -1;
+    d->durationFixed = -1;
     d->frames.remove(index);
 }
 ZFMETHOD_DEFINE_0(ZFAniForFrame, void, frameRemoveAll) {
-    d->aniDurationFixed = -1;
+    d->durationFixed = -1;
     d->frames.removeAll();
 }
 
@@ -218,14 +218,14 @@ ZFMETHOD_DEFINE_0(ZFAniForFrame, zfindex, frameIndex) {
 
 // ============================================================
 // start stop
-zftimet ZFAniForFrame::aniDurationFixed(void) {
-    if(d->aniDurationFixed == -1) {
-        d->aniDurationFixed = 0;
+zftimet ZFAniForFrame::durationFixed(void) {
+    if(d->durationFixed == -1) {
+        d->durationFixed = 0;
         for(zfindex i = 0; i < d->frames.count(); ++i) {
-            d->aniDurationFixed += d->frames[i];
+            d->durationFixed += d->frames[i];
         }
     }
-    return d->aniDurationFixed;
+    return d->durationFixed;
 }
 
 void ZFAniForFrame::aniImplStart(void) {

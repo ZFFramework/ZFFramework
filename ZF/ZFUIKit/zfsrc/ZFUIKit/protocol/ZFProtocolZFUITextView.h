@@ -69,9 +69,9 @@ public:
             , ZF_IN zffloat textSizeAutoMax
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
-    virtual void textSingleLine(
+    virtual void singleLine(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zfbool textSingleLine
+            , ZF_IN zfbool singleLine
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
     virtual void textTruncateMode(

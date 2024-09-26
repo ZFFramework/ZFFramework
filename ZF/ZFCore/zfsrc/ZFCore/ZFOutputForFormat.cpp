@@ -149,9 +149,9 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT
                 ) {
             ZFSerializableData serializableData;
             outputData.category(ZFSerializableKeyword_ZFOutputForFormat_output);
-            serializableData.childAdd(outputData);
+            serializableData.child(outputData);
             formatData.category(ZFSerializableKeyword_ZFOutputForFormat_format);
-            serializableData.childAdd(formatData);
+            serializableData.child(formatData);
             ret.callbackSerializeType(ZFCallbackSerializeType_ZFOutputForFormat);
             ret.callbackSerializeData(serializableData);
         }

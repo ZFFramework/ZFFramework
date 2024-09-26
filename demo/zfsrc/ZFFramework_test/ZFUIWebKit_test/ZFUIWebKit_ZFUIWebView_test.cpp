@@ -18,17 +18,17 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIWebView> testView;
-        container->childAdd(testView)->c_sizeFill()->c_margin(40);
-        testView->viewBackgroundColor(ZFUIColorRed());
+        container->child(testView)->c_sizeFill()->c_margin(40);
+        testView->backgroundColor(ZFUIColorRed());
 
         this->prepareSettingButton(window, testView);
 
         ZFLISTENER(loadStateOnUpdate) {
-            ZFLogTrim() << "webLoadingOnUpdate " << zfargs.sender()->to<ZFUIWebView *>()->webLoading();
+            ZFLogTrim() << "loadingOnUpdate " << zfargs.sender()->to<ZFUIWebView *>()->loading();
         } ZFLISTENER_END()
         testView->observerAdd(ZFUIWebView::EventWebLoadStateOnUpdate(), loadStateOnUpdate);
 
-        testView->webLoadUrl("http://www.baidu.com");
+        testView->loadUrl("http://www.baidu.com");
     }
 
 private:

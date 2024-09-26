@@ -42,7 +42,7 @@ zfbool ZFTypeIdDynamicRegister(
         , ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    if(zfstringIsEmpty(typeIdName)) {
+    if(!typeIdName) {
         zfstringAppend(errorHint, "empty typeIdName");
         return zffalse;
     }
@@ -57,7 +57,7 @@ zfbool ZFTypeIdDynamicRegister(
     }
     if(!ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
                 .methodGenericInvoker(_ZFP_ZFTypeIdGI)
-                .methodReturnTypeId(ZFTypeId_zfstring())
+                .returnTypeId(ZFTypeId_zfstring())
                 .methodName(zfstr("ZFTypeId_%s", typeIdName))
                 , errorHint)
                 ) {
@@ -68,7 +68,7 @@ zfbool ZFTypeIdDynamicRegister(
     return zftrue;
 }
 void ZFTypeIdDynamicUnregister(ZF_IN const zfstring &typeIdName) {
-    if(!zfstringIsEmpty(typeIdName)) {
+    if(typeIdName) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
         _ZFP_ZFTypeIdDynamicMapType::iterator it = d->m.find(typeIdName);
         if(it != d->m.end()) {

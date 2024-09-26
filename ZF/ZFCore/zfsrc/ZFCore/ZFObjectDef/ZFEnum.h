@@ -110,33 +110,33 @@ public:
     virtual void wrappedValueCopy(ZF_IN void *v);
 public:
     zfoverride
-    virtual void wrappedValueReset(void);
+    virtual void zfvReset(void);
     zfoverride
-    virtual zfbool wrappedValueIsInit(void);
+    virtual zfbool zfvIsInit(void);
 public:
     zfoverride
     virtual zfbool wrappedValuePreferStringConverter(void) {
         return zftrue;
     }
     zfoverride
-    virtual zfbool wrappedValueFromData(
+    virtual zfbool zfvFromData(
             ZF_IN const ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
             );
     zfoverride
-    virtual zfbool wrappedValueToData(
+    virtual zfbool zfvToData(
             ZF_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             );
     zfoverride
-    virtual zfbool wrappedValueFromString(
+    virtual zfbool zfvFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
     zfoverride
-    virtual zfbool wrappedValueToString(
+    virtual zfbool zfvToString(
             ZF_IN_OUT zfstring &s
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             );

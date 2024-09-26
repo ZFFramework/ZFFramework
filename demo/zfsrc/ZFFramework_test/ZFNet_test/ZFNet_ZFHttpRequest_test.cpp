@@ -18,15 +18,15 @@ protected:
             ;
         ZFHttpMethodEnum httpMethod = ZFHttpMethod::e_GET;
 
-        this->testCaseOutput("header test");
+        this->output("header test");
         zfobj<ZFHttpRequest> headerTest(url, httpMethod);
         headerTest->header("k1", "v1_1");
         headerTest->header("k1", "v1_2");
         headerTest->header("k2", "v2_1");
         headerTest->header("k2", "v2_2");
         headerTest->headerRemove("k2");
-        this->testCaseOutput(zfstr("%s", headerTest->contentInfo()));
-        this->testCaseOutputSeparator();
+        this->output(zfstr("%s", headerTest->contentInfo()));
+        this->outputSeparator();
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(onRecv
@@ -35,11 +35,11 @@ protected:
             ZFHttpRequest *request = zfargs.sender();
             ZFHttpResponse *response = zfargs.param0();
 
-            testCase->testCaseOutput(zfstr("send: %s", request->objectInfo()));
-            testCase->testCaseOutput(zfstr("%s", request->contentInfo()));
-            testCase->testCaseOutput(zfstr("recv: %s", response->objectInfo()));
-            testCase->testCaseOutput(zfstr("%s", response->contentInfo()));
-            testCase->testCaseStop();
+            testCase->output(zfstr("send: %s", request->objectInfo()));
+            testCase->output(zfstr("%s", request->contentInfo()));
+            testCase->output(zfstr("recv: %s", response->objectInfo()));
+            testCase->output(zfstr("%s", response->contentInfo()));
+            testCase->stop();
         } ZFLISTENER_END()
         zfobj<ZFHttpRequest>(url, httpMethod)
             ->c_request(onRecv);

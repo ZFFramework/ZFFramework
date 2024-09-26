@@ -44,19 +44,21 @@ protected:
         ZFFramework_test_asyncTestCheck();
 
         zfobj<_ZFP_ZFUtility_ZFAni_test_Object> target;
-        zfauto aniHolder = ZFAni(target, "testProp"
+        zfauto aniHolder = ZFAni("testProp"
                 , zfobj<v_zfstring>("-100")
                 , zfobj<v_zfstring>("200")
-                );
+                )
+            ->c_target(target)
+            ;
         ZFAnimation *ani = aniHolder;
-        ani->aniDuration(2000);
+        ani->duration(2000);
 
         ZFTestCase *owner = this;
 
         ZFLISTENER_1(aniOnStop
                 , ZFTestCase *, owner
                 ) {
-            owner->testCaseStop();
+            owner->stop();
         } ZFLISTENER_END()
         ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
 
@@ -66,7 +68,7 @@ protected:
         } ZFLISTENER_END()
         ani->observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
 
-        ani->aniStart();
+        ani->start();
     }
 };
 ZFOBJECT_REGISTER(ZFUtility_ZFAni_test)

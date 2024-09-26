@@ -19,20 +19,20 @@ protected:
 
         ZFLISTENER(onClickReturn) {
             ZFUITextEdit *textEdit = zfargs.sender();
-            textEdit->viewFocusRequest(zffalse);
+            textEdit->focusRequest(zffalse);
         } ZFLISTENER_END()
 
         zfobj<ZFUITextEdit> view;
-        container->childAdd(view)->c_widthFill()->c_margin(40);
-        view->viewBackgroundColor(ZFUIColorRed());
+        container->child(view)->c_widthFill()->c_margin(40);
+        view->backgroundColor(ZFUIColorRed());
         view->observerAdd(ZFUITextEdit::EventTextOnReturnClick(), onClickReturn);
-        view->textPlaceHolder()->text("first text edit");
+        view->placeholder()->text("first text edit");
 
         zfobj<ZFUITextEdit> view2;
-        container->childAdd(view2)->c_sizeFill()->c_margin(40, 100, 40, 40);
-        view2->viewBackgroundColor(ZFUIColorBlue());
+        container->child(view2)->c_sizeFill()->c_margin(40, 100, 40, 40);
+        view2->backgroundColor(ZFUIColorBlue());
         view2->observerAdd(ZFUITextEdit::EventTextOnReturnClick(), onClickReturn);
-        view2->textPlaceHolder()->text("second text edit");
+        view2->placeholder()->text("second text edit");
 
         this->prepareSettingButton(window, view);
     }
@@ -43,7 +43,7 @@ private:
             , ZF_IN ZFUITextEdit *view
             ) {
         zfobj<ZFArray> settings;
-        ZFUIKit_test_prepareSettingForBoolProperty(settings, view, ZFPropertyAccess(ZFUITextEdit, textEditEnable));
+        ZFUIKit_test_prepareSettingForBoolProperty(settings, view, ZFPropertyAccess(ZFUITextEdit, editEnable));
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);
     }

@@ -60,7 +60,7 @@ extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayToDataT(
 zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextend ZFTypeIdWrapper {
     ZFOBJECT_DECLARE(v_ZFCoreArray, ZFTypeIdWrapper)
     ZFALLOC_CACHE_RELEASE({
-        cache->wrappedValueReset();
+        cache->zfvReset();
     })
 public:
     /** @brief the value, see #ZFTypeId::Value */
@@ -102,7 +102,7 @@ protected:
 
     zfoverride
     virtual void objectOnDealloc(void) {
-        this->wrappedValueReset();
+        this->zfvReset();
         zfsuper::objectOnDealloc();
     }
 
@@ -164,7 +164,7 @@ public:
         }
     }
     zfoverride
-    virtual const zfstring &wrappedValueTypeId(void) {
+    virtual const zfstring &zfvTypeId(void) {
         static ZFSigName d(ZFTypeId_ZFCoreArray());
         return d;
     }
@@ -207,7 +207,7 @@ public:
     }
 public:
     zfoverride
-    virtual void wrappedValueReset(void) {
+    virtual void zfvReset(void) {
         if(this->zfv) {
             ZFCoreArrayBase *zfvOld = this->zfv;
             ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
@@ -221,12 +221,12 @@ public:
         }
     }
     zfoverride
-    virtual zfbool wrappedValueIsInit(void) {
+    virtual zfbool zfvIsInit(void) {
         return this->zfv == zfnull || this->zfv->isEmpty();
     }
 public:
     zfoverride
-    virtual zfbool wrappedValueFromData(
+    virtual zfbool zfvFromData(
             ZF_IN const ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
@@ -245,7 +245,7 @@ public:
                 );
     }
     zfoverride
-    virtual zfbool wrappedValueToData(
+    virtual zfbool zfvToData(
             ZF_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             ) {
@@ -262,7 +262,7 @@ public:
                 );
     }
     zfoverride
-    virtual zfbool wrappedValueFromString(
+    virtual zfbool zfvFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -282,7 +282,7 @@ public:
                 );
     }
     zfoverride
-    virtual zfbool wrappedValueToString(
+    virtual zfbool zfvToString(
             ZF_IN_OUT zfstring &s
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
@@ -557,7 +557,7 @@ protected:
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
             ) {
         if(this->zfv != zfnull && !this->elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-            return this->wrappedValueFromData(serializableData, outErrorHint, outErrorPos);
+            return this->zfvFromData(serializableData, outErrorHint, outErrorPos);
         }
         else {
             return zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos);
@@ -570,7 +570,7 @@ protected:
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             ) {
         if(this->zfv != zfnull && !this->elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-            return this->wrappedValueToData(serializableData, outErrorHint);
+            return this->zfvToData(serializableData, outErrorHint);
         }
         else {
             return zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint);

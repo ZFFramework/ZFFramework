@@ -4,7 +4,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 _ZFP_ZFBufferPrivate::~_ZFP_ZFBufferPrivate(void) {
-    if(this->bufferAutoFree && this->buffer) {
+    if(this->autoFree && this->buffer) {
         zffree(this->buffer);
     }
 }
@@ -24,59 +24,59 @@ static inline void _ZFP_ZFBufferCapacityOptimize(ZF_IN_OUT zfindex &capacity) {
     }
 }
 
-void ZFBuffer::bufferCapacity(ZF_IN zfindex bufferCapacity) {
-    if(bufferCapacity == zfindexMax()) {
+void ZFBuffer::capacity(ZF_IN zfindex capacity) {
+    if(capacity == zfindexMax()) {
         return;
     }
-    _ZFP_ZFBufferCapacityOptimize(bufferCapacity);
-    if(bufferCapacity > d->bufferCapacity) {
-        _bufferCapacityDoChange(bufferCapacity);
+    _ZFP_ZFBufferCapacityOptimize(capacity);
+    if(capacity > d->capacity) {
+        _capacityDoChange(capacity);
     }
 }
-void ZFBuffer::bufferCapacityTrim(void) {
-    zfindex bufferCapacity = this->bufferSize();
-    _ZFP_ZFBufferCapacityOptimize(bufferCapacity);
-    if(bufferCapacity != this->bufferCapacity()) {
-        _bufferCapacityDoChange(bufferCapacity);
+void ZFBuffer::capacityTrim(void) {
+    zfindex capacity = this->length();
+    _ZFP_ZFBufferCapacityOptimize(capacity);
+    if(capacity != this->capacity()) {
+        _capacityDoChange(capacity);
     }
 }
-void ZFBuffer::_bufferCapacityDoChange(ZF_IN zfindex bufferCapacity) {
-    if(bufferCapacity == 0) {
-        if(d->bufferAutoFree) {
+void ZFBuffer::_capacityDoChange(ZF_IN zfindex capacity) {
+    if(capacity == 0) {
+        if(d->autoFree) {
             zffree(d->buffer);
         }
         d->buffer = zfnull;
-        d->bufferCapacity = 0;
-        d->bufferAutoFree = zffalse;
+        d->capacity = 0;
+        d->autoFree = zffalse;
         return;
     }
 
-    if(d->bufferAutoFree) {
-        d->buffer = zfrealloc(d->buffer, bufferCapacity + sizeof(zfchar));
+    if(d->autoFree) {
+        d->buffer = zfrealloc(d->buffer, capacity + sizeof(zfchar));
     }
     else {
         void *bufferOld = d->buffer;
-        d->buffer = zfmalloc(bufferCapacity + sizeof(zfchar));
-        zfmemcpy(d->buffer, bufferOld, d->bufferCapacity);
+        d->buffer = zfmalloc(capacity + sizeof(zfchar));
+        zfmemcpy(d->buffer, bufferOld, d->capacity);
     }
-    *(zfchar *)((zfbyte *)d->buffer + d->bufferCapacity) = '\0';
+    *(zfchar *)((zfbyte *)d->buffer + d->capacity) = '\0';
 
-    d->bufferCapacity = bufferCapacity;
-    d->bufferAutoFree = zftrue;
+    d->capacity = capacity;
+    d->autoFree = zftrue;
 }
 
 void ZFBuffer::bufferFree(void) {
-    if(d->buffer != zfnull && d->bufferAutoFree) {
+    if(d->buffer != zfnull && d->autoFree) {
         zffree(d->buffer);
     }
     d->buffer = zfnull;
-    d->bufferCapacity = 0;
-    d->bufferSize = 0;
-    d->bufferAutoFree = zffalse;
+    d->capacity = 0;
+    d->length = 0;
+    d->autoFree = zffalse;
 }
 
 void ZFBuffer::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    zfstringAppend(ret, "<ZFBuffer %s(%s/%s)>", this->buffer(), this->bufferSize(), this->bufferCapacity());
+    zfstringAppend(ret, "<ZFBuffer %s(%s/%s)>", this->buffer(), this->length(), this->capacity());
 }
 
 ZF_NAMESPACE_GLOBAL_END

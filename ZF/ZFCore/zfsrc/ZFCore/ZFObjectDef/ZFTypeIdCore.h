@@ -479,20 +479,20 @@ zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyleableObject, zfimplemen
     ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyleableObject)
     ZFIMPLEMENT_DECLARE(ZFProgressable)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
-        cache->wrappedValueReset();
+        cache->zfvReset();
     })
 
 public:
     /**
      * @brief copy internal value
      */
-    zffinal ZFTypeIdWrapper *wrappedValueAssign(ZF_IN ZFTypeIdWrapper *ref) {
+    zffinal ZFTypeIdWrapper *zfvAssign(ZF_IN ZFTypeIdWrapper *ref) {
         this->wrappedValueOnAssign(ref);
         return this;
     }
 protected:
     /**
-     * @brief see #wrappedValueAssign
+     * @brief see #zfvAssign
      */
     virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) zfpurevirtual;
 
@@ -500,7 +500,7 @@ public:
     /**
      * @brief type id for this wrapper type
      */
-    virtual const zfstring &wrappedValueTypeId(void) zfpurevirtual;
+    virtual const zfstring &zfvTypeId(void) zfpurevirtual;
     /**
      * @brief access the value's address
      */
@@ -517,11 +517,11 @@ public:
     /**
      * @brief reset the value to it's init value
      */
-    virtual void wrappedValueReset(void) zfpurevirtual;
+    virtual void zfvReset(void) zfpurevirtual;
     /**
      * @brief true if the value is in init value state
      */
-    virtual zfbool wrappedValueIsInit(void) zfpurevirtual;
+    virtual zfbool zfvIsInit(void) zfpurevirtual;
 
 public:
     /**
@@ -542,7 +542,7 @@ public:
     /**
      * @brief convert from serializable data
      */
-    virtual zfbool wrappedValueFromData(
+    virtual zfbool zfvFromData(
             ZF_IN const ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
@@ -550,14 +550,14 @@ public:
     /**
      * @brief convert to serializable data
      */
-    virtual zfbool wrappedValueToData(
+    virtual zfbool zfvToData(
             ZF_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             ) zfpurevirtual;
     /**
      * @brief convert from string
      */
-    virtual zfbool wrappedValueFromString(
+    virtual zfbool zfvFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -565,7 +565,7 @@ public:
     /**
      * @brief convert to string
      */
-    virtual zfbool wrappedValueToString(
+    virtual zfbool zfvToString(
             ZF_IN_OUT zfstring &s
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) zfpurevirtual;
@@ -604,9 +604,9 @@ protected:
 
         zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
         if(valueString == zfnull) {
-            this->wrappedValueReset();
+            this->zfvReset();
         }
-        else if(!this->wrappedValueFromString(valueString)) {
+        else if(!this->zfvFromString(valueString)) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "failed to convert from \"%s\"", valueString);
             return zffalse;
@@ -622,18 +622,18 @@ protected:
         if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
         zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
-        if((ref == zfnull && !this->wrappedValueIsInit())
+        if((ref == zfnull && !this->zfvIsInit())
                 || (ref != zfnull && this->objectCompare(ref) != ZFCompareEqual)
                 ) {
             if(this->wrappedValuePreferStringConverter()) {
                 zfstring valueString;
-                if(!this->wrappedValueToString(valueString, outErrorHint)) {
+                if(!this->zfvToString(valueString, outErrorHint)) {
                     return zffalse;
                 }
                 serializableData.propertyValue(valueString);
             }
             else {
-                if(!this->wrappedValueToData(serializableData, outErrorHint)) {
+                if(!this->zfvToData(serializableData, outErrorHint)) {
                     return zffalse;
                 }
             }
@@ -648,14 +648,14 @@ protected:
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        return this->wrappedValueFromString(src, srcLen, errorHint);
+        return this->zfvFromString(src, srcLen, errorHint);
     }
     zfoverride
     virtual inline zfbool serializableOnSerializeToString(
             ZF_IN_OUT zfstring &ret
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        return this->wrappedValueToString(ret, errorHint);
+        return this->zfvToString(ret, errorHint);
     }
 };
 

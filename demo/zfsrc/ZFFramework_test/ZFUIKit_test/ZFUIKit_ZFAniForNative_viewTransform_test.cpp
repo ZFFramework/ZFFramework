@@ -18,15 +18,15 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIImageView> view;
-        container->childAdd(view)->c_alignCenter();
+        container->child(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeCreate(80, 60));
-        view->viewBackgroundColor(ZFUIColorRandom());
+        view->backgroundColor(ZFUIColorRandom());
         view->image(zfres("test_normal.png"));
-        view->viewScaleX(1.5f);
-        view->viewScaleY(0.5f);
-        view->viewRotateZ(40);
+        view->scaleX(1.5f);
+        view->scaleY(0.5f);
+        view->rotateZ(40);
 
-        this->ani()->aniTarget(view);
+        this->ani()->target(view);
 
         this->prepareSettingButton(window, this->ani());
 
@@ -34,12 +34,12 @@ protected:
         ZFLISTENER_1(startOnClick
                 , ZFAnimation *, ani
                 ) {
-            ani->aniStart();
+            ani->start();
         } ZFLISTENER_END()
         zfobj<ZFUIKit_test_Button> startButton;
         startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
-        container->childAdd(startButton)->c_alignRightTop();
+        container->child(startButton)->c_alignRightTop();
     }
 
     ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFAniForNative>, ani, zfobj<ZFAniForNative>())
@@ -52,36 +52,36 @@ private:
         zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForResetProperty(settings, ani, ZFCoreArrayCreate(const ZFProperty *
-                , ZFPropertyAccess(ZFAniForNative, aniCurve)
-                , ZFPropertyAccess(ZFAniForNative, aniAlphaFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniAlphaTo)
-                , ZFPropertyAccess(ZFAniForNative, aniScaleXFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniScaleXTo)
-                , ZFPropertyAccess(ZFAniForNative, aniScaleYFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniScaleYTo)
-                , ZFPropertyAccess(ZFAniForNative, aniScaleZFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniScaleZTo)
-                , ZFPropertyAccess(ZFAniForNative, aniTranslateXFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniTranslateXTo)
-                , ZFPropertyAccess(ZFAniForNative, aniTranslateYFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniTranslateYTo)
-                , ZFPropertyAccess(ZFAniForNative, aniTranslateZFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniTranslateZTo)
-                , ZFPropertyAccess(ZFAniForNative, aniRotateXFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniRotateXTo)
-                , ZFPropertyAccess(ZFAniForNative, aniRotateYFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniRotateYTo)
-                , ZFPropertyAccess(ZFAniForNative, aniRotateZFrom)
-                , ZFPropertyAccess(ZFAniForNative, aniRotateZTo)
+                , ZFPropertyAccess(ZFAniForNative, curve)
+                , ZFPropertyAccess(ZFAniForNative, alphaFrom)
+                , ZFPropertyAccess(ZFAniForNative, alphaTo)
+                , ZFPropertyAccess(ZFAniForNative, scaleXFrom)
+                , ZFPropertyAccess(ZFAniForNative, scaleXTo)
+                , ZFPropertyAccess(ZFAniForNative, scaleYFrom)
+                , ZFPropertyAccess(ZFAniForNative, scaleYTo)
+                , ZFPropertyAccess(ZFAniForNative, scaleZFrom)
+                , ZFPropertyAccess(ZFAniForNative, scaleZTo)
+                , ZFPropertyAccess(ZFAniForNative, translateXFrom)
+                , ZFPropertyAccess(ZFAniForNative, translateXTo)
+                , ZFPropertyAccess(ZFAniForNative, translateYFrom)
+                , ZFPropertyAccess(ZFAniForNative, translateYTo)
+                , ZFPropertyAccess(ZFAniForNative, translateZFrom)
+                , ZFPropertyAccess(ZFAniForNative, translateZTo)
+                , ZFPropertyAccess(ZFAniForNative, rotateXFrom)
+                , ZFPropertyAccess(ZFAniForNative, rotateXTo)
+                , ZFPropertyAccess(ZFAniForNative, rotateYFrom)
+                , ZFPropertyAccess(ZFAniForNative, rotateYTo)
+                , ZFPropertyAccess(ZFAniForNative, rotateZFrom)
+                , ZFPropertyAccess(ZFAniForNative, rotateZTo)
             ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zftimet, ZFPropertyAccess(ZFAniForNative, aniDuration),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zftimet, ZFPropertyAccess(ZFAniForNative, duration),
             ZFCoreArrayCreate(zftimet
                 , (zftimet)0
                 , (zftimet)3000
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, ZFAniForNativeCurveEnum, ZFPropertyAccess(ZFAniForNative, aniCurve),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, ZFAniForNativeCurveEnum, ZFPropertyAccess(ZFAniForNative, curve),
             ZFCoreArrayCreate(ZFAniForNativeCurveEnum
                 , ZFAniForNativeCurve::e_Linear
                 , ZFAniForNativeCurve::e_EaseIn
@@ -90,122 +90,122 @@ private:
                 ));
 
         { // aniAlpha
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniAlphaFrom),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, alphaFrom),
                 ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniAlphaTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, alphaTo),
                 ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
         } // aniAlpha
 
-        { // aniScale
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniScaleXFrom),
+        { // scale
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, scaleXFrom),
                 ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniScaleXTo),
-                ZFCoreArrayCreate(zffloat
-                    , 1.0f
-                    , 0.0f
-                    ));
-
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniScaleYFrom),
-                ZFCoreArrayCreate(zffloat
-                    , 1.0f
-                    , 0.0f
-                    ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniScaleYTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, scaleXTo),
                 ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
 
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniScaleZFrom),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, scaleYFrom),
                 ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniScaleZTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, scaleYTo),
                 ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
-        } // aniScale
 
-        { // aniTranslate
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniTranslateXFrom),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, scaleZFrom),
+                ZFCoreArrayCreate(zffloat
+                    , 1.0f
+                    , 0.0f
+                    ));
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, scaleZTo),
+                ZFCoreArrayCreate(zffloat
+                    , 1.0f
+                    , 0.0f
+                    ));
+        } // scale
+
+        { // translate
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, translateXFrom),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniTranslateXTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, translateXTo),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
 
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniTranslateYFrom),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, translateYFrom),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniTranslateYTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, translateYTo),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
 
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniTranslateZFrom),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, translateZFrom),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniTranslateZTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, translateZTo),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
-        } // aniTranslate
+        } // translate
 
-        { // aniRotate
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniRotateXFrom),
+        { // rotate
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, rotateXFrom),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniRotateXTo),
-                ZFCoreArrayCreate(zffloat
-                    , 0
-                    , 90
-                    ));
-
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniRotateYFrom),
-                ZFCoreArrayCreate(zffloat
-                    , 0
-                    , 90
-                    ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniRotateYTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, rotateXTo),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
 
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniRotateZFrom),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, rotateYFrom),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
-            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, aniRotateZTo),
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, rotateYTo),
                 ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
-        } // aniRotate
+
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, rotateZFrom),
+                ZFCoreArrayCreate(zffloat
+                    , 0
+                    , 90
+                    ));
+            ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAniForNative, rotateZTo),
+                ZFCoreArrayCreate(zffloat
+                    , 0
+                    , 90
+                    ));
+        } // rotate
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);
     }

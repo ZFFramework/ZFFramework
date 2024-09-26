@@ -53,16 +53,16 @@ public:
      */
     virtual const ZFTimeValue &timeZoneLocal(void) zfpurevirtual;
     /**
-     * @brief see #ZFTime::timeInfoDayOfWeek
+     * @brief see #ZFTime::dayOfWeek
      */
-    virtual zfuint timeInfoDayOfWeek(
+    virtual zfuint dayOfWeek(
             ZF_IN const ZFTimeValue &tv
             , ZF_IN const ZFTimeInfo &ti
             ) zfpurevirtual;
     /**
-     * @brief see #ZFTime::timeInfoDayOfYear
+     * @brief see #ZFTime::dayOfYear
      */
-    virtual zfuint timeInfoDayOfYear(
+    virtual zfuint dayOfYear(
             ZF_IN const ZFTimeValue &tv
             , ZF_IN const ZFTimeInfo &ti
             ) zfpurevirtual;

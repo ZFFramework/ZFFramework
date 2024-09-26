@@ -38,7 +38,7 @@ zfbool ZFIOCallback::ioSeek(
     if(method == zfnull) {
         return zffalse;
     }
-    return method->execute<zfbool, zfindex, ZFSeekPos>(owner, byteSize, pos);
+    return method->executeExact<zfbool, zfindex, ZFSeekPos>(owner, byteSize, pos);
 }
 zfindex ZFIOCallback::ioTell(void) const {
     ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
@@ -49,7 +49,7 @@ zfindex ZFIOCallback::ioTell(void) const {
     if(method == zfnull) {
         return zfindexMax();
     }
-    return method->execute<zfindex>(owner);
+    return method->executeExact<zfindex>(owner);
 }
 zfindex ZFIOCallback::ioSize(void) const {
     ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
@@ -60,7 +60,7 @@ zfindex ZFIOCallback::ioSize(void) const {
     if(method == zfnull) {
         return zfindexMax();
     }
-    return method->execute<zfindex>(owner);
+    return method->executeExact<zfindex>(owner);
 }
 
 ZF_NAMESPACE_GLOBAL_END

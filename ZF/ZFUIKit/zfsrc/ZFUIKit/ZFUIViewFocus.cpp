@@ -75,11 +75,11 @@ static void _ZFP_ZFUIViewFocusNextFind(
         , ZF_IN zffloat offsetX
         , ZF_IN zffloat offsetY
         ) {
-    if(!ZFUIViewFocusNextFilter().filterCheckActive(view)) {
+    if(!ZFUIViewFocusNextFilter().filterPassed(view)) {
         return;
     }
 
-    if(view->viewFocusable()) {
+    if(view->focusable()) {
         _ZFP_ZFUIViewFocusData focusData;
         focusData.view = view;
         focusData.center = ZFUIRectGetCenter(view->viewFrame());
@@ -309,13 +309,13 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
 
     ZFUIView *root = view;
     ZFUIPoint viewCenter = ZFUIRectGetCenter(view->viewFrame());
-    while(root->viewParent() != zfnull
+    while(root->parent() != zfnull
             && !root->classData()->classIsTypeOf(ZFUIWindow::ClassData())
             && root != param.focusEndParent()
             ) {
         viewCenter.x += root->viewFrame().x;
         viewCenter.y += root->viewFrame().y;
-        root = root->viewParent();
+        root = root->parent();
     }
     ZFCoreArray<_ZFP_ZFUIViewFocusData> focusDatas;
     _ZFP_ZFUIViewFocusNextFind(focusDatas, root, param.focusInternalViews(), 0, 0);
@@ -409,7 +409,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextMove
         ) {
     zfanyT<ZFUIView> next = ZFUIViewFocusNextFind(view, param);
     if(next != zfnull) {
-        next->viewFocusRequest(zftrue);
+        next->focusRequest(zftrue);
     }
     return next;
 }
@@ -451,12 +451,12 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
             break;
         case ZFUIKeyCode::e_kShift:
             switch(keyEvent->keyAction) {
-                case ZFUIKeyAction::e_KeyDown:
-                case ZFUIKeyAction::e_KeyRepeat:
+                case ZFUIKeyAction::e_Down:
+                case ZFUIKeyAction::e_Repeat:
                     _ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed = zftrue;
                     break;
-                case ZFUIKeyAction::e_KeyUp:
-                case ZFUIKeyAction::e_KeyCancel:
+                case ZFUIKeyAction::e_Up:
+                case ZFUIKeyAction::e_Cancel:
                     _ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed = zffalse;
                     break;
                 default:
@@ -469,7 +469,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
             return zffalse;
     }
     keyEvent->eventResolved(zftrue);
-    if(keyEvent->keyAction != ZFUIKeyAction::e_KeyRepeat && keyEvent->keyAction != ZFUIKeyAction::e_KeyUp) {
+    if(keyEvent->keyAction != ZFUIKeyAction::e_Repeat && keyEvent->keyAction != ZFUIKeyAction::e_Up) {
         return zftrue;
     }
     param.focusEndParent(endParent);

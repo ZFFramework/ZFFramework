@@ -76,7 +76,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
                 return zffalse;
             }
             element.category(ZFSerializableKeyword_ZFRegExpResult_namedGroups);
-            serializableData.childAdd(element);
+            serializableData.child(element);
         }
 
         return zftrue;
@@ -118,13 +118,13 @@ zfbool ZFRegExp::serializableOnSerializeFromData(
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     const zfchar *pattern = zfnull;
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
             check, ZFSerializableKeyword_ZFRegExp_pattern, zfstring, pattern, {
                 return zffalse;
             });
 
     ZFRegExpOptionFlags flag = ZFRegExpOptionFlags::EnumDefault();
-    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
             check, ZFSerializableKeyword_ZFRegExp_flag, ZFRegExpOptionFlags, flag, {
                 return zffalse;
             });
@@ -141,12 +141,12 @@ zfbool ZFRegExp::serializableOnSerializeToData(
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
-    ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFRegExp_pattern, zfstring, this->pattern(), ref->pattern(), "", {
                 return zffalse;
             });
 
-    ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
+    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFRegExp_flag, ZFRegExpOptionFlags, this->options(), ref->options(), ZFRegExpOptionFlags::EnumDefault(), {
                 return zffalse;
             });

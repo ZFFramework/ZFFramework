@@ -46,7 +46,7 @@ public:
             ) {
         ZFLog() << param0;
     }
-    ZFMETHOD_INLINE_0(zfstring &, methodReturnReference) {
+    ZFMETHOD_INLINE_0(zfstring &, returnReference) {
         ZFLog();
         return this->s;
     }
@@ -158,128 +158,128 @@ protected:
         const ZFClass *clsChild = _ZFP_ZFCore_ZFMethod_test_TestChild::ClassData();
 
         // ============================================================
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFMethod registration");
+        this->outputSeparator();
+        this->output("ZFMethod registration");
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("method registered before any of instances created:");
+        this->outputSeparator();
+        this->output("method registered before any of instances created:");
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("Base:");
+        this->outputSeparator();
+        this->output("Base:");
         this->printMethodInfo(_ZFP_ZFCore_ZFMethod_test_TestBase::ClassData());
-        this->testCaseOutput("Child:");
+        this->output("Child:");
         this->printMethodInfo(_ZFP_ZFCore_ZFMethod_test_TestChild::ClassData());
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
 
         this->prepareInstance();
-        this->testCaseOutput("method registered after any of instances created:");
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("Base:");
+        this->output("method registered after any of instances created:");
+        this->outputSeparator();
+        this->output("Base:");
         this->printMethodInfo(_ZFP_ZFCore_ZFMethod_test_TestBase::ClassData());
-        this->testCaseOutput("Child:");
+        this->output("Child:");
         this->printMethodInfo(_ZFP_ZFCore_ZFMethod_test_TestChild::ClassData());
 
         // ============================================================
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFMethod directly access");
-        this->testCaseOutput(zfstr("methodNormal: %s"
+        this->outputSeparator();
+        this->output("ZFMethod directly access");
+        this->output(zfstr("methodNormal: %s"
                     , ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodNormal)
                     ));
-        this->testCaseOutput(zfstr("methodStatic: %s"
+        this->output(zfstr("methodStatic: %s"
                     , ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodStatic)
                     ));
-        this->testCaseOutput(zfstr("methodOverloaded(zfint): %s"
+        this->output(zfstr("methodOverloaded(zfint): %s"
                     , ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
                         , ZFMP_IN(zfint, param0)
                         )
                         ));
-        this->testCaseOutput(zfstr("methodOverloaded(zffloat): %s"
+        this->output(zfstr("methodOverloaded(zffloat): %s"
                     , ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
                         , ZFMP_IN(zffloat, param0)
                         )
                         ));
 
-        this->testCaseOutput("unlike reflected by ZFClass, ZFMethodAccess would comiple error if method not defined");
+        this->output("unlike reflected by ZFClass, ZFMethodAccess would comiple error if method not defined");
 #if 0 // this should not able to be compiled
         ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodNotDefined);
 #endif
 
         // ============================================================
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFMethod reflection");
-        this->testCaseOutput("call method normally:");
+        this->outputSeparator();
+        this->output("ZFMethod reflection");
+        this->output("call method normally:");
         this->pBase->methodNormal();
         this->pChild->methodNormal();
         this->pBasePointToChild->methodNormal();
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("call by reflect:");
-        clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pBase);
-        clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pChild);
-        clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pBasePointToChild);
+        this->outputSeparator();
+        this->output("call by reflect:");
+        clsBase->methodForNameIgnoreParent("methodNormal")->executeExact<void>(this->pBase);
+        clsBase->methodForNameIgnoreParent("methodNormal")->executeExact<void>(this->pChild);
+        clsBase->methodForNameIgnoreParent("methodNormal")->executeExact<void>(this->pBasePointToChild);
 
-        this->testCaseOutput(zfstr("should be null since it's in base only: %s"
+        this->output(zfstr("should be null since it's in base only: %s"
                     , clsChild->methodForNameIgnoreParent("methodNormal")
                     ));
-        this->testCaseOutput(zfstr("should not be null since we search hierarchically: %s"
+        this->output(zfstr("should not be null since we search hierarchically: %s"
                     , clsChild->methodForName("methodNormal")
                     ));
-        this->testCaseOutput(zfstr("should not be null since it's in child only: %s"
+        this->output(zfstr("should not be null since it's in child only: %s"
                     , clsChild->methodForNameIgnoreParent("methodInChild")
                     ));
 
-        clsChild->methodForName("methodNormal")->execute<void>(this->pBase);
-        clsChild->methodForName("methodNormal")->execute<void>(this->pChild);
-        clsChild->methodForName("methodNormal")->execute<void>(this->pBasePointToChild);
+        clsChild->methodForName("methodNormal")->executeExact<void>(this->pBase);
+        clsChild->methodForName("methodNormal")->executeExact<void>(this->pChild);
+        clsChild->methodForName("methodNormal")->executeExact<void>(this->pBasePointToChild);
 
         // ============================================================
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFMethod overloaded method");
+        this->outputSeparator();
+        this->output("ZFMethod overloaded method");
 
-        clsBase->methodForNameIgnoreParent("methodOverloaded", "zfint")->execute<void, zfint>(this->pBase, 123);
-        clsBase->methodForNameIgnoreParent("methodOverloaded", "zffloat")->execute<void, zffloat>(this->pBase, 123.456f);
+        clsBase->methodForNameIgnoreParent("methodOverloaded", "zfint")->executeExact<void, zfint>(this->pBase, 123);
+        clsBase->methodForNameIgnoreParent("methodOverloaded", "zffloat")->executeExact<void, zffloat>(this->pBase, 123.456f);
 
         // ============================================================
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFMethod with default param");
+        this->outputSeparator();
+        this->output("ZFMethod with default param");
 
         this->pBase->methodForDefaultParam();
-        clsBase->methodForNameIgnoreParent("methodForDefaultParam")->execute<void, const zfstring &>(this->pBase,
+        clsBase->methodForNameIgnoreParent("methodForDefaultParam")->executeExact<void, const zfstring &>(this->pBase,
             "default value not available when reflect");
 
         // ============================================================
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("return reference:");
+        this->outputSeparator();
+        this->output("return reference:");
         this->pBase->s = "oldString";
-        this->testCaseOutput(zfstr("before: %s", this->pBase->s));
-        clsBase->methodForNameIgnoreParent("methodReturnReference")->execute<zfstring &>(this->pBase) = "newString";
-        this->testCaseOutput(zfstr("after: %s", this->pBase->s));
+        this->output(zfstr("before: %s", this->pBase->s));
+        clsBase->methodForNameIgnoreParent("returnReference")->executeExact<zfstring &>(this->pBase) = "newString";
+        this->output(zfstr("after: %s", this->pBase->s));
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
 
         zfstring _paramReference;
         zfstring &paramReference = _paramReference;
-        this->testCaseOutput("param is reference:");
+        this->output("param is reference:");
         paramReference = "oldString";
-        this->testCaseOutput(zfstr("before: %s", paramReference));
-        clsBase->methodForNameIgnoreParent("methodParamIsReference")->execute<void, zfstring &>(this->pBase, paramReference);
-        this->testCaseOutput(zfstr("after: %s", paramReference));
+        this->output(zfstr("before: %s", paramReference));
+        clsBase->methodForNameIgnoreParent("methodParamIsReference")->executeExact<void, zfstring &>(this->pBase, paramReference);
+        this->output(zfstr("after: %s", paramReference));
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("note that you must specify both ReturnType and ParamType, ");
-        this->testCaseOutput("if not, no compiler would occurred, but app may crash at runtime");
+        this->outputSeparator();
+        this->output("note that you must specify both ReturnType and ParamType, ");
+        this->output("if not, no compiler would occurred, but app may crash at runtime");
 #if 0
         // invoke method without explicitly specifying the param types
         // this code may or may not crash
         paramReference = "oldString";
-        this->testCaseOutput("these code may have wrong result or crash:");
-        this->testCaseOutput(zfstr("before: %s", paramReference));
-        clsBase->methodForNameIgnoreParent("methodParamIsReference")->execute<void>(this->pBase, paramReference);
-        this->testCaseOutput(zfstr("after: %s", paramReference));
+        this->output("these code may have wrong result or crash:");
+        this->output(zfstr("before: %s", paramReference));
+        clsBase->methodForNameIgnoreParent("methodParamIsReference")->executeExact<void>(this->pBase, paramReference);
+        this->output(zfstr("after: %s", paramReference));
 #endif
 
-        this->testCaseStop();
+        this->stop();
     }
 
 private:
@@ -318,7 +318,7 @@ private:
     }
     void printMethodInfo(const ZFClass *cls, const zfchar *indent = "  ") {
         for(zfindex i = 0; i < cls->methodCount(); ++i) {
-            this->testCaseOutput(zfstr("%s%s", indent, cls->methodAt(i)));
+            this->output(zfstr("%s%s", indent, cls->methodAt(i)));
         }
     }
 };

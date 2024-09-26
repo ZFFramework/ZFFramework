@@ -114,7 +114,7 @@ public:
 public:
     // ============================================================
     // properties
-    ZFPROPERTY_ON_INIT_DECLARE(zfbool, viewFocusable)
+    ZFPROPERTY_ON_INIT_DECLARE(zfbool, focusable)
     ZFPROPERTY_ON_INIT_DECLARE(ZFUISize, viewSizeMin)
 
     /**
@@ -140,13 +140,13 @@ public:
      * so that button is easier to be clicked,
      * and a positive value would reduce the button area
      */
-    ZFPROPERTY_ASSIGN(ZFUIMargin, buttonClickTolerance, ZFUIMarginCreate(- ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
+    ZFPROPERTY_ASSIGN(ZFUIMargin, clickTolerance, ZFUIMarginCreate(- ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
     /**
      * @brief if two click event's interval smaller than this value,
      *   the second one would be ignored,
      *   100 by default
      */
-    ZFPROPERTY_ASSIGN(zftimet, buttonClickInterval, 100)
+    ZFPROPERTY_ASSIGN(zftimet, clickInterval, 100)
 
 protected:
     zfoverride
@@ -158,10 +158,10 @@ protected:
 
 public:
     /**
-     * @brief reset #buttonClickInterval so that next click event would be
+     * @brief reset #clickInterval so that next click event would be
      *   ensured to be fired
      */
-    ZFMETHOD_DECLARE_0(void, buttonClickIntervalReset)
+    ZFMETHOD_DECLARE_0(void, clickIntervalReset)
 
 public:
     /**

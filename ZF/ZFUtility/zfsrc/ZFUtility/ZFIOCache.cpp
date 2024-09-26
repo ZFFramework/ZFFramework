@@ -55,8 +55,8 @@ public:
             d->localCacheList.removeAll();
             if(impl->implFindFirst(fd, pathInfo.pathData())) {
                 do {
-                    zfstring childPath = impl->implToChild(pathInfo.pathData(), fd.fileName());
-                    if(ZFRegExpFind(fd.fileName(), pattern) == ZFIndexRangeZero()) {
+                    zfstring childPath = impl->implToChild(pathInfo.pathData(), fd.name());
+                    if(ZFRegExpFind(fd.name(), pattern) == ZFIndexRangeZero()) {
                         impl->implRemove(childPath, zffalse, zftrue, zfnull);
                         continue;
                     }

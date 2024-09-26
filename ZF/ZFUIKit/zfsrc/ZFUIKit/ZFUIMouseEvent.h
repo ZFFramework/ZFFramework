@@ -13,34 +13,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief mouse action for ZFUIMouseEvent
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIMouseAction)
-    ZFENUM_VALUE(MouseDown) /**< @brief mouse down */
-    ZFENUM_VALUE(MouseMove) /**< @brief mouse move */
-    ZFENUM_VALUE(MouseUp) /**< @brief mouse up */
-    ZFENUM_VALUE(MouseCancel) /**< @brief mouse cancel */
-    ZFENUM_VALUE(MouseHoverEnter) /**< @brief mouse hover enter */
-    ZFENUM_VALUE(MouseHover) /**< @brief mouse hover */
-    ZFENUM_VALUE(MouseHoverExit) /**< @brief mouse hover exit */
+    ZFENUM_VALUE(Down) /**< @brief mouse down */
+    ZFENUM_VALUE(Move) /**< @brief mouse move */
+    ZFENUM_VALUE(Up) /**< @brief mouse up */
+    ZFENUM_VALUE(Cancel) /**< @brief mouse cancel */
+    ZFENUM_VALUE(HoverEnter) /**< @brief mouse hover enter */
+    ZFENUM_VALUE(Hover) /**< @brief mouse hover */
+    ZFENUM_VALUE(HoverExit) /**< @brief mouse hover exit */
 ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(MouseDown)
-    ZFENUM_VALUE_REGISTER(MouseMove)
-    ZFENUM_VALUE_REGISTER(MouseUp)
-    ZFENUM_VALUE_REGISTER(MouseCancel)
-    ZFENUM_VALUE_REGISTER(MouseHoverEnter)
-    ZFENUM_VALUE_REGISTER(MouseHover)
-    ZFENUM_VALUE_REGISTER(MouseHoverExit)
+    ZFENUM_VALUE_REGISTER(Down)
+    ZFENUM_VALUE_REGISTER(Move)
+    ZFENUM_VALUE_REGISTER(Up)
+    ZFENUM_VALUE_REGISTER(Cancel)
+    ZFENUM_VALUE_REGISTER(HoverEnter)
+    ZFENUM_VALUE_REGISTER(Hover)
+    ZFENUM_VALUE_REGISTER(HoverExit)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseAction)
 
 /**
  * @brief mouse action for ZFUIMouseEvent
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIMouseButton)
-    ZFENUM_VALUE(MouseButtonLeft) /**< @brief left button */
-    ZFENUM_VALUE(MouseButtonRight) /**< @brief right button */
-    ZFENUM_VALUE(MouseButtonCenter) /**< @brief center button */
+    ZFENUM_VALUE(Left) /**< @brief left button */
+    ZFENUM_VALUE(Right) /**< @brief right button */
+    ZFENUM_VALUE(Center) /**< @brief center button */
 ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(MouseButtonLeft)
-    ZFENUM_VALUE_REGISTER(MouseButtonRight)
-    ZFENUM_VALUE_REGISTER(MouseButtonCenter)
+    ZFENUM_VALUE_REGISTER(Left)
+    ZFENUM_VALUE_REGISTER(Right)
+    ZFENUM_VALUE_REGISTER(Center)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseButton)
 
 // ============================================================
@@ -70,7 +70,7 @@ public:
      * @brief mouse button
      *
      * note, this value is invalid for mouse hover event,
-     * and would always be #ZFUIMouseButton::e_MouseButtonLeft
+     * and would always be #ZFUIMouseButton::e_Left
      */
     ZFUIMouseButtonEnum mouseButton;
 

@@ -64,7 +64,7 @@ public:
             for(zfindex i = 0; i < this->childDelayTimers->count(); ++i) {
                 ZFTimer *timer = this->childDelayTimers->get(i);
                 if(timer != zfnull) {
-                    timer->timerStop();
+                    timer->stop();
                 }
             }
             this->childDelayTimers->removeAll();
@@ -77,13 +77,13 @@ public:
                     this->childCleanup(childToStop->get(i));
                 }
                 _ZFP_ZFAniGroupChildData *childData = childToStop->getFirst();
-                childData->child()->aniStop();
+                childData->child()->stop();
             }
             else {
                 for(zfindex i = 0; i < childToStop->count(); ++i) {
                     _ZFP_ZFAniGroupChildData *childData = childToStop->get(i);
                     this->childCleanup(childData);
-                    childData->child()->aniStop();
+                    childData->child()->stop();
                 }
             }
         }
@@ -97,14 +97,14 @@ private:
         for(zfindex i = 0; aniId == this->pimplOwner->aniId() && i < tmpArray->count(); ++i) {
             _ZFP_ZFAniGroupChildData *childData = tmpArray->get(i);
             this->childSetup(childData);
-            childData->child()->aniStart();
+            childData->child()->start();
         }
     }
     void doStartQueue(void) {
         this->childBuf->addFrom(this->childDatas);
         _ZFP_ZFAniGroupChildData *childData = this->childBuf->getFirst();
         this->childSetup(childData);
-        childData->child()->aniStart();
+        childData->child()->start();
     }
 
 private:
@@ -182,7 +182,7 @@ private:
         else {
             childData = this->childBuf->getFirst();
             this->childSetup(childData);
-            childData->child()->aniStart();
+            childData->child()->start();
         }
     }
 };
@@ -194,32 +194,32 @@ ZFEVENT_REGISTER(ZFAniGroup, ChildAniOnStart)
 ZFEVENT_REGISTER(ZFAniGroup, ChildAniOnStop)
 
 // ============================================================
-zftimet ZFAniGroup::aniDurationFixed(void) {
+zftimet ZFAniGroup::durationFixed(void) {
     zftimet ret = 0;
     if(this->_ZFP_ZFAniGroup_queueType()) {
         for(zfindex i = 0; i < this->childCount(); ++i) {
             ZFAnimation *ani = this->childAt(i);
             if(this->autoUpdateDuration()) {
-                ani->aniDuration(this->aniDuration());
+                ani->duration(this->duration());
             }
-            ret += ani->aniDurationFixed();
+            ret += ani->durationFixed();
         }
     }
     else {
         for(zfindex i = 0; i < this->childCount(); ++i) {
             ZFAnimation *ani = this->childAt(i);
             if(this->autoUpdateDuration()) {
-                ani->aniDuration(this->aniDuration());
+                ani->duration(this->duration());
             }
-            ret = zfmMax<zftimet>(ret, ani->aniDurationFixed());
+            ret = zfmMax<zftimet>(ret, ani->durationFixed());
         }
     }
     if(ret == 0) {
-        if(this->aniDuration() == 0) {
+        if(this->duration() == 0) {
             ret = ZFAnimationDurationDefault();
         }
         else {
-            ret = this->aniDuration();
+            ret = this->duration();
         }
     }
     return ret;
@@ -277,13 +277,13 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
             ZFSerializableData elementData;
             ZFAnimation *child = this->childAt(i);
             if(this->autoUpdateDuration()) {
-                ZFPropertyValueReset(ZFPropertyAccess(ZFAnimation, aniDuration), child);
+                ZFPropertyValueReset(ZFPropertyAccess(ZFAnimation, duration), child);
             }
             if(!ZFObjectToDataT(elementData, child, outErrorHint)) {
                 return zffalse;
             }
             elementData.category(ZFSerializableKeyword_ZFAniGroup_child);
-            serializableData.childAdd(elementData);
+            serializableData.child(elementData);
         }
     }
     else {
@@ -323,7 +323,7 @@ void ZFAniGroup::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 void ZFAniGroup::objectOnDeallocPrepare(void) {
-    this->aniStop();
+    this->stop();
     this->childRemoveAll();
     zfsuper::objectOnDeallocPrepare();
 }
@@ -337,7 +337,7 @@ ZFMETHOD_DEFINE_2(ZFAniGroup, void, child
     if(ani == zfnull) {
         return;
     }
-    ZFCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
+    ZFCoreAssertWithMessage(!this->started(), "you must not modify child animation while group is running");
     zfobj<_ZFP_ZFAniGroupChildData> childData;
     childData->child(ani);
     d->childDatas->add(childData, index);
@@ -354,11 +354,11 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, zfanyT<ZFAnimation>, childAt
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, childRemoveAt
         , ZFMP_IN(zfindex, index)
         ) {
-    ZFCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
+    ZFCoreAssertWithMessage(!this->started(), "you must not modify child animation while group is running");
     d->childDatas->remove(index);
 }
 ZFMETHOD_DEFINE_0(ZFAniGroup, void, childRemoveAll) {
-    ZFCoreAssertWithMessage(!this->aniRunning(), "you must not modify child animation while group is running");
+    ZFCoreAssertWithMessage(!this->started(), "you must not modify child animation while group is running");
     d->childDatas->removeAll();
 }
 
@@ -370,10 +370,10 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, zfany, childTargetAt
 }
 ZFMETHOD_DEFINE_2(ZFAniGroup, void, childTargetAt
         , ZFMP_IN(zfindex , index)
-        , ZFMP_IN(zfany, aniTarget)
+        , ZFMP_IN(zfany, target)
         ) {
     _ZFP_ZFAniGroupChildData *childData = d->childDatas->get(index);
-    childData->childTarget(aniTarget);
+    childData->childTarget(target);
 }
 
 ZFMETHOD_DEFINE_1(ZFAniGroup, zftimet, childDurationAt
@@ -384,10 +384,10 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, zftimet, childDurationAt
 }
 ZFMETHOD_DEFINE_2(ZFAniGroup, void, childDurationAt
         , ZFMP_IN(zfindex , index)
-        , ZFMP_IN(zftimet, aniDuration)
+        , ZFMP_IN(zftimet, duration)
         ) {
     _ZFP_ZFAniGroupChildData *childData = d->childDatas->get(index);
-    childData->childDuration(aniDuration);
+    childData->childDuration(duration);
 }
 
 // ============================================================
@@ -401,22 +401,22 @@ zfbool ZFAniGroup::aniImplCheckValid(void) {
         if(this->autoUpdateTarget()) {
             ZFObject *childTarget = this->childTargetAt(i);
             if(childTarget == zfnull) {
-                childAni->aniTarget(this->aniTarget());
+                childAni->target(this->target());
             }
             else {
-                childAni->aniTarget(childTarget);
+                childAni->target(childTarget);
             }
         }
         if(this->autoUpdateDuration()) {
             zftimet childDuration = this->childDurationAt(i);
             if(childDuration == 0) {
-                childAni->aniDuration(this->aniDuration());
+                childAni->duration(this->duration());
             }
             else {
-                childAni->aniDuration(childDuration);
+                childAni->duration(childDuration);
             }
         }
-        if(!childAni->aniValid()) {
+        if(!childAni->valid()) {
             return zffalse;
         }
     }
@@ -438,68 +438,21 @@ void ZFAniGroup::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 
 // ============================================================
 // util for chained call
-ZFMETHOD_DEFINE_3(ZFAniGroup, void, child
-        , ZFMP_IN(const zfstring &, name)
-        , ZFMP_IN(ZFObject *, from)
-        , ZFMP_IN(ZFObject *, to)
-        ) {
-    this->child(ZFAni(zfnull, name, from, to));
-}
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, childImpl
-        , ZFMP_IN(const ZFListener &, aniImpl)
-        ) {
-    this->child(ZFAni(zfnull, aniImpl));
-}
-
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, childTarget
-        , ZFMP_IN(ZFObject *, aniTarget)
+        , ZFMP_IN(ZFObject *, target)
         ) {
     if(this->childCount() > 0) {
-        this->childTargetAt(this->childCount() - 1, aniTarget);
+        this->childTargetAt(this->childCount() - 1, target);
     }
 }
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, childDuration
-        , ZFMP_IN(zftimet, aniDuration)
+        , ZFMP_IN(zftimet, duration)
         ) {
     if(this->childCount() > 0) {
-        this->childDurationAt(this->childCount() - 1, aniDuration);
-    }
-}
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, childLoop
-        , ZFMP_IN(zfindex, aniLoop)
-        ) {
-    if(this->childCount() > 0) {
-        ZFAnimation *child = this->childAt(this->childCount() - 1);
-        child->aniLoop(aniLoop);
-    }
-}
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, childCurve
-        , ZFMP_IN(ZFCurve *, aniCurve)
-        ) {
-    if(this->childCount() > 0) {
-        ZFAniForTimer *child = this->childAt(this->childCount() - 1);
-        if(child != zfnull) {
-            child->aniCurve(aniCurve);
-        }
+        this->childDurationAt(this->childCount() - 1, duration);
     }
 }
 
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnDelayBegin
-        , ZFMP_IN(const ZFListener &, cb)
-        ) {
-    if(this->childCount() > 0) {
-        ZFAnimation *child = this->childAt(this->childCount() - 1);
-        child->aniOnDelayBegin(cb);
-    }
-}
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnDelayEnd
-        , ZFMP_IN(const ZFListener &, cb)
-        ) {
-    if(this->childCount() > 0) {
-        ZFAnimation *child = this->childAt(this->childCount() - 1);
-        child->aniOnDelayEnd(cb);
-    }
-}
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnStart
         , ZFMP_IN(const ZFListener &, cb)
         ) {
@@ -529,7 +482,7 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnStop
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, wait
         , ZFMP_IN(zftimet, duration)
         ) {
-    this->child(zfobj<ZFAnimation>()->c_aniDuration(duration));
+    this->child(zfobj<ZFAnimation>()->c_duration(duration));
 }
 zfclass _ZFP_I_ZFAniGroupStep : zfextend ZFAnimation {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFAniGroupStep, ZFAnimation)

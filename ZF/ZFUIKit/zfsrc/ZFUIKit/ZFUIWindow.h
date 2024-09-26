@@ -58,17 +58,17 @@ zfclassFwd _ZFP_ZFUIWindowPrivate;
  * your app should always start with a ZFUIWindow as root view,
  * then build your own view tree\n
  * \n
- * to show a window, simply create a ZFUIWindow's instance and invoke #windowShow,
+ * to show a window, simply create a ZFUIWindow's instance and invoke #show,
  * which would internally add this window to #ZFUISysWindow,
  * you must not add ZFUIWindow to any other view manully\n
  * \n
  * after show, window would be automatically retained and you may release it,
- * and it would be released automatically when you hide window by #windowHide\n
+ * and it would be released automatically when you hide window by #hide\n
  * \n
  * ADVANCED:\n
  * ZFUIWindow would be attached to #ZFUISysWindow::keyWindow by default,
- * you may change its owner ZFUISysWindow by #windowOwnerSysWindow,
- * but only before #windowShow is called
+ * you may change its owner ZFUISysWindow by #ownerSysWindow,
+ * but only before #show is called
  */
 zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIWindow, ZFUIView)
@@ -80,7 +80,7 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * notified when window's windowOwnerSysWindow changed,
+     * notified when window's ownerSysWindow changed,
      * param0 is the old value
      */
     ZFEVENT(WindowOwnerSysWindowOnUpdate)
@@ -123,10 +123,10 @@ public:
 
 protected:
     /**
-     * @brief init with custom #windowOwnerSysWindow,
+     * @brief init with custom #ownerSysWindow,
      *   null to use #ZFUISysWindow::keyWindow
      */
-    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(ZFUISysWindow *, windowOwnerSysWindow))
+    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(ZFUISysWindow *, ownerSysWindow))
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
@@ -149,13 +149,13 @@ public:
 
 public:
     /**
-     * @brief change owner #ZFUISysWindow, must be called before #windowShow is called
+     * @brief change owner #ZFUISysWindow, must be called before #show is called
      *
      * usually you should have only one #ZFUISysWindow in your app
      * so you have no need to care about this method
      */
-    ZFMETHOD_DECLARE_1(void, windowOwnerSysWindow
-            , ZFMP_IN(ZFUISysWindow *, windowOwnerSysWindow)
+    ZFMETHOD_DECLARE_1(void, ownerSysWindow
+            , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
             )
     /**
      * @brief get the owner #ZFUISysWindow, even if not showing
@@ -163,10 +163,10 @@ public:
      * usually you should have only one #ZFUISysWindow in your app
      * so you have no need to care about this method
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, windowOwnerSysWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, ownerSysWindow)
 protected:
     /** @brief see #EventWindowOwnerSysWindowOnUpdate */
-    virtual inline void windowOwnerSysWindowOnUpdate(ZF_IN ZFUISysWindow *oldSysWindow) {
+    virtual inline void ownerSysWindowOnUpdate(ZF_IN ZFUISysWindow *oldSysWindow) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnUpdate(), oldSysWindow);
     }
 
@@ -174,15 +174,15 @@ public:
     /**
      * @brief show the window, automatically retain the window
      */
-    ZFMETHOD_DECLARE_0(void, windowShow)
+    ZFMETHOD_DECLARE_0(void, show)
     /**
      * @brief hide the window, automatically release the window
      */
-    ZFMETHOD_DECLARE_0(void, windowHide)
+    ZFMETHOD_DECLARE_0(void, hide)
     /**
      * @brief whether the window is showing
      */
-    ZFMETHOD_DECLARE_0(zfbool, windowShowing)
+    ZFMETHOD_DECLARE_0(zfbool, showing)
 
 public:
     /**
@@ -214,7 +214,7 @@ protected:
     }
 
     /** @brief see #EventWindowOwnerSysWindowOnRotate */
-    virtual inline void windowOwnerSysWindowOnRotate(void) {
+    virtual inline void ownerSysWindowOnRotate(void) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnRotate());
     }
 

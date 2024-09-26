@@ -55,7 +55,7 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextend ZFObject {
     // ============================================================
     /** @brief get the response header */
     ZFMETHOD_DECLARE_1(zfstring, header
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
 
     /** @brief response header count */
@@ -73,8 +73,14 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextend ZFObject {
             )
 
     // ============================================================
-    /** @brief util to access body as plain text */
-    ZFMETHOD_DECLARE_0(const zfchar *, bodyText)
+    /**
+     * @brief util to access body as plain text
+     *
+     * note, return a #zfstring::shared that points to #body,
+     * you must ensure life cycle of the #ZFHttpResponse or #body
+     * longer than the returned string object
+     */
+    ZFMETHOD_DECLARE_0(zfstring, bodyText)
     /** @brief util to access body as json, return an invalid json if not able to parse */
     ZFMETHOD_DECLARE_0(ZFJson, bodyJson)
 
@@ -157,7 +163,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * @brief init and connect
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
-            ZFMP_IN(const zfchar *, url)
+            ZFMP_IN(const zfstring &, url)
             , ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET)
             )
 
@@ -183,16 +189,16 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * use #headerRemove or #headerIterRemove to remove
      */
     ZFMETHOD_DECLARE_2(void, header
-            , ZFMP_IN(const zfchar *, key)
-            , ZFMP_IN(const zfchar *, value)
+            , ZFMP_IN(const zfstring &, key)
+            , ZFMP_IN(const zfstring &, value)
             )
     /** @brief remove http header */
     ZFMETHOD_DECLARE_1(void, headerRemove
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
     /** @brief get http header */
     ZFMETHOD_DECLARE_1(zfstring, header
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
 
     /** @brief response header count */
@@ -211,7 +217,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_2(void, headerIterValue
             , ZFMP_IN_OUT(zfiter &, it)
-            , ZFMP_IN(const zfchar *, value)
+            , ZFMP_IN(const zfstring &, value)
             )
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_1(void, headerIterRemove

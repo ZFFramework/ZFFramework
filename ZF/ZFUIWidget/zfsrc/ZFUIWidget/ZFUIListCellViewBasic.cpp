@@ -24,10 +24,10 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon
     cellIcon->viewSizeMax(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
-    this->cellIconContainer()->childAdd(this->cellIcon())->c_alignCenter();
+    this->cellIconContainer()->child(this->cellIcon())->c_alignCenter();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
-    this->cellIcon()->viewRemoveFromParent();
+    this->cellIcon()->removeFromParent();
 }
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelMain) {
@@ -35,10 +35,10 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabel
     propertyValue = cellLabelMain;
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelMain) {
-    this->cellLabelMainContainer()->childAdd(this->cellLabelMain())->c_alignLeft();
+    this->cellLabelMainContainer()->child(this->cellLabelMain())->c_alignLeft();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelMain) {
-    this->cellLabelMain()->viewRemoveFromParent();
+    this->cellLabelMain()->removeFromParent();
 }
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelSub) {
@@ -48,10 +48,10 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabel
     cellLabelSub->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelSub) {
-    this->cellLabelSubContainer()->childAdd(this->cellLabelSub())->c_alignLeft();
+    this->cellLabelSubContainer()->child(this->cellLabelSub())->c_alignLeft();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelSub) {
-    this->cellLabelSub()->viewRemoveFromParent();
+    this->cellLabelSub()->removeFromParent();
 }
 
 ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, zfanyT<ZFUIView>, cellIconContainer) {
@@ -79,13 +79,13 @@ void ZFUIListCellViewBasic::objectOnInit(void) {
 
     {
         d->cellCenterContainer = zfAlloc(ZFUILinearLayout);
-        d->cellCenterContainer->layoutOrientation(ZFUIOrientation::e_Top);
+        d->cellCenterContainer->orientation(ZFUIOrientation::e_Top);
 
         d->cellLabelMainContainer = zfAlloc(ZFUIViewLayout);
-        d->cellCenterContainer->childAdd(d->cellLabelMainContainer)->c_alignLeft();
+        d->cellCenterContainer->child(d->cellLabelMainContainer)->c_alignLeft();
 
         d->cellLabelSubContainer = zfAlloc(ZFUIViewLayout);
-        d->cellCenterContainer->childAdd(d->cellLabelSubContainer)->c_alignLeft();
+        d->cellCenterContainer->child(d->cellLabelSubContainer)->c_alignLeft();
     }
 
     d->cellAccessoryContainer = zfAlloc(ZFUIViewLayout);

@@ -62,7 +62,7 @@ protected:
                     ZFClass::classForName("_ZFP_ZFCore_inner_class_test_Object.InnerInterface.InnerInterfaceInInterface")
                     == _ZFP_ZFCore_inner_class_test_Object::InnerInterface::InnerInterfaceInInterface::ClassData());
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_inner_class_test)

@@ -6,14 +6,14 @@
 #import <WebKit/WebKit.h>
 
 @interface _ZFP_ZFUIWebViewImpl_sys_iOS_View : WKWebView<WKNavigationDelegate, WKUIDelegate>
-@property (nonatomic, assign) BOOL _ZFP_webLoadingSaved;
+@property (nonatomic, assign) BOOL _ZFP_loadingSaved;
 @property (nonatomic, assign) ZFUIWebView *_ZFP_ownerZFUIWebView;
 @property (nonatomic, assign) ZFPROTOCOL_INTERFACE_CLASS(ZFUIWebView) *_ZFP_impl;
 @end
 @implementation _ZFP_ZFUIWebViewImpl_sys_iOS_View
 - (void)_notifyStateOnUpdate:(WKWebView *)webView {
-    if(self._ZFP_webLoadingSaved != webView.loading) {
-        self._ZFP_webLoadingSaved = webView.loading;
+    if(self._ZFP_loadingSaved != webView.loading) {
+        self._ZFP_loadingSaved = webView.loading;
         self._ZFP_impl->notifyWebLoadStateOnUpdate(self._ZFP_ownerZFUIWebView);
     }
 }
@@ -98,14 +98,14 @@ public:
         nativeWebViewTmp = nil;
     }
 
-    virtual void webLoadUrl(
+    virtual void loadUrl(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *url
             ) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         [nativeWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithCString:url encoding:NSUTF8StringEncoding]]]];
     }
-    virtual void webLoadHtml(
+    virtual void loadHtml(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *html
             , ZF_IN_OPT const zfchar *baseUrl = zfnull
@@ -117,33 +117,33 @@ public:
         }
         [nativeWebView loadHTMLString:[NSString stringWithCString:html encoding:NSUTF8StringEncoding] baseURL:baseUrlTmp];
     }
-    virtual void webReload(ZF_IN ZFUIWebView *webView) {
+    virtual void reload(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         [nativeWebView reload];
     }
-    virtual void webLoadStop(ZF_IN ZFUIWebView *webView) {
+    virtual void loadStop(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         [nativeWebView stopLoading];
     }
 
-    virtual void webGoBack(ZF_IN ZFUIWebView *webView) {
+    virtual void goBack(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         [nativeWebView goBack];
     }
-    virtual void webGoForward(ZF_IN ZFUIWebView *webView) {
+    virtual void goForward(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         [nativeWebView goForward];
     }
 
-    virtual zfbool webLoading(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool loading(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         return nativeWebView.loading;
     }
-    virtual zfbool webGoBackAvailable(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool goBackAvailable(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         return [nativeWebView canGoBack];
     }
-    virtual zfbool webGoForwardAvailable(ZF_IN ZFUIWebView *webView) {
+    virtual zfbool goForwardAvailable(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         return [nativeWebView canGoForward];
     }

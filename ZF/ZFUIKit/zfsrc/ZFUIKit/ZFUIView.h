@@ -259,8 +259,8 @@ public:
     /**
      * @brief visible or not, zftrue by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, viewVisible, zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewVisible)
+    ZFPROPERTY_ASSIGN(zfbool, visible, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, visible)
 
     /**
      * @brief true if added to ZFUISysWindow
@@ -280,9 +280,9 @@ public:
     /**
      * @brief view's alpha, 1 by default
      */
-    ZFPROPERTY_ASSIGN(zffloat, viewAlpha, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewAlpha)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewAlpha)
+    ZFPROPERTY_ASSIGN(zffloat, alpha, 1)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, alpha)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, alpha)
 
     /**
      * @brief whether the view should receive user interaction
@@ -301,18 +301,18 @@ public:
     /**
      * @brief whether enable mouse hover event, see #ZFUIView::viewEventOnMouseEvent, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, viewMouseHoverEventEnable)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewMouseHoverEventEnable)
+    ZFPROPERTY_ASSIGN(zfbool, mouseHoverEnable)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, mouseHoverEnable)
 
     /**
      * @brief whether the view can be focused, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, viewFocusable)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewFocusable)
+    ZFPROPERTY_ASSIGN(zfbool, focusable)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, focusable)
     /**
      * @brief whether try to obtain focus when clicked down, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, viewFocusObtainWhenClick, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, focusObtainWhenClick, zftrue)
 
     /**
      * @brief the view's frame
@@ -340,39 +340,39 @@ public:
     ZFMETHOD_DECLARE_0(void, viewFrameReset)
 
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat, viewX)
+    ZFMETHOD_DECLARE_0(zffloat, x)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewX
+    ZFMETHOD_DECLARE_1(void, x
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat, viewY)
+    ZFMETHOD_DECLARE_0(zffloat, y)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewY
+    ZFMETHOD_DECLARE_1(void, y
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat, viewWidth)
+    ZFMETHOD_DECLARE_0(zffloat, width)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewWidth
+    ZFMETHOD_DECLARE_1(void, width
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat, viewHeight)
+    ZFMETHOD_DECLARE_0(zffloat, height)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewHeight
+    ZFMETHOD_DECLARE_1(void, height
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat, viewCenterX)
+    ZFMETHOD_DECLARE_0(zffloat, centerX)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewCenterX
+    ZFMETHOD_DECLARE_1(void, centerX
             , ZFMP_IN(zffloat const &, propertyValue)
             )
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_0(zffloat, viewCenterY)
+    ZFMETHOD_DECLARE_0(zffloat, centerY)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewCenterY
+    ZFMETHOD_DECLARE_1(void, centerY
             , ZFMP_IN(zffloat const &, propertyValue)
             )
 
@@ -399,8 +399,8 @@ public:
     /**
      * @brief background color, #ZFUIColorZero by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, viewBackgroundColor, ZFUIColorZero())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, viewBackgroundColor)
+    ZFPROPERTY_ASSIGN(ZFUIColor, backgroundColor, ZFUIColorZero())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, backgroundColor)
 
     // ============================================================
     // transform
@@ -408,58 +408,58 @@ public:
      * @brief whether transform is supported
      *
      * basic 2D transform:
-     * -  #viewTranslateX
-     * -  #viewTranslateY
-     * -  #viewScaleX
-     * -  #viewScaleY
-     * -  #viewRotateZ
+     * -  #translateX
+     * -  #translateY
+     * -  #scaleX
+     * -  #scaleY
+     * -  #rotateZ
      *
      * 3D transform:
-     * -  #viewTranslateX
-     * -  #viewTranslateY
-     * -  #viewTranslateZ
-     * -  #viewScaleX
-     * -  #viewScaleY
-     * -  #viewScaleZ
-     * -  #viewRotateX
-     * -  #viewRotateY
-     * -  #viewRotateZ
+     * -  #translateX
+     * -  #translateY
+     * -  #translateZ
+     * -  #scaleX
+     * -  #scaleY
+     * -  #scaleZ
+     * -  #rotateX
+     * -  #rotateY
+     * -  #rotateZ
      *
      * when setting transform which is not supported,
      * it's ensured nothing happen,
      * but the property value is ensured to be updated
      */
-    ZFMETHOD_DECLARE_STATIC_0(ZFUITransformFlags, viewTransformAvailable)
+    ZFMETHOD_DECLARE_STATIC_0(ZFUITransformFlags, transformAvailable)
 
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewTranslateX, 0)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateX)
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewTranslateY, 0)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateY)
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewTranslateZ, 0)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateZ)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, translateX, 0)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, translateX)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, translateY, 0)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, translateY)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, translateZ, 0)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, translateZ)
 
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewScaleX, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleX)
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewScaleY, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleY)
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewScaleZ, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleZ)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, scaleX, 1)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, scaleX)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, scaleY, 1)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, scaleY)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, scaleZ, 1)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, scaleZ)
 
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewRotateX, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateX)
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewRotateY, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateY)
-    /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN(zffloat, viewRotateZ, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateZ)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, rotateX, 0)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateX)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, rotateY, 0)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateY)
+    /** @brief see #transformAvailable */
+    ZFPROPERTY_ASSIGN(zffloat, rotateZ, 0)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateZ)
 
     // ============================================================
     // init and dealloc
@@ -614,26 +614,26 @@ public:
     /**
      * @brief whether the view currently focused
      */
-    ZFMETHOD_DECLARE_0(zfbool, viewFocused)
+    ZFMETHOD_DECLARE_0(zfbool, focused)
     /**
      * @brief request to obtain or resign focus,
-     *   result can be checked by #viewFocused
+     *   result can be checked by #focused
      *
      * only focused view can receive key events
      */
-    ZFMETHOD_DECLARE_1(void, viewFocusRequest
-            , ZFMP_IN(zfbool, viewFocus)
+    ZFMETHOD_DECLARE_1(void, focusRequest
+            , ZFMP_IN(zfbool, focus)
             )
-    zffinal void _ZFP_ZFUIView_viewFocusOnUpdate(void) {
-        this->viewFocusOnUpdate();
+    zffinal void _ZFP_ZFUIView_focusOnUpdate(void) {
+        this->focusOnUpdate();
     }
     /**
      * @brief recursively to find focused child, take care of performance
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, viewFocusFind)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, focusFind)
 protected:
     /** @brief see #EventViewFocusOnUpdate */
-    virtual inline void viewFocusOnUpdate(void) {
+    virtual inline void focusOnUpdate(void) {
         this->observerNotify(ZFUIView::EventViewFocusOnUpdate());
     }
 
@@ -648,14 +648,14 @@ public:
     /**
      * @brief parent view or null if none
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, viewParent)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, parent)
 
     /**
      * @brief remove this view from parent or do nothing if no parent
      *
      * can remove normal child view or internal view
      */
-    ZFMETHOD_DECLARE_0(void, viewRemoveFromParent)
+    ZFMETHOD_DECLARE_0(void, removeFromParent)
 
     // ============================================================
     // scale settings
@@ -707,7 +707,7 @@ public:
      * all layout and touch position would be scaled properly,
      * however, changing #UIScale for a deep view tree may consume much time\n
      * for temporarily scale, typically for animation,
-     * use #viewScaleX instead
+     * use #scaleX instead
      */
     ZFPROPERTY_ASSIGN(zffloat, UIScale, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, UIScale)
@@ -897,17 +897,17 @@ public:
      * otherwise, a new layout param would be created
      * and source layout param would be copied to the newly created layout param
      */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, childAddWithParam
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, childWithParam
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN(ZFUILayoutParam *, layoutParam)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
-    /** @brief util method for #childAddWithParam */
-    inline zfanyT<ZFUILayoutParam> childAdd(
+    /** @brief util method for #childWithParam */
+    inline zfanyT<ZFUILayoutParam> child(
             ZF_IN ZFUIView *view
             , ZF_IN_OPT zfindex atIndex = zfindexMax()
             ) {
-        return this->childAddWithParam(view, zfnull, atIndex);
+        return this->childWithParam(view, zfnull, atIndex);
     }
     /**
      * @brief remove view or do nothing if view isn't added to this view
@@ -974,7 +974,7 @@ public:
 
     /**
      * @brief this view belongs to which layer of parent,
-     *   valid only if #viewParent is not null
+     *   valid only if #parent is not null
      *
      * would be #ZFUIViewChildLayer::e_Normal if no parent
      */
@@ -1040,7 +1040,7 @@ public:
      * to make the interfaces cleaner, the internal ones are named with
      * "internalBgView" and "internalFgView" as pre-fix,
      * such as #internalBgViewAdd and #internalBgViewRemove
-     * (considering the #childAdd and #childRemove)\n
+     * (considering the #child and #childRemove)\n
      * \n
      * internal views has no measure steps, its size always depends on parent's size
      */
@@ -1142,7 +1142,7 @@ protected:
      * event dispatch logic depends on implementation,
      * you may use native view to achieve if necessary\n
      * \n
-     * mouse hover event would only be fired if #viewMouseHoverEventEnable\n
+     * mouse hover event would only be fired if #mouseHoverEnable\n
      * \n
      * by default, this method would simply resolve the event if this view is enabled,
      * you may override without call super's method, to override the event

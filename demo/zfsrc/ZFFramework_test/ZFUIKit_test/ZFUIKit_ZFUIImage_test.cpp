@@ -19,7 +19,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIImageView> view;
-        container->childAdd(view)->c_sizeFill();
+        container->child(view)->c_sizeFill();
 
         // encode image to binary and load it again to test
         zfauto imageHolder = zfres("test_normal.png");

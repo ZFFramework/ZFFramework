@@ -39,7 +39,7 @@ public:
 public:
     virtual zfindex childCount(void) const;
     virtual QGraphicsWidget *childAt(ZF_IN zfindex index) const;
-    virtual void childAdd(
+    virtual void child(
             ZF_IN QGraphicsWidget *item
             , ZF_IN_OPT zfindex index = zfindexMax()
             );

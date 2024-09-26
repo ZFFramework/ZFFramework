@@ -42,14 +42,14 @@ zfclassFwd _ZFP_ZFPropertyDynamicRegisterParamPrivate;
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFPropertyDynamicRegisterParam {
 public:
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyDynamicRegisterUserData(ZF_IN ZFObject *propertyDynamicRegisterUserData);
+    ZFPropertyDynamicRegisterParam &dynamicRegisterUserData(ZF_IN ZFObject *dynamicRegisterUserData);
     /** @brief see #ZFPropertyDynamicRegister */
-    zfany propertyDynamicRegisterUserData(void) const;
+    zfany dynamicRegisterUserData(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyOwnerClass(ZF_IN const ZFClass *propertyOwnerClass);
+    ZFPropertyDynamicRegisterParam &ownerClass(ZF_IN const ZFClass *ownerClass);
     /** @brief see #ZFPropertyDynamicRegister */
-    const ZFClass *propertyOwnerClass(void) const;
+    const ZFClass *ownerClass(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
     ZFPropertyDynamicRegisterParam &propertyTypeId(ZF_IN const zfstring &propertyTypeId);

@@ -7,14 +7,14 @@ ZFMETHOD_FUNC_DEFINE_1(zfanyT<ZFUIView>, viewRoot
         , ZFMP_IN(ZFUIView *, view)
         ) {
     if(view != zfnull) {
-        while(view->viewParent() != zfnull) {
-            view = view->viewParent();
+        while(view->parent() != zfnull) {
+            view = view->parent();
         }
     }
     return view;
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, viewIsChildOf
+ZFMETHOD_FUNC_DEFINE_2(zfbool, isChildOf
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIView *, parentToCheck)
         ) {
@@ -24,13 +24,13 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, viewIsChildOf
             if(tmp == view) {
                 return zftrue;
             }
-            tmp = tmp->viewParent();
+            tmp = tmp->parent();
         } while(tmp != zfnull);
     }
     return zffalse;
 }
 
-ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
+ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewAtPos
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(const ZFUIPoint &, pos)
         , ZFMP_IN_OPT(zfbool, filterDisabledView, zffalse)
@@ -39,7 +39,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
         ) {
     if(view == zfnull
             || (filterDisabledView && !view->viewUIEnableTree())
-            || (filter != zfnull && !filter->filterCheckActive(view))
+            || (filter != zfnull && !filter->filterPassed(view))
             ) {
         return zfnull;
     }
@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     ZFCoreArray<zfautoT<ZFUIView> > childList = view->internalFgViewArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
-        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointCreate(
+        ZFUIView *tmp = ZFUIViewUtil::viewAtPos(child, ZFUIPointCreate(
                 pos.x - child->viewFrame().x,
                 pos.y - child->viewFrame().y
             ),
@@ -66,7 +66,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     childList = view->childArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
-        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointCreate(
+        ZFUIView *tmp = ZFUIViewUtil::viewAtPos(child, ZFUIPointCreate(
                 pos.x - (child->viewFrame().x + layoutChildOffset.x),
                 pos.y - (child->viewFrame().y + layoutChildOffset.y)
             ),
@@ -81,7 +81,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     childList = view->internalBgViewArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
-        ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointCreate(
+        ZFUIView *tmp = ZFUIViewUtil::viewAtPos(child, ZFUIPointCreate(
                 pos.x - child->viewFrame().x,
                 pos.y - child->viewFrame().y
             ),
@@ -100,7 +100,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
     return view;
 }
 
-ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParent
+ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParentT
         , ZFMP_OUT(ZFUIRect &, rect)
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIView *, parent)
@@ -110,8 +110,8 @@ ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParent
         return;
     }
     rect = view->viewFrame();
-    while(view->viewParent() != zfnull && view != parent) {
-        view = view->viewParent();
+    while(view->parent() != zfnull && view != parent) {
+        view = view->parent();
         ZFUIPoint layoutChildOffset = view->layoutChildOffset();
         rect.x += layoutChildOffset.x;
         rect.y += layoutChildOffset.y;
@@ -125,7 +125,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIRect, viewRectToParent
         , ZFMP_IN(ZFUIView *, parent)
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUIViewUtil::viewRectToParent(ret, view, parent);
+    ZFUIViewUtil::viewRectToParentT(ret, view, parent);
     return ret;
 }
 

@@ -33,19 +33,19 @@ protected:
                 ZFLevelAppHigh
             );
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("notify with event filter, only filter would be called");
+        this->outputSeparator();
+        this->output("notify with event filter, only filter would be called");
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFCore_EventFilter_test());
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("notify without event filter");
+        this->outputSeparator();
+        this->output("notify without event filter");
         ZFGlobalObserver().observerRemove(
             ZFGlobalEvent::EventZFCore_EventFilter_test(),
             eventFilter);
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFCore_EventFilter_test());
 
         ZFGlobalObserver().observerRemoveAll(ZFGlobalEvent::EventZFCore_EventFilter_test());
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_EventFilter_test)

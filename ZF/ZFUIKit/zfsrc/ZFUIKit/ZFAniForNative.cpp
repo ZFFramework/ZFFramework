@@ -9,12 +9,12 @@ ZFENUM_DEFINE(ZFAniForNativeCurve)
 zfclassNotPOD _ZFP_ZFAniForNativePrivate {
 public:
     void *nativeAni;
-    zfbool aniTargetAutoDisableFlag;
+    zfbool targetAutoDisableFlag;
 
 public:
     _ZFP_ZFAniForNativePrivate(void)
     : nativeAni(zfnull)
-    , aniTargetAutoDisableFlag(zffalse)
+    , targetAutoDisableFlag(zffalse)
     {
     }
 };
@@ -46,23 +46,23 @@ ZFCompareResult ZFAniForNative::objectValueCompare(ZF_IN ZFObject *anotherObj) {
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(zftrue
-        && this->aniCurve() == another->aniCurve()
-        && this->aniAlphaFrom() == another->aniAlphaFrom()
-        && this->aniAlphaTo() == another->aniAlphaTo()
-        && this->aniScaleXFrom() == another->aniScaleXFrom()
-        && this->aniScaleXTo() == another->aniScaleXTo()
-        && this->aniScaleYFrom() == another->aniScaleYFrom()
-        && this->aniScaleYTo() == another->aniScaleYTo()
-        && this->aniTranslateXFrom() == another->aniTranslateXFrom()
-        && this->aniTranslateXTo() == another->aniTranslateXTo()
-        && this->aniTranslateYFrom() == another->aniTranslateYFrom()
-        && this->aniTranslateYTo() == another->aniTranslateYTo()
-        && this->aniRotateXFrom() == another->aniRotateXFrom()
-        && this->aniRotateXTo() == another->aniRotateXTo()
-        && this->aniRotateYFrom() == another->aniRotateYFrom()
-        && this->aniRotateYTo() == another->aniRotateYTo()
-        && this->aniRotateZFrom() == another->aniRotateZFrom()
-        && this->aniRotateZTo() == another->aniRotateZTo()
+        && this->curve() == another->curve()
+        && this->alphaFrom() == another->alphaFrom()
+        && this->alphaTo() == another->alphaTo()
+        && this->scaleXFrom() == another->scaleXFrom()
+        && this->scaleXTo() == another->scaleXTo()
+        && this->scaleYFrom() == another->scaleYFrom()
+        && this->scaleYTo() == another->scaleYTo()
+        && this->translateXFrom() == another->translateXFrom()
+        && this->translateXTo() == another->translateXTo()
+        && this->translateYFrom() == another->translateYFrom()
+        && this->translateYTo() == another->translateYTo()
+        && this->rotateXFrom() == another->rotateXFrom()
+        && this->rotateXTo() == another->rotateXTo()
+        && this->rotateYFrom() == another->rotateYFrom()
+        && this->rotateYTo() == another->rotateYTo()
+        && this->rotateZFrom() == another->rotateZFrom()
+        && this->rotateZTo() == another->rotateZTo()
         ) {
         return ZFCompareEqual;
     }
@@ -77,37 +77,37 @@ ZFMETHOD_DEFINE_0(ZFAniForNative, void *, nativeAnimation) {
 // start stop
 zfbool ZFAniForNative::aniImplCheckValid(void) {
     return (zfsuper::aniImplCheckValid()
-        && this->aniTarget() != zfnull && this->aniTarget()->classData()->classIsTypeOf(ZFUIView::ClassData())
+        && this->target() != zfnull && this->target()->classData()->classIsTypeOf(ZFUIView::ClassData())
     );
 }
 
 void ZFAniForNative::aniOnStart(void) {
     zfsuper::aniOnStart();
-    ZFUIView *aniTarget = zfany(this->aniTarget());
-    if(aniTarget == zfnull || !this->aniTargetAutoDisable()) {
-        d->aniTargetAutoDisableFlag = zffalse;
+    ZFUIView *target = zfany(this->target());
+    if(target == zfnull || !this->targetAutoDisable()) {
+        d->targetAutoDisableFlag = zffalse;
     }
     else {
-        d->aniTargetAutoDisableFlag = zftrue;
-        aniTarget->viewUIEnableTree(zffalse);
+        d->targetAutoDisableFlag = zftrue;
+        target->viewUIEnableTree(zffalse);
     }
 }
 void ZFAniForNative::aniOnStop(ZF_IN ZFResultTypeEnum resultType) {
-    ZFUIView *aniTarget = zfany(this->aniTarget());
-    if(aniTarget != zfnull && d->aniTargetAutoDisableFlag) {
-        aniTarget->viewUIEnableTree(zftrue);
+    ZFUIView *target = zfany(this->target());
+    if(target != zfnull && d->targetAutoDisableFlag) {
+        target->viewUIEnableTree(zftrue);
     }
     zfsuper::aniOnStop(resultType);
 }
 
 void ZFAniForNative::aniImplStart(void) {
     zfsuper::aniImplStart();
-    ZFUIView *aniTarget = this->aniTarget();
+    ZFUIView *target = this->target();
     ZFPROTOCOL_ACCESS(ZFAniForNative)->nativeAniStart(this,
-        aniTarget != zfnull ? aniTarget->UIScaleFixed() : (zffloat)1);
-    zfanyT<ZFUIView> parent = aniTarget;
-    while(parent->viewParent() != zfnull) {
-        parent = parent->viewParent();
+        target != zfnull ? target->UIScaleFixed() : (zffloat)1);
+    zfanyT<ZFUIView> parent = target;
+    while(parent->parent() != zfnull) {
+        parent = parent->parent();
     }
     parent->layoutIfNeed();
 }

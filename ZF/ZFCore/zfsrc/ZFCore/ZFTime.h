@@ -556,51 +556,51 @@ public:
     /**
      * @brief year since 0000, e.g. 2012
      */
-    ZFMETHOD_DECLARE_0(zfint, timeInfoYear)
+    ZFMETHOD_DECLARE_0(zfint, year)
 
     /**
      * @brief month range in [0, 11]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoMonth)
+    ZFMETHOD_DECLARE_0(zfuint, month)
 
     /**
      * @brief day of month range in [0, 27...30]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoDay)
+    ZFMETHOD_DECLARE_0(zfuint, day)
 
     /**
      * @brief day of week range in [0, 6], while 0 stands for Sunday
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoDayOfWeek)
+    ZFMETHOD_DECLARE_0(zfuint, dayOfWeek)
     /**
      * @brief day of year range in [0, 364/365]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoDayOfYear)
+    ZFMETHOD_DECLARE_0(zfuint, dayOfYear)
 
     /**
      * @brief hour range in [0, 23]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoHour)
+    ZFMETHOD_DECLARE_0(zfuint, hour)
 
     /**
      * @brief minute range in [0, 59]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoMinute)
+    ZFMETHOD_DECLARE_0(zfuint, minute)
 
     /**
      * @brief second range in [0, 59]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoSecond)
+    ZFMETHOD_DECLARE_0(zfuint, second)
 
     /**
      * @brief miliSecond range in [0, 999]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoMiliSecond)
+    ZFMETHOD_DECLARE_0(zfuint, miliSecond)
 
     /**
      * @brief microSecond range in [0, 999]
      */
-    ZFMETHOD_DECLARE_0(zfuint, timeInfoMicroSecond)
+    ZFMETHOD_DECLARE_0(zfuint, microSecond)
 
 private:
     _ZFP_ZFTimePrivate *d;

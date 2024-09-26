@@ -101,12 +101,6 @@ zfclassFwd zfauto;
 
 // ============================================================
 /**
- * @brief function type to create object
- */
-typedef zfauto (*ZFObjectCreator)(void);
-
-// ============================================================
-/**
  * @brief true if Type is #ZFObject type or #ZFInterface type
  */
 #define zftIsZFObject(Type) (zftIsSame<Type, ZFObject>::Value || ZFM_CLASS_HAS_MEMBER(ObjCk, _ZFP_zftIsZFObject, Type))

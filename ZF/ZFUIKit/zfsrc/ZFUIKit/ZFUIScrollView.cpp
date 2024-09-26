@@ -320,23 +320,29 @@ private:
     }
 
 private:
-    ZFMETHOD_INLINE_0(zftimet, x_scrollAniStart) {
+    ZFMETHOD_INLINE_1(void, x_scrollAniStart
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            ) {
         if(!this->xScrollAniTimerStarted) {
             this->xScrollAniTimerStarted = zftrue;
             this->notifyScrollAniTimerStart();
         }
         this->scrollerActionAdd(_ZFP_ZFUIScrollViewActionScrollBegin);
-        return this->scrollAniLastTime;
+        zfargs.result(zfobj<v_zftimet>(this->scrollAniLastTime));
     }
-    ZFMETHOD_INLINE_0(zftimet, y_scrollAniStart) {
+    ZFMETHOD_INLINE_1(void, y_scrollAniStart
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            ) {
         if(!this->yScrollAniTimerStarted) {
             this->yScrollAniTimerStarted = zftrue;
             this->notifyScrollAniTimerStart();
         }
         this->scrollerActionAdd(_ZFP_ZFUIScrollViewActionScrollBegin);
-        return this->scrollAniLastTime;
+        zfargs.result(zfobj<v_zftimet>(this->scrollAniLastTime));
     }
-    ZFMETHOD_INLINE_0(void, x_scrollAniStop) {
+    ZFMETHOD_INLINE_1(void, x_scrollAniStop
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            ) {
         if(this->xScrollAniTimerStarted) {
             this->xScrollAniTimerStarted = zffalse;
             if(!this->yScrollAniTimerStarted) {
@@ -345,7 +351,9 @@ private:
             }
         }
     }
-    ZFMETHOD_INLINE_0(void, y_scrollAniStop) {
+    ZFMETHOD_INLINE_1(void, y_scrollAniStop
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            ) {
         if(this->yScrollAniTimerStarted) {
             this->yScrollAniTimerStarted = zffalse;
             if(!this->xScrollAniTimerStarted) {
@@ -730,7 +738,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
             if(scrollView == zfnull) {
                 return;
             }
-            ZFUIView *focusedChild = scrollView->viewFocusFind();
+            ZFUIView *focusedChild = scrollView->focusFind();
             if(focusedChild != zfnull) {
                 scrollView->scrollChildToVisible(
                     focusedChild,

@@ -92,7 +92,7 @@ void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_detach(ZF_IN void *token) {
 void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_cleanup(ZF_IN void *token) {
     delete (_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *)token;
 }
-void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusable(
+void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_focusable(
         ZF_IN void *token
         , ZF_IN zfbool v
         ) {
@@ -112,7 +112,7 @@ void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusable(
         }
     }
 }
-void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusRequest(
+void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_focusRequest(
         ZF_IN void *token
         , ZF_IN zfbool v
         ) {
@@ -124,7 +124,7 @@ void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusRequest(
         t->nativeOwner->clearFocus();
     }
 }
-zfbool _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocused(ZF_IN void *token) {
+zfbool _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_focused(ZF_IN void *token) {
     _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = (_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *)token;
     return t->nativeOwner->hasFocus();
 }

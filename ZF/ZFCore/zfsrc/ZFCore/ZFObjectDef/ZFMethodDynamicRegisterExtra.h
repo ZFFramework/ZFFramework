@@ -15,7 +15,7 @@ zfclass ZFLIB_ZFCore ZFMethodInvokeData : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFMethodInvokeData, ZFObject)
 
 public:
-    zfbool invokeSuccess; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfbool success; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     const ZFMethod *invokerMethod; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfany invokerObject; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfstring errorHint; /**< @brief data to hold params for #ZFMethodGenericInvoker */
@@ -50,7 +50,7 @@ protected:
     /** @cond ZFPrivateDoc */
     ZFMethodInvokeData(void)
     : ZFObject()
-    , invokeSuccess(zftrue)
+    , success(zftrue)
     , invokerMethod(zfnull)
     , invokerObject(zfnull)
     , errorHint()

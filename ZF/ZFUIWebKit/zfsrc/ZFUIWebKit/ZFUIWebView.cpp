@@ -12,38 +12,38 @@ ZFOBJECT_REGISTER(ZFUIWebView)
 
 ZFEVENT_REGISTER(ZFUIWebView, WebLoadStateOnUpdate)
 
-ZFMETHOD_DEFINE_1(ZFUIWebView, void, webLoadUrl
+ZFMETHOD_DEFINE_1(ZFUIWebView, void, loadUrl
         , ZFMP_IN(const zfchar *, url)
         ) {
-    ZFPROTOCOL_ACCESS(ZFUIWebView)->webLoadUrl(this, url);
+    ZFPROTOCOL_ACCESS(ZFUIWebView)->loadUrl(this, url);
 }
-ZFMETHOD_DEFINE_2(ZFUIWebView, void, webLoadHtml
+ZFMETHOD_DEFINE_2(ZFUIWebView, void, loadHtml
         , ZFMP_IN(const zfchar *, html)
         , ZFMP_IN_OPT(const zfchar *, baseUrl, zfnull)
         ) {
-    ZFPROTOCOL_ACCESS(ZFUIWebView)->webLoadHtml(this, html, baseUrl);
+    ZFPROTOCOL_ACCESS(ZFUIWebView)->loadHtml(this, html, baseUrl);
 }
-ZFMETHOD_DEFINE_0(ZFUIWebView, void, webReload) {
-    ZFPROTOCOL_ACCESS(ZFUIWebView)->webReload(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, void, reload) {
+    ZFPROTOCOL_ACCESS(ZFUIWebView)->reload(this);
 }
-ZFMETHOD_DEFINE_0(ZFUIWebView, void, webLoadStop) {
-    ZFPROTOCOL_ACCESS(ZFUIWebView)->webLoadStop(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, void, loadStop) {
+    ZFPROTOCOL_ACCESS(ZFUIWebView)->loadStop(this);
 }
-ZFMETHOD_DEFINE_0(ZFUIWebView, void, webGoBack) {
-    ZFPROTOCOL_ACCESS(ZFUIWebView)->webGoBack(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, void, goBack) {
+    ZFPROTOCOL_ACCESS(ZFUIWebView)->goBack(this);
 }
-ZFMETHOD_DEFINE_0(ZFUIWebView, void, webGoForward) {
-    ZFPROTOCOL_ACCESS(ZFUIWebView)->webGoForward(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, void, goForward) {
+    ZFPROTOCOL_ACCESS(ZFUIWebView)->goForward(this);
 }
 
-ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, webLoading) {
-    return ZFPROTOCOL_ACCESS(ZFUIWebView)->webLoading(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, loading) {
+    return ZFPROTOCOL_ACCESS(ZFUIWebView)->loading(this);
 }
-ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, webGoBackAvailable) {
-    return ZFPROTOCOL_ACCESS(ZFUIWebView)->webGoBackAvailable(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, goBackAvailable) {
+    return ZFPROTOCOL_ACCESS(ZFUIWebView)->goBackAvailable(this);
 }
-ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, webGoForwardAvailable) {
-    return ZFPROTOCOL_ACCESS(ZFUIWebView)->webGoForwardAvailable(this);
+ZFMETHOD_DEFINE_0(ZFUIWebView, zfbool, goForwardAvailable) {
+    return ZFPROTOCOL_ACCESS(ZFUIWebView)->goForwardAvailable(this);
 }
 
 void ZFUIWebView::objectOnInit(void) {
@@ -70,12 +70,12 @@ void ZFUIWebView::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 void ZFUIWebView::objectOnDeallocPrepare(void) {
-    this->webLoadStop();
+    this->loadStop();
     zfsuper::objectOnDeallocPrepare();
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIWebView_ignoreFrom_ZFUIViewBlinkWhenFoocus, ZFLevelZFFrameworkNormal) {
-    ZFUIViewBlinkWhenFocusFilter().classFilter.filterAdd(ZFUIWebView::ClassData());
+    ZFUIViewBlinkWhenFocusFilter().classFilter.filter(ZFUIWebView::ClassData());
 }
 ZF_GLOBAL_INITIALIZER_END(ZFUIWebView_ignoreFrom_ZFUIViewBlinkWhenFoocus)
 

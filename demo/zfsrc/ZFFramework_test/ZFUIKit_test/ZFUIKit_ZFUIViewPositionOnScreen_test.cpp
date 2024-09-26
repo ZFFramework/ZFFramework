@@ -18,7 +18,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIKit_test_Button> button;
-        container->childAdd(button)->c_alignCenter();
+        container->child(button)->c_alignCenter();
         button->label()->text("click me");
 
         ZFLISTENER(buttonOnClick) {

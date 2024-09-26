@@ -31,7 +31,7 @@ protected:
         if(!ZFBitTest(_ZFP_stateFlag, stateFlag_observerHasAdd)) {
             if(ZFBitTest(_ZFP_stateFlag, stateFlag_pendingStop)) {
                 ZFBitUnset(_ZFP_stateFlag, stateFlag_pendingStop);
-                this->timerStop();
+                this->stop();
             }
             else {
                 ZFBitSet(_ZFP_stateFlag, stateFlag_pendingStop);
@@ -53,7 +53,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFGlobalTimerDataHolder, ZFLevelZFFramewor
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFGlobalTimerDataHolder) {
     if(this->globalTimer != zfnull) {
-        this->globalTimer->timerStop();
+        this->globalTimer->stop();
         zfRetainChange(this->globalTimer, zfnull);
     }
 }
@@ -63,7 +63,7 @@ _ZFP_I_ZFGlobalTimer *globalTimer;
 zfbool globalTimerManualStep;
 void checkCleanup(void) {
     if(!this->globalTimer->hasTimerObserver()) {
-        this->globalTimer->timerStop();
+        this->globalTimer->stop();
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFGlobalTimerDataHolder)
@@ -87,11 +87,11 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttach
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
         d->globalTimer = zfAlloc(_ZFP_I_ZFGlobalTimer);
-        d->globalTimer->timerInterval(ZFGlobalTimerInterval());
+        d->globalTimer->interval(ZFGlobalTimerInterval());
     }
-    if(!d->globalTimer->timerStarted() && !d->globalTimerManualStep) {
-        d->globalTimer->timerInterval(ZFGlobalTimerInterval());
-        d->globalTimer->timerStart();
+    if(!d->globalTimer->started() && !d->globalTimerManualStep) {
+        d->globalTimer->interval(ZFGlobalTimerInterval());
+        d->globalTimer->start();
     }
     d->globalTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback, observerLevel);
 }
@@ -106,11 +106,11 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     if(d->globalTimer == zfnull) {
         d->globalTimer = zfAlloc(_ZFP_I_ZFGlobalTimer);
-        d->globalTimer->timerInterval(ZFGlobalTimerInterval());
+        d->globalTimer->interval(ZFGlobalTimerInterval());
     }
-    if(!d->globalTimer->timerStarted() && !d->globalTimerManualStep) {
-        d->globalTimer->timerInterval(ZFGlobalTimerInterval());
-        d->globalTimer->timerStart();
+    if(!d->globalTimer->started() && !d->globalTimerManualStep) {
+        d->globalTimer->interval(ZFGlobalTimerInterval());
+        d->globalTimer->start();
     }
     d->globalTimer->observerAddForOnce(ZFTimer::EventTimerOnActivate(), timerCallback, observerLevel);
 }
@@ -140,26 +140,26 @@ ZFMETHOD_FUNC_DEFINE_0(zftimet const &, ZFGlobalTimerIntervalDefault) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder)->globalTimerIntervalDefault;
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerIntervalDefault
-        , ZFMP_IN(zftimet const &, timerIntervalDefault)
+        , ZFMP_IN(zftimet const &, intervalDefault)
         ) {
-    ZFCoreAssert(timerIntervalDefault > 0);
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder)->globalTimerIntervalDefault = timerIntervalDefault;
+    ZFCoreAssert(intervalDefault > 0);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder)->globalTimerIntervalDefault = intervalDefault;
 }
 ZFMETHOD_FUNC_DEFINE_0(zftimet const &, ZFGlobalTimerInterval) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder)->globalTimerInterval;
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerInterval
-        , ZFMP_IN(zftimet const &, timerInterval)
+        , ZFMP_IN(zftimet const &, interval)
         ) {
-    ZFCoreAssert(timerInterval > 0);
+    ZFCoreAssert(interval > 0);
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
-    if(d->globalTimerInterval != timerInterval) {
-        d->globalTimerInterval = timerInterval;
-        if(d->globalTimer != zfnull && d->globalTimer->timerStarted()) {
-            d->globalTimer->timerStop();
-            d->globalTimer->timerInterval(d->globalTimerInterval);
-            d->globalTimer->timerStart();
+    if(d->globalTimerInterval != interval) {
+        d->globalTimerInterval = interval;
+        if(d->globalTimer != zfnull && d->globalTimer->started()) {
+            d->globalTimer->stop();
+            d->globalTimer->interval(d->globalTimerInterval);
+            d->globalTimer->start();
         }
     }
 }
@@ -170,7 +170,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStep) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
     d->globalTimerManualStep = zftrue;
     if(d->globalTimer != zfnull) {
-        d->globalTimer->timerStop();
+        d->globalTimer->stop();
         d->globalTimer->observerNotify(ZFTimer::EventTimerOnActivate());
     }
 }
@@ -183,8 +183,8 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStepCancel) {
     d->globalTimerManualStep = zffalse;
     if(d->globalTimer != zfnull) {
         if(d->globalTimer->hasTimerObserver()) {
-            d->globalTimer->timerInterval(ZFGlobalTimerInterval());
-            d->globalTimer->timerStart();
+            d->globalTimer->interval(ZFGlobalTimerInterval());
+            d->globalTimer->start();
         }
     }
 }

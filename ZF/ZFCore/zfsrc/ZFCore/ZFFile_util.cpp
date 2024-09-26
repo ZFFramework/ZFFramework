@@ -382,15 +382,15 @@ static void _ZFP_ZFFileTreePrint(
                 }
             }
 
-            if(fd.fileIsDir()) {
-                outputCallback << fd.fileName() << "/\n";
-                zfstring pathDataChild = fileImpl.implToChild(pathData, fd.fileName());
+            if(fd.isDir()) {
+                outputCallback << fd.name() << "/\n";
+                zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
                 if(pathDataChild) {
                     _ZFP_ZFFileTreePrint(pathDataChild, outputCallback, headToken, indentToken, indentLevel + 1, fileImpl);
                 }
             }
             else {
-                outputCallback << fd.fileName();
+                outputCallback << fd.name();
                 outputCallback << "\n";
             }
         } while(fileImpl.implFindNext(fd));
@@ -422,18 +422,18 @@ public:
         zfobj<v_ZFFileFindData> fd;
         if(impl.implFindFirst(fd->zfv, pathInfo->zfv.pathData())) {
             do {
-                pathInfo->zfv.pathData(impl.implToChild(pathInfo->zfv.pathData(), fd->zfv.fileName()));
+                pathInfo->zfv.pathData(impl.implToChild(pathInfo->zfv.pathData(), fd->zfv.name()));
                 if(!pathInfo->zfv.pathData()) {
                     return zffalse;
                 }
 
-                if((fd->zfv.fileIsDir() && forEachDir) || (!fd->zfv.fileIsDir() && forEachFile)) {
+                if((fd->zfv.isDir() && forEachDir) || (!fd->zfv.isDir() && forEachFile)) {
                     fileCallback.execute(ZFArgs()
                             .param0(pathInfo)
                             .param1(fd)
                         );
                 }
-                if(isRecursive && fd->zfv.fileIsDir()) {
+                if(isRecursive && fd->zfv.isDir()) {
                     action(impl, fileCallback, pathInfo);
                 }
 

@@ -156,20 +156,20 @@ zfbool ZFMethodGenericInvokerParamsCheckWithMethod(
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN const ZFMethod *method
         ) {
-    if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount()) {
+    if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
         if(errorHint != zfnull) {
-            if(method->methodParamCountMin() == method->methodParamCount()) {
+            if(method->paramCountMin() == method->paramCount()) {
                 zfstringAppend(errorHint
                         , "expect %s param, got %s"
-                        , method->methodParamCount()
+                        , method->paramCount()
                         , paramCount
                         );
             }
             else {
                 zfstringAppend(errorHint
                         , "expect %s~%s param, got %s"
-                        , method->methodParamCountMin()
-                        , method->methodParamCount()
+                        , method->paramCountMin()
+                        , method->paramCount()
                         , paramCount
                         );
             }
@@ -179,14 +179,14 @@ zfbool ZFMethodGenericInvokerParamsCheckWithMethod(
     const ZFClass *paramTypes[ZFMETHOD_MAX_PARAM];
     zfmemset(paramTypes, 0, sizeof(const ZFClass *) * ZFMETHOD_MAX_PARAM);
     for(zfindex i = 0; i < paramCount; ++i) {
-        const ZFClass *cls = ZFClass::classForName(method->methodParamTypeIdAt(i));
+        const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(i));
         if(cls == zfnull) {
-            const ZFTypeInfo *typeInfo = ZFTypeInfoForName(method->methodParamTypeIdAt(i));
+            const ZFTypeInfo *typeInfo = ZFTypeInfoForName(method->paramTypeIdAt(i));
             if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull) {
                 zfstringAppend(errorHint
                         , "unable to access param%s's typeInfo, typeId: %s, typeInfo: typeInfo"
                         , i
-                        , method->methodParamTypeIdAt(i)
+                        , method->paramTypeIdAt(i)
                         );
                 return zffalse;
             }
@@ -198,7 +198,7 @@ zfbool ZFMethodGenericInvokerParamsCheckWithMethod(
             errorHint
             , paramCount
             , paramList
-            , method->methodParamCountMin()
+            , method->paramCountMin()
             , paramTypes[0]
             , paramTypes[1]
             , paramTypes[2]
@@ -220,7 +220,7 @@ zfbool _ZFP_MtdGIParamCheck(
         , ZF_IN ZFObject *param
         ) {
     if((param != ZFMP_DEF() && !zfvAccessAvailable)
-            || (param == ZFMP_DEF() && paramIndex < invokerMethod->methodParamDefaultBeginIndex())
+            || (param == ZFMP_DEF() && paramIndex < invokerMethod->paramDefaultBeginIndex())
             ) {
         if(errorHint != zfnull) {
             zfstringAppend(errorHint,

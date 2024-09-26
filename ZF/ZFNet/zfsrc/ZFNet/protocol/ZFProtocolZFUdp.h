@@ -30,7 +30,7 @@ public:
 public:
     /** @brief see #ZFUdp::hostResolve */
     virtual void *hostResolve(
-            ZF_IN const zfchar *host
+            ZF_IN const zfstring &host
             , ZF_IN zfuint port
             ) zfpurevirtual;
     /** @brief see #ZFUdp::hostResolve */

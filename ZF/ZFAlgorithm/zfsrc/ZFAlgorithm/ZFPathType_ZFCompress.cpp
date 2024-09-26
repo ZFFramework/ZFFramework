@@ -194,7 +194,7 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        if(zfstringIsEmpty(relPath)) {
+        if(!relPath) {
             return zftrue;
         }
         zfbool exist = (ZFDecompressContentIndex(taskData->taskToken, relPath) != zfindexMax())
@@ -208,7 +208,7 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        if(zfstringIsEmpty(relPath)) {
+        if(!relPath) {
             return zftrue;
         }
         zfbool isDir = ZFDecompressContentIsDir(taskData->taskToken, ZFDecompressContentIndex(taskData->taskToken,

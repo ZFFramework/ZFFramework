@@ -43,17 +43,17 @@ void ZFFilterForZFProperty::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
 zfbool ZFFilterForZFProperty::filterOnCheckActive(ZF_IN const ZFProperty * const &e) const {
     if(!zfsuper::filterOnCheckActive(e)
-            || !this->classFilter.filterCheckActive(e->propertyOwnerClass())
+            || !this->classFilter.filterPassed(e->ownerClass())
             ) {
         return zffalse;
     }
 
-    if((e->setterMethod()->methodIsPrivate() && this->ignorePrivateSetter())
-            || (e->setterMethod()->methodIsProtected() && this->ignoreProtectedSetter())
-            || (e->setterMethod()->methodIsPublic() && this->ignorePublicSetter())
-            || (e->getterMethod()->methodIsPrivate() && this->ignorePrivateGetter())
-            || (e->getterMethod()->methodIsProtected() && this->ignoreProtectedGetter())
-            || (e->getterMethod()->methodIsPublic() && this->ignorePublicGetter())
+    if((e->setterMethod()->isPrivate() && this->ignorePrivateSetter())
+            || (e->setterMethod()->isProtected() && this->ignoreProtectedSetter())
+            || (e->setterMethod()->isPublic() && this->ignorePublicSetter())
+            || (e->getterMethod()->isPrivate() && this->ignorePrivateGetter())
+            || (e->getterMethod()->isProtected() && this->ignoreProtectedGetter())
+            || (e->getterMethod()->isPublic() && this->ignorePublicGetter())
             ) {
         return zffalse;
     }

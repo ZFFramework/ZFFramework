@@ -26,7 +26,7 @@ private:
     ZFMETHOD_INLINE_1(void, managerOnDestroy
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        this->testCaseStop(ZFResultType::e_Success);
+        this->stop(ZFResultType::e_Success);
         ZFLuaGC();
     }
 };

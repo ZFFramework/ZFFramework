@@ -10,7 +10,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
             classNameList.capacity(allClass.count());
             for(zfindex i = 0; i < allClass.count(); ++i) {
                 const ZFClass *cls = allClass[i];
-                if(!cls->classIsInternalPrivate() && zfstringIsEmpty(cls->classNamespace())) {
+                if(!cls->classIsInternalPrivate() && !cls->classNamespace()) {
                     classNameList.add(cls->className());
                 }
             }
@@ -23,7 +23,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
     }), ZFM_EXPAND({
         if(data.changedClass != zfnull && data.changedClass != zfnull
                 && !data.changedClass->classIsInternalPrivate()
-                && zfstringIsEmpty(data.changedClass->classNamespace())
+                && !data.changedClass->classNamespace()
                 ) {
             ZFCoreArray<lua_State *> stateList;
             stateList.add(L);

@@ -52,12 +52,12 @@ public:
     /**
      * @brief curve for timer, null to use linear curve, null by default
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFCurve>, aniCurve)
+    ZFPROPERTY_RETAIN(zfanyT<ZFCurve>, curve)
     /**
      * @brief interval to update timer, in miliseconds, 0 by default
      *
      * -  when set to 0, we would use special logic to achieve global timer control:
-     *   -# calculate frame count by #aniDurationFixed/#ZFGlobalTimerIntervalDefault
+     *   -# calculate frame count by #durationFixed/#ZFGlobalTimerIntervalDefault
      *   -# step each frame by #ZFGlobalTimerInterval, until reach the frame count
      *
      *   for example, if you increace #ZFGlobalTimerInterval,
@@ -80,7 +80,7 @@ protected:
     /**
      * @brief called to do the actual update
      *
-     * note, progress is based on #aniCurve,
+     * note, progress is based on #curve,
      * which typically has value in range [0, 1] as base value,
      * but may exceeds the range for bounce curve
      */

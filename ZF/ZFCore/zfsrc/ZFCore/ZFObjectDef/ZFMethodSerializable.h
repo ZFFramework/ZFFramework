@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * valid method signature:
  * -  "OwnerClass.methodName" :
  *   for class member type method
- * -  "OwnerClass.methodName:methodParamTypeId0:methodParamTypeId1" :
+ * -  "OwnerClass.methodName:paramTypeId0:paramTypeId1" :
  *   for method with params
  * -  "methodName" :
  *   for function type method with default name space
@@ -40,14 +40,14 @@ ZFOUTPUT_TYPE(ZFMethod, {v.objectInfoT(s);})
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(
         ZF_IN const zfstring &classOrNamespace
         , ZF_IN const zfstring &methodName
-        , ZF_IN_OPT const zfchar *methodParamTypeId0 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-        , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId0 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId1 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId2 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId3 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId4 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId5 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId6 = zfnull
+        , ZF_IN_OPT const zfchar *paramTypeId7 = zfnull
         );
 /**
  * @brief parse method from method sig
@@ -64,14 +64,14 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(
  * result ensured to contain (ZFMETHOD_MAX_PARAM + 2) element if success:
  * -  pos[0] : range of OwnerClass or MethodNamespace, 0 length for global namespace
  * -  pos[1] : range of methodName, ensured not empty
- * -  pos[2] : range of methodParamTypeId0, 0 length if none
- * -  pos[3] : range of methodParamTypeId1, 0 length if none
- * -  pos[4] : range of methodParamTypeId2, 0 length if none
- * -  pos[5] : range of methodParamTypeId3, 0 length if none
- * -  pos[6] : range of methodParamTypeId4, 0 length if none
- * -  pos[7] : range of methodParamTypeId5, 0 length if none
- * -  pos[8] : range of methodParamTypeId6, 0 length if none
- * -  pos[9] : range of methodParamTypeId7, 0 length if none
+ * -  pos[2] : range of paramTypeId0, 0 length if none
+ * -  pos[3] : range of paramTypeId1, 0 length if none
+ * -  pos[4] : range of paramTypeId2, 0 length if none
+ * -  pos[5] : range of paramTypeId3, 0 length if none
+ * -  pos[6] : range of paramTypeId4, 0 length if none
+ * -  pos[7] : range of paramTypeId5, 0 length if none
+ * -  pos[8] : range of paramTypeId6, 0 length if none
+ * -  pos[9] : range of paramTypeId7, 0 length if none
  */
 extern ZFLIB_ZFCore zfbool ZFMethodSigSplit(
         ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret

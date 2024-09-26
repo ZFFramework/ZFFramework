@@ -23,18 +23,18 @@ protected:
             zfobj<_ZFP_ZFCore_ZFPropertyUserRegister_test_Object> obj;
             obj->valueNormal(1);
 
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("try modify and serialize a dynamically registered property, result");
+            this->outputSeparator();
+            this->output("try modify and serialize a dynamically registered property, result");
 
             ZFPropertyUserRegisterAssign(propertyInfo, _ZFP_ZFCore_ZFPropertyUserRegister_test_Object::ClassData(),
                 zfstring, "valueDynamic", ZFPropertyNoInitValue,
                 public, public);
             obj->classData()->propertyForName("valueDynamic")->setterMethod()
-                ->execute<void, zfstring const &>(obj, "value");
+                ->executeExact<void, zfstring const &>(obj, "value");
             ZFObjectToXml(ZFOutputDefault(), obj);
             ZFPropertyUserUnregister(obj->classData()->propertyForName("valueDynamic"));
 
-            this->testCaseOutput("after unregister:");
+            this->output("after unregister:");
             ZFObjectToXml(ZFOutputDefault(), obj);
         }
 
@@ -42,15 +42,15 @@ protected:
             zfobj<_ZFP_ZFCore_ZFPropertyUserRegister_test_Object> obj;
             obj->valueNormal(1);
 
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("try modify and serialize a statically registered property, result");
+            this->outputSeparator();
+            this->output("try modify and serialize a statically registered property, result");
 
             obj->classData()->propertyForName("valueStatic")->setterMethod()
-                ->execute<void, v_zfstring * const &>(obj, zfobj<v_zfstring>("value"));
+                ->executeExact<void, v_zfstring * const &>(obj, zfobj<v_zfstring>("value"));
             ZFObjectToXml(ZFOutputDefault(), obj);
         }
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFPropertyUserRegister_test)

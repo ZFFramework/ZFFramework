@@ -14,16 +14,16 @@ zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFBufferPrivate {
 public:
     zfuint refCount;
     void *buffer;
-    zfindex bufferCapacity; // capacity exclude tail '\0'
-    zfindex bufferSize;
-    zfbool bufferAutoFree;
+    zfindex capacity; // capacity exclude tail '\0'
+    zfindex length;
+    zfbool autoFree;
 public:
     _ZFP_ZFBufferPrivate(void)
     : refCount(1)
     , buffer(zfnull)
-    , bufferCapacity(0)
-    , bufferSize(0)
-    , bufferAutoFree(zffalse)
+    , capacity(0)
+    , length(0)
+    , autoFree(zffalse)
     {
     }
     ~_ZFP_ZFBufferPrivate(void);
@@ -43,69 +43,69 @@ public:
     zffinal void *bufferGiveUp(void) {
         void *ret = d->buffer;
         d->buffer = zfnull;
-        d->bufferCapacity = 0;
-        d->bufferSize = 0;
-        d->bufferAutoFree = zffalse;
+        d->capacity = 0;
+        d->length = 0;
+        d->autoFree = zffalse;
         return ret;
     }
     /**
      * @brief swap buffer
      */
-    zffinal void bufferSwap(ZF_IN_OUT ZFBuffer &buf) {
+    zffinal void swap(ZF_IN_OUT ZFBuffer &buf) {
         if(d == buf.d) {
             return;
         }
         void *buffer = d->buffer;
-        zfindex bufferCapacity = d->bufferCapacity;
-        zfindex bufferSize = d->bufferSize;
-        zfindex bufferAutoFree = d->bufferAutoFree;
+        zfindex capacity = d->capacity;
+        zfindex length = d->length;
+        zfindex autoFree = d->autoFree;
 
         d->buffer = buf.d->buffer;
-        d->bufferCapacity = buf.d->bufferCapacity;
-        d->bufferSize = buf.d->bufferSize;
-        d->bufferAutoFree = buf.d->bufferAutoFree;
+        d->capacity = buf.d->capacity;
+        d->length = buf.d->length;
+        d->autoFree = buf.d->autoFree;
 
         buf.d->buffer = buffer;
-        buf.d->bufferCapacity = bufferCapacity;
-        buf.d->bufferSize = bufferSize;
-        buf.d->bufferAutoFree = bufferAutoFree;
+        buf.d->capacity = capacity;
+        buf.d->length = length;
+        buf.d->autoFree = autoFree;
     }
 
 public:
     /**
      * @brief change the internal buffer, usually for internal use only
      *
-     * note the bufferSize <= bufferCapacity, the actual buffer capacity must at least (bufferCapacity + sizeof(zfchar))
+     * note the length <= capacity, the actual buffer capacity must at least (capacity + sizeof(zfchar))
      */
     zffinal void zfunsafe_bufferChange(
             ZF_IN void *buffer
-            , ZF_IN zfindex bufferCapacity
-            , ZF_IN zfindex bufferSize
-            , ZF_IN zfbool bufferAutoFree
+            , ZF_IN zfindex capacity
+            , ZF_IN zfindex length
+            , ZF_IN zfbool autoFree
             ) {
         this->bufferFree();
         d->buffer = buffer;
-        d->bufferCapacity = bufferCapacity;
-        d->bufferSize = bufferSize;
-        d->bufferAutoFree = bufferAutoFree;
+        d->capacity = capacity;
+        d->length = length;
+        d->autoFree = autoFree;
     }
     /**
-     * @brief util method to malloc and copy buffer, ensured NULL terminated (not included in bufferSize)
-     * @note bufferSize must explicitly specified
+     * @brief util method to malloc and copy buffer, ensured NULL terminated (not included in length)
+     * @note length must explicitly specified
      */
     zffinal void bufferCopy(
             ZF_IN const void *buffer
-            , ZF_IN zfindex bufferSize
+            , ZF_IN zfindex length
             ) {
-        if(bufferSize == zfindexMax()) {
-            bufferSize = zfslen((const zfchar *)buffer) * sizeof(zfchar);
+        if(length == zfindexMax()) {
+            length = zfslen((const zfchar *)buffer) * sizeof(zfchar);
         }
-        this->bufferCapacity(bufferSize);
-        if(bufferSize > 0) {
-            zfmemcpy(this->buffer(), buffer, bufferSize);
-            *((zfchar *)((zfbyte *)this->buffer() + bufferSize)) = '\0';
+        this->capacity(length);
+        if(length > 0) {
+            zfmemcpy(this->buffer(), buffer, length);
+            *((zfchar *)((zfbyte *)this->buffer() + length)) = '\0';
         }
-        d->bufferSize = bufferSize;
+        d->length = length;
     }
     /**
      * @brief util method to copy string
@@ -124,36 +124,36 @@ public:
     }
 
     /**
-     * @brief util method to realloc and append buffer, ensured NULL terminated (not included in bufferSize)
+     * @brief util method to realloc and append buffer, ensured NULL terminated (not included in length)
      */
-    zffinal void bufferAppend(
+    zffinal void append(
             ZF_IN const void *buffer
-            , ZF_IN zfindex bufferSize
+            , ZF_IN zfindex length
             ) {
-        if(bufferSize == zfindexMax()) {
-            bufferSize = zfslen((const zfchar *)buffer) * sizeof(zfchar);
+        if(length == zfindexMax()) {
+            length = zfslen((const zfchar *)buffer) * sizeof(zfchar);
         }
-        if(bufferSize > 0) {
-            this->bufferCapacity(this->bufferSize() + bufferSize);
-            zfmemcpy((zfbyte *)this->buffer() + this->bufferSize(), buffer, bufferSize);
-            *((zfchar *)((zfbyte *)this->buffer() + this->bufferSize() + bufferSize)) = '\0';
-            d->bufferSize += bufferSize;
+        if(length > 0) {
+            this->capacity(this->length() + length);
+            zfmemcpy((zfbyte *)this->buffer() + this->length(), buffer, length);
+            *((zfchar *)((zfbyte *)this->buffer() + this->length() + length)) = '\0';
+            d->length += length;
         }
     }
     /**
      * @brief util method to append string
      */
-    zffinal void bufferAppend(
+    zffinal void append(
             ZF_IN const zfchar *s
             , ZF_IN_OPT zfindex length = zfindexMax()
             ) {
-        this->bufferAppend((const void *)s, ((length == zfindexMax()) ? zfslen(s) : length) * sizeof(zfchar));
+        this->append((const void *)s, ((length == zfindexMax()) ? zfslen(s) : length) * sizeof(zfchar));
     }
     /**
      * @brief util method to append string
      */
-    zffinal void bufferAppend(ZF_IN const zfstring &s) {
-        this->bufferAppend(s.cString(), s.length());
+    zffinal void append(ZF_IN const zfstring &s) {
+        this->append(s.cString(), s.length());
     }
 
 public:
@@ -162,36 +162,36 @@ public:
      *
      * this method do nothing if memory allocate fail\n
      * when success, for convenient, it's ensured the buffer can hold bytes up to
-     * (buffer.bufferCapacity() + sizeof(zfchar))
+     * (buffer.capacity() + sizeof(zfchar))
      */
-    zffinal void bufferCapacity(ZF_IN zfindex bufferCapacity);
+    zffinal void capacity(ZF_IN zfindex capacity);
     /**
      * @brief return buffer capacity
      */
-    zffinal zfindex bufferCapacity(void) const {
-        return d->bufferCapacity;
+    zffinal zfindex capacity(void) const {
+        return d->capacity;
     }
     /**
      * @brief trim buffer capacity
      */
-    zffinal void bufferCapacityTrim(void);
+    zffinal void capacityTrim(void);
     /**
-     * @brief change #bufferSize only, no memory change would be applied
+     * @brief change #length only, no memory change would be applied
      *
-     * new size must be smaller than current #bufferCapacity\n
-     * the bufferSize only stored for convenient,
+     * new size must be smaller than current #capacity\n
+     * the length only stored for convenient,
      * the actual meaning depends on its user
      */
-    zffinal void bufferSize(ZF_IN zfindex bufferSize) {
-        if(bufferSize <= d->bufferCapacity) {
-            d->bufferSize = bufferSize;
+    zffinal void length(ZF_IN zfindex length) {
+        if(length <= d->capacity) {
+            d->length = length;
         }
     }
     /**
      * @brief return buffer content's size
      */
-    zffinal zfindex bufferSize(void) const {
-        return d->bufferSize;
+    zffinal zfindex length(void) const {
+        return d->length;
     }
 
 public:
@@ -223,7 +223,7 @@ public:
      * @brief util method to access buffer as string type
      */
     zfindex textLength(void) const {
-        return this->bufferSize() / sizeof(zfchar);
+        return this->length() / sizeof(zfchar);
     }
     /**
      * @brief access the buffer
@@ -242,8 +242,8 @@ public:
     /**
      * @brief whether the buffer would be free-ed automatically
      */
-    zffinal zfbool bufferAutoFree(void) const {
-        return d->bufferAutoFree;
+    zffinal zfbool autoFree(void) const {
+        return d->autoFree;
     }
 
 public:
@@ -305,7 +305,7 @@ public:
 private:
     _ZFP_ZFBufferPrivate *d;
 private:
-    void _bufferCapacityDoChange(ZF_IN zfindex bufferCapacity);
+    void _capacityDoChange(ZF_IN zfindex capacity);
 };
 ZFOUTPUT_TYPE(ZFBuffer, {v.objectInfoT(s);})
 

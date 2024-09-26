@@ -108,11 +108,11 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         return zffalse;
     }
     const ZFMethod *getterMethod = propertyOwner->classData()->propertyGetterForName(propertyName);
-    if(getterMethod == zfnull || !getterMethod->methodIsPublic()) {
+    if(getterMethod == zfnull || !getterMethod->isPublic()) {
         return zffalse;
     }
     const ZFMethod *setterMethod = propertyOwner->classData()->propertySetterForName(propertyName);
-    if(setterMethod == zfnull || !setterMethod->methodIsPublic()) {
+    if(setterMethod == zfnull || !setterMethod->isPublic()) {
         ZFStyleable *styleable = getterMethod->methodInvoke(propertyOwner);
         if(styleable == zfnull) {
             return zffalse;

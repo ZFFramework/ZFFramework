@@ -97,7 +97,7 @@ zfbool ZFContainer::serializableOnSerializeToData(
                 return zffalse;
             }
             elementData.category(ZFSerializableKeyword_ZFContainer_element);
-            serializableData.childAdd(elementData);
+            serializableData.child(elementData);
         }
     }
     else {
@@ -127,7 +127,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
                 return zffalse;
             }
             elementData.category(ZFSerializableKeyword_ZFContainer_element);
-            serializableData.childAdd(elementData);
+            serializableData.child(elementData);
         }
         return zftrue;
     }
@@ -148,7 +148,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
             return zffalse;
         }
         elementData.category(ZFSerializableKeyword_ZFContainer_element);
-        serializableData.childAdd(elementData);
+        serializableData.child(elementData);
     }
 
     if(tmp->count() > 0) {

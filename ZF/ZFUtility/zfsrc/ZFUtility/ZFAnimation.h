@@ -28,30 +28,14 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when animation delay begin
-     */
-    ZFEVENT(AniOnDelayBegin)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when animation delay finished,
-     * param0 is a #ZFResultType to show the delay result
-     */
-    ZFEVENT(AniOnDelayEnd)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
      * called when animation started
-     * @note for delayed animation,
-     *   this event would be fired before delay,
-     *   use #EventAniOnDelayEnd if necessary
      */
     ZFEVENT(AniOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when animation looped,
-     * current loop count can be accessed by #aniLoopCur
+     * current loop count can be accessed by #loopCur
      */
     ZFEVENT(AniOnLoop)
     /**
@@ -68,23 +52,23 @@ public:
     /**
      * @brief animation's duration in miliseconds, 0 to use #ZFAnimationDurationDefault, 0 by default
      */
-    ZFPROPERTY_ASSIGN(zftimet, aniDuration)
+    ZFPROPERTY_ASSIGN(zftimet, duration)
     /**
-     * @brief util method to #aniDuration
+     * @brief util method to #duration
      */
-    ZFMETHOD_DECLARE_0(zftimet, aniDurationFixed)
+    ZFMETHOD_DECLARE_0(zftimet, durationFixed)
     /**
-     * @brief whether automatically stop previous animation attached to #aniTarget,
+     * @brief whether automatically stop previous animation attached to #target,
      *   false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, aniAutoStopPrev)
+    ZFPROPERTY_ASSIGN(zfbool, autoStopPrev)
 
     /**
      * @brief loop count, 0 by default
      *
      * 0 mean no loop, use #zfindexMax for infinite loop
      */
-    ZFPROPERTY_ASSIGN(zfindex, aniLoop)
+    ZFPROPERTY_ASSIGN(zfindex, loop)
 
 public:
     /**
@@ -94,13 +78,13 @@ public:
      * this is not necessary to be set during animation's running
      * (although most animation subclass need a target)
      */
-    ZFMETHOD_DECLARE_1(void, aniTarget
-            , ZFMP_IN(ZFObject *, aniTarget)
+    ZFMETHOD_DECLARE_1(void, target
+            , ZFMP_IN(ZFObject *, target)
             )
     /**
      * @brief animation's target
      */
-    ZFMETHOD_DECLARE_0(zfany, aniTarget)
+    ZFMETHOD_DECLARE_0(zfany, target)
 
     // ============================================================
     // start stop
@@ -110,21 +94,21 @@ public:
      * @note an animation would be retained automatically when it's running,
      *   and released after stopped
      */
-    ZFMETHOD_DECLARE_0(void, aniStart)
+    ZFMETHOD_DECLARE_0(void, start)
     /**
-     * @brief true if the animation is running (or delaying)
+     * @brief true if the animation is running
      */
-    ZFMETHOD_DECLARE_0(zfbool, aniRunning)
+    ZFMETHOD_DECLARE_0(zfbool, started)
     /**
      * @brief stop the animation or do nothing if not started
      */
-    ZFMETHOD_DECLARE_0(void, aniStop)
+    ZFMETHOD_DECLARE_0(void, stop)
     /**
-     * @brief true if the animation is stopped by calling #aniStop
+     * @brief true if the animation is stopped by calling #stop
      *
-     * this state would be kept until next #aniStart called
+     * this state would be kept until next #start called
      */
-    ZFMETHOD_DECLARE_0(zfbool, aniStoppedByUser)
+    ZFMETHOD_DECLARE_0(zfbool, stoppedByUser)
 
 public:
     /**
@@ -138,24 +122,16 @@ public:
     /**
      * @brief check whether animation is valid, see #aniImplCheckValid
      */
-    ZFMETHOD_DECLARE_0(zfbool, aniValid)
+    ZFMETHOD_DECLARE_0(zfbool, valid)
 
     /**
      * @brief current loop count, 0 for first time
      *
-     * reset when #aniStart, see #aniLoop for more info
+     * reset when #start, see #loop for more info
      */
-    ZFMETHOD_DECLARE_0(zfindex, aniLoopCur)
+    ZFMETHOD_DECLARE_0(zfindex, loopCur)
 
 public:
-    /** @brief util to attach observer */
-    ZFMETHOD_DECLARE_1(void, aniOnDelayBegin
-            , ZFMP_IN(const ZFListener &, cb)
-            )
-    /** @brief util to attach observer */
-    ZFMETHOD_DECLARE_1(void, aniOnDelayEnd
-            , ZFMP_IN(const ZFListener &, cb)
-            )
     /** @brief util to attach observer */
     ZFMETHOD_DECLARE_1(void, aniOnStart
             , ZFMP_IN(const ZFListener &, cb)
@@ -170,8 +146,8 @@ public:
             )
 
 protected:
-    /** @brief called when #aniTarget changed */
-    virtual void aniImplTargetOnUpdate(ZF_IN ZFObject *aniTargetOld) {}
+    /** @brief called when #target changed */
+    virtual void aniImplTargetOnUpdate(ZF_IN ZFObject *targetOld) {}
     /**
      * @brief called to check whether the animation is currently valid,
      *   an invalid animation is ensured can't be started
@@ -196,14 +172,6 @@ protected:
      * @brief for subclass to stop actual animation
      */
     virtual void aniImplStop(void);
-    /** @brief see #EventAniOnDelayBegin */
-    virtual inline void aniOnDelayBegin(void) {
-        this->observerNotify(ZFAnimation::EventAniOnDelayBegin());
-    }
-    /** @brief see #EventAniOnDelayEnd */
-    virtual inline void aniOnDelayEnd(ZF_IN ZFResultTypeEnum resultType) {
-        this->observerNotify(ZFAnimation::EventAniOnDelayEnd(), zfobj<ZFResultType>(resultType));
-    }
     /** @brief see #EventAniOnStart */
     virtual inline void aniOnStart(void) {
         this->observerNotify(ZFAnimation::EventAniOnStart());
@@ -222,9 +190,9 @@ protected:
     zffinal void aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType = ZFResultType::e_Success);
 
 protected:
-    /** @brief init with #aniTarget */
+    /** @brief init with #target */
     ZFOBJECT_ON_INIT_DECLARE_1(
-            ZFMP_IN(ZFObject *, aniTarget)
+            ZFMP_IN(ZFObject *, target)
             )
 
 protected:

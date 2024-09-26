@@ -34,35 +34,35 @@ public:
     // properties
 public:
     /** @brief see #ZFUITextEdit */
-    virtual void textEditEnable(
+    virtual void editEnable(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN zfbool textEditEnable
+            , ZF_IN zfbool editEnable
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
     virtual void textEditSecure(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN zfbool textEditSecured
+            , ZF_IN zfbool editSecured
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
-    virtual void textEditKeyboardType(
+    virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum textEditKeyboardType
+            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
-    virtual void textEditKeyboardReturnType(
+    virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum textEditKeyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
             ) zfpurevirtual;
 
     /** @brief see #ZFUITextEdit */
-    virtual void textSelectRange(
+    virtual void selectedRange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT ZFIndexRange &textSelectRange
+            , ZF_OUT ZFIndexRange &selectedRange
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
-    virtual void textSelectRange(
+    virtual void selectedRange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const ZFIndexRange &textSelectRange
+            , ZF_IN const ZFIndexRange &selectedRange
             ) zfpurevirtual;
 
 public:
@@ -110,10 +110,10 @@ public:
     // ============================================================
     // edit
 public:
-    /** @brief see #ZFUITextEdit::textEditBegin */
-    virtual void textEditBegin(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
-    /** @brief see #ZFUITextEdit::textEditEnd */
-    virtual void textEditEnd(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
+    /** @brief see #ZFUITextEdit::editBegin */
+    virtual void editBegin(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
+    /** @brief see #ZFUITextEdit::editEnd */
+    virtual void editEnd(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
 
     // ============================================================
     // callbacks that implementations must notify
@@ -140,7 +140,7 @@ public:
      * @brief implementation must notify when text select range changed
      */
     zffinal void notifyTextSelectRangeOnUpdate(ZF_IN ZFUITextEdit *textEdit) {
-        textEdit->_ZFP_ZFUITextEdit_textSelectRangeNotifyUpdate();
+        textEdit->_ZFP_ZFUITextEdit_selectedRangeNotifyUpdate();
     }
     /**
      * @brief implementation must notify when text changed

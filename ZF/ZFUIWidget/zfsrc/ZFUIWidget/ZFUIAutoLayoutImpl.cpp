@@ -91,7 +91,7 @@ public:
             , ZF_IN ZFUIView *parent
             ) {
         ZFUIView *target = rule.target();
-        if(target == zfnull || target == parent || target->viewParent() != parent) {
+        if(target == zfnull || target == parent || target->parent() != parent) {
             return parent;
         }
         else {

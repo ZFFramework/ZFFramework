@@ -12,31 +12,31 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, ZFTypeIdWrapper *, wrappedValueAssign
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, ZFTypeIdWrapper *, zfvAssign
         , ZFMP_IN(ZFTypeIdWrapper *, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, const zfchar *, wrappedValueTypeId)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, void, wrappedValueReset)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, zfbool, wrappedValueIsInit)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFTypeIdWrapper, zfbool, wrappedValueFromData
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, const zfchar *, zfvTypeId)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, void, zfvReset)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, zfbool, zfvIsInit)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFTypeIdWrapper, zfbool, zfvFromData
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, wrappedValueToData
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, zfvToData
         , ZFMP_OUT(ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, wrappedValueFromString
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, zfvFromString
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, wrappedValueToString
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, zfvToString
         , ZFMP_IN_OUT(zfstring &, s)
         )
 
 ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(src, srcLen);
+        invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen);
     }, ZFTypeIdWrapper
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
@@ -46,16 +46,16 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
             if(src->classData()->classIsTypeOf(invokerObject->classData())
                 || (
                     invokerObject->classData()->classIsTypeOf(src->classData())
-                    && zfstringIsEqual(src->wrappedValueTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueTypeId())
+                    && zfstringIsEqual(src->zfvTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->zfvTypeId())
                 )
             ) {
-                invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueAssign(src);
+                invokerObject->to<ZFTypeIdWrapper *>()->zfvAssign(src);
             }
             else {
                 zfbool success = zffalse;
                 zfstring s;
-                if(src->wrappedValueToString(s)) {
-                    success = invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(s);
+                if(src->zfvToString(s)) {
+                    success = invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(s);
                 }
                 if(!success) {
                     zfobj<v_zfstring> errorHint;

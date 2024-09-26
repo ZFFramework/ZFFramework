@@ -15,7 +15,7 @@ public:
         if(dataBuf.buffer() == zfnull) {
             return zfnull;
         }
-        NSData *nsData = [NSData dataWithBytesNoCopy:dataBuf.buffer() length:(NSUInteger)dataBuf.bufferSize() freeWhenDone:YES];
+        NSData *nsData = [NSData dataWithBytesNoCopy:dataBuf.buffer() length:(NSUInteger)dataBuf.length() freeWhenDone:YES];
         if(nsData == nil) {
             return zfnull;
         }

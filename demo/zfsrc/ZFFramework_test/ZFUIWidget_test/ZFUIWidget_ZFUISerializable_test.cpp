@@ -15,49 +15,49 @@ protected:
 
         {
             zfstring s;
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("xml:");
+            this->outputSeparator();
+            this->output("xml:");
             ZFObjectToXml(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
-            this->testCaseOutput("xml re-serialized:");
+            this->output("xml re-serialized:");
             ZFObjectToXml(ZFOutputDefault(), ZFObjectFromXml(ZFInputForString(s)));
         }
 
         {
             zfstring s;
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("json:");
+            this->outputSeparator();
+            this->output("json:");
             ZFObjectToJson(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
-            this->testCaseOutput("json re-serialized:");
+            this->output("json re-serialized:");
             ZFObjectToJson(ZFOutputDefault(), ZFObjectFromJson(ZFInputForString(s)));
         }
 
         {
             zfstring s;
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("zfsd:");
+            this->outputSeparator();
+            this->output("zfsd:");
             ZFObjectToZfsd(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
-            this->testCaseOutput("zfsd re-serialized:");
+            this->output("zfsd re-serialized:");
             ZFObjectToZfsd(ZFOutputDefault(), ZFObjectFromZfsd(ZFInputForString(s)));
         }
 
-        this->testCaseStop();
+        this->stop();
     }
 
 private:
     zfauto prepareTestObject(void) {
         zfobj<ZFUIAutoLayout> parent;
-        parent->viewAlpha(0.5f);
+        parent->alpha(0.5f);
 
         zfobj<ZFUIView> child0;
         child0->viewUIEnableTree(zffalse);
-        parent->childAdd(child0)->c_left()->c_toParent();
+        parent->child(child0)->c_left()->c_toParent();
 
         zfobj<ZFUITextView> child1;
         child1->text("special chars: \r\n\t\"'-_=+<>()[]{}");
-        parent->childAdd(child1)->c_right()->c_toParentRight();
+        parent->child(child1)->c_right()->c_toParentRight();
 
         return parent;
     }

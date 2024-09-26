@@ -11,11 +11,11 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutput(zfstr("stack trace:\n%s", ZFLogStackTrace()));
+        this->output(zfstr("stack trace:\n%s", ZFLogStackTrace()));
 
-        this->testCaseOutput(zfstr("caller info: %s", ZFLogCallerInfo()));
+        this->output(zfstr("caller info: %s", ZFLogCallerInfo()));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFLogStackTrace_test)

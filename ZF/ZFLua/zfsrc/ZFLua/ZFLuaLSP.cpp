@@ -211,18 +211,18 @@ static void _ZFP_ZFLuaLSPGenFile_class(
     ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
     for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
         const ZFMethod *m = ctorMethods[iMethod];
-        if(m->methodParamCount() == 0
-                || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
+        if(m->paramCount() == 0
+                || (m->ownerClass() != cls && !m->ownerClass()->classIsInterface())
                 ) {
             continue;
         }
         zfstring paramList;
-        for(zfindex i = 0; i < m->methodParamCount(); ++i) {
-            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, luaKeywords, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
+        for(zfindex i = 0; i < m->paramCount(); ++i) {
+            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
             if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
-            paramList += m->methodParamNameAt(i);
+            paramList += m->paramNameAt(i);
         }
         output
             << "---@return " << classSig << "\n"
@@ -234,12 +234,12 @@ static void _ZFP_ZFLuaLSPGenFile_class(
     ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
-        if(!m->methodIsPublic() || m->methodIsInternal()
+        if(!m->isPublic() || m->isInternal()
                 || zfstringIsEqual(m->methodName(), "objectOnInit")
                 || luaKeywords.find(m->methodName()) != luaKeywords.end()
-                || (m->methodOwnerClass() != cls
-                    && !m->methodOwnerClass()->classIsInterface()
-                    && !cls->dynamicImplementOf(m->methodOwnerClass())
+                || (m->ownerClass() != cls
+                    && !m->ownerClass()->classIsInterface()
+                    && !cls->dynamicImplementOf(m->ownerClass())
                     )
                 ) {
             continue;
@@ -249,7 +249,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
             zfbool exist = zffalse;
             for(zfindex i = itMethod->second.count() - 1; i != zfindexMax(); --i) {
                 const ZFMethod *methodExist = itMethod->second[i];
-                if(m->methodParamTypeIdIsMatch(methodExist)) {
+                if(m->paramTypeIdIsMatch(methodExist)) {
                     exist = zftrue;
                     break;
                 }
@@ -266,20 +266,20 @@ static void _ZFP_ZFLuaLSPGenFile_class(
             end
          */
         zfstring paramList;
-        for(zfindex i = 0; i < m->methodParamCount(); ++i) {
-            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, luaKeywords, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
+        for(zfindex i = 0; i < m->paramCount(); ++i) {
+            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
             if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
-            paramList += _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, m->methodParamNameAt(i));
+            paramList += _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
         }
-        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void())) {
-            zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodReturnTypeId());
+        if(!zfstringIsEqual(m->returnTypeId(), ZFTypeId_void())) {
+            zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->returnTypeId());
             output << "---@return " << retSig << "\n";
         }
         else {
             if(m->methodType() != ZFMethodTypeStatic) {
-                zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodOwnerClass());
+                zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->ownerClass());
                 output << "---@return " << retSig << "\n";
             }
         }
@@ -323,7 +323,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(
     ZFCoreArray<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
-        if(m->methodIsInternal()
+        if(m->isInternal()
                 || luaKeywords.find(m->methodName()) != luaKeywords.end()
                 ) {
             continue;
@@ -334,19 +334,19 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(
             function NS.Func(P0) end
          */
         zfstring paramList;
-        for(zfindex i = 0; i < m->methodParamCount(); ++i) {
-            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, luaKeywords, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
+        for(zfindex i = 0; i < m->paramCount(); ++i) {
+            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
             if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
-            paramList += _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, m->methodParamNameAt(i));
+            paramList += _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
         }
-        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void())) {
-            zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodReturnTypeId());
+        if(!zfstringIsEqual(m->returnTypeId(), ZFTypeId_void())) {
+            zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->returnTypeId());
             output << "---@return " << retSig << "\n";
         }
         zfstring funcPrefix;
-        if(!zfstringIsEmpty(m->methodNamespace())) {
+        if(m->methodNamespace()) {
             funcPrefix += m->methodNamespace();
             funcPrefix += ".";
         }

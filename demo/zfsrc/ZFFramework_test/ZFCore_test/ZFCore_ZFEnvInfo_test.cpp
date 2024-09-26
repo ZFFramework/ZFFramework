@@ -11,9 +11,9 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutput("current env info:");
-        this->testCaseOutput(ZFEnvInfo::envSummary());
-        this->testCaseStop();
+        this->output("current env info:");
+        this->output(ZFEnvInfo::envSummary());
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFEnvInfo_test)

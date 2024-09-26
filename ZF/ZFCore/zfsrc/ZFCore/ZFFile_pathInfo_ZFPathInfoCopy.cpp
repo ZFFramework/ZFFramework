@@ -94,9 +94,9 @@ static zfbool _ZFP_ZFPathInfoCopy_copyDir(
             ZFPathInfo srcTmp(srcDir.pathType(), zfnull);
             ZFPathInfo dstTmp(dstDir.pathType(), zfnull);
             do {
-                srcTmp.pathData(srcImpl.implToChild(srcDir.pathData(), fd.fileName()));
+                srcTmp.pathData(srcImpl.implToChild(srcDir.pathData(), fd.name()));
 
-                dstTmp.pathData(dstImpl.implToChild(dstDir.pathData(), fd.fileName()));
+                dstTmp.pathData(dstImpl.implToChild(dstDir.pathData(), fd.name()));
                 if(srcImpl.implIsDir(srcTmp.pathData())) {
                     stacksDirSrc.add(srcTmp.pathData());
                     stacksDirDst.add(dstTmp.pathData());

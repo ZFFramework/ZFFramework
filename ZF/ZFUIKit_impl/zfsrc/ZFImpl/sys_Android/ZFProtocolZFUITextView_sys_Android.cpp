@@ -121,19 +121,19 @@ public:
             ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSingleLine(
+    virtual void singleLine(
             ZF_IN ZFUITextView *textView
-            , ZF_IN zfbool textSingleLine
+            , ZF_IN zfbool singleLine
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_textSingleLine",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_singleLine",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), jmId
             , (jobject)textView->nativeImplView()
-            , (jboolean)textSingleLine
+            , (jboolean)singleLine
             );
     }
     virtual void textTruncateMode(

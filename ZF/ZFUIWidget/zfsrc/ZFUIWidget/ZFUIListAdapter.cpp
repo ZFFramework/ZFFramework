@@ -10,11 +10,11 @@ ZFEVENT_REGISTER(ZFUIListAdapter, ListCellOnUpdate)
 ZFEVENT_REGISTER(ZFUIListAdapter, ListCellCacheOnRecycle)
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFUIListAdapter, ZFUIOrientationEnum, listOrientation) {
-    return this->_ZFP_ZFUIListAdapter_listOrientation;
+ZFMETHOD_DEFINE_0(ZFUIListAdapter, ZFUIOrientationEnum, orientation) {
+    return this->_ZFP_ZFUIListAdapter_orientation;
 }
-ZFMETHOD_DEFINE_0(ZFUIListAdapter, const ZFUISize &, listContainerSize) {
-    return this->_ZFP_ZFUIListAdapter_listContainerSize;
+ZFMETHOD_DEFINE_0(ZFUIListAdapter, const ZFUISize &, containerSize) {
+    return this->_ZFP_ZFUIListAdapter_containerSize;
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListAdapter, zffloat, cellSizeHint) {
@@ -35,13 +35,13 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
         , ZFMP_IN(ZFUIListCell *, cell)
         ) {
     if(this->cellSizeFill()) {
-        switch(this->listOrientation()) {
+        switch(this->orientation()) {
             case ZFUIOrientation::e_Left:
             case ZFUIOrientation::e_Right:
-                return this->listContainerSize().width;
+                return this->containerSize().width;
             case ZFUIOrientation::e_Top:
             case ZFUIOrientation::e_Bottom:
-                return this->listContainerSize().height;
+                return this->containerSize().height;
             default:
                 ZFCoreCriticalShouldNotGoHere();
                 return -1;

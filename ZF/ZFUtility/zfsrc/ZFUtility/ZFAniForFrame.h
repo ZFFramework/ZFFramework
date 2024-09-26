@@ -116,7 +116,7 @@ protected:
     // start stop
 public:
     zfoverride
-    virtual zftimet aniDurationFixed(void);
+    virtual zftimet durationFixed(void);
 
 protected:
     zfoverride

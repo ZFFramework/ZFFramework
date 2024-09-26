@@ -12,7 +12,7 @@
 @property (nonatomic, strong) UIView *_ZFP_nativeImplView;
 @property (nonatomic, strong) NSMutableArray *_ZFP_mouseRecords; // UITouch
 @property (nonatomic, assign) BOOL _ZFP_uiEnable;
-@property (nonatomic, assign) BOOL _ZFP_ZFUIViewFocus_viewFocusable;
+@property (nonatomic, assign) BOOL _ZFP_ZFUIViewFocus_focusable;
 @end
 @implementation _ZFP_ZFUIViewImpl_sys_iOS_View
 // ============================================================
@@ -30,7 +30,7 @@
     // status init
     self._ZFP_uiEnable = YES;
 
-    self._ZFP_ZFUIViewFocus_viewFocusable = NO;
+    self._ZFP_ZFUIViewFocus_focusable = NO;
 
     return self;
 }
@@ -58,7 +58,7 @@
 - (void)layoutSubviews {
     if(self._ZFP_ownerZFUIView != zfnull
         && self._ZFP_ownerZFUIView->layoutRequested()
-        && (self._ZFP_ownerZFUIView->viewParent() == zfnull || !self._ZFP_ownerZFUIView->viewParent()->layoutRequested())
+        && (self._ZFP_ownerZFUIView->parent() == zfnull || !self._ZFP_ownerZFUIView->parent()->layoutRequested())
     ) {
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyLayoutView(self._ZFP_ownerZFUIView, ZFImpl_sys_iOS_ZFUIRectFromCGRect(self.frame));
     }
@@ -80,9 +80,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_MouseDown;
+        ev->mouseAction = ZFUIMouseAction::e_Down;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+        ev->mouseButton = ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -104,9 +104,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_MouseMove;
+        ev->mouseAction = ZFUIMouseAction::e_Move;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+        ev->mouseButton = ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -124,9 +124,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_MouseUp;
+        ev->mouseAction = ZFUIMouseAction::e_Up;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+        ev->mouseButton = ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -144,9 +144,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_MouseCancel;
+        ev->mouseAction = ZFUIMouseAction::e_Cancel;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+        ev->mouseButton = ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -158,7 +158,7 @@
         return [self._ZFP_nativeImplView canBecomeFirstResponder];
     }
     else {
-        return self._ZFP_ZFUIViewFocus_viewFocusable;
+        return self._ZFP_ZFUIViewFocus_focusable;
     }
 }
 - (BOOL)becomeFirstResponder {
@@ -277,7 +277,7 @@ public:
         nativeViewTmp._ZFP_uiEnable = YES;
         nativeViewTmp.userInteractionEnabled = YES;
         nativeViewTmp.backgroundColor = nil;
-        nativeViewTmp._ZFP_ZFUIViewFocus_viewFocusable = NO;
+        nativeViewTmp._ZFP_ZFUIViewFocus_focusable = NO;
         nativeViewTmp.layer.transform = CATransform3DIdentity;
 
         [nativeViewTmp._ZFP_mouseRecords removeAllObjects];
@@ -337,17 +337,17 @@ public:
     // ============================================================
     // properties
 public:
-    virtual void viewVisible(
+    virtual void visible(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewVisible
+            , ZF_IN zfbool visible
             ) {
-        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).hidden = !viewVisible;
+        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).hidden = !visible;
     }
-    virtual void viewAlpha(
+    virtual void alpha(
             ZF_IN ZFUIView *view
-            , ZF_IN zffloat viewAlpha
+            , ZF_IN zffloat alpha
             ) {
-        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).alpha = viewAlpha;
+        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).alpha = alpha;
     }
     virtual void viewUIEnable(
             ZF_IN ZFUIView *view
@@ -361,15 +361,15 @@ public:
             ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).userInteractionEnabled = viewUIEnableTree;
     }
-    virtual void viewBackgroundColor(
+    virtual void backgroundColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &viewBackgroundColor
+            , ZF_IN const ZFUIColor &backgroundColor
             ) {
-        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(viewBackgroundColor);
+        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(backgroundColor);
     }
 
 public:
-    virtual void childAdd(
+    virtual void child(
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
@@ -392,9 +392,10 @@ public:
     virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)parent->nativeView();
         NSArray *children = nativeView.subviews;
-        if(children.count > 0
-                && !(nativeView._ZFP_nativeImplView != nil && children.count == 1)
-                ) {
+        if(!(
+                    children.count == 0
+                    || (nativeView._ZFP_nativeImplView != nil && children.count == 1)
+                    )) {
             for(NSUInteger i = children.count - 1; i != (NSUInteger)-1; --i) {
                 UIView *child = [children objectAtIndex:i];
                 if(child != nativeView._ZFP_nativeImplView) {
@@ -437,22 +438,22 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_iOS, ZFUIViewFocus, ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewFocusable(
+    virtual void focusable(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewFocusable
+            , ZF_IN zfbool focusable
             ) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
-        nativeView._ZFP_ZFUIViewFocus_viewFocusable = viewFocusable;
-        if(!viewFocusable) {
+        nativeView._ZFP_ZFUIViewFocus_focusable = focusable;
+        if(!focusable) {
             [nativeView resignFirstResponder];
         }
     }
-    virtual zfbool viewFocused(ZF_IN ZFUIView *view) {
+    virtual zfbool focused(ZF_IN ZFUIView *view) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         return (nativeView.isFirstResponder
             || (nativeView._ZFP_nativeImplView != nil && nativeView._ZFP_nativeImplView.isFirstResponder));
     }
-    virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view) {
+    virtual ZFUIView *focusFind(ZF_IN ZFUIView *view) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         id focused = [UIResponder _ZFP_ZFUIViewImpl_sys_iOS_firstResponder];
         if(focused == nil || ![focused isKindOfClass:[UIView class]]) {
@@ -471,12 +472,12 @@ public:
         }
         return zfnull;
     }
-    virtual void viewFocusRequest(
+    virtual void focusRequest(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewFocus
+            , ZF_IN zfbool focus
             ) {
         UIView *nativeView = (__bridge UIView *)view->nativeView();
-        if(viewFocus) {
+        if(focus) {
             [nativeView becomeFirstResponder];
         }
         else {

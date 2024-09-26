@@ -7,7 +7,7 @@
  * @code
  *   zfobj<ZFUIView> parent;
  *   zfobj<ZFUIButtonBasic> child;
- *   parent->childAdd(child)->c_sizeFill();
+ *   parent->child(child)->c_sizeFill();
  *   child->label()->text("button");
  *
  *   ZFSerializableData data = ZFObjectToData(parent);

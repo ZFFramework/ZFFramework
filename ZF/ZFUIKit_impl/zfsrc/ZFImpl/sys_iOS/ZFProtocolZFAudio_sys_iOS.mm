@@ -82,14 +82,14 @@ public:
 
             ZFBuffer buf;
             ZFInputRead(buf, input);
-            if(buf.bufferSize() == 0) {
+            if(buf.length() == 0) {
                 zfobj<v_zfstring> errorHint;
                 errorHint->zfv = "unable to load from input";
                 zfargs.result(errorHint);
                 return;
             }
 
-            NSData *data = [NSData dataWithBytesNoCopy:buf.buffer() length:buf.bufferSize() freeWhenDone:YES];
+            NSData *data = [NSData dataWithBytesNoCopy:buf.buffer() length:buf.length() freeWhenDone:YES];
             buf.bufferGiveUp();
             NSError *error = nil;
             nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];

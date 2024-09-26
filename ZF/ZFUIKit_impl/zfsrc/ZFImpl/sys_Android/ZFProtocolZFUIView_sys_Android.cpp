@@ -140,34 +140,34 @@ public:
     // ============================================================
     // properties
 public:
-    virtual void viewVisible(
+    virtual void visible(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewVisible
+            , ZF_IN zfbool visible
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_viewVisible",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_visible",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()
-            , (jboolean)viewVisible
+            , (jboolean)visible
             );
     }
-    virtual void viewAlpha(
+    virtual void alpha(
             ZF_IN ZFUIView *view
-            , ZF_IN zffloat viewAlpha
+            , ZF_IN zffloat alpha
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_viewAlpha",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_alpha",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()
-            , (jfloat)viewAlpha
+            , (jfloat)alpha
             );
     }
     virtual void viewUIEnable(
@@ -200,24 +200,24 @@ public:
             , (jboolean)viewUIEnableTree
             );
     }
-    virtual void viewBackgroundColor(
+    virtual void backgroundColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &viewBackgroundColor
+            , ZF_IN const ZFUIColor &backgroundColor
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_viewBackgroundColor",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_backgroundColor",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()
-            , ZFImpl_sys_Android_ZFUIColorToColor(viewBackgroundColor)
+            , ZFImpl_sys_Android_ZFUIColorToColor(backgroundColor)
             );
     }
 
 public:
-    virtual void childAdd(
+    virtual void child(
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
@@ -225,7 +225,7 @@ public:
             , ZF_IN zfindex childLayerIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_childAdd",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_child",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
@@ -363,7 +363,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     event->mouseId = mouseId;
     event->mouseAction = (ZFUIMouseActionEnum)mouseAction;
     event->mousePoint = ZFUIPointCreate(mousePointX, mousePointY);
-    event->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+    event->mouseButton = ZFUIMouseButton::e_Left;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),
         event);

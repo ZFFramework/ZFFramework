@@ -21,13 +21,13 @@ public:
      * reset your native view's state and return true if your impl support cache\n
      * \n
      * here's a list of state you should take care to reset:
-     * -  #ZFUIView::viewVisible (true by default)
-     * -  #ZFUIView::viewAlpha (1 by default)
+     * -  #ZFUIView::visible (true by default)
+     * -  #ZFUIView::alpha (1 by default)
      * -  #ZFUIView::viewUIEnable (true by default)
      * -  #ZFUIView::viewUIEnableTree (true by default)
-     * -  #ZFUIView::viewMouseHoverEventEnable (false by default)
-     * -  #ZFUIView::viewBackgroundColor (clear color by default)
-     * -  #ZFUIView::viewFocusable (false by default)
+     * -  #ZFUIView::mouseHoverEnable (false by default)
+     * -  #ZFUIView::backgroundColor (clear color by default)
+     * -  #ZFUIView::focusable (false by default)
      */
     virtual zfbool nativeViewCacheOnSave(ZF_IN void *nativeView) {
         return zffalse;
@@ -97,14 +97,14 @@ public:
     // properties
 public:
     /** @brief see #ZFUIView */
-    virtual void viewVisible(
+    virtual void visible(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewVisible
+            , ZF_IN zfbool visible
             ) zfpurevirtual;
     /** @brief see #ZFUIView */
-    virtual void viewAlpha(
+    virtual void alpha(
             ZF_IN ZFUIView *view
-            , ZF_IN zffloat viewAlpha
+            , ZF_IN zffloat alpha
             ) zfpurevirtual;
     /** @brief see #ZFUIView */
     virtual void viewUIEnable(
@@ -117,16 +117,16 @@ public:
             , ZF_IN zfbool viewUIEnableTree
             ) zfpurevirtual;
     /** @brief see #ZFUIView */
-    virtual void viewMouseHoverEventEnable(
+    virtual void mouseHoverEnable(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewMouseHoverEventEnable
+            , ZF_IN zfbool mouseHoverEnable
             ) {
         // no hover event support by default
     }
     /** @brief see #ZFUIView */
-    virtual void viewBackgroundColor(
+    virtual void backgroundColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &viewBackgroundColor
+            , ZF_IN const ZFUIColor &backgroundColor
             ) zfpurevirtual;
 
     // ============================================================
@@ -140,7 +140,7 @@ public:
      * impl should not care about the actual meanning of this index,
      * simply add to the specified index
      */
-    virtual void childAdd(
+    virtual void child(
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
@@ -150,7 +150,7 @@ public:
     /**
      * @brief remove view, no need to worry about layout param or ZFUIView's internal views
      *
-     * see #childAdd
+     * see #child
      */
     virtual void childRemove(
             ZF_IN ZFUIView *parent

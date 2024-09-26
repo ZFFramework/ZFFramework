@@ -80,7 +80,7 @@ public:
     /**
      * @brief add a filter
      */
-    virtual ZFFilterForZFClass &filterAdd(
+    virtual ZFFilterForZFClass &filter(
             ZF_IN const ZFClass * const &e
             , ZF_IN_OPT ZFFilterForZFClassType filterType = ZFFilterForZFClassTypeExclude
             );
@@ -138,7 +138,7 @@ public:
     /**
      * @brief return true if e not filtered out
      */
-    virtual zfbool filterCheckActive(ZF_IN const ZFClass * const &e) const;
+    virtual zfbool filterPassed(ZF_IN const ZFClass * const &e) const;
 
 public:
     /** @brief see #objectInfo */

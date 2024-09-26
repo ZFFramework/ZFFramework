@@ -11,8 +11,8 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFDynamic");
+        this->outputSeparator();
+        this->output("ZFDynamic");
 
         ZFLISTENER(methodCallback) {
             ZFMethodInvokeData *d = zfargs.param0();
@@ -47,7 +47,7 @@ protected:
         ZFLog() << method->methodInvoke(zfnull, zfobj<v_zfstring>("testParam"));
 
         d.removeAll();
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFDynamic_test)

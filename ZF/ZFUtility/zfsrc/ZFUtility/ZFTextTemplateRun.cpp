@@ -70,7 +70,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
         , ZF_IN const ZFFilterForString &nameFilter
         , ZF_OUT zfstring *outErrorHint
         ) {
-    if(!nameFilter.filterCheckActive(path)) {
+    if(!nameFilter.filterPassed(path)) {
         return zftrue;
     }
 
@@ -115,7 +115,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyDir(
     if(path.isEmpty()) {
         return zftrue;
     }
-    if(!runParam.dirContentFilter.filterCheckActive(path)) {
+    if(!runParam.dirContentFilter.filterPassed(path)) {
         return zftrue;
     }
 
@@ -125,8 +125,8 @@ static zfbool _ZFP_ZFTextTemplateRun_applyDir(
         do {
             zfstring fullPath = path;
             fullPath += '/';
-            fullPath += fd.fileName();
-            if(fd.fileIsDir()) {
+            fullPath += fd.name();
+            if(fd.isDir()) {
                 if(!_ZFP_ZFTextTemplateRun_applyDir(fullPath, textTemplateParam, runParam, outErrorHint)) {
                     ret = zffalse;
                     break;
@@ -155,7 +155,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(
     if(path.isEmpty()) {
         return zftrue;
     }
-    if(!runParam.fileContentFilter.filterCheckActive(path)) {
+    if(!runParam.fileContentFilter.filterPassed(path)) {
         return zftrue;
     }
 

@@ -137,23 +137,23 @@ static void _ZFP_ZFUIViewBlinkDoOn(
     if(ZFPROTOCOL_IS_AVAILABLE(ZFAniForNative)) {
         zfobj<ZFAniForNative> tmp;
         ani = tmp;
-        tmp->aniAlphaTo(0);
+        tmp->alphaTo(0);
     }
     else {
-        ani = ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
+        ani = ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
     }
     view->objectTag(_ZFP_ZFUIViewBlink_tag_ani, ani);
     #if _ZFP_ZFUIViewBlink_DEBUG_duration
-        ani->aniDuration(5000);
+        ani->duration(5000);
     #else
-        ani->aniDuration(blinkParam.blinkDuration());
+        ani->duration(blinkParam.blinkDuration());
     #endif
 
     ZFLISTENER_1(aniOnStopListener
             , zfautoT<ZFUIView>, view
             ) {
         ZFAnimation *ani = zfargs.sender();
-        ZFUIView *blinkView = ani->aniTarget();
+        ZFUIView *blinkView = ani->target();
 
         v_zfindex *blinkCountLeft = view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
         if(blinkCountLeft != zfnull) {
@@ -164,7 +164,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
                 blinkCountLeft->zfv = blinkCountLeft->zfv - 1;
             }
 
-            ani->aniStart();
+            ani->start();
             return;
         }
 
@@ -172,25 +172,25 @@ static void _ZFP_ZFUIViewBlinkDoOn(
 
         view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_ani);
         view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_blinkView);
-        blinkView->viewRemoveFromParent();
-        ani->aniTarget(zfnull);
+        blinkView->removeFromParent();
+        ani->target(zfnull);
 
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->blinkingViews.removeElement(view);
         ZFGlobalObserver().observerNotifyWithSender(view, ZFGlobalEvent::EventViewBlinkOff());
     } ZFLISTENER_END()
     view->observerAdd(ZFObject::EventObjectBeforeDealloc(), ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->viewOnDeallocListener);
     ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStopListener);
-    ani->aniTarget(blinkView);
+    ani->target(blinkView);
 
     ZFGlobalObserver().observerNotifyWithSender(view, ZFGlobalEvent::EventViewBlinkOn());
-    ani->aniStart();
+    ani->start();
 #endif // #if _ZFP_ZFUIViewBlink_DEBUG_noAni
 }
 static void _ZFP_ZFUIViewBlink_noAni_doOff(ZF_IN ZFUIView *view) {
     ZFUIView *blinkView = view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkView);
 
     view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_blinkView);
-    blinkView->viewRemoveFromParent();
+    blinkView->removeFromParent();
 
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->blinkingViews.removeElement(view);
     view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_delayTaskId);
@@ -205,7 +205,7 @@ static void _ZFP_ZFUIViewBlinkDoOff(ZF_IN ZFUIView *view) {
     ZFAnimation *ani = view->objectTag(_ZFP_ZFUIViewBlink_tag_ani);
     if(ani != zfnull) {
         view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
-        ani->aniStop();
+        ani->stop();
     }
     else {
         _ZFP_ZFUIViewBlink_noAni_doOff(view);

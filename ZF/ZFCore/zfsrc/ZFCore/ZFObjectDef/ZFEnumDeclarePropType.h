@@ -158,7 +158,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             s += EnumName::EnumNameForValue(v); \
             return zftrue; \
         }) \
-    const zfstring &EnumName::wrappedValueTypeId(void) { \
+    const zfstring &EnumName::zfvTypeId(void) { \
         return ZFTypeId_##EnumName(); \
     }
 
@@ -171,11 +171,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     zfclass ZFLIB_ v_##EnumFlagsName : zfextend EnumName { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, EnumName) \
         ZFALLOC_CACHE_RELEASE({ \
-            cache->wrappedValueReset(); \
+            cache->zfvReset(); \
         }) \
     public: \
         zfoverride \
-        virtual const zfstring &wrappedValueTypeId(void) { \
+        virtual const zfstring &zfvTypeId(void) { \
             return ZFTypeId_##EnumFlagsName(); \
         } \
     public: \

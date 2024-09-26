@@ -23,8 +23,8 @@ zfclassFwd _ZFP_ZFTimerPrivate;
 zfclass ZFLIB_ZFCore ZFTimer : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFTimer, ZFObject)
     ZFALLOC_CACHE_RELEASE({
-            cache->timerStop();
-            cache->timerInterval(1000);
+            cache->stop();
+            cache->interval(1000);
         })
 
     // ============================================================
@@ -42,7 +42,7 @@ public:
      *
      * called when timer activated
      * @note on what thread this event is fired depends on impl,
-     *   unless #timerActivateOnMainThread was set
+     *   unless #activateOnMainThread was set
      */
     ZFEVENT(TimerOnActivate)
     /**
@@ -61,7 +61,7 @@ protected:
      * but you must not if timer is started
      */
     ZFOBJECT_ON_INIT_DECLARE_1(
-            ZFMP_IN(zftimet, timerInterval)
+            ZFMP_IN(zftimet, interval)
             )
     zfoverride
     virtual void objectOnInit(void);
@@ -80,34 +80,34 @@ public:
      *
      * assert fail if interval is less than 0
      */
-    ZFPROPERTY_ASSIGN(zftimet, timerInterval, 1000)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zftimet, timerInterval)
+    ZFPROPERTY_ASSIGN(zftimet, interval, 1000)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zftimet, interval)
 
     /**
      * @brief whether timer activate on main thread, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, timerActivateOnMainThread, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, activateOnMainThread, zftrue)
 
 public:
     /**
      * @brief start the timer
      */
-    ZFMETHOD_DECLARE_0(void, timerStart)
+    ZFMETHOD_DECLARE_0(void, start)
     /**
      * @brief stop the timer
      */
-    ZFMETHOD_DECLARE_0(void, timerStop)
+    ZFMETHOD_DECLARE_0(void, stop)
     /**
      * @brief true if started
      */
-    ZFMETHOD_DECLARE_0(zfbool, timerStarted)
+    ZFMETHOD_DECLARE_0(zfbool, started)
 
 public:
     /**
      * @brief get timer's current fired count, with 1 as first fired time's value,
      *   keep after timer stop, but reset before timer start
      */
-    ZFMETHOD_DECLARE_0(zfindex, timerActivatedCount)
+    ZFMETHOD_DECLARE_0(zfindex, activatedCount)
 
     /** @brief internal timer id for impl only */
     zfidentity timerImplId(void);
@@ -137,7 +137,7 @@ private:
  * @brief util to start timer
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTimer>, ZFTimerStart
-        , ZFMP_IN(zftimet, timerInterval)
+        , ZFMP_IN(zftimet, interval)
         , ZFMP_IN(const ZFListener &, timerCallback)
         )
 

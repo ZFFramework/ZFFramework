@@ -31,22 +31,22 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_MouseCancel
+            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel
             ) {
         SDL_Event *ret = zfnew(SDL_Event);
         zfmemcpy(ret, nativeMouseEvent, sizeof(SDL_Event));
         if(changeMouseAction) {
             switch(mouseAction) {
-                case ZFUIMouseAction::e_MouseDown:
+                case ZFUIMouseAction::e_Down:
                     ret->type = SDL_MOUSEBUTTONDOWN;
                     break;
-                case ZFUIMouseAction::e_MouseMove:
+                case ZFUIMouseAction::e_Move:
                     ret->type = SDL_MOUSEMOTION;
                     break;
-                case ZFUIMouseAction::e_MouseUp:
+                case ZFUIMouseAction::e_Up:
                     ret->type = SDL_MOUSEBUTTONUP;
                     break;
-                case ZFUIMouseAction::e_MouseCancel:
+                case ZFUIMouseAction::e_Cancel:
                     ret->type = SDL_MOUSEBUTTONUP;
                     ret->button.x = ZFImpl_sys_SDL_View::MouseCancel;
                     ret->button.y = ZFImpl_sys_SDL_View::MouseCancel;
@@ -138,7 +138,7 @@ public:
                     y - t->rect.y,
                     zftrue);
                 if(innerChild != zfnull) {
-                    return &(((_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)innerChild)->_ZFP_scrollViewImplHelper);
+                    return &(((_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)innerChild)->_ZFP_scrollViewImplHelper);
                 }
             }
         } while(beforeIndex != zfindexMax());
@@ -232,22 +232,22 @@ private:
             return (x >= 0 && x <= owner->rect.w && y >= 0 && y <= owner->rect.h);
         }
 
-        ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_MouseDown;
+        ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Down;
         switch(sdlEvent->type) {
             case SDL_MOUSEBUTTONDOWN:
-                mouseAction = ZFUIMouseAction::e_MouseDown;
+                mouseAction = ZFUIMouseAction::e_Down;
                 break;
             case SDL_MOUSEMOTION:
-                mouseAction = ZFUIMouseAction::e_MouseMove;
+                mouseAction = ZFUIMouseAction::e_Move;
                 break;
             case SDL_MOUSEBUTTONUP:
-                mouseAction = ZFUIMouseAction::e_MouseUp;
+                mouseAction = ZFUIMouseAction::e_Up;
                 break;
             default:
                 return zffalse;
         }
 
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)owner;
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)owner;
         nativeScrollView->_ZFP_scrollViewImplHelper.interceptMouse(sdlEvent, mouseAction);
         return zftrue;
     }
@@ -261,13 +261,13 @@ public:
         nativeScrollView->_ZFP_scrollViewImplHelper.implProtocol = nativeScrollView;
         nativeScrollView->sdlMouseGrabCallback = zfself::sdlMouseGrabCallback;
 
-        return nativeScrollView;
+        return (void *)(ZFImpl_sys_SDL_View *)nativeScrollView;
     }
     virtual void nativeScrollViewDestroy(
             ZF_IN ZFUIScrollView *scrollView
             , ZF_IN void *nativeScrollView
             ) {
-        zfdelete((_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)nativeScrollView);
+        zfdelete((_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)nativeScrollView);
     }
 
 public:
@@ -290,7 +290,7 @@ public:
             ZF_IN ZFUIScrollView *scrollView
             , ZF_IN const ZFUIRect &frame
             ) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)scrollView->nativeImplView();
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)scrollView->nativeImplView();
         nativeScrollView->rect.x = frame.x;
         nativeScrollView->rect.y = frame.y;
         nativeScrollView->rect.w = frame.width;
@@ -304,7 +304,7 @@ public:
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex atIndex
             ) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)parent->nativeImplView();
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)parent->nativeImplView();
         ZFImpl_sys_SDL_View *nativeChild = (ZFImpl_sys_SDL_View *)child->nativeView();
         nativeParent->childAttach(atIndex, nativeChild);
         nativeParent->layoutRequest();
@@ -314,12 +314,12 @@ public:
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex atIndex
             ) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)parent->nativeImplView();
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)parent->nativeImplView();
         nativeParent->childDetach(atIndex);
         nativeParent->layoutRequest();
     }
     virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)parent->nativeImplView();
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)parent->nativeImplView();
         for(zfindex i = 0; i < nativeParent->children.count(); ++i) {
             ZFImpl_sys_SDL_View *nativeChild = nativeParent->children[i];
             nativeChild->parent = zfnull;

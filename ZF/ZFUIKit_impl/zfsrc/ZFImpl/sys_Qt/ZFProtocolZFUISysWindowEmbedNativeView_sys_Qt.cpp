@@ -22,12 +22,12 @@ public:
         QGraphicsWidget *nativeParent = (QGraphicsWidget *)parent;
         QGraphicsWidget *nativeChild = (QGraphicsWidget *)child;
         if(nativeParent->layout() != NULL) {
-            ((ZFImpl_sys_Qt_BaseLayout *)nativeParent->layout())->childAdd(nativeChild);
+            ((ZFImpl_sys_Qt_BaseLayout *)nativeParent->layout())->child(nativeChild);
         }
         else {
             ZFImpl_sys_Qt_BaseLayout *layout = new ZFImpl_sys_Qt_BaseLayout();
             nativeParent->setLayout(layout);
-            layout->childAdd(nativeChild);
+            layout->child(nativeChild);
         }
     }
     virtual void nativeViewRemove(

@@ -90,7 +90,7 @@ public:
 
     virtual void url(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
         nativeTaskTmp->url = url;
@@ -106,27 +106,27 @@ public:
 
     virtual void header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        nativeTaskTmp->headers.insert(std::pair<std::string, std::string>(key, value));
+        nativeTaskTmp->headers.insert(std::pair<std::string, std::string>(key.cString(), value.cString()));
     }
 
     virtual void headerRemove(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        nativeTaskTmp->headers.erase(key);
+        nativeTaskTmp->headers.erase(key.cString());
     }
 
     virtual zfstring header(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        auto range = nativeTaskTmp->headers.equal_range(key);
+        auto range = nativeTaskTmp->headers.equal_range(key.cString());
         zfstring ret;
         for(auto i = range.first; i != range.second; ++i) {
             if(!ret.isEmpty()) {
@@ -194,7 +194,7 @@ public:
     virtual void headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             ) {
         it.impl<_Iter *>()->it->second = value;
     }
@@ -212,7 +212,7 @@ public:
             , ZF_IN zfindex byteSize
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        nativeTaskTmp->body.bufferAppend(buffer, byteSize);
+        nativeTaskTmp->body.append(buffer, byteSize);
     }
 
     virtual ZFBuffer body(ZF_IN void *nativeTask) {
@@ -266,7 +266,7 @@ public:
                     task->ownerRequest->timeout(),
                     task->headers,
                     task->body.buffer(),
-                    task->body.bufferSize());
+                    task->body.length());
                 if(result && result.value().status >= 300 && result.value().status < 400) {
                     std::string redirectUrl = result.value().get_header_value("Location");
                     if(!redirectUrl.empty()) {
@@ -315,10 +315,10 @@ public:
 public:
     virtual zfstring responseHeader(
             ZF_IN void *nativeTask
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        auto range = nativeTaskTmp->responseHeaders.equal_range(key);
+        auto range = nativeTaskTmp->responseHeaders.equal_range(key.cString());
         zfstring ret;
         for(auto i = range.first; i != range.second; ++i) {
             if(!ret.isEmpty()) {
@@ -421,7 +421,7 @@ public:
         if(success) {
             task->responseHeaders = std::move(result.value().headers);
             task->ownerResponse->code((zfint)result.value().status);
-            task->ownerResponse->body().bufferAppend(result.value().body.c_str(), result.value().body.length());
+            task->ownerResponse->body().append(result.value().body.c_str(), result.value().body.length());
         }
         switch(result.error()) {
             case httplib::Error::Success:

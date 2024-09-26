@@ -31,50 +31,50 @@ public:
             ) zfpurevirtual;
 
     /**
-     * @brief see #ZFUIWebView::webLoadUrl
+     * @brief see #ZFUIWebView::loadUrl
      */
-    virtual void webLoadUrl(
+    virtual void loadUrl(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *url
             ) zfpurevirtual;
     /**
-     * @brief see #ZFUIWebView::webLoadHtml
+     * @brief see #ZFUIWebView::loadHtml
      */
-    virtual void webLoadHtml(
+    virtual void loadHtml(
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *html
             , ZF_IN_OPT const zfchar *baseUrl = zfnull
             ) zfpurevirtual;
     /**
-     * @brief see #ZFUIWebView::webReload
+     * @brief see #ZFUIWebView::reload
      */
-    virtual void webReload(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual void reload(ZF_IN ZFUIWebView *webView) zfpurevirtual;
     /**
-     * @brief see #ZFUIWebView::webLoadStop
+     * @brief see #ZFUIWebView::loadStop
      */
-    virtual void webLoadStop(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual void loadStop(ZF_IN ZFUIWebView *webView) zfpurevirtual;
 
     /**
-     * @brief see #ZFUIWebView::webGoBack
+     * @brief see #ZFUIWebView::goBack
      */
-    virtual void webGoBack(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual void goBack(ZF_IN ZFUIWebView *webView) zfpurevirtual;
     /**
-     * @brief see #ZFUIWebView::webGoForward
+     * @brief see #ZFUIWebView::goForward
      */
-    virtual void webGoForward(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual void goForward(ZF_IN ZFUIWebView *webView) zfpurevirtual;
 
     /**
-     * @brief see #ZFUIWebView::webLoading
+     * @brief see #ZFUIWebView::loading
      */
-    virtual zfbool webLoading(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual zfbool loading(ZF_IN ZFUIWebView *webView) zfpurevirtual;
     /**
-     * @brief see #ZFUIWebView::webGoBackAvailable
+     * @brief see #ZFUIWebView::goBackAvailable
      */
-    virtual zfbool webGoBackAvailable(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual zfbool goBackAvailable(ZF_IN ZFUIWebView *webView) zfpurevirtual;
     /**
-     * @brief see #ZFUIWebView::webGoForwardAvailable
+     * @brief see #ZFUIWebView::goForwardAvailable
      */
-    virtual zfbool webGoForwardAvailable(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual zfbool goForwardAvailable(ZF_IN ZFUIWebView *webView) zfpurevirtual;
 
     // ============================================================
     // callbacks that implementations must notify

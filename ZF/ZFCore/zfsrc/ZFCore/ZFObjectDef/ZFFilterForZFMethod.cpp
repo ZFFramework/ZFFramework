@@ -32,14 +32,14 @@ void ZFFilterForZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
 zfbool ZFFilterForZFMethod::filterOnCheckActive(ZF_IN const ZFMethod * const &e) const {
     if(!zfsuper::filterOnCheckActive(e)
-            || !this->classFilter.filterCheckActive(e->methodOwnerClass())
+            || !this->classFilter.filterPassed(e->ownerClass())
             ) {
         return zffalse;
     }
 
-    if((e->methodIsPrivate() && this->ignorePrivate())
-            || (e->methodIsProtected() && this->ignoreProtected())
-            || (e->methodIsPublic() && this->ignorePublic())
+    if((e->isPrivate() && this->ignorePrivate())
+            || (e->isProtected() && this->ignoreProtected())
+            || (e->isPublic() && this->ignorePublic())
             ) {
         return zffalse;
     }

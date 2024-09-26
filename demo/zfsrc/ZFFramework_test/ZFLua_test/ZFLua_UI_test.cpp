@@ -16,14 +16,14 @@ protected:
 
         zfauto result = ZFLuaExecute(
                 "local window = ZFUIWindow()\n"
-                "window:windowShow()\n"
-                "window:viewBackgroundColor(ZFUIColorRandom())\n"
+                "window:show()\n"
+                "window:backgroundColor(ZFUIColorRandom())\n"
                 "local button = ZFUIButtonBasic()\n"
-                "window:childAdd(button):alignRightTop()\n"
-                "button:viewBackgroundColor(ZFUIColorRandom())\n"
+                "window:child(button):alignRightTop()\n"
+                "button:backgroundColor(ZFUIColorRandom())\n"
                 "button:label():text('close')\n"
                 "button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)\n"
-                "    window:windowHide()\n"
+                "    window:hide()\n"
                 "end)\n"
                 "return window\n"
             );
@@ -33,13 +33,13 @@ protected:
         ZFLISTENER_1(windowOnHide
                 , ZFTestCase *, testCase
                 ) {
-            ZFLISTENER_1(testCaseStopDelay
+            ZFLISTENER_1(stopDelay
                     , ZFTestCase *, testCase
                     ) {
                 ZFLuaGC();
-                testCase->testCaseStop();
+                testCase->stop();
             } ZFLISTENER_END()
-            zfpost(testCaseStopDelay);
+            zfpost(stopDelay);
         } ZFLISTENER_END()
         result->observerAdd(ZFUIWindow::EventWindowOnHide(), windowOnHide);
     }

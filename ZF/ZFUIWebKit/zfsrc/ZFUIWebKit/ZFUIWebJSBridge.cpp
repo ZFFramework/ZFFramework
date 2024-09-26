@@ -5,12 +5,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIWebJSBridgeSendData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, messageSend)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, messageResponse)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, send)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, response)
 
 ZFOBJECT_REGISTER(ZFUIWebJSBridgeRecvData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, messageRecv)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, messageResponse)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, recv)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, response)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFUIWebJSBridgePrivate {
@@ -53,22 +53,22 @@ ZFMETHOD_DEFINE_0(ZFUIWebJSBridge, ZFUIWebView *, webView) {
     return d->webView;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend
-        , ZFMP_IN_OUT(ZFJson &, messageSend)
+ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, send
+        , ZFMP_IN_OUT(ZFJson &, send)
         ) {
     zfobj<ZFUIWebJSBridgeSendData> dataSend;
-    dataSend->messageSend = messageSend;
+    dataSend->send = send;
     this->webMessageBeforeSend(dataSend);
-    dataSend->messageResponse = ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->webMessageSend(this, messageSend);
+    dataSend->response = ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->send(this, send);
     this->webMessageAfterSend(dataSend);
-    return dataSend->messageResponse;
+    return dataSend->response;
 }
-ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv) {
+ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &recv) {
     zfobj<ZFUIWebJSBridgeRecvData> dataRecv;
-    dataRecv->messageRecv = messageRecv;
+    dataRecv->recv = recv;
     this->webMessageBeforeRecv(dataRecv);
     this->webMessageAfterRecv(dataRecv);
-    return dataRecv->messageResponse;
+    return dataRecv->response;
 }
 
 void ZFUIWebJSBridge::objectOnInit(void) {

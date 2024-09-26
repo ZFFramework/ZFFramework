@@ -413,14 +413,14 @@ public:
      */
     const ZFMethod *methodForNameIgnoreParent(
             ZF_IN const zfstring &methodName
-            , ZF_IN const zfchar *methodParamTypeId0
-            , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+            , ZF_IN const zfchar *paramTypeId0
+            , ZF_IN_OPT const zfchar *paramTypeId1 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId2 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId3 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId4 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId5 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId6 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId7 = zfnull
             ) const;
     /** @brief see #methodForNameIgnoreParent */
     const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfstring &methodName) const;
@@ -445,14 +445,14 @@ public:
      */
     const ZFMethod *methodForName(
             ZF_IN const zfstring &methodName
-            , ZF_IN const zfchar *methodParamTypeId0
-            , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-            , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+            , ZF_IN const zfchar *paramTypeId0
+            , ZF_IN_OPT const zfchar *paramTypeId1 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId2 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId3 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId4 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId5 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId6 = zfnull
+            , ZF_IN_OPT const zfchar *paramTypeId7 = zfnull
             ) const;
     /** @brief see #methodForName */
     const ZFMethod *methodForName(ZF_IN const zfstring &methodName) const;

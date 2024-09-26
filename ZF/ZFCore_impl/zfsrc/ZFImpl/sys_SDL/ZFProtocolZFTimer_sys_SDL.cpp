@@ -27,16 +27,16 @@ public:
             ) {
         zfRelease((_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)nativeTimer);
     }
-    virtual void timerStart(
+    virtual void start(
             ZF_IN ZFTimer *timer
             , ZF_IN zfidentity timerImplId
             ) {
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer();
         nativeTimer->timer = timer;
         nativeTimer->timerImplId = timerImplId;
-        nativeTimer->nativeTimerId = SDL_AddTimer(timer->timerInterval(), _ZFP_timerCallback, nativeTimer);
+        nativeTimer->nativeTimerId = SDL_AddTimer(timer->interval(), _ZFP_timerCallback, nativeTimer);
     }
-    virtual void timerStop(ZF_IN ZFTimer *timer) {
+    virtual void stop(ZF_IN ZFTimer *timer) {
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer();
         SDL_RemoveTimer(nativeTimer->nativeTimerId);
     }
@@ -44,7 +44,7 @@ private:
     static Uint32 _ZFP_timerCallback(Uint32 interval, void *param) {
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)param;
         zfblockedRelease(zfRetain(nativeTimer));
-        if(nativeTimer->timer->timerActivateOnMainThread()) {
+        if(nativeTimer->timer->activateOnMainThread()) {
             if(!nativeTimer->timerMainThreadListener) {
                 ZFLISTENER_1(mainThreadCallback
                         , zfautoT<_ZFP_I_ZFTimerImpl_sys_SDL_TimerData>, nativeTimer

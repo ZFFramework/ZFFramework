@@ -12,8 +12,8 @@ protected:
         zfsuper::testCaseOnStart();
 
         {
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("try execute dynamically registered method");
+            this->outputSeparator();
+            this->output("try execute dynamically registered method");
 
             ZFMethodUserRegisterDetail_1(method, {
                     ZFLog();
@@ -122,16 +122,16 @@ protected:
                 , ZFMP_IN(zfstring const &, param7)
                 );
 
-            zfstring ret = zfself::ClassData()->methodForName("funcDynamic")->execute<zfstring, zfstring const &>(this, "paramValue");
-            this->testCaseOutput(zfstr("execute result: %s", ret));
+            zfstring ret = zfself::ClassData()->methodForName("funcDynamic")->executeExact<zfstring, zfstring const &>(this, "paramValue");
+            this->output(zfstr("execute result: %s", ret));
 
             ZFMethodUserUnregister(zfself::ClassData()->methodForName("funcDynamic"));
 
             ZFLogTrim() << "after unregister, method: " << zfself::ClassData()->methodForName("funcDynamic");
 
-            this->testCaseOutput("all list:");
+            this->output("all list:");
             for(zfindex i = 0; i <= 8; ++i) {
-                this->testCaseOutput(zfstr("  %s"
+                this->output(zfstr("  %s"
                             , zfself::ClassData()->methodForName(zfstr("funcDynamic%s", i))
                             ));
             }
@@ -142,21 +142,21 @@ protected:
         }
 
         {
-            this->testCaseOutputSeparator();
-            this->testCaseOutput("try execute statically registered method");
+            this->outputSeparator();
+            this->output("try execute statically registered method");
 
-            zfstring ret = zfself::ClassData()->methodForName("funcStatic")->execute<zfstring, zfstring const &>(this, "paramValue");
-            this->testCaseOutput(zfstr("execute result: %s", ret));
+            zfstring ret = zfself::ClassData()->methodForName("funcStatic")->executeExact<zfstring, zfstring const &>(this, "paramValue");
+            this->output(zfstr("execute result: %s", ret));
 
-            this->testCaseOutput("all list:");
+            this->output("all list:");
             for(zfindex i = 0; i <= ZFMETHOD_MAX_PARAM; ++i) {
-                this->testCaseOutput(zfstr("  %s"
+                this->output(zfstr("  %s"
                             , zfself::ClassData()->methodForName(zfstr("funcStatic%s", i))
                             ));
             }
         }
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFMethodUserRegister_test)

@@ -51,8 +51,8 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
 
         // found
         d->lastIndex = i;
-        fd.impl().fileName.assign(path, pos == zfindexMax() ? pathLen : pathLen - 1);
-        fd.impl().fileIsDir = ZFDecompressContentIsDir(d->decompressToken, i);
+        fd.impl().name.assign(path, pos == zfindexMax() ? pathLen : pathLen - 1);
+        fd.impl().isDir = ZFDecompressContentIsDir(d->decompressToken, i);
         return true;
     }
     return zffalse;

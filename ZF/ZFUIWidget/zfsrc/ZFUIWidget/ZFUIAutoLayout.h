@@ -99,8 +99,8 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextend ZFUILayoutParam {
     /** @brief see #ZFUIAutoLayout */
     ZFPROPERTY_ASSIGN(zffloat, biasY, 0.5f)
 
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutAlign)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, layoutMargin)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, align)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, margin)
 
     /** @brief the owner parent view this param attached to */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUIAutoLayout>, ownerParent)
@@ -208,6 +208,11 @@ protected:
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             );
 
+    zfoverride
+    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    zfoverride
+    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj);
+
 public:
     zfclassLikePOD _ZFP_Data {
     public:
@@ -302,7 +307,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * for convenient, #ZFUIAutoLayoutParam has many util methods to build the rule,
  * typical case:
  * @code
- *   parent->childAdd(child)
+ *   parent->child(child)
  *       ->c_widthFill(100)
  *       ->c_left()->c_toParentLeft()
  *       ->c_top()->c_right()->c_to(sibling)
@@ -325,8 +330,8 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   util to toLeft(target) with same position of left() series,
  *   can be combined with multiple rules:
  *   @code
- *     parent->childAdd(child)->c_left()->c_top()->c_to(target);
- *     parent->childAdd(child)->c_left()->c_toLeft(target)->c_top()->c_toTop(target);
+ *     parent->child(child)->c_left()->c_top()->c_to(target);
+ *     parent->child(child)->c_left()->c_toLeft(target)->c_top()->c_toTop(target);
  *   @endcode
  * -  toParent() :
  *   util to to(target) with parent
@@ -342,8 +347,8 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextend ZFUIView {
     // ============================================================
     // override ZFUIView
 public:
-    /** @brief util method for #childAddWithParam */
-    ZFMETHOD_DECLARE_2(zfanyT<ZFUIAutoLayoutParam>, childAdd
+    /** @brief util method for #childWithParam */
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUIAutoLayoutParam>, child
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )

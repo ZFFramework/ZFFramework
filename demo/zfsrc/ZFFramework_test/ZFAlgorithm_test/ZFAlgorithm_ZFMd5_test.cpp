@@ -15,7 +15,7 @@ protected:
         zfstring value;
 
         value = ZFMd5((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
-        this->testCaseOutput(zfstr("MD5 of array \"%s\": %s", testString, value));
+        this->output(zfstr("MD5 of array \"%s\": %s", testString, value));
         ZFTestCaseAssert(value == testValue);
 
         zfstring tmpFilePath = this->testCaseUseTmpFile("ZFMd5_Md5.txt");
@@ -25,12 +25,12 @@ protected:
             ZFFileClose(fp);
             fp = zfnull;
         }
-        this->testCaseOutput(zfstr("write it to file %s, file's MD5: %s"
+        this->output(zfstr("write it to file %s, file's MD5: %s"
                     , tmpFilePath
                     , ZFMd5(ZFInputForFile(tmpFilePath))
                     ));
 
-        this->testCaseOutputSeparator();
+        this->outputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFMd5_Md5_big.txt");
         fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
         zfindex fileSize = 0;
@@ -47,7 +47,7 @@ protected:
         ZFTimeValue tv1 = ZFTime::currentTimeValue();
         zfstring MD5BigFile = ZFMd5(ZFInputForFile(tmpFilePath));
         ZFTimeValue tv2 = ZFTimeValueDec(ZFTime::currentTimeValue(), tv1);
-        this->testCaseOutput(zfstr("write it 1000*1000 times to file %s, file's size: %s, MD5: %s, time: %s.%03s %03s"
+        this->output(zfstr("write it 1000*1000 times to file %s, file's size: %s, MD5: %s, time: %s.%03s %03s"
                     , tmpFilePath
                     , fileSize
                     , MD5BigFile
@@ -56,7 +56,7 @@ protected:
                     , tv2.usec % 1000
                     ));
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFAlgorithm_ZFMd5_test)

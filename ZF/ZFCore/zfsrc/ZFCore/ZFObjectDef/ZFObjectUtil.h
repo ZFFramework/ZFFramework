@@ -39,6 +39,35 @@ inline ZFCompareResult ZFObjectCompare(
         }
     }
 }
+/**
+ * @brief util method to #ZFObject::objectValueCompare
+ */
+inline ZFCompareResult ZFObjectValueCompare(
+        ZF_IN ZFObject *const &e0
+        , ZF_IN ZFObject *const &e1
+        ) {
+    if(e0 == zfnull) {
+        if(e1 == zfnull) {
+            return ZFCompareEqual;
+        }
+        else {
+            switch(e1->objectValueCompare(e0)) {
+                case ZFCompareEqual:
+                    return ZFCompareEqual;
+                case ZFCompareSmaller:
+                    return ZFCompareGreater;
+                case ZFCompareGreater:
+                    return ZFCompareSmaller;
+                case ZFCompareUncomparable:
+                default:
+                    return ZFCompareUncomparable;
+            }
+        }
+    }
+    else {
+        return e0->objectValueCompare(e1);
+    }
+}
 
 // ============================================================
 /** @brief see #ZFObjectInfoOfInstance */
@@ -116,6 +145,18 @@ ZFCOMPARER_DEFAULT_DECLARE(zfany, zfany, {
 ZFCOMPARER_DEFAULT_DECLARE(zfauto, zfauto, {
         return ZFObjectCompare(v0.toObject(), v1.toObject());
     })
+
+// ============================================================
+/**
+ * @brief util to create object from custom impl
+ */
+inline zfauto ZFObjectCreator(
+        ZF_IN const ZFListener &impl
+        , ZF_IN_OPT const ZFArgs &zfargs = ZFArgs()
+        ) {
+    impl.execute(zfargs);
+    return zfargs.result();
+}
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectUtil_h_

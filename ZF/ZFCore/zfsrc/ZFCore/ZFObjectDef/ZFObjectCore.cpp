@@ -171,6 +171,35 @@ zfauto ZFObject::invoke(
         return zfnull;
     }
 }
+zfbool ZFObject::invokeT(
+        ZF_OUT zfauto &ret
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN const zfstring &methodName
+        , ZF_IN_OPT ZFObject *param0 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param1 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param2 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param3 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param4 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param5 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
+        , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
+        ) {
+    ZFCoreMutexLock();
+    zfauto paramList[ZFMETHOD_MAX_PARAM];
+    zfindex paramCount = ZFMETHOD_MAX_PARAM;
+    do {
+        if(param0 == ZFMP_DEF()) {paramCount = 0; break;} else {paramList[0].zfunsafe_assign(param0);}
+        if(param1 == ZFMP_DEF()) {paramCount = 1; break;} else {paramList[1].zfunsafe_assign(param1);}
+        if(param2 == ZFMP_DEF()) {paramCount = 2; break;} else {paramList[2].zfunsafe_assign(param2);}
+        if(param3 == ZFMP_DEF()) {paramCount = 3; break;} else {paramList[3].zfunsafe_assign(param3);}
+        if(param4 == ZFMP_DEF()) {paramCount = 4; break;} else {paramList[4].zfunsafe_assign(param4);}
+        if(param5 == ZFMP_DEF()) {paramCount = 5; break;} else {paramList[5].zfunsafe_assign(param5);}
+        if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
+        if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
+    } while(zffalse);
+    ZFCoreMutexUnlock();
+    return ZFDI_invoke(ret, errorHint, this, methodName, paramCount, paramList, zftrue);
+}
 zfauto ZFObject::invokeDetail(
         ZF_IN const zfstring &methodName
         , ZF_IN const ZFCoreArray<zfauto> &params
@@ -736,6 +765,20 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_8(ZFObject, zfauto, invoke
         // ZFMETHOD_MAX_PARAM
         // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_8(ZFObject, zfbool, invokeT
+        , ZFMP_OUT(zfauto &, ret)
+        , ZFMP_OUT(zfstring *, errorHint)
+        , ZFMP_IN(const zfstring &, methodName)
+        , ZFMP_IN_OPT(ZFObject *, param0, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMP_DEF())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMP_DEF())
+        // ZFMETHOD_MAX_PARAM
+        // , ZFMP_IN_OPT(ZFObject *, param5, ZFMP_DEF())
+        // , ZFMP_IN_OPT(ZFObject *, param6, ZFMP_DEF())
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, zfauto, invokeDetail
         , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
@@ -767,6 +810,16 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerAdd
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerAddForOnce
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, on
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, once
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)

@@ -17,9 +17,9 @@ protected:
                 ) {
             capture = "changed";
         } ZFLAMBDA_END()
-        this->testCaseOutput(zfstr("before invoke: %s", capture));
+        this->output(zfstr("before invoke: %s", capture));
         refCapture.executeExact<void>();
-        this->testCaseOutput(zfstr("after invoke: %s", capture));
+        this->output(zfstr("after invoke: %s", capture));
 
         ZFCallback outer;
         {
@@ -30,7 +30,7 @@ protected:
                     , ZFTestCase *, testCase
                     , void
                     ) {
-                testCase->testCaseOutput(zfstr("value capture: %s", value));
+                testCase->output(zfstr("value capture: %s", value));
             } ZFLAMBDA_END()
             outer = valueCapture;
         }
@@ -54,7 +54,7 @@ protected:
         } ZFLISTENER_END()
         lambdaListenerWithZeroParam.executeExact<void>();
 
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFLambda_test)

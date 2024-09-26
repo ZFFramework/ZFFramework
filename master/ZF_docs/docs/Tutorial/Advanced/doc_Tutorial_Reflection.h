@@ -36,7 +36,7 @@
  *   // -  explicitly specify the return type and each param type
  *   // -  ensure the proto type of the method is right
  *   // -  ensure obj is the right object that have the method
- *   method->execute<ReturnType, ParamType0, ParamType1>(obj, param0, param1);
+ *   method->executeExact<ReturnType, ParamType0, ParamType1>(obj, param0, param1);
  * @endcode
  *
  * @section DocTag_Tutorial_Reflection_Property Reflect property
@@ -50,7 +50,7 @@
  *
  *   // change the property's value by setter method,
  *   // also, must ensure all the type matches the original type
- *   property->setterMethod()->execute<void, Type const &>(obj, newValue);
+ *   property->setterMethod()->executeExact<void, Type const &>(obj, newValue);
  * @endcode
  *
  * @section DocTag_Tutorial_Reflection_ExistingClass Existing class
@@ -78,7 +78,7 @@
  * once registered:
  * @code
  *   zfauto obj = ZFClass::classForName("YourType")->newInstance();
- *   int yourProp = obj->classData()->propertyGetterForName("yourProp")->execute<zfint const &>(obj);
+ *   int yourProp = obj->classData()->propertyGetterForName("yourProp")->executeExact<zfint const &>(obj);
  * @endcode
  * or even for lua: (see also @ref DocTag_Feature_LuaAutoBinding)
  * @code

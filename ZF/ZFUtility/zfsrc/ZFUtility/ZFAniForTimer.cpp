@@ -32,7 +32,7 @@ public:
     static void doStart(ZF_IN ZFAniForTimer *owner) {
         if(owner->aniInterval() == 0) {
             owner->d->useGlobalTimer = zftrue;
-            owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
+            owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->durationFixed() / ZFGlobalTimerIntervalDefault());
             owner->d->globalTimerFrameIndex = 0;
 
             ZFLISTENER_1(globalTimerOnActivate
@@ -55,9 +55,9 @@ public:
                 } ZFLISTENER_END()
                 owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
-            owner->d->builtinTimer->timerInterval(owner->aniInterval() > 0 ? owner->aniInterval() : ZFGlobalTimerIntervalDefault());
+            owner->d->builtinTimer->interval(owner->aniInterval() > 0 ? owner->aniInterval() : ZFGlobalTimerIntervalDefault());
             owner->d->builtinTimerStartTime = ZFTime::timestamp();
-            owner->d->builtinTimer->timerStart();
+            owner->d->builtinTimer->start();
         }
         _update(owner, 0);
     }
@@ -67,7 +67,7 @@ public:
             owner->d->globalTimerTask = zfnull;
         }
         else {
-            owner->d->builtinTimer->timerStop();
+            owner->d->builtinTimer->stop();
         }
     }
 
@@ -85,9 +85,9 @@ private:
     }
     static void builtinTimerOnActivate(ZF_IN ZFAniForTimer *owner) {
         zftimet curTime = ZFTime::timestamp();
-        zffloat progress = ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / owner->aniDurationFixed();
+        zffloat progress = ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / owner->durationFixed();
         _update(owner, progress);
-        if(curTime - owner->d->builtinTimerStartTime >= owner->aniDurationFixed()) {
+        if(curTime - owner->d->builtinTimerStartTime >= owner->durationFixed()) {
             owner->aniImplNotifyStop();
         }
     }
@@ -97,8 +97,8 @@ private:
             ) {
         if(progress < 0) {progress = 0;}
         else if(progress > 1) {progress = 1;}
-        if(owner->aniCurve() != zfnull) {
-            progress = owner->aniCurve()->progressUpdate(progress);
+        if(owner->curve() != zfnull) {
+            progress = owner->curve()->progressUpdate(progress);
         }
         owner->aniTimerOnUpdate(progress);
     }

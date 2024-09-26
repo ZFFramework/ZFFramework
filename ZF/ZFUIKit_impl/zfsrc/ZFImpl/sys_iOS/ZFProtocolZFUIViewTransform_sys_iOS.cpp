@@ -14,7 +14,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_iOS, ZFUIViewTransform
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual ZFUITransformFlags viewTransformAvailable(void) {
+    virtual ZFUITransformFlags transformAvailable(void) {
         return ZFUITransform::e_Transform2D;
     }
 
@@ -31,18 +31,18 @@ public:
             }
             UIView *nativeView = (__bridge UIView *)viewTmp->nativeView();
             CATransform3D t = CATransform3DIdentity;
-            if(viewTmp->viewTranslateX() != 0 || viewTmp->viewTranslateY() != 0) {
+            if(viewTmp->translateX() != 0 || viewTmp->translateY() != 0) {
                 t = CATransform3DTranslate(t
-                        , viewTmp->viewTranslateX() * viewTmp->UIScaleFixed()
-                        , viewTmp->viewTranslateY() * viewTmp->UIScaleFixed()
+                        , viewTmp->translateX() * viewTmp->UIScaleFixed()
+                        , viewTmp->translateY() * viewTmp->UIScaleFixed()
                         , 0
                     );
             }
-            if(viewTmp->viewRotateZ() != 0) {
-                t = CATransform3DRotate(t, ((int)viewTmp->viewRotateZ()) * M_PI / 180, 0, 0, 1);
+            if(viewTmp->rotateZ() != 0) {
+                t = CATransform3DRotate(t, ((int)viewTmp->rotateZ()) * M_PI / 180, 0, 0, 1);
             }
-            if(viewTmp->viewScaleX() != 1 || viewTmp->viewScaleY() != 1) {
-                t = CATransform3DScale(t, viewTmp->viewScaleX(), viewTmp->viewScaleY(), 1);
+            if(viewTmp->scaleX() != 1 || viewTmp->scaleY() != 1) {
+                t = CATransform3DScale(t, viewTmp->scaleX(), viewTmp->scaleY(), 1);
             }
             nativeView.layer.transform = t;
         });

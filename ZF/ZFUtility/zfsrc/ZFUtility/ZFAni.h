@@ -20,12 +20,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
  *       yourAniImpl(progress, ani);
  *   } ZFLISTENER_END()
- *   ZFAni(target, aniImpl)->aniStart();
+ *   ZFAni(aniImpl)->target(target)->start();
  * @endcode
  * aniImpl's param0 is #v_zffloat that holds progress
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
-        , ZFMP_IN(ZFObject *, target)
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(const ZFListener &, aniImpl)
         )
 
@@ -35,7 +34,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
  *
  * usage:
  * @code
- *   ZFAni(target, "yourProp", from, to)->aniStart();
+ *   ZFAni("yourProp", from, to)->target(target)->start();
  * @endcode
  * -  yourPropName can be:
  *   -  name of #ZFProperty
@@ -50,8 +49,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
  *     #ZFTYPEID_PROGRESS_DEFINE
  *   -  v_zfstring or ZFDI_WrapperBase that can be serialized by #ZFSerializable::serializeFromString
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
-        , ZFMP_IN(ZFObject *, target)
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
@@ -116,7 +114,7 @@ public:
 
 protected:
     zfoverride
-    virtual void aniImplTargetOnUpdate(ZF_IN ZFObject *aniTargetOld);
+    virtual void aniImplTargetOnUpdate(ZF_IN ZFObject *targetOld);
     zfoverride
     virtual zfbool aniImplCheckValid(void);
     zfoverride

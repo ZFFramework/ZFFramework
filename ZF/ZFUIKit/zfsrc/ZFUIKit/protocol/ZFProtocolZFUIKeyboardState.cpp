@@ -75,14 +75,14 @@ void ZFUIKeyboardStateBuiltinImplUnregister(void) {
 void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIKeyboardStateBuiltinImpl_DataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder);
     switch(event->keyAction) {
-        case ZFUIKeyAction::e_KeyDown:
-        case ZFUIKeyAction::e_KeyRepeat: {
+        case ZFUIKeyAction::e_Down:
+        case ZFUIKeyAction::e_Repeat: {
             d->keyPressed.add(event->keyCode);
             d->keyPressedRaw.add(event->keyCodeRaw);
         }
             break;
-        case ZFUIKeyAction::e_KeyUp:
-        case ZFUIKeyAction::e_KeyCancel: {
+        case ZFUIKeyAction::e_Up:
+        case ZFUIKeyAction::e_Cancel: {
             zfindex index = 0;
             for( ; index < d->keyPressed.count(); ++index) {
                 if(d->keyPressed[index] == event->keyCode

@@ -17,7 +17,7 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
             return zffalse;
         }
 
-        zfstring tmpValue = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFProperty_owner, outErrorHint, outErrorPos);
+        zfstring tmpValue = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFProperty_owner, outErrorHint, outErrorPos);
         if(tmpValue == zfnull) {
             return zffalse;
         }
@@ -28,7 +28,7 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
             return zffalse;
         }
 
-        tmpValue = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFProperty_property, outErrorHint, outErrorPos);
+        tmpValue = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFProperty_property, outErrorHint, outErrorPos);
         if(tmpValue == zfnull) {
             return zffalse;
         }
@@ -49,7 +49,7 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
 
         serializableData.itemClass(ZFTypeId_ZFProperty());
 
-        serializableData.attr(ZFSerializableKeyword_ZFProperty_owner, v->propertyOwnerClass()->classNameFull());
+        serializableData.attr(ZFSerializableKeyword_ZFProperty_owner, v->ownerClass()->classNameFull());
         serializableData.attr(ZFSerializableKeyword_ZFProperty_property, v->propertyName());
 
         return zftrue;
@@ -64,23 +64,23 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
         return (v != zfnull);
     }, {
         if(v) {
-            s += v->propertyOwnerClass()->classNameFull();
+            s += v->ownerClass()->classNameFull();
             s += "::";
             s += v->propertyName();
         }
         return zftrue;
     })
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const zfstring &, propertyInternalId)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, propertyIsUserRegister)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, propertyIsDynamicRegister)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfany, propertyDynamicRegisterUserData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFClass *, propertyOwnerClass)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const zfstring &, propertyId)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, isUserRegister)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, isDynamicRegister)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfany, dynamicRegisterUserData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFClass *, ownerClass)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const zfstring &, propertyName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const zfstring &, propertyTypeName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const zfstring &, propertyTypeId)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFMethod *, setterMethod)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFMethod *, getterMethod)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, propertyIsRetainProperty)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, isRetainProperty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFClass *, propertyClassOfRetainProperty)
 
 ZF_NAMESPACE_GLOBAL_END

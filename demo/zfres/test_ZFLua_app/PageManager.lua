@@ -9,15 +9,15 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
 
         local topView = ZFUILinearLayout();
         pm:objectTag("topView", topView);
-        managerContainer:childAdd(topView):widthFill();
-        topView:layoutOrientation(ZFUIOrientation.e_Left());
+        managerContainer:child(topView):widthFill();
+        topView:orientation(ZFUIOrientation.e_Left());
 
         local leftButton = ZFUIButtonBasic();
         pm:objectTag("leftButton", leftButton);
-        topView:childAdd(leftButton):widthFill():alignCenter():layoutWeight(1):reserveSpace(zftrue);
+        topView:child(leftButton):widthFill():alignCenter():weight(1):reserveSpace(zftrue);
         leftButton:label():text("Back");
-        leftButton:viewBackgroundColor(ZFUIColorRandom());
-        leftButton:viewVisible(zffalse);
+        leftButton:backgroundColor(ZFUIColorRandom());
+        leftButton:visible(zffalse);
 
         leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
                 local pm = pmHolder:objectHolded();
@@ -26,14 +26,14 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
 
         local centerButton = ZFUIButtonBasic();
         pm:objectTag("centerButton", centerButton);
-        topView:childAdd(centerButton):widthFill():alignCenter():layoutWeight(2);
-        centerButton:viewBackgroundColor(ZFUIColorRandom());
+        topView:child(centerButton):widthFill():alignCenter():weight(2);
+        centerButton:backgroundColor(ZFUIColorRandom());
 
         local rightButton = ZFUIButtonBasic();
         pm:objectTag("rightButton", rightButton);
-        topView:childAdd(rightButton):widthFill():alignCenter():layoutWeight(1);
+        topView:child(rightButton):widthFill():alignCenter():weight(1);
         rightButton:label():text("ExitTest");
-        rightButton:viewBackgroundColor(ZFUIColorRandom());
+        rightButton:backgroundColor(ZFUIColorRandom());
         rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
                 local pm = pmHolder:objectHolded();
                 pm:managerDestroy();

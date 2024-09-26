@@ -26,11 +26,11 @@ public:
         rect.y = 0;
         rect.w = nativeView->rect.w;
         rect.h = nativeView->rect.h;
-        zffloat viewAlpha = 1;
-        for(ZFUIView *p = view; p != zfnull; p = p->viewParent()) {
-            viewAlpha *= p->viewAlpha();
+        zffloat alpha = 1;
+        for(ZFUIView *p = view; p != zfnull; p = p->parent()) {
+            alpha *= p->alpha();
         }
-        nativeView->render(renderer, rect, rect, viewAlpha);
+        nativeView->render(renderer, rect, rect, alpha);
         image->nativeImage(nativeImage, zffalse);
         SDL_DestroyRenderer(renderer);
         return zftrue;

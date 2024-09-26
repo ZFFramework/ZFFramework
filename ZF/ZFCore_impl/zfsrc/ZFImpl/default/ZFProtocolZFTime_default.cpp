@@ -342,7 +342,7 @@ public:
         #endif
         return _tv;
     }
-    virtual zfuint timeInfoDayOfWeek(
+    virtual zfuint dayOfWeek(
             ZF_IN const ZFTimeValue &tv
             , ZF_IN const ZFTimeInfo &ti
             ) {
@@ -352,7 +352,7 @@ public:
                  (zfuint)((_ZFP_ZFTimeImpl_default_baseDayOfWeek + (tv.sec / zftimetOneDay)) % 7)
                  + 7) % 7);
     }
-    virtual zfuint timeInfoDayOfYear(
+    virtual zfuint dayOfYear(
             ZF_IN const ZFTimeValue &tv
             , ZF_IN const ZFTimeInfo &ti
             ) {

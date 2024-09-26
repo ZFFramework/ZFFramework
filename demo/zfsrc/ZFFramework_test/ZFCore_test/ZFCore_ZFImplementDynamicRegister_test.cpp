@@ -45,7 +45,7 @@ protected:
         }
         ZFImplementDynamicUnregister(ExistClass::ClassData(), AttachClass::ClassData());
         ZFTestCaseAssert(!ExistClass::ClassData()->classIsTypeOf(AttachClass::ClassData()));
-        this->testCaseStop();
+        this->stop();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFImplementDynamicRegister_test)

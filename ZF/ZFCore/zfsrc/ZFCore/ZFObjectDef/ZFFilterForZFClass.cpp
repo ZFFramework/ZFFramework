@@ -29,7 +29,7 @@ void ZFFilterForZFClass::copyFrom(ZF_IN ZFFilterForZFClass const &ref) {
     this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.copyFrom(ref._ZFP_ZFFilterForZFClass_customFilterCallbacks);
 }
 
-ZFFilterForZFClass &ZFFilterForZFClass::filterAdd(
+ZFFilterForZFClass &ZFFilterForZFClass::filter(
         ZF_IN const ZFClass * const &e
         , ZF_IN_OPT ZFFilterForZFClassType filterType /* = ZFFilterForZFClassTypeExclude */
         ) {
@@ -89,7 +89,7 @@ ZFFilterForZFClass::CustomFilterCallback ZFFilterForZFClass::customFilterCallbac
     return this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.get(index);
 }
 
-zfbool ZFFilterForZFClass::filterCheckActive(ZF_IN const ZFClass * const &e) const {
+zfbool ZFFilterForZFClass::filterPassed(ZF_IN const ZFClass * const &e) const {
     for(zfindex i = 0, count = this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.count(); i < count; ++i) {
         switch(this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.get(i)(e)) {
             case ZFFilterCallbackResultNotSpecified:

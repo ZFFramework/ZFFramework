@@ -61,7 +61,7 @@ public:
         ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIRetain_";
         key += method->methodName();
-        const ZFProperty *property = method->methodOwnerClass()->propertyForName(
+        const ZFProperty *property = method->ownerClass()->propertyForName(
             key + zfslen("_ZFP_PropURDIRetain_"));
 
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
@@ -85,7 +85,7 @@ public:
             , ZF_IN ZFObject *ownerObj
             ) {
         _ZFP_I_PropURDIVH *holder = _ZFP_valueHolderAccess(
-            method->methodOwnerClass()->propertyForName(method->methodName()),
+            method->ownerClass()->propertyForName(method->methodName()),
             ownerObj);
         return *(T_Type *)holder->v;
     }
@@ -184,7 +184,7 @@ public:
         ZFCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += method->methodName();
-        const ZFProperty *property = method->methodOwnerClass()->propertyForName(
+        const ZFProperty *property = method->ownerClass()->propertyForName(
             key + zfslen("_ZFP_PropURDIRetain_"));
 
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
@@ -207,7 +207,7 @@ public:
             , ZF_IN ZFObject *ownerObj
             ) {
         _ZFP_I_PropURDIVH *holder = _ZFP_valueHolderAccess(
-            method->methodOwnerClass()->propertyForName(method->methodName()),
+            method->ownerClass()->propertyForName(method->methodName()),
             ownerObj);
         return *(T_Type *)holder->v;
     }

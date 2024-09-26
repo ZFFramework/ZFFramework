@@ -31,7 +31,7 @@ protected:
 public:
     void attach(ZF_IN ZFUIImage *holder) {
         this->holder = holder;
-        this->ani->aniLoop(zfindexMax());
+        this->ani->loop(zfindexMax());
 
         zfself *task = this;
 
@@ -58,12 +58,12 @@ public:
                     task->holder->imageStateImplNotifyUpdate(zfnull);
                 }
                 else {
-                    task->ani->aniStart();
+                    task->ani->start();
                 }
             }
             else {
                 task->imageStateAttached = zffalse;
-                task->ani->aniStop();
+                task->ani->stop();
             }
         } ZFLISTENER_END()
         holder->imageStateImpl(imageStateImpl);
@@ -102,7 +102,7 @@ public:
         }
         this->implLoaded = zftrue;
         if(this->imageStateAttached) {
-            this->ani->aniStart();
+            this->ani->start();
         }
         return zftrue;
     }
@@ -150,7 +150,7 @@ public:
         }
         this->implLoaded = zftrue;
         if(this->imageStateAttached) {
-            this->ani->aniStart();
+            this->ani->start();
         }
         return zftrue;
     }
@@ -167,7 +167,7 @@ public:
                 ) {
             ZFSerializableData data;
             ZFSerializableData containerData;
-            data.childAdd(containerData);
+            data.child(containerData);
             containerData.itemClass(ZFSerializableKeyword_node);
             containerData.category(ZFSerializableKeyword_ZFUIImageAni_images);
             if(duration != 0) {
@@ -177,7 +177,7 @@ public:
             zfstring outErrorHint;
             for(zfindex i = 0; i < images->count(); ++i) {
                 ZFSerializableData imageData;
-                containerData.childAdd(imageData);
+                containerData.child(imageData);
                 if(!ZFObjectToDataT(imageData, images->get(i), &outErrorHint)) {
                     zfargs.result(zfobj<v_zfstring>(outErrorHint));
                     return;
@@ -208,7 +208,7 @@ public:
             zfstring outErrorHint;
 
             ZFSerializableData refData;
-            data.childAdd(refData);
+            data.child(refData);
             if(!ZFObjectToDataT(refData, ref, &outErrorHint)) {
                 zfargs.result(zfobj<v_zfstring>(outErrorHint));
                 return;
@@ -216,7 +216,7 @@ public:
             refData.category(ZFSerializableKeyword_ZFUIImageAni_ref);
 
             ZFSerializableData nodeData;
-            data.childAdd(nodeData);
+            data.child(nodeData);
             nodeData.itemClass(ZFSerializableKeyword_node);
             nodeData.category(ZFSerializableKeyword_ZFUIImageAni_split);
             nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_size, ZFUISizeToString(frameSize));
@@ -248,11 +248,11 @@ public:
                     ZFSerializableData data;
                     zfstring outErrorHint;
 
-                    data.childAdd(refSrcData);
+                    data.child(refSrcData);
                     refSrcData.category(ZFSerializableKeyword_ZFUIImageAni_refSrc);
 
                     ZFSerializableData nodeData;
-                    data.childAdd(nodeData);
+                    data.child(nodeData);
                     nodeData.itemClass(ZFSerializableKeyword_node);
                     nodeData.category(ZFSerializableKeyword_ZFUIImageAni_split);
                     nodeData.attr(ZFSerializableKeyword_ZFUIImageAni_size, ZFUISizeToString(frameSize));
@@ -284,7 +284,7 @@ public:
             zfstring outErrorHint;
 
             ZFSerializableData refData;
-            data.childAdd(refData);
+            data.child(refData);
             if(!ZFObjectToDataT(refData, ref, &outErrorHint)) {
                 zfargs.result(zfobj<v_zfstring>(outErrorHint));
                 return;
@@ -292,7 +292,7 @@ public:
             refData.category(ZFSerializableKeyword_ZFUIImageAni_ref);
 
             ZFSerializableData nodeData;
-            data.childAdd(nodeData);
+            data.child(nodeData);
             nodeData.itemClass(ZFSerializableKeyword_node);
             nodeData.category(ZFSerializableKeyword_ZFUIImageAni_frames);
             if(duration != 0) {
@@ -335,11 +335,11 @@ public:
                     ZFSerializableData data;
                     zfstring outErrorHint;
 
-                    data.childAdd(refSrcData);
+                    data.child(refSrcData);
                     refSrcData.category(ZFSerializableKeyword_ZFUIImageAni_refSrc);
 
                     ZFSerializableData nodeData;
-                    data.childAdd(nodeData);
+                    data.child(nodeData);
                     nodeData.itemClass(ZFSerializableKeyword_node);
                     nodeData.category(ZFSerializableKeyword_ZFUIImageAni_frames);
                     if(duration != 0) {
@@ -347,7 +347,7 @@ public:
                     }
                     for(zfindex i = 0; i < frameRects->count(); ++i) {
                         ZFSerializableData frameData;
-                        nodeData.childAdd(frameData);
+                        nodeData.child(frameData);
                         frameData.itemClass(ZFSerializableKeyword_node);
 
                         v_ZFUIRect *rect = frameRects->get(i);
@@ -609,7 +609,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
         zfobj<ZFArray> frameDurations;
         zfbool hasSpecDuration = zffalse;
 
-        ZFSerializableUtilSerializeAttributeFromData(refData, outErrorHint, outErrorPos,
+        ZFSerializableUtilSerializeAttrFromData(refData, outErrorHint, outErrorPos,
                 check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, duration, {
                     return zffalse;
                 });
@@ -617,7 +617,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             const ZFSerializableData &frameData = refData.childAt(i);
 
             zftimet frameDuration = duration;
-            ZFSerializableUtilSerializeAttributeFromData(frameData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(frameData, outErrorHint, outErrorPos,
                     check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                         return zffalse;
                     });
@@ -681,15 +681,15 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             zfindex frameCount = 0;
             zftimet frameDuration = 0;
 
-            ZFSerializableUtilSerializeAttributeFromData(splitData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(splitData, outErrorHint, outErrorPos,
                     require, ZFSerializableKeyword_ZFUIImageAni_size, ZFUISize, frameSize, {
                         return zffalse;
                     });
-            ZFSerializableUtilSerializeAttributeFromData(splitData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(splitData, outErrorHint, outErrorPos,
                     require, ZFSerializableKeyword_ZFUIImageAni_count, zfindex, frameCount, {
                         return zffalse;
                     });
-            ZFSerializableUtilSerializeAttributeFromData(splitData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(splitData, outErrorHint, outErrorPos,
                     check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                         return zffalse;
                     });
@@ -709,7 +709,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
             zfobj<ZFArray> frameDurations;
             zfbool hasSpecDuration = zffalse;
 
-            ZFSerializableUtilSerializeAttributeFromData(framesData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(framesData, outErrorHint, outErrorPos,
                     check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, duration, {
                         return zffalse;
                     });
@@ -719,11 +719,11 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ani, ZFUIImageSerializeType_ZFUIImageAni) {
                 nodeData.resolveMark();
                 ZFUIRect frameRect = ZFUIRectZero();
                 zftimet frameDuration = duration;
-                ZFSerializableUtilSerializeAttributeFromData(nodeData, outErrorHint, outErrorPos,
+                ZFSerializableUtilSerializeAttrFromData(nodeData, outErrorHint, outErrorPos,
                         require, ZFSerializableKeyword_ZFUIImageAni_rect, ZFUIRect, frameRect, {
                             return zffalse;
                         });
-                ZFSerializableUtilSerializeAttributeFromData(nodeData, outErrorHint, outErrorPos,
+                ZFSerializableUtilSerializeAttrFromData(nodeData, outErrorHint, outErrorPos,
                         check, ZFSerializableKeyword_ZFUIImageAni_duration, zftimet, frameDuration, {
                             return zffalse;
                         });

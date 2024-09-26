@@ -55,8 +55,8 @@ public:
     /**
      * @brief single line or not, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, textSingleLine, zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textSingleLine)
+    ZFPROPERTY_ASSIGN(zfbool, singleLine, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, singleLine)
 
     /**
      * @brief text truncate mode, #ZFUITextTruncateMode::e_Disable by default

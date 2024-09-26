@@ -46,7 +46,7 @@ zfbool ZFSerializable::serializeFromData(
     // style logic
     ZFStyleable *styleable = zfcast(ZFStyleable *, this);
     {
-        zfstring styleKey = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_styleKey);
+        zfstring styleKey = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_styleKey);
         if(styleKey != zfnull) {
             if(styleable == zfnull) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -78,7 +78,7 @@ zfbool ZFSerializable::serializeFromData(
                 continue;
             }
             zfauto propertyValue = propertyClass->newInstance();
-            if(!zfcast(ZFTypeIdWrapper *, propertyValue)->wrappedValueFromString(serializableData.attrIterValue(it))) {
+            if(!zfcast(ZFTypeIdWrapper *, propertyValue)->zfvFromString(serializableData.attrIterValue(it))) {
                 continue;
             }
             property->setterMethod()->methodInvoke(this->toObject(), propertyValue);
@@ -106,7 +106,7 @@ zfbool ZFSerializable::serializeFromData(
             // serialize the property
             switch(data->propertyType) {
                 case ZFSerializablePropertyTypeSerializable: {
-                        zfstring styleKey = ZFSerializableUtil::checkAttribute(element, ZFSerializableKeyword_styleKey);
+                        zfstring styleKey = ZFSerializableUtil::checkAttr(element, ZFSerializableKeyword_styleKey);
                         if(styleKey != zfnull) {
                             if(styleable == zfnull) {
                                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -157,11 +157,27 @@ zfbool ZFSerializable::serializeFromData(
 
     // dynamic
     ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnSerializeFromData");
-    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-        if(!dynamicMethod[i]->execute<zfbool, const ZFSerializableData &, zfstring *, ZFSerializableData *>(
-                    this->toObject(), serializableData, outErrorHint, outErrorPos)
-                    ) {
-            return zffalse;
+    if(!dynamicMethod.isEmpty()) {
+        zfautoT<v_zfstring> outErrorHintHolder;
+        if(outErrorHint) {
+            outErrorHintHolder = zfobj<v_zfstring>(*outErrorHint);
+        }
+        zfauto outErrorPosHolder;
+        if(outErrorPos) {
+            outErrorPosHolder = zfobj<v_ZFSerializableData>(*outErrorPos);
+        }
+        for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+            if(!(dynamicMethod[i]->methodInvoke(
+                            this->toObject()
+                            , zfobj<v_ZFSerializableData>(serializableData)
+                            , outErrorHintHolder
+                            , outErrorPosHolder
+                            ).to<v_zfbool *>()->zfv)) {
+                if(outErrorHint) {
+                    *outErrorHint = outErrorHintHolder->zfv;
+                }
+                return zffalse;
+            }
         }
     }
 
@@ -218,7 +234,7 @@ zfbool ZFSerializable::serializeToData(
                             propertyData.itemClass(data->property->propertyTypeId());
                             propertyData.attr(ZFSerializableKeyword_styleKey, styleKey);
                             propertyData.propertyName(data->property->propertyName());
-                            serializableData.childAdd(propertyData);
+                            serializableData.child(propertyData);
                             break;
                         }
                     }
@@ -260,11 +276,23 @@ zfbool ZFSerializable::serializeToData(
 
     // dynamic
     ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnSerializeToData");
-    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-        if(!dynamicMethod[i]->execute<zfbool, ZFSerializableData &, ZFSerializable *, zfstring *>(
-                    this->toObject(), serializableData, referencedObject, outErrorHint)
-                    ) {
-            return zffalse;
+    if(!dynamicMethod.isEmpty()) {
+        zfautoT<v_zfstring> outErrorHintHolder;
+        if(outErrorHint) {
+            outErrorHintHolder = zfobj<v_zfstring>(*outErrorHint);
+        }
+        for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+            if(!(dynamicMethod[i]->methodInvoke(
+                            this->toObject()
+                            , zfobj<v_ZFSerializableData>(serializableData)
+                            , zfcast(ZFObject *, referencedObject)
+                            , outErrorHintHolder
+                            ).to<v_zfbool *>()->zfv)) {
+                if(outErrorHint) {
+                    *outErrorHint = outErrorHintHolder->zfv;
+                }
+                return zffalse;
+            }
         }
     }
 
@@ -278,10 +306,22 @@ zfbool ZFSerializable::serializeFromString(
         ) {
     // dynamic
     const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeFromString");
-    if(dynamicMethod != zfnull
-            && !dynamicMethod->execute<zfbool, const zfchar *>(this->toObject(), src)
-            ) {
-        return zffalse;
+    if(dynamicMethod) {
+        zfautoT<v_zfstring> errorHintHolder;
+        if(errorHint) {
+            errorHintHolder = zfobj<v_zfstring>(*errorHint);
+        }
+        if(!(dynamicMethod->methodInvoke(
+                        this->toObject()
+                        , zfobj<v_zfstring>(zfstring(src, srcLen))
+                        , zfobj<v_zfindex>(srcLen)
+                        , errorHintHolder
+                        ).to<v_zfbool *>()->zfv)) {
+            if(errorHint) {
+                *errorHint = errorHintHolder->zfv;
+            }
+            return zffalse;
+        }
     }
     return this->serializableOnSerializeFromString(src, srcLen, errorHint);
 }
@@ -291,10 +331,23 @@ zfbool ZFSerializable::serializeToString(
         ) {
     // dynamic
     const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeToString");
-    if(dynamicMethod != zfnull
-            && !dynamicMethod->execute<zfbool, zfstring &>(this->toObject(), ret)
-            ) {
-        return zffalse;
+    if(dynamicMethod) {
+        zfobj<v_zfstring> retHolder;
+        zfautoT<v_zfstring> errorHintHolder;
+        if(errorHint) {
+            errorHintHolder = zfobj<v_zfstring>(*errorHint);
+        }
+        if(!(dynamicMethod->methodInvoke(
+                        this->toObject()
+                        , retHolder
+                        , errorHintHolder
+                        ).to<v_zfbool *>()->zfv)) {
+            if(errorHint) {
+                *errorHint = errorHintHolder->zfv;
+            }
+            return zffalse;
+        }
+        ret += retHolder->zfv;
     }
     return this->serializableOnSerializeToString(ret, errorHint);
 }
@@ -336,14 +389,19 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
 
             ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
             ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnCheckPropertyType");
-            for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-                ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->execute<ZFSerializablePropertyType, const ZFProperty *>(this->toObject(), property);
-                if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
-                    propertyType = propertyTypeTmp;
-                    break;
-                }
-                else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
-                    propertyType = propertyTypeTmp;
+            if(!dynamicMethod.isEmpty()) {
+                for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                    ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
+                            this->toObject()
+                            , zfobj<v_ZFProperty>(property)
+                            ).to<v_ZFSerializablePropertyType *>()->zfv;
+                    if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
+                        propertyType = propertyTypeTmp;
+                        break;
+                    }
+                    else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
+                        propertyType = propertyTypeTmp;
+                    }
                 }
             }
             if(propertyType == ZFSerializablePropertyTypeUnspecified) {
@@ -392,9 +450,9 @@ void ZFSerializable::serializableGetAllSerializableEmbededPropertyT(ZF_IN_OUT ZF
 }
 
 ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
-    if(property->propertyIsRetainProperty()) {
-        if(property->setterMethod()->methodIsPrivate()) {
-            if(property->getterMethod()->methodIsPrivate()
+    if(property->isRetainProperty()) {
+        if(property->setterMethod()->isPrivate()) {
+            if(property->getterMethod()->isPrivate()
                     || !property->propertyClassOfRetainProperty()->classIsTypeOf(ZFSerializable::ClassData())
                     ) {
                 return ZFSerializablePropertyTypeNotSerializable;
@@ -404,7 +462,7 @@ ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN
             }
         }
         else {
-            if(property->getterMethod()->methodIsPrivate()) {
+            if(property->getterMethod()->isPrivate()) {
                 return ZFSerializablePropertyTypeNotSerializable;
             }
             else {
@@ -414,7 +472,7 @@ ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN
     }
     else {
         if(!property->propertySerializable()
-                || property->getterMethod()->methodIsPrivate()
+                || property->getterMethod()->isPrivate()
                 ) {
             return ZFSerializablePropertyTypeNotSerializable;
         }
@@ -430,7 +488,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyFromData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    if(property->propertyIsRetainProperty()) {
+    if(property->isRetainProperty()) {
         zfauto obj;
         if(!ZFObjectFromDataT(obj, propertyData, outErrorHint, outErrorPos)) {
             return zffalse;
@@ -461,7 +519,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyFromData(
             return zffalse;
         }
         zfauto propertyValue = propertyClass->newInstance();
-        if(!zfcast(ZFTypeIdWrapper *, propertyValue)->wrappedValueFromData(propertyData, outErrorHint, outErrorPos)) {
+        if(!zfcast(ZFTypeIdWrapper *, propertyValue)->zfvFromData(propertyData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         property->setterMethod()->methodInvoke(this->toObject(), propertyValue);
@@ -487,19 +545,19 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(
     ZFTypeIdWrapper *wrapper = propertyValue;
     if(wrapper != zfnull && wrapper->wrappedValuePreferStringConverter()) {
         zfstring value;
-        if(wrapper->wrappedValueToString(value)) {
+        if(wrapper->zfvToString(value)) {
             ownerData.attr(property->propertyName(), value);
             return zftrue;
         }
     }
 
-    if(property->propertyIsRetainProperty()) {
+    if(property->isRetainProperty()) {
         ZFSerializableData propertyData;
         if(!ZFObjectToDataT(propertyData, propertyValue, outErrorHint)) {
             return zffalse;
         }
         propertyData.propertyName(property->propertyName());
-        ownerData.childAdd(propertyData);
+        ownerData.child(propertyData);
         return zftrue;
     }
     else {
@@ -510,11 +568,11 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(
             return zffalse;
         }
         ZFSerializableData propertyData;
-        if(!zfcast(ZFTypeIdWrapper *, propertyValue)->wrappedValueToData(propertyData, outErrorHint)) {
+        if(!zfcast(ZFTypeIdWrapper *, propertyValue)->zfvToData(propertyData, outErrorHint)) {
             return zffalse;
         }
         propertyData.propertyName(property->propertyName());
-        ownerData.childAdd(propertyData);
+        ownerData.child(propertyData);
         return zftrue;
     }
 }
@@ -605,7 +663,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
         propertyData.itemClass(zfnull);
     }
     propertyData.propertyName(property->propertyName());
-    ownerData.childAdd(propertyData);
+    ownerData.child(propertyData);
     return zftrue;
 }
 
@@ -666,7 +724,7 @@ zfbool ZFObjectFromDataT(
     {
         const ZFMethod *overridedCreateMethod = cls->methodForNameIgnoreParent(ZFSerializableKeyword_serializableNewInstance);
         if(overridedCreateMethod != zfnull) {
-            obj = overridedCreateMethod->execute<zfauto>(zfnull);
+            obj = overridedCreateMethod->methodInvoke();
         }
         else {
             obj = cls->newInstance();
@@ -745,7 +803,7 @@ zfbool ZFSerializeFromString(
         result = cls->newInstance();
     }
     else {
-        result = createMethod->execute<zfauto>(zfnull);
+        result = createMethod->methodInvoke();
     }
     ZFSerializable *serializable = result;
     if(serializable == zfnull) {

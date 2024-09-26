@@ -20,7 +20,7 @@ protected:
                 , ZFTestCase *, testCase
                 ) {
             ZFLog();
-            testCase->testCaseStop();
+            testCase->stop();
         } ZFLISTENER_END()
 #else
         ZFLISTENER_1(hintOnHide
@@ -36,7 +36,7 @@ protected:
             ZFLISTENER_1(lastHintOnHide
                 , ZFTestCase *, testCase
                 ) {
-                testCase->testCaseStop();
+                testCase->stop();
             } ZFLISTENER_END()
             last->observerAdd(ZFUIHint::EventHintOnHide(), lastHintOnHide);
         } ZFLISTENER_END()

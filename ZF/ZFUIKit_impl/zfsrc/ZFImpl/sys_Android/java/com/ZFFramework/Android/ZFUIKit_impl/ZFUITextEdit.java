@@ -42,70 +42,70 @@ public final class ZFUITextEdit extends EditText {
     }
 
     // ============================================================
-    public static void native_textEditEnable(Object nativeTextEdit,
-                                             boolean textEditEnable) {
+    public static void native_editEnable(Object nativeTextEdit,
+                                         boolean editEnable) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        nativeTextEditTmp.setEnabled(textEditEnable);
+        nativeTextEditTmp.setEnabled(editEnable);
     }
 
     public static void native_textEditSecure(Object nativeTextEdit,
-                                             boolean textEditSecured) {
+                                             boolean editSecured) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        if (textEditSecured) {
+        if (editSecured) {
             nativeTextEditTmp.setTransformationMethod(PasswordTransformationMethod.getInstance());
         } else {
             nativeTextEditTmp.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         }
     }
 
-    public static void native_textEditKeyboardType(Object nativeTextEdit,
-                                                   int textEditKeyboardType) {
+    public static void native_keyboardType(Object nativeTextEdit,
+                                                   int keyboardType) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        if (textEditKeyboardType == ZFUITextEditKeyboardType.e_Normal) {
+        if (keyboardType == ZFUITextEditKeyboardType.e_Normal) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        } else if (textEditKeyboardType == ZFUITextEditKeyboardType.e_CharBased) {
+        } else if (keyboardType == ZFUITextEditKeyboardType.e_CharBased) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        } else if (textEditKeyboardType == ZFUITextEditKeyboardType.e_PhonePad) {
+        } else if (keyboardType == ZFUITextEditKeyboardType.e_PhonePad) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        } else if (textEditKeyboardType == ZFUITextEditKeyboardType.e_NumberPad) {
+        } else if (keyboardType == ZFUITextEditKeyboardType.e_NumberPad) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
         } else {
             ZFAndroidLog.shouldNotGoHere();
         }
     }
 
-    public static void native_textEditKeyboardReturnType(Object nativeTextEdit,
-                                                         int textEditKeyboardReturnType) {
+    public static void native_keyboardReturnType(Object nativeTextEdit,
+                                                         int keyboardReturnType) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Normal) {
+        if (keyboardReturnType == ZFUITextEditKeyboardReturnType.e_Normal) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Next) {
+        } else if (keyboardReturnType == ZFUITextEditKeyboardReturnType.e_Next) {
             nativeTextEditTmp.setImeActionLabel(null, 0);
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Search) {
+        } else if (keyboardReturnType == ZFUITextEditKeyboardReturnType.e_Search) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Done) {
+        } else if (keyboardReturnType == ZFUITextEditKeyboardReturnType.e_Done) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Go) {
+        } else if (keyboardReturnType == ZFUITextEditKeyboardReturnType.e_Go) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_GO);
-        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Send) {
+        } else if (keyboardReturnType == ZFUITextEditKeyboardReturnType.e_Send) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_SEND);
         } else {
             ZFAndroidLog.shouldNotGoHere();
         }
     }
 
-    public static int native_textSelectRange_start(Object nativeTextEdit) {
+    public static int native_selectedRange_start(Object nativeTextEdit) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         return nativeTextEditTmp.getSelectionStart();
     }
 
-    public static int native_textSelectRange_count(Object nativeTextEdit) {
+    public static int native_selectedRange_count(Object nativeTextEdit) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         return nativeTextEditTmp.getSelectionEnd() - nativeTextEditTmp.getSelectionStart();
     }
 
-    public static void native_textSelectRange(Object nativeTextEdit, int start, int count) {
+    public static void native_selectedRange(Object nativeTextEdit, int start, int count) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         if (count == 0) {
             nativeTextEditTmp.setSelection(start);
@@ -196,12 +196,12 @@ public final class ZFUITextEdit extends EditText {
     }
 
     // ============================================================
-    public static void native_textEditBegin(Object nativeTextEdit) {
+    public static void native_editBegin(Object nativeTextEdit) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.requestFocus();
     }
 
-    public static void native_textEditEnd(Object nativeTextEdit) {
+    public static void native_editEnd(Object nativeTextEdit) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.clearFocus();
     }
@@ -222,24 +222,24 @@ public final class ZFUITextEdit extends EditText {
     private static native void native_notifyTextEditEnd(long zfjniPointerOwnerZFUITextEdit);
 
     // ============================================================
-    private int _ZFP_textSelectRangeUpdateFlag = 0;
+    private int _ZFP_selectedRangeUpdateFlag = 0;
 
     @Override
     public void setSelection(int start, int stop) {
-        ++_ZFP_textSelectRangeUpdateFlag;
+        ++_ZFP_selectedRangeUpdateFlag;
         super.setSelection(start, stop);
-        --_ZFP_textSelectRangeUpdateFlag;
-        if (_ZFP_textSelectRangeUpdateFlag == 0) {
+        --_ZFP_selectedRangeUpdateFlag;
+        if (_ZFP_selectedRangeUpdateFlag == 0) {
             ZFUITextEdit.native_notifyTextSelectRangeOnUpdate(this.zfjniPointerOwnerZFUITextEdit);
         }
     }
 
     @Override
     public void setSelection(int index) {
-        ++_ZFP_textSelectRangeUpdateFlag;
+        ++_ZFP_selectedRangeUpdateFlag;
         super.setSelection(index);
-        --_ZFP_textSelectRangeUpdateFlag;
-        if (_ZFP_textSelectRangeUpdateFlag == 0) {
+        --_ZFP_selectedRangeUpdateFlag;
+        if (_ZFP_selectedRangeUpdateFlag == 0) {
             ZFUITextEdit.native_notifyTextSelectRangeOnUpdate(this.zfjniPointerOwnerZFUITextEdit);
         }
     }

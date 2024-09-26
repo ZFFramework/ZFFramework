@@ -19,46 +19,46 @@ public:
     /**
      * @brief change view's focusable setting
      */
-    virtual void viewFocusable(
+    virtual void focusable(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewFocusable
+            , ZF_IN zfbool focusable
             ) zfpurevirtual;
     /**
-     * @brief see #ZFUIView::viewFocused
+     * @brief see #ZFUIView::focused
      */
-    virtual zfbool viewFocused(ZF_IN ZFUIView *view) zfpurevirtual;
+    virtual zfbool focused(ZF_IN ZFUIView *view) zfpurevirtual;
     /**
-     * @brief see #ZFUIView::viewFocusFind
+     * @brief see #ZFUIView::focusFind
      */
-    virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view) {
-        if(view->viewFocused()) {
+    virtual ZFUIView *focusFind(ZF_IN ZFUIView *view) {
+        if(view->focused()) {
             return view;
         }
         ZFUIView *ret = zfnull;
         ZFCoreArray<zfautoT<ZFUIView> > children = view->childArray();
         for(zfindex i = 0; i < children.count(); ++i) {
-            ret = this->viewFocusFind(children[i]);
+            ret = this->focusFind(children[i]);
             if(ret != zfnull) {
                 return ret;
             }
         }
         children = view->internalFgViewArray();
         for(zfindex i = 0; i < children.count(); ++i) {
-            ret = this->viewFocusFind(children[i]);
+            ret = this->focusFind(children[i]);
             if(ret != zfnull) {
                 return ret;
             }
         }
         children = view->internalBgViewArray();
         for(zfindex i = 0; i < children.count(); ++i) {
-            ret = this->viewFocusFind(children[i]);
+            ret = this->focusFind(children[i]);
             if(ret != zfnull) {
                 return ret;
             }
         }
         children = view->internalImplViewArray();
         for(zfindex i = 0; i < children.count(); ++i) {
-            ret = this->viewFocusFind(children[i]);
+            ret = this->focusFind(children[i]);
             if(ret != zfnull) {
                 return ret;
             }
@@ -66,11 +66,11 @@ public:
         return zfnull;
     }
     /**
-     * @brief see #ZFUIView::viewFocusRequest
+     * @brief see #ZFUIView::focusRequest
      */
-    virtual void viewFocusRequest(
+    virtual void focusRequest(
             ZF_IN ZFUIView *view
-            , ZF_IN zfbool viewFocus
+            , ZF_IN zfbool focus
             ) zfpurevirtual;
 
     // ============================================================
@@ -80,7 +80,7 @@ public:
      * @brief implementations must notify when view's focus state changed (both obtain or resign)
      */
     zffinal void notifyViewFocusUpdate(ZF_IN ZFUIView *view) {
-        view->_ZFP_ZFUIView_viewFocusOnUpdate();
+        view->_ZFP_ZFUIView_focusOnUpdate();
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIViewFocus)
 
