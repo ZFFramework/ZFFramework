@@ -29,22 +29,49 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 
 // ============================================================
+/** @cond ZFPrivateDoc */
+class ZFLIB_ZFCore zft_zfnullT {
+public:
+    inline operator void *(void) const {
+        return 0;
+    }
+    inline operator const void *(void) const {
+        return 0;
+    }
+    template<typename T>
+    inline operator T *(void) const {
+        return 0;
+    }
+    template<class C, typename T>
+    inline operator T C::*(void) const {
+        return 0;
+    }
+private:
+    void operator &(void) const;
+};
+extern ZFLIB_ZFCore const zft_zfnullT zft_zfnull;
+/** @endcond */
+
 /**
  * @def zfnullT
  * @brief type for zfnull, can be used for function overload
  * @def zfnull
  * @brief same as NULL, defined for future use
- * @def zfnullAsInt
- * @brief whether zfnull is defined as int
  */
-#if 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
+#if 1
+    #ifndef zfnullT
+        #define zfnullT zft_zfnullT
+    #endif
+    #ifndef zfnull
+        #define zfnull zft_zfnull
+    #endif
+#elif 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
     #ifndef zfnullT
         #define zfnullT nullptr_t
     #endif
     #ifndef zfnull
         #define zfnull nullptr
     #endif
-    #define zfnullAsInt 0
 #else // backward capacity
     #ifndef zfnullT
         #define zfnullT int
@@ -52,7 +79,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #ifndef zfnull
         #define zfnull 0
     #endif
-    #define zfnullAsInt 1
 #endif
 
 // ============================================================

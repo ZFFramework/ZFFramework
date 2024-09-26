@@ -143,7 +143,7 @@ public:
             , ZF_IN const zfstring &url
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        task->request.setUrl(QUrl(url));
+        task->request.setUrl(QUrl(url.cString()));
     }
 
     virtual void httpMethod(
@@ -160,7 +160,7 @@ public:
             , ZF_IN const zfstring &value
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        task->request.setRawHeader(key, value);
+        task->request.setRawHeader(key.cString(), value.cString());
         if(task->rawHeaderList != NULL) {
             delete task->rawHeaderList;
             task->rawHeaderList = NULL;
@@ -172,7 +172,7 @@ public:
             , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        task->request.setRawHeader(key, QByteArray());
+        task->request.setRawHeader(key.cString(), QByteArray());
         if(task->rawHeaderList != NULL) {
             delete task->rawHeaderList;
             task->rawHeaderList = NULL;
@@ -184,7 +184,7 @@ public:
             , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        return task->request.rawHeader(key).data();
+        return task->request.rawHeader(key.cString()).data();
     }
 
     virtual zfindex headerCount(ZF_IN void *nativeTask) {
@@ -254,7 +254,7 @@ public:
             , ZF_IN const zfstring &value
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        task->request.setRawHeader(it.impl<_Iter *>()->it->data(), value);
+        task->request.setRawHeader(it.impl<_Iter *>()->it->data(), value.cString());
     }
     virtual void headerIterRemove(
             ZF_IN void *nativeTask
@@ -329,7 +329,7 @@ public:
         if(task->response == NULL) {
             return "";
         }
-        return task->response->rawHeader(key).data();
+        return task->response->rawHeader(key.cString()).data();
     }
 
     virtual zfindex responseHeaderCount(ZF_IN void *nativeTask) {

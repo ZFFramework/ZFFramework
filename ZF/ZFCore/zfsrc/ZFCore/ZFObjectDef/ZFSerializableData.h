@@ -74,9 +74,11 @@ zfclassFwd _ZFP_ZFSerializableDataPrivate;
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFSerializableData {
 public:
     /** @cond ZFPrivateDoc */
-    ZFSerializableData(ZF_IN _ZFP_ZFSerializableDataPrivate *d);
+    explicit ZFSerializableData(ZF_IN _ZFP_ZFSerializableDataPrivate *d);
     ZFSerializableData(void);
     ZFSerializableData(ZF_IN const ZFSerializableData &ref);
+    ZFSerializableData(ZF_IN const zfnullT &dummy);
+    ZFSerializableData &operator = (ZF_IN const zfnullT &dummy);
     ZFSerializableData &operator = (ZF_IN const ZFSerializableData &ref);
     zfbool operator == (ZF_IN const ZFSerializableData &ref) const;
     inline zfbool operator != (ZF_IN const ZFSerializableData &ref) const {return !this->operator == (ref);}

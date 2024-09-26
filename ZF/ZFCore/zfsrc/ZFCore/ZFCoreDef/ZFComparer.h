@@ -76,23 +76,13 @@ namespace _ZFP_ZFComparer {
             Value = 0,
         };
     };
-#if zfnullAsInt
     template <int isFunc>
     class HasSmaller<zfnullT, zfnullT, isFunc> {
     public:
         enum {
-            Value = 1,
+            Value = zftIsSame<zfnullT, int>::Value,
         };
     };
-#else
-    template <int isFunc>
-    class HasSmaller<zfnullT, zfnullT, isFunc> {
-    public:
-        enum {
-            Value = 0,
-        };
-    };
-#endif
 
 #if defined(__GNUC__)
 #pragma GCC diagnostic pop

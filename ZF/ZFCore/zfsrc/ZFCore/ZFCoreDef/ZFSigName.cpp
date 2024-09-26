@@ -126,6 +126,8 @@ ZFSigName::ZFSigName(ZF_IN const zfchar *s) {
     ZFCoreMutexLocker();
     d = _ZFP_ZFSigNameAttach(s);
 }
+ZFSigName::ZFSigName(ZF_IN const zfnullT &dummy) : d(zfnull) {
+}
 ZFSigName::~ZFSigName(void) {
     if(d) {
         ZFCoreMutexLocker();

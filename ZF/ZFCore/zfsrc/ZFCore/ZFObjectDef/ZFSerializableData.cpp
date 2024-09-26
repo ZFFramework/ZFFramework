@@ -97,6 +97,21 @@ ZFSerializableData::ZFSerializableData(ZF_IN const ZFSerializableData &ref)
         ++(d->refCount);
     }
 }
+ZFSerializableData::ZFSerializableData(ZF_IN const zfnullT &dummy)
+: d(zfnull)
+{
+}
+ZFSerializableData &ZFSerializableData::operator = (ZF_IN const zfnullT &dummy) {
+    _ZFP_ZFSerializableDataPrivate *dTmp = d;
+    d = zfnull;
+    if(dTmp) {
+        --(dTmp->refCount);
+        if(dTmp->refCount == 0) {
+            zfpoolDelete(dTmp);
+        }
+    }
+    return *this;
+}
 ZFSerializableData &ZFSerializableData::operator = (ZF_IN const ZFSerializableData &ref) {
     _ZFP_ZFSerializableDataPrivate *dTmp = d;
     d = ref.d;
@@ -149,7 +164,7 @@ zfindex ZFSerializableData::objectRetainCount(void) const {
 // ============================================================
 // local path logic
 ZFPathInfo ZFSerializableData::pathInfo(void) const {
-    return d ? d->pathInfo : ZFPathInfo();
+    return d ? d->pathInfo : zfnull;
 }
 void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo &pathInfo) {
     if(pathInfo) {
@@ -353,7 +368,7 @@ zfiter ZFSerializableData::attrIterFind(ZF_IN const zfstring &name) const {
     }
 }
 zfiter ZFSerializableData::attrIter(void) const {
-    return d ? d->attrs.iter() : zfiter();
+    return d ? d->attrs.iter() : zfnull;
 }
 zfstring ZFSerializableData::attrIterKey(ZF_IN const zfiter &it) const {
     return d ? d->attrs.iterKey(it) : zfnull;

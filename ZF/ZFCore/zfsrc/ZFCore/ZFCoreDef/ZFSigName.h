@@ -21,6 +21,7 @@ public:
     ZFSigName(ZF_IN const ZFSigName &ref);
     ZFSigName(ZF_IN const zfstring &s);
     ZFSigName(ZF_IN const zfchar *s);
+    ZFSigName(ZF_IN const zfnullT &dummy);
     ~ZFSigName(void);
     /** @endcond */
 
@@ -62,6 +63,7 @@ public:
     ZFSigName &operator = (ZF_IN const ZFSigName &ref);
     ZFSigName &operator = (ZF_IN const zfstring &s);
     ZFSigName &operator = (ZF_IN const zfchar *s);
+    ZFSigName &operator = (ZF_IN const zfnullT &dummy);
 public:
     zfbool operator == (ZF_IN const ZFSigName &ref) const {return this->compare(ref) == 0;}
     zfbool operator != (ZF_IN const ZFSigName &ref) const {return this->compare(ref) != 0;}
@@ -69,6 +71,8 @@ public:
     zfbool operator != (ZF_IN const zfstring &s) const {return this->compare(s) != 0;}
     zfbool operator == (ZF_IN const zfchar *s) const {return this->compare(s) == 0;}
     zfbool operator != (ZF_IN const zfchar *s) const {return this->compare(s) != 0;}
+    zfbool operator == (ZF_IN const zfnullT &dummy) const {return this->isEmpty();}
+    zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->isEmpty();}
 public:
     /* ZFTAG_TRICKS: tricks to make zfstlmap<ZFSigName, xxx> works */
     inline zfbool operator < (ZF_IN const ZFSigName &ref) const {return this->compare(ref) < 0;}

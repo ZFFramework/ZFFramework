@@ -238,15 +238,15 @@ void ZFCoreMap::removeAll(void) {
 // ============================================================
 // iterator
 zfiter ZFCoreMap::iter(void) const {
-    return d ? d->m.iter() : zfiter();
+    return d ? d->m.iter() : zfnull;
 }
 
 zfiter ZFCoreMap::iterFind(ZF_IN const zfstring &key) const {
-    return d ? d->m.iterFind(key) : zfiter();
+    return d ? d->m.iterFind(key) : zfnull;
 }
 
 zfstring ZFCoreMap::iterKey(ZF_IN const zfiter &it) const {
-    return d ? d->m.iterKey(it) : zfstring();
+    return d ? d->m.iterKey(it) : zfnull;
 }
 ZFCorePointerBase *ZFCoreMap::iterValue(ZF_IN const zfiter &it) const {
     return d ? d->m.iterValue(it) : zfnull;

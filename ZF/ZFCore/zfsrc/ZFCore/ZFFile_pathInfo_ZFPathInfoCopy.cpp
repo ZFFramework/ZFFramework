@@ -5,14 +5,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 static void _ZFP_ZFPathInfoCopy_SetErrPos(
         ZF_IN ZFPathInfo *errPos
-        , ZF_IN const ZFPathInfo *s
-        ) {
-    if(errPos != zfnull) {
-        *errPos = ((s != zfnull) ? (*s) : ZFPathInfo("", "<null>"));
-    }
-}
-static void _ZFP_ZFPathInfoCopy_SetErrPos(
-        ZF_IN ZFPathInfo *errPos
         , ZF_IN const ZFPathInfo &s
         ) {
     if(errPos != zfnull) {
