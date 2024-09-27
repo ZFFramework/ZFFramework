@@ -235,6 +235,22 @@ public:
             , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
             );
     /** @brief see #ZFDynamic */
+    ZFDynamic &propertyWithInit(
+            ZF_IN const zfstring &propertyTypeId
+            , ZF_IN const zfstring &propertyName
+            , ZF_IN const ZFListener &propertyInitValue
+            , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic
+            , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
+            );
+    /** @brief see #ZFDynamic */
+    ZFDynamic &propertyWithInit(
+            ZF_IN const ZFClass *propertyClassOfRetainProperty
+            , ZF_IN const zfstring &propertyName
+            , ZF_IN const ZFListener &propertyInitValue
+            , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic
+            , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
+            );
+    /** @brief see #ZFDynamic */
     ZFDynamic &property(ZF_IN const ZFPropertyDynamicRegisterParam &param);
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */

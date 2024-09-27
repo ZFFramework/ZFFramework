@@ -39,8 +39,8 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArray<void *>, ZFLuaStateList)
 
 /** @brief get lua state list for all thread, use with caution, see #ZFLuaState */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFLua, void, ZFLuaStateListForAllThread
-        , ZFMP_OUT(ZFCoreArray<void *>, luaStateList)
-        , ZFMP_OUT(ZFCoreArray<ZFThread *>, threadList)
+        , ZFMP_OUT(ZFCoreArray<void *> &, luaStateList)
+        , ZFMP_OUT(ZFCoreArray<ZFThread *> &, threadList)
         )
 
 /** @brief create new lua state, see #ZFLuaState */

@@ -280,7 +280,7 @@ private:
 #define _ZFP_ZFPropertyUserRegister_PropInit_Retain(registerSig, Type, InitValueOrEmpty) \
     zfclassNotPOD _ZFP_PropURInit_##registerSig { \
     public: \
-        static void propertyInit( \
+        static void I( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN_OUT void *p \
                 ) { \
@@ -294,7 +294,7 @@ private:
 #define _ZFP_ZFPropertyUserRegister_PropInit_Assign(registerSig, Type, InitValueOrEmpty) \
     zfclassNotPOD _ZFP_PropURInit_##registerSig { \
     public: \
-        static void propertyInit( \
+        static void I( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN_OUT void *p \
                 ) { \
@@ -332,7 +332,7 @@ private:
         , Func_ZFPropertyCallbackIsValueAccessed \
         , Func_ZFPropertyCallbackIsInitValue \
         , Func_ZFPropertyCallbackValueReset \
-        , _ZFP_PropURInit_##registerSig::propertyInit \
+        , _ZFP_PropURInit_##registerSig::I \
         , zfnull \
         , zfnull \
         , zfnull \
@@ -365,7 +365,7 @@ private:
         , Func_ZFPropertyCallbackIsValueAccessed \
         , Func_ZFPropertyCallbackIsInitValue \
         , Func_ZFPropertyCallbackValueReset \
-        , _ZFP_PropURInit_##registerSig::propertyInit \
+        , _ZFP_PropURInit_##registerSig::I \
         , zfnull \
         , zfnull \
         , zfnull \

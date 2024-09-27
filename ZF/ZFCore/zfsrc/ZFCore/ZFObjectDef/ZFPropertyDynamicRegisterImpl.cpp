@@ -442,11 +442,21 @@ const ZFProperty *ZFPropertyDynamicRegister(
         zfstringAppend(errorHint, "propertyName not set");
         return zfnull;
     }
+    const ZFTypeInfo *d = zfnull;
     if(param.propertyClassOfRetainProperty() == zfnull) {
-        if(ZFClass::classForName(param.propertyTypeId()) != zfnull) {
-            zfstringAppend(errorHint,
-                "propertyTypeId %s is ZFObject type but propertyClassOfRetainProperty not set, weak property not supported",
-                param.propertyTypeId());
+        d = ZFTypeInfoForName(param.propertyTypeId());
+        if(d == zfnull) {
+            const ZFClass *clsTmp = ZFClass::classForName(param.propertyTypeId());
+            if(clsTmp != zfnull) {
+                zfstringAppend(errorHint,
+                    "propertyTypeId %s is ZFObject type but propertyClassOfRetainProperty not set, weak property not supported",
+                    param.propertyTypeId());
+            }
+            else {
+                zfstringAppend(errorHint,
+                    "propertyTypeId %s not registered",
+                    param.propertyTypeId());
+            }
             return zfnull;
         }
     }
@@ -454,17 +464,6 @@ const ZFProperty *ZFPropertyDynamicRegister(
         if(!zfstringIsEqual(param.propertyTypeId(), param.propertyClassOfRetainProperty()->classNameFull())) {
             zfstringAppend(errorHint,
                 "propertyTypeId must be same as propertyClassOfRetainProperty for retain property");
-            return zfnull;
-        }
-    }
-
-    const ZFTypeInfo *d = zfnull;
-    if(param.propertyClassOfRetainProperty() == zfnull) {
-        d = ZFTypeInfoForName(param.propertyTypeId());
-        if(d == zfnull) {
-            zfstringAppend(errorHint,
-                "propertyTypeId %s not registered",
-                param.propertyTypeId());
             return zfnull;
         }
     }

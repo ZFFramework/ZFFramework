@@ -170,8 +170,8 @@ ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<void *>, ZFLuaStateList) {
     return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LList;
 }
 ZFMETHOD_FUNC_DEFINE_2(void, ZFLuaStateListForAllThread
-        , ZFMP_OUT(ZFCoreArray<void *>, luaStateList)
-        , ZFMP_OUT(ZFCoreArray<ZFThread *>, threadList)
+        , ZFMP_OUT(ZFCoreArray<void *> &, luaStateList)
+        , ZFMP_OUT(ZFCoreArray<ZFThread *> &, threadList)
         ) {
     ZFCoreMutexLocker();
     ZFCoreArray<_ZFP_I_ZFLuaStateHolder *> &d = _ZFP_I_ZFLuaStateHolder::attachList();
