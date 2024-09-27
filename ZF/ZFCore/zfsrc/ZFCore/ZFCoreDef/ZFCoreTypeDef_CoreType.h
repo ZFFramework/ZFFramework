@@ -33,18 +33,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 class ZFLIB_ZFCore zft_zfnullT {
 public:
     inline operator void *(void) const {
-        return 0;
+        return NULL;
     }
     inline operator const void *(void) const {
-        return 0;
+        return NULL;
     }
     template<typename T>
     inline operator T *(void) const {
-        return 0;
+        return NULL;
     }
     template<class C, typename T>
     inline operator T C::*(void) const {
-        return 0;
+        return NULL;
     }
 private:
     void operator &(void) const;
