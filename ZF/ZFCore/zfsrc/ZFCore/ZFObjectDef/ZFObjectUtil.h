@@ -40,9 +40,9 @@ inline ZFCompareResult ZFObjectCompare(
     }
 }
 /**
- * @brief util method to #ZFObject::objectValueCompare
+ * @brief util method to #ZFObject::objectCompareValue
  */
-inline ZFCompareResult ZFObjectValueCompare(
+inline ZFCompareResult ZFObjectCompareValue(
         ZF_IN ZFObject *const &e0
         , ZF_IN ZFObject *const &e1
         ) {
@@ -51,7 +51,7 @@ inline ZFCompareResult ZFObjectValueCompare(
             return ZFCompareEqual;
         }
         else {
-            switch(e1->objectValueCompare(e0)) {
+            switch(e1->objectCompareValue(e0)) {
                 case ZFCompareEqual:
                     return ZFCompareEqual;
                 case ZFCompareSmaller:
@@ -65,7 +65,7 @@ inline ZFCompareResult ZFObjectValueCompare(
         }
     }
     else {
-        return e0->objectValueCompare(e1);
+        return e0->objectCompareValue(e1);
     }
 }
 

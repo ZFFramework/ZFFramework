@@ -252,7 +252,7 @@ void ZFKeyValueContainer::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFCompareResult ZFKeyValueContainer::objectValueCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFKeyValueContainer::objectCompareValue(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

@@ -49,6 +49,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCompareResult, ZFPropertyCompare
         , ZFMP_IN(ZFObject *, obj0)
         , ZFMP_IN(ZFObject *, obj1)
         )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCompareResult, ZFPropertyCompareValue
+        , ZFMP_IN(const ZFProperty *, propertyInfo)
+        , ZFMP_IN(ZFObject *, obj0)
+        , ZFMP_IN(ZFObject *, obj1)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFPropertyCopy
         , ZFMP_IN(const ZFProperty *, propertyInfo)
         , ZFMP_IN(ZFObject *, dstObj)

@@ -40,7 +40,7 @@ void ZFAniForNative::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsFromPointerT(ret, this->nativeAnimation());
     ZFClassUtil::objectPropertyInfo(ret, this);
 }
-ZFCompareResult ZFAniForNative::objectValueCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFAniForNative::objectCompareValue(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

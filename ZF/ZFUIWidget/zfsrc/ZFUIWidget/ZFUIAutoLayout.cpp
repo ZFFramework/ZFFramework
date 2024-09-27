@@ -240,8 +240,8 @@ void ZFUIAutoLayoutParam::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleabl
     zfsuper::styleableOnCopyFrom(anotherStyleable);
     // not implemented yet
 }
-ZFCompareResult ZFUIAutoLayoutParam::objectValueCompare(ZF_IN ZFObject *anotherObj) {
-    if(zfsuper::objectValueCompare(anotherObj) != ZFCompareEqual) {
+ZFCompareResult ZFUIAutoLayoutParam::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    if(zfsuper::objectCompareValue(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
     // not implemented yet

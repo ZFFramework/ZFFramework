@@ -21,6 +21,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseIn().y_by_x(time);
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 
 // ============================================================
@@ -34,6 +41,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseOut().y_by_x(time);
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 
@@ -49,6 +63,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseInOut().y_by_x(time);
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 
 // ============================================================
@@ -62,6 +83,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBounceIn().y_by_x(time);
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 
@@ -77,6 +105,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBounceOut().y_by_x(time);
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 
 // ============================================================
@@ -90,6 +125,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBounceInOut().y_by_x(time);
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 
@@ -114,6 +156,14 @@ protected:
             return time;
         }
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        if(ZFObjectCompareValue(this->curve(), another->curve()) != ZFCompareEqual) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 /**
  * @brief loop with linear curve, see #ZFCurve
@@ -125,6 +175,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return (time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 /**
@@ -138,6 +195,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 /**
  * @brief loop with ease out curve, see #ZFCurve
@@ -149,6 +213,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 /**
@@ -162,6 +233,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierEaseInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 /**
  * @brief loop with bounce in curve, see #ZFCurve
@@ -173,6 +251,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBounceIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 /**
@@ -186,6 +271,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBounceOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 /**
  * @brief loop with bounce in and out curve, see #ZFCurve
@@ -197,6 +289,13 @@ protected:
     zfoverride
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return ZFBezierBounceInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
     }
 };
 

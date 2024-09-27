@@ -94,7 +94,7 @@ zfbool allPropertyIsEqual(
     ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(cls0, filter);
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
         if(cls1->classIsTypeOf(allProperty[i]->ownerClass())
-                && ZFPropertyCompare(allProperty[i], obj0, obj1) != ZFCompareEqual
+                && ZFPropertyCompareValue(allProperty[i], obj0, obj1) != ZFCompareEqual
                 ) {
             return zffalse;
         }

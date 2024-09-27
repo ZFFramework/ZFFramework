@@ -62,6 +62,21 @@ inline ZFCompareResult ZFPropertyCompare(
 }
 
 // ============================================================
+// ZFPropertyCompareValue
+/**
+ * @brief util to compare property value
+ */
+inline ZFCompareResult ZFPropertyCompareValue(
+        ZF_IN const ZFProperty *propertyInfo
+        , ZF_IN ZFObject *obj0
+        , ZF_IN ZFObject *obj1
+        ) {
+    return ZFObjectCompareValue(
+        propertyInfo->getterMethod()->methodInvoke(obj0),
+        propertyInfo->getterMethod()->methodInvoke(obj1));
+}
+
+// ============================================================
 // ZFPropertyCopy
 /**
  * @brief util to copy property between object

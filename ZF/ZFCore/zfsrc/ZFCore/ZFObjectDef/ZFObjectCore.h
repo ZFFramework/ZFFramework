@@ -349,26 +349,24 @@ public:
      * it's recommended to override this method only for objects that only contains value types,
      * for example, #v_zfstring, #v_zfindex, etc,
      * for other complex type,
-     * it's recommended to override #objectValueCompare instead
+     * it's recommended to override #objectCompareValue instead
      *
      * @warning if your override #objectCompare,
      *   you must also override #objectHash,
      *   and follow the rules described in #objectHash
+     * @note for dynamic registered class (#ZFClassDynamicRegister),
+     *   you may supply a reflectable method with same name,
+     *   to achieve custom compare logic
      */
-    virtual inline ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
-        return ((this == anotherObj) ? ZFCompareEqual : ZFCompareUncomparable);
-    }
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
     /**
      * @brief explicitly compare object by logical value, see #objectCompare
+     *
+     * @note for dynamic registered class (#ZFClassDynamicRegister),
+     *   you may supply a reflectable method with same name,
+     *   to achieve custom compare logic
      */
-    virtual inline ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj) {
-        return this->objectCompare(anotherObj);
-    }
-
-    /** @brief util to #objectCompare */
-    virtual zfbool equalTo(ZF_IN ZFObject *anotherObj) {
-        return this->objectCompare(anotherObj) == ZFCompareEqual;
-    }
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
 
 public:
     /* ZFMETHOD_MAX_PARAM */

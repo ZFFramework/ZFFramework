@@ -51,6 +51,13 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return time;
     }
+    zfoverride
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        return ZFCompareEqual;
+    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

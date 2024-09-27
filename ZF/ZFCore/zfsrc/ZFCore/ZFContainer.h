@@ -156,7 +156,7 @@ public:
     }
 
     zfoverride
-    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
 };
 
 ZF_NAMESPACE_GLOBAL_END

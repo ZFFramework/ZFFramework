@@ -125,6 +125,25 @@ ZFObjectHolder *ZFObject::objectHolder(void) {
     return d->objectHolder;
 }
 
+ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
+    if(this->classData()->classIsDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName("objectCompare");
+        if(m) {
+            return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
+        }
+    }
+    return ((this == anotherObj) ? ZFCompareEqual : ZFCompareUncomparable);
+}
+ZFCompareResult ZFObject::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    if(this->classData()->classIsDynamicRegister()) {
+        const ZFMethod *m = this->classData()->methodForName("objectCompareValue");
+        if(m) {
+            return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
+        }
+    }
+    return this->objectCompare(anotherObj);
+}
+
 /* ZFMETHOD_MAX_PARAM */
 zfauto ZFObject::invoke(
         ZF_IN const zfstring &methodName
@@ -744,10 +763,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfidentity, objectHash)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectCompare
         , ZFMP_IN(ZFObject *, anotherObj)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectValueCompare
-        , ZFMP_IN(ZFObject *, anotherObj)
-        )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfbool, equalTo
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectCompareValue
         , ZFMP_IN(ZFObject *, anotherObj)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfauto, invoke

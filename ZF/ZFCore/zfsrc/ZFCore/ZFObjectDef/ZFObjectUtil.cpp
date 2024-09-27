@@ -13,7 +13,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFObjectCompare
         , ZFMP_IN(ZFObject *, e0)
         , ZFMP_IN(ZFObject *, e1)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFObjectValueCompare
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFObjectCompareValue
         , ZFMP_IN(ZFObject *, e0)
         , ZFMP_IN(ZFObject *, e1)
         )

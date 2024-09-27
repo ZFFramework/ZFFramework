@@ -211,7 +211,7 @@ protected:
     zfoverride
     virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
     zfoverride
-    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
 
 public:
     zfclassLikePOD _ZFP_Data {

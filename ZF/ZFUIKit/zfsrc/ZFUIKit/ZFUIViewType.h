@@ -410,7 +410,7 @@ public:
 
 public:
     zfoverride
-    virtual ZFCompareResult objectValueCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
                 && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
                 ) {

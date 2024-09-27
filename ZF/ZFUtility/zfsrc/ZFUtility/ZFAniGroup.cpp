@@ -293,7 +293,7 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
         }
         else {
             for(zfindex i = 0; i < this->childCount(); ++i) {
-                if(ZFObjectCompare(this->childAt(i), ref->childAt(i)) != ZFCompareEqual) {
+                if(ZFObjectCompareValue(this->childAt(i), ref->childAt(i)) != ZFCompareEqual) {
                     mismatch = zftrue;
                     break;
                 }
@@ -326,6 +326,25 @@ void ZFAniGroup::objectOnDeallocPrepare(void) {
     this->stop();
     this->childRemoveAll();
     zfsuper::objectOnDeallocPrepare();
+}
+ZFCompareResult ZFAniGroup::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    if(this == anotherObj) {return ZFCompareEqual;}
+    zfself *another = zfcast(zfself *, anotherObj);
+    if(another == zfnull) {return ZFCompareUncomparable;}
+
+    if(zffalse
+            || this->childCount() != another->childCount()
+            || this->autoUpdateTarget() != another->autoUpdateTarget()
+            || this->autoUpdateDuration() != another->autoUpdateDuration()
+            ) {
+        return ZFCompareUncomparable;
+    }
+    for(zfindex i = 0; i < this->childCount(); ++i) {
+        if(ZFObjectCompareValue(this->childAt(i), another->childAt(i)) != ZFCompareEqual) {
+            return ZFCompareUncomparable;
+        }
+    }
+    return ZFCompareEqual;
 }
 
 // ============================================================
@@ -522,6 +541,19 @@ protected:
             this->cancelImpl.execute(ZFArgs().sender(this));
         }
         zfsuper::aniImplStop();
+    }
+    zfoverride
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        if(zffalse
+                || !this->runImpl != another->runImpl
+                || !this->cancelImpl != another->cancelImpl
+                ) {
+            return ZFCompareUncomparable;
+        }
+        return ZFCompareEqual;
     }
 };
 ZFMETHOD_DEFINE_2(ZFAniGroup, void, step

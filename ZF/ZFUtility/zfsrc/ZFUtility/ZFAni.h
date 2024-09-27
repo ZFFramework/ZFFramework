@@ -89,6 +89,15 @@ protected:
         zfRetainChange(this->_ZFP_progressHolder, zfnull);
         zfsuper::objectOnDealloc();
     }
+    zfoverride
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+        if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
+                && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
+                ) {
+            return ZFCompareEqual;
+        }
+        return ZFCompareUncomparable;
+    }
 private:
     v_zffloat *_ZFP_progressHolder;
 };
@@ -127,6 +136,15 @@ protected:
     virtual void objectOnInit(void);
     zfoverride
     virtual void objectOnDealloc(void);
+    zfoverride
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+        if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
+                && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
+                ) {
+            return ZFCompareEqual;
+        }
+        return ZFCompareUncomparable;
+    }
 private:
     _ZFP_ZFAniForGenericPrivate *d;
 };

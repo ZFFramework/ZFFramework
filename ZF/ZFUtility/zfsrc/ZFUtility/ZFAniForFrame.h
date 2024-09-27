@@ -98,6 +98,23 @@ protected:
     virtual void objectOnInit(void);
     zfoverride
     virtual void objectOnDealloc(void);
+    zfoverride
+    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj) {return ZFCompareEqual;}
+        zfself *another = zfcast(zfself *, anotherObj);
+        if(another == zfnull) {return ZFCompareUncomparable;}
+        if(this->frameCount() != another->frameCount()
+                || this->useGlobalTimer() != another->useGlobalTimer()
+                ) {
+            return ZFCompareUncomparable;
+        }
+        for(zfindex i = 0; i < this->frameCount(); ++i) {
+            if(this->frameAt(i) != another->frameAt(i)) {
+                return ZFCompareUncomparable;
+            }
+        }
+        return ZFCompareEqual;
+    }
 
     zfoverride
     virtual zfbool serializableOnSerializeFromData(

@@ -466,7 +466,7 @@ public:
                 if(outInitValue != zfnull) { \
                     *outInitValue = _holder._ZFP_init(ownerObj, zffalse); \
                 } \
-                zfbool ret = (ZFComparerDefault( \
+                zfbool ret = (ZFObjectCompareValue( \
                         t->Name(), _holder._ZFP_init(ownerObj, zffalse)) \
                     == ZFCompareEqual); \
                 _holder._ZFP_dealloc(ownerObj, zffalse); \

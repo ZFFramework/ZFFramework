@@ -619,7 +619,7 @@ void ZFSerializableData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ZFSerializableDataToZfsd(ret, *this);
 }
 
-ZFCompareResult ZFSerializableData::objectValueCompare(ZF_IN const ZFSerializableData &another) const {
+ZFCompareResult ZFSerializableData::objectCompareValue(ZF_IN const ZFSerializableData &another) const {
     if(d == another.d) {
         return ZFCompareEqual;
     }

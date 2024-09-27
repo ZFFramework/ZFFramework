@@ -12,7 +12,7 @@ void ZFValueHolder::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     ret += " ";
     zfsFromPointerT(ret, this->holdedData);
 }
-ZFCompareResult ZFValueHolder::objectValueCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFValueHolder::objectCompareValue(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

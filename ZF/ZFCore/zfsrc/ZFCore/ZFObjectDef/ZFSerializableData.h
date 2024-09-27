@@ -428,7 +428,7 @@ public:
      * attribute's order have no need to be same,
      * but child element's order must be same
      */
-    zffinal ZFCompareResult objectValueCompare(ZF_IN const ZFSerializableData &another) const;
+    zffinal ZFCompareResult objectCompareValue(ZF_IN const ZFSerializableData &another) const;
 
 public:
     /**

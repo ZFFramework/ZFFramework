@@ -431,7 +431,7 @@ public:
     /**
      * @brief compare by content
      */
-    ZFCompareResult objectValueCompare(
+    ZFCompareResult objectCompareValue(
             ZF_IN const ZFCoreArray<T_Element> &ref
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
             ) const {

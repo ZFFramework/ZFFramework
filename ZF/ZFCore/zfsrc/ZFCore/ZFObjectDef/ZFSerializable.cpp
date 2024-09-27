@@ -533,7 +533,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(referencedOwnerOrNull != zfnull
-            && ZFPropertyCompare(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareEqual
+            && ZFPropertyCompareValue(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareEqual
             ) {
         return zftrue;
     }
@@ -626,7 +626,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(referencedOwnerOrNull != zfnull
-            && ZFPropertyCompare(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareEqual
+            && ZFPropertyCompareValue(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareEqual
             ) {
         return zftrue;
     }
