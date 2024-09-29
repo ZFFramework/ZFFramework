@@ -486,8 +486,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
         posTail, tail, xAxis);
 
     zffloat fixedSize = 0;
-    // note the flexibleChildCount must be signed int type for safe divide with negative value
-    zfint flexibleChildCount = 0;
+    zfuint flexibleChildCount = 0;
     zffloat *&_childSizeCache = xAxis ? _childSizeCacheX : _childSizeCacheY;
     for(zfindex i = chain.count() - 1; i != zfindexMax(); --i) {
         zfindex childIndex = chain[i];

@@ -53,6 +53,7 @@ public:
         this->targetPos(ZFUIAutoLayoutPos::e_None);
         this->weight(0);
         this->offset(0);
+        this->_ZFP_AL_targetId.removeAll();
     }
 
 public:
@@ -241,8 +242,6 @@ public:
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self "self"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_prev "prev"
-/** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_weight "weight"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_offset "offset"
@@ -295,7 +294,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *     note, if both left/right and width have flexible rule,
  *     the left/right rule would have higher priority
  * -  `offset` : #zffloat shows offset to `target`
- * -  `biasX` : if both left and right has flexible rule,
+ * -  `biasX` : if all of left/right/width has flexible rule,
  *   align to which side, `0` means totally align to left,
  *   while `1` means align to right
  *
@@ -379,6 +378,8 @@ protected:
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
 protected:
+    zfoverride
+    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
     zfoverride
     virtual zfbool serializableOnSerializeFromData(
             ZF_IN const ZFSerializableData &serializableData

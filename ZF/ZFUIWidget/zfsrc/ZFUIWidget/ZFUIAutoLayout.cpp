@@ -238,14 +238,36 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
 
 void ZFUIAutoLayoutParam::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuper::styleableOnCopyFrom(anotherStyleable);
-    // not implemented yet
+    // copy ZFUIAutoLayoutParam does not copy rules,
+    // it's done by ZFUIAutoLayout::styleableOnCopyFrom
 }
 ZFCompareResult ZFUIAutoLayoutParam::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    if(this == anotherObj) {return ZFCompareEqual;}
+    zfself *another = zfcast(zfself *, anotherObj);
+    if(another == zfnull) {return ZFCompareUncomparable;}
     if(zfsuper::objectCompareValue(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
-    // not implemented yet
-    return ZFCompareUncomparable;
+    for(zfindex i = 0; i < ZFUIAutoLayoutPos::EnumCount(); ++i) {
+        ZFUIAutoLayoutPosEnum pos = (ZFUIAutoLayoutPosEnum)ZFUIAutoLayoutPos::EnumValueAt(i);
+        const ZFUIAutoLayoutRule &rule = this->rule(pos);
+        const ZFUIAutoLayoutRule &ruleRef = another->rule(pos);
+        if(rule.pos() != ruleRef.pos()
+                || rule.targetPos() != ruleRef.targetPos()
+                || rule.weight() != ruleRef.weight()
+                || rule.offset() != ruleRef.offset()
+                ) {
+            return ZFCompareUncomparable;
+        }
+        zfstring targetId;
+        zfstring targetIdRef;
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetId, rule, this->ownerParent(), this->ownerChild());
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetIdRef, ruleRef, another->ownerParent(), another->ownerChild());
+        if(targetId != targetIdRef) {
+            return ZFCompareUncomparable;
+        }
+    }
+    return ZFCompareEqual;
 }
 
 // ============================================================
@@ -260,6 +282,47 @@ ZFMETHOD_DEFINE_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, child
     return this->childWithParam(view, zfnull, atIndex);
 }
 
+void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+    zfsuper::styleableOnCopyFrom(anotherStyleable);
+    zfself *another = zfcast(zfself *, anotherStyleable);
+    if(another == zfnull
+            || this->childCount() != another->childCount()
+            ) {
+        return;
+    }
+    // copy all rules
+    for(zfindex iChild = 0; iChild < this->childCount(); ++iChild) {
+        ZFUIAutoLayoutParam *lp = this->childAt(iChild)->layoutParam();
+        ZFUIAutoLayoutParam *lpRef = another->childAt(iChild)->layoutParam();
+        for(zfindex iPos = 0; iPos < ZFUIAutoLayoutPos::EnumCount(); ++iPos) {
+            ZFUIAutoLayoutPosEnum pos = (ZFUIAutoLayoutPosEnum)ZFUIAutoLayoutPos::EnumValueAt(iChild);
+            ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[pos];
+            ZFUIAutoLayoutRule &ruleRef = lpRef->_ZFP_AL_d.ruleList[pos];
+            if(ruleRef.pos() == ZFUIAutoLayoutPos::e_None) {
+                if(rule.pos() != ZFUIAutoLayoutPos::e_None) {
+                    rule.removeAll();
+                }
+            }
+            else {
+                rule.pos(ruleRef.pos());
+                rule.targetPos(ruleRef.targetPos());
+                rule.weight(ruleRef.weight());
+                rule.offset(ruleRef.offset());
+                if(ruleRef.target() == lpRef->ownerParent()) {
+                    rule.target(this);
+                }
+                else if(ruleRef.target() == lpRef->ownerChild()) {
+                    rule.target(this->childAt(iChild));
+                }
+                else {
+                    zfindex childIndex = another->childFind(ruleRef.target());
+                    ZFCoreAssert(childIndex < another->childCount());
+                    rule.target(this->childAt(childIndex));
+                }
+            }
+        }
+    }
+}
 zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -281,6 +344,8 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
                         this,
                         rule._ZFP_AL_targetId,
                         child);
+                    rule.target(zfnull);
+                    rule._ZFP_AL_targetId.removeAll();
                     return zffalse;
                 }
                 rule._ZFP_AL_targetId.removeAll();
