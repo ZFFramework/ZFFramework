@@ -81,7 +81,7 @@ public:
             ZFUIAutoLayoutParam *layoutParam = child->layoutParam();
             ZFUISize childSize = child->layoutMeasure(
                 ZFUILayoutParam::sizeHintMerge(sizeHint, layoutParam->sizeHint()),
-                layoutParam->sizeParam());
+                ZFUISizeParamWrapWrap());
             _childFrame[i].width = childSize.width;
             _childFrame[i].height = childSize.height;
         }
@@ -97,9 +97,6 @@ public:
         else {
             return target;
         }
-    }
-    zfbool isFixedRule(ZF_IN const ZFUIAutoLayoutRule &rule) {
-        return (rule.pos() != ZFUIAutoLayoutPos::e_None && rule.weight() != 0);
     }
     void layoutChild(
             ZF_IN ZFUIView *parent
@@ -145,6 +142,7 @@ private:
             , ZF_IN const ZFUIAutoLayoutRule &ruleTail
             , ZF_IN zffloat headPos
             , ZF_IN zffloat childSizeCache
+            , ZF_IN ZFUISizeTypeEnum sizeType
             , ZF_IN zffloat bias
             , ZF_IN_OUT zffloat &childHead
             , ZF_IN_OUT zffloat &childSize
@@ -279,6 +277,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
             ruleList[posTail],
             head,
             tail - head,
+            xAxis ? layoutParam->sizeParam().width : layoutParam->sizeParam().height,
             xAxis ? layoutParam->biasX() : layoutParam->biasY(),
             xAxis ? _childFrame[childIndex].x : _childFrame[childIndex].y,
             xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height);
@@ -294,7 +293,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
         , ZF_IN const ZFUIAutoLayoutRule &rule
         , ZF_IN zfbool xAxis
         ) {
-    if(rule.pos() == ZFUIAutoLayoutPos::e_None) {
+    if(!rule.valid()) {
         return;
     }
 
@@ -312,33 +311,24 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
     ZFUIView *target = this->targetForLayout(rule, parent);
 
     zffloat &_childSize = xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height;
-    zffloat weight = (rule.weight() > 0 ? rule.weight() : (zffloat)1);
     if(rule.targetPos() == ZFUIAutoLayoutPos::e_Width) {
         if(target == parent) {
-            _childSize = zfmMax(_childSize, (zffloat)(_parentWidth * weight + rule.offset()));
+            _childSize = zfmMax(_childSize, (zffloat)(_parentWidth + rule.offset()));
         }
         else {
             zfindex targetIndex = parent->childArray().find(target);
-            this->updateChildSize(
-                parent,
-                targetIndex,
-                target->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList[ZFUIAutoLayoutPos::e_Width],
-                zftrue);
-            _childSize = zfmMax(_childSize, (zffloat)(_childFrame[targetIndex].width * weight + rule.offset()));
+            this->layoutChild(parent, targetIndex, xAxis);
+            _childSize = zfmMax(_childSize, (zffloat)(_childFrame[targetIndex].width + rule.offset()));
         }
     }
     else if(rule.targetPos() == ZFUIAutoLayoutPos::e_Height) {
         if(target == parent) {
-            _childSize = zfmMax(_childSize, (zffloat)(_parentHeight * weight + rule.offset()));
+            _childSize = zfmMax(_childSize, (zffloat)(_parentHeight + rule.offset()));
         }
         else {
             zfindex targetIndex = parent->childArray().find(target);
-            this->updateChildSize(
-                parent,
-                targetIndex,
-                target->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList[ZFUIAutoLayoutPos::e_Height],
-                zftrue);
-            _childSize = zfmMax(_childSize, (zffloat)(_childFrame[targetIndex].height * weight + rule.offset()));
+            this->layoutChild(parent, targetIndex, xAxis);
+            _childSize = zfmMax(_childSize, (zffloat)(_childFrame[targetIndex].height + rule.offset()));
         }
     }
 
@@ -362,11 +352,11 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
     // head
     do {
         ZFUIView *target = this->targetForLayout(ruleListCur[posHead], parent);
-        if(ruleListCur[posHead].pos() == ZFUIAutoLayoutPos::e_None || target == parent) {
+        if(!ruleListCur[posHead].valid() || target == parent) {
             break;
         }
         ruleListNext = target->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;
-        if(ruleListNext[posTail].pos() != ZFUIAutoLayoutPos::e_None && this->targetForLayout(ruleListNext[posTail], parent) == childPrev) {
+        if(ruleListNext[posTail].valid() && this->targetForLayout(ruleListNext[posTail], parent) == childPrev) {
             if(!centerChildHasAdd) {
                 centerChildHasAdd = zftrue;
                 chain.add(parent->childArray().find(childPrev), 0);
@@ -385,11 +375,11 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
     childPrev = parent->childAt(childIndex);
     do {
         ZFUIView *target = this->targetForLayout(ruleListCur[posTail], parent);
-        if(ruleListCur[posTail].pos() == ZFUIAutoLayoutPos::e_None || target == parent) {
+        if(!ruleListCur[posTail].valid() || target == parent) {
             break;
         }
         ruleListNext = target->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;
-        if(ruleListNext[posHead].pos() != ZFUIAutoLayoutPos::e_None && this->targetForLayout(ruleListNext[posHead], parent) == childPrev) {
+        if(ruleListNext[posHead].valid() && this->targetForLayout(ruleListNext[posHead], parent) == childPrev) {
             if(!centerChildHasAdd) {
                 centerChildHasAdd = zftrue;
                 chain.add(parent->childArray().find(childPrev));
@@ -402,25 +392,6 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
             break;
         }
     } while(zftrue);
-
-    // check
-    if(chain.count() <= 1) {
-        chain.removeAll();
-        return;
-    }
-    while(!chain.isEmpty()
-            && this->isFixedRule(parent->childAt(chain.getLast())->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList[posTail])
-            ) {
-        chain.removeLast();
-    }
-    while(!chain.isEmpty()
-            && this->isFixedRule(parent->childAt(chain.getFirst())->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList[posHead])
-            ) {
-        chain.removeFirst();
-    }
-    if(chain.count() == 1) {
-        chain.removeAll();
-    }
 }
 
 void _ZFP_ZFUIAutoLayoutPrivate::calcChildHead(
@@ -431,7 +402,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::calcChildHead(
         , ZF_IN zfbool xAxis
         ) {
     head = 0;
-    if(ruleList[posHead].pos() != ZFUIAutoLayoutPos::e_None) {
+    if(ruleList[posHead].valid()) {
         ZFUIView *target = this->targetForLayout(ruleList[posHead], parent);
         if(target != parent) {
             zfindex targetIndex = parent->childArray().find(target);
@@ -453,7 +424,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::calcChildTail(
         , ZF_IN zfbool xAxis
         ) {
     tail = xAxis ? _parentWidth : _parentHeight;
-    if(ruleList[posTail].pos() != ZFUIAutoLayoutPos::e_None) {
+    if(ruleList[posTail].valid()) {
         ZFUIView *target = this->targetForLayout(ruleList[posTail], parent);
         if(target != parent) {
             zfindex targetIndex = parent->childArray().find(target);
@@ -475,7 +446,6 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
         ) {
     ZFUIAutoLayoutPosEnum posHead = xAxis ? ZFUIAutoLayoutPos::e_Left : ZFUIAutoLayoutPos::e_Top;
     ZFUIAutoLayoutPosEnum posTail = xAxis ? ZFUIAutoLayoutPos::e_Right : ZFUIAutoLayoutPos::e_Bottom;
-    ZFUIAutoLayoutPosEnum posSize = xAxis ? ZFUIAutoLayoutPos::e_Width : ZFUIAutoLayoutPos::e_Height;
     zffloat head = 0;
     zffloat tail = 0;
     this->calcChildHead(parent,
@@ -486,48 +456,35 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
         posTail, tail, xAxis);
 
     zffloat fixedSize = 0;
-    zfuint flexibleChildCount = 0;
     zffloat *&_childSizeCache = xAxis ? _childSizeCacheX : _childSizeCacheY;
     for(zfindex i = chain.count() - 1; i != zfindexMax(); --i) {
         zfindex childIndex = chain[i];
         const ZFUIAutoLayoutRule *ruleList = parent->childAt(childIndex)->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;
         _childSizeCache[childIndex] = xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height;
-        if(ruleList[posHead].pos() != ZFUIAutoLayoutPos::e_None) {
+        if(ruleList[posHead].valid()) {
             _childSizeCache[childIndex] += ruleList[posHead].offset();
         }
-        if(ruleList[posTail].pos() != ZFUIAutoLayoutPos::e_None) {
+        if(ruleList[posTail].valid()) {
             _childSizeCache[childIndex] += ruleList[posTail].offset();
         }
         fixedSize += _childSizeCache[childIndex];
-        if(!this->isFixedRule(ruleList[posHead])
-                || !this->isFixedRule(ruleList[posTail])
-                || !this->isFixedRule(ruleList[posSize])
-                ) {
-            ++flexibleChildCount;
-        }
     }
     zffloat flexibleUnit = 0;
-    if(flexibleChildCount > 0) {
-        flexibleUnit = (tail - head - fixedSize) / flexibleChildCount;
-    }
+    flexibleUnit = (tail - head - fixedSize) / chain.count();
 
     zffloat tailTmp = tail;
     for(zfindex i = chain.count() - 1; i != zfindexMax(); --i) {
         zfindex childIndex = chain[i];
         ZFUIAutoLayoutParam *layoutParam = parent->childAt(childIndex)->layoutParam();
         const ZFUIAutoLayoutRule *ruleList = layoutParam->_ZFP_AL_d.ruleList;
-        if(!this->isFixedRule(ruleList[posHead])
-                || !this->isFixedRule(ruleList[posTail])
-                || !this->isFixedRule(ruleList[posSize])
-                ) {
-            _childSizeCache[childIndex] += flexibleUnit;
-        }
+        _childSizeCache[childIndex] += flexibleUnit;
         tailTmp -= _childSizeCache[childIndex];
         this->layoutChildByRange(
             ruleList[posHead],
             ruleList[posTail],
             tailTmp,
             _childSizeCache[childIndex],
+            xAxis ? layoutParam->sizeParam().width : layoutParam->sizeParam().height,
             xAxis ? layoutParam->biasX() : layoutParam->biasY(),
             xAxis ? _childFrame[childIndex].x : _childFrame[childIndex].y,
             xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height);
@@ -539,58 +496,43 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
         , ZF_IN const ZFUIAutoLayoutRule &ruleTail
         , ZF_IN zffloat headPos
         , ZF_IN zffloat childSizeCache
+        , ZF_IN ZFUISizeTypeEnum sizeType
         , ZF_IN zffloat bias
         , ZF_IN_OUT zffloat &childHead
         , ZF_IN_OUT zffloat &childSize
         ) {
     typedef enum {
         _RuleTypeCenter,
-        _RuleTypeFlexibleSize,
         _RuleTypeHead,
         _RuleTypeTail,
     } _RuleType;
     _RuleType t = _RuleTypeCenter;
-    if(ruleHead.pos() == ZFUIAutoLayoutPos::e_None) {
-        if(ruleTail.pos() == ZFUIAutoLayoutPos::e_None) { // <none, none>
+    if(!ruleHead.valid()) {
+        if(!ruleTail.valid()) { // <none, none>
             t = _RuleTypeCenter;
         }
-        else { // <none, flexible> or <none, fixed>
+        else { // <none, fixed>
             t = _RuleTypeTail;
         }
     }
     else {
-        if(ruleHead.weight() == 0) {
-            if(ruleTail.pos() == ZFUIAutoLayoutPos::e_None) { // <flexible, none>
-                t = _RuleTypeHead;
-            }
-            else if(ruleTail.weight() == 0) { // <flexible, flexible>
-                t = _RuleTypeCenter;
-            }
-            else { // <flexible, fixed>
-                t = _RuleTypeTail;
-            }
+        if(!ruleTail.valid()) { // <fixed, none>
+            t = _RuleTypeHead;
         }
-        else {
-            if(ruleTail.pos() != ZFUIAutoLayoutPos::e_None && ruleTail.weight() != 0) { // <fixed, fixed>
-                t = _RuleTypeFlexibleSize;
-            }
-            else { // <fixed, none> or <fixed, flexible>
-                t = _RuleTypeHead;
-            }
+        else { // <fixed, fixed>
+            t = _RuleTypeCenter;
         }
     }
     switch(t) {
         case _RuleTypeCenter:
-            childHead = headPos + ruleHead.offset() + (childSizeCache - ruleHead.offset() - ruleTail.offset() - childSize) * bias;
-            break;
-        case _RuleTypeFlexibleSize: {
-            zffloat tmp = childSizeCache - ruleHead.offset() - ruleTail.offset();
-            if(tmp > childSize) {
-                childSize = tmp;
+            if(sizeType == ZFUISizeType::e_Wrap) {
+                childHead = headPos + ruleHead.offset() + (childSizeCache - ruleHead.offset() - ruleTail.offset() - childSize) * bias;
             }
-            childHead = headPos + ruleHead.offset() + (tmp - childSize) / 2;
+            else {
+                childHead = headPos + ruleHead.offset();
+                childSize = childSizeCache - ruleHead.offset() - ruleTail.offset();
+            }
             break;
-        }
         case _RuleTypeHead:
             childHead = headPos + ruleHead.offset();
             break;

@@ -6,18 +6,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // misc
 ZFENUM_DEFINE(ZFUIAutoLayoutPos)
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutPosEnum, pos)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, zfanyT<ZFUIView>, target)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutPosEnum, targetPos)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, zffloat, weight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, zffloat, offset)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUIAutoLayoutRule, zfbool, valid)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUIAutoLayoutRule, void, removeAll)
 
 void ZFUIAutoLayoutRule::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    zfstringAppend(ret, "<ZFUIAutoLayoutRule pos:%s target:%s targetPos:%s weight:%s offset:%s>"
-            , this->pos()
+    zfstringAppend(ret, "<ZFUIAutoLayoutRule target:%s targetPos:%s offset:%s>"
             , this->target()
             , this->targetPos()
-            , this->weight()
             , this->offset()
             );
 }
@@ -32,40 +30,50 @@ static void _ZFP_ZFUIAutoLayoutAlignApply(
         , ZF_IN const ZFUIMargin &margin
         ) {
     if(ZFBitTest(align, ZFUIAlign::e_Left)) {
-        lp->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.left);
+        lp->c_left()->c_toParentLeft()->c_biasX(0.5f)->c_offset(margin.left);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Right);
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Right)) {
-        lp->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.right);
+        lp->c_right()->c_toParentRight()->c_biasX(0.5f)->c_offset(margin.right);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Left);
     }
     else if(ZFBitTest(align, ZFUIAlign::e_LeftEdge)) {
-        lp->c_right()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.right);
+        lp->c_right()->c_toParentLeft()->c_biasX(0.5f)->c_offset(margin.right);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Left);
     }
     else if(ZFBitTest(align, ZFUIAlign::e_RightEdge)) {
-        lp->c_left()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.left);
+        lp->c_left()->c_toParentRight()->c_biasX(0.5f)->c_offset(margin.left);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Right);
     }
     else {
         lp
-            ->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.left)
-            ->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(margin.right)
+            ->c_left()->c_toParentLeft()->c_offset(margin.left)
+            ->c_right()->c_toParentRight()->c_offset(margin.right)
+            ->c_biasX(0.5f)
             ;
     }
 
     if(ZFBitTest(align, ZFUIAlign::e_Top)) {
-        lp->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.top);
+        lp->c_top()->c_toParentTop()->c_biasY(0.5f)->c_offset(margin.top);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Bottom);
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Bottom)) {
-        lp->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.bottom);
+        lp->c_bottom()->c_toParentBottom()->c_biasY(0.5f)->c_offset(margin.bottom);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Top);
     }
     else if(ZFBitTest(align, ZFUIAlign::e_TopEdge)) {
-        lp->c_bottom()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.bottom);
+        lp->c_bottom()->c_toParentTop()->c_biasY(0.5f)->c_offset(margin.bottom);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Top);
     }
     else if(ZFBitTest(align, ZFUIAlign::e_BottomEdge)) {
-        lp->c_top()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.top);
+        lp->c_top()->c_toParentBottom()->c_biasY(0.5f)->c_offset(margin.top);
+        lp->ruleRemove(ZFUIAutoLayoutPos::e_Bottom);
     }
     else {
         lp
-            ->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.top)
-            ->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(margin.bottom)
+            ->c_top()->c_toParentTop()->c_offset(margin.top)
+            ->c_bottom()->c_toParentBottom()->c_offset(margin.bottom)
+            ->c_biasY(0.5f)
             ;
     }
 }
@@ -109,7 +117,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
     // remove all rule
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
-        _ZFP_AL_d.ruleList[i].pos(ZFUIAutoLayoutPos::e_None);
+        _ZFP_AL_d.ruleList[i].removeAll();
     }
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
@@ -134,7 +142,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
                 pos);
             return zffalse;
         }
-        if(_ZFP_AL_d.ruleList[pos].pos() != ZFUIAutoLayoutPos::e_None) {
+        if(_ZFP_AL_d.ruleList[pos].valid()) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
                 "\"%s\" rule already has been set",
                 pos);
@@ -165,14 +173,6 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             rule._ZFP_AL_targetId = valueTmp + 1;
         }
 
-        // weight
-        zffloat weight = 0;
-        ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, weight, {
-                    return zffalse;
-                });
-        rule.weight(weight);
-
         // offset
         zffloat offset = 0;
         ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
@@ -183,7 +183,6 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         // finish
         element.resolveMark();
-        rule.pos(pos);
     }
     return zftrue;
 }
@@ -200,13 +199,13 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         if(ref != zfnull && ref->_ZFP_AL_d.ruleList[i] == rule) {
             continue;
         }
-        if(rule.pos() == ZFUIAutoLayoutPos::e_None) {
+        if(!rule.valid()) {
             continue;
         }
         ZFSerializableData element;
 
         // pos
-        element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPosToString(rule.pos()));
+        element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPosToString((ZFUIAutoLayoutPosEnum)i));
 
         // target
         {
@@ -216,12 +215,6 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
             _ZFP_ZFUIAutoLayout_targetIdUpdate(target, rule, this->ownerParent(), this->ownerChild());
             element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_target, target);
         }
-
-        // weight
-        ZFSerializableUtilSerializeAttrToDataNoRef(element, outErrorHint,
-                ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, rule.weight(), 0, {
-                    return zffalse;
-                });
 
         // offset
         ZFSerializableUtilSerializeAttrToDataNoRef(element, outErrorHint,
@@ -252,9 +245,8 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompareValue(ZF_IN ZFObject *anotherO
         ZFUIAutoLayoutPosEnum pos = (ZFUIAutoLayoutPosEnum)ZFUIAutoLayoutPos::EnumValueAt(i);
         const ZFUIAutoLayoutRule &rule = this->rule(pos);
         const ZFUIAutoLayoutRule &ruleRef = another->rule(pos);
-        if(rule.pos() != ruleRef.pos()
+        if(rule.valid() != ruleRef.valid()
                 || rule.targetPos() != ruleRef.targetPos()
-                || rule.weight() != ruleRef.weight()
                 || rule.offset() != ruleRef.offset()
                 ) {
             return ZFCompareUncomparable;
@@ -298,15 +290,13 @@ void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
             ZFUIAutoLayoutPosEnum pos = (ZFUIAutoLayoutPosEnum)ZFUIAutoLayoutPos::EnumValueAt(iChild);
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[pos];
             ZFUIAutoLayoutRule &ruleRef = lpRef->_ZFP_AL_d.ruleList[pos];
-            if(ruleRef.pos() == ZFUIAutoLayoutPos::e_None) {
-                if(rule.pos() != ZFUIAutoLayoutPos::e_None) {
+            if(!ruleRef.valid()) {
+                if(rule.valid()) {
                     rule.removeAll();
                 }
             }
             else {
-                rule.pos(ruleRef.pos());
                 rule.targetPos(ruleRef.targetPos());
-                rule.weight(ruleRef.weight());
                 rule.offset(ruleRef.offset());
                 if(ruleRef.target() == lpRef->ownerParent()) {
                     rule.target(this);
@@ -363,7 +353,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         , ZF_IN ZFUIView *child
         , ZF_IN const zfstring &targetId
         ) {
-    if(rule.pos() == ZFUIAutoLayoutPos::e_None) {
+    if(!rule.valid()) {
         return zftrue;
     }
     rule.target(zfnull);

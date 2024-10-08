@@ -35,23 +35,21 @@ zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule {
 
 public:
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
-    /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM_WEAK(zfanyT<ZFUIView>, target)
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(zffloat, weight, 0)
-    /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(zffloat, offset)
 
 public:
+    /** @brief true if contains valid rule */
+    inline zfbool valid(void) const {
+        return this->target() != zfnull;
+    }
     /** @brief remove all contents */
     void removeAll(void) {
-        this->pos(ZFUIAutoLayoutPos::e_None);
         this->target(zfnull);
         this->targetPos(ZFUIAutoLayoutPos::e_None);
-        this->weight(0);
         this->offset(0);
         this->_ZFP_AL_targetId.removeAll();
     }
@@ -70,10 +68,8 @@ public:
     /** @cond ZFPrivateDoc */
     zfbool operator == (ZF_IN const ZFUIAutoLayoutRule &ref) const {
         return (zftrue
-                && this->pos() == ref.pos()
                 && this->target() == ref.target()
                 && this->targetPos() == ref.targetPos()
-                && this->weight() == ref.weight()
                 && this->offset() == ref.offset()
             );
     }
@@ -185,10 +181,6 @@ public:
     ZFMETHOD_DECLARE_0(void, toParent)
 
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, weight
-            , ZFMP_IN(zffloat, weight)
-            )
-    /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_1(void, offset
             , ZFMP_IN(zffloat, offset)
             )
@@ -242,8 +234,6 @@ public:
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self "self"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_weight "weight"
-/** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_offset "offset"
 
 // ============================================================
@@ -263,7 +253,6 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *       <rule
  *           pos=""                 // required, #ZFUIAutoLayoutPos
  *           target=""              // required, rule target, see below
- *           weight=""              // optional, 0 by default
  *           offset=""              // optional, 0 by default
  *           />
  *       ... // other rules
@@ -281,20 +270,8 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   -  `self`, ref to self
  *   -  `N` while `N` is a #zfindex value :
  *     ref to the sibling at the index
- * -  `weight` : #zffloat value, `0` by default
- *   -  for #ZFUIAutoLayoutPos::e_Width rule,
- *     `0` or negative value to show the width should be flexible,
- *     otherwise it's the weight value ref to the `target`
- *     (resultWidth = targetWidth * weight)
- *   -  for #ZFUIAutoLayoutPos::e_Left rule,
- *     `0` or negative value to show the rule should be flexible,
- *     otherwise shows the rule are fixed value\n
- *     note, if left or right rule not set,
- *     it's implicitly set to align to parent with flexible rule\n
- *     note, if both left/right and width have flexible rule,
- *     the left/right rule would have higher priority
  * -  `offset` : #zffloat shows offset to `target`
- * -  `biasX` : if all of left/right/width has flexible rule,
+ * -  `biasX` : if both left and right rules specified and width param is wrap without fixed rule,
  *   align to which side, `0` means totally align to left,
  *   while `1` means align to right
  *
@@ -334,8 +311,6 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   @endcode
  * -  toParent() :
  *   util to to(target) with parent
- * -  weight(weight) :
- *   specify the #ZFUIAutoLayoutRule::weight
  * -  offset(offset) :
  *   specify the #ZFUIAutoLayoutRule::offset
  */

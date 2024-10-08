@@ -32,7 +32,6 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
             posAttached = zftrue;
 
             ZFUIAutoLayoutRule &rule = d.ruleList[i];
-            rule.pos((ZFUIAutoLayoutPosEnum)i);
             rule.target(target);
             rule.targetPos(targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPosEnum)i : targetPos);
         }
@@ -53,7 +52,7 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, ruleRemove
         ) {
     ZFUIAutoLayout *parent = this->ownerParent();
     ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[pos];
-    if(rule.pos() != ZFUIAutoLayoutPos::e_None) {
+    if(rule.valid()) {
         if(parent != zfnull) {
             parent->layoutRequest();
         }
@@ -64,7 +63,7 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, ruleRemoveAll) {
     ZFUIAutoLayout *parent = this->ownerParent();
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
-        if(rule.pos() != ZFUIAutoLayoutPos::e_None) {
+        if(rule.valid()) {
             if(parent != zfnull) {
                 parent->layoutRequest();
             }
@@ -152,25 +151,6 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParent) {
     _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_None);
 }
 
-ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, weight
-        , ZFMP_IN(zffloat, weight)
-        ) {
-    ZFCoreAssertWithMessageTrim(this->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing weight rule");
-    ZFUIAutoLayoutParam::_ZFP_Data &d = _ZFP_AL_d;
-    zfbool posAttached = zffalse;
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
-        if(d.posAttached[i]) {
-            posAttached = zftrue;
-
-            ZFUIAutoLayoutRule &rule = d.ruleList[i];
-            rule.pos((ZFUIAutoLayoutPosEnum)i);
-            rule.weight(weight);
-        }
-    }
-    ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
-    d.posReset = zftrue;
-    this->ownerParent()->layoutRequest();
-}
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, offset
         , ZFMP_IN(zffloat, offset)
         ) {
@@ -182,7 +162,6 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, offset
             posAttached = zftrue;
 
             ZFUIAutoLayoutRule &rule = d.ruleList[i];
-            rule.pos((ZFUIAutoLayoutPosEnum)i);
             rule.offset(offset);
         }
     }
