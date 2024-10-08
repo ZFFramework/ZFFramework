@@ -23,24 +23,6 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextend ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUIFlowLayoutParam, ZFUILayoutParam)
 
     /**
-     * @brief weight for the view, 0 by default
-     *
-     * if greater than 0, all children with weight would be layouted by its weight percent,
-     * ignoring sizeParam\n
-     * for example, assume we have 3 children with these layout weight:
-     * -  child0: 2
-     * -  child1: 4
-     * -  child2: 3
-     *
-     * then the total weight of children would be (2+4+3)=9,
-     * and the children's final size would be:
-     * -  child0 = parentSize * 2 / 9
-     * -  child1 = parentSize * 4 / 9
-     * -  child2 = parentSize * 3 / 9
-     */
-    ZFPROPERTY_ASSIGN(zffloat, weight)
-
-    /**
      * @brief whether reserve space if child is not visible, false by default
      */
     ZFPROPERTY_ASSIGN(zfbool, reserveSpace)

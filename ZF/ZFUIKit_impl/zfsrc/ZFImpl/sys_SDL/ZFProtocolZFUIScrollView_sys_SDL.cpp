@@ -291,10 +291,13 @@ public:
             , ZF_IN const ZFUIRect &frame
             ) {
         _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)scrollView->nativeImplView();
-        nativeScrollView->rect.x = frame.x;
-        nativeScrollView->rect.y = frame.y;
-        nativeScrollView->rect.w = frame.width;
-        nativeScrollView->rect.h = frame.height;
+        ZFUIRectRound(
+                nativeScrollView->rect.x
+                , nativeScrollView->rect.y
+                , nativeScrollView->rect.w
+                , nativeScrollView->rect.h
+                , frame
+                );
         nativeScrollView->layoutRequest();
     }
 

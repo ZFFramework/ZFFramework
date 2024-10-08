@@ -978,6 +978,55 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectApplyMarginRever
     return ret;
 }
 
+/**
+ * @brief util method for impl to safe convert float rect to int values
+ */
+template<typename T_Size>
+void ZFUIRectRound(
+        ZF_OUT T_Size &x
+        , ZF_OUT T_Size &y
+        , ZF_OUT T_Size &w
+        , ZF_OUT T_Size &h
+        , ZF_IN const ZFUIRect &rect
+        ) {
+    x = (T_Size)zfmRound(rect.x);
+    y = (T_Size)zfmRound(rect.y);
+    w = (T_Size)zfmRound(rect.x + rect.width) - x;
+    h = (T_Size)zfmRound(rect.y + rect.height) - y;
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundX(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.x);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundY(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.y);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundWidth(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.x + rect.width) - (zfint)zfmRound(rect.x);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundHeight(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.y + rect.height) - (zfint)zfmRound(rect.y);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundLeft(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.x);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundTop(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.y);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundRight(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.x + rect.width);
+}
+/** @brief see #ZFUIRectRound */
+inline zfint ZFUIRectRoundBottom(ZF_IN const ZFUIRect &rect) {
+    return (zfint)zfmRound(rect.y + rect.height);
+}
+
 // ============================================================
 // ZFUIAlignFlags
 /**

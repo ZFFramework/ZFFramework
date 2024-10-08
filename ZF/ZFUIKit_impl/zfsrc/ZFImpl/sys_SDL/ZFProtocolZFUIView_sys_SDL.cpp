@@ -85,10 +85,13 @@ public:
             ) {
         ZFImpl_sys_SDL_View *nativeImplView = (ZFImpl_sys_SDL_View *)view->nativeImplView();
         if(nativeImplView != zfnull) {
-            nativeImplView->rect.x = rect.x;
-            nativeImplView->rect.y = rect.y;
-            nativeImplView->rect.w = rect.width;
-            nativeImplView->rect.h = rect.height;
+            ZFUIRectRound(
+                    nativeImplView->rect.x
+                    , nativeImplView->rect.y
+                    , nativeImplView->rect.w
+                    , nativeImplView->rect.h
+                    , rect
+                    );
             nativeImplView->layoutRequest();
         }
     }
@@ -187,10 +190,13 @@ public:
             , ZF_IN const ZFUIRect &rect
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
-        nativeView->rect.x = (int)rect.x;
-        nativeView->rect.y = (int)rect.y;
-        nativeView->rect.w = (int)rect.width;
-        nativeView->rect.h = (int)rect.height;
+        ZFUIRectRound(
+                nativeView->rect.x
+                , nativeView->rect.y
+                , nativeView->rect.w
+                , nativeView->rect.h
+                , rect
+                );
         nativeView->layoutRequest();
     }
 

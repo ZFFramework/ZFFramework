@@ -95,10 +95,10 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), jmId
             , (jobject)scrollView->nativeImplView()
-            , (jint)frame.x
-            , (jint)frame.y
-            , (jint)frame.width
-            , (jint)frame.height
+            , (jint)ZFUIRectRoundX(frame)
+            , (jint)ZFUIRectRoundY(frame)
+            , (jint)ZFUIRectRoundWidth(frame)
+            , (jint)ZFUIRectRoundHeight(frame)
             );
     }
     virtual zftimet scrollAnimationStart(

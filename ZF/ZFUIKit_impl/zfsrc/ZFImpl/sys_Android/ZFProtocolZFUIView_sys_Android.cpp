@@ -110,10 +110,10 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()
-            , (jint)rect.x
-            , (jint)rect.y
-            , (jint)rect.width
-            , (jint)rect.height
+            , (jint)ZFUIRectRoundX(rect)
+            , (jint)ZFUIRectRoundY(rect)
+            , (jint)ZFUIRectRoundWidth(rect)
+            , (jint)ZFUIRectRoundHeight(rect)
             );
     }
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
@@ -290,10 +290,10 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()
-            , (jint)rect.x
-            , (jint)rect.y
-            , (jint)rect.width
-            , (jint)rect.height
+            , (jint)ZFUIRectRoundX(rect)
+            , (jint)ZFUIRectRoundY(rect)
+            , (jint)ZFUIRectRoundWidth(rect)
+            , (jint)ZFUIRectRoundHeight(rect)
             );
     }
 

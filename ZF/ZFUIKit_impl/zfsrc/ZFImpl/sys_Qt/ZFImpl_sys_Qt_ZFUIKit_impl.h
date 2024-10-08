@@ -138,7 +138,12 @@ inline void ZFImpl_sys_Qt_ZFUIRectToQRectT(
         ZF_OUT QRect &ret
         , ZF_IN const ZFUIRect &rect
         ) {
-    ret = QRect(rect.x, rect.y, rect.width, rect.height);
+    ret.setRect(
+            ZFUIRectRoundX(rect)
+            , ZFUIRectRoundY(rect)
+            , ZFUIRectRoundWidth(rect)
+            , ZFUIRectRoundHeight(rect)
+            );
 }
 inline QRect ZFImpl_sys_Qt_ZFUIRectToQRect(ZF_IN const ZFUIRect &rect) {
     QRect ret;

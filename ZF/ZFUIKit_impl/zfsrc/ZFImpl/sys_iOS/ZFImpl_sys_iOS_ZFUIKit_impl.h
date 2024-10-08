@@ -66,10 +66,13 @@ inline void ZFImpl_sys_iOS_ZFUIRectToCGRectT(
         ZF_OUT CGRect &ret
         , ZF_IN const ZFUIRect &rect
         ) {
-    ret.origin.x = rect.x;
-    ret.origin.y = rect.y;
-    ret.size.width = rect.width;
-    ret.size.height = rect.height;
+    ZFUIRectRound(
+            ret.origin.x
+            , ret.origin.y
+            , ret.size.width
+            , ret.size.height
+            , rect
+            );
 }
 inline CGRect ZFImpl_sys_iOS_ZFUIRectToCGRect(ZF_IN const ZFUIRect &rect) {
     CGRect ret = CGRectZero;
