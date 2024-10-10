@@ -5,6 +5,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // ZFUILinearLayoutParam
 ZFOBJECT_REGISTER(ZFUILinearLayoutParam)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILinearLayoutParam, zfanyT<ZFUILinearLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUILinearLayoutParam, ZFUIAlignFlags, align) {
     propertyValue = ZFUIAlign::e_Center;

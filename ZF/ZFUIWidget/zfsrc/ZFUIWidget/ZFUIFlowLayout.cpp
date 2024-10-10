@@ -7,6 +7,10 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIFlowLayout)
 // ============================================================
 // ZFUIFlowLayoutParam
 ZFOBJECT_REGISTER(ZFUIFlowLayoutParam)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayoutParam, zfanyT<ZFUIFlowLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
 
 // ============================================================
 // ZFUIFlowLayout

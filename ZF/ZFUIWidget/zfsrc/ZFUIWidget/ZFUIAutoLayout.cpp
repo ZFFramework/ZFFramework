@@ -23,6 +23,10 @@ void ZFUIAutoLayoutRule::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 // ============================================================
 // ZFUIAutoLayoutParam
 ZFOBJECT_REGISTER(ZFUIAutoLayoutParam)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIAutoLayoutParam, zfanyT<ZFUIAutoLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
 
 static void _ZFP_ZFUIAutoLayoutAlignApply(
         ZF_IN ZFUIAutoLayoutParam *lp

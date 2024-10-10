@@ -418,6 +418,23 @@ ZFMETHOD_DEFINE_2(ZFUILayoutParam, ZFUISize, sizeHintOffset
     return ret;
 }
 
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, owner)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+
+zfanyT<ZFUILayoutParam> ZFUILayoutParam::child(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
+            ) {
+    ZFCoreAssertWithMessageTrim(_ZFP_LP_owner
+            , "layout param not attached to view: %s"
+            , this
+            );
+    return _ZFP_LP_owner->parent()->child(view, atIndex);
+}
+
 // ============================================================
 ZFENUM_DEFINE(ZFUIViewChildLayer)
 

@@ -409,6 +409,32 @@ public:
             )
 
 public:
+    /**
+     * @brief owner child view of this layout param
+     */
+    virtual ZFUIView *owner(void) {return this->_ZFP_LP_owner;}
+    /**
+     * @brief util method to add sibling child to owner parent,
+     *   for convenient for chained call
+     *
+     * useful in script, lua for example:
+     * @code
+     *   SomeParent()
+     *       :child(SomeChild()
+     *           :viewId('xxx')
+     *       )
+     *       :alignCenter()
+     *
+     *       :child(SomeChild())
+     *       :sizeFill()
+     * @endcode
+     */
+    zffinal zfanyT<ZFUILayoutParam> child(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            );
+
+public:
     zfoverride
     virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
@@ -440,6 +466,9 @@ protected:
     virtual inline void layoutParamOnUpdate(void) {
         this->observerNotify(ZFUILayoutParam::EventLayoutParamOnUpdate());
     }
+
+public:
+    ZFUIView *_ZFP_LP_owner;
 };
 
 // ============================================================
