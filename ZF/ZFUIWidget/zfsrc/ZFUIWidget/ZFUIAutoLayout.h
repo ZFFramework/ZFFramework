@@ -44,7 +44,7 @@ public:
 public:
     /** @brief true if contains valid rule */
     inline zfbool valid(void) const {
-        return this->target() != zfnull;
+        return this->target() || this->_ZFP_AL_targetId;
     }
     /** @brief remove all contents */
     void removeAll(void) {
@@ -376,11 +376,10 @@ extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         ZF_IN_OUT ZFUIAutoLayoutRule &rule
         , ZF_IN ZFUIAutoLayout *parent
         , ZF_IN ZFUIView *child
-        , ZF_IN const zfstring &targetId
         );
 extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
         ZF_OUT zfstring &targetId
-        , ZF_IN const ZFUIAutoLayoutRule &rule
+        , ZF_IN ZFUIAutoLayoutRule &rule
         , ZF_IN ZFUIAutoLayout *parent
         , ZF_IN ZFUIView *child
         );
