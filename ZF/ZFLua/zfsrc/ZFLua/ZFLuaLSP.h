@@ -15,12 +15,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * include the generated lua file for LSP plugins,
  * then your LSP plugin should be able to perform semantic completion\n
- * recommended LSP is EmmyLua
- * @code
- *   https://github.com/EmmyLua/EmmyLua-LanguageServer
- * @endcode
+ * recommended LSP
+ * -  lua-language-server : https://github.com/LuaLS/lua-language-server
+ * -  EmmyLua : https://github.com/EmmyLua/EmmyLua-LanguageServer
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaLSPGenFile
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaLSPGen
         , ZFMP_IN(const ZFOutput &, output)
         )
 

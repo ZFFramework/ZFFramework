@@ -570,18 +570,18 @@ zfbool ZFImpl_ZFLua_toNumberT(
         , ZF_OUT_OPT const ZFClass **holderCls /* = zfnull */
         ) {
     if(holderCls != zfnull) {*holderCls = zfnull;}
+    if(lua_isuserdata(L, luaStackOffset)) {
+        zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
+        return ZFImpl_ZFLua_toNumberT(ret, param, allowEmpty, holderCls);
+    }
+
     int success = 0;
     lua_Number num = lua_tonumberx(L, luaStackOffset, &success);
     if(success) {
         ret = zfobj<v_zflongdouble>((zflongdouble)num);
         return zftrue;
     }
-    if(!lua_isuserdata(L, luaStackOffset)) {
-        return zffalse;
-    }
-
-    zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
-    return ZFImpl_ZFLua_toNumberT(ret, param, allowEmpty, holderCls);
+    return zffalse;
 }
 
 zfbool ZFImpl_ZFLua_toNumberT(
@@ -608,7 +608,8 @@ zfbool ZFImpl_ZFLua_toNumberT(
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfindex::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfindex *, obj)->zfv));
+        v_zfindex *t = zfcast(v_zfindex *, obj);
+        ret = zfobj<v_zflongdouble>(t->zfv == zfindexMax() ? (zft_zflongdouble)-1 : (zft_zflongdouble)t->zfv);
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfint::ClassData())) {
@@ -616,7 +617,8 @@ zfbool ZFImpl_ZFLua_toNumberT(
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfuint::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfuint *, obj)->zfv));
+        v_zfuint *t = zfcast(v_zfuint *, obj);
+        ret = zfobj<v_zflongdouble>(t->zfv == (zfuint)-1 ? (zft_zflongdouble)-1 : (zft_zflongdouble)t->zfv);
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zffloat::ClassData())) {
@@ -644,11 +646,13 @@ zfbool ZFImpl_ZFLua_toNumberT(
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfidentity::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfidentity *, obj)->zfv));
+        v_zfidentity *t = zfcast(v_zfidentity *, obj);
+        ret = zfobj<v_zflongdouble>(t->zfv == zfidentityInvalid() ? (zft_zflongdouble)-1 : (zft_zflongdouble)t->zfv);
         return zftrue;
     }
     else if(cls->classIsTypeOf(ZFEnum::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(ZFEnum *, obj)->enumValue()));
+        ZFEnum *t = zfcast(ZFEnum *, obj);
+        ret = zfobj<v_zflongdouble>(t->enumValue() == ZFEnumInvalid() ? (zft_zflongdouble)-1 : (zft_zflongdouble)t->enumValue());
         return zftrue;
     }
     else {

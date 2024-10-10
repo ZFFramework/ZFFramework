@@ -4,8 +4,10 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+#define _ZFP_ZFLuaLSP_supportMultiInherit 1
+
 template<typename T_str>
-static zfstring _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(
+static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
         ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         , ZF_IN T_str s
         ) {
@@ -20,51 +22,48 @@ static zfstring _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(
     }
 }
 
-static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const ZFClass *cls) {
+static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const ZFClass *cls) {
     return zfstringReplace(cls->classNameFull(), ".", "_");
 }
-static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId) {
+static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const zfchar *typeId) {
     const ZFClass *cls = ZFClass::classForName(typeId);
     if(cls != zfnull) {
-        return _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls);
+        return _ZFP_ZFLuaLSPGen_typeIdToSig(cls);
     }
     const ZFTypeInfo *typeInfo = ZFTypeInfoForName(typeId);
     if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull) {
-        zfstring ret;
-        ret += "_";
-        ret += zfstringReplace(typeId, ".", "_");
-        return ret;
+        return _ZFP_ZFLuaLSPGen_typeIdToSig(typeId);
     }
-    return _ZFP_ZFLuaLSPGenFile_typeIdToSig(typeInfo->typeIdClass());
+    return _ZFP_ZFLuaLSPGen_typeIdToSig(typeInfo->typeIdClass());
 }
 
-static void _ZFP_ZFLuaLSPGenFile_methodParam(
+static void _ZFP_ZFLuaLSPGen_methodParam(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         , ZF_IN const zfchar *paramTypeId
         , ZF_IN const zfchar *paramName
         ) {
-    zfstring sig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(paramTypeId);
+    zfstring sig = _ZFP_ZFLuaLSPGen_typeIdToSig(paramTypeId);
     if(zfstringIsEqual(paramTypeId, ZFTypeId_ZFListener())) {
-        // ---@param P0 v_ZFListener|fun(zfargs:v_ZFArgs)
-        output << "---@param " << _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, paramName) << " " << sig
-            << "|fun(zfargs:" << _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZFTypeId_ZFArgs()) << ")"
+        // ---@param P0 ZFListener|fun(zfargs:ZFArgs)
+        output << "---@param " << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, paramName) << " " << sig
+            << "|fun(zfargs:" << _ZFP_ZFLuaLSPGen_typeIdToSig(ZFTypeId_ZFArgs()) << ")"
             << "\n";
     }
     else {
         // ---@param P0 P0
-        output << "---@param " << _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, paramName) << " " << sig << "\n";
+        output << "---@param " << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, paramName) << " " << sig << "\n";
     }
 }
 
 // ============================================================
-static void _ZFP_ZFLuaLSPGenFile_prefix(
+static void _ZFP_ZFLuaLSPGen_prefix(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
     output <<
         "local _class = {}\n"
-        "function _ZFP_ZFLuaLSP_Class(base)\n"
+        "function _ZFP_ZFLuaLSP_Class(base, ...)\n"
         "    local class_type = {}\n"
         "    class_type.__type = 'class'\n"
         "    class_type._ZFP_ZFLuaLSP_ctor = false\n"
@@ -127,7 +126,7 @@ static void _ZFP_ZFLuaLSPGenFile_prefix(
         ;
 }
 
-static void _ZFP_ZFLuaLSPGenFile_NS(
+static void _ZFP_ZFLuaLSPGen_NS(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         , ZF_IN_OUT zfstlmap<zfstring, zfbool> &NSMap
@@ -141,7 +140,7 @@ static void _ZFP_ZFLuaLSPGenFile_NS(
     ZFCoreArray<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, NS);
     for(zfindex i = 0; i < pos.count() - 1; ++i) {
-        _ZFP_ZFLuaLSPGenFile_NS(output, luaKeywords, NSMap, zfstring(NS, 0, pos[i].start + pos[i].count));
+        _ZFP_ZFLuaLSPGen_NS(output, luaKeywords, NSMap, zfstring(NS, 0, pos[i].start + pos[i].count));
     }
 
     /* NS
@@ -152,18 +151,18 @@ static void _ZFP_ZFLuaLSPGenFile_NS(
     output << NS << " = _ZFP_ZFLuaLSP_Class()\n";
     NSMap[NS] = zftrue;
 }
-static void _ZFP_ZFLuaLSPGenFile_allNS(
+static void _ZFP_ZFLuaLSPGen_allNS(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
     ZFCoreArray<zfstring> allNS = ZFNamespaceGetAll();
     zfstlmap<zfstring, zfbool> NSMap;
     for(zfindex i = 0; i < allNS.count(); ++i) {
-        _ZFP_ZFLuaLSPGenFile_NS(output, luaKeywords, NSMap, allNS[i]);
+        _ZFP_ZFLuaLSPGen_NS(output, luaKeywords, NSMap, allNS[i]);
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_class(
+static void _ZFP_ZFLuaLSPGen_class(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         , ZF_IN_OUT zfstlmap<const ZFClass *, zfbool> &clsMap
@@ -176,33 +175,60 @@ static void _ZFP_ZFLuaLSPGenFile_class(
     }
     clsMap.erase(cls);
     if(cls->classParent() != zfnull) {
-        _ZFP_ZFLuaLSPGenFile_class(output, luaKeywords, clsMap, cls->classParent());
+        _ZFP_ZFLuaLSPGen_class(output, luaKeywords, clsMap, cls->classParent());
     }
 
-    zfstring classSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls);
+    zfstring classSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls);
     const zfchar *classNameFull = cls->classNameFull();
 
     /* class
-        ---@class NS_Cls : Base
-        NS_Cls = _ZFP_ZFLuaLSP_Class(Base)
+        ---@class NS_Cls:Base1,Base2
+        NS_Cls = _ZFP_ZFLuaLSP_Class(Base1,Base2)
         ---@return NS_Cls
-        function NS.v_Cls() end
+        function NS.Cls() end
+
+        ---@class Cls:Base1,Base2
+        ---@overload fun():Cls
+        Cls = _ZFP_ZFLuaLSP_Class(Base1,Base2)
      */
     zfstring classParentSig;
     if(cls->classParent() != zfnull) {
-        classParentSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls->classParent());
+        classParentSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls->classParent());
     }
-    output
-        << "---@class " << classSig << (!classParentSig.isEmpty() ? ": " : "") << classParentSig << "\n"
-        << classSig << " = _ZFP_ZFLuaLSP_Class(" << classParentSig << ")\n"
-        << "---@return " << classSig << "\n"
-        << "function " << classNameFull << "() end\n"
-        ;
+#if _ZFP_ZFLuaLSP_supportMultiInherit
+    for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
+        if(classParentSig) {
+            classParentSig += ",";
+        }
+        classParentSig += _ZFP_ZFLuaLSPGen_typeIdToSig(cls->dynamicInterfaceAt(i));
+    }
+    for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
+        if(classParentSig) {
+            classParentSig += ",";
+        }
+        classParentSig += _ZFP_ZFLuaLSPGen_typeIdToSig(cls->implementedInterfaceAt(i));
+    }
+#endif
+    if(zfstringFind(classNameFull, ".") != zfindexMax()) {
+        output
+            << "---@class " << classSig << (!classParentSig.isEmpty() ? ":" : "") << classParentSig << "\n"
+            << classSig << " = _ZFP_ZFLuaLSP_Class(" << classParentSig << ")\n"
+            << "---@return " << classSig << "\n"
+            << "function " << classNameFull << "() end\n"
+            ;
+    }
+    else {
+        output
+            << "---@class " << classSig << (!classParentSig.isEmpty() ? ":" : "") << classParentSig << "\n"
+            << "---@overload fun():" << classSig << "\n"
+            << classSig << " = _ZFP_ZFLuaLSP_Class(" << classParentSig << ")\n"
+            ;
+    }
 
     /* constructor
         ---@param P0 P0
         ---@return NS_Cls
-        function NS.v_Cls(P0) end
+        function NS.Cls(P0) end
      */
     ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
     for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
@@ -214,7 +240,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         }
         zfstring paramList;
         for(zfindex i = 0; i < m->paramCount(); ++i) {
-            _ZFP_ZFLuaLSPGenFile_methodParam(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
+            _ZFP_ZFLuaLSPGen_methodParam(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
             if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
@@ -233,10 +259,14 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         if(!m->isPublic() || m->isInternal()
                 || zfstringIsEqual(m->methodName(), "objectOnInit")
                 || luaKeywords.find(m->methodName()) != luaKeywords.end()
+#if _ZFP_ZFLuaLSP_supportMultiInherit
+                || m->ownerClass() != cls
+#else
                 || (m->ownerClass() != cls
                     && !m->ownerClass()->classIsInterface()
                     && !cls->dynamicImplementOf(m->ownerClass())
                     )
+#endif
                 ) {
             continue;
         }
@@ -259,25 +289,25 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         /* member methods
             ---@param P0 P0
             ---@return Ret
-            function NS.v_Cls.Func(P0)
+            function NS.Cls.Func(P0)
             function NS_Cls:Func(P0)
             end
          */
         zfstring paramList;
         for(zfindex i = 0; i < m->paramCount(); ++i) {
-            _ZFP_ZFLuaLSPGenFile_methodParam(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
+            _ZFP_ZFLuaLSPGen_methodParam(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
             if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
-            paramList += _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
+            paramList += _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
         }
         if(!zfstringIsEqual(m->returnTypeId(), ZFTypeId_void())) {
-            zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->returnTypeId());
+            zfstring retSig = _ZFP_ZFLuaLSPGen_typeIdToSig(m->returnTypeId());
             output << "---@return " << retSig << "\n";
         }
         else {
             if(m->methodType() != ZFMethodTypeStatic) {
-                zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->ownerClass());
+                zfstring retSig = _ZFP_ZFLuaLSPGen_typeIdToSig(m->ownerClass());
                 output << "---@return " << retSig << "\n";
             }
         }
@@ -296,7 +326,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         methodMap[m->methodName()].add(m);
     }
 }
-static void _ZFP_ZFLuaLSPGenFile_allClass(
+static void _ZFP_ZFLuaLSPGen_allClass(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
@@ -310,11 +340,11 @@ static void _ZFP_ZFLuaLSPGenFile_allClass(
         clsMap[cls] = zftrue;
     }
     while(!clsMap.empty()) {
-        _ZFP_ZFLuaLSPGenFile_class(output, luaKeywords, clsMap, clsMap.begin()->first);
+        _ZFP_ZFLuaLSPGen_class(output, luaKeywords, clsMap, clsMap.begin()->first);
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_allMethod(
+static void _ZFP_ZFLuaLSPGen_allMethod(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
@@ -333,14 +363,14 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(
          */
         zfstring paramList;
         for(zfindex i = 0; i < m->paramCount(); ++i) {
-            _ZFP_ZFLuaLSPGenFile_methodParam(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
+            _ZFP_ZFLuaLSPGen_methodParam(output, luaKeywords, m->paramTypeIdAt(i), m->paramNameAt(i));
             if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
-            paramList += _ZFP_ZFLuaLSPGenFile_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
+            paramList += _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
         }
         if(!zfstringIsEqual(m->returnTypeId(), ZFTypeId_void())) {
-            zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->returnTypeId());
+            zfstring retSig = _ZFP_ZFLuaLSPGen_typeIdToSig(m->returnTypeId());
             output << "---@return " << retSig << "\n";
         }
         zfstring funcPrefix;
@@ -354,7 +384,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_spec(
+static void _ZFP_ZFLuaLSPGen_spec(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
@@ -363,46 +393,36 @@ static void _ZFP_ZFLuaLSPGenFile_spec(
         << "zftrue = true\n"
         << "zffalse = false\n"
 
-        << "---@return v_ZFCoreArray\n"
+        << "---@return ZFCoreArray\n"
         << "function ZFCoreArrayCreate(...) end\n"
 
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@return v_zfstring\n"
+        << "---@param ret zfstring\n"
+        << "---@param fmt zfstring\n"
         << "function zfstringAppend(ret, fmt, ...) end\n"
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@return v_zfstring\n"
+        << "---@param fmt zfstring\n"
+        << "---@return zfstring\n"
         << "function zfstr(fmt, ...) end\n"
 
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@param v_zfstring v_zfstring\n"
-        << "function zfstringAppend(ret, fmt, ...) end\n"
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@param v_zfstring v_zfstring\n"
-        << "---@return v_zfstring\n"
-        << "function zfstr(fmt, ...) end\n"
-
-        << "---@return v_zfptr\n"
+        << "---@return zfptr\n"
         << "function zfl_L(...) end\n"
         << "---@return ZFObject\n"
         << "function zfl_call(...) end\n"
         << "function zfl_value(...) end\n"
 
-        << "---@param v_zfstring\n"
-        << "---@return v_ZFOutput\n"
+        << "---@param fmt zfstring\n"
+        << "---@return ZFOutput\n"
         << "function ZFLog(fmt, ...) end\n"
-        << "---@param v_zfstring\n"
-        << "---@return v_ZFOutput\n"
+        << "---@param fmt zfstring\n"
+        << "---@return ZFOutput\n"
         << "function ZFLogTrim(fmt, ...) end\n"
 
-        << "---@return v_zfstring\n"
+        << "---@return zfstring\n"
         << "function zfl_tableInfo(tbl) end\n"
         << "function zfl_tableInfoPrint(tbl) end\n"
         ;
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGenFile
+ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGen
         , ZFMP_IN(const ZFOutput &, output)
         ) {
     zfstlmap<zfstring, zfbool> luaKeywords;
@@ -429,11 +449,11 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGenFile
     luaKeywords["until"] = zftrue;
     luaKeywords["while"] = zftrue;
 
-    _ZFP_ZFLuaLSPGenFile_prefix(output, luaKeywords);
-    _ZFP_ZFLuaLSPGenFile_spec(output, luaKeywords);
-    _ZFP_ZFLuaLSPGenFile_allNS(output, luaKeywords);
-    _ZFP_ZFLuaLSPGenFile_allClass(output, luaKeywords);
-    _ZFP_ZFLuaLSPGenFile_allMethod(output, luaKeywords);
+    _ZFP_ZFLuaLSPGen_prefix(output, luaKeywords);
+    _ZFP_ZFLuaLSPGen_spec(output, luaKeywords);
+    _ZFP_ZFLuaLSPGen_allNS(output, luaKeywords);
+    _ZFP_ZFLuaLSPGen_allClass(output, luaKeywords);
+    _ZFP_ZFLuaLSPGen_allMethod(output, luaKeywords);
 }
 
 ZF_NAMESPACE_GLOBAL_END
