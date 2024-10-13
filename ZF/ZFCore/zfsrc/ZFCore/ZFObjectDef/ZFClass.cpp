@@ -821,6 +821,14 @@ zfbool ZFClass::dynamicImplementOf(ZF_IN const ZFClass *parent) const {
     return d->ZFImplementDynamicCache.find(parent) != d->ZFImplementDynamicCache.end();
 }
 
+ZFCoreArray<const ZFClass *> ZFClass::childGetAll(void) const {
+    ZFCoreArray<const ZFClass *> ret;
+    for(zfstlmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
+        ret.add(it->first);
+    }
+    return ret;
+}
+
 // ============================================================
 // ZFMethod
 zfindex ZFClass::methodCount(void) const {

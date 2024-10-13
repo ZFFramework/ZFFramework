@@ -1,5 +1,6 @@
 
 return function(zfargs)
+    ---@type ZFUIPageManager
     local pm = zfargs:param0();
 
     pm:observerAdd(ZFUIPage.EventPageOnResume(), function(zfargs)

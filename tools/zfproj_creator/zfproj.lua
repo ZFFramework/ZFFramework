@@ -26,20 +26,20 @@ local function printUsage()
     ZFLogTrim('the "private" template dir must be in the same dir of zfproj.lua')
 end
 
-local ZF_ROOT_PATH = ZFLocalPathInfo()
-if ZF_ROOT_PATH == zfnull then
+local ZF_ROOT_PATH_DATA = ZFLocalPathInfo()
+if ZF_ROOT_PATH_DATA == zfnull then
     ZFLogTrim('unable to obtain local path info')
     return
 end
-if ZF_ROOT_PATH:pathType() ~= ZFPathType_file() then
+if ZF_ROOT_PATH_DATA:pathType() ~= ZFPathType_file() then
     ZFLogTrim('only support from file')
     return
 end
-ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
-local WORK_DIR = ZF_ROOT_PATH:pathData()
-ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
-ZF_ROOT_PATH:pathData(ZFPathInfoToParent(ZF_ROOT_PATH))
-ZF_ROOT_PATH = ZF_ROOT_PATH:pathData()
+ZF_ROOT_PATH_DATA:pathData(ZFPathInfoToParent(ZF_ROOT_PATH_DATA))
+local WORK_DIR = ZF_ROOT_PATH_DATA:pathData()
+ZF_ROOT_PATH_DATA:pathData(ZFPathInfoToParent(ZF_ROOT_PATH_DATA))
+ZF_ROOT_PATH_DATA:pathData(ZFPathInfoToParent(ZF_ROOT_PATH_DATA))
+ZF_ROOT_PATH = ZF_ROOT_PATH_DATA:pathData()
 
 local _PY = nil
 if os.execute('python --version >/dev/null 2>&1') then
@@ -198,6 +198,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         return false
     end
 
+    ---@type ZFArray
     local ZF_LIB = config:get('ZF_LIB')
     if ZF_LIB ~= zfnull then
         local libIndex = 0
@@ -208,6 +209,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             libIndex = libIndex + 1
         end
     end
+    ---@type ZFArray
     local ZF_IMPL = config:get('ZF_IMPL')
     if ZF_IMPL ~= zfnull then
         local implIndex = 0
@@ -240,6 +242,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             return ZFRegExpReplace(items:get(0), '.*/([^/]+)$', '$1')
         end
     end
+    ---@type ZFArray
     local ZF_LIB_EXT = config:get('ZF_LIB_EXT')
     if ZF_LIB_EXT ~= zfnull then
         local libExtIndex = 0
@@ -251,6 +254,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             libExtIndex = libExtIndex + 1
         end
     end
+    ---@type ZFArray
     local ZF_IMPL_EXT = config:get('ZF_IMPL_EXT')
     if ZF_IMPL_EXT ~= zfnull then
         local implExtIndex = 0
@@ -352,6 +356,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     if zfstringIsEmpty(_PY) then
         _SYNC_EXCLUDE:add('project.pbxproj')
     end
+    ---@type ZFArray
     local ZF_EXCLUDE = config:get('ZF_EXCLUDE')
     if ZF_EXCLUDE ~= zfnull then
         for i=0,zfl_value(ZF_EXCLUDE:count()) - 1 do
@@ -374,9 +379,9 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     local _TMP_DIR_SRC_FORMATED = zfstring()
     ZFPathFormat(_TMP_DIR_SRC_FORMATED, _TMP_DIR_SRC)
     ZFPathInfoForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_SRC_FORMATED), function(zfargs)
-        ---@type v_ZFPathInfo
+        ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        ---@type v_ZFFileFindData
+        ---@type ZFFileFindData
         local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
@@ -405,9 +410,9 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     local _TMP_DIR_FORMATED = zfstring()
     ZFPathFormat(_TMP_DIR_FORMATED, _TMP_DIR .. '/' .. config:get('ZF_INPLACE_SRC'))
     ZFPathInfoForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_FORMATED), function(zfargs)
-        ---@type v_ZFPathInfo
+        ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        ---@type v_ZFFileFindData
+        ---@type ZFFileFindData
         local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
@@ -441,9 +446,9 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
     local DST_DIR_FORMATED = zfstring()
     ZFPathFormat(DST_DIR_FORMATED, DST_DIR)
     ZFPathInfoForEach(ZFPathInfo(ZFPathType_file(), SRC_DIR_FORMATED), function(zfargs)
-        ---@type v_ZFPathInfo
+        ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        ---@type v_ZFFileFindData
+        ---@type ZFFileFindData
         local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), SRC_DIR_FORMATED:length(), zfindexMax())
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))

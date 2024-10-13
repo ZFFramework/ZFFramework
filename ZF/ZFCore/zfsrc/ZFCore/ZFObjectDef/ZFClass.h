@@ -366,6 +366,11 @@ public:
      */
     zfbool dynamicImplementOf(ZF_IN const ZFClass *parent) const;
 
+    /**
+     * @brief get all child, for debug use only
+     */
+    ZFCoreArray<const ZFClass *> childGetAll(void) const;
+
     // ============================================================
     // ZFMethod
 public:
