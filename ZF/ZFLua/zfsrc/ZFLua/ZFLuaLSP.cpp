@@ -37,18 +37,30 @@ static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const zfstring &typeId) {
     return _ZFP_ZFLuaLSPGen_typeIdToSig(typeInfo->typeIdClass());
 }
 
-static zfstring _ZFP_ZFLuaLSPGen_retSig(
-        ZF_IN const ZFMethod *m
-        , ZF_IN const ZFClass *ctorCls
-        ) {
-    if(ctorCls) {
-        return _ZFP_ZFLuaLSPGen_typeIdToSig(ctorCls);
+static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
+    if(typeId == ZFTypeId_ZFCallback()) {
+        return zfstr("%s|fun(zfargs:ZFArgs)", typeId);
     }
     else {
-        if(m->returnTypeId() == ZFTypeId_void()
+        return typeId;
+    }
+}
+static zfbool _ZFP_ZFLuaLSPGen_isChainedRet(ZF_IN const ZFMethod *m) {
+    return (m->returnTypeId() == ZFTypeId_void()
                 && m->ownerClass()
                 && m->methodType() != ZFMethodTypeStatic
-                ) {
+                );
+}
+static zfstring _ZFP_ZFLuaLSPGen_retSig(ZF_IN const ZFMethod *m) {
+    /* method return type
+     *   fun(p0:P0, p1:P1):Ret
+     *                     ^ ^
+     */
+    if(m->methodName() == "objectOnInit") {
+        return _ZFP_ZFLuaLSPGen_typeIdToSig(m->ownerClass());
+    }
+    else {
+        if(_ZFP_ZFLuaLSPGen_isChainedRet(m)) {
             // for class member method with void return,
             // change it to ownerClass for chained call
             return _ZFP_ZFLuaLSPGen_typeIdToSig(m->ownerClass());
@@ -58,21 +70,16 @@ static zfstring _ZFP_ZFLuaLSPGen_retSig(
         }
     }
 }
-static void _ZFP_ZFLuaLSPGen_method(
+static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         , ZF_IN const ZFMethod *m
-        , ZF_IN_OPT const ZFClass *ctorCls = zfnull
-        , ZF_IN_OPT zfbool outputFuncSig = zftrue
         ) {
-    /* method
+    /*
+        ---@overload fun(p0:P0):Ret
         ---@overload fun(p0:P0, p1:P1):Ret
-        ---@overload fun(p0:P0, p1:P1, p2:P2):Ret
-        ---@overload fun(p0:P0, p1:P1, p2:P2, p3:P3):Ret
-        function NS.Cls:func(p0, p1, p2, p3) end
      */
-    zfstring retSig = _ZFP_ZFLuaLSPGen_retSig(m, ctorCls);
-
+    zfstring retSig = _ZFP_ZFLuaLSPGen_retSig(m);
     zfindex paramCount = m->paramCountMin();
     do {
         output << "---@overload fun(";
@@ -83,7 +90,7 @@ static void _ZFP_ZFLuaLSPGen_method(
             output
                 << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i))
                 << ":"
-                << _ZFP_ZFLuaLSPGen_typeIdToSig(m->paramTypeIdAt(i))
+                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i))
                 ;
         }
         output << ")";
@@ -100,8 +107,54 @@ static void _ZFP_ZFLuaLSPGen_method(
             continue;
         }
     } while(zftrue);
+}
+static void _ZFP_ZFLuaLSPGen_method(
+        ZF_IN const ZFOutput &output
+        , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
+        , ZF_IN const ZFMethod *m
+        , ZF_IN_OPT const ZFClass *ctorCls = zfnull
+        ) {
+    /* method
+        ---@param p0 P0
+        ---@return Ret
+        function NS.Cls:func(p0) end
 
-    if(outputFuncSig) {
+        ---@generic T:NS.Cls
+        ---@param self T
+        ---@param p0 P0
+        ---@param p1 P1
+        ---@return T
+        function NS.Cls:func(p0, p1) end
+     */
+    zfstring retSig = _ZFP_ZFLuaLSPGen_retSig(m);
+    zfbool isChainedRet = _ZFP_ZFLuaLSPGen_isChainedRet(m);
+    zfindex paramCount = m->paramCountMin();
+    do {
+        if(isChainedRet) {
+            output
+                << "---@generic T:" << m->ownerClass()->classNameFull() << "\n"
+                << "---@param self T\n"
+                ;
+        }
+
+        for(zfindex i = 0; i < paramCount; ++i) {
+            output
+                << "---@param " << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i))
+                << " "
+                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i))
+                << "\n"
+                ;
+        }
+
+        if(isChainedRet) {
+            output << "---@return T\n";
+        }
+        else {
+            if(retSig != ZFTypeId_void()) {
+                output << "---@return " << retSig << "\n";
+            }
+        }
+
         output << "function ";
         if(ctorCls) {
             output << retSig;
@@ -122,14 +175,22 @@ static void _ZFP_ZFLuaLSPGen_method(
             output << m->methodName();
         }
         output << "(";
-        for(zfindex i = 0; i < m->paramCount(); ++i) {
+        for(zfindex i = 0; i < paramCount; ++i) {
             if(i != 0) {
                 output << ", ";
             }
-            output << m->paramNameAt(i);
+            output << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
         }
         output << ") end\n";
-    }
+
+        if(paramCount == m->paramCount()) {
+            break;
+        }
+        else {
+            ++paramCount;
+            continue;
+        }
+    } while(zftrue);
 }
 
 // ============================================================
@@ -193,7 +254,6 @@ static void _ZFP_ZFLuaLSPGen_class(
         ---@overload fun():NS.Cls
         ---@overload fun(p0:P0, p1:P1):NS.Cls
         NS.Cls = {}
-        function NS.Cls() end
      */
     zfstring classParentSig;
     if(cls->classParent() != zfnull) {
@@ -220,12 +280,13 @@ static void _ZFP_ZFLuaLSPGen_class(
     ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
     for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
         const ZFMethod *m = ctorMethods[iMethod];
-        if(m->paramCount() == 0
-                || (m->ownerClass() != cls && !m->ownerClass()->classIsInterface())
-                ) {
+        if(m->paramCount() == 0) {
             continue;
         }
-        _ZFP_ZFLuaLSPGen_method(output, luaKeywords, m, cls, zffalse);
+        if(m->ownerClass() != cls && !m->ownerClass()->classIsInterface()) {
+            continue;
+        }
+        _ZFP_ZFLuaLSPGen_method_overloadAnnotation(output, luaKeywords, m);
     }
     output
         << classSig << " = {}\n"
@@ -310,6 +371,9 @@ static void _ZFP_ZFLuaLSPGen_spec(
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
     output
+        << "---@meta ZF"
+        << "\n"
+
         << "zfnull = nil\n"
         << "zftrue = true\n"
         << "zffalse = false\n"
