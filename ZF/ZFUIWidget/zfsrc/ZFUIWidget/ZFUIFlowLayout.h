@@ -30,16 +30,6 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, align) {
         propertyValue = ZFUIAlign::e_Center;
     }
-
-public:
-    /** @cond ZFPrivateDoc */
-    zffinal zfanyT<ZFUILayoutParam> child(
-            ZF_IN ZFUIView *view
-            , ZF_IN_OPT zfindex atIndex = zfindexMax()
-            ) {
-        return zfsuper::child(view, atIndex);
-    }
-    /** @endcond */
 };
 
 // ============================================================

@@ -316,6 +316,25 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, background
     }
 }
 
+ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, labelStyle
+        , ZFMP_IN(ZFUITextView *, style)
+        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        ) {
+    this->label(forState)->styleableCopyFrom(style);
+}
+ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, iconStyle
+        , ZFMP_IN(ZFUIImageView *, style)
+        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        ) {
+    this->icon(forState)->styleableCopyFrom(style);
+}
+ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, backgroundStyle
+        , ZFMP_IN(ZFUIImageView *, style)
+        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        ) {
+    this->background(forState)->styleableCopyFrom(style);
+}
+
 void ZFUIButtonBasic::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIButtonBasicPrivate);

@@ -219,16 +219,6 @@ public:
     };
 public:
     _ZFP_Data _ZFP_AL_d;
-
-public:
-    /** @cond ZFPrivateDoc */
-    zffinal zfanyT<ZFUILayoutParam> child(
-            ZF_IN ZFUIView *view
-            , ZF_IN_OPT zfindex atIndex = zfindexMax()
-            ) {
-        return zfsuper::child(view, atIndex);
-    }
-    /** @endcond */
 };
 
 /** @brief keyword for serialize */

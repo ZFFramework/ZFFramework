@@ -828,6 +828,15 @@ ZFCoreArray<const ZFClass *> ZFClass::childGetAll(void) const {
     }
     return ret;
 }
+ZFCoreArray<const ZFClass *> ZFClass::parentGetAll(void) const {
+    ZFCoreArray<const ZFClass *> ret;
+    for(zfstlmap<const ZFClass *, zfbool>::iterator it = d->parentTypeCache.begin(); it != d->parentTypeCache.end(); ++it) {
+        if(it->first != this) {
+            ret.add(it->first);
+        }
+    }
+    return ret;
+}
 
 // ============================================================
 // ZFMethod

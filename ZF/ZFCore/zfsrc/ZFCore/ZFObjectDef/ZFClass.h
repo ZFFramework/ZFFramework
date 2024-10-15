@@ -367,9 +367,13 @@ public:
     zfbool dynamicImplementOf(ZF_IN const ZFClass *parent) const;
 
     /**
-     * @brief get all child, for debug use only
+     * @brief get all child excluding self, for debug use only
      */
     ZFCoreArray<const ZFClass *> childGetAll(void) const;
+    /**
+     * @brief get all parent (parent/interface/dynamicInterface) excluding self, for debug use only
+     */
+    ZFCoreArray<const ZFClass *> parentGetAll(void) const;
 
     // ============================================================
     // ZFMethod

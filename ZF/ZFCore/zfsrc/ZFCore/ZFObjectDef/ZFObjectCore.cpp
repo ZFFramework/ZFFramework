@@ -428,6 +428,29 @@ ZFObserver &ZFObject::observerHolder(void) {
     return *d->observerHolder;
 }
 
+void ZFObject::on(
+        ZF_IN const zfstring &eventName
+        , ZF_IN const ZFListener &observer
+        , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
+        ) {
+    zfidentity eventId = ZFIdMapIdForName(eventName);
+    if(eventId != zfidentityInvalid()) {
+        return this->observerAdd(eventId, observer, observerLevel);
+    }
+    eventId = ZFIdMapIdForName(zfstr("%s.Event%s", this->classData()->classNameFull(), eventName));
+    if(eventId != zfidentityInvalid()) {
+        return this->observerAdd(eventId, observer, observerLevel);
+    }
+    ZFCoreArray<const ZFClass *> allParent = this->classData()->parentGetAll();
+    for(zfindex i = 0; i < allParent.count(); ++i) {
+        eventId = ZFIdMapIdForName(zfstr("%s.Event%s", this->classData()->classNameFull(), eventName));
+        if(eventId != zfidentityInvalid()) {
+            return this->observerAdd(eventId, observer, observerLevel);
+        }
+    }
+    ZFCoreLogTrim("no such event \"%s\" for class: %s", eventName, this->classData()->classNameFull());
+}
+
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId) {
     if(zffalse) {
     }
@@ -831,14 +854,17 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerAddForOnce
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, on
+        , ZFMP_IN(const zfstring &, eventName)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, on
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, once
-        , ZFMP_IN(zfidentity, eventId)
-        , ZFMP_IN(const ZFListener &, observer)
-        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, onInit
+        , ZFMP_IN(const ZFListener &, impl)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, observerRemove
         , ZFMP_IN(zfidentity, eventId)

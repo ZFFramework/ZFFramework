@@ -46,16 +46,6 @@ zfclass ZFLIB_ZFUIWidget ZFUILinearLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ASSIGN(zfbool, reserveSpace)
 
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIAlignFlags, align)
-
-public:
-    /** @cond ZFPrivateDoc */
-    zffinal zfanyT<ZFUILayoutParam> child(
-            ZF_IN ZFUIView *view
-            , ZF_IN_OPT zfindex atIndex = zfindexMax()
-            ) {
-        return zfsuper::child(view, atIndex);
-    }
-    /** @endcond */
 };
 
 // ============================================================

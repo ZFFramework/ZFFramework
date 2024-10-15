@@ -247,7 +247,17 @@ public:
             owner->d->layoutParamOnUpdate = layoutParamOnUpdate;
         }
 
+        if(this->layoutParam) {
+            this->layoutParam->_ZFP_LP_owner = zfnull;
+        }
+
         if(newLayoutParam) {
+            ZFCoreAssertWithMessageTrim(newLayoutParam->_ZFP_LP_owner == zfnull
+                    , "layout param %s already attached to view: %s"
+                    , newLayoutParam
+                    , newLayoutParam->_ZFP_LP_owner
+                    );
+            newLayoutParam->_ZFP_LP_owner = owner;
             newLayoutParam->observerAdd(
                 ZFUILayoutParam::EventLayoutParamOnUpdate(),
                 owner->d->layoutParamOnUpdate);

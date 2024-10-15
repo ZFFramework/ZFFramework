@@ -566,6 +566,30 @@ public:
     zffinal ZFObserver &observerHolder(void);
 
 public:
+    /**
+     * @brief util to #observerAdd
+     *
+     * note, this method would recursively search event name by #ZFIdMapIdForName
+     * from entire inherit tree,
+     * used for convenient only (in script for example),
+     * take care of performance\n
+     * example:
+     * @code
+     *   ZFUIButtonBasic *obj = xxx;
+     *   obj->on("ButtonOnClick", xxx);
+     *   // these event would be searched, until proper event found:
+     *   // 1. ZFUIButtonBasic.EventButtonOnClick : not found
+     *   // 2. ZFUIButton.EventButtonOnClick : found
+     *
+     *   // or, use exact event name
+     *   obj->on("ZFUIButton.EventButtonOnClick", xxx);
+     * @endcode
+     */
+    zffinal void on(
+            ZF_IN const zfstring &eventName
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            );
     /** @brief util to #observerAdd */
     zffinal inline void on(
             ZF_IN zfidentity eventId
@@ -574,13 +598,11 @@ public:
             ) {
         this->observerAdd(eventId, observer, observerLevel);
     }
-    /** @brief util to #observerAddForOnce */
-    zffinal void once(
-            ZF_IN zfidentity eventId
-            , ZF_IN const ZFListener &observer
-            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
-            ) {
-        this->observerAddForOnce(eventId, observer, observerLevel);
+    /**
+     * @brief util for script to achieve chained call
+     */
+    zffinal inline void onInit(ZF_IN const ZFListener &impl) {
+        impl.execute(ZFArgs().sender(this));
     }
 
 protected:

@@ -177,6 +177,42 @@ public:
             , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
             )
 
+    /**
+     * @brief util method to apply label style
+     *
+     * convenient for chained script call, lua for example:
+     * @code
+     *   ZFUIButtonBasic()
+     *       :viewId("xxx")
+     *       :labelStyle(ZFUITextView():text("test"))
+     *       :alpha(0.5)
+     * @endcode
+     * another option is #ZFObject::onInit
+     * @code
+     *   ZFUIButtonBasic()
+     *       :viewId("xxx")
+     *       :onInit(function(zfargs)
+     *           local p = zfargs:sender()
+     *           p:label():text("test")
+     *       end)
+     *       :alpha(0.5)
+     * @endcode
+     */
+    ZFMETHOD_DECLARE_2(void, labelStyle
+            , ZFMP_IN(ZFUITextView *, style)
+            , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+            )
+    /** @brief see labelStyle */
+    ZFMETHOD_DECLARE_2(void, iconStyle
+            , ZFMP_IN(ZFUIImageView *, style)
+            , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+            )
+    /** @brief see backgroundStyle */
+    ZFMETHOD_DECLARE_2(void, backgroundStyle
+            , ZFMP_IN(ZFUIImageView *, style)
+            , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+            )
+
 protected:
     zfoverride
     virtual void objectOnInit(void);
