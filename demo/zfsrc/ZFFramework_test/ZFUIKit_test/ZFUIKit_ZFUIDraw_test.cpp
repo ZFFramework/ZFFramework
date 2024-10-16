@@ -47,7 +47,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        container->backgroundColor(ZFUIColorRandom(1));
+        container->bgColor(ZFUIColorRandom(1));
 
         zfobj<ZFUIKit_ZFUIDraw_test_DrawableView> view0;
         container->child(view0)->c_sizeFill(100, 100)->c_alignLeft();

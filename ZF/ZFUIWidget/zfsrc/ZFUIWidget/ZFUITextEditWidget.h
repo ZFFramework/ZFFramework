@@ -27,8 +27,8 @@ public:
      *
      * note, image's nine patch would be added to #ZFUIView::nativeImplViewMargin
      */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundView, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundView)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, bgView, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, bgView)
 
     /**
      * @brief the clear button

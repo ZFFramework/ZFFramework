@@ -18,7 +18,7 @@ protected:
 
         zfobj<ZFUILinearLayout> layout;
         container->child(layout)->c_margin(40);
-        layout->backgroundColor(ZFUIColorRed());
+        layout->bgColor(ZFUIColorRed());
 
         this->prepareChildren(layout);
 
@@ -32,7 +32,7 @@ private:
             layout->child(child);
             child->text(zfstr("text %s", i));
             child->textAlign(ZFUIAlign::e_Center);
-            child->backgroundColor(ZFUIColorRandom());
+            child->bgColor(ZFUIColorRandom());
         }
 
         layout->childAt(1)->layoutParam().to<ZFUILinearLayoutParam *>()->weight(1);
@@ -46,7 +46,7 @@ private:
             l->child(child);
             child->text(zfstr("text %s", 3 + i));
             child->textAlign(ZFUIAlign::e_Center);
-            child->backgroundColor(ZFUIColorRandom());
+            child->bgColor(ZFUIColorRandom());
         }
     }
     void prepareSettingButton(

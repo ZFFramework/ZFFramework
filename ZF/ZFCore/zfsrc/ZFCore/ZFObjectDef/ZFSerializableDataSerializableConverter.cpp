@@ -33,40 +33,40 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 //   a-z
 //   A-Z
 //   @_
-static const zfchar _ZFP_ZFSerializableEscapeCharMap[256] = {
-    // 0x00 ~ 0x0F
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0x10 ~ 0x1F
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0x20 ~ 0x2F
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0x30 ~ 0x3F
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-    // 0x40 ~ 0x4F
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    // 0x50 ~ 0x5F
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
-    // 0x60 ~ 0x6F
-    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    // 0x70 ~ 0x7F
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-    // 0x80 ~ 0x8F
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0x90 ~ 0x9F
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0xA0 ~ 0xAF
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0xB0 ~ 0xBF
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0xC0 ~ 0xCF
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0xD0 ~ 0xDF
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0xE0 ~ 0xEF
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    // 0xF0 ~ 0xFF
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-};
+#define _ZFP_ZFSerializableEscapeCharMap() const zfchar charMap[256] = { \
+        /* 0x00 ~ 0x0F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x10 ~ 0x1F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x20 ~ 0x2F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x30 ~ 0x3F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, \
+        /* 0x40 ~ 0x4F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
+        /* 0x50 ~ 0x5F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, \
+        /* 0x60 ~ 0x6F */ \
+        0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
+        /* 0x70 ~ 0x7F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, \
+        /* 0x80 ~ 0x8F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x90 ~ 0x9F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xA0 ~ 0xAF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xB0 ~ 0xBF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xC0 ~ 0xCF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xD0 ~ 0xDF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xE0 ~ 0xEF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xF0 ~ 0xFF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+    }
 
 // ============================================================
 zfbool ZFSerializableDataFromZfsd(
@@ -398,6 +398,8 @@ zfbool ZFSerializableDataToZfsd(
         return _ZFP_ZFSerializableDataToZfsdPretty(result, serializableData, outErrorHint, 0);
     }
 
+    _ZFP_ZFSerializableEscapeCharMap();
+
     result += _ZFP_ZFSD_ObjBegin;
 
     // serializable class
@@ -405,14 +407,14 @@ zfbool ZFSerializableDataToZfsd(
         result += _ZFP_ZFSD_NullClass;
     }
     else {
-        ZFCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+        ZFCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), charMap);
     }
 
     // attributes
     if(serializableData.attrCount() > 0) {
         for(zfiter it = serializableData.attrIter(); it; ++it) {
             result += _ZFP_ZFSD_Space;
-            ZFCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+            ZFCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), charMap);
             result += _ZFP_ZFSD_AttrAssign;
             _ZFP_ZFSD_AttrValueEncode(result, serializableData.attrIterValue(it));
         }
@@ -457,6 +459,8 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
         , ZF_OUT zfstring *outErrorHint
         , ZF_IN zfindex indentLevel
         ) {
+    _ZFP_ZFSerializableEscapeCharMap();
+
     _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel);
     result += _ZFP_ZFSD_ObjBegin;
 
@@ -465,7 +469,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
         result += _ZFP_ZFSD_NullClass;
     }
     else {
-        ZFCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+        ZFCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), charMap);
     }
 
     zfbool needBreak = (serializableData.attrCount() > 3);
@@ -480,7 +484,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
             else {
                 result += _ZFP_ZFSD_Space;
             }
-            ZFCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
+            ZFCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), charMap);
             result += _ZFP_ZFSD_AttrAssign;
             _ZFP_ZFSD_AttrValueEncode(result, serializableData.attrIterValue(it));
         }

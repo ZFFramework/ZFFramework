@@ -361,11 +361,11 @@ public:
             ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).userInteractionEnabled = viewUIEnableTree;
     }
-    virtual void backgroundColor(
+    virtual void bgColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &backgroundColor
+            , ZF_IN const ZFUIColor &bgColor
             ) {
-        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(backgroundColor);
+        ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(bgColor);
     }
 
 public:

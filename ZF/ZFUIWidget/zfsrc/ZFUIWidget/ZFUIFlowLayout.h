@@ -30,6 +30,17 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, align) {
         propertyValue = ZFUIAlign::e_Center;
     }
+
+public:
+    /** @cond ZFPrivateDoc */
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    inline zfanyT<ZFUIFlowLayoutParam> child(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
+        return zfsuper::child(view, atIndex);
+    }
+    /** @endcond */
 };
 
 // ============================================================
@@ -99,11 +110,15 @@ public:
     // ============================================================
     // override ZFUIView
 public:
-    /** @brief util method for #childWithParam */
-    ZFMETHOD_DECLARE_2(zfanyT<ZFUIFlowLayoutParam>, child
-            , ZFMP_IN(ZFUIView *, view)
-            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-            )
+    /** @cond ZFPrivateDoc */
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    inline zfanyT<ZFUIFlowLayoutParam> child(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
+        return zfsuper::child(view, atIndex);
+    }
+    /** @endcond */
 protected:
     zfoverride
     virtual const ZFClass *layoutParamClass(void) {

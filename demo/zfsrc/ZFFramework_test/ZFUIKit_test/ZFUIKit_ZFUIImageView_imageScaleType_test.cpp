@@ -12,18 +12,18 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->backgroundColor(ZFUIColorYellow());
+        this->bgColor(ZFUIColorYellow());
 
         zfauto imageSmall = zfres("test_normal.png");
         zfauto imageLarge = ZFUIImageScale(imageSmall, ZFUISizeCreate(600));
 
         this->child(this->imageViewSmall());
         this->imageViewSmall()->image(imageSmall);
-        this->imageViewSmall()->backgroundColor(ZFUIColorRed());
+        this->imageViewSmall()->bgColor(ZFUIColorRed());
 
         this->child(this->imageViewLarge());
         this->imageViewLarge()->image(imageLarge);
-        this->imageViewLarge()->backgroundColor(ZFUIColorBlue());
+        this->imageViewLarge()->bgColor(ZFUIColorBlue());
     }
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds) {

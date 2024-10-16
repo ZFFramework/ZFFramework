@@ -1087,8 +1087,8 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizeMax) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUIColor, backgroundColor) {
-    ZFPROTOCOL_ACCESS(ZFUIView)->backgroundColor(this, this->backgroundColor());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUIColor, bgColor) {
+    ZFPROTOCOL_ACCESS(ZFUIView)->bgColor(this, this->bgColor());
 }
 
 ZFMETHOD_DEFINE_0(ZFUIView, ZFUITransformFlags, transformAvailable) {
@@ -1384,12 +1384,8 @@ void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
         d->parent = parent;
     }
 
-    if(layoutParam != zfnull) {
-        // only change layoutParam if not null
-        // keep old one for performance
-        d->layoutParamUpdate(this, layoutParam);
-    }
-    else {
+    d->layoutParamUpdate(this, layoutParam);
+    if(layoutParam == zfnull) {
         this->serializableRefLayoutParam(zfnull);
     }
 
@@ -1908,8 +1904,26 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childWithParam
     return d->child(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, view, layoutParam, atIndex);
 }
 
+zfanyT<ZFUILayoutParam> ZFUIView::child(
+        ZF_IN const zfany &view
+        , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
+        ) {
+    ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
+        ? zfcast(ZFUILayoutParam *, view)->ownerParent()
+        : zfcast(ZFUIView *, view);
+    ZFCoreAssertWithMessageTrim(tmp
+            , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
+            , view
+            );
+    return this->childWithParam(tmp, zfnull, atIndex);
+}
+/* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, child
         , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
 

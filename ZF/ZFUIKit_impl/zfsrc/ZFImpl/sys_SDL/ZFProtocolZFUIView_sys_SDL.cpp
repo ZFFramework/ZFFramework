@@ -20,7 +20,7 @@ public:
             , ZF_IN zffloat treeAlpha
             ) {
         if(nativeView->ownerZFUIView != zfnull) {
-            ZFUIColor bg = nativeView->ownerZFUIView->backgroundColor();
+            ZFUIColor bg = nativeView->ownerZFUIView->bgColor();
             if(ZFUIColorGetA(bg) != 0) {
                 Uint8 rOld, gOld, bOld, aOld;
                 SDL_GetRenderDrawColor(renderer, &rOld, &gOld, &bOld, &aOld);
@@ -131,9 +131,9 @@ public:
             ) {
         // nothing to do
     }
-    virtual void backgroundColor(
+    virtual void bgColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &backgroundColor
+            , ZF_IN const ZFUIColor &bgColor
             ) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
         nativeViewTmp->renderRequest();

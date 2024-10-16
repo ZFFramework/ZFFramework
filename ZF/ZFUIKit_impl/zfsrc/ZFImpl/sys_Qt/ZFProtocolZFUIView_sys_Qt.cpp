@@ -452,13 +452,13 @@ public:
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeViewTmp = (_ZFP_ZFUIViewImpl_sys_Qt_View *)view->nativeView();
         nativeViewTmp->setAcceptHoverEvents(mouseHoverEnable);
     }
-    virtual void backgroundColor(
+    virtual void bgColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &backgroundColor
+            , ZF_IN const ZFUIColor &bgColor
             ) {
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeViewTmp = (_ZFP_ZFUIViewImpl_sys_Qt_View *)view->nativeView();
         QPalette palette = nativeViewTmp->palette();
-        palette.setColor(QPalette::Window, ZFImpl_sys_Qt_ZFUIColorToQColor(backgroundColor));
+        palette.setColor(QPalette::Window, ZFImpl_sys_Qt_ZFUIColorToQColor(bgColor));
         nativeViewTmp->setPalette(palette);
     }
 

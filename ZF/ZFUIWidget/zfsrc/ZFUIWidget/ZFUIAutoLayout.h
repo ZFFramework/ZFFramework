@@ -13,20 +13,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFUIAutoLayout */
 ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
     ZFENUM_VALUE(None)
-    ZFENUM_VALUE(Width)
-    ZFENUM_VALUE(Height)
     ZFENUM_VALUE(Left)
     ZFENUM_VALUE(Top)
     ZFENUM_VALUE(Right)
     ZFENUM_VALUE(Bottom)
+    ZFENUM_VALUE(Width)
+    ZFENUM_VALUE(Height)
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(None)
-    ZFENUM_VALUE_REGISTER(Width)
-    ZFENUM_VALUE_REGISTER(Height)
     ZFENUM_VALUE_REGISTER(Left)
     ZFENUM_VALUE_REGISTER(Top)
     ZFENUM_VALUE_REGISTER(Right)
     ZFENUM_VALUE_REGISTER(Bottom)
+    ZFENUM_VALUE_REGISTER(Width)
+    ZFENUM_VALUE_REGISTER(Height)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
 
 /** @brief see #ZFUIAutoLayout */
@@ -99,12 +99,6 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, align)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, margin)
 
-    /** @brief the owner parent view this param attached to */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUIAutoLayout>, ownerParent)
-
-    /** @brief the owner child view this param attached to */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, ownerChild)
-
     // ============================================================
     // rule state
 public:
@@ -134,6 +128,31 @@ public:
     ZFMETHOD_DECLARE_0(void, right)
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, bottom)
+
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toWidth
+            , ZFMP_IN(const zfstring &, viewId)
+            )
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toHeight
+            , ZFMP_IN(const zfstring &, viewId)
+            )
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toLeft
+            , ZFMP_IN(const zfstring &, viewId)
+            )
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toTop
+            , ZFMP_IN(const zfstring &, viewId)
+            )
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toRight
+            , ZFMP_IN(const zfstring &, viewId)
+            )
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toBottom
+            , ZFMP_IN(const zfstring &, viewId)
+            )
 
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_1(void, toWidth
@@ -175,6 +194,10 @@ public:
 
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_1(void, to
+            , ZFMP_IN(const zfstring &, viewId)
+            )
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, to
             , ZFMP_IN(ZFUIView *, target)
             )
     /** @brief see #ZFUIAutoLayout */
@@ -209,32 +232,32 @@ protected:
 public:
     zfclassLikePOD _ZFP_Data {
     public:
-        zfanyT<ZFUIAutoLayout> ownerParent;
-        zfautoT<ZFObjectHolder> ownerChild;
         ZFUIAutoLayoutRule ruleList[ZFUIAutoLayoutPos::ZFEnumCount];
         zfbool posAttached[ZFUIAutoLayoutPos::ZFEnumCount];
         zfbool posReset;
     public:
-        _ZFP_Data(void) : ownerParent(zfnull), ruleList(), posAttached(), posReset(zffalse) {}
+        _ZFP_Data(void) : ruleList(), posAttached(), posReset(zffalse) {}
     };
 public:
     _ZFP_Data _ZFP_AL_d;
+public:
+    /** @cond ZFPrivateDoc */
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    inline zfanyT<ZFUIAutoLayoutParam> child(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
+        return zfsuper::child(view, atIndex);
+    }
+    /** @endcond */
 };
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_rule "rule"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_pos "pos"
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target "target"
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token ':'
-/** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent "parent"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self "self"
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_offset "offset"
 
 // ============================================================
 // ZFUIAutoLayout
@@ -247,23 +270,17 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * \n
  * serializable data:
  * @code
- *   <ZFUIAutoLayoutParam>
+ *   <ZFUIAutoLayoutParam
+ *       rule="Left:Left:parent|Top:Bottom:@SomeViewId|Width:Width:2" // optional, rules for this lp
+ *       >
  *       <zffloat prop="biasX" />   // optional, 0.5 by default
  *       <zffloat prop="biasY" />   // optional, 0.5 by default
- *       <rule
- *           pos=""                 // required, #ZFUIAutoLayoutPos
- *           target=""              // required, rule target, see below
- *           offset=""              // optional, 0 by default
- *           />
- *       ... // other rules
  *   </ZFUIAutoLayoutParam>
  * @endcode
  *
- * rules:
- * -  `pos` : #ZFUIAutoLayoutPos shows the rule affect which position
- * -  `target` : target of the rule, it splits by two part, `Pos:Target`,
- *   while `Pos` is the value of #ZFUIAutoLayoutPos,
- *   and `Target` can be:
+ * rule format `<pos>:<targetPos>:<target>[:offset][|...]`:
+ * -  `pos` / `targetPos` : #ZFUIAutoLayoutPos shows the rule affect which position
+ * -  `target` : target of the rule, can be:
  *   -  `@viewId` while `viewId` is #ZFUIView::viewId,
  *     ref to the sibling with the view id
  *   -  `parent`, ref to parent
@@ -321,17 +338,16 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextend ZFUIView {
     // ============================================================
     // override ZFUIView
 public:
-    /** @brief util method for #childWithParam */
-    ZFMETHOD_DECLARE_2(zfanyT<ZFUIAutoLayoutParam>, child
-            , ZFMP_IN(ZFUIView *, view)
-            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-            )
+    /** @cond ZFPrivateDoc */
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    inline zfanyT<ZFUIAutoLayoutParam> child(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
+        return zfsuper::child(view, atIndex);
+    }
+    /** @endcond */
 protected:
-    zfoverride
-    virtual void viewChildOnAdd(
-            ZF_IN ZFUIView *child
-            , ZF_IN ZFUIViewChildLayerEnum layer
-            );
     zfoverride
     virtual void viewChildOnRemove(
             ZF_IN ZFUIView *child

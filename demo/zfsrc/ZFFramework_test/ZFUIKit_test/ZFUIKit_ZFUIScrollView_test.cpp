@@ -19,7 +19,7 @@ protected:
 
         zfobj<ZFUIScrollView> scrollView;
         container->child(scrollView)->c_sizeFill()->c_margin(40);
-        scrollView->backgroundColor(ZFUIColorRed());
+        scrollView->bgColor(ZFUIColorRed());
 
         this->setupScrollListener(scrollView);
         this->setupScrollContent(scrollView, ZFUISizeCreate(120), ZFUISizeCreate(60), ZFUISizeCreate(10));
@@ -27,7 +27,7 @@ protected:
 #if 1 // test embeded scroll view
         zfobj<ZFUIScrollView> embededScrollView;
         scrollView->child(embededScrollView)->c_sizeFill(200, 100)->c_margin(80);
-        embededScrollView->backgroundColor(ZFUIColorCreate(0, 0, 1, 0.75f));
+        embededScrollView->bgColor(ZFUIColorCreate(0, 0, 1, 0.75f));
 
         this->setupScrollListener(embededScrollView);
         this->setupScrollContent(embededScrollView, ZFUISizeCreate(60), ZFUISizeCreate(30), ZFUISizeCreate(10));
@@ -93,7 +93,7 @@ private:
                     ) {
                 zfobj<ZFUIButton> btn;
                 scrollView->child(btn)->c_sizeFill(itemSize)->c_margin(x, y, 0, 0);
-                btn->backgroundColor(ZFUIColorRandom(0.75f));
+                btn->bgColor(ZFUIColorRandom(0.75f));
 
                 ZFLISTENER(onClick) {
                     ZFLogTrim() << "clicked " << zfargs.sender();

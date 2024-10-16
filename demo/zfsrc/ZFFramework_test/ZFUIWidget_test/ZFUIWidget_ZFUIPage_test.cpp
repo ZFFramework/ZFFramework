@@ -18,13 +18,13 @@ protected:
         this->pageView()->to<ZFUILinearLayout *>()->orientation(ZFUIOrientation::e_Top);
 
         this->pageView()->child(this->_titleView())->c_widthFill();
-        this->_titleView()->backgroundColor(ZFUIColorRandom());
+        this->_titleView()->bgColor(ZFUIColorRandom());
         this->_titleView()->orientation(ZFUIOrientation::e_Left);
         this->_titleView()->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton()));
 
         this->_titleView()->child(this->_titleLeftView())->c_weight(1);
         this->_titleLeftView()->label()->text("back");
-        this->_titleLeftView()->backgroundColor(ZFUIColorRandom());
+        this->_titleLeftView()->bgColor(ZFUIColorRandom());
         {
             ZFUIPage *page = this;
             ZFLISTENER_1(_titleLeftViewOnClick
@@ -40,7 +40,7 @@ protected:
         this->_titleCenterView()->textAlign(ZFUIAlign::e_Center);
 
         this->pageView()->child(this->_contentView())->c_sizeFill();
-        this->_contentView()->backgroundColor(ZFUIColorRandom());
+        this->_contentView()->bgColor(ZFUIColorRandom());
         this->_contentView()->label()->text(zfstr("belong to %s", this->pageGroupId()));
         {
             ZFUIPage *page = this;
@@ -159,8 +159,8 @@ protected:
             zffloat r = zfmRand(255) / 255.0f;
             zffloat g = zfmRand(255) / 255.0f;
             zffloat b = zfmRand(255) / 255.0f;
-            button->backgroundNormal()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b, 0.25f)));
-            button->backgroundHighlighted()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b)));
+            button->bgNormal()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b, 0.25f)));
+            button->bgHighlighted()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b)));
         }
         this->_buttonLayout()->childAt(0)->to<ZFUIButton *>()->simulateClick();
     }

@@ -147,30 +147,12 @@ void ZFUIAutoLayout::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFUIAutoLayout::viewChildOnAdd(
-        ZF_IN ZFUIView *child
-        , ZF_IN ZFUIViewChildLayerEnum layer
-        ) {
-    zfsuper::viewChildOnAdd(child, layer);
-    if(layer == ZFUIViewChildLayer::e_Normal) {
-        ZFUIAutoLayoutParam *layoutParam = child->layoutParam();
-        ZFCoreAssertWithMessageTrim(
-            layoutParam->_ZFP_AL_d.ownerParent == zfnull,
-            "[ZFUIAutoLayout] layout param %s already attached to %s",
-            child->layoutParam(),
-            layoutParam->_ZFP_AL_d.ownerParent);
-        layoutParam->_ZFP_AL_d.ownerParent = this;
-        layoutParam->_ZFP_AL_d.ownerChild = child->objectHolder();
-    }
-}
 void ZFUIAutoLayout::viewChildOnRemove(
         ZF_IN ZFUIView *child
         , ZF_IN ZFUIViewChildLayerEnum layer
         ) {
     if(layer == ZFUIViewChildLayer::e_Normal) {
         ZFUIAutoLayoutParam::_ZFP_Data &t = child->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d;
-        t.ownerParent = zfnull;
-        t.ownerChild = zfnull;
         if(d->_childCountCache > this->childCount() * 4) {
             d->_childCountCache = 0;
         }

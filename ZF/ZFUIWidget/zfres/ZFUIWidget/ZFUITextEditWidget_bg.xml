@@ -1,0 +1,3 @@
+<ZFUIImage imageNinePatch="(8, 4, 8, 4)" imageType="ZFUIImageFromInput">
+    <ZFCallback callbackType="ZFInputForLocal" category="imageData" localPath="ZFUITextEditWidget_bg.png" />
+</ZFUIImage>

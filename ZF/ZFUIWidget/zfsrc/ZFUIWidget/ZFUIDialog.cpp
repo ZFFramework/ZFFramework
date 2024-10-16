@@ -184,8 +184,8 @@ public:
 
 public:
     void layoutDialogPrepare(ZF_IN const ZFUIRect &bounds) {
-        if(this->pimplOwner->backgroundImage() != zfnull) {
-            this->dialogContainer->layoutParam()->margin(this->pimplOwner->backgroundImage()->imageNinePatch());
+        if(this->pimplOwner->bgImage() != zfnull) {
+            this->dialogContainer->layoutParam()->margin(this->pimplOwner->bgImage()->imageNinePatch());
         }
     }
     void layoutDialog(ZF_IN const ZFUIRect &bounds) {
@@ -278,10 +278,10 @@ ZFEVENT_REGISTER(ZFUIDialog, DialogAfterHide)
 ZFEVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, dialogWindowColor) {
-    d->dialogWindowBg->backgroundColor(this->dialogWindowColor());
+    d->dialogWindowBg->bgColor(this->dialogWindowColor());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIImage>, backgroundImage) {
-    d->dialogBg->image(this->backgroundImage());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIImage>, bgImage) {
+    d->dialogBg->image(this->bgImage());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, content) {
     if(this->content() != zfnull) {
@@ -453,8 +453,8 @@ void ZFUIDialog::objectOnInit(void) {
     d->aniShowOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniShowOnStop));
     d->aniHideOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniHideOnStop));
 
-    d->dialogWindowBg->backgroundColor(this->dialogWindowColor());
-    d->dialogBg->image(this->backgroundImage());
+    d->dialogWindowBg->bgColor(this->dialogWindowColor());
+    d->dialogBg->image(this->bgImage());
 
     _ZFP_ZFUIDialogAllDialog.add(this);
 }

@@ -7,8 +7,22 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIFlowLayout)
 // ============================================================
 // ZFUIFlowLayoutParam
 ZFOBJECT_REGISTER(ZFUIFlowLayoutParam)
+
+/* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayoutParam, zfanyT<ZFUIFlowLayoutParam>, child
         , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayoutParam, zfanyT<ZFUIFlowLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayout, zfanyT<ZFUIFlowLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayout, zfanyT<ZFUIFlowLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
 
@@ -40,13 +54,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zffloat, childSpaceY) {
     if(this->childSpaceY() != propertyValueOld) {
         this->layoutRequest();
     }
-}
-
-ZFMETHOD_DEFINE_2(ZFUIFlowLayout, zfanyT<ZFUIFlowLayoutParam>, child
-        , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-        ) {
-    return this->childWithParam(view, zfnull, atIndex);
 }
 
 // ============================================================

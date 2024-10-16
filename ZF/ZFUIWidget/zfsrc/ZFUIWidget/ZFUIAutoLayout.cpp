@@ -23,8 +23,22 @@ void ZFUIAutoLayoutRule::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 // ============================================================
 // ZFUIAutoLayoutParam
 ZFOBJECT_REGISTER(ZFUIAutoLayoutParam)
+
+/* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIAutoLayoutParam, zfanyT<ZFUIAutoLayoutParam>, child
         , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIAutoLayoutParam, zfanyT<ZFUIAutoLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
 
@@ -89,19 +103,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIMargin, margin) {
     _ZFP_ZFUIAutoLayoutAlignApply(this, this->align(), propertyValue);
 }
 
-ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, zfanyT<ZFUIAutoLayout>, ownerParent) {
-    return _ZFP_AL_d.ownerParent;
-}
-
-ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, zfanyT<ZFUIView>, ownerChild) {
-    if(_ZFP_AL_d.ownerChild != zfnull) {
-        return _ZFP_AL_d.ownerChild->objectHolded();
-    }
-    else {
-        return zfnull;
-    }
-}
-
 ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
     if(zffalse
         || property == ZFPropertyAccess(zfself, align)
@@ -112,81 +113,129 @@ ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(
     return zfsuper::serializableOnCheckPropertyType(property);
 }
 
+// all printable chars (0x20 ~ 0x7E) except:
+//   '%' : 0x25
+//   ':' : 0x3A
+//   '|' : 0x7C
+#define _ZFP_ZFUIAutoLayoutRuleEscapeCharMap() const zfchar charMap[256] = { \
+        /* 0x00 ~ 0x0F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x10 ~ 0x1F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x20 ~ 0x2F */ \
+        1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
+        /* 0x30 ~ 0x3F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, \
+        /* 0x40 ~ 0x4F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
+        /* 0x50 ~ 0x5F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
+        /* 0x60 ~ 0x6F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
+        /* 0x70 ~ 0x7F */ \
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, \
+        /* 0x80 ~ 0x8F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0x90 ~ 0x9F */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xA0 ~ 0xAF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xB0 ~ 0xBF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xC0 ~ 0xCF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xD0 ~ 0xDF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xE0 ~ 0xEF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        /* 0xF0 ~ 0xFF */ \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+    }
+
 zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
-
     // remove all rule
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         _ZFP_AL_d.ruleList[i].removeAll();
     }
 
-    for(zfindex i = 0; i < serializableData.childCount(); ++i) {
-        const ZFSerializableData &element = serializableData.childAt(i);
-        if(element.resolved()
-                || ZFSerializableUtil::checkItemClass(element, ZFSerializableKeyword_ZFUIAutoLayoutParam_rule) == zfnull
-                ) {
-            continue;
+    zfstring ruleListStr = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFUIAutoLayoutParam_rule);
+    ZFCoreArray<zfstring> ruleList = zfstringSplit(ruleListStr, "|");
+    for(zfindex iRule = 0; iRule < ruleList.count(); ++iRule) {
+        const zfstring &ruleStr = ruleList[iRule];
+        ZFCoreArray<ZFIndexRange> itemPos = zfstringSplitIndex(ruleStr, ":");
+        if(!(itemPos.count() >= 3 && itemPos.count() <= 4)) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                , "invalid rule: \"%s\""
+                , ruleStr
+                );
+            return zffalse;
         }
 
         ZFUIAutoLayoutPosEnum pos = ZFUIAutoLayoutPos::e_None;
-
-        // pos
-        ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
-                require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPos, pos, {
-                    return zffalse;
-                });
-        if(pos == ZFUIAutoLayoutPos::e_None) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
-                "\"%s\" does not support \"%s\"",
-                ZFSerializableKeyword_ZFUIAutoLayoutParam_pos,
-                pos);
+        if(!ZFUIAutoLayoutPosFromStringT(pos, ruleStr + itemPos[0].start, itemPos[0].count)
+                || pos == ZFUIAutoLayoutPos::e_None
+                ) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                , "invalid pos rule \"%s\", declared in rule \"%s\""
+                , zfstring(ruleStr + itemPos[0].start, itemPos[0].count)
+                , ruleStr
+                );
             return zffalse;
         }
-        if(_ZFP_AL_d.ruleList[pos].valid()) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
-                "\"%s\" rule already has been set",
-                pos);
+
+        ZFUIAutoLayoutPosEnum targetPos = ZFUIAutoLayoutPos::e_None;
+        if(!ZFUIAutoLayoutPosFromStringT(targetPos, ruleStr + itemPos[1].start, itemPos[1].count)
+                || pos == ZFUIAutoLayoutPos::e_None
+                ) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                , "invalid targetPos rule \"%s\", declared in rule \"%s\""
+                , zfstring(ruleStr + itemPos[1].start, itemPos[1].count)
+                , ruleStr
+                );
             return zffalse;
+        }
+
+        zfstring target;
+        ZFCoreDataDecode(target, ruleStr + itemPos[2].start, itemPos[2].count);
+        if(ruleStr[itemPos[2].start] == '@'
+                || target == ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent
+                || target == ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self
+                ) {
+            // nothing to do
+        }
+        else {
+            zfindex refIndex = zfindexMax();
+            if(!zfindexFromStringT(refIndex, target)) {
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                    , "invalid target rule \"%s\", declared in rule \"%s\""
+                    , target
+                    , ruleStr
+                    );
+                return zffalse;
+            }
         }
 
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[pos];
+        rule.targetPos(targetPos);
+        rule._ZFP_AL_targetId = target;
 
-        // target/targetPos
-        {
-            zfstring value = ZFSerializableUtil::requireAttr(
-                element, ZFSerializableKeyword_ZFUIAutoLayoutParam_target, outErrorHint, outErrorPos);
-            if(value == zfnull) {
+        if(itemPos.count() >= 4) {
+            zffloat offset = 0;
+            if(!zffloatFromStringT(offset, ruleStr + itemPos[2].start, itemPos[2].count)) {
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                    , "invalid offset value \"%s\", declared in rule \"%s\""
+                    , zfstring(ruleStr + itemPos[2].start, itemPos[2].count)
+                    , ruleStr
+                    );
                 return zffalse;
             }
-            const zfchar *valueTmp = value;
-            while(*valueTmp != '\0' && *valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token) {++valueTmp;}
-            ZFUIAutoLayoutPosEnum targetPos = ZFUIAutoLayoutPos::e_None;
-            if(*valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token
-                    || !ZFUIAutoLayoutPosFromStringT(targetPos, value, valueTmp - value)
-                    ) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
-                    "invalid target value: %s",
-                    value);
-                return zffalse;
-            }
-            rule.targetPos(targetPos);
-            rule._ZFP_AL_targetId = valueTmp + 1;
+            rule.offset(offset);
         }
-
-        // offset
-        zffloat offset = 0;
-        ZFSerializableUtilSerializeAttrFromData(element, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, offset, {
-                    return zffalse;
-                });
-        rule.offset(offset);
-
-        // finish
-        element.resolveMark();
     }
     return zftrue;
 }
@@ -197,7 +246,9 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    _ZFP_ZFUIAutoLayoutRuleEscapeCharMap();
 
+    zfstring ruleStr;
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(ref != zfnull && ref->_ZFP_AL_d.ruleList[i] == rule) {
@@ -206,30 +257,37 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         if(!rule.valid()) {
             continue;
         }
-        ZFSerializableData element;
 
-        // pos
-        element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPosToString((ZFUIAutoLayoutPosEnum)i));
-
-        // target
-        {
-            zfstring target;
-            ZFUIAutoLayoutPosToStringT(target, rule.targetPos());
-            target += ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token;
-            _ZFP_ZFUIAutoLayout_targetIdUpdate(target, rule, this->ownerParent(), this->ownerChild());
-            element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_target, target);
+        if(rule.targetPos() == ZFUIAutoLayoutPos::e_None) {
+            ZFSerializableUtilErrorOccurred(outErrorHint
+                    , "invalid targetPos"
+                    );
+            return zffalse;
+        }
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(rule._ZFP_AL_targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerParent()), this->owner());
+        if(!rule._ZFP_AL_targetId) {
+            ZFSerializableUtilErrorOccurred(outErrorHint
+                    , "no target specified"
+                    );
+            return zffalse;
         }
 
-        // offset
-        ZFSerializableUtilSerializeAttrToDataNoRef(element, outErrorHint,
-                ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, rule.offset(), 0, {
-                    return zffalse;
-                });
-
-        element.itemClass(ZFSerializableKeyword_ZFUIAutoLayoutParam_rule);
-        serializableData.child(element);
+        if(ruleStr) {
+            ruleStr += "|";
+        }
+        ZFUIAutoLayoutPosToStringT(ruleStr, (ZFUIAutoLayoutPosEnum)i);
+        ruleStr += ":";
+        ZFUIAutoLayoutPosToStringT(ruleStr, rule.targetPos());
+        ruleStr += ":";
+        ZFCoreDataEncode(ruleStr, rule._ZFP_AL_targetId, rule._ZFP_AL_targetId.length(), charMap);
+        if(rule.offset() != 0) {
+            ruleStr += ":";
+            zffloatToStringT(ruleStr, rule.offset());
+        }
     }
-
+    if(ruleStr) {
+        serializableData.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_rule, ruleStr);
+    }
     return zftrue;
 }
 
@@ -257,8 +315,8 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompareValue(ZF_IN ZFObject *anotherO
         }
         zfstring targetId;
         zfstring targetIdRef;
-        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetId, rule, this->ownerParent(), this->ownerChild());
-        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetIdRef, ruleRef, another->ownerParent(), another->ownerChild());
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerParent()), this->owner());
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetIdRef, ruleRef, zfcast(ZFUIAutoLayout *, another->ownerParent()), another->owner());
         if(targetId != targetIdRef) {
             return ZFCompareUncomparable;
         }
@@ -270,13 +328,6 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompareValue(ZF_IN ZFObject *anotherO
 // ZFUIAutoLayout
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoLayout)
 ZFOBJECT_REGISTER(ZFUIAutoLayout)
-
-ZFMETHOD_DEFINE_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, child
-        , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-        ) {
-    return this->childWithParam(view, zfnull, atIndex);
-}
 
 void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuper::styleableOnCopyFrom(anotherStyleable);
@@ -307,7 +358,7 @@ void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
                 if(ruleRef.target() == lpRef->ownerParent()) {
                     rule.target(this);
                 }
-                else if(ruleRef.target() == lpRef->ownerChild()) {
+                else if(ruleRef.target() == lpRef->owner()) {
                     rule.target(this->childAt(iChild));
                 }
                 else {
@@ -394,8 +445,13 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
         , ZF_IN ZFUIView *child
         ) {
     if(rule._ZFP_AL_targetId) {
-        targetId += rule._ZFP_AL_targetId;
+        if(&targetId != &(rule._ZFP_AL_targetId)) {
+            targetId += rule._ZFP_AL_targetId;
+        }
         return zftrue;
+    }
+    if(&targetId == &(rule._ZFP_AL_targetId)) {
+        rule._ZFP_AL_targetId.removeAll();
     }
     ZFUIView *target = rule.target();
     if(target == zfnull || (target != parent && rule.target()->parent() != parent)) {
@@ -404,11 +460,12 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
     if(target == parent) {
         targetId += ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent;
     }
-    else if(!target->viewId().isEmpty()) {
-        targetId += target->viewId();
-    }
     else if(target == child) {
         targetId += ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self;
+    }
+    else if(!target->viewId().isEmpty()) {
+        targetId += "@";
+        targetId += target->viewId();
     }
     else {
         zfindex childIndexRef = parent->childFind(target);

@@ -119,9 +119,9 @@ public class ZFUIView extends ViewGroup {
         nativeViewTmp.setClickable(viewUIEnableTree);
     }
 
-    public static void native_backgroundColor(Object nativeView,
-                                                  int backgroundColor) {
-        ((ZFUIView) nativeView).setBackgroundColor(backgroundColor);
+    public static void native_bgColor(Object nativeView,
+                                                  int bgColor) {
+        ((ZFUIView) nativeView).setBackgroundColor(bgColor);
     }
 
     public static void native_child(Object nativeView,

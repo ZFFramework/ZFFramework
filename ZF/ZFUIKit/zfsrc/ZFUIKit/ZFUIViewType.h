@@ -414,6 +414,12 @@ public:
      */
     virtual ZFUIView *owner(void) {return this->_ZFP_LP_owner;}
     /**
+     * @brief owner parent view of this layout param
+     */
+    virtual ZFUIView *ownerParent(void);
+
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    /**
      * @brief util method to add sibling child to owner parent,
      *   for convenient for chained call
      *
@@ -430,7 +436,7 @@ public:
      * @endcode
      */
     zffinal zfanyT<ZFUILayoutParam> child(
-            ZF_IN ZFUIView *view
+            ZF_IN const zfany &view
             , ZF_IN_OPT zfindex atIndex = zfindexMax()
             );
 

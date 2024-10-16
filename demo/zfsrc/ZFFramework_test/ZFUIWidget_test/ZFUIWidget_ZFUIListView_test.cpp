@@ -39,7 +39,7 @@ public:
         if(zfmRand(3) == 0) {
             tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeCreate(40)));
         }
-        tmp->backgroundColor(ZFUIColorRandom());
+        tmp->bgColor(ZFUIColorRandom());
     }
 
     #if 1 // whether use cache
@@ -70,7 +70,7 @@ protected:
 
         zfobj<ZFUIListView> listView;
         container->child(listView)->c_sizeFill()->c_margin(40);
-        listView->backgroundColor(ZFUIColorRed());
+        listView->bgColor(ZFUIColorRed());
         listView->listAdapter(this->listAdapter());
         {
             zfobj<ZFUIListCellUpdaterBasic> cellUpdater;

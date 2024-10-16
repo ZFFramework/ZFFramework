@@ -10,7 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
     ZFOBJECT_DECLARE(ZFUIKit_test_Window, ZFUIWindow)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, backgroundColor) {
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, bgColor) {
         propertyValue = ZFUIColorWhite();
     }
 };
@@ -18,11 +18,11 @@ zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
 zfclass ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
-    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, backgroundNormal) {
-        propertyValue.to<ZFUIImageView *>()->backgroundColor(ZFUIColorGreen());
+    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, bgNormal) {
+        propertyValue.to<ZFUIImageView *>()->bgColor(ZFUIColorGreen());
     }
-    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, backgroundHighlighted) {
-        propertyValue.to<ZFUIImageView *>()->backgroundColor(ZFUIColorBlue());
+    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, bgHighlighted) {
+        propertyValue.to<ZFUIImageView *>()->bgColor(ZFUIColorBlue());
     }
 };
 

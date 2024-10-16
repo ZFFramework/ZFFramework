@@ -19,7 +19,7 @@ return function(zfargs)
                     page:pageView():child(pageView):sizeFill();
 
                     pageView:label():text(page:objectInfoOfInstance());
-                    pageView:backgroundColor(ZFUIColorRandom());
+                    pageView:bgColor(ZFUIColorRandom());
 
                     local pageHolder = page:objectHolder();
                     pageView:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)

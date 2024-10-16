@@ -18,14 +18,14 @@ protected:
 
         zfobj<ZFUIAutoLayout> layout;
         container->child(layout)->c_sizeFill()->c_margin(40);
-        layout->backgroundColor(ZFUIColorRed());
+        layout->bgColor(ZFUIColorRed());
 
         ZFCoreArray<zfauto> v;
         for(zfindex i = 0; i < 5; ++i) {
             zfobj<ZFUITextView> t;
             v.add(t);
             t->text(zfstr("text %s", i));
-            t->backgroundColor(ZFUIColorRandom());
+            t->bgColor(ZFUIColorRandom());
         }
 
         layout->child(v[0])->c_left()->c_toParentLeft()->c_right()->c_toLeft(v[1]);

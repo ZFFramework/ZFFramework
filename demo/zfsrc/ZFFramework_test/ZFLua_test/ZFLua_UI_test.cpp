@@ -17,10 +17,10 @@ protected:
         zfauto result = ZFLuaExecute(
                 "local window = ZFUIWindow()\n"
                 "window:show()\n"
-                "window:backgroundColor(ZFUIColorRandom())\n"
+                "window:bgColor(ZFUIColorRandom())\n"
                 "local button = ZFUIButtonBasic()\n"
                 "window:child(button):alignRightTop()\n"
-                "button:backgroundColor(ZFUIColorRandom())\n"
+                "button:bgColor(ZFUIColorRandom())\n"
                 "button:label():text('close')\n"
                 "button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)\n"
                 "    window:hide()\n"

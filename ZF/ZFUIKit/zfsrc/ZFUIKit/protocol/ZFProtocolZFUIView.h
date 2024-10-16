@@ -26,7 +26,7 @@ public:
      * -  #ZFUIView::viewUIEnable (true by default)
      * -  #ZFUIView::viewUIEnableTree (true by default)
      * -  #ZFUIView::mouseHoverEnable (false by default)
-     * -  #ZFUIView::backgroundColor (clear color by default)
+     * -  #ZFUIView::bgColor (clear color by default)
      * -  #ZFUIView::focusable (false by default)
      */
     virtual zfbool nativeViewCacheOnSave(ZF_IN void *nativeView) {
@@ -124,9 +124,9 @@ public:
         // no hover event support by default
     }
     /** @brief see #ZFUIView */
-    virtual void backgroundColor(
+    virtual void bgColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &backgroundColor
+            , ZF_IN const ZFUIColor &bgColor
             ) zfpurevirtual;
 
     // ============================================================

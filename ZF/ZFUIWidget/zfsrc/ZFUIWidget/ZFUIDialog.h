@@ -126,8 +126,8 @@ public:
      *
      * note that the #ZFUIImage::imageNinePatch would be used as dialog content's margin
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, backgroundImage, zfres("ZFUIWidget/ZFUIDialog_background.xml"))
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, backgroundImage)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, bgImage, zfres("ZFUIWidget/ZFUIDialog_bg.xml"))
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, bgImage)
 
     /**
      * @brief whether automatically focus to dialog content, true by default
@@ -223,7 +223,7 @@ protected:
      */
     ZFMETHOD_DECLARE_0(ZFUIView *, dialogContainer)
     /**
-     * @brief the dialog background container which hold the #ZFUIDialog::backgroundImage
+     * @brief the dialog background container which hold the #ZFUIDialog::bgImage
      */
     ZFMETHOD_DECLARE_0(ZFUIView *, dialogBackgroundContainer)
 

@@ -419,21 +419,43 @@ ZFMETHOD_DEFINE_2(ZFUILayoutParam, ZFUISize, sizeHintOffset
 }
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, owner)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, child
-        , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, ownerParent)
+
+ZFUIView *ZFUILayoutParam::ownerParent(void) {
+    if(_ZFP_LP_owner) {
+        return _ZFP_LP_owner->parent();
+    }
+    else {
+        return zfnull;
+    }
+}
 
 zfanyT<ZFUILayoutParam> ZFUILayoutParam::child(
-            ZF_IN ZFUIView *view
+            ZF_IN const zfany &view
             , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
             ) {
     ZFCoreAssertWithMessageTrim(_ZFP_LP_owner
             , "layout param not attached to view: %s"
             , this
             );
-    return _ZFP_LP_owner->parent()->child(view, atIndex);
+    ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
+        ? zfcast(ZFUILayoutParam *, view)->ownerParent()
+        : zfcast(ZFUIView *, view);
+    ZFCoreAssertWithMessageTrim(tmp
+            , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
+            , view
+            );
+    return _ZFP_LP_owner->parent()->child(tmp, atIndex);
 }
+/* ZFTAG_TRICKS: util for chained call to build view tree */
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
 
 // ============================================================
 ZFENUM_DEFINE(ZFUIViewChildLayer)

@@ -18,11 +18,11 @@ protected:
 
         ZFUIOnScreenKeyboardAutoResizeStart(window);
 
-        container->backgroundColor(ZFUIColorGreen());
+        container->bgColor(ZFUIColorGreen());
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextEdit> view;
             container->child(view)->c_widthFill()->c_margin(10);
-            view->backgroundColor(ZFUIColorRandom());
+            view->bgColor(ZFUIColorRandom());
         }
         container->childAt(0)->layoutParam()->align(ZFUIAlign::e_Top);
         container->childAt(1)->layoutParam()->align(ZFUIAlign::e_Center);

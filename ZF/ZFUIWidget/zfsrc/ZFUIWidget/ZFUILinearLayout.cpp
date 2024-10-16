@@ -5,8 +5,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // ZFUILinearLayoutParam
 ZFOBJECT_REGISTER(ZFUILinearLayoutParam)
+
+/* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILinearLayoutParam, zfanyT<ZFUILinearLayoutParam>, child
         , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILinearLayoutParam, zfanyT<ZFUILinearLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILinearLayout, zfanyT<ZFUILinearLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILinearLayout, zfanyT<ZFUILinearLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
 
@@ -33,13 +47,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, zffloat, childSpace) {
     if(this->childSpace() != propertyValueOld) {
         this->layoutRequest();
     }
-}
-
-ZFMETHOD_DEFINE_2(ZFUILinearLayout, zfanyT<ZFUILinearLayoutParam>, child
-        , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-        ) {
-    return this->childWithParam(view, zfnull, atIndex);
 }
 
 // ============================================================

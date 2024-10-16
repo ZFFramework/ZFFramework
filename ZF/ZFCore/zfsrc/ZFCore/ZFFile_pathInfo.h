@@ -836,7 +836,9 @@ extern ZFLIB_ZFCore const zfchar _ZFP_ZFPathInfoChainCharMap[256];
 /**
  * @brief see #ZFPathInfoChainDecode
  *
- * only `%` and `|` would be escaped
+ * keep all printable chars except:
+ * -  `%`
+ * -  `|`
  */
 #define ZFPathInfoChainCharMap() _ZFP_ZFPathInfoChainCharMap
 

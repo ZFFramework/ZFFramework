@@ -26,7 +26,7 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
     }
 
     updateParam.cell->internalFgViewAdd(separatorView);
-    separatorView->backgroundColor(owner->separatorColor());
+    separatorView->bgColor(owner->separatorColor());
     switch(updateParam.orientation) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:

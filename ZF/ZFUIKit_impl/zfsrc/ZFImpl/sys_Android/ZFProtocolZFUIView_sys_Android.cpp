@@ -200,19 +200,19 @@ public:
             , (jboolean)viewUIEnableTree
             );
     }
-    virtual void backgroundColor(
+    virtual void bgColor(
             ZF_IN ZFUIView *view
-            , ZF_IN const ZFUIColor &backgroundColor
+            , ZF_IN const ZFUIColor &bgColor
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_backgroundColor",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_bgColor",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()
-            , ZFImpl_sys_Android_ZFUIColorToColor(backgroundColor)
+            , ZFImpl_sys_Android_ZFUIColorToColor(bgColor)
             );
     }
 

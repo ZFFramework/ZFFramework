@@ -19,7 +19,7 @@ protected:
 
         zfobj<ZFUIWebView> testView;
         container->child(testView)->c_sizeFill()->c_margin(40);
-        testView->backgroundColor(ZFUIColorRed());
+        testView->bgColor(ZFUIColorRed());
 
         this->prepareSettingButton(window, testView);
 

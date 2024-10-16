@@ -56,7 +56,7 @@ protected:
 
         zfobj<ZFUIView> outputViewContainer;
         container->child(outputViewContainer)->c_sizeFill()->c_margin(0, 50, 0, 0);
-        outputViewContainer->backgroundColor(ZFUIColorBlack());
+        outputViewContainer->bgColor(ZFUIColorBlack());
 
         zfobj<ZFUITextView> outputView;
         outputViewContainer->child(outputView)->c_widthFill();
@@ -155,7 +155,7 @@ public:
         switch(this->testObjectType) {
             case 0: {
                 zfobj<ZFUIKit_test_Button> v;
-                v->background()->backgroundColor(ZFUIColorRandom());
+                v->bg()->bgColor(ZFUIColorRandom());
                 return v;
             }
             case 1: {

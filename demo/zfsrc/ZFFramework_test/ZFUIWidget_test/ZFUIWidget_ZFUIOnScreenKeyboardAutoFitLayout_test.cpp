@@ -20,11 +20,11 @@ protected:
         container->child(layout)->c_sizeFill();
         this->prepareSettingButton(window, layout);
 
-        layout->backgroundColor(ZFUIColorGreen());
+        layout->bgColor(ZFUIColorGreen());
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextEdit> view;
             layout->child(view)->c_widthFill()->c_margin(10);
-            view->backgroundColor(ZFUIColorRandom());
+            view->bgColor(ZFUIColorRandom());
         }
         layout->childAt(0)->layoutParam()->align(ZFUIAlign::e_Top);
         layout->childAt(1)->layoutParam()->align(ZFUIAlign::e_Center);

@@ -21,9 +21,9 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUITextView>, labelNorma
     value->singleLine(zffalse);
     value->textSizeAutoMin(0);
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroundNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, bgNormal) {
     ZFUIImageView *value = propertyValue;
-    value->image(zfres("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
+    value->image(zfres("ZFUIWidget/ZFUIHintContentBasic_bg.xml"));
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintCreate

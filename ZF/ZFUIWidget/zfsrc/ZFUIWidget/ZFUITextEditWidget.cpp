@@ -7,10 +7,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECT_REGISTER(ZFUITextEditWidget)
 ZFSTYLE_DEFAULT_DEFINE(ZFUITextEditWidget)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIImageView>, backgroundView) {
-    zfobj<ZFUIImageView> backgroundView;
-    propertyValue = backgroundView;
-    backgroundView->image(zfres("ZFUIWidget/ZFUITextEditWidget_background.xml"));
+ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIImageView>, bgView) {
+    zfobj<ZFUIImageView> bgView;
+    propertyValue = bgView;
+    bgView->image(zfres("ZFUIWidget/ZFUITextEditWidget_bg.xml"));
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIButtonBasic>, clearButton) {
     zfobj<ZFUIButtonBasic> clearButton;
@@ -34,10 +34,10 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEditWidget, zfbool, clearButtonAutoEnable) {
 void ZFUITextEditWidget::objectOnInit(void) {
     zfsuper::objectOnInit();
 
-    ZFUIImageView *backgroundView = this->backgroundView();
-    this->internalImplViewAdd(backgroundView);
-    backgroundView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-    backgroundView->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
+    ZFUIImageView *bgView = this->bgView();
+    this->internalImplViewAdd(bgView);
+    bgView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+    bgView->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
 
     ZFUIButtonBasic *clearButton = this->clearButton();
     this->internalBgViewAdd(clearButton);
@@ -57,9 +57,9 @@ void ZFUITextEditWidget::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
 void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin) {
     zfsuper::nativeImplViewMarginImplUpdate(nativeImplViewMargin);
 
-    ZFUIImageView *backgroundView = this->backgroundView();
-    if(backgroundView->visible()) {
-        ZFUIImage *image = backgroundView->imageState();
+    ZFUIImageView *bgView = this->bgView();
+    if(bgView->visible()) {
+        ZFUIImage *image = bgView->imageState();
         if(image != zfnull) {
             ZFUIMarginInc(nativeImplViewMargin, nativeImplViewMargin, image->imageNinePatch());
         }
@@ -92,9 +92,9 @@ void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     }
 
     ZFUIMargin margin = ZFUIMarginZero();
-    ZFUIImageView *backgroundView = this->backgroundView();
-    if(backgroundView->visible()) {
-        ZFUIImage *image = backgroundView->imageState();
+    ZFUIImageView *bgView = this->bgView();
+    if(bgView->visible()) {
+        ZFUIImage *image = bgView->imageState();
         if(image != zfnull) {
             margin = image->imageNinePatch();
         }

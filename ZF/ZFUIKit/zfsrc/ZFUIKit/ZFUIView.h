@@ -399,8 +399,8 @@ public:
     /**
      * @brief background color, #ZFUIColorZero by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, backgroundColor, ZFUIColorZero())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, backgroundColor)
+    ZFPROPERTY_ASSIGN(ZFUIColor, bgColor, ZFUIColorZero())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, bgColor)
 
     // ============================================================
     // transform
@@ -902,13 +902,13 @@ public:
             , ZFMP_IN(ZFUILayoutParam *, layoutParam)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
-    /** @brief util method for #childWithParam */
-    inline zfanyT<ZFUILayoutParam> child(
-            ZF_IN ZFUIView *view
+    /**
+     * @brief add child and return child's #layoutParam, see #childWithParam
+     */
+    zffinal zfanyT<ZFUILayoutParam> child(
+            ZF_IN const zfany &view
             , ZF_IN_OPT zfindex atIndex = zfindexMax()
-            ) {
-        return this->childWithParam(view, zfnull, atIndex);
-    }
+            );
     /**
      * @brief remove view or do nothing if view isn't added to this view
      */

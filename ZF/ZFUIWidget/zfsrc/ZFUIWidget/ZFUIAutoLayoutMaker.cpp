@@ -6,7 +6,7 @@ static void _ZFP_ZFUIAutoLayout_posAttach(
         ZF_IN ZFUIAutoLayoutParam *lp
         , ZF_IN ZFUIAutoLayoutPosEnum pos
         ) {
-    ZFCoreAssertWithMessageTrim(lp->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing pos rule");
+    ZFCoreAssertWithMessageTrim(lp->owner() != zfnull, "[ZFUIAutoLayout] must add to parent before changing pos rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
     if(d.posReset) {
         d.posReset = zffalse;
@@ -17,12 +17,40 @@ static void _ZFP_ZFUIAutoLayout_posAttach(
 
 static void _ZFP_ZFUIAutoLayout_targetAttach(
         ZF_IN ZFUIAutoLayoutParam *lp
+        , ZF_IN const zfstring &viewId
+        , ZF_IN ZFUIAutoLayoutPosEnum targetPos
+        ) {
+    ZFCoreAssertWithMessageTrim(lp->owner() != zfnull, "[ZFUIAutoLayout] must add to parent before changing target rule");
+    ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
+    ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, lp->ownerParent());
+    zfbool posAttached = zffalse;
+    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+        if(d.posAttached[i]) {
+            posAttached = zftrue;
+
+            ZFUIAutoLayoutRule &rule = d.ruleList[i];
+            if(!viewId) {
+                rule._ZFP_AL_targetId = ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent;
+            }
+            else {
+                rule._ZFP_AL_targetId = viewId;
+            }
+            rule.target(zfnull);
+            rule.targetPos(targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPosEnum)i : targetPos);
+        }
+    }
+    ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
+    d.posReset = zftrue;
+    parent->layoutRequest();
+}
+static void _ZFP_ZFUIAutoLayout_targetAttach(
+        ZF_IN ZFUIAutoLayoutParam *lp
         , ZF_IN ZFUIView *target
         , ZF_IN ZFUIAutoLayoutPosEnum targetPos
         ) {
-    ZFCoreAssertWithMessageTrim(lp->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing target rule");
+    ZFCoreAssertWithMessageTrim(lp->owner() != zfnull, "[ZFUIAutoLayout] must add to parent before changing target rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
-    ZFUIAutoLayout *parent = lp->ownerParent();
+    ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, lp->ownerParent());
     if(target == zfnull) {
         target = parent;
     }
@@ -50,7 +78,7 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, const ZFUIAutoLayoutRule &, rule
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, ruleRemove
         , ZFMP_IN(ZFUIAutoLayoutPosEnum, pos)
         ) {
-    ZFUIAutoLayout *parent = this->ownerParent();
+    ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, this->ownerParent());
     ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[pos];
     if(rule.valid()) {
         if(parent != zfnull) {
@@ -60,7 +88,7 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, ruleRemove
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, ruleRemoveAll) {
-    ZFUIAutoLayout *parent = this->ownerParent();
+    ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, this->ownerParent());
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(rule.valid()) {
@@ -90,6 +118,37 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, right) {
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, bottom) {
     _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Bottom);
+}
+
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toWidth
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Width);
+}
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toHeight
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Height);
+}
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toLeft
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Left);
+}
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toTop
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Top);
+}
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toRight
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Right);
+}
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toBottom
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Bottom);
 }
 
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toWidth
@@ -124,37 +183,42 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toBottom
 }
 
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentWidth) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_Width);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Width);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentHeight) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_Height);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Height);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentLeft) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Left);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentTop) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Top);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentRight) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Right);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentBottom) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_Bottom);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Bottom);
 }
 
+ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, to
+        , ZFMP_IN(const zfstring &, viewId)
+        ) {
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_None);
+}
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, to
         , ZFMP_IN(ZFUIView *, target)
         ) {
     _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_None);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParent) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, zfnull, ZFUIAutoLayoutPos::e_None);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_None);
 }
 
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, offset
         , ZFMP_IN(zffloat, offset)
         ) {
-    ZFCoreAssertWithMessageTrim(this->ownerChild() != zfnull, "[ZFUIAutoLayout] must add to parent before changing offset rule");
+    ZFCoreAssertWithMessageTrim(this->owner() != zfnull, "[ZFUIAutoLayout] must add to parent before changing offset rule");
     ZFUIAutoLayoutParam::_ZFP_Data &d = _ZFP_AL_d;
     zfbool posAttached = zffalse;
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {

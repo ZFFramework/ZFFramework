@@ -18,7 +18,7 @@ zfclassFwd _ZFP_ZFUIButtonBasicPrivate;
  * a basic button contains:
  * -  label: to show button's text
  * -  icon: to show button's icon
- * -  background: to show button's background
+ * -  bg: to show button's background
  *
  * to change the button's property,
  * you must use ZFUIButtonBasic's styleable property,
@@ -28,7 +28,7 @@ zfclassFwd _ZFP_ZFUIButtonBasicPrivate;
  * if other state doesn't supply value:
  * -  label's #ZFUITextView::text
  * -  icon's #ZFUIImageView::image
- * -  background's #ZFUIImageView::image
+ * -  bg's #ZFUIImageView::image
  */
 zfclass ZFLIB_ZFUIWidget ZFUIButtonBasic : zfextend ZFUIButton {
     ZFOBJECT_DECLARE(ZFUIButtonBasic, ZFUIButton)
@@ -57,7 +57,7 @@ public:
     /**
      * @brief button background's layout margin, #ZFUIMarginZero by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIMargin, backgroundMargin, ZFUIMarginZero())
+    ZFPROPERTY_ASSIGN(ZFUIMargin, bgMargin, ZFUIMarginZero())
 
     // ============================================================
     // label
@@ -126,34 +126,34 @@ public:
     // ============================================================
     // background
     /** @brief background style in normal state */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundNormal, zfobj<ZFUIImageView>())
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundNormal)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, backgroundNormal)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, backgroundNormal)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, bgNormal, zfobj<ZFUIImageView>())
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, bgNormal)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, bgNormal)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, bgNormal)
 
     /** @brief background style in highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundHighlighted, zfobj<ZFUIImageView>())
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundHighlighted)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, backgroundHighlighted)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, backgroundHighlighted)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, bgHighlighted, zfobj<ZFUIImageView>())
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, bgHighlighted)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, bgHighlighted)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, bgHighlighted)
 
     /** @brief background style in checked state */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundChecked, zfobj<ZFUIImageView>())
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundChecked)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, backgroundChecked)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, backgroundChecked)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, bgChecked, zfobj<ZFUIImageView>())
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, bgChecked)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, bgChecked)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, bgChecked)
 
     /** @brief background style in checked highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundCheckedHighlighted, zfobj<ZFUIImageView>())
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundCheckedHighlighted)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, backgroundCheckedHighlighted)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, backgroundCheckedHighlighted)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, bgCheckedHighlighted, zfobj<ZFUIImageView>())
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, bgCheckedHighlighted)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, bgCheckedHighlighted)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, bgCheckedHighlighted)
 
     /** @brief background style in disabled state */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, backgroundDisabled, zfobj<ZFUIImageView>())
-    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, backgroundDisabled)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, backgroundDisabled)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, backgroundDisabled)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, bgDisabled, zfobj<ZFUIImageView>())
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, bgDisabled)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, bgDisabled)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, bgDisabled)
 
     // ============================================================
     // util method
@@ -173,7 +173,7 @@ public:
     /**
      * @brief util method to get button icon's style
      */
-    ZFMETHOD_DECLARE_1(zfanyT<ZFUIImageView>, background
+    ZFMETHOD_DECLARE_1(zfanyT<ZFUIImageView>, bg
             , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
             )
 
@@ -207,8 +207,8 @@ public:
             , ZFMP_IN(ZFUIImageView *, style)
             , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
             )
-    /** @brief see backgroundStyle */
-    ZFMETHOD_DECLARE_2(void, backgroundStyle
+    /** @brief see labelStyle */
+    ZFMETHOD_DECLARE_2(void, bgStyle
             , ZFMP_IN(ZFUIImageView *, style)
             , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
             )
@@ -240,15 +240,15 @@ protected:
     /**
      * @brief must be type of #ZFUITextView, by default it's #ZFUITextView
      */
-    virtual const ZFClass *buttonLabelClass(void);
+    virtual const ZFClass *labelViewClass(void);
     /**
      * @brief must be type of #ZFUIImageView, by default it's #ZFUIImageView
      */
-    virtual const ZFClass *buttonIconClass(void);
+    virtual const ZFClass *iconViewClass(void);
     /**
      * @brief must be type of #ZFUIImageView, by default it's #ZFUIImageView
      */
-    virtual const ZFClass *buttonBackgroundClass(void);
+    virtual const ZFClass *bgViewClass(void);
 
 public:
     /**
@@ -260,9 +260,9 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUIImageView>, iconView)
     /**
-     * @brief button's background view, style of this view must be changed by #ZFUIButtonBasic::backgroundNormal, etc
+     * @brief button's background view, style of this view must be changed by #ZFUIButtonBasic::bgNormal, etc
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUIImageView>, backgroundView)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIImageView>, bgView)
 
 private:
     _ZFP_ZFUIButtonBasicPrivate *d;
