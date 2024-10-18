@@ -206,14 +206,6 @@ public:
             ) {
         this->observerAdd(eventId, observer, observerLevel);
     }
-    /** @brief util to #observerAddForOnce */
-    zffinal inline void once(
-            ZF_IN zfidentity eventId
-            , ZF_IN const ZFListener &observer
-            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
-            ) {
-        this->observerAddForOnce(eventId, observer, observerLevel);
-    }
 
 public:
     /**

@@ -501,7 +501,8 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnStop
 ZFMETHOD_DEFINE_1(ZFAniGroup, void, wait
         , ZFMP_IN(zftimet, duration)
         ) {
-    this->child(zfobj<ZFAnimation>()->c_duration(duration));
+    this->child(zfobj<ZFAnimation>());
+    this->childDuration(duration);
 }
 zfclass _ZFP_I_ZFAniGroupStep : zfextend ZFAnimation {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFAniGroupStep, ZFAnimation)
