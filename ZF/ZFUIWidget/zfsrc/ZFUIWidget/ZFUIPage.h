@@ -186,6 +186,10 @@ public:
     ZFMETHOD_DECLARE_1(void, pageCreate
             , ZFMP_IN(ZFUIPage *, page)
             )
+    /** @brief util to #ZFUIPageManager::pageReplace */
+    ZFMETHOD_DECLARE_1(void, pageReplace
+            , ZFMP_IN(ZFUIPage *, page)
+            )
     /** @brief util to #ZFUIPageManager::pageResume */
     ZFMETHOD_DECLARE_0(void, pageResume)
     /** @brief util to #ZFUIPageManager::pageDestroy */
@@ -486,6 +490,10 @@ public:
 
     /** @brief create and resume page */
     ZFMETHOD_DECLARE_1(void, pageCreate
+            , ZFMP_IN(ZFUIPage *, page)
+            )
+    /** @brief util to destroy current and create new page */
+    ZFMETHOD_DECLARE_1(void, pageReplace
             , ZFMP_IN(ZFUIPage *, page)
             )
 

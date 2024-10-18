@@ -371,12 +371,11 @@ public:
                     break;
                 }
                 for(int iLocal = 1; ; ++iLocal) {
-                    const char *varName = lua_getlocal(L, &ar, iLocal);
+                    const char *varName = lua_getlocal(L, &ar, iLocal); // [var]
                     if(varName == NULL) {
                         break;
                     }
                     if(strcmp(varName, "_ENV") == 0) {
-                        // [var]
                         lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
                         lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
                         lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
@@ -394,7 +393,7 @@ public:
                         }
                     }
                     else if(strcmp(varName, "ZFLocalPathInfo") == 0) {
-                        int error = lua_pcall(L, 0, 1, 0);
+                        int error = lua_pcall(L, 0, 1, 0); // [pathInfoObj]
                         if(error != 0) {
                             lua_pop(L, 1);
                             zfstringAppend(errorHint,
@@ -425,8 +424,8 @@ public:
         // dump the function
         lua_pushvalue(L, luaStackOffset);
         int dumpError = lua_dump(L, _funcWriter, this, ZFLogLevelIsActive(ZFLogLevel::e_Debug) ? 0 : 1);
+        lua_pop(L, 1);
         if(dumpError != 0) {
-            lua_pop(L, 1);
             zfstringAppend(errorHint,
                 "[%s] unable to dump function: %s",
                 this->logTag(),
@@ -455,8 +454,6 @@ public:
             this->upvalues.add(v);
         }
 
-        // pop the function
-        lua_pop(L, 1);
         return zftrue;
     }
 

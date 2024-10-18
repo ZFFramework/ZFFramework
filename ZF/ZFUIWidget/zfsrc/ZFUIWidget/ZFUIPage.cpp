@@ -34,6 +34,11 @@ ZFMETHOD_DEFINE_1(ZFUIPage, void, pageCreate
         ) {
     this->pageManager()->pageCreate(page);
 }
+ZFMETHOD_DEFINE_1(ZFUIPage, void, pageReplace
+        , ZFMP_IN(ZFUIPage *, page)
+        ) {
+    this->pageManager()->pageReplace(page);
+}
 
 ZFMETHOD_DEFINE_0(ZFUIPage, void, pageResume) {
     this->pageManager()->pageResume(this);
@@ -231,11 +236,18 @@ public:
         ZFUIPageManager *manager = zfnull;
         if(resumePage != zfnull) {
             resumePage->pageAni(zfnull);
-            manager = resumePage->pageManager();
+            if(manager == zfnull) {
+                manager = resumePage->pageManager();
+            }
         }
         if(pausePage != zfnull) {
             pausePage->pageAni(zfnull);
-            manager = pausePage->pageManager();
+            if(manager == zfnull) {
+                manager = pausePage->pageManager();
+            }
+        }
+        if(manager == zfnull) {
+            return;
         }
         if(resumePage != zfnull && resumePage->pageView()->parent() == zfnull) {
             resumePage->pageManager()->pageContainer()->child(resumePage->pageView())->c_sizeFill();
@@ -655,6 +667,15 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageCreate
         pm->d->scheduleResume(ZFUIPageResumeReason::e_ByRequest, pausePage, ZFUIPagePauseReason::e_ToBackground);
     } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
+}
+ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageReplace
+        , ZFMP_IN(ZFUIPage *, page)
+        ) {
+    ZFUIPage *cur = this->pageForeground();
+    this->pageCreate(page);
+    if(cur) {
+        this->pageDestroy(cur);
+    }
 }
 
 ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResume

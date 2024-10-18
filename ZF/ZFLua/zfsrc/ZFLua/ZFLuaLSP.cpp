@@ -74,12 +74,13 @@ static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         , ZF_IN const ZFMethod *m
+        , ZF_IN const zfstring &returnTypeId
         ) {
     /*
         ---@overload fun(p0:P0):Ret
         ---@overload fun(p0:P0, p1:P1):Ret
      */
-    zfstring retSig = _ZFP_ZFLuaLSPGen_retSig(m);
+    zfstring retSig = returnTypeId ? returnTypeId : _ZFP_ZFLuaLSPGen_retSig(m);
     zfindex paramCount = m->paramCountMin();
     do {
         output << "---@overload fun(";
@@ -283,10 +284,7 @@ static void _ZFP_ZFLuaLSPGen_class(
         if(m->paramCount() == 0) {
             continue;
         }
-        if(m->ownerClass() != cls && !m->ownerClass()->classIsInterface()) {
-            continue;
-        }
-        _ZFP_ZFLuaLSPGen_method_overloadAnnotation(output, luaKeywords, m);
+        _ZFP_ZFLuaLSPGen_method_overloadAnnotation(output, luaKeywords, m, _ZFP_ZFLuaLSPGen_typeIdToSig(cls));
     }
     output
         << classSig << " = {}\n"

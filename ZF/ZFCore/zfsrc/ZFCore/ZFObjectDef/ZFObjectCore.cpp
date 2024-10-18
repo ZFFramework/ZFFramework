@@ -128,7 +128,7 @@ ZFObjectHolder *ZFObject::objectHolder(void) {
 ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this->classData()->classIsDynamicRegister()) {
         const ZFMethod *m = this->classData()->methodForName("objectCompare");
-        if(m) {
+        if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
         }
     }
@@ -137,7 +137,7 @@ ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
 ZFCompareResult ZFObject::objectCompareValue(ZF_IN ZFObject *anotherObj) {
     if(this->classData()->classIsDynamicRegister()) {
         const ZFMethod *m = this->classData()->methodForName("objectCompareValue");
-        if(m) {
+        if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
         }
     }

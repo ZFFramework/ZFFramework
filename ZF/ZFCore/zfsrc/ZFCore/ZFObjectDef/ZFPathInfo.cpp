@@ -53,8 +53,14 @@ zfbool ZFPathInfo::isEmpty(void) const {
 }
 void ZFPathInfo::removeAll(void) {
     if(d) {
-        d->pathType.removeAll();
-        d->pathData.removeAll();
+        if(d->refCount == 1) {
+            d->pathType.removeAll();
+            d->pathData.removeAll();
+        }
+        else {
+            --(d->refCount);
+            d = zfnull;
+        }
     }
 }
 
