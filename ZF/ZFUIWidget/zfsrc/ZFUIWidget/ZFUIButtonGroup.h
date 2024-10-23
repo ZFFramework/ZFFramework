@@ -1,6 +1,6 @@
 /**
  * @file ZFUIButtonGroup.h
- * @brief abstract button group management
+ * @brief button group util
  */
 
 #ifndef _ZFI_ZFUIButtonGroup_h_
@@ -9,9 +9,6 @@
 #include "ZFUIButton.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIButtonGroup_buttons "buttons"
-
 // ============================================================
 // ZFUIButtonGroupType
 /**
@@ -19,49 +16,31 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
     /**
-     * @brief normal, all buttons are added without any modification
-     */
-    ZFENUM_VALUE(Normal)
-    /**
      * @brief act like tab management, all buttons are changed to checkable,
      *   and only one button can be checked at one time
      *
      * this type can be used as tab buttons and ratio buttons
      */
     ZFENUM_VALUE(Tab)
+    /**
+     * @brief normal, all buttons are added without any modification
+     */
+    ZFENUM_VALUE(Normal)
 ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(Tab)
+    ZFENUM_VALUE_REGISTER(Normal)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
 
 // ============================================================
 // ZFUIButtonGroup
 /**
- * @brief abstract button group management
+ * @brief button group util
  *
- * you have two basic ways to use a button group to manage button views:
- * -  implement from #ZFUIButtonGroup,
- *   override #ZFUIButtonGroup::buttonOnAdd and #ZFUIButtonGroup::buttonOnRemove
- *   to manage button views
- * -  use #ZFUIButtonGroupArray to manage buttons,
- *   and observe #ZFUIButtonGroup::EventButtonOnAdd and #ZFUIButtonGroup::EventButtonOnRemove
- *   to manage button views
- *
- * after buttons added, you may observe #ZFUIButton's button event to achieve your logic\n
- * see #ZFUIButtonGroup::buttonGroupOnEvent for more info
- *
- * serializable data:
- * @code
- *   <SomeButtonGroup>
- *       <ZFArray category="buttons">
- *           <SomeButton category="element" />
- *           <SomeButton category="element" />
- *       </ZFArray>
- *   </SomeButtonGroup>
- * @endcode
+ * a button group is simply a abstract button manager,
+ * you need to add buttons to both button group and view tree
  */
-zfinterface ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextend ZFInterface {
-    ZFINTERFACE_DECLARE(ZFUIButtonGroup, ZFInterface)
+zfclass ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextend ZFStyleableObject {
+    ZFOBJECT_DECLARE(ZFUIButtonGroup, ZFStyleableObject)
 
 public:
     // ============================================================
@@ -167,7 +146,7 @@ protected:
      * for example:
      * @code
      *   ZFUIButtonGroup *buttonGroup = ...;
-     *   buttonGroup->toObject()->observerAdd(ZFUIButton::EventButtonOnClick(), myObserver);
+     *   buttonGroup->->observerAdd(ZFUIButton::EventButtonOnClick(), myObserver);
      * @endcode
      * note:
      * sender is the button that fired the button event,
@@ -179,10 +158,10 @@ protected:
             , ZF_IN zfindex buttonIndex
             , ZF_IN zfidentity eventId
             ) {
-        this->toObject()->observerNotifyWithSender(
+        this->observerNotifyWithSender(
             button,
             eventId,
-            this->toObject(),
+            this,
             zfobj<v_zfindex>(buttonIndex));
     }
     /** @brief see #EventButtonOnAdd */
@@ -190,10 +169,10 @@ protected:
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->toObject()->observerNotifyWithSender(
+        this->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonOnAdd(),
-            this->toObject(),
+            this,
             zfobj<v_zfindex>(buttonIndex));
     }
     /** @brief see #EventButtonOnRemove */
@@ -201,10 +180,10 @@ protected:
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->toObject()->observerNotifyWithSender(
+        this->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonOnRemove(),
-            this->toObject(),
+            this,
             zfobj<v_zfindex>(buttonIndex));
     }
 
@@ -265,10 +244,10 @@ protected:
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndexPrev
             ) {
-        this->toObject()->observerNotifyWithSender(
+        this->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonTabOnUpdate(),
-            this->toObject(),
+            this,
             zfobj<v_zfindex>(buttonIndexPrev));
     }
     /** @brief see #EventButtonTabOnClickChecked */
@@ -276,102 +255,30 @@ protected:
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
-        this->toObject()->observerNotifyWithSender(
+        this->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonTabOnClickChecked(),
-            this->toObject(),
+            this,
             zfobj<v_zfindex>(buttonIndex));
     }
 
 protected:
-    ZFINTERFACE_ON_INIT_DECLARE() {
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
         _ZFP_buttons = zfAlloc(ZFArray);
     }
-    ZFINTERFACE_ON_DEALLOC_DECLARE() {
-        zfRetainChange(_ZFP_buttons, zfnull);
-    }
-
-protected:
-    /** @brief util for serialization */
-    virtual zfbool serializableOnSerializeFromData(
-            ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
-            ) {
-        zfautoT<ZFArray> buttons;
-        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, buttons, {
-                    return zffalse;
-                });
-
-        this->buttonRemoveAll();
-        for(zfindex i = 0; i < buttons->count(); ++i) {
-            ZFUIButton *button = buttons->get(i);
-            if(button == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-                    "item %s not type of %s", buttons->get(i), ZFUIButton::ClassData()->className());
-                return zffalse;
-            }
-            this->button(button);
-        }
-        return zftrue;
-    }
-    /** @brief util for serialization */
-    virtual zfbool serializableOnSerializeToData(
-            ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            ) {
-        ZFUIButtonGroup *ref = zfcast(zfself *, referencedOwnerOrNull);
-        ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
-                ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, this->_ZFP_buttons, ref->_ZFP_buttons, zfnull, {
-                    return zffalse;
-                });
-        return zftrue;
-    }
-    /** @brief util for serialization */
-    virtual inline zfbool serializableOnCheckNeedSerializeChildren(void) {
-        return zffalse;
+    zfoverride
+    virtual void objectOnDealloc(void) {
+        zfRelease(_ZFP_buttons);
+        _ZFP_buttons = zfnull;
+        zfsuper::objectOnDealloc();
     }
 
 public:
     ZFArray *_ZFP_buttons;
     ZFListener _ZFP_buttonOnEvent;
     ZFListener _ZFP_buttonOnClick;
-};
-
-// ============================================================
-// ZFUIButtonGroupArray
-/**
- * @brief simply button group that only holds buttons
- */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupArray : zfextend ZFStyleableObject, zfimplement ZFUIButtonGroup {
-    ZFOBJECT_DECLARE(ZFUIButtonGroupArray, ZFStyleableObject)
-    ZFIMPLEMENT_DECLARE(ZFUIButtonGroup)
-
-protected:
-    zfoverride
-    virtual zfbool serializableOnSerializeFromData(
-            ZF_IN const ZFSerializableData &serializableData
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
-            ) {
-        return zfsuper::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)
-            && zfsuperI(ZFUIButtonGroup)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos);
-    }
-    zfoverride
-    virtual zfbool serializableOnSerializeToData(
-            ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
-            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            ) {
-        return zfsuper::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)
-            && zfsuperI(ZFUIButtonGroup)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint);
-    }
-    zfoverride
-    virtual inline zfbool serializableOnCheckNeedSerializeChildren(void) {
-        return zfsuperI(ZFUIButtonGroup)::serializableOnCheckNeedSerializeChildren();
-    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

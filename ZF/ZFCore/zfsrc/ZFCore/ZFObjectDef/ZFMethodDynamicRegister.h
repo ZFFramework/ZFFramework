@@ -23,7 +23,7 @@ zfclassFwd ZFMP;
  *   have lower performance (trade for flexibility)
  *
  * @note you may override parent's method by registering a dynamic method in subclass,
- *   at this case, you may use #ZFMethodInvokeData::callSuper
+ *   at this case, you may use #ZFInvokeData::callSuper
  *   to call parent's method
  * @note dynamic registered contents would be removed automatically
  *   during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkHigh
@@ -123,8 +123,8 @@ public:
 
     /**
      * @brief see #ZFMethodDynamicRegister,
-     *   methodImpl's param0 is #ZFMethodInvokeData,
-     *   sender is the invokerObject
+     *   methodImpl's param0 is #ZFInvokeData,
+     *   sender is the ownerObject
      */
     ZFMethodDynamicRegisterParam &methodImpl(ZF_IN const ZFListener &methodImpl);
     /** @brief see #ZFMethodDynamicRegister */

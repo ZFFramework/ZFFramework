@@ -31,9 +31,9 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     if(!ZFMethodGenericInvokerParamsCheckWithMethod(errorHint, paramCount, paramList, invokerMethod)) {
         return zffalse;
     }
-    zfobj<ZFMethodInvokeData> d;
-    d->invokerMethod = invokerMethod;
-    d->invokerObject = invokerObject;
+    zfobj<ZFInvokeData> d;
+    d->ownerMethod = invokerMethod;
+    d->ownerObject = invokerObject;
     d->param0.zfunsafe_assign(paramList[0]);
     d->param1.zfunsafe_assign(paramList[1]);
     d->param2.zfunsafe_assign(paramList[2]);

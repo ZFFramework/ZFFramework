@@ -28,8 +28,8 @@ typedef enum {
  *
  * can not be registered if the property already has custom life cycle for ownerClass\n
  * \n
- * callback's param0 is #ZFPropertyInvokeData,
- * sender is the invokerObject
+ * callback's param0 is #ZFPropertyState,
+ * sender is the ownerObject
  */
 extern ZFLIB_ZFCore zfbool ZFPropertyDynamicRegisterLifeCycle(
         ZF_IN const ZFProperty *property
@@ -46,37 +46,37 @@ extern ZFLIB_ZFCore zfbool ZFPropertyDynamicUnregisterLifeCycle(
         );
 
 /** @brief data to hold params for property, see #ZFPropertyDynamicRegisterLifeCycle */
-zfclass ZFLIB_ZFCore ZFPropertyInvokeData : zfextend ZFObject {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFPropertyInvokeData, ZFObject)
+zfclass ZFLIB_ZFCore ZFPropertyState : zfextend ZFObject {
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFPropertyState, ZFObject)
 
 public:
     /**
      * @brief holds the owner object of the property
      */
-    zfany invokerObject;
+    zfany ownerObject;
     /**
      * @brief holds the owner property
      */
-    const ZFProperty *invokerProperty;
+    const ZFProperty *ownerProperty;
     /**
      * @brief holds the property's value
      *
      * for retain property, it's the property's value,
      * for assign property, it's a #ZFTypeIdWrapper
      */
-    zfauto propertyValue;
+    zfauto value;
     /**
-     * @brief see #propertyValue
+     * @brief see #value
      */
-    zfauto propertyValueOld;
+    zfauto valueOld;
 
 protected:
     /** @cond ZFPrivateDoc */
-    ZFPropertyInvokeData(void) : ZFObject()
-    , invokerObject(zfnull)
-    , invokerProperty(zfnull)
-    , propertyValue()
-    , propertyValueOld()
+    ZFPropertyState(void) : ZFObject()
+    , ownerObject(zfnull)
+    , ownerProperty(zfnull)
+    , value()
+    , valueOld()
     {
     }
     /** @endcond */

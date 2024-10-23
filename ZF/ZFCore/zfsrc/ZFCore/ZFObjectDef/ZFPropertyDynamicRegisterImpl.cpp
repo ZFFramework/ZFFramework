@@ -674,20 +674,20 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         return;
     }
 
-    zfobj<ZFPropertyInvokeData> invokeData;
-    invokeData->invokerObject = propertyOwnerObject;
-    invokeData->invokerProperty = property;
+    zfobj<ZFPropertyState> invokeData;
+    invokeData->ownerObject = propertyOwnerObject;
+    invokeData->ownerProperty = property;
 
     if(property->isRetainProperty()) {
-        invokeData->propertyValue = ((zfauto *)propertyValue)->toObject();
-        invokeData->propertyValueOld = *(zfauto *)propertyValueOld;
+        invokeData->value = ((zfauto *)propertyValue)->toObject();
+        invokeData->valueOld = *(zfauto *)propertyValueOld;
 
         implUserData->callback.execute(ZFArgs()
                 .sender(propertyOwnerObject)
                 .param0(invokeData)
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
-            *(zfauto *)propertyValue = invokeData->propertyValue;
+            *(zfauto *)propertyValue = invokeData->value;
         }
     }
     else {
@@ -698,10 +698,10 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         ) {
             return;
         }
-        invokeData->propertyValue = typeInfo->typeIdClass()->newInstance();
-        invokeData->propertyValueOld = typeInfo->typeIdClass()->newInstance();
-        ZFTypeIdWrapper *propertyValueHolder = invokeData->propertyValue;
-        ZFTypeIdWrapper *propertyValueOldHolder = invokeData->propertyValueOld;
+        invokeData->value = typeInfo->typeIdClass()->newInstance();
+        invokeData->valueOld = typeInfo->typeIdClass()->newInstance();
+        ZFTypeIdWrapper *propertyValueHolder = invokeData->value;
+        ZFTypeIdWrapper *propertyValueOldHolder = invokeData->valueOld;
         if(propertyValueHolder == zfnull || propertyValueOldHolder == zfnull) {
             return;
         }

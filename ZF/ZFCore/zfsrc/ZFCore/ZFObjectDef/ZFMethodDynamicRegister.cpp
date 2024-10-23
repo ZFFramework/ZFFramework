@@ -5,39 +5,39 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFMethodInvokeData)
+ZFOBJECT_REGISTER(ZFInvokeData)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfbool, success)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, const ZFMethod *, invokerMethod)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfany, invokerObject)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfstring, errorHint)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, ret)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param0)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param1)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param2)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param3)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param4)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param5)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param6)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param7)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfbool, success)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, const ZFMethod *, ownerMethod)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfany, ownerObject)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfstring, errorHint)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, ret)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param0)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param1)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param2)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param3)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param4)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param5)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param6)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFInvokeData, zfauto, param7)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFMethodInvokeData, zfauto, callSuper)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFMethodInvokeData, const zfauto &, paramAt
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFInvokeData, zfauto, callSuper)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFInvokeData, const zfauto &, paramAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFMethodInvokeData, ZFMethodInvokeData *, paramSet
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFInvokeData, ZFInvokeData *, paramSet
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN(ZFObject *, param)
         )
 
-zfauto ZFMethodInvokeData::callSuper(void) {
-    ZFCoreAssertWithMessage(invokerMethod->isDynamicRegister(),
-        "ZFMethodInvokeData::callSuper() only works for dynamic registered method");
-    ZFCoreAssertWithMessage(invokerMethod->ownerClass() != zfnull && invokerMethod->methodType() == ZFMethodTypeVirtual,
-        "ZFMethodInvokeData::callSuper() only works for class virtual method");
+zfauto ZFInvokeData::callSuper(void) {
+    ZFCoreAssertWithMessage(this->ownerMethod->isDynamicRegister(),
+        "ZFInvokeData::callSuper() only works for dynamic registered method");
+    ZFCoreAssertWithMessage(this->ownerMethod->ownerClass() != zfnull && this->ownerMethod->methodType() == ZFMethodTypeVirtual,
+        "ZFInvokeData::callSuper() only works for class virtual method");
 
     ZFCoreQueuePOD<const ZFClass *> toCheck;
-    const ZFClass *cls = invokerMethod->ownerClass();
+    const ZFClass *cls = this->ownerMethod->ownerClass();
     ZFCoreArray<const ZFMethod *> buf;
     do {
         if(cls->classParent() != zfnull) {
@@ -54,13 +54,13 @@ zfauto ZFMethodInvokeData::callSuper(void) {
         }
 
         cls = toCheck.take();
-        const ZFMethod *chain = invokerMethod;
+        const ZFMethod *chain = this->ownerMethod;
         do {
             cls->methodForNameIgnoreParentGetAllT(buf, chain->methodName());
             for(zfindex i = 0; i < buf.count(); ++i) {
                 const ZFMethod *m = buf[i];
-                if(m->paramTypeIdIsMatch(invokerMethod)) {
-                    return m->methodInvoke(invokerObject
+                if(m->paramTypeIdIsMatch(this->ownerMethod)) {
+                    return m->methodInvoke(this->ownerObject
                             , param0
                             , param1
                             , param2
@@ -79,7 +79,7 @@ zfauto ZFMethodInvokeData::callSuper(void) {
     return zfnull;
 }
 
-const zfauto &ZFMethodInvokeData::paramAt(ZF_IN zfindex index) {
+const zfauto &ZFInvokeData::paramAt(ZF_IN zfindex index) {
     switch(index) {
         case 0: return this->param0;
         case 1: return this->param1;
@@ -94,7 +94,7 @@ const zfauto &ZFMethodInvokeData::paramAt(ZF_IN zfindex index) {
             return this->param7;
     } /* ZFMETHOD_MAX_PARAM */
 }
-ZFMethodInvokeData *ZFMethodInvokeData::paramSet(
+ZFInvokeData *ZFInvokeData::paramSet(
         ZF_IN zfindex index
         , ZF_IN ZFObject *param
         ) {
@@ -114,7 +114,7 @@ ZFMethodInvokeData *ZFMethodInvokeData::paramSet(
     return this;
 }
 
-void ZFMethodInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
     ret += ZFTOKEN_ZFObjectInfoLeft;
     ret += this->classData()->className();
     if(!this->success) {
@@ -126,8 +126,8 @@ void ZFMethodInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
     if(this->ret) {
         this->ret->objectInfoT(ret);
     }
-    else if(this->invokerMethod != zfnull) {
-        ret += this->invokerMethod->returnTypeId();
+    else if(this->ownerMethod != zfnull) {
+        ret += this->ownerMethod->returnTypeId();
     }
     else {
         ret += "?";
@@ -135,20 +135,20 @@ void ZFMethodInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
 
     // scope
     ret += " ";
-    if(this->invokerObject != zfnull) {
-        this->invokerObject->objectInfoOfInstanceT(ret);
+    if(this->ownerObject != zfnull) {
+        this->ownerObject->objectInfoOfInstanceT(ret);
         ret += ".";
     }
-    else if(this->invokerMethod != zfnull) {
-        if(this->invokerMethod->methodNamespace()) {
-            ret += this->invokerMethod->methodNamespace();
+    else if(this->ownerMethod != zfnull) {
+        if(this->ownerMethod->methodNamespace()) {
+            ret += this->ownerMethod->methodNamespace();
             ret += "::";
         }
     }
 
     // method name
-    if(this->invokerMethod != zfnull) {
-        ret += this->invokerMethod->methodName();
+    if(this->ownerMethod != zfnull) {
+        ret += this->ownerMethod->methodName();
     }
     else {
         ret += "?";

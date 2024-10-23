@@ -251,9 +251,5 @@ ZFMETHOD_DEFINE_0(ZFUIButtonGroup, void, buttonRemoveAll) {
     }
 }
 
-// ============================================================
-// ZFUIButtonGroupArray
-ZFOBJECT_REGISTER(ZFUIButtonGroupArray)
-
 ZF_NAMESPACE_GLOBAL_END
 

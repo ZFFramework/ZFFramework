@@ -194,7 +194,7 @@ public:
      * @brief see #ZFDynamic
      *
      * util method to register method (global method or class member method),
-     * methodImpl's param0 is #ZFMethodInvokeData
+     * methodImpl's param0 is #ZFInvokeData
      *
      * usage:
      * @code

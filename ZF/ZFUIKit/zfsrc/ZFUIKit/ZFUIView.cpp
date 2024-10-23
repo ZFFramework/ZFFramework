@@ -408,20 +408,22 @@ public:
         }
         child->serializableRefLayoutParam(this->serializableRefLayoutParamCache);
 
+        if(layoutParam == zfnull) {
+            layoutParam = child->layoutParam();
+        }
         zfautoT<ZFUILayoutParam> layoutParamTmp = layoutParam;
         if(layoutParamTmp == zfnull) {
-            layoutParamTmp = child->layoutParam();
-            if(layoutParamTmp == zfnull) {
-                layoutParamTmp = owner->layoutParamCreate();
-            }
+            layoutParamTmp = owner->layoutParamCreate();
+            layoutParam = layoutParamTmp;
         }
         else {
             if(!layoutParam->classData()->classIsTypeOf(owner->layoutParamClass())) {
                 layoutParamTmp = owner->layoutParamCreate();
                 layoutParamTmp->styleableCopyFrom(layoutParam);
+                layoutParam = layoutParamTmp;
             }
         }
-        layoutParam = layoutParamTmp;
+
         child->_ZFP_ZFUIView_parentOnUpdate(owner, layoutParam, childLayer);
         if(atIndex == zfindexMax()) {
             atIndex = layer.count();

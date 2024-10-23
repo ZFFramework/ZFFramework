@@ -83,8 +83,7 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when page created\n
-     * this event would also be fired to it's owner #pageManager
+     * called when page created
      */
     ZFEVENT(PageOnCreate)
     /**
@@ -92,8 +91,7 @@ public:
      *
      * called when page resumed,
      * param0 is #ZFUIPageResumeReason,
-     * param1 is the sibling pause page or null\n
-     * this event would also be fired to it's owner #pageManager
+     * param1 is the sibling pause page or null
      */
     ZFEVENT(PageOnResume)
     /**
@@ -101,15 +99,13 @@ public:
      *
      * called when page resumed,
      * param0 is #ZFUIPagePauseReason,
-     * param1 is the sibling resume page or null\n
-     * this event would also be fired to it's owner #pageManager
+     * param1 is the sibling resume page or null
      */
     ZFEVENT(PageOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when page destroyed\n
-     * this event would also be fired to it's owner #pageManager
+     * called when page destroyed
      */
     ZFEVENT(PageOnDestroy)
 
@@ -120,8 +116,7 @@ public:
      * to prepare #pageAni for this page and sibling page,
      * param0 is the #ZFUIPageResumeReason or #ZFUIPagePauseReason,
      * param1 is the sibling page\n
-     * see #pageAniOnPrepare for more info\n
-     * this event would also be fired to it's owner #pageManager
+     * see #pageAniOnPrepare for more info
      */
     ZFEVENT(PageAniOnPrepare)
 
@@ -131,8 +126,7 @@ public:
      * called when page ani start,
      * called once each for pause and resume page,
      * even if no actual animation to start,
-     * param0 is the #ZFUIPagePauseReason/#ZFUIPageResumeReason\n
-     * this event would also be fired to it's owner #pageManager
+     * param0 is the #ZFUIPagePauseReason/#ZFUIPageResumeReason
      */
     ZFEVENT(PageAniOnStart)
     /**
@@ -141,8 +135,7 @@ public:
      * called when page ani start,
      * called once each for pause and resume page,
      * even if no actual animation to start,
-     * param0 is the #ZFUIPagePauseReason/#ZFUIPageResumeReason\n
-     * this event would also be fired to it's owner #pageManager
+     * param0 is the #ZFUIPagePauseReason/#ZFUIPageResumeReason
      */
     ZFEVENT(PageAniOnStop)
 
@@ -325,6 +318,24 @@ public:
      * see #managerUIBlocked
      */
     ZFEVENT(ManagerUIBlockedOnUpdate)
+
+    // ============================================================
+    // page observers
+public:
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnCreate */
+    ZFEVENT(PageOnCreate)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnResume */
+    ZFEVENT(PageOnResume)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnPause */
+    ZFEVENT(PageOnPause)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnDestroy */
+    ZFEVENT(PageOnDestroy)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageAniOnPrepare */
+    ZFEVENT(PageAniOnPrepare)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageAniOnStart */
+    ZFEVENT(PageAniOnStart)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageAniOnStop */
+    ZFEVENT(PageAniOnStop)
 
     // ============================================================
     // manager creation

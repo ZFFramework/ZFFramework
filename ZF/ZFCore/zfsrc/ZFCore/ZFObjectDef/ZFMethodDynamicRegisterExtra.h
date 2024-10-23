@@ -11,13 +11,13 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief data to hold params for #ZFMethodGenericInvoker */
-zfclass ZFLIB_ZFCore ZFMethodInvokeData : zfextend ZFObject {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFMethodInvokeData, ZFObject)
+zfclass ZFLIB_ZFCore ZFInvokeData : zfextend ZFObject {
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFInvokeData, ZFObject)
 
 public:
     zfbool success; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    const ZFMethod *invokerMethod; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfany invokerObject; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    const ZFMethod *ownerMethod; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfany ownerObject; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfstring errorHint; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfauto ret; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     /* ZFMETHOD_MAX_PARAM */
@@ -44,15 +44,15 @@ public:
     /**
      * @brief util to set param by index
      */
-    zffinal ZFMethodInvokeData *paramSet(ZF_IN zfindex index, ZF_IN ZFObject *param);
+    zffinal ZFInvokeData *paramSet(ZF_IN zfindex index, ZF_IN ZFObject *param);
 
 protected:
     /** @cond ZFPrivateDoc */
-    ZFMethodInvokeData(void)
+    ZFInvokeData(void)
     : ZFObject()
     , success(zftrue)
-    , invokerMethod(zfnull)
-    , invokerObject(zfnull)
+    , ownerMethod(zfnull)
+    , ownerObject(zfnull)
     , errorHint()
     , ret()
     , param0()

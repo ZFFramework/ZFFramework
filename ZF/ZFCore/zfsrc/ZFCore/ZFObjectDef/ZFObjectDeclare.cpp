@@ -19,8 +19,8 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
             , ZFListener, methodImpl
             ) {
         // call `this->objectOnInit();`
-        ZFMethodInvokeData *ivk = zfargs.param0();
-        ivk->invokerObject->_ZFP_ZFObject_objectOnInit();
+        ZFInvokeData *ivk = zfargs.param0();
+        ivk->ownerObject->_ZFP_ZFObject_objectOnInit();
         methodImpl.execute(zfargs);
     } ZFLISTENER_END()
     return ZFMethodDynamicRegister(
@@ -72,8 +72,8 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
                 , ZFListener, methodImpl
                 ) {
             // call `this->objectOnInit();`
-            ZFMethodInvokeData *ivk = zfargs.param0();
-            ivk->invokerObject->_ZFP_ZFObject_objectOnInit();
+            ZFInvokeData *ivk = zfargs.param0();
+            ivk->ownerObject->_ZFP_ZFObject_objectOnInit();
             methodImpl.execute(zfargs);
         } ZFLISTENER_END()
         paramTmp.methodImpl(methodImplWrapper);
