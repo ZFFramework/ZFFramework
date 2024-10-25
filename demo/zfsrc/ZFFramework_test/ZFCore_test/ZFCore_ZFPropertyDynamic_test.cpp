@@ -32,7 +32,7 @@ protected:
                 .methodGenericInvoker(_setterGI)
                 .methodType(ZFMethodTypeNormal)
                 .methodName("myProp")
-                .methodParam(ZFTypeId_zfint(), "zfint const &")
+                .methodParam(ZFTypeId_zfint())
             );
         const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
                 .ownerClass(cls)

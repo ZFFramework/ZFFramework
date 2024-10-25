@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 template<typename T_str>
 static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
         ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
-        , ZF_IN T_str s
+        , ZF_IN T_str const &s
         ) {
     if(luaKeywords.find(s) != luaKeywords.end()) {
         zfstring ret;
