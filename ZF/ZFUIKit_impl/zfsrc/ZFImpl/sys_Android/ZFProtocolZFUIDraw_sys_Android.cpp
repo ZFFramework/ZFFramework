@@ -170,24 +170,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Android, ZFUIDraw, ZFProtocolLe
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void antialiasing(
-            ZF_IN ZFUIDrawToken &token
-            , ZF_IN zfbool antialiasing
-            ) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIDraw(), "native_antialiasing",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_object_Object())
-                .add(JNIType::S_boolean())
-            ).c_str());
-        _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIDraw(), jmId
-            , nativeToken->canvas
-            , (jboolean)antialiasing
-            );
-    }
-
-public:
     virtual void drawClear(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIRect &targetFramePixel

@@ -104,20 +104,6 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, endForImage
 }
 
 // ============================================================
-// settings
-ZFMETHOD_FUNC_DEFINE_1(zfbool const &, antialiasing
-        , ZFMP_IN(void *, context)
-        ) {
-    return ((ZFUIDrawToken *)context)->antialiasing;
-}
-ZFMETHOD_FUNC_DEFINE_2(void, antialiasing
-        , ZFMP_IN(void *, context)
-        , ZFMP_IN(zfbool const &, value)
-        ) {
-    ZFPROTOCOL_ACCESS(ZFUIDraw)->antialiasing(*(ZFUIDrawToken *)context, value);
-}
-
-// ============================================================
 // draw api
 ZFMETHOD_FUNC_DEFINE_2(void, drawClear
         , ZFMP_IN(void *, context)

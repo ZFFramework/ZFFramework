@@ -10,7 +10,6 @@ public:
             ZF_IN void *context
             , ZF_IN const ZFUISize &ownerSize
             ) {
-        ZFUIDraw::antialiasing(context, zftrue);
         ZFUIDraw::drawColor(context,
             ZFUIColorBlue(),
             ZFUIRectCreate(0, 0, ownerSize.width, ownerSize.height));

@@ -82,18 +82,6 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, endForImage
         )
 
 // ============================================================
-// settings
-/** @brief whether antialiasing, false by default */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfbool const &, antialiasing
-        , ZFMP_IN(void *, context)
-        )
-/** @brief whether antialiasing, false by default */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, antialiasing
-        , ZFMP_IN(void *, context)
-        , ZFMP_IN(zfbool const &, value)
-        )
-
-// ============================================================
 // draw api
 /** @brief see #ZFUIDraw::beginForView */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, drawClear

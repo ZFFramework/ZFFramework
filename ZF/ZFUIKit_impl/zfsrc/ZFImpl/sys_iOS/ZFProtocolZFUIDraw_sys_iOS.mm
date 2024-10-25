@@ -51,7 +51,9 @@ public:
 
 public:
     virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token) {
-        token.impl = (void *)UIGraphicsGetCurrentContext();
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetAllowsAntialiasing(context, YES);
+        token.impl = (void *)context;
         return (token.impl != zfnull);
     }
     virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
@@ -73,7 +75,9 @@ public:
             , ZF_IN const ZFUISize &imageSizePixel
             ) {
         UIGraphicsBeginImageContext(ZFImpl_sys_iOS_ZFUISizeToCGSize(imageSizePixel));
-        token.impl = (void *)UIGraphicsGetCurrentContext();
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetAllowsAntialiasing(context, YES);
+        token.impl = (void *)context;
         return (token.impl != zfnull);
     }
     virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) {
@@ -91,15 +95,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_iOS, ZFUIDraw, ZFProtocolLevel:
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForImage, "iOS:UIImage")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
-
-public:
-    virtual void antialiasing(
-            ZF_IN ZFUIDrawToken &token
-            , ZF_IN zfbool antialiasing
-            ) {
-        CGContextRef context = (CGContextRef)token.impl;
-        CGContextSetAllowsAntialiasing(context, antialiasing);
-    }
 
 public:
     virtual void drawClear(

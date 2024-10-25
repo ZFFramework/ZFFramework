@@ -24,20 +24,13 @@ public final class ZFUIDraw {
         NativeToken nativeToken = new NativeToken();
         Bitmap bitmap = Bitmap.createBitmap(imageSizePixel_width, imageSizePixel_height, Bitmap.Config.ARGB_8888);
         nativeToken.canvas = new Canvas(bitmap);
+        nativeToken.canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         nativeToken.image = new BitmapDrawable(ZFMainEntry.appContext().getResources(), bitmap);
         return nativeToken;
     }
 
     // ============================================================
     // ZFUIDraw
-    public static void native_antialiasing(Object canvas, boolean antialiasing) {
-        Canvas canvasTmp = (Canvas) canvas;
-        canvasTmp.setDrawFilter(antialiasing
-                ? new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG)
-                : null
-        );
-    }
-
     private static Paint _drawClear_paintCache_prepare() {
         Paint ret = new Paint();
         ret.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));

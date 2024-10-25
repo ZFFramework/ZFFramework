@@ -64,6 +64,7 @@ public:
         ZFUIDrawableView *drawableView = token.target;
         _ZFP_ZFUIDrawableViewImpl_sys_Qt *nativeDrawableView = (_ZFP_ZFUIDrawableViewImpl_sys_Qt *)drawableView->nativeImplView();
         token.impl = (void *)nativeDrawableView->_ZFP_painter;
+        nativeDrawableView->_ZFP_painter->setRenderHint(QPainter::Antialiasing, true);
         return zftrue;
     }
     virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
@@ -87,6 +88,7 @@ public:
         QImage *image = new QImage(imageSizePixel.width, imageSizePixel.height, QImage::Format_ARGB32);
         QPainter *painter = new QPainter(image);
         token.impl = (void *)painter;
+        painter->setRenderHint(QPainter::Antialiasing, true);
         painter->setPen(QColor(0, 0, 0, 0));
         painter->setBrush(QColor(0, 0, 0, 0));
         QPainter::CompositionMode oldMode = painter->compositionMode();
@@ -111,15 +113,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Qt, ZFUIDraw, ZFProtocolLevel::
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForImage, "Qt:QImage")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
-
-public:
-    virtual void antialiasing(
-            ZF_IN ZFUIDrawToken &token
-            , ZF_IN zfbool antialiasing
-            ) {
-        QPainter *painter = (QPainter *)token.impl;
-        painter->setRenderHint(QPainter::Antialiasing, antialiasing);
-    }
 
 public:
     virtual void drawClear(

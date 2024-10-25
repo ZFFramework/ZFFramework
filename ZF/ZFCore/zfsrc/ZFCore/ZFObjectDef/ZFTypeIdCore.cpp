@@ -35,12 +35,6 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, zfvToString
         , ZFMP_IN_OUT(zfstring &, s)
         )
 
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen);
-    }, ZFTypeIdWrapper
-    , ZFMP_IN(const zfchar *, src)
-    , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
-    )
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         if(src != zfnull) {
             if(src->classData()->classIsTypeOf(invokerObject->classData())
@@ -69,6 +63,12 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
         }
     }, ZFTypeIdWrapper
     , ZFMP_IN(ZFTypeIdWrapper *, src)
+    )
+ZFOBJECT_ON_INIT_USER_REGISTER_2({
+        invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen);
+    }, ZFTypeIdWrapper
+    , ZFMP_IN(const zfchar *, src)
+    , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
     )
 
 ZF_NAMESPACE_GLOBAL_END

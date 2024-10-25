@@ -231,8 +231,8 @@ public:
             , ZF_IN ZFUIPage *siblingPage
             ) {
         page->pageAniOnPrepare(resumeOrPauseReason, siblingPage);
-        page->observerNotify(ZFUIPage::EventPageAniOnPrepare(), resumeOrPauseReason, siblingPage);
         page->pageManager()->observerNotifyWithSender(page, ZFUIPageManager::EventPageAniOnPrepare(), resumeOrPauseReason, siblingPage);
+        page->observerNotify(ZFUIPage::EventPageAniOnPrepare(), resumeOrPauseReason, siblingPage);
     }
 
 public:

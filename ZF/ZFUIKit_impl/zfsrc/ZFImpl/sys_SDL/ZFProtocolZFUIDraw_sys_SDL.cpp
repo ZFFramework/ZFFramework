@@ -7,7 +7,14 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFUIDrawImpl_sys_SDL {
+zfclassNotPOD _ZFP_ZFUIDrawImpl_sys_SDL : zfextend ZFImpl_sys_SDL_View {
+
+public:
+    zfoverride
+    virtual const void *implType(void) {
+        return ZFUIDrawableView::ClassData();
+    }
+
 public:
     typedef enum {
         Invalid,
@@ -46,14 +53,20 @@ public:
             ZF_IN ZFUIDrawableView *drawableView
             , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)drawableView->nativeView();
+        nativeView->renderImpls.add(zfself::_renderCallback);
+
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
-        return drawImpl;
+        return (void *)(ZFImpl_sys_SDL_View *)drawImpl;
     }
     virtual void nativeDrawableViewDestroy(
             ZF_IN ZFUIDrawableView *drawableView
             , ZF_IN void *nativeDrawableView
             ) {
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)nativeDrawableView;
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)drawableView->nativeView();
+        nativeView->renderImpls.removeElement(zfself::_renderCallback);
+
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)nativeDrawableView;
         zfdelete(drawImpl);
     }
 
@@ -64,20 +77,13 @@ public:
 
 public:
     virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token) {
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.target->to<ZFUIView *>()->nativeImplView();
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)token.target->to<ZFUIView *>()->nativeImplView();
         drawImpl->type = _ZFP_ZFUIDrawImpl_sys_SDL::View;
-
         token.impl = drawImpl;
-
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)token.target->to<ZFUIView *>()->nativeView();
-        nativeView->renderImpls.add(zfself::_renderCallback);
         return zftrue;
     }
     virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)token.target->to<ZFUIView *>()->nativeView();
-        nativeView->renderImpls.removeElement(zfself::_renderCallback);
-
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.target->to<ZFUIDrawableView *>()->nativeImplView();
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)token.target->to<ZFUIDrawableView *>()->nativeImplView();
         drawImpl->type = _ZFP_ZFUIDrawImpl_sys_SDL::Invalid;
     }
 private:
@@ -92,7 +98,7 @@ private:
         if(drawableView == zfnull) {
             return zffalse;
         }
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)drawableView->nativeImplView();
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)drawableView->nativeImplView();
         if(drawImpl == zfnull) {
             return zffalse;
         }
@@ -163,14 +169,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_SDL, ZFUIDraw, ZFProtocolLevel:
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForView, "ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForImage, "SDL_image")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
-
-public:
-    virtual void antialiasing(
-            ZF_IN ZFUIDrawToken &token
-            , ZF_IN zfbool antialiasing
-            ) {
-        // not supported
-    }
 
 public:
     virtual void drawClear(

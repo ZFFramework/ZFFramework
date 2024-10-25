@@ -23,8 +23,6 @@ public:
     ZFUISize targetSizePixel; /**< @brief target size in pixel */
     void *impl; /**< @brief impl */
 
-    zfbool antialiasing; /**< @brief impl */
-
 public:
     /** @brief main constructor */
     explicit ZFUIDrawToken(
@@ -36,7 +34,6 @@ public:
     , target(target)
     , targetSizePixel(targetSizePixel)
     , impl(zfnull)
-    , antialiasing(zffalse)
     {
     }
 };
@@ -100,14 +97,6 @@ ZFPROTOCOL_INTERFACE_END(ZFUIDrawForImage)
  * @brief protocol for #ZFUIDraw
  */
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDraw)
-public:
-    /** @brief see #ZFUIDraw::antialiasing */
-    virtual void antialiasing(
-            ZF_IN ZFUIDrawToken &token
-            , ZF_IN zfbool antialiasing
-            ) {
-    }
-
 public:
     /** @brief see #ZFUIDraw::beginForView */
     virtual void drawClear(

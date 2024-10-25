@@ -131,6 +131,7 @@ private:
             , ZF_IN zffloat headPos
             , ZF_IN zffloat childSizeCache
             , ZF_IN ZFUISizeTypeEnum sizeType
+            , ZF_IN zffloat sizeHint
             , ZF_IN zffloat bias
             , ZF_IN_OUT zffloat &childHead
             , ZF_IN_OUT zffloat &childSize
@@ -249,6 +250,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
             head,
             tail - head,
             xAxis ? layoutParam->sizeParam().width : layoutParam->sizeParam().height,
+            xAxis ? layoutParam->sizeHint().width : layoutParam->sizeHint().height,
             xAxis ? layoutParam->biasX() : layoutParam->biasY(),
             xAxis ? _childFrame[childIndex].x : _childFrame[childIndex].y,
             xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height);
@@ -467,6 +469,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
             tailTmp,
             _childSizeCache[childIndex],
             xAxis ? layoutParam->sizeParam().width : layoutParam->sizeParam().height,
+            xAxis ? layoutParam->sizeHint().width : layoutParam->sizeHint().height,
             xAxis ? layoutParam->biasX() : layoutParam->biasY(),
             xAxis ? _childFrame[childIndex].x : _childFrame[childIndex].y,
             xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height);
@@ -479,6 +482,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
         , ZF_IN zffloat headPos
         , ZF_IN zffloat childSizeCache
         , ZF_IN ZFUISizeTypeEnum sizeType
+        , ZF_IN zffloat sizeHint
         , ZF_IN zffloat bias
         , ZF_IN_OUT zffloat &childHead
         , ZF_IN_OUT zffloat &childSize
@@ -517,8 +521,14 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
             break;
         case _RuleTypeHead:
             childHead = headPos + ruleHead.offset();
+            if(sizeType == ZFUISizeType::e_Fill) {
+                childSize = sizeHint;
+            }
             break;
         case _RuleTypeTail:
+            if(sizeType == ZFUISizeType::e_Fill) {
+                childSize = sizeHint;
+            }
             childHead = headPos + childSizeCache - ruleTail.offset() - childSize;
             break;
     }
