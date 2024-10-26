@@ -59,8 +59,8 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
         , ZF_IN const ZFProperty *property
         , ZF_IN ZFStyleable::PropertyType propertyType
         ) {
-    if(this->styleKeyForProperty(property) == zfnull) {
-        this->styleKeyForProperty(property, anotherStyleable->styleKeyForProperty(property));
+    if(property && this->propStyle(property->propertyName()) == zfnull) {
+        this->propStyle(property->propertyName(), anotherStyleable->propStyle(property->propertyName()));
     }
     switch(propertyType) {
         case ZFStyleable::PropertyTypeNormal: {
@@ -391,19 +391,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleKey
         , ZFMP_IN(const zfstring &, styleKey)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, const zfstring &, styleKey)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFStyleable, void, styleKeyForProperty
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFStyleable, void, propStyle
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const zfstring &, styleKey)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, styleKeyForProperty
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, propStyle
         , ZFMP_IN(const zfstring &, propertyName)
-        )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFStyleable, void, styleKeyForProperty
-        , ZFMP_IN(const ZFProperty *, property)
-        , ZFMP_IN(const zfstring &, styleKey)
-        )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, styleKeyForProperty
-        , ZFMP_IN(const ZFProperty *, property)
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFStyleDefaultApplyAutoCopy

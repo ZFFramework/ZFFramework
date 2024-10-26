@@ -115,7 +115,7 @@ zfbool ZFSerializable::serializeFromData(
                                     this->toObject()->objectInfoOfInstance());
                                 return zffalse;
                             }
-                            styleable->styleKeyForProperty(data->property, styleKey);
+                            styleable->propStyle(data->property->propertyName(), styleKey);
                             break;
                         }
                     }
@@ -228,7 +228,7 @@ zfbool ZFSerializable::serializeToData(
             switch(data->propertyType) {
                 case ZFSerializablePropertyTypeSerializable:
                     if(styleable != zfnull) {
-                        const zfstring &styleKey = styleable->styleKeyForProperty(data->property);
+                        const zfstring &styleKey = styleable->propStyle(data->property->propertyName());
                         if(styleKey != zfnull) {
                             ZFSerializableData propertyData;
                             propertyData.itemClass(data->property->propertyTypeId());

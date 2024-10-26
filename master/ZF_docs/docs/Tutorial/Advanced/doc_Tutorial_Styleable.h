@@ -46,7 +46,7 @@
  * for non-ZFStyleable property, you may also attach to style
  * if it's registered by #ZFTYPEID_DECLARE
  * @code
- *   yourObj->styleKeyForProperty(ZFPropertyAccess(YourObject, yourProperty), "your_skin_key");
+ *   yourObj->propStyle("yourProperty", "your_skin_key");
  * @endcode
  * \n
  * also, thanks to ZFClass's instance observer,

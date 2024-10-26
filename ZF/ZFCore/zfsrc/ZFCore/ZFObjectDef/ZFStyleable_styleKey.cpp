@@ -140,7 +140,7 @@ void _ZFP_ZFStyleKeyHolder::stylePropertyOnUpdate(
         }
     }
 }
-void ZFStyleable::styleKeyForProperty(
+void ZFStyleable::propStyle(
         ZF_IN const zfstring &propertyName
         , ZF_IN const zfstring &styleKey
         ) {
@@ -202,7 +202,7 @@ void ZFStyleable::styleKeyForProperty(
         }
     }
 }
-const zfstring &ZFStyleable::styleKeyForProperty(ZF_IN const zfstring &propertyName) {
+const zfstring &ZFStyleable::propStyle(ZF_IN const zfstring &propertyName) {
     if(propertyName == zfnull) {
         return zfstring::Empty();
     }

@@ -121,29 +121,12 @@ public:
     /** @brief see #ZFStyleSet */
     zffinal const zfstring &styleKey(void);
     /** @brief see #ZFStyleSet */
-    zffinal void styleKeyForProperty(
+    zffinal void propStyle(
             ZF_IN const zfstring &propertyName
             , ZF_IN const zfstring &styleKey
             );
     /** @brief see #ZFStyleSet */
-    zffinal const zfstring &styleKeyForProperty(ZF_IN const zfstring &propertyName);
-    /** @brief see #ZFStyleSet */
-    zffinal void styleKeyForProperty(
-            ZF_IN const ZFProperty *property
-            , ZF_IN const zfstring &styleKey) {
-        if(property) {
-            this->styleKeyForProperty(property->propertyName(), styleKey);
-        }
-    }
-    /** @brief see #ZFStyleSet */
-    zffinal const zfstring &styleKeyForProperty(ZF_IN const ZFProperty *property) {
-        if(property) {
-            return this->styleKeyForProperty(property->propertyName());
-        }
-        else {
-            return zfstring::Empty();
-        }
-    }
+    zffinal const zfstring &propStyle(ZF_IN const zfstring &propertyName);
 private:
     friend zfclassFwd _ZFP_ZFStyleKeyHolder;
 protected:
@@ -413,7 +396,7 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  *
  * to apply style logic for these non-ZFStyleable types:
  * @code
- *   ownerZFStyleable->styleKeyForProperty("yourPropertyName", "yourStyleKey");
+ *   ownerZFStyleable->propStyle("yourPropertyName", "yourStyleKey");
  * @endcode
  * when style of yourStyleKey changed,
  * yourPropertyName's setter method would be called to apply the style\n
