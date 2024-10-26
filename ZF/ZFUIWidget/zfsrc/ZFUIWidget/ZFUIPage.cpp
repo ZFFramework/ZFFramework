@@ -95,6 +95,7 @@ public:
     ZFUIView *managerContainer;
     ZFUIView *pageContainer;
     ZFCoreArray<ZFUIPage *> pageList;
+    ZFCoreArray<ZFUIPage *> pageDestroyList;
     ZFCoreArray<_ZFP_ZFUIPageAniOverrideData> pageAniOverrideList;
     zfautoT<ZFAnimation> resumeAni;
     zfautoT<ZFAnimation> pauseAni;
@@ -113,6 +114,7 @@ public:
     , managerContainer(zfnull)
     , pageContainer(zfnull)
     , pageList()
+    , pageDestroyList()
     , pageAniOverrideList()
     , resumeAni()
     , pauseAni()
@@ -168,17 +170,39 @@ public:
                 , zfobj<ZFUIPagePauseReason>, pauseReason
                 ) {
             owner->scheduleResumeTaskId = zfnull;
-            if(owner->pageList.isEmpty()) {
+            if(owner->pageList.isEmpty() && owner->pageDestroyList.isEmpty()) {
                 return;
             }
-            ZFUIPage *resumePage = owner->pageList.getLast();
-            pageOnResume(resumePage, resumeReason->zfv(), pausePage);
+            ZFUIPage *resumePage = zfnull;
+            if(!owner->pageList.isEmpty()) {
+                resumePage = owner->pageList.getLast();
+                pageOnResume(resumePage, resumeReason->zfv(), pausePage);
+            }
             pageAniUpdate(
                     resumePage, resumeReason->zfv()
                     , pausePage, pauseReason->zfv()
                     );
         } ZFLISTENER_END()
         this->scheduleResumeTaskId = zfpost(action);
+    }
+
+public:
+    void pageDestroyAction(ZF_IN zfindex pageIndex) {
+        ZFCoreAssert(this->pageMoveFlag == 0);
+        if(pageIndex >= this->pageList.count()) {
+            return;
+        }
+        ZFUIPage *pausePage = this->pageList.removeAndGet(pageIndex);
+        ZFCoreAssert(this->pageDestroyList.find(pausePage) == zfindexMax());
+        this->pageDestroyList.add(pausePage);
+        if(pageIndex < this->pageList.count() - 1) {
+            _ZFP_ZFUIPageManagerPrivate::pageOnPause(pausePage, ZFUIPagePauseReason::e_BeforeDestroy, zfnull);
+        }
+        else {
+            ZFUIPage *resumePage = this->pageList.isEmpty() ? zfnull : this->pageList.getLast();
+            _ZFP_ZFUIPageManagerPrivate::pageOnPause(pausePage, ZFUIPagePauseReason::e_BeforeDestroy, resumePage);
+        }
+        this->scheduleResume(ZFUIPageResumeReason::e_FromBackground, pausePage, ZFUIPagePauseReason::e_BeforeDestroy);
     }
 
 public:
@@ -258,15 +282,18 @@ public:
         if(manager == zfnull) {
             return;
         }
-        if(resumePage != zfnull && resumePage->pageView()->parent() == zfnull) {
-            resumePage->pageManager()->pageContainer()->child(resumePage->pageView())->c_sizeFill();
-        }
 
+        // stop prev
         if(manager->d->resumeAni != zfnull) {
             manager->d->resumeAni->stop();
         }
         if(manager->d->pauseAni != zfnull) {
             manager->d->pauseAni->stop();
+        }
+
+        // add resume page view
+        if(resumePage != zfnull && resumePage->pageView()->parent() == zfnull) {
+            resumePage->pageManager()->pageContainer()->child(resumePage->pageView())->c_sizeFill();
         }
 
         if(manager->d->managerDestroyRunning) {
@@ -403,9 +430,11 @@ public:
             resumePage->observerNotify(ZFUIPage::EventPageAniOnStop(), resumeReasonHolder);
             manager->observerNotifyWithSender(resumePage, ZFUIPageManager::EventPageAniOnStop(), resumeReasonHolder);
         }
-        if(pausePage != zfnull) {
-            if(pauseReason == ZFUIPagePauseReason::e_BeforeDestroy) {
-                pageOnDestroy(pausePage);
+        if(!manager->d->pageDestroyList.isEmpty()) {
+            ZFCoreArray<ZFUIPage *> pageDestroyList = manager->d->pageDestroyList;
+            manager->d->pageDestroyList = ZFCoreArray<ZFUIPage *>();
+            for(zfindex i = 0; i < pageDestroyList.count(); ++i) {
+                pageOnDestroy(pageDestroyList[i]);
             }
         }
     }
@@ -483,10 +512,10 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
     }
 
     d->pageRequestResolve(this);
-    while(this->pageCount() > 0) {
-        this->pageDestroy(this->pageCount() - 1);
-        d->pageRequestResolve(this);
+    while(!d->pageList.isEmpty()) {
+        d->pageDestroyAction(d->pageList.count() - 1);
     }
+    d->pageRequestResolve(this);
 
     if(d->managerOwnerWindow != zfnull) {
         ZFUIWindow *managerOwnerWindowTmp = d->managerOwnerWindow;
@@ -744,31 +773,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageDestroy
             , ZFUIPageManager *, pm
             , ZFUIPage *, page
             ) {
-        pm->pageDestroy(pm->pageIndex(page));
-    } ZFLISTENER_END()
-    d->pageRequestAdd(this, callback);
-}
-ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageDestroy
-        , ZFMP_IN(zfindex, pageIndex)
-        ) {
-    ZFUIPageManager *pm = this;
-    ZFLISTENER_2(callback
-            , ZFUIPageManager *, pm
-            , zfindex, pageIndex
-            ) {
-        ZFCoreAssert(pm->d->pageMoveFlag == 0);
-        if(pageIndex >= pm->d->pageList.count()) {
-            return;
-        }
-        ZFUIPage *pausePage = pm->d->pageList.removeAndGet(pageIndex);
-        if(pageIndex < pm->d->pageList.count() - 1) {
-            _ZFP_ZFUIPageManagerPrivate::pageOnPause(pausePage, ZFUIPagePauseReason::e_BeforeDestroy, zfnull);
-        }
-        else {
-            ZFUIPage *resumePage = pm->d->pageList.isEmpty() ? zfnull : pm->d->pageList.getLast();
-            _ZFP_ZFUIPageManagerPrivate::pageOnPause(pausePage, ZFUIPagePauseReason::e_BeforeDestroy, resumePage);
-        }
-        pm->d->scheduleResume(ZFUIPageResumeReason::e_FromBackground, pausePage, ZFUIPagePauseReason::e_BeforeDestroy);
+        pm->d->pageDestroyAction(pm->pageIndex(page));
     } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }

@@ -525,10 +525,6 @@ public:
     ZFMETHOD_DECLARE_1(void, pageDestroy
             , ZFMP_IN(ZFUIPage *, page)
             )
-    /** @brief destroy page */
-    ZFMETHOD_DECLARE_1(void, pageDestroy
-            , ZFMP_IN(zfindex, pageIndex)
-            )
 
     /**
      * @brief advanced page stack management
