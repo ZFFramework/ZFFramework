@@ -485,16 +485,10 @@ ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnUpdate)
  * sender is the styleable object that changing the styleKey,
  * param0 is a #v_zfstring if chaning property's name
  * or holds empty string if changing the styleable object itself,
- * param1 is a #v_zfstring that holds the new styleKey\n
- * \n
- * by default, we would assert fail if invalid style occurred,
- * you may close it by #ZFStyleInvalidCheckDisable
+ * param1 is a #v_zfstring that holds the new styleKey
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
-
-/** @brief see #ZFGlobalEvent::EventZFStyleOnInvalid */
-extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
 
 // ============================================================
 /**

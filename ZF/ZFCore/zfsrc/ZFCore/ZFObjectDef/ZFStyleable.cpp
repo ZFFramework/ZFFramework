@@ -376,40 +376,6 @@ ZFEVENT_GLOBAL_REGISTER(ZFStyleOnUpdate)
 ZFEVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-static zfbool _ZFP_ZFStyleInvalidCheckDisableFlag = zffalse;
-void ZFStyleInvalidCheckDisable(ZF_IN zfbool enable) {
-    _ZFP_ZFStyleInvalidCheckDisableFlag = zftrue;
-}
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleInvalidAssert, ZFLevelZFFrameworkHigh) {
-    this->styleOnInvalidListener = ZFCallbackForFunc(styleOnInvalid);
-    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventZFStyleOnInvalid(), this->styleOnInvalidListener);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFStyleInvalidAssert) {
-    _ZFP_ZFStyleInvalidCheckDisableFlag = zffalse;
-    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventZFStyleOnInvalid(), this->styleOnInvalidListener);
-}
-private:
-    ZFListener styleOnInvalidListener;
-    static void styleOnInvalid(ZF_IN const ZFArgs &zfargs) {
-        if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return;}
-        zfstring const &propertyName = zfargs.param0().to<v_zfstring *>()->zfv;
-        zfstring const &styleKey = zfargs.param1().to<v_zfstring *>()->zfv;
-        if(!propertyName) {
-            ZFCoreCriticalMessageTrim(
-                    "[ZFStyle] %s unable to apply style \"%s\"",
-                    zfargs.sender()->objectInfoOfInstance(),
-                    styleKey);
-        }
-        else {
-            ZFCoreCriticalMessageTrim(
-                    "[ZFStyle] %s unable to apply style \"%s\" for property \"%s\"",
-                    zfargs.sender()->objectInfoOfInstance(),
-                    styleKey,
-                    propertyName);
-        }
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFStyleInvalidAssert)
-
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG

@@ -175,6 +175,61 @@ void ZFDI_paramInfo(
 }
 
 // ============================================================
+static zfbool _ZFP_ZFDI_paramConvert(
+        ZF_IN const ZFMethod *method
+        , ZF_IN_OUT _ZFP_ZFDI_ParamBackupMapType &paramBackup
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN zfindex paramCount
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN_OPT zfbool convStr /* = zffalse */
+        ) {
+    if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
+        if(errorHint != zfnull) {
+            zfstringAppend(errorHint, "expect %s param, got %s",
+                ((method->paramCountMin() == method->paramCount())
+                    ? zfindexToString(method->paramCount())
+                    : zfstr("%s~%s", method->paramCountMin(), method->paramCount())),
+                paramCount);
+        }
+        return zffalse;
+    }
+    for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
+        const zfchar *s = zfnull;
+        ZFDI_WrapperBase *wrapper = paramList[iParam];
+        if(wrapper != zfnull) {
+            s = wrapper->zfv();
+            if(s == zfnull) {
+                s = "";
+            }
+        }
+        else if(convStr) {
+            v_zfstring *holder = paramList[iParam];
+            if(holder) {
+                const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(iParam));
+                if(cls != ZFObject::ClassData()
+                        && !v_zfstring::ClassData()->classIsTypeOf(cls)
+                        ) {
+                    s = holder->zfv;
+                    if(s == zfnull) {
+                        s = "";
+                    }
+                }
+            }
+        }
+        if(s != zfnull) {
+            zfauto paramTmp;
+            if(!ZFDI_objectFromString(
+                        paramTmp, method->paramTypeIdAt(iParam), s, zfindexMax(), errorHint)
+                        ) {
+                return zffalse;
+            }
+            paramBackup[iParam] = paramList[iParam];
+            paramList[iParam] = paramTmp;
+            continue;
+        }
+    }
+    return zftrue;
+}
 static zfbool _ZFP_ZFDI_invoke(
         ZF_OUT zfauto &ret
         , ZF_OUT_OPT zfstring *errorHint
@@ -370,61 +425,14 @@ zfbool ZFDI_invoke(
             if(errorHintTmp != zfnull && !_errorHintTmp.isEmpty()) {
                 _errorHintTmp += "\n    ";
             }
-            if(!method->isPublic()) {
-                if(errorHintTmp != zfnull) {
-                    zfstringAppend(_errorHintTmp, "can not invoke %s method: %s",
-                        method->methodPrivilegeType(),
-                        method);
-                }
-                break;
-            }
-            if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
-                if(errorHintTmp != zfnull) {
-                    zfstringAppend(_errorHintTmp, "expect %s param, got %s",
-                        ((method->paramCountMin() == method->paramCount())
-                            ? zfindexToString(method->paramCount())
-                            : zfstr("%s~%s", method->paramCountMin(), method->paramCount())),
-                        paramCount);
-                }
-                continue;
-            }
-
-            zfbool paramConvertSuccess = zftrue;
-            for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
-                const zfchar *s = zfnull;
-                ZFDI_WrapperBase *wrapper = paramList[iParam];
-                if(wrapper != zfnull) {
-                    s = wrapper->zfv();
-                    if(s == zfnull) {
-                        s = "";
-                    }
-                }
-                else if(convStr) {
-                    v_zfstring *holder = paramList[iParam];
-                    if(holder != zfnull
-                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
-                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFTypeId_zfstring())
-                            ) {
-                        s = holder->zfv;
-                        if(s == zfnull) {
-                            s = "";
-                        }
-                    }
-                }
-                if(s != zfnull) {
-                    zfauto paramTmp;
-                    if(!ZFDI_objectFromString(
-                                paramTmp, method->paramTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
-                                ) {
-                        paramConvertSuccess = zffalse;
-                        break;
-                    }
-                    paramBackup[iParam] = paramList[iParam];
-                    paramList[iParam] = paramTmp;
-                    continue;
-                }
-            }
-            if(!paramConvertSuccess) {
+            if(!_ZFP_ZFDI_paramConvert(
+                        method
+                        , paramBackup
+                        , errorHintTmp
+                        , paramCount
+                        , paramList
+                        , convStr
+                        )) {
                 continue;
             }
             if(method->methodGenericInvoker()(ret, errorHintTmp, obj, method, paramCount, paramList)) {
@@ -534,56 +542,17 @@ zfbool ZFDI_alloc(
             paramBackup.clear();
 
             const ZFMethod *method = methodList[iMethod];
-            if(!_errorHintTmp.isEmpty()) {
+            if(errorHintTmp != zfnull && !_errorHintTmp.isEmpty()) {
                 _errorHintTmp += "\n    ";
             }
-            if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
-                if(errorHintTmp != zfnull) {
-                    zfstringAppend(_errorHintTmp, "expect %s param, got %s",
-                        ((method->paramCountMin() == method->paramCount())
-                            ? zfindexToString(method->paramCount())
-                            : zfstr("%s~%s", method->paramCountMin(), method->paramCount())),
-                        paramCount);
-                }
-                continue;
-            }
-
-            zfbool paramConvertSuccess = zftrue;
-            for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
-                const zfchar *s = zfnull;
-                ZFDI_WrapperBase *wrapper = paramList[iParam];
-                if(wrapper != zfnull) {
-                    s = wrapper->zfv();
-                    if(s == zfnull) {
-                        s = "";
-                    }
-                }
-                else if(convStr) {
-                    v_zfstring *holder = paramList[iParam];
-                    if(holder != zfnull
-                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
-                            && !zfstringIsEqual(method->paramTypeIdAt(iParam), ZFTypeId_zfstring())
-                            ) {
-                        s = holder->zfv;
-                        if(s == zfnull) {
-                            s = "";
-                        }
-                    }
-                }
-                if(s != zfnull) {
-                    zfauto paramTmp;
-                    if(!ZFDI_objectFromString(
-                                paramTmp, method->paramTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
-                                ) {
-                        paramConvertSuccess = zffalse;
-                        break;
-                    }
-                    paramBackup[iParam] = paramList[iParam];
-                    paramList[iParam] = paramTmp;
-                    continue;
-                }
-            }
-            if(!paramConvertSuccess) {
+            if(!_ZFP_ZFDI_paramConvert(
+                        method
+                        , paramBackup
+                        , errorHintTmp
+                        , paramCount
+                        , paramList
+                        , convStr
+                        )) {
                 continue;
             }
             if(cls->newInstanceGenericCheck(token, method, paramCount, paramList, errorHintTmp)) {
@@ -668,8 +637,7 @@ zfbool ZFDI_objectFromString(
         ) {
     const ZFClass *cls = ZFClass::classForName(typeId);
     if(cls == zfnull) {
-        zfstringAppend(errorHint, "no such type \"%s\"",
-            typeId);
+        zfstringAppend(errorHint, "no such type \"%s\"", typeId);
         return zffalse;
     }
     else if(cls == ZFObject::ClassData()) {
