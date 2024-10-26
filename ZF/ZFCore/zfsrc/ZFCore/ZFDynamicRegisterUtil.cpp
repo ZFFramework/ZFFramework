@@ -993,7 +993,7 @@ ZFDynamic &ZFDynamic::property(
         if(zfcast(ZFCopyable *, propertyInitValue) == zfnull
                 && zfcast(ZFStyleable *, propertyInitValue) == zfnull
                 ) {
-            d->error(zfstr("init value %s is not type of %s or %s"
+            d->error(zfstr("init value %s is not type of %s or %s, use propertyWithInit instead"
                         , propertyInitValue
                         , ZFCopyable::ClassData()->classNameFull()
                         , ZFStyleable::ClassData()->classNameFull()

@@ -538,6 +538,12 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFuncAddrType, ZFFuncAddrType)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(zfiter, zfiter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfiter, zfbool, valid)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfiter, void, next)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfiter, zfiter, copy)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfiter, zfbool, isEqual
+        , ZFMP_IN(const zfiter &, ref)
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFBuffer, ZFBuffer)

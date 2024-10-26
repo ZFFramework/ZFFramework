@@ -156,7 +156,7 @@ public:
     zfiter &operator = (ZF_IN const zfiter &ref) {
         if(this != &ref) {
             Impl *dOld = d;
-            d = ref.d->copy();
+            d = (ref.d ? ref.d->copy() : zfnull);
             if(dOld) {
                 dOld->destroy();
             }
