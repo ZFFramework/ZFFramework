@@ -233,7 +233,24 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
                 }
             }
             else {
-                ret = v1->objectCompare(v2);
+                if(zffalse
+                        || v1->classData()->classIsTypeOf(v2->classData())
+                        || v2->classData()->classIsTypeOf(v1->classData())
+                        ) {
+                    ret = v1->objectCompare(v2);
+                }
+                else {
+                    zfauto v1;
+                    zfauto v2;
+                    if(ZFImpl_ZFLua_toNumberT(v1, L, 1)
+                            && ZFImpl_ZFLua_toNumberT(v2, L, 2)
+                            ) {
+                        ret = ZFComparerDefault(v1, v2);
+                    }
+                    else {
+                        ret = v1->objectCompare(v2);
+                    }
+                }
             }
         }
         return zftrue;
