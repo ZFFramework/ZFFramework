@@ -953,8 +953,29 @@ ZFDynamic &ZFDynamic::property(
                         ));
             return *this;
         }
-        param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
-        param.dynamicRegisterUserData(propertyInitValue);
+        if(propertyInitValue->classData()->classIsTypeOf(cls)) {
+            param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
+            param.dynamicRegisterUserData(propertyInitValue);
+        }
+        else {
+            // try to convert by construct new value
+            zfauto wrap;
+            zfstring errorHint;
+            zfauto paramList[ZFMETHOD_MAX_PARAM];
+            paramList[0] = propertyInitValue;
+            if(!ZFDI_alloc(wrap, &errorHint, cls, 1, paramList)
+                    || !wrap
+                    ) {
+                d->error(zfstr("invalid init value \"%s\" for assign property: (%s)%s"
+                            , propertyInitValue
+                            , cls->classNameFull()
+                            , propertyName
+                            ));
+                return *this;
+            }
+            param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
+            param.dynamicRegisterUserData(wrap);
+        }
     }
     return this->property(param);
 }

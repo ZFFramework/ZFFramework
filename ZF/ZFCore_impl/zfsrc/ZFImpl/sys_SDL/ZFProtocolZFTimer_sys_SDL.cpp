@@ -34,7 +34,7 @@ public:
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer();
         nativeTimer->timer = timer;
         nativeTimer->timerImplId = timerImplId;
-        nativeTimer->nativeTimerId = SDL_AddTimer(timer->interval(), _ZFP_timerCallback, nativeTimer);
+        nativeTimer->nativeTimerId = SDL_AddTimer((Uint32)timer->interval(), _ZFP_timerCallback, nativeTimer);
     }
     virtual void stop(ZF_IN ZFTimer *timer) {
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer();
