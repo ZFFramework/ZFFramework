@@ -158,6 +158,8 @@ zfclass ZFLIB_ZFUtility ZFTaskGroup : zfextend ZFTask {
     ZFMETHOD_DECLARE_1(zfautoT<ZFTask>, childRemoveAt
             , ZFMP_IN(zfindex, index)
             )
+    /** @brief remove all child */
+    ZFMETHOD_DECLARE_0(void, childRemoveAll)
 
 public:
     /** @brief child array */
@@ -198,6 +200,8 @@ zfclass ZFLIB_ZFUtility ZFTaskQueue : zfextend ZFTask {
     ZFMETHOD_DECLARE_1(zfautoT<ZFTask>, childRemoveAt
             , ZFMP_IN(zfindex, index)
             )
+    /** @brief remove all child */
+    ZFMETHOD_DECLARE_0(void, childRemoveAll)
 
 public:
     /** @brief child array */

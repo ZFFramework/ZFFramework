@@ -134,6 +134,9 @@ ZFMETHOD_DEFINE_1(ZFTaskGroup, zfautoT<ZFTask>, childRemoveAt
     this->childArray()->remove(index);
     return ret;
 }
+ZFMETHOD_DEFINE_0(ZFTaskGroup, void, childRemoveAll) {
+    this->childArray()->removeAll();
+}
 
 void ZFTaskGroup::taskOnStart(void) {
     zfsuper::taskOnStart();
@@ -225,6 +228,9 @@ ZFMETHOD_DEFINE_1(ZFTaskQueue, zfautoT<ZFTask>, childRemoveAt
     zfautoT<ZFTask> ret = this->childArray()->get(index);
     this->childArray()->remove(index);
     return ret;
+}
+ZFMETHOD_DEFINE_0(ZFTaskQueue, void, childRemoveAll) {
+    this->childArray()->removeAll();
 }
 
 static void _ZFP_ZFTaskQueue_startNext(

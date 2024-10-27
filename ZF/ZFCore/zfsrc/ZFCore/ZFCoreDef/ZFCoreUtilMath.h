@@ -105,7 +105,7 @@ extern ZFLIB_ZFCore zfuint zfmRand(void);
  * @brief return a random number range [0, range) or 0 if range is 0 or negative
  */
 template<typename T_int>
-T_int zfmRand(ZF_IN T_int range) {
+T_int zfmRand(ZF_IN T_int const &range) {
     return ((range <= 0) ? 0 : ((T_int)(zfmRand()) % range));
 }
 /**
@@ -113,8 +113,8 @@ T_int zfmRand(ZF_IN T_int range) {
  */
 template<typename T_int>
 T_int zfmRand(
-        ZF_IN T_int start
-        , ZF_IN T_int end
+        ZF_IN T_int const &start
+        , ZF_IN T_int const &end
         ) {
     return ((start < end) ? (start + zfmRand(end - start)) : 0);
 }
