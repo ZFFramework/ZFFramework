@@ -908,6 +908,64 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     return *this;
 }
 
+static zfbool _ZFP_ZFDynamicSingletonGI_getter(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                , 0
+                )) {
+        return zffalse;
+    }
+    ret = invokerMethod->ownerClass()->classTag("_ZFP_ZFDynamicSingleton");
+    if(!ret) {
+        ret = invokerMethod->ownerClass()->newInstance();
+        invokerMethod->ownerClass()->classTag("_ZFP_ZFDynamicSingleton", ret);
+    }
+    return zftrue;
+}
+static zfbool _ZFP_ZFDynamicSingletonGI_setter(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                , 1
+                , invokerMethod->ownerClass()
+                )) {
+        return zffalse;
+    }
+    invokerMethod->ownerClass()->classTag("_ZFP_ZFDynamicSingleton"
+            , paramList[0]
+            );
+    return zftrue;
+}
+ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext("instance") */) {
+    if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error("can only be called within classBegin");
+        return *this;
+    }
+    const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodGenericInvoker(_ZFP_ZFDynamicSingletonGI_getter)
+            .ownerClass(scope->d.cls)
+            .methodName(methodName)
+            .returnTypeId(scope->d.cls->classNameFull())
+            );
+    if(getterMethod == zfnull) {
+        d->error("unable to register singleton getter");
+        return *this;
+    }
+    const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodGenericInvoker(_ZFP_ZFDynamicSingletonGI_setter)
+            .ownerClass(scope->d.cls)
+            .methodName(methodName)
+            .methodParam(scope->d.cls->classNameFull())
+            );
+    if(setterMethod == zfnull) {
+        ZFMethodDynamicUnregister(getterMethod);
+        d->error("unable to register singleton setter");
+        return *this;
+    }
+    d->allMethod.add(getterMethod);
+    d->allMethod.add(setterMethod);
+    return *this;
+}
+
 static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
     ZFCopyable *copyable = property->dynamicRegisterUserData();
     if(copyable != zfnull) {
@@ -1311,6 +1369,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFDynamic, ZFDynamic &, method
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, singleton
+        , ZFMP_IN_OPT(const zfstring &, methodName, zftext("instance"))
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, property
         , ZFMP_IN(const zfstring &, propertyTypeId)

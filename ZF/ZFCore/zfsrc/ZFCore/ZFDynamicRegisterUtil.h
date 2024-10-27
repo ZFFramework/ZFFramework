@@ -29,6 +29,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  *           .onEvent(ZFObject::EventObjectAfterAlloc(), callback)
  *           .onInit(callback)
  *           .onDealloc(callback)
+ *           .singleton()
  *       .classEnd()
  *       .NSBegin(methodNamespace)
  *           .event(eventName)
@@ -216,6 +217,11 @@ public:
 
     /** @brief see #ZFDynamic */
     ZFDynamic &method(ZF_IN const ZFMethodDynamicRegisterParam &param);
+
+    /**
+     * @brief util to register a static method that holds singleton instance
+     */
+    ZFDynamic &singleton(ZF_IN_OPT const zfstring &methodName = zftext("instance"));
 
 public:
     /** @brief see #ZFDynamic */
