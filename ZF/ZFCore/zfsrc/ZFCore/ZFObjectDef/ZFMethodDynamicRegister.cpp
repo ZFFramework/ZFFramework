@@ -30,53 +30,113 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFInvokeData, ZFInvokeData *, paramSe
         , ZFMP_IN(ZFObject *, param)
         )
 
+zfclass _ZFP_I_ZFInvokeDataCallSuperCache : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFInvokeDataCallSuperCache, ZFObject)
+public:
+    const ZFMethod *ownerMethod;
+    const ZFMethod *superMethod;
+    ZFListener classDataUpdateListener;
+public:
+    static zfself *attach(ZF_IN ZFInvokeData *invokeData) {
+        zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classNameFull(), invokeData->ownerMethod->methodId());
+        zfself *cache = invokeData->ownerMethod->ownerClass()->classTag(cacheKey);
+        if(cache == zfnull) {
+            zfobj<zfself> holder;
+            cache = holder;
+            cache->ownerMethod = invokeData->ownerMethod;
+            cache->_update(invokeData);
+            ZFLISTENER_1(classDataOnUpdate
+                    , zfweakT<zfself>, cache
+                    ) {
+                cache->detach();
+            } ZFLISTENER_END()
+            cache->classDataUpdateListener = classDataOnUpdate;
+            ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), cache->classDataUpdateListener);
+            invokeData->ownerMethod->ownerClass()->classTag(cacheKey, cache);
+        }
+        return cache;
+    }
+    void detach(void) {
+        if(this->ownerMethod == zfnull) {
+            return;
+        }
+        const ZFClass *cls = this->ownerMethod->ownerClass();
+        zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classNameFull(), this->ownerMethod->methodId());
+        this->ownerMethod = zfnull;
+        this->superMethod = zfnull;
+        ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
+        cls->classTagRemove(cacheKey);
+    }
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+        this->ownerMethod = zfnull;
+        this->superMethod = zfnull;
+    }
+    zfoverride
+    virtual void objectOnDeallocPrepare(void) {
+        this->detach();
+        zfsuper::objectOnDeallocPrepare();
+    }
+private:
+    void _update(ZF_IN ZFInvokeData *invokeData) {
+        ZFCoreQueuePOD<const ZFClass *> toCheck;
+        const ZFClass *cls = invokeData->ownerMethod->ownerClass();
+        ZFCoreArray<const ZFMethod *> buf;
+        do {
+            if(cls->classParent() != zfnull) {
+                toCheck.add(cls->classParent());
+            }
+            for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
+                toCheck.add(cls->implementedInterfaceAt(i));
+            }
+            for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
+                toCheck.add(cls->dynamicInterfaceAt(i));
+            }
+            if(toCheck.isEmpty()) {
+                break;
+            }
+
+            cls = toCheck.take();
+            const ZFMethod *chain = invokeData->ownerMethod;
+            do {
+                cls->methodForNameIgnoreParentGetAllT(buf, chain->methodName());
+                for(zfindex i = 0; i < buf.count(); ++i) {
+                    const ZFMethod *m = buf[i];
+                    if(m->paramTypeIdIsMatch(invokeData->ownerMethod)) {
+                        this->superMethod = m;
+                        return;
+                    }
+                }
+                buf.removeAll();
+                chain = chain->aliasFrom();
+            } while(chain != zfnull);
+        } while(zftrue);
+    }
+};
 zfauto ZFInvokeData::callSuper(void) {
     ZFCoreAssertWithMessage(this->ownerMethod->isDynamicRegister(),
         "ZFInvokeData::callSuper() only works for dynamic registered method");
     ZFCoreAssertWithMessage(this->ownerMethod->ownerClass() != zfnull && this->ownerMethod->methodType() == ZFMethodTypeVirtual,
         "ZFInvokeData::callSuper() only works for class virtual method");
 
-    ZFCoreQueuePOD<const ZFClass *> toCheck;
-    const ZFClass *cls = this->ownerMethod->ownerClass();
-    ZFCoreArray<const ZFMethod *> buf;
-    do {
-        if(cls->classParent() != zfnull) {
-            toCheck.add(cls->classParent());
-        }
-        for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
-            toCheck.add(cls->implementedInterfaceAt(i));
-        }
-        for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
-            toCheck.add(cls->dynamicInterfaceAt(i));
-        }
-        if(toCheck.isEmpty()) {
-            break;
-        }
-
-        cls = toCheck.take();
-        const ZFMethod *chain = this->ownerMethod;
-        do {
-            cls->methodForNameIgnoreParentGetAllT(buf, chain->methodName());
-            for(zfindex i = 0; i < buf.count(); ++i) {
-                const ZFMethod *m = buf[i];
-                if(m->paramTypeIdIsMatch(this->ownerMethod)) {
-                    return m->methodInvoke(this->ownerObject
-                            , param0
-                            , param1
-                            , param2
-                            , param3
-                            , param4
-                            , param5
-                            , param6
-                            , param7
-                        );
-                }
-            }
-            buf.removeAll();
-            chain = chain->aliasFrom();
-        } while(chain != zfnull);
-    } while(zftrue);
-    return zfnull;
+    _ZFP_I_ZFInvokeDataCallSuperCache *cache = _ZFP_I_ZFInvokeDataCallSuperCache::attach(this);
+    if(cache->superMethod) {
+        return cache->superMethod->methodInvoke(this->ownerObject
+                , param0
+                , param1
+                , param2
+                , param3
+                , param4
+                , param5
+                , param6
+                , param7
+                );
+    }
+    else {
+        return zfnull;
+    }
 }
 
 const zfauto &ZFInvokeData::paramAt(ZF_IN zfindex index) {
