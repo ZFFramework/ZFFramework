@@ -23,11 +23,6 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
     this->errorHint("");
 
     this->taskOnStart();
-    if(this->implStart()) {
-        this->implStart().execute(ZFArgs()
-                .sender(this)
-                );
-    }
     this->observerNotify(zfself::EventTaskOnStart());
 }
 ZFMETHOD_DEFINE_1(ZFTask, void, stop
@@ -39,11 +34,6 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
     _ZFP_started = zffalse;
     this->resultType(resultType);
     this->taskOnStop();
-    if(this->implStop()) {
-        this->implStop().execute(ZFArgs()
-                .sender(this)
-                );
-    }
     this->observerNotify(zfself::EventTaskOnStop());
     if(_ZFP_onStop) {
         ZFListener tmp = _ZFP_onStop;
@@ -68,15 +58,6 @@ ZFMETHOD_DEFINE_1(ZFTask, void, notifyFail
         ) {
     this->errorHint(errorHint);
     this->stop(ZFResultType::e_Fail);
-}
-
-ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
-        , ZFMP_IN(const ZFListener &, implStart)
-        , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
-        ) {
-    this->objectOnInit();
-    this->implStart(implStart);
-    this->implStop(implStop);
 }
 
 void ZFTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
@@ -116,7 +97,14 @@ ZFMETHOD_DEFINE_2(ZFTaskGroup, void, child
         , ZFMP_IN(const ZFListener &, implStart)
         , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
         ) {
-    this->childArray()->add(zfobj<ZFTask>(implStart, implStop));
+    zfobj<ZFTask> child;
+    if(implStart) {
+        child->observerAdd(ZFTask::EventTaskOnStart(), implStart);
+    }
+    if(implStop) {
+        child->observerAdd(ZFTask::EventTaskOnStop(), implStop);
+    }
+    this->childArray()->add(child);
 }
 
 ZFMETHOD_DEFINE_0(ZFTaskGroup, zfindex, childCount) {
@@ -211,7 +199,14 @@ ZFMETHOD_DEFINE_2(ZFTaskQueue, void, child
         , ZFMP_IN(const ZFListener &, implStart)
         , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
         ) {
-    this->childArray()->add(zfobj<ZFTask>(implStart, implStop));
+    zfobj<ZFTask> child;
+    if(implStart) {
+        child->observerAdd(ZFTask::EventTaskOnStart(), implStart);
+    }
+    if(implStop) {
+        child->observerAdd(ZFTask::EventTaskOnStop(), implStop);
+    }
+    this->childArray()->add(child);
 }
 
 ZFMETHOD_DEFINE_0(ZFTaskQueue, zfindex, childCount) {

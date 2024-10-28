@@ -29,8 +29,10 @@ public:
     /**
      * @brief start the task
      *
-     * note an empty or invalid task is not treated as error,
-     * it would result to #stop with success get called
+     * impl must call #stop or #notifySuccess or #notifyFail when task done,
+     * by any of these methods:
+     * -  override #taskOnStart
+     * -  attach observer to #EventTaskOnStart
      */
     ZFMETHOD_DECLARE_1(void, start
             , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)
@@ -62,15 +64,6 @@ public:
 
 public:
     /**
-     * @brief task impl
-     */
-    ZFPROPERTY_ASSIGN(ZFListener, implStart)
-    /**
-     * @brief task impl
-     */
-    ZFPROPERTY_ASSIGN(ZFListener, implStop)
-
-    /**
      * @brief for task impl to store extra data, typically task id,
      *   reset to null when stop
      */
@@ -96,15 +89,6 @@ public:
     /** @brief called to stop task */
     virtual inline void taskOnStop(void) {
     }
-
-protected:
-    /**
-     * @brief init with task impl
-     */
-    ZFOBJECT_ON_INIT_DECLARE_2(
-            ZFMP_IN(const ZFListener &, implStart)
-            , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
-            )
 
 protected:
     zfoverride
