@@ -945,6 +945,7 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
             .ownerClass(scope->d.cls)
             .methodName(methodName)
             .returnTypeId(scope->d.cls->classNameFull())
+            .methodType(ZFMethodTypeStatic)
             );
     if(getterMethod == zfnull) {
         d->error("unable to register singleton getter");
@@ -955,6 +956,7 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
             .ownerClass(scope->d.cls)
             .methodName(methodName)
             .methodParam(scope->d.cls->classNameFull())
+            .methodType(ZFMethodTypeStatic)
             );
     if(setterMethod == zfnull) {
         ZFMethodDynamicUnregister(getterMethod);
