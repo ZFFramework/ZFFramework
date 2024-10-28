@@ -170,11 +170,8 @@ public:
                 , zfobj<ZFUIPagePauseReason>, pauseReason
                 ) {
             owner->scheduleResumeTaskId = zfnull;
-            if(owner->pageList.isEmpty() && owner->pageDestroyList.isEmpty()) {
-                return;
-            }
             ZFUIPage *resumePage = zfnull;
-            if(!owner->pageList.isEmpty()) {
+            if(!owner->pageList.isEmpty() && owner->managerResumed) {
                 resumePage = owner->pageList.getLast();
                 pageOnResume(resumePage, resumeReason->zfv(), pausePage);
             }
@@ -354,23 +351,21 @@ public:
             return;
         }
 
-        if(pausePage != zfnull) {
-            if(manager->d->pauseAni != zfnull) {
-                manager->d->pauseAni->target(pausePage->pageView());
-                ZFLISTENER_4(aniOnStop
-                        , ZFUIPage *, pausePage
-                        , ZFUIPagePauseReasonEnum, pauseReason
-                        , ZFUIPage *, resumePage
-                        , ZFUIPageResumeReasonEnum, resumeReason
-                        ) {
-                    pausePage->pageManager()->d->pauseAni = zfnull;
-                    pageAniOnStop(pausePage->pageManager(), resumePage, resumeReason, pausePage, pauseReason);
-                } ZFLISTENER_END()
-                manager->d->pauseAni->observerAddForOnce(
+        if(manager->d->pauseAni != zfnull) {
+            manager->d->pauseAni->target(pausePage->pageView());
+            ZFLISTENER_4(aniOnStop
+                    , ZFUIPage *, pausePage
+                    , ZFUIPagePauseReasonEnum, pauseReason
+                    , ZFUIPage *, resumePage
+                    , ZFUIPageResumeReasonEnum, resumeReason
+                    ) {
+                pausePage->pageManager()->d->pauseAni = zfnull;
+                pageAniOnStop(pausePage->pageManager(), resumePage, resumeReason, pausePage, pauseReason);
+            } ZFLISTENER_END()
+            manager->d->pauseAni->observerAddForOnce(
                     ZFAnimation::EventAniOnStop(),
                     aniOnStop);
-                manager->d->pauseAni->start();
-            }
+            manager->d->pauseAni->start();
         }
 
         if(manager->d->resumeAni != zfnull) {
