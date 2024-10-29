@@ -557,6 +557,10 @@ public:
     ZFMETHOD_DECLARE_1(void, pageRequestCancel
             , ZFMP_IN(const ZFListener &, callback)
             )
+    /**
+     * @brief return count of request in queue
+     */
+    ZFMETHOD_DECLARE_0(zfindex, pageRequestCount)
 
 protected:
     zfoverride
