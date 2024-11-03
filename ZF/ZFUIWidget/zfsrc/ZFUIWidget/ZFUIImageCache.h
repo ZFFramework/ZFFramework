@@ -25,7 +25,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFTaskId>, ZFUIImageLoad
 /**
  * @brief io load task
  */
-zfclass ZFLIB_ZFUtility ZFUIImageLoadTask : zfextend ZFTask {
+zfclass ZFLIB_ZFUIWidget ZFUIImageLoadTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFUIImageLoadTask, ZFTask)
 
 public:
