@@ -44,7 +44,7 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, notifyProgress
 }
 
 ZFMETHOD_DEFINE_1(ZFTestCase, void, stop
-        , ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success)
+        , ZFMP_IN(ZFResultTypeEnum, testCaseResult)
         ) {
     if(!this->_started) {
         return;

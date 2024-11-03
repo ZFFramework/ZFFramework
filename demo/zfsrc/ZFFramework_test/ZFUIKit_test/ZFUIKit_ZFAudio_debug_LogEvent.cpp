@@ -23,12 +23,13 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFAudio_debug_LogEvent) {
 private:
     ZFListener onEventListener;
     static void onEvent(ZF_IN const ZFArgs &zfargs) {
-        ZFLogTrim()
-            << zfargs.sender()
-            << ZFEventNameForId(zfargs.eventId())
-            << zfargs.param0()
-            << zfargs.param1()
-            ;
+        ZFLogTrim("%s %s %s(%s, %s)"
+                , ZFLogCurTimeString()
+                , zfargs.sender()
+                , ZFEventNameForId(zfargs.eventId())
+                , zfargs.param0()
+                , zfargs.param1()
+                );
 
         if(zfargs.eventId() == ZFAudio::EventAudioOnResume()) {
             audioOnResume(zfargs.sender());

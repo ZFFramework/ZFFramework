@@ -17,14 +17,14 @@ public:
     void *nativeAudio;
     zftimet positionToUpdate;
     zfuint state; // StateFlag
-    zfuint looped;
+    zfuint loopCur;
 
 public:
     _ZFP_ZFAudioPrivate(void)
     : nativeAudio(zfnull)
     , positionToUpdate(-1)
     , state(0)
-    , looped(0)
+    , loopCur(0)
     {
     }
 };
@@ -47,6 +47,12 @@ ZFMETHOD_DEFINE_0(ZFAudio, void *, nativeAudio) {
     return d->nativeAudio;
 }
 
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, startable) {
+    return ZFBitTest(d->state, 0
+            | _ZFP_ZFAudioPrivate::LoadFlag
+            | _ZFP_ZFAudioPrivate::ImplLoaded
+            );
+}
 ZFMETHOD_DEFINE_0(ZFAudio, zfbool, loading) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
 }
@@ -63,8 +69,8 @@ ZFMETHOD_DEFINE_0(ZFAudio, zfbool, paused) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag);
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, zfindex, looped) {
-    return (zfindex)d->looped;
+ZFMETHOD_DEFINE_0(ZFAudio, zfindex, loopCur) {
+    return (zfindex)d->loopCur;
 }
 
 ZFMETHOD_DEFINE_1(ZFAudio, void, load
@@ -90,6 +96,9 @@ ZFMETHOD_DEFINE_1(ZFAudio, void, load
 }
 
 ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
+        this->stop();
+    }
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         return;
     }
@@ -97,14 +106,14 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
         zfRetain(this); // release when OnStop
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
-        d->looped = 0;
+        d->loopCur = 0;
         this->audioOnStart();
     }
     else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded)) {
         zfRetain(this); // release when OnStop
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
-        d->looped = 0;
+        d->loopCur = 0;
         this->audioOnStart();
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
@@ -266,9 +275,9 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ) {
     ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
     if(result != ZFResultType::e_Cancel) {
-        ++d->looped;
+        ++d->loopCur;
     }
-    if(result != ZFResultType::e_Cancel && (this->loop() == zfindexMax() || d->looped <= this->loop())) {
+    if(result != ZFResultType::e_Cancel && (this->loop() == zfindexMax() || d->loopCur <= this->loop())) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
         this->audioOnLoop();
     }

@@ -13,8 +13,8 @@ zfclassFwd _ZFP_ZFAudioPrivate;
 /**
  * @brief audio player
  */
-zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFObject {
-    ZFOBJECT_DECLARE(ZFAudio, ZFObject)
+zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFTaskId {
+    ZFOBJECT_DECLARE(ZFAudio, ZFTaskId)
 
 public:
     // ============================================================
@@ -70,6 +70,9 @@ public:
     ZFMETHOD_DECLARE_0(void *, nativeAudio)
 
 public:
+    /** @brief whether able to start */
+    ZFMETHOD_DECLARE_0(zfbool, startable)
+
     /** @brief whether loading */
     ZFMETHOD_DECLARE_0(zfbool, loading)
 
@@ -115,11 +118,11 @@ public:
     ZFMETHOD_DECLARE_0(void, pause)
 
     /**
-     * @brief current looped count
+     * @brief current loop count
      *
      * reset when #start, but keep previous value when #stop
      */
-    ZFMETHOD_DECLARE_0(zfindex, looped)
+    ZFMETHOD_DECLARE_0(zfindex, loopCur)
 
     /** @brief duration, valid only when loaded, may be 0 if impl not supported */
     ZFMETHOD_DECLARE_0(zftimet, duration)

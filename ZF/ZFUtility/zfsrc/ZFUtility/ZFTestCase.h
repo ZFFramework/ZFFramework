@@ -22,8 +22,8 @@ zfclassFwd _ZFP_ZFTestCasePrivate;
  * @note automatically test case run depends on #ZFClass's class map,
  *   see #ZFOBJECT_REGISTER for more info
  */
-zfabstract ZFLIB_ZFUtility ZFTestCase : zfextend ZFObject {
-    ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTestCase, ZFObject)
+zfabstract ZFLIB_ZFUtility ZFTestCase : zfextend ZFTaskId {
+    ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTestCase, ZFTaskId)
 
 public:
     /**
@@ -103,6 +103,10 @@ public:
     ZFMETHOD_DECLARE_1(void, notifyProgress
             , ZFMP_IN_OPT(ZFObject *, progress, zfnull)
             )
+    zfoverride
+    virtual void stop(void) {
+        this->stop(ZFResultType::e_Success);
+    }
     /**
      * @brief must be called to stop test,
      *   do nothing if not running
@@ -110,7 +114,7 @@ public:
      * @warning you must not access this object after calling this method
      */
     ZFMETHOD_DECLARE_1(void, stop
-            , ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success)
+            , ZFMP_IN(ZFResultTypeEnum, testCaseResult)
             )
 
 private:
