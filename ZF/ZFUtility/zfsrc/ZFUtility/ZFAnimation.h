@@ -186,6 +186,7 @@ protected:
     virtual inline void aniOnStop(ZF_IN ZFResultTypeEnum resultType) {
         this->observerNotify(ZFAnimation::EventAniOnStop(), zfobj<ZFResultType>(resultType));
     }
+public:
     /**
      * @brief subclass must notify after the animation stop
      */

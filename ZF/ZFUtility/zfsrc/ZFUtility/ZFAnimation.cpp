@@ -181,6 +181,9 @@ void ZFAnimation::aniImplStop(void) {
     }
 }
 
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFAnimation, void, aniImplNotifyStop
+        , ZFMP_IN_OPT(ZFResultTypeEnum, resultType, ZFResultType::e_Success)
+        )
 void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = ZFResultType::e_Success */) {
     if(!d->started || !d->aniImplStartFlag) {
         return;

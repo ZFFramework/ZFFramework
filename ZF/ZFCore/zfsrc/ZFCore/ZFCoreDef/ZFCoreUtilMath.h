@@ -97,16 +97,15 @@ inline T_zffloat zfmRound(ZF_IN const T_zffloat &v) {
 
 // ============================================================
 /**
- * @brief return a random number range [0, max),
- *   max depends on implementation and is ensured at least 32767
+ * @brief return a random float in range [0, 1]
  */
-extern ZFLIB_ZFCore zfuint zfmRand(void);
+extern ZFLIB_ZFCore zffloat zfmRand(void);
 /**
  * @brief return a random number range [0, range) or 0 if range is 0 or negative
  */
 template<typename T_int>
 T_int zfmRand(ZF_IN T_int const &range) {
-    return ((range <= 0) ? 0 : ((T_int)(zfmRand()) % range));
+    return (T_int)(range * zfmRand());
 }
 /**
  * @brief return a random number range [start, end) or 0 if range invalid
@@ -116,7 +115,7 @@ T_int zfmRand(
         ZF_IN T_int const &start
         , ZF_IN T_int const &end
         ) {
-    return ((start < end) ? (start + zfmRand(end - start)) : 0);
+    return start + (T_int)((end - start) * zfmRand());
 }
 
 // ============================================================

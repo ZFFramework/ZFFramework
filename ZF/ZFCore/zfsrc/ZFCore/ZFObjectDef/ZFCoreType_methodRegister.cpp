@@ -517,7 +517,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRound
         , ZFMP_IN(zffloat const &, v)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfuint, zfmRand)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zffloat, zfmRand)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, zfmRand
         , ZFMP_IN(zfindex const &, range)
@@ -525,6 +525,13 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, zfmRand
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfmRand
         , ZFMP_IN(zfindex const &, start)
         , ZFMP_IN(zfindex const &, end)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRand
+        , ZFMP_IN(zffloat const &, range)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zffloat, zfmRand
+        , ZFMP_IN(zffloat const &, start)
+        , ZFMP_IN(zffloat const &, end)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zftimet, zfmRand
         , ZFMP_IN(zftimet const &, range)
