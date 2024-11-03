@@ -15,20 +15,22 @@ public:
 // _ZFP_ZFAnimationPrivate
 zfclassNotPOD _ZFP_ZFAnimationPrivate {
 public:
-    ZFObjectHolder *targetHolder;
+    zfweak target;
     zfbool started;
     zfbool aniImplStartFlag;
     zfbool stoppedByUser;
+    ZFListener onStop;
     zfautoT<ZFTimer> aniDummyTimer;
     zfidentity aniId;
     zfindex loopCur;
 
 public:
     _ZFP_ZFAnimationPrivate(void)
-    : targetHolder(zfnull)
+    : target(zfnull)
     , started(zffalse)
     , aniImplStartFlag(zffalse)
     , stoppedByUser(zffalse)
+    , onStop()
     , aniDummyTimer()
     , aniId(zfidentityInvalid())
     , loopCur(0)
@@ -51,18 +53,20 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, target
         , ZFMP_IN(ZFObject *, target)
         ) {
     ZFCoreAssertWithMessage(!d->started, "change animation's target while animation is running");
-    ZFObjectHolder *targetHolderTmp = d->targetHolder;
-    zfblockedRelease(targetHolderTmp);
-    d->targetHolder = target ? zfRetain(target->objectHolder()) : zfnull;
-    this->aniImplTargetOnUpdate(targetHolderTmp ? targetHolderTmp->objectHolded().toObject() : zfnull);
-    zfRetainChange(d->targetHolder, target ? target->objectHolder() : zfnull);
+    if(d->target != target) {
+        this->aniImplTargetOnUpdate(target);
+        d->target = target;
+    }
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfany, target) {
-    return d->targetHolder ? d->targetHolder->objectHolded().toObject() : zfnull;
+    return d->target;
 }
 
-ZFMETHOD_DEFINE_0(ZFAnimation, void, start) {
+ZFMETHOD_DEFINE_1(ZFAnimation, void, start
+        , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)
+        ) {
     this->stop();
+    d->onStop = onStop;
     this->_ZFP_ZFAnimation_aniReadyStart();
 
     d->stoppedByUser = zffalse;
@@ -198,7 +202,16 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = Z
     }
 
     d->started = zffalse;
+    ZFListener onStopSaved = d->onStop;
+    d->onStop = zfnull;
     this->aniOnStop(resultType);
+    if(onStopSaved) {
+        onStopSaved.execute(ZFArgs()
+                .sender(this)
+                .eventId(zfself::EventAniOnStop())
+                .param0(zfobj<ZFResultType>(resultType))
+                );
+    }
 
     zfRelease(targetToRelease);
     zfRelease(this);
@@ -216,7 +229,6 @@ void ZFAnimation::objectOnInit(void) {
     d = zfpoolNew(_ZFP_ZFAnimationPrivate);
 }
 void ZFAnimation::objectOnDealloc(void) {
-    zfRetainChange(d->targetHolder, zfnull);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -224,6 +236,45 @@ void ZFAnimation::objectOnDealloc(void) {
 void ZFAnimation::objectOnDeallocPrepare(void) {
     this->stop();
     zfsuper::objectOnDeallocPrepare();
+}
+
+// ============================================================
+ZFOBJECT_REGISTER(ZFAniTask)
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAniTask
+        , ZFMP_IN(ZFAnimation *, impl)
+        ) {
+    this->objectOnInit();
+    this->impl(impl);
+}
+
+void ZFAniTask::taskOnStart(void) {
+    zfsuper::taskOnStart();
+    if(this->impl()) {
+        zfweakT<zfself> owner = this;
+        ZFLISTENER_1(implOnStop
+                , zfweakT<zfself>, owner
+                ) {
+            owner->notifySuccess();
+        } ZFLISTENER_END()
+        this->impl()->start(implOnStop);
+    }
+    else {
+        this->notifySuccess();
+    }
+}
+void ZFAniTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+    if(this->impl()) {
+        this->impl()->stop();
+    }
+    zfsuper::taskOnStop(resultType);
+}
+void ZFAniTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    if(this->impl()) {
+        return this->impl()->objectInfoT(ret);
+    }
+    else {
+        return zfsuper::objectInfoT(ret);
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

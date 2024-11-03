@@ -94,7 +94,9 @@ public:
      * @note an animation would be retained automatically when it's running,
      *   and released after stopped
      */
-    ZFMETHOD_DECLARE_0(void, start)
+    ZFMETHOD_DECLARE_1(void, start
+            , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)
+            )
     /**
      * @brief true if the animation is running
      */
@@ -212,6 +214,36 @@ protected:
 
 private:
     _ZFP_ZFAnimationPrivate *d;
+};
+
+// ============================================================
+/**
+ * @brief animation task
+ */
+zfclass ZFLIB_ZFUtility ZFAniTask : zfextend ZFTask {
+    ZFOBJECT_DECLARE(ZFAniTask, ZFTask)
+
+public:
+    /** @brief the impl */
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, impl)
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
+    /** @brief construct with impl */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(ZFAnimation *, impl)
+            )
+
+public:
+    zfoverride
+    virtual void taskOnStart(void);
+    zfoverride
+    virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 };
 
 ZF_NAMESPACE_GLOBAL_END

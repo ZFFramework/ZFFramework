@@ -21,6 +21,38 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFTaskId>, ZFUIImageLoad
         , ZFMP_IN(const ZFListener &, callback)
         )
 
+// ============================================================
+/**
+ * @brief io load task
+ */
+zfclass ZFLIB_ZFUtility ZFUIImageLoadTask : zfextend ZFTask {
+    ZFOBJECT_DECLARE(ZFUIImageLoadTask, ZFTask)
+
+public:
+    /** @brief the src input */
+    ZFPROPERTY_ASSIGN(ZFInput, input)
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
+    /** @brief construct with impl */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(const ZFInput &, input)
+            )
+
+public:
+    zfoverride
+    virtual void taskOnStart(void);
+    zfoverride
+    virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+private:
+    zfautoT<ZFTaskId> _implTaskId;
+};
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIImageCache_h_
 

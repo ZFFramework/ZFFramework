@@ -73,6 +73,7 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
  * \n
  * callback's param0 would be the result object if success,
  * param1 would be a #ZFResultType indicates load result\n
+ * \n
  * the loadImpl's param0 would be a ZFInput points to local cache file or original src,
  * param1 would be the original src input,
  * and should set #ZFArgs::result to non null object as result,
@@ -83,6 +84,41 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFTaskId>, ZFIOCacheLoad
         , ZFMP_IN(const ZFListener &, callback)
         , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
         )
+
+// ============================================================
+/**
+ * @brief io load task
+ */
+zfclass ZFLIB_ZFUtility ZFIOCacheLoadTask : zfextend ZFTask {
+    ZFOBJECT_DECLARE(ZFIOCacheLoadTask, ZFTask)
+
+public:
+    /** @brief the src input */
+    ZFPROPERTY_ASSIGN(ZFInput, input)
+    /** @brief the load impl */
+    ZFPROPERTY_ASSIGN(ZFListener, loadImpl)
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
+    /** @brief construct with impl */
+    ZFOBJECT_ON_INIT_DECLARE_2(
+            ZFMP_IN(const ZFInput &, input)
+            , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
+            )
+
+public:
+    zfoverride
+    virtual void taskOnStart(void);
+    zfoverride
+    virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+private:
+    zfautoT<ZFTaskId> _implTaskId;
+};
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCache_h_

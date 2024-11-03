@@ -6,13 +6,13 @@
 #ifndef _ZFI_ZFTask_h_
 #define _ZFI_ZFTask_h_
 
-#include "ZFUtilityDef.h"
+#include "ZFResultType.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
  * @brief abstract task util
  */
-zfclass ZFLIB_ZFUtility ZFTask : zfextend ZFTaskId {
+zfclass ZFLIB_ZFCore ZFTask : zfextend ZFTaskId {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFTask, ZFTaskId)
 
 public:
@@ -22,6 +22,8 @@ public:
     ZFEVENT(TaskOnStart)
     /**
      * @brief called when task started
+     *
+     * param0 is a #ZFResultType to show the result
      */
     ZFEVENT(TaskOnStop)
 
@@ -64,8 +66,9 @@ public:
     /**
      * @brief util method to call stop with fail result
      */
-    ZFMETHOD_DECLARE_1(void, notifyFail
+    ZFMETHOD_DECLARE_2(void, notifyFail
             , ZFMP_IN(const zfstring &, errorHint)
+            , ZFMP_IN_OPT(ZFObject *, result, zfnull)
             )
 
 public:
@@ -88,7 +91,7 @@ public:
     virtual inline void taskOnStart(void) {
     }
     /** @brief called to stop task */
-    virtual inline void taskOnStop(void) {
+    virtual inline void taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     }
 
 protected:
@@ -126,89 +129,6 @@ protected:
     /** @endcond */
 };
 
-/**
- * @brief group of #ZFTask, all task run concurrently
- */
-zfclass ZFLIB_ZFUtility ZFTaskGroup : zfextend ZFTask {
-    ZFOBJECT_DECLARE(ZFTaskGroup, ZFTask)
-
-    /** @brief add child */
-    ZFMETHOD_DECLARE_1(void, child
-            , ZFMP_IN(ZFTask *, child)
-            )
-    /** @brief util to add child task */
-    ZFMETHOD_DECLARE_2(void, child
-            , ZFMP_IN(const ZFListener &, implStart)
-            , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
-            )
-
-    /** @brief child count */
-    ZFMETHOD_DECLARE_0(zfindex, childCount)
-    /** @brief child at index */
-    ZFMETHOD_DECLARE_1(zfanyT<ZFTask>, childAt
-            , ZFMP_IN(zfindex, index)
-            )
-    /** @brief child remove at index */
-    ZFMETHOD_DECLARE_1(zfautoT<ZFTask>, childRemoveAt
-            , ZFMP_IN(zfindex, index)
-            )
-    /** @brief remove all child */
-    ZFMETHOD_DECLARE_0(void, childRemoveAll)
-
-public:
-    /** @brief child array */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFArray>, childArray, zfobj<ZFArray>())
-
-public:
-    zfoverride
-    virtual void taskOnStart(void);
-    zfoverride
-    virtual void taskOnStop(void);
-    zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
-};
-
-/**
- * @brief queue of #ZFTask, all task run sequencely
- */
-zfclass ZFLIB_ZFUtility ZFTaskQueue : zfextend ZFTask {
-    ZFOBJECT_DECLARE(ZFTaskQueue, ZFTask)
-
-    /** @brief add child */
-    ZFMETHOD_DECLARE_1(void, child
-            , ZFMP_IN(ZFTask *, child)
-            )
-    /** @brief util to add child task */
-    ZFMETHOD_DECLARE_2(void, child
-            , ZFMP_IN(const ZFListener &, implStart)
-            , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
-            )
-
-    /** @brief child count */
-    ZFMETHOD_DECLARE_0(zfindex, childCount)
-    /** @brief child at index */
-    ZFMETHOD_DECLARE_1(zfanyT<ZFTask>, childAt
-            , ZFMP_IN(zfindex, index)
-            )
-    /** @brief child remove at index */
-    ZFMETHOD_DECLARE_1(zfautoT<ZFTask>, childRemoveAt
-            , ZFMP_IN(zfindex, index)
-            )
-    /** @brief remove all child */
-    ZFMETHOD_DECLARE_0(void, childRemoveAll)
-
-public:
-    /** @brief child array */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFArray>, childArray, zfobj<ZFArray>())
-
-public:
-    zfoverride
-    virtual void taskOnStart(void);
-    zfoverride
-    virtual void taskOnStop(void);
-    zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
-};
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTask_h_
+

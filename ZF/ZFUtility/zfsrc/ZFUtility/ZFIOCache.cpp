@@ -368,5 +368,51 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
     return taskId;
 }
 
+// ============================================================
+ZFOBJECT_REGISTER(ZFIOCacheLoadTask)
+ZFOBJECT_ON_INIT_DEFINE_2(ZFIOCacheLoadTask
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
+        ) {
+    this->objectOnInit();
+    this->input(input);
+    this->loadImpl(loadImpl);
+}
+
+void ZFIOCacheLoadTask::taskOnStart(void) {
+    zfsuper::taskOnStart();
+    if(this->input()) {
+        zfweakT<zfself> owner = this;
+        ZFLISTENER_1(implOnStop
+                , zfweakT<zfself>, owner
+                ) {
+            owner->_implTaskId = zfnull;
+            ZFResultType *resultType = zfargs.param1();
+            if(resultType->enumValue() == ZFResultType::e_Success) {
+                owner->notifySuccess(zfargs.param0());
+            }
+            else {
+                owner->notifyFail(zfstr("io cache load fail: %s"
+                            , owner->input()
+                            ), zfargs.param0());
+            }
+        } ZFLISTENER_END()
+        this->_implTaskId = ZFIOCacheLoad(this->input(), implOnStop, this->loadImpl());
+    }
+    else {
+        this->notifySuccess();
+    }
+}
+void ZFIOCacheLoadTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+    if(this->_implTaskId) {
+        this->_implTaskId->stop();
+        this->_implTaskId = zfnull;
+    }
+    zfsuper::taskOnStop(resultType);
+}
+void ZFIOCacheLoadTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    return zfsuper::objectInfoT(ret);
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
