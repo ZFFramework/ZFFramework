@@ -70,7 +70,8 @@ public:
             this->childDelayTimers->removeAll();
         }
         if(!this->childBuf->isEmpty()) {
-            zfobj<ZFArray> childToStop(this->childBuf);
+            zfobj<ZFArray> childToStop;
+            childToStop->addFrom(this->childBuf);
             this->childBuf->removeAll();
             if(this->pimplOwner->_ZFP_ZFAniGroup_queueType()) {
                 for(zfindex i = 0; i < childToStop->count(); ++i) {
