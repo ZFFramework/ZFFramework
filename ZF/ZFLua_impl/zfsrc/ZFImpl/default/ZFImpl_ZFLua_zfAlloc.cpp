@@ -74,9 +74,33 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
     }
 
     zfauto ret;
-    ZFDI_alloc(ret, zfnull, cls, (zfindex)paramCount, paramList, zftrue);
-    ZFImpl_ZFLua_luaPush(L, ret);
-    return 1;
+    zfstring errorHintTmp;
+    if(ZFDI_alloc(
+                ret
+                , ZFLogLevelIsActive(ZFLogLevel::e_Verbose) ? &errorHintTmp : zfnull
+                , cls
+                , (zfindex)paramCount
+                , paramList
+                , zftrue
+                )) {
+        ZFImpl_ZFLua_luaPush(L, ret);
+        return 1;
+    }
+    zfstring errorHint = "failed to alloc: ";
+    errorHint += cls->classNameFull();
+    errorHint += "(";
+    for(zfindex i = 0; i < paramCount; ++i) {
+        if(i != 0) {
+            errorHint += ", ";
+        }
+        ZFObjectInfoT(errorHint, paramList[i]);
+    }
+    errorHint += ")";
+    if(errorHintTmp) {
+        errorHint += ", errorHint:\n";
+        errorHint += errorHintTmp;
+    }
+    return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
 }
 
 // ============================================================

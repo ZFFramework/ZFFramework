@@ -287,16 +287,17 @@ void ZFImpl_ZFLua_execute_errorHandle(
         while(*nativeError == ' ') {++nativeError;}
     }
 
-    *errHint += nativeError;
     if(!zfstringIsEmpty(chunkInfo)) {
-        *errHint += ", at: [";
+        *errHint += "[";
         *errHint += chunkInfo;
-        *errHint += "]";
+        if(errorLine != zfindexMax()) {
+            *errHint += " (";
+            zfindexToStringT(*errHint, errorLine);
+            *errHint += ")";
+        }
+        *errHint += "] ";
     }
-    if(errorLine != zfindexMax()) {
-        *errHint += ", line: ";
-        zfindexToStringT(*errHint, errorLine);
-    }
+    *errHint += nativeError;
     lua_pop(L, 1);
 }
 

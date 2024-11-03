@@ -158,6 +158,30 @@ public:
         return this->onEvent(ZFObject::EventObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
     }
 
+    /**
+     * @brief util to register custom constructor
+     *
+     * when impl valid, the impl would be used to init the object,
+     * otherwise, each init param would be treated as property to init the object
+     * @code
+     *   ZFDynamic()
+     *       :classBegin('MyClass')
+     *       :property('zfstring', 'myProp')
+     *       :customInit(ZFMP()
+     *           :mp('zfstring', 'myProp')
+     *       , function(zfargs)  -- when no impl supplied, this is the default behavior
+     *           ---@type ZFInvokeData
+     *           local m = zfargs:param0()
+     *           m:ownerObject():myProp(m:param0())
+     *       end)
+     *       :classEnd()
+     * @endcode
+     */
+    ZFDynamic &customInit(
+            ZF_IN const ZFMP &mp
+            , ZF_IN_OPT const ZFListener &impl = zfnull
+            );
+
 public:
     /** @brief see #ZFDynamic */
     ZFDynamic &NSBegin(ZF_IN const zfstring &methodNamespace);

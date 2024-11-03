@@ -34,14 +34,14 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     zfobj<ZFInvokeData> d;
     d->ownerMethod = invokerMethod;
     d->ownerObject = invokerObject;
-    d->param0.zfunsafe_assign(paramList[0]);
-    d->param1.zfunsafe_assign(paramList[1]);
-    d->param2.zfunsafe_assign(paramList[2]);
-    d->param3.zfunsafe_assign(paramList[3]);
-    d->param4.zfunsafe_assign(paramList[4]);
-    d->param5.zfunsafe_assign(paramList[5]);
-    d->param6.zfunsafe_assign(paramList[6]);
-    d->param7.zfunsafe_assign(paramList[7]);
+    for(zfindex i = 0; i < invokerMethod->paramCount(); ++i) {
+        if(paramList[i] == ZFMP_DEF()) {
+            d->paramSet(i, invokerMethod->paramDefaultValueAt(i));
+        }
+        else {
+            d->paramSet(i, paramList[i]);
+        }
+    }
 
     ZFListener methodImpl = zfcast(v_ZFListener *, invokerMethod->dynamicRegisterUserData())->zfv;
     methodImpl.execute(ZFArgs()
@@ -53,14 +53,9 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
         *errorHint += d->errorHint;
     }
     if(d->success) {
-        paramList[0].zfunsafe_assign(d->param0);
-        paramList[1].zfunsafe_assign(d->param1);
-        paramList[2].zfunsafe_assign(d->param2);
-        paramList[3].zfunsafe_assign(d->param3);
-        paramList[4].zfunsafe_assign(d->param4);
-        paramList[5].zfunsafe_assign(d->param5);
-        paramList[6].zfunsafe_assign(d->param6);
-        paramList[7].zfunsafe_assign(d->param7);
+        for(zfindex i = 0; i < invokerMethod->paramCount(); ++i) {
+            paramList[i].zfunsafe_assign(d->paramAt(i));
+        }
     }
     return d->success;
 }

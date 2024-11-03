@@ -679,6 +679,70 @@ ZFDynamic &ZFDynamic::onEvent(
     return *this;
 }
 
+ZFDynamic &ZFDynamic::customInit(
+        ZF_IN const ZFMP &mp
+        , ZF_IN_OPT const ZFListener &impl /* = zfnull */
+        ) {
+    if(d->errorOccurred) {return *this;}
+    if(!d->scopeCheck_class()) {return *this;}
+    if(mp.paramCount() == 0) {
+        d->error("customInit() must have one or more init param");
+        return *this;
+    }
+    ZFListener implWrap;
+    if(impl) {
+        implWrap = impl;
+    }
+    else {
+        for(zfindex i = 0; i < mp.paramCount(); ++i) {
+            if(!mp.paramNameAt(i) || mp.paramNameAt(i) == mp.paramTypeIdAt(i)) {
+                d->error(zfstr("customInit() init param must have proper param name, class: %s, param index: %s, type: %s"
+                            , d->scopeList.getLast()->d.cls->classNameFull()
+                            , i
+                            , mp.paramTypeIdAt(i)
+                            ));
+                return *this;
+            }
+        }
+
+        ZFLISTENER_1(onInit
+                , ZFMP, mp
+                ) {
+            ZFInvokeData *m = zfargs.param0();
+            zfauto retDummy;
+            zfstring errorHint;
+            zfauto paramList[ZFMETHOD_MAX_PARAM];
+            for(zfindex i = 0; i < mp.paramCount(); ++i) {
+                paramList[0] = m->paramAt(i);
+                if(!ZFDI_invoke(retDummy, &errorHint, m->ownerObject, mp.paramNameAt(i), 1, paramList)) {
+                    m->success = zffalse;
+                    zfstring paramInfo;
+                    ZFDI_paramInfo(paramInfo
+                            , m->param0
+                            , m->param1
+                            , m->param2
+                            , m->param3
+                            , m->param4
+                            , m->param5
+                            , m->param6
+                            , m->param7
+                            , mp.paramCount()
+                            );
+                    m->errorHint = zfstr("unable to construct %s(%s) at param %s, reason: %s"
+                            , m->ownerObject->classData()->classNameFull()
+                            , paramInfo
+                            , i
+                            , errorHint
+                            );
+                    return;
+                }
+            }
+        } ZFLISTENER_END()
+        implWrap = onInit;
+    }
+    return this->method(ZFTypeId_void(), "objectOnInit", mp, implWrap, ZFMethodTypeVirtual, ZFMethodPrivilegeTypeProtected);
+}
+
 ZFDynamic &ZFDynamic::NSBegin(ZF_IN const zfstring &methodNamespace) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_NS()) {return *this;}
@@ -1321,6 +1385,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onInit
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDealloc
         , ZFMP_IN(const ZFListener &, callback)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, customInit
+        , ZFMP_IN(const ZFMP &, mp)
+        , ZFMP_IN_OPT(const ZFListener &, impl, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin
         , ZFMP_IN(const zfstring &, methodNamespace)

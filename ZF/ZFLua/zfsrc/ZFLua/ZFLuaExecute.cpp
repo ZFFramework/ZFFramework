@@ -81,7 +81,7 @@ static zfbool _ZFP_ZFLuaExecute(
     zfstring errHint;
     if(!ZFPROTOCOL_ACCESS(ZFLua)->luaExecute(L ? L : ZFLuaState(), pathInfoOrNull, input, luaResult, luaParams, &errHint)) {
         if(!errHint.isEmpty()) {
-            ZFLuaErrorOccurredTrim("[ZFLua] %s", errHint);
+            ZFLuaErrorOccurredTrim("%s", errHint);
         }
         return zffalse;
     }

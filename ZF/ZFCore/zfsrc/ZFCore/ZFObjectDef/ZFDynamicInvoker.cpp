@@ -42,7 +42,7 @@ public:
             _deleteFlag = zftrue;
         }
         else {
-            _errorHint = errorHint;
+            _errorHint = zfnull;
             _deleteFlag = zffalse;
         }
     }

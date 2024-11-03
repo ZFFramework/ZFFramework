@@ -38,7 +38,7 @@ public:
             ) {
         if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) != ZFFrameworkStateAvailable) {
             ZFLuaErrorOccurredTrim(
-                "[ZFLua] lua module only available after ZFFrameworkStateCheck(ZFLevelZFFrameworkLow)"
+                "lua module only available after ZFFrameworkStateCheck(ZFLevelZFFrameworkLow)"
                 );
             return zffalse;
         }

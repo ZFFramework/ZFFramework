@@ -527,7 +527,6 @@ ZFMP &ZFMP::mp(
             , zfauto, wrap
             ) {
         zfargs.result(wrap);
-        // zfzfzf not called ?
     } ZFLISTENER_END()
     return this->mpWithInit(paramTypeId, paramName, paramDefaultValueCallback);
 }

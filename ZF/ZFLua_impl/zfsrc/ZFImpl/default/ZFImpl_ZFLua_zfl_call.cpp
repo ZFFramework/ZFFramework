@@ -82,11 +82,20 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     }
 
     zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, obj, name, (zfindex)paramCount, paramList, zftrue)) {
+    zfstring errorHintTmp;
+    if(ZFDI_invoke(
+                ret
+                , ZFLogLevelIsActive(ZFLogLevel::e_Verbose) ? &errorHintTmp : zfnull
+                , obj
+                , name
+                , (zfindex)paramCount
+                , paramList
+                , zftrue
+                )) {
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
-    zfstring errorHint = "[zfl_call] failed to invoke: ";
+    zfstring errorHint = "failed to invoke: ";
     errorHint += name;
     errorHint += "(";
     for(zfindex i = 0; i < paramCount; ++i) {
@@ -97,6 +106,10 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     }
     errorHint += "), obj: ";
     ZFObjectInfoT(errorHint, obj);
+    if(errorHintTmp) {
+        errorHint += ", errorHint:\n";
+        errorHint += errorHintTmp;
+    }
     return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
 }
 
