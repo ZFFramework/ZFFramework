@@ -25,6 +25,10 @@ zfclass ZFLIB_ZFCore ZFTaskGroup : zfextend ZFTask {
             , ZFMP_IN(const ZFListener &, implStart)
             , ZFMP_IN_OPT(const ZFListener &, implStop, zfnull)
             )
+    /** @brief util to add #ZFWaitTask */
+    ZFMETHOD_DECLARE_1(void, wait
+            , ZFMP_IN(zftimet, duration)
+            )
 
     /** @brief child count */
     ZFMETHOD_DECLARE_0(zfindex, childCount)

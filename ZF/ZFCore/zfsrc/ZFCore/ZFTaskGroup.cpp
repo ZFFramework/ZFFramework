@@ -1,4 +1,5 @@
 #include "ZFTaskGroup.h"
+#include "ZFTaskUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -22,6 +23,12 @@ ZFMETHOD_DEFINE_2(ZFTaskGroup, void, child
         child->observerAdd(ZFTask::EventTaskOnStop(), implStop);
     }
     this->childArray()->add(child);
+}
+
+ZFMETHOD_DEFINE_1(ZFTaskGroup, void, wait
+        , ZFMP_IN(zftimet, duration)
+        ) {
+    this->child(zfobj<ZFWaitTask>(duration).to<ZFTask *>());
 }
 
 ZFMETHOD_DEFINE_0(ZFTaskGroup, zfindex, childCount) {

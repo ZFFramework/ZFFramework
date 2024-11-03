@@ -1,6 +1,46 @@
 #include "ZFTaskUtil.h"
+#include "ZFTimer.h"
+#include "ZFThread_zfasync.h"
+#include "ZFThread_zfpost.h"
+#include "ZFThread_zfasyncIO.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+
+// ============================================================
+ZFOBJECT_REGISTER(ZFWaitTask)
+ZFOBJECT_ON_INIT_DEFINE_1(ZFWaitTask
+        , ZFMP_IN(zftimet, duration)
+        ) {
+    this->objectOnInit();
+    this->duration(duration);
+}
+
+void ZFWaitTask::taskOnStart(void) {
+    zfsuper::taskOnStart();
+    if(this->duration() > 0) {
+        zfweakT<zfself> owner = this;
+        ZFLISTENER_1(implOnStop
+                , zfweakT<zfself>, owner
+                ) {
+            owner->_implTaskId = zfnull;
+            owner->notifySuccess(zfargs.param0());
+        } ZFLISTENER_END()
+        this->_implTaskId = ZFTimerOnce(this->duration(), implOnStop);
+    }
+    else {
+        this->notifySuccess();
+    }
+}
+void ZFWaitTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+    if(this->_implTaskId) {
+        this->_implTaskId->stop();
+        this->_implTaskId = zfnull;
+    }
+    zfsuper::taskOnStop(resultType);
+}
+void ZFWaitTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    return zfsuper::objectInfoT(ret);
+}
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAsyncTask)

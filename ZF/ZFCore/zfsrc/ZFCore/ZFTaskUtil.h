@@ -7,10 +7,39 @@
 #define _ZFI_ZFTaskUtil_h_
 
 #include "ZFTask.h"
-#include "ZFThread_zfasync.h"
-#include "ZFThread_zfpost.h"
-#include "ZFThread_zfasyncIO.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
+
+// ============================================================
+/**
+ * @brief wait task by #ZFTimerOnce
+ */
+zfclass ZFLIB_ZFCore ZFWaitTask : zfextend ZFTask {
+    ZFOBJECT_DECLARE(ZFWaitTask, ZFTask)
+
+public:
+    /** @brief the wait duration */
+    ZFPROPERTY_ASSIGN(zftimet, duration)
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
+    /** @brief construct with impl */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(zftimet, duration)
+            )
+
+public:
+    zfoverride
+    virtual void taskOnStart(void);
+    zfoverride
+    virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+private:
+    zfautoT<ZFTaskId> _implTaskId;
+};
 
 // ============================================================
 /**
