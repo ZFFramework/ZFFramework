@@ -1,8 +1,6 @@
 #include "ZFDynamicInvoker.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstlhashmap.h" // for ZFDI_invoke method cache
-
 #include "../ZFSTLWrapper/zfstlmap.h" // for ZFDI_invoke param convert backup
 
 // #define _ZFP_ZFDI_DEBUG 1
@@ -19,8 +17,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-// #define _ZFP_ZFDI_CACHE_ENABLE 1
-
 typedef zfstlmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
 
 // ============================================================
@@ -31,35 +27,6 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFDI_WrapperBase, void, zfv
         , ZFMP_IN(const zfchar *, zfv)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv)
-
-// ============================================================
-#if _ZFP_ZFDI_CACHE_ENABLE
-    static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
-    typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFDI_MethodMapCache;
-    static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
-
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {
-        ZFCoreMutexLocker();
-        this->classDataUpdateListener = ZFCallbackForFunc(zfself::classDataUpdate);
-        ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
-
-        _ZFP_ZFDI_methodMapCache.clear();
-        _ZFP_ZFDI_cacheEnable = zftrue;
-    }
-    ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache) {
-        ZFCoreMutexLocker();
-        _ZFP_ZFDI_cacheEnable = zffalse;
-        _ZFP_ZFDI_methodMapCache.clear();
-        ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
-    }
-    private:
-        ZFListener classDataUpdateListener;
-        static void classDataUpdate(ZF_IN const ZFArgs &zfargs) {
-            ZFCoreMutexLocker();
-            _ZFP_ZFDI_methodMapCache.clear();
-        }
-    ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
-#endif // #if _ZFP_ZFDI_CACHE_ENABLE
 
 // ============================================================
 ZFCoreArray<ZFOutput> &ZFDI_errorCallbacks(void) {
@@ -266,21 +233,6 @@ static zfbool _ZFP_ZFDI_invoke(
         return _ZFP_ZFDI_errorOccurred();
     }
     else {
-#if _ZFP_ZFDI_CACHE_ENABLE
-        if(_ZFP_ZFDI_cacheEnable) {
-            ZFCoreMutexLocker();
-            zfstring key;
-            if(obj != zfnull) {
-                key += obj->classData()->classNameFull();
-                key += ':';
-                key += name;
-            }
-            else {
-                key = name;
-            }
-            _ZFP_ZFDI_methodMapCache[key].addFrom(methodList);
-        }
-#endif // #if _ZFP_ZFDI_CACHE_ENABLE
         return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr);
     }
 }
@@ -302,29 +254,6 @@ zfbool ZFDI_invoke(
         obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     }
     _ZFP_ZFDI_errorPrepare(errorHint);
-#if _ZFP_ZFDI_CACHE_ENABLE
-    if(_ZFP_ZFDI_cacheEnable) {
-        ZFCoreMutexLock();
-        zfstring key;
-        if(obj != zfnull) {
-            key += obj->classData()->classNameFull();
-            key += ':';
-            key += name;
-        }
-        else {
-            key = name;
-        }
-        _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
-        if(it != _ZFP_ZFDI_methodMapCache.end()) {
-            ZFCoreArray<const ZFMethod *> methodList = it->second;
-            ZFCoreMutexUnlock();
-            return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr);
-        }
-        else {
-            ZFCoreMutexUnlock();
-        }
-    }
-#endif // #if _ZFP_ZFDI_CACHE_ENABLE
 
     ZFCoreArray<const ZFMethod *> methodList;
 
@@ -648,6 +577,34 @@ zfbool ZFDI_objectFromString(
     }
     else {
         return ZFDI_objectFromString(ret, cls, src, srcLen, errorHint);
+    }
+}
+
+zfbool ZFDI_implicitConvertT(
+        ZF_OUT zfauto &ret
+        , ZF_IN const zfstring &desiredTypeId
+        , ZF_IN ZFObject *value
+        ) {
+    const ZFClass *cls = ZFClass::classForName(desiredTypeId);
+    if(cls == zfnull) {
+        return zffalse;
+    }
+    if(value == zfnull) {
+        ret = cls->newInstance();
+        return (ret != zfnull);
+    }
+    else if(value->classData()->classIsTypeOf(cls)) {
+        ret = value;
+        return zftrue;
+    }
+    else {
+        // try to convert by construct new value
+        zfstring errorHint;
+        zfauto paramList[ZFMETHOD_MAX_PARAM];
+        paramList[0] = value;
+        return ZFDI_alloc(ret, &errorHint, cls, 1, paramList)
+            && ret
+            ;
     }
 }
 

@@ -1,6 +1,7 @@
 #include "ZFMethodDynamicRegister.h"
 #include "ZFMethodDynamicRegisterExtra.h"
 #include "ZFObjectImpl.h"
+#include "ZFDynamicInvoker.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -503,7 +504,37 @@ public:
 ZFMP &ZFMP::mp(
         ZF_IN const zfstring &paramTypeId
         , ZF_IN_OPT const zfstring &paramName /* = zfnull */
-        , ZF_IN_OPT const ZFListener &paramDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
+        ) {
+    ZFCoreAssert(d->paramCount <= ZFMETHOD_MAX_PARAM);
+    d->paramTypeId[d->paramCount] = paramTypeId;
+    d->paramName[d->paramCount] = paramName;
+    ++(d->paramCount);
+    return *this;
+}
+ZFMP &ZFMP::mp(
+        ZF_IN const zfstring &paramTypeId
+        , ZF_IN const zfstring &paramName
+        , ZF_IN ZFObject *paramDefaultValue
+        ) {
+    zfauto wrap;
+    if(!ZFDI_implicitConvertT(wrap, paramTypeId, paramDefaultValue)) {
+        ZFCoreLogTrim("invalid param default value: \"%s\", desired: %s"
+                , paramDefaultValue
+                , paramTypeId
+                );
+    }
+    ZFLISTENER_1(paramDefaultValueCallback
+            , zfauto, wrap
+            ) {
+        zfargs.result(wrap);
+        // zfzfzf not called ?
+    } ZFLISTENER_END()
+    return this->mpWithInit(paramTypeId, paramName, paramDefaultValueCallback);
+}
+ZFMP &ZFMP::mpWithInit(
+        ZF_IN const zfstring &paramTypeId
+        , ZF_IN const zfstring &paramName
+        , ZF_IN const ZFListener &paramDefaultValueCallback
         ) {
     ZFCoreAssert(d->paramCount <= ZFMETHOD_MAX_PARAM);
     d->paramTypeId[d->paramCount] = paramTypeId;

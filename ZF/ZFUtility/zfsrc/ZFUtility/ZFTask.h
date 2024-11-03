@@ -12,8 +12,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract task util
  */
-zfclass ZFLIB_ZFUtility ZFTask : zfextend ZFObject {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFTask, ZFObject)
+zfclass ZFLIB_ZFUtility ZFTask : zfextend ZFTaskId {
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFTask, ZFTaskId)
 
 public:
     /**
@@ -33,15 +33,21 @@ public:
      * by any of these methods:
      * -  override #taskOnStart
      * -  attach observer to #EventTaskOnStart
+     *
+     * the task object would be retained during running
      */
     ZFMETHOD_DECLARE_1(void, start
             , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)
             )
+    zfoverride
+    virtual void stop(void) {
+        this->stop(ZFResultType::e_Cancel);
+    }
     /**
      * @brief stop the task
      */
     ZFMETHOD_DECLARE_1(void, stop
-            , ZFMP_IN_OPT(ZFResultTypeEnum, resultType, ZFResultType::e_Cancel)
+            , ZFMP_IN(ZFResultTypeEnum, resultType)
             )
     /**
      * @brief whether task running
@@ -64,11 +70,6 @@ public:
 
 public:
     /**
-     * @brief for task impl to store extra data, typically task id,
-     *   reset to null when stop
-     */
-    ZFPROPERTY_RETAIN(zfany, implData)
-    /**
      * @brief for task impl to store task result, actual result depends on task,
      *   reset to null when start
      */
@@ -90,6 +91,15 @@ public:
     virtual inline void taskOnStop(void) {
     }
 
+protected:
+    /**
+     * @brief util constructor to attach custom impl to
+     *   #EventTaskOnStart and #EventTaskOnStop
+     */
+    ZFOBJECT_ON_INIT_DECLARE_2(
+            ZFMP_IN(const ZFListener &, implOnStart)
+            , ZFMP_IN_OPT(const ZFListener &, implOnStop, zfnull)
+            )
 protected:
     zfoverride
     virtual void objectOnInit(void) {

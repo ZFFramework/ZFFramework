@@ -204,7 +204,18 @@ public:
     ZFMP &mp(
             ZF_IN const zfstring &paramTypeId
             , ZF_IN_OPT const zfstring &paramName = zfnull
-            , ZF_IN_OPT const ZFListener &paramDefaultValueCallback = _ZFP_ZFMethod_paramDefaultValueCallbackDummy()
+            );
+    /** @brief util for #ZFDynamic::method */
+    ZFMP &mp(
+            ZF_IN const zfstring &paramTypeId
+            , ZF_IN const zfstring &paramName
+            , ZF_IN ZFObject *paramDefaultValue
+            );
+    /** @brief util for #ZFDynamic::method */
+    ZFMP &mpWithInit(
+            ZF_IN const zfstring &paramTypeId
+            , ZF_IN const zfstring &paramName
+            , ZF_IN const ZFListener &paramDefaultValueCallback
             );
 
 public:

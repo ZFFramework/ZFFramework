@@ -17,11 +17,11 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
     _ZFP_started = zftrue;
     _ZFP_onStop = onStop;
 
-    this->implData(zfnull);
     this->result(zfnull);
     this->resultType(ZFResultType::e_Success);
     this->errorHint("");
 
+    zfRetain(this);
     this->taskOnStart();
     this->observerNotify(zfself::EventTaskOnStart());
 }
@@ -42,6 +42,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
                 .sender(this)
                 );
     }
+    zfRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFTask, zfbool, started) {
     return _ZFP_started;
@@ -58,6 +59,20 @@ ZFMETHOD_DEFINE_1(ZFTask, void, notifyFail
         ) {
     this->errorHint(errorHint);
     this->stop(ZFResultType::e_Fail);
+}
+
+
+ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
+        , ZFMP_IN(const ZFListener &, implOnStart)
+        , ZFMP_IN_OPT(const ZFListener &, implOnStop, zfnull)
+        ) {
+    this->objectOnInit();
+    if(implOnStart) {
+        this->on(zfself::EventTaskOnStart(), implOnStart);
+    }
+    if(implOnStop) {
+        this->on(zfself::EventTaskOnStop(), implOnStop);
+    }
 }
 
 void ZFTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
@@ -134,7 +149,7 @@ void ZFTaskGroup::taskOnStart(void) {
     }
     zfobj<ZFArray> childRunning;
     childRunning->addFrom(this->childArray());
-    this->implData(childRunning);
+    this->objectTag("_ZFP_ZFTaskGroupImpl", childRunning);
     zfweakT<zfself> owner = this;
     ZFLISTENER_2(childOnStop
             , zfweakT<zfself>, owner
@@ -154,7 +169,7 @@ void ZFTaskGroup::taskOnStart(void) {
     }
 }
 void ZFTaskGroup::taskOnStop(void) {
-    ZFArray *childRunning = this->implData();
+    zfautoT<ZFArray> childRunning = this->objectTagRemoveAndGet("_ZFP_ZFTaskGroupImpl");
     if(childRunning != zfnull) {
         for(zfindex i = 0; i < childRunning->count(); ++i) {
             ZFTask *child = childRunning->get(i);
@@ -236,7 +251,7 @@ static void _ZFP_ZFTaskQueue_startNext(
             ) {
         ZFTask *child = zfargs.sender();
         if(child->resultType() != ZFResultType::e_Cancel) {
-            ZFArray *childQueue = owner->implData();
+            ZFArray *childQueue = owner->objectTag("_ZFP_ZFTaskQueueImpl");
             if(childQueue->getFirst() == child) {
                 childQueue->removeFirst();
             }
@@ -248,7 +263,7 @@ static void _ZFP_ZFTaskQueue_startNext(
             }
         }
     } ZFLISTENER_END()
-    ZFArray *childQueue = owner->implData();
+    ZFArray *childQueue = owner->objectTag("_ZFP_ZFTaskQueueImpl");
     zfautoT<ZFTask> child = childQueue->getFirst();
     child->start(childOnStop);
 }
@@ -260,11 +275,11 @@ void ZFTaskQueue::taskOnStart(void) {
     }
     zfobj<ZFArray> childQueue;
     childQueue->addFrom(this->childArray());
-    this->implData(childQueue);
+    this->objectTag("_ZFP_ZFTaskQueueImpl", childQueue);
     _ZFP_ZFTaskQueue_startNext(this);
 }
 void ZFTaskQueue::taskOnStop(void) {
-    ZFArray *childQueue = this->implData();
+    zfautoT<ZFArray> childQueue = this->objectTagRemoveAndGet("_ZFP_ZFTaskQueueImpl");
     if(childQueue != zfnull) {
         ZFTask *child = childQueue->getFirst();
         if(child != zfnull) {

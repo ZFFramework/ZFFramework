@@ -486,10 +486,19 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, zfbool
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMP, ZFMP)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFMP, ZFMP &, mp
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFMP, ZFMP &, mp
         , ZFMP_IN(const zfstring &, paramTypeId)
         , ZFMP_IN_OPT(const zfstring &, paramName, zfnull)
-        , ZFMP_IN_OPT(const ZFListener &, paramDefaultValue, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFMP, ZFMP &, mp
+        , ZFMP_IN(const zfstring &, paramTypeId)
+        , ZFMP_IN(const zfstring &, paramName)
+        , ZFMP_IN(ZFObject *, paramDefaultValue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFMP, ZFMP &, mpWithInit
+        , ZFMP_IN(const zfstring &, paramTypeId)
+        , ZFMP_IN(const zfstring &, paramName)
+        , ZFMP_IN(const ZFListener &, paramDefaultValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMP, zfindex, paramCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfstring &, paramTypeIdAt

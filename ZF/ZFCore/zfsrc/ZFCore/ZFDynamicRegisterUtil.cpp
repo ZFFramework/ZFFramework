@@ -1005,37 +1005,18 @@ ZFDynamic &ZFDynamic::property(
     param.propertySetterType(setterPrivilegeType);
     param.propertyGetterType(getterPrivilegeType);
     if(propertyInitValue != zfnull) {
-        ZFTypeIdWrapper *propertyInitValueWrapper = zfcast(ZFTypeIdWrapper *, propertyInitValue);
-        if(propertyInitValueWrapper == zfnull) {
-            d->error(zfstr("assign property's type must be %s: %s"
-                        , ZFTypeIdWrapper::ClassData()->classNameFull()
+        zfauto wrap = ZFDI_implicitConvert(propertyTypeId, propertyInitValue);
+        if(wrap == zfnull) {
+            d->error(zfstr("invalid init value (%s)\"%s\" for property: (%s)%s"
+                        , propertyInitValue->classData()->classNameFull()
                         , propertyInitValue
+                        , cls->classNameFull()
+                        , propertyName
                         ));
             return *this;
         }
-        if(propertyInitValue->classData()->classIsTypeOf(cls)) {
-            param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
-            param.dynamicRegisterUserData(propertyInitValue);
-        }
-        else {
-            // try to convert by construct new value
-            zfauto wrap;
-            zfstring errorHint;
-            zfauto paramList[ZFMETHOD_MAX_PARAM];
-            paramList[0] = propertyInitValue;
-            if(!ZFDI_alloc(wrap, &errorHint, cls, 1, paramList)
-                    || !wrap
-                    ) {
-                d->error(zfstr("invalid init value \"%s\" for assign property: (%s)%s"
-                            , propertyInitValue
-                            , cls->classNameFull()
-                            , propertyName
-                            ));
-                return *this;
-            }
-            param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
-            param.dynamicRegisterUserData(wrap);
-        }
+        param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
+        param.dynamicRegisterUserData(wrap);
     }
     return this->property(param);
 }

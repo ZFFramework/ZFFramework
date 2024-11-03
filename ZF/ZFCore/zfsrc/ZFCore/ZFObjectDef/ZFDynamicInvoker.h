@@ -229,6 +229,31 @@ extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
+/**
+ * @brief try implicit convert if possible
+ *
+ * return original object if value is type of desiredTypeId,
+ * or try to construct new object from value
+ */
+extern ZFLIB_ZFCore zfbool ZFDI_implicitConvertT(
+        ZF_OUT zfauto &ret
+        , ZF_IN const zfstring &desiredTypeId
+        , ZF_IN ZFObject *value
+        );
+/** @brief see #ZFDI_implicitConvertT */
+inline zfauto ZFDI_implicitConvert(
+        ZF_IN const zfstring &desiredTypeId
+        , ZF_IN ZFObject *value
+        ) {
+    zfauto ret;
+    if(ZFDI_implicitConvertT(ret, desiredTypeId, value)) {
+        return ret;
+    }
+    else {
+        return zfnull;
+    }
+}
+
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */
 /**
