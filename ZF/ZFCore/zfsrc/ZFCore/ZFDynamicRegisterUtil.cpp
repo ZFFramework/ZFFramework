@@ -709,6 +709,8 @@ ZFDynamic &ZFDynamic::customInit(
                 , ZFMP, mp
                 ) {
             ZFInvokeData *m = zfargs.param0();
+            m->ownerObject->_ZFP_ZFObject_objectOnInit();
+
             zfauto retDummy;
             zfstring errorHint;
             zfauto paramList[ZFMETHOD_MAX_PARAM];
