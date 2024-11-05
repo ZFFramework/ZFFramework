@@ -1,6 +1,5 @@
 #include "ZFObjectDeclare.h"
 #include "ZFObjectImpl.h"
-#include "ZFMethodDynamicRegisterExtra.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -19,8 +18,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
             , ZFListener, methodImpl
             ) {
         // call `this->objectOnInit();`
-        ZFInvokeData *ivk = zfargs.param0();
-        ivk->ownerObject->_ZFP_ZFObject_objectOnInit();
+        zfargs.sender()->_ZFP_ZFObject_objectOnInit();
         methodImpl.execute(zfargs);
     } ZFLISTENER_END()
     return ZFMethodDynamicRegister(
@@ -72,8 +70,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
                 , ZFListener, methodImpl
                 ) {
             // call `this->objectOnInit();`
-            ZFInvokeData *ivk = zfargs.param0();
-            ivk->ownerObject->_ZFP_ZFObject_objectOnInit();
+            zfargs.sender()->_ZFP_ZFObject_objectOnInit();
             methodImpl.execute(zfargs);
         } ZFLISTENER_END()
         paramTmp.methodImpl(methodImplWrapper);

@@ -1,6 +1,5 @@
 #include "ZFIdMap.h"
 #include "ZFObjectImpl.h"
-#include "ZFCore/ZFObjectDef/ZFMethodDynamicRegisterExtra.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 

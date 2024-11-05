@@ -13,38 +13,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // ZFArgs
 zfclassFwd _ZFP_ZFArgsPrivate;
+zfclassFwd zfauto;
 /**
  * @brief listener data used by #ZFListener
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFArgs {
 public:
     /**
-     * @brief event id, may be #zfidentityInvalid
+     * @brief owner object or event sender, may be null
+     * @note the sender won't be retained
      */
-    ZFArgs &eventId(ZF_IN zfidentity const &v);
-    /** @brief see #eventId */
-    zfidentity const &eventId(void) const;
-    /**
-     * @brief who notified the listener event, may be null
-     * @note the sneder has no auto retain
-     */
-    ZFArgs &sender(ZF_IN zfany const &v);
-    /** @brief see #sender */
     zfany const &sender(void) const;
-    /**
-     * @brief params, may be null
-     * @note the param has no auto retain
-     */
-    ZFArgs &param0(ZF_IN zfany const &v);
-    /** @brief see #param0 */
-    zfany const &param0(void) const;
-    /**
-     * @brief params, may be null
-     * @note the param has no auto retain
-     */
-    ZFArgs &param1(ZF_IN zfany const &v);
-    /** @brief see #param1 */
-    zfany const &param1(void) const;
+    /** @brief see #sender */
+    ZFArgs &sender(ZF_IN zfany const &v);
 
     /**
      * @brief the result
@@ -52,13 +33,114 @@ public:
      */
     zfany const &result(void) const;
     /** @brief see #result */
-    ZFArgs const &result(ZF_IN zfany const &result) const;
+    ZFArgs const &result(ZF_IN zfany const &v) const;
     /** @brief see #result */
-    ZFArgs &result(ZF_IN zfany const &result);
+    ZFArgs &result(ZF_IN zfany const &v);
+
+    /* ZFMETHOD_MAX_PARAM */
+    /**
+     * @brief params, may be null
+     * @note the param would be retained
+     */
+    zfany const &param0(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param0(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param0(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param1(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param1(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param1(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param2(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param2(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param2(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param3(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param3(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param3(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param4(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param4(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param4(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param5(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param5(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param5(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param6(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param6(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param6(ZF_IN zfany const &v);
+
+    /** @brief see #param0 */
+    zfany const &param7(void) const;
+    /** @brief see #param0 */
+    ZFArgs const &param7(ZF_IN zfany const &v) const;
+    /** @brief see #param0 */
+    ZFArgs &param7(ZF_IN zfany const &v);
 
 public:
     // ============================================================
-    // event filter logic
+    /**
+     * @brief whether invoke success
+     */
+    zfbool success(void) const;
+    /** @brief see #success */
+    ZFArgs const &success(ZF_IN zfbool v) const;
+    /** @brief see #success */
+    ZFArgs &success(ZF_IN zfbool v);
+
+    /**
+     * @brief error hint
+     */
+    zfstring const &errorHint(void) const;
+    /** @brief see #errorHint */
+    ZFArgs const &errorHint(ZF_IN zfstring const &v) const;
+    /** @brief see #errorHint */
+    ZFArgs &errorHint(ZF_IN zfstring const &v);
+
+public:
+    // ============================================================
+    /**
+     * @brief owner method
+     */
+    const ZFMethod *ownerMethod(void) const;
+    /** @brief see #ownerMethod */
+    ZFArgs &ownerMethod(ZF_IN const ZFMethod *v);
+
+    /**
+     * @brief owner property
+     */
+    const ZFProperty *ownerProperty(void) const;
+    /** @brief see #ownerProperty */
+    ZFArgs &ownerProperty(ZF_IN const ZFProperty *v);
+
+public:
+    // ============================================================
+    /**
+     * @brief event id, may be #zfidentityInvalid
+     */
+    zfidentity const &eventId(void) const;
+    /** @brief see #eventId */
+    ZFArgs &eventId(ZF_IN zfidentity const &v);
     /**
      * @brief used to achieve event filter logic
      *
@@ -67,11 +149,37 @@ public:
      * and set #eventFiltered to true,
      * then the event would not be further dispatched
      */
-    ZFArgs const &eventFiltered(ZF_IN zfbool eventFiltered) const;
-    /** @brief see #eventFiltered */
-    ZFArgs &eventFiltered(ZF_IN zfbool eventFiltered);
-    /** @brief see #eventFiltered */
     zfbool eventFiltered(void) const;
+    /** @brief see #eventFiltered */
+    ZFArgs const &eventFiltered(ZF_IN zfbool v) const;
+    /** @brief see #eventFiltered */
+    ZFArgs &eventFiltered(ZF_IN zfbool v);
+
+public:
+    // ============================================================
+    /**
+     * @brief util method for dynamic registered method to call parent's method
+     */
+    zfauto callSuper(void) const;
+
+    /** @brief get param at index */
+    zfany const &paramAt(ZF_IN zfindex index) const;
+    /** @brief set param at index */
+    ZFArgs const &param(ZF_IN zfindex index, ZF_IN zfany const &v) const;
+    /** @brief set param at index */
+    ZFArgs &param(ZF_IN zfindex index, ZF_IN zfany const &v);
+
+    /** @brief get property value */
+    zfany const &propValue(void) const {return this->paramAt(0);}
+    /** @brief set property value */
+    ZFArgs const &propValue(ZF_IN zfany const &v) const {return this->param(0, v);}
+    /** @brief set property value */
+    ZFArgs &propValue(ZF_IN zfany const &v) {return this->param(0, v);}
+
+    /** @brief get old property value */
+    zfany const &propValueOld(void) const {return this->paramAt(1);}
+    /** @brief set old property value */
+    ZFArgs &propValueOld(ZF_IN zfany const &v) {return this->param(1, v);}
 
     // ============================================================
 public:

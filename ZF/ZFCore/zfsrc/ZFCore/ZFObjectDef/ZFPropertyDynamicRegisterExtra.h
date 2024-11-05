@@ -26,10 +26,7 @@ typedef enum {
 /**
  * @brief dynamic version of #ZFPROPERTY_ON_INIT_DECLARE
  *
- * can not be registered if the property already has custom life cycle for ownerClass\n
- * \n
- * callback's param0 is #ZFPropertyState,
- * sender is the ownerObject
+ * can not be registered if the property already has custom life cycle for ownerClass
  */
 extern ZFLIB_ZFCore zfbool ZFPropertyDynamicRegisterLifeCycle(
         ZF_IN const ZFProperty *property
@@ -44,43 +41,6 @@ extern ZFLIB_ZFCore zfbool ZFPropertyDynamicUnregisterLifeCycle(
         , ZF_IN const ZFClass *ownerClassOrNull
         , ZF_IN ZFPropertyLifeCycle lifeCycle
         );
-
-/** @brief data to hold params for property, see #ZFPropertyDynamicRegisterLifeCycle */
-zfclass ZFLIB_ZFCore ZFPropertyState : zfextend ZFObject {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFPropertyState, ZFObject)
-
-public:
-    /**
-     * @brief holds the owner object of the property
-     */
-    zfany ownerObject;
-    /**
-     * @brief holds the owner property
-     */
-    const ZFProperty *ownerProperty;
-    /**
-     * @brief holds the property's value
-     *
-     * for retain property, it's the property's value,
-     * for assign property, it's a #ZFTypeIdWrapper
-     */
-    zfauto value;
-    /**
-     * @brief see #value
-     */
-    zfauto valueOld;
-
-protected:
-    /** @cond ZFPrivateDoc */
-    ZFPropertyState(void) : ZFObject()
-    , ownerObject(zfnull)
-    , ownerProperty(zfnull)
-    , value()
-    , valueOld()
-    {
-    }
-    /** @endcond */
-};
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPropertyDynamicRegisterExtra_h_

@@ -15,12 +15,11 @@ protected:
         this->output("ZFDynamic");
 
         ZFLISTENER(methodCallback) {
-            ZFInvokeData *d = zfargs.param0();
             zfobj<v_zfstring> ret;
-            ret->zfv += d->param0->to<v_zfstring *>()->zfv;
+            ret->zfv += zfargs.param0()->to<v_zfstring *>()->zfv;
             ret->zfv += "(modified)";
             zfautoRelease(zfRetain(ret)); // take care of this
-            d->ret = ret;
+            zfargs.result(ret);
         } ZFLISTENER_END()
         ZFDynamic d = ZFDynamic()
             .classBegin("ZFDynamicTest", "ZFObject")

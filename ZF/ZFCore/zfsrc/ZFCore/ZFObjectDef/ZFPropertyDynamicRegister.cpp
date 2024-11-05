@@ -229,12 +229,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFPropertyDynamicUnregister
         , ZFMP_IN(const ZFProperty *, property)
         )
 
-ZFOBJECT_REGISTER(ZFPropertyState)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyState, zfany, ownerObject)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyState, const ZFProperty *, ownerProperty)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyState, zfauto, value)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyState, zfauto, valueOld)
-
 ZF_NAMESPACE_GLOBAL_END
 #endif
 

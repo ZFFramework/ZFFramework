@@ -1,5 +1,4 @@
 #include "ZFMethodDynamicRegister.h"
-#include "ZFMethodDynamicRegisterExtra.h"
 #include "ZFObjectImpl.h"
 #include "ZFMethodFuncDeclare.h"
 
@@ -31,33 +30,33 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     if(!ZFMethodGenericInvokerParamsCheckWithMethod(errorHint, paramCount, paramList, invokerMethod)) {
         return zffalse;
     }
-    zfobj<ZFInvokeData> d;
-    d->ownerMethod = invokerMethod;
-    d->ownerObject = invokerObject;
+    ZFArgs d;
+    d.sender(invokerObject);
+    d.ownerMethod(invokerMethod);
     for(zfindex i = 0; i < invokerMethod->paramCount(); ++i) {
         if(paramList[i] == ZFMP_DEF()) {
-            d->paramSet(i, invokerMethod->paramDefaultValueAt(i));
+            d.param(i, invokerMethod->paramDefaultValueAt(i));
         }
         else {
-            d->paramSet(i, paramList[i]);
+            d.param(i, paramList[i]);
         }
     }
 
     ZFListener methodImpl = zfcast(v_ZFListener *, invokerMethod->dynamicRegisterUserData())->zfv;
-    methodImpl.execute(ZFArgs()
-            .sender(invokerObject)
-            .param0(d)
-        );
-    ret = d->ret;
-    if(errorHint != zfnull) {
-        *errorHint += d->errorHint;
-    }
-    if(d->success) {
+    methodImpl.execute(d);
+    if(d.success()) {
+        ret = d.result();
         for(zfindex i = 0; i < invokerMethod->paramCount(); ++i) {
-            paramList[i].zfunsafe_assign(d->paramAt(i));
+            paramList[i].zfunsafe_assign(d.paramAt(i));
         }
+        return zftrue;
     }
-    return d->success;
+    else {
+        if(errorHint != zfnull) {
+            *errorHint += d.errorHint();
+        }
+        return zffalse;
+    }
 }
 
 // ============================================================

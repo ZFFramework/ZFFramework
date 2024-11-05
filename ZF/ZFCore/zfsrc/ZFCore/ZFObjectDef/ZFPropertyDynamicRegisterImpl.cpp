@@ -672,20 +672,17 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         return;
     }
 
-    zfobj<ZFPropertyState> invokeData;
-    invokeData->ownerObject = propertyOwnerObject;
-    invokeData->ownerProperty = property;
+    ZFArgs d;
+    d.sender(propertyOwnerObject);
+    d.ownerProperty(property);
 
     if(property->isRetainProperty()) {
-        invokeData->value = ((zfauto *)propertyValue)->toObject();
-        invokeData->valueOld = *(zfauto *)propertyValueOld;
+        d.propValue(*(zfauto *)propertyValue);
+        d.propValueOld(*(zfauto *)propertyValueOld);
 
-        implUserData->callback.execute(ZFArgs()
-                .sender(propertyOwnerObject)
-                .param0(invokeData)
-            );
+        implUserData->callback.execute(d);
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
-            *(zfauto *)propertyValue = invokeData->value;
+            *(zfauto *)propertyValue = d.propValue();
         }
     }
     else {
@@ -696,20 +693,17 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         ) {
             return;
         }
-        invokeData->value = typeInfo->typeIdClass()->newInstance();
-        invokeData->valueOld = typeInfo->typeIdClass()->newInstance();
-        ZFTypeIdWrapper *propertyValueHolder = invokeData->value;
-        ZFTypeIdWrapper *propertyValueOldHolder = invokeData->valueOld;
+        d.propValue(typeInfo->typeIdClass()->newInstance());
+        d.propValueOld(typeInfo->typeIdClass()->newInstance());
+        ZFTypeIdWrapper *propertyValueHolder = d.propValue();
+        ZFTypeIdWrapper *propertyValueOldHolder = d.propValueOld();
         if(propertyValueHolder == zfnull || propertyValueOldHolder == zfnull) {
             return;
         }
         propertyValueHolder->wrappedValue(propertyValue);
         propertyValueOldHolder->wrappedValue(propertyValueOld);
 
-        implUserData->callback.execute(ZFArgs()
-                .sender(propertyOwnerObject)
-                .param0(invokeData)
-            );
+        implUserData->callback.execute(d);
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
             propertyValueHolder->wrappedValueCopy(propertyValue);
         }

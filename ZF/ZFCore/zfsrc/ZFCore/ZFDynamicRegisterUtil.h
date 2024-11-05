@@ -170,9 +170,7 @@ public:
      *       :customInit(ZFMP()
      *           :mp('zfstring', 'myProp')
      *       , function(zfargs)  -- when no impl supplied, this is the default behavior
-     *           ---@type ZFInvokeData
-     *           local m = zfargs:param0()
-     *           m:ownerObject():myProp(m:param0())
+     *           zfargs:sender():myProp(zfargs:param0())
      *       end)
      *       :classEnd()
      * @endcode
@@ -218,8 +216,7 @@ public:
     /**
      * @brief see #ZFDynamic
      *
-     * util method to register method (global method or class member method),
-     * methodImpl's param0 is #ZFInvokeData
+     * util method to register method (global method or class member method)
      *
      * usage:
      * @code

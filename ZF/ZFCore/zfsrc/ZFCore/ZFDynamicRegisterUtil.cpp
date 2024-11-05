@@ -708,34 +708,33 @@ ZFDynamic &ZFDynamic::customInit(
         ZFLISTENER_1(onInit
                 , ZFMP, mp
                 ) {
-            ZFInvokeData *m = zfargs.param0();
-            m->ownerObject->_ZFP_ZFObject_objectOnInit();
+            zfargs.sender()->_ZFP_ZFObject_objectOnInit();
 
             zfauto retDummy;
             zfstring errorHint;
             zfauto paramList[ZFMETHOD_MAX_PARAM];
             for(zfindex i = 0; i < mp.paramCount(); ++i) {
-                paramList[0] = m->paramAt(i);
-                if(!ZFDI_invoke(retDummy, &errorHint, m->ownerObject, mp.paramNameAt(i), 1, paramList)) {
-                    m->success = zffalse;
+                paramList[0] = zfargs.paramAt(i);
+                if(!ZFDI_invoke(retDummy, &errorHint, zfargs.sender(), mp.paramNameAt(i), 1, paramList)) {
+                    zfargs.success(zffalse);
                     zfstring paramInfo;
                     ZFDI_paramInfo(paramInfo
-                            , m->param0
-                            , m->param1
-                            , m->param2
-                            , m->param3
-                            , m->param4
-                            , m->param5
-                            , m->param6
-                            , m->param7
+                            , zfargs.param0()
+                            , zfargs.param1()
+                            , zfargs.param2()
+                            , zfargs.param3()
+                            , zfargs.param4()
+                            , zfargs.param5()
+                            , zfargs.param6()
+                            , zfargs.param7()
                             , mp.paramCount()
                             );
-                    m->errorHint = zfstr("unable to construct %s(%s) at param %s, reason: %s"
-                            , m->ownerObject->classData()->classNameFull()
-                            , paramInfo
-                            , i
-                            , errorHint
-                            );
+                    zfargs.errorHint(zfstr("unable to construct %s(%s) at param %s, reason: %s"
+                                , zfargs.sender()->classData()->classNameFull()
+                                , paramInfo
+                                , i
+                                , errorHint
+                                ));
                     return;
                 }
             }

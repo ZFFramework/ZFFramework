@@ -111,8 +111,7 @@ ZFMAIN_ENTRY() {
             .method("void", "testFunc", ZFMP()
                 .mp("zfstring", "testParam0")
                 , [](const ZFArgs &zfargs) {
-                    ZFInvokeData *m = zfargs.param0();
-                    ZFLogTrim() << m->ownerMethod << " called, param0: " << m->param0;
+                    ZFLogTrim() << zfargs.ownerMethod() << " called, param0: " << zfargs.param0();
                 })
         .classEnd();
 
@@ -122,9 +121,8 @@ ZFMAIN_ENTRY() {
         "        :method('void', 'testFunc', ZFMP()\n"
         "            :mp('zfstring', 'testParam0')\n"
         "            , function(zfargs)\n"
-        "                local m = zfargs:param0()\n"
-        "                m:callSuper()\n"
-        "                ZFLogTrim('%s called, param0: %s', m:ownerMethod(), m:param0())\n"
+        "                zfargs:callSuper()\n"
+        "                ZFLogTrim('%s called, param0: %s', zfargs:ownerMethod(), zfargs:param0())\n"
         "            end)\n"
         "    :classEnd()\n"
         "\n"
