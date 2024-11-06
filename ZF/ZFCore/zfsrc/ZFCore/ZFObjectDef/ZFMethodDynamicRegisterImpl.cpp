@@ -26,37 +26,18 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove) {
 ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterAutoRemove)
 
 // ============================================================
-static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    if(!ZFMethodGenericInvokerParamsCheckWithMethod(errorHint, paramCount, paramList, invokerMethod)) {
-        return zffalse;
+static void _ZFP_I_ZFMethodDynamicRegisterGI(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
     }
-    ZFArgs d;
-    d.sender(invokerObject);
-    d.ownerMethod(invokerMethod);
-    for(zfindex i = 0; i < invokerMethod->paramCount(); ++i) {
-        if(paramList[i] == ZFMP_DEF()) {
-            d.param(i, invokerMethod->paramDefaultValueAt(i));
-        }
-        else {
-            d.param(i, paramList[i]);
+    const ZFMethod *ownerMethod = zfargs.ownerMethod();
+    for(zfindex i = 0; i < ownerMethod->paramCount(); ++i) {
+        if(zfargs.paramAt(i) == ZFMP_DEF()) {
+            zfargs.param(i, ownerMethod->paramDefaultValueAt(i));
         }
     }
-
-    ZFListener methodImpl = zfcast(v_ZFListener *, invokerMethod->dynamicRegisterUserData())->zfv;
-    methodImpl.execute(d);
-    if(d.success()) {
-        ret = d.result();
-        for(zfindex i = 0; i < invokerMethod->paramCount(); ++i) {
-            paramList[i].zfunsafe_assign(d.paramAt(i));
-        }
-        return zftrue;
-    }
-    else {
-        if(errorHint != zfnull) {
-            *errorHint += d.errorHint();
-        }
-        return zffalse;
-    }
+    ZFListener methodImpl = zfcast(v_ZFListener *, ownerMethod->dynamicRegisterUserData())->zfv;
+    methodImpl.execute(zfargs);
 }
 
 // ============================================================

@@ -121,10 +121,15 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         return zftrue;
     }
     else {
-        zfauto retDummy;
-        zfauto paramDummy[ZFMETHOD_MAX_PARAM];
-        paramDummy[0] = styleValue;
-        return setterMethod->methodGenericInvoker()(retDummy, zfnull, propertyOwner, setterMethod, 1, paramDummy);
+        ZFArgs zfargs;
+        zfargs
+            .sender(propertyOwner)
+            .ownerMethod(setterMethod)
+            .paramInit()
+            .param0(styleValue)
+            ;
+        setterMethod->methodGenericInvoker()(zfargs);
+        return zfargs.success();
     }
 }
 void _ZFP_ZFStyleKeyHolder::stylePropertyOnUpdate(

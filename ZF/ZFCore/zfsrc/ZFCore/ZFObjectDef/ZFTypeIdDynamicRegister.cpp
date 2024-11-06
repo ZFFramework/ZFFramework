@@ -28,14 +28,11 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFTypeIdDynamicRegisterAutoRemove) {
 ZF_GLOBAL_INITIALIZER_END(ZFTypeIdDynamicRegisterAutoRemove)
 
 // ============================================================
-static zfbool _ZFP_ZFTypeIdGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
-                , 0
-                )) {
-        return zffalse;
+static void _ZFP_ZFTypeIdGI(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
     }
-    ret = zfobj<v_zfstring>(invokerMethod->methodName() + zfslen("ZFTypeId_"));
-    return zftrue;
+    zfargs.result(zfobj<v_zfstring>(zfargs.ownerMethod()->methodName() + zfslen("ZFTypeId_")));
 }
 zfbool ZFTypeIdDynamicRegister(
         ZF_IN const zfstring &typeIdName

@@ -710,31 +710,26 @@ ZFDynamic &ZFDynamic::customInit(
                 ) {
             zfargs.sender()->_ZFP_ZFObject_objectOnInit();
 
-            zfauto retDummy;
-            zfstring errorHint;
-            zfauto paramList[ZFMETHOD_MAX_PARAM];
             for(zfindex i = 0; i < mp.paramCount(); ++i) {
-                paramList[0] = zfargs.paramAt(i);
-                if(!ZFDI_invoke(retDummy, &errorHint, zfargs.sender(), mp.paramNameAt(i), 1, paramList)) {
+                ZFArgs zfargsSetter;
+                zfargsSetter
+                    .sender(zfargs.sender())
+                    .paramInit()
+                    .param0(zfargs.paramAt(i))
+                    .ignoreError(zfargs.ignoreError())
+                    .ignoreErrorEvent(zfargs.ignoreErrorEvent())
+                    ;
+                ZFDI_invoke(zfargsSetter, mp.paramNameAt(i));
+                if(!zfargsSetter.success()) {
                     zfargs.success(zffalse);
-                    zfstring paramInfo;
-                    ZFDI_paramInfo(paramInfo
-                            , zfargs.param0()
-                            , zfargs.param1()
-                            , zfargs.param2()
-                            , zfargs.param3()
-                            , zfargs.param4()
-                            , zfargs.param5()
-                            , zfargs.param6()
-                            , zfargs.param7()
-                            , mp.paramCount()
-                            );
-                    zfargs.errorHint(zfstr("unable to construct %s(%s) at param %s, reason: %s"
-                                , zfargs.sender()->classData()->classNameFull()
-                                , paramInfo
-                                , i
-                                , errorHint
-                                ));
+                    if(!zfargs.ignoreError()) {
+                        zfargs.errorHint(zfstr("unable to construct %s(%s) at param %s : %s"
+                                    , zfargs.sender()->classData()->classNameFull()
+                                    , ZFDI_paramInfo(zfargs)
+                                    , i
+                                    , zfargsSetter.errorHint()
+                                    ));
+                    }
                     return;
                 }
             }
@@ -857,14 +852,11 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
     return *this;
 }
 
-static zfbool _ZFP_ZFDynamicEventGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
-                , 0
-                )) {
-        return zffalse;
+static void _ZFP_ZFDynamicEventGI(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
     }
-    ret = invokerMethod->dynamicRegisterUserData();
-    return zftrue;
+    zfargs.result(zfargs.ownerMethod()->dynamicRegisterUserData());
 }
 ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
     if(d->errorOccurred) {return *this;}
@@ -973,30 +965,24 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     return *this;
 }
 
-static zfbool _ZFP_ZFDynamicSingletonGI_getter(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
-                , 0
-                )) {
-        return zffalse;
+static void _ZFP_ZFDynamicSingletonGI_getter(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
     }
-    ret = invokerMethod->ownerClass()->classTag("_ZFP_ZFDynamicSingleton");
+    zfauto ret = zfargs.ownerMethod()->ownerClass()->classTag("_ZFP_ZFDynamicSingleton");
     if(!ret) {
-        ret = invokerMethod->ownerClass()->newInstance();
-        invokerMethod->ownerClass()->classTag("_ZFP_ZFDynamicSingleton", ret);
+        ret = zfargs.ownerMethod()->ownerClass()->newInstance();
+        zfargs.ownerMethod()->ownerClass()->classTag("_ZFP_ZFDynamicSingleton", ret);
     }
-    return zftrue;
+    zfargs.result(ret);
 }
-static zfbool _ZFP_ZFDynamicSingletonGI_setter(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
-                , 1
-                , invokerMethod->ownerClass()
-                )) {
-        return zffalse;
+static void _ZFP_ZFDynamicSingletonGI_setter(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
     }
-    invokerMethod->ownerClass()->classTag("_ZFP_ZFDynamicSingleton"
-            , paramList[0]
+    zfargs.ownerMethod()->ownerClass()->classTag("_ZFP_ZFDynamicSingleton"
+            , zfargs.param0()
             );
-    return zftrue;
 }
 ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext("instance") */) {
     if(d->errorOccurred) {return *this;}

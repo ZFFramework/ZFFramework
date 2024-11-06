@@ -7,6 +7,8 @@ zfclassNotPOD _ZFP_ZFArgsPrivate {
 public:
     zfuint refCount;
     zfbool success;
+    zfbool ignoreError;
+    zfbool ignoreErrorEvent;
     zfbool eventFiltered;
     zfidentity eventId;
     zfstring errorHint;
@@ -19,6 +21,8 @@ public:
     _ZFP_ZFArgsPrivate(void)
     : refCount(1)
     , success(zftrue)
+    , ignoreError(zffalse)
+    , ignoreErrorEvent(zffalse)
     , eventFiltered(zffalse)
     , eventId(zfidentityInvalid())
     , errorHint()
@@ -40,103 +44,103 @@ ZFArgs &ZFArgs::sender(ZF_IN zfany const &v) {
     return *this;
 }
 
-zfany const &ZFArgs::result(void) const {
-    return d->result.asAny();
+zfauto &ZFArgs::result(void) const {
+    return d->result;
 }
-ZFArgs const &ZFArgs::result(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::result(ZF_IN zfauto const &v) const {
     d->result = v;
     return *this;
 }
-ZFArgs &ZFArgs::result(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::result(ZF_IN zfauto const &v) {
     d->result = v;
     return *this;
 }
 
-zfany const &ZFArgs::param0(void) const {
-    return d->param[0].asAny();
+zfauto &ZFArgs::param0(void) const {
+    return d->param[0];
 }
-ZFArgs const &ZFArgs::param0(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param0(ZF_IN zfauto const &v) const {
     d->param[0] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param0(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param0(ZF_IN zfauto const &v) {
     d->param[0] = v;
     return *this;
 }
-zfany const &ZFArgs::param1(void) const {
-    return d->param[1].asAny();
+zfauto &ZFArgs::param1(void) const {
+    return d->param[1];
 }
-ZFArgs const &ZFArgs::param1(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param1(ZF_IN zfauto const &v) const {
     d->param[1] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param1(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param1(ZF_IN zfauto const &v) {
     d->param[1] = v;
     return *this;
 }
-zfany const &ZFArgs::param2(void) const {
-    return d->param[2].asAny();
+zfauto &ZFArgs::param2(void) const {
+    return d->param[2];
 }
-ZFArgs const &ZFArgs::param2(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param2(ZF_IN zfauto const &v) const {
     d->param[2] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param2(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param2(ZF_IN zfauto const &v) {
     d->param[2] = v;
     return *this;
 }
-zfany const &ZFArgs::param3(void) const {
-    return d->param[3].asAny();
+zfauto &ZFArgs::param3(void) const {
+    return d->param[3];
 }
-ZFArgs const &ZFArgs::param3(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param3(ZF_IN zfauto const &v) const {
     d->param[3] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param3(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param3(ZF_IN zfauto const &v) {
     d->param[3] = v;
     return *this;
 }
-zfany const &ZFArgs::param4(void) const {
-    return d->param[4].asAny();
+zfauto &ZFArgs::param4(void) const {
+    return d->param[4];
 }
-ZFArgs const &ZFArgs::param4(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param4(ZF_IN zfauto const &v) const {
     d->param[4] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param4(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param4(ZF_IN zfauto const &v) {
     d->param[4] = v;
     return *this;
 }
-zfany const &ZFArgs::param5(void) const {
-    return d->param[5].asAny();
+zfauto &ZFArgs::param5(void) const {
+    return d->param[5];
 }
-ZFArgs const &ZFArgs::param5(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param5(ZF_IN zfauto const &v) const {
     d->param[5] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param5(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param5(ZF_IN zfauto const &v) {
     d->param[5] = v;
     return *this;
 }
-zfany const &ZFArgs::param6(void) const {
-    return d->param[6].asAny();
+zfauto &ZFArgs::param6(void) const {
+    return d->param[6];
 }
-ZFArgs const &ZFArgs::param6(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param6(ZF_IN zfauto const &v) const {
     d->param[6] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param6(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param6(ZF_IN zfauto const &v) {
     d->param[6] = v;
     return *this;
 }
-zfany const &ZFArgs::param7(void) const {
-    return d->param[7].asAny();
+zfauto &ZFArgs::param7(void) const {
+    return d->param[7];
 }
-ZFArgs const &ZFArgs::param7(ZF_IN zfany const &v) const {
+ZFArgs const &ZFArgs::param7(ZF_IN zfauto const &v) const {
     d->param[7] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param7(ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param7(ZF_IN zfauto const &v) {
     d->param[7] = v;
     return *this;
 }
@@ -163,6 +167,22 @@ ZFArgs const &ZFArgs::errorHint(ZF_IN zfstring const &v) const {
 }
 ZFArgs &ZFArgs::errorHint(ZF_IN zfstring const &v) {
     d->errorHint = v;
+    return *this;
+}
+
+zfbool ZFArgs::ignoreError(void) const {
+    return d->ignoreError;
+}
+ZFArgs &ZFArgs::ignoreError(ZF_IN zfbool v) {
+    d->ignoreError = v;
+    return *this;
+}
+
+zfbool ZFArgs::ignoreErrorEvent(void) const {
+    return d->ignoreErrorEvent;
+}
+ZFArgs &ZFArgs::ignoreErrorEvent(ZF_IN zfbool v) {
+    d->ignoreErrorEvent = v;
     return *this;
 }
 
@@ -205,14 +225,62 @@ ZFArgs &ZFArgs::eventFiltered(ZF_IN zfbool eventFiltered) {
 }
 
 // ============================================================
-zfany const &ZFArgs::paramAt(ZF_IN zfindex index) const {
-    return d->param[index].asAny();
+ZFArgs &ZFArgs::paramInit(void) {
+    ZFCoreMutexLock();
+    _ZFP_ZFArgsPrivate &dTmp = *d;
+    dTmp.param[0].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[1].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[2].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[3].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[4].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[5].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[6].zfunsafe_assign(ZFMP_DEF());
+    dTmp.param[7].zfunsafe_assign(ZFMP_DEF());
+    ZFCoreMutexUnlock();
+    return *this;
 }
-ZFArgs const &ZFArgs::param(ZF_IN zfindex index, ZF_IN zfany const &v) const {
+ZFArgs &ZFArgs::paramInit(
+        ZF_IN ZFObject *param0
+        , ZF_IN ZFObject *param1
+        , ZF_IN ZFObject *param2
+        , ZF_IN ZFObject *param3
+        , ZF_IN ZFObject *param4
+        , ZF_IN ZFObject *param5
+        , ZF_IN ZFObject *param6
+        , ZF_IN ZFObject *param7
+        ) {
+    ZFCoreMutexLock();
+    _ZFP_ZFArgsPrivate &dTmp = *d;
+    dTmp.param[0].zfunsafe_assign(param0);
+    dTmp.param[1].zfunsafe_assign(param1);
+    dTmp.param[2].zfunsafe_assign(param2);
+    dTmp.param[3].zfunsafe_assign(param3);
+    dTmp.param[4].zfunsafe_assign(param4);
+    dTmp.param[5].zfunsafe_assign(param5);
+    dTmp.param[6].zfunsafe_assign(param6);
+    dTmp.param[7].zfunsafe_assign(param7);
+    ZFCoreMutexUnlock();
+    return *this;
+}
+ZFArgs &ZFArgs::paramInit(ZF_IN const ZFCoreArray<zfauto> &params) {
+    ZFCoreAssert(params.count() <= ZFMETHOD_MAX_PARAM);
+    ZFCoreMutexLock();
+    _ZFP_ZFArgsPrivate &dTmp = *d;
+    for(zfindex i = 0; i < params.count(); ++i) {
+        dTmp.param[i].zfunsafe_assign(params[i]);
+    }
+    ZFCoreMutexUnlock();
+    return *this;
+}
+
+zfauto &ZFArgs::paramAt(ZF_IN zfindex index) const {
+    return d->param[index];
+}
+ZFArgs const &ZFArgs::param(ZF_IN zfindex index, ZF_IN zfauto const &v) const {
     d->param[index] = v;
     return *this;
 }
-ZFArgs &ZFArgs::param(ZF_IN zfindex index, ZF_IN zfany const &v) {
+ZFArgs &ZFArgs::param(ZF_IN zfindex index, ZF_IN zfauto const &v) {
     d->param[index] = v;
     return *this;
 }
@@ -279,6 +347,12 @@ void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     }
     if(!this->success()) {
         ret += " success:false";
+    }
+    if(this->ignoreError()) {
+        ret += " ignoreError:true";
+    }
+    else if(this->ignoreErrorEvent()) {
+        ret += " ignoreErrorEvent:true";
     }
     if(this->errorHint()) {
         ret += " errorHint:";

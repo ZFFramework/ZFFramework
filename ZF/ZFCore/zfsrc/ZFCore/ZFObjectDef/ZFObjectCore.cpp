@@ -148,14 +148,13 @@ ZFCompareResult ZFObject::objectCompareValue(ZF_IN ZFObject *anotherObj) {
 zfauto ZFObject::invoke(
         ZF_IN const zfstring &methodName
         ) {
-    zfauto paramList[ZFMETHOD_MAX_PARAM];
-    zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, this, methodName, 0, paramList)) {
-        return ret;
-    }
-    else {
-        return zfnull;
-    }
+    ZFArgs zfargs;
+    zfargs
+        .sender(this)
+        .paramInit()
+        ;
+    ZFDI_invoke(zfargs, methodName, zftrue);
+    return zfargs.result();
 }
 zfauto ZFObject::invoke(
         ZF_IN const zfstring &methodName
@@ -168,27 +167,22 @@ zfauto ZFObject::invoke(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) {
-    ZFCoreMutexLock();
-    zfauto paramList[ZFMETHOD_MAX_PARAM];
-    zfindex paramCount = ZFMETHOD_MAX_PARAM;
-    do {
-        if(param0 == ZFMP_DEF()) {paramCount = 0; break;} else {paramList[0].zfunsafe_assign(param0);}
-        if(param1 == ZFMP_DEF()) {paramCount = 1; break;} else {paramList[1].zfunsafe_assign(param1);}
-        if(param2 == ZFMP_DEF()) {paramCount = 2; break;} else {paramList[2].zfunsafe_assign(param2);}
-        if(param3 == ZFMP_DEF()) {paramCount = 3; break;} else {paramList[3].zfunsafe_assign(param3);}
-        if(param4 == ZFMP_DEF()) {paramCount = 4; break;} else {paramList[4].zfunsafe_assign(param4);}
-        if(param5 == ZFMP_DEF()) {paramCount = 5; break;} else {paramList[5].zfunsafe_assign(param5);}
-        if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
-        if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
-    } while(zffalse);
-    ZFCoreMutexUnlock();
-    zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, this, methodName, paramCount, paramList, zftrue)) {
-        return ret;
-    }
-    else {
-        return zfnull;
-    }
+    ZFArgs zfargs;
+    zfargs
+        .sender(this)
+        .paramInit(
+                param0
+                , param1
+                , param2
+                , param3
+                , param4
+                , param5
+                , param6
+                , param7
+                )
+        ;
+    ZFDI_invoke(zfargs, methodName, zftrue);
+    return zfargs.result();
 }
 zfbool ZFObject::invokeT(
         ZF_OUT zfauto &ret
@@ -203,21 +197,27 @@ zfbool ZFObject::invokeT(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) {
-    ZFCoreMutexLock();
-    zfauto paramList[ZFMETHOD_MAX_PARAM];
-    zfindex paramCount = ZFMETHOD_MAX_PARAM;
-    do {
-        if(param0 == ZFMP_DEF()) {paramCount = 0; break;} else {paramList[0].zfunsafe_assign(param0);}
-        if(param1 == ZFMP_DEF()) {paramCount = 1; break;} else {paramList[1].zfunsafe_assign(param1);}
-        if(param2 == ZFMP_DEF()) {paramCount = 2; break;} else {paramList[2].zfunsafe_assign(param2);}
-        if(param3 == ZFMP_DEF()) {paramCount = 3; break;} else {paramList[3].zfunsafe_assign(param3);}
-        if(param4 == ZFMP_DEF()) {paramCount = 4; break;} else {paramList[4].zfunsafe_assign(param4);}
-        if(param5 == ZFMP_DEF()) {paramCount = 5; break;} else {paramList[5].zfunsafe_assign(param5);}
-        if(param6 == ZFMP_DEF()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
-        if(param7 == ZFMP_DEF()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
-    } while(zffalse);
-    ZFCoreMutexUnlock();
-    return ZFDI_invoke(ret, errorHint, this, methodName, paramCount, paramList, zftrue);
+    ZFArgs zfargs;
+    zfargs
+        .sender(this)
+        .paramInit(
+                param0
+                , param1
+                , param2
+                , param3
+                , param4
+                , param5
+                , param6
+                , param7
+                )
+        .ignoreErrorEvent(errorHint != zfnull)
+        ;
+    ZFDI_invoke(zfargs, methodName, zftrue);
+    ret = zfargs.result();
+    if(errorHint != zfnull) {
+        *errorHint += zfargs.errorHint();
+    }
+    return zfargs.success();
 }
 zfauto ZFObject::invokeDetail(
         ZF_IN const zfstring &methodName
@@ -225,23 +225,23 @@ zfauto ZFObject::invokeDetail(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    ZFCoreMutexLock();
-    zfauto paramList[ZFMETHOD_MAX_PARAM];
-    zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
-    for(zfindex i = 0; i < paramCount; ++i) {
-        paramList[i].zfunsafe_assign(params[i]);
+    ZFArgs zfargs;
+    zfargs
+        .sender(this)
+        .paramInit(params)
+        .ignoreErrorEvent(errorHint != zfnull)
+        ;
+    ZFDI_invoke(zfargs, methodName, zftrue);
+    if(success != zfnull) {
+        *success = zfargs.success();
     }
-    for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
-        paramList[i].zfunsafe_assign(ZFMP_DEF());
-    }
-    ZFCoreMutexUnlock();
-    zfauto ret;
-    if(ZFDI_invoke(ret, errorHint, this, methodName, paramCount, paramList, zftrue)) {
-        if(success != zfnull) {*success = zftrue;}
-        return ret;
+    if(zfargs.success()) {
+        return zfargs.result();
     }
     else {
-        if(success != zfnull) {*success = zffalse;}
+        if(errorHint != zfnull) {
+            *errorHint += zfargs.errorHint();
+        }
         return zfnull;
     }
 }

@@ -44,22 +44,13 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
             ZFImpl_ZFLua_luaObjectInfo(L, 2));
     }
 
-    zfauto paramList[ZFMETHOD_MAX_PARAM] = {
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-    };
-
+    ZFArgs zfargs;
+    zfargs.paramInit();
     if(ZFLogLevelIsActive(ZFLogLevel::e_Debug)) {
         zfstring errorHint;
         for(int i = 0; i < paramCount; ++i) {
             errorHint.removeAll();
-            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint)) {
+            if(!ZFImpl_ZFLua_toGeneric(zfargs.paramAt(i), L, luaParamOffset + i, &errorHint)) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfl_call] failed to get param%s, got %s, error: %s, while executing: %s",
                     i,
@@ -71,7 +62,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     }
     else {
         for(int i = 0; i < paramCount; ++i) {
-            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i)) {
+            if(!ZFImpl_ZFLua_toGeneric(zfargs.paramAt(i), L, luaParamOffset + i)) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfl_call] failed to get param%s, got %s, while executing: %s",
                     i,
@@ -81,34 +72,25 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         }
     }
 
-    zfauto ret;
-    zfstring errorHintTmp;
-    if(ZFDI_invoke(
-                ret
-                , ZFLogLevelIsActive(ZFLogLevel::e_Verbose) ? &errorHintTmp : zfnull
-                , obj
-                , name
-                , (zfindex)paramCount
-                , paramList
-                , zftrue
-                )) {
-        ZFImpl_ZFLua_luaPush(L, ret);
+    zfargs
+        .sender(obj)
+        .ignoreErrorEvent(zftrue)
+        ;
+    ZFDI_invoke(zfargs, name, zftrue);
+    if(zfargs.success()) {
+        ZFImpl_ZFLua_luaPush(L, zfargs.result());
         return 1;
     }
+
     zfstring errorHint = "failed to invoke: ";
     errorHint += name;
     errorHint += "(";
-    for(zfindex i = 0; i < paramCount; ++i) {
-        if(i != 0) {
-            errorHint += ", ";
-        }
-        ZFObjectInfoT(errorHint, paramList[i]);
-    }
+    ZFDI_paramInfoT(errorHint, zfargs);
     errorHint += "), obj: ";
     ZFObjectInfoT(errorHint, obj);
-    if(errorHintTmp) {
+    if(zfargs.errorHint()) {
         errorHint += ", errorHint:\n";
-        errorHint += errorHintTmp;
+        errorHint += zfargs.errorHint();
     }
     return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
 }

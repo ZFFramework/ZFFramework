@@ -111,37 +111,21 @@ extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
  * output format:
  *   (Class0)param0, (Class1)param1, ...
  */
-extern ZFLIB_ZFCore void ZFDI_paramInfo(
+extern ZFLIB_ZFCore void ZFDI_paramInfoT(
         ZF_IN_OUT zfstring &ret
-        , ZF_IN_OPT ZFObject *param0 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param1 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param2 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param3 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param4 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param5 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param6 = ZFMP_DEF()
-        , ZF_IN_OPT ZFObject *param7 = ZFMP_DEF()
-        , ZF_IN_OPT zfindex paramCount = zfindexMax()
+        , ZF_IN const ZFArgs &zfargs
         );
+/** @brief see #ZFDI_paramInfoT */
+inline zfstring ZFDI_paramInfo(ZF_IN const ZFArgs &zfargs) {
+    zfstring ret;
+    ZFDI_paramInfoT(ret, zfargs);
+    return ret;
+}
 
 /** @brief util method to calc param count */
-inline zfindex ZFDI_paramCount(
-        ZF_IN ZFObject * const *paramList
-        , ZF_IN_OPT zfindex paramListCount = zfindexMax()
-        ) {
+inline zfindex ZFDI_paramCount(ZF_IN const ZFArgs &zfargs) {
     zfindex paramCount = 0;
-    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMP_DEF()) {
-        ++paramCount;
-    }
-    return paramCount;
-}
-/** @brief util method to calc param count */
-inline zfindex ZFDI_paramCount(
-        ZF_IN zfauto const *paramList
-        , ZF_IN_OPT zfindex paramListCount = zfindexMax()
-        ) {
-    zfindex paramCount = 0;
-    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMP_DEF()) {
+    while(paramCount < ZFMETHOD_MAX_PARAM && zfargs.paramAt(paramCount) != ZFMP_DEF()) {
         ++paramCount;
     }
     return paramCount;
@@ -167,29 +151,24 @@ inline zfindex ZFDI_paramCount(
  * -  #ZFMP_DEF for default param
  * -  #ZFDI_WrapperBase (or #v_zfstring when convStr=true), we will try to convert to desired type if possible
  *
+ * note: null param is also a valid param, you must fill #ZFMP_DEF to indicate param end
  *
  * note: only public methods are allowed to be called by this method,
  * non-public method would result to fail,
  * but you can still explicitly find the method by #ZFMethodForName
  * and invoke it by #ZFMethod::methodInvoke
  */
-extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
-        , ZF_OUT_OPT zfstring *errorHint
-        , ZF_IN_OPT ZFObject *obj
+extern ZFLIB_ZFCore void ZFDI_invoke(
+        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const zfstring &name
-        , ZF_IN_OPT zfindex paramCount
-        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr = zffalse
         );
 /**
- * @brief perform advanced dynamic invoke
+ * @brief see #ZFDI_invoke
  */
-extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
-        , ZF_OUT_OPT zfstring *errorHint
-        , ZF_IN_OPT ZFObject *obj
+extern ZFLIB_ZFCore void ZFDI_invoke(
+        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
-        , ZF_IN_OPT zfindex paramCount
-        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr = zffalse
         );
 
@@ -199,11 +178,9 @@ extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
  * use #ZFClass::classForName to find class,
  * for the params, see #ZFDI_invoke for more info
  */
-extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfauto &ret
-        , ZF_OUT_OPT zfstring *errorHint
+extern ZFLIB_ZFCore void ZFDI_alloc(
+        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT zfindex paramCount
-        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr = zffalse
         );
 
@@ -239,14 +216,16 @@ extern ZFLIB_ZFCore zfbool ZFDI_implicitConvertT(
         ZF_OUT zfauto &ret
         , ZF_IN const zfstring &desiredTypeId
         , ZF_IN ZFObject *value
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFDI_implicitConvertT */
 inline zfauto ZFDI_implicitConvert(
         ZF_IN const zfstring &desiredTypeId
         , ZF_IN ZFObject *value
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     zfauto ret;
-    if(ZFDI_implicitConvertT(ret, desiredTypeId, value)) {
+    if(ZFDI_implicitConvertT(ret, desiredTypeId, value, errorHint)) {
         return ret;
     }
     else {

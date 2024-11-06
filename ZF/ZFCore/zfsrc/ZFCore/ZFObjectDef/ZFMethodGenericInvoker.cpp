@@ -20,124 +20,74 @@ ZF_GLOBAL_INITIALIZER_END(ZFMP_DEF_Init)
 
 // ============================================================
 static void _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch(
-        ZF_OUT zfstring *errorHint
+        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN zfindex paramCount
-        , ZF_IN zfindex paramCountMin
-        , ZF_IN_OPT const ZFClass *paramType0 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType1 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType2 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType3 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType4 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType5 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType6 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType7 /* = zfnull */
         ) {
-    zfindex paramCountMax = ZFMETHOD_MAX_PARAM;
-    do {
-        if(paramType0 == zfnull) {paramCountMax = 0; break;}
-        if(paramType1 == zfnull) {paramCountMax = 1; break;}
-        if(paramType2 == zfnull) {paramCountMax = 2; break;}
-        if(paramType3 == zfnull) {paramCountMax = 3; break;}
-        if(paramType4 == zfnull) {paramCountMax = 4; break;}
-        if(paramType5 == zfnull) {paramCountMax = 5; break;}
-        if(paramType6 == zfnull) {paramCountMax = 6; break;}
-        if(paramType7 == zfnull) {paramCountMax = 7; break;}
-    } while(zffalse);
-    if(paramCountMin == paramCountMax) {
-        zfstringAppend(errorHint
-                , "expect %s param, got %s"
-                , paramCountMin
-                , paramCount
-                );
+    if(paramCount == zfindexMax()) {
+        paramCount = ZFMETHOD_MAX_PARAM;
+        for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+            if(zfargs.paramAt(i) == ZFMP_DEF()) {
+                paramCount = i;
+                break;
+            }
+        }
     }
-    else {
-        zfstringAppend(errorHint
-                , "expect %s~%s param, got %s"
-                , paramCountMin
-                , paramCountMax
-                , paramCount
-                );
+    zfargs.success(zffalse);
+    if(!zfargs.ignoreError()) {
+        if(zfargs.ownerMethod()->paramDefaultBeginIndex() == zfindexMax()) {
+            zfargs.errorHint(zfstr("expect %s param, got %s"
+                        , zfargs.ownerMethod()->paramCount()
+                        , paramCount
+                        ));
+        }
+        else {
+            zfargs.errorHint(zfstr("expect %s~%s param, got %s"
+                        , zfargs.ownerMethod()->paramCountMin()
+                        , zfargs.ownerMethod()->paramCount()
+                        , paramCount
+                        ));
+        }
     }
 }
 static void _ZFP_ZFMethodGenericInvokerParamsCheck_paramTypeMismatch(
-        ZF_OUT_OPT zfstring *errorHint
+        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN zfindex N
-        , ZF_IN const ZFClass *paramType
-        , ZF_IN ZFObject *p
         ) {
-    if(errorHint != zfnull) {
-        zfstringAppend(errorHint
-                , "unable to access param%s as type (%s): (%s)%s"
-                , N
-                , paramType->className()
-                , p->classData()->className()
-                , p
-                );
+    zfargs.success(zffalse);
+    if(!zfargs.ignoreError()) {
+        ZFObject *p = zfargs.paramAt(N);
+        zfargs.errorHint(zfstr("unable to access param%s as type (%s): (%s)%s"
+                    , N
+                    , zfargs.ownerMethod()->paramTypeIdAt(N)
+                    , p ? p->classData()->classNameFull() : ZFTOKEN_zfnull
+                    , p
+                    ));
     }
 }
-zfbool ZFMethodGenericInvokerParamsCheck(
-        ZF_OUT_OPT zfstring *errorHint
-        , ZF_IN zfindex paramCount
-        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-        , ZF_IN zfindex paramCountMin
-        , ZF_IN_OPT const ZFClass *paramType0 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType1 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType2 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType3 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType4 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType5 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType6 /* = zfnull */
-        , ZF_IN_OPT const ZFClass *paramType7 /* = zfnull */
-        ) {
-    if(paramCount < paramCountMin) {
-        if(errorHint != zfnull) {
-            _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch(
-                    errorHint
-                    , paramCount
-                    , paramCountMin
-                    , paramType0
-                    , paramType1
-                    , paramType2
-                    , paramType3
-                    , paramType4
-                    , paramType5
-                    , paramType6
-                    , paramType7
-                    );
-        }
-        return zffalse;
-    }
+zfbool ZFMethodGenericInvokerParamsCheck(ZF_IN_OUT const ZFArgs &zfargs) {
 #define _ZFP_ZFMethodGenericInvokerParamsCheck_loop(N) \
-    if(paramType##N != zfnull) { \
-        if(paramCount <= N) { \
-            return zftrue; \
+    { \
+        ZFObject *p = zfargs.paramAt(N); \
+        if(p == ZFMP_DEF()) { \
+            if(N >= zfargs.ownerMethod()->paramCountMin()) { \
+                return zftrue; \
+            } \
+            else { \
+                _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch(zfargs, N); \
+                return zffalse; \
+            } \
         } \
-        ZFObject *p = paramList[N]; \
-        if(p != zfnull && !p->classData()->classIsTypeOf(paramType##N)) { \
-            _ZFP_ZFMethodGenericInvokerParamsCheck_paramTypeMismatch(errorHint, N, paramType##N, p); \
+        else if(N >= zfargs.ownerMethod()->paramCount()) { \
+            _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch(zfargs, zfindexMax()); \
             return zffalse; \
         } \
-    } \
-    else { \
-        if(paramCount <= N) { \
-            return zftrue; \
+        else if(p != zfnull) { \
+            const ZFClass *desired = ZFClass::classForName(zfargs.ownerMethod()->paramTypeIdAt(N)); \
+            if(!p->classData()->classIsTypeOf(desired)) { \
+                _ZFP_ZFMethodGenericInvokerParamsCheck_paramTypeMismatch(zfargs, N); \
+                return zffalse; \
+            } \
         } \
-        if(errorHint != zfnull) { \
-            _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch( \
-                    errorHint \
-                    , paramCount \
-                    , paramCountMin \
-                    , paramType0 \
-                    , paramType1 \
-                    , paramType2 \
-                    , paramType3 \
-                    , paramType4 \
-                    , paramType5 \
-                    , paramType6 \
-                    , paramType7 \
-                    ); \
-        } \
-        return zffalse; \
     }
     _ZFP_ZFMethodGenericInvokerParamsCheck_loop(0)
     _ZFP_ZFMethodGenericInvokerParamsCheck_loop(1)
@@ -150,86 +100,26 @@ zfbool ZFMethodGenericInvokerParamsCheck(
 #undef _ZFP_ZFMethodGenericInvokerParamsCheck_loop
     return zftrue;
 }
-zfbool ZFMethodGenericInvokerParamsCheckWithMethod(
-        ZF_OUT_OPT zfstring *errorHint
-        , ZF_IN zfindex paramCount
-        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-        , ZF_IN const ZFMethod *method
-        ) {
-    if(paramCount < method->paramCountMin() || paramCount > method->paramCount()) {
-        if(errorHint != zfnull) {
-            if(method->paramCountMin() == method->paramCount()) {
-                zfstringAppend(errorHint
-                        , "expect %s param, got %s"
-                        , method->paramCount()
-                        , paramCount
-                        );
-            }
-            else {
-                zfstringAppend(errorHint
-                        , "expect %s~%s param, got %s"
-                        , method->paramCountMin()
-                        , method->paramCount()
-                        , paramCount
-                        );
-            }
-        }
-        return zffalse;
-    }
-    const ZFClass *paramTypes[ZFMETHOD_MAX_PARAM];
-    zfmemset(paramTypes, 0, sizeof(const ZFClass *) * ZFMETHOD_MAX_PARAM);
-    for(zfindex i = 0; i < paramCount; ++i) {
-        const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(i));
-        if(cls == zfnull) {
-            const ZFTypeInfo *typeInfo = ZFTypeInfoForName(method->paramTypeIdAt(i));
-            if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull) {
-                zfstringAppend(errorHint
-                        , "unable to access param%s's typeInfo, typeId: %s, typeInfo: typeInfo"
-                        , i
-                        , method->paramTypeIdAt(i)
-                        );
-                return zffalse;
-            }
-            cls = typeInfo->typeIdClass();
-        }
-        paramTypes[i] = cls;
-    }
-    return ZFMethodGenericInvokerParamsCheck(
-            errorHint
-            , paramCount
-            , paramList
-            , method->paramCountMin()
-            , paramTypes[0]
-            , paramTypes[1]
-            , paramTypes[2]
-            , paramTypes[3]
-            , paramTypes[4]
-            , paramTypes[5]
-            , paramTypes[6]
-            , paramTypes[7]
-            );
-}
 
 // ============================================================
 zfbool _ZFP_MtdGIParamCheck(
-        ZF_OUT_OPT zfstring *errorHint
+        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN zfbool zfvAccessAvailable
-        , ZF_IN const ZFMethod *invokerMethod
         , ZF_IN zfindex paramIndex
         , ZF_IN const zfchar *paramType
-        , ZF_IN ZFObject *param
         ) {
+    ZFObject *param = zfargs.paramAt(paramIndex);
     if((param != ZFMP_DEF() && !zfvAccessAvailable)
-            || (param == ZFMP_DEF() && paramIndex < invokerMethod->paramDefaultBeginIndex())
+            || (param == ZFMP_DEF() && paramIndex < zfargs.ownerMethod()->paramDefaultBeginIndex())
             ) {
-        if(errorHint != zfnull) {
-            zfstringAppend(errorHint,
-                    "unable to access param%s as type (%s): (%s)%s",
-                    paramIndex,
-                    paramType,
-                    param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull,
-                    param
-                    );
+        zfargs.success(zffalse);
+        if(!zfargs.ignoreError()) {
+            zfargs.errorHint(zfstr("unable to access param%s as type (%s): (%s)%s"
+                        , paramIndex
+                        , paramType
+                        , (param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull)
+                        , param
+                        ));
         }
         return zffalse;
     }
@@ -237,50 +127,31 @@ zfbool _ZFP_MtdGIParamCheck(
         return zftrue;
     }
 }
-void _ZFP_MtdGIRetError(
-        ZF_OUT_OPT zfstring *errorHint
-        , ZF_IN const zfchar *returnTypeId
-        , ZF_IN const zfchar *returnValueInfo
-        ) {
-    zfstringAppend(errorHint,
-        "unable to convert return value as type %s: %s",
-        returnTypeId,
-        returnValueInfo);
-}
 
 // ============================================================
-zfbool _ZFP_ZFMethodGenericInvoke(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    return invokerMethod->methodGenericInvoker()(
-            ret
-            , errorHint
-            , invokerObject
-            , invokerMethod
-            , paramCount
-            , paramList
-        );
+void _ZFP_ZFMethodGenericInvoke(ZF_IN_OUT const ZFArgs &zfargs) {
+    zfargs.ownerMethod()->methodGenericInvoker()(zfargs);
 }
 void _ZFP_ZFMethodGenericInvokeError(
-        ZF_IN const ZFMethod *method
-        , ZF_IN ZFObject *obj
-        , ZF_IN zfint pos
-        , ZF_IN_OPT const zfchar *errorHint /* = zfnull */
+        ZF_IN zfint pos
+        , ZF_IN const ZFArgs &zfargs
         ) {
     if(pos >= 0) {
-        ZFCoreCriticalMessageTrim(
-            "[ZFMethodDynamicRegister] method %s unable to convert param %s",
-            method,
-            pos);
+        ZFCoreCriticalMessageTrim("[ZFMethodDynamicRegister] method %s unable to convert param %s"
+                , zfargs.ownerMethod()
+                , pos
+                );
     }
     else if(pos == -1) {
-        ZFCoreCriticalMessageTrim(
-            "[ZFMethodDynamicRegister] method %s unable to perform generic invoker, reason: %s",
-            method,
-            errorHint);
+        ZFCoreCriticalMessageTrim("[ZFMethodDynamicRegister] method %s unable to perform generic invoker, reason: %s"
+                , zfargs.ownerMethod()
+                , zfargs.errorHint()
+                );
     }
     else {
-        ZFCoreCriticalMessageTrim(
-            "[ZFMethodDynamicRegister] method %s unable to convert return value",
-            method);
+        ZFCoreCriticalMessageTrim("[ZFMethodDynamicRegister] method %s unable to convert return value"
+                , zfargs.ownerMethod()
+                );
     }
 }
 

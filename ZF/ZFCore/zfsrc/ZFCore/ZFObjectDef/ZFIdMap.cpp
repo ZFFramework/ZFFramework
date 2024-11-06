@@ -16,9 +16,8 @@ _ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(
 {
     zfclassNotPOD _ZFP_IdMap_GI {
     public:
-        static zfbool GI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-            ret = invokerMethod->dynamicRegisterUserData();
-            return zftrue;
+        static void GI(ZF_IN_OUT const ZFArgs &zfargs) {
+            zfargs.result(zfargs.ownerMethod()->dynamicRegisterUserData());
         }
     };
     ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()

@@ -15,22 +15,25 @@ zfbool ZFImpl_ZFLua_zfAlloc(
         return zftrue;
     }
 
-    zfauto paramList[ZFMETHOD_MAX_PARAM] = {
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-    };
+    ZFArgs zfargs;
+    zfargs.paramInit();
     for(int i = 0; i < paramCount; ++i) {
-        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, errorHint)) {
+        if(!ZFImpl_ZFLua_toGeneric(zfargs.paramAt(i), L, luaParamOffset + i, errorHint)) {
             return zffalse;
         }
     }
-    return ZFDI_alloc(ret, errorHint, cls, (zfindex)paramCount, paramList, zftrue);
+    zfargs.ignoreErrorEvent(errorHint != zfnull);
+    ZFDI_alloc(zfargs, cls, zftrue);
+    if(zfargs.success()) {
+        ret = zfargs.result();
+        return zftrue;
+    }
+    else {
+        if(errorHint != zfnull) {
+            *errorHint += zfargs.errorHint();
+        }
+        return zffalse;
+    }
 }
 
 // ============================================================
@@ -56,49 +59,32 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
             "[zfAlloc] unable to find class: %s", clsName);
     }
 
-    zfauto paramList[ZFMETHOD_MAX_PARAM] = {
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-        ZFMP_DEF(),
-    };
+    ZFArgs zfargs;
+    zfargs.paramInit();
     for(int i = 0; i < paramCount; ++i) {
-        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i)) {
+        if(!ZFImpl_ZFLua_toGeneric(zfargs.paramAt(i), L, luaParamOffset + i)) {
             return ZFImpl_ZFLua_luaError(L,
                 "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i));
         }
     }
 
-    zfauto ret;
-    zfstring errorHintTmp;
-    if(ZFDI_alloc(
-                ret
-                , ZFLogLevelIsActive(ZFLogLevel::e_Verbose) ? &errorHintTmp : zfnull
-                , cls
-                , (zfindex)paramCount
-                , paramList
-                , zftrue
-                )) {
-        ZFImpl_ZFLua_luaPush(L, ret);
+    zfargs
+        .ignoreErrorEvent(zftrue)
+        ;
+    ZFDI_alloc(zfargs, cls, zftrue);
+    if(zfargs.success()) {
+        ZFImpl_ZFLua_luaPush(L, zfargs.result());
         return 1;
     }
+
     zfstring errorHint = "failed to alloc: ";
     errorHint += cls->classNameFull();
     errorHint += "(";
-    for(zfindex i = 0; i < paramCount; ++i) {
-        if(i != 0) {
-            errorHint += ", ";
-        }
-        ZFObjectInfoT(errorHint, paramList[i]);
-    }
+    ZFDI_paramInfoT(errorHint, zfargs);
     errorHint += ")";
-    if(errorHintTmp) {
+    if(zfargs.errorHint()) {
         errorHint += ", errorHint:\n";
-        errorHint += errorHintTmp;
+        errorHint += zfargs.errorHint();
     }
     return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
 }

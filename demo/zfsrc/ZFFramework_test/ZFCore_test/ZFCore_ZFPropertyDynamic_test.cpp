@@ -64,29 +64,22 @@ private:
     static const zfchar *_valueKey(void) {
         return "ZFCore_ZFPropertyDynamic_test_myProp";
     }
-    static zfbool _setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-        if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
-                    , 1
-                    , v_zfint::ClassData()
-                    )) {
-            return zffalse;
+    static void _setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
+        if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+            return;
         }
-        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject;
-        obj->myProp(paramList[0]->to<v_zfint *>()->zfv);
-        obj->objectTag(_valueKey(), paramList[0]->to<ZFCopyable *>()->copy());
-        return zftrue;
+        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = zfargs.sender();
+        obj->myProp(zfargs.param0()->to<v_zfint *>()->zfv);
+        obj->objectTag(_valueKey(), zfargs.param0()->to<ZFCopyable *>()->copy());
     }
-    static zfbool _getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-        if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
-                    , 0
-                    )) {
-            return zffalse;
+    static void _getterGI(ZF_IN_OUT const ZFArgs &zfargs) {
+        if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+            return;
         }
-        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject;
+        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = zfargs.sender();
         zfauto tag = zfobj<v_zfint>(obj->myProp());
         obj->objectTag(_valueKey(), tag);
-        ret = tag;
-        return zftrue;
+        zfargs.result(tag);
     }
     static zfbool _callbackIsValueAccessed(
             ZF_IN const ZFProperty *property

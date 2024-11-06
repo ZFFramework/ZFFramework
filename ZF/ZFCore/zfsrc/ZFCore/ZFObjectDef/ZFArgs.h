@@ -31,71 +31,77 @@ public:
      * @brief the result
      * @note the result would be retained
      */
-    zfany const &result(void) const;
+    zfauto &result(void) const;
     /** @brief see #result */
-    ZFArgs const &result(ZF_IN zfany const &v) const;
+    ZFArgs const &result(ZF_IN zfauto const &v) const;
     /** @brief see #result */
-    ZFArgs &result(ZF_IN zfany const &v);
+    ZFArgs &result(ZF_IN zfauto const &v);
 
     /* ZFMETHOD_MAX_PARAM */
     /**
      * @brief params, may be null
      * @note the param would be retained
+     * @note params would be init as null for performance,
+     *   but since null is also a valid param value,
+     *   when used in #ZFMethodGenericInvoker or #ZFDI_invoke,
+     *   generally you should set param as #ZFMP_DEF
+     *   to make param count detect logic work,
+     *   use #paramInit for short
      */
-    zfany const &param0(void) const;
+    zfauto &param0(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param0(ZF_IN zfany const &v) const;
+    ZFArgs const &param0(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param0(ZF_IN zfany const &v);
+    ZFArgs &param0(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param1(void) const;
+    zfauto &param1(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param1(ZF_IN zfany const &v) const;
+    ZFArgs const &param1(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param1(ZF_IN zfany const &v);
+    ZFArgs &param1(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param2(void) const;
+    zfauto &param2(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param2(ZF_IN zfany const &v) const;
+    ZFArgs const &param2(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param2(ZF_IN zfany const &v);
+    ZFArgs &param2(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param3(void) const;
+    zfauto &param3(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param3(ZF_IN zfany const &v) const;
+    ZFArgs const &param3(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param3(ZF_IN zfany const &v);
+    ZFArgs &param3(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param4(void) const;
+    zfauto &param4(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param4(ZF_IN zfany const &v) const;
+    ZFArgs const &param4(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param4(ZF_IN zfany const &v);
+    ZFArgs &param4(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param5(void) const;
+    zfauto &param5(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param5(ZF_IN zfany const &v) const;
+    ZFArgs const &param5(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param5(ZF_IN zfany const &v);
+    ZFArgs &param5(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param6(void) const;
+    zfauto &param6(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param6(ZF_IN zfany const &v) const;
+    ZFArgs const &param6(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param6(ZF_IN zfany const &v);
+    ZFArgs &param6(ZF_IN zfauto const &v);
 
     /** @brief see #param0 */
-    zfany const &param7(void) const;
+    zfauto &param7(void) const;
     /** @brief see #param0 */
-    ZFArgs const &param7(ZF_IN zfany const &v) const;
+    ZFArgs const &param7(ZF_IN zfauto const &v) const;
     /** @brief see #param0 */
-    ZFArgs &param7(ZF_IN zfany const &v);
+    ZFArgs &param7(ZF_IN zfauto const &v);
 
 public:
     // ============================================================
@@ -116,6 +122,22 @@ public:
     ZFArgs const &errorHint(ZF_IN zfstring const &v) const;
     /** @brief see #errorHint */
     ZFArgs &errorHint(ZF_IN zfstring const &v);
+
+    /**
+     * @brief a hint flag that tell impl to ignore error,
+     *   no #errorHint would be stored for performance
+     */
+    zfbool ignoreError(void) const;
+    /** @brief see #ignoreError */
+    ZFArgs &ignoreError(ZF_IN zfbool v);
+
+    /**
+     * @brief a hint flag that tell impl do not fire error event,
+     *   while #errorHint would still be stored
+     */
+    zfbool ignoreErrorEvent(void) const;
+    /** @brief see #ignoreErrorEvent */
+    ZFArgs &ignoreErrorEvent(ZF_IN zfbool v);
 
 public:
     // ============================================================
@@ -162,24 +184,46 @@ public:
      */
     zfauto callSuper(void) const;
 
+    /**
+     * @brief util for impl to init all params with #ZFMP_DEF
+     */
+    ZFArgs &paramInit(void);
+    /**
+     * @brief util for impl to init all params
+     */
+    ZFArgs &paramInit(
+            ZF_IN ZFObject *param0
+            , ZF_IN ZFObject *param1
+            , ZF_IN ZFObject *param2
+            , ZF_IN ZFObject *param3
+            , ZF_IN ZFObject *param4
+            , ZF_IN ZFObject *param5
+            , ZF_IN ZFObject *param6
+            , ZF_IN ZFObject *param7
+            );
+    /**
+     * @brief util for impl to init all params
+     */
+    ZFArgs &paramInit(ZF_IN const ZFCoreArray<zfauto> &params);
+
     /** @brief get param at index */
-    zfany const &paramAt(ZF_IN zfindex index) const;
+    zfauto &paramAt(ZF_IN zfindex index) const;
     /** @brief set param at index */
-    ZFArgs const &param(ZF_IN zfindex index, ZF_IN zfany const &v) const;
+    ZFArgs const &param(ZF_IN zfindex index, ZF_IN zfauto const &v) const;
     /** @brief set param at index */
-    ZFArgs &param(ZF_IN zfindex index, ZF_IN zfany const &v);
+    ZFArgs &param(ZF_IN zfindex index, ZF_IN zfauto const &v);
 
     /** @brief get property value */
-    zfany const &propValue(void) const {return this->paramAt(0);}
+    zfauto &propValue(void) const {return this->paramAt(0);}
     /** @brief set property value */
-    ZFArgs const &propValue(ZF_IN zfany const &v) const {return this->param(0, v);}
+    ZFArgs const &propValue(ZF_IN zfauto const &v) const {return this->param(0, v);}
     /** @brief set property value */
-    ZFArgs &propValue(ZF_IN zfany const &v) {return this->param(0, v);}
+    ZFArgs &propValue(ZF_IN zfauto const &v) {return this->param(0, v);}
 
     /** @brief get old property value */
-    zfany const &propValueOld(void) const {return this->paramAt(1);}
+    zfauto &propValueOld(void) const {return this->paramAt(1);}
     /** @brief set old property value */
-    ZFArgs &propValueOld(ZF_IN zfany const &v) {return this->param(1, v);}
+    ZFArgs &propValueOld(ZF_IN zfauto const &v) {return this->param(1, v);}
 
     // ============================================================
 public:
@@ -208,6 +252,11 @@ public:
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
+    }
+
+public:
+    ZFArgs &_ZFP_ZFArgs_removeConst(void) const {
+        return const_cast<ZFArgs &>(*this);
     }
 
 private:

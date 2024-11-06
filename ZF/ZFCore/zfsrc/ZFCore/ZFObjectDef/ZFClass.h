@@ -291,7 +291,7 @@ public:
      *     void *token = cls->newInstanceGenericBegin();
      *     if(token != zfnull) {
      *         for(zfindex i = 0; i < objectOnInitMethodList.count(); ++i) {
-     *             if(cls->newInstanceGenericCheck(token, objectOnInitMethodList[i], paramCount, paramList)) {
+     *             if(cls->newInstanceGenericCheck(token, objectOnInitMethodList[i], zfargs)) {
      *                 result = cls->newInstanceGenericEnd(token, zftrue);
      *                 break;
      *             }
@@ -334,9 +334,8 @@ public:
     zfbool newInstanceGenericCheck(
             ZF_IN void *&token
             , ZF_IN const ZFMethod *objectOnInitMethod
-            , ZF_IN zfindex paramCount
-            , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-            , ZF_OUT_OPT zfstring *errorHint = zfnull) const; /* ZFMETHOD_MAX_PARAM */
+            , ZF_IN_OUT const ZFArgs &zfargs
+            ) const;
     /** @brief see #newInstance */
     zfauto newInstanceGenericEnd(
             ZF_IN void *&token

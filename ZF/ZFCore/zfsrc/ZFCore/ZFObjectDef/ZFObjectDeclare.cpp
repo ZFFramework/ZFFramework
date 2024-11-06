@@ -33,19 +33,12 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
             );
 }
 
-static zfbool _ZFP_ZFObjectOnInitGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    ZFValueHolder *valueHolder = invokerMethod->dynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
+static void _ZFP_ZFObjectOnInitGI(ZF_IN_OUT const ZFArgs &zfargs) {
+    ZFValueHolder *valueHolder = zfargs.ownerMethod()->dynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
     ZFCoreAssert(valueHolder != zfnull);
-    invokerObject->_ZFP_ZFObject_objectOnInit();
+    zfargs.sender()->_ZFP_ZFObject_objectOnInit();
     ZFMethodGenericInvoker methodGI = *valueHolder->holdedDataPointer<ZFMethodGenericInvoker *>();
-    return methodGI(
-            ret
-            , errorHint
-            , invokerObject
-            , invokerMethod
-            , paramCount
-            , paramList
-            );
+    methodGI(zfargs);
 }
 const ZFMethod *ZFObjectOnInitDynamicRegister(
         ZF_IN const ZFClass *cls
