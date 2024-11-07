@@ -1074,9 +1074,17 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, mouseHoverEnable) {
     ZFPROTOCOL_ACCESS(ZFUIView)->mouseHoverEnable(this, this->mouseHoverEnable());
 }
 
-ZFMETHOD_DEFINE_1(ZFUIView, void, viewSize
+ZFMETHOD_DEFINE_1(ZFUIView, void, viewSizeFixed
         , ZFMP_IN(const ZFUISize &, size)
         ) {
+    this->viewSizeMin(size);
+    this->viewSizeMax(size);
+}
+ZFMETHOD_DEFINE_2(ZFUIView, void, viewSizeFixed
+        , ZFMP_IN(zffloat, width)
+        , ZFMP_IN(zffloat, height)
+        ) {
+    ZFUISize size = ZFUISizeCreate(width, height);
     this->viewSizeMin(size);
     this->viewSizeMax(size);
 }

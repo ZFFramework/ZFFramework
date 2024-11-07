@@ -450,6 +450,9 @@ void ZFSerializable::serializableGetAllSerializableEmbededPropertyT(ZF_IN_OUT ZF
 }
 
 ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
+    if(property->propertyName()[0] == '_') {
+        return ZFSerializablePropertyTypeNotSerializable;
+    }
     if(property->isRetainProperty()) {
         if(property->setterMethod()->isPrivate()) {
             if(property->getterMethod()->isPrivate()

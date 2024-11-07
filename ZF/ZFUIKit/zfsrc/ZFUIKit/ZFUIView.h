@@ -379,8 +379,13 @@ public:
     /**
      * @brief util method to set fixed size, by setting both of #viewSizeMin and #viewSizeMax
      */
-    ZFMETHOD_DECLARE_1(void, viewSize
+    ZFMETHOD_DECLARE_1(void, viewSizeFixed
             , ZFMP_IN(const ZFUISize &, size)
+            )
+    /** @brief see #viewSizeFixed */
+    ZFMETHOD_DECLARE_2(void, viewSizeFixed
+            , ZFMP_IN(zffloat, width)
+            , ZFMP_IN(zffloat, height)
             )
     /**
      * @brief min size, #ZFUISizeZero by default

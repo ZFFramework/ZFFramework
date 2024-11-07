@@ -286,7 +286,11 @@ protected:
      * subclass may override this method to make ZFSerializable ignore or force serialize some property,
      * but you must make sure it's logical valid\n
      * ignored property (i.e. ZFSerializablePropertyTypeNotSerializable) can be manually serialized
-     * during #serializableOnSerializeFromData and #serializableOnSerializeToData
+     * during #serializableOnSerializeFromData and #serializableOnSerializeToData\n
+     * \n
+     * by default, these properties would be treated as not serializable:
+     * -  getter method is private or #ZFMethod::isInternal
+     * -  property name start with "_"
      */
     virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);
 

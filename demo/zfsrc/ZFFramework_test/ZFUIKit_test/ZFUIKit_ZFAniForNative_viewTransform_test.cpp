@@ -19,7 +19,7 @@ protected:
 
         zfobj<ZFUIImageView> view;
         container->child(view)->c_alignCenter();
-        view->viewSize(ZFUISizeCreate(80, 60));
+        view->viewSizeFixed(80, 60);
         view->bgColor(ZFUIColorRandom());
         view->image(zfres("test_normal.png"));
         view->scaleX(1.5f);

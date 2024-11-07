@@ -19,7 +19,7 @@ protected:
 
         zfobj<ZFUIView> view;
         container->child(view)->c_alignCenter();
-        view->viewSize(ZFUISizeCreate(80, 60));
+        view->viewSizeFixed(80, 60);
         view->bgColor(ZFUIColorRandom());
 
         this->ani()->target(view);
