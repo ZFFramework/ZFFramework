@@ -83,12 +83,14 @@ private:
         SDL_Event event;
         while(!quitFlag) {
             while(SDL_WaitEvent(&event)) {
-                if(!ZFImpl_sys_SDL_embedEventHandler(&event)) {
-                    if(event.type == SDL_QUIT) {
-                        quitFlag = zftrue;
-                        break;
+                do {
+                    if(!ZFImpl_sys_SDL_embedEventHandler(&event)) {
+                        if(event.type == SDL_QUIT) {
+                            quitFlag = zftrue;
+                            break;
+                        }
                     }
-                }
+                } while(SDL_PollEvent(&event));
             }
         }
         ZFImpl_sys_SDL_embedCleanup();

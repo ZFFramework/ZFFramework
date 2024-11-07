@@ -18,8 +18,8 @@ zfclassNotPOD _ZFP_ZFImpl_sys_SDL_SysWindowPrivate {
 public:
     zfuint refCount;
     ZFImpl_sys_SDL_SysWindow *sysWindow;
-    ZFListener renderCallback;
     zfbool renderStarted;
+    zfbool renderPending;
     zfbool renderRequested;
     zfbool layoutRequested;
 
@@ -29,36 +29,39 @@ public:
     _ZFP_ZFImpl_sys_SDL_SysWindowPrivate(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWindow)
     : refCount(1)
     , sysWindow(sysWindow)
-    , renderCallback()
     , renderStarted(zffalse)
+    , renderPending(zffalse)
     , renderRequested(zftrue)
     , layoutRequested(zftrue)
     , mouseState()
     {
     }
+
+public:
+    void renderRequest(void);
 };
 
-ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRender, ZFLevelZFFrameworkPostNormal) {
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRenderAction, ZFLevelZFFrameworkPostNormal) {
     _ZFP_ZFImpl_sys_SDL_SysWindowPrivate *d = (_ZFP_ZFImpl_sys_SDL_SysWindowPrivate *)sdlEvent->user.data1;
-    if(d->sysWindow == zfnull) {
-        return zftrue;
-    }
-    ZFPROTOCOL_INTERFACE_CLASS(ZFUIView) *impl = ZFPROTOCOL_ACCESS(ZFUIView);
-    if(d->layoutRequested) {
-        d->layoutRequested = zffalse;
-        if(d->sysWindow->rootView != zfnull && d->sysWindow->rootView->ownerZFUIView != zfnull) {
-            int w, h;
-            SDL_GetWindowSize(d->sysWindow->sdlWindow, &w, &h);
-            impl->notifyLayoutView(d->sysWindow->rootView->ownerZFUIView, ZFUIRectCreate(0, 0, w, h));
+    d->renderPending = zffalse;
+    if(d->sysWindow != zfnull) {
+        ZFPROTOCOL_INTERFACE_CLASS(ZFUIView) *impl = ZFPROTOCOL_ACCESS(ZFUIView);
+        if(d->layoutRequested) {
+            d->layoutRequested = zffalse;
+            if(d->sysWindow->rootView != zfnull && d->sysWindow->rootView->ownerZFUIView != zfnull) {
+                int w, h;
+                SDL_GetWindowSize(d->sysWindow->sdlWindow, &w, &h);
+                impl->notifyLayoutView(d->sysWindow->rootView->ownerZFUIView, ZFUIRectCreate(0, 0, w, h));
+            }
         }
-    }
-    if(d->renderRequested) {
-        d->renderRequested = zffalse;
-        if(d->sysWindow->rootView != zfnull) {
-            SDL_SetRenderDrawColor(d->sysWindow->sdlRenderer, 255, 255, 255, 255);
-            SDL_RenderClear(d->sysWindow->sdlRenderer);
-            d->sysWindow->rootView->render(d->sysWindow->sdlRenderer, d->sysWindow->rootView->rect, d->sysWindow->rootView->rect, 1);
-            SDL_RenderPresent(d->sysWindow->sdlRenderer);
+        if(d->renderRequested) {
+            d->renderRequested = zffalse;
+            if(d->sysWindow->rootView != zfnull) {
+                SDL_SetRenderDrawColor(d->sysWindow->sdlRenderer, 255, 255, 255, 255);
+                SDL_RenderClear(d->sysWindow->sdlRenderer);
+                d->sysWindow->rootView->render(d->sysWindow->sdlRenderer, d->sysWindow->rootView->rect, d->sysWindow->rootView->rect, 1);
+                SDL_RenderPresent(d->sysWindow->sdlRenderer);
+            }
         }
     }
     --(d->refCount);
@@ -66,6 +69,19 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRender, ZFLevelZFFrameworkPostNormal)
         zfdelete(d);
     }
     return zftrue;
+}
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRender, ZFLevelZFFrameworkPostNormal) {
+    _ZFP_ZFImpl_sys_SDL_SysWindowPrivate *d = (_ZFP_ZFImpl_sys_SDL_SysWindowPrivate *)sdlEvent->user.data1;
+    ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowRenderAction, d, zfnull);
+    return zftrue;
+}
+
+void _ZFP_ZFImpl_sys_SDL_SysWindowPrivate::renderRequest(void) {
+    if(!this->renderPending) {
+        this->renderPending = zftrue;
+        ++(this->refCount);
+        ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowRender, this, zfnull);
+    }
 }
 
 ZFImpl_sys_SDL_SysWindow::ZFImpl_sys_SDL_SysWindow(void)
@@ -79,18 +95,6 @@ ZFImpl_sys_SDL_SysWindow::ZFImpl_sys_SDL_SysWindow(void)
 , mouseIdGen()
 {
     allWindow().add(this);
-
-    ZFLISTENER_1(renderCallback
-            , _ZFP_ZFImpl_sys_SDL_SysWindowPrivate *, d
-            ) {
-        if(d->layoutRequested || d->renderRequested) {
-            if(d->refCount == 1) {
-                ++(d->refCount);
-                ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowRender, d, zfnull);
-            }
-        }
-    } ZFLISTENER_END()
-    d->renderCallback = renderCallback;
 }
 ZFImpl_sys_SDL_SysWindow::~ZFImpl_sys_SDL_SysWindow(void) {
     allWindow().removeElement(this);
@@ -120,7 +124,7 @@ void ZFImpl_sys_SDL_SysWindow::renderStart(void) {
         return;
     }
     d->renderStarted = zftrue;
-    ZFGlobalTimerAttachOnce(d->renderCallback, ZFLevelZFFrameworkPostNormal);
+    d->renderRequest();
 }
 void ZFImpl_sys_SDL_SysWindow::renderStop(void) {
     if(!d->renderStarted) {
@@ -131,12 +135,13 @@ void ZFImpl_sys_SDL_SysWindow::renderStop(void) {
 
 void ZFImpl_sys_SDL_SysWindow::renderRequest(void) {
     d->renderRequested = zftrue;
-    ZFGlobalTimerAttachOnce(d->renderCallback, ZFLevelZFFrameworkPostNormal);
+    d->renderRequest();
 }
 
 void ZFImpl_sys_SDL_SysWindow::layoutRequest(void) {
     d->layoutRequested = zftrue;
     d->renderRequested = zftrue;
+    d->renderRequest();
 }
 
 // ============================================================

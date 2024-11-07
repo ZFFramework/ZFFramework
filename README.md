@@ -211,7 +211,7 @@ ZFMAIN_ENTRY() {
 
 ## License
 
-ZFFramework is under MIT license ([see here](https://github.com/ZFFramework/ZFFramework/blob/master/LICENSE)),
+ZFFramework is under [MIT license](https://github.com/ZFFramework/ZFFramework/blob/master/LICENSE),
 feel free to copy or modify or use it
 
 * project home page: [http://ZFFramework.com](http://ZFFramework.com)
