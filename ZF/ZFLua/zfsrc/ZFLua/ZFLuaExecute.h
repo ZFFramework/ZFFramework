@@ -127,7 +127,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   -  "ZFCoreArrayCreate([a, b, c, ...])"\n
  *     create a array, params support these types:
  *     -  zfauto
- *     -  native lua number (stored as #v_zflongdouble)
+ *     -  native lua number (stored as #v_zfdouble)
  *     -  native lua string (stored as #v_zfstring)
  * -  param and return value
  *   -  simply use lua standard logic to process params and return values,

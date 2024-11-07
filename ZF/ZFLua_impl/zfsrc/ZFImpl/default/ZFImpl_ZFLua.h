@@ -289,7 +289,7 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(
  * -  #v_zfidentity
  * -  all #ZFEnum types
  *
- * return proper #v_zflongdouble if success, or empty if fail
+ * return proper #v_zfdouble if success, or empty if fail
  */
 inline zfauto ZFImpl_ZFLua_toNumber(
         ZF_IN lua_State *L

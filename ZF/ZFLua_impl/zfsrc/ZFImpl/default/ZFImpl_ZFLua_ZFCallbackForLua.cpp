@@ -185,7 +185,7 @@ public:
                 break;
             case ValueType_number:
                 ret += "(number)";
-                zflongdoubleToStringT(ret, (zflongdouble)v.v.numberValue);
+                zfdoubleToStringT(ret, (zfdouble)v.v.numberValue);
                 break;
             case ValueType_string:
                 ret += "(string)";

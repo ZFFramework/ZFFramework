@@ -10,15 +10,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             "[LuaMetatable] unknown param type: %s", \
             ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue)); \
     } \
-    v_zflongdouble *param = _##param.to<v_zflongdouble *>()
+    v_zfdouble *param = _##param.to<v_zfdouble *>()
 
 // ============================================================
 static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
         ZF_IN lua_State *L
         , ZF_IN lua_Number const &n
-        , ZF_IN v_zflongdouble *param0
+        , ZF_IN v_zfdouble *param0
         , ZF_IN const ZFClass *paramClass0
-        , ZF_IN v_zflongdouble *param1
+        , ZF_IN v_zfdouble *param1
         , ZF_IN const ZFClass *paramClass1
         );
 
@@ -439,9 +439,9 @@ void ZFImpl_ZFLua_implSetupMetatable(
 static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
         ZF_IN lua_State *L
         , ZF_IN lua_Number const &n
-        , ZF_IN v_zflongdouble *param0
+        , ZF_IN v_zfdouble *param0
         , ZF_IN const ZFClass *paramClass0
-        , ZF_IN v_zflongdouble *param1
+        , ZF_IN v_zfdouble *param1
         , ZF_IN const ZFClass *paramClass1
         ) {
     if(paramClass0 == zfnull) {
