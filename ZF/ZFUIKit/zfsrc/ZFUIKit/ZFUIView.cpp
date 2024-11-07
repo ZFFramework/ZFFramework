@@ -1074,10 +1074,11 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, mouseHoverEnable) {
     ZFPROTOCOL_ACCESS(ZFUIView)->mouseHoverEnable(this, this->mouseHoverEnable());
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizePrefer) {
-    if(this->viewSizePrefer() != propertyValueOld) {
-        this->layoutRequest();
-    }
+ZFMETHOD_DEFINE_1(ZFUIView, void, viewSize
+        , ZFMP_IN(const ZFUISize &, size)
+        ) {
+    this->viewSizeMin(size);
+    this->viewSizeMax(size);
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizeMin) {
     if(this->viewSizeMin() != propertyValueOld) {
@@ -1608,23 +1609,6 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
 
         this->layoutOnMeasureFinish(d->measureResult->measuredSize, sizeHint, sizeParam);
         this->observerNotify(ZFUIView::EventViewLayoutOnMeasureFinish(), d->measureResult);
-
-        if(d->measureResult->measuredSize.width < 0) {
-            if(this->viewSizePrefer().width >= 0) {
-                d->measureResult->measuredSize.width = this->viewSizePrefer().width;
-            }
-            else {
-                d->measureResult->measuredSize.width = 0;
-            }
-        }
-        if(d->measureResult->measuredSize.height < 0) {
-            if(this->viewSizePrefer().height >= 0) {
-                d->measureResult->measuredSize.height = this->viewSizePrefer().height;
-            }
-            else {
-                d->measureResult->measuredSize.height = 0;
-            }
-        }
 
         ZFUILayoutParam::sizeHintApply(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHint, sizeParam);
         ZFUISizeApplyRange(d->measureResult->measuredSize, d->measureResult->measuredSize, this->viewSizeMin(), this->viewSizeMax());

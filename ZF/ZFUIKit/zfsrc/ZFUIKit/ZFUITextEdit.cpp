@@ -369,11 +369,9 @@ void ZFUITextEdit::layoutOnMeasure(
         , ZF_IN const ZFUISize &sizeHint
         , ZF_IN const ZFUISizeParam &sizeParam
         ) {
-    ret = this->viewSizePrefer();
-    ZFUISize tmp = ZFUISizeZero();
-    this->measureTextEdit(tmp, sizeHint);
-    if(ret.width < tmp.width) {
-        ret.width = tmp.width;
+    this->measureTextEdit(ret, sizeHint);
+    if(ret.width < 0) {
+        ret.width = ZFUIGlobalStyle::DefaultStyle()->itemSizeControl();
     }
     if(ret.height < 0) {
         ret.height = ZFUIGlobalStyle::DefaultStyle()->itemSizeControl();

@@ -377,14 +377,11 @@ public:
             )
 
     /**
-     * @brief prefered size, #ZFUISizeInvalid by default
-     *
-     * if no actual rule to measure the view,
-     * the prefered size would be used to measure the view,
-     * if prefered size not set, size hint would be used
+     * @brief util method to set fixed size, by setting both of #viewSizeMin and #viewSizeMax
      */
-    ZFPROPERTY_ASSIGN(ZFUISize, viewSizePrefer, ZFUISizeInvalid())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUISize, viewSizePrefer)
+    ZFMETHOD_DECLARE_1(void, viewSize
+            , ZFMP_IN(const ZFUISize &, size)
+            )
     /**
      * @brief min size, #ZFUISizeZero by default
      */
@@ -832,8 +829,7 @@ protected:
      * \n
      * sizeHint means the max size child should reach, see #ZFUISizeType for more info\n
      * \n
-     * return a negative value means the view doesn't care about size,
-     * let #ZFUIView::viewSizePrefer to decide final result size\n
+     * return a negative value means the view doesn't care about size\n
      * \n
      * @note there's some repeatly work that #layoutMeasure would have done for you,
      *   you should not repeat it again for performance:
