@@ -511,5 +511,39 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
     return 1;
 }
 
+// ============================================================
+// zfl_cmp
+static int _ZFP_ZFImpl_ZFLua_zfl_cmp(ZF_IN lua_State *L) {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+    ZFCompareResult result = ZFCompareUncomparable;
+    zfstring errorHint;
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+        return ZFImpl_ZFLua_luaError(L,
+            "%s",
+            errorHint);
+    }
+    switch(result) {
+        case ZFCompareSmaller:
+            lua_pushnumber(L, -1);
+            break;
+        case ZFCompareEqual:
+            lua_pushnumber(L, 0);
+            break;
+        case ZFCompareGreater:
+            lua_pushnumber(L, 1);
+            break;
+        case ZFCompareUncomparable:
+        default:
+            lua_pushnumber(L, -2);
+            break;
+    }
+    return 1;
+}
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_cmp, ZFM_EXPAND({
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_cmp", _ZFP_ZFImpl_ZFLua_zfl_cmp);
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
+
 ZF_NAMESPACE_GLOBAL_END
 

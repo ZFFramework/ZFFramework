@@ -391,6 +391,8 @@ static void _ZFP_ZFLuaLSPGen_spec(
         << "---@return ZFObject\n"
         << "function zfl_call(...) end\n"
         << "function zfl_value(...) end\n"
+        << "---@return number\n"
+        << "function zfl_cmp(...) end\n"
 
         << "---@param fmt zfstring\n"
         << "---@return ZFCallback\n"

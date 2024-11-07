@@ -86,6 +86,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  lua boolean
  *   -  these types are automatically converted when return from cpp to lua:
  *     -  v_zfbool => lua boolean
+ * -  value comparer
+ *   -  "zfl_cmp(v0, v1)"\n
+ *     compare two values, including ZFObject types and lua types, return:
+ *     -  -2 : error or uncomparable
+ *     -  -1 : v0 < v1
+ *     -  0 : v0 == v1
+ *     -  1 : v0 > v1
  * -  callback
  *   -  "ZFCallbackForLua(luaFunc)"\n
  *     create a #ZFListener from lua function\n
