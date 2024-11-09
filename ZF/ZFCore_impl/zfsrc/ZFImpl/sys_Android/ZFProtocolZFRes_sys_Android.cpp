@@ -51,7 +51,7 @@ public:
 public:
     _ZFP_ZFProtocolZFRes_sys_Android_FindData(void)
     : parentPath()
-    , files(zfnull)
+    , files(NULL)
     , curFileIndex(0)
     {
     }
@@ -147,7 +147,7 @@ public:
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = zfnew(_ZFP_ZFProtocolZFRes_sys_Android_FileToken);
         d->assetManagerHolder = ZFImpl_sys_Android_assetManager();
         d->assetManager = AAssetManager_fromJava(jniEnv, d->assetManagerHolder);
-        ZFCoreAssert(d->assetManager != zfnull);
+        ZFCoreAssert(d->assetManager != NULL);
 
         zfstring absPath;
         this->resPathFormat(absPath, resPath);
@@ -155,12 +155,12 @@ public:
         d->token = AAssetManager_open(d->assetManager,
             absPath.cString(),
             AASSET_MODE_RANDOM);
-        if(d->token == zfnull) {
+        if(d->token == NULL) {
             absPath += this->zfresPostfix;
             d->token = AAssetManager_open(d->assetManager,
                 absPath.cString(),
                 AASSET_MODE_RANDOM);
-            if(d->token == zfnull) {
+            if(d->token == NULL) {
                 zfdelete(d);
                 d = zfnull;
             }
@@ -275,7 +275,7 @@ public:
         jobjectArray files = (jobjectArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
         JNIBlockedDeleteLocalRef(files);
         zfbool success = zffalse;
-        if(files != zfnull) {
+        if(files != NULL) {
             d->files = (jobjectArray)JNIUtilNewGlobalRef(jniEnv, files);
             success = this->resFindNext(fd);
         }
@@ -295,7 +295,7 @@ public:
         }
         jstring jsPath = (jstring)JNIUtilGetObjectArrayElement(jniEnv, d->files, d->curFileIndex);
         ++d->curFileIndex;
-        const char *sName = JNIUtilGetStringUTFChars(jniEnv, jsPath, zfnull);
+        const char *sName = JNIUtilGetStringUTFChars(jniEnv, jsPath, NULL);
         fd.name = sName;
         JNIUtilReleaseStringUTFChars(jniEnv, jsPath, sName);
 
@@ -311,7 +311,7 @@ public:
             AAssetManager_fromJava(jniEnv, ZFImpl_sys_Android_assetManager()),
             absPath.cString(),
             AASSET_MODE_STREAMING);
-        if(asset == zfnull) {
+        if(asset == NULL) {
             fd.isDir = zftrue;
         }
         else {
@@ -330,9 +330,9 @@ public:
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = (_ZFP_ZFProtocolZFRes_sys_Android_FindData *)fd.nativeFd;
-        if(d->files != zfnull) {
+        if(d->files != NULL) {
             JNIUtilDeleteGlobalRef(jniEnv, d->files);
-            d->files = zfnull;
+            d->files = NULL;
         }
         zfdelete(d);
         fd.nativeFd = zfnull;

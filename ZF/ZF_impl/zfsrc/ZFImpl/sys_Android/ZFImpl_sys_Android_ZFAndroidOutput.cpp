@@ -43,7 +43,7 @@ public:
             JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidOutput(), jmId, this->nativeOutputWrapper);
 
             JNIUtilDeleteGlobalRef(jniEnv, this->nativeOutputWrapper);
-            this->nativeOutputWrapper = zfnull;
+            this->nativeOutputWrapper = NULL;
         }
         if(this->nativeBuf != NULL) {
             JNIUtilDeleteGlobalRef(jniEnv, this->nativeBuf);

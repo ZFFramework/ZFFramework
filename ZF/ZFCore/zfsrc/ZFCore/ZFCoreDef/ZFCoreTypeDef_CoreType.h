@@ -58,19 +58,19 @@ extern ZFLIB_ZFCore const zft_zfnullT zft_zfnull;
  * @def zfnull
  * @brief same as NULL, defined for future use
  */
-#if 1
-    #ifndef zfnullT
-        #define zfnullT zft_zfnullT
-    #endif
-    #ifndef zfnull
-        #define zfnull zft_zfnull
-    #endif
-#elif 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
+#if 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
     #ifndef zfnullT
         #define zfnullT nullptr_t
     #endif
     #ifndef zfnull
         #define zfnull nullptr
+    #endif
+#elif 1
+    #ifndef zfnullT
+        #define zfnullT zft_zfnullT
+    #endif
+    #ifndef zfnull
+        #define zfnull zft_zfnull
     #endif
 #else // backward capacity
     #ifndef zfnullT

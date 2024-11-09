@@ -142,7 +142,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
                 ZFUILayoutParam::sizeHintMerge(
                     layoutParam->sizeHint().height,
                     ZFUILayoutParam::sizeHintOffset(sizeHint.height, 0 - parentMarginY - marginY))),
-            ZFUISizeParamWrapWrap());
+            ZFUISizeParamCreate(ZFUISizeType::e_Wrap, layoutParam->sizeParam().height));
         ret.width += prevSpace + child->layoutMeasuredSize().width + marginX;
         ret.height = zfmMax<zffloat>(ret.height, child->layoutMeasuredSize().height + parentMarginY + marginY);
         if(fixedSize != zfnull) {
@@ -187,7 +187,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
                 ZFUILayoutParam::sizeHintMerge(
                     layoutParam->sizeHint().height,
                     ZFUILayoutParam::sizeHintOffset(sizeHint.height, 0 - parentMarginY - marginY))),
-            ZFUISizeParamWrapWrap());
+            ZFUISizeParamCreate(layoutParam->sizeParam().width, ZFUISizeType::e_Wrap));
         ret.width = zfmMax<zffloat>(ret.width, child->layoutMeasuredSize().width + parentMarginX + marginX);
         ret.height += prevSpace + child->layoutMeasuredSize().height + marginY;
         if(fixedSize != zfnull) {
@@ -242,9 +242,7 @@ static void _ZFP_ZFUILinearLayout_layoutHorizontal(
                 size.height - ZFUIMarginGetHeight(parent->childMargin())),
             ZFUISizeCreate(
                 childSize - ZFUIMarginGetWidth(layoutParam->margin()),
-                layoutParam->sizeParam().height == ZFUISizeType::e_Fill
-                    ? (zffloat)(size.height - ZFUIMarginGetHeight(parent->childMargin()))
-                    : child->layoutMeasuredSize().height),
+                child->layoutMeasuredSize().height),
             layoutParam->margin()));
         usedSize += prevSpace + childSize;
     }
@@ -288,9 +286,7 @@ static void _ZFP_ZFUILinearLayout_layoutVertical(
                 size.width - ZFUIMarginGetWidth(parent->childMargin()),
                 childSize),
             ZFUISizeCreate(
-                layoutParam->sizeParam().width == ZFUISizeType::e_Fill
-                    ? (zffloat)(size.width - ZFUIMarginGetWidth(parent->childMargin()))
-                    : child->layoutMeasuredSize().width,
+                child->layoutMeasuredSize().width,
                 childSize - ZFUIMarginGetHeight(layoutParam->margin())),
             layoutParam->margin()));
         usedSize += prevSpace + childSize;

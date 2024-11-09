@@ -149,13 +149,13 @@ public:
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
             switch(scope->scopeType) {
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS:
-                    this->error("have you forgot NSEnd?");
+                    this->error(zfstr("%s not closed, have you forgot NSEnd?", scope->d.NS));
                     return zffalse;
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
-                    this->error("have you forgot classEnd?");
+                    this->error(zfstr("%s not closed, have you forgot classEnd?", scope->d.cls->classNameFull()));
                     return zffalse;
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
-                    this->error("have you forgot enumEnd?");
+                    this->error(zfstr("%s not closed, have you forgot enumEnd?", scope->d.enumInfo->enumClassName));
                     return zffalse;
                 default:
                     return zftrue;
@@ -170,10 +170,10 @@ public:
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
             switch(scope->scopeType) {
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
-                    this->error("have you forgot classEnd?");
+                    this->error(zfstr("%s not closed, have you forgot classEnd?", scope->d.cls->classNameFull()));
                     return zffalse;
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
-                    this->error("have you forgot enumEnd?");
+                    this->error(zfstr("%s not closed, have you forgot enumEnd?", scope->d.enumInfo->enumClassName));
                     return zffalse;
                 default:
                     return zftrue;
@@ -188,7 +188,7 @@ public:
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
             switch(scope->scopeType) {
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
-                    this->error("have you forgot enumEnd?");
+                    this->error(zfstr("%s not closed, have you forgot enumEnd?", scope->d.enumInfo->enumClassName));
                     return zffalse;
                 default:
                     return zftrue;
@@ -203,10 +203,10 @@ public:
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
             switch(scope->scopeType) {
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
-                    this->error("have you forgot classEnd?");
+                    this->error(zfstr("%s not closed, have you forgot classEnd?", scope->d.cls->classNameFull()));
                     return zffalse;
                 case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
-                    this->error("have you forgot enumEnd?");
+                    this->error(zfstr("%s not closed, have you forgot enumEnd?", scope->d.enumInfo->enumClassName));
                     return zffalse;
                 default:
                     return zftrue;
@@ -505,7 +505,7 @@ ZFDynamic &ZFDynamic::classBegin(
             }
         }
 
-        d->error(zfstr("no such classParent: %s", parentClassNameFull));
+        d->error(zfstr("no such parent class: %s, for class: ", parentClassNameFull, classNameFull));
         return *this;
     }
 }
@@ -686,7 +686,8 @@ ZFDynamic &ZFDynamic::customInit(
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_class()) {return *this;}
     if(mp.paramCount() == 0) {
-        d->error("customInit() must have one or more init param");
+        _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.getLast();
+        d->error(zfstr("customInit() must have one or more init param, class: %s", scope->d.cls->classNameFull()));
         return *this;
     }
     ZFListener implWrap;
@@ -845,7 +846,7 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
         scope->d.enumInfo->enumIsFlags,
         &errorHint);
     if(enumClass == zfnull) {
-        d->error(zfstr("unable to register enum, reason: %s", errorHint));
+        d->error(zfstr("unable to register enum: %s, reason: %s", scope->d.enumInfo->enumClassName, errorHint));
         return *this;
     }
     d->allEnum.add(enumClass);
@@ -862,7 +863,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope != zfnull && scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
-        d->error("can not be called within enumBegin");
+        d->error(zfstr("event() can not be called within enumBegin, enum: %s", scope->d.enumInfo->enumClassName));
         return *this;
     }
     if(!eventName) {
@@ -888,7 +889,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
     idName += eventName;
     zfidentity idValue = ZFEventIdForName(idName);
     if(idValue != zfidentityInvalid()) {
-        d->error(zfstr("%s already exists", idName));
+        d->error(zfstr("event %s already exists", idName));
         return *this;
     }
     idValue = ZFEventDynamicRegister(idName);
@@ -951,13 +952,18 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope != zfnull && scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
-        d->error("can not be called within enumBegin");
+        d->error(zfstr("method() can not be called within enumBegin, enum: %s, method: %s", scope->d.enumInfo->enumClassName, param.methodName()));
         return *this;
     }
     zfstring errorHint;
     const ZFMethod *dynMethod = ZFMethodDynamicRegister(param, &errorHint);
     if(dynMethod == zfnull) {
-        d->error(zfstr("unable to register method, reason: %s", errorHint));
+        d->error(zfstr("unable to register method, scope: %s, reason: %s"
+                    , scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_class
+                        ? scope->d.cls->classNameFull()
+                        : *(scope->d.NS)
+                    , errorHint
+                    ));
     }
     else {
         d->allMethod.add(dynMethod);
@@ -988,7 +994,7 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("can only be called within classBegin");
+        d->error("singleton() can only be called within classBegin");
         return *this;
     }
     const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
@@ -999,7 +1005,7 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
             .methodType(ZFMethodTypeStatic)
             );
     if(getterMethod == zfnull) {
-        d->error("unable to register singleton getter");
+        d->error(zfstr("unable to register singleton getter, class: %s", scope->d.cls->classNameFull()));
         return *this;
     }
     const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
@@ -1011,7 +1017,7 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
             );
     if(setterMethod == zfnull) {
         ZFMethodDynamicUnregister(getterMethod);
-        d->error("unable to register singleton setter");
+        d->error(zfstr("unable to register singleton setter, class: %s", scope->d.cls->classNameFull()));
         return *this;
     }
     d->allMethod.add(getterMethod);
@@ -1042,7 +1048,7 @@ ZFDynamic &ZFDynamic::property(
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("have you forgot classBegin?");
+        d->error(zfstr("property() can only be called within classBegin, property: (%s)%s", propertyTypeId, propertyName));
         return *this;
     }
     const ZFClass *cls = ZFClass::classForName(propertyTypeId);
@@ -1058,10 +1064,11 @@ ZFDynamic &ZFDynamic::property(
     if(propertyInitValue != zfnull) {
         zfauto wrap = ZFDI_implicitConvert(propertyTypeId, propertyInitValue);
         if(wrap == zfnull) {
-            d->error(zfstr("invalid init value (%s)\"%s\" for property: (%s)%s"
+            d->error(zfstr("invalid init value (%s)\"%s\" for property: (%s)%s::%s"
                         , propertyInitValue->classData()->classNameFull()
                         , propertyInitValue
-                        , cls->classNameFull()
+                        , propertyTypeId
+                        , scope->d.cls->classNameFull()
                         , propertyName
                         ));
             return *this;
@@ -1080,12 +1087,12 @@ ZFDynamic &ZFDynamic::property(
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("have you forgot classBegin?");
-        return *this;
-    }
     if(propertyClassOfRetainProperty == zfnull) {
         d->error("propertyClassOfRetainProperty not set");
+        return *this;
+    }
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error(zfstr("property() can only be called within classBegin, property: (%s)%s", propertyClassOfRetainProperty->classNameFull(), propertyName));
         return *this;
     }
     ZFPropertyDynamicRegisterParam param;
@@ -1097,19 +1104,25 @@ ZFDynamic &ZFDynamic::property(
     param.propertyGetterType(getterPrivilegeType);
     if(propertyInitValue != zfnull) {
         if(!propertyInitValue->classData()->classIsTypeOf(propertyClassOfRetainProperty)) {
-            d->error(zfstr("init value %s is not type of %s"
+            d->error(zfstr("init value (%s)%s is not type of %s for property: %s::%s"
+                        , propertyInitValue->classData()->classNameFull()
                         , propertyInitValue
                         , propertyClassOfRetainProperty->classNameFull()
+                        , scope->d.cls->classNameFull()
+                        , propertyName
                         ));
             return *this;
         }
         if(zfcast(ZFCopyable *, propertyInitValue) == zfnull
                 && zfcast(ZFStyleable *, propertyInitValue) == zfnull
                 ) {
-            d->error(zfstr("init value %s is not type of %s or %s, use propertyWithInit instead"
+            d->error(zfstr("init value (%s)%s is not type of %s or %s for property: %s::%s, use propertyWithInit instead"
+                        , propertyClassOfRetainProperty->classNameFull()
                         , propertyInitValue
                         , ZFCopyable::ClassData()->classNameFull()
                         , ZFStyleable::ClassData()->classNameFull()
+                        , scope->d.cls->classNameFull()
+                        , propertyName
                         ));
             return *this;
         }
@@ -1139,7 +1152,7 @@ ZFDynamic &ZFDynamic::propertyWithInit(
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("have you forgot classBegin?");
+        d->error(zfstr("propertyWithInit() can only be called within classBegin, property: (%s)%s", propertyTypeId, propertyName));
         return *this;
     }
     const ZFClass *cls = ZFClass::classForName(propertyTypeId);
@@ -1167,12 +1180,12 @@ ZFDynamic &ZFDynamic::propertyWithInit(
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("have you forgot classBegin?");
-        return *this;
-    }
     if(propertyClassOfRetainProperty == zfnull) {
         d->error("propertyClassOfRetainProperty not set");
+        return *this;
+    }
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error(zfstr("propertyWithInit() can only be called within classBegin, property: (%s)%s", propertyClassOfRetainProperty->classNameFull(), propertyName));
         return *this;
     }
     ZFPropertyDynamicRegisterParam param;
@@ -1192,13 +1205,18 @@ ZFDynamic &ZFDynamic::property(ZF_IN const ZFPropertyDynamicRegisterParam &param
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("have you forgot classBegin?");
+        d->error(zfstr("property() can only be called within classBegin, property: (%s)%s", param.propertyTypeId(), param.propertyName()));
         return *this;
     }
     zfstring errorHint;
     const ZFProperty *dynProperty = ZFPropertyDynamicRegister(param, &errorHint);
     if(dynProperty == zfnull) {
-        d->error(zfstr("unable to register property, reason: %s", errorHint));
+        d->error(zfstr("unable to register property (%s)%s for class %s, reason: %s"
+                    , param.propertyTypeId()
+                    , param.propertyName()
+                    , scope->d.cls->classNameFull()
+                    , errorHint
+                    ));
     }
     else {
         d->allProperty.add(dynProperty);
@@ -1239,7 +1257,7 @@ ZFDynamic &ZFDynamic::propertyLifeCycle(
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("have you forgot classBegin?");
+        d->error(zfstr("property life cycle can only be called within classBegin, property: %s", propertyName));
         return *this;
     }
     _ZFP_ZFDynamicPropLifeCycle item;
@@ -1247,12 +1265,15 @@ ZFDynamic &ZFDynamic::propertyLifeCycle(
     item.ownerClassOrNull = scope->d.cls;
     item.lifeCycle = lifeCycle;
     if(item.property == zfnull) {
-        d->error(zfstr("no property %s for class %s", propertyName, scope->d.cls->className()));
+        d->error(zfstr("no property %s for class %s, while registering property life cycle", propertyName, scope->d.cls->className()));
         return *this;
     }
     zfstring errorHint;
     if(!ZFPropertyDynamicRegisterLifeCycle(item.property, scope->d.cls, lifeCycle, callback)) {
-        d->error(zfstr("%s", errorHint));
+        d->error(zfstr("property life cycle register fail for property %s, reason: %s"
+                    , propertyName
+                    , errorHint
+                    ));
         return *this;
     }
     d->allPropertyLifeCycle.add(item);

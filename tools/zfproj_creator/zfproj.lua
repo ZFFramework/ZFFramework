@@ -26,20 +26,17 @@ local function printUsage()
     ZFLogTrim('the "private" template dir must be in the same dir of zfproj.lua')
 end
 
-local ZF_ROOT_PATH_DATA = ZFLocalPathInfo()
-if ZF_ROOT_PATH_DATA == zfnull then
+local localPathInfo = ZFLocalPathInfo()
+if localPathInfo == zfnull then
     ZFLogTrim('unable to obtain local path info')
     return
 end
-if ZF_ROOT_PATH_DATA:pathType() ~= ZFPathType_file() then
+if localPathInfo:pathType() ~= ZFPathType_file() then
     ZFLogTrim('only support from file')
     return
 end
-ZF_ROOT_PATH_DATA:pathData(ZFPathInfoToParent(ZF_ROOT_PATH_DATA))
-local WORK_DIR = ZF_ROOT_PATH_DATA:pathData()
-ZF_ROOT_PATH_DATA:pathData(ZFPathInfoToParent(ZF_ROOT_PATH_DATA))
-ZF_ROOT_PATH_DATA:pathData(ZFPathInfoToParent(ZF_ROOT_PATH_DATA))
-ZF_ROOT_PATH = ZF_ROOT_PATH_DATA:pathData()
+local WORK_DIR = ZFPathInfoForLocal(localPathInfo, '..'):pathData()
+ZF_ROOT_PATH = ZFPathInfoForLocal(localPathInfo, '../../..'):pathData()
 
 local _PY = nil
 if os.execute('python --version >/dev/null 2>&1') then

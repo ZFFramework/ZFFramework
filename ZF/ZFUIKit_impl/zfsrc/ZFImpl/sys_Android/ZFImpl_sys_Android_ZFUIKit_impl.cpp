@@ -196,7 +196,7 @@ void ZFImpl_sys_Android_viewTreePrintT(
             .add(JNIType::S_object_Object())
         ).c_str());
     jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidUI(), jmId, nativeView);
-    const char *utf = JNIUtilGetStringUTFChars(jniEnv, (jstring)tmp, zfnull);
+    const char *utf = JNIUtilGetStringUTFChars(jniEnv, (jstring)tmp, NULL);
     ret += utf;
     JNIUtilReleaseStringUTFChars(jniEnv, (jstring)tmp, utf);
 }

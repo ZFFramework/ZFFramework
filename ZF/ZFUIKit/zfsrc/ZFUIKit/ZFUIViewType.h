@@ -122,7 +122,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamFillFil
  * @note by default, a layout param would be compared by comparing all property
  */
 zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFUILayoutParam, ZFStyleableObject)
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUILayoutParam, ZFStyleableObject)
 
 public:
     // ============================================================
@@ -475,6 +475,8 @@ protected:
 
 public:
     ZFUIView *_ZFP_LP_owner;
+protected:
+    ZFUILayoutParam(void) : _ZFP_LP_owner(zfnull) {}
 };
 
 // ============================================================
