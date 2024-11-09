@@ -151,14 +151,14 @@ void ZFImpl_sys_SDL_View::render(
         return;
     }
 
-    this->renderCachePrepare(renderer, zfmMin(parentRect.w, this->rect.w), zfmMin(parentRect.h, this->rect.h));
+    this->renderCachePrepare(renderer, this->rect.w, this->rect.h);
     if(this->renderCache == zfnull) {
         _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
         return;
     }
     if(!this->renderCacheValid) {
-        ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetNew, renderer, this->renderCache);
-        if(!renderTargetNew) {
+        ZFImpl_sys_SDL_zfblockedRenderTarget(success, renderer, this->renderCache);
+        if(!success) {
             _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
             return;
         }
@@ -183,7 +183,7 @@ void ZFImpl_sys_SDL_View::render(
     src.y = 0;
     src.w = this->rect.w;
     src.h = this->rect.h;
-    SDL_FRect dst;
+    SDL_Rect dst;
     dst.x = childRect.x;
     dst.y = childRect.y;
     dst.w = this->rect.w;
@@ -226,7 +226,7 @@ void ZFImpl_sys_SDL_View::render(
     SDL_Rect clipSaved;
     SDL_RenderGetClipRect(renderer, &clipSaved);
     SDL_RenderSetClipRect(renderer, &parentRect);
-    SDL_RenderCopyExF(renderer, this->renderCache, &src, &dst, angle, zfnull, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, this->renderCache, &src, &dst, angle, zfnull, SDL_FLIP_NONE);
     if(clipSaved.w > 0 && clipSaved.h > 0) {
         SDL_RenderSetClipRect(renderer, &clipSaved);
     }

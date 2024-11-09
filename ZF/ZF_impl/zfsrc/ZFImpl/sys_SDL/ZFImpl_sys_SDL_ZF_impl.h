@@ -72,8 +72,8 @@ private:
 /**
  * @brief util to change render target within code block
  */
-#define ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetNew, sdlRenderer, sdlTexture) \
-    _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget renderTargetNew(sdlRenderer, sdlTexture)
+#define ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture) \
+    _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget success(sdlRenderer, sdlTexture)
 zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget {
 public:
     _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget(
