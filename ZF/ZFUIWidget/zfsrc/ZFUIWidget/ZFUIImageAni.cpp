@@ -53,6 +53,9 @@ public:
                 ) {
             v_zfbool *state = zfargs.param0();
             if(state->zfv) {
+                if(task->imageStateAttached) {
+                    return;
+                }
                 task->imageStateAttached = zftrue;
                 if(!task->implLoaded) {
                     task->holder->imageStateImplNotifyUpdate(zfnull);

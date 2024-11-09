@@ -198,11 +198,11 @@ public:
      *   supplying #imageStateImpl as actual impl
      *
      * note: valid only when any observer attached by #imageStateAttach,
-     * to explicitly obtain latest state, use #imageStateForceUpdate
+     * to explicitly obtain latest state, use #imageStateUpdate
      */
     ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage>, imageState)
     /** @brief see #imageState */
-    ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage>, imageStateForceUpdate)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage>, imageStateUpdate)
 
     /**
      * @brief for impl to attach image state update observer
@@ -224,7 +224,7 @@ public:
      * @brief for impl to implement stateful image logic
      *
      * there are different ways to call the impl:
-     * -  when first observer attached:
+     * -  when first observer attached and each time #imageStateUpdate called:
      *   -  sender would be the owner ZFUIImage object
      *   -  param0 would be a #v_zfbool as true
      *   -  impl must notify owner ZFUIImage's imageStateImplNotifyUpdate,

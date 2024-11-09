@@ -137,15 +137,15 @@ ZFMETHOD_FUNC_DEFINE_4(void, drawImage
     if(image == zfnull) {
         return;
     }
-    zfautoT<ZFUIImage> imageState = image->imageStateForceUpdate();
-    if(imageState != zfnull && imageState->nativeImage() != zfnull) {
+    zfautoT<ZFUIImage> imageState = image->imageStateUpdate();
+    if(imageState != zfnull) {
         ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
-        imageFrame == ZFUIRectZero()
-            ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
-            : ZFUIRectApplyScale(imageFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale()),
-        targetFrame == ZFUIRectZero()
-            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+            imageFrame == ZFUIRectZero()
+                ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
+                : ZFUIRectApplyScale(imageFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale()),
+            targetFrame == ZFUIRectZero()
+                ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
+                : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
         );
     }
 }

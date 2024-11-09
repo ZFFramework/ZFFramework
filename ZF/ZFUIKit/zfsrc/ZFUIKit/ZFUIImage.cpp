@@ -342,19 +342,19 @@ ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageState) {
         return this;
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageStateForceUpdate) {
+ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageStateUpdate) {
     if(d->imageStateImpl) {
+        d->imageStateImpl.execute(ZFArgs()
+                .sender(this)
+                .param0(zfobj<v_zfbool>(zftrue))
+                );
+        zfautoT<ZFUIImage> ret = this->imageState();
         if(d->imageStateObservers.isEmpty()) {
-            ZFLISTENER_0(dummy) {
-            } ZFLISTENER_END()
-            this->imageStateAttach(dummy);
-            zfautoT<ZFUIImage> ret = d->imageState;
-            this->imageStateDetach(dummy);
-            return ret;
+            d->imageStateImpl.execute(ZFArgs()
+                    .sender(this)
+                    );
         }
-        else {
-            return d->imageState;
-        }
+        return ret;
     }
     else {
         return this;
