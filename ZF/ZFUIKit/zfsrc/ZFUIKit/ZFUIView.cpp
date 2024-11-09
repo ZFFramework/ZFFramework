@@ -1180,6 +1180,15 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateZ) {
     }
 }
 
+ZFMETHOD_DEFINE_2(ZFUIView, void, bind
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(const zfstring &, name)
+        ) {
+    if(owner) {
+        owner->invoke(name, this);
+    }
+}
+
 // ============================================================
 // init and dealloc
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewNativeViewCache, ZFLevelZFFrameworkNormal) {

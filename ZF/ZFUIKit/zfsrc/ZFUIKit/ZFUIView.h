@@ -464,6 +464,37 @@ public:
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateZ)
 
     // ============================================================
+    // util
+public:
+    /**
+     * @brief util method to bind this view to owner's property
+     *
+     * useful in script to build view tree quickly:
+     * @code
+     *   ZFDynamic()
+     *       :classBegin('MyView', 'ZFUIView')
+     *       :property('ZFUIView', '_myChild')
+     *       :onInit(function(zfargs)
+     *           ---@type MyView
+     *           local owner = zfargs:sender()
+     *           owner
+     *               ... // other view tree
+     *               :child(ZFUIView():bind(owner, '_myChild')
+     *                   ... // other view tree
+     *               )
+     *
+     *           -- now the property can be accessed
+     *           owner:_myChild()
+     *       end)
+     *       :classEnd()
+     * @endcode
+     */
+    ZFMETHOD_DECLARE_2(void, bind
+            , ZFMP_IN(ZFObject *, owner)
+            , ZFMP_IN(const zfstring &, name)
+            )
+
+    // ============================================================
     // init and dealloc
 protected:
     zfoverride
