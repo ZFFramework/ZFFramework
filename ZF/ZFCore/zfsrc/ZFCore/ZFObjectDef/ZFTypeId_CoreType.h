@@ -569,8 +569,6 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPropertyCallbackDynamicRegisterInit
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam)
 ZFOUTPUT_TYPE(ZFPropertyDynamicRegisterParam, {v.objectInfoT(s);})
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObject *>::Comparer)
-
 /**
  * @brief see #ZFTYPEID_DECLARE
  *
