@@ -1189,6 +1189,76 @@ ZFMETHOD_DEFINE_2(ZFUIView, void, bind
     }
 }
 
+ZFMETHOD_DEFINE_3(ZFUIView, void, bindEvent
+        , ZFMP_IN(const zfstring &, eventName)
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(const zfstring &, methodName)
+        ) {
+    zfidentity eventId = ZFIdMapIdForName(eventName);
+    if(eventId != zfidentityInvalid()) {
+        return this->bindEvent(eventId, owner, methodName);
+    }
+    eventId = ZFIdMapIdForName(zfstr("%s.Event%s", this->classData()->classNameFull(), eventName));
+    if(eventId != zfidentityInvalid()) {
+        return this->bindEvent(eventId, owner, methodName);
+    }
+    ZFCoreArray<const ZFClass *> allParent = this->classData()->parentGetAll();
+    for(zfindex i = 0; i < allParent.count(); ++i) {
+        eventId = ZFIdMapIdForName(zfstr("%s.Event%s", this->classData()->classNameFull(), eventName));
+        if(eventId != zfidentityInvalid()) {
+            return this->bindEvent(eventId, owner, methodName);
+        }
+    }
+    ZFCoreLogTrim("no such event \"%s\" for class: %s", eventName, this->classData()->classNameFull());
+}
+ZFMETHOD_DEFINE_3(ZFUIView, void, bindEvent
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(const zfstring &, methodName)
+        ) {
+    if(eventId == zfidentityInvalid()
+            || owner == zfnull
+            ) {
+        return;
+    }
+    ZFCoreArray<const ZFMethod *> allMethods = owner->classData()->methodForNameGetAll(methodName);
+    const ZFMethod *methodToBind = zfnull;
+    for(zfindex i = 0; i < allMethods.count(); ++i) {
+        const ZFMethod *m = allMethods[i];
+        if(m->paramCount() == 0
+                || (m->paramCount() == 1 && m->paramTypeIdAt(0) == ZFTypeId_ZFArgs())
+                || m->paramCount() == 2
+                ) {
+            methodToBind = m;
+            break;
+        }
+    }
+    if(methodToBind == zfnull) {
+        ZFCoreLogTrim("no such method \"%s\" for class: %s, while bindEvent to %s"
+                , methodName
+                , owner->classData()->classNameFull()
+                , ZFIdMapNameForId(eventId)
+                );
+        return;
+    }
+    ZFLISTENER_3(wrap
+            , zfidentity, eventId
+            , zfweak, owner
+            , const ZFMethod *, methodToBind
+            ) {
+        zfauto ret;
+        if(!methodToBind->methodInvokeT(ret, zfnull, owner)) {
+            ZFCoreLogTrim("failed to invoke method %s::%s(%s) for bindEvent %s"
+                    , owner ? owner->classData()->classNameFull().cString() : ZFTOKEN_zfnull
+                    , methodToBind->methodName()
+                    , methodToBind->paramInfo()
+                    , ZFIdMapNameForId(eventId)
+                    );
+        }
+    } ZFLISTENER_END()
+    this->observerAdd(eventId, wrap);
+}
+
 // ============================================================
 // init and dealloc
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewNativeViewCache, ZFLevelZFFrameworkNormal) {

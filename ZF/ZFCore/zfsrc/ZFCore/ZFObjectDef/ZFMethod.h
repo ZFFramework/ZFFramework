@@ -412,6 +412,20 @@ public:
     }
 
     /**
+     * @brief util to return param info
+     *
+     * sample output: `P0 p0, P1 p1 = def`,
+     * or output nothing if no param
+     */
+    void paramInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief see #paramInfoT */
+    zfstring paramInfo(void) const {
+        zfstring ret;
+        this->paramInfoT(ret);
+        return ret;
+    }
+
+    /**
      * @brief invoker function address for both class member type and function type
      *
      * proto type:

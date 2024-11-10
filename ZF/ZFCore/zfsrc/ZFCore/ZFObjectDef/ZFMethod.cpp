@@ -277,24 +277,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
     if(this->paramCount() > 0) {
         ret += "(";
-        for(zfindex i = 0; i < this->paramCount(); ++i) {
-            if(i != 0) {
-                ret += ", ";
-            }
-            ret += this->paramTypeIdAt(i);
-            ret += " ";
-            ret += this->paramNameAt(i);
-            if(i >= this->paramDefaultBeginIndex()) {
-                ret += " = ";
-                zfauto v = this->paramDefaultValueAt(i);
-                if(v == zfnull) {
-                    ret += ZFTOKEN_zfnull;
-                }
-                else {
-                    v->objectInfoT(ret);
-                }
-            }
-        }
+        this->paramInfoT(ret);
         ret += ")";
     }
     else {
@@ -479,6 +462,27 @@ zfauto ZFMethod::paramDefaultValueAt(ZF_IN zfindex index) const {
         zfargs.result(ZFMP_DEF());
         this->paramDefaultValueCallbackAt(index).execute(zfargs);
         return zfargs.result();
+    }
+}
+
+void ZFMethod::paramInfoT(ZF_IN_OUT zfstring &ret) const {
+    for(zfindex i = 0; i < this->paramCount(); ++i) {
+        if(i != 0) {
+            ret += ", ";
+        }
+        ret += this->paramTypeIdAt(i);
+        ret += " ";
+        ret += this->paramNameAt(i);
+        if(i >= this->paramDefaultBeginIndex()) {
+            ret += " = ";
+            zfauto v = this->paramDefaultValueAt(i);
+            if(v == zfnull) {
+                ret += ZFTOKEN_zfnull;
+            }
+            else {
+                v->objectInfoT(ret);
+            }
+        }
     }
 }
 

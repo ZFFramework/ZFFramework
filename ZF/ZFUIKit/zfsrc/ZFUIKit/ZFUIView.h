@@ -493,6 +493,51 @@ public:
             , ZFMP_IN(ZFObject *, owner)
             , ZFMP_IN(const zfstring &, name)
             )
+    /**
+     * @brief util method to bind this view's event to owner's method
+     *
+     * useful in script to build view tree quickly:
+     * @code
+     *   ZFDynamic()
+     *       :classBegin('MyView', 'ZFUIView')
+     *       :onInit(function(zfargs)
+     *           ---@type MyView
+     *           local owner = zfargs:sender()
+     *           owner
+     *               ... // other view tree
+     *               :child(ZFUIButtonBasic():bindEvent('ButtonOnClick', owner, '_myOnClick')
+     *                   ... // other view tree
+     *               )
+     *       end)
+     *       :method('void', '_myOnClick', ZFMP(), function(zfargs)
+     *           ...
+     *       end)
+     *       :classEnd()
+     * @endcode
+     *
+     * see #ZFObject::on for event name search logic\n
+     * \n
+     * the owner's method's return value would be ignored, and params can be
+     * -  method with no params
+     * -  exactly one param with #v_ZFArgs type, which was the zfargs from the source event
+     * -  exactly two param with ZFObject type (or sub class of ZFObject), which was the param0 and param1 from the source event
+     *
+     * note, when multiple method matches, which one to use would not be ensured,
+     * try to prevent that
+     */
+    ZFMETHOD_DECLARE_3(void, bindEvent
+            , ZFMP_IN(const zfstring &, eventName)
+            , ZFMP_IN(ZFObject *, owner)
+            , ZFMP_IN(const zfstring &, methodName)
+            )
+    /**
+     * @brief util method to bind this view's event to owner's method, see #bindEvent
+     */
+    ZFMETHOD_DECLARE_3(void, bindEvent
+            , ZFMP_IN(zfidentity, eventId)
+            , ZFMP_IN(ZFObject *, owner)
+            , ZFMP_IN(const zfstring &, methodName)
+            )
 
     // ============================================================
     // init and dealloc
