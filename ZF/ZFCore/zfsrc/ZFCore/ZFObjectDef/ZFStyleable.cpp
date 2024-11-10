@@ -412,7 +412,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFStyleGet
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, styleKey)
-        , ZFMP_IN_OUT(ZFCoreArray<ZFStyleable *>, styleValue)
+        , ZFMP_IN_OUT(ZFCoreArray<ZFStyleable *> &, styleValue)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleRemoveAll)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateBegin)
