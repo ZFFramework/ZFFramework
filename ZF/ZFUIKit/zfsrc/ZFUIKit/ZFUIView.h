@@ -467,7 +467,8 @@ public:
     // util
 public:
     /**
-     * @brief util method to bind this view to owner's property
+     * @brief util method to bind this view to owner's property,
+     *   and auto setup #viewId if not set
      *
      * useful in script to build view tree quickly:
      * @code

@@ -1187,6 +1187,9 @@ ZFMETHOD_DEFINE_2(ZFUIView, void, bind
     if(owner) {
         owner->invoke(name, this);
     }
+    if(!this->viewId()) {
+        this->viewId(name);
+    }
 }
 
 ZFMETHOD_DEFINE_3(ZFUIView, void, bindEvent
