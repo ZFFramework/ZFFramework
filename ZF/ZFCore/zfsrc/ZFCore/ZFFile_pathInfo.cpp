@@ -41,7 +41,7 @@ zfstring ZFPathInfoCallbackToChildDefault(
         pathDataChild += '/';
     }
     pathDataChild += childName;
-    ZFPathFormatRelative(pathDataChild);
+    ZFPathFormatRelativeT(pathDataChild, pathDataChild);
     if(success) {
         *success = zftrue;
     }

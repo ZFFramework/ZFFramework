@@ -48,8 +48,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFTextTemplateRun
         , ZFMP_IN_OPT(const ZFTextTemplateRunParam &, runParam, ZFTextTemplateRunParam())
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         ) {
-    zfstring pathTmp;
-    ZFPathFormat(pathTmp, path);
+    zfstring pathTmp = ZFPathFormat(path);
     if(!ZFFileIsExist(pathTmp)) {
         zfstringAppend(outErrorHint, "path not exist: \"%s\"", path);
         return zffalse;

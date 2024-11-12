@@ -28,18 +28,38 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  null src is treated as error, while empty string src is not an error
  * -  single "/" src would result empty string
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathFormat
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathFormatT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
+/** @brief see #ZFPathFormatT */
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, zfstring, ZFPathFormat
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        ) {
+    zfstring ret;
+    ZFPathFormatT(ret, src, srcLen);
+    return ret;
+}
 
 /**
  * @brief util method to resolve ".." in path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathFormatRelative
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathFormatRelativeT
         , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
+/** @brief see #ZFPathFormatRelativeT */
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, zfstring, ZFPathFormatRelative
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        ) {
+    zfstring ret;
+    ZFPathFormatRelativeT(ret, src, srcLen);
+    return ret;
+}
 
 /**
  * @brief get file name from path or src if error,

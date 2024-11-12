@@ -117,8 +117,8 @@ public:
         ZFUIRect newValue = ZFUIRectZero();
         newValue.width = this->pimplOwner->viewFrame().width;
         newValue.height = this->pimplOwner->viewFrame().height;
-        ZFUIRectApplyMargin(newValue, newValue, this->pimplOwner->nativeImplViewMargin());
-        ZFUIRectApplyMargin(newValue, newValue, this->scrollAreaMargin);
+        ZFUIRectApplyMarginT(newValue, newValue, this->pimplOwner->nativeImplViewMargin());
+        ZFUIRectApplyMarginT(newValue, newValue, this->scrollAreaMargin);
         if(newValue != this->scrollArea) {
             this->scrollArea = newValue;
             this->pimplOwner->scrollAreaOnUpdate();
@@ -297,7 +297,7 @@ public:
         ZFUIRect frame = this->pimplOwner->scrollContentFrame();
         frame.x += this->pimplOwner->scrollAreaMargin().left;
         frame.y += this->pimplOwner->scrollAreaMargin().top;
-        ZFUIRectApplyScale(frame, frame, this->pimplOwner->UIScaleFixed());
+        ZFUIRectApplyScaleT(frame, frame, this->pimplOwner->UIScaleFixed());
         if(frame != this->scrollContentFrameCache) {
             this->scrollContentFrameCache = frame;
             ZFPROTOCOL_ACCESS(ZFUIScrollView)->scrollContentFrame(this->pimplOwner, frame);

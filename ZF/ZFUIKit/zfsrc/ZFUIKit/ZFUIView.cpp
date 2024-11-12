@@ -1700,8 +1700,8 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
         this->layoutOnMeasureFinish(d->measureResult->measuredSize, sizeHint, sizeParam);
         this->observerNotify(ZFUIView::EventViewLayoutOnMeasureFinish(), d->measureResult);
 
-        ZFUILayoutParam::sizeHintApply(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHint, sizeParam);
-        ZFUISizeApplyRange(d->measureResult->measuredSize, d->measureResult->measuredSize, this->viewSizeMin(), this->viewSizeMax());
+        ZFUILayoutParam::sizeHintApplyT(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHint, sizeParam);
+        ZFUISizeApplyRangeT(d->measureResult->measuredSize, d->measureResult->measuredSize, this->viewSizeMin(), this->viewSizeMax());
 
         if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)) {
             d->measureResult->measuredSize.width = d->viewFrame.width;

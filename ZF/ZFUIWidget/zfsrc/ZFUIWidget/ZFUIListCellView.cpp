@@ -33,13 +33,13 @@ static void _ZFP_ZFUIListCellView_measureContent(
     view->cellIconContainer()->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());
     cellIconSize = view->cellIconContainer()->layoutMeasuredSize();
     if(cellIconSize.width > 0) {
-        cellIconSize = ZFUISizeApplyMarginReversely(cellIconSize, view->cellIconContainer()->layoutParam()->margin());
+        ZFUISizeApplyMarginReverselyT(cellIconSize, cellIconSize, view->cellIconContainer()->layoutParam()->margin());
     }
 
     view->cellAccessoryContainer()->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());
     cellAccessorySize = view->cellAccessoryContainer()->layoutMeasuredSize();
     if(cellAccessorySize.width > 0) {
-        cellAccessorySize = ZFUISizeApplyMarginReversely(cellAccessorySize, view->cellAccessoryContainer()->layoutParam()->margin());
+        ZFUISizeApplyMarginReverselyT(cellAccessorySize, cellAccessorySize, view->cellAccessoryContainer()->layoutParam()->margin());
     }
 
     ZFUISize cellCenterSizeHint = sizeHint;

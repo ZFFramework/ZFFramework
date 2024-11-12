@@ -31,7 +31,7 @@ public:
 
     virtual const zfstring &pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
-            ZFPathFormat(this->_pathForSetting, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString().c_str());
+            ZFPathFormatT(this->_pathForSetting, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString().c_str());
             if(this->_pathForSetting.isEmpty()) {
                 this->_pathForSetting = this->pathForModule();
             }
@@ -45,7 +45,7 @@ public:
 
     virtual const zfstring &pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
-            ZFPathFormat(this->_pathForStorage, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdString().c_str());
+            ZFPathFormatT(this->_pathForStorage, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdString().c_str());
             if(this->_pathForStorage.isEmpty()) {
                 this->_pathForStorage = this->pathForModule();
             }
@@ -59,7 +59,7 @@ public:
 
     virtual const zfstring &pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
-            ZFPathFormat(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
+            ZFPathFormatT(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
             if(this->_pathForStorageShared.isEmpty()) {
                 this->_pathForStorageShared = this->pathForModule();
                 this->_pathForStorageShared += "/zfstorage";
@@ -73,7 +73,7 @@ public:
 
     virtual const zfstring &pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
-            ZFPathFormat(this->_pathForCache, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString().c_str());
+            ZFPathFormatT(this->_pathForCache, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString().c_str());
             if(this->_pathForCache.isEmpty()) {
                 this->_pathForCache = this->pathForModule();
             }

@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief return a scaled int
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScale
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleT
         , ZFMP_OUT(zffloat &, ret)
         , ZFMP_IN(zffloat const &, v)
         , ZFMP_IN(zffloat, scale)
@@ -29,13 +29,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, zffloat, ZFUISizeApplyScale
         , ZFMP_IN(zffloat, scale)
         ) {
     zffloat ret = 0;
-    ZFUISizeApplyScale(ret, v, scale);
+    ZFUISizeApplyScaleT(ret, v, scale);
     return ret;
 }
 /**
  * @brief return a scaled int reversely
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleReverselyT
         , ZFMP_OUT(zffloat &, ret)
         , ZFMP_IN(zffloat const &, v)
         , ZFMP_IN(zffloat, scale)
@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, zffloat, ZFUISizeApplyScaleReverse
         , ZFMP_IN(zffloat, scale)
         ) {
     zffloat ret = 0;
-    ZFUISizeApplyScaleReversely(ret, v, scale);
+    ZFUISizeApplyScaleReverselyT(ret, v, scale);
     return ret;
 }
 
@@ -101,13 +101,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointCreate
 /**
  * @brief return a scaled point
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIPointApplyScale
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIPointApplyScaleT
         , ZFMP_OUT(ZFUIPoint &, ret)
         , ZFMP_IN(const ZFUIPoint &, point)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.x = ZFUISizeApplyScale(point.x, scale);
-    ret.y = ZFUISizeApplyScale(point.y, scale);
+    ZFUISizeApplyScaleT(ret.x, point.x, scale);
+    ZFUISizeApplyScaleT(ret.y, point.y, scale);
 }
 /**
  * @brief return a scaled point
@@ -122,13 +122,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPointApplyScale
 /**
  * @brief return a scaled point reversely
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIPointApplyScaleReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIPointApplyScaleReverselyT
         , ZFMP_OUT(ZFUIPoint &, ret)
         , ZFMP_IN(const ZFUIPoint &, point)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.x = ZFUISizeApplyScaleReversely(point.x, scale);
-    ret.y = ZFUISizeApplyScaleReversely(point.y, scale);
+    ZFUISizeApplyScaleReverselyT(ret.x, point.x, scale);
+    ZFUISizeApplyScaleReverselyT(ret.y, point.y, scale);
 }
 /**
  * @brief return a scaled point reversely
@@ -211,15 +211,15 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginCreate
 /**
  * @brief return a scaled margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIMarginApplyScale
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIMarginApplyScaleT
         , ZFMP_OUT(ZFUIMargin &, ret)
         , ZFMP_IN(const ZFUIMargin &, margin)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.left = ZFUISizeApplyScale(margin.left, scale);
-    ret.top = ZFUISizeApplyScale(margin.top, scale);
-    ret.right = ZFUISizeApplyScale(margin.right, scale);
-    ret.bottom = ZFUISizeApplyScale(margin.bottom, scale);
+    ZFUISizeApplyScaleT(ret.left, margin.left, scale);
+    ZFUISizeApplyScaleT(ret.top, margin.top, scale);
+    ZFUISizeApplyScaleT(ret.right, margin.right, scale);
+    ZFUISizeApplyScaleT(ret.bottom, margin.bottom, scale);
 }
 /**
  * @brief return a scaled margin
@@ -239,15 +239,15 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMarginApplyScale
 /**
  * @brief return a scaled margin reversely
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIMarginApplyScaleReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIMarginApplyScaleReverselyT
         , ZFMP_OUT(ZFUIMargin &, ret)
         , ZFMP_IN(const ZFUIMargin &, margin)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.left = ZFUISizeApplyScaleReversely(margin.left, scale);
-    ret.top = ZFUISizeApplyScaleReversely(margin.top, scale);
-    ret.right = ZFUISizeApplyScaleReversely(margin.right, scale);
-    ret.bottom = ZFUISizeApplyScaleReversely(margin.bottom, scale);
+    ZFUISizeApplyScaleReverselyT(ret.left, margin.left, scale);
+    ZFUISizeApplyScaleReverselyT(ret.top, margin.top, scale);
+    ZFUISizeApplyScaleReverselyT(ret.right, margin.right, scale);
+    ZFUISizeApplyScaleReverselyT(ret.bottom, margin.bottom, scale);
 }
 /**
  * @brief return a scaled margin reversely
@@ -459,7 +459,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeCreate
  * return value in range [minSize, maxSize] if minSize < maxSize,
  * or return value in range [minSize, infinite) minSize > maxSize
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRange
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRangeT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, orgSize)
         , ZFMP_IN(const ZFUISize &, minSize)
@@ -480,7 +480,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyRange
         , ZFMP_IN(const ZFUISize &, maxSize)
         ) {
     ZFUISize ret;
-    ZFUISizeApplyRange(ret, orgSize, minSize, maxSize);
+    ZFUISizeApplyRangeT(ret, orgSize, minSize, maxSize);
     return ret;
 }
 /**
@@ -489,7 +489,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyRange
  * return value in range [minSize, maxSize] if minSize < maxSize,
  * or return value in range [minSize, infinite) minSize > maxSize
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRange
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRangeT
         , ZFMP_OUT(zffloat &, ret)
         , ZFMP_IN(const zffloat &, orgSize)
         , ZFMP_IN(const zffloat &, minSize)
@@ -509,19 +509,19 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, zffloat, ZFUISizeApplyRange
         , ZFMP_IN(const zffloat &, maxSize)
         ) {
     zffloat ret = orgSize;
-    ZFUISizeApplyRange(ret, orgSize, minSize, maxSize);
+    ZFUISizeApplyRangeT(ret, orgSize, minSize, maxSize);
     return ret;
 }
 /**
  * @brief return a scaled size
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScale
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, size)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.width = ZFUISizeApplyScale(size.width, scale);
-    ret.height = ZFUISizeApplyScale(size.height, scale);
+    ZFUISizeApplyScaleT(ret.width, size.width, scale);
+    ZFUISizeApplyScaleT(ret.height, size.height, scale);
 }
 /**
  * @brief return a scaled size
@@ -539,13 +539,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyScale
 /**
  * @brief return a scaled size reversely
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleReverselyT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, size)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.width = ZFUISizeApplyScaleReversely(size.width, scale);
-    ret.height = ZFUISizeApplyScaleReversely(size.height, scale);
+    ZFUISizeApplyScaleReverselyT(ret.width, size.width, scale);
+    ZFUISizeApplyScaleReverselyT(ret.height, size.height, scale);
 }
 /**
  * @brief return a scaled size reversely
@@ -566,7 +566,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyScaleRevers
  *
  * input size must be valid, while negative refSize means no limit
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyAspectRatio
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyAspectRatioT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, size)
         , ZFMP_IN(const ZFUISize &, refSize)
@@ -581,14 +581,14 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyAspectRatio
         , ZFMP_IN(const ZFUISize &, refSize)
         ) {
     ZFUISize ret = ZFUISizeZero();
-    ZFUISizeApplyAspectRatio(ret, size, refSize);
+    ZFUISizeApplyAspectRatioT(ret, size, refSize);
     return ret;
 }
 
 /**
  * @brief return a size excluding the margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyMargin
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyMarginT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, size)
         , ZFMP_IN(const ZFUIMargin &, margin)
@@ -612,7 +612,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyMargin
 /**
  * @brief revert excluding the margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyMarginReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyMarginReverselyT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, size)
         , ZFMP_IN(const ZFUIMargin &, margin)
@@ -820,15 +820,15 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, zfbool, ZFUIRectIsContainRect
 /**
  * @brief return a scaled rect
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyScale
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyScaleT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIRect &, rect)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.x = ZFUISizeApplyScale(rect.x, scale);
-    ret.y = ZFUISizeApplyScale(rect.y, scale);
-    ret.width = ZFUISizeApplyScale(rect.width, scale);
-    ret.height = ZFUISizeApplyScale(rect.height, scale);
+    ZFUISizeApplyScaleT(ret.x, rect.x, scale);
+    ZFUISizeApplyScaleT(ret.y, rect.y, scale);
+    ZFUISizeApplyScaleT(ret.width, rect.width, scale);
+    ZFUISizeApplyScaleT(ret.height, rect.height, scale);
 }
 /**
  * @brief return a scaled rect
@@ -848,15 +848,15 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectApplyScale
 /**
  * @brief return a scaled rect reversely
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyScaleReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyScaleReverselyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIRect &, rect)
         , ZFMP_IN(zffloat, scale)
         ) {
-    ret.x = ZFUISizeApplyScaleReversely(rect.x, scale);
-    ret.y = ZFUISizeApplyScaleReversely(rect.y, scale);
-    ret.width = ZFUISizeApplyScaleReversely(rect.width, scale);
-    ret.height = ZFUISizeApplyScaleReversely(rect.height, scale);
+    ZFUISizeApplyScaleReverselyT(ret.x, rect.x, scale);
+    ZFUISizeApplyScaleReverselyT(ret.y, rect.y, scale);
+    ZFUISizeApplyScaleReverselyT(ret.width, rect.width, scale);
+    ZFUISizeApplyScaleReverselyT(ret.height, rect.height, scale);
 }
 /**
  * @brief return a scaled rect reversely
@@ -951,7 +951,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zffloat, ZFUIRectGetBottom
 /**
  * @brief return a rect excluding the margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyMargin
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyMarginT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIRect &, rect)
         , ZFMP_IN(const ZFUIMargin &, margin)
@@ -979,7 +979,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectApplyMargin
 /**
  * @brief revert excluding the margin
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyMarginReversely
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIRectApplyMarginReverselyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIRect &, rect)
         , ZFMP_IN(const ZFUIMargin &, margin)
@@ -1097,7 +1097,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIAlignValid
 /**
  * @brief apply align and calculate result, or #ZFUIRectZero if error
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIAlignApply
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIAlignApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         , ZFMP_IN(const ZFUIRect &, refRect)
@@ -1114,7 +1114,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIAlignApply
         , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginZero())
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUIAlignApply(ret, align, refRect, itemSize, margin);
+    ZFUIAlignApplyT(ret, align, refRect, itemSize, margin);
     return ret;
 }
 /**
@@ -1505,7 +1505,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIContentScaleType)
 /**
  * @brief apply scale for #ZFUIContentScaleType
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApply
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
@@ -1520,7 +1520,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUIRect, ZFUIContentScaleTypeAppl
         , ZFMP_IN(const ZFUISize &, contentSize)
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUIContentScaleTypeApply(ret, scaleType, bounds, contentSize);
+    ZFUIContentScaleTypeApplyT(ret, scaleType, bounds, contentSize);
     return ret;
 }
 

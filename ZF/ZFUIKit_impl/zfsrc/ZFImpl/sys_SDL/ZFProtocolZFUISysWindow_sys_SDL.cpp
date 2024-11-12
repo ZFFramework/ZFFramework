@@ -136,7 +136,7 @@ public:
         SDL_Rect sdlRect;
         SDL_GetDisplayUsableBounds(0, &sdlRect);
         ZFUIRect rect;
-        ZFUILayoutParam::layoutParamApply(
+        ZFUILayoutParam::layoutParamApplyT(
                 rect
                 , ZFUIRectCreate(sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h)
                 , sysWindow->rootView()

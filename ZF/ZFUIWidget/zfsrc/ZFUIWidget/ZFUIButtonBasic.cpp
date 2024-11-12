@@ -471,7 +471,8 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
             if(iconSize.width > 0 && labelSize.width > 0) {
                 contentSpace = this->contentSpace();
             }
-            contentFrame = ZFUIAlignApply(
+            ZFUIAlignApplyT(
+                contentFrame,
                 this->contentAlign(),
                 bounds,
                 ZFUISizeCreate(iconSize.width + contentSpace + labelSize.width, zfmMax(iconSize.height, labelSize.height)),
@@ -498,7 +499,8 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
             if(iconSize.height > 0 && labelSize.height > 0) {
                 contentSpace = this->contentSpace();
             }
-            contentFrame = ZFUIAlignApply(
+            ZFUIAlignApplyT(
+                contentFrame,
                 this->contentAlign(),
                 bounds,
                 ZFUISizeCreate(zfmMax(iconSize.width, labelSize.width), iconSize.height + contentSpace + labelSize.height),

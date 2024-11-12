@@ -69,7 +69,7 @@ public:
                     }
                 #endif // #if ZF_ENV_sys_Windows #else
             #endif
-            zfbool result = ZFPathFormat(this->_pathForModuleFile, tmp);
+            zfbool result = ZFPathFormatT(this->_pathForModuleFile, tmp);
             ZFCoreAssert(result);
         }
         return this->_pathForModuleFile;

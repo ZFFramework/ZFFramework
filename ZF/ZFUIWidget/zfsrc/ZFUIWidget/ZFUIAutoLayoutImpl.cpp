@@ -226,8 +226,8 @@ void ZFUIAutoLayout::layoutOnMeasure(
         , ZF_IN const ZFUISizeParam &sizeParam
         ) {
     d->prepareLayout(this, sizeHint);
-    ZFUISizeApplyRange(ret.width, 0, this->viewSizeMin().width, this->viewSizeMax().height);
-    ZFUISizeApplyRange(ret.height, 0, this->viewSizeMin().height, this->viewSizeMax().height);
+    ZFUISizeApplyRangeT(ret.width, 0, this->viewSizeMin().width, this->viewSizeMax().height);
+    ZFUISizeApplyRangeT(ret.height, 0, this->viewSizeMin().height, this->viewSizeMax().height);
 
     for(zfindex i = this->childCount() - 1; i != zfindexMax(); --i) {
         d->layoutChild(this, ret.width, ret.height, i, zftrue);
@@ -244,8 +244,8 @@ void ZFUIAutoLayout::layoutOnMeasure(
         parentRight = zfmMax(parentRight, ZFUIRectGetRight(childFrame));
         parentBottom = zfmMax(parentBottom, ZFUIRectGetBottom(childFrame));
     }
-    ZFUISizeApplyRange(ret.width, parentRight - parentLeft, this->viewSizeMin().width, this->viewSizeMax().height);
-    ZFUISizeApplyRange(ret.height, parentBottom - parentTop, this->viewSizeMin().height, this->viewSizeMax().height);
+    ZFUISizeApplyRangeT(ret.width, parentRight - parentLeft, this->viewSizeMin().width, this->viewSizeMax().height);
+    ZFUISizeApplyRangeT(ret.height, parentBottom - parentTop, this->viewSizeMin().height, this->viewSizeMax().height);
 }
 void ZFUIAutoLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     d->prepareLayout(this, ZFUIRectGetSize(this->viewFrame()));
@@ -576,14 +576,17 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
     switch(t) {
         case _RuleTypeCenter: {
             if(sizeType == ZFUISizeType::e_Wrap) {
-                childSize = ZFUISizeApplyRange(childSize
+                ZFUISizeApplyRangeT(
+                        childSize
+                        , childSize
                         , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
                         , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
                         );
             }
             else {
-                childSize = ZFUISizeApplyRange(
-                        sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - ruleHead.offset() - ruleTail.offset())
+                ZFUISizeApplyRangeT(
+                        childSize
+                        , sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - ruleHead.offset() - ruleTail.offset())
                         , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
                         , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
                         );
@@ -595,14 +598,17 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
         case _RuleTypeHead:
             childHead = headPos + ruleHead.offset();
             if(sizeType == ZFUISizeType::e_Wrap) {
-                childSize = ZFUISizeApplyRange(childSize
+                ZFUISizeApplyRangeT(
+                        childSize
+                        , childSize
                         , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
                         , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
                         );
             }
             else {
-                childSize = ZFUISizeApplyRange(
-                        sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - ruleHead.offset() - ruleTail.offset())
+                ZFUISizeApplyRangeT(
+                        childSize
+                        , sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - ruleHead.offset() - ruleTail.offset())
                         , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
                         , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
                         );
@@ -610,14 +616,17 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
             break;
         case _RuleTypeTail:
             if(sizeType == ZFUISizeType::e_Wrap) {
-                childSize = ZFUISizeApplyRange(childSize
+                ZFUISizeApplyRangeT(
+                        childSize
+                        , childSize
                         , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
                         , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
                         );
             }
             else {
-                childSize = ZFUISizeApplyRange(
-                        sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - ruleHead.offset() - ruleTail.offset())
+                ZFUISizeApplyRangeT(
+                        childSize
+                        , sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - ruleHead.offset() - ruleTail.offset())
                         , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
                         , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
                         );

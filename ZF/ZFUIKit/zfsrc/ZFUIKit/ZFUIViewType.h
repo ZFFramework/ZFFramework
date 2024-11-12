@@ -287,7 +287,7 @@ public:
 public:
     // ============================================================
     /** @brief see #layoutParamApply */
-    ZFMETHOD_DECLARE_STATIC_4(void, layoutParamApply
+    ZFMETHOD_DECLARE_STATIC_4(void, layoutParamApplyT
             , ZFMP_OUT(ZFUIRect &, ret)
             , ZFMP_IN(const ZFUIRect &, rect)
             , ZFMP_IN(ZFUIView *, child)
@@ -309,13 +309,13 @@ public:
     /**
      * @brief util method to apply sizeHint according sizeParam
      */
-    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply
+    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApplyT
             , ZFMP_OUT(zffloat &, ret)
             , ZFMP_IN(zffloat, size)
             , ZFMP_IN(zffloat, sizeHint)
             , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
             )
-    /** @brief see #sizeHintApply */
+    /** @brief see #sizeHintApplyT */
     ZFMETHOD_DECLARE_STATIC_3(zffloat, sizeHintApply
             , ZFMP_IN(zffloat, size)
             , ZFMP_IN(zffloat, sizeHint)
@@ -325,13 +325,13 @@ public:
     /**
      * @brief util method to apply sizeHint according sizeParam
      */
-    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply
+    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApplyT
             , ZFMP_OUT(ZFUISize &, ret)
             , ZFMP_IN(const ZFUISize &, size)
             , ZFMP_IN(const ZFUISize &, sizeHint)
             , ZFMP_IN(const ZFUISizeParam &, sizeParam)
             )
-    /** @brief see #sizeHintApply */
+    /** @brief see #sizeHintApplyT */
     ZFMETHOD_DECLARE_STATIC_3(ZFUISize, sizeHintApply
             , ZFMP_IN(const ZFUISize &, size)
             , ZFMP_IN(const ZFUISize &, sizeHint)

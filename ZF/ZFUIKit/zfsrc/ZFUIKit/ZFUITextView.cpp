@@ -116,7 +116,7 @@ ZFMETHOD_DEFINE_2(ZFUITextView, void, measureTextView
         , ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeZero())
         ) {
     const ZFUIMargin &nativeImplViewMargin = this->nativeImplViewMargin();
-    ZFUISizeApplyScaleReversely(ret, ZFPROTOCOL_ACCESS(ZFUITextView)->measureNativeTextView(this,
+    ZFUISizeApplyScaleReverselyT(ret, ZFPROTOCOL_ACCESS(ZFUITextView)->measureNativeTextView(this,
         ZFUISizeApplyScale(ZFUILayoutParam::sizeHintOffset(sizeHint, ZFUISizeCreate(
                     0 - ZFUIMarginGetWidth(nativeImplViewMargin),
                     0 - ZFUIMarginGetHeight(nativeImplViewMargin)
@@ -124,7 +124,7 @@ ZFMETHOD_DEFINE_2(ZFUITextView, void, measureTextView
             this->UIScaleFixed()),
         ZFUISizeApplyScale(this->textSize(), this->UIScaleFixed())),
         this->UIScaleFixed());
-    ZFUISizeApplyMarginReversely(ret, ret, nativeImplViewMargin);
+    ZFUISizeApplyMarginReverselyT(ret, ret, nativeImplViewMargin);
 }
 
 ZFMETHOD_DEFINE_0(ZFUITextView, zffloat, textSizeCurrent) {

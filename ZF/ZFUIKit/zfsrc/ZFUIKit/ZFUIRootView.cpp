@@ -33,7 +33,7 @@ void ZFUIRootView::layoutOnMeasure(
     ret = sizeHint;
 }
 
-static void _ZFP_ZFUIRootView_layoutParamApply(
+static void _ZFP_ZFUIRootView_layoutParamApplyT(
         ZF_OUT ZFUIRect &ret
         , ZF_IN const ZFUIRect &rect
         , ZF_IN ZFUIView *child
@@ -56,7 +56,7 @@ static void _ZFP_ZFUIRootView_layoutParamApply(
         refSizeTmp.height = zfmMin(lp->sizeHint().height, refSizeTmp.height);
     }
     child->layoutMeasure(refSizeTmp, lp->sizeParam());
-    ZFUIAlignApply(
+    ZFUIAlignApplyT(
             ret,
             lp->align(),
             rect,
@@ -78,7 +78,7 @@ void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
         }
 
         ZFUIRect result = ZFUIRectZero();
-        _ZFP_ZFUIRootView_layoutParamApply(
+        _ZFP_ZFUIRootView_layoutParamApplyT(
             result,
             bounds,
             child,

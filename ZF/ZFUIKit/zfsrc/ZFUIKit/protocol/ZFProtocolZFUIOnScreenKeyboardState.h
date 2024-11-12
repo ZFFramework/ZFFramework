@@ -35,7 +35,7 @@ public:
             , ZF_OUT ZFUIRect &clientFrame
             ) {
         ZFUIViewPositionOnScreen(clientFrame, keyboardState->keyboardOwnerSysWindow()->rootView());
-        ZFUIRectApplyScale(clientFrame, clientFrame, keyboardState->keyboardOwnerSysWindow()->rootView()->UIScaleFixed());
+        ZFUIRectApplyScaleT(clientFrame, clientFrame, keyboardState->keyboardOwnerSysWindow()->rootView()->UIScaleFixed());
         if(ZFUIRectGetBottom(clientFrame) > ZFUIRectGetTop(keyboardFrame)) {
             clientFrame.height -= ZFUIRectGetBottom(clientFrame) - ZFUIRectGetTop(keyboardFrame);
         }

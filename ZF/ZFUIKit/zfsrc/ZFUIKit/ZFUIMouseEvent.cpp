@@ -24,11 +24,11 @@ void ZFUIMouseEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 
 void ZFUIMouseEvent::eventOnApplyScale(ZF_IN zffloat scale) {
     zfsuper::eventOnApplyScale(scale);
-    this->mousePoint = ZFUIPointApplyScale(this->mousePoint, scale);
+    ZFUIPointApplyScaleT(this->mousePoint, this->mousePoint, scale);
 }
 void ZFUIMouseEvent::eventOnApplyScaleReversely(ZF_IN zffloat scale) {
     zfsuper::eventOnApplyScale(scale);
-    this->mousePoint = ZFUIPointApplyScaleReversely(this->mousePoint, scale);
+    ZFUIPointApplyScaleReverselyT(this->mousePoint, this->mousePoint, scale);
 }
 
 // ============================================================

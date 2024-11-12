@@ -158,7 +158,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, const ZFUIMargin &, sysWindowMargin) {
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_sysWindowMargin(ZF_IN const ZFUIMargin &sysWindowMargin) {
     ZFUIMargin sysWindowMarginOld = d->sysWindowMargin;
-    d->sysWindowMargin = ZFUIMarginApplyScaleReversely(sysWindowMargin, this->rootView()->UIScaleFixed());
+    ZFUIMarginApplyScaleReverselyT(d->sysWindowMargin, sysWindowMargin, this->rootView()->UIScaleFixed());
     if(d->sysWindowMargin != sysWindowMarginOld) {
         this->sysWindowMarginOnUpdate(sysWindowMarginOld);
     }

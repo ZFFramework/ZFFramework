@@ -88,7 +88,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         ) {
     zfstring pathFormated;
-    if(!ZFPathFormat(pathFormated, path)) {
+    if(!ZFPathFormatT(pathFormated, path)) {
         return zfnull;
     }
 

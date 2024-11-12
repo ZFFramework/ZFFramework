@@ -73,7 +73,7 @@ static zfbool _ZFP_ZFPathFormat(
     }
     return zftrue;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormat
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormatT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
@@ -92,19 +92,35 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormat
         return _ZFP_ZFPathFormat(ret, src, srcEnd);
     }
 }
+ZFMETHOD_FUNC_INLINE_DEFINE_2(zfstring, ZFPathFormat
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
 
-ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormatRelativeT
         , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         ) {
-    ZFPathFormat(ret, ret, ret.length());
-    if(ret.isEmpty()) {
-        return;
+    zfindex start = ret.length();
+    if(src >= ret && src < ret + ret.length()) {
+        ZFPathFormatT(ret, src, srcLen);
+        if(ret.isEmpty()) {
+            return zftrue;
+        }
+        start = 0;
+    }
+    else {
+        ZFPathFormatT(ret, src, srcLen);
+        if(ret.isEmpty()) {
+            return zftrue;
+        }
     }
 
-    zfindex p = 0;
+    zfindex p = start;
     do {
         if(p + 2 >= ret.length()) {
-            return;
+            return zftrue;
         }
         if(!(ret[p] == '/' && ret[p + 1] == '.' && ret[p + 2] == '.')) {
             ++p;
@@ -114,31 +130,40 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative
             p += 4;
             continue;
         }
-        zfindex pL = zfstringFindReversely(ret.cString(), p, '/');
+        zfindex pL = zfstringFindReversely(ret.cString() + start, p - start, '/');
         if(pL == zfindexMax()) {
-            if(p == 3 && ret[0] == '.' && ret[1] == '.') {
-                return;
+            if(ret[start] == '.' && ret[start + 1] == '.' && ret[start + 2] == '/') { // ../..
+                p += 3;
             }
-            if(p + 3 >= ret.length()) {
-                ret.removeAll();
-                return;
+            else if(ret[p + 3] == '/') { // xx/../yy  => yy
+                ret.remove(start, p + 4 - start);
+                p = start;
             }
-            else {
-                ret.remove(0, p + 4);
+            else { // xx/..  =>
+                ret.remove(start);
+                p = start;
             }
-            p = 0;
-            continue;
-        }
-        if(p + 3 >= ret.length()) {
-            ret.remove(pL);
-            return;
         }
         else {
-            ret.remove(pL, p + 3 - pL);
+            if(p == pL + 3 && ret[pL + 1] == '.' && ret[pL + 2] == '.') { // xx/../..
+                p += 3;
+            }
+            else if(ret[p + 3] == '/') { // xx/yy/../zz  => xx/zz
+                ret.remove(pL, p + 3 - pL);
+                p = pL;
+            }
+            else { // xx/yy/.. => xx
+                ret.remove(pL);
+                p = pL;
+            }
         }
-        p = pL;
     } while(zftrue);
+    return zftrue;
 }
+ZFMETHOD_FUNC_INLINE_DEFINE_2(zfstring, ZFPathFormatRelative
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
 
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOf
         , ZFMP_OUT(zfstring &, ret)

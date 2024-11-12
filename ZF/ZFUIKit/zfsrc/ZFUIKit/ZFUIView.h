@@ -628,7 +628,7 @@ protected:
             , ZF_IN const ZFUIRect &bounds
             , ZF_IN const ZFUIMargin &nativeImplViewMargin
             ) {
-        ZFUIRectApplyMargin(ret, bounds, nativeImplViewMargin);
+        ZFUIRectApplyMarginT(ret, bounds, nativeImplViewMargin);
     }
 
     // ============================================================

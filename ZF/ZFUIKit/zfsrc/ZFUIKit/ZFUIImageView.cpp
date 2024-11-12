@@ -46,7 +46,7 @@ ZFMETHOD_DEFINE_1(ZFUIImageView, void, measureImageView
         ) {
     zfautoT<ZFUIImage> imageState = (this->image() ? this->image()->imageState() : zfnull);
     ret = (imageState ? imageState->imageSize() : ZFUISizeZero());
-    ZFUISizeApplyMarginReversely(ret, ret, this->imageMargin());
+    ZFUISizeApplyMarginReverselyT(ret, ret, this->imageMargin());
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIImageView
@@ -103,7 +103,7 @@ void ZFUIImageView::nativeImplViewOnLayout(
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUIMargin &nativeImplViewMargin
         ) {
-    ZFUIContentScaleTypeApply(
+    ZFUIContentScaleTypeApplyT(
         ret,
         this->imageScaleType(),
         ZFUIRectApplyMargin(bounds, nativeImplViewMargin),

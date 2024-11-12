@@ -164,8 +164,8 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(
 
         ZFUIRect windowFrame = ZFUIRectZero();
         ZFUIViewPositionOnScreen(windowFrame, window->ownerSysWindow()->rootView());
-        ZFUIRectApplyMargin(windowFrame, windowFrame, margin);
-        ZFUIRectApplyMargin(windowFrame, windowFrame, window->ownerSysWindow()->sysWindowMargin());
+        ZFUIRectApplyMarginT(windowFrame, windowFrame, margin);
+        ZFUIRectApplyMarginT(windowFrame, windowFrame, window->ownerSysWindow()->sysWindowMargin());
 
         ZFUIRect clientFrame = ZFUIRectZero();
         state->keyboardFixClientFrameT(clientFrame);

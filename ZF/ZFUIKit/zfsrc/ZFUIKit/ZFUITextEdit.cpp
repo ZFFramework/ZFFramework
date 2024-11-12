@@ -204,7 +204,7 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, measureTextEdit
         , ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeZero())
         ) {
     const ZFUIMargin &nativeImplViewMargin = this->nativeImplViewMargin();
-    ZFUISizeApplyScaleReversely(ret, ZFPROTOCOL_ACCESS(ZFUITextEdit)->measureNativeTextEdit(this,
+    ZFUISizeApplyScaleReverselyT(ret, ZFPROTOCOL_ACCESS(ZFUITextEdit)->measureNativeTextEdit(this,
         ZFUISizeApplyScale(ZFUILayoutParam::sizeHintOffset(sizeHint, ZFUISizeCreate(
                     0 - ZFUIMarginGetWidth(nativeImplViewMargin),
                     0 - ZFUIMarginGetHeight(nativeImplViewMargin)
@@ -224,7 +224,7 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, measureTextEdit
             ret.height = hintSize.height;
         }
     }
-    ZFUISizeApplyMarginReversely(ret, ret, nativeImplViewMargin);
+    ZFUISizeApplyMarginReverselyT(ret, ret, nativeImplViewMargin);
 }
 
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyBeginEdit(void) {

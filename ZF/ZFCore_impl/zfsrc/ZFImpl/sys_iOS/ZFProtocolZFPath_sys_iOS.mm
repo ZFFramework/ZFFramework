@@ -23,7 +23,7 @@ public:
         if(this->_pathForModuleFile.isEmpty()) {
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, [[NSBundle mainBundle] bundlePath]);
-            ZFPathFormat(this->_pathForModuleFile, tmp);
+            ZFPathFormatT(this->_pathForModuleFile, tmp);
         }
         return this->_pathForModuleFile;
     }
@@ -81,7 +81,7 @@ private:
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, (NSString *)[paths objectAtIndex:0]);
-            ZFPathFormat(_nativeDocumentPath, tmp);
+            ZFPathFormatT(_nativeDocumentPath, tmp);
         }
         return _nativeDocumentPath;
     }
@@ -91,7 +91,7 @@ private:
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, (NSString *)[paths objectAtIndex:0]);
-            ZFPathFormat(_nativeCachePath, tmp);
+            ZFPathFormatT(_nativeCachePath, tmp);
         }
         return _nativeCachePath;
     }
