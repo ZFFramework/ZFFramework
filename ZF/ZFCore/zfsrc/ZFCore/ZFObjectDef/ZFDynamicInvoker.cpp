@@ -326,6 +326,7 @@ void ZFDI_invoke(
             paramBackup.clear();
         }
     }
+    zfargs.success(zffalse);
     if(!zfargs.ignoreError()) {
         zfstring errorHintTmp;
         errorHintTmp += "no matching method to call";
@@ -451,6 +452,7 @@ void ZFDI_alloc(
         }
     }
     cls->newInstanceGenericEnd(token, zffalse);
+    zfargs.success(zffalse);
     if(!zfargs.ignoreError()) {
         zfstring errorHintTmp;
         errorHintTmp += "no matching objectOnInit to call for class \"";

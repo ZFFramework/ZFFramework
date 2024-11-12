@@ -255,9 +255,9 @@ public:
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_rule "rule"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent "parent"
+#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent "@parent"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self "self"
+#define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self "@self"
 
 // ============================================================
 // ZFUIAutoLayout
@@ -271,7 +271,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * serializable data:
  * @code
  *   <ZFUIAutoLayoutParam
- *       rule="Left:Left:parent|Top:Bottom:@SomeViewId|Width:Width:2" // optional, rules for this lp
+ *       rule="Left:Left:@parent|Top:Bottom:SomeViewId|Width:Width:@2" // optional, rules for this lp
  *       >
  *       <zffloat prop="biasX" />   // optional, 0.5 by default
  *       <zffloat prop="biasY" />   // optional, 0.5 by default
@@ -281,11 +281,11 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * rule format `<pos>:<targetPos>:<target>[:offset][|...]`:
  * -  `pos` / `targetPos` : #ZFUIAutoLayoutPos shows the rule affect which position
  * -  `target` : target of the rule, can be:
- *   -  `@viewId` while `viewId` is #ZFUIView::viewId,
+ *   -  `viewId` while `viewId` is #ZFUIView::viewId,
  *     ref to the sibling with the view id
- *   -  `parent`, ref to parent
- *   -  `self`, ref to self
- *   -  `N` while `N` is a #zfindex value :
+ *   -  `@parent`, ref to parent
+ *   -  `@self`, ref to self
+ *   -  `@N` while `N` is a #zfindex value :
  *     ref to the sibling at the index
  * -  `offset` : #zffloat shows offset to `target`
  * -  `biasX` : if both left and right rules specified and width param is wrap without fixed rule,

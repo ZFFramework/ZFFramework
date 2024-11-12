@@ -202,21 +202,20 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         zfstring target;
         ZFCoreDataDecode(target, ruleStr + itemPos[2].start, itemPos[2].count);
-        if(ruleStr[itemPos[2].start] == '@'
-                || target == ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent
-                || target == ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self
-                ) {
-            // nothing to do
-        }
-        else {
-            zfindex refIndex = zfindexMax();
-            if(!zfindexFromStringT(refIndex, target)) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
-                    , "invalid target rule \"%s\", declared in rule \"%s\""
-                    , target
-                    , ruleStr
-                    );
-                return zffalse;
+        if(ruleStr[itemPos[2].start] == '@') {
+            if(zftrue
+                    && target != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent
+                    && target != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self
+                    ) {
+                zfindex refIndex = zfindexMax();
+                if(!zfindexFromStringT(refIndex, target + 1)) {
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                            , "invalid target rule \"%s\", declared in rule \"%s\""
+                            , target
+                            , ruleStr
+                            );
+                    return zffalse;
+                }
             }
         }
 
@@ -411,22 +410,24 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
     }
     zfstring &targetId = rule._ZFP_AL_targetId;
     if(targetId[0] == '@') {
-        rule.target(parent->childFindById(targetId + 1, zfHint("findRecursively")zffalse));
-    }
-    else if(zfstringIsEqual(targetId, ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent)) {
-        rule.target(parent);
-    }
-    else if(zfstringIsEqual(targetId, ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self)) {
-        rule.target(child);
-    }
-    else {
-        zfindex childIndexRef = zfindexMax();
-        if(zfindexFromStringT(childIndexRef, targetId) && childIndexRef < parent->childCount()) {
-            rule.target(parent->childAt(childIndexRef));
+        if(targetId == ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent) {
+            rule.target(parent);
+        }
+        else if(targetId == ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self) {
+            rule.target(child);
         }
         else {
-            rule.target(zfnull);
+            zfindex childIndexRef = zfindexMax();
+            if(zfindexFromStringT(childIndexRef, targetId) && childIndexRef < parent->childCount()) {
+                rule.target(parent->childAt(childIndexRef));
+            }
+            else {
+                rule.target(zfnull);
+            }
         }
+    }
+    else {
+        rule.target(parent->childFindById(targetId, zfHint("findRecursively")zffalse));
     }
 
     if(rule.target()) {
@@ -451,8 +452,9 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
         return zftrue;
     }
     if(&targetId == &(rule._ZFP_AL_targetId)) {
-        rule._ZFP_AL_targetId.removeAll();
+        targetId.removeAll();
     }
+
     ZFUIView *target = rule.target();
     if(target == zfnull || (target != parent && rule.target()->parent() != parent)) {
         return zffalse;
@@ -464,7 +466,6 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
         targetId += ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self;
     }
     else if(!target->viewId().isEmpty()) {
-        targetId += "@";
         targetId += target->viewId();
     }
     else {
@@ -473,6 +474,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
             return zffalse;
         }
         else {
+            targetId += '@';
             zfindexToStringT(targetId, childIndexRef);
         }
     }

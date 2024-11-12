@@ -51,9 +51,23 @@ template<int N>
 zfclassNotPOD _ZFP_MP_SA { // Size Align
 public:
     enum {
-        _A = (N <= sizeof(const void *) * 4 ? sizeof(const void *) : sizeof(const void *) * 4),
+        _A = (N <= sizeof(const void *) * 4
+                ? sizeof(const void *)
+                : N <= sizeof(const void *) * 32
+                    ? sizeof(const void *) * 4
+                    : sizeof(const void *) * 32
+            ),
         V = ((N % _A) == 0 ? N : ((N / _A) + 1) * _A),
-        M = (N <= sizeof(const void *) * 4 ? 8 : N <= sizeof(const void *) * 8 ? 4 : 2),
+        M = (N <= sizeof(const void *) * 4
+                ? 8
+                : N <= sizeof(const void *) * 8
+                    ? 4
+                    : N <= sizeof(const void *) * 32
+                        ? 2
+                        : N <= sizeof(const void *) * 256
+                            ? 1
+                            : 0
+            ),
     };
 };
 template<int N>

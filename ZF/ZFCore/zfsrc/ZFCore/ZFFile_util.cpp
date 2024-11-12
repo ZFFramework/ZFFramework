@@ -96,6 +96,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormat
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative
         , ZFMP_IN_OUT(zfstring &, ret)
         ) {
+    ZFPathFormat(ret, ret, ret.length());
     if(ret.isEmpty()) {
         return;
     }
