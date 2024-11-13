@@ -96,8 +96,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, zfbool, dynamicImplementOf
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, ZFCoreArray<const ZFClass *>, childGetAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, ZFCoreArray<const ZFClass *>, parentGetAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfindex, methodCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFMethod *, methodAt
-        , ZFMP_IN(zfindex, index)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfiter, methodIter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFMethod *, methodIterValue
+        , ZFMP_IN(const zfiter &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, methodGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
@@ -133,8 +134,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, ZFCoreArray<const ZFMethod 
         , ZFMP_IN(const zfstring &, methodName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfindex, propertyCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFProperty *, propertyAt
-        , ZFMP_IN(zfindex, index)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfiter, propertyIter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFProperty *, propertyIterValue
+        , ZFMP_IN(const zfiter &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, propertyGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)

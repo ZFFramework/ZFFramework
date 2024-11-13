@@ -201,7 +201,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count) 
 
 // ============================================================
 #if _ZFP_ZFMEM_LOG
-    extern ZFLIB_ZFCore void _ZFP_ZFMEM_logNew(void *p, const char *action, const char *file, const char *func, int line);
+    extern ZFLIB_ZFCore void _ZFP_ZFMEM_logNew(void *p, const char *action, size_t size, const char *file, const char *func, int line);
     extern ZFLIB_ZFCore void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const char *func, int line);
     extern ZFLIB_ZFCore void _ZFP_ZFMEM_printStatus(int threshold = 10);
     template<typename T>
@@ -209,7 +209,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count) 
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
             _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc((void *)p, sizeof(T));
         #endif
-        _ZFP_ZFMEM_logNew((void *)p, action, file, func, line);
+        _ZFP_ZFMEM_logNew((void *)p, action, sizeof(T), file, func, line);
         return p;
     }
     template<typename T>
@@ -240,10 +240,10 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count) 
             _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(ret, size);
         #endif
         if(mallocZero) {
-            _ZFP_ZFMEM_logNew(ret, "zfmallocZero     ", file, func, line);
+            _ZFP_ZFMEM_logNew(ret, "zfmallocZero     ", (size_t)size, file, func, line);
         }
         else {
-            _ZFP_ZFMEM_logNew(ret, "zfmalloc         ", file, func, line);
+            _ZFP_ZFMEM_logNew(ret, "zfmalloc         ", (size_t)size, file, func, line);
         }
         return ret;
     }
@@ -258,7 +258,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count) 
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
             _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(ret, newSize);
         #endif
-        _ZFP_ZFMEM_logNew(ret, "zfrealloc        ", file, func, line);
+        _ZFP_ZFMEM_logNew(ret, "zfrealloc        ", (size_t)newSize, file, func, line);
         return ret;
     }
     #undef zfrealloc
@@ -269,7 +269,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count) 
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
             _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(ret, newSize);
         #endif
-        _ZFP_ZFMEM_logNew(ret, "zfreallocZero    ", file, func, line);
+        _ZFP_ZFMEM_logNew(ret, "zfreallocZero    ", (size_t)newSize, file, func, line);
         return ret;
     }
     #undef zfreallocZero

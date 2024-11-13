@@ -53,9 +53,10 @@ void allMethodT(
     ZFCoreArray<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
     for(zfindex i = 0; i < allClassParent.count(); ++i) {
         const ZFClass *cls = allClassParent.get(i);
-        for(zfindex j = 0; j < cls->methodCount(); ++j) {
-            if(filter == zfnull || filter->filterPassed(cls->methodAt(j))) {
-                ret.add(cls->methodAt(j));
+        for(zfiter it = cls->methodIter(); it; ++it) {
+            const ZFMethod *method = cls->methodIterValue(it);
+            if(filter == zfnull || filter->filterPassed(method)) {
+                ret.add(method);
             }
         }
     }
@@ -69,9 +70,10 @@ void allPropertyT(
     ZFCoreArray<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
     for(zfindex i = 0; i < allClassParent.count(); ++i) {
         const ZFClass *cls = allClassParent.get(i);
-        for(zfindex j = 0; j < cls->propertyCount(); ++j) {
-            if(filter == zfnull || filter->filterPassed(cls->propertyAt(j))) {
-                ret.add(cls->propertyAt(j));
+        for(zfiter it = cls->propertyIter(); it; ++it) {
+            const ZFProperty *property = cls->propertyIterValue(it);
+            if(filter == zfnull || filter->filterPassed(property)) {
+                ret.add(property);
             }
         }
     }

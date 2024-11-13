@@ -37,8 +37,11 @@ static const char *_ZFP_ZFMEM_file(const char *file) {
     if(*fileStart == '/' || *fileStart == '\\') {++fileStart;}
     return fileStart;
 }
-static void _ZFP_ZFMEM_hint(zfstlstring &hint, const char *action, const char *file, const char *func, int line) {
+static void _ZFP_ZFMEM_hint(zfstlstring &hint, const char *action, size_t size, const char *file, const char *func, int line) {
     hint += action;
+    char buf[32];
+    snprintf(buf, sizeof(buf), "%6u", (unsigned int)size);
+    hint += buf;
     hint += " [";
     hint += _ZFP_ZFMEM_file(file);
     hint += ' ';
@@ -61,9 +64,9 @@ static zfstlmap<void *, zfstlstring> &_ZFP_ZFMEM_d(void) {
     return d;
 }
 
-void _ZFP_ZFMEM_logNew(void *p, const char *action, const char *file, const char *func, int line) {
+void _ZFP_ZFMEM_logNew(void *p, const char *action, size_t size, const char *file, const char *func, int line) {
     zfstlstring hint;
-    _ZFP_ZFMEM_hint(hint, action, file, func, line);
+    _ZFP_ZFMEM_hint(hint, action, size, file, func, line);
     #if _ZFP_ZFMEM_LOG_VERBOSE
     _ZFP_ZFMemLog("%p %s", p, hint.c_str());
     #endif
@@ -78,7 +81,7 @@ void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const c
 
     #if _ZFP_ZFMEM_LOG_VERBOSE
     zfstlstring hint;
-    _ZFP_ZFMEM_hint(hint, action, file, func, line);
+    _ZFP_ZFMEM_hint(hint, action, 0, file, func, line);
     _ZFP_ZFMemLog("%p %s", p, hint.c_str());
     #endif
 

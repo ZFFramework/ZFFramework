@@ -317,8 +317,8 @@ private:
         this->pBasePointToChild = zfnull;
     }
     void printMethodInfo(const ZFClass *cls, const zfchar *indent = "  ") {
-        for(zfindex i = 0; i < cls->methodCount(); ++i) {
-            this->output(zfstr("%s%s", indent, cls->methodAt(i)));
+        for(zfiter it = cls->methodIter(); it; ++it) {
+            this->output(zfstr("%s%s", indent, cls->methodIterValue(it)));
         }
     }
 };

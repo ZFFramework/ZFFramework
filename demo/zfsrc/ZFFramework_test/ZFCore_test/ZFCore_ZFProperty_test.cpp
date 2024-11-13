@@ -76,11 +76,17 @@ protected:
             zfanyT<ZFLogFormat> fmt = ZFOutputFormat::getFormat(log);
             fmt->autoEndl(zffalse);
             log << "list: ";
-            for(zfindex i = 0; i < clsTmp->propertyCount(); ++i) {
-                if(i > 0) {
-                    log << ", ";
+            {
+                zfbool first = zftrue;
+                for(zfiter it = clsTmp->propertyIter(); it; ++it) {
+                    if(first) {
+                        first = zffalse;
+                    }
+                    else {
+                        log << ", ";
+                    }
+                    log << clsTmp->propertyIterValue(it)->propertyName();
                 }
-                log << clsTmp->propertyAt(i)->propertyName();
             }
             log = zfnull;
 
