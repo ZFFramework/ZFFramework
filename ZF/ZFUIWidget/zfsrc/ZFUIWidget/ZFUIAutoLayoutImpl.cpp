@@ -138,16 +138,16 @@ public:
     }
     void layoutChild(
             ZF_IN ZFUIAutoLayout *parent
-            , ZF_IN_OUT zffloat &parentWidth
-            , ZF_IN_OUT zffloat &parentHeight
+            , ZF_IN zffloat parentWidth
+            , ZF_IN zffloat parentHeight
             , ZF_IN zfindex childIndex
             , ZF_IN zfbool xAxis
             );
 private:
     void updateChildSize(
             ZF_IN ZFUIAutoLayout *parent
-            , ZF_IN_OUT zffloat &parentWidth
-            , ZF_IN_OUT zffloat &parentHeight
+            , ZF_IN zffloat parentWidth
+            , ZF_IN zffloat parentHeight
             , ZF_IN zfindex childIndex
             , ZF_IN ZFUIAutoLayoutRule &rule
             , ZF_IN zfbool xAxis
@@ -162,8 +162,8 @@ private:
             );
     void calcChildHead(
             ZF_IN ZFUIAutoLayout *parent
-            , ZF_IN_OUT zffloat &parentWidth
-            , ZF_IN_OUT zffloat &parentHeight
+            , ZF_IN zffloat parentWidth
+            , ZF_IN zffloat parentHeight
             , ZF_IN ZFUIView *child
             , ZF_IN ZFUIAutoLayoutPosEnum posHead
             , ZF_OUT zffloat &head
@@ -171,8 +171,8 @@ private:
             );
     void calcChildTail(
             ZF_IN ZFUIAutoLayout *parent
-            , ZF_IN_OUT zffloat &parentWidth
-            , ZF_IN_OUT zffloat &parentHeight
+            , ZF_IN zffloat parentWidth
+            , ZF_IN zffloat parentHeight
             , ZF_IN ZFUIView *child
             , ZF_IN ZFUIAutoLayoutPosEnum posTail
             , ZF_OUT zffloat &tail
@@ -180,8 +180,8 @@ private:
             );
     void layoutChildByChain(
             ZF_IN ZFUIAutoLayout *parent
-            , ZF_IN_OUT zffloat &parentWidth
-            , ZF_IN_OUT zffloat &parentHeight
+            , ZF_IN zffloat parentWidth
+            , ZF_IN zffloat parentHeight
             , ZF_IN const ZFCoreArray<zfindex> &chain
             , ZF_IN zfbool xAxis
             );
@@ -249,11 +249,9 @@ void ZFUIAutoLayout::layoutOnMeasure(
 }
 void ZFUIAutoLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     d->prepareLayout(this, ZFUIRectGetSize(this->viewFrame()));
-    zffloat parentWidth = bounds.width;
-    zffloat parentHeight = bounds.height;
     for(zfindex i = this->childCount() - 1; i != zfindexMax(); --i) {
-        d->layoutChild(this, parentWidth, parentHeight, i, zftrue);
-        d->layoutChild(this, parentWidth, parentHeight, i, zffalse);
+        d->layoutChild(this, bounds.width, bounds.height, i, zftrue);
+        d->layoutChild(this, bounds.width, bounds.height, i, zffalse);
     }
     for(zfindex i = this->childCount() - 1; i != zfindexMax(); --i) {
         this->childAt(i)->viewFrame(d->_childFrame(i));
@@ -263,8 +261,8 @@ void ZFUIAutoLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 // ============================================================
 void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
         ZF_IN ZFUIAutoLayout *parent
-        , ZF_IN_OUT zffloat &parentWidth
-        , ZF_IN_OUT zffloat &parentHeight
+        , ZF_IN zffloat parentWidth
+        , ZF_IN zffloat parentHeight
         , ZF_IN zfindex childIndex
         , ZF_IN zfbool xAxis
         ) {
@@ -297,15 +295,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
         zffloat tail = 0;
         this->calcChildHead(parent, parentWidth, parentHeight, child, posHead, head, xAxis);
         this->calcChildTail(parent, parentWidth, parentHeight, child, posTail, tail, xAxis);
-        this->layoutChildByRange(
-                ruleList[posHead]
-                , ruleList[posTail]
-                , layoutParam
-                , childIndex
-                , head
-                , tail - head
-                , xAxis
-                );
+        this->layoutChildByRange(ruleList[posHead], ruleList[posTail], layoutParam, childIndex, head, tail - head, xAxis);
     }
 
     _layouting = zffalse;
@@ -314,8 +304,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
 
 void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
         ZF_IN ZFUIAutoLayout *parent
-        , ZF_IN_OUT zffloat &parentWidth
-        , ZF_IN_OUT zffloat &parentHeight
+        , ZF_IN zffloat parentWidth
+        , ZF_IN zffloat parentHeight
         , ZF_IN zfindex childIndex
         , ZF_IN ZFUIAutoLayoutRule &rule
         , ZF_IN zfbool xAxis
@@ -430,8 +420,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
 
 void _ZFP_ZFUIAutoLayoutPrivate::calcChildHead(
         ZF_IN ZFUIAutoLayout *parent
-        , ZF_IN_OUT zffloat &parentWidth
-        , ZF_IN_OUT zffloat &parentHeight
+        , ZF_IN zffloat parentWidth
+        , ZF_IN zffloat parentHeight
         , ZF_IN ZFUIView *child
         , ZF_IN ZFUIAutoLayoutPosEnum posHead
         , ZF_OUT zffloat &head
@@ -456,8 +446,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::calcChildHead(
 }
 void _ZFP_ZFUIAutoLayoutPrivate::calcChildTail(
         ZF_IN ZFUIAutoLayout *parent
-        , ZF_IN_OUT zffloat &parentWidth
-        , ZF_IN_OUT zffloat &parentHeight
+        , ZF_IN zffloat parentWidth
+        , ZF_IN zffloat parentHeight
         , ZF_IN ZFUIView *child
         , ZF_IN ZFUIAutoLayoutPosEnum posTail
         , ZF_OUT zffloat &tail
@@ -483,8 +473,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::calcChildTail(
 
 void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
         ZF_IN ZFUIAutoLayout *parent
-        , ZF_IN_OUT zffloat &parentWidth
-        , ZF_IN_OUT zffloat &parentHeight
+        , ZF_IN zffloat parentWidth
+        , ZF_IN zffloat parentHeight
         , ZF_IN const ZFCoreArray<zfindex> &chain
         , ZF_IN zfbool xAxis
         ) {
@@ -492,14 +482,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
     ZFUIAutoLayoutPosEnum posTail = xAxis ? ZFUIAutoLayoutPos::e_Right : ZFUIAutoLayoutPos::e_Bottom;
     zffloat head = 0;
     zffloat tail = 0;
-    this->calcChildHead(parent, parentWidth, parentHeight
-            , parent->childAt(chain.getFirst())
-            , posHead, head, xAxis
-            );
-    this->calcChildTail(parent, parentWidth, parentHeight
-            , parent->childAt(chain.getLast())
-            , posTail, tail, xAxis
-            );
+    this->calcChildHead(parent, parentWidth, parentHeight, parent->childAt(chain.getFirst()), posHead, head, xAxis);
+    this->calcChildTail(parent, parentWidth, parentHeight, parent->childAt(chain.getLast()), posTail, tail, xAxis);
 
     zffloat fixedSize = 0;
     zffloat *childSizeCache = (zffloat *)zfmalloc(sizeof(zffloat) * parent->childCount());
@@ -526,15 +510,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
         ZFUIAutoLayoutRule *ruleList = layoutParam->_ZFP_AL_d.ruleList;
         childSizeCache[childIndex] += flexibleUnit;
         tailTmp -= childSizeCache[childIndex];
-        this->layoutChildByRange(
-                ruleList[posHead]
-                , ruleList[posTail]
-                , layoutParam
-                , childIndex
-                , tailTmp
-                , childSizeCache[childIndex]
-                , xAxis
-                );
+        this->layoutChildByRange(ruleList[posHead], ruleList[posTail], layoutParam, childIndex, tailTmp, childSizeCache[childIndex], xAxis);
     }
 }
 
