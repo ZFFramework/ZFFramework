@@ -283,6 +283,22 @@ public:
             , ZFMP_IN(zffloat, right)
             , ZFMP_IN(zffloat, bottom)
             )
+    /** @brief util to set #margin */
+    ZFMETHOD_DECLARE_1(void, marginLeft
+            , ZFMP_IN(zffloat, left)
+            )
+    /** @brief util to set #margin */
+    ZFMETHOD_DECLARE_1(void, marginTop
+            , ZFMP_IN(zffloat, top)
+            )
+    /** @brief util to set #margin */
+    ZFMETHOD_DECLARE_1(void, marginRight
+            , ZFMP_IN(zffloat, right)
+            )
+    /** @brief util to set #margin */
+    ZFMETHOD_DECLARE_1(void, marginBottom
+            , ZFMP_IN(zffloat, bottom)
+            )
 
 public:
     // ============================================================

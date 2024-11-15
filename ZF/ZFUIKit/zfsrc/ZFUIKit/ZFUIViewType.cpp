@@ -235,6 +235,30 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, margin
         ) {
     this->margin(ZFUIMarginCreate(left, top, right, bottom));
 }
+ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, marginLeft
+        , ZFMP_IN(zffloat, left)
+        ) {
+    const ZFUIMargin &margin = this->margin();
+    this->margin(ZFUIMarginCreate(left, margin.top, margin.right, margin.bottom));
+}
+ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, marginTop
+        , ZFMP_IN(zffloat, top)
+        ) {
+    const ZFUIMargin &margin = this->margin();
+    this->margin(ZFUIMarginCreate(margin.left, top, margin.right, margin.bottom));
+}
+ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, marginRight
+        , ZFMP_IN(zffloat, right)
+        ) {
+    const ZFUIMargin &margin = this->margin();
+    this->margin(ZFUIMarginCreate(margin.left, margin.top, right, margin.bottom));
+}
+ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, marginBottom
+        , ZFMP_IN(zffloat, bottom)
+        ) {
+    const ZFUIMargin &margin = this->margin();
+    this->margin(ZFUIMarginCreate(margin.left, margin.top, margin.right, bottom));
+}
 
 // ============================================================
 ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, layoutParamApplyT

@@ -38,8 +38,6 @@ public:
     ZFCORE_PARAM_WEAK(zfanyT<ZFUIView>, target)
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
-    /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(zffloat, offset)
 
 public:
     /** @brief true if contains valid rule */
@@ -50,7 +48,6 @@ public:
     void removeAll(void) {
         this->target(zfnull);
         this->targetPos(ZFUIAutoLayoutPos::e_None);
-        this->offset(0);
         this->_ZFP_AL_targetId.removeAll();
     }
 
@@ -70,7 +67,6 @@ public:
         return (zftrue
                 && this->target() == ref.target()
                 && this->targetPos() == ref.targetPos()
-                && this->offset() == ref.offset()
             );
     }
     inline zfbool operator != (ZF_IN const ZFUIAutoLayoutRule &ref) const {
@@ -97,7 +93,6 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ASSIGN(zffloat, biasY, 0.5f)
 
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, align)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, margin)
 
     // ============================================================
     // rule state
@@ -203,11 +198,6 @@ public:
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, toParent)
 
-    /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, offset
-            , ZFMP_IN(zffloat, offset)
-            )
-
 protected:
     zfoverride
     virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);
@@ -278,7 +268,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   </ZFUIAutoLayoutParam>
  * @endcode
  *
- * rule format `<pos>:<targetPos>:<target>[:offset][|...]`:
+ * rule format `<pos>:<targetPos>:<target>[|...]`:
  * -  `pos` / `targetPos` : #ZFUIAutoLayoutPos shows the rule affect which position
  * -  `target` : target of the rule, can be:
  *   -  `viewId` while `viewId` is #ZFUIView::viewId,
@@ -287,7 +277,6 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   -  `@self`, ref to self
  *   -  `@N` while `N` is a #zfindex value :
  *     ref to the sibling at the index
- * -  `offset` : #zffloat shows offset to `target`
  * -  `biasX` : if both left and right rules specified and width param is wrap without fixed rule,
  *   align to which side, `0` means totally align to left,
  *   while `1` means align to right
@@ -328,8 +317,6 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   @endcode
  * -  toParent() :
  *   util to to(target) with parent
- * -  offset(offset) :
- *   specify the #ZFUIAutoLayoutRule::offset
  */
 zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIAutoLayout, ZFUIView)
