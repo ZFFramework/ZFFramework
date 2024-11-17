@@ -1,26 +1,26 @@
 /**
- * @file ZFUIListCell.h
- * @brief abstract list cell to hold list content views
+ * @file ZFUICell.h
+ * @brief abstract cell to hold content views
  */
 
-#ifndef _ZFI_ZFUIListCell_h_
-#define _ZFI_ZFUIListCell_h_
+#ifndef _ZFI_ZFUICell_h_
+#define _ZFI_ZFUICell_h_
 
 #include "ZFUIWidgetDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFUIListCell
+// ZFUICell
 /**
- * @brief utility class to hold list cell
+ * @brief utility class to hold cell
  *
  * a #ZFUIListView won't supply separators or margins or border radius directly,
- * it's achieved by a wrapper view, which is this #ZFUIListCell\n
- * typically, the extra features are implemented by utility methods described in #ZFUIListCellUpdater
+ * it's achieved by a wrapper view, which is this #ZFUICell\n
+ * typically, the extra features are implemented by utility methods described in #ZFUICellUpdater
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextend ZFUIView {
-    ZFOBJECT_DECLARE(ZFUIListCell, ZFUIView)
-    ZFSTYLE_DEFAULT_DECLARE(ZFUIListCell)
+zfclass ZFLIB_ZFUIWidget ZFUICell : zfextend ZFUIView {
+    ZFOBJECT_DECLARE(ZFUICell, ZFUIView)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUICell)
 
     /**
      * @brief the content view
@@ -31,7 +31,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextend ZFUIView {
 
     /**
      * @brief content view's layout param,
-     *   usually would be updated by #ZFUIListCellUpdater
+     *   usually would be updated by #ZFUICellUpdater
      *   to achieve additional features,
      *   fill parent and align center by default
      */
@@ -48,5 +48,5 @@ protected:
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFUIListCell_h_
+#endif // #ifndef _ZFI_ZFUICell_h_
 

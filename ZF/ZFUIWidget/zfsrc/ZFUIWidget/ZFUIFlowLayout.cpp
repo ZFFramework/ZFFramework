@@ -30,8 +30,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayout, zfanyT<ZFUIFlowLayout
 // ZFUIFlowLayout
 ZFOBJECT_REGISTER(ZFUIFlowLayout)
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIOrientationEnum, orientationMain) {
-    if(this->orientationMain() != propertyValueOld) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIOrientationEnum, orientation) {
+    if(this->orientation() != propertyValueOld) {
         this->layoutRequest();
     }
 }
@@ -73,7 +73,7 @@ void ZFUIFlowLayout::layoutOnMeasure(
         , ZF_IN const ZFUISize &sizeHint
         , ZF_IN const ZFUISizeParam &sizeParam
         ) {
-    switch(this->orientationMain()) {
+    switch(this->orientation()) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
             ret = _ZFP_ZFUIFlowLayout_measureHorizontal(this, sizeHint, sizeParam.height);
@@ -97,7 +97,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
         , ZF_IN const ZFUISize &size
         );
 void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
-    switch(this->orientationMain()) {
+    switch(this->orientation()) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
             _ZFP_ZFUIFlowLayout_layoutHorizontal(this, ZFUIRectGetSize(bounds));
@@ -115,7 +115,7 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 // ============================================================
 // util
 ZFUIOrientationEnum _ZFP_ZFUIFlowLayout_orientationSecondary(ZF_IN ZFUIFlowLayout *parent) {
-    switch(parent->orientationMain()) {
+    switch(parent->orientation()) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
             switch(parent->orientationSecondary()) {
@@ -305,7 +305,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
         , ZF_IN const ZFUISize &size
         ) {
     zffloat parentMarginX = ZFUIMarginGetWidth(parent->childMargin());
-    zfbool positiveDirectionX = (parent->orientationMain() == ZFUIOrientation::e_Left);
+    zfbool positiveDirectionX = (parent->orientation() == ZFUIOrientation::e_Left);
     zfbool positiveDirectionY = (_ZFP_ZFUIFlowLayout_orientationSecondary(parent) == ZFUIOrientation::e_Top);
     zffloat lineSizeUsed = (positiveDirectionY ? parent->childMargin().top : parent->childMargin().bottom);
     zffloat lineTailMargin = (positiveDirectionY ? parent->childMargin().bottom : parent->childMargin().top);
@@ -358,7 +358,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
         ) {
     zffloat parentMarginY = ZFUIMarginGetHeight(parent->childMargin());
     zfbool positiveDirectionX = (_ZFP_ZFUIFlowLayout_orientationSecondary(parent) == ZFUIOrientation::e_Left);
-    zfbool positiveDirectionY = (parent->orientationMain() == ZFUIOrientation::e_Top);
+    zfbool positiveDirectionY = (parent->orientation() == ZFUIOrientation::e_Top);
     zffloat lineSizeUsed = (positiveDirectionX ? parent->childMargin().left : parent->childMargin().right);
     zffloat lineTailMargin = (positiveDirectionX ? parent->childMargin().right : parent->childMargin().left);
     zfindex childIndex = 0;

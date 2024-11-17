@@ -2,9 +2,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIListView_test_ListAdapter : zfextend ZFObject, zfimplement ZFUIListAdapter {
-    ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test_ListAdapter, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFUIListAdapter)
+zfclass ZFUIWidget_ZFUIListView_test_CellAdapter : zfextend ZFObject, zfimplement ZFUICellAdapter {
+    ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test_CellAdapter, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFUICellAdapter)
 
 public:
     virtual zfindex cellCount(void) {
@@ -12,26 +12,26 @@ public:
     }
     virtual zffloat cellSizeAt(
             ZF_IN zfindex index
-            , ZF_IN ZFUIListCell *cell
+            , ZF_IN ZFUICell *cell
             ) {
         #if 1
             return this->cellSizeHint() + zfmRand(100);
         #else
-            return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
+            return zfsuperI(ZFUICellAdapter)::cellSizeAt(index, cell);
         #endif
     }
-    virtual zfautoT<ZFUIListCell> cellAt(ZF_IN zfindex index) {
-        zfobj<ZFUIListCell> ret;
-        ret->cellView(zfobj<ZFUIListCellViewBasic>());
+    virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
+        zfobj<ZFUICell> ret;
+        ret->cellView(zfobj<ZFUICellViewBasic>());
         return ret;
     }
     virtual inline void cellOnUpdate(
             ZF_IN zfindex atIndex
-            , ZF_IN ZFUIListCell *cell
+            , ZF_IN ZFUICell *cell
             ) {
-        zfsuperI(ZFUIListAdapter)::cellOnUpdate(atIndex, cell);
+        zfsuperI(ZFUICellAdapter)::cellOnUpdate(atIndex, cell);
 
-        ZFUIListCellViewBasic *tmp = cell->cellView();
+        ZFUICellViewBasic *tmp = cell->cellView();
         tmp->cellLabelMain()->text(zfstr("main %s", atIndex));
         if(zfmRand(3) == 0) {
             tmp->cellLabelSub()->text(zfstr("sub %s", atIndex));
@@ -46,7 +46,7 @@ public:
         virtual inline zfauto cellCacheOnAccess(ZF_IN zfindex index) {
             return this->cellCacheDefaultAccess(zfnull);
         }
-        virtual inline void cellCacheOnRecycle(ZF_IN ZFUIListCell *cell) {
+        virtual inline void cellCacheOnRecycle(ZF_IN ZFUICell *cell) {
             this->cellCacheDefaultRecycle(zfnull, cell);
         }
     #endif
@@ -55,7 +55,7 @@ public:
 zfclass ZFUIWidget_ZFUIListView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test, ZFFramework_test_TestCase)
 
-    ZFPROPERTY_RETAIN(zfanyT<ZFUIListAdapter>, listAdapter, zfobj<ZFUIWidget_ZFUIListView_test_ListAdapter>())
+    ZFPROPERTY_RETAIN(zfanyT<ZFUICellAdapter>, cellAdapter, zfobj<ZFUIWidget_ZFUIListView_test_CellAdapter>())
 
 protected:
     zfoverride
@@ -71,9 +71,9 @@ protected:
         zfobj<ZFUIListView> listView;
         container->child(listView)->c_sizeFill()->c_margin(40);
         listView->bgColor(ZFUIColorRed());
-        listView->listAdapter(this->listAdapter());
+        listView->cellAdapter(this->cellAdapter());
         {
-            zfobj<ZFUIListCellUpdaterBasic> cellUpdater;
+            zfobj<ZFUIListViewCellUpdater> cellUpdater;
             listView->cellUpdater()->add(cellUpdater);
             cellUpdater->separatorSize(5);
             cellUpdater->separatorColor(ZFUIColorRed());
@@ -135,7 +135,7 @@ private:
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
                 ));
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->listAdapter(), zffloat, ZFPropertyAccess(ZFUIListAdapter, cellSizeHint), ZFCoreArrayCreate(zffloat, 56, 100, 44));
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->cellAdapter(), zffloat, ZFPropertyAccess(ZFUICellAdapter, cellSizeHint), ZFCoreArrayCreate(zffloat, 56, 100, 44));
 
 #define _ZFP_ZFUIWidget_ZFUIListView_test_autoScrollSpeed 100
         { // auto scroll x
@@ -192,7 +192,7 @@ private:
                     , ZFUIListView *, listView
                     ) {
                 zfbool toHead = (zfmRand(2) == 0);
-                zfindex toIndex = zfmRand(listView->listAdapter()->cellCount());
+                zfindex toIndex = zfmRand(listView->cellAdapter()->cellCount());
                 zffloat toOffset = (ZFUIOrientationIsHorizontal(listView->orientation())
                     ? zfmRand((zfint)listView->viewFrame().width)
                     : zfmRand((zfint)listView->viewFrame().height));

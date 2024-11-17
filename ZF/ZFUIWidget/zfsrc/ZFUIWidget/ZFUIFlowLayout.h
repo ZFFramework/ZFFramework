@@ -71,16 +71,16 @@ public:
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientationMain, ZFUIOrientation::e_Left)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientationMain)
+    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientation, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientation)
     /**
      * @brief secondary direction to layout children, #ZFUIOrientation::e_Top by default
      *
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
-     * @note this direction must differs from #orientationMain,
+     * @note this direction must differs from #orientation,
      *   otherwise, default value would be used\n
-     *   for example, if both #orientationMain and #orientationSecondary are x direction,
+     *   for example, if both #orientation and #orientationSecondary are x direction,
      *   then #orientationSecondary would be treated as #ZFUIOrientation::e_Top,
      *   and if they are both y direction, then #orientationSecondary would be
      *   treated as #ZFUIOrientation::e_Left

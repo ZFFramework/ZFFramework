@@ -1,23 +1,23 @@
 /**
- * @file ZFUIListCellViewBasic.h
- * @brief basic list cell view with icon and label
+ * @file ZFUICellViewBasic.h
+ * @brief basic cell view with icon and label
  */
 
-#ifndef _ZFI_ZFUIListCellViewBasic_h_
-#define _ZFI_ZFUIListCellViewBasic_h_
+#ifndef _ZFI_ZFUICellViewBasic_h_
+#define _ZFI_ZFUICellViewBasic_h_
 
-#include "ZFUIListCellView.h"
+#include "ZFUICellView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFUIListCellViewBasic
-zfclassFwd _ZFP_ZFUIListCellViewBasicPrivate;
+// ZFUICellViewBasic
+zfclassFwd _ZFP_ZFUICellViewBasicPrivate;
 /**
- * @brief basic list cell view with icon and label
+ * @brief basic cell view with icon and label
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListCellViewBasic : zfextend ZFUIListCellView {
-    ZFOBJECT_DECLARE(ZFUIListCellViewBasic, ZFUIListCellView)
-    ZFSTYLE_DEFAULT_DECLARE(ZFUIListCellViewBasic)
+zfclass ZFLIB_ZFUIWidget ZFUICellViewBasic : zfextend ZFUICellView {
+    ZFOBJECT_DECLARE(ZFUICellViewBasic, ZFUICellView)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUICellViewBasic)
 
 public:
     // ============================================================
@@ -75,9 +75,9 @@ protected:
     virtual void objectOnDealloc(void);
 
 private:
-    _ZFP_ZFUIListCellViewBasicPrivate *d;
+    _ZFP_ZFUICellViewBasicPrivate *d;
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFUIListCellViewBasic_h_
+#endif // #ifndef _ZFI_ZFUICellViewBasic_h_
 

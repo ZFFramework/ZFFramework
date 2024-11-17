@@ -1,17 +1,17 @@
-#include "ZFUIListCellUpdaterBasic.h"
+#include "ZFUIListViewCellUpdater.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFOBJECT_REGISTER(ZFUIListCellUpdaterBasic)
+ZFOBJECT_REGISTER(ZFUIListViewCellUpdater)
 
-#define _ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator "_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator"
-#define _ZFP_ZFUIListCellUpdaterBasic_tag_separator "_ZFP_ZFUIListCellUpdaterBasic_tag_separator"
-#define _ZFP_ZFUIListCellUpdaterBasic_tag_separator_head "_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head"
-static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
-        ZF_IN ZFUIListCellUpdaterBasic *owner
-        , ZF_IN const ZFUIListCellUpdaterParam &updateParam
+#define _ZFP_ZFUIListViewCellUpdater_cacheKey_separator "_ZFP_ZFUIListViewCellUpdater_cacheKey_separator"
+#define _ZFP_ZFUIListViewCellUpdater_tag_separator "_ZFP_ZFUIListViewCellUpdater_tag_separator"
+#define _ZFP_ZFUIListViewCellUpdater_tag_separator_head "_ZFP_ZFUIListViewCellUpdater_tag_separator_head"
+static ZFUIView *_ZFP_ZFUIListViewCellUpdater_setupSeparator(
+        ZF_IN ZFUIListViewCellUpdater *owner
+        , ZF_IN const ZFUICellUpdaterParam &updateParam
         ) {
-    zfauto separatorViewHolder = owner->itemCacheAccess(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator);
+    zfauto separatorViewHolder = owner->itemCacheAccess(_ZFP_ZFUIListViewCellUpdater_cacheKey_separator);
     ZFUIView *separatorView = separatorViewHolder;
     if(separatorView == zfnull) {
         separatorView = zfAlloc(ZFUIView);
@@ -44,13 +44,13 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
     }
     return separatorView;
 }
-void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam &updateParam) {
-    zfsuperI(ZFUIListCellUpdater)::cellOnUpdate(updateParam);
+void ZFUIListViewCellUpdater::cellOnUpdate(ZF_IN const ZFUICellUpdaterParam &updateParam) {
+    zfsuperI(ZFUICellUpdater)::cellOnUpdate(updateParam);
 
     if(updateParam.cellIndex == 0) { // first cell
         if(this->separatorIncludingHead()) {
-            ZFUIView *separatorView = _ZFP_ZFUIListCellUpdaterBasic_setupSeparator(this, updateParam);
-            updateParam.cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head, separatorView);
+            ZFUIView *separatorView = _ZFP_ZFUIListViewCellUpdater_setupSeparator(this, updateParam);
+            updateParam.cell->objectTag(_ZFP_ZFUIListViewCellUpdater_tag_separator_head, separatorView);
             switch(updateParam.orientation) {
                 case ZFUIOrientation::e_Left:
                     separatorView->layoutParam()->align(ZFUIAlign::e_Left);
@@ -76,8 +76,8 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
         }
     }
 
-    ZFUIView *separatorView = _ZFP_ZFUIListCellUpdaterBasic_setupSeparator(this, updateParam);
-    updateParam.cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator, separatorView);
+    ZFUIView *separatorView = _ZFP_ZFUIListViewCellUpdater_setupSeparator(this, updateParam);
+    updateParam.cell->objectTag(_ZFP_ZFUIListViewCellUpdater_tag_separator, separatorView);
     switch(updateParam.orientation) {
         case ZFUIOrientation::e_Left:
             separatorView->layoutParam()->align(ZFUIAlign::e_Right);
@@ -96,20 +96,20 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
             return;
     }
 }
-void ZFUIListCellUpdaterBasic::cellOnRecycle(ZF_IN ZFUIListCell *cell) {
-    zfsuperI(ZFUIListCellUpdater)::cellOnRecycle(cell);
+void ZFUIListViewCellUpdater::cellOnRecycle(ZF_IN ZFUICell *cell) {
+    zfsuperI(ZFUICellUpdater)::cellOnRecycle(cell);
 
-    ZFUIView *separatorHead = cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head);
+    ZFUIView *separatorHead = cell->objectTag(_ZFP_ZFUIListViewCellUpdater_tag_separator_head);
     if(separatorHead != zfnull) {
-        this->itemCacheRecycle(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator, separatorHead);
+        this->itemCacheRecycle(_ZFP_ZFUIListViewCellUpdater_cacheKey_separator, separatorHead);
         cell->internalFgViewRemove(separatorHead);
-        cell->objectTagRemove(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head);
+        cell->objectTagRemove(_ZFP_ZFUIListViewCellUpdater_tag_separator_head);
     }
-    ZFUIView *separatorTail = cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator);
+    ZFUIView *separatorTail = cell->objectTag(_ZFP_ZFUIListViewCellUpdater_tag_separator);
     if(separatorTail != zfnull) {
-        this->itemCacheRecycle(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator, separatorTail);
+        this->itemCacheRecycle(_ZFP_ZFUIListViewCellUpdater_cacheKey_separator, separatorTail);
         cell->internalFgViewRemove(separatorTail);
-        cell->objectTagRemove(_ZFP_ZFUIListCellUpdaterBasic_tag_separator);
+        cell->objectTagRemove(_ZFP_ZFUIListViewCellUpdater_tag_separator);
     }
 }
 

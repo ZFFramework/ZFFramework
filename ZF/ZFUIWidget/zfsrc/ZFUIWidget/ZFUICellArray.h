@@ -1,32 +1,32 @@
 /**
- * @file ZFUIListAdapterArray.h
- * @brief basic list adapter which hold all list cells directly (with no recycle logic)
+ * @file ZFUICellArray.h
+ * @brief basic cell adapter which hold all cells directly (with no recycle logic)
  */
 
-#ifndef _ZFI_ZFUIListAdapterArray_h_
-#define _ZFI_ZFUIListAdapterArray_h_
+#ifndef _ZFI_ZFUICellArray_h_
+#define _ZFI_ZFUICellArray_h_
 
-#include "ZFUIListAdapter.h"
+#include "ZFUICellAdapter.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIListAdapterArray_cell "ZFSerializableKeyword_ZFUIListAdapterArray_cell"
+#define ZFSerializableKeyword_ZFUICellArray_cell "ZFSerializableKeyword_ZFUICellArray_cell"
 
 /**
- * @brief basic list adapter which hold all list cells directly (with no recycle logic)
+ * @brief basic cell adapter which hold all cells directly (with no recycle logic)
  *
  * serializable data:
  * @code
- *   <ZFUIListAdapterArray>
+ *   <ZFUICellArray>
  *       <SomeView category="cell" />
  *       ... // each cell
- *   </ZFUIListAdapterArray>
+ *   </ZFUICellArray>
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListAdapterArray : zfextend ZFStyleableObject, zfimplement ZFUIListAdapter {
-    ZFOBJECT_DECLARE(ZFUIListAdapterArray, ZFStyleableObject)
-    ZFIMPLEMENT_DECLARE(ZFUIListAdapter)
+zfclass ZFLIB_ZFUIWidget ZFUICellArray : zfextend ZFStyleableObject, zfimplement ZFUICellAdapter {
+    ZFOBJECT_DECLARE(ZFUICellArray, ZFStyleableObject)
+    ZFIMPLEMENT_DECLARE(ZFUICellAdapter)
 
 protected:
     zfoverride
@@ -57,7 +57,7 @@ public:
      * @brief add cell
      */
     ZFMETHOD_INLINE_1(void, cell
-            , ZFMP_IN(ZFUIListCell *, cell)
+            , ZFMP_IN(ZFUICell *, cell)
             ) {
         d->add(cell);
     }
@@ -65,7 +65,7 @@ public:
      * @brief add cell at index
      */
     ZFMETHOD_INLINE_2(void, cell
-            , ZFMP_IN(ZFUIListCell *, cell)
+            , ZFMP_IN(ZFUICell *, cell)
             , ZFMP_IN(zfindex, index)
             ) {
         d->add(cell, index);
@@ -83,7 +83,7 @@ public:
      * @brief remove cell
      */
     ZFMETHOD_INLINE_1(void, cellRemoveElement
-            , ZFMP_IN(ZFUIListCell *, cell)
+            , ZFMP_IN(ZFUICell *, cell)
             ) {
         d->removeElement(cell);
     }
@@ -100,7 +100,7 @@ public:
         return d->count();
     }
     zfoverride
-    virtual zfautoT<ZFUIListCell> cellAt(ZF_IN zfindex index) {
+    virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
         return d->get(index);
     }
 
@@ -129,5 +129,5 @@ private:
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFUIListAdapterArray_h_
+#endif // #ifndef _ZFI_ZFUICellArray_h_
 

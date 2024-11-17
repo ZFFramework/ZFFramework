@@ -1,38 +1,38 @@
-#include "ZFUIListAdapter.h"
+#include "ZFUICellAdapter.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFUIListAdapter)
+ZFOBJECT_REGISTER(ZFUICellAdapter)
 
-ZFEVENT_REGISTER(ZFUIListAdapter, ListAdapterOnReload)
-ZFEVENT_REGISTER(ZFUIListAdapter, ListCellOnUpdate)
-ZFEVENT_REGISTER(ZFUIListAdapter, ListCellCacheOnRecycle)
+ZFEVENT_REGISTER(ZFUICellAdapter, CellAdapterOnReload)
+ZFEVENT_REGISTER(ZFUICellAdapter, CellOnUpdate)
+ZFEVENT_REGISTER(ZFUICellAdapter, CellCacheOnRecycle)
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFUIListAdapter, ZFUIOrientationEnum, orientation) {
-    return this->_ZFP_ZFUIListAdapter_orientation;
+ZFMETHOD_DEFINE_0(ZFUICellAdapter, ZFUIOrientationEnum, orientation) {
+    return this->_ZFP_ZFUICellAdapter_orientation;
 }
-ZFMETHOD_DEFINE_0(ZFUIListAdapter, const ZFUISize &, containerSize) {
-    return this->_ZFP_ZFUIListAdapter_containerSize;
-}
-
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListAdapter, zffloat, cellSizeHint) {
-    this->listAdapterNotifyReload();
-}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListAdapter, zfbool, cellSizeFill) {
-    this->listAdapterNotifyReload();
+ZFMETHOD_DEFINE_0(ZFUICellAdapter, const ZFUISize &, containerSize) {
+    return this->_ZFP_ZFUICellAdapter_containerSize;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIListAdapter, void, listAdapterNotifyReload
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUICellAdapter, zffloat, cellSizeHint) {
+    this->cellAdapterNotifyReload();
+}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUICellAdapter, zfbool, cellSizeFill) {
+    this->cellAdapterNotifyReload();
+}
+
+ZFMETHOD_DEFINE_1(ZFUICellAdapter, void, cellAdapterNotifyReload
         , ZFMP_IN_OPT(zfindex, atIndexOrMax, zfindexMax())
         ) {
-    this->listAdapterOnReload(atIndexOrMax);
+    this->cellAdapterOnReload(atIndexOrMax);
 }
 
-ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
+ZFMETHOD_DEFINE_2(ZFUICellAdapter, zffloat, cellSizeAt
         , ZFMP_IN(zfindex, index)
-        , ZFMP_IN(ZFUIListCell *, cell)
+        , ZFMP_IN(ZFUICell *, cell)
         ) {
     if(this->cellSizeFill()) {
         switch(this->orientation()) {
@@ -53,15 +53,15 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
 }
 
 // ============================================================
-#define _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key) \
-    zfstring cacheKey = zfstr("_ZFP_ZFUIListAdapter_cacheKey_%s", key)
-ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellCacheDefaultAccess
+#define _ZFP_ZFUICellAdapter_cacheKey(cacheKey, key) \
+    zfstring cacheKey = zfstr("_ZFP_ZFUICellAdapter_cacheKey_%s", key)
+ZFMETHOD_DEFINE_1(ZFUICellAdapter, zfautoT<ZFUICell>, cellCacheDefaultAccess
         , ZFMP_IN(const zfstring &, key)
         ) {
-    _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key);
+    _ZFP_ZFUICellAdapter_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty()) {
-        zfautoT<ZFUIListCell> ret = cacheList->getLast();
+        zfautoT<ZFUICell> ret = cacheList->getLast();
         cacheList->removeLast();
         return ret;
     }
@@ -69,11 +69,11 @@ ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellCacheDefaultAccess
         return zfnull;
     }
 }
-ZFMETHOD_DEFINE_2(ZFUIListAdapter, void, cellCacheDefaultRecycle
+ZFMETHOD_DEFINE_2(ZFUICellAdapter, void, cellCacheDefaultRecycle
         , ZFMP_IN(const zfstring &, key)
-        , ZFMP_IN(ZFUIListCell *, cell)
+        , ZFMP_IN(ZFUICell *, cell)
         ) {
-    _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key);
+    _ZFP_ZFUICellAdapter_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList == zfnull) {
         cacheList = zfAlloc(ZFArray);
@@ -84,8 +84,8 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, void, cellCacheDefaultRecycle
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIListAdapter, zfindex, cellCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellAt
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUICellAdapter, zfindex, cellCount)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUICellAdapter, zfautoT<ZFUICell>, cellAt
         , ZFMP_IN(zfindex, index)
         )
 

@@ -70,7 +70,7 @@ public:
     /**
      * @brief list cell size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, itemSizeListCell, 48)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeCell, 48)
     /**
      * @brief dialog item size hint
      */

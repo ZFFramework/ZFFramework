@@ -1,21 +1,21 @@
 /**
- * @file ZFUIListCellView.h
- * @brief abstract list content view
+ * @file ZFUICellView.h
+ * @brief abstract cell content view
  */
 
-#ifndef _ZFI_ZFUIListCellView_h_
-#define _ZFI_ZFUIListCellView_h_
+#ifndef _ZFI_ZFUICellView_h_
+#define _ZFI_ZFUICellView_h_
 
 #include "ZFUIWidgetDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFUIListCellView
+// ZFUICellView
 /**
- * @brief abstract list content view
+ * @brief abstract cell content view
  */
-zfabstract ZFLIB_ZFUIWidget ZFUIListCellView : zfextend ZFUIView {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFUIListCellView, ZFUIView)
+zfabstract ZFLIB_ZFUIWidget ZFUICellView : zfextend ZFUIView {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFUICellView, ZFUIView)
 
 public:
     /**
@@ -49,5 +49,5 @@ protected:
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFUIListCellView_h_
+#endif // #ifndef _ZFI_ZFUICellView_h_
 

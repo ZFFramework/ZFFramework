@@ -1,10 +1,10 @@
-#include "ZFUIListAdapterArray.h"
+#include "ZFUICellArray.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFOBJECT_REGISTER(ZFUIListAdapterArray)
+ZFOBJECT_REGISTER(ZFUICellArray)
 
-zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
+zfbool ZFUICellArray::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
@@ -17,7 +17,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         zfstring category = ZFSerializableUtil::checkCategory(categoryData);
-        if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
+        if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUICellArray_cell)) {continue;}
 
         zfauto element;
         if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
@@ -28,10 +28,10 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
                 "null cell");
             return zffalse;
         }
-        if(!element->classData()->classIsTypeOf(ZFUIListCell::ClassData())) {
+        if(!element->classData()->classIsTypeOf(ZFUICell::ClassData())) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
-                element->objectInfoOfInstance(), ZFUIListCell::ClassData()->classNameFull());
+                element->objectInfoOfInstance(), ZFUICell::ClassData()->classNameFull());
             return zffalse;
         }
         this->cell(element);
@@ -40,7 +40,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
     }
     return zftrue;
 }
-zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
+zfbool ZFUICellArray::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
         , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -54,7 +54,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
             if(!ZFObjectToDataT(cellData, this->cellAt(i), outErrorHint)) {
                 return zffalse;
             }
-            cellData.category(ZFSerializableKeyword_ZFUIListAdapterArray_cell);
+            cellData.category(ZFSerializableKeyword_ZFUICellArray_cell);
             serializableData.child(cellData);
         }
     }

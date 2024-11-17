@@ -68,7 +68,7 @@ private:
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, orientationMain),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, orientation),
             ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom

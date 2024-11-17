@@ -6,14 +6,14 @@
 #ifndef _ZFI_ZFUIListView_h_
 #define _ZFI_ZFUIListView_h_
 
-#include "ZFUIListAdapter.h"
-#include "ZFUIListCellUpdater.h"
+#include "ZFUICellAdapter.h"
+#include "ZFUICellUpdater.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFUIListView
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIListView_listAdapter "listAdapter"
+#define ZFSerializableKeyword_ZFUIListView_cellAdapter "cellAdapter"
 
 zfclassFwd _ZFP_ZFUIListViewPrivate;
 /**
@@ -26,15 +26,15 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
  *   only internal background or foreground view is allowed
  *
  * to use a list view, you must supply a list adapter which would supply all of list cells,
- * see #ZFUIListAdapter for more info\n
+ * see #ZFUICellAdapter for more info\n
  * list view itself won't supplly any separator or margins or border radius,
  * you must supply by the list adapter,
- * see #ZFUIListCell for more info \n
+ * see #ZFUICell for more info \n
  * \n
  * serializable data:
  * @code
  *   <ZFUIListView>
- *       <ListAdapterClass category="listAdapter" /> // used only if #listAdapterSerializable
+ *       <CellAdapterClass category="cellAdapter" /> // used only if #cellAdapterSerializable
  *       <ZFArray prop="cellUpdater"> // all cell updater
  *           ...
  *       </ZFArray>
@@ -57,7 +57,7 @@ public:
      *   during this event,
      *   you can only access them during #EventListVisibleCellOnUpdate
      */
-    ZFEVENT(ListCellOnAttach)
+    ZFEVENT(CellOnAttach)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -67,7 +67,7 @@ public:
      *   during this event,
      *   you can only access them during #EventListVisibleCellOnUpdate
      */
-    ZFEVENT(ListCellOnDetach)
+    ZFEVENT(CellOnDetach)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -81,30 +81,30 @@ public:
     /**
      * @brief list adapter
      *
-     * no auto retain by default, use #listAdapterAutoRetain if necessary\n
+     * no auto retain by default, use #cellAdapterAutoRetain if necessary\n
      * by default, the list adapter won't be serialized during the list view's serialization,
-     * you can enable it by #listAdapterSerializable
+     * you can enable it by #cellAdapterSerializable
      */
-    ZFPROPERTY_ASSIGN(zfanyT<ZFUIListAdapter>, listAdapter)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIListAdapter>, listAdapter)
-    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIListAdapter>, listAdapter)
+    ZFPROPERTY_ASSIGN(zfanyT<ZFUICellAdapter>, cellAdapter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUICellAdapter>, cellAdapter)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUICellAdapter>, cellAdapter)
     /**
      * @brief set and retain the list adapter
      *
      * by default, list adapter won't be retained by this list view to prevent recursive retain,
      * you may use this method to retain it automatically
      */
-    ZFMETHOD_DECLARE_1(void, listAdapterAutoRetain
-            , ZFMP_IN(ZFUIListAdapter *, listAdapter)
+    ZFMETHOD_DECLARE_1(void, cellAdapterAutoRetain
+            , ZFMP_IN(ZFUICellAdapter *, cellAdapter)
             )
 
     /**
-     * @brief whether the #listAdapter is serializable, false by default
+     * @brief whether the #cellAdapter is serializable, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, listAdapterSerializable)
+    ZFPROPERTY_ASSIGN(zfbool, cellAdapterSerializable)
 
     /**
-     * @brief list updater to update list cells, holds #ZFUIListCellUpdater
+     * @brief list updater to update list cells, holds #ZFUICellUpdater
      */
     ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFArray>, cellUpdater, zfobj<ZFArray>())
 
@@ -228,11 +228,11 @@ public:
      * returned value should not be stored,
      * since visible cell may change frequently
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIListCell *>, visibleCells)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUICell *>, visibleCells)
     /**
      * @brief return first visible cell's index, valid only if #reloadRequested is not true
      *
-     * index is ordered by #ZFUIListAdapter,
+     * index is ordered by #ZFUICellAdapter,
      * so first cell may positioned at bottom according to layout orientation
      */
     ZFMETHOD_DECLARE_0(const ZFIndexRange &, visibleCellRange)
@@ -264,13 +264,13 @@ public:
     // ============================================================
     // events
 protected:
-    /** @brief see #EventListCellOnAttach */
-    virtual inline void cellOnAttach(ZF_IN ZFUIListCell *cell) {
-        this->observerNotify(ZFUIListView::EventListCellOnAttach(), cell);
+    /** @brief see #EventCellOnAttach */
+    virtual inline void cellOnAttach(ZF_IN ZFUICell *cell) {
+        this->observerNotify(ZFUIListView::EventCellOnAttach(), cell);
     }
-    /** @brief see #EventListCellOnDetach */
-    virtual inline void cellOnDetach(ZF_IN ZFUIListCell *cell) {
-        this->observerNotify(ZFUIListView::EventListCellOnDetach(), cell);
+    /** @brief see #EventCellOnDetach */
+    virtual inline void cellOnDetach(ZF_IN ZFUICell *cell) {
+        this->observerNotify(ZFUIListView::EventCellOnDetach(), cell);
     }
     /** @brief see #EventListVisibleCellOnUpdate */
     virtual void visibleCellsOnUpdate(void);

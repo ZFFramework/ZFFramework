@@ -1,21 +1,21 @@
 /**
- * @file ZFUIListCellUpdaterBasic.h
- * @brief common updater of #ZFUIListCellUpdater
+ * @file ZFUIListViewCellUpdater.h
+ * @brief common updater of #ZFUICellUpdater
  */
 
-#ifndef _ZFI_ZFUIListCellUpdaterBasic_h_
-#define _ZFI_ZFUIListCellUpdaterBasic_h_
+#ifndef _ZFI_ZFUIListViewCellUpdater_h_
+#define _ZFI_ZFUIListViewCellUpdater_h_
 
-#include "ZFUIListCellUpdater.h"
+#include "ZFUICellUpdater.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
  * @brief basic updater that insert separator to list cell
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListCellUpdaterBasic : zfextend ZFStyleableObject, zfimplement ZFUIListCellUpdater {
-    ZFOBJECT_DECLARE(ZFUIListCellUpdaterBasic, ZFStyleableObject)
-    ZFIMPLEMENT_DECLARE(ZFUIListCellUpdater)
+zfclass ZFLIB_ZFUIWidget ZFUIListViewCellUpdater : zfextend ZFStyleableObject, zfimplement ZFUICellUpdater {
+    ZFOBJECT_DECLARE(ZFUIListViewCellUpdater, ZFStyleableObject)
+    ZFIMPLEMENT_DECLARE(ZFUICellUpdater)
 
 public:
     /**
@@ -47,11 +47,11 @@ public:
 
 public:
     zfoverride
-    virtual void cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam &updateParam);
+    virtual void cellOnUpdate(ZF_IN const ZFUICellUpdaterParam &updateParam);
     zfoverride
-    virtual void cellOnRecycle(ZF_IN ZFUIListCell *cell);
+    virtual void cellOnRecycle(ZF_IN ZFUICell *cell);
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFUIListCellUpdaterBasic_h_
+#endif // #ifndef _ZFI_ZFUIListViewCellUpdater_h_
 
