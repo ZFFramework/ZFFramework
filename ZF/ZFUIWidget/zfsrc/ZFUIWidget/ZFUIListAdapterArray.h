@@ -56,7 +56,7 @@ public:
     /**
      * @brief add cell
      */
-    ZFMETHOD_INLINE_1(void, cellAdd
+    ZFMETHOD_INLINE_1(void, cell
             , ZFMP_IN(ZFUIListCell *, cell)
             ) {
         d->add(cell);
@@ -64,7 +64,7 @@ public:
     /**
      * @brief add cell at index
      */
-    ZFMETHOD_INLINE_2(void, cellAdd
+    ZFMETHOD_INLINE_2(void, cell
             , ZFMP_IN(ZFUIListCell *, cell)
             , ZFMP_IN(zfindex, index)
             ) {

@@ -175,6 +175,13 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, bottom) {
     _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Bottom);
 }
 
+ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, edges) {
+    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Bottom);
+}
+
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toWidth
         , ZFMP_IN(const zfstring &, viewId)
         ) {

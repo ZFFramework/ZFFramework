@@ -34,7 +34,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
                 element->objectInfoOfInstance(), ZFUIListCell::ClassData()->classNameFull());
             return zffalse;
         }
-        this->cellAdd(element);
+        this->cell(element);
 
         categoryData.resolveMark();
     }

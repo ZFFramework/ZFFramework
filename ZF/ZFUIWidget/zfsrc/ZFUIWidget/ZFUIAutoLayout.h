@@ -124,6 +124,9 @@ public:
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, bottom)
 
+    /** @brief util to setup #left + #top + #right + #bottom */
+    ZFMETHOD_DECLARE_0(void, edges)
+
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_1(void, toWidth
             , ZFMP_IN(const zfstring &, viewId)
