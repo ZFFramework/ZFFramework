@@ -243,7 +243,7 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, content) {
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, zfbool, hintWindowAutoResize) {
-    if(this->hintWindowAutoResize() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         if(this->hintWindowAutoResize()) {
             ZFUIOnScreenKeyboardAutoResizeStart(this->hintWindow());
         }

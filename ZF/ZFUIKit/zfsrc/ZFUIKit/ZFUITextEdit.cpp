@@ -116,7 +116,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextAppearanceEnum, textAppearance) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textAppearance(this, this->textAppearance());
-    if(this->textAppearance() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
@@ -129,7 +129,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUIColor, textColor) {
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zffloat, textSize) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSize(this, ZFUISizeApplyScale(this->textSize(), this->UIScaleFixed()));
-    if(this->textSize() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }

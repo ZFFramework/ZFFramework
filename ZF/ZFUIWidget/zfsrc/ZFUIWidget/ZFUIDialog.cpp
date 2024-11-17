@@ -215,10 +215,10 @@ public:
         dialogBgSize.width += ZFUIMarginGetWidth(contentMargin);
         dialogBgSize.height += ZFUIMarginGetHeight(contentMargin);
         this->dialogBg->viewFrame(ZFUIAlignApply(
-            align,
-            bounds,
-            dialogBgSize,
-            margin));
+                    align,
+                    ZFUIRectApplyMargin(bounds, margin),
+                    dialogBgSize
+                    ));
     }
 
     // event handle

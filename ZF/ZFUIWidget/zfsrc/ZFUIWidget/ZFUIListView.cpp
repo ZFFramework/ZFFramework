@@ -98,7 +98,7 @@ public:
             }
         }
     }
-    void cellAdaptertingUpdate(void) {
+    void cellAdapterNotifyUpdate(void) {
         if(this->cellAdapter != zfnull) {
             this->cellAdapter->notifyContainerUpdate(
                     this->pimplOwner->orientation()
@@ -119,7 +119,7 @@ public:
             this->cellAdapter->toObject()->observerAdd(
                 ZFUICellAdapter::EventCellAdapterOnReload(),
                 this->cellAdapterOnReloadListener);
-            this->cellAdaptertingUpdate();
+            this->cellAdapterNotifyUpdate();
         }
     }
     void cellAdapterBeforeDetach(void) {
@@ -1219,7 +1219,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfanyT<ZFUICellAdapter>, cellAdapter) 
     d->cellAdapter = this->cellAdapter();
     d->cellAdapterAfterAttach();
 
-    if(this->cellAdapter() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->reload();
     }
 }
@@ -1238,14 +1238,14 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, cellAdapterAutoRetain
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIOrientationEnum, orientation) {
-    if(this->orientation() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         d->bounceableUpdate();
         d->reloadByUpdateListOrientation = zftrue;
         this->reload();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfbool, bounceable) {
-    if(this->bounceable() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         d->bounceableUpdate();
         if(!this->bounceable()) {
             this->scrollBounceVerticalAlways(zffalse);
@@ -1366,7 +1366,7 @@ void ZFUIListView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
         d->cellNeedUpdate = zftrue;
     }
     if(d->reloadRequested || d->listQuickReloadRequested) {
-        d->cellAdaptertingUpdate();
+        d->cellAdapterNotifyUpdate();
     }
     zfsuper::layoutOnLayoutPrepare(bounds);
     d->listCheckReload();
@@ -1399,7 +1399,7 @@ void ZFUIListView::scrollAreaOnUpdate(void) {
     if(!d->listQuickReloadRequested) {
         d->listQuickReloadRequested = zftrue;
     }
-    d->cellAdaptertingUpdate();
+    d->cellAdapterNotifyUpdate();
 }
 void ZFUIListView::scrollContentFrameOnUpdate(void) {
     zfsuper::scrollContentFrameOnUpdate();

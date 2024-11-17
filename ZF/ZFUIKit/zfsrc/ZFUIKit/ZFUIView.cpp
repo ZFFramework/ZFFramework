@@ -1024,7 +1024,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
 // ============================================================
 // properties
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, visible) {
-    if(this->visible() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         ZFPROTOCOL_ACCESS(ZFUIView)->visible(this, this->visible());
         d->viewTreeVisibleUpdate(
                 this
@@ -1089,12 +1089,12 @@ ZFMETHOD_DEFINE_2(ZFUIView, void, viewSizeFixed
     this->viewSizeMax(size);
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizeMin) {
-    if(this->viewSizeMin() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUISize, viewSizeMax) {
-    if(this->viewSizeMax() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }

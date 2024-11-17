@@ -100,10 +100,10 @@ void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
         }
     }
     clearButton->viewFrame(ZFUIAlignApply(
-        clearButton->layoutParam()->align(),
-        bounds,
-        clearButton->layoutMeasuredSize(),
-        margin));
+                clearButton->layoutParam()->align(),
+                ZFUIRectApplyMargin(bounds, margin),
+                clearButton->layoutMeasuredSize()
+                ));
 }
 void ZFUITextEditWidget::textOnUpdate(ZF_IN const zfstring &oldText) {
     zfsuper::textOnUpdate(oldText);

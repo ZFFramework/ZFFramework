@@ -9,6 +9,22 @@
 #include "ZFMainEntry.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+
+ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
+/**
+ * @brief called when #appExit
+ *
+ * param0 is a #v_zfint contains appExitCode\n
+ * param1 is a #v_zfbool, set to true to override and ignore default impl
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppExit)
+/**
+ * @brief called when #appRestart
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppRestart)
+ZF_NAMESPACE_END(ZFGlobalEvent)
+
+// ============================================================
 ZF_NAMESPACE_BEGIN(ZFApp)
 
 /**
@@ -17,7 +33,6 @@ ZF_NAMESPACE_BEGIN(ZFApp)
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, appExit
         , ZFMP_IN_OPT(zfint, appExitCode, ZFApp::appExitCode())
         )
-
 /**
  * @brief restart the app
  */

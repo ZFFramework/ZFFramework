@@ -474,9 +474,9 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
             ZFUIAlignApplyT(
                 contentFrame,
                 this->contentAlign(),
-                bounds,
-                ZFUISizeCreate(iconSize.width + contentSpace + labelSize.width, zfmMax(iconSize.height, labelSize.height)),
-                this->contentMargin());
+                ZFUIRectApplyMargin(bounds, this->contentMargin()),
+                ZFUISizeCreate(iconSize.width + contentSpace + labelSize.width, zfmMax(iconSize.height, labelSize.height))
+                );
             if(this->iconPosition() == ZFUIOrientation::e_Left) {
                 if(d->iconView != zfnull) {
                     d->iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Left, contentFrame, iconSize));
@@ -502,9 +502,9 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
             ZFUIAlignApplyT(
                 contentFrame,
                 this->contentAlign(),
-                bounds,
-                ZFUISizeCreate(zfmMax(iconSize.width, labelSize.width), iconSize.height + contentSpace + labelSize.height),
-                this->contentMargin());
+                ZFUIRectApplyMargin(bounds, this->contentMargin()),
+                ZFUISizeCreate(zfmMax(iconSize.width, labelSize.width), iconSize.height + contentSpace + labelSize.height)
+                );
             if(this->iconPosition() == ZFUIOrientation::e_Top) {
                 if(d->iconView != zfnull) {
                     d->iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Top, contentFrame, iconSize));

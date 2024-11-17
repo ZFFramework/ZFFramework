@@ -84,6 +84,25 @@ private:
                 , ZFUIOrientation::e_Top
                 ));
 
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zfbool, ZFPropertyAccess(ZFUIFlowLayout, gridMode),
+            ZFCoreArrayCreate(zfbool
+                , zffalse
+                , zftrue
+                ));
+
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIContentScaleTypeEnum, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
+            ZFCoreArrayCreate(ZFUIContentScaleTypeEnum
+                , ZFUIContentScaleType::e_Fill
+                , ZFUIContentScaleType::e_Center
+                , ZFUIContentScaleType::e_FillCenter
+                , ZFUIContentScaleType::e_FillCenterClipped
+                , ZFUIContentScaleType::e_FitCenter
+                , ZFUIContentScaleType::e_FillX
+                , ZFUIContentScaleType::e_FitX
+                , ZFUIContentScaleType::e_FillY
+                , ZFUIContentScaleType::e_FitY
+                ));
+
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUIFlowLayout, childMargin),
             ZFCoreArrayCreate(ZFUIMargin
                 , ZFUIMarginZero()

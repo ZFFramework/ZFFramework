@@ -135,7 +135,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIButtonGroup, zfindex, buttonTabChecked) {
     propertyValue = ((propertyValue >= this->buttonCount()) ? zfindexMax() : propertyValue);
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, zfindex, buttonTabChecked) {
-    if(this->buttonTabChecked() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         if(!this->buttonTabAllowUnchecked() && this->buttonTabChecked() >= this->buttonCount()) {
             return;
         }

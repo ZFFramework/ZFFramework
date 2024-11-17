@@ -282,7 +282,12 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, layoutParamApplyT
     }
 
     child->layoutMeasure(refSizeTmp, lp->sizeParam());
-    ZFUIAlignApplyT(ret, lp->align(), rect, child->layoutMeasuredSize(), lp->margin());
+    ZFUIAlignApplyT(
+            ret
+            , lp->align()
+            , ZFUIRectApplyMargin(rect, lp->margin())
+            , child->layoutMeasuredSize()
+            );
 }
 ZFMETHOD_DEFINE_3(ZFUILayoutParam, ZFUIRect, layoutParamApply
         , ZFMP_IN(const ZFUIRect &, rect)

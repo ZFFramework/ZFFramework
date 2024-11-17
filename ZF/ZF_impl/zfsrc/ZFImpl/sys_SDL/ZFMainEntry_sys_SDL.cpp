@@ -291,6 +291,19 @@ zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event) {
             }
         }
     }
+
+    // default impl
+    switch(event->type) {
+        case SDL_QUIT:
+            ZFApp::appExit();
+            return zftrue;
+        case SDL_APP_LOWMEMORY:
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventAppOnMemoryLow());
+            return zftrue;
+        default:
+            break;
+    }
+
     return zffalse;
 }
 

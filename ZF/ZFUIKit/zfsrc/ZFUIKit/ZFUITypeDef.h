@@ -1097,24 +1097,22 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIAlignValid
 /**
  * @brief apply align and calculate result, or #ZFUIRectZero if error
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIAlignApplyT
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIAlignApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         , ZFMP_IN(const ZFUIRect &, refRect)
         , ZFMP_IN(const ZFUISize &, itemSize)
-        , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginZero())
         )
 /**
  * @brief apply align and calculate result, or #ZFUIRectZero if error
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIAlignApply
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUIRect, ZFUIAlignApply
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         , ZFMP_IN(const ZFUIRect &, refRect)
         , ZFMP_IN(const ZFUISize &, itemSize)
-        , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginZero())
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUIAlignApplyT(ret, align, refRect, itemSize, margin);
+    ZFUIAlignApplyT(ret, align, refRect, itemSize);
     return ret;
 }
 /**
@@ -1505,22 +1503,24 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIContentScaleType)
 /**
  * @brief apply scale for #ZFUIContentScaleType
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
+        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
         )
 /**
  * @brief apply scale for #ZFUIContentScaleType
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUIRect, ZFUIContentScaleTypeApply
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIContentScaleTypeApply
         , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
+        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUIContentScaleTypeApplyT(ret, scaleType, bounds, contentSize);
+    ZFUIContentScaleTypeApplyT(ret, scaleType, bounds, contentSize, alignFlags);
     return ret;
 }
 

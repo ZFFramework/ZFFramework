@@ -439,12 +439,11 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFUIAlignValid
                 ) <= 1
         );
 }
-ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApplyT
+ZFMETHOD_FUNC_DEFINE_4(void, ZFUIAlignApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         , ZFMP_IN(const ZFUIRect &, refRect)
         , ZFMP_IN(const ZFUISize &, itemSize)
-        , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginZero())
         ) {
     ret = ZFUIRectZero();
     if(!ZFUIAlignValid(align)) {
@@ -454,44 +453,41 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApplyT
     ret.height = itemSize.height;
 
     if(ZFBitTest(align, ZFUIAlign::e_Left)) {
-        ret.x = refRect.x + margin.left;
+        ret.x = refRect.x;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Right)) {
-        ret.x = refRect.x + refRect.width - margin.right - itemSize.width;
+        ret.x = refRect.x + refRect.width - itemSize.width;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_LeftEdge)) {
-        ret.x = refRect.x - margin.right - itemSize.width;
+        ret.x = refRect.x - itemSize.width;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_RightEdge)) {
-        ret.x = refRect.x + refRect.width + margin.left;
+        ret.x = refRect.x + refRect.width;
     }
     else {
-        ret.x = refRect.x + margin.left
-            + (refRect.width - margin.left - margin.right - itemSize.width) / 2;
+        ret.x = refRect.x + (refRect.width - itemSize.width) / 2;
     }
 
     if(ZFBitTest(align, ZFUIAlign::e_Top)) {
-        ret.y = refRect.y + margin.top;
+        ret.y = refRect.y;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Bottom)) {
-        ret.y = refRect.y + refRect.height - margin.bottom - itemSize.height;
+        ret.y = refRect.y + refRect.height - itemSize.height;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_TopEdge)) {
-        ret.y = refRect.y - margin.bottom - itemSize.height;
+        ret.y = refRect.y - itemSize.height;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_BottomEdge)) {
-        ret.y = refRect.y + refRect.height + margin.top;
+        ret.y = refRect.y + refRect.height;
     }
     else {
-        ret.y = refRect.y + margin.top
-            + (refRect.height - margin.top - margin.bottom - itemSize.height) / 2;
+        ret.y = refRect.y + (refRect.height - itemSize.height) / 2;
     }
 }
-ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIAlignApply
+ZFMETHOD_FUNC_INLINE_DEFINE_3(ZFUIRect, ZFUIAlignApply
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         , ZFMP_IN(const ZFUIRect &, refRect)
         , ZFMP_IN(const ZFUISize &, itemSize)
-        , ZFMP_IN_OPT(const ZFUIMargin &, margin, ZFUIMarginZero())
         )
 ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetX
         , ZFMP_IN(const ZFUIAlignFlags &, align)
@@ -763,6 +759,7 @@ static void _ZFP_ZFUIContentScaleTypeApply_Center(
         ZF_OUT ZFUIRect &ret
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
+        , ZF_IN const ZFUIAlignFlags &alignFlags
         ) {
     ZFUIAlignApplyT(ret, ZFUIAlign::e_Center, bounds, contentSize);
 }
@@ -770,8 +767,9 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillX(
         ZF_OUT ZFUIRect &ret
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
+        , ZF_IN const ZFUIAlignFlags &alignFlags
         ) {
-    ZFUIAlignApplyT(ret, ZFUIAlign::e_Center, bounds, ZFUISizeCreate(
+    ZFUIAlignApplyT(ret, alignFlags, bounds, ZFUISizeCreate(
         bounds.width,
         bounds.width * contentSize.height / contentSize.width
         ));
@@ -780,8 +778,9 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillY(
         ZF_OUT ZFUIRect &ret
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
+        , ZF_IN const ZFUIAlignFlags &alignFlags
         ) {
-    ZFUIAlignApplyT(ret, ZFUIAlign::e_Center, bounds, ZFUISizeCreate(
+    ZFUIAlignApplyT(ret, alignFlags, bounds, ZFUISizeCreate(
         contentSize.width * bounds.height / contentSize.height,
         bounds.height
         ));
@@ -790,73 +789,76 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillCenter(
         ZF_OUT ZFUIRect &ret
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
+        , ZF_IN const ZFUIAlignFlags &alignFlags
         ) {
     if(contentSize.width * bounds.height >= bounds.width * contentSize.height) {
-        _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize);
+        _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize, alignFlags);
     }
     else {
-        _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize);
+        _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize, alignFlags);
     }
 }
 static void _ZFP_ZFUIContentScaleTypeApply_FillCenterClipped(
         ZF_OUT ZFUIRect &ret
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUISize &contentSize
+        , ZF_IN const ZFUIAlignFlags &alignFlags
         ) {
     if(contentSize.width * bounds.height >= bounds.width * contentSize.height) {
-        _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize);
+        _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize, alignFlags);
     }
     else {
-        _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize);
+        _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize, alignFlags);
     }
 }
-ZFMETHOD_FUNC_DEFINE_4(void, ZFUIContentScaleTypeApplyT
+ZFMETHOD_FUNC_DEFINE_5(void, ZFUIContentScaleTypeApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
         , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
+        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
         ) {
     switch(scaleType) {
         case ZFUIContentScaleType::e_Fill:
             ret = bounds;
             break;
         case ZFUIContentScaleType::e_Center:
-            _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
+            _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize, alignFlags);
             break;
         case ZFUIContentScaleType::e_FillCenter:
-            _ZFP_ZFUIContentScaleTypeApply_FillCenter(ret, bounds, contentSize);
+            _ZFP_ZFUIContentScaleTypeApply_FillCenter(ret, bounds, contentSize, alignFlags);
             break;
         case ZFUIContentScaleType::e_FillCenterClipped:
-            _ZFP_ZFUIContentScaleTypeApply_FillCenterClipped(ret, bounds, contentSize);
+            _ZFP_ZFUIContentScaleTypeApply_FillCenterClipped(ret, bounds, contentSize, alignFlags);
             break;
         case ZFUIContentScaleType::e_FitCenter:
             if(contentSize.width <= bounds.width && contentSize.height <= bounds.height) {
-                _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
+                _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize, alignFlags);
             }
             else {
-                _ZFP_ZFUIContentScaleTypeApply_FillCenter(ret, bounds, contentSize);
+                _ZFP_ZFUIContentScaleTypeApply_FillCenter(ret, bounds, contentSize, alignFlags);
             }
             break;
         case ZFUIContentScaleType::e_FillX:
-            _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize);
+            _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize, alignFlags);
             break;
         case ZFUIContentScaleType::e_FitX:
             if(contentSize.width <= bounds.width) {
-                _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
+                _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize, alignFlags);
             }
             else {
-                _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize);
+                _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize, alignFlags);
             }
             break;
         case ZFUIContentScaleType::e_FillY:
-            _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize);
+            _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize, alignFlags);
             break;
         case ZFUIContentScaleType::e_FitY:
             if(contentSize.height <= bounds.height) {
-                _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
+                _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize, alignFlags);
             }
             else {
-                _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize);
+                _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize, alignFlags);
             }
             break;
         default:
@@ -864,10 +866,11 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFUIContentScaleTypeApplyT
             break;
     }
 }
-ZFMETHOD_FUNC_INLINE_DEFINE_3(ZFUIRect, ZFUIContentScaleTypeApply
+ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIContentScaleTypeApply
         , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
+        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
         )
 
 ZF_NAMESPACE_GLOBAL_END

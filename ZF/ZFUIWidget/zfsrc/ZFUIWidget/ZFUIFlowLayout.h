@@ -89,6 +89,17 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientationSecondary)
 
     /**
+     * @brief whether in grid mode, which makes all children have same size
+     */
+    ZFPROPERTY_ASSIGN(zfbool, gridMode)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, gridMode)
+    /**
+     * @brief valid only when #gridMode, indicates how to scale children
+     */
+    ZFPROPERTY_ASSIGN(ZFUIContentScaleTypeEnum, childScaleType, ZFUIContentScaleType::e_FillCenter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleTypeEnum, childScaleType)
+
+    /**
      * @brief extra margin independent from children's layout param's margin, #ZFUIMarginZero by default
      */
     ZFPROPERTY_ASSIGN(ZFUIMargin, childMargin)

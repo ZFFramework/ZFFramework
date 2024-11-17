@@ -19,6 +19,7 @@
 #include "ZFUIWidget/ZFUICellViewBasic.h"
 #include "ZFUIWidget/ZFUIDialog.h"
 #include "ZFUIWidget/ZFUIFlowLayout.h"
+#include "ZFUIWidget/ZFUIGridLayout.h"
 #include "ZFUIWidget/ZFUIHint.h"
 #include "ZFUIWidget/ZFUIHint_Basic.h"
 #include "ZFUIWidget/ZFUIImageAni.h"

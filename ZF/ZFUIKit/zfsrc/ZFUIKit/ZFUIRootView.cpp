@@ -59,9 +59,8 @@ static void _ZFP_ZFUIRootView_layoutParamApplyT(
     ZFUIAlignApplyT(
             ret,
             lp->align(),
-            rect,
-            child->layoutMeasuredSize(),
-            totalMargin
+            ZFUIRectApplyMargin(rect, totalMargin),
+            child->layoutMeasuredSize()
         );
 }
 void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {

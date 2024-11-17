@@ -200,17 +200,17 @@ public:
 ZFOBJECT_REGISTER(ZFUIOnScreenKeyboardAutoFitLayout)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIOnScreenKeyboardAutoFitLayout, zfbool, autoFitEnable) {
-    if(this->autoFitEnable() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         d->autoFitEnable(this->autoFitEnable());
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIOnScreenKeyboardAutoFitLayout, zfbool, autoFitFocusedViewToVisible) {
-    if(this->autoFitFocusedViewToVisible() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         d->autoFitFocusedViewToVisible(this->autoFitFocusedViewToVisible());
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIOnScreenKeyboardAutoFitLayout, zfbool, autoFitScrollEnable) {
-    if(this->autoFitFocusedViewToVisible() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->scrollEnable(d->scrollEnableFlag && this->autoFitScrollEnable());
     }
 }

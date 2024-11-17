@@ -32,7 +32,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfstring, text) {
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUITextAppearanceEnum, textAppearance) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textAppearance(this, this->textAppearance());
-    if(this->textAppearance() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
@@ -44,31 +44,31 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUIColor, textColor) {
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSize) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textSize(this, ZFUISizeApplyScale(this->textSize(), this->UIScaleFixed()));
-    if(this->textSize() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoMin) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeAutoMin(this, ZFUISizeApplyScale(this->textSizeAutoMin(), this->UIScaleFixed()));
-    if(this->textSizeAutoMin() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSizeAutoMax) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textSizeAutoMax(this, ZFUISizeApplyScale(this->textSizeAutoMax(), this->UIScaleFixed()));
-    if(this->textSizeAutoMax() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfbool, singleLine) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->singleLine(this, this->singleLine());
-    if(this->singleLine() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUITextTruncateModeEnum, textTruncateMode) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textTruncateMode(this, this->textTruncateMode());
-    if(this->textTruncateMode() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }

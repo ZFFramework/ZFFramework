@@ -75,25 +75,25 @@ void ZFUICellView::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     _ZFP_ZFUICellView_measureContent(this, ZFUIRectGetSize(bounds), cellIconSize, cellCenterSize, cellAccessorySize);
 
     this->cellIconContainer()->viewFrame(ZFUIAlignApply(
-        ZFUIAlign::e_Left | ZFUIAlignGetY(this->cellIconContainer()->layoutParam()->align()),
-        bounds,
-        this->cellIconContainer()->layoutMeasuredSize(),
-        this->cellIconContainer()->layoutParam()->margin()));
+                ZFUIAlign::e_Left | ZFUIAlignGetY(this->cellIconContainer()->layoutParam()->align()),
+                ZFUIRectApplyMargin(bounds, this->cellIconContainer()->layoutParam()->margin()),
+                this->cellIconContainer()->layoutMeasuredSize()
+                ));
 
     ZFUIMargin cellCenterMargin = this->cellCenterContainer()->layoutParam()->margin();
     cellCenterMargin.left += cellIconSize.width;
     cellCenterMargin.right += cellAccessorySize.width;
     this->cellCenterContainer()->viewFrame(ZFUIAlignApply(
-        ZFUIAlign::e_Left | ZFUIAlignGetY(this->cellCenterContainer()->layoutParam()->align()),
-        bounds,
-        this->cellCenterContainer()->layoutMeasuredSize(),
-        cellCenterMargin));
+                ZFUIAlign::e_Left | ZFUIAlignGetY(this->cellCenterContainer()->layoutParam()->align()),
+                ZFUIRectApplyMargin(bounds, cellCenterMargin),
+                this->cellCenterContainer()->layoutMeasuredSize()
+                ));
 
     this->cellAccessoryContainer()->viewFrame(ZFUIAlignApply(
-        ZFUIAlign::e_Right | ZFUIAlignGetY(this->cellAccessoryContainer()->layoutParam()->align()),
-        bounds,
-        this->cellAccessoryContainer()->layoutMeasuredSize(),
-        this->cellAccessoryContainer()->layoutParam()->margin()));
+                ZFUIAlign::e_Right | ZFUIAlignGetY(this->cellAccessoryContainer()->layoutParam()->align()),
+                ZFUIRectApplyMargin(bounds, this->cellAccessoryContainer()->layoutParam()->margin()),
+                this->cellAccessoryContainer()->layoutMeasuredSize()
+                ));
 }
 zfbool ZFUICellView::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
     if(internalView == this->cellIconContainer()

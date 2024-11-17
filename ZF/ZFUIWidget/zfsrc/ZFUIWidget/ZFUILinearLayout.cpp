@@ -34,17 +34,17 @@ ZFOBJECT_REGISTER(ZFUILinearLayout)
 ZFSTYLE_DEFAULT_DEFINE(ZFUILinearLayout)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, ZFUIOrientationEnum, orientation) {
-    if(this->orientation() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, ZFUIMargin, childMargin) {
-    if(this->childMargin() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, zffloat, childSpace) {
-    if(this->childSpace() != propertyValueOld) {
+    if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
@@ -250,18 +250,19 @@ static void _ZFP_ZFUILinearLayout_layoutHorizontal(
             childSize = child->layoutMeasuredSize().width + ZFUIMarginGetWidth(layoutParam->margin());
         }
         child->viewFrame(ZFUIAlignApply(
-            layoutParam->align(),
-            ZFUIRectCreate(
-                positiveDirection
-                    ? usedSize + prevSpace
-                    : size.width - usedSize - prevSpace - childSize,
-                parent->childMargin().top,
-                childSize,
-                size.height - ZFUIMarginGetHeight(parent->childMargin())),
-            ZFUISizeCreate(
-                childSize - ZFUIMarginGetWidth(layoutParam->margin()),
-                child->layoutMeasuredSize().height),
-            layoutParam->margin()));
+                    layoutParam->align(),
+                    ZFUIRectApplyMargin(ZFUIRectCreate(
+                            positiveDirection
+                            ? usedSize + prevSpace
+                            : size.width - usedSize - prevSpace - childSize,
+                            parent->childMargin().top,
+                            childSize,
+                            size.height - ZFUIMarginGetHeight(parent->childMargin())
+                            ), layoutParam->margin()),
+                    ZFUISizeCreate(
+                        childSize - ZFUIMarginGetWidth(layoutParam->margin()),
+                        child->layoutMeasuredSize().height)
+                        ));
         usedSize += prevSpace + childSize;
     }
 }
@@ -295,18 +296,19 @@ static void _ZFP_ZFUILinearLayout_layoutVertical(
             childSize = child->layoutMeasuredSize().height + ZFUIMarginGetHeight(layoutParam->margin());
         }
         child->viewFrame(ZFUIAlignApply(
-            layoutParam->align(),
-            ZFUIRectCreate(
-                parent->childMargin().left,
-                positiveDirection
-                    ? usedSize + prevSpace
-                    : size.height - usedSize - prevSpace - childSize,
-                size.width - ZFUIMarginGetWidth(parent->childMargin()),
-                childSize),
-            ZFUISizeCreate(
-                child->layoutMeasuredSize().width,
-                childSize - ZFUIMarginGetHeight(layoutParam->margin())),
-            layoutParam->margin()));
+                    layoutParam->align(),
+                    ZFUIRectApplyMargin(ZFUIRectCreate(
+                            parent->childMargin().left,
+                            positiveDirection
+                            ? usedSize + prevSpace
+                            : size.height - usedSize - prevSpace - childSize,
+                            size.width - ZFUIMarginGetWidth(parent->childMargin()),
+                            childSize
+                            ), layoutParam->margin()),
+                    ZFUISizeCreate(
+                        child->layoutMeasuredSize().width,
+                        childSize - ZFUIMarginGetHeight(layoutParam->margin()))
+                        ));
         usedSize += prevSpace + childSize;
     }
 }
