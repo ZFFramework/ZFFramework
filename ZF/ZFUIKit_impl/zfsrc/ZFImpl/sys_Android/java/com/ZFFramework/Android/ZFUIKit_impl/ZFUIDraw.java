@@ -24,7 +24,7 @@ public final class ZFUIDraw {
         NativeToken nativeToken = new NativeToken();
         Bitmap bitmap = Bitmap.createBitmap(imageSizePixel_width, imageSizePixel_height, Bitmap.Config.ARGB_8888);
         nativeToken.canvas = new Canvas(bitmap);
-        nativeToken.canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+        ((Canvas) nativeToken.canvas).setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         nativeToken.image = new BitmapDrawable(ZFMainEntry.appContext().getResources(), bitmap);
         return nativeToken;
     }
