@@ -50,6 +50,11 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIContentScaleTypeEnum, childScale
         this->layoutRequest();
     }
 }
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zfindex, childCountPerLine) {
+    if(propertyValue != propertyValueOld) {
+        this->layoutRequest();
+    }
+}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIMargin, childMargin) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
@@ -234,25 +239,25 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         if(parent->gridMode()) {
             maxCellSize.width = zfmMax<zffloat>(
                     maxCellSize.width
-                    , child->layoutMeasuredSize().width
-                    + ZFUIMarginGetWidth(child->layoutParam()->margin())
-                    + ZFUIMarginGetWidth(parent->childMargin())
+                    , child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->margin())
                     );
             maxCellSize.height = zfmMax<zffloat>(
                     maxCellSize.height
-                    , child->layoutMeasuredSize().height
-                    + ZFUIMarginGetHeight(child->layoutParam()->margin())
-                    + ZFUIMarginGetHeight(parent->childMargin())
+                    , child->layoutMeasuredSize().height + ZFUIMarginGetHeight(child->layoutParam()->margin())
                     );
         }
-        if(sizeHint.width >= 0 && lineSize.width + prevSpace + child->layoutMeasuredSize().width + marginX > sizeHint.width) {
+        if(i > childIndexStart
+                && sizeHint.width >= 0
+                && lineSize.width + prevSpace + child->layoutMeasuredSize().width + marginX > sizeHint.width
+                ) {
             childIndexStop = i;
             break;
         }
         lineSize.width += prevSpace + child->layoutMeasuredSize().width + marginX;
         lineSize.height = zfmMax<zffloat>(lineSize.height, child->layoutMeasuredSize().height + marginY);
         if(layoutParam->sizeParam().width == ZFUISizeType::e_Fill
-                || (sizeHint.width >= 0 && lineSize.width == sizeHint.width)
+                || (sizeHint.width >= 0 && lineSize.width >= sizeHint.width)
+                || (parent->childCountPerLine() > 0 && i >= parent->childCountPerLine())
                 ) {
             childIndexStop = i + 1;
             break;
@@ -298,25 +303,25 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         if(parent->gridMode()) {
             maxCellSize.width = zfmMax<zffloat>(
                     maxCellSize.width
-                    , child->layoutMeasuredSize().width
-                    + ZFUIMarginGetWidth(child->layoutParam()->margin())
-                    + ZFUIMarginGetWidth(parent->childMargin())
+                    , child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->margin())
                     );
             maxCellSize.height = zfmMax<zffloat>(
                     maxCellSize.height
-                    , child->layoutMeasuredSize().height
-                    + ZFUIMarginGetHeight(child->layoutParam()->margin())
-                    + ZFUIMarginGetHeight(parent->childMargin())
+                    , child->layoutMeasuredSize().height + ZFUIMarginGetHeight(child->layoutParam()->margin())
                     );
         }
-        if(sizeHint.height >= 0 && lineSize.height + prevSpace + child->layoutMeasuredSize().height + marginY > sizeHint.height) {
+        if(i > childIndexStart
+                && sizeHint.height >= 0
+                && lineSize.height + prevSpace + child->layoutMeasuredSize().height + marginY > sizeHint.height
+                ) {
             childIndexStop = i;
             break;
         }
         lineSize.width = zfmMax<zffloat>(lineSize.width, child->layoutMeasuredSize().width + marginX);
         lineSize.height += prevSpace + child->layoutMeasuredSize().height + marginY;
         if(layoutParam->sizeParam().height == ZFUISizeType::e_Fill
-                || (sizeHint.height >= 0 && lineSize.height == sizeHint.height)
+                || (sizeHint.height >= 0 && lineSize.height >= sizeHint.height)
+                || (parent->childCountPerLine() > 0 && i >= parent->childCountPerLine())
                 ) {
             childIndexStop = i + 1;
             break;
@@ -367,10 +372,16 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(
         if(childCountPerLine > parent->childCount()) {
             childCountPerLine = parent->childCount();
         }
+        if(parent->childCountPerLine() > 0 && childCountPerLine > parent->childCountPerLine()) {
+            childCountPerLine = parent->childCountPerLine();
+        }
         zfindex lineCount = (parent->childCount() + childCountPerLine - 1) / childCountPerLine;
         ret.width = (maxCellSize.width + parent->childSpaceX()) * childCountPerLine - parent->childSpaceX();
         ret.height = (maxCellSize.height + parent->childSpaceY()) * lineCount - parent->childSpaceY();
     }
+
+    ret.width += parentMarginX;
+    ret.height += parentMarginY;
     return ret;
 }
 static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(
@@ -413,10 +424,16 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(
         if(childCountPerLine > parent->childCount()) {
             childCountPerLine = parent->childCount();
         }
+        if(parent->childCountPerLine() > 0 && childCountPerLine > parent->childCountPerLine()) {
+            childCountPerLine = parent->childCountPerLine();
+        }
         zfindex lineCount = (parent->childCount() + childCountPerLine - 1) / childCountPerLine;
         ret.width = (maxCellSize.width + parent->childSpaceX()) * lineCount - parent->childSpaceX();
         ret.height = (maxCellSize.height + parent->childSpaceY()) * childCountPerLine - parent->childSpaceY();
     }
+
+    ret.width += parentMarginX;
+    ret.height += parentMarginY;
     return ret;
 }
 
@@ -546,6 +563,9 @@ static void _ZFP_ZFUIFlowLayout_layoutGridHorizontal(
             );
     if(childCountPerLine > 0) {
         maxCellSize.width = (contentSize.width + parent->childSpaceX()) / childCountPerLine - parent->childSpaceX();
+        if(parent->childCountPerLine() > 0 && childCountPerLine > parent->childCountPerLine()) {
+            childCountPerLine = parent->childCountPerLine();
+        }
     }
     else {
         childCountPerLine = 1;
@@ -609,6 +629,9 @@ static void _ZFP_ZFUIFlowLayout_layoutGridVertical(
             );
     if(childCountPerLine > 0) {
         maxCellSize.height = (contentSize.height + parent->childSpaceY()) / childCountPerLine - parent->childSpaceY();
+        if(parent->childCountPerLine() > 0 && childCountPerLine > parent->childCountPerLine()) {
+            childCountPerLine = parent->childCountPerLine();
+        }
     }
     else {
         childCountPerLine = 1;

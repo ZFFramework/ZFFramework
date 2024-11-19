@@ -470,7 +470,7 @@ public:
     /**
      * @brief return foreground page or null if no page
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUIPage>, pageForeground)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIPage>, currentPage)
     /**
      * @brief find page index
      */

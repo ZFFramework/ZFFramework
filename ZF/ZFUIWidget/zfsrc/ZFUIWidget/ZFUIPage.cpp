@@ -499,15 +499,12 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerResume) {
     d->managerResumed = zftrue;
     this->managerOnResume();
     this->observerNotify(ZFUIPageManager::EventManagerOnResume());
-    ZFUIPage *page = this->pageForeground();
-    if(page != zfnull) {
-        _ZFP_ZFUIPageManagerPrivate::pageOnResume(page, ZFUIPageResumeReason::e_ByManagerResume, zfnull);
-    }
+    d->scheduleResume(this, ZFUIPageResumeReason::e_ByManagerResume, zfnull, ZFUIPagePauseReason::e_ToBackground);
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause) {
     ZFCoreAssert(d->managerResumed);
 
-    ZFUIPage *page = this->pageForeground();
+    ZFUIPage *page = this->currentPage();
     if(page != zfnull) {
         _ZFP_ZFUIPageManagerPrivate::pageOnPause(page, ZFUIPagePauseReason::e_ByManagerPause, zfnull);
     }
@@ -647,7 +644,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, zfanyT<ZFUIPage>, pageAt
         ) {
     return this->pageList().get(index);
 }
-ZFMETHOD_DEFINE_0(ZFUIPageManager, zfanyT<ZFUIPage>, pageForeground) {
+ZFMETHOD_DEFINE_0(ZFUIPageManager, zfanyT<ZFUIPage>, currentPage) {
     if(!this->pageList().isEmpty()) {
         return this->pageList().getLast();
     }
@@ -705,7 +702,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageCreate
         ZFCoreAssert(pm->d->pageMoveFlag == 0);
 
         ZFUIPage *resumePage = page;
-        ZFUIPage *pausePage = pm->pageForeground();
+        ZFUIPage *pausePage = pm->currentPage();
 
         pm->d->pageList.add(resumePage);
         resumePage->_ZFP_ZFUIPage_pageManager = pm;
@@ -721,7 +718,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageCreate
 ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageReplace
         , ZFMP_IN(ZFUIPage *, page)
         ) {
-    ZFUIPage *cur = this->pageForeground();
+    ZFUIPage *cur = this->currentPage();
     this->pageCreate(page);
     if(cur) {
         this->pageDestroy(cur);

@@ -93,11 +93,18 @@ public:
      */
     ZFPROPERTY_ASSIGN(zfbool, gridMode)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, gridMode)
+
     /**
      * @brief valid only when #gridMode, indicates how to scale children
      */
     ZFPROPERTY_ASSIGN(ZFUIContentScaleTypeEnum, childScaleType, ZFUIContentScaleType::e_FillCenter)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleTypeEnum, childScaleType)
+
+    /**
+     * @brief max child count per line, 0 means no limit
+     */
+    ZFPROPERTY_ASSIGN(zfindex, childCountPerLine, 0)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, childCountPerLine)
 
     /**
      * @brief extra margin independent from children's layout param's margin, #ZFUIMarginZero by default
