@@ -96,11 +96,8 @@ typedef ZFInput (*ZFImpl_sys_SDL_FontLoader)(ZF_IN ZFImpl_sys_SDL_FontType fontT
 /**
  * @brief change the font source of #ZFImpl_sys_SDL_fontAlloc
  *
- * by default, we would access font by:
- * -  normal: zfres/ZF_impl/sys_SDL/font/IBMPlexMono-Regular.ttf
- * -  bold: zfres/ZF_impl/sys_SDL/font/IBMPlexMono-Bold.ttf
- * -  italic: zfres/ZF_impl/sys_SDL/font/IBMPlexMono-Italic.ttf
- * -  bold italic: zfres/ZF_impl/sys_SDL/font/IBMPlexMono-BoldItalic.ttf
+ * by default, we would try to find fonts under `ZF_impl/sys_SDL/font` by #ZFInputForRes,
+ * if more than one font found, which one is not ensured
  *
  * you may supply your own font by supply font loader callback,
  * which would return proper input callback points to a ttf font file\n

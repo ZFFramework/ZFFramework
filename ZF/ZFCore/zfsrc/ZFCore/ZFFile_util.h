@@ -228,7 +228,8 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFPathInfoTreePrint
  * @endcode
  *
  * fileCallback's param0 is #v_ZFPathInfo that describe the child file or dir,
- * and param1 is #v_ZFFileFindData
+ * and param1 is #v_ZFFileFindData,
+ * set #ZFArgs::eventFiltered to indicates process done
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForEach
         , ZFMP_IN(const ZFPathInfo &, pathInfo)

@@ -454,10 +454,14 @@ public:
                 }
 
                 if((fd->zfv.isDir() && forEachDir) || (!fd->zfv.isDir() && forEachFile)) {
-                    fileCallback.execute(ZFArgs()
+                    ZFArgs zfargs;
+                    fileCallback.execute(zfargs
                             .param0(pathInfo)
                             .param1(fd)
                         );
+                    if(zfargs.eventFiltered()) {
+                        break;
+                    }
                 }
                 if(isRecursive && fd->zfv.isDir()) {
                     action(impl, fileCallback, pathInfo);

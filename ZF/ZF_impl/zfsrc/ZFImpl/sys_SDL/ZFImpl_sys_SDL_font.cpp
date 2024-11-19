@@ -65,20 +65,17 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
 
     for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp) {
         ZFInput input;
-        switch(fontTypeTmp) {
-            case ZFImpl_sys_SDL_FontType_bold:
-                input = ZFInputForRes("ZF_impl/sys_SDL/font/IBMPlexMono-Bold.ttf");
-                break;
-            case ZFImpl_sys_SDL_FontType_italic:
-                input = ZFInputForRes("ZF_impl/sys_SDL/font/IBMPlexMono-Italic.ttf");
-                break;
-            case ZFImpl_sys_SDL_FontType_bold_italic:
-                input = ZFInputForRes("ZF_impl/sys_SDL/font/IBMPlexMono-BoldItalic.ttf");
-                break;
-            case ZFImpl_sys_SDL_FontType_normal:
-            default:
-                input = ZFInputForRes("ZF_impl/sys_SDL/font/IBMPlexMono-Regular.ttf");
-                break;
+        {
+            ZFLISTENER_1(impl
+                    , ZFInput &, input
+                    ) {
+                const ZFFileFindData &fd = zfargs.param1().to<v_ZFFileFindData *>()->zfv;
+                if(fd.name().length() > 4 && zfstringIsEqual(fd.name() + (fd.name().length() - 4), ".ttf")) {
+                    zfargs.eventFiltered(zftrue);
+                    input = ZFInputForPathInfo(zfargs.param0().to<v_ZFPathInfo *>()->zfv);
+                }
+            } ZFLISTENER_END()
+            ZFPathInfoForEachFile(ZFPathInfo(ZFPathType_res(), "ZF_impl/sys_SDL/font"), impl);
         }
         if(input) {
             ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);

@@ -85,31 +85,31 @@ public:
     /**
      * @brief extra tiny text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeExtraTiny, 8)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeExtraTiny, 9)
     /**
      * @brief tiny text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeTiny, 10)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeTiny, 11)
     /**
      * @brief small text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeSmall, 12)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeSmall, 13)
     /**
      * @brief normal text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeNormal, 14)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeNormal, 16)
     /**
      * @brief big text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeBig, 16)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeBig, 19)
     /**
      * @brief large text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeLarge, 18)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeLarge, 22)
     /**
      * @brief extra large text size hint
      */
-    ZFPROPERTY_ASSIGN(zffloat, textSizeExtraLarge, 20)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeExtraLarge, 25)
 
     // ============================================================
     // text settings
