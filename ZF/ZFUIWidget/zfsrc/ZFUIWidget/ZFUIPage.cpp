@@ -195,7 +195,7 @@ public:
                         );
             }
             else {
-                d->scheduleResumeAction(owner, resumeReason, pausePage, pauseReason);
+                d->scheduleResume(owner, resumeReason, pausePage, pauseReason);
             }
         } ZFLISTENER_END()
         owner->pageRequest(action);

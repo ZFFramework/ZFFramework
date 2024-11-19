@@ -1,5 +1,11 @@
 
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
+    if(WIN32)
+        execute_process(COMMAND "${ZF_ROOT_PATH}/tools/common/zfsh.bat" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh" "${ZF_ROOT_PATH}")
+    else()
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh" "${ZF_ROOT_PATH}")
+    endif()
+
     # https://open.oppomobile.com/new/developmentDoc/info?id=13223
     set(FONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
 
