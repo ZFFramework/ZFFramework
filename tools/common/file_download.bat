@@ -15,10 +15,28 @@ echo   file_download.bat SRC_URL DST_PATH
 exit /b 1
 :run
 
-for %%a in (%~f2\..) do set DST_PARENT=%%~fa
-mkdir "%DST_PARENT%" >nul 2>&1
+for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
+mkdir "%_DST_PARENT%" >nul 2>&1
 
-bitsadmin.exe /transfer "file_download.bat" "%SRC_URL%" "%DST_PATH%"
+call :DownloadFile "%SRC_URL%" "%DST_PATH%"
 
 exit /b 0
+
+:DownloadFile <SRC_URL> <DST_PATH>
+set vbs="%WORK_DIR%\..\..\_tmp\file_download.vbs"
+if exist %vbs% del /f /q %vbs%
+for %%a in (%vbs%\..) do set _vbs_PARENT=%%~fa
+mkdir "%_vbs_PARENT%" >nul 2>&1
+>%vbs%  echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
+>>%vbs% echo dim bStrm: Set bStrm = createobject("Adodb.Stream")
+>>%vbs% echo xHttp.Open "GET", "%~1", False
+>>%vbs% echo xHttp.Send
+>>%vbs% echo with bStrm
+>>%vbs% echo     .type = 1 '//binary
+>>%vbs% echo     .open
+>>%vbs% echo     .write xHttp.responseBody
+>>%vbs% echo     .savetofile "%~2", 2 '//overwrite
+>>%vbs% echo end with
+cscript //nologo %vbs%
+if exist %vbs% del /f /q %vbs%
 

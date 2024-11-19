@@ -1,6 +1,8 @@
 
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
+    # https://open.oppomobile.com/new/developmentDoc/info?id=13223
     set(FONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
+
     set(FONT_TMP_FILE "${ZF_ROOT_PATH}/_tmp/sys_SDL/font.zip")
     set(FONT_TMP_PATH "${ZF_ROOT_PATH}/_tmp/sys_SDL/font")
     if(NOT EXISTS ${FONT_TMP_FILE})
