@@ -965,6 +965,14 @@ public:
             , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
             , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
             )
+    /**
+     * @brief find view by class, return the view or null if not found
+     */
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUIView>, childFindByClass
+            , ZFMP_IN(const ZFClass *, cls)
+            , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
+            , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
+            )
 
 public:
     /**

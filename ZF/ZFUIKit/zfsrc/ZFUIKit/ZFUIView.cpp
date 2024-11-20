@@ -1972,6 +1972,58 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindById
     return zfnull;
 }
 
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindByClass
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
+        , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
+        ) {
+    if(cls == zfnull) {
+        return zfnull;
+    }
+
+    if(!findRecursively) {
+        for(zfindex i = 0; i < d->layerNormal.count(); ++i) {
+            if(d->layerNormal[i]->classData() == cls) {
+                return d->layerNormal[i];
+            }
+        }
+        if(includeInternalViews) {
+            for(zfindex i = 0; i < d->layerInternalImpl.count(); ++i) {
+                if(d->layerInternalImpl[i]->classData() == cls) {
+                    return d->layerInternalImpl[i];
+                }
+            }
+            for(zfindex i = 0; i < d->layerInternalBg.count(); ++i) {
+                if(d->layerInternalBg[i]->classData(), cls) {
+                    return d->layerInternalBg[i];
+                }
+            }
+            for(zfindex i = 0; i < d->layerInternalFg.count(); ++i) {
+                if(d->layerInternalFg[i]->classData() == cls) {
+                    return d->layerInternalFg[i];
+                }
+            }
+        }
+        return zfnull;
+    }
+
+    ZFCoreQueuePOD<ZFUIView *> toFind;
+    toFind.add(this);
+    while(!toFind.isEmpty()) {
+        ZFUIView *view = toFind.take();
+        if(view->classData() == cls) {
+            return view;
+        }
+        toFind.addFrom(view->childArray());
+        if(includeInternalViews) {
+            toFind.addFrom(view->d->layerInternalImpl);
+            toFind.addFrom(view->d->layerInternalBg);
+            toFind.addFrom(view->d->layerInternalFg);
+        }
+    }
+    return zfnull;
+}
+
 ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childWithParam
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUILayoutParam *, layoutParam)

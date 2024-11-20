@@ -359,7 +359,8 @@ void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         ret += this->errorHint();
     }
     for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
-        if(this->paramAt(i)) {
+        zfany p = this->paramAt(i);
+        if(p && p != ZFMP_DEF()) {
             ret += " param";
             zfindexToStringT(ret, i);
             ret += ":";
