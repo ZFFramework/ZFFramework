@@ -176,7 +176,7 @@ static void _ZFP_ZFDI_invoke(
         zfargs.success(zffalse);
         if(!zfargs.ignoreError()) {
             zfstring errorHint;
-            errorHint += "no matching method to call ";
+            errorHint += "no matching method to call: ";
             errorHint += name;
             errorHint += "(";
             ZFDI_paramInfoT(errorHint, zfargs);

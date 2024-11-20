@@ -77,14 +77,16 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
         return 1;
     }
 
-    zfstring errorHint = "failed to alloc: ";
-    errorHint += cls->classNameFull();
-    errorHint += "(";
-    ZFDI_paramInfoT(errorHint, zfargs);
-    errorHint += ")";
+    zfstring errorHint;
     if(zfargs.errorHint()) {
-        errorHint += ", errorHint:\n";
-        errorHint += zfargs.errorHint();
+        errorHint = zfargs.errorHint();
+    }
+    else {
+        errorHint += "failed to alloc: ";
+        errorHint += cls->classNameFull();
+        errorHint += "(";
+        ZFDI_paramInfoT(errorHint, zfargs);
+        errorHint += ")";
     }
     return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
 }

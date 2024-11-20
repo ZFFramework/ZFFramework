@@ -110,7 +110,7 @@ public:
         int error = lua_pcall(this->ownerL, 1, 0, 0);
         if(error != 0) {
             zfstring errorHint;
-            ZFImpl_ZFLua_execute_errorHandle(this->ownerL, error, &errorHint, zfstr("[%s]", this->logTag()));
+            ZFImpl_ZFLua_execute_errorHandle(this->ownerL, error, &errorHint, this->logTag());
             ZFLuaErrorOccurredTrim("%s", errorHint);
         }
     }
@@ -387,10 +387,11 @@ public:
         int dumpError = lua_dump(L, _funcWriter, this, ZFLogLevelIsActive(ZFLogLevel::e_Debug) ? 0 : 1);
         lua_pop(L, 1);
         if(dumpError != 0) {
-            zfstringAppend(errorHint,
-                "[%s] unable to dump function: %s",
-                this->logTag(),
-                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
+            zfstringAppend(errorHint
+                    , "[%s] unable to dump function: %s"
+                    , this->logTag()
+                    , ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue)
+                    );
             return zffalse;
         }
 
@@ -402,12 +403,13 @@ public:
             }
             ValueHolder v;
             if(!_fromUpvalue(v, L, name, upvalueIndex)) {
-                zfstringAppend(errorHint,
-                    "[%s] unable to store upvalue \"%s\" at index %s: %s",
-                    this->logTag(),
-                    name,
-                    (zfint)upvalueIndex,
-                    ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue));
+                zfstringAppend(errorHint
+                        , "[%s] unable to store upvalue \"%s\" at index %s: %s"
+                        , this->logTag()
+                        , name
+                        , (zfint)upvalueIndex
+                        , ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue)
+                        );
                 lua_pop(L, 1);
                 return zffalse;
             }
@@ -423,7 +425,6 @@ public:
             , ZF_IN const ZFArgs &zfargs
             ) {
         ZFImpl_ZFLua_luaErrorPrepare(L);
-        zfstring logTag = this->logTag();
 
         { // stack from empty to [func, zfargs]
             ZFCoreMutexLocker();
@@ -431,11 +432,12 @@ public:
 
             // restore function, stack: [func]
             this->funcReaderDone = zffalse;
-            int loadError = lua_load(L, _funcReader, this, logTag.cString(), "b");
+            int loadError = lua_load(L, _funcReader, this, this->logTag().cString(), "b");
             if(loadError != LUA_OK) {
                 ZFCoreCriticalMessageTrim(
-                    "[%s] unable to load function",
-                    logTag);
+                        "[%s] unable to load function"
+                        , this->logTag()
+                        );
                 return;
             }
             int luaFuncIndex = lua_gettop(L);
@@ -461,9 +463,11 @@ public:
             for(zfindex i = 0; i < this->upvalues.count(); ++i) {
                 const ValueHolder &v = this->upvalues[i];
                 if(!_ZFP_ZFCallbackForLua_toUpvalue(v, L, luaFuncIndex, luaLocalFuncNameList, luaLocalFuncIndex)) {
-                    ZFCoreCriticalMessageTrim("[%s] unable to restore upvalue: %s",
-                        logTag,
-                        valueHolderInfo(v));
+                    ZFCoreCriticalMessageTrim(
+                            "[%s] unable to restore upvalue: %s"
+                            , this->logTag()
+                            , valueHolderInfo(v)
+                            );
                     return;
                 }
             }
@@ -476,7 +480,7 @@ public:
         int error = lua_pcall(L, 1, 0, 0);
         if(error != 0) {
             zfstring errorHint;
-            ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, logTag);
+            ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, this->logTag());
             ZFLuaErrorOccurredTrim("%s", errorHint);
         }
     }
@@ -515,8 +519,9 @@ public:
             ZF_IN lua_State *L
             , ZF_OUT_OPT zfstring *errorHint
             ) {
+        this->ownerPathInfo.removeAll();
         lua_Debug ar;
-        for(int iStack = 1; ; ++iStack) {
+        for(int iStack = 1; !this->ownerPathInfo; ++iStack) {
             int success = lua_getstack(L, iStack, &ar);
             if(!success) {
                 break;
@@ -589,6 +594,7 @@ public:
 private:
     void _cleanup(void) {
         ZFCoreMutexLocker();
+        this->ownerPathInfo.removeAll();
         this->syncMode.removeAll();
         this->asyncMode.removeAll();
     }

@@ -265,26 +265,56 @@ void ZFImpl_ZFLua_execute_errorHandle(
         , ZF_IN int error
         , ZF_OUT_OPT zfstring *errHint /* = zfnull */
         , ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */
+        , ZF_IN_OPT zfindex errorLine /* = zfindexMax() */
         ) {
     if(error == 0 || errHint == zfnull) {
         return;
     }
-    // [string "?"]:123: xxx
+
     const char *nativeError = lua_tostring(L, -1);
-    zfindex tokenL = zfindexMax();
-    zfindex tokenR = zfindexMax();
-    tokenL = zfstringFind((const zfchar *)nativeError, zfindexMax(), "]:");
-    if(tokenL != zfindexMax()) {
-        tokenL += 2;
-        tokenR = zfstringFind((const zfchar *)nativeError + tokenL, zfindexMax(), ":");
-    }
 
     // detect error line
-    zfindex errorLine = zfindexMax();
-    if(tokenL != zfindexMax() && tokenR != zfindexMax()) {
-        zfindexFromStringT(errorLine, (const zfchar *)nativeError + tokenL, tokenR);
-        nativeError = nativeError + tokenL + tokenR + 1;
-        while(*nativeError == ' ') {++nativeError;}
+    // case 1: (lua syntax error, etc, usually the `123` is correct)
+    //     [string "?"]:123: xxx
+    //     ^^^^^^^^^^^^^^^^^^
+    //     lua error header
+    //
+    // case 2: (by luaL_error, the `123` may be incorrect)
+    //     [string "?"]:123: <{456}>xxx
+    //     ^^^^^^^^^^^^^^^^^^
+    //     lua error header
+    //                       ^^^^^^^
+    //                       special header passed from ZFImpl_ZFLua_luaError
+    {
+        zfindex tokenL = zfindexMax();
+        zfindex tokenR = zfindexMax();
+        zfindex offset = 0;
+        tokenL = zfstringFind((const zfchar *)nativeError, ": <{");
+        if(tokenL != zfindexMax()) {
+            tokenL += 4;
+            tokenR = zfstringFind((const zfchar *)nativeError + tokenL, "}>");
+            if(tokenR != zfindexMax()) {
+                tokenR += tokenL;
+                offset = tokenR + 2;
+            }
+        }
+        else {
+            tokenL = zfstringFind((const zfchar *)nativeError, "]:");
+            if(tokenL != zfindexMax()) {
+                tokenL += 2;
+                tokenR = zfstringFind((const zfchar *)nativeError + tokenL, ":");
+                if(tokenR != zfindexMax()) {
+                    tokenR += tokenL;
+                    offset = tokenR + 2;
+                }
+            }
+        }
+        if(tokenL != zfindexMax() && tokenR != zfindexMax()) {
+            if(errorLine == zfindexMax()) {
+                zfindexFromStringT(errorLine, (const zfchar *)nativeError + tokenL, tokenR - tokenL);
+            }
+            nativeError += offset;
+        }
     }
 
     if(!zfstringIsEmpty(chunkInfo)) {

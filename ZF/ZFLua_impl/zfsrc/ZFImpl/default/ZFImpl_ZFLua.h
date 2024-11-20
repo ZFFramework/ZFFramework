@@ -160,6 +160,7 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_execute_errorHandle(
         , ZF_IN int error
         , ZF_OUT_OPT zfstring *errHint = zfnull
         , ZF_IN_OPT const zfchar *chunkInfo = zfnull
+        , ZF_IN_OPT zfindex errorLine = zfindexMax()
         );
 
 // ============================================================
@@ -494,18 +495,29 @@ zfclassNotPOD ZFLIB_ZFLua_impl _ZFP_ZFImpl_ZFLua_luaErrorPrepare {
 public:
     _ZFP_ZFImpl_ZFLua_luaErrorPrepare(ZF_IN lua_State *L)
     : L(L)
-    , errorHint(zfnull)
+    , errorHint()
     {
     }
     ~_ZFP_ZFImpl_ZFLua_luaErrorPrepare(void) {
-        if(this->errorHint != zfnull) {
-            zfchar buf[4096];
-            zfindex size = errorHint->length() >= sizeof(buf) ? sizeof(buf) - 1 : errorHint->length();
-            zfmemcpy(buf, errorHint->cString(), size * sizeof(zfchar));
-            buf[size] = '\0';
-            zfdelete(this->errorHint);
+        if(this->errorHint) {
+            lua_Debug ar;
+            for(int iStack = 1; ; ++iStack) {
+                int success = lua_getstack(L, iStack, &ar);
+                if(!success) {
+                    break;
+                }
+                success = lua_getinfo(L, "nSltu", &ar);
+                if(!success) {
+                    break;
+                }
+                if((iStack == 2 || ar.name == NULL) && ar.currentline > 0) {
+                    // pass special header to ZFImpl_ZFLua_execute_errorHandle
+                    this->errorHint.insert(0, zfstr("<{%s}>", (zfindex)ar.currentline));
+                    break;
+                }
+            }
 
-            luaL_error(L, "%s", buf);
+            luaL_error(L, "%s", this->errorHint.cString());
         }
     }
 public:
@@ -514,13 +526,12 @@ public:
             , ZF_IN const zfchar *text
             ) {
         ZFCoreAssert(this->errorHint == zfnull);
-        this->errorHint = zfnew(zfstring);
-        *(this->errorHint) += text;
+        this->errorHint += text;
         return 0;
     }
 private:
     lua_State *L;
-    zfstring *errorHint;
+    zfstring errorHint;
 };
 
 /** @brief see #ZFImpl_ZFLua_luaErrorPrepare */
