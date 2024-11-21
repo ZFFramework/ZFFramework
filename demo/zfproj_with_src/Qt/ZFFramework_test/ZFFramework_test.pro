@@ -69,26 +69,23 @@ CONFIG(debug, debug|release) {
 }
 
 win32 {
-    _ZF_QT_TYPE=Qt_Windows
     _ZF_SCRIPT_CALL=
     _ZF_SCRIPT_EXT=bat
-    _ZF_DESTDIR = $${ZF_BUILD_PATH}/$${_ZF_QT_TYPE}/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
+    _ZF_DESTDIR = $${ZF_BUILD_PATH}/Qt/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
     _ZF_RES_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/zfres))
     _ZF_LIB_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/.))
 }
 unix:!macx {
-    _ZF_QT_TYPE=Qt_Posix
     _ZF_SCRIPT_CALL=sh
     _ZF_SCRIPT_EXT=sh
-    _ZF_DESTDIR = $${ZF_BUILD_PATH}/$${_ZF_QT_TYPE}/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
+    _ZF_DESTDIR = $${ZF_BUILD_PATH}/Qt/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
     _ZF_RES_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/zfres))
     _ZF_LIB_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/.))
 }
 macx {
-    _ZF_QT_TYPE=Qt_MacOS
     _ZF_SCRIPT_CALL=sh
     _ZF_SCRIPT_EXT=sh
-    _ZF_DESTDIR = $${ZF_BUILD_PATH}/$${_ZF_QT_TYPE}/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
+    _ZF_DESTDIR = $${ZF_BUILD_PATH}/Qt/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
     _ZF_RES_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/"$${TARGET}".app/Contents/Resources/zfres))
     _ZF_LIB_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/"$${TARGET}".app/Contents/Frameworks))
 }

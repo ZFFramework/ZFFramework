@@ -52,26 +52,23 @@ CONFIG(debug, debug|release) {
 }
 
 win32 {
-    _ZF_QT_TYPE=Qt_Windows
     _ZF_SCRIPT_CALL=
     _ZF_SCRIPT_EXT=bat
-    _ZF_DESTDIR = $${ZF_BUILD_PATH}/$${_ZF_QT_TYPE}/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
+    _ZF_DESTDIR = $${ZF_BUILD_PATH}/Qt/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
     _ZF_RES_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/zfres))
     _ZF_LIB_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/.))
 }
 unix:!macx {
-    _ZF_QT_TYPE=Qt_Posix
     _ZF_SCRIPT_CALL=sh
     _ZF_SCRIPT_EXT=sh
-    _ZF_DESTDIR = $${ZF_BUILD_PATH}/$${_ZF_QT_TYPE}/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
+    _ZF_DESTDIR = $${ZF_BUILD_PATH}/Qt/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
     _ZF_RES_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/zfres))
     _ZF_LIB_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/.))
 }
 macx {
-    _ZF_QT_TYPE=Qt_MacOS
     _ZF_SCRIPT_CALL=sh
     _ZF_SCRIPT_EXT=sh
-    _ZF_DESTDIR = $${ZF_BUILD_PATH}/$${_ZF_QT_TYPE}/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
+    _ZF_DESTDIR = $${ZF_BUILD_PATH}/Qt/$${ZF_PROJ_NAME}/$${_ZF_BUILD_TYPE}
     _ZF_RES_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/"$${TARGET}".app/Contents/Resources/zfres))
     _ZF_LIB_DEPLOY_PATH=$$system_path($$clean_path($${_ZF_DESTDIR}/"$${TARGET}".app/Contents/Frameworks))
 }
@@ -79,17 +76,17 @@ macx {
 defineReplace(ZFAddLib) {
     _ZF_IS_IMPL=$$1
     _ZF_LIBNAME=$$2
-    LIBS += -L$${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/all/lib -l$${_ZF_LIBNAME}
+    LIBS += -L$${ZF_ROOT_PATH}/_release/Qt/all/lib -l$${_ZF_LIBNAME}
     export(LIBS)
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_res.$${_ZF_SCRIPT_EXT})) \
-        $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${_ZF_LIBNAME}/zfres)) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/Qt/module/$${_ZF_LIBNAME}/zfres)) \
         $${_ZF_RES_DEPLOY_PATH} \
         $$escape_expand(\\n\\t)
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/spec/Qt/install_lib.$${_ZF_SCRIPT_EXT})) \
         $${_ZF_LIBNAME} \
-        $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${_ZF_LIBNAME}/lib)) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/Qt/module/$${_ZF_LIBNAME}/lib)) \
         $${_ZF_LIB_DEPLOY_PATH} \
         $$escape_expand(\\n\\t)
     macx {
@@ -136,7 +133,7 @@ QT += network
 # no need to change these
 # ======================================================================
 INCLUDEPATH += $${_PRO_FILE_PWD_}/../../../zfsrc
-INCLUDEPATH += $${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/all/include
+INCLUDEPATH += $${ZF_ROOT_PATH}/_release/Qt/all/include
 
 QT += core
 
@@ -161,7 +158,7 @@ UI_DIR = $${DESTDIR}/.ui
 
 # ======================================================================
 system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${_PRO_FILE_PWD_}/../../../../zfsetup.$${_ZF_SCRIPT_EXT})))
-system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/release/release_$${_ZF_QT_TYPE}.$${_ZF_SCRIPT_EXT})) 1)
+system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/release/release_Qt.$${_ZF_SCRIPT_EXT})) 1)
 
 exists(qt_main.cpp) {
     SOURCES += qt_main.cpp

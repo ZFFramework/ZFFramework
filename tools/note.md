@@ -100,9 +100,7 @@
                 lib/
                     libLibName.a
                 zfres/
-    Qt_MacOS/
-    Qt_Posix
-    Qt_Windows/
+    Qt/
         all/
         module/
             LibName/
@@ -119,9 +117,7 @@
     _tmp/
         Android/
         iOS/
-        Qt_MacOS/
-        Qt_Posix/
-        Qt_Windows/
+        Qt/
             ProjName/
                 app/
                     zfres/

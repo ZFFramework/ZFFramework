@@ -6,10 +6,10 @@ set CHECK_ONLY=%~1%
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 
 if not defined CHECK_ONLY goto :run
-if not exist "%ZF_ROOT_PATH%\_release\Qt_Windows\all\lib" goto :run
+if not exist "%ZF_ROOT_PATH%\_release\Qt\all\lib" goto :run
 exit /b 0
 :run
 
 call "%ZF_ROOT_PATH%\zfsetup.bat"
-call "%ZF_ROOT_PATH%\tools\common\zfsh.bat" "%WORK_DIR%\release.zfsh" Qt_Windows
+call "%ZF_ROOT_PATH%\tools\common\zfsh.bat" "%WORK_DIR%\release.zfsh" Qt
 

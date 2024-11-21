@@ -32,7 +32,8 @@ Homepage:
 
     [![Doxygen](https://github.com/ZFFramework/ZFFramework/actions/workflows/doxygen.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/doxygen.yml)
     [![Android](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml)
-    [![CMake](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake.yml)
+    [![CMake Linux](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake_linux.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake_linux.yml)
+    [![CMake MacOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake_macos.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake_macos.yml)
     [![iOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml)
     [![Qt Linux](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml)
     [![Qt MacOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml)

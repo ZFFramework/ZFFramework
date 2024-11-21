@@ -10,7 +10,7 @@ if not defined PROJ_PATH goto :usage
 goto :run
 :usage
 echo usage:
-echo   buildapp_Qt_Windows.bat PROJ_NAME PROJ_PATH
+echo   buildapp_Qt.bat PROJ_NAME PROJ_PATH
 exit /b 1
 :run
 
@@ -28,7 +28,7 @@ if not defined ZF_QT_MAKE (
 )
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set _TMP_PATH=%PROJ_PATH%\..\..\_tmp\Qt_Windows\%PROJ_NAME%\release
+set _TMP_PATH=%PROJ_PATH%\..\..\_tmp\Qt\%PROJ_NAME%\release
 
 set _OLD_DIR=%cd%
 cd /d "%PROJ_PATH%/Qt/%PROJ_NAME%"

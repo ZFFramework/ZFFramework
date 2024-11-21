@@ -35,8 +35,8 @@ if localPathInfo:pathType() ~= ZFPathType_file() then
     ZFLogTrim('only support from file')
     return
 end
-local WORK_DIR = ZFPathInfoForLocal(localPathInfo, '..'):pathData()
-ZF_ROOT_PATH = ZFPathInfoForLocal(localPathInfo, '../../..'):pathData()
+local WORK_DIR = ZFPathInfoForLocal(localPathInfo, '.'):pathData()
+ZF_ROOT_PATH = ZFPathInfoForLocal(localPathInfo, '../..'):pathData()
 
 local _PY = nil
 if os.execute('python --version >/dev/null 2>&1') then

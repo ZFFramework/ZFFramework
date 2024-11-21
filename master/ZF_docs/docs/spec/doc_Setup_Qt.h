@@ -24,8 +24,8 @@
  *   @endcode
  * -# specify include path and lib search path in your pro file:
  *   @code
- *     INCLUDEPATH += path_to_ZFFramework/_release/your_Qt_type/all/include
- *     LIBS += -Lpath_to_ZFFramework/_release/your_Qt_type/all/lib your_linker_flags -lyour_required_ZF_lib_name
+ *     INCLUDEPATH += path_to_ZFFramework/_release/Qt/all/include
+ *     LIBS += -Lpath_to_ZFFramework/_release/Qt/all/lib your_linker_flags -lyour_required_ZF_lib_name
  *   @endcode
  * -# manually add loader routine to your project:
  *   @code

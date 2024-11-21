@@ -10,7 +10,7 @@ if not defined PROJ_PATH goto :usage
 goto :run
 :usage
 echo usage:
-echo   releaselib_Qt_Windows.bat PROJ_NAME PROJ_PATH
+echo   releaselib_Qt.bat PROJ_NAME PROJ_PATH
 exit /b 1
 :run
 
@@ -28,17 +28,15 @@ if not defined ZF_QT_MAKE (
 )
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set QT_TYPE=Qt_Windows
-set RELEASE_PATH=%ZF_ROOT_PATH%\_release\%QT_TYPE%
 
-call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%RELEASE_PATH%\module\%PROJ_NAME%\lib" "*%PROJ_NAME%*"
+call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%ZF_ROOT_PATH%\_release\Qt\module\%PROJ_NAME%\lib" "*%PROJ_NAME%*"
 if "%errorlevel%" == "0" (
     goto :EOF
 )
 
 set _OLD_DIR=%cd%
-mkdir "%ZF_ROOT_PATH%\_tmp\%QT_TYPE%\%PROJ_NAME%\build" >nul 2>&1
-cd /d "%ZF_ROOT_PATH%\_tmp\%QT_TYPE%\%PROJ_NAME%\build"
+mkdir "%ZF_ROOT_PATH%\_tmp\Qt\%PROJ_NAME%\build" >nul 2>&1
+cd /d "%ZF_ROOT_PATH%\_tmp\Qt\%PROJ_NAME%\build"
 del /f/s/q ".\*.dll" /f/s/q/a >nul 2>&1
 del /f/s/q ".\*.a" /f/s/q/a >nul 2>&1
 qmake "%PROJ_PATH%\Qt\%PROJ_NAME%\%PROJ_NAME%.pro" CONFIG+=release
