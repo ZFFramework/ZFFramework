@@ -146,7 +146,6 @@ public:
                 && (this->pimplOwner->aniHide() == zfnull || !this->pimplOwner->aniHide()->started())
                 ) {
             this->viewUIEnableTree(zftrue);
-            ZFUIViewBlinkWhenFocusAutoApplyPause();
             if(this->pimplOwner->autoFocus()) {
                 zfanyT<ZFUIView> v = this->pimplOwner->dialogFocusOnUpdate();
                 if(this->pimplOwner->observerHasAdd(ZFUIDialog::EventDialogFocusOnUpdate())) {
@@ -163,7 +162,6 @@ public:
             else {
                 this->dialogClickMask->focusRequest(zftrue);
             }
-            ZFUIViewBlinkWhenFocusAutoApplyResume();
             this->pimplOwner->dialogAfterShow();
         }
     }

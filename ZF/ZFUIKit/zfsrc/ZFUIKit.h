@@ -35,7 +35,6 @@
 #include "ZFUIKit/ZFUITypeDef.h"
 #include "ZFUIKit/ZFUIView.h"
 #include "ZFUIKit/ZFUIViewBlink.h"
-#include "ZFUIKit/ZFUIViewBlinkWhenFocus.h"
 #include "ZFUIKit/ZFUIViewCapture.h"
 #include "ZFUIKit/ZFUIViewFocus.h"
 #include "ZFUIKit/ZFUIViewPositionOnScreen.h"

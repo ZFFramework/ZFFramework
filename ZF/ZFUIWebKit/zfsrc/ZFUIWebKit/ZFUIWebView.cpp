@@ -74,10 +74,5 @@ void ZFUIWebView::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIWebView_ignoreFrom_ZFUIViewBlinkWhenFoocus, ZFLevelZFFrameworkNormal) {
-    ZFUIViewBlinkWhenFocusFilter().classFilter.filter(ZFUIWebView::ClassData());
-}
-ZF_GLOBAL_INITIALIZER_END(ZFUIWebView_ignoreFrom_ZFUIViewBlinkWhenFoocus)
-
 ZF_NAMESPACE_GLOBAL_END
 
