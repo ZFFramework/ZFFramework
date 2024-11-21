@@ -161,6 +161,10 @@ public:
      * @brief page group id, see #ZFUIPageManager::pageResumeForGroupId for more info
      */
     ZFPROPERTY_ASSIGN(zfstring, pageGroupId)
+    /**
+     * @brief store page result, passed to pageResultCallback of #pageCreate
+     */
+    ZFPROPERTY_RETAIN(zfany, pageResult)
 
     // ============================================================
     // page state
@@ -175,9 +179,16 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, pageResumed)
 
 public:
-    /** @brief util to #ZFUIPageManager::pageCreate */
-    ZFMETHOD_DECLARE_1(void, pageCreate
+    /**
+     * @brief util to #ZFUIPageManager::pageCreate
+     *
+     * the optional pageResultCallback would be called when page destroyed,
+     * sender would be the owner page calling pageCreate,
+     * and param0 would be the #pageResult of the new page
+     */
+    ZFMETHOD_DECLARE_2(void, pageCreate
             , ZFMP_IN(ZFUIPage *, page)
+            , ZFMP_IN_OPT(const ZFListener &, pageResultCallback, zfnull)
             )
     /** @brief util to #ZFUIPageManager::pageReplace */
     ZFMETHOD_DECLARE_1(void, pageReplace

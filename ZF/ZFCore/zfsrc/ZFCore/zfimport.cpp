@@ -25,14 +25,24 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
     if(!input) {
         return zffalse;
     }
-    _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
-    if(input.callbackId() != zfnull) {
+    ZF_GLOBAL_INITIALIZER_CLASS(zfimportDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder);
+    _ZFP_zfimportCacheMapType &cacheMap = d->cacheMap;
+    zfstring callbackId = input.callbackId();
+    if(callbackId) {
         ZFCoreMutexLocker();
-        _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(input.callbackId());
+        _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(callbackId);
         if(it != cacheMap.end()) {
-            ret = it->second;
+            if(it->second == ZFNull()) {
+                ret = zfnull;
+            }
+            else {
+                ret = it->second;
+            }
             return zftrue;
         }
+
+        // mark loading
+        cacheMap[callbackId] = ZFNull();
     }
 
     zfobj<v_ZFInput> inputHolder;
@@ -41,9 +51,15 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
     zfbool success = ZFObjectIOLoadT(ret, input);
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFImportEnd(), inputHolder, ret);
 
-    if(success && input.callbackId() != zfnull) {
+    if(callbackId) {
         ZFCoreMutexLocker();
-        cacheMap[input.callbackId()] = ret;
+        if(success) {
+            cacheMap[callbackId] = ret;
+        }
+        else {
+            // unmark loading
+            cacheMap.erase(callbackId);
+        }
     }
 
     return success;

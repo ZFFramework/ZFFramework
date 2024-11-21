@@ -29,9 +29,24 @@ ZFMETHOD_DEFINE_0(ZFUIPage, zfbool, pageResumed) {
     return _ZFP_ZFUIPage_pageResumed;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIPage, void, pageCreate
+ZFMETHOD_DEFINE_2(ZFUIPage, void, pageCreate
         , ZFMP_IN(ZFUIPage *, page)
+        , ZFMP_IN_OPT(const ZFListener &, pageResultCallback, zfnull)
         ) {
+    if(page && pageResultCallback) {
+        zfself *owner = this;
+        ZFLISTENER_2(impl
+                , zfweakT<ZFUIPage>, owner
+                , ZFListener, pageResultCallback
+                ) {
+            ZFUIPage *page = zfargs.sender();
+            pageResultCallback.execute(ZFArgs()
+                    .sender(owner)
+                    .param0(page->pageResult())
+                    );
+        } ZFLISTENER_END()
+        page->observerAddForOnce(ZFUIPage::EventPageOnDestroy(), impl);
+    }
     this->pageManager()->pageCreate(page);
 }
 ZFMETHOD_DEFINE_1(ZFUIPage, void, pageReplace
