@@ -167,7 +167,23 @@ private:
             , ZF_IN int widthHint
             , ZF_IN zffloat textSize
             ) {
-        ZFImpl_sys_SDL_fontAccess(sdlFont, ZFImpl_sys_SDL_FontType_normal, (zfint)textSize);
+        ZFImpl_sys_SDL_FontType sdlFontType = ZFImpl_sys_SDL_FontType_normal;
+        switch(textView->textAppearance()) {
+            case ZFUITextAppearance::e_Bold:
+                sdlFontType = ZFImpl_sys_SDL_FontType_bold;
+                break;
+            case ZFUITextAppearance::e_Italic:
+                sdlFontType = ZFImpl_sys_SDL_FontType_italic;
+                break;
+            case ZFUITextAppearance::e_BoldItalic:
+                sdlFontType = ZFImpl_sys_SDL_FontType_bold_italic;
+                break;
+            case ZFUITextAppearance::e_Normal:
+            default:
+                sdlFontType = ZFImpl_sys_SDL_FontType_normal;
+                break;
+        }
+        ZFImpl_sys_SDL_fontAccess(sdlFont, sdlFontType, (zfint)textSize);
         if(sdlFont == zfnull) {
             return zffalse;
         }

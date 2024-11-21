@@ -510,9 +510,16 @@ public:
             , ZFMP_IN_OPT(zfbool, pauseAniHigherPriority, zffalse)
             )
 
-    /** @brief create and resume page */
-    ZFMETHOD_DECLARE_1(void, pageCreate
+    /**
+     * @brief create and resume page
+     *
+     * the optional pageResultCallback would be called when page destroyed,
+     * sender would be the owner manager,
+     * and param0 would be the #pageResult of the new page
+     */
+    ZFMETHOD_DECLARE_2(void, pageCreate
             , ZFMP_IN(ZFUIPage *, page)
+            , ZFMP_IN_OPT(const ZFListener &, pageResultCallback, zfnull)
             )
     /** @brief util to destroy current and create new page */
     ZFMETHOD_DECLARE_1(void, pageReplace

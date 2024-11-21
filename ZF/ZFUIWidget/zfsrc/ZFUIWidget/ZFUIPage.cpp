@@ -36,7 +36,7 @@ ZFMETHOD_DEFINE_2(ZFUIPage, void, pageCreate
     if(page && pageResultCallback) {
         zfself *owner = this;
         ZFLISTENER_2(impl
-                , zfweakT<ZFUIPage>, owner
+                , zfweak, owner
                 , ZFListener, pageResultCallback
                 ) {
             ZFUIPage *page = zfargs.sender();
@@ -701,11 +701,27 @@ ZFMETHOD_DEFINE_3(ZFUIPageManager, void, pageAniOverride
     d->pageAniOverrideList.add(data);
 }
 
-ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageCreate
+ZFMETHOD_DEFINE_2(ZFUIPageManager, void, pageCreate
         , ZFMP_IN(ZFUIPage *, page)
+        , ZFMP_IN_OPT(const ZFListener &, pageResultCallback, zfnull)
         ) {
     if(page == zfnull) {
         return;
+    }
+
+    if(pageResultCallback) {
+        zfself *owner = this;
+        ZFLISTENER_2(impl
+                , zfweak, owner
+                , ZFListener, pageResultCallback
+                ) {
+            ZFUIPage *page = zfargs.sender();
+            pageResultCallback.execute(ZFArgs()
+                    .sender(owner)
+                    .param0(page->pageResult())
+                    );
+        } ZFLISTENER_END()
+        page->observerAddForOnce(ZFUIPage::EventPageOnDestroy(), impl);
     }
 
     ZFUIPageManager *pm = this;
