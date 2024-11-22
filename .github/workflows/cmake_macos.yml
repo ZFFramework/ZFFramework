@@ -22,8 +22,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup SDL
-      uses: libsdl-org/setup-sdl@v1
+    - name: get-cmake
+      uses: lukka/get-cmake@latest
 
     - name: ZFSetup
       run: |
