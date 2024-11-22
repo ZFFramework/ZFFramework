@@ -1,5 +1,8 @@
 
-<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_orig"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_orig" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\file_merge.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\include\begin_code.h" "<ZF_WORK_DIR>\zf3rd_SDL_prefix.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_orig\include\begin_code.h"
+
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\include" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
 
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_image" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_image"
