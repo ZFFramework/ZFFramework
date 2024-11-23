@@ -38,7 +38,7 @@ echo set _ZF_P8=%%~8%%>>"%TMP_PATH%"
 for /f "tokens=*" %%a in (%ZFSH_PATH%) do (
     set line=%%a
 
-    set line=!line:^<ZF_COMMENT^>=rem!
+    set line=!line:^<ZF_COMMENT^>=rem !
     set line=!line:^<ZF_SH^>=call!
     set line=!line:^<ZF_SH_EXT^>=bat!
 
