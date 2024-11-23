@@ -14,7 +14,10 @@
         #define ZF_ENV_IMPORT
     #endif
 #endif
+#ifndef ZFLIB_SDL
+    #define ZFLIB_SDL ZF_ENV_IMPORT
+#endif
 #ifndef DECLSPEC
-    #define DECLSPEC ZF_ENV_IMPORT
+    #define DECLSPEC ZFLIB_SDL
 #endif
 
