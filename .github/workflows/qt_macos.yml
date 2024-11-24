@@ -17,10 +17,10 @@ jobs:
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@v3
 
     - name: Setup Qt
-      uses: jurplel/install-qt-action@latest
+      uses: jurplel/install-qt-action@v3.3.0
       with:
         host: mac
         target: desktop

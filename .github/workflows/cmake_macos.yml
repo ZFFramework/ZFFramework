@@ -20,13 +20,13 @@ jobs:
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@v3
 
     - name: get-cmake
       uses: lukka/get-cmake@latest
 
     - name: Setup SDL
-      uses: libsdl-org/setup-sdl@latest
+      uses: libsdl-org/setup-sdl@v1
       with:
           install-dependencies: true
 

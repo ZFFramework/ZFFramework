@@ -17,16 +17,16 @@ jobs:
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@v3
 
     - name: Setup MSVC cmd
-      uses: TheMrMilchmann/setup-msvc-dev@latest
+      uses: TheMrMilchmann/setup-msvc-dev@v3
       with:
         export-path-to-vcvarsall: VCVARSALL_PATH
         arch: x64
 
     - name: Setup Qt
-      uses: jurplel/install-qt-action@latest
+      uses: jurplel/install-qt-action@v3.3.0
       with:
         host: windows
         target: desktop
