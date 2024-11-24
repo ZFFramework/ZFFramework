@@ -59,7 +59,7 @@ static void _ZFP_ZFMethodGenericInvokerParamsCheck_paramTypeMismatch(
         zfargs.errorHint(zfstr("unable to access param%s as type (%s): (%s)%s"
                     , N
                     , zfargs.ownerMethod()->paramTypeIdAt(N)
-                    , p ? p->classData()->classNameFull() : ZFTOKEN_zfnull
+                    , p ? p->classData()->classNameFull().cString() : ZFTOKEN_zfnull
                     , p
                     ));
     }
@@ -117,7 +117,7 @@ zfbool _ZFP_MtdGIParamCheck(
             zfargs.errorHint(zfstr("unable to access param%s as type (%s): (%s)%s"
                         , paramIndex
                         , paramType
-                        , (param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull)
+                        , (param != zfnull ? param->classData()->className().cString() : ZFTOKEN_zfnull)
                         , param
                         ));
         }

@@ -387,7 +387,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             , ZF_IN EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        ret += ((value == zfnull) ? "" : value->enumName()); \
+        ret += ((value == zfnull) ? zfstring() : value->enumName()); \
         return zftrue; \
     } \
     zfbool EnumName##FromStringT( \

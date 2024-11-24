@@ -301,7 +301,7 @@ static void _ZFP_PropDynReg_setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
         zfargs.success(zffalse);
         if(!zfargs.ignoreError()) {
             zfargs.errorHint(zfstr("invalid value: (%s)%s, desired: %s"
-                        , valueNew != zfnull ? valueNew->classData()->className() : ZFTOKEN_zfnull
+                        , valueNew != zfnull ? valueNew->classData()->className().cString() : ZFTOKEN_zfnull
                         , valueNew
                         , property->isRetainProperty()
                         ? property->propertyClassOfRetainProperty()->classNameFull()
