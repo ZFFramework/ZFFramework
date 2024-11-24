@@ -40,8 +40,8 @@ ninja
 set _RESULT=%errorlevel%
 cd /d "%_OLD_DIR%"
 
-"%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\%PROJ_NAME%" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\%PROJ_NAME%"
-"%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\zfres" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\zfres"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\%PROJ_NAME%.exe" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\%PROJ_NAME%.exe"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\zfres" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\zfres"
 
 exit /b %_RESULT%
 
