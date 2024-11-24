@@ -15,7 +15,7 @@ jobs:
       ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@latest
 
     - name: ZFSetup
       run: |
@@ -24,7 +24,7 @@ jobs:
         mkdir -p ./_tmp
 
     - name: ZF gen doc
-      uses: mattnotmitt/doxygen-action@edge
+      uses: mattnotmitt/doxygen-action@latest
       with:
         working-directory: master/ZF_docs/Doxygen
         doxyfile-path: ./Doxyfile
