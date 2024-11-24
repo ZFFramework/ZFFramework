@@ -140,8 +140,8 @@ public:
         drawImpl->sdlRenderer = sdlRenderer;
         drawImpl->framePixel.x = 0;
         drawImpl->framePixel.y = 0;
-        drawImpl->framePixel.w = imageSizePixel.width;
-        drawImpl->framePixel.h = imageSizePixel.height;
+        drawImpl->framePixel.w = (int)imageSizePixel.width;
+        drawImpl->framePixel.h = (int)imageSizePixel.height;
         drawImpl->treeAlpha = 1;
         drawImpl->nativeImage = nativeImage;
 
@@ -180,8 +180,10 @@ public:
         Uint8 rOld, gOld, bOld, aOld;
         SDL_GetRenderDrawColor(drawImpl->sdlRenderer, &rOld, &gOld, &bOld, &aOld);
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer
-                , 0xFF * ZFUIColorGetR(color), 0xFF * ZFUIColorGetG(color), 0xFF * ZFUIColorGetB(color)
-                , 0xFF * (ZFUIColorGetA(color) * drawImpl->treeAlpha)
+                , (Uint8)(0xFF * ZFUIColorGetR(color))
+                , (Uint8)(0xFF * ZFUIColorGetG(color))
+                , (Uint8)(0xFF * ZFUIColorGetB(color))
+                , (Uint8)(0xFF * (ZFUIColorGetA(color) * drawImpl->treeAlpha))
             );
         SDL_RenderFillRect(drawImpl->sdlRenderer, &(drawImpl->framePixel));
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer, rOld, gOld, bOld, aOld);
@@ -193,17 +195,19 @@ public:
             ) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
         SDL_Rect rect;
-        rect.x = drawImpl->framePixel.x + targetFramePixel.x;
-        rect.y = drawImpl->framePixel.y + targetFramePixel.y;
-        rect.w = targetFramePixel.width;
-        rect.h = targetFramePixel.height;
+        rect.x = (int)(drawImpl->framePixel.x + targetFramePixel.x);
+        rect.y = (int)(drawImpl->framePixel.y + targetFramePixel.y);
+        rect.w = (int)targetFramePixel.width;
+        rect.h = (int)targetFramePixel.height;
         ZFImpl_sys_SDL_View::renderRectCalc(rect, rect, drawImpl->framePixel);;
 
         Uint8 rOld, gOld, bOld, aOld;
         SDL_GetRenderDrawColor(drawImpl->sdlRenderer, &rOld, &gOld, &bOld, &aOld);
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer
-                , 0xFF * ZFUIColorGetR(color), 0xFF * ZFUIColorGetG(color), 0xFF * ZFUIColorGetB(color)
-                , 0xFF * (ZFUIColorGetA(color) * drawImpl->treeAlpha)
+                , (Uint8)(0xFF * ZFUIColorGetR(color))
+                , (Uint8)(0xFF * ZFUIColorGetG(color))
+                , (Uint8)(0xFF * ZFUIColorGetB(color))
+                , (Uint8)(0xFF * (ZFUIColorGetA(color) * drawImpl->treeAlpha))
             );
         SDL_RenderFillRect(drawImpl->sdlRenderer, &rect);
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer, rOld, gOld, bOld, aOld);
@@ -217,10 +221,10 @@ public:
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
 
         SDL_Rect rect;
-        rect.x = drawImpl->framePixel.x + targetFramePixel.x;
-        rect.y = drawImpl->framePixel.y + targetFramePixel.y;
-        rect.w = targetFramePixel.width;
-        rect.h = targetFramePixel.height;
+        rect.x = (int)(drawImpl->framePixel.x + targetFramePixel.x);
+        rect.y = (int)(drawImpl->framePixel.y + targetFramePixel.y);
+        rect.w = (int)(targetFramePixel.width);
+        rect.h = (int)(targetFramePixel.height);
 
         SDL_Rect rectClipped;
         ZFImpl_sys_SDL_View::renderRectCalc(rectClipped, rect, drawImpl->framePixel);;
@@ -234,10 +238,10 @@ public:
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(drawImpl->sdlRenderer, (SDL_Surface *)image->nativeImage());
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
         if(zfmemcmp(&rect, &rectClipped, sizeof(SDL_Rect)) == 0) {
-            srcRect.x = imageFramePixel.x;
-            srcRect.y = imageFramePixel.y;
-            srcRect.w = imageFramePixel.width;
-            srcRect.h = imageFramePixel.height;
+            srcRect.x = (int)imageFramePixel.x;
+            srcRect.y = (int)imageFramePixel.y;
+            srcRect.w = (int)imageFramePixel.width;
+            srcRect.h = (int)imageFramePixel.height;
         }
         else {
             srcRect.x = (int)((float)imageFramePixel.width * (rectClipped.x - rect.x) / rect.w);

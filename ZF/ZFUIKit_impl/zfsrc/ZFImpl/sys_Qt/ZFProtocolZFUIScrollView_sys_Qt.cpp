@@ -223,13 +223,13 @@ protected:
 
         QGraphicsSceneMouseEvent *e = (QGraphicsSceneMouseEvent *)event;
 
-        QGraphicsWidget *touchedFgView = this->_ZFP_findFgView(e->pos().x() + xOffset, e->pos().y() + yOffset);
+        QGraphicsWidget *touchedFgView = this->_ZFP_findFgView((zffloat)(e->pos().x() + xOffset), (zffloat)(e->pos().y() + yOffset));
         if(touchedFgView != zfnull) {
             // cloned even if no extra processing
             // to ensure tag map would be cleaned to the event
             QGraphicsSceneMouseEvent *t = _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventClone(e, e->type(), QPointF(e->pos().x() + xOffset, e->pos().y() + yOffset));
 
-            QEvent *eTmp = (QEvent *)this->translateFromParentToChild(touchedFgView, t, t->pos().x() + xOffset, t->pos().y() + yOffset);
+            QEvent *eTmp = (QEvent *)this->translateFromParentToChild(touchedFgView, t, (zffloat)(t->pos().x() + xOffset), (zffloat)(t->pos().y() + yOffset));
             _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventTagAccess(eTmp)->forwardedFlag.insert(touchedFgView);
 
             ++_ZFP_ZFUIScrollViewImpl_sys_Qt_sendEvent_flag;
@@ -377,7 +377,7 @@ public:
                 if(qobject_cast<_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *>(t) != zfnull) {
                     return t;
                 }
-                QGraphicsWidget *inner = _ZFP_findChildRecursive(t, x - t->geometry().x(), y - t->geometry().y(), findScrollView);
+                QGraphicsWidget *inner = _ZFP_findChildRecursive(t, (zffloat)(x - t->geometry().x()), (zffloat)(y - t->geometry().y()), findScrollView);
                 if(inner != zfnull) {
                     return inner;
                 }
@@ -414,8 +414,8 @@ public:
             if(t != zfnull) {
                 QGraphicsWidget *innerChild = _ZFP_findChildRecursive(
                     t,
-                    x - _ZFP_scrollViewContentView->geometry().x() - t->geometry().x(),
-                    y - _ZFP_scrollViewContentView->geometry().y() - t->geometry().y(),
+                    (zffloat)(x - _ZFP_scrollViewContentView->geometry().x() - t->geometry().x()),
+                    (zffloat)(y - _ZFP_scrollViewContentView->geometry().y() - t->geometry().y()),
                     zftrue);
                 if(innerChild != zfnull) {
                     return &(qobject_cast<_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *>(innerChild)->_ZFP_scrollViewImplHelper);
@@ -440,8 +440,8 @@ public:
                 }
                 QGraphicsWidget *innerChild = _ZFP_findChildRecursive(
                     t,
-                    x - _ZFP_scrollViewContentView->geometry().x() - t->geometry().x(),
-                    y - _ZFP_scrollViewContentView->geometry().y() - t->geometry().y(),
+                    (zffloat)(x - _ZFP_scrollViewContentView->geometry().x() - t->geometry().x()),
+                    (zffloat)(y - _ZFP_scrollViewContentView->geometry().y() - t->geometry().y()),
                     zffalse);
                 if(innerChild != zfnull) {
                     return innerChild;

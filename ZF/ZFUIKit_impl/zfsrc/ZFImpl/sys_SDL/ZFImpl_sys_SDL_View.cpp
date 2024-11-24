@@ -192,9 +192,9 @@ void ZFImpl_sys_SDL_View::render(
     zffloat scaleX = 1;
     zffloat scaleY = 1;
     if(this->viewTransform != zfnull) {
-        angle += this->viewTransform->rotateZ;
-        dst.x += this->viewTransform->translateX;
-        dst.y += this->viewTransform->translateY;
+        angle += (double)this->viewTransform->rotateZ;
+        dst.x += (int)this->viewTransform->translateX;
+        dst.y += (int)this->viewTransform->translateY;
         if(this->viewTransform->scaleX != 1) {
             scaleX *= this->viewTransform->scaleX;
         }
@@ -203,9 +203,9 @@ void ZFImpl_sys_SDL_View::render(
         }
     }
     if(this->aniTransform != zfnull) {
-        angle += this->aniTransform->rotateZ;
-        dst.x += this->aniTransform->translateX;
-        dst.y += this->aniTransform->translateY;
+        angle += (double)this->aniTransform->rotateZ;
+        dst.x += (int)this->aniTransform->translateX;
+        dst.y += (int)this->aniTransform->translateY;
         if(this->aniTransform->scaleX != 1) {
             scaleX *= this->aniTransform->scaleX;
         }
@@ -215,13 +215,13 @@ void ZFImpl_sys_SDL_View::render(
     }
     if(scaleX != 1) {
         zffloat offset = src.w * (scaleX - 1);
-        dst.x -= offset / 2;
-        dst.w += offset;
+        dst.x -= (int)(offset / 2);
+        dst.w += (int)offset;
     }
     if(scaleY != 1) {
         zffloat offset = src.h * (scaleY - 1);
-        dst.y -= offset / 2;
-        dst.h += offset;
+        dst.y -= (int)(offset / 2);
+        dst.h += (int)offset;
     }
     SDL_Rect clipSaved;
     SDL_RenderGetClipRect(renderer, &clipSaved);

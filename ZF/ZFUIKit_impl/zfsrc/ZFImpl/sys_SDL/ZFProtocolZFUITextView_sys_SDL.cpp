@@ -135,7 +135,7 @@ public:
             , ZF_IN zffloat textSize
             ) {
         int w, h;
-        if(zfself::measureNativeTextView(w, h, textView, textView->text(), textView->text().length(), sizeHint.width, textSize)) {
+        if(zfself::measureNativeTextView(w, h, textView, textView->text(), textView->text().length(), (int)sizeHint.width, textSize)) {
             return ZFUISizeCreate((zffloat)w, (zffloat)h);
         }
         else {
@@ -376,7 +376,7 @@ private:
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, sdlSurface);
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
         if(treeAlpha != 1) {
-            SDL_SetTextureAlphaMod(sdlTexture, treeAlpha * 255);
+            SDL_SetTextureAlphaMod(sdlTexture, (Uint8)(treeAlpha * 255));
         }
         SDL_RenderCopy(renderer, sdlTexture, &srcRect, &targetRectFixed);
         return zffalse;

@@ -68,7 +68,7 @@ private:
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, nativeImage);
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
         if(treeAlpha != 1) {
-            SDL_SetTextureAlphaMod(sdlTexture, treeAlpha * 255);
+            SDL_SetTextureAlphaMod(sdlTexture, (Uint8)(treeAlpha * 255));
         }
         if(imageState->imageNinePatch() == ZFUIMarginZero()) {
             SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);

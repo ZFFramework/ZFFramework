@@ -42,7 +42,7 @@ public:
  */
 extern ZFLIB_ZF_impl ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
         ZF_IN ZFImpl_sys_SDL_FontType fontType
-        , ZF_IN zfuint ptsize
+        , ZF_IN zffloat ptsize
         );
 /** @brief see #ZFImpl_sys_SDL_fontAlloc */
 extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData);
@@ -53,7 +53,7 @@ zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_fontAccess {
 public:
     _ZFP_ZFImpl_sys_SDL_fontAccess(
             ZF_IN ZFImpl_sys_SDL_FontType fontType
-            , ZF_IN zfuint ptsize
+            , ZF_IN zffloat ptsize
             )
     : fontData(ZFImpl_sys_SDL_fontAlloc(fontType, ptsize))
     {

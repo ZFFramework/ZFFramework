@@ -25,8 +25,10 @@ public:
                 Uint8 rOld, gOld, bOld, aOld;
                 SDL_GetRenderDrawColor(renderer, &rOld, &gOld, &bOld, &aOld);
                 SDL_SetRenderDrawColor(renderer
-                        , 0xFF * ZFUIColorGetR(bg), 0xFF * ZFUIColorGetG(bg), 0xFF * ZFUIColorGetB(bg)
-                        , 0xFF * (ZFUIColorGetA(bg) * treeAlpha)
+                        , (Uint8)(0xFF * ZFUIColorGetR(bg))
+                        , (Uint8)(0xFF * ZFUIColorGetG(bg))
+                        , (Uint8)(0xFF * ZFUIColorGetB(bg))
+                        , (Uint8)(0xFF * (ZFUIColorGetA(bg) * treeAlpha))
                     );
                 SDL_Rect rect;
                 ZFImpl_sys_SDL_View::renderRectCalc(rect, childRect, parentRect);

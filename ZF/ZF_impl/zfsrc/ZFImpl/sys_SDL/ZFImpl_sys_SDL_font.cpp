@@ -40,12 +40,13 @@ ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_fontDataHolder)
 
 ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
         ZF_IN ZFImpl_sys_SDL_FontType fontType
-        , ZF_IN zfuint ptsize
+        , ZF_IN zffloat ptsize
         ) {
+    zfuint ptsizeFixed = (zfuint)zfmRound(ptsize);
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_sys_SDL_fontDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_SDL_fontDataHolder);
     for(zfindex i = d->fontCache.count() - 1; i != zfindexMax(); --i) {
         ZFImpl_sys_SDL_FontData *fontData = d->fontCache[i];
-        if(fontData->fontType == fontType && fontData->ptsize == ptsize) {
+        if(fontData->fontType == fontType && fontData->ptsize == ptsizeFixed) {
             d->fontCache.remove(i);
             return fontData;
         }
@@ -55,7 +56,7 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
         for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp) {
             ZFInput input = ZFImpl_sys_SDL_fontLoader((ZFImpl_sys_SDL_FontType)fontTypeTmp);
             if(input) {
-                ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);
+                ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsizeFixed, input);
                 if(fontData != zfnull) {
                     return fontData;
                 }
@@ -78,7 +79,7 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
             ZFPathInfoForEachFile(ZFPathInfo(ZFPathType_res(), "ZF_impl/sys_SDL/font"), impl);
         }
         if(input) {
-            ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);
+            ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsizeFixed, input);
             if(fontData != zfnull) {
                 return fontData;
             }
