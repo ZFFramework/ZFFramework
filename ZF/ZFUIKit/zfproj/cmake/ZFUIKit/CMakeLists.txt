@@ -47,7 +47,7 @@ install(
 install(TARGETS ZFUIKit EXPORT ZFUIKit
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/zfres"

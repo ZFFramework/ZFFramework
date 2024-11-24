@@ -47,7 +47,7 @@ install(
 install(TARGETS ZFAlgorithm_impl EXPORT ZFAlgorithm_impl
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFAlgorithm_impl/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFAlgorithm_impl/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFAlgorithm_impl/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFAlgorithm_impl/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFAlgorithm_impl/zfres"

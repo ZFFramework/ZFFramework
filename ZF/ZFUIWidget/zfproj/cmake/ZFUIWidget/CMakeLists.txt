@@ -48,7 +48,7 @@ install(
 install(TARGETS ZFUIWidget EXPORT ZFUIWidget
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/zfres"

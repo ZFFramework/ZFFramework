@@ -46,7 +46,7 @@ install(
 install(TARGETS ZFUtility EXPORT ZFUtility
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/zfres"

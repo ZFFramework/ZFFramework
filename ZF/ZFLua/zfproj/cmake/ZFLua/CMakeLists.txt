@@ -45,7 +45,7 @@ install(
 install(TARGETS ZFLua EXPORT ZFLua
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/zfres"

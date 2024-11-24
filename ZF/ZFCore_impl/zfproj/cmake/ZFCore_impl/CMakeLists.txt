@@ -46,7 +46,7 @@ install(
 install(TARGETS ZFCore_impl EXPORT ZFCore_impl
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/zfres"

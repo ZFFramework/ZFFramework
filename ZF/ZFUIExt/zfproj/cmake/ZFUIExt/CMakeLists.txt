@@ -50,7 +50,7 @@ install(
 install(TARGETS ZFUIExt EXPORT ZFUIExt
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/zfres"

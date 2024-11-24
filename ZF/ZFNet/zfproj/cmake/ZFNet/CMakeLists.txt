@@ -46,7 +46,7 @@ install(
 install(TARGETS ZFNet EXPORT ZFNet
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFNet/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFNet/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFNet/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFNet/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFNet/zfres"

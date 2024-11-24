@@ -172,7 +172,7 @@ install(
 install(TARGETS {ZFTT_R_proj_name} EXPORT {ZFTT_R_proj_name}
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/bin")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib")
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/zfres"
