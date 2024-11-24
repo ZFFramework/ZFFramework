@@ -30,6 +30,7 @@ else
     cmake "$_PROJ_PATH" -DCMAKE_BUILD_TYPE=${_CONFIG} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
 fi
 make -j4
+make install
 _RESULT="$?"
 cd "$_OLD_DIR"
 

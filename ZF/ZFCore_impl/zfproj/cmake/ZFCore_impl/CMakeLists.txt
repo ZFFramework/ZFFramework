@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.4.1)
 project(ZFCore_impl)
-set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
+set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_PREFIX "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl")
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
@@ -23,13 +25,12 @@ if(COMMAND zfprojConfigAfter_ZFCore_impl)
     zfprojConfigAfter_ZFCore_impl(ZFCore_impl)
 endif()
 
-include_directories(${PROJECT_SOURCE_DIR}/../../../zfsrc)
-include_directories(${ZF_ROOT_PATH}/_release/cmake/all/include)
+target_include_directories(ZFCore_impl PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc")
 
 function(ZFAddLib ZF_LIB_NAME_)
-    add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
-    file(GLOB_RECURSE libPath "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*")
-    set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
+    target_include_directories(ZFCore_impl PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
+
+    target_link_directories(ZFCore_impl PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/")
     target_link_libraries(ZFCore_impl PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)
 
@@ -46,7 +47,8 @@ install(
 install(TARGETS ZFCore_impl EXPORT ZFCore_impl
     LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib")
+    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
+    )
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/zfres"

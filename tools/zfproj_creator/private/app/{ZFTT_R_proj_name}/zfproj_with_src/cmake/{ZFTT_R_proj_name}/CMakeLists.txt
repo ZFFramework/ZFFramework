@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.4.1)
 project({ZFTT_R_proj_name})
 
 if(WIN32)
-    execute_process(COMMAND "${PROJECT_SOURCE_DIR}/../../../../zfsetup.bat")
+    execute_process(COMMAND call "${PROJECT_SOURCE_DIR}\\..\\..\\..\\..\\zfsetup.bat")
 else()
     execute_process(COMMAND sh "${PROJECT_SOURCE_DIR}/../../../../zfsetup.sh")
 endif()
 
-set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../ZFFramework)
+set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
@@ -25,7 +25,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         "${PROJ_PATH_}/zfsrc_ext/*.cpp"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
-    include_directories(${PROJ_PATH_}/zfsrc)
+    target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJ_PATH_}/zfsrc")
     if(WIN32)
         execute_process(COMMAND call "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJ_PATH_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfres")
     else()

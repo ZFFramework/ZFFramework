@@ -20,11 +20,14 @@ function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
             execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/unzip.sh" "${FONT_REPO_FILE}" "${FONT_REPO_PATH}")
         endif()
     endif()
-    if(WIN32)
-        execute_process(COMMAND call "${ZF_ROOT_PATH}\\tools\\common\\copy_check.bat" "${FONT_REPO_PATH}" "${PROJECT_BINARY_DIR}\\zfres\\ZF_impl\\sys_SDL\\font")
-    else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/copy_check.sh" "${FONT_REPO_PATH}" "${PROJECT_BINARY_DIR}/zfres/ZF_impl/sys_SDL/font")
-    endif()
+    install(
+        DIRECTORY "${FONT_REPO_PATH}"
+        DESTINATION "${PROJECT_BINARY_DIR}/zfres/ZF_impl/sys_SDL/font"
+        )
+    install(
+        DIRECTORY "${FONT_REPO_PATH}"
+        DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/zfres/ZF_impl/sys_SDL/font"
+        )
 endfunction(zfprojConfigBefore_ZF_impl)
 
 function(zfprojConfigAfter_ZF_impl projName)
