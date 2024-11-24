@@ -18,11 +18,11 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         include("${zfprojConfigPath}")
     endif()
 
-    file(GLOB_RECURSE ZF_SRC_FILES_TMP RELATIVE ${PROJECT_SOURCE_DIR}
-        ${PROJ_PATH_}/zfsrc/*.c
-        ${PROJ_PATH_}/zfsrc/*.cpp
-        ${PROJ_PATH_}/zfsrc_ext/*.c
-        ${PROJ_PATH_}/zfsrc_ext/*.cpp
+    file(GLOB_RECURSE ZF_SRC_FILES_TMP RELATIVE "${PROJECT_SOURCE_DIR}"
+        "${PROJ_PATH_}/zfsrc/*.c"
+        "${PROJ_PATH_}/zfsrc/*.cpp"
+        "${PROJ_PATH_}/zfsrc_ext/*.c"
+        "${PROJ_PATH_}/zfsrc_ext/*.cpp"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
     include_directories(${PROJ_PATH_}/zfsrc)

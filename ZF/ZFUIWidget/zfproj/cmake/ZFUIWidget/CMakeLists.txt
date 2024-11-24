@@ -6,11 +6,11 @@ add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
-file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp"
     )
 if(COMMAND zfprojConfigBefore_ZFUIWidget)
     zfprojConfigBefore_ZFUIWidget(ZFUIWidget ZF_SRC_FILES)
@@ -28,7 +28,7 @@ include_directories(${ZF_ROOT_PATH}/_release/cmake/all/include)
 
 function(ZFAddLib ZF_LIB_NAME_)
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
-    file(GLOB_RECURSE libPath ${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*)
+    file(GLOB_RECURSE libPath "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*")
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
     target_link_libraries(ZFUIWidget PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)

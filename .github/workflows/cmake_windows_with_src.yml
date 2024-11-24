@@ -36,8 +36,8 @@ jobs:
     - name: Set up NASM
       uses: ilammy/setup-nasm@v1
 
-    - name: Setup Ninja
-      uses: ashutoshvarma/setup-ninja@v1
+    - name: Install ninja-build tool
+      uses: seanmiddleditch/gha-setup-ninja@v5
 
     - name: ZFSetup
       run: |

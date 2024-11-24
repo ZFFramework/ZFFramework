@@ -10,11 +10,11 @@ set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../../../../_tmp/cmake/{ZFTT_R_p
 
 execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 
-file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
-    ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c"
+    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp"
     )
 if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
     zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} ZF_SRC_FILES)
