@@ -194,7 +194,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
 }
 
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
-        , ZFMP_IN_OPT(zftimet, timeout, zfindexMax())
+        , ZFMP_IN_OPT(zftimet, timeout, zftimetInvalid())
         ) {
     ZFHttpRequest *send = this;
     zfautoT<ZFHttpResponse> recv;

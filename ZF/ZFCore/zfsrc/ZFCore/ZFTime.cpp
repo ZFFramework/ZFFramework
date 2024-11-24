@@ -79,7 +79,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFTimeValueDiv
     ZFCoreAssertWithMessage(v != 0, "divided by 0");
     result.usec = tv.usec / v;
     result.sec = tv.sec / v;
-    result.usec += (zft_zftimet)(((zft_zflongdouble)tv.sec / v - result.sec) * 1000000LL);
+    result.usec += (zftimet)(((zfdouble)tv.sec / v - result.sec) * 1000000LL);
     ZFTimeValueNormalize(result);
 }
 ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFTimeValue, ZFTimeValueDiv

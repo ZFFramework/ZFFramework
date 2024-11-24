@@ -3,15 +3,13 @@ setlocal
 
 set WORK_DIR=%~dp0
 set DIR_TO_CHECK=%~1%
-set CHECK_INTERVAL=%~2%
-set TIMESTAMP_FILE_NAME=%~3%
+set TIMESTAMP_FILE_NAME=%~2%
 
 if not defined DIR_TO_CHECK goto :usage
-if not defined CHECK_INTERVAL goto :usage
 goto :run
 :usage
 echo usage:
-echo   timestamp_save.bat DIR_TO_CHECK CHECK_INTERVAL [TIMESTAMP_FILE_NAME]
+echo   timestamp_save.bat DIR_TO_CHECK [TIMESTAMP_FILE_NAME]
 exit /b 1
 :run
 

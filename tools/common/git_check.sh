@@ -16,8 +16,6 @@ if test "x-$CLONE_OPTION" = "x-" ; then
 fi
 
 _OLD_DIR=$(pwd)
-# 60*60*24*7, one week
-_TIMEOUT=604800
 _GIT_VALID=0
 
 if test -e "$DST_PATH/.git"; then
@@ -39,7 +37,7 @@ if test -e "$DST_PATH/.git"; then
 fi
 
 if test "$_GIT_VALID" = "1"; then
-    sh "$WORK_DIR/timestamp_check.sh" "$DST_PATH/.git" $_TIMEOUT
+    sh "$WORK_DIR/timestamp_check.sh" "$DST_PATH/.git"
 
     if test ! "$?" = "0" ; then
         cd "$DST_PATH"
@@ -59,7 +57,7 @@ if test "$_GIT_VALID" = "1"; then
         cd "$_OLD_DIR"
 
         if test "$_SUCCESS" = "0"; then
-            sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git" $_TIMEOUT
+            sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git"
         fi
     fi
 else
@@ -77,7 +75,7 @@ else
     fi
 
     if test "$_SUCCESS" = "0"; then
-        sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git" $_TIMEOUT
+        sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git"
     fi
 fi
 

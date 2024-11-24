@@ -20,8 +20,6 @@ exit /b 1
 if not defined CLONE_OPTION set CLONE_OPTION=--depth=1
 
 set _OLD_DIR=%cd%
-rem 60*60*24*7, one week
-set _TIMEOUT=604800
 set _GIT_VALID=0
 
 if exist "%DST_PATH%\.git" (
@@ -43,7 +41,7 @@ if exist "%DST_PATH%\.git" (
 )
 
 if "%_GIT_VALID%" == "1" (
-    call "%WORK_DIR%\timestamp_check.bat" "%DST_PATH%\.git" %_TIMEOUT%
+    call "%WORK_DIR%\timestamp_check.bat" "%DST_PATH%\.git"
 
     if not "!errorlevel!" == "0" (
         cd /d "%DST_PATH%"
@@ -64,7 +62,7 @@ if "%_GIT_VALID%" == "1" (
         cd /d "%_OLD_DIR%"
 
         if "!_SUCCESS!" == "0" (
-            call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git" %_TIMEOUT%
+            call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git"
         )
     )
 ) else (
@@ -82,7 +80,7 @@ if "%_GIT_VALID%" == "1" (
     )
 
     if "!_SUCCESS!" == "0" (
-        call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git" %_TIMEOUT%
+        call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git"
     )
 )
 

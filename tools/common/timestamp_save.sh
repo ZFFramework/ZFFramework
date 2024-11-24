@@ -1,10 +1,9 @@
 WORK_DIR=$(cd "$(dirname "$0")"; pwd)
 DIR_TO_CHECK=$1
-CHECK_INTERVAL=$2
-TIMESTAMP_FILE_NAME=$3
-if test "x-$DIR_TO_CHECK" = "x-" || test "x-$CHECK_INTERVAL" = "x-" ; then
+TIMESTAMP_FILE_NAME=$2
+if test "x-$DIR_TO_CHECK" = "x-" ; then
     echo "usage:"
-    echo "  timestamp_save.sh DIR_TO_CHECK CHECK_INTERVAL [TIMESTAMP_FILE_NAME]"
+    echo "  timestamp_save.sh DIR_TO_CHECK [TIMESTAMP_FILE_NAME]"
     exit 1
 fi
 

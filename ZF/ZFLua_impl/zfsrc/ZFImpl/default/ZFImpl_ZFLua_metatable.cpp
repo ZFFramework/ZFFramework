@@ -457,13 +457,13 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
 
     if(paramClass0->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass0->newInstance();
-        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>(n));
+        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>((zfuint)n));
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
     if(paramClass1->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass1->newInstance();
-        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>(n));
+        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>((zfuint)n));
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }

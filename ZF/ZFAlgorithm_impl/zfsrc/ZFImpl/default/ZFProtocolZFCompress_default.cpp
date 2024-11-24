@@ -56,8 +56,8 @@ public:
     virtual zfbool compressEnd(ZF_IN_OUT void *compressToken) {
         mz_zip_archive *zip = (mz_zip_archive *)compressToken;
         zfbool success = zftrue;
-        success &= mz_zip_writer_finalize_archive(zip);
-        success &= mz_zip_writer_end(zip);
+        success &= (zfbool)mz_zip_writer_finalize_archive(zip);
+        success &= (zfbool)mz_zip_writer_end(zip);
         zfdelete((ZFOutput *)zip->m_pIO_opaque);
         zffree(zip);
         return success;

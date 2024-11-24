@@ -373,13 +373,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFM_VA_APPEND(ToExpand, ...) _ZFP_ZFM_VA_APPEND_CALL(ToExpand, (__VA_ARGS__))
 
 // ============================================================
-#define _ZFP_zfidentityHash_EXPAND(v) (zft_zfidentity)(v)
+#define _ZFP_zfidentityHash_EXPAND(v) (zfidentity)(v)
 #define _ZFP_zfidentityHash_COMMA() ^
 /**
  * @brief util method to connect multiple hash value into one hash value
  */
 #define zfidentityHash(hash, ...) \
-    (zft_zfidentity)(ZFM_FIX_PARAM(_ZFP_zfidentityHash_EXPAND, _ZFP_zfidentityHash_COMMA, hash, ##__VA_ARGS__))
+    (zfidentity)(ZFM_FIX_PARAM(_ZFP_zfidentityHash_EXPAND, _ZFP_zfidentityHash_COMMA, hash, ##__VA_ARGS__))
 
 // ============================================================
 /**

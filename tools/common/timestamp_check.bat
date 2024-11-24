@@ -3,15 +3,14 @@ setlocal
 
 set WORK_DIR=%~dp0
 set DIR_TO_CHECK=%~1%
-set CHECK_INTERVAL=%~2%
-set TIMESTAMP_FILE_NAME=%~3%
+set TIMESTAMP_FILE_NAME=%~2%
+set CHECK_INTERVAL=%~3%
 
 if not defined DIR_TO_CHECK goto :usage
-if not defined CHECK_INTERVAL goto :usage
 goto :run
 :usage
 echo usage:
-echo   timestamp_check.bat DIR_TO_CHECK CHECK_INTERVAL [TIMESTAMP_FILE_NAME]
+echo   timestamp_check.bat DIR_TO_CHECK [TIMESTAMP_FILE_NAME CHECK_INTERVAL]
 echo return by "errorlevel":
 echo   0: not expired
 echo   1: expired
@@ -19,6 +18,7 @@ exit /b 1
 :run
 
 if not defined TIMESTAMP_FILE_NAME set TIMESTAMP_FILE_NAME=_zf_timestamp_
+if not defined CHECK_INTERVAL set CHECK_INTERVAL=604800
 
 call :GetUnixTime _CUR_TIME
 if exist "%DIR_TO_CHECK%\%TIMESTAMP_FILE_NAME%" (

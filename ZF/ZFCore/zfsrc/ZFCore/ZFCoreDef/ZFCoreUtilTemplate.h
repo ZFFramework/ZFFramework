@@ -525,7 +525,6 @@ public:
     /** @endcond */
 
 ZFCORE_POD_DECLARE(zfdouble)
-ZFCORE_POD_DECLARE(zflongdouble)
 ZFCORE_POD_DECLARE(zftimet)
 ZFCORE_POD_DECLARE(zfflags)
 ZFCORE_POD_DECLARE(zfidentity)

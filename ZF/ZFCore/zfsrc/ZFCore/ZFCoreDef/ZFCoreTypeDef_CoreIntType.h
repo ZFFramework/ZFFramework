@@ -97,7 +97,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         _zft_##D(void) : t() {} \
         _zft_##D(const D &t_) : t(t_.t) {} \
         _zft_##D(const T t_) : t(t_) {} \
+        _zft_##D(const int t_) : t((T)t_) {} \
+        template<typename T2> explicit _zft_##D(const T2 t_) : t((T)t_) {} \
         inline D &operator = (const D &t_) {t = t_.t; return *this;} \
+        inline D &operator = (const int &t_) {t = (T)t_; return *this;} \
         template<typename T2> inline D &operator = (const T2 &t_) {t = t_; return *this;} \
         inline operator const T & (void) const {return t;} \
         inline operator T & (void) {return t;} \
@@ -108,12 +111,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         inline bool operator <= (const D &t_) const {return (t <= t_.t);} \
         inline bool operator >  (const D &t_) const {return (t >  t_.t);} \
         inline bool operator >= (const D &t_) const {return (t >= t_.t);} \
+        inline bool operator == (const int &t_) const {return (t == (T)t_);} \
+        inline bool operator != (const int &t_) const {return (t != (T)t_);} \
+        inline bool operator <  (const int &t_) const {return (t <  (T)t_);} \
+        inline bool operator <= (const int &t_) const {return (t <= (T)t_);} \
+        inline bool operator >  (const int &t_) const {return (t >  (T)t_);} \
+        inline bool operator >= (const int &t_) const {return (t >= (T)t_);} \
         template<typename T2> inline bool operator == (const T2 &t_) const {return (t == t_);} \
         template<typename T2> inline bool operator != (const T2 &t_) const {return (t != t_);} \
         template<typename T2> inline bool operator <  (const T2 &t_) const {return (t <  t_);} \
         template<typename T2> inline bool operator <= (const T2 &t_) const {return (t <= t_);} \
         template<typename T2> inline bool operator >  (const T2 &t_) const {return (t >  t_);} \
         template<typename T2> inline bool operator >= (const T2 &t_) const {return (t >= t_);} \
+        inline D & operator ++ (void) {t += 1; return *this;} \
+        inline D operator ++ (int) {D t_(t); t += 1; return t_;} \
+        inline D & operator -- (void) {t -= 1; return *this;} \
+        inline D operator -- (int) {D t_(t); t -= 1; return t_;} \
     }; \
     /** @endcond */ \
     typedef _zft_##D D; \
@@ -125,8 +138,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define zffloatEpsilon FLT_EPSILON
 /** @brief double epsilon */
 #define zfdoubleEpsilon DBL_EPSILON
-/** @brief longdouble epsilon */
-#define zflongdoubleEpsilon LDBL_EPSILON
 
 /** @brief template version of #zffloatEpsilon */
 template<typename T_zffloat>
@@ -150,8 +161,11 @@ public:
     public: \
         _zft_##D(void) : t() {} \
         _zft_##D(const D &t_) : t(t_.t) {} \
-        _zft_##D(const T t_) : t(t_) {} \
+        _zft_##D(const T &t_) : t(t_) {} \
+        _zft_##D(const int &t_) : t((T)t_) {} \
+        template<typename T2> explicit _zft_##D(const T2 &t_) : t((T)t_) {} \
         inline D &operator = (const D &t_) {t = t_.t; return *this;} \
+        inline D &operator = (const int &t_) {t = (T)t_; return *this;} \
         template<typename T2> inline D &operator = (const T2 &t_) {t = t_; return *this;} \
         inline operator const T & (void) const {return t;} \
         inline operator T & (void) {return t;} \
@@ -162,18 +176,18 @@ public:
         inline bool operator <= (const D &t_) const {return (t <= t_.t + epsilon);} \
         inline bool operator >  (const D &t_) const {return (t > t_.t + epsilon);} \
         inline bool operator >= (const D &t_) const {return (t >= t_.t - epsilon);} \
-        inline bool operator == (const T &t_) const {return (t >= t_ - epsilon && t <= t_ + epsilon);} \
-        inline bool operator != (const T &t_) const {return (t < t_ - epsilon || t > t_ + epsilon);} \
-        inline bool operator <  (const T &t_) const {return (t < t_ - epsilon);} \
-        inline bool operator <= (const T &t_) const {return (t <= t_ + epsilon);} \
-        inline bool operator >  (const T &t_) const {return (t > t_ + epsilon);} \
-        inline bool operator >= (const T &t_) const {return (t >= t_ - epsilon);} \
         inline bool operator == (const int &t_) const {return (t >= t_ - epsilon && t <= t_ + epsilon);} \
         inline bool operator != (const int &t_) const {return (t < t_ - epsilon || t > t_ + epsilon);} \
         inline bool operator <  (const int &t_) const {return (t < t_ - epsilon);} \
         inline bool operator <= (const int &t_) const {return (t <= t_ + epsilon);} \
         inline bool operator >  (const int &t_) const {return (t > t_ + epsilon);} \
         inline bool operator >= (const int &t_) const {return (t >= t_ - epsilon);} \
+        template<typename T2> inline bool operator == (const T2 &t_) const {return (t >= t_ - epsilon && t <= t_ + epsilon);} \
+        template<typename T2> inline bool operator != (const T2 &t_) const {return (t < t_ - epsilon || t > t_ + epsilon);} \
+        template<typename T2> inline bool operator <  (const T2 &t_) const {return (t < t_ - epsilon);} \
+        template<typename T2> inline bool operator <= (const T2 &t_) const {return (t <= t_ + epsilon);} \
+        template<typename T2> inline bool operator >  (const T2 &t_) const {return (t > t_ + epsilon);} \
+        template<typename T2> inline bool operator >= (const T2 &t_) const {return (t >= t_ - epsilon);} \
         inline D & operator ++ (void) {t += 1; return *this;} \
         inline D operator ++ (int) {D t_(t); t += 1; return t_;} \
         inline D & operator -- (void) {t -= 1; return *this;} \

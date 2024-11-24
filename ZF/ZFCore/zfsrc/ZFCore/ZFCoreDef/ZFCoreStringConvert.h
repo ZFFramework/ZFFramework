@@ -334,7 +334,7 @@ zfbool zfsToFloatT(
         return zffalse;
     }
 
-    ret = 0;
+    ret = (T_Float)0;
     const zfchar *p = src;
     const zfchar *pEnd = ((srcLen == zfindexMax()) ? (p - 1) : (p + srcLen));
     zfbool negative = zffalse;
@@ -375,7 +375,7 @@ zfbool zfsToFloatT(
     }
 
     if(negative) {
-        ret = 0 - ret;
+        ret = (T_Float)(0 - ret);
     }
 
     if(*p == '\0' || p == pEnd) {

@@ -284,7 +284,7 @@ void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size) {
     saved_lo = ctx->lo;
     if ((ctx->lo = (saved_lo + size) & 0x1fffffff) < saved_lo)
         ctx->hi++;
-    ctx->hi += size >> 29;
+    ctx->hi += (zft_zfuint32)(size >> 29);
 
     used = saved_lo & 0x3f;
 

@@ -58,7 +58,7 @@ ZFTYPEID_PROGRESS_DEFINE_BY_VALUE(zfindex, zfindex)
 // ============================================================
 _ZFP_ZFTYPEID_DEFINE_int_allow_negative(zftimet, zftimet)
 ZFTYPEID_PROGRESS_DEFINE(zftimet, zftimet, {
-        ret = (zft_zftimet)(from + (zft_zftimet)((to - from) * progress));
+        ret = (zftimet)(from + (zftimet)((to - from) * progress));
     })
 
 // ============================================================

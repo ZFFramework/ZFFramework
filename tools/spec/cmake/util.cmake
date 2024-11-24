@@ -1,6 +1,7 @@
 
 function(zfprojStripFILE targetName)
     if(WIN32)
+        target_compile_options(${targetName} PUBLIC "/wd4117;")
     else()
         target_compile_options(${targetName} PUBLIC "-Wno-builtin-macro-redefined")
     endif()

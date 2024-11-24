@@ -89,7 +89,7 @@ public:
             , ZF_IN zfindex num1orBroadcastNum
             ) {
         LeaveCriticalSection(&(semaphoreToken->semaMutex));
-        ReleaseSemaphore(semaphoreToken->sema, num1orBroadcastNum, zfnull);
+        ReleaseSemaphore(semaphoreToken->sema, (LONG)num1orBroadcastNum, zfnull);
         EnterCriticalSection(&(semaphoreToken->semaMutex));
     }
     void semaWait(ZF_IN _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken) {

@@ -260,7 +260,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
 
     /** @brief util to perform sync request, return null if timeout */
     ZFMETHOD_DECLARE_1(zfautoT<ZFHttpResponse>, requestSync
-            , ZFMP_IN_OPT(zftimet, timeout, zfindexMax())
+            , ZFMP_IN_OPT(zftimet, timeout, zftimetInvalid())
             )
 
     /** @brief print all header info, usually for debug use only */

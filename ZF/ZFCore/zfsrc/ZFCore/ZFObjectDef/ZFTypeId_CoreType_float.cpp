@@ -27,9 +27,5 @@ ZFTYPEID_PROGRESS_DEFINE_BY_VALUE(zffloat, zffloat)
 _ZFP_ZFTYPEID_DEFINE_float(zfdouble, zfdouble)
 ZFTYPEID_PROGRESS_DEFINE_BY_VALUE(zfdouble, zfdouble)
 
-// ============================================================
-_ZFP_ZFTYPEID_DEFINE_float(zflongdouble, zflongdouble)
-ZFTYPEID_PROGRESS_DEFINE_BY_VALUE(zflongdouble, zflongdouble)
-
 ZF_NAMESPACE_GLOBAL_END
 

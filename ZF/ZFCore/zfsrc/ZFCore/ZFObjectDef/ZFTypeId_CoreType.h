@@ -283,16 +283,6 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfdouble, zfdouble)
  *
  * serializable data:
  * @code
- *   <zflongdouble value="value" />
- * @endcode
- */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, zflongdouble, zflongdouble)
-
-/**
- * @brief see #ZFTYPEID_DECLARE
- *
- * serializable data:
- * @code
  *   <zftimet value="value" />
  * @endcode
  */

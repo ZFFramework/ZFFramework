@@ -531,7 +531,7 @@ public:
             if(len > 0) {
                 _prepareWrite(lenTmp);
                 zfmemmove(d->d.buf + pos, d->d.buf + pos + len, (lenTmp - pos - len) * sizeof(T_Char));
-                d->length -= len;
+                d->length -= (zfuint)len;
                 d->d.buf[d->length] = '\0';
                 capacityTrim();
             }

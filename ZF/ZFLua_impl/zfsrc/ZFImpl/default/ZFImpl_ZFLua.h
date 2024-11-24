@@ -283,7 +283,6 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(
  * -  #v_zfuint
  * -  #v_zffloat
  * -  #v_zfdouble
- * -  #v_zflongdouble
  * -  #v_zfbyte
  * -  #v_zftimet
  * -  #v_zfflags

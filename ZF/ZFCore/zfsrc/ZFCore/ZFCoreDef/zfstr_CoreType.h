@@ -53,7 +53,6 @@ ZFOUTPUT_TYPE(zfindex, {
 })
 ZFOUTPUT_TYPE(zffloat, {zfsFromFloatT(s, v);})
 ZFOUTPUT_TYPE(zfdouble, {zfsFromFloatT(s, v);})
-ZFOUTPUT_TYPE(zflongdouble, {zfsFromFloatT(s, v);})
 ZFOUTPUT_TYPE(zftimet, {zfsFromIntT(s, v);})
 ZFOUTPUT_TYPE(zfflags, {
     if(v == (zfflags)-1) {

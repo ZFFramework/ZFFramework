@@ -781,7 +781,7 @@ public:
         }
         _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + index, d->buf + index + count, this->count() - (index + count));
         _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf + d->count - count, d->buf + d->count);
-        d->count -= count;
+        d->count -= (zfuint)count;
     }
     /**
      * @brief remove and return the removed value

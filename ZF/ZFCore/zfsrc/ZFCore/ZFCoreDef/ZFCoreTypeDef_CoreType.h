@@ -21,7 +21,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * * zfuint
  * * zffloat
  * * zfdouble
- * * zflongdouble
  * * zfbyte
  * * zftimet
  * * zfflags
@@ -102,7 +101,7 @@ ZFT_INT_WEAK(_ZFT_t_zfbool, zfbool)
  * we use these number types in ZFFramework:
  * -  zfint, zfuint: normal integer types, size depends on environment
  * -  zfindex: integer types used for index and size
- * -  zffloat/zfdouble/zflongdouble: most widely used float type in ZFFramework, size depends on environment
+ * -  zffloat/zfdouble: most widely used float type in ZFFramework, size depends on environment
  * -  zfbyte: for byte types
  * -  zftimet: for time types
  * -  zfflags: for flag types
@@ -162,11 +161,6 @@ ZFT_FLOAT_STRONG(_ZFT_t_zffloat, zffloat, zffloatEpsilon)
  * @brief same as double, see #zfindex
  */
 ZFT_FLOAT_STRONG(double, zfdouble, zfdoubleEpsilon)
-
-/**
- * @brief same as long double, see #zfindex
- */
-ZFT_FLOAT_STRONG(long double, zflongdouble, zflongdoubleEpsilon)
 
 // ============================================================
 /**

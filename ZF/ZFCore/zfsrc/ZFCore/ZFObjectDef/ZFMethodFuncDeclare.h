@@ -264,7 +264,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilter
 
 #define _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix_isInline(ZFLIB_) inline
 #define _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix_notInline(ZFLIB_) extern ZFLIB_
-#define _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix(ZFLIB_, isInlineOrNot) _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix_##isInlineOrNot(ZFLIB_)
+#define _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix(ZFLIB_, isInlineOrNot) _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix_##isInlineOrNot(ZFM_EXPAND(ZFLIB_))
 
 #define _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePostfix_isInline()
 #define _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePostfix_notInline() ;

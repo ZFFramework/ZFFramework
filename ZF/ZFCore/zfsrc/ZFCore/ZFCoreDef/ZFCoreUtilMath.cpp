@@ -13,7 +13,7 @@ ZF_STATIC_REGISTER_INIT(ZFCoreUtilMathDataHolder) {
 ZF_STATIC_REGISTER_END(ZFCoreUtilMathDataHolder)
 
 zffloat zfmRand(void) {
-    return ((zft_zffloat)rand()) / ((zft_zffloat)RAND_MAX);
+    return ((zffloat)rand()) / ((zffloat)RAND_MAX);
 }
 
 ZF_NAMESPACE_GLOBAL_END

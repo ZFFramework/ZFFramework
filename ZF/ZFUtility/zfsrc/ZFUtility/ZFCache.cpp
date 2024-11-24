@@ -17,7 +17,7 @@ public:
         const zfstlmap<ZFCache *, zfbool> &attachedObject = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->attachedObject;
         for(zfstlmap<ZFCache *, zfbool>::const_iterator it = attachedObject.begin(); it != attachedObject.end(); ++it) {
             ZFCache *holder = it->first;
-            holder->cacheTrim(holder->cacheMaxSize() * holder->cacheTrimThreshold());
+            holder->cacheTrim((zft_zfindex)(holder->cacheMaxSize() * holder->cacheTrimThreshold()));
         }
     }
     void cacheTrimListenerSetup(

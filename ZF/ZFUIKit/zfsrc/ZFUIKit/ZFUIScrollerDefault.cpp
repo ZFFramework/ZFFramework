@@ -340,7 +340,7 @@ public:
             zffloat bounceOffset = this->calcBounceFromContentOffset(this->contentOffset, bounceAtHead);
             if(bounceAway) {
                 v = zfmMin(v, _ZFP_ZFUIScrollerDefault_aniBySpeedSpeedMaxBounce);
-                zftimet tDelta = (zftimet)((long)-v * 1000 / a);
+                zftimet tDelta = (zft_zftimet)(-v * 1000 / a);
                 zfbool reachEnd = (t - 10 >= tDelta);
                 this->contentOffset = this->calcContentOffsetFromBounce(
                     bounceOffset + this->aniBySpeed_calcOffset(v, reachEnd ? tDelta : t, a),
@@ -421,7 +421,7 @@ public:
         }
     }
     zffloat anibySpeedEndPointPredicted(void) {
-        zftimet t = (zftimet)((long)zfmAbs(this->aniBySpeedCurSpeed) * 1000 / _ZFP_ZFUIScrollerDefault_aniBySpeedGravityNormal);
+        zftimet t = (zft_zftimet)(zfmAbs(this->aniBySpeedCurSpeed) * 1000 / _ZFP_ZFUIScrollerDefault_aniBySpeedGravityNormal);
         zffloat offset = this->aniBySpeed_calcOffset(zfmAbs(this->aniBySpeedCurSpeed), t, -_ZFP_ZFUIScrollerDefault_aniBySpeedGravityNormal);
         if(this->aniBySpeedCurSpeed > 0) {
             return this->contentOffset + offset;
