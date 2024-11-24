@@ -18,6 +18,7 @@
  * however, the project files created by zfproj_creator.sh are currently tested only in these platforms:
  * -  Android : Android Studio
  * -  iOS : XCode
+ * -  cmake : CMakeLists.txt
  * -  Qt (Windows) : QtCreator
  * -  Qt (MacOS) : QtCreator
  * -  Qt (Ubuntu) : QtCreator
@@ -25,6 +26,7 @@
  * @section DocTag_Setup_ManuallySetup Manually setup
  * -  @subpage DocTag_Setup_Android "Android"
  * -  @subpage DocTag_Setup_iOS "iOS"
+ * -  @subpage DocTag_Setup_cmake "cmake"
  * -  @subpage DocTag_Setup_Qt "Qt"
  */
 

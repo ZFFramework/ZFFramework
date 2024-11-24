@@ -37,6 +37,7 @@ if "%CMAKE_CXX_FLAGS%" == "" (
     cmake -G "Ninja" "%_PROJ_PATH%" -DCMAKE_BUILD_TYPE=%_CONFIG% -DCMAKE_CXX_FLAGS=%CMAKE_CXX_FLAGS%
 )
 ninja
+ninja install
 set _RESULT=%errorlevel%
 cd /d "%_OLD_DIR%"
 
