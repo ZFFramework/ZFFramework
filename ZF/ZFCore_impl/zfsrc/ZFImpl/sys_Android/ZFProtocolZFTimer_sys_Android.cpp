@@ -69,7 +69,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer
         , jlong timerImplId
         ) {
     ZFTimer *timer = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerToken);
-    ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(timer, timerImplId);
+    ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(timer, (zfidentity)timerImplId);
 }
 JNI_METHOD_DECLARE_END()
 #endif // #if ZF_ENV_sys_Android

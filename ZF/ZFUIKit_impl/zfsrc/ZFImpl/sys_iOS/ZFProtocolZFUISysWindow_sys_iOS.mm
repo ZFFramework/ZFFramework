@@ -26,7 +26,7 @@
 - (void)_ZFP_updateLayout;
 @end
 @implementation _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow
-- (void)setSysWindowOrientationFlags:(ZF::ZFUIOrientationFlags)sysWindowOrientationFlags {
+- (void)setSysWindowOrientationFlags:(ZFUIOrientationFlags)sysWindowOrientationFlags {
     if(self->_sysWindowOrientationFlags == sysWindowOrientationFlags) {
         return;
     }
@@ -43,7 +43,7 @@
         }
         dummy._ZFP_owner = t;
         [t presentViewController:dummy animated:NO completion:nil];
-        __block typeof(self) weakSelf = self;
+        __block _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *weakSelf = self;
         [t dismissViewControllerAnimated:NO completion:^{
             weakSelf._ZFP_windowRotateOverrideFlag -= 1;
             if(weakSelf.ownerZFUISysWindow != zfnull) {

@@ -248,7 +248,6 @@ static void _ZFP_ZFLuaLSPGen_class(
     }
 
     zfstring classSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls);
-    const zfchar *classNameFull = cls->classNameFull();
 
     /* class and constructor
         ---@class NS.Cls:Base1,Base2

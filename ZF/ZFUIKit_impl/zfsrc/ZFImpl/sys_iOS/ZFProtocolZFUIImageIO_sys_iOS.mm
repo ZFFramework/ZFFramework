@@ -65,7 +65,7 @@ private:
         if(image.scale == 0) {
             return nil;
         }
-        ZFUISize srcSize = ZFUISizeCreate(image.size.width * image.scale, image.size.height * image.scale);
+        ZFUISize srcSize = ZFUISizeCreate((zffloat)(image.size.width * image.scale), (zffloat)(image.size.height * image.scale));
         zfbool sizeChanged = (scaleToSize != srcSize);
         if([image respondsToSelector:@selector(resizableImageWithCapInsets:resizingMode:)]) {
             if(sizeChanged && (scaleUseNinePatch != ZFUIMarginZero())) {
@@ -128,7 +128,7 @@ private:
         zfmemset(drawDatas, 0, sizeof(drawDatas));
         zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
             drawDatas,
-            ZFUISizeApplyScale(ZFImpl_sys_iOS_ZFUISizeFromCGSize(image.size), image.scale),
+            ZFUISizeApplyScale(ZFImpl_sys_iOS_ZFUISizeFromCGSize(image.size), (zffloat)(image.scale)),
             scaleUseNinePatch,
             scaleToSize);
 

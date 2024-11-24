@@ -24,12 +24,23 @@ public:
     , pathData(pathData)
     {
     }
+public:
+    static void prepareWrite(ZF_IN_OUT _ZFP_ZFPathInfoPrivate *&d) {
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFPathInfoPrivate);
+        }
+        else if(d->refCount > 1) {
+            _ZFP_ZFPathInfoPrivate *dTmp = d;
+            --(dTmp->refCount);
+            d = zfpoolNew(_ZFP_ZFPathInfoPrivate);
+            d->pathType = dTmp->pathType;
+            d->pathData = dTmp->pathData;
+        }
+    }
 };
 
 ZFPathInfo &ZFPathInfo::pathType(ZF_IN const zfstring &pathType) {
-    if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFPathInfoPrivate);
-    }
+    _ZFP_ZFPathInfoPrivate::prepareWrite(d);
     d->pathType = pathType;
     return *this;
 }
@@ -38,9 +49,7 @@ const zfstring &ZFPathInfo::pathType(void) const {
 }
 
 ZFPathInfo &ZFPathInfo::pathData(ZF_IN const zfstring &pathData) {
-    if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFPathInfoPrivate);
-    }
+    _ZFP_ZFPathInfoPrivate::prepareWrite(d);
     d->pathData = pathData;
     return *this;
 }
