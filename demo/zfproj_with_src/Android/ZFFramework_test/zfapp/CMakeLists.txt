@@ -13,7 +13,7 @@ function(ZFAddSrc ZF_SRC_FILES_ PROJ_PATH_)
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
 
-    target_include_directories(ZFFramework_test PRIVATE "${PROJ_PATH_}/zfsrc")
+    include_directories("${PROJ_PATH_}/zfsrc")
 endfunction(ZFAddSrc)
 
 ZFAddSrc(ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../../..)

@@ -25,7 +25,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         "${PROJ_PATH_}/zfsrc_ext/*.cpp"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
-    target_include_directories(ZFFramework_test PRIVATE "${PROJ_PATH_}/zfsrc")
+    include_directories("${PROJ_PATH_}/zfsrc")
     if(WIN32)
         execute_process(COMMAND call "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJ_PATH_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfres")
     else()
