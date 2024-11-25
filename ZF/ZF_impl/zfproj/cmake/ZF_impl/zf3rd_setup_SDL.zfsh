@@ -1,15 +1,11 @@
 
-echo "setup SDL: timestamp check"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\.git"
 <ZF_IF_FAILED_BEGIN>
-    echo "setup SDL: enter setup"
     <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL"
     git -C "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL" checkout .
     <ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\include\begin_code.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL\include\begin_code.h"
     <ZF_SH> "<ZF_ROOT_PATH>\tools\common\file_merge.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\include\begin_code.h" "<ZF_WORK_DIR>\zf3rd_SDL_prefix.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL\include\begin_code.h"
-    echo "setup SDL: exit setup"
 <ZF_IF_FAILED_END>
-echo "setup SDL: done"
 
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\include" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
 

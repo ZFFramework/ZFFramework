@@ -2,7 +2,7 @@
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
     message("SDL setup begin")
     if(WIN32)
-        execute_process(COMMAND call "${ZF_ROOT_PATH}\\tools\\common\\zfsh.bat" "${ZF_ROOT_PATH}\\ZF\\ZF_impl\\zfproj\\cmake\\ZF_impl\\zf3rd_setup_SDL.zfsh")
+        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\common\\zfsh.bat" "${ZF_ROOT_PATH}\\ZF\\ZF_impl\\zfproj\\cmake\\ZF_impl\\zf3rd_setup_SDL.zfsh")
     else()
         execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh")
     endif()
