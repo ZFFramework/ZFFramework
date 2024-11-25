@@ -8,25 +8,43 @@
 #include "ZFCoreEnvDef.h"
 
 // ============================================================
+class ZFLIB_ZFCore _ZFP_ZFNamespaceHolder {
+public:
+    _ZFP_ZFNamespaceHolder(const char *parent, const char *child);
+    ~_ZFP_ZFNamespaceHolder(void);
+public:
+    const char *ns(void) const {
+        return _ns;
+    }
+private:
+    const char *_ns;
+};
+
 /**
  * @brief begin namespace
  */
 #define ZF_NAMESPACE_BEGIN(NameSpace) \
+    namespace NameSpace { \
+        template<typename T> \
+        const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
+
+/**
+ * @brief begin and register namespace
+ */
+#define ZF_NAMESPACE_BEGIN_REGISTER(NameSpace, ParentNameSpace) \
     /** @brief \n */ \
     namespace NameSpace { \
-        extern ZFLIB_ZFCore const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
+        template<typename T> \
+        const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) { \
+            static _ZFP_ZFNamespaceHolder d(ParentNameSpace::_ZFP_ZF_NAMESPACE_NOT_REGISTERED<T>(), #NameSpace); \
+            return d.ns(); \
+        }
 
 /**
  * @brief end namespace
  */
 #define ZF_NAMESPACE_END(NameSpace) \
     }
-/**
- * @brief end namespace
- */
-#define ZF_NAMESPACE_END_WITH_REGISTER(NameSpace, ParentNameSpace) \
-    ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
-    ZF_NAMESPACE_END(NameSpace)
 
 /**
  * @brief use namespace
@@ -70,10 +88,13 @@
     #define ZF_NAMESPACE_GLOBAL_BEGIN
     #define ZF_NAMESPACE_GLOBAL_END
     #define ZF_NAMESPACE_GLOBAL_USE
-    extern ZFLIB_ZFCore const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+    template<typename T>
+    const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) {
+        return 0;
+    }
 ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_USE
 

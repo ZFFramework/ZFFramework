@@ -9,7 +9,7 @@
 #include "ZFSerializable.h"
 #include "ZFOutputDefault.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZF_NAMESPACE_BEGIN(ZFSerializableUtil)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFSerializableUtil, ZF_NAMESPACE_GLOBAL)
 
 /**
  * @brief util method to set error

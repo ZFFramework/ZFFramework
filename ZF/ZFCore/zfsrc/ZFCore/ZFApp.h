@@ -25,7 +25,7 @@ ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppRestart)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
-ZF_NAMESPACE_BEGIN(ZFApp)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFApp, ZF_NAMESPACE_GLOBAL)
 
 /**
  * @brief exit the app

@@ -10,7 +10,7 @@ ZF_NAMESPACE_BEGIN(ZFCore_ZFMethodFunc_test_namespace)
 ZFMETHOD_FUNC_DEFINE_0(void, ZFCore_ZFMethodFunc_test_func) {
     ZFLog();
 }
-ZF_NAMESPACE_END_WITH_REGISTER(ZFCore_ZFMethodFunc_test_namespace, ZF_NAMESPACE_GLOBAL)
+ZF_NAMESPACE_END(ZFCore_ZFMethodFunc_test_namespace)
 
 ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFCore_ZFMethodFunc_test_func0) {
     ZFLog();

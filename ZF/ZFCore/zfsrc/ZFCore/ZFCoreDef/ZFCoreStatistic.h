@@ -9,7 +9,7 @@
 #include "ZFCoreTypeDef.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFCoreStatistic, ZF_NAMESPACE_GLOBAL)
 
 /** @brief see #ZFCoreStatistic::invokeCountGet */
 extern ZFLIB_ZFCore void invokeCountLog(ZF_IN const zfstring &key);

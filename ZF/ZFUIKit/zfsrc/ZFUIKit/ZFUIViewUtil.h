@@ -9,7 +9,7 @@
 #include "ZFUIView.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZF_NAMESPACE_BEGIN(ZFUIViewUtil)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFUIViewUtil, ZF_NAMESPACE_GLOBAL)
 
 /**
  * @brief recursive find the root ZFUIView parent of this view,

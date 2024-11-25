@@ -2,11 +2,15 @@
 
 #include "../ZFSTLWrapper/zfstlmap.h"
 
-ZF_NAMESPACE_GLOBAL_BEGIN
-
-const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) {
-    return zfnull;
+_ZFP_ZFNamespaceHolder::_ZFP_ZFNamespaceHolder(const char *parent, const char *child)
+: _ns(_ZFP_ZFNamespaceRegister(parent, child))
+{
 }
+_ZFP_ZFNamespaceHolder::~_ZFP_ZFNamespaceHolder(void) {
+    _ZFP_ZFNamespaceUnregister(_ns);
+}
+
+ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {

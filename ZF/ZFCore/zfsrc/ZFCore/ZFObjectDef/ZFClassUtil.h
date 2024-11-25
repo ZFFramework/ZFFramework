@@ -15,7 +15,7 @@ zfclassFwd ZFFilterForZFClass;
 zfclassFwd ZFFilterForZFMethod;
 zfclassFwd ZFFilterForZFProperty;
 
-ZF_NAMESPACE_BEGIN(ZFClassUtil)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFClassUtil, ZF_NAMESPACE_GLOBAL)
 
 /** @brief see #allClassParent */
 extern ZFLIB_ZFCore void allClassParentT(

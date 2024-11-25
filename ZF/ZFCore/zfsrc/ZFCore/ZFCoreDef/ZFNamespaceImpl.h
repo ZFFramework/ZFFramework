@@ -12,40 +12,11 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-/**
- * @brief register namespace
- */
-#define ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
-    _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace)
-#define _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
-    const zfchar *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) { \
-        static _ZFP_ZFNamespaceHolder d(ParentNameSpace::_ZFP_ZF_NAMESPACE_NOT_REGISTERED(), #NameSpace); \
-        return d.ns; \
-    } \
-    ZF_STATIC_REGISTER_INIT(_ZFP_NSReg) { \
-        _ZFP_ZF_NAMESPACE_NOT_REGISTERED(); \
-    } \
-    ZF_STATIC_REGISTER_END(_ZFP_NSReg)
 extern ZFLIB_ZFCore zfstring _ZFP_ZFNamespaceRegister(
         ZF_IN const zfchar *parent
         , ZF_IN const zfchar *child
         );
 extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns);
-class _ZFP_ZFNamespaceHolder {
-public:
-    _ZFP_ZFNamespaceHolder(
-            ZF_IN const zfchar *parent
-            , ZF_IN const zfchar *child
-            )
-    : ns(_ZFP_ZFNamespaceRegister(parent, child))
-    {
-    }
-    ~_ZFP_ZFNamespaceHolder(void) {
-        _ZFP_ZFNamespaceUnregister(this->ns);
-    }
-public:
-    zfstring ns;
-};
 
 /**
  * @brief get current namespace name
@@ -53,11 +24,11 @@ public:
  * note:
  * -  global namespace and ZFFramework's main namespace (#ZF_NAMESPACE_GLOBAL) are ensured null
  * -  embeded namespace are supported,
- *   however, you must ensure it's valid declared by #ZF_NAMESPACE_REGISTER or #ZF_NAMESPACE_END_WITH_REGISTER
+ *   however, you must ensure it's valid declared by #ZF_NAMESPACE_BEGIN_REGISTER
  * -  for embeded namespace, the namespace text are something looks like "GrandParent.Parent.Child"
  */
 #define ZF_NAMESPACE_CURRENT() \
-    _ZFP_ZF_NAMESPACE_NOT_REGISTERED()
+    _ZFP_ZF_NAMESPACE_NOT_REGISTERED<void>()
 
 // ============================================================
 /**

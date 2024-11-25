@@ -31,6 +31,6 @@ zfindex invokeCountGet(ZF_IN const zfstring &key) {
     return ((count != zfnull) ? *count : 0);
 }
 
-ZF_NAMESPACE_END_WITH_REGISTER(ZFCoreStatistic, ZF_NAMESPACE_GLOBAL)
+ZF_NAMESPACE_END(ZFCoreStatistic)
 ZF_NAMESPACE_GLOBAL_END
 

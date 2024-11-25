@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFEnvInfo::envSummaryCallbackRegister */
 typedef void (*ZFEnvSummaryCallback)(ZF_IN_OUT zfstring &ret);
 
-ZF_NAMESPACE_BEGIN(ZFEnvInfo)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFEnvInfo, ZF_NAMESPACE_GLOBAL)
 
 // ============================================================
 /**

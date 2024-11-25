@@ -57,7 +57,7 @@ private:
     zfbool _drawing;
 };
 
-ZF_NAMESPACE_BEGIN(ZFUIDraw)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFUIDraw, ZF_NAMESPACE_GLOBAL)
 
 // ============================================================
 // context

@@ -281,7 +281,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_8({
     , ZFMP_IN(zfstring const &, param7)
     )
 
-ZF_NAMESPACE_END_WITH_REGISTER(ZFCore_ZFMethodFuncUserRegister_testNamespace, ZF_NAMESPACE_GLOBAL)
+ZF_NAMESPACE_END(ZFCore_ZFMethodFuncUserRegister_testNamespace)
 
 ZF_NAMESPACE_GLOBAL_END
 
