@@ -82,7 +82,7 @@ zfclassFwd _ZFP_ZFCallbackPrivate;
  * it's a ZFMethod pointer container in fact\n
  * use ZFCallbackForXXX to create a callback,
  * then you may pass it as param or store it for future use\n
- * to execute callback, use #executeExact similar to ZFMethod::execute,
+ * to execute callback, use #executeExact similar to ZFMethod::executeExact,
  * while you have no need to take care of the owner object
  * @warning before execute, you must check whether the callback is valid
  *   (by #valid or `cb != zfnull` or `!cb`), otherwise, assert fail

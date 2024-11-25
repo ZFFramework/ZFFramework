@@ -515,7 +515,7 @@ public:
      *
      * the optional pageResultCallback would be called when page destroyed,
      * sender would be the owner manager,
-     * and param0 would be the #pageResult of the new page
+     * and param0 would be the #ZFUIPage::pageResult of the new page
      */
     ZFMETHOD_DECLARE_2(void, pageCreate
             , ZFMP_IN(ZFUIPage *, page)

@@ -306,7 +306,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   would be overrided by other rules if conflict,
  *   set to negative value would reset the rule
  * -  left(), top/right/bottom/width/height, etc :
- *   specify the #ZFUIAutoLayoutRule::pos
+ *   specify the #ZFUIAutoLayoutParam::pos
  * -  toLeft(target), top/right/bottom/width/height, etc :
  *   specify the #ZFUIAutoLayoutRule::target and #ZFUIAutoLayoutRule::targetPos
  * -  toParentLeft(), top/right/bottom/width/height, etc :

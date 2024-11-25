@@ -30,7 +30,7 @@ zfclassFwd ZFMP;
  * @warning (ZFTAG_LIMITATION) for dynamic registered method,
  *   if your method has return value,
  *   you must take care the life cycle of the return value\n
- *   when the method called by plain #ZFMethod::execute
+ *   when the method called by plain #ZFMethod::executeExact
  *   instead of #ZFMethod::methodGenericInvoker,
  *   the #ZFTypeIdWrapper created by generic invoker
  *   would be released immediately after method call,

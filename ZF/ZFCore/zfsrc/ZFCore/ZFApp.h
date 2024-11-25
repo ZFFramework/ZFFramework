@@ -12,14 +12,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 /**
- * @brief called when #appExit
+ * @brief called when #ZFApp::appExit
  *
  * param0 is a #v_zfint contains appExitCode\n
  * param1 is a #v_zfbool, set to true to override and ignore default impl
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppExit)
 /**
- * @brief called when #appRestart
+ * @brief called when #ZFApp::appRestart
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppRestart)
 ZF_NAMESPACE_END(ZFGlobalEvent)

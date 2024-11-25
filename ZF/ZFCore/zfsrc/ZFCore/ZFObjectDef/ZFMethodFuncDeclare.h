@@ -490,7 +490,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilter
  *
  * similar to #ZFMETHOD_INLINE_0, but declared in global scope instead of class scope,
  * declared method can be reflected by #ZFMethodFuncForName,
- * and can be invoked by by #ZFMethod::execute with null as first param\n
+ * and can be invoked by by #ZFMethod::executeExact with null as first param\n
  * function type method support at most one level namespace
  */
 #define ZFMETHOD_FUNC_DECLARE_0(ZFLIB_, \

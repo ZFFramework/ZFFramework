@@ -321,7 +321,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
  *   use #ZF_GLOBAL_INITIALIZER_INIT is recommeded
  * -  once registered, the method can be reflected by #ZFClass::methodForName,
  *   but there's no way to invoke the method directly,
- *   it can only be invoked by #ZFMethod::execute
+ *   it can only be invoked by #ZFMethod::executeExact
  */
 #define ZFMethodFuncUserRegister_0(resultMethod, methodInvokerAction, \
     methodNamespaceString, \
