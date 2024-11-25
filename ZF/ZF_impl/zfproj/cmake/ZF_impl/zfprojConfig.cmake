@@ -1,14 +1,17 @@
 
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
+    message("SDL setup begin")
     if(WIN32)
-        execute_process(COMMAND call "${ZF_ROOT_PATH}\\tools\\common\\zfsh.bat" "${ZF_ROOT_PATH}\\ZF\\ZF_impl\\zfproj\\cmake\\ZF_impl\\zf3rd_setup_SDL.zfsh" "${ZF_ROOT_PATH}")
+        execute_process(COMMAND call "${ZF_ROOT_PATH}\\tools\\common\\zfsh.bat" "${ZF_ROOT_PATH}\\ZF\\ZF_impl\\zfproj\\cmake\\ZF_impl\\zf3rd_setup_SDL.zfsh")
     else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh" "${ZF_ROOT_PATH}")
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh")
     endif()
+    message("SDL setup end")
 
     # https://open.oppomobile.com/new/developmentDoc/info?id=13223
     set(FONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
 
+    message("SDL font setup begin")
     set(FONT_REPO_FILE "${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/font.zip")
     set(FONT_REPO_PATH "${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/font")
     if(NOT EXISTS ${FONT_REPO_FILE})
@@ -28,6 +31,7 @@ function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
         DIRECTORY "${FONT_REPO_PATH}"
         DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/zfres/ZF_impl/sys_SDL/font"
         )
+    message("SDL font setup end")
 endfunction(zfprojConfigBefore_ZF_impl)
 
 function(zfprojConfigAfter_ZF_impl projName)
