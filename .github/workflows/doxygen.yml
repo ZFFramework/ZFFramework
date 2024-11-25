@@ -31,7 +31,7 @@ jobs:
 
     - name: ZF upload
       run: |
-        if [ $(basename $(dirname $(git remote get-url origin)) .git) = "ZFFramework" ]; then
+        if [ $(basename $(dirname $(git remote get-url origin))) = "ZFFramework" ]; then
         chmod +x ../ZFFramework/master/ZF_CI/doc.sh
         ../ZFFramework/master/ZF_CI/doc.sh
         fi

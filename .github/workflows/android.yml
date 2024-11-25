@@ -46,7 +46,7 @@ jobs:
 
     - name: ZF upload archive
       run: |
-        if [ $(basename $(dirname $(git remote get-url origin)) .git) = "ZFFramework" ]; then
+        if [ $(basename $(dirname $(git remote get-url origin))) = "ZFFramework" ]; then
         chmod +x ../ZFFramework/master/ZF_CI/upload_app.sh
         ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/../../_tmp/Android/${ZF_PROJ_NAME}/app/${ZF_PROJ_NAME}.apk" "${ZF_PROJ_NAME}.apk"
         fi
