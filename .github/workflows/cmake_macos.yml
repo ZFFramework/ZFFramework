@@ -8,9 +8,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   build:
     runs-on: macos-latest
@@ -28,7 +25,10 @@ jobs:
     - name: Setup SDL
       uses: libsdl-org/setup-sdl@v1
       with:
-          install-dependencies: true
+          version-sdl-image: 2-latest
+          version-sdl-mixer: 2-latest
+          version-sdl-net: 2-latest
+          version-sdl-ttf: 2-latest
 
     - name: ZFSetup
       run: |
