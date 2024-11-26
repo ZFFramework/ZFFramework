@@ -32,8 +32,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief true if under Windows
  */
-#if !ZF_ENV_FORCE_not_sys_Windows && (( \
-            defined(_WIN32) || defined(WIN32) \
+#if !ZF_ENV_FORCE_not_sys_Windows && ((0 \
+            || defined(WIN32) \
+            || defined(_WIN32) \
         ) || ZF_ENV_FORCE_sys_Windows)
     #define ZF_ENV_sys_Windows 1
 #else

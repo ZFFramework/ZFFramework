@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.16)
 project(ZFCore)
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
@@ -6,7 +6,6 @@ add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_PREFIX "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore")
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
@@ -30,9 +29,9 @@ target_include_directories(ZFCore PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc"
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(ZFCore PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
 
-    target_link_directories(ZFCore PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/")
-    target_link_libraries(ZFCore PUBLIC ${ZF_LIB_NAME_})
-endfunction(ZFAddLib)
+    target_link_directories(ZFCore PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
+    target_link_libraries(ZFCore ${ZF_LIB_NAME_})
+endfunction()
 
 
 install(
@@ -47,11 +46,11 @@ install(TARGETS ZFCore EXPORT ZFCore
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore/lib"
     )
-install(
-    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
-    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore/zfres"
-    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
-    )
+if(WIN32)
+    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\ZFCore\\zfres")
+else()
+    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore/zfres")
+endif()
 
 install(
     DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore/"

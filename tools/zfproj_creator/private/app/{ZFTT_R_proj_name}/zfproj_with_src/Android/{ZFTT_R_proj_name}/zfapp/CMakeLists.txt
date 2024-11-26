@@ -13,8 +13,8 @@ function(ZFAddSrc ZF_SRC_FILES_ PROJ_PATH_)
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
 
-    include_directories("${PROJ_PATH_}/zfsrc")
-endfunction(ZFAddSrc)
+    target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJ_PATH_}/zfsrc")
+endfunction()
 
 ZFAddSrc(ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../../..)
 {ZFTT_C_lib_require_0}

@@ -36,8 +36,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief true if under iOS
  */
-#if !ZF_ENV_FORCE_not_sys_iOS && (( \
-            defined(__APPLE__) && (TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) \
+#if !ZF_ENV_FORCE_not_sys_iOS && ((0 \
+            || (defined(__APPLE__) && (TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)) \
         ) || ZF_ENV_FORCE_sys_iOS)
     #define ZF_ENV_sys_iOS 1
 #else

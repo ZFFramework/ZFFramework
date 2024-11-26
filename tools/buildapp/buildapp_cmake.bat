@@ -41,8 +41,7 @@ ninja install
 set _RESULT=%errorlevel%
 cd /d "%_OLD_DIR%"
 
-call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\%PROJ_NAME%.exe" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\%PROJ_NAME%.exe"
-call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\zfres" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\zfres"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\dist" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
 
 exit /b %_RESULT%
 

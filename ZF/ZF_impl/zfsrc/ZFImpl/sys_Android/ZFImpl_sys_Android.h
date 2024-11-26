@@ -32,8 +32,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief true if under Android
  */
-#if !ZF_ENV_FORCE_not_sys_Android && (( \
-            defined(ANDROID) || defined(__ANDROID__) \
+#if !ZF_ENV_FORCE_not_sys_Android && ((0 \
+            || defined(ANDROID) \
+            || defined(__ANDROID__) \
         ) || ZF_ENV_FORCE_sys_Android)
     #define ZF_ENV_sys_Android 1
 #else

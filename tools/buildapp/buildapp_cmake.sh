@@ -34,8 +34,7 @@ make install
 _RESULT="$?"
 cd "$_OLD_DIR"
 
-sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_TMP_PATH/$PROJ_NAME" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app/$PROJ_NAME"
-sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_TMP_PATH/zfres" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app/zfres"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_TMP_PATH/dist" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app"
 
 exit $_RESULT
 

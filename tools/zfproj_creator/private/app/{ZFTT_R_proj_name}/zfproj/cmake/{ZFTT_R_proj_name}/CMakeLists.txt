@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.16)
 project({ZFTT_R_proj_name})
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
@@ -6,7 +6,6 @@ add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../../../../_tmp/cmake/{ZFTT_R_proj_name}/app")
 
 execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 
@@ -31,17 +30,19 @@ target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJECT_SOURCE_DIR}/../
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories({ZFTT_R_proj_name} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
 
-    target_link_directories({ZFTT_R_proj_name} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/")
-    target_link_libraries({ZFTT_R_proj_name} PUBLIC ${ZF_LIB_NAME_})
+    target_link_directories({ZFTT_R_proj_name} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
+    target_link_libraries({ZFTT_R_proj_name} ${ZF_LIB_NAME_})
 
+    install(
+        DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/"
+        DESTINATION "${PROJECT_BINARY_DIR}/dist"
+        )
     if(WIN32)
-        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\common\\copy_check.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\lib\\" "${CMAKE_INSTALL_PREFIX}\\.")
-        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfres")
+        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\zfres\\" "${PROJECT_BINARY_DIR}\\dist\\zfres")
     else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/copy_check.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/" "${CMAKE_INSTALL_PREFIX}/.")
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/dist/zfres")
     endif()
-endfunction(ZFAddLib)
+endfunction()
 {ZFTT_C_lib_require_0}
 ZFAddLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}
 ZFAddLib({ZFTT_R_lib_name_1}){ZFTT_CE}{ZFTT_C_lib_require_2}
@@ -180,8 +181,8 @@ else()
 endif()
 
 install(TARGETS {ZFTT_R_proj_name} EXPORT {ZFTT_R_proj_name}
-    LIBRARY DESTINATION "${PROJECT_BINARY_DIR}"
-    ARCHIVE DESTINATION "${PROJECT_BINARY_DIR}"
-    RUNTIME DESTINATION "${PROJECT_BINARY_DIR}"
+    LIBRARY DESTINATION "${PROJECT_BINARY_DIR}/dist"
+    ARCHIVE DESTINATION "${PROJECT_BINARY_DIR}/dist"
+    RUNTIME DESTINATION "${PROJECT_BINARY_DIR}/dist"
     )
 

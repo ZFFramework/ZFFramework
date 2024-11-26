@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.16)
 project({ZFTT_R_proj_name})
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
@@ -6,7 +6,6 @@ add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_PREFIX "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}")
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
@@ -30,9 +29,9 @@ target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJECT_SOURCE_DIR}/../
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories({ZFTT_R_proj_name} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
 
-    target_link_directories({ZFTT_R_proj_name} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/")
-    target_link_libraries({ZFTT_R_proj_name} PUBLIC ${ZF_LIB_NAME_})
-endfunction(ZFAddLib)
+    target_link_directories({ZFTT_R_proj_name} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
+    target_link_libraries({ZFTT_R_proj_name} ${ZF_LIB_NAME_})
+endfunction()
 {ZFTT_C_lib_require_0}
 ZFAddLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}
 ZFAddLib({ZFTT_R_lib_name_1}){ZFTT_CE}{ZFTT_C_lib_require_2}
@@ -175,11 +174,11 @@ install(TARGETS {ZFTT_R_proj_name} EXPORT {ZFTT_R_proj_name}
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib"
     )
-install(
-    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
-    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/zfres"
-    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
-    )
+if(WIN32)
+    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\{ZFTT_R_proj_name}\\zfres")
+else()
+    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/zfres")
+endif()
 
 install(
     DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/"

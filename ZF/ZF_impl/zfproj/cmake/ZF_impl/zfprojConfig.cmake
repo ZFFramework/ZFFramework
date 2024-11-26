@@ -1,13 +1,5 @@
 
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
-    message("SDL setup begin")
-    if(WIN32)
-        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\common\\zfsh.bat" "${ZF_ROOT_PATH}\\ZF\\ZF_impl\\zfproj\\cmake\\ZF_impl\\zf3rd_setup_SDL.zfsh")
-    else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh")
-    endif()
-    message("SDL setup end")
-
     # https://open.oppomobile.com/new/developmentDoc/info?id=13223
     set(FONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
 
@@ -27,59 +19,28 @@ function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
         DIRECTORY "${FONT_REPO_PATH}"
         DESTINATION "${PROJECT_BINARY_DIR}/zfres/ZF_impl/sys_SDL/font"
         )
-    install(
-        DIRECTORY "${FONT_REPO_PATH}"
-        DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/zfres/ZF_impl/sys_SDL/font"
-        )
     message("SDL font setup end")
 endfunction(zfprojConfigBefore_ZF_impl)
 
 function(zfprojConfigAfter_ZF_impl projName)
-    set(SDL2_SHARED OFF CACHE BOOL "build static" FORCE)
-    set(INTERFACE_SDL2_SHARED OFF CACHE BOOL "build static" FORCE)
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
+    target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
 
+    if(NOT ZFSDL_SDL2)
+        set(ZFSDL_SDL2 TRUE)
+        find_package(SDL2 REQUIRED)
+        target_link_libraries(${projName} SDL2::SDL2)
+    endif()
 
-    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL" SDL)
-    set_target_properties(SDL2-static PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_compile_definitions(SDL2-static PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
-    zfprojLoadAllSymbol(SDL2-static)
+    if(NOT ZFSDL_SDL2_ttf)
+        set(ZFSDL_SDL2_ttf TRUE)
+        find_package(SDL2_ttf REQUIRED)
+        target_link_libraries(${projName} SDL2_ttf::SDL2_ttf)
+    endif()
 
-    set(SDL2IMAGE_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
-    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_image" SDL_image)
-    set_target_properties(SDL2_image PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_compile_definitions(SDL2_image PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
-    zfprojLoadAllSymbol(SDL2_image)
-
-    set(SDL2TTF_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
-    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_ttf" SDL_ttf)
-    set_target_properties(SDL2_ttf PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_compile_definitions(SDL2_ttf PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
-    zfprojLoadAllSymbol(SDL2_ttf)
-
-    set(SDL2NET_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
-    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_net" SDL_net)
-    set_target_properties(SDL2_net PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_compile_definitions(SDL2_net PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
-    zfprojLoadAllSymbol(SDL2_net)
-
-    set(SDL2MIXER_FLAC OFF CACHE BOOL "disable sdl mixer feature" FORCE)
-    set(SDL2MIXER_MIDI OFF CACHE BOOL "disable sdl mixer feature" FORCE)
-    set(SDL2MIXER_MOD OFF CACHE BOOL "disable sdl mixer feature" FORCE)
-    set(SDL2MIXER_OPUS OFF CACHE BOOL "disable sdl mixer feature" FORCE)
-    set(SDL2MIXER_WAVPACK OFF CACHE BOOL "disable sdl mixer feature" FORCE)
-    set(SDL2MIXER_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
-    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_mixer" SDL_mixer)
-    set_target_properties(SDL2_mixer PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_compile_definitions(SDL2_mixer PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
-    zfprojLoadAllSymbol(SDL2_mixer)
-
-    target_link_libraries(${projName} PUBLIC
-        SDL2-static
-        SDL2_image
-        SDL2_ttf
-        SDL2_net
-        SDL2_mixer
-        )
+    if(NOT ZFSDL_SDL2_image)
+        set(ZFSDL_SDL2_image TRUE)
+        find_package(SDL2_image REQUIRED)
+        target_link_libraries(${projName} SDL2_image::SDL2_image)
+    endif()
 endfunction(zfprojConfigAfter_ZF_impl)
 

@@ -7,7 +7,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "ZFImpl/_repo/SDL/SDL_ttf.h"
+#include "SDL_ttf.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

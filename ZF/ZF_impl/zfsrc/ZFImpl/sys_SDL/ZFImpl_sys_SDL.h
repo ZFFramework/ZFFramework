@@ -33,13 +33,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #endif
 
 /**
- * @brief true if under QT
+ * @brief true if under SDL
  */
-#if !ZF_ENV_FORCE_not_sys_SDL && (( \
-            1 \
-            && !ZF_ENV_sys_Android \
-            && !ZF_ENV_sys_iOS \
-            && !ZF_ENV_sys_Qt \
+#if !ZF_ENV_FORCE_not_sys_SDL && ((0 \
         ) || ZF_ENV_FORCE_sys_SDL)
     #define ZF_ENV_sys_SDL 1
 #else

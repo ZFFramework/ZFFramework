@@ -3,7 +3,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "ZFImpl/_repo/SDL/SDL_net.h"
+#include "SDL_net.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

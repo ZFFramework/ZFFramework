@@ -32,8 +32,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief true if under QT
  */
-#if !ZF_ENV_FORCE_not_sys_Qt && (( \
-            defined(QT_VERSION) || defined(QT_CORE_LIB) \
+#if !ZF_ENV_FORCE_not_sys_Qt && ((0 \
+            || defined(QT_VERSION) \
+            || defined(QT_CORE_LIB) \
         ) || ZF_ENV_FORCE_sys_Qt)
     #define ZF_ENV_sys_Qt 1
 #else

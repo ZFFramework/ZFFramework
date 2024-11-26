@@ -36,8 +36,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief true if under Posix
  */
-#if !ZF_ENV_FORCE_not_sys_Posix && (( \
-            defined(__unix__) || defined(__APPLE__) || defined(__linux) \
+#if !ZF_ENV_FORCE_not_sys_Posix && ((0 \
+            || defined(__unix__) \
+            || defined(__linux) \
+            || defined(__APPLE__) \
         ) || ZF_ENV_FORCE_sys_Posix)
     #define ZF_ENV_sys_Posix 1
 #else
@@ -73,8 +75,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief true if under MacOS
  */
-#if !ZF_ENV_FORCE_not_sys_MacOS && (( \
-            defined(__APPLE__) && TARGET_OS_MAC \
+#if !ZF_ENV_FORCE_not_sys_MacOS && ((0 \
+            || (defined(__APPLE__) && TARGET_OS_MAC) \
         ) || ZF_ENV_FORCE_sys_MacOS)
     #define ZF_ENV_sys_MacOS 1
 #else

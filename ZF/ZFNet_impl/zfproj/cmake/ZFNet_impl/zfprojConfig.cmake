@@ -8,15 +8,28 @@ function(zfprojConfigBefore_ZFNet_impl projName ZF_SRC_FILES)
     else()
         message("OpenSSL: NOT FOUND")
     endif()
-endfunction(zfprojConfigBefore_ZFNet_impl)
+endfunction()
 
 function(zfprojConfigAfter_ZFNet_impl projName)
-    set_target_properties(${projName} PROPERTIES CXX_STANDARD 11)
-
     find_package(OpenSSL MODULE)
     if(OPENSSL_FOUND)
+        set_target_properties(${projName} PROPERTIES CXX_STANDARD 11)
         target_compile_options(${projName} PUBLIC -DZF_ENV_HTTPS=1)
-        target_link_libraries(${projName} PRIVATE ${OPENSSL_LIBRARIES})
+        target_link_libraries(${projName} ${OPENSSL_LIBRARIES})
     endif()
-endfunction(zfprojConfigAfter_ZFNet_impl)
+
+    target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
+
+    if(NOT ZFSDL_SDL2)
+        set(ZFSDL_SDL2 TRUE)
+        find_package(SDL2 REQUIRED)
+        target_link_libraries(${projName} SDL2::SDL2)
+    endif()
+
+    if(NOT ZFSDL_SDL2_net)
+        set(ZFSDL_SDL2_net TRUE)
+        find_package(SDL2_net REQUIRED)
+        target_link_libraries(${projName} SDL2_net::SDL2_net)
+    endif()
+endfunction()
 

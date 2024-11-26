@@ -3,7 +3,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "ZFImpl/_repo/SDL/SDL_mixer.h"
+#include "SDL_mixer.h"
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN

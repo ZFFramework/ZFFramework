@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.16)
 project(ZFFramework_test)
 
 if(WIN32)
@@ -25,13 +25,13 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         "${PROJ_PATH_}/zfsrc_ext/*.cpp"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
-    include_directories("${PROJ_PATH_}/zfsrc")
+    target_include_directories(ZFFramework_test PRIVATE "${PROJ_PATH_}/zfsrc")
     if(WIN32)
-        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJ_PATH_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfres")
+        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJ_PATH_}\\zfres\\" "${PROJECT_BINARY_DIR}\\dist\\zfres")
     else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJ_PATH_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJ_PATH_}/zfres/" "${PROJECT_BINARY_DIR}/dist/zfres")
     endif()
-endfunction(ZFAddSrc)
+endfunction()
 
 ZFAddSrc(ZF_LIB_NAMES ZFFramework_test ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../..)
 
@@ -77,4 +77,27 @@ endif()
 foreach(LIB_NAME_ ${ZF_LIB_NAMES})
     target_compile_definitions(ZFFramework_test PUBLIC ZFLIB_${LIB_NAME_}=)
 endforeach()
+
+install(TARGETS ZFFramework_test EXPORT ZFFramework_test
+    LIBRARY DESTINATION "${PROJECT_BINARY_DIR}/dist"
+    ARCHIVE DESTINATION "${PROJECT_BINARY_DIR}/dist"
+    RUNTIME DESTINATION "${PROJECT_BINARY_DIR}/dist"
+    )
+
+install(CODE [[
+    file(GET_RUNTIME_DEPENDENCIES
+        EXECUTABLES "$<TARGET_FILE:ZFFramework_test>"
+        RESOLVED_DEPENDENCIES_VAR _r_deps
+        POST_EXCLUDE_REGEXES
+            ".*system32.*"
+        )
+    foreach(_file ${_r_deps})
+        file(INSTALL
+            DESTINATION "$<TARGET_FILE_DIR:ZFFramework_test>/dist"
+            TYPE SHARED_LIBRARY
+            FOLLOW_SYMLINK_CHAIN
+            FILES "${_file}"
+            )
+    endforeach()
+    ]])
 

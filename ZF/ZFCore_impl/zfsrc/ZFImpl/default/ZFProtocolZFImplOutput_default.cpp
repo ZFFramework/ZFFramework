@@ -9,9 +9,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_default, ZFImplOutput, ZFProtoc
 public:
     virtual void outputCoreLog(ZF_IN const zfchar *s) {
         printf("%s", s);
-        #if ZF_ENV_DEBUG
-            fflush(stdout);
-        #endif
+        fflush(stdout);
     }
     virtual void outputLog(
             ZF_IN const zfchar *s
@@ -19,13 +17,16 @@ public:
             ) {
         if(count == zfindexMax()) {
             printf("%s", s);
+            if(zfstringFind(s, '\n') >= 0) {
+                fflush(stdout);
+            }
         }
         else {
             printf("%s", zfstring(s, count).cString());
+            if(zfstringFind(s, count, '\n') >= 0) {
+                fflush(stdout);
+            }
         }
-        #if ZF_ENV_DEBUG
-            fflush(stdout);
-        #endif
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFImplOutputImpl_default)
 

@@ -12,7 +12,7 @@ function(zfprojStripFILE targetName)
         list(APPEND defs "__FILE__=\"${filename}\"")
         set_property(SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS ${defs})
     endforeach()
-endfunction(zfprojStripFILE)
+endfunction()
 
 function(zfprojLoadAllSymbol targetName)
     if(WIN32)
@@ -31,5 +31,5 @@ function(zfprojLoadAllSymbol targetName)
             LINK_FLAGS "-Wl,--allow-multiple-definition"
             )
     endif()
-endfunction(zfprojLoadAllSymbol)
+endfunction()
 
