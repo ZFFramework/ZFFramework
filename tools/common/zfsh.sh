@@ -39,6 +39,7 @@ sed -e 's/\\/\//g' \
     -e 's/<ZF_COMMENT>/#/g' \
     -e 's/<ZF_SH>/sh/g' \
     -e 's/<ZF_SH_EXT>/sh/g' \
+    -e 's/<ZF_WRAP>/\\/g' \
     \
     -e 's/<ZF_ROOT_PATH>/\$_ZF_ROOT_PATH/g' \
     -e 's/<ZF_WORK_DIR>/\$_ZFSH_WORK_DIR/g' \
@@ -64,6 +65,8 @@ sed -e 's/\\/\//g' \
     -e 's/<ZF_IF_FAILED_END>/fi/g' \
     -e 's/<ZF_ELSE>/else/g' \
     -e 's/<ZF_IGNORE_OUTPUT>/>\/dev\/null 2>\&1/g' \
+    -e 's/<ZF_CD>/cd/g' \
+    -e 's/<ZF_PWD>/\$(pwd)/g' \
     "$TMP_PATH.tmp" > "$TMP_PATH"
 rm -rf "$TMP_PATH.tmp" >/dev/null 2>&1
 

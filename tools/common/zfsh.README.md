@@ -36,6 +36,7 @@ common:
 * `<ZF_COMMENT>` : `rem` for Windows and `#` for other
 * `<ZF_SH>` : `call` for Windows and `sh` for other
 * `<ZF_SH_EXT>` : `bat` for Windows and `sh` for other
+* `<ZF_WRAP>` : `^` for Windows and `\` for other
 
 path:
 
@@ -58,4 +59,6 @@ logic:
 * `<ZF_IF_FAILED_END>` : if statement
 * `<ZF_ELSE>` : if statement
 * `<ZF_IGNORE_OUTPUT>` : ignore output
+* `<ZF_CD>` : change dir
+* `<ZF_PWD>` : get current dir
 

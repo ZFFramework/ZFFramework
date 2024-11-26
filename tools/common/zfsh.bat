@@ -41,6 +41,7 @@ for /f "tokens=*" %%a in (%ZFSH_PATH%) do (
     set line=!line:^<ZF_COMMENT^>=rem !
     set line=!line:^<ZF_SH^>=call!
     set line=!line:^<ZF_SH_EXT^>=bat!
+    set line=!line:^<ZF_WRAP^>=^^!
 
     set line=!line:^<ZF_ROOT_PATH^>=%ZF_ROOT_PATH%!
     set line=!line:^<ZF_WORK_DIR^>=%ZFSH_WORK_DIR%!
@@ -66,6 +67,8 @@ for /f "tokens=*" %%a in (%ZFSH_PATH%) do (
     set line=!line:^<ZF_IF_FAILED_END^>=^)!
     set line=!line:^<ZF_ELSE^>=^) else (!
     set line=!line:^<ZF_IGNORE_OUTPUT^>=^>nul 2^>^&1!
+    set line=!line:^<ZF_CD^>=cd /d!
+    set line=!line:^<ZF_PWD^>=%cd%!
 
     echo !line!>>"%TMP_PATH%"
 )

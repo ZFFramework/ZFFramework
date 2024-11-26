@@ -1,5 +1,11 @@
 
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
+    if(WIN32)
+        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\common\\zfsh.bat" "${ZF_ROOT_PATH}\\ZF\\ZF_impl\\zfproj\\cmake\\ZF_impl\\zf3rd_setup_SDL.zfsh")
+    else()
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh")
+    endif()
+
     # https://open.oppomobile.com/new/developmentDoc/info?id=13223
     set(FONT_URL "https://openfs.oppomobile.com/open/oop/202410/18/62d51f494591f1a9040d83b597745911.zip")
 
@@ -24,6 +30,10 @@ endfunction(zfprojConfigBefore_ZF_impl)
 
 function(zfprojConfigAfter_ZF_impl projName)
     target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
+    if(NOT ZFSDL_PREFIX)
+        set(ZFSDL_PREFIX TRUE)
+        list(APPEND CMAKE_PREFIX_PATH "${ZF_ROOT_PATH}/_tmp/SDL")
+    endif()
 
     if(NOT ZFSDL_SDL2)
         set(ZFSDL_SDL2 TRUE)
