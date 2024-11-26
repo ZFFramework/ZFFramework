@@ -6,7 +6,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFCore_ZFMethodFunc_test_func) {
     ZFLog();
 }
 
-ZF_NAMESPACE_BEGIN(ZFCore_ZFMethodFunc_test_namespace)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFCore_ZFMethodFunc_test_namespace, ZF_NAMESPACE_GLOBAL)
 ZFMETHOD_FUNC_DEFINE_0(void, ZFCore_ZFMethodFunc_test_func) {
     ZFLog();
 }

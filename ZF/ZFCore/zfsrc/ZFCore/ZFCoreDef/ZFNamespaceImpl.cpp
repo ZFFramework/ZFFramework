@@ -98,12 +98,13 @@ zfclassLikePOD _ZFP_ZFNamespaceMapType {
 public:
     zfuint refCount;
     zfstring ns;
+    zfstring nsFull;
     zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
 public:
     _ZFP_ZFNamespaceMapType(void)
-        : refCount(1)
-          , ns()
-          , d()
+    : refCount(1)
+    , ns()
+    , d()
     {
     }
 };
@@ -138,13 +139,14 @@ zfstring _ZFP_ZFNamespaceRegister(
             t->d[key] = ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *>(tNew);
             t = tNew;
             t->ns.append(ns, pos[i].start + pos[i].count);
+            t->nsFull = ns;
         }
         else {
             t = it->second.pointerValue();
             (++t->refCount);
         }
     }
-    return ns;
+    return t->nsFull;
 }
 void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
     if(ns == zfnull) {

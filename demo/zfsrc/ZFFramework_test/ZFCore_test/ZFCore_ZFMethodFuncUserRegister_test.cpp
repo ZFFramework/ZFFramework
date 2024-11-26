@@ -172,7 +172,7 @@ protected:
 };
 ZFOBJECT_REGISTER(ZFCore_ZFMethodFuncUserRegister_test)
 
-ZF_NAMESPACE_BEGIN(ZFCore_ZFMethodFuncUserRegister_testNamespace)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFCore_ZFMethodFuncUserRegister_testNamespace, ZF_NAMESPACE_GLOBAL)
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
         ZFLog();
