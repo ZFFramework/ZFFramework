@@ -8,7 +8,7 @@
 
 #include "ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZF_NAMESPACE_BEGIN_REGISTER(ZFGlobalEvent, ZF_NAMESPACE_GLOBAL)
+ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 
 /**
  * @brief see #ZFObject::observerNotify

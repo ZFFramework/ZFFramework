@@ -22,6 +22,20 @@ private:
 
 /**
  * @brief begin namespace
+ *
+ * when declaring your own new namespace,
+ * you must register it by #ZF_NAMESPACE_BEGIN_REGISTER before any other
+ * access or declare of the same namespace
+ * @code
+ *   // YourModule.h
+ *   ZF_NAMESPACE_BEGIN_REGISTER(YourNS, ParentNS)
+ *   ZF_NAMESPACE_END(YourNS)
+ *
+ *   // OtherModule.h
+ *   #include "YourModule.h" // include the registered YourNS
+ *   ZF_NAMESPACE_BEGIN(YourNS) // extend the YourNS
+ *   ZF_NAMESPACE_END(YourNS)
+ * @endcode
  */
 #define ZF_NAMESPACE_BEGIN(NameSpace) \
     namespace NameSpace { \

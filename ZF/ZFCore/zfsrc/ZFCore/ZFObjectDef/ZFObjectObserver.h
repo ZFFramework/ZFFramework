@@ -385,6 +385,9 @@ inline void ZFEventDynamicUnregister(ZF_IN zfidentity idValue) {
     ZFIdMapDynamicUnregister(idValue);
 }
 
+ZF_NAMESPACE_BEGIN_REGISTER(ZFGlobalEvent, ZF_NAMESPACE_GLOBAL)
+ZF_NAMESPACE_END(ZFGlobalEvent)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectObserver_h_
 

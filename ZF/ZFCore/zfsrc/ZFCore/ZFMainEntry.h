@@ -71,7 +71,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs)
 
 // ============================================================
-ZF_NAMESPACE_BEGIN(ZFApp)
+ZF_NAMESPACE_BEGIN_REGISTER(ZFApp, ZF_NAMESPACE_GLOBAL)
 
 /**
  * @brief see #ZFObject::observerNotify
