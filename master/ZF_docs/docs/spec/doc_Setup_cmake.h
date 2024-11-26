@@ -5,8 +5,10 @@
  *
  * you must have these settings being prepared:
  * -  cmake
+ * -  SDL
  * -  proper make and compilers
  * -  for Windows:
+ *   -  `Desktop development with C++` via VisualStudioInstaller
  *   -  nasm
  *   -  ninja
  *

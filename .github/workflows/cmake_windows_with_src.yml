@@ -31,6 +31,7 @@ jobs:
     - name: Setup SDL
       uses: libsdl-org/setup-sdl@v1
       with:
+          install-linux-dependencies: true
           version-sdl-image: 2-latest
           version-sdl-mixer: 2-latest
           version-sdl-net: 2-latest
