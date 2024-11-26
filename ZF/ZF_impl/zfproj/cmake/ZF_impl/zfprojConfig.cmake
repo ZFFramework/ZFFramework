@@ -35,35 +35,33 @@ function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
 endfunction(zfprojConfigBefore_ZF_impl)
 
 function(zfprojConfigAfter_ZF_impl projName)
-    if(${projName} STREQUAL "ZF_impl")
-        zfprojLoadAllSymbol(${projName})
-    endif()
-
     set(SDL2_SHARED OFF CACHE BOOL "build static" FORCE)
     set(INTERFACE_SDL2_SHARED OFF CACHE BOOL "build static" FORCE)
     set(BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
 
 
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL" SDL)
-    set_target_properties(SDL2main PROPERTIES POSITION_INDEPENDENT_CODE ON)
     set_target_properties(SDL2-static PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    target_compile_definitions(SDL2main PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
     target_compile_definitions(SDL2-static PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
+    zfprojLoadAllSymbol(SDL2-static)
 
     set(SDL2IMAGE_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_image" SDL_image)
     set_target_properties(SDL2_image PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_compile_definitions(SDL2_image PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
+    zfprojLoadAllSymbol(SDL2_image)
 
     set(SDL2TTF_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_ttf" SDL_ttf)
     set_target_properties(SDL2_ttf PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_compile_definitions(SDL2_ttf PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
+    zfprojLoadAllSymbol(SDL2_ttf)
 
     set(SDL2NET_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_net" SDL_net)
     set_target_properties(SDL2_net PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_compile_definitions(SDL2_net PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
+    zfprojLoadAllSymbol(SDL2_net)
 
     set(SDL2MIXER_FLAC OFF CACHE BOOL "disable sdl mixer feature" FORCE)
     set(SDL2MIXER_MIDI OFF CACHE BOOL "disable sdl mixer feature" FORCE)
@@ -74,9 +72,9 @@ function(zfprojConfigAfter_ZF_impl projName)
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_mixer" SDL_mixer)
     set_target_properties(SDL2_mixer PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_compile_definitions(SDL2_mixer PUBLIC ZFLIB_SDL=ZF_ENV_EXPORT)
+    zfprojLoadAllSymbol(SDL2_mixer)
 
     target_link_libraries(${projName} PUBLIC
-        SDL2main
         SDL2-static
         SDL2_image
         SDL2_ttf
