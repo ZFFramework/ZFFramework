@@ -13,6 +13,7 @@ else()
 endif()
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/cmake_main.cpp"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c"
