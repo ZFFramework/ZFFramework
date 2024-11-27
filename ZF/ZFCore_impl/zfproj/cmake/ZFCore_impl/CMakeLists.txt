@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.4.1)
 project(ZFCore_impl)
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
@@ -43,10 +42,9 @@ install(
         PATTERN "*.h"
         PATTERN "*.hpp"
     )
-install(TARGETS ZFCore_impl EXPORT ZFCore_impl
-    LIBRARY DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
-    ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
-    RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
+install(
+    TARGETS ZFCore_impl
+    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
     )
 if(WIN32)
     execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\ZFCore_impl\\zfres")

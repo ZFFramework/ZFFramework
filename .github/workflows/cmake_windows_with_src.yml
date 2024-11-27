@@ -28,15 +28,6 @@ jobs:
     - name: get-cmake
       uses: lukka/get-cmake@latest
 
-    - name: Setup SDL
-      uses: libsdl-org/setup-sdl@v1
-      with:
-          install-linux-dependencies: true
-          version-sdl-image: 2-latest
-          version-sdl-mixer: 2-latest
-          version-sdl-net: 2-latest
-          version-sdl-ttf: 2-latest
-
     - name: Set up NASM
       uses: ilammy/setup-nasm@v1
 

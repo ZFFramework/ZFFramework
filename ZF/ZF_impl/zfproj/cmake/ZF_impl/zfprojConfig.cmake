@@ -21,10 +21,17 @@ function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
             execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/unzip.sh" "${FONT_REPO_FILE}" "${FONT_REPO_PATH}")
         endif()
     endif()
-    install(
-        DIRECTORY "${FONT_REPO_PATH}"
-        DESTINATION "${PROJECT_BINARY_DIR}/zfres/ZF_impl/sys_SDL/font"
-        )
+    if(${projName} STREQUAL "ZF_impl")
+        install(
+            DIRECTORY "${FONT_REPO_PATH}"
+            DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/zfres/ZF_impl/sys_SDL/font"
+            )
+    else()
+        install(
+            DIRECTORY "${FONT_REPO_PATH}"
+            DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres/ZF_impl/sys_SDL/font"
+            )
+    endif()
     message("SDL font setup end")
 endfunction(zfprojConfigBefore_ZF_impl)
 
@@ -32,7 +39,7 @@ function(zfprojConfigAfter_ZF_impl projName)
     target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
     if(NOT ZFSDL_PREFIX)
         set(ZFSDL_PREFIX TRUE)
-        list(APPEND CMAKE_PREFIX_PATH "${ZF_ROOT_PATH}/_tmp/SDL")
+        list(APPEND CMAKE_PREFIX_PATH "${ZF_ROOT_PATH}/_release/cmake/SDL")
     endif()
 
     if(NOT ZFSDL_SDL2)

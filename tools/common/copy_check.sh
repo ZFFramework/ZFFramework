@@ -9,10 +9,10 @@ fi
 
 if test -d "$SRC_PATH" ; then
     mkdir -p "$DST_PATH" >/dev/null 2>&1
-    rsync --exclude=".*" -ruc "$SRC_PATH/." "$DST_PATH/" >/dev/null 2>&1
+    rsync --exclude=".*" -rucl "$SRC_PATH/." "$DST_PATH/" >/dev/null 2>&1
 else
     mkdir -p $(dirname "$DST_PATH") >/dev/null 2>&1
-    rsync --exclude=".*" -ruc "$SRC_PATH" "$DST_PATH" >/dev/null 2>&1
+    rsync --exclude=".*" -rucl "$SRC_PATH" "$DST_PATH" >/dev/null 2>&1
 fi
 
 exit 0

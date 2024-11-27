@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.4.1)
 project(ZFFramework_test)
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 
 execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 
@@ -35,12 +34,12 @@ function(ZFAddLib ZF_LIB_NAME_)
 
     install(
         DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/"
-        DESTINATION "${PROJECT_BINARY_DIR}/dist"
+        DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
         )
     if(WIN32)
-        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\zfres\\" "${PROJECT_BINARY_DIR}\\dist\\zfres")
+        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfdist\\zfres")
     else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/dist/zfres")
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/zfdist/zfres")
     endif()
 endfunction()
 
@@ -68,9 +67,18 @@ else()
     set_target_properties(ZFFramework_test PROPERTIES INSTALL_RPATH "\\\$ORIGIN;$ORIGIN")
 endif()
 
-install(TARGETS ZFFramework_test EXPORT ZFFramework_test
-    LIBRARY DESTINATION "${PROJECT_BINARY_DIR}/dist"
-    ARCHIVE DESTINATION "${PROJECT_BINARY_DIR}/dist"
-    RUNTIME DESTINATION "${PROJECT_BINARY_DIR}/dist"
+install(
+    TARGETS ZFFramework_test
+    DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
     )
+file(GLOB_RECURSE SDL_LIBS_
+    "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL2*.*"
+    )
+foreach(SDL_LIB_ ${SDL_LIBS_})
+    if(NOT (SDL_LIB_ MATCHES "_release/cmake/SDL/lib/cmake|_release/cmake/SDL/lib/pkgconfig"))
+        if(NOT (SDL_LIB_ MATCHES "SDL2[^/]*\\.a"))
+            install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
+        endif()
+    endif()
+endforeach()
 
