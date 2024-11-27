@@ -68,7 +68,7 @@ for /f "tokens=*" %%a in (%ZFSH_PATH%) do (
     set line=!line:^<ZF_ELSE^>=^) else (!
     set line=!line:^<ZF_IGNORE_OUTPUT^>=^>nul 2^>^&1!
     set line=!line:^<ZF_CD^>=cd /d!
-    set line=!line:^<ZF_PWD^>=%cd%!
+    set line=!line:^<ZF_PWD^>=%%cd%%!
 
     echo !line!>>"%TMP_PATH%"
 )
