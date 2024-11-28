@@ -1,3 +1,5 @@
+#define SDL_MAIN_HANDLED
+
 #include "ZFCore.h"
 #include "ZFCore/protocol/ZFProtocolZFMainEntry.h"
 

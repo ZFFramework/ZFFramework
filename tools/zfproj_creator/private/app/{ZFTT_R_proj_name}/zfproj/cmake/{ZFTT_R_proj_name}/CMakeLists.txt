@@ -7,6 +7,7 @@ add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 if(WIN32)
+    set(CMAKE_WIN32_EXECUTABLE TRUE)
     execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\release\\release_cmake.bat" 1)
 else()
     execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)

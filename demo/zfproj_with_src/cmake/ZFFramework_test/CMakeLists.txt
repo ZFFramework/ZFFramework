@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 project(ZFFramework_test)
 
 if(WIN32)
+    set(CMAKE_WIN32_EXECUTABLE TRUE)
     execute_process(COMMAND "${PROJECT_SOURCE_DIR}\\..\\..\\..\\..\\zfsetup.bat")
 else()
     execute_process(COMMAND sh "${PROJECT_SOURCE_DIR}/../../../../zfsetup.sh")
