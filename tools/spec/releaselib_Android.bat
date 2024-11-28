@@ -25,6 +25,9 @@ set _OLD_DIR=%cd%
 
 cd /d "%PROJ_PATH%\Android\%PROJ_NAME%"
 call "gradlew.bat" assembleRelease
+set RESULT=%errorlevel%
 
 cd /d "%_OLD_DIR%"
+
+exit /b %RESULT%
 

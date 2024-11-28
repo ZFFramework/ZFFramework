@@ -21,6 +21,9 @@ cd "$ZF_ROOT_PATH/_tmp/cmake/$PROJ_NAME/build"
 cmake "$PROJ_PATH/cmake/$PROJ_NAME" -DCMAKE_BUILD_TYPE=Release
 make -j4
 make install
+RESULT=$?
 
 cd "$_OLD_DIR"
+
+exit $RESULT
 

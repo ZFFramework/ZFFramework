@@ -41,5 +41,8 @@ del /f/s/q ".\*.dll" /f/s/q/a >nul 2>&1
 del /f/s/q ".\*.a" /f/s/q/a >nul 2>&1
 qmake "%PROJ_PATH%\Qt\%PROJ_NAME%\%PROJ_NAME%.pro" CONFIG+=release
 %ZF_QT_MAKE%
+set RESULT=%errorlevel%
 cd /d "%_OLD_DIR%"
+
+exit /b %RESULT%
 

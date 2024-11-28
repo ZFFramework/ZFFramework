@@ -18,5 +18,8 @@ fi
 _OLD_DIR=$(pwd)
 cd "$PROJ_PATH/iOS/$PROJ_NAME"
 xcodebuild -configuration "Release" -target "${PROJ_NAME}_aggregate" SYMROOT="$ZF_ROOT_PATH/_tmp/iOS/$PROJ_NAME/build"
+RESULT=$?
 cd "$_OLD_DIR"
+
+exit $RESULT
 

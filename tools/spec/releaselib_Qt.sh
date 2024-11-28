@@ -22,5 +22,8 @@ find . -name "*.so.*" 2>/dev/null | xargs -I{} rm {}
 find . -name "*.dylib.*" 2>/dev/null | xargs -I{} rm {}
 qmake "$PROJ_PATH/Qt/$PROJ_NAME/$PROJ_NAME.pro" CONFIG+=release
 make -j4
+RESULT=$?
 cd "$_OLD_DIR"
+
+exit $RESULT
 

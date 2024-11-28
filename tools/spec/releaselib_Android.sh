@@ -19,6 +19,9 @@ _OLD_DIR=$(pwd)
 cd "$PROJ_PATH/Android/$PROJ_NAME"
 chmod +x gradlew
 ./gradlew assembleRelease
+RESULT=$?
 
 cd "$_OLD_DIR"
+
+exit $RESULT
 
