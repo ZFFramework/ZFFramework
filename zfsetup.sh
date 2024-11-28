@@ -7,10 +7,7 @@ if ! test -e "$ZF_ROOT_PATH/tools"; then
 fi
 
 sh "$ZF_ROOT_PATH/tools/common/zfsh_recursive.sh" "$ZF_ROOT_PATH" "zfautoscript_zf3rd_setup*.zfsh"
-sh "$ZF_ROOT_PATH/tools/common/zfsh_recursive.sh" "$ZF_ROOT_PATH/ZFModule" "zfautoscript_zf3rd_setup*.zfsh"
-
 sh "$ZF_ROOT_PATH/tools/common/zfsh_recursive.sh" "$ZF_ROOT_PATH" "zfautoscript_zfmodule.zfsh"
-sh "$ZF_ROOT_PATH/tools/common/zfsh_recursive.sh" "$ZF_ROOT_PATH/ZFModule" "zfautoscript_zfmodule.zfsh"
 
 ABS_ZF_ROOT_PATH=$(cd -- "$ZF_ROOT_PATH" && pwd)
 ABS_WORK_DIR=$(cd -- "$WORK_DIR" && pwd)

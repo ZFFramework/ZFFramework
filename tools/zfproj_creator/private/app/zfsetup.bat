@@ -10,10 +10,7 @@ if not exist "%ZF_ROOT_PATH%\tools" (
 )
 
 call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%ZF_ROOT_PATH%" "zfautoscript_zf3rd_setup*.zfsh"
-call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%ZF_ROOT_PATH%\ZFModule" "zfautoscript_zf3rd_setup*.zfsh"
-
 call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%ZF_ROOT_PATH%" "zfautoscript_zfmodule.zfsh"
-call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%ZF_ROOT_PATH%\ZFModule" "zfautoscript_zfmodule.zfsh"
 
 for %%i in (%ZF_ROOT_PATH%) do set ABS_ZF_ROOT_PATH=%%~fi
 for %%i in (%WORK_DIR%) do set ABS_WORK_DIR=%%~fi
