@@ -40,6 +40,7 @@ function(ZFAddLib ZF_LIB_NAME_)
     install(
         DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/"
         DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
+        PATTERN "*.lib" EXCLUDE
         )
     if(WIN32)
         execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfdist\\zfres")
@@ -188,14 +189,22 @@ install(
     TARGETS {ZFTT_R_proj_name}
     DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
     )
+
 file(GLOB_RECURSE SDL_LIBS_
     "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL2*.*"
     )
 foreach(SDL_LIB_ ${SDL_LIBS_})
     if(NOT (SDL_LIB_ MATCHES "_release/cmake/SDL/lib/cmake|_release/cmake/SDL/lib/pkgconfig"))
-        if(NOT (SDL_LIB_ MATCHES "SDL2[^/]*\\.a"))
+        if(NOT (SDL_LIB_ MATCHES "SDL2[^/]*\\.a|SDL2[^/]*\\.lib"))
             install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
         endif()
     endif()
+endforeach()
+
+file(GLOB_RECURSE SDL_LIBS_
+    "${ZF_ROOT_PATH}/_release/cmake/SDL/bin/*.dll"
+    )
+foreach(SDL_LIB_ ${SDL_LIBS_})
+    install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
 endforeach()
 
