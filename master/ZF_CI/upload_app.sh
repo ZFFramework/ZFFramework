@@ -39,7 +39,10 @@ sh "$ZF_ROOT_PATH/tools/common/zfsh/rm.sh" "$REPO_PATH_TMP/$REMOTE_FILE"
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$APP_PATH" "$REPO_PATH_TMP/$REMOTE_FILE"
 
 cd "$REPO_PATH"
-git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
+_rev_count=`git rev-list --count --all`
+if test $_rev_count -gt 20 ; then
+    git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
+fi
 cd "$_OLD_DIR"
 
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$REPO_PATH_TMP" "$REPO_PATH"

@@ -5,8 +5,9 @@
  *
  * you must have these settings being prepared:
  * -  cmake
- * -  SDL
  * -  proper make and compilers
+ * -  SDL
+ * -  OpenSSL
  * -  for Windows:
  *   -  `Desktop development with C++` via VisualStudioInstaller
  *   -  nasm

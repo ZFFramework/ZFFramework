@@ -45,7 +45,10 @@ call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%REPO_PATH_TMP%\%REMOTE_FILE%"
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%APP_PATH%" "%REPO_PATH_TMP%\%REMOTE_FILE%"
 
 cd /d "%REPO_PATH%"
-git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
+for /f "delims=" %%a in ('git rev-list --count --all') do @set _rev_count=%%a
+if %_rev_count% gtr 20 (
+    git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
+)
 cd /d "%_OLD_DIR%"
 
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%REPO_PATH_TMP%" "%REPO_PATH%"
