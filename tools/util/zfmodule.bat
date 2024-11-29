@@ -14,7 +14,7 @@ echo   zfmodule.bat MODULE_REPO [MODULE_NAME MODULE_BRANCH]
 exit /b 1
 :run
 
-if not defined MODULE_NAME for %%a in (%MODULE_REPO%) do set MODULE_NAME=%%~nxa
+if not defined MODULE_NAME for %%a in ("%MODULE_REPO%") do set MODULE_NAME=%%~nxa
 if not defined MODULE_BRANCH set MODULE_BRANCH=master
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..

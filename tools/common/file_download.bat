@@ -15,7 +15,7 @@ echo   file_download.bat SRC_URL DST_PATH
 exit /b 1
 :run
 
-for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
+for %%a in ("%DST_PATH%\..") do set _DST_PARENT=%%~fa
 mkdir "%_DST_PARENT%" >nul 2>&1
 
 call :DownloadFile "%SRC_URL%" "%DST_PATH%"
@@ -25,7 +25,7 @@ exit /b 0
 :DownloadFile <SRC_URL> <DST_PATH>
 set vbs="%WORK_DIR%\..\..\_tmp\file_download.vbs"
 if exist %vbs% del /f /q %vbs%
-for %%a in (%vbs%\..) do set _vbs_PARENT=%%~fa
+for %%a in ("%vbs%\..") do set _vbs_PARENT=%%~fa
 mkdir "%_vbs_PARENT%" >nul 2>&1
 >%vbs%  echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
 >>%vbs% echo dim bStrm: Set bStrm = createobject("Adodb.Stream")

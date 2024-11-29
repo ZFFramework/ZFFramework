@@ -14,7 +14,7 @@ echo   file_append.bat DST_PATH SRC_PATH
 exit /b 1
 :run
 
-for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
+for %%a in ("%DST_PATH%\..") do set _DST_PARENT=%%~fa
 mkdir "%_DST_PARENT%" >nul 2>&1
 
 if exist "%DST_PATH%" (

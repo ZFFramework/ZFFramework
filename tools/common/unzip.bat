@@ -25,10 +25,10 @@ exit /b 0
 :UnZipFile <SRC_PATH> <DST_PATH>
 set vbs="%WORK_DIR%\..\..\_tmp\unzip.vbs"
 if exist %vbs% del /f /q %vbs%
-for %%a in (%vbs%\..) do set _vbs_PARENT=%%~fa
+for %%a in ("%vbs%\..") do set _vbs_PARENT=%%~fa
 mkdir "%_vbs_PARENT%" >nul 2>&1
-for %%i in (%SRC_PATH%) do set _SRC_PATH=%%~fi
-for %%i in (%DST_PATH%) do set _DST_PATH=%%~fi
+for %%i in ("%SRC_PATH%") do set _SRC_PATH=%%~fi
+for %%i in ("%DST_PATH%") do set _DST_PATH=%%~fi
 rmdir /s/q "%_DST_PATH%" >nul 2>&1
 >%vbs%  echo Set fso = CreateObject("Scripting.FileSystemObject")
 >>%vbs% echo If NOT fso.FolderExists("%_DST_PATH%") Then

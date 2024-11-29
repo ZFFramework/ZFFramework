@@ -13,12 +13,12 @@ exit /b 1
 :run
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-for %%a in (%ZFSH_PATH%\..) do set ZFSH_WORK_DIR=%%~fa
-for %%a in (%ZFSH_PATH%) do set TMP_PATH=%%~nxa
+for %%a in ("%ZFSH_PATH%\..") do set ZFSH_WORK_DIR=%%~fa
+for %%a in ("%ZFSH_PATH%") do set TMP_PATH=%%~nxa
 set TMP_PATH=%ZF_ROOT_PATH%\_tmp\zfsh_tmp_%TMP_PATH%.bat
 
 del /f/s/q "%TMP_PATH%" >nul 2>&1
-for %%a in (%TMP_PATH%\..) do set TMP_PATH_PARENT=%%~fa
+for %%a in ("%TMP_PATH%\..") do set TMP_PATH_PARENT=%%~fa
 mkdir %TMP_PATH_PARENT% >nul 2>&1
 
 setlocal enabledelayedexpansion
@@ -35,7 +35,7 @@ echo set _ZF_P6=%%~6%%>>"%TMP_PATH%"
 echo set _ZF_P7=%%~7%%>>"%TMP_PATH%"
 echo set _ZF_P8=%%~8%%>>"%TMP_PATH%"
 
-for /f "tokens=*" %%a in (%ZFSH_PATH%) do (
+for /f "tokens=*" %%a in ("%ZFSH_PATH%") do (
     set line=%%a
 
     set line=!line:^<ZF_COMMENT^>=rem !

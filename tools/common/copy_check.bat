@@ -31,7 +31,7 @@ for /f "tokens=*" %%f in ('dir /a-d/s/b "%SRC_PATH%" 2^>nul') do (
 exit /b 0
 
 :CopyByMd5Check
-for %%a in (%~f2\..) do set DST_PARENT=%%~fa
+for %%a in ("%~f2\..") do set DST_PARENT=%%~fa
 mkdir "%DST_PARENT%" >nul 2>&1
 if not exist "%~f2" (
     copy /y "%~f1" "%~f2" >nul 2>&1

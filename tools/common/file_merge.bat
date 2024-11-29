@@ -14,7 +14,7 @@ echo   file_merge.bat DST_PATH FILE1_PATH [FILE2_PATH ...]
 exit /b 1
 :run
 
-for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
+for %%a in ("%DST_PATH%\..") do set _DST_PARENT=%%~fa
 mkdir "%_DST_PARENT%" >nul 2>&1
 
 del /q "%DST_PATH%" >nul 2>&1

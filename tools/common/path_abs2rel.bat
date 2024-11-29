@@ -14,8 +14,8 @@ echo   path_abs2rel.bat RESULT ABS_PATH REF_PATH
 exit /b 1
 :run
 
-for %%i in (%REF_PATH%) do set REF_PATH_TMP=%%~fi
-for %%i in (%ABS_PATH%) do set ABS_PATH_TMP=%%~fi
+for %%i in ("%REF_PATH%") do set REF_PATH_TMP=%%~fi
+for %%i in ("%ABS_PATH%") do set ABS_PATH_TMP=%%~fi
 
 if not exist "%REF_PATH_TMP%" (
     RESULT=%ABS_PATH_TMP%
@@ -35,7 +35,7 @@ if not "%MATCH_TMP%" == "%ABS_PATH_TMP%" (
     goto :same_path_loop_end
 )
 set SAME_PATH_OLD=%SAME_PATH%
-for %%a in (%SAME_PATH%\..) do set SAME_PATH=%%~fa
+for %%a in ("%SAME_PATH%\..") do set SAME_PATH=%%~fa
 if "%SAME_PATH%" == "%SAME_PATH_OLD%" goto :same_path_loop_end
 goto :same_path_loop
 :same_path_loop_end
@@ -54,7 +54,7 @@ if "x%REF_PATH_TMP%" == "x" (
     goto :abs_parent_loop_end
 )
 set REF_PATH_TMP_OLD=%REF_PATH_TMP%
-for %%a in (%REF_PATH_TMP%\..) do set REF_PATH_TMP=%%~fa
+for %%a in ("%REF_PATH_TMP%\..") do set REF_PATH_TMP=%%~fa
 if "%REF_PATH_TMP%" == "%REF_PATH_TMP_OLD%" goto :abs_parent_loop_end
 if "x%RESULT%" == "x" (
     set RESULT=..
