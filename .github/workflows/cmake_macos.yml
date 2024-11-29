@@ -19,9 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Debug Session
-      uses: csexton/debugger-action@master
-
     - name: get-cmake
       uses: lukka/get-cmake@latest
 
@@ -34,4 +31,7 @@ jobs:
       run: |
         chmod +x ../ZFFramework/tools/buildapp/buildapp_cmake.sh
         ../ZFFramework/tools/buildapp/buildapp_cmake.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
+
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
 
