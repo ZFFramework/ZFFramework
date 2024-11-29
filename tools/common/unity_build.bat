@@ -41,7 +41,7 @@ del /f/s/q %TARGET_FILE%.tmp2 >nul 2>&1
 >nul 2>&1 (
     rem ensure file exist
     echo /* auto generated file */>%TARGET_FILE%.tmp2
-    for /f "delims=" %%a in ("%TARGET_FILE%.tmp") do (
+    for /f "delims=" %%a in ('type "%TARGET_FILE%.tmp"') do (
         set v=#include "%%a"
         echo !v!>>%TARGET_FILE%.tmp2
     )

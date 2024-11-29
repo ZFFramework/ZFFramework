@@ -26,7 +26,7 @@ if not defined _VALUE (
 
 setlocal enabledelayedexpansion
 del /f/s/q "%DST_PATH%" >nul 2>&1
-for /f "tokens=*" %%a in ("%SRC_PATH%") do (
+for /f "tokens=*" %%a in ('type "%SRC_PATH%"') do (
     set line=%%a
     set line=!line:%KEY_NAME%=%_VALUE%!
 

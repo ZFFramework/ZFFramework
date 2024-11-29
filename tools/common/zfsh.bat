@@ -35,7 +35,7 @@ echo set _ZF_P6=%%~6%%>>"%TMP_PATH%"
 echo set _ZF_P7=%%~7%%>>"%TMP_PATH%"
 echo set _ZF_P8=%%~8%%>>"%TMP_PATH%"
 
-for /f "tokens=*" %%a in ("%ZFSH_PATH%") do (
+for /f "tokens=*" %%a in ('type "%ZFSH_PATH%"') do (
     set line=%%a
 
     set line=!line:^<ZF_COMMENT^>=rem !
