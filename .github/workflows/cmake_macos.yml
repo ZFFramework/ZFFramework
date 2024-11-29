@@ -32,6 +32,3 @@ jobs:
         chmod +x ../ZFFramework/tools/buildapp/buildapp_cmake.sh
         ../ZFFramework/tools/buildapp/buildapp_cmake.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
 
-    - name: Setup Debug Session
-      uses: csexton/debugger-action@master
-
