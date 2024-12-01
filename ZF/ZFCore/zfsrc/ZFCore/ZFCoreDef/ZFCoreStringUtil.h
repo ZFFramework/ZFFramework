@@ -512,6 +512,29 @@ inline zfstring zfstringToUpper(
     return ret;
 }
 
+/** @brief repeat string */
+inline void zfstringRepeatT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *token
+        , ZF_IN zfindex count
+        ) {
+    if(count != 0 && !zfstringIsEmpty(token)) {
+        zfindex len = zfslen(token);
+        for(zfindex i = 0; i < count; ++i) {
+            ret.append(token, len);
+        }
+    }
+}
+/** @brief repeat string */
+inline zfstring zfstringRepeat(
+        ZF_IN const zfchar *token
+        , ZF_IN zfindex count
+        ) {
+    zfstring ret;
+    zfstringRepeatT(ret, token, count);
+    return ret;
+}
+
 /**
  * @brief util to switch-case on string
  *

@@ -420,15 +420,15 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTok
 /**
  * @brief default xml output token
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDefault)
 /**
  * @brief xml output token with trim format
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenTrim)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenTrim)
 /**
  * @brief xml output token with detailed format
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDetailed)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDetail)
 
 // ============================================================
 /**

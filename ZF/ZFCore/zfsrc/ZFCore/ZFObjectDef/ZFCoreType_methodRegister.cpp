@@ -349,6 +349,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToUpper
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfstringToUpperT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringRepeatT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, token)
+        , ZFMP_IN(zfindex, count)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringRepeat
+        , ZFMP_IN(const zfchar *, token)
+        , ZFMP_IN(zfindex, count)
+        )
 
 // ============================================================
 // namespace

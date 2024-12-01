@@ -105,7 +105,7 @@ private:
         {
             ZFSerializableData serializableData;
             ZFObjectToDataT(serializableData, serializableObj->toObject());
-            ZFSerializableDataToZfsd(encodedData, serializableData);
+            ZFSerializableDataToZFSD(encodedData, serializableData);
             this->output(zfstr("encodedData:\n%s\n", encodedData));
         }
 
@@ -117,7 +117,7 @@ private:
 
         {
             ZFSerializableData serializableData;
-            ZFSerializableDataFromZfsd(serializableData, encodedData);
+            ZFSerializableDataFromZFSD(serializableData, encodedData);
             zfauto newSerializableObj;
             ZFObjectFromDataT(newSerializableObj, serializableData);
             this->output(zfstr("re-serialize from encodedData, result:\n%s\n", newSerializableObj));

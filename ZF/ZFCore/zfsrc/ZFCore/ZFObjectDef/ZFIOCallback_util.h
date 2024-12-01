@@ -140,6 +140,23 @@ extern ZFLIB_ZFCore zfindex ZFInputReadLine(
         , ZF_IN_OUT const ZFInput &input
         );
 
+// ============================================================
+/**
+ * @brief repeat output, return total bytes written to output
+ */
+inline void ZFOutputRepeat(
+        ZF_IN_OUT const ZFOutput &output
+        , ZF_IN const zfchar *token
+        , ZF_IN zfindex count
+        ) {
+    if(count != 0 && !zfstringIsEmpty(token)) {
+        zfindex len = zfslen(token);
+        for(zfindex i = 0; i < count; ++i) {
+            output.execute(token, len);
+        }
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCallback_util_h_
 

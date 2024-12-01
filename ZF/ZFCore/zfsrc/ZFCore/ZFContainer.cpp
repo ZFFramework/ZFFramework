@@ -60,23 +60,25 @@ zfbool ZFContainer::serializableOnSerializeFromData(
     this->removeAll();
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
-        const ZFSerializableData &categoryData = serializableData.childAt(i);
-        if(categoryData.resolved()) {continue;}
-        zfstring category = ZFSerializableUtil::checkCategory(categoryData);
-        if(category) {continue;}
+        const ZFSerializableData &elementData = serializableData.childAt(i);
+        if(elementData.resolved()
+                || elementData.category()
+                ) {
+            continue;
+        }
 
         zfauto element;
-        if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(element, elementData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(element == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, elementData,
                 "null element");
             return zffalse;
         }
         this->iterAdd(element);
 
-        categoryData.resolveMark();
+        elementData.resolveMark();
     }
     return zftrue;
 }

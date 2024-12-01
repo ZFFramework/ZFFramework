@@ -333,12 +333,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction) \
     ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), { \
         ZFSerializableData serializableData; \
-        return (ZFSerializableDataFromZfsd(serializableData, src, srcLen) \
+        return (ZFSerializableDataFromZFSD(serializableData, src, srcLen) \
             && TypeName##FromDataT(v, serializableData)); \
     }, { \
         ZFSerializableData serializableData; \
         if(TypeName##ToDataT(serializableData, v)) { \
-            return ZFSerializableDataToZfsd(s, serializableData, zfnull, zffalse); \
+            return ZFSerializableDataToZFSD(s, serializableData, zfnull, ZFSDOutputTokenTrim()); \
         } \
         else { \
             return zffalse; \

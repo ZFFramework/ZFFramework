@@ -400,6 +400,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine
         , ZFMP_IN_OUT(zfstring &, output)
         , ZFMP_IN_OUT(const ZFInput &, input)
         )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFOutputRepeat
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(const zfchar *, token)
+        , ZFMP_IN(zfindex, count)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

@@ -190,6 +190,50 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZF_STATIC_REGISTER_END(ExportVar_##Name)
 
 // ============================================================
+/** @brief see #ZFEXPORT_VAR_DECLARE */
+#define ZFEXPORT_VAR_USER_REGISTER_FOR_FUNC(Type, Name) \
+    ZF_STATIC_REGISTER_INIT(ExportVar_##Name) { \
+        ZFMethodFuncUserRegister_1(setterMethod, { \
+                Name(v); \
+            }, ZF_NAMESPACE_CURRENT(), void, zftext(#Name) \
+            , ZFMP_IN(Type const &, v) \
+            ); \
+        ZFMethodFuncUserRegister_0(getterMethod, { \
+                return Name(); \
+            }, ZF_NAMESPACE_CURRENT(), Type const &, zftext(#Name) \
+            ); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(ExportVar_##Name) { \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName( \
+                    ZF_NAMESPACE_CURRENT() \
+                    , zftext(#Name) \
+                    , ZFTypeId<Type>::TypeId() \
+                )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName( \
+                    ZF_NAMESPACE_CURRENT() \
+                    , zftext(#Name) \
+                    , zfnull \
+                )); \
+    } \
+    ZF_STATIC_REGISTER_END(ExportVar_##Name)
+/** @brief see #ZFEXPORT_VAR_DECLARE */
+#define ZFEXPORT_VAR_READONLY_USER_REGISTER_FOR_FUNC(Type, Name) \
+    ZF_STATIC_REGISTER_INIT(ExportVar_##Name) { \
+        ZFMethodFuncUserRegister_0(getterMethod, { \
+                return Name(); \
+            }, ZF_NAMESPACE_CURRENT(), Type const &, zftext(#Name) \
+            ); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(ExportVar_##Name) { \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName( \
+                    ZF_NAMESPACE_CURRENT() \
+                    , zftext(#Name) \
+                    , zfnull \
+                )); \
+    } \
+    ZF_STATIC_REGISTER_END(ExportVar_##Name)
+
+// ============================================================
 /**
  * @brief util macro to export raw enum value as zfint
  *

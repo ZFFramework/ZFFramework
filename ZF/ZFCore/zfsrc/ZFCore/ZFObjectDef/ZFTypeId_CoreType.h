@@ -605,6 +605,11 @@ ZFOUTPUT_TYPE(ZFSerializablePropertyType, {ZFSerializablePropertyTypeToStringT(s
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSerializableData, ZFSerializableData)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFSerializableData)
 
+/**
+ * @brief see #ZFTYPEID_DECLARE
+ */
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFSDOutputToken, ZFSDOutputToken)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeId_CoreType_h_
 

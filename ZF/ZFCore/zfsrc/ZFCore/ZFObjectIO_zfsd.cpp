@@ -12,9 +12,9 @@ ZFOBJECTIO_DEFINE(zfsd, {
         zfstringToLowerT(fileExt);
         return fileExt == "zfsd";
     }, {
-        return ZFObjectFromZfsd(ret, input, outErrorHint);
+        return ZFObjectFromZFSD(ret, input, outErrorHint);
     }, {
-        return ZFObjectToZfsd(output, obj, outErrorHint);
+        return ZFObjectToZFSD(output, obj, outErrorHint);
     })
 
 ZF_NAMESPACE_GLOBAL_END

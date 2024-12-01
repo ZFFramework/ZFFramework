@@ -76,54 +76,34 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
 
     this->removeAll();
 
-    zfauto key;
-    zfauto value;
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
-        const ZFSerializableData &categoryData = serializableData.childAt(i);
-        if(categoryData.resolved()) {continue;}
-        zfstring category = ZFSerializableUtil::checkCategory(categoryData);
-        if(category == zfnull) {continue;}
+        const ZFSerializableData &nodeData = serializableData.childAt(i);
+        if(nodeData.resolved()
+                || nodeData.category()
+                || nodeData.itemClass() != ZFSerializableKeyword_node
+                || nodeData.childCount() != 2
+                ) {
+            continue;
+        }
 
-        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_key)) {
-            if(key != zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-                    "missing value for key %s (%s)",
-                    key->objectInfoOfInstance(),
-                    key);
-                return zffalse;
-            }
-            if(!ZFObjectFromDataT(key, categoryData, outErrorHint, outErrorPos)) {
-                return zffalse;
-            }
-            if(key == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null key");
-                return zffalse;
-            }
+        zfauto key;
+        if(!ZFObjectFromDataT(key, nodeData.childAt(0), outErrorHint, outErrorPos)) {
+            return zffalse;
         }
-        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_value)) {
-            if(key == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-                    "missing key");
-                return zffalse;
-            }
-            if(!ZFObjectFromDataT(value, categoryData, outErrorHint, outErrorPos)) {
-                return zffalse;
-            }
-            if(value == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null value");
-                return zffalse;
-            }
-            this->iterAdd(key, value);
-            key = zfnull;
-            value = zfnull;
+        if(key == zfnull) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null key");
+            return zffalse;
         }
-    }
-    if(key != zfnull) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-            "missing value for key %s (%s)",
-            key->objectInfoOfInstance(),
-            key);
-        return zffalse;
+
+        zfauto value;
+        if(!ZFObjectFromDataT(value, nodeData.childAt(0), outErrorHint, outErrorPos)) {
+            return zffalse;
+        }
+        if(value == zfnull) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null value");
+            return zffalse;
+        }
+        this->iterAdd(key, value);
     }
 
     return zftrue;
@@ -151,10 +131,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(
                 return zffalse;
             }
 
-            keyData.category(ZFSerializableKeyword_ZFKeyValueContainer_key);
-            serializableData.child(keyData);
-            valueData.category(ZFSerializableKeyword_ZFKeyValueContainer_value);
-            serializableData.child(valueData);
+            ZFSerializableData nodeData;
+            nodeData.itemClass(ZFSerializableKeyword_node);
+            nodeData.child(keyData);
+            nodeData.child(valueData);
+            serializableData.child(nodeData);
         }
     }
     else {
@@ -189,10 +170,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
                 return zffalse;
             }
 
-            keyData.category(ZFSerializableKeyword_ZFKeyValueContainer_key);
-            serializableData.child(keyData);
-            valueData.category(ZFSerializableKeyword_ZFKeyValueContainer_value);
-            serializableData.child(valueData);
+            ZFSerializableData nodeData;
+            nodeData.itemClass(ZFSerializableKeyword_node);
+            nodeData.child(keyData);
+            nodeData.child(valueData);
+            serializableData.child(nodeData);
         }
         return zftrue;
     }
@@ -223,10 +205,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
             return zffalse;
         }
 
-        keyData.category(ZFSerializableKeyword_ZFKeyValueContainer_key);
-        serializableData.child(keyData);
-        valueData.category(ZFSerializableKeyword_ZFKeyValueContainer_value);
-        serializableData.child(valueData);
+        ZFSerializableData nodeData;
+        nodeData.itemClass(ZFSerializableKeyword_node);
+        nodeData.child(keyData);
+        nodeData.child(valueData);
+        serializableData.child(nodeData);
     }
 
     if(tmp->count() > 0) {

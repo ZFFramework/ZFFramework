@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief see #ZFObjectIOLoad
  *
- * for "*.zfsd" file, which should contain data converted by #ZFObjectFromZfsd
+ * for "*.zfsd" file, which should contain data converted by #ZFObjectFromZFSD
  */
 #define ZFObjectIO_zfsd "zfsd"
 

@@ -616,7 +616,7 @@ void ZFSerializableData::resolveAttrUnmarkAll(void) const {
 // ============================================================
 // other functions
 void ZFSerializableData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    ZFSerializableDataToZfsd(ret, *this);
+    ZFSerializableDataToZFSD(ret, *this);
 }
 
 ZFCompareResult ZFSerializableData::objectCompareValue(ZF_IN const ZFSerializableData &another) const {

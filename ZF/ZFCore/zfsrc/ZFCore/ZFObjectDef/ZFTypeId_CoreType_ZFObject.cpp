@@ -821,9 +821,9 @@ ZFTYPEID_DEFINE(ZFSerializableData, ZFSerializableData, {
         serializableData = v;
         return zftrue;
     }, {
-        return ZFSerializableDataFromZfsd(v, src, srcLen);
+        return ZFSerializableDataFromZFSD(v, src, srcLen);
     }, {
-        return ZFSerializableDataToZfsd(s, v, zfnull, zffalse);
+        return ZFSerializableDataToZFSD(s, v, zfnull, ZFSDOutputTokenTrim());
     })
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFSerializableData, void, copyFrom
@@ -964,6 +964,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFSerializableData, void, resolveAtt
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFSerializableData, zfbool, valid)
 
 ZFOUTPUT_TYPE_DEFINE(ZFSerializableData, {v.objectInfoT(s);})
+
+// ============================================================
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFSDOutputToken, ZFSDOutputToken)
 
 ZF_NAMESPACE_GLOBAL_END
 

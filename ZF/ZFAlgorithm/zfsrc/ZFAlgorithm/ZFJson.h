@@ -145,11 +145,15 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputT
 /**
  * @brief default output token for #ZFJsonToOutput
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenDefault)
 /**
  * @brief trim output token for #ZFJsonToOutput
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenTrim)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenTrim)
+/**
+ * @brief detailed output token for #ZFJsonToOutput
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenDetail)
 
 // ============================================================
 // ZFJson

@@ -9,11 +9,6 @@
 #include "ZFIterable.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFKeyValueContainer_key "key"
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFKeyValueContainer_value "value"
-
 zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
 /**
  * @brief key value container of ZFObject
@@ -43,13 +38,14 @@ zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
  * serializable data:
  * @code
  *   <ContainerClass>
- *       // each paired elements, must be paired
- *       <ElementKeyClass0 category="key" />
- *       <ElementValueClass0 category="value" />
- *
- *       <ElementKeyClass1 category="key" />
- *       <ElementValueClass1 category="value" />
- *
+ *       <node>
+ *           <ElementKeyClass0 />
+ *           <ElementValueClass0 />
+ *       </node>
+ *       <node>
+ *           <ElementKeyClass1 />
+ *           <ElementValueClass1 />
+ *       </node>
  *       ...
  *   </ContainerClass>
  * @endcode

@@ -70,7 +70,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementTri
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementEndTagAtSameLineIfNoChildElement)
 
 // ============================================================
-ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDefault, ZFXmlOutputToken())
+ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDefault, ZFXmlOutputToken())
 
 static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenTrimInit(void) {
     static ZFXmlOutputToken d;
@@ -80,16 +80,16 @@ static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenTrimInit(void) {
     d.xmlIndentToken.removeAll();
     return d;
 }
-ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenTrim, _ZFP_ZFXmlOutputTokenTrimInit())
+ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenTrim, _ZFP_ZFXmlOutputTokenTrimInit())
 
-static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenDetailedInit(void) {
+static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenDetailInit(void) {
     static ZFXmlOutputToken d;
     d.xmlElementAddNewLineAtHeadIfNotSingleLine = zftrue;
     d.xmlElementAttrCountBeforeAddNewLine = 1;
     d.xmlElementEndTagAtSameLineIfNoChildElement = zftrue;
     return d;
 }
-ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDetailed, _ZFP_ZFXmlOutputTokenDetailedInit())
+ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDetail, _ZFP_ZFXmlOutputTokenDetailInit())
 
 // ============================================================
 /*
@@ -699,17 +699,6 @@ static void _ZFP_ZFXmlOutputEncoded(
         ZFXmlEscapeCharEncode(output, s);
     }
 }
-static void _ZFP_ZFXmlOutputIndent(
-        ZF_IN_OUT const ZFOutput &output
-        , ZF_IN_OPT const zfchar *xmlIndentToken
-        , ZF_IN zfindex indentLevel
-        ) {
-    if(xmlIndentToken && *xmlIndentToken) {
-        for(zfindex i = 0; i < indentLevel; ++i) {
-            output.execute(xmlIndentToken);
-        }
-    }
-}
 static zfbool _ZFP_ZFXmlOutputElementAttrNeedNewLine(
         ZF_IN const ZFXml &element
         , ZF_IN const ZFXmlOutputToken &token
@@ -760,7 +749,7 @@ static void _ZFP_ZFXmlToOutput_Attr(
                     ) {
             _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
             _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
-            _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+            ZFOutputRepeat(output, token.xmlIndentToken, depth);
         }
         else {
             _ZFP_ZFXmlOutput(output, " ");
@@ -794,7 +783,7 @@ static void _ZFP_ZFXmlToOutput_Element(
         _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
         _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
     }
-    _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+    ZFOutputRepeat(output, token.xmlIndentToken, depth);
     if(_ZFP_ZFXmlOutputElementUseSingleTag(xmlItem, token)) {
         _ZFP_ZFXmlOutput(output, token.xmlElementSingleTagLeft);
     }
@@ -808,9 +797,6 @@ static void _ZFP_ZFXmlToOutput_Element(
 
     // element tag end
     if(_ZFP_ZFXmlOutputElementUseSingleTag(xmlItem, token)) {
-        if(xmlItem.attrCount() > 0) {
-            _ZFP_ZFXmlOutput(output, " ");
-        }
         _ZFP_ZFXmlOutput(output, token.xmlElementSingleTagRight);
     }
     else {
@@ -829,7 +815,7 @@ static void _ZFP_ZFXmlToOutput_Element(
                 ) {
             _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
             _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
-            _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+            ZFOutputRepeat(output, token.xmlIndentToken, depth);
         }
         _ZFP_ZFXmlOutput(output, token.xmlElementEndTagLeft);
         _ZFP_ZFXmlOutput(output, xmlItem.name());
@@ -865,7 +851,7 @@ static void _ZFP_ZFXmlToOutput_Comment(
         _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
     }
     _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
-    _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+    ZFOutputRepeat(output, token.xmlIndentToken, depth);
 
     _ZFP_ZFXmlOutput(output, token.xmlCommentTagLeft);
     _ZFP_ZFXmlOutput(output, xmlItem.value());
@@ -883,7 +869,7 @@ static void _ZFP_ZFXmlToOutput_Declaration(
         _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
     }
     _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
-    _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+    ZFOutputRepeat(output, token.xmlIndentToken, depth);
     _ZFP_ZFXmlOutput(output, token.xmlDeclarationTagLeft);
     _ZFP_ZFXmlToOutput_Attr(output, xmlParent, xmlItem, token, depth + 1, siblingIndex);
     _ZFP_ZFXmlOutput(output, token.xmlDeclarationTagRight);
@@ -900,7 +886,7 @@ static void _ZFP_ZFXmlToOutput_DocType(
         _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
     }
     _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
-    _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+    ZFOutputRepeat(output, token.xmlIndentToken, depth);
     _ZFP_ZFXmlOutput(output, token.xmlDocTypeTagLeft);
     _ZFP_ZFXmlOutput(output, " ");
     _ZFP_ZFXmlOutput(output, xmlItem.value());
@@ -918,7 +904,7 @@ static void _ZFP_ZFXmlToOutput_PI(
         _ZFP_ZFXmlOutput(output, token.xmlNewLineToken);
     }
     _ZFP_ZFXmlOutput(output, token.xmlGlobalLineBeginToken);
-    _ZFP_ZFXmlOutputIndent(output, token.xmlIndentToken, depth);
+    ZFOutputRepeat(output, token.xmlIndentToken, depth);
     _ZFP_ZFXmlOutput(output, token.xmlPITagLeft);
     _ZFP_ZFXmlOutput(output, xmlItem.name());
     _ZFP_ZFXmlOutput(output, " ");

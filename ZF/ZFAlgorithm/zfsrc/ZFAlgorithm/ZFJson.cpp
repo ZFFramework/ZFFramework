@@ -57,7 +57,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfbool, jsonArrayCon
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfbool, jsonArrayTagInSameLineIfNoContent)
 
 // ============================================================
-ZFEXPORT_VAR_READONLY_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenDefault, ZFJsonOutputToken())
+ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenDefault, ZFJsonOutputToken())
 
 static const ZFJsonOutputToken &_ZFP_ZFJsonOutputTokenTrimInit(void) {
     static ZFJsonOutputToken d;
@@ -69,18 +69,10 @@ static const ZFJsonOutputToken &_ZFP_ZFJsonOutputTokenTrimInit(void) {
     d.jsonArrayAddNewLineForContent = zffalse;
     return d;
 }
-ZFEXPORT_VAR_READONLY_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenTrim, _ZFP_ZFJsonOutputTokenTrimInit())
+ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenTrim, _ZFP_ZFJsonOutputTokenTrimInit())
+ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenDetail, ZFJsonOutputToken())
 
 // ============================================================
-static void _ZFP_ZFJsonToOutput_outputIndent(
-        ZF_IN_OUT const ZFOutput &output
-        , ZF_IN const ZFJsonOutputToken &token
-        , ZF_IN zfindex indentLevel
-        ) {
-    for(zfindex i = 0; i < indentLevel; ++i) {
-        output << token.jsonIndentToken;
-    }
-}
 static void _ZFP_ZFJsonToOutput_output(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFJson &item
@@ -114,7 +106,7 @@ static void _ZFP_ZFJsonToOutput_output_Object(
                 output << token.jsonSeparatorToken;
             }
             output << token.jsonNewLineToken << token.jsonGlobalLineBeginToken;
-            _ZFP_ZFJsonToOutput_outputIndent(output, token, indentLevel + 1);
+            ZFOutputRepeat(output, token.jsonIndentToken, indentLevel + 1);
         }
         else {
             if(first) {
@@ -135,7 +127,7 @@ static void _ZFP_ZFJsonToOutput_output_Object(
             && !(token.jsonObjectTagInSameLineIfNoContent && item.attrCount() == 0)
             ) {
         output << token.jsonNewLineToken << token.jsonGlobalLineBeginToken;
-        _ZFP_ZFJsonToOutput_outputIndent(output, token, indentLevel);
+        ZFOutputRepeat(output, token.jsonIndentToken, indentLevel);
     }
     output << token.jsonObjectTagRight;
 }
@@ -159,7 +151,7 @@ static void _ZFP_ZFJsonToOutput_output_Array(
 
             if(!token.jsonArrayContentTagInSameLine) {
                 output << token.jsonNewLineToken << token.jsonGlobalLineBeginToken;
-                _ZFP_ZFJsonToOutput_outputIndent(output, token, indentLevel);
+                ZFOutputRepeat(output, token.jsonIndentToken, indentLevel);
             }
             _ZFP_ZFJsonToOutput_output(output, jsonArray.childAt(i), token, indentLevel + 1);
         }
@@ -174,7 +166,7 @@ static void _ZFP_ZFJsonToOutput_output_Array(
             && !(token.jsonArrayTagInSameLineIfNoContent && jsonArray.childCount() == 0)
             ) {
         output << token.jsonNewLineToken << token.jsonGlobalLineBeginToken;
-        _ZFP_ZFJsonToOutput_outputIndent(output, token, indentLevel);
+        ZFOutputRepeat(output, token.jsonIndentToken, indentLevel);
     }
     output << token.jsonArrayTagRight;
 }

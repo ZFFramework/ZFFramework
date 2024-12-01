@@ -4,6 +4,33 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFEXPORT_VAR_USER_REGISTER_FOR_FUNC(ZFSDOutputToken, ZFSDOutputTokenDefault)
+ZFEXPORT_VAR_USER_REGISTER_FOR_FUNC(ZFSDOutputToken, ZFSDOutputTokenTrim)
+ZFEXPORT_VAR_USER_REGISTER_FOR_FUNC(ZFSDOutputToken, ZFSDOutputTokenDetail)
+
+ZFSDOutputToken &ZFSDOutputTokenDefault(void) {
+    static ZFSDOutputToken d;
+    return d;
+}
+void ZFSDOutputTokenDefault(ZF_IN const ZFSDOutputToken &v) {
+    ZFSDOutputTokenDefault() = v;
+}
+
+ZFSDOutputToken &ZFSDOutputTokenTrim(void) {
+    static ZFSDOutputToken d;
+    return d;
+}
+void ZFSDOutputTokenTrim(ZF_IN const ZFSDOutputToken &v) {
+    ZFSDOutputTokenTrim() = v;
+}
+
+ZFSDOutputToken &ZFSDOutputTokenDetail(void) {
+    static ZFSDOutputToken d;
+    return d;
+}
+void ZFSDOutputTokenDetail(ZF_IN const ZFSDOutputToken &v) {
+    ZFSDOutputTokenDetail() = v;
+}
 
 // ============================================================
 /*
@@ -69,7 +96,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 // ============================================================
-zfbool ZFSerializableDataFromZfsd(
+zfbool ZFSerializableDataFromZFSD(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -84,36 +111,36 @@ zfbool ZFSerializableDataFromZfsd(
         ZFSerializableUtilErrorOccurred(outErrorHint, "unable to load data from input");
         return zffalse;
     }
-    zfbool ret = ZFSerializableDataFromZfsd(serializableData, buf.text(), buf.textLength(), outErrorHint);
+    zfbool ret = ZFSerializableDataFromZFSD(serializableData, buf.text(), buf.textLength(), outErrorHint);
     if(ret) {
         serializableData.pathInfo(input.pathInfo());
     }
     return ret;
 }
-ZFSerializableData ZFSerializableDataFromZfsd(
+ZFSerializableData ZFSerializableDataFromZFSD(
         ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     ZFSerializableData ret;
-    if(ZFSerializableDataFromZfsd(ret, input, outErrorHint)) {
+    if(ZFSerializableDataFromZFSD(ret, input, outErrorHint)) {
         return ret;
     }
     else {
         return ZFSerializableData();
     }
 }
-zfbool ZFSerializableDataToZfsd(
+zfbool ZFSerializableDataToZFSD(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        , ZF_IN_OPT const ZFSDOutputToken &token /* = ZFSDOutputTokenDefault() */
         ) {
     if(!output) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "invalid output callback");
         return zffalse;
     }
     zfstring tmp;
-    if(!ZFSerializableDataToZfsd(tmp, serializableData, outErrorHint, prettyPrint)) {
+    if(!ZFSerializableDataToZFSD(tmp, serializableData, outErrorHint, token)) {
         return zffalse;
     }
     tmp += "\n";
@@ -229,7 +256,7 @@ static void _ZFP_ZFSD_AttrValueEncode(
     ret.append(pL, value - pL);
     ret += _ZFP_ZFSD_AttrValuePair;
 }
-zfbool _ZFP_ZFSerializableDataFromZfsd(
+zfbool _ZFP_ZFSerializableDataFromZFSD(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN_OUT const zfchar *&encodedData
         , ZF_IN zfindex encodedDataLen
@@ -332,7 +359,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
                 }
 
                 ZFSerializableData element;
-                if(!_ZFP_ZFSerializableDataFromZfsd(element, encodedData, srcEnd - encodedData, outErrorHint)) {
+                if(!_ZFP_ZFSerializableDataFromZFSD(element, encodedData, srcEnd - encodedData, outErrorHint)) {
                     return zffalse;
                 }
                 serializableData.child(element);
@@ -360,21 +387,21 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
 }
 
 // ============================================================
-zfbool ZFSerializableDataFromZfsd(
+zfbool ZFSerializableDataFromZFSD(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar *encodedData
         , ZF_IN_OPT zfindex encodedDataLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
-    return _ZFP_ZFSerializableDataFromZfsd(serializableData, encodedData, encodedDataLen, outErrorHint, zfHint("validateTail")zftrue);
+    return _ZFP_ZFSerializableDataFromZFSD(serializableData, encodedData, encodedDataLen, outErrorHint, zfHint("validateTail")zftrue);
 }
-ZFSerializableData ZFSerializableDataFromZfsd(
+ZFSerializableData ZFSerializableDataFromZFSD(
         ZF_IN const zfchar *encodedData
         , ZF_IN zfindex encodedDataLen
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     ZFSerializableData ret;
-    if(ZFSerializableDataFromZfsd(ret, encodedData, encodedDataLen, outErrorHint)) {
+    if(ZFSerializableDataFromZFSD(ret, encodedData, encodedDataLen, outErrorHint)) {
         return ret;
     }
     else {
@@ -382,20 +409,20 @@ ZFSerializableData ZFSerializableDataFromZfsd(
     }
 }
 
-static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
+static zfbool _ZFP_ZFSerializableDataToZFSDPretty(
         ZF_OUT zfstring &result
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT zfstring *outErrorHint
         , ZF_IN zfindex indentLevel
         );
-zfbool ZFSerializableDataToZfsd(
+zfbool ZFSerializableDataToZFSD(
         ZF_OUT zfstring &result
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        , ZF_IN_OPT const ZFSDOutputToken &token /* = ZFSDOutputTokenDefault() */
         ) {
-    if(prettyPrint) {
-        return _ZFP_ZFSerializableDataToZfsdPretty(result, serializableData, outErrorHint, 0);
+    if(token.prettyPrint) {
+        return _ZFP_ZFSerializableDataToZFSDPretty(result, serializableData, outErrorHint, 0);
     }
 
     _ZFP_ZFSerializableEscapeCharMap();
@@ -424,7 +451,7 @@ zfbool ZFSerializableDataToZfsd(
     if(serializableData.childCount() > 0) {
         result += _ZFP_ZFSD_ChildBegin;
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
-            if(!ZFSerializableDataToZfsd(result, serializableData.childAt(i), outErrorHint, prettyPrint)) {
+            if(!ZFSerializableDataToZFSD(result, serializableData.childAt(i), outErrorHint, token)) {
                 return zffalse;
             }
         }
@@ -434,26 +461,18 @@ zfbool ZFSerializableDataToZfsd(
     result += _ZFP_ZFSD_ObjEnd;
     return zftrue;
 }
-zfstring ZFSerializableDataToZfsd(
+zfstring ZFSerializableDataToZFSD(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        , ZF_IN_OPT const ZFSDOutputToken &token /* = ZFSDOutputTokenDefault() */
         ) {
     zfstring tmp;
-    ZFSerializableDataToZfsd(tmp, serializableData, outErrorHint);
+    ZFSerializableDataToZFSD(tmp, serializableData, outErrorHint, token);
     return tmp;
 }
 
 // ============================================================
-static void _ZFP_ZFSerializableDataToZfsdPrettyIndent(
-        ZF_OUT zfstring &result
-        , ZF_IN zfindex indentLevel
-        ) {
-    for(zfindex i = 0; i < indentLevel; ++i) {
-        result += "    ";
-    }
-}
-static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
+static zfbool _ZFP_ZFSerializableDataToZFSDPretty(
         ZF_OUT zfstring &result
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT zfstring *outErrorHint
@@ -461,7 +480,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
         ) {
     _ZFP_ZFSerializableEscapeCharMap();
 
-    _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel);
+    zfstringRepeatT(result, "    ", indentLevel);
     result += _ZFP_ZFSD_ObjBegin;
 
     // serializable class
@@ -479,7 +498,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
         for(zfiter it = serializableData.attrIter(); it; ++it) {
             if(needBreak) {
                 result += '\n';
-                _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel + 1);
+                zfstringRepeatT(result, "    ", indentLevel + 1);
             }
             else {
                 result += _ZFP_ZFSD_Space;
@@ -494,7 +513,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
     if(serializableData.childCount() > 0) {
         if(needBreak) {
             result += '\n';
-            _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel + 1);
+            zfstringRepeatT(result, "    ", indentLevel + 1);
         }
         else {
             result += ' ';
@@ -502,12 +521,12 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
         result += _ZFP_ZFSD_ChildBegin;
         result += '\n';
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
-            if(!_ZFP_ZFSerializableDataToZfsdPretty(result, serializableData.childAt(i), outErrorHint, indentLevel + 1)) {
+            if(!_ZFP_ZFSerializableDataToZFSDPretty(result, serializableData.childAt(i), outErrorHint, indentLevel + 1)) {
                 return zffalse;
             }
             result += '\n';
         }
-        _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel);
+        zfstringRepeatT(result, "    ", indentLevel);
         result += _ZFP_ZFSD_ChildEnd;
     }
 
@@ -518,40 +537,40 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
     return zftrue;
 }
 
-zfbool ZFObjectFromZfsd(
+zfbool ZFObjectFromZFSD(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     ZFSerializableData data;
-    if(ZFSerializableDataFromZfsd(data, input, outErrorHint)) {
+    if(ZFSerializableDataFromZFSD(data, input, outErrorHint)) {
         return ZFObjectFromDataT(ret, data, outErrorHint);
     }
     else {
         return zffalse;
     }
 }
-zfauto ZFObjectFromZfsd(
+zfauto ZFObjectFromZFSD(
         ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     zfauto ret;
-    ZFObjectFromZfsd(ret, input, outErrorHint);
+    ZFObjectFromZFSD(ret, input, outErrorHint);
     return ret;
 }
 
-zfbool ZFObjectToZfsd(
+zfbool ZFObjectToZFSD(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        , ZF_IN_OPT const ZFSDOutputToken &token /* = ZFSDOutputTokenDefault() */
         ) {
     ZFSerializableData serializableData;
     if(!ZFObjectToDataT(serializableData, obj, outErrorHint)) {
         return zffalse;
     }
     else {
-        return ZFSerializableDataToZfsd(output, serializableData, outErrorHint, prettyPrint);
+        return ZFSerializableDataToZFSD(output, serializableData, outErrorHint, token);
     }
 }
 
@@ -561,56 +580,56 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataFromZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataFromZFSD
         , ZFMP_OUT(ZFSerializableData &, serializableData)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFSerializableData, ZFSerializableDataFromZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFSerializableData, ZFSerializableDataFromZFSD
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZFSD
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFSerializableDataFromZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFSerializableDataFromZFSD
         , ZFMP_OUT(ZFSerializableData &, serializableData)
         , ZFMP_IN(const zfchar *, encodedData)
         , ZFMP_IN_OPT(zfindex, encodedDataLen, zfindexMax())
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFSerializableData, ZFSerializableDataFromZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFSerializableData, ZFSerializableDataFromZFSD
         , ZFMP_IN(const zfchar *, encodedData)
         , ZFMP_IN_OPT(zfindex, encodedDataLen, zfindexMax())
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZFSD
         , ZFMP_OUT(zfstring &, result)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFSerializableDataToZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFSerializableDataToZFSD
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectFromZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectFromZFSD
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, ZFObjectFromZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, ZFObjectFromZFSD
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToZfsd
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToZFSD
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(zfbool, prettyPrint, zftrue)
+        , ZFMP_IN_OPT(const ZFSDOutputToken &, token, ZFSDOutputTokenDefault())
         )
 
 ZF_NAMESPACE_GLOBAL_END

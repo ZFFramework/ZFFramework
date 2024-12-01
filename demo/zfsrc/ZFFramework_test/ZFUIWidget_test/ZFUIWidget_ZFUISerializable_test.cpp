@@ -37,10 +37,10 @@ protected:
             zfstring s;
             this->outputSeparator();
             this->output("zfsd:");
-            ZFObjectToZfsd(ZFOutputForString(s), testObject);
+            ZFObjectToZFSD(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
             this->output("zfsd re-serialized:");
-            ZFObjectToZfsd(ZFOutputDefault(), ZFObjectFromZfsd(ZFInputForString(s)));
+            ZFObjectToZFSD(ZFOutputDefault(), ZFObjectFromZFSD(ZFInputForString(s)));
         }
 
         this->stop();
