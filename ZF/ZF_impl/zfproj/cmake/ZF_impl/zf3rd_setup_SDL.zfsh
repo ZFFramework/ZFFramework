@@ -19,6 +19,7 @@
 <ZF_SET> _CMAKE_PREFIX_DIR=<ZF_PL>_INSTALL_DIR<ZF_PR>
 
 
+echo ZFSDL: updating SDL
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL"
 <ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL"
@@ -28,6 +29,7 @@ ninja install
 <ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
 
 
+echo ZFSDL: updating SDL_image
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_image" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_image"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_image"
 <ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_image"
@@ -37,6 +39,7 @@ ninja install
 <ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
 
 
+echo ZFSDL: updating SDL_ttf
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_ttf" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_ttf"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_ttf"
 <ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_ttf"
@@ -46,6 +49,7 @@ ninja install
 <ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
 
 
+echo ZFSDL: updating SDL_net
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_net" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_net"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_net"
 <ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_net"
@@ -55,6 +59,7 @@ ninja install
 <ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
 
 
+echo ZFSDL: updating SDL_mixer
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_mixer" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_mixer"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_mixer"
 <ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_mixer"
@@ -67,4 +72,6 @@ cmake -G "Ninja" "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_mixer" -DCMAKE_PREFIX_PATH="<ZF_PL
 ninja
 ninja install
 <ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+echo ZFSDL: update finish
 

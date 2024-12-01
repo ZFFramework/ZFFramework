@@ -63,22 +63,20 @@ zfbool ZFContainer::serializableOnSerializeFromData(
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         zfstring category = ZFSerializableUtil::checkCategory(categoryData);
-        if(category == zfnull) {continue;}
+        if(category) {continue;}
 
-        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFContainer_element)) {
-            zfauto element;
-            if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
-                return zffalse;
-            }
-            if(element == zfnull) {
-                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
-                    "null element");
-                return zffalse;
-            }
-            this->iterAdd(element);
-
-            categoryData.resolveMark();
+        zfauto element;
+        if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
+            return zffalse;
         }
+        if(element == zfnull) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                "null element");
+            return zffalse;
+        }
+        this->iterAdd(element);
+
+        categoryData.resolveMark();
     }
     return zftrue;
 }
@@ -96,7 +94,6 @@ zfbool ZFContainer::serializableOnSerializeToData(
             if(!ZFObjectToDataT(elementData, this->iterValue(it), outErrorHint)) {
                 return zffalse;
             }
-            elementData.category(ZFSerializableKeyword_ZFContainer_element);
             serializableData.child(elementData);
         }
     }
@@ -126,7 +123,6 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
             if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
                 return zffalse;
             }
-            elementData.category(ZFSerializableKeyword_ZFContainer_element);
             serializableData.child(elementData);
         }
         return zftrue;
@@ -147,7 +143,6 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
             return zffalse;
         }
-        elementData.category(ZFSerializableKeyword_ZFContainer_element);
         serializableData.child(elementData);
     }
 

@@ -11,9 +11,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFContainer_element "element"
-
 /**
  * @brief container of ZFObject
  *
@@ -33,8 +30,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * serializable data:
  * @code
  *   <ContainerClass> // container class
- *       <ElementClass0 category="element" /> // each elements
- *       <ElementClass1 category="element" />
+ *       <ElementClass0 /> // each elements
+ *       <ElementClass1 />
  *       ...
  *   </ContainerClass>
  * @endcode

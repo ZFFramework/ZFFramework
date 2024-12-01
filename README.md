@@ -87,23 +87,22 @@ ZFLog('hello world')
 local window = ZFUIWindow()
 window:show()
 
-local textView = zfAlloc('ZFUITextView')
+local textView = ZFUITextView.ClassData():newInstance()
 window:child(textView):alignTop():margin(40)
 textView:text('hello wolrd')
 
-local button = ZFUIButtonBasic.ClassData():newInstance()
+local button = ZFClass.classForName('ZFUIButtonBasic'):newInstance()
 window:child(button):alignBottom():margin(40)
 button:label():text('click me')
-button:onClick(
-    function (zfargs)
+button:onClick(function (zfargs)
         ZFLog('button clicked: %s', zfargs:sender())
     end)
 ```
 
 
-## powerful dynamic register
+## dynamic register
 
-both lua and cpp can dynamic register class and method
+both lua and cpp can dynamic register class and method, even for existing class
 
 ```cpp
 #include "ZFLua.h"
@@ -144,26 +143,44 @@ ZFMAIN_ENTRY() {
 ```
 
 
-## powerful abstract IO
+## automatic serialzation
 
-chain http file and zip file, and R/W contents in the zip file just like normal local file
+```lua
+ZFDynamic()
+    :classBegin('MyObj', 'ZFStyleableObject')
+    :property('zfstring', 'myProp')
+    :classEnd()
 
-```cpp
-#include "ZFCore.h"
-ZFMAIN_ENTRY() {
-    ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
-    ZFInputRead(ZFLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
-    ZFPathInfoTreePrint(ZFPathInfo("res:"));
-}
+    :classBegin('MyContainer', 'ZFStyleableObject')
+    :property('MyObj', 'myObj', MyObj())
+    :property('ZFArray', 'myObjArr', ZFArray())
+    :classEnd()
+
+local obj = MyContainer()
+obj:myObj():myProp('123')
+obj:myObjArr()
+    :add(MyObj():myProp('456'))
+    :add(MyObj():myProp('789'))
+ZFObjectToXml(ZFOutputForConsole(), obj)
+ZFObjectToJson(ZFOutputForConsole(), obj)
 ```
 
-abstract R/W
+
+## abstract IO
+
+example: chain http and zip file, and R/W contents in the zip file just like normal local file
 
 ```cpp
 #include "ZFCore.h"
 ZFMAIN_ENTRY() {
-    ZFInputRead(ZFLogTrim(), ZFInputForHttp("http://xxx.xxx/xxx.json"));
-    zfauto obj = ZFObjectFromJson(ZFInputForHttp("http://xxx.xxx/xxx.json"))
+    // before
+    ZFPathInfoTreePrint(ZFPathInfo("res:"));
+
+    ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
+
+    // after
+    ZFPathInfoTreePrint(ZFPathInfo("res:"));
+    ZFInputRead(ZFLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
 }
 ```
 
