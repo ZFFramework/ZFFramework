@@ -6,11 +6,10 @@
  * you must have these settings being prepared:
  * -  cmake
  * -  proper make and compilers
- * -  SDL
+ * -  nasm
  * -  OpenSSL
  * -  for Windows:
  *   -  `Desktop development with C++` via VisualStudioInstaller
- *   -  nasm
  *   -  ninja
  *
  * once prepared, it's recommended to follow @ref DocTag_Setup_QuickSetup for quick setup your project files

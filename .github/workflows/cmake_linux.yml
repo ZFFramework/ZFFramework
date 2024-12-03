@@ -22,6 +22,9 @@ jobs:
     - name: get-cmake
       uses: lukka/get-cmake@latest
 
+    - name: Set up NASM
+      uses: ilammy/setup-nasm@v1
+
     - name: ZFSetup
       run: |
         chmod +x ./zfsetup.sh
