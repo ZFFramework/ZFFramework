@@ -43,14 +43,15 @@ function(zfprojConfigAfter_ZF_impl projName)
         target_link_libraries(${projName} SDL2::SDL2)
     endif()
 
+    # if(NOT TARGET SDL2_image::SDL2_image)
+    #     find_package(SDL2_image REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
+    #     target_link_libraries(${projName} SDL2_image::SDL2_image)
+    # endif()
+    # zfzfzf
+
     if(NOT TARGET SDL2_ttf::SDL2_ttf)
         find_package(SDL2_ttf REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
         target_link_libraries(${projName} SDL2_ttf::SDL2_ttf)
-    endif()
-
-    if(NOT TARGET SDL2_image::SDL2_image)
-        find_package(SDL2_image REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
-        target_link_libraries(${projName} SDL2_image::SDL2_image)
     endif()
 endfunction(zfprojConfigAfter_ZF_impl)
 

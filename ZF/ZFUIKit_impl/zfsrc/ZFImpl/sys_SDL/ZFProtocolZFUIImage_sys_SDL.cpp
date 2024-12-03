@@ -1,7 +1,7 @@
 #include "ZFImpl_sys_SDL_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
 
-#if ZF_ENV_sys_SDL
+#if ZF_ENV_sys_SDL && 0 // zfzfzf
 
 #include "SDL_image.h"
 

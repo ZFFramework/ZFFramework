@@ -2,7 +2,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "SDL_image.h"
+// #include "SDL_image.h" // zfzfzf
 #include "ZFMainEntry_sys_SDL.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -143,7 +143,8 @@ zfbool ZFImpl_sys_SDL_SurfaceToOutput(
         ZF_IN const ZFOutput &callback
         , ZF_IN SDL_Surface *sdlSurface
         ) {
-    return 0 == IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1);
+    return zffalse; // zfzfzf
+    // return 0 == IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1);
 }
 zfbool ZFImpl_sys_SDL_TextureToOutput(
         ZF_IN const ZFOutput &callback
@@ -160,7 +161,8 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
     ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture);
     return success
         && SDL_RenderReadPixels(sdlRenderer, zfnull, sdlSurface->format->format, sdlSurface->pixels, sdlSurface->pitch) == 0
-        && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
+        && zffalse // zfzfzf
+        // && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
         ;
 }
 
