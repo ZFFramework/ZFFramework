@@ -38,6 +38,10 @@ endfunction(zfprojConfigBefore_ZF_impl)
 function(zfprojConfigAfter_ZF_impl projName)
     target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
 
+    find_package(SDL2 CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
+    find_package(SDL2_ttf CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
+    find_package(SDL2_image CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
+
     message("ZFDEBUG begin")
     get_cmake_property(_vars VARIABLES)
     list(SORT _vars)
