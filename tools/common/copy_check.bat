@@ -3,8 +3,13 @@ setlocal
 setlocal enabledelayedexpansion
 
 set WORK_DIR=%~dp0
-set SRC_PATH=%~1%
+set SRC_PATH=%~f1%
 set DST_PATH=%~2%
+
+REM remove tail `\`
+if "!SRC_PATH:~-1!"=="\" (
+    set SRC_PATH=!SRC_PATH:~0,-1!
+)
 
 if not defined SRC_PATH goto :usage
 if not defined DST_PATH goto :usage
@@ -12,7 +17,6 @@ goto :run
 :usage
 echo usage:
 echo   copy_check.bat SRC_PATH DST_PATH
-echo "note: path must not end with \"
 exit /b 1
 :run
 

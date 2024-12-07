@@ -24,7 +24,7 @@ if not exist "%APP_PATH%" (
     exit /b 1
 )
 
-echo uploading app: %APP_PATH% => %REMOTE_FILE%
+echo "uploading app: %APP_PATH% => %REMOTE_FILE%"
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 set REPO_PATH=%ZF_ROOT_PATH%\_tmp\upload_app
