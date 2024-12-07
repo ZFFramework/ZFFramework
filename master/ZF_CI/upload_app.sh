@@ -18,6 +18,8 @@ if ! test -e "$APP_PATH" ; then
     exit 1
 fi
 
+echo "uploading app: $APP_PATH => $REMOTE_FILE"
+
 ZF_ROOT_PATH=$WORK_DIR/../..
 REPO_PATH="$ZF_ROOT_PATH/_tmp/upload_app"
 REPO_PATH_TMP="$ZF_ROOT_PATH/_tmp/upload_app_tmp"
@@ -40,7 +42,7 @@ sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$APP_PATH" "$REPO_PATH_TMP/$REMOT
 
 cd "$REPO_PATH"
 _rev_count=`git rev-list --count --all`
-if test $_rev_count -gt 20 ; then
+if test $_rev_count -gt 1 ; then
     git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
 fi
 cd "$_OLD_DIR"

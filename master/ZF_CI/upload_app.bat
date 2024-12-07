@@ -24,6 +24,8 @@ if not exist "%APP_PATH%" (
     exit /b 1
 )
 
+echo uploading app: %APP_PATH% => %REMOTE_FILE%
+
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 set REPO_PATH=%ZF_ROOT_PATH%\_tmp\upload_app
 set REPO_PATH_TMP=%ZF_ROOT_PATH%\_tmp\upload_app_tmp
@@ -46,7 +48,7 @@ call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%APP_PATH%" "%REPO_PATH_TMP%\
 
 cd /d "%REPO_PATH%"
 for /f "delims=" %%a in ('git rev-list --count --all') do @set _rev_count=%%a
-if %_rev_count% gtr 20 (
+if %_rev_count% gtr 1 (
     git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
 )
 cd /d "%_OLD_DIR%"

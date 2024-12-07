@@ -767,7 +767,7 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(
     }
 
     _ZFP_PropLifeCycleData data;
-    data.ownerClass = property->ownerClass();
+    data.ownerClass = ownerClassOrNull;
     data.propertyLifeCycleWrapper = _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper;
     zfobj<_ZFP_I_PropDynRegLifeCycleData> implUserData;
     implUserData->lifeCycle = lifeCycle;
