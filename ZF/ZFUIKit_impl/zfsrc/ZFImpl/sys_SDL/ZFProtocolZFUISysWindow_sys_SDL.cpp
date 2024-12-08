@@ -144,6 +144,7 @@ public:
             );
         SDL_SetWindowPosition(nativeWindow->sdlWindow, (int)rect.x, (int)rect.y);
         SDL_SetWindowSize(nativeWindow->sdlWindow, (int)rect.width, (int)rect.height);
+        SDL_SetWindowFullscreen(nativeWindow->sdlWindow, sysWindow->preferFullscreen() ? SDL_WINDOW_FULLSCREEN : 0);
     }
 
     virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {

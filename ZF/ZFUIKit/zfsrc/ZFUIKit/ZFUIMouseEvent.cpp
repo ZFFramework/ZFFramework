@@ -8,6 +8,7 @@ ZFENUM_DEFINE(ZFUIMouseButton)
 ZFOBJECT_REGISTER(ZFUIMouseEvent)
 
 void ZFUIMouseEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+    ret += "Mouse ";
     ret += ZFUIMouseAction::EnumNameForValue(this->mouseAction);
     ret += " ";
     ZFUIPointToStringT(ret, this->mousePoint);

@@ -288,6 +288,12 @@ public:
      */
     ZFMETHOD_DECLARE_0(const ZFUIOrientationFlags &, sysWindowOrientationFlags)
 
+    /**
+     * @brief whether prefer fullscreen
+     */
+    ZFPROPERTY_ASSIGN(zfbool, preferFullscreen, zffalse)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, preferFullscreen)
+
 public:
     /**
      * @brief show a new modal window,

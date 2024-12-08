@@ -278,6 +278,10 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, const ZFUIOrientationFlags &, sysWindowOrientat
     return d->sysWindowOrientationFlags;
 }
 
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUISysWindow, zfbool, preferFullscreen) {
+    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
+}
+
 ZFMETHOD_DEFINE_0(ZFUISysWindow, zfautoT<ZFUISysWindow>, modalWindowShow) {
     ZFCoreAssertWithMessage(d->modalWindowShowing == zfnull, "already has a showing modal window, you must finish it first");
 
