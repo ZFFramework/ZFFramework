@@ -279,7 +279,9 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, const ZFUIOrientationFlags &, sysWindowOrientat
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUISysWindow, zfbool, preferFullscreen) {
-    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
+    if(this->nativeWindowIsResumed()) {
+        ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFUISysWindow, zfautoT<ZFUISysWindow>, modalWindowShow) {
@@ -356,8 +358,6 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onCreate(ZF_IN void *nativeWindow) {
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(this->rootView(), nativeParentView);
 
     this->observerNotify(ZFUISysWindow::EventSysWindowOnCreate());
-
-    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void) {
     if(d->nativeWindowResumed) {
@@ -392,6 +392,8 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onResume(void) {
     d->nativeWindowResumed = zftrue;
     this->observerNotify(ZFUISysWindow::EventSysWindowOnResume());
     this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zftrue);
+
+    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void) {
     if(!d->nativeWindowResumed) {
@@ -415,11 +417,13 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void) {
     }
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_sysWindowLayoutUpdate(void) {
-    if(this->nativeWindowEmbedImpl() != zfnull) {
-        this->nativeWindowEmbedImpl()->sysWindowLayoutParamOnUpdate(this);
-    }
-    else {
-        ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
+    if(this->nativeWindowIsResumed()) {
+        if(this->nativeWindowEmbedImpl() != zfnull) {
+            this->nativeWindowEmbedImpl()->sysWindowLayoutParamOnUpdate(this);
+        }
+        else {
+            ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
+        }
     }
 }
 

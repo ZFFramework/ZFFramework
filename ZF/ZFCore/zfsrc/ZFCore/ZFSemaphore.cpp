@@ -80,12 +80,22 @@ ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndWait) {
 ZFMETHOD_DEFINE_1(ZFSemaphore, zfbool, lockAndWait
         , ZFMP_IN(zftimet, miliSecs)
         ) {
-    zfRetain(this);
-    d->impl->semaphoreLock(this);
-    zfbool ret = d->impl->semaphoreWait(this, miliSecs);
-    d->impl->semaphoreUnlock(this);
-    zfRelease(this);
-    return ret;
+    if(miliSecs == zftimetInvalid()) {
+        zfRetain(this);
+        d->impl->semaphoreLock(this);
+        d->impl->semaphoreWait(this);
+        d->impl->semaphoreUnlock(this);
+        zfRelease(this);
+        return zftrue;
+    }
+    else {
+        zfRetain(this);
+        d->impl->semaphoreLock(this);
+        zfbool ret = d->impl->semaphoreWait(this, miliSecs);
+        d->impl->semaphoreUnlock(this);
+        zfRelease(this);
+        return ret;
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END
