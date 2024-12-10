@@ -36,3 +36,10 @@ jobs:
         ../ZFFramework/master/ZF_CI/doc.sh
         fi
 
+    - name: ZFLoader build trigger
+      uses: amandastecz/pipeline-trigger@v1.1
+      with:
+        pat-token: ${{secrets.ZFCI_TOKEN}}
+        owner: ZFFramework
+        repo: ZFLoader
+
