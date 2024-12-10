@@ -45,6 +45,6 @@ jobs:
     - name: ZF upload archive
       run: |
         if("ZFFramework" -eq [System.IO.Path]::GetDirectoryName(([System.Uri](git remote get-url origin)).AbsolutePath.TrimStart('/'))) {
-            Invoke-Expression -Command 'cmd.exe /C "..\\ZFFramework\\master\\ZF_CI\\upload_app.bat" "${env:ZF_PROJ_PATH}\\..\\..\\_tmp\\cmake\\${env:ZF_PROJ_NAME}\\app\\" "cmake_Windows\\${env:ZF_PROJ_NAME}.src\\"'
+        Invoke-Expression -Command 'cmd.exe /C "..\\ZFFramework\\master\\ZF_CI\\upload_app.bat" "${env:ZF_PROJ_PATH}\\..\\..\\_tmp\\cmake\\${env:ZF_PROJ_NAME}\\app\\" "cmake_Windows\\${env:ZF_PROJ_NAME}.src\\"'
         }
 

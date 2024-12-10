@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public final class ZFHttpRequest {
 
@@ -37,7 +38,7 @@ public final class ZFHttpRequest {
         if (this.sendHeaderCache != null || this.connection == null) {
             return;
         }
-        this.sendHeaderCache = new HashMap<>();
+        this.sendHeaderCache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (Map.Entry<String, List<String>> entry : this.connection.getRequestProperties().entrySet()) {
             this.sendHeaderCache.put(entry.getKey(), _join(entry.getValue()));
         }
@@ -47,7 +48,7 @@ public final class ZFHttpRequest {
         if (this.recvHeaderCache != null || this.connection == null) {
             return;
         }
-        this.recvHeaderCache = new HashMap<>();
+        this.recvHeaderCache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (Map.Entry<String, List<String>> entry : this.connection.getHeaderFields().entrySet()) {
             this.recvHeaderCache.put(entry.getKey(), _join(entry.getValue()));
         }

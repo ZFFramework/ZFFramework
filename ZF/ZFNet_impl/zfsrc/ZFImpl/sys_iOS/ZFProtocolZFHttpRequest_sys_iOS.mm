@@ -193,7 +193,7 @@ public:
             , ZF_IN const zfstring &key
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return ZFImpl_sys_iOS_zfstringFromNSString([task.response.allHeaderFields objectForKey:ZFImpl_sys_iOS_zfstringToNSString(key)]);
+        return ZFImpl_sys_iOS_zfstringFromNSString([task.response valueForHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)]);
     }
 
     virtual zfindex responseHeaderCount(ZF_IN void *nativeTask) {
