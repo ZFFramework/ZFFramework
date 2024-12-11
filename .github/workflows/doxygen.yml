@@ -37,9 +37,8 @@ jobs:
         fi
 
     - name: ZFLoader build trigger
-      uses: amandastecz/pipeline-trigger@v1.1
-      with:
-        pat-token: ${{secrets.ZFCI_TOKEN}}
-        owner: ZFFramework
-        repo: ZFLoader
+      run: |
+        curl -X POST https://api.github.com/repos/ZFFramework/ZFLoader/dispatches \
+        -H 'Accept: application/vnd.github.everest-preview+json' \
+        -u ${{secrets.ZFCI_TOKEN}}
 
