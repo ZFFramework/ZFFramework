@@ -38,8 +38,8 @@ jobs:
 
     - name: ZFLoader build trigger
       run: |
-        curl -X POST https://api.github.com/repos/ZFFramework/ZFLoader/dispatches \
-        -H 'Accept: application/vnd.github.everest-preview+json' \
-        -u ${{secrets.ZFCI_TOKEN}} \
-        --data '{"src":"ZFFramework"}'
+        curl -L -X POST https://api.github.com/repos/ZFFramework/ZFLoader/dispatches \
+        -H 'Accept: application/vnd.github+json' \
+        -H "Authorization: ZSaberLv0 ${{secrets.ZFCI_TOKEN}}" \
+        -d '{"event_type":"trigger_build", "client_payload":{}}'
 
