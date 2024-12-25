@@ -481,6 +481,7 @@ const ZFCoreArray<zfidentity> &ZFDynamic::allEvent(void) const {
     return d->allEvent;
 }
 
+// ============================================================
 ZFDynamic &ZFDynamic::classBegin(
         ZF_IN const zfstring &classNameFull
         , ZF_IN const zfstring &parentClassNameFull
@@ -679,6 +680,7 @@ ZFDynamic &ZFDynamic::onEvent(
     return *this;
 }
 
+// ============================================================
 ZFDynamic &ZFDynamic::customInit(
         ZF_IN const ZFMP &mp
         , ZF_IN_OPT const ZFListener &impl /* = zfnull */
@@ -740,6 +742,7 @@ ZFDynamic &ZFDynamic::customInit(
     return this->method(ZFTypeId_void(), "objectOnInit", mp, implWrap, ZFMethodTypeVirtual, ZFMethodPrivilegeTypeProtected);
 }
 
+// ============================================================
 ZFDynamic &ZFDynamic::NSBegin(ZF_IN const zfstring &methodNamespace) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_NS()) {return *this;}
@@ -776,6 +779,7 @@ ZFDynamic &ZFDynamic::NSEnd(void) {
     return *this;
 }
 
+// ============================================================
 ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_enum()) {return *this;}
@@ -853,6 +857,7 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
     return *this;
 }
 
+// ============================================================
 static void _ZFP_ZFDynamicEventGI(ZF_IN_OUT const ZFArgs &zfargs) {
     if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
         return;
@@ -911,6 +916,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
     return *this;
 }
 
+// ============================================================
 ZFDynamic &ZFDynamic::method(
         ZF_IN const zfstring &returnTypeId
         , ZF_IN const zfstring &methodName
@@ -971,6 +977,7 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     return *this;
 }
 
+// ============================================================
 static void _ZFP_ZFDynamicSingletonGI_getter(ZF_IN_OUT const ZFArgs &zfargs) {
     if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
         return;
@@ -1025,6 +1032,7 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
     return *this;
 }
 
+// ============================================================
 static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
     ZFCopyable *copyable = property->dynamicRegisterUserData();
     if(copyable != zfnull) {
@@ -1036,7 +1044,7 @@ static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
         ret.to<ZFStyleable *>()->styleableCopyFrom(styleable);
         return ret;
     }
-    return zfnull;
+    return property->dynamicRegisterUserData();
 }
 ZFDynamic &ZFDynamic::property(
         ZF_IN const zfstring &propertyTypeId
@@ -1087,12 +1095,12 @@ ZFDynamic &ZFDynamic::property(
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    if(propertyClassOfRetainProperty == zfnull) {
-        d->error("propertyClassOfRetainProperty not set");
-        return *this;
-    }
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error(zfstr("property() can only be called within classBegin, property: (%s)%s", propertyClassOfRetainProperty->classNameFull(), propertyName));
+        return *this;
+    }
+    if(propertyClassOfRetainProperty == zfnull) {
+        d->error(zfstr("type not set when register property %s::%s", scope->d.cls->classNameFull(), propertyName));
         return *this;
     }
     ZFPropertyDynamicRegisterParam param;
@@ -1103,7 +1111,8 @@ ZFDynamic &ZFDynamic::property(
     param.propertySetterType(setterPrivilegeType);
     param.propertyGetterType(getterPrivilegeType);
     if(propertyInitValue != zfnull) {
-        if(!propertyInitValue->classData()->classIsTypeOf(propertyClassOfRetainProperty)) {
+        zfauto wrap = ZFDI_implicitConvert(propertyClassOfRetainProperty->classNameFull(), propertyInitValue);
+        if(!wrap || !wrap->classData()->classIsTypeOf(propertyClassOfRetainProperty)) {
             d->error(zfstr("init value (%s)%s is not type of %s for property: %s::%s"
                         , propertyInitValue->classData()->classNameFull()
                         , propertyInitValue
@@ -1113,8 +1122,8 @@ ZFDynamic &ZFDynamic::property(
                         ));
             return *this;
         }
-        if(zfcast(ZFCopyable *, propertyInitValue) == zfnull
-                && zfcast(ZFStyleable *, propertyInitValue) == zfnull
+        if(zfcast(ZFCopyable *, wrap) == zfnull
+                && zfcast(ZFStyleable *, wrap) == zfnull
                 ) {
             d->error(zfstr("init value (%s)%s is not type of %s or %s for property: %s::%s, use propertyWithInit instead"
                         , propertyClassOfRetainProperty->classNameFull()
@@ -1127,7 +1136,7 @@ ZFDynamic &ZFDynamic::property(
             return *this;
         }
         param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
-        param.dynamicRegisterUserData(propertyInitValue);
+        param.dynamicRegisterUserData(wrap);
     }
     return this->property(param);
 }
@@ -1180,12 +1189,12 @@ ZFDynamic &ZFDynamic::propertyWithInit(
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    if(propertyClassOfRetainProperty == zfnull) {
-        d->error("propertyClassOfRetainProperty not set");
-        return *this;
-    }
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error(zfstr("propertyWithInit() can only be called within classBegin, property: (%s)%s", propertyClassOfRetainProperty->classNameFull(), propertyName));
+        return *this;
+    }
+    if(propertyClassOfRetainProperty == zfnull) {
+        d->error(zfstr("type not set when register property %s::%s", scope->d.cls->classNameFull(), propertyName));
         return *this;
     }
     ZFPropertyDynamicRegisterParam param;
@@ -1280,6 +1289,218 @@ ZFDynamic &ZFDynamic::propertyLifeCycle(
     return *this;
 }
 
+// ============================================================
+zfclass _ZFP_I_ZFDynamicStaticPropertyValueHolder : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFDynamicStaticPropertyValueHolder, ZFObject)
+public:
+    zfauto value;
+};
+static void _ZFP_ZFDynamicStaticPropertyGI_getter(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
+    }
+    _ZFP_I_ZFDynamicStaticPropertyValueHolder *holder = zfargs.ownerMethod()->dynamicRegisterUserData();
+    zfargs.result(holder->value);
+}
+static void _ZFP_ZFDynamicStaticPropertyGI_setter(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
+    }
+    _ZFP_I_ZFDynamicStaticPropertyValueHolder *holder = zfargs.ownerMethod()->dynamicRegisterUserData();
+    holder->value = zfargs.param0();
+}
+ZFDynamic &ZFDynamic::staticProperty(
+        ZF_IN const zfstring &propertyTypeId
+        , ZF_IN const zfstring &propertyName
+        , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
+        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        ) {
+    if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error(zfstr("staticProperty can only be called within classBegin, property: %s", propertyName));
+        return *this;
+    }
+    const ZFClass *cls = ZFClass::classForName(propertyTypeId);
+    if(cls == zfnull) {
+        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeId, scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    return this->staticProperty(cls, propertyName, propertyInitValue, setterPrivilegeType, getterPrivilegeType);
+}
+ZFDynamic &ZFDynamic::staticProperty(
+        ZF_IN const ZFClass *propertyClassOfRetainProperty
+        , ZF_IN const zfstring &propertyName
+        , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
+        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        ) {
+    if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error(zfstr("staticProperty can only be called within classBegin, property: %s", propertyName));
+        return *this;
+    }
+    if(propertyClassOfRetainProperty == zfnull) {
+        d->error(zfstr("type not set when register property %s::%s", scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    const zfstring &propertyTypeId = propertyClassOfRetainProperty->classNameFull();
+    zfobj<_ZFP_I_ZFDynamicStaticPropertyValueHolder> wrap;
+    if(propertyInitValue != zfnull) {
+        wrap->value = ZFDI_implicitConvert(propertyTypeId, propertyInitValue);
+        if(wrap->value == zfnull) {
+            d->error(zfstr("invalid init value (%s)\"%s\" for staticProperty: (%s)%s::%s"
+                        , propertyInitValue->classData()->classNameFull()
+                        , propertyInitValue
+                        , propertyTypeId
+                        , scope->d.cls->classNameFull()
+                        , propertyName
+                        ));
+            return *this;
+        }
+    }
+
+    const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodGenericInvoker(_ZFP_ZFDynamicStaticPropertyGI_getter)
+            .dynamicRegisterUserData(wrap)
+            .ownerClass(scope->d.cls)
+            .methodName(propertyName)
+            .returnTypeId(propertyTypeId)
+            .methodType(ZFMethodTypeStatic)
+            .methodPrivilegeType(getterPrivilegeType)
+            );
+    if(getterMethod == zfnull) {
+        d->error(zfstr("unable to register staticProperty getter: %s::%s", scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodGenericInvoker(_ZFP_ZFDynamicStaticPropertyGI_setter)
+            .dynamicRegisterUserData(wrap)
+            .ownerClass(scope->d.cls)
+            .methodName(propertyName)
+            .methodParam(propertyTypeId)
+            .methodType(ZFMethodTypeStatic)
+            .methodPrivilegeType(setterPrivilegeType)
+            );
+    if(setterMethod == zfnull) {
+        ZFMethodDynamicUnregister(getterMethod);
+        d->error(zfstr("unable to register staticProperty setter: %s::%s", scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    d->allMethod.add(getterMethod);
+    d->allMethod.add(setterMethod);
+    return *this;
+}
+
+// ============================================================
+zfclass _ZFP_I_ZFDynamicStaticPropertyWithInit : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFDynamicStaticPropertyWithInit, ZFObject)
+public:
+    ZFListener impl;
+};
+static void _ZFP_ZFDynamicStaticPropertyWithInitGI_getter(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
+    }
+    _ZFP_I_ZFDynamicStaticPropertyValueHolder *holder = zfargs.ownerMethod()->dynamicRegisterUserData();
+    _ZFP_I_ZFDynamicStaticPropertyWithInit *impl = holder->value;
+    if(impl != zfnull) {
+        ZFArgs zfargsTmp;
+        zfargsTmp.sender(zfobj<v_ZFMethod>(zfargs.ownerMethod()));
+        impl->impl.execute(zfargsTmp);
+        zfargs.result(zfargsTmp.result());
+    }
+    else {
+        zfargs.result(holder->value);
+    }
+}
+static void _ZFP_ZFDynamicStaticPropertyWithInitGI_setter(ZF_IN_OUT const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
+    }
+    _ZFP_I_ZFDynamicStaticPropertyValueHolder *holder = zfargs.ownerMethod()->dynamicRegisterUserData();
+    holder->value = zfargs.param0();
+}
+ZFDynamic &ZFDynamic::staticPropertyWithInit(
+        ZF_IN const zfstring &propertyTypeId
+        , ZF_IN const zfstring &propertyName
+        , ZF_IN const ZFListener &propertyInitValue
+        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        ) {
+    if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error(zfstr("staticPropertyWithInit can only be called within classBegin, property: %s", propertyName));
+        return *this;
+    }
+    const ZFClass *cls = ZFClass::classForName(propertyTypeId);
+    if(cls == zfnull) {
+        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeId, scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    return this->staticPropertyWithInit(cls, propertyName, propertyInitValue, setterPrivilegeType, getterPrivilegeType);
+}
+ZFDynamic &ZFDynamic::staticPropertyWithInit(
+        ZF_IN const ZFClass *propertyClassOfRetainProperty
+        , ZF_IN const zfstring &propertyName
+        , ZF_IN const ZFListener &propertyInitValue
+        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        ) {
+    if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error(zfstr("staticPropertyWithInit can only be called within classBegin, property: %s", propertyName));
+        return *this;
+    }
+    if(propertyClassOfRetainProperty == zfnull) {
+        d->error(zfstr("type not set when register property %s::%s", scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    const zfstring &propertyTypeId = propertyClassOfRetainProperty->classNameFull();
+    zfobj<_ZFP_I_ZFDynamicStaticPropertyValueHolder> wrap;
+    if(propertyInitValue) {
+        zfobj<_ZFP_I_ZFDynamicStaticPropertyWithInit> cbHolder;
+        cbHolder->impl = propertyInitValue;
+        wrap->value = cbHolder;
+    }
+
+    const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodGenericInvoker(_ZFP_ZFDynamicStaticPropertyWithInitGI_getter)
+            .dynamicRegisterUserData(wrap)
+            .ownerClass(scope->d.cls)
+            .methodName(propertyName)
+            .returnTypeId(propertyTypeId)
+            .methodType(ZFMethodTypeStatic)
+            .methodPrivilegeType(getterPrivilegeType)
+            );
+    if(getterMethod == zfnull) {
+        d->error(zfstr("unable to register staticProperty getter: %s::%s", scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodGenericInvoker(_ZFP_ZFDynamicStaticPropertyWithInitGI_setter)
+            .dynamicRegisterUserData(wrap)
+            .ownerClass(scope->d.cls)
+            .methodName(propertyName)
+            .methodParam(propertyTypeId)
+            .methodType(ZFMethodTypeStatic)
+            .methodPrivilegeType(setterPrivilegeType)
+            );
+    if(setterMethod == zfnull) {
+        ZFMethodDynamicUnregister(getterMethod);
+        d->error(zfstr("unable to register staticProperty setter: %s::%s", scope->d.cls->classNameFull(), propertyName));
+        return *this;
+    }
+    d->allMethod.add(getterMethod);
+    d->allMethod.add(setterMethod);
+    return *this;
+}
+
+// ============================================================
 ZFCoreArray<ZFOutput> &ZFDynamic::errorCallbacks(void) {
     static ZFCoreArray<ZFOutput> d;
     return d;
@@ -1478,6 +1699,34 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnAt
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnDetach
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticProperty
+        , ZFMP_IN(const zfstring &, propertyTypeId)
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticProperty
+        , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticPropertyWithInit
+        , ZFMP_IN(const zfstring &, propertyTypeId)
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const ZFListener &, propertyInitValue)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticPropertyWithInit
+        , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const ZFListener &, propertyInitValue)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFCoreArray<ZFOutput> &, errorCallbacks)
 
