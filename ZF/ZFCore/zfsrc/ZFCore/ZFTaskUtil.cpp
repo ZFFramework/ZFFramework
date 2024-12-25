@@ -38,9 +38,6 @@ void ZFWaitTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     }
     zfsuper::taskOnStop(resultType);
 }
-void ZFWaitTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
-}
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAsyncTask)
@@ -73,9 +70,6 @@ void ZFAsyncTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
         this->_implTaskId = zfnull;
     }
     zfsuper::taskOnStop(resultType);
-}
-void ZFAsyncTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
 }
 
 // ============================================================
@@ -111,9 +105,6 @@ void ZFPostTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     }
     zfsuper::taskOnStop(resultType);
 }
-void ZFPostTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
-}
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAsyncIOCustomTask)
@@ -146,9 +137,6 @@ void ZFAsyncIOCustomTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
         this->_implTaskId = zfnull;
     }
     zfsuper::taskOnStop(resultType);
-}
-void ZFAsyncIOCustomTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
 }
 
 // ============================================================
@@ -193,9 +181,6 @@ void ZFAsyncIOTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
         this->_implTaskId = zfnull;
     }
     zfsuper::taskOnStop(resultType);
-}
-void ZFAsyncIOTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
 }
 
 ZF_NAMESPACE_GLOBAL_END

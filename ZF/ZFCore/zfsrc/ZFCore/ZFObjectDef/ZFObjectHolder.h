@@ -71,13 +71,13 @@ protected:
     }
 
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void);
+    virtual zfidentity objectHashImpl(void);
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj);
 
 public:
     zfoverride

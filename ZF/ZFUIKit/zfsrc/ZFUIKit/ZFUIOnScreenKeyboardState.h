@@ -74,7 +74,7 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 
 public:
     ZFUISysWindow *_ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow;

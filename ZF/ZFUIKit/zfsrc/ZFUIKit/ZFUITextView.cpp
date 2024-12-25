@@ -101,8 +101,8 @@ void ZFUITextView::objectOnInitFinish(void) {
     _ZFP_ZFUITextView_updateSizeRelatedProperty(this);
 }
 
-void ZFUITextView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUITextView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
 
     if(!this->text().isEmpty()) {
         ret += " \"";

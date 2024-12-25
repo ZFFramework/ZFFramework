@@ -23,12 +23,12 @@ function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
     endif()
     if(${projName} STREQUAL "ZF_impl")
         install(
-            DIRECTORY "${FONT_REPO_PATH}"
+            DIRECTORY "${FONT_REPO_PATH}/"
             DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/zfres/ZF_impl/sys_SDL/font"
             )
     else()
         install(
-            DIRECTORY "${FONT_REPO_PATH}"
+            DIRECTORY "${FONT_REPO_PATH}/"
             DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres/ZF_impl/sys_SDL/font"
             )
     endif()

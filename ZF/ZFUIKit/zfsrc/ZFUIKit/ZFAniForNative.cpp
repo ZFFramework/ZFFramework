@@ -34,13 +34,13 @@ void ZFAniForNative::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFAniForNative::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFAniForNative::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     ret += "-";
     zfsFromPointerT(ret, this->nativeAnimation());
     ZFClassUtil::objectPropertyInfo(ret, this);
 }
-ZFCompareResult ZFAniForNative::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFAniForNative::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

@@ -148,12 +148,12 @@ public:
     virtual void objectOnDeallocPrepare(void);
 
     zfoverride
-    virtual inline void objectInfoT(ZF_IN_OUT zfstring &ret) {
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
         this->objectInfoOfContentT(ret, 10);
     }
 
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj);
 };
 
 ZF_NAMESPACE_GLOBAL_END

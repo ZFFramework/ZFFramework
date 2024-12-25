@@ -88,7 +88,7 @@ void ZFTaskGroup::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     zfsuper::taskOnStop(resultType);
 }
 
-void ZFTaskGroup::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFTaskGroup::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     ret += ZFTOKEN_ZFObjectInfoLeft;
     if(this->started()) {
         zfstringAppend(ret, "%s running"

@@ -171,7 +171,7 @@ void ZFContainer::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFCompareResult ZFContainer::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFContainer::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

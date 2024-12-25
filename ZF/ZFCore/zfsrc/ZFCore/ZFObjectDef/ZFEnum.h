@@ -77,10 +77,10 @@ protected:
 
 public:
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 
     zfoverride
-    virtual inline zfidentity objectHash(void) {
+    virtual inline zfidentity objectHashImpl(void) {
         return zfidentityCalcPOD(this->enumValue());
     }
     /**
@@ -88,7 +88,7 @@ public:
      *   or return ZFCompareUncomparable if any of them are ZFEnumInvalid
      */
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj);
 
 public:
     /* use ZFObject version instead of ZFTypeIdWrapper version */

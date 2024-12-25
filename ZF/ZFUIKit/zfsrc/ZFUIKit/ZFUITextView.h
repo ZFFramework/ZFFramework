@@ -73,7 +73,7 @@ protected:
     virtual void objectOnInitFinish(void);
 
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 
 public:
     /**

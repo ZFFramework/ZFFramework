@@ -85,7 +85,7 @@ void ZFEnum::objectOnInit(ZF_IN ZFEnum *another) {
     }
 }
 
-void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFEnum::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     if(this->enumValue() == ZFEnumInvalid()) {
         ret += "(";
         ret += this->classData()->className();
@@ -102,7 +102,7 @@ void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
     }
 }
 
-ZFCompareResult ZFEnum::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFEnum::objectCompareImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {
         return ZFCompareEqual;
     }

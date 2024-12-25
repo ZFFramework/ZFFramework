@@ -350,8 +350,8 @@ void ZFUIButtonBasic::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFUIButtonBasic::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIButtonBasic::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
 
     if(this->labelView() != zfnull && !this->labelView()->text().isEmpty()) {
         zfstringAppend(ret, " \"%s\"", this->labelView()->text());

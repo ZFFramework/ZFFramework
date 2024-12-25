@@ -7,12 +7,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ZFValueHolder
 ZFOBJECT_REGISTER(ZFValueHolder)
 
-void ZFValueHolder::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFValueHolder::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     ret += " ";
     zfsFromPointerT(ret, this->holdedData);
 }
-ZFCompareResult ZFValueHolder::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFValueHolder::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

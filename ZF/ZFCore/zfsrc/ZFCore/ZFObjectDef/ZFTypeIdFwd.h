@@ -278,11 +278,11 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         virtual void objectOnInit(void) {zfsuper::objectOnInit();} \
     public: \
         zfoverride \
-        virtual void objectInfoT(ZF_IN_OUT zfstring &ret); \
+        virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret); \
         zfoverride \
-        virtual zfidentity objectHash(void); \
+        virtual zfidentity objectHashImpl(void); \
         zfoverride \
-        virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj); \
+        virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj); \
     public: \
         zfoverride \
         virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref); \
@@ -348,7 +348,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         static _ZFP_ZFTypeIdProgressUpdate d = zfnull; \
         return d; \
     } \
-    void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) { \
+    void v_##TypeName::objectInfoImpl(ZF_IN_OUT zfstring &ret) { \
         zftToStringT(ret, this->zfv); \
     } \
     void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
@@ -443,10 +443,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type) \
-    zfidentity v_##TypeName::objectHash(void) { \
+    zfidentity v_##TypeName::objectHashImpl(void) { \
         return zfidentityCalcPointer(&(this->zfv)); \
     } \
-    ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
+    ZFCompareResult v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
         ZFTypeIdWrapper *t = zfcast(ZFTypeIdWrapper *, anotherObj); \
         if(t == zfnull || !zfstringIsEqual(this->zfvTypeId(), t->zfvTypeId())) { \
             return ZFCompareUncomparable; \
@@ -460,10 +460,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    zfidentity v_##TypeName::objectHash(void) { \
+    zfidentity v_##TypeName::objectHashImpl(void) { \
         return zfidentityCalcPointer(this); \
     } \
-    ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
+    ZFCompareResult v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
         return this == anotherObj ? ZFCompareEqual : ZFCompareUncomparable; \
     } \
     zfbool v_##TypeName::zfvIsInit(void) { \

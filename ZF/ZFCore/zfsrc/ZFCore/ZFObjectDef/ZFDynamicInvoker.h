@@ -34,11 +34,11 @@ public:
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void) {
+    virtual zfidentity objectHashImpl(void) {
         return zfidentityCalcString(this->zfv());
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         zfself *ref = zfcast(zfself *, anotherObj);
         if(ref != zfnull) {
             return ZFComparerDefault(this->zfv(), ref->zfv());
@@ -52,7 +52,7 @@ public:
     zfoverride
     virtual inline zfbool objectIsInternalPrivate(void) {return zftrue;}
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
         ret += this->zfv();
     }
 protected:

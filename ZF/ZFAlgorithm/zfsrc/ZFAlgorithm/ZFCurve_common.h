@@ -22,7 +22,7 @@ protected:
         return ZFBezierEaseIn().y_by_x(time);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -43,7 +43,7 @@ protected:
         return ZFBezierEaseOut().y_by_x(time);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -64,7 +64,7 @@ protected:
         return ZFBezierEaseInOut().y_by_x(time);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -85,7 +85,7 @@ protected:
         return ZFBezierBounceIn().y_by_x(time);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -106,7 +106,7 @@ protected:
         return ZFBezierBounceOut().y_by_x(time);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -127,7 +127,7 @@ protected:
         return ZFBezierBounceInOut().y_by_x(time);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -157,7 +157,7 @@ protected:
         }
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -177,7 +177,7 @@ protected:
         return (time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -196,7 +196,7 @@ protected:
         return ZFBezierEaseIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -215,7 +215,7 @@ protected:
         return ZFBezierEaseOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -234,7 +234,7 @@ protected:
         return ZFBezierEaseInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -253,7 +253,7 @@ protected:
         return ZFBezierBounceIn().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -272,7 +272,7 @@ protected:
         return ZFBezierBounceOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
@@ -291,7 +291,7 @@ protected:
         return ZFBezierBounceInOut().y_by_x(time < (zffloat)0.5f ? 2 * time : 2 * (1 - time));
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}

@@ -162,8 +162,8 @@ protected:
 
 protected:
     zfoverride
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual inline void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         if(this->content() != zfnull) {
             ret += ", content: ";
             this->content()->objectInfoT(ret);

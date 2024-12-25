@@ -285,7 +285,7 @@ public:
     zffinal ZFObjectHolder *objectHolder(void);
 
     /** @brief see #objectInfoOfInstance */
-    virtual inline void objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret) {
+    zffinal void objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret) {
         ret += this->classData()->classNameFull();
         ret += "(";
         zfsFromPointerT(ret, this);
@@ -298,30 +298,39 @@ public:
      *   ClassName(0x123456)
      * @see objectInfo
      */
-    virtual inline zfstring objectInfoOfInstance(void) {
+    zffinal inline zfstring objectInfoOfInstance(void) {
         zfstring ret;
         this->objectInfoOfInstanceT(ret);
         return ret;
     }
 
     /** @brief see #objectInfo */
-    virtual inline void objectInfoT(ZF_IN_OUT zfstring &ret) {
-        ret += ZFTOKEN_ZFObjectInfoLeft;
-        this->objectInfoOnAppend(ret);
-        ret += ZFTOKEN_ZFObjectInfoRight;
-    }
-    /** @brief return object info */
-    virtual inline zfstring objectInfo(void) {
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret);
+    /**
+     * @brief return object info
+     *
+     * subclass or impl may override or supply dynamic registered method
+     * with `void objectInfoImpl(zfstring &ret)` to achieve custom logic,
+     * or override #objectInfoImplAppend for chained impl
+     */
+    zffinal inline zfstring objectInfo(void) {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
     }
+    zffinal inline void _ZFP_ZFObject_objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        this->objectInfoImpl(ret);
+    }
 
 protected:
-    /**
-     * @brief called by #objectInfoT to append object info as a chain
-     */
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+    /** @brief see #objectInfo */
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret += ZFTOKEN_ZFObjectInfoLeft;
+        this->objectInfoImplAppend(ret);
+        ret += ZFTOKEN_ZFObjectInfoRight;
+    }
+    /** @brief see #objectInfo */
+    virtual inline void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
         this->objectInfoOfInstanceT(ret);
     }
 
@@ -335,13 +344,14 @@ public:
      *   two objects have same hash if they are regarded as same
      *   (i.e. #objectCompare return #ZFCompareEqual)
      * @note this method may or may not be called frequently,
-     *   (for example, store as key of #ZFMap may cause frequently call),
+     *   (for example, store as key of #ZFHashMap may cause frequently call),
      *   you should always try to make the implementation
      *   have good performance
+     * @note for dynamic registered class (#ZFClassDynamicRegister),
+     *   you may supply a reflectable method with `zfidentity objectHashImpl(void)`,
+     *   to achieve custom logic
      */
-    virtual inline zfidentity objectHash(void) {
-        return zfidentityCalcPointer(this);
-    }
+    zffinal zfidentity objectHash(void);
     /**
      * @brief compare with anotherObj
      *
@@ -355,18 +365,42 @@ public:
      *   you must also override #objectHash,
      *   and follow the rules described in #objectHash
      * @note for dynamic registered class (#ZFClassDynamicRegister),
-     *   you may supply a reflectable method with same name,
-     *   to achieve custom compare logic
+     *   you may supply a reflectable method with `ZFCompareResult objectCompare(ZFObject *)`,
+     *   to achieve custom logic
      */
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
+    zffinal ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
     /**
      * @brief explicitly compare object by logical value, see #objectCompare
      *
      * @note for dynamic registered class (#ZFClassDynamicRegister),
-     *   you may supply a reflectable method with same name,
-     *   to achieve custom compare logic
+     *   you may supply a reflectable method with `ZFCompareResult objectCompareValue(ZFObject *)`,
+     *   to achieve custom logic
      */
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
+    zffinal ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
+
+    zffinal zfidentity _ZFP_ZFObject_objectHashImpl(void) {
+        return this->objectHashImpl();
+    }
+    zffinal ZFCompareResult _ZFP_ZFObject_objectCompareImpl(ZF_IN ZFObject *anotherObj) {
+        return this->objectCompareImpl(anotherObj);
+    }
+    zffinal ZFCompareResult _ZFP_ZFObject_objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
+        return this->objectCompareValueImpl(anotherObj);
+    }
+
+protected:
+    /** @brief see #objectHash */
+    virtual inline zfidentity objectHashImpl(void) {
+        return zfidentityCalcPointer(this);
+    }
+    /** @brief see #objectCompare */
+    virtual inline ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
+        return ((this == anotherObj) ? ZFCompareEqual : ZFCompareUncomparable);
+    }
+    /** @brief see #objectCompareValue */
+    virtual inline ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
+        return this->objectCompare(anotherObj);
+    }
 
 public:
     /* ZFMETHOD_MAX_PARAM */

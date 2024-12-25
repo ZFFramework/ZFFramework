@@ -128,7 +128,7 @@ public:
     zfuint port;
 };
 
-void ZFUdp::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFUdp::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     ret += "udp:";
     zfstringAppend(ret, "%s", this->port());
 }

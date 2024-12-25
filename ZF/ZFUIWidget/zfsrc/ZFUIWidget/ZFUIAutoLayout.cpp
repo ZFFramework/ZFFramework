@@ -272,11 +272,11 @@ void ZFUIAutoLayoutParam::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleabl
     // copy ZFUIAutoLayoutParam does not copy rules,
     // it's done by ZFUIAutoLayout::styleableOnCopyFrom
 }
-ZFCompareResult ZFUIAutoLayoutParam::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFUIAutoLayoutParam::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
-    if(zfsuper::objectCompareValue(anotherObj) != ZFCompareEqual) {
+    if(zfsuper::objectCompareValueImpl(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
     for(zfindex i = 0; i < ZFUIAutoLayoutPos::EnumCount(); ++i) {

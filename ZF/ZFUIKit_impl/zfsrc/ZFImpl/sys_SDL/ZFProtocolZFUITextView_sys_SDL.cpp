@@ -183,7 +183,7 @@ private:
                 sdlFontType = ZFImpl_sys_SDL_FontType_normal;
                 break;
         }
-        ZFImpl_sys_SDL_fontAccess(sdlFont, sdlFontType, (zfint)textSize);
+        ZFImpl_sys_SDL_fontAccess(sdlFont, sdlFontType, textSize);
         if(sdlFont == zfnull) {
             return zffalse;
         }
@@ -192,8 +192,9 @@ private:
         if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0) {
             return zffalse;
         }
-        if(widthHint <= 0 || w <= widthHint || textView->singleLine()) {
+        if(widthHint <= 0 || w < widthHint || textView->singleLine()) {
             h = zfmMax(h, lineSkip);
+            ++w;
             return zftrue;
         }
 
@@ -219,6 +220,8 @@ private:
             }
         }
         h = zfmMax(h, lineSkip) + lineSkip * (line - 1);
+        ++w;
+        ++h;
         return zftrue;
     }
 
@@ -290,7 +293,7 @@ private:
             sdlSurface = renderWrapped(owner, targetRect, sdlFont, textSizeCurrent);
         }
         else {
-            sdlSurface = TTF_RenderUTF8_Solid_Wrapped(
+            sdlSurface = TTF_RenderUTF8_Blended_Wrapped(
                 sdlFont,
                 owner->text(),
                 ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor()),
@@ -392,10 +395,10 @@ private:
         SDL_Color textColor = ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor());
         if(textTruncateMode == ZFUITextTruncateMode::e_Disable) {
             if(singleLine) {
-                return TTF_RenderUTF8_Solid(sdlFont, owner->text(), textColor);
+                return TTF_RenderUTF8_Blended(sdlFont, owner->text(), textColor);
             }
             else {
-                return TTF_RenderUTF8_Solid_Wrapped(sdlFont, owner->text(), textColor, targetRect.w);
+                return TTF_RenderUTF8_Blended_Wrapped(sdlFont, owner->text(), textColor, targetRect.w);
             }
         }
 
@@ -405,7 +408,7 @@ private:
                 return zfnull;
             }
             if(w <= targetRect.w) {
-                return TTF_RenderUTF8_Solid(sdlFont, owner->text(), textColor);
+                return TTF_RenderUTF8_Blended(sdlFont, owner->text(), textColor);
             }
         }
         else {
@@ -413,7 +416,7 @@ private:
                 return zfnull;
             }
             if(w <= targetRect.w && h <= targetRect.h) {
-                return TTF_RenderUTF8_Solid_Wrapped(sdlFont, owner->text(), textColor, (Uint32)targetRect.w);
+                return TTF_RenderUTF8_Blended_Wrapped(sdlFont, owner->text(), textColor, (Uint32)targetRect.w);
             }
         }
 
@@ -451,7 +454,7 @@ private:
                 }
                 if(w <= targetRect.w) {
                     if(stripMin == stripMax || strip == stripMin + 1) {
-                        return TTF_RenderUTF8_Solid(sdlFont, textNew, textColor);
+                        return TTF_RenderUTF8_Blended(sdlFont, textNew, textColor);
                     }
                     stripMax = strip;
                 }
@@ -465,7 +468,7 @@ private:
                 }
                 if(w <= targetRect.w && h <= targetRect.h) {
                     if(stripMin == stripMax || strip == stripMin + 1) {
-                        return TTF_RenderUTF8_Solid_Wrapped(sdlFont, textNew, textColor, targetRect.w);
+                        return TTF_RenderUTF8_Blended_Wrapped(sdlFont, textNew, textColor, targetRect.w);
                     }
                     stripMax = strip;
                 }

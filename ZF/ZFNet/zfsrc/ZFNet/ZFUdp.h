@@ -251,7 +251,7 @@ public:
 
 public:
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 
 protected:
     zfoverride

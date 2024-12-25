@@ -45,7 +45,7 @@ protected:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 
 private:
     zfbool _ZFP_ZFUIEvent_eventResolved;

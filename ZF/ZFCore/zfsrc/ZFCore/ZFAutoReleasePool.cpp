@@ -45,8 +45,8 @@ void ZFAutoReleasePool::objectOnDeallocPrepare(void) {
     this->poolDrain();
     zfsuper::objectOnDeallocPrepare();
 }
-void ZFAutoReleasePool::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFAutoReleasePool::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     ret += ", count: ";
     zfsFromIntT(ret, d->array.count());
 }

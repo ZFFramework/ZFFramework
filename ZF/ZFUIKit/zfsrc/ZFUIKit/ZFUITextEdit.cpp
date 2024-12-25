@@ -180,8 +180,8 @@ void ZFUITextEdit::objectOnInitFinish(void) {
     d->updateSizeRelatedProperty();
 }
 
-void ZFUITextEdit::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUITextEdit::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
 
     if(!this->placeholder()->text().isEmpty()) {
         zfstringAppend(ret, " (%s)", this->placeholder()->text());

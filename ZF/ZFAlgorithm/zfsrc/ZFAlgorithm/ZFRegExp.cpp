@@ -197,19 +197,19 @@ void ZFRegExp::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFRegExp::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFRegExp::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     ZFClassUtil::objectPropertyInfo(ret, this);
 }
 
-zfidentity ZFRegExp::objectHash(void) {
+zfidentity ZFRegExp::objectHashImpl(void) {
     ZFRegExpOptionFlags flag = this->options();
     return zfidentityHash(
             zfidentityCalcString(this->pattern())
             , zfidentityCalcPOD(flag)
             );
 }
-ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFRegExp::objectCompareImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

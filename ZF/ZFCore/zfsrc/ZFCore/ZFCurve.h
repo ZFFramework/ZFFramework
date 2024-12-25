@@ -52,7 +52,7 @@ protected:
         return time;
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}

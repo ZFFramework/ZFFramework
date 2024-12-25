@@ -32,7 +32,7 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 };
 
 ZF_NAMESPACE_GLOBAL_END

@@ -155,9 +155,6 @@ void ZFAudioPlayTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     }
     zfsuper::taskOnStop(resultType);
 }
-void ZFAudioPlayTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
-}
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAudioCache)

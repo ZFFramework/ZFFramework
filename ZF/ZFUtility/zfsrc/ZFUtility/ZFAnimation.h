@@ -208,8 +208,8 @@ protected:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 
@@ -244,7 +244,7 @@ public:
     zfoverride
     virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 };
 
 ZF_NAMESPACE_GLOBAL_END

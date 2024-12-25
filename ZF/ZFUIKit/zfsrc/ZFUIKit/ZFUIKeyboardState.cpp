@@ -28,8 +28,8 @@ ZFMETHOD_DEFINE_1(ZFUIKeyboardState, zfbool, keyPressedRaw
     return zffalse;
 }
 
-void ZFUIKeyboardState::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIKeyboardState::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     zfstring tmp;
     for(zfindex i = 0; i < ZFUIKeyCode::EnumCount(); ++i) {
         if(this->keyPressed((ZFUIKeyCodeEnum)ZFUIKeyCode::EnumValueAt(i))) {

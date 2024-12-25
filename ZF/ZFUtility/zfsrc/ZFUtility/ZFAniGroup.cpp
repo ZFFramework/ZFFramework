@@ -11,7 +11,7 @@ zfclass _ZFP_ZFAniGroupChildData : zfextend ZFObject {
 
 public:
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
         ZFObjectInfoT(ret, this->child());
     }
 };
@@ -328,7 +328,7 @@ void ZFAniGroup::objectOnDeallocPrepare(void) {
     this->childRemoveAll();
     zfsuper::objectOnDeallocPrepare();
 }
-ZFCompareResult ZFAniGroup::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFAniGroup::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
@@ -451,8 +451,8 @@ void ZFAniGroup::aniImplStop(void) {
     zfsuper::aniImplStop();
 }
 
-void ZFAniGroup::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFAniGroup::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     d->childDatas->objectInfoT(ret);
 }
 
@@ -545,7 +545,7 @@ protected:
         zfsuper::aniImplStop();
     }
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}

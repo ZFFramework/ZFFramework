@@ -379,8 +379,8 @@ protected:
         zfsuper::objectOnDeallocPrepare();
     }
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         if(L != zfnull && luaValue != -1) {
             lua_rawgeti(L, LUA_REGISTRYINDEX, luaValue);
             ret += " luaValue=";

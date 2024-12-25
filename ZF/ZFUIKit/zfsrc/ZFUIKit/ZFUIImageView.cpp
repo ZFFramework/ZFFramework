@@ -80,8 +80,8 @@ void ZFUIImageView::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFUIImageView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIImageView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     if(this->image() != zfnull) {
         ret += " ";
         this->image()->objectInfoT(ret);

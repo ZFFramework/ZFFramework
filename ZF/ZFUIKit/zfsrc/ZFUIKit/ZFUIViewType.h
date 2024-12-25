@@ -458,7 +458,7 @@ public:
 
 public:
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
                 && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
                 ) {
@@ -467,8 +467,8 @@ public:
         return ZFCompareUncomparable;
     }
     zfoverride
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual inline void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 
@@ -537,8 +537,8 @@ public:
 
 protected:
     zfoverride
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual inline void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 };

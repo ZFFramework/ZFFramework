@@ -52,9 +52,6 @@ void ZFUIImageLoadTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     }
     zfsuper::taskOnStop(resultType);
 }
-void ZFUIImageLoadTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    return zfsuper::objectInfoT(ret);
-}
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -1366,8 +1366,8 @@ void ZFUIView::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
 
     if(!this->viewId().isEmpty()) {
         zfstringAppend(ret, " [%s]", this->viewId());

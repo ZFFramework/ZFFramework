@@ -81,7 +81,7 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
     }
 }
 
-void ZFTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFTask::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     ret += ZFTOKEN_ZFObjectInfoLeft;
     if(this->started()) {
         zfstringAppend(ret, "%s running"

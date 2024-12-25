@@ -257,10 +257,10 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj);
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
     zfoverride
     virtual void objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property

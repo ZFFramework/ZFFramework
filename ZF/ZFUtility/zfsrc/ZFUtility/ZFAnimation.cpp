@@ -271,12 +271,12 @@ void ZFAniTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
     }
     zfsuper::taskOnStop(resultType);
 }
-void ZFAniTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFAniTask::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     if(this->impl()) {
         return this->impl()->objectInfoT(ret);
     }
     else {
-        return zfsuper::objectInfoT(ret);
+        return zfsuper::objectInfoImpl(ret);
     }
 }
 

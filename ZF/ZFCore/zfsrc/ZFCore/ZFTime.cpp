@@ -489,7 +489,7 @@ void ZFTime::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFTime::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+void ZFTime::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfstringAppend(ret, "%04s-%02s-%02s %02s:%02s:%02s.%03s %03s",
         this->year(),
         this->month() + 1,
@@ -506,12 +506,12 @@ public:
     ZFTimeValue tv;
     ZFTimeValue tz;
 };
-zfidentity ZFTime::objectHash(void) {
+zfidentity ZFTime::objectHashImpl(void) {
     _ZFP_ZFTime_hash tmp = {d->tv, d->tz};
     return zfidentityCalcPOD(tmp);
 }
 
-ZFCompareResult ZFTime::objectCompare(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFTime::objectCompareImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

@@ -12,8 +12,8 @@ ZFOBJECT_ON_INIT_DEFINE_1(ZFUINativeViewWrapper
     zfself::nativeImplView(nativeImplView, zfnull, zftrue);
 }
 
-void ZFUINativeViewWrapper::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUINativeViewWrapper::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     if(this->nativeImplView() != zfnull) {
         ret += " ";
         zfsFromPointerT(ret, this->nativeImplView());

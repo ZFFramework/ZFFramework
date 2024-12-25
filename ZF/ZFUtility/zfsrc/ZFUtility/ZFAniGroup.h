@@ -71,7 +71,7 @@ protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void);
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj);
 
     // ============================================================
     // child animation control
@@ -228,7 +228,7 @@ protected:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 
 protected:
     virtual zfbool _ZFP_ZFAniGroup_queueType(void) {

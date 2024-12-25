@@ -221,6 +221,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
                 zfdelete(implUserData);
                 return zffalse;
             }
+            implUserData->resFindFirstStarted = zftrue;
             return zftrue;
         }
     }
@@ -230,6 +231,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
             zfdelete(implUserData);
             return zffalse;
         }
+        implUserData->resFindFirstStarted = zftrue;
         return zftrue;
     }
 }
@@ -268,11 +270,11 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
 
         // finally fallback to res
         if(ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), implUserData->resPathSaved)) {
+            implUserData->resFindFirstStarted = zftrue;
             do {
                 if(implUserData->resExtItemResolved.find(fd.name()) != implUserData->resExtItemResolved.end()) {
                     continue;
                 }
-                implUserData->resFindFirstStarted = zftrue;
                 return zftrue;
             } while(ZFPROTOCOL_ACCESS(ZFRes)->resFindNext(fd.impl()));
         }

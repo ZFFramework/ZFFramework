@@ -11,15 +11,15 @@ zfclass ZFNullObject : zfextend ZFObject, zfimplement ZFSerializable, zfimplemen
 
 public:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
         ret += "ZFNull";
     }
     zfoverride
-    virtual zfidentity objectHash(void) {
+    virtual zfidentity objectHashImpl(void) {
         return zfidentityInvalid();
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj || (anotherObj != zfnull && anotherObj->classData() == ZFNullObject::ClassData())) {
             return ZFCompareEqual;
         }

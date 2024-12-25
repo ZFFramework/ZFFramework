@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIKeyEvent)
 
-void ZFUIKeyEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+void ZFUIKeyEvent::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     ret += "Key ";
     ret += ZFUIKeyAction::EnumNameForValue(this->keyAction);
     ret += " ";

@@ -164,8 +164,8 @@ protected:
     virtual void objectOnDealloc(void);
 
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         ret += " ";
         ret += this->stateHint();
         if(this->started()) {

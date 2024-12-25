@@ -90,7 +90,7 @@ protected:
         zfsuper::objectOnDealloc();
     }
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
                 && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
                 ) {
@@ -137,7 +137,7 @@ protected:
     zfoverride
     virtual void objectOnDealloc(void);
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
                 && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
                 ) {

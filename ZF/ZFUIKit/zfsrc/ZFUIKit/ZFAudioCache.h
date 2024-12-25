@@ -71,8 +71,6 @@ public:
     virtual void taskOnStart(void);
     zfoverride
     virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
-    zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 private:
     zfautoT<ZFAudio> _impl;
     zfobj<ZFObject> _holder;

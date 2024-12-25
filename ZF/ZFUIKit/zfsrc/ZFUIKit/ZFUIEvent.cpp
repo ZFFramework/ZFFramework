@@ -13,8 +13,8 @@ ZFMETHOD_DEFINE_0(ZFUIEvent, zfbool, eventResolved) {
     return _ZFP_ZFUIEvent_eventResolved;
 }
 
-void ZFUIEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIEvent::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     if(this->eventResolved()) {
         ret += " (resolved)";
     }

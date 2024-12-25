@@ -22,7 +22,7 @@ public:
     }
 };
 
-void ZFTcp::objectInfoT(ZF_IN_OUT zfstring &ret) {
+void ZFTcp::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     ret += "tcp:";
     zfstringAppend(ret, "%s:%s", this->host(), this->port());
 }

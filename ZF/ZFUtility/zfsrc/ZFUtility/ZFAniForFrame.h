@@ -99,7 +99,7 @@ protected:
     zfoverride
     virtual void objectOnDealloc(void);
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj) {return ZFCompareEqual;}
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}

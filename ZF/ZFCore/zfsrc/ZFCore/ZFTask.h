@@ -114,7 +114,7 @@ protected:
         zfsuper::objectOnDeallocPrepare();
     }
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 
 private:
     zfbool _ZFP_started;

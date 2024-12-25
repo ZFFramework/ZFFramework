@@ -59,7 +59,7 @@ ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, ZFUIRect, keyboardFixClientFrame) {
     return ret;
 }
 
-void ZFUIOnScreenKeyboardState::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+void ZFUIOnScreenKeyboardState::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfsFromPointerT(ret, this->keyboardOwnerSysWindow());
     if(this->keyboardShowing()) {
         ret += " keyboardFrame: ";

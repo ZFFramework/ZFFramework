@@ -478,7 +478,7 @@ void ZFUIImage::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFCompareResult ZFUIImage::objectCompareValue(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFUIImage::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
@@ -494,8 +494,8 @@ ZFCompareResult ZFUIImage::objectCompareValue(ZF_IN ZFObject *anotherObj) {
     }
     return ZFCompareUncomparable;
 }
-void ZFUIImage::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIImage::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     ret += " ";
     ZFUISizeToStringT(ret, this->imageSize());
 }

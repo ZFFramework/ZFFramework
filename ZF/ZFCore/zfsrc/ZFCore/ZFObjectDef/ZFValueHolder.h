@@ -102,10 +102,10 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 public:
     zfoverride
-    virtual ZFCompareResult objectCompareValue(ZF_IN ZFObject *anotherObj);
+    virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj);
 };
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueHolderType {
 public:

@@ -656,8 +656,8 @@ void ZFUIScrollView::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-void ZFUIScrollView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFUIScrollView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     ret += " ";
     ZFUIRectToStringT(ret, this->scrollContentFrame());
     if(!this->scrollEnable()) {

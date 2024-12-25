@@ -54,13 +54,8 @@ public:
     _ZFP_ZFImpl_sys_SDL_fontAccess(
             ZF_IN ZFImpl_sys_SDL_FontType fontType
             , ZF_IN zffloat ptsize
-            )
-    : fontData(ZFImpl_sys_SDL_fontAlloc(fontType, ptsize))
-    {
-    }
-    ~_ZFP_ZFImpl_sys_SDL_fontAccess(void) {
-        ZFImpl_sys_SDL_fontRelease(this->fontData);
-    }
+            );
+    ~_ZFP_ZFImpl_sys_SDL_fontAccess(void);
 public:
     ZFImpl_sys_SDL_FontData *fontData;
 public:
@@ -87,9 +82,6 @@ public:
 };
 
 // ============================================================
-/** @brief max cache size of #ZFImpl_sys_SDL_fontAlloc, default 10 */
-extern ZFLIB_ZF_impl zfindex ZFImpl_sys_SDL_fontCacheSize;
-
 /** @brief custom font load for #ZFImpl_sys_SDL_fontAlloc */
 typedef ZFInput (*ZFImpl_sys_SDL_FontLoader)(ZF_IN ZFImpl_sys_SDL_FontType fontType);
 

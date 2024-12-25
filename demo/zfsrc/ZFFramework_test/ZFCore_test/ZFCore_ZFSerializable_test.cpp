@@ -11,8 +11,8 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoOnAppend(ret);
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoImplAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 };
@@ -32,7 +32,7 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
         ret += this->classData()->classNameFull();
         ZFClassUtil::objectPropertyInfo(ret, this);
     }

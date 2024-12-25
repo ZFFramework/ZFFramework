@@ -35,7 +35,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreePrintAfterDelay
  * output should contain only infomations without extra new line or tokens,
  * newly set would override old one, set null to remove\n
  * you may add your own at runtime, using #ZF_GLOBAL_INITIALIZER_INIT is recommended\n
- * if a view class not registered, only #ZFObject::objectInfoOnAppend would be outputed
+ * if a view class not registered, only #ZFObject::objectInfoImplAppend would be outputed
  * \n
  * if both base class and child class registered,
  * child class's one would have higher priority,

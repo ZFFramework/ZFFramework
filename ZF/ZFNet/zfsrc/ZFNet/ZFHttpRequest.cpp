@@ -256,8 +256,8 @@ void ZFHttpRequest::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFHttpRequest::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFHttpRequest::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     zfstringAppend(ret, " %s:%s", ZFHttpMethodToString(this->httpMethod()), this->url());
     zfstringAppend(ret, " header:%s", this->headerCount());
     zfstringAppend(ret, " body:%s", this->body().length());
@@ -367,8 +367,8 @@ void ZFHttpResponse::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-void ZFHttpResponse::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfsuper::objectInfoOnAppend(ret);
+void ZFHttpResponse::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoImplAppend(ret);
     if(this->code() != 0) {
         zfstringAppend(ret, " code:%s", this->code());
     }

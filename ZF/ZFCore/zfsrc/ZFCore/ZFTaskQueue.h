@@ -53,7 +53,7 @@ public:
     zfoverride
     virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 };
 
 ZF_NAMESPACE_GLOBAL_END

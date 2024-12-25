@@ -60,11 +60,11 @@ public:
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void) {
+    virtual zfidentity objectHashImpl(void) {
         return zfidentityCalcPointer(this->zfv.toObject());
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         return ZFObjectCompare(this->zfv, anotherObj);
     }
 };

@@ -215,7 +215,7 @@ public:
         #endif // #if ZF_ENV_sys_Windows #else
         } while(zffalse);
         if(success) {
-            while(zfstringIsEqual(fd.name, ".")
+            if(zfstringIsEqual(fd.name, ".")
                     || zfstringIsEqual(fd.name, "..")
                     ) {
                 if(!this->fileFindNext(fd)) {

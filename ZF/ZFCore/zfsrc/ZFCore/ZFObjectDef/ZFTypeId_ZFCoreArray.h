@@ -108,7 +108,7 @@ protected:
 
 public:
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
         if(this->zfv == zfnull) {
             ret += ZFTOKEN_zfnull;
         }
@@ -118,11 +118,11 @@ public:
     }
 
     zfoverride
-    virtual zfidentity objectHash(void) {
+    virtual zfidentity objectHashImpl(void) {
         return zfidentityCalcPointer(this->zfv ? this->zfv->refImpl() : zfnull);
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         zfself *t = zfcast(zfself *, anotherObj);
         if(t != zfnull
                 && this->zfv != zfnull
