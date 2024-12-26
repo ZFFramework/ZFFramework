@@ -6,10 +6,11 @@
 #ifndef _ZFI_zfweak_h_
 #define _ZFI_zfweak_h_
 
-#include "ZFObjectHolder.h"
+#include "zfweak_fwd.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+// ============================================================
 /**
  * @brief weak reference to ZFObject
  *
@@ -25,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       p2.get()->add(xxx);
  *   }
  *   p2.set(xxx);
- *   if(p2.objectValid()) {
+ *   if(p2.valid()) {
  *       p2.get()->add(xxx);
  *   }
  * @endcode
@@ -42,23 +43,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       p2:get():add(xxx);
  *   }
  *   p2:set(xxx);
- *   if(p2:objectValid()) {
+ *   if(p2:valid()) {
  *       p2:get():add(xxx);
  *   }
  * @endcode
- *
- * this class is a util wrapper for #ZFObjectHolder
  */
 zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
     zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
-    zfweak(ZF_IN ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->objectHolder()) : zfnull) {}
+    zfweak(ZF_IN ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->_ZFP_ZFObject_weakHolder()) : zfnull) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
-        _ZFP_obj = t ? zfRetain(t->objectHolder()) : zfnull;
+        _ZFP_obj = t ? zfRetain(t->_ZFP_ZFObject_weakHolder()) : zfnull;
     }
     ~zfweak(void) {
         zfRelease(_ZFP_obj);
@@ -107,7 +106,7 @@ public:
     /**
      * @brief true if the holded object is not null
      */
-    inline zfbool objectValid(void) const {
+    inline zfbool valid(void) const {
         return this->toObject() != zfnull;
     }
 
@@ -115,7 +114,7 @@ public:
      * @brief get the holded object
      */
     inline zfany get(void) const {
-        return _ZFP_obj ? _ZFP_obj->objectHolded().toObject() : zfnull;
+        return _ZFP_obj ? _ZFP_obj->get().toObject() : zfnull;
     }
     /**
      * @brief set the holded object
@@ -123,19 +122,23 @@ public:
     template<typename T_ZFObject>
     void set(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
-        zfRetainChange(_ZFP_obj, t ? t->objectHolder() : zfnull);
+        _ZFP_I_zfweak *old = _ZFP_obj;
+        _ZFP_obj = (t ? zfRetain(t->_ZFP_ZFObject_weakHolder()) : zfnull);
+        zfRelease(old);
     }
     /**
      * @brief set the holded object
      */
     void set(ZF_IN const zfweak &obj) {
-        zfRetainChange(_ZFP_obj, obj._ZFP_obj);
+        this->set(obj.toObject());
     }
     /**
      * @brief set the holded object
      */
     void set(ZF_IN zfnullT const &) {
-        zfRetainChange(_ZFP_obj, zfnull);
+        _ZFP_I_zfweak *old = _ZFP_obj;
+        _ZFP_obj = zfnull;
+        zfRelease(old);
     }
 
 public:
@@ -143,7 +146,7 @@ public:
      * @brief get the holded object
      */
     inline ZFObject *toObject(void) const {
-        return _ZFP_obj ? _ZFP_obj->objectHolded().toObject() : zfnull;
+        return _ZFP_obj ? _ZFP_obj->get().toObject() : zfnull;
     }
     /**
      * @brief cast by #zfcast
@@ -161,7 +164,7 @@ public:
     }
 
 private:
-    zfanyT<ZFObjectHolder> _ZFP_obj;
+    zfanyT<_ZFP_I_zfweak> _ZFP_obj;
 };
 ZFOUTPUT_TYPE(zfweak, {
     if(v) {
@@ -172,10 +175,10 @@ ZFOUTPUT_TYPE(zfweak, {
         s += ZFTOKEN_zfnull;
     }
 })
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfweak, zfweak)
 ZFCOMPARER_DEFAULT_DECLARE(zfweak, zfweak, {
         return ZFObjectCompare(v0.toObject(), v1.toObject());
     })
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfweak, zfweak)
 
 // ============================================================
 /**
@@ -355,6 +358,19 @@ inline zfbool operator != (ZF_IN T_ZFObject *obj, ZF_IN zfweakT<T_ZFObjectBase> 
     return e.toObject() != _ZFP_zfanyCast(obj);
 }
 /** @endcond */
+
+// ============================================================
+template<typename T_ZFObject>
+zfclassNotPOD _ZFP_zfweakCkT {
+public:
+    static inline void zfweakNotSupport(void) {}
+};
+template<> zfclassNotPOD _ZFP_zfweakCkT<zfweak> {};
+template<typename T_ZFObject> zfclassNotPOD _ZFP_zfweakCkT<zfweakT<T_ZFObject> > {};
+template<typename T_ZFObject>
+inline void _ZFP_zfweakCk(T_ZFObject &t) {
+    _ZFP_zfweakCkT<typename zftTraits<T_ZFObject>::TrNoRef>::zfweakNotSupport();
+}
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_zfweak_h_

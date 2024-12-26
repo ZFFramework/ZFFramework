@@ -81,7 +81,8 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * called after dialog show, to update focus\n
-     * param0 is a #ZFObjectHolder to store the result view to focus
+     * param0 is a #ZFObjectHolder to pass the result view to focus,
+     * you may modify by #ZFObjectHolder::value
      */
     ZFEVENT(DialogFocusOnUpdate)
 

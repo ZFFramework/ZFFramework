@@ -35,7 +35,7 @@ typedef zfstlmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
 
 zfclassNotPOD _ZFP_ZFObjectPrivate {
 public:
-    ZFObjectHolder *objectHolder;
+    _ZFP_I_zfweak *weakHolder;
     void *mutexImpl;
     _ZFP_ZFObjectTagMapType *objectTagMap;
     zfstlvector<const ZFProperty *> propertyAccessed;
@@ -59,7 +59,7 @@ public:
 
 public:
     _ZFP_ZFObjectPrivate(void)
-    : objectHolder(zfnull)
+    : weakHolder(zfnull)
     , mutexImpl(zfnull)
     , objectTagMap(zfnull)
     , propertyAccessed()
@@ -114,15 +114,15 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFObject_stateFlags) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFObject_stateFlags)
 
-ZFObjectHolder *ZFObject::objectHolder(void) {
+_ZFP_I_zfweak *ZFObject::_ZFP_ZFObject_weakHolder(void) {
+    ZFCoreMutexLocker();
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFObjectPrivate);
     }
-    if(d->objectHolder == zfnull) {
-        d->objectHolder = zfunsafe_zfAlloc(ZFObjectHolder);
-        d->objectHolder->objectHolded(this);
+    if(d->weakHolder == zfnull) {
+        d->weakHolder = zfunsafe_zfAlloc(_ZFP_I_zfweak, this);
     }
-    return d->objectHolder;
+    return d->weakHolder;
 }
 
 void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
@@ -657,14 +657,14 @@ void ZFObject::objectOnDealloc(void) {
             if(d->observerHolder) {
                 zfpoolDelete(d->observerHolder);
             }
-            if(d->objectHolder) {
-                d->objectHolder->objectHolded(zfnull);
-                zfRelease(d->objectHolder);
+            if(d->weakHolder) {
+                d->weakHolder->set(zfnull);
+                zfRelease(d->weakHolder);
             }
         }
         else {
-            if(d->objectHolder) {
-                zfRelease(d->objectHolder);
+            if(d->weakHolder) {
+                zfRelease(d->weakHolder);
             }
         }
 
@@ -765,7 +765,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
         dObj->ZFImplementDynamicOwner = this;
 
         // alias internal data to owner
-        dObj->objectHolder = zfRetain(this->objectHolder());
+        dObj->weakHolder = zfRetain(this->_ZFP_ZFObject_weakHolder());
         dObj->observerHolder = zfpoolNew(ZFObserver, this->observerHolder());
         if(d->objectTagMap == zfnull) {
             d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
@@ -795,7 +795,6 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, const ZFClass *, classData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, ZFObjectHolder *, objectHolder)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectInfoOfInstanceT
         , ZFMP_IN_OUT(zfstring &, ret)
         )

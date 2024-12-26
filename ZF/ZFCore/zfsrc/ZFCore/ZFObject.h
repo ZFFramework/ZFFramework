@@ -45,7 +45,6 @@
 #include "ZFObjectDef/ZFObjectCore.h"
 #include "ZFObjectDef/ZFObjectDeclare.h"
 #include "ZFObjectDef/ZFObjectGlobalInstance.h"
-#include "ZFObjectDef/ZFObjectHolder.h"
 #include "ZFObjectDef/ZFObjectIO.h"
 #include "ZFObjectDef/ZFObjectInterface.h"
 #include "ZFObjectDef/ZFObjectMutex.h"

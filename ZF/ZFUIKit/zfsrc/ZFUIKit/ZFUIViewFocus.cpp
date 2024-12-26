@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextSetupDataHolder, ZFLevelZFFrameworkEssential) {
     ZFLISTENER(nextFocusOnDealloc) {
-        ZFObjectHolder *nextFocusOwner = zfargs.sender()->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+        v_zfweak *nextFocusOwner = zfargs.sender()->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
         if(nextFocusOwner == zfnull) {
             return;
         }
@@ -34,16 +34,19 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewFocusNextSetupDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewFocusNextSetupDataHolder);
 
-    ZFObjectHolder *nextFocusHolderOld = from->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus);
+    v_zfweak *nextFocusHolderOld = from->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus);
     if(nextFocusHolderOld != zfnull) {
-        nextFocusHolderOld->objectHolded()->observerRemove(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
-        nextFocusHolderOld->objectHolded()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+        ZFObject *tmp = nextFocusHolderOld->zfv;
+        if(tmp != zfnull) {
+            tmp->observerRemove(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
+            tmp->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+        }
         from->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocus);
     }
 
     if(nextFocus != zfnull) {
-        from->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus, nextFocus->objectHolder());
-        nextFocus->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocusOwner, from->objectHolder());
+        from->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus, zfobj<v_zfweak>(nextFocus));
+        nextFocus->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocusOwner, zfobj<v_zfweak>(from));
         nextFocus->observerAdd(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
     }
 }
@@ -301,9 +304,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
     }
 
     {
-        ZFObjectHolder *t = view->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus);
+        v_zfweak *t = view->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus);
         if(t != zfnull) {
-            return t->objectHolded();
+            return t->zfv;
         }
     }
 

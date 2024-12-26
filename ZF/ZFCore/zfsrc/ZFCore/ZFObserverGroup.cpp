@@ -7,14 +7,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFObserverGroupHolderPrivate {
 public:
     zfuint refCount;
-    ZFObjectHolder *owner; // auto retain within life cycle
-    ZFObjectHolder *target; // auto retain within life cycle
+    zfweak owner;
+    zfweak target;
     ZFObserver *targetObserver; // auto retain within life cycle
 
 public:
     void removeAll(void) {
-        zfRetainChange(this->owner, zfnull);
-        zfRetainChange(this->target, zfnull);
+        this->owner = zfnull;
+        this->target = zfnull;
         if(this->targetObserver != zfnull) {
             zfdelete(this->targetObserver);
             this->targetObserver = zfnull;
@@ -347,8 +347,8 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAdd(
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) const {
     ZFCoreMutexLocker();
-    ZFObject *owner = d->owner != zfnull ? d->owner->objectHolded().toObject() : zfnull;
-    ZFObject *target = d->target != zfnull ? d->target->objectHolded().toObject() : zfnull;
+    ZFObject *owner = d->owner;
+    ZFObject *target = d->target;
     if(target == zfnull && d->targetObserver == zfnull) {
         return *this;
     }
@@ -367,8 +367,8 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) const {
     ZFCoreMutexLocker();
-    ZFObject *owner = d->owner != zfnull ? d->owner->objectHolded().toObject() : zfnull;
-    ZFObject *target = d->target != zfnull ? d->target->objectHolded().toObject() : zfnull;
+    ZFObject *owner = d->owner;
+    ZFObject *target = d->target;
     if(target == zfnull && d->targetObserver == zfnull) {
         return *this;
     }
@@ -423,8 +423,8 @@ void ZFObserverGroupHolder::_ZFP_update(
         ) {
     ZFCoreAssert(owner != zfnull);
 
-    zfRetainChange(d->owner, owner->objectHolder());
-    zfRetainChange(d->target, zfnull);
+    d->owner = owner;
+    d->target = zfnull;
     if(d->targetObserver != zfnull) {
         *(d->targetObserver) = target;
     }
@@ -439,8 +439,8 @@ void ZFObserverGroupHolder::_ZFP_update(
     ZFCoreAssert(owner != zfnull);
 
     if(target != zfnull) {
-        zfRetainChange(d->owner, owner->objectHolder());
-        zfRetainChange(d->target, target->objectHolder());
+        d->owner = owner;
+        d->target = target;
         if(d->targetObserver != zfnull) {
             zfdelete(d->targetObserver);
             d->targetObserver = zfnull;
@@ -456,8 +456,8 @@ void ZFObserverGroupHolder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     if(d->target != zfnull) {
         d->targetObserver->objectInfoT(ret);
     }
-    else if(d->target != zfnull && d->target->objectHolded() != zfnull) {
-        d->target->objectHolded()->objectInfoT(ret);
+    else if(d->target != zfnull) {
+        d->target->objectInfoT(ret);
     }
     ret += ">";
 }

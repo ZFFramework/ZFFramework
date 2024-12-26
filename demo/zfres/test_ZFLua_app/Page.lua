@@ -21,9 +21,9 @@ return function(zfargs)
                     pageView:label():text(page:objectInfoOfInstance());
                     pageView:bgColor(ZFUIColorRandom());
 
-                    local pageHolder = page:objectHolder();
+                    local pageHolder = zfweak(page);
                     pageView:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
-                            local page = pageHolder:objectHolded();
+                            local page = pageHolder:get();
                             page:pageManager():pageCreate(_ZFP_ZFLua_app_test_setupPage(ZFUIPage()));
                         end);
                 end);

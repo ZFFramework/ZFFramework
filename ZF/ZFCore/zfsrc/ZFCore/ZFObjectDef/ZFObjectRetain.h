@@ -282,6 +282,7 @@ T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
 }
 
 // ============================================================
+template<typename T_ZFObject> void _ZFP_zfweakCk(T_ZFObject &t);
 /**
  * @brief util to release property's old value, retain new value, then set to property
  *
@@ -310,21 +311,23 @@ T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
  * @endcode
  * @see zfRetain, zfRelease, ZFPROPERTY_RETAIN
  */
-#define zfRetainChange(property, propertyValue) \
-    do { \
-        ZFCoreMutexLock(); \
-        ZFObject *_ZFP_zfRetainChangeTmpValue = zfcast(ZFObject *, property); \
-        zfunsafe_zfRetain(property = propertyValue); \
-        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
-        ZFCoreMutexUnlock(); \
-    } while(zffalse)
+template<typename T_ZFObject, typename T_ZFObject2>
+inline void zfRetainChange(ZF_IN T_ZFObject &obj, ZF_IN T_ZFObject2 const &v) {
+    ZFCoreMutexLock();
+    _ZFP_zfweakCk(obj);
+    ZFObject *tmp = zfcast(ZFObject *, obj);
+    zfunsafe_zfRetain(obj = v);
+    zfunsafe_zfRelease(tmp);
+    ZFCoreMutexUnlock();
+}
 /** @brief no lock version of #zfRetainChange, use with caution */
-#define zfunsafe_zfRetainChange(property, propertyValue) \
-    do { \
-        ZFObject *_ZFP_zfRetainChangeTmpValue = zfcast(ZFObject *, property); \
-        zfunsafe_zfRetain(property = propertyValue); \
-        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
-    } while(zffalse)
+template<typename T_ZFObject, typename T_ZFObject2>
+inline void zfunsafe_zfRetainChange(ZF_IN T_ZFObject &obj, ZF_IN T_ZFObject2 const &v) {
+    _ZFP_zfweakCk(obj);
+    ZFObject *tmp = zfcast(ZFObject *, obj);
+    zfunsafe_zfRetain(obj = v);
+    zfunsafe_zfRelease(tmp);
+}
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectRetain_h_

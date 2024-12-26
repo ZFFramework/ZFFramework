@@ -80,7 +80,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, void, nativeWindowEmbedImplDestroy) {
 static ZFUISysWindow *_ZFP_ZFUISysWindow_mainWindowRegistered = zfnull;
 static ZFUISysWindow *_ZFP_ZFUISysWindow_mainWindowBuiltin = zfnull;
 static ZFUISysWindow *_ZFP_ZFUISysWindow_mainWindow = zfnull;
-static ZFObjectHolder *_ZFP_ZFUISysWindow_keyWindow = zfnull;
+static zfweakT<ZFUISysWindow> _ZFP_ZFUISysWindow_keyWindow;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUISysWindowMainWindowCleanup, ZFLevelZFFrameworkLow) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowMainWindowCleanup) {
@@ -127,17 +127,12 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, zfbool, mainWindowAttached) {
 ZFMETHOD_DEFINE_1(ZFUISysWindow, void, keyWindow
         , ZFMP_IN(ZFUISysWindow *, window)
         ) {
-    if(window == zfnull) {
-        zfRetainChange(_ZFP_ZFUISysWindow_keyWindow, zfnull);
-    }
-    else {
-        zfRetainChange(_ZFP_ZFUISysWindow_keyWindow, window->objectHolder());
-    }
+    _ZFP_ZFUISysWindow_keyWindow = window;
 }
 ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, keyWindow) {
     ZFUISysWindow *ret = zfnull;
     if(_ZFP_ZFUISysWindow_keyWindow != zfnull) {
-        ret = _ZFP_ZFUISysWindow_keyWindow->objectHolded();
+        ret = _ZFP_ZFUISysWindow_keyWindow;
     }
     if(ret != zfnull) {
         return ret;

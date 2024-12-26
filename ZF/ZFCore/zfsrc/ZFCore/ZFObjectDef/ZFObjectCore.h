@@ -62,7 +62,7 @@ public:
 template<typename T_ZFObject, int valid>
 zfclassNotPOD _ZFP_Obj_AllocCk;
 zfclassFwd _ZFP_ZFObjectPrivate;
-zfclassFwd ZFObjectHolder;
+zfclassFwd _ZFP_I_zfweak;
 /**
  * @brief base class of all objects
  *
@@ -273,16 +273,7 @@ public:
         return _objectRetainCount;
     }
 
-    /**
-     * @brief return an object holder that hold this object without affecting retain count
-     *
-     * the holder would be cached,
-     * you have no need to care about performance\n
-     * when owner object destroyed,
-     * the holder object's content is ensured reset to null,
-     * it's safe to retain the holder for future use or check
-     */
-    zffinal ZFObjectHolder *objectHolder(void);
+    zffinal _ZFP_I_zfweak *_ZFP_ZFObject_weakHolder(void);
 
     /** @brief see #objectInfoOfInstance */
     zffinal void objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret) {

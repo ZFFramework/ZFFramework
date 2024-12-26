@@ -26,7 +26,6 @@
 #include "ZFEnum.h"
 #include "ZFEnumDeclare.h"
 #include "ZFValueHolder.h"
-#include "ZFObjectHolder.h"
 #include "ZFObjectUtil.h"
 #include "ZFExport.h"
 #include "zfweak.h"

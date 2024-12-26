@@ -35,11 +35,11 @@ class _ZFP_ZFUISysWindowImpl_sys_Qt_EventWrapper : public QObject {
 
 protected:
     virtual bool eventFilter(QObject *obj, QEvent *event) {
-        ZFObjectHolder *ownerHolder = ZFImpl_sys_Qt_QObjectZFObjectTag(obj, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow");
+        v_zfweak *ownerHolder = ZFImpl_sys_Qt_QObjectZFObjectTag(obj, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow");
         if(ownerHolder == zfnull) {
             return false;
         }
-        ZFUISysWindow *owner = ownerHolder->objectHolded();
+        ZFUISysWindow *owner = ownerHolder->zfv;
         if(owner == zfnull) {
             return false;
         }
@@ -84,7 +84,7 @@ public:
         if(this->_mainWindow == zfnull) {
             this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
             QGraphicsWidget *nativeWindow = ZFImpl_sys_Qt_rootWindow();
-            ZFImpl_sys_Qt_QObjectZFObjectTag(nativeWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", this->_mainWindow->objectHolder());
+            ZFImpl_sys_Qt_QObjectZFObjectTag(nativeWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", zfobj<v_zfweak>(this->_mainWindow));
             nativeWindow->installEventFilter(&_eventWrapper);
 
             this->notifyOnCreate(this->_mainWindow, nativeWindow);
@@ -145,7 +145,7 @@ public:
     virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
         zfauto modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
         ZFImpl_sys_Qt_Window *nativeModalWindow = new ZFImpl_sys_Qt_Window();
-        ZFImpl_sys_Qt_QObjectZFObjectTag(nativeModalWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", modalWindow->objectHolder());
+        ZFImpl_sys_Qt_QObjectZFObjectTag(nativeModalWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", zfobj<v_zfweak>(modalWindow));
         nativeModalWindow->installEventFilter(&_eventWrapper);
         this->notifyOnCreate(modalWindow, nativeModalWindow);
 

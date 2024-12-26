@@ -12,7 +12,7 @@ protected:
 
 public:
     ZFPathInfo ownerPathInfo;
-    zfautoT<ZFObjectHolder> ownerThread;
+    zfweakT<ZFThread> ownerThread;
     lua_State *ownerL;
     int luaFunc;
 
@@ -63,10 +63,7 @@ public:
         this->luaFunc = luaL_ref(this->ownerL, LUA_REGISTRYINDEX);
         if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
             ZFCoreMutexLocker();
-            ZFThread *curThread = ZFThread::currentThread();
-            if(curThread != zfnull) {
-                this->ownerThread = curThread->objectHolder();
-            }
+            this->ownerThread = ZFThread::currentThread();
         }
         return zftrue;
     }
@@ -81,9 +78,9 @@ public:
 
         if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
             ZFCoreMutexLocker();
-            if(this->ownerThread != zfnull && this->ownerThread->objectHolded() != zfnull) {
+            if(this->ownerThread) {
                 ZFThread *curThread = ZFThread::currentThread();
-                if(curThread != zfnull && curThread != this->ownerThread->objectHolded()) {
+                if(curThread != zfnull && curThread != this->ownerThread) {
                     ZFCoreCriticalMessageTrim(
                         "[%s] can not execute in different thread"
                         , this->logTag()

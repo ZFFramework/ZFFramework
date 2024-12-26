@@ -194,7 +194,7 @@ zfclass _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData, ZFObject)
 
 public:
-    ZFCoreArray<ZFObjectHolder *> styles;
+    ZFCoreArray<ZFObject *> styles;
 };
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleDefaultApplyAutoCopyDataHolder, ZFLevelZFFrameworkEssential) {
     this->styleOnDeallocListener = ZFCallbackForFunc(zfself::styleOnDealloc);
@@ -213,7 +213,7 @@ public:
             ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
         ZFCoreAssert(taskData != zfnull);
 
-        taskData->styles.removeElement(zfargs.sender()->objectHolder());
+        taskData->styles.removeElement(zfargs.sender());
 
         if(taskData->styles.isEmpty()) {
             defaultStyle->objectTagRemove(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
@@ -229,10 +229,10 @@ public:
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle
             ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 
-        ZFCoreArray<ZFObjectHolder *> styles;
+        ZFCoreArray<ZFObject *> styles;
         styles.copyFrom(taskData->styles);
         for(zfindex i = 0; i < styles.count(); ++i) {
-            ZFPropertyCopy(property, styles[i]->objectHolded(), zfargs.sender());
+            ZFPropertyCopy(property, styles[i], zfargs.sender());
         }
     }
 ZF_GLOBAL_INITIALIZER_END(ZFStyleDefaultApplyAutoCopyDataHolder)
@@ -252,7 +252,7 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
                 defaultStyle->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(),
                     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnUpdateListener);
             }
-            taskData->styles.add(style->toObject()->objectHolder());
+            taskData->styles.add(style->toObject());
             style->toObject()->observerAdd(ZFObject::EventObjectBeforeDealloc(),
                 ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->styleOnDeallocListener);
         }
