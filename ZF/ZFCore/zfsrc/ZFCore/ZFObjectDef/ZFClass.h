@@ -390,6 +390,17 @@ public:
     /** @brief see #zfiter */
     const ZFMethod *methodIterValue(ZF_IN const zfiter &it) const;
 
+    /** @brief see #methodGetAllIgnoreParent */
+    void methodGetAllIgnoreParentT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) const;
+    /**
+     * @brief get all method, excluding methods inherited from parent
+     */
+    ZFCoreArray<const ZFMethod *> methodGetAllIgnoreParent(void) const {
+        ZFCoreArray<const ZFMethod *> ret;
+        this->methodGetAllIgnoreParentT(ret);
+        return ret;
+    }
+
     /** @brief see #methodGetAll */
     void methodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) const;
     /**
@@ -427,14 +438,14 @@ public:
     /** @brief see #methodForNameIgnoreParent */
     const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfstring &methodName) const;
     /** @brief see #methodForNameIgnoreParent */
-    void methodForNameIgnoreParentGetAllT(
+    void methodForNameGetAllIgnoreParentT(
             ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
             , ZF_IN const zfstring &methodName
             ) const;
     /** @brief see #methodForNameIgnoreParent */
-    ZFCoreArray<const ZFMethod *> methodForNameIgnoreParentGetAll(ZF_IN const zfstring &methodName) const {
+    ZFCoreArray<const ZFMethod *> methodForNameGetAllIgnoreParent(ZF_IN const zfstring &methodName) const {
         ZFCoreArray<const ZFMethod *> ret;
-        this->methodForNameIgnoreParentGetAllT(ret, methodName);
+        this->methodForNameGetAllIgnoreParentT(ret, methodName);
         return ret;
     }
     /**
@@ -487,6 +498,17 @@ public:
     zfiter propertyIter(void) const;
     /** @brief see #zfiter */
     const ZFProperty *propertyIterValue(ZF_IN const zfiter &it) const;
+
+    /** @brief see #propertyGetAllIgnoreParent */
+    void propertyGetAllIgnoreParentT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) const;
+    /**
+     * @brief get all property, including properties inherited from parent
+     */
+    ZFCoreArray<const ZFProperty *> propertyGetAllIgnoreParent(void) const {
+        ZFCoreArray<const ZFProperty *> ret;
+        this->propertyGetAllIgnoreParentT(ret);
+        return ret;
+    }
 
     /** @brief see #propertyGetAll */
     void propertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) const;

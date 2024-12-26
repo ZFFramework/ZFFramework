@@ -442,7 +442,7 @@ private:
             cls = toCheck.take();
             const ZFMethod *chain = zfargs.ownerMethod();
             do {
-                cls->methodForNameIgnoreParentGetAllT(buf, chain->methodName());
+                cls->methodForNameGetAllIgnoreParentT(buf, chain->methodName());
                 for(zfindex i = 0; i < buf.count(); ++i) {
                     const ZFMethod *m = buf[i];
                     if(m->paramTypeIdIsMatch(zfargs.ownerMethod())) {

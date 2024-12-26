@@ -100,6 +100,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfiter, methodIter)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFMethod *, methodIterValue
         , ZFMP_IN(const zfiter &, it)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, methodGetAllIgnoreParentT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, ZFCoreArray<const ZFMethod *>, methodGetAllIgnoreParent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, methodGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
         )
@@ -138,6 +142,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfiter, propertyIter)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFProperty *, propertyIterValue
         , ZFMP_IN(const zfiter &, it)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, propertyGetAllIgnoreParentT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, ZFCoreArray<const ZFProperty *>, propertyGetAllIgnoreParent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, propertyGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
         )

@@ -377,7 +377,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
                 tmpCls = tmpCls->classParent();
             } while(tmpCls != zfnull);
             for(zfindex i = allClass.count() - 1; i != zfindexMax(); --i) {
-                allClass[i]->propertyGetAllT(allProperty);
+                allClass[i]->propertyGetAllIgnoreParentT(allProperty);
             }
         }
 
