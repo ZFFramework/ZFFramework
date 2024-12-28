@@ -1,30 +1,22 @@
 #include "ZFState.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstllist.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFState)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFState, instance, ZFLevelZFFrameworkEssential)
 
-zfclassFwd _ZFP_ZFStateData;
-typedef zfstlhashmap<zfstring, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFStateMapType;
-typedef zfstllist<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > _ZFP_ZFStateListType;
 zfclassNotPOD _ZFP_ZFStateData {
 public:
     zftimet cacheTime;
     zfstring key;
     zfstring value;
-    _ZFP_ZFStateListType::iterator listIt;
 };
 
 zfclassNotPOD _ZFP_ZFStatePrivate {
 public:
     ZFCoreArray<ZFListener> *loadQueue; // null when ready
-    _ZFP_ZFStateMapType pending;
-    _ZFP_ZFStateMapType m;
-    _ZFP_ZFStateListType l; // latest item at head
+    ZFCoreOrderMap pending; // <key, _ZFP_ZFStateData>
+    ZFCoreOrderMap m; // <key, _ZFP_ZFStateData>
     zfautoT<ZFTaskId> taskId; // taskId for load or save
     zfautoT<ZFTimer> delayId; // taskId for delay save
 
@@ -33,7 +25,6 @@ public:
     : loadQueue(zfpoolNew(ZFCoreArray<ZFListener>))
     , pending()
     , m()
-    , l()
     , taskId()
     , delayId()
     {
@@ -46,23 +37,24 @@ public:
     }
 
 public:
-    void trim(ZF_IN ZFState *owner) {
+    zfbool trim(ZF_IN ZFState *owner) {
         zfsynchronize(owner);
-        if(this->l.empty()) {
-            return;
+        if(this->m.isEmpty()) {
+            return zffalse;
         }
         zftimet curTime = ZFTime::currentTime();
-        _ZFP_ZFStateListType::iterator it = this->l.end();
-        --it;
-        while(it != this->l.end()) {
-            if(this->m.size() <= owner->cacheSize()
-                    && curTime - (*it)->cacheTime <= owner->cacheTime()
+        zfbool changed = zffalse;
+        for(zfiter it = this->m.iter(); it; ++it) {
+            _ZFP_ZFStateData *data = this->m.iterValue<_ZFP_ZFStateData *>(it);
+            if(this->m.count() <= owner->cacheSize()
+                    && curTime - data->cacheTime <= owner->cacheTime()
                     ) {
                 break;
             }
-            this->m.erase((*it)->key);
-            this->l.erase(it--);
+            this->m.iterRemove(it);
+            changed = zftrue;
         }
+        return changed;
     }
     void loadCheck(ZF_IN ZFState *owner) {
         if(this->taskId || this->loadQueue == zfnull) {
@@ -72,36 +64,23 @@ public:
                 , zfautoT<ZFState>, owner
                 ) {
             if(!zfargs.param0()) {return;}
-            _ZFP_ZFStateListType *lNew = zfpoolNew(_ZFP_ZFStateListType);
-            zfobj<ZFValueHolder> holder((void *)lNew, ZFValueHolderTypePoolObject(_ZFP_ZFStateListType *));
-            _loadAsyncImpl(*lNew, owner->stateFileFixed(), zfargs);
+            ZFCoreOrderMap *mNew = zfpoolNew(ZFCoreOrderMap);
+            zfobj<ZFValueHolder> holder((void *)mNew, ZFValueHolderTypePoolObject(ZFCoreOrderMap *));
+            _loadAsyncImpl(*mNew, owner->stateFileFixed(), zfargs);
             zfargs.result(holder);
         } ZFLISTENER_END()
         ZFLISTENER_1(loadFinish
                 , zfautoT<ZFState>, owner
                 ) {
             ZFValueHolder *holder = zfargs.param0();
-            _ZFP_ZFStateListType &lNew = holder->holdedDataRef<_ZFP_ZFStateListType &>();
+            ZFCoreOrderMap &mNew = holder->holdedDataRef<ZFCoreOrderMap &>();
             _ZFP_ZFStatePrivate *d = owner->d;
             {
                 zfsynchronize(owner);
-                for(_ZFP_ZFStateListType::iterator itNew = lNew.begin(); itNew != lNew.end(); ++itNew) {
-                    ZFCorePointerForPoolObject<_ZFP_ZFStateData *> &data = *itNew;
-                    _ZFP_ZFStateMapType::iterator it = d->m.find(data->key);
-                    if(it == d->m.end()) {
-                        d->m[data->key] = data;
-                        d->l.push_back(data);
-                        data->listIt = d->l.begin();
-                    }
-                    else if(data->cacheTime > it->second->cacheTime) {
-                        it->second->cacheTime = data->cacheTime;
-                        it->second->value = data->value;
-                        // do not reorder by cacheTime for performance
-                    }
-                }
+                d->m.swap(mNew);
             }
             zfbool changed = d->_resolvePending(owner);
-            d->trim(owner);
+            changed |= d->trim(owner);
             while(!d->loadQueue->isEmpty()) {
                 ZFListener callback = d->loadQueue->removeAndGet(0);
                 callback.execute();
@@ -130,9 +109,12 @@ public:
                     ) {
                 _ZFP_ZFStatePrivate *d = owner->d;
                 zfsynchronizeLock(owner);
-                _ZFP_ZFStateListType lTmp = d->l;
+                ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > l;
+                for(zfiter it = d->m.iter(); it; ++it) {
+                    l.add(*(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)d->m.iterValue(it));
+                }
                 zfsynchronizeUnlock(owner);
-                _saveAsyncImpl(lTmp, owner->stateFileFixed(), zfargs);
+                _saveAsyncImpl(l, owner->stateFileFixed(), zfargs);
             } ZFLISTENER_END()
             ZFLISTENER_1(saveFinish
                     , zfautoT<ZFState>, owner
@@ -157,39 +139,21 @@ public:
 
 private:
     zfbool _resolvePending(ZF_IN ZFState *owner) {
-        zfsynchronize(owner);
-        zfbool changed = zffalse;
-        for(_ZFP_ZFStateMapType::iterator itNew = this->pending.begin(); itNew != this->pending.end(); ++itNew) {
-            _ZFP_ZFStateMapType::iterator it = this->m.find(itNew->first);
-            if(it == this->m.end()) {
-                if(itNew->second->value) {
-                    changed = zftrue;
-                    this->m[itNew->first] = itNew->second;
-                    this->l.push_front(itNew->second);
-                    itNew->second->listIt = this->l.begin();
-                }
-            }
-            else {
-                changed = zftrue;
-                if(itNew->second->value) {
-                    it->second->cacheTime = itNew->second->cacheTime;
-                    it->second->value = itNew->second->value;
-                    this->l.erase(it->second->listIt);
-                    this->l.push_front(it->second);
-                    it->second->listIt = this->l.begin();
-                }
-                else {
-                    this->l.erase(it->second->listIt);
-                    this->m.erase(it);
-                }
-            }
+        if(this->pending.isEmpty()) {
+            return zffalse;
         }
-        return changed;
+        zfsynchronize(owner);
+        for(zfiter it = this->pending.iter(); it; ++it) {
+            const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> &item = *(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)this->pending.iterValue(it);
+            this->m.set(item->key, item);
+        }
+        this->pending.removeAll();
+        return zftrue;
     }
     // file format:
     //     cacheTime:encode(key):encode(value)
     static void _loadAsyncImpl(
-            ZF_OUT _ZFP_ZFStateListType &lNew
+            ZF_OUT ZFCoreOrderMap &mNew
             , ZF_IN const ZFPathInfo &pathInfo
             , ZF_IN const ZFArgs &zfargs
             ) {
@@ -218,11 +182,11 @@ private:
             if(data->value.isEmpty()) {
                 continue;
             }
-            lNew.push_back(data);
+            mNew.set(data->key, data);
         }
     }
     static void _saveAsyncImpl(
-            ZF_IN _ZFP_ZFStateListType &l
+            ZF_IN const ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > &l
             , ZF_IN const ZFPathInfo &pathInfo
             , ZF_IN const ZFArgs &zfargs
             ) {
@@ -230,13 +194,13 @@ private:
         ZFOutput output = ZFOutputForPathInfo(pathInfo);
         if(!output) {return;}
         zfstring line;
-        for(_ZFP_ZFStateListType::iterator it = l.begin(); it != l.end() && zfargs.param0(); ++it, line.removeAll()) {
-            _ZFP_ZFStateData *data = *it;
-            zftimetToStringT(line, data->cacheTime);
+        for(zfindex i = 0; i < l.count(); ++i) {
+            const _ZFP_ZFStateData &data = *((l[i]).pointerValue());
+            zftimetToStringT(line, data.cacheTime);
             line += ":";
-            ZFCoreDataEncode(line, data->key);
+            ZFCoreDataEncode(line, data.key);
             line += ":";
-            ZFCoreDataEncode(line, data->value);
+            ZFCoreDataEncode(line, data.value);
             output << line;
         }
     }
@@ -317,31 +281,11 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
     if(this->ready()) {
         {
             zfsynchronize(this);
-            _ZFP_ZFStateMapType::iterator it = d->m.find(key);
-            if(it != d->m.end()) {
-                if(!value) {
-                    d->l.erase(it->second->listIt);
-                    d->m.erase(it);
-                }
-                else {
-                    it->second->cacheTime = ZFTime::currentTime();
-                    it->second->value = value;
-                    d->l.erase(it->second->listIt);
-                    d->l.push_front(it->second);
-                    it->second->listIt = d->l.begin();
-                }
-            }
-            else {
-                if(value) {
-                    ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
-                    data->cacheTime = ZFTime::currentTime();
-                    data->key = key;
-                    data->value = value;
-                    d->m[data->key] = data;
-                    d->l.push_front(data);
-                    data->listIt = d->l.begin();
-                }
-            }
+            _ZFP_ZFStateData *data = zfpoolNew(_ZFP_ZFStateData);
+            data->cacheTime = ZFTime::currentTime();
+            data->key = key;
+            data->value = value;
+            d->m.set(key, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>(data));
         }
         d->trim(this);
         d->saveCheck(this);
@@ -349,17 +293,16 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
     else {
         {
             zfsynchronize(this);
-            _ZFP_ZFStateMapType::iterator it = d->pending.find(key);
-            if(it != d->pending.end()) {
-                it->second->cacheTime = ZFTime::currentTime();
-                it->second->value = value;
+            _ZFP_ZFStateData *exist = d->pending.update<_ZFP_ZFStateData *>(key);
+            if(exist != zfnull) {
+                exist->cacheTime = ZFTime::currentTime();
             }
             else {
                 ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
                 data->cacheTime = ZFTime::currentTime();
                 data->key = key;
                 data->value = value;
-                d->pending[data->key] = data;
+                d->pending.set(key, data);
             }
         }
         d->loadCheck(this);
@@ -373,19 +316,10 @@ ZFMETHOD_DEFINE_1(ZFState, void, remove
 ZFMETHOD_DEFINE_0(ZFState, void, removeAll) {
     d->taskCleanup();
 
-    ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > toRelease;
-    if(!d->m.empty()) {
-        toRelease.capacity((zfindex)d->m.size());
+    {
         zfsynchronize(this);
-        for(_ZFP_ZFStateMapType::iterator it = d->m.begin(); it != d->m.end(); ++it) {
-            toRelease.add(it->second);
-        }
-        for(_ZFP_ZFStateMapType::iterator it = d->pending.begin(); it != d->pending.end(); ++it) {
-            toRelease.add(it->second);
-        }
-        d->m.clear();
-        d->l.clear();
-        d->pending.clear();
+        d->pending.removeAll();
+        d->m.removeAll();
     }
 
     d->saveCheck(this);
@@ -398,9 +332,9 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
         return zfnull;
     }
     zfsynchronize(this);
-    _ZFP_ZFStateMapType::iterator it = d->m.find(key);
-    if(it != d->m.end()) {
-        return it->second->value;
+    const _ZFP_ZFStateData *data = d->m.get<const _ZFP_ZFStateData *>(key);
+    if(data != zfnull) {
+        return data->value;
     }
     else {
         return zfnull;
@@ -441,8 +375,8 @@ ZFMETHOD_DEFINE_2(ZFState, zfautoT<ZFTaskId>, getAsync
 ZFMETHOD_DEFINE_0(ZFState, ZFCoreArray<zfstring>, allKey) {
     zfsynchronize(this);
     ZFCoreArray<zfstring> ret;
-    for(_ZFP_ZFStateMapType::iterator it = d->m.begin(); it != d->m.end(); ++it) {
-        ret.add(it->second->key);
+    for(zfiter it = d->m.iter(); it; ++it) {
+        ret.add(d->m.iterKey(it));
     }
     return ret;
 }

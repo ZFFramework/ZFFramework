@@ -212,6 +212,25 @@ public:
         return zfnull;
     }
 
+    // ============================================================
+    // order map spec
+public:
+    /**
+     * @brief try update value order by moving to tail, return null if not exist
+     */
+    zffinal const ZFCorePointerBase *update(ZF_IN const zfstring &key) const;
+    /**
+     * @brief try update value order by moving to tail, return null if not exist
+     */
+    template<typename T_Element>
+    T_Element update(ZF_IN const zfstring &key) const {
+        const ZFCorePointerBase *t = this->update(key);
+        if(t != zfnull) {
+            return t->pointerValueT<T_Element>();
+        }
+        return zfnull;
+    }
+
 private:
     _ZFP_ZFCoreOrderMapPrivate *d;
 };
