@@ -15,9 +15,7 @@ ZFMETHOD_DEFINE_1(ZFUICellUpdater, zfauto, itemCacheAccess
     _ZFP_ZFUICellUpdater_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty()) {
-        zfauto ret = cacheList->getLast();
-        cacheList->removeLast();
-        return ret;
+        return cacheList->removeLastAndGet();
     }
     else {
         return zfnull;

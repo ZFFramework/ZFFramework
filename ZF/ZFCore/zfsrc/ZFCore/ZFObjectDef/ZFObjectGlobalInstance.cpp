@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(Name) { \
         while(!this->instances.isEmpty()) { \
-            ZFCoreArray<ZFCorePointerBase *> tmp; \
+            ZFCoreArray<const ZFCorePointerBase *> tmp; \
             tmp.copyFrom(this->instances); \
             this->instances.removeAll(); \
             for(zfindex i = 0; i < tmp.count(); ++i) { \
@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     } \
     public: \
-        ZFCoreArray<ZFCorePointerBase *> instances; \
+        ZFCoreArray<const ZFCorePointerBase *> instances; \
     ZF_GLOBAL_INITIALIZER_END(Name)
 #define _ZFP_ZFObjectGlobalInstanceDefine(Name, Level) \
     _ZFP_ZFObjectGlobalInstanceDefine_(Name, Level)
@@ -38,7 +38,7 @@ _ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostNormal, ZFLevelZFFramewor
 _ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostHigh, ZFLevelZFFrameworkPostHigh)
 _ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostEssential, ZFLevelZFFrameworkPostEssential)
 
-static ZFCoreArray<ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZFLevel level) {
+static ZFCoreArray<const ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZFLevel level) {
     switch(level) {
         case ZFLevelZFFrameworkEssential:
             return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkEssential)->instances;
@@ -73,16 +73,16 @@ static ZFCoreArray<ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZF
     }
 }
 
-ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
+const ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
         ZF_IN const ZFCorePointerBase &sp
         , ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */
         ) {
-    ZFCorePointerBase *t = sp.refNew();
+    const ZFCorePointerBase *t = sp.refNew();
     _ZFP_ZFObjectGlobalInstanceRef(level).add(t);
     return t;
 }
 
-ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
+const ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
         ZF_IN ZFObject *obj
         , ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */
         ) {
@@ -95,10 +95,10 @@ ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
 }
 
 void ZFObjectGlobalInstanceRemove(
-        ZF_IN ZFCorePointerBase *sp
+        ZF_IN const ZFCorePointerBase *sp
         , ZF_IN ZFLevel level
         ) {
-    ZFCoreArray<ZFCorePointerBase *> &instances = _ZFP_ZFObjectGlobalInstanceRef(level);
+    ZFCoreArray<const ZFCorePointerBase *> &instances = _ZFP_ZFObjectGlobalInstanceRef(level);
     zfindex index = instances.find(sp);
     if(index != zfindexMax()) {
         instances.remove(index);
@@ -115,7 +115,7 @@ ZF_STATIC_INITIALIZER_END(ZFClassSingletonInstanceRefHolder)
 _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig) {
     ZFCoreMutexLocker();
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassSingletonInstanceRefHolder)->singletonInstanceMap;
-    ZFCorePointerBase *v = m.get(sig);
+    const ZFCorePointerBase *v = m.get(sig);
     if(v == zfnull) {
         m.set(sig, ZFCorePointerForObject<_ZFP_ZFClassSingletonPointerHolder *>(zfnew(_ZFP_ZFClassSingletonPointerHolder)));
         v = m.get(sig);

@@ -1314,7 +1314,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         classNameFull = classNameTmp;
     }
 
-    ZFCorePointerBase *d = _ZFP_ZFClassMap.get(classNameFull);
+    const ZFCorePointerBase *d = _ZFP_ZFClassMap.get(classNameFull);
     ZFClass *cls = zfnull;
     zfbool needFinalInit = zffalse;
     if(d != zfnull) {

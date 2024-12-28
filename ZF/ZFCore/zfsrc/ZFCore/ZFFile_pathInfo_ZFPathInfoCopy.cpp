@@ -70,10 +70,8 @@ static zfbool _ZFP_ZFPathInfoCopy_copyDir(
     ZFPathInfo dstDir(dstPath.pathType(), zfnull);
     zfstring errPosTmp;
     while(!stacksDirSrc.isEmpty()) {
-        srcDir.pathData(stacksDirSrc.getLast());
-        dstDir.pathData(stacksDirDst.getLast());
-        stacksDirSrc.removeLast();
-        stacksDirDst.removeLast();
+        srcDir.pathData(stacksDirSrc.removeLastAndGet());
+        dstDir.pathData(stacksDirDst.removeLastAndGet());
 
         if(!dstImpl.implPathCreate(dstDir.pathData(), zftrue, &errPosTmp)) {
             dstDir.pathData(errPosTmp);

@@ -85,8 +85,7 @@ public:
             return;
         }
 
-        const ZFClass *cls = this->testCases.getLast();
-        this->testCases.removeLast();
+        const ZFClass *cls = this->testCases.removeLastAndGet();
         this->testCaseRunning = ZFTestCaseRun(cls);
         if(this->testCaseRunning == zfnull) {
             this->testCaseRunNext();

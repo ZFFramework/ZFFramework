@@ -1,10 +1,10 @@
 /**
- * @file ZFCoreMap.h
- * @brief core map type for private use only
+ * @file ZFCoreOrderMap.h
+ * @brief map type which keeps item order, for private use only
  */
 
-#ifndef _ZFI_ZFCoreMap_h_
-#define _ZFI_ZFCoreMap_h_
+#ifndef _ZFI_ZFCoreOrderMap_h_
+#define _ZFI_ZFCoreOrderMap_h_
 
 #include "ZFCorePointer.h"
 #include "ZFCoreArray.h"
@@ -13,39 +13,33 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd _ZFP_ZFCoreMapPrivate;
+zfclassFwd _ZFP_ZFCoreOrderMapPrivate;
 /**
- * @brief core map type for private use only
- *
- * used to reduce dependency of stl\n
- * use string as key,
- * null key is considered same as empty string\n
- * use #ZFCorePointerBase as value,
- * which use retain logic and can hold many types
+ * @brief map type which keeps item order, for private use only
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFCoreMap {
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFCoreOrderMap {
 public:
     /**
      * @brief construct an empty map
      */
-    ZFCoreMap(void);
+    ZFCoreOrderMap(void);
     /**
      * @brief retain the ref, to copy, use #copyFrom
      */
-    ZFCoreMap(ZF_IN const ZFCoreMap &ref);
+    ZFCoreOrderMap(ZF_IN const ZFCoreOrderMap &ref);
     /**
      * @brief retain the ref, to copy, use #copyFrom
      */
-    zffinal ZFCoreMap &operator = (ZF_IN const ZFCoreMap &ref);
+    zffinal ZFCoreOrderMap &operator = (ZF_IN const ZFCoreOrderMap &ref);
     /**
      * @brief true if same ref
      */
-    zffinal zfbool operator == (ZF_IN const ZFCoreMap &ref) const;
+    zffinal zfbool operator == (ZF_IN const ZFCoreOrderMap &ref) const;
     /**
      * @brief true if not same ref
      */
-    zffinal zfbool operator != (ZF_IN const ZFCoreMap &ref) const {return !this->operator == (ref);}
-    ~ZFCoreMap(void);
+    zffinal zfbool operator != (ZF_IN const ZFCoreOrderMap &ref) const {return !this->operator == (ref);}
+    ~ZFCoreOrderMap(void);
 
 public:
     /** @brief see #objectInfo */
@@ -78,13 +72,13 @@ public:
     /**
      * @brief swap internal data
      */
-    zffinal void swap(ZF_IN_OUT ZFCoreMap &ref);
+    zffinal void swap(ZF_IN_OUT ZFCoreOrderMap &ref);
 
 public:
     /**
      * @brief copy all contents from ref, remove all before copy
      */
-    zffinal void copyFrom(ZF_IN const ZFCoreMap &ref);
+    zffinal void copyFrom(ZF_IN const ZFCoreOrderMap &ref);
 
     /**
      * @brief get current retain count
@@ -110,7 +104,7 @@ public:
     /**
      * @brief add elements from ref
      */
-    zffinal void addFrom(ZF_IN const ZFCoreMap &ref);
+    zffinal void addFrom(ZF_IN const ZFCoreOrderMap &ref);
 
     /**
      * @brief change value or create if not exist,
@@ -219,11 +213,11 @@ public:
     }
 
 private:
-    _ZFP_ZFCoreMapPrivate *d;
+    _ZFP_ZFCoreOrderMapPrivate *d;
 };
-ZFOUTPUT_TYPE(ZFCoreMap, {v.objectInfoT(s);})
+ZFOUTPUT_TYPE(ZFCoreOrderMap, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_ZFCoreMap_h_
+#endif // #ifndef _ZFI_ZFCoreOrderMap_h_
 

@@ -215,9 +215,8 @@ ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, button
     if(atIndex == zfindexMax()) {
         atIndex = this->buttonCount();
     }
-    else if(atIndex >= this->buttonCount()) {
-        ZFCoreCriticalIndexOutOfRange(atIndex, this->buttonCount());
-        return;
+    else {
+        ZFCoreAssertIndexRange(atIndex, this->buttonCount());
     }
     this->_ZFP_buttons->add(button, atIndex);
     _ZFP_ZFUIButtonGroup_setup(this, button, atIndex);
@@ -234,10 +233,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt
     if(buttonIndex == zfindexMax()) {
         return;
     }
-    if(buttonIndex >= this->buttonCount()) {
-        ZFCoreCriticalIndexOutOfRange(buttonIndex, this->buttonCount());
-        return;
-    }
+    ZFCoreAssertIndexRange(buttonIndex, this->buttonCount());
     ZFUIButton *button = this->buttonAt(buttonIndex);
     zfRetain(button);
     _ZFP_ZFUIButtonGroup_cleanup(this, button);

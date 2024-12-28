@@ -101,12 +101,12 @@ public:
      * @note should be (and recommended to be) paired with #refDelete instead of #zfdelete,
      *   if you override default #zfnew and #zfdelete
      */
-    virtual ZFCorePointerBase *refNew(void) const zfpurevirtual;
+    virtual const ZFCorePointerBase *refNew(void) const zfpurevirtual;
     /**
      * @brief see #refNew
      */
-    virtual void refDelete(void) {
-        zfdelete(this);
+    virtual void refDelete(void) const {
+        zfdelete(const_cast<ZFCorePointerBase *>(this));
     }
     /**
      * @brief get the internal pointer
@@ -298,7 +298,7 @@ public:
 
 public:
     zfoverride
-    virtual ZFCorePointerBase *refNew(void) const {
+    virtual const ZFCorePointerBase *refNew(void) const {
         return zfnew((ZFCorePointer<T_Pointer, T_ZFCorePointerType>), *this);
     }
     zfoverride

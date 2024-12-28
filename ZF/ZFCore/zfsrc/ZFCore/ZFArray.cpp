@@ -46,10 +46,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, isContain
 ZFMETHOD_DEFINE_1(ZFArray, zfany, get
         , ZFMP_IN(zfindex, index)
         ) {
-    if(index >= d->data.size()) {
-        ZFCoreCriticalIndexOutOfRange(index, d->data.size());
-        return zfnull;
-    }
+    ZFCoreAssertIndexRange(index, this->count());
     return d->data[index];
 }
 ZFMETHOD_DEFINE_0(ZFArray, zfany, getFirst) {
@@ -99,8 +96,8 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
     if(indexAddTo == zfindexMax()) {
         indexAddTo = this->count();;
     }
-    else if(indexAddTo > this->count()) {
-        ZFCoreCriticalIndexOutOfRange(indexAddTo, this->count());
+    else {
+        ZFCoreAssertIndexRange(indexAddTo, this->count() + 1);
     }
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfRetain(obj);
@@ -288,14 +285,11 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN_OPT(zfindex, count, 1)
         ) {
-    if(index >= this->count()) {
-        ZFCoreCriticalIndexOutOfRange(index, this->count());
-        return;
-    }
+    ZFCoreAssertIndexRange(index, this->count());
     if(count == 1) {
         ZFObject *tmp = d->data[index];
+        zfblockedRelease(tmp);
         d->data.erase(d->data.begin() + index);
-        zfRelease(tmp);
 
         this->contentOnRemove(tmp);
         this->contentOnUpdate();
@@ -318,25 +312,28 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         }
     }
 }
+ZFMETHOD_DEFINE_1(ZFArray, zfauto, removeAndGet
+        , ZFMP_IN(zfindex, index)
+        ) {
+    zfauto t = this->get(index);
+    this->remove(index);
+    return t;
+}
 ZFMETHOD_DEFINE_0(ZFArray, void, removeFirst) {
-    if(!d->data.empty()) {
-        ZFObject *tmp = d->data[0];
-        d->data.pop_front();
-        zfRelease(tmp);
-
-        this->contentOnRemove(tmp);
-        this->contentOnUpdate();
-    }
+    this->remove(0);
+}
+ZFMETHOD_DEFINE_0(ZFArray, zfauto, removeFirstAndGet) {
+    zfauto t = this->getFirst();
+    this->removeFirst();
+    return t;
 }
 ZFMETHOD_DEFINE_0(ZFArray, void, removeLast) {
-    if(!d->data.empty()) {
-        ZFObject *tmp = d->data[d->data.size() - 1];
-        d->data.pop_back();
-        zfRelease(tmp);
-
-        this->contentOnRemove(tmp);
-        this->contentOnUpdate();
-    }
+    this->remove(this->count() - 1);
+}
+ZFMETHOD_DEFINE_0(ZFArray, zfauto, removeLastAndGet) {
+    zfauto t = this->getLast();
+    this->removeLast();
+    return t;
 }
 ZFMETHOD_DEFINE_0(ZFArray, void, removeAll) {
     if(!d->data.empty()) {
@@ -356,16 +353,12 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
         , ZFMP_IN(zfindex, fromIndex)
         , ZFMP_IN(zfindex, toIndexOrIndexMax)
         ) {
-    if(fromIndex >= (zfindex)d->data.size()) {
-        ZFCoreCriticalIndexOutOfRange(fromIndex, (zfindex)d->data.size());
-        return;
-    }
+    ZFCoreAssertIndexRange(fromIndex, this->count());
     if(toIndexOrIndexMax == zfindexMax()) {
-        toIndexOrIndexMax = (zfindex)(d->data.size() - 1);
+        toIndexOrIndexMax = this->count() - 1;
     }
-    if(toIndexOrIndexMax >= (zfindex)d->data.size()) {
-        ZFCoreCriticalIndexOutOfRange(toIndexOrIndexMax, (zfindex)d->data.size());
-        return;
+    else {
+        ZFCoreAssertIndexRange(toIndexOrIndexMax, this->count());
     }
     if(fromIndex == toIndexOrIndexMax) {
         return;
@@ -420,25 +413,22 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
 // ============================================================
 zfclassNotPOD _ZFP_ZFArrayIter : zfextend zfiter::Impl {
 public:
-    zfindex index;
-    ZFArray *owner;
+    zfstldeque<ZFObject *> *owner;
+    zfstldeque<ZFObject *>::iterator impl;
 public:
     zfoverride
     virtual zfbool valid(void) {
-        return index < owner->count();
+        return impl != owner->end();
     }
     zfoverride
     virtual void next(void) {
-        ++index;
-        if(index >= owner->count()) {
-            index = zfindexMax();
-        }
+        ++impl;
     }
     zfoverride
     virtual Impl *copy(void) {
         _ZFP_ZFArrayIter *ret = zfpoolNew(_ZFP_ZFArrayIter);
-        ret->index = index;
         ret->owner = owner;
+        ret->impl = impl;
         return ret;
     }
     zfoverride
@@ -448,25 +438,23 @@ public:
     zfoverride
     virtual zfbool isEqual(ZF_IN Impl *d) {
         _ZFP_ZFArrayIter *t = (_ZFP_ZFArrayIter *)d;
-        return (owner == t->owner && (
-                    index == t->index
-                    || (index >= owner->count() && t->index >= t->owner->count())
-                    ));
+        return (owner == t->owner && impl == t->impl);
     }
 };
 ZFMETHOD_DEFINE_1(ZFArray, zfiter, iterForIndex
         , ZFMP_IN(zfindex, index)
         ) {
+    ZFCoreAssertIndexRange(index, this->count());
     _ZFP_ZFArrayIter *impl = zfpoolNew(_ZFP_ZFArrayIter);
-    impl->owner = this;
-    impl->index = index;
+    impl->owner = &(d->data);
+    impl->impl = d->data.begin() + index;
     return zfiter(impl);
 }
 
 ZFMETHOD_DEFINE_0(ZFArray, zfiter, iter) {
     _ZFP_ZFArrayIter *impl = zfpoolNew(_ZFP_ZFArrayIter);
-    impl->owner = this;
-    impl->index = 0;
+    impl->owner = &(d->data);
+    impl->impl = d->data.begin();
     return zfiter(impl);
 }
 
@@ -479,19 +467,19 @@ ZFMETHOD_DEFINE_1(ZFArray, zfiter, iterFind
 ZFMETHOD_DEFINE_1(ZFArray, zfany, iterValue
         , ZFMP_IN(const zfiter &, it)
         ) {
-    return this->get(it.impl<_ZFP_ZFArrayIter *>()->index);
+    return *(it.impl<_ZFP_ZFArrayIter *>()->impl);
 }
 
 ZFMETHOD_DEFINE_2(ZFArray, void, iterValue
         , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    this->set(it.impl<_ZFP_ZFArrayIter *>()->index, value);
+    this->set(it.impl<_ZFP_ZFArrayIter *>()->impl - d->data.begin(), value);
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, iterRemove
         , ZFMP_IN_OUT(zfiter &, it)
         ) {
-    this->remove(it.impl<_ZFP_ZFArrayIter *>()->index);
+    this->remove(it.impl<_ZFP_ZFArrayIter *>()->impl - d->data.begin());
 }
 ZFMETHOD_DEFINE_1(ZFArray, void, iterAdd
         , ZFMP_IN(ZFObject *, value)
@@ -504,7 +492,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, iterAdd
         ) {
     if(it) {
         _ZFP_ZFArrayIter *impl = it.impl<_ZFP_ZFArrayIter *>();
-        this->add(value, (impl->index)++);
+        this->add(value, impl->impl - d->data.begin());
     }
     else {
         this->add(value);

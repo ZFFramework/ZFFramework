@@ -19,18 +19,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if necessary,
  * use #ZFObjectGlobalInstanceRemove to remove manually before #ZFFrameworkCleanup
  */
-extern ZFLIB_ZFCore ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
+extern ZFLIB_ZFCore const ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
         ZF_IN const ZFCorePointerBase &sp
         , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
         );
 /** @brief see #ZFObjectGlobalInstanceAdd */
-extern ZFLIB_ZFCore ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
+extern ZFLIB_ZFCore const ZFCorePointerBase *ZFObjectGlobalInstanceAdd(
         ZF_IN ZFObject *obj
         , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
         );
 /** @brief see #ZFObjectGlobalInstanceAdd */
 extern ZFLIB_ZFCore void ZFObjectGlobalInstanceRemove(
-        ZF_IN ZFCorePointerBase *sp
+        ZF_IN const ZFCorePointerBase *sp
         , ZF_IN ZFLevel level
         );
 
@@ -76,7 +76,7 @@ public:
         /** @brief see @ref accessMethodName */ \
         static void accessMethodName(ZF_IN AccessTypeName *newInstance); \
     public: \
-        static ZFCorePointerBase *&_ZFP_ZFClassSingletonCleaner_##accessMethodName(void); \
+        static const ZFCorePointerBase *&_ZFP_ZFClassSingletonCleaner_##accessMethodName(void); \
         static void _ZFP_ZFClassSingletonOnDelete_##accessMethodName(ZF_IN void *instance); \
     public:
 #define _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, AccessTypeName, ObjectTypeName, sig, accessMethodName, \
@@ -103,9 +103,9 @@ public:
             return; \
         } \
         ZFCoreMutexLocker(); \
-        ZFCorePointerBase *&cleanerRef = OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(); \
-        ZFCorePointerBase *cleanerOld = cleanerRef; \
-        ZFCorePointerBase *cleanerNew = zfnull; \
+        const ZFCorePointerBase *&cleanerRef = OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(); \
+        const ZFCorePointerBase *cleanerOld = cleanerRef; \
+        const ZFCorePointerBase *cleanerNew = zfnull; \
         cleanerRef = zfnull; \
         AccessTypeName *newInstanceValue = zfnull; \
         if(newInstance != zfnull) { \
@@ -122,8 +122,8 @@ public:
             cleanerRef = cleanerNew; \
         } \
     } \
-    ZFCorePointerBase *&OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(void) { \
-        static ZFCorePointerBase *_cleaner = zfnull; \
+    const ZFCorePointerBase *&OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(void) { \
+        static const ZFCorePointerBase *_cleaner = zfnull; \
         return _cleaner; \
     } \
     void OwnerClass::_ZFP_ZFClassSingletonOnDelete_##accessMethodName(ZF_IN void *instance) { \

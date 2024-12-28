@@ -590,9 +590,8 @@ ZFJson &ZFJson::child(
     if(index == zfindexMax()) {
         index = this->childCount();
     }
-    else if(index > this->childCount()) {
-        ZFCoreCriticalIndexOutOfRange(index, this->childCount());
-        return *this;
+    else {
+        ZFCoreAssertIndexRange(index, this->childCount() + 1);
     }
     ZFCoreAssertWithMessage(item, "add null object");
     d->d.childList->insert(d->d.childList->begin() + index, item);

@@ -110,6 +110,20 @@ extern ZFLIB_ZFCore void _ZFP_ZFCoreCritical(
         (zfindex)(index), \
         (zfindex)(range))
 
+/**
+ * @brief log that likes "[file function (line)] index i out of range [0, n)"
+ */
+#define ZFCoreAssertIndexRange(index, range) \
+    ZFCoreAssertIndexRangeDetail(ZFCallerInfoCreate(), index, range)
+/**
+ * @brief see #ZFCoreAssertIndexRange
+ */
+inline void ZFCoreAssertIndexRangeDetail(ZF_IN const ZFCallerInfo &callerInfo, ZF_IN zfindex index, ZF_IN zfindex range) {
+    if(index >= range) {
+        ZFCoreCriticalIndexOutOfRangeDetail(callerInfo, index, range);
+    }
+}
+
 // ============================================================
 /**
  * @brief log that likes "[file function (line)] should not go here"

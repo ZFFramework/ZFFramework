@@ -416,9 +416,8 @@ ZFXml &ZFXml::child(
     if(index == zfindexMax()) {
         index = this->childCount();
     }
-    else if(index > (zfindex)d->childList.size()) {
-        ZFCoreCriticalIndexOutOfRange(index, (zfindex)d->childList.size());
-        return *this;
+    else {
+        ZFCoreAssertIndexRange(index, (zfindex)(d->childList.size() + 1));
     }
     ZFCoreAssertWithMessage(item, "add null object");
     d->childList.insert(d->childList.begin() + index, item);

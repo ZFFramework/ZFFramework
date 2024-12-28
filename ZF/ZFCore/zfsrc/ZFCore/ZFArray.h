@@ -45,12 +45,12 @@ public:
             )
 
     /**
-     * @brief return first object or zfnull if empty
+     * @brief return first object, assert failure if out of range
      */
     ZFMETHOD_DECLARE_0(zfany, getFirst)
 
     /**
-     * @brief return last object or zfnull if empty
+     * @brief return last object, assert failure if out of range
      */
     ZFMETHOD_DECLARE_0(zfany, getLast)
 
@@ -148,13 +148,27 @@ public:
             , ZFMP_IN_OPT(zfindex, count, 1)
             )
     /**
-     * @brief remove first object or do nothing if out of range
+     * @brief remove object at index and return removed item, assert failure if out of range
+     */
+    ZFMETHOD_DECLARE_1(zfauto, removeAndGet
+            , ZFMP_IN(zfindex, index)
+            )
+    /**
+     * @brief remove first object, assert fail if out of range
      */
     ZFMETHOD_DECLARE_0(void, removeFirst)
     /**
-     * @brief remove last object or do nothing if out of range
+     * @brief remove first object and return removed item, assert fail if out of range
+     */
+    ZFMETHOD_DECLARE_0(zfauto, removeFirstAndGet)
+    /**
+     * @brief remove last object, assert fail if out of range
      */
     ZFMETHOD_DECLARE_0(void, removeLast)
+    /**
+     * @brief remove last object and return removed item, assert fail if out of range
+     */
+    ZFMETHOD_DECLARE_0(zfauto, removeLastAndGet)
     /**
      * @brief remove all object
      */

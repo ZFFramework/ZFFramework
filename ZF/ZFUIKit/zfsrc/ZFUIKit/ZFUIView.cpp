@@ -506,16 +506,12 @@ public:
             , ZF_IN zfindex fromIndex
             , ZF_IN zfindex toIndexOrIndexMax
             ) {
+        ZFCoreAssertIndexRange(fromIndex, this->childCount(layer));
         if(toIndexOrIndexMax == zfindexMax()) {
             toIndexOrIndexMax = this->childCount(layer) - 1;
         }
-        if(fromIndex >= this->childCount(layer)) {
-            ZFCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
-            return;
-        }
-        if(toIndexOrIndexMax >= this->childCount(layer)) {
-            ZFCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
-            return;
+        else {
+            ZFCoreAssertIndexRange(toIndexOrIndexMax, this->childCount(layer));
         }
         if(fromIndex == toIndexOrIndexMax) {
             return;

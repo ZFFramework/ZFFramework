@@ -310,8 +310,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, remove
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN(zfindex, count)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfauto, removeAndGet
+        , ZFMP_IN(zfindex, index)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, removeFirst)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, removeFirstAndGet)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, removeLast)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, removeLastAndGet)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, removeAll)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, move
         , ZFMP_IN(zfindex, fromIndex)

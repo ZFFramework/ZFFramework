@@ -441,10 +441,8 @@ private:
         stacksDirDst.add(dstPath);
 
         while(stacksDirSrc.count() > 0) {
-            zfstring srcDir = stacksDirSrc.getLast();
-            zfstring dstDir = stacksDirDst.getLast();
-            stacksDirSrc.removeLast();
-            stacksDirDst.removeLast();
+            zfstring srcDir = stacksDirSrc.removeLastAndGet();
+            zfstring dstDir = stacksDirDst.removeLastAndGet();
 
             if(!this->makePath(dstDir, errPos)) {
                 return zffalse;
@@ -517,8 +515,7 @@ private:
 
         // delete all child files
         while(dirsToCheck.count() > 0) {
-            zfstring dirPath = dirsToCheck.getLast();
-            dirsToCheck.removeLast();
+            zfstring dirPath = dirsToCheck.removeLastAndGet();
             emptyDirsToDel.add(dirPath);
 
             if(isForce) {
@@ -553,8 +550,7 @@ private:
 
         // delete all empty dir
         while(emptyDirsToDel.count() > 0) {
-            zfstring pathTmp = emptyDirsToDel.getLast();
-            emptyDirsToDel.removeLast();
+            zfstring pathTmp = emptyDirsToDel.removeLastAndGet();
 
             #if ZF_ENV_sys_Windows
                 if(RemoveDirectoryW(zfstringToUTF16(pathTmp, ZFStringEncoding::e_UTF8).cString()) == 0) {

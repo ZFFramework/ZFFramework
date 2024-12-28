@@ -169,7 +169,7 @@ private:
     ZFMETHOD_INLINE_1(void, onChildStop_queue
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        _ZFP_ZFAniGroupChildData *childData = this->childBuf->getFirst();
+        zfautoT<_ZFP_ZFAniGroupChildData> childData = this->childBuf->getFirst();
         if(childData == zfnull || childData->child() != zfargs.sender()) {
             return;
         }

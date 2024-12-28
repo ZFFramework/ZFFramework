@@ -240,11 +240,11 @@ public:
             , ZF_IN zfindex count
             ) zfpurevirtual;
     /**
-     * @brief remove first or do nothing if empty
+     * @brief remove first, assert fail if out of range
      */
     virtual void removeFirst(void) zfpurevirtual;
     /**
-     * @brief remove last or do nothing if empty
+     * @brief remove last, assert fail if out of range
      */
     virtual void removeLast(void) zfpurevirtual;
     /**
@@ -537,9 +537,8 @@ public:
         if(index == zfindexMax()) {
             index = this->count();
         }
-        else if(index > this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count() + 1);
-            return;
+        else {
+            ZFCoreAssertIndexRange(index, this->count() + 1);
         }
         _capacityRequire(this->count() + 1);
         _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + d->count + 1);
@@ -759,10 +758,7 @@ public:
 
     zfoverride
     virtual void remove(ZF_IN zfindex index) {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-            return;
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1);
         _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf + d->count - 1, d->buf + d->count);
         --(d->count);
@@ -772,10 +768,7 @@ public:
             ZF_IN zfindex index
             , ZF_IN zfindex count
             ) {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-            return;
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         if(count > this->count() - index) {
             count = this->count() - index;
         }
@@ -787,43 +780,34 @@ public:
      * @brief remove and return the removed value
      */
     T_Element removeAndGet(ZF_IN zfindex index) {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-        }
-        T_Element t = *(d->buf + index);
+        T_Element t = this->get(index);
         this->remove(index);
         return t;
     }
     zfoverride
     virtual void removeFirst(void) {
-        if(!this->isEmpty()) {
-            this->remove(0);
-        }
+        this->remove(0);
     }
     /**
      * @brief remove first and return the removed value,
      *   or assert fail if empty
      */
     T_Element removeFirstAndGet(void) {
-        ZFCoreAssertWithMessage(!this->isEmpty(), "removeFirstAndGet an empty array");
-        T_Element t = *(d->buf);
-        this->remove(0);
+        T_Element t = this->getFirst();
+        this->removeFirst();
         return t;
     }
     zfoverride
     virtual void removeLast(void) {
-        if(!this->isEmpty()) {
-            this->remove(this->count() - 1);
-        }
+        this->remove(this->count() - 1);
     }
     /**
      * @brief remove last and return the removed value,
      *   or assert fail if empty
      */
     T_Element removeLastAndGet(void) {
-        ZFCoreAssertWithMessage(!this->isEmpty(), "removeLastAndGet an empty array");
-        T_Element t = *(d->buf + d->count - 1);
-        this->remove(this->count() - 1);
+        T_Element t = this->getLast();
+        this->removeLast();
         return t;
     }
     zfoverride
@@ -839,16 +823,12 @@ public:
             ZF_IN zfindex fromIndex
             , ZF_IN zfindex toIndexOrIndexMax
             ) {
-        if(fromIndex >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(fromIndex, this->count());
-            return;
-        }
+        ZFCoreAssertIndexRange(fromIndex, this->count());
         if(toIndexOrIndexMax == zfindexMax()) {
             toIndexOrIndexMax = this->count() - 1;
         }
-        if(toIndexOrIndexMax >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(toIndexOrIndexMax, this->count());
-            return;
+        else {
+            ZFCoreAssertIndexRange(toIndexOrIndexMax, this->count());
         }
         if(fromIndex == toIndexOrIndexMax) {
             return;
@@ -871,9 +851,7 @@ public:
             ZF_IN zfindex index
             , ZF_IN T_Element const &e
             ) {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         d->buf[index] = e;
     }
 
@@ -882,54 +860,42 @@ public:
      * @brief get element's reference at index
      */
     T_Element &get(ZF_IN zfindex index) {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         return d->buf[index];
     }
     /**
      * @brief get element's const reference at index
      */
     T_Element const &get(ZF_IN zfindex index) const {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         return d->buf[index];
     }
     /**
      * @brief get element's reference at index
      */
     T_Element &operator [] (ZF_IN zfindex index) {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         return d->buf[index];
     }
     /**
      * @brief get element's const reference at index
      */
     T_Element const &operator [] (ZF_IN zfindex index) const {
-        if(index >= this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count());
-        }
+        ZFCoreAssertIndexRange(index, this->count());
         return d->buf[index];
     }
     /**
      * @brief try to get first element, assert fail if empty
      */
     T_Element const &getFirst(void) const {
-        if(this->count() == 0) {
-            ZFCoreCriticalIndexOutOfRange(0, this->count());
-        }
+        ZFCoreAssertIndexRange(0, this->count());
         return *(d->buf);
     }
     /**
      * @brief try to get first element, assert fail if empty
      */
     T_Element const &getLast(void) const {
-        if(this->count() == 0) {
-            ZFCoreCriticalIndexOutOfRange(0, this->count());
-        }
+        ZFCoreAssertIndexRange(0, this->count());
         return *(d->buf + d->count - 1);
     }
 

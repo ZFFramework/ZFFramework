@@ -439,10 +439,7 @@ void ZFSerializableData::child(
     if(atIndex == zfindexMax()) {
         atIndex = (zfindex)d->elements.size();
     }
-    if(atIndex > (zfindex)d->elements.size()) {
-        ZFCoreCriticalIndexOutOfRange(atIndex, (zfindex)(d->elements.size() + 1));
-        return;
-    }
+    ZFCoreAssertIndexRange(atIndex, zfindex(d->elements.size() + 1));
 
     d->elements.insert(d->elements.begin() + atIndex, element);
     element.d->serializableDataParent = d;

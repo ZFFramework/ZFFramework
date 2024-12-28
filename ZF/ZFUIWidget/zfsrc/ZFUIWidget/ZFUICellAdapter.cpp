@@ -61,9 +61,7 @@ ZFMETHOD_DEFINE_1(ZFUICellAdapter, zfautoT<ZFUICell>, cellCacheDefaultAccess
     _ZFP_ZFUICellAdapter_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty()) {
-        zfautoT<ZFUICell> ret = cacheList->getLast();
-        cacheList->removeLast();
-        return ret;
+        return cacheList->removeLastAndGet();
     }
     else {
         return zfnull;

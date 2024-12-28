@@ -64,8 +64,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
 
     outputCallback.execute("====================== view tree begin =====================\n");
     do {
-        _ZFP_ZFUIViewTreePrintPrintData printData = printDatas.getLast();
-        printDatas.removeLast();
+        _ZFP_ZFUIViewTreePrintPrintData printData = printDatas.removeLastAndGet();
 
         // all children
         ZFCoreArray<zfautoT<ZFUIView> > implViews = printData.view->internalImplViewArray();

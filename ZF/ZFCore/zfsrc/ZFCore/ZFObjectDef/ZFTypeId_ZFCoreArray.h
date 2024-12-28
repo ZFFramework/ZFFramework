@@ -68,7 +68,7 @@ public:
     /** @brief type info for element */
     const ZFTypeInfo *elementType;
 private:
-    ZFCorePointerBase *_ZFP_elementTypeHolder;
+    const ZFCorePointerBase *_ZFP_elementTypeHolder;
 
 public:
     /** @brief init element type */
@@ -143,7 +143,7 @@ public:
             return;
         }
         ZFCoreArrayBase *zfvOld = this->zfv;
-        ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
+        const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
         if(t != zfnull && t->zfv != zfnull) {
             this->zfv = t->zfv->refNew();
             this->elementType = t->elementType;
@@ -189,7 +189,7 @@ public:
     template<typename T_Type>
     void wrappedValue(ZF_IN const ZFCoreArray<T_Type> &v) {
         ZFCoreArrayBase *zfvOld = this->zfv;
-        ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
+        const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
         this->zfv = v.refNew();
         this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<T_Type>));
         this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
@@ -210,7 +210,7 @@ public:
     virtual void zfvReset(void) {
         if(this->zfv) {
             ZFCoreArrayBase *zfvOld = this->zfv;
-            ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
+            const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
             this->zfv = zfnull;
             this->elementType = zfnull;
             this->_ZFP_elementTypeHolder = zfnull;
@@ -388,10 +388,7 @@ public:
         if(!t) {
             return;
         }
-        if(index > this->count()) {
-            ZFCoreCriticalIndexOutOfRange(index, this->count() + 1);
-            return;
-        }
+        ZFCoreAssertIndexRange(index, this->count() + 1);
         void *v = this->elementType->genericAccess(t);
         ZFCoreAssertWithMessageTrim(v != zfnull
                 , "add with different element type, desired: %s, got: %s"
@@ -453,15 +450,30 @@ public:
             this->zfv->remove(index, count);
         }
     }
+    zfauto removeAndGet(ZF_IN zfindex index) {
+        zfauto t = this->get(index);
+        this->remove(index);
+        return t;
+    }
     void removeFirst(void) {
         if(this->zfv != zfnull) {
             this->zfv->removeFirst();
         }
     }
+    zfauto removeFirstAndGet() {
+        zfauto t = this->getFirst();
+        this->removeFirst();
+        return t;
+    }
     void removeLast(void) {
         if(this->zfv != zfnull) {
             this->zfv->removeLast();
         }
+    }
+    zfauto removeLastAndGet() {
+        zfauto t = this->getLast();
+        this->removeLast();
+        return t;
     }
     void removeAll(void) {
         if(this->zfv != zfnull) {
@@ -502,7 +514,7 @@ public:
         return t;
     }
     zfauto getFirst(void) {
-        if(this->zfv == zfnull || this->count() == 0) {
+        if(this->zfv == zfnull || this->isEmpty()) {
             ZFCoreCriticalIndexOutOfRange(0, this->count());
         }
         zfauto t;
@@ -510,7 +522,7 @@ public:
         return t;
     }
     zfauto getLast(void) {
-        if(this->zfv == zfnull || this->count() == 0) {
+        if(this->zfv == zfnull || this->isEmpty()) {
             ZFCoreCriticalIndexOutOfRange(0, this->count());
         }
         zfauto t;
