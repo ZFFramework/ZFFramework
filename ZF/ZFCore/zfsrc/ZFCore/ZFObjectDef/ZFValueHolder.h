@@ -128,9 +128,9 @@ public:
 /** @brief see #ZFValueHolderType */
 #define ZFValueHolderTypePOD() _ZFP_ZFValueHolderType::TypePOD
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypeObject(T_Object, ...) _ZFP_ZFValueHolderType::TypeObject<T_Object, ##__VA_ARGS__>
+#define ZFValueHolderTypeObject(T_Object) _ZFP_ZFValueHolderType::TypeObject<T_Object>
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypePoolObject(T_Object, ...) _ZFP_ZFValueHolderType::TypePoolObject<T_Object, ##__VA_ARGS__>
+#define ZFValueHolderTypePoolObject(T_Object) _ZFP_ZFValueHolderType::TypePoolObject<T_Object>
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFValueHolder_h_

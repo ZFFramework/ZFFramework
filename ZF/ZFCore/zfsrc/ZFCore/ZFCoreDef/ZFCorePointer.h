@@ -418,6 +418,7 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
 ZFCOREPOINTER_DECLARE(ZFCorePointerForPointerRef, {}, {})
 ZFCOREPOINTER_DECLARE(ZFCorePointerForPOD, {}, {zffree(p);})
 ZFCOREPOINTER_DECLARE(ZFCorePointerForObject, {}, {zfdelete(p);})
+ZFCOREPOINTER_DECLARE(ZFCorePointerForPoolObject, {}, {zfpoolDelete(p);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCorePointer_h_

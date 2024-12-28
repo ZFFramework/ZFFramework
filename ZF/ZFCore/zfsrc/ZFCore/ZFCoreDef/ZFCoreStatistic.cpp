@@ -1,6 +1,5 @@
 #include "ZFCoreStatistic.h"
 #include "ZFCoreMap.h"
-#include "ZFNamespaceImpl.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
@@ -17,7 +16,7 @@ void invokeCountLog(ZF_IN const zfstring &key) {
         ++(*count);
     }
     else {
-        m.set(key, ZFCorePointerForObject<zfindex *>(zfnew(zfindex, 1)));
+        m.set(key, ZFCorePointerForPoolObject<zfindex *>(zfpoolNew(zfindex, 1)));
     }
 }
 void invokeCountRemove(ZF_IN const zfstring &key) {

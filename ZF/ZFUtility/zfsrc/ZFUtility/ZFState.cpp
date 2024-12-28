@@ -72,8 +72,8 @@ public:
                 , zfautoT<ZFState>, owner
                 ) {
             if(!zfargs.param0()) {return;}
-            _ZFP_ZFStateListType *lNew = zfnew(_ZFP_ZFStateListType);
-            zfobj<ZFValueHolder> holder((void *)lNew, ZFValueHolderTypeObject(_ZFP_ZFStateListType *));
+            _ZFP_ZFStateListType *lNew = zfpoolNew(_ZFP_ZFStateListType);
+            zfobj<ZFValueHolder> holder((void *)lNew, ZFValueHolderTypePoolObject(_ZFP_ZFStateListType *));
             _loadAsyncImpl(*lNew, owner->stateFileFixed(), zfargs);
             zfargs.result(holder);
         } ZFLISTENER_END()

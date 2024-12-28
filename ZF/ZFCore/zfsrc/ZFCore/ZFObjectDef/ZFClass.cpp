@@ -490,7 +490,7 @@ void ZFClass::instanceObserverAdd(
     }
 
     ZFCoreMutexLocker();
-    _ZFP_ZFClassPrivate::InstanceObserverData *data = zfnew(_ZFP_ZFClassPrivate::InstanceObserverData);
+    _ZFP_ZFClassPrivate::InstanceObserverData *data = zfpoolNew(_ZFP_ZFClassPrivate::InstanceObserverData);
     data->observer = observer;
     data->owner = owner;
     data->observerLevel = observerLevel;
@@ -504,7 +504,7 @@ void ZFClass::instanceObserverRemove(ZF_IN const ZFListener &observer) const {
         if(data->observer == observer) {
             d->instanceObserverDoRemove(data);
             d->instanceObserver.remove(i);
-            zfdelete(data);
+            zfpoolDelete(data);
             break;
         }
     }
@@ -517,7 +517,7 @@ void ZFClass::instanceObserverRemoveByOwner(ZF_IN ZFObject *owner) const {
             d->instanceObserverDoRemove(data);
             d->instanceObserver.remove(i);
             --i;
-            zfdelete(data);
+            zfpoolDelete(data);
         }
     }
 }
@@ -527,7 +527,7 @@ void ZFClass::instanceObserverRemoveAll(void) const {
         _ZFP_ZFClassPrivate::InstanceObserverData *data = d->instanceObserver.getLast();
         d->instanceObserverDoRemove(data);
         d->instanceObserver.removeLast();
-        zfdelete(data);
+        zfpoolDelete(data);
     }
 }
 void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const {

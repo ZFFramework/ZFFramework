@@ -4,7 +4,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfbool _ZFP_ZFCoreArrayFromStringT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
@@ -14,56 +14,56 @@ zfbool _ZFP_ZFCoreArrayFromStringT(
     if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
         return zffalse;
     }
-    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+    if(elementType.typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         for(zfindex i = 0; i < pos.count(); ++i) {
             zfstring elementString;
             ZFCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
-            zfauto e = elementType->typeIdClass()->newInstance();
+            zfauto e = elementType.typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
             if(eTmp == zfnull || !eTmp->zfvFromString(elementString, elementString.length(), errorHint)) {
                 return zffalse;
             }
-            void *eGeneric = elementType->genericAccess(e);
+            void *eGeneric = elementType.genericAccess(e);
             if(eGeneric == zfnull) {
                 return zffalse;
             }
             v.genericAdd(eGeneric);
-            elementType->genericAccessFinish(e, eGeneric);
+            elementType.genericAccessFinish(e, eGeneric);
         }
     }
     else {
         for(zfindex i = 0; i < pos.count(); ++i) {
             zfstring elementString;
             ZFCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
-            zfauto e = elementType->typeIdClass()->newInstance();
+            zfauto e = elementType.typeIdClass()->newInstance();
             ZFSerializable *eTmp = e;
             if(eTmp == zfnull || !eTmp->serializeFromString(elementString, elementString.length(), errorHint)) {
                 return zffalse;
             }
-            void *eGeneric = elementType->genericAccess(e);
+            void *eGeneric = elementType.genericAccess(e);
             if(eGeneric == zfnull) {
                 return zffalse;
             }
             v.genericAdd(eGeneric);
-            elementType->genericAccessFinish(e, eGeneric);
+            elementType.genericAccessFinish(e, eGeneric);
         }
     }
     return zftrue;
 }
 zfbool _ZFP_ZFCoreArrayToStringT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_OUT zfstring &s
         , ZF_IN ZFCoreArrayBase const &v
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     s += "[";
-    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+    if(elementType.typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         for(zfindex i = 0; i < v.count(); ++i) {
             if(i != 0) {
                 s += ",";
             }
             zfauto e;
-            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+            if(!elementType.genericValueStore(e, v.genericGet(i))) {
                 return zffalse;
             }
             ZFTypeIdWrapper *eTmp = e;
@@ -83,7 +83,7 @@ zfbool _ZFP_ZFCoreArrayToStringT(
                 s += ",";
             }
             zfauto e;
-            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+            if(!elementType.genericValueStore(e, v.genericGet(i))) {
                 return zffalse;
             }
             ZFSerializable *eTmp = e;
@@ -101,7 +101,7 @@ zfbool _ZFP_ZFCoreArrayToStringT(
     return zftrue;
 }
 zfbool _ZFP_ZFCoreArrayFromDataT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -111,23 +111,23 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
     if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), outErrorHint, outErrorPos)) {
         return zffalse;
     }
-    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+    if(elementType.typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
             const ZFSerializableData &element = serializableData.childAt(i);
             if(element.resolved()) {
                 continue;
             }
-            zfauto e = elementType->typeIdClass()->newInstance();
+            zfauto e = elementType.typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
             if(eTmp == zfnull || !eTmp->zfvFromData(element, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
-            void *eGeneric = elementType->genericAccess(e);
+            void *eGeneric = elementType.genericAccess(e);
             if(eGeneric == zfnull) {
                 return zffalse;
             }
             v.genericAdd(eGeneric);
-            elementType->genericAccessFinish(e, eGeneric);
+            elementType.genericAccessFinish(e, eGeneric);
         }
     }
     else {
@@ -136,32 +136,32 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
             if(element.resolved()) {
                 continue;
             }
-            zfauto e = elementType->typeIdClass()->newInstance();
+            zfauto e = elementType.typeIdClass()->newInstance();
             ZFSerializable *eTmp = e;
             if(eTmp == zfnull || !eTmp->serializeFromData(element, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
-            void *eGeneric = elementType->genericAccess(e);
+            void *eGeneric = elementType.genericAccess(e);
             if(eGeneric == zfnull) {
                 return zffalse;
             }
             v.genericAdd(eGeneric);
-            elementType->genericAccessFinish(e, eGeneric);
+            elementType.genericAccessFinish(e, eGeneric);
         }
     }
     return zftrue;
 }
 zfbool _ZFP_ZFCoreArrayToDataT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFCoreArrayBase const &v
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     serializableData.itemClass(ZFTypeId_ZFCoreArray());
-    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+    if(elementType.typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         for(zfindex i = 0; i < v.count(); ++i) {
             zfauto e;
-            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+            if(!elementType.genericValueStore(e, v.genericGet(i))) {
                 return zffalse;
             }
             ZFTypeIdWrapper *eTmp = e;
@@ -178,7 +178,7 @@ zfbool _ZFP_ZFCoreArrayToDataT(
     else {
         for(zfindex i = 0; i < v.count(); ++i) {
             zfauto e;
-            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+            if(!elementType.genericValueStore(e, v.genericGet(i))) {
                 return zffalse;
             }
             ZFSerializable *eTmp = e;
@@ -213,7 +213,8 @@ zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfstring &elementTypeId) {
     }
     else if(ZFClass::classForName(elementTypeId) != zfnull) {
         this->zfv = ZFCoreArray<zfauto>().refNew();
-        this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<zfauto>));
+        ZFTypeInfo *t = zfpoolNew(ZFTypeId<zfauto>);
+        this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
         this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
         return zftrue;
     }

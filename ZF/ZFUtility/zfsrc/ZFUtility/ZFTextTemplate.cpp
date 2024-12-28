@@ -289,7 +289,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(
         zfstring indexDataStateKey = zfstr("indexData:%s", key);
         _ZFP_ZFTextTemplateIndexDataState *indexDataState = stateMap.get<_ZFP_ZFTextTemplateIndexDataState *>(indexDataStateKey);
         if(indexDataState == zfnull) {
-            indexDataState = zfnew(_ZFP_ZFTextTemplateIndexDataState);
+            indexDataState = zfpoolNew(_ZFP_ZFTextTemplateIndexDataState);
             indexDataState->indexData = param.indexData(key);
             if(indexDataState->indexData == zfnull) {
                 indexDataState->indexData = &(param.indexDataDefault());
@@ -297,7 +297,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(
 
             indexDataState->indexCur = indexDataState->indexData->indexStart;
 
-            stateMap.set(indexDataStateKey, ZFCorePointerForObject<_ZFP_ZFTextTemplateIndexDataState *>(indexDataState));
+            stateMap.set(indexDataStateKey, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateIndexDataState *>(indexDataState));
         }
 
         zfstring fmt;

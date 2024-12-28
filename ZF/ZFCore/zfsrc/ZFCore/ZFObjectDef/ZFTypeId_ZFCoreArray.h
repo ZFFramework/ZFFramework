@@ -10,27 +10,27 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayFromStringT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayToStringT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_OUT zfstring &s
         , ZF_IN ZFCoreArrayBase const &v
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayFromDataT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayToDataT(
-        ZF_IN const ZFTypeInfo *elementType
+        ZF_IN const ZFTypeInfo &elementType
         , ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFCoreArrayBase const &v
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
@@ -82,7 +82,8 @@ protected:
     void objectOnInit(ZF_IN const ZFCoreArray<T_Type> &v) {
         this->objectOnInit();
         this->zfv = v.refNew();
-        this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<T_Type>));
+        ZFTypeInfo *t = zfpoolNew(ZFTypeId<T_Type>);
+        this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
         this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
     }
 
@@ -191,7 +192,8 @@ public:
         ZFCoreArrayBase *zfvOld = this->zfv;
         const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
         this->zfv = v.refNew();
-        this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<T_Type>));
+        ZFTypeInfo *t = zfpoolNew(ZFTypeId<T_Type>);
+        this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
         this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
         if(zfvOld) {
             zfvOld->refDelete();
@@ -237,7 +239,7 @@ public:
             return zffalse;
         }
         return _ZFP_ZFCoreArrayFromDataT(
-                this->elementType
+                *this->elementType
                 , *(this->zfv)
                 , serializableData
                 , outErrorHint
@@ -255,7 +257,7 @@ public:
             return zffalse;
         }
         return _ZFP_ZFCoreArrayToDataT(
-                this->elementType
+                *this->elementType
                 , serializableData
                 , *(this->zfv)
                 , outErrorHint
@@ -274,7 +276,7 @@ public:
             return zffalse;
         }
         return _ZFP_ZFCoreArrayFromStringT(
-                this->elementType
+                *this->elementType
                 , *(this->zfv)
                 , src
                 , srcLen
@@ -293,7 +295,7 @@ public:
             return zffalse;
         }
         return _ZFP_ZFCoreArrayToStringT(
-                this->elementType
+                *this->elementType
                 , s
                 , *(this->zfv)
                 , errorHint
@@ -686,16 +688,16 @@ public:
         if(!Value<ZFCoreArray<T_Type> >::zfvAccessAvailable(obj)) {
             return zfnull;
         }
-        return (void *)zfnew(ZFCoreArray<T_Type>, Value<ZFCoreArray<T_Type> >::zfvAccess(obj));
+        return (void *)zfpoolNew(ZFCoreArray<T_Type>, Value<ZFCoreArray<T_Type> >::zfvAccess(obj));
     }
     zfoverride
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
-        zfdelete((ZFCoreArray<T_Type> *)v);
+        zfpoolDelete((ZFCoreArray<T_Type> *)v);
         Value<ZFCoreArray<T_Type> >::zfvAccessFinish(obj);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfnew(ZFCoreArray<ZFCoreArray<T_Type> >);
+        return zfpoolNew(ZFCoreArray<ZFCoreArray<T_Type> >);
     }
 };
 /** @endcond */
@@ -710,7 +712,7 @@ zfbool ZFCoreArrayFromStringT(
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     return _ZFP_ZFCoreArrayFromStringT(
-            zflineDelete(zfnew(ZFTypeId<T_Type>))
+            ZFTypeId<T_Type>()
             , v
             , src
             , srcLen
@@ -726,7 +728,7 @@ ZFCoreArray<T_Type> ZFCoreArrayFromString(
         ) {
     ZFCoreArray<T_Type> ret;
     _ZFP_ZFCoreArrayFromStringT(
-            zflineDelete(zfnew(ZFTypeId<T_Type>))
+            ZFTypeId<T_Type>()
             , ret
             , src
             , srcLen
@@ -742,7 +744,7 @@ zfbool ZFCoreArrayToStringT(
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     return _ZFP_ZFCoreArrayToStringT(
-            zflineDelete(zfnew(ZFTypeId<T_Type>))
+            ZFTypeId<T_Type>()
             , s
             , v
             , errorHint
@@ -769,7 +771,7 @@ zfbool ZFCoreArrayFromDataT(
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         ) {
     return _ZFP_ZFCoreArrayFromDataT(
-            zflineDelete(zfnew(ZFTypeId<T_Type>))
+            ZFTypeId<T_Type>()
             , v
             , serializableData
             , outErrorHint
@@ -785,7 +787,7 @@ ZFCoreArray<T_Type> ZFCoreArrayFromData(
         ) {
     ZFCoreArray<T_Type> ret;
     _ZFP_ZFCoreArrayFromDataT(
-            zflineDelete(zfnew(ZFTypeId<T_Type>))
+            ZFTypeId<T_Type>()
             , ret
             , serializableData
             , outErrorHint
@@ -801,7 +803,7 @@ zfbool ZFCoreArrayToDataT(
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         ) {
     return _ZFP_ZFCoreArrayToDataT(
-            zflineDelete(zfnew(ZFTypeId<T_Type>))
+            ZFTypeId<T_Type>()
             , serializableData
             , v
             , outErrorHint

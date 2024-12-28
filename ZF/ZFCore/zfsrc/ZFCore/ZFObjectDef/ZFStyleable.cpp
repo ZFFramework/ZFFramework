@@ -183,7 +183,7 @@ _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN con
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
     const ZFCorePointerBase *v = m.get(name);
     if(v == zfnull) {
-        m.set(name, ZFCorePointerForObject<_ZFP_ZFStyleableDefaultPointerHolder *>(zfnew(_ZFP_ZFStyleableDefaultPointerHolder)));
+        m.set(name, ZFCorePointerForPoolObject<_ZFP_ZFStyleableDefaultPointerHolder *>(zfpoolNew(_ZFP_ZFStyleableDefaultPointerHolder)));
         v = m.get(name);
     }
     return v->pointerValueT<_ZFP_ZFStyleableDefaultPointerHolder *>();

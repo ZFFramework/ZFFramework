@@ -12,11 +12,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFCOREPOINTER_DECLARE(ZFCorePointerForPoolObject, {}, {
-        zfpoolDelete(p);
-    })
-
-// ============================================================
 ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
         zfRetain(p);
     }, {

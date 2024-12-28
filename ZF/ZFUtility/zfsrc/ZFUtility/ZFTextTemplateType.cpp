@@ -159,7 +159,7 @@ public:
 };
 // ============================================================
 ZFTextTemplateParam::ZFTextTemplateParam(void)
-: d(zfnew(_ZFP_ZFTextTemplateParamPrivate))
+: d(zfpoolNew(_ZFP_ZFTextTemplateParamPrivate))
 {
 }
 ZFTextTemplateParam::ZFTextTemplateParam(ZF_IN const ZFTextTemplateParam &ref)
@@ -170,7 +170,7 @@ ZFTextTemplateParam::ZFTextTemplateParam(ZF_IN const ZFTextTemplateParam &ref)
 ZFTextTemplateParam::~ZFTextTemplateParam(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
         d = zfnull;
     }
 }
@@ -181,7 +181,7 @@ ZFTextTemplateParam &ZFTextTemplateParam::operator = (ZF_IN const ZFTextTemplate
         ++(d->refCount);
         --(t->refCount);
         if(t->refCount == 0) {
-            zfdelete(t);
+            zfpoolDelete(t);
         }
     }
     return *this;
@@ -208,11 +208,11 @@ void ZFTextTemplateParam::replaceData(
     }
     else {
         if(value != zfnull) {
-            _ZFP_ZFTextTemplateReplaceData *replaceData = zfnew(_ZFP_ZFTextTemplateReplaceData);
+            _ZFP_ZFTextTemplateReplaceData *replaceData = zfpoolNew(_ZFP_ZFTextTemplateReplaceData);
             replaceData->key = key;
             replaceData->value = value;
             d->replaceDataList.add(replaceData);
-            d->replaceDataMap.set(key, ZFCorePointerForObject<_ZFP_ZFTextTemplateReplaceData *>(replaceData));
+            d->replaceDataMap.set(key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateReplaceData *>(replaceData));
         }
     }
 }
@@ -272,11 +272,11 @@ void ZFTextTemplateParam::enableData(
         enableData->value = value;
     }
     else {
-        _ZFP_ZFTextTemplateEnableData *enableData = zfnew(_ZFP_ZFTextTemplateEnableData);
+        _ZFP_ZFTextTemplateEnableData *enableData = zfpoolNew(_ZFP_ZFTextTemplateEnableData);
         enableData->key = key;
         enableData->value = value;
         d->enableDataList.add(enableData);
-        d->enableDataMap.set(key, ZFCorePointerForObject<_ZFP_ZFTextTemplateEnableData *>(enableData));
+        d->enableDataMap.set(key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateEnableData *>(enableData));
     }
 }
 const zfbool *ZFTextTemplateParam::enableData(ZF_IN const zfstring &key) const {
@@ -344,11 +344,11 @@ void ZFTextTemplateParam::indexData(
         indexData->value = value;
     }
     else {
-        _ZFP_ZFTextTemplateIndexData *indexData = zfnew(_ZFP_ZFTextTemplateIndexData);
+        _ZFP_ZFTextTemplateIndexData *indexData = zfpoolNew(_ZFP_ZFTextTemplateIndexData);
         indexData->key = key;
         indexData->value = value;
         d->indexDataList.add(indexData);
-        d->indexDataMap.set(key, ZFCorePointerForObject<_ZFP_ZFTextTemplateIndexData *>(indexData));
+        d->indexDataMap.set(key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateIndexData *>(indexData));
     }
 }
 const ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &key) const {
@@ -408,11 +408,11 @@ void ZFTextTemplateParam::copyFrom(ZF_IN const ZFTextTemplateParam &ref) {
     d->replaceDataMap.removeAll();
     for(zfindex i = 0; i < ref.d->replaceDataList.count(); ++i) {
         const _ZFP_ZFTextTemplateReplaceData *replaceDataRef = ref.d->replaceDataList[i];
-        _ZFP_ZFTextTemplateReplaceData *replaceData = zfnew(_ZFP_ZFTextTemplateReplaceData);
+        _ZFP_ZFTextTemplateReplaceData *replaceData = zfpoolNew(_ZFP_ZFTextTemplateReplaceData);
         replaceData->key = replaceDataRef->key;
         replaceData->value = replaceDataRef->value;
         d->replaceDataList.add(replaceData);
-        d->replaceDataMap.set(replaceData->key, ZFCorePointerForObject<_ZFP_ZFTextTemplateReplaceData *>(replaceData));
+        d->replaceDataMap.set(replaceData->key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateReplaceData *>(replaceData));
     }
 
     d->enableDataDefault = ref.d->enableDataDefault;
@@ -421,11 +421,11 @@ void ZFTextTemplateParam::copyFrom(ZF_IN const ZFTextTemplateParam &ref) {
     d->enableDataMap.removeAll();
     for(zfindex i = 0; i < ref.d->enableDataList.count(); ++i) {
         const _ZFP_ZFTextTemplateEnableData *enableDataRef = ref.d->enableDataList[i];
-        _ZFP_ZFTextTemplateEnableData *enableData = zfnew(_ZFP_ZFTextTemplateEnableData);
+        _ZFP_ZFTextTemplateEnableData *enableData = zfpoolNew(_ZFP_ZFTextTemplateEnableData);
         enableData->key = enableDataRef->key;
         enableData->value = enableDataRef->value;
         d->enableDataList.add(enableData);
-        d->enableDataMap.set(enableData->key, ZFCorePointerForObject<_ZFP_ZFTextTemplateEnableData *>(enableData));
+        d->enableDataMap.set(enableData->key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateEnableData *>(enableData));
     }
 
     d->indexDataDefault.copyFrom(ref.d->indexDataDefault);
@@ -434,11 +434,11 @@ void ZFTextTemplateParam::copyFrom(ZF_IN const ZFTextTemplateParam &ref) {
     d->indexDataMap.removeAll();
     for(zfindex i = 0; i < ref.d->indexDataList.count(); ++i) {
         const _ZFP_ZFTextTemplateIndexData *indexDataRef = ref.d->indexDataList[i];
-        _ZFP_ZFTextTemplateIndexData *indexData = zfnew(_ZFP_ZFTextTemplateIndexData);
+        _ZFP_ZFTextTemplateIndexData *indexData = zfpoolNew(_ZFP_ZFTextTemplateIndexData);
         indexData->key = indexDataRef->key;
         indexData->value.copyFrom(indexDataRef->value);
         d->indexDataList.add(indexData);
-        d->indexDataMap.set(indexData->key, ZFCorePointerForObject<_ZFP_ZFTextTemplateIndexData *>(indexData));
+        d->indexDataMap.set(indexData->key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateIndexData *>(indexData));
     }
 }
 

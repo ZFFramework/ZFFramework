@@ -553,14 +553,14 @@ static void _ZFP_GI_dataRegister(
         ++(data->refCount);
     }
     else {
-        data = zfnew(_ZFP_GI_Data);
+        data = zfpoolNew(_ZFP_GI_Data);
         data->name = name;
         data->level = level;
         data->constructor = constructor;
         data->destructor = destructor;
 
         dataList.add(data);
-        dataMap.set(name, ZFCorePointerForObject<_ZFP_GI_Data *>(data));
+        dataMap.set(name, ZFCorePointerForPoolObject<_ZFP_GI_Data *>(data));
     }
 
     switch(ZFFrameworkStateCheck(level)) {
@@ -763,13 +763,13 @@ _ZFP_GI_Reg::_ZFP_GI_Reg(
         , ZF_IN _ZFP_GI_Constructor constructor
         , ZF_IN _ZFP_GI_Destructor destructor
         )
-: d(zfnew(_ZFP_GI_RegPrivate, name, level))
+: d(zfpoolNew(_ZFP_GI_RegPrivate, name, level))
 {
     _ZFP_GI_dataRegister(name, level, constructor, destructor);
 }
 _ZFP_GI_Reg::~_ZFP_GI_Reg(void) {
     _ZFP_GI_dataUnregister(d->name, d->level);
-    zfdelete(d);
+    zfpoolDelete(d);
 }
 void *_ZFP_GI_Reg::instanceAccess(void) {
     if(d->instance == zfnull || *(d->instance) == zfnull) {

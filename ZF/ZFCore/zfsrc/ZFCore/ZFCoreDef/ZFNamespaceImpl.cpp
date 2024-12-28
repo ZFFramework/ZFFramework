@@ -94,14 +94,16 @@ zfbool ZFNamespaceSplit(
 }
 
 // ============================================================
-zfclassLikePOD _ZFP_ZFNamespaceMapType {
+zfclassLikePOD _ZFP_ZFNamespaceTreeType {
+public:
+    typedef zfstlmap<zfstring, ZFCorePointerForPoolObject<_ZFP_ZFNamespaceTreeType *> > MapType;
 public:
     zfuint refCount;
     zfstring ns;
     zfstring nsFull;
-    zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
+    MapType d;
 public:
-    _ZFP_ZFNamespaceMapType(void)
+    _ZFP_ZFNamespaceTreeType(void)
     : refCount(1)
     , ns()
     , d()
@@ -109,8 +111,8 @@ public:
     }
 };
 
-static _ZFP_ZFNamespaceMapType &_ZFP_ZFNamespaceMap(void) {
-    static _ZFP_ZFNamespaceMapType d;
+static _ZFP_ZFNamespaceTreeType &_ZFP_ZFNamespaceTree(void) {
+    static _ZFP_ZFNamespaceTreeType d;
     return d;
 }
 zfstring _ZFP_ZFNamespaceRegister(
@@ -130,13 +132,13 @@ zfstring _ZFP_ZFNamespaceRegister(
     ns += child;
     ZFCoreArray<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, ns, ns.length());
-    _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
+    _ZFP_ZFNamespaceTreeType *t = &_ZFP_ZFNamespaceTree();
     for(zfindex i = 0; i < pos.count(); ++i) {
         zfstring key(ns + pos[i].start, pos[i].count);
-        zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+        _ZFP_ZFNamespaceTreeType::MapType::iterator it = t->d.find(key);
         if(it == t->d.end()) {
-            _ZFP_ZFNamespaceMapType *tNew = zfnew(_ZFP_ZFNamespaceMapType);
-            t->d[key] = ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *>(tNew);
+            _ZFP_ZFNamespaceTreeType *tNew = zfpoolNew(_ZFP_ZFNamespaceTreeType);
+            t->d[key] = ZFCorePointerForPoolObject<_ZFP_ZFNamespaceTreeType *>(tNew);
             t = tNew;
             t->ns.append(ns, pos[i].start + pos[i].count);
             t->nsFull = ns;
@@ -159,10 +161,10 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
     if(pos.count() < 1) {
         return;
     }
-    _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
+    _ZFP_ZFNamespaceTreeType *t = &_ZFP_ZFNamespaceTree();
     for(zfindex i = 0; i < pos.count(); ++i) {
         zfstring key(nsTmp + pos[i].start, pos[i].count);
-        zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+        _ZFP_ZFNamespaceTreeType::MapType::iterator it = t->d.find(key);
         if(it == t->d.end()) {
             t = zfnull;
             break;
@@ -181,14 +183,14 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
 
 void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     ZFCoreMutexLocker();
-    ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
-    toCheck.add(&_ZFP_ZFNamespaceMap());
+    ZFCoreQueuePOD<_ZFP_ZFNamespaceTreeType *> toCheck;
+    toCheck.add(&_ZFP_ZFNamespaceTree());
     do {
-        _ZFP_ZFNamespaceMapType *t = toCheck.take();
+        _ZFP_ZFNamespaceTreeType *t = toCheck.take();
         if(!t->ns.isEmpty()) {
             ret.add(t->ns);
         }
-        for(zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it) {
+        for(_ZFP_ZFNamespaceTreeType::MapType::iterator it = t->d.begin(); it != t->d.end(); ++it) {
             toCheck.add(it->second.pointerValue());
         }
     } while(!toCheck.isEmpty());
@@ -201,13 +203,13 @@ void ZFNamespaceGetAllT(
         ) {
     ZFCoreMutexLocker();
     parent = ZFNamespaceSkipGlobal(parent);
-    _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
+    _ZFP_ZFNamespaceTreeType *t = &_ZFP_ZFNamespaceTree();
     if(parent != zfnull) {
         ZFCoreArray<ZFIndexRange> pos;
         ZFNamespaceSplit(pos, parent);
         for(zfindex i = 0; i < pos.count(); ++i) {
             zfstring key(parent + pos[i].start, pos[i].count);
-            zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+            _ZFP_ZFNamespaceTreeType::MapType::iterator it = t->d.find(key);
             if(it == t->d.end()) {
                 return;
             }
@@ -217,17 +219,17 @@ void ZFNamespaceGetAllT(
         }
     }
 
-    ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
-    for(zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it) {
+    ZFCoreQueuePOD<_ZFP_ZFNamespaceTreeType *> toCheck;
+    for(_ZFP_ZFNamespaceTreeType::MapType::iterator it = t->d.begin(); it != t->d.end(); ++it) {
         toCheck.add(it->second.pointerValue());
     }
     do {
-        _ZFP_ZFNamespaceMapType *t = toCheck.take();
+        _ZFP_ZFNamespaceTreeType *t = toCheck.take();
         if(!t->ns.isEmpty()) {
             ret.add(t->ns);
         }
         if(recursive) {
-            for(zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it) {
+            for(_ZFP_ZFNamespaceTreeType::MapType::iterator it = t->d.begin(); it != t->d.end(); ++it) {
                 toCheck.add(it->second.pointerValue());
             }
         }

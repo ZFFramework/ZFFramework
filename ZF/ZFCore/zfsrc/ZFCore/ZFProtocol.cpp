@@ -66,7 +66,7 @@ _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(
         ) {
     _ZFP_ZFProtocolData *dataHolder = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolData *>(protocolName);
     if(dataHolder == zfnull) {
-        dataHolder = zfnew(_ZFP_ZFProtocolData);
+        dataHolder = zfpoolNew(_ZFP_ZFProtocolData);
         dataHolder->protocolName = protocolName;
         dataHolder->protocolOptional = protocolOptional;
         dataHolder->implTryAccessCallback = implTryAccessCallback;
@@ -74,7 +74,7 @@ _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(
         dataHolder->implLevel = ZFProtocolLevel::e_Default;
         dataHolder->implCleanupCallback = zfnull;
         dataHolder->implInstance = zfnull;
-        _ZFP_ZFProtocolDataMap.set(protocolName, ZFCorePointerForObject<_ZFP_ZFProtocolData *>(dataHolder));
+        _ZFP_ZFProtocolDataMap.set(protocolName, ZFCorePointerForPoolObject<_ZFP_ZFProtocolData *>(dataHolder));
     }
 
     return *dataHolder;
