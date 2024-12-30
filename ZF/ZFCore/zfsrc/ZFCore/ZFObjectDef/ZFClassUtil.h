@@ -109,13 +109,19 @@ inline zfstring objectPropertyInfo(
 extern ZFLIB_ZFCore void objectInfoT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
         );
 /**
  * @brief get short info of object, see #objectPropertyInfo
  */
-inline zfstring objectInfo(ZF_IN ZFObject *obj) {
+inline zfstring objectInfo(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+        ) {
     zfstring ret;
-    ZFClassUtil::objectInfoT(ret, obj);
+    ZFClassUtil::objectInfoT(ret, obj, maxCount, token);
     return ret;
 }
 

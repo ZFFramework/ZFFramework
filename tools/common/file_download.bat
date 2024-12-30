@@ -23,7 +23,7 @@ call :DownloadFile "%SRC_URL%" "%DST_PATH%"
 exit /b 0
 
 :DownloadFile <SRC_URL> <DST_PATH>
-set vbs="%WORK_DIR%\..\..\_tmp\file_download.vbs"
+set vbs=%WORK_DIR%\..\..\_tmp\file_download.vbs
 if exist %vbs% del /f /q %vbs%
 for %%a in ("%vbs%\..") do set _vbs_PARENT=%%~fa
 mkdir "%_vbs_PARENT%" >nul 2>&1

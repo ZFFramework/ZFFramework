@@ -96,7 +96,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
         }
 
         zfauto value;
-        if(!ZFObjectFromDataT(value, nodeData.childAt(0), outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(value, nodeData.childAt(1), outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(value == zfnull) {
@@ -104,6 +104,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
             return zffalse;
         }
         this->iterAdd(key, value);
+        nodeData.resolveMark();
     }
 
     return zftrue;

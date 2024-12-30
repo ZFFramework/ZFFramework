@@ -140,7 +140,22 @@ void objectPropertyInfo(
         ret += token.tokenPairSeparator;
         {
             ret += token.tokenValueLeft;
-            ZFPropertyGetInfo(ret, allProperty[index], obj);
+            {
+                zfstring s;
+                ZFPropertyGetInfo(s, allProperty[index], obj);
+
+                zfindex iL = 0;
+                for(zfindex i = 0; i < s.length(); i += zfcharGetSize(s + i)) {
+                    if(s[i] == '\n') {
+                        ret.append(s, iL, i + 1 - iL);
+                        iL = i + 1;
+                        ret += "    ";
+                    }
+                }
+                if(iL < s.length()) {
+                    ret.append(s, iL, s.length() - iL);
+                }
+            }
             ret += token.tokenValueRight;
         }
         ret += token.tokenPairRight;
@@ -159,6 +174,8 @@ void objectPropertyInfo(
 void objectInfoT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token /* = ZFTokenForKeyValueContainerDefault() */
         ) {
     if(obj == zfnull) {
         ret += ZFTOKEN_zfnull;
@@ -171,7 +188,7 @@ void objectInfoT(
     zfsFromPointerT(ret, obj);
     ret += ")";
 
-    ZFClassUtil::objectPropertyInfo(ret, obj);
+    ZFClassUtil::objectPropertyInfo(ret, obj, maxCount, token);
 
     ret += ZFTOKEN_ZFObjectInfoRight;
 }
@@ -228,12 +245,16 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfstring, objectPropertyInfo
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, objectInfoT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, objectInfoT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, objectInfo
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfstring, objectInfo
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
         )
 
 ZF_NAMESPACE_END(ZFClassUtil)
