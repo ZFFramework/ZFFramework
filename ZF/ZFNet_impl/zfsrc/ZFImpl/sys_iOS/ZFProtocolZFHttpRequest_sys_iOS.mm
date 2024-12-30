@@ -63,7 +63,7 @@ public:
 
     virtual void httpMethod(
             ZF_IN void *nativeTask
-            , ZF_IN ZFHttpMethodEnum httpMethod
+            , ZF_IN ZFHttpMethod httpMethod
             ) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         task.httpMethod = ZFImpl_sys_iOS_zfstringToNSString(ZFHttpMethodToString(httpMethod));

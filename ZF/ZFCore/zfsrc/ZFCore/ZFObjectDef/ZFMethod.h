@@ -15,16 +15,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief access type for ZFMethod
  */
 typedef enum {
-    ZFMethodPrivilegeTypePublic, /**< @brief public */
-    ZFMethodPrivilegeTypeProtected, /**< @brief protected */
-    ZFMethodPrivilegeTypePrivate, /**< @brief private */
-} ZFMethodPrivilegeType;
+    ZFMethodAccessTypePublic, /**< @brief public */
+    ZFMethodAccessTypeProtected, /**< @brief protected */
+    ZFMethodAccessTypePrivate, /**< @brief private */
+} ZFMethodAccessType;
 /** @brief string tokens */
-#define ZFTOKEN_ZFMethodPrivilegeTypePublic "public"
+#define ZFTOKEN_ZFMethodAccessTypePublic "public"
 /** @brief string tokens */
-#define ZFTOKEN_ZFMethodPrivilegeTypeProtected "protected"
+#define ZFTOKEN_ZFMethodAccessTypeProtected "protected"
 /** @brief string tokens */
-#define ZFTOKEN_ZFMethodPrivilegeTypePrivate "private"
+#define ZFTOKEN_ZFMethodAccessTypePrivate "private"
 
 // ============================================================
 #define _ZFP_ZFMethodType_ZFMethodTypeNormal()
@@ -266,7 +266,7 @@ public:
             );
     void _ZFP_ZFMethod_initClassMemberType(
             ZF_IN const ZFClass *ownerClass
-            , ZF_IN ZFMethodPrivilegeType privilegeType
+            , ZF_IN ZFMethodAccessType privilegeType
             );
     void _ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace);
     /** @cond ZFPrivateDoc */
@@ -593,15 +593,15 @@ public:
     /**
      * @brief get the method's access type
      */
-    inline ZFMethodPrivilegeType methodPrivilegeType(void) const {
-        return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType;
+    inline ZFMethodAccessType methodAccessType(void) const {
+        return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType;
     }
-    /** @brief util to check whether #methodPrivilegeType is #ZFMethodPrivilegeTypePublic */
-    inline zfbool isPublic(void) const {return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypePublic;}
-    /** @brief util to check whether #methodPrivilegeType is #ZFMethodPrivilegeTypeProtected */
-    inline zfbool isProtected(void) const {return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypeProtected;}
-    /** @brief util to check whether #methodPrivilegeType is #ZFMethodPrivilegeTypePrivate */
-    inline zfbool isPrivate(void) const {return (ZFMethodPrivilegeType)this->_ZFP_ZFMethod_privilegeType == ZFMethodPrivilegeTypePrivate;}
+    /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypePublic */
+    inline zfbool isPublic(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType == ZFMethodAccessTypePublic;}
+    /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypeProtected */
+    inline zfbool isProtected(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType == ZFMethodAccessTypeProtected;}
+    /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypePrivate */
+    inline zfbool isPrivate(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType == ZFMethodAccessTypePrivate;}
 
     /**
      * @brief method type
@@ -696,7 +696,7 @@ public:
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type
-    unsigned short /* ZFMethodPrivilegeType */ _ZFP_ZFMethod_privilegeType;
+    unsigned short /* ZFMethodAccessType */ _ZFP_ZFMethod_privilegeType;
     unsigned short /* ZFMethodType */ _ZFP_ZFMethod_methodType;
     const ZFClass *_ZFP_ZFMethod_ownerClass;
     const ZFProperty *_ZFP_ZFMethod_ownerProperty;
@@ -715,7 +715,7 @@ extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
         , ZF_IN ZFMethodType methodType
         , ZF_IN const ZFClass *ownerClass
-        , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
+        , ZF_IN ZFMethodAccessType methodAccessType
         , ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
@@ -733,7 +733,7 @@ public:
             , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
             , ZF_IN ZFMethodType methodType
             , ZF_IN const ZFClass *ownerClass
-            , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
+            , ZF_IN ZFMethodAccessType methodAccessType
             , ZF_IN const zfstring &methodNamespace
             , ZF_IN const zfstring &methodName
             , ZF_IN const zfstring &returnTypeId

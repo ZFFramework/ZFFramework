@@ -400,7 +400,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilter
                 , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdFH_##MethodName##_##RegSig) \
                 , ZFMethodTypeStatic \
                 , zfnull \
-                , ZFMethodPrivilegeTypePublic \
+                , ZFMethodAccessTypePublic \
                 , ZF_NAMESPACE_CURRENT() \
                 , zftext(#MethodName) \
                 , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \

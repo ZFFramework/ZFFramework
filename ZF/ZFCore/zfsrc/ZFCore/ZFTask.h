@@ -49,7 +49,7 @@ public:
      * @brief stop the task
      */
     ZFMETHOD_DECLARE_1(void, stop
-            , ZFMP_IN(ZFResultTypeEnum, resultType)
+            , ZFMP_IN(ZFResultType, resultType)
             )
     /**
      * @brief whether task running
@@ -80,7 +80,7 @@ public:
     /**
      * @brief for task impl to store task result, reset to success when start
      */
-    ZFPROPERTY_ASSIGN(ZFResultTypeEnum, resultType, ZFResultType::e_Success)
+    ZFPROPERTY_ASSIGN(ZFResultType, resultType, ZFResultType::e_Success)
     /**
      * @brief for task impl to store error hint, reset when start
      */
@@ -91,7 +91,7 @@ public:
     virtual inline void taskOnStart(void) {
     }
     /** @brief called to stop task */
-    virtual inline void taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+    virtual inline void taskOnStop(ZF_IN ZFResultType resultType) {
     }
 
 protected:

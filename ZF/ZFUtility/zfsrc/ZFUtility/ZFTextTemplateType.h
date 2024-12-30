@@ -51,9 +51,9 @@ public:
     /**
      * @brief flag to use when output index,
      *   valid only if #indexWidth greater than 0,
-     *   #ZFTextTemplateIndexFlag::EnumDefault by default
+     *   #v_ZFTextTemplateIndexFlag::EnumDefault by default
      */
-    ZFTextTemplateIndexFlagEnum indexFlag;
+    ZFTextTemplateIndexFlag indexFlag;
 
 public:
     ZFTextTemplateIndexData(void)
@@ -62,7 +62,7 @@ public:
     , indexRadix(10)
     , indexUpperCase(zftrue)
     , indexWidth(0)
-    , indexFlag(ZFTextTemplateIndexFlag::EnumDefault())
+    , indexFlag(v_ZFTextTemplateIndexFlag::EnumDefault())
     {
     }
 
@@ -112,7 +112,7 @@ public:
  *       indexRadix="10" // optional, 10 by default
  *       indexUpperCase="true" // optional, true by default
  *       indexWidth="0" // optional, 0 by default
- *       indexFlag="LeadingZero" // optional, ZFTextTemplateIndexFlag::EnumDefault() by default
+ *       indexFlag="LeadingZero" // optional, v_ZFTextTemplateIndexFlag::EnumDefault() by default
  *   />
  * @endcode
  */

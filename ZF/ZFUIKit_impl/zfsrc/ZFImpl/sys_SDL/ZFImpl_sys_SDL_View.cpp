@@ -321,7 +321,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
     }
 
     Uint8 sdlButton = (Uint8)sdlEvent->button.button;
-    ZFUIMouseButtonEnum mouseButton = ZFUIMouseButton::e_Left;
+    ZFUIMouseButton mouseButton = ZFUIMouseButton::e_Left;
     switch(sdlButton) {
         case SDL_BUTTON_RIGHT:
             mouseButton = ZFUIMouseButton::e_Right;
@@ -454,7 +454,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
             mouseState.viewDown = zfnull;
 
             if(mouseIdPrev != zfidentityInvalid() && viewDownPrev != zfnull) {
-                ZFUIMouseActionEnum mouseAction = (sdlEvent->button.x > ZFImpl_sys_SDL_View::MouseCancel && sdlEvent->button.y > ZFImpl_sys_SDL_View::MouseCancel)
+                ZFUIMouseAction mouseAction = (sdlEvent->button.x > ZFImpl_sys_SDL_View::MouseCancel && sdlEvent->button.y > ZFImpl_sys_SDL_View::MouseCancel)
                     ? ZFUIMouseAction::e_Up
                     : ZFUIMouseAction::e_Cancel;
                 if(mouseState.mouseGrab) {

@@ -53,7 +53,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClassDataUpdateType, ZFClassDataUpdateType
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFClassDataUpdateType
+ZFEXPORT_RAW_ENUM_DEFINE(ZFClassDataUpdateType
         , ZFClassDataUpdateTypeAttach
         , ZFClassDataUpdateTypeDetach
         , ZFClassDataUpdateTypeClassAliasAttach
@@ -134,7 +134,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterForZFClassType, ZFFilterForZFClassTy
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFFilterForZFClassType
+ZFEXPORT_RAW_ENUM_DEFINE(ZFFilterForZFClassType
         , ZFFilterForZFClassTypeInclude
         , ZFFilterForZFClassTypeExclude
         , ZFFilterForZFClassTypeIncludeChildOf
@@ -144,27 +144,27 @@ ZFEXPORT_ENUM_DEFINE(ZFFilterForZFClassType
         )
 
 // ============================================================
-ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodPrivilegeType, ZFMethodPrivilegeType, {
+ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodAccessType, ZFMethodAccessType, {
         const zfchar *tokens[] = ZFM_EXPAND({
-            ZFTOKEN_ZFMethodPrivilegeTypePublic,
-            ZFTOKEN_ZFMethodPrivilegeTypeProtected,
-            ZFTOKEN_ZFMethodPrivilegeTypePrivate,
+            ZFTOKEN_ZFMethodAccessTypePublic,
+            ZFTOKEN_ZFMethodAccessTypeProtected,
+            ZFTOKEN_ZFMethodAccessTypePrivate,
             "",
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
-        v = ZFMethodPrivilegeTypePublic;
+        v = ZFMethodAccessTypePublic;
         switch(matched) {
             case 0:
-                v = ZFMethodPrivilegeTypePublic;
+                v = ZFMethodAccessTypePublic;
                 return zftrue;
             case 1:
-                v = ZFMethodPrivilegeTypeProtected;
+                v = ZFMethodAccessTypeProtected;
                 return zftrue;
             case 2:
-                v = ZFMethodPrivilegeTypePrivate;
+                v = ZFMethodAccessTypePrivate;
                 return zftrue;
             case 3:
-                v = ZFMethodPrivilegeTypePublic;
+                v = ZFMethodAccessTypePublic;
                 return zftrue;
             default:
                 if(errorHint) {
@@ -174,24 +174,24 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodPrivilegeType, ZFMethodPrivilegeType
         }
     }, {
         switch(v) {
-            case ZFMethodPrivilegeTypePublic:
-                s += ZFTOKEN_ZFMethodPrivilegeTypePublic;
+            case ZFMethodAccessTypePublic:
+                s += ZFTOKEN_ZFMethodAccessTypePublic;
                 return zftrue;
-            case ZFMethodPrivilegeTypeProtected:
-                s += ZFTOKEN_ZFMethodPrivilegeTypeProtected;
+            case ZFMethodAccessTypeProtected:
+                s += ZFTOKEN_ZFMethodAccessTypeProtected;
                 return zftrue;
-            case ZFMethodPrivilegeTypePrivate:
-                s += ZFTOKEN_ZFMethodPrivilegeTypePrivate;
+            case ZFMethodAccessTypePrivate:
+                s += ZFTOKEN_ZFMethodAccessTypePrivate;
                 return zftrue;
             default:
                 ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFMethodPrivilegeType
-        , ZFMethodPrivilegeTypePublic
-        , ZFMethodPrivilegeTypeProtected
-        , ZFMethodPrivilegeTypePrivate
+ZFEXPORT_RAW_ENUM_DEFINE(ZFMethodAccessType
+        , ZFMethodAccessTypePublic
+        , ZFMethodAccessTypeProtected
+        , ZFMethodAccessTypePrivate
         )
 
 // ============================================================
@@ -239,7 +239,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodType, ZFMethodType, {
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFMethodType
+ZFEXPORT_RAW_ENUM_DEFINE(ZFMethodType
         , ZFMethodTypeNormal
         , ZFMethodTypeStatic
         , ZFMethodTypeVirtual
@@ -533,10 +533,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, void, 
         , ZFMP_IN(ZFMethodType, methodType)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, ZFMethodType, methodType)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, void, methodPrivilegeType
-        , ZFMP_IN(ZFMethodPrivilegeType, methodPrivilegeType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, void, methodAccessType
+        , ZFMP_IN(ZFMethodAccessType, methodAccessType)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, ZFMethodPrivilegeType, methodPrivilegeType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, ZFMethodAccessType, methodAccessType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, void, methodName
         , ZFMP_IN(const zfstring &, methodName)
         )
@@ -624,13 +624,13 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFPropertyCallbackDynamicRegisterInitValueGetter, propertyInitValueCallback)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertySetterType
-        , ZFMP_IN(ZFMethodPrivilegeType, propertySetterType)
+        , ZFMP_IN(ZFMethodAccessType, propertySetterType)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFMethodPrivilegeType, propertySetterType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFMethodAccessType, propertySetterType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertyGetterType
-        , ZFMP_IN(ZFMethodPrivilegeType, propertyGetterType)
+        , ZFMP_IN(ZFMethodAccessType, propertyGetterType)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFMethodPrivilegeType, propertyGetterType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFMethodAccessType, propertyGetterType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam &, zfunsafe_disableChecker
         , ZFMP_IN(zfbool, disableChecker)
         )
@@ -698,7 +698,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFObjectInstanceState, ZFObjectInstanceState
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFObjectInstanceState
+ZFEXPORT_RAW_ENUM_DEFINE(ZFObjectInstanceState
         , ZFObjectInstanceStateOnInit
         , ZFObjectInstanceStateOnInitFinish
         , ZFObjectInstanceStateIdle

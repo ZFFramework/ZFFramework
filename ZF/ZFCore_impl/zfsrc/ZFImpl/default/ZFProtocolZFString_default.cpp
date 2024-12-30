@@ -10,7 +10,7 @@ public:
     virtual zfbool toUTF8(
             ZF_OUT zfstring &result
             , ZF_IN const void *s
-            , ZF_IN ZFStringEncodingEnum srcEncoding
+            , ZF_IN ZFStringEncoding srcEncoding
             ) {
         switch(srcEncoding) {
             case ZFStringEncoding::e_UTF8:
@@ -41,7 +41,7 @@ public:
     virtual zfbool toUTF16(
             ZF_OUT zfstringW &result
             , ZF_IN const void *s
-            , ZF_IN ZFStringEncodingEnum srcEncoding
+            , ZF_IN ZFStringEncoding srcEncoding
             ) {
         switch(srcEncoding) {
             case ZFStringEncoding::e_UTF8: {
@@ -69,7 +69,7 @@ public:
     virtual zfbool toUTF16BE(
             ZF_OUT zfstringW &result
             , ZF_IN const void *s
-            , ZF_IN ZFStringEncodingEnum srcEncoding
+            , ZF_IN ZFStringEncoding srcEncoding
             ) {
         switch(srcEncoding) {
             case ZFStringEncoding::e_UTF8: {

@@ -36,7 +36,7 @@ void _ZFP_ZFStyleKeyHolder::styleOnUpdate(
     if(style != zfnull) {
         ZFCoreAssertWithMessageTrim(style->classData()->classIsTypeOf(owner->classData())
             || owner->classData()->classIsTypeOf(style->classData()),
-            "[ZFStyle] applying style from incorrect type, to object: %s, from style: %s",
+            "applying style from incorrect type, to object: %s, from style: %s",
             owner->toObject()->objectInfoOfInstance(),
             style->objectInfoOfInstance());
 

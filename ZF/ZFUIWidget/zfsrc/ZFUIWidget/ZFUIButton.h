@@ -234,7 +234,7 @@ public:
     /**
      * @brief current button state
      */
-    ZFMETHOD_DECLARE_0(ZFUIButtonStateEnum, buttonState)
+    ZFMETHOD_DECLARE_0(ZFUIButtonState, buttonState)
 
 protected:
     /** @brief see #EventButtonStateOnUpdate */

@@ -4,15 +4,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTextTemplateRunParamDefault_DECLARE(typeName) \
     static ZFRegExp *_ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule = zfnull; \
-    static ZFFilterCallbackResult _ZFP_ZFTextTemplateRunParamDefault_##typeName##Filter(ZF_IN const zfchar *const &value) { \
+    static ZFFilterResult _ZFP_ZFTextTemplateRunParamDefault_##typeName##Filter(ZF_IN const zfchar *const &value) { \
         if(_ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule != zfnull) { \
             ZFRegExpResult regExpResult; \
             _ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule->find(regExpResult, value); \
             if(regExpResult.matched) { \
-                return ZFFilterCallbackResultNotActive; \
+                return ZFFilterResultNotActive; \
             } \
         } \
-        return ZFFilterCallbackResultNotSpecified; \
+        return ZFFilterResultNotSpecified; \
     }
 
 _ZFP_ZFTextTemplateRunParamDefault_DECLARE(dirName)

@@ -31,7 +31,7 @@ zfclass _ZFP_ZFUIScrollViewPrivate : zfextend ZFObject {
 
 public:
     ZFUIScrollView *pimplOwner;
-    ZFUIScrollViewStateEnum state;
+    ZFUIScrollViewState state;
     zfbool scrollContentFrameOverrideFlag;
     zfbool scrollAniTimerStarted;
     zftimet scrollAniLastTime;
@@ -670,7 +670,7 @@ void ZFUIScrollView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
 void ZFUIScrollView::implChildOnAdd(
         ZF_IN ZFUIView *child
         , ZF_IN zfindex virtualIndex
-        , ZF_IN ZFUIViewChildLayerEnum childLayer
+        , ZF_IN ZFUIViewChildLayer childLayer
         , ZF_IN zfindex childLayerIndex
         ) {
     switch(child->viewLayer()) {
@@ -694,7 +694,7 @@ void ZFUIScrollView::implChildOnAdd(
 void ZFUIScrollView::implChildOnRemove(
         ZF_IN ZFUIView *child
         , ZF_IN zfindex virtualIndex
-        , ZF_IN ZFUIViewChildLayerEnum childLayer
+        , ZF_IN ZFUIViewChildLayer childLayer
         , ZF_IN zfindex childLayerIndex
         ) {
     switch(childLayer) {
@@ -1201,7 +1201,7 @@ zfbool ZFUIScrollView::scrollOverride(void) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFUIScrollView, ZFUIScrollViewStateEnum, scrollViewState) {
+ZFMETHOD_DEFINE_0(ZFUIScrollView, ZFUIScrollViewState, scrollViewState) {
     return d->state;
 }
 

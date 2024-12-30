@@ -77,14 +77,14 @@ public:
     ZFPropertyCallbackDynamicRegisterInitValueGetter propertyInitValueCallback(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertySetterType(ZF_IN ZFMethodPrivilegeType propertySetterType);
+    ZFPropertyDynamicRegisterParam &propertySetterType(ZF_IN ZFMethodAccessType propertySetterType);
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFMethodPrivilegeType propertySetterType(void) const;
+    ZFMethodAccessType propertySetterType(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyGetterType(ZF_IN ZFMethodPrivilegeType propertyGetterType);
+    ZFPropertyDynamicRegisterParam &propertyGetterType(ZF_IN ZFMethodAccessType propertyGetterType);
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFMethodPrivilegeType propertyGetterType(void) const;
+    ZFMethodAccessType propertyGetterType(void) const;
 
     // ============================================================
     // for custom impl

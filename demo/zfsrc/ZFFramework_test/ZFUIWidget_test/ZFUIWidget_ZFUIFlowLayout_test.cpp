@@ -68,16 +68,16 @@ private:
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, orientation),
-            ZFCoreArrayCreate(ZFUIOrientationEnum
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientation, ZFPropertyAccess(ZFUIFlowLayout, orientation),
+            ZFCoreArrayCreate(ZFUIOrientation
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
                 , ZFUIOrientation::e_Left
                 , ZFUIOrientation::e_Top
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIFlowLayout, orientationSecondary),
-            ZFCoreArrayCreate(ZFUIOrientationEnum
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientation, ZFPropertyAccess(ZFUIFlowLayout, orientationSecondary),
+            ZFCoreArrayCreate(ZFUIOrientation
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
                 , ZFUIOrientation::e_Left
@@ -90,8 +90,8 @@ private:
                 , zftrue
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIContentScaleTypeEnum, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
-            ZFCoreArrayCreate(ZFUIContentScaleTypeEnum
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIContentScaleType, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
+            ZFCoreArrayCreate(ZFUIContentScaleType
                 , ZFUIContentScaleType::e_Fill
                 , ZFUIContentScaleType::e_Center
                 , ZFUIContentScaleType::e_FillCenter

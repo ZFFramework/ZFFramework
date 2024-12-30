@@ -9,13 +9,13 @@ ZFOBJECT_REGISTER(ZFUIMouseEvent)
 
 void ZFUIMouseEvent::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     ret += "Mouse ";
-    ret += ZFUIMouseAction::EnumNameForValue(this->mouseAction);
+    ret += v_ZFUIMouseAction::EnumNameForValue(this->mouseAction);
     ret += " ";
     ZFUIPointToStringT(ret, this->mousePoint);
 
     if(this->mouseButton != ZFUIMouseButton::e_Left) {
         ret += " ";
-        ret += ZFUIMouseButton::EnumNameForValue(this->mouseButton);
+        ret += v_ZFUIMouseButton::EnumNameForValue(this->mouseButton);
     }
 
     if(this->eventResolved()) {
@@ -34,9 +34,9 @@ void ZFUIMouseEvent::eventOnApplyScaleReversely(ZF_IN zffloat scale) {
 
 // ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIMouseEvent, zfidentity, mouseId)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIMouseEvent, ZFUIMouseActionEnum, mouseAction)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIMouseEvent, ZFUIMouseAction, mouseAction)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIMouseEvent, ZFUIPoint, mousePoint)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIMouseEvent, ZFUIMouseButtonEnum, mouseButton)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIMouseEvent, ZFUIMouseButton, mouseButton)
 
 ZF_NAMESPACE_GLOBAL_END
 

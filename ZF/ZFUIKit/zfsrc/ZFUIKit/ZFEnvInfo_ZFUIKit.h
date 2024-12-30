@@ -46,8 +46,8 @@ ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 /**
  * @brief device type, #ZFEnvDeviceUIType::e_Desktop if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFEnvDeviceUITypeEnum, deviceUIType
-        , ZFMP_IN_OPT(ZFEnvDeviceUITypeEnum, defaultValue, ZFEnvDeviceUIType::e_Desktop)
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFEnvDeviceUIType, deviceUIType
+        , ZFMP_IN_OPT(ZFEnvDeviceUIType, defaultValue, ZFEnvDeviceUIType::e_Desktop)
         )
 
 ZF_NAMESPACE_END(ZFEnvInfo)

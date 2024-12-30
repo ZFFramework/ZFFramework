@@ -182,9 +182,9 @@ void ZFAnimation::aniImplStop(void) {
 }
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFAnimation, void, aniImplNotifyStop
-        , ZFMP_IN_OPT(ZFResultTypeEnum, resultType, ZFResultType::e_Success)
+        , ZFMP_IN_OPT(ZFResultType, resultType, ZFResultType::e_Success)
         )
-void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = ZFResultType::e_Success */) {
+void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = ZFResultType::e_Success */) {
     if(!d->started || !d->aniImplStartFlag) {
         return;
     }
@@ -212,7 +212,7 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = Z
         onStopSaved.execute(ZFArgs()
                 .sender(this)
                 .eventId(zfself::EventAniOnStop())
-                .param0(zfobj<ZFResultType>(resultType))
+                .param0(zfobj<v_ZFResultType>(resultType))
                 );
     }
 
@@ -265,7 +265,7 @@ void ZFAniTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAniTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFAniTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->impl()) {
         this->impl()->stop();
     }

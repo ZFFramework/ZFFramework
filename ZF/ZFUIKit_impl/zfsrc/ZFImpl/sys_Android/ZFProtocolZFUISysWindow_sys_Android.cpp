@@ -140,7 +140,7 @@ public:
             );
     }
 
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {
             return ZFUIOrientation::e_Top;
         }
@@ -152,7 +152,7 @@ public:
         jint ret = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), jmId
             , (jobject)sysWindow->nativeWindow()
             );
-        return (ZFUIOrientationEnum)ret;
+        return (ZFUIOrientation)ret;
     }
     virtual void sysWindowOrientationFlags(
             ZF_IN ZFUISysWindow *sysWindow
@@ -264,8 +264,8 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow
     zfobj<ZFUIKeyEvent> event;
     event->eventResolved(zffalse);
     event->keyId = keyId;
-    event->keyAction = (ZFUIKeyActionEnum)keyAction;
-    event->keyCode = (ZFUIKeyCodeEnum)keyCode;
+    event->keyAction = (ZFUIKeyAction)keyAction;
+    event->keyCode = (ZFUIKeyCode)keyCode;
     event->keyCodeRaw = keyCodeRaw;
     ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyKeyEvent(JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUISysWindow), event);
     return event->eventResolved();

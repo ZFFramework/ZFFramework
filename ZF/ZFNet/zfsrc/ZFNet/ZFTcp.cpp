@@ -11,7 +11,7 @@ public:
     void *nativeSocket;
     zfstring host;
     zfuint port;
-    ZFTcpTypeEnum type;
+    ZFTcpType type;
 public:
     _ZFP_ZFTcpPrivate(void)
     : nativeSocket(zfnull)
@@ -80,7 +80,7 @@ ZFMETHOD_DEFINE_0(ZFTcp, void, close) {
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFTcp, ZFTcpTypeEnum, type) {
+ZFMETHOD_DEFINE_0(ZFTcp, ZFTcpType, type) {
     return d->type;
 }
 

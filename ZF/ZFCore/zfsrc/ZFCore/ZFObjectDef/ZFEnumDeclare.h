@@ -57,9 +57,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     value = EnumName::EnumValueForName("Value1");
  *     name = EnumName::EnumNameForValue(value);
  *   @endcode
- * -  use EnumName to store the enum value as a ZFObject
+ * -  use v_EnumName to store the enum value as a ZFObject
  *   @code
- *     EnumName *e = zfAlloc(EnumName());
+ *     v_EnumName *e = zfAlloc(v_EnumName());
  *     e->enumValue(EnumName::e_Value1);
  *     zfuint value = e->enumValue();
  *     const zfchar *name = e->enumName();
@@ -84,10 +84,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     name = e->enumNameForValue(value); // OK, name from EnumName
  *     zfRelease(e);
  *   @endcode
- * -  you can access the internal enum type by EnumNameEnum
+ * -  you can access the internal enum type by EnumName
  * -  usually, it's highly recommended to use the internal enum type for performance:
  *   @code
- *     // pass by EnumNameEnum value, which is actually a int value
+ *     // pass by EnumName value, which is actually a int value
  *     void func1(MyEnumEnum e) {...}
  *   @endcode
  */
@@ -181,10 +181,10 @@ public:
 
 // ============================================================
 #define _ZFP_ZFENUM_BEGIN(ZFLIB_, EnumName) \
-    zfclass ZFLIB_ EnumName : zfextend ZFEnum { \
-        ZFOBJECT_DECLARE(EnumName, ZFEnum) \
+    zfclass ZFLIB_ v_##EnumName : zfextend ZFEnum { \
+        ZFOBJECT_DECLARE(v_##EnumName, ZFEnum) \
     public: \
-        /** @brief see @ref EnumName */ \
+        /** @brief see @ref v_##EnumName */ \
         typedef enum {
 
 #define _ZFP_ZFENUM_VALUE(Value) /** \n */ e_##Value,
@@ -281,22 +281,19 @@ public:
                 d->add(isEnableDuplicateValue, zfself::e_##Value, Name);
 
 #define _ZFP_ZFENUM_END(ZFLIB_, EnumName) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, ZFEnumInvalid())
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, d->enumValueAt(0))
 #define _ZFP_ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, defaultEnum)
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, zfself::e_##defaultEnum)
 
 #define _ZFP_ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, ZFEnumInvalid()) \
-    _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, EnumName::EnumDefault())
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, d->enumValueAt(0)) \
+    _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, v_##EnumName::EnumDefault())
 #define _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, defaultEnum) \
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, zfself::e_##defaultEnum) \
     _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultEnumFlags)
 
-#define _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, IsFlags, EnumDefaultAction) \
-                d->enumDefault = (zfuint)(EnumDefaultAction); \
-                if(d->enumDefault == ZFEnumInvalid()) { \
-                    d->enumDefault = d->enumValueAt(0); \
-                } \
+#define _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, IsFlags, defaultEnum) \
+                d->enumDefault = (zfuint)(defaultEnum); \
                 d->enumIsFlags = (IsFlags); \
             } \
             return d; \
@@ -304,11 +301,11 @@ public:
     public: \
         /** @brief see #ZFEnum::enumIsFlags */ \
         static inline zfbool EnumIsFlags(void) { \
-            return (EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumIsFlags; \
+            return (v_##EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumIsFlags; \
         } \
         /** @brief default value for @ref EnumName */ \
-        static inline EnumName::ZFEnumType EnumDefault(void) { \
-            return (EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumDefault; \
+        static inline v_##EnumName::ZFEnumType EnumDefault(void) { \
+            return (v_##EnumName::ZFEnumType)zfself::_ZFP_ZFEnumDataRef()->enumDefault; \
         } \
     public: \
         /** @brief util method to access original enum value */ \
@@ -319,8 +316,8 @@ public:
         zfoverride \
         virtual const zfstring &zfvTypeId(void); \
     }; \
-    /** @brief same as @ref EnumName##Enum, see @ref EnumName */ \
-    typedef EnumName::ZFEnumType EnumName##Enum; \
+    /** @brief see @ref v_##EnumName */ \
+    typedef v_##EnumName::ZFEnumType EnumName; \
     _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
     _ZFP_ZFENUM_PROP_TYPE_DECLARE(ZFLIB_, EnumName)
 
@@ -332,17 +329,17 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         );
 #define _ZFP_ZFENUM_DEFINE(EnumName) \
     _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
-    ZFOBJECT_REGISTER(EnumName) \
+    ZFOBJECT_REGISTER(v_##EnumName) \
     _ZFP_ZFENUM_PROP_TYPE_DEFINE(EnumName) \
     ZF_STATIC_REGISTER_INIT(EnumReg_##EnumName) { \
-        for(zfindex i = 0; i < EnumName::EnumCount(); ++i) { \
+        for(zfindex i = 0; i < v_##EnumName::EnumCount(); ++i) { \
             ZFMethodUserRegisterDetail_0(resultMethod, { \
-                    return (EnumName##Enum)EnumName::EnumValueForName(invokerMethod->methodName() + 2); \
-                }, EnumName::ClassData(), public, ZFMethodTypeStatic, \
-                EnumName##Enum, zfstr("e_%s", EnumName::EnumNameAt(i))); \
+                    return (EnumName)v_##EnumName::EnumValueForName(invokerMethod->methodName() + 2); \
+                }, v_##EnumName::ClassData(), public, ZFMethodTypeStatic, \
+                EnumName, zfstr("e_%s", v_##EnumName::EnumNameAt(i))); \
             _m.add(resultMethod); \
         } \
-        _ZFP_ZFEnumMethodReg(_m, EnumName::_ZFP_ZFEnumDataRef()); \
+        _ZFP_ZFEnumMethodReg(_m, v_##EnumName::_ZFP_ZFEnumDataRef()); \
     } \
     ZF_STATIC_REGISTER_DESTROY(EnumReg_##EnumName) { \
         for(zfindex i = 0; i < _m.count(); ++i) { \
@@ -358,7 +355,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
 
 // ============================================================
 #define _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
-    /** @brief see @ref EnumName, return enum object if success */ \
+    /** @brief see @ref v_##EnumName, return enum object if success */ \
     extern ZFLIB_ zfbool EnumName##FromStringT( \
             ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *src \
@@ -368,23 +365,23 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
     /** @brief see @ref EnumName, return empty string if error */ \
     extern ZFLIB_ zfbool EnumName##ToStringT( \
             ZF_IN_OUT zfstring &ret \
-            , ZF_IN EnumName *const &value \
+            , ZF_IN v_##EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
-    /** @brief see @ref EnumName, return empty string if error */ \
+    /** @brief see @ref v_##EnumName, return empty string if error */ \
     inline zfstring EnumName##ToString( \
-            ZF_IN EnumName *const &value \
+            ZF_IN v_##EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
         zfstring ret; \
         EnumName##ToStringT(ret, value, errorHint); \
         return ret; \
     } \
-    ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumName##Enum)
+    ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumName)
 #define _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
     zfbool EnumName##ToStringT( \
             ZF_IN_OUT zfstring &ret \
-            , ZF_IN EnumName *const &value \
+            , ZF_IN v_##EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         ret += ((value == zfnull) ? zfstring() : value->enumName()); \
@@ -397,25 +394,25 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
-            ret = zfobj<EnumName>(ZFEnumInvalid()); \
+            ret = zfobj<v_##EnumName>(ZFEnumInvalid()); \
             return zftrue; \
         } \
-        zfuint tmpValue = EnumName::EnumValueForName( \
+        zfuint tmpValue = v_##EnumName::EnumValueForName( \
             (srcLen == zfindexMax()) ? src : zfstring(src, srcLen).cString()); \
         if(tmpValue == ZFEnumInvalid()) { \
             zfstringAppend(errorHint, "no enum named: \"%s\"", zfstring(src, srcLen)); \
             return zffalse; \
         } \
         else { \
-            ret = zfobj<EnumName>(tmpValue); \
+            ret = zfobj<v_##EnumName>(tmpValue); \
             return zftrue; \
         } \
     } \
-    ZFOUTPUT_TYPE_DEFINE(EnumName##Enum, {s += EnumName::EnumNameForValue(v);})
+    ZFOUTPUT_TYPE_DEFINE(EnumName, {s += v_##EnumName::EnumNameForValue(v);})
 
 // ============================================================
 #define _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultValue) \
-    /** @brief EnumName as #zfflags, see @ref EnumName, @ref EnumFlagsName##ToString, @ref EnumFlagsName##FromString */ \
+    /** @brief v_##EnumName as #zfflags, see @ref v_##EnumName, @ref EnumFlagsName##ToString, @ref EnumFlagsName##FromString */ \
     zffinal zfclassPOD ZFLIB_ EnumFlagsName { \
         /* this class should be POD-like to support enum value reinterpret cast (ZFTAG_TRICKS: EnumReinterpretCast) */ \
     public: \
@@ -427,28 +424,28 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         /** @cond ZFPrivateDoc */ \
         EnumFlagsName(void) : flags(0) {} \
         EnumFlagsName(ZF_IN zfuint const &flags) : flags(flags) {} \
-        EnumFlagsName(ZF_IN EnumName##Enum const &flags) : flags((zfuint)flags) {} \
+        EnumFlagsName(ZF_IN EnumName const &flags) : flags((zfuint)flags) {} \
         EnumFlagsName(ZF_IN EnumFlagsName const &ref) : flags(ref.flags) {} \
     public: \
         zfuint const &enumValue(void) const {return this->flags;} \
         void enumValue(ZF_IN zfuint const &flags) {this->flags = flags;} \
-        void enumValue(ZF_IN EnumName##Enum const &flags) {this->flags = (zfuint)flags;} \
+        void enumValue(ZF_IN EnumName const &flags) {this->flags = (zfuint)flags;} \
     public: \
         operator zfuint const & (void) const {return this->flags;} \
         EnumFlagsName &operator = (ZF_IN zfuint const &flags) {this->flags = flags; return *this;} \
-        EnumFlagsName &operator = (ZF_IN EnumName##Enum const &flags) {this->flags = (zfuint)flags; return *this;} \
+        EnumFlagsName &operator = (ZF_IN EnumName const &flags) {this->flags = (zfuint)flags; return *this;} \
         EnumFlagsName &operator = (ZF_IN EnumFlagsName const &ref) {this->flags = ref.flags; return *this;} \
         zfbool operator == (ZF_IN zfuint const &flags) const {return (this->flags == flags);} \
-        zfbool operator == (ZF_IN EnumName##Enum const &flags) const {return (this->flags == (zfuint)flags);} \
+        zfbool operator == (ZF_IN EnumName const &flags) const {return (this->flags == (zfuint)flags);} \
         zfbool operator == (ZF_IN EnumFlagsName const &ref) const {return (this->flags == ref.flags);} \
         zfbool operator != (ZF_IN zfuint const &flags) const {return (this->flags != flags);} \
-        zfbool operator != (ZF_IN EnumName##Enum const &flags) const {return (this->flags != (zfuint)flags);} \
+        zfbool operator != (ZF_IN EnumName const &flags) const {return (this->flags != (zfuint)flags);} \
         zfbool operator != (ZF_IN EnumFlagsName const &ref) const {return (this->flags != ref.flags);} \
         EnumFlagsName &operator |= (ZF_IN zfuint const &flags) {this->flags |= flags; return *this;} \
-        EnumFlagsName &operator |= (ZF_IN EnumName##Enum const &flags) {this->flags |= (zfuint)flags; return *this;} \
+        EnumFlagsName &operator |= (ZF_IN EnumName const &flags) {this->flags |= (zfuint)flags; return *this;} \
         EnumFlagsName &operator |= (ZF_IN EnumFlagsName const &ref) {this->flags |= ref.flags; return *this;} \
         EnumFlagsName &operator &= (ZF_IN zfuint const &flags) {this->flags &= flags; return *this;} \
-        EnumFlagsName &operator &= (ZF_IN EnumName##Enum const &flags) {this->flags &= (zfuint)flags; return *this;} \
+        EnumFlagsName &operator &= (ZF_IN EnumName const &flags) {this->flags &= (zfuint)flags; return *this;} \
         EnumFlagsName &operator &= (ZF_IN EnumFlagsName const &ref) {this->flags &= ref.flags; return *this;} \
     public: \
         void objectInfoT(ZF_IN_OUT zfstring &ret) const; \
@@ -467,7 +464,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
 #define _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName) \
     ZFOUTPUT_TYPE_DEFINE(EnumFlagsName, {v.objectInfoT(s);}) \
     void EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const { \
-        zfflagsToStringT(ret, EnumName::ClassData(), (zfflags)this->enumValue()); \
+        zfflagsToStringT(ret, v_##EnumName::ClassData(), (zfflags)this->enumValue()); \
     } \
     _ZFP_ZFENUM_FLAGS_PROP_TYPE_DEFINE(EnumName, EnumFlagsName)
 

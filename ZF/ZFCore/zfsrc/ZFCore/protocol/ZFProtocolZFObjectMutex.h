@@ -29,10 +29,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ZFObjectMutexImplSet(); \
         } \
     } \
-    ZFProtocolLevelEnum _protocolLevel; \
+    ZFProtocolLevel _protocolLevel; \
     ZF_STATIC_REGISTER_END(_ZFP_OMI_##registerSig)
 
-extern ZFLIB_ZFCore ZFProtocolLevelEnum *_ZFP_ZFObjectMutexImplRegistered;
+extern ZFLIB_ZFCore ZFProtocolLevel *_ZFP_ZFObjectMutexImplRegistered;
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFObjectMutex_h_

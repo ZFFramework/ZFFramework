@@ -62,7 +62,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
                     return zffalse;
                 });
 
-        v.indexFlag = ZFTextTemplateIndexFlag::EnumDefault();
+        v.indexFlag = v_ZFTextTemplateIndexFlag::EnumDefault();
         ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
                 check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag, {
                     return zffalse;
@@ -99,7 +99,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
                 });
 
         ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag, ZFTextTemplateIndexFlag::EnumDefault(), {
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag, v_ZFTextTemplateIndexFlag::EnumDefault(), {
                     return zffalse;
                 });
 
@@ -110,7 +110,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, zfint, indexOf
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, zfindex, indexRadix)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, zfbool, indexUpperCase)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, zfindex, indexWidth)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, ZFTextTemplateIndexFlagEnum, indexFlag)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, ZFTextTemplateIndexFlag, indexFlag)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFTextTemplateReplaceData {

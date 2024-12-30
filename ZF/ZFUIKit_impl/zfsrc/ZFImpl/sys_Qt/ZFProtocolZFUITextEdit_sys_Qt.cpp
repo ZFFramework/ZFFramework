@@ -197,13 +197,13 @@ public:
     }
     virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
+            , ZF_IN ZFUITextEditKeyboardType keyboardType
             ) {
         // not supported
     }
     virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnType keyboardReturnType
             ) {
         // not supported
     }
@@ -245,7 +245,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         QFont font = nativeImplView->font();

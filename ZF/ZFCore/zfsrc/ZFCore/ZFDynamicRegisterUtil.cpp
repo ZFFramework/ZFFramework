@@ -739,7 +739,7 @@ ZFDynamic &ZFDynamic::customInit(
         } ZFLISTENER_END()
         implWrap = onInit;
     }
-    return this->method(ZFTypeId_void(), "objectOnInit", mp, implWrap, ZFMethodTypeVirtual, ZFMethodPrivilegeTypeProtected);
+    return this->method(ZFTypeId_void(), "objectOnInit", mp, implWrap, ZFMethodTypeVirtual, ZFMethodAccessTypeProtected);
 }
 
 // ============================================================
@@ -923,14 +923,14 @@ ZFDynamic &ZFDynamic::method(
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
-        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType methodAccessType /* = ZFMethodAccessTypePublic */
         ) {
     ZFMethodDynamicRegisterParam p;
     p.returnTypeId(returnTypeId);
     p.methodName(methodName);
     p.methodImpl(methodImpl);
     p.methodType(methodType);
-    p.methodPrivilegeType(methodPrivilegeType);
+    p.methodAccessType(methodAccessType);
     for(zfindex i = 0; i < methodParam.paramCount(); ++i) {
         p.methodParam(
             methodParam.paramTypeIdAt(i),
@@ -1050,8 +1050,8 @@ ZFDynamic &ZFDynamic::property(
         ZF_IN const zfstring &propertyTypeId
         , ZF_IN const zfstring &propertyName
         , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1090,8 +1090,8 @@ ZFDynamic &ZFDynamic::property(
         ZF_IN const ZFClass *propertyClassOfRetainProperty
         , ZF_IN const zfstring &propertyName
         , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1155,8 +1155,8 @@ ZFDynamic &ZFDynamic::propertyWithInit(
         ZF_IN const zfstring &propertyTypeId
         , ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &propertyInitValue
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1184,8 +1184,8 @@ ZFDynamic &ZFDynamic::propertyWithInit(
         ZF_IN const ZFClass *propertyClassOfRetainProperty
         , ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &propertyInitValue
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1313,8 +1313,8 @@ ZFDynamic &ZFDynamic::staticProperty(
         ZF_IN const zfstring &propertyTypeId
         , ZF_IN const zfstring &propertyName
         , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1333,8 +1333,8 @@ ZFDynamic &ZFDynamic::staticProperty(
         ZF_IN const ZFClass *propertyClassOfRetainProperty
         , ZF_IN const zfstring &propertyName
         , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1369,7 +1369,7 @@ ZFDynamic &ZFDynamic::staticProperty(
             .methodName(propertyName)
             .returnTypeId(propertyTypeId)
             .methodType(ZFMethodTypeStatic)
-            .methodPrivilegeType(getterPrivilegeType)
+            .methodAccessType(getterPrivilegeType)
             );
     if(getterMethod == zfnull) {
         d->error(zfstr("unable to register staticProperty getter: %s::%s", scope->d.cls->classNameFull(), propertyName));
@@ -1382,7 +1382,7 @@ ZFDynamic &ZFDynamic::staticProperty(
             .methodName(propertyName)
             .methodParam(propertyTypeId)
             .methodType(ZFMethodTypeStatic)
-            .methodPrivilegeType(setterPrivilegeType)
+            .methodAccessType(setterPrivilegeType)
             );
     if(setterMethod == zfnull) {
         ZFMethodDynamicUnregister(getterMethod);
@@ -1427,8 +1427,8 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
         ZF_IN const zfstring &propertyTypeId
         , ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &propertyInitValue
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1447,8 +1447,8 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
         ZF_IN const ZFClass *propertyClassOfRetainProperty
         , ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &propertyInitValue
-        , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
-        , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType /* = ZFMethodAccessTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType /* = ZFMethodAccessTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -1475,7 +1475,7 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
             .methodName(propertyName)
             .returnTypeId(propertyTypeId)
             .methodType(ZFMethodTypeStatic)
-            .methodPrivilegeType(getterPrivilegeType)
+            .methodAccessType(getterPrivilegeType)
             );
     if(getterMethod == zfnull) {
         d->error(zfstr("unable to register staticProperty getter: %s::%s", scope->d.cls->classNameFull(), propertyName));
@@ -1488,7 +1488,7 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
             .methodName(propertyName)
             .methodParam(propertyTypeId)
             .methodType(ZFMethodTypeStatic)
-            .methodPrivilegeType(setterPrivilegeType)
+            .methodAccessType(setterPrivilegeType)
             );
     if(setterMethod == zfnull) {
         ZFMethodDynamicUnregister(getterMethod);
@@ -1645,7 +1645,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, methodPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, methodAccessType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
@@ -1657,29 +1657,29 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, property
         , ZFMP_IN(const zfstring &, propertyTypeId)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, property
         , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, propertyWithInit
         , ZFMP_IN(const zfstring &, propertyTypeId)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, propertyInitValue)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, propertyWithInit
         , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, propertyInitValue)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, property
         , ZFMP_IN(const ZFPropertyDynamicRegisterParam &, param)
@@ -1704,29 +1704,29 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticProper
         , ZFMP_IN(const zfstring &, propertyTypeId)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticProperty
         , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticPropertyWithInit
         , ZFMP_IN(const zfstring &, propertyTypeId)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, propertyInitValue)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticPropertyWithInit
         , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, propertyInitValue)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, setterPrivilegeType, ZFMethodAccessTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, getterPrivilegeType, ZFMethodAccessTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFCoreArray<ZFOutput> &, errorCallbacks)
 

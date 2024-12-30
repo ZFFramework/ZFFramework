@@ -199,7 +199,7 @@ public:
     typedef zfstldeque<ZFJson> ChildList;
 public:
     zfuint refCount;
-    ZFJsonTypeEnum type;
+    ZFJsonType type;
     union {
         zfstring *value; // for ZFJsonType::e_Value
         AttrMap *attrMap; // for ZFJsonType::e_Object
@@ -207,7 +207,7 @@ public:
     } d;
 
 public:
-    explicit _ZFP_ZFJsonPrivate(ZF_IN ZFJsonTypeEnum type)
+    explicit _ZFP_ZFJsonPrivate(ZF_IN ZFJsonType type)
     : refCount(1)
     , type(type)
     {
@@ -256,7 +256,7 @@ ZFJson::ZFJson(ZF_IN const zfnullT &dummy)
 : d(zfnull)
 {
 }
-ZFJson::ZFJson(ZF_IN ZFJsonTypeEnum type) {
+ZFJson::ZFJson(ZF_IN ZFJsonType type) {
     if(type != ZFJsonType::e_Null) {
         d = zfnew(_ZFP_ZFJsonPrivate, type);
     }
@@ -318,7 +318,7 @@ zfindex ZFJson::objectRetainCount(void) const {
 }
 
 // ============================================================
-void ZFJson::_ZFP_ZFJson_jsonType(ZF_IN ZFJsonTypeEnum type) {
+void ZFJson::_ZFP_ZFJson_jsonType(ZF_IN ZFJsonType type) {
     if(type != ZFJsonType::e_Null) {
         if(d) {
             d->type = type;
@@ -328,7 +328,7 @@ void ZFJson::_ZFP_ZFJson_jsonType(ZF_IN ZFJsonTypeEnum type) {
         }
     }
 }
-ZFJsonTypeEnum ZFJson::type(void) const {
+ZFJsonType ZFJson::type(void) const {
     return (d ? d->type : ZFJsonType::e_Null);
 }
 
@@ -642,14 +642,14 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
         v_ZFJson *v = invokerObject;
         v->zfv._ZFP_ZFJson_jsonType(type);
     }, v_ZFJson
-    , ZFMP_IN(ZFJsonTypeEnum, type)
+    , ZFMP_IN(ZFJsonType, type)
     )
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, void, objectInfoT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfstring, objectInfo)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJsonTypeEnum, type)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJsonType, type)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJson, copy)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, merge

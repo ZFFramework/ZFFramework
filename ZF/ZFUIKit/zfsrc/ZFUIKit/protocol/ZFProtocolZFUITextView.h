@@ -41,7 +41,7 @@ public:
     /** @brief see #ZFUITextView */
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
     virtual void textAlign(
@@ -76,7 +76,7 @@ public:
     /** @brief see #ZFUITextView */
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            , ZF_IN ZFUITextTruncateMode const &textTruncateMode
             ) zfpurevirtual;
 
     // ============================================================

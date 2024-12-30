@@ -66,14 +66,14 @@ protected:
      */
     virtual void format(
             ZF_IN_OUT zfstring &ret
-            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN ZFOutputFormatStep outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
             ) zfpurevirtual;
 public:
     inline void _ZFP_format(
             ZF_IN_OUT zfstring &ret
-            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN ZFOutputFormatStep outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
             ) {
@@ -134,8 +134,8 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat
 /**
  * @brief basic output format
  */
-zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextend ZFStyleableObject, zfimplement ZFOutputFormat {
-    ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFStyleableObject)
+zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextend ZFStyle, zfimplement ZFOutputFormat {
+    ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFOutputFormat)
 
 public:
@@ -154,7 +154,7 @@ protected:
     zfoverride
     virtual void format(
             ZF_IN_OUT zfstring &ret
-            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN ZFOutputFormatStep outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
             );

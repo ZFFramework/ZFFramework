@@ -39,8 +39,8 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUISizeType)
  */
 zfclassPOD ZFLIB_ZFUIKit ZFUISizeParam {
 public:
-    ZFUISizeTypeEnum width;   /**< @brief width */
-    ZFUISizeTypeEnum height;  /**< @brief height */
+    ZFUISizeType width;   /**< @brief width */
+    ZFUISizeType height;  /**< @brief height */
 };
 ZFCORE_POD_DECLARE(ZFUISizeParam)
 
@@ -64,8 +64,8 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUISizeParam)
  * @brief make a ZFUISizeParam
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamCreate
-        , ZFMP_IN(ZFUISizeTypeEnum const &, width)
-        , ZFMP_IN(ZFUISizeTypeEnum const &, height)
+        , ZFMP_IN(ZFUISizeType const &, width)
+        , ZFMP_IN(ZFUISizeType const &, height)
         ) {
     ZFUISizeParam ret = {width, height};
     return ret;
@@ -74,7 +74,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamCreate
  * @brief make a ZFUISizeParam
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamCreate
-        , ZFMP_IN(ZFUISizeTypeEnum const &, v)
+        , ZFMP_IN(ZFUISizeType const &, v)
         ) {
     ZFUISizeParam ret = {v, v};
     return ret;
@@ -121,8 +121,8 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamFillFil
  *   and must be serializable
  * @note by default, a layout param would be compared by comparing all property
  */
-zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUILayoutParam, ZFStyleableObject)
+zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextend ZFStyle {
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUILayoutParam, ZFStyle)
 
 public:
     // ============================================================
@@ -329,13 +329,13 @@ public:
             , ZFMP_OUT(zffloat &, ret)
             , ZFMP_IN(zffloat, size)
             , ZFMP_IN(zffloat, sizeHint)
-            , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
+            , ZFMP_IN(ZFUISizeType, sizeParam)
             )
     /** @brief see #sizeHintApplyT */
     ZFMETHOD_DECLARE_STATIC_3(zffloat, sizeHintApply
             , ZFMP_IN(zffloat, size)
             , ZFMP_IN(zffloat, sizeHint)
-            , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
+            , ZFMP_IN(ZFUISizeType, sizeParam)
             )
 
     /**

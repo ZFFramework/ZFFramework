@@ -30,7 +30,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfstring, text) {
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUITextAppearanceEnum, textAppearance) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUITextAppearance, textAppearance) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textAppearance(this, this->textAppearance());
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
@@ -66,7 +66,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfbool, singleLine) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUITextTruncateModeEnum, textTruncateMode) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUITextTruncateMode, textTruncateMode) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textTruncateMode(this, this->textTruncateMode());
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();

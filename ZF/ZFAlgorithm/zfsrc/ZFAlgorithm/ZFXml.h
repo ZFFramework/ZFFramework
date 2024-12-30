@@ -86,7 +86,7 @@ public:
     /** @cond ZFPrivateDoc */
     ZFXml(void);
     ZFXml(ZF_IN const zfnullT &dummy);
-    ZFXml(ZF_IN ZFXmlTypeEnum type);
+    ZFXml(ZF_IN ZFXmlType type);
     ZFXml(ZF_IN const ZFXml &ref);
     virtual ~ZFXml(void);
 
@@ -117,11 +117,11 @@ public:
 
     // ============================================================
 public:
-    void _ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum type);
+    void _ZFP_ZFXml_xmlType(ZF_IN ZFXmlType type);
     /**
      * @brief type of this item
      */
-    ZFXmlTypeEnum type(void) const;
+    ZFXmlType type(void) const;
     /**
      * @brief true if #type is #ZFXmlType::e_Null
      */

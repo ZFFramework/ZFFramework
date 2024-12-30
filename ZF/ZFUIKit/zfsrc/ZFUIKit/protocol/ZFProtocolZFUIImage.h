@@ -82,7 +82,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchPos)
  */
 zfclassPOD ZFLIB_ZFUIKit ZFUIImageImplNinePatchDrawData {
 public:
-    ZFUIImageImplNinePatchPosEnum position; /**< @brief position of the nine patch piece */
+    ZFUIImageImplNinePatchPos position; /**< @brief position of the nine patch piece */
     ZFUIRect src; /**< @brief src rect to draw bitmap from, ensured valid */
     ZFUIRect dst; /**< @brief dst rect to draw bitmapt to, ensured valid */
 };

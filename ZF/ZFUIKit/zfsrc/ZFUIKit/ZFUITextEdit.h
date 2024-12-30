@@ -70,7 +70,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Confirm)
     ZFENUM_VALUE_REGISTER(FocusNext)
     ZFENUM_VALUE_REGISTER(HideKeyboard)
-ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnAction, ZFUITextEditKeyboardReturnAction::e_FocusNext)
+ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnAction, FocusNext)
 
 zfclassFwd _ZFP_ZFUITextEditPrivate;
 // ============================================================
@@ -153,19 +153,19 @@ public:
     ZFPROPERTY_ASSIGN(zfbool, editSecured)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, editSecured)
     /**
-     * @brief keyboard hint, see #ZFUITextEditKeyboardType, #ZFUITextEditKeyboardType::EnumDefault by default
+     * @brief keyboard hint, see #ZFUITextEditKeyboardType, #v_ZFUITextEditKeyboardType::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardTypeEnum, keyboardType, ZFUITextEditKeyboardType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardTypeEnum, keyboardType)
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardType, keyboardType, v_ZFUITextEditKeyboardType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardType, keyboardType)
     /**
-     * @brief keyboard hint, see #ZFUITextEditKeyboardReturnType, #ZFUITextEditKeyboardReturnType::EnumDefault by default
+     * @brief keyboard hint, see #ZFUITextEditKeyboardReturnType, #v_ZFUITextEditKeyboardReturnType::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnTypeEnum, keyboardReturnType, ZFUITextEditKeyboardReturnType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardReturnTypeEnum, keyboardReturnType)
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnType, keyboardReturnType, v_ZFUITextEditKeyboardReturnType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardReturnType, keyboardReturnType)
     /**
-     * @brief action to perform when click return, see #ZFUITextEditKeyboardReturnAction, #ZFUITextEditKeyboardReturnAction::EnumDefault by default
+     * @brief action to perform when click return, see #ZFUITextEditKeyboardReturnAction, #v_ZFUITextEditKeyboardReturnAction::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnActionEnum, keyboardReturnAction, ZFUITextEditKeyboardReturnAction::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnAction, keyboardReturnAction, v_ZFUITextEditKeyboardReturnAction::EnumDefault())
     /**
      * @brief text place holder
      */
@@ -199,7 +199,7 @@ public:
 public:
     ZFPROPERTY_ON_VERIFY_DECLARE(zfstring, text)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, text)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearanceEnum, textAppearance)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearance, textAppearance)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSize)

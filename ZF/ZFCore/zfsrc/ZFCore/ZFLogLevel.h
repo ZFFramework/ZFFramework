@@ -32,7 +32,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Warning)
     ZFENUM_VALUE_REGISTER(Error)
     ZFENUM_VALUE_REGISTER(Assert)
-ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFCore, ZFLogLevel, ZFLogLevel::e_Warning)
+ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFCore, ZFLogLevel, Warning)
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 /**
@@ -45,17 +45,17 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /** @brief see #ZFLogLevel, #ZFLogLevel::e_Warning by default */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFLogLevelDefault
-        , ZFMP_IN(ZFLogLevelEnum, level)
+        , ZFMP_IN(ZFLogLevel, level)
         )
 /** @brief see #ZFLogLevel */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFLogLevelEnum, ZFLogLevelDefault)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFLogLevel, ZFLogLevelDefault)
 
 /**
  * @brief true if specified level is active
  *   (i.e. #ZFLogLevelDefault not greater than the specified level)
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFLogLevelIsActive
-        , ZFMP_IN(ZFLogLevelEnum, level)
+        , ZFMP_IN(ZFLogLevel, level)
         ) {
     return (ZFLogLevelDefault() <= level);
 }

@@ -106,8 +106,8 @@ zfclassFwd _ZFP_ZFUIImagePrivate;
  *   </ZFUIImage>
  * @endcode
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFUIImage, ZFStyleableObject)
+zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFUIImage, ZFStyle)
 
     /**
      * @brief see #ZFObject::observerNotify

@@ -276,7 +276,7 @@ public:
     /**
      * @brief get current orientation
      */
-    ZFMETHOD_DECLARE_0(ZFUIOrientationEnum, sysWindowOrientation)
+    ZFMETHOD_DECLARE_0(ZFUIOrientation, sysWindowOrientation)
     /**
      * @brief set supported orientation, orientation may or may not change immediately
      */
@@ -419,7 +419,7 @@ public:
     /**
      * @brief see #ZFUISysWindow::sysWindowOrientation
      */
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         return ZFUIOrientation::e_Top;
     }
     /**

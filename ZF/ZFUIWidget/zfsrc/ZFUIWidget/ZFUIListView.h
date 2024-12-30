@@ -114,8 +114,8 @@ public:
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientation, ZFUIOrientation::e_Top)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientation)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientation, ZFUIOrientation::e_Top)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientation, orientation)
 
     /**
      * @brief whether auto update #ZFUIScrollView::scrollBounceVertical series according to #orientation,
@@ -176,12 +176,12 @@ protected:
     zfoverride
     virtual void viewChildOnAdd(
             ZF_IN ZFUIView *child
-            , ZF_IN ZFUIViewChildLayerEnum layer
+            , ZF_IN ZFUIViewChildLayer layer
             );
     zfoverride
     virtual void viewChildOnRemove(
             ZF_IN ZFUIView *child
-            , ZF_IN ZFUIViewChildLayerEnum layer
+            , ZF_IN ZFUIViewChildLayer layer
             );
 
     zfoverride

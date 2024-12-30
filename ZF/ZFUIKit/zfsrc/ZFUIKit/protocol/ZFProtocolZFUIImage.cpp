@@ -8,7 +8,7 @@ ZFENUM_DEFINE(ZFUIImageImplNinePatchPos)
 
 ZFOUTPUT_TYPE_DEFINE(ZFUIImageImplNinePatchDrawData, {
     zfstringAppend(s, "(%s)<%s, %s>",
-        ZFUIImageImplNinePatchPos::EnumNameForValue(v.position),
+        v_ZFUIImageImplNinePatchPos::EnumNameForValue(v.position),
         v.src,
         v.dst
         );

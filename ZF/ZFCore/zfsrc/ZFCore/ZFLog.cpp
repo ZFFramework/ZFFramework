@@ -11,7 +11,7 @@ ZFOBJECT_REGISTER(ZFLogFormat)
 
 void ZFLogFormat::format(
         ZF_IN_OUT zfstring &ret
-        , ZF_IN ZFOutputFormatStepEnum outputStep
+        , ZF_IN ZFOutputFormatStep outputStep
         , ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
         ) {

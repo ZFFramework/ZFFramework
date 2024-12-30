@@ -170,7 +170,7 @@ void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
 }
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFStyleableObject)
+ZFOBJECT_REGISTER(ZFStyle)
 
 // ============================================================
 ZF_STATIC_INITIALIZER_INIT(ZFStyleableDefaultStyleDataHolder) {

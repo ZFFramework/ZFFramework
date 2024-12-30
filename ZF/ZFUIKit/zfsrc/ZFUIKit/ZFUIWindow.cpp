@@ -73,7 +73,7 @@ void ZFUIWindow::objectOnDealloc(void) {
 
 // ============================================================
 // properties
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIWindow, ZFUIWindowLevelEnum, windowLevel) {
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIWindow, ZFUIWindowLevel, windowLevel) {
     ZFCoreAssertWithMessage(!this->showing(), "you must not change window level while it's showing");
 }
 
@@ -147,7 +147,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
     }
 
     ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
-    ZFUIWindowLevelEnum selfWindowLevel = this->windowLevel();
+    ZFUIWindowLevel selfWindowLevel = this->windowLevel();
     zfindex topIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
     for(zfindex i = tmpArray.count() - 1; i != zfindexMax(); --i) {
@@ -172,7 +172,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
     }
 
     ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
-    ZFUIWindowLevelEnum selfWindowLevel = this->windowLevel();
+    ZFUIWindowLevel selfWindowLevel = this->windowLevel();
     zfindex bottomIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
     for(zfindex i = 0; i < tmpArray.count(); ++i) {

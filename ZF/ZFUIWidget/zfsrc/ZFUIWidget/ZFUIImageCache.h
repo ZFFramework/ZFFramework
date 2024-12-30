@@ -46,7 +46,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
+    virtual void taskOnStop(ZF_IN ZFResultType resultType);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };

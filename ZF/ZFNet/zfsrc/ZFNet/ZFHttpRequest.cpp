@@ -37,14 +37,14 @@ public:
     }
 
 public:
-    void notifyResponse(ZF_IN ZFHttpRequest *owner, ZF_IN ZFResultTypeEnum resultType) {
+    void notifyResponse(ZF_IN ZFHttpRequest *owner, ZF_IN ZFResultType resultType) {
         ZFListener callbackTmp = this->callback;
         this->callback = zfnull;
         zfautoT<ZFHttpResponse> responseTmp = this->response;
         this->response = zfnull;
         zfautoT<ZFThread> ownerThreadTmp = this->ownerThread;
         this->ownerThread = zfnull;
-        zfobj<ZFResultType> resultTypeTmp = resultType;
+        zfobj<v_ZFResultType> resultTypeTmp = resultType;
 
         if(this->bodyJsonCache != zfnull) {
             zfdelete(this->bodyJsonCache);
@@ -73,7 +73,7 @@ ZFEVENT_REGISTER(ZFHttpRequest, OnResponse)
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest
         , ZFMP_IN(const zfstring &, url)
-        , ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET)
+        , ZFMP_IN_OPT(ZFHttpMethod, method, ZFHttpMethod::e_GET)
         ) {
     this->objectOnInit();
     this->url(url);
@@ -83,7 +83,7 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFHttpRequest, zfstring, url) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->url(d->nativeTask, propertyValue);
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFHttpRequest, ZFHttpMethodEnum, httpMethod) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFHttpRequest, ZFHttpMethod, httpMethod) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->httpMethod(d->nativeTask, propertyValue);
 }
 

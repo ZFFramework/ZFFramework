@@ -70,7 +70,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         switch(textAppearance) {
@@ -147,7 +147,7 @@ public:
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            , ZF_IN ZFUITextTruncateMode const &textTruncateMode
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         switch(textTruncateMode) {

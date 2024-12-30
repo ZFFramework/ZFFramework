@@ -7,8 +7,8 @@ ZFENUM_DEFINE(ZFEnvDeviceUIType)
 
 ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 
-ZFMETHOD_FUNC_DEFINE_1(ZFEnvDeviceUITypeEnum, deviceUIType
-        , ZFMP_IN_OPT(ZFEnvDeviceUITypeEnum, defaultValue, ZFEnvDeviceUIType::e_Desktop)
+ZFMETHOD_FUNC_DEFINE_1(ZFEnvDeviceUIType, deviceUIType
+        , ZFMP_IN_OPT(ZFEnvDeviceUIType, defaultValue, ZFEnvDeviceUIType::e_Desktop)
         ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_deviceUIInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_deviceUIInfo);
     if(impl != zfnull) {
@@ -30,7 +30,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFEnvSummary_ZFUIKit) {
 }
 public:
     static void deviceUITypeSummary(ZF_IN_OUT zfstring &ret) {
-        ret += ZFEnvDeviceUIType::EnumNameForValue(ZFEnvInfo::deviceUIType());
+        ret += v_ZFEnvDeviceUIType::EnumNameForValue(ZFEnvInfo::deviceUIType());
     }
 ZF_GLOBAL_INITIALIZER_END(ZFEnvSummary_ZFUIKit)
 

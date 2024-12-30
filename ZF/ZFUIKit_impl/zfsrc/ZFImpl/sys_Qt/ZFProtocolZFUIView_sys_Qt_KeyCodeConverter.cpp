@@ -6,7 +6,7 @@
 
 #include <QKeyEvent>
 
-ZFUIKeyCodeEnum ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(int qKeyCode)
+ZFUIKeyCode ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(int qKeyCode)
 {
     switch(qKeyCode)
     {

@@ -136,7 +136,7 @@ public:
     }
     virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
+            , ZF_IN ZFUITextEditKeyboardType keyboardType
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         switch(keyboardType) {
@@ -159,7 +159,7 @@ public:
     }
     virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnType keyboardReturnType
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         switch(keyboardReturnType) {
@@ -222,7 +222,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         switch(textAppearance) {

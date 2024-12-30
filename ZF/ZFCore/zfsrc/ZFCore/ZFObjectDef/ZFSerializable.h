@@ -275,7 +275,7 @@ protected:
      *   -  while serializing from data,
      *     ZFSerializable will directly serialize the data to property instance
      *     (do nothing if property is null)
-     *   -  by default, a property is treated as normal serializable property if:
+     *   -  by default, a property is treated as embeded serializable property if:
      *     -  the property is retain property and its type is ZFSerializable
      *     -  the property's setter is private and getter is not private
      *   -  if a property is an embeded property,

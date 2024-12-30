@@ -31,7 +31,7 @@ void ZFWaitTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFWaitTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFWaitTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
@@ -64,7 +64,7 @@ void ZFAsyncTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAsyncTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFAsyncTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
@@ -98,7 +98,7 @@ void ZFPostTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFPostTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFPostTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
@@ -131,7 +131,7 @@ void ZFAsyncIOCustomTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAsyncIOCustomTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFAsyncIOCustomTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
@@ -175,7 +175,7 @@ void ZFAsyncIOTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAsyncIOTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFAsyncIOTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;

@@ -12,10 +12,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // normal enum
 #define _ZFP_ZFENUM_PROP_TYPE_DECLARE(ZFLIB_, EnumName) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName, EnumName##Enum) \
+    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName, EnumName) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<EnumName> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ZFTypeId_##EnumName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
-            return EnumName::ClassData(); \
+            return v_##EnumName::ClassData(); \
         } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
@@ -44,7 +44,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            EnumName *t = zfunsafe_zfAlloc(EnumName, v); \
+            v_##EnumName *t = zfunsafe_zfAlloc(v_##EnumName, v); \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
             ZFCoreMutexUnlock(); \
@@ -52,20 +52,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN EnumName##Enum const &v \
+                , ZF_IN EnumName const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            EnumName *t = zfunsafe_zfAlloc(EnumName, v); \
+            v_##EnumName *t = zfunsafe_zfAlloc(v_##EnumName, v); \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
-        template<typename T_Access = EnumName##Enum \
+        template<typename T_Access = EnumName \
             , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
                 && zftIsSame< \
                         typename zftTraits<T_Access>::TrNoRef, \
-                        EnumName##Enum \
+                        EnumName \
                     >::Value != 1) \
                 ? 1 : 0) \
             , typename T_Fix = void \
@@ -73,11 +73,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(EnumName *, obj) != zfnull); \
+                return (zfcast(v_##EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
-                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(EnumName *, obj)->_ZFP_ZFEnum_value)); \
+                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(v_##EnumName *, obj)->_ZFP_ZFEnum_value)); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -88,10 +88,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(EnumName *, obj) != zfnull); \
+                return (zfcast(v_##EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                EnumName *t = zfcast(EnumName *, obj); \
+                v_##EnumName *t = zfcast(v_##EnumName *, obj); \
                 _TrNoRef *holder = zfnew(_TrNoRef); \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
@@ -117,34 +117,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }; \
         zfoverride \
         virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
-            return ValueStore(obj, *(const EnumName##Enum *)v); \
+            return ValueStore(obj, *(const EnumName *)v); \
         } \
         zfoverride \
         virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
-            if(!Value<EnumName##Enum>::zfvAccessAvailable(obj)) { \
+            if(!Value<EnumName>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(EnumName##Enum, Value<EnumName##Enum>::zfvAccess(obj)); \
+            return (void *)zfnew(EnumName, Value<EnumName>::zfvAccess(obj)); \
         } \
         zfoverride \
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((EnumName##Enum *)v); \
-            Value<EnumName##Enum>::zfvAccessFinish(obj); \
+            zfdelete((EnumName *)v); \
+            Value<EnumName>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<EnumName##Enum>); \
+            return zfnew(ZFCoreArray<EnumName>); \
         } \
     }; \
     /** @endcond */
 
 #define _ZFP_ZFENUM_PROP_TYPE_DEFINE(EnumName) \
-    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumName, EnumName##Enum, { \
+    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumName, EnumName, { \
             if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
-                v = (EnumName##Enum)ZFEnumInvalid(); \
+                v = (EnumName)ZFEnumInvalid(); \
                 return zftrue; \
             } \
-            v = (EnumName##Enum)EnumName::EnumValueForName( \
+            v = (EnumName)v_##EnumName::EnumValueForName( \
                     (srcLen == zfindexMax()) ? src : zfstring(src, srcLen).cString() \
                 ); \
             if(v == ZFEnumInvalid()) { \
@@ -155,10 +155,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
             return zftrue; \
         }, { \
-            s += EnumName::EnumNameForValue(v); \
+            s += v_##EnumName::EnumNameForValue(v); \
             return zftrue; \
         }) \
-    const zfstring &EnumName::zfvTypeId(void) { \
+    const zfstring &v_##EnumName::zfvTypeId(void) { \
         return ZFTypeId_##EnumName(); \
     }
 
@@ -168,8 +168,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(ZFLIB_, EnumName, EnumFlagsName) \
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumFlagsName, EnumFlagsName) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##EnumFlagsName : zfextend EnumName { \
-        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, EnumName) \
+    zfclass ZFLIB_ v_##EnumFlagsName : zfextend v_##EnumName { \
+        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, v_##EnumName) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->zfvReset(); \
         }) \
@@ -224,9 +224,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN EnumName##Enum const &v \
+                , ZF_IN EnumName const &v \
                 ) { \
-            EnumName *t = zfAlloc(EnumName, (zfuint)v); \
+            v_##EnumName *t = zfAlloc(v_##EnumName, (zfuint)v); \
             obj = t; \
             zfRelease(t); \
             return zftrue; \
@@ -235,7 +235,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN EnumFlagsName const &v \
                 ) { \
-            EnumName *t = zfAlloc(EnumName, (zfuint)v); \
+            v_##EnumName *t = zfAlloc(v_##EnumName, (zfuint)v); \
             obj = t; \
             zfRelease(t); \
             return zftrue; \
@@ -252,11 +252,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(EnumName *, obj) != zfnull); \
+                return (zfcast(v_##EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
-                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(EnumName *, obj)->_ZFP_ZFEnum_value)); \
+                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(v_##EnumName *, obj)->_ZFP_ZFEnum_value)); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -267,10 +267,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(EnumName *, obj) != zfnull); \
+                return (zfcast(v_##EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                EnumName *t = zfcast(EnumName *, obj); \
+                v_##EnumName *t = zfcast(v_##EnumName *, obj); \
                 _TrNoRef *holder = zfnew(_TrNoRef); \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
@@ -321,7 +321,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumFlagsName, EnumFlagsName, { \
             zfflags flags = 0; \
             if(!zfflagsFromStringT(flags, \
-                        EnumName::ClassData(), \
+                        v_##EnumName::ClassData(), \
                         src, srcLen)) { \
                 if(errorHint) { \
                     zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
@@ -331,7 +331,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             v.enumValue((zfuint)flags); \
             return zftrue; \
         }, { \
-            return zfflagsToStringT(s, EnumName::ClassData(), (zfflags)v.enumValue()); \
+            return zfflagsToStringT(s, v_##EnumName::ClassData(), (zfflags)v.enumValue()); \
         }) \
     ZFOBJECT_REGISTER(v_##EnumFlagsName)
 

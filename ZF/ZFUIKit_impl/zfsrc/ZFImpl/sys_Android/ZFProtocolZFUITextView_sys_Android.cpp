@@ -60,7 +60,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_textAppearance",
@@ -138,7 +138,7 @@ public:
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            , ZF_IN ZFUITextTruncateMode const &textTruncateMode
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_textTruncateMode",

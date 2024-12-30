@@ -84,7 +84,7 @@ void ZFTaskQueue::taskOnStart(void) {
     this->objectTag("_ZFP_ZFTaskQueueImpl", childQueue);
     _ZFP_ZFTaskQueue_startNext(this);
 }
-void ZFTaskQueue::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFTaskQueue::taskOnStop(ZF_IN ZFResultType resultType) {
     zfautoT<ZFArray> childQueue = this->objectTagRemoveAndGet("_ZFP_ZFTaskQueueImpl");
     if(childQueue != zfnull) {
         ZFTask *child = childQueue->getFirst();

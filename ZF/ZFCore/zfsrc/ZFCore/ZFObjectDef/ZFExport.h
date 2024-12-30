@@ -235,25 +235,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief util macro to export raw enum value as zfint
+ * @brief util macro to export raw enum
  *
  * for normal enum, use #ZFENUM_BEGIN is recommended\n
  * this macro is used to export low level enum values by #ZFMETHOD_FUNC_USER_REGISTER_0,
  * with this proto type:
  * @code
- *   zfint YourRawEnumValueName(void);
+ *   YourEnumType YourRawEnumValueName(void);
  * @endcode
  */
-#define ZFEXPORT_ENUM_DEFINE(EnumName, enumValues, ...) \
-    _ZFP_ZFEXPORT_ENUM_DEFINE(EnumName, enumValues, ##__VA_ARGS__)
+#define ZFEXPORT_RAW_ENUM_DEFINE(EnumName, enumValues, ...) \
+    _ZFP_ZFEXPORT_RAW_ENUM_DEFINE(EnumName, enumValues, ##__VA_ARGS__)
 
-#define _ZFP_ZFEXPORT_ENUM_DEFINE_EXPAND(...) __VA_ARGS__
-#define _ZFP_ZFEXPORT_ENUM_DEFINE(...) \
-    _ZFP_ZFEXPORT_ENUM_DEFINE_EXPAND(_ZFP_ZFEXPORT_ENUM_DEFINE_(__VA_ARGS__))
-#define _ZFP_ZFEXPORT_ENUM_DEFINE_(EnumName, enumValues, ...) \
+#define _ZFP_ZFEXPORT_RAW_ENUM_DEFINE_EXPAND(...) __VA_ARGS__
+#define _ZFP_ZFEXPORT_RAW_ENUM_DEFINE(...) \
+    _ZFP_ZFEXPORT_RAW_ENUM_DEFINE_EXPAND(_ZFP_ZFEXPORT_RAW_ENUM_DEFINE_(__VA_ARGS__))
+#define _ZFP_ZFEXPORT_RAW_ENUM_DEFINE_(EnumName, enumValues, ...) \
     ZF_STATIC_REGISTER_INIT(ExportEnum_##EnumName) { \
         typedef EnumName _EnumName; \
-        ZFM_FIX_PARAM(_ZFP_ZFEXPORT_ENUM_EXPAND, ZFM_EMPTY, enumValues, ##__VA_ARGS__) \
+        ZFM_FIX_PARAM(_ZFP_ZFEXPORT_RAW_ENUM_DEFINE_ITEM_EXPAND, ZFM_EMPTY, enumValues, ##__VA_ARGS__) \
     } \
     ZF_STATIC_REGISTER_DESTROY(ExportEnum_##EnumName) { \
         for(zfindex i = 0; i < m.count(); ++i) { \
@@ -262,7 +262,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     ZFCoreArray<const ZFMethod *> m; \
     ZF_STATIC_REGISTER_END(ExportEnum_##EnumName)
-#define _ZFP_ZFEXPORT_ENUM_EXPAND(v) \
+#define _ZFP_ZFEXPORT_RAW_ENUM_DEFINE_ITEM_EXPAND(v) \
     { \
         ZFMethodFuncUserRegister_0(resultMethod, { \
                 return v; \

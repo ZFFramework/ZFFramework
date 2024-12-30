@@ -70,10 +70,10 @@ const ZFMethod *ZFMethodDynamicRegister(
         return zfnull;
     }
     ZFMethodType methodType = param.methodType();
-    ZFMethodPrivilegeType methodPrivilegeType = param.methodPrivilegeType();
+    ZFMethodAccessType methodAccessType = param.methodAccessType();
     if(param.ownerClass() == zfnull) {
         methodType = ZFMethodTypeStatic;
-        methodPrivilegeType = ZFMethodPrivilegeTypePublic;
+        methodAccessType = ZFMethodAccessTypePublic;
     }
     if(param.methodName() == zfnull) {
         zfstringAppend(errorHint, "methodName not set");
@@ -151,7 +151,7 @@ const ZFMethod *ZFMethodDynamicRegister(
             , methodImplValid ? _ZFP_I_ZFMethodDynamicRegisterGI : param.methodGenericInvoker()
             , methodType
             , param.ownerClass()
-            , methodPrivilegeType
+            , methodAccessType
             , param.methodNamespace()
             , param.methodName()
             , param.returnTypeId()
@@ -169,7 +169,7 @@ const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
-        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType methodAccessType /* = ZFMethodAccessTypePublic */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     ZFMethodDynamicRegisterParam p;
@@ -177,7 +177,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     p.methodName(methodName);
     p.methodImpl(methodImpl);
     p.methodType(methodType);
-    p.methodPrivilegeType(methodPrivilegeType);
+    p.methodAccessType(methodAccessType);
     for(zfindex i = 0; i < methodParam.paramCount(); ++i) {
         p.methodParam(
             methodParam.paramTypeIdAt(i),
@@ -194,7 +194,7 @@ const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
-        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType /* = ZFMethodPrivilegeTypePublic */
+        , ZF_IN_OPT ZFMethodAccessType methodAccessType /* = ZFMethodAccessTypePublic */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     ZFMethodDynamicRegisterParam p;
@@ -202,7 +202,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     p.methodName(methodName);
     p.methodImpl(methodImpl);
     p.methodType(methodType);
-    p.methodPrivilegeType(methodPrivilegeType);
+    p.methodAccessType(methodAccessType);
     for(zfindex i = 0; i < methodParam.paramCount(); ++i) {
         p.methodParam(
             methodParam.paramTypeIdAt(i),

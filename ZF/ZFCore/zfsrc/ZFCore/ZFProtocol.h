@@ -38,10 +38,10 @@ ZFENUM_END(ZFLIB_ZFCore, ZFProtocolLevel)
  *
  * note, it's ensured that:
  * @code
- *   ZFProtocolInstanceStateEnum state0 = ZFProtocolInstanceState::e_OnInitFinish;
+ *   ZFProtocolInstanceState state0 = ZFProtocolInstanceState::e_OnInitFinish;
  *   zfbool t0 = ZFBitTest(state0, ZFProtocolInstanceState::e_OnInit); // ensured true
  *
- *   ZFProtocolInstanceStateEnum state1 = ZFProtocolInstanceState::e_OnDeallocPrepare;
+ *   ZFProtocolInstanceState state1 = ZFProtocolInstanceState::e_OnDeallocPrepare;
  *   zfbool t1 = ZFBitTest(state1, ZFProtocolInstanceState::e_OnDealloc); // ensured true
  * @endcode
  */
@@ -96,10 +96,10 @@ public:
     /**
      * @brief protocol instance's state
      */
-    virtual ZFProtocolInstanceStateEnum protocolInstanceState(void) {
+    virtual ZFProtocolInstanceState protocolInstanceState(void) {
         return _ZFP_ZFProtocol_protocolInstanceState;
     }
-    ZFProtocolInstanceStateEnum _ZFP_ZFProtocol_protocolInstanceState;
+    ZFProtocolInstanceState _ZFP_ZFProtocol_protocolInstanceState;
 
 public:
     /**
@@ -117,7 +117,7 @@ public:
     /**
      * @brief get the level of the protocol implementation
      */
-    virtual ZFProtocolLevelEnum protocolImplLevel(void) const {
+    virtual ZFProtocolLevel protocolImplLevel(void) const {
         return ZFProtocolLevel::e_Default;
     }
     /**
@@ -186,7 +186,7 @@ public:
     _ZFP_ZFProtocolConstructor implConstructor;
     _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk;
     zfstring implName;
-    ZFProtocolLevelEnum implLevel;
+    ZFProtocolLevel implLevel;
     _ZFP_ZFProtocolCleanupCallback implCleanupCallback;
     ZFProtocol *implInstance;
 };
@@ -243,7 +243,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     ZF_IN _ZFP_ZFProtocolConstructor implConstructor \
                     , ZF_IN _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk \
                     , ZF_IN const zfchar *implName \
-                    , ZF_IN ZFProtocolLevelEnum implLevel \
+                    , ZF_IN ZFProtocolLevel implLevel \
                     ) { \
                 _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                 if(_d.implConstructor != zfnull) { \
@@ -278,7 +278,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     ZF_IN _ZFP_ZFProtocolConstructor implConstructor \
                     , ZF_IN _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk \
                     , ZF_IN const zfchar *implName \
-                    , ZF_IN ZFProtocolLevelEnum implLevel \
+                    , ZF_IN ZFProtocolLevel implLevel \
                     ) { \
                 _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                 if(_d.implInstance != zfnull) { \
@@ -503,7 +503,7 @@ private:
                 return #ImplementationName; \
             } \
             zfoverride \
-            virtual ZFProtocolLevelEnum protocolImplLevel(void) const { \
+            virtual ZFProtocolLevel protocolImplLevel(void) const { \
                 return implLevel; \
             } \
         public: \

@@ -11,7 +11,7 @@
 #include <QKeyEvent>
 
 // ============================================================
-extern ZFUIKeyCodeEnum ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(ZF_IN int qKeyCode);
+extern ZFUIKeyCode ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(ZF_IN int qKeyCode);
 zfbool (*ZFUIViewImpl_sys_Qt_isMouseCancel)(ZF_IN QGraphicsSceneMouseEvent *event) = zfnull;
 
 QGraphicsSceneMouseEvent *ZFUIViewImpl_sys_Qt_mouseEventClone(
@@ -198,7 +198,7 @@ protected:
         }
     }
 private:
-    void mouseEventResolve(QGraphicsSceneMouseEvent *event, ZFUIMouseActionEnum mouseAction) {
+    void mouseEventResolve(QGraphicsSceneMouseEvent *event, ZFUIMouseAction mouseAction) {
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zfidentity)event->button();
@@ -251,7 +251,7 @@ protected:
         this->mouseHoverEventResolve(event, ZFUIMouseAction::e_HoverExit);
     }
 private:
-    void mouseHoverEventResolve(QGraphicsSceneHoverEvent *event, ZFUIMouseActionEnum mouseAction) {
+    void mouseHoverEventResolve(QGraphicsSceneHoverEvent *event, ZFUIMouseAction mouseAction) {
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = 0;
@@ -284,7 +284,7 @@ protected:
         this->keyEventResolve(event, event->isAutoRepeat() ? ZFUIKeyAction::e_Repeat : ZFUIKeyAction::e_Up);
     }
 private:
-    void keyEventResolve(QKeyEvent *event, ZFUIKeyActionEnum keyAction) {
+    void keyEventResolve(QKeyEvent *event, ZFUIKeyAction keyAction) {
         if(this->_ZFP_viewUIEnableTree && this->_ZFP_viewUIEnable) {
             zfobj<ZFUIKeyEvent> ev;
             ev->eventResolved(zffalse);
@@ -467,7 +467,7 @@ public:
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             ) {
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = (_ZFP_ZFUIViewImpl_sys_Qt_View *)parent->nativeView();
@@ -478,7 +478,7 @@ public:
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             ) {
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = (_ZFP_ZFUIViewImpl_sys_Qt_View *)parent->nativeView();

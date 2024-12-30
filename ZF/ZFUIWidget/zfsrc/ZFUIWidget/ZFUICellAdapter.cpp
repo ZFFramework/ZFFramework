@@ -10,7 +10,7 @@ ZFEVENT_REGISTER(ZFUICellAdapter, CellOnUpdate)
 ZFEVENT_REGISTER(ZFUICellAdapter, CellCacheOnRecycle)
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFUICellAdapter, ZFUIOrientationEnum, orientation) {
+ZFMETHOD_DEFINE_0(ZFUICellAdapter, ZFUIOrientation, orientation) {
     return this->_ZFP_ZFUICellAdapter_orientation;
 }
 ZFMETHOD_DEFINE_0(ZFUICellAdapter, const ZFUISize &, containerSize) {

@@ -1118,13 +1118,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUIRect, ZFUIAlignApply
 /**
  * @brief get horizontal align or #ZFUIAlign::e_Center if invalid
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFUIAlignEnum, ZFUIAlignGetX
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignGetX
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         )
 /**
  * @brief get vertical align or #ZFUIAlign::e_Center if invalid
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFUIAlignEnum, ZFUIAlignGetY
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignGetY
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         )
 
@@ -1162,7 +1162,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIOrientationFlags, ZFUIOrientati
  * @brief true if vertical orientation
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsVertical
-        , ZFMP_IN(ZFUIOrientationEnum, orientation)
+        , ZFMP_IN(ZFUIOrientation, orientation)
         ) {
     return (orientation == ZFUIOrientation::e_Top || orientation == ZFUIOrientation::e_Bottom);
 }
@@ -1170,7 +1170,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsVertical
  * @brief true if vertical orientation
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsHorizontal
-        , ZFMP_IN(ZFUIOrientationEnum, orientation)
+        , ZFMP_IN(ZFUIOrientation, orientation)
         ) {
     return (orientation == ZFUIOrientation::e_Left || orientation == ZFUIOrientation::e_Right);
 }
@@ -1505,7 +1505,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIContentScaleType)
  */
 ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
-        , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
+        , ZFMP_IN(ZFUIContentScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
         , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
@@ -1514,7 +1514,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
  * @brief apply scale for #ZFUIContentScaleType
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIContentScaleTypeApply
-        , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
+        , ZFMP_IN(ZFUIContentScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
         , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)

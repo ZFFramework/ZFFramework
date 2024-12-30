@@ -16,7 +16,7 @@ protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void);
     zfoverride
-    virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult);
+    virtual void testCaseOnStop(ZF_IN ZFResultType testCaseResult);
 
 public:
     virtual void outputSeparator(void);

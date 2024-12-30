@@ -167,7 +167,7 @@ public:
     /** @cond ZFPrivateDoc */
     ZFJson(void);
     ZFJson(ZF_IN const zfnullT &dummy);
-    ZFJson(ZF_IN ZFJsonTypeEnum type);
+    ZFJson(ZF_IN ZFJsonType type);
     ZFJson(ZF_IN const ZFJson &ref);
     virtual ~ZFJson(void);
 
@@ -198,11 +198,11 @@ public:
 
     // ============================================================
 public:
-    void _ZFP_ZFJson_jsonType(ZF_IN ZFJsonTypeEnum type);
+    void _ZFP_ZFJson_jsonType(ZF_IN ZFJsonType type);
     /**
      * @brief type of this item
      */
-    ZFJsonTypeEnum type(void) const;
+    ZFJsonType type(void) const;
     /**
      * @brief true if #type is not #ZFJsonType::e_Null
      */

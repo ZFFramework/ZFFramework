@@ -122,8 +122,8 @@ private:
  *       ->request(onRecv);
  * @endcode
  */
-zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyleableObject)
+zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyle)
 
     /**
      * @brief called before request
@@ -164,7 +164,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(const zfstring &, url)
-            , ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET)
+            , ZFMP_IN_OPT(ZFHttpMethod, method, ZFHttpMethod::e_GET)
             )
 
     /** @brief timeout */
@@ -175,8 +175,8 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, url)
 
     /** @brief the http method, GET/POST/..., GET by default */
-    ZFPROPERTY_ASSIGN(ZFHttpMethodEnum, httpMethod, ZFHttpMethod::e_GET)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFHttpMethodEnum, httpMethod)
+    ZFPROPERTY_ASSIGN(ZFHttpMethod, httpMethod, ZFHttpMethod::e_GET)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFHttpMethod, httpMethod)
 
     /** @brief whether https impl available */
     ZFMETHOD_DECLARE_STATIC_0(zfbool, httpsAvailable)

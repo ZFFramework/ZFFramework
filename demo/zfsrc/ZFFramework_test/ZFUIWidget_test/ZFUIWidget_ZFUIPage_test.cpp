@@ -65,7 +65,7 @@ protected:
         return ZFCompareUncomparable;
     }
     zfoverride
-    virtual void pageOnResume(ZF_IN ZFUIPageResumeReasonEnum reason) {
+    virtual void pageOnResume(ZF_IN ZFUIPageResumeReason reason) {
         zfsuper::pageOnResume(reason);
         zfindex index = this->pageManager()->pageList().find(this->pageGroupId().cString(), zfself::pageFindFirstByPageGroupId);
         if(index != zfindexMax() && this->pageManager()->pageAt(index) != this) {
@@ -191,7 +191,7 @@ protected:
         this->prepareSettingButton(window, this->_pageManager);
     }
     zfoverride
-    virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult) {
+    virtual void testCaseOnStop(ZF_IN ZFResultType testCaseResult) {
         if(this->_pageManager != zfnull) {
             this->_pageManager->managerPause();
             this->_pageManager->managerDestroy();

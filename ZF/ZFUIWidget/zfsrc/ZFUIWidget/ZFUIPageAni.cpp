@@ -9,10 +9,10 @@ static zfbool _ZFP_ZFUIPageAniCheck(ZF_IN ZFUIPage *page, ZFEnum *resumeOrPauseR
             ) {
         return zffalse;
     }
-    if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPageResumeReason::ClassData())) {
+    if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
         return resumeOrPauseReason->enumValue() != ZFUIPageResumeReason::e_ByManagerResume;
     }
-    else if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPagePauseReason::ClassData())) {
+    else if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPagePauseReason::ClassData())) {
         return resumeOrPauseReason->enumValue() != ZFUIPagePauseReason::e_ByManagerPause;
     }
     else {
@@ -29,7 +29,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForAlpha
 
     ZFUIPage *alphaInPage = zfnull;
     ZFUIPage *alphaOutPage = zfnull;
-    if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPageResumeReason::ClassData())) {
+    if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
         alphaInPage = page;
         alphaOutPage = siblingPage;
     }
@@ -54,7 +54,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         ) {
     if(!_ZFP_ZFUIPageAniCheck(page, resumeOrPauseReason, siblingPage)) {return zffalse;}
 
-    if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPageResumeReason::ClassData())) {
+    if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
         if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
                 ZFLISTENER(impl) {
@@ -148,7 +148,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
         ) {
     if(!_ZFP_ZFUIPageAniCheck(page, resumeOrPauseReason, siblingPage)) {return zffalse;}
 
-    if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPageResumeReason::ClassData())) {
+    if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
         if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
                 ZFLISTENER(impl) {

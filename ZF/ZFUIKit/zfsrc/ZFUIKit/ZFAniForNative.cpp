@@ -92,7 +92,7 @@ void ZFAniForNative::aniOnStart(void) {
         target->viewUIEnableTree(zffalse);
     }
 }
-void ZFAniForNative::aniOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFAniForNative::aniOnStop(ZF_IN ZFResultType resultType) {
     ZFUIView *target = zfany(this->target());
     if(target != zfnull && d->targetAutoDisableFlag) {
         target->viewUIEnableTree(zftrue);

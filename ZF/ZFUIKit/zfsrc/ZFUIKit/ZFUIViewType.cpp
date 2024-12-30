@@ -28,15 +28,15 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
         s += ")";
         return zftrue;
     })
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISizeParam, ZFUISizeTypeEnum, width)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISizeParam, ZFUISizeTypeEnum, height)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISizeParam, ZFUISizeType, width)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISizeParam, ZFUISizeType, height)
 
 ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISizeParam, ZFUISizeParamCreate
-        , ZFMP_IN(ZFUISizeTypeEnum const &, width)
-        , ZFMP_IN(ZFUISizeTypeEnum const &, height)
+        , ZFMP_IN(ZFUISizeType const &, width)
+        , ZFMP_IN(ZFUISizeType const &, height)
         )
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUISizeParam, ZFUISizeParamCreate
-        , ZFMP_IN(ZFUISizeTypeEnum const &, v)
+        , ZFMP_IN(ZFUISizeType const &, v)
         )
 
 ZFEXPORT_VAR_READONLY_DEFINE(ZFUISizeParam, ZFUISizeParamZero, ZFUISizeParamCreate(ZFUISizeType::e_Wrap, ZFUISizeType::e_Wrap))
@@ -303,7 +303,7 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, sizeHintApplyT
         , ZFMP_OUT(zffloat &, ret)
         , ZFMP_IN(zffloat, size)
         , ZFMP_IN(zffloat, sizeHint)
-        , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
+        , ZFMP_IN(ZFUISizeType, sizeParam)
         ) {
     ret = size;
     switch(sizeParam) {
@@ -325,7 +325,7 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, sizeHintApplyT
 ZFMETHOD_DEFINE_3(ZFUILayoutParam, zffloat, sizeHintApply
         , ZFMP_IN(zffloat, size)
         , ZFMP_IN(zffloat, sizeHint)
-        , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
+        , ZFMP_IN(ZFUISizeType, sizeParam)
         ) {
     zffloat ret = size;
     ZFUILayoutParam::sizeHintApplyT(ret, size, sizeHint, sizeParam);

@@ -221,7 +221,7 @@ public:
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -245,7 +245,7 @@ public:
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -361,7 +361,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     zfobj<ZFUIMouseEvent> event;
     event->eventResolved(zffalse);
     event->mouseId = mouseId;
-    event->mouseAction = (ZFUIMouseActionEnum)mouseAction;
+    event->mouseAction = (ZFUIMouseAction)mouseAction;
     event->mousePoint = ZFUIPointCreate(mousePointX, mousePointY);
     event->mouseButton = ZFUIMouseButton::e_Left;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
@@ -381,8 +381,8 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     zfobj<ZFUIKeyEvent> event;
     event->eventResolved(zffalse);
     event->keyId = keyId;
-    event->keyAction = (ZFUIKeyActionEnum)keyAction;
-    event->keyCode = (ZFUIKeyCodeEnum)keyCode;
+    event->keyAction = (ZFUIKeyAction)keyAction;
+    event->keyCode = (ZFUIKeyCode)keyCode;
     event->keyCodeRaw = keyCodeRaw;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),

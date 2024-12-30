@@ -39,8 +39,8 @@ ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
  * a button group is simply a abstract button manager,
  * you need to add buttons to both button group and view tree
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFUIButtonGroup, ZFStyleableObject)
+zfclass ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFUIButtonGroup, ZFStyle)
 
 public:
     // ============================================================
@@ -68,8 +68,8 @@ public:
     /**
      * @brief button group's type, see #ZFUIButtonGroupType::e_Normal for more info
      */
-    ZFPROPERTY_ASSIGN(ZFUIButtonGroupTypeEnum, type, ZFUIButtonGroupType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIButtonGroupTypeEnum, type)
+    ZFPROPERTY_ASSIGN(ZFUIButtonGroupType, type, v_ZFUIButtonGroupType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIButtonGroupType, type)
 
 public:
     /**

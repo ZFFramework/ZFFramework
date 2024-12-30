@@ -28,7 +28,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
             , methodParam
             , methodImplWrapper
             , ZFMethodTypeVirtual
-            , ZFMethodPrivilegeTypeProtected
+            , ZFMethodAccessTypeProtected
             , errorHint
             );
 }
@@ -55,7 +55,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     paramTmp.methodName("objectOnInit");
     paramTmp.returnTypeId(ZFTypeId_void());
     paramTmp.methodType(ZFMethodTypeVirtual);
-    paramTmp.methodPrivilegeType(ZFMethodPrivilegeTypeProtected);
+    paramTmp.methodAccessType(ZFMethodAccessTypeProtected);
 
     if(param.methodImpl()) {
         ZFListener methodImpl = param.methodImpl();

@@ -26,7 +26,7 @@ public:
      *
      * note, for some implementations and font settings, italic or bold may or may not be supported
      */
-    ZFPROPERTY_ASSIGN(ZFUITextAppearanceEnum, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
+    ZFPROPERTY_ASSIGN(ZFUITextAppearance, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
 
     /**
      * @brief text alignment, #ZFUIGlobalStyle::textAlign by default

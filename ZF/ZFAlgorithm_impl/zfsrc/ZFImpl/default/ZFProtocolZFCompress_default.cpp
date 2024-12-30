@@ -31,16 +31,16 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFCompressImpl_default, ZFCompress, ZFProtocolLe
 public:
     virtual void *compressBegin(
             ZF_IN_OUT const ZFOutput &outputZip
-            , ZF_IN ZFCompressLevelEnum compressLevel
+            , ZF_IN ZFCompressLevel compressLevel
             ) {
         if(!outputZip.ioSeek(0)) {
             // output must support random access
             return zfnull;
         }
 
-        mz_zip_archive *zip = (mz_zip_archive *)zfmalloc(sizeof(mz_zip_archive) + sizeof(ZFCompressLevelEnum));
+        mz_zip_archive *zip = (mz_zip_archive *)zfmalloc(sizeof(mz_zip_archive) + sizeof(ZFCompressLevel));
         zfmemset(zip, 0, sizeof(mz_zip_archive));
-        *(ZFCompressLevelEnum *)(zip + 1) = compressLevel;
+        *(ZFCompressLevel *)(zip + 1) = compressLevel;
 
         zip->m_pIO_opaque = zfnew(ZFOutput, outputZip);
         zip->m_pWrite = _writeFuncForOutput;
@@ -69,7 +69,7 @@ public:
             ) {
         mz_zip_archive *zip = (mz_zip_archive *)compressToken;
         mz_uint flags = MZ_DEFAULT_COMPRESSION;
-        switch(*(ZFCompressLevelEnum *)(zip + 1)) {
+        switch(*(ZFCompressLevel *)(zip + 1)) {
             case ZFCompressLevel::e_NoCompress:
                 flags = MZ_NO_COMPRESSION;
                 break;

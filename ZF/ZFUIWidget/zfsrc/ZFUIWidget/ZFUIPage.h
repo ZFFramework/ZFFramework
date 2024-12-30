@@ -211,11 +211,11 @@ protected:
         zfRetain(this->_ZFP_ZFUIPage_pageView);
     }
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnResume(ZF_IN ZFUIPageResumeReasonEnum reason) {
+    virtual inline void pageOnResume(ZF_IN ZFUIPageResumeReason reason) {
         this->_ZFP_ZFUIPage_pageResumed = zftrue;
     }
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnPause(ZF_IN ZFUIPagePauseReasonEnum reason) {
+    virtual inline void pageOnPause(ZF_IN ZFUIPagePauseReason reason) {
         this->_ZFP_ZFUIPage_pageResumed = zffalse;
     }
     /** @brief see #ZFUIPage */

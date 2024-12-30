@@ -61,7 +61,7 @@ public:
     /**
      * @brief mouse action
      */
-    ZFUIMouseActionEnum mouseAction;
+    ZFUIMouseAction mouseAction;
     /**
      * @brief mouse point
      */
@@ -72,7 +72,7 @@ public:
      * note, this value is invalid for mouse hover event,
      * and would always be #ZFUIMouseButton::e_Left
      */
-    ZFUIMouseButtonEnum mouseButton;
+    ZFUIMouseButton mouseButton;
 
 protected:
     zfoverride

@@ -41,7 +41,7 @@ public:
     ZFUIView *view;
     zfindex depth;
     zfindex siblingIndex;
-    ZFUIViewChildLayerEnum layer;
+    ZFUIViewChildLayer layer;
 };
 
 ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint

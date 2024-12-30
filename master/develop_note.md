@@ -95,7 +95,7 @@ which are all implemented by callback functions
 however, we have no direct support to export and make global vars serializable,
 mainly to reduce complex rate of impl
 
-to export global vars, we use `ZFEXPORT_VAR_DECLARE` / `ZFEXPORT_ENUM_DEFINE`,
+to export global vars, we use `ZFEXPORT_VAR_DECLARE` / `ZFEXPORT_RAW_ENUM_DEFINE`,
 which is actually a wrapper to ZFMethod
 
 

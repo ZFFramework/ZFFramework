@@ -248,7 +248,7 @@ void ZFAudio::objectOnDealloc(void) {
 }
 
 void ZFAudio::_ZFP_ZFAudio_OnLoad(
-        ZF_IN ZFResultTypeEnum result
+        ZF_IN ZFResultType result
         , ZF_IN v_zfstring *errorHint
         ) {
     ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag));
@@ -270,7 +270,7 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(
     zfRelease(this); // retained when load
 }
 void ZFAudio::_ZFP_ZFAudio_OnStop(
-        ZF_IN ZFResultTypeEnum result
+        ZF_IN ZFResultType result
         , ZF_IN v_zfstring *errorHint
         ) {
     ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));

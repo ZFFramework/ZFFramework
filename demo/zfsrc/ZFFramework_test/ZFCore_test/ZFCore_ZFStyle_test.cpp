@@ -2,8 +2,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFStyle_test_Object, ZFStyleableObject)
+zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFStyle_test_Object, ZFStyle)
 
     ZFPROPERTY_ASSIGN(zfint, myProperty)
     ZFPROPERTY_ON_ATTACH_INLINE(zfint, myProperty) {

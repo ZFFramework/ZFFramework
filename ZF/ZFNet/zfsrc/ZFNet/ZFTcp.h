@@ -58,7 +58,7 @@ public:
     /**
      * @brief type of this tcp object
      */
-    ZFMETHOD_DECLARE_0(ZFTcpTypeEnum, type)
+    ZFMETHOD_DECLARE_0(ZFTcpType, type)
 
     /**
      * @brief true if #open or #accept successfully

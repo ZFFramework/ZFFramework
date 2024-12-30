@@ -92,11 +92,11 @@ ZFFilterForZFClass::CustomFilterCallback ZFFilterForZFClass::customFilterCallbac
 zfbool ZFFilterForZFClass::filterPassed(ZF_IN const ZFClass * const &e) const {
     for(zfindex i = 0, count = this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.count(); i < count; ++i) {
         switch(this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.get(i)(e)) {
-            case ZFFilterCallbackResultNotSpecified:
+            case ZFFilterResultNotSpecified:
                 break;
-            case ZFFilterCallbackResultActive:
+            case ZFFilterResultActive:
                 return zftrue;
-            case ZFFilterCallbackResultNotActive:
+            case ZFFilterResultNotActive:
                 return zffalse;
             default:
                 ZFCoreCriticalShouldNotGoHere();

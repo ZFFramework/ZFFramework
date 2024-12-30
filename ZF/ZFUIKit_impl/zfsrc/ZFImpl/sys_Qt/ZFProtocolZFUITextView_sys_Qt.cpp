@@ -78,7 +78,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
         QFont font = nativeImplView->font();
@@ -146,7 +146,7 @@ public:
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            , ZF_IN ZFUITextTruncateMode const &textTruncateMode
             ) {
 #if 0 // not supported for now
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = (_ZFP_ZFUITextViewImpl_sys_Qt_TextView *)textView->nativeImplView();

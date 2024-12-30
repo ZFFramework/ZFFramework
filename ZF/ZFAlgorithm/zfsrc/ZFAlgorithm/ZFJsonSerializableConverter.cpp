@@ -53,7 +53,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "json item %s not type of %s",
                     jsonItem,
-                    ZFJsonType::EnumNameForValue(ZFJsonType::e_Array));
+                    v_ZFJsonType::EnumNameForValue(ZFJsonType::e_Array));
                 if(outErrorPos != zfnull) {
                     *outErrorPos = jsonItem;
                 }
@@ -66,7 +66,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "json item %s not type of %s",
                     jsonItem,
-                    ZFJsonType::EnumNameForValue(ZFJsonType::e_Value));
+                    v_ZFJsonType::EnumNameForValue(ZFJsonType::e_Value));
                 if(outErrorPos != zfnull) {
                     *outErrorPos = jsonItem;
                 }

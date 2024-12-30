@@ -61,7 +61,7 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType = ZFMethodTypeVirtual
-        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType = ZFMethodPrivilegeTypePublic
+        , ZF_IN_OPT ZFMethodAccessType methodAccessType = ZFMethodAccessTypePublic
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**
@@ -74,7 +74,7 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType = ZFMethodTypeVirtual
-        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType = ZFMethodPrivilegeTypePublic
+        , ZF_IN_OPT ZFMethodAccessType methodAccessType = ZFMethodAccessTypePublic
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**
@@ -96,7 +96,7 @@ zfclassFwd _ZFP_ZFMethodDynamicRegisterParamPrivate;
  * optional:
  * -  dynamicRegisterUserData, null by default
  * -  methodType, #ZFMethodTypeVirtual by default, auto fallback to #ZFMethodTypeStatic for function type method
- * -  methodPrivilegeType, #ZFMethodPrivilegeTypePublic by default
+ * -  methodAccessType, #ZFMethodAccessTypePublic by default
  * -  returnTypeId, #ZFTypeId_void by default
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFMethodDynamicRegisterParam {
@@ -132,9 +132,9 @@ public:
     ZFMethodType methodType(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodPrivilegeType(ZF_IN ZFMethodPrivilegeType methodPrivilegeType);
+    ZFMethodDynamicRegisterParam &methodAccessType(ZF_IN ZFMethodAccessType methodAccessType);
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodPrivilegeType methodPrivilegeType(void) const;
+    ZFMethodAccessType methodAccessType(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodDynamicRegisterParam &methodName(ZF_IN const zfstring &methodName);

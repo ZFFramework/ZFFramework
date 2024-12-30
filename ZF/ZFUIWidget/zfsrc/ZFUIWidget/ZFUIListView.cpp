@@ -1237,7 +1237,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, cellAdapterAutoRetain
     zfRelease(cellAdapter);
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIOrientationEnum, orientation) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIOrientation, orientation) {
     if(propertyValue != propertyValueOld) {
         d->bounceableUpdate();
         d->reloadByUpdateListOrientation = zftrue;
@@ -1377,7 +1377,7 @@ void ZFUIListView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 
 void ZFUIListView::viewChildOnAdd(
         ZF_IN ZFUIView *child
-        , ZF_IN ZFUIViewChildLayerEnum layer
+        , ZF_IN ZFUIViewChildLayer layer
         ) {
     if(layer == ZFUIViewChildLayer::e_Normal) {
         ZFCoreAssertWithMessage(d->childOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not add child to a list view");
@@ -1386,7 +1386,7 @@ void ZFUIListView::viewChildOnAdd(
 }
 void ZFUIListView::viewChildOnRemove(
         ZF_IN ZFUIView *child
-        , ZF_IN ZFUIViewChildLayerEnum layer
+        , ZF_IN ZFUIViewChildLayer layer
         ) {
     if(layer == ZFUIViewChildLayer::e_Normal) {
         ZFCoreAssertWithMessage(d->childOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not remove child from a list view");

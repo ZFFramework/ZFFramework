@@ -61,10 +61,10 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, editEnable) {
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfbool, editSecured) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditSecure(this, this->editSecured());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardTypeEnum, keyboardType) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardType, keyboardType) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->keyboardType(this, this->keyboardType());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardReturnTypeEnum, keyboardReturnType) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardReturnType, keyboardReturnType) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->keyboardReturnType(this, this->keyboardReturnType());
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfanyT<ZFUITextView>, placeholder) {
@@ -114,7 +114,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextAppearanceEnum, textAppearance) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextAppearance, textAppearance) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textAppearance(this, this->textAppearance());
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();

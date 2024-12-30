@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFENUM_DEFINE(ZFUIAutoLayoutPos)
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, zfanyT<ZFUIView>, target)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutPosEnum, targetPos)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutPos, targetPos)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUIAutoLayoutRule, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUIAutoLayoutRule, void, removeAll)
 
@@ -153,7 +153,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
     // remove all rule
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         _ZFP_AL_d.ruleList[i].removeAll();
     }
 
@@ -170,7 +170,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             return zffalse;
         }
 
-        ZFUIAutoLayoutPosEnum pos = ZFUIAutoLayoutPos::e_None;
+        ZFUIAutoLayoutPos pos = ZFUIAutoLayoutPos::e_None;
         if(!ZFUIAutoLayoutPosFromStringT(pos, ruleStr + itemPos[0].start, itemPos[0].count)
                 || pos == ZFUIAutoLayoutPos::e_None
                 ) {
@@ -182,7 +182,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             return zffalse;
         }
 
-        ZFUIAutoLayoutPosEnum targetPos = ZFUIAutoLayoutPos::e_None;
+        ZFUIAutoLayoutPos targetPos = ZFUIAutoLayoutPos::e_None;
         if(!ZFUIAutoLayoutPosFromStringT(targetPos, ruleStr + itemPos[1].start, itemPos[1].count)
                 || pos == ZFUIAutoLayoutPos::e_None
                 ) {
@@ -229,7 +229,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
     _ZFP_ZFUIAutoLayoutRuleEscapeCharMap();
 
     zfstring ruleStr;
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(ref != zfnull && ref->_ZFP_AL_d.ruleList[i] == rule) {
             continue;
@@ -255,7 +255,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         if(ruleStr) {
             ruleStr += "|";
         }
-        ZFUIAutoLayoutPosToStringT(ruleStr, (ZFUIAutoLayoutPosEnum)i);
+        ZFUIAutoLayoutPosToStringT(ruleStr, (ZFUIAutoLayoutPos)i);
         ruleStr += ":";
         ZFUIAutoLayoutPosToStringT(ruleStr, rule.targetPos());
         ruleStr += ":";
@@ -279,8 +279,8 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompareValueImpl(ZF_IN ZFObject *anot
     if(zfsuper::objectCompareValueImpl(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
-    for(zfindex i = 0; i < ZFUIAutoLayoutPos::EnumCount(); ++i) {
-        ZFUIAutoLayoutPosEnum pos = (ZFUIAutoLayoutPosEnum)ZFUIAutoLayoutPos::EnumValueAt(i);
+    for(zfindex i = 0; i < v_ZFUIAutoLayoutPos::EnumCount(); ++i) {
+        ZFUIAutoLayoutPos pos = (ZFUIAutoLayoutPos)v_ZFUIAutoLayoutPos::EnumValueAt(i);
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[pos];
         ZFUIAutoLayoutRule &ruleRef = another->_ZFP_AL_d.ruleList[pos];
         if(rule.valid() != ruleRef.valid()
@@ -317,8 +317,8 @@ void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
         ZFUIView *childRef = another->childAt(iChild);
         ZFUIAutoLayoutParam *lp = this->childAt(iChild)->layoutParam();
         ZFUIAutoLayoutParam *lpRef = childRef->layoutParam();
-        for(zfindex iPos = 0; iPos < ZFUIAutoLayoutPos::EnumCount(); ++iPos) {
-            ZFUIAutoLayoutPosEnum pos = (ZFUIAutoLayoutPosEnum)ZFUIAutoLayoutPos::EnumValueAt(iChild);
+        for(zfindex iPos = 0; iPos < v_ZFUIAutoLayoutPos::EnumCount(); ++iPos) {
+            ZFUIAutoLayoutPos pos = (ZFUIAutoLayoutPos)v_ZFUIAutoLayoutPos::EnumValueAt(iChild);
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[pos];
             ZFUIAutoLayoutRule &ruleRef = lpRef->_ZFP_AL_d.ruleList[pos];
             if(!ruleRef.valid()) {
@@ -356,7 +356,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
     for(zfindex iChild = this->childCount() - 1; iChild != zfindexMax(); --iChild) {
         ZFUIView *child = this->childAt(iChild);
         ZFUIAutoLayoutParam *lp = child->layoutParam();
-        for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+        for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[i];
             if(!_ZFP_ZFUIAutoLayout_targetUpdate(rule, this, child)) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,

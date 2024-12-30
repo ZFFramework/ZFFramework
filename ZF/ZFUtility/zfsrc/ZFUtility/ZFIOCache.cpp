@@ -144,7 +144,7 @@ private:
     zfstring _callbackId;
     zfautoT<ZFTaskId> _implTask;
     zfauto _result;
-    ZFResultTypeEnum _resultType;
+    ZFResultType _resultType;
     ZFListener _localCacheCallback;
 public:
     void _loadAction(void) {
@@ -161,7 +161,7 @@ public:
         }
         ZFArgs zfargsTmp;
         zfargsTmp.param0(_result);
-        zfargsTmp.param1(zfobj<ZFResultType>(_resultType));
+        zfargsTmp.param1(zfobj<v_ZFResultType>(_resultType));
         for(zfindex i = 0; i < this->callbackList.count(); ++i) {
             this->callbackList[i].execute(zfargsTmp);
         }
@@ -320,7 +320,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
         if(callback) {
             callback.execute(ZFArgs()
                     .param0(zfnull)
-                    .param1(zfobj<ZFResultType>(ZFResultType::e_Fail))
+                    .param1(zfobj<v_ZFResultType>(ZFResultType::e_Fail))
                     );
         }
         return zfnull;
@@ -331,7 +331,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
             if(callback) {
                 callback.execute(ZFArgs()
                         .param0(ret)
-                        .param1(zfobj<ZFResultType>(ZFResultType::e_Success))
+                        .param1(zfobj<v_ZFResultType>(ZFResultType::e_Success))
                         );
             }
             return zfnull;
@@ -387,7 +387,7 @@ void ZFIOCacheLoadTask::taskOnStart(void) {
                 , zfweakT<zfself>, owner
                 ) {
             owner->_implTaskId = zfnull;
-            ZFResultType *resultType = zfargs.param1();
+            v_ZFResultType *resultType = zfargs.param1();
             if(resultType->enumValue() == ZFResultType::e_Success) {
                 owner->notifySuccess(zfargs.param0());
             }
@@ -403,7 +403,7 @@ void ZFIOCacheLoadTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFIOCacheLoadTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFIOCacheLoadTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;

@@ -9,7 +9,7 @@ ZFENUM_DEFINE(ZFCompressLevel)
 // base api
 ZFMETHOD_FUNC_DEFINE_2(void *, ZFCompressBegin
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
-        , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         ) {
     if(!outputZip) {
         return zfnull;
@@ -192,7 +192,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFDecompressContentFindClose
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompress
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN_OUT(const ZFInput &, inputRaw)
-        , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         , ZFMP_IN_OPT(const zfchar *, filePathInZip, "content")
         ) {
     void *compressToken = ZFCompressBegin(outputZip, compressLevel);
@@ -274,7 +274,7 @@ static zfbool _ZFP_ZFCompressDir(
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressDir
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN(const ZFPathInfo &, inputPathInfo)
-        , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         ) {
     const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(inputPathInfo.pathType());
     if(fileImpl == zfnull) {

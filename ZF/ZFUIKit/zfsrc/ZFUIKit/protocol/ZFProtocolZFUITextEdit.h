@@ -46,12 +46,12 @@ public:
     /** @brief see #ZFUITextEdit */
     virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
+            , ZF_IN ZFUITextEditKeyboardType keyboardType
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
     virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnType keyboardReturnType
             ) zfpurevirtual;
 
     /** @brief see #ZFUITextEdit */
@@ -74,7 +74,7 @@ public:
     /** @brief see #ZFUITextEdit */
     virtual void textAppearance(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
     virtual void textAlign(

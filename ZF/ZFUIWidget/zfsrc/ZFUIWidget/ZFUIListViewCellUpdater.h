@@ -13,8 +13,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief basic updater that insert separator to list cell
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListViewCellUpdater : zfextend ZFStyleableObject, zfimplement ZFUICellUpdater {
-    ZFOBJECT_DECLARE(ZFUIListViewCellUpdater, ZFStyleableObject)
+zfclass ZFLIB_ZFUIWidget ZFUIListViewCellUpdater : zfextend ZFStyle, zfimplement ZFUICellUpdater {
+    ZFOBJECT_DECLARE(ZFUIListViewCellUpdater, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFUICellUpdater)
 
 public:

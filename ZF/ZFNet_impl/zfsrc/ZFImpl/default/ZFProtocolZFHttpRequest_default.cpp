@@ -31,7 +31,7 @@ private:
         ZFHttpResponse *ownerResponse;
         zfidentity taskId;
         zfstring url;
-        ZFHttpMethodEnum httpMethod;
+        ZFHttpMethod httpMethod;
         httplib::Headers headers;
         ZFBuffer body;
         httplib::Headers responseHeaders;
@@ -98,7 +98,7 @@ public:
 
     virtual void httpMethod(
             ZF_IN void *nativeTask
-            , ZF_IN ZFHttpMethodEnum httpMethod
+            , ZF_IN ZFHttpMethod httpMethod
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
         nativeTaskTmp->httpMethod = httpMethod;
@@ -376,7 +376,7 @@ public:
     }
 
     static httplib::Result _ZFP_asyncRequest(
-            ZF_IN ZFHttpMethodEnum httpMethod
+            ZF_IN ZFHttpMethod httpMethod
             , ZF_IN const zfchar *url
             , ZF_IN zfindex pHostPath
             , ZF_IN zftimet timeout

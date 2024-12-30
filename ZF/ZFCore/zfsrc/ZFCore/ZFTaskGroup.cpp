@@ -77,7 +77,7 @@ void ZFTaskGroup::taskOnStart(void) {
         child->start(childOnStop);
     }
 }
-void ZFTaskGroup::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFTaskGroup::taskOnStop(ZF_IN ZFResultType resultType) {
     zfautoT<ZFArray> childRunning = this->objectTagRemoveAndGet("_ZFP_ZFTaskGroupImpl");
     if(childRunning != zfnull) {
         for(zfindex i = 0; i < childRunning->count(); ++i) {

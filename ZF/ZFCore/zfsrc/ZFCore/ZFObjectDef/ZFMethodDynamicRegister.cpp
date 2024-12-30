@@ -15,7 +15,7 @@ public:
     ZFMethodGenericInvoker methodGenericInvoker;
     ZFListener methodImpl;
     ZFMethodType methodType;
-    ZFMethodPrivilegeType methodPrivilegeType;
+    ZFMethodAccessType methodAccessType;
     zfstring methodName;
     zfstring returnTypeId;
     zfindex paramCount;
@@ -33,7 +33,7 @@ public:
     , methodGenericInvoker(zfnull)
     , methodImpl()
     , methodType(ZFMethodTypeVirtual)
-    , methodPrivilegeType(ZFMethodPrivilegeTypePublic)
+    , methodAccessType(ZFMethodAccessTypePublic)
     , methodName()
     , returnTypeId(ZFTypeId_void())
     , paramCount(0)
@@ -93,12 +93,12 @@ ZFMethodType ZFMethodDynamicRegisterParam::methodType(void) const {
     return d->methodType;
 }
 
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodPrivilegeType(ZF_IN ZFMethodPrivilegeType methodPrivilegeType) {
-    d->methodPrivilegeType = methodPrivilegeType;
+ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodAccessType(ZF_IN ZFMethodAccessType methodAccessType) {
+    d->methodAccessType = methodAccessType;
     return *this;
 }
-ZFMethodPrivilegeType ZFMethodDynamicRegisterParam::methodPrivilegeType(void) const {
-    return d->methodPrivilegeType;
+ZFMethodAccessType ZFMethodDynamicRegisterParam::methodAccessType(void) const {
+    return d->methodAccessType;
 }
 
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodName(ZF_IN const zfstring &methodName) {
@@ -188,8 +188,8 @@ zfbool ZFMethodDynamicRegisterParam::operator == (ZF_IN ZFMethodDynamicRegisterP
 void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += "<ZFMethodDynamicRegisterParam ";
 
-    if(this->methodPrivilegeType() != ZFMethodPrivilegeTypePublic) {
-        ZFMethodPrivilegeTypeToStringT(ret, this->methodPrivilegeType());
+    if(this->methodAccessType() != ZFMethodAccessTypePublic) {
+        ZFMethodAccessTypeToStringT(ret, this->methodAccessType());
         ret += ":";
     }
 
@@ -400,7 +400,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, methodPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, methodAccessType, ZFMethodAccessTypePublic)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
@@ -410,7 +410,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
-        , ZFMP_IN_OPT(ZFMethodPrivilegeType, methodPrivilegeType, ZFMethodPrivilegeTypePublic)
+        , ZFMP_IN_OPT(ZFMethodAccessType, methodAccessType, ZFMethodAccessTypePublic)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodDynamicUnregister

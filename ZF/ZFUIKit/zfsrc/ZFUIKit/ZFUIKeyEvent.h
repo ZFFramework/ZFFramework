@@ -25,11 +25,11 @@ public:
     /**
      * @brief action
      */
-    ZFUIKeyActionEnum keyAction;
+    ZFUIKeyAction keyAction;
     /**
      * @brief key code
      */
-    ZFUIKeyCodeEnum keyCode;
+    ZFUIKeyCode keyCode;
     /**
      * @brief raw key code depends on implementation, try not to abuse it
      */

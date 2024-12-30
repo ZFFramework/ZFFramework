@@ -30,7 +30,7 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
 ZFMETHOD_DEFINE_0(ZFUIImageView, zfautoT<ZFUIImage>, imageState) {
     return this->image() ? this->image()->imageState() : zfnull;
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIContentScaleTypeEnum, imageScaleType) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIContentScaleType, imageScaleType) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }

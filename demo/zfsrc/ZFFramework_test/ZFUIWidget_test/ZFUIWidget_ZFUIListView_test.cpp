@@ -128,8 +128,8 @@ private:
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVertical));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceHorizontalAlways));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVerticalAlways));
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIListView, orientation),
-            ZFCoreArrayCreate(ZFUIOrientationEnum
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView, ZFUIOrientation, ZFPropertyAccess(ZFUIListView, orientation),
+            ZFCoreArrayCreate(ZFUIOrientation
                 , ZFUIOrientation::e_Top
                 , ZFUIOrientation::e_Left
                 , ZFUIOrientation::e_Right

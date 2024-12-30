@@ -78,7 +78,7 @@ public:
     }
     virtual void keyboardType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardTypeEnum keyboardType
+            , ZF_IN ZFUITextEditKeyboardType keyboardType
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_keyboardType",
@@ -93,7 +93,7 @@ public:
     }
     virtual void keyboardReturnType(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum keyboardReturnType
+            , ZF_IN ZFUITextEditKeyboardReturnType keyboardReturnType
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_keyboardReturnType",
@@ -163,7 +163,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_textAppearance",

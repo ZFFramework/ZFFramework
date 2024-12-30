@@ -134,7 +134,7 @@ protected:
 };
 
 // ============================================================
-// ZFStyleableObject
+// ZFStyle
 /**
  * @brief common styleable object
  *
@@ -142,8 +142,8 @@ protected:
  * every style, serialize and copy logic has been done by reflect,
  * if all of your properties are declared as #ZFProperty
  */
-zfclass ZFLIB_ZFCore ZFStyleableObject : zfextend ZFObject, zfimplement ZFStyleable, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE(ZFStyleableObject, ZFObject)
+zfclass ZFLIB_ZFCore ZFStyle : zfextend ZFObject, zfimplement ZFStyleable, zfimplement ZFSerializable, zfimplement ZFCopyable {
+    ZFOBJECT_DECLARE(ZFStyle, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFStyleable, ZFSerializable, ZFCopyable)
 
 protected:

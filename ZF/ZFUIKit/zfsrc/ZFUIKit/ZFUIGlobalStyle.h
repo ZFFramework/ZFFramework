@@ -12,8 +12,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief global style for ui elements
  */
-zfclass ZFLIB_ZFUIKit ZFUIGlobalStyle : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFUIGlobalStyle, ZFStyleableObject)
+zfclass ZFLIB_ZFUIKit ZFUIGlobalStyle : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFUIGlobalStyle, ZFStyle)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIGlobalStyle)
 
 public:
@@ -116,7 +116,7 @@ public:
     /**
      * @brief default text appearance
      */
-    ZFPROPERTY_ASSIGN(ZFUITextAppearanceEnum, textAppearance, ZFUITextAppearance::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextAppearance, textAppearance, v_ZFUITextAppearance::EnumDefault())
     /**
      * @brief default text align
      */
@@ -124,7 +124,7 @@ public:
     /**
      * @brief default text truncate mode
      */
-    ZFPROPERTY_ASSIGN(ZFUITextTruncateModeEnum, textTruncateMode, ZFUITextTruncateMode::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextTruncateMode, textTruncateMode, v_ZFUITextTruncateMode::EnumDefault())
 
     // ============================================================
     // generanl colors

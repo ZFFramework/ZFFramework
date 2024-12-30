@@ -489,7 +489,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_3(ZFUIRect, ZFUIAlignApply
         , ZFMP_IN(const ZFUIRect &, refRect)
         , ZFMP_IN(const ZFUISize &, itemSize)
         )
-ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetX
+ZFMETHOD_FUNC_DEFINE_1(ZFUIAlign, ZFUIAlignGetX
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         ) {
     if(!ZFUIAlignValid(align)) {
@@ -510,7 +510,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetX
     }
     return ZFUIAlign::e_Center;
 }
-ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetY
+ZFMETHOD_FUNC_DEFINE_1(ZFUIAlign, ZFUIAlignGetY
         , ZFMP_IN(const ZFUIAlignFlags &, align)
         ) {
     if(!ZFUIAlignValid(align)) {
@@ -742,10 +742,10 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFUIOrientationFlags, ZFUIOrientationFlagsHorizonta
 ZFEXPORT_VAR_READONLY_DEFINE(ZFUIOrientationFlags, ZFUIOrientationFlagsVertical, (ZFUIOrientation::e_Top | ZFUIOrientation::e_Bottom))
 
 ZFMETHOD_FUNC_INLINE_DEFINE_1(zfbool, ZFUIOrientationIsVertical
-        , ZFMP_IN(ZFUIOrientationEnum, orientation)
+        , ZFMP_IN(ZFUIOrientation, orientation)
         )
 ZFMETHOD_FUNC_INLINE_DEFINE_1(zfbool, ZFUIOrientationIsHorizontal
-        , ZFMP_IN(ZFUIOrientationEnum, orientation)
+        , ZFMP_IN(ZFUIOrientation, orientation)
         )
 
 ZFENUM_DEFINE(ZFUITextAppearance)
@@ -813,7 +813,7 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillCenterClipped(
 }
 ZFMETHOD_FUNC_DEFINE_5(void, ZFUIContentScaleTypeApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
-        , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
+        , ZFMP_IN(ZFUIContentScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
         , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
@@ -867,7 +867,7 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIContentScaleTypeApplyT
     }
 }
 ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIContentScaleTypeApply
-        , ZFMP_IN(ZFUIContentScaleTypeEnum, scaleType)
+        , ZFMP_IN(ZFUIContentScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
         , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)

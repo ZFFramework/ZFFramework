@@ -385,10 +385,10 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
  *
  * serializable data:
  * @code
- *   <ZFFilterCallbackResult value="value" />
+ *   <ZFFilterResult value="value" />
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterCallbackResult, ZFFilterCallbackResult)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterResult, ZFFilterResult)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)
@@ -512,11 +512,11 @@ ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToStringT(s, v);})
  *
  * serializable data:
  * @code
- *   <ZFMethodPrivilegeType value="value" />
+ *   <ZFMethodAccessType value="value" />
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodPrivilegeType, ZFMethodPrivilegeType)
-ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {ZFMethodPrivilegeTypeToStringT(s, v);})
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodAccessType, ZFMethodAccessType)
+ZFOUTPUT_TYPE(ZFMethodAccessType, {ZFMethodAccessTypeToStringT(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE

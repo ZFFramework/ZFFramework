@@ -72,8 +72,8 @@ protected:
         this->observerNotify(ZFTestCase::EventTestCaseOnProgress(), progress);
     }
     /** @brief see #EventTestCaseOnStop */
-    virtual inline void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult) {
-        this->observerNotify(ZFTestCase::EventTestCaseOnStop(), zfobj<ZFResultType>(testCaseResult));
+    virtual inline void testCaseOnStop(ZF_IN ZFResultType testCaseResult) {
+        this->observerNotify(ZFTestCase::EventTestCaseOnStop(), zfobj<v_ZFResultType>(testCaseResult));
         zfRelease(this);
     }
 
@@ -114,7 +114,7 @@ public:
      * @warning you must not access this object after calling this method
      */
     ZFMETHOD_DECLARE_1(void, stop
-            , ZFMP_IN(ZFResultTypeEnum, testCaseResult)
+            , ZFMP_IN(ZFResultType, testCaseResult)
             )
 
 private:

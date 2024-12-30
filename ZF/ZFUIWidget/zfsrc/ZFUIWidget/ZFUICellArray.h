@@ -24,8 +24,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   </ZFUICellArray>
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUICellArray : zfextend ZFStyleableObject, zfimplement ZFUICellAdapter {
-    ZFOBJECT_DECLARE(ZFUICellArray, ZFStyleableObject)
+zfclass ZFLIB_ZFUIWidget ZFUICellArray : zfextend ZFStyle, zfimplement ZFUICellAdapter {
+    ZFOBJECT_DECLARE(ZFUICellArray, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFUICellAdapter)
 
 protected:

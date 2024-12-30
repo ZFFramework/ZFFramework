@@ -115,13 +115,13 @@ protected:
         {
             zfclassNotPOD _Holder {
                 public:
-                    static ZFFilterCallbackResult filter(ZF_IN const ZFMethod *const &e) {
+                    static ZFFilterResult filter(ZF_IN const ZFMethod *const &e) {
                         const zfchar *prefix = "ZFCore_ZFMethodFunc_test_";
                         if(zfsncmp(e->methodName(), prefix, zfslen(prefix)) == 0) {
-                            return ZFFilterCallbackResultActive;
+                            return ZFFilterResultActive;
                         }
                         else {
-                            return ZFFilterCallbackResultNotActive;
+                            return ZFFilterResultNotActive;
                         }
                     }
             };

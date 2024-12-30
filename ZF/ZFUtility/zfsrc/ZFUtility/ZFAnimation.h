@@ -19,8 +19,8 @@ zfclassFwd _ZFP_ZFAnimationPrivate;
 /**
  * @brief base class of all animation
  */
-zfclass ZFLIB_ZFUtility ZFAnimation : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFAnimation, ZFStyleableObject)
+zfclass ZFLIB_ZFUtility ZFAnimation : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFAnimation, ZFStyle)
 
 public:
     // ============================================================
@@ -183,14 +183,14 @@ protected:
         this->observerNotify(ZFAnimation::EventAniOnLoop());
     }
     /** @brief see #EventAniOnStop */
-    virtual inline void aniOnStop(ZF_IN ZFResultTypeEnum resultType) {
-        this->observerNotify(ZFAnimation::EventAniOnStop(), zfobj<ZFResultType>(resultType));
+    virtual inline void aniOnStop(ZF_IN ZFResultType resultType) {
+        this->observerNotify(ZFAnimation::EventAniOnStop(), zfobj<v_ZFResultType>(resultType));
     }
 public:
     /**
      * @brief subclass must notify after the animation stop
      */
-    zffinal void aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType = ZFResultType::e_Success);
+    zffinal void aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType = ZFResultType::e_Success);
 
 protected:
     /** @brief init with #target */
@@ -242,7 +242,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultTypeEnum resultType);
+    virtual void taskOnStop(ZF_IN ZFResultType resultType);
     zfoverride
     virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 };

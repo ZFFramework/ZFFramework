@@ -30,12 +30,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIFlowLayout, zfanyT<ZFUIFlowLayout
 // ZFUIFlowLayout
 ZFOBJECT_REGISTER(ZFUIFlowLayout)
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIOrientationEnum, orientation) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIOrientation, orientation) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIOrientationEnum, orientationSecondary) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIOrientation, orientationSecondary) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
@@ -45,7 +45,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zfbool, gridMode) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIContentScaleTypeEnum, childScaleType) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIContentScaleType, childScaleType) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
@@ -76,13 +76,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zffloat, childSpaceY) {
 static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(
         ZF_IN ZFUIFlowLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum heightParam
+        , ZF_IN ZFUISizeType heightParam
         , ZF_OUT ZFUISize &maxCellSize
         );
 static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(
         ZF_IN ZFUIFlowLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum widthParam
+        , ZF_IN ZFUISizeType widthParam
         , ZF_OUT ZFUISize &maxCellSize
         );
 
@@ -165,7 +165,7 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 
 // ============================================================
 // util
-ZFUIOrientationEnum _ZFP_ZFUIFlowLayout_orientationSecondary(ZF_IN ZFUIFlowLayout *parent) {
+ZFUIOrientation _ZFP_ZFUIFlowLayout_orientationSecondary(ZF_IN ZFUIFlowLayout *parent) {
     switch(parent->orientation()) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
@@ -204,7 +204,7 @@ ZFUIOrientationEnum _ZFP_ZFUIFlowLayout_orientationSecondary(ZF_IN ZFUIFlowLayou
 static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         ZF_IN ZFUIFlowLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum heightParam
+        , ZF_IN ZFUISizeType heightParam
         , ZF_IN zfindex childIndexStart
         , ZF_OUT zfindex &childIndexStop
         , ZF_OUT ZFUISize &maxCellSize
@@ -268,7 +268,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
 static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         ZF_IN ZFUIFlowLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum widthParam
+        , ZF_IN ZFUISizeType widthParam
         , ZF_IN zfindex childIndexStart
         , ZF_OUT zfindex &childIndexStop
         , ZF_OUT ZFUISize &maxCellSize
@@ -335,7 +335,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
 static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(
         ZF_IN ZFUIFlowLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum heightParam
+        , ZF_IN ZFUISizeType heightParam
         , ZF_OUT ZFUISize &maxCellSize
         ) {
     zffloat parentMarginX = ZFUIMarginGetWidth(parent->childMargin());
@@ -387,7 +387,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(
 static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(
         ZF_IN ZFUIFlowLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum widthParam
+        , ZF_IN ZFUISizeType widthParam
         , ZF_OUT ZFUISize &maxCellSize
         ) {
     zffloat parentMarginX = ZFUIMarginGetWidth(parent->childMargin());

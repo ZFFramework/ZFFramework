@@ -219,7 +219,7 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel
+            , ZF_IN_OPT ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel
             ) zfpurevirtual;
     /** @brief see #ZFUIScrollViewImplHelper */
     virtual void mouseEventCleanup(ZF_IN void *nativeMouseEvent) zfpurevirtual;
@@ -314,7 +314,7 @@ public:
     /** @brief see #ZFUIScrollViewImplHelper */
     void interceptMouse(
             ZF_IN void *nativeMouseEvent
-            , ZF_IN ZFUIMouseActionEnum mouseAction
+            , ZF_IN ZFUIMouseAction mouseAction
             );
     /** @brief see #ZFUIScrollViewImplHelper */
     void trackDelayNotifyTimeout(void);

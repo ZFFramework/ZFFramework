@@ -229,7 +229,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFCompareResult
+ZFEXPORT_RAW_ENUM_DEFINE(ZFCompareResult
         , ZFCompareUncomparable
         , ZFCompareSmaller
         , ZFCompareEqual
@@ -288,7 +288,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFSeekPos
+ZFEXPORT_RAW_ENUM_DEFINE(ZFSeekPos
         , ZFSeekPosBegin
         , ZFSeekPosCur
         , ZFSeekPosCurReversely
@@ -464,7 +464,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFLevel, ZFLevel, {
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFLevel
+ZFEXPORT_RAW_ENUM_DEFINE(ZFLevel
     , ZFLevelZFFrameworkStatic
     , ZFLevelZFFrameworkEssential
     , ZFLevelZFFrameworkHigh
@@ -710,29 +710,29 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFFilterType
+ZFEXPORT_RAW_ENUM_DEFINE(ZFFilterType
         , ZFFilterTypeInclude
         , ZFFilterTypeExclude
         )
 
 // ============================================================
-ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResult, {
+ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterResult, ZFFilterResult, {
         const zfchar *tokens[] = ZFM_EXPAND({
-            ZFTOKEN_ZFFilterCallbackResultNotSpecified,
-            ZFTOKEN_ZFFilterCallbackResultActive,
-            ZFTOKEN_ZFFilterCallbackResultNotActive,
+            ZFTOKEN_ZFFilterResultNotSpecified,
+            ZFTOKEN_ZFFilterResultActive,
+            ZFTOKEN_ZFFilterResultNotActive,
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
-        v = ZFFilterCallbackResultNotSpecified;
+        v = ZFFilterResultNotSpecified;
         switch(matched) {
             case 0:
-                v = ZFFilterCallbackResultNotSpecified;
+                v = ZFFilterResultNotSpecified;
                 return zftrue;
             case 1:
-                v = ZFFilterCallbackResultActive;
+                v = ZFFilterResultActive;
                 return zftrue;
             case 2:
-                v = ZFFilterCallbackResultNotActive;
+                v = ZFFilterResultNotActive;
                 return zftrue;
             default:
                 if(errorHint) {
@@ -742,24 +742,24 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
         }
     }, {
         switch(v) {
-            case ZFFilterCallbackResultNotSpecified:
-                s += ZFTOKEN_ZFFilterCallbackResultNotSpecified;
+            case ZFFilterResultNotSpecified:
+                s += ZFTOKEN_ZFFilterResultNotSpecified;
                 return zftrue;
-            case ZFFilterCallbackResultActive:
-                s += ZFTOKEN_ZFFilterCallbackResultActive;
+            case ZFFilterResultActive:
+                s += ZFTOKEN_ZFFilterResultActive;
                 return zftrue;
-            case ZFFilterCallbackResultNotActive:
-                s += ZFTOKEN_ZFFilterCallbackResultNotActive;
+            case ZFFilterResultNotActive:
+                s += ZFTOKEN_ZFFilterResultNotActive;
                 return zftrue;
             default:
                 ZFCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
     })
-ZFEXPORT_ENUM_DEFINE(ZFFilterCallbackResult
-        , ZFFilterCallbackResultNotSpecified
-        , ZFFilterCallbackResultActive
-        , ZFFilterCallbackResultNotActive
+ZFEXPORT_RAW_ENUM_DEFINE(ZFFilterResult
+        , ZFFilterResultNotSpecified
+        , ZFFilterResultActive
+        , ZFFilterResultNotActive
         )
 
 // ============================================================

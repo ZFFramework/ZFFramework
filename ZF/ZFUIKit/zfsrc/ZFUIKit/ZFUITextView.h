@@ -31,7 +31,7 @@ public:
 
 public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, text)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearanceEnum, textAppearance)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearance, textAppearance)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSize)
@@ -61,8 +61,8 @@ public:
     /**
      * @brief text truncate mode, #ZFUITextTruncateMode::e_Disable by default
      */
-    ZFPROPERTY_ASSIGN(ZFUITextTruncateModeEnum, textTruncateMode, ZFUIGlobalStyle::DefaultStyle()->textTruncateMode())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextTruncateModeEnum, textTruncateMode)
+    ZFPROPERTY_ASSIGN(ZFUITextTruncateMode, textTruncateMode, ZFUIGlobalStyle::DefaultStyle()->textTruncateMode())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextTruncateMode, textTruncateMode)
 
 protected:
     zfoverride

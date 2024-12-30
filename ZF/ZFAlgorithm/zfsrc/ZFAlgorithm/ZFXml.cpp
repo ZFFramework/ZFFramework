@@ -108,7 +108,7 @@ public:
     typedef zfstldeque<ZFXml> ChildList;
 public:
     zfuint refCount;
-    ZFXmlTypeEnum type;
+    ZFXmlType type;
     zfstring name;
     zfstring value;
     AttrMap attrMap;
@@ -116,7 +116,7 @@ public:
     zfbool CDATA;
 
 public:
-    explicit _ZFP_ZFXmlPrivate(ZF_IN ZFXmlTypeEnum type)
+    explicit _ZFP_ZFXmlPrivate(ZF_IN ZFXmlType type)
     : refCount(1)
     , type(type)
     , name(zfnull)
@@ -151,7 +151,7 @@ ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
 : d(zfnull)
 {
 }
-ZFXml::ZFXml(ZF_IN ZFXmlTypeEnum type) {
+ZFXml::ZFXml(ZF_IN ZFXmlType type) {
     if(type != ZFXmlType::e_Null) {
         d = zfnew(_ZFP_ZFXmlPrivate, type);
     }
@@ -213,7 +213,7 @@ zfindex ZFXml::objectRetainCount(void) const {
 }
 
 // ============================================================
-void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum type) {
+void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlType type) {
     if(type != ZFXmlType::e_Null) {
         if(d) {
             d->type = type;
@@ -223,7 +223,7 @@ void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum type) {
         }
     }
 }
-ZFXmlTypeEnum ZFXml::type(void) const {
+ZFXmlType ZFXml::type(void) const {
     return d ? d->type : ZFXmlType::e_Null;
 }
 
@@ -497,14 +497,14 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
         v_ZFXml *v = invokerObject;
         v->zfv._ZFP_ZFXml_xmlType(type);
     }, v_ZFXml
-    , ZFMP_IN(ZFXmlTypeEnum, type)
+    , ZFMP_IN(ZFXmlType, type)
     )
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, objectInfoT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, objectInfo)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXmlTypeEnum, type)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXmlType, type)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, name
         , ZFMP_IN(const zfstring &, name)

@@ -42,27 +42,27 @@ ZFOUTPUT_TYPE(ZFFilterType, {
  * @brief filter result for custom filter callback
  */
 typedef enum {
-    ZFFilterCallbackResultNotSpecified,
-    ZFFilterCallbackResultActive,
-    ZFFilterCallbackResultNotActive,
-} ZFFilterCallbackResult;
+    ZFFilterResultNotSpecified,
+    ZFFilterResultActive,
+    ZFFilterResultNotActive,
+} ZFFilterResult;
 /** @brief string tokens */
-#define ZFTOKEN_ZFFilterCallbackResultNotSpecified "NotSpecified"
+#define ZFTOKEN_ZFFilterResultNotSpecified "NotSpecified"
 /** @brief string tokens */
-#define ZFTOKEN_ZFFilterCallbackResultActive "Active"
+#define ZFTOKEN_ZFFilterResultActive "Active"
 /** @brief string tokens */
-#define ZFTOKEN_ZFFilterCallbackResultNotActive "NotActive"
+#define ZFTOKEN_ZFFilterResultNotActive "NotActive"
 
-ZFOUTPUT_TYPE(ZFFilterCallbackResult, {
+ZFOUTPUT_TYPE(ZFFilterResult, {
     switch(v) {
-        case ZFFilterCallbackResultNotSpecified:
-            s += ZFTOKEN_ZFFilterCallbackResultNotSpecified;
+        case ZFFilterResultNotSpecified:
+            s += ZFTOKEN_ZFFilterResultNotSpecified;
             break;
-        case ZFFilterCallbackResultActive:
-            s += ZFTOKEN_ZFFilterCallbackResultActive;
+        case ZFFilterResultActive:
+            s += ZFTOKEN_ZFFilterResultActive;
             break;
-        case ZFFilterCallbackResultNotActive:
-            s += ZFTOKEN_ZFFilterCallbackResultNotActive;
+        case ZFFilterResultNotActive:
+            s += ZFTOKEN_ZFFilterResultNotActive;
             break;
         default:
             break;
@@ -112,7 +112,7 @@ public:
     /**
      * @brief custom filter callback for ZFFilter
      */
-    typedef ZFFilterCallbackResult (*CustomFilterCallback)(ZF_IN T_Public const &e);
+    typedef ZFFilterResult (*CustomFilterCallback)(ZF_IN T_Public const &e);
 
 public:
     /**
@@ -322,11 +322,11 @@ public:
         if(this->_customFilters != zfnull) {
             for(zfindex i = 0; i < this->_customFilters->count(); ++i) {
                 switch(this->_customFilters->get(i)(e)) {
-                    case ZFFilterCallbackResultNotSpecified:
+                    case ZFFilterResultNotSpecified:
                         break;
-                    case ZFFilterCallbackResultActive:
+                    case ZFFilterResultActive:
                         return zftrue;
-                    case ZFFilterCallbackResultNotActive:
+                    case ZFFilterResultNotActive:
                         return zffalse;
                     default:
                         ZFCoreCriticalShouldNotGoHere();

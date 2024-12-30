@@ -9,7 +9,7 @@ ZFOBJECT_REGISTER(ZFOutputFormat)
 
 void ZFOutputFormat::format(
         ZF_IN_OUT zfstring &ret
-        , ZF_IN ZFOutputFormatStepEnum outputStep
+        , ZF_IN ZFOutputFormatStep outputStep
         , ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
         ) {
@@ -23,7 +23,7 @@ zfclass _ZFP_I_ZFOutputForFormatOwner : zfextend ZFObject {
 public:
     ZFOutput output;
     ZFOutputFormat *format;
-    ZFOutputFormatStepEnum outputStep;
+    ZFOutputFormatStep outputStep;
 
 public:
     ZFALLOC_CACHE_RELEASE({
@@ -239,7 +239,7 @@ ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutput, getOutput
 ZFOBJECT_REGISTER(ZFOutputFormatBasic)
 void ZFOutputFormatBasic::format(
         ZF_IN_OUT zfstring &ret
-        , ZF_IN ZFOutputFormatStepEnum outputStep
+        , ZF_IN ZFOutputFormatStep outputStep
         , ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
         ) {

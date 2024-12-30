@@ -71,7 +71,7 @@ public:
     }
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
@@ -120,7 +120,7 @@ public:
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
-            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            , ZF_IN ZFUITextTruncateMode const &textTruncateMode
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
@@ -391,7 +391,7 @@ private:
             , ZF_IN zffloat textSizeCurrent
             ) {
         zfbool singleLine = owner->singleLine();
-        ZFUITextTruncateModeEnum textTruncateMode = owner->textTruncateMode();
+        ZFUITextTruncateMode textTruncateMode = owner->textTruncateMode();
         SDL_Color textColor = ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor());
         if(textTruncateMode == ZFUITextTruncateMode::e_Disable) {
             if(singleLine) {

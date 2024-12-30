@@ -20,7 +20,7 @@
 @interface _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow : UIViewController
 @property (nonatomic, assign) ZFPROTOCOL_INTERFACE_CLASS(ZFUISysWindow) *impl;
 @property (nonatomic, assign) ZFUISysWindow *ownerZFUISysWindow;
-@property (nonatomic, assign) ZFUIOrientationEnum sysWindowOrientation;
+@property (nonatomic, assign) ZFUIOrientation sysWindowOrientation;
 @property (nonatomic, assign) ZFUIOrientationFlags sysWindowOrientationFlags;
 @property (nonatomic, assign) zfint _ZFP_windowRotateOverrideFlag;
 - (void)_ZFP_updateLayout;
@@ -294,7 +294,7 @@ public:
         [(__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow() _ZFP_updateLayout];
     }
 
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         return ((__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow()).sysWindowOrientation;
     }
     virtual void sysWindowOrientationFlags(

@@ -67,7 +67,7 @@ public:
     /**
      * @brief animation's curve, #ZFAniForNativeCurve::e_Linear by default
      */
-    ZFPROPERTY_ASSIGN(ZFAniForNativeCurveEnum, curve, ZFAniForNativeCurve::e_Linear)
+    ZFPROPERTY_ASSIGN(ZFAniForNativeCurve, curve, ZFAniForNativeCurve::e_Linear)
 
     /**
      * @brief alpha from, 1 by default
@@ -161,7 +161,7 @@ protected:
     zfoverride
     virtual void aniOnStart(void);
     zfoverride
-    virtual void aniOnStop(ZF_IN ZFResultTypeEnum resultType);
+    virtual void aniOnStop(ZF_IN ZFResultType resultType);
 
 protected:
     zfoverride

@@ -71,8 +71,8 @@ public:
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientation, ZFUIOrientation::e_Left)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientation)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientation, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientation, orientation)
     /**
      * @brief secondary direction to layout children, #ZFUIOrientation::e_Top by default
      *
@@ -85,8 +85,8 @@ public:
      *   and if they are both y direction, then #orientationSecondary would be
      *   treated as #ZFUIOrientation::e_Left
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientationSecondary, ZFUIOrientation::e_Top)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientationSecondary)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientationSecondary, ZFUIOrientation::e_Top)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientation, orientationSecondary)
 
     /**
      * @brief whether in grid mode, which makes all children have same size
@@ -97,8 +97,8 @@ public:
     /**
      * @brief valid only when #gridMode, indicates how to scale children
      */
-    ZFPROPERTY_ASSIGN(ZFUIContentScaleTypeEnum, childScaleType, ZFUIContentScaleType::e_FillCenter)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleTypeEnum, childScaleType)
+    ZFPROPERTY_ASSIGN(ZFUIContentScaleType, childScaleType, ZFUIContentScaleType::e_FillCenter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleType, childScaleType)
 
     /**
      * @brief max child count per line, 0 means no limit

@@ -19,7 +19,7 @@ public:
     /** @brief see #ZFCompressBegin */
     virtual void *compressBegin(
             ZF_IN_OUT const ZFOutput &outputZip
-            , ZF_IN ZFCompressLevelEnum compressLevel
+            , ZF_IN ZFCompressLevel compressLevel
             ) zfpurevirtual;
     /** @brief see #ZFCompressBegin */
     virtual zfbool compressEnd(ZF_IN_OUT void *compressToken) zfpurevirtual;

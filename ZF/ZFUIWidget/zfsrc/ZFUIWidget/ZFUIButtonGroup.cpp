@@ -183,7 +183,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup(
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, ZFUIButtonGroupTypeEnum, type) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, ZFUIButtonGroupType, type) {
     if(this->type() == propertyValueOld) {
         return;
     }

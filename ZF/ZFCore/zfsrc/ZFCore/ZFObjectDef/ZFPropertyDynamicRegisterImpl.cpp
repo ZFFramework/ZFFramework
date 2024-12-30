@@ -532,7 +532,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .ownerClass(param.ownerClass())
                 .methodGenericInvoker(_ZFP_PropDynReg_setterGI)
                 .methodType(ZFMethodTypeVirtual)
-                .methodPrivilegeType(param.propertySetterType())
+                .methodAccessType(param.propertySetterType())
                 .methodName(param.propertyName())
                 .returnTypeId(ZFTypeId_void())
                 .methodParam(param.propertyTypeId(), "v")
@@ -548,7 +548,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .ownerClass(param.ownerClass())
                 .methodGenericInvoker(_ZFP_PropDynReg_getterGI)
                 .methodType(ZFMethodTypeVirtual)
-                .methodPrivilegeType(param.propertyGetterType())
+                .methodAccessType(param.propertyGetterType())
                 .methodName(param.propertyName())
                 .returnTypeId(param.propertyTypeId())
             , &errorHintTmp);

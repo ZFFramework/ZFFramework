@@ -21,7 +21,7 @@ public:
     ZFUIMargin nativeImplViewMargin;
 
     ZFUIView *parent;
-    ZFUIViewChildLayerEnum viewLayer;
+    ZFUIViewChildLayer viewLayer;
     zfautoT<ZFUILayoutParam> layoutParam;
     zfautoT<ZFUILayoutParam> serializableRefLayoutParam;
     zfautoT<ZFUILayoutParam> serializableRefLayoutParamCache;
@@ -391,7 +391,7 @@ public:
     }
     ZFUILayoutParam *child(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN ZFUIView *child
             , ZF_IN ZFUILayoutParam *layoutParam
@@ -443,7 +443,7 @@ public:
     }
     void childRemove(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN ZFUIView *view
             ) {
@@ -454,7 +454,7 @@ public:
     }
     void childRemoveAt(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN zfindex index
             ) {
@@ -472,7 +472,7 @@ public:
     }
     void childRemoveAll(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             ) {
         if(layer.isEmpty()) {
@@ -501,7 +501,7 @@ public:
     }
     void childMove(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN zfindex fromIndex
             , ZF_IN zfindex toIndexOrIndexMax
@@ -528,7 +528,7 @@ public:
     }
     void childMove(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex toIndexOrIndexMax
@@ -540,7 +540,7 @@ public:
     }
     void childReplace(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN zfindex atIndex
             , ZF_IN ZFUIView *toReplace
@@ -584,7 +584,7 @@ public:
     zfbool childArrayIsEqual(
             ZF_IN ZFUIView *view0
             , ZF_IN ZFUIView *view1
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             ) {
         const ZFCoreArray<zfautoT<ZFUIView> > *children0 = zfnull;
         const ZFCoreArray<zfautoT<ZFUIView> > *children1 = zfnull;
@@ -629,7 +629,7 @@ public:
 
     zfbool serializeInternalViewFromCategoryData(
             ZF_IN ZFUIView *owner
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN const ZFSerializableData &categoryData
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
@@ -708,7 +708,7 @@ public:
         return zftrue;
     }
     zfbool serializeInternalViewToCategoryData(
-            ZF_IN ZFUIViewChildLayerEnum childLayer
+            ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN_OUT ZFSerializableData &serializableData
             , ZF_IN ZFUIView *ref
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -1439,7 +1439,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUIMargin, nativeImplViewMarginCustom) {
 void ZFUIView::implChildOnAdd(
         ZF_IN ZFUIView *child
         , ZF_IN zfindex virtualIndex
-        , ZF_IN ZFUIViewChildLayerEnum childLayer
+        , ZF_IN ZFUIViewChildLayer childLayer
         , ZF_IN zfindex childLayerIndex
         ) {
     ZFPROTOCOL_ACCESS(ZFUIView)->child(this, child, virtualIndex, childLayer, childLayerIndex);
@@ -1447,7 +1447,7 @@ void ZFUIView::implChildOnAdd(
 void ZFUIView::implChildOnRemove(
         ZF_IN ZFUIView *child
         , ZF_IN zfindex virtualIndex
-        , ZF_IN ZFUIViewChildLayerEnum childLayer
+        , ZF_IN ZFUIViewChildLayer childLayer
         , ZF_IN zfindex childLayerIndex
         ) {
     ZFPROTOCOL_ACCESS(ZFUIView)->childRemove(this, child, virtualIndex, childLayer, childLayerIndex);
@@ -1461,7 +1461,7 @@ void ZFUIView::implChildOnRemoveAllForDealloc(void) {
 void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
         ZF_IN ZFUIView *parent
         , ZF_IN ZFUILayoutParam *layoutParam
-        , ZF_IN ZFUIViewChildLayerEnum viewLayer
+        , ZF_IN ZFUIViewChildLayer viewLayer
         ) {
     if(parent == zfnull) {
         d->parent = zfnull;
@@ -2100,7 +2100,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, zfindex, childFind
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, childArray) {
     return d->layerNormal;
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFUIViewChildLayerEnum, viewLayer) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFUIViewChildLayer, viewLayer) {
     return d->viewLayer;
 }
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, childRawArray) {
@@ -2142,23 +2142,23 @@ void ZFUIView::viewChildOnUpdate(void) {
 }
 void ZFUIView::viewChildOnAdd(
         ZF_IN ZFUIView *child
-        , ZF_IN ZFUIViewChildLayerEnum childLayer
+        , ZF_IN ZFUIViewChildLayer childLayer
         ) {
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd)
             || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnAdd)
             ) {
-        zfobj<ZFUIViewChildLayer> t(childLayer);
+        zfobj<v_ZFUIViewChildLayer> t(childLayer);
         this->observerNotify(ZFUIView::EventViewChildOnAdd(), child, t);
     }
 }
 void ZFUIView::viewChildOnRemove(
         ZF_IN ZFUIView *child
-        , ZF_IN ZFUIViewChildLayerEnum childLayer
+        , ZF_IN ZFUIViewChildLayer childLayer
         ) {
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnRemove)
             || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_viewChildOnRemove)
             ) {
-        zfobj<ZFUIViewChildLayer> t(childLayer);
+        zfobj<v_ZFUIViewChildLayer> t(childLayer);
         this->observerNotify(ZFUIView::EventViewChildOnRemove(), child, t);
     }
 }

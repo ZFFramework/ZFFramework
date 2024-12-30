@@ -384,19 +384,21 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             const ZFProperty *property = allProperty[i];
 
             ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
-            ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnCheckPropertyType");
-            if(!dynamicMethod.isEmpty()) {
-                for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
-                    ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
-                            this->toObject()
-                            , zfobj<v_ZFProperty>(property)
-                            ).to<v_ZFSerializablePropertyType *>()->zfv;
-                    if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
-                        propertyType = propertyTypeTmp;
-                        break;
-                    }
-                    else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
-                        propertyType = propertyTypeTmp;
+            if(this->classData()->classIsDynamicRegister()) {
+                ZFCoreArray<const ZFMethod *> dynamicMethod = this->classData()->methodForNameGetAll("serializableOnCheckPropertyType");
+                if(!dynamicMethod.isEmpty()) {
+                    for(zfindex i = 0; i < dynamicMethod.count(); ++i) {
+                        ZFSerializablePropertyType propertyTypeTmp = dynamicMethod[i]->methodInvoke(
+                                this->toObject()
+                                , zfobj<v_ZFProperty>(property)
+                                ).to<v_ZFSerializablePropertyType *>()->zfv;
+                        if(propertyTypeTmp == ZFSerializablePropertyTypeNotSerializable) {
+                            propertyType = propertyTypeTmp;
+                            break;
+                        }
+                        else if(propertyTypeTmp != ZFSerializablePropertyTypeUnspecified) {
+                            propertyType = propertyTypeTmp;
+                        }
                     }
                 }
             }

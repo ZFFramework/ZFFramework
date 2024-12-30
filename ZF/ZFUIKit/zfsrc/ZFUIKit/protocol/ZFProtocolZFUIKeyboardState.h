@@ -21,7 +21,7 @@ public:
     /**
      * @brief see #ZFUIKeyboardState::keyPressed
      */
-    virtual zfbool keyPressed(ZF_IN ZFUIKeyCodeEnum keyCode) zfpurevirtual;
+    virtual zfbool keyPressed(ZF_IN ZFUIKeyCode keyCode) zfpurevirtual;
     /**
      * @brief see #ZFUIKeyboardState::keyPressedRaw
      */

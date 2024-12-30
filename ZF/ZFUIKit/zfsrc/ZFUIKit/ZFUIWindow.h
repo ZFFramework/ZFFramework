@@ -44,7 +44,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgNormal)
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgHigh)
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgHighest)
-ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUIWindowLevel, ZFUIWindowLevel::e_AppNormal)
+ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUIWindowLevel, AppNormal)
 
 // ============================================================
 // ZFUIWindow
@@ -138,8 +138,8 @@ public:
     /**
      * @brief window's level
      */
-    ZFPROPERTY_ASSIGN(ZFUIWindowLevelEnum, windowLevel, ZFUIWindowLevel::EnumDefault())
-    ZFPROPERTY_ON_VERIFY_DECLARE(ZFUIWindowLevelEnum, windowLevel)
+    ZFPROPERTY_ASSIGN(ZFUIWindowLevel, windowLevel, v_ZFUIWindowLevel::EnumDefault())
+    ZFPROPERTY_ON_VERIFY_DECLARE(ZFUIWindowLevel, windowLevel)
 
     /**
      * @brief whether this window update layout according to #ZFUISysWindow::sysWindowMargin,

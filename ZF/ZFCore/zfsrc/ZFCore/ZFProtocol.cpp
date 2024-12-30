@@ -7,10 +7,10 @@ ZFENUM_DEFINE(ZFProtocolInstanceState)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFProtocol, ZFProtocol *)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolInstanceStateEnum, protocolInstanceState)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolInstanceState, protocolInstanceState)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevelEnum, protocolImplLevel)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevel, protocolImplLevel)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplPlatformHint)
 
 // ============================================================

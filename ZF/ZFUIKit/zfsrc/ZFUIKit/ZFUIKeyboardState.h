@@ -31,7 +31,7 @@ public:
      * @brief true is key is pressed
      */
     ZFMETHOD_DECLARE_1(zfbool, keyPressed
-            , ZFMP_IN(ZFUIKeyCodeEnum, keyCode)
+            , ZFMP_IN(ZFUIKeyCode, keyCode)
             )
     /**
      * @brief true is key is pressed

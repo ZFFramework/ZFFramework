@@ -84,7 +84,7 @@ public:
 
     virtual void httpMethod(
             ZF_IN void *nativeTask
-            , ZF_IN ZFHttpMethodEnum httpMethod
+            , ZF_IN ZFHttpMethod httpMethod
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_httpMethod",

@@ -29,7 +29,7 @@ void ZFUIImageLoadTask::taskOnStart(void) {
                 , zfweakT<zfself>, owner
                 ) {
             owner->_implTaskId = zfnull;
-            ZFResultType *resultType = zfargs.param1();
+            v_ZFResultType *resultType = zfargs.param1();
             if(resultType->enumValue() == ZFResultType::e_Success) {
                 owner->notifySuccess(zfargs.param0());
             }
@@ -45,7 +45,7 @@ void ZFUIImageLoadTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFUIImageLoadTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFUIImageLoadTask::taskOnStop(ZF_IN ZFResultType resultType) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;

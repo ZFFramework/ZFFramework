@@ -15,7 +15,7 @@ class _ZFP_ZFHttpRequestImpl_sys_Qt_Task : public QObject {
 public:
     ZFHttpRequest *ownerRequest;
     ZFHttpResponse *ownerResponse;
-    ZFHttpMethodEnum httpMethod;
+    ZFHttpMethod httpMethod;
     QNetworkAccessManager manager;
     QNetworkRequest request;
     QList<QByteArray> *rawHeaderList;
@@ -148,7 +148,7 @@ public:
 
     virtual void httpMethod(
             ZF_IN void *nativeTask
-            , ZF_IN ZFHttpMethodEnum httpMethod
+            , ZF_IN ZFHttpMethod httpMethod
             ) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->httpMethod = httpMethod;

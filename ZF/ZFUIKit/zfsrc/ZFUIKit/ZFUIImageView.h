@@ -40,8 +40,8 @@ public:
     /**
      * @brief image scale type, fill by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIContentScaleTypeEnum, imageScaleType, ZFUIContentScaleType::EnumDefault())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleTypeEnum, imageScaleType)
+    ZFPROPERTY_ASSIGN(ZFUIContentScaleType, imageScaleType, v_ZFUIContentScaleType::EnumDefault())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleType, imageScaleType)
 
     /**
      * @brief margin of the content image

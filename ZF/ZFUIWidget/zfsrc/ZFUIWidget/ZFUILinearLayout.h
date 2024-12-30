@@ -76,8 +76,8 @@ public:
      * #ZFUIOrientation::e_Left means layout children from left to right,
      * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, orientation, ZFUIOrientation::e_Left)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientationEnum, orientation)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientation, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientation, orientation)
 
     /**
      * @brief extra margin independent from children's layout param's margin, #ZFUIMarginZero by default

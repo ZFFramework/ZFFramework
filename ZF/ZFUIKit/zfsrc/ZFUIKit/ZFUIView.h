@@ -90,8 +90,8 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * we also allow add ZFUIView to native view,
  * for how to, refer to #ZFUISysWindow::nativeWindowEmbed
  */
-zfclass ZFLIB_ZFUIKit ZFUIView : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFUIView, ZFStyleableObject)
+zfclass ZFLIB_ZFUIKit ZFUIView : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFUIView, ZFStyle)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIView)
 
 public:
@@ -645,7 +645,7 @@ protected:
     virtual void implChildOnAdd(
             ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             );
     /**
@@ -654,7 +654,7 @@ protected:
     virtual void implChildOnRemove(
             ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             );
     /**
@@ -722,7 +722,7 @@ public:
     zffinal void _ZFP_ZFUIView_parentOnUpdate(
             ZF_IN ZFUIView *parentView
             , ZF_IN ZFUILayoutParam *layoutParam
-            , ZF_IN ZFUIViewChildLayerEnum viewLayer
+            , ZF_IN ZFUIViewChildLayer viewLayer
             );
     /**
      * @brief parent view or null if none
@@ -1064,7 +1064,7 @@ public:
      *
      * would be #ZFUIViewChildLayer::e_Normal if no parent
      */
-    ZFMETHOD_DECLARE_0(ZFUIViewChildLayerEnum, viewLayer)
+    ZFMETHOD_DECLARE_0(ZFUIViewChildLayer, viewLayer)
     /**
      * @brief return all children including internal views, see #childArray
      *
@@ -1084,12 +1084,12 @@ protected:
     /** @brief see #EventViewChildOnAdd */
     virtual void viewChildOnAdd(
             ZF_IN ZFUIView *child
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             );
     /** @brief see #EventViewChildOnRemove */
     virtual void viewChildOnRemove(
             ZF_IN ZFUIView *child
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             );
     /** @brief see #EventViewOnAddToParent */
     virtual void viewOnAddToParent(ZF_IN ZFUIView *parent);

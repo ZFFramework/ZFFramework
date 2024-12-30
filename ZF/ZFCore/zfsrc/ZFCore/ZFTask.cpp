@@ -24,7 +24,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
     this->observerNotify(zfself::EventTaskOnStart());
 }
 ZFMETHOD_DEFINE_1(ZFTask, void, stop
-        , ZFMP_IN_OPT(ZFResultTypeEnum, resultType, ZFResultType::e_Cancel)
+        , ZFMP_IN_OPT(ZFResultType, resultType, ZFResultType::e_Cancel)
         ) {
     if(!_ZFP_started) {
         return;
@@ -39,7 +39,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
         onStopSaved.execute(ZFArgs()
                 .sender(this)
                 .eventId(zfself::EventTaskOnStop())
-                .param0(zfobj<ZFResultType>(resultType))
+                .param0(zfobj<v_ZFResultType>(resultType))
                 );
     }
     zfRelease(this);

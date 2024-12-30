@@ -146,7 +146,7 @@ public:
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             ) {
         ZFImpl_sys_SDL_View *nativeParent = (ZFImpl_sys_SDL_View *)parent->nativeView();
@@ -158,7 +158,7 @@ public:
             ZF_IN ZFUIView *parent
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             ) {
         ZFImpl_sys_SDL_View *nativeParent = (ZFImpl_sys_SDL_View *)parent->nativeView();

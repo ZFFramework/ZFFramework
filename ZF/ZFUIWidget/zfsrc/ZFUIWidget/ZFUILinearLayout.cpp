@@ -33,7 +33,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUILinearLayoutParam, ZFUIAlignFlags, align) {
 ZFOBJECT_REGISTER(ZFUILinearLayout)
 ZFSTYLE_DEFAULT_DEFINE(ZFUILinearLayout)
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, ZFUIOrientationEnum, orientation) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, ZFUIOrientation, orientation) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
@@ -54,14 +54,14 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, zffloat, childSpace) {
 static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
         ZF_IN ZFUILinearLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum heightParam
+        , ZF_IN ZFUISizeType heightParam
         , ZF_OUT_OPT zffloat *fixedSize = zfnull
         , ZF_OUT_OPT zffloat *totalWeight = zfnull
         );
 static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
         ZF_IN ZFUILinearLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum widthParam
+        , ZF_IN ZFUISizeType widthParam
         , ZF_OUT_OPT zffloat *fixedSize = zfnull
         , ZF_OUT_OPT zffloat *totalWeight = zfnull
         );
@@ -114,7 +114,7 @@ void ZFUILinearLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
         ZF_IN ZFUILinearLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum heightParam
+        , ZF_IN ZFUISizeType heightParam
         , ZF_OUT_OPT zffloat *fixedSize /* = zfnull */
         , ZF_OUT_OPT zffloat *totalWeight /* = zfnull */
         ) {
@@ -167,7 +167,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
 static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
         ZF_IN ZFUILinearLayout *parent
         , ZF_IN const ZFUISize &sizeHint
-        , ZF_IN ZFUISizeTypeEnum widthParam
+        , ZF_IN ZFUISizeType widthParam
         , ZF_OUT_OPT zffloat *fixedSize /* = zfnull */
         , ZF_OUT_OPT zffloat *totalWeight /* = zfnull */
         ) {

@@ -55,8 +55,8 @@ public:
  *   end);
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUICellAdapterBasic : zfextend ZFStyleableObject, zfimplement ZFUICellAdapter {
-    ZFOBJECT_DECLARE(ZFUICellAdapterBasic, ZFStyleableObject)
+zfclass ZFLIB_ZFUIWidget ZFUICellAdapterBasic : zfextend ZFStyle, zfimplement ZFUICellAdapter {
+    ZFOBJECT_DECLARE(ZFUICellAdapterBasic, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFUICellAdapter)
 
 public:

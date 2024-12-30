@@ -169,7 +169,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
 }
 void ZFMethod::_ZFP_ZFMethod_initClassMemberType(
         ZF_IN const ZFClass *ownerClass
-        , ZF_IN ZFMethodPrivilegeType privilegeType
+        , ZF_IN ZFMethodAccessType privilegeType
         ) {
     this->_ZFP_ZFMethod_ownerClass = ownerClass;
     this->_ZFP_ZFMethod_privilegeType = (unsigned short)privilegeType;
@@ -183,7 +183,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace)
     }
 
     this->_ZFP_ZFMethod_ownerClass = zfnull;
-    this->_ZFP_ZFMethod_privilegeType = (unsigned short)ZFMethodPrivilegeTypePublic;
+    this->_ZFP_ZFMethod_privilegeType = (unsigned short)ZFMethodAccessTypePublic;
 }
 
 ZFMethod::ZFMethod(void)
@@ -206,7 +206,7 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_paramDefaultBeginIndex((zfuint)-1)
 , _ZFP_ZFMethod_ownerClass(zfnull)
 , _ZFP_ZFMethod_ownerProperty(zfnull)
-, _ZFP_ZFMethod_privilegeType((unsigned short)ZFMethodPrivilegeTypePublic)
+, _ZFP_ZFMethod_privilegeType((unsigned short)ZFMethodAccessTypePublic)
 , _ZFP_ZFMethod_methodType((unsigned short)ZFMethodTypeNormal)
 , _ZFP_ZFMethod_methodNamespace(zfnull)
 {
@@ -236,15 +236,15 @@ ZFMethod::~ZFMethod(void) {
 }
 
 void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    switch(this->methodPrivilegeType()) {
-        case ZFMethodPrivilegeTypePublic:
+    switch(this->methodAccessType()) {
+        case ZFMethodAccessTypePublic:
             break;
-        case ZFMethodPrivilegeTypeProtected:
-            ret += ZFTOKEN_ZFMethodPrivilegeTypeProtected;
+        case ZFMethodAccessTypeProtected:
+            ret += ZFTOKEN_ZFMethodAccessTypeProtected;
             ret += ": ";
             break;
-        case ZFMethodPrivilegeTypePrivate:
-            ret += ZFTOKEN_ZFMethodPrivilegeTypePrivate;
+        case ZFMethodAccessTypePrivate:
+            ret += ZFTOKEN_ZFMethodAccessTypePrivate;
             ret += ": ";
             break;
         default:
@@ -582,7 +582,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
         , ZF_IN ZFMethodType methodType
         , ZF_IN const ZFClass *ownerClass
-        , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
+        , ZF_IN ZFMethodAccessType methodAccessType
         , ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
@@ -689,7 +689,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
                 );
 
             if(ownerClass != zfnull) {
-                method->_ZFP_ZFMethod_initClassMemberType(ownerClass, methodPrivilegeType);
+                method->_ZFP_ZFMethod_initClassMemberType(ownerClass, methodAccessType);
                 ownerClass->_ZFP_ZFClass_methodRegister(method);
                 _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeAttach, zfnull, zfnull, method);
             }
@@ -740,7 +740,7 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
         , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
         , ZF_IN ZFMethodType methodType
         , ZF_IN const ZFClass *ownerClass
-        , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
+        , ZF_IN ZFMethodAccessType methodAccessType
         , ZF_IN const zfstring &methodNamespace
         , ZF_IN const zfstring &methodName
         , ZF_IN const zfstring &returnTypeId
@@ -755,7 +755,7 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
             , methodGenericInvoker
             , methodType
             , ownerClass
-            , methodPrivilegeType
+            , methodAccessType
             , methodNamespace
             , methodName
             , returnTypeId
@@ -895,7 +895,7 @@ const ZFMethod *ZFMethodAlias(
             , method->methodGenericInvokerOrig()
             , method->methodType()
             , method->ownerClass()
-            , method->methodPrivilegeType()
+            , method->methodAccessType()
             , method->methodNamespace()
             , aliasName
             , method->returnTypeId()

@@ -259,7 +259,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bgDisabled) {
 }
 
 ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUITextView>, label
-        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
         case ZFUIButtonState::e_Normal:
@@ -278,7 +278,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUITextView>, label
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, icon
-        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
         case ZFUIButtonState::e_Normal:
@@ -297,7 +297,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, icon
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bg
-        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
         case ZFUIButtonState::e_Normal:
@@ -318,19 +318,19 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bg
 
 ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, labelStyle
         , ZFMP_IN(ZFUITextView *, style)
-        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
         ) {
     this->label(forState)->styleableCopyFrom(style);
 }
 ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, iconStyle
         , ZFMP_IN(ZFUIImageView *, style)
-        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
         ) {
     this->icon(forState)->styleableCopyFrom(style);
 }
 ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, bgStyle
         , ZFMP_IN(ZFUIImageView *, style)
-        , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
         ) {
     this->bg(forState)->styleableCopyFrom(style);
 }

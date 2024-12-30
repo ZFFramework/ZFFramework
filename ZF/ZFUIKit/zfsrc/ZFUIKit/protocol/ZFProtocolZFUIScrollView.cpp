@@ -223,7 +223,7 @@ ZFUIScrollViewImplHelper::~ZFUIScrollViewImplHelper(void) {
 
 void ZFUIScrollViewImplHelper::interceptMouse(
         ZF_IN void *nativeMouseEvent
-        , ZF_IN ZFUIMouseActionEnum mouseAction
+        , ZF_IN ZFUIMouseAction mouseAction
         ) {
     zfblockedRelease(zfRetain(this->scrollView));
 

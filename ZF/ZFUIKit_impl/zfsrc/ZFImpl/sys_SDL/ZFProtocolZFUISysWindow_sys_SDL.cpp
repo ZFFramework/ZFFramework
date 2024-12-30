@@ -159,7 +159,7 @@ public:
         }
     }
 
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         return ZFUIOrientation::e_Top;
     }
     virtual void sysWindowOrientationFlags(

@@ -18,7 +18,7 @@ public:
     zfanyT<ZFUICell> cell; /**< @brief the cell */
     zfindex cellIndex; /**< @brief cell's index */
     zfindex cellCount; /**< @brief cell's total count */
-    ZFUIOrientationEnum orientation; /**< @brief owner container's orientation */
+    ZFUIOrientation orientation; /**< @brief owner container's orientation */
     ZFUISize containerSize; /**< @brief owner container's size */
     zffloat cellSizeHint; /**< @brief cell's size hint */
 };

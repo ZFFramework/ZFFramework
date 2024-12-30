@@ -48,12 +48,12 @@ public:
     // ============================================================
     // owner state
 private:
-    ZFUIOrientationEnum _ZFP_ZFUICellAdapter_orientation;
+    ZFUIOrientation _ZFP_ZFUICellAdapter_orientation;
 public:
     /**
      * @brief owner view's orientation
      */
-    ZFMETHOD_DECLARE_0(ZFUIOrientationEnum, orientation)
+    ZFMETHOD_DECLARE_0(ZFUIOrientation, orientation)
 
 private:
     ZFUISize _ZFP_ZFUICellAdapter_containerSize;
@@ -121,7 +121,7 @@ public:
 public:
     /** @brief for impl to notify state update */
     zffinal void notifyContainerUpdate(
-            ZF_IN ZFUIOrientationEnum orientation
+            ZF_IN ZFUIOrientation orientation
             , ZF_IN const ZFUISize &containerSize
             ) {
         _ZFP_ZFUICellAdapter_orientation = orientation;

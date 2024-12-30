@@ -25,7 +25,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButton)
 zfclassPOD _ZFP_ZFUIButtonMouseData {
 public:
     zfidentity mouseId;
-    ZFUIMouseActionEnum mouseAction;
+    ZFUIMouseAction mouseAction;
     ZFUIPoint mousePoint;
 };
 static inline _ZFP_ZFUIButtonMouseData _ZFP_ZFUIButtonMouseDataFromEvent(ZF_IN ZFUIMouseEvent *event) {
@@ -47,7 +47,7 @@ static inline _ZFP_ZFUIButtonMouseData _ZFP_ZFUIButtonMouseDataFromEvent(ZF_IN Z
 zfclassNotPOD _ZFP_ZFUIButtonPrivate {
 public:
     ZFUIButton *pimplOwner;
-    ZFUIButtonStateEnum buttonState;
+    ZFUIButtonState buttonState;
     zfidentity processingMouseId;
     ZFUIPoint prevMousePoint;
     zfbool enableFlag;
@@ -66,7 +66,7 @@ public:
 
 public:
     void buttonStateUpdate(ZF_IN zfbool highlighted) {
-        ZFUIButtonStateEnum buttonStateOld = this->buttonState;
+        ZFUIButtonState buttonStateOld = this->buttonState;
         this->buttonHighlightedFlag = highlighted;
         if(this->enableFlag) {
             if(this->buttonHighlightedFlag) {
@@ -114,7 +114,7 @@ public:
     }
     void viewEventOnMouseEvent(ZF_IN ZFUIMouseEvent *mouseEvent) {
         _ZFP_ZFUIButton_DEBUG_LOG("begin %s", mouseEvent)
-        ZFUIMouseActionEnum mouseAction = mouseEvent->mouseAction;
+        ZFUIMouseAction mouseAction = mouseEvent->mouseAction;
         switch(mouseAction) {
             case ZFUIMouseAction::e_Down:
                 if(!this->enableFlag) {
@@ -388,7 +388,7 @@ void ZFUIButton::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFUIButton, ZFUIButtonStateEnum, buttonState) {
+ZFMETHOD_DEFINE_0(ZFUIButton, ZFUIButtonState, buttonState) {
     return d->buttonState;
 }
 

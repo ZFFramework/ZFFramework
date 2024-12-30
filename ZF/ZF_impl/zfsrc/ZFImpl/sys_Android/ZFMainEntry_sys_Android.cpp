@@ -103,7 +103,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFMainEntry
         ZFLogLevelDefault(ZFLogLevel::e_Verbose);
     }
     else {
-        ZFLogLevelDefault(ZFLogLevel::EnumDefault());
+        ZFLogLevelDefault(v_ZFLogLevel::EnumDefault());
     }
 }
 JNI_METHOD_DECLARE_END()

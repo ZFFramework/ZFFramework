@@ -199,14 +199,14 @@ protected:
     virtual void implChildOnAdd(
             ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             );
     zfoverride
     virtual void implChildOnRemove(
             ZF_IN ZFUIView *child
             , ZF_IN zfindex virtualIndex
-            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN zfindex childLayerIndex
             );
     zfoverride
@@ -479,7 +479,7 @@ public:
     /**
      * @brief current state for the scroll view
      */
-    ZFMETHOD_DECLARE_0(ZFUIScrollViewStateEnum, scrollViewState)
+    ZFMETHOD_DECLARE_0(ZFUIScrollViewState, scrollViewState)
 
     // ============================================================
     // scroll callbacks

@@ -14,8 +14,8 @@ zfclassFwd _ZFP_ZFStyleListPrivate;
 /**
  * @brief see #ZFStyleLoad
  */
-zfclass ZFLIB_ZFCore ZFStyleList : zfextend ZFStyleableObject {
-    ZFOBJECT_DECLARE(ZFStyleList, ZFStyleableObject)
+zfclass ZFLIB_ZFCore ZFStyleList : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFStyleList, ZFStyle)
 
 public:
     /** @brief style count */

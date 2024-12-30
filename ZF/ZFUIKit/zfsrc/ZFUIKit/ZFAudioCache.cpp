@@ -16,7 +16,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
     }
     if(!impl->startable()) {
         callback.execute(ZFArgs()
-                .param0(zfobj<ZFResultType>(ZFResultType::e_Fail))
+                .param0(zfobj<v_ZFResultType>(ZFResultType::e_Fail))
                 .param1(zfobj<v_zfstring>(zfstr("unable to load audio from input: %s"
                             , src
                             )))
@@ -46,7 +46,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
     }
     if(!impl->startable()) {
         callback.execute(ZFArgs()
-                .param0(zfobj<ZFResultType>(ZFResultType::e_Fail))
+                .param0(zfobj<v_ZFResultType>(ZFResultType::e_Fail))
                 .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
                             , url
                             )))
@@ -113,7 +113,7 @@ void ZFAudioPlayTask::taskOnStart(void) {
         ZFLISTENER_1(onLoad
                 , zfweakT<zfself>, owner
                 ) {
-            ZFResultType *resultType = zfargs.param0();
+            v_ZFResultType *resultType = zfargs.param0();
             if(resultType->zfv() != ZFResultType::e_Success) {
                 v_zfstring *errorHint = zfargs.param1();
                 if(errorHint) {
@@ -125,7 +125,7 @@ void ZFAudioPlayTask::taskOnStart(void) {
         ZFLISTENER_1(onStop
                 , zfweakT<zfself>, owner
                 ) {
-            ZFResultType *resultType = zfargs.param0();
+            v_ZFResultType *resultType = zfargs.param0();
             if(resultType->zfv() != ZFResultType::e_Success) {
                 v_zfstring *errorHint = zfargs.param1();
                 if(errorHint) {
@@ -148,7 +148,7 @@ void ZFAudioPlayTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAudioPlayTask::taskOnStop(ZF_IN ZFResultTypeEnum resultType) {
+void ZFAudioPlayTask::taskOnStop(ZF_IN ZFResultType resultType) {
     ZFObserverGroupRemove(_holder);
     if(this->_impl) {
         this->_impl->stop();

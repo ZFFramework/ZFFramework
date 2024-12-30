@@ -26,7 +26,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(GoodCompress)
     ZFENUM_VALUE_REGISTER(BestCompress)
-ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFAlgorithm, ZFCompressLevel, ZFCompressLevel::e_Normal)
+ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFAlgorithm, ZFCompressLevel, Normal)
 
 // ============================================================
 // base api
@@ -74,7 +74,7 @@ ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFAlgorithm, ZFCompressLevel, ZFCompressLevel::e_N
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, void *, ZFCompressBegin
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
-        , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         )
 /** @brief see #ZFCompressBegin */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, zfbool, ZFCompressEnd
@@ -177,7 +177,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, void, ZFDecompressContentFindClose
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFCompress
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN_OUT(const ZFInput &, inputRaw)
-        , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         , ZFMP_IN_OPT(const zfchar *, filePathInZip, "content")
         )
 /** @brief see #ZFCompressBegin */
@@ -191,7 +191,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFDecompress
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFCompressDir
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN(const ZFPathInfo &, inputPathInfo)
-        , ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault())
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         )
 /** @brief see #ZFCompressBegin */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfbool, ZFDecompressDir

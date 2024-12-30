@@ -31,7 +31,7 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel
+            , ZF_IN_OPT ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel
             ) {
         SDL_Event *ret = zfnew(SDL_Event);
         zfmemcpy(ret, nativeMouseEvent, sizeof(SDL_Event));
@@ -232,7 +232,7 @@ private:
             return (x >= 0 && x <= owner->rect.w && y >= 0 && y <= owner->rect.h);
         }
 
-        ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Down;
+        ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Down;
         switch(sdlEvent->type) {
             case SDL_MOUSEBUTTONDOWN:
                 mouseAction = ZFUIMouseAction::e_Down;

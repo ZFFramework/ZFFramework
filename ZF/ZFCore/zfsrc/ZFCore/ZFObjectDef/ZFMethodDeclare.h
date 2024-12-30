@@ -224,9 +224,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         )
 
-#define _ZFP_ZFMethod_initClassMemberType_privilege_public ZFMethodPrivilegeTypePublic
-#define _ZFP_ZFMethod_initClassMemberType_privilege_protected ZFMethodPrivilegeTypeProtected
-#define _ZFP_ZFMethod_initClassMemberType_privilege_private ZFMethodPrivilegeTypePrivate
+#define _ZFP_ZFMethod_initClassMemberType_privilege_public ZFMethodAccessTypePublic
+#define _ZFP_ZFMethod_initClassMemberType_privilege_protected ZFMethodAccessTypeProtected
+#define _ZFP_ZFMethod_initClassMemberType_privilege_private ZFMethodAccessTypePrivate
 #define _ZFP_ZFMethod_initClassMemberType_privilege(privilege) _ZFP_ZFMethod_initClassMemberType_privilege_##privilege
 
 // ============================================================
@@ -481,7 +481,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ParamExpandOrEmpty7(ZFM_COMMA() param7) \
                 ); \
         } \
-        static inline ZFMethodPrivilegeType _ZFP_MtdS_P_##MethodName(void (*)( \
+        static inline ZFMethodAccessType _ZFP_MtdS_P_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \

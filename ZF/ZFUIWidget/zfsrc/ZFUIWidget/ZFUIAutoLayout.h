@@ -37,7 +37,7 @@ public:
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM_WEAK(zfanyT<ZFUIView>, target)
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
+    ZFCORE_PARAM(ZFUIAutoLayoutPos, targetPos, ZFUIAutoLayoutPos::e_None)
 
 public:
     /** @brief true if contains valid rule */
@@ -99,11 +99,11 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextend ZFUILayoutParam {
 public:
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_1(const ZFUIAutoLayoutRule &, rule
-            , ZFMP_IN(ZFUIAutoLayoutPosEnum, pos)
+            , ZFMP_IN(ZFUIAutoLayoutPos, pos)
             )
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_1(void, ruleRemove
-            , ZFMP_IN(ZFUIAutoLayoutPosEnum, pos)
+            , ZFMP_IN(ZFUIAutoLayoutPos, pos)
             )
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, ruleRemoveAll)
@@ -225,8 +225,8 @@ protected:
 public:
     zfclassLikePOD _ZFP_Data {
     public:
-        ZFUIAutoLayoutRule ruleList[ZFUIAutoLayoutPos::ZFEnumCount];
-        zfbool posAttached[ZFUIAutoLayoutPos::ZFEnumCount];
+        ZFUIAutoLayoutRule ruleList[v_ZFUIAutoLayoutPos::ZFEnumCount];
+        zfbool posAttached[v_ZFUIAutoLayoutPos::ZFEnumCount];
         zfbool posReset;
     public:
         _ZFP_Data(void) : ruleList(), posAttached(), posReset(zffalse) {}
@@ -341,7 +341,7 @@ protected:
     zfoverride
     virtual void viewChildOnRemove(
             ZF_IN ZFUIView *child
-            , ZF_IN ZFUIViewChildLayerEnum layer
+            , ZF_IN ZFUIViewChildLayer layer
             );
 
     zfoverride

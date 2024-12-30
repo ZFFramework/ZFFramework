@@ -77,8 +77,8 @@ private:
                 , (zftimet)3000
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, ZFAniForNativeCurveEnum, ZFPropertyAccess(ZFAniForNative, curve),
-            ZFCoreArrayCreate(ZFAniForNativeCurveEnum
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, ZFAniForNativeCurve, ZFPropertyAccess(ZFAniForNative, curve),
+            ZFCoreArrayCreate(ZFAniForNativeCurve
                 , ZFAniForNativeCurve::e_Linear
                 , ZFAniForNativeCurve::e_EaseIn
                 , ZFAniForNativeCurve::e_EaseOut

@@ -21,7 +21,7 @@ void ZFFramework_test_TestCase::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 
-void ZFFramework_test_TestCase::testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult) {
+void ZFFramework_test_TestCase::testCaseOnStop(ZF_IN ZFResultType testCaseResult) {
     for(zfindex i = 0; i < this->_filesToRemove.count(); ++i) {
         ZFFileRemove(this->_filesToRemove[i]);
     }

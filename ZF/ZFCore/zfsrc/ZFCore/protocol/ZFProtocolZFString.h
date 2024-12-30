@@ -21,7 +21,7 @@ public:
     virtual zfbool toUTF8(
             ZF_OUT zfstring &result
             , ZF_IN const void *s
-            , ZF_IN ZFStringEncodingEnum srcEncoding
+            , ZF_IN ZFStringEncoding srcEncoding
             ) zfpurevirtual;
     /**
      * @brief see #zfstringToUTF16
@@ -29,7 +29,7 @@ public:
     virtual zfbool toUTF16(
             ZF_OUT zfstringW &result
             , ZF_IN const void *s
-            , ZF_IN ZFStringEncodingEnum srcEncoding
+            , ZF_IN ZFStringEncoding srcEncoding
             ) zfpurevirtual;
     /**
      * @brief see #zfstringToUTF16BE
@@ -37,7 +37,7 @@ public:
     virtual zfbool toUTF16BE(
             ZF_OUT zfstringW &result
             , ZF_IN const void *s
-            , ZF_IN ZFStringEncodingEnum srcEncoding
+            , ZF_IN ZFStringEncoding srcEncoding
             ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFString)
 

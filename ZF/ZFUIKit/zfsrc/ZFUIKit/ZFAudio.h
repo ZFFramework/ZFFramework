@@ -179,10 +179,10 @@ protected:
 protected:
     /** @brief see #EventAudioOnLoad */
     virtual void audioOnLoad(
-            ZF_IN ZFResultTypeEnum result
+            ZF_IN ZFResultType result
             , ZF_IN v_zfstring *errorHint
             ) {
-        zfobj<ZFResultType> resultHolder;
+        zfobj<v_ZFResultType> resultHolder;
         resultHolder->enumValue(result);
         this->observerNotify(ZFAudio::EventAudioOnLoad(), resultHolder, errorHint);
     }
@@ -192,10 +192,10 @@ protected:
     }
     /** @brief see #EventAudioOnStop */
     virtual void audioOnStop(
-            ZF_IN ZFResultTypeEnum result
+            ZF_IN ZFResultType result
             , ZF_IN v_zfstring *errorHint
             ) {
-        zfobj<ZFResultType> resultHolder;
+        zfobj<v_ZFResultType> resultHolder;
         resultHolder->enumValue(result);
         this->observerNotify(ZFAudio::EventAudioOnStop(), resultHolder, errorHint);
     }
@@ -214,11 +214,11 @@ protected:
 
 public:
     zffinal void _ZFP_ZFAudio_OnLoad(
-            ZF_IN ZFResultTypeEnum result
+            ZF_IN ZFResultType result
             , ZF_IN v_zfstring *errorHint
             );
     zffinal void _ZFP_ZFAudio_OnStop(
-            ZF_IN ZFResultTypeEnum result
+            ZF_IN ZFResultType result
             , ZF_IN v_zfstring *errorHint
             );
     zffinal void _ZFP_ZFAudio_OnResume(void);

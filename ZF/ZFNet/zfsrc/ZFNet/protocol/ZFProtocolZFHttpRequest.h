@@ -48,7 +48,7 @@ public:
      */
     virtual void httpMethod(
             ZF_IN void *nativeTask
-            , ZF_IN ZFHttpMethodEnum httpMethod
+            , ZF_IN ZFHttpMethod httpMethod
             ) zfpurevirtual;
 
     /**

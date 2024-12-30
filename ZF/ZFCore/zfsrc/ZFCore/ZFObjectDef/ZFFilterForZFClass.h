@@ -51,7 +51,7 @@ public:
     /**
      * @brief see #ZFFilterBase::CustomFilterCallback
      */
-    typedef ZFFilterCallbackResult (*CustomFilterCallback)(ZF_IN const ZFClass * const &e);
+    typedef ZFFilterResult (*CustomFilterCallback)(ZF_IN const ZFClass * const &e);
 
 public:
     /**

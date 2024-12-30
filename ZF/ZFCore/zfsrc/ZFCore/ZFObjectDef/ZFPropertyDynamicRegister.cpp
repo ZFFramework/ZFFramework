@@ -15,8 +15,8 @@ public:
     zfstring propertyName;
     const ZFClass *propertyClassOfRetainProperty;
     ZFPropertyCallbackDynamicRegisterInitValueGetter propertyInitValueCallback;
-    ZFMethodPrivilegeType propertySetterType;
-    ZFMethodPrivilegeType propertyGetterType;
+    ZFMethodAccessType propertySetterType;
+    ZFMethodAccessType propertyGetterType;
 
     const ZFMethod *propertyCustomImplSetterMethod;
     const ZFMethod *propertyCustomImplGetterMethod;
@@ -35,8 +35,8 @@ public:
     , propertyName()
     , propertyClassOfRetainProperty(zfnull)
     , propertyInitValueCallback(zfnull)
-    , propertySetterType(ZFMethodPrivilegeTypePublic)
-    , propertyGetterType(ZFMethodPrivilegeTypePublic)
+    , propertySetterType(ZFMethodAccessTypePublic)
+    , propertyGetterType(ZFMethodAccessTypePublic)
 
     , propertyCustomImplSetterMethod(zfnull)
     , propertyCustomImplGetterMethod(zfnull)
@@ -104,19 +104,19 @@ ZFPropertyCallbackDynamicRegisterInitValueGetter ZFPropertyDynamicRegisterParam:
     return d->propertyInitValueCallback;
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertySetterType(ZF_IN ZFMethodPrivilegeType propertySetterType) {
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertySetterType(ZF_IN ZFMethodAccessType propertySetterType) {
     d->propertySetterType = propertySetterType;
     return *this;
 }
-ZFMethodPrivilegeType ZFPropertyDynamicRegisterParam::propertySetterType(void) const {
+ZFMethodAccessType ZFPropertyDynamicRegisterParam::propertySetterType(void) const {
     return d->propertySetterType;
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyGetterType(ZF_IN ZFMethodPrivilegeType propertyGetterType) {
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyGetterType(ZF_IN ZFMethodAccessType propertyGetterType) {
     d->propertyGetterType = propertyGetterType;
     return *this;
 }
-ZFMethodPrivilegeType ZFPropertyDynamicRegisterParam::propertyGetterType(void) const {
+ZFMethodAccessType ZFPropertyDynamicRegisterParam::propertyGetterType(void) const {
     return d->propertyGetterType;
 }
 

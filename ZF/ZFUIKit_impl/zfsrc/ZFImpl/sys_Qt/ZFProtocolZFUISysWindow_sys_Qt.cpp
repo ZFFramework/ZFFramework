@@ -181,7 +181,7 @@ public:
         _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(sysWindow, (QGraphicsWidget *)sysWindow->nativeWindow());
     }
 
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         // Qt don't support rotate
         return ZFUIOrientation::e_Top;
     }

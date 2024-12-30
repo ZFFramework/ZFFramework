@@ -171,7 +171,7 @@ protected:
         if(child == zfnull || child->window() != this->window()) {
             return false;
         }
-        ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel;
+        ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel;
         switch(event->type()) {
             case QEvent::GraphicsSceneMousePress:
             case QEvent::GraphicsSceneMouseDoubleClick:
@@ -267,7 +267,7 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseActionEnum mouseAction = ZFUIMouseAction::e_Cancel
+            , ZF_IN_OPT ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel
             ) {
         QGraphicsSceneMouseEvent *e = (QGraphicsSceneMouseEvent *)nativeMouseEvent;
         QEvent::Type type = e->type();

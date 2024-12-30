@@ -88,7 +88,7 @@ public:
     /**
      * @brief see #ZFUISysWindow::sysWindowOrientation
      */
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) zfpurevirtual;
+    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) zfpurevirtual;
     /**
      * @brief see #ZFUISysWindow::sysWindowOrientationFlags,
      *  impl should have #ZFUIOrientation::e_Top as init value

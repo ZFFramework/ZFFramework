@@ -147,11 +147,11 @@ ZFMAIN_ENTRY() {
 
 ```lua
 ZFDynamic()
-    :classBegin('MyObj', 'ZFStyleableObject')
+    :classBegin('MyObj', 'ZFStyle')
     :property('zfstring', 'myProp')
     :classEnd()
 
-    :classBegin('MyContainer', 'ZFStyleableObject')
+    :classBegin('MyContainer', 'ZFStyle')
     :property('MyObj', 'myObj', MyObj())
     :property('ZFArray', 'myObjArr', ZFArray())
     :property('ZFMap', 'myObjMap', ZFMap())

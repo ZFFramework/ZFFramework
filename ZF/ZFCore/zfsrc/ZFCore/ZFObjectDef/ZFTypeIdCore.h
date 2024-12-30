@@ -475,8 +475,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   />
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyleableObject, zfimplement ZFProgressable {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyleableObject)
+zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyle, zfimplement ZFProgressable {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFProgressable)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
         cache->zfvReset();
