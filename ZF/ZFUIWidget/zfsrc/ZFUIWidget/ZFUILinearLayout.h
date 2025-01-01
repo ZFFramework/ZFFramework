@@ -115,12 +115,6 @@ protected:
             , ZF_IN const ZFUISize &sizeHint
             , ZF_IN const ZFUISizeParam &sizeParam
             );
-    /**
-     * @brief override ZFUIView to layout scroll view's internal view and content view
-     *
-     * usually you should not override this method,
-     * if necessary, you must call super
-     */
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 };

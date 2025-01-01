@@ -32,6 +32,7 @@
 #include "ZFUIWidget/ZFUIOnScreenKeyboardAutoResize.h"
 #include "ZFUIWidget/ZFUIPage.h"
 #include "ZFUIWidget/ZFUIPageAni.h"
+#include "ZFUIWidget/ZFUIScrollLayout.h"
 #include "ZFUIWidget/ZFUITextEditWidget.h"
 #include "ZFUIWidget/ZFUIViewLayout.h"
 #include "ZFUIWidget/ZFUIWidgetDef.h"
