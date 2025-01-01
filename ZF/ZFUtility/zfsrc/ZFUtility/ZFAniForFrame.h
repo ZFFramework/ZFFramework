@@ -21,7 +21,7 @@ zfclassFwd _ZFP_ZFAniForFramePrivate;
  * you should either:
  * -  supply subclass and implement actual animation by overriding
  *   #aniFrameOnUpdate
- * -  attach observer to #EventAniFrameOnUpdate
+ * -  attach observer to #E_AniFrameOnUpdate
  *
  * serializable data:
  * @code

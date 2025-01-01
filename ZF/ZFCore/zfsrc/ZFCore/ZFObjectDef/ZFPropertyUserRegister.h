@@ -549,7 +549,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *   use #ZF_GLOBAL_INITIALIZER_INIT is recommeded
  * -  when you supply custom setter or getter method,
  *   you must use #ZFPropertyUserRegisterNotifyUpdate at proper time
- *   to notify #ZFObject::EventObjectPropertyValueOnUpdate
+ *   to notify #ZFObject::E_ObjectPropertyValueOnUpdate
  * -  once registered, the property can be reflected by #ZFClass::propertyForName,
  *   but there's no way to access the property by object directly,
  *   it can only be accessed by #ZFProperty's method

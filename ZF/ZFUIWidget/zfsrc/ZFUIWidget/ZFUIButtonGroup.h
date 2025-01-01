@@ -133,20 +133,20 @@ protected:
      *   to the buttons managed by this group
      *
      * here's a list of button event that would be fired:
-     * -  #ZFUIButton::EventButtonOnClick
-     * -  #ZFUIButton::EventButtonStateOnUpdate
-     * -  #ZFUIButton::EventButtonMouseOnDown
-     * -  #ZFUIButton::EventButtonMouseOnMoveEnter
-     * -  #ZFUIButton::EventButtonMouseOnMoveExit
-     * -  #ZFUIButton::EventButtonMouseOnMoveInside
-     * -  #ZFUIButton::EventButtonMouseOnMoveOutside
-     * -  #ZFUIButton::EventButtonMouseOnUpInside
-     * -  #ZFUIButton::EventButtonMouseOnUp
+     * -  #ZFUIButton::E_ButtonOnClick
+     * -  #ZFUIButton::E_ButtonStateOnUpdate
+     * -  #ZFUIButton::E_ButtonMouseOnDown
+     * -  #ZFUIButton::E_ButtonMouseOnMoveEnter
+     * -  #ZFUIButton::E_ButtonMouseOnMoveExit
+     * -  #ZFUIButton::E_ButtonMouseOnMoveInside
+     * -  #ZFUIButton::E_ButtonMouseOnMoveOutside
+     * -  #ZFUIButton::E_ButtonMouseOnUpInside
+     * -  #ZFUIButton::E_ButtonMouseOnUp
      *
      * for example:
      * @code
      *   ZFUIButtonGroup *buttonGroup = ...;
-     *   buttonGroup->->observerAdd(ZFUIButton::EventButtonOnClick(), myObserver);
+     *   buttonGroup->->observerAdd(ZFUIButton::E_ButtonOnClick(), myObserver);
      * @endcode
      * note:
      * sender is the button that fired the button event,
@@ -164,25 +164,25 @@ protected:
             this,
             zfobj<v_zfindex>(buttonIndex));
     }
-    /** @brief see #EventButtonOnAdd */
+    /** @brief see #E_ButtonOnAdd */
     virtual inline void buttonOnAdd(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
         this->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::EventButtonOnAdd(),
+            ZFUIButtonGroup::E_ButtonOnAdd(),
             this,
             zfobj<v_zfindex>(buttonIndex));
     }
-    /** @brief see #EventButtonOnRemove */
+    /** @brief see #E_ButtonOnRemove */
     virtual inline void buttonOnRemove(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
         this->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::EventButtonOnRemove(),
+            ZFUIButtonGroup::E_ButtonOnRemove(),
             this,
             zfobj<v_zfindex>(buttonIndex));
     }
@@ -239,25 +239,25 @@ public:
         this->buttonTabOnClickChecked(button, buttonIndex);
     }
 protected:
-    /** @brief see #EventButtonTabOnUpdate */
+    /** @brief see #E_ButtonTabOnUpdate */
     virtual inline void buttonTabOnUpdate(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndexPrev
             ) {
         this->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::EventButtonTabOnUpdate(),
+            ZFUIButtonGroup::E_ButtonTabOnUpdate(),
             this,
             zfobj<v_zfindex>(buttonIndexPrev));
     }
-    /** @brief see #EventButtonTabOnClickChecked */
+    /** @brief see #E_ButtonTabOnClickChecked */
     virtual inline void buttonTabOnClickChecked(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
         this->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::EventButtonTabOnClickChecked(),
+            ZFUIButtonGroup::E_ButtonTabOnClickChecked(),
             this,
             zfobj<v_zfindex>(buttonIndex));
     }

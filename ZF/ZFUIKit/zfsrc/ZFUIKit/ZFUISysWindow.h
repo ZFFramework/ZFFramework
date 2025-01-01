@@ -203,7 +203,7 @@ public:
      * to change window's size or layout,
      * use #sysWindowLayoutParam\n
      * to observe window size change,
-     * attach #ZFUIView::EventViewLayoutOnLayoutFinish listener to #rootView
+     * attach #ZFUIView::E_ViewLayoutOnLayoutFinish listener to #rootView
      */
     ZFMETHOD_DECLARE_0(const ZFUISize &, sysWindowSize)
 
@@ -220,7 +220,7 @@ public:
     void _ZFP_ZFUISysWindow_sysWindowMargin(ZF_IN const ZFUIMargin &sysWindowMargin);
 protected:
     /**
-     * @brief see #EventSysWindowMarginOnUpdate
+     * @brief see #E_SysWindowMarginOnUpdate
      */
     virtual void sysWindowMarginOnUpdate(ZF_IN const ZFUIMargin &sysWindowMarginOld);
 
@@ -240,7 +240,7 @@ public:
      * @brief access the internal native window
      *
      * note, this value would be valid only after
-     * #EventSysWindowOnCreate\n
+     * #E_SysWindowOnCreate\n
      * note, this value can be null if window created by #nativeWindowEmbed
      */
     ZFMETHOD_DECLARE_0(void *, nativeWindow)
@@ -251,7 +251,7 @@ public:
      *
      * @note for some implementation,
      *   creating a ZFUISysWindow may or may not create native window immediately,
-     *   you may use this method as well as #EventSysWindowOnCreate to see when did window created,
+     *   you may use this method as well as #E_SysWindowOnCreate to see when did window created,
      *   typical usage:
      *   @code
      *       ZFUISysWindow *newWindow = ZFUISysWindow::mainWindow()->modalWindowShow();
@@ -259,7 +259,7 @@ public:
      *           ZFListener observer = ... {
      *               initWindow();
      *           };
-     *           newWindow->observerAdd(ZFUISysWindow::EventSysWindowOnCreate(), observer);
+     *           newWindow->observerAdd(ZFUISysWindow::E_SysWindowOnCreate(), observer);
      *       }
      *       else {
      *           initWindow();
@@ -341,7 +341,7 @@ public:
     zffinal void _ZFP_ZFUISysWindow_onRotate(void);
     zffinal void _ZFP_ZFUISysWindow_sysWindowLayoutUpdate(void);
     zffinal void _ZFP_ZFUISysWindow_keyEvent(ZF_IN ZFUIKeyEvent *event) {
-        this->observerNotify(ZFUISysWindow::EventSysWindowOnKeyEvent(), event);
+        this->observerNotify(ZFUISysWindow::E_SysWindowOnKeyEvent(), event);
     }
 
 private:

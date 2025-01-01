@@ -27,7 +27,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
         ZFAudioCache::instance()->cacheAdd(src.callbackId(), impl);
     }
     if(callback) {
-        impl->observerAddForOnce(ZFAudio::EventAudioOnStop(), callback);
+        impl->observerAddForOnce(ZFAudio::E_AudioOnStop(), callback);
     }
     impl->start();
     return impl;
@@ -55,7 +55,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
     }
     ZFAudioCache::instance()->cacheAdd(url, impl);
     if(callback) {
-        impl->observerAddForOnce(ZFAudio::EventAudioOnStop(), callback);
+        impl->observerAddForOnce(ZFAudio::E_AudioOnStop(), callback);
     }
     impl->start();
     return impl;
@@ -138,8 +138,8 @@ void ZFAudioPlayTask::taskOnStart(void) {
             }
         } ZFLISTENER_END()
         ZFObserverGroup(_holder, _impl)
-            .on(ZFAudio::EventAudioOnLoad(), onLoad)
-            .on(ZFAudio::EventAudioOnLoad(), onStop)
+            .on(ZFAudio::E_AudioOnLoad(), onLoad)
+            .on(ZFAudio::E_AudioOnLoad(), onStop)
             ;
 
         _impl->start();

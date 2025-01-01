@@ -25,7 +25,7 @@ protected:
             ZFLogTrim() << "window size: " << ZFUIRectGetSize(ZFUIViewUtil::viewRoot(zfargs.sender())->viewFrame());
             ZFLogTrim() << "clicked view's position: " << ZFUIViewPositionOnScreen(zfargs.sender());
         } ZFLISTENER_END()
-        button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);
+        button->observerAdd(ZFUIButton::E_ButtonOnClick(), buttonOnClick);
     }
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFUIViewPositionOnScreen_test)

@@ -21,11 +21,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(
-            ZFUISysWindow::EventSysWindowOnPause(), this->windowOnPauseListener);
+            ZFUISysWindow::E_SysWindowOnPause(), this->windowOnPauseListener);
     }
     ZF_GLOBAL_INITIALIZER_DESTROY(main_setting_autoPrintViewTree) {
         ZFGlobalObserver().observerRemove(
-            ZFUISysWindow::EventSysWindowOnPause(), this->windowOnPauseListener);
+            ZFUISysWindow::E_SysWindowOnPause(), this->windowOnPauseListener);
     }
     private:
         ZFListener windowOnPauseListener;

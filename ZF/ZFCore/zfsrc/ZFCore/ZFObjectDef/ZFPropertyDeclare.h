@@ -195,7 +195,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *   -# store raw value
  *   -# propertyOnVerify
  *   -# propertyOnAttach
- *   -# #ZFObject::EventObjectPropertyValueOnUpdate
+ *   -# #ZFObject::E_ObjectPropertyValueOnUpdate
  * -  property's owner object deallocated:
  *   -# propertyOnDetach
  *

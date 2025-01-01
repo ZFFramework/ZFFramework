@@ -39,9 +39,9 @@ public:
     ZFMETHOD_DECLARE_0(zfbool const &, drawing)
 
 protected:
-    /** @brief see #EventOnDraw */
+    /** @brief see #E_OnDraw */
     virtual inline void onDraw(void) {
-        this->observerNotify(zfself::EventOnDraw());
+        this->observerNotify(zfself::E_OnDraw());
     }
 public:
     zffinal inline void _ZFP_ZFUIDrawableView_onDraw(void) {

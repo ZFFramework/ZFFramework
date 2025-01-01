@@ -174,17 +174,17 @@ protected:
      * @brief for subclass to stop actual animation
      */
     virtual void aniImplStop(void);
-    /** @brief see #EventAniOnStart */
+    /** @brief see #E_AniOnStart */
     virtual inline void aniOnStart(void) {
-        this->observerNotify(ZFAnimation::EventAniOnStart());
+        this->observerNotify(ZFAnimation::E_AniOnStart());
     }
-    /** @brief see #EventAniOnLoop */
+    /** @brief see #E_AniOnLoop */
     virtual inline void aniOnLoop(void) {
-        this->observerNotify(ZFAnimation::EventAniOnLoop());
+        this->observerNotify(ZFAnimation::E_AniOnLoop());
     }
-    /** @brief see #EventAniOnStop */
+    /** @brief see #E_AniOnStop */
     virtual inline void aniOnStop(ZF_IN ZFResultType resultType) {
-        this->observerNotify(ZFAnimation::EventAniOnStop(), zfobj<v_ZFResultType>(resultType));
+        this->observerNotify(ZFAnimation::E_AniOnStop(), zfobj<v_ZFResultType>(resultType));
     }
 public:
     /**

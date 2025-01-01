@@ -13,7 +13,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFramew
 
     this->afterListener = ZFCallbackForFunc(zfself::after);
     ZFGlobalObserver().observerAdd(
-            ZFApp::EventAppEntry(),
+            ZFApp::E_AppEntry(),
             this->afterListener,
             ZFLevelZFFrameworkPostEssential
         );
@@ -21,7 +21,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFramew
     zfself::before(this);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
-    ZFGlobalObserver().observerRemove(ZFApp::EventAppEntry(), this->afterListener);
+    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), this->afterListener);
 
     if(this->builtinWindow != zfnull) {
         SDL_DestroyWindow(this->builtinWindow);
@@ -298,7 +298,7 @@ zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event) {
             ZFApp::appExit();
             return zftrue;
         case SDL_APP_LOWMEMORY:
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventAppOnMemoryLow());
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppOnMemoryLow());
             return zftrue;
         default:
             break;

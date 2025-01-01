@@ -10,42 +10,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-/**
- * @brief store necessary data for #ZFUIWebJSBridge::webMessageBeforeSend
- */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeSendData : zfextend ZFObject {
-    ZFOBJECT_DECLARE(ZFUIWebJSBridgeSendData, ZFObject)
-
-public:
-    /**
-     * @brief message sent to web
-     */
-    ZFJson send;
-    /**
-     * @brief message response from web
-     */
-    ZFJson response;
-};
-
-// ============================================================
-/**
- * @brief store necessary data for #ZFUIWebJSBridge::webMessageBeforeRecv
- */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeRecvData : zfextend ZFObject {
-    ZFOBJECT_DECLARE(ZFUIWebJSBridgeRecvData, ZFObject)
-
-public:
-    /**
-     * @brief message received from web
-     */
-    ZFJson recv;
-    /**
-     * @brief message response to web
-     */
-    ZFJson response;
-};
-
-// ============================================================
 zfclassFwd _ZFP_ZFUIWebJSBridgePrivate;
 /**
  * @brief web JS bridge
@@ -59,31 +23,17 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when receive message from web\n
-     * param0 is a #ZFUIWebJSBridgeSendData
+     * called when send message to web\n
+     * param0 is a #v_ZFJson
      */
-    ZFEVENT(WebMessageBeforeSend)
+    ZFEVENT(OnSend)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when receive message from web\n
-     * param0 is a #ZFUIWebJSBridgeSendData
+     * param0 is a #v_ZFJson
      */
-    ZFEVENT(WebMessageAfterSend)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when receive message from web\n
-     * param0 is a #ZFUIWebJSBridgeRecvData
-     */
-    ZFEVENT(WebMessageBeforeRecv)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when receive message from web\n
-     * param0 is a #ZFUIWebJSBridgeRecvData
-     */
-    ZFEVENT(WebMessageAfterRecv)
+    ZFEVENT(OnRecv)
 
 public:
     /**
@@ -106,12 +56,14 @@ public:
     /**
      * @brief send message to web
      *
-     * note: the message to send can be modified by observing #EventWebMessageBeforeSend
+     * note: the message to send can be modified by observing #E_OnSend
      */
-    ZFMETHOD_DECLARE_1(ZFJson, send
-            , ZFMP_IN_OUT(ZFJson &, send)
+    ZFMETHOD_DECLARE_1(void, send
+            , ZFMP_IN_OUT(ZFJson &, data)
             )
-    zffinal ZFJson _ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &recv);
+    zffinal void _ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &data) {
+        this->onRecv(data);
+    }
 
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFUIWebJSBridge::instanceForWebView")
 protected:
@@ -121,21 +73,13 @@ protected:
     virtual void objectOnDealloc(void);
 
 protected:
-    /** @brief see #EventWebMessageBeforeSend */
-    virtual inline void webMessageBeforeSend(ZF_IN ZFUIWebJSBridgeSendData *dataSend) {
-        this->observerNotify(ZFUIWebJSBridge::EventWebMessageBeforeSend(), dataSend);
+    /** @brief see #E_OnSend */
+    virtual inline void onSend(ZF_IN_OUT ZFJson &data) {
+        this->observerNotify(ZFUIWebJSBridge::E_OnSend(), zfobj<v_ZFJson>(data));
     }
-    /** @brief see #EventWebMessageAfterSend */
-    virtual inline void webMessageAfterSend(ZF_IN ZFUIWebJSBridgeSendData *dataSend) {
-        this->observerNotify(ZFUIWebJSBridge::EventWebMessageAfterSend(), dataSend);
-    }
-    /** @brief see #EventWebMessageBeforeRecv */
-    virtual inline void webMessageBeforeRecv(ZF_IN ZFUIWebJSBridgeRecvData *dataRecv) {
-        this->observerNotify(ZFUIWebJSBridge::EventWebMessageBeforeRecv(), dataRecv);
-    }
-    /** @brief see #EventWebMessageAfterRecv */
-    virtual inline void webMessageAfterRecv(ZF_IN ZFUIWebJSBridgeRecvData *dataRecv) {
-        this->observerNotify(ZFUIWebJSBridge::EventWebMessageAfterRecv(), dataRecv);
+    /** @brief see #E_OnRecv */
+    virtual inline void onRecv(ZF_IN_OUT ZFJson &data) {
+        this->observerNotify(ZFUIWebJSBridge::E_OnRecv(), zfobj<v_ZFJson>(data));
     }
 
 private:

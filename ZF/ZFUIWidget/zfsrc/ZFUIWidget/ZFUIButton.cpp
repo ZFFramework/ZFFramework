@@ -333,13 +333,13 @@ ZFMETHOD_DEFINE_2(ZFUIButton, void, onClick
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         ) {
-    this->observerAdd(ZFUIButton::EventButtonOnClick(), observer, observerLevel);
+    this->observerAdd(ZFUIButton::E_ButtonOnClick(), observer, observerLevel);
 }
 ZFMETHOD_DEFINE_2(ZFUIButton, void, onClickForOnce
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         ) {
-    this->observerAddForOnce(ZFUIButton::EventButtonOnClick(), observer, observerLevel);
+    this->observerAddForOnce(ZFUIButton::E_ButtonOnClick(), observer, observerLevel);
 }
 
 void ZFUIButton::viewEventOnMouseEvent(ZF_IN ZFUIMouseEvent *mouseEvent) {

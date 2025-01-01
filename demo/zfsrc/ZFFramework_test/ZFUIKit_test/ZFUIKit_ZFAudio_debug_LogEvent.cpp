@@ -5,20 +5,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #if 1
 ZF_GLOBAL_INITIALIZER_INIT(ZFUIKit_ZFAudio_debug_LogEvent) {
     this->onEventListener = ZFCallbackForFunc(zfself::onEvent);
-    ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnLoad(), this->onEventListener);
-    ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnStart(), this->onEventListener);
-    ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnStop(), this->onEventListener);
-    ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnResume(), this->onEventListener);
-    ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnPause(), this->onEventListener);
-    ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnLoop(), this->onEventListener);
+    ZFGlobalObserver().observerAdd(ZFAudio::E_AudioOnLoad(), this->onEventListener);
+    ZFGlobalObserver().observerAdd(ZFAudio::E_AudioOnStart(), this->onEventListener);
+    ZFGlobalObserver().observerAdd(ZFAudio::E_AudioOnStop(), this->onEventListener);
+    ZFGlobalObserver().observerAdd(ZFAudio::E_AudioOnResume(), this->onEventListener);
+    ZFGlobalObserver().observerAdd(ZFAudio::E_AudioOnPause(), this->onEventListener);
+    ZFGlobalObserver().observerAdd(ZFAudio::E_AudioOnLoop(), this->onEventListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFAudio_debug_LogEvent) {
-    ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnLoad(), this->onEventListener);
-    ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnStart(), this->onEventListener);
-    ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnStop(), this->onEventListener);
-    ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnResume(), this->onEventListener);
-    ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnPause(), this->onEventListener);
-    ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnLoop(), this->onEventListener);
+    ZFGlobalObserver().observerRemove(ZFAudio::E_AudioOnLoad(), this->onEventListener);
+    ZFGlobalObserver().observerRemove(ZFAudio::E_AudioOnStart(), this->onEventListener);
+    ZFGlobalObserver().observerRemove(ZFAudio::E_AudioOnStop(), this->onEventListener);
+    ZFGlobalObserver().observerRemove(ZFAudio::E_AudioOnResume(), this->onEventListener);
+    ZFGlobalObserver().observerRemove(ZFAudio::E_AudioOnPause(), this->onEventListener);
+    ZFGlobalObserver().observerRemove(ZFAudio::E_AudioOnLoop(), this->onEventListener);
 }
 private:
     ZFListener onEventListener;
@@ -31,10 +31,10 @@ private:
                 , zfargs.param1()
                 );
 
-        if(zfargs.eventId() == ZFAudio::EventAudioOnResume()) {
+        if(zfargs.eventId() == ZFAudio::E_AudioOnResume()) {
             audioOnResume(zfargs.sender());
         }
-        else if(zfargs.eventId() == ZFAudio::EventAudioOnPause()) {
+        else if(zfargs.eventId() == ZFAudio::E_AudioOnPause()) {
             audioOnPause(zfargs.sender());
         }
     }

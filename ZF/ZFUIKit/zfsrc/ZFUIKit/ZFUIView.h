@@ -265,13 +265,13 @@ public:
     /**
      * @brief true if added to ZFUISysWindow
      *
-     * see #EventViewTreeInWindowOnUpdate
+     * see #E_ViewTreeInWindowOnUpdate
      */
     ZFMETHOD_DECLARE_0(zfbool, viewTreeInWindow)
     /**
      * @brief true only if added to ZFUISysWindow and all of parents are visible
      *
-     * see #EventViewTreeVisibleOnUpdate
+     * see #E_ViewTreeVisibleOnUpdate
      */
     ZFMETHOD_DECLARE_0(zfbool, viewTreeVisible)
 
@@ -615,10 +615,10 @@ protected:
     virtual inline void nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin) {
     }
     /**
-     * @brief see #EventNativeImplViewMarginOnUpdate
+     * @brief see #E_NativeImplViewMarginOnUpdate
      */
     virtual inline void nativeImplViewMarginOnUpdate(void) {
-        this->observerNotify(ZFUIView::EventNativeImplViewMarginOnUpdate());
+        this->observerNotify(ZFUIView::E_NativeImplViewMarginOnUpdate());
     }
     /**
      * @brief called to layout #nativeImplView
@@ -711,9 +711,9 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, focusFind)
 protected:
-    /** @brief see #EventViewFocusOnUpdate */
+    /** @brief see #E_ViewFocusOnUpdate */
     virtual inline void focusOnUpdate(void) {
-        this->observerNotify(ZFUIView::EventViewFocusOnUpdate());
+        this->observerNotify(ZFUIView::E_ViewFocusOnUpdate());
     }
 
     // ============================================================
@@ -803,7 +803,7 @@ protected:
     /**
      * @brief see #UIScale, ensured called only when scale value actually changed
      *
-     * after this method, #EventUIScaleOnUpdate would be fired
+     * after this method, #E_UIScaleOnUpdate would be fired
      */
     virtual void UIScaleOnUpdate(void);
 
@@ -928,14 +928,14 @@ protected:
             , ZF_IN const ZFUISizeParam &sizeParam
             ) {
     }
-    /** @brief see #EventViewLayoutOnMeasureFinish */
+    /** @brief see #E_ViewLayoutOnMeasureFinish */
     virtual inline void layoutOnMeasureFinish(
             ZF_IN_OUT ZFUISize &measuredSize
             , ZF_IN const ZFUISize &sizeHint
             , ZF_IN const ZFUISizeParam &sizeParam
             ) {
     }
-    /** @brief see #EventViewLayoutOnLayoutPrepare */
+    /** @brief see #E_ViewLayoutOnLayoutPrepare */
     virtual inline void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
     }
     /**
@@ -947,7 +947,7 @@ protected:
      * note that we doesn't ensure layoutOnMeasure would be called before layoutOnLayout
      */
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
-    /** @brief see #EventViewLayoutOnLayoutFinish */
+    /** @brief see #E_ViewLayoutOnLayoutFinish */
     virtual inline void layoutOnLayoutFinish(ZF_IN const ZFUIRect &bounds) {
     }
     /** @brief see #layoutChildOffset */
@@ -1075,25 +1075,25 @@ public:
     // ============================================================
     // events
 protected:
-    /** @brief see #EventViewTreeInWindowOnUpdate */
+    /** @brief see #E_ViewTreeInWindowOnUpdate */
     virtual void viewTreeInWindowOnUpdate(void);
-    /** @brief see #EventViewTreeVisibleOnUpdate */
+    /** @brief see #E_ViewTreeVisibleOnUpdate */
     virtual void viewTreeVisibleOnUpdate(void);
-    /** @brief see #EventViewChildOnUpdate */
+    /** @brief see #E_ViewChildOnUpdate */
     virtual void viewChildOnUpdate(void);
-    /** @brief see #EventViewChildOnAdd */
+    /** @brief see #E_ViewChildOnAdd */
     virtual void viewChildOnAdd(
             ZF_IN ZFUIView *child
             , ZF_IN ZFUIViewChildLayer childLayer
             );
-    /** @brief see #EventViewChildOnRemove */
+    /** @brief see #E_ViewChildOnRemove */
     virtual void viewChildOnRemove(
             ZF_IN ZFUIView *child
             , ZF_IN ZFUIViewChildLayer childLayer
             );
-    /** @brief see #EventViewOnAddToParent */
+    /** @brief see #E_ViewOnAddToParent */
     virtual void viewOnAddToParent(ZF_IN ZFUIView *parent);
-    /** @brief see #EventViewOnRemoveFromParent */
+    /** @brief see #E_ViewOnRemoveFromParent */
     virtual void viewOnRemoveFromParent(ZF_IN ZFUIView *parent);
 
     // ============================================================

@@ -29,7 +29,7 @@ protected:
                 audios[i]->stop();
             }
         } ZFLISTENER_END()
-        this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
+        this->observerAdd(ZFTestCase::E_TestCaseOnStop(), testCaseOnStop);
 
         audios[0]->loop(zfindexMax());
 
@@ -51,12 +51,12 @@ protected:
                     ) {
                 stateLabel->text(audio->stateHint());
             } ZFLISTENER_END()
-            audio->observerAdd(ZFAudio::EventAudioOnLoad(), stateOnUpdate);
-            audio->observerAdd(ZFAudio::EventAudioOnStart(), stateOnUpdate);
-            audio->observerAdd(ZFAudio::EventAudioOnStop(), stateOnUpdate);
-            audio->observerAdd(ZFAudio::EventAudioOnResume(), stateOnUpdate);
-            audio->observerAdd(ZFAudio::EventAudioOnPause(), stateOnUpdate);
-            audio->observerAdd(ZFAudio::EventAudioOnLoop(), stateOnUpdate);
+            audio->observerAdd(ZFAudio::E_AudioOnLoad(), stateOnUpdate);
+            audio->observerAdd(ZFAudio::E_AudioOnStart(), stateOnUpdate);
+            audio->observerAdd(ZFAudio::E_AudioOnStop(), stateOnUpdate);
+            audio->observerAdd(ZFAudio::E_AudioOnResume(), stateOnUpdate);
+            audio->observerAdd(ZFAudio::E_AudioOnPause(), stateOnUpdate);
+            audio->observerAdd(ZFAudio::E_AudioOnLoop(), stateOnUpdate);
             ZFListener(stateOnUpdate).execute();
 
             zfobj<ZFUIKit_test_Button> loadBtn;

@@ -116,7 +116,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     \n
  *     further more, lua function can be converted to #ZFListener implicitly
  *     @code
- *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
+ *       button:observerAdd(ZFUIButton.E_ButtonOnClick(), function(zfargs)
  *           end)
  *     @endcode
  *   -  "output:output(text[, size, result])"\n

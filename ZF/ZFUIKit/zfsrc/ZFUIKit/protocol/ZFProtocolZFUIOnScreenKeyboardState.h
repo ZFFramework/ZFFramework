@@ -59,7 +59,7 @@ public:
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFramePrev = keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame;
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame = keyboardFrameNew;
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardShowing = this->keyboardShowing(keyboardState);
-        keyboardState->observerNotify(ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate());
+        keyboardState->observerNotify(ZFUIOnScreenKeyboardState::E_KeyboardStateOnUpdate());
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIOnScreenKeyboardState)
 

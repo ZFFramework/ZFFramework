@@ -73,7 +73,7 @@ ZF_NAMESPACE_GLOBAL_END
     }
 }
 - (void)appOnReceiveMemoryWarning {
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventAppOnMemoryLow());
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppOnMemoryLow());
 }
 @end
 

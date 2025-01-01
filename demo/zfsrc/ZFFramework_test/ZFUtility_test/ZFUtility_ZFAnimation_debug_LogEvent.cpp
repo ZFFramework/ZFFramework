@@ -29,11 +29,11 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent) {
     } ZFLISTENER_END()
 
     ZFObserverGroup(this->taskOwner, ZFGlobalObserver())
-        .observerAdd(ZFObject::EventObjectAfterAlloc(), aniOnAlloc)
-        .observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc)
-        .observerAdd(ZFAnimation::EventAniOnStart(), aniOnStart)
-        .observerAdd(ZFAnimation::EventAniOnLoop(), aniOnLoop)
-        .observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop)
+        .observerAdd(ZFObject::E_ObjectAfterAlloc(), aniOnAlloc)
+        .observerAdd(ZFObject::E_ObjectBeforeDealloc(), aniOnDealloc)
+        .observerAdd(ZFAnimation::E_AniOnStart(), aniOnStart)
+        .observerAdd(ZFAnimation::E_AniOnLoop(), aniOnLoop)
+        .observerAdd(ZFAnimation::E_AniOnStop(), aniOnStop)
         ;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUtility_ZFAnimation_debug_LogEvent) {

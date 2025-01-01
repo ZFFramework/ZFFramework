@@ -46,7 +46,7 @@ public:
                     ) {
                 curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), zfnull);
             } ZFLISTENER_END()
-            curThread->observerAddForOnce(ZFThread::EventThreadOnUnregister(), onDetach, ZFLevelZFFrameworkPostNormal);
+            curThread->observerAddForOnce(ZFThread::E_ThreadOnUnregister(), onDetach, ZFLevelZFFrameworkPostNormal);
         }
         return holder;
     }
@@ -61,7 +61,7 @@ public:
 
             zfobj<v_zfptr> LHolder;
             LHolder->zfv = L;
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLuaStateOnAttach(), LHolder);
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnAttach(), LHolder);
         }
         return L;
     }
@@ -83,12 +83,12 @@ public:
 
         zfobj<v_zfptr> LHolder;
         LHolder->zfv = L;
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLuaStateOnAttach(), LHolder);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnAttach(), LHolder);
     }
     void LDetach(ZF_IN void *L) {
         zfobj<v_zfptr> LHolder;
         LHolder->zfv = L;
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLuaStateOnDetach(), LHolder);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), LHolder);
 
         LList.removeElement(L);
         ZFPROTOCOL_ACCESS(ZFLua)->luaStateDetach(L);
@@ -102,7 +102,7 @@ private:
 
             zfobj<v_zfptr> LHolder;
             LHolder->zfv = L;
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLuaStateOnDetach(), LHolder);
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), LHolder);
 
             ZFPROTOCOL_ACCESS(ZFLua)->luaStateDetach(L);
             if(autoClose) {
@@ -114,7 +114,7 @@ private:
         for(zfindex i = 0; i < LList.count(); ++i) {
             zfobj<v_zfptr> LHolder;
             LHolder->zfv = LList[i];
-            ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLuaStateOnDetach(), LHolder);
+            ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LuaStateOnDetach(), LHolder);
 
             ZFPROTOCOL_ACCESS(ZFLua)->luaStateDetach(LList[i]);
         }
@@ -224,10 +224,10 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 // notify update metadata when class data changed
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoUpdate, ZFLevelZFFrameworkNormal) {
     this->classDataOnUpdateListener = ZFCallbackForFunc(zfself::classDataOnUpdate);
-    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), this->classDataOnUpdateListener);
+    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataOnUpdateListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoUpdate) {
-    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataOnUpdateListener);
+    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataOnUpdateListener);
 }
 public:
     ZFListener classDataOnUpdateListener;

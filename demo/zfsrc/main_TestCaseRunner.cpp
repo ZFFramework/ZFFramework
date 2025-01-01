@@ -11,7 +11,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, TestCaseRunner) {
         ZFResultType resultType = zfargs.param0().to<v_ZFResultType *>()->zfv();
         ZFCoreAssertWithMessageTrim(resultType != ZFResultType::e_Fail, "[TestCaseRunner] test failed: %s", zfargs.sender());
     } ZFLISTENER_END()
-    ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFTestCase::EventTestCaseOnStop(), testOnFail);
+    ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFTestCase::E_TestCaseOnStop(), testOnFail);
 
     ZFLISTENER_1(testOnFinish
             , zfauto, owner
@@ -20,7 +20,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, TestCaseRunner) {
         ZFObserverGroupRemove(owner);
         ZFApp::appExit();
     } ZFLISTENER_END()
-    ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFGlobalEvent::EventTestCaseRunAllOnStop(), testOnFinish);
+    ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFGlobalEvent::E_TestCaseRunAllOnStop(), testOnFinish);
 
     ZFFramework_test_asyncTestAvailable(zffalse);
     ZFLogTrim("[TestCaseRunner] start");

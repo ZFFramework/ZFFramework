@@ -35,7 +35,7 @@ protected:
                 ZFThread::mainThread()->taskQueueAdd(action);
             }
         } ZFLISTENER_END()
-        timer->observerAdd(ZFTimer::EventTimerOnActivate(), timerOnActivate);
+        timer->observerAdd(ZFTimer::E_TimerOnActivate(), timerOnActivate);
         timer->interval((zftimet)1000);
         timer->start();
 

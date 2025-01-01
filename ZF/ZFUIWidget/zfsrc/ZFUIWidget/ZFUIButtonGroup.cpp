@@ -30,29 +30,29 @@ static void _ZFP_ZFUIButtonGroup_setup_common(
         buttonGroup->_ZFP_buttonOnEvent = buttonEvent;
     }
 
-    button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonStateOnUpdate(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnDown(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveEnter(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveExit(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveInside(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveOutside(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnUpInside(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnUp(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonOnClick(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonStateOnUpdate(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnDown(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnMoveEnter(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnMoveExit(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnMoveInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnMoveOutside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnUpInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::E_ButtonMouseOnUp(), buttonGroup->_ZFP_buttonOnEvent);
 }
 static void _ZFP_ZFUIButtonGroup_cleanup_common(
         ZF_IN ZFUIButtonGroup *buttonGroup
         , ZF_IN ZFUIButton *button
         ) {
-    button->observerRemove(ZFUIButton::EventButtonOnClick(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonStateOnUpdate(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnDown(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveEnter(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveExit(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveInside(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveOutside(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnUpInside(), buttonGroup->_ZFP_buttonOnEvent);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnUp(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonOnClick(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonStateOnUpdate(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnDown(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnMoveEnter(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnMoveExit(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnMoveInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnMoveOutside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnUpInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::E_ButtonMouseOnUp(), buttonGroup->_ZFP_buttonOnEvent);
 }
 
 // ============================================================
@@ -109,7 +109,7 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(
         buttonGroup->_ZFP_buttonOnClick = buttonOnClick;
     }
     button->observerAdd(
-        ZFUIButton::EventButtonOnClick(),
+        ZFUIButton::E_ButtonOnClick(),
         buttonGroup->_ZFP_buttonOnClick);
 
     if(!buttonGroup->buttonTabAllowUnchecked() && buttonGroup->buttonTabChecked() == zfindexMax()) {
@@ -123,7 +123,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup_Tab(
     _ZFP_ZFUIButtonGroup_cleanup_common(buttonGroup, button);
 
     button->observerRemove(
-        ZFUIButton::EventButtonOnClick(),
+        ZFUIButton::E_ButtonOnClick(),
         buttonGroup->_ZFP_buttonOnClick);
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, zfbool, buttonTabAllowUnchecked) {

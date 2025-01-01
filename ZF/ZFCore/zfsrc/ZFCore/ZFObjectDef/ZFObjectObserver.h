@@ -223,8 +223,8 @@ public:
      *       Flag_MyEvent1,
      *   };
      *   zfuint myFlag = 0;
-     *   observer.observerHasAddStateAttach(EventXXX, &myFlag, Flag_MyEvent0);
-     *   observer.observerHasAddStateAttach(EventXXX, &myFlag, Flag_MyEvent1);
+     *   observer.observerHasAddStateAttach(E_XXX, &myFlag, Flag_MyEvent0);
+     *   observer.observerHasAddStateAttach(E_XXX, &myFlag, Flag_MyEvent1);
      *
      *   if(ZFBitTest(myFlag, Flag_MyEvent0)) {
      *       observer.observerNotify(...);
@@ -291,13 +291,13 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  * declare a event for ZFObject's observer logic,
  * declared event name can be accessed by:
  * @code
- *   zfidentity eventId = YourClass::EventYourEvent();
+ *   zfidentity eventId = YourClass::E_YourEvent();
  *   zfstring eventName = ZFEventNameForId(eventId);
  * @endcode
  * note that subclass may declare a event same as parent,
  * while the final event name is different:\n
- *   ParentClass::EventYourEvent() => "ParentClass.EventYourEvent"\n
- *   ChildClass::EventYourEvent() => "ChildClass.EventYourEvent"\n
+ *   ParentClass::E_YourEvent() => "ParentClass.E_YourEvent"\n
+ *   ChildClass::E_YourEvent() => "ChildClass.E_YourEvent"\n
  * \n
  * @note we declare the event id as int types for performance,
  *   it's ensured each event has different event id,
@@ -309,15 +309,15 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   to convert them easily
  */
 #define ZFEVENT(YourEvent) \
-    ZFIDMAP_DETAIL(Event, YourEvent)
+    ZFIDMAP_DETAIL(E_, YourEvent)
 
 /** @brief see #ZFEVENT */
 #define ZFEVENT_INLINE(YourEvent) \
-    ZFIDMAP_DETAIL_INLINE(Event, YourEvent)
+    ZFIDMAP_DETAIL_INLINE(E_, YourEvent)
 
 /** @brief see #ZFEVENT */
 #define ZFEVENT_REGISTER(YourClass, YourEvent) \
-    ZFIDMAP_REGISTER_DETAIL(YourClass, Event, YourEvent)
+    ZFIDMAP_REGISTER_DETAIL(YourClass, E_, YourEvent)
 
 // ============================================================
 /**
@@ -334,17 +334,17 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   ZFEVENT_GLOBAL_REGISTER(YourNamespace, YourEvent)
  *
  *   // use the event
- *   zfidentity eventId = YourNamespace::EventYourEvent();
+ *   zfidentity eventId = YourNamespace::E_YourEvent();
  * @endcode
  * unlike #ZFEVENT, this macro would declare event outside of class scope,
  * typically you should use #ZFEVENT_GLOBAL which have "ZFGlobalEvent" as namespace
  */
 #define ZFEVENT_GLOBAL(ZFLIB_, YourEvent) \
-    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Event, YourEvent)
+    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, E_, YourEvent)
 
 /** @brief see #ZFEVENT */
 #define ZFEVENT_GLOBAL_REGISTER(YourEvent) \
-    ZFIDMAP_GLOBAL_REGISTER_DETAIL(Event, YourEvent)
+    ZFIDMAP_GLOBAL_REGISTER_DETAIL(E_, YourEvent)
 
 // ============================================================
 /**
@@ -356,7 +356,7 @@ inline zfstring ZFEventNameForId(ZF_IN zfidentity idValue) {
 /**
  * @brief get id value from id name, or #zfidentityInvalid if no such id name
  *
- * the id name should looks like `YourClass.EventYourIdName` or `YourNamespace.EventYourIdName`
+ * the id name should looks like `YourClass.E_YourIdName` or `YourNamespace.E_YourIdName`
  *
  * note: can be found only if:
  * -  declared with #ZFEVENT_INLINE

@@ -143,21 +143,21 @@ public:
     ZFMETHOD_DECLARE_0(ZFAnimation *, started)
 
 protected:
-    /** @brief see #ZFUIHint::EventHintOnInit */
+    /** @brief see #ZFUIHint::E_HintOnInit */
     virtual inline void hintOnInit(void) {
-        this->observerNotify(ZFUIHint::EventHintOnInit());
+        this->observerNotify(ZFUIHint::E_HintOnInit());
     }
-    /** @brief see #ZFUIHint::EventHintOnUpdate */
+    /** @brief see #ZFUIHint::E_HintOnUpdate */
     virtual inline void hintOnUpdate(void) {
-        this->observerNotify(ZFUIHint::EventHintOnUpdate());
+        this->observerNotify(ZFUIHint::E_HintOnUpdate());
     }
-    /** @brief see #ZFUIHint::EventHintOnShow */
+    /** @brief see #ZFUIHint::E_HintOnShow */
     virtual inline void hintOnShow(void) {
-        this->observerNotify(ZFUIHint::EventHintOnShow());
+        this->observerNotify(ZFUIHint::E_HintOnShow());
     }
-    /** @brief see #ZFUIHint::EventHintOnHide */
+    /** @brief see #ZFUIHint::E_HintOnHide */
     virtual inline void hintOnHide(void) {
-        this->observerNotify(ZFUIHint::EventHintOnHide());
+        this->observerNotify(ZFUIHint::E_HintOnHide());
     }
 
 protected:

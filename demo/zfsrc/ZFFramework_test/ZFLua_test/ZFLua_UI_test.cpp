@@ -22,7 +22,7 @@ protected:
                 "window:child(button):alignRightTop()\n"
                 "button:bgColor(ZFUIColorRandom())\n"
                 "button:label():text('close')\n"
-                "button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)\n"
+                "button:observerAdd(ZFUIButton.E_ButtonOnClick(), function(zfargs)\n"
                 "    window:hide()\n"
                 "end)\n"
                 "return window\n"
@@ -41,7 +41,7 @@ protected:
             } ZFLISTENER_END()
             zfpost(stopDelay);
         } ZFLISTENER_END()
-        result->observerAdd(ZFUIWindow::EventWindowOnHide(), windowOnHide);
+        result->observerAdd(ZFUIWindow::E_WindowOnHide(), windowOnHide);
     }
 };
 ZFOBJECT_REGISTER(ZFLua_UI_test)

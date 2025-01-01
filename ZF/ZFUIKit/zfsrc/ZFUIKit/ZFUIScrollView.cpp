@@ -522,11 +522,11 @@ public:
         if(this->scrollThumbNeedUpdate) {
             if(this->xScrollThumb != zfnull) {
                 this->xScrollThumb->scrollThumbUpdate();
-                this->xScrollThumb->toObject()->observerNotify(ZFUIScrollThumb::EventScrollThumbOnUpdate());
+                this->xScrollThumb->toObject()->observerNotify(ZFUIScrollThumb::E_ScrollThumbOnUpdate());
             }
             if(this->yScrollThumb != zfnull) {
                 this->yScrollThumb->scrollThumbUpdate();
-                this->yScrollThumb->toObject()->observerNotify(ZFUIScrollThumb::EventScrollThumbOnUpdate());
+                this->yScrollThumb->toObject()->observerNotify(ZFUIScrollThumb::E_ScrollThumbOnUpdate());
             }
             this->scrollThumbNeedUpdate = zffalse;
         }

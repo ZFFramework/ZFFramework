@@ -21,7 +21,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
 
     zfRetain(this);
     this->taskOnStart();
-    this->observerNotify(zfself::EventTaskOnStart());
+    this->observerNotify(zfself::E_TaskOnStart());
 }
 ZFMETHOD_DEFINE_1(ZFTask, void, stop
         , ZFMP_IN_OPT(ZFResultType, resultType, ZFResultType::e_Cancel)
@@ -34,11 +34,11 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
     _ZFP_onStop = zfnull;
     this->resultType(resultType);
     this->taskOnStop(resultType);
-    this->observerNotify(zfself::EventTaskOnStop());
+    this->observerNotify(zfself::E_TaskOnStop());
     if(onStopSaved) {
         onStopSaved.execute(ZFArgs()
                 .sender(this)
-                .eventId(zfself::EventTaskOnStop())
+                .eventId(zfself::E_TaskOnStop())
                 .param0(zfobj<v_ZFResultType>(resultType))
                 );
     }
@@ -74,10 +74,10 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
         ) {
     this->objectOnInit();
     if(implOnStart) {
-        this->on(zfself::EventTaskOnStart(), implOnStart);
+        this->on(zfself::E_TaskOnStart(), implOnStart);
     }
     if(implOnStop) {
-        this->on(zfself::EventTaskOnStop(), implOnStop);
+        this->on(zfself::E_TaskOnStop(), implOnStop);
     }
 }
 

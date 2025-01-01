@@ -605,7 +605,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDynamicClassEventDataHolder, ZFLevelZFFr
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder) {
     if(this->classOnUpdateListener) {
         ZFClassDataUpdateObserver().observerRemove(
-            ZFGlobalEvent::EventClassDataUpdate(),
+            ZFGlobalEvent::E_ClassDataUpdate(),
             this->classOnUpdateListener);
     }
 }
@@ -615,7 +615,7 @@ void classOnUpdateCheckAttach(void) {
     if(!this->classOnUpdateListener) {
         this->classOnUpdateListener = ZFCallbackForFunc(zfself::classOnUpdate);
         ZFClassDataUpdateObserver().observerAdd(
-            ZFGlobalEvent::EventClassDataUpdate(),
+            ZFGlobalEvent::E_ClassDataUpdate(),
             this->classOnUpdateListener);
     }
 }
@@ -890,7 +890,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
         idName += scope->d.cls->classNameFull();
         cls = scope->d.cls;
     }
-    idName += ".Event";
+    idName += ".E_";
     idName += eventName;
     zfidentity idValue = ZFEventIdForName(idName);
     if(idValue != zfidentityInvalid()) {
@@ -907,7 +907,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
             .dynamicRegisterUserData(t)
             .ownerClass(cls)
             .methodNamespace(NS)
-            .methodName(zfstr("Event%s", eventName))
+            .methodName(zfstr("E_%s", eventName))
             .returnTypeId(ZFTypeId_zfidentity())
         );
     ZFCoreAssert(method != zfnull);

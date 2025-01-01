@@ -141,7 +141,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
     ZFEVENT(OnRequest)
 
     /**
-     * @brief called when any response received or timeout, before #EventOnResponse and impl callback
+     * @brief called when any response received or timeout, before #E_OnResponse and impl callback
      *
      * sender is the #ZFHttpRequest,
      * param0 is the #ZFHttpResponse or null if timeout,

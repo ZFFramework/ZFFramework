@@ -132,7 +132,7 @@ public:
      *
      * called when layout param changed,
      * this event would be automatically fired if any of property value changed
-     * (#ZFObject::EventObjectPropertyValueOnUpdate),
+     * (#ZFObject::E_ObjectPropertyValueOnUpdate),
      * you may also notify it manually to show the layout param changed
      */
     ZFEVENT(LayoutParamOnUpdate)
@@ -484,9 +484,9 @@ protected:
         }
     }
 protected:
-    /** @brief see #EventLayoutParamOnUpdate */
+    /** @brief see #E_LayoutParamOnUpdate */
     virtual inline void layoutParamOnUpdate(void) {
-        this->observerNotify(ZFUILayoutParam::EventLayoutParamOnUpdate());
+        this->observerNotify(ZFUILayoutParam::E_LayoutParamOnUpdate());
     }
 
 public:
@@ -514,7 +514,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
 // ============================================================
 // ZFUIViewMeasureResult
 /**
- * @brief data used by #ZFUIView::EventViewLayoutOnMeasureFinish,
+ * @brief data used by #ZFUIView::E_ViewLayoutOnMeasureFinish,
  *   you may modify the #ZFUIViewMeasureResult::measuredSize
  *   to override the measured result
  */

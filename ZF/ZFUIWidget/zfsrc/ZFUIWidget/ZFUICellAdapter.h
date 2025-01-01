@@ -88,7 +88,7 @@ public:
     // basic cell access
 public:
     /**
-     * @brief see #EventCellAdapterOnReload
+     * @brief see #E_CellAdapterOnReload
      */
     ZFMETHOD_DECLARE_1(void, cellAdapterNotifyReload
             , ZFMP_IN_OPT(zfindex, atIndexOrMax, zfindexMax())
@@ -145,27 +145,27 @@ public:
     /** @brief for impl to notify cell cache access */
     zffinal void notifyCellCacheRecycle(ZF_IN ZFUICell *cell) {
         this->cellCacheOnRecycle(cell);
-        this->toObject()->observerNotify(zfself::EventCellCacheOnRecycle(), cell);
+        this->toObject()->observerNotify(zfself::E_CellCacheOnRecycle(), cell);
     }
 
     // ============================================================
     // cell update callback
 protected:
     /**
-     * @brief see #EventCellAdapterOnReload
+     * @brief see #E_CellAdapterOnReload
      */
     virtual inline void cellAdapterOnReload(ZF_IN_OPT zfindex atIndexOrMax = zfindexMax()) {
-        this->toObject()->observerNotify(zfself::EventCellAdapterOnReload(),
+        this->toObject()->observerNotify(zfself::E_CellAdapterOnReload(),
             (atIndexOrMax == zfindexMax()) ? zfnull : zfobj<v_zfindex>(atIndexOrMax).toObject());
     }
     /**
-     * @brief see #EventCellOnUpdate
+     * @brief see #E_CellOnUpdate
      */
     virtual inline void cellOnUpdate(
             ZF_IN zfindex atIndex
             , ZF_IN ZFUICell *cell
             ) {
-        this->toObject()->observerNotify(zfself::EventCellOnUpdate(), cell, zfobj<v_zfindex>(atIndex));
+        this->toObject()->observerNotify(zfself::E_CellOnUpdate(), cell, zfobj<v_zfindex>(atIndex));
     }
 
     // ============================================================

@@ -119,7 +119,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(
  * false by default, which would use builtin SDL_Window and event loop\n
  * if you want to attach your custom impl:
  * -# set ZFImpl_sys_SDL_embed to true before
- *   #ZFApp::EventAppParamDispatch ZFLevelZFFrameworkNormal
+ *   #ZFApp::E_AppParamDispatch ZFLevelZFFrameworkNormal
  * -# attach custom SDL_Renderer by #ZFImpl_sys_SDL_embedInit
  * -# in your sdl event loop, resolve event by #ZFImpl_sys_SDL_embedEventHandler
  * -# #ZFImpl_sys_SDL_embedCleanup before app exit

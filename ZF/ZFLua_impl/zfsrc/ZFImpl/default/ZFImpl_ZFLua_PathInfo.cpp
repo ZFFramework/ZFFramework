@@ -10,12 +10,12 @@ typedef zfstlmap<zfstring, zfstring> _ZFP_ZFImpl_ZFLua_PathInfoMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfoData, ZFLevelZFFrameworkEssential) {
     this->luaStateOnAttachListener = ZFCallbackForFunc(zfself::luaStateOnAttach);
     this->luaStateOnDetachListener = ZFCallbackForFunc(zfself::luaStateOnDetach);
-    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLuaStateOnAttach(), this->luaStateOnAttachListener);
-    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
+    ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnAttach(), this->luaStateOnAttachListener);
+    ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), this->luaStateOnDetachListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfoData) {
-    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLuaStateOnAttach(), this->luaStateOnAttachListener);
-    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
+    ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnAttach(), this->luaStateOnAttachListener);
+    ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), this->luaStateOnDetachListener);
 }
 public:
     _ZFP_ZFImpl_ZFLua_PathInfoStateMapType stateMap; // <lua_State *, needUpdate>

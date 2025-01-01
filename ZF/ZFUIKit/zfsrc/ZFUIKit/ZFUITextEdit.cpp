@@ -319,10 +319,10 @@ ZFMETHOD_DEFINE_0(ZFUITextEdit, zfbool, editing) {
 }
 
 void ZFUITextEdit::textOnEditBegin(void) {
-    this->observerNotify(ZFUITextEdit::EventTextOnEditBegin());
+    this->observerNotify(ZFUITextEdit::E_TextOnEditBegin());
 }
 void ZFUITextEdit::textOnEditEnd(void) {
-    this->observerNotify(ZFUITextEdit::EventTextOnEditEnd());
+    this->observerNotify(ZFUITextEdit::E_TextOnEditEnd());
 }
 void ZFUITextEdit::textOnUpdateCheck(
         ZF_IN const zfstring &newText
@@ -338,23 +338,23 @@ void ZFUITextEdit::textOnUpdateCheck(
         }
     }
 
-    if(this->observerHasAdd(ZFUITextEdit::EventTextOnUpdateCheck())) {
+    if(this->observerHasAdd(ZFUITextEdit::E_TextOnUpdateCheck())) {
         zfobj<v_zfbool> t(shouldUpdate);
-        this->observerNotify(ZFUITextEdit::EventTextOnUpdateCheck(), zfobj<v_zfstring>(newText), t);
+        this->observerNotify(ZFUITextEdit::E_TextOnUpdateCheck(), zfobj<v_zfstring>(newText), t);
         shouldUpdate = t->zfv;
     }
 }
 void ZFUITextEdit::textOnUpdate(ZF_IN const zfstring &oldText) {
-    if(this->observerHasAdd(ZFUITextEdit::EventTextOnUpdate())) {
+    if(this->observerHasAdd(ZFUITextEdit::E_TextOnUpdate())) {
         zfobj<v_zfstring> oldTextTmp(oldText);
-        this->observerNotify(ZFUITextEdit::EventTextOnUpdate(), oldTextTmp);
+        this->observerNotify(ZFUITextEdit::E_TextOnUpdate(), oldTextTmp);
     }
 }
 void ZFUITextEdit::textOnReturnClick(void) {
-    this->observerNotify(ZFUITextEdit::EventTextOnReturnClick());
+    this->observerNotify(ZFUITextEdit::E_TextOnReturnClick());
 }
 void ZFUITextEdit::textOnEditConfirm(void) {
-    this->observerNotify(ZFUITextEdit::EventTextOnEditConfirm());
+    this->observerNotify(ZFUITextEdit::E_TextOnEditConfirm());
 }
 ZFMETHOD_DEFINE_0(ZFUITextEdit, void, editConfirm) {
     this->textOnEditConfirm();

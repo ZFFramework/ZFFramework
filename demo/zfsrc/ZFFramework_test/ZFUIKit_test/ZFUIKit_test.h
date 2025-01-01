@@ -90,7 +90,7 @@ public:
 
 public:
     zffinal void settingUpdate(void) {
-        this->observerNotify(zfself::EventSettingOnUpdate());
+        this->observerNotify(zfself::E_SettingOnUpdate());
     }
 
 protected:

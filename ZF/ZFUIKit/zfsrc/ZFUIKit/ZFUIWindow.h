@@ -101,7 +101,7 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * notified when #ZFUISysWindow::EventSysWindowOnRotate
+     * notified when #ZFUISysWindow::E_SysWindowOnRotate
      */
     ZFEVENT(WindowOwnerSysWindowOnRotate)
 
@@ -165,9 +165,9 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, ownerSysWindow)
 protected:
-    /** @brief see #EventWindowOwnerSysWindowOnUpdate */
+    /** @brief see #E_WindowOwnerSysWindowOnUpdate */
     virtual inline void ownerSysWindowOnUpdate(ZF_IN ZFUISysWindow *oldSysWindow) {
-        this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnUpdate(), oldSysWindow);
+        this->observerNotify(ZFUIWindow::E_WindowOwnerSysWindowOnUpdate(), oldSysWindow);
     }
 
 public:
@@ -204,18 +204,18 @@ public:
     ZFMETHOD_DECLARE_0(zfanyT<ZFUILayoutParam>, windowLayoutParam)
 
 protected:
-    /** @brief see #EventWindowOnShow */
+    /** @brief see #E_WindowOnShow */
     virtual inline void windowOnShow(void) {
-        this->observerNotify(ZFUIWindow::EventWindowOnShow());
+        this->observerNotify(ZFUIWindow::E_WindowOnShow());
     }
-    /** @brief see #EventWindowOnHide */
+    /** @brief see #E_WindowOnHide */
     virtual inline void windowOnHide(void) {
-        this->observerNotify(ZFUIWindow::EventWindowOnHide());
+        this->observerNotify(ZFUIWindow::E_WindowOnHide());
     }
 
-    /** @brief see #EventWindowOwnerSysWindowOnRotate */
+    /** @brief see #E_WindowOwnerSysWindowOnRotate */
     virtual inline void ownerSysWindowOnRotate(void) {
-        this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnRotate());
+        this->observerNotify(ZFUIWindow::E_WindowOwnerSysWindowOnRotate());
     }
 
 protected:

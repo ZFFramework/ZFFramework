@@ -16,7 +16,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLogLevelDefault
     _ZFP_ZFLogLevelGlobal = level;
     ZFLogHeaderDefault_logCaller(ZFLogLevelIsActive(ZFLogLevel::e_Verbose));
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) == ZFFrameworkStateAvailable) {
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLogLevelOnUpdate());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_LogLevelOnUpdate());
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFLogLevel, ZFLogLevelDefault) {

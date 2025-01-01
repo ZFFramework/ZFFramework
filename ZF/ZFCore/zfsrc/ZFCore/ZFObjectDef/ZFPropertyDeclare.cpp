@@ -308,7 +308,7 @@ static void _ZFP_ZFPropertyWeakAttach(
     propertyOwnerObject->objectTag(zfstr("_ZFP_PropWeak_%s", property->propertyName()), holder);
 
     valueNew->observerAdd(
-        ZFObject::EventObjectBeforeDealloc(),
+        ZFObject::E_ObjectBeforeDealloc(),
         propertyOnDealloc);
 }
 static void _ZFP_ZFPropertyWeakDetach(
@@ -318,7 +318,7 @@ static void _ZFP_ZFPropertyWeakDetach(
         ) {
     v_ZFListener *holder = propertyOwnerObject->objectTag(zfstr("_ZFP_PropWeak_%s", property->propertyName()));
     valueOld->observerRemove(
-        ZFObject::EventObjectBeforeDealloc(),
+        ZFObject::E_ObjectBeforeDealloc(),
         holder->zfv);
 }
 

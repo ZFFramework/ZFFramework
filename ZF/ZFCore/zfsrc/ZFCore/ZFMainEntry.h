@@ -30,7 +30,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  *
  * advanced:
- * -  #ZFMAIN_ENTRY was added to #ZFApp::EventAppParamDispatch as ZFLevelZFFrameworkPostNormal in fact,
+ * -  #ZFMAIN_ENTRY was added to #ZFApp::E_AppParamDispatch as ZFLevelZFFrameworkPostNormal in fact,
  *   you may add your own impl to run custom code before or after #ZFMAIN_ENTRY,
  *   by specify different observer level,
  *   or ignore the default entry by #ZFArgs::eventFiltered
@@ -45,7 +45,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     static void _ZFMain(void)
 
 /**
- * @brief util macro to register #ZFApp::EventAppParamDispatch
+ * @brief util macro to register #ZFApp::E_AppParamDispatch
  *
  * @code
  *   ZFMAIN_PARAM_DISPATCH(MyDispatch) {
@@ -60,10 +60,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs); \
     ZF_GLOBAL_INITIALIZER_INIT(MPD_##regSig) { \
         this->callback = ZFCallbackForFunc(_ZFP_MPD_##regSig); \
-        ZFGlobalObserver().observerAdd(ZFApp::EventAppParamDispatch(), this->callback); \
+        ZFGlobalObserver().observerAdd(ZFApp::E_AppParamDispatch(), this->callback); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(MPD_##regSig) { \
-        ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->callback); \
+        ZFGlobalObserver().observerRemove(ZFApp::E_AppParamDispatch(), this->callback); \
     } \
     private: \
         ZFListener callback; \
@@ -76,7 +76,7 @@ ZF_NAMESPACE_BEGIN_REGISTER(ZFApp, ZF_NAMESPACE_GLOBAL)
 /**
  * @brief see #ZFObject::observerNotify
  *
- * notified when #ZFMainExecute, before #ZFMAIN_ENTRY and #ZFApp::EventAppEntry,
+ * notified when #ZFMainExecute, before #ZFMAIN_ENTRY and #ZFApp::E_AppEntry,
  * to let impl to supply custom #ZFApp::appParams dispatch
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppParamDispatch)

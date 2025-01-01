@@ -12,10 +12,10 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLog_ZFDI_errorCallbacks, ZFLevelZFFramew
         _update(_o);
     } ZFLISTENER_END()
     _logLevelOnUpdate = logLevelOnUpdate;
-    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLogLevelOnUpdate(), _logLevelOnUpdate);
+    ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LogLevelOnUpdate(), _logLevelOnUpdate);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLog_ZFDI_errorCallbacks) {
-    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLogLevelOnUpdate(), _logLevelOnUpdate);
+    ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LogLevelOnUpdate(), _logLevelOnUpdate);
 }
 private:
     ZFOutput _o;

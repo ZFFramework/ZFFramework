@@ -32,7 +32,7 @@ public:
 
         if(value) {
             ZFGlobalObserver().observerAdd(
-                ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(),
+                ZFUIOnScreenKeyboardState::E_KeyboardStateOnUpdate(),
                 this->onScreenKeyboardStateOnUpdateListener);
 
             this->pimplOwner->layoutRequest();
@@ -41,7 +41,7 @@ public:
             this->scrollEnableFlag = zffalse;
             this->pimplOwner->scrollEnable(this->scrollEnableFlag && this->pimplOwner->autoFitScrollEnable());
             ZFGlobalObserver().observerRemove(
-                ZFUIOnScreenKeyboardState::EventKeyboardStateOnUpdate(),
+                ZFUIOnScreenKeyboardState::E_KeyboardStateOnUpdate(),
                 this->onScreenKeyboardStateOnUpdateListener);
 
             this->pimplOwner->scrollContentFrame(ZFUIRectGetBounds(this->pimplOwner->viewFrame()));
@@ -67,12 +67,12 @@ public:
 
         if(value) {
             ZFGlobalObserver().observerAdd(
-                ZFUIView::EventViewFocusOnUpdate(),
+                ZFUIView::E_ViewFocusOnUpdate(),
                 this->focusOnUpdateListener);
         }
         else {
             ZFGlobalObserver().observerRemove(
-                ZFUIView::EventViewFocusOnUpdate(),
+                ZFUIView::E_ViewFocusOnUpdate(),
                 this->focusOnUpdateListener);
             #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
                 ZFLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] focused view changed to " << (void *)zfnull;

@@ -14,7 +14,7 @@
  *           zfobj<ZFObject> myParam0;
  *           zfobj<ZFObject> myParam1;
  *           this->observerNotify(
- *               MyObject::EventMyEvent(), // event id to notify
+ *               MyObject::E_MyEvent(), // event id to notify
  *               myParam0, // param0
  *               myParam1); // param1
  *       }
@@ -51,7 +51,7 @@
  *   ZFListener listener1 = ZFCallbackForFunc(testListener1);
  *
  *   // add an observer
- *   obj->observerAdd(MyObject::EventMyEvent(), listener1);
+ *   obj->observerAdd(MyObject::E_MyEvent(), listener1);
  *
  *   // optionally, you may declare a lambda-like listener for short
  *   // or, for extra param passing
@@ -60,7 +60,7 @@
  *           ) {
  *       testListener2(zfargs, myUserData);
  *   } ZFLISTENER_END()
- *   obj->observerAdd(MyObject::EventMyEvent(), listener2);
+ *   obj->observerAdd(MyObject::E_MyEvent(), listener2);
  *
  *   // finlly we will test to notify the event
  *   obj->test();
@@ -69,7 +69,7 @@
  *   // but it's your responsibility to ensure the passed params suit for the listener
  *   zfobj<ZFObject> myParam0;
  *   zfobj<ZFObject> myParam1;
- *   obj->observerNotify(MyObject::EventMyEvent(), myParam0, myParam1);
+ *   obj->observerNotify(MyObject::E_MyEvent(), myParam0, myParam1);
  * @endcode
  */
 

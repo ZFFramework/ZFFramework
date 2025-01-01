@@ -29,7 +29,7 @@ public:
 
 public:
     /** @brief see #ZFUIWebJSBridge::send */
-    virtual ZFJson send(
+    virtual void send(
             ZF_IN ZFUIWebJSBridge *webJSBridge
             , ZF_IN_OUT ZFJson &send
             ) zfpurevirtual;
@@ -40,11 +40,11 @@ public:
     /**
      * @brief implementations must notify when message sent from web
      */
-    zffinal ZFJson notifyWebMessageRecv(
+    zffinal void notifyWebMessageRecv(
             ZF_IN ZFUIWebJSBridge *webJSBridge
             , ZF_IN_OUT ZFJson &recv
             ) {
-        return webJSBridge->_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(recv);
+        webJSBridge->_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(recv);
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIWebJSBridge)
 

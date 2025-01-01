@@ -148,8 +148,8 @@ public:
             this->viewUIEnableTree(zftrue);
             if(this->pimplOwner->autoFocus()) {
                 zfanyT<ZFUIView> v = this->pimplOwner->dialogFocusOnUpdate();
-                if(this->pimplOwner->observerHasAdd(ZFUIDialog::EventDialogFocusOnUpdate())) {
-                    this->pimplOwner->observerNotify(ZFUIDialog::EventDialogFocusOnUpdate(), zfobj<ZFObjectHolder>(v));
+                if(this->pimplOwner->observerHasAdd(ZFUIDialog::E_DialogFocusOnUpdate())) {
+                    this->pimplOwner->observerNotify(ZFUIDialog::E_DialogFocusOnUpdate(), zfobj<ZFObjectHolder>(v));
                 }
                 if(v != zfnull) {
                     v->focusRequest(zftrue);
@@ -328,14 +328,14 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, show) {
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
         d->dialogWindowAniShow->target(d->dialogWindowBg);
         d->dialogWindowAniShow->observerAddForOnce(
-            ZFAnimation::EventAniOnStop(),
+            ZFAnimation::E_AniOnStop(),
             d->aniShowOnStopListener);
         d->dialogWindowAniShow->start();
     }
     if(this->aniShow() != zfnull) {
         this->aniShow()->target(d->dialogBg);
         this->aniShow()->observerAddForOnce(
-            ZFAnimation::EventAniOnStop(),
+            ZFAnimation::E_AniOnStop(),
             d->aniShowOnStopListener);
         this->aniShow()->start();
     }
@@ -358,14 +358,14 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, hide) {
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
         d->dialogWindowAniHide->target(d->dialogWindowBg);
         d->dialogWindowAniHide->observerAddForOnce(
-            ZFAnimation::EventAniOnStop(),
+            ZFAnimation::E_AniOnStop(),
             d->aniHideOnStopListener);
         d->dialogWindowAniHide->start();
     }
     if(this->aniHide() != zfnull) {
         this->aniHide()->target(d->dialogBg);
         this->aniHide()->observerAddForOnce(
-            ZFAnimation::EventAniOnStop(),
+            ZFAnimation::E_AniOnStop(),
             d->aniHideOnStopListener);
         this->aniHide()->start();
     }
@@ -396,7 +396,7 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, autoHideForButton
         owner->hide();
     } ZFLISTENER_END()
     button->observerAdd(
-            ZFUIButton::EventButtonOnClick(),
+            ZFUIButton::E_ButtonOnClick(),
             buttonOnClick,
             ZFLevelZFFrameworkPostNormal
         );
@@ -428,7 +428,7 @@ void ZFUIDialog::objectOnInit(void) {
 
     d->dialogClickMask = zfAlloc(_ZFP_I_ZFUIDialog_DialogClickMask);
     d->internalBgViewAdd(d->dialogClickMask)->c_sizeFill();
-    d->dialogClickMask->observerAdd(ZFUIButton::EventButtonOnClick(),
+    d->dialogClickMask->observerAdd(ZFUIButton::E_ButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
 
     zfobj<_ZFP_ZFUIDialogContentHolder> dialogContentHolder;

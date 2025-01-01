@@ -6,13 +6,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT(ZFUIKit_ZFUIView_debug_LogUIEvent) {
     this->onUIEventListener = ZFCallbackForFunc(zfself::onUIEvent);
     ZFGlobalObserver().observerAdd(
-            ZFUIView::EventViewOnEvent(),
+            ZFUIView::E_ViewOnEvent(),
             this->onUIEventListener
         );
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFUIView_debug_LogUIEvent) {
     ZFGlobalObserver().observerRemove(
-            ZFUIView::EventViewOnEvent(),
+            ZFUIView::E_ViewOnEvent(),
             this->onUIEventListener
         );
 }

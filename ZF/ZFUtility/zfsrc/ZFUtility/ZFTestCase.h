@@ -57,23 +57,23 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
 protected:
-    /** @brief see #EventTestCaseOnOutput */
+    /** @brief see #E_TestCaseOnOutput */
     virtual inline void testCaseOnOutput(ZF_IN const zfchar *info) {
-        if(this->observerHasAdd(ZFTestCase::EventTestCaseOnOutput())) {
-            this->observerNotify(ZFTestCase::EventTestCaseOnOutput(), zfobj<v_zfstring>(info));
+        if(this->observerHasAdd(ZFTestCase::E_TestCaseOnOutput())) {
+            this->observerNotify(ZFTestCase::E_TestCaseOnOutput(), zfobj<v_zfstring>(info));
         }
     }
-    /** @brief see #EventTestCaseOnStart */
+    /** @brief see #E_TestCaseOnStart */
     virtual inline void testCaseOnStart(void) {
-        this->observerNotify(ZFTestCase::EventTestCaseOnStart());
+        this->observerNotify(ZFTestCase::E_TestCaseOnStart());
     }
-    /** @brief see #EventTestCaseOnProgress */
+    /** @brief see #E_TestCaseOnProgress */
     virtual inline void testCaseOnProgress(ZF_IN ZFObject *progress) {
-        this->observerNotify(ZFTestCase::EventTestCaseOnProgress(), progress);
+        this->observerNotify(ZFTestCase::E_TestCaseOnProgress(), progress);
     }
-    /** @brief see #EventTestCaseOnStop */
+    /** @brief see #E_TestCaseOnStop */
     virtual inline void testCaseOnStop(ZF_IN ZFResultType testCaseResult) {
-        this->observerNotify(ZFTestCase::EventTestCaseOnStop(), zfobj<v_ZFResultType>(testCaseResult));
+        this->observerNotify(ZFTestCase::E_TestCaseOnStop(), zfobj<v_ZFResultType>(testCaseResult));
         zfRelease(this);
     }
 

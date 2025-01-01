@@ -123,7 +123,7 @@ ZFM_CLASS_HAS_MEMBER_DECLARE(ObjCk, _ZFP_zftIsZFInterface, void (*F)(void))
 ZFM_CLASS_HAS_MEMBER_DECLARE(ObjTCk, toObject, ZFObject *(T::*F)(void) const)
 
 // ============================================================
-/** @brief type for #ZFGlobalEvent::EventClassDataUpdate */
+/** @brief type for #ZFGlobalEvent::E_ClassDataUpdate */
 typedef enum {
     ZFClassDataUpdateTypeAttach, /**< @brief attach */
     ZFClassDataUpdateTypeDetach, /**< @brief detach */
@@ -139,7 +139,7 @@ typedef enum {
 /** @brief string tokens */
 #define ZFTOKEN_ZFClassDataUpdateTypeClassAliasDetach "ClassAliasDetach"
 
-/** @brief data holder for #ZFGlobalEvent::EventClassDataUpdate */
+/** @brief data holder for #ZFGlobalEvent::E_ClassDataUpdate */
 zfclassLikePOD ZFLIB_ZFCore ZFClassDataUpdateData {
 public:
     ZFClassDataUpdateType changeType; /**< @brief change type */

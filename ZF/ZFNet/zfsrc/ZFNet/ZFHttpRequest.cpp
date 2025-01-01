@@ -50,7 +50,7 @@ public:
             zfdelete(this->bodyJsonCache);
             this->bodyJsonCache = zfnull;
         }
-        owner->observerNotify(ZFHttpRequest::EventOnResponsePrepare(), responseTmp, resultTypeTmp);
+        owner->observerNotify(ZFHttpRequest::E_OnResponsePrepare(), responseTmp, resultTypeTmp);
         if(callbackTmp) {
             callbackTmp.execute(ZFArgs()
                     .sender(owner)
@@ -58,7 +58,7 @@ public:
                     .param1(resultTypeTmp)
                 );
         }
-        owner->observerNotify(ZFHttpRequest::EventOnResponse(), responseTmp, resultTypeTmp);
+        owner->observerNotify(ZFHttpRequest::E_OnResponse(), responseTmp, resultTypeTmp);
         zfRelease(owner);
     }
 };
@@ -183,9 +183,9 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, void, request
         d->ownerThread = ZFThread::currentThread();
     }
     d->callback = callback;
-    this->observerNotify(zfself::EventOnRequestPrepare());
+    this->observerNotify(zfself::E_OnRequestPrepare());
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
-    this->observerNotify(zfself::EventOnRequest());
+    this->observerNotify(zfself::E_OnRequest());
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {

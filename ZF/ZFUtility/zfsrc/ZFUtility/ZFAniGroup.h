@@ -217,13 +217,13 @@ protected:
     virtual void aniImplStop(void);
 
 protected:
-    /** @brief see #EventChildAniOnStart */
+    /** @brief see #E_ChildAniOnStart */
     virtual inline void childAniOnStart(ZF_IN ZFAnimation *childAni) {
-        this->observerNotify(ZFAniGroup::EventChildAniOnStart(), childAni);
+        this->observerNotify(ZFAniGroup::E_ChildAniOnStart(), childAni);
     }
-    /** @brief see #EventChildAniOnStop */
+    /** @brief see #E_ChildAniOnStop */
     virtual inline void childAniOnStop(ZF_IN ZFAnimation *childAni) {
-        this->observerNotify(ZFAniGroup::EventChildAniOnStop(), childAni);
+        this->observerNotify(ZFAniGroup::E_ChildAniOnStop(), childAni);
     }
 
 protected:

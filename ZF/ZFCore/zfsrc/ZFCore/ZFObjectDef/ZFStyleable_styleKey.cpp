@@ -50,7 +50,7 @@ void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
         if(holder != zfnull) {
             holder->styleKey = styleKey;
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                ZFGlobalEvent::E_ZFStyleOnUpdate(),
                 holder->styleOnUpdateListener);
         }
     }
@@ -71,7 +71,7 @@ void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
                 holder->styleOnUpdateListener = styleOnUpdate;
             }
             ZFGlobalObserver().observerAdd(
-                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                ZFGlobalEvent::E_ZFStyleOnUpdate(),
                 holder->styleOnUpdateListener);
         }
         holder->styleKey = styleKey;
@@ -84,7 +84,7 @@ void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
             param1->zfv = styleKey;
             ZFGlobalObserver().observerNotifyWithSender(
                 this->toObject(),
-                ZFGlobalEvent::EventZFStyleOnInvalid(),
+                ZFGlobalEvent::E_ZFStyleOnInvalid(),
                 param0,
                 param1);
             zfunsafe_zfRelease(param0);
@@ -159,7 +159,7 @@ void ZFStyleable::propStyle(
             holder->stylePropertyKeyMap.erase(propertyName);
             if(holder->stylePropertyKeyMap.empty()) {
                 ZFGlobalObserver().observerRemove(
-                    ZFGlobalEvent::EventZFStyleOnUpdate(),
+                    ZFGlobalEvent::E_ZFStyleOnUpdate(),
                     holder->stylePropertyOnUpdateListener);
             }
         }
@@ -183,14 +183,14 @@ void ZFStyleable::propStyle(
                 holder->stylePropertyOnUpdateListener = stylePropertyOnUpdate;
             }
             ZFGlobalObserver().observerAdd(
-                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                ZFGlobalEvent::E_ZFStyleOnUpdate(),
                 holder->stylePropertyOnUpdateListener);
         }
         if(!_ZFP_ZFStylePropertyCopy(this->toObject(), propertyName, styleKey)) {
             holder->stylePropertyKeyMap.erase(propertyName);
             if(holder->stylePropertyKeyMap.empty()) {
                 ZFGlobalObserver().observerRemove(
-                    ZFGlobalEvent::EventZFStyleOnUpdate(),
+                    ZFGlobalEvent::E_ZFStyleOnUpdate(),
                     holder->stylePropertyOnUpdateListener);
             }
             v_zfstring *param0 = zfunsafe_zfAlloc(v_zfstring);
@@ -199,7 +199,7 @@ void ZFStyleable::propStyle(
             param1->zfv = styleKey;
             ZFGlobalObserver().observerNotifyWithSender(
                 this->toObject(),
-                ZFGlobalEvent::EventZFStyleOnInvalid(),
+                ZFGlobalEvent::E_ZFStyleOnInvalid(),
                 param0,
                 param1);
             zfunsafe_zfRelease(param0);
@@ -232,13 +232,13 @@ ZFINTERFACE_ON_DEALLOC_DEFINE(ZFStyleable) {
     if(holder) {
         if(holder->styleKey != zfnull) {
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                ZFGlobalEvent::E_ZFStyleOnUpdate(),
                 holder->styleOnUpdateListener);
             holder->styleKey = zfnull;
         }
         if(!holder->stylePropertyKeyMap.empty()) {
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventZFStyleOnUpdate(),
+                ZFGlobalEvent::E_ZFStyleOnUpdate(),
                 holder->stylePropertyOnUpdateListener);
         }
     }

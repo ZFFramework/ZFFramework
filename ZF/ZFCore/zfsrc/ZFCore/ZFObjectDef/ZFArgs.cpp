@@ -392,7 +392,7 @@ public:
                 cache->detach();
             } ZFLISTENER_END()
             cache->classDataUpdateListener = classDataOnUpdate;
-            ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::EventClassDataUpdate(), cache->classDataUpdateListener);
+            ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), cache->classDataUpdateListener);
             zfargs.ownerMethod()->ownerClass()->classTag(cacheKey, cache);
         }
         return cache;
@@ -405,7 +405,7 @@ public:
         zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classNameFull(), this->ownerMethod->methodId());
         this->ownerMethod = zfnull;
         this->superMethod = zfnull;
-        ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::EventClassDataUpdate(), this->classDataUpdateListener);
+        ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataUpdateListener);
         cls->classTagRemove(cacheKey);
     }
 protected:

@@ -46,7 +46,7 @@ public:
                 task->holder->imageStateImplNotifyUpdate(task->images->get(frameIndex % task->images->count()));
             }
         } ZFLISTENER_END()
-        ani->observerAdd(ZFAniForFrame::EventAniFrameOnUpdate(), aniOnFrame);
+        ani->observerAdd(ZFAniForFrame::E_AniFrameOnUpdate(), aniOnFrame);
 
         ZFLISTENER_1(imageStateImpl
                 , zfautoT<zfself>, task

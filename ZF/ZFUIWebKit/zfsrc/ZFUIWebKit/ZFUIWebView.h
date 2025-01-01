@@ -97,9 +97,9 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
 protected:
-    /** @brief see #EventWebLoadStateOnUpdate */
+    /** @brief see #E_WebLoadStateOnUpdate */
     virtual inline void loadStateOnUpdate(void) {
-        this->observerNotify(ZFUIWebView::EventWebLoadStateOnUpdate());
+        this->observerNotify(ZFUIWebView::E_WebLoadStateOnUpdate());
     }
 };
 

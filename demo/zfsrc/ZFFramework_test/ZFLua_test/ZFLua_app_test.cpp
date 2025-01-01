@@ -18,7 +18,7 @@ protected:
         ZFUIPageManager *pm = luaResult;
         ZFCoreAssert(pm != zfnull);
         pm->observerAdd(
-            ZFUIPageManager::EventManagerOnDestroy(),
+            ZFUIPageManager::E_ManagerOnDestroy(),
             ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, managerOnDestroy)));
     }
 

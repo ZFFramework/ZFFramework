@@ -50,7 +50,7 @@ public:
 
         this->testCaseListPrepare(this->testCases, toStart);
 
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventTestCaseRunAllOnStart());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_TestCaseRunAllOnStart());
 
         this->testCaseRunNext();
     }
@@ -64,11 +64,11 @@ public:
         this->running = zffalse;
 
         if(toStop != zfnull) {
-            toStop->observerRemove(ZFTestCase::EventTestCaseOnStop(), this->testCaseFinishListener);
+            toStop->observerRemove(ZFTestCase::E_TestCaseOnStop(), this->testCaseFinishListener);
             toStop->stop(ZFResultType::e_Cancel);
         }
 
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventTestCaseRunAllOnStop());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_TestCaseRunAllOnStop());
     }
 
     void testCaseRunNext(void) {
@@ -77,7 +77,7 @@ public:
         }
 
         if(this->testCaseRunning != zfnull) {
-            this->testCaseRunning->observerRemove(ZFTestCase::EventTestCaseOnStop(), this->testCaseFinishListener);
+            this->testCaseRunning->observerRemove(ZFTestCase::E_TestCaseOnStop(), this->testCaseFinishListener);
         }
 
         if(this->testCases.isEmpty()) {
@@ -91,7 +91,7 @@ public:
             this->testCaseRunNext();
             return;
         }
-        this->testCaseRunning->observerAdd(ZFTestCase::EventTestCaseOnStop(), this->testCaseFinishListener);
+        this->testCaseRunning->observerAdd(ZFTestCase::E_TestCaseOnStop(), this->testCaseFinishListener);
     }
 private:
     zfbool running;

@@ -32,7 +32,7 @@ protected:
                     ) {
                 page->pageDestroy();
             } ZFLISTENER_END()
-            this->_titleLeftView()->observerAdd(ZFUIButton::EventButtonOnClick(), _titleLeftViewOnClick);
+            this->_titleLeftView()->observerAdd(ZFUIButton::E_ButtonOnClick(), _titleLeftViewOnClick);
         }
 
         this->_titleView()->child(this->_titleCenterView())->c_weight(3);
@@ -52,7 +52,7 @@ protected:
                 page->pageManager()->pageCreate(newPage);
                 page->pageView()->viewId(zfstr("%s:%s", page->pageGroupId(), (const void *)page));
             } ZFLISTENER_END()
-            this->_contentView()->observerAdd(ZFUIButton::EventButtonOnClick(), _contentViewOnClick);
+            this->_contentView()->observerAdd(ZFUIButton::E_ButtonOnClick(), _contentViewOnClick);
         }
     }
     static ZFCompareResult pageFindFirstByPageGroupId(
@@ -155,7 +155,7 @@ protected:
                     }
                 }
             } ZFLISTENER_END()
-            button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);
+            button->observerAdd(ZFUIButton::E_ButtonOnClick(), buttonOnClick);
             zffloat r = zfmRand(255) / 255.0f;
             zffloat g = zfmRand(255) / 255.0f;
             zffloat b = zfmRand(255) / 255.0f;

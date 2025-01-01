@@ -83,7 +83,7 @@ public:
 public:
     void objectAttach(ZF_IN ZFObject *obj) {
         if(this->_objAttached.find(obj) == this->_objAttached.end()) {
-            obj->observerAdd(ZFObject::EventObjectBeforeDealloc(), this->_objOnDeallocListener);
+            obj->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->_objOnDeallocListener);
         }
         this->_objAttached[obj] = zftrue;
     }
@@ -101,7 +101,7 @@ public:
         }
     }
     void objectDetachAction(ZF_IN ZFObject *obj) {
-        obj->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->_objOnDeallocListener);
+        obj->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->_objOnDeallocListener);
         zfauto propertyValue = obj->objectTagRemoveAndGet(this->tagKey_propertyValue);
         this->propLifeCycle(ZFPropertyLifeCycleOnDetach, obj, this->propertySaved, propertyValue, propertyValue);
     }

@@ -309,29 +309,29 @@ protected:
             )
 
 protected:
-    /** @brief see #EventThreadOnRegister */
+    /** @brief see #E_ThreadOnRegister */
     virtual inline void threadOnRegister(void) {
-        this->observerNotify(ZFThread::EventThreadOnRegister());
+        this->observerNotify(ZFThread::E_ThreadOnRegister());
     }
-    /** @brief see #EventThreadOnUnregister */
+    /** @brief see #E_ThreadOnUnregister */
     virtual inline void threadOnUnregister(void) {
-        this->observerNotify(ZFThread::EventThreadOnUnregister());
+        this->observerNotify(ZFThread::E_ThreadOnUnregister());
     }
-    /** @brief see #EventThreadOnStart */
+    /** @brief see #E_ThreadOnStart */
     virtual inline void threadOnStart(ZF_IN const ZFArgs &zfargs) {
-        this->observerNotify(ZFThread::EventThreadOnStart(), zfargs.param0(), zfargs.param1());
+        this->observerNotify(ZFThread::E_ThreadOnStart(), zfargs.param0(), zfargs.param1());
     }
-    /** @brief see #EventThreadOnStop */
+    /** @brief see #E_ThreadOnStop */
     virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs) {
-        this->observerNotify(ZFThread::EventThreadOnStop(), zfargs.param0(), zfargs.param1());
+        this->observerNotify(ZFThread::E_ThreadOnStop(), zfargs.param0(), zfargs.param1());
     }
-    /** @brief see #EventThreadOnStopRequested */
+    /** @brief see #E_ThreadOnStopRequested */
     virtual inline void threadOnStopRequested(void) {
-        this->observerNotify(ZFThread::EventThreadOnStopRequested());
+        this->observerNotify(ZFThread::E_ThreadOnStopRequested());
     }
-    /** @brief see #EventThreadTaskQueueOnFinish */
+    /** @brief see #E_ThreadTaskQueueOnFinish */
     virtual inline void threadTaskQueueOnFinish(void) {
-        this->observerNotify(ZFThread::EventThreadTaskQueueOnFinish());
+        this->observerNotify(ZFThread::E_ThreadTaskQueueOnFinish());
     }
 
 private:

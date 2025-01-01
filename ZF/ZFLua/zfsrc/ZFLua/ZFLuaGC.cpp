@@ -17,7 +17,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGCImmediately
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCHolder, ZFLevelZFFrameworkHigh) {
     this->luaStateOnDetachListener = ZFCallbackForFunc(luaStateOnDetach);
     ZFGlobalObserver().observerAdd(
-        ZFGlobalEvent::EventLuaStateOnDetach(),
+        ZFGlobalEvent::E_LuaStateOnDetach(),
         this->luaStateOnDetachListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
@@ -25,7 +25,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
         ZFLuaGCImmediately(it->first);
     }
     ZFGlobalObserver().observerRemove(
-        ZFGlobalEvent::EventLuaStateOnDetach(),
+        ZFGlobalEvent::E_LuaStateOnDetach(),
         this->luaStateOnDetachListener);
     if(this->gcTask != zfnull) {
         this->gcTask->stop();

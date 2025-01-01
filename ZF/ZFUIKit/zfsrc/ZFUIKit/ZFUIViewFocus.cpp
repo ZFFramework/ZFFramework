@@ -14,7 +14,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextSetupDataHolder, ZFLevelZ
             return;
         }
         nextFocusOwner->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocus);
-        zfargs.sender()->observerRemove(ZFObject::EventObjectBeforeDealloc(),
+        zfargs.sender()->observerRemove(ZFObject::E_ObjectBeforeDealloc(),
             ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewFocusNextSetupDataHolder)->nextFocusOnDeallocListener);
         zfargs.sender()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
     } ZFLISTENER_END()
@@ -38,7 +38,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
     if(nextFocusHolderOld != zfnull) {
         ZFObject *tmp = nextFocusHolderOld->zfv;
         if(tmp != zfnull) {
-            tmp->observerRemove(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
+            tmp->observerRemove(ZFObject::E_ObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
             tmp->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
         }
         from->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocus);
@@ -47,7 +47,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
     if(nextFocus != zfnull) {
         from->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus, zfobj<v_zfweak>(nextFocus));
         nextFocus->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocusOwner, zfobj<v_zfweak>(from));
-        nextFocus->observerAdd(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
+        nextFocus->observerAdd(ZFObject::E_ObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
     }
 }
 

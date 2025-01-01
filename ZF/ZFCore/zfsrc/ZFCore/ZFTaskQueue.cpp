@@ -16,10 +16,10 @@ ZFMETHOD_DEFINE_2(ZFTaskQueue, void, child
         ) {
     zfobj<ZFTask> child;
     if(implStart) {
-        child->observerAdd(ZFTask::EventTaskOnStart(), implStart);
+        child->observerAdd(ZFTask::E_TaskOnStart(), implStart);
     }
     if(implStop) {
-        child->observerAdd(ZFTask::EventTaskOnStop(), implStop);
+        child->observerAdd(ZFTask::E_TaskOnStop(), implStop);
     }
     this->childArray()->add(child);
 }

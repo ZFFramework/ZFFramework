@@ -89,17 +89,17 @@ public:
             )
 
 protected:
-    /** @brief see #EventContentOnUpdate */
+    /** @brief see #E_ContentOnUpdate */
     virtual inline void contentOnUpdate(void) {
-        this->observerNotify(ZFContainer::EventContentOnUpdate());
+        this->observerNotify(ZFContainer::E_ContentOnUpdate());
     }
-    /** @brief see #EventContentOnAdd */
+    /** @brief see #E_ContentOnAdd */
     virtual inline void contentOnAdd(ZF_IN ZFObject *element) {
-        this->observerNotify(ZFContainer::EventContentOnAdd(), element);
+        this->observerNotify(ZFContainer::E_ContentOnAdd(), element);
     }
-    /** @brief see #EventContentOnRemove */
+    /** @brief see #E_ContentOnRemove */
     virtual inline void contentOnRemove(ZF_IN ZFObject *element) {
-        this->observerNotify(ZFContainer::EventContentOnRemove(), element);
+        this->observerNotify(ZFContainer::E_ContentOnRemove(), element);
     }
 
 protected:

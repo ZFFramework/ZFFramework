@@ -72,7 +72,7 @@ protected:
 private:
     void cleanup(void) {
         if(this->ownerOnDealloc) {
-            this->obj->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDealloc);
+            this->obj->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDealloc);
             this->ownerOnDealloc = zfnull;
         }
         if(this->detachCallback != zfnull) {
@@ -104,7 +104,7 @@ void _ZFP_PropAliasAttach(
     //     3.1. owner obj got retained due to alias type's zfvAccess
     //     3.2. crash due to obj got retained during dealloc
     //
-    // it's designed safe to retain during EventObjectBeforeDealloc, but not during objectOnDealloc
+    // it's designed safe to retain during E_ObjectBeforeDealloc, but not during objectOnDealloc
     ZFLISTENER_2(ownerOnDealloc
             , ZFObject *, obj
             , zfstring, tagKey
@@ -112,7 +112,7 @@ void _ZFP_PropAliasAttach(
         obj->objectTagRemove(tagKey);
     } ZFLISTENER_END()
     d->ownerOnDealloc = ownerOnDealloc;
-    obj->observerAddForOnce(ZFObject::EventObjectBeforeDealloc(), ownerOnDealloc);
+    obj->observerAddForOnce(ZFObject::E_ObjectBeforeDealloc(), ownerOnDealloc);
 }
 void _ZFP_PropAliasDetach(
         ZF_IN ZFObject *obj

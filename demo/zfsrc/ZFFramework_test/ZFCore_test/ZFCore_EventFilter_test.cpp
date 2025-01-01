@@ -20,7 +20,7 @@ protected:
             ZFLog() << "normal observer";
         } ZFLISTENER_END()
         ZFGlobalObserver().observerAdd(
-            ZFGlobalEvent::EventZFCore_EventFilter_test(),
+            ZFGlobalEvent::E_ZFCore_EventFilter_test(),
             normalObserver);
 
         ZFLISTENER(eventFilter) {
@@ -28,23 +28,23 @@ protected:
             zfargs.eventFiltered(zftrue);
         } ZFLISTENER_END()
         ZFGlobalObserver().observerAdd(
-                ZFGlobalEvent::EventZFCore_EventFilter_test(),
+                ZFGlobalEvent::E_ZFCore_EventFilter_test(),
                 eventFilter,
                 ZFLevelAppHigh
             );
 
         this->outputSeparator();
         this->output("notify with event filter, only filter would be called");
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFCore_EventFilter_test());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFCore_EventFilter_test());
 
         this->outputSeparator();
         this->output("notify without event filter");
         ZFGlobalObserver().observerRemove(
-            ZFGlobalEvent::EventZFCore_EventFilter_test(),
+            ZFGlobalEvent::E_ZFCore_EventFilter_test(),
             eventFilter);
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFCore_EventFilter_test());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFCore_EventFilter_test());
 
-        ZFGlobalObserver().observerRemoveAll(ZFGlobalEvent::EventZFCore_EventFilter_test());
+        ZFGlobalObserver().observerRemoveAll(ZFGlobalEvent::E_ZFCore_EventFilter_test());
         this->stop();
     }
 };

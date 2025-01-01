@@ -170,12 +170,12 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
             d->T_Component##T_State##OnUpdateListener = callback; \
         } \
         this->T_Component##T_State()->toObject()->observerAdd( \
-            ZFObject::EventObjectPropertyValueOnUpdate(), \
+            ZFObject::E_ObjectPropertyValueOnUpdate(), \
             d->T_Component##T_State##OnUpdateListener); \
     } \
     ZFPROPERTY_ON_DETACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) { \
         this->T_Component##T_State()->toObject()->observerRemove( \
-            ZFObject::EventObjectPropertyValueOnUpdate(), \
+            ZFObject::E_ObjectPropertyValueOnUpdate(), \
             d->T_Component##T_State##OnUpdateListener); \
     }
 

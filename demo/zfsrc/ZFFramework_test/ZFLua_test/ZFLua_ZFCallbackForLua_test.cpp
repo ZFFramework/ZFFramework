@@ -9,7 +9,7 @@ zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextend ZFObject {
 
 public:
     ZFMETHOD_INLINE_0(void, notifyTest) {
-        this->observerNotify(zfself::EventTest(), zfobj<v_zfint>(1111), zfobj<v_zfint>(2222));
+        this->observerNotify(zfself::E_Test(), zfobj<v_zfint>(1111), zfobj<v_zfint>(2222));
     }
 
 protected:
@@ -53,7 +53,7 @@ protected:
                     "local callback = function(zfargs)"
                     "        print(zfargs)\n"
                     "    end\n"
-                    "obj:observerAdd(_ZFP_ZFLua_ZFCallbackForLua_test_Object.EventTest(), callback)\n"
+                    "obj:observerAdd(_ZFP_ZFLua_ZFCallbackForLua_test_Object.E_Test(), callback)\n"
                     "obj:notifyTest()\n"
                 );
         }

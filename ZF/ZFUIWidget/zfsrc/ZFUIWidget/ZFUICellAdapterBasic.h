@@ -9,16 +9,16 @@
 #include "ZFUICellAdapter.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @brief see #ZFUICellAdapterBasic::EventCellAt */
+/** @brief see #ZFUICellAdapterBasic::E_CellAt */
 zfclass ZFLIB_ZFUIWidget ZFUICellAdapterBasicParam : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUICellAdapterBasicParam, ZFObject)
 
 public:
-    /** @brief see #ZFUICellAdapterBasic::EventCellAt */
+    /** @brief see #ZFUICellAdapterBasic::E_CellAt */
     ZFPROPERTY_RETAIN(zfanyT<ZFUICell>, cell)
-    /** @brief see #ZFUICellAdapterBasic::EventCellAt */
+    /** @brief see #ZFUICellAdapterBasic::E_CellAt */
     ZFPROPERTY_ASSIGN(zfindex, cellIndex)
-    /** @brief see #ZFUICellAdapterBasic::EventCellAt */
+    /** @brief see #ZFUICellAdapterBasic::E_CellAt */
     ZFPROPERTY_ASSIGN(zffloat, cellSize, -1)
 };
 
@@ -32,24 +32,24 @@ public:
  *   listView:cellAdapterAutoRetain(ZFUICellAdapterBasic());
  *
  *   -- required
- *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.EventCellCount(), function(zfargs)
+ *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.E_CellCount(), function(zfargs)
  *       zfargs:param0():zfv(yourCellCount());
  *   end);
- *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.EventCellAt(), function(zfargs)
+ *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.E_CellAt(), function(zfargs)
  *       local param = zfargs:param0();
  *       param:cell(yourCellAt(param:cellIndex()));
  *   end);
  *
  *   -- optional
- *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.EventCellSizeAt(), function(zfargs)
+ *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.E_CellSizeAt(), function(zfargs)
  *       local param = zfargs:param0();
  *       param:cellSize(yourCellSizeAt(param:cellIndex(), param:cell()));
  *   end);
- *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.EventCellCacheOnAccess(), function(zfargs)
+ *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.E_CellCacheOnAccess(), function(zfargs)
  *       local param = zfargs:param0();
  *       param:cell(yourCellCacheAt(param:cellIndex()));
  *   end);
- *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.EventCellCacheOnRecycle(), function(zfargs)
+ *   listView:cellAdapter():observerAdd(ZFUICellAdapterBasic.E_CellCacheOnRecycle(), function(zfargs)
  *       local cell = zfargs:param0();
  *       yourCellRecycle(cell);
  *   end);
@@ -95,14 +95,14 @@ public:
     zfoverride
     virtual zfindex cellCount(void) {
         zfobj<v_zfindex> ret;
-        this->observerNotify(zfself::EventCellCount(), ret);
+        this->observerNotify(zfself::E_CellCount(), ret);
         return ret->zfv;
     }
     zfoverride
     virtual zfautoT<ZFUICell> cellAt(ZF_IN zfindex index) {
         zfobj<ZFUICellAdapterBasicParam> param;
         param->cellIndex(index);
-        this->observerNotify(zfself::EventCellAt(), param);
+        this->observerNotify(zfself::E_CellAt(), param);
         return param->cell();
     }
     zfoverride
@@ -110,11 +110,11 @@ public:
             ZF_IN zfindex index
             , ZF_IN ZFUICell *cell
             ) {
-        if(this->observerHasAdd(zfself::EventCellSizeAt())) {
+        if(this->observerHasAdd(zfself::E_CellSizeAt())) {
             zfobj<ZFUICellAdapterBasicParam> param;
             param->cellIndex(index);
             param->cell(cell);
-            this->observerNotify(zfself::EventCellSizeAt(), param);
+            this->observerNotify(zfself::E_CellSizeAt(), param);
             return param->cellSize();
         }
         else {
@@ -125,10 +125,10 @@ public:
 protected:
     zfoverride
     virtual zfauto cellCacheOnAccess(ZF_IN zfindex index) {
-        if(this->observerHasAdd(zfself::EventCellCacheOnAccess())) {
+        if(this->observerHasAdd(zfself::E_CellCacheOnAccess())) {
             zfobj<ZFUICellAdapterBasicParam> param;
             param->cellIndex(index);
-            this->observerNotify(zfself::EventCellCacheOnAccess(), param);
+            this->observerNotify(zfself::E_CellCacheOnAccess(), param);
             return param->cell();
         }
         else {

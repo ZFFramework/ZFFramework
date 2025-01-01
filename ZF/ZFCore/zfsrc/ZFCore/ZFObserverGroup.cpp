@@ -128,7 +128,7 @@ public:
                 if(it == this->ownerMap.end()) {
                     head = &(this->ownerMap[owner]);
                     *head = zfnull;
-                    owner->observerAdd(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
+                    owner->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
                 else {
                     head = &(it->second);
@@ -148,7 +148,7 @@ public:
                 if(it == this->targetMap.end()) {
                     head = &(this->targetMap[target]);
                     *head = zfnull;
-                    target->observerAdd(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
+                    target->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
                 else {
                     head = &(it->second);
@@ -168,7 +168,7 @@ public:
         }
         _ZFP_ZFObserverGroupTaskData *head = it->second;
         this->ownerMap.erase(it);
-        owner->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
+        owner->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDeallocListener);
 
         _ZFP_ZFObserverGroupTaskData *p = head;
         while(p != zfnull) {
@@ -178,7 +178,7 @@ public:
                 }
                 else {
                     this->targetMap.erase(p->target);
-                    p->target->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
+                    p->target->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
             }
 
@@ -204,7 +204,7 @@ public:
         }
         _ZFP_ZFObserverGroupTaskData *head = it->second;
         this->targetMap.erase(it);
-        target->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
+        target->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->targetOnDeallocListener);
 
         _ZFP_ZFObserverGroupTaskData *p = head;
         while(p != zfnull) {
@@ -214,7 +214,7 @@ public:
                 }
                 else {
                     this->ownerMap.erase(p->owner);
-                    p->owner->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
+                    p->owner->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
             }
 
@@ -296,7 +296,7 @@ private:
             if(it->second == task) {
                 if(task->ownerMapNext == zfnull) {
                     this->ownerMap.erase(it);
-                    task->owner->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
+                    task->owner->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
                 else {
                     it->second = task->ownerMapNext;
@@ -317,7 +317,7 @@ private:
             if(it->second == task) {
                 if(task->targetMapNext == zfnull) {
                     this->targetMap.erase(it);
-                    task->target->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
+                    task->target->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
                 else {
                     it->second = task->targetMapNext;

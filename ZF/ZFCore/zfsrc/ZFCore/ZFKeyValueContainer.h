@@ -116,23 +116,23 @@ public:
             )
 
 protected:
-    /** @brief see #EventContentOnUpdate */
+    /** @brief see #E_ContentOnUpdate */
     virtual inline void contentOnUpdate(void) {
-        this->observerNotify(ZFKeyValueContainer::EventContentOnUpdate());
+        this->observerNotify(ZFKeyValueContainer::E_ContentOnUpdate());
     }
-    /** @brief see #EventContentOnAdd */
+    /** @brief see #E_ContentOnAdd */
     virtual inline void contentOnAdd(
             ZF_IN ZFObject *key
             , ZF_IN ZFObject *value
             ) {
-        this->observerNotify(ZFKeyValueContainer::EventContentOnAdd(), key, value);
+        this->observerNotify(ZFKeyValueContainer::E_ContentOnAdd(), key, value);
     }
-    /** @brief see #EventContentOnRemove */
+    /** @brief see #E_ContentOnRemove */
     virtual inline void contentOnRemove(
             ZF_IN ZFObject *key
             , ZF_IN ZFObject *value
             ) {
-        this->observerNotify(ZFKeyValueContainer::EventContentOnRemove(), key, value);
+        this->observerNotify(ZFKeyValueContainer::E_ContentOnRemove(), key, value);
     }
 
 protected:

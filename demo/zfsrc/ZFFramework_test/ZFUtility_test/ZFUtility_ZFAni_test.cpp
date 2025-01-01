@@ -60,13 +60,13 @@ protected:
                 ) {
             owner->stop();
         } ZFLISTENER_END()
-        ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
+        ani->observerAdd(ZFAnimation::E_AniOnStop(), aniOnStop);
 
         ZFLISTENER(aniOnDealloc
                 ) {
             ZFLogTrim() << "[ZFAni_test] aniOnDealloc " << zfargs.sender()->objectHash();
         } ZFLISTENER_END()
-        ani->observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
+        ani->observerAdd(ZFObject::E_ObjectBeforeDealloc(), aniOnDealloc);
 
         ani->start();
     }

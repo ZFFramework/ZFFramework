@@ -17,7 +17,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, appExit
         , ZFMP_IN_OPT(zfint, appExitCode, ZFApp::appExitCode())
         ) {
     zfobj<v_zfbool> flag;
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventAppExit(), zfobj<v_zfint>(appExitCode), flag);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppExit(), zfobj<v_zfint>(appExitCode), flag);
     if(flag->zfv) {
         return;
     }
@@ -32,7 +32,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, appExit
 }
 
 ZFMETHOD_FUNC_DEFINE_0(void, appRestart) {
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventAppRestart());
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppRestart());
     ZFPROTOCOL_INTERFACE_CLASS(ZFApp) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp);
     if(impl != zfnull) {
         impl->appRestart();

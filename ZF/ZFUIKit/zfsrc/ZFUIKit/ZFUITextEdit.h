@@ -258,23 +258,23 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, editing)
 
 protected:
-    /** @brief see #EventTextOnEditBegin */
+    /** @brief see #E_TextOnEditBegin */
     virtual void textOnEditBegin(void);
-    /** @brief see #EventTextOnEditEnd */
+    /** @brief see #E_TextOnEditEnd */
     virtual void textOnEditEnd(void);
-    /** @brief see #EventTextOnUpdateCheck */
+    /** @brief see #E_TextOnUpdateCheck */
     virtual void textOnUpdateCheck(
             ZF_IN const zfstring &newText
             , ZF_IN_OUT zfbool &shouldUpdate
             );
-    /** @brief see #EventTextOnUpdate */
+    /** @brief see #E_TextOnUpdate */
     virtual void textOnUpdate(ZF_IN const zfstring &oldText);
-    /** @brief see #EventTextOnReturnClick */
+    /** @brief see #E_TextOnReturnClick */
     virtual void textOnReturnClick(void);
-    /** @brief see #EventTextOnEditConfirm */
+    /** @brief see #E_TextOnEditConfirm */
     virtual void textOnEditConfirm(void);
 public:
-    /** @brief see #EventTextOnEditConfirm */
+    /** @brief see #E_TextOnEditConfirm */
     ZFMETHOD_DECLARE_0(void, editConfirm)
 
     // ============================================================

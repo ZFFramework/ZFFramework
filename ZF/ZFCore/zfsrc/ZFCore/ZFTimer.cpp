@@ -163,7 +163,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer>, ZFTimerStart
         ) {
     zfobj<ZFTimer> ret;
     ret->interval(interval);
-    ret->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback);
+    ret->observerAdd(ZFTimer::E_TimerOnActivate(), timerCallback);
     ret->start();
     return ret;
 }
@@ -194,7 +194,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer>, ZFTimerOnce
             ) {
         ZFThread::executeInThread(currentThread, implThreadCallback);
     } ZFLISTENER_END()
-    ret->observerAddForOnce(ZFTimer::EventTimerOnActivate(), timerOnActivate);
+    ret->observerAddForOnce(ZFTimer::E_TimerOnActivate(), timerOnActivate);
 
     ret->start();
     return ret;

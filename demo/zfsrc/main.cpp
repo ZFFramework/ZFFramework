@@ -165,7 +165,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
                     ) {
                 subModuleWindow->hide();
             } ZFLISTENER_END()
-            closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), closeButtonOnClick);
+            closeButton->observerAdd(ZFUIButton::E_ButtonOnClick(), closeButtonOnClick);
             closeButton->bg()->bgColor(ZFUIColorRed());
 
             zfobj<ZFUIView> separator;
@@ -180,7 +180,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         }
         ZFUIViewFocusNextMove(subModuleWindow);
     } ZFLISTENER_END()
-    button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton);
+    button->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickButton);
     button->label()->text(subModuleName);
 }
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
@@ -203,13 +203,13 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
                     ) {
                 containerView->viewUIEnableTree(zftrue);
             } ZFLISTENER_END()
-            running->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
+            running->observerAdd(ZFTestCase::E_TestCaseOnStop(), testCaseOnStop);
         }
         else {
             containerView->viewUIEnableTree(zftrue);
         }
     } ZFLISTENER_END()
-    button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton);
+    button->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickButton);
     button->label()->text(zfstring(testCase->classNameFull() + zfslen(subModuleName) + 1));
 }
 

@@ -12,7 +12,7 @@
  *   } ZFLISTENER_END()
  *
  *   // add as observer
- *   button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickListener);
+ *   button->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickListener);
  * @endcode
  */
 

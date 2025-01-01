@@ -45,7 +45,7 @@ private:
             }
             view->text(text);
         } ZFLISTENER_END()
-        addButton->observerAdd(ZFUIButton::EventButtonOnClick(), addButtonOnClick);
+        addButton->observerAdd(ZFUIButton::E_ButtonOnClick(), addButtonOnClick);
         addButton->label()->text("add");
 
         zfobj<ZFUIKit_test_Button> removeButton;
@@ -57,7 +57,7 @@ private:
                 layout->childRemoveAt(layout->childCount() - 1);
             }
         } ZFLISTENER_END()
-        removeButton->observerAdd(ZFUIButton::EventButtonOnClick(), removeButtonOnClick);
+        removeButton->observerAdd(ZFUIButton::E_ButtonOnClick(), removeButtonOnClick);
         removeButton->label()->text("remove");
     }
     void prepareSettingButton(

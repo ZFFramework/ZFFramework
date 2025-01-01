@@ -117,7 +117,7 @@ public:
                 this->cellAdapterOnReloadListener = callback;
             }
             this->cellAdapter->toObject()->observerAdd(
-                ZFUICellAdapter::EventCellAdapterOnReload(),
+                ZFUICellAdapter::E_CellAdapterOnReload(),
                 this->cellAdapterOnReloadListener);
             this->cellAdapterNotifyUpdate();
         }
@@ -125,7 +125,7 @@ public:
     void cellAdapterBeforeDetach(void) {
         if(this->cellAdapter) {
             this->cellAdapter->toObject()->observerRemove(
-                ZFUICellAdapter::EventCellAdapterOnReload(),
+                ZFUICellAdapter::E_CellAdapterOnReload(),
                 this->cellAdapterOnReloadListener);
         }
     }
@@ -1266,7 +1266,7 @@ void ZFUIListView::objectOnInit(void) {
             ) {
         d->cellNeedUpdate = zftrue;
     } ZFLISTENER_END()
-    this->observerAdd(ZFUIView::EventViewLayoutOnLayoutRequest(), layoutOnLayoutRequest);
+    this->observerAdd(ZFUIView::E_ViewLayoutOnLayoutRequest(), layoutOnLayoutRequest);
 }
 void ZFUIListView::objectOnDealloc(void) {
     zfpoolDelete(d);
@@ -1552,7 +1552,7 @@ ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollCellToTail
 }
 
 void ZFUIListView::visibleCellsOnUpdate(void) {
-    this->observerNotify(ZFUIListView::EventListVisibleCellOnUpdate());
+    this->observerNotify(ZFUIListView::E_ListVisibleCellOnUpdate());
 
     if(!this->scrollOverride()) {
         d->scrollCellCheckUpdate();

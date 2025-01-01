@@ -35,12 +35,12 @@ public:
 
         if(autoTrim && this->attachedObject.size() == 1) {
             ZFGlobalObserver().observerAdd(
-                ZFGlobalEvent::EventAppOnMemoryLow(),
+                ZFGlobalEvent::E_AppOnMemoryLow(),
                 this->cacheTrimListener);
         }
         else if(!autoTrim && this->attachedObject.size() == 0) {
             ZFGlobalObserver().observerRemove(
-                ZFGlobalEvent::EventAppOnMemoryLow(),
+                ZFGlobalEvent::E_AppOnMemoryLow(),
                 this->cacheTrimListener);
         }
     }
@@ -108,8 +108,8 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
             --(cacheData->cacheListIt);
 
             zfRetain(cacheData->cacheValue);
-            // would be removed by retain in EventObjectBeforeDealloc
-            // cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+            // would be removed by retain in E_ObjectBeforeDealloc
+            // cacheData->cacheValue->observerRemove(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
         } ZFLISTENER_END()
         cacheData->cacheOnDeallocListener = cacheOnDealloc;
 
@@ -126,7 +126,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
         cacheData->aliveListIt = d->aliveList.end();
         --(cacheData->aliveListIt);
 
-        cacheValue->observerAdd(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+        cacheValue->observerAdd(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
     }
 
     this->cacheOnAdd(cacheValue);
@@ -147,7 +147,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
     zfauto ret = cacheData->cacheValue;
 
     if(cacheData->aliveListIt != d->aliveList.end()) {
-        cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+        cacheData->cacheValue->observerRemove(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
         d->aliveList.erase(cacheData->aliveListIt);
     }
     if(cacheData->cacheListIt != d->cacheList.end()) {
@@ -184,7 +184,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
         cacheData->aliveListIt = d->aliveList.end();
         --(cacheData->aliveListIt);
 
-        cacheData->cacheValue->observerAdd(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+        cacheData->cacheValue->observerAdd(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
     }
 
     return ret;
@@ -210,7 +210,7 @@ ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
         }
         if(cacheData->aliveListIt != d->aliveList.end()) {
             d->aliveList.erase(cacheData->aliveListIt);
-            cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+            cacheData->cacheValue->observerRemove(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
         }
 
         this->cacheOnRemove(cacheData->cacheValue);
@@ -238,7 +238,7 @@ ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
                 }
                 if(cacheData->aliveListIt != d->aliveList.end()) {
                     d->aliveList.erase(cacheData->aliveListIt);
-                    cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+                    cacheData->cacheValue->observerRemove(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
                 }
 
                 this->cacheOnRemove(cacheData->cacheValue);

@@ -465,7 +465,7 @@ protected:
      *
      * this method is used to ignore some internal scroll actions
      * from being recognized as user's manual scroll action,
-     * see #EventScrollOnScrolledByUser\n
+     * see #E_ScrollOnScrolledByUser\n
      * this method can be called more than one time,
      * but must be paired
      */
@@ -498,49 +498,49 @@ public:
             );
     zffinal void _ZFP_ZFUIScrollView_notifyScrollAnimation(ZF_IN zftimet relativeTimeInMiliseconds);
 protected:
-    /** @brief see #EventScrollOnDragBegin */
+    /** @brief see #E_ScrollOnDragBegin */
     virtual inline void scrollOnDragBegin(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnDragBegin());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnDragBegin());
     }
-    /** @brief see #EventScrollOnDrag */
+    /** @brief see #E_ScrollOnDrag */
     virtual inline void scrollOnDrag(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnDrag());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnDrag());
     }
-    /** @brief see #EventScrollOnDragEnd */
+    /** @brief see #E_ScrollOnDragEnd */
     virtual inline void scrollOnDragEnd(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnDragEnd());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnDragEnd());
     }
-    /** @brief see #EventScrollOnScrollBegin */
+    /** @brief see #E_ScrollOnScrollBegin */
     virtual inline void scrollOnScrollBegin(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnScrollBegin());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnScrollBegin());
     }
-    /** @brief see #EventScrollOnScroll */
+    /** @brief see #E_ScrollOnScroll */
     virtual inline void scrollOnScroll(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnScroll());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnScroll());
     }
-    /** @brief see #EventScrollOnScrollEnd */
+    /** @brief see #E_ScrollOnScrollEnd */
     virtual inline void scrollOnScrollEnd(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnScrollEnd());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnScrollEnd());
     }
-    /** @brief see #EventScrollAreaOnUpdate */
+    /** @brief see #E_ScrollAreaOnUpdate */
     virtual inline void scrollAreaOnUpdate(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollAreaOnUpdate());
+        this->observerNotify(ZFUIScrollView::E_ScrollAreaOnUpdate());
     }
-    /** @brief see #EventScrollContentFrameOnUpdate */
+    /** @brief see #E_ScrollContentFrameOnUpdate */
     virtual inline void scrollContentFrameOnUpdate(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollContentFrameOnUpdate());
+        this->observerNotify(ZFUIScrollView::E_ScrollContentFrameOnUpdate());
     }
-    /** @brief see #EventScrollAutoScrollOnStart */
+    /** @brief see #E_ScrollAutoScrollOnStart */
     virtual inline void scrollAutoScrollOnStart(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollAutoScrollOnStart());
+        this->observerNotify(ZFUIScrollView::E_ScrollAutoScrollOnStart());
     }
-    /** @brief see #EventScrollAutoScrollOnStop */
+    /** @brief see #E_ScrollAutoScrollOnStop */
     virtual inline void scrollAutoScrollOnStop(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollAutoScrollOnStop());
+        this->observerNotify(ZFUIScrollView::E_ScrollAutoScrollOnStop());
     }
-    /** @brief see #EventScrollOnScrolledByUser */
+    /** @brief see #E_ScrollOnScrolledByUser */
     virtual inline void scrollOnScrolledByUser(void) {
-        this->observerNotify(ZFUIScrollView::EventScrollOnScrolledByUser());
+        this->observerNotify(ZFUIScrollView::E_ScrollOnScrolledByUser());
     }
 
 private:

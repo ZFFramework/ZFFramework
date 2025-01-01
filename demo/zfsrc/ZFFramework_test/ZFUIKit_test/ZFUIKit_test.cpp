@@ -29,7 +29,7 @@ void ZFUIKit_test_prepareTestWindow(
         testCaseToStop->stop();
         window->hide();
     } ZFLISTENER_END()
-    closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
+    closeButton->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickCloseButton);
 
     // container
     container = zfAlloc(ZFUIView);
@@ -50,7 +50,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
             ) {
         window->show();
     } ZFLISTENER_END()
-    settingsButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickSetting);
+    settingsButton->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickSetting);
 
     zfobj<ZFUIKit_test_Button> closeButton;
     window->child(closeButton)->c_alignTop();
@@ -60,7 +60,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
             ) {
         window->hide();
     } ZFLISTENER_END()
-    closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
+    closeButton->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickCloseButton);
 
     zfobj<ZFUIKit_test_ListView> listView;
     window->child(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
@@ -81,7 +81,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
                 );
             setting->settingUpdate();
         } ZFLISTENER_END()
-        button->observerAdd(ZFUIButton::EventButtonOnClick(), onButtonClick);
+        button->observerAdd(ZFUIButton::E_ButtonOnClick(), onButtonClick);
 
         ZFLISTENER_2(settingOnUpdate
                 , ZFUIKit_test_SettingData *, setting
@@ -94,7 +94,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
                 );
             button->label()->text(buttonText->zfv);
         } ZFLISTENER_END()
-        setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnUpdate(), settingOnUpdate);
+        setting->observerAdd(ZFUIKit_test_SettingData::E_SettingOnUpdate(), settingOnUpdate);
 
         zfobj<v_zfstring> buttonText;
         setting->buttonTextGetter().execute(ZFArgs()

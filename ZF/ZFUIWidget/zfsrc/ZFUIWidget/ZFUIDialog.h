@@ -229,24 +229,24 @@ protected:
     ZFMETHOD_DECLARE_0(ZFUIView *, dialogBackgroundContainer)
 
 protected:
-    /** @brief see #EventDialogBeforeShow */
+    /** @brief see #E_DialogBeforeShow */
     virtual inline void dialogBeforeShow(void) {
-        this->observerNotify(ZFUIDialog::EventDialogBeforeShow());
+        this->observerNotify(ZFUIDialog::E_DialogBeforeShow());
     }
-    /** @brief see #EventDialogAfterShow */
+    /** @brief see #E_DialogAfterShow */
     virtual inline void dialogAfterShow(void) {
-        this->observerNotify(ZFUIDialog::EventDialogAfterShow());
+        this->observerNotify(ZFUIDialog::E_DialogAfterShow());
     }
-    /** @brief see #EventDialogBeforeHide */
+    /** @brief see #E_DialogBeforeHide */
     virtual inline void dialogBeforeHide(void) {
-        this->observerNotify(ZFUIDialog::EventDialogBeforeHide());
+        this->observerNotify(ZFUIDialog::E_DialogBeforeHide());
     }
-    /** @brief see #EventDialogAfterHide */
+    /** @brief see #E_DialogAfterHide */
     virtual inline void dialogAfterHide(void) {
-        this->observerNotify(ZFUIDialog::EventDialogAfterHide());
+        this->observerNotify(ZFUIDialog::E_DialogAfterHide());
     }
     /**
-     * @brief see #EventDialogFocusOnUpdate
+     * @brief see #E_DialogFocusOnUpdate
      *
      * return the view to focus, or null if nothing need to be focused\n
      * by default, dialog would try to find first focusable view to focus by #ZFUIViewFocusNextMove\n

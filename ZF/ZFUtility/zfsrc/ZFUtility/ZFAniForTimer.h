@@ -18,7 +18,7 @@ zfclassFwd _ZFP_ZFAniForTimerPrivate;
  * you should either:
  * -  supply subclass and implement actual animation by overriding
  *   #aniTimerOnUpdate
- * -  attach observer to #EventAniTimerOnUpdate
+ * -  attach observer to #E_AniTimerOnUpdate
  *
  * serializable data:
  * @code

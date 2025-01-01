@@ -4,15 +4,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFUIWebJSBridgeSendData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, send)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, response)
-
-ZFOBJECT_REGISTER(ZFUIWebJSBridgeRecvData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, recv)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, response)
-
-// ============================================================
 zfclassNotPOD _ZFP_ZFUIWebJSBridgePrivate {
 public:
     void *nativeWebJSBridge;
@@ -30,10 +21,8 @@ public:
 // ZFUIWebJSBridge
 ZFOBJECT_REGISTER(ZFUIWebJSBridge)
 
-ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeSend)
-ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterSend)
-ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeRecv)
-ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterRecv)
+ZFEVENT_REGISTER(ZFUIWebJSBridge, OnSend)
+ZFEVENT_REGISTER(ZFUIWebJSBridge, OnRecv)
 
 #define _ZFP_ZFUIWebJSBridge_tagKey "_ZFP_ZFUIWebJSBridge_tagKey"
 ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView
@@ -53,22 +42,11 @@ ZFMETHOD_DEFINE_0(ZFUIWebJSBridge, ZFUIWebView *, webView) {
     return d->webView;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, send
-        , ZFMP_IN_OUT(ZFJson &, send)
+ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, void, send
+        , ZFMP_IN_OUT(ZFJson &, data)
         ) {
-    zfobj<ZFUIWebJSBridgeSendData> dataSend;
-    dataSend->send = send;
-    this->webMessageBeforeSend(dataSend);
-    dataSend->response = ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->send(this, send);
-    this->webMessageAfterSend(dataSend);
-    return dataSend->response;
-}
-ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &recv) {
-    zfobj<ZFUIWebJSBridgeRecvData> dataRecv;
-    dataRecv->recv = recv;
-    this->webMessageBeforeRecv(dataRecv);
-    this->webMessageAfterRecv(dataRecv);
-    return dataRecv->response;
+    this->onSend(data);
+    ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->send(this, data);
 }
 
 void ZFUIWebJSBridge::objectOnInit(void) {

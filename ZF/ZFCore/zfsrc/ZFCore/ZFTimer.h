@@ -115,17 +115,17 @@ public:
 public:
     zffinal void _ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId);
 protected:
-    /** @brief see #EventTimerOnStart */
+    /** @brief see #E_TimerOnStart */
     virtual inline void timerOnStart(void) {
-        this->observerNotify(ZFTimer::EventTimerOnStart());
+        this->observerNotify(ZFTimer::E_TimerOnStart());
     }
-    /** @brief see #EventTimerOnActivate */
+    /** @brief see #E_TimerOnActivate */
     virtual inline void timerOnActivate(void) {
-        this->observerNotify(ZFTimer::EventTimerOnActivate());
+        this->observerNotify(ZFTimer::E_TimerOnActivate());
     }
-    /** @brief see #EventTimerOnStop */
+    /** @brief see #E_TimerOnStop */
     virtual inline void timerOnStop(void) {
-        this->observerNotify(ZFTimer::EventTimerOnStop());
+        this->observerNotify(ZFTimer::E_TimerOnStop());
     }
 
 private:

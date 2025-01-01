@@ -109,7 +109,7 @@ protected:
             ZFCoreStatistic::invokeTimeRemove("ZFUISerializePerformance_test_toData");
             ZFCoreStatistic::invokeTimeRemove("ZFUISerializePerformance_test_fromData");
         } ZFLISTENER_END()
-        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), onStart);
+        startButton->observerAdd(ZFUIButton::E_ButtonOnClick(), onStart);
 
         this->prepareSettingButton(window);
     }

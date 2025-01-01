@@ -25,13 +25,13 @@ protected:
         zfobj<ZFUITextEdit> view;
         container->child(view)->c_widthFill()->c_margin(40);
         view->bgColor(ZFUIColorRed());
-        view->observerAdd(ZFUITextEdit::EventTextOnReturnClick(), onClickReturn);
+        view->observerAdd(ZFUITextEdit::E_TextOnReturnClick(), onClickReturn);
         view->placeholder()->text("first text edit");
 
         zfobj<ZFUITextEdit> view2;
         container->child(view2)->c_sizeFill()->c_margin(40, 100, 40, 40);
         view2->bgColor(ZFUIColorBlue());
-        view2->observerAdd(ZFUITextEdit::EventTextOnReturnClick(), onClickReturn);
+        view2->observerAdd(ZFUITextEdit::E_TextOnReturnClick(), onClickReturn);
         view2->placeholder()->text("second text edit");
 
         this->prepareSettingButton(window, view);

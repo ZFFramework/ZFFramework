@@ -53,7 +53,7 @@ public:
                         ) {
                     _ZFP_ZFAniForTimerPrivate::builtinTimerOnActivate(owner);
                 } ZFLISTENER_END()
-                owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
+                owner->d->builtinTimer->observerAdd(ZFTimer::E_TimerOnActivate(), builtinTimerOnActivate);
             }
             owner->d->builtinTimer->interval(owner->aniInterval() > 0 ? owner->aniInterval() : ZFGlobalTimerIntervalDefault());
             owner->d->builtinTimerStartTime = ZFTime::timestamp();
@@ -134,7 +134,7 @@ void ZFAniForTimer::aniImplStop(void) {
 
 void ZFAniForTimer::aniTimerOnUpdate(ZF_IN zffloat progress) {
     this->observerNotify(
-        ZFAniForTimer::EventAniTimerOnUpdate(),
+        ZFAniForTimer::E_AniTimerOnUpdate(),
         zfobj<v_zffloat>(progress));
 }
 

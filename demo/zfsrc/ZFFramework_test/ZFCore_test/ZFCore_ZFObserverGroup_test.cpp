@@ -24,37 +24,37 @@ protected:
             ZFLogTrim() << zfargs.sender() << " " << ZFEventNameForId(zfargs.eventId());
         } ZFLISTENER_END()
         ZFObserverGroup(this, testObserver0)
-            .observerAdd(zfself::EventZFObserverGroupTest0(), observer)
-            .observerAdd(zfself::EventZFObserverGroupTest1(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest0(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest1(), observer)
             ;
         ZFObserverGroup(this, testObserver1)
-            .observerAdd(zfself::EventZFObserverGroupTest0(), observer)
-            .observerAdd(zfself::EventZFObserverGroupTest1(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest0(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest1(), observer)
             ;
         ZFObserverGroup(this, testObserver2)
-            .observerAdd(zfself::EventZFObserverGroupTest0(), observer)
-            .observerAdd(zfself::EventZFObserverGroupTest1(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest0(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest1(), observer)
             ;
         ZFObserverGroup(owner, testObserver3)
-            .observerAdd(zfself::EventZFObserverGroupTest0(), observer)
-            .observerAdd(zfself::EventZFObserverGroupTest1(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest0(), observer)
+            .observerAdd(zfself::E_ZFObserverGroupTest1(), observer)
             ;
 
         this->output("before remove, all observer should be called");
-        testObserver0->observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver0->observerNotify(zfself::EventZFObserverGroupTest1());
-        testObserver1.observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver1.observerNotify(zfself::EventZFObserverGroupTest1());
-        testObserver2->observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver2->observerNotify(zfself::EventZFObserverGroupTest1());
-        testObserver3->observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver3->observerNotify(zfself::EventZFObserverGroupTest1());
+        testObserver0->observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver0->observerNotify(zfself::E_ZFObserverGroupTest1());
+        testObserver1.observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver1.observerNotify(zfself::E_ZFObserverGroupTest1());
+        testObserver2->observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver2->observerNotify(zfself::E_ZFObserverGroupTest1());
+        testObserver3->observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver3->observerNotify(zfself::E_ZFObserverGroupTest1());
 
         this->outputSeparator();
         zfRelease(owner);
         this->output("owner released, all related observer should be removed");
-        testObserver3->observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver3->observerNotify(zfself::EventZFObserverGroupTest1());
+        testObserver3->observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver3->observerNotify(zfself::E_ZFObserverGroupTest1());
 
         this->outputSeparator();
         zfRelease(testObserver2);
@@ -63,12 +63,12 @@ protected:
         this->outputSeparator();
         ZFObserverGroupRemove(this);
         this->output("after remove, all observer should be removed");
-        testObserver0->observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver0->observerNotify(zfself::EventZFObserverGroupTest1());
-        testObserver1.observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver1.observerNotify(zfself::EventZFObserverGroupTest1());
-        testObserver3->observerNotify(zfself::EventZFObserverGroupTest0());
-        testObserver3->observerNotify(zfself::EventZFObserverGroupTest1());
+        testObserver0->observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver0->observerNotify(zfself::E_ZFObserverGroupTest1());
+        testObserver1.observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver1.observerNotify(zfself::E_ZFObserverGroupTest1());
+        testObserver3->observerNotify(zfself::E_ZFObserverGroupTest0());
+        testObserver3->observerNotify(zfself::E_ZFObserverGroupTest1());
 
         this->stop();
     }

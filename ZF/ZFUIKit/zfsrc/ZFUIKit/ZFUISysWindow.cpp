@@ -108,14 +108,14 @@ void ZFUISysWindow::mainWindowRegister(ZF_IN ZFUISysWindow *window) {
     _ZFP_ZFUISysWindow_mainWindowRegistered = zfRetain(window);
     _ZFP_ZFUISysWindow_mainWindow = _ZFP_ZFUISysWindow_mainWindowRegistered;
 
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventSysWindowMainWindowOnAttach());
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_SysWindowMainWindowOnAttach());
 }
 
 ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, mainWindow) {
     if(_ZFP_ZFUISysWindow_mainWindow == zfnull) {
         _ZFP_ZFUISysWindow_mainWindowBuiltin = ZFPROTOCOL_ACCESS(ZFUISysWindow)->mainWindow();
         _ZFP_ZFUISysWindow_mainWindow = _ZFP_ZFUISysWindow_mainWindowBuiltin;
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventSysWindowMainWindowOnAttach());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_SysWindowMainWindowOnAttach());
     }
     return _ZFP_ZFUISysWindow_mainWindow;
 }
@@ -159,8 +159,8 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_sysWindowMargin(ZF_IN const ZFUIMargin &s
     }
 }
 void ZFUISysWindow::sysWindowMarginOnUpdate(ZF_IN const ZFUIMargin &sysWindowMarginOld) {
-    if(this->observerHasAdd(ZFUISysWindow::EventSysWindowMarginOnUpdate())) {
-        this->observerNotify(ZFUISysWindow::EventSysWindowMarginOnUpdate(), zfobj<v_ZFUIMargin>(sysWindowMarginOld));
+    if(this->observerHasAdd(ZFUISysWindow::E_SysWindowMarginOnUpdate())) {
+        this->observerNotify(ZFUISysWindow::E_SysWindowMarginOnUpdate(), zfobj<v_ZFUIMargin>(sysWindowMarginOld));
     }
 }
 
@@ -183,7 +183,7 @@ void ZFUISysWindow::objectOnInitFinish(void) {
         owner->_ZFP_ZFUISysWindow_sysWindowLayoutUpdate();
     } ZFLISTENER_END()
     d->sysWindowLayoutParamOnUpdateListener = sysWindowLayoutParamOnUpdate;
-    d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnUpdate(), d->sysWindowLayoutParamOnUpdateListener);
+    d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::E_LayoutParamOnUpdate(), d->sysWindowLayoutParamOnUpdateListener);
 }
 void ZFUISysWindow::objectOnDeallocPrepare(void) {
     if(d->nativeWindowResumed) {
@@ -352,7 +352,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onCreate(ZF_IN void *nativeWindow) {
     }
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(this->rootView(), nativeParentView);
 
-    this->observerNotify(ZFUISysWindow::EventSysWindowOnCreate());
+    this->observerNotify(ZFUISysWindow::E_SysWindowOnCreate());
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void) {
     if(d->nativeWindowResumed) {
@@ -372,7 +372,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void) {
 
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyRemove(this->rootView());
 
-    this->observerNotify(ZFUISysWindow::EventSysWindowOnDestroy());
+    this->observerNotify(ZFUISysWindow::E_SysWindowOnDestroy());
 
     if(this == _ZFP_ZFUISysWindow_mainWindowBuiltin) {
         ZFPROTOCOL_ACCESS(ZFUISysWindow)->mainWindowOnDestroy();
@@ -385,7 +385,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onResume(void) {
     }
 
     d->nativeWindowResumed = zftrue;
-    this->observerNotify(ZFUISysWindow::EventSysWindowOnResume());
+    this->observerNotify(ZFUISysWindow::E_SysWindowOnResume());
     this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zftrue);
 
     ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnUpdate(this);
@@ -396,13 +396,13 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void) {
     }
 
     d->nativeWindowResumed = zffalse;
-    this->observerNotify(ZFUISysWindow::EventSysWindowOnPause());
+    this->observerNotify(ZFUISysWindow::E_SysWindowOnPause());
     this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zffalse);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void) {
     ZFCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
     ZFCoreAssertWithMessage(d->nativeWindowResumed, "window not resumed");
-    this->observerNotify(ZFUISysWindow::EventSysWindowOnRotate());
+    this->observerNotify(ZFUISysWindow::E_SysWindowOnRotate());
 
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i) {
         ZFUIWindow *window = this->rootView()->childAt(i);

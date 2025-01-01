@@ -534,7 +534,7 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const {
     if(!d->instanceObserverCached.isEmpty()) {
         ZFArgs zfargs;
         zfargs
-            .eventId(ZFObject::EventObjectAfterAlloc())
+            .eventId(ZFObject::E_ObjectAfterAlloc())
             .sender(obj)
             ;
         for(zfindex i = 0; i < d->instanceObserverCached.count() && !zfargs.eventFiltered(); ++i) {
@@ -1780,7 +1780,7 @@ void _ZFP_ZFClassDataUpdateNotify(
         holder->zfv.changedProperty = changedProperty;
         holder->zfv.changedMethod = changedMethod;
         holder->zfv.name = name;
-        ZFClassDataUpdateObserver().observerNotify(ZFGlobalEvent::EventClassDataUpdate(), holder);
+        ZFClassDataUpdateObserver().observerNotify(ZFGlobalEvent::E_ClassDataUpdate(), holder);
         zfunsafe_zfRelease(holder);
     }
 }

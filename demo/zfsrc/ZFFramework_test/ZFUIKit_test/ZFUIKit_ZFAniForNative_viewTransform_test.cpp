@@ -38,7 +38,7 @@ protected:
         } ZFLISTENER_END()
         zfobj<ZFUIKit_test_Button> startButton;
         startButton->label()->text("start");
-        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
+        startButton->observerAdd(ZFUIButton::E_ButtonOnClick(), startOnClick);
         container->child(startButton)->c_alignRightTop();
     }
 

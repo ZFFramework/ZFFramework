@@ -26,7 +26,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  *               , methodImpl
  *           )
  *           .property(typeIdOrRetainClass, propertyName [, propertyInitValue])
- *           .onEvent(ZFObject::EventObjectAfterAlloc(), callback)
+ *           .onEvent(ZFObject::E_ObjectAfterAlloc(), callback)
  *           .onInit(callback)
  *           .onDealloc(callback)
  *           .singleton()
@@ -151,11 +151,11 @@ public:
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
-        return this->onEvent(ZFObject::EventObjectBeforeAlloc(), callback, ZFLevelZFFrameworkStatic);
+        return this->onEvent(ZFObject::E_ObjectBeforeAlloc(), callback, ZFLevelZFFrameworkStatic);
     }
     /** @brief see #ZFDynamic */
     ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
-        return this->onEvent(ZFObject::EventObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
+        return this->onEvent(ZFObject::E_ObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
     }
 
     /**
@@ -204,8 +204,8 @@ public:
      * @brief register a event, see also #ZFEVENT #ZFEVENT_GLOBAL
      *
      * if within class scope (#classBegin),
-     * `YourClassName::EventYourEvent` would be registered,
-     * otherwise, `YourNamespace::EventYourEvent` would be registered\n
+     * `YourClassName::E_YourEvent` would be registered,
+     * otherwise, `YourNamespace::E_YourEvent` would be registered\n
      * registered event would include:
      * -  an event registered by #ZFEventDynamicRegister
      * -  a #ZFMethod to access the event

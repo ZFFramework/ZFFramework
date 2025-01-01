@@ -34,7 +34,7 @@ zfclassFwd _ZFP_ZFUIButtonPrivate;
 /**
  * @brief abstract button
  *
- * use #ZFUIButton::EventButtonOnClick to register button click listener,
+ * use #ZFUIButton::E_ButtonOnClick to register button click listener,
  * see #ZFObject::observerNotify for more info\n
  * #ZFUIButton is an abstract button, use its subclass to create
  */
@@ -167,21 +167,21 @@ public:
     /**
      * @brief util method to simulate click button
      *
-     * the optional event paran would be passed to #EventButtonOnClick
+     * the optional event paran would be passed to #E_ButtonOnClick
      */
     ZFMETHOD_DECLARE_1(void, simulateClick
             , ZFMP_IN_OPT(ZFUIEvent *, event, zfnull)
             )
 
     /**
-     * @brief util to observe #EventButtonOnClick
+     * @brief util to observe #E_ButtonOnClick
      */
     ZFMETHOD_DECLARE_2(void, onClick
             , ZFMP_IN(const ZFListener &, observer)
             , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
             )
     /**
-     * @brief util to observe #EventButtonOnClick
+     * @brief util to observe #E_ButtonOnClick
      */
     ZFMETHOD_DECLARE_2(void, onClickForOnce
             , ZFMP_IN(const ZFListener &, observer)
@@ -195,39 +195,39 @@ protected:
     virtual void viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent);
 
 protected:
-    /** @brief see #EventButtonOnClick */
+    /** @brief see #E_ButtonOnClick */
     virtual inline void buttonOnClick(ZF_IN ZFUIEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonOnClick(), event);
+        this->observerNotify(ZFUIButton::E_ButtonOnClick(), event);
     }
 
 protected:
-    /** @brief see #EventButtonMouseOnDown */
+    /** @brief see #E_ButtonMouseOnDown */
     virtual void buttonMouseOnDown(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnDown(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnDown(), event);
     }
-    /** @brief see #EventButtonMouseOnMoveEnter */
+    /** @brief see #E_ButtonMouseOnMoveEnter */
     virtual void buttonMouseOnMoveEnter(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnMoveEnter(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveEnter(), event);
     }
-    /** @brief see #EventButtonMouseOnMoveExit */
+    /** @brief see #E_ButtonMouseOnMoveExit */
     virtual void buttonMouseOnMoveExit(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnMoveExit(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveExit(), event);
     }
-    /** @brief see #EventButtonMouseOnMoveInside */
+    /** @brief see #E_ButtonMouseOnMoveInside */
     virtual void buttonMouseOnMoveInside(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnMoveInside(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveInside(), event);
     }
-    /** @brief see #EventButtonMouseOnMoveOutside */
+    /** @brief see #E_ButtonMouseOnMoveOutside */
     virtual void buttonMouseOnMoveOutside(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnMoveOutside(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnMoveOutside(), event);
     }
-    /** @brief see #EventButtonMouseOnUpInside */
+    /** @brief see #E_ButtonMouseOnUpInside */
     virtual void buttonMouseOnUpInside(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnUpInside(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnUpInside(), event);
     }
-    /** @brief see #EventButtonMouseOnUp */
+    /** @brief see #E_ButtonMouseOnUp */
     virtual void buttonMouseOnUp(ZF_IN ZFUIMouseEvent *event) {
-        this->observerNotify(ZFUIButton::EventButtonMouseOnUp(), event);
+        this->observerNotify(ZFUIButton::E_ButtonMouseOnUp(), event);
     }
 
 public:
@@ -237,9 +237,9 @@ public:
     ZFMETHOD_DECLARE_0(ZFUIButtonState, buttonState)
 
 protected:
-    /** @brief see #EventButtonStateOnUpdate */
+    /** @brief see #E_ButtonStateOnUpdate */
     virtual inline void buttonStateOnUpdate(void) {
-        this->observerNotify(ZFUIButton::EventButtonStateOnUpdate());
+        this->observerNotify(ZFUIButton::E_ButtonStateOnUpdate());
     }
 
 private:

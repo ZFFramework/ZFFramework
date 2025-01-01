@@ -113,7 +113,7 @@ void ZFUIScrollThumbDefault::objectOnInitFinish(void) {
             ) {
         _ZFP_ZFUIScrollThumbDefaultPrivate::aniOnStop(zfargs, owner);
     } ZFLISTENER_END()
-    d->thumbHideAni->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
+    d->thumbHideAni->observerAdd(ZFAnimation::E_AniOnStop(), aniOnStop);
 
     ZFLISTENER_1(thumbHideAniAutoStop
             , ZFUIScrollThumbDefault *, owner
@@ -121,10 +121,10 @@ void ZFUIScrollThumbDefault::objectOnInitFinish(void) {
         _ZFP_ZFUIScrollThumbDefaultPrivate::thumbHideAniAutoStop(zfargs, owner);
     } ZFLISTENER_END()
     d->thumbHideAniAutoStopListener = thumbHideAniAutoStop;
-    ZFGlobalObserver().observerAdd(ZFUIWindow::EventWindowOnHide(), d->thumbHideAniAutoStopListener);
+    ZFGlobalObserver().observerAdd(ZFUIWindow::E_WindowOnHide(), d->thumbHideAniAutoStopListener);
 }
 void ZFUIScrollThumbDefault::objectOnDeallocPrepare(void) {
-    ZFGlobalObserver().observerRemove(ZFUIWindow::EventWindowOnHide(), d->thumbHideAniAutoStopListener);
+    ZFGlobalObserver().observerRemove(ZFUIWindow::E_WindowOnHide(), d->thumbHideAniAutoStopListener);
     zfsuper::objectOnDeallocPrepare();
 }
 void ZFUIScrollThumbDefault::objectOnDealloc(void) {

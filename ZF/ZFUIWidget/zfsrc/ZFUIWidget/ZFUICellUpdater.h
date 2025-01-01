@@ -56,12 +56,12 @@ public:
     /** @brief for impl to notify cell update */
     zffinal void notifyCellUpdate(ZF_IN const ZFUICellUpdaterParam &updateParam) {
         this->cellOnUpdate(updateParam);
-        this->toObject()->observerNotify(zfself::EventCellOnUpdate(), zfobj<v_ZFUICellUpdaterParam>(updateParam));
+        this->toObject()->observerNotify(zfself::E_CellOnUpdate(), zfobj<v_ZFUICellUpdaterParam>(updateParam));
     }
     /** @brief for impl to notify cell recycle */
     zffinal void notifyCellRecycle(ZF_IN ZFUICell *cell) {
         this->cellOnRecycle(cell);
-        this->toObject()->observerNotify(zfself::EventCellOnRecycle(), cell);
+        this->toObject()->observerNotify(zfself::E_CellOnRecycle(), cell);
     }
 
 protected:

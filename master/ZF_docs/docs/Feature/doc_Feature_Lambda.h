@@ -18,7 +18,7 @@
  *   } ZFLISTENER_END()
  *
  *   zfobj<ZFUIButton> btn;
- *   btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);
+ *   btn->observerAdd(ZFUIButton::E_ButtonOnClick(), onClick);
  *
  *   ZFLogTrim() << "before invoke: " << refCapture << valueCapture;
  *   btn->simulateClick();

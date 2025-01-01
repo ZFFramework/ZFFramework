@@ -103,7 +103,7 @@ public:
      * @brief start to play
      *
      * it's ensured safe to call start immediately after #load,
-     * but #EventAudioOnLoad may called after #EventAudioOnStart for this case\n
+     * but #E_AudioOnLoad may called after #E_AudioOnStart for this case\n
      * once loaded, it's ensured able to start and stop more than one time
      */
     ZFMETHOD_DECLARE_0(void, start)
@@ -177,39 +177,39 @@ protected:
     }
 
 protected:
-    /** @brief see #EventAudioOnLoad */
+    /** @brief see #E_AudioOnLoad */
     virtual void audioOnLoad(
             ZF_IN ZFResultType result
             , ZF_IN v_zfstring *errorHint
             ) {
         zfobj<v_ZFResultType> resultHolder;
         resultHolder->enumValue(result);
-        this->observerNotify(ZFAudio::EventAudioOnLoad(), resultHolder, errorHint);
+        this->observerNotify(ZFAudio::E_AudioOnLoad(), resultHolder, errorHint);
     }
-    /** @brief see #EventAudioOnStart */
+    /** @brief see #E_AudioOnStart */
     virtual void audioOnStart(void) {
-        this->observerNotify(ZFAudio::EventAudioOnStart());
+        this->observerNotify(ZFAudio::E_AudioOnStart());
     }
-    /** @brief see #EventAudioOnStop */
+    /** @brief see #E_AudioOnStop */
     virtual void audioOnStop(
             ZF_IN ZFResultType result
             , ZF_IN v_zfstring *errorHint
             ) {
         zfobj<v_ZFResultType> resultHolder;
         resultHolder->enumValue(result);
-        this->observerNotify(ZFAudio::EventAudioOnStop(), resultHolder, errorHint);
+        this->observerNotify(ZFAudio::E_AudioOnStop(), resultHolder, errorHint);
     }
-    /** @brief see #EventAudioOnResume */
+    /** @brief see #E_AudioOnResume */
     virtual void audioOnResume(void) {
-        this->observerNotify(ZFAudio::EventAudioOnResume());
+        this->observerNotify(ZFAudio::E_AudioOnResume());
     }
-    /** @brief see #EventAudioOnPause */
+    /** @brief see #E_AudioOnPause */
     virtual void audioOnPause(void) {
-        this->observerNotify(ZFAudio::EventAudioOnPause());
+        this->observerNotify(ZFAudio::E_AudioOnPause());
     }
-    /** @brief see #EventAudioOnLoop */
+    /** @brief see #E_AudioOnLoop */
     virtual void audioOnLoop(void) {
-        this->observerNotify(ZFAudio::EventAudioOnLoop());
+        this->observerNotify(ZFAudio::E_AudioOnLoop());
     }
 
 public:

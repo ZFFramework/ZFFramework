@@ -20,7 +20,7 @@ protected:
             ZFLISTENER(serverOnDealloc) {
                 ZFLogTrim() << "server dealloc";
             } ZFLISTENER_END()
-            server->observerAdd(ZFObject::EventObjectBeforeDealloc(), serverOnDealloc);
+            server->observerAdd(ZFObject::E_ObjectBeforeDealloc(), serverOnDealloc);
 
             this->output("server start");
             zfbool serverOpenSuccess = server->open(zfnull, zfmRand(1025, 65536));
@@ -55,7 +55,7 @@ protected:
             ZFLISTENER(clientOnDealloc) {
                 ZFLogTrim() << "client dealloc";
             } ZFLISTENER_END()
-            client->observerAdd(ZFObject::EventObjectBeforeDealloc(), clientOnDealloc);
+            client->observerAdd(ZFObject::E_ObjectBeforeDealloc(), clientOnDealloc);
 
             this->output("client start");
             zfbool clientOpenSuccess = client->open("localhost", serverPort);

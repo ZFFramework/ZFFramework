@@ -34,7 +34,7 @@ public:
      * impl must call #stop or #notifySuccess or #notifyFail when task done,
      * by any of these methods:
      * -  override #taskOnStart
-     * -  attach observer to #EventTaskOnStart
+     * -  attach observer to #E_TaskOnStart
      *
      * the task object would be retained during running
      */
@@ -97,7 +97,7 @@ public:
 protected:
     /**
      * @brief util constructor to attach custom impl to
-     *   #EventTaskOnStart and #EventTaskOnStop
+     *   #E_TaskOnStart and #E_TaskOnStop
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(const ZFListener &, implOnStart)

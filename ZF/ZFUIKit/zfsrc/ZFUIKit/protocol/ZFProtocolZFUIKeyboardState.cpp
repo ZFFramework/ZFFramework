@@ -35,7 +35,7 @@ public:
         this->implRegisterFlag = zftrue;
 
         ZFGlobalObserver().observerAdd(
-                ZFUIView::EventViewOnEvent(),
+                ZFUIView::E_ViewOnEvent(),
                 this->viewOnEventListener,
                 ZFLevelZFFrameworkEssential
             );
@@ -47,7 +47,7 @@ public:
         this->implRegisterFlag = zffalse;
 
         ZFGlobalObserver().observerRemove(
-            ZFUIView::EventViewOnEvent(),
+            ZFUIView::E_ViewOnEvent(),
             this->viewOnEventListener);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardStateBuiltinImpl_DataHolder)

@@ -239,7 +239,7 @@ void ZFAniForFrame::aniImplStop(void) {
 
 void ZFAniForFrame::aniFrameOnUpdate(ZF_IN zfindex frameIndex) {
     this->observerNotify(
-        ZFAniForFrame::EventAniFrameOnUpdate(),
+        ZFAniForFrame::E_AniFrameOnUpdate(),
         zfobj<v_zfindex>(frameIndex));
 }
 

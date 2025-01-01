@@ -108,7 +108,7 @@ private:
                 ZFCoreMutexLocker();
                 _taskIdleTimer() = zfnull;
             } ZFLISTENER_END();
-            timer->observerAdd(ZFTimer::EventTimerOnStop(), delayOnStop);
+            timer->observerAdd(ZFTimer::E_TimerOnStop(), delayOnStop);
         }
     }
 

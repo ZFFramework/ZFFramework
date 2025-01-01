@@ -90,32 +90,32 @@ private:
         ZFLISTENER(onDragBegin) {
             ZFLogTrim() << "onDragBegin   " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        listView->observerAdd(ZFUIListView::EventScrollOnDragBegin(), onDragBegin);
+        listView->observerAdd(ZFUIListView::E_ScrollOnDragBegin(), onDragBegin);
 
         ZFLISTENER(onDrag) {
             ZFLogTrim() << "onDrag        " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        listView->observerAdd(ZFUIListView::EventScrollOnDrag(), onDrag);
+        listView->observerAdd(ZFUIListView::E_ScrollOnDrag(), onDrag);
 
         ZFLISTENER(onDragEnd) {
             ZFLogTrim() << "onDragEnd     " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        listView->observerAdd(ZFUIListView::EventScrollOnDragEnd(), onDragEnd);
+        listView->observerAdd(ZFUIListView::E_ScrollOnDragEnd(), onDragEnd);
 
         ZFLISTENER(onScrollBegin) {
             ZFLogTrim() << "onScrollBegin " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        listView->observerAdd(ZFUIListView::EventScrollOnScrollBegin(), onScrollBegin);
+        listView->observerAdd(ZFUIListView::E_ScrollOnScrollBegin(), onScrollBegin);
 
         ZFLISTENER(onScroll) {
             ZFLogTrim() << "onScroll      " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        listView->observerAdd(ZFUIListView::EventScrollOnScroll(), onScroll);
+        listView->observerAdd(ZFUIListView::E_ScrollOnScroll(), onScroll);
 
         ZFLISTENER(onScrollEnd) {
             ZFLogTrim() << "onScrollEnd   " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        listView->observerAdd(ZFUIListView::EventScrollOnScrollEnd(), onScrollEnd);
+        listView->observerAdd(ZFUIListView::E_ScrollOnScrollEnd(), onScrollEnd);
 #endif
     }
     void prepareSettingButton(
@@ -210,7 +210,7 @@ private:
             zfobj<ZFUIKit_test_Button> randomScrollButton;
             window->child(randomScrollButton);
             randomScrollButton->label()->text("random scroll");
-            randomScrollButton->observerAdd(ZFUIButton::EventButtonOnClick(), buttonClickListener);
+            randomScrollButton->observerAdd(ZFUIButton::E_ButtonOnClick(), buttonClickListener);
         }
 
         { // scrollAreaMargin

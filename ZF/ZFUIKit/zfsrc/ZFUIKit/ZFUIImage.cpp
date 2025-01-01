@@ -462,7 +462,7 @@ void ZFUIImage::objectOnInitFinish(void) {
     } ZFLISTENER_END()
     d->globalImageScaleOnUpdateListener = globalImageScaleOnUpdate;
     ZFUIGlobalStyle::DefaultStyle()->observerAdd(
-        ZFObject::EventObjectPropertyValueOnUpdate(),
+        ZFObject::E_ObjectPropertyValueOnUpdate(),
         d->globalImageScaleOnUpdateListener);
 }
 void ZFUIImage::objectOnDeallocPrepare(void) {
@@ -472,7 +472,7 @@ void ZFUIImage::objectOnDeallocPrepare(void) {
             );
     if(ZFUIGlobalStyle::DefaultStyle()) {
         ZFUIGlobalStyle::DefaultStyle()->observerRemove(
-            ZFObject::EventObjectPropertyValueOnUpdate(),
+            ZFObject::E_ObjectPropertyValueOnUpdate(),
             d->globalImageScaleOnUpdateListener);
     }
     zfsuper::objectOnDeallocPrepare();

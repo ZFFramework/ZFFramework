@@ -7,8 +7,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArray<zfstring>() */) {
     _ZFP_ZFApp_appParams().removeAll();
     _ZFP_ZFApp_appParams().addFrom(appParams);
-    ZFGlobalObserver().observerNotify(ZFApp::EventAppParamDispatch());
-    ZFGlobalObserver().observerNotify(ZFApp::EventAppEntry());
+    ZFGlobalObserver().observerNotify(ZFApp::E_AppParamDispatch());
+    ZFGlobalObserver().observerNotify(ZFApp::E_AppEntry());
     return _ZFP_ZFApp_appExitCode();
 }
 
@@ -24,13 +24,13 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic
     } ZFLISTENER_END()
     this->callback = action;
     ZFGlobalObserver().observerAdd(
-            ZFApp::EventAppParamDispatch(),
+            ZFApp::E_AppParamDispatch(),
             this->callback,
             ZFLevelZFFrameworkPostNormal
         );
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntrySetup) {
-    ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->callback);
+    ZFGlobalObserver().observerRemove(ZFApp::E_AppParamDispatch(), this->callback);
 }
 private:
     ZFListener callback;

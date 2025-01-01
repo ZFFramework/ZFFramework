@@ -50,7 +50,7 @@ zfclassFwd ZFUIPageManager;
  * typical usage:
  * @code
  *   zfobj<ZFUIPageManager> pm;
- *   pm->observerAdd(ZFUIPageManager::EventManagerOnCreate, myPMCreateCallback);
+ *   pm->observerAdd(ZFUIPageManager::E_ManagerOnCreate, myPMCreateCallback);
  *   pm->managerCreateForWindow();
  *   ZFUIPageManager::instance(pm);
  *
@@ -58,7 +58,7 @@ zfclassFwd ZFUIPageManager;
  *   ZFUIPageManager::instance()->pageCreate(page1);
  *   ...
  *   zfobj<ZFUIPage> page2;
- *   page2->observerAdd(ZFUIPage::EventPageOnCreate(), myCreateCallback);
+ *   page2->observerAdd(ZFUIPage::E_PageOnCreate(), myCreateCallback);
  *   ZFUIPageManager::instance()->pageCreate(page2);
  *   ...
  *   page1->pageDestroy();
@@ -71,7 +71,7 @@ zfclassFwd ZFUIPageManager;
  * to implement your own page, either:
  * -  inherit #ZFUIPage and override #pageOnCreate series,
  *   construct your page view and add to #pageView
- * -  alloc a ZFUIPage, #ZFObject::observerAdd to #EventPageOnCreate,
+ * -  alloc a ZFUIPage, #ZFObject::observerAdd to #E_PageOnCreate,
  *   and perform additional page create steps
  */
 zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextend ZFObject {
@@ -333,19 +333,19 @@ public:
     // ============================================================
     // page observers
 public:
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnCreate */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageOnCreate */
     ZFEVENT(PageOnCreate)
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnResume */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageOnResume */
     ZFEVENT(PageOnResume)
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnPause */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageOnPause */
     ZFEVENT(PageOnPause)
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageOnDestroy */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageOnDestroy */
     ZFEVENT(PageOnDestroy)
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageAniOnPrepare */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageAniOnPrepare */
     ZFEVENT(PageAniOnPrepare)
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageAniOnStart */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageAniOnStart */
     ZFEVENT(PageAniOnStart)
-    /** @brief see #ZFObject::observerNotify, #ZFUIPage::EventPageAniOnStop */
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageAniOnStop */
     ZFEVENT(PageAniOnStop)
 
     // ============================================================
@@ -452,7 +452,7 @@ public:
     /** @brief see #managerUIBlocked */
     ZFMETHOD_DECLARE_0(zfindex, managerUIBlockedCount)
 protected:
-    /** @brief see #EventManagerUIBlockedOnUpdate */
+    /** @brief see #E_ManagerUIBlockedOnUpdate */
     virtual inline void managerUIBlockedOnUpdate(void) {}
 
     // ============================================================

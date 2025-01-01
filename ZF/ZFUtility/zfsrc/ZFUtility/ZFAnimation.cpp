@@ -116,17 +116,17 @@ ZFMETHOD_DEFINE_0(ZFAnimation, zfindex, loopCur) {
 ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStart
         , ZFMP_IN(const ZFListener &, cb)
         ) {
-    this->observerAdd(zfself::EventAniOnStart(), cb);
+    this->observerAdd(zfself::E_AniOnStart(), cb);
 }
 ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnLoop
         , ZFMP_IN(const ZFListener &, cb)
         ) {
-    this->observerAdd(zfself::EventAniOnLoop(), cb);
+    this->observerAdd(zfself::E_AniOnLoop(), cb);
 }
 ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStop
         , ZFMP_IN(const ZFListener &, cb)
         ) {
-    this->observerAdd(zfself::EventAniOnStop(), cb);
+    this->observerAdd(zfself::E_AniOnStop(), cb);
 }
 
 void ZFAnimation::_ZFP_ZFAnimation_aniReadyStart(void) {
@@ -211,7 +211,7 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = ZFRes
     if(onStopSaved) {
         onStopSaved.execute(ZFArgs()
                 .sender(this)
-                .eventId(zfself::EventAniOnStop())
+                .eventId(zfself::E_AniOnStop())
                 .param0(zfobj<v_ZFResultType>(resultType))
                 );
     }

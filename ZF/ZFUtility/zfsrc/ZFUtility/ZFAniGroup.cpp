@@ -110,12 +110,12 @@ private:
 
 private:
     void childSetup(ZF_IN _ZFP_ZFAniGroupChildData *childData) {
-        childData->child()->observerAdd(ZFAnimation::EventAniOnStart(), this->cachedOnStartListener);
-        childData->child()->observerAdd(ZFAnimation::EventAniOnStop(), this->cachedOnStopListener);
+        childData->child()->observerAdd(ZFAnimation::E_AniOnStart(), this->cachedOnStartListener);
+        childData->child()->observerAdd(ZFAnimation::E_AniOnStop(), this->cachedOnStopListener);
     }
     void childCleanup(ZF_IN _ZFP_ZFAniGroupChildData *childData) {
-        childData->child()->observerRemove(ZFAnimation::EventAniOnStart(), this->cachedOnStartListener);
-        childData->child()->observerRemove(ZFAnimation::EventAniOnStop(), this->cachedOnStopListener);
+        childData->child()->observerRemove(ZFAnimation::E_AniOnStart(), this->cachedOnStartListener);
+        childData->child()->observerRemove(ZFAnimation::E_AniOnStop(), this->cachedOnStopListener);
     }
 private:
     _ZFP_ZFAniGroupChildData *checkChild(

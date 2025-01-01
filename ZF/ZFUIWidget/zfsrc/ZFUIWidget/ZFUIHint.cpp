@@ -111,7 +111,7 @@ public:
                 this->aniShowOnStopListener = callback;
             }
             this->started->observerAddForOnce(
-                ZFAnimation::EventAniOnStop(),
+                ZFAnimation::E_AniOnStop(),
                 this->aniShowOnStopListener);
             this->started->target(this->pimplOwner->hintWindow());
             this->started->start();
@@ -160,7 +160,7 @@ public:
                 this->aniHideOnStopListener = callback;
             }
             this->started->observerAddForOnce(
-                ZFAnimation::EventAniOnStop(),
+                ZFAnimation::E_AniOnStop(),
                 this->aniHideOnStopListener);
             this->started->target(this->pimplOwner->hintWindow());
             this->started->start();
@@ -294,8 +294,8 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hide) {
                 d->showDelayTimer = zfnull;
             }
             if(d->started != zfnull) {
-                d->started->observerRemove(ZFAnimation::EventAniOnStop(), d->aniShowOnStopListener);
-                d->started->observerRemove(ZFAnimation::EventAniOnStop(), d->aniHideOnStopListener);
+                d->started->observerRemove(ZFAnimation::E_AniOnStop(), d->aniShowOnStopListener);
+                d->started->observerRemove(ZFAnimation::E_AniOnStop(), d->aniHideOnStopListener);
                 ZFAnimation *hintAniTmp = d->started;
                 d->started = zfnull;
                 hintAniTmp->stop();
@@ -355,14 +355,14 @@ void ZFUIHint::objectOnInit(void) {
             }
         }
     } ZFLISTENER_END()
-    d->hintWindow->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnUpdate(), hintWindowOnUpdate);
+    d->hintWindow->observerAdd(ZFUIWindow::E_WindowOwnerSysWindowOnUpdate(), hintWindowOnUpdate);
 
     ZFLISTENER_1(hintWindowOnLayoutPrepare
             , ZFUIHint *, hint
             ) {
         hint->hintOnUpdate();
     } ZFLISTENER_END()
-    d->hintWindow->observerAdd(ZFUIView::EventViewLayoutOnLayoutPrepare(), hintWindowOnLayoutPrepare);
+    d->hintWindow->observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), hintWindowOnLayoutPrepare);
 
     _ZFP_ZFUIHint_allHint.add(this);
 }

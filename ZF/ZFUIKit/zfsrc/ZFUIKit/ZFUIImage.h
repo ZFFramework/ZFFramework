@@ -276,14 +276,14 @@ public:
 public:
     zffinal void _ZFP_ZFUIImage_imageScaleOnUpdate(void);
 protected:
-    /** @brief see #EventImageScaleOnUpdate */
+    /** @brief see #E_ImageScaleOnUpdate */
     virtual void imageScaleOnUpdate(void) {
-        this->observerNotify(ZFUIImage::EventImageScaleOnUpdate());
+        this->observerNotify(ZFUIImage::E_ImageScaleOnUpdate());
     }
 
-    /** @brief see #EventImageStateOnUpdate */
+    /** @brief see #E_ImageStateOnUpdate */
     virtual void imageStateOnUpdate(void) {
-        this->observerNotify(ZFUIImage::EventImageStateOnUpdate());
+        this->observerNotify(ZFUIImage::E_ImageStateOnUpdate());
     }
 
     // ============================================================

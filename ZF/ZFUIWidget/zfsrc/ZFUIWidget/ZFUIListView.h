@@ -55,7 +55,7 @@ public:
      * param0 is the list cell
      * @note you must not access #visibleCells or #visibleCellRange
      *   during this event,
-     *   you can only access them during #EventListVisibleCellOnUpdate
+     *   you can only access them during #E_ListVisibleCellOnUpdate
      */
     ZFEVENT(CellOnAttach)
     /**
@@ -65,7 +65,7 @@ public:
      * param0 is the list cell
      * @note you must not access #visibleCells or #visibleCellRange
      *   during this event,
-     *   you can only access them during #EventListVisibleCellOnUpdate
+     *   you can only access them during #E_ListVisibleCellOnUpdate
      */
     ZFEVENT(CellOnDetach)
     /**
@@ -264,15 +264,15 @@ public:
     // ============================================================
     // events
 protected:
-    /** @brief see #EventCellOnAttach */
+    /** @brief see #E_CellOnAttach */
     virtual inline void cellOnAttach(ZF_IN ZFUICell *cell) {
-        this->observerNotify(ZFUIListView::EventCellOnAttach(), cell);
+        this->observerNotify(ZFUIListView::E_CellOnAttach(), cell);
     }
-    /** @brief see #EventCellOnDetach */
+    /** @brief see #E_CellOnDetach */
     virtual inline void cellOnDetach(ZF_IN ZFUICell *cell) {
-        this->observerNotify(ZFUIListView::EventCellOnDetach(), cell);
+        this->observerNotify(ZFUIListView::E_CellOnDetach(), cell);
     }
-    /** @brief see #EventListVisibleCellOnUpdate */
+    /** @brief see #E_ListVisibleCellOnUpdate */
     virtual void visibleCellsOnUpdate(void);
 
 private:

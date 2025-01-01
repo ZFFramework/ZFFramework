@@ -22,7 +22,7 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         _ZFP_stateFlag = 0;
-        this->observerHolder().observerHasAddStateAttach(zfself::EventTimerOnActivate(), &_ZFP_stateFlag, stateFlag_observerHasAdd);
+        this->observerHolder().observerHasAddStateAttach(zfself::E_TimerOnActivate(), &_ZFP_stateFlag, stateFlag_observerHasAdd);
     }
 
     zfoverride
@@ -93,7 +93,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttach
         d->globalTimer->interval(ZFGlobalTimerInterval());
         d->globalTimer->start();
     }
-    d->globalTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback, observerLevel);
+    d->globalTimer->observerAdd(ZFTimer::E_TimerOnActivate(), timerCallback, observerLevel);
 }
 ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce
         , ZFMP_IN(const ZFListener &, timerCallback)
@@ -112,7 +112,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce
         d->globalTimer->interval(ZFGlobalTimerInterval());
         d->globalTimer->start();
     }
-    d->globalTimer->observerAddForOnce(ZFTimer::EventTimerOnActivate(), timerCallback, observerLevel);
+    d->globalTimer->observerAddForOnce(ZFTimer::E_TimerOnActivate(), timerCallback, observerLevel);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetach
         , ZFMP_IN(const ZFListener &, timerCallback)
@@ -122,7 +122,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetach
     if(d->globalTimer == zfnull) {
         return;
     }
-    d->globalTimer->observerRemove(ZFTimer::EventTimerOnActivate(), timerCallback);
+    d->globalTimer->observerRemove(ZFTimer::E_TimerOnActivate(), timerCallback);
     d->checkCleanup();
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerDetachAll) {
@@ -131,7 +131,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerDetachAll) {
     if(d->globalTimer == zfnull) {
         return;
     }
-    d->globalTimer->observerRemoveAll(ZFTimer::EventTimerOnActivate());
+    d->globalTimer->observerRemoveAll(ZFTimer::E_TimerOnActivate());
     d->checkCleanup();
 }
 
@@ -171,7 +171,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStep) {
     d->globalTimerManualStep = zftrue;
     if(d->globalTimer != zfnull) {
         d->globalTimer->stop();
-        d->globalTimer->observerNotify(ZFTimer::EventTimerOnActivate());
+        d->globalTimer->observerNotify(ZFTimer::E_TimerOnActivate());
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerManualStepCancel) {

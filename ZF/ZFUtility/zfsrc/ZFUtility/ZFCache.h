@@ -43,7 +43,7 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, cacheMaxSize)
 
     /**
-     * @brief whether invoke #cacheTrim when receive #ZFGlobalEvent::EventAppOnMemoryLow, true by default
+     * @brief whether invoke #cacheTrim when receive #ZFGlobalEvent::E_AppOnMemoryLow, true by default
      */
     ZFPROPERTY_ASSIGN(zfbool, cacheTrimWhenReceiveMemoryWarning, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, cacheTrimWhenReceiveMemoryWarning)
@@ -106,13 +106,13 @@ public:
             )
 
 protected:
-    /** @brief see #EventCacheOnAdd */
+    /** @brief see #E_CacheOnAdd */
     virtual void cacheOnAdd(ZF_IN ZFObject *cache) {
-        this->observerNotify(zfself::EventCacheOnAdd(), cache);
+        this->observerNotify(zfself::E_CacheOnAdd(), cache);
     }
-    /** @brief see #EventCacheOnRemove */
+    /** @brief see #E_CacheOnRemove */
     virtual void cacheOnRemove(ZF_IN ZFObject *cache) {
-        this->observerNotify(zfself::EventCacheOnRemove(), cache);
+        this->observerNotify(zfself::E_CacheOnRemove(), cache);
     }
 
 protected:

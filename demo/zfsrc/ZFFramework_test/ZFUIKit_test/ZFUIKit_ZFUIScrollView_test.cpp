@@ -42,32 +42,32 @@ private:
         ZFLISTENER(onDragBegin) {
             ZFLogTrim() << "onDragBegin   " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        scrollView->observerAdd(ZFUIScrollView::EventScrollOnDragBegin(), onDragBegin);
+        scrollView->observerAdd(ZFUIScrollView::E_ScrollOnDragBegin(), onDragBegin);
 
         ZFLISTENER(onDrag) {
             ZFLogTrim() << "onDrag        " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        scrollView->observerAdd(ZFUIScrollView::EventScrollOnDrag(), onDrag);
+        scrollView->observerAdd(ZFUIScrollView::E_ScrollOnDrag(), onDrag);
 
         ZFLISTENER(onDragEnd) {
             ZFLogTrim() << "onDragEnd     " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        scrollView->observerAdd(ZFUIScrollView::EventScrollOnDragEnd(), onDragEnd);
+        scrollView->observerAdd(ZFUIScrollView::E_ScrollOnDragEnd(), onDragEnd);
 
         ZFLISTENER(onScrollBegin) {
             ZFLogTrim() << "onScrollBegin " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        scrollView->observerAdd(ZFUIScrollView::EventScrollOnScrollBegin(), onScrollBegin);
+        scrollView->observerAdd(ZFUIScrollView::E_ScrollOnScrollBegin(), onScrollBegin);
 
         ZFLISTENER(onScroll) {
             ZFLogTrim() << "onScroll      " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        scrollView->observerAdd(ZFUIScrollView::EventScrollOnScroll(), onScroll);
+        scrollView->observerAdd(ZFUIScrollView::E_ScrollOnScroll(), onScroll);
 
         ZFLISTENER(onScrollEnd) {
             ZFLogTrim() << "onScrollEnd   " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
-        scrollView->observerAdd(ZFUIScrollView::EventScrollOnScrollEnd(), onScrollEnd);
+        scrollView->observerAdd(ZFUIScrollView::E_ScrollOnScrollEnd(), onScrollEnd);
 #endif
     }
     void setupScrollContent(

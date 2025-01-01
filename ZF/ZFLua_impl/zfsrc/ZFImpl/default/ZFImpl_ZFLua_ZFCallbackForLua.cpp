@@ -497,11 +497,11 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->luaStateOnDetachListener = ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, luaStateOnDetach));
-        ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
+        ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), this->luaStateOnDetachListener);
     }
     zfoverride
     virtual void objectOnDealloc(void) {
-        ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
+        ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), this->luaStateOnDetachListener);
         this->_cleanup();
         zfsuper::objectOnDealloc();
     }

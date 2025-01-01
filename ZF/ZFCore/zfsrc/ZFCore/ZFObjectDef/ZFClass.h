@@ -589,7 +589,7 @@ public:
      *   as #ZFLevelZFFrameworkHigh and #ZFLevelZFFrameworkEssential,
      *   you must ensure the classTag is safe to be deleted at this time
      * @note usually used to store meta-data for performance use only
-     * @note all tag would be cleared during #ZFGlobalEvent::EventClassDataUpdate
+     * @note all tag would be cleared during #ZFGlobalEvent::E_ClassDataUpdate
      */
     void classTag(
             ZF_IN const zfstring &key
@@ -789,7 +789,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 
 extern ZFLIB_ZFCore ZFObserver &_ZFP_ZFClassDataUpdateObserverRef(void);
 /**
- * @brief see #ZFGlobalEvent::EventClassDataUpdate
+ * @brief see #ZFGlobalEvent::E_ClassDataUpdate
  *
  * @warning app code can add observer to this event,
  *   but must not manually notify this event\n

@@ -97,7 +97,7 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNative
             ) {
         ZFUISysWindow::nativeWindowEmbedNativeViewCleanup(sysWindowName);
     } ZFLISTENER_END()
-    sysWindow->observerAdd(ZFObject::EventObjectBeforeDealloc(), sysWindowOnDealloc);
+    sysWindow->observerAdd(ZFObject::E_ObjectBeforeDealloc(), sysWindowOnDealloc);
 
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUISysWindowEmbedNativeViewAutoRemove)->m[sysWindowName] = zftrue;
     return sysWindow;

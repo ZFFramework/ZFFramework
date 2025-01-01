@@ -1,6 +1,6 @@
 local pm = ZFUIPageManager();
 
-pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
+pm:observerAdd(ZFUIPageManager.E_ManagerOnCreate(), function(zfargs)
         ZFLog("manager onCreate");
         local pm = zfargs:sender();
         local pmHolder = zfweak(pm);
@@ -19,7 +19,7 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
         leftButton:bgColor(ZFUIColorRandom());
         leftButton:visible(zffalse);
 
-        leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
+        leftButton:observerAdd(ZFUIButton.E_ButtonOnClick(), function(zfargs)
                 local pm = pmHolder:get();
                 pm:pageAt(pm:pageCount() - 1):pageDestroy();
             end);
@@ -34,7 +34,7 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
         topView:child(rightButton):widthFill():alignCenter():weight(1);
         rightButton:label():text("ExitTest");
         rightButton:bgColor(ZFUIColorRandom());
-        rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
+        rightButton:observerAdd(ZFUIButton.E_ButtonOnClick(), function(zfargs)
                 local pm = pmHolder:get();
                 pm:managerDestroy();
             end);

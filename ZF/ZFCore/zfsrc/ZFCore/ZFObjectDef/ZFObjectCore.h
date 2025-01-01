@@ -488,7 +488,7 @@ public:
      *   which may break unrelated modules' additional logic,
      *   remove only if necessary\n
      *   typically, you should remove exactly the one you have added
-     * @note this method would be called during #EventObjectBeforeDealloc and #objectOnDeallocPrepare
+     * @note this method would be called during #E_ObjectBeforeDealloc and #objectOnDeallocPrepare
      */
     zffinal void objectTagRemoveAll(void);
 
@@ -553,11 +553,11 @@ public:
      *   zfclass YourClass {
      *       // declare your event here,
      *       // which would generate a method:
-     *       //   static zfidentity EventYourEvent(void)
+     *       //   static zfidentity E_YourEvent(void)
      *       ZFEVENT(YourEvent)
      *   };
      *   // notify using declared event
-     *   yourClass->observerNotify(YourClass::EventYourEvent(), params...);
+     *   yourClass->observerNotify(YourClass::E_YourEvent(), params...);
      * @endcode
      * @note observers would be compared
      *   by #ZFCallback::objectCompareByInstance when add or remove
@@ -603,11 +603,11 @@ public:
      *   ZFUIButtonBasic *obj = xxx;
      *   obj->on("ButtonOnClick", xxx);
      *   // these event would be searched, until proper event found:
-     *   // 1. ZFUIButtonBasic.EventButtonOnClick : not found
-     *   // 2. ZFUIButton.EventButtonOnClick : found
+     *   // 1. ZFUIButtonBasic.E_ButtonOnClick : not found
+     *   // 2. ZFUIButton.E_ButtonOnClick : found
      *
      *   // or, use exact event name
-     *   obj->on("ZFUIButton.EventButtonOnClick", xxx);
+     *   obj->on("ZFUIButton.E_ButtonOnClick", xxx);
      * @endcode
      */
     zffinal void on(
@@ -798,7 +798,7 @@ public:
     }
 protected:
     /**
-     * @brief see #EventObjectPropertyValueOnUpdate
+     * @brief see #E_ObjectPropertyValueOnUpdate
      */
     virtual void objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property

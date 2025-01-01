@@ -16,8 +16,8 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFNet_ZFHttpRequest_debug_LogEvent) {
     } ZFLISTENER_END()
 
     ZFObserverGroup(this->taskOwner, ZFGlobalObserver())
-        .observerAdd(ZFHttpRequest::EventOnRequest(), onSend)
-        .observerAdd(ZFHttpRequest::EventOnResponse(), onRecv)
+        .observerAdd(ZFHttpRequest::E_OnRequest(), onSend)
+        .observerAdd(ZFHttpRequest::E_OnResponse(), onRecv)
         ;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFNet_ZFHttpRequest_debug_LogEvent) {

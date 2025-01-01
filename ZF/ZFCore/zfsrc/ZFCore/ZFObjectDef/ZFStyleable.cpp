@@ -217,7 +217,7 @@ public:
 
         if(taskData->styles.isEmpty()) {
             defaultStyle->objectTagRemove(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
-            defaultStyle->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(),
+            defaultStyle->observerRemove(ZFObject::E_ObjectPropertyValueOnUpdate(),
                 ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnUpdateListener);
         }
     }
@@ -249,11 +249,11 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
                 defaultStyle->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull(), taskData);
                 zfRelease(taskData);
 
-                defaultStyle->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(),
+                defaultStyle->observerAdd(ZFObject::E_ObjectPropertyValueOnUpdate(),
                     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnUpdateListener);
             }
             taskData->styles.add(style->toObject());
-            style->toObject()->observerAdd(ZFObject::EventObjectBeforeDealloc(),
+            style->toObject()->observerAdd(ZFObject::E_ObjectBeforeDealloc(),
                 ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->styleOnDeallocListener);
         }
     }
@@ -367,7 +367,7 @@ void ZFStyleUpdateEnd() {
     ZFCoreMutexUnlock();
 
     if(needNotify) {
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFStyleOnUpdate());
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleOnUpdate());
     }
 }
 
