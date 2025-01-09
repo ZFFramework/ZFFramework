@@ -22,15 +22,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFLIB_ZFUIWidget ZFUIGridLayoutParam : zfextend ZFUIFlowLayoutParam {
     ZFOBJECT_DECLARE(ZFUIGridLayoutParam, ZFUIFlowLayoutParam)
 
-    /**
-     * @brief whether reserve space if child is not visible, false by default
-     */
-    ZFPROPERTY_ASSIGN(zfbool, reserveSpace)
-
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, align) {
-        propertyValue = ZFUIAlign::e_Center;
-    }
-
 public:
     /** @cond ZFPrivateDoc */
     /* ZFTAG_TRICKS: util for chained call to build view tree */
