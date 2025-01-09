@@ -114,14 +114,14 @@ zfclassFwd _ZFP_I_zfweak;
  * -  nested inner class or interface can be declared,
  *   however, (ZFTAG_LIMITATION) you must make sure outer class is declared
  *   @code
- *     zfclass YourOutterClass : zfextend ZFObject {
- *         ZFOBJECT_DECLARE(YourOutterClass, ZFObject)
+ *     zfclass YourOuterClass : zfextend ZFObject {
+ *         ZFOBJECT_DECLARE(YourOuterClass, ZFObject)
  *
  *         zfclass YourInnerClass : zfextend ZFObject {
- *             ZFOBJECT_DECLARE(YourInnerClass, ZFObject, YourOutterClass) // <= note for the outer class
+ *             ZFOBJECT_DECLARE(YourInnerClass, ZFObject, YourOuterClass) // <= note for the outer class
  *         };
  *         zfinterface YourInnerInterface : zfextend ZFInterface {
- *             ZFINTERFACE_DECLARE(YourInnerClass, ZFInterface, YourOutterClass) // <= note for the outer class
+ *             ZFINTERFACE_DECLARE(YourInnerClass, ZFInterface, YourOuterClass) // <= note for the outer class
  *         };
  *     };
  *   @endcode
