@@ -18,6 +18,7 @@ public:
     zfweak target;
     zfbool started;
     zfbool aniImplStartFlag;
+    zfbool aniImplStartRunning;
     zfbool stoppedByUser;
     ZFListener onStop;
     zfautoT<ZFTimer> aniDummyTimer;
@@ -29,6 +30,7 @@ public:
     : target(zfnull)
     , started(zffalse)
     , aniImplStartFlag(zffalse)
+    , aniImplStartRunning(zffalse)
     , stoppedByUser(zffalse)
     , onStop()
     , aniDummyTimer()
@@ -83,7 +85,9 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, start
     ++(d->aniId);
     d->started = zftrue;
     d->aniImplStartFlag = zftrue;
+    d->aniImplStartRunning = zftrue;
     this->aniImplStart();
+    d->aniImplStartRunning = zffalse;
     this->aniOnStart();
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, started) {
@@ -194,12 +198,14 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = ZFRes
     d->aniImplStartFlag = zffalse;
     this->aniImplStop();
 
-    if(!d->stoppedByUser) {
+    if(!d->stoppedByUser && !d->aniImplStartRunning) {
         ++(d->loopCur);
         if(this->loop() == zfindexMax() || d->loopCur <= this->loop()) {
             this->aniOnLoop();
             d->aniImplStartFlag = zftrue;
+            d->aniImplStartRunning = zftrue;
             this->aniImplStart();
+            d->aniImplStartRunning = zffalse;
             return;
         }
     }

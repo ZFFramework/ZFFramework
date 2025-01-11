@@ -220,7 +220,7 @@ public:
     /**
      * @brief whether the class is internal class
      *
-     * all class that have "_ZFP_" as prefix would be treated as internal class\n
+     * all class that have "_ZFP_" as prefix (or parent scope prefix) would be treated as internal class\n
      * internal class should not be used publicly,
      * however, you may still apply alloc observer or reflection,
      * see #classIsInternalPrivate
@@ -231,7 +231,7 @@ public:
     /**
      * @brief whether the class is internal private class
      *
-     * all class that have "_ZFP_I_" as prefix would be treated as internal private class\n
+     * all class that have "_ZFP_I_" as prefix (or parent scope prefix) would be treated as internal private class\n
      * internal private class should not be used publicly,
      * also, it would be ignored from alloc observer and reflection,
      * see #classIsInternal

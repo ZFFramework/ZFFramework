@@ -17,19 +17,75 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass _ZFP_I_ZFUIImageAsyncTask : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFUIImageAsyncTask, ZFObject)
+
 public:
-    zfautoT<ZFTaskId> imageLoadTaskId;
-    zfautoT<ZFUIImage> imageLoadFail;
-    zfautoT<ZFUIImage> imageLoading;
-    zfautoT<ZFUIImage> imageLoaded;
+    zfclass Data : zfextend ZFObject {
+        ZFOBJECT_DECLARE(Data, ZFObject, _ZFP_I_ZFUIImageAsyncTask)
+    public:
+        ZFCoreArray<zfweakT<ZFUIImage> > ownerList;
+        zfautoT<ZFTaskId> imageLoadTaskId;
+        zfautoT<ZFUIImage> imageLoadFail;
+        zfautoT<ZFUIImage> imageLoading;
+        zfautoT<ZFUIImage> imageLoaded;
+    protected:
+        zfoverride
+        virtual void objectOnDeallocPrepare(void) {
+            if(this->imageLoadTaskId) {
+                this->imageLoadTaskId->stop();
+                this->imageLoadTaskId = zfnull;
+            }
+            zfsuper::objectOnDeallocPrepare();
+        }
+    };
+
+public:
+    zfweakT<ZFUIImage> owner;
+    zfautoT<Data> data;
 protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void) {
-        if(this->imageLoadTaskId) {
-            this->imageLoadTaskId->stop();
-            this->imageLoadTaskId = zfnull;
+        if(this->owner && this->data) {
+            this->data->ownerList.removeElement(this->owner);
         }
         zfsuper::objectOnDeallocPrepare();
+    }
+
+public:
+    void imageStateImplSetup(void) {
+        zfself *task = this;
+        ZFLISTENER_1(imageStateImpl
+                , zfautoT<zfself>, task
+                ) {
+            v_ZFUIImageStateImplAction *action = zfargs.param0();
+            switch(action->zfv()) {
+                case ZFUIImageStateImplAction::e_Attach: {
+                    ZFUIImage *owner = zfargs.sender();
+                    if(task->data->imageLoaded) {
+                        owner->imageStateImplNotifyUpdate(task->data->imageLoaded);
+                    }
+                    else if(task->data->imageLoadTaskId) {
+                        owner->imageStateImplNotifyUpdate(task->data->imageLoading);
+                    }
+                    else {
+                        owner->imageStateImplNotifyUpdate(task->data->imageLoadFail);
+                    }
+                    break;
+                }
+                case ZFUIImageStateImplAction::e_Detach:
+                    break;
+                case ZFUIImageStateImplAction::e_Copy: {
+                    zfobj<_ZFP_I_ZFUIImageAsyncTask> taskNew;
+                    taskNew->owner = zfargs.param1();
+                    taskNew->data = task->data;
+                    taskNew->imageStateImplSetup();
+                    break;
+                }
+                default:
+                    break;
+            }
+        } ZFLISTENER_END()
+        owner->imageStateImpl(imageStateImpl);
+        data->ownerList.add(owner);
     }
 };
 
@@ -55,42 +111,34 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
         , ZFMP_IN_OPT(ZFUIImage *, imageLoadFail, zfnull)
         , ZFMP_IN_OPT(ZFUIImage *, imageLoading, zfnull)
         ) {
+    if(!ret) {
+        return zffalse;
+    }
+
     _ZFP_ZFUIImageAsync_log("%p load begin: %s %s %s", holder, zftToString(src).cString(), zftToString(imageLoadFail).cString(), zftToString(imageLoading).cString());
     zfobj<_ZFP_I_ZFUIImageAsyncTask> task;
-    task->imageLoadFail = imageLoadFail;
-    task->imageLoading = imageLoading;
+    zfobj<_ZFP_I_ZFUIImageAsyncTask::Data> data;
+    data->imageLoadFail = imageLoadFail;
+    data->imageLoading = imageLoading;
+    task->owner = ret;
+    task->data = data;
 
-    ZFLISTENER_1(imageStateImpl
-            , zfautoT<_ZFP_I_ZFUIImageAsyncTask>, task
+    ZFLISTENER_1(loadOnFinish
+            , zfweakT<_ZFP_I_ZFUIImageAsyncTask::Data>, data
             ) {
-        v_zfbool *state = zfargs.param0();
-        if(state->zfv) {
-            ZFUIImage *owner = zfargs.sender();
-            if(task->imageLoaded) {
-                owner->imageStateImplNotifyUpdate(task->imageLoaded);
+        if(data) {
+            data->imageLoadTaskId = zfnull;
+            data->imageLoaded = zfargs.param0();
+            zfautoT<ZFUIImage> state = data->imageLoaded ? data->imageLoaded : data->imageLoadFail;
+            for(zfindex i = 0; i < data->ownerList.count(); ++i) {
+                data->ownerList[i]->imageStateImplNotifyUpdate(state);
             }
-            else if(task->imageLoadTaskId) {
-                owner->imageStateImplNotifyUpdate(task->imageLoading);
-            }
-            else {
-                owner->imageStateImplNotifyUpdate(task->imageLoadFail);
-            }
-        }
-    } ZFLISTENER_END()
-    ret->imageStateImpl(imageStateImpl);
-
-    ZFLISTENER_2(loadOnFinish
-            , ZFUIImage *, ret
-            , zfweakT<_ZFP_I_ZFUIImageAsyncTask>, task
-            ) {
-        if(task) {
-            task->imageLoadTaskId = zfnull;
-            task->imageLoaded = zfargs.param0();
-            ret->imageStateImplNotifyUpdate(task->imageLoaded ? task->imageLoaded : task->imageLoadFail);
         }
         _ZFP_ZFUIImageAsync_log("%p load end: %s", holder, zftToString(zfargs.param0()).cString());
     } ZFLISTENER_END()
-    task->imageLoadTaskId = ZFUIImageLoad(src, loadOnFinish);
+    task->data->imageLoadTaskId = ZFUIImageLoad(src, loadOnFinish);
+
+    task->imageStateImplSetup();
 
     if(!src.callbackSerializeDisable()
             && !ret->imageSerializeDisable()

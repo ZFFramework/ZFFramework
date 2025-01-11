@@ -68,12 +68,16 @@ public:
     }
     static void doStop(ZF_IN ZFAniForFrame *owner) {
         if(owner->d->useGlobalTimer) {
-            ZFGlobalTimerDetach(owner->d->globalTimerTask);
-            owner->d->globalTimerTask = zfnull;
+            if(owner->d->globalTimerTask) {
+                ZFGlobalTimerDetach(owner->d->globalTimerTask);
+                owner->d->globalTimerTask = zfnull;
+            }
         }
         else {
-            owner->d->builtinTimer->stop();
-            owner->d->builtinTimer = zfnull;
+            if(owner->d->builtinTimer) {
+                owner->d->builtinTimer->stop();
+                owner->d->builtinTimer = zfnull;
+            }
         }
     }
 

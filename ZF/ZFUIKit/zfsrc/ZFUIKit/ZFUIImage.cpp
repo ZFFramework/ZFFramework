@@ -7,7 +7,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// serializabel data
 typedef zfstlmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
 static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void) {
     static _ZFP_ZFUIImageSerializeDataMapType d;
@@ -38,6 +37,8 @@ void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
         ret.add(it->first);
     }
 }
+
+ZFENUM_DEFINE(ZFUIImageStateImplAction)
 
 // ============================================================
 // _ZFP_ZFUIImagePrivate
@@ -80,31 +81,6 @@ public:
             this->imageSizeFixed = ZFUISizeZero();
             this->imageSize = ZFUISizeZero();
         }
-    }
-    void copyFrom(ZF_IN _ZFP_ZFUIImagePrivate *another) {
-        if(this == another) {
-            return;
-        }
-        if(this->nativeImage != zfnull) {
-            ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(this->nativeImage);
-            this->nativeImage = zfnull;
-        }
-        this->imageSizeFixed = ZFUISizeZero();
-        this->imageSize = ZFUISizeZero();
-        this->imageSerializeType = zfnull;
-        this->imageSerializeData = zfnull;
-        this->imageSerializeDataGetter = zfnull;
-
-        if(another->nativeImage != zfnull) {
-            this->nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(another->nativeImage);
-        }
-        this->imageSizeUpdate();
-        this->imageSerializeType = another->imageSerializeType;
-        this->imageSerializeData = another->imageSerializeData;
-        this->imageSerializeDataGetter = another->imageSerializeDataGetter;
-        this->imageStateImpl = another->imageStateImpl;
-        this->imageState = zfnull;
-        this->imageStateObservers.removeAll();
     }
 
 public:
@@ -310,7 +286,38 @@ zfbool ZFUIImage::serializableOnSerializeToData(
 
 void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuperI(ZFCopyable)::styleableOnCopyFrom(anotherStyleable);
-    d->copyFrom(zfcast(zfself *, anotherStyleable)->d);
+    ZFUIImage *ref = zfcast(zfself *, anotherStyleable);
+    if(ref == zfnull || ref == this) {
+        return;
+    }
+    if(d->nativeImage != zfnull) {
+        ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(d->nativeImage);
+        d->nativeImage = zfnull;
+    }
+    d->imageSizeFixed = ZFUISizeZero();
+    d->imageSize = ZFUISizeZero();
+    d->imageSerializeType = zfnull;
+    d->imageSerializeData = zfnull;
+    d->imageSerializeDataGetter = zfnull;
+
+    if(ref->d->nativeImage != zfnull) {
+        d->nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(ref->d->nativeImage);
+    }
+    d->imageSizeUpdate();
+    d->imageSerializeType = ref->d->imageSerializeType;
+    d->imageSerializeData = ref->d->imageSerializeData;
+    d->imageSerializeDataGetter = ref->d->imageSerializeDataGetter;
+    d->imageState = zfnull;
+    d->imageStateObservers.removeAll();
+
+    d->imageStateImpl = zfnull;
+    if(ref->d->imageStateImpl) {
+        ref->d->imageStateImpl.execute(ZFArgs()
+                .sender(ref)
+                .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Copy))
+                .param1(this)
+                );
+    }
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImage, zffloat, imageScale) {
@@ -346,7 +353,7 @@ ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageStateUpdate) {
     if(d->imageStateImpl) {
         d->imageStateImpl.execute(ZFArgs()
                 .sender(this)
-                .param0(zfobj<v_zfbool>(zftrue))
+                .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Attach))
                 );
         zfautoT<ZFUIImage> ret = this->imageState();
         if(d->imageStateObservers.isEmpty()) {
@@ -367,7 +374,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateAttach
     if(d->imageStateObservers.count() == 1) {
         d->imageStateImpl.execute(ZFArgs()
                 .sender(this)
-                .param0(zfobj<v_zfbool>(zftrue))
+                .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Attach))
                 );
     }
     else {
@@ -384,7 +391,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateDetach
         if(d->imageStateObservers.isEmpty()) {
             d->imageStateImpl.execute(ZFArgs()
                     .sender(this)
-                    .param0(zfobj<v_zfbool>(zffalse))
+                    .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Detach))
                     );
             d->imageState = zfnull;
         }
@@ -403,7 +410,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
         if(!d->imageStateObservers.isEmpty()) {
             d->imageStateImpl.execute(ZFArgs()
                     .sender(this)
-                    .param0(zfobj<v_zfbool>(zffalse))
+                    .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Detach))
                     );
         }
         d->imageStateImpl = zfnull;
@@ -414,7 +421,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
         if(!d->imageStateObservers.isEmpty()) {
             d->imageStateImpl.execute(ZFArgs()
                     .sender(this)
-                    .param0(zfobj<v_zfbool>(zftrue))
+                    .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Attach))
                     );
         }
     }

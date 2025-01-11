@@ -204,10 +204,10 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_paramBuf(zfnull)
 , _ZFP_ZFMethod_paramDefaultValueCallbackList(zfnull)
 , _ZFP_ZFMethod_paramDefaultBeginIndex((zfuint)-1)
-, _ZFP_ZFMethod_ownerClass(zfnull)
-, _ZFP_ZFMethod_ownerProperty(zfnull)
 , _ZFP_ZFMethod_privilegeType((unsigned short)ZFMethodAccessTypePublic)
 , _ZFP_ZFMethod_methodType((unsigned short)ZFMethodTypeNormal)
+, _ZFP_ZFMethod_ownerClass(zfnull)
+, _ZFP_ZFMethod_ownerProperty(zfnull)
 , _ZFP_ZFMethod_methodNamespace(zfnull)
 {
 }

@@ -58,6 +58,19 @@ public:
         return zffalse;
     }
 
+    /**
+     * @brief return a list of each type of property, for debug use only
+     */
+    zffinal void styleablePropertyTypeGetAll(
+            ZF_OUT ZFCoreArray<const ZFProperty *> &normalProperty
+            , ZF_OUT ZFCoreArray<const ZFProperty *> &styleableProperty
+            , ZF_OUT ZFCoreArray<const ZFProperty *> &copyableProperty
+            );
+    /**
+     * @brief return info of #styleablePropertyTypeGetAll, for debug use only
+     */
+    zffinal zfstring styleablePropertyTypeInfo(void);
+
 protected:
     /** @brief see #ZFStyleable::styleableOnCheckPropertyType */
     typedef enum {

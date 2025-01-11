@@ -34,6 +34,37 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
         this->styleableOnCopyFrom(anotherStyleable);
     }
 }
+void ZFStyleable::styleablePropertyTypeGetAll(
+        ZF_OUT ZFCoreArray<const ZFProperty *> &normalProperty
+        , ZF_OUT ZFCoreArray<const ZFProperty *> &styleableProperty
+        , ZF_OUT ZFCoreArray<const ZFProperty *> &copyableProperty
+        ) {
+    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
+    normalProperty.addFrom(holder->normalProperty);
+    styleableProperty.addFrom(holder->styleableProperty);
+    copyableProperty.addFrom(holder->copyableProperty);
+}
+zfstring ZFStyleable::styleablePropertyTypeInfo(void) {
+    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
+
+    zfstring ret;
+    ret += "normal:\n";
+    for(zfindex i = 0; i < holder->normalProperty.count(); ++i) {
+        const ZFProperty *p = holder->normalProperty[i];
+        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
+    }
+    ret += "styleable:\n";
+    for(zfindex i = 0; i < holder->styleableProperty.count(); ++i) {
+        const ZFProperty *p = holder->styleableProperty[i];
+        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
+    }
+    ret += "copyable:\n";
+    for(zfindex i = 0; i < holder->copyableProperty.count(); ++i) {
+        const ZFProperty *p = holder->copyableProperty[i];
+        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
+    }
+    return ret;
+}
 ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
     if(property->isRetainProperty()
             && property->setterMethod()->isPrivate()
@@ -387,6 +418,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
         , ZFMP_IN(ZFStyleable *, anotherStyleable)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfbool, styleableIsDefaultStyle)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFStyleable, void, styleablePropertyTypeGetAll
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, normalProperty)
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, styleableProperty)
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, copyableProperty)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfstring, styleablePropertyTypeInfo)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleKey
         , ZFMP_IN(const zfstring &, styleKey)
         )

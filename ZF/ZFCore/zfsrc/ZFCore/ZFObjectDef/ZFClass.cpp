@@ -1356,17 +1356,13 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         cls->_ZFP_ZFClass_classCanAllocPublic = (classCanAllocPublic && (constructor != zfnull));
 
         // internal
-        static const zfchar *_ZFP_ = "_ZFP_";
-        static zfindex _ZFP_len = zfslen(_ZFP_);
-        static const zfchar *_ZFP_I_ = "_ZFP_I_";
-        static zfindex _ZFP_I_len = zfslen(_ZFP_I_);
-        if(zfsncmp(classNameTmp, _ZFP_I_, _ZFP_I_len) == 0) {
+        //   _ZFP_xxx
+        //   Outer._ZFP_xxx
+        zfindex p = zfstringFind(classNameTmp, "_ZFP_");
+        if(p != zfindexMax() && (p == 0 || classNameTmp[p - 1] == '.')) {
             cls->_ZFP_ZFClass_classIsInternal = zftrue;
-            cls->_ZFP_ZFClass_classIsInternalPrivate = zftrue;
-        }
-        else if(zfsncmp(classNameTmp, _ZFP_, _ZFP_len) == 0) {
-            cls->_ZFP_ZFClass_classIsInternal = zftrue;
-            cls->_ZFP_ZFClass_classIsInternalPrivate = zffalse;
+            // _ZFP_I_
+            cls->_ZFP_ZFClass_classIsInternalPrivate = (classNameTmp[p + 5] == 'I' && classNameTmp[p + 6] == '_');
         }
         else {
             cls->_ZFP_ZFClass_classIsInternal = zffalse;

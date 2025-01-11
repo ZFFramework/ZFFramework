@@ -9,85 +9,6 @@
 #include "ZFUIGlobalStyle.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd ZFUIImage;
-
-// ============================================================
-typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(
-        ZF_IN_OUT ZFUIImage *image
-        , ZF_IN const ZFSerializableData &imageData
-        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
-        );
-
-extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(
-        ZF_IN const zfstring &name
-        , ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback
-        );
-extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfstring &name);
-/**
- * @brief register a serializable logic for ZFUIImage
- *
- * ZFUIImage can be loaded from many sources,
- * so we supply a dynamic serializable logic depending on image's load logic,
- * use this macro to register your own serialize logic,
- * such as load from file or load from color\n
- * \n
- * example
- * @code
- *   // in cpp file
- *   ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, yourTypeName) {
- *       // serialize callback from data
- *       // proto type:
- *       //   zfbool action(
- *       //           ZF_IN_OUT ZFUIImage *ret
- *       //           , ZF_IN const ZFSerializableData &serializableData
- *       //           , ZF_OUT_OPT zfstring *outErrorHint
- *       //           , ZF_OUT_OPT ZFSerializableData *outErrorPos
- *       //           );
- *       return zftrue;
- *   }
- * @endcode
- *
- * when image loaded or serialized successfully,
- * impl may store these serializable datas to the image:
- * -  #ZFUIImage::imageSerializeType : the type registered by ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
- * -  #ZFUIImage::imageSerializeData or #ZFUIImage::imageSerializeDataGetter :
- *   actual serializable data,
- *   or a callback to obtain (store result to #ZFArgs::result) the serializable data
- */
-#define ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, typeName) \
-    static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
-                                                                    ZF_IN const ZFSerializableData &serializableData, \
-                                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */); \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageSerializeReg_##registerSig, ZFLevelZFFrameworkHigh) { \
-        _ZFP_ZFUIImageSerializeTypeRegister(typeName, _ZFP_ZFUIImageSerializeFromCallback_##registerSig); \
-    } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageSerializeReg_##registerSig) { \
-        _ZFP_ZFUIImageSerializeTypeUnregister(typeName); \
-    } \
-    ZF_GLOBAL_INITIALIZER_END(ZFUIImageSerializeReg_##registerSig) \
-    static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
-                                                                    ZF_IN const ZFSerializableData &serializableData, \
-                                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-
-/** @brief see #ZFUIImageSerializeTypeGetAll */
-extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
-/**
- * @brief usually for debug use only
- */
-inline ZFCoreArray<zfstring> ZFUIImageSerializeTypeGetAll(void) {
-    ZFCoreArray<zfstring> ret;
-    ZFUIImageSerializeTypeGetAllT(ret);
-    return ret;
-}
-
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImage_imageType "imageType"
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImage_imageBin "imageBin"
-
 // ============================================================
 // ZFUIImage
 zfclassFwd _ZFP_ZFUIImagePrivate;
@@ -226,12 +147,16 @@ public:
      * there are different ways to call the impl:
      * -  when first observer attached and each time #imageStateUpdate called:
      *   -  sender would be the owner ZFUIImage object
-     *   -  param0 would be a #v_zfbool as true
+     *   -  param0 would be a #ZFUIImageStateImplAction::e_Attach
      *   -  impl must notify owner ZFUIImage's imageStateImplNotifyUpdate,
      *     immediately and each time needs to update
      * -  when all observer detached:
      *   -  sender would be the owner ZFUIImage object
-     *   -  param0 would be a #v_zfbool as false
+     *   -  param0 would be a #ZFUIImageStateImplAction::e_Detach
+     * -  when owner image copy to another image:
+     *   -  sender would be the owner ZFUIImage object
+     *   -  param0 would be a #ZFUIImageStateImplAction::e_Copy
+     *   -  param1 would be the target ZFUIImage object
      */
     ZFMETHOD_DECLARE_1(void, imageStateImpl
             , ZFMP_IN(const ZFListener &, impl)
@@ -335,6 +260,95 @@ private:
     _ZFP_ZFUIImagePrivate *d;
     friend zfclassFwd _ZFP_ZFUIImagePrivate;
 };
+
+// ============================================================
+typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(
+        ZF_IN_OUT ZFUIImage *image
+        , ZF_IN const ZFSerializableData &imageData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        );
+
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(
+        ZF_IN const zfstring &name
+        , ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback
+        );
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfstring &name);
+/**
+ * @brief register a serializable logic for ZFUIImage
+ *
+ * ZFUIImage can be loaded from many sources,
+ * so we supply a dynamic serializable logic depending on image's load logic,
+ * use this macro to register your own serialize logic,
+ * such as load from file or load from color\n
+ * \n
+ * example
+ * @code
+ *   // in cpp file
+ *   ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, yourTypeName) {
+ *       // serialize callback from data
+ *       // proto type:
+ *       //   zfbool action(
+ *       //           ZF_IN_OUT ZFUIImage *ret
+ *       //           , ZF_IN const ZFSerializableData &serializableData
+ *       //           , ZF_OUT_OPT zfstring *outErrorHint
+ *       //           , ZF_OUT_OPT ZFSerializableData *outErrorPos
+ *       //           );
+ *       return zftrue;
+ *   }
+ * @endcode
+ *
+ * when image loaded or serialized successfully,
+ * impl may store these serializable datas to the image:
+ * -  #ZFUIImage::imageSerializeType : the type registered by ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
+ * -  #ZFUIImage::imageSerializeData or #ZFUIImage::imageSerializeDataGetter :
+ *   actual serializable data,
+ *   or a callback to obtain (store result to #ZFArgs::result) the serializable data
+ */
+#define ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, typeName) \
+    static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
+                                                                    ZF_IN const ZFSerializableData &serializableData, \
+                                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
+                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */); \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageSerializeReg_##registerSig, ZFLevelZFFrameworkHigh) { \
+        _ZFP_ZFUIImageSerializeTypeRegister(typeName, _ZFP_ZFUIImageSerializeFromCallback_##registerSig); \
+    } \
+    ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageSerializeReg_##registerSig) { \
+        _ZFP_ZFUIImageSerializeTypeUnregister(typeName); \
+    } \
+    ZF_GLOBAL_INITIALIZER_END(ZFUIImageSerializeReg_##registerSig) \
+    static zfbool _ZFP_ZFUIImageSerializeFromCallback_##registerSig(ZF_IN_OUT ZFUIImage *ret, \
+                                                                    ZF_IN const ZFSerializableData &serializableData, \
+                                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
+                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
+
+/** @brief see #ZFUIImageSerializeTypeGetAll */
+extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
+/**
+ * @brief usually for debug use only
+ */
+inline ZFCoreArray<zfstring> ZFUIImageSerializeTypeGetAll(void) {
+    ZFCoreArray<zfstring> ret;
+    ZFUIImageSerializeTypeGetAllT(ret);
+    return ret;
+}
+
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFUIImage_imageType "imageType"
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFUIImage_imageBin "imageBin"
+
+// ============================================================
+/** @brief see #ZFUIImage::imageStateImpl */
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIImageStateImplAction)
+    ZFENUM_VALUE(Attach) /**< @brief see #ZFUIImage::imageStateImpl */
+    ZFENUM_VALUE(Detach) /**< @brief see #ZFUIImage::imageStateImpl */
+    ZFENUM_VALUE(Copy) /**< @brief see #ZFUIImage::imageStateImpl */
+ZFENUM_SEPARATOR()
+    ZFENUM_VALUE_REGISTER(Attach)
+    ZFENUM_VALUE_REGISTER(Detach)
+    ZFENUM_VALUE_REGISTER(Copy)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIImageStateImplAction)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIImage_h_

@@ -351,6 +351,55 @@ zfbool ZFSerializable::serializeToString(
     return this->serializableOnSerializeToString(ret, errorHint);
 }
 
+void ZFSerializable::serializablePropertyTypeGetAll(
+        ZF_OUT ZFCoreArray<const ZFProperty *> &notSerializableProperty
+        , ZF_OUT ZFCoreArray<const ZFProperty *> &serializableProperty
+        , ZF_OUT ZFCoreArray<const ZFProperty *> &embededProperty
+        ) {
+    const ZFCoreOrderMap &m = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
+    for(zfiter it = m.iter(); it; ++it) {
+        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = m.iterValue<_ZFP_I_ZFSerializablePropertyTypeHolder::Data *>(it);
+        switch(data->propertyType) {
+            case ZFSerializablePropertyTypeNotSerializable:
+                notSerializableProperty.add(data->property);
+                break;
+            case ZFSerializablePropertyTypeSerializable:
+                serializableProperty.add(data->property);
+                break;
+            case ZFSerializablePropertyTypeEmbeded:
+                embededProperty.add(data->property);
+                break;
+            case ZFSerializablePropertyTypeUnspecified:
+            default:
+                break;
+        }
+    }
+}
+zfstring ZFSerializable::serializablePropertyTypeInfo(void) {
+    ZFCoreArray<const ZFProperty *> notSerializableProperty;
+    ZFCoreArray<const ZFProperty *> serializableProperty;
+    ZFCoreArray<const ZFProperty *> embededProperty;
+    this->serializablePropertyTypeGetAll(notSerializableProperty, serializableProperty, embededProperty);
+
+    zfstring ret;
+    ret += "not serializable:\n";
+    for(zfindex i = 0; i < notSerializableProperty.count(); ++i) {
+        const ZFProperty *p = notSerializableProperty[i];
+        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
+    }
+    ret += "serializable:\n";
+    for(zfindex i = 0; i < serializableProperty.count(); ++i) {
+        const ZFProperty *p = serializableProperty[i];
+        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
+    }
+    ret += "embeded:\n";
+    for(zfindex i = 0; i < embededProperty.count(); ++i) {
+        const ZFProperty *p = embededProperty[i];
+        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
+    }
+    return ret;
+}
+
 _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_getPropertyTypeHolder(void) {
     ZFCoreMutexLocker();
     _ZFP_I_ZFSerializablePropertyTypeHolder *holder = this->classData()->classTag(_ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull());
@@ -880,6 +929,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFSerializable, zfbool, serializeToSt
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFSerializable, void, serializablePropertyTypeGetAll
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, notSerializableProperty)
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, serializableProperty)
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, embededProperty)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFSerializable, zfstring, serializablePropertyTypeInfo)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, void, serializableGetAllSerializablePropertyT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
         )

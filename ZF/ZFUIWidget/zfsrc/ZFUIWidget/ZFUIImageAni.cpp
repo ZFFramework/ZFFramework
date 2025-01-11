@@ -5,45 +5,66 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass _ZFP_I_ZFUIImageAniTask : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFUIImageAniTask, ZFObject)
+
 public:
-    zfweakT<ZFUIImage> holder;
-    zfobj<ZFArray> images;
+    zfclass Data : zfextend ZFObject {
+        ZFOBJECT_DECLARE(Data, ZFObject, _ZFP_I_ZFUIImageAniTask)
+    public:
+        ZFCoreArray<zfweakT<_ZFP_I_ZFUIImageAniTask> > taskList;
+        zfobj<ZFArray> images;
+        zfautoT<ZFTaskId> implTaskId;
+        zfbool implLoaded;
+    protected:
+        zfoverride
+        virtual void objectOnInit(void) {
+            zfsuper::objectOnInit();
+            this->implLoaded = zffalse;
+        }
+        zfoverride
+        virtual void objectOnDeallocPrepare(void) {
+            if(this->implTaskId) {
+                this->implTaskId->stop();
+                this->implTaskId = zfnull;
+            }
+            zfsuper::objectOnDeallocPrepare();
+        }
+    };
+
+public:
+    zfweakT<ZFUIImage> owner;
+    zfautoT<Data> data;
     zfobj<ZFAniForFrame> ani;
-    zfautoT<ZFTaskId> implTaskId;
-    zfbool implLoaded;
     zfbool imageStateAttached;
+
 protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->implLoaded = zffalse;
         this->imageStateAttached = zffalse;
     }
     zfoverride
     virtual void objectOnDeallocPrepare(void) {
-        if(this->implTaskId) {
-            this->implTaskId->stop();
-            this->implTaskId = zfnull;
+        if(this->data) {
+            this->data->taskList.removeElement(this);
         }
         zfsuper::objectOnDeallocPrepare();
     }
 
 public:
-    void attach(ZF_IN ZFUIImage *holder) {
-        this->holder = holder;
+    void imageStateImplSetup(void) {
         this->ani->loop(zfindexMax());
 
         zfself *task = this;
 
         ZFLISTENER_1(aniOnFrame
-                , zfautoT<zfself>, task
+                , zfweakT<zfself>, task
                 ) {
             zfindex frameIndex = zfargs.param0().to<v_zfindex *>()->zfv;
-            if(task->images->isEmpty()) {
-                task->holder->imageStateImplNotifyUpdate(zfnull);
+            if(task->data->images->isEmpty()) {
+                task->owner->imageStateImplNotifyUpdate(zfnull);
             }
             else {
-                task->holder->imageStateImplNotifyUpdate(task->images->get(frameIndex % task->images->count()));
+                task->owner->imageStateImplNotifyUpdate(task->data->images->get(frameIndex % task->data->images->count()));
             }
         } ZFLISTENER_END()
         ani->observerAdd(ZFAniForFrame::E_AniFrameOnUpdate(), aniOnFrame);
@@ -51,25 +72,42 @@ public:
         ZFLISTENER_1(imageStateImpl
                 , zfautoT<zfself>, task
                 ) {
-            v_zfbool *state = zfargs.param0();
-            if(state->zfv) {
-                if(task->imageStateAttached) {
-                    return;
+            v_ZFUIImageStateImplAction *action = zfargs.param0();
+            switch(action->zfv()) {
+                case ZFUIImageStateImplAction::e_Attach:
+                    if(task->imageStateAttached) {
+                        return;
+                    }
+                    task->imageStateAttached = zftrue;
+                    if(!task->data->implLoaded) {
+                        task->owner->imageStateImplNotifyUpdate(zfnull);
+                    }
+                    else {
+                        task->ani->start();
+                    }
+                    break;
+                case ZFUIImageStateImplAction::e_Detach:
+                    task->imageStateAttached = zffalse;
+                    task->ani->stop();
+                    break;
+                case ZFUIImageStateImplAction::e_Copy: {
+                    zfobj<_ZFP_I_ZFUIImageAniTask> taskNew;
+                    taskNew->owner = zfargs.param1();
+                    taskNew->data = task->data;
+                    if(task->data->implLoaded) {
+                        for(zfindex i = 0; i < task->ani->frameCount(); ++i) {
+                            taskNew->ani->frame(task->ani->frameAt(i));
+                        }
+                    }
+                    taskNew->imageStateImplSetup();
+                    break;
                 }
-                task->imageStateAttached = zftrue;
-                if(!task->implLoaded) {
-                    task->holder->imageStateImplNotifyUpdate(zfnull);
-                }
-                else {
-                    task->ani->start();
-                }
-            }
-            else {
-                task->imageStateAttached = zffalse;
-                task->ani->stop();
+                default:
+                    break;
             }
         } ZFLISTENER_END()
-        holder->imageStateImpl(imageStateImpl);
+        owner->imageStateImpl(imageStateImpl);
+        data->taskList.add(task);
     }
     zfbool refOnLoad(
             ZF_IN ZFUIImage *ref
@@ -96,14 +134,14 @@ public:
                     return zffalse;
                 }
 
-                this->images->add(frame);
+                this->data->images->add(frame);
                 this->ani->frame(frameDuration);
 
                 ++frameIndex;
                 x += frameSize.width;
             }
         }
-        this->implLoaded = zftrue;
+        this->data->implLoaded = zftrue;
         if(this->imageStateAttached) {
             this->ani->start();
         }
@@ -138,7 +176,7 @@ public:
             if(frame == zfnull) {
                 return zffalse;
             }
-            this->images->add(frame);
+            this->data->images->add(frame);
 
             if(frameDurations != zfnull && i < frameDurations->count()) {
                 v_zftimet *t = frameDurations->get(i);
@@ -151,7 +189,7 @@ public:
                 this->ani->frame(duration);
             }
         }
-        this->implLoaded = zftrue;
+        this->data->implLoaded = zftrue;
         if(this->imageStateAttached) {
             this->ani->start();
         }
@@ -397,8 +435,8 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAniT
         return zffalse;
     }
     zfobj<_ZFP_I_ZFUIImageAniTask> task;
-
-    task->images->addFrom(images);
+    zfobj<_ZFP_I_ZFUIImageAniTask::Data> data;
+    data->images->addFrom(images);
 
     ZFAniForFrame *ani = task->ani;
     if(frameDurations == zfnull || frameDurations->isEmpty()) {
@@ -422,9 +460,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAniT
             }
         }
     }
-    task->implLoaded = zftrue;
+    data->implLoaded = zftrue;
 
-    task->attach(ret);
+    task->owner = ret;
+    task->data = data;
+    task->imageStateImplSetup();
     task->serializeImpl(ret, images, duration, frameDurations);
     return zftrue;
 }
@@ -461,10 +501,12 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFUIImageAniT
         return zffalse;
     }
     zfobj<_ZFP_I_ZFUIImageAniTask> task;
+    task->owner = ret;
+    task->data = zfobj<_ZFP_I_ZFUIImageAniTask::Data>();
     if(!task->refOnLoad(ref, frameSize, frameCount, frameDuration)) {
         return zffalse;
     }
-    task->attach(ret);
+    task->imageStateImplSetup();
     task->serializeImpl(ret, ref, frameSize, frameCount, frameDuration);
     return ret;
 }
@@ -498,19 +540,25 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFUIImageAniT
         return zffalse;
     }
     zfobj<_ZFP_I_ZFUIImageAniTask> task;
+    zfobj<_ZFP_I_ZFUIImageAniTask::Data> data;
+    task->owner = ret;
+    task->data = data;
 
     ZFLISTENER_4(refOnLoad
-            , zfautoT<_ZFP_I_ZFUIImageAniTask>, task
+            , zfweakT<_ZFP_I_ZFUIImageAniTask::Data>, data
             , ZFUISize, frameSize
             , zfindex, frameCount
             , zftimet, frameDuration
             ) {
-        task->implTaskId = zfnull;
-        task->refOnLoad(zfargs.param0(), frameSize, frameCount, frameDuration);
+        data->implTaskId = zfnull;
+        zfautoT<ZFUIImage> ref = zfargs.param0();
+        for(zfindex i = 0; i < data->taskList.count(); ++i) {
+            data->taskList[i]->refOnLoad(ref, frameSize, frameCount, frameDuration);
+        }
     } ZFLISTENER_END()
-    task->implTaskId = ZFUIImageLoad(refSrc, refOnLoad);
+    data->implTaskId = ZFUIImageLoad(refSrc, refOnLoad);
 
-    task->attach(ret);
+    task->imageStateImplSetup();
     task->serializeImpl(ret, refSrc, frameSize, frameCount, frameDuration);
     return ret;
 }
@@ -545,10 +593,13 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFUIImageAniT
         return zffalse;
     }
     zfobj<_ZFP_I_ZFUIImageAniTask> task;
+    zfobj<_ZFP_I_ZFUIImageAniTask::Data> data;
+    task->owner = ret;
+    task->data = data;
     if(!task->refOnLoad(ref, frameRects, duration, frameDurations)) {
         return zffalse;
     }
-    task->attach(ret);
+    task->imageStateImplSetup();
     task->serializeImpl(ret, ref, frameRects, duration, frameDurations);
     return ret;
 }
@@ -581,19 +632,25 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFUIImageAniT
         return zffalse;
     }
     zfobj<_ZFP_I_ZFUIImageAniTask> task;
+    zfobj<_ZFP_I_ZFUIImageAniTask::Data> data;
+    task->owner = ret;
+    task->data = data;
 
     ZFLISTENER_4(refOnLoad
-            , zfautoT<_ZFP_I_ZFUIImageAniTask>, task
+            , zfweakT<_ZFP_I_ZFUIImageAniTask::Data>, data
             , zfautoT<ZFArray>, frameRects
             , zftimet, duration
             , zfautoT<ZFArray>, frameDurations
             ) {
-        task->implTaskId = zfnull;
-        task->refOnLoad(zfargs.param0(), frameRects, duration, frameDurations);
+        data->implTaskId = zfnull;
+        zfautoT<ZFUIImage> ref = zfargs.param0();
+        for(zfindex i = 0; i < data->taskList.count(); ++i) {
+            data->taskList[i]->refOnLoad(ref, frameRects, duration, frameDurations);
+        }
     } ZFLISTENER_END()
-    task->implTaskId = ZFUIImageLoad(refSrc, refOnLoad);
+    data->implTaskId = ZFUIImageLoad(refSrc, refOnLoad);
 
-    task->attach(ret);
+    task->imageStateImplSetup();
     task->serializeImpl(ret, refSrc, frameRects, duration, frameDurations);
     return ret;
 }

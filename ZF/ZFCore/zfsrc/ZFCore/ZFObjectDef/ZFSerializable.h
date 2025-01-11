@@ -229,6 +229,19 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
 
+    /**
+     * @brief return a list of each type of property, for debug use only
+     */
+    zffinal void serializablePropertyTypeGetAll(
+            ZF_OUT ZFCoreArray<const ZFProperty *> &notSerializableProperty
+            , ZF_OUT ZFCoreArray<const ZFProperty *> &serializableProperty
+            , ZF_OUT ZFCoreArray<const ZFProperty *> &embededProperty
+            );
+    /**
+     * @brief return info of #serializablePropertyTypeGetAll, for debug use only
+     */
+    zffinal zfstring serializablePropertyTypeInfo(void);
+
 private:
     zffinal _ZFP_I_ZFSerializablePropertyTypeHolder *_ZFP_ZFSerializable_getPropertyTypeHolder(void);
 public:
