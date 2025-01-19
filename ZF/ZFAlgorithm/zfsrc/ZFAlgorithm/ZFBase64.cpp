@@ -75,7 +75,7 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Encode
             pOutputLineBegin = pOutput;
         }
         if(pOutput >= pOutputEnd) {
-            outputCallback.execute(outputBuf, (pOutput - outputBuf) * sizeof(zfchar));
+            outputCallback.execute(outputBuf, (pOutput - outputBuf));
             writtenCount += pOutput - outputBuf;
             pOutput = outputBuf;
         }
@@ -94,7 +94,7 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Encode
         }
     }
     *pOutput = '\0';
-    outputCallback.execute(outputBuf, (pOutput - outputBuf) * sizeof(zfchar));
+    outputCallback.execute(outputBuf, pOutput - outputBuf);
     writtenCount += pOutput - outputBuf;
     if(outResultSize != zfnull) {
         *outResultSize = writtenCount;

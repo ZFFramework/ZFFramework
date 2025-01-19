@@ -12,6 +12,7 @@
 @property (nonatomic, strong) NSMutableData *requestBody;
 @property (nonatomic, strong) NSURLSessionDataTask *task;
 @property (nonatomic, strong) NSHTTPURLResponse *response;
+@property (nonatomic, strong) NSData *responseData;
 @end
 @implementation _ZFP_ZFHttpRequestImpl_sys_iOS_Task
 @end
@@ -141,11 +142,9 @@ public:
         }
         [task.requestBody appendBytes:buffer length:byteSize];
     }
-    virtual ZFBuffer body(ZF_IN void *nativeTask) {
+    virtual zfstring body(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        ZFBuffer ret;
-        ret.zfunsafe_bufferChange(task.requestBody.mutableBytes, (zfindex)task.requestBody.length, (zfindex)task.requestBody.length, zffalse);
-        return ret;
+        return zfstring::shared(task.requestBody.mutableBytes, (zfindex)task.requestBody.length);
     }
 
     virtual void request(ZF_IN void *nativeTask) {
@@ -172,7 +171,8 @@ public:
             }
             weakTask.response = (NSHTTPURLResponse *)response;
             if(data != nil) {
-                weakTask.ownerResponse->body().bufferCopy(data.bytes, data.length);
+                weakTask.responseData = data;
+                weakTask.ownerResponse->body(zfstring::shared(data.bytes, data.length));
             }
             ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(weakTask.ownerRequest);
         }];

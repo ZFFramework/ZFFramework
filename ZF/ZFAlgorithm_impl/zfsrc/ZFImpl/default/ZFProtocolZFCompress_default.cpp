@@ -226,7 +226,7 @@ private:
             ) {
         zfindex inputSize = input.ioSize();
         if(inputSize == zfindexMax()) {
-            ZFBuffer buffer;
+            zfstring buffer;
             ZFInputRead(buffer, input);
             return mz_zip_writer_add_mem(&zip, filePath, buffer.buffer(), buffer.length(), flags);
         }
@@ -264,11 +264,13 @@ private:
         num_alignment_padding_bytes = mz_zip_writer_compute_padding_needed_for_file_alignment(pZip);
 
         // no zip64 support yet
-        if ((pZip->m_total_files == 0xFFFF) || ((pZip->m_archive_size + num_alignment_padding_bytes + MZ_ZIP_LOCAL_DIR_HEADER_SIZE + MZ_ZIP_CENTRAL_DIR_HEADER_SIZE + comment_size + archive_name_size) > 0xFFFFFFFF))
+        if ((pZip->m_total_files == 0xFFFF) || ((pZip->m_archive_size + num_alignment_padding_bytes + MZ_ZIP_LOCAL_DIR_HEADER_SIZE + MZ_ZIP_CENTRAL_DIR_HEADER_SIZE + comment_size + archive_name_size) > 0xFFFFFFFF)) {
             return MZ_FALSE;
+        }
 
         #ifndef MINIZ_NO_TIME
-            time_t cur_time; time(&cur_time);
+            time_t cur_time;
+            time(&cur_time);
             mz_zip_time_t_to_dos_time(cur_time, &dos_time, &dos_date);
         #endif
 
@@ -390,7 +392,7 @@ private:
 private:
     zfclassNotPOD _DecompressToken {
     public:
-        ZFBuffer zipBuffer;
+        zfstring zipBuffer;
         ZFInput zipInput;
     };
 
@@ -408,17 +410,17 @@ private:
         return (size_t)input.execute(pBuf, (zfindex)n);
     }
     static size_t _readFuncForBuffer(void *pOpaque, mz_uint64 file_ofs, void *pBuf, size_t n) {
-        ZFBuffer &buffer = ((_DecompressToken *)pOpaque)->zipBuffer;
+        zfstring &buffer = ((_DecompressToken *)pOpaque)->zipBuffer;
         if((zfindex)file_ofs >= buffer.length()) {
             return 0;
         }
         else if((zfindex)(file_ofs + n) >= buffer.length()) {
             zfindex len = buffer.length() - (zfindex)file_ofs;
-            zfmemcpy(pBuf, buffer.bufferT<zfbyte *>() + file_ofs, len);
+            zfmemcpy(pBuf, buffer.zfunsafe_buffer() + file_ofs, len);
             return (size_t)len;
         }
         else {
-            zfmemcpy(pBuf, buffer.bufferT<zfbyte *>() + file_ofs, (zfindex)n);
+            zfmemcpy(pBuf, buffer.zfunsafe_buffer() + file_ofs, (zfindex)n);
             return n;
         }
     }

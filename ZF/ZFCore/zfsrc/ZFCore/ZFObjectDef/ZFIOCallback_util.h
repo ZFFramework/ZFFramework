@@ -84,21 +84,9 @@ extern ZFLIB_ZFCore zfindex ZFInputRead(
         , ZF_IN_OPT zfindex size = zfindexMax()
         );
 /**
- * @brief util method to read contents from input to buffer
- *
- * buffer is ensured null-terminated,
- * and buffer's size increase the content's size excluding tail '\0'\n
- * return total byte size appended to the buffer
- */
-extern ZFLIB_ZFCore zfindex ZFInputRead(
-        ZF_IN_OUT ZFBuffer &ret
-        , ZF_IN_OUT const ZFInput &input
-        , ZF_IN_OPT zfindex size = zfindexMax()
-        );
-/**
  * @brief util method to read contents from input to string
  *
- * return count of sizeof(zfchar) appended to string
+ * return size appended to string
  */
 extern ZFLIB_ZFCore zfindex ZFInputRead(
         ZF_IN_OUT zfstring &ret
@@ -115,17 +103,6 @@ extern ZFLIB_ZFCore zfindex ZFInputRead(
  */
 extern ZFLIB_ZFCore zfindex ZFInputReadLine(
         ZF_IN_OUT const ZFOutput &output
-        , ZF_IN_OUT const ZFInput &input
-        );
-/**
- * @brief util method to read one line
- *
- * return size read for the line (excluding the endl), or 0 for empty line,
- * or zfindexMax if failed\n
- * note the result would be appended to the buffer
- */
-extern ZFLIB_ZFCore zfindex ZFInputReadLine(
-        ZF_IN_OUT ZFBuffer &output
         , ZF_IN_OUT const ZFInput &input
         );
 /**

@@ -172,7 +172,7 @@ zfindex ZFInputCheckMatch(
         for(zfindex i = 0; i < tokenCount; ++i) {
             maxLen = zfmMax(maxLen, zfslen(tokens[i]));
         }
-        zfchar *buf = (zfchar *)zfmalloc(sizeof(zfchar) * maxLen);
+        zfchar *buf = (zfchar *)zfmalloc(maxLen);
         zfblockedFree(buf);
 
         zfbool matched = zffalse;
@@ -232,35 +232,6 @@ zfindex ZFInputRead(
 }
 
 zfindex ZFInputRead(
-        ZF_IN_OUT ZFBuffer &ret
-        , ZF_IN_OUT const ZFInput &input
-        , ZF_IN_OPT zfindex size /* = zfindexMax() */
-        ) {
-    zfindex read = 0;
-    if(input) {
-        zfindex readCount = 0;
-        zfindex toRead = 0;
-        do {
-            if(read + _ZFP_ZFInputRead_blockSize <= size) {
-                toRead = _ZFP_ZFInputRead_blockSize;
-            }
-            else {
-                toRead = size - read;
-            }
-            ret.capacity(ret.length() + toRead);
-            readCount = input.execute(ret.bufferT<zfbyte *>() + ret.length(), toRead);
-            read += readCount;
-            ret.length(ret.length() + readCount);
-            if(readCount < toRead) {
-                *(zfchar *)(ret.bufferT<zfbyte *>() + ret.length()) = '\0';
-                break;
-            }
-        } while(zftrue);
-    }
-    return read;
-}
-
-zfindex ZFInputRead(
         ZF_IN_OUT zfstring &ret
         , ZF_IN_OUT const ZFInput &input
         , ZF_IN_OPT zfindex size /* = zfindexMax() */
@@ -276,10 +247,10 @@ zfindex ZFInputRead(
             else {
                 toRead = size - read;
             }
-            ret.capacity(ret.length() + (read + toRead) / sizeof(zfchar));
+            ret.capacity(ret.length() + (read + toRead));
             readCount = input.execute(ret.zfunsafe_buffer() + ret.length(), toRead);
             read += readCount;
-            ret.zfunsafe_length(ret.length() + readCount / sizeof(zfchar));
+            ret.zfunsafe_length(ret.length() + readCount);
             if(readCount < toRead) {
                 ret.zfunsafe_buffer()[ret.length()] = '\0';
                 break;
@@ -309,32 +280,9 @@ zfindex ZFInputReadLine(
             if(*c == '\n') {
                 return count;
             }
-            if(output.execute(c, readCount * sizeof(zfchar)) < readCount * sizeof(zfchar)) {
+            if(output.execute(c, readCount) < readCount) {
                 return count == 0 ? zfindexMax() : count;
             }
-            ++count;
-        }
-    } while(zftrue);
-}
-zfindex ZFInputReadLine(
-        ZF_IN_OUT ZFBuffer &output
-        , ZF_IN_OUT const ZFInput &input
-        ) {
-    if(!input) {
-        return zfindexMax();
-    }
-    zfindex count = 0;
-    zfchar c[9];
-    do {
-        zfindex readCount = ZFInputReadChar(c, input);
-        if(readCount == 0) {
-            return count == 0 ? zfindexMax() : count;
-        }
-        else {
-            if(*c == '\n') {
-                return count;
-            }
-            output.append(c, readCount * sizeof(zfchar));
             ++count;
         }
     } while(zftrue);
@@ -379,21 +327,12 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, ZFInputRead
         , ZFMP_IN_OPT(zfindex, size, zfindexMax())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, ZFInputRead
-        , ZFMP_IN_OUT(ZFBuffer &, ret)
-        , ZFMP_IN_OUT(const ZFInput &, input)
-        , ZFMP_IN_OPT(zfindex, size, zfindexMax())
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, ZFInputRead
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN_OUT(const ZFInput &, input)
         , ZFMP_IN_OPT(zfindex, size, zfindexMax())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine
         , ZFMP_IN_OUT(const ZFOutput &, output)
-        , ZFMP_IN_OUT(const ZFInput &, input)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine
-        , ZFMP_IN_OUT(ZFBuffer &, output)
         , ZFMP_IN_OUT(const ZFInput &, input)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine

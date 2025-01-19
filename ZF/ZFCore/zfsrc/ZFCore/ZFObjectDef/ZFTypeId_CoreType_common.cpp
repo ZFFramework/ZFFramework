@@ -111,8 +111,13 @@ ZFOBJECT_ON_INIT_USER_REGISTER_3({
     , ZFMP_IN(zfindex, len)
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_0(zfstring, v_zfstring, const zfstring &, Empty)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(zfstring, v_zfstring, zfstring, shared
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(zfstring, v_zfstring, zfstring, shared
         , ZFMP_IN(const zfchar *, sLiteral)
+        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(zfstring, v_zfstring, zfstring, shared
+        , ZFMP_IN(const void *, sLiteral)
+        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, set
         , ZFMP_IN(zfindex, pos)
@@ -131,11 +136,19 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, append
         , ZFMP_IN(const zfchar *, s)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, append
+        , ZFMP_IN(const void *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, assign
         , ZFMP_IN(const zfstring &, s)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, assign
         , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, assign
+        , ZFMP_IN(const void *, s)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, insert
@@ -147,6 +160,11 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, insert
         , ZFMP_IN(const zfchar *, s)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, insert
+        , ZFMP_IN(zfindex, insertAt)
+        , ZFMP_IN(const void *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, replace
         , ZFMP_IN(zfindex, replacePos)
         , ZFMP_IN(zfindex, replaceLen)
@@ -156,6 +174,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_zfstring, void, replace
         , ZFMP_IN(zfindex, replacePos)
         , ZFMP_IN(zfindex, replaceLen)
         , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_zfstring, void, replace
+        , ZFMP_IN(zfindex, replacePos)
+        , ZFMP_IN(zfindex, replaceLen)
+        , ZFMP_IN(const void *, s)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfindex, length)
@@ -176,6 +200,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, zfint, compare
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, zfint, compare
         , ZFMP_IN(const zfchar *, s)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, const void *, buffer)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, void *, zfunsafe_bufferGiveUp)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfchar *, zfunsafe_buffer)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, zfunsafe_length
+        , ZFMP_IN(zfindex, length)
         )
 
 ZFTYPEID_ALIAS_DEFINE(zfstring, zfstring, cString, const zfchar *)
@@ -544,54 +574,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfiter, zfiter, copy)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfiter, zfbool, isEqual
         , ZFMP_IN(const zfiter &, ref)
         )
-
-// ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFBuffer, ZFBuffer)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void, bufferFree)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, bufferGiveUp)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, swap
-        , ZFMP_IN_OUT(ZFBuffer &, buf)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBuffer, void, zfunsafe_bufferChange
-        , ZFMP_IN(void *, buffer)
-        , ZFMP_IN(zfindex, capacity)
-        , ZFMP_IN(zfindex, length)
-        , ZFMP_IN(zfbool, autoFree)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy
-        , ZFMP_IN(const void *, buffer)
-        , ZFMP_IN(zfindex, length)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCopy
-        , ZFMP_IN(const zfstring &, s)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy
-        , ZFMP_IN(const zfchar *, s)
-        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, append
-        , ZFMP_IN(const zfstring &, s)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, append
-        , ZFMP_IN(const void *, buffer)
-        , ZFMP_IN(zfindex, length)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, append
-        , ZFMP_IN(const zfchar *, s)
-        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, capacity
-        , ZFMP_IN(zfindex, capacity)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, capacity)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, length
-        , ZFMP_IN(zfindex, length)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, length)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, buffer)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, const zfchar *, text)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, textLength)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfbool, autoFree)
 
 // ============================================================
 // ZFCallerInfo

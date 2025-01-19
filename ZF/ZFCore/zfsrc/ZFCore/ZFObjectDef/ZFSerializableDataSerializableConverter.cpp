@@ -105,13 +105,13 @@ zfbool ZFSerializableDataFromZFSD(
         ZFSerializableUtilErrorOccurred(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFBuffer buf;
+    zfstring buf;
     ZFInputRead(buf, input);
     if(buf.buffer() == zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "unable to load data from input");
         return zffalse;
     }
-    zfbool ret = ZFSerializableDataFromZFSD(serializableData, buf.text(), buf.textLength(), outErrorHint);
+    zfbool ret = ZFSerializableDataFromZFSD(serializableData, buf.cString(), buf.length(), outErrorHint);
     if(ret) {
         serializableData.pathInfo(input.pathInfo());
     }

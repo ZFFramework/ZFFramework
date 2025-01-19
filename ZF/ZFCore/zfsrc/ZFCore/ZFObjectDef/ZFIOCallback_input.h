@@ -191,16 +191,6 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(
 #define ZFSerializableKeyword_ZFInputForBuffer_buf "buf"
 
 /**
- * @brief create a input callback from ZFBuffer
- *
- * the source ZFBuffer would be retained until the result ZFInput destroyed
- */
-extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(
-        ZF_IN const ZFBuffer &buffer
-        , ZF_IN_OPT zfbool serializable = zffalse
-        );
-
-/**
  * @brief create a intput callback input from a const void *,
  *   you must ensure the buffer is alive during the callback's life time
  *
@@ -225,7 +215,9 @@ extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(
         );
 
 /**
- * @brief same as #ZFInputForBuffer
+ * @brief create a input callback from string
+ *
+ * the source string would be retained until the result ZFInput destroyed
  */
 extern ZFLIB_ZFCore ZFInput ZFInputForString(
         ZF_IN const zfstring &src

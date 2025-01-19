@@ -163,7 +163,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileWrite
         return 0;
     }
     return ZFPROTOCOL_ACCESS(ZFFile)->fileWrite(token, src,
-        (maxByteSize == zfindexMax()) ? (sizeof(zfchar) * zfslen((const zfchar *)src)) : maxByteSize);
+        (maxByteSize == zfindexMax()) ? zfslen((const zfchar *)src) : maxByteSize);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFlush
         , ZFMP_IN(void *, token)

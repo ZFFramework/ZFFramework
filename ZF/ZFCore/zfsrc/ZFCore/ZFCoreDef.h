@@ -6,7 +6,6 @@
 #ifndef _ZFI_ZFCoreDef_h_
 #define _ZFI_ZFCoreDef_h_
 
-#include "ZFCoreDef/ZFBuffer.h"
 #include "ZFCoreDef/ZFCallerInfo.h"
 #include "ZFCoreDef/ZFComparer.h"
 #include "ZFCoreDef/ZFCoreArg.h"

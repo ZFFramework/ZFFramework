@@ -106,30 +106,19 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
+    ZFMETHOD_DECLARE_1(zfbool, send
+            , ZFMP_IN(const zfstring &, data)
+            )
+    /**
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
+     */
     ZFMETHOD_DECLARE_2(zfbool, send
             , ZFMP_IN(const void *, data)
             , ZFMP_IN(zfindex, size)
-            )
-    /**
-     * @brief send packet
-     *
-     * note:
-     * -  this method would block current thread until done,
-     *   call in new thread if necessary
-     */
-    ZFMETHOD_DECLARE_2(zfbool, send
-            , ZFMP_IN(const zfchar *, data)
-            , ZFMP_IN_OPT(zfindex, size, zfindexMax())
-            )
-    /**
-     * @brief send packet
-     *
-     * note:
-     * -  this method would block current thread until done,
-     *   call in new thread if necessary
-     */
-    ZFMETHOD_DECLARE_1(zfbool, send
-            , ZFMP_IN(const ZFBuffer &, data)
             )
     /**
      * @brief send packet
@@ -158,7 +147,7 @@ public:
      * note: received data would be appended to buffer
      */
     ZFMETHOD_DECLARE_3(zfindex, recv
-            , ZFMP_IN_OUT(ZFBuffer &, data)
+            , ZFMP_IN_OUT(zfstring &, data)
             , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
             , ZFMP_IN_OPT(zftimet, timeout, -1)
             )

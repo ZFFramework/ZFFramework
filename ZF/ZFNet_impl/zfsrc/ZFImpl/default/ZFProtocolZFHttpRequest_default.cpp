@@ -33,7 +33,7 @@ private:
         zfstring url;
         ZFHttpMethod httpMethod;
         httplib::Headers headers;
-        ZFBuffer body;
+        zfstring body;
         httplib::Headers responseHeaders;
 
     public:
@@ -212,10 +212,10 @@ public:
             , ZF_IN zfindex byteSize
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        nativeTaskTmp->body.append(buffer, byteSize);
+        nativeTaskTmp->body.append((const zfchar *)buffer, byteSize);
     }
 
-    virtual ZFBuffer body(ZF_IN void *nativeTask) {
+    virtual zfstring body(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
         return nativeTaskTmp->body;
     }

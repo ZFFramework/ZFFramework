@@ -14,7 +14,7 @@ protected:
         zfflags testValue = (zfflags)0x8DFE51D2; // testString's CRC32 to verify
         zfflags value = 0;
 
-        value = ZFCrc32((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
+        value = ZFCrc32((const zfbyte *)testString, zfslen(testString));
         this->output(zfstr("CRC32 of array \"%s\": %s", testString, value));
         ZFTestCaseAssert(value == testValue);
 

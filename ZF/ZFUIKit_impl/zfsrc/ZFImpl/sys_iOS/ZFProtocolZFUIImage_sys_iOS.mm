@@ -10,16 +10,16 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_iOS, ZFUIImage, ZFProtocolLeve
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIImage")
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
-        ZFBuffer dataBuf;
+        zfstring dataBuf;
         ZFInputRead(dataBuf, inputCallback);
         if(dataBuf.buffer() == zfnull) {
             return zfnull;
         }
-        NSData *nsData = [NSData dataWithBytesNoCopy:dataBuf.buffer() length:(NSUInteger)dataBuf.length() freeWhenDone:YES];
+        NSData *nsData = [NSData dataWithBytesNoCopy:dataBuf.zfunsafe_buffer() length:(NSUInteger)dataBuf.length() freeWhenDone:YES];
         if(nsData == nil) {
             return zfnull;
         }
-        dataBuf.bufferGiveUp(); // should be free-ed by nsData
+        dataBuf.zfunsafe_bufferGiveUp(); // should be free-ed by nsData
         UIImage *uiImage = [UIImage imageWithData:nsData scale:ZFUIGlobalStyle::DefaultStyle()->imageScale()];
         if(uiImage == nil) {
             return zfnull;

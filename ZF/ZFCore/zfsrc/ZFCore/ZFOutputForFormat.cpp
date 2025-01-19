@@ -63,7 +63,7 @@ public:
         zfstring buf;
         this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnInit, "", 0);
         if(!buf.isEmpty()) {
-            this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
+            this->output.execute(buf.cString(), buf.length());
         }
     }
     void outputEnd(void) {
@@ -71,7 +71,7 @@ public:
         this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnOutputEnd, "", 0);
         if(!buf.isEmpty()) {
             if(this->output) {
-                this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
+                this->output.execute(buf.cString(), buf.length());
             }
             buf.removeAll();
         }
@@ -79,7 +79,7 @@ public:
         this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnDealloc, "", 0);
         if(!buf.isEmpty()) {
             if(this->output) {
-                this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
+                this->output.execute(buf.cString(), buf.length());
             }
         }
     }
@@ -99,19 +99,16 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput
     if(count == zfindexMax()) {
         count = zfslen((const zfchar *)s);
     }
-    else {
-        count /= sizeof(zfchar);
-    }
 
     zfstring buf;
     this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnOutput, (const zfchar *)s, count);
     if(buf.isEmpty()) {
-        return count * sizeof(zfchar);
+        return count;
     }
 
-    zfindex written = this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
-    if(written == buf.length() * sizeof(zfchar)) {
-        return count * sizeof(zfchar);
+    zfindex written = this->output.execute(buf.cString(), buf.length());
+    if(written == buf.length()) {
+        return count;
     }
     else {
         return 0;

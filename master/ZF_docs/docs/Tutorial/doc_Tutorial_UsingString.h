@@ -29,6 +29,6 @@
  *   ZFLog() << zfStyle << " " << zfStyle2->zfv;
  * @endcode
  * \n
- * by default, all strings in ZFFramework use UTF-8 as string encoding
+ * all strings in ZFFramework use UTF-8 as string encoding
  */
 

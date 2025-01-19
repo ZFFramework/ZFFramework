@@ -49,9 +49,9 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForImplOwner, zfindex, onOutput
         ) {
     if(this->impl) {
         if(count == zfindexMax()) {
-            count = zfslen((const zfchar *)src) * sizeof(zfchar);
+            count = zfslen((const zfchar *)src);
         }
-        this->_srcCache->zfv.assign((const zfchar *)src, count / sizeof(zfchar));
+        this->_srcCache->zfv.assign((const zfchar *)src, count);
         this->_countCache->zfv = count;
         this->_resultCache->zfv = count;
         this->impl.execute(ZFArgs()

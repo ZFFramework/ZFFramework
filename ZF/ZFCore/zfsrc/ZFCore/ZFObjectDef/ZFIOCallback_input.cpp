@@ -218,75 +218,6 @@ static void _ZFP_ZFInputForBuffer_serialize(
 }
 
 // ============================================================
-// ZFInputForBuffer
-zfclass _ZFP_I_ZFInputForBufferOwner : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFInputForBufferOwner, ZFObject)
-    ZFALLOC_CACHE_RELEASE({
-        cache->buffer = ZFBuffer();
-    })
-
-public:
-    zfindex p;
-    ZFBuffer buffer;
-
-public:
-    ZFMETHOD_DECLARE_2(zfindex, onInput
-            , ZFMP_IN(void *, buf)
-            , ZFMP_IN(zfindex, count)
-            )
-    ZFMETHOD_DECLARE_2(zfbool, ioSeek
-            , ZFMP_IN(zfindex, byteSize)
-            , ZFMP_IN(ZFSeekPos, pos)
-            )
-    ZFMETHOD_DECLARE_0(zfindex, ioTell)
-    ZFMETHOD_DECLARE_0(zfindex, ioSize)
-};
-ZFOBJECT_REGISTER(_ZFP_I_ZFInputForBufferOwner)
-ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferOwner, zfindex, onInput
-        , ZFMP_IN(void *, buf)
-        , ZFMP_IN(zfindex, count)
-        ) {
-    if(this->buffer.length() <= this->p) {
-        return 0;
-    }
-    if(buf == zfnull) {
-        return this->buffer.length() - this->p;
-    }
-    count = zfmMin(count, this->buffer.length() - this->p);
-    zfmemcpy(buf, this->buffer.buffer(), count * sizeof(zfchar));
-    this->p += count;
-    return count;
-}
-ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferOwner, zfbool, ioSeek
-        , ZFMP_IN(zfindex, byteSize)
-        , ZFMP_IN(ZFSeekPos, pos)
-        ) {
-    p = ZFIOCallbackCalcFSeek(0, this->buffer.length(), p, byteSize, pos);
-    return zftrue;
-}
-ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferOwner, zfindex, ioTell) {
-    return p;
-}
-ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferOwner, zfindex, ioSize) {
-    return this->buffer.length();
-}
-ZFInput ZFInputForBuffer(
-        ZF_IN const ZFBuffer &buffer
-        , ZF_IN_OPT zfbool serializable /* = zffalse */
-        ) {
-    zfobj<_ZFP_I_ZFInputForBufferOwner> owner;
-    owner->p = 0;
-    owner->buffer = buffer;
-    ZFInput ret = ZFCallbackForMemberMethod(
-        owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferOwner, onInput));
-    ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
-    if(serializable) {
-        _ZFP_ZFInputForBuffer_serialize(ret, buffer.buffer(), buffer.length());
-    }
-    return ret;
-}
-
-// ============================================================
 // ZFInputForBufferUnsafe
 zfclass _ZFP_I_ZFInputForBufferUnsafeOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFInputForBufferUnsafeOwner, ZFObject)
@@ -325,7 +256,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, onInput
     if(p + count > pEnd) {
         count = pEnd - p;
     }
-    zfmemcpy(buf, p, count * sizeof(zfchar));
+    zfmemcpy(buf, p, count);
     p += count;
     return count;
 }
@@ -356,8 +287,8 @@ static ZFInput _ZFP_ZFInputForBuffer(
     }
     if(copy) {
         zfobj<_ZFP_I_ZFInputForBufferUnsafeOwner> owner;
-        zfobj<v_ZFBuffer> buf;
-        buf->zfv.bufferCopy(src, count * sizeof(zfchar));
+        zfobj<v_zfstring> buf;
+        buf->zfv.assign((const zfchar *)src, count);
         owner->pStart = (const zfbyte *)buf->zfv.buffer();
         owner->pEnd = owner->pStart + buf->zfv.length();
         owner->p = owner->pStart;
@@ -405,14 +336,14 @@ ZFInput ZFInputForString(
     zfobj<_ZFP_I_ZFInputForBufferUnsafeOwner> owner;
     zfobj<v_zfstring> buf(src);
     owner->pStart = (const zfbyte *)buf->zfv.cString();
-    owner->pEnd = owner->pStart + buf->zfv.length() * sizeof(zfchar);
+    owner->pEnd = owner->pStart + buf->zfv.length();
     owner->p = owner->pStart;
     ZFInput ret = ZFCallbackForMemberMethod(
         owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferUnsafeOwner, onInput));
     ret.callbackTag("ZFInputForBufferCopiedBuffer", buf);
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
     if(serializable) {
-        _ZFP_ZFInputForBuffer_serialize(ret, src, src.length() * sizeof(zfchar));
+        _ZFP_ZFInputForBuffer_serialize(ret, src, src.length());
     }
     return ret;
 }
@@ -450,10 +381,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(ZFInput, ZFInputForInputInRange
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
         , ZFMP_IN_OPT(zfbool, autoRestorePos, zftrue)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFInput, ZFInputForBuffer
-        , ZFMP_IN(const ZFBuffer &, buffer)
-        , ZFMP_IN_OPT(zfbool, serializable, zffalse)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFInput, ZFInputForBufferUnsafe
         , ZFMP_IN(const zfchar *, buf)

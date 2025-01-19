@@ -31,15 +31,15 @@ protected:
             ZFLISTENER_1(serverRecvThread
                     , zfautoT<ZFTcp>, server
                     ) {
-                ZFBuffer buf;
+                zfstring buf;
                 while(server->valid())
                 {
                     zfautoT<ZFTcp> conn = server->accept();
                     if(conn != zfnull)
                     {
-                        buf.length(0);
+                        buf.removeAll();
                         conn->recv(buf, 4096);
-                        ZFLog() << "server recv: " << buf.text();
+                        ZFLog() << "server recv: " << buf;
 
                         conn->send("server reply");
                         break;
@@ -67,12 +67,12 @@ protected:
                     , zfautoT<ZFTestCase>, testCase
                     , zfautoT<ZFTcp>, client
                     ) {
-                ZFBuffer buf;
+                zfstring buf;
                 while(client->valid())
                 {
-                    buf.length(0);
+                    buf.removeAll();
                     client->recv(buf);
-                    ZFLog() << "client recv: " << buf.text();
+                    ZFLog() << "client recv: " << buf;
 
                     testCase->stop();
                     break;

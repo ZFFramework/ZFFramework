@@ -108,7 +108,7 @@ static zfindex _ZFP_ZFLogOnOutput(
         , ZF_IN zfindex size
         ) {
     if(size == zfindexMax()) {
-        size = zfslen((const zfchar *)src) * sizeof(zfchar);
+        size = zfslen((const zfchar *)src);
     }
     ZFOutputDefault().execute(src, size);
     return size;

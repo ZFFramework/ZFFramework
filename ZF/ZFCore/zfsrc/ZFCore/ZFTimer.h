@@ -42,7 +42,7 @@ public:
      *
      * called when timer activated
      * @note on what thread this event is fired depends on impl,
-     *   unless #activateOnMainThread was set
+     *   unless #eventOnMainThread was set
      */
     ZFEVENT(TimerOnActivate)
     /**
@@ -86,7 +86,7 @@ public:
     /**
      * @brief whether timer activate on main thread, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, activateOnMainThread, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, eventOnMainThread, zftrue)
 
 public:
     /**

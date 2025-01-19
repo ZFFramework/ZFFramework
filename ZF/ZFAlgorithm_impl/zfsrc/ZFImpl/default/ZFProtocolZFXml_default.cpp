@@ -13,28 +13,28 @@ public:
             , ZF_IN_OPT zfindex size = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        ZFBuffer buf;
-        buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
+        zfstring buf;
+        buf.assign(src, (size != zfindexMax() ? size : zfslen(src)));
         return this->xmlParse(buf, errorHint);
     }
     virtual ZFXml xmlParse(
             ZF_IN const ZFInput &inputCallback
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        ZFBuffer buf;
+        zfstring buf;
         ZFInputRead(buf, inputCallback);
         return this->xmlParse(buf, errorHint);
     }
 private:
     ZFXml xmlParse(
-            ZF_IN_OUT ZFBuffer &buf
+            ZF_IN_OUT zfstring &buf
             , ZF_OUT zfstring *errorHint
             ) {
         if(buf.buffer() == zfnull) {
             return zfnull;
         }
         pugi::xml_document implXmlDoc;
-        pugi::xml_parse_result implResult = implXmlDoc.load_buffer_inplace(buf.buffer(), buf.length(), pugi::parse_full);
+        pugi::xml_parse_result implResult = implXmlDoc.load_buffer_inplace(buf.zfunsafe_buffer(), buf.length(), pugi::parse_full);
         if(implResult.status != pugi::status_ok) {
             if(errorHint) {
                 *errorHint += implResult.description();
@@ -44,11 +44,11 @@ private:
                     zfindex len = buf.length() - offset;
                     zfstring tmp;
                     if(len >= 128) {
-                        tmp.append(buf.bufferT<zfchar *>() + offset, 32);
+                        tmp.append(buf + offset, 32);
                         tmp += "...";
                     }
                     else {
-                        tmp += buf.bufferT<zfchar *>() + offset;
+                        tmp += buf + offset;
                     }
                     *errorHint += zfstringReplace(tmp, "\n", "\\n");
                 }

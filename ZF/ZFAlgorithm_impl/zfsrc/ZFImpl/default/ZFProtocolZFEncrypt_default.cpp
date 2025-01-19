@@ -16,17 +16,17 @@ public:
         zfindex inputSize = input.ioSize();
         if(inputSize != zfindexMax()) {
             zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputSize, 16));
-            output.execute(sizeCheck.cString(), sizeCheck.length() * sizeof(zfchar));
+            output.execute(sizeCheck.cString(), sizeCheck.length());
             return ZFBase64Encode(output, input, zfnull, this->tableForKey(key));
         }
         else {
-            ZFBuffer inputBuf;
+            zfstring inputBuf;
             ZFInputRead(inputBuf, input);
             if(inputBuf.buffer() == zfnull) {
                 return zffalse;
             }
             zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputBuf.length(), 16));
-            output.execute(sizeCheck.cString(), sizeCheck.length() * sizeof(zfchar));
+            output.execute(sizeCheck.cString(), sizeCheck.length());
             return ZFBase64Encode(output, ZFInputForBuffer(inputBuf), zfnull, this->tableForKey(key));
         }
     }
@@ -37,7 +37,7 @@ public:
             ) {
         zfchar sizeCheckBuf[16] = {0};
         for(zfindex i = 0; i < 10; ++i) {
-            if(input.execute(sizeCheckBuf + i, sizeof(zfchar)) != sizeof(zfchar)) {
+            if(input.execute(sizeCheckBuf + i, 1) != 1) {
                 return zffalse;
             }
             if(sizeCheckBuf[i] == '+') {

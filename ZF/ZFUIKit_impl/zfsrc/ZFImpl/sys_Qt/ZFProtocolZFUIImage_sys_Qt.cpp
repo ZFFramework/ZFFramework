@@ -15,7 +15,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_Qt, ZFUIImage, ZFProtocolLevel
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         QImage *nativeImage = new QImage();
-        ZFBuffer buf;
+        zfstring buf;
         ZFInputRead(buf, inputCallback);
         if(!nativeImage->loadFromData((const uchar *)buf.buffer(), buf.length())) {
             delete nativeImage;

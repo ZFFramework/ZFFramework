@@ -186,6 +186,12 @@ ZFMETHOD_DEFINE_2(ZFUdp, ZFUdpAddr, hostResolve
 }
 
 // ============================================================
+ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send
+        , ZFMP_IN(const ZFUdpAddr &, hostAddr)
+        , ZFMP_IN(const zfstring &, data)
+        ) {
+    return this->send(hostAddr, data.buffer(), data.length());
+}
 ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
         , ZFMP_IN(const ZFUdpAddr &, hostAddr)
         , ZFMP_IN(const void *, data)
@@ -195,28 +201,12 @@ ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
         && size != zfindexMax()
         && ZFPROTOCOL_ACCESS(ZFUdp)->send(this, d->nativeSocket, hostAddr._ZFP_hostAddr(), data, size);
 }
-ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
-        , ZFMP_IN(const ZFUdpAddr &, hostAddr)
-        , ZFMP_IN(const zfchar *, data)
-        , ZFMP_IN_OPT(zfindex, size, zfindexMax())
-        ) {
-    if(size == zfindexMax()) {
-        size = (data != zfnull ? zfslen(data) : 0);
-    }
-    return this->send(hostAddr, (const void *)data, size);
-}
-ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send
-        , ZFMP_IN(const ZFUdpAddr &, hostAddr)
-        , ZFMP_IN(const ZFBuffer &, data)
-        ) {
-    return this->send(hostAddr, data.buffer(), data.length());
-}
 ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send
         , ZFMP_IN(const ZFUdpAddr &, hostAddr)
         , ZFMP_IN(const ZFInput &, input)
         ) {
     if(hostAddr.valid()) {
-        ZFBuffer buf;
+        zfstring buf;
         ZFInputRead(buf, input);
         return this->send(hostAddr, buf.buffer(), buf.length());
     }
@@ -226,6 +216,13 @@ ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send
 }
 
 // ============================================================
+ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
+        , ZFMP_IN(const zfstring &, host)
+        , ZFMP_IN(zfuint, port)
+        , ZFMP_IN(const zfstring &, data)
+        ) {
+    return this->send(this->hostResolve(host, port), data);
+}
 ZFMETHOD_DEFINE_4(ZFUdp, zfbool, send
         , ZFMP_IN(const zfstring &, host)
         , ZFMP_IN(zfuint, port)
@@ -233,21 +230,6 @@ ZFMETHOD_DEFINE_4(ZFUdp, zfbool, send
         , ZFMP_IN(zfindex, size)
         ) {
     return this->send(this->hostResolve(host, port), data, size);
-}
-ZFMETHOD_DEFINE_4(ZFUdp, zfbool, send
-        , ZFMP_IN(const zfstring &, host)
-        , ZFMP_IN(zfuint, port)
-        , ZFMP_IN(const zfchar *, data)
-        , ZFMP_IN_OPT(zfindex, size, zfindexMax())
-        ) {
-    return this->send(this->hostResolve(host, port), data, size);
-}
-ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
-        , ZFMP_IN(const zfstring &, host)
-        , ZFMP_IN(zfuint, port)
-        , ZFMP_IN(const ZFBuffer &, data)
-        ) {
-    return this->send(this->hostResolve(host, port), data);
 }
 ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
         , ZFMP_IN(const zfstring &, host)
@@ -260,7 +242,7 @@ ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
 // ============================================================
 ZFMETHOD_DEFINE_4(ZFUdp, zfindex, recv
         , ZFMP_OUT(ZFUdpAddr &, hostAddr)
-        , ZFMP_IN_OUT(ZFBuffer &, data)
+        , ZFMP_IN_OUT(zfstring &, data)
         , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
         , ZFMP_IN_OPT(zftimet, timeout, -1)
         ) {
@@ -277,11 +259,11 @@ ZFMETHOD_DEFINE_4(ZFUdp, zfindex, recv
         this,
         d->nativeSocket,
         hostAddrImpl,
-        data.bufferT<zfbyte *>() + data.length(),
+        data.zfunsafe_buffer() + data.length(),
         maxSize,
         timeout);
-    data.length(data.length() + recvSize);
-    data.bufferT<zfchar *>()[data.length() / sizeof(zfchar)] = '\0';
+    data.zfunsafe_length(data.length() + recvSize);
+    data.zfunsafe_buffer()[data.length()] = '\0';
     hostAddr._ZFP_hostAddr(hostAddrImpl);
     return recvSize;
 }

@@ -17,10 +17,10 @@ static zfindex _ZFP_ZFOutputForConsoleFunction(
         ) {
     if(count == zfindexMax()) {
         ZFImplOutput((const zfchar *)s, zfindexMax());
-        return zfslen((const zfchar *)s) * sizeof(zfchar);
+        return zfslen((const zfchar *)s);
     }
     else {
-        ZFImplOutput((const zfchar *)s, count / sizeof(zfchar));
+        ZFImplOutput((const zfchar *)s, count);
         return count;
     }
 }

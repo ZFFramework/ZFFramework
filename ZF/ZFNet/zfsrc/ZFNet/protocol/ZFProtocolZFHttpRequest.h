@@ -127,7 +127,7 @@ public:
     /**
      * @brief return the current body contents
      */
-    virtual ZFBuffer body(ZF_IN void *nativeTask) zfpurevirtual;
+    virtual zfstring body(ZF_IN void *nativeTask) zfpurevirtual;
 
     /**
      * @brief start the http request, impl must notify #notifyResponse even if fail or error

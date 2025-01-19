@@ -15,7 +15,6 @@ public:
     zfautoT<ZFThread> ownerThread;
     zfautoT<ZFHttpResponse> response;
     ZFListener callback;
-    ZFBuffer body;
     ZFJson *bodyJsonCache;
 public:
     _ZFP_ZFHttpRequestPrivate(void)
@@ -24,7 +23,6 @@ public:
     , ownerThread()
     , response(ZFHttpResponse::ClassData()->newInstance())
     , callback()
-    , body()
     , bodyJsonCache(zfnull)
     {
         this->response->d = this;
@@ -148,28 +146,26 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, void, headerIterRemove
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(ZFHttpRequest, void, body
-        , ZFMP_IN(const zfchar *, text)
-        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+ZFMETHOD_DEFINE_1(ZFHttpRequest, void, body
+        , ZFMP_IN(const zfstring &, buf)
         ) {
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask,
-        (const void *)text,
-        ((count == zfindexMax()) ? zfslen(text) : count) * sizeof(zfchar));
+    ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, buf.buffer(), buf.length());
+}
+ZFMETHOD_DEFINE_2(ZFHttpRequest, void, body
+        , ZFMP_IN(const void *, buf)
+        , ZFMP_IN(zfindex, count)
+        ) {
+    ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, buf, ((count == zfindexMax()) ? zfslen((const zfchar *)buf) : count));
 }
 ZFMETHOD_DEFINE_1(ZFHttpRequest, void, body
         , ZFMP_IN(const ZFJson &, json)
         ) {
     zfstring text;
     ZFJsonToStringT(text, json, ZFJsonOutputTokenTrim());
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, (const void *)text.cString(), text.length());
-}
-ZFMETHOD_DEFINE_1(ZFHttpRequest, void, body
-        , ZFMP_IN(const ZFBuffer &, buf)
-        ) {
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, buf.buffer(), buf.length());
+    ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, text.buffer(), text.length());
 }
 
-ZFMETHOD_DEFINE_0(ZFHttpRequest, ZFBuffer, body) {
+ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, body) {
     return ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask);
 }
 
@@ -231,14 +227,14 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo) {
 }
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, contentInfo) {
     zfstring ret;
-    ret.capacity(this->body().textLength() + 10 * this->headerCount());
+    ret.capacity(this->body().length() + 10 * this->headerCount());
     for(zfiter it = this->headerIter(); it; ++it) {
         zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     if(this->headerCount() > 0) {
         ret += "\n";
     }
-    ret.append(this->body().text(), this->body().textLength());
+    ret.append(this->body());
     return ret;
 }
 
@@ -283,10 +279,6 @@ void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void) {
 ZFOBJECT_REGISTER(ZFHttpResponse)
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFBuffer &, body) {
-    return d->body;
-}
-
 ZFMETHOD_DEFINE_1(ZFHttpResponse, zfstring, header
         , ZFMP_IN(const zfstring &, key)
         ) {
@@ -317,18 +309,9 @@ ZFMETHOD_DEFINE_1(ZFHttpResponse, zfstring, headerIterValue
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, bodyText) {
-    if(this->body().length() <= 0) {
-        return zfnull;
-    }
-    else {
-        this->body().text()[this->body().textLength()] = '\0';
-        return zfstring::shared(this->body().text());
-    }
-}
 ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFJson, bodyJson) {
     if(d->bodyJsonCache == zfnull) {
-        d->bodyJsonCache = zfnew(ZFJson, ZFJsonFromString(this->body().text(), this->body().textLength()));
+        d->bodyJsonCache = zfnew(ZFJson, ZFJsonFromString(this->body(), this->body().length()));
     }
     return *(d->bodyJsonCache);
 }
@@ -343,14 +326,14 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, headerInfo) {
 }
 ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, contentInfo) {
     zfstring ret;
-    ret.capacity(this->body().textLength() + 10 * this->headerCount());
+    ret.capacity(this->body().length() + 10 * this->headerCount());
     for(zfiter it = this->headerIter(); it; ++it) {
         zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     if(this->headerCount() > 0) {
         ret += "\n";
     }
-    ret.append(this->body().text(), this->body().textLength());
+    ret.append(this->body());
     return ret;
 }
 

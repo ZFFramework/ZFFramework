@@ -323,12 +323,12 @@ public:
     }
     /** @brief append string */
     zft_zfstring<T_Char> &append(
-            ZF_IN const T_Char *s
+            ZF_IN const void *s
             , ZF_IN_OPT zfindex len = zfindexMax()
             ) {
         if(s) {
             if(len == zfindexMax()) {
-                len = _ZFP_zfstring_len(s);
+                len = _ZFP_zfstring_len((const T_Char *)s);
             }
             if(len > 0) {
                 zfindex lenTmp = this->length();
@@ -369,12 +369,12 @@ public:
     }
     /** @brief replace all content of the string */
     zft_zfstring<T_Char> &assign(
-            ZF_IN const T_Char *s
+            ZF_IN const void *s
             , ZF_IN_OPT zfindex len = zfindexMax()
             ) {
         if(len == zfindexMax()) {
             if(s) {
-                len = _ZFP_zfstring_len(s);
+                len = _ZFP_zfstring_len((const T_Char *)s);
             }
             else {
                 len = 0;
@@ -397,21 +397,6 @@ public:
         return *this;
     }
 
-    /**
-     * @brief directly access internal writable buffer
-     */
-    T_Char *zfunsafe_buffer(void) {
-        _prepareWrite(this->length());
-        return d->d.buf;
-    }
-    /**
-     * @brief directly modify the string's length
-     */
-    void zfunsafe_length(ZF_IN zfindex length) {
-        _prepareWrite(this->length());
-        d->length = (zfuint)length;
-    }
-
 public:
     /** @brief insert string */
     inline zft_zfstring<T_Char> &insert(
@@ -423,7 +408,7 @@ public:
     /** @brief insert string */
     zft_zfstring<T_Char> &insert(
             ZF_IN zfindex insertAt
-            , ZF_IN const T_Char *s
+            , ZF_IN const void *s
             , ZF_IN_OPT zfindex len = zfindexMax()
             ) {
         if(insertAt >= this->length()) {
@@ -431,7 +416,7 @@ public:
         }
         else if(s) {
             if(len == zfindexMax()) {
-                len = _ZFP_zfstring_len(s);
+                len = _ZFP_zfstring_len((const T_Char *)s);
             }
             if(len > 0) {
                 zfindex lenTmp = this->length();
@@ -458,7 +443,7 @@ public:
     zft_zfstring<T_Char> &replace(
             ZF_IN zfindex replacePos
             , ZF_IN zfindex replaceLen
-            , ZF_IN const T_Char *s
+            , ZF_IN const void *s
             , ZF_IN_OPT zfindex len = zfindexMax()
             ) {
         if(replacePos >= this->length()) {
@@ -470,7 +455,7 @@ public:
                 replaceLen = lenTmp - replacePos;
             }
             if(len == zfindexMax()) {
-                len = _ZFP_zfstring_len(s);
+                len = _ZFP_zfstring_len((const T_Char *)s);
             }
             if(len > replaceLen) {
                 _prepareWrite(lenTmp + len - replaceLen);
@@ -482,7 +467,6 @@ public:
             zfmemcpy(d->d.buf + replacePos, s, len * sizeof(T_Char));
             d->length = (zfuint)(lenTmp + len - replaceLen);
             d->d.buf[d->length] = '\0';
-            capacityTrim();
         }
         return *this;
     }
@@ -533,7 +517,6 @@ public:
                 zfmemmove(d->d.buf + pos, d->d.buf + pos + len, (lenTmp - pos - len) * sizeof(T_Char));
                 d->length -= (zfuint)len;
                 d->d.buf[d->length] = '\0';
-                capacityTrim();
             }
         }
     }
@@ -542,13 +525,7 @@ public:
         if(!this->isEmpty()) {
             ZFCoreMutexLocker();
             if(d->refCount == 1) {
-                if(d->capacity >= 64) {
-                    zffree(d->d.buf);
-                    d->d.buf = zfnull;
-                    d->capacity = 0;
-                    d->length = 0;
-                }
-                else if(d->capacity > 0) {
+                if(d->capacity > 0) {
                     d->d.buf[0] = '\0';
                     d->length = 0;
                 }
@@ -587,6 +564,42 @@ public:
         }
     }
 
+public:
+    /**
+     * @brief return internal buffer
+     */
+    const void *buffer(void) const {
+        return d->d.ptr;
+    }
+
+    /**
+     * @brief give up the buffer's ownership and return the buffer, you should free it manually
+     */
+    void *zfunsafe_bufferGiveUp(void) {
+        ZFCoreMutexLocker();
+        _prepareWrite(this->length());
+        T_Char *ret = d->d.buf;
+        zfpoolDelete(d);
+        d = _ZFP_Empty();
+        ++(d->refCount);
+        return ret;
+    }
+
+    /**
+     * @brief directly access internal writable buffer
+     */
+    T_Char *zfunsafe_buffer(void) {
+        _prepareWrite(this->length());
+        return d->d.buf;
+    }
+    /**
+     * @brief directly modify the string's length
+     */
+    void zfunsafe_length(ZF_IN zfindex length) {
+        _prepareWrite(this->length());
+        d->length = (zfuint)length;
+    }
+
 private:
     _ZFP_zfstringD<T_Char> *d;
 public:
@@ -601,11 +614,12 @@ public:
      *   you must ensure the literal's life exceeds the returned string
      */
     static zft_zfstring<T_Char> shared(
-            ZF_IN const T_Char *sLiteral
+            ZF_IN const void *sLiteral
+            , ZF_IN_OPT zfindex length = zfindexMax()
             ) {
         _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
-        d->d.ptr = sLiteral;
-        d->length = (zfuint)_ZFP_zfstring_len(sLiteral);
+        d->d.ptr = (const T_Char *)sLiteral;
+        d->length = (zfuint)(length == zfindexMax() ? _ZFP_zfstring_len((const T_Char *)sLiteral) : length);
         return zft_zfstring<T_Char>(d);
     }
 private:

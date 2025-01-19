@@ -81,11 +81,11 @@ template<typename T>
 inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN T const &v) {
     zfstring s;
     zftToStringT(s, v);
-    o.output(s.cString(), s.length() * sizeof(zfchar));
+    o.output(s.cString(), s.length());
     return o;
 }
 inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN zfstring const &s) {
-    o.output(s.cString(), s.length() * sizeof(zfchar));
+    o.output(s.cString(), s.length());
     return o;
 }
 inline const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &o, ZF_IN const zfchar * const &s) {
@@ -132,10 +132,6 @@ extern ZFLIB_ZFCore ZFOutput ZFOutputDummy(void);
  * @note you must ensure the string to output is alive while the callback is still under use
  */
 extern ZFLIB_ZFCore ZFOutput ZFOutputForString(ZF_IN_OUT zfstring &s);
-/**
- * @brief create a output callback to output to a ZFBuffer
- */
-extern ZFLIB_ZFCore ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf);
 /**
  * @brief create a output callback to output to a buffer
  *

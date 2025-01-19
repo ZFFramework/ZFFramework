@@ -56,6 +56,7 @@ public:
         this->ownerResponse->success(zffalse);
         this->ownerResponse->code(504);
         this->ownerResponse->errorHint("request timeout");
+        this->ownerResponse->body(zfnull);
         ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(this->ownerRequest);
     }
 
@@ -93,20 +94,22 @@ public slots:
         if(nativeResponse->error() != QNetworkReply::NoError) {
             this->ownerResponse->errorHint(zfstr("recv error, code: %s", (zfint)nativeResponse->error()));
         }
+
         { // response body
-            ZFBuffer &body = this->ownerResponse->body();
+            zfstring body;
             const zfint bufSize = 256;
             do {
                 body.capacity(body.length() + bufSize);
-                zfint read = (zfint)nativeResponse->read((char *)body.buffer() + body.length(), (qint64)bufSize);
+                zfint read = (zfint)nativeResponse->read((char *)body.zfunsafe_buffer() + body.length(), (qint64)bufSize);
                 if(read > 0) {
-                    body.length(body.length() + read);
+                    body.zfunsafe_length(body.length() + read);
                 }
                 if(read < bufSize) {
-                    body.text()[body.textLength()] = '\0';
+                    body.zfunsafe_buffer()[body.length()] = '\0';
                     break;
                 }
             } while(true);
+            this->ownerResponse->body(body);
         }
 
         this->responseRawHeaderList = nativeResponse->rawHeaderList();
@@ -272,11 +275,9 @@ public:
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->body.append((const char *)buffer, byteSize);
     }
-    virtual ZFBuffer body(ZF_IN void *nativeTask) {
+    virtual zfstring body(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        ZFBuffer ret;
-        ret.zfunsafe_bufferChange(task->body.data(), task->body.capacity(), task->body.size(), false);
-        return ret;
+        return zfstring::shared((const zfchar *)task->body.data(), (zfindex)task->body.size());
     }
 
     virtual void request(ZF_IN void *nativeTask) {

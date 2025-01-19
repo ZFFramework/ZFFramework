@@ -49,8 +49,13 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextend ZFObject {
     ZFPROPERTY_ASSIGN(zfint, code)
     /** @brief error hint, if error occurred */
     ZFPROPERTY_ASSIGN(zfstring, errorHint)
-    /** @brief response body content */
-    ZFMETHOD_DECLARE_0(ZFBuffer &, body)
+    /**
+     * @brief response body
+     *
+     * note, you must ensure life cycle of the #ZFHttpResponse
+     * longer than the returned string object
+     */
+    ZFPROPERTY_ASSIGN(zfstring, body)
 
     // ============================================================
     /** @brief get the response header */
@@ -73,14 +78,6 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextend ZFObject {
             )
 
     // ============================================================
-    /**
-     * @brief util to access body as plain text
-     *
-     * note, return a #zfstring::shared that points to #body,
-     * you must ensure life cycle of the #ZFHttpResponse or #body
-     * longer than the returned string object
-     */
-    ZFMETHOD_DECLARE_0(zfstring, bodyText)
     /** @brief util to access body as json, return an invalid json if not able to parse */
     ZFMETHOD_DECLARE_0(ZFJson, bodyJson)
 
@@ -226,21 +223,25 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
 
     // ============================================================
     /** @brief append content to body */
+    ZFMETHOD_DECLARE_1(void, body
+            , ZFMP_IN(const zfstring &, buf)
+            )
+    /** @brief append content to body */
     ZFMETHOD_DECLARE_2(void, body
-            , ZFMP_IN(const zfchar *, text)
-            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+            , ZFMP_IN(const void *, buf)
+            , ZFMP_IN(zfindex, count)
             )
     /** @brief append content to body */
     ZFMETHOD_DECLARE_1(void, body
             , ZFMP_IN(const ZFJson &, json)
             )
-    /** @brief append content to body */
-    ZFMETHOD_DECLARE_1(void, body
-            , ZFMP_IN(const ZFBuffer &, buf)
-            )
 
-    /** @brief return current body contents, note this may cause additional memorpy copy */
-    ZFMETHOD_DECLARE_0(ZFBuffer, body)
+    /**
+     * @brief return current body contents
+     *
+     * may cause additional memory copy, usually for debug use only
+     */
+    ZFMETHOD_DECLARE_0(zfstring, body)
 
     // ============================================================
     /**

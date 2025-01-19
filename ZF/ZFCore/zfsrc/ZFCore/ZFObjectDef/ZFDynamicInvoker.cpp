@@ -41,8 +41,8 @@ static void _ZFP_ZFDI_errorOccurred(ZF_IN const ZFArgs &zfargs) {
             ) {
         for(zfindex i = 0; i < ZFDI_errorCallbacks().count(); ++i) {
             const ZFOutput &o = ZFDI_errorCallbacks()[i];
-            o.execute(zfargs.errorHint(), zfargs.errorHint().length() * sizeof(zfchar));
-            o.execute("\n", sizeof(zfchar));
+            o.execute(zfargs.errorHint(), zfargs.errorHint().length());
+            o.execute("\n");
         }
     }
 }

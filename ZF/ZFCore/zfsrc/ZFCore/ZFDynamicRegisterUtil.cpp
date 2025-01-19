@@ -136,7 +136,7 @@ public:
             s += "\n";
 
             for(zfindex i = 0; i < ZFDynamic::errorCallbacks().count(); ++i) {
-                ZFDynamic::errorCallbacks()[i].execute(s.cString(), s.length() * sizeof(zfchar));
+                ZFDynamic::errorCallbacks()[i].execute(s.cString(), s.length());
             }
         }
     }

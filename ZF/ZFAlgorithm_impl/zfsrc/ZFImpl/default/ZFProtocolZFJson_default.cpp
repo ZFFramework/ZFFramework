@@ -16,28 +16,28 @@ public:
             , ZF_IN_OPT zfindex size = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        ZFBuffer buf;
-        buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
+        zfstring buf;
+        buf.assign(src, (size != zfindexMax() ? size : zfslen(src)));
         return this->jsonParse(buf, errorHint);
     }
     virtual ZFJson jsonParse(
             ZF_IN const ZFInput &inputCallback
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        ZFBuffer buf;
+        zfstring buf;
         ZFInputRead(buf, inputCallback);
         return this->jsonParse(buf, errorHint);
     }
 private:
     ZFJson jsonParse(
-            ZF_IN_OUT ZFBuffer &buf
+            ZF_IN_OUT zfstring &buf
             , ZF_OUT zfstring *errorHint
             ) {
         if(buf.buffer() == zfnull) {
             return zfnull;
         }
         rapidjson::Document implJsonDoc;
-        implJsonDoc.ParseInsitu<rapidjson::kParseNumbersAsStringsFlag>(buf.text());
+        implJsonDoc.ParseInsitu<rapidjson::kParseNumbersAsStringsFlag>(buf.zfunsafe_buffer());
         if(implJsonDoc.HasParseError()) {
             if(errorHint) {
                 *errorHint += rapidjson::GetParseError_En(implJsonDoc.GetParseError());
@@ -47,11 +47,11 @@ private:
                     zfindex len = buf.length() - offset;
                     zfstring tmp;
                     if(len >= 128) {
-                        tmp.append(buf.bufferT<zfchar *>() + offset, 32);
+                        tmp.append(buf + offset, 32);
                         tmp += "...";
                     }
                     else {
-                        tmp += buf.bufferT<zfchar *>() + offset;
+                        tmp += buf + offset;
                     }
                     *errorHint += zfstringReplace(tmp, "\n", "\\n");
                 }

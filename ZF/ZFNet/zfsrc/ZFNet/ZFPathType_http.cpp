@@ -30,7 +30,7 @@ public:
         zfstring url;
         zfindex contentLength; // total size of the file, zfindexMax if not available
         zfindex curPos;
-        zfstlmap<zfindex, ZFBuffer> chunkCache; // <chunkAlign, buffer>
+        zfstlmap<zfindex, zfstring> chunkCache; // <chunkAlign, buffer>
         ZFCoreArray<zfindex> chunkCacheFIFO;
     public:
         _Token(void)
@@ -60,13 +60,13 @@ public:
         inline zfindex chunkAlign(ZF_IN zfindex p) {
             return (p / ChunkSize) * ChunkSize;
         }
-        ZFBuffer chunkLoad(ZF_IN zfindex chunkPos) {
+        zfstring chunkLoad(ZF_IN zfindex chunkPos) {
             if(chunkPos >= contentLength) {
-                return ZFBuffer();
+                return zfnull;
             }
             {
                 ZFCoreMutexLocker();
-                zfstlmap<zfindex, ZFBuffer>::iterator it = chunkCache.find(chunkPos);
+                zfstlmap<zfindex, zfstring>::iterator it = chunkCache.find(chunkPos);
                 if(it != chunkCache.end()) {
                     chunkCacheFIFO.removeElement(chunkPos);
                     chunkCacheFIFO.add(chunkPos);
@@ -84,7 +84,7 @@ public:
                 zfautoT<ZFHttpResponse> recv = send->requestSync();
                 if(recv != zfnull && recv->success() && recv->body().length() == chunkEnd - chunkPos) {
                     ZFCoreMutexLocker();
-                    ZFBuffer ret;
+                    zfstring ret;
                     ret.swap(recv->body());
                     chunkCache[chunkPos] = ret;
                     chunkCacheFIFO.removeElement(chunkPos);
@@ -96,7 +96,7 @@ public:
                     return ret;
                 }
             }
-            return ZFBuffer();
+            return zfnull;
         }
     };
 
@@ -247,14 +247,14 @@ public:
         zfindex pEnd = d->curPos + maxByteSize;
         while(p < pEnd) {
             zfindex chunkPos = d->chunkAlign(p);
-            ZFBuffer chunk = d->chunkLoad(chunkPos);
+            zfstring chunk = d->chunkLoad(chunkPos);
             if(chunk.length() == 0) {
                 break;
             }
             zfindex sizeToRead = pEnd > chunkPos + _Token::ChunkSize
                 ? (chunkPos + _Token::ChunkSize - p)
                 : pEnd - p;
-            zfmemcpy((zfbyte *)buf + read, chunk.bufferT<zfbyte *>() + p - chunkPos, sizeToRead);
+            zfmemcpy((zfbyte *)buf + read, chunk.zfunsafe_buffer() + p - chunkPos, sizeToRead);
             read += sizeToRead;
             p += sizeToRead;
         }

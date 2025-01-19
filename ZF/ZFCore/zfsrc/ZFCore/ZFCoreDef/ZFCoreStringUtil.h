@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 inline zfchar *zfsCopy(ZF_IN const zfchar *src) {
     zfchar *ret = zfnull;
     if(src) {
-        zfindex size = sizeof(zfchar) * (zfslen(src) + 1);
+        zfindex size = (zfslen(src) + 1);
         ret = (zfchar *)zfmalloc(size);
         zfmemcpy(ret, src, size);
     }
@@ -38,8 +38,8 @@ inline zfchar *zfsCopy(
         if(size == zfindexMax()) {
             size = zfslen(src);
         }
-        ret = (zfchar *)zfmalloc(sizeof(zfchar) * (size + 1));
-        zfmemcpy(ret, src, sizeof(zfchar) * size);
+        ret = (zfchar *)zfmalloc(size + 1);
+        zfmemcpy(ret, src, size);
         ret[size] = '\0';
     }
     return ret;
@@ -54,7 +54,7 @@ inline zfchar *zfsChange(
         , ZF_IN const zfchar *src
         ) {
     if(src) {
-        zfindex size = sizeof(zfchar) * (zfslen(src) + 1);
+        zfindex size = zfslen(src) + 1;
         dst = (zfchar *)zfrealloc(dst, size);
         zfmemcpy(dst, src, size);
     }
@@ -83,8 +83,8 @@ inline zfchar *zfsChange(
     if(size == zfindexMax()) {
         size = zfslen(src);
     }
-    dst = (zfchar *)zfrealloc(dst, sizeof(zfchar) * (size + 1));
-    zfmemcpy(dst, src, sizeof(zfchar) * size);
+    dst = (zfchar *)zfrealloc(dst, size + 1);
+    zfmemcpy(dst, src, size);
     dst[size] = '\0';
     return dst;
 }
@@ -101,7 +101,7 @@ inline zfchar *zfsAppend(
     }
 
     zfindex oldSize = zfslen(old);
-    zfindex size = sizeof(zfchar) * (oldSize + zfslen(append) + 1);
+    zfindex size = oldSize + zfslen(append) + 1;
     old = (zfchar *)zfrealloc(old, size);
     zfmemcpy(old + oldSize, append, size);
     return old;
@@ -123,8 +123,8 @@ inline zfchar *zfsAppend(
     if(size == zfindexMax()) {
         size = zfslen(append);
     }
-    old = (zfchar *)zfrealloc(old, sizeof(zfchar) * (oldSize + size + 1));
-    zfmemcpy(old + oldSize, append, sizeof(zfchar) * size);
+    old = (zfchar *)zfrealloc(old, oldSize + size + 1);
+    zfmemcpy(old + oldSize, append, size);
     old[oldSize + size] = '\0';
     return old;
 }

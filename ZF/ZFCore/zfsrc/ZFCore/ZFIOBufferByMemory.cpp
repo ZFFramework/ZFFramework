@@ -118,7 +118,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfindex, onInput
     }
     else {
         count = zfmMin(count, d->ioBuf.length() - d->inputIndex);
-        zfmemcpy(buf, d->ioBuf.cString() + d->inputIndex, count * sizeof(zfchar));
+        zfmemcpy(buf, d->ioBuf.cString() + d->inputIndex, count);
         d->inputIndex += count;
         return count;
     }
@@ -143,7 +143,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfindex, onOutput
             , ZFMP_IN(zfindex, count)
             ) {
     if(count == zfindexMax()) {
-        count = zfslen((const zfchar *)buf) * sizeof(zfchar);
+        count = zfslen((const zfchar *)buf);
     }
     d->ioBuf.replace(d->outputIndex, zfmMin(count, d->ioBuf.length() - d->outputIndex), (const zfchar *)buf, count);
     d->outputIndex += count;

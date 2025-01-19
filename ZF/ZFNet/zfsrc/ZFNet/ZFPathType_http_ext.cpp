@@ -24,7 +24,7 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
     if(!recv->success() || !zfstringIsEqual(recv->header("Content-Type"), "text/html")) {
         return zffalse;
     }
-    const zfchar *body = recv->bodyText();
+    const zfchar *body = recv->body();
 
     zfobj<ZFRegExp> pattern("(?<=<a .*href=\")([^\"]+)(?=\")");
     zfobj<ZFRegExp> ignorePattern("^/|^[a-z]+://|[\\?&=~]|\\./|^\\.+$");

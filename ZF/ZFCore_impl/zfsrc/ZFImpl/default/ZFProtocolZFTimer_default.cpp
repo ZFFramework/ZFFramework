@@ -47,7 +47,7 @@ public:
         if(curId != this->timer->timerImplId() || curThread->threadStopRequested()) {return;}
 
         // timer
-        if(this->timer->activateOnMainThread()) {
+        if(this->timer->eventOnMainThread()) {
             zfself *owner = this;
             ZFLISTENER_2(timerMainThread
                     , zfautoT<zfself>, owner

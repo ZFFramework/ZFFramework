@@ -14,7 +14,7 @@ protected:
         zfstring testValue = "A906449D5769FA7361D7ECC6AA3F6D28"; // testString's MD5 to verify
         zfstring value;
 
-        value = ZFMd5((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
+        value = ZFMd5((const zfbyte *)testString, zfslen(testString));
         this->output(zfstr("MD5 of array \"%s\": %s", testString, value));
         ZFTestCaseAssert(value == testValue);
 

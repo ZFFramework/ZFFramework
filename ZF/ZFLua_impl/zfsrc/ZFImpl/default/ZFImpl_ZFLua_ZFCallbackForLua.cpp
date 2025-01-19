@@ -215,7 +215,7 @@ public:
 
 public:
     ZFPathInfo ownerPathInfo;
-    ZFBuffer func;
+    zfstring func;
     zfbool funcReaderDone;
     ZFCoreArray<ValueHolder> upvalues;
 
@@ -227,7 +227,7 @@ public:
 public:
     void removeAll(void) {
         this->ownerPathInfo.removeAll();
-        this->func.bufferFree();
+        this->func.removeAll();
         if(!this->upvalues.isEmpty()) {
             ZFCoreArray<ValueHolder> tmp = this->upvalues;
             this->upvalues = ZFCoreArray<ValueHolder>();
@@ -249,8 +249,8 @@ private:
             return NULL;
         }
         owner->funcReaderDone = zftrue;
-        *size = (size_t)owner->func.textLength();
-        return owner->func.text();
+        *size = (size_t)owner->func.length();
+        return owner->func.cString();
     }
 
 private:

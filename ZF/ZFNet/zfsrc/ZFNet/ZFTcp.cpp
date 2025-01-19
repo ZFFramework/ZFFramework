@@ -131,6 +131,11 @@ ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp>, accept) {
     return ret;
 }
 
+ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
+            , ZFMP_IN(const zfstring &, data)
+            ) {
+    return this->send(data.buffer(), data.length());
+}
 ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
             , ZFMP_IN(const void *, data)
             , ZFMP_IN(zfindex, size)
@@ -147,26 +152,15 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
     }
     return ZFPROTOCOL_ACCESS(ZFTcp)->send(this, d->nativeSocket, data, size);
 }
-ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
-            , ZFMP_IN(const zfchar *, data)
-            , ZFMP_IN_OPT(zfindex, size, zfindexMax())
-            ) {
-    return this->send((const void *)data, (size == zfindexMax() ? zfslen(data) : size) * sizeof(zfchar));
-}
-ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
-            , ZFMP_IN(const ZFBuffer &, data)
-            ) {
-    return this->send(data.buffer(), data.length());
-}
 ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
             , ZFMP_IN(const ZFInput &, input)
             ) {
-    ZFBuffer buf;
+    zfstring buf;
     ZFInputRead(buf, input);
     return this->send(buf.buffer(), buf.length());
 }
 ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
-            , ZFMP_IN_OUT(ZFBuffer &, data)
+            , ZFMP_IN_OUT(zfstring &, data)
             , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
             , ZFMP_IN_OPT(zftimet, timeout, -1)
             ) {
@@ -184,9 +178,9 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
         maxSize = 4096;
     }
     data.capacity(data.length() + maxSize);
-    zfindex recvSize = ZFPROTOCOL_ACCESS(ZFTcp)->recv(this, d->nativeSocket, data.bufferT<zfbyte *>() + data.length(), maxSize, timeout);
-    data.length(data.length() + recvSize);
-    data.bufferT<zfchar *>()[data.length() / sizeof(zfchar)] = '\0';
+    zfindex recvSize = ZFPROTOCOL_ACCESS(ZFTcp)->recv(this, d->nativeSocket, data.zfunsafe_buffer() + data.length(), maxSize, timeout);
+    data.zfunsafe_length(data.length() + recvSize);
+    data.zfunsafe_buffer()[data.length()] = '\0';
     return recvSize;
 }
 ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv

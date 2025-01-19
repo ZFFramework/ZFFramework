@@ -80,7 +80,7 @@ public:
                 ) {
             _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
-            ZFBuffer buf;
+            zfstring buf;
             ZFInputRead(buf, input);
             if(buf.length() == 0) {
                 zfobj<v_zfstring> errorHint;
@@ -89,8 +89,8 @@ public:
                 return;
             }
 
-            NSData *data = [NSData dataWithBytesNoCopy:buf.buffer() length:buf.length() freeWhenDone:YES];
-            buf.bufferGiveUp();
+            NSData *data = [NSData dataWithBytesNoCopy:buf.zfunsafe_buffer() length:buf.length() freeWhenDone:YES];
+            buf.zfunsafe_bufferGiveUp();
             NSError *error = nil;
             nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];
             if(error != nil) {

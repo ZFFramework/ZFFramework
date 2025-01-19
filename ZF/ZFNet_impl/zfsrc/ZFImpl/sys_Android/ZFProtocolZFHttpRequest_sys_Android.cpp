@@ -13,7 +13,7 @@ zfclassNotPOD _ZFP_ZFHttpRequestImpl_sys_Android_Task {
 public:
     zfobj<v_zfbool> running;
     ZFHttpRequest *request;
-    ZFBuffer body;
+    zfstring body;
     jobject nativeTask;
 };
 
@@ -224,7 +224,7 @@ public:
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
         task->body.append(buffer, byteSize);
     }
-    virtual ZFBuffer body(ZF_IN void *nativeTask) {
+    virtual zfstring body(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
         return task->body;
     }
@@ -250,7 +250,7 @@ public:
             }
             jobject nativeTask = (jobject)task->nativeTask;
             jobject nativeInput = task->body.length() > 0
-                ? ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForBuffer(task->body))
+                ? ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForString(task->body))
                 : NULL;
             ZFCoreMutexUnlock();
 
@@ -360,7 +360,9 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest
     response->errorHint(ZFImpl_sys_Android_zfstringFromString(errorHint));
     if(nativeBodyInput != NULL) {
         ZFInput bodyInput = ZFImpl_sys_Android_ZFInputFromZFAndroidInput(nativeBodyInput);
-        ZFInputRead(response->body(), bodyInput);
+        zfstring body;
+        ZFInputRead(body, bodyInput);
+        response->body(body);
     }
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(request);
 }

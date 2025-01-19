@@ -152,7 +152,7 @@ public:
             return zfnull;
         }
         _Token *d = zfnew(_Token);
-        d->bufSize = zfslen(pathData) * sizeof(zfchar);
+        d->bufSize = zfslen(pathData);
         d->buf = (zfbyte *)zfmalloc(d->bufSize);
         zfmemcpy(d->buf, pathData, d->bufSize);
         return d;
