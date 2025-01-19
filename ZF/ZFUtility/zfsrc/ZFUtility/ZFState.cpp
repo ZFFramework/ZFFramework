@@ -236,14 +236,10 @@ ZFMETHOD_DEFINE_0(ZFState, zfbool, ready) {
 zfclass _ZFP_I_ZFStateLoadTaskId : zfextend ZFTaskId {
     ZFOBJECT_DECLARE(_ZFP_I_ZFStateLoadTaskId, ZFTaskId)
 public:
-    _ZFP_ZFStatePrivate *d;
     ZFListener callback;
 public:
     virtual void stop(void) {
-        if(d && d->loadQueue && this->callback) {
-            d->loadQueue->removeElement(this->callback);
-            this->callback = zfnull;
-        }
+        this->callback = zfnull;
         zfsuper::stop();
     }
 };
@@ -261,13 +257,20 @@ ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, load
 
     zfobj<_ZFP_I_ZFStateLoadTaskId> taskId;
     taskId->callback = callback;
-    ZFLISTENER_1(callbackWrap
+    zfself *owner = this;
+    ZFLISTENER_2(callbackWrap
+            , zfweakT<zfself>, owner
             , zfautoT<_ZFP_I_ZFStateLoadTaskId>, taskId
             ) {
-        taskId->d = zfnull;
-        taskId->callback = zfnull;
+        if(taskId->callback) {
+            taskId->callback.execute(ZFArgs()
+                    .sender(owner)
+                    );
+            taskId->callback = zfnull;
+        }
     } ZFLISTENER_END()
     d->loadQueue->add(callbackWrap);
+    d->loadCheck(this);
     return taskId;
 }
 

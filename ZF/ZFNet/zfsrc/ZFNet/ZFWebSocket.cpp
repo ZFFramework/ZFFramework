@@ -8,6 +8,7 @@ ZFOBJECT_REGISTER(ZFWebSocket)
 ZFEVENT_REGISTER(ZFWebSocket, OnOpen)
 ZFEVENT_REGISTER(ZFWebSocket, OnClose)
 ZFEVENT_REGISTER(ZFWebSocket, OnRecv)
+ZFEVENT_REGISTER(ZFWebSocket, OnRecvBin)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFWebSocketPrivate {
@@ -61,6 +62,21 @@ ZFMETHOD_DEFINE_2(ZFWebSocket, void, send
         ) {
     if(d->nativeWebSocket) {
         ZFPROTOCOL_ACCESS(ZFWebSocket)->send(this, d->nativeWebSocket, data, size);
+    }
+}
+ZFMETHOD_DEFINE_1(ZFWebSocket, void, sendBin
+        , ZFMP_IN(const zfstring &, data)
+        ) {
+    if(d->nativeWebSocket) {
+        ZFPROTOCOL_ACCESS(ZFWebSocket)->sendBin(this, d->nativeWebSocket, data.buffer(), data.length());
+    }
+}
+ZFMETHOD_DEFINE_2(ZFWebSocket, void, sendBin
+        , ZFMP_IN(const void *, data)
+        , ZFMP_IN(zfindex, size)
+        ) {
+    if(d->nativeWebSocket) {
+        ZFPROTOCOL_ACCESS(ZFWebSocket)->sendBin(this, d->nativeWebSocket, data, size);
     }
 }
 

@@ -40,6 +40,14 @@ public:
      * @note may or may not fired in background thread, unless #eventOnMainThread is set
      */
     ZFEVENT(OnRecv)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * param0 would be a #v_zfstring contains binary data,
+     * the data should not be cached for further use
+     * @note may or may not fired in background thread, unless #eventOnMainThread is set
+     */
+    ZFEVENT(OnRecvBin)
 
 public:
     /**
@@ -76,6 +84,20 @@ public:
      * @brief send data
      */
     ZFMETHOD_DECLARE_2(void, send
+            , ZFMP_IN(const void *, data)
+            , ZFMP_IN(zfindex, size)
+            )
+
+    /**
+     * @brief send binary data
+     */
+    ZFMETHOD_DECLARE_1(void, sendBin
+            , ZFMP_IN(const zfstring &, data)
+            )
+    /**
+     * @brief send binary data
+     */
+    ZFMETHOD_DECLARE_2(void, sendBin
             , ZFMP_IN(const void *, data)
             , ZFMP_IN(zfindex, size)
             )

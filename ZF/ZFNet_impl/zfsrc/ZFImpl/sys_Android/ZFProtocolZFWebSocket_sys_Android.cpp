@@ -34,12 +34,11 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), "native_close",
-            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject nativeWebSocketTmp = (jobject)nativeWebSocket;
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), jmId
-                , JNIConvertZFObjectToJNIType(jniEnv, owner)
                 , nativeWebSocketTmp
             );
         JNIUtilDeleteGlobalRef(jniEnv, nativeWebSocketTmp);
@@ -52,7 +51,27 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), "native_send",
-                JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                    .add(JNIType::S_object_Object())
+                    .add(JNIType::S_object_Object())
+                    ).c_str());
+        jbyteArray nativeBuf = JNIUtilNewByteArray(jniEnv, size);
+        JNIBlockedDeleteLocalRef(nativeBuf);
+        JNIUtilSetByteArrayRegion(jniEnv, nativeBuf, 0, (jint)size, (const jbyte *)data);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), jmId
+                , (jobject)nativeWebSocket
+                , nativeBuf
+                );
+    }
+    virtual void sendBin(
+            ZF_IN ZFWebSocket *owner
+            , ZF_IN void *nativeWebSocket
+            , ZF_IN const void *data
+            , ZF_IN zfindex size
+            ) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), "native_sendBin",
+                JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                     .add(JNIType::S_object_Object())
                     .add(JNIType::S_object_Object())
                     ).c_str());
@@ -99,6 +118,20 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFWebSocket
     ZFWebSocket *owner = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFWebSocket);
     jbyte *nativeData = JNIUtilGetByteArrayElements(jniEnv, (jbyteArray)data, NULL);
     ZFPROTOCOL_ACCESS(ZFWebSocket)->notifyOnRecv(owner
+            , zfstring::shared((const zfchar *)nativeData, (zfindex)JNIUtilGetArrayLength(jniEnv, (jbyteArray)data))
+            );
+    JNIUtilReleaseByteArrayElements(jniEnv, (jbyteArray)data, nativeData, 0);
+}
+JNI_METHOD_DECLARE_END()
+
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFWebSocket
+        , void, native_1notifyOnRecvBin
+        , JNIPointer zfjniPointerOwnerZFWebSocket
+        , jobject data
+        ) {
+    ZFWebSocket *owner = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFWebSocket);
+    jbyte *nativeData = JNIUtilGetByteArrayElements(jniEnv, (jbyteArray)data, NULL);
+    ZFPROTOCOL_ACCESS(ZFWebSocket)->notifyOnRecvBin(owner
             , zfstring::shared((const zfchar *)nativeData, (zfindex)JNIUtilGetArrayLength(jniEnv, (jbyteArray)data))
             );
     JNIUtilReleaseByteArrayElements(jniEnv, (jbyteArray)data, nativeData, 0);

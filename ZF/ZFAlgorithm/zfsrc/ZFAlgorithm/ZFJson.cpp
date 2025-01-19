@@ -735,7 +735,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFJsonToOutput
     if(output && item) {
         output << token.jsonGlobalLineBeginToken;
         if(item.type() == ZFJsonType::e_Value) {
-            ZFJsonEscapeCharEncode(output, item.value());
+            output << item.value();
         }
         else {
             _ZFP_ZFJsonToOutput_output(output, item, token, 0);

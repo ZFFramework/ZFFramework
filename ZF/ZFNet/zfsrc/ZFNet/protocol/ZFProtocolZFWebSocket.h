@@ -33,6 +33,13 @@ public:
             , ZF_IN const void *data
             , ZF_IN zfindex size
             ) zfpurevirtual;
+    /** @brief see #ZFWebSocket::close */
+    virtual void sendBin(
+            ZF_IN ZFWebSocket *owner
+            , ZF_IN void *nativeWebSocket
+            , ZF_IN const void *data
+            , ZF_IN zfindex size
+            ) zfpurevirtual;
 public:
     /** @brief implementation must notify when connection opened */
     virtual void notifyOnOpen(
@@ -54,6 +61,13 @@ public:
             , ZF_IN const zfstring &data
             ) {
         owner->observerNotify(ZFWebSocket::E_OnRecv(), zfobj<v_zfstring>(data));
+    }
+    /** @brief implementation must notify when recv data */
+    virtual void notifyOnRecvBin(
+            ZF_IN ZFWebSocket *owner
+            , ZF_IN const zfstring &data
+            ) {
+        owner->observerNotify(ZFWebSocket::E_OnRecvBin(), zfobj<v_zfstring>(data));
     }
 ZFPROTOCOL_INTERFACE_END(ZFWebSocket)
 

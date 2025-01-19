@@ -5,6 +5,7 @@ import com.ZFFramework.Android.ZF_impl.ZFResultType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ConnectionPool;
@@ -25,7 +26,6 @@ public final class ZFWebSocket {
         ZFWebSocket ws = new ZFWebSocket();
         ws.zfjniPointerOwnerZFWebSocket = zfjniPointerOwnerZFWebSocket;
         ++ws.wsTaskId;
-        int wsTaskIdCur = ws.wsTaskId;
         ws.ws = new OkHttpClient.Builder()
                 .addInterceptor(new GzipRequestInterceptor())
                 .connectionPool(new ConnectionPool(5, 5, TimeUnit.MINUTES))
@@ -84,7 +84,7 @@ public final class ZFWebSocket {
                     public void onMessage(@NotNull WebSocket webSocket, @NotNull ByteString bytes) {
                         super.onMessage(webSocket, bytes);
                         if (_wsTaskIdSaved == ws.wsTaskId) {
-                            native_notifyOnRecv(ws.zfjniPointerOwnerZFWebSocket, bytes.toByteArray());
+                            native_notifyOnRecvBin(ws.zfjniPointerOwnerZFWebSocket, bytes.toByteArray());
                         }
                     }
                 });
@@ -101,6 +101,11 @@ public final class ZFWebSocket {
 
     public static void native_send(Object nativeWebSocket, Object data) {
         ZFWebSocket ws = (ZFWebSocket) nativeWebSocket;
+        ws.ws.send(new String((byte[]) data, StandardCharsets.UTF_8));
+    }
+
+    public static void native_sendBin(Object nativeWebSocket, Object data) {
+        ZFWebSocket ws = (ZFWebSocket) nativeWebSocket;
         byte[] tmp = (byte[]) data;
         ws.ws.send(ByteString.of(tmp, 0, tmp.length));
     }
@@ -110,5 +115,7 @@ public final class ZFWebSocket {
     private static native void native_notifyOnClose(long zfjniPointerOwnerZFWebSocket, int result, String reasonHint);
 
     private static native void native_notifyOnRecv(long zfjniPointerOwnerZFWebSocket, Object data);
+
+    private static native void native_notifyOnRecvBin(long zfjniPointerOwnerZFWebSocket, Object data);
 
 }
