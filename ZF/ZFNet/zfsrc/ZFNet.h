@@ -11,6 +11,7 @@
 #include "ZFNet/ZFPathType_http.h"
 #include "ZFNet/ZFTcp.h"
 #include "ZFNet/ZFUdp.h"
+#include "ZFNet/ZFWebSocket.h"
 
 #endif // #ifndef _ZFI_ZFNet_h_
 

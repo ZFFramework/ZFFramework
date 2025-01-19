@@ -31,7 +31,7 @@ public final class ZFUIWebView extends WebView {
         public void onPageStarted(WebView view, String url, Bitmap facIcon) {
             _owner.get()._ZFP_loading = true;
             if (_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView != 0) {
-                ZFUIWebView.native_ZFUIWebView_notifyWebLoadStateOnUpdate(_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView);
+                ZFUIWebView.native_notifyWebLoadStateOnUpdate(_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView);
             }
         }
 
@@ -43,7 +43,7 @@ public final class ZFUIWebView extends WebView {
 
             if (!_owner.get()._ZFP_loading && !_owner.get()._ZFP_webRedirect) {
                 if (_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView != 0) {
-                    ZFUIWebView.native_ZFUIWebView_notifyWebLoadStateOnUpdate(_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView);
+                    ZFUIWebView.native_notifyWebLoadStateOnUpdate(_owner.get()._ZFP_zfjniPointerOwnerZFUIWebView);
                 }
             } else {
                 _owner.get()._ZFP_webRedirect = false;
@@ -99,7 +99,7 @@ public final class ZFUIWebView extends WebView {
     }
 
     // ============================================================
-    public static native void native_ZFUIWebView_notifyWebLoadStateOnUpdate(long zfjniPointerOwnerZFUIWebView);
+    public static native void native_notifyWebLoadStateOnUpdate(long zfjniPointerOwnerZFUIWebView);
 
     // ============================================================
     public long _ZFP_zfjniPointerOwnerZFUIWebView = 0;

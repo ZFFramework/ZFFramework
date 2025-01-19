@@ -46,6 +46,10 @@ dependencies {
     implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs', includes: ['*.jar'])
 }
 
+if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
+}
+
 import org.apache.tools.ant.taskdefs.condition.Os
 
 task ZFSetup {

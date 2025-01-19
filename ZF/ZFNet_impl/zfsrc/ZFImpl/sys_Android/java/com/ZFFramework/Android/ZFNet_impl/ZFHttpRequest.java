@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -50,16 +49,18 @@ public final class ZFHttpRequest {
         }
         this.recvHeaderCache = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (Map.Entry<String, List<String>> entry : this.connection.getHeaderFields().entrySet()) {
-            this.recvHeaderCache.put(entry.getKey(), _join(entry.getValue()));
+            if (entry.getKey() != null) {
+                this.recvHeaderCache.put(entry.getKey(), _join(entry.getValue()));
+            }
         }
     }
 
     // ============================================================
-    public static native void native_ZFHttpRequest_notifyResponse(long zfjniPointerOwnerZFHttpRequest,
-                                                                  long zfjniPointerOwnerZFHttpResponse,
-                                                                  int code,
-                                                                  String errorHint,
-                                                                  Object nativeBodyInput);
+    public static native void native_notifyResponse(long zfjniPointerOwnerZFHttpRequest,
+                                                    long zfjniPointerOwnerZFHttpResponse,
+                                                    int code,
+                                                    String errorHint,
+                                                    Object nativeBodyInput);
 
     // ============================================================
     // for request
@@ -220,7 +221,7 @@ public final class ZFHttpRequest {
         } while (false);
 
         if (task.running) {
-            native_ZFHttpRequest_notifyResponse(
+            native_notifyResponse(
                     task.zfjniPointerOwnerZFHttpRequest,
                     task.zfjniPointerOwnerZFHttpResponse,
                     code,

@@ -228,14 +228,9 @@ ZFArgs &ZFArgs::eventFiltered(ZF_IN zfbool eventFiltered) {
 ZFArgs &ZFArgs::paramInit(void) {
     ZFCoreMutexLock();
     _ZFP_ZFArgsPrivate &dTmp = *d;
-    dTmp.param[0].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[1].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[2].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[3].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[4].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[5].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[6].zfunsafe_assign(ZFMP_DEF());
-    dTmp.param[7].zfunsafe_assign(ZFMP_DEF());
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        dTmp.param[i].zfunsafe_assign(ZFMP_DEF());
+    }
     ZFCoreMutexUnlock();
     return *this;
 }
@@ -268,6 +263,9 @@ ZFArgs &ZFArgs::paramInit(ZF_IN const ZFCoreArray<zfauto> &params) {
     _ZFP_ZFArgsPrivate &dTmp = *d;
     for(zfindex i = 0; i < params.count(); ++i) {
         dTmp.param[i].zfunsafe_assign(params[i]);
+    }
+    for(zfindex i = params.count(); i < ZFMETHOD_MAX_PARAM; ++i) {
+        dTmp.param[i].zfunsafe_assign(ZFMP_DEF());
     }
     ZFCoreMutexUnlock();
     return *this;

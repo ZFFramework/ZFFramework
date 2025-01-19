@@ -346,7 +346,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_sys_Android)
 ZF_NAMESPACE_GLOBAL_END
 
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest
-        , void, native_1ZFHttpRequest_1notifyResponse
+        , void, native_1notifyResponse
         , JNIPointer zfjniPointerOwnerZFHttpRequest
         , JNIPointer zfjniPointerOwnerZFHttpResponse
         , jint code

@@ -552,15 +552,17 @@ public:
             ZF_IN const T_Char *s
             , ZF_IN zfindex len = zfindexMax()
             ) const {
-        const T_Char *buf = this->cString();
-        if(s) {
-            if(len == zfindexMax()) {
-                len = _ZFP_zfstring_len(s);
-            }
-            return _ZFP_zfstring_ncmp(buf, s, (len >= this->length() ? this->length() : len) + 1);
+        if(len == zfindexMax()) {
+            len = s ? _ZFP_zfstring_len(s) : 0;
+        }
+        if(this->length() < len) {
+            return -1;
+        }
+        else if(this->length() > len) {
+            return 1;
         }
         else {
-            return (zfint)buf[0];
+            return _ZFP_zfstring_ncmp(this->cString(), s, len);
         }
     }
 
@@ -670,7 +672,8 @@ private:
             d->length = dTmp->length;
             d->d.buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
             if(dTmp->length > 0 && keepContents) {
-                zfmemcpy(d->d.buf, dTmp->d.ptr, (dTmp->length + 1) * sizeof(T_Char));
+                zfmemcpy(d->d.buf, dTmp->d.ptr, dTmp->length * sizeof(T_Char));
+                d->d.buf[dTmp->length] = '\0';
             }
             else {
                 d->d.buf[0] = '\0';
