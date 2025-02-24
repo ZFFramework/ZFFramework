@@ -1,0 +1,3 @@
+<ZFUIImage imageNinePatch="(7, 7, 7, 7)" imageType="ZFUIImageFromInput">
+    <ZFCallback callbackType="ZFInputForLocal" category="imageData" localPath="ZFUIViewBlinkImage.png" />
+</ZFUIImage>

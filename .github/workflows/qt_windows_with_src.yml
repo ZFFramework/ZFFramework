@@ -1,0 +1,42 @@
+name: Qt Windows with src
+
+on:
+  push:
+    branches: [ "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
+      ZF_PROJ_PATH: demo/zfproj_with_src
+      ZF_PROJ_NAME: ZFFramework_test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup MSVC cmd
+      uses: TheMrMilchmann/setup-msvc-dev@v3
+      with:
+        export-path-to-vcvarsall: VCVARSALL_PATH
+        arch: x64
+
+    - name: Setup Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        host: windows
+        target: desktop
+        modules: qtwebengine
+
+    - name: ZFSetup
+      run: |
+        Invoke-Expression -Command 'cmd.exe /C ".\\zfsetup.bat"'
+
+    - name: ZF build zfproj
+      run: |
+        Invoke-Expression -Command 'cmd.exe /C "..\\ZFFramework\\tools\\buildapp\\buildapp_Qt.bat" "${env:ZF_PROJ_NAME}" "${env:ZF_PROJ_PATH}"'
+

@@ -1,0 +1,45 @@
+name: Doxygen
+
+on:
+  push:
+    branches: [ "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+        mkdir -p ./_tmp
+
+    - name: ZF gen doc
+      uses: mattnotmitt/doxygen-action@edge
+      with:
+        working-directory: master/ZF_docs/Doxygen
+        doxyfile-path: ./Doxyfile
+
+    - name: ZF upload
+      run: |
+        if [ $(basename $(dirname $(git remote get-url origin))) = "ZFFramework" ]; then
+        chmod +x ../ZFFramework/master/ZF_CI/doc.sh
+        ../ZFFramework/master/ZF_CI/doc.sh
+        fi
+
+    - name: ZFLoader build trigger
+      run: |
+        curl -L -X POST https://api.github.com/repos/ZFFramework/ZFLoader/dispatches \
+            -H 'Accept: application/vnd.github+json' \
+            -H "Authorization: Bearer ${{secrets.ZFCI_TOKEN}}" \
+            -d '{"event_type":"trigger_build", "client_payload":{}}'
+

@@ -1,0 +1,21 @@
+#ifndef _ZFI_ZFImpl_sys_Android_ZFObject_h_
+#define _ZFI_ZFImpl_sys_Android_ZFObject_h_
+
+#include "ZFImpl_sys_Android_def.h"
+
+#if ZF_ENV_sys_Android
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+#define ZFImpl_sys_Android_JNI_ID_ZFObject ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFObject)
+#define ZFImpl_sys_Android_JNI_NAME_ZFObject ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFObject)
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassZFObject(void);
+
+#define ZFImpl_sys_Android_JNI_ID_ZFListener ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFListener)
+#define ZFImpl_sys_Android_JNI_NAME_ZFListener ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFListener)
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassZFListener(void);
+
+ZF_NAMESPACE_GLOBAL_END
+#endif // #if ZF_ENV_sys_Android
+#endif // #ifndef _ZFI_ZFImpl_sys_Android_ZFObject_h_
+

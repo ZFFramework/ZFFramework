@@ -1,0 +1,143 @@
+apply plugin: 'com.android.application'
+
+def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../ZFFramework'
+android {
+    signingConfigs {
+        ZFFramework {
+            keyAlias 'ZFFramework'
+            keyPassword 'ZFFramework'
+            storeFile file(ZF_ROOT_PATH + '/tools/spec/Android/ZFFramework.keystore')
+            storePassword 'ZFFramework'
+        }
+    }
+    compileSdkVersion 29
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 29
+        versionCode 1
+        versionName '1.0'
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_ARM_MODE=arm'
+                cppFlags ''
+            }
+        }
+        ndk {
+            if (System.getenv('ZF_ANDROID_ABI') != null && !System.getenv('ZF_ANDROID_ABI').isEmpty()) {
+                // ZF_ANDROID_ABI=armeabi-v7a,arm64-v8a,x86 ./gradle assembleRelease
+                abiFilters System.getenv('ZF_ANDROID_ABI').split(',')
+            } else {
+                // abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'x86', 'x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
+            }
+        }
+    }
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.ZFFramework
+        }
+    }
+    sourceSets {
+        main {
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZF_impl/zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFUIKit_impl/zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFLua_impl/zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFUIWebKit_impl/zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFNet_impl/zfsrc/ZFImpl/sys_Android/java'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path 'CMakeLists.txt'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(includes: ['*.jar'], dir: 'libs')
+}
+
+if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZF_impl/zfproj/Android/ZF_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZF_impl/zfproj/Android/ZF_impl/zflib/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfproj/Android/ZFCore_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfproj/Android/ZFCore_impl/zflib/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfproj/Android/ZFAlgorithm_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfproj/Android/ZFAlgorithm_impl/zflib/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZFUIKit_impl/zfproj/Android/ZFUIKit_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZFUIKit_impl/zfproj/Android/ZFUIKit_impl/zflib/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZFLua_impl/zfproj/Android/ZFLua_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZFLua_impl/zfproj/Android/ZFLua_impl/zflib/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZFUIWebKit_impl/zfproj/Android/ZFUIWebKit_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZFUIWebKit_impl/zfproj/Android/ZFUIWebKit_impl/zflib/zfprojConfig.gradle'
+}
+if (file(ZF_ROOT_PATH + '/ZF/ZFNet_impl/zfproj/Android/ZFNet_impl/zflib/zfprojConfig.gradle').exists()) {
+    apply from: ZF_ROOT_PATH + '/ZF/ZFNet_impl/zfproj/Android/ZFNet_impl/zflib/zfprojConfig.gradle'
+}
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+task ZFSetup {
+    ext.ZFCopyRes = { ModulePath, LibName ->
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            exec {
+                executable 'cmd.exe'
+                args '/c', ZF_ROOT_PATH + '/tools/util/copy_res.bat', ModulePath + '/' + LibName + '/zfres', this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
+            }
+        } else {
+            exec {
+                executable 'sh'
+                args ZF_ROOT_PATH + '/tools/util/copy_res.sh', ModulePath + '/' + LibName + '/zfres', this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
+            }
+        }
+    }
+    doLast {
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            exec {
+                executable 'cmd.exe'
+                args '/c', this.projectDir.getAbsolutePath() + '/../../../../../zfsetup.bat'
+            }
+            exec {
+                executable 'cmd.exe'
+                args '/c', ZF_ROOT_PATH + '/tools/util/copy_res.bat', this.projectDir.getAbsolutePath() + '/../../../../zfres', this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
+            }
+        } else {
+            exec {
+                executable 'sh'
+                args this.projectDir.getAbsolutePath() + '/../../../../../zfsetup.sh'
+            }
+            exec {
+                executable 'sh'
+                args ZF_ROOT_PATH + '/tools/util/copy_res.sh', this.projectDir.getAbsolutePath() + '/../../../../zfres', this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
+            }
+        }
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFCore')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFAlgorithm')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUtility')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIKit')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIWidget')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIExt')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFLua')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIWebKit')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFNet')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZF_impl')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFCore_impl')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFAlgorithm_impl')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIKit_impl')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFLua_impl')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIWebKit_impl')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFNet_impl')
+    }
+}
+preBuild.dependsOn ZFSetup
+

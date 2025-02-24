@@ -1,0 +1,14 @@
+ZF_NAME = ZFUIExt
+ZF_TYPE = lib
+
+ZF_OUTPUT = ..
+ZF_INPLACE = 1
+ZF_INPLACE_SRC = ZFFramework/ZFModule/$ZF_NAME
+
+ZF_LIB += ZFCore
+ZF_LIB += ZFAlgorithm
+ZF_LIB += ZFUtility
+ZF_LIB += ZFUIKit
+ZF_LIB += ZFUIWidget
+ZF_LIB += ZFNet
+

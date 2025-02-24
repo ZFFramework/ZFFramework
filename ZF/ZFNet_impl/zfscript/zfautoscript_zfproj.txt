@@ -1,0 +1,13 @@
+ZF_NAME = ZFNet_impl
+ZF_TYPE = impl
+
+ZF_OUTPUT = ..
+ZF_INPLACE = 1
+ZF_INPLACE_SRC = ZFFramework/ZFModule/$ZF_NAME
+
+ZF_LIB += ZFCore
+ZF_LIB += ZFNet
+ZF_LIB += ZFAlgorithm
+
+ZF_IMPL += ZF_impl
+

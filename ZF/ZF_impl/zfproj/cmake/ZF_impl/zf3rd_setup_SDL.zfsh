@@ -1,0 +1,104 @@
+
+<ZF_SET> _OLD_DIR=<ZF_PWD>
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo"
+<ZF_CD> "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo"
+<ZF_SET> _REPO_DIR=<ZF_PWD>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\_tmp\cmake\SDL"
+<ZF_CD> "<ZF_ROOT_PATH>\_tmp\cmake\SDL"
+<ZF_SET> _BUILD_DIR=<ZF_PWD>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\_release\cmake\SDL"
+<ZF_CD> "<ZF_ROOT_PATH>\_release\cmake\SDL"
+<ZF_SET> _INSTALL_DIR=<ZF_PWD>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+<ZF_SET> _CMAKE_PREFIX_DIR=<ZF_PL>_INSTALL_DIR<ZF_PR>
+
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_check.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>"
+<ZF_IF_SUCCESS_BEGIN>
+    echo ZFSDL: cache available, build skipped
+    <ZF_EXIT_SUCCESS>
+<ZF_IF_SUCCESS_END>
+
+
+echo ZFSDL: building SDL
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL"
+<ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL"
+cmake -G "Ninja" "<ZF_PL>_REPO_DIR<ZF_PR>\SDL" -DCMAKE_PREFIX_PATH="<ZF_PL>_CMAKE_PREFIX_DIR<ZF_PR>" -DCMAKE_INSTALL_PREFIX="<ZF_PL>_INSTALL_DIR<ZF_PR>" -DCMAKE_BUILD_TYPE=Release
+ninja
+ninja install
+<ZF_IF_FAILED_BEGIN>
+    <ZF_EXIT_FAILED>
+<ZF_IF_FAILED_END>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+
+echo ZFSDL: building SDL_image
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_image" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_image"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_image"
+<ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_image"
+cmake -G "Ninja" "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_image" -DCMAKE_PREFIX_PATH="<ZF_PL>_CMAKE_PREFIX_DIR<ZF_PR>" -DCMAKE_INSTALL_PREFIX="<ZF_PL>_INSTALL_DIR<ZF_PR>" -DCMAKE_BUILD_TYPE=Release <ZF_WRAP>
+    -DSDL2IMAGE_VENDORED=ON
+ninja
+ninja install
+<ZF_IF_FAILED_BEGIN>
+    <ZF_EXIT_FAILED>
+<ZF_IF_FAILED_END>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+
+echo ZFSDL: building SDL_ttf
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_ttf" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_ttf"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_ttf"
+<ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_ttf"
+cmake -G "Ninja" "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_ttf" -DCMAKE_PREFIX_PATH="<ZF_PL>_CMAKE_PREFIX_DIR<ZF_PR>" -DCMAKE_INSTALL_PREFIX="<ZF_PL>_INSTALL_DIR<ZF_PR>" -DCMAKE_BUILD_TYPE=Release <ZF_WRAP>
+    -DSDL2TTF_VENDORED=ON
+ninja
+ninja install
+<ZF_IF_FAILED_BEGIN>
+    <ZF_EXIT_FAILED>
+<ZF_IF_FAILED_END>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+
+echo ZFSDL: building SDL_net
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_net" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_net"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_net"
+<ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_net"
+cmake -G "Ninja" "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_net" -DCMAKE_PREFIX_PATH="<ZF_PL>_CMAKE_PREFIX_DIR<ZF_PR>" -DCMAKE_INSTALL_PREFIX="<ZF_PL>_INSTALL_DIR<ZF_PR>" -DCMAKE_BUILD_TYPE=Release
+ninja
+ninja install
+<ZF_IF_FAILED_BEGIN>
+    <ZF_EXIT_FAILED>
+<ZF_IF_FAILED_END>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+
+echo ZFSDL: building SDL_mixer
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_mixer" SDL2 "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_mixer"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_mixer"
+<ZF_CD> "<ZF_PL>_BUILD_DIR<ZF_PR>\SDL_mixer"
+cmake -G "Ninja" "<ZF_PL>_REPO_DIR<ZF_PR>\SDL_mixer" -DCMAKE_PREFIX_PATH="<ZF_PL>_CMAKE_PREFIX_DIR<ZF_PR>" -DCMAKE_INSTALL_PREFIX="<ZF_PL>_INSTALL_DIR<ZF_PR>" -DCMAKE_BUILD_TYPE=Release <ZF_WRAP>
+    -DSDL2MIXER_VENDORED=ON <ZF_WRAP>
+    -DSDL2MIXER_FLAC=OFF <ZF_WRAP>
+    -DSDL2MIXER_MIDI=OFF <ZF_WRAP>
+    -DSDL2MIXER_MOD=OFF <ZF_WRAP>
+    -DSDL2MIXER_OPUS=OFF <ZF_WRAP>
+    -DSDL2MIXER_WAVPACK=OFF
+ninja
+ninja install
+<ZF_IF_FAILED_BEGIN>
+    <ZF_EXIT_FAILED>
+<ZF_IF_FAILED_END>
+<ZF_CD> "<ZF_PL>_OLD_DIR<ZF_PR>"
+
+
+echo ZFSDL: build finish
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_save.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>"
+

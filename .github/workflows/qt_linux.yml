@@ -1,0 +1,38 @@
+name: Qt Linux
+
+on:
+  push:
+    branches: [ "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
+      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_NAME: ZFFramework_test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        host: linux
+        target: desktop
+        modules: qtwebengine
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+
+    - name: ZF build zfproj
+      run: |
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_Qt.sh
+        ../ZFFramework/tools/buildapp/buildapp_Qt.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
+

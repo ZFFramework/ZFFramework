@@ -1,0 +1,53 @@
+name: Android
+
+on:
+  push:
+    branches: [ "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
+      ZF_ANDROID_ABI: arm64-v8a
+      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_NAME: ZFFramework_test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: 17
+        distribution: temurin
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Setup Android NDK
+      uses: nttld/setup-ndk@v1
+      with:
+        ndk-version: r21e
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+
+    - name: ZF build zfproj
+      run: |
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_Android.sh
+        ../ZFFramework/tools/buildapp/buildapp_Android.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
+
+    - name: ZF upload archive
+      run: |
+        if [ $(basename $(dirname $(git remote get-url origin))) = "ZFFramework" ]; then
+        chmod +x ../ZFFramework/master/ZF_CI/upload_app.sh
+        ../ZFFramework/master/ZF_CI/upload_app.sh "_tmp/Android/${ZF_PROJ_NAME}/app/${ZF_PROJ_NAME}.apk" "Android/${ZF_PROJ_NAME}.apk"
+        fi
+

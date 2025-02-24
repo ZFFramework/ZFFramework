@@ -1,0 +1,4 @@
+-DZF_ENV_NAMESPACE_GLOBAL_DISABLE=1
+-I./zfsrc
+
+

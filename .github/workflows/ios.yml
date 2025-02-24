@@ -1,0 +1,32 @@
+name: iOS
+
+on:
+  push:
+    branches: [ "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_NAME: ZFFramework_test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+        chmod +x ../ZFFramework/tools/release/release_iOS.sh
+        ../ZFFramework/tools/release/release_iOS.sh
+
+    - name: ZF build zfproj
+      run: |
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_iOS.sh
+        ../ZFFramework/tools/buildapp/buildapp_iOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
+
