@@ -7,7 +7,7 @@
 #define _ZFI_ZFPropertyFwd_h_
 
 #include "ZFObjectClassTypeFwd.h"
-#include "ZFTypeIdFwd.h"
+#include "zfautoFwd.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFProperty;

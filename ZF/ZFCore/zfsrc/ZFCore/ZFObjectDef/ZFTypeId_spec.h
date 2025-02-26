@@ -79,12 +79,12 @@ public:
 // const void * / void *
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfptr, const void *)
 
-#define _ZFP_ZFTYPEID_ALIAS_EXPAND_zfptr(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
-    template<typename T_Access = _ZFP_PropTypeW_##TypeName \
+#define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+    template<typename T_Access = Type \
         , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-            && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value) ? 1 \
+            && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, Type >::Value) ? 1 \
             : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value \
+                && zftIsSame<typename zftTraits<T_Access>::TrNoRef, Type >::Value \
                 && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
         , typename T_Fix = void \
         > \
@@ -123,8 +123,8 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfptr, const void *)
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \
     };
-ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfptr, const void *, zfptrW, void *, _ZFP_ZFTYPEID_ALIAS_EXPAND_zfptr)
-#undef _ZFP_ZFTYPEID_ALIAS_EXPAND_zfptr
+ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfptr, const void *, zfptrW, void *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr)
+#undef _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr
 
 // ============================================================
 // ZFObject

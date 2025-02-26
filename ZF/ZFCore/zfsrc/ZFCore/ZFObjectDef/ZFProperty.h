@@ -7,7 +7,6 @@
 #define _ZFI_ZFProperty_h_
 
 #include "ZFPropertyFwd.h"
-#include "ZFTypeIdFwd.h"
 #include "ZFMethod.h"
 #include "zfany.h"
 ZF_NAMESPACE_GLOBAL_BEGIN

@@ -161,12 +161,12 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfchar, zfchar)
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
 
-#define _ZFP_ZFTYPEID_ALIAS_EXPAND_cString(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
-    template<typename T_Access = _ZFP_PropTypeW_##TypeName \
+#define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+    template<typename T_Access = Type \
         , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-            && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value) ? 1 \
+            && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, Type >::Value) ? 1 \
             : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value \
+                && zftIsSame<typename zftTraits<T_Access>::TrNoRef, Type >::Value \
                 && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
         , typename T_Fix = void \
         > \
@@ -205,8 +205,8 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \
     };
-ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_EXPAND_cString)
-#undef _ZFP_ZFTYPEID_ALIAS_EXPAND_cString
+ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString)
+#undef _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString
 
 /**
  * @brief see #ZFTYPEID_DECLARE
