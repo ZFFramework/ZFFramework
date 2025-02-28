@@ -15,7 +15,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // void
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTypeId_void() "void"
+inline const zfstring &ZFTypeId_void(void) {
+    static ZFSigName d(zftext("void"));
+    return d;
+}
 
 /** @cond ZFPrivateDoc */
 template<>
@@ -26,8 +29,7 @@ public:
         TypeIdSerializable = 0,
     };
     static inline const zfstring &TypeId(void) {
-        static ZFSigName d(ZFTypeId_void());
-        return d;
+        return ZFTypeId_void();
     }
     virtual const ZFClass *TypeIdClass(void) const {
         return zfnull;
@@ -78,7 +80,9 @@ public:
 // ============================================================
 // const void * / void *
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfptr, const void *)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, zfptr, const void *)
 
+ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, zfptr, const void *, zfptrW, void *)
 #define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     template<typename T_Access = Type \
         , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
@@ -123,7 +127,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfptr, const void *)
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \
     };
-ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfptr, const void *, zfptrW, void *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr)
+ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_ZFCore, zfptr, const void *, zfptrW, void *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr)
 #undef _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_zfptr
 
 // ============================================================

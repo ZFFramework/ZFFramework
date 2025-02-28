@@ -73,6 +73,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIViewFocusNextParam, ZFUIViewFocusNextParam)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFUIKit, ZFUIViewFocusNextParam, ZFUIViewFocusNextParam)
 ZFOUTPUT_TYPE(ZFUIViewFocusNextParam, {v.objectInfoT(s);})
 
 // ============================================================

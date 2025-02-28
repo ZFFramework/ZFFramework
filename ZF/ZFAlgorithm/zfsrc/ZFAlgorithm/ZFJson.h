@@ -55,6 +55,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Object)
     ZFENUM_VALUE_REGISTER(Array)
 ZFENUM_END(ZFLIB_ZFAlgorithm, ZFJsonType)
+ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFJsonType)
 
 // ============================================================
 /**
@@ -142,6 +143,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputToken)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputToken)
 /**
  * @brief default output token for #ZFJsonToOutput
  */
@@ -356,6 +358,7 @@ private:
     ZFJson(ZF_IN _ZFP_ZFJsonPrivate *ref);
 };
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFJson, ZFJson)
+ZFTYPEID_REG(ZFLIB_ZFAlgorithm, ZFJson, ZFJson)
 ZFOUTPUT_TYPE(ZFJson, {v.objectInfoT(s);})
 
 /** @brief util to create #ZFJson */

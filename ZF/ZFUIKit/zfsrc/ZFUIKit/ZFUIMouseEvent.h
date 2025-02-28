@@ -29,6 +29,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Hover)
     ZFENUM_VALUE_REGISTER(HoverExit)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseAction)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIMouseAction)
 
 /**
  * @brief mouse action for ZFUIMouseEvent
@@ -42,6 +43,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Right)
     ZFENUM_VALUE_REGISTER(Center)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseButton)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIMouseButton)
 
 // ============================================================
 /**

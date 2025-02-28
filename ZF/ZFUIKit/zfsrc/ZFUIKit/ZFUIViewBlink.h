@@ -56,6 +56,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIViewBlinkParam, ZFUIViewBlinkParam)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFUIKit, ZFUIViewBlinkParam, ZFUIViewBlinkParam)
 ZFOUTPUT_TYPE(ZFUIViewBlinkParam, {v.objectInfoT(s);})
 /**
  * @brief blink view so that it's easy to be noticed

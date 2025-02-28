@@ -45,6 +45,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgHigh)
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgHighest)
 ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUIWindowLevel, AppNormal)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIWindowLevel)
 
 // ============================================================
 // ZFUIWindow

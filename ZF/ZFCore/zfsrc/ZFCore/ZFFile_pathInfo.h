@@ -474,6 +474,7 @@ public:
     }
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPathInfoImpl, const ZFPathInfoImpl *)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFPathInfoImpl, const ZFPathInfoImpl *)
 
 extern ZFLIB_ZFCore void _ZFP_ZFPathInfoRegister(
         ZF_IN const zfstring &pathType

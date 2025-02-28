@@ -54,6 +54,7 @@ private:
     _ZFP_ZFUdpAddrPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFNet, ZFUdpAddr, ZFUdpAddr)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFNet, ZFUdpAddr, ZFUdpAddr)
 ZFOUTPUT_TYPE(ZFUdpAddr, {v.objectInfoT(s);})
 
 zfclassFwd _ZFP_ZFUdpPrivate;

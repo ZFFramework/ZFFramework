@@ -21,6 +21,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Dragging)
     ZFENUM_VALUE_REGISTER(Scrolling)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIScrollViewState)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIScrollViewState)
 
 zfclassFwd _ZFP_ZFUIScrollViewPrivate;
 // ============================================================

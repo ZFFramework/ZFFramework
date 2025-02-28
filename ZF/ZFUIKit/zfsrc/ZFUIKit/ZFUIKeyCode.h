@@ -23,6 +23,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Up)
     ZFENUM_VALUE_REGISTER(Cancel)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIKeyAction)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIKeyAction)
 
 // ============================================================
 /**
@@ -291,6 +292,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(kPhoneSearch)
     ZFENUM_VALUE_REGISTER(kPhoneCamera)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIKeyCode)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIKeyCode)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIKeyCode_h_

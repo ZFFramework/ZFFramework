@@ -67,6 +67,7 @@ ZFENUM_SEPARATOR_ALLOW_DUPLICATE_VALUE()
     ZFENUM_VALUE_REGISTER_WITH_NAME(UTF16BE, "UTF16BE")
     ZFENUM_VALUE_REGISTER_WITH_NAME(UTF16, "UTF16")
 ZFENUM_END(ZFLIB_ZFCore, ZFStringEncoding)
+ZFENUM_REG(ZFLIB_ZFCore, ZFStringEncoding)
 
 // ============================================================
 // conversion

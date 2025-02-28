@@ -76,6 +76,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(BottomCenter)
     ZFENUM_VALUE_REGISTER(BottomRight)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchPos)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchPos)
 
 /**
  * @brief see #ZFUIImageImplNinePatchCalc

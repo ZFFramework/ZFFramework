@@ -41,7 +41,7 @@ public:
 public:
     _ZFP_ZFClassDataHolder(void) {
         // dummy instance to ensure init order
-        ZFSigName dummy("ZFObject");
+        ZFSigName dummy(zftext("ZFObject"));
     }
     ~_ZFP_ZFClassDataHolder(void) {
         ZFCoreMap classMapTmp = this->classMap;

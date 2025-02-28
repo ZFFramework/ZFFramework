@@ -23,6 +23,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(EaseOut)
     ZFENUM_VALUE_REGISTER(EaseInOut)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFAniForNativeCurve)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFAniForNativeCurve)
 
 // ============================================================
 zfclassFwd _ZFP_ZFAniForNativePrivate;

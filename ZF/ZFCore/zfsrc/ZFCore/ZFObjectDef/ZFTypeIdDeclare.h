@@ -91,9 +91,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFTYPEID_DECLARE(ZFLIB_, TypeName, Type) \
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
-    _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type)
-
+    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type)
 /**
  * @brief declare a type id with custom type wrapper
  *
@@ -107,10 +105,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfstring &ZFTypeId_##TypeName(void) { \
-        static ZFSigName d(#TypeName); \
+        static ZFSigName d(ZF_NAMESPACE_CURRENT() != zfnull ? zfstr("%s.%s", ZF_NAMESPACE_CURRENT(), #TypeName) : zftext(#TypeName)); \
         return d; \
     } \
+    typedef Type _ZFP_PropTypeW_##TypeName; \
     _ZFP_ZFTYPEID_CONVERTER_DECLARE(ZFLIB_, TypeName, Type)
+
+/** @brief see #ZFTYPEID_DECLARE */
+#define ZFTYPEID_REG(ZFLIB_, TypeName, Type, ...) \
+    _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type, ##__VA_ARGS__)
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
@@ -165,11 +168,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfstring &ZFTypeId_##TypeName(void) { \
-        static ZFSigName d(#TypeName); \
+        static ZFSigName d(ZF_NAMESPACE_CURRENT() != zfnull ? zfstr("%s.%s", ZF_NAMESPACE_CURRENT(), #TypeName) : zftext(#TypeName)); \
         return d; \
     } \
-    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
-    _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type)
+    typedef Type _ZFP_PropTypeW_##TypeName; \
+    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type)
+
+/** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
+#define ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ...) \
+    _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ##__VA_ARGS__)
+
 /** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
@@ -202,16 +210,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     inline const zfstring &ZFTypeId_##TypeName(void) { \
         return ZFTypeId_##AliasToTypeName(); \
     } \
+    typedef Type _ZFP_PropTypeW_##TypeName; \
     _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
-    _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_DEFAULT)
+
 /** @brief see #ZFTYPEID_ALIAS_DECLARE */
-#define ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, ValueAccessExpand) \
-    /** @brief see @ref ZFTypeId_##AliasToTypeName */ \
-    inline const zfstring &ZFTypeId_##TypeName(void) { \
-        return ZFTypeId_##AliasToTypeName(); \
-    } \
-    _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
-    _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, ValueAccessExpand)
+#define ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, ...) \
+    _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_DEFAULT, __VA_ARGS__ ::)
+/** @brief see #ZFTYPEID_ALIAS_DECLARE */
+#define ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, ...) \
+    _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, __VA_ARGS__ ::)
+
 /** @brief see #ZFTYPEID_ALIAS_DECLARE */
 #define ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
     _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
@@ -225,14 +233,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             cache->zfvReset(); \
         }) \
     public: \
-        typedef Type _ZFP_PropTypeW_##TypeName; \
+        typedef _ZFP_PropTypeW_##TypeName _ZFP_PropType; \
         /** @brief the value, see #ZFTypeId::Value */ \
-        _ZFP_PropTypeW_##TypeName zfv; \
+        _ZFP_PropType zfv; \
     protected: \
         v_##TypeName(void) : zfv() {} \
     protected: \
         /** @brief init with value */ \
-        virtual void objectOnInit(ZF_IN _ZFP_PropTypeW_##TypeName const &value) { \
+        virtual void objectOnInit(ZF_IN _ZFP_PropType const &value) { \
             this->objectOnInit(); \
             this->zfv = value; \
         } \
@@ -253,13 +261,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfoverride \
         virtual void *wrappedValue(void) {return &(this->zfv);} \
         zfoverride \
-        virtual void wrappedValue(ZF_IN const void *v) {this->zfv = *(const _ZFP_PropTypeW_##TypeName *)v;} \
+        virtual void wrappedValue(ZF_IN const void *v) {this->zfv = *(const _ZFP_PropType *)v;} \
         zfoverride \
-        virtual void wrappedValueCopy(ZF_IN void *v) {*(_ZFP_PropTypeW_##TypeName *)v = this->zfv;} \
+        virtual void wrappedValueCopy(ZF_IN void *v) {*(_ZFP_PropType *)v = this->zfv;} \
     public: \
         zfoverride \
         virtual void zfvReset(void) { \
-            this->zfv = zftValue<_ZFP_PropTypeW_##TypeName>().zfv; \
+            this->zfv = zftValue<_ZFP_PropType>().zfv; \
         } \
         zfoverride \
         virtual zfbool zfvIsInit(void); \
@@ -320,20 +328,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     } \
     const zfstring &v_##TypeName::zfvTypeId(void) { \
-        return ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId(); \
+        return ZFTypeId<_ZFP_PropType>::TypeId(); \
     } \
     ZF_STATIC_REGISTER_INIT(TypeIdReg_##TypeName) { \
         ZFMethodUserRegister_1(setterMethod, { \
                 invokerObject->to<v_##TypeName *>()->zfv = value; \
             }, v_##TypeName::ClassData(), void, zftext("zfv") \
-            , ZFMP_IN(v_##TypeName::_ZFP_PropTypeW_##TypeName const &, value) \
+            , ZFMP_IN(v_##TypeName::_ZFP_PropType const &, value) \
             ); \
         ZFMethodUserRegister_0(getterMethod, { \
                 return invokerObject->to<v_##TypeName *>()->zfv; \
-            }, v_##TypeName::ClassData(), v_##TypeName::_ZFP_PropTypeW_##TypeName const &, zftext("zfv")); \
+            }, v_##TypeName::ClassData(), v_##TypeName::_ZFP_PropType const &, zftext("zfv")); \
     } \
     ZF_STATIC_REGISTER_DESTROY(TypeIdReg_##TypeName) { \
-        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), ZFTypeId<v_##TypeName::_ZFP_PropTypeW_##TypeName>::TypeId())); \
+        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), ZFTypeId<v_##TypeName::_ZFP_PropType>::TypeId())); \
         ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(TypeIdReg_##TypeName)
@@ -414,11 +422,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ZFCompareUncomparable; \
         } \
         else { \
-            return ZFComparerDefault(this->zfv, *(_ZFP_PropTypeW_##TypeName *)t->wrappedValue()); \
+            return ZFComparerDefault(this->zfv, *(_ZFP_PropType *)t->wrappedValue()); \
         } \
     } \
     zfbool v_##TypeName::zfvIsInit(void) { \
-        return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropTypeW_##TypeName>().zfv) == ZFCompareEqual); \
+        return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropType>().zfv) == ZFCompareEqual); \
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \
@@ -436,36 +444,35 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFTYPEID_CONVERTER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @brief see #ZFTYPEID_DECLARE */ \
     extern ZFLIB_ zfbool TypeName##FromDataT( \
-            ZF_OUT Type &v \
+            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
             ); \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    inline Type TypeName##FromData( \
+    inline _ZFP_PropTypeW_##TypeName TypeName##FromData( \
             ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
             ) { \
-        Type ret; \
+        _ZFP_PropTypeW_##TypeName ret; \
         if(TypeName##FromDataT(ret, serializableData, outErrorHint, outErrorPos)) { \
             return ret; \
         } \
         else { \
-            typedef Type _Type; \
-            return _Type();\
+            return _ZFP_PropTypeW_##TypeName();\
         } \
         return ret; \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
     extern ZFLIB_ zfbool TypeName##ToDataT( \
             ZF_OUT ZFSerializableData &serializableData \
-            , ZF_IN Type const &v \
+            , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ); \
     /** @brief see #ZFTYPEID_DECLARE */ \
     inline ZFSerializableData TypeName##ToData( \
-            ZF_IN Type const &v \
+            ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ) { \
         ZFSerializableData ret; \
@@ -476,11 +483,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ZFSerializableData(); \
         } \
     } \
-    ZFCORETYPE_STRING_CONVERTER_DECLARE(ZFLIB_, TypeName, Type)
+    ZFCORETYPE_STRING_CONVERTER_DECLARE(ZFLIB_, TypeName, _ZFP_PropTypeW_##TypeName)
 
 #define _ZFP_ZFTYPEID_CONVERTER_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
     zfbool TypeName##FromDataT( \
-            ZF_OUT Type &v \
+            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
@@ -489,12 +496,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     zfbool TypeName##ToDataT( \
             ZF_OUT ZFSerializableData &serializableData \
-            , ZF_IN Type const &v \
+            , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
         ZFM_EXPAND(serializeToAction) \
     } \
-    ZFCORETYPE_STRING_CONVERTER_DEFINE(TypeName, Type, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction))
+    ZFCORETYPE_STRING_CONVERTER_DEFINE(TypeName, _ZFP_PropTypeW_##TypeName, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction))
 
 // ============================================================
 #define _ZFP_ZFTYPEID_DEF_SERIALIZABLE_CONVERTER_FROM(TypeName, Type) \
@@ -504,8 +511,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData); \
         if(valueString == zfnull) { \
-            typedef Type _Type; \
-            v = _Type(); \
+            v = _ZFP_PropTypeW_##TypeName(); \
             return zftrue; \
         } \
         if(!TypeName##FromStringT(v, valueString)) { \
@@ -546,22 +552,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 // ============================================================
-#define _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, TypeIdSerializable_) \
+#define _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, TypeIdSerializable_, Scope) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId< Type > : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<Scope _ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
     public: \
-        typedef Type _ZFP_PropTypeW_##TypeName; \
+        typedef Scope _ZFP_PropTypeW_##TypeName _ZFP_PropType; \
+        typedef Scope v_##TypeName _ZFP_WrapType; \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = TypeIdSerializable_, \
         }; \
         static inline const zfstring &TypeId(void) { \
-            return ZFTypeId_##TypeName(); \
+            return Scope ZFTypeId_##TypeName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
-            return v_##TypeName::ClassData(); \
+            return _ZFP_WrapType::ClassData(); \
         } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
@@ -577,31 +584,31 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+                , ZF_IN _ZFP_PropType const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
+            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType); \
             t->zfv = v; \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
-        template<typename T_Access = _ZFP_PropTypeW_##TypeName \
+        template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value) ? 1 \
+                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \
                 : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value \
+                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value \
                     && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
             , typename T_Fix = void \
             > \
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(v_##TypeName *, obj) != zfnull); \
+                return (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return zfcast(v_##TypeName *, obj)->zfv; \
+                return zfcast(_ZFP_WrapType *, obj)->zfv; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -610,10 +617,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return obj == zfnull || (zfcast(v_##TypeName *, obj) != zfnull); \
+                return obj == zfnull || (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return obj == zfnull ? zfnull : &(zfcast(v_##TypeName *, obj)->zfv); \
+                return obj == zfnull ? zfnull : &(zfcast(_ZFP_WrapType *, obj)->zfv); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -622,10 +629,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value<T_Access, 2> { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return obj == zfnull || (zfcast(v_##TypeName *, obj) != zfnull); \
+                return obj == zfnull || (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return obj == zfnull ? zfnull : (T_Access)(zfcast(v_##TypeName *, obj)->zfv); \
+                return obj == zfnull ? zfnull : (T_Access)(zfcast(_ZFP_WrapType *, obj)->zfv); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -633,29 +640,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     public: \
         zfoverride \
         virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
-            return ValueStore(obj, *(const _ZFP_PropTypeW_##TypeName *)v); \
+            return ValueStore(obj, *(const _ZFP_PropType *)v); \
         } \
         zfoverride \
         virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
-            if(!Value<_ZFP_PropTypeW_##TypeName>::zfvAccessAvailable(obj)) { \
+            if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(_ZFP_PropTypeW_##TypeName, Value<_ZFP_PropTypeW_##TypeName>::zfvAccess(obj)); \
+            return (void *)zfnew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
         } \
         zfoverride \
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
-            Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
+            zfdelete((_ZFP_PropType *)v); \
+            Value<_ZFP_PropType>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
+            return zfnew(ZFCoreArray<_ZFP_PropType>); \
         } \
     }; \
     /** @endcond */
 
-#define _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type) \
-    _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 1)
+#define _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type, ...) \
+    _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 1, __VA_ARGS__ ::)
 
 // ============================================================
 #define _ZFP_ZFTYPEID_METHOD_REGISTER(TypeName, Type) \
@@ -663,14 +670,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         ZFMethodFuncUserRegister_4(method_FromDataT, { \
                 return TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
             }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromDataT)) \
-            , ZFMP_OUT(Type &, v) \
+            , ZFMP_OUT(_ZFP_PropTypeW_##TypeName &, v) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
         ZFMethodFuncUserRegister_3(method_FromData, { \
                 return TypeName##FromData(serializableData, outErrorHint, outErrorPos); \
-            }, ZF_NAMESPACE_CURRENT(), Type, zftext(ZFM_TOSTRING(TypeName##FromData)) \
+            }, ZF_NAMESPACE_CURRENT(), _ZFP_PropTypeW_##TypeName, zftext(ZFM_TOSTRING(TypeName##FromData)) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
@@ -679,26 +686,26 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 return TypeName##ToDataT(serializableData, v, outErrorHint); \
             }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##ToDataT)) \
             , ZFMP_OUT(ZFSerializableData &, serializableData) \
-            , ZFMP_IN(Type const &, v) \
+            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_2(method_ToData, { \
                 return TypeName##ToData(v, outErrorHint); \
             }, ZF_NAMESPACE_CURRENT(), ZFSerializableData, zftext(ZFM_TOSTRING(TypeName##ToData)) \
-            , ZFMP_IN(Type const &, v) \
+            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_4(method_FromStringT, { \
                 return TypeName##FromStringT(v, src, srcLen, errorHint); \
             }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromStringT)) \
-            , ZFMP_OUT(Type &, v) \
+            , ZFMP_OUT(_ZFP_PropTypeW_##TypeName &, v) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_3(method_FromString, { \
                 return TypeName##FromString(src, srcLen, errorHint); \
-            }, ZF_NAMESPACE_CURRENT(), Type, zftext(ZFM_TOSTRING(TypeName##FromString)) \
+            }, ZF_NAMESPACE_CURRENT(), _ZFP_PropTypeW_##TypeName, zftext(ZFM_TOSTRING(TypeName##FromString)) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
@@ -707,13 +714,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 return TypeName##ToStringT(s, v, errorHint); \
             }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##ToStringT)) \
             , ZFMP_OUT(zfstring &, s) \
-            , ZFMP_IN(Type const &, v) \
+            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         ZFMethodFuncUserRegister_2(method_ToString, { \
                 return TypeName##ToString(v, errorHint); \
             }, ZF_NAMESPACE_CURRENT(), zfstring, zftext(ZFM_TOSTRING(TypeName##ToString)) \
-            , ZFMP_IN(Type const &, v) \
+            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
     } \
@@ -767,8 +774,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type)
 
 // ============================================================
-#define _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type) \
-    _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 0)
+#define _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ...) \
+    _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 0, __VA_ARGS__ ::)
 
 #define _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
     _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
@@ -785,12 +792,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     /** @brief type wrapper for #ZFTypeId::Value */ \
     typedef v_##AliasToTypeName v_##TypeName;
 
-#define _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
+#define _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, Scope) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId< Type > : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<Scope _ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
     public: \
-        typedef Type _ZFP_PropTypeW_##TypeName; \
+        typedef Scope _ZFP_PropTypeW_##TypeName _ZFP_PropType; \
+        typedef Scope v_##TypeName _ZFP_WrapType; \
     public: \
         enum { \
             TypeIdRegistered = ZFTypeId<AliasToType>::TypeIdRegistered, \
@@ -816,7 +824,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+                , ZF_IN _ZFP_PropType const &v \
                 ) { \
             return ZFTypeId<AliasToType>::ValueStore(obj, (AliasToType)v); \
         } \
@@ -824,23 +832,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     public: \
         zfoverride \
         virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
-            return ValueStore(obj, *(const _ZFP_PropTypeW_##TypeName *)v); \
+            return ValueStore(obj, *(const _ZFP_PropType *)v); \
         } \
         zfoverride \
         virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
-            if(!Value<_ZFP_PropTypeW_##TypeName>::zfvAccessAvailable(obj)) { \
+            if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(_ZFP_PropTypeW_##TypeName, Value<_ZFP_PropTypeW_##TypeName>::zfvAccess(obj)); \
+            return (void *)zfnew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
         } \
         zfoverride \
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
-            Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
+            zfdelete((_ZFP_PropType *)v); \
+            Value<_ZFP_PropType>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
+            return zfnew(ZFCoreArray<_ZFP_PropType>); \
         } \
     }; \
     /** @endcond */
@@ -848,11 +856,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
 
 #define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_DEFAULT(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
-        template<typename T_Access = _ZFP_PropTypeW_##TypeName \
+        template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value) ? 1 \
+                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \
                 : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropTypeW_##TypeName>::Value \
+                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value \
                     && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
             , typename T_Fix = void \
             > \
@@ -863,8 +871,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
-                _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
-                *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
+                _ZFP_PropType *v = zfnew(_ZFP_PropType); \
+                *v = (_ZFP_PropType)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
@@ -884,7 +892,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , ZF_IN void *v \
                     ) { \
                 zfauto objTmp = obj; \
-                _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)v; \
+                _ZFP_PropType *vTmp = (_ZFP_PropType *)v; \
                 if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \
                     AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(objTmp); \
                     aliasValue = (AliasToType)*vTmp; \
@@ -903,8 +911,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
             static _TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
-                _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
-                *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
+                _ZFP_PropType *v = zfnew(_ZFP_PropType); \
+                *v = (_ZFP_PropType)aliasValue; \
                 _TrNoRef *p = zfnew(_TrNoRef); \
                 *p = v; \
                 _ZFP_PropAliasAttach(obj, p \
@@ -927,7 +935,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ) { \
                 zfauto objTmp = obj; \
                 _TrNoRef *p = (_TrNoRef *)v; \
-                _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)*p; \
+                _ZFP_PropType *vTmp = (_ZFP_PropType *)*p; \
                 if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \
                     AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(objTmp); \
                     aliasValue = (AliasToType)*vTmp; \
@@ -948,8 +956,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     return zfnull; \
                 } \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
-                _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
-                *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
+                _ZFP_PropType *v = zfnew(_ZFP_PropType); \
+                *v = (_ZFP_PropType)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
@@ -969,7 +977,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , ZF_IN void *v \
                     ) { \
                 zfauto objTmp = obj; \
-                _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)v; \
+                _ZFP_PropType *vTmp = (_ZFP_PropType *)v; \
                 if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \
                     AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(objTmp); \
                     aliasValue = (AliasToType)*vTmp; \

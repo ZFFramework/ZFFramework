@@ -110,6 +110,7 @@ public:
     jobject implInterface(ZF_IN const zfchar *interfaceClass, ZF_IN const ZFListener &impl) const;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZF_impl, ZFAndroidReflect, ZFAndroidReflect)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZF_impl, ZFAndroidReflect, ZFAndroidReflect)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Android

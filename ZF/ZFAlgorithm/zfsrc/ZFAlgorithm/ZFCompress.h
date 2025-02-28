@@ -27,6 +27,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(GoodCompress)
     ZFENUM_VALUE_REGISTER(BestCompress)
 ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFAlgorithm, ZFCompressLevel, Normal)
+ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFCompressLevel)
 
 // ============================================================
 // base api

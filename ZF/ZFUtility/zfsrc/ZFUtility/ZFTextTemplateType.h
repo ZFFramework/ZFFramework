@@ -22,6 +22,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(LeadingSpace)
     ZFENUM_VALUE_REGISTER(TailSpace)
 ZFENUM_END(ZFLIB_ZFUtility, ZFTextTemplateIndexFlag)
+ZFENUM_REG(ZFLIB_ZFUtility, ZFTextTemplateIndexFlag)
 
 // ============================================================
 /** @brief see #ZFTextTemplateApply */
@@ -117,6 +118,7 @@ public:
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUtility, ZFTextTemplateIndexData, ZFTextTemplateIndexData)
+ZFTYPEID_REG(ZFLIB_ZFUtility, ZFTextTemplateIndexData, ZFTextTemplateIndexData)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart "indexStart"
@@ -278,6 +280,7 @@ private:
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUtility, ZFTextTemplateParam, ZFTextTemplateParam)
+ZFTYPEID_REG(ZFLIB_ZFUtility, ZFTextTemplateParam, ZFTextTemplateParam)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateParam_replace "replace"

@@ -34,6 +34,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(OnOutputEnd)
     ZFENUM_VALUE_REGISTER(OnDealloc)
 ZFENUM_END(ZFLIB_ZFCore, ZFOutputFormatStep)
+ZFENUM_REG(ZFLIB_ZFCore, ZFOutputFormatStep)
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */

@@ -54,7 +54,10 @@ extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayToDataT(
  *   [e0_encoded_string_data, e1_encoded_string_data, ...]
  * @endcode
  */
-#define ZFTypeId_ZFCoreArray() "ZFCoreArray"
+inline const zfstring &ZFTypeId_ZFCoreArray(void) {
+    static ZFSigName d(zftext("ZFCoreArray"));
+    return d;
+}
 
 /** @brief type wrapper for #ZFTypeId::Value */
 zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextend ZFTypeIdWrapper {
@@ -166,8 +169,7 @@ public:
     }
     zfoverride
     virtual const zfstring &zfvTypeId(void) {
-        static ZFSigName d(ZFTypeId_ZFCoreArray());
-        return d;
+        return ZFTypeId_ZFCoreArray();
     }
     zfoverride
     virtual void *wrappedValue(void) {return this->zfv;}
@@ -601,8 +603,7 @@ public:
         TypeIdSerializable = ZFTypeId<T_Type>::TypeIdSerializable,
     };
     static inline const zfstring &TypeId(void) {
-        static ZFSigName d(ZFTypeId_ZFCoreArray());
-        return d;
+        return ZFTypeId_ZFCoreArray();
     }
     static inline const ZFClass *TypeIdClass(void) {
         return v_ZFCoreArray::ClassData();

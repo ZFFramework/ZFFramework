@@ -375,6 +375,7 @@ private:
     _ZFP_ZFDynamicPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamic, ZFDynamic)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFDynamic, ZFDynamic)
 ZFOUTPUT_TYPE(ZFDynamic, {v.objectInfoT(s);})
 
 // ============================================================

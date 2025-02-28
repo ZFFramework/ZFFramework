@@ -31,6 +31,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Wrap)
     ZFENUM_VALUE_REGISTER(Fill)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUISizeType)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUISizeType)
 
 // ============================================================
 // ZFUISizeParam
@@ -56,6 +57,7 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUISizeParam)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParam)
+ZFTYPEID_REG(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParam)
 ZFOUTPUT_TYPE(ZFUISizeParam, {ZFUISizeParamToStringT(s, v);})
 
 /**
@@ -508,6 +510,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(InternalBg)
     ZFENUM_VALUE_REGISTER(InternalFg)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
 
 // ============================================================
 // ZFUIViewMeasureResult
@@ -594,6 +597,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(RotateY)
     ZFENUM_VALUE_REGISTER(RotateZ)
 ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUITransform, ZFUITransformFlags)
+ZFENUM_REG_FLAGS(ZFLIB_ZFUIKit, ZFUITransform, ZFUITransformFlags)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIViewType_h_

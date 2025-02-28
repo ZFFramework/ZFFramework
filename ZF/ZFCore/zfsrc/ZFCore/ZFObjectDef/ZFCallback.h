@@ -431,7 +431,8 @@ ZFCOMPARER_DEFAULT_DECLARE(ZFCallback, ZFCallback, {
  */
 #define ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
     _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
-    ZFTYPEID_ALIAS_DECLARE(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName)
+    ZFTYPEID_ALIAS_DECLARE(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName) \
+    ZFTYPEID_ALIAS_REG(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName)
 #define _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_, CallbackTypeName, ParentType) \
     _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType)
 

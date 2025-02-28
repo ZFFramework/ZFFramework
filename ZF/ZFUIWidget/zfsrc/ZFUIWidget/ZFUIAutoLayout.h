@@ -28,6 +28,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Width)
     ZFENUM_VALUE_REGISTER(Height)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
+ZFENUM_REG(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
 
 /** @brief see #ZFUIAutoLayout */
 zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule {
@@ -78,6 +79,7 @@ public:
     zfstring _ZFP_AL_targetId;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFUIWidget, ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
 ZFOUTPUT_TYPE(ZFUIAutoLayoutRule, {v.objectInfoT(s);})
 
 // ============================================================

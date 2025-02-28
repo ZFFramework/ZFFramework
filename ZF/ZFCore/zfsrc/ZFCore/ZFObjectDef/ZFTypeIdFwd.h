@@ -232,9 +232,8 @@ public:
  */
 #define ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
     ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
-        typedef Type _ZFP_PropTypeW2_##TypeName; \
         _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \
-            zfnew(ZFTypeId<_ZFP_PropTypeW2_##TypeName>)); \
+            zfnew(ZFTypeId< Type >)); \
         ZFMethodFuncUserRegister_0(dummy, { \
                 return ZFTypeId_##TypeName(); \
             }, ZF_NAMESPACE_CURRENT(), const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName))); \

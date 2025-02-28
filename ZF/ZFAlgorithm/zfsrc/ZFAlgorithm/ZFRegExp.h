@@ -52,6 +52,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(SingleLine)
     ZFENUM_VALUE_REGISTER(MultiLine)
 ZFENUM_END_FLAGS(ZFLIB_ZFAlgorithm, ZFRegExpOption, ZFRegExpOptionFlags)
+ZFENUM_REG_FLAGS(ZFLIB_ZFAlgorithm, ZFRegExpOption, ZFRegExpOptionFlags)
 
 // ============================================================
 /**
@@ -119,6 +120,7 @@ public:
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFRegExpResult, ZFRegExpResult)
+ZFTYPEID_REG(ZFLIB_ZFAlgorithm, ZFRegExpResult, ZFRegExpResult)
 ZFOUTPUT_TYPE(ZFRegExpResult, {v.objectInfoT(s);})
 
 // ============================================================

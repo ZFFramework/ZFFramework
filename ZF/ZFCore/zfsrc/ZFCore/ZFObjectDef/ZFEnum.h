@@ -7,6 +7,7 @@
 #define _ZFI_ZFEnum_h_
 
 #include "ZFTypeId.h"
+#include "ZFEnumDeclare.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -281,6 +282,53 @@ inline zfstring zfflagsToString(
     zfflagsToStringT(ret, enumClass, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
     return ret;
 }
+
+// ============================================================
+zfclassFwd _ZFP_ZFEnumDataPrivate;
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFEnumData {
+public:
+    _ZFP_ZFEnumData(void);
+    ~_ZFP_ZFEnumData(void);
+public:
+    zfbool needInitFlag;
+    const ZFClass *ownerClass;
+    zfuint enumDefault;
+    zfbool enumIsFlags;
+    void add(
+            ZF_IN zfbool isEnableDuplicateValue
+            , ZF_IN zfuint value
+            , ZF_IN const zfstring &name
+            );
+    zfindex enumCount(void) const;
+    zfindex enumIndexForValue(ZF_IN zfuint value) const;
+    zfuint enumValueAt(ZF_IN zfindex index) const;
+    const zfstring &enumNameAt(ZF_IN zfindex index) const;
+    zfbool enumValueContain(ZF_IN zfuint value) const;
+    zfuint enumValueForName(ZF_IN const zfstring &name) const;
+    const zfstring &enumNameForValue(ZF_IN zfuint value) const;
+private:
+    _ZFP_ZFEnumDataPrivate *d;
+};
+extern ZFLIB_ZFCore _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData *d);
+zfclassNotPOD _ZFP_ZFEnumDataHolder {
+public:
+    _ZFP_ZFEnumDataHolder(ZF_IN const _ZFP_ZFEnumData *d)
+    : d(d)
+    {
+    }
+    _ZFP_ZFEnumDataHolder(void) {
+        _ZFP_ZFEnumDataCleanup(d);
+    }
+public:
+    const _ZFP_ZFEnumData *d;
+};
+extern ZFLIB_ZFCore const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
+        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
+        , ZF_IN const _ZFP_ZFEnumData *d
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnum_h_

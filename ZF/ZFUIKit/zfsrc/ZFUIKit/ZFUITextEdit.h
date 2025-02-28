@@ -29,6 +29,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(PhonePad)
     ZFENUM_VALUE_REGISTER(NumberPad)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUITextEditKeyboardType)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUITextEditKeyboardType)
 
 // ============================================================
 // ZFUITextEditKeyboardReturnType
@@ -54,6 +55,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Go)
     ZFENUM_VALUE_REGISTER(Send)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnType)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnType)
 
 // ============================================================
 // ZFUITextEditKeyboardReturnAction
@@ -71,6 +73,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(FocusNext)
     ZFENUM_VALUE_REGISTER(HideKeyboard)
 ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnAction, FocusNext)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnAction)
 
 zfclassFwd _ZFP_ZFUITextEditPrivate;
 // ============================================================

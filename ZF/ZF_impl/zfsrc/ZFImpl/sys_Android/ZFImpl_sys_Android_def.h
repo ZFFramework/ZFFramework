@@ -98,9 +98,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // typeid
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZF_impl, ZFAndroid_JNIGlobalRef, JNIGlobalRef)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZF_impl, ZFAndroid_JNIGlobalRef, JNIGlobalRef)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZF_impl, JNIGlobalRef)
 
 ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZF_impl, ZFAndroid_JNIGlobalRef, JNIGlobalRef, ZFAndroid_jobject, jobject)
+ZFTYPEID_ALIAS_REG(ZFLIB_ZF_impl, ZFAndroid_JNIGlobalRef, JNIGlobalRef, ZFAndroid_jobject, jobject)
 
 // ============================================================
 // Object

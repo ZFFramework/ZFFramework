@@ -31,6 +31,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   for function type method with custom name space
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethod, const ZFMethod *)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFMethod, const ZFMethod *)
 ZFOUTPUT_TYPE(ZFMethod, {v.objectInfoT(s);})
 
 /* ZFMETHOD_MAX_PARAM */

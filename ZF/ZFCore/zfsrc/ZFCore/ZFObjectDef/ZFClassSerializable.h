@@ -15,6 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief see #ZFTYPEID_DECLARE
  */
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassInstanceObserverAddParam, ZFClassInstanceObserverAddParam)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFClassInstanceObserverAddParam, ZFClassInstanceObserverAddParam)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -25,6 +26,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassInstanceObserverAddParam, ZFCl
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClass, const ZFClass *)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFClass, const ZFClass *)
 ZFOUTPUT_TYPE(ZFClass, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END

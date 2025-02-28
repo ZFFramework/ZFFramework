@@ -130,6 +130,7 @@ extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbool, zfbool)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfbool, zfbool)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -140,6 +141,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbool, zfbool)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbyte, zfbyte)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfbyte, zfbyte)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -150,6 +152,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbyte, zfbyte)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfchar, zfchar)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfchar, zfchar)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -160,7 +163,9 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfchar, zfchar)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfstring, zfstring)
 
+ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *)
 #define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     template<typename T_Access = Type \
         , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
@@ -205,7 +210,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \
     };
-ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString)
+ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString)
 #undef _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString
 
 /**
@@ -217,6 +222,7 @@ ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const z
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfint, zfint)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfint, zfint)
 /**
  * @brief see #ZFTYPEID_DECLARE
  *
@@ -228,6 +234,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfint, zfint)
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfuint, zfuint)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfuint, zfuint)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -238,6 +245,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfuint, zfuint)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zflong, zflong)
+ZFTYPEID_REG(ZFLIB_ZFCore, zflong, zflong)
 /**
  * @brief see #ZFTYPEID_DECLARE
  *
@@ -249,6 +257,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zflong, zflong)
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfulong, zfulong)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfulong, zfulong)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -261,6 +270,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfulong, zfulong)
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfindex, zfindex)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfindex, zfindex)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -271,6 +281,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfindex, zfindex)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zffloat, zffloat)
+ZFTYPEID_REG(ZFLIB_ZFCore, zffloat, zffloat)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -281,6 +292,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zffloat, zffloat)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfdouble, zfdouble)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfdouble, zfdouble)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -291,6 +303,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfdouble, zfdouble)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zftimet, zftimet)
+ZFTYPEID_REG(ZFLIB_ZFCore, zftimet, zftimet)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -303,6 +316,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zftimet, zftimet)
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfflags, zfflags)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfflags, zfflags)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -315,6 +329,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfflags, zfflags)
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfidentity, zfidentity)
+ZFTYPEID_REG(ZFLIB_ZFCore, zfidentity, zfidentity)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -325,6 +340,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfidentity, zfidentity)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCompareResult, ZFCompareResult)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFCompareResult, ZFCompareResult)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -335,6 +351,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCompareResult, ZFCompareResult)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSeekPos, ZFSeekPos)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFSeekPos, ZFSeekPos)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -347,6 +364,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSeekPos, ZFSeekPos)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFIndexRange, ZFIndexRange)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFIndexRange, ZFIndexRange)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -357,6 +375,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFIndexRange, ZFIndexRange)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFLevel, ZFLevel)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFLevel, ZFLevel)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -367,11 +386,16 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFLevel, ZFLevel)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFrameworkState, ZFFrameworkState)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFFrameworkState, ZFFrameworkState)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFuncAddrType, ZFFuncAddrType)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFuncAddrType, ZFFuncAddrType)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfiter, zfiter)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, zfiter, zfiter)
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallerInfo, ZFCallerInfo)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFCallerInfo, ZFCallerInfo)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenerator)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenerator)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -382,6 +406,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenera
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -392,11 +417,16 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterResult, ZFFilterResult)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFFilterResult, ZFFilterResult)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIdentity, ZFFilterForIdentity)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForIdentity, ZFFilterForIdentity)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -407,6 +437,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfo)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfo)
 ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToStringT(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFPathInfo_separator ":"
@@ -427,6 +458,7 @@ ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToStringT(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTokenForContainer, ZFTokenForContainer)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFTokenForContainer, ZFTokenForContainer)
 ZFOUTPUT_TYPE(ZFTokenForContainer, {ZFTokenForContainerToStringT(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTokenForContainer_tokenLeft "tokenLeft"
@@ -462,6 +494,7 @@ ZFOUTPUT_TYPE(ZFTokenForContainer, {ZFTokenForContainerToStringT(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainer)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainer)
 ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToStringT(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenLeft "tokenLeft"
@@ -492,11 +525,13 @@ ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToStringT
  * @brief see #ZFTYPEID_DECLARE
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClassDataUpdateType, ZFClassDataUpdateType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFClassDataUpdateType, ZFClassDataUpdateType)
 ZFOUTPUT_TYPE(ZFClassDataUpdateType, {ZFClassDataUpdateTypeToStringT(s, v);})
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassDataUpdateData, ZFClassDataUpdateData)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFClassDataUpdateData, ZFClassDataUpdateData)
 ZFOUTPUT_TYPE(ZFClassDataUpdateData, {v.objectInfoT(s);})
 
 /**
@@ -508,6 +543,7 @@ ZFOUTPUT_TYPE(ZFClassDataUpdateData, {v.objectInfoT(s);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClassType, ZFFilterForZFClassType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFFilterForZFClassType, ZFFilterForZFClassType)
 ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToStringT(s, v);})
 
 /**
@@ -519,6 +555,7 @@ ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToStringT(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodAccessType, ZFMethodAccessType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFMethodAccessType, ZFMethodAccessType)
 ZFOUTPUT_TYPE(ZFMethodAccessType, {ZFMethodAccessTypeToStringT(s, v);})
 
 /**
@@ -530,39 +567,52 @@ ZFOUTPUT_TYPE(ZFMethodAccessType, {ZFMethodAccessTypeToStringT(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodType, ZFMethodType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFMethodType, ZFMethodType)
 ZFOUTPUT_TYPE(ZFMethodType, {ZFMethodTypeToStringT(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFArgs, ZFArgs)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFArgs, ZFArgs)
 ZFOUTPUT_TYPE(ZFArgs, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserver, ZFObserver)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFObserver, ZFObserver)
 ZFOUTPUT_TYPE(ZFObserver, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClass, ZFFilterForZFClass)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFClass, ZFFilterForZFClass)
 ZFOUTPUT_TYPE(ZFFilterForZFClass, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFMethod, ZFFilterForZFMethod)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFMethod, ZFFilterForZFMethod)
 ZFOUTPUT_TYPE(ZFFilterForZFMethod, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFProperty, ZFFilterForZFProperty)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFProperty, ZFFilterForZFProperty)
 ZFOUTPUT_TYPE(ZFFilterForZFProperty, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFObject, ZFFilterForZFObject)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFObject, ZFFilterForZFObject)
 ZFOUTPUT_TYPE(ZFFilterForZFObject, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodGenericInvoker, ZFMethodGenericInvoker)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFMethodGenericInvoker, ZFMethodGenericInvoker)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodDynamicRegisterParam, ZFMethodDynamicRegisterParam)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFMethodDynamicRegisterParam, ZFMethodDynamicRegisterParam)
 ZFOUTPUT_TYPE(ZFMethodDynamicRegisterParam, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMP, ZFMP)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFMP, ZFMP)
 ZFOUTPUT_TYPE(ZFMP, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPropertyCallbackDynamicRegisterInitValueGetter, ZFPropertyCallbackDynamicRegisterInitValueGetter)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFPropertyCallbackDynamicRegisterInitValueGetter, ZFPropertyCallbackDynamicRegisterInitValueGetter)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam)
 ZFOUTPUT_TYPE(ZFPropertyDynamicRegisterParam, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObject *>::Comparer)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObject *>::Comparer)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -573,6 +623,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObj
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFObjectInstanceState, ZFObjectInstanceState)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFObjectInstanceState, ZFObjectInstanceState)
 ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToStringT(s, v);})
 
 /**
@@ -584,6 +635,7 @@ ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToStringT(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallbackType, ZFCallbackType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFCallbackType, ZFCallbackType)
 ZFOUTPUT_TYPE(ZFCallbackType, {ZFCallbackTypeToStringT(s, v);})
 
 /**
@@ -595,6 +647,7 @@ ZFOUTPUT_TYPE(ZFCallbackType, {ZFCallbackTypeToStringT(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSerializablePropertyType, ZFSerializablePropertyType)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFSerializablePropertyType, ZFSerializablePropertyType)
 ZFOUTPUT_TYPE(ZFSerializablePropertyType, {ZFSerializablePropertyTypeToStringT(s, v);})
 
 /**
@@ -606,12 +659,14 @@ ZFOUTPUT_TYPE(ZFSerializablePropertyType, {ZFSerializablePropertyTypeToStringT(s
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSerializableData, ZFSerializableData)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFSerializableData, ZFSerializableData)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFSerializableData)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFSDOutputToken, ZFSDOutputToken)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFSDOutputToken, ZFSDOutputToken)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeId_CoreType_h_

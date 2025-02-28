@@ -42,6 +42,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Write)
     ZFENUM_VALUE_REGISTER(Append)
 ZFENUM_END_FLAGS(ZFLIB_ZFCore, ZFFileOpenOption, ZFFileOpenOptionFlags)
+ZFENUM_REG_FLAGS(ZFLIB_ZFCore, ZFFileOpenOption, ZFFileOpenOptionFlags)
 
 // ============================================================
 zfclassFwd _ZFP_ZFFileFindDataPrivate;
@@ -131,6 +132,7 @@ private:
     _ZFP_ZFFileFindDataPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFileFindData, ZFFileFindData)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFileFindData, ZFFileFindData)
 ZFOUTPUT_TYPE(ZFFileFindData, {v.objectInfoT(s);})
 
 // ============================================================

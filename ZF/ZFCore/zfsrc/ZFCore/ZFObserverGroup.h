@@ -70,6 +70,7 @@ public:
 };
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroupHolder)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroupHolder)
 ZFOUTPUT_TYPE(ZFObserverGroupHolder, {v.objectInfoT(s);})
 
 /**

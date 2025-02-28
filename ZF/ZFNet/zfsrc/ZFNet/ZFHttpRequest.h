@@ -33,6 +33,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(TRACE)
     ZFENUM_VALUE_REGISTER(PATCH)
 ZFENUM_END(ZFLIB_ZFNet, ZFHttpMethod)
+ZFENUM_REG(ZFLIB_ZFNet, ZFHttpMethod)
 
 zfclassFwd _ZFP_ZFHttpRequestPrivate;
 // ============================================================

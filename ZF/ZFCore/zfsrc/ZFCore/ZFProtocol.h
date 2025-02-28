@@ -32,6 +32,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(AppNormal)
     ZFENUM_VALUE_REGISTER(AppHigh)
 ZFENUM_END(ZFLIB_ZFCore, ZFProtocolLevel)
+ZFENUM_REG(ZFLIB_ZFCore, ZFProtocolLevel)
 
 /**
  * @brief instance state of ZFProtocol
@@ -58,6 +59,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(OnDeallocPrepare)
     ZFENUM_VALUE_REGISTER(OnDealloc)
 ZFENUM_END(ZFLIB_ZFCore, ZFProtocolInstanceState)
+ZFENUM_REG(ZFLIB_ZFCore, ZFProtocolInstanceState)
 
 // ============================================================
 /**
@@ -170,6 +172,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocol, ZFProtocol *)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFProtocol, ZFProtocol *)
 ZFOUTPUT_TYPE(ZFProtocol, {v.objectInfoT(s);})
 
 // ============================================================
@@ -798,6 +801,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocolImplInfo, ZFProtocolImplInfo)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFProtocolImplInfo, ZFProtocolImplInfo)
 ZFOUTPUT_TYPE(ZFProtocolImplInfo, {v.objectInfoT(s);})
 
 /**

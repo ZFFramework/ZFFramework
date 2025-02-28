@@ -40,6 +40,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback)
 ZFOUTPUT_TYPE(ZFCallback, {v.objectInfoT(s);})
 
 /** @brief keyword for serialize */
@@ -52,9 +53,13 @@ ZFOUTPUT_TYPE(ZFCallback, {v.objectInfoT(s);})
 
 // ============================================================
 ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFListener, ZFListener)
+ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFListener, ZFListener)
 ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
+ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
 ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFOutput, ZFOutput)
+ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFOutput, ZFOutput)
 ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFInput, ZFInput)
+ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFInput, ZFInput)
 
 // ============================================================
 // custom serialize logic

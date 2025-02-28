@@ -21,6 +21,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ByRequest)
     ZFENUM_VALUE_REGISTER(FromBackground)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIPageResumeReason)
+ZFENUM_REG(ZFLIB_ZFUIWidget, ZFUIPageResumeReason)
 
 /**
  * @brief page pause reason
@@ -34,6 +35,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ToBackground)
     ZFENUM_VALUE_REGISTER(BeforeDestroy)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIPagePauseReason)
+ZFENUM_REG(ZFLIB_ZFUIWidget, ZFUIPagePauseReason)
 
 // ============================================================
 zfclassFwd ZFUIPageManager;

@@ -30,6 +30,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Tab)
     ZFENUM_VALUE_REGISTER(Normal)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
+ZFENUM_REG(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
 
 // ============================================================
 // ZFUIButtonGroup

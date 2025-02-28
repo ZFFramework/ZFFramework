@@ -69,6 +69,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUtility, ZFTextTemplateRunParam, ZFTextTemplateRunParam)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFUtility, ZFTextTemplateRunParam, ZFTextTemplateRunParam)
 
 extern ZFLIB_ZFUtility ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefault(void);
 /**

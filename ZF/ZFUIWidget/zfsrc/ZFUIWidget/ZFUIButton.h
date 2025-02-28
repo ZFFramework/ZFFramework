@@ -27,6 +27,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(CheckedHighlighted)
     ZFENUM_VALUE_REGISTER(Disabled)
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonState)
+ZFENUM_REG(ZFLIB_ZFUIWidget, ZFUIButtonState)
 
 // ============================================================
 // ZFUIButton

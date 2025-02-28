@@ -25,6 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFProperty, const ZFProperty *)
+ZFTYPEID_REG(ZFLIB_ZFCore, ZFProperty, const ZFProperty *)
 ZFOUTPUT_TYPE(ZFProperty, {v.objectInfoT(s);})
 
 /** @brief keyword for serialize */

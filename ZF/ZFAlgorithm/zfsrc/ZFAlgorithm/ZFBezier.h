@@ -186,6 +186,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceInOut)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezier)
+ZFTYPEID_REG(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezier)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFBezier_p0x "p0x"

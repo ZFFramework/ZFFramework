@@ -73,6 +73,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(DocType)
     ZFENUM_VALUE_REGISTER(PI)
 ZFENUM_END(ZFLIB_ZFAlgorithm, ZFXmlType)
+ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFXmlType)
 
 // ============================================================
 // ZFXml
@@ -293,6 +294,7 @@ private:
     ZFXml(ZF_IN _ZFP_ZFXmlPrivate *ref);
 };
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFXml, ZFXml)
+ZFTYPEID_REG(ZFLIB_ZFAlgorithm, ZFXml, ZFXml)
 ZFOUTPUT_TYPE(ZFXml, {v.objectInfoT(s);})
 
 /** @brief util to create #ZFXml */
@@ -416,6 +418,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
 
 /**
  * @brief default xml output token

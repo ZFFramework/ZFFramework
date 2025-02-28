@@ -23,6 +23,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Client)
     ZFENUM_VALUE_REGISTER(ServerAccept)
 ZFENUM_END(ZFLIB_ZFNet, ZFTcpType)
+ZFENUM_REG(ZFLIB_ZFNet, ZFTcpType)
 
 zfclassFwd _ZFP_ZFTcpPrivate;
 // ============================================================

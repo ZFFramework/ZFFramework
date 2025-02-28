@@ -78,6 +78,7 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUIPoint)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPoint)
+ZFTYPEID_REG(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPoint)
 ZFOUTPUT_TYPE(ZFUIPoint, {ZFUIPointToStringT(s, v);})
 
 /**
@@ -165,6 +166,7 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUIMargin)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMargin)
+ZFTYPEID_REG(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMargin)
 ZFOUTPUT_TYPE(ZFUIMargin, {ZFUIMarginToStringT(s, v);})
 
 /**
@@ -413,6 +415,7 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUISize)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUISize, ZFUISize)
+ZFTYPEID_REG(ZFLIB_ZFUIKit, ZFUISize, ZFUISize)
 ZFOUTPUT_TYPE(ZFUISize, {ZFUISizeToStringT(s, v);})
 
 /**
@@ -654,6 +657,7 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUIRect)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRect)
+ZFTYPEID_REG(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRect)
 ZFOUTPUT_TYPE(ZFUIRect, {ZFUIRectToStringT(s, v);})
 
 /**
@@ -1073,6 +1077,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(RightEdge)
     ZFENUM_VALUE_REGISTER(BottomEdge)
 ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignFlags)
+ZFENUM_REG_FLAGS(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignFlags)
 
 /**
  * @brief true if align is valid
@@ -1142,6 +1147,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Right)
     ZFENUM_VALUE_REGISTER(Bottom)
 ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUIOrientation, ZFUIOrientationFlags)
+ZFENUM_REG_FLAGS(ZFLIB_ZFUIKit, ZFUIOrientation, ZFUIOrientationFlags)
 
 /** @brief (ZFUIOrientation::e_Left | ZFUIOrientation::e_Top | ZFUIOrientation::e_Right | ZFUIOrientation::e_Bottom) */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIOrientationFlags, ZFUIOrientationFlagsAll)
@@ -1212,6 +1218,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorZero)
  * (e.g. "RGB" instead of "AARRGGBB")
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColor)
+ZFTYPEID_REG(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColor)
 ZFOUTPUT_TYPE(ZFUIColor, {ZFUIColorToStringT(s, v);})
 
 /**
@@ -1404,6 +1411,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Italic)
     ZFENUM_VALUE_REGISTER(BoldItalic)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUITextAppearance)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUITextAppearance)
 
 // ============================================================
 // ZFUITextTruncateMode
@@ -1421,6 +1429,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Middle)
     ZFENUM_VALUE_REGISTER(Tail)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUITextTruncateMode)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUITextTruncateMode)
 
 // ============================================================
 /**
@@ -1480,6 +1489,7 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(FillY)
     ZFENUM_VALUE_REGISTER(FitY)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFUIContentScaleType)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIContentScaleType)
 
 /**
  * @brief apply scale for #ZFUIContentScaleType
