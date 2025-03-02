@@ -439,6 +439,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     template<> \
     zfclassNotPOD ZFTypeId<Scope EnumName> : zfextend ZFTypeInfo { \
     public: \
+        typedef Scope EnumName _ZFP_PropType; \
+        typedef Scope v_##EnumName _ZFP_WrapType; \
+    public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
@@ -447,7 +450,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return Scope ZFTypeId_##EnumName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
-            return Scope v_##EnumName::ClassData(); \
+            return _ZFP_WrapType::ClassData(); \
         } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
@@ -466,7 +469,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            Scope v_##EnumName *t = zfunsafe_zfAlloc(Scope v_##EnumName, v); \
+            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, v); \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
             ZFCoreMutexUnlock(); \
@@ -474,31 +477,31 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN Scope EnumName const &v \
+                , ZF_IN _ZFP_PropType const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            Scope v_##EnumName *t = zfunsafe_zfAlloc(Scope v_##EnumName, v); \
+            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
-        template<typename T_Access = Scope EnumName \
+        template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, Scope EnumName>::Value) ? 1 \
+                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \
                 : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, Scope EnumName>::Value \
+                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value \
                     && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
             , typename T_Fix = void \
             > \
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(Scope v_##EnumName *, obj) != zfnull); \
+                return (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
-                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(Scope v_##EnumName *, obj)->_ZFP_ZFEnum_value)); \
+                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(_ZFP_WrapType *, obj)->_ZFP_ZFEnum_value)); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -507,14 +510,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return obj == zfnull || (zfcast(Scope v_##EnumName *, obj) != zfnull); \
+                return obj == zfnull || (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 if(obj == zfnull) { \
                     return zfnull; \
                 } \
                 else { \
-                    Scope v_##EnumName *t = zfcast(Scope v_##EnumName *, obj); \
+                    _ZFP_WrapType *t = zfcast(_ZFP_WrapType *, obj); \
                     /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                     return (typename zftTraits<T_Access>::TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 } \
@@ -524,23 +527,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }; \
         zfoverride \
         virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
-            return ValueStore(obj, *(const Scope EnumName *)v); \
+            return ValueStore(obj, *(const _ZFP_PropType *)v); \
         } \
         zfoverride \
         virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
-            if(!Value<Scope EnumName>::zfvAccessAvailable(obj)) { \
+            if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(Scope EnumName, Value<Scope EnumName>::zfvAccess(obj)); \
+            return (void *)zfnew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
         } \
         zfoverride \
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((Scope EnumName *)v); \
-            Value<Scope EnumName>::zfvAccessFinish(obj); \
+            zfdelete((_ZFP_PropType *)v); \
+            Value<_ZFP_PropType>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<Scope EnumName>); \
+            return zfnew(ZFCoreArray<_ZFP_PropType>); \
         } \
     }; \
     /** @endcond */ \
@@ -597,6 +600,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     template<> \
     zfclassNotPOD ZFTypeId<Scope EnumFlagsName> : zfextend ZFTypeInfo { \
     public: \
+        typedef Scope EnumName _ZFP_PropTypeOrig; \
+        typedef Scope EnumFlagsName _ZFP_PropType; \
+        typedef Scope v_##EnumFlagsName _ZFP_WrapType; \
+    public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
@@ -605,7 +612,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return Scope ZFTypeId_##EnumFlagsName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
-            return Scope v_##EnumFlagsName::ClassData(); \
+            return _ZFP_WrapType::ClassData(); \
         } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
@@ -624,47 +631,50 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            Scope v_##EnumFlagsName *t = zfunsafe_zfAlloc(Scope v_##EnumFlagsName); \
-            t->zfv = v; \
-            obj = t; \
+            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, v); \
+            obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN Scope EnumName const &v \
+                , ZF_IN _ZFP_PropTypeOrig const &v \
                 ) { \
-            Scope v_##EnumName *t = zfAlloc(Scope v_##EnumName, (zfuint)v); \
-            obj = t; \
-            zfRelease(t); \
+            ZFCoreMutexLock(); \
+            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            obj.zfunsafe_assign(t); \
+            zfunsafe_zfRelease(t); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
-                , ZF_IN Scope EnumFlagsName const &v \
+                , ZF_IN _ZFP_PropType const &v \
                 ) { \
-            Scope v_##EnumName *t = zfAlloc(Scope v_##EnumName, (zfuint)v); \
-            obj = t; \
-            zfRelease(t); \
+            ZFCoreMutexLock(); \
+            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            obj.zfunsafe_assign(t); \
+            zfunsafe_zfRelease(t); \
+            ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
-        template<typename T_Access = Scope EnumFlagsName \
+        template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, Scope EnumFlagsName>::Value) ? 1 \
+                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \
                 : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, Scope EnumFlagsName>::Value \
+                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value \
                     && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
             , typename T_Fix = void \
             > \
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (zfcast(Scope v_##EnumName *, obj) != zfnull); \
+                return (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
-                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(Scope v_##EnumName *, obj)->_ZFP_ZFEnum_value)); \
+                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(_ZFP_WrapType *, obj)->_ZFP_ZFEnum_value)); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -673,14 +683,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return obj == zfnull || (zfcast(Scope v_##EnumName *, obj) != zfnull); \
+                return obj == zfnull || (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
             static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 if(obj == zfnull) { \
                     return zfnull; \
                 } \
                 else { \
-                    Scope v_##EnumName *t = zfcast(Scope v_##EnumName *, obj); \
+                    _ZFP_WrapType *t = zfcast(_ZFP_WrapType *, obj); \
                     /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                     return (typename zftTraits<T_Access>::TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 } \
@@ -690,23 +700,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }; \
         zfoverride \
         virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
-            return ValueStore(obj, *(const Scope EnumFlagsName *)v); \
+            return ValueStore(obj, *(const _ZFP_PropType *)v); \
         } \
         zfoverride \
         virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
-            if(!Value<Scope EnumFlagsName>::zfvAccessAvailable(obj)) { \
+            if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(Scope EnumFlagsName, Value<Scope EnumFlagsName>::zfvAccess(obj)); \
+            return (void *)zfnew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
         } \
         zfoverride \
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((Scope EnumFlagsName *)v); \
-            Value<Scope EnumFlagsName>::zfvAccessFinish(obj); \
+            zfdelete((_ZFP_PropType *)v); \
+            Value<_ZFP_PropType>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<Scope EnumFlagsName>); \
+            return zfnew(ZFCoreArray<_ZFP_PropType>); \
         } \
     }; \
     /** @endcond */ \
