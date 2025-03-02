@@ -92,16 +92,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_DECLARE(ZFLIB_, TypeName, Type) \
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type)
-/**
- * @brief declare a type id with custom type wrapper
- *
- * by default, all of your type should be registered by #ZFTYPEID_DECLARE series,
- * for some special case,
- * you may need to register your type manually,
- * to achieve this, you must:
- * -  specialize template #ZFTypeId
- * -  use this macro to register your type
- */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfstring &ZFTypeId_##TypeName(void) { \
@@ -124,7 +115,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
     _ZFP_ZFTYPEID_CONVERTER_DEFINE(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
     _ZFP_ZFTYPEID_METHOD_REGISTER(TypeName, Type) \
-    ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, convertFromStringAction, convertToStringAction) \
@@ -155,16 +146,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             )
 
 // ============================================================
-/**
- * @brief declare a type that reflectable and accessable, but not serializable
- *
- * by default, all return types and method types in ZFMethod
- * must be registered by #ZFTYPEID_DECLARE
- * for advanced reflection logic\n
- * if you simply want basic method declaration,
- * you may use this macro to disable your type explicitly\n
- * see #ZFTYPEID_DECLARE for more info
- */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfstring &ZFTypeId_##TypeName(void) { \
@@ -174,37 +156,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     typedef Type _ZFP_PropTypeW_##TypeName; \
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type)
 
-/** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ...) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ##__VA_ARGS__)
 
-/** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
-    ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
-/** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
+    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
 
 // ============================================================
-/**
- * @brief alias an existing type to another type, see #ZFTYPEID_DECLARE
- *
- * the original type must be declared by #ZFTYPEID_DECLARE or #ZFTYPEID_ACCESS_ONLY_DECLARE\n
- * the newly aliased type would share same type id,
- * serializable converter and string converter,
- * with the original exist one\n
- * see #ZFTYPEID_DECLARE for more info
- * @note aliased type would:
- *   -  create temp holder object for conversion
- *   -  perform value copy during conversion
- *
- *   which would cause bad performance during reflection\n
- *   if performance matters,
- *   you should consider supply custom type id specializations (by #ZFTYPEID_ALIAS_DECLARE_CUSTOM),
- *   or, prevent to use aliased type for reflectable method
- */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     /** @brief see @ref ZFTypeId_##AliasToTypeName */ \
     inline const zfstring &ZFTypeId_##TypeName(void) { \
@@ -213,14 +179,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     typedef Type _ZFP_PropTypeW_##TypeName; \
     _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
 
-/** @brief see #ZFTYPEID_ALIAS_DECLARE */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, ...) \
     _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_DEFAULT, __VA_ARGS__ ::)
-/** @brief see #ZFTYPEID_ALIAS_DECLARE */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, ...) \
     _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, __VA_ARGS__ ::)
 
-/** @brief see #ZFTYPEID_ALIAS_DECLARE */
+/** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
     _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
 
@@ -483,7 +449,55 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ZFSerializableData(); \
         } \
     } \
-    ZFCORETYPE_STRING_CONVERTER_DECLARE(ZFLIB_, TypeName, _ZFP_PropTypeW_##TypeName)
+    /** @brief util method to convert TypeName from string */ \
+    extern ZFLIB_ zfbool TypeName##FromStringT( \
+            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
+            , ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ); \
+    /** @brief util method to convert TypeName from string */ \
+    inline _ZFP_PropTypeW_##TypeName TypeName##FromString( \
+            ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        _ZFP_PropTypeW_##TypeName v; \
+        TypeName##FromStringT(v, src, srcLen, errorHint); \
+        return v; \
+    } \
+    /** @cond ZFPrivateDoc */ \
+    inline zfbool TypeName##FromStringT( \
+            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
+            , ZF_IN const zfstring &src \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        return TypeName##FromStringT(v, src.cString(), src.length(), errorHint); \
+    } \
+    inline _ZFP_PropTypeW_##TypeName TypeName##FromString( \
+            ZF_IN const zfstring &src \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        _ZFP_PropTypeW_##TypeName v; \
+        TypeName##FromStringT(v, src.cString(), src.length(), errorHint); \
+        return v; \
+    } \
+    /** @endcond */ \
+    /** @brief util method to convert TypeName to string */ \
+    extern ZFLIB_ zfbool TypeName##ToStringT( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ); \
+    /** @brief util method to convert TypeName to string */ \
+    inline zfstring TypeName##ToString( \
+            ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        zfstring s; \
+        TypeName##ToStringT(s, v, errorHint); \
+        return s; \
+    }
 
 #define _ZFP_ZFTYPEID_CONVERTER_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
     zfbool TypeName##FromDataT( \
@@ -501,7 +515,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ) { \
         ZFM_EXPAND(serializeToAction) \
     } \
-    ZFCORETYPE_STRING_CONVERTER_DEFINE(TypeName, _ZFP_PropTypeW_##TypeName, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction))
+    zfbool TypeName##FromStringT( \
+            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
+            , ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
+            ) { \
+        ZFM_EXPAND(convertFromStringAction) \
+    } \
+    zfbool TypeName##ToStringT( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
+            ) { \
+        ZFM_EXPAND(convertToStringAction) \
+    }
 
 // ============================================================
 #define _ZFP_ZFTYPEID_DEF_SERIALIZABLE_CONVERTER_FROM(TypeName, Type) \
@@ -663,6 +691,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type, ...) \
     _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 1, __VA_ARGS__ ::)
+
+#define _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
+    ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
+        _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \
+            zfnew(ZFTypeId< Type >)); \
+        ZFMethodFuncUserRegister_0(dummy, { \
+                return ZFTypeId_##TypeName(); \
+            }, ZF_NAMESPACE_CURRENT(), const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
+        zfdelete(_ZFP_ZFTypeInfoUnregister(ZFTypeId_##TypeName())); \
+    } \
+    ZF_STATIC_REGISTER_END(PropTIReg_##TypeName)
 
 // ============================================================
 #define _ZFP_ZFTYPEID_METHOD_REGISTER(TypeName, Type) \

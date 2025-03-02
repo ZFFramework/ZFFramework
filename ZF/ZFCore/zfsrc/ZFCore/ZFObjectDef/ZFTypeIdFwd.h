@@ -223,28 +223,6 @@ public:
 };
 
 // ============================================================
-/**
- * @brief manually register a custom type id
- *
- * you must have these things available before register:
- * -  `const zfstring &ZFTypeId_YourTypeName()`
- * -  specialization for `ZFTypeId<YourType>`
- */
-#define ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
-        _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \
-            zfnew(ZFTypeId< Type >)); \
-        ZFMethodFuncUserRegister_0(dummy, { \
-                return ZFTypeId_##TypeName(); \
-            }, ZF_NAMESPACE_CURRENT(), const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
-    } \
-    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
-        zfdelete(_ZFP_ZFTypeInfoUnregister(ZFTypeId_##TypeName())); \
-    } \
-    ZF_STATIC_REGISTER_END(PropTIReg_##TypeName)
-
-// ============================================================
 zfclassFwd ZFProgressable;
 typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         ZF_IN_OUT ZFProgressable *ret

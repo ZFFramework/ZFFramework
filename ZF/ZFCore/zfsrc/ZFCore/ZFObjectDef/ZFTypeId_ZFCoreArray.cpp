@@ -260,7 +260,7 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
 }
 
 // ============================================================
-ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
+_ZFP_ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
     invokerObject->to<v_ZFCoreArray *>()->elementTypeInit(elementTypeId);
