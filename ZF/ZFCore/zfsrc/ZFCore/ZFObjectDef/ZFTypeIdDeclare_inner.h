@@ -1,175 +1,52 @@
 /**
- * @file ZFTypeIdDeclare.h
+ * @file ZFTypeIdDeclare_inner.h
  * @brief reflectable type define
  */
 
-#ifndef _ZFI_ZFTypeIdDeclare_h_
-#define _ZFI_ZFTypeIdDeclare_h_
+#ifndef _ZFI_ZFTypeIdDeclare_inner_h_
+#define _ZFI_ZFTypeIdDeclare_inner_h_
 
 #include "ZFTypeIdFwd.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-/**
- * @brief register a type for reflection
- *
- * usually for implementation use only,
- * ZFFramework would supply most of the types,
- * however you may use this to register your own types\n
- * \n
- * typical code to register a type:
- * @code
- *   // ============================================================
- *   // in h file
- *   // declare your type
- *   // * must be declared inside global namespace (#ZF_NAMESPACE_GLOBAL_BEGIN)
- *   // * type name must be unique, you may use custom prefix to prevent name conflict
- *   / **
- *    * add your Doxygen docs here
- *    * /
- *   ZFTYPEID_DECLARE(ZFLIB_APP, YourType, YourType)
- *   ZFTYPEID_REG(ZFLIB_APP, YourType, YourType)
- *
- *   // ============================================================
- *   // in cpp file
- *   // register your type
- *   ZFTYPEID_DEFINE(YourType, YourType, {
- *           // serializeFrom callback, proto type:
- *           //   zfbool YourTypeFromDataT(
- *           //           ZF_OUT YourType &v
- *           //           , ZF_IN const ZFSerializableData &serializableData
- *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
- *           //           , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
- *           //           );
- *           // you should:
- *           //   * check whether the type match the serializableData's type
- *           //   * serialize from serializableData
- *       }, {
- *           // serializeTo callback, proto type:
- *           //   zfbool YourTypeToDataT(
- *           //           ZF_OUT ZFSerializableData &serializableData
- *           //           , ZF_IN YourType const &v
- *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
- *           //           );
- *           // you should:
- *           //   * save type name to the serializableData
- *           //   * save type value to the serializableData
- *       }, {
- *           // convertFromString callback, proto type:
- *           //   zfbool YourTypeFromStringT(
- *           //           ZF_OUT YourType &v
- *           //           , ZF_IN const zfchar *src
- *           //           , ZF_IN_OPT zfindex srcLen = zfindexMax()
- *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
- *           //           );
- *       }, {
- *           // convertToString callbackk, proto type:
- *           //   zfbool YourTypeToStringT(
- *           //           ZF_IN_OUT zfstring &s
- *           //           , ZF_IN YourType const &v
- *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
- *           //           );
- *       })
- *
- *   // or, you may use #ZFTYPEID_DEFINE_BY_STRING_CONVERTER for short,
- *   // if your type support converter from/to string
- *   ZFTYPEID_DEFINE_BY_STRING_CONVERTER(YourType, YourType, YourTypeFromString, YourTypeToString)
- *
- *   // or, you may use #ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER for short,
- *   // if your type support converter from/to ZFSerializableData
- *   ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(YourType, YourType, YourTypeFromData, YourTypeToData)
- * @endcode
- *
- * once registered, your type can be used as #ZFPROPERTY_ASSIGN
- * which benefits from the powerful automatic serialization logic,
- * or, can be used as reflectable param or return type for #ZFMETHOD_INLINE_0\n
- * \n
- * \n
- * ADVANCED:\n
- * -  a type can be used as #ZFPROPERTY_ASSIGN only if declared by #ZFTYPEID_DECLARE
- * -  no inheritance support for #ZFTYPEID_DECLARE
- * -  for types that can not be serialized, you may use #ZFTYPEID_ACCESS_ONLY_DECLARE
- * -  for aliased type, you may use #ZFTYPEID_ALIAS_DECLARE
- *
- *
- * ADVANCED:\n
- * ZFTypeId can also be declared in different namespace,
- * or even declared as inner class, with some limitations\n
- * \n
- * declare in different namespace:
- * @code
- *   // ============================================================
- *   // in h file
- *   ZF_NAMESPACE_BEGIN(YourNamespace)
- *   // declare as usual, inside namespace
- *   ZFTYPEID_DECLARE(ZFLIB_APP, YourType, YourType)
- *   ZF_NAMESPACE_END(YourNamespace)
- *
- *   // ZFTYPEID_REG must be declared in global scope, with owner namespace declared
- *   ZFTYPEID_REG(ZFLIB_APP, YourType, YourType, YourNamespace)
- *
- *   // ============================================================
- *   // in cpp file
- *   ZFTYPEID_DEFINE(YourType, YourType, ...)
- * @endcode
- * \n
- * declare as inner class:
- * @code
- *   // ============================================================
- *   // in h file
- *   zfclass ZFLIB_APP YourOuterClass : zfextend ZFObject {
- *       ZFOBJECT_DECLARE(YourOuterClass, ZFObject)
- *
- *       zfclassNotPOD YourType {};
- *
- *       // declare as inner class
- *       ZFTYPEID_INNER_DECLARE(YourOuterClass, YourType, YourType)
- *   };
- *
- *   // ZFTYPEID_INNER_REG must be declared in global scope
- *   ZFTYPEID_INNER_REG(YourOuterClass, YourType, YourType)
- *
- *   // ============================================================
- *   // in cpp file
- *   ZFTYPEID_INNER_DEFINE(YourOuterClass, YourType, YourType, ...)
- * @endcode
- */
-#define ZFTYPEID_DECLARE(ZFLIB_, TypeName, Type) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type)
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
+#define ZFTYPEID_INNER_DECLARE(OuterClass, TypeName, Type) \
+    ZFTYPEID_INNER_DECLARE_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DECLARE(OuterClass, TypeName, Type)
+/** @brief see #ZFTYPEID_DECLARE */
+#define ZFTYPEID_INNER_DECLARE_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type) \
     /** \n */ \
-    inline const zfstring &ZFTypeId_##TypeName(void) { \
-        static ZFSigName d(ZF_NAMESPACE_CURRENT() != zfnull ? zfstr("%s.%s", ZF_NAMESPACE_CURRENT(), #TypeName) : zftext(#TypeName)); \
+    static inline const zfstring &ZFTypeId_##TypeName(void) { \
+        static ZFSigName d(zfstr("%s.%s", OuterClass::ClassData()->classNameFull(), #TypeName)); \
         return d; \
     } \
     typedef Type _ZFP_PropTypeW_##TypeName; \
-    _ZFP_ZFTYPEID_CONVERTER_DECLARE(ZFLIB_, TypeName, Type)
+    _ZFP_ZFTYPEID_INNER_CONVERTER_DECLARE(OuterClass, TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_REG(ZFLIB_, TypeName, Type, ...) \
-    _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type, ##__VA_ARGS__)
+#define ZFTYPEID_INNER_REG(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_REG(OuterClass, TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
-    ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
-    _ZFP_ZFTYPEID_DEFINE(TypeName, Type, zffalse)
+#define ZFTYPEID_INNER_DEFINE(OuterClass, TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
+    ZFTYPEID_INNER_DEFINE_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
+    _ZFP_ZFTYPEID_INNER_DEFINE(OuterClass, TypeName, Type, zffalse)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
-    _ZFP_ZFTYPEID_CONVERTER_DEFINE(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
-    _ZFP_ZFTYPEID_METHOD_REGISTER(TypeName, Type) \
-    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+#define ZFTYPEID_INNER_DEFINE_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
+    _ZFP_ZFTYPEID_INNER_CONVERTER_DEFINE(OuterClass, TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
+    _ZFP_ZFTYPEID_INNER_METHOD_REGISTER(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ID_DATA_REGISTER(OuterClass, TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, convertFromStringAction, convertToStringAction) \
-    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
-    _ZFP_ZFTYPEID_DEFINE(TypeName, Type, zftrue)
+#define ZFTYPEID_INNER_DEFINE_BY_STRING_CONVERTER(OuterClass, TypeName, Type, convertFromStringAction, convertToStringAction) \
+    ZFTYPEID_INNER_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
+    _ZFP_ZFTYPEID_INNER_DEFINE(OuterClass, TypeName, Type, zftrue)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, convertFromStringAction, convertToStringAction) \
-    ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type \
+#define ZFTYPEID_INNER_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type, convertFromStringAction, convertToStringAction) \
+    ZFTYPEID_INNER_DEFINE_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type \
             , _ZFP_ZFTYPEID_DEF_SERIALIZABLE_CONVERTER_FROM(TypeName, Type) \
             , _ZFP_ZFTYPEID_DEF_SERIALIZABLE_CONVERTER_TO(TypeName, Type) \
             , ZFM_EXPAND(convertFromStringAction) \
@@ -177,13 +54,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             )
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(TypeName, Type, serializeFromAction, serializeToAction) \
-    ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction)) \
-    _ZFP_ZFTYPEID_DEFINE(TypeName, Type, zffalse)
+#define ZFTYPEID_INNER_DEFINE_BY_SERIALIZABLE_CONVERTER(OuterClass, TypeName, Type, serializeFromAction, serializeToAction) \
+    ZFTYPEID_INNER_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction)) \
+    _ZFP_ZFTYPEID_INNER_DEFINE(OuterClass, TypeName, Type, zffalse)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction) \
-    ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type \
+#define ZFTYPEID_INNER_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type, serializeFromAction, serializeToAction) \
+    ZFTYPEID_INNER_DEFINE_WITH_CUSTOM_WRAPPER(OuterClass, TypeName, Type \
             , ZFM_EXPAND(serializeFromAction) \
             , ZFM_EXPAND(serializeToAction) \
             , _ZFP_ZFTYPEID_DEF_STRING_CONVERTER_FROM(TypeName, Type) \
@@ -192,54 +69,54 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type) \
+#define ZFTYPEID_INNER_ACCESS_ONLY_DECLARE(OuterClass, TypeName, Type) \
     /** \n */ \
-    inline const zfstring &ZFTypeId_##TypeName(void) { \
-        static ZFSigName d(ZF_NAMESPACE_CURRENT() != zfnull ? zfstr("%s.%s", ZF_NAMESPACE_CURRENT(), #TypeName) : zftext(#TypeName)); \
+    static inline const zfstring &ZFTypeId_##TypeName(void) { \
+        static ZFSigName d(zfstr("%s.%s", OuterClass::ClassData()->classNameFull(), #TypeName)); \
         return d; \
     } \
     typedef Type _ZFP_PropTypeW_##TypeName; \
-    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type)
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DECLARE(OuterClass, TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ...) \
-    _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ##__VA_ARGS__)
+#define ZFTYPEID_INNER_ACCESS_ONLY_REG(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ACCESS_ONLY_REG(OuterClass, TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
-    _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
-    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+#define ZFTYPEID_INNER_ACCESS_ONLY_DEFINE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ACCESS_ONLY_DEFINE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ID_DATA_REGISTER(OuterClass, TypeName, Type)
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+#define ZFTYPEID_INNER_ACCESS_ONLY_DEFINE_UNCOMPARABLE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ACCESS_ONLY_DEFINE_UNCOMPARABLE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ID_DATA_REGISTER(OuterClass, TypeName, Type)
 
 // ============================================================
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+#define ZFTYPEID_INNER_ALIAS_DECLARE(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
     /** @brief see @ref ZFTypeId_##AliasToTypeName */ \
-    inline const zfstring &ZFTypeId_##TypeName(void) { \
+    static inline const zfstring &ZFTypeId_##TypeName(void) { \
         return ZFTypeId_##AliasToTypeName(); \
     } \
     typedef Type _ZFP_PropTypeW_##TypeName; \
-    _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ALIAS_DECLARE(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, ...) \
-    _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_DEFAULT, __VA_ARGS__ ::)
+#define ZFTYPEID_INNER_ALIAS_REG(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ALIAS_REG(OuterClass, AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_INNER_ALIAS_VALUE_ACCESS_DEFAULT)
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, ...) \
-    _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, __VA_ARGS__ ::)
+#define ZFTYPEID_INNER_ALIAS_REG_CUSTOM(OuterClass, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
+    _ZFP_ZFTYPEID_INNER_ALIAS_REG(OuterClass, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion)
 
 /** @brief see #ZFTYPEID_DECLARE */
-#define ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
-    _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
+#define ZFTYPEID_INNER_ALIAS_DEFINE(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_ALIAS_DEFINE(OuterClass, AliasToTypeName, AliasToType, TypeName, Type)
 
 // ============================================================
-#define _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
+#define _ZFP_ZFTYPEID_INNER_WRAPPER_DECLARE(OuterClass, TypeName, Type) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##TypeName : zfextend ZFTypeIdWrapper { \
-        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper) \
+    zfclass v_##TypeName : zfextend ZFTypeIdWrapper { \
+        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper, OuterClass) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->zfvReset(); \
         }) \
@@ -324,77 +201,77 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     };
 
-#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    ZFOBJECT_REGISTER(v_##TypeName) \
-    _ZFP_ZFTypeIdProgressUpdate &v_##TypeName::_ZFP_ZFTypeId_progressUpdate(void) { \
+#define _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMMON(OuterClass, TypeName, Type) \
+    ZFOBJECT_REGISTER(OuterClass, v_##TypeName) \
+    _ZFP_ZFTypeIdProgressUpdate &OuterClass::v_##TypeName::_ZFP_ZFTypeId_progressUpdate(void) { \
         static _ZFP_ZFTypeIdProgressUpdate d = zfnull; \
         return d; \
     } \
-    void v_##TypeName::objectInfoImpl(ZF_IN_OUT zfstring &ret) { \
+    void OuterClass::v_##TypeName::objectInfoImpl(ZF_IN_OUT zfstring &ret) { \
         zftToStringT(ret, this->zfv); \
     } \
-    void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
+    void OuterClass::v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
         zfself *refTmp = zfcast(zfself *, ref); \
         if(refTmp != zfnull) { \
             this->zfv = refTmp->zfv; \
         } \
     } \
-    const zfstring &v_##TypeName::zfvTypeId(void) { \
+    const zfstring &OuterClass::v_##TypeName::zfvTypeId(void) { \
         return ZFTypeId<_ZFP_PropType>::TypeId(); \
     } \
-    ZF_STATIC_REGISTER_INIT(TypeIdReg_##TypeName) { \
+    ZF_STATIC_REGISTER_INIT(TypeIdReg_##OuterClass##_##TypeName) { \
         ZFMethodUserRegister_1(setterMethod, { \
-                invokerObject->to<v_##TypeName *>()->zfv = value; \
-            }, v_##TypeName::ClassData(), void, zftext("zfv") \
-            , ZFMP_IN(v_##TypeName::_ZFP_PropType const &, value) \
+                invokerObject->to<OuterClass::v_##TypeName *>()->zfv = value; \
+            }, OuterClass::v_##TypeName::ClassData(), void, zftext("zfv") \
+            , ZFMP_IN(OuterClass::v_##TypeName::_ZFP_PropType const &, value) \
             ); \
         ZFMethodUserRegister_0(getterMethod, { \
-                return invokerObject->to<v_##TypeName *>()->zfv; \
-            }, v_##TypeName::ClassData(), v_##TypeName::_ZFP_PropType const &, zftext("zfv") \
+                return invokerObject->to<OuterClass::v_##TypeName *>()->zfv; \
+            }, OuterClass::v_##TypeName::ClassData(), OuterClass::v_##TypeName::_ZFP_PropType const &, zftext("zfv") \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(TypeIdReg_##TypeName) { \
-        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), ZFTypeId<v_##TypeName::_ZFP_PropType>::TypeId())); \
-        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), zfnull)); \
+    ZF_STATIC_REGISTER_DESTROY(TypeIdReg_##OuterClass##_##TypeName) { \
+        ZFMethodUserUnregister(OuterClass::v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), ZFTypeId<OuterClass::v_##TypeName::_ZFP_PropType>::TypeId())); \
+        ZFMethodUserUnregister(OuterClass::v_##TypeName::ClassData()->methodForNameIgnoreParent(zftext("zfv"), zfnull)); \
     } \
-    ZF_STATIC_REGISTER_END(TypeIdReg_##TypeName)
+    ZF_STATIC_REGISTER_END(TypeIdReg_##OuterClass##_##TypeName)
 
-#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type, preferStringConverter) \
-    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
+#define _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_SERIALIZABLE(OuterClass, TypeName, Type, preferStringConverter) \
+    zfbool OuterClass::v_##TypeName::wrappedValuePreferStringConverter(void) { \
         return preferStringConverter; \
     } \
-    zfbool v_##TypeName::zfvFromData( \
+    zfbool OuterClass::v_##TypeName::zfvFromData( \
             ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
             ) { \
-        return TypeName##FromDataT(this->zfv, serializableData, outErrorHint, outErrorPos); \
+        return OuterClass::TypeName##FromDataT(this->zfv, serializableData, outErrorHint, outErrorPos); \
     } \
-    zfbool v_##TypeName::zfvToData( \
+    zfbool OuterClass::v_##TypeName::zfvToData( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
-        return TypeName##ToDataT(serializableData, this->zfv, outErrorHint); \
+        return OuterClass::TypeName##ToDataT(serializableData, this->zfv, outErrorHint); \
     } \
-    zfbool v_##TypeName::zfvFromString( \
+    zfbool OuterClass::v_##TypeName::zfvFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        return TypeName##FromStringT(this->zfv, src, srcLen, errorHint); \
+        return OuterClass::TypeName##FromStringT(this->zfv, src, srcLen, errorHint); \
     } \
-    zfbool v_##TypeName::zfvToString( \
+    zfbool OuterClass::v_##TypeName::zfvToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        return TypeName##ToStringT(s, this->zfv, errorHint); \
+        return OuterClass::TypeName##ToStringT(s, this->zfv, errorHint); \
     }
 
-#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \
-    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
+#define _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_NOT_SERIALIZABLE(OuterClass, TypeName, Type) \
+    zfbool OuterClass::v_##TypeName::wrappedValuePreferStringConverter(void) { \
         return zffalse; \
     } \
-    zfbool v_##TypeName::zfvFromData( \
+    zfbool OuterClass::v_##TypeName::zfvFromData( \
             ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
@@ -403,7 +280,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             "registered type %s is not serializable", #TypeName); \
         return zffalse; \
     } \
-    zfbool v_##TypeName::zfvToData( \
+    zfbool OuterClass::v_##TypeName::zfvToData( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
@@ -411,25 +288,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             "registered type %s is not serializable", #TypeName); \
         return zffalse; \
     } \
-    zfbool v_##TypeName::zfvFromString( \
+    zfbool OuterClass::v_##TypeName::zfvFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         return zffalse; \
     } \
-    zfbool v_##TypeName::zfvToString( \
+    zfbool OuterClass::v_##TypeName::zfvToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         return zffalse; \
     }
 
-#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type) \
-    zfidentity v_##TypeName::objectHashImpl(void) { \
+#define _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMPARABLE(OuterClass, TypeName, Type) \
+    zfidentity OuterClass::v_##TypeName::objectHashImpl(void) { \
         return zfidentityCalcPointer(&(this->zfv)); \
     } \
-    ZFCompareResult v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
+    ZFCompareResult OuterClass::v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
         ZFTypeIdWrapper *t = zfcast(ZFTypeIdWrapper *, anotherObj); \
         if(t == zfnull || !zfstringIsEqual(this->zfvTypeId(), t->zfvTypeId())) { \
             return ZFCompareUncomparable; \
@@ -438,32 +315,32 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ZFComparerDefault(this->zfv, *(_ZFP_PropType *)t->wrappedValue()); \
         } \
     } \
-    zfbool v_##TypeName::zfvIsInit(void) { \
+    zfbool OuterClass::v_##TypeName::zfvIsInit(void) { \
         return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropType>().zfv) == ZFCompareEqual); \
     }
 
-#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    zfidentity v_##TypeName::objectHashImpl(void) { \
+#define _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_UNCOMPARABLE(OuterClass, TypeName, Type) \
+    zfidentity OuterClass::v_##TypeName::objectHashImpl(void) { \
         return zfidentityCalcPointer(this); \
     } \
-    ZFCompareResult v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
+    ZFCompareResult OuterClass::v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
         return this == anotherObj ? ZFCompareEqual : ZFCompareUncomparable; \
     } \
-    zfbool v_##TypeName::zfvIsInit(void) { \
+    zfbool OuterClass::v_##TypeName::zfvIsInit(void) { \
         return zffalse; \
     }
 
 // ============================================================
-#define _ZFP_ZFTYPEID_CONVERTER_DECLARE(ZFLIB_, TypeName, Type) \
+#define _ZFP_ZFTYPEID_INNER_CONVERTER_DECLARE(OuterClass, TypeName, Type) \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    extern ZFLIB_ zfbool TypeName##FromDataT( \
+    static zfbool TypeName##FromDataT( \
             ZF_OUT _ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
             ); \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    inline _ZFP_PropTypeW_##TypeName TypeName##FromData( \
+    static inline _ZFP_PropTypeW_##TypeName TypeName##FromData( \
             ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
@@ -478,13 +355,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return ret; \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    extern ZFLIB_ zfbool TypeName##ToDataT( \
+    static zfbool TypeName##ToDataT( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ); \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    inline ZFSerializableData TypeName##ToData( \
+    static inline ZFSerializableData TypeName##ToData( \
             ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ) { \
@@ -497,14 +374,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     } \
     /** @brief util method to convert TypeName from string */ \
-    extern ZFLIB_ zfbool TypeName##FromStringT( \
+    static zfbool TypeName##FromStringT( \
             ZF_OUT _ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen = zfindexMax() \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief util method to convert TypeName from string */ \
-    inline _ZFP_PropTypeW_##TypeName TypeName##FromString( \
+    static inline _ZFP_PropTypeW_##TypeName TypeName##FromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen = zfindexMax() \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
@@ -514,14 +391,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return v; \
     } \
     /** @cond ZFPrivateDoc */ \
-    inline zfbool TypeName##FromStringT( \
+    static inline zfbool TypeName##FromStringT( \
             ZF_OUT _ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const zfstring &src \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
         return TypeName##FromStringT(v, src.cString(), src.length(), errorHint); \
     } \
-    inline _ZFP_PropTypeW_##TypeName TypeName##FromString( \
+    static inline _ZFP_PropTypeW_##TypeName TypeName##FromString( \
             ZF_IN const zfstring &src \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
@@ -531,13 +408,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     /** @endcond */ \
     /** @brief util method to convert TypeName to string */ \
-    extern ZFLIB_ zfbool TypeName##ToStringT( \
+    static zfbool TypeName##ToStringT( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief util method to convert TypeName to string */ \
-    inline zfstring TypeName##ToString( \
+    static inline zfstring TypeName##ToString( \
             ZF_IN _ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
@@ -546,101 +423,53 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return s; \
     }
 
-#define _ZFP_ZFTYPEID_CONVERTER_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
-    zfbool TypeName##FromDataT( \
-            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
+#define _ZFP_ZFTYPEID_INNER_CONVERTER_DEFINE(OuterClass, TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
+    zfbool OuterClass::TypeName##FromDataT( \
+            ZF_OUT OuterClass::_ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
             ) { \
         ZFM_EXPAND(serializeFromAction) \
     } \
-    zfbool TypeName##ToDataT( \
+    zfbool OuterClass::TypeName##ToDataT( \
             ZF_OUT ZFSerializableData &serializableData \
-            , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+            , ZF_IN OuterClass::_ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
         ZFM_EXPAND(serializeToAction) \
     } \
-    zfbool TypeName##FromStringT( \
-            ZF_OUT _ZFP_PropTypeW_##TypeName &v \
+    zfbool OuterClass::TypeName##FromStringT( \
+            ZF_OUT OuterClass::_ZFP_PropTypeW_##TypeName &v \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         ZFM_EXPAND(convertFromStringAction) \
     } \
-    zfbool TypeName##ToStringT( \
+    zfbool OuterClass::TypeName##ToStringT( \
             ZF_IN_OUT zfstring &s \
-            , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+            , ZF_IN OuterClass::_ZFP_PropTypeW_##TypeName const &v \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         ZFM_EXPAND(convertToStringAction) \
     }
 
 // ============================================================
-#define _ZFP_ZFTYPEID_DEF_SERIALIZABLE_CONVERTER_FROM(TypeName, Type) \
-    { \
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_##TypeName(), outErrorHint, outErrorPos) == zfnull) { \
-            return zffalse; \
-        } \
-        zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData); \
-        if(valueString == zfnull) { \
-            v = _ZFP_PropTypeW_##TypeName(); \
-            return zftrue; \
-        } \
-        if(!TypeName##FromStringT(v, valueString)) { \
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
-                "invalid value: \"%s\"", valueString); \
-            return zffalse; \
-        } \
-        serializableData.resolveMark(); \
-        return zftrue; \
-    }
-#define _ZFP_ZFTYPEID_DEF_SERIALIZABLE_CONVERTER_TO(TypeName, Type) \
-    { \
-        serializableData.itemClass(ZFTypeId_##TypeName()); \
-        zfstring s; \
-        if(!TypeName##ToStringT(s, v)) { \
-            ZFSerializableUtilErrorOccurred(outErrorHint, \
-                "unable to convert value to string"); \
-            return zffalse; \
-        } \
-        serializableData.propertyValue(s.isEmpty() ? zfnull : s.cString()); \
-        return zftrue; \
-    }
-#define _ZFP_ZFTYPEID_DEF_STRING_CONVERTER_FROM(TypeName, Type) \
-    { \
-        ZFSerializableData serializableData; \
-        return (ZFSerializableDataFromZFSD(serializableData, src, srcLen) \
-            && TypeName##FromDataT(v, serializableData)); \
-    }
-#define _ZFP_ZFTYPEID_DEF_STRING_CONVERTER_TO(TypeName, Type) \
-    { \
-        ZFSerializableData serializableData; \
-        if(TypeName##ToDataT(serializableData, v)) { \
-            return ZFSerializableDataToZFSD(s, serializableData, zfnull, ZFSDOutputTokenTrim()); \
-        } \
-        else { \
-            return zffalse; \
-        } \
-    }
-
-// ============================================================
-#define _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, TypeIdSerializable_, Scope) \
+#define _ZFP_ZFTYPEID_INNER_REG_IMPL(OuterClass, TypeName, Type, TypeIdSerializable_) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Scope _ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<OuterClass::_ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
     public: \
-        typedef Scope _ZFP_PropTypeW_##TypeName _ZFP_PropType; \
-        typedef Scope v_##TypeName _ZFP_WrapType; \
+        typedef OuterClass::_ZFP_PropTypeW_##TypeName _ZFP_PropType; \
+        typedef OuterClass::v_##TypeName _ZFP_WrapType; \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = TypeIdSerializable_, \
         }; \
         static inline const zfstring &TypeId(void) { \
-            return Scope ZFTypeId_##TypeName(); \
+            return OuterClass::ZFTypeId_##TypeName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
             return _ZFP_WrapType::ClassData(); \
@@ -736,159 +565,169 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }; \
     /** @endcond */
 
-#define _ZFP_ZFTYPEID_REG(ZFLIB_, TypeName, Type, ...) \
-    _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 1, __VA_ARGS__ ::)
+#define _ZFP_ZFTYPEID_INNER_REG(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_REG_IMPL(OuterClass, TypeName, Type, 1)
 
-#define _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
-        _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \
-            zfnew(ZFTypeId<_ZFP_PropTypeW_##TypeName>)); \
-        ZFMethodFuncUserRegister_0(dummy, { \
-                return ZFTypeId_##TypeName(); \
-            }, ZF_NAMESPACE_CURRENT(), const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName)) \
+#define _ZFP_ZFTYPEID_INNER_ID_DATA_REGISTER(OuterClass, TypeName, Type) \
+    ZF_STATIC_REGISTER_INIT(PropTIReg_##OuterClass##_##TypeName) { \
+        _ZFP_ZFTypeInfoRegister(OuterClass::ZFTypeId_##TypeName(), \
+            zfnew(ZFTypeId<OuterClass::_ZFP_PropTypeW_##TypeName>)); \
+        ZFMethodUserRegisterDetail_0(dummy, { \
+                return OuterClass::ZFTypeId_##TypeName(); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName)) \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
-        zfdelete(_ZFP_ZFTypeInfoUnregister(ZFTypeId_##TypeName())); \
+    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##OuterClass##_##TypeName) { \
+        ZFMethodUserUnregister(OuterClass::ClassData()->methodForNameIgnoreParent(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
+        zfdelete(_ZFP_ZFTypeInfoUnregister(OuterClass::ZFTypeId_##TypeName())); \
     } \
-    ZF_STATIC_REGISTER_END(PropTIReg_##TypeName)
+    ZF_STATIC_REGISTER_END(PropTIReg_##OuterClass##_##TypeName)
 
 // ============================================================
-#define _ZFP_ZFTYPEID_METHOD_REGISTER(TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropMtdReg_##TypeName) { \
-        ZFMethodFuncUserRegister_4(method_FromDataT, { \
-                return TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
-            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromDataT)) \
-            , ZFMP_OUT(_ZFP_PropTypeW_##TypeName &, v) \
+#define _ZFP_ZFTYPEID_INNER_METHOD_REGISTER(OuterClass, TypeName, Type) \
+    ZF_STATIC_REGISTER_INIT(PropMtdReg_##OuterClass##_##TypeName) { \
+        ZFMethodUserRegisterDetail_4(method_FromDataT, { \
+                return OuterClass::TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , zfbool, zftext(ZFM_TOSTRING(TypeName##FromDataT)) \
+            , ZFMP_OUT(OuterClass::_ZFP_PropTypeW_##TypeName &, v) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_3(method_FromData, { \
-                return TypeName##FromData(serializableData, outErrorHint, outErrorPos); \
-            }, ZF_NAMESPACE_CURRENT(), _ZFP_PropTypeW_##TypeName, zftext(ZFM_TOSTRING(TypeName##FromData)) \
+        ZFMethodUserRegisterDetail_3(method_FromData, { \
+                return OuterClass::TypeName##FromData(serializableData, outErrorHint, outErrorPos); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , OuterClass::_ZFP_PropTypeW_##TypeName, zftext(ZFM_TOSTRING(TypeName##FromData)) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_3(method_ToDataT, { \
-                return TypeName##ToDataT(serializableData, v, outErrorHint); \
-            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##ToDataT)) \
+        ZFMethodUserRegisterDetail_3(method_ToDataT, { \
+                return OuterClass::TypeName##ToDataT(serializableData, v, outErrorHint); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , zfbool, zftext(ZFM_TOSTRING(TypeName##ToDataT)) \
             , ZFMP_OUT(ZFSerializableData &, serializableData) \
-            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
+            , ZFMP_IN(OuterClass::_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_2(method_ToData, { \
-                return TypeName##ToData(v, outErrorHint); \
-            }, ZF_NAMESPACE_CURRENT(), ZFSerializableData, zftext(ZFM_TOSTRING(TypeName##ToData)) \
-            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
+        ZFMethodUserRegisterDetail_2(method_ToData, { \
+                return OuterClass::TypeName##ToData(v, outErrorHint); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , ZFSerializableData, zftext(ZFM_TOSTRING(TypeName##ToData)) \
+            , ZFMP_IN(OuterClass::_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_4(method_FromStringT, { \
-                return TypeName##FromStringT(v, src, srcLen, errorHint); \
-            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromStringT)) \
-            , ZFMP_OUT(_ZFP_PropTypeW_##TypeName &, v) \
+        ZFMethodUserRegisterDetail_4(method_FromStringT, { \
+                return OuterClass::TypeName##FromStringT(v, src, srcLen, errorHint); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , zfbool, zftext(ZFM_TOSTRING(TypeName##FromStringT)) \
+            , ZFMP_OUT(OuterClass::_ZFP_PropTypeW_##TypeName &, v) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_3(method_FromString, { \
-                return TypeName##FromString(src, srcLen, errorHint); \
-            }, ZF_NAMESPACE_CURRENT(), _ZFP_PropTypeW_##TypeName, zftext(ZFM_TOSTRING(TypeName##FromString)) \
+        ZFMethodUserRegisterDetail_3(method_FromString, { \
+                return OuterClass::TypeName##FromString(src, srcLen, errorHint); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , OuterClass::_ZFP_PropTypeW_##TypeName, zftext(ZFM_TOSTRING(TypeName##FromString)) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_3(method_ToStringT, { \
-                return TypeName##ToStringT(s, v, errorHint); \
-            }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##ToStringT)) \
+        ZFMethodUserRegisterDetail_3(method_ToStringT, { \
+                return OuterClass::TypeName##ToStringT(s, v, errorHint); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , zfbool, zftext(ZFM_TOSTRING(TypeName##ToStringT)) \
             , ZFMP_OUT(zfstring &, s) \
-            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
+            , ZFMP_IN(OuterClass::_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        ZFMethodFuncUserRegister_2(method_ToString, { \
-                return TypeName##ToString(v, errorHint); \
-            }, ZF_NAMESPACE_CURRENT(), zfstring, zftext(ZFM_TOSTRING(TypeName##ToString)) \
-            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, v) \
+        ZFMethodUserRegisterDetail_2(method_ToString, { \
+                return OuterClass::TypeName##ToString(v, errorHint); \
+            }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
+            , zfstring, zftext(ZFM_TOSTRING(TypeName##ToString)) \
+            , ZFMP_IN(OuterClass::_ZFP_PropTypeW_##TypeName const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropMtdReg_##TypeName) { \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromDataT) \
-                    , ZFTypeId_##TypeName() \
+    ZF_STATIC_REGISTER_DESTROY(PropMtdReg_##OuterClass##_##TypeName) { \
+        const ZFClass *cls = OuterClass::ClassData(); \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##FromDataT) \
+                    , OuterClass::ZFTypeId_##TypeName() \
                     , ZFTypeId_ZFSerializableData() \
                     , ZFTypeId_zfstring() \
                     , ZFTypeId_ZFSerializableData() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromData) \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##FromData) \
                     , ZFTypeId_ZFSerializableData() \
                     , ZFTypeId_zfstring() \
                     , ZFTypeId_ZFSerializableData() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToDataT) \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##ToDataT) \
                     , ZFTypeId_ZFSerializableData() \
-                    , ZFTypeId_##TypeName() \
+                    , OuterClass::ZFTypeId_##TypeName() \
                     , ZFTypeId_zfstring() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToData) \
-                    , ZFTypeId_##TypeName() \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##ToData) \
+                    , OuterClass::ZFTypeId_##TypeName() \
                     , ZFTypeId_zfstring() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromStringT) \
-                    , ZFTypeId_##TypeName() \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##FromStringT) \
+                    , OuterClass::ZFTypeId_##TypeName() \
                     , ZFTypeId_zfstring() \
                     , ZFTypeId_zfindex() \
                     , ZFTypeId_zfstring() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromString) \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##FromString) \
                     , ZFTypeId_zfstring() \
                     , ZFTypeId_zfindex() \
                     , ZFTypeId_zfstring() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToStringT) \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##ToStringT) \
                     , ZFTypeId_zfstring() \
-                    , ZFTypeId_##TypeName() \
+                    , OuterClass::ZFTypeId_##TypeName() \
                     , ZFTypeId_zfstring() \
                     )); \
-        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToString) \
-                    , ZFTypeId_##TypeName() \
+        ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##ToString) \
+                    , OuterClass::ZFTypeId_##TypeName() \
                     , ZFTypeId_zfstring() \
                     )); \
     } \
-    ZF_STATIC_REGISTER_END(PropMtdReg_##TypeName)
+    ZF_STATIC_REGISTER_END(PropMtdReg_##OuterClass##_##TypeName)
 
-#define _ZFP_ZFTYPEID_DEFINE(TypeName, Type, preferStringConverter) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type, preferStringConverter) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type)
-
-// ============================================================
-#define _ZFP_ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_, TypeName, Type, ...) \
-    _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 0, __VA_ARGS__ ::)
-
-#define _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type)
-
-#define _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type)
+#define _ZFP_ZFTYPEID_INNER_DEFINE(OuterClass, TypeName, Type, preferStringConverter) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMMON(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_SERIALIZABLE(OuterClass, TypeName, Type, preferStringConverter) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMPARABLE(OuterClass, TypeName, Type)
 
 // ============================================================
-#define _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+#define _ZFP_ZFTYPEID_INNER_ACCESS_ONLY_REG(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_REG_IMPL(OuterClass, TypeName, Type, 0)
+
+#define _ZFP_ZFTYPEID_INNER_ACCESS_ONLY_DEFINE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMMON(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_NOT_SERIALIZABLE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMPARABLE(OuterClass, TypeName, Type)
+
+#define _ZFP_ZFTYPEID_INNER_ACCESS_ONLY_DEFINE_UNCOMPARABLE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMMON(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_NOT_SERIALIZABLE(OuterClass, TypeName, Type) \
+    _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_UNCOMPARABLE(OuterClass, TypeName, Type)
+
+// ============================================================
+#define _ZFP_ZFTYPEID_INNER_ALIAS_DECLARE(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
     typedef v_##AliasToTypeName v_##TypeName;
 
-#define _ZFP_ZFTYPEID_ALIAS_REG(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion, Scope) \
+#define _ZFP_ZFTYPEID_INNER_ALIAS_REG(OuterClass, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Scope _ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<OuterClass::_ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
     public: \
-        typedef Scope _ZFP_PropTypeW_##TypeName _ZFP_PropType; \
-        typedef Scope v_##TypeName _ZFP_WrapType; \
+        typedef OuterClass::_ZFP_PropTypeW_##TypeName _ZFP_PropType; \
+        typedef OuterClass::v_##TypeName _ZFP_WrapType; \
     public: \
         enum { \
             TypeIdRegistered = ZFTypeId<AliasToType>::TypeIdRegistered, \
@@ -918,7 +757,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ) { \
             return ZFTypeId<AliasToType>::ValueStore(obj, (AliasToType)v); \
         } \
-        TypeIdValueConversion(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+        TypeIdValueConversion(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
     public: \
         zfoverride \
         virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
@@ -943,9 +782,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }; \
     /** @endcond */
 
-#define _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
+#define _ZFP_ZFTYPEID_INNER_ALIAS_DEFINE(OuterClass, AliasToTypeName, AliasToType, TypeName, Type)
 
-#define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_DEFAULT(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+#define _ZFP_ZFTYPEID_INNER_ALIAS_VALUE_ACCESS_DEFAULT(OuterClass, AliasToTypeName, AliasToType, TypeName, Type) \
         template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
                 && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \
@@ -1078,5 +917,5 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFTypeIdDeclare_h_
+#endif // #ifndef _ZFI_ZFTypeIdDeclare_inner_h_
 

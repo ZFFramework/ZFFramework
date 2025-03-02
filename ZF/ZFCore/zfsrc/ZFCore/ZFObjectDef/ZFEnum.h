@@ -8,6 +8,7 @@
 
 #include "ZFTypeId.h"
 #include "ZFEnumDeclare.h"
+#include "ZFEnumDeclare_inner.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

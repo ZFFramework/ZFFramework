@@ -18,7 +18,6 @@
 #include "ZFObjectDef/ZFCoreType_methodRegister.h"
 #include "ZFObjectDef/ZFDynamicInvoker.h"
 #include "ZFObjectDef/ZFEnum.h"
-#include "ZFObjectDef/ZFEnumDeclare.h"
 #include "ZFObjectDef/ZFEnumDynamicRegister.h"
 #include "ZFObjectDef/ZFExport.h"
 #include "ZFObjectDef/ZFFilterForZFClass.h"

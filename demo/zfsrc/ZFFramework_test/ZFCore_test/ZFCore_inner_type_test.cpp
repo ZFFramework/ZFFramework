@@ -17,6 +17,21 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(T1)
 ZFENUM_END_FLAGS(ZFLIB_APP, TestEnum, TestEnumFlags)
 
+zfclass OuterClass : zfextend ZFObject {
+    ZFOBJECT_DECLARE(OuterClass, ZFObject)
+
+    zfclassNotPOD TestType {};
+    ZFTYPEID_INNER_ACCESS_ONLY_DECLARE(OuterClass, TestType, TestType)
+
+    ZFENUM_INNER_BEGIN(OuterClass, TestEnum)
+        ZFENUM_INNER_VALUE(T0)
+        ZFENUM_INNER_VALUE(T1)
+    ZFENUM_INNER_SEPARATOR()
+        ZFENUM_INNER_VALUE_REGISTER(T0)
+        ZFENUM_INNER_VALUE_REGISTER(T1)
+    ZFENUM_INNER_END_FLAGS(OuterClass, TestEnum, TestEnumFlags)
+};
+
 ZF_NAMESPACE_END(ZFCore_inner_type_test_NS)
 
 // ============================================================
@@ -24,6 +39,9 @@ ZF_NAMESPACE_END(ZFCore_inner_type_test_NS)
 ZFTYPEID_REG(ZFLIB_APP, TestType, TestType, ZFCore_inner_type_test_NS)
 ZFOUTPUT_TYPE(ZFCore_inner_type_test_NS::TestType, {zfsFromPointerT(s, &v);})
 ZFENUM_REG_FLAGS(ZFLIB_APP, TestEnum, TestEnumFlags, ZFCore_inner_type_test_NS)
+ZFTYPEID_INNER_REG(ZFCore_inner_type_test_NS::OuterClass, TestType, TestType)
+ZFOUTPUT_TYPE(ZFCore_inner_type_test_NS::OuterClass::TestType, {zfsFromPointerT(s, &v);})
+ZFENUM_INNER_REG_FLAGS(ZFCore_inner_type_test_NS::OuterClass, TestEnum, TestEnumFlags)
 
 // ============================================================
 // in source
@@ -31,6 +49,8 @@ ZF_NAMESPACE_BEGIN(ZFCore_inner_type_test_NS)
 
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TestType, TestType)
 ZFENUM_DEFINE_FLAGS(TestEnum, TestEnumFlags)
+ZFTYPEID_INNER_ACCESS_ONLY_DEFINE_UNCOMPARABLE(OuterClass, TestType, TestType)
+ZFENUM_INNER_DEFINE_FLAGS(OuterClass, TestEnum, TestEnumFlags)
 
 ZF_NAMESPACE_END(ZFCore_inner_type_test_NS)
 
@@ -44,11 +64,25 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        zfobj<ZFCore_inner_type_test_NS::v_TestType> v0;
-        ZFLogTrim("v0: %s", v0->zfv);
+        {
+            zfobj<ZFCore_inner_type_test_NS::v_TestType> v;
+            ZFLogTrim("raw type in NS: %s", v);
+        }
 
-        zfobj<ZFCore_inner_type_test_NS::v_TestEnum> v1(ZFCore_inner_type_test_NS::v_TestEnumFlags::e_T0);
-        ZFLogTrim("v1: %s", v1->zfv());
+        {
+            zfobj<ZFCore_inner_type_test_NS::v_TestEnum> v(ZFCore_inner_type_test_NS::v_TestEnum::e_T0);
+            ZFLogTrim("enum in NS: %s", v);
+        }
+
+        {
+            zfobj<ZFCore_inner_type_test_NS::OuterClass::v_TestType> v;
+            ZFLogTrim("raw type as inner class: %s", v);
+        }
+
+        {
+            zfobj<ZFCore_inner_type_test_NS::OuterClass::v_TestEnum> v(ZFCore_inner_type_test_NS::OuterClass::v_TestEnum::e_T0);
+            ZFLogTrim("enum as inner class: %s", v);
+        }
 
         this->stop();
     }

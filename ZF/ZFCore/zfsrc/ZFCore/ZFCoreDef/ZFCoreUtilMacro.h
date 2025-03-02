@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief macro to detect whether bit is set, zftrue any one of test bit has set
+ * @brief macro to detect whether bit is set, zftrue if any one of test bit has set
  */
 #define ZFBitTest(var, bit) (((var) & (bit)) != 0)
 /**

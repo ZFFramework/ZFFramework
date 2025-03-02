@@ -1,215 +1,82 @@
 /**
- * @file ZFEnumDeclare.h
+ * @file ZFEnumDeclare_inner.h
  * @brief ZFEnum declare impl
  */
 
-#ifndef _ZFI_ZFEnumDeclare_h_
-#define _ZFI_ZFEnumDeclare_h_
+#ifndef _ZFI_ZFEnumDeclare_inner_h_
+#define _ZFI_ZFEnumDeclare_inner_h_
 
 #include "ZFObjectClassTypeFwd.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-/**
- * @brief macros to define reflectable enum type
- *
- * usage:
- * @code
- *   // ============================================================
- *   // in h file
- *   // declare your enum
- *   // * must be declared inside global namespace (#ZF_NAMESPACE_GLOBAL_BEGIN)
- *   // * enum name must be unique, you may use custom prefix to prevent name conflict
- *  / **
- *    * you can add Doxygen docs for EnumName (as a ZFObject) here
- *    * /
- *   ZFENUM_BEGIN(ZFLIB_APP, EnumName)
- *      / **
- *        * you can add Doxygen docs for Value1 here
- *        * /
- *       ZFENUM_VALUE(Value1)
- *       ZFENUM_VALUE(Value2) // /< you can add Doxygen docs for Value2 here
- *       ZFENUM_VALUE_WITH_INIT(Value3, 33) // you can assign the value for enum item
- *       ZFENUM_VALUE_WITH_INIT(Value4, e_Value2) // you can assign a same value with old value
- *   ZFENUM_SEPARATOR()
- *       // you must use ZFENUM_VALUE_REGISTER to map the value and name
- *       ZFENUM_VALUE_REGISTER(Value1)
- *       ZFENUM_VALUE_REGISTER(Value2)
- *       // you can set a custom name by ZFENUM_VALUE_REGISTER_WITH_NAME
- *       ZFENUM_VALUE_REGISTER_WITH_NAME(Value3, "CustomNameValue3")
- *       // (here Value4 is equal to Value2)
- *       // when register a new name for a existing value,
- *       // old name would be overrided,
- *       // as well as the value-name map
- *       ZFENUM_VALUE_REGISTER_WITH_NAME(Value4, "Value4 override Value2")
- *   ZFENUM_END(ZFLIB_APP, EnumName)
- *   ZFENUM_REG(ZFLIB_APP, EnumName)
- *
- *   // ============================================================
- *   // in cpp file
- *   // add this macro for necessary code expansion
- *   ZFENUM_DEFINE(EnumName)
- * @endcode
- * @note if there are more than one enum with same value,
- *   only the last registered one would be mapped
- * once defined, you can:
- * -  use EnumName to access the enum value and name
- *   @code
- *     zfuint value;
- *     const zfchar *name;
- *     value = EnumName::e_Value1;
- *     value = v_EnumName::EnumValueForName("Value1");
- *     name = v_EnumName::EnumNameForValue(value);
- *   @endcode
- * -  use v_EnumName to store the enum value as a ZFObject
- *   @code
- *     v_EnumName *e = zfAlloc(v_EnumName());
- *     e->enumValue(EnumName::e_Value1);
- *     zfuint value = e->enumValue();
- *     const zfchar *name = e->enumName();
- *     zfRelease(e);
- *   @endcode
- * -  use base class ZFEnum to achieve dynamic binding
- *   @code
- *     zfuint value;
- *     const zfchar *name;
- *
- *     ZFEnum *e = zfAlloc(EnumName, EnumName::e_Value1);
- *     value = e->enumValue(); // return the value stored as EnumName
- *     zfRelease(e);
- *
- *     zfauto tmp = ZFClass::classForName("EnumName")->newInstance(); // see #ZFOBJECT_REGISTER for more info
- *     e = tmp;
- *     for(zfindex i = 0; i < e->enumCount(); ++i) { // OK, list all the value and name for e, which is EnumName type
- *         value = e->enumValueAt(i);
- *         name = e->enumNameAt(i);
- *     }
- *     value = e->enumValueForName("Value1"); // OK, value from EnumName
- *     name = e->enumNameForValue(value); // OK, name from EnumName
- *     zfRelease(e);
- *   @endcode
- * -  you can access the internal enum type by EnumName
- * -  usually, it's highly recommended to use the internal enum type for performance:
- *   @code
- *     // pass by EnumName value, which is actually a int value
- *     void func1(MyEnumEnum e) {...}
- *   @endcode
- *
- *
- * ADVANCED:\n
- * ZFEnum can also be declared in different namespace,
- * or even declared as inner class, with some limitations\n
- * \n
- * declare in different namespace:
- * @code
- *   // ============================================================
- *   // in h file
- *   ZF_NAMESPACE_BEGIN(YourNamespace)
- *   // declare enum as usual, inside namespace
- *   ZFENUM_BEGIN(ZFLIB_APP, EnumName)
- *       ZFENUM_VALUE(Value1)
- *   ZFENUM_SEPARATOR()
- *       ZFENUM_VALUE_REGISTER(Value1)
- *   ZFENUM_END(ZFLIB_APP, EnumName)
- *   ZF_NAMESPACE_END(YourNamespace)
- *
- *   // ZFENUM_REG must be declared in global scope, with owner namespace declared
- *   ZFENUM_REG(ZFLIB_APP, EnumName, YourNamespace)
- *
- *   // ============================================================
- *   // in cpp file
- *   ZFENUM_DEFINE(EnumName)
- * @endcode
- * \n
- * declare as inner class:
- * @code
- *   // ============================================================
- *   // in h file
- *   zfclass ZFLIB_APP YourOuterClass : zfextend ZFObject {
- *       ZFOBJECT_DECLARE(YourOuterClass, ZFObject)
- *
- *       // declare enum as inner class
- *       ZFENUM_INNER_BEGIN(YourOuterClass, EnumName)
- *           ZFENUM_INNER_VALUE(Value1)
- *       ZFENUM_INNER_SEPARATOR()
- *           ZFENUM_INNER_VALUE_REGISTER(Value1)
- *       ZFENUM_INNER_END(YourOuterClass, EnumName)
- *   };
- *
- *   // ZFENUM_INNER_REG must be declared in global scope
- *   ZFENUM_INNER_REG(YourOuterClass, EnumName)
- *
- *   // ============================================================
- *   // in cpp file
- *   ZFENUM_INNER_DEFINE(YourOuterClass, EnumName)
- * @endcode
- */
-#define ZFENUM_BEGIN(ZFLIB_, EnumName) \
-    _ZFP_ZFENUM_BEGIN(ZFLIB_, EnumName)
+/** @brief see #ZFENUM_BEGIN */
+#define ZFENUM_INNER_BEGIN(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_BEGIN(OuterClass, EnumName)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_VALUE(Value) \
-    _ZFP_ZFENUM_VALUE(Value)
+#define ZFENUM_INNER_VALUE(Value) \
+    _ZFP_ZFENUM_INNER_VALUE(Value)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_VALUE_WITH_INIT(Value, initValue) \
-    _ZFP_ZFENUM_VALUE_WITH_INIT(Value, initValue)
+#define ZFENUM_INNER_VALUE_WITH_INIT(Value, initValue) \
+    _ZFP_ZFENUM_INNER_VALUE_WITH_INIT(Value, initValue)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_SEPARATOR() \
-    _ZFP_ZFENUM_SEPARATOR(zffalse)
+#define ZFENUM_INNER_SEPARATOR() \
+    _ZFP_ZFENUM_INNER_SEPARATOR(zffalse)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_SEPARATOR_ALLOW_DUPLICATE_VALUE() \
-    _ZFP_ZFENUM_SEPARATOR(zftrue)
+#define ZFENUM_INNER_SEPARATOR_ALLOW_DUPLICATE_VALUE() \
+    _ZFP_ZFENUM_INNER_SEPARATOR(zftrue)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_VALUE_REGISTER_WITH_NAME(Value, Name) \
-    _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, Name)
+#define ZFENUM_INNER_VALUE_REGISTER_WITH_NAME(Value, Name) \
+    _ZFP_ZFENUM_INNER_VALUE_REGISTER_WITH_NAME(Value, Name)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_VALUE_REGISTER(Value) \
-    _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, zftext(#Value))
+#define ZFENUM_INNER_VALUE_REGISTER(Value) \
+    _ZFP_ZFENUM_INNER_VALUE_REGISTER_WITH_NAME(Value, zftext(#Value))
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END(ZFLIB_, EnumName) \
-    _ZFP_ZFENUM_END(ZFLIB_, EnumName)
+#define ZFENUM_INNER_END(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_END(OuterClass, EnumName)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum) \
-    _ZFP_ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum)
+#define ZFENUM_INNER_END_WITH_DEFAULT(OuterClass, EnumName, defaultEnum) \
+    _ZFP_ZFENUM_INNER_END_WITH_DEFAULT(OuterClass, EnumName, defaultEnum)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName)
+#define ZFENUM_INNER_END_FLAGS(OuterClass, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_INNER_END_FLAGS(OuterClass, EnumName, EnumFlagsName)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
-    _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags)
+#define ZFENUM_INNER_END_FLAGS_WITH_DEFAULT(OuterClass, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
+    _ZFP_ZFENUM_INNER_END_FLAGS_WITH_DEFAULT(OuterClass, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_REG(ZFLIB_, EnumName, ...) \
-    _ZFP_ZFENUM_TYPEID_REG(ZFLIB_, EnumName, __VA_ARGS__ ::)
+#define ZFENUM_INNER_REG(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_TYPEID_REG(OuterClass, EnumName)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_REG_FLAGS(ZFLIB_, EnumName, EnumFlagsName, ...) \
-    _ZFP_ZFENUM_TYPEID_REG(ZFLIB_, EnumName, __VA_ARGS__ ::) \
-    _ZFP_ZFENUM_FLAGS_TYPEID_REG(ZFLIB_, EnumName, EnumFlagsName, __VA_ARGS__ ::)
+#define ZFENUM_INNER_REG_FLAGS(OuterClass, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_INNER_TYPEID_REG(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_FLAGS_TYPEID_REG(OuterClass, EnumName, EnumFlagsName)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_DEFINE(EnumName) \
-    _ZFP_ZFENUM_DEFINE(EnumName)
+#define ZFENUM_INNER_DEFINE(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_DEFINE(OuterClass, EnumName)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_DEFINE_FLAGS(EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_DEFINE_FLAGS(EnumName, EnumFlagsName)
+#define ZFENUM_INNER_DEFINE_FLAGS(OuterClass, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_INNER_DEFINE_FLAGS(OuterClass, EnumName, EnumFlagsName)
 
 // ============================================================
-#define _ZFP_ZFENUM_BEGIN(ZFLIB_, EnumName) \
-    zfclass ZFLIB_ v_##EnumName : zfextend ZFEnum { \
-        ZFOBJECT_DECLARE(v_##EnumName, ZFEnum) \
+#define _ZFP_ZFENUM_INNER_BEGIN(OuterClass, EnumName) \
+    zfclass v_##EnumName : zfextend ZFEnum { \
+        ZFOBJECT_DECLARE(v_##EnumName, ZFEnum, OuterClass) \
     public: \
         /** @brief see @ref v_##EnumName */ \
         typedef enum {
 
-#define _ZFP_ZFENUM_VALUE(Value) /** \n */ e_##Value,
-#define _ZFP_ZFENUM_VALUE_WITH_INIT(Value, initValue) /** @brief \n Value(initValue)\n */ e_##Value = initValue,
+#define _ZFP_ZFENUM_INNER_VALUE(Value) /** \n */ e_##Value,
+#define _ZFP_ZFENUM_INNER_VALUE_WITH_INIT(Value, initValue) /** @brief \n Value(initValue)\n */ e_##Value = initValue,
 
-#define _ZFP_ZFENUM_SEPARATOR(isEnableDuplicateValue_) \
+#define _ZFP_ZFENUM_INNER_SEPARATOR(isEnableDuplicateValue_) \
             /** @brief max enum value */ \
             ZFEnumCount, \
             /* used to ensure sizeof(enum) == sizeof(zfuint) */ \
@@ -296,22 +163,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 d->needInitFlag = zffalse; \
                 zfbool isEnableDuplicateValue = isEnableDuplicateValue_;
 
-#define _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, Name) \
+#define _ZFP_ZFENUM_INNER_VALUE_REGISTER_WITH_NAME(Value, Name) \
                 d->add(isEnableDuplicateValue, zfself::e_##Value, Name);
 
-#define _ZFP_ZFENUM_END(ZFLIB_, EnumName) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, d->enumValueAt(0))
-#define _ZFP_ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, zfself::e_##defaultEnum)
+#define _ZFP_ZFENUM_INNER_END(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zffalse, d->enumValueAt(0))
+#define _ZFP_ZFENUM_INNER_END_WITH_DEFAULT(OuterClass, EnumName, defaultEnum) \
+    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zffalse, zfself::e_##defaultEnum)
 
-#define _ZFP_ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, d->enumValueAt(0)) \
-    _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, v_##EnumName::EnumDefault())
-#define _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
-    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, zfself::e_##defaultEnum) \
-    _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultEnumFlags)
+#define _ZFP_ZFENUM_INNER_END_FLAGS(OuterClass, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zftrue, d->enumValueAt(0)) \
+    _ZFP_ZFENUM_INNER_FLAGS_DECLARE(OuterClass, EnumName, EnumFlagsName, v_##EnumName::EnumDefault())
+#define _ZFP_ZFENUM_INNER_END_FLAGS_WITH_DEFAULT(OuterClass, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
+    _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, zftrue, zfself::e_##defaultEnum) \
+    _ZFP_ZFENUM_INNER_FLAGS_DECLARE(OuterClass, EnumName, EnumFlagsName, defaultEnumFlags)
 
-#define _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, IsFlags, defaultEnum) \
+#define _ZFP_ZFENUM_INNER_END_DETAIL(OuterClass, EnumName, IsFlags, defaultEnum) \
                 d->enumDefault = (zfuint)(defaultEnum); \
                 d->enumIsFlags = (IsFlags); \
             } \
@@ -337,54 +204,53 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }; \
     /** @brief see @ref v_##EnumName */ \
     typedef v_##EnumName::ZFEnumType EnumName; \
-    _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
-    _ZFP_ZFENUM_TYPEID_DECLARE(ZFLIB_, EnumName)
+    _ZFP_ZFENUM_INNER_CONVERTER_DECLARE(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_TYPEID_DECLARE(OuterClass, EnumName)
 
 // ============================================================
-#define _ZFP_ZFENUM_DEFINE(EnumName) \
-    _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
-    ZFOBJECT_REGISTER(v_##EnumName) \
-    _ZFP_ZFENUM_TYPEID_DEFINE(EnumName) \
-    ZF_STATIC_REGISTER_INIT(EnumReg_##EnumName) { \
-        for(zfindex i = 0; i < v_##EnumName::EnumCount(); ++i) { \
+#define _ZFP_ZFENUM_INNER_DEFINE(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_CONVERTER_DEFINE(OuterClass, EnumName) \
+    ZFOBJECT_REGISTER(OuterClass, v_##EnumName) \
+    _ZFP_ZFENUM_INNER_TYPEID_DEFINE(OuterClass, EnumName) \
+    ZF_STATIC_REGISTER_INIT(EnumReg_##OuterClass##_##EnumName) { \
+        for(zfindex i = 0; i < OuterClass::v_##EnumName::EnumCount(); ++i) { \
             ZFMethodUserRegisterDetail_0(resultMethod, { \
-                    return (EnumName)v_##EnumName::EnumValueForName(invokerMethod->methodName() + 2); \
-                }, v_##EnumName::ClassData(), public, ZFMethodTypeStatic \
-                , EnumName, zfstr("e_%s", v_##EnumName::EnumNameAt(i)) \
-                ); \
+                    return (OuterClass::EnumName)OuterClass::v_##EnumName::EnumValueForName(invokerMethod->methodName() + 2); \
+                }, OuterClass::v_##EnumName::ClassData(), public, ZFMethodTypeStatic, \
+                OuterClass::EnumName, zfstr("e_%s", OuterClass::v_##EnumName::EnumNameAt(i))); \
             _m.add(resultMethod); \
         } \
-        _ZFP_ZFEnumMethodReg(_m, v_##EnumName::_ZFP_ZFEnumDataRef()); \
+        _ZFP_ZFEnumMethodReg(_m, OuterClass::v_##EnumName::_ZFP_ZFEnumDataRef()); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(EnumReg_##EnumName) { \
+    ZF_STATIC_REGISTER_DESTROY(EnumReg_##OuterClass##_##EnumName) { \
         for(zfindex i = 0; i < _m.count(); ++i) { \
             ZFMethodUserUnregister(_m[i]); \
         } \
     } \
     ZFCoreArray<const ZFMethod *> _m; \
-    ZF_STATIC_REGISTER_END(EnumReg_##EnumName)
+    ZF_STATIC_REGISTER_END(EnumReg_##OuterClass##_##EnumName)
 
-#define _ZFP_ZFENUM_DEFINE_FLAGS(EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_DEFINE(EnumName) \
-    _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName)
+#define _ZFP_ZFENUM_INNER_DEFINE_FLAGS(OuterClass, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_INNER_DEFINE(OuterClass, EnumName) \
+    _ZFP_ZFENUM_INNER_FLAGS_DEFINE(OuterClass, EnumName, EnumFlagsName)
 
 // ============================================================
-#define _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
+#define _ZFP_ZFENUM_INNER_CONVERTER_DECLARE(OuterClass, EnumName) \
     /** @brief see @ref v_##EnumName, return enum object if success */ \
-    extern ZFLIB_ zfbool EnumName##FromStringT( \
+    static zfbool EnumName##FromStringT( \
             ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen = zfindexMax() \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief see @ref EnumName, return empty string if error */ \
-    extern ZFLIB_ zfbool EnumName##ToStringT( \
+    static zfbool EnumName##ToStringT( \
             ZF_IN_OUT zfstring &ret \
             , ZF_IN v_##EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief see @ref v_##EnumName, return empty string if error */ \
-    inline zfstring EnumName##ToString( \
+    static inline zfstring EnumName##ToString( \
             ZF_IN v_##EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
@@ -392,16 +258,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         EnumName##ToStringT(ret, value, errorHint); \
         return ret; \
     }
-#define _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
-    zfbool EnumName##ToStringT( \
+#define _ZFP_ZFENUM_INNER_CONVERTER_DEFINE(OuterClass, EnumName) \
+    zfbool OuterClass::EnumName##ToStringT( \
             ZF_IN_OUT zfstring &ret \
-            , ZF_IN v_##EnumName *const &value \
+            , ZF_IN OuterClass::v_##EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         ret += ((value == zfnull) ? zfstring() : value->enumName()); \
         return zftrue; \
     } \
-    zfbool EnumName##FromStringT( \
+    zfbool OuterClass::EnumName##FromStringT( \
             ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
@@ -424,9 +290,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 // ============================================================
-#define _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultValue) \
+#define _ZFP_ZFENUM_INNER_FLAGS_DECLARE(OuterClass, EnumName, EnumFlagsName, defaultValue) \
     /** @brief see @ref v_##EnumName, @ref EnumFlagsName##ToString, @ref EnumFlagsName##FromString */ \
-    zffinal zfclassPOD ZFLIB_ EnumFlagsName { \
+    zffinal zfclassPOD EnumFlagsName { \
         /* this class should be POD-like to support enum value reinterpret cast (ZFTAG_TRICKS: EnumReinterpretCast) */ \
     public: \
         /** @brief default value for EnumFlagsName */ \
@@ -471,33 +337,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     private: \
         zfuint flags; \
     }; \
-    _ZFP_ZFENUM_FLAGS_TYPEID_DECLARE(ZFLIB_, EnumName, EnumFlagsName)
+    _ZFP_ZFENUM_INNER_FLAGS_TYPEID_DECLARE(OuterClass, EnumName, EnumFlagsName)
 
-#define _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName) \
-    void EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const { \
+#define _ZFP_ZFENUM_INNER_FLAGS_DEFINE(OuterClass, EnumName, EnumFlagsName) \
+    void OuterClass::EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const { \
         zfflagsToStringT(ret, v_##EnumName::ClassData(), (zfflags)this->enumValue()); \
     } \
-    _ZFP_ZFENUM_FLAGS_TYPEID_DEFINE(EnumName, EnumFlagsName)
+    _ZFP_ZFENUM_INNER_FLAGS_TYPEID_DEFINE(OuterClass, EnumName, EnumFlagsName)
 
 
 // ============================================================
 // normal enum
-#define _ZFP_ZFENUM_TYPEID_DECLARE(ZFLIB_, EnumName) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName, EnumName)
-#define _ZFP_ZFENUM_TYPEID_REG(ZFLIB_, EnumName, Scope) \
+#define _ZFP_ZFENUM_INNER_TYPEID_DECLARE(OuterClass, EnumName) \
+    ZFTYPEID_INNER_DECLARE_WITH_CUSTOM_WRAPPER(OuterClass, EnumName, EnumName)
+#define _ZFP_ZFENUM_INNER_TYPEID_REG(OuterClass, EnumName) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Scope EnumName> : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<OuterClass::EnumName> : zfextend ZFTypeInfo { \
     public: \
-        typedef Scope EnumName _ZFP_PropType; \
-        typedef Scope v_##EnumName _ZFP_WrapType; \
+        typedef OuterClass::EnumName _ZFP_PropType; \
+        typedef OuterClass::v_##EnumName _ZFP_WrapType; \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
         }; \
         static inline const zfstring &TypeId(void) { \
-            return Scope ZFTypeId_##EnumName(); \
+            return OuterClass::ZFTypeId_##EnumName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
             return _ZFP_WrapType::ClassData(); \
@@ -597,10 +463,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     }; \
     /** @endcond */ \
-    ZFOUTPUT_TYPE(Scope EnumName, {s += Scope v_##EnumName::EnumNameForValue(v);})
+    ZFOUTPUT_TYPE(OuterClass::EnumName, {s += OuterClass::v_##EnumName::EnumNameForValue(v);})
 
-#define _ZFP_ZFENUM_TYPEID_DEFINE(EnumName) \
-    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumName, EnumName, { \
+#define _ZFP_ZFENUM_INNER_TYPEID_DEFINE(OuterClass, EnumName) \
+    ZFTYPEID_INNER_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(OuterClass, EnumName, EnumName, { \
             if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
                 v = (EnumName)ZFEnumInvalid(); \
                 return zftrue; \
@@ -619,18 +485,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             s += v_##EnumName::EnumNameForValue(v); \
             return zftrue; \
         }) \
-    const zfstring &v_##EnumName::zfvTypeId(void) { \
+    const zfstring &OuterClass::v_##EnumName::zfvTypeId(void) { \
         return ZFTypeId_##EnumName(); \
     }
 
 
 // ============================================================
 // enum flags
-#define _ZFP_ZFENUM_FLAGS_TYPEID_DECLARE(ZFLIB_, EnumName, EnumFlagsName) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumFlagsName, EnumFlagsName) \
+#define _ZFP_ZFENUM_INNER_FLAGS_TYPEID_DECLARE(OuterClass, EnumName, EnumFlagsName) \
+    ZFTYPEID_INNER_DECLARE_WITH_CUSTOM_WRAPPER(OuterClass, EnumFlagsName, EnumFlagsName) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##EnumFlagsName : zfextend v_##EnumName { \
-        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, v_##EnumName) \
+    zfclass v_##EnumFlagsName : zfextend v_##EnumName { \
+        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, v_##EnumName, OuterClass) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->zfvReset(); \
         }) \
@@ -645,21 +511,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     protected: \
        v_##EnumFlagsName(void) : zfv(_ZFP_ZFEnum_value) {} \
     };
-#define _ZFP_ZFENUM_FLAGS_TYPEID_REG(ZFLIB_, EnumName, EnumFlagsName, Scope) \
+#define _ZFP_ZFENUM_INNER_FLAGS_TYPEID_REG(OuterClass, EnumName, EnumFlagsName) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Scope EnumFlagsName> : zfextend ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<OuterClass::EnumFlagsName> : zfextend ZFTypeInfo { \
     public: \
-        typedef Scope EnumName _ZFP_PropTypeOrig; \
-        typedef Scope EnumFlagsName _ZFP_PropType; \
-        typedef Scope v_##EnumFlagsName _ZFP_WrapType; \
+        typedef OuterClass::EnumName _ZFP_PropTypeOrig; \
+        typedef OuterClass::EnumFlagsName _ZFP_PropType; \
+        typedef OuterClass::v_##EnumFlagsName _ZFP_WrapType; \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
         }; \
         static inline const zfstring &TypeId(void) { \
-            return Scope ZFTypeId_##EnumFlagsName(); \
+            return OuterClass::ZFTypeId_##EnumFlagsName(); \
         } \
         static inline const ZFClass *TypeIdClass(void) { \
             return _ZFP_WrapType::ClassData(); \
@@ -770,10 +636,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     }; \
     /** @endcond */ \
-    ZFOUTPUT_TYPE(Scope EnumFlagsName, {v.objectInfoT(s);})
+    ZFOUTPUT_TYPE(OuterClass::EnumFlagsName, {v.objectInfoT(s);})
 
-#define _ZFP_ZFENUM_FLAGS_TYPEID_DEFINE(EnumName, EnumFlagsName) \
-    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumFlagsName, EnumFlagsName, { \
+#define _ZFP_ZFENUM_INNER_FLAGS_TYPEID_DEFINE(OuterClass, EnumName, EnumFlagsName) \
+    ZFTYPEID_INNER_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(OuterClass, EnumFlagsName, EnumFlagsName, { \
             zfflags flags = 0; \
             if(!zfflagsFromStringT(flags, \
                         v_##EnumName::ClassData(), \
@@ -788,8 +654,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }, { \
             return zfflagsToStringT(s, v_##EnumName::ClassData(), (zfflags)v.enumValue()); \
         }) \
-    ZFOBJECT_REGISTER(v_##EnumFlagsName)
+    ZFOBJECT_REGISTER(OuterClass, v_##EnumFlagsName)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFEnumDeclare_h_
+#endif // #ifndef _ZFI_ZFEnumDeclare_inner_h_
 

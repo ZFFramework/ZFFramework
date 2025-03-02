@@ -16,6 +16,7 @@
 #include "ZFSerializableDataSerializableConverter.h"
 #include "ZFObjectRetain.h"
 #include "ZFTypeIdDeclare.h"
+#include "ZFTypeIdDeclare_inner.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

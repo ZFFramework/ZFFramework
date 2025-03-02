@@ -7,6 +7,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_none)
 
 // ============================================================
 // void
+typedef void _ZFP_PropTypeW_void;
 _ZFP_ZFTYPEID_ID_DATA_REGISTER(void, void)
 
 // ============================================================
