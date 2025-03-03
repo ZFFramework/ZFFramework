@@ -250,16 +250,16 @@ public:
             ZF_IN const zfstring &propertyTypeId
             , ZF_IN const zfstring &propertyName
             , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &property(
             ZF_IN const ZFClass *propertyClassOfRetainProperty
             , ZF_IN const zfstring &propertyName
             , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /**
      * @brief see #property
@@ -270,16 +270,16 @@ public:
             ZF_IN const zfstring &propertyTypeId
             , ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &propertyInitValue
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &propertyWithInit(
             ZF_IN const ZFClass *propertyClassOfRetainProperty
             , ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &propertyInitValue
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &property(ZF_IN const ZFPropertyDynamicRegisterParam &param);
@@ -320,16 +320,16 @@ public:
             ZF_IN const zfstring &propertyTypeId
             , ZF_IN const zfstring &propertyName
             , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /** @brief see #staticProperty */
     ZFDynamic &staticProperty(
             ZF_IN const ZFClass *propertyClassOfRetainProperty
             , ZF_IN const zfstring &propertyName
             , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /**
      * @brief util to register setter and getter static method to simulate static property
@@ -340,16 +340,16 @@ public:
             ZF_IN const zfstring &propertyTypeId
             , ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &propertyInitValue
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
     /** @brief see #staticPropertyWithInit */
     ZFDynamic &staticPropertyWithInit(
             ZF_IN const ZFClass *propertyClassOfRetainProperty
             , ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &propertyInitValue
-            , ZF_IN_OPT ZFMethodAccessType setterPrivilegeType = ZFMethodAccessTypePublic
-            , ZF_IN_OPT ZFMethodAccessType getterPrivilegeType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType setterAccessType = ZFMethodAccessTypePublic
+            , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
 
 public:

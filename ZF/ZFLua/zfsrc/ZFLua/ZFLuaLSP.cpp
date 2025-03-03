@@ -5,6 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFLuaLSP_supportMultiInherit 1
+#define _ZFP_ZFLuaLSP_supportOptionalParam 1
 
 template<typename T_str>
 static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
@@ -129,7 +130,11 @@ static void _ZFP_ZFLuaLSPGen_method(
      */
     zfstring retSig = _ZFP_ZFLuaLSPGen_retSig(m);
     zfbool isChainedRet = _ZFP_ZFLuaLSPGen_isChainedRet(m);
+#if _ZFP_ZFLuaLSP_supportOptionalParam
+    zfindex paramCount = m->paramCount();
+#else
     zfindex paramCount = m->paramCountMin();
+#endif
     do {
         if(isChainedRet) {
             output
@@ -141,6 +146,9 @@ static void _ZFP_ZFLuaLSPGen_method(
         for(zfindex i = 0; i < paramCount; ++i) {
             output
                 << "---@param " << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i))
+#if _ZFP_ZFLuaLSP_supportOptionalParam
+                << (i >= m->paramCountMin() ? "?" : "")
+#endif
                 << " "
                 << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i))
                 << "\n"
@@ -184,6 +192,9 @@ static void _ZFP_ZFLuaLSPGen_method(
         }
         output << ") end\n";
 
+#if _ZFP_ZFLuaLSP_supportOptionalParam
+        break;
+#else
         if(paramCount == m->paramCount()) {
             break;
         }
@@ -191,6 +202,7 @@ static void _ZFP_ZFLuaLSPGen_method(
             ++paramCount;
             continue;
         }
+#endif
     } while(zftrue);
 }
 
