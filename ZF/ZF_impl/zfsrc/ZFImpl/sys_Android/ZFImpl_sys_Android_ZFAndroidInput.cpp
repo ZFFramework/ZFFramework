@@ -55,7 +55,7 @@ public:
     ZFMETHOD_DECLARE_2(zfindex, onInput
             , ZFMP_OUT(void *, buf)
             , ZFMP_IN(zfindex, count)
-            );
+            )
 };
 ZFOBJECT_REGISTER(_ZFP_I_ZFAndroidInput)
 

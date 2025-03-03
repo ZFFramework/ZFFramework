@@ -64,7 +64,7 @@ ZFOUTPUT_TYPE(ZFUIViewBlinkParam, {v.objectInfoT(s);})
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewBlink
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFUIViewBlinkParam &, blinkParam, ZFUIViewBlinkParam())
-        );
+        )
 /**
  * @brief blink view so that it's easy to be noticed
  */

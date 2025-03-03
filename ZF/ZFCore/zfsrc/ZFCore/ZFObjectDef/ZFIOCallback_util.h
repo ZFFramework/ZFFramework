@@ -119,7 +119,7 @@ extern ZFLIB_ZFCore zfindex ZFInputReadLine(
 
 // ============================================================
 /**
- * @brief repeat output, return total bytes written to output
+ * @brief repeat output
  */
 inline void ZFOutputRepeat(
         ZF_IN_OUT const ZFOutput &output
@@ -133,6 +133,34 @@ inline void ZFOutputRepeat(
         }
     }
 }
+
+// ============================================================
+/**
+ * @brief util to create a chained output
+ *
+ * typical usage:
+ * @code
+ *   ZFOutputDefault(ZFOutputChain(ZFOutputForConsole()
+ *           , ZFOutputForFile('/path/to/log/file')
+ *       ))
+ * @endcode
+ */
+extern ZFLIB_ZFCore ZFOutput ZFOutputChain(
+        ZF_IN const ZFOutput &o0
+        , ZF_IN const ZFOutput &o1
+        , ZF_IN_OPT const ZFOutput &o2 = zfnull
+        , ZF_IN_OPT const ZFOutput &o3 = zfnull
+        , ZF_IN_OPT const ZFOutput &o4 = zfnull
+        , ZF_IN_OPT const ZFOutput &o5 = zfnull
+        , ZF_IN_OPT const ZFOutput &o6 = zfnull
+        , ZF_IN_OPT const ZFOutput &o7 = zfnull
+        );
+/**
+ * @brief util to create a chained output
+ */
+extern ZFLIB_ZFCore ZFOutput ZFOutputChain(
+        ZF_IN const ZFCoreArray<ZFOutput> &o
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCallback_util_h_

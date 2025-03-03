@@ -311,6 +311,57 @@ zfindex ZFInputReadLine(
     } while(zftrue);
 }
 
+// ============================================================
+ZFOutput ZFOutputChain(
+        ZF_IN const ZFOutput &o0
+        , ZF_IN const ZFOutput &o1
+        , ZF_IN_OPT const ZFOutput &o2 /* = zfnull */
+        , ZF_IN_OPT const ZFOutput &o3 /* = zfnull */
+        , ZF_IN_OPT const ZFOutput &o4 /* = zfnull */
+        , ZF_IN_OPT const ZFOutput &o5 /* = zfnull */
+        , ZF_IN_OPT const ZFOutput &o6 /* = zfnull */
+        , ZF_IN_OPT const ZFOutput &o7 /* = zfnull */
+        ) {
+    ZFCoreArray<ZFOutput> o;
+    if(o0) {o.add(o0);}
+    if(o1) {o.add(o1);}
+    if(o2) {o.add(o2);}
+    if(o3) {o.add(o3);}
+    if(o4) {o.add(o4);}
+    if(o5) {o.add(o5);}
+    if(o6) {o.add(o6);}
+    if(o7) {o.add(o7);}
+    return ZFOutputChain(o);
+}
+zfclass _ZFP_I_ZFOutputChain : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFOutputChain, ZFObject)
+    ZFCoreArray<ZFOutput> o;
+    ZFMETHOD_DECLARE_2(zfindex, onOutput
+            , ZFMP_OUT(const void *, src)
+            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+            )
+};
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputChain, zfindex, onOutput
+        , ZFMP_OUT(const void *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        ) {
+    for(zfindex i = 0; i < o.count(); ++i) {
+        o[i].execute(src, count);
+    }
+    return count;
+}
+ZFOutput ZFOutputChain(
+        ZF_IN const ZFCoreArray<ZFOutput> &o
+        ) {
+    if(o.isEmpty()) {return zfnull;}
+    if(o.count() == 1) {return o[0];}
+    zfobj<_ZFP_I_ZFOutputChain> owner;
+    owner->o.addFrom(o);
+    ZFOutput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFOutputChain, onOutput));
+    ret.callbackOwnerObjectRetain();
+    return ret;
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG
@@ -343,6 +394,19 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFOutputRepeat
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const zfchar *, token)
         , ZFMP_IN(zfindex, count)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(ZFOutput, ZFOutputChain
+        , ZFMP_IN(const ZFOutput &, o0)
+        , ZFMP_IN(const ZFOutput &, o1)
+        , ZFMP_IN_OPT(const ZFOutput &, o2, zfnull)
+        , ZFMP_IN_OPT(const ZFOutput &, o3, zfnull)
+        , ZFMP_IN_OPT(const ZFOutput &, o4, zfnull)
+        , ZFMP_IN_OPT(const ZFOutput &, o5, zfnull)
+        , ZFMP_IN_OPT(const ZFOutput &, o6, zfnull)
+        , ZFMP_IN_OPT(const ZFOutput &, o7, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFOutput, ZFOutputChain
+        , ZFMP_IN(const ZFCoreArray<ZFOutput> &, o)
         )
 
 ZF_NAMESPACE_GLOBAL_END

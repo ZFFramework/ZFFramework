@@ -55,7 +55,7 @@ public:
     ZFMETHOD_DECLARE_2(zfindex, onOutput
             , ZFMP_OUT(const void *, buf)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            );
+            )
 };
 ZFOBJECT_REGISTER(_ZFP_I_ZFAndroidOutput)
 
