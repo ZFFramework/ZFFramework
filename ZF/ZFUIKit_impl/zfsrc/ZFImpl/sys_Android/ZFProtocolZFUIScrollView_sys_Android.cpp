@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIScrollView ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIScrollView)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIScrollView, ZFImpl_sys_Android_JNI_NAME_ZFUIScrollView)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Android, ZFUIScrollView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Android, ZFUIScrollView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
 
 public:

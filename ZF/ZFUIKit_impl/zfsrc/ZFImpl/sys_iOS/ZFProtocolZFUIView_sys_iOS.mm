@@ -80,9 +80,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_Down;
+        ev->mouseAction = v_ZFUIMouseAction::e_Down;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_Left;
+        ev->mouseButton = v_ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -104,9 +104,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_Move;
+        ev->mouseAction = v_ZFUIMouseAction::e_Move;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_Left;
+        ev->mouseButton = v_ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -124,9 +124,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_Up;
+        ev->mouseAction = v_ZFUIMouseAction::e_Up;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_Left;
+        ev->mouseButton = v_ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -144,9 +144,9 @@
         zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
-        ev->mouseAction = ZFUIMouseAction::e_Cancel;
+        ev->mouseAction = v_ZFUIMouseAction::e_Cancel;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIPointFromCGPoint([touch locationInView:self]);
-        ev->mouseButton = ZFUIMouseButton::e_Left;
+        ev->mouseButton = v_ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
@@ -244,7 +244,7 @@ static __weak id _ZFP_ZFUIViewImpl_sys_iOS_firstResponderRef = nil;
 @end
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_iOS, ZFUIView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_iOS, ZFUIView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIView")
 
 public:
@@ -432,7 +432,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_iOS)
 
 // ============================================================
 // ZFUIViewFocus
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_iOS, ZFUIViewFocus, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_iOS, ZFUIViewFocus, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")

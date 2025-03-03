@@ -36,14 +36,14 @@ public:
             zfRelease(cache->format);
             cache->format = zfnull;
         }
-        cache->outputStep = ZFOutputFormatStep::e_OnInit;
+        cache->outputStep = v_ZFOutputFormatStep::e_OnInit;
     })
 
 protected:
     _ZFP_I_ZFOutputForFormatOwner(void)
     : output()
     , format(zfnull)
-    , outputStep(ZFOutputFormatStep::e_OnInit)
+    , outputStep(v_ZFOutputFormatStep::e_OnInit)
     {
     }
 
@@ -61,14 +61,14 @@ protected:
 public:
     void outputBegin(void) {
         zfstring buf;
-        this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnInit, "", 0);
+        this->format->_ZFP_format(buf, v_ZFOutputFormatStep::e_OnInit, "", 0);
         if(!buf.isEmpty()) {
             this->output.execute(buf.cString(), buf.length());
         }
     }
     void outputEnd(void) {
         zfstring buf;
-        this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnOutputEnd, "", 0);
+        this->format->_ZFP_format(buf, v_ZFOutputFormatStep::e_OnOutputEnd, "", 0);
         if(!buf.isEmpty()) {
             if(this->output) {
                 this->output.execute(buf.cString(), buf.length());
@@ -76,7 +76,7 @@ public:
             buf.removeAll();
         }
 
-        this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnDealloc, "", 0);
+        this->format->_ZFP_format(buf, v_ZFOutputFormatStep::e_OnDealloc, "", 0);
         if(!buf.isEmpty()) {
             if(this->output) {
                 this->output.execute(buf.cString(), buf.length());
@@ -101,7 +101,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput
     }
 
     zfstring buf;
-    this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnOutput, (const zfchar *)s, count);
+    this->format->_ZFP_format(buf, v_ZFOutputFormatStep::e_OnOutput, (const zfchar *)s, count);
     if(buf.isEmpty()) {
         return count;
     }
@@ -241,14 +241,14 @@ void ZFOutputFormatBasic::format(
         , ZF_IN zfindex srcLen
         ) {
     switch(outputStep) {
-        case ZFOutputFormatStep::e_OnInit:
+        case v_ZFOutputFormatStep::e_OnInit:
             _ZFP_needLinePrefix = zftrue;
             return;
-        case ZFOutputFormatStep::e_OnDealloc:
+        case v_ZFOutputFormatStep::e_OnDealloc:
             return;
-        case ZFOutputFormatStep::e_OnOutput:
+        case v_ZFOutputFormatStep::e_OnOutput:
             break;
-        case ZFOutputFormatStep::e_OnOutputEnd:
+        case v_ZFOutputFormatStep::e_OnOutputEnd:
             if(_ZFP_outputCount > 0) {
                 ret += this->linePostfix();
                 ret += this->outputPostfix();

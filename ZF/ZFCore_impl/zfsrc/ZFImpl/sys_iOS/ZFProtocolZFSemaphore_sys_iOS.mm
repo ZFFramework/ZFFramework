@@ -5,7 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_iOS, ZFSemaphore, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_iOS, ZFSemaphore, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:NSCondition")
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {

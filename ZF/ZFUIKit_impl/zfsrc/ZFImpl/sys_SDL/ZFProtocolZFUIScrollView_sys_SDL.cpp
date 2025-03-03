@@ -31,22 +31,22 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel
+            , ZF_IN_OPT ZFUIMouseAction mouseAction = v_ZFUIMouseAction::e_Cancel
             ) {
         SDL_Event *ret = zfnew(SDL_Event);
         zfmemcpy(ret, nativeMouseEvent, sizeof(SDL_Event));
         if(changeMouseAction) {
             switch(mouseAction) {
-                case ZFUIMouseAction::e_Down:
+                case v_ZFUIMouseAction::e_Down:
                     ret->type = SDL_MOUSEBUTTONDOWN;
                     break;
-                case ZFUIMouseAction::e_Move:
+                case v_ZFUIMouseAction::e_Move:
                     ret->type = SDL_MOUSEMOTION;
                     break;
-                case ZFUIMouseAction::e_Up:
+                case v_ZFUIMouseAction::e_Up:
                     ret->type = SDL_MOUSEBUTTONUP;
                     break;
-                case ZFUIMouseAction::e_Cancel:
+                case v_ZFUIMouseAction::e_Cancel:
                     ret->type = SDL_MOUSEBUTTONUP;
                     ret->button.x = ZFImpl_sys_SDL_View::MouseCancel;
                     ret->button.y = ZFImpl_sys_SDL_View::MouseCancel;
@@ -215,7 +215,7 @@ public:
 // impl
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_SDL, ZFUIScrollView, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_SDL, ZFUIScrollView, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "ZFImpl_sys_SDL_View")
@@ -232,16 +232,16 @@ private:
             return (x >= 0 && x <= owner->rect.w && y >= 0 && y <= owner->rect.h);
         }
 
-        ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Down;
+        ZFUIMouseAction mouseAction = v_ZFUIMouseAction::e_Down;
         switch(sdlEvent->type) {
             case SDL_MOUSEBUTTONDOWN:
-                mouseAction = ZFUIMouseAction::e_Down;
+                mouseAction = v_ZFUIMouseAction::e_Down;
                 break;
             case SDL_MOUSEMOTION:
-                mouseAction = ZFUIMouseAction::e_Move;
+                mouseAction = v_ZFUIMouseAction::e_Move;
                 break;
             case SDL_MOUSEBUTTONUP:
-                mouseAction = ZFUIMouseAction::e_Up;
+                mouseAction = v_ZFUIMouseAction::e_Up;
                 break;
             default:
                 return zffalse;

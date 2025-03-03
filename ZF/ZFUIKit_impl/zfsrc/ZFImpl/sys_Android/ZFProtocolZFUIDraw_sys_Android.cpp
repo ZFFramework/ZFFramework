@@ -27,7 +27,7 @@ public:
 
 // ============================================================
 // ZFUIDrawForView
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Android, ZFUIDrawForView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Android, ZFUIDrawForView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
 
 public:
@@ -109,7 +109,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFUIDrawForImage
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_Android, ZFUIDrawForImage, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_Android, ZFUIDrawForImage, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:BitmapDrawable")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIImage, "Android:BitmapDrawable")
@@ -162,7 +162,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_Android)
 
 // ============================================================
 // ZFUIDraw
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Android, ZFUIDraw, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Android, ZFUIDraw, v_ZFProtocolLevel::e_SystemNormal)
     // ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Canvas")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForView, "Android:View")

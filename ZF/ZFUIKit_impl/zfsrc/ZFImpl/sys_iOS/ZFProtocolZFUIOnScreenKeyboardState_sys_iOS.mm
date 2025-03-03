@@ -49,7 +49,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder) 
 }
 ZF_GLOBAL_INITIALIZER_END(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIOnScreenKeyboardStateImpl_sys_iOS, ZFUIOnScreenKeyboardState, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIOnScreenKeyboardStateImpl_sys_iOS, ZFUIOnScreenKeyboardState, v_ZFProtocolLevel::e_SystemNormal)
 public:
     virtual zfbool keyboardShowing(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         return _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance.keyboardShowing;

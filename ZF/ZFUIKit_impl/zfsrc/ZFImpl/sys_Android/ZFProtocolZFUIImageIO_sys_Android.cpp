@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIImageIO ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIImageIO)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIImageIO, ZFImpl_sys_Android_JNI_NAME_ZFUIImageIO)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageIOImpl_sys_Android, ZFUIImageIO, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageIOImpl_sys_Android, ZFUIImageIO, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:BitmapDrawable")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIImage, "Android:BitmapDrawable")

@@ -137,7 +137,7 @@ public:
             _implTask = zfnull;
         }
         _result = zfnull;
-        _resultType = ZFResultType::e_Cancel;
+        _resultType = v_ZFResultType::e_Cancel;
         _implFinishAction();
     }
 private:
@@ -181,7 +181,7 @@ public:
             ;
         this->loadImpl.execute(zfargsLoadImpl);
         _result = zfargsLoadImpl.result();
-        _resultType = (_result != zfnull ? ZFResultType::e_Success : ZFResultType::e_Fail);
+        _resultType = (_result != zfnull ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail);
     }
     ZFMETHOD_INLINE_1(void, _implRun
             , ZFMP_IN(const ZFArgs &, zfargs)
@@ -320,7 +320,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
         if(callback) {
             callback.execute(ZFArgs()
                     .param0(zfnull)
-                    .param1(zfobj<v_ZFResultType>(ZFResultType::e_Fail))
+                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
                     );
         }
         return zfnull;
@@ -331,7 +331,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFIOCacheLoad
             if(callback) {
                 callback.execute(ZFArgs()
                         .param0(ret)
-                        .param1(zfobj<v_ZFResultType>(ZFResultType::e_Success))
+                        .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
                         );
             }
             return zfnull;
@@ -388,7 +388,7 @@ void ZFIOCacheLoadTask::taskOnStart(void) {
                 ) {
             owner->_implTaskId = zfnull;
             v_ZFResultType *resultType = zfargs.param1();
-            if(resultType->enumValue() == ZFResultType::e_Success) {
+            if(resultType->enumValue() == v_ZFResultType::e_Success) {
                 owner->notifySuccess(zfargs.param0());
             }
             else {

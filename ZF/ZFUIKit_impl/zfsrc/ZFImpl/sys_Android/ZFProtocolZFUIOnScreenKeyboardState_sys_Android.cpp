@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIOnScreenKeyboardState ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIOnScreenKeyboardState)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIOnScreenKeyboardState, ZFImpl_sys_Android_JNI_NAME_ZFUIOnScreenKeyboardState)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIOnScreenKeyboardStateImpl_sys_Android, ZFUIOnScreenKeyboardState, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIOnScreenKeyboardStateImpl_sys_Android, ZFUIOnScreenKeyboardState, v_ZFProtocolLevel::e_SystemNormal)
 public:
     virtual zfbool keyboardShowing(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         JNIEnv *jniEnv = JNIGetJNIEnv();

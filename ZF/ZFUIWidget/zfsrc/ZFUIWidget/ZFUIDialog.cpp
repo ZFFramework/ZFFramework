@@ -13,7 +13,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultConfig, ZFLevelZFFramewor
     {
         ZFLISTENER(impl) {
             zfobj<ZFUILayoutParam> lp;
-            lp->align(ZFUIAlign::e_Center);
+            lp->align(v_ZFUIAlign::e_Center);
             lp->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
             zfargs.result(lp);
         } ZFLISTENER_END()
@@ -100,7 +100,7 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->windowLevel(ZFUIWindowLevel::e_AppHigh);
+        this->windowLevel(v_ZFUIWindowLevel::e_AppHigh);
         this->sysWindowMarginShouldApply(zffalse);
     }
     zfoverride
@@ -197,7 +197,7 @@ public:
         else {
             margin = ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin());
             sizeParam = ZFUISizeParamWrapWrap();
-            align = ZFUIAlign::e_Center;
+            align = v_ZFUIAlign::e_Center;
         }
         const ZFUIMargin &contentMargin = this->dialogContainer->layoutParam()->margin();
 
@@ -226,14 +226,14 @@ protected:
         keyEvent->eventResolved(zftrue);
 
         if(!this->pimplOwner->hideWhenClickBack()
-                || keyEvent->keyAction != ZFUIKeyAction::e_Up
+                || keyEvent->keyAction != v_ZFUIKeyAction::e_Up
                 ) {
             return;
         }
 
         switch(keyEvent->keyCode) {
-            case ZFUIKeyCode::e_kPhoneBack:
-            case ZFUIKeyCode::e_kEsc:
+            case v_ZFUIKeyCode::e_kPhoneBack:
+            case v_ZFUIKeyCode::e_kEsc:
                 this->pimplOwner->hide();
                 break;
             default:
@@ -415,7 +415,7 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIView *, dialogBackgroundContainer) {
 
 zfanyT<ZFUIView> ZFUIDialog::dialogFocusOnUpdate(void) {
     return ZFUIViewFocusNextMove(this->dialogContainer(),
-        ZFUIViewFocusNextParam().focusDirection(ZFUIOrientation::e_Left | ZFUIOrientation::e_Top));
+        ZFUIViewFocusNextParam().focusDirection(v_ZFUIOrientation::e_Left | v_ZFUIOrientation::e_Top));
 }
 
 void ZFUIDialog::objectOnInit(void) {

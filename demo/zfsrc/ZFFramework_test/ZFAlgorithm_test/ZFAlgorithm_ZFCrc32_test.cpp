@@ -19,7 +19,7 @@ protected:
         ZFTestCaseAssert(value == testValue);
 
         zfstring tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32.txt");
-        void *fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
+        void *fp = ZFFileOpen(tmpFilePath, v_ZFFileOpenOption::e_Write);
         if(fp != zfnull) {
             ZFFileWrite(fp, testString);
             ZFFileClose(fp);
@@ -32,7 +32,7 @@ protected:
 
         this->outputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32_big.txt");
-        fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
+        fp = ZFFileOpen(tmpFilePath, v_ZFFileOpenOption::e_Write);
         zfindex fileSize = 0;
         if(fp != zfnull) {
             for(zfindex i = 0; i < 1000; i++) {

@@ -58,7 +58,7 @@ public:
                 ) {
             v_ZFUIImageStateImplAction *action = zfargs.param0();
             switch(action->zfv()) {
-                case ZFUIImageStateImplAction::e_Attach: {
+                case v_ZFUIImageStateImplAction::e_Attach: {
                     ZFUIImage *owner = zfargs.sender();
                     if(task->data->imageLoaded) {
                         owner->imageStateImplNotifyUpdate(task->data->imageLoaded);
@@ -71,9 +71,9 @@ public:
                     }
                     break;
                 }
-                case ZFUIImageStateImplAction::e_Detach:
+                case v_ZFUIImageStateImplAction::e_Detach:
                     break;
-                case ZFUIImageStateImplAction::e_Copy: {
+                case v_ZFUIImageStateImplAction::e_Copy: {
                     zfobj<_ZFP_I_ZFUIImageAsyncTask> taskNew;
                     taskNew->owner = zfargs.param1();
                     taskNew->data = task->data;

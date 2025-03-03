@@ -36,11 +36,11 @@ ZFMETHOD_DEFINE_2(ZFUICellAdapter, zffloat, cellSizeAt
         ) {
     if(this->cellSizeFill()) {
         switch(this->orientation()) {
-            case ZFUIOrientation::e_Left:
-            case ZFUIOrientation::e_Right:
+            case v_ZFUIOrientation::e_Left:
+            case v_ZFUIOrientation::e_Right:
                 return this->containerSize().width;
-            case ZFUIOrientation::e_Top:
-            case ZFUIOrientation::e_Bottom:
+            case v_ZFUIOrientation::e_Top:
+            case v_ZFUIOrientation::e_Bottom:
                 return this->containerSize().height;
             default:
                 ZFCoreCriticalShouldNotGoHere();

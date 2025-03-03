@@ -10,7 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIView ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIView)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIView, ZFImpl_sys_Android_JNI_NAME_ZFUIView)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_Android, ZFUIView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_Android, ZFUIView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
 
 public:
@@ -363,7 +363,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     event->mouseId = mouseId;
     event->mouseAction = (ZFUIMouseAction)mouseAction;
     event->mousePoint = ZFUIPointCreate(mousePointX, mousePointY);
-    event->mouseButton = ZFUIMouseButton::e_Left;
+    event->mouseButton = v_ZFUIMouseButton::e_Left;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
         JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),
         event);

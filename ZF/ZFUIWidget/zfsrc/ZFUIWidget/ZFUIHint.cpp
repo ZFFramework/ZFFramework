@@ -325,9 +325,9 @@ void ZFUIHint::objectOnInit(void) {
     d->pimplOwner = this;
 
     d->hintWindow = zfAlloc(_ZFP_ZFUIHintWindow);
-    d->hintWindow->windowLevel(ZFUIWindowLevel::e_ZFFrameworkFgHighest);
+    d->hintWindow->windowLevel(v_ZFUIWindowLevel::e_ZFFrameworkFgHighest);
     d->hintWindow->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
-    d->hintWindow->windowLayoutParam()->align(ZFUIAlign::e_Center);
+    d->hintWindow->windowLayoutParam()->align(v_ZFUIAlign::e_Center);
     d->hintWindow->windowLayoutParam()->sizeParam(ZFUISizeParamWrapWrap());
     d->hintWindow->windowLayoutParam()->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     d->hintWindow->viewUIEnableTree(zffalse);

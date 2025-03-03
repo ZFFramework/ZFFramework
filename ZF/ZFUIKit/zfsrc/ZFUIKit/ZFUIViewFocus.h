@@ -33,7 +33,7 @@ zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam {
     /**
      * @brief direction to find, #v_ZFUIOrientation::e_Right | #v_ZFUIOrientation::e_Bottom by default
      */
-    ZFCORE_PARAM(ZFUIOrientationFlags, focusDirection, (ZFUIOrientation::e_Right | ZFUIOrientation::e_Bottom))
+    ZFCORE_PARAM(ZFUIOrientationFlags, focusDirection, (v_ZFUIOrientation::e_Right | v_ZFUIOrientation::e_Bottom))
     /**
      * @brief whether find in loop mode, false by default
      */

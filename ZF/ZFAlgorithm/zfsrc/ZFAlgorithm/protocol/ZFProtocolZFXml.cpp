@@ -37,7 +37,7 @@ static void _ZFP_ZFXml_decimalCharEscape(
     zfcharW s[4] = {0};
     if(zfsToIntT(*(zft_zfuint16 *)s, p, encodedCharLen, 10)) {
         zfstring t;
-        zfstringToUTF8(t, s, ZFStringEncoding::e_UTF16);
+        zfstringToUTF8(t, s, v_ZFStringEncoding::e_UTF16);
         dst.execute(t.cString(), t.length());
     }
     else {
@@ -79,7 +79,7 @@ static void _ZFP_ZFXml_heximalCharEscape(
     zfcharW s[4] = {0};
     if(zfsToIntT(*(zft_zfuint16 *)s, p, encodedCharLen, 16)) {
         zfstring t;
-        zfstringToUTF8(t, s, ZFStringEncoding::e_UTF16);
+        zfstringToUTF8(t, s, v_ZFStringEncoding::e_UTF16);
         dst.execute(t.cString(), t.length());
     }
     else {

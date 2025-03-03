@@ -10,7 +10,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLog_sys_Android, ZFLevelZFFrameworkEssen
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLog_sys_Android)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_sys_Android, ZFImplOutput, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_sys_Android, ZFImplOutput, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Logcat")
 public:
     zfoverride

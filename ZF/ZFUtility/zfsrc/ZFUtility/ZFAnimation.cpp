@@ -75,7 +75,7 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, start
     d->loopCur = 0;
     if(!this->valid()) {
         this->aniOnStart();
-        this->aniOnStop(ZFResultType::e_Fail);
+        this->aniOnStop(v_ZFResultType::e_Fail);
         return;
     }
 
@@ -99,7 +99,7 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, stop) {
     }
     d->stoppedByUser = zftrue;
     ++(d->aniId);
-    this->aniImplNotifyStop(ZFResultType::e_Cancel);
+    this->aniImplNotifyStop(v_ZFResultType::e_Cancel);
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, stoppedByUser) {
     return d->stoppedByUser;
@@ -186,9 +186,9 @@ void ZFAnimation::aniImplStop(void) {
 }
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFAnimation, void, aniImplNotifyStop
-        , ZFMP_IN_OPT(ZFResultType, resultType, ZFResultType::e_Success)
+        , ZFMP_IN_OPT(ZFResultType, resultType, v_ZFResultType::e_Success)
         )
-void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = ZFResultType::e_Success */) {
+void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = v_ZFResultType::e_Success */) {
     if(!d->started || !d->aniImplStartFlag) {
         return;
     }

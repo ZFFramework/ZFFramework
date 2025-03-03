@@ -43,7 +43,7 @@ public:
             )
     zfoverride
     virtual void stop(void) {
-        this->stop(ZFResultType::e_Cancel);
+        this->stop(v_ZFResultType::e_Cancel);
     }
     /**
      * @brief stop the task
@@ -80,7 +80,7 @@ public:
     /**
      * @brief for task impl to store task result, reset to success when start
      */
-    ZFPROPERTY_ASSIGN(ZFResultType, resultType, ZFResultType::e_Success)
+    ZFPROPERTY_ASSIGN(ZFResultType, resultType, v_ZFResultType::e_Success)
     /**
      * @brief for task impl to store error hint, reset when start
      */

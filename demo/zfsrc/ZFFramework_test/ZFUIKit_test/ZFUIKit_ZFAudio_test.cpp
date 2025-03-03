@@ -44,7 +44,7 @@ protected:
             zfobj<ZFUITextView> stateLabel;
             container->child(stateLabel)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
-            stateLabel->textAlign(ZFUIAlign::e_Center);
+            stateLabel->textAlign(v_ZFUIAlign::e_Center);
             ZFLISTENER_2(stateOnUpdate
                     , ZFAudio *, audio
                     , ZFUITextView *, stateLabel

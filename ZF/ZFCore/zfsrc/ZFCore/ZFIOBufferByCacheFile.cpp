@@ -26,7 +26,7 @@ public:
             '/',
             zfidentityCalcPointer(this));
         this->token = ZFFileOpen(this->tmpFilePath,
-            ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write);
+            v_ZFFileOpenOption::e_Create | v_ZFFileOpenOption::e_Read | v_ZFFileOpenOption::e_Write);
     }
     ~_ZFP_ZFIOBufferByCacheFile(void) {
         if(this->token != zfnull) {

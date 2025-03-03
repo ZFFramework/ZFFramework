@@ -240,7 +240,7 @@ static zfbool _ZFP_ZFCompressDir(
                 && !fileImpl.implIsDir(pathData)
                 ) {
             ZFInput inputRaw;
-            if(!ZFInputForPathInfoT(inputRaw, ZFPathInfo(pathType, pathData), ZFFileOpenOption::e_Read)) {
+            if(!ZFInputForPathInfoT(inputRaw, ZFPathInfo(pathType, pathData), v_ZFFileOpenOption::e_Read)) {
                 return zffalse;
             }
             return ZFCompressContent(compressToken, inputRaw, filePathInZip);

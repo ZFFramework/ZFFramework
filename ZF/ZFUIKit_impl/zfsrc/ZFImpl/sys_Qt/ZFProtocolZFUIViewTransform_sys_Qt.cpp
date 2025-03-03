@@ -9,14 +9,14 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Qt, ZFUIViewTransform, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Qt, ZFUIViewTransform, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
     virtual ZFUITransformFlags transformAvailable(void) {
-        return ZFUITransform::e_Transform2D;
+        return v_ZFUITransform::e_Transform2D;
     }
 
     virtual void viewTransform(ZF_IN ZFUIView *view) {

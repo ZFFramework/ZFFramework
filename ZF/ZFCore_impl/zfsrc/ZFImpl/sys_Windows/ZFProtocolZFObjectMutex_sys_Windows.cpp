@@ -129,7 +129,7 @@ public:
         }
     }
 };
-ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Windows, ZFProtocolLevel::e_SystemLow, {
+ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Windows, v_ZFProtocolLevel::e_SystemLow, {
         ZFObjectMutexImplSet(
                 _ZFP_ZFObjectMutexImpl_sys_Windows::implInit,
                 _ZFP_ZFObjectMutexImpl_sys_Windows::implDealloc,

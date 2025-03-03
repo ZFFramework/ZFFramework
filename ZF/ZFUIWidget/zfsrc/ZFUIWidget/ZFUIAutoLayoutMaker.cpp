@@ -21,31 +21,31 @@ static zfbool _ZFP_ZFUIAutoLayout_posValid(
         , ZF_IN ZFUIAutoLayoutPos targetPos
         ) {
     switch(pos) {
-        case ZFUIAutoLayoutPos::e_Left:
-        case ZFUIAutoLayoutPos::e_Right:
+        case v_ZFUIAutoLayoutPos::e_Left:
+        case v_ZFUIAutoLayoutPos::e_Right:
             switch(targetPos) {
-                case ZFUIAutoLayoutPos::e_Left:
-                case ZFUIAutoLayoutPos::e_Right:
+                case v_ZFUIAutoLayoutPos::e_Left:
+                case v_ZFUIAutoLayoutPos::e_Right:
                     return zftrue;
                 default:
                     break;
             }
             break;
-        case ZFUIAutoLayoutPos::e_Top:
-        case ZFUIAutoLayoutPos::e_Bottom:
+        case v_ZFUIAutoLayoutPos::e_Top:
+        case v_ZFUIAutoLayoutPos::e_Bottom:
             switch(targetPos) {
-                case ZFUIAutoLayoutPos::e_Top:
-                case ZFUIAutoLayoutPos::e_Bottom:
+                case v_ZFUIAutoLayoutPos::e_Top:
+                case v_ZFUIAutoLayoutPos::e_Bottom:
                     return zftrue;
                 default:
                     break;
             }
             break;
-        case ZFUIAutoLayoutPos::e_Width:
-        case ZFUIAutoLayoutPos::e_Height:
+        case v_ZFUIAutoLayoutPos::e_Width:
+        case v_ZFUIAutoLayoutPos::e_Height:
             switch(targetPos) {
-                case ZFUIAutoLayoutPos::e_Width:
-                case ZFUIAutoLayoutPos::e_Height:
+                case v_ZFUIAutoLayoutPos::e_Width:
+                case v_ZFUIAutoLayoutPos::e_Height:
                     return zftrue;
                 default:
                     break;
@@ -71,11 +71,11 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
     ZFUIAutoLayoutParam::_ZFP_Data &d = lp->_ZFP_AL_d;
     ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, lp->ownerParent());
     zfbool posAttached = zffalse;
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         if(d.posAttached[i] && _ZFP_ZFUIAutoLayout_posValid(
                     lp
                     , (ZFUIAutoLayoutPos)i
-                    , targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos
+                    , targetPos == v_ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos
                     )) {
             posAttached = zftrue;
 
@@ -87,7 +87,7 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
                 rule._ZFP_AL_targetId = viewId;
             }
             rule.target(zfnull);
-            rule.targetPos(targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos);
+            rule.targetPos(targetPos == v_ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos);
         }
     }
     ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
@@ -106,17 +106,17 @@ static void _ZFP_ZFUIAutoLayout_targetAttach(
         target = parent;
     }
     zfbool posAttached = zffalse;
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         if(d.posAttached[i] && _ZFP_ZFUIAutoLayout_posValid(
                     lp
                     , (ZFUIAutoLayoutPos)i
-                    , targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos
+                    , targetPos == v_ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos
                     )) {
             posAttached = zftrue;
 
             ZFUIAutoLayoutRule &rule = d.ruleList[i];
             rule.target(target);
-            rule.targetPos(targetPos == ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos);
+            rule.targetPos(targetPos == v_ZFUIAutoLayoutPos::e_None ? (ZFUIAutoLayoutPos)i : targetPos);
         }
     }
     ZFCoreAssertWithMessageTrim(posAttached, "[ZFUIAutoLayout] pos rule (width/left/...) not set");
@@ -144,7 +144,7 @@ ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, ruleRemove
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, ruleRemoveAll) {
     ZFUIAutoLayout *parent = zfcast(ZFUIAutoLayout *, this->ownerParent());
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(rule.valid()) {
             if(parent != zfnull) {
@@ -157,124 +157,124 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, ruleRemoveAll) {
 
 // ============================================================
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, width) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Width);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Width);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, height) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Height);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Height);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, left) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Left);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, top) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Top);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, right) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Right);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, bottom) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Bottom);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Bottom);
 }
 
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, edges) {
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Left);
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Top);
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Right);
-    _ZFP_ZFUIAutoLayout_posAttach(this, ZFUIAutoLayoutPos::e_Bottom);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_posAttach(this, v_ZFUIAutoLayoutPos::e_Bottom);
 }
 
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toWidth
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Width);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_Width);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toHeight
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Height);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_Height);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toLeft
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_Left);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toTop
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_Top);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toRight
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_Right);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toBottom
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_Bottom);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_Bottom);
 }
 
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toWidth
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_Width);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_Width);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toHeight
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_Height);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_Height);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toLeft
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_Left);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toTop
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_Top);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toRight
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_Right);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, toBottom
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_Bottom);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_Bottom);
 }
 
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentWidth) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Width);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_Width);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentHeight) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Height);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_Height);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentLeft) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Left);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_Left);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentTop) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Top);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_Top);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentRight) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Right);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_Right);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParentBottom) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_Bottom);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_Bottom);
 }
 
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, to
         , ZFMP_IN(const zfstring &, viewId)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, ZFUIAutoLayoutPos::e_None);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, viewId, v_ZFUIAutoLayoutPos::e_None);
 }
 ZFMETHOD_DEFINE_1(ZFUIAutoLayoutParam, void, to
         , ZFMP_IN(ZFUIView *, target)
         ) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, target, ZFUIAutoLayoutPos::e_None);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, target, v_ZFUIAutoLayoutPos::e_None);
 }
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, void, toParent) {
-    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, ZFUIAutoLayoutPos::e_None);
+    _ZFP_ZFUIAutoLayout_targetAttach(this, (ZFUIView *)zfnull, v_ZFUIAutoLayoutPos::e_None);
 }
 
 ZF_NAMESPACE_GLOBAL_END

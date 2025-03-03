@@ -16,7 +16,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
     _ZFP_onStop = onStop;
 
     this->result(zfnull);
-    this->resultType(ZFResultType::e_Success);
+    this->resultType(v_ZFResultType::e_Success);
     this->errorHint("");
 
     zfRetain(this);
@@ -24,7 +24,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
     this->observerNotify(zfself::E_TaskOnStart());
 }
 ZFMETHOD_DEFINE_1(ZFTask, void, stop
-        , ZFMP_IN_OPT(ZFResultType, resultType, ZFResultType::e_Cancel)
+        , ZFMP_IN_OPT(ZFResultType, resultType, v_ZFResultType::e_Cancel)
         ) {
     if(!_ZFP_started) {
         return;
@@ -53,7 +53,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, notifySuccess
         ) {
     if(_ZFP_started) {
         this->result(result);
-        this->stop(ZFResultType::e_Success);
+        this->stop(v_ZFResultType::e_Success);
     }
 }
 ZFMETHOD_DEFINE_2(ZFTask, void, notifyFail
@@ -63,7 +63,7 @@ ZFMETHOD_DEFINE_2(ZFTask, void, notifyFail
     if(_ZFP_started) {
         this->errorHint(errorHint);
         this->result(result);
-        this->stop(ZFResultType::e_Fail);
+        this->stop(v_ZFResultType::e_Fail);
     }
 }
 

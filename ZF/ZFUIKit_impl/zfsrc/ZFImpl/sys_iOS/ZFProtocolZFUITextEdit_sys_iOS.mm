@@ -98,7 +98,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_iOS, ZFUITextEdit, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_iOS, ZFUITextEdit, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UITextField")
 public:
     virtual void *nativeTextEditCreate(
@@ -140,16 +140,16 @@ public:
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         switch(keyboardType) {
-            case ZFUITextEditKeyboardType::e_Normal:
+            case v_ZFUITextEditKeyboardType::e_Normal:
                 nativeImplView.keyboardType = UIKeyboardTypeDefault;
                 break;
-            case ZFUITextEditKeyboardType::e_CharBased:
+            case v_ZFUITextEditKeyboardType::e_CharBased:
                 nativeImplView.keyboardType = UIKeyboardTypeASCIICapable;
                 break;
-            case ZFUITextEditKeyboardType::e_PhonePad:
+            case v_ZFUITextEditKeyboardType::e_PhonePad:
                 nativeImplView.keyboardType = UIKeyboardTypePhonePad;
                 break;
-            case ZFUITextEditKeyboardType::e_NumberPad:
+            case v_ZFUITextEditKeyboardType::e_NumberPad:
                 nativeImplView.keyboardType = UIKeyboardTypeNumberPad;
                 break;
             default:
@@ -163,22 +163,22 @@ public:
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         switch(keyboardReturnType) {
-            case ZFUITextEditKeyboardReturnType::e_Normal:
+            case v_ZFUITextEditKeyboardReturnType::e_Normal:
                 nativeImplView.returnKeyType = UIReturnKeyDefault;
                 break;
-            case ZFUITextEditKeyboardReturnType::e_Next:
+            case v_ZFUITextEditKeyboardReturnType::e_Next:
                 nativeImplView.returnKeyType = UIReturnKeyNext;
                 break;
-            case ZFUITextEditKeyboardReturnType::e_Search:
+            case v_ZFUITextEditKeyboardReturnType::e_Search:
                 nativeImplView.returnKeyType = UIReturnKeySearch;
                 break;
-            case ZFUITextEditKeyboardReturnType::e_Done:
+            case v_ZFUITextEditKeyboardReturnType::e_Done:
                 nativeImplView.returnKeyType = UIReturnKeyDone;
                 break;
-            case ZFUITextEditKeyboardReturnType::e_Go:
+            case v_ZFUITextEditKeyboardReturnType::e_Go:
                 nativeImplView.returnKeyType = UIReturnKeyGo;
                 break;
-            case ZFUITextEditKeyboardReturnType::e_Send:
+            case v_ZFUITextEditKeyboardReturnType::e_Send:
                 nativeImplView.returnKeyType = UIReturnKeySend;
                 break;
             default:
@@ -226,16 +226,16 @@ public:
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         switch(textAppearance) {
-            case ZFUITextAppearance::e_Normal:
+            case v_ZFUITextAppearance::e_Normal:
                 nativeImplView.fontName = [UIFont systemFontOfSize:[UIFont systemFontSize]].fontName;
                 break;
-            case ZFUITextAppearance::e_Bold:
+            case v_ZFUITextAppearance::e_Bold:
                 nativeImplView.fontName = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]].fontName;
                 break;
-            case ZFUITextAppearance::e_Italic:
+            case v_ZFUITextAppearance::e_Italic:
                 nativeImplView.fontName = [UIFont italicSystemFontOfSize:[UIFont systemFontSize]].fontName;
                 break;
-            case ZFUITextAppearance::e_BoldItalic:
+            case v_ZFUITextAppearance::e_BoldItalic:
                 nativeImplView.fontName = @"Helvetica-BoldOblique";
                 break;
             default:
@@ -248,13 +248,13 @@ public:
             , ZF_IN ZFUIAlignFlags const &textAlign
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        if(ZFBitTest(textAlign, ZFUIAlign::e_Left)) {
+        if(ZFBitTest(textAlign, v_ZFUIAlign::e_Left)) {
             nativeImplView.textAlignment = NSTextAlignmentLeft;
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_Right)) {
+        else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Right)) {
             nativeImplView.textAlignment = NSTextAlignmentRight;
         }
-        else if(textAlign == ZFUIAlign::e_Center) {
+        else if(textAlign == v_ZFUIAlign::e_Center) {
             nativeImplView.textAlignment = NSTextAlignmentCenter;
         }
         else {

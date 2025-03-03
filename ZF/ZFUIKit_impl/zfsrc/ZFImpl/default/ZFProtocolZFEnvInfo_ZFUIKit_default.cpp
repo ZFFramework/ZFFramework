@@ -5,13 +5,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_deviceUIInfoImpl_default, ZFEnvInfo_deviceUIInfo, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_deviceUIInfoImpl_default, ZFEnvInfo_deviceUIInfo, v_ZFProtocolLevel::e_Default)
 public:
-    virtual ZFEnvDeviceUIType deviceUIType(ZF_IN_OPT ZFEnvDeviceUIType defaultValue = ZFEnvDeviceUIType::e_Desktop) {
+    virtual ZFEnvDeviceUIType deviceUIType(ZF_IN_OPT ZFEnvDeviceUIType defaultValue = v_ZFEnvDeviceUIType::e_Desktop) {
         #if ZF_ENV_sys_Qt
-            return ZFEnvDeviceUIType::e_Desktop;
+            return v_ZFEnvDeviceUIType::e_Desktop;
         #else // #if ZF_ENV_sys_Qt
-            return ZFEnvDeviceUIType::e_Handheld;
+            return v_ZFEnvDeviceUIType::e_Handheld;
         #endif // #if ZF_ENV_sys_Qt #else
         return defaultValue;
     }

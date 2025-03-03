@@ -39,11 +39,11 @@ ZFENUM_REG(ZFLIB_ZFCore, ZFProtocolLevel)
  *
  * note, it's ensured that:
  * @code
- *   ZFProtocolInstanceState state0 = ZFProtocolInstanceState::e_OnInitFinish;
- *   zfbool t0 = ZFBitTest(state0, ZFProtocolInstanceState::e_OnInit); // ensured true
+ *   ZFProtocolInstanceState state0 = v_ZFProtocolInstanceState::e_OnInitFinish;
+ *   zfbool t0 = ZFBitTest(state0, v_ZFProtocolInstanceState::e_OnInit); // ensured true
  *
- *   ZFProtocolInstanceState state1 = ZFProtocolInstanceState::e_OnDeallocPrepare;
- *   zfbool t1 = ZFBitTest(state1, ZFProtocolInstanceState::e_OnDealloc); // ensured true
+ *   ZFProtocolInstanceState state1 = v_ZFProtocolInstanceState::e_OnDeallocPrepare;
+ *   zfbool t1 = ZFBitTest(state1, v_ZFProtocolInstanceState::e_OnDealloc); // ensured true
  * @endcode
  */
 ZFENUM_BEGIN(ZFLIB_ZFCore, ZFProtocolInstanceState)
@@ -120,7 +120,7 @@ public:
      * @brief get the level of the protocol implementation
      */
     virtual ZFProtocolLevel protocolImplLevel(void) const {
-        return ZFProtocolLevel::e_Default;
+        return v_ZFProtocolLevel::e_Default;
     }
     /**
      * @brief get type hint of the implementation or empty string if not defined, e.g. "iOS:NSString" for iOS's string impl,
@@ -167,7 +167,7 @@ protected:
 
 public:
     /** @cond ZFPrivateDoc */
-    ZFProtocol(void) : _ZFP_ZFProtocol_protocolInstanceState(ZFProtocolInstanceState::e_OnInit) {}
+    ZFProtocol(void) : _ZFP_ZFProtocol_protocolInstanceState(v_ZFProtocolInstanceState::e_OnInit) {}
     virtual ~ZFProtocol(void) {}
     /** @endcond */
 };
@@ -285,11 +285,11 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     ) { \
                 _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                 if(_d.implInstance != zfnull) { \
-                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDeallocPrepare; \
+                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnDeallocPrepare; \
                     _d.implInstance->protocolOnDeallocPrepare(); \
-                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDealloc; \
+                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnDealloc; \
                     _d.implInstance->protocolOnDealloc(); \
-                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit; \
+                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnInit; \
                 } \
                 zfself::_ZFP_ZFProtocolInstanceCleanupCallback(&_d); \
                 if(implConstructor != zfnull && !zfstringIsEmpty(implName)) { \
@@ -302,7 +302,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     _d.implConstructor = zfnull; \
                     _d.isAvailableCk = zfnull; \
                     _d.implName.removeAll(); \
-                    _d.implLevel = ZFProtocolLevel::e_Default; \
+                    _d.implLevel = v_ZFProtocolLevel::e_Default; \
                 } \
             } \
             static inline zfbool _ZFP_ZFProtocolIsAvailable(void) { \
@@ -316,11 +316,11 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 if(_d.isAvailableCk != zfnull && _d.isAvailableCk()) { \
                     retVal = (zfself *)_d.implConstructor(); \
                     if(retVal != zfnull) { \
-                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit; \
+                        retVal->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnInit; \
                         retVal->protocolOnInit(); \
-                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInitFinish; \
+                        retVal->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnInitFinish; \
                         retVal->protocolOnInitFinish(); \
-                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_Idle; \
+                        retVal->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_Idle; \
                     } \
                 } \
                 return retVal; \
@@ -515,7 +515,7 @@ private:
             } \
             static void _ZFP_ZFProtocolUnregister(void) { \
                 if(ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolDataRef().implConstructor == &ImplementationClass::_ZFP_##ImplementationClass##_ctor) { \
-                    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default); \
+                    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, v_ZFProtocolLevel::e_Default); \
                 } \
                 _ZFP_ZFProtocolImplDataUnregister(#ModuleName); \
             } \
@@ -675,13 +675,13 @@ private:
  * what you should do, is to put it in a cpp file and make it active\n
  * \n
  * the third param "implLevel", which has:
- * -  ZFProtocolLevel::e_Default
- * -  ZFProtocolLevel::e_SystemLow
- * -  ZFProtocolLevel::e_SystemNormal
- * -  ZFProtocolLevel::e_SystemHigh
- * -  ZFProtocolLevel::e_AppLow
- * -  ZFProtocolLevel::e_AppNormal
- * -  ZFProtocolLevel::e_AppHigh
+ * -  v_ZFProtocolLevel::e_Default
+ * -  v_ZFProtocolLevel::e_SystemLow
+ * -  v_ZFProtocolLevel::e_SystemNormal
+ * -  v_ZFProtocolLevel::e_SystemHigh
+ * -  v_ZFProtocolLevel::e_AppLow
+ * -  v_ZFProtocolLevel::e_AppNormal
+ * -  v_ZFProtocolLevel::e_AppHigh
  *
  * is used to specify the implementation level, ordered from low to high priority\n
  * for example, if you have a Default and a System level's implementation,
@@ -731,7 +731,7 @@ private:
  * @brief remove implementation, see #ZFProtocolImplChange
  */
 #define ZFProtocolImplRemove(ModuleName) \
-    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default)
+    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, v_ZFProtocolLevel::e_Default)
 
 // ============================================================
 /**

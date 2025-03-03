@@ -26,9 +26,9 @@ protected:
             layout->child(view)->c_widthFill()->c_margin(10);
             view->bgColor(ZFUIColorRandom());
         }
-        layout->childAt(0)->layoutParam()->align(ZFUIAlign::e_Top);
-        layout->childAt(1)->layoutParam()->align(ZFUIAlign::e_Center);
-        layout->childAt(2)->layoutParam()->align(ZFUIAlign::e_Bottom);
+        layout->childAt(0)->layoutParam()->align(v_ZFUIAlign::e_Top);
+        layout->childAt(1)->layoutParam()->align(v_ZFUIAlign::e_Center);
+        layout->childAt(2)->layoutParam()->align(v_ZFUIAlign::e_Bottom);
     }
 
 private:

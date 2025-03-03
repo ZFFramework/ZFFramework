@@ -258,12 +258,12 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
     this->textOnReturnClick();
 
     switch(this->keyboardReturnAction()) {
-        case ZFUITextEditKeyboardReturnAction::e_None:
+        case v_ZFUITextEditKeyboardReturnAction::e_None:
             break;
-        case ZFUITextEditKeyboardReturnAction::e_Confirm:
+        case v_ZFUITextEditKeyboardReturnAction::e_Confirm:
             this->editConfirm();
             break;
-        case ZFUITextEditKeyboardReturnAction::e_FocusNext:
+        case v_ZFUITextEditKeyboardReturnAction::e_FocusNext:
             if(!this->focused() || !this->confirmWhenLostFocus()) {
                 this->editConfirm();
             }
@@ -283,7 +283,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
                 }
             }
             break;
-        case ZFUITextEditKeyboardReturnAction::e_HideKeyboard: {
+        case v_ZFUITextEditKeyboardReturnAction::e_HideKeyboard: {
             this->editConfirm();
             ZFUIOnScreenKeyboardState *keyboardState = ZFUIOnScreenKeyboardState::instanceForView(this);
             if(keyboardState != zfnull && keyboardState->keyboardShowing() && this->editing()) {
@@ -379,8 +379,8 @@ void ZFUITextEdit::layoutOnMeasure(
 }
 void ZFUITextEdit::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
     switch(keyEvent->keyCode) {
-        case ZFUIKeyCode::e_kShift:
-        case ZFUIKeyCode::e_kTab:
+        case v_ZFUIKeyCode::e_kShift:
+        case v_ZFUIKeyCode::e_kTab:
             zfsuper::viewEventOnKeyEvent(keyEvent);
             break;
         default:

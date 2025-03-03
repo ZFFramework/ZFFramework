@@ -59,7 +59,7 @@ public:
     }
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_Android, ZFRes, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_Android, ZFRes, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:AssetsFile")
 private:
     const zfchar *zfresPrefix;

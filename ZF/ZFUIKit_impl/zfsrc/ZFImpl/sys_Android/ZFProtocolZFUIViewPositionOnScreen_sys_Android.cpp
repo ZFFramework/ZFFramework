@@ -10,7 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIViewPositionOnScreen ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIViewPositionOnScreen)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIViewPositionOnScreen, ZFImpl_sys_Android_JNI_NAME_ZFUIViewPositionOnScreen)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewPositionOnScreenImpl_sys_Android, ZFUIViewPositionOnScreen, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewPositionOnScreenImpl_sys_Android, ZFUIViewPositionOnScreen, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")

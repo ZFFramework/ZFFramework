@@ -11,7 +11,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLogStackTraceImpl_sys_Posix, ZFLogStackTrace, ZFProtocolLevel::e_SystemLow)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLogStackTraceImpl_sys_Posix, ZFLogStackTrace, v_ZFProtocolLevel::e_SystemLow)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Posix:backtrace")
 public:
     virtual void stackTrace(

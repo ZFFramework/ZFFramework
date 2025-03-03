@@ -28,13 +28,13 @@ static zfbool _ZFP_ZFPathInfoCopy_copyFile(
     if(isForce) {
         dstImpl.implRemove(dstPath.pathData(), zffalse, isForce, zfnull);
     }
-    void *srcFd = srcImpl.implOpen(srcPath.pathData(), ZFFileOpenOption::e_Read, zffalse);
+    void *srcFd = srcImpl.implOpen(srcPath.pathData(), v_ZFFileOpenOption::e_Read, zffalse);
     if(srcFd == zfnull) {
         _ZFP_ZFPathInfoCopy_SetErrPos(errPos, srcPath);
         return zffalse;
     }
     ZFPathInfoCloseHolder(srcPath, srcFd);
-    void *dstFd = dstImpl.implOpen(dstPath.pathData(), ZFFileOpenOption::e_Write, zftrue);
+    void *dstFd = dstImpl.implOpen(dstPath.pathData(), v_ZFFileOpenOption::e_Write, zftrue);
     if(dstFd == zfnull) {
         _ZFP_ZFPathInfoCopy_SetErrPos(errPos, dstPath);
         return zffalse;

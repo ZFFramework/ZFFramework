@@ -15,11 +15,11 @@ protected:
     virtual void pageOnCreate(void) {
         this->pageViewClass(ZFUILinearLayout::ClassData());
         zfsuper::pageOnCreate();
-        this->pageView()->to<ZFUILinearLayout *>()->orientation(ZFUIOrientation::e_Top);
+        this->pageView()->to<ZFUILinearLayout *>()->orientation(v_ZFUIOrientation::e_Top);
 
         this->pageView()->child(this->_titleView())->c_widthFill();
         this->_titleView()->bgColor(ZFUIColorRandom());
-        this->_titleView()->orientation(ZFUIOrientation::e_Left);
+        this->_titleView()->orientation(v_ZFUIOrientation::e_Left);
         this->_titleView()->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton()));
 
         this->_titleView()->child(this->_titleLeftView())->c_weight(1);
@@ -37,7 +37,7 @@ protected:
 
         this->_titleView()->child(this->_titleCenterView())->c_weight(3);
         this->_titleCenterView()->text(zfstr("page %s", (const void *)this));
-        this->_titleCenterView()->textAlign(ZFUIAlign::e_Center);
+        this->_titleCenterView()->textAlign(v_ZFUIAlign::e_Center);
 
         this->pageView()->child(this->_contentView())->c_sizeFill();
         this->_contentView()->bgColor(ZFUIColorRandom());
@@ -94,11 +94,11 @@ protected:
         this->managerContainerClass(ZFUILinearLayout::ClassData());
         zfsuper::managerOnCreate();
 
-        this->managerContainer()->to<ZFUILinearLayout *>()->orientation(ZFUIOrientation::e_Top);
+        this->managerContainer()->to<ZFUILinearLayout *>()->orientation(v_ZFUIOrientation::e_Top);
         this->pageContainer()->layoutParam().to<ZFUILinearLayoutParam *>()->weight(1);
 
         this->managerContainer()->child(this->_buttonLayout())->c_widthFill();
-        this->_buttonLayout()->orientation(ZFUIOrientation::e_Left);
+        this->_buttonLayout()->orientation(v_ZFUIOrientation::e_Left);
 
         for(zfindex i = 0; i < 4; ++i) {
             zfobj<v_zfstring> pageGroupId(zfstr("pageGroup %s", i));

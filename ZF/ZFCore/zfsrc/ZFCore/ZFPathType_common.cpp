@@ -148,7 +148,7 @@ public:
             , ZF_IN_OPT ZFFileOpenOptionFlags flag
             , ZF_IN_OPT zfbool autoCreateParent
             ) {
-        if(flag != ZFFileOpenOption::e_Read) {
+        if(flag != v_ZFFileOpenOption::e_Read) {
             return zfnull;
         }
         _Token *d = zfnew(_Token);

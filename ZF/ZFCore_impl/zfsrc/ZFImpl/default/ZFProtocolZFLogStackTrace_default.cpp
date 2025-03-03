@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * also note that this may not work for release build
  */
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLogStackTraceImpl_default, ZFLogStackTrace, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLogStackTraceImpl_default, ZFLogStackTrace, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("edd_stacktrace")
 public:
     virtual void stackTrace(

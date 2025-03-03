@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_default, ZFImplOutput, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_default, ZFImplOutput, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("C:printf")
 public:
     virtual void outputCoreLog(ZF_IN const zfchar *s) {

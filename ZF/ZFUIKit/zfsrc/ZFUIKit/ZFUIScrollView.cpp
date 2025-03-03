@@ -72,7 +72,7 @@ public:
 protected:
     _ZFP_ZFUIScrollViewPrivate(void)
     : pimplOwner(zfnull)
-    , state(ZFUIScrollViewState::e_Idle)
+    , state(v_ZFUIScrollViewState::e_Idle)
     , scrollContentFrameOverrideFlag(zffalse)
     , scrollAniTimerStarted(zffalse)
     , scrollAniLastTime(0)
@@ -193,7 +193,7 @@ public:
             ZF_IN const ZFUIPoint &mousePos
             , ZF_IN zftimet mouseTime
             ) {
-        if(this->state != ZFUIScrollViewState::e_Dragging) {
+        if(this->state != v_ZFUIScrollViewState::e_Dragging) {
             return;
         }
 
@@ -229,7 +229,7 @@ public:
             ZF_IN zftimet mouseTime
             , ZF_IN zfbool needScrollAni
             ) {
-        if(this->state != ZFUIScrollViewState::e_Dragging) {
+        if(this->state != v_ZFUIScrollViewState::e_Dragging) {
             // this may be an error state, reset by end scroll
             this->scrollerActionAdd(_ZFP_ZFUIScrollViewActionScrollEnd);
             this->scrollerActionRun();
@@ -384,20 +384,20 @@ private:
         }
     }
     void notifyScrollOnDragBegin(void) {
-        if(this->state != ZFUIScrollViewState::e_Dragging) {
+        if(this->state != v_ZFUIScrollViewState::e_Dragging) {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
                 ZFLogTrim() << this->pimplOwner->objectInfoOfInstance() << " scrollOnDragBegin";
             #endif
             this->notifyScrollAniTimerStop();
             this->notifyScrollOnScrollEnd();
 
-            this->state = ZFUIScrollViewState::e_Dragging;
+            this->state = v_ZFUIScrollViewState::e_Dragging;
             this->pimplOwner->scrollOnDragBegin();
             this->scrollThumbUpdate();
         }
     }
     void notifyScrollOnDrag(void) {
-        if(this->state == ZFUIScrollViewState::e_Dragging) {
+        if(this->state == v_ZFUIScrollViewState::e_Dragging) {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
                 ZFLogTrim() << this->pimplOwner->objectInfoOfInstance() << " scrollOnDrag";
             #endif
@@ -406,30 +406,30 @@ private:
         }
     }
     void notifyScrollOnDragEnd(void) {
-        if(this->state == ZFUIScrollViewState::e_Dragging) {
+        if(this->state == v_ZFUIScrollViewState::e_Dragging) {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
                 ZFLogTrim() << this->pimplOwner->objectInfoOfInstance() << " scrollOnDragEnd";
             #endif
-            this->state = ZFUIScrollViewState::e_Idle;
+            this->state = v_ZFUIScrollViewState::e_Idle;
             this->pimplOwner->scrollOnDragEnd();
             this->scrollThumbNeedUpdate = zftrue;
             this->scrollThumbUpdate();
         }
     }
     void notifyScrollOnScrollBegin(void) {
-        if(this->state != ZFUIScrollViewState::e_Scrolling) {
+        if(this->state != v_ZFUIScrollViewState::e_Scrolling) {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
                 ZFLogTrim() << this->pimplOwner->objectInfoOfInstance() << " scrollOnScrollBegin";
             #endif
             this->notifyScrollOnDragEnd();
 
-            this->state = ZFUIScrollViewState::e_Scrolling;
+            this->state = v_ZFUIScrollViewState::e_Scrolling;
             this->pimplOwner->scrollOnScrollBegin();
             this->scrollThumbUpdate();
         }
     }
     void notifyScrollOnScroll(void) {
-        if(this->state == ZFUIScrollViewState::e_Scrolling) {
+        if(this->state == v_ZFUIScrollViewState::e_Scrolling) {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
                 ZFLogTrim() << this->pimplOwner->objectInfoOfInstance() << " scrollOnScroll";
             #endif
@@ -438,13 +438,13 @@ private:
         }
     }
     void notifyScrollOnScrollEnd(void) {
-        if(this->state == ZFUIScrollViewState::e_Scrolling) {
+        if(this->state == v_ZFUIScrollViewState::e_Scrolling) {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
                 ZFLogTrim() << this->pimplOwner->objectInfoOfInstance() << " scrollOnScrollEnd";
             #endif
             this->notifyScrollOnScroll();
 
-            this->state = ZFUIScrollViewState::e_Idle;
+            this->state = v_ZFUIScrollViewState::e_Idle;
             this->notifyScrollAniTimerStop();
             this->pimplOwner->scrollOnScrollEnd();
             this->scrollThumbNeedUpdate = zftrue;
@@ -674,16 +674,16 @@ void ZFUIScrollView::implChildOnAdd(
         , ZF_IN zfindex childLayerIndex
         ) {
     switch(child->viewLayer()) {
-        case ZFUIViewChildLayer::e_Normal:
+        case v_ZFUIViewChildLayer::e_Normal:
             ZFPROTOCOL_ACCESS(ZFUIScrollView)->scrollChildAdd(this, child, childLayerIndex);
             break;
-        case ZFUIViewChildLayer::e_InternalImpl:
+        case v_ZFUIViewChildLayer::e_InternalImpl:
             zfsuper::implChildOnAdd(child, virtualIndex, childLayer, childLayerIndex);
             break;
-        case ZFUIViewChildLayer::e_InternalBg:
+        case v_ZFUIViewChildLayer::e_InternalBg:
             zfsuper::implChildOnAdd(child, virtualIndex, childLayer, childLayerIndex);
             break;
-        case ZFUIViewChildLayer::e_InternalFg:
+        case v_ZFUIViewChildLayer::e_InternalFg:
             zfsuper::implChildOnAdd(child, virtualIndex - this->childCount(), childLayer, childLayerIndex);
             break;
         default:
@@ -698,16 +698,16 @@ void ZFUIScrollView::implChildOnRemove(
         , ZF_IN zfindex childLayerIndex
         ) {
     switch(childLayer) {
-        case ZFUIViewChildLayer::e_Normal:
+        case v_ZFUIViewChildLayer::e_Normal:
             ZFPROTOCOL_ACCESS(ZFUIScrollView)->scrollChildRemove(this, child, childLayerIndex);
             break;
-        case ZFUIViewChildLayer::e_InternalImpl:
+        case v_ZFUIViewChildLayer::e_InternalImpl:
             zfsuper::implChildOnRemove(child, virtualIndex, childLayer, childLayerIndex);
             break;
-        case ZFUIViewChildLayer::e_InternalBg:
+        case v_ZFUIViewChildLayer::e_InternalBg:
             zfsuper::implChildOnRemove(child, virtualIndex, childLayer, childLayerIndex);
             break;
-        case ZFUIViewChildLayer::e_InternalFg:
+        case v_ZFUIViewChildLayer::e_InternalFg:
             zfsuper::implChildOnRemove(child, virtualIndex - this->childCount(), childLayer, childLayerIndex);
             break;
         default:
@@ -1046,7 +1046,7 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameAnimated
         this->scrollContentFrame().y,
         scrollContentFrame.width,
         scrollContentFrame.height));
-    if(d->state != ZFUIScrollViewState::e_Dragging) {
+    if(d->state != v_ZFUIScrollViewState::e_Dragging) {
         this->scrollByPoint(scrollContentFrame.x, scrollContentFrame.y);
     }
     else {
@@ -1066,7 +1066,7 @@ ZFMETHOD_DEFINE_2(ZFUIScrollView, void, scrollByPoint
         , ZFMP_IN(zffloat, xPos)
         , ZFMP_IN(zffloat, yPos)
         ) {
-    if(d->state != ZFUIScrollViewState::e_Dragging) {
+    if(d->state != v_ZFUIScrollViewState::e_Dragging) {
         d->xScroll->scrollByPoint(xPos);
         d->yScroll->scrollByPoint(yPos);
         d->scrollerUpdate();
@@ -1087,7 +1087,7 @@ ZFMETHOD_DEFINE_2(ZFUIScrollView, void, scrollBySpeed
         , ZFMP_IN(zffloat, xSpeedInPixelsPerSecond)
         , ZFMP_IN(zffloat, ySpeedInPixelsPerSecond)
         ) {
-    if(d->state != ZFUIScrollViewState::e_Dragging) {
+    if(d->state != v_ZFUIScrollViewState::e_Dragging) {
         d->xScroll->scrollBySpeed(xSpeedInPixelsPerSecond);
         d->yScroll->scrollBySpeed(ySpeedInPixelsPerSecond);
         d->scrollerUpdate();
@@ -1114,7 +1114,7 @@ ZFMETHOD_DEFINE_0(ZFUIScrollView, ZFUIPoint, scrollEndPointPredicted) {
 ZFMETHOD_DEFINE_1(ZFUIScrollView, void, autoScrollStartX
         , ZFMP_IN(zffloat, speedInPixelsPerSecond)
         ) {
-    if(d->state != ZFUIScrollViewState::e_Dragging) {
+    if(d->state != v_ZFUIScrollViewState::e_Dragging) {
         d->autoScrollSpeedX = speedInPixelsPerSecond;
         if(d->xScrollEnable) {
             d->xScroll->scrollBySpeed(speedInPixelsPerSecond);
@@ -1128,7 +1128,7 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, autoScrollStartX
 ZFMETHOD_DEFINE_1(ZFUIScrollView, void, autoScrollStartY
         , ZFMP_IN(zffloat , speedInPixelsPerSecond)
         ) {
-    if(d->state != ZFUIScrollViewState::e_Dragging) {
+    if(d->state != v_ZFUIScrollViewState::e_Dragging) {
         d->autoScrollSpeedY = speedInPixelsPerSecond;
         if(d->yScrollEnable) {
             d->yScroll->scrollBySpeed(speedInPixelsPerSecond);

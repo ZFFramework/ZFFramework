@@ -151,12 +151,12 @@ void ZFUIScrollThumbDefault::scrollThumbInit(void) {
     this->scrollView()->internalFgViewAdd(d->thumbView);
 
     if(this->scrollThumbHorizontal()) {
-        d->thumbView->layoutParam()->align(ZFUIAlign::e_Left | ZFUIAlign::e_Bottom);
+        d->thumbView->layoutParam()->align(v_ZFUIAlign::e_Left | v_ZFUIAlign::e_Bottom);
         d->thumbView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
         d->thumbView->image(this->thumbImageHorizontal());
     }
     else {
-        d->thumbView->layoutParam()->align(ZFUIAlign::e_Top | ZFUIAlign::e_Right);
+        d->thumbView->layoutParam()->align(v_ZFUIAlign::e_Top | v_ZFUIAlign::e_Right);
         d->thumbView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
         d->thumbView->image(this->thumbImageVertical());
     }
@@ -171,7 +171,7 @@ void ZFUIScrollThumbDefault::scrollThumbDealloc(void) {
 }
 
 void ZFUIScrollThumbDefault::scrollThumbUpdate(void) {
-    if(this->scrollView()->scrollViewState() != ZFUIScrollViewState::e_Idle) {
+    if(this->scrollView()->scrollViewState() != v_ZFUIScrollViewState::e_Idle) {
         d->thumbHideAni->stop();
         d->thumbView->alpha(1);
     }
@@ -238,13 +238,13 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void) {
         if(visibleNew) {
             if(!d->thumbView->visible()
                     && pos == d->lastPos && size == d->lastSize
-                    && (this->scrollView()->scrollViewState() == ZFUIScrollViewState::e_Idle || size == sizeRange)
+                    && (this->scrollView()->scrollViewState() == v_ZFUIScrollViewState::e_Idle || size == sizeRange)
                     ) {
                 visibleNew = zffalse;
             }
             else {
                 if(curTime - d->lastVisibleTime >= 100
-                        && this->scrollView()->scrollViewState() == ZFUIScrollViewState::e_Idle
+                        && this->scrollView()->scrollViewState() == v_ZFUIScrollViewState::e_Idle
                         && size == sizeRange
                         ) {
                     visibleNew = zffalse;
@@ -265,7 +265,7 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void) {
 
     // auto hide scroll thumb
     if(d->thumbView->visible()
-            && this->scrollView()->scrollViewState() == ZFUIScrollViewState::e_Idle) {
+            && this->scrollView()->scrollViewState() == v_ZFUIScrollViewState::e_Idle) {
         d->thumbHideAni->stop();
         d->thumbView->visible(zftrue);
         zftimet autoHideTime = (this->scrollThumbHorizontal() ? this->autoHideDurationHorizontal() : this->autoHideDurationVertical());

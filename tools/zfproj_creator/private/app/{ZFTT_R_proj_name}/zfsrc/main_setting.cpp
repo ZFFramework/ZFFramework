@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if ZF_ENV_DEBUG // global debug level
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(main_setting_debugLevel, ZFLevelAppEssential) {
-        ZFLogLevelDefault(ZFLogLevel::e_Verbose);
+        ZFLogLevelDefault(v_ZFLogLevel::e_Verbose);
     }
     ZF_GLOBAL_INITIALIZER_END(main_setting_debugLevel)
 #endif

@@ -76,7 +76,7 @@ static void _ZFP_ZFThreadImpl_sys_Android_updateExecuteId(void) {
 }
 
 // ============================================================
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Android, ZFThread, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Android, ZFThread, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Thread")
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {

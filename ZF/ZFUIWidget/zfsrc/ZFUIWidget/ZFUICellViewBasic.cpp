@@ -79,7 +79,7 @@ void ZFUICellViewBasic::objectOnInit(void) {
 
     {
         d->cellCenterContainer = zfAlloc(ZFUILinearLayout);
-        d->cellCenterContainer->orientation(ZFUIOrientation::e_Top);
+        d->cellCenterContainer->orientation(v_ZFUIOrientation::e_Top);
 
         d->cellLabelMainContainer = zfAlloc(ZFUIViewLayout);
         d->cellCenterContainer->child(d->cellLabelMainContainer)->c_alignLeft();

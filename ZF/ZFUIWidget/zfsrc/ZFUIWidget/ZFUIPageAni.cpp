@@ -10,10 +10,10 @@ static zfbool _ZFP_ZFUIPageAniCheck(ZF_IN ZFUIPage *page, ZFEnum *resumeOrPauseR
         return zffalse;
     }
     if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
-        return resumeOrPauseReason->enumValue() != ZFUIPageResumeReason::e_ByManagerResume;
+        return resumeOrPauseReason->enumValue() != v_ZFUIPageResumeReason::e_ByManagerResume;
     }
     else if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPagePauseReason::ClassData())) {
-        return resumeOrPauseReason->enumValue() != ZFUIPagePauseReason::e_ByManagerPause;
+        return resumeOrPauseReason->enumValue() != v_ZFUIPagePauseReason::e_ByManagerPause;
     }
     else {
         return zffalse;
@@ -55,7 +55,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
     if(!_ZFP_ZFUIPageAniCheck(page, resumeOrPauseReason, siblingPage)) {return zffalse;}
 
     if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
-        if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
+        if(resumeOrPauseReason->enumValue() == v_ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
@@ -75,7 +75,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
                 siblingPage->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
         }
-        else { // ZFUIPageResumeReason::e_FromBackground
+        else { // v_ZFUIPageResumeReason::e_FromBackground
             if(page != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
@@ -97,7 +97,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         }
     }
     else {
-        if(resumeOrPauseReason->enumValue() == ZFUIPagePauseReason::e_ToBackground) {
+        if(resumeOrPauseReason->enumValue() == v_ZFUIPagePauseReason::e_ToBackground) {
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
@@ -117,7 +117,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
                 page->pageAni(ZFAni(impl)->c_curve(zfobj<ZFCurveEaseOut>()));
             }
         }
-        else { // ZFUIPagePauseReason::e_BeforeDestroy
+        else { // v_ZFUIPagePauseReason::e_BeforeDestroy
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
@@ -149,7 +149,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
     if(!_ZFP_ZFUIPageAniCheck(page, resumeOrPauseReason, siblingPage)) {return zffalse;}
 
     if(resumeOrPauseReason->classData()->classIsTypeOf(v_ZFUIPageResumeReason::ClassData())) {
-        if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
+        if(resumeOrPauseReason->enumValue() == v_ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
@@ -164,7 +164,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
                 siblingPage->pageAni(requestOutAni);
             }
         }
-        else { // ZFUIPageResumeReason::e_FromBackground
+        else { // v_ZFUIPageResumeReason::e_FromBackground
             if(page != zfnull) {
                 zfobj<ZFAnimation> resumeInAni;
                 page->pageAni(resumeInAni);
@@ -181,7 +181,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
         }
     }
     else {
-        if(resumeOrPauseReason->enumValue() == ZFUIPagePauseReason::e_ToBackground) {
+        if(resumeOrPauseReason->enumValue() == v_ZFUIPagePauseReason::e_ToBackground) {
             if(siblingPage != zfnull) {
                 ZFLISTENER(impl) {
                     zffloat progress = zfargs.param0().to<v_zffloat *>()->zfv;
@@ -196,7 +196,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
                 page->pageAni(requestOutAni);
             }
         }
-        else { // ZFUIPagePauseReason::e_BeforeDestroy
+        else { // v_ZFUIPagePauseReason::e_BeforeDestroy
             if(siblingPage != zfnull) {
                 zfobj<ZFAnimation> resumeInAni;
                 siblingPage->pageAni(resumeInAni);

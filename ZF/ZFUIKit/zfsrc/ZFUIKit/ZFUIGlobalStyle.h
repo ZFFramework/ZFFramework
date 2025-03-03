@@ -120,7 +120,7 @@ public:
     /**
      * @brief default text align
      */
-    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, textAlign, ZFUIAlign::e_Left)
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, textAlign, v_ZFUIAlign::e_Left)
     /**
      * @brief default text truncate mode
      */

@@ -117,12 +117,12 @@ void ZFUIFlowLayout::layoutOnMeasure(
 
     ZFUISize maxCellSize = ZFUISizeZero();
     switch(this->orientation()) {
-        case ZFUIOrientation::e_Left:
-        case ZFUIOrientation::e_Right:
+        case v_ZFUIOrientation::e_Left:
+        case v_ZFUIOrientation::e_Right:
             ret = _ZFP_ZFUIFlowLayout_measureHorizontal(this, sizeHint, sizeParam.height, maxCellSize);
             break;
-        case ZFUIOrientation::e_Top:
-        case ZFUIOrientation::e_Bottom:
+        case v_ZFUIOrientation::e_Top:
+        case v_ZFUIOrientation::e_Bottom:
             ret = _ZFP_ZFUIFlowLayout_measureVertical(this, sizeHint, sizeParam.width, maxCellSize);
             break;
         default:
@@ -137,20 +137,20 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 
     ZFUISize maxCellSize = ZFUISizeZero();
     switch(this->orientation()) {
-        case ZFUIOrientation::e_Left:
-        case ZFUIOrientation::e_Right:
+        case v_ZFUIOrientation::e_Left:
+        case v_ZFUIOrientation::e_Right:
             if(this->gridMode()) {
-                _ZFP_ZFUIFlowLayout_measureHorizontal(this, ZFUIRectGetSize(bounds), ZFUISizeType::e_Wrap, maxCellSize);
+                _ZFP_ZFUIFlowLayout_measureHorizontal(this, ZFUIRectGetSize(bounds), v_ZFUISizeType::e_Wrap, maxCellSize);
                 _ZFP_ZFUIFlowLayout_layoutGridHorizontal(this, ZFUIRectGetSize(bounds), maxCellSize);
             }
             else {
                 _ZFP_ZFUIFlowLayout_layoutHorizontal(this, ZFUIRectGetSize(bounds));
             }
             break;
-        case ZFUIOrientation::e_Top:
-        case ZFUIOrientation::e_Bottom:
+        case v_ZFUIOrientation::e_Top:
+        case v_ZFUIOrientation::e_Bottom:
             if(this->gridMode()) {
-                _ZFP_ZFUIFlowLayout_measureVertical(this, ZFUIRectGetSize(bounds), ZFUISizeType::e_Wrap, maxCellSize);
+                _ZFP_ZFUIFlowLayout_measureVertical(this, ZFUIRectGetSize(bounds), v_ZFUISizeType::e_Wrap, maxCellSize);
                 _ZFP_ZFUIFlowLayout_layoutGridVertical(this, ZFUIRectGetSize(bounds), maxCellSize);
             }
             else {
@@ -167,35 +167,35 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 // util
 ZFUIOrientation _ZFP_ZFUIFlowLayout_orientationSecondary(ZF_IN ZFUIFlowLayout *parent) {
     switch(parent->orientation()) {
-        case ZFUIOrientation::e_Left:
-        case ZFUIOrientation::e_Right:
+        case v_ZFUIOrientation::e_Left:
+        case v_ZFUIOrientation::e_Right:
             switch(parent->orientationSecondary()) {
-                case ZFUIOrientation::e_Left:
-                case ZFUIOrientation::e_Right:
-                    return ZFUIOrientation::e_Top;
-                case ZFUIOrientation::e_Top:
-                case ZFUIOrientation::e_Bottom:
+                case v_ZFUIOrientation::e_Left:
+                case v_ZFUIOrientation::e_Right:
+                    return v_ZFUIOrientation::e_Top;
+                case v_ZFUIOrientation::e_Top:
+                case v_ZFUIOrientation::e_Bottom:
                     return parent->orientationSecondary();
                 default:
                     ZFCoreCriticalShouldNotGoHere();
-                    return ZFUIOrientation::e_Left;
+                    return v_ZFUIOrientation::e_Left;
             }
-        case ZFUIOrientation::e_Top:
-        case ZFUIOrientation::e_Bottom:
+        case v_ZFUIOrientation::e_Top:
+        case v_ZFUIOrientation::e_Bottom:
             switch(parent->orientationSecondary()) {
-                case ZFUIOrientation::e_Left:
-                case ZFUIOrientation::e_Right:
+                case v_ZFUIOrientation::e_Left:
+                case v_ZFUIOrientation::e_Right:
                     return parent->orientationSecondary();
-                case ZFUIOrientation::e_Top:
-                case ZFUIOrientation::e_Bottom:
-                    return ZFUIOrientation::e_Left;
+                case v_ZFUIOrientation::e_Top:
+                case v_ZFUIOrientation::e_Bottom:
+                    return v_ZFUIOrientation::e_Left;
                 default:
                     ZFCoreCriticalShouldNotGoHere();
-                    return ZFUIOrientation::e_Left;
+                    return v_ZFUIOrientation::e_Left;
             }
         default:
             ZFCoreCriticalShouldNotGoHere();
-            return ZFUIOrientation::e_Left;
+            return v_ZFUIOrientation::e_Left;
     }
 }
 
@@ -231,10 +231,10 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
                         ZFUILayoutParam::sizeHintOffset(sizeHint.height, 0 - marginY))
                     ),
                 ZFUISizeParamCreate(
-                    ZFUISizeType::e_Wrap,
-                    heightParam == ZFUISizeType::e_Fill && layoutParam->sizeParam().height == ZFUISizeType::e_Fill
-                        ? ZFUISizeType::e_Fill
-                        : ZFUISizeType::e_Wrap
+                    v_ZFUISizeType::e_Wrap,
+                    heightParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
+                        ? v_ZFUISizeType::e_Fill
+                        : v_ZFUISizeType::e_Wrap
                     ));
         if(parent->gridMode()) {
             maxCellSize.width = zfmMax<zffloat>(
@@ -255,7 +255,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         }
         lineSize.width += prevSpace + child->layoutMeasuredSize().width + marginX;
         lineSize.height = zfmMax<zffloat>(lineSize.height, child->layoutMeasuredSize().height + marginY);
-        if(layoutParam->sizeParam().width == ZFUISizeType::e_Fill
+        if(layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill
                 || (sizeHint.width >= 0 && lineSize.width >= sizeHint.width)
                 || (parent->childCountPerLine() > 0 && i >= parent->childCountPerLine())
                 ) {
@@ -295,10 +295,10 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
                         ZFUILayoutParam::sizeHintOffset(sizeHint.height, 0 - marginY))
                         ),
                 ZFUISizeParamCreate(
-                    widthParam == ZFUISizeType::e_Fill && layoutParam->sizeParam().width == ZFUISizeType::e_Fill
-                        ? ZFUISizeType::e_Fill
-                        : ZFUISizeType::e_Wrap,
-                    ZFUISizeType::e_Wrap
+                    widthParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill
+                        ? v_ZFUISizeType::e_Fill
+                        : v_ZFUISizeType::e_Wrap,
+                    v_ZFUISizeType::e_Wrap
                     ));
         if(parent->gridMode()) {
             maxCellSize.width = zfmMax<zffloat>(
@@ -319,7 +319,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         }
         lineSize.width = zfmMax<zffloat>(lineSize.width, child->layoutMeasuredSize().width + marginX);
         lineSize.height += prevSpace + child->layoutMeasuredSize().height + marginY;
-        if(layoutParam->sizeParam().height == ZFUISizeType::e_Fill
+        if(layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
                 || (sizeHint.height >= 0 && lineSize.height >= sizeHint.height)
                 || (parent->childCountPerLine() > 0 && i >= parent->childCountPerLine())
                 ) {
@@ -444,8 +444,8 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
         , ZF_IN const ZFUISize &size
         ) {
     zffloat parentMarginX = ZFUIMarginGetWidth(parent->childMargin());
-    zfbool positiveDirectionX = (parent->orientation() == ZFUIOrientation::e_Left);
-    zfbool positiveDirectionY = (_ZFP_ZFUIFlowLayout_orientationSecondary(parent) == ZFUIOrientation::e_Top);
+    zfbool positiveDirectionX = (parent->orientation() == v_ZFUIOrientation::e_Left);
+    zfbool positiveDirectionY = (_ZFP_ZFUIFlowLayout_orientationSecondary(parent) == v_ZFUIOrientation::e_Top);
     zffloat lineSizeUsed = (positiveDirectionY ? parent->childMargin().top : parent->childMargin().bottom);
     zffloat lineTailMargin = (positiveDirectionY ? parent->childMargin().bottom : parent->childMargin().top);
     zfindex childIndex = 0;
@@ -455,7 +455,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
         zffloat prevLineSpace = (lineIndex > 0 ? parent->childSpaceY() : (zffloat)0);
         zfindex childIndexStart = childIndex;
         lineSizeHint.height = size.height - lineSizeUsed - lineTailMargin;
-        ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureHorizontalLine(parent, lineSizeHint, ZFUISizeType::e_Fill, childIndexStart, childIndex, maxCellSize);
+        ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureHorizontalLine(parent, lineSizeHint, v_ZFUISizeType::e_Fill, childIndexStart, childIndex, maxCellSize);
 
         zffloat usedSize = (positiveDirectionX ? parent->childMargin().left : parent->childMargin().right);
         for(zfindex i = childIndexStart; i < childIndex; ++i) {
@@ -466,7 +466,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
             }
             zffloat prevSpace = (i > childIndexStart ? parent->childSpaceX() : (zffloat)0);
             zffloat childSize = 0;
-            if(layoutParam->sizeParam().width == ZFUISizeType::e_Fill) {
+            if(layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill) {
                 childSize = zfmMax<zffloat>(0, size.width - usedSize - prevSpace);
             }
             else {
@@ -498,8 +498,8 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
         , ZF_IN const ZFUISize &size
         ) {
     zffloat parentMarginY = ZFUIMarginGetHeight(parent->childMargin());
-    zfbool positiveDirectionX = (_ZFP_ZFUIFlowLayout_orientationSecondary(parent) == ZFUIOrientation::e_Left);
-    zfbool positiveDirectionY = (parent->orientation() == ZFUIOrientation::e_Top);
+    zfbool positiveDirectionX = (_ZFP_ZFUIFlowLayout_orientationSecondary(parent) == v_ZFUIOrientation::e_Left);
+    zfbool positiveDirectionY = (parent->orientation() == v_ZFUIOrientation::e_Top);
     zffloat lineSizeUsed = (positiveDirectionX ? parent->childMargin().left : parent->childMargin().right);
     zffloat lineTailMargin = (positiveDirectionX ? parent->childMargin().right : parent->childMargin().left);
     zfindex childIndex = 0;
@@ -509,7 +509,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
         zffloat prevLineSpace = (lineIndex > 0 ? parent->childSpaceX() : (zffloat)0);
         zfindex childIndexStart = childIndex;
         lineSizeHint.width = size.width - lineSizeUsed - lineTailMargin;
-        ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureVerticalLine(parent, lineSizeHint, ZFUISizeType::e_Fill, childIndexStart, childIndex, maxCellSize);
+        ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureVerticalLine(parent, lineSizeHint, v_ZFUISizeType::e_Fill, childIndexStart, childIndex, maxCellSize);
 
         zffloat usedSize = (positiveDirectionY ? parent->childMargin().top : parent->childMargin().bottom);
         for(zfindex i = childIndexStart; i < childIndex; ++i) {
@@ -520,7 +520,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
             }
             zffloat prevSpace = (i > childIndexStart ? parent->childSpaceY() : (zffloat)0);
             zffloat childSize = 0;
-            if(layoutParam->sizeParam().height == ZFUISizeType::e_Fill) {
+            if(layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill) {
                 childSize = zfmMax<zffloat>(0, size.height - usedSize - prevSpace);
             }
             else {
@@ -572,7 +572,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridHorizontal(
     }
 
     zffloat childStart, childOffset;
-    if(parent->orientation() == ZFUIOrientation::e_Right) {
+    if(parent->orientation() == v_ZFUIOrientation::e_Right) {
         childStart = size.width - parent->childMargin().right - maxCellSize.width;
         childOffset = 0 - maxCellSize.width - parent->childSpaceX();
     }
@@ -581,7 +581,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridHorizontal(
         childOffset = maxCellSize.width + parent->childSpaceX();
     }
     zffloat lineStart, lineOffset;
-    if(parent->orientationSecondary() == ZFUIOrientation::e_Bottom) {
+    if(parent->orientationSecondary() == v_ZFUIOrientation::e_Bottom) {
         lineStart = size.height - parent->childMargin().bottom - maxCellSize.height;
         lineOffset = 0 - maxCellSize.height - parent->childSpaceY();
     }
@@ -638,7 +638,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridVertical(
     }
 
     zffloat childStart, childOffset;
-    if(parent->orientation() == ZFUIOrientation::e_Bottom) {
+    if(parent->orientation() == v_ZFUIOrientation::e_Bottom) {
         childStart = size.height - parent->childMargin().bottom - maxCellSize.height;
         childOffset = 0 - maxCellSize.height - parent->childSpaceY();
     }
@@ -647,7 +647,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridVertical(
         childOffset = maxCellSize.height + parent->childSpaceY();
     }
     zffloat lineStart, lineOffset;
-    if(parent->orientationSecondary() == ZFUIOrientation::e_Right) {
+    if(parent->orientationSecondary() == v_ZFUIOrientation::e_Right) {
         lineStart = size.width - parent->childMargin().right - maxCellSize.width;
         lineOffset = 0 - maxCellSize.width - parent->childSpaceX();
     }

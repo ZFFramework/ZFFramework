@@ -13,7 +13,7 @@ ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAniForNative, ZFImpl
 #define ZFImpl_sys_Android_JNI_NAME_ZFAniForNative_NativeAnimation ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFAniForNative$NativeAnimation)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAniForNative_NativeAnimation, ZFImpl_sys_Android_JNI_NAME_ZFAniForNative_NativeAnimation)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_Android, ZFAniForNative, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_Android, ZFAniForNative, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Animation")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")

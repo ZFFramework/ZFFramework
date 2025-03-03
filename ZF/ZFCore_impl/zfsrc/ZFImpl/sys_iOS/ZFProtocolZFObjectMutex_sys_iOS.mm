@@ -24,7 +24,7 @@ public:
         return (zfbool)[(__bridge NSRecursiveLock *)implObject tryLock];
     }
 };
-ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_iOS, ZFProtocolLevel::e_SystemNormal, {
+ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_iOS, v_ZFProtocolLevel::e_SystemNormal, {
         ZFObjectMutexImplSet(
                 _ZFP_ZFObjectMutexImpl_sys_iOS::implInit,
                 _ZFP_ZFObjectMutexImpl_sys_iOS::implDealloc,

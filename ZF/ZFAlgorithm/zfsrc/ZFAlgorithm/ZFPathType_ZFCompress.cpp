@@ -362,7 +362,7 @@ public:
             , ZF_IN_OPT ZFFileOpenOptionFlags flag
             , ZF_IN_OPT zfbool autoCreateParent
             ) {
-        if(flag == ZFFileOpenOption::e_Read) {
+        if(flag == v_ZFFileOpenOption::e_Read) {
             zfstring relPath;
             _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeDecompress);
             if(taskData == zfnull) {
@@ -502,7 +502,7 @@ ZFPATHTYPE_FILEIO_REGISTER(ZFCompress, ZFPathType_ZFCompress()
 ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompressFile
         , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
         , ZFMP_IN(const zfchar *, relPath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathInfo(
@@ -515,7 +515,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompressFile
 ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompressFile
         , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
         , ZFMP_IN(const zfchar *, relPath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(ret, ZFPathInfo(

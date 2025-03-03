@@ -18,7 +18,7 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
     zfindex len = zfslen(pathData);
     zfobj<ZFHttpRequest> send(
             len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
-            , ZFHttpMethod::e_GET
+            , v_ZFHttpMethod::e_GET
             );
     zfautoT<ZFHttpResponse> recv = send->requestSync();
     if(!recv->success() || !zfstringIsEqual(recv->header("Content-Type"), "text/html")) {

@@ -8,7 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFPath ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFPath)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFPath, ZFImpl_sys_Android_JNI_NAME_ZFPath)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Android, ZFPath, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Android, ZFPath, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:FileSystem")
 public:
     virtual const zfstring &pathForModule(void) {

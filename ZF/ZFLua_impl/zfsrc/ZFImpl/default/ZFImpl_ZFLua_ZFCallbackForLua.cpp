@@ -61,7 +61,7 @@ public:
         this->ownerL = L;
         lua_pushvalue(this->ownerL, luaStackOffset);
         this->luaFunc = luaL_ref(this->ownerL, LUA_REGISTRYINDEX);
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
+        if(ZFLogLevelIsActive(v_ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
             ZFCoreMutexLocker();
             this->ownerThread = ZFThread::currentThread();
         }
@@ -76,7 +76,7 @@ public:
             return;
         }
 
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
+        if(ZFLogLevelIsActive(v_ZFLogLevel::e_Debug) && ZFThread::implAvailable()) {
             ZFCoreMutexLocker();
             if(this->ownerThread) {
                 ZFThread *curThread = ZFThread::currentThread();
@@ -381,7 +381,7 @@ public:
 
         // dump the function
         lua_pushvalue(L, luaStackOffset);
-        int dumpError = lua_dump(L, _funcWriter, this, ZFLogLevelIsActive(ZFLogLevel::e_Debug) ? 0 : 1);
+        int dumpError = lua_dump(L, _funcWriter, this, ZFLogLevelIsActive(v_ZFLogLevel::e_Debug) ? 0 : 1);
         lua_pop(L, 1);
         if(dumpError != 0) {
             zfstringAppend(errorHint

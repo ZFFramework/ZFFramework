@@ -162,7 +162,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(
     zfchar *buf = zfnull;
     zfchar *bufEnd = zfnull;
     {
-        void *token = ZFFileOpen(path, ZFFileOpenOption::e_Read);
+        void *token = ZFFileOpen(path, v_ZFFileOpenOption::e_Read);
         if(token == zfnull) {
             zfstringAppend(outErrorHint, "failed to open file %s", path);
             return zffalse;

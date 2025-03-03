@@ -62,7 +62,7 @@ protected:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_Qt, ZFUISysWindow, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_Qt, ZFUISysWindow, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
@@ -171,7 +171,7 @@ public:
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
         // centered by default
-        sysWindow->sysWindowLayoutParam()->align(ZFUIAlign::e_Center);
+        sysWindow->sysWindowLayoutParam()->align(v_ZFUIAlign::e_Center);
         sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(480, 640));
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
@@ -183,7 +183,7 @@ public:
 
     virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         // Qt don't support rotate
-        return ZFUIOrientation::e_Top;
+        return v_ZFUIOrientation::e_Top;
     }
     virtual void sysWindowOrientationFlags(
             ZF_IN ZFUISysWindow *sysWindow

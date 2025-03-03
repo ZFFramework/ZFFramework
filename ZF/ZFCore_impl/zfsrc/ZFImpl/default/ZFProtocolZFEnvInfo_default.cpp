@@ -18,7 +18,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_systemInfoImpl_default, ZFEnvInfo_systemInfo, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_systemInfoImpl_default, ZFEnvInfo_systemInfo, v_ZFProtocolLevel::e_Default)
 public:
     virtual void systemName(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt
@@ -81,7 +81,7 @@ public:
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_systemInfoImpl_default)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_default, ZFEnvInfo_frameworkInfo, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_default, ZFEnvInfo_frameworkInfo, v_ZFProtocolLevel::e_Default)
 public:
     virtual void frameworkName(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt

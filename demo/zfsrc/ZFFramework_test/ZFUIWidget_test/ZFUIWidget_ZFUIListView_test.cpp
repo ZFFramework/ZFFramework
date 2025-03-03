@@ -130,10 +130,10 @@ private:
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVerticalAlways));
         ZFUIKit_test_prepareSettingForNormalProperty(settings, listView, ZFUIOrientation, ZFPropertyAccess(ZFUIListView, orientation),
             ZFCoreArrayCreate(ZFUIOrientation
-                , ZFUIOrientation::e_Top
-                , ZFUIOrientation::e_Left
-                , ZFUIOrientation::e_Right
-                , ZFUIOrientation::e_Bottom
+                , v_ZFUIOrientation::e_Top
+                , v_ZFUIOrientation::e_Left
+                , v_ZFUIOrientation::e_Right
+                , v_ZFUIOrientation::e_Bottom
                 ));
         ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->cellAdapter(), zffloat, ZFPropertyAccess(ZFUICellAdapter, cellSizeHint), ZFCoreArrayCreate(zffloat, 56, 100, 44));
 

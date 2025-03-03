@@ -13,7 +13,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_default, ZFHttpRequest, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_default, ZFHttpRequest, v_ZFProtocolLevel::e_Default)
 private:
     zfclassNotPOD NativeTask {
     public:
@@ -46,7 +46,7 @@ private:
         , ownerResponse(response)
         , taskId(zfidentityInvalid())
         , url()
-        , httpMethod(ZFHttpMethod::e_GET)
+        , httpMethod(v_ZFHttpMethod::e_GET)
         , headers()
         , body()
         , responseHeaders()
@@ -393,21 +393,21 @@ public:
         const zfchar *hostPath = (pHostPath == zfindexMax() ? "/" : url + pHostPath);
 
         switch(httpMethod) {
-            case ZFHttpMethod::e_GET:
+            case v_ZFHttpMethod::e_GET:
                 return client.Get(hostPath, headers);
-            case ZFHttpMethod::e_HEAD:
+            case v_ZFHttpMethod::e_HEAD:
                 return client.Head(hostPath, headers);
-            case ZFHttpMethod::e_PUT:
+            case v_ZFHttpMethod::e_PUT:
                 return client.Put(hostPath, headers, (const char *)body, (size_t)bodySize, "");
-            case ZFHttpMethod::e_DELETE:
+            case v_ZFHttpMethod::e_DELETE:
                 return client.Delete(hostPath, headers, (const char *)body, (size_t)bodySize, "");
-            case ZFHttpMethod::e_OPTIONS:
+            case v_ZFHttpMethod::e_OPTIONS:
                 return client.Options(hostPath, headers);
-            case ZFHttpMethod::e_PATCH:
+            case v_ZFHttpMethod::e_PATCH:
                 return client.Patch(hostPath, headers, (const char *)body, (size_t)bodySize, "");
-            case ZFHttpMethod::e_CONNECT:
-            case ZFHttpMethod::e_TRACE:
-            case ZFHttpMethod::e_POST:
+            case v_ZFHttpMethod::e_CONNECT:
+            case v_ZFHttpMethod::e_TRACE:
+            case v_ZFHttpMethod::e_POST:
             default:
                 return client.Post(hostPath, headers, (const char *)body, (size_t)bodySize, "");
         }

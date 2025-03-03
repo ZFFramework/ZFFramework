@@ -17,7 +17,7 @@ public:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Qt, ZFSemaphore, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Qt, ZFSemaphore, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QWaitCondition")
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {

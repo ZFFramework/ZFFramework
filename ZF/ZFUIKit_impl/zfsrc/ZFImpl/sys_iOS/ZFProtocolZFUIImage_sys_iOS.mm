@@ -6,7 +6,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_iOS, ZFUIImage, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_iOS, ZFUIImage, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIImage")
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {

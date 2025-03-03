@@ -53,16 +53,16 @@
     UIView *target = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->target())->nativeView();
     CAMediaTimingFunction *nativeCurve = nil;
     switch(self.ownerAni->curve()) {
-        case ZFAniForNativeCurve::e_Linear:
+        case v_ZFAniForNativeCurve::e_Linear:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
             break;
-        case ZFAniForNativeCurve::e_EaseIn:
+        case v_ZFAniForNativeCurve::e_EaseIn:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
             break;
-        case ZFAniForNativeCurve::e_EaseOut:
+        case v_ZFAniForNativeCurve::e_EaseOut:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
             break;
-        case ZFAniForNativeCurve::e_EaseInOut:
+        case v_ZFAniForNativeCurve::e_EaseInOut:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
             break;
         default:
@@ -164,7 +164,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_iOS, ZFAniForNative, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_iOS, ZFAniForNative, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:CAAnimation")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")

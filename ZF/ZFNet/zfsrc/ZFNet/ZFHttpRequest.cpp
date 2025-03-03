@@ -71,7 +71,7 @@ ZFEVENT_REGISTER(ZFHttpRequest, OnResponse)
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest
         , ZFMP_IN(const zfstring &, url)
-        , ZFMP_IN_OPT(ZFHttpMethod, method, ZFHttpMethod::e_GET)
+        , ZFMP_IN_OPT(ZFHttpMethod, method, v_ZFHttpMethod::e_GET)
         ) {
     this->objectOnInit();
     this->url(url);
@@ -186,7 +186,7 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, void, request
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->requestCancel(d->nativeTask);
-    d->notifyResponse(this, ZFResultType::e_Cancel);
+    d->notifyResponse(this, v_ZFResultType::e_Cancel);
 }
 
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
@@ -266,12 +266,12 @@ void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void) {
                 , zfautoT<ZFHttpRequest>, owner
                 , _ZFP_ZFHttpRequestPrivate *, d
                 ) {
-            d->notifyResponse(owner, ZFResultType::e_Success);
+            d->notifyResponse(owner, v_ZFResultType::e_Success);
         } ZFLISTENER_END()
         ZFThread::executeInThread(d->ownerThread, notifyResponse);
     }
     else {
-        d->notifyResponse(this, ZFResultType::e_Success);
+        d->notifyResponse(this, v_ZFResultType::e_Success);
     }
 }
 
@@ -406,7 +406,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlParamSet
     for(zfiter it = params.attrIter(); it; ++it) {
         zfstring key = params.attrIterKey(it);
         ZFJson valueHolder = params.attrIterValue(it);
-        if(valueHolder.type() != ZFJsonType::e_Value) {
+        if(valueHolder.type() != v_ZFJsonType::e_Value) {
             continue;
         }
         zfstring value = valueHolder.value();
@@ -543,7 +543,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
     }
 
     // no match, load
-    zfautoT<ZFHttpResponse> recv = zfobj<ZFHttpRequest>(url, ZFHttpMethod::e_HEAD)->requestSync();
+    zfautoT<ZFHttpResponse> recv = zfobj<ZFHttpRequest>(url, v_ZFHttpMethod::e_HEAD)->requestSync();
     if(recv == zfnull) {
         return recv;
     }

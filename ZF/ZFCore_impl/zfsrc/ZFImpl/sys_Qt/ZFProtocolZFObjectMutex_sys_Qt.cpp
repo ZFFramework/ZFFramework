@@ -43,7 +43,7 @@ public:
         return mutex->tryLock();
     }
 };
-ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Qt, ZFProtocolLevel::e_SystemHigh, {
+ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Qt, v_ZFProtocolLevel::e_SystemHigh, {
         ZFObjectMutexImplSet(
                 _ZFP_ZFObjectMutexImpl_sys_Qt::implInit,
                 _ZFP_ZFObjectMutexImpl_sys_Qt::implDealloc,

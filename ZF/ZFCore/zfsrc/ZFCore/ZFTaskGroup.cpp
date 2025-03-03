@@ -53,7 +53,7 @@ ZFMETHOD_DEFINE_0(ZFTaskGroup, void, childRemoveAll) {
 void ZFTaskGroup::taskOnStart(void) {
     zfsuper::taskOnStart();
     if(this->childArray()->isEmpty()) {
-        this->stop(ZFResultType::e_Success);
+        this->stop(v_ZFResultType::e_Success);
         return;
     }
     zfobj<ZFArray> childRunning;
@@ -65,10 +65,10 @@ void ZFTaskGroup::taskOnStart(void) {
             , zfautoT<ZFArray>, childRunning
             ) {
         ZFTask *child = zfargs.sender();
-        if(child->resultType() != ZFResultType::e_Cancel) {
+        if(child->resultType() != v_ZFResultType::e_Cancel) {
             childRunning->removeElement(child);
             if(childRunning->isEmpty()) {
-                owner->stop(ZFResultType::e_Success);
+                owner->stop(v_ZFResultType::e_Success);
             }
         }
     } ZFLISTENER_END()
@@ -82,7 +82,7 @@ void ZFTaskGroup::taskOnStop(ZF_IN ZFResultType resultType) {
     if(childRunning != zfnull) {
         for(zfindex i = 0; i < childRunning->count(); ++i) {
             ZFTask *child = childRunning->get(i);
-            child->stop(ZFResultType::e_Cancel);
+            child->stop(v_ZFResultType::e_Cancel);
         }
     }
     zfsuper::taskOnStop(resultType);

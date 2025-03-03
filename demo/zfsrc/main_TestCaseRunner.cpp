@@ -9,7 +9,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, TestCaseRunner) {
 
     ZFLISTENER(testOnFail) {
         ZFResultType resultType = zfargs.param0().to<v_ZFResultType *>()->zfv();
-        ZFCoreAssertWithMessageTrim(resultType != ZFResultType::e_Fail, "[TestCaseRunner] test failed: %s", zfargs.sender());
+        ZFCoreAssertWithMessageTrim(resultType != v_ZFResultType::e_Fail, "[TestCaseRunner] test failed: %s", zfargs.sender());
     } ZFLISTENER_END()
     ZFObserverGroup(owner, ZFGlobalObserver()).observerAdd(ZFTestCase::E_TestCaseOnStop(), testOnFail);
 

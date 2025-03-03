@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIImage ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIImage)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIImage, ZFImpl_sys_Android_JNI_NAME_ZFUIImage)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_Android, ZFUIImage, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_Android, ZFUIImage, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:BitmapDrawable")
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {

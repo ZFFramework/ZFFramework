@@ -70,18 +70,18 @@ private:
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientation, ZFPropertyAccess(ZFUIFlowLayout, orientation),
             ZFCoreArrayCreate(ZFUIOrientation
-                , ZFUIOrientation::e_Right
-                , ZFUIOrientation::e_Bottom
-                , ZFUIOrientation::e_Left
-                , ZFUIOrientation::e_Top
+                , v_ZFUIOrientation::e_Right
+                , v_ZFUIOrientation::e_Bottom
+                , v_ZFUIOrientation::e_Left
+                , v_ZFUIOrientation::e_Top
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientation, ZFPropertyAccess(ZFUIFlowLayout, orientationSecondary),
             ZFCoreArrayCreate(ZFUIOrientation
-                , ZFUIOrientation::e_Right
-                , ZFUIOrientation::e_Bottom
-                , ZFUIOrientation::e_Left
-                , ZFUIOrientation::e_Top
+                , v_ZFUIOrientation::e_Right
+                , v_ZFUIOrientation::e_Bottom
+                , v_ZFUIOrientation::e_Left
+                , v_ZFUIOrientation::e_Top
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zfbool, ZFPropertyAccess(ZFUIFlowLayout, gridMode),
@@ -92,15 +92,15 @@ private:
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIContentScaleType, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
             ZFCoreArrayCreate(ZFUIContentScaleType
-                , ZFUIContentScaleType::e_Fill
-                , ZFUIContentScaleType::e_Center
-                , ZFUIContentScaleType::e_FillCenter
-                , ZFUIContentScaleType::e_FillCenterClipped
-                , ZFUIContentScaleType::e_FitCenter
-                , ZFUIContentScaleType::e_FillX
-                , ZFUIContentScaleType::e_FitX
-                , ZFUIContentScaleType::e_FillY
-                , ZFUIContentScaleType::e_FitY
+                , v_ZFUIContentScaleType::e_Fill
+                , v_ZFUIContentScaleType::e_Center
+                , v_ZFUIContentScaleType::e_FillCenter
+                , v_ZFUIContentScaleType::e_FillCenterClipped
+                , v_ZFUIContentScaleType::e_FitCenter
+                , v_ZFUIContentScaleType::e_FillX
+                , v_ZFUIContentScaleType::e_FitX
+                , v_ZFUIContentScaleType::e_FillY
+                , v_ZFUIContentScaleType::e_FitY
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUIFlowLayout, childMargin),

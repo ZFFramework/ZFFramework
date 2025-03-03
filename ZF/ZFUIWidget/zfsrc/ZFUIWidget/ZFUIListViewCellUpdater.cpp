@@ -28,13 +28,13 @@ static ZFUIView *_ZFP_ZFUIListViewCellUpdater_setupSeparator(
     updateParam.cell->internalFgViewAdd(separatorView);
     separatorView->bgColor(owner->separatorColor());
     switch(updateParam.orientation) {
-        case ZFUIOrientation::e_Left:
-        case ZFUIOrientation::e_Right:
+        case v_ZFUIOrientation::e_Left:
+        case v_ZFUIOrientation::e_Right:
             separatorView->layoutParam()->sizeHint(ZFUISizeCreate(owner->separatorSize(), -1));
             separatorView->layoutParam()->margin(ZFUIMarginCreate(0, owner->separatorMargin().top, 0, owner->separatorMargin().bottom));
             break;
-        case ZFUIOrientation::e_Top:
-        case ZFUIOrientation::e_Bottom:
+        case v_ZFUIOrientation::e_Top:
+        case v_ZFUIOrientation::e_Bottom:
             separatorView->layoutParam()->sizeHint(ZFUISizeCreate(-1, owner->separatorSize()));
             separatorView->layoutParam()->margin(ZFUIMarginCreate(owner->separatorMargin().left, 0, owner->separatorMargin().right, 0));
             break;
@@ -52,17 +52,17 @@ void ZFUIListViewCellUpdater::cellOnUpdate(ZF_IN const ZFUICellUpdaterParam &upd
             ZFUIView *separatorView = _ZFP_ZFUIListViewCellUpdater_setupSeparator(this, updateParam);
             updateParam.cell->objectTag(_ZFP_ZFUIListViewCellUpdater_tag_separator_head, separatorView);
             switch(updateParam.orientation) {
-                case ZFUIOrientation::e_Left:
-                    separatorView->layoutParam()->align(ZFUIAlign::e_Left);
+                case v_ZFUIOrientation::e_Left:
+                    separatorView->layoutParam()->align(v_ZFUIAlign::e_Left);
                     break;
-                case ZFUIOrientation::e_Right:
-                    separatorView->layoutParam()->align(ZFUIAlign::e_Right);
+                case v_ZFUIOrientation::e_Right:
+                    separatorView->layoutParam()->align(v_ZFUIAlign::e_Right);
                     break;
-                case ZFUIOrientation::e_Top:
-                    separatorView->layoutParam()->align(ZFUIAlign::e_Top);
+                case v_ZFUIOrientation::e_Top:
+                    separatorView->layoutParam()->align(v_ZFUIAlign::e_Top);
                     break;
-                case ZFUIOrientation::e_Bottom:
-                    separatorView->layoutParam()->align(ZFUIAlign::e_Bottom);
+                case v_ZFUIOrientation::e_Bottom:
+                    separatorView->layoutParam()->align(v_ZFUIAlign::e_Bottom);
                     break;
                 default:
                     ZFCoreCriticalShouldNotGoHere();
@@ -79,17 +79,17 @@ void ZFUIListViewCellUpdater::cellOnUpdate(ZF_IN const ZFUICellUpdaterParam &upd
     ZFUIView *separatorView = _ZFP_ZFUIListViewCellUpdater_setupSeparator(this, updateParam);
     updateParam.cell->objectTag(_ZFP_ZFUIListViewCellUpdater_tag_separator, separatorView);
     switch(updateParam.orientation) {
-        case ZFUIOrientation::e_Left:
-            separatorView->layoutParam()->align(ZFUIAlign::e_Right);
+        case v_ZFUIOrientation::e_Left:
+            separatorView->layoutParam()->align(v_ZFUIAlign::e_Right);
             break;
-        case ZFUIOrientation::e_Right:
-            separatorView->layoutParam()->align(ZFUIAlign::e_Left);
+        case v_ZFUIOrientation::e_Right:
+            separatorView->layoutParam()->align(v_ZFUIAlign::e_Left);
             break;
-        case ZFUIOrientation::e_Top:
-            separatorView->layoutParam()->align(ZFUIAlign::e_Bottom);
+        case v_ZFUIOrientation::e_Top:
+            separatorView->layoutParam()->align(v_ZFUIAlign::e_Bottom);
             break;
-        case ZFUIOrientation::e_Bottom:
-            separatorView->layoutParam()->align(ZFUIAlign::e_Top);
+        case v_ZFUIOrientation::e_Bottom:
+            separatorView->layoutParam()->align(v_ZFUIAlign::e_Top);
             break;
         default:
             ZFCoreCriticalShouldNotGoHere();

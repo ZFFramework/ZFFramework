@@ -65,7 +65,7 @@ public:
 
         if(toStop != zfnull) {
             toStop->observerRemove(ZFTestCase::E_TestCaseOnStop(), this->testCaseFinishListener);
-            toStop->stop(ZFResultType::e_Cancel);
+            toStop->stop(v_ZFResultType::e_Cancel);
         }
 
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_TestCaseRunAllOnStop());

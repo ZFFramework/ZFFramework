@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFAudio ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFAudio)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAudio, ZFImpl_sys_Android_JNI_NAME_ZFAudio)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_Android, ZFAudio, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_Android, ZFAudio, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:MediaPlayer")
 
 public:

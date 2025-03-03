@@ -27,7 +27,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_default, ZFPath, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_default, ZFPath, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ModuleLocalPath")
 public:
     virtual const zfstring &pathForModule(void) {
@@ -57,7 +57,7 @@ public:
                     zfstring tmp;
                     zfcharW buf[1024] = {0};
                     GetModuleFileNameW(zfnull, buf, 1024);
-                    zfstringToUTF8(tmp, buf, ZFStringEncoding::e_UTF16);
+                    zfstringToUTF8(tmp, buf, v_ZFStringEncoding::e_UTF16);
                 #else // #if ZF_ENV_sys_Windows
                     zfchar tmp[1024] = {0};
                     zfint len = (zfint)readlink("/proc/self/exe", tmp, 1024);

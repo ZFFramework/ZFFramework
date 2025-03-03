@@ -16,7 +16,7 @@ protected:
             ? "https://bing.com"
             : "http://bing.com"
             ;
-        ZFHttpMethod httpMethod = ZFHttpMethod::e_GET;
+        ZFHttpMethod httpMethod = v_ZFHttpMethod::e_GET;
 
         this->output("header test");
         zfobj<ZFHttpRequest> headerTest(url, httpMethod);

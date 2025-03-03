@@ -53,7 +53,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_iOS, ZFAudio, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_iOS, ZFAudio, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:AVAudioPlayer")
 public:
     virtual void *nativeAudioCreate(ZF_IN ZFAudio *audio) {

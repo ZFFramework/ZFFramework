@@ -169,7 +169,7 @@ zfbool ZFRegExp::serializableOnSerializeToString(
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(zffalse
-            || ZFBitTest(this->options(), ZFRegExpOption::e_IgnoreCase)
+            || ZFBitTest(this->options(), v_ZFRegExpOption::e_IgnoreCase)
             ) {
         zfstringAppend(errorHint, "only regexp with default options can be serialized to string, got: %s", this->options());
         return zffalse;

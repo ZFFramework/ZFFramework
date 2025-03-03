@@ -40,11 +40,11 @@ public:
     /**
      * @brief button icon's orientation (relative to label), #v_ZFUIOrientation::e_Left by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientation, iconPosition, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, iconPosition, v_ZFUIOrientation::e_Left)
     /**
      * @brief button content(icon, label)'s layout align, #v_ZFUIAlign::e_Center by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, contentAlign, ZFUIAlign::e_Center)
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, contentAlign, v_ZFUIAlign::e_Center)
     /**
      * @brief button content(icon, label)'s layout margin, #ZFUIGlobalStyle::itemMargin by default
      */
@@ -162,19 +162,19 @@ public:
      * @brief util method to get button label's style
      */
     ZFMETHOD_DECLARE_1(zfanyT<ZFUITextView>, label
-            , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
     /**
      * @brief util method to get button icon's style
      */
     ZFMETHOD_DECLARE_1(zfanyT<ZFUIImageView>, icon
-            , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
     /**
      * @brief util method to get button icon's style
      */
     ZFMETHOD_DECLARE_1(zfanyT<ZFUIImageView>, bg
-            , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
 
     /**
@@ -200,17 +200,17 @@ public:
      */
     ZFMETHOD_DECLARE_2(void, labelStyle
             , ZFMP_IN(ZFUITextView *, style)
-            , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
     /** @brief see labelStyle */
     ZFMETHOD_DECLARE_2(void, iconStyle
             , ZFMP_IN(ZFUIImageView *, style)
-            , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
     /** @brief see labelStyle */
     ZFMETHOD_DECLARE_2(void, bgStyle
             , ZFMP_IN(ZFUIImageView *, style)
-            , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
 
 protected:

@@ -8,7 +8,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFJsonImpl_default, ZFJson, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFJsonImpl_default, ZFJson, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("rapidjson")
 public:
     virtual ZFJson jsonParse(
@@ -69,13 +69,13 @@ private:
             case rapidjson::kTrueType:
             case rapidjson::kStringType:
             case rapidjson::kNumberType: {
-                ZFJson value(ZFJsonType::e_Value);
+                ZFJson value(v_ZFJsonType::e_Value);
                 const char *implString = implJsonItem.GetString();
                 value.value(zfstring(implString, implJsonItem.GetStringLength()));
                 return value;
             }
             case rapidjson::kArrayType: {
-                ZFJson jsonArray(ZFJsonType::e_Array);
+                ZFJson jsonArray(v_ZFJsonType::e_Array);
                 for(rapidjson::Value::ConstValueIterator it = implJsonItem.Begin(); it != implJsonItem.End(); ++it) {
                     ZFJson jsonChild = this->jsonConvert(*it);
                     if(!jsonChild) {
@@ -86,7 +86,7 @@ private:
                 return jsonArray;
             }
             case rapidjson::kObjectType: {
-                ZFJson jsonObject(ZFJsonType::e_Object);
+                ZFJson jsonObject(v_ZFJsonType::e_Object);
                 for(rapidjson::Value::ConstMemberIterator it = implJsonItem.MemberBegin(); it != implJsonItem.MemberEnd(); ++it) {
                     ZFJson jsonChild = this->jsonConvert(it->value);
                     if(!jsonChild) {

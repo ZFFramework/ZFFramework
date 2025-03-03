@@ -89,7 +89,7 @@ public:
     /** @brief see #ZFFileOpen */
     virtual void *fileOpen(
             ZF_IN const zfchar *filePath
-            , ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read
+            , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
             ) zfpurevirtual;
     /** @brief see #ZFFileClose */
     virtual zfbool fileClose(ZF_IN void *token) zfpurevirtual;

@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUITextView ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUITextView)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUITextView, ZFImpl_sys_Android_JNI_NAME_ZFUITextView)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Android, ZFUITextView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Android, ZFUITextView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:TextView")
 
 public:

@@ -30,7 +30,7 @@ void ZFUIImageLoadTask::taskOnStart(void) {
                 ) {
             owner->_implTaskId = zfnull;
             v_ZFResultType *resultType = zfargs.param1();
-            if(resultType->enumValue() == ZFResultType::e_Success) {
+            if(resultType->enumValue() == v_ZFResultType::e_Success) {
                 owner->notifySuccess(zfargs.param0());
             }
             else {

@@ -420,7 +420,7 @@ public:
      * @brief see #ZFUISysWindow::sysWindowOrientation
      */
     virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
-        return ZFUIOrientation::e_Top;
+        return v_ZFUIOrientation::e_Top;
     }
     /**
      * @brief see #ZFUISysWindow::sysWindowOrientationFlags,

@@ -59,7 +59,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
     rootPrintData.view = view;
     rootPrintData.depth = 0;
     rootPrintData.siblingIndex = 0;
-    rootPrintData.layer = ZFUIViewChildLayer::e_Normal;
+    rootPrintData.layer = v_ZFUIViewChildLayer::e_Normal;
     printDatas.add(rootPrintData);
 
     outputCallback.execute("====================== view tree begin =====================\n");
@@ -76,7 +76,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
             printDataTmp.view = fgViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
-            printDataTmp.layer = ZFUIViewChildLayer::e_InternalFg;
+            printDataTmp.layer = v_ZFUIViewChildLayer::e_InternalFg;
             printDatas.add(printDataTmp);
         }
         for(zfindex i = normalViews.count() - 1; i != zfindexMax(); --i) {
@@ -84,7 +84,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
             printDataTmp.view = normalViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
-            printDataTmp.layer = ZFUIViewChildLayer::e_Normal;
+            printDataTmp.layer = v_ZFUIViewChildLayer::e_Normal;
             printDatas.add(printDataTmp);
         }
         for(zfindex i = bgViews.count() - 1; i != zfindexMax(); --i) {
@@ -92,7 +92,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
             printDataTmp.view = bgViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
-            printDataTmp.layer = ZFUIViewChildLayer::e_InternalBg;
+            printDataTmp.layer = v_ZFUIViewChildLayer::e_InternalBg;
             printDatas.add(printDataTmp);
         }
         for(zfindex i = implViews.count() - 1; i != zfindexMax(); --i) {
@@ -100,7 +100,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
             printDataTmp.view = implViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
-            printDataTmp.layer = ZFUIViewChildLayer::e_InternalImpl;
+            printDataTmp.layer = v_ZFUIViewChildLayer::e_InternalImpl;
             printDatas.add(printDataTmp);
         }
 
@@ -111,16 +111,16 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
 
         switch(printData.layer) {
-            case ZFUIViewChildLayer::e_Normal:
+            case v_ZFUIViewChildLayer::e_Normal:
                 outputCallback.execute(" ");
                 break;
-            case ZFUIViewChildLayer::e_InternalImpl:
+            case v_ZFUIViewChildLayer::e_InternalImpl:
                 outputCallback.execute(" impl ");
                 break;
-            case ZFUIViewChildLayer::e_InternalBg:
+            case v_ZFUIViewChildLayer::e_InternalBg:
                 outputCallback.execute(" bg ");
                 break;
-            case ZFUIViewChildLayer::e_InternalFg:
+            case v_ZFUIViewChildLayer::e_InternalFg:
                 outputCallback.execute(" fg ");
                 break;
             default:

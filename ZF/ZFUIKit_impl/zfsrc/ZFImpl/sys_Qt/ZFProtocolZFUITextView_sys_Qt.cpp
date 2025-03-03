@@ -41,7 +41,7 @@ public:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Qt, ZFUITextView, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Qt, ZFUITextView, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsProxyWidget:QLabel")
 
 public:
@@ -83,19 +83,19 @@ public:
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
         QFont font = nativeImplView->font();
         switch(textAppearance) {
-            case ZFUITextAppearance::e_Normal:
+            case v_ZFUITextAppearance::e_Normal:
                 font.setBold(false);
                 font.setItalic(false);
                 break;
-            case ZFUITextAppearance::e_Bold:
+            case v_ZFUITextAppearance::e_Bold:
                 font.setBold(true);
                 font.setItalic(false);
                 break;
-            case ZFUITextAppearance::e_Italic:
+            case v_ZFUITextAppearance::e_Italic:
                 font.setBold(false);
                 font.setItalic(true);
                 break;
-            case ZFUITextAppearance::e_BoldItalic:
+            case v_ZFUITextAppearance::e_BoldItalic:
                 font.setBold(true);
                 font.setItalic(true);
                 break;
@@ -151,13 +151,13 @@ public:
 #if 0 // not supported for now
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = (_ZFP_ZFUITextViewImpl_sys_Qt_TextView *)textView->nativeImplView();
         switch(textTruncateMode) {
-            case ZFUITextTruncateMode::e_Disable:
+            case v_ZFUITextTruncateMode::e_Disable:
                 break;
-            case ZFUITextTruncateMode::e_Head:
+            case v_ZFUITextTruncateMode::e_Head:
                 break;
-            case ZFUITextTruncateMode::e_Middle:
+            case v_ZFUITextTruncateMode::e_Middle:
                 break;
-            case ZFUITextTruncateMode::e_Tail:
+            case v_ZFUITextTruncateMode::e_Tail:
                 break;
             default:
                 ZFCoreCriticalShouldNotGoHere();

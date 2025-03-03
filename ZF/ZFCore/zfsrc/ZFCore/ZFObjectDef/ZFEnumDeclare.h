@@ -57,14 +57,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   @code
  *     zfuint value;
  *     const zfchar *name;
- *     value = EnumName::e_Value1;
+ *     value = v_EnumName::e_Value1;
  *     value = v_EnumName::EnumValueForName("Value1");
  *     name = v_EnumName::EnumNameForValue(value);
  *   @endcode
  * -  use v_EnumName to store the enum value as a ZFObject
  *   @code
  *     v_EnumName *e = zfAlloc(v_EnumName());
- *     e->enumValue(EnumName::e_Value1);
+ *     e->enumValue(v_EnumName::e_Value1);
  *     zfuint value = e->enumValue();
  *     const zfchar *name = e->enumName();
  *     zfRelease(e);
@@ -74,7 +74,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     zfuint value;
  *     const zfchar *name;
  *
- *     ZFEnum *e = zfAlloc(EnumName, EnumName::e_Value1);
+ *     ZFEnum *e = zfAlloc(EnumName, v_EnumName::e_Value1);
  *     value = e->enumValue(); // return the value stored as EnumName
  *     zfRelease(e);
  *

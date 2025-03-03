@@ -17,7 +17,7 @@ public:
     : nativeSocket(zfnull)
     , host()
     , port(0)
-    , type(ZFTcpType::e_Invalid)
+    , type(v_ZFTcpType::e_Invalid)
     {
     }
 };
@@ -44,7 +44,7 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
             , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
             ) {
-    if(d->type == ZFTcpType::e_ServerAccept) {
+    if(d->type == v_ZFTcpType::e_ServerAccept) {
         ZFLog("calling open() on tcp returned by accept()");
         return zffalse;
     }
@@ -52,11 +52,11 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
     this->close();
     if(!host) {
         d->host = "localhost";
-        d->type = ZFTcpType::e_Server;
+        d->type = v_ZFTcpType::e_Server;
     }
     else {
         d->host = host;
-        d->type = ZFTcpType::e_Client;
+        d->type = v_ZFTcpType::e_Client;
     }
     d->port = port;
     d->nativeSocket = zfnull;
@@ -65,18 +65,18 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
         d->host.removeAll();
         d->port = 0;
         d->nativeSocket = zfnull;
-        d->type = ZFTcpType::e_Invalid;
+        d->type = v_ZFTcpType::e_Invalid;
         return zffalse;
     }
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(ZFTcp, void, close) {
-    if(d->type != ZFTcpType::e_Invalid) {
+    if(d->type != v_ZFTcpType::e_Invalid) {
         ZFPROTOCOL_ACCESS(ZFTcp)->close(this, d->nativeSocket);
         d->nativeSocket = zfnull;
         d->host.removeAll();
         d->port = 0;
-        d->type = ZFTcpType::e_Invalid;
+        d->type = v_ZFTcpType::e_Invalid;
     }
 }
 
@@ -85,7 +85,7 @@ ZFMETHOD_DEFINE_0(ZFTcp, ZFTcpType, type) {
 }
 
 ZFMETHOD_DEFINE_0(ZFTcp, zfbool, valid) {
-    return d->type != ZFTcpType::e_Invalid;
+    return d->type != v_ZFTcpType::e_Invalid;
 }
 ZFMETHOD_DEFINE_0(ZFTcp, const zfstring &, host) {
     return d->host;
@@ -99,8 +99,8 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo
             , ZFMP_OUT(zfuint &, remotePort)
             ) {
     switch(d->type) {
-        case ZFTcpType::e_Invalid:
-        case ZFTcpType::e_Server:
+        case v_ZFTcpType::e_Invalid:
+        case v_ZFTcpType::e_Server:
             return zffalse;
         default:
             return ZFPROTOCOL_ACCESS(ZFTcp)->remoteInfo(this, d->nativeSocket, remoteAddr, remotePort);
@@ -109,10 +109,10 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo
 
 ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp>, accept) {
     switch(d->type) {
-        case ZFTcpType::e_Invalid:
+        case v_ZFTcpType::e_Invalid:
             ZFLog("calling accept() before open() successfully");
             return zfnull;
-        case ZFTcpType::e_Server:
+        case v_ZFTcpType::e_Server:
             break;
         default:
             ZFLog("calling accept() on non server type socket");
@@ -127,7 +127,7 @@ ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp>, accept) {
     ret->d->nativeSocket = acceptSocket;
     ret->d->host = d->host;
     ret->d->port = d->port;
-    ret->d->type = ZFTcpType::e_ServerAccept;
+    ret->d->type = v_ZFTcpType::e_ServerAccept;
     return ret;
 }
 
@@ -141,10 +141,10 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
             , ZFMP_IN(zfindex, size)
             ) {
     switch(d->type) {
-        case ZFTcpType::e_Invalid:
+        case v_ZFTcpType::e_Invalid:
             ZFLog("calling send() on invalid socket");
             return zffalse;
-        case ZFTcpType::e_Server:
+        case v_ZFTcpType::e_Server:
             ZFLog("calling send() on server socket");
             return zffalse;
         default:
@@ -165,10 +165,10 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
             , ZFMP_IN_OPT(zftimet, timeout, -1)
             ) {
     switch(d->type) {
-        case ZFTcpType::e_Invalid:
+        case v_ZFTcpType::e_Invalid:
             ZFLog("calling recv() before open() successfully");
             return 0;
-        case ZFTcpType::e_Server:
+        case v_ZFTcpType::e_Server:
             ZFLog("calling recv() on server type socket");
             return 0;
         default:
@@ -189,10 +189,10 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
             , ZFMP_IN_OPT(zftimet, timeout, -1)
             ) {
     switch(d->type) {
-        case ZFTcpType::e_Invalid:
+        case v_ZFTcpType::e_Invalid:
             ZFLog("calling recv() before open() successfully");
             return 0;
-        case ZFTcpType::e_Server:
+        case v_ZFTcpType::e_Server:
             ZFLog("calling recv() on server type socket");
             return 0;
         default:

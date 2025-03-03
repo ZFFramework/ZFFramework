@@ -324,7 +324,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
     _ZFP_ZFUIViewFocusNextFind(focusDatas, root, param.focusInternalViews(), 0, 0);
 
     ZFUIView *ret = zfnull;
-    if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Right) && ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Bottom)) { // tab
+    if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Right) && ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Bottom)) { // tab
         focusDatas.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_tab);
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatas, zftrue, view);
         if(ret != zfnull) {
@@ -332,7 +332,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
         }
         return _ZFP_ZFUIViewFocusDataFindFirst(focusDatas, zftrue, view);
     }
-    if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Left) && ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Top)) { // shift tab
+    if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Left) && ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Top)) { // shift tab
         focusDatas.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_tab);
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatas, zffalse, view);
         if(ret != zfnull) {
@@ -351,25 +351,25 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
     focusDatasY.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_y);
     _ZFP_ZFUIViewFocusDataRemoveForY(focusDatasY, view, viewCenter);
 
-    if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Right)) {
+    if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Right)) {
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatasX, zftrue, view);
         if(ret != zfnull) {
             return ret;
         }
     }
-    if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Bottom)) {
+    if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Bottom)) {
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatasY, zftrue, view);
         if(ret != zfnull) {
             return ret;
         }
     }
-    if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Left)) {
+    if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Left)) {
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatasX, zffalse, view);
         if(ret != zfnull) {
             return ret;
         }
     }
-    if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Top)) {
+    if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Top)) {
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatasY, zffalse, view);
         if(ret != zfnull) {
             return ret;
@@ -377,25 +377,25 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
     }
 
     if(param.focusLoopMode()) {
-        if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Right)) {
+        if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Right)) {
             ret = _ZFP_ZFUIViewFocusDataFindFirst(focusDatasX, zftrue, view);
             if(ret != zfnull) {
                 return ret;
             }
         }
-        if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Bottom)) {
+        if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Bottom)) {
             ret = _ZFP_ZFUIViewFocusDataFindFirst(focusDatasY, zftrue, view);
             if(ret != zfnull) {
                 return ret;
             }
         }
-        if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Left)) {
+        if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Left)) {
             ret = _ZFP_ZFUIViewFocusDataFindFirst(focusDatasX, zffalse, view);
             if(ret != zfnull) {
                 return ret;
             }
         }
-        if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Top)) {
+        if(ZFBitTest(param.focusDirection(), v_ZFUIOrientation::e_Top)) {
             ret = _ZFP_ZFUIViewFocusDataFindFirst(focusDatasY, zffalse, view);
             if(ret != zfnull) {
                 return ret;
@@ -430,36 +430,36 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
     }
     ZFUIViewFocusNextParam param;
     switch(keyEvent->keyCode) {
-        case ZFUIKeyCode::e_kLeft:
-            param.focusDirection(ZFUIOrientation::e_Left);
+        case v_ZFUIKeyCode::e_kLeft:
+            param.focusDirection(v_ZFUIOrientation::e_Left);
             break;
-        case ZFUIKeyCode::e_kUp:
-            param.focusDirection(ZFUIOrientation::e_Top);
+        case v_ZFUIKeyCode::e_kUp:
+            param.focusDirection(v_ZFUIOrientation::e_Top);
             break;
-        case ZFUIKeyCode::e_kRight:
-            param.focusDirection(ZFUIOrientation::e_Right);
+        case v_ZFUIKeyCode::e_kRight:
+            param.focusDirection(v_ZFUIOrientation::e_Right);
             break;
-        case ZFUIKeyCode::e_kDown:
-            param.focusDirection(ZFUIOrientation::e_Bottom);
+        case v_ZFUIKeyCode::e_kDown:
+            param.focusDirection(v_ZFUIOrientation::e_Bottom);
             break;
-        case ZFUIKeyCode::e_kTab: {
+        case v_ZFUIKeyCode::e_kTab: {
             param.focusLoopMode(zftrue);
             if(_ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed) {
-                param.focusDirection(ZFUIOrientation::e_Left | ZFUIOrientation::e_Top);
+                param.focusDirection(v_ZFUIOrientation::e_Left | v_ZFUIOrientation::e_Top);
             }
             else {
-                param.focusDirection(ZFUIOrientation::e_Right | ZFUIOrientation::e_Bottom);
+                param.focusDirection(v_ZFUIOrientation::e_Right | v_ZFUIOrientation::e_Bottom);
             }
         }
             break;
-        case ZFUIKeyCode::e_kShift:
+        case v_ZFUIKeyCode::e_kShift:
             switch(keyEvent->keyAction) {
-                case ZFUIKeyAction::e_Down:
-                case ZFUIKeyAction::e_Repeat:
+                case v_ZFUIKeyAction::e_Down:
+                case v_ZFUIKeyAction::e_Repeat:
                     _ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed = zftrue;
                     break;
-                case ZFUIKeyAction::e_Up:
-                case ZFUIKeyAction::e_Cancel:
+                case v_ZFUIKeyAction::e_Up:
+                case v_ZFUIKeyAction::e_Cancel:
                     _ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed = zffalse;
                     break;
                 default:
@@ -472,7 +472,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
             return zffalse;
     }
     keyEvent->eventResolved(zftrue);
-    if(keyEvent->keyAction != ZFUIKeyAction::e_Repeat && keyEvent->keyAction != ZFUIKeyAction::e_Up) {
+    if(keyEvent->keyAction != v_ZFUIKeyAction::e_Repeat && keyEvent->keyAction != v_ZFUIKeyAction::e_Up) {
         return zftrue;
     }
     param.focusEndParent(endParent);

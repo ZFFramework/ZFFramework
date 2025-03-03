@@ -1149,11 +1149,11 @@ ZFENUM_SEPARATOR()
 ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUIOrientation, ZFUIOrientationFlags)
 ZFENUM_REG_FLAGS(ZFLIB_ZFUIKit, ZFUIOrientation, ZFUIOrientationFlags)
 
-/** @brief (ZFUIOrientation::e_Left | ZFUIOrientation::e_Top | ZFUIOrientation::e_Right | ZFUIOrientation::e_Bottom) */
+/** @brief (v_ZFUIOrientation::e_Left | v_ZFUIOrientation::e_Top | v_ZFUIOrientation::e_Right | v_ZFUIOrientation::e_Bottom) */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIOrientationFlags, ZFUIOrientationFlagsAll)
-/** @brief (ZFUIOrientation::e_Left | ZFUIOrientation::e_Right) */
+/** @brief (v_ZFUIOrientation::e_Left | v_ZFUIOrientation::e_Right) */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIOrientationFlags, ZFUIOrientationFlagsHorizontal)
-/** @brief (ZFUIOrientation::e_Top | ZFUIOrientation::e_Bottom) */
+/** @brief (v_ZFUIOrientation::e_Top | v_ZFUIOrientation::e_Bottom) */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIOrientationFlags, ZFUIOrientationFlagsVertical)
 
 /**
@@ -1162,7 +1162,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIOrientationFlags, ZFUIOrientati
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsVertical
         , ZFMP_IN(ZFUIOrientation, orientation)
         ) {
-    return (orientation == ZFUIOrientation::e_Top || orientation == ZFUIOrientation::e_Bottom);
+    return (orientation == v_ZFUIOrientation::e_Top || orientation == v_ZFUIOrientation::e_Bottom);
 }
 /**
  * @brief true if vertical orientation
@@ -1170,7 +1170,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsVertical
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsHorizontal
         , ZFMP_IN(ZFUIOrientation, orientation)
         ) {
-    return (orientation == ZFUIOrientation::e_Left || orientation == ZFUIOrientation::e_Right);
+    return (orientation == v_ZFUIOrientation::e_Left || orientation == v_ZFUIOrientation::e_Right);
 }
 
 // ============================================================
@@ -1499,7 +1499,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
         , ZFMP_IN(ZFUIContentScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
-        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
+        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, v_ZFUIAlign::e_Center)
         )
 /**
  * @brief apply scale for #ZFUIContentScaleType
@@ -1508,7 +1508,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIContentScaleTypeAppl
         , ZFMP_IN(ZFUIContentScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
-        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, ZFUIAlign::e_Center)
+        , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, v_ZFUIAlign::e_Center)
         ) {
     ZFUIRect ret = ZFUIRectZero();
     ZFUIContentScaleTypeApplyT(ret, scaleType, bounds, contentSize, alignFlags);

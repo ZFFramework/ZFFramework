@@ -65,7 +65,7 @@ void *ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resOpen(ZF_IN const zfchar *resPath) {
     zfstring tmpPath;
     tmpPath += this->resRootPath();
     tmpPath += resPath;
-    return ZFFileOpen(tmpPath, ZFFileOpenOption::e_Read);
+    return ZFFileOpen(tmpPath, v_ZFFileOpenOption::e_Read);
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resClose(ZF_IN void *token) {
     return ZFFileClose(token);

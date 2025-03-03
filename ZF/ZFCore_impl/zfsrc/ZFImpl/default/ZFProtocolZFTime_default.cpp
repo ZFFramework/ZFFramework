@@ -89,7 +89,7 @@ static const zfuint _ZFP_ZFTimeImpl_default_DayNumOfMonth[] = {
     (zfuint)(31), // 12
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimeImpl_default, ZFTime, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimeImpl_default, ZFTime, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("nativeAPI")
 public:
     virtual zfbool leapYear(ZF_IN zfint year) {

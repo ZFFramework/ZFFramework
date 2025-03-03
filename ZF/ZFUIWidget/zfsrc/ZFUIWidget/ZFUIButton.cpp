@@ -42,7 +42,7 @@ static inline _ZFP_ZFUIButtonMouseData _ZFP_ZFUIButtonMouseDataFromEvent(ZF_IN Z
     event->mouseId = mouseData.mouseId; \
     event->mouseAction = mouseData.mouseAction; \
     event->mousePoint = mouseData.mousePoint; \
-    event->mouseButton = ZFUIMouseButton::e_Left
+    event->mouseButton = v_ZFUIMouseButton::e_Left
 
 zfclassNotPOD _ZFP_ZFUIButtonPrivate {
 public:
@@ -71,10 +71,10 @@ public:
         if(this->enableFlag) {
             if(this->buttonHighlightedFlag) {
                 if(this->pimplOwner->checked()) {
-                    this->buttonState = ZFUIButtonState::e_CheckedHighlighted;
+                    this->buttonState = v_ZFUIButtonState::e_CheckedHighlighted;
                 }
                 else {
-                    this->buttonState = ZFUIButtonState::e_Highlighted;
+                    this->buttonState = v_ZFUIButtonState::e_Highlighted;
                 }
                 if(buttonStateOld != this->buttonState) {
                     if(this->pimplOwner->checked()) {
@@ -88,10 +88,10 @@ public:
             }
             else {
                 if(this->pimplOwner->checked()) {
-                    this->buttonState = ZFUIButtonState::e_Checked;
+                    this->buttonState = v_ZFUIButtonState::e_Checked;
                 }
                 else {
-                    this->buttonState = ZFUIButtonState::e_Normal;
+                    this->buttonState = v_ZFUIButtonState::e_Normal;
                 }
                 if(buttonStateOld != this->buttonState) {
                     if(this->pimplOwner->checked()) {
@@ -106,7 +106,7 @@ public:
         }
         else {
             if(buttonStateOld != this->buttonState) {
-                this->buttonState = ZFUIButtonState::e_Disabled;
+                this->buttonState = v_ZFUIButtonState::e_Disabled;
                 _ZFP_ZFUIButton_DEBUG_EVENT(buttonStateOnDisabled)
                 this->pimplOwner->buttonStateOnUpdate();
             }
@@ -116,7 +116,7 @@ public:
         _ZFP_ZFUIButton_DEBUG_LOG("begin %s", mouseEvent)
         ZFUIMouseAction mouseAction = mouseEvent->mouseAction;
         switch(mouseAction) {
-            case ZFUIMouseAction::e_Down:
+            case v_ZFUIMouseAction::e_Down:
                 if(!this->enableFlag) {
                     _ZFP_ZFUIButton_DEBUG_LOG("      %s disabled", mouseEvent)
                     break;
@@ -124,20 +124,20 @@ public:
                 this->processingMouseId = mouseEvent->mouseId;
                 this->processMouse(mouseEvent);
                 break;
-            case ZFUIMouseAction::e_Move:
+            case v_ZFUIMouseAction::e_Move:
                 if(mouseEvent->mouseId == this->processingMouseId) {
                     this->processMouse(mouseEvent);
                 }
                 break;
-            case ZFUIMouseAction::e_Up:
-            case ZFUIMouseAction::e_Cancel:
+            case v_ZFUIMouseAction::e_Up:
+            case v_ZFUIMouseAction::e_Cancel:
                 if(mouseEvent->mouseId == this->processingMouseId) {
                     this->processMouse(mouseEvent);
                 }
                 break;
-            case ZFUIMouseAction::e_HoverEnter:
-            case ZFUIMouseAction::e_Hover:
-            case ZFUIMouseAction::e_HoverExit:
+            case v_ZFUIMouseAction::e_HoverEnter:
+            case v_ZFUIMouseAction::e_Hover:
+            case v_ZFUIMouseAction::e_HoverExit:
                 break;
             default:
                 ZFCoreCriticalShouldNotGoHere();
@@ -151,14 +151,14 @@ private:
     void processMouse(ZF_IN ZFUIMouseEvent *mouseEvent) {
         _ZFP_ZFUIButton_DEBUG_LOG("process begin %s", mouseEvent)
         switch(mouseEvent->mouseAction) {
-            case ZFUIMouseAction::e_Down: {
+            case v_ZFUIMouseAction::e_Down: {
                 this->prevMousePoint = mouseEvent->mousePoint;
                 this->buttonStateUpdate(zftrue);
                 _ZFP_ZFUIButton_DEBUG_EVENT(buttonMouseOnDown)
                 this->pimplOwner->buttonMouseOnDown(mouseEvent);
             }
                 break;
-            case ZFUIMouseAction::e_Move: {
+            case v_ZFUIMouseAction::e_Move: {
                 ZFUIRect bounds = ZFUIRectGetBounds(this->pimplOwner->viewFrame());
                 zfbool mouseInside = this->buttonClickedInside(bounds, mouseEvent->mousePoint);
                 zfbool mouseInsidePrev = this->buttonClickedInside(bounds, this->prevMousePoint);
@@ -185,7 +185,7 @@ private:
                 }
             }
                 break;
-            case ZFUIMouseAction::e_Up: {
+            case v_ZFUIMouseAction::e_Up: {
                 zfbool mouseInside = this->buttonClickedInside(
                     ZFUIRectGetBounds(this->pimplOwner->viewFrame()),
                     mouseEvent->mousePoint);
@@ -209,15 +209,15 @@ private:
                 }
             }
                 break;
-            case ZFUIMouseAction::e_Cancel: {
+            case v_ZFUIMouseAction::e_Cancel: {
                 this->buttonStateUpdate(zffalse);
                 _ZFP_ZFUIButton_DEBUG_EVENT(buttonMouseOnUp)
                 this->pimplOwner->buttonMouseOnUp(mouseEvent);
             }
                 break;
-            case ZFUIMouseAction::e_HoverEnter:
-            case ZFUIMouseAction::e_Hover:
-            case ZFUIMouseAction::e_HoverExit:
+            case v_ZFUIMouseAction::e_HoverEnter:
+            case v_ZFUIMouseAction::e_Hover:
+            case v_ZFUIMouseAction::e_HoverExit:
                 break;
             default:
                 ZFCoreCriticalShouldNotGoHere();
@@ -248,7 +248,7 @@ public:
 public:
     _ZFP_ZFUIButtonPrivate(void)
     : pimplOwner(zfnull)
-    , buttonState(ZFUIButtonState::e_Normal)
+    , buttonState(v_ZFUIButtonState::e_Normal)
     , processingMouseId(zfidentityInvalid())
     , prevMousePoint()
     , enableFlag(zftrue)
@@ -345,7 +345,7 @@ ZFMETHOD_DEFINE_2(ZFUIButton, void, onClickForOnce
 void ZFUIButton::viewEventOnMouseEvent(ZF_IN ZFUIMouseEvent *mouseEvent) {
     zfsuper::viewEventOnMouseEvent(mouseEvent);
 
-    if(mouseEvent->mouseButton == ZFUIMouseButton::e_Left) {
+    if(mouseEvent->mouseButton == v_ZFUIMouseButton::e_Left) {
         d->viewEventOnMouseEvent(mouseEvent);
     }
 }
@@ -356,15 +356,15 @@ void ZFUIButton::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
     }
 
     switch(keyEvent->keyCode) {
-        case ZFUIKeyCode::e_kEnter:
-        case ZFUIKeyCode::e_kSpace:
+        case v_ZFUIKeyCode::e_kEnter:
+        case v_ZFUIKeyCode::e_kSpace:
             switch(keyEvent->keyAction) {
-                case ZFUIKeyAction::e_Down:
+                case v_ZFUIKeyAction::e_Down:
                     d->buttonStateUpdate(zftrue);
                     break;
-                case ZFUIKeyAction::e_Repeat:
+                case v_ZFUIKeyAction::e_Repeat:
                     break;
-                case ZFUIKeyAction::e_Up:
+                case v_ZFUIKeyAction::e_Up:
                     d->buttonHighlightedFlag = zffalse;
                     if(this->checkable()) {
                         this->checked(!this->checked());
@@ -374,7 +374,7 @@ void ZFUIButton::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent) {
                     }
                     d->buttonClicked(keyEvent);
                     break;
-                case ZFUIKeyAction::e_Cancel:
+                case v_ZFUIKeyAction::e_Cancel:
                     d->buttonStateUpdate(zffalse);
                     break;
                 default:

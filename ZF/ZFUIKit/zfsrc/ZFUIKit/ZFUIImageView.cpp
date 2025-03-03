@@ -140,8 +140,8 @@ void ZFUIImageView::_ZFP_imageStateAttach(void) {
                 ZFPROTOCOL_ACCESS(ZFUIImageView)->image(owner, imageNew);
                 ZFUILayoutParam *lp = owner->layoutParam();
                 if(lp && (zffalse
-                            || (lp->sizeParam().width == ZFUISizeType::e_Wrap && sizeNew.width != sizeSaved.width)
-                            || (lp->sizeParam().height == ZFUISizeType::e_Wrap && sizeNew.height != sizeSaved.height)
+                            || (lp->sizeParam().width == v_ZFUISizeType::e_Wrap && sizeNew.width != sizeSaved.width)
+                            || (lp->sizeParam().height == v_ZFUISizeType::e_Wrap && sizeNew.height != sizeSaved.height)
                             )) {
                     owner->layoutRequest();
                 }

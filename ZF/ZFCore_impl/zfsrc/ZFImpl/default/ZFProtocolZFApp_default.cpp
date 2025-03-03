@@ -18,7 +18,7 @@ public:
     }
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_default, ZFApp, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_default, ZFApp, v_ZFProtocolLevel::e_Default)
 public:
     virtual void appRestart(void) {
         _ZFP_ZFThreadImpl_default_TaskData *taskData = zfnew(_ZFP_ZFThreadImpl_default_TaskData);

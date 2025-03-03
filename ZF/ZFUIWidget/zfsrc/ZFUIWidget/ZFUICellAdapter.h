@@ -207,7 +207,7 @@ public:
 protected:
     /** @cond ZFPrivateDoc */
     ZFUICellAdapter(void)
-    : _ZFP_ZFUICellAdapter_orientation(ZFUIOrientation::e_Top)
+    : _ZFP_ZFUICellAdapter_orientation(v_ZFUIOrientation::e_Top)
     , _ZFP_ZFUICellAdapter_containerSize(ZFUISizeZero())
     {
     }

@@ -16,21 +16,21 @@ void ZFLogFormat::format(
         , ZF_IN zfindex srcLen
         ) {
     switch(outputStep) {
-        case ZFOutputFormatStep::e_OnInit:
+        case v_ZFOutputFormatStep::e_OnInit:
             if(_ZFP_ZFLogMutex != zfnull) {
                 _ZFP_ZFLogMutex->mutexLock();
             }
             break;
-        case ZFOutputFormatStep::e_OnDealloc:
+        case v_ZFOutputFormatStep::e_OnDealloc:
             this->autoEndl(zftrue);
             if(_ZFP_ZFLogMutex != zfnull) {
                 _ZFP_ZFLogMutex->mutexUnlock();
             }
             break;
-        case ZFOutputFormatStep::e_OnOutput:
+        case v_ZFOutputFormatStep::e_OnOutput:
             ret.append(src, srcLen);
             break;
-        case ZFOutputFormatStep::e_OnOutputEnd:
+        case v_ZFOutputFormatStep::e_OnOutputEnd:
             if(this->autoEndl()) {
                 ret += "\n";
             }
@@ -95,7 +95,7 @@ zfstring ZFLogHeaderDefault(ZF_IN const ZFCallerInfo &callerInfo) {
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogHeaderInit, ZFLevelZFFrameworkStatic) {
     ZFLogHeader = ZFLogHeaderDefault;
     ZFLogHeaderDefault_logTime(zftrue);
-    ZFLogHeaderDefault_logCaller(ZFLogLevelIsActive(ZFLogLevel::e_Verbose));
+    ZFLogHeaderDefault_logCaller(ZFLogLevelIsActive(v_ZFLogLevel::e_Verbose));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogHeaderInit) {
     ZFLogHeader = zfnull;

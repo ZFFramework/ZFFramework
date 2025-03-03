@@ -24,9 +24,9 @@ protected:
             container->child(view)->c_widthFill()->c_margin(10);
             view->bgColor(ZFUIColorRandom());
         }
-        container->childAt(0)->layoutParam()->align(ZFUIAlign::e_Top);
-        container->childAt(1)->layoutParam()->align(ZFUIAlign::e_Center);
-        container->childAt(2)->layoutParam()->align(ZFUIAlign::e_Bottom);
+        container->childAt(0)->layoutParam()->align(v_ZFUIAlign::e_Top);
+        container->childAt(1)->layoutParam()->align(v_ZFUIAlign::e_Center);
+        container->childAt(2)->layoutParam()->align(v_ZFUIAlign::e_Bottom);
     }
 };
 ZFOBJECT_REGISTER(ZFUIWidget_ZFUIOnScreenKeyboardAutoResize_test)

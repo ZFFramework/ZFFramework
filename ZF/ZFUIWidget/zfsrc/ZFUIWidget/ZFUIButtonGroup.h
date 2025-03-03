@@ -189,7 +189,7 @@ protected:
     }
 
     // ============================================================
-    // for ZFUIButtonGroupType::e_Tab type
+    // for v_ZFUIButtonGroupType::e_Tab type
 public:
     /**
      * @brief see #ZFObject::observerNotify

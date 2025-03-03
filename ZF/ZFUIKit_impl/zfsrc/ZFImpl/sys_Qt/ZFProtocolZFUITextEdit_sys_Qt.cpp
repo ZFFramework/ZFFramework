@@ -154,7 +154,7 @@ public slots:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Qt, ZFUITextEdit, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Qt, ZFUITextEdit, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsProxyWidget:QLineEdit")
 public:
     virtual void *nativeTextEditCreate(
@@ -250,19 +250,19 @@ public:
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         QFont font = nativeImplView->font();
         switch(textAppearance) {
-            case ZFUITextAppearance::e_Normal:
+            case v_ZFUITextAppearance::e_Normal:
                 font.setBold(false);
                 font.setItalic(false);
                 break;
-            case ZFUITextAppearance::e_Bold:
+            case v_ZFUITextAppearance::e_Bold:
                 font.setBold(true);
                 font.setItalic(false);
                 break;
-            case ZFUITextAppearance::e_Italic:
+            case v_ZFUITextAppearance::e_Italic:
                 font.setBold(false);
                 font.setItalic(true);
                 break;
-            case ZFUITextAppearance::e_BoldItalic:
+            case v_ZFUITextAppearance::e_BoldItalic:
                 font.setBold(true);
                 font.setItalic(true);
                 break;

@@ -29,7 +29,7 @@ public:
     : QObject()
     , ownerRequest(zfnull)
     , ownerResponse(zfnull)
-    , httpMethod(ZFHttpMethod::e_GET)
+    , httpMethod(v_ZFHttpMethod::e_GET)
     , manager()
     , request()
     , rawHeaderList(NULL)
@@ -119,7 +119,7 @@ public slots:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_Qt, ZFHttpRequest, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_Qt, ZFHttpRequest, v_ZFProtocolLevel::e_SystemHigh)
     // ============================================================
     // for request
 public:
@@ -291,23 +291,23 @@ public:
         task->timeoutTimer = ZFTimerOnce(task->ownerRequest->timeout(), onTimeout);
 
         switch(task->httpMethod) {
-            case ZFHttpMethod::e_GET:
+            case v_ZFHttpMethod::e_GET:
                 task->response = task->manager.get(task->request);
                 break;
-            case ZFHttpMethod::e_HEAD:
+            case v_ZFHttpMethod::e_HEAD:
                 task->response = task->manager.head(task->request);
                 break;
-            case ZFHttpMethod::e_PUT:
+            case v_ZFHttpMethod::e_PUT:
                 task->response = task->manager.put(task->request, task->body);
                 break;
-            case ZFHttpMethod::e_DELETE:
+            case v_ZFHttpMethod::e_DELETE:
                 task->response = task->manager.deleteResource(task->request);
                 break;
-            case ZFHttpMethod::e_CONNECT:
-            case ZFHttpMethod::e_OPTIONS:
-            case ZFHttpMethod::e_TRACE:
-            case ZFHttpMethod::e_PATCH:
-            case ZFHttpMethod::e_POST:
+            case v_ZFHttpMethod::e_CONNECT:
+            case v_ZFHttpMethod::e_OPTIONS:
+            case v_ZFHttpMethod::e_TRACE:
+            case v_ZFHttpMethod::e_PATCH:
+            case v_ZFHttpMethod::e_POST:
             default:
                 task->response = task->manager.post(task->request, task->body);
                 break;

@@ -8,7 +8,7 @@ ZFENUM_DEFINE(ZFEnvDeviceUIType)
 ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 
 ZFMETHOD_FUNC_DEFINE_1(ZFEnvDeviceUIType, deviceUIType
-        , ZFMP_IN_OPT(ZFEnvDeviceUIType, defaultValue, ZFEnvDeviceUIType::e_Desktop)
+        , ZFMP_IN_OPT(ZFEnvDeviceUIType, defaultValue, v_ZFEnvDeviceUIType::e_Desktop)
         ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_deviceUIInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_deviceUIInfo);
     if(impl != zfnull) {

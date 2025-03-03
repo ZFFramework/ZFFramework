@@ -43,7 +43,7 @@ private:
                     , ZFUIImageView *, imageView
                     ) {
                 v_zfstring *text = zfargs.param0();
-                zfbool fill = (imageView->layoutParam()->sizeParam().width == ZFUISizeType::e_Fill);
+                zfbool fill = (imageView->layoutParam()->sizeParam().width == v_ZFUISizeType::e_Fill);
                 text->zfv = fill ? "fill" : "wrap";
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -51,7 +51,7 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIImageView *, imageView
                     ) {
-                zfbool fill = (imageView->layoutParam()->sizeParam().width == ZFUISizeType::e_Fill);
+                zfbool fill = (imageView->layoutParam()->sizeParam().width == v_ZFUISizeType::e_Fill);
                 imageView->layoutParam()->sizeParam(fill ? ZFUISizeParamWrapWrap() : ZFUISizeParamFillFill());
             } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);

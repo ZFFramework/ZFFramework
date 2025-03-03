@@ -36,14 +36,14 @@ ZFPATHTYPE_FILEIO_REGISTER(file, ZFPathType_file()
 // ZFInputForFile
 ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFInput, ZFInputForFile
         , ZFMP_IN(const zfchar *, filePath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         )
 
 // ============================================================
 // ZFOutputForFile
 ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFOutput, ZFOutputForFile
         , ZFMP_IN(const zfchar *, filePath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         )
 
 ZF_NAMESPACE_GLOBAL_END

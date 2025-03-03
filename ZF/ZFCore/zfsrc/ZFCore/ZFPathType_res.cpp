@@ -7,10 +7,10 @@ ZFPATHTYPE_DEFINE(res)
 // ============================================================
 static void *_ZFP_ZFPathInfoOpenForRes(
         ZF_IN const zfchar *filePath
-        , ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read
+        , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
         , ZF_IN_OPT zfbool autoCreateParent = zftrue
         ) {
-    if(flag != ZFFileOpenOption::e_Read) {
+    if(flag != v_ZFFileOpenOption::e_Read) {
         return zfnull;
     }
     return ZFResOpen(filePath);

@@ -38,7 +38,7 @@ protected:
 
         this->outputSeparator();
         this->output("ZFXml add element");
-        ZFXml element(ZFXmlType::e_Element);
+        ZFXml element(v_ZFXmlType::e_Element);
         element.name("testElement");
         doc.child(element);
         this->output("ZFXml add element, result:");

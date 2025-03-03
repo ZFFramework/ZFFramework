@@ -57,7 +57,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_sys_iOS_DataHolder)
 #define _ZFP_ZFThreadImpl_sys_iOS_threadMap (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadImpl_sys_iOS_DataHolder)->threadMap)
 
 // ============================================================
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_iOS, ZFThread, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_iOS, ZFThread, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:NSThread")
 public:
     zfoverride

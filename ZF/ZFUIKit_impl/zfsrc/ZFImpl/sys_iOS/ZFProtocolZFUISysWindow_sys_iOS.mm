@@ -91,8 +91,8 @@
 - (id)init {
     self = [super init];
     if(self) {
-        self.sysWindowOrientation = ZFUIOrientation::e_Top;
-        self->_sysWindowOrientationFlags = ZFUIOrientation::e_Top;
+        self.sysWindowOrientation = v_ZFUIOrientation::e_Top;
+        self->_sysWindowOrientationFlags = v_ZFUIOrientation::e_Top;
     }
     return self;
 }
@@ -101,19 +101,19 @@
     UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     switch(toInterfaceOrientation) {
         case UIInterfaceOrientationPortrait:
-            self.sysWindowOrientation = ZFUIOrientation::e_Top;
+            self.sysWindowOrientation = v_ZFUIOrientation::e_Top;
             break;
         case UIInterfaceOrientationPortraitUpsideDown:
-            self.sysWindowOrientation = ZFUIOrientation::e_Bottom;
+            self.sysWindowOrientation = v_ZFUIOrientation::e_Bottom;
             break;
         case UIInterfaceOrientationLandscapeLeft:
-            self.sysWindowOrientation = ZFUIOrientation::e_Left;
+            self.sysWindowOrientation = v_ZFUIOrientation::e_Left;
             break;
         case UIInterfaceOrientationLandscapeRight:
-            self.sysWindowOrientation = ZFUIOrientation::e_Right;
+            self.sysWindowOrientation = v_ZFUIOrientation::e_Right;
             break;
         default:
-            self.sysWindowOrientation = ZFUIOrientation::e_Top;
+            self.sysWindowOrientation = v_ZFUIOrientation::e_Top;
             break;
     }
     if(self.ownerZFUISysWindow != zfnull) {
@@ -126,16 +126,16 @@
     }
 
     UIInterfaceOrientationMask ret = 0;
-    if(ZFBitTest(self.sysWindowOrientationFlags, ZFUIOrientation::e_Top)) {
+    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Top)) {
         ret |= UIInterfaceOrientationMaskPortrait;
     }
-    if(ZFBitTest(self.sysWindowOrientationFlags, ZFUIOrientation::e_Left)) {
+    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Left)) {
         ret |= UIInterfaceOrientationMaskLandscapeLeft;
     }
-    if(ZFBitTest(self.sysWindowOrientationFlags, ZFUIOrientation::e_Right)) {
+    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Right)) {
         ret |= UIInterfaceOrientationMaskLandscapeRight;
     }
-    if(ZFBitTest(self.sysWindowOrientationFlags, ZFUIOrientation::e_Bottom)) {
+    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Bottom)) {
         ret |= UIInterfaceOrientationMaskPortraitUpsideDown;
     }
     if(ret == 0) {
@@ -175,7 +175,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_iOS, ZFUISysWindow, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_iOS, ZFUISysWindow, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIViewController")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")

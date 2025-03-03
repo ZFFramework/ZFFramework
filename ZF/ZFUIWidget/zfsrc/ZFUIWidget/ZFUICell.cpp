@@ -21,7 +21,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUICell, zfanyT<ZFUILayoutParam>, cellViewLayoutParam
     propertyValue = this->layoutParamCreate();
     ZFUILayoutParam *value = propertyValue;
     value->sizeParam(ZFUISizeParamFillFill());
-    value->align(ZFUIAlign::e_Center);
+    value->align(v_ZFUIAlign::e_Center);
 }
 
 void ZFUICell::layoutOnMeasure(

@@ -74,7 +74,7 @@ public:
                 ) {
             v_ZFUIImageStateImplAction *action = zfargs.param0();
             switch(action->zfv()) {
-                case ZFUIImageStateImplAction::e_Attach:
+                case v_ZFUIImageStateImplAction::e_Attach:
                     if(task->imageStateAttached) {
                         return;
                     }
@@ -86,11 +86,11 @@ public:
                         task->ani->start();
                     }
                     break;
-                case ZFUIImageStateImplAction::e_Detach:
+                case v_ZFUIImageStateImplAction::e_Detach:
                     task->imageStateAttached = zffalse;
                     task->ani->stop();
                     break;
-                case ZFUIImageStateImplAction::e_Copy: {
+                case v_ZFUIImageStateImplAction::e_Copy: {
                     zfobj<_ZFP_I_ZFUIImageAniTask> taskNew;
                     taskNew->owner = zfargs.param1();
                     taskNew->data = task->data;

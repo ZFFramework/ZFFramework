@@ -50,7 +50,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   zfstring str = s;
  *
  *   // for Windows API, convert to zfcharW and use WCS versions:
- *   WindowsWAPI(zfstringToUTF16(s, ZFStringEncoding::e_UTF8));
+ *   WindowsWAPI(zfstringToUTF16(s, v_ZFStringEncoding::e_UTF8));
  * @endcode
  *
  * for more advanced string encoding operation,

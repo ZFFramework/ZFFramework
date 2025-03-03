@@ -37,7 +37,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFUIDrawForView
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Qt, ZFUIDrawForView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Qt, ZFUIDrawForView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
@@ -74,7 +74,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_Qt)
 
 // ============================================================
 // ZFUIDrawForImage
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_Qt, ZFUIDrawForImage, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_Qt, ZFUIDrawForImage, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QImage")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIImage, "Qt:QImage")
@@ -107,7 +107,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_Qt)
 
 // ============================================================
 // ZFUIDraw
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Qt, ZFUIDraw, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Qt, ZFUIDraw, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QPainter")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForView, "Qt:QGraphicsWidget")

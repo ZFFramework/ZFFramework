@@ -162,7 +162,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(const zfstring &, url)
-            , ZFMP_IN_OPT(ZFHttpMethod, method, ZFHttpMethod::e_GET)
+            , ZFMP_IN_OPT(ZFHttpMethod, method, v_ZFHttpMethod::e_GET)
             )
 
     /** @brief timeout */
@@ -173,7 +173,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, url)
 
     /** @brief the http method, GET/POST/..., GET by default */
-    ZFPROPERTY_ASSIGN(ZFHttpMethod, httpMethod, ZFHttpMethod::e_GET)
+    ZFPROPERTY_ASSIGN(ZFHttpMethod, httpMethod, v_ZFHttpMethod::e_GET)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFHttpMethod, httpMethod)
 
     /** @brief whether https impl available */

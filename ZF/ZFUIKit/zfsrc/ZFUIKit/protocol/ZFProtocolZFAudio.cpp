@@ -14,7 +14,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(
             , zfbool, success
             , zfautoT<v_zfstring>, errorHint
             ) {
-        audio->_ZFP_ZFAudio_OnLoad(success ? ZFResultType::e_Success : ZFResultType::e_Fail, errorHint);
+        audio->_ZFP_ZFAudio_OnLoad(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
     } ZFLISTENER_END()
     ZFThread::mainThread()->taskQueueAdd(action);
 }
@@ -28,7 +28,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(
             , zfbool, success
             , zfautoT<v_zfstring>, errorHint
             ) {
-        audio->_ZFP_ZFAudio_OnStop(success ? ZFResultType::e_Success : ZFResultType::e_Fail, errorHint);
+        audio->_ZFP_ZFAudio_OnStop(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
     } ZFLISTENER_END()
     ZFThread::mainThread()->taskQueueAdd(action);
 }

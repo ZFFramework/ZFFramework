@@ -33,7 +33,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDeallocPrepare) {
     for(zfindex i = 0; i < allValue.count(); ++i) {
         _ZFP_ZFProtocolData *dataHolder = allValue[i];
         if(dataHolder->implInstance != zfnull) {
-            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDeallocPrepare;
+            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnDeallocPrepare;
             dataHolder->implInstance->protocolOnDeallocPrepare();
         }
     }
@@ -49,9 +49,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDealloc) {
     for(zfindex i = 0; i < allValue.count(); ++i) {
         _ZFP_ZFProtocolData *dataHolder = allValue[i];
         if(dataHolder->implInstance != zfnull) {
-            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDealloc;
+            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnDealloc;
             dataHolder->implInstance->protocolOnDealloc();
-            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit;
+            dataHolder->implInstance->_ZFP_ZFProtocol_protocolInstanceState = v_ZFProtocolInstanceState::e_OnInit;
             dataHolder->implCleanupCallback(dataHolder);
         }
     }
@@ -71,7 +71,7 @@ _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(
         dataHolder->protocolOptional = protocolOptional;
         dataHolder->implTryAccessCallback = implTryAccessCallback;
         dataHolder->implConstructor = zfnull;
-        dataHolder->implLevel = ZFProtocolLevel::e_Default;
+        dataHolder->implLevel = v_ZFProtocolLevel::e_Default;
         dataHolder->implCleanupCallback = zfnull;
         dataHolder->implInstance = zfnull;
         _ZFP_ZFProtocolDataMap.set(protocolName, ZFCorePointerForPoolObject<_ZFP_ZFProtocolData *>(dataHolder));

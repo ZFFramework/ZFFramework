@@ -44,21 +44,21 @@ static void _ZFP_ZFUIAutoLayoutAlignApply(
         ZF_IN ZFUIAutoLayoutParam *lp
         , ZF_IN const ZFUIAlignFlags &align
         ) {
-    if(ZFBitTest(align, ZFUIAlign::e_Left)) {
+    if(ZFBitTest(align, v_ZFUIAlign::e_Left)) {
         lp->c_left()->c_toParentLeft()->c_biasX(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Right);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Right);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_Right)) {
+    else if(ZFBitTest(align, v_ZFUIAlign::e_Right)) {
         lp->c_right()->c_toParentRight()->c_biasX(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Left);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Left);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_LeftEdge)) {
+    else if(ZFBitTest(align, v_ZFUIAlign::e_LeftEdge)) {
         lp->c_right()->c_toParentLeft()->c_biasX(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Left);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Left);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_RightEdge)) {
+    else if(ZFBitTest(align, v_ZFUIAlign::e_RightEdge)) {
         lp->c_left()->c_toParentRight()->c_biasX(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Right);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Right);
     }
     else {
         lp
@@ -68,21 +68,21 @@ static void _ZFP_ZFUIAutoLayoutAlignApply(
             ;
     }
 
-    if(ZFBitTest(align, ZFUIAlign::e_Top)) {
+    if(ZFBitTest(align, v_ZFUIAlign::e_Top)) {
         lp->c_top()->c_toParentTop()->c_biasY(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Bottom);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Bottom);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_Bottom)) {
+    else if(ZFBitTest(align, v_ZFUIAlign::e_Bottom)) {
         lp->c_bottom()->c_toParentBottom()->c_biasY(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Top);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Top);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_TopEdge)) {
+    else if(ZFBitTest(align, v_ZFUIAlign::e_TopEdge)) {
         lp->c_bottom()->c_toParentTop()->c_biasY(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Top);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Top);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_BottomEdge)) {
+    else if(ZFBitTest(align, v_ZFUIAlign::e_BottomEdge)) {
         lp->c_top()->c_toParentBottom()->c_biasY(0.5f);
-        lp->ruleRemove(ZFUIAutoLayoutPos::e_Bottom);
+        lp->ruleRemove(v_ZFUIAutoLayoutPos::e_Bottom);
     }
     else {
         lp
@@ -153,7 +153,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
     // remove all rule
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         _ZFP_AL_d.ruleList[i].removeAll();
     }
 
@@ -170,9 +170,9 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             return zffalse;
         }
 
-        ZFUIAutoLayoutPos pos = ZFUIAutoLayoutPos::e_None;
+        ZFUIAutoLayoutPos pos = v_ZFUIAutoLayoutPos::e_None;
         if(!ZFUIAutoLayoutPosFromStringT(pos, ruleStr + itemPos[0].start, itemPos[0].count)
-                || pos == ZFUIAutoLayoutPos::e_None
+                || pos == v_ZFUIAutoLayoutPos::e_None
                 ) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
                 , "invalid pos rule \"%s\", declared in rule \"%s\""
@@ -182,9 +182,9 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             return zffalse;
         }
 
-        ZFUIAutoLayoutPos targetPos = ZFUIAutoLayoutPos::e_None;
+        ZFUIAutoLayoutPos targetPos = v_ZFUIAutoLayoutPos::e_None;
         if(!ZFUIAutoLayoutPosFromStringT(targetPos, ruleStr + itemPos[1].start, itemPos[1].count)
-                || pos == ZFUIAutoLayoutPos::e_None
+                || pos == v_ZFUIAutoLayoutPos::e_None
                 ) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
                 , "invalid targetPos rule \"%s\", declared in rule \"%s\""
@@ -229,7 +229,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
     _ZFP_ZFUIAutoLayoutRuleEscapeCharMap();
 
     zfstring ruleStr;
-    for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+    for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
         ZFUIAutoLayoutRule &rule = _ZFP_AL_d.ruleList[i];
         if(ref != zfnull && ref->_ZFP_AL_d.ruleList[i] == rule) {
             continue;
@@ -238,7 +238,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
             continue;
         }
 
-        if(rule.targetPos() == ZFUIAutoLayoutPos::e_None) {
+        if(rule.targetPos() == v_ZFUIAutoLayoutPos::e_None) {
             ZFSerializableUtilErrorOccurred(outErrorHint
                     , "invalid targetPos"
                     );
@@ -356,7 +356,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
     for(zfindex iChild = this->childCount() - 1; iChild != zfindexMax(); --iChild) {
         ZFUIView *child = this->childAt(iChild);
         ZFUIAutoLayoutParam *lp = child->layoutParam();
-        for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
+        for(zfindex i = v_ZFUIAutoLayoutPos::e_None + 1; i < v_ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[i];
             if(!_ZFP_ZFUIAutoLayout_targetUpdate(rule, this, child)) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,

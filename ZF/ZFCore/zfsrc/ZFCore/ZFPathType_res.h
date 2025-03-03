@@ -32,7 +32,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForRes
         , ZFMP_IN(const zfchar *, resFilePath)
         ) {
     ZFInput ret;
-    ZFInputForPathInfoT(ret, ZFPathInfo(ZFPathType_res(), resFilePath), ZFFileOpenOption::e_Read);
+    ZFInputForPathInfoT(ret, ZFPathInfo(ZFPathType_res(), resFilePath), v_ZFFileOpenOption::e_Read);
     return ret;
 }
 

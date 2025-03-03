@@ -190,7 +190,7 @@ public:
     /**
      * @brief subclass must notify after the animation stop
      */
-    zffinal void aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType = ZFResultType::e_Success);
+    zffinal void aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType = v_ZFResultType::e_Success);
 
 protected:
     /** @brief init with #target */

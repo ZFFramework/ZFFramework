@@ -56,7 +56,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup_common(
 }
 
 // ============================================================
-// ZFUIButtonGroupType::e_Normal
+// v_ZFUIButtonGroupType::e_Normal
 static void _ZFP_ZFUIButtonGroup_setup_Normal(
         ZF_IN ZFUIButtonGroup *buttonGroup
         , ZF_IN ZFUIButton *button
@@ -72,7 +72,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup_Normal(
 }
 
 // ============================================================
-// ZFUIButtonGroupType::e_Tab
+// v_ZFUIButtonGroupType::e_Tab
 static void _ZFP_ZFUIButtonGroup_setup_Tab(
         ZF_IN ZFUIButtonGroup *buttonGroup
         , ZF_IN ZFUIButton *button
@@ -155,10 +155,10 @@ static void _ZFP_ZFUIButtonGroup_setup(
         , ZF_IN zfindex buttonIndex
         ) {
     switch(buttonGroup->type()) {
-        case ZFUIButtonGroupType::e_Normal:
+        case v_ZFUIButtonGroupType::e_Normal:
             _ZFP_ZFUIButtonGroup_setup_Normal(buttonGroup, button, buttonIndex);
             break;
-        case ZFUIButtonGroupType::e_Tab:
+        case v_ZFUIButtonGroupType::e_Tab:
             _ZFP_ZFUIButtonGroup_setup_Tab(buttonGroup, button, buttonIndex);
             break;
         default:
@@ -171,10 +171,10 @@ static void _ZFP_ZFUIButtonGroup_cleanup(
         , ZF_IN ZFUIButton *button
         ) {
     switch(buttonGroup->type()) {
-        case ZFUIButtonGroupType::e_Normal:
+        case v_ZFUIButtonGroupType::e_Normal:
             _ZFP_ZFUIButtonGroup_cleanup_Normal(buttonGroup, button);
             break;
-        case ZFUIButtonGroupType::e_Tab:
+        case v_ZFUIButtonGroupType::e_Tab:
             _ZFP_ZFUIButtonGroup_cleanup_Tab(buttonGroup, button);
             break;
         default:

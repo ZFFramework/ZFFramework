@@ -61,7 +61,7 @@ typedef void (*ZFPathInfoCallbackFindClose)(ZF_IN_OUT ZFFileFindData &fd);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 typedef void *(*ZFPathInfoCallbackOpen)(
         ZF_IN const zfchar *pathData
-        , ZF_IN_OPT ZFFileOpenOptionFlags flag /* = ZFFileOpenOption::e_Read */
+        , ZF_IN_OPT ZFFileOpenOptionFlags flag /* = v_ZFFileOpenOption::e_Read */
         , ZF_IN_OPT zfbool autoCreateParent /* = zftrue */
         );
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
@@ -147,7 +147,7 @@ extern ZFLIB_ZFCore void ZFPathInfoCallbackFindCloseDefault(ZF_IN_OUT ZFFileFind
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 extern ZFLIB_ZFCore void *ZFPathInfoCallbackOpenDefault(
         ZF_IN const zfchar *pathData
-        , ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read
+        , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
         , ZF_IN_OPT zfbool autoCreateParent = zftrue
         );
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
@@ -243,7 +243,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFPathInfoFindClose
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void *, ZFPathInfoOpen
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, v_ZFFileOpenOption::e_Read)
         , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
         )
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
@@ -419,7 +419,7 @@ public:
     /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     inline void *implOpen(
             ZF_IN const zfchar *pathData
-            , ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read
+            , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
             , ZF_IN_OPT zfbool autoCreateParent = zftrue
             ) const {
         return this->callbackOpen(pathData, flag, autoCreateParent);
@@ -612,7 +612,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocal
  *   <ZFCallback
  *       callbackType="ZFInputForPathInfo"
  *       pathInfo="ZFPathInfo" // required, the path info
- *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Read by default
+ *       flags="ZFFileOpenOptionFlags" // optional, v_ZFFileOpenOption::e_Read by default
  *   >
  *   </ZFCallback>
  * @endcode
@@ -632,7 +632,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocal
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForPathInfo
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         )
 /**
  * @brief see #ZFInputForPathInfo
@@ -644,7 +644,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForPathInfo
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         )
 
 // ============================================================
@@ -657,7 +657,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
  *   <ZFCallback
  *       callbackType="ZFOutputForPathInfo"
  *       pathInfo="ZFPathInfo" // required, the path info
- *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Create by default
+ *       flags="ZFFileOpenOptionFlags" // optional, v_ZFFileOpenOption::e_Create by default
  *   >
  *   </ZFCallback>
  * @endcode
@@ -677,7 +677,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForPathInfo
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         )
 /**
  * @brief see #ZFOutputForPathInfo
@@ -689,7 +689,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForPathInfo
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         )
 
 // ============================================================
@@ -702,7 +702,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
  *   <ZFCallback
  *       callbackType="ZFInputForLocal"
  *       localPath="zfstring" // required, the local path
- *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Read by default
+ *       flags="ZFFileOpenOptionFlags" // optional, v_ZFFileOpenOption::e_Read by default
  *   >
  *   </ZFCallback>
  * @endcode
@@ -725,7 +725,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFInput, ZFInputForLocal
         , ZFMP_IN(const zfchar *, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         )
 /**
  * @brief see #ZFInputForLocal
@@ -734,7 +734,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalT
         , ZFMP_OUT(ZFCallback &, ret)
         , ZFMP_IN(const zfchar *, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         )
 
 // ============================================================
@@ -747,7 +747,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalT
  *   <ZFCallback
  *       callbackType="ZFOutputForLocal"
  *       localPath="zfstring" // required, the local path
- *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Create by default
+ *       flags="ZFFileOpenOptionFlags" // optional, v_ZFFileOpenOption::e_Create by default
  *   >
  *   </ZFCallback>
  * @endcode
@@ -771,7 +771,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalT
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFOutput, ZFOutputForLocal
         , ZFMP_IN(const zfchar *, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         )
 /**
  * @brief see #ZFOutputForLocal
@@ -780,7 +780,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT
         , ZFMP_OUT(ZFCallback &, ret)
         , ZFMP_IN(const zfchar *, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         )
 
 // ============================================================

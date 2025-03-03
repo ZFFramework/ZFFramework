@@ -9,7 +9,7 @@ ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFWebSocket, ZFImpl_sy
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFWebSocketImpl_sys_Android, ZFWebSocket, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFWebSocketImpl_sys_Android, ZFWebSocket, v_ZFProtocolLevel::e_SystemNormal)
 public:
     virtual void *open(
             ZF_IN ZFWebSocket *owner

@@ -21,7 +21,7 @@
  *       window->child(textView);
  *
  *       // make it center in window
- *       textView->layoutParam()->align(ZFUIAlign::e_Center);
+ *       textView->layoutParam()->align(v_ZFUIAlign::e_Center);
  *   }
  * @endcode
  */

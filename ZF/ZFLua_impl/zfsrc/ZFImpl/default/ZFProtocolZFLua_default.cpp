@@ -5,7 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLua_impl, ZFLua, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLua_impl, ZFLua, v_ZFProtocolLevel::e_Default)
 public:
     virtual void *luaStateOpen(void) {
         return ZFImpl_ZFLua_luaStateOpen();

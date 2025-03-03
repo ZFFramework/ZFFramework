@@ -31,7 +31,7 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, file)
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile
         , ZFMP_IN(const zfchar *, filePath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), filePath), flags);
@@ -51,7 +51,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile
         , ZFMP_IN(const zfchar *, filePath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), filePath), flags);

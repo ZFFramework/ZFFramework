@@ -10,7 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUISysWindow ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUISysWindow)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUISysWindow, ZFImpl_sys_Android_JNI_NAME_ZFUISysWindow)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_Android, ZFUISysWindow, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_Android, ZFUISysWindow, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Activity")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
@@ -142,7 +142,7 @@ public:
 
     virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {
-            return ZFUIOrientation::e_Top;
+            return v_ZFUIOrientation::e_Top;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindow(), "native_sysWindowOrientation",

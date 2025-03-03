@@ -14,7 +14,7 @@ public:
     pthread_mutex_t semaLocker;
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Posix, ZFSemaphore, ZFProtocolLevel::e_SystemLow)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Posix, ZFSemaphore, v_ZFProtocolLevel::e_SystemLow)
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
         _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = zfnew(_ZFP_ZFSemaphoreImpl_sys_Posix_Token);

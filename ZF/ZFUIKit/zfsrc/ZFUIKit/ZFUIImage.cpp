@@ -314,7 +314,7 @@ void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     if(ref->d->imageStateImpl) {
         ref->d->imageStateImpl.execute(ZFArgs()
                 .sender(ref)
-                .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Copy))
+                .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Copy))
                 .param1(this)
                 );
     }
@@ -353,7 +353,7 @@ ZFMETHOD_DEFINE_0(ZFUIImage, zfautoT<ZFUIImage>, imageStateUpdate) {
     if(d->imageStateImpl) {
         d->imageStateImpl.execute(ZFArgs()
                 .sender(this)
-                .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Attach))
+                .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Attach))
                 );
         zfautoT<ZFUIImage> ret = this->imageState();
         if(d->imageStateObservers.isEmpty()) {
@@ -374,7 +374,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateAttach
     if(d->imageStateObservers.count() == 1) {
         d->imageStateImpl.execute(ZFArgs()
                 .sender(this)
-                .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Attach))
+                .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Attach))
                 );
     }
     else {
@@ -391,7 +391,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateDetach
         if(d->imageStateObservers.isEmpty()) {
             d->imageStateImpl.execute(ZFArgs()
                     .sender(this)
-                    .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Detach))
+                    .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Detach))
                     );
             d->imageState = zfnull;
         }
@@ -410,7 +410,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
         if(!d->imageStateObservers.isEmpty()) {
             d->imageStateImpl.execute(ZFArgs()
                     .sender(this)
-                    .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Detach))
+                    .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Detach))
                     );
         }
         d->imageStateImpl = zfnull;
@@ -421,7 +421,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
         if(!d->imageStateObservers.isEmpty()) {
             d->imageStateImpl.execute(ZFArgs()
                     .sender(this)
-                    .param0(zfobj<v_ZFUIImageStateImplAction>(ZFUIImageStateImplAction::e_Attach))
+                    .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Attach))
                     );
         }
     }

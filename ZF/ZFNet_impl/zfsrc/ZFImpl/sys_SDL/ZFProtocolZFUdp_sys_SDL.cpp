@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUdpImpl_sys_SDL, ZFUdp, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUdpImpl_sys_SDL, ZFUdp, v_ZFProtocolLevel::e_SystemHigh)
 public:
     virtual void *open(
             ZF_IN ZFUdp *owner

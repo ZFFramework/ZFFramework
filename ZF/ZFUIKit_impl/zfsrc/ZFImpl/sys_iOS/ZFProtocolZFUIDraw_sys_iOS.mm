@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFUIDrawForView
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_iOS, ZFUIDrawForView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_iOS, ZFUIDrawForView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIView")
 
 public:
@@ -63,7 +63,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_iOS)
 
 // ============================================================
 // ZFUIDrawForImage
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_iOS, ZFUIDrawForImage, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_iOS, ZFUIDrawForImage, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIImage")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIImage, "iOS:UIImage")
@@ -89,7 +89,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_iOS)
 
 // ============================================================
 // ZFUIDraw
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_iOS, ZFUIDraw, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_iOS, ZFUIDraw, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:CGContextRef")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIDrawForView, "iOS:UIView")

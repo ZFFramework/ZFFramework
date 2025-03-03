@@ -315,7 +315,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
     _ZFP_ZFFileTokenForRes *ret = zfnew(_ZFP_ZFFileTokenForRes);
     if(ZFResExtPathCheck(ret->resExtPath, resPath)) {
         ret->resExtPath.pathData(ZFPathInfoToChild(ret->resExtPath, resPath));
-        ret->fd = ZFPathInfoOpen(ret->resExtPath, ZFFileOpenOption::e_Read);
+        ret->fd = ZFPathInfoOpen(ret->resExtPath, v_ZFFileOpenOption::e_Read);
     }
     else {
         ret->fd = ZFPROTOCOL_ACCESS(ZFRes)->resOpen(resPath);

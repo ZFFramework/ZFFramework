@@ -16,7 +16,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
     }
     if(!impl->startable()) {
         callback.execute(ZFArgs()
-                .param0(zfobj<v_ZFResultType>(ZFResultType::e_Fail))
+                .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
                 .param1(zfobj<v_zfstring>(zfstr("unable to load audio from input: %s"
                             , src
                             )))
@@ -46,7 +46,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
     }
     if(!impl->startable()) {
         callback.execute(ZFArgs()
-                .param0(zfobj<v_ZFResultType>(ZFResultType::e_Fail))
+                .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
                 .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
                             , url
                             )))
@@ -114,7 +114,7 @@ void ZFAudioPlayTask::taskOnStart(void) {
                 , zfweakT<zfself>, owner
                 ) {
             v_ZFResultType *resultType = zfargs.param0();
-            if(resultType->zfv() != ZFResultType::e_Success) {
+            if(resultType->zfv() != v_ZFResultType::e_Success) {
                 v_zfstring *errorHint = zfargs.param1();
                 if(errorHint) {
                     owner->errorHint(errorHint->zfv);
@@ -126,7 +126,7 @@ void ZFAudioPlayTask::taskOnStart(void) {
                 , zfweakT<zfself>, owner
                 ) {
             v_ZFResultType *resultType = zfargs.param0();
-            if(resultType->zfv() != ZFResultType::e_Success) {
+            if(resultType->zfv() != v_ZFResultType::e_Success) {
                 v_zfstring *errorHint = zfargs.param1();
                 if(errorHint) {
                     owner->errorHint(errorHint->zfv);

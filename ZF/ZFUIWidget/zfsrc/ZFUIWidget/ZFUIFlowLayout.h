@@ -28,7 +28,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ASSIGN(zfbool, reserveSpace)
 
     ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, align) {
-        propertyValue = ZFUIAlign::e_Center;
+        propertyValue = v_ZFUIAlign::e_Center;
     }
 
 public:
@@ -71,7 +71,7 @@ public:
      * #v_ZFUIOrientation::e_Left means layout children from left to right,
      * while #v_ZFUIOrientation::e_Bottom means layout children from bottom to top
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientation, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientation, v_ZFUIOrientation::e_Left)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientation, orientation)
     /**
      * @brief secondary direction to layout children, #v_ZFUIOrientation::e_Top by default
@@ -85,7 +85,7 @@ public:
      *   and if they are both y direction, then #orientationSecondary would be
      *   treated as #v_ZFUIOrientation::e_Left
      */
-    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientationSecondary, ZFUIOrientation::e_Top)
+    ZFPROPERTY_ASSIGN(ZFUIOrientation, orientationSecondary, v_ZFUIOrientation::e_Top)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIOrientation, orientationSecondary)
 
     /**
@@ -97,7 +97,7 @@ public:
     /**
      * @brief valid only when #gridMode, indicates how to scale children
      */
-    ZFPROPERTY_ASSIGN(ZFUIContentScaleType, childScaleType, ZFUIContentScaleType::e_FillCenter)
+    ZFPROPERTY_ASSIGN(ZFUIContentScaleType, childScaleType, v_ZFUIContentScaleType::e_FillCenter)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleType, childScaleType)
 
     /**

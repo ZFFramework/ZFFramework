@@ -11,258 +11,258 @@ ZFUIKeyCode ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(int qKeyCode)
     switch(qKeyCode)
     {
         case Qt::Key_Escape:
-            return ZFUIKeyCode::e_kEsc;
+            return v_ZFUIKeyCode::e_kEsc;
         case Qt::Key_Tab:
         case Qt::Key_Backtab:
-            return ZFUIKeyCode::e_kTab;
+            return v_ZFUIKeyCode::e_kTab;
         case Qt::Key_Backspace:
-            return ZFUIKeyCode::e_kBackspace;
+            return v_ZFUIKeyCode::e_kBackspace;
         case Qt::Key_Return:
-            return ZFUIKeyCode::e_kEnter;
+            return v_ZFUIKeyCode::e_kEnter;
         case Qt::Key_Space:
-            return ZFUIKeyCode::e_kSpace;
+            return v_ZFUIKeyCode::e_kSpace;
         case Qt::Key_CapsLock:
-            return ZFUIKeyCode::e_kCapsLock;
+            return v_ZFUIKeyCode::e_kCapsLock;
         case Qt::Key_Shift:
-            return ZFUIKeyCode::e_kShift;
+            return v_ZFUIKeyCode::e_kShift;
         case Qt::Key_Control:
-            return ZFUIKeyCode::e_kCtrl;
+            return v_ZFUIKeyCode::e_kCtrl;
         case Qt::Key_Alt:
-            return ZFUIKeyCode::e_kAlt;
+            return v_ZFUIKeyCode::e_kAlt;
         case Qt::Key_Meta:
-            return ZFUIKeyCode::e_kCommand;
+            return v_ZFUIKeyCode::e_kCommand;
         case Qt::Key_Menu:
-            return ZFUIKeyCode::e_kContextMenu;
+            return v_ZFUIKeyCode::e_kContextMenu;
 
         case Qt::Key_F1:
-            return ZFUIKeyCode::e_kF1;
+            return v_ZFUIKeyCode::e_kF1;
         case Qt::Key_F2:
-            return ZFUIKeyCode::e_kF2;
+            return v_ZFUIKeyCode::e_kF2;
         case Qt::Key_F3:
-            return ZFUIKeyCode::e_kF3;
+            return v_ZFUIKeyCode::e_kF3;
         case Qt::Key_F4:
-            return ZFUIKeyCode::e_kF4;
+            return v_ZFUIKeyCode::e_kF4;
         case Qt::Key_F5:
-            return ZFUIKeyCode::e_kF5;
+            return v_ZFUIKeyCode::e_kF5;
         case Qt::Key_F6:
-            return ZFUIKeyCode::e_kF6;
+            return v_ZFUIKeyCode::e_kF6;
         case Qt::Key_F7:
-            return ZFUIKeyCode::e_kF7;
+            return v_ZFUIKeyCode::e_kF7;
         case Qt::Key_F8:
-            return ZFUIKeyCode::e_kF8;
+            return v_ZFUIKeyCode::e_kF8;
         case Qt::Key_F9:
-            return ZFUIKeyCode::e_kF9;
+            return v_ZFUIKeyCode::e_kF9;
         case Qt::Key_F10:
-            return ZFUIKeyCode::e_kF10;
+            return v_ZFUIKeyCode::e_kF10;
         case Qt::Key_F11:
-            return ZFUIKeyCode::e_kF11;
+            return v_ZFUIKeyCode::e_kF11;
         case Qt::Key_F12:
-            return ZFUIKeyCode::e_kF12;
+            return v_ZFUIKeyCode::e_kF12;
 
         case Qt::Key_0:
-            return ZFUIKeyCode::e_k0;
+            return v_ZFUIKeyCode::e_k0;
         case Qt::Key_1:
-            return ZFUIKeyCode::e_k1;
+            return v_ZFUIKeyCode::e_k1;
         case Qt::Key_2:
-            return ZFUIKeyCode::e_k2;
+            return v_ZFUIKeyCode::e_k2;
         case Qt::Key_3:
-            return ZFUIKeyCode::e_k3;
+            return v_ZFUIKeyCode::e_k3;
         case Qt::Key_4:
-            return ZFUIKeyCode::e_k4;
+            return v_ZFUIKeyCode::e_k4;
         case Qt::Key_5:
-            return ZFUIKeyCode::e_k5;
+            return v_ZFUIKeyCode::e_k5;
         case Qt::Key_6:
-            return ZFUIKeyCode::e_k6;
+            return v_ZFUIKeyCode::e_k6;
         case Qt::Key_7:
-            return ZFUIKeyCode::e_k7;
+            return v_ZFUIKeyCode::e_k7;
         case Qt::Key_8:
-            return ZFUIKeyCode::e_k8;
+            return v_ZFUIKeyCode::e_k8;
         case Qt::Key_9:
-            return ZFUIKeyCode::e_k9;
+            return v_ZFUIKeyCode::e_k9;
 
         case Qt::Key_A:
-            return ZFUIKeyCode::e_kA;
+            return v_ZFUIKeyCode::e_kA;
         case Qt::Key_B:
-            return ZFUIKeyCode::e_kB;
+            return v_ZFUIKeyCode::e_kB;
         case Qt::Key_C:
-            return ZFUIKeyCode::e_kC;
+            return v_ZFUIKeyCode::e_kC;
         case Qt::Key_D:
-            return ZFUIKeyCode::e_kD;
+            return v_ZFUIKeyCode::e_kD;
         case Qt::Key_E:
-            return ZFUIKeyCode::e_kE;
+            return v_ZFUIKeyCode::e_kE;
         case Qt::Key_F:
-            return ZFUIKeyCode::e_kF;
+            return v_ZFUIKeyCode::e_kF;
         case Qt::Key_G:
-            return ZFUIKeyCode::e_kG;
+            return v_ZFUIKeyCode::e_kG;
         case Qt::Key_H:
-            return ZFUIKeyCode::e_kH;
+            return v_ZFUIKeyCode::e_kH;
         case Qt::Key_I:
-            return ZFUIKeyCode::e_kI;
+            return v_ZFUIKeyCode::e_kI;
         case Qt::Key_J:
-            return ZFUIKeyCode::e_kJ;
+            return v_ZFUIKeyCode::e_kJ;
         case Qt::Key_K:
-            return ZFUIKeyCode::e_kK;
+            return v_ZFUIKeyCode::e_kK;
         case Qt::Key_L:
-            return ZFUIKeyCode::e_kL;
+            return v_ZFUIKeyCode::e_kL;
         case Qt::Key_M:
-            return ZFUIKeyCode::e_kM;
+            return v_ZFUIKeyCode::e_kM;
         case Qt::Key_N:
-            return ZFUIKeyCode::e_kN;
+            return v_ZFUIKeyCode::e_kN;
         case Qt::Key_O:
-            return ZFUIKeyCode::e_kO;
+            return v_ZFUIKeyCode::e_kO;
         case Qt::Key_P:
-            return ZFUIKeyCode::e_kP;
+            return v_ZFUIKeyCode::e_kP;
         case Qt::Key_Q:
-            return ZFUIKeyCode::e_kQ;
+            return v_ZFUIKeyCode::e_kQ;
         case Qt::Key_R:
-            return ZFUIKeyCode::e_kR;
+            return v_ZFUIKeyCode::e_kR;
         case Qt::Key_S:
-            return ZFUIKeyCode::e_kS;
+            return v_ZFUIKeyCode::e_kS;
         case Qt::Key_T:
-            return ZFUIKeyCode::e_kT;
+            return v_ZFUIKeyCode::e_kT;
         case Qt::Key_U:
-            return ZFUIKeyCode::e_kU;
+            return v_ZFUIKeyCode::e_kU;
         case Qt::Key_V:
-            return ZFUIKeyCode::e_kV;
+            return v_ZFUIKeyCode::e_kV;
         case Qt::Key_W:
-            return ZFUIKeyCode::e_kW;
+            return v_ZFUIKeyCode::e_kW;
         case Qt::Key_X:
-            return ZFUIKeyCode::e_kX;
+            return v_ZFUIKeyCode::e_kX;
         case Qt::Key_Y:
-            return ZFUIKeyCode::e_kY;
+            return v_ZFUIKeyCode::e_kY;
         case Qt::Key_Z:
-            return ZFUIKeyCode::e_kZ;
+            return v_ZFUIKeyCode::e_kZ;
 
         case Qt::Key_Agrave:
-            return ZFUIKeyCode::e_kGrave;
+            return v_ZFUIKeyCode::e_kGrave;
         case Qt::Key_Minus:
-            return ZFUIKeyCode::e_kMinus;
+            return v_ZFUIKeyCode::e_kMinus;
         case Qt::Key_Equal:
-            return ZFUIKeyCode::e_kEquals;
+            return v_ZFUIKeyCode::e_kEquals;
         case Qt::Key_BracketLeft:
-            return ZFUIKeyCode::e_kBracketLeft;
+            return v_ZFUIKeyCode::e_kBracketLeft;
         case Qt::Key_BracketRight:
-            return ZFUIKeyCode::e_kBracketRight;
+            return v_ZFUIKeyCode::e_kBracketRight;
         case Qt::Key_Backslash:
-            return ZFUIKeyCode::e_kBackSlash;
+            return v_ZFUIKeyCode::e_kBackSlash;
         case Qt::Key_Semicolon:
-            return ZFUIKeyCode::e_kSemiColon;
+            return v_ZFUIKeyCode::e_kSemiColon;
         case Qt::Key_Apostrophe:
-            return ZFUIKeyCode::e_kApostrophe;
+            return v_ZFUIKeyCode::e_kApostrophe;
         case Qt::Key_Comma:
-            return ZFUIKeyCode::e_kComma;
+            return v_ZFUIKeyCode::e_kComma;
         case Qt::Key_Period:
-            return ZFUIKeyCode::e_kPeriod;
+            return v_ZFUIKeyCode::e_kPeriod;
         case Qt::Key_Slash:
-            return ZFUIKeyCode::e_kSlash;
+            return v_ZFUIKeyCode::e_kSlash;
 
         case Qt::Key_Left:
-            return ZFUIKeyCode::e_kLeft;
+            return v_ZFUIKeyCode::e_kLeft;
         case Qt::Key_Up:
-            return ZFUIKeyCode::e_kUp;
+            return v_ZFUIKeyCode::e_kUp;
         case Qt::Key_Right:
-            return ZFUIKeyCode::e_kRight;
+            return v_ZFUIKeyCode::e_kRight;
         case Qt::Key_Down:
-            return ZFUIKeyCode::e_kDown;
+            return v_ZFUIKeyCode::e_kDown;
         case Qt::Key_Home:
-            return ZFUIKeyCode::e_kHome;
+            return v_ZFUIKeyCode::e_kHome;
         case Qt::Key_End:
-            return ZFUIKeyCode::e_kEnd;
+            return v_ZFUIKeyCode::e_kEnd;
         case Qt::Key_PageUp:
-            return ZFUIKeyCode::e_kPageUp;
+            return v_ZFUIKeyCode::e_kPageUp;
         case Qt::Key_PageDown:
-            return ZFUIKeyCode::e_kPageDown;
+            return v_ZFUIKeyCode::e_kPageDown;
         case Qt::Key_Insert:
-            return ZFUIKeyCode::e_kInsert;
+            return v_ZFUIKeyCode::e_kInsert;
         case Qt::Key_Delete:
-            return ZFUIKeyCode::e_kDelete;
+            return v_ZFUIKeyCode::e_kDelete;
         case Qt::Key_SysReq:
-            return ZFUIKeyCode::e_kPrintScreen;
+            return v_ZFUIKeyCode::e_kPrintScreen;
         case Qt::Key_ScrollLock:
-            return ZFUIKeyCode::e_kScrollLock;
+            return v_ZFUIKeyCode::e_kScrollLock;
         case Qt::Key_Pause:
-            return ZFUIKeyCode::e_kPauseBreak;
+            return v_ZFUIKeyCode::e_kPauseBreak;
 
 #if 0
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum0;
+            return v_ZFUIKeyCode::e_kNum0;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum1;
+            return v_ZFUIKeyCode::e_kNum1;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum2;
+            return v_ZFUIKeyCode::e_kNum2;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum3;
+            return v_ZFUIKeyCode::e_kNum3;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum4;
+            return v_ZFUIKeyCode::e_kNum4;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum5;
+            return v_ZFUIKeyCode::e_kNum5;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum6;
+            return v_ZFUIKeyCode::e_kNum6;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum7;
+            return v_ZFUIKeyCode::e_kNum7;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum8;
+            return v_ZFUIKeyCode::e_kNum8;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNum9;
+            return v_ZFUIKeyCode::e_kNum9;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumLock;
+            return v_ZFUIKeyCode::e_kNumLock;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumAdd;
+            return v_ZFUIKeyCode::e_kNumAdd;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumMinus;
+            return v_ZFUIKeyCode::e_kNumMinus;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumMultiply;
+            return v_ZFUIKeyCode::e_kNumMultiply;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumDivide;
+            return v_ZFUIKeyCode::e_kNumDivide;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumEnter;
+            return v_ZFUIKeyCode::e_kNumEnter;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kNumDot;
+            return v_ZFUIKeyCode::e_kNumDot;
 
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaPlay;
+            return v_ZFUIKeyCode::e_kMediaPlay;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaPause;
+            return v_ZFUIKeyCode::e_kMediaPause;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaPlayPause;
+            return v_ZFUIKeyCode::e_kMediaPlayPause;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaStop;
+            return v_ZFUIKeyCode::e_kMediaStop;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaRecord;
+            return v_ZFUIKeyCode::e_kMediaRecord;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaPrev;
+            return v_ZFUIKeyCode::e_kMediaPrev;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaNext;
+            return v_ZFUIKeyCode::e_kMediaNext;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaFastForward;
+            return v_ZFUIKeyCode::e_kMediaFastForward;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kMediaFastRewind;
+            return v_ZFUIKeyCode::e_kMediaFastRewind;
 
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kVolumeMute;
+            return v_ZFUIKeyCode::e_kVolumeMute;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kVolumeUp;
+            return v_ZFUIKeyCode::e_kVolumeUp;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kVolumeDown;
+            return v_ZFUIKeyCode::e_kVolumeDown;
 
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneCall;
+            return v_ZFUIKeyCode::e_kPhoneCall;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneCallEnd;
+            return v_ZFUIKeyCode::e_kPhoneCallEnd;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneHome;
+            return v_ZFUIKeyCode::e_kPhoneHome;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneMenu;
+            return v_ZFUIKeyCode::e_kPhoneMenu;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneBack;
+            return v_ZFUIKeyCode::e_kPhoneBack;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneSearch;
+            return v_ZFUIKeyCode::e_kPhoneSearch;
         case Qt::Key_unknown:
-            return ZFUIKeyCode::e_kPhoneCamera;
+            return v_ZFUIKeyCode::e_kPhoneCamera;
 #endif
         case Qt::Key_unknown:
         default:
-            return ZFUIKeyCode::e_kUnknown;
+            return v_ZFUIKeyCode::e_kUnknown;
     }
 }
 

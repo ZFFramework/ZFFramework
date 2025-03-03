@@ -43,7 +43,7 @@ public slots:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_Qt, ZFTimer, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_Qt, ZFTimer, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QTimer")
 public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {

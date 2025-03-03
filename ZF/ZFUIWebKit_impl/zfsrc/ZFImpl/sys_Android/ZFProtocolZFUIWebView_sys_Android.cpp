@@ -9,7 +9,7 @@ ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIWebView, ZFImpl_sy
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_Android, ZFUIWebView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_Android, ZFUIWebView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:WebView")
 
 public:

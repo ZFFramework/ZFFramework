@@ -171,22 +171,22 @@ protected:
         if(child == zfnull || child->window() != this->window()) {
             return false;
         }
-        ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel;
+        ZFUIMouseAction mouseAction = v_ZFUIMouseAction::e_Cancel;
         switch(event->type()) {
             case QEvent::GraphicsSceneMousePress:
             case QEvent::GraphicsSceneMouseDoubleClick:
                 ZFImpl_sys_Qt_QObjectTag(obj, "_ZFP_ZFImpl_ZFUIScrollView_sys_Qt_mouseDownTag", QVariant::fromValue(zftrue));
-                mouseAction = ZFUIMouseAction::e_Down;
+                mouseAction = v_ZFUIMouseAction::e_Down;
                 break;
             case QEvent::GraphicsSceneMouseMove:
                 if(!ZFImpl_sys_Qt_QObjectTag(obj, "_ZFP_ZFImpl_ZFUIScrollView_sys_Qt_mouseDownTag").isValid()) {
                     return false;
                 }
-                mouseAction = ZFUIMouseAction::e_Move;
+                mouseAction = v_ZFUIMouseAction::e_Move;
                 break;
             case QEvent::GraphicsSceneMouseRelease:
                 ZFImpl_sys_Qt_QObjectTag(obj, "_ZFP_ZFImpl_ZFUIScrollView_sys_Qt_mouseDownTag", QVariant());
-                mouseAction = ZFUIMouseAction::e_Up;
+                mouseAction = v_ZFUIMouseAction::e_Up;
                 break;
             default:
                 return false;
@@ -267,22 +267,22 @@ public:
     virtual void *mouseEventClone(
             ZF_IN void *nativeMouseEvent
             , ZF_IN_OPT zfbool changeMouseAction = zffalse
-            , ZF_IN_OPT ZFUIMouseAction mouseAction = ZFUIMouseAction::e_Cancel
+            , ZF_IN_OPT ZFUIMouseAction mouseAction = v_ZFUIMouseAction::e_Cancel
             ) {
         QGraphicsSceneMouseEvent *e = (QGraphicsSceneMouseEvent *)nativeMouseEvent;
         QEvent::Type type = e->type();
         if(changeMouseAction) {
             switch(mouseAction) {
-                case ZFUIMouseAction::e_Down:
+                case v_ZFUIMouseAction::e_Down:
                     type = QEvent::GraphicsSceneMousePress;
                     break;
-                case ZFUIMouseAction::e_Move:
+                case v_ZFUIMouseAction::e_Move:
                     type = QEvent::GraphicsSceneMouseMove;
                     break;
-                case ZFUIMouseAction::e_Up:
+                case v_ZFUIMouseAction::e_Up:
                     type = QEvent::GraphicsSceneMouseRelease;
                     break;
-                case ZFUIMouseAction::e_Cancel:
+                case v_ZFUIMouseAction::e_Cancel:
                     type = QEvent::GraphicsSceneMouseRelease;
                     break;
                 default:
@@ -291,7 +291,7 @@ public:
             }
         }
         QGraphicsSceneMouseEvent *ret = _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventClone(e, type, e->pos());
-        if(changeMouseAction && mouseAction == ZFUIMouseAction::e_Cancel) {
+        if(changeMouseAction && mouseAction == v_ZFUIMouseAction::e_Cancel) {
             _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventTagAccess(ret)->cancelFlag = zftrue;
         }
         return ret;
@@ -489,7 +489,7 @@ public:
 // impl
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Qt, ZFUIScrollView, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Qt, ZFUIScrollView, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:

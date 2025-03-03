@@ -127,7 +127,7 @@ public:
      * @brief true if #type is #v_ZFXmlType::e_Null
      */
     inline zfbool valid(void) const {
-        return (this->type() != ZFXmlType::e_Null);
+        return (this->type() != v_ZFXmlType::e_Null);
     }
 
 public:

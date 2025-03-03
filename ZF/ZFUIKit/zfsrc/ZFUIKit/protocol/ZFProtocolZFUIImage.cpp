@@ -60,19 +60,19 @@ zfindex ZFUIImageImplNinePatchCalc(
     if(srcMargin.top > 0 && dstMargin.top > 0) {
         if(srcMargin.left > 0 && dstMargin.left > 0) { // left
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_TopLeft;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_TopLeft;
             drawData->src = ZFUIRectCreate(0, 0, srcMarginFixed.left, srcMarginFixed.top);
             drawData->dst = ZFUIRectCreate(0, 0, dstMargin.left, dstMargin.top);
         }
         if(srcCenter.width > 0 && dstCenter.width > 0) { // center
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_TopCenter;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_TopCenter;
             drawData->src = ZFUIRectCreate(srcMargin.left, 0, srcCenter.width, srcMarginFixed.top);
             drawData->dst = ZFUIRectCreate(dstMargin.left, 0, dstCenter.width, dstMargin.top);
         }
         if(srcMargin.right > 0 && dstMargin.right > 0) { // right
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_TopRight;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_TopRight;
             drawData->src = ZFUIRectCreate(srcSize.width - srcMarginFixed.right, 0, srcMarginFixed.right, srcMarginFixed.top);
             drawData->dst = ZFUIRectCreate(dstMargin.left + dstCenter.width, 0, dstMargin.right, dstMargin.top);
         }
@@ -81,19 +81,19 @@ zfindex ZFUIImageImplNinePatchCalc(
     if(srcMargin.top > 0 && dstMargin.top > 0) {
         if(srcMargin.left > 0 && dstMargin.left > 0) { // left
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_CenterLeft;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_CenterLeft;
             drawData->src = ZFUIRectCreate(0, srcMargin.top, srcMarginFixed.left, srcCenter.height);
             drawData->dst = ZFUIRectCreate(0, dstMargin.top, dstMargin.left, dstCenter.height);
         }
         if(srcCenter.width > 0 && dstCenter.width > 0) { // center
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_CenterCenter;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_CenterCenter;
             drawData->src = ZFUIRectCreate(srcMargin.left, srcMargin.top, srcCenter.width, srcCenter.height);
             drawData->dst = ZFUIRectCreate(dstMargin.left, dstMargin.top, dstCenter.width, dstCenter.height);
         }
         if(srcMargin.right > 0 && dstMargin.right > 0) { // right
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_CenterRight;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_CenterRight;
             drawData->src = ZFUIRectCreate(srcSize.width - srcMarginFixed.right, srcMargin.top, srcMarginFixed.right, srcCenter.height);
             drawData->dst = ZFUIRectCreate(dstMargin.left + dstCenter.width, dstMargin.top, dstMargin.right, dstCenter.height);
         }
@@ -102,19 +102,19 @@ zfindex ZFUIImageImplNinePatchCalc(
     if(srcMargin.top > 0 && dstMargin.top > 0) {
         if(srcMargin.left > 0 && dstMargin.left > 0) { // left
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_BottomLeft;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_BottomLeft;
             drawData->src = ZFUIRectCreate(0, srcSize.height - srcMarginFixed.bottom, srcMarginFixed.left, srcMarginFixed.bottom);
             drawData->dst = ZFUIRectCreate(0, dstMargin.top + dstCenter.height, dstMargin.left, dstMargin.bottom);
         }
         if(srcCenter.width > 0 && dstCenter.width > 0) { // center
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_BottomCenter;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_BottomCenter;
             drawData->src = ZFUIRectCreate(srcMargin.left, srcSize.height - srcMarginFixed.bottom, srcCenter.width, srcMarginFixed.bottom);
             drawData->dst = ZFUIRectCreate(dstMargin.left, dstMargin.top + dstCenter.height, dstCenter.width, dstMargin.bottom);
         }
         if(srcMargin.right > 0 && dstMargin.right > 0) { // right
             ZFUIImageImplNinePatchDrawData *drawData = outBuf + count; ++count;
-            drawData->position = ZFUIImageImplNinePatchPos::e_BottomRight;
+            drawData->position = v_ZFUIImageImplNinePatchPos::e_BottomRight;
             drawData->src = ZFUIRectCreate(srcSize.width - srcMarginFixed.right, srcSize.height - srcMarginFixed.bottom, srcMarginFixed.right, srcMarginFixed.bottom);
             drawData->dst = ZFUIRectCreate(dstMargin.left + dstCenter.width, dstMargin.top + dstCenter.height, dstMargin.right, dstMargin.bottom);
         }

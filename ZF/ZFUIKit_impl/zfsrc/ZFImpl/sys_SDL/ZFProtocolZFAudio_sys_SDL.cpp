@@ -46,7 +46,7 @@ private:
     Mix_Chunk *_ZFP_impl;
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_SDL, ZFAudio, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_SDL, ZFAudio, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("SDL_mixer")
 
 public:

@@ -101,7 +101,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_sys_Qt_DataHolder)
 #define _ZFP_ZFThreadImpl_sys_Qt_threadMap (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadImpl_sys_Qt_DataHolder)->threadMap)
 
 // ============================================================
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Qt, ZFThread, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Qt, ZFThread, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QThread")
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {

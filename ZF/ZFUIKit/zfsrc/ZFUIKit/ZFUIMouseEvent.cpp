@@ -13,7 +13,7 @@ void ZFUIMouseEvent::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     ret += " ";
     ZFUIPointToStringT(ret, this->mousePoint);
 
-    if(this->mouseButton != ZFUIMouseButton::e_Left) {
+    if(this->mouseButton != v_ZFUIMouseButton::e_Left) {
         ret += " ";
         ret += v_ZFUIMouseButton::EnumNameForValue(this->mouseButton);
     }

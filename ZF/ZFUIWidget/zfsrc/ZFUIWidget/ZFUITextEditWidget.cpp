@@ -41,8 +41,8 @@ void ZFUITextEditWidget::objectOnInit(void) {
 
     ZFUIButtonBasic *clearButton = this->clearButton();
     this->internalBgViewAdd(clearButton);
-    clearButton->layoutParam()->align(ZFUIAlign::e_Right);
-    clearButton->serializableRefLayoutParam()->align(ZFUIAlign::e_Right);
+    clearButton->layoutParam()->align(v_ZFUIAlign::e_Right);
+    clearButton->serializableRefLayoutParam()->align(v_ZFUIAlign::e_Right);
 
     _ZFP_ZFUITextEditWidget_updateClearButton(this);
 }
@@ -69,7 +69,7 @@ void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &na
     if(clearButton->visible()) {
         clearButton->layoutMeasure(ZFUISizeInvalid(), ZFUISizeParamWrapWrap());
         zffloat size = ZFUIMarginGetWidth(clearButton->layoutParam()->margin()) + clearButton->layoutMeasuredSize().width;
-        if(ZFBitTest(clearButton->layoutParam()->align(), ZFUIAlign::e_Left)) {
+        if(ZFBitTest(clearButton->layoutParam()->align(), v_ZFUIAlign::e_Left)) {
             nativeImplViewMargin.left += size;
         }
         else {

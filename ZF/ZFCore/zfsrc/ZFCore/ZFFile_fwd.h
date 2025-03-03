@@ -16,19 +16,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   while we have binary mode only
  *
  * usage:
- * -  ZFFileOpenOption::e_Create\n
+ * -  v_ZFFileOpenOption::e_Create\n
  *   create a new file for write only
- * -  ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read\n
+ * -  v_ZFFileOpenOption::e_Create | v_ZFFileOpenOption::e_Read\n
  *   create a new file for read/write
- * -  ZFFileOpenOption::e_Read\n
+ * -  v_ZFFileOpenOption::e_Read\n
  *   open a existing file for read only, fail if file not exist
- * -  ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write\n
+ * -  v_ZFFileOpenOption::e_Read | v_ZFFileOpenOption::e_Write\n
  *   open a existing file for read/write, fail if file not exist
- * -  ZFFileOpenOption::e_Write\n
- *   same as ZFFileOpenOption::e_Create, create a new file for write only
- * -  ZFFileOpenOption::e_Append\n
+ * -  v_ZFFileOpenOption::e_Write\n
+ *   same as v_ZFFileOpenOption::e_Create, create a new file for write only
+ * -  v_ZFFileOpenOption::e_Append\n
  *   open a file for append or create new if not exist, for write only
- * -  ZFFileOpenOption::e_Append | ZFFileOpenOption::e_Read\n
+ * -  v_ZFFileOpenOption::e_Append | v_ZFFileOpenOption::e_Read\n
  *   open a file for append or create new if not exist, for read/write
  */
 ZFENUM_BEGIN(ZFLIB_ZFCore, ZFFileOpenOption)

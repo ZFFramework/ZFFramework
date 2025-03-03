@@ -209,7 +209,7 @@ public:
      * @brief true if #type is not #v_ZFJsonType::e_Null
      */
     inline zfbool valid(void) const {
-        return (this->type() != ZFJsonType::e_Null);
+        return (this->type() != v_ZFJsonType::e_Null);
     }
 
     /**

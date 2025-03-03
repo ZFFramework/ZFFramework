@@ -17,7 +17,7 @@ public:
     jobject nativeTask;
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_Android, ZFHttpRequest, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_Android, ZFHttpRequest, v_ZFProtocolLevel::e_SystemNormal)
     // ============================================================
     // for request
 public:

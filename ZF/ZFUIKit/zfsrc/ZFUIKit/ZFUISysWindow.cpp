@@ -30,7 +30,7 @@ public:
     : embedImpl(zfnull)
     , nativeWindow(zfnull)
     , windowRootView(zfnull)
-    , sysWindowOrientationFlags(ZFUIOrientation::e_Top)
+    , sysWindowOrientationFlags(v_ZFUIOrientation::e_Top)
     , modalWindowOwner(zfnull)
     , modalWindowShowing(zfnull)
     , sysWindowLayoutParam(zfnull)
@@ -238,24 +238,24 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUIOrientation, sysWindowOrientation) {
         }
     }
     else {
-        return ZFUIOrientation::e_Top;
+        return v_ZFUIOrientation::e_Top;
     }
 }
 ZFMETHOD_DEFINE_1(ZFUISysWindow, void, sysWindowOrientationFlags
         , ZFMP_IN(const ZFUIOrientationFlags &, sysWindowOrientationFlags)
         ) {
     zfuint tmp = 0;
-    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), ZFUIOrientation::e_Left)) {
-        ZFBitSet(tmp, ZFUIOrientation::e_Left);
+    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), v_ZFUIOrientation::e_Left)) {
+        ZFBitSet(tmp, v_ZFUIOrientation::e_Left);
     }
-    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), ZFUIOrientation::e_Top)) {
-        ZFBitSet(tmp, ZFUIOrientation::e_Top);
+    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), v_ZFUIOrientation::e_Top)) {
+        ZFBitSet(tmp, v_ZFUIOrientation::e_Top);
     }
-    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), ZFUIOrientation::e_Right)) {
-        ZFBitSet(tmp, ZFUIOrientation::e_Right);
+    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), v_ZFUIOrientation::e_Right)) {
+        ZFBitSet(tmp, v_ZFUIOrientation::e_Right);
     }
-    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), ZFUIOrientation::e_Bottom)) {
-        ZFBitSet(tmp, ZFUIOrientation::e_Bottom);
+    if(ZFBitTest(sysWindowOrientationFlags.enumValue(), v_ZFUIOrientation::e_Bottom)) {
+        ZFBitSet(tmp, v_ZFUIOrientation::e_Bottom);
     }
     if(d->sysWindowOrientationFlags != tmp) {
         d->sysWindowOrientationFlags = tmp;

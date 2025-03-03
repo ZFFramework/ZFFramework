@@ -93,10 +93,10 @@ public:
     void labelViewUpdate(void) {
         zfstring value = this->pimplOwner->label(this->pimplOwner->buttonState())->text();
         if(value == zfnull) {
-            if(this->pimplOwner->buttonState() == ZFUIButtonState::e_Checked) {
+            if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_Checked) {
                 value = this->pimplOwner->labelHighlighted()->text();
             }
-            else if(this->pimplOwner->buttonState() == ZFUIButtonState::e_CheckedHighlighted) {
+            else if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_CheckedHighlighted) {
                 value = this->pimplOwner->labelChecked()->text();
                 if(value == zfnull) {
                     value = this->pimplOwner->labelHighlighted()->text();
@@ -111,10 +111,10 @@ public:
     void iconViewUpdate(void) {
         ZFUIImage *value = this->pimplOwner->icon(this->pimplOwner->buttonState())->imageState();
         if(value == zfnull) {
-            if(this->pimplOwner->buttonState() == ZFUIButtonState::e_Checked) {
+            if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_Checked) {
                 value = this->pimplOwner->iconHighlighted()->imageState();
             }
-            else if(this->pimplOwner->buttonState() == ZFUIButtonState::e_CheckedHighlighted) {
+            else if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_CheckedHighlighted) {
                 value = this->pimplOwner->iconChecked()->imageState();
                 if(value == zfnull) {
                     value = this->pimplOwner->iconHighlighted()->imageState();
@@ -129,10 +129,10 @@ public:
     void bgViewUpdate(void) {
         ZFUIImage *value = this->pimplOwner->bg(this->pimplOwner->buttonState())->imageState();
         if(value == zfnull) {
-            if(this->pimplOwner->buttonState() == ZFUIButtonState::e_Checked) {
+            if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_Checked) {
                 value = this->pimplOwner->bgHighlighted()->imageState();
             }
-            else if(this->pimplOwner->buttonState() == ZFUIButtonState::e_CheckedHighlighted) {
+            else if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_CheckedHighlighted) {
                 value = this->pimplOwner->bgChecked()->imageState();
                 if(value == zfnull) {
                     value = this->pimplOwner->bgHighlighted()->imageState();
@@ -160,7 +160,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
                     ) { \
                 const ZFProperty *property = zfargs.param0().to<v_ZFProperty *>()->zfv; \
                 button->d->T_Component##ViewPrepare(); \
-                if(button->buttonState() == ZFUIButtonState::e_##T_State) { \
+                if(button->buttonState() == v_ZFUIButtonState::e_##T_State) { \
                     ZFPropertyCopy(property, button->T_Component##View()->toObject(), zfargs.sender()); \
                 } \
                 else if(property == ZFPropertyAccess(CkClass, CkProp)) { \
@@ -259,18 +259,18 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bgDisabled) {
 }
 
 ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUITextView>, label
-        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
-        case ZFUIButtonState::e_Normal:
+        case v_ZFUIButtonState::e_Normal:
             return this->labelNormal();
-        case ZFUIButtonState::e_Highlighted:
+        case v_ZFUIButtonState::e_Highlighted:
             return this->labelHighlighted();
-        case ZFUIButtonState::e_Checked:
+        case v_ZFUIButtonState::e_Checked:
             return this->labelChecked();
-        case ZFUIButtonState::e_CheckedHighlighted:
+        case v_ZFUIButtonState::e_CheckedHighlighted:
             return this->labelCheckedHighlighted();
-        case ZFUIButtonState::e_Disabled:
+        case v_ZFUIButtonState::e_Disabled:
             return this->labelDisabled();
         default:
             ZFCoreCriticalShouldNotGoHere();
@@ -278,18 +278,18 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUITextView>, label
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, icon
-        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
-        case ZFUIButtonState::e_Normal:
+        case v_ZFUIButtonState::e_Normal:
             return this->iconNormal();
-        case ZFUIButtonState::e_Highlighted:
+        case v_ZFUIButtonState::e_Highlighted:
             return this->iconHighlighted();
-        case ZFUIButtonState::e_Checked:
+        case v_ZFUIButtonState::e_Checked:
             return this->iconChecked();
-        case ZFUIButtonState::e_CheckedHighlighted:
+        case v_ZFUIButtonState::e_CheckedHighlighted:
             return this->iconCheckedHighlighted();
-        case ZFUIButtonState::e_Disabled:
+        case v_ZFUIButtonState::e_Disabled:
             return this->iconDisabled();
         default:
             ZFCoreCriticalShouldNotGoHere();
@@ -297,18 +297,18 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, icon
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bg
-        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
-        case ZFUIButtonState::e_Normal:
+        case v_ZFUIButtonState::e_Normal:
             return this->bgNormal();
-        case ZFUIButtonState::e_Highlighted:
+        case v_ZFUIButtonState::e_Highlighted:
             return this->bgHighlighted();
-        case ZFUIButtonState::e_Checked:
+        case v_ZFUIButtonState::e_Checked:
             return this->bgChecked();
-        case ZFUIButtonState::e_CheckedHighlighted:
+        case v_ZFUIButtonState::e_CheckedHighlighted:
             return this->bgCheckedHighlighted();
-        case ZFUIButtonState::e_Disabled:
+        case v_ZFUIButtonState::e_Disabled:
             return this->bgDisabled();
         default:
             ZFCoreCriticalShouldNotGoHere();
@@ -318,19 +318,19 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bg
 
 ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, labelStyle
         , ZFMP_IN(ZFUITextView *, style)
-        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
     this->label(forState)->styleableCopyFrom(style);
 }
 ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, iconStyle
         , ZFMP_IN(ZFUIImageView *, style)
-        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
     this->icon(forState)->styleableCopyFrom(style);
 }
 ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, bgStyle
         , ZFMP_IN(ZFUIImageView *, style)
-        , ZFMP_IN_OPT(ZFUIButtonState, forState, ZFUIButtonState::e_Normal)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
     this->bg(forState)->styleableCopyFrom(style);
 }
@@ -408,16 +408,16 @@ void ZFUIButtonBasic::layoutOnMeasure(
     ZFUISize contentSize = ZFUISizeZero();
     zffloat contentSpace = 0;
     switch(this->iconPosition()) {
-        case ZFUIOrientation::e_Left:
-        case ZFUIOrientation::e_Right:
+        case v_ZFUIOrientation::e_Left:
+        case v_ZFUIOrientation::e_Right:
             if(iconSize.width > 0 && labelSize.width > 0) {
                 contentSpace = this->contentSpace();
             }
             contentSize.width = iconSize.width + contentSpace + labelSize.width;
             contentSize.height = zfmMax(iconSize.height, labelSize.height);
             break;
-        case ZFUIOrientation::e_Top:
-        case ZFUIOrientation::e_Bottom:
+        case v_ZFUIOrientation::e_Top:
+        case v_ZFUIOrientation::e_Bottom:
             if(iconSize.height > 0 && labelSize.height > 0) {
                 contentSpace = this->contentSpace();
             }
@@ -466,8 +466,8 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     ZFUIRect contentFrame = ZFUIRectZero();
     zffloat contentSpace = 0;
     switch(this->iconPosition()) {
-        case ZFUIOrientation::e_Left:
-        case ZFUIOrientation::e_Right:
+        case v_ZFUIOrientation::e_Left:
+        case v_ZFUIOrientation::e_Right:
             if(iconSize.width > 0 && labelSize.width > 0) {
                 contentSpace = this->contentSpace();
             }
@@ -477,25 +477,25 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
                 ZFUIRectApplyMargin(bounds, this->contentMargin()),
                 ZFUISizeCreate(iconSize.width + contentSpace + labelSize.width, zfmMax(iconSize.height, labelSize.height))
                 );
-            if(this->iconPosition() == ZFUIOrientation::e_Left) {
+            if(this->iconPosition() == v_ZFUIOrientation::e_Left) {
                 if(d->iconView != zfnull) {
-                    d->iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Left, contentFrame, iconSize));
+                    d->iconView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Left, contentFrame, iconSize));
                 }
                 if(d->labelView != zfnull) {
-                    d->labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Right, contentFrame, labelSize));
+                    d->labelView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Right, contentFrame, labelSize));
                 }
             }
             else {
                 if(d->iconView != zfnull) {
-                    d->iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Right, contentFrame, iconSize));
+                    d->iconView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Right, contentFrame, iconSize));
                 }
                 if(d->labelView != zfnull) {
-                    d->labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Left, contentFrame, labelSize));
+                    d->labelView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Left, contentFrame, labelSize));
                 }
             }
             break;
-        case ZFUIOrientation::e_Top:
-        case ZFUIOrientation::e_Bottom:
+        case v_ZFUIOrientation::e_Top:
+        case v_ZFUIOrientation::e_Bottom:
             if(iconSize.height > 0 && labelSize.height > 0) {
                 contentSpace = this->contentSpace();
             }
@@ -505,20 +505,20 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
                 ZFUIRectApplyMargin(bounds, this->contentMargin()),
                 ZFUISizeCreate(zfmMax(iconSize.width, labelSize.width), iconSize.height + contentSpace + labelSize.height)
                 );
-            if(this->iconPosition() == ZFUIOrientation::e_Top) {
+            if(this->iconPosition() == v_ZFUIOrientation::e_Top) {
                 if(d->iconView != zfnull) {
-                    d->iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Top, contentFrame, iconSize));
+                    d->iconView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Top, contentFrame, iconSize));
                 }
                 if(d->labelView != zfnull) {
-                    d->labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Bottom, contentFrame, labelSize));
+                    d->labelView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Bottom, contentFrame, labelSize));
                 }
             }
             else {
                 if(d->iconView != zfnull) {
-                    d->iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Bottom, contentFrame, iconSize));
+                    d->iconView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Bottom, contentFrame, iconSize));
                 }
                 if(d->labelView != zfnull) {
-                    d->labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Top, contentFrame, labelSize));
+                    d->labelView->viewFrame(ZFUIAlignApply(v_ZFUIAlign::e_Top, contentFrame, labelSize));
                 }
             }
             break;
@@ -561,19 +561,19 @@ void ZFUIButtonBasic::buttonStateOnUpdate(void) {
             d->bgViewUpdate(); \
         }
     switch(this->buttonState()) {
-        case ZFUIButtonState::e_Normal:
+        case v_ZFUIButtonState::e_Normal:
             _ZFP_ZFUIButtonBasic_buttonStateOn(Normal)
             break;
-        case ZFUIButtonState::e_Highlighted:
+        case v_ZFUIButtonState::e_Highlighted:
             _ZFP_ZFUIButtonBasic_buttonStateOn(Highlighted)
             break;
-        case ZFUIButtonState::e_Checked:
+        case v_ZFUIButtonState::e_Checked:
             _ZFP_ZFUIButtonBasic_buttonStateOn(Checked)
             break;
-        case ZFUIButtonState::e_CheckedHighlighted:
+        case v_ZFUIButtonState::e_CheckedHighlighted:
             _ZFP_ZFUIButtonBasic_buttonStateOn(CheckedHighlighted)
             break;
-        case ZFUIButtonState::e_Disabled:
+        case v_ZFUIButtonState::e_Disabled:
             _ZFP_ZFUIButtonBasic_buttonStateOn(Disabled)
             break;
         default:

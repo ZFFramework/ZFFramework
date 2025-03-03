@@ -6,7 +6,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_iOS, ZFPath, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_iOS, ZFPath, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:SandboxPath")
 public:
     virtual const zfstring &pathForModule(void) {

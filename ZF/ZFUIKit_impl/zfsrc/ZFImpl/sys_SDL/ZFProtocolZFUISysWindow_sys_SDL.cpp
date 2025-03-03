@@ -16,7 +16,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowResume, ZFLevelZFFrameworkPostNormal)
     return zftrue;
 }
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_SDL, ZFUISysWindow, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_SDL, ZFUISysWindow, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_SysWindow")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "ZFImpl_sys_SDL_View")
@@ -160,7 +160,7 @@ public:
     }
 
     virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
-        return ZFUIOrientation::e_Top;
+        return v_ZFUIOrientation::e_Top;
     }
     virtual void sysWindowOrientationFlags(
             ZF_IN ZFUISysWindow *sysWindow

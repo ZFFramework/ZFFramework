@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Qt, ZFPath, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Qt, ZFPath, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt::applicationDirPath")
 public:
     virtual const zfstring &pathForModule(void) {

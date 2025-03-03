@@ -139,7 +139,7 @@ static zftimet _ZFP_ZFUIScrollViewImpl_sys_iOS_timestamp(void) {
 @end
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_iOS, ZFUIScrollView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_iOS, ZFUIScrollView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIScrollView")
 
 public:

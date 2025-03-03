@@ -152,16 +152,16 @@ public:
     void nativeAniStart(void) {
         this->aniProgress = 0;
         switch(this->ownerZFAnimation->curve()) {
-            case ZFAniForNativeCurve::e_Linear:
+            case v_ZFAniForNativeCurve::e_Linear:
                 this->curveFunc = _curveFuncLinear;
                 break;
-            case ZFAniForNativeCurve::e_EaseIn:
+            case v_ZFAniForNativeCurve::e_EaseIn:
                 this->curveFunc = _curveFuncEaseIn;
                 break;
-            case ZFAniForNativeCurve::e_EaseOut:
+            case v_ZFAniForNativeCurve::e_EaseOut:
                 this->curveFunc = _curveFuncEaseOut;
                 break;
-            case ZFAniForNativeCurve::e_EaseInOut:
+            case v_ZFAniForNativeCurve::e_EaseInOut:
                 this->curveFunc = _curveFuncEaseInOut;
                 break;
             default:
@@ -223,7 +223,7 @@ private:
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_Qt, ZFAniForNative, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAniForNativeImpl_sys_Qt, ZFAniForNative, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QAbstractAnimation")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")

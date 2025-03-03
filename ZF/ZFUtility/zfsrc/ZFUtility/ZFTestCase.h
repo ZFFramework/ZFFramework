@@ -105,7 +105,7 @@ public:
             )
     zfoverride
     virtual void stop(void) {
-        this->stop(ZFResultType::e_Success);
+        this->stop(v_ZFResultType::e_Success);
     }
     /**
      * @brief must be called to stop test,
@@ -142,7 +142,7 @@ protected:
     do { \
         if(!(cond)) { \
             this->output(zfstr("%s " fmt, ZFCallerInfoCreate(), ##__VA_ARGS__)); \
-            this->stop(ZFResultType::e_Fail); \
+            this->stop(v_ZFResultType::e_Fail); \
             return; \
         } \
     } while(zffalse)
@@ -151,7 +151,7 @@ protected:
     do { \
         if(!(cond)) { \
             this->output(zfstr(fmt, ##__VA_ARGS__)); \
-            this->stop(ZFResultType::e_Fail); \
+            this->stop(v_ZFResultType::e_Fail); \
             return; \
         } \
     } while(zffalse)
@@ -160,7 +160,7 @@ protected:
     do { \
         if(!(cond)) { \
             this->output(zfstr("%s " fmt, callerInfo, fmt, ##__VA_ARGS__)); \
-            this->stop(ZFResultType::e_Fail); \
+            this->stop(v_ZFResultType::e_Fail); \
             return; \
         } \
     } while(zffalse)

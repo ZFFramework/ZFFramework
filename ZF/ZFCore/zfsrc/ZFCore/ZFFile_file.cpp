@@ -104,13 +104,13 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFindClose
 
 ZFMETHOD_FUNC_DEFINE_3(void *, ZFFileOpen
         , ZFMP_IN(const zfchar *, filePath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, v_ZFFileOpenOption::e_Read)
         , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
         ) {
     if(autoCreateParent && (zffalse
-                || ZFBitTest(flag, ZFFileOpenOption::e_Create)
-                || ZFBitTest(flag, ZFFileOpenOption::e_Write)
-                || ZFBitTest(flag, ZFFileOpenOption::e_Append)
+                || ZFBitTest(flag, v_ZFFileOpenOption::e_Create)
+                || ZFBitTest(flag, v_ZFFileOpenOption::e_Write)
+                || ZFBitTest(flag, v_ZFFileOpenOption::e_Append)
                 )) {
         zfstring parentPath;
         if(ZFPathParentOf(parentPath, filePath)) {

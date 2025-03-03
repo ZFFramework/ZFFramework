@@ -129,9 +129,9 @@ public:
 };
 
 #define _ZFP_ZFXmlAssertCanHaveAttr(item) \
-    ZFCoreAssert((item).type() == ZFXmlType::e_Element || (item).type() == ZFXmlType::e_Declaration)
+    ZFCoreAssert((item).type() == v_ZFXmlType::e_Element || (item).type() == v_ZFXmlType::e_Declaration)
 #define _ZFP_ZFXmlAssertCanHaveChild(item) \
-    ZFCoreAssert((item).type() == ZFXmlType::e_Element || (item).type() == ZFXmlType::e_Document)
+    ZFCoreAssert((item).type() == v_ZFXmlType::e_Element || (item).type() == v_ZFXmlType::e_Document)
 
 // ============================================================
 // ZFXml
@@ -144,7 +144,7 @@ ZFXml::ZFXml(ZF_IN _ZFP_ZFXmlPrivate *ref)
 }
 
 ZFXml::ZFXml(void)
-: d(zfnew(_ZFP_ZFXmlPrivate, ZFXmlType::e_Element))
+: d(zfnew(_ZFP_ZFXmlPrivate, v_ZFXmlType::e_Element))
 {
 }
 ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
@@ -152,7 +152,7 @@ ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
 {
 }
 ZFXml::ZFXml(ZF_IN ZFXmlType type) {
-    if(type != ZFXmlType::e_Null) {
+    if(type != v_ZFXmlType::e_Null) {
         d = zfnew(_ZFP_ZFXmlPrivate, type);
     }
     else {
@@ -214,7 +214,7 @@ zfindex ZFXml::objectRetainCount(void) const {
 
 // ============================================================
 void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlType type) {
-    if(type != ZFXmlType::e_Null) {
+    if(type != v_ZFXmlType::e_Null) {
         if(d) {
             d->type = type;
         }
@@ -224,13 +224,13 @@ void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlType type) {
     }
 }
 ZFXmlType ZFXml::type(void) const {
-    return d ? d->type : ZFXmlType::e_Null;
+    return d ? d->type : v_ZFXmlType::e_Null;
 }
 
 ZFXml &ZFXml::name(ZF_IN const zfstring &name) {
     switch(this->type()) {
-        case ZFXmlType::e_PI:
-        case ZFXmlType::e_Element:
+        case v_ZFXmlType::e_PI:
+        case v_ZFXmlType::e_Element:
             d->name = name;
             break;
         default:
@@ -244,10 +244,10 @@ const zfstring &ZFXml::name(void) const {
 
 ZFXml &ZFXml::value(ZF_IN const zfstring &value) {
     switch(this->type()) {
-        case ZFXmlType::e_DocType:
-        case ZFXmlType::e_PI:
-        case ZFXmlType::e_Text:
-        case ZFXmlType::e_Comment:
+        case v_ZFXmlType::e_DocType:
+        case v_ZFXmlType::e_PI:
+        case v_ZFXmlType::e_Text:
+        case v_ZFXmlType::e_Comment:
             d->value = value;
             break;
         default:
@@ -263,9 +263,9 @@ const zfstring &ZFXml::value(void) const {
 ZFXml ZFXml::copy(void) const {
     ZFXml ret(this->type());
     switch(this->type()) {
-        case ZFXmlType::e_Null:
+        case v_ZFXmlType::e_Null:
             break;
-        case ZFXmlType::e_Element:
+        case v_ZFXmlType::e_Element:
             ret.name(this->name());
             for(zfiter it = this->attrIter(); it; ++it) {
                 ret.attr(this->attrIterKey(it), this->attrIterValue(it));
@@ -274,27 +274,27 @@ ZFXml ZFXml::copy(void) const {
                 ret.child(this->childAt(i).copy());
             }
             break;
-        case ZFXmlType::e_Text:
+        case v_ZFXmlType::e_Text:
             ret.value(this->value());
             ret.CDATA(this->CDATA());
             break;
-        case ZFXmlType::e_Comment:
+        case v_ZFXmlType::e_Comment:
             ret.value(this->value());
             break;
-        case ZFXmlType::e_Document:
+        case v_ZFXmlType::e_Document:
             for(zfindex i = 0; i < this->childCount(); ++i) {
                 ret.child(this->childAt(i).copy());
             }
             break;
-        case ZFXmlType::e_Declaration:
+        case v_ZFXmlType::e_Declaration:
             for(zfiter it = this->attrIter(); it; ++it) {
                 ret.attr(this->attrIterKey(it), this->attrIterValue(it));
             }
             break;
-        case ZFXmlType::e_DocType:
+        case v_ZFXmlType::e_DocType:
             ret.value(this->value());
             break;
-        case ZFXmlType::e_PI:
+        case v_ZFXmlType::e_PI:
             ret.name(this->name());
             ret.value(this->value());
             break;
@@ -393,17 +393,17 @@ ZFXml &ZFXml::child(
         ) {
     _ZFP_ZFXmlAssertCanHaveChild(*this);
     switch(item.type()) {
-        case ZFXmlType::e_Null:
-        case ZFXmlType::e_Document:
+        case v_ZFXmlType::e_Null:
+        case v_ZFXmlType::e_Document:
             ZFCoreCriticalMessage("%s can not be added to %s"
                     , item.type()
                     , this->type()
                 );
             break;
-        case ZFXmlType::e_Declaration:
-        case ZFXmlType::e_DocType:
-        case ZFXmlType::e_PI:
-            if(this->type() != ZFXmlType::e_Document) {
+        case v_ZFXmlType::e_Declaration:
+        case v_ZFXmlType::e_DocType:
+        case v_ZFXmlType::e_PI:
+            if(this->type() != v_ZFXmlType::e_Document) {
                 ZFCoreCriticalMessage("%s can not be added to %s"
                         , item.type()
                         , this->type()
@@ -449,7 +449,7 @@ zfindex ZFXml::childFind(ZF_IN const ZFXml &item) const {
 ZFXml ZFXml::childElement(void) const {
     for(zfindex i = 0; i < this->childCount(); ++i) {
         ZFXml child = this->childAt(i);
-        if(child.type() == ZFXmlType::e_Element) {
+        if(child.type() == v_ZFXmlType::e_Element) {
             return child;
         }
     }
@@ -458,7 +458,7 @@ ZFXml ZFXml::childElement(void) const {
 
 ZFXml ZFXml::childElementAt(ZF_IN zfindex index) const {
     ZFXml child = this->childAt(index);
-    if(child.type() == ZFXmlType::e_Element) {
+    if(child.type() == v_ZFXmlType::e_Element) {
         return child;
     }
     else {
@@ -468,7 +468,7 @@ ZFXml ZFXml::childElementAt(ZF_IN zfindex index) const {
 
 // ============================================================
 void ZFXml::CDATA(ZF_IN zfbool CDATA) {
-    ZFCoreAssert(this->type() == ZFXmlType::e_Text);
+    ZFCoreAssert(this->type() == v_ZFXmlType::e_Text);
     d->CDATA = CDATA;
 }
 zfbool ZFXml::CDATA(void) const {
@@ -575,34 +575,34 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, CDATA)
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlElement
         , ZFMP_IN(const zfstring &, name)
         ) {
-    return ZFXml(ZFXmlType::e_Element).name(name);
+    return ZFXml(v_ZFXmlType::e_Element).name(name);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlText
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_Text).value(value);
+    return ZFXml(v_ZFXmlType::e_Text).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlComment
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_Comment).value(value);
+    return ZFXml(v_ZFXmlType::e_Comment).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDocument) {
-    return ZFXml(ZFXmlType::e_Document);
+    return ZFXml(v_ZFXmlType::e_Document);
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDeclaration) {
-    return ZFXml(ZFXmlType::e_Declaration);
+    return ZFXml(v_ZFXmlType::e_Declaration);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlDocType
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_DocType).value(value);
+    return ZFXml(v_ZFXmlType::e_DocType).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlPI
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(const zfstring &, value)
         ) {
-    return ZFXml(ZFXmlType::e_PI).name(name).value(value);
+    return ZFXml(v_ZFXmlType::e_PI).name(name).value(value);
 }
 
 // ============================================================
@@ -718,7 +718,7 @@ static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(
         return zftrue;
     }
     for(zfindex i = 0; i < xmlItem.childCount(); ++i) {
-        if(xmlItem.childAt(i).type() != ZFXmlType::e_Text) {
+        if(xmlItem.childAt(i).type() != v_ZFXmlType::e_Text) {
             return zftrue;
         }
     }
@@ -919,30 +919,30 @@ static void _ZFP_ZFXmlToOutput(
         , ZF_IN zfindex siblingIndex
         ) {
     switch(xmlItem.type()) {
-        case ZFXmlType::e_Null:
+        case v_ZFXmlType::e_Null:
             ZFCoreCriticalShouldNotGoHere();
             break;
-        case ZFXmlType::e_Element:
+        case v_ZFXmlType::e_Element:
             _ZFP_ZFXmlToOutput_Element(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_Text:
+        case v_ZFXmlType::e_Text:
             _ZFP_ZFXmlToOutput_Text(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_Comment:
+        case v_ZFXmlType::e_Comment:
             _ZFP_ZFXmlToOutput_Comment(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_Document:
+        case v_ZFXmlType::e_Document:
             for(zfindex i = 0; i < xmlItem.childCount(); ++i) {
                 _ZFP_ZFXmlToOutput(output, xmlItem, xmlItem.childAt(i), token, depth, i);
             }
             break;
-        case ZFXmlType::e_Declaration:
+        case v_ZFXmlType::e_Declaration:
             _ZFP_ZFXmlToOutput_Declaration(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_DocType:
+        case v_ZFXmlType::e_DocType:
             _ZFP_ZFXmlToOutput_DocType(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
-        case ZFXmlType::e_PI:
+        case v_ZFXmlType::e_PI:
             _ZFP_ZFXmlToOutput_PI(output, xmlParent, xmlItem, token, depth, siblingIndex);
             break;
         default:

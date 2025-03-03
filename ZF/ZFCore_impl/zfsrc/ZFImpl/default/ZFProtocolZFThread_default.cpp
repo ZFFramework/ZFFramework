@@ -86,7 +86,7 @@ void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteD
 }
 
 // ============================================================
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_default, ZFThread, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_default, ZFThread, v_ZFProtocolLevel::e_Default)
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
         _ZFP_ZFThreadImpl_default_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_default_NativeThreadIdType);

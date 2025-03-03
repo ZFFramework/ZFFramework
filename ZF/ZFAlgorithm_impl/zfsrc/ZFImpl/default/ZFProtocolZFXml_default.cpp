@@ -5,7 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFXmlImpl_default, ZFXml, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFXmlImpl_default, ZFXml, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("pugixml")
 public:
     virtual ZFXml xmlParse(
@@ -55,7 +55,7 @@ private:
             }
             return zfnull;
         }
-        ZFXml doc(ZFXmlType::e_Document);
+        ZFXml doc(v_ZFXmlType::e_Document);
         this->translateChildren(implXmlDoc, doc);
         return doc;
     }
@@ -80,7 +80,7 @@ private:
                     ZFCoreCriticalShouldNotGoHere();
                     return;
                 case pugi::node_element: {
-                    ZFXml zfXmlChild(ZFXmlType::e_Element);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_Element);
                     this->translateAttr(implXmlChild, zfXmlChild);
                     this->translateChildren(implXmlChild, zfXmlChild);
 
@@ -89,7 +89,7 @@ private:
                     break;
                 }
                 case pugi::node_pcdata: {
-                    ZFXml zfXmlChild(ZFXmlType::e_Text);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_Text);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
@@ -97,7 +97,7 @@ private:
                     break;
                 }
                 case pugi::node_cdata: {
-                    ZFXml zfXmlChild(ZFXmlType::e_Text);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_Text);
                     zfXmlChild.CDATA(zftrue);
 
                     zfXmlChild.name(implXmlChild.name());
@@ -106,7 +106,7 @@ private:
                     break;
                 }
                 case pugi::node_comment: {
-                    ZFXml zfXmlChild(ZFXmlType::e_Comment);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_Comment);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
@@ -114,7 +114,7 @@ private:
                     break;
                 }
                 case pugi::node_declaration: {
-                    ZFXml zfXmlChild(ZFXmlType::e_Declaration);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_Declaration);
                     this->translateAttr(implXmlChild, zfXmlChild);
 
                     zfXmlChild.name(implXmlChild.name());
@@ -123,7 +123,7 @@ private:
                     break;
                 }
                 case pugi::node_doctype: {
-                    ZFXml zfXmlChild(ZFXmlType::e_DocType);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_DocType);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());
@@ -131,7 +131,7 @@ private:
                     break;
                 }
                 case pugi::node_pi: {
-                    ZFXml zfXmlChild(ZFXmlType::e_PI);
+                    ZFXml zfXmlChild(v_ZFXmlType::e_PI);
 
                     zfXmlChild.name(implXmlChild.name());
                     zfXmlChild.value(implXmlChild.value());

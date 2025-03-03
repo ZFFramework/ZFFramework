@@ -74,7 +74,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_iOS, ZFUIWebView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_iOS, ZFUIWebView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:WKWebView")
 public:
     virtual void *nativeWebViewCreate(

@@ -14,7 +14,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_iOS, ZFRes, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_iOS, ZFRes, v_ZFProtocolLevel::e_SystemNormal)
 public:
     zfoverride
     virtual void protocolOnInit(void) {

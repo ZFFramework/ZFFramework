@@ -13,7 +13,7 @@ public:
     CRITICAL_SECTION semaMutex;
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Windows, ZFSemaphore, ZFProtocolLevel::e_SystemLow)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Windows, ZFSemaphore, v_ZFProtocolLevel::e_SystemLow)
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
         _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = zfnew(_ZFP_ZFSemaphoreImpl_sys_Windows_Token);

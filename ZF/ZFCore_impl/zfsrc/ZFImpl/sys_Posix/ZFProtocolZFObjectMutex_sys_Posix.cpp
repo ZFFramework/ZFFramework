@@ -36,7 +36,7 @@ public:
         return (pthread_mutex_trylock(mutex) == 0);
     }
 };
-ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Posix, ZFProtocolLevel::e_SystemLow, {
+ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Posix, v_ZFProtocolLevel::e_SystemLow, {
         ZFObjectMutexImplSet(
                 _ZFP_ZFObjectMutexImpl_sys_Posix::implInit,
                 _ZFP_ZFObjectMutexImpl_sys_Posix::implDealloc,

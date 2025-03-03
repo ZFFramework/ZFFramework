@@ -10,14 +10,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIViewTransform ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIViewTransform)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIViewTransform, ZFImpl_sys_Android_JNI_NAME_ZFUIViewTransform)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Android, ZFUIViewTransform, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Android, ZFUIViewTransform, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
     virtual ZFUITransformFlags transformAvailable(void) {
-        return ZFUITransform::e_Transform2D;
+        return v_ZFUITransform::e_Transform2D;
     }
 
     virtual void viewTransform(ZF_IN ZFUIView *view) {

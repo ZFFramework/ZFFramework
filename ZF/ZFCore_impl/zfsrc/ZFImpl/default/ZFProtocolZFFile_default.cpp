@@ -16,20 +16,20 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileImpl_default, ZFFile, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileImpl_default, ZFFile, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("nativeAPI")
 public:
     virtual zfbool fileIsExist(ZF_IN const zfchar *path) {
         if(path == zfnull) {return zffalse;}
         #if ZF_ENV_sys_Windows
-            return (GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
+            return (GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
         #else // #if ZF_ENV_sys_Windows
             return (access(path, F_OK) != -1);
         #endif // #if ZF_ENV_sys_Windows #else
     }
     virtual zfbool isDir(ZF_IN const zfchar *path) {
         #if ZF_ENV_sys_Windows
-            return ((GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString())
+            return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
                 & FILE_ATTRIBUTE_DIRECTORY) != 0);
         #else // #if ZF_ENV_sys_Windows
             zfstring tmp = path;
@@ -153,7 +153,7 @@ public:
         HANDLE hFind;
         void setup(ZFFileFindData::Impl &zfd) {
             zfd.name.removeAll();
-            zfstringToUTF8(zfd.name, fd.cFileName, ZFStringEncoding::e_UTF16);
+            zfstringToUTF8(zfd.name, fd.cFileName, v_ZFStringEncoding::e_UTF16);
 
             zfstring filePath = this->parentPath;
             filePath += '/';
@@ -198,7 +198,7 @@ public:
             tmp += path;
             tmp += "/*";
             nativeFd->hFind = FindFirstFileW(
-                zfstringToUTF16(tmp, ZFStringEncoding::e_UTF8).cString(),
+                zfstringToUTF16(tmp, v_ZFStringEncoding::e_UTF8).cString(),
                 &(nativeFd->fd));
             if(nativeFd->hFind == INVALID_HANDLE_VALUE) {break;}
 
@@ -285,7 +285,7 @@ private:
             return zftrue;
         }
         #if ZF_ENV_sys_Windows
-            if(!CreateDirectoryW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString(), zfnull)) {
+            if(!CreateDirectoryW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString(), zfnull)) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
@@ -357,8 +357,8 @@ private:
         }
         #if ZF_ENV_sys_Windows
             if(CopyFileW(
-                    zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString(),
-                    zfstringToUTF16(dstPath, ZFStringEncoding::e_UTF8).cString(),
+                    zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
+                    zfstringToUTF16(dstPath, v_ZFStringEncoding::e_UTF8).cString(),
                     !isForce
                 ) != TRUE) {
                 zfself::SetErrPos(errPos, dstPath);
@@ -406,8 +406,8 @@ private:
         }
         #if ZF_ENV_sys_Windows
             if(MoveFileW(
-                    zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString(),
-                    zfstringToUTF16(dstPath, ZFStringEncoding::e_UTF8).cString()
+                    zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
+                    zfstringToUTF16(dstPath, v_ZFStringEncoding::e_UTF8).cString()
                 ) != TRUE) {
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
@@ -485,10 +485,10 @@ private:
         #if ZF_ENV_sys_Windows
             if(isForce) {
                 SetFileAttributesW(
-                    zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString(),
+                    zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
                     FILE_ATTRIBUTE_NORMAL);
             }
-            if(DeleteFileW(zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString()) != TRUE) {
+            if(DeleteFileW(zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString()) != TRUE) {
                 zfself::SetErrPos(errPos, srcPath);
                 return zffalse;
             }
@@ -521,7 +521,7 @@ private:
             if(isForce) {
                 #if ZF_ENV_sys_Windows
                     SetFileAttributesW(
-                        zfstringToUTF16(dirPath, ZFStringEncoding::e_UTF8).cString(),
+                        zfstringToUTF16(dirPath, v_ZFStringEncoding::e_UTF8).cString(),
                         FILE_ATTRIBUTE_NORMAL);
                 #else // #if ZF_ENV_sys_Windows
                     chmod(dirPath.cString(), 0777);
@@ -553,7 +553,7 @@ private:
             zfstring pathTmp = emptyDirsToDel.removeLastAndGet();
 
             #if ZF_ENV_sys_Windows
-                if(RemoveDirectoryW(zfstringToUTF16(pathTmp, ZFStringEncoding::e_UTF8).cString()) == 0) {
+                if(RemoveDirectoryW(zfstringToUTF16(pathTmp, v_ZFStringEncoding::e_UTF8).cString()) == 0) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
@@ -571,34 +571,34 @@ private:
 public:
     virtual void *fileOpen(
             ZF_IN const zfchar *filePath
-            , ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read
+            , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
             ) {
         const zfchar *sFlag = zfnull;
-        if(ZFBitTest(flag, ZFFileOpenOption::e_Append)) {
-            if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
+        if(ZFBitTest(flag, v_ZFFileOpenOption::e_Append)) {
+            if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
                 sFlag = "a+b";
             }
             else {
                 sFlag = "ab";
             }
         }
-        else if(ZFBitTest(flag, ZFFileOpenOption::e_Create)) {
-            if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
+        else if(ZFBitTest(flag, v_ZFFileOpenOption::e_Create)) {
+            if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
                 sFlag = "w+b";
             }
             else {
                 sFlag = "wb";
             }
         }
-        else if(ZFBitTest(flag, ZFFileOpenOption::e_Write)) {
-            if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
+        else if(ZFBitTest(flag, v_ZFFileOpenOption::e_Write)) {
+            if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
                 sFlag = "r+b";
             }
             else {
                 sFlag = "wb";
             }
         }
-        else if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
+        else if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
             sFlag = "rb";
         }
         else {
@@ -608,7 +608,7 @@ public:
 
         #if ZF_ENV_sys_Windows
             zfstringW _filePathSaved;
-            zfstringToUTF16(_filePathSaved, filePath, ZFStringEncoding::e_UTF8);
+            zfstringToUTF16(_filePathSaved, filePath, v_ZFStringEncoding::e_UTF8);
             DWORD _fileAttrSaved = GetFileAttributesW(_filePathSaved.cString());
             SetFileAttributesW(_filePathSaved.cString(), FILE_ATTRIBUTE_NORMAL);
         #endif

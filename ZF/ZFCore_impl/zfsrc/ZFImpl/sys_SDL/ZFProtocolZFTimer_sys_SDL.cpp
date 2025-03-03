@@ -15,7 +15,7 @@ public:
     zfautoT<ZFSemaphore> timerMainThreadSema;
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_SDL, ZFTimer, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_SDL, ZFTimer, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("SDL:Timer")
 public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {

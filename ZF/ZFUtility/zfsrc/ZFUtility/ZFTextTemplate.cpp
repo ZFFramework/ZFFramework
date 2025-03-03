@@ -306,13 +306,13 @@ static void _ZFP_ZFTextTemplateApply_indexData(
         }
         else {
             switch(indexDataState->indexData->indexFlag) {
-                case ZFTextTemplateIndexFlag::e_LeadingZero:
+                case v_ZFTextTemplateIndexFlag::e_LeadingZero:
                     zfstringAppend(fmt, "%%0%ss", indexDataState->indexData->indexWidth);
                     break;
-                case ZFTextTemplateIndexFlag::e_LeadingSpace:
+                case v_ZFTextTemplateIndexFlag::e_LeadingSpace:
                     zfstringAppend(fmt, "%%%ss", indexDataState->indexData->indexWidth);
                     break;
-                case ZFTextTemplateIndexFlag::e_TailSpace:
+                case v_ZFTextTemplateIndexFlag::e_TailSpace:
                     zfstringAppend(fmt, "%%-%ss", indexDataState->indexData->indexWidth);
                     break;
                 default:

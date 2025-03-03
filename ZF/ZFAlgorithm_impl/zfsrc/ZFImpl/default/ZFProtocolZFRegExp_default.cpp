@@ -9,7 +9,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFRegExpImpl_default, ZFRegExp, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFRegExpImpl_default, ZFRegExp, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("deelx")
 public:
     virtual void *nativeRegExpCreate(ZF_IN ZFRegExp *regExp) {
@@ -30,13 +30,13 @@ public:
         CRegexpT<zfchar> *regexp = (CRegexpT<zfchar> *)regExp->nativeRegExp();
 
         int tmp = NO_FLAG;
-        if(ZFBitTest(flag, ZFRegExpOption::e_IgnoreCase)) {
+        if(ZFBitTest(flag, v_ZFRegExpOption::e_IgnoreCase)) {
             ZFBitSet(tmp, IGNORECASE);
         }
-        if(ZFBitTest(flag, ZFRegExpOption::e_SingleLine)) {
+        if(ZFBitTest(flag, v_ZFRegExpOption::e_SingleLine)) {
             ZFBitSet(tmp, SINGLELINE);
         }
-        if(ZFBitTest(flag, ZFRegExpOption::e_MultiLine)) {
+        if(ZFBitTest(flag, v_ZFRegExpOption::e_MultiLine)) {
             ZFBitSet(tmp, MULTILINE);
         }
         regexp->Compile(pattern, tmp);

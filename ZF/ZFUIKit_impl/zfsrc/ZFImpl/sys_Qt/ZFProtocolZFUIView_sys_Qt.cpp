@@ -168,7 +168,7 @@ protected:
             QGraphicsWidget::mousePressEvent(event);
             return;
         }
-        this->mouseEventResolve(event, ZFUIMouseAction::e_Down);
+        this->mouseEventResolve(event, v_ZFUIMouseAction::e_Down);
     }
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         this->_ZFP_mouseMoveLastPoint = ZFImpl_sys_Qt_ZFUIPointFromQPointF(event->pos());
@@ -179,7 +179,7 @@ protected:
             return;
         }
         if(this->_ZFP_mousePressed) {
-            this->mouseEventResolve(event, ZFUIMouseAction::e_Move);
+            this->mouseEventResolve(event, v_ZFUIMouseAction::e_Move);
         }
     }
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
@@ -191,10 +191,10 @@ protected:
             return;
         }
         if(ZFUIViewImpl_sys_Qt_isMouseCancel != zfnull && ZFUIViewImpl_sys_Qt_isMouseCancel(event)) {
-            this->mouseEventResolve(event, ZFUIMouseAction::e_Cancel);
+            this->mouseEventResolve(event, v_ZFUIMouseAction::e_Cancel);
         }
         else {
-            this->mouseEventResolve(event, ZFUIMouseAction::e_Up);
+            this->mouseEventResolve(event, v_ZFUIMouseAction::e_Up);
         }
     }
 private:
@@ -204,17 +204,17 @@ private:
         ev->mouseId = (zfidentity)event->button();
         ev->mouseAction = mouseAction;
         ev->mousePoint = ZFImpl_sys_Qt_ZFUIPointFromQPointF(event->pos());
-        ev->mouseButton = ZFUIMouseButton::e_Left;
+        ev->mouseButton = v_ZFUIMouseButton::e_Left;
         switch(event->button()) {
             case Qt::RightButton:
-                ev->mouseButton = ZFUIMouseButton::e_Right;
+                ev->mouseButton = v_ZFUIMouseButton::e_Right;
                 break;
             case Qt::MiddleButton:
-                ev->mouseButton = ZFUIMouseButton::e_Center;
+                ev->mouseButton = v_ZFUIMouseButton::e_Center;
                 break;
             case Qt::LeftButton:
             default:
-                ev->mouseButton = ZFUIMouseButton::e_Left;
+                ev->mouseButton = v_ZFUIMouseButton::e_Left;
                 break;
         }
 
@@ -230,7 +230,7 @@ protected:
             QGraphicsWidget::hoverEnterEvent(event);
             return;
         }
-        this->mouseHoverEventResolve(event, ZFUIMouseAction::e_HoverEnter);
+        this->mouseHoverEventResolve(event, v_ZFUIMouseAction::e_HoverEnter);
     }
     virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
         if(_ZFP_layoutProxy->_ZFP_ownerZFUIView == zfnull
@@ -239,7 +239,7 @@ protected:
             QGraphicsWidget::hoverMoveEvent(event);
             return;
         }
-        this->mouseHoverEventResolve(event, ZFUIMouseAction::e_Hover);
+        this->mouseHoverEventResolve(event, v_ZFUIMouseAction::e_Hover);
     }
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
         if(_ZFP_layoutProxy->_ZFP_ownerZFUIView == zfnull
@@ -248,7 +248,7 @@ protected:
             QGraphicsWidget::hoverLeaveEvent(event);
             return;
         }
-        this->mouseHoverEventResolve(event, ZFUIMouseAction::e_HoverExit);
+        this->mouseHoverEventResolve(event, v_ZFUIMouseAction::e_HoverExit);
     }
 private:
     void mouseHoverEventResolve(QGraphicsSceneHoverEvent *event, ZFUIMouseAction mouseAction) {
@@ -257,7 +257,7 @@ private:
         ev->mouseId = 0;
         ev->mouseAction = mouseAction;
         ev->mousePoint = ZFImpl_sys_Qt_ZFUIPointFromQPointF(event->pos());
-        ev->mouseButton = ZFUIMouseButton::e_Left;
+        ev->mouseButton = v_ZFUIMouseButton::e_Left;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(_ZFP_layoutProxy->_ZFP_ownerZFUIView, ev);
         if(event != NULL) {
             event->setAccepted(ev->eventResolved());
@@ -272,7 +272,7 @@ protected:
             QGraphicsWidget::keyPressEvent(event);
             return;
         }
-        this->keyEventResolve(event, event->isAutoRepeat() ? ZFUIKeyAction::e_Repeat : ZFUIKeyAction::e_Down);
+        this->keyEventResolve(event, event->isAutoRepeat() ? v_ZFUIKeyAction::e_Repeat : v_ZFUIKeyAction::e_Down);
     }
     virtual void keyReleaseEvent(QKeyEvent *event) {
         if(_ZFP_layoutProxy->_ZFP_ownerZFUIView == zfnull
@@ -281,7 +281,7 @@ protected:
             QGraphicsWidget::keyReleaseEvent(event);
             return;
         }
-        this->keyEventResolve(event, event->isAutoRepeat() ? ZFUIKeyAction::e_Repeat : ZFUIKeyAction::e_Up);
+        this->keyEventResolve(event, event->isAutoRepeat() ? v_ZFUIKeyAction::e_Repeat : v_ZFUIKeyAction::e_Up);
     }
 private:
     void keyEventResolve(QKeyEvent *event, ZFUIKeyAction keyAction) {
@@ -331,7 +331,7 @@ private:
 // impl
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_Qt, ZFUIView, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_Qt, ZFUIView, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
@@ -540,7 +540,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_Qt)
 
 // ============================================================
 // ZFUIViewFocus
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_Qt, ZFUIViewFocus, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_Qt, ZFUIViewFocus, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")

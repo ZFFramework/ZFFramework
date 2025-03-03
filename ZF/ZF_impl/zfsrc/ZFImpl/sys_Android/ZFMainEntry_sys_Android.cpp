@@ -100,7 +100,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFMainEntry
         , jboolean value
         ) {
     if(value) {
-        ZFLogLevelDefault(ZFLogLevel::e_Verbose);
+        ZFLogLevelDefault(v_ZFLogLevel::e_Verbose);
     }
     else {
         ZFLogLevelDefault(v_ZFLogLevel::EnumDefault());

@@ -79,10 +79,10 @@ private:
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, ZFAniForNativeCurve, ZFPropertyAccess(ZFAniForNative, curve),
             ZFCoreArrayCreate(ZFAniForNativeCurve
-                , ZFAniForNativeCurve::e_Linear
-                , ZFAniForNativeCurve::e_EaseIn
-                , ZFAniForNativeCurve::e_EaseOut
-                , ZFAniForNativeCurve::e_EaseInOut
+                , v_ZFAniForNativeCurve::e_Linear
+                , v_ZFAniForNativeCurve::e_EaseIn
+                , v_ZFAniForNativeCurve::e_EaseOut
+                , v_ZFAniForNativeCurve::e_EaseInOut
                 ));
 
         { // aniAlpha

@@ -31,7 +31,7 @@ private:
             zfobj<ZFUITextView> child;
             layout->child(child);
             child->text(zfstr("text %s", i));
-            child->textAlign(ZFUIAlign::e_Center);
+            child->textAlign(v_ZFUIAlign::e_Center);
             child->bgColor(ZFUIColorRandom());
         }
 
@@ -40,12 +40,12 @@ private:
 
         zfobj<ZFUILinearLayout> l;
         layout->child(l);
-        l->orientation(ZFUIOrientation::e_Bottom);
+        l->orientation(v_ZFUIOrientation::e_Bottom);
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextView> child;
             l->child(child);
             child->text(zfstr("text %s", 3 + i));
-            child->textAlign(ZFUIAlign::e_Center);
+            child->textAlign(v_ZFUIAlign::e_Center);
             child->bgColor(ZFUIColorRandom());
         }
     }
@@ -59,10 +59,10 @@ private:
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientation, ZFPropertyAccess(ZFUILinearLayout, orientation),
             ZFCoreArrayCreate(ZFUIOrientation
-                , ZFUIOrientation::e_Right
-                , ZFUIOrientation::e_Bottom
-                , ZFUIOrientation::e_Left
-                , ZFUIOrientation::e_Top
+                , v_ZFUIOrientation::e_Right
+                , v_ZFUIOrientation::e_Bottom
+                , v_ZFUIOrientation::e_Left
+                , v_ZFUIOrientation::e_Top
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUILinearLayout, childMargin),

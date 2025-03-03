@@ -79,7 +79,7 @@ public:
                 chunkEnd = contentLength;
             }
             for(zfindex iRetry = 0; iRetry <= ChunkRetry; ++iRetry) {
-                zfobj<ZFHttpRequest> send(url, ZFHttpMethod::e_GET);
+                zfobj<ZFHttpRequest> send(url, v_ZFHttpMethod::e_GET);
                 send->header("Range", zfstr("bytes=%s-%s", chunkPos, chunkEnd - 1));
                 zfautoT<ZFHttpResponse> recv = send->requestSync();
                 if(recv != zfnull && recv->success() && recv->body().length() == chunkEnd - chunkPos) {
@@ -195,7 +195,7 @@ public:
             , ZF_IN_OPT ZFFileOpenOptionFlags flag
             , ZF_IN_OPT zfbool autoCreateParent
             ) {
-        if(flag != ZFFileOpenOption::e_Read) {
+        if(flag != v_ZFFileOpenOption::e_Read) {
             return zfnull;
         }
         _Token *d = zfnew(_Token);

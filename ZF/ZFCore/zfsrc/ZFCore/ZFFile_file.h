@@ -123,7 +123,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileFindClose
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void *, ZFFileOpen
         , ZFMP_IN(const zfchar *, filePath)
-        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, v_ZFFileOpenOption::e_Read)
         , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
         )
 /**

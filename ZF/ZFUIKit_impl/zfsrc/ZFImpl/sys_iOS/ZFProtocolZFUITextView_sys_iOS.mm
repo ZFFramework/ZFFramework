@@ -40,7 +40,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_iOS, ZFUITextView, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_iOS, ZFUITextView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UILabel")
 
 public:
@@ -74,16 +74,16 @@ public:
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         switch(textAppearance) {
-            case ZFUITextAppearance::e_Normal:
+            case v_ZFUITextAppearance::e_Normal:
                 nativeImplView.fontName = [UIFont systemFontOfSize:[UIFont systemFontSize]].fontName;
                 break;
-            case ZFUITextAppearance::e_Bold:
+            case v_ZFUITextAppearance::e_Bold:
                 nativeImplView.fontName = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]].fontName;
                 break;
-            case ZFUITextAppearance::e_Italic:
+            case v_ZFUITextAppearance::e_Italic:
                 nativeImplView.fontName = [UIFont italicSystemFontOfSize:[UIFont systemFontSize]].fontName;
                 break;
-            case ZFUITextAppearance::e_BoldItalic: {
+            case v_ZFUITextAppearance::e_BoldItalic: {
                 UIFontDescriptor *fontD = [UIFont systemFontOfSize:[UIFont systemFontSize]].fontDescriptor;
                 fontD = [fontD fontDescriptorWithSymbolicTraits:(UIFontDescriptorTraitBold | UIFontDescriptorTraitItalic)];
                 nativeImplView.fontName = [UIFont fontWithDescriptor:fontD size:[UIFont systemFontSize]].fontName;
@@ -100,13 +100,13 @@ public:
             , ZF_IN ZFUIAlignFlags const &textAlign
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
-        if(ZFBitTest(textAlign, ZFUIAlign::e_Left)) {
+        if(ZFBitTest(textAlign, v_ZFUIAlign::e_Left)) {
             nativeImplView.textAlignment = NSTextAlignmentLeft;
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_Right)) {
+        else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Right)) {
             nativeImplView.textAlignment = NSTextAlignmentRight;
         }
-        else if(textAlign == ZFUIAlign::e_Center) {
+        else if(textAlign == v_ZFUIAlign::e_Center) {
             nativeImplView.textAlignment = NSTextAlignmentCenter;
         }
         else {
@@ -151,16 +151,16 @@ public:
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         switch(textTruncateMode) {
-            case ZFUITextTruncateMode::e_Disable:
+            case v_ZFUITextTruncateMode::e_Disable:
                 nativeImplView.lineBreakMode = NSLineBreakByClipping;
                 break;
-            case ZFUITextTruncateMode::e_Head:
+            case v_ZFUITextTruncateMode::e_Head:
                 nativeImplView.lineBreakMode = NSLineBreakByTruncatingHead;
                 break;
-            case ZFUITextTruncateMode::e_Middle:
+            case v_ZFUITextTruncateMode::e_Middle:
                 nativeImplView.lineBreakMode = NSLineBreakByTruncatingMiddle;
                 break;
-            case ZFUITextTruncateMode::e_Tail:
+            case v_ZFUITextTruncateMode::e_Tail:
                 nativeImplView.lineBreakMode = NSLineBreakByTruncatingTail;
                 break;
             default:

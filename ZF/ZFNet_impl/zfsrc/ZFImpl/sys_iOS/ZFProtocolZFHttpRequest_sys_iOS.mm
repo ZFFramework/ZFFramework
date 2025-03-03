@@ -19,7 +19,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_iOS, ZFHttpRequest, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_iOS, ZFHttpRequest, v_ZFProtocolLevel::e_SystemNormal)
     // ============================================================
     // for request
 public:

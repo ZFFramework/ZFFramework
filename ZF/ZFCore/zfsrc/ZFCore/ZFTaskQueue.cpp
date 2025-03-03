@@ -56,13 +56,13 @@ static void _ZFP_ZFTaskQueue_startNext(
             , zfweakT<ZFTaskQueue>, owner
             ) {
         ZFTask *child = zfargs.sender();
-        if(child->resultType() != ZFResultType::e_Cancel) {
+        if(child->resultType() != v_ZFResultType::e_Cancel) {
             ZFArray *childQueue = owner->objectTag("_ZFP_ZFTaskQueueImpl");
             if(childQueue->getFirst() == child) {
                 childQueue->removeFirst();
             }
             if(childQueue->isEmpty()) {
-                owner->stop(ZFResultType::e_Success);
+                owner->stop(v_ZFResultType::e_Success);
             }
             else {
                 _ZFP_ZFTaskQueue_startNext(owner);
@@ -76,7 +76,7 @@ static void _ZFP_ZFTaskQueue_startNext(
 void ZFTaskQueue::taskOnStart(void) {
     zfsuper::taskOnStart();
     if(this->childArray()->isEmpty()) {
-        this->stop(ZFResultType::e_Success);
+        this->stop(v_ZFResultType::e_Success);
         return;
     }
     zfobj<ZFArray> childQueue;
@@ -89,7 +89,7 @@ void ZFTaskQueue::taskOnStop(ZF_IN ZFResultType resultType) {
     if(childQueue != zfnull) {
         ZFTask *child = childQueue->getFirst();
         if(child != zfnull) {
-            child->stop(ZFResultType::e_Cancel);
+            child->stop(v_ZFResultType::e_Cancel);
         }
     }
     zfsuper::taskOnStop(resultType);

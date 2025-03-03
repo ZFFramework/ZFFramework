@@ -38,7 +38,7 @@ public:
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM_WEAK(zfanyT<ZFUIView>, target)
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(ZFUIAutoLayoutPos, targetPos, ZFUIAutoLayoutPos::e_None)
+    ZFCORE_PARAM(ZFUIAutoLayoutPos, targetPos, v_ZFUIAutoLayoutPos::e_None)
 
 public:
     /** @brief true if contains valid rule */
@@ -48,7 +48,7 @@ public:
     /** @brief remove all contents */
     void removeAll(void) {
         this->target(zfnull);
-        this->targetPos(ZFUIAutoLayoutPos::e_None);
+        this->targetPos(v_ZFUIAutoLayoutPos::e_None);
         this->_ZFP_AL_targetId.removeAll();
     }
 

@@ -149,9 +149,9 @@ public:
      */
     ZFPROPERTY_ASSIGN(ZFUISizeParam, sizeParam, ZFUISizeParamWrapWrap())
     /**
-     * @brief see #ZFUILayoutParam, default is (ZFUIAlign::e_Left | ZFUIAlign::e_Top)
+     * @brief see #ZFUILayoutParam, default is (v_ZFUIAlign::e_Left | v_ZFUIAlign::e_Top)
      */
-    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, align, ZFUIAlign::e_Left | ZFUIAlign::e_Top)
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, align, v_ZFUIAlign::e_Left | v_ZFUIAlign::e_Top)
     /**
      * @brief see #ZFUILayoutParam, default is (0, 0, 0, 0)
      */

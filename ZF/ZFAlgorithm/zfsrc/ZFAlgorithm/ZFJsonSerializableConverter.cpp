@@ -49,11 +49,11 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
         if(*key == _ZFP_ZFJsonSerializeKey_classPrefix) {
             serializableData.itemClass(key + 1);
 
-            if(jsonItem.type() != ZFJsonType::e_Array) {
+            if(jsonItem.type() != v_ZFJsonType::e_Array) {
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "json item %s not type of %s",
                     jsonItem,
-                    v_ZFJsonType::EnumNameForValue(ZFJsonType::e_Array));
+                    v_ZFJsonType::EnumNameForValue(v_ZFJsonType::e_Array));
                 if(outErrorPos != zfnull) {
                     *outErrorPos = jsonItem;
                 }
@@ -62,11 +62,11 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
             elementArray = jsonItem;
         }
         else {
-            if(jsonItem.type() != ZFJsonType::e_Value) {
+            if(jsonItem.type() != v_ZFJsonType::e_Value) {
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "json item %s not type of %s",
                     jsonItem,
-                    v_ZFJsonType::EnumNameForValue(ZFJsonType::e_Value));
+                    v_ZFJsonType::EnumNameForValue(v_ZFJsonType::e_Value));
                 if(outErrorPos != zfnull) {
                     *outErrorPos = jsonItem;
                 }
@@ -138,17 +138,17 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFSerializableDataToJson
         return zfnull;
     }
 
-    ZFJson ret(ZFJsonType::e_Object);
+    ZFJson ret(v_ZFJsonType::e_Object);
 
     for(zfiter it = serializableData.attrIter(); it; ++it) {
         ret.attr(serializableData.attrIterKey(it),
             serializableData.attrIterValue(it));
     }
 
-    ZFJson elementArray(ZFJsonType::e_Array);
+    ZFJson elementArray(v_ZFJsonType::e_Array);
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         ZFJson child = ZFSerializableDataToJson(serializableData.childAt(i), outErrorHint, outErrorPos);
-        if(child.type() == ZFJsonType::e_Null) {
+        if(child.type() == v_ZFJsonType::e_Null) {
             return zfnull;
         }
         elementArray.child(child);

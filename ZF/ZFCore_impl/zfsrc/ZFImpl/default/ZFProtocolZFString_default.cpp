@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFStringImpl_default, ZFString, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFStringImpl_default, ZFString, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFFramework:zfstring")
 public:
     virtual zfbool toUTF8(
@@ -13,17 +13,17 @@ public:
             , ZF_IN ZFStringEncoding srcEncoding
             ) {
         switch(srcEncoding) {
-            case ZFStringEncoding::e_UTF8:
+            case v_ZFStringEncoding::e_UTF8:
                 result += (const zfchar *)s;
                 return zftrue;
-            case ZFStringEncoding::e_UTF16LE: {
+            case v_ZFStringEncoding::e_UTF16LE: {
                 zfchar *sUTF8 = UTFCodeUtil::UTF16ToUTF8((const zfcharW *)s);
                 if(sUTF8 == zfnull) {return zffalse;}
                 result += sUTF8;
                 zffree(sUTF8);
                 return zftrue;
             }
-            case ZFStringEncoding::e_UTF16BE: {
+            case v_ZFStringEncoding::e_UTF16BE: {
                 zfcharW *sUTF16 = UTFCodeUtil::UTF16BEToUTF16((const zfcharW *)s);
                 if(sUTF16 == zfnull) {return zffalse;}
                 zfchar *sUTF8 = UTFCodeUtil::UTF16ToUTF8(sUTF16);
@@ -44,17 +44,17 @@ public:
             , ZF_IN ZFStringEncoding srcEncoding
             ) {
         switch(srcEncoding) {
-            case ZFStringEncoding::e_UTF8: {
+            case v_ZFStringEncoding::e_UTF8: {
                 zfcharW *sUTF16 = UTFCodeUtil::UTF8ToUTF16((const zfchar *)s);
                 if(sUTF16 == zfnull) {return zffalse;}
                 result += sUTF16;
                 zffree(sUTF16);
                 return zftrue;
             }
-            case ZFStringEncoding::e_UTF16LE:
+            case v_ZFStringEncoding::e_UTF16LE:
                 result += (const zfcharW *)s;
                 return zftrue;
-            case ZFStringEncoding::e_UTF16BE: {
+            case v_ZFStringEncoding::e_UTF16BE: {
                 zfcharW *sUTF16 = UTFCodeUtil::UTF16BEToUTF16((const zfcharW *)s);
                 if(sUTF16 == zfnull) {return zffalse;}
                 result += sUTF16;
@@ -72,7 +72,7 @@ public:
             , ZF_IN ZFStringEncoding srcEncoding
             ) {
         switch(srcEncoding) {
-            case ZFStringEncoding::e_UTF8: {
+            case v_ZFStringEncoding::e_UTF8: {
                 zfcharW *sUTF16 = UTFCodeUtil::UTF8ToUTF16((const zfchar *)s);
                 if(sUTF16 == zfnull) {return zffalse;}
                 zfcharW *sUTF16BE = UTFCodeUtil::UTF16ToUTF16BE(sUTF16);
@@ -82,14 +82,14 @@ public:
                 zffree(sUTF16BE);
                 return zftrue;
             }
-            case ZFStringEncoding::e_UTF16LE: {
+            case v_ZFStringEncoding::e_UTF16LE: {
                 zfcharW *sUTF16BE = UTFCodeUtil::UTF16ToUTF16BE((const zfcharW *)s);
                 if(sUTF16BE == zfnull) {return zffalse;}
                 result += sUTF16BE;
                 zffree(sUTF16BE);
                 return zftrue;
             }
-            case ZFStringEncoding::e_UTF16BE:
+            case v_ZFStringEncoding::e_UTF16BE:
                 result += (const zfcharW *)s;
                 return zftrue;
             default:

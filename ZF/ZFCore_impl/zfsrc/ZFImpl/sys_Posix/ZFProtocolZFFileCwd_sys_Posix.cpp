@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileCwdImpl_sys_Posix, ZFFileCwd, ZFProtocolLevel::e_SystemLow)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileCwdImpl_sys_Posix, ZFFileCwd, v_ZFProtocolLevel::e_SystemLow)
 public:
     virtual zfstring pathForCwd(void) {
         zfchar _pathForCwd[PATH_MAX];

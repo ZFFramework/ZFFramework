@@ -8,7 +8,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_SDL, ZFUITextView, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_SDL, ZFUITextView, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "ZFImpl_sys_SDL_View")
@@ -169,16 +169,16 @@ private:
             ) {
         ZFImpl_sys_SDL_FontType sdlFontType = ZFImpl_sys_SDL_FontType_normal;
         switch(textView->textAppearance()) {
-            case ZFUITextAppearance::e_Bold:
+            case v_ZFUITextAppearance::e_Bold:
                 sdlFontType = ZFImpl_sys_SDL_FontType_bold;
                 break;
-            case ZFUITextAppearance::e_Italic:
+            case v_ZFUITextAppearance::e_Italic:
                 sdlFontType = ZFImpl_sys_SDL_FontType_italic;
                 break;
-            case ZFUITextAppearance::e_BoldItalic:
+            case v_ZFUITextAppearance::e_BoldItalic:
                 sdlFontType = ZFImpl_sys_SDL_FontType_bold_italic;
                 break;
-            case ZFUITextAppearance::e_Normal:
+            case v_ZFUITextAppearance::e_Normal:
             default:
                 sdlFontType = ZFImpl_sys_SDL_FontType_normal;
                 break;
@@ -240,16 +240,16 @@ private:
 
         ZFImpl_sys_SDL_FontType sdlFontType = ZFImpl_sys_SDL_FontType_normal;
         switch(owner->textAppearance()) {
-            case ZFUITextAppearance::e_Bold:
+            case v_ZFUITextAppearance::e_Bold:
                 sdlFontType = ZFImpl_sys_SDL_FontType_bold;
                 break;
-            case ZFUITextAppearance::e_Italic:
+            case v_ZFUITextAppearance::e_Italic:
                 sdlFontType = ZFImpl_sys_SDL_FontType_italic;
                 break;
-            case ZFUITextAppearance::e_BoldItalic:
+            case v_ZFUITextAppearance::e_BoldItalic:
                 sdlFontType = ZFImpl_sys_SDL_FontType_bold_italic;
                 break;
-            case ZFUITextAppearance::e_Normal:
+            case v_ZFUITextAppearance::e_Normal:
             default:
                 sdlFontType = ZFImpl_sys_SDL_FontType_normal;
                 break;
@@ -260,10 +260,10 @@ private:
         }
 
         int sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
-        if(ZFBitTest(owner->textAlign(), ZFUIAlign::e_Left)) {
+        if(ZFBitTest(owner->textAlign(), v_ZFUIAlign::e_Left)) {
             sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
         }
-        else if(ZFBitTest(owner->textAlign(), ZFUIAlign::e_Right)) {
+        else if(ZFBitTest(owner->textAlign(), v_ZFUIAlign::e_Right)) {
             sdlFontAlign = TTF_WRAPPED_ALIGN_RIGHT;
         }
         else {
@@ -289,7 +289,7 @@ private:
         }
 
         SDL_Surface *sdlSurface = zfnull;
-        if(owner->singleLine() || owner->textTruncateMode() != ZFUITextTruncateMode::e_Disable) {
+        if(owner->singleLine() || owner->textTruncateMode() != v_ZFUITextTruncateMode::e_Disable) {
             sdlSurface = renderWrapped(owner, targetRect, sdlFont, textSizeCurrent);
         }
         else {
@@ -308,12 +308,12 @@ private:
         SDL_Rect targetRectFixed;
         ZFUIAlignFlags textAlign = owner->textAlign();
 
-        if(ZFBitTest(textAlign, ZFUIAlign::e_Left)) {
+        if(ZFBitTest(textAlign, v_ZFUIAlign::e_Left)) {
             srcRect.x = 0;
             targetRectFixed.x = targetRect.x;
             srcRect.w = targetRectFixed.w = (sdlSurface->w <= targetRect.w ? sdlSurface->w : targetRect.w);
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_Right)) {
+        else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Right)) {
             if(sdlSurface->w <= targetRect.w) {
                 srcRect.x = 0;
                 srcRect.w = sdlSurface->w;
@@ -342,12 +342,12 @@ private:
             }
         }
 
-        if(ZFBitTest(textAlign, ZFUIAlign::e_Top)) {
+        if(ZFBitTest(textAlign, v_ZFUIAlign::e_Top)) {
             srcRect.y = 0;
             targetRectFixed.y = targetRect.y;
             srcRect.h = targetRectFixed.h = (sdlSurface->h <= targetRect.h ? sdlSurface->h : targetRect.h);
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_Bottom)) {
+        else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Bottom)) {
             if(sdlSurface->h <= targetRect.h) {
                 srcRect.y = 0;
                 srcRect.h = sdlSurface->h;
@@ -393,7 +393,7 @@ private:
         zfbool singleLine = owner->singleLine();
         ZFUITextTruncateMode textTruncateMode = owner->textTruncateMode();
         SDL_Color textColor = ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor());
-        if(textTruncateMode == ZFUITextTruncateMode::e_Disable) {
+        if(textTruncateMode == v_ZFUITextTruncateMode::e_Disable) {
             if(singleLine) {
                 return TTF_RenderUTF8_Blended(sdlFont, owner->text(), textColor);
             }
@@ -423,13 +423,13 @@ private:
         zfstring text = owner->text();
         zfindex p;
         switch(owner->textTruncateMode()) {
-            case ZFUITextTruncateMode::e_Head:
+            case v_ZFUITextTruncateMode::e_Head:
                 p = 0;
                 break;
-            case ZFUITextTruncateMode::e_Tail:
+            case v_ZFUITextTruncateMode::e_Tail:
                 p = text.length() - 1;
                 break;
-            case ZFUITextTruncateMode::e_Middle:
+            case v_ZFUITextTruncateMode::e_Middle:
             default:
                 p = text.length() / 2;
                 break;

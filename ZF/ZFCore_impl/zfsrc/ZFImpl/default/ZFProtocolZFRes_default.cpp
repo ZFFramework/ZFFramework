@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // res files must be placed at "zfres/" in the same dir of your executable
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_default, ZFRes, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_default, ZFRes, v_ZFProtocolLevel::e_Default)
 public:
     zfoverride
     virtual void protocolOnInit(void) {

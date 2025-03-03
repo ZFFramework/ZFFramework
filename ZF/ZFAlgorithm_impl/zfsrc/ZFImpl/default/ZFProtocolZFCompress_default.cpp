@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  *   so, it's recommended to use ASCII chars only for file and path names
  */
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFCompressImpl_default, ZFCompress, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFCompressImpl_default, ZFCompress, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("miniz")
 public:
     virtual void *compressBegin(
@@ -70,22 +70,22 @@ public:
         mz_zip_archive *zip = (mz_zip_archive *)compressToken;
         mz_uint flags = MZ_DEFAULT_COMPRESSION;
         switch(*(ZFCompressLevel *)(zip + 1)) {
-            case ZFCompressLevel::e_NoCompress:
+            case v_ZFCompressLevel::e_NoCompress:
                 flags = MZ_NO_COMPRESSION;
                 break;
-            case ZFCompressLevel::e_BestSpeed:
+            case v_ZFCompressLevel::e_BestSpeed:
                 flags = MZ_BEST_SPEED;
                 break;
-            case ZFCompressLevel::e_GoodSpeed:
+            case v_ZFCompressLevel::e_GoodSpeed:
                 flags = 3;
                 break;
-            case ZFCompressLevel::e_Normal:
+            case v_ZFCompressLevel::e_Normal:
                 flags = MZ_DEFAULT_LEVEL;
                 break;
-            case ZFCompressLevel::e_GoodCompress:
+            case v_ZFCompressLevel::e_GoodCompress:
                 flags = 7;
                 break;
-            case ZFCompressLevel::e_BestCompress:
+            case v_ZFCompressLevel::e_BestCompress:
                 flags = MZ_BEST_COMPRESSION;
                 break;
             default:

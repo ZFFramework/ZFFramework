@@ -20,7 +20,7 @@ public:
     /**
      * @brief device type
      */
-    virtual ZFEnvDeviceUIType deviceUIType(ZF_IN_OPT ZFEnvDeviceUIType defaultValue = ZFEnvDeviceUIType::e_Desktop) {
+    virtual ZFEnvDeviceUIType deviceUIType(ZF_IN_OPT ZFEnvDeviceUIType defaultValue = v_ZFEnvDeviceUIType::e_Desktop) {
         return defaultValue;
     }
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_deviceUIInfo)
