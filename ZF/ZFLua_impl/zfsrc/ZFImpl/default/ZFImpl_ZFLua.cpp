@@ -452,33 +452,13 @@ zfbool ZFImpl_ZFLua_toGeneric(
         param = wrapper;
         return zftrue;
     }
-    if(!lua_isuserdata(L, luaStackOffset)) {
-        zfobj<ZFImpl_ZFLuaValue> holder;
-        holder->L = L;
-        lua_pushvalue(L, luaStackOffset);
-        holder->luaValue = luaL_ref(L, LUA_REGISTRYINDEX);
-        param = holder;
-        return zftrue;
-    }
 
-    zfauto const &obj = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
-    if(obj == zfnull) {
-        wrapper->zfv("");
-        return zftrue;
-    }
-    const ZFClass *cls = obj->classData();
-    if(cls->classIsTypeOf(v_zfstring::ClassData())) {
-        wrapper->zfv(obj->to<v_zfstring *>()->zfv);
-        return zftrue;
-    }
-    else if(cls->classIsTypeOf(ZFDI_WrapperBase::ClassData())) {
-        wrapper->zfv(obj->to<ZFDI_WrapperBase *>()->zfv());
-        return zftrue;
-    }
-    else {
-        zfstringAppend(errorHint, "unknown param type: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
-        return zffalse;
-    }
+    zfobj<ZFImpl_ZFLuaValue> holder;
+    holder->L = L;
+    lua_pushvalue(L, luaStackOffset);
+    holder->luaValue = luaL_ref(L, LUA_REGISTRYINDEX);
+    param = holder;
+    return zftrue;
 }
 
 zfbool ZFImpl_ZFLua_toCallback(

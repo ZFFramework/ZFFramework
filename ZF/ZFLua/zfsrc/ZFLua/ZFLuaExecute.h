@@ -119,6 +119,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       button:observerAdd(ZFUIButton.E_ButtonOnClick(), function(zfargs)
  *           end)
  *     @endcode
+ *     useful in dynamic method register:
+ *     @code
+ *       ZFDynamic()
+ *           :staticMethod('MyRetType', 'myMethod', ZFMP()
+ *               :mp('MyParamType', 'p0')
+ *           , function(zfargs)
+ *               ---@type MyRetType
+ *               local p0 = zfargs:param0()
+ *
+ *               -- return by either of ways:
+ *               zfargs:result(MyRetType())
+ *               -- or simply return
+ *               -- return MyRetType()
+ *           end)
+ *     @endcode
  *   -  "output:output(text[, size, result])"\n
  *     write to output callback
  *   -  "input:input(buf [, size, result])"\n

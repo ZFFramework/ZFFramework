@@ -40,7 +40,7 @@ static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const zfstring &typeId) {
 
 static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
     if(typeId == ZFTypeId_ZFCallback()) {
-        return zfstr("%s|fun(zfargs:ZFArgs)", typeId);
+        return zfstr("%s|fun(zfargs:ZFArgs):any", typeId);
     }
     else {
         return typeId;

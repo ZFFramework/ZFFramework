@@ -5,6 +5,43 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+// stack before:
+//     [func, zfargs]
+// stack after: (no lua return value)
+//     []
+// stack after: (has lua return value)
+//     [ret]
+static void _ZFP_ZFCallbackForLua_invoke(
+        ZF_IN lua_State *L
+        , ZF_IN const ZFArgs &zfargs
+        , ZF_IN const zfstring &logTag
+        ) {
+    int stackCountPrev = lua_gettop(L) - 2;
+    int error = lua_pcall(L, 1, LUA_MULTRET, 0);
+    if(error != 0) {
+        zfstring errorHint;
+        ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, logTag);
+        ZFLuaErrorOccurredTrim("%s", errorHint);
+    }
+    int stackCount = lua_gettop(L);
+    if(stackCount > stackCountPrev) {
+        if(stackCount == stackCountPrev + 1) {
+            zfauto result;
+            if(ZFImpl_ZFLua_toGeneric(result, L, -1) && result) {
+                zfargs.result(result);
+            }
+            lua_pop(L, 1);
+        }
+        else {
+            lua_pop(L, stackCount - stackCountPrev);
+            ZFLuaErrorOccurredTrim("[%s] only 0 or 1 return value is allowed for ZFCallbackForLua, got: %s"
+                    , logTag
+                    , stackCount - stackCountPrev
+                    );
+        }
+    }
+}
+
 // ============================================================
 zfclassLikePOD _ZFP_ZFCallbackForLua_SyncMode {
 protected:
@@ -104,12 +141,7 @@ public:
         zfargsHolder->zfv = zfargs;
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
-        int error = lua_pcall(this->ownerL, 1, 0, 0);
-        if(error != 0) {
-            zfstring errorHint;
-            ZFImpl_ZFLua_execute_errorHandle(this->ownerL, error, &errorHint, this->logTag());
-            ZFLuaErrorOccurredTrim("%s", errorHint);
-        }
+        _ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->logTag());
     }
 };
 
@@ -474,12 +506,7 @@ public:
         }
 
         // finally call, stack: [func, zfargs]
-        int error = lua_pcall(L, 1, 0, 0);
-        if(error != 0) {
-            zfstring errorHint;
-            ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, this->logTag());
-            ZFLuaErrorOccurredTrim("%s", errorHint);
-        }
+        _ZFP_ZFCallbackForLua_invoke(L, zfargs, this->logTag());
     }
 };
 
