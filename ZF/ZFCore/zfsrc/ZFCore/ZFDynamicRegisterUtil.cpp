@@ -976,6 +976,15 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     return *this;
 }
 
+ZFDynamic &ZFDynamic::staticMethod(
+        ZF_IN const zfstring &returnTypeId
+        , ZF_IN const zfstring &methodName
+        , ZF_IN const ZFMP &methodParam
+        , ZF_IN const ZFListener &methodImpl
+        ) {
+    return this->method(returnTypeId, methodName, methodParam, methodImpl, ZFMethodTypeStatic);
+}
+
 // ============================================================
 static void _ZFP_ZFDynamicSingletonGI_getter(ZF_IN_OUT const ZFArgs &zfargs) {
     if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
@@ -1683,6 +1692,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFDynamic, ZFDynamic &, method
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFDynamic, ZFDynamic &, staticMethod
+        , ZFMP_IN(const zfstring &, returnTypeId)
+        , ZFMP_IN(const zfstring &, methodName)
+        , ZFMP_IN(const ZFMP &, methodParam)
+        , ZFMP_IN(const ZFListener &, methodImpl)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, singleton
         , ZFMP_IN_OPT(const zfstring &, methodName, zftext("instance"))

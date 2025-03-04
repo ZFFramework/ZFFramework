@@ -239,6 +239,14 @@ public:
     /** @brief see #ZFDynamic */
     ZFDynamic &method(ZF_IN const ZFMethodDynamicRegisterParam &param);
 
+    /** @brief see #ZFDynamic */
+    ZFDynamic &staticMethod(
+            ZF_IN const zfstring &returnTypeId
+            , ZF_IN const zfstring &methodName
+            , ZF_IN const ZFMP &methodParam
+            , ZF_IN const ZFListener &methodImpl
+            );
+
     /**
      * @brief util to register a static method that holds singleton instance
      */
