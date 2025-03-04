@@ -84,9 +84,6 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_toNumber_DataHolder, ZFLevelZFFramewo
 }
 public:
     _ZFP_ZFDI_toNumberConv check(ZF_IN const ZFClass *cls) {
-        static zfstlmap<const ZFClass *, _ZFP_ZFDI_toNumberConv> m;
-        if(m.empty()) {
-        }
         zfstlmap<const ZFClass *, _ZFP_ZFDI_toNumberConv>::iterator it = m.find(cls);
         if(it != m.end()) {
             return it->second;

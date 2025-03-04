@@ -262,7 +262,7 @@ void _ZFP_zfstringAppend(
                 if(decimalLen > option.precision) {
                     zfindex newLen = pos + option.precision + 1;
                     if(tmp[newLen] >= '5') {
-                        tmp[newLen - 1] = tmp[newLen - 1] + 1;
+                        tmp.set(newLen - 1, (zfchar)(tmp[newLen - 1] + 1));
                     }
                     tmp.remove(newLen);
                 }

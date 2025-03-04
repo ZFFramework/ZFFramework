@@ -76,7 +76,7 @@ void zfcharAppendAndMoveNext(T_Str &s, T_CharString &p) {
             break;
         case 1:
         default:
-            s.append(p, 1);
+            s += *p;
             p += 1;
             break;
     }

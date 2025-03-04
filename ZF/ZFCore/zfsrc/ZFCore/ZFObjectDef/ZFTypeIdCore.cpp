@@ -65,7 +65,10 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
     , ZFMP_IN(ZFTypeIdWrapper *, src)
     )
 ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen);
+        zfstring errorHint;
+        if(!invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen, &errorHint)) {
+            invokerObject->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed, zfobj<v_zfstring>(errorHint));
+        }
     }, ZFTypeIdWrapper
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())

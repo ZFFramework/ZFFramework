@@ -66,8 +66,8 @@ private:
             zfindex pos0 = (zfindex)(p[0] % 64);
             zfindex pos1 = (zfindex)(p[1] % 64);
             zfchar t = table[pos0];
-            table[pos0] = table[pos1];
-            table[pos1] = t;
+            table.set(pos0, table[pos1]);
+            table.set(pos1, t);
         }
         return table;
     }

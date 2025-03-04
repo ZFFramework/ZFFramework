@@ -213,14 +213,10 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
+    inline zft_zfstring<T_Char> &operator += (ZF_IN T_Char c) {return this->append(c);}
     inline zft_zfstring<T_Char> &operator += (ZF_IN const zft_zfstring<T_Char> &s) {return this->append(s);}
     inline zft_zfstring<T_Char> &operator += (ZF_IN const T_Char *s) {return this->append(s);}
-    zft_zfstring<T_Char> &operator += (ZF_IN T_Char c) {
-        _prepareWrite(this->length() + 1);
-        d->d.buf[d->length] = c;
-        d->d.buf[++(d->length)] = '\0';
-        return *this;
-    }
+
     template<typename T_Int>
     inline const T_Char *operator + (ZF_IN T_Int const &offset) const {
         return this->cString() + offset;
@@ -252,32 +248,6 @@ public:
     }
     /** @endcond */
 
-    /** @cond ZFPrivateDoc */
-public:
-    zfclassLikePOD Char {
-    public:
-        Char(ZF_IN zft_zfstring<T_Char> &ref, ZF_IN zfuint pos) : _ref(ref), _pos(pos) {}
-        T_Char &operator = (ZF_IN T_Char const &c) {
-            _ref.set(_pos, c);
-            return _ref.zfunsafe_buffer()[_pos];
-        }
-        T_Char &operator = (ZF_IN Char const &c) {
-            _ref.set(_pos, (T_Char)c);
-            return _ref.zfunsafe_buffer()[_pos];
-        }
-        operator T_Char (void) const {
-            return _ref.get(_pos);
-        }
-    private:
-        zft_zfstring<T_Char> &_ref;
-        zfuint _pos;
-    };
-    template<typename T_Int>
-    inline Char operator [] (ZF_IN T_Int pos) {
-        return Char(*this, (zfuint)pos);
-    }
-    /** @endcond */
-
 public:
     /**
      * @brief swap internal data without deep copy,
@@ -292,15 +262,29 @@ public:
 
 public:
     /** @brief append string */
+    inline zft_zfstring<T_Char> &append(ZF_IN T_Char c) {
+        _prepareWrite(d->length + 1);
+        d->d.buf[d->length] = c;
+        d->d.buf[++(d->length)] = '\0';
+        return *this;
+    }
+    /** @brief append string */
     inline zft_zfstring<T_Char> &append(ZF_IN const zft_zfstring<T_Char> &s) {
-        return this->append(s.cString(), s.length());
+        if(s) {
+            _appendImpl(s.cString(), s.length());
+        }
+        return *this;
     }
     /** @brief append string */
     inline zft_zfstring<T_Char> &append(
             ZF_IN const zft_zfstring<T_Char> &s
             , ZF_IN zfindex len
             ) {
-        return this->append(s.cString(), len <= s.length() ? len : s.length());
+        len = (len <= s.length() ? len : s.length());
+        if(len > 0) {
+            _appendImpl(s.cString(), len);
+        }
+        return *this;
     }
     /** @brief append string */
     inline zft_zfstring<T_Char> &append(
@@ -315,11 +299,9 @@ public:
             len = s.length() - offset;
         }
         if(len > 0) {
-            return this->append(s.cString() + offset, len);
+            _appendImpl(s.cString() + offset, len);
         }
-        else {
-            return *this;
-        }
+        return *this;
     }
     /** @brief append string */
     zft_zfstring<T_Char> &append(
@@ -331,13 +313,19 @@ public:
                 len = _ZFP_zfstring_len((const T_Char *)s);
             }
             if(len > 0) {
-                zfindex lenTmp = this->length();
-                _prepareWrite(lenTmp + len);
-                zfmemcpy(d->d.buf + lenTmp, s, len * sizeof(T_Char));
-                d->d.buf[d->length = (zfuint)(lenTmp + len)] = '\0';
+                _appendImpl(s, len);
             }
         }
         return *this;
+    }
+private:
+    void _appendImpl(
+            ZF_IN const void *s
+            , ZF_IN zfindex len
+            ) {
+        _prepareWrite(d->length + len);
+        zfmemcpy(d->d.buf + d->length, s, len * sizeof(T_Char));
+        d->d.buf[d->length += (zfuint)len] = '\0';
     }
 
 public:

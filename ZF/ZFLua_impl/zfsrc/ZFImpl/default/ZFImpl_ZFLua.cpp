@@ -824,7 +824,7 @@ zfbool ZFImpl_ZFLua_zfstringAppend(
                 pFmtL = pToken + 1;
                 if(i <= count) {
                     fmtTmp.assign(pFmt, pFmtL - pFmt);
-                    fmtTmp[fmtTmp.length() - 1] = 's';
+                    fmtTmp.set(fmtTmp.length() - 1, 's');
                     zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_pointer(L, i));
                 }
                 break;

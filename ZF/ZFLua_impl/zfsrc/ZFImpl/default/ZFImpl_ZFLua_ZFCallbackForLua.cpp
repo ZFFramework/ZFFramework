@@ -11,35 +11,57 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 //     []
 // stack after: (has lua return value)
 //     [ret]
-static void _ZFP_ZFCallbackForLua_invoke(
+static zfbool _ZFP_ZFCallbackForLua_invoke(
         ZF_IN lua_State *L
         , ZF_IN const ZFArgs &zfargs
-        , ZF_IN const zfstring &logTag
+        , ZF_OUT zfstring &errorHint
         ) {
     int stackCountPrev = lua_gettop(L) - 2;
     int error = lua_pcall(L, 1, LUA_MULTRET, 0);
     if(error != 0) {
-        zfstring errorHint;
-        ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, logTag);
-        ZFLuaErrorOccurredTrim("%s", errorHint);
+        ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, zfnull);
+        return zffalse;
     }
     int stackCount = lua_gettop(L);
     if(stackCount > stackCountPrev) {
         if(stackCount == stackCountPrev + 1) {
             zfauto result;
-            if(ZFImpl_ZFLua_toGeneric(result, L, -1) && result) {
+            ZFImpl_ZFLua_toGeneric(result, L, -1);
+            lua_pop(L, 1);
+
+            if(result) {
+                if(zfargs.ownerMethod()) {
+                    if(zfargs.ownerMethod()->returnTypeId() == ZFTypeId_void()) {
+                        result = zfnull;
+                    }
+                    else {
+                        zfauto resultTmp;
+                        zfstring errorHintTmp;
+                        if(!ZFDI_implicitConvertT(resultTmp, zfargs.ownerMethod()->returnTypeId(), result, &errorHintTmp)) {
+                            zfstringAppend(errorHint, "invalid return value, desired type: %s, got value: %s, reason: %s, for method: %s"
+                                    , zfargs.ownerMethod()->returnTypeId()
+                                    , result
+                                    , errorHintTmp
+                                    , zfargs.ownerMethod()
+                                    );
+                            return zffalse;
+                        }
+                        result = resultTmp;
+                    }
+                }
                 zfargs.result(result);
             }
-            lua_pop(L, 1);
         }
         else {
             lua_pop(L, stackCount - stackCountPrev);
-            ZFLuaErrorOccurredTrim("[%s] only 0 or 1 return value is allowed for ZFCallbackForLua, got: %s"
-                    , logTag
+            zfstringAppend(errorHint, "only 0 or 1 return value is allowed for ZFCallbackForLua, got: %s%s"
                     , stackCount - stackCountPrev
+                    , zfargs.ownerMethod() ? zfstr(", for method: %s", zfargs.ownerMethod()) : zfstring()
                     );
+            return zffalse;
         }
     }
+    return zftrue;
 }
 
 // ============================================================
@@ -141,7 +163,11 @@ public:
         zfargsHolder->zfv = zfargs;
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
-        _ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->logTag());
+        zfstring errorHint;
+        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, errorHint)) {
+            ZFImpl_ZFLua_luaError(L, "%s", errorHint);
+            return;
+        }
     }
 };
 
@@ -506,7 +532,11 @@ public:
         }
 
         // finally call, stack: [func, zfargs]
-        _ZFP_ZFCallbackForLua_invoke(L, zfargs, this->logTag());
+        zfstring errorHint;
+        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, errorHint)) {
+            ZFImpl_ZFLua_luaError(L, "%s", errorHint);
+            return;
+        }
     }
 };
 
