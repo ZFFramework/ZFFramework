@@ -6,274 +6,279 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFENUM_DEFINE(ZFCompressLevel)
 
 // ============================================================
-// base api
-ZFMETHOD_FUNC_DEFINE_2(void *, ZFCompressBegin
-        , ZFMP_IN_OUT(const ZFOutput &, outputZip)
+// ZFCompress
+ZFOBJECT_REGISTER(ZFCompress)
+
+ZFMETHOD_DEFINE_2(ZFCompress, zfbool, open
+        , ZFMP_IN(const ZFOutput &, outputZip)
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         ) {
-    if(!outputZip) {
-        return zfnull;
+    this->close();
+    d = ZFPROTOCOL_ACCESS(ZFCompress)->compressBegin(outputZip, compressLevel);
+    return d != zfnull;
+}
+ZFMETHOD_DEFINE_0(ZFCompress, zfbool, close) {
+    if(d) {
+        zfbool ret = ZFPROTOCOL_ACCESS(ZFCompress)->compressEnd(d);
+        d = zfnull;
+        return ret;
     }
     else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->compressBegin(outputZip, compressLevel);
+        return zftrue;
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFCompressEnd
-        , ZFMP_IN(void *, compressToken)
-        ) {
-    if(compressToken == zfnull) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->compressEnd(compressToken);
-    }
+ZFMETHOD_DEFINE_0(ZFCompress, zfbool, valid) {
+    return d != zfnull;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressContent
-        , ZFMP_IN_OUT(void *, compressToken)
+
+ZFMETHOD_DEFINE_2(ZFCompress, zfbool, add
         , ZFMP_IN_OUT(const ZFInput &, inputRaw)
-        , ZFMP_IN(const zfchar *, filePathInZip)
+        , ZFMP_IN(const zfstring &, filePathInZip)
         ) {
-    if(compressToken == zfnull || !inputRaw || zfstringIsEmpty(filePathInZip)) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->compressContent(compressToken, inputRaw, filePathInZip);
-    }
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->compressContent(d, inputRaw, filePathInZip)
+        ;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFCompressContentDir
-        , ZFMP_IN_OUT(void *, compressToken)
-        , ZFMP_IN(const zfchar *, filePathInZip)
+ZFMETHOD_DEFINE_1(ZFCompress, zfbool, createDir
+        , ZFMP_IN(const zfstring &, filePathInZip)
         ) {
-    if(compressToken == zfnull || zfstringIsEmpty(filePathInZip)) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->compressContentDir(compressToken, filePathInZip);
-    }
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->compressContentDir(d, filePathInZip)
+        ;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFCompressContentRemove
-        , ZFMP_IN_OUT(void *, compressToken)
-        , ZFMP_IN(const zfchar *, filePathInZip)
+ZFMETHOD_DEFINE_1(ZFCompress, zfbool, remove
+        , ZFMP_IN(const zfstring &, filePathInZip)
         ) {
-    if(compressToken == zfnull || zfstringIsEmpty(filePathInZip)) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->compressContentRemove(compressToken, filePathInZip);
-    }
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->compressContentRemove(d, filePathInZip)
+        ;
 }
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompressContentMove
-        , ZFMP_IN_OUT(void *, compressToken)
-        , ZFMP_IN(const zfchar *, filePathInZipFrom)
-        , ZFMP_IN(const zfchar *, filePathInZipTo)
+ZFMETHOD_DEFINE_3(ZFCompress, zfbool, move
+        , ZFMP_IN(const zfstring &, filePathInZipFrom)
+        , ZFMP_IN(const zfstring &, filePathInZipTo)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         ) {
-    if(compressToken == zfnull || zfstringIsEmpty(filePathInZipFrom) || zfstringIsEmpty(filePathInZipTo)) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->compressContentMove(compressToken, filePathInZipFrom, filePathInZipTo, isForce);
-    }
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->compressContentMove(d, filePathInZipFrom, filePathInZipTo)
+        ;
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void *, ZFDecompressBegin
+ZFOBJECT_ON_INIT_DEFINE_2(ZFCompress
+        , ZFMP_IN(const ZFOutput &, outputZip)
+        , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
+        ) {
+    this->objectOnInit();
+    this->open(outputZip, compressLevel);
+}
+void ZFCompress::objectOnInit(void) {
+    zfsuper::objectOnInit();
+    d = zfnull;
+}
+void ZFCompress::objectOnDeallocPrepare(void) {
+    this->close();
+    zfsuper::objectOnDeallocPrepare();
+}
+
+// ============================================================
+// ZFDecompress
+ZFMETHOD_DEFINE_1(ZFDecompress, zfbool, open
         , ZFMP_IN_OUT(const ZFInput &, inputZip)
         ) {
-    if(!inputZip) {
-        return zfnull;
+    this->close();
+    d = ZFPROTOCOL_ACCESS(ZFCompress)->decompressBegin(inputZip);
+    return d != zfnull;
+}
+ZFMETHOD_DEFINE_0(ZFDecompress, zfbool, close) {
+    if(d) {
+        zfbool ret = ZFPROTOCOL_ACCESS(ZFCompress)->decompressEnd(d);
+        d = zfnull;
+        return ret;
     }
     else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressBegin(inputZip);
+        return zftrue;
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFDecompressEnd
-        , ZFMP_IN(void *, decompressToken)
-        ) {
-    if(decompressToken == zfnull) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressEnd(decompressToken);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContentAt
-        , ZFMP_IN_OUT(void *, decompressToken)
-        , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
-        , ZFMP_IN(zfindex, fileIndexInZip)
-        ) {
-    if(decompressToken == zfnull || !outputRaw || fileIndexInZip == zfindexMax()) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContent(decompressToken, outputRaw, fileIndexInZip);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContent
-        , ZFMP_IN_OUT(void *, decompressToken)
-        , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
-        , ZFMP_IN(const zfchar *, filePathInZip)
-        ) {
-    if(decompressToken == zfnull || !outputRaw || zfstringIsEmpty(filePathInZip)) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContent(
-            decompressToken, outputRaw, ZFDecompressContentIndex(decompressToken, filePathInZip));
-    }
-}
-ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFDecompressContentCount
-        , ZFMP_IN(void *, decompressToken)
-        ) {
-    if(decompressToken == zfnull) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentCount(decompressToken);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFDecompressContentIndex
-        , ZFMP_IN(void *, decompressToken)
-        , ZFMP_IN(const zfchar *, filePathInZip)
-        ) {
-    if(decompressToken == zfnull || zfstringIsEmpty(filePathInZip)) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentIndex(decompressToken, filePathInZip);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContentPathT
-        , ZFMP_IN(void *, decompressToken)
-        , ZFMP_IN_OUT(zfstring &, filePathInZip)
-        , ZFMP_IN(zfindex, fileIndexInZip)
-        ) {
-    if(decompressToken == zfnull || fileIndexInZip == zfindexMax()) {
-        return zffalse;
-    }
-    else {
-        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentPath(decompressToken, filePathInZip, fileIndexInZip);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFDecompressContentPath
-        , ZFMP_IN(void *, decompressToken)
-        , ZFMP_IN(zfindex, fileIndexInZip)
-        ) {
-    zfstring ret;
-    ZFDecompressContentPathT(decompressToken, ret, fileIndexInZip);
-    return ret;
-}
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressContentIsDir
-        , ZFMP_IN(void *, decompressToken)
-        , ZFMP_IN(zfindex, fileIndexInZip)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentIsDir(decompressToken, fileIndexInZip);
+ZFMETHOD_DEFINE_0(ZFDecompress, zfbool, valid) {
+    return d != zfnull;
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContentFindFirst
-        , ZFMP_IN_OUT(ZFFileFindData &, fd)
-        , ZFMP_IN(void *, decompressToken)
-        , ZFMP_IN(const zfchar *, filePathInZip)
+ZFMETHOD_DEFINE_2(ZFDecompress, zfbool, outputAt
+        , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
+        , ZFMP_IN(zfindex, fileIndexInZip)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentFindFirst(fd, decompressToken, filePathInZip);
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContent(d, outputRaw, fileIndexInZip)
+        ;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFDecompressContentFindNext
+ZFMETHOD_DEFINE_2(ZFDecompress, zfbool, output
+        , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
+        , ZFMP_IN(const zfstring &, filePathInZip)
+        ) {
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContent(d, outputRaw, this->contentIndex(filePathInZip))
+        ;
+}
+
+ZFMETHOD_DEFINE_0(ZFDecompress, zfindex, contentCount) {
+    if(d) {
+        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentCount(d);
+    }
+    else {
+        return 0;
+    }
+}
+ZFMETHOD_DEFINE_1(ZFDecompress, zfindex, contentIndex
+        , ZFMP_IN(const zfstring &, filePathInZip)
+        ) {
+    if(d) {
+        return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentIndex(d, filePathInZip);
+    }
+    else {
+        return zfindexMax();
+    }
+}
+ZFMETHOD_DEFINE_1(ZFDecompress, zfstring, contentPath
+        , ZFMP_IN(zfindex, fileIndexInZip)
+        ) {
+    zfstring tmp;
+    if(d && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentPath(d, tmp, fileIndexInZip)) {
+        return tmp;
+    }
+    else {
+        return zfnull;
+    }
+}
+ZFMETHOD_DEFINE_2(ZFDecompress, zfbool, contentPathT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(zfindex, fileIndexInZip)
+        ) {
+    return (d && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentPath(d, ret, fileIndexInZip));
+}
+ZFMETHOD_DEFINE_1(ZFDecompress, zfbool, isDir
+        , ZFMP_IN(zfindex, fileIndexInZip)
+        ) {
+    return d
+        && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentIsDir(d, fileIndexInZip)
+        ;
+}
+
+ZFMETHOD_DEFINE_2(ZFDecompress, zfbool, findFirst
+        , ZFMP_IN_OUT(ZFFileFindData &, fd)
+        , ZFMP_IN(const zfstring &, filePathInZip)
+        ) {
+    return d && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentFindFirst(fd, d, filePathInZip);
+}
+ZFMETHOD_DEFINE_1(ZFDecompress, zfbool, findNext
         , ZFMP_IN_OUT(ZFFileFindData &, fd)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentFindNext(fd);
+    return d && ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentFindNext(fd);
 }
-ZFMETHOD_FUNC_DEFINE_1(void, ZFDecompressContentFindClose
+ZFMETHOD_DEFINE_1(ZFDecompress, void, findClose
         , ZFMP_IN_OUT(ZFFileFindData &, fd)
         ) {
     ZFPROTOCOL_ACCESS(ZFCompress)->decompressContentFindClose(fd);
 }
 
+ZFOBJECT_ON_INIT_DEFINE_1(ZFDecompress
+        , ZFMP_IN_OUT(const ZFInput &, inputZip)
+        ) {
+    this->objectOnInit();
+    this->open(inputZip);
+}
+void ZFDecompress::objectOnInit(void) {
+    zfsuper::objectOnInit();
+    d = zfnull;
+}
+void ZFDecompress::objectOnDeallocPrepare(void) {
+    this->close();
+    zfsuper::objectOnDeallocPrepare();
+}
+
 // ============================================================
 // util
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompress
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompressContent
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN_OUT(const ZFInput &, inputRaw)
+        , ZFMP_IN_OPT(const zfstring &, filePathInZip, zftext("content"))
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
-        , ZFMP_IN_OPT(const zfchar *, filePathInZip, "content")
         ) {
-    void *compressToken = ZFCompressBegin(outputZip, compressLevel);
-    if(compressToken == zfnull) {return zffalse;}
+    zfobj<ZFCompress> t(outputZip, compressLevel);
+    if(!t->valid()) {return zffalse;}
     zfbool success = zftrue;
-    success &= ZFCompressContent(compressToken, inputRaw, filePathInZip);
-    success &= ZFCompressEnd(compressToken);
+    success &= t->add(inputRaw, filePathInZip);
+    success &= t->close();
     return success;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompress
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContent
         , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
         , ZFMP_IN_OUT(const ZFInput &, inputZip)
-        , ZFMP_IN_OPT(const zfchar *, filePathInZip, "content")
+        , ZFMP_IN_OPT(const zfstring &, filePathInZip, zftext("content"))
         ) {
-    void *decompressToken = ZFDecompressBegin(inputZip);
-    if(decompressToken == zfnull) {return zffalse;}
+    zfobj<ZFDecompress> t(inputZip);
+    if(!t->valid()) {return zffalse;}
     zfbool success = zftrue;
-    success &= ZFDecompressContent(decompressToken, outputRaw, filePathInZip);
-    success &= ZFDecompressEnd(decompressToken);
+    success &= t->output(outputRaw, filePathInZip);
+    success &= t->close();
     return success;
 }
 
 static zfbool _ZFP_ZFCompressDir(
-        ZF_IN_OUT void *compressToken
+        ZF_IN_OUT ZFCompress *compressToken
         , ZF_IN const ZFPathInfoImpl &fileImpl
-        , ZF_IN const zfchar *pathType
-        , ZF_IN const zfchar *pathData
-        , ZF_IN const zfchar *parentPathInZip
+        , ZF_IN const zfstring &pathType
+        , ZF_IN const zfstring &pathData
+        , ZF_IN const zfstring &relPathInZip
         ) {
-    // prepare param
-    zfstring inputName = fileImpl.implToFileName(pathData);
-    if(!inputName) {
+    if(!fileImpl.implIsExist(pathData)) {
         return zffalse;
     }
 
-    zfstring filePathInZip = parentPathInZip;
-    if(!filePathInZip.isEmpty()) {
-        filePathInZip += '/';
-    }
-    filePathInZip += inputName;
-
-    if(!filePathInZip.isEmpty()) {
-        // file
-        if(fileImpl.implIsExist(pathData)
-                && !fileImpl.implIsDir(pathData)
-                ) {
-            ZFInput inputRaw;
-            if(!ZFInputForPathInfoT(inputRaw, ZFPathInfo(pathType, pathData), v_ZFFileOpenOption::e_Read)) {
-                return zffalse;
-            }
-            return ZFCompressContent(compressToken, inputRaw, filePathInZip);
-        }
-        else {
-            if(!ZFCompressContentDir(compressToken, filePathInZip)) {
+    if(fileImpl.implIsDir(pathData)) {
+        if(!relPathInZip.isEmpty()) {
+            if(!compressToken->createDir(relPathInZip)) {
                 return zffalse;
             }
         }
-    }
 
-    // dir
-    ZFFileFindData fd;
-    zfbool success = zftrue;
-    if(fileImpl.implFindFirst(fd, pathData)) {
-        do {
-            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
-            if(!pathDataChild) {
-                success = zffalse;
-                break;
-            }
-            if(!_ZFP_ZFCompressDir(compressToken, fileImpl, pathType, pathDataChild, filePathInZip)) {
-                success = zffalse;
-                break;
-            }
-        } while(fileImpl.implFindNext(fd));
-        fileImpl.implFindClose(fd);
+        ZFFileFindData fd;
+        zfbool success = zftrue;
+        if(fileImpl.implFindFirst(fd, pathData)) {
+            do {
+                zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
+                if(!pathDataChild) {
+                    success = zffalse;
+                    break;
+                }
+                zfstring filePathInZip;
+                if(!relPathInZip.isEmpty()) {
+                    filePathInZip += relPathInZip;
+                    filePathInZip += '/';
+                }
+                filePathInZip += fd.name();
+                if(!_ZFP_ZFCompressDir(compressToken, fileImpl, pathType, pathDataChild, filePathInZip)) {
+                    success = zffalse;
+                    break;
+                }
+            } while(fileImpl.implFindNext(fd));
+            fileImpl.implFindClose(fd);
+        }
+        return success;
     }
-    return success;
+    else {
+        zfstring filePathInZip = relPathInZip;
+        if(filePathInZip.isEmpty()) {
+            filePathInZip = fileImpl.implToFileName(pathData);
+            if(filePathInZip.isEmpty()) {
+                return zffalse;
+            }
+        }
+        return compressToken->add(ZFInputForPathInfo(ZFPathInfo(pathType, pathData)), filePathInZip);
+    }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressDir
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompressDir
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN(const ZFPathInfo &, inputPathInfo)
+        , ZFMP_IN_OPT(const zfstring &, filePathInZip, zftext("content"))
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         ) {
     const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(inputPathInfo.pathType());
@@ -281,14 +286,14 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressDir
         return zffalse;
     }
 
-    void *compressToken = ZFCompressBegin(outputZip, compressLevel);
-    if(compressToken == zfnull) {
+    zfobj<ZFCompress> compressToken(outputZip, compressLevel);
+    if(!compressToken->valid()) {
         return zffalse;
     }
 
     zfbool success = zftrue;
-    success &= _ZFP_ZFCompressDir(compressToken, *fileImpl, inputPathInfo.pathType(), inputPathInfo.pathData(), "");
-    success &= ZFCompressEnd(compressToken);
+    success &= _ZFP_ZFCompressDir(compressToken, *fileImpl, inputPathInfo.pathType(), inputPathInfo.pathData(), filePathInZip);
+    success &= compressToken->close();
     return success;
 }
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
@@ -300,17 +305,17 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
         return zffalse;
     }
 
-    void *decompressToken = ZFDecompressBegin(inputZip);
-    if(decompressToken == zfnull) {
+    zfobj<ZFDecompress> decompressToken(inputZip);
+    if(!decompressToken->valid()) {
         return zffalse;
     }
 
-    zfindex fileCountInZip = ZFDecompressContentCount(decompressToken);
+    zfindex fileCountInZip = decompressToken->contentCount();
     zfbool success = zftrue;
     do {
         for(zfindex fileIndexInZip = 0; fileIndexInZip < fileCountInZip; ++fileIndexInZip) {
-            zfstring filePathInZip;
-            if(!ZFDecompressContentPathT(decompressToken, filePathInZip, fileIndexInZip)) {
+            zfstring filePathInZip = decompressToken->contentPath(fileIndexInZip);
+            if(!filePathInZip) {
                 success = zffalse;
                 break;
             }
@@ -334,13 +339,13 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
                 success = zffalse;
                 break;
             }
-            if(!ZFDecompressContentAt(decompressToken, outputRaw, fileIndexInZip)) {
+            if(!decompressToken->outputAt(outputRaw, fileIndexInZip)) {
                 success = zffalse;
                 break;
             }
         }
     } while(zffalse);
-    success &= ZFDecompressEnd(decompressToken);
+    success &= decompressToken->close();
     return success;
 }
 

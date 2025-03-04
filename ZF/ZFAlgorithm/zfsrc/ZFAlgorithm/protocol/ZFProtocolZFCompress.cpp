@@ -12,14 +12,15 @@ public:
 };
 
 static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
-        ZF_IN_OUT ZFFileFindData &fd
+        ZFPROTOCOL_INTERFACE_CLASS(ZFCompress) *impl
+        , ZF_IN_OUT ZFFileFindData &fd
         , ZF_IN _ZFP_ZFProtocolZFCompress_FindData *d
         ) {
-    zfindex count = ZFDecompressContentCount(d->decompressToken);
+    zfindex count = impl->decompressContentCount(d->decompressToken);
     zfstring tmp;
     for(zfindex i = d->lastIndex + 1; i < count; ++i) {
         tmp.removeAll();
-        if(!ZFDecompressContentPathT(d->decompressToken, tmp, i) || tmp.isEmpty()) {
+        if(!impl->decompressContentPath(d->decompressToken, tmp, i) || tmp.isEmpty()) {
             return zffalse;
         }
         const zfchar *path = tmp;
@@ -52,7 +53,7 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
         // found
         d->lastIndex = i;
         fd.impl().name.assign(path, pos == zfindexMax() ? pathLen : pathLen - 1);
-        fd.impl().isDir = ZFDecompressContentIsDir(d->decompressToken, i);
+        fd.impl().isDir = impl->decompressContentIsDir(d->decompressToken, i);
         return true;
     }
     return zffalse;
@@ -61,7 +62,7 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(
         ZF_IN_OUT ZFFileFindData &fd
         , ZF_IN void *decompressToken
-        , ZF_IN const zfchar *filePathInZip
+        , ZF_IN const zfstring &filePathInZip
         ) {
     _ZFP_ZFProtocolZFCompress_FindData *d = zfnew(_ZFP_ZFProtocolZFCompress_FindData);
     d->decompressToken = decompressToken;
@@ -70,7 +71,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(
     while(!d->relPath.isEmpty() && d->relPath[0] == '/') {
         d->relPath.remove(0, 1);
     }
-    zfbool ret = _ZFP_ZFProtocolZFCompress_FindNext(fd, d);
+    zfbool ret = _ZFP_ZFProtocolZFCompress_FindNext(this, fd, d);
     if(ret) {
         fd.implAttach("ZFDecompressContentFindFirst", d);
     }
@@ -81,7 +82,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindNext(ZF_IN_OUT ZFFileFindData &fd) {
     _ZFP_ZFProtocolZFCompress_FindData *d = (_ZFP_ZFProtocolZFCompress_FindData *)fd.implUserData();
-    return _ZFP_ZFProtocolZFCompress_FindNext(fd, d);
+    return _ZFP_ZFProtocolZFCompress_FindNext(this, fd, d);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindClose(ZF_IN_OUT ZFFileFindData &fd) {
     fd.implDetach();

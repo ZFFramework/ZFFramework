@@ -65,7 +65,7 @@ public:
     virtual zfbool compressContent(
             ZF_IN_OUT void *compressToken
             , ZF_IN_OUT const ZFInput &inputRaw
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) {
         mz_zip_archive *zip = (mz_zip_archive *)compressToken;
         mz_uint flags = MZ_DEFAULT_COMPRESSION;
@@ -96,12 +96,11 @@ public:
     }
     virtual zfbool compressContentDir(
             ZF_IN_OUT void *compressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) {
         mz_zip_archive *zip = (mz_zip_archive *)compressToken;
-        zfindex len = zfslen(filePathInZip);
-        if(filePathInZip[len - 1] == '/') {
-            return mz_zip_writer_add_mem(zip, filePathInZip, NULL, 0, 0);
+        if(filePathInZip[filePathInZip.length() - 1] == '/') {
+            return mz_zip_writer_add_mem(zip, filePathInZip.cString(), NULL, 0, 0);
         }
         else {
             zfstring tmp = filePathInZip;
@@ -111,7 +110,7 @@ public:
     }
     virtual zfbool compressContentRemove(
             ZF_IN_OUT void *compressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) {
         // not implemented yet
         return zffalse;
@@ -119,8 +118,8 @@ public:
 
     virtual zfbool compressContentMove(
             ZF_IN_OUT void *compressToken
-            , ZF_IN const zfchar *filePathInZipFrom
-            , ZF_IN const zfchar *filePathInZipTo
+            , ZF_IN const zfstring &filePathInZipFrom
+            , ZF_IN const zfstring &filePathInZipTo
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
         // not implemented yet
@@ -182,10 +181,10 @@ public:
     }
     virtual zfindex decompressContentIndex(
             ZF_IN void *decompressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) {
         mz_zip_archive *zip = (mz_zip_archive *)decompressToken;
-        int ret = mz_zip_reader_locate_file(zip, filePathInZip, NULL, MZ_ZIP_FLAG_CASE_SENSITIVE);
+        int ret = mz_zip_reader_locate_file(zip, filePathInZip.cString(), NULL, MZ_ZIP_FLAG_CASE_SENSITIVE);
         if(ret < 0) {
             return zfindexMax();
         }
@@ -221,7 +220,7 @@ private:
     zfbool compressAdd(
             ZF_IN_OUT mz_zip_archive &zip
             , ZF_IN const ZFInput &input
-            , ZF_IN const zfchar *filePath
+            , ZF_IN const zfstring &filePath
             , ZF_IN mz_uint flags
             ) {
         zfindex inputSize = input.ioSize();

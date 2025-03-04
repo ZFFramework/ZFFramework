@@ -118,9 +118,6 @@ public:
     virtual void pathForCache(ZF_IN const zfstring &path) {
         this->_pathForCache = path;
     }
-    virtual void pathForCacheClear(void) {
-        ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
-    }
 
 private:
     zfstring _pathForModule;

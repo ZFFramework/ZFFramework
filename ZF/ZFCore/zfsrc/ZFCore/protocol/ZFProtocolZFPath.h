@@ -62,7 +62,9 @@ public:
     /**
      * @brief see #ZFPathForCacheClear
      */
-    virtual void pathForCacheClear(void) zfpurevirtual;
+    virtual void pathForCacheClear(void) {
+        ZFFileRemove(this->pathForCache(), zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
+    }
 ZFPROTOCOL_INTERFACE_END(ZFPath)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -18,7 +18,7 @@ private:
     public:
         zfstring compressFilePathInfo;
         _TaskType taskType;
-        void *taskToken; // compress / decompress token
+        zfauto taskToken; // ZFCompress / ZFDecompress token
         zfuint ioCount; // input / output task count
                         // maybe zero when in idle state (_taskIdle)
                         // would be cleaned by _taskIdleCleanup
@@ -26,19 +26,9 @@ private:
         _TaskData(void)
         : compressFilePathInfo()
         , taskType()
-        , taskToken(zfnull)
+        , taskToken()
         , ioCount(1)
         {
-        }
-        ~_TaskData(void) {
-            if(this->taskToken != zfnull) {
-                if(this->taskType == _TaskTypeCompress) {
-                    ZFCompressEnd(this->taskToken);
-                }
-                else {
-                    ZFDecompressEnd(this->taskToken);
-                }
-            }
         }
     };
     typedef zfstlmap<const zfchar *, _TaskData *, zfcharConst_zfstlLess> _TaskMap;
@@ -156,14 +146,23 @@ private:
             taskData->taskType = taskType;
         }
 
+        zfbool success = zffalse;
         if(taskType == _TaskTypeCompress) {
-            taskData->taskToken = ZFCompressBegin(ZFOutputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)));
+            zfobj<ZFCompress> t;
+            if(t->open(ZFOutputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)))) {
+                taskData->taskToken = t;
+                success = zftrue;
+            }
         }
         else {
-            taskData->taskToken = ZFDecompressBegin(ZFInputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)));
+            zfobj<ZFDecompress> t;
+            if(t->open(ZFInputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)))) {
+                taskData->taskToken = t;
+                success = zftrue;
+            }
         }
         ZFCoreMutexLocker();
-        if(taskData->taskToken == zfnull) {
+        if(!success) {
             _taskRelease(taskData);
             return zfnull;
         }
@@ -197,8 +196,11 @@ public:
         if(!relPath) {
             return zftrue;
         }
-        zfbool exist = (ZFDecompressContentIndex(taskData->taskToken, relPath) != zfindexMax())
-            || (ZFDecompressContentIndex(taskData->taskToken, zfstr("%s%s", relPath, '/')) != zfindexMax());
+        ZFDecompress *t = taskData->taskToken;
+        zfbool exist = (zffalse
+                || t->contentIndex(relPath) != zfindexMax()
+                || t->contentIndex(zfstr("%s%s", relPath, '/')) != zfindexMax()
+                );
         _taskIdle(taskData);
         return exist;
     }
@@ -211,9 +213,10 @@ public:
         if(!relPath) {
             return zftrue;
         }
-        zfbool isDir = ZFDecompressContentIsDir(taskData->taskToken, ZFDecompressContentIndex(taskData->taskToken,
-                relPath[relPath.length() - 1] == '/' ? relPath : zfstr("%s/", relPath)
-            ));
+        ZFDecompress *t = taskData->taskToken;
+        zfbool isDir = t->isDir(t->contentIndex(
+                    relPath[relPath.length() - 1] == '/' ? relPath : zfstr("%s/", relPath)
+                    ));
         _taskIdle(taskData);
         return isDir;
     }
@@ -282,7 +285,8 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        zfbool ret = ZFCompressContentDir(taskData->taskToken, relPath);
+        ZFCompress *t = taskData->taskToken;
+        zfbool ret = t->createDir(relPath);
         _taskIdle(taskData);
         return ret;
     }
@@ -297,7 +301,8 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        zfbool ret = ZFCompressContentRemove(taskData->taskToken, relPath);
+        ZFCompress *t = taskData->taskToken;
+        zfbool ret = t->remove(relPath);
         _taskIdle(taskData);
         return ret;
     }
@@ -312,7 +317,8 @@ public:
         _TaskData *taskDataTo = _taskCreate(relPathTo, pathDataTo, _TaskTypeCompress);
         zfbool ret = zffalse;
         if(taskDataFrom != zfnull && taskDataTo != zfnull) {
-            ret = ZFCompressContentMove(taskDataFrom->taskToken, relPathFrom, relPathTo, isForce);
+            ZFCompress *t = taskDataFrom->taskToken;
+            ret = t->move(relPathFrom, relPathTo, isForce);
         }
         if(taskDataFrom != zfnull) {
             _taskIdle(taskDataFrom);
@@ -331,7 +337,8 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        zfbool ret = ZFDecompressContentFindFirst(fd, taskData->taskToken, relPath);
+        ZFDecompress *t = taskData->taskToken;
+        zfbool ret = t->findFirst(fd, relPath);
         if(ret) {
             zfobj<ZFValueHolder> taskDataHolder(taskData, ZFValueHolderTypePointerRef());
             fd.implTag("_ZFP_ZFPathType_ZFCompress", taskDataHolder);
@@ -342,7 +349,13 @@ public:
         return ret;
     }
     static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd) {
-        return ZFDecompressContentFindNext(fd);
+        _TaskData *taskData = zfnull;
+        ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_ZFCompress");
+        if(taskDataHolder != zfnull) {
+            taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
+        }
+        ZFDecompress *t = taskData->taskToken;
+        return t->findNext(fd);
     }
     static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd) {
         _TaskData *taskData = zfnull;
@@ -350,12 +363,14 @@ public:
         if(taskDataHolder != zfnull) {
             taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
         }
-        fd.implTag("_ZFP_ZFPathType_ZFCompress", zfnull);
-        ZFDecompressContentFindClose(fd);
+        ZFDecompress *t = taskData->taskToken;
+        t->findClose(fd);
 
         if(taskData != zfnull) {
             _taskIdle(taskData);
         }
+
+        fd.implTag("_ZFP_ZFPathType_ZFCompress", zfnull);
     }
     static void *callbackOpen(
             ZF_IN const zfchar *pathData
@@ -370,7 +385,8 @@ public:
             }
             _Token *d = zfnew(_Token);
             d->owner = taskData;
-            if(!ZFDecompressContent(taskData->taskToken, d->ioBuf->output(), relPath)) {
+            ZFDecompress *t = taskData->taskToken;
+            if(!t->output(d->ioBuf->output(), relPath)) {
                 zfdelete(d);
                 return zfnull;
             }
@@ -396,7 +412,8 @@ public:
             return zftrue;
         }
         else {
-            zfbool ret = ZFCompressContent(d->owner->taskToken, d->ioBuf->input(), d->relPath);
+            ZFDecompress *t = d->owner->taskToken;
+            zfbool ret = t->output(d->ioBuf->input(), d->relPath);
             zfdelete(d);
             return ret;
         }

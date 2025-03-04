@@ -27,23 +27,23 @@ public:
     virtual zfbool compressContent(
             ZF_IN_OUT void *compressToken
             , ZF_IN_OUT const ZFInput &inputRaw
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) zfpurevirtual;
     /** @brief see #ZFCompressBegin */
     virtual zfbool compressContentDir(
             ZF_IN_OUT void *compressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) zfpurevirtual;
     /** @brief see #ZFCompressBegin */
     virtual zfbool compressContentRemove(
             ZF_IN_OUT void *compressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) zfpurevirtual;
     /** @brief see #ZFCompressBegin */
     virtual zfbool compressContentMove(
             ZF_IN_OUT void *compressToken
-            , ZF_IN const zfchar *filePathInZipFrom
-            , ZF_IN const zfchar *filePathInZipTo
+            , ZF_IN const zfstring &filePathInZipFrom
+            , ZF_IN const zfstring &filePathInZipTo
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
 
@@ -63,7 +63,7 @@ public:
     /** @brief see #ZFCompressBegin */
     virtual zfindex decompressContentIndex(
             ZF_IN void *decompressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) zfpurevirtual;
     /** @brief see #ZFCompressBegin */
     virtual zfbool decompressContentPath(
@@ -79,7 +79,7 @@ public:
     /** @brief see #ZFCompressBegin */
     virtual zfbool decompressContentIsDir(
             ZF_IN void *decompressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             ) {
         zfindex fileIndexInZip = this->decompressContentIndex(decompressToken, filePathInZip);
         return fileIndexInZip != zfindexMax() && this->decompressContentIsDir(decompressToken, fileIndexInZip);
@@ -89,7 +89,7 @@ public:
     virtual zfbool decompressContentFindFirst(
             ZF_IN_OUT ZFFileFindData &fd
             , ZF_IN void *decompressToken
-            , ZF_IN const zfchar *filePathInZip
+            , ZF_IN const zfstring &filePathInZip
             );
     /** @brief see #ZFDecompressContentFindFirst */
     virtual zfbool decompressContentFindNext(ZF_IN_OUT ZFFileFindData &fd);
