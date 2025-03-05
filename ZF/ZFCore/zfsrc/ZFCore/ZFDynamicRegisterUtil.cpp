@@ -783,7 +783,7 @@ ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_enum()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum);
     d->scopeList.add(scope);
     if(scopePrev != zfnull) {
         scope->d.enumInfo->enumClassNameFull += scopePrev->scopeNS();
@@ -797,7 +797,7 @@ ZFDynamic &ZFDynamic::enumBeginFlags(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_enum()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum);
     d->scopeList.add(scope);
     if(scopePrev != zfnull) {
         scope->d.enumInfo->enumClassNameFull += scopePrev->scopeNS();

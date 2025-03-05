@@ -263,7 +263,7 @@ public:
 public:
     /** @brief append string */
     inline zft_zfstring<T_Char> &append(ZF_IN T_Char c) {
-        _prepareWrite(this->length() + 1);
+        _prepareWrite(d->length + 1);
         d->d.buf[d->length] = c;
         d->d.buf[++(d->length)] = '\0';
         return *this;
@@ -323,7 +323,7 @@ private:
             ZF_IN const void *s
             , ZF_IN zfindex len
             ) {
-        _prepareWrite(this->length() + len);
+        _prepareWrite(d->length + len);
         zfmemcpy(d->d.buf + d->length, s, len * sizeof(T_Char));
         d->d.buf[d->length += (zfuint)len] = '\0';
     }
