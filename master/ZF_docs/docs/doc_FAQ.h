@@ -19,14 +19,9 @@
  *
  * -  <b>Q</b>: no semantic completion in lua\n
  *   <b>A</b>: unfortunately, there is no suitable IDE to complete cpp contents in lua files,
- *   it's recommended to setup keyword completion by using #ZFDynamic::exportTag,
- *   and you may consider manually append some extra contents to match
- *   Exuberant Ctags format (http://ctags.sourceforge.net/FORMAT)
- *   @code
- *     ClassData	dummy	/^.$/;"		language:lua
- *   @endcode
- *   with the tag file, you may use it in vim or other editor envs
- *   to supply keyword completion
+ *   it's recommended to setup [Lua Language Server](https://luals.github.io) instead:
+ *     -# use #ZFLuaLSPGen to generate definition file for LuaLS
+ *     -# put the generated lua file to your lua code dir
  *
  */
 

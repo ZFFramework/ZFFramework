@@ -33,24 +33,15 @@
  * specify INPUT and INCLUDE_PATH to the "zfsrc" dir of each module,
  * and:
  * ============================================================ */
+PROJECT_NAME           = ZFFramework
 FULL_PATH_NAMES        = NO
-AUTOLINK_SUPPORT       = YES
-EXTRACT_PRIVATE        = NO
 EXTRACT_LOCAL_CLASSES  = NO
 EXTRACT_LOCAL_METHODS  = NO
 CASE_SENSE_NAMES       = NO
 SORT_MEMBER_DOCS       = NO
 MAX_INITIALIZER_LINES  = 0
-RECURSIVE              = YES
-USE_MDFILE_AS_MAINPAGE = ../../../README.md
-HTML_FOOTER            = doc_footer.html
-HTML_TIMESTAMP         = YES
-GENERATE_LATEX         = NO
-ENABLE_PREPROCESSING   = YES
-MACRO_EXPANSION        = YES
-EXPAND_ONLY_PREDEF     = NO
-SKIP_FUNCTION_MACROS   = YES
 
+# ZFTAG_ADD_MODULE
 INPUT                  =
 INPUT                  += ../../../README.md
 INPUT                  += ../docs
@@ -71,7 +62,11 @@ INPUT                  += ../../../ZF/ZFUIWidget/zfsrc
 INPUT                  += ../../../ZF/ZFUtility/zfsrc
 INPUT                  += ../../../ZF/ZF_impl/zfsrc
 
-FILE_PATTERNS          = *.h *.hpp
+FILE_PATTERNS          =
+FILE_PATTERNS         += *.h
+FILE_PATTERNS         += *.hpp
+
+RECURSIVE              = YES
 
 EXCLUDE_PATTERNS      += */*.java
 EXCLUDE_PATTERNS      += */_repo/*
@@ -83,6 +78,12 @@ EXCLUDE_SYMBOLS       += _ZFI_*
 EXCLUDE_SYMBOLS       += _ZFT_*
 EXCLUDE_SYMBOLS       += *zfstl_impl*
 
+USE_MDFILE_AS_MAINPAGE = ../../../README.md
+FULL_SIDEBAR           = YES
+GENERATE_LATEX         = NO
+MACRO_EXPANSION        = YES
+
+# ZFTAG_ADD_MODULE
 INCLUDE_PATH           =
 INCLUDE_PATH           += ../../../ZF/ZFAlgorithm/zfsrc
 INCLUDE_PATH           += ../../../ZF/ZFAlgorithm_impl/zfsrc
@@ -109,6 +110,9 @@ PREDEFINED            += _ZFP_ZFIMPLEMENT_DECLARE(...):=
 PREDEFINED            += ZFIMPLEMENT_DECLARE(...):=
 PREDEFINED            += ZF_ENV_EXPORT:=
 PREDEFINED            += ZF_ENV_IMPORT:=
+
+SKIP_FUNCTION_MACROS   = YES
+
 /* ============================================================ */
 #endif
 

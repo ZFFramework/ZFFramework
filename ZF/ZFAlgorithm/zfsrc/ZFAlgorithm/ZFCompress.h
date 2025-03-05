@@ -203,28 +203,28 @@ private:
 
 // ============================================================
 // util
-/** @brief see #ZFCompressBegin */
+/** @brief see #ZFCompress */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFCompressContent
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN_OUT(const ZFInput &, inputRaw)
         , ZFMP_IN_OPT(const zfstring &, filePathInZip, zftext("content"))
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         )
-/** @brief see #ZFCompressBegin */
+/** @brief see #ZFCompress */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFDecompressContent
         , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
         , ZFMP_IN_OUT(const ZFInput &, inputZip)
         , ZFMP_IN_OPT(const zfstring &, filePathInZip, zftext("content"))
         )
 
-/** @brief see #ZFCompressBegin */
+/** @brief see #ZFCompress */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFCompressDir
         , ZFMP_IN_OUT(const ZFOutput &, outputZip)
         , ZFMP_IN(const ZFPathInfo &, inputPathInfo)
         , ZFMP_IN_OPT(const zfstring &, filePathInZip, zftext("content"))
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         )
-/** @brief see #ZFCompressBegin */
+/** @brief see #ZFCompress */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfbool, ZFDecompressDir
         , ZFMP_IN(const ZFPathInfo &, outputPathInfo)
         , ZFMP_IN_OUT(const ZFInput &, inputZip)
