@@ -267,7 +267,11 @@ void ZFImpl_ZFLua_execute_errorHandle(
         , ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */
         , ZF_IN_OPT zfindex errorLine /* = zfindexMax() */
         ) {
-    if(error == 0 || errHint == zfnull) {
+    if(error == 0) {
+        return;
+    }
+    if(errHint == zfnull) {
+        lua_pop(L, 1);
         return;
     }
 

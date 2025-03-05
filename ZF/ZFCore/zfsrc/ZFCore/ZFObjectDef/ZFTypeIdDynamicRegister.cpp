@@ -52,14 +52,34 @@ zfbool ZFTypeIdDynamicRegister(
         zfstringAppend(errorHint, "type id %s already registered", typeIdName);
         return zffalse;
     }
+
+    zfstring methodName;
+    zfstring methodNamespace;
+    const ZFClass *ownerClass = zfnull;
+    zfindex dotPos = zfstringFindReversely(typeIdName, '.');
+    if(dotPos != zfindexMax()) {
+        methodName.assign(typeIdName + dotPos + 1);
+        zfstring tmp(typeIdName, dotPos);
+        ownerClass = ZFClass::classForName(tmp);
+        if(ownerClass == zfnull) {
+            methodNamespace = tmp;
+        }
+    }
+    else {
+        methodName = typeIdName;
+    }
     if(!ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+                .methodNamespace(methodNamespace)
+                .ownerClass(ownerClass)
+                .methodType(ZFMethodTypeStatic)
                 .methodGenericInvoker(_ZFP_ZFTypeIdGI)
                 .returnTypeId(ZFTypeId_zfstring())
-                .methodName(zfstr("ZFTypeId_%s", typeIdName))
+                .methodName(zfstr("ZFTypeId_%s", methodName))
                 , errorHint)
                 ) {
         return zffalse;
     }
+
     d->m[typeIdName] = typeIdData;
     _ZFP_ZFTypeInfoRegister(typeIdName, typeIdData);
     return zftrue;
@@ -69,8 +89,20 @@ void ZFTypeIdDynamicUnregister(ZF_IN const zfstring &typeIdName) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
         _ZFP_ZFTypeIdDynamicMapType::iterator it = d->m.find(typeIdName);
         if(it != d->m.end()) {
-            ZFMethodDynamicUnregister(ZFMethodFuncForName(zfnull,
-                zfstr("ZFTypeId_%s", typeIdName)));
+            zfindex dotPos = zfstringFindReversely(typeIdName, '.');
+            if(dotPos == zfindexMax()) {
+                ZFMethodDynamicUnregister(ZFMethodFuncForName(
+                            zfnull
+                            , zfstr("ZFTypeId_%s", typeIdName)
+                            ));
+            }
+            else {
+                ZFMethodDynamicUnregister(ZFMethodFuncForName(
+                            zfstring(typeIdName, dotPos)
+                            , zfstr("ZFTypeId_%s", zfstring(typeIdName + dotPos + 1))
+                            ));
+            }
+
             _ZFP_ZFTypeInfoUnregister(typeIdName);
             d->m.erase(it);
         }
