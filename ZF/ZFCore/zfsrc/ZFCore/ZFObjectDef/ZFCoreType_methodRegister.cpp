@@ -16,7 +16,7 @@ ZFEXPORT_VAR_READONLY_DEFINE(zfint, ZF_ENV_ZFVERSION_MINOR, ZF_ENV_ZFVERSION_MIN
 ZFEXPORT_VAR_READONLY_DEFINE(const zfchar *, ZF_ENV_ZFVERSION, ZF_ENV_ZFVERSION())
 
 // ============================================================
-static zfuint _ZFP_ZFBitCast(ZF_IN ZFTypeIdWrapper *v) {
+static zfuint _ZFP_ZFBitCast(ZF_IN ZFObject *v) {
     if(v == zfnull) {
         return 0;
     }
@@ -30,12 +30,16 @@ static zfuint _ZFP_ZFBitCast(ZF_IN ZFTypeIdWrapper *v) {
     else if(cls->classIsTypeOf(v_zfflags::ClassData())) {
         return (zfuint)zfcast(v_zfflags *, v)->zfv;
     }
-    else {
+    else if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         zfstring tmp;
-        v->zfvToString(tmp);
-        zfuint ret = 0;
-        zfuintFromStringT(ret, tmp);
-        return ret;
+        zfcast(ZFTypeIdWrapper *, v)->zfvToString(tmp);
+        return zfuintFromString(tmp);
+    }
+    else if(cls->classIsTypeOf(ZFDI_WrapperBase::ClassData())) {
+        return zfuintFromString(zfcast(ZFDI_WrapperBase *, v)->zfv());
+    }
+    else {
+        return 0;
     }
 }
 static void _ZFP_ZFBitStore(ZF_IN ZFTypeIdWrapper *v, ZF_IN zfuint t) {
@@ -59,74 +63,38 @@ static void _ZFP_ZFBitStore(ZF_IN ZFTypeIdWrapper *v, ZF_IN zfuint t) {
     }
 }
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFBitTest
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(ZFTypeIdWrapper *, t)
+        , ZFMP_IN(ZFObject *, v)
+        , ZFMP_IN(ZFObject *, t)
         ) {
     return ZFBitTest(_ZFP_ZFBitCast(v), _ZFP_ZFBitCast(t));
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFBitTest
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(zfuint, t)
-        ) {
-    return ZFBitTest(_ZFP_ZFBitCast(v), t);
-}
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFBitTestAll
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(ZFTypeIdWrapper *, t)
+        , ZFMP_IN(ZFObject *, v)
+        , ZFMP_IN(ZFObject *, t)
         ) {
     return ZFBitTestAll(_ZFP_ZFBitCast(v), _ZFP_ZFBitCast(t));
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFBitTestAll
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(zfuint, t)
-        ) {
-    return ZFBitTestAll(_ZFP_ZFBitCast(v), t);
-}
 ZFMETHOD_FUNC_DEFINE_2(zfuint, ZFBitGet
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(ZFTypeIdWrapper *, t)
+        , ZFMP_IN(ZFObject *, v)
+        , ZFMP_IN(ZFObject *, t)
         ) {
     return ZFBitGet(_ZFP_ZFBitCast(v), _ZFP_ZFBitCast(t));
 }
-ZFMETHOD_FUNC_DEFINE_2(zfuint, ZFBitGet
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(zfuint, t)
-        ) {
-    return ZFBitGet(_ZFP_ZFBitCast(v), t);
-}
 ZFMETHOD_FUNC_DEFINE_2(zfuint, ZFBitSet
         , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(ZFTypeIdWrapper *, t)
+        , ZFMP_IN(ZFObject *, t)
         ) {
     zfuint ret = _ZFP_ZFBitCast(v);
     ZFBitSet(ret, _ZFP_ZFBitCast(t));
     _ZFP_ZFBitStore(v, ret);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfuint, ZFBitSet
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(zfuint, t)
-        ) {
-    zfuint ret = _ZFP_ZFBitCast(v);
-    ZFBitSet(ret, t);
-    _ZFP_ZFBitStore(v, ret);
-    return ret;
-}
 ZFMETHOD_FUNC_DEFINE_2(zfuint, ZFBitUnset
         , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(ZFTypeIdWrapper *, t)
+        , ZFMP_IN(ZFObject *, t)
         ) {
     zfuint ret = _ZFP_ZFBitCast(v);
     ZFBitUnset(ret, _ZFP_ZFBitCast(t));
-    _ZFP_ZFBitStore(v, ret);
-    return ret;
-}
-ZFMETHOD_FUNC_DEFINE_2(zfuint, ZFBitUnset
-        , ZFMP_IN(ZFTypeIdWrapper *, v)
-        , ZFMP_IN(zfuint, t)
-        ) {
-    zfuint ret = _ZFP_ZFBitCast(v);
-    ZFBitUnset(ret, t);
     _ZFP_ZFBitStore(v, ret);
     return ret;
 }
