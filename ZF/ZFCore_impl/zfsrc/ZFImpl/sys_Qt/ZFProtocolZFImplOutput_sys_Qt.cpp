@@ -49,7 +49,7 @@ private:
             else {
                 zfindex index = zfstringFindReversely(s, s.length(), '\n');
                 if(index != zfindexMax()) {
-                    s[index] = '\0';
+                    s.set(index, '\0');
                     qDebug() << s.cString();
                     s.remove(0, index + 1);
                 }
