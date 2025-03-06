@@ -123,7 +123,9 @@ public:
         this->attachGlobal();
     }
     ~_ZFP_ZFDynamicPrivate(void) {
-        this->scopeCheck_all();
+        if(!this->errorOccurred) {
+            this->scopeCheck_all();
+        }
         while(!this->scopeList.isEmpty()) {
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.removeLastAndGet();
             zfdelete(scope);
@@ -141,6 +143,36 @@ public:
                 ZFDynamic::errorCallbacks()[i].execute(s.cString(), s.length());
             }
         }
+    }
+public:
+    zfstring typeIdFix(ZF_IN const zfstring &v) {
+        for(zfindex i = this->scopeList.count() - 1; i != zfindexMax(); --i) {
+            _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.get(i);
+            if(scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
+                continue;
+            }
+            zfstring tmp = zfstr("%s.%s", scope->scopeNS(), v);
+            if(ZFClass::classForName(tmp) != zfnull
+                    || ZFTypeInfoForName(tmp) != zfnull
+                    ) {
+                return tmp;
+            }
+        }
+        return v;
+    }
+    ZFMP typeIdFix(ZF_IN const ZFMP &mp) {
+        if(mp.paramCount() == 0) {
+            return mp;
+        }
+        ZFMP mpFix;
+        for(zfindex i = 0; i < mp.paramCount(); ++i) {
+            mpFix.mpWithInit(
+                    mp.paramTypeIdAt(i)
+                    , mp.paramNameAt(i)
+                    , mp.paramDefaultValueCallbackAt(i)
+                    );
+        }
+        return mpFix;
     }
 public:
     zfbool scopeCheck_all(void) {
@@ -482,42 +514,35 @@ const ZFCoreArray<zfidentity> &ZFDynamic::allEvent(void) const {
 
 // ============================================================
 ZFDynamic &ZFDynamic::classBegin(
-        ZF_IN const zfstring &classNameFull
-        , ZF_IN const zfstring &parentClassNameFull
+        ZF_IN const zfstring &className
+        , ZF_IN const zfstring &parentClassName
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         ) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_class()) {return *this;}
-    if(!parentClassNameFull) {
-        return this->classBegin(classNameFull, ZFObject::ClassData(), classDynamicRegisterUserData);
+    if(!parentClassName) {
+        return this->classBegin(className, ZFObject::ClassData(), classDynamicRegisterUserData);
     }
     else {
-        const ZFClass *classParent = ZFClass::classForName(parentClassNameFull);
+        const ZFClass *classParent = ZFClass::classForName(d->typeIdFix(parentClassName));
         if(classParent != zfnull) {
-            return this->classBegin(classNameFull, classParent, classDynamicRegisterUserData);
+            return this->classBegin(className, classParent, classDynamicRegisterUserData);
         }
-
-        _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-        if(scope != zfnull && scope->scopeNS() != zfnull) {
-            classParent = ZFClass::classForName(parentClassNameFull, scope->scopeNS());
-            if(classParent != zfnull) {
-                return this->classBegin(classNameFull, classParent, classDynamicRegisterUserData);
-            }
+        else {
+            d->error(zfstr("no such parent class: %s, for class: ", parentClassName, className));
+            return *this;
         }
-
-        d->error(zfstr("no such parent class: %s, for class: ", parentClassNameFull, classNameFull));
-        return *this;
     }
 }
 ZFDynamic &ZFDynamic::classBegin(
-        ZF_IN const zfstring &classNameFull
+        ZF_IN const zfstring &className
         , ZF_IN_OPT const ZFClass *classParent /* = ZFObject::ClassData() */
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         ) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_class()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    const ZFClass *cls = ZFClass::classForName(classNameFull, scopePrev ? scopePrev->scopeNS() : zfnull);
+    const ZFClass *cls = ZFClass::classForName(className, scopePrev ? scopePrev->scopeNS() : zfnull);
     if(cls != zfnull) {
         _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
         d->scopeList.add(scope);
@@ -526,11 +551,11 @@ ZFDynamic &ZFDynamic::classBegin(
     else {
         zfstring errorHint;
         const ZFClass *dynClass = ZFClassDynamicRegister(
-            scopePrev && scopePrev->scopeNS() ? zfstr("%s.%s", scopePrev->scopeNS(), classNameFull) : classNameFull,
+            scopePrev && scopePrev->scopeNS() ? zfstr("%s.%s", scopePrev->scopeNS(), className) : className,
             classParent, classDynamicRegisterUserData, &errorHint);
         if(dynClass == zfnull) {
             d->error(zfstr("unable to register class: %s, reason: %s"
-                        , classNameFull
+                        , className
                         , errorHint
                         ));
         }
@@ -691,28 +716,29 @@ ZFDynamic &ZFDynamic::customInit(
         d->error(zfstr("customInit() must have one or more init param, class: %s", scope->d.cls->classNameFull()));
         return *this;
     }
+    ZFMP mpFix = d->typeIdFix(mp);
     ZFListener implWrap;
     if(impl) {
         implWrap = impl;
     }
     else {
-        for(zfindex i = 0; i < mp.paramCount(); ++i) {
-            if(!mp.paramNameAt(i) || mp.paramNameAt(i) == mp.paramTypeIdAt(i)) {
+        for(zfindex i = 0; i < mpFix.paramCount(); ++i) {
+            if(!mpFix.paramNameAt(i) || mpFix.paramNameAt(i) == mpFix.paramTypeIdAt(i)) {
                 d->error(zfstr("customInit() init param must have proper param name, class: %s, param index: %s, type: %s"
                             , d->scopeList.getLast()->d.cls->classNameFull()
                             , i
-                            , mp.paramTypeIdAt(i)
+                            , mpFix.paramTypeIdAt(i)
                             ));
                 return *this;
             }
         }
 
         ZFLISTENER_1(onInit
-                , ZFMP, mp
+                , ZFMP, mpFix
                 ) {
             zfargs.sender()->_ZFP_ZFObject_objectOnInit();
 
-            for(zfindex i = 0; i < mp.paramCount(); ++i) {
+            for(zfindex i = 0; i < mpFix.paramCount(); ++i) {
                 ZFArgs zfargsSetter;
                 zfargsSetter
                     .sender(zfargs.sender())
@@ -721,7 +747,7 @@ ZFDynamic &ZFDynamic::customInit(
                     .ignoreError(zfargs.ignoreError())
                     .ignoreErrorEvent(zfargs.ignoreErrorEvent())
                     ;
-                ZFDI_invoke(zfargsSetter, mp.paramNameAt(i));
+                ZFDI_invoke(zfargsSetter, mpFix.paramNameAt(i));
                 if(!zfargsSetter.success()) {
                     zfargs.success(zffalse);
                     if(!zfargs.ignoreError()) {
@@ -738,7 +764,7 @@ ZFDynamic &ZFDynamic::customInit(
         } ZFLISTENER_END()
         implWrap = onInit;
     }
-    return this->method(ZFTypeId_void(), "objectOnInit", mp, implWrap, ZFMethodTypeVirtual, ZFMethodAccessTypeProtected);
+    return this->method(ZFTypeId_void(), "objectOnInit", mpFix, implWrap, ZFMethodTypeVirtual, ZFMethodAccessTypeProtected);
 }
 
 // ============================================================
@@ -925,16 +951,17 @@ ZFDynamic &ZFDynamic::method(
         , ZF_IN_OPT ZFMethodAccessType methodAccessType /* = ZFMethodAccessTypePublic */
         ) {
     ZFMethodDynamicRegisterParam p;
-    p.returnTypeId(returnTypeId);
+    p.returnTypeId(d->typeIdFix(returnTypeId));
     p.methodName(methodName);
     p.methodImpl(methodImpl);
     p.methodType(methodType);
     p.methodAccessType(methodAccessType);
     for(zfindex i = 0; i < methodParam.paramCount(); ++i) {
         p.methodParam(
-            methodParam.paramTypeIdAt(i),
-            methodParam.paramNameAt(i),
-            methodParam.paramDefaultValueCallbackAt(i));
+                d->typeIdFix(methodParam.paramTypeIdAt(i))
+                , methodParam.paramNameAt(i)
+                , methodParam.paramDefaultValueCallbackAt(i)
+                );
     }
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope != zfnull) {
@@ -1067,23 +1094,24 @@ ZFDynamic &ZFDynamic::property(
         d->error(zfstr("property() can only be called within classBegin, property: (%s)%s", propertyTypeId, propertyName));
         return *this;
     }
-    const ZFClass *cls = ZFClass::classForName(propertyTypeId);
-    if(cls != zfnull && ZFTypeInfoForName(propertyTypeId) == zfnull) {
+    zfstring propertyTypeIdFix = d->typeIdFix(propertyTypeId);
+    const ZFClass *cls = ZFClass::classForName(propertyTypeIdFix);
+    if(cls != zfnull && ZFTypeInfoForName(propertyTypeIdFix) == zfnull) {
         return this->property(cls, propertyName, propertyInitValue, setterAccessType, getterAccessType);
     }
     ZFPropertyDynamicRegisterParam param;
     param.ownerClass(scope->d.cls);
-    param.propertyTypeId(propertyTypeId);
+    param.propertyTypeId(propertyTypeIdFix);
     param.propertyName(propertyName);
     param.propertySetterType(setterAccessType);
     param.propertyGetterType(getterAccessType);
     if(propertyInitValue != zfnull) {
-        zfauto wrap = ZFDI_implicitConvert(propertyTypeId, propertyInitValue);
+        zfauto wrap = ZFDI_implicitConvert(propertyTypeIdFix, propertyInitValue);
         if(wrap == zfnull) {
             d->error(zfstr("invalid init value (%s)\"%s\" for property: (%s)%s::%s"
                         , propertyInitValue->classData()->classNameFull()
                         , propertyInitValue
-                        , propertyTypeId
+                        , propertyTypeIdFix
                         , scope->d.cls->classNameFull()
                         , propertyName
                         ));
@@ -1172,13 +1200,14 @@ ZFDynamic &ZFDynamic::propertyWithInit(
         d->error(zfstr("propertyWithInit() can only be called within classBegin, property: (%s)%s", propertyTypeId, propertyName));
         return *this;
     }
-    const ZFClass *cls = ZFClass::classForName(propertyTypeId);
-    if(cls != zfnull && ZFTypeInfoForName(propertyTypeId) == zfnull) {
+    zfstring propertyTypeIdFix = d->typeIdFix(propertyTypeId);
+    const ZFClass *cls = ZFClass::classForName(propertyTypeIdFix);
+    if(cls != zfnull && ZFTypeInfoForName(propertyTypeIdFix) == zfnull) {
         return this->propertyWithInit(cls, propertyName, propertyInitValue, setterAccessType, getterAccessType);
     }
     ZFPropertyDynamicRegisterParam param;
     param.ownerClass(scope->d.cls);
-    param.propertyTypeId(propertyTypeId);
+    param.propertyTypeId(propertyTypeIdFix);
     param.propertyName(propertyName);
     param.propertySetterType(setterAccessType);
     param.propertyGetterType(getterAccessType);
@@ -1330,9 +1359,10 @@ ZFDynamic &ZFDynamic::staticProperty(
         d->error(zfstr("staticProperty can not be called within enumBegin, property: %s", propertyName));
         return *this;
     }
-    const ZFClass *cls = ZFClass::classForName(propertyTypeId);
+    zfstring propertyTypeIdFix = d->typeIdFix(propertyTypeId);
+    const ZFClass *cls = ZFClass::classForName(propertyTypeIdFix);
     if(cls == zfnull) {
-        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeId, scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeIdFix, scope ? scope->scopeNS() : "", propertyName));
         return *this;
     }
     return this->staticProperty(cls, propertyName, propertyInitValue, setterAccessType, getterAccessType);
@@ -1461,9 +1491,10 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
         d->error(zfstr("staticProperty can not be called within enumBegin, property: %s", propertyName));
         return *this;
     }
-    const ZFClass *cls = ZFClass::classForName(propertyTypeId);
+    zfstring propertyTypeIdFix = d->typeIdFix(propertyTypeId);
+    const ZFClass *cls = ZFClass::classForName(propertyTypeIdFix);
     if(cls == zfnull) {
-        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeId, scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeIdFix, scope ? scope->scopeNS() : "", propertyName));
         return *this;
     }
     return this->staticPropertyWithInit(cls, propertyName, propertyInitValue, setterAccessType, getterAccessType);
@@ -1628,12 +1659,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const Z
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFProperty *> &, allProperty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<zfidentity> &, allEvent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
-        , ZFMP_IN(const zfstring &, classNameFull)
-        , ZFMP_IN(const zfstring &, parentClassNameFull)
+        , ZFMP_IN(const zfstring &, className)
+        , ZFMP_IN(const zfstring &, parentClassName)
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
-        , ZFMP_IN(const zfstring &, classNameFull)
+        , ZFMP_IN(const zfstring &, className)
         , ZFMP_IN_OPT(const ZFClass *, classParent, ZFObject::ClassData())
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         )

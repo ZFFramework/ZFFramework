@@ -5,37 +5,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
         ZFCoreArray<const ZFClass *> allClass = ZFClassGetAll();
-        if(!allClass.isEmpty()) {
-            ZFCoreArray<zfstring> classNameList;
-            classNameList.capacity(allClass.count());
-            for(zfindex i = 0; i < allClass.count(); ++i) {
-                const ZFClass *cls = allClass[i];
-                if(!cls->classIsInternalPrivate() && !cls->classNamespace()) {
-                    classNameList.add(cls->className());
-                }
+        for(zfindex i = 0; i < allClass.count(); ++i) {
+            const ZFClass *cls = allClass[i];
+            if(!cls->classIsInternalPrivate()) {
+                helper.addGenericScope(cls->classNameFull());
             }
-
-            ZFImpl_ZFLua_implSetupScope(
-                ZFCoreArrayCreate(lua_State *, L),
-                classNameList);
         }
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
-        if(data.changedClass != zfnull && data.changedClass != zfnull
+        if(data.changedClass != zfnull
                 && !data.changedClass->classIsInternalPrivate()
-                && !data.changedClass->classNamespace()
                 ) {
-            ZFCoreArray<lua_State *> stateList;
-            stateList.add(L);
             if(data.changeType == ZFClassDataUpdateTypeAttach) {
-                ZFImpl_ZFLua_implSetupScope(
-                    stateList,
-                    ZFCoreArrayCreate(zfstring, data.changedClass->className()));
+                helper.addGenericScope(data.changedClass->classNameFull());
             }
             else if(data.changeType == ZFClassDataUpdateTypeClassAliasAttach) {
-                ZFImpl_ZFLua_implSetupScope(
-                    stateList,
-                    ZFCoreArrayCreate(zfstring, data.name));
+                helper.addGenericScope(data.name);
             }
         }
     }))

@@ -19,7 +19,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  * usage:
  * @code
  *   ZFDynamic()
- *       .classBegin(classNameFull [, parent, classDynamicRegisterUserData])
+ *       .classBegin(className [, parent, classDynamicRegisterUserData])
  *           .event(eventName)
  *           .method(returnTypeId, methodName, ZFMP()
  *               .mp(paramTypeId0 [, paramName0, paramDefault0])
@@ -122,13 +122,13 @@ public:
 public:
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(
-            ZF_IN const zfstring &classNameFull
-            , ZF_IN const zfstring &parentClassNameFull
+            ZF_IN const zfstring &className
+            , ZF_IN const zfstring &parentClassName
             , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(
-            ZF_IN const zfstring &classNameFull
+            ZF_IN const zfstring &className
             , ZF_IN_OPT const ZFClass *classParent = ZFObject::ClassData()
             , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
             );

@@ -21,9 +21,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  in ZFLua, all types are wrapped by #zfauto
  *   (wrapped directly for ZFObject type,
  *   wrapped by #ZFTypeIdWrapper for non-ZFObject type)
- * -  all global variables are also wrapped by #zfauto
  * -  class and topmost namespace are wrapped by lua raw string value as a global variable,
- *   and should be registered by #ZFImpl_ZFLua_implSetupScope\n
+ *   and should be registered by #ZFImpl_ZFLua_ImplSetupHelper::addGlobalScope\n
  *   these things are equal:
  *   -  `MyClass.myFunc(param);`
  *   -  `zfl_call(zfnull, "MyClass.myFunc", param);`
@@ -63,19 +62,59 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataUpdate(
         );
 
 // ============================================================
-typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupCallback)(ZF_IN_OUT lua_State *L);
+/** @brief see #ZFImpl_ZFLua_luaStateOpen */
+zfclassLikePOD ZFLIB_ZFLua_impl ZFImpl_ZFLua_ImplSetupHelper {
+public:
+    /** @cond ZFPrivateDoc */
+    explicit ZFImpl_ZFLua_ImplSetupHelper(ZF_IN lua_State *L);
+    ~ZFImpl_ZFLua_ImplSetupHelper(void);
+    /** @endcond */
+public:
+    /** @brief see #ZFImpl_ZFLua_luaStateOpen */
+    void addGlobalScope(ZF_IN const zfstring &scope);
+    /** @brief see #ZFImpl_ZFLua_luaStateOpen */
+    void addGenericScope(ZF_IN const zfstring &genericScope);
+    /** @brief see #ZFImpl_ZFLua_luaStateOpen */
+    void addCustomCode(ZF_IN const zfstring &code);
+private:
+    /** @cond ZFPrivateDoc */
+    ZFImpl_ZFLua_ImplSetupHelper(ZF_IN ZFImpl_ZFLua_ImplSetupHelper const &ref);
+    ZFImpl_ZFLua_ImplSetupHelper &operator = (ZF_IN ZFImpl_ZFLua_ImplSetupHelper const &ref);
+    void _commit(void);
+    /** @endcond */
+private:
+    lua_State *_L;
+    zfstring _code;
+    void *_m;
+};
+
+/**
+ * @brief setup metatable for zfauto in lua env
+ */
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(
+        ZF_IN_OUT lua_State *L
+        , ZF_IN_OPT int metatableIndex = -1
+        );
+
+// ============================================================
+typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupAttach)(
+        ZF_IN_OUT lua_State *L
+        , ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper
+        );
+typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupDetach)(ZF_IN_OUT lua_State *L);
 typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate)(
         ZF_IN_OUT lua_State *L
         , ZF_IN const ZFClassDataUpdateData &data
+        , ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper
         );
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
-        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
+        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupAttach setupAttachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupDetach setupDetachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         );
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
-        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
+        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupAttach setupAttachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupDetach setupDetachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         );
 
@@ -86,7 +125,10 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
  * @code
  *   ZFImpl_ZFLua_implSetupCallback_DEFINE(YourSetupSig, {
  *           // your own attach action, callback proto type:
- *           //   void implSetupAttach(ZF_IN_OUT lua_State *L);
+ *           //   void implSetupAttach(
+ *           //           ZF_IN_OUT lua_State *L
+ *           //           , ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper
+ *           //           );
  *       }, {
  *           // your own detach action, callback proto type:
  *           //   void implSetupDetach(ZF_IN_OUT lua_State *L);
@@ -95,6 +137,7 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
  *           //   void implSetupClassDataUpdate(
  *           //           ZF_IN_OUT lua_State *L
  *           //           , ZF_IN const ZFClassDataUpdateData &data
+ *           //           , ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper
  *           //           );
  *       })
  * @endcode
@@ -107,7 +150,10 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataUpdate); \
     } \
     public: \
-        static void implSetupAttach(ZF_IN_OUT lua_State *L) { \
+        static void implSetupAttach( \
+                ZF_IN_OUT lua_State *L \
+                , ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper \
+                ) { \
             setupAttachAction \
         } \
         static void implSetupDetach(ZF_IN_OUT lua_State *L) { \
@@ -116,24 +162,11 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
         static void implSetupClassDataUpdate( \
                 ZF_IN_OUT lua_State *L \
                 , ZF_IN const ZFClassDataUpdateData &data \
+                , ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper \
                 ) { \
             setupClassDataUpdate \
         } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implSetupAction_##SetupSig)
-
-// ============================================================
-/** @brief see #ZFImpl_ZFLua_luaStateOpen */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupScope(
-        ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList
-        , ZF_IN ZFCoreArray<zfstring> const &scopeNameList
-        );
-/**
- * @brief setup metatable for zfauto in lua env
- */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(
-        ZF_IN_OUT lua_State *L
-        , ZF_IN_OPT int metatableIndex = -1
-        );
 
 // ============================================================
 /**

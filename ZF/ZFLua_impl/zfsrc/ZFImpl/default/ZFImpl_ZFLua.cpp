@@ -2,6 +2,8 @@
 
 #include "ZFImpl_ZFLua_ZFCallbackForLua.h"
 
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+
 // #define _ZFP_ZFImpl_ZFLua_DEBUG 1
 
 #if _ZFP_ZFImpl_ZFLua_DEBUG
@@ -26,11 +28,68 @@ void ZFImpl_ZFLua_luaStateClose(ZF_IN lua_State *L) {
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateGlobalHolder, ZFLevelZFFrameworkStatic) {
 }
-ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupAttach;
-ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupDetach;
+ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupAttach> setupAttach;
+ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupDetach> setupDetach;
 ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate> setupClassDataUpdate;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
+// ============================================================
+typedef zfstlmap<zfstring, zfbool> _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType;
+ZFImpl_ZFLua_ImplSetupHelper::ZFImpl_ZFLua_ImplSetupHelper(ZF_IN lua_State *L)
+    : _L(L)
+    , _code()
+    , _m(zfnew(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType))
+{
+    _code.capacity(1000);
+}
+ZFImpl_ZFLua_ImplSetupHelper::~ZFImpl_ZFLua_ImplSetupHelper(void) {
+    _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType &m = *(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType *)_m;
+    for(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType::iterator it = m.begin(); it != m.end(); ++it) {
+        const zfstring &scope = it->first;
+        zfstringAppend(_code,
+                "if %s == nil then "
+                "%s = {ZFNS='%s'};"
+                "debug.setmetatable(%s, _ZFP_zfl_metatable);"
+                "end\n"
+                , scope
+                , scope
+                , scope
+                , scope
+                );
+        if(_code.length() >= 10000) {
+            _commit();
+        }
+    }
+    if(_code) {
+        _commit();
+    }
+    zfdelete(&m);
+}
+void ZFImpl_ZFLua_ImplSetupHelper::addGlobalScope(ZF_IN const zfstring &scope) {
+    if(scope) {
+        (*(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType *)_m)[scope] = zftrue;
+    }
+}
+void ZFImpl_ZFLua_ImplSetupHelper::addGenericScope(ZF_IN const zfstring &genericScope) {
+    zfindex dotPos = zfstringFind(genericScope, '.');
+    this->addGlobalScope(dotPos != zfindexMax()
+            ? zfstring(genericScope, dotPos)
+            : genericScope
+            );
+}
+void ZFImpl_ZFLua_ImplSetupHelper::addCustomCode(ZF_IN const zfstring &code) {
+    _code += code;
+    if(_code.length() >= 10000) {
+        _commit();
+    }
+}
+void ZFImpl_ZFLua_ImplSetupHelper::_commit(void) {
+    ZFImpl_ZFLua_execute(_L, _code, _code.length());
+    _code.zfunsafe_buffer()[0] = '\0';
+    _code.zfunsafe_length(0);
+}
+
+// ============================================================
 void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     ZFCoreAssert(L != zfnull);
     ZFCoreMutexLocker();
@@ -93,14 +152,13 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
         );
 
     // global NS
-    ZFImpl_ZFLua_implSetupScope(
-            ZFCoreArrayCreate(lua_State *, L),
-            ZFCoreArrayCreate(zfstring, ZF_NAMESPACE_GLOBAL_NAME, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
-        );
+    ZFImpl_ZFLua_ImplSetupHelper helper(L);
+    helper.addGlobalScope(ZF_NAMESPACE_GLOBAL_NAME);
+    helper.addGlobalScope(ZF_NAMESPACE_GLOBAL_ABBR_NAME);
 
     // each impl setup callback
     for(zfindex i = 0; i < d->setupAttach.count(); ++i) {
-        d->setupAttach[i](L);
+        d->setupAttach[i](L, helper);
     }
 }
 void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L) {
@@ -123,15 +181,16 @@ void ZFImpl_ZFLua_classDataUpdate(
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
+    ZFImpl_ZFLua_ImplSetupHelper helper(L);
     for(zfindex i = 0; i < d->setupClassDataUpdate.count(); ++i) {
-        d->setupClassDataUpdate[i](L, data);
+        d->setupClassDataUpdate[i](L, data, helper);
     }
 }
 
 // ============================================================
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
-        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
+        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupAttach setupAttachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupDetach setupDetachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         ) {
     ZFCoreMutexLocker();
@@ -143,8 +202,8 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
     d->setupClassDataUpdate.add(setupClassDataUpdate);
 }
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
-        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
-        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
+        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupAttach setupAttachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupDetach setupDetachCallback
         , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate setupClassDataUpdate
         ) {
     ZFCoreMutexLocker();
@@ -154,47 +213,6 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
     d->setupAttach.removeElement(setupAttachCallback);
     d->setupDetach.removeElement(setupDetachCallback);
     d->setupClassDataUpdate.removeElement(setupClassDataUpdate);
-}
-
-// ============================================================
-static void _ZFP_ZFImpl_ZFLua_implSetupScope(
-        ZF_IN_OUT zfstring &code
-        , ZF_IN const zfchar *scopeName
-        ) {
-    zfstringAppend(code,
-            "%s = {ZFNS='%s'};"
-            "debug.setmetatable(%s, _ZFP_zfl_metatable)\n"
-        , scopeName, scopeName, scopeName);
-}
-void ZFImpl_ZFLua_implSetupScope(
-        ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList
-        , ZF_IN ZFCoreArray<zfstring> const &scopeNameList
-        ) {
-    zfstring code;
-    if(scopeNameList.count() >= 100) {
-        code.capacity(10000);
-    }
-    else if(scopeNameList.count() >= 10) {
-        code.capacity(1000);
-    }
-    for(zfindex i = 0; i < scopeNameList.count(); ++i) {
-        const zfchar *scopeName = scopeNameList[i];
-        if(zfstringIsEmpty(scopeName)) {
-            continue;
-        }
-        _ZFP_ZFImpl_ZFLua_implSetupScope(code, scopeName);
-        if(i != 0 && (i % 100) == 0) {
-            for(zfindex iL = 0; iL < luaStateList.count(); ++iL) {
-                ZFImpl_ZFLua_execute(luaStateList[iL], code);
-            }
-            code.removeAll();
-        }
-    }
-    if(!code.isEmpty()) {
-        for(zfindex iL = 0; iL < luaStateList.count(); ++iL) {
-            ZFImpl_ZFLua_execute(luaStateList[iL], code);
-        }
-    }
 }
 
 // ============================================================
