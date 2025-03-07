@@ -732,39 +732,42 @@ ZFDynamic &ZFDynamic::customInit(
                 return *this;
             }
         }
-
-        ZFLISTENER_1(onInit
-                , ZFMP, mpFix
+        ZFLISTENER(onInit
                 ) {
             zfargs.sender()->_ZFP_ZFObject_objectOnInit();
-
-            for(zfindex i = 0; i < mpFix.paramCount(); ++i) {
-                ZFArgs zfargsSetter;
-                zfargsSetter
-                    .sender(zfargs.sender())
-                    .paramInit()
-                    .param0(zfargs.paramAt(i))
-                    .ignoreError(zfargs.ignoreError())
-                    .ignoreErrorEvent(zfargs.ignoreErrorEvent())
-                    ;
-                ZFDI_invoke(zfargsSetter, mpFix.paramNameAt(i));
-                if(!zfargsSetter.success()) {
-                    zfargs.success(zffalse);
-                    if(!zfargs.ignoreError()) {
-                        zfargs.errorHint(zfstr("unable to construct %s(%s) at param %s : %s"
-                                    , zfargs.sender()->classData()->classNameFull()
-                                    , ZFDI_paramInfo(zfargs)
-                                    , i
-                                    , zfargsSetter.errorHint()
-                                    ));
-                    }
-                    return;
-                }
-            }
+            ZFDynamic::customInitAction(zfargs);
         } ZFLISTENER_END()
         implWrap = onInit;
     }
     return this->method(ZFTypeId_void(), "objectOnInit", mpFix, implWrap, ZFMethodTypeVirtual, ZFMethodAccessTypeProtected);
+}
+
+void ZFDynamic::customInitAction(ZF_IN const ZFArgs &zfargs) {
+    ZFObject *owner = zfargs.sender();
+    const ZFMethod *method = zfargs.ownerMethod();
+    for(zfindex i = 0; i < method->paramCount(); ++i) {
+        ZFArgs zfargsSetter;
+        zfargsSetter
+            .sender(zfargs.sender())
+            .paramInit()
+            .param0(zfargs.paramAt(i))
+            .ignoreError(zfargs.ignoreError())
+            .ignoreErrorEvent(zfargs.ignoreErrorEvent())
+            ;
+        ZFDI_invoke(zfargsSetter, method->paramNameAt(i));
+        if(!zfargsSetter.success()) {
+            zfargs.success(zffalse);
+            if(!zfargs.ignoreError()) {
+                zfargs.errorHint(zfstr("unable to construct %s(%s) at param %s : %s"
+                            , zfargs.sender()->classData()->classNameFull()
+                            , ZFDI_paramInfo(zfargs)
+                            , i
+                            , zfargsSetter.errorHint()
+                            ));
+            }
+            return;
+        }
+    }
 }
 
 // ============================================================
@@ -1692,6 +1695,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDealloc
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, customInit
         , ZFMP_IN(const ZFMP &, mp)
         , ZFMP_IN_OPT(const ZFListener &, impl, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFDynamic, v_ZFDynamic, void, customInitAction
+        , ZFMP_IN(const ZFArgs &, zfargs)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin
         , ZFMP_IN(const zfstring &, methodNamespace)

@@ -180,6 +180,11 @@ public:
             , ZF_IN_OPT const ZFListener &impl = zfnull
             );
 
+    /**
+     * @brief util for impl to implement default behavior of #customInit
+     */
+    static void customInitAction(ZF_IN const ZFArgs &zfargs);
+
 public:
     /** @brief see #ZFDynamic */
     ZFDynamic &NSBegin(ZF_IN const zfstring &methodNamespace);
