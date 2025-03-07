@@ -107,8 +107,28 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
     if(!ZFPathFormatT(pathFormated, path)) {
         return zfnull;
     }
-
-    if(pathInfo == zfnull) {
+    ZFPathInfo abs;
+    if(ZFPathInfoFromStringT(abs, pathFormated)) {
+        if(ZFPathInfoIsDir(abs)) {
+            const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(abs.pathType());
+            if(impl == zfnull) {
+                return zfnull;
+            }
+            zfobj<ZFMap> ret;
+            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(abs.pathType(), ""), pathFormated);
+            return ret;
+        }
+        else {
+            zfauto ret;
+            if(_ZFP_zfimportFile(ret, ZFInputForPathInfo(abs))) {
+                return ret;
+            }
+            else {
+                return zfnull;
+            }
+        }
+    }
+    else if(pathInfo == zfnull) {
         if(ZFResIsDir(pathFormated)) {
             const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(ZFPathType_res());
             if(impl == zfnull) {

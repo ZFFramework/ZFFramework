@@ -35,7 +35,8 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * of other script language such as Javascript\n
  * \n
  * what the path and pathInfo means:
- * -  when pathInfo is not specified, the path is used as #ZFInputForRes
+ * -  when path can be parsed as #ZFPathInfoFromString, it would used to detect target
+ * -  when pathInfo is not specified, the path would be used as #ZFInputForRes
  * -  when pathInfo is specified, the path is the relative path to pathInfo,
  *   and would be used as #ZFInputForLocal
  *
