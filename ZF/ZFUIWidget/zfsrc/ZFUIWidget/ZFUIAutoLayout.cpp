@@ -402,7 +402,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         }
     }
     else {
-        rule.target(parent->childFindById(targetId, zfHint("findRecursively")zffalse));
+        rule.target(parent->childFindById(targetId, ZF_HINT("findRecursively")zffalse));
     }
 
     if(rule.target()) {

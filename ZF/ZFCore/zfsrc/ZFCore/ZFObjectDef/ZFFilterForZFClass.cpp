@@ -160,7 +160,7 @@ static void _ZFP_ZFFilterForZFClass_contentInfoGetter(
 }
 void ZFFilterForZFClass::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     this->_ZFP_ZFFilterForZFClass_filters.objectInfoOfContentT(ret,
-        zfHint("max count")5,
+        ZF_HINT("max count")5,
         ZFTokenForContainerDefault(),
         _ZFP_ZFFilterForZFClass_contentInfoGetter);
 }

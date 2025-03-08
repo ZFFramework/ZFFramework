@@ -283,6 +283,17 @@ ZFArgs &ZFArgs::param(ZF_IN zfindex index, ZF_IN zfauto const &v) {
     return *this;
 }
 
+zfauto ZFArgs::p(ZF_IN const zfstring &paramName) const {
+    ZFCoreAssert(this->ownerMethod() != zfnull);
+    const ZFMethod *m = this->ownerMethod();
+    for(zfindex i = 0; i < m->paramCount(); ++i) {
+        if(m->paramNameAt(i) == paramName) {
+            return this->paramAt(i);
+        }
+    }
+    return zfnull;
+}
+
 // ============================================================
 ZFArgs::ZFArgs(void) {
     d = zfpoolNew(_ZFP_ZFArgsPrivate);

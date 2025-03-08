@@ -33,7 +33,7 @@ public:
             ZFFileClose(this->token);
             this->token = zfnull;
         }
-        ZFFileRemove(this->tmpFilePath, zfHint("recursive")zffalse, zfHint("force")zftrue);
+        ZFFileRemove(this->tmpFilePath, ZF_HINT("recursive")zffalse, ZF_HINT("force")zftrue);
     }
 };
 

@@ -63,7 +63,7 @@ public:
      * @brief see #ZFPathForCacheClear
      */
     virtual void pathForCacheClear(void) {
-        ZFFileRemove(this->pathForCache(), zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
+        ZFFileRemove(this->pathForCache(), ZF_HINT("isRecursive")zftrue, ZF_HINT("isForce")zftrue);
     }
 ZFPROTOCOL_INTERFACE_END(ZFPath)
 

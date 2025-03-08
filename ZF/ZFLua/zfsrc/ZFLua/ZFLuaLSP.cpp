@@ -6,6 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFLuaLSP_supportMultiInherit 1
 #define _ZFP_ZFLuaLSP_supportOptionalParam 1
+#define _ZFP_ZFLuaLSP_supportTypeWithDot 1
 
 template<typename T_str>
 static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
@@ -24,18 +25,24 @@ static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
 }
 
 static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const ZFClass *cls) {
+#if _ZFP_ZFLuaLSP_supportTypeWithDot
     return cls->classNameFull();
+#else
+    return zfstringReplace(cls->classNameFull(), ".", "_");
+#endif
 }
 static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const zfstring &typeId) {
-    const ZFClass *cls = ZFClass::classForName(typeId);
-    if(cls != zfnull) {
-        return _ZFP_ZFLuaLSPGen_typeIdToSig(cls);
-    }
     const ZFTypeInfo *typeInfo = ZFTypeInfoForName(typeId);
     if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull) {
+#if _ZFP_ZFLuaLSP_supportTypeWithDot
         return typeId;
+#else
+        return zfstringReplace(typeId, ".", "_");
+#endif
     }
-    return _ZFP_ZFLuaLSPGen_typeIdToSig(typeInfo->typeIdClass());
+    else {
+        return _ZFP_ZFLuaLSPGen_typeIdToSig(typeInfo->typeIdClass());
+    }
 }
 
 static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
@@ -48,10 +55,10 @@ static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
                     || cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())
                     || cls == ZFObject::ClassData()
                     )) {
-            return zfstr("%s|string|number", typeId);
+            return zfstr("%s|string|number", _ZFP_ZFLuaLSPGen_typeIdToSig(cls));
         }
         else {
-            return typeId;
+            return _ZFP_ZFLuaLSPGen_typeIdToSig(typeId);
         }
     }
 }

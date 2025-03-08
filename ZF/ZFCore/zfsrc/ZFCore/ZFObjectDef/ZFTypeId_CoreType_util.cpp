@@ -66,8 +66,8 @@ zfbool zfflagsToStringT(
     else if(includeNotConverted) {
         ret += "0x";
         zfsFromIntT(ret, flagsLeft,
-            zfHint("radix")16,
-            zfHint("upper case?")zftrue);
+            ZF_HINT("radix")16,
+            ZF_HINT("upper case?")zftrue);
     }
 
     if(notConverted != zfnull) {

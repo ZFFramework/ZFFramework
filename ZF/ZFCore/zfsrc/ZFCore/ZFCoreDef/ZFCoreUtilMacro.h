@@ -41,11 +41,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   void yourFunc(zfbool clickable, zfbool moveable) {...}
  *   ...
  *   yourFunc(
- *       zfHint("clickable?")zftrue,
- *       zfHint("moveable?")zffalse);
+ *       ZF_HINT("clickable?")zftrue,
+ *       ZF_HINT("moveable?")zffalse);
  * @endcode
  */
-#define zfHint(...)
+#define ZF_HINT(...)
 
 // ============================================================
 #define _ZFP_ZFM_REPEAT_0(Type, LeftCommaFix, CenterCommaFix)

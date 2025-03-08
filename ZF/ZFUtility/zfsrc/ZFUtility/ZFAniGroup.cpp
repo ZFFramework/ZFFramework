@@ -146,7 +146,7 @@ private:
     ZFMETHOD_INLINE_1(void, onChildStop_group
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        _ZFP_ZFAniGroupChildData *childData = this->checkChild(zfargs.sender(), zfHint("autoRemove")zftrue);
+        _ZFP_ZFAniGroupChildData *childData = this->checkChild(zfargs.sender(), ZF_HINT("autoRemove")zftrue);
         if(childData == zfnull) {
             return;
         }

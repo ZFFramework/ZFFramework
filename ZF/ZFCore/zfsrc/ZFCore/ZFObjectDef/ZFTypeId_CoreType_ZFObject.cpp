@@ -349,6 +349,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfauto &, propValueOld)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, propValueOld
         , ZFMP_IN(zfauto const &, v)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfany const &, o)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, zfauto, p
+        , ZFMP_IN(const zfstring &, paramName)
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserver, ZFObserver)

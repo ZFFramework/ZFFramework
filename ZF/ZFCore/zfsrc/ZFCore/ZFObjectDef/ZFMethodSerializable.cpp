@@ -196,11 +196,11 @@ zfbool ZFMethodSigSplit(
     ret.add(ZFIndexRangeZero()); // add placeholder for method scope
     if(!ZFCoreDataPairSplitString(
                 ret,
-                zfHint("desiredCountOrIndexMax")zfindexMax(),
+                ZF_HINT("desiredCountOrIndexMax")zfindexMax(),
                 src, srcLen,
-                zfHint("separatorTokens")":",
-                zfHint("leftToken")zfnull, zfHint("rightToken")zfnull,
-                zfHint("allowEmptyItem")zftrue)
+                ZF_HINT("separatorTokens")":",
+                ZF_HINT("leftToken")zfnull, ZF_HINT("rightToken")zfnull,
+                ZF_HINT("allowEmptyItem")zftrue)
             || ret.count() > 1 + ZFMETHOD_MAX_PARAM
             || ret.count() <= 1
             || ret[1].count == 0

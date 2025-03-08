@@ -227,6 +227,13 @@ public:
 
     // ============================================================
 public:
+    /** @brief short form to access #sender */
+    zfany const &o(void) const {return this->sender();}
+    /** @brief short form to access param by name */
+    zfauto p(ZF_IN const zfstring &paramName) const;
+
+    // ============================================================
+public:
     /**
      * @brief main constructor
      */

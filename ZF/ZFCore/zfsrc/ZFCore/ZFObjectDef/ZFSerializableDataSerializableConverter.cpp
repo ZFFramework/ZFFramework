@@ -393,7 +393,7 @@ zfbool ZFSerializableDataFromZFSD(
         , ZF_IN_OPT zfindex encodedDataLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
-    return _ZFP_ZFSerializableDataFromZFSD(serializableData, encodedData, encodedDataLen, outErrorHint, zfHint("validateTail")zftrue);
+    return _ZFP_ZFSerializableDataFromZFSD(serializableData, encodedData, encodedDataLen, outErrorHint, ZF_HINT("validateTail")zftrue);
 }
 ZFSerializableData ZFSerializableDataFromZFSD(
         ZF_IN const zfchar *encodedData
