@@ -43,7 +43,16 @@ static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
         return zfstr("%s|fun(zfargs:ZFArgs):any", typeId);
     }
     else {
-        return typeId;
+        const ZFClass *cls = ZFClass::classForName(typeId);
+        if(cls != zfnull && (zffalse
+                    || cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())
+                    || cls == ZFObject::ClassData()
+                    )) {
+            return zfstr("%s|string|number", typeId);
+        }
+        else {
+            return typeId;
+        }
     }
 }
 static zfbool _ZFP_ZFLuaLSPGen_isChainedRet(ZF_IN const ZFMethod *m) {
@@ -391,9 +400,9 @@ static void _ZFP_ZFLuaLSPGen_spec(
         << "function ZFCoreArrayCreate(...) end\n"
 
         << "---@param ret zfstring\n"
-        << "---@param fmt zfstring\n"
+        << "---@param fmt zfstring|string\n"
         << "function zfstringAppend(ret, fmt, ...) end\n"
-        << "---@param fmt zfstring\n"
+        << "---@param fmt zfstring|string\n"
         << "---@return zfstring\n"
         << "function zfstr(fmt, ...) end\n"
 
@@ -405,10 +414,10 @@ static void _ZFP_ZFLuaLSPGen_spec(
         << "---@return number\n"
         << "function zfl_cmp(...) end\n"
 
-        << "---@param fmt zfstring\n"
+        << "---@param fmt zfstring|string\n"
         << "---@return ZFCallback\n"
         << "function ZFLog(fmt, ...) end\n"
-        << "---@param fmt zfstring\n"
+        << "---@param fmt zfstring|string\n"
         << "---@return ZFCallback\n"
         << "function ZFLogTrim(fmt, ...) end\n"
 
