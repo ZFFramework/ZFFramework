@@ -160,6 +160,12 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     for(zfindex i = 0; i < d->setupAttach.count(); ++i) {
         d->setupAttach[i](L, helper);
     }
+
+    if(ZFResIsExist("ZFLua_impl/debugger.lua")) {
+        ZFImpl_ZFLua_execute(L,
+                "zfl_dbg = zfl_value(zfimport('res:ZFLua_impl/debugger.lua'))"
+                );
+    }
 }
 void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L) {
     ZFCoreMutexLocker();

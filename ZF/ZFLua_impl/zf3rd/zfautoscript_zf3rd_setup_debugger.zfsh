@@ -1,0 +1,4 @@
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/slembcke/debugger.lua" master "<ZF_WORK_DIR>\_repo\debugger.lua"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_repo\debugger.lua\debugger.lua" "<ZF_WORK_DIR>\..\zfres\ZFLua_impl\debugger.lua"
+
