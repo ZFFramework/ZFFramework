@@ -417,9 +417,11 @@ static void _ZFP_ZFLuaLSPGen_spec(
         << "function zfl_L(...) end\n"
         << "---@return ZFObject\n"
         << "function zfl_call(...) end\n"
-        << "function zfl_value(...) end\n"
+        << "function zfl_value(e) end\n"
         << "---@return number\n"
-        << "function zfl_cmp(...) end\n"
+        << "function zfl_cmp(v0, v1) end\n"
+        << "---@return boolean\n"
+        << "function zfl_eq(v0, v1) end\n"
 
         << "---@param fmt zfstring|string\n"
         << "---@return ZFCallback\n"

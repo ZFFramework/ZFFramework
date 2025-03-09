@@ -937,6 +937,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
             .methodNamespace(NS)
             .methodName(zfstr("E_%s", eventName))
             .returnTypeId(ZFTypeId_zfidentity())
+            .methodType(ZFMethodTypeStatic)
         );
     ZFCoreAssert(method != zfnull);
     d->allMethod.add(method);

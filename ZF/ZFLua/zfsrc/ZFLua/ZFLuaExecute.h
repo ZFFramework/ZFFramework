@@ -93,6 +93,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  -1 : v0 < v1
  *     -  0 : v0 == v1
  *     -  1 : v0 > v1
+ *   -  "zfl_eq(v0, v1)"\n
+ *     similar to zfl_cmp, compare two values
  * -  callback
  *   -  "ZFCallbackForLua(luaFunc)"\n
  *     create a #ZFListener from lua function\n

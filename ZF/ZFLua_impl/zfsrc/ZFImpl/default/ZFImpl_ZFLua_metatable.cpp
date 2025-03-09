@@ -545,5 +545,25 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_cmp, ZFM_EXPAND({
     }), ZFM_EXPAND({
     }))
 
+// ============================================================
+// zfl_eq
+static int _ZFP_ZFImpl_ZFLua_zfl_eq(ZF_IN lua_State *L) {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+    ZFCompareResult result = ZFCompareUncomparable;
+    zfstring errorHint;
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+        return ZFImpl_ZFLua_luaError(L,
+            "%s",
+            errorHint);
+    }
+    lua_pushboolean(L, result == ZFCompareEqual);
+    return 1;
+}
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_eq, ZFM_EXPAND({
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_eq", _ZFP_ZFImpl_ZFLua_zfl_eq);
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
+
 ZF_NAMESPACE_GLOBAL_END
 

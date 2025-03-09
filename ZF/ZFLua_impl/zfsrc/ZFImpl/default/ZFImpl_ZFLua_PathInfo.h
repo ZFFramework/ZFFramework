@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * how it works:\n
  * lua does not have any way to append additional user data to chunk,
  * so we hack it by appending extra code before each #ZFLuaExecute,
- * to setup some path info related datas, mainly `zfl_L()` to return a #ZFPathInfo\n
+ * to setup some path info related datas, to return a #ZFPathInfo\n
  * \n
  * impl may use #ZFImpl_ZFLua_implPathInfo_DEFINE to append extra contents,
  * the final extra code may be something look like this:
