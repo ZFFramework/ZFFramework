@@ -11,10 +11,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 //     []
 // stack after: (has lua return value)
 //     [ret]
-static zfbool _ZFP_ZFCallbackForLua_invoke(
+static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
         ZF_IN lua_State *L
         , ZF_IN const ZFArgs &zfargs
-        , ZF_OUT zfstring &errorHint
+        , ZF_IN const zfstring &logTag
+        , ZF_IN_OUT zfstring &errorHint
         ) {
     int stackCountPrev = lua_gettop(L) - 2;
     int error = lua_pcall(L, 1, LUA_MULTRET, 0);
@@ -62,6 +63,20 @@ static zfbool _ZFP_ZFCallbackForLua_invoke(
         }
     }
     return zftrue;
+}
+static zfbool _ZFP_ZFCallbackForLua_invoke(
+        ZF_IN lua_State *L
+        , ZF_IN const ZFArgs &zfargs
+        , ZF_IN const zfstring &logTag
+        ) {
+    zfstring errorHint;
+    if(_ZFP_ZFCallbackForLua_invokeImpl(L, zfargs, logTag, errorHint)) {
+        return zftrue;
+    }
+    else {
+        ZFLuaErrorOccurredTrim("[%s] %s", logTag, errorHint);
+        return zffalse;
+    }
 }
 
 // ============================================================
@@ -163,9 +178,7 @@ public:
         zfargsHolder->zfv = zfargs;
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
-        zfstring errorHint;
-        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, errorHint)) {
-            ZFImpl_ZFLua_luaError(L, "%s", errorHint);
+        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->logTag())) {
             return;
         }
     }
@@ -532,9 +545,7 @@ public:
         }
 
         // finally call, stack: [func, zfargs]
-        zfstring errorHint;
-        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, errorHint)) {
-            ZFImpl_ZFLua_luaError(L, "%s", errorHint);
+        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, this->logTag())) {
             return;
         }
     }
