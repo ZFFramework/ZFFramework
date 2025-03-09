@@ -23,5 +23,8 @@
  *     -# use #ZFLuaLSPGen to generate definition file for LuaLS
  *     -# put the generated lua file to your lua code dir
  *
+ * -  <b>Q</b>: unable to debug in lua\n
+ *   <b>A</b>: it's recommended to use [debugger.lua](https://github.com/slembcke/debugger.lua)
+ *
  */
 

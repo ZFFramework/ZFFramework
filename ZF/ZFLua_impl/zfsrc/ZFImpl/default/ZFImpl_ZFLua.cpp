@@ -241,7 +241,14 @@ zfbool ZFImpl_ZFLua_execute(
     ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
 
     int luaStackNum = lua_gettop(L);
-    int error = luaL_loadbuffer(L, buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen, zfnull);
+    int error = luaL_loadbuffer(L, buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen
+            , ZFLogLevelIsActive(v_ZFLogLevel::e_Info)
+            ? (bufLen == zfindexMax() || buf[bufLen] == '\0'
+                ? buf
+                : zfstr(buf, bufLen).cString()
+                )
+            : zfnull
+            );
     if(error == 0) {
         if(luaParams != zfnull && !luaParams->isEmpty()) {
             for(zfindex i = 0; i < luaParams->count(); ++i) {
