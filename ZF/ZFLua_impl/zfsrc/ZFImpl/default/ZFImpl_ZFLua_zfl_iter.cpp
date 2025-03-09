@@ -6,7 +6,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_iter, ZFM_EXPAND({
         ZFImpl_ZFLua_execute(L,
                 "function zfl_iter(a)\n"
                 "    if a == zfnull then\n"
-                "        return function()\n"
+                "        return function(a)\n"
                 "            return nil\n"
                 "        end\n"
                 "    elseif a:classData():classIsTypeOf(ZFKeyValueContainer.ClassData()) then\n"

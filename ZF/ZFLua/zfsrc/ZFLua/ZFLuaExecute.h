@@ -166,6 +166,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       for i,k,v in zfl_iter(m) do
  *       end
  *     @endcode
+ *   -  "zfl_range(n, ...)"\n
+ *     util to perform range loop:
+ *     @code
+ *       for i in zfl_range(xxx) do
+ *       end
+ *     @endcode
+ *     -  "zfl_range(n)" : loop in range `[0, n)`
+ *     -  "zfl_range(n0, n1)" : loop in range `[n0, n1)`
+ *     -  "zfl_range(n0, n1, offset)" : loop in range `[n0, n1)`, each step with specified offset
  * -  local path info spec
  *   -  "zfl_L()"\n
  *     lua_State of current chunk, stored as #v_zfptr

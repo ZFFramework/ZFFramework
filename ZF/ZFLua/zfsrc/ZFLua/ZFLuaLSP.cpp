@@ -428,6 +428,11 @@ static void _ZFP_ZFLuaLSPGen_spec(
         << "---@return ZFCallback\n"
         << "function ZFLogTrim(fmt, ...) end\n"
 
+        << "---@param a ZFCoreArray|ZFContainer|ZFKeyValueContainer\n"
+        << "---@return fun(a):any\n"
+        << "function zfl_iter(a) end\n"
+        << "function zfl_range(n, ...) end\n"
+
         << "---@param tbl table\n"
         << "---@return zfstring\n"
         << "function zfl_tableInfo(tbl) end\n"
