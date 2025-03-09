@@ -156,15 +156,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     @endcode
  *     note that, all params passed from #ZFLuaExecute are all #zfauto type
  * -  util
- *   -  "zfstringAppend(s, fmt, ...)"
- *     or "zfstr(fmt, ...)"\n
- *     fmt can be #v_zfstring, or native lua string\n
- *     following va_args support:
- *     -  #ZFObject, would be converted by #ZFObject::objectInfo
- *     -  lua string type
- *     -  any lua type that supports convert to string
- *
- *     note: the va_args support params up to #ZFMETHOD_MAX_PARAM
+ *   -  "zfl_iter(a)"\n
+ *     util to loop #ZFCoreArray, #ZFContainer, #ZFKeyValueContainer:
+ *     @code
+ *       -- for array type
+ *       for i,e in zfl_iter(a) do
+ *       end
+ *       -- for map type
+ *       for i,k,v in zfl_iter(m) do
+ *       end
+ *     @endcode
  * -  local path info spec
  *   -  "zfl_L()"\n
  *     lua_State of current chunk, stored as #v_zfptr
