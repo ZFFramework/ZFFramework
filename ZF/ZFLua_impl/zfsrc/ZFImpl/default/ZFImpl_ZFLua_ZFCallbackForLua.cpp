@@ -521,11 +521,7 @@ public:
             {
                 zfstring code;
                 ZFImpl_ZFLua_implPathInfoSetup(L, code, this->ownerPathInfo, zffalse);
-                int error = luaL_loadbuffer(L, code.cString(), code.length()
-                        , ZFLogLevelIsActive(v_ZFLogLevel::e_Info)
-                        ? code.cString()
-                        : zfnull
-                        );
+                int error = luaL_loadbuffer(L, code.cString(), code.length(), code.cString());
                 ZFCoreAssert(error == 0);
                 error = lua_pcall(L, 0, (int)luaLocalFuncNameList.count(), 0);
                 ZFCoreAssert(error == 0);

@@ -575,7 +575,9 @@ ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<zfstring>, ZFPathInfoIm
  * when called from cpp side,
  * it always return a dummy path info
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFPathInfo, ZFLocalPathInfo)
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFPathInfo, ZFLocalPathInfo
+        , ZFMP_IN_OPT(const zfstring &, localPath, zfnull)
+        )
 /**
  * @brief util to make a child path info relative to existing one,
  *   see also #ZFPathInfoCallbackToChild

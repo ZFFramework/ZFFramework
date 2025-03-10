@@ -483,7 +483,9 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathInfoImplGetAllT
 ZFMETHOD_FUNC_INLINE_DEFINE_0(ZFCoreArray<zfstring>, ZFPathInfoImplGetAll)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_0(ZFPathInfo, ZFLocalPathInfo) {
+ZFMETHOD_FUNC_DEFINE_1(ZFPathInfo, ZFLocalPathInfo
+        , ZFMP_IN_OPT(const zfstring &, localPath, zfnull)
+        ) {
     return ZFPathInfo();
 }
 
@@ -505,6 +507,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalT
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const zfchar *, childPath)
         ) {
+    if(zfstringIsEmpty(childPath)) {
+        ret = pathInfo.pathData();
+        return zftrue;
+    }
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
         return zffalse;

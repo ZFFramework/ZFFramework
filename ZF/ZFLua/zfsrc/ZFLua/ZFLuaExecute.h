@@ -180,7 +180,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  local path info spec
  *   -  "zfl_L()"\n
  *     lua_State of current chunk, stored as #v_zfptr
- *   -  "ZFLocalPathInfo()"\n
+ *   -  "ZFLocalPathInfo([localPath])"\n
  *     return path info of current context, null if not available
  *   -  "zfimport(localFilePath)"\n
  *     util method for #ZFLuaExecute + #ZFInputForLocal,

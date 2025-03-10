@@ -5,8 +5,10 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLocalPathInfo,
-        "function ()"
-        "    return zfl_l or zfnull;"
+        "function (...)"
+        "    local arg={...};"
+        "    if #arg > 0 then return ZFPathInfoForLocal(zfl_l or zfnull, arg[1]) "
+        "    else return zfl_l or zfnull end "
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFInputForLocal,
