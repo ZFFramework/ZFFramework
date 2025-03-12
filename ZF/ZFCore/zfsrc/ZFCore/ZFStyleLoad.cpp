@@ -25,8 +25,12 @@ static void _ZFP_ZFStyleLoadImpl(
     ZFFileFindData fd;
     if(fileImpl.implFindFirst(fd, pathData)) {
         do {
-            if(*fd.name() == '.' || *fd.name() == '_'
-                    || zfstringFind(fd.name(), zfindexMax(), "._.") != zfindexMax()
+            if(*fd.name() == '.' || *fd.name() == '_') {
+                continue;
+            }
+            zfindex dotPos = zfstringFindReversely(fd.name(), '.');
+            if(dotPos != zfindexMax()
+                    && (dotPos > 0 && fd.name()[dotPos - 1] == '_')
                     ) {
                 continue;
             }
