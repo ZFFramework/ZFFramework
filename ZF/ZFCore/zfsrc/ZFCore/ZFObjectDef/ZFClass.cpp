@@ -1784,48 +1784,38 @@ void _ZFP_ZFClassDataUpdateNotify(
 // ============================================================
 void ZFClassAlias(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfstring &aliasName
+        , ZF_IN const zfstring &aliasNameFull
         ) {
     ZFCoreMutexLocker();
 
-    if(cls == zfnull || !aliasName
-        || cls->classAliasTo().find(aliasName) != zfindexMax()
-        || ZFClass::classForName(aliasName, cls->classNamespace()) != zfnull
+    if(cls == zfnull || !aliasNameFull
+        || cls->classAliasTo().find(aliasNameFull) != zfindexMax()
+        || ZFClass::classForName(aliasNameFull) != zfnull
     ) {
         return;
     }
-    zfstring aliasNameFull = cls->classNamespace();
-    if(!aliasNameFull.isEmpty()) {
-        aliasNameFull += ".";
-    }
-    aliasNameFull += aliasName;
     _ZFP_ZFClassMap.set(aliasNameFull, ZFCorePointerForPointerRef<const ZFClass *>(cls));
-    cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.add(aliasName);
+    cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.add(aliasNameFull);
 
-    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasAttach, cls, zfnull, zfnull, aliasName);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasAttach, cls, zfnull, zfnull, aliasNameFull);
 }
 void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfstring &aliasName
+        , ZF_IN const zfstring &aliasNameFull
         ) {
     ZFCoreMutexLocker();
-    if(cls == zfnull || !aliasName) {
+    if(cls == zfnull || !aliasNameFull) {
         return;
     }
-    zfindex index = cls->classAliasTo().find(aliasName);
+    zfindex index = cls->classAliasTo().find(aliasNameFull);
     if(index == zfindexMax()) {
         return;
     }
 
-    zfstring aliasNameFull = cls->classNamespace();
-    if(!aliasNameFull.isEmpty()) {
-        aliasNameFull += ".";
-    }
-    aliasNameFull += aliasName;
     _ZFP_ZFClassMap.remove(aliasNameFull);
     cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.remove(index);
 
-    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasDetach, cls, zfnull, zfnull, aliasName);
+    _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasDetach, cls, zfnull, zfnull, aliasNameFull);
 }
 
 ZF_NAMESPACE_GLOBAL_END
@@ -1845,11 +1835,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFClass *>, ZFClassGetA
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAlias
         , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN(const zfstring &, aliasName)
+        , ZFMP_IN(const zfstring &, aliasNameFull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAliasRemove
         , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN(const zfstring &, aliasName)
+        , ZFMP_IN(const zfstring &, aliasNameFull)
         )
 
 ZF_NAMESPACE_GLOBAL_END

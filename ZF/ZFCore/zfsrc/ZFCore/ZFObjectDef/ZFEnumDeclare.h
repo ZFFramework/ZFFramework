@@ -629,22 +629,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFENUM_FLAGS_TYPEID_DECLARE(ZFLIB_, EnumName, EnumFlagsName) \
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumFlagsName, EnumFlagsName) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##EnumFlagsName : zfextend v_##EnumName { \
-        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, v_##EnumName) \
-        ZFALLOC_CACHE_RELEASE({ \
-            cache->zfvReset(); \
-        }) \
-    public: \
-        zfoverride \
-        virtual const zfstring &zfvTypeId(void) { \
-            return ZFTypeId_##EnumFlagsName(); \
-        } \
-    public: \
-        /** @brief the value, see #ZFTypeId::Value */ \
-        zfuint &zfv; \
-    protected: \
-       v_##EnumFlagsName(void) : zfv(_ZFP_ZFEnum_value) {} \
-    };
+    typedef v_##EnumName v_##EnumFlagsName;
 #define _ZFP_ZFENUM_FLAGS_TYPEID_REG(ZFLIB_, EnumName, EnumFlagsName, Scope) \
     /** @cond ZFPrivateDoc */ \
     template<> \
@@ -788,7 +773,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }, { \
             return zfflagsToStringT(s, v_##EnumName::ClassData(), (zfflags)v.enumValue()); \
         }) \
-    ZFOBJECT_REGISTER(v_##EnumFlagsName)
+    ZF_STATIC_REGISTER_INIT(EnumReg_##EnumFlagsName) { \
+        ZFClassAlias(v_##EnumName::ClassData(), v_##EnumName::ClassData()->classNamespace() \
+                ? zfstr("%s.%s", v_##EnumName::ClassData()->classNamespace(), #EnumFlagsName).cString() \
+                : #EnumFlagsName \
+                ); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(EnumReg_##EnumFlagsName) { \
+        ZFClassAliasRemove(v_##EnumName::ClassData(), v_##EnumName::ClassData()->classNamespace() \
+                ? zfstr("%s.%s", v_##EnumName::ClassData()->classNamespace(), #EnumFlagsName).cString() \
+                : #EnumFlagsName \
+                ); \
+    } \
+    ZF_STATIC_REGISTER_END(EnumReg_##EnumFlagsName)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnumDeclare_h_

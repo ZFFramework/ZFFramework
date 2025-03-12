@@ -9,6 +9,9 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
             const ZFClass *cls = allClass[i];
             if(!cls->classIsInternalPrivate()) {
                 helper.addGenericScope(cls->classNameFull());
+                for(zfindex i = 0; i < cls->classAliasTo().count(); ++i) {
+                    helper.addGenericScope(cls->classAliasTo()[i]);
+                }
             }
         }
     }), ZFM_EXPAND({

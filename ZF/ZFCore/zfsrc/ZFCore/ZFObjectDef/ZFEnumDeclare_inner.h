@@ -495,22 +495,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFENUM_INNER_FLAGS_TYPEID_DECLARE(OuterClass, EnumName, EnumFlagsName) \
     ZFTYPEID_INNER_DECLARE_WITH_CUSTOM_WRAPPER(OuterClass, EnumFlagsName, EnumFlagsName) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass v_##EnumFlagsName : zfextend v_##EnumName { \
-        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, v_##EnumName, OuterClass) \
-        ZFALLOC_CACHE_RELEASE({ \
-            cache->zfvReset(); \
-        }) \
-    public: \
-        zfoverride \
-        virtual const zfstring &zfvTypeId(void) { \
-            return ZFTypeId_##EnumFlagsName(); \
-        } \
-    public: \
-        /** @brief the value, see #ZFTypeId::Value */ \
-        zfuint &zfv; \
-    protected: \
-       v_##EnumFlagsName(void) : zfv(_ZFP_ZFEnum_value) {} \
-    };
+    typedef v_##EnumName v_##EnumFlagsName;
 #define _ZFP_ZFENUM_INNER_FLAGS_TYPEID_REG(OuterClass, EnumName, EnumFlagsName) \
     /** @cond ZFPrivateDoc */ \
     template<> \
@@ -654,7 +639,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }, { \
             return zfflagsToStringT(s, v_##EnumName::ClassData(), (zfflags)v.enumValue()); \
         }) \
-    ZFOBJECT_REGISTER(OuterClass, v_##EnumFlagsName)
+    ZF_STATIC_REGISTER_INIT(EnumReg_##OuterClass##_##EnumFlagsName) { \
+        ZFClassAlias(OuterClass::v_##EnumName::ClassData(), OuterClass::v_##EnumName::ClassData()->classNamespace() \
+                ? zfstr("%s.%s", OuterClass::v_##EnumName::ClassData()->classNamespace(), #EnumFlagsName).cString() \
+                : #EnumFlagsName \
+                ); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(EnumReg_##OuterClass##_##EnumFlagsName) { \
+        ZFClassAliasRemove(OuterClass::v_##EnumName::ClassData(), OuterClass::v_##EnumName::ClassData()->classNamespace() \
+                ? zfstr("%s.%s", OuterClass::v_##EnumName::ClassData()->classNamespace(), #EnumFlagsName).cString() \
+                : #EnumFlagsName \
+                ); \
+    } \
+    ZF_STATIC_REGISTER_END(EnumReg_##OuterClass##_##EnumFlagsName)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnumDeclare_inner_h_

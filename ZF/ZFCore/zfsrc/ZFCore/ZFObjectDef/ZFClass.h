@@ -843,14 +843,14 @@ public:
  */
 extern ZFLIB_ZFCore void ZFClassAlias(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfstring &aliasName
+        , ZF_IN const zfstring &aliasNameFull
         );
 /**
  * @brief see #ZFClassAlias
  */
 extern ZFLIB_ZFCore void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfstring &aliasName
+        , ZF_IN const zfstring &aliasNameFull
         );
 
 ZF_NAMESPACE_GLOBAL_END
