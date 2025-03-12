@@ -167,7 +167,7 @@ public:
      *   ZFDynamic()
      *       :classBegin('MyClass')
      *       :property('zfstring', 'myProp')
-     *       :customInit(ZFMP()
+     *       :onInit(ZFMP()
      *           :mp('zfstring', 'myProp')
      *       , function(zfargs)  -- when no impl supplied, this is the default behavior
      *           zfargs:sender():myProp(zfargs:param0())
@@ -175,15 +175,15 @@ public:
      *       :classEnd()
      * @endcode
      */
-    ZFDynamic &customInit(
+    ZFDynamic &onInit(
             ZF_IN const ZFMP &mp
             , ZF_IN_OPT const ZFListener &impl = zfnull
             );
 
     /**
-     * @brief util for impl to implement default behavior of #customInit
+     * @brief util for impl to implement default behavior of #onInit
      */
-    static void customInitAction(ZF_IN const ZFArgs &zfargs);
+    static void onInitImpl(ZF_IN const ZFArgs &zfargs);
 
 public:
     /** @brief see #ZFDynamic */

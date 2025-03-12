@@ -705,7 +705,7 @@ ZFDynamic &ZFDynamic::onEvent(
 }
 
 // ============================================================
-ZFDynamic &ZFDynamic::customInit(
+ZFDynamic &ZFDynamic::onInit(
         ZF_IN const ZFMP &mp
         , ZF_IN_OPT const ZFListener &impl /* = zfnull */
         ) {
@@ -713,7 +713,7 @@ ZFDynamic &ZFDynamic::customInit(
     if(!d->scopeCheck_class()) {return *this;}
     if(mp.paramCount() == 0) {
         _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.getLast();
-        d->error(zfstr("customInit() must have one or more init param, class: %s", scope->d.cls->classNameFull()));
+        d->error(zfstr("onInit(ZFMP) must have one or more init param, class: %s", scope->d.cls->classNameFull()));
         return *this;
     }
     ZFMP mpFix = d->typeIdFix(mp);
@@ -724,7 +724,7 @@ ZFDynamic &ZFDynamic::customInit(
     else {
         for(zfindex i = 0; i < mpFix.paramCount(); ++i) {
             if(!mpFix.paramNameAt(i) || mpFix.paramNameAt(i) == mpFix.paramTypeIdAt(i)) {
-                d->error(zfstr("customInit() init param must have proper param name, class: %s, param index: %s, type: %s"
+                d->error(zfstr("onInit(ZFMP) init param must have proper param name, class: %s, param index: %s, type: %s"
                             , d->scopeList.getLast()->d.cls->classNameFull()
                             , i
                             , mpFix.paramTypeIdAt(i)
@@ -735,14 +735,14 @@ ZFDynamic &ZFDynamic::customInit(
         ZFLISTENER(onInit
                 ) {
             zfargs.sender()->_ZFP_ZFObject_objectOnInit();
-            ZFDynamic::customInitAction(zfargs);
+            ZFDynamic::onInitImpl(zfargs);
         } ZFLISTENER_END()
         implWrap = onInit;
     }
     return this->method(ZFTypeId_void(), "objectOnInit", mpFix, implWrap, ZFMethodTypeVirtual, ZFMethodAccessTypeProtected);
 }
 
-void ZFDynamic::customInitAction(ZF_IN const ZFArgs &zfargs) {
+void ZFDynamic::onInitImpl(ZF_IN const ZFArgs &zfargs) {
     ZFObject *owner = zfargs.sender();
     const ZFMethod *method = zfargs.ownerMethod();
     for(zfindex i = 0; i < method->paramCount(); ++i) {
@@ -1693,11 +1693,11 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onInit
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDealloc
         , ZFMP_IN(const ZFListener &, callback)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, customInit
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, onInit
         , ZFMP_IN(const ZFMP &, mp)
         , ZFMP_IN_OPT(const ZFListener &, impl, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFDynamic, v_ZFDynamic, void, customInitAction
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFDynamic, v_ZFDynamic, void, onInitImpl
         , ZFMP_IN(const ZFArgs &, zfargs)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin
