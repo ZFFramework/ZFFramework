@@ -276,6 +276,11 @@ static void _ZFP_ZFLuaLSPGen_class(
     }
 
     zfstring classSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls);
+    ZFCoreArray<zfstring> aliasNames;
+    aliasNames.add(classSig);
+    for(zfindex i = 0; i < cls->classAliasTo().count(); ++i) {
+        aliasNames.add(cls->classAliasTo()[i]);
+    }
 
     /* class and constructor
         ---@class NS.Cls:Base1,Base2
@@ -283,39 +288,43 @@ static void _ZFP_ZFLuaLSPGen_class(
         ---@overload fun(p0:P0, p1:P1):NS.Cls
         NS.Cls = {}
      */
-    zfstring classParentSig;
-    if(cls->classParent() != zfnull) {
-        classParentSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls->classParent());
-    }
+    for(zfindex i = 0; i < aliasNames.count(); ++i) {
+        const zfstring &aliasName = aliasNames[i];
+
+        zfstring classParentSig;
+        if(cls->classParent() != zfnull) {
+            classParentSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls->classParent());
+        }
 #if _ZFP_ZFLuaLSP_supportMultiInherit
-    for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
-        if(classParentSig) {
-            classParentSig += ",";
+        for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
+            if(classParentSig) {
+                classParentSig += ",";
+            }
+            classParentSig += _ZFP_ZFLuaLSPGen_typeIdToSig(cls->dynamicInterfaceAt(i));
         }
-        classParentSig += _ZFP_ZFLuaLSPGen_typeIdToSig(cls->dynamicInterfaceAt(i));
-    }
-    for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
-        if(classParentSig) {
-            classParentSig += ",";
+        for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
+            if(classParentSig) {
+                classParentSig += ",";
+            }
+            classParentSig += _ZFP_ZFLuaLSPGen_typeIdToSig(cls->implementedInterfaceAt(i));
         }
-        classParentSig += _ZFP_ZFLuaLSPGen_typeIdToSig(cls->implementedInterfaceAt(i));
-    }
 #endif
-    output
-        << "---@class " << classSig << (!classParentSig.isEmpty() ? ":" : "") << classParentSig << "\n"
-        << "---@overload fun():" << classSig << "\n"
-        ;
-    ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
-    for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
-        const ZFMethod *m = ctorMethods[iMethod];
-        if(m->paramCount() == 0) {
-            continue;
+        output
+            << "---@class " << aliasName << (!classParentSig.isEmpty() ? ":" : "") << classParentSig << "\n"
+            << "---@overload fun():" << classSig << "\n"
+            ;
+        ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
+        for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
+            const ZFMethod *m = ctorMethods[iMethod];
+            if(m->paramCount() == 0) {
+                continue;
+            }
+            _ZFP_ZFLuaLSPGen_method_overloadAnnotation(output, luaKeywords, m, classSig);
         }
-        _ZFP_ZFLuaLSPGen_method_overloadAnnotation(output, luaKeywords, m, _ZFP_ZFLuaLSPGen_typeIdToSig(cls));
+        output
+            << aliasName << " = {}\n"
+            ;
     }
-    output
-        << classSig << " = {}\n"
-        ;
 
     zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlLess> methodMap;
     ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
