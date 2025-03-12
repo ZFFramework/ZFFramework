@@ -151,11 +151,19 @@ public:
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
-        return this->onEvent(ZFObject::E_ObjectBeforeAlloc(), callback, ZFLevelZFFrameworkStatic);
+        return this->onEvent(ZFObject::E_ObjectBeforeAlloc(), callback, ZFLevelZFFrameworkNormal);
+    }
+    /** @brief see #ZFDynamic */
+    ZFDynamic &onInitFinish(ZF_IN const ZFListener &callback) {
+        return this->onEvent(ZFObject::E_ObjectAfterAlloc(), callback, ZFLevelZFFrameworkNormal);
+    }
+    /** @brief see #ZFDynamic */
+    ZFDynamic &onDeallocPrepare(ZF_IN const ZFListener &callback) {
+        return this->onEvent(ZFObject::E_ObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostNormal);
     }
     /** @brief see #ZFDynamic */
     ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
-        return this->onEvent(ZFObject::E_ObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
+        return this->onEvent(ZFObject::E_ObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostHigh);
     }
 
     /**

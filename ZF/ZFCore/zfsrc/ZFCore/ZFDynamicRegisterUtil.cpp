@@ -1162,19 +1162,6 @@ ZFDynamic &ZFDynamic::property(
                         ));
             return *this;
         }
-        if(zfcast(ZFCopyable *, wrap) == zfnull
-                && zfcast(ZFStyleable *, wrap) == zfnull
-                ) {
-            d->error(zfstr("init value (%s)%s is not type of %s or %s for property: %s::%s, use propertyWithInit instead"
-                        , propertyClassOfRetainProperty->classNameFull()
-                        , propertyInitValue
-                        , ZFCopyable::ClassData()->classNameFull()
-                        , ZFStyleable::ClassData()->classNameFull()
-                        , scope->d.cls->classNameFull()
-                        , propertyName
-                        ));
-            return *this;
-        }
         param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
         param.dynamicRegisterUserData(wrap);
     }
@@ -1688,6 +1675,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, onEvent
         , ZFMP_IN_OPT(ZFLevel, level, ZFLevelAppNormal)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onInit
+        , ZFMP_IN(const ZFListener &, callback)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onInitFinish
+        , ZFMP_IN(const ZFListener &, callback)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDeallocPrepare
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDealloc
