@@ -69,14 +69,14 @@ protected:
     }
 
 private:
-    static void _nextValue(ZF_IN_OUT ZFUIContentScaleType &value) {
-        zfindex index = v_ZFUIContentScaleType::EnumIndexForValue(value);
+    static void _nextValue(ZF_IN_OUT ZFUIScaleType &value) {
+        zfindex index = v_ZFUIScaleType::EnumIndexForValue(value);
         ZFCoreAssert(index != zfindexMax());
         ++index;
-        if(index >= v_ZFUIContentScaleType::EnumCount()) {
+        if(index >= v_ZFUIScaleType::EnumCount()) {
             index = 0;
         }
-        value = (ZFUIContentScaleType)v_ZFUIContentScaleType::EnumValueAt(index);
+        value = (ZFUIScaleType)v_ZFUIScaleType::EnumValueAt(index);
     }
     void prepareSettingButton(
             ZF_IN ZFUIWindow *window
@@ -94,7 +94,7 @@ private:
                 v_zfstring *text = zfargs.param0();
 
                 ZFUIImageView *imageView = imageViews->getFirst();
-                text->zfv = v_ZFUIContentScaleType::EnumNameForValue(imageView->imageScaleType());
+                text->zfv = v_ZFUIScaleType::EnumNameForValue(imageView->imageScaleType());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
@@ -102,7 +102,7 @@ private:
                     , zfautoT<ZFArray>, imageViews
                     ) {
                 ZFUIImageView *first = imageViews->getFirst();
-                ZFUIContentScaleType value = first->imageScaleType();
+                ZFUIScaleType value = first->imageScaleType();
                 _nextValue(value);
                 for(zfindex i = 0; i < imageViews->count(); ++i) {
                     ZFUIImageView *child = imageViews->get(i);

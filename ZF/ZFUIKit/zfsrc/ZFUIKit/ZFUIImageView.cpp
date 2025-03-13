@@ -30,7 +30,7 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
 ZFMETHOD_DEFINE_0(ZFUIImageView, zfautoT<ZFUIImage>, imageState) {
     return this->image() ? this->image()->imageState() : zfnull;
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIContentScaleType, imageScaleType) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIScaleType, imageScaleType) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
@@ -103,7 +103,7 @@ void ZFUIImageView::nativeImplViewOnLayout(
         , ZF_IN const ZFUIRect &bounds
         , ZF_IN const ZFUIMargin &nativeImplViewMargin
         ) {
-    ZFUIContentScaleTypeApplyT(
+    ZFUIScaleTypeApplyT(
         ret,
         this->imageScaleType(),
         ZFUIRectApplyMargin(bounds, nativeImplViewMargin),

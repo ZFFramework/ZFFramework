@@ -90,17 +90,17 @@ private:
                 , zftrue
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIContentScaleType, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
-            ZFCoreArrayCreate(ZFUIContentScaleType
-                , v_ZFUIContentScaleType::e_Fill
-                , v_ZFUIContentScaleType::e_Center
-                , v_ZFUIContentScaleType::e_FillCenter
-                , v_ZFUIContentScaleType::e_FillCenterClipped
-                , v_ZFUIContentScaleType::e_FitCenter
-                , v_ZFUIContentScaleType::e_FillX
-                , v_ZFUIContentScaleType::e_FitX
-                , v_ZFUIContentScaleType::e_FillY
-                , v_ZFUIContentScaleType::e_FitY
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIScaleType, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
+            ZFCoreArrayCreate(ZFUIScaleType
+                , v_ZFUIScaleType::e_Fill
+                , v_ZFUIScaleType::e_Center
+                , v_ZFUIScaleType::e_FillCenter
+                , v_ZFUIScaleType::e_FillCenterClipped
+                , v_ZFUIScaleType::e_FitCenter
+                , v_ZFUIScaleType::e_FillX
+                , v_ZFUIScaleType::e_FitX
+                , v_ZFUIScaleType::e_FillY
+                , v_ZFUIScaleType::e_FitY
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUIFlowLayout, childMargin),

@@ -45,7 +45,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zfbool, gridMode) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIContentScaleType, childScaleType) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, ZFUIScaleType, childScaleType) {
     if(propertyValue != propertyValueOld) {
         this->layoutRequest();
     }
@@ -472,7 +472,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
             else {
                 childSize = child->layoutMeasuredSize().width;
             }
-            child->viewFrame(ZFUIContentScaleTypeApply(
+            child->viewFrame(ZFUIScaleTypeApply(
                         parent->childScaleType(),
                         ZFUIRectApplyMargin(ZFUIRectCreate(
                                 positiveDirectionX
@@ -526,7 +526,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
             else {
                 childSize = child->layoutMeasuredSize().height;
             }
-            child->viewFrame(ZFUIContentScaleTypeApply(
+            child->viewFrame(ZFUIScaleTypeApply(
                         parent->childScaleType(),
                         ZFUIRectApplyMargin(ZFUIRectCreate(
                                 positiveDirectionX
@@ -596,7 +596,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridHorizontal(
         childStart = childStartSaved;
         for(zfindex i = 0; i < childCountPerLine && childIndex + i < parent->childCount(); ++i) {
             ZFUIView *child = parent->childAt(childIndex + i);
-            child->viewFrame(ZFUIContentScaleTypeApply(
+            child->viewFrame(ZFUIScaleTypeApply(
                         parent->childScaleType()
                         , ZFUIRectApplyMargin(ZFUIRectCreate(
                                 childStart
@@ -662,7 +662,7 @@ static void _ZFP_ZFUIFlowLayout_layoutGridVertical(
         childStart = childStartSaved;
         for(zfindex i = 0; i < childCountPerLine && childIndex + i < parent->childCount(); ++i) {
             ZFUIView *child = parent->childAt(childIndex + i);
-            child->viewFrame(ZFUIContentScaleTypeApply(
+            child->viewFrame(ZFUIScaleTypeApply(
                         parent->childScaleType()
                         , ZFUIRectApplyMargin(ZFUIRectCreate(
                                 lineStart

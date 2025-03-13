@@ -1435,7 +1435,7 @@ ZFENUM_REG(ZFLIB_ZFUIKit, ZFUITextTruncateMode)
 /**
  * @brief scale type when stretch items
  */
-ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIContentScaleType)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIScaleType)
     /**
      * @brief simply fill to parent
      */
@@ -1488,30 +1488,30 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(FitX)
     ZFENUM_VALUE_REGISTER(FillY)
     ZFENUM_VALUE_REGISTER(FitY)
-ZFENUM_END(ZFLIB_ZFUIKit, ZFUIContentScaleType)
-ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIContentScaleType)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIScaleType)
+ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIScaleType)
 
 /**
- * @brief apply scale for #ZFUIContentScaleType
+ * @brief apply scale for #ZFUIScaleType
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIContentScaleTypeApplyT
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, void, ZFUIScaleTypeApplyT
         , ZFMP_OUT(ZFUIRect &, ret)
-        , ZFMP_IN(ZFUIContentScaleType, scaleType)
+        , ZFMP_IN(ZFUIScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
         , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, v_ZFUIAlign::e_Center)
         )
 /**
- * @brief apply scale for #ZFUIContentScaleType
+ * @brief apply scale for #ZFUIScaleType
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIContentScaleTypeApply
-        , ZFMP_IN(ZFUIContentScaleType, scaleType)
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIRect, ZFUIScaleTypeApply
+        , ZFMP_IN(ZFUIScaleType, scaleType)
         , ZFMP_IN(const ZFUIRect &, bounds)
         , ZFMP_IN(const ZFUISize &, contentSize)
         , ZFMP_IN_OPT(const ZFUIAlignFlags &, alignFlags, v_ZFUIAlign::e_Center)
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUIContentScaleTypeApplyT(ret, scaleType, bounds, contentSize, alignFlags);
+    ZFUIScaleTypeApplyT(ret, scaleType, bounds, contentSize, alignFlags);
     return ret;
 }
 

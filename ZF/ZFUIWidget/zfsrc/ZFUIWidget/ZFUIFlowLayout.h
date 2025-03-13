@@ -97,8 +97,8 @@ public:
     /**
      * @brief valid only when #gridMode, indicates how to scale children
      */
-    ZFPROPERTY_ASSIGN(ZFUIContentScaleType, childScaleType, v_ZFUIContentScaleType::e_FillCenter)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleType, childScaleType)
+    ZFPROPERTY_ASSIGN(ZFUIScaleType, childScaleType, v_ZFUIScaleType::e_FillCenter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIScaleType, childScaleType)
 
     /**
      * @brief max child count per line, 0 means no limit
