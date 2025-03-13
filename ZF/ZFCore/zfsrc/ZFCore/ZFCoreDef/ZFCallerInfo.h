@@ -80,6 +80,7 @@ public:
     ZFCallerInfo &operator = (ZF_IN const ZFCallerInfo &ref);
     zfbool operator == (ZF_IN const ZFCallerInfo &ref) const;
     inline zfbool operator != (ZF_IN const ZFCallerInfo &ref) const {return !this->operator == (ref);}
+    inline operator zfbool (void) const {return this->valid();}
     /** @endcond */
 
 public:
@@ -89,6 +90,9 @@ public:
     inline const zfchar *callerFunc(void) const {return _callerFunc;}
     /** @brief see #ZF_CALLER_LINE */
     inline zfuint callerLine(void) const {return _callerLine;}
+
+    /** @brief whether valid */
+    inline zfbool valid(void) const {return this->callerFile() != zfnull;}
 
 public:
     /**

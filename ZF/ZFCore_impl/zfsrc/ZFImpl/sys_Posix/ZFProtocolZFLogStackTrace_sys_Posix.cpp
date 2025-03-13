@@ -30,7 +30,7 @@ public:
         zfchar **strings = backtrace_symbols(array, (int)size);
 
         ret += fixedPrefix;
-        ret += "======================== stack begin =======================";
+        ret += "======================== stack trace =======================";
         ret += '\n';
         for(zfindex i = ignoreLevel; i < size; ++i) {
             ret += fixedPrefix;
@@ -38,7 +38,7 @@ public:
             ret += '\n';
         }
         ret += fixedPrefix;
-        ret += "========================  stack end  =======================";
+        ret += "------------------------ stack trace -----------------------";
 
         zffree(strings);
         zffree(array);

@@ -138,13 +138,13 @@ void ZFImpl_sys_iOS_viewTreePrintT(
         ZF_OUT zfstring &ret
         , ZF_IN UIView *view
         ) {
-    ret += "==================== UIView tree begin ====================\n";
+    ret += "======================= iOS view tree ======================\n";
     if(view != nil) {
         @autoreleasepool {
             _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ret, view, 0, 0);
         }
     }
-    ret += "==================== UIView tree  end  ====================\n";
+    ret += "----------------------- iOS view tree ----------------------\n";
 }
 
 ZF_NAMESPACE_GLOBAL_END

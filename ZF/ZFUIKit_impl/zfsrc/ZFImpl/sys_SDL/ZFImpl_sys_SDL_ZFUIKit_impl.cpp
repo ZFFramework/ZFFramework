@@ -36,11 +36,11 @@ void ZFImpl_sys_SDL_viewTreePrintT(
         ZF_OUT zfstring &ret
         , ZF_IN ZFImpl_sys_SDL_View *view
         ) {
-    ret += "==================== SDL view tree begin ====================\n";
+    ret += "======================= SDL view tree ======================\n";
     if(view != zfnull) {
         _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ret, view, 0, 0);
     }
-    ret += "==================== SDL view tree  end  ====================\n";
+    ret += "----------------------- SDL view tree ----------------------\n";
 }
 
 ZF_NAMESPACE_GLOBAL_END

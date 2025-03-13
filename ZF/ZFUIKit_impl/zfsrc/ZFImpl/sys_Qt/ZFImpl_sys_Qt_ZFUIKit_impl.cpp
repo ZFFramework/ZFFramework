@@ -137,11 +137,11 @@ void ZFImpl_sys_Qt_viewTreePrintT(
         ZF_OUT zfstring &ret
         , ZF_IN QObject *view
         ) {
-    ret += "==================== Qt view tree begin ====================\n";
+    ret += "======================= Qt view tree =======================\n";
     if(view != zfnull) {
         _ZFP_ZFImpl_sys_Qt_viewTreePrint_recursive(ret, view, 0, 0);
     }
-    ret += "==================== Qt view tree  end  ====================\n";
+    ret += "----------------------- Qt view tree -----------------------\n";
 }
 
 // convert utility

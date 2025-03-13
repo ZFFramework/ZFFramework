@@ -31,10 +31,10 @@ public class ZFAndroidLog {
 
     private static void _printAssertMsg(String msg) {
         StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
-        ZFAndroidLog.p("====================  assert message   ====================");
+        ZFAndroidLog.p("====================== assert message ======================");
         ZFAndroidLog.p("| called by %s [%s (%d)]", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
         ZFAndroidLog.p("| " + msg);
-        ZFAndroidLog.p("====================  assert message   ====================");
+        ZFAndroidLog.p("---------------------- assert message ----------------------");
     }
 
     // caller info
@@ -68,7 +68,7 @@ public class ZFAndroidLog {
     private static String _stackTrace(int levelIgnore, int maxNum) {
         StringBuilder sb = new StringBuilder();
         StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        sb.append("==================== stack trace begin ====================");
+        sb.append("======================== stack trace =======================");
         sb.append('\n');
         for (int i = 4 + levelIgnore, num = 0; i < ste.length && num < maxNum; ++i, ++num) {
             sb.append(String.format("|  %s [%s (%d)]",
@@ -77,7 +77,7 @@ public class ZFAndroidLog {
                     ste[i].getLineNumber()));
             sb.append('\n');
         }
-        sb.append("====================  stack trace end  ====================");
+        sb.append("------------------------ stack trace -----------------------");
         sb.append('\n');
         return sb.toString();
     }
@@ -96,14 +96,14 @@ public class ZFAndroidLog {
 
     private static void _stackTracePrint(int levelIgnore, int maxNum) {
         StackTraceElement[] ste = Thread.currentThread().getStackTrace();
-        ZFAndroidLog.p("==================== stack trace begin ====================");
+        ZFAndroidLog.p("======================== stack trace =======================");
         for (int i = 4 + levelIgnore, num = 0; i < ste.length && num < maxNum; ++i, ++num) {
             ZFAndroidLog.p(String.format("|  %s [%s (%d)]",
                     ste[i].getMethodName(),
                     ste[i].getFileName(),
                     ste[i].getLineNumber()));
         }
-        ZFAndroidLog.p("====================  stack trace end  ====================");
+        ZFAndroidLog.p("------------------------ stack trace -----------------------");
     }
 
     public static boolean isEmpty(String s) {

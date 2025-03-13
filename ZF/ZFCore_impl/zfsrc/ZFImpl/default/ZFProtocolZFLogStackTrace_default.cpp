@@ -31,7 +31,7 @@ public:
         const zfchar *fixedPrefix = ((prefix == zfnull) ? "" : prefix);
 
         ret += fixedPrefix;
-        ret += "======================== stack begin =======================";
+        ret += "======================== stack trace =======================";
         ret += '\n';
 
         dbg::stack s;
@@ -50,7 +50,7 @@ public:
         }
 
         ret += fixedPrefix;
-        ret += "========================  stack end  =======================";
+        ret += "------------------------ stack trace -----------------------";
     }
     virtual void callerInfo(
             ZF_IN_OUT zfstring &ret

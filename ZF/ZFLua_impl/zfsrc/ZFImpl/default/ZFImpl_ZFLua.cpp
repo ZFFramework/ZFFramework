@@ -353,23 +353,27 @@ void ZFImpl_ZFLua_execute_errorHandle(
         zfindex tokenL = zfindexMax();
         zfindex tokenR = zfindexMax();
         zfindex offset = 0;
-        tokenL = zfstringFind((const zfchar *)nativeError, ": <<{{");
+        const zfchar *KEY_tokenL = "<<{{";
+        const zfchar *KEY_tokenR = "}}>>";
+        tokenL = zfstringFind((const zfchar *)nativeError, KEY_tokenL);
         if(tokenL != zfindexMax()) {
-            tokenL += 4;
-            tokenR = zfstringFind((const zfchar *)nativeError + tokenL, "}}>>");
+            tokenL += zfslen(KEY_tokenL);
+            tokenR = zfstringFind((const zfchar *)nativeError + tokenL, KEY_tokenR);
             if(tokenR != zfindexMax()) {
                 tokenR += tokenL;
-                offset = tokenR + 2;
+                offset = tokenR + zfslen(KEY_tokenR);
             }
         }
         else {
-            tokenL = zfstringFind((const zfchar *)nativeError, "]:");
+            KEY_tokenL = "?\"]:";
+            KEY_tokenR = ": ";
+            tokenL = zfstringFind((const zfchar *)nativeError, KEY_tokenL);
             if(tokenL != zfindexMax()) {
-                tokenL += 2;
-                tokenR = zfstringFind((const zfchar *)nativeError + tokenL, ":");
+                tokenL += zfslen(KEY_tokenL);
+                tokenR = zfstringFind((const zfchar *)nativeError + tokenL, KEY_tokenR);
                 if(tokenR != zfindexMax()) {
                     tokenR += tokenL;
-                    offset = tokenR + 2;
+                    offset = tokenR + zfslen(KEY_tokenR);
                 }
             }
         }
@@ -926,13 +930,13 @@ zfstring ZFImpl_ZFLua_luaStackInfo(
         ) {
     zfstring ret;
     int count = lua_gettop(L);
-    ret += "========== lua stack begin ==========\n";
+    ret += "========================= lua stack ========================\n";
     for(int i = count; i >= luaStackOffset; --i) {
         zfstringAppend(ret, "\t%s: ", i);
         ZFImpl_ZFLua_luaObjectInfoT(ret, L, i, zftrue);
         ret += '\n';
     }
-    ret += "---------- lua stack end   ----------\n";
+    ret += "------------------------- lua stack ------------------------\n";
     return ret;
 }
 
@@ -954,19 +958,24 @@ static void impl(const ZFCallerInfo &callerInfo) {
         lua_getinfo(L, "nSl", &ar);
         if(ar.source != NULL) {
             if(ar.source[0] != '\0' && ar.currentline > 0) {
+                const zfchar *source = ar.source;
+
+                // parse special chunkInfo, passed from _ZFP_ZFImpl_ZFLua_sourceInfo
+                zfstring chunkInfo;
+                const zfchar *KEY_tokenL = "{{<<";
+                const zfchar *KEY_tokenR = ">>}}";
+                if(zfsncmp(source, KEY_tokenL, zfslen(KEY_tokenL)) == 0) {
+                    zfindex p = zfstringFind(source, KEY_tokenR);
+                    if(p != zfindexMax()) {
+                        chunkInfo.assign(source + zfslen(KEY_tokenL), p - zfslen(KEY_tokenL));
+                        source += p + zfslen(KEY_tokenR);
+                    }
+                }
+
                 ZFCoreArray<ZFIndexRange> pos;
-                zfstringSplitIndexT(pos, ar.source, "\n", zftrue);
+                zfstringSplitIndexT(pos, source, "\n", zftrue);
                 if(ar.currentline <= pos.count()) {
                     info += "\n| ";
-
-                    // parse special chunkInfo, passed from _ZFP_ZFImpl_ZFLua_sourceInfo
-                    zfstring chunkInfo;
-                    if(zfsncmp(ar.source, "{{<<", 4) == 0) {
-                        zfindex p = zfstringFind(ar.source, ">>}}");
-                        if(p != zfindexMax()) {
-                            chunkInfo.assign(ar.source + 4, p - 4);
-                        }
-                    }
 
                     if(chunkInfo) {
                         zfstringAppend(info, "[%s (%s)]  ", chunkInfo, ar.currentline);
@@ -976,8 +985,8 @@ static void impl(const ZFCallerInfo &callerInfo) {
                     }
 
                     ZFIndexRange p = pos[ar.currentline - 1];
-                    while(p.count != 0 && (ar.source[p.start] == ' ' || ar.source[p.start] == '\t')) {++p.start; --p.count;}
-                    info.append(ar.source + p.start, p.count);
+                    while(p.count != 0 && (source[p.start] == ' ' || source[p.start] == '\t')) {++p.start; --p.count;}
+                    info.append(source + p.start, p.count);
                 }
             }
         }
@@ -988,11 +997,10 @@ static void impl(const ZFCallerInfo &callerInfo) {
 
     if(info) {
         zfstring tmp;
-        tmp += "lua stack trace:\n";
-        tmp += "============================================================";
+        tmp += "====================== lua stack trace =====================";
         tmp += info;
         tmp += "\n";
-        tmp += "============================================================";
+        tmp += "---------------------- lua stack trace ---------------------";
         ZFCoreLogTrim("%s", tmp);
     }
 }

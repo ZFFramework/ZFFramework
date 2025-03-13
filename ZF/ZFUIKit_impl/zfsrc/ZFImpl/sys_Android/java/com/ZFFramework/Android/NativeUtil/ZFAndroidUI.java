@@ -43,9 +43,9 @@ public class ZFAndroidUI {
     }
 
     public static void viewTreePrint(ViewTreeOutput output, View view) {
-        output.outputLine("====================  view tree begin  ====================");
+        output.outputLine("===================== Android view tree ====================");
         _viewTreePrintRecursion(output, view, 0, 0);
-        output.outputLine("====================   view tree end   ====================");
+        output.outputLine("--------------------- Android view tree --------------------");
     }
 
     public static String native_viewTreePrint(Object view) {

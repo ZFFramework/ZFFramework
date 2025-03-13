@@ -62,7 +62,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
     rootPrintData.layer = v_ZFUIViewChildLayer::e_Normal;
     printDatas.add(rootPrintData);
 
-    outputCallback.execute("====================== view tree begin =====================\n");
+    outputCallback.execute("========================= view tree ========================\n");
     do {
         _ZFP_ZFUIViewTreePrintPrintData printData = printDatas.removeLastAndGet();
 
@@ -147,7 +147,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
         outputCallback.execute("\n");
     } while(!printDatas.isEmpty());
-    outputCallback.execute("====================== view tree  end  =====================\n");
+    outputCallback.execute("------------------------- view tree ------------------------\n");
 }
 
 void ZFUIViewTreePrintInfoGetterForClass(
@@ -212,9 +212,9 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreeNativePrint
     }
     else {
         outputCallback
-            << "========== ZFUIViewTreeNativePrint begin ==========\n"
+            << "===================== native view tree =====================\n"
             << "| not available\n"
-            << "========== ZFUIViewTreeNativePrint  end  ==========\n"
+            << "--------------------- native view tree ---------------------\n"
             ;
     }
 }
