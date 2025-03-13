@@ -1,8 +1,6 @@
 #include "ZFImpl_ZFLua.h"
 #include "ZFImpl_ZFLua_PathInfo.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // stack before:
@@ -14,13 +12,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
         ZF_IN lua_State *L
         , ZF_IN const ZFArgs &zfargs
-        , ZF_IN const zfstring &logTag
+        , ZF_IN const ZFPathInfo &ownerPathInfo
         , ZF_IN_OUT zfstring &errorHint
         ) {
     int stackCountPrev = lua_gettop(L) - 2;
     int error = lua_pcall(L, 1, LUA_MULTRET, 0);
     if(error != 0) {
-        ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, zfnull);
+        ZFImpl_ZFLua_execute_errorHandle(L
+                , error
+                , &errorHint
+                , ownerPathInfo ? ZFPathInfoToString(ownerPathInfo).cString() : zfnull
+                );
         return zffalse;
     }
     int stackCount = lua_gettop(L);
@@ -67,14 +69,17 @@ static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
 static zfbool _ZFP_ZFCallbackForLua_invoke(
         ZF_IN lua_State *L
         , ZF_IN const ZFArgs &zfargs
-        , ZF_IN const zfstring &logTag
+        , ZF_IN const ZFPathInfo &ownerPathInfo
         ) {
     zfstring errorHint;
-    if(_ZFP_ZFCallbackForLua_invokeImpl(L, zfargs, logTag, errorHint)) {
+    if(_ZFP_ZFCallbackForLua_invokeImpl(L, zfargs, ownerPathInfo, errorHint)) {
         return zftrue;
     }
     else {
-        ZFLuaErrorOccurredTrim("[%s] %s", logTag, errorHint);
+        ZFLuaErrorOccurredTrim("[%s] %s"
+                , ownerPathInfo ? ZFPathInfoToString(ownerPathInfo) : zftext("ZFCallbackForLua")
+                , errorHint
+                );
         return zffalse;
     }
 }
@@ -178,7 +183,7 @@ public:
         zfargsHolder->zfv = zfargs;
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
-        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->logTag())) {
+        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->ownerPathInfo)) {
             return;
         }
     }
@@ -545,7 +550,7 @@ public:
         }
 
         // finally call, stack: [func, zfargs]
-        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, this->logTag())) {
+        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, this->ownerPathInfo)) {
             return;
         }
     }

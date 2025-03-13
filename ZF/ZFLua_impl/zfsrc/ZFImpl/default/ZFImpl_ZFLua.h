@@ -489,10 +489,11 @@ inline zfauto &ZFImpl_ZFLua_luaGet(
 /**
  * @brief util for impl
  *
- * note: when calling this method without ZF_ENV_ZFLUA_USE_EXCEPTION defined,
+ * used to solve this problem:
+ * when raise lua error without ZF_ENV_ZFLUA_USE_EXCEPTION defined,
  * you must ensure any cpp object has been properly cleaned up
- * (from nearest lua c function registered by #ZFImpl_ZFLua_luaCFunctionRegister, to this method),
- * otherwise all of the cpp object's destructor would be skipped due to
+ * (from nearest lua c function registered by #ZFImpl_ZFLua_luaCFunctionRegister, to luaL_error),
+ * otherwise all of cpp objects' destructor would be skipped due to
  * usage of longjmp instead of exception handler\n
  * \n
  * a typical recommended use case:
@@ -529,13 +530,13 @@ public:
                 if(!success) {
                     break;
                 }
-                success = lua_getinfo(L, "nSltu", &ar);
+                success = lua_getinfo(L, "nSl", &ar);
                 if(!success) {
                     break;
                 }
                 if((iStack == 2 || ar.name == NULL) && ar.currentline > 0) {
                     // pass special header to ZFImpl_ZFLua_execute_errorHandle
-                    this->errorHint.insert(0, zfstr("<{%s}>", (zfindex)ar.currentline));
+                    this->errorHint.insert(0, zfstr("<<{{%s}}>>", (zfindex)ar.currentline));
                     break;
                 }
             }

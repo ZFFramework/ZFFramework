@@ -349,7 +349,7 @@ void ZFImpl_ZFLua_implSetupMetatable(
             "        return zfl_call(obj, k, ...)\n"
             "    end\n"
             "end\n"
-        , zfindexMax(), zfnull, zfnull, zfnull, zfnull, "ZFLua_zfl_call");
+        , zfindexMax(), zfnull, zfnull, zfnull, zfnull, "");
 
     if(metatableIndex >= 0) {
         metatableIndex += 2;

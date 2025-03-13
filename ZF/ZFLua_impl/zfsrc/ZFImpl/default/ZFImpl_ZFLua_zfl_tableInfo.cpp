@@ -22,7 +22,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_tableInfo, ZFM_EXPAND({
             "function zfl_tableInfo(t, indent)\n"
             "    local ret = ''\n"
             "    zfl_tableInfoT(function(s)\n"
-            "        ret = ret .. s .. '\n'\n"
+            "        ret = ret .. s .. '\\n'\n"
             "    end, t, indent)\n"
             "    return ret\n"
             "end\n"

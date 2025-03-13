@@ -149,7 +149,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
             "    return zfl_call(zfnull, tbl.ZFNS, ...);"
             "end;"
             "_ZFP_zfl_metatable = {__index = _ZFP_zfl_index, __call = _ZFP_zfl_call};"
-        , zfindexMax(), zfnull, zfnull, zfnull, zfnull, "ZFLua_metatable");
+        , zfindexMax(), zfnull, zfnull, zfnull, zfnull, "");
 
     // global NS
     ZFImpl_ZFLua_ImplSetupHelper helper(L);
@@ -222,6 +222,37 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
 }
 
 // ============================================================
+static const zfchar *_ZFP_ZFImpl_ZFLua_sourceInfo(
+        ZF_IN_OUT zfstring &sourceHolder
+        , ZF_IN const zfchar *buf
+        , ZF_IN_OPT zfindex bufLen
+        , ZF_IN_OPT const zfchar *chunkInfo
+        , ZF_IN_OPT const zfchar *srcInfo
+        ) {
+    if(srcInfo) {
+        return srcInfo;
+    }
+    else if(ZFLogLevelIsActive(v_ZFLogLevel::e_Debug) && chunkInfo) {
+        // append special pathInfo, for stack trace when critical error in cpp
+        sourceHolder += "{{<<";
+        sourceHolder += chunkInfo;
+        sourceHolder += ">>}}";
+        sourceHolder.append(buf, bufLen);
+        return sourceHolder;
+    }
+    else if(ZFLogLevelIsActive(v_ZFLogLevel::e_Error)) {
+        if(bufLen == zfindexMax() || buf[bufLen] == '\0') {
+            return buf;
+        }
+        else {
+            sourceHolder.append(buf, bufLen);
+            return sourceHolder;
+        }
+    }
+    else {
+        return zfnull;
+    }
+}
 zfbool ZFImpl_ZFLua_execute(
         ZF_IN lua_State *L
         , ZF_IN const zfchar *buf
@@ -242,11 +273,11 @@ zfbool ZFImpl_ZFLua_execute(
     ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
 
     int luaStackNum = lua_gettop(L);
-    int error = luaL_loadbuffer(L, buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen
-            , srcInfo ? srcInfo : ((bufLen == zfindexMax() || buf[bufLen] == '\0')
-                ? buf
-                : (ZFLogLevelIsActive(v_ZFLogLevel::e_Info) ? zfstr(buf, bufLen).cString() : zfnull)
-                ));
+    zfstring sourceHolder;
+    int error = luaL_loadbuffer(L
+            , buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen
+            , _ZFP_ZFImpl_ZFLua_sourceInfo(sourceHolder, buf, bufLen, chunkInfo, srcInfo)
+            );
     if(error == 0) {
         if(luaParams != zfnull && !luaParams->isEmpty()) {
             for(zfindex i = 0; i < luaParams->count(); ++i) {
@@ -313,7 +344,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
     //     lua error header
     //
     // case 2: (by luaL_error, the `123` may be incorrect)
-    //     [string "?"]:123: <{456}>xxx
+    //     [string "?"]:123: <<{{456}}>>xxx
     //     ^^^^^^^^^^^^^^^^^^
     //     lua error header
     //                       ^^^^^^^
@@ -322,10 +353,10 @@ void ZFImpl_ZFLua_execute_errorHandle(
         zfindex tokenL = zfindexMax();
         zfindex tokenR = zfindexMax();
         zfindex offset = 0;
-        tokenL = zfstringFind((const zfchar *)nativeError, ": <{");
+        tokenL = zfstringFind((const zfchar *)nativeError, ": <<{{");
         if(tokenL != zfindexMax()) {
             tokenL += 4;
-            tokenR = zfstringFind((const zfchar *)nativeError + tokenL, "}>");
+            tokenR = zfstringFind((const zfchar *)nativeError + tokenL, "}}>>");
             if(tokenR != zfindexMax()) {
                 tokenR += tokenL;
                 offset = tokenR + 2;
@@ -921,14 +952,33 @@ static void impl(const ZFCallerInfo &callerInfo) {
             break;
         }
         lua_getinfo(L, "nSl", &ar);
-        if(ar.source != NULL && ar.currentline > 0) {
-            ZFCoreArray<ZFIndexRange> pos;
-            zfstringSplitIndexT(pos, ar.source, "\n", zftrue);
-            if(ar.currentline > 0 && ar.currentline <= pos.count()) {
-                info += "\n|   ";
-                ZFIndexRange p = pos[ar.currentline - 1];
-                while(p.count != 0 && (ar.source[p.start] == ' ' || ar.source[p.start] == '\t')) {++p.start; --p.count;}
-                info.append(ar.source + p.start, p.count);
+        if(ar.source != NULL) {
+            if(ar.source[0] != '\0' && ar.currentline > 0) {
+                ZFCoreArray<ZFIndexRange> pos;
+                zfstringSplitIndexT(pos, ar.source, "\n", zftrue);
+                if(ar.currentline <= pos.count()) {
+                    info += "\n| ";
+
+                    // parse special chunkInfo, passed from _ZFP_ZFImpl_ZFLua_sourceInfo
+                    zfstring chunkInfo;
+                    if(zfsncmp(ar.source, "{{<<", 4) == 0) {
+                        zfindex p = zfstringFind(ar.source, ">>}}");
+                        if(p != zfindexMax()) {
+                            chunkInfo.assign(ar.source + 4, p - 4);
+                        }
+                    }
+
+                    if(chunkInfo) {
+                        zfstringAppend(info, "[%s (%s)]  ", chunkInfo, ar.currentline);
+                    }
+                    else {
+                        zfstringAppend(info, "(%s)  ", ar.currentline);
+                    }
+
+                    ZFIndexRange p = pos[ar.currentline - 1];
+                    while(p.count != 0 && (ar.source[p.start] == ' ' || ar.source[p.start] == '\t')) {++p.start; --p.count;}
+                    info.append(ar.source + p.start, p.count);
+                }
             }
         }
         else {
@@ -937,7 +987,13 @@ static void impl(const ZFCallerInfo &callerInfo) {
     }
 
     if(info) {
-        luaL_error(L, "lua call stack:%s", info.cString());
+        zfstring tmp;
+        tmp += "lua stack trace:\n";
+        tmp += "============================================================";
+        tmp += info;
+        tmp += "\n";
+        tmp += "============================================================";
+        ZFCoreLogTrim("%s", tmp);
     }
 }
 ZF_STATIC_INITIALIZER_END(ZFImpl_ZFLua_criticalErrorHandler)
