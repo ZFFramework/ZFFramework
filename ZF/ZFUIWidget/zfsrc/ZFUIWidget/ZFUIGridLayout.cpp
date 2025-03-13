@@ -33,6 +33,9 @@ ZFOBJECT_REGISTER(ZFUIGridLayout)
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIGridLayout, zfbool, gridMode) {
     propertyValue = zftrue;
 }
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIGridLayout, ZFUIScaleType, childScaleType) {
+    propertyValue = v_ZFUIScaleType::e_FillCenter;
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

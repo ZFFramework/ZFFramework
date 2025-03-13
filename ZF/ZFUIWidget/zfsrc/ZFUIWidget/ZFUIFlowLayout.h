@@ -97,7 +97,7 @@ public:
     /**
      * @brief valid only when #gridMode, indicates how to scale children
      */
-    ZFPROPERTY_ASSIGN(ZFUIScaleType, childScaleType, v_ZFUIScaleType::e_FillCenter)
+    ZFPROPERTY_ASSIGN(ZFUIScaleType, childScaleType, v_ZFUIScaleType::e_Center)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIScaleType, childScaleType)
 
     /**

@@ -92,8 +92,8 @@ private:
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIScaleType, ZFPropertyAccess(ZFUIFlowLayout, childScaleType),
             ZFCoreArrayCreate(ZFUIScaleType
-                , v_ZFUIScaleType::e_Fill
                 , v_ZFUIScaleType::e_Center
+                , v_ZFUIScaleType::e_Fill
                 , v_ZFUIScaleType::e_FillCenter
                 , v_ZFUIScaleType::e_FillCenterClipped
                 , v_ZFUIScaleType::e_FitCenter

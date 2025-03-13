@@ -451,6 +451,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
     zfindex childIndex = 0;
     ZFUISize lineSizeHint = ZFUISizeCreate(size.width - parentMarginX, 0);
     ZFUISize maxCellSize = ZFUISizeZero();
+    ZFUIScaleType childScaleType = parent->childScaleType();
     for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
         zffloat prevLineSpace = (lineIndex > 0 ? parent->childSpaceY() : (zffloat)0);
         zfindex childIndexStart = childIndex;
@@ -458,6 +459,11 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
         ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureHorizontalLine(parent, lineSizeHint, v_ZFUISizeType::e_Fill, childIndexStart, childIndex, maxCellSize);
 
         zffloat usedSize = (positiveDirectionX ? parent->childMargin().left : parent->childMargin().right);
+        zffloat flexibleFactorBase = (lineSize.width - parent->childSpaceX() * (childIndex - childIndexStart - 1));
+        zffloat flexibleFactor = (flexibleFactorBase != 0)
+            ? (size.width - lineSize.width) / flexibleFactorBase
+            : 0
+            ;
         for(zfindex i = childIndexStart; i < childIndex; ++i) {
             ZFUIView *child = parent->childAt(i);
             ZFUIFlowLayoutParam *layoutParam = child->layoutParam();
@@ -465,29 +471,36 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
                 continue ;
             }
             zffloat prevSpace = (i > childIndexStart ? parent->childSpaceX() : (zffloat)0);
-            zffloat childSize = 0;
+            zffloat childWidth = 0;
+            zffloat childHeight = (childScaleType != ZFUIScaleType::e_Center
+                    ? lineSize.height
+                    : child->layoutMeasuredSize().height
+                    );
             if(layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill) {
-                childSize = zfmMax<zffloat>(0, size.width - usedSize - prevSpace);
+                childWidth = zfmMax<zffloat>(0, size.width - usedSize - prevSpace);
             }
             else {
-                childSize = child->layoutMeasuredSize().width;
+                childWidth = child->layoutMeasuredSize().width;
+                if(childScaleType != ZFUIScaleType::e_Center) {
+                    childWidth += childWidth * flexibleFactor;
+                }
             }
             child->viewFrame(ZFUIScaleTypeApply(
-                        parent->childScaleType(),
+                        childScaleType,
                         ZFUIRectApplyMargin(ZFUIRectCreate(
                                 positiveDirectionX
                                 ? usedSize + prevSpace
-                                : size.width - usedSize - prevSpace - childSize,
+                                : size.width - usedSize - prevSpace - childWidth,
                                 positiveDirectionY
                                 ? lineSizeUsed + prevLineSpace
                                 : size.height - lineSizeUsed - prevLineSpace - lineSize.height,
-                                childSize,
+                                childWidth,
                                 lineSize.height
                                 ), layoutParam->margin()),
-                        ZFUISizeCreate(childSize, child->layoutMeasuredSize().height),
+                        ZFUISizeCreate(childWidth, childHeight),
                         layoutParam->align()
                         ));
-            usedSize += prevSpace + childSize;
+            usedSize += prevSpace + childWidth;
         }
 
         lineSizeUsed += prevLineSpace + lineSize.height;
@@ -505,6 +518,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
     zfindex childIndex = 0;
     ZFUISize lineSizeHint = ZFUISizeCreate(0, size.height - parentMarginY);
     ZFUISize maxCellSize = ZFUISizeZero();
+    ZFUIScaleType childScaleType = parent->childScaleType();
     for(zfindex lineIndex = 0; childIndex < parent->childCount(); ++lineIndex) {
         zffloat prevLineSpace = (lineIndex > 0 ? parent->childSpaceX() : (zffloat)0);
         zfindex childIndexStart = childIndex;
@@ -512,6 +526,11 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
         ZFUISize lineSize = _ZFP_ZFUIFlowLayout_measureVerticalLine(parent, lineSizeHint, v_ZFUISizeType::e_Fill, childIndexStart, childIndex, maxCellSize);
 
         zffloat usedSize = (positiveDirectionY ? parent->childMargin().top : parent->childMargin().bottom);
+        zffloat flexibleFactorBase = (lineSize.height - parent->childSpaceY() * (childIndex - childIndexStart - 1));
+        zffloat flexibleFactor = (flexibleFactorBase != 0)
+            ? (size.height - lineSize.height) / flexibleFactorBase
+            : 0
+            ;
         for(zfindex i = childIndexStart; i < childIndex; ++i) {
             ZFUIView *child = parent->childAt(i);
             ZFUIFlowLayoutParam *layoutParam = child->layoutParam();
@@ -519,29 +538,36 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
                 continue ;
             }
             zffloat prevSpace = (i > childIndexStart ? parent->childSpaceY() : (zffloat)0);
-            zffloat childSize = 0;
+            zffloat childWidth = (childScaleType != ZFUIScaleType::e_Center
+                    ? lineSize.width
+                    : child->layoutMeasuredSize().width
+                    );
+            zffloat childHeight = 0;
             if(layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill) {
-                childSize = zfmMax<zffloat>(0, size.height - usedSize - prevSpace);
+                childHeight = zfmMax<zffloat>(0, size.height - usedSize - prevSpace);
             }
             else {
-                childSize = child->layoutMeasuredSize().height;
+                childHeight = child->layoutMeasuredSize().height;
+                if(childScaleType != ZFUIScaleType::e_Center) {
+                    childHeight += childHeight * flexibleFactor;
+                }
             }
             child->viewFrame(ZFUIScaleTypeApply(
-                        parent->childScaleType(),
+                        childScaleType,
                         ZFUIRectApplyMargin(ZFUIRectCreate(
                                 positiveDirectionX
                                 ? lineSizeUsed + prevLineSpace
                                 : size.width - lineSizeUsed - prevLineSpace - lineSize.width,
                                 positiveDirectionY
                                 ? usedSize + prevSpace
-                                : size.height - usedSize - prevSpace - childSize,
+                                : size.height - usedSize - prevSpace - childHeight,
                                 lineSize.width,
-                                childSize
+                                childHeight
                                 ), layoutParam->margin()),
-                        ZFUISizeCreate(child->layoutMeasuredSize().width, childSize),
+                        ZFUISizeCreate(childWidth, childHeight),
                         layoutParam->align()
                         ));
-            usedSize += prevSpace + childSize;
+            usedSize += prevSpace + childHeight;
         }
 
         lineSizeUsed += prevLineSpace + lineSize.width;

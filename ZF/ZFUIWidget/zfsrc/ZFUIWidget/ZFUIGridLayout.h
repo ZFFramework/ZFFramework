@@ -48,6 +48,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIGridLayout : zfextend ZFUIFlowLayout {
 
 public:
     ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(zfbool, gridMode)
+    ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(ZFUIScaleType, childScaleType)
 
     // ============================================================
     // override ZFUIView

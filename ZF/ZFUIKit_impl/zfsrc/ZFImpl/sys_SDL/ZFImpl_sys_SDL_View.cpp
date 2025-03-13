@@ -410,6 +410,11 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
         }
         case SDL_MOUSEBUTTONDOWN: {
             ZFImpl_sys_SDL_MouseState &mouseState = this->sysWindow->mouseState(sdlEvent->motion.which, sdlEvent->button.button);
+            if(mouseState.mouseId != zfidentityInvalid()) {
+                this->sysWindow->mouseIdGen.idRelease(mouseState.mouseId);
+                mouseState.mouseId = zfidentityInvalid();
+            }
+            mouseState.mouseId = this->sysWindow->mouseIdGen.idAcquire();
             ZFImpl_sys_SDL_View *viewDown = this->mouseTestGlobal(sdlEvent->motion.x, sdlEvent->motion.y, &mouseState.mouseGrab);
             if(mouseState.mouseGrab) {
                 mouseState.viewDown = viewDown;
@@ -423,16 +428,11 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                 return;
             }
 
-            if(mouseState.mouseId != zfidentityInvalid()) {
-                this->sysWindow->mouseIdGen.idRelease(mouseState.mouseId);
-                mouseState.mouseId = zfidentityInvalid();
-            }
             if(viewDown == zfnull || viewDown->ownerZFUIView == zfnull) {
                 return;
             }
 
             mouseState.viewDown = viewDown;
-            mouseState.mouseId = this->sysWindow->mouseIdGen.idAcquire();
             zfobj<ZFUIMouseEvent> event;
             event->mouseId = mouseState.mouseId;
             event->mouseAction = v_ZFUIMouseAction::e_Down;
