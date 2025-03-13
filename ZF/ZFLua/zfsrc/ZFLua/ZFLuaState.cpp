@@ -155,6 +155,10 @@ ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaState) {
     ZFCoreMutexLocker();
     return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LInit();
 }
+ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaStateCheck) {
+    ZFCoreMutexLocker();
+    return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->L;
+}
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateChange
         , ZFMP_IN(void *, L)

@@ -149,7 +149,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
             "    return zfl_call(zfnull, tbl.ZFNS, ...);"
             "end;"
             "_ZFP_zfl_metatable = {__index = _ZFP_zfl_index, __call = _ZFP_zfl_call};"
-        );
+        , zfindexMax(), zfnull, zfnull, zfnull, zfnull, "ZFLua_metatable");
 
     // global NS
     ZFImpl_ZFLua_ImplSetupHelper helper(L);
@@ -230,6 +230,7 @@ zfbool ZFImpl_ZFLua_execute(
         , ZF_IN_OPT const ZFCoreArray<zfauto> *luaParams /* = zfnull */
         , ZF_OUT_OPT zfstring *errHint /* = zfnull */
         , ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */
+        , ZF_IN_OPT const zfchar *srcInfo /* = zfnull */
         ) {
     _ZFP_ZFImpl_ZFLua_invokeTimeLogger("execute %d: %s"
             , (int)(bufLen == zfindexMax() ? zfslen(buf) : bufLen)
@@ -242,10 +243,10 @@ zfbool ZFImpl_ZFLua_execute(
 
     int luaStackNum = lua_gettop(L);
     int error = luaL_loadbuffer(L, buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen
-            , (bufLen == zfindexMax() || buf[bufLen] == '\0')
-            ? buf
-            : (ZFLogLevelIsActive(v_ZFLogLevel::e_Info) ? zfstr(buf, bufLen).cString() : zfnull)
-            );
+            , srcInfo ? srcInfo : ((bufLen == zfindexMax() || buf[bufLen] == '\0')
+                ? buf
+                : (ZFLogLevelIsActive(v_ZFLogLevel::e_Info) ? zfstr(buf, bufLen).cString() : zfnull)
+                ));
     if(error == 0) {
         if(luaParams != zfnull && !luaParams->isEmpty()) {
             for(zfindex i = 0; i < luaParams->count(); ++i) {
@@ -903,6 +904,43 @@ zfstring ZFImpl_ZFLua_luaStackInfo(
     ret += "---------- lua stack end   ----------\n";
     return ret;
 }
+
+ZF_STATIC_INITIALIZER_INIT(ZFImpl_ZFLua_criticalErrorHandler) {
+    ZFCoreCriticalErrorCallbackAdd(zfself::impl);
+}
+static void impl(const ZFCallerInfo &callerInfo) {
+    lua_State *L = (lua_State *)ZFLuaStateCheck();
+    if(L == NULL) {
+        return;
+    }
+
+    zfstring info;
+    lua_Debug ar;
+    for(int i = 1; ; ++i) {
+        if(lua_getstack(L, i, &ar) == 0) {
+            break;
+        }
+        lua_getinfo(L, "nSl", &ar);
+        if(ar.source != NULL && ar.currentline > 0) {
+            ZFCoreArray<ZFIndexRange> pos;
+            zfstringSplitIndexT(pos, ar.source, "\n", zftrue);
+            if(ar.currentline > 0 && ar.currentline <= pos.count()) {
+                info += "\n|   ";
+                ZFIndexRange p = pos[ar.currentline - 1];
+                while(p.count != 0 && (ar.source[p.start] == ' ' || ar.source[p.start] == '\t')) {++p.start; --p.count;}
+                info.append(ar.source + p.start, p.count);
+            }
+        }
+        else {
+            zfstringAppend(info, "\n|   %s : %d", ar.short_src, ar.currentline);
+        }
+    }
+
+    if(info) {
+        luaL_error(L, "lua call stack:%s", info.cString());
+    }
+}
+ZF_STATIC_INITIALIZER_END(ZFImpl_ZFLua_criticalErrorHandler)
 
 ZF_NAMESPACE_GLOBAL_END
 

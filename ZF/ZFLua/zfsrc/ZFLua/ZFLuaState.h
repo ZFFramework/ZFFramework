@@ -28,6 +28,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * or #ZFLuaStateListForAllThread for all thread
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void *, ZFLuaState)
+/**
+ * @brief try get lua state for current thread, or return null if none
+ * @see ZFLuaState
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void *, ZFLuaStateCheck)
 
 /** @brief change builtin lua state for current thread, see #ZFLuaState */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateChange

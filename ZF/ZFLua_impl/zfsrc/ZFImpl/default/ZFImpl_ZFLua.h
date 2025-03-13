@@ -184,6 +184,7 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_execute(
         , ZF_IN_OPT const ZFCoreArray<zfauto> *luaParams = zfnull
         , ZF_OUT_OPT zfstring *errHint = zfnull
         , ZF_IN_OPT const zfchar *chunkInfo = zfnull
+        , ZF_IN_OPT const zfchar *srcInfo = zfnull
         );
 /**
  * @brief error handler for #ZFImpl_ZFLua_execute, lua_pcall, etc

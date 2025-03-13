@@ -49,12 +49,12 @@ void _ZFP_ZFCoreLog(
     _ZFP_ZFCoreLogOutputCallback(s);
 }
 
-void ZFCoreCriticalErrorCallbackPrepareAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
+void ZFCoreCriticalErrorPrepareCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
     if(callback != zfnull) {
         _ZFP_ZFCoreCriticalErrorPrepareCallbacks.add(callback);
     }
 }
-void ZFCoreCriticalErrorCallbackPrepareRemove(ZF_IN ZFCoreCriticalErrorCallback callback) {
+void ZFCoreCriticalErrorPrepareCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback) {
     _ZFP_ZFCoreCriticalErrorPrepareCallbacks.removeElement(callback);
 }
 void ZFCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {
