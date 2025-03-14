@@ -197,6 +197,14 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_execute_errorHandle(
         , ZF_IN_OPT zfindex errorLine = zfindexMax()
         );
 
+/**
+ * @brief get lua stacktrace
+ */
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_stacktrace(
+        ZF_IN lua_State *L
+        , ZF_IN_OUT zfstring &ret
+        );
+
 // ============================================================
 // utils
 /** @brief see #ZFImpl_ZFLua_luaObjectInfo */
@@ -541,6 +549,11 @@ public:
                 }
             }
 
+            zfstring info;
+            if(ZFImpl_ZFLua_stacktrace(L, info)) {
+                this->errorHint += "\n";
+                this->errorHint += info;
+            }
             luaL_error(L, "%s", this->errorHint.cString());
         }
     }

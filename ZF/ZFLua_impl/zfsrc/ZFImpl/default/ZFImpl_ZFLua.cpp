@@ -399,6 +399,58 @@ void ZFImpl_ZFLua_execute_errorHandle(
     lua_pop(L, 1);
 }
 
+zfbool ZFImpl_ZFLua_stacktrace(
+        ZF_IN lua_State *L
+        , ZF_IN_OUT zfstring &ret
+        ) {
+    lua_Debug ar;
+    ret += "====================== lua stack trace =====================";
+    for(int i = 1; ; ++i) {
+        if(lua_getstack(L, i, &ar) == 0) {
+            if(i == 1) {
+                return zffalse;
+            }
+            else {
+                ret += "\n";
+                ret += "---------------------- lua stack trace ---------------------";
+                return zftrue;
+            }
+        }
+        lua_getinfo(L, "nSl", &ar);
+        if(ar.source != NULL) {
+            if(ar.source[0] != '\0' && ar.currentline > 0) {
+                const zfchar *source = ar.source;
+
+                // parse special chunkInfo, passed from _ZFP_ZFImpl_ZFLua_sourceInfo
+                zfstring chunkInfo;
+                const zfchar *KEY_tokenL = "{{<<";
+                const zfchar *KEY_tokenR = ">>}}";
+                if(zfsncmp(source, KEY_tokenL, zfslen(KEY_tokenL)) == 0) {
+                    zfindex p = zfstringFind(source, KEY_tokenR);
+                    if(p != zfindexMax()) {
+                        chunkInfo.assign(source + zfslen(KEY_tokenL), p - zfslen(KEY_tokenL));
+                        source += p + zfslen(KEY_tokenR);
+                    }
+                }
+
+                ZFCoreArray<ZFIndexRange> pos;
+                zfstringSplitIndexT(pos, source, "\n", zftrue);
+                if(ar.currentline <= pos.count()) {
+                    ret += "\n| ";
+                    zfstringAppend(ret, "[%s (%s)]  ", chunkInfo ? chunkInfo.cString() : "?", ar.currentline);
+
+                    ZFIndexRange p = pos[ar.currentline - 1];
+                    while(p.count != 0 && (source[p.start] == ' ' || source[p.start] == '\t')) {++p.start; --p.count;}
+                    ret.append(source + p.start, p.count);
+                }
+            }
+        }
+        else {
+            zfstringAppend(ret, "\n|   %s : %d", ar.short_src, ar.currentline);
+        }
+    }
+}
+
 // ============================================================
 // utils
 void ZFImpl_ZFLua_luaObjectInfoT(
@@ -945,63 +997,11 @@ ZF_STATIC_INITIALIZER_INIT(ZFImpl_ZFLua_criticalErrorHandler) {
 }
 static void impl(const ZFCallerInfo &callerInfo) {
     lua_State *L = (lua_State *)ZFLuaStateCheck();
-    if(L == NULL) {
-        return;
-    }
-
-    zfstring info;
-    lua_Debug ar;
-    for(int i = 1; ; ++i) {
-        if(lua_getstack(L, i, &ar) == 0) {
-            break;
+    if(L != NULL) {
+        zfstring info;
+        if(ZFImpl_ZFLua_stacktrace(L, info)) {
+            ZFCoreLogTrim("%s", info);
         }
-        lua_getinfo(L, "nSl", &ar);
-        if(ar.source != NULL) {
-            if(ar.source[0] != '\0' && ar.currentline > 0) {
-                const zfchar *source = ar.source;
-
-                // parse special chunkInfo, passed from _ZFP_ZFImpl_ZFLua_sourceInfo
-                zfstring chunkInfo;
-                const zfchar *KEY_tokenL = "{{<<";
-                const zfchar *KEY_tokenR = ">>}}";
-                if(zfsncmp(source, KEY_tokenL, zfslen(KEY_tokenL)) == 0) {
-                    zfindex p = zfstringFind(source, KEY_tokenR);
-                    if(p != zfindexMax()) {
-                        chunkInfo.assign(source + zfslen(KEY_tokenL), p - zfslen(KEY_tokenL));
-                        source += p + zfslen(KEY_tokenR);
-                    }
-                }
-
-                ZFCoreArray<ZFIndexRange> pos;
-                zfstringSplitIndexT(pos, source, "\n", zftrue);
-                if(ar.currentline <= pos.count()) {
-                    info += "\n| ";
-
-                    if(chunkInfo) {
-                        zfstringAppend(info, "[%s (%s)]  ", chunkInfo, ar.currentline);
-                    }
-                    else {
-                        zfstringAppend(info, "(%s)  ", ar.currentline);
-                    }
-
-                    ZFIndexRange p = pos[ar.currentline - 1];
-                    while(p.count != 0 && (source[p.start] == ' ' || source[p.start] == '\t')) {++p.start; --p.count;}
-                    info.append(source + p.start, p.count);
-                }
-            }
-        }
-        else {
-            zfstringAppend(info, "\n|   %s : %d", ar.short_src, ar.currentline);
-        }
-    }
-
-    if(info) {
-        zfstring tmp;
-        tmp += "====================== lua stack trace =====================";
-        tmp += info;
-        tmp += "\n";
-        tmp += "---------------------- lua stack trace ---------------------";
-        ZFCoreLogTrim("%s", tmp);
     }
 }
 ZF_STATIC_INITIALIZER_END(ZFImpl_ZFLua_criticalErrorHandler)

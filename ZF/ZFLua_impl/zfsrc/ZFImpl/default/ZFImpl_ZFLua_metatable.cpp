@@ -240,12 +240,12 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
                     ret = v1->objectCompare(v2);
                 }
                 else {
-                    zfauto v1;
-                    zfauto v2;
-                    if(ZFImpl_ZFLua_toNumberT(v1, L, 1)
-                            && ZFImpl_ZFLua_toNumberT(v2, L, 2)
+                    zfauto t1;
+                    zfauto t2;
+                    if(ZFImpl_ZFLua_toNumberT(t1, L, 1)
+                            && ZFImpl_ZFLua_toNumberT(t2, L, 2)
                             ) {
-                        ret = ZFComparerDefault(v1, v2);
+                        ret = ZFComparerDefault(t1, t2);
                     }
                     else {
                         ret = v1->objectCompare(v2);
