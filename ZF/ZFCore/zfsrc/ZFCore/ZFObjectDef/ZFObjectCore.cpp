@@ -78,15 +78,6 @@ public:
         --_ZFP_ZFObjectPrivateCount;
     }
 #endif
-
-public:
-    ZFObserver &observerHolderCheck(ZF_IN ZFObject *owner) {
-        if(this->observerHolder == zfnull) {
-            this->observerHolder = zfpoolNew(ZFObserver);
-            this->observerHolder->_ZFP_ZFObserver_observerOwner(owner);
-        }
-        return *this->observerHolder;
-    }
 };
 
 // ============================================================

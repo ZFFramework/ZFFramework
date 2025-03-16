@@ -21,7 +21,7 @@ static int _ZFP_ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L) {
         return 1;
     }
 
-    ZFImpl_ZFLua_zfstringAppend(L, s->zfv);
+    ZFImpl_ZFLua_zfstringAppend(L, s->zfv, 2);
     ZFImpl_ZFLua_luaPush(L, s);
     return 1;
 }

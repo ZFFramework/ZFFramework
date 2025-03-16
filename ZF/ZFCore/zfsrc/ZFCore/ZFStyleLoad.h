@@ -58,6 +58,17 @@ private:
     _ZFP_ZFStyleListPrivate *d;
 };
 
+extern ZFLIB_ZFCore void _ZFP_ZFStyleLoadErrorCallbackForConsole(ZF_IN const ZFArgs &zfargs);
+/** @brief error callback for #ZFStyleLoad */
+#define ZFStyleLoadErrorCallbackForConsole() ZFCallbackForFunc(_ZFP_ZFStyleLoadErrorCallbackForConsole)
+/** @brief default error callback for #ZFStyleLoad */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, ZFListener, ZFStyleLoadErrorCallbackDefault)
+/** @brief util for impl to output error hint */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(const ZFArgs &, zfargs)
+        )
+
 // ============================================================
 /**
  * @brief util to load multiple styles from directory
@@ -86,10 +97,16 @@ private:
  *
  * specially, if the loaded object is type of #ZFStyleList,
  * all of its contents would be appended to current style,
- * instead of setting #ZFStyleList itself as a style value
+ * instead of setting #ZFStyleList itself as a style value\n
+ * \n
+ * the errorCallback would be called when anything load failed,
+ * param0 would be the error location
+ * (ZFPathInfo or ZFSerializableData or zfstring, depends on load method),
+ * param1 would be a zfstring contains error hint
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         , ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull)
         , ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull)
         )
@@ -107,15 +124,17 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad
  *
  * the #ZFStyleList is a dummy holder to make the serializable data itself serializable
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         )
 
 /**
  * @brief see #ZFStyleLoad
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
         , ZFMP_IN(ZFStyleList *, styleList)
+        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         )
 
 ZF_NAMESPACE_GLOBAL_END

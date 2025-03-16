@@ -2,6 +2,31 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+void _ZFP_ZFStyleLoadErrorCallbackForConsole(ZF_IN const ZFArgs &zfargs) {
+    ZFStyleLoadErrorHint(ZFOutputDefault(), zfargs);
+}
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFListener, ZFStyleLoadErrorCallbackForConsole)
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFStyleLoadErrorCallbackDefault, ZFStyleLoadErrorCallbackForConsole())
+ZFMETHOD_FUNC_DEFINE_2(void, ZFStyleLoadErrorHint
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(const ZFArgs &, zfargs)
+        ) {
+    v_ZFSerializableData *pos = zfargs.param0();
+    v_zfstring *errorHint = zfargs.param1();
+
+    output << "style load failed: ";
+
+    if(pos != zfnull) {
+        output << ZFSerializableDataToString(pos->zfv);
+    }
+    else {
+        output << zfargs.param0();
+    }
+
+    output << ", reason: " << errorHint << "\n";
+}
+
 // ============================================================
 static void _ZFP_ZFStyleLoad_ZFStyleSet(
         ZF_IN const zfstring &styleKey
@@ -21,6 +46,8 @@ static void _ZFP_ZFStyleLoadImpl(
         , ZF_IN const ZFFilterForString *fileNameFilter
         , ZF_IN const ZFFilterForString *dirNameFilter
         , ZF_IN const zfstring &relativePath
+        , ZF_IN_OUT zfbool &allSuccess
+        , ZF_IN const ZFListener &errorCallback
         ) {
     ZFFileFindData fd;
     if(fileImpl.implFindFirst(fd, pathData)) {
@@ -46,25 +73,33 @@ static void _ZFP_ZFStyleLoadImpl(
                 if(dirNameFilter != zfnull && !dirNameFilter->filterPassed(fd.name())) {
                     continue;
                 }
-                _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, fileNameFilter, dirNameFilter, relativePathTmp);
+                _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, fileNameFilter, dirNameFilter, relativePathTmp, allSuccess, errorCallback);
             }
             else {
                 if(fileNameFilter != zfnull && !fileNameFilter->filterPassed(fd.name())) {
                     continue;
                 }
                 zfauto styleValue;
-                if(ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathType, pathDataChild)))) {
-                    ZFPathOfWithoutExt(relativePathTmp, relativePathTmp);
-                    _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
+                zfstring errorHint;
+                if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathType, pathDataChild)), &errorHint)) {
+                    allSuccess = zffalse;
+                    errorCallback.execute(ZFArgs()
+                            .param0(zfobj<v_ZFPathInfo>(ZFPathInfo(pathType, pathDataChild)))
+                            .param1(zfobj<v_zfstring>(errorHint))
+                            );
+                    continue;
                 }
+                ZFPathOfWithoutExt(relativePathTmp, relativePathTmp);
+                _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
             }
         } while(fileImpl.implFindNext(fd));
         fileImpl.implFindClose(fd);
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         , ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull)
         , ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull)
         ) {
@@ -83,7 +118,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
             return zftrue;
         }
         zfauto styleValue;
-        if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(pathInfo))) {
+        zfstring errorHint;
+        if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(pathInfo), &errorHint)) {
+            errorCallback.execute(ZFArgs()
+                    .param0(zfobj<v_ZFPathInfo>(pathInfo))
+                    .param1(zfobj<v_zfstring>(errorHint))
+                    );
             return zffalse;
         }
         ZFPathOfWithoutExt(fileName, fileName);
@@ -91,14 +131,17 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
         return zftrue;
     }
 
-    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType(), pathInfo.pathData(), fileNameFilter, dirNameFilter, zfnull);
-    return zftrue;
+    zfbool allSuccess = zftrue;
+    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType(), pathInfo.pathData(), fileNameFilter, dirNameFilter, zfnull, allSuccess, errorCallback);
+    return allSuccess;
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         ) {
+    zfbool allSuccess = zftrue;
     if(serializableData.childCount() > 0) {
         ZFStyleUpdateBlock();
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
@@ -106,19 +149,27 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
             zfstring styleKey = ZFSerializableUtil::checkPropertyName(child);
             if(styleKey != zfnull) {
                 zfauto styleValueHolder;
-                if(ZFObjectFromDataT(styleValueHolder, child)) {
-                    ZFStyleable *styleValue = styleValueHolder;
-                    if(styleValue != zfnull) {
-                        _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
-                    }
+                zfstring errorHint;
+                if(!ZFObjectFromDataT(styleValueHolder, child, &errorHint)) {
+                    allSuccess = zffalse;
+                    errorCallback.execute(ZFArgs()
+                            .param0(zfobj<v_ZFSerializableData>(child))
+                            .param1(zfobj<v_zfstring>(errorHint))
+                            );
+                    continue;
+                }
+                ZFStyleable *styleValue = styleValueHolder;
+                if(styleValue != zfnull) {
+                    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
                 }
             }
         }
     }
-    return zftrue;
+    return allSuccess;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
         , ZFMP_IN(ZFStyleList *, styleList)
+        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         ) {
     if(styleList != zfnull && styleList->itemCount() > 0) {
         ZFStyleUpdateBlock();

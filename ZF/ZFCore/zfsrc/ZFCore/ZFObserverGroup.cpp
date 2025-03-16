@@ -453,11 +453,11 @@ void ZFObserverGroupHolder::_ZFP_update(
 
 void ZFObserverGroupHolder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += "<ZFObserverGroupHolder:";
-    if(d->target != zfnull) {
-        d->targetObserver->objectInfoT(ret);
+    if(d->targetObserver != zfnull) {
+        zfstringAppend(ret, "<ZFObserver(%s)>", (const void *)d->targetObserver);
     }
     else if(d->target != zfnull) {
-        d->target->objectInfoT(ret);
+        d->target->objectInfoOfInstanceT(ret);
     }
     ret += ">";
 }
