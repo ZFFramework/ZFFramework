@@ -201,18 +201,14 @@ public:
 };
 
 // ============================================================
-zfclassFwd ZFFilterForZFProperty;
 /** @brief see #ZFPropertyGetAll */
-extern ZFLIB_ZFCore void ZFPropertyGetAllT(
-        ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret
-        , ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull
-        );
+extern ZFLIB_ZFCore void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret);
 /**
  * @brief get all property currently registered, for debug use only
  */
-inline ZFCoreArray<const ZFProperty *> ZFPropertyGetAll(ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull) {
+inline ZFCoreArray<const ZFProperty *> ZFPropertyGetAll(void) {
     ZFCoreArray<const ZFProperty *> ret;
-    ZFPropertyGetAllT(ret, propertyFilter);
+    ZFPropertyGetAllT(ret);
     return ret;
 }
 

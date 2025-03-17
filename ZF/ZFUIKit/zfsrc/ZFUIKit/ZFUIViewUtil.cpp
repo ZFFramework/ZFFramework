@@ -30,16 +30,14 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, isChildOf
     return zffalse;
 }
 
-ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewAtPos
+ZFMETHOD_FUNC_DEFINE_4(zfanyT<ZFUIView>, viewAtPos
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(const ZFUIPoint &, pos)
         , ZFMP_IN_OPT(zfbool, filterDisabledView, zffalse)
         , ZFMP_IN_OPT(zfbool, filterInternalView, zftrue)
-        , ZFMP_IN_OPT(const ZFFilterForZFObject *, filter, zfnull)
         ) {
     if(view == zfnull
             || (filterDisabledView && !view->viewUIEnableTree())
-            || (filter != zfnull && !filter->filterPassed(view))
             ) {
         return zfnull;
     }
@@ -55,8 +53,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewAtPos
                 pos.y - child->viewFrame().y
             ),
             filterDisabledView,
-            filterInternalView,
-            filter);
+            filterInternalView);
         if(tmp != zfnull) {
             return tmp;
         }
@@ -71,8 +68,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewAtPos
                 pos.y - (child->viewFrame().y + layoutChildOffset.y)
             ),
             filterDisabledView,
-            filterInternalView,
-            filter);
+            filterInternalView);
         if(tmp != zfnull) {
             return tmp;
         }
@@ -86,8 +82,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewAtPos
                 pos.y - child->viewFrame().y
             ),
             filterDisabledView,
-            filterInternalView,
-            filter);
+            filterInternalView);
         if(tmp != zfnull) {
             return tmp;
         }

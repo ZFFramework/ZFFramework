@@ -43,8 +43,6 @@ static void _ZFP_ZFStyleLoadImpl(
         ZF_IN const ZFPathInfoImpl &fileImpl
         , ZF_IN const zfstring &pathType
         , ZF_IN const zfstring &pathData
-        , ZF_IN const ZFFilterForString *fileNameFilter
-        , ZF_IN const ZFFilterForString *dirNameFilter
         , ZF_IN const zfstring &relativePath
         , ZF_IN_OUT zfbool &allSuccess
         , ZF_IN const ZFListener &errorCallback
@@ -70,15 +68,9 @@ static void _ZFP_ZFStyleLoadImpl(
 
             zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
             if(fd.isDir()) {
-                if(dirNameFilter != zfnull && !dirNameFilter->filterPassed(fd.name())) {
-                    continue;
-                }
-                _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, fileNameFilter, dirNameFilter, relativePathTmp, allSuccess, errorCallback);
+                _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, relativePathTmp, allSuccess, errorCallback);
             }
             else {
-                if(fileNameFilter != zfnull && !fileNameFilter->filterPassed(fd.name())) {
-                    continue;
-                }
                 zfauto styleValue;
                 zfstring errorHint;
                 if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathType, pathDataChild)), &errorHint)) {
@@ -97,11 +89,9 @@ static void _ZFP_ZFStyleLoadImpl(
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        , ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull)
-        , ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull)
         ) {
     const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(fileImpl == zfnull) {
@@ -113,9 +103,6 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFStyleLoad
         zfstring fileName = fileImpl->implToFileName(pathInfo.pathData());
         if(!fileName) {
             return zffalse;
-        }
-        if(fileNameFilter != zfnull && !fileNameFilter->filterPassed(fileName)) {
-            return zftrue;
         }
         zfauto styleValue;
         zfstring errorHint;
@@ -132,7 +119,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFStyleLoad
     }
 
     zfbool allSuccess = zftrue;
-    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType(), pathInfo.pathData(), fileNameFilter, dirNameFilter, zfnull, allSuccess, errorCallback);
+    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType(), pathInfo.pathData(), zfnull, allSuccess, errorCallback);
     return allSuccess;
 }
 

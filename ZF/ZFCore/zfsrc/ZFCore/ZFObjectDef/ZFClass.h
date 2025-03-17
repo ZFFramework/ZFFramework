@@ -740,18 +740,14 @@ public:
 };
 
 // ============================================================
-zfclassFwd ZFFilterForZFClass;
 /** @brief see #ZFClassGetAll */
-extern ZFLIB_ZFCore void ZFClassGetAllT(
-        ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret
-        , ZF_IN_OPT const ZFFilterForZFClass *classFilter = zfnull
-        );
+extern ZFLIB_ZFCore void ZFClassGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret);
 /**
  * @brief get all class currently registered, for debug use only
  */
-inline ZFCoreArray<const ZFClass *> ZFClassGetAll(ZF_IN_OPT const ZFFilterForZFClass *classFilter = zfnull) {
+inline ZFCoreArray<const ZFClass *> ZFClassGetAll(void) {
     ZFCoreArray<const ZFClass *> ret;
-    ZFClassGetAllT(ret, classFilter);
+    ZFClassGetAllT(ret);
     return ret;
 }
 

@@ -11,65 +11,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFObject;
-zfclassFwd ZFFilterForZFClass;
-zfclassFwd ZFFilterForZFMethod;
-zfclassFwd ZFFilterForZFProperty;
 
 ZF_NAMESPACE_BEGIN_REGISTER(ZFClassUtil, ZF_NAMESPACE_GLOBAL)
-
-/** @brief see #allClassParent */
-extern ZFLIB_ZFCore void allClassParentT(
-        ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFClass *filter = zfnull
-        );
-/**
- * @brief util to get all parent class
- */
-inline ZFCoreArray<const ZFClass *> allClassParent(
-        ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFClass *filter = zfnull
-        ) {
-    ZFCoreArray<const ZFClass *> ret;
-    ZFClassUtil::allClassParentT(ret, cls, filter);
-    return ret;
-}
-
-/** @brief see #allMethod */
-extern ZFLIB_ZFCore void allMethodT(
-        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull
-        );
-/**
- * @brief util to get all method in inherit tree
- */
-inline ZFCoreArray<const ZFMethod *> allMethod(
-        ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull
-        ) {
-    ZFCoreArray<const ZFMethod *> ret;
-    ZFClassUtil::allMethodT(ret, cls, filter);
-    return ret;
-}
-
-/** @brief see #allProperty */
-extern ZFLIB_ZFCore void allPropertyT(
-        ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull
-        );
-/**
- * @brief util to get all property in inherit tree
- */
-inline ZFCoreArray<const ZFProperty *> allProperty(
-        ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull
-        ) {
-    ZFCoreArray<const ZFProperty *> ret;
-    ZFClassUtil::allPropertyT(ret, cls, filter);
-    return ret;
-}
 
 /**
  * @brief compare all properties of obj0 with obj1's property by reflect
@@ -82,7 +25,6 @@ inline ZFCoreArray<const ZFProperty *> allProperty(
 extern ZFLIB_ZFCore zfbool allPropertyIsEqual(
         ZF_IN ZFObject *obj0
         , ZF_IN ZFObject *obj1
-        , ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull
         );
 
 /**

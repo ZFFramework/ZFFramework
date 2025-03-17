@@ -767,25 +767,12 @@ _ZFP_ZFMethodRegisterHolder::~_ZFP_ZFMethodRegisterHolder(void) {
 }
 
 // ============================================================
-void ZFMethodGetAllT(
-        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN_OPT const ZFFilterForZFMethod *methodFilter /* = zfnull */
-        ) {
+void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
-    if(methodFilter != zfnull) {
-        for(_ZFP_ZFMethodMapType::iterator it = m.begin(); it != m.end(); ++it) {
-            ZFMethod *v = it->second;
-            if(methodFilter->filterPassed(v)) {
-                ret.add(v);
-            }
-        }
-    }
-    else {
-        for(_ZFP_ZFMethodMapType::iterator it = m.begin(); it != m.end(); ++it) {
-            ZFMethod *v = it->second;
-            ret.add(v);
-        }
+    for(_ZFP_ZFMethodMapType::iterator it = m.begin(); it != m.end(); ++it) {
+        ZFMethod *v = it->second;
+        ret.add(v);
     }
 }
 
@@ -947,13 +934,10 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFMethodGetAllT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
-        , ZFMP_IN_OPT(const ZFFilterForZFMethod *, methodFilter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFMethod *>, ZFMethodGetAll
-        , ZFMP_IN_OPT(const ZFFilterForZFMethod *, methodFilter, zfnull)
-        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFMethod *>, ZFMethodGetAll)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodForName
         , ZFMP_IN(const zfstring &, classNameOrNamespace)

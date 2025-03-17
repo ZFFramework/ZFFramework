@@ -33,8 +33,7 @@ protected:
      * anotherObj is ensured the same type as self,
      * ensured not null,
      * and ensured not same instance of this\n
-     * by default this method would do nothing for performance,
-     * you may use #ZFPropertyCopyAll to copy all properties for most case
+     * by default this method would do nothing for performance
      */
     virtual inline void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
     }

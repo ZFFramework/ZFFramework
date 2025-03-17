@@ -52,14 +52,6 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
 }
 
 // ============================================================
-ZFEXPORT_VAR_DEFINE(ZFFilterForZFObject, ZFUIViewFocusNextFilter, ZFFilterForZFObject())
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextFilterDataHolder, ZFLevelZFFrameworkEssential) {
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewFocusNextFilterDataHolder) {
-    ZFUIViewFocusNextFilter(ZFFilterForZFObject());
-}
-ZF_GLOBAL_INITIALIZER_END(ZFUIViewFocusNextFilterDataHolder)
-
 zfclassPOD _ZFP_ZFUIViewFocusData {
 public:
     ZFUIView *view;
@@ -78,10 +70,6 @@ static void _ZFP_ZFUIViewFocusNextFind(
         , ZF_IN zffloat offsetX
         , ZF_IN zffloat offsetY
         ) {
-    if(!ZFUIViewFocusNextFilter().filterPassed(view)) {
-        return;
-    }
-
     if(view->focusable()) {
         _ZFP_ZFUIViewFocusData focusData;
         focusData.view = view;

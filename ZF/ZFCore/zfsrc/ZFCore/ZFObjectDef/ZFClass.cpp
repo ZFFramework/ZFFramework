@@ -1719,21 +1719,9 @@ _ZFP_ZFClassRegisterHolder::~_ZFP_ZFClassRegisterHolder(void) {
 // ============================================================
 void ZFClassGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret
-        , ZF_IN_OPT const ZFFilterForZFClass *classFilter /* = zfnull */
         ) {
     ZFCoreMutexLocker();
-    if(classFilter == zfnull) {
-        _ZFP_ZFClassMap.allValueT(ret);
-    }
-    else {
-        const ZFCoreMap &m = _ZFP_ZFClassMap;
-        for(zfiter it = m.iter(); it; ++it) {
-            ZFClass *v = m.iterValue<ZFClass *>(it);
-            if(classFilter->filterPassed(v)) {
-                ret.add(v);
-            }
-        }
-    }
+    _ZFP_ZFClassMap.allValueT(ret);
 }
 
 // ============================================================
@@ -1825,13 +1813,10 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassGetAllT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFClassGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret)
-        , ZFMP_IN_OPT(const ZFFilterForZFClass *, classFilter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFClass *>, ZFClassGetAll
-        , ZFMP_IN_OPT(const ZFFilterForZFClass *, classFilter, zfnull)
-        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFClass *>, ZFClassGetAll)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAlias
         , ZFMP_IN(const ZFClass *, cls)

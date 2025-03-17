@@ -60,16 +60,13 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncForNameGetAll(
 }
 
 /** @brief see #ZFMethodFuncGetAll */
-extern ZFLIB_ZFCore void ZFMethodFuncGetAllT(
-        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull
-        );
+extern ZFLIB_ZFCore void ZFMethodFuncGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret);
 /**
  * @brief get all function type method currently registered, for debug use only
  */
-inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull) {
+inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(void) {
     ZFCoreArray<const ZFMethod *> ret;
-    ZFMethodFuncGetAllT(ret, filter);
+    ZFMethodFuncGetAllT(ret);
     return ret;
 }
 

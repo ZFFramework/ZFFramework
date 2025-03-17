@@ -20,11 +20,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewFocusNextSetup
 
 // ============================================================
 /**
- * @brief filter to exclude certain view from being focused by #ZFUIViewFocusNextFind, empty by default
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, ZFFilterForZFObject, ZFUIViewFocusNextFilter)
-
-/**
  * @brief param for #ZFUIViewFocusNextFind and #ZFUIViewFocusNextMove
  */
 zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam {

@@ -104,11 +104,9 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
  * (ZFPathInfo or ZFSerializableData or zfstring, depends on load method),
  * param1 would be a zfstring contains error hint
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        , ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull)
-        , ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull)
         )
 
 /**

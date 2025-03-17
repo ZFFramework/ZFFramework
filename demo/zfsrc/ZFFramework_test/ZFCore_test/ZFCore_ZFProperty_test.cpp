@@ -128,22 +128,6 @@ protected:
                 ZFLog() << p->propertyWeak();
             }
             ZFLog() << p->propertyWeak();
-
-            // copy
-            this->outputSeparator();
-            this->output("copy propertis");
-            zfobj<_ZFP_ZFCore_ZFProperty_test_TestBase> pBase;
-            zfobj<_ZFP_ZFCore_ZFProperty_test_TestChild> pChild;
-            pBase->propertyAssign("string set in another");
-            ZFPropertyCopyAll(pChild, pBase);
-            this->outputSeparator();
-            ZFLogTrim() << "after copy: " << pChild->propertyAssign();
-
-            this->outputSeparator();
-            this->output("copy by ZFPropertyCopyAll");
-            pChild->propertyAssign("");
-            ZFPropertyCopyAll(pChild, pBase);
-            ZFLogTrim() << "after copy: " << pChild->propertyAssign();
         }
 
         this->stop();

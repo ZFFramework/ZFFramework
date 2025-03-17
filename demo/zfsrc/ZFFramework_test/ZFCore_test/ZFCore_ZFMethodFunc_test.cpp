@@ -111,23 +111,15 @@ protected:
         zfsuper::testCaseOnStart();
 
         ZFCoreArray<const ZFMethod *> methods;
-        ZFFilterForZFMethod filter;
-        {
-            zfclassNotPOD _Holder {
-                public:
-                    static ZFFilterResult filter(ZF_IN const ZFMethod *const &e) {
-                        const zfchar *prefix = "ZFCore_ZFMethodFunc_test_";
-                        if(zfsncmp(e->methodName(), prefix, zfslen(prefix)) == 0) {
-                            return ZFFilterResultActive;
-                        }
-                        else {
-                            return ZFFilterResultNotActive;
-                        }
-                    }
-            };
-            filter.customFilterCallbackAdd(_Holder::filter);
+        ZFMethodFuncGetAllT(methods);
+        const zfchar *prefix = "ZFCore_ZFMethodFunc_test_";
+        const zfindex prefixLen = zfslen(prefix);
+        for(zfindex i = methods.count() - 1; i != zfindexMax(); --i) {
+            if(zfsncmp(methods[i]->methodName(), prefix, prefixLen) != 0) {
+                methods.remove(i);
+            }
         }
-        ZFMethodFuncGetAllT(methods, &filter);
+
         this->output(methods.objectInfoOfContent(
                 zfindexMax(),
                 ZFTokenForContainerPlainList()

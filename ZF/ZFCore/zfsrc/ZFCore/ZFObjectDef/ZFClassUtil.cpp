@@ -1,88 +1,13 @@
 #include "ZFClassUtil.h"
 #include "ZFObjectImpl.h"
-#include "ZFFilterForZFClass.h"
-#include "ZFFilterForZFMethod.h"
-#include "ZFFilterForZFProperty.h"
 #include "ZFPropertyUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFClassUtil)
 
-void allClassParentT(
-        ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFClass *filter /* = zfnull */
-        ) {
-    if(filter == zfnull) {
-        while(cls != zfnull) {
-            ret.add(cls);
-            for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
-                ret.add(cls->dynamicInterfaceAt(i));
-            }
-            for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
-                ret.add(cls->implementedInterfaceAt(i));
-            }
-            cls = cls->classParent();
-        }
-    }
-    else {
-        while(cls != zfnull) {
-            if(filter->filterPassed(cls)) {
-                ret.add(cls);
-            }
-            for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
-                if(filter->filterPassed(cls->dynamicInterfaceAt(i))) {
-                    ret.add(cls->dynamicInterfaceAt(i));
-                }
-            }
-            for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
-                if(filter->filterPassed(cls->implementedInterfaceAt(i))) {
-                    ret.add(cls->implementedInterfaceAt(i));
-                }
-            }
-            cls = cls->classParent();
-        }
-    }
-}
-
-void allMethodT(
-        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFMethod *filter /* = zfnull */
-        ) {
-    ZFCoreArray<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
-    for(zfindex i = 0; i < allClassParent.count(); ++i) {
-        const ZFClass *cls = allClassParent.get(i);
-        for(zfiter it = cls->methodIter(); it; ++it) {
-            const ZFMethod *method = cls->methodIterValue(it);
-            if(filter == zfnull || filter->filterPassed(method)) {
-                ret.add(method);
-            }
-        }
-    }
-}
-
-void allPropertyT(
-        ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN_OPT const ZFFilterForZFProperty *filter /* = zfnull */
-        ) {
-    ZFCoreArray<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
-    for(zfindex i = 0; i < allClassParent.count(); ++i) {
-        const ZFClass *cls = allClassParent.get(i);
-        for(zfiter it = cls->propertyIter(); it; ++it) {
-            const ZFProperty *property = cls->propertyIterValue(it);
-            if(filter == zfnull || filter->filterPassed(property)) {
-                ret.add(property);
-            }
-        }
-    }
-}
-
 zfbool allPropertyIsEqual(
         ZF_IN ZFObject *obj0
         , ZF_IN ZFObject *obj1
-        , ZF_IN_OPT const ZFFilterForZFProperty *filter /* = zfnull */
         ) {
     if(obj0 == obj1) {
         return zftrue;
@@ -93,7 +18,7 @@ zfbool allPropertyIsEqual(
     const ZFClass *cls0 = obj0->classData();
     const ZFClass *cls1 = obj1->classData();
 
-    ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(cls0, filter);
+    ZFCoreArray<const ZFProperty *> allProperty = cls0->propertyGetAll();
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
         if(cls1->classIsTypeOf(allProperty[i]->ownerClass())
                 && ZFPropertyCompareValue(allProperty[i], obj0, obj1) != ZFCompareEqual
@@ -115,7 +40,7 @@ void objectPropertyInfo(
         return;
     }
 
-    ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(obj->classData());
+    ZFCoreArray<const ZFProperty *> allProperty = obj->classData()->propertyGetAll();
     zfindex count = 0;
     zfindex index = 0;
     for( ; index < allProperty.count() && count < maxCount; ++index) {
@@ -142,7 +67,7 @@ void objectPropertyInfo(
             ret += token.tokenValueLeft;
             {
                 zfstring s;
-                ZFPropertyGetInfo(s, allProperty[index], obj);
+                ZFObjectInfoT(s, allProperty[index]->getterMethod()->methodInvoke(obj));
 
                 zfindex iL = 0;
                 for(zfindex i = 0; i < s.length(); i += zfcharGetSize(s + i)) {
@@ -202,37 +127,9 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFClassUtil)
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, allClassParentT
-        , ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret)
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN_OPT(const ZFFilterForZFClass *, filter, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFClass *>, allClassParent
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN_OPT(const ZFFilterForZFClass *, filter, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, allMethodT
-        , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN_OPT(const ZFFilterForZFMethod *, filter, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFMethod *>, allMethod
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN_OPT(const ZFFilterForZFMethod *, filter, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, allPropertyT
-        , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN_OPT(const ZFFilterForZFProperty *, filter, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFProperty *>, allProperty
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN_OPT(const ZFFilterForZFProperty *, filter, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, allPropertyIsEqual
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, allPropertyIsEqual
         , ZFMP_IN(ZFObject *, obj0)
         , ZFMP_IN(ZFObject *, obj1)
-        , ZFMP_IN_OPT(const ZFFilterForZFProperty *, filter, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, objectPropertyInfo
         , ZFMP_IN_OUT(zfstring &, ret)

@@ -116,25 +116,12 @@ static _ZFP_ZFPropertyMapType &_ZFP_ZFPropertyMap(void) {
 }
 
 // ============================================================
-void ZFPropertyGetAllT(
-        ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret
-        , ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter /* = zfnull */
-        ) {
+void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
     ZFCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
-    if(propertyFilter != zfnull) {
-        for(_ZFP_ZFPropertyMapType::iterator it = m.begin(); it != m.end(); ++it) {
-            ZFProperty *v = it->second;
-            if(propertyFilter->filterPassed(v)) {
-                ret.add(v);
-            }
-        }
-    }
-    else {
-        for(_ZFP_ZFPropertyMapType::iterator it = m.begin(); it != m.end(); ++it) {
-            ZFProperty *v = it->second;
-            ret.add(v);
-        }
+    for(_ZFP_ZFPropertyMapType::iterator it = m.begin(); it != m.end(); ++it) {
+        ZFProperty *v = it->second;
+        ret.add(v);
     }
 }
 
@@ -299,13 +286,10 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFPropertyGetAllT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFPropertyGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
-        , ZFMP_IN_OPT(const ZFFilterForZFProperty *, propertyFilter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFProperty *>, ZFPropertyGetAll
-        , ZFMP_IN_OPT(const ZFFilterForZFProperty *, propertyFilter, zfnull)
-        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFProperty *>, ZFPropertyGetAll)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

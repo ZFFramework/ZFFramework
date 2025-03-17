@@ -130,7 +130,7 @@ void ZFUIKit_test_prepareSettingForProperty(
             , const ZFProperty *, property
             ) {
         v_zfstring *text = zfargs.param0();
-        text->zfv = zfstr("%s : %s", property->propertyName(), ZFPropertyGetInfo(property, obj));
+        text->zfv = zfstr("%s : %s", property->propertyName(), ZFObjectInfo(property->getterMethod()->methodInvoke(obj)));
     } ZFLISTENER_END()
     ZFLISTENER_1(buttonClickListener
             , ZFListener, nextCallback

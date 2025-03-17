@@ -34,12 +34,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, isChildOf
  *
  * may be invalid if layout step not finished
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewAtPos
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewAtPos
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(const ZFUIPoint &, pos)
         , ZFMP_IN_OPT(zfbool, filterDisabledView, zffalse)
         , ZFMP_IN_OPT(zfbool, filterInternalView, zftrue)
-        , ZFMP_IN_OPT(const ZFFilterForZFObject *, filter, zfnull)
         )
 
 /**

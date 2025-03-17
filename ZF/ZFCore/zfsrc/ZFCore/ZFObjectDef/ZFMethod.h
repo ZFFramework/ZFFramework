@@ -745,12 +745,8 @@ public:
 };
 
 // ============================================================
-zfclassFwd ZFFilterForZFMethod;
 /** @brief see #ZFMethodGetAll */
-extern ZFLIB_ZFCore void ZFMethodGetAllT(
-        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull
-        );
+extern ZFLIB_ZFCore void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret);
 /**
  * @brief get all method currently registered
  *
@@ -759,9 +755,9 @@ extern ZFLIB_ZFCore void ZFMethodGetAllT(
  * use with caution\n
  * use #ZFClass::methodForName or #ZFMethodFuncForName if necessary
  */
-inline ZFCoreArray<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull) {
+inline ZFCoreArray<const ZFMethod *> ZFMethodGetAll(void) {
     ZFCoreArray<const ZFMethod *> ret;
-    ZFMethodGetAllT(ret, methodFilter);
+    ZFMethodGetAllT(ret);
     return ret;
 }
 
