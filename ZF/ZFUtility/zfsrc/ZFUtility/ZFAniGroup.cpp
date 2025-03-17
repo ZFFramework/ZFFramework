@@ -1,5 +1,4 @@
 #include "ZFAniGroup.h"
-#include "ZFAni.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -8,6 +7,7 @@ zfclass _ZFP_ZFAniGroupChildData : zfextend ZFObject {
     ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, child)
     ZFPROPERTY_ASSIGN(zfweak, childTarget)
     ZFPROPERTY_ASSIGN(zftimet, childDuration)
+    ZFPROPERTY_ASSIGN(zfautoT<ZFCurve>, childCurve)
 
 public:
     zfoverride
@@ -247,8 +247,14 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAniGroup_child)) {
             zftimet childDuration = 0;
-            ZFSerializableUtilSerializeCategoryFromData(categoryData, outErrorHint, outErrorPos,
+            ZFSerializableUtilSerializeAttrFromData(categoryData, outErrorHint, outErrorPos,
                     check, ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, childDuration, {
+                        return zffalse;
+                    });
+
+            zfautoT<ZFCurve> childCurve;
+            ZFSerializableUtilSerializeCategoryFromData(categoryData, outErrorHint, outErrorPos,
+                    check, ZFSerializableKeyword_ZFAniGroup_childCurve, ZFObject, childCurve, {
                         return zffalse;
                     });
 
@@ -270,6 +276,9 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
             if(childDuration != 0) {
                 this->childDurationAt(this->childCount() - 1, childDuration);
             }
+            if(childCurve) {
+                this->childCurveAt(this->childCount() - 1, childCurve);
+            }
 
             categoryData.resolveMark();
         }
@@ -288,14 +297,23 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
         for(zfindex i = 0; i < this->childCount(); ++i) {
             ZFSerializableData elementData;
             ZFAnimation *child = this->childAt(i);
+
             if(this->autoUpdateDuration()) {
                 ZFPropertyValueReset(ZFPropertyAccess(ZFAnimation, duration), child);
+            }
+            if(this->autoUpdateCurve() && this->curve()) {
+                ZFPropertyValueReset(ZFPropertyAccess(ZFAnimation, curve), child);
             }
             if(!ZFObjectToDataT(elementData, child, outErrorHint)) {
                 return zffalse;
             }
+
             ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
-                    ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, this->childDurationAt(i), 0, {
+                    ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, this->childDurationAt(i), (zftimet)0, {
+                        return zffalse;
+                    });
+            ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
+                    ZFSerializableKeyword_ZFAniGroup_childCurve, ZFObject, this->childCurveAt(i), zfnull, {
                         return zffalse;
                     });
             elementData.category(ZFSerializableKeyword_ZFAniGroup_child);
@@ -311,6 +329,7 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
             for(zfindex i = 0; i < this->childCount(); ++i) {
                 if(ZFObjectCompareValue(this->childAt(i), ref->childAt(i)) != ZFCompareEqual
                         || this->childDurationAt(i) != ref->childDurationAt(i)
+                        || ZFObjectCompareValue(this->childCurveAt(i), ref->childCurveAt(i)) != ZFCompareEqual
                         ) {
                     mismatch = zftrue;
                     break;
@@ -427,6 +446,20 @@ ZFMETHOD_DEFINE_2(ZFAniGroup, void, childDurationAt
     childData->childDuration(duration);
 }
 
+ZFMETHOD_DEFINE_1(ZFAniGroup, zfautoT<ZFCurve>, childCurveAt
+        , ZFMP_IN(zfindex , index)
+        ) {
+    _ZFP_ZFAniGroupChildData *childData = d->childDatas->get(index);
+    return childData->childCurve();
+}
+ZFMETHOD_DEFINE_2(ZFAniGroup, void, childCurveAt
+        , ZFMP_IN(zfindex , index)
+        , ZFMP_IN(ZFCurve *, curve)
+        ) {
+    _ZFP_ZFAniGroupChildData *childData = d->childDatas->get(index);
+    childData->childCurve(curve);
+}
+
 // ============================================================
 // start stop
 zfbool ZFAniGroup::aniImplCheckValid(void) {
@@ -451,6 +484,17 @@ zfbool ZFAniGroup::aniImplCheckValid(void) {
             }
             else {
                 childAni->duration(childDuration);
+            }
+        }
+        if(this->autoUpdateCurve()) {
+            zfautoT<ZFCurve> childCurve = this->childCurveAt(i);
+            if(!childCurve) {
+                if(this->curve()) {
+                    childAni->curve(this->curve());
+                }
+            }
+            else {
+                childAni->curve(childCurve);
             }
         }
         if(!childAni->valid()) {
@@ -487,6 +531,13 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childDuration
         ) {
     if(this->childCount() > 0) {
         this->childDurationAt(this->childCount() - 1, duration);
+    }
+}
+ZFMETHOD_DEFINE_1(ZFAniGroup, void, childCurve
+        , ZFMP_IN(ZFCurve *, curve)
+        ) {
+    if(this->childCount() > 0) {
+        this->childCurveAt(this->childCount() - 1, curve);
     }
 }
 

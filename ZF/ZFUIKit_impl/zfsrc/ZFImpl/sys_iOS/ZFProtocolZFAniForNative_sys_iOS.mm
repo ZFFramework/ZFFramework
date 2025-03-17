@@ -52,7 +52,7 @@
 - (void)nativeAniStart {
     UIView *target = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->target())->nativeView();
     CAMediaTimingFunction *nativeCurve = nil;
-    switch(self.ownerAni->curve()) {
+    switch(self.ownerAni->nativeCurve()) {
         case v_ZFAniForNativeCurve::e_Linear:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
             break;

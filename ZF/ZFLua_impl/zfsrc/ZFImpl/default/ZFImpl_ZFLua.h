@@ -200,10 +200,18 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_execute_errorHandle(
 /**
  * @brief get lua stacktrace
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_stacktrace(
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_stacktraceT(
         ZF_IN lua_State *L
         , ZF_IN_OUT zfstring &ret
         );
+/**
+ * @brief get lua stacktrace
+ */
+inline zfstring ZFImpl_ZFLua_stacktrace(ZF_IN lua_State *L) {
+    zfstring ret;
+    ZFImpl_ZFLua_stacktraceT(L, ret);
+    return ret;
+}
 
 // ============================================================
 // utils
@@ -550,7 +558,7 @@ public:
             }
 
             zfstring info;
-            if(ZFImpl_ZFLua_stacktrace(L, info)) {
+            if(ZFImpl_ZFLua_stacktraceT(L, info)) {
                 this->errorHint += "\n";
                 this->errorHint += info;
             }

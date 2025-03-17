@@ -90,7 +90,7 @@ private:
         jobject nativeAnimation = (jobject)ani->nativeAnimation();
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAniForNative(), jmId
             , nativeAnimation
-            , (jint)ani->curve()
+            , (jint)ani->nativeCurve()
             , (jint)ani->durationFixed()
             );
 

@@ -330,19 +330,19 @@ public class ZFAniForNative {
 
     public static void native_setup(
             Object nativeAnimation
-            , int curve
+            , int nativeCurve
             , int duration
     ) {
         NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
         nativeAnimationTmp.nativeAnimationReset();
 
-        if (curve == ZFAniForNativeCurve.e_Linear) {
+        if (nativeCurve == ZFAniForNativeCurve.e_Linear) {
             nativeAnimationTmp.setInterpolator(_curveLinear);
-        } else if (curve == ZFAniForNativeCurve.e_EaseInOut) {
+        } else if (nativeCurve == ZFAniForNativeCurve.e_EaseInOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseInOut);
-        } else if (curve == ZFAniForNativeCurve.e_EaseIn) {
+        } else if (nativeCurve == ZFAniForNativeCurve.e_EaseIn) {
             nativeAnimationTmp.setInterpolator(_curveEaseIn);
-        } else if (curve == ZFAniForNativeCurve.e_EaseOut) {
+        } else if (nativeCurve == ZFAniForNativeCurve.e_EaseOut) {
             nativeAnimationTmp.setInterpolator(_curveEaseOut);
         } else {
             ZFAndroidLog.shouldNotGoHere();

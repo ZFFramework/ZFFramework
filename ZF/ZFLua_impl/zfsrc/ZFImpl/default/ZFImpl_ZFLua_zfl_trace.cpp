@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 static int _ZFP_ZFImpl_ZFLua_zfl_trace(ZF_IN lua_State *L) {
     zfobj<v_zfstring> ret;
-    ZFImpl_ZFLua_stacktrace(L, ret->zfv);
+    ZFImpl_ZFLua_stacktraceT(L, ret->zfv);
     ZFImpl_ZFLua_luaPush(L, ret);
     return 1;
 }

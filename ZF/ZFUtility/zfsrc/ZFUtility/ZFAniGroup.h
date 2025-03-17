@@ -13,6 +13,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFSerializableKeyword_ZFAniGroup_child "child"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFAniGroup_childDuration "childDuration"
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFAniGroup_childCurve "childCurve"
 
 // ============================================================
 zfclassFwd _ZFP_ZFAniGroupPrivate;
@@ -26,7 +28,9 @@ zfclassFwd _ZFP_ZFAniGroupPrivate;
  *       <SomeAni category="child"
  *           childDuration="123" // optional
  *           ...
- *           />
+ *           >
+ *           <SomeCurve category="childCurve" /> // optional
+ *       </SomeAni>
  *       ...
  *   </ZFAniGroup>
  * @endcode
@@ -125,17 +129,31 @@ public:
             )
 
     /**
-     * @brief get child animation's target, or null if not specified
+     * @brief get child animation's duration, or 0 if not specified
      */
     ZFMETHOD_DECLARE_1(zftimet, childDurationAt
             , ZFMP_IN(zfindex , index)
             )
     /**
-     * @brief set child animation's target
+     * @brief set child animation's duration
      */
     ZFMETHOD_DECLARE_2(void, childDurationAt
             , ZFMP_IN(zfindex , index)
             , ZFMP_IN(zftimet, duration)
+            )
+
+    /**
+     * @brief get child animation's curve, or null if not specified
+     */
+    ZFMETHOD_DECLARE_1(zfautoT<ZFCurve>, childCurveAt
+            , ZFMP_IN(zfindex , index)
+            )
+    /**
+     * @brief set child animation's curve
+     */
+    ZFMETHOD_DECLARE_2(void, childCurveAt
+            , ZFMP_IN(zfindex , index)
+            , ZFMP_IN(ZFCurve *, curve)
             )
 
     // ============================================================
@@ -152,9 +170,16 @@ public:
      * @brief whether update all children's duration, true by default
      *
      * when true, child's duration would be set to group's state,
-     * unless #childTargetAt was set
+     * unless #childDurationAt was set
      */
     ZFPROPERTY_ASSIGN(zfbool, autoUpdateDuration, zftrue)
+    /**
+     * @brief whether update all children's curve, true by default
+     *
+     * when true, child's curve would be set to group's state,
+     * unless #childCurveAt was set
+     */
+    ZFPROPERTY_ASSIGN(zfbool, autoUpdateCurve, zftrue)
 
 public:
     zfoverride
@@ -170,6 +195,10 @@ public:
     /** @brief util to set last child's property */
     ZFMETHOD_DECLARE_1(void, childDuration
             , ZFMP_IN(zftimet, duration)
+            )
+    /** @brief util to set last child's property */
+    ZFMETHOD_DECLARE_1(void, childCurve
+            , ZFMP_IN(ZFCurve *, curve)
             )
 
 public:

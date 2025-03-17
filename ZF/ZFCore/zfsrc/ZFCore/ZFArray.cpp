@@ -138,6 +138,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN(ZFObject *, obj)
         ) {
+    ZFCoreAssertIndexRange(index, this->count());
     ZFCoreAssertWithMessage(obj != zfnull, "set null object");
     zfRetain(obj);
 

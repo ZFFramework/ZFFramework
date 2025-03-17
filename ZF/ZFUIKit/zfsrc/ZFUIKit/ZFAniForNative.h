@@ -68,7 +68,7 @@ public:
     /**
      * @brief animation's curve, #v_ZFAniForNativeCurve::e_Linear by default
      */
-    ZFPROPERTY_ASSIGN(ZFAniForNativeCurve, curve, v_ZFAniForNativeCurve::e_Linear)
+    ZFPROPERTY_ASSIGN(ZFAniForNativeCurve, nativeCurve, v_ZFAniForNativeCurve::e_Linear)
 
     /**
      * @brief alpha from, 1 by default

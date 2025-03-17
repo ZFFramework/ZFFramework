@@ -37,7 +37,7 @@ public:
      *   you should apply scale manually by nativeAniScale
      *
      * here's a list of things you need to implement:
-     * -  curve (ZFAniForNativeCurve)
+     * -  nativeCurve (ZFAniForNativeCurve)
      * -  aniAlpha (zffloat)
      * -  scaleX/Y/Z (zffloat)
      * -  translateX/Y/Z (zffloat)

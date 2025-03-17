@@ -399,7 +399,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
     lua_pop(L, 1);
 }
 
-zfbool ZFImpl_ZFLua_stacktrace(
+zfbool ZFImpl_ZFLua_stacktraceT(
         ZF_IN lua_State *L
         , ZF_IN_OUT zfstring &ret
         ) {
@@ -999,7 +999,7 @@ static void impl(const ZFCallerInfo &callerInfo) {
     lua_State *L = (lua_State *)ZFLuaStateCheck();
     if(L != NULL) {
         zfstring info;
-        if(ZFImpl_ZFLua_stacktrace(L, info)) {
+        if(ZFImpl_ZFLua_stacktraceT(L, info)) {
             ZFCoreLogTrim("%s", info);
         }
     }

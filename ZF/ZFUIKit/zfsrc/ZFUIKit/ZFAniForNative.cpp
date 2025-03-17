@@ -46,7 +46,7 @@ ZFCompareResult ZFAniForNative::objectCompareValueImpl(ZF_IN ZFObject *anotherOb
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(zftrue
-        && this->curve() == another->curve()
+        && this->nativeCurve() == another->nativeCurve()
         && this->alphaFrom() == another->alphaFrom()
         && this->alphaTo() == another->alphaTo()
         && this->scaleXFrom() == another->scaleXFrom()

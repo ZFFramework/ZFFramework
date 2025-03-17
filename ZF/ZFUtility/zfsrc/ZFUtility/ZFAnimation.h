@@ -57,11 +57,6 @@ public:
      * @brief util method to #duration
      */
     ZFMETHOD_DECLARE_0(zftimet, durationFixed)
-    /**
-     * @brief whether automatically stop previous animation attached to #target,
-     *   false by default
-     */
-    ZFPROPERTY_ASSIGN(zfbool, autoStopPrev)
 
     /**
      * @brief loop count, 0 by default
@@ -70,13 +65,17 @@ public:
      */
     ZFPROPERTY_ASSIGN(zfindex, loop)
 
+    /**
+     * @brief curve for animation, null to use linear curve, null by default
+     *
+     * how the curve affects animation, depends on implementation
+     */
+    ZFPROPERTY_RETAIN(zfanyT<ZFCurve>, curve)
+
 public:
     /**
      * @brief animation's target, assign only,
      *   but would be retain automatically while animation is running
-     *
-     * this is not necessary to be set during animation's running
-     * (although most animation subclass need a target)
      */
     ZFMETHOD_DECLARE_1(void, target
             , ZFMP_IN(ZFObject *, target)
@@ -162,8 +161,6 @@ protected:
     }
 
 public:
-    zffinal void _ZFP_ZFAnimation_aniReadyStart(void);
-    zffinal void _ZFP_ZFAnimation_aniReadyStop(void);
     zffinal void _ZFP_ZFAnimation_aniDummyNotifyStop(void);
 protected:
     /**

@@ -151,7 +151,7 @@ public:
     }
     void nativeAniStart(void) {
         this->aniProgress = 0;
-        switch(this->ownerZFAnimation->curve()) {
+        switch(this->ownerZFAnimation->nativeCurve()) {
             case v_ZFAniForNativeCurve::e_Linear:
                 this->curveFunc = _curveFuncLinear;
                 break;

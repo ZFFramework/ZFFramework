@@ -5,13 +5,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFEXPORT_VAR_DEFINE(zftimet, ZFAnimationDurationDefault, 250)
 
 // ============================================================
-zfclass _ZFP_I_ZFAnimationAniList : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFAnimationAniList, ZFObject)
-public:
-    ZFCoreArray<ZFAnimation *> aniList;
-};
-
-// ============================================================
 // _ZFP_ZFAnimationPrivate
 zfclassNotPOD _ZFP_ZFAnimationPrivate {
 public:
@@ -69,7 +62,6 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, start
         ) {
     this->stop();
     d->onStop = onStop;
-    this->_ZFP_ZFAnimation_aniReadyStart();
 
     d->stoppedByUser = zffalse;
     d->loopCur = 0;
@@ -133,30 +125,6 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStop
     this->observerAdd(zfself::E_AniOnStop(), cb);
 }
 
-void ZFAnimation::_ZFP_ZFAnimation_aniReadyStart(void) {
-    if(this->target() != zfnull) {
-        _ZFP_I_ZFAnimationAniList *aniList = this->target()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
-        if(aniList == zfnull) {
-            aniList = zfAlloc(_ZFP_I_ZFAnimationAniList);
-            this->target()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull(), aniList);
-            zfRelease(aniList);
-        }
-        if(this->autoStopPrev()) {
-            while(!aniList->aniList.isEmpty()) {
-                aniList->aniList.getFirst()->stop();
-            }
-        }
-        aniList->aniList.add(this);
-    }
-}
-void ZFAnimation::_ZFP_ZFAnimation_aniReadyStop(void) {
-    if(this->target() != zfnull) {
-        _ZFP_I_ZFAnimationAniList *aniList = this->target()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
-        if(aniList != zfnull) {
-            aniList->aniList.removeElement(this);
-        }
-    }
-}
 void ZFAnimation::_ZFP_ZFAnimation_aniDummyNotifyStop(void) {
     d->aniDummyTimer = zfnull;
     this->aniImplNotifyStop();
@@ -192,7 +160,6 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = v_ZFR
     if(!d->started || !d->aniImplStartFlag) {
         return;
     }
-    this->_ZFP_ZFAnimation_aniReadyStop();
     ZFObject *targetToRelease = this->target();
 
     d->aniImplStartFlag = zffalse;
