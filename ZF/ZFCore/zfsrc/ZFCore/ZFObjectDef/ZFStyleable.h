@@ -13,7 +13,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFStyleable
-zfclassFwd _ZFP_I_ZFStyleable_PropertyTypeHolder;
 zfclassFwd _ZFP_ZFStyleKeyHolder;
 /**
  * @brief styleable element that can apply style from another object
@@ -26,7 +25,7 @@ zfclassFwd _ZFP_ZFStyleKeyHolder;
  * if all of your properties are declared as #ZFProperty,
  * then every thing's done,
  * and style can be copied by #ZFStyleable::styleableCopyFrom\n
- * for a list of copy method, please refer to #ZFStyleable::styleableOnCheckPropertyType
+ * for how styleable would be copied, see #styleableOnCopyPropertyFrom
  */
 zfinterface ZFLIB_ZFCore ZFStyleable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFStyleable, ZFInterface)
@@ -59,74 +58,29 @@ public:
     }
 
     /**
-     * @brief return a list of each type of property, for debug use only
+     * @brief return a list of styleable property, for debug use only
      */
-    zffinal void styleablePropertyTypeGetAll(
-            ZF_OUT ZFCoreArray<const ZFProperty *> &normalProperty
-            , ZF_OUT ZFCoreArray<const ZFProperty *> &styleableProperty
-            , ZF_OUT ZFCoreArray<const ZFProperty *> &copyableProperty
+    zffinal void styleablePropertyGetAllT(
+            ZF_OUT ZFCoreArray<const ZFProperty *> &ret
             );
     /**
-     * @brief return info of #styleablePropertyTypeGetAll, for debug use only
+     * @brief return a list of styleable property, for debug use only
      */
-    zffinal zfstring styleablePropertyTypeInfo(void);
+    zffinal ZFCoreArray<const ZFProperty *> styleablePropertyGetAll(void);
 
 protected:
-    /** @brief see #ZFStyleable::styleableOnCheckPropertyType */
-    typedef enum {
-        PropertyTypeNotStyleable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
-        PropertyTypeNormal, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
-        PropertyTypeStyleable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
-        PropertyTypeCopyable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
-    } PropertyType;
-    /**
-     * @brief check property type
-     *
-     * property type shows how styleable would act while copying from another styleable:
-     * -  PropertyTypeNotStyleable:
-     *   shows the property should not be copied
-     * -  PropertyTypeNormal:
-     *   shows the property should be copied normally,
-     *   i.e. use getter and setter to copy value
-     * -  PropertyTypeStyleable:
-     *   shows the property itself is styleable,
-     *   we would access its value and copy style by #styleableCopyFrom\n
-     *   if the property is both #ZFStyleable and #ZFCopyable,
-     *   it would be treated as #ZFStyleable
-     * -  PropertyTypeCopyable:
-     *   shows the property itself is copyable,
-     *   we would access its value and copy style by #ZFCopyable::copyFrom
-     *
-     * \n
-     * by default, a property is treated as not copyable if matches any of conditions below:
-     * -  getter or setter method is private
-     *
-     * a property is treated as styleable/copyable property if matches all of conditions below:
-     * -  is retain property and the type is ZFStyleable/ZFCopyable
-     * -  getter method is not private and setter method is private
-     *
-     * all other property are treated as normal property
-     */
-    virtual ZFStyleable::PropertyType styleableOnCheckPropertyType(ZF_IN const ZFProperty *property);
     /**
      * @brief copy property with styleable logic
-     *
-     * @note anotherStyleable not ensured to be same type as self,
-     *   while the property is ensured to be same and safe to copy
      */
     virtual void styleableOnCopyPropertyFrom(
             ZF_IN ZFObject *anotherStyleable
             , ZF_IN const ZFProperty *property
-            , ZF_IN ZFStyleable::PropertyType propertyType
             );
     /**
      * @brief for subclass to achieve custom style copy step,
      *   called by #styleableCopyFrom, see #ZFStyleable
      */
     virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
-
-private:
-    zffinal _ZFP_I_ZFStyleable_PropertyTypeHolder *_ZFP_ZFStyleable_getPropertyTypeHolder(void);
 
 public:
     /** @brief see #ZFStyleSet */

@@ -1128,7 +1128,7 @@ static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
     ZFStyleable *styleable = property->dynamicRegisterUserData();
     if(styleable != zfnull) {
         zfauto ret = styleable->classData()->newInstance();
-        ret.to<ZFStyleable *>()->styleableCopyFrom(styleable);
+        ret.to<ZFStyleable *>()->styleableCopyFrom(styleable->toObject());
         return ret;
     }
     return property->dynamicRegisterUserData();

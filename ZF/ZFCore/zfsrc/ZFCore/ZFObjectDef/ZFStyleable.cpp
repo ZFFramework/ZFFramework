@@ -18,15 +18,34 @@ zfanyT<ZFStyleable> ZFStyleable::defaultStyle(void) {
     }
 }
 
-// ============================================================
-zfclass _ZFP_I_ZFStyleable_PropertyTypeHolder : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFStyleable_PropertyTypeHolder, ZFObject)
-
-public:
-    ZFCoreArray<const ZFProperty *> normalProperty;
-    ZFCoreArray<const ZFProperty *> styleableProperty;
-    ZFCoreArray<const ZFProperty *> copyableProperty;
-};
+static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFClass *cls) {
+    v_ZFCoreArray *holder = cls->classTag("_ZFP_ZFStyleable_propList");
+    if(holder) {
+        return *(const ZFCoreArray<const ZFProperty *> *)holder->zfv;
+    }
+    ZFCoreArray<const ZFProperty *> ret = cls->propertyGetAll();
+    for(zfindex i = ret.count() - 1; i != zfindexMax(); --i) {
+        const ZFProperty *prop = ret[i];
+        if(zffalse
+                || !prop->getterMethod()->isPublic()
+                || prop->propertyName()[0] == '_'
+                ) {
+            ret.remove(i);
+        }
+        else if(!prop->setterMethod()->isPublic() && !(
+                    prop->isRetainProperty()
+                    && (zffalse
+                        || prop->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())
+                        || prop->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())
+                        )
+                        )) {
+            ret.remove(i);
+        }
+    }
+    zfobj<v_ZFCoreArray> holderTmp(ret);
+    cls->classTag("_ZFP_ZFStyleable_propList", holderTmp);
+    return ret;
+}
 
 // ============================================================
 void ZFStyleable::styleableCopyFrom(ZF_IN ZFObject *anotherStyleable) {
@@ -34,124 +53,84 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFObject *anotherStyleable) {
         this->styleableOnCopyFrom(anotherStyleable);
     }
 }
-void ZFStyleable::styleablePropertyTypeGetAll(
-        ZF_OUT ZFCoreArray<const ZFProperty *> &normalProperty
-        , ZF_OUT ZFCoreArray<const ZFProperty *> &styleableProperty
-        , ZF_OUT ZFCoreArray<const ZFProperty *> &copyableProperty
+void ZFStyleable::styleablePropertyGetAllT(
+        ZF_OUT ZFCoreArray<const ZFProperty *> &ret
         ) {
-    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
-    normalProperty.addFrom(holder->normalProperty);
-    styleableProperty.addFrom(holder->styleableProperty);
-    copyableProperty.addFrom(holder->copyableProperty);
 }
-zfstring ZFStyleable::styleablePropertyTypeInfo(void) {
-    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
-
-    zfstring ret;
-    ret += "normal:\n";
-    for(zfindex i = 0; i < holder->normalProperty.count(); ++i) {
-        const ZFProperty *p = holder->normalProperty[i];
-        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
-    }
-    ret += "styleable:\n";
-    for(zfindex i = 0; i < holder->styleableProperty.count(); ++i) {
-        const ZFProperty *p = holder->styleableProperty[i];
-        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
-    }
-    ret += "copyable:\n";
-    for(zfindex i = 0; i < holder->copyableProperty.count(); ++i) {
-        const ZFProperty *p = holder->copyableProperty[i];
-        zfstringAppend(ret, "    (%s) %s::%s", p->propertyTypeName(), p->ownerClass()->className(), p->propertyName());
-    }
+ZFCoreArray<const ZFProperty *> ZFStyleable::styleablePropertyGetAll(void) {
+    ZFCoreArray<const ZFProperty *> ret;
+    this->styleablePropertyGetAllT(ret);
     return ret;
-}
-ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
-    if(property->isRetainProperty()
-            && property->setterMethod()->isPrivate()
-            && !property->getterMethod()->isPrivate()
-            ) {
-        if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())) {
-            return ZFStyleable::PropertyTypeStyleable;
-        }
-        else if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())) {
-            return ZFStyleable::PropertyTypeCopyable;
-        }
-    }
-    if(property->setterMethod()->isPrivate()
-            || property->getterMethod()->isPrivate()
-            ) {
-        return ZFStyleable::PropertyTypeNotStyleable;
-    }
-    return ZFStyleable::PropertyTypeNormal;
 }
 
 void ZFStyleable::styleableOnCopyPropertyFrom(
         ZF_IN ZFObject *anotherStyleable
         , ZF_IN const ZFProperty *property
-        , ZF_IN ZFStyleable::PropertyType propertyType
         ) {
-    if(property && this->propStyle(property->propertyName()) == zfnull) {
-        this->propStyle(property->propertyName(), zfcast(ZFStyleable *, anotherStyleable)->propStyle(property->propertyName()));
-    }
-    switch(propertyType) {
-        case ZFStyleable::PropertyTypeNormal: {
-            ZFPropertyCopy(property, this->toObject(), anotherStyleable->toObject());
-        }
-            break;
-        case ZFStyleable::PropertyTypeStyleable: {
-            ZFStyleable *selfPropertyValue = property->getterMethod()->methodInvoke(this->toObject());
-            ZFObject *anotherPropertyValue = property->getterMethod()->methodInvoke(anotherStyleable->toObject());
-            if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull) {
-                selfPropertyValue->styleableCopyFrom(anotherPropertyValue);
+    ZFStyleable *ref = zfcast(ZFStyleable *, anotherStyleable);
+    this->propStyle(property->propertyName(), ref->propStyle(property->propertyName()));
+
+    if(property->setterMethod()->isPublic()) {
+        zfbool copied = zffalse;
+        if(property->isRetainProperty()) {
+            if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())) {
+                copied = zftrue;
+                ZFStyleable *v0 = property->getterMethod()->methodInvoke(this->toObject());
+                ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
+                if(v0) {
+                    if(v1) {
+                        v0->styleableCopyFrom(v1);
+                    }
+                    else {
+                        property->setterMethod()->methodInvoke(this->toObject(), zfnull);
+                    }
+                }
+                else {
+                    if(v1) {
+                        zfautoT<ZFStyleable> v0Tmp = v1->classData()->newInstance();
+                        v0Tmp->styleableCopyFrom(v1);
+                    }
+                }
+            }
+            else if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())) {
+                copied = zftrue;
+                ZFCopyable *v0 = property->getterMethod()->methodInvoke(this->toObject());
+                ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
+                if(v0) {
+                    if(v1) {
+                        v0->copyFrom(v1);
+                    }
+                    else {
+                        property->setterMethod()->methodInvoke(this->toObject(), zfnull);
+                    }
+                }
+                else {
+                    if(v1) {
+                        property->setterMethod()->methodInvoke(this->toObject(), zfcast(ZFCopyable *, v1)->copy());
+                    }
+                }
             }
         }
-            break;
-        case ZFStyleable::PropertyTypeCopyable: {
-            ZFCopyable *selfPropertyValue = property->getterMethod()->methodInvoke(this->toObject());
-            ZFObject *anotherPropertyValue = property->getterMethod()->methodInvoke(anotherStyleable->toObject());
-            if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull) {
-                selfPropertyValue->copyFrom(anotherPropertyValue);
+        if(!copied) {
+            ZFPropertyCopy(property, this->toObject(), anotherStyleable);
+        }
+    }
+    else if(property->isRetainProperty()) {
+        if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())) {
+            ZFStyleable *v0 = property->getterMethod()->methodInvoke(this->toObject());
+            ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
+            if(v0 && v1) {
+                v0->styleableCopyFrom(v1);
             }
         }
-            break;
-        case ZFStyleable::PropertyTypeNotStyleable:
-        default:
-            ZFCoreCriticalShouldNotGoHere();
-            return;
-    }
-}
-
-_ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getPropertyTypeHolder(void) {
-    ZFCoreMutexLocker();
-    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->classData()->classTag(_ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
-    if(holder == zfnull) {
-        zfobj<_ZFP_I_ZFStyleable_PropertyTypeHolder> holderTmp;
-
-        const ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(this->classData());
-        const ZFProperty *propertyTmp = zfnull;
-        for(zfindex i = 0; i < allProperty.count(); ++i) {
-            propertyTmp = allProperty[i];
-            switch(this->styleableOnCheckPropertyType(propertyTmp)) {
-                case ZFStyleable::PropertyTypeNotStyleable:
-                    break;
-                case ZFStyleable::PropertyTypeNormal:
-                    holderTmp->normalProperty.add(propertyTmp);
-                    break;
-                case ZFStyleable::PropertyTypeStyleable:
-                    holderTmp->styleableProperty.add(propertyTmp);
-                    break;
-                case ZFStyleable::PropertyTypeCopyable:
-                    holderTmp->copyableProperty.add(propertyTmp);
-                    break;
+        else if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())) {
+            ZFCopyable *v0 = property->getterMethod()->methodInvoke(this->toObject());
+            ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
+            if(v0 && v1) {
+                v0->copyFrom(v1);
             }
         }
-
-        holder = holderTmp;
-        this->classData()->classTag(
-            _ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull(),
-            holderTmp);
     }
-    return holder;
 }
 
 void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
@@ -159,43 +138,21 @@ void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
         this->styleKey(zfcast(ZFStyleable *, anotherStyleable)->styleKey());
     }
 
-    _ZFP_I_ZFStyleable_PropertyTypeHolder *holderTmp = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
+    ZFCoreArray<const ZFProperty *> propList = _ZFP_ZFStyleable_propList(this->classData());
     const ZFClass *thisCls = this->classData();
     const ZFClass *anotherCls = anotherStyleable->classData();
     ZFObject *anotherStyleableObject = anotherStyleable->toObject();;
     const ZFProperty *property = zfnull;
 
-    for(zfindex i = holderTmp->normalProperty.count() - 1; i != zfindexMax(); --i) {
-        property = holderTmp->normalProperty[i];
+    for(zfindex i = propList.count() - 1; i != zfindexMax(); --i) {
+        property = propList[i];
         if(!anotherCls->classIsTypeOf(property->ownerClass())) {
             continue;
         }
         if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
                 || property->callbackIsValueAccessed(property, anotherStyleableObject)
                 ) {
-            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeNormal);
-        }
-    }
-    for(zfindex i = holderTmp->styleableProperty.count() - 1; i != zfindexMax(); --i) {
-        property = holderTmp->styleableProperty[i];
-        if(!anotherCls->classIsTypeOf(property->ownerClass())) {
-            continue;
-        }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
-                || property->callbackIsValueAccessed(property, anotherStyleableObject)
-                ) {
-            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeStyleable);
-        }
-    }
-    for(zfindex i = holderTmp->copyableProperty.count() - 1; i != zfindexMax(); --i) {
-        property = holderTmp->copyableProperty[i];
-        if(!anotherCls->classIsTypeOf(property->ownerClass())) {
-            continue;
-        }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
-                || property->callbackIsValueAccessed(property, anotherStyleableObject)
-                ) {
-            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeCopyable);
+            this->styleableOnCopyPropertyFrom(anotherStyleable, property);
         }
     }
 }
@@ -418,12 +375,10 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
         , ZFMP_IN(ZFObject *, anotherStyleable)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfbool, styleableIsDefaultStyle)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFStyleable, void, styleablePropertyTypeGetAll
-        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, normalProperty)
-        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, styleableProperty)
-        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, copyableProperty)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleablePropertyGetAllT
+        , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, ret)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfstring, styleablePropertyTypeInfo)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, ZFCoreArray<const ZFProperty *>, styleablePropertyGetAll)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleKey
         , ZFMP_IN(const zfstring &, styleKey)
         )
