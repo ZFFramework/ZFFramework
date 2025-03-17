@@ -144,7 +144,7 @@ public:
 
 protected:
     zfoverride
-    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
         zfsuper::styleableOnCopyFrom(anotherStyleable);
         this->wrappedValue(anotherStyleable->to<ZFTypeIdWrapper *>()->wrappedValue());
     }

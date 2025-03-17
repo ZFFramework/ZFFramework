@@ -15,7 +15,7 @@ zfautoT<ZFCopyable> ZFCopyable::copy(void) {
 }
 
 void ZFCopyable::copyFrom(ZF_IN ZFObject *anotherObj) {
-    if(anotherObj != zfnull && anotherObj != this->toObject() && anotherObj->classData() == this->classData()) {
+    if(anotherObj != zfnull && anotherObj != this->toObject()) {
         this->copyableOnCopyFrom(anotherObj);
     }
 }

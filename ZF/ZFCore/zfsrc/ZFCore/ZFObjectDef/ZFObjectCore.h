@@ -353,8 +353,9 @@ public:
      * it's recommended to override #objectCompareValue instead
      *
      * @warning if your override #objectCompare,
-     *   you must also override #objectHash,
-     *   and follow the rules described in #objectHash
+     *   you must also override #objectCompareValue,
+     *   if two objects are #objectCompare as same,
+     *   then #objectCompareValue must also result to same
      * @note for dynamic registered class (#ZFClassDynamicRegister),
      *   you may supply a reflectable method with `ZFCompareResult objectCompare(ZFObject *)`,
      *   to achieve custom logic

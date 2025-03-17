@@ -153,6 +153,12 @@ ZFCompareResult ZFObject::objectCompareValue(ZF_IN ZFObject *anotherObj) {
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
         }
+        else {
+            m = this->classData()->methodForName("objectCompareImpl");
+            if(m && m->ownerClass() != ZFObject::ClassData()) {
+                return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
+            }
+        }
     }
     return this->objectCompareValueImpl(anotherObj);
 }

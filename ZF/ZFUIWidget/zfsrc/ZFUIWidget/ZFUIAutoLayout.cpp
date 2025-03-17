@@ -267,7 +267,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
     return zftrue;
 }
 
-void ZFUIAutoLayoutParam::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+void ZFUIAutoLayoutParam::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     zfsuper::styleableOnCopyFrom(anotherStyleable);
     // copy ZFUIAutoLayoutParam does not copy rules,
     // it's done by ZFUIAutoLayout::styleableOnCopyFrom
@@ -304,7 +304,7 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompareValueImpl(ZF_IN ZFObject *anot
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoLayout)
 ZFOBJECT_REGISTER(ZFUIAutoLayout)
 
-void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     zfsuper::styleableOnCopyFrom(anotherStyleable);
     zfself *another = zfcast(zfself *, anotherStyleable);
     if(another == zfnull

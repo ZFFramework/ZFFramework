@@ -1275,7 +1275,7 @@ protected:
      * @brief for a view, copy style would also copy all of it's children
      */
     zfoverride
-    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
 
 protected:
     zfoverride

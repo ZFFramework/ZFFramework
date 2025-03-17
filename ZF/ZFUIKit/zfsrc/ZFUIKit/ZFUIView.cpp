@@ -2362,7 +2362,7 @@ void ZFUIView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent) {
 
 // ============================================================
 // override
-void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+void ZFUIView::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
     ZFUIView *ref = zfcast(zfself *, anotherStyleable);
     if(ref == zfnull || this->childCount() != 0) {

@@ -48,7 +48,7 @@ public:
      * usually you should not override this method,
      * override #styleableOnCopyFrom instead
      */
-    zffinal void styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    zffinal void styleableCopyFrom(ZF_IN ZFObject *anotherStyleable);
 
 public:
     /**
@@ -115,7 +115,7 @@ protected:
      *   while the property is ensured to be same and safe to copy
      */
     virtual void styleableOnCopyPropertyFrom(
-            ZF_IN ZFStyleable *anotherStyleable
+            ZF_IN ZFObject *anotherStyleable
             , ZF_IN const ZFProperty *property
             , ZF_IN ZFStyleable::PropertyType propertyType
             );
@@ -123,7 +123,7 @@ protected:
      * @brief for subclass to achieve custom style copy step,
      *   called by #styleableCopyFrom, see #ZFStyleable
      */
-    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
 
 private:
     zffinal _ZFP_I_ZFStyleable_PropertyTypeHolder *_ZFP_ZFStyleable_getPropertyTypeHolder(void);

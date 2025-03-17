@@ -29,8 +29,8 @@ public:
 };
 
 // ============================================================
-void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
-    if(anotherStyleable != zfnull) {
+void ZFStyleable::styleableCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+    if(anotherStyleable != zfnull && anotherStyleable != this->toObject()) {
         this->styleableOnCopyFrom(anotherStyleable);
     }
 }
@@ -86,12 +86,12 @@ ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const 
 }
 
 void ZFStyleable::styleableOnCopyPropertyFrom(
-        ZF_IN ZFStyleable *anotherStyleable
+        ZF_IN ZFObject *anotherStyleable
         , ZF_IN const ZFProperty *property
         , ZF_IN ZFStyleable::PropertyType propertyType
         ) {
     if(property && this->propStyle(property->propertyName()) == zfnull) {
-        this->propStyle(property->propertyName(), anotherStyleable->propStyle(property->propertyName()));
+        this->propStyle(property->propertyName(), zfcast(ZFStyleable *, anotherStyleable)->propStyle(property->propertyName()));
     }
     switch(propertyType) {
         case ZFStyleable::PropertyTypeNormal: {
@@ -100,7 +100,7 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
             break;
         case ZFStyleable::PropertyTypeStyleable: {
             ZFStyleable *selfPropertyValue = property->getterMethod()->methodInvoke(this->toObject());
-            ZFStyleable *anotherPropertyValue = property->getterMethod()->methodInvoke(anotherStyleable->toObject());
+            ZFObject *anotherPropertyValue = property->getterMethod()->methodInvoke(anotherStyleable->toObject());
             if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull) {
                 selfPropertyValue->styleableCopyFrom(anotherPropertyValue);
             }
@@ -154,9 +154,9 @@ _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getProperty
     return holder;
 }
 
-void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
+void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     if(this->styleKey() == zfnull) {
-        this->styleKey(anotherStyleable->styleKey());
+        this->styleKey(zfcast(ZFStyleable *, anotherStyleable)->styleKey());
     }
 
     _ZFP_I_ZFStyleable_PropertyTypeHolder *holderTmp = this->_ZFP_ZFStyleable_getPropertyTypeHolder();
@@ -415,7 +415,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfanyT<ZFStyleable>, defaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
-        , ZFMP_IN(ZFStyleable *, anotherStyleable)
+        , ZFMP_IN(ZFObject *, anotherStyleable)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfbool, styleableIsDefaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFStyleable, void, styleablePropertyTypeGetAll

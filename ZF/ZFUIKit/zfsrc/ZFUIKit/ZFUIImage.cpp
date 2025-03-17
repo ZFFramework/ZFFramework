@@ -284,8 +284,8 @@ zfbool ZFUIImage::serializableOnSerializeToData(
     return zftrue;
 }
 
-void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
-    zfsuperI(ZFCopyable)::styleableOnCopyFrom(anotherStyleable);
+void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+    zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
     ZFUIImage *ref = zfcast(zfself *, anotherStyleable);
     if(ref == zfnull || ref == this) {
         return;

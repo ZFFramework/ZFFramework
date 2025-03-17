@@ -188,10 +188,15 @@ public:
             , ZF_IN_OPT const ZFListener &impl = zfnull
             );
 
-    /**
-     * @brief util for impl to implement default behavior of #onInit
-     */
+    /** @brief util for impl to implement default behavior of #onInit */
     static void onInitImpl(ZF_IN const ZFArgs &zfargs);
+
+    /** @brief util to implement #ZFObject::objectInfoImpl by #ZFClassUtil::objectInfo */
+    ZFDynamic &objectInfoImplByProp(void);
+    /** @brief util to implement #ZFObject::objectCompareImpl by #ZFClassUtil::allPropertyIsEqual */
+    ZFDynamic &objectCompareImplByProp(void);
+    /** @brief util to implement #ZFObject::objectCompareValueImpl by #ZFClassUtil::allPropertyIsEqual */
+    ZFDynamic &objectCompareValueImplByProp(void);
 
 public:
     /** @brief see #ZFDynamic */

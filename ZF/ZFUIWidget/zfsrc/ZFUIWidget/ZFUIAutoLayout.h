@@ -220,7 +220,7 @@ protected:
             );
 
     zfoverride
-    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
     zfoverride
     virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj);
 
@@ -362,7 +362,7 @@ protected:
 
 protected:
     zfoverride
-    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
     zfoverride
     virtual zfbool serializableOnSerializeFromData(
             ZF_IN const ZFSerializableData &serializableData

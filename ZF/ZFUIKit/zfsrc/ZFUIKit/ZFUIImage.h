@@ -60,7 +60,7 @@ protected:
 
 protected:
     zfoverride
-    virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
 
     // ============================================================
     // property

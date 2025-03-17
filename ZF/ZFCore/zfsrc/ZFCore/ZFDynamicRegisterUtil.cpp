@@ -770,6 +770,54 @@ void ZFDynamic::onInitImpl(ZF_IN const ZFArgs &zfargs) {
     }
 }
 
+ZFDynamic &ZFDynamic::objectInfoImplByProp(void) {
+    ZFLISTENER(impl) {
+        v_zfstring *ret = zfargs.param0();
+        ZFClassUtil::objectInfoT(ret->zfv, zfargs.sender());
+    } ZFLISTENER_END()
+    return this->method(
+            ZFTypeId_void()
+            , "objectInfoImpl"
+            , ZFMP()
+            .mp(ZFTypeId_zfstring(), "ret")
+            , impl
+            );
+}
+ZFDynamic &ZFDynamic::objectCompareImplByProp(void) {
+    ZFLISTENER(impl) {
+        zfobj<v_ZFCompareResult> ret;
+        ret->zfv = ZFClassUtil::allPropertyIsEqual(zfargs.sender(), zfargs.param0())
+            ? ZFCompareEqual
+            : ZFCompareUncomparable
+            ;
+        zfargs.result(ret);
+    } ZFLISTENER_END()
+    return this->method(
+            ZFTypeId_ZFCompareResult()
+            , "objectCompareImpl"
+            , ZFMP()
+            .mp(ZFObject::ClassData()->classNameFull(), "ref")
+            , impl
+            );
+}
+ZFDynamic &ZFDynamic::objectCompareValueImplByProp(void) {
+    ZFLISTENER(impl) {
+        zfobj<v_ZFCompareResult> ret;
+        ret->zfv = ZFClassUtil::allPropertyIsEqual(zfargs.sender(), zfargs.param0())
+            ? ZFCompareEqual
+            : ZFCompareUncomparable
+            ;
+        zfargs.result(ret);
+    } ZFLISTENER_END()
+    return this->method(
+            ZFTypeId_ZFCompareResult()
+            , "objectCompareValueImpl"
+            , ZFMP()
+            .mp(ZFObject::ClassData()->classNameFull(), "ref")
+            , impl
+            );
+}
+
 // ============================================================
 ZFDynamic &ZFDynamic::NSBegin(ZF_IN const zfstring &methodNamespace) {
     if(d->errorOccurred) {return *this;}
@@ -1693,6 +1741,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, onInit
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFDynamic, v_ZFDynamic, void, onInitImpl
         , ZFMP_IN(const ZFArgs &, zfargs)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectInfoImplByProp)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectCompareImplByProp)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectCompareValueImplByProp)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin
         , ZFMP_IN(const zfstring &, methodNamespace)
         )
