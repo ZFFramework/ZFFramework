@@ -203,7 +203,8 @@ zftimet ZFAniGroup::durationFixed(void) {
             if(this->autoUpdateDuration()) {
                 ani->duration(this->duration());
             }
-            ret += ani->durationFixed();
+            zftimet childDuration = this->childDurationAt(i);
+            ret += (childDuration == 0 ? ani->durationFixed() : childDuration);
         }
     }
     else {
@@ -212,7 +213,8 @@ zftimet ZFAniGroup::durationFixed(void) {
             if(this->autoUpdateDuration()) {
                 ani->duration(this->duration());
             }
-            ret = zfmMax<zftimet>(ret, ani->durationFixed());
+            zftimet childDuration = this->childDurationAt(i);
+            ret = zfmMax<zftimet>(ret, childDuration == 0 ? ani->durationFixed() : childDuration);
         }
     }
     if(ret == 0) {
@@ -244,6 +246,12 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
         if(category == zfnull) {continue;}
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAniGroup_child)) {
+            zftimet childDuration = 0;
+            ZFSerializableUtilSerializeCategoryFromData(categoryData, outErrorHint, outErrorPos,
+                    check, ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, childDuration, {
+                        return zffalse;
+                    });
+
             zfauto element;
             if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
@@ -259,6 +267,9 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
                 return zffalse;
             }
             this->child(element);
+            if(childDuration != 0) {
+                this->childDurationAt(this->childCount() - 1, childDuration);
+            }
 
             categoryData.resolveMark();
         }
@@ -283,6 +294,10 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
             if(!ZFObjectToDataT(elementData, child, outErrorHint)) {
                 return zffalse;
             }
+            ZFSerializableUtilSerializeAttrToDataNoRef(serializableData, outErrorHint,
+                    ZFSerializableKeyword_ZFAniGroup_childDuration, zftimet, this->childDurationAt(i), 0, {
+                        return zffalse;
+                    });
             elementData.category(ZFSerializableKeyword_ZFAniGroup_child);
             serializableData.child(elementData);
         }
@@ -294,7 +309,9 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
         }
         else {
             for(zfindex i = 0; i < this->childCount(); ++i) {
-                if(ZFObjectCompareValue(this->childAt(i), ref->childAt(i)) != ZFCompareEqual) {
+                if(ZFObjectCompareValue(this->childAt(i), ref->childAt(i)) != ZFCompareEqual
+                        || this->childDurationAt(i) != ref->childDurationAt(i)
+                        ) {
                     mismatch = zftrue;
                     break;
                 }

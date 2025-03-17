@@ -1,8 +1,6 @@
 #include "ZFUIViewBlink.h"
 #include "ZFUIImageView.h"
-#include "ZFAniForNative.h"
 
-#include "ZFUIKit/protocol/ZFProtocolZFAniForNative.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIImageIO.h"
 
@@ -133,15 +131,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkCountLeft, zfobj<v_zfindex>(blinkParam.blinkCount() - 1));
     }
 
-    zfautoT<ZFAnimation> ani;
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFAniForNative)) {
-        zfobj<ZFAniForNative> tmp;
-        ani = tmp;
-        tmp->alphaTo(0);
-    }
-    else {
-        ani = ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
-    }
+    zfautoT<ZFAnimation> ani = ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
     view->objectTag(_ZFP_ZFUIViewBlink_tag_ani, ani);
     #if _ZFP_ZFUIViewBlink_DEBUG_duration
         ani->duration(5000);

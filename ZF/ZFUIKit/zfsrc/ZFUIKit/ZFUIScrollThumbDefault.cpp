@@ -1,8 +1,5 @@
 #include "ZFUIScrollThumbDefault.h"
 #include "ZFUIWindow.h"
-#include "ZFAniForNative.h"
-
-#include "ZFUIKit/protocol/ZFProtocolZFAniForNative.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -32,20 +29,6 @@ protected:
         if(this->thumbView->visible()) {
             this->thumbView->alpha(1 - progress);
         }
-    }
-};
-zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView : zfextend ZFAniForNative {
-    ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, ZFAniForNative)
-
-protected:
-    virtual void objectOnInit(ZF_IN ZFUIImageView *thumbView) {
-        this->objectOnInit();
-        this->target(thumbView);
-        this->alphaTo(0);
-    }
-    zfoverride
-    virtual void objectOnInit(void) {
-        zfsuper::objectOnInit();
     }
 };
 zfclassNotPOD _ZFP_ZFUIScrollThumbDefaultPrivate {
@@ -96,13 +79,7 @@ void ZFUIScrollThumbDefault::objectOnInit(void) {
     d->thumbView = zfobj<ZFUIImageView>();
     d->thumbHideAni = zfobj<ZFAniQueue>();
     d->thumbHideAni->wait(0);
-
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFAniForNative)) {
-        d->thumbHideAni->child(zfobj<_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView>(d->thumbView));
-    }
-    else {
-        d->thumbHideAni->child(zfobj<_ZFP_ZFUIScrollThumbDefault_HideThumbAni>(d->thumbView));
-    }
+    d->thumbHideAni->child(zfobj<_ZFP_ZFUIScrollThumbDefault_HideThumbAni>(d->thumbView));
 }
 void ZFUIScrollThumbDefault::objectOnInitFinish(void) {
     zfsuper::objectOnInitFinish();

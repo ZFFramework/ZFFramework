@@ -11,6 +11,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFAniGroup_child "child"
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFAniGroup_childDuration "childDuration"
 
 // ============================================================
 zfclassFwd _ZFP_ZFAniGroupPrivate;
@@ -21,7 +23,10 @@ zfclassFwd _ZFP_ZFAniGroupPrivate;
  * @code
  *   <ZFAniGroup>
  *       // all child animations
- *       <SomeAni category="child" ... />
+ *       <SomeAni category="child"
+ *           childDuration="123" // optional
+ *           ...
+ *           />
  *       ...
  *   </ZFAniGroup>
  * @endcode
