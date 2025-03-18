@@ -15,6 +15,8 @@
     #define _ZFP_ZFDI_invokeTimeLogger(fmt, ...)
 #endif
 
+#define _ZFP_ZFDI_CACHE_ENABLE 1
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 typedef zfstlmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
@@ -293,20 +295,100 @@ static void _ZFP_ZFDI_invoke(
         return ZFDI_invoke(zfargs, methodList, convStr);
     }
 }
+static zfbool _ZFP_ZFDI_invokeAction(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFArgs &zfargs
+        , ZF_IN const ZFMethod *method
+        , ZF_IN_OUT _ZFP_ZFDI_ParamBackupMapType &paramBackup
+        , ZF_IN_OUT zfstring *errorHint
+        , ZF_IN zfbool convStr
+        ) {
+    if(_ZFP_ZFDI_paramConvert(
+                method
+                , paramBackup
+                , zfargs
+                , !zfargs.ignoreError() ? errorHint : zfnull
+                , convStr
+                )) {
+        zfargs.success(zftrue);
+        zfargs.errorHint(zfnull);
+        zfargs._ZFP_ZFArgs_removeConst().ownerMethod(method);
+        method->methodGenericInvoker()(zfargs);
+        if(zfargs.success()) {
+            if(zfstringIsEqual(method->returnTypeId(), ZFTypeId_void())) {
+                zfargs.result(obj);
+            }
+            return zftrue;
+        }
+        else {
+            if(errorHint) {
+                *errorHint += zfargs.errorHint();
+            }
+        }
+    }
+
+    for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
+        zfargs.param(it->first, it->second);
+    }
+    paramBackup.clear();
+    return zffalse;
+}
+
+#if _ZFP_ZFDI_CACHE_ENABLE
+static zfstlmap<zfstring, const ZFMethod *> _ZFP_ZFDI_cacheMap;
+
+static zfstring _ZFP_ZFDI_cacheKey(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFArgs &zfargs
+        , ZF_IN const zfstring &methodName
+        , ZF_IN zfbool convStr
+        ) {
+    zfstring ret;
+    if(obj) {
+        zfidentityToStringT(ret, obj->classData()->classId());
+    }
+    ret += '.';
+    ret += methodName;
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        ZFObject *param = zfargs.paramAt(i);
+        if(param == ZFMP_DEF()) {
+            break;
+        }
+        ret += ':';
+        if(param) {
+            zfidentityToStringT(ret, param->classData()->classId());
+        }
+    }
+    if(convStr) {
+        ret += '?';
+    }
+    return ret;
+}
+#endif
+
 void ZFDI_invoke(
         ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const zfstring &name
         , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
     ZFObject *obj = zfargs.sender();
+    if(obj != zfnull) {
+        obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
+    }
     _ZFP_ZFDI_invokeTimeLogger("ivk: %s::%s"
             , obj ? obj->classData()->classNameFull().cString() : ""
             , name.cString()
             );
-
-    if(obj != zfnull) {
-        obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
+#if _ZFP_ZFDI_CACHE_ENABLE
+    zfstring cacheKey = _ZFP_ZFDI_cacheKey(obj, zfargs, name, convStr);
+    zfstlmap<zfstring, const ZFMethod *>::iterator itCache = _ZFP_ZFDI_cacheMap.find(cacheKey);
+    if(itCache != _ZFP_ZFDI_cacheMap.end()) {
+        _ZFP_ZFDI_ParamBackupMapType paramBackup;
+        if(_ZFP_ZFDI_invokeAction(obj, zfargs, itCache->second, paramBackup, zfnull, convStr)) {
+            return;
+        }
     }
+#endif
 
     ZFCoreArray<const ZFMethod *> methodList;
 
@@ -396,34 +478,16 @@ void ZFDI_invoke(
                 errorHint += "\n    ";
             }
 
-            if(_ZFP_ZFDI_paramConvert(
-                        method
-                        , paramBackup
-                        , zfargs
-                        , !zfargs.ignoreError() ? &errorHint : zfnull
-                        , convStr
-                        )) {
-                zfargs.success(zftrue);
-                zfargs.errorHint(zfnull);
-                zfargs._ZFP_ZFArgs_removeConst().ownerMethod(method);
-                method->methodGenericInvoker()(zfargs);
-                if(zfargs.success()) {
-                    if(zfstringIsEqual(method->returnTypeId(), ZFTypeId_void())) {
-                        zfargs.result(obj);
-                    }
-                    return;
+            if(_ZFP_ZFDI_invokeAction(obj, zfargs, method, paramBackup, &errorHint, convStr)) {
+#if _ZFP_ZFDI_CACHE_ENABLE
+                for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
+                    zfargs.param(it->first, it->second);
                 }
-                else {
-                    if(!zfargs.ignoreError()) {
-                        errorHint += zfargs.errorHint();
-                    }
-                }
+                zfstring cacheKey = _ZFP_ZFDI_cacheKey(obj, zfargs, method->methodName(), convStr);
+                _ZFP_ZFDI_cacheMap[cacheKey] = method;
+#endif
+                return;
             }
-
-            for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
-                zfargs.param(it->first, it->second);
-            }
-            paramBackup.clear();
         }
     }
     zfargs.success(zffalse);

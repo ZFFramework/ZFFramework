@@ -569,7 +569,7 @@ static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfstring &methodId) {
     else {
         ZFMethod *v = zfnew(ZFMethod);
         v->_ZFP_ZFMethod_methodId = methodId;
-        m[v->methodId()] = v;
+        m[methodId] = v;
         return v;
     }
 }
@@ -707,7 +707,7 @@ void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
     _ZFP_ZFMethod_invokeTimeLogger("unreg: %s", method->methodName().cString());
     ZFCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
-    _ZFP_ZFMethodMapType::iterator it = m.find(method->methodId());
+    _ZFP_ZFMethodMapType::iterator it = m.find(method->_ZFP_ZFMethod_methodId);
     if(it == m.end()) {
         return;
     }

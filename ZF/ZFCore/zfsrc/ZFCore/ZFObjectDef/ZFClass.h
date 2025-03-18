@@ -624,6 +624,14 @@ public:
      */
     zffinal void classTagRemoveAll(void) const;
 
+    /**
+     * @brief a unique id that represents the class
+     * @note the id may be reused if owner class unloaded
+     */
+    zffinal zfidentity classId(void) const {
+        return _ZFP_ZFClass_classNameFull.sigId();
+    }
+
     // ============================================================
     // private
 public:

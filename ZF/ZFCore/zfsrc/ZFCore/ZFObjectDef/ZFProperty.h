@@ -44,8 +44,8 @@ public:
     /**
      * @brief internal property id, for debug use only
      */
-    inline const zfstring &propertyId(void) const {
-        return this->_ZFP_ZFProperty_propertyId;
+    inline zfidentity propertyId(void) const {
+        return this->_ZFP_ZFProperty_propertyId.sigId();
     }
     /**
      * @brief true if this property is registered by #ZFPropertyUserRegisterRetain
@@ -180,7 +180,7 @@ public:
     zfuint _ZFP_ZFProperty_refCount;
     zfbool _ZFP_ZFProperty_isUserRegister;
     zfbool _ZFP_ZFProperty_isDynamicRegister;
-    zfstring _ZFP_ZFProperty_propertyId;
+    ZFSigName _ZFP_ZFProperty_propertyId;
     ZFObject *_ZFP_ZFProperty_dynamicRegisterUserData;
     ZFObject *_ZFP_ZFProperty_dynamicRegisterUserDataWrapper;
     const ZFClass *_ZFP_ZFProperty_ownerClass;

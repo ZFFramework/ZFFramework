@@ -20,7 +20,9 @@ zfauto &zfauto::operator = (ZF_IN zfauto const &p) {
 }
 
 void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {
-    zfunsafe_zfRetainChange(_ZFP_obj, obj);
+    ZFObject *t = _ZFP_obj;
+    _ZFP_obj = zfunsafe_zfRetain(obj);
+    zfunsafe_zfRelease(t);
 }
 
 zfindex zfauto::objectRetainCount(void) const {

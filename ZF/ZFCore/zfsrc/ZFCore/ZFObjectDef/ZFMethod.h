@@ -307,8 +307,8 @@ public:
     /**
      * @brief internal method id, for debug use only
      */
-    inline const zfstring &methodId(void) const {
-        return this->_ZFP_ZFMethod_methodId;
+    inline zfidentity methodId(void) const {
+        return this->_ZFP_ZFMethod_methodId.sigId();
     }
     /**
      * @brief whether the method is registered by #ZFMethodUserRegister_0
@@ -682,7 +682,7 @@ public:
     zfbool _ZFP_ZFMethod_isDynamicRegister;
     zfany _ZFP_ZFMethod_methodUserData;
 
-    zfstring _ZFP_ZFMethod_methodId;
+    ZFSigName _ZFP_ZFMethod_methodId;
     _ZFP_ZFMethodPrivateExt *_ZFP_ZFMethod_ext;
 
     ZFFuncAddrType _ZFP_ZFMethod_invoker;

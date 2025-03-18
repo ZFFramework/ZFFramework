@@ -127,6 +127,9 @@ public:
     }
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
+        SDL_Rect sdlRect;
+        SDL_GetDisplayUsableBounds(0, &sdlRect);
+        sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(sdlRect.w, sdlRect.h));
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {

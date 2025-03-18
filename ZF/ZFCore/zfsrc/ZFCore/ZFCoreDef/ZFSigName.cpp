@@ -15,7 +15,7 @@ public:
 };
 
 typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;
-typedef zfstlhashmap<zfidentity, zfbool, zfpod_zfstlHash<zfidentity>, zfpod_zfstlEqual<zfidentity> > _ZFP_ZFSigNameIdMapType;
+typedef zfstlhashmap<zfidentity, _ZFP_ZFSigNamePrivate *, zfpod_zfstlHash<zfidentity>, zfpod_zfstlEqual<zfidentity> > _ZFP_ZFSigNameIdMapType;
 typedef zfstldeque<_ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameCacheType;
 
 static zfidentity &_ZFP_ZFSigNameId(void) {
@@ -54,7 +54,7 @@ static void _ZFP_ZFSigIdAttach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
         d->sigId = _ZFP_ZFSigNameIdUnusedMap().begin()->first;
         _ZFP_ZFSigNameIdUnusedMap().erase(_ZFP_ZFSigNameIdUnusedMap().begin());
     }
-    _ZFP_ZFSigNameIdMap()[d->sigId] = zftrue;
+    _ZFP_ZFSigNameIdMap()[d->sigId] = d;
 }
 static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
     if(s == zfnull) {
@@ -100,7 +100,7 @@ static void _ZFP_ZFSigNameDetach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
                 _ZFP_ZFSigNameMap().erase(d->s);
                 if(d->sigId != zfidentityInvalid()) {
                     _ZFP_ZFSigNameIdMap().erase(d->sigId);
-                    _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zftrue;
+                    _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zfnull;
                 }
                 zfdelete(d);
             }
@@ -207,7 +207,7 @@ ZFSigName &ZFSigName::operator = (ZF_IN const zfchar *s) {
 }
 
 // ============================================================
-void ZFSigNameInfo(ZF_OUT zfstring &ret) {
+void ZFSigNameInfoT(ZF_OUT zfstring &ret) {
     ZFCoreMutexLocker();
     _ZFP_ZFSigNameMapType &m = _ZFP_ZFSigNameMap();
     for(_ZFP_ZFSigNameMapType::iterator it = m.begin(); it != m.end(); ++it) {
@@ -215,6 +215,33 @@ void ZFSigNameInfo(ZF_OUT zfstring &ret) {
         ret += " : ";
         zfsFromIntT(ret, it->second->refCount);
         ret += "\n";
+    }
+}
+zfstring ZFSigNameInfo(void) {
+    zfstring ret;
+    ZFSigNameInfoT(ret);
+    return ret;
+}
+zfidentity ZFSigNameToId(ZF_IN const zfstring &name) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFSigNameMapType &m = _ZFP_ZFSigNameMap();
+    _ZFP_ZFSigNameMapType::iterator it = m.find(name);
+    if(it != m.end()) {
+        return it->second->sigId;
+    }
+    else {
+        return zfidentityInvalid();
+    }
+}
+zfstring ZFSigNameFromId(ZF_IN zfidentity sigId) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFSigNameIdMapType &m = _ZFP_ZFSigNameIdMap();
+    _ZFP_ZFSigNameIdMapType::iterator it = m.find(sigId);
+    if(it != m.end()) {
+        return it->second->s;
+    }
+    else {
+        return zfnull;
     }
 }
 

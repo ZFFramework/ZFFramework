@@ -576,6 +576,19 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfiter, zfbool, isEqual
         )
 
 // ============================================================
+// ZFSigName
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFSigNameInfoT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfstring, ZFSigNameInfo)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFSigNameToId
+        , ZFMP_IN_OUT(const zfstring &, name)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFSigNameFromId
+        , ZFMP_IN(zfidentity, sigId)
+        )
+
+// ============================================================
 // ZFCallerInfo
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
         do {

@@ -388,7 +388,7 @@ public:
     ZFListener classDataUpdateListener;
 public:
     static zfself *attach(ZF_IN const ZFArgs &zfargs) {
-        zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classNameFull(), zfargs.ownerMethod()->methodId());
+        zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classId(), zfargs.ownerMethod()->methodId());
         zfself *cache = zfargs.ownerMethod()->ownerClass()->classTag(cacheKey);
         if(cache == zfnull) {
             zfobj<zfself> holder;
@@ -411,7 +411,7 @@ public:
             return;
         }
         const ZFClass *cls = this->ownerMethod->ownerClass();
-        zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classNameFull(), this->ownerMethod->methodId());
+        zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classId(), this->ownerMethod->methodId());
         this->ownerMethod = zfnull;
         this->superMethod = zfnull;
         ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataUpdateListener);

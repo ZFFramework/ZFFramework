@@ -162,7 +162,7 @@ static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfstring &propertyI
     else {
         ZFProperty *v = zfnew(ZFProperty);
         v->_ZFP_ZFProperty_propertyId = propertyId;
-        m[v->propertyId()] = v;
+        m[propertyId] = v;
         return v;
     }
 }
@@ -254,7 +254,7 @@ void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo) {
     _ZFP_ZFProperty_invokeTimeLogger("unreg: %s::%s", propertyInfo->ownerClass()->className().cString(), propertyInfo->propertyName().cString());
     ZFCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
-    _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInfo->propertyId());
+    _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInfo->_ZFP_ZFProperty_propertyId);
     if(it == m.end()) {
         return;
     }

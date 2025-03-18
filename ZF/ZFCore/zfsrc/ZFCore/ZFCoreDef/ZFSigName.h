@@ -86,10 +86,14 @@ private:
 };
 ZFOUTPUT_TYPE(ZFSigName, {s += v.cString();})
 
-/**
- * @brief print all state, for debug use only
- */
-extern ZFLIB_ZFCore void ZFSigNameInfo(ZF_OUT zfstring &ret);
+/** @brief print all state, for debug use only */
+extern ZFLIB_ZFCore void ZFSigNameInfoT(ZF_OUT zfstring &ret);
+/** @brief print all state, for debug use only */
+extern ZFLIB_ZFCore zfstring ZFSigNameInfo(void);
+/** @brief for debug use only */
+extern ZFLIB_ZFCore zfidentity ZFSigNameToId(ZF_IN const zfstring &name);
+/** @brief for debug use only */
+extern ZFLIB_ZFCore zfstring ZFSigNameFromId(ZF_IN zfidentity sigId);
 
 ZF_NAMESPACE_GLOBAL_END
 
