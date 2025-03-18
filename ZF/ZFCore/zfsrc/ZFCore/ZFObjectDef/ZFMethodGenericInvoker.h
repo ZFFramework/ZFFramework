@@ -72,12 +72,16 @@ extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
 template<typename T_Type, typename T_Access>
 zfclassNotPOD _ZFP_MtdGIPA { // Param Access
 public:
-    zfauto &obj;
+    typedef zfauto (Cb_pDef)(void);
+    zfauto obj;
 public:
-    explicit _ZFP_MtdGIPA(ZF_IN_OUT zfauto &obj) : obj(obj) {}
-    T_Access a(ZF_IN_OPT ZFObject *pDef = zfnull) {
+    explicit _ZFP_MtdGIPA(ZF_IN const zfauto &obj) : obj(obj) {}
+    T_Access a(void) {
+        return ZFTypeId<T_Type>::template Value<T_Access>::zfvAccess(this->obj);
+    }
+    T_Access a(ZF_IN Cb_pDef pDef) {
         if(this->obj == ZFMP_DEF()) {
-            this->obj = pDef;
+            this->obj = pDef();
         }
         return ZFTypeId<T_Type>::template Value<T_Access>::zfvAccess(this->obj);
     }
@@ -87,7 +91,7 @@ public:
     }
 };
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_ACCESS_EXPAND(N, DefaultExpandOrEmpty, ParamType) \
-    _ZFP_MtdGIPA<_TR##N, _T##N>(zfargs.paramAt(N)).a(DefaultExpandOrEmpty(pDef##N()))
+    _ZFP_MtdGIPA<_TR##N, _T##N>(zfargs.paramAt(N)).a(DefaultExpandOrEmpty(pDef##N))
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(N, DefaultExpandOrEmpty, ParamType, DefaultValueFix) \
     DefaultExpandOrEmpty( \
         static zfauto pDef##N(void) { \

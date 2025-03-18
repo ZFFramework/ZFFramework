@@ -199,14 +199,6 @@ extern ZFLIB_ZFCore void ZFDI_invoke(
         , ZF_IN const zfstring &name
         , ZF_IN_OPT zfbool convStr = zffalse
         );
-/**
- * @brief see #ZFDI_invoke
- */
-extern ZFLIB_ZFCore void ZFDI_invoke(
-        ZF_IN_OUT const ZFArgs &zfargs
-        , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
-        , ZF_IN_OPT zfbool convStr = zffalse
-        );
 
 /**
  * @brief perform advanced dynamic class alloc

@@ -268,33 +268,106 @@ static zfbool _ZFP_ZFDI_paramConvert(
     }
     return zftrue;
 }
-static void _ZFP_ZFDI_invoke(
-        ZF_IN_OUT const ZFArgs &zfargs
-        , ZF_IN const zfstring &name
-        , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
-        , ZF_IN_OPT zfbool convStr = zffalse
-        ) {
-    if(methodList.isEmpty()) {
-        zfargs.success(zffalse);
-        if(!zfargs.ignoreError()) {
-            zfstring errorHint;
-            errorHint += "no matching method to call: ";
-            errorHint += name;
-            errorHint += "(";
-            ZFDI_paramInfoT(errorHint, zfargs);
-            errorHint += ")";
-            if(zfargs.sender()) {
-                errorHint += ", for object: ";
-                zfargs.sender()->objectInfoT(errorHint);
-            }
-            zfargs.errorHint(errorHint);
-        }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
-    }
-    else {
-        return ZFDI_invoke(zfargs, methodList, convStr);
-    }
+
+#if _ZFP_ZFDI_CACHE_ENABLE
+zfclassPOD _ZFP_ZFDI_CacheData {
+public:
+    // cls && !m : alloc with no param
+    // cls && m : alloc with custom ctor
+    // !cls && m : method call
+    const ZFClass *cls;
+    const ZFMethod *m;
+};
+static zfstlmap<zfstring, _ZFP_ZFDI_CacheData> _ZFP_ZFDI_cacheMap;
+
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_cache, ZFLevelZFFrameworkEssential) {
+    _ZFP_ZFDI_cacheMap.clear();
+    _classOnUpdateListener = ZFCallbackForFunc(zfself::classOnUpdate);
+    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), _classOnUpdateListener);
 }
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_cache) {
+    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), _classOnUpdateListener);
+}
+private:
+    ZFListener _classOnUpdateListener;
+    static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
+        v_ZFClassDataUpdateData *info = zfargs.param0();
+        if(info->zfv.changeType == ZFClassDataUpdateTypeDetach) {
+            const ZFMethod *m = info->zfv.changedMethod;
+            const ZFClass *cls = info->zfv.changedClass;
+            if(m) {
+                if(cls) {
+                    for(zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                        if(it->second.m == m || it->second.cls == cls) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
+                    }
+                }
+                else {
+                    for(zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                        if(it->second.m == m) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
+                    }
+                }
+            }
+            else {
+                if(cls) {
+                    for(zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                        if(it->second.cls == cls) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
+                    }
+                }
+            }
+        }
+    }
+ZF_GLOBAL_INITIALIZER_END(ZFDI_cache)
+
+static zfstring _ZFP_ZFDI_cacheKey(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFArgs &zfargs
+        , ZF_IN const zfstring &methodName
+        , ZF_IN zfbool convStr
+        ) {
+    zfstring ret;
+    if(obj) {
+        zfidentityToStringT(ret, obj->classData()->classId());
+    }
+    ret += '.';
+    ret += methodName;
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        ZFObject *param = zfargs.paramAt(i);
+        if(param == ZFMP_DEF()) {
+            break;
+        }
+        ret += ':';
+        if(param) {
+            zfidentityToStringT(ret, param->classData()->classId());
+        }
+    }
+    if(!convStr) {
+        ret += '*';
+    }
+    return ret;
+}
+static zfstring _ZFP_ZFDI_zfargsInfo(ZF_IN const ZFArgs &zfargs) {
+    zfstring ret;
+    ret += "[";
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        ZFObject *p = zfargs.paramAt(i);
+        if(p == ZFMP_DEF()) {
+            break;
+        }
+        if(i != 0) {
+            ret += ", ";
+        }
+        if(p) {
+            ret += p->classData()->classNameFull();
+        }
+        else {
+            ret += ZFTOKEN_zfnull;
+        }
+    }
+    ret += "]";
+    return ret;
+}
+#endif
+
 static zfbool _ZFP_ZFDI_invokeAction(
         ZF_IN ZFObject *obj
         , ZF_IN const ZFArgs &zfargs
@@ -333,130 +406,33 @@ static zfbool _ZFP_ZFDI_invokeAction(
     paramBackup.clear();
     return zffalse;
 }
-
-#if _ZFP_ZFDI_CACHE_ENABLE
-static zfstlmap<zfstring, const ZFMethod *> _ZFP_ZFDI_cacheMap;
-
-static zfstring _ZFP_ZFDI_cacheKey(
-        ZF_IN ZFObject *obj
-        , ZF_IN const ZFArgs &zfargs
-        , ZF_IN const zfstring &methodName
-        , ZF_IN zfbool convStr
-        ) {
-    zfstring ret;
-    if(obj) {
-        zfidentityToStringT(ret, obj->classData()->classId());
-    }
-    ret += '.';
-    ret += methodName;
-    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
-        ZFObject *param = zfargs.paramAt(i);
-        if(param == ZFMP_DEF()) {
-            break;
-        }
-        ret += ':';
-        if(param) {
-            zfidentityToStringT(ret, param->classData()->classId());
-        }
-    }
-    if(convStr) {
-        ret += '?';
-    }
-    return ret;
-}
-#endif
-
-void ZFDI_invoke(
+static void _ZFP_ZFDI_invoke(
         ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const zfstring &name
-        , ZF_IN_OPT zfbool convStr /* = zffalse */
-        ) {
-    ZFObject *obj = zfargs.sender();
-    if(obj != zfnull) {
-        obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
-    }
-    _ZFP_ZFDI_invokeTimeLogger("ivk: %s::%s"
-            , obj ? obj->classData()->classNameFull().cString() : ""
-            , name.cString()
-            );
-#if _ZFP_ZFDI_CACHE_ENABLE
-    zfstring cacheKey = _ZFP_ZFDI_cacheKey(obj, zfargs, name, convStr);
-    zfstlmap<zfstring, const ZFMethod *>::iterator itCache = _ZFP_ZFDI_cacheMap.find(cacheKey);
-    if(itCache != _ZFP_ZFDI_cacheMap.end()) {
-        _ZFP_ZFDI_ParamBackupMapType paramBackup;
-        if(_ZFP_ZFDI_invokeAction(obj, zfargs, itCache->second, paramBackup, zfnull, convStr)) {
-            return;
-        }
-    }
-#endif
-
-    ZFCoreArray<const ZFMethod *> methodList;
-
-    // obj->methodName()
-    if(obj != zfnull) {
-        obj->classData()->methodForNameGetAllT(methodList, name);
-        return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr);
-    }
-
-    zfindex dotPos = zfstringFindReversely(name, zfslen(name), ".");
-    if(dotPos == zfindexMax()) {
-        // ClassName()
-        // v_ClassName()
-        const ZFClass *cls = ZFClass::classForName(name, zfnull);
-        if(cls != zfnull) {
-            return ZFDI_alloc(zfargs, cls, convStr);
-        }
-
-        // methodName()
-        ZFMethodFuncForNameGetAllT(methodList, zfnull, name);
-        if(!methodList.isEmpty()) {
-            return ZFDI_invoke(zfargs, methodList, convStr);
-        }
-
-        // fail
-        return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr);
-    }
-    else {
-        // NS.ClassName()
-        // NS.v_ClassName()
-        // NS.ClassName.InnerClassName()
-        {
-            const ZFClass *cls = ZFClass::classForName(name, zfnull);
-            if(cls != zfnull) {
-                return ZFDI_alloc(zfargs, cls, convStr);
-            }
-        }
-
-        zfstring scopeTmp(name, dotPos);
-        const zfchar *nameTmp = name + dotPos + 1;
-
-        // NS.ClassName.methodName()
-        // NS.v_ClassName.methodName()
-        {
-            const ZFClass *cls = ZFClass::classForName(scopeTmp, zfnull);
-            if(cls != zfnull) {
-                cls->methodForNameGetAllT(methodList, nameTmp);
-                return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr);
-            }
-        }
-
-        // NS.methodName()
-        {
-            ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
-            if(!methodList.isEmpty()) {
-                return ZFDI_invoke(zfargs, methodList, convStr);
-            }
-        }
-
-        // fail
-        return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr);
-    }
-}
-void ZFDI_invoke(
-        ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
-        , ZF_IN_OPT zfbool convStr /* = zffalse */
+        , ZF_IN_OPT zfbool convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+        , ZF_IN const zfstring &cacheKey
+#endif
         ) {
+    if(methodList.isEmpty()) {
+        zfargs.success(zffalse);
+        if(!zfargs.ignoreError()) {
+            zfstring errorHint;
+            errorHint += "no matching method to call: ";
+            errorHint += name;
+            errorHint += "(";
+            ZFDI_paramInfoT(errorHint, zfargs);
+            errorHint += ")";
+            if(zfargs.sender()) {
+                errorHint += ", for object: ";
+                zfargs.sender()->objectInfoT(errorHint);
+            }
+            zfargs.errorHint(errorHint);
+        }
+        return _ZFP_ZFDI_errorOccurred(zfargs);
+    }
+
     ZFObject *obj = zfargs.sender();
     if(obj != zfnull) {
         obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
@@ -483,8 +459,10 @@ void ZFDI_invoke(
                 for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
                     zfargs.param(it->first, it->second);
                 }
-                zfstring cacheKey = _ZFP_ZFDI_cacheKey(obj, zfargs, method->methodName(), convStr);
-                _ZFP_ZFDI_cacheMap[cacheKey] = method;
+                paramBackup.clear();
+                _ZFP_ZFDI_CacheData &cache = _ZFP_ZFDI_cacheMap[cacheKey];
+                cache.cls = zfnull;
+                cache.m = method;
 #endif
                 return;
             }
@@ -511,18 +489,186 @@ void ZFDI_invoke(
     return _ZFP_ZFDI_errorOccurred(zfargs);
 }
 
-void ZFDI_alloc(
+static zfbool _ZFP_ZFDI_alloc(
         ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN const ZFClass *cls
         , ZF_IN_OPT zfbool convStr /* = zffalse */
+        , ZF_OUT_OPT const ZFMethod **ctorMethod = zfnull
+        );
+
+void ZFDI_invoke(
+        ZF_IN_OUT const ZFArgs &zfargs
+        , ZF_IN const zfstring &name
+        , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
-    if(cls == zfnull) {
-        zfargs.success(zffalse);
-        if(!zfargs.ignoreError()) {
-            zfargs.errorHint("null class");
-        }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+    ZFObject *obj = zfargs.sender();
+    if(obj != zfnull) {
+        obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     }
+    _ZFP_ZFDI_invokeTimeLogger("ivk: %s::%s"
+            , obj ? obj->classData()->classNameFull().cString() : ""
+            , name.cString()
+            );
+#if _ZFP_ZFDI_CACHE_ENABLE
+    zfstring cacheKey = _ZFP_ZFDI_cacheKey(obj, zfargs, name, convStr);
+    zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator itCache = _ZFP_ZFDI_cacheMap.find(cacheKey);
+    if(itCache != _ZFP_ZFDI_cacheMap.end()) {
+        const _ZFP_ZFDI_CacheData &cache = itCache->second;
+        if(cache.cls) {
+            if(cache.m) {
+                _ZFP_ZFDI_ParamBackupMapType paramBackup;
+                void *token = cache.cls->newInstanceGenericBegin();
+                if(_ZFP_ZFDI_paramConvert(cache.m, paramBackup, zfargs, zfnull, convStr)
+                        && cache.cls->newInstanceGenericCheck(token, cache.m, zfargs)
+                        ) {
+                    zfargs.result(cache.cls->newInstanceGenericEnd(token, zftrue));
+                    return;
+                }
+                cache.cls->newInstanceGenericEnd(token, zffalse);
+                for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
+                    zfargs.param(it->first, it->second);
+                }
+                paramBackup.clear();
+            }
+            else {
+                zfauto ret = cache.cls->newInstance();
+                if(ret) {
+                    zfargs.result(ret);
+                    return;
+                }
+            }
+        }
+        else {
+            _ZFP_ZFDI_ParamBackupMapType paramBackup;
+            if(_ZFP_ZFDI_invokeAction(obj, zfargs, cache.m, paramBackup, zfnull, convStr)) {
+                return;
+            }
+        }
+        ZFCoreLogTrim("[ZFDI] cache call failed: %s, obj: %s, args: %s"
+                , name
+                , ZFObjectInfoOfInstance(obj)
+                , _ZFP_ZFDI_zfargsInfo(zfargs)
+                );
+    }
+#if _ZFP_ZFDI_DEBUG
+    // cache miss debug
+    ZFCoreLogTrim("[ZFDI] cache call miss: %s, obj: %s, args: %s"
+            , name
+            , ZFObjectInfoOfInstance(obj)
+            , _ZFP_ZFDI_zfargsInfo(zfargs)
+            );
+#endif
+#endif
+
+    ZFCoreArray<const ZFMethod *> methodList;
+
+    // obj->methodName()
+    if(obj != zfnull) {
+        obj->classData()->methodForNameGetAllT(methodList, name);
+        return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+                , cacheKey
+#endif
+                );
+    }
+
+    zfindex dotPos = zfstringFindReversely(name, zfslen(name), ".");
+    if(dotPos == zfindexMax()) {
+        // ClassName()
+        // v_ClassName()
+        const ZFClass *cls = ZFClass::classForName(name, zfnull);
+        if(cls != zfnull) {
+            const ZFMethod *ctorMethod = zfnull;
+            if(_ZFP_ZFDI_alloc(zfargs, cls, convStr, &ctorMethod)) {
+#if _ZFP_ZFDI_CACHE_ENABLE
+                _ZFP_ZFDI_CacheData &cache = _ZFP_ZFDI_cacheMap[cacheKey];
+                cache.cls = cls;
+                cache.m = ctorMethod;
+#endif
+            }
+            return;
+        }
+
+        // methodName()
+        ZFMethodFuncForNameGetAllT(methodList, zfnull, name);
+        if(!methodList.isEmpty()) {
+            return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+                    , cacheKey
+#endif
+                    );
+        }
+
+        // fail
+        return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+                , cacheKey
+#endif
+                );
+    }
+    else {
+        // NS.ClassName()
+        // NS.v_ClassName()
+        // NS.ClassName.InnerClassName()
+        {
+            const ZFClass *cls = ZFClass::classForName(name, zfnull);
+            if(cls != zfnull) {
+                const ZFMethod *ctorMethod = zfnull;
+                if(_ZFP_ZFDI_alloc(zfargs, cls, convStr, &ctorMethod)) {
+#if _ZFP_ZFDI_CACHE_ENABLE
+                    _ZFP_ZFDI_CacheData &cache = _ZFP_ZFDI_cacheMap[cacheKey];
+                    cache.cls = cls;
+                    cache.m = ctorMethod;
+#endif
+                }
+                return;
+            }
+        }
+
+        zfstring scopeTmp(name, dotPos);
+        const zfchar *nameTmp = name + dotPos + 1;
+
+        // NS.ClassName.methodName()
+        // NS.v_ClassName.methodName()
+        {
+            const ZFClass *cls = ZFClass::classForName(scopeTmp, zfnull);
+            if(cls != zfnull) {
+                cls->methodForNameGetAllT(methodList, nameTmp);
+                return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+                        , cacheKey
+#endif
+                        );
+            }
+        }
+
+        // NS.methodName()
+        {
+            ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
+            if(!methodList.isEmpty()) {
+                return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+                        , cacheKey
+#endif
+                        );
+            }
+        }
+
+        // fail
+        return _ZFP_ZFDI_invoke(zfargs, name, methodList, convStr
+#if _ZFP_ZFDI_CACHE_ENABLE
+                , cacheKey
+#endif
+                );
+    }
+}
+
+static zfbool _ZFP_ZFDI_alloc(
+        ZF_IN_OUT const ZFArgs &zfargs
+        , ZF_IN const ZFClass *cls
+        , ZF_IN_OPT zfbool convStr
+        , ZF_OUT_OPT const ZFMethod **ctorMethod /* = zfnull */
+        ) {
     if(cls->classIsAbstract()) {
         zfargs.success(zffalse);
         if(!zfargs.ignoreError()) {
@@ -530,7 +676,8 @@ void ZFDI_alloc(
                         , cls->classNameFull()
                         ));
         }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+        _ZFP_ZFDI_errorOccurred(zfargs);
+        return zffalse;
     }
     if(!cls->classCanAllocPublic()) {
         zfargs.success(zffalse);
@@ -539,7 +686,8 @@ void ZFDI_alloc(
                         , cls->classNameFull()
                         ));
         }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+        _ZFP_ZFDI_errorOccurred(zfargs);
+        return zffalse;
     }
 
     if(zfargs.param0() == ZFMP_DEF()) {
@@ -551,11 +699,15 @@ void ZFDI_alloc(
                             , cls->classNameFull()
                             ));
             }
-            return _ZFP_ZFDI_errorOccurred(zfargs);
+            _ZFP_ZFDI_errorOccurred(zfargs);
+            return zffalse;
         }
         else {
             zfargs.result(ret);
-            return;
+            if(ctorMethod) {
+                *ctorMethod = zfnull;
+            }
+            return zftrue;
         }
     }
     ZFCoreArray<const ZFMethod *> methodList;
@@ -567,7 +719,8 @@ void ZFDI_alloc(
                         , cls->classNameFull()
                         ));
         }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+        _ZFP_ZFDI_errorOccurred(zfargs);
+        return zffalse;
     }
 
     void *token = cls->newInstanceGenericBegin();
@@ -578,7 +731,8 @@ void ZFDI_alloc(
                         , cls->classNameFull()
                         ));
         }
-        return _ZFP_ZFDI_errorOccurred(zfargs);
+        _ZFP_ZFDI_errorOccurred(zfargs);
+        return zffalse;
     }
 
     zfstring errorHint;
@@ -600,7 +754,10 @@ void ZFDI_alloc(
                         )) {
                 if(cls->newInstanceGenericCheck(token, method, zfargs)) {
                     zfargs.result(cls->newInstanceGenericEnd(token, zftrue));
-                    return;
+                    if(ctorMethod) {
+                        *ctorMethod = method;
+                    }
+                    return zftrue;
                 }
                 else {
                     if(!zfargs.ignoreError()) {
@@ -636,7 +793,23 @@ void ZFDI_alloc(
         }
         zfargs.errorHint(errorHintTmp);
     }
-    return _ZFP_ZFDI_errorOccurred(zfargs);
+    _ZFP_ZFDI_errorOccurred(zfargs);
+    return zffalse;
+}
+void ZFDI_alloc(
+        ZF_IN_OUT const ZFArgs &zfargs
+        , ZF_IN const ZFClass *cls
+        , ZF_IN_OPT zfbool convStr /* = zffalse */
+        ) {
+    if(cls == zfnull) {
+        zfargs.success(zffalse);
+        if(!zfargs.ignoreError()) {
+            zfargs.errorHint("null class");
+        }
+        _ZFP_ZFDI_errorOccurred(zfargs);
+        return;
+    }
+    _ZFP_ZFDI_alloc(zfargs, cls, convStr);
 }
 
 zfbool ZFDI_objectFromString(

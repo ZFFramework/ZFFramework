@@ -7,6 +7,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 zfclass _ZFP_I_ZFMP_DEF_Type : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFMP_DEF_Type, ZFObject)
+protected:
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret += "ZFMP_DEF()";
+    }
 };
 ZFObject *_ZFP_ZFMP_DEF = zfnull;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMP_DEF_Init, ZFLevelZFFrameworkEssential) {
