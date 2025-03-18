@@ -5,6 +5,8 @@
 
 #if ZF_ENV_sys_SDL
 
+#include "ZFImpl_sys_SDL_Image.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFUIDrawImpl_sys_SDL : zfextend ZFImpl_sys_SDL_View {
@@ -157,7 +159,7 @@ public:
             drawImpl->sdlRenderer = zfnull;
         }
 
-        return drawImpl->nativeImage;
+        return ZFImpl_sys_SDL_Image::implCreate(drawImpl->nativeImage);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_SDL)
 
@@ -235,7 +237,8 @@ public:
 
         SDL_Rect srcRect;
 
-        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(drawImpl->sdlRenderer, (SDL_Surface *)image->nativeImage());
+        ZFImpl_sys_SDL_Image *sdlImg = (ZFImpl_sys_SDL_Image *)image->nativeImage();
+        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(drawImpl->sdlRenderer, sdlImg->sdlSurface());
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
         if(zfmemcmp(&rect, &rectClipped, sizeof(SDL_Rect)) == 0) {
             srcRect.x = (int)imageFramePixel.x;

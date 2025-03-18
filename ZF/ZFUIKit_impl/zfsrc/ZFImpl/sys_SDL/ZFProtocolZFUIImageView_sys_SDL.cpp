@@ -4,6 +4,9 @@
 
 #if ZF_ENV_sys_SDL
 
+#include "ZFImpl_sys_SDL_Image.h"
+#include "ZFUIKit/ZFUIWindow.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_SDL, ZFUIImageView, v_ZFProtocolLevel::e_SystemHigh)
@@ -56,7 +59,7 @@ private:
         if(imageState == zfnull) {
             return zffalse;
         }
-        SDL_Surface *nativeImage = (SDL_Surface *)imageState->nativeImage();
+        ZFImpl_sys_SDL_Image *nativeImage = (ZFImpl_sys_SDL_Image *)imageState->nativeImage();
         if(nativeImage == zfnull) {
             return zffalse;
         }
@@ -65,11 +68,8 @@ private:
         targetRect.x += childRect.x;
         targetRect.y += childRect.y;
 
-        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, nativeImage);
-        ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
-        if(treeAlpha != 1) {
-            SDL_SetTextureAlphaMod(sdlTexture, (Uint8)(treeAlpha * 255));
-        }
+        SDL_Texture *sdlTexture = nativeImage->sdlTexture(ZFUIWindow::sysWindowForView(owner));
+        SDL_SetTextureAlphaMod(sdlTexture, treeAlpha != 1 ? (Uint8)(treeAlpha * 255) : (Uint8)255);
         if(imageState->imageNinePatch() == ZFUIMarginZero()) {
             SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);
         }
@@ -78,7 +78,7 @@ private:
             zfmemset(drawDatas, 0, sizeof(drawDatas));
             zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
                 drawDatas,
-                ZFUISizeCreate((zffloat)nativeImage->w, (zffloat)nativeImage->h),
+                ZFUISizeCreate((zffloat)nativeImage->sdlSurface()->w, (zffloat)nativeImage->sdlSurface()->h),
                 ZFUIMarginApplyScale(imageState->imageNinePatch(), imageState->imageScaleFixed()),
                 ZFUISizeCreate((zffloat)targetRect.w, (zffloat)targetRect.h));
 

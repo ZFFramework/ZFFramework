@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_SDL_KeyCode_h_
 #define _ZFI_ZFImpl_sys_SDL_KeyCode_h_
 
-#include "ZFImpl_sys_SDL_ZFUIKit_impl.h"
+#include "ZFImpl_sys_SDL_View.h"
 #include "ZFUIKit/ZFUIKeyCode.h"
 
 #if ZF_ENV_sys_SDL

@@ -5,6 +5,8 @@
 
 #if ZF_ENV_sys_SDL
 
+#include "ZFImpl_sys_SDL_Image.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewCaptureImpl_sys_SDL, ZFUIViewCapture, v_ZFProtocolLevel::e_SystemNormal)
@@ -31,7 +33,7 @@ public:
             alpha *= p->alpha();
         }
         nativeView->render(renderer, rect, rect, alpha);
-        image->nativeImage(nativeImage, zffalse);
+        image->nativeImage(ZFImpl_sys_SDL_Image::implCreate(nativeImage), zffalse);
         SDL_DestroyRenderer(renderer);
         return zftrue;
     }

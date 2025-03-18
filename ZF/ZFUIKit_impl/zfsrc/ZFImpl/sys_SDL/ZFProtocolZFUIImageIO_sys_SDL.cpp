@@ -3,6 +3,8 @@
 
 #if ZF_ENV_sys_SDL
 
+#include "ZFImpl_sys_SDL_Image.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageIOImpl_sys_SDL, ZFUIImageIO, v_ZFProtocolLevel::e_SystemHigh)
@@ -18,14 +20,15 @@ public:
             , ZF_IN const ZFUISize &newSize
             , ZF_IN const ZFUIMargin &ninePatch
             ) {
-        SDL_Surface *nativeImageOld = (SDL_Surface *)nativeImage;
+        ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
+        SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
         SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)newSize.width, (int)newSize.height, 0, nativeImageOld->format->format);
         if(nativeImageNew == zfnull) {
             return zfnull;
         }
         if(ninePatch == ZFUIMarginZero()) {
             SDL_BlitSurface(nativeImageOld, zfnull, nativeImageNew, zfnull);
-            return nativeImageNew;
+            return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
         }
 
         ZFUIImageImplNinePatchDrawData drawDatas[9];
@@ -50,14 +53,15 @@ public:
             dstRect.h = (int)drawData.dst.height;
             SDL_BlitSurface(nativeImageOld, &srcRect, nativeImageNew, &dstRect);
         }
-        return nativeImageNew;
+        return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }
     virtual void *imageLoadInFrame(
             ZF_IN zffloat imageScale
             , ZF_IN void *nativeImage
             , ZF_IN const ZFUIRect &frameInImage
             ) {
-        SDL_Surface *nativeImageOld = (SDL_Surface *)nativeImage;
+        ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
+        SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
         SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)frameInImage.width, (int)frameInImage.height, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
         if(nativeImageNew != zfnull) {
             SDL_Rect srcRect;
@@ -67,7 +71,7 @@ public:
             srcRect.h = (int)frameInImage.height;
             SDL_BlitSurface(nativeImageOld, &srcRect, nativeImageNew, zfnull);
         }
-        return nativeImageNew;
+        return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }
     virtual void *imageLoadFromColor(
             ZF_IN zffloat imageScale
@@ -83,7 +87,7 @@ public:
                 , (Uint8)(ZFUIColorGetA(color) * 0xFF)
                 ));
         }
-        return nativeImageNew;
+        return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageIOImpl_sys_SDL)
 
