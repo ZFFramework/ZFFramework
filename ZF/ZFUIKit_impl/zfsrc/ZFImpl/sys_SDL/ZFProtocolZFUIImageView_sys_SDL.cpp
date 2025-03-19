@@ -23,7 +23,6 @@ public:
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
         nativeView->renderImpls.add(zfself::renderCallback);
-        ++nativeView->renderCacheRequired;
 
         // no actual impl view, use renderImpls
         return zfnull;
