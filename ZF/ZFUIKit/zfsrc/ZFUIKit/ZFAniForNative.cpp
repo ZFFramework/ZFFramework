@@ -38,7 +38,7 @@ void ZFAniForNative::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoImplAppend(ret);
     ret += "-";
     zfsFromPointerT(ret, this->nativeAnimation());
-    ZFClassUtil::objectPropertyInfo(ret, this);
+    ZFObjectPropertyInfoT(ret, this);
 }
 ZFCompareResult ZFAniForNative::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}

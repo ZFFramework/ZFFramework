@@ -13,7 +13,7 @@ protected:
     zfoverride
     virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoImplAppend(ret);
-        ZFClassUtil::objectPropertyInfo(ret, this);
+        ZFObjectPropertyInfoT(ret, this);
     }
 };
 
@@ -34,7 +34,7 @@ protected:
     zfoverride
     virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
         ret += this->classData()->classNameFull();
-        ZFClassUtil::objectPropertyInfo(ret, this);
+        ZFObjectPropertyInfoT(ret, this);
     }
 };
 

@@ -89,6 +89,83 @@ inline void ZFPropertyCopy(
     propertyInfo->setterMethod()->methodInvoke(dstObj, propertyInfo->getterMethod()->methodInvoke(srcObj));
 }
 
+// ============================================================
+/**
+ * @brief copy all properties from srcObj to dstObj
+ *
+ * this function would go through all properties in dstObj,
+ * then search whether there are same property in srcObj,
+ * if there are, copy them from srcObj to dstObj by the reflectable getter and setter\n
+ * search is done by property's name compare and type compare,
+ * and type is compared by ZFProperty::propertyTypeId\n
+ * it's your responsibility to make sure the copy is valid\n
+ * \n
+ * by default, these properties would be ignored:
+ * -  setter or getter is not public
+ * -  property name start with '_'
+ *
+ * @note this function may cost much time if there are many properties in the inherit tree,
+ *   you may want to use #ZFPropertyCopy directly for performance
+ */
+extern ZFLIB_ZFCore void ZFPropertyCopyAll(
+        ZF_IN ZFObject *dstObj
+        , ZF_IN ZFObject *srcObj
+        );
+
+// ============================================================
+/**
+ * @brief compare all properties of obj0 with obj1's property by reflect
+ *
+ * if both object is null, return true\n
+ * two object have no need to be same class,
+ * but must be ensured that all property are safe to be compared,
+ * i.e. each property's type must match
+ */
+extern ZFLIB_ZFCore zfbool ZFPropertyAllEqual(
+        ZF_IN ZFObject *obj0
+        , ZF_IN ZFObject *obj1
+        );
+
+/**
+ * @brief use reflect to print all property if the property is not #ZFPropertyIsInitValue
+ */
+extern ZFLIB_ZFCore void ZFObjectPropertyInfoT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+        );
+/** @brief see #ZFObjectPropertyInfoT */
+inline zfstring ZFObjectPropertyInfo(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+        ) {
+    zfstring ret;
+    ZFObjectPropertyInfoT(ret, obj, maxCount, token);
+    return ret;
+}
+
+/**
+ * @brief print verbose info about the object, using #ZFObjectPropertyInfoT
+ */
+extern ZFLIB_ZFCore void ZFObjectVerboseInfoT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+        );
+/** @brief see #ZFObjectVerboseInfoT */
+inline zfstring ZFObjectVerboseInfo(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+        ) {
+    zfstring ret;
+    ZFObjectVerboseInfoT(ret, obj, maxCount, token);
+    return ret;
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPropertyUtil_h_
 

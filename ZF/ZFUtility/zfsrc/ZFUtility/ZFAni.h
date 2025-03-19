@@ -92,7 +92,7 @@ protected:
     zfoverride
     virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
-                && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
+                && ZFPropertyAllEqual(this, anotherObj)
                 ) {
             return ZFCompareEqual;
         }
@@ -139,7 +139,7 @@ protected:
     zfoverride
     virtual ZFCompareResult objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
-                && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
+                && ZFPropertyAllEqual(this, anotherObj)
                 ) {
             return ZFCompareEqual;
         }

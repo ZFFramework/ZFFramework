@@ -199,7 +199,7 @@ void ZFRegExp::objectOnDealloc(void) {
 
 void ZFRegExp::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoImplAppend(ret);
-    ZFClassUtil::objectPropertyInfo(ret, this);
+    ZFObjectPropertyInfoT(ret, this);
 }
 
 zfidentity ZFRegExp::objectHashImpl(void) {

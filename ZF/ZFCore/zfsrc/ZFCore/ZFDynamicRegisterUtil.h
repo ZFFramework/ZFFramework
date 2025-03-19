@@ -191,11 +191,11 @@ public:
     /** @brief util for impl to implement default behavior of #onInit */
     static void onInitImpl(ZF_IN const ZFArgs &zfargs);
 
-    /** @brief util to implement #ZFObject::objectInfoImpl by #ZFClassUtil::objectInfo */
+    /** @brief util to implement #ZFObject::objectInfoImpl by #ZFObjectVerboseInfo */
     ZFDynamic &objectInfoImplByProp(void);
-    /** @brief util to implement #ZFObject::objectCompareImpl by #ZFClassUtil::allPropertyIsEqual */
+    /** @brief util to implement #ZFObject::objectCompareImpl by #ZFPropertyAllEqual */
     ZFDynamic &objectCompareImplByProp(void);
-    /** @brief util to implement #ZFObject::objectCompareValueImpl by #ZFClassUtil::allPropertyIsEqual */
+    /** @brief util to implement #ZFObject::objectCompareValueImpl by #ZFPropertyAllEqual */
     ZFDynamic &objectCompareValueImplByProp(void);
 
 public:

@@ -13,7 +13,6 @@
 #include "ZFObjectDef/ZFClass.h"
 #include "ZFObjectDef/ZFClassDynamicRegister.h"
 #include "ZFObjectDef/ZFClassSerializable.h"
-#include "ZFObjectDef/ZFClassUtil.h"
 #include "ZFObjectDef/ZFCopyable.h"
 #include "ZFObjectDef/ZFCoreType_methodRegister.h"
 #include "ZFObjectDef/ZFDynamicInvoker.h"

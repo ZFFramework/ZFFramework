@@ -773,7 +773,7 @@ void ZFDynamic::onInitImpl(ZF_IN const ZFArgs &zfargs) {
 ZFDynamic &ZFDynamic::objectInfoImplByProp(void) {
     ZFLISTENER(impl) {
         v_zfstring *ret = zfargs.param0();
-        ZFClassUtil::objectInfoT(ret->zfv, zfargs.sender());
+        ZFObjectVerboseInfoT(ret->zfv, zfargs.sender());
     } ZFLISTENER_END()
     return this->method(
             ZFTypeId_void()
@@ -786,7 +786,7 @@ ZFDynamic &ZFDynamic::objectInfoImplByProp(void) {
 ZFDynamic &ZFDynamic::objectCompareImplByProp(void) {
     ZFLISTENER(impl) {
         zfobj<v_ZFCompareResult> ret;
-        ret->zfv = ZFClassUtil::allPropertyIsEqual(zfargs.sender(), zfargs.param0())
+        ret->zfv = ZFPropertyAllEqual(zfargs.sender(), zfargs.param0())
             ? ZFCompareEqual
             : ZFCompareUncomparable
             ;
@@ -803,7 +803,7 @@ ZFDynamic &ZFDynamic::objectCompareImplByProp(void) {
 ZFDynamic &ZFDynamic::objectCompareValueImplByProp(void) {
     ZFLISTENER(impl) {
         zfobj<v_ZFCompareResult> ret;
-        ret->zfv = ZFClassUtil::allPropertyIsEqual(zfargs.sender(), zfargs.param0())
+        ret->zfv = ZFPropertyAllEqual(zfargs.sender(), zfargs.param0())
             ? ZFCompareEqual
             : ZFCompareUncomparable
             ;

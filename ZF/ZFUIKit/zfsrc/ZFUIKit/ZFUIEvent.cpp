@@ -18,7 +18,7 @@ void ZFUIEvent::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     if(this->eventResolved()) {
         ret += " (resolved)";
     }
-    ZFClassUtil::objectPropertyInfo(ret, this);
+    ZFObjectPropertyInfoT(ret, this);
 }
 
 ZF_NAMESPACE_GLOBAL_END

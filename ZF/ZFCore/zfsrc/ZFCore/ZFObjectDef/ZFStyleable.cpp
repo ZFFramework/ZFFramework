@@ -1,6 +1,5 @@
 #include "ZFStyleable.h"
 #include "ZFObjectImpl.h"
-#include "ZFClassUtil.h"
 #include "ZFPropertyUtil.h"
 #include "ZFListenerDeclare.h"
 
