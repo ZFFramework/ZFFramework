@@ -8,10 +8,10 @@ public class ZFAndroidMapIter {
     public static Object native_iterFind(Object nativeMap, Object key) {
         if (nativeMap != null) {
             _Iter it = new _Iter();
-            it.m = (Map) nativeMap;
+            it.m = (Map<?, ?>) nativeMap;
             it.it = it.m.entrySet().iterator();
             while (it.it.hasNext()) {
-                Map.Entry entry = (Map.Entry) it.it.next();
+                Map.Entry<?, ?> entry = (Map.Entry<?, ?>) it.it.next();
                 if (entry.equals(key)) {
                     it.entry = entry;
                     break;
@@ -27,10 +27,10 @@ public class ZFAndroidMapIter {
     public static Object native_iter(Object nativeMap) {
         if (nativeMap != null) {
             _Iter it = new _Iter();
-            it.m = (Map) nativeMap;
+            it.m = (Map<?, ?>) nativeMap;
             it.it = it.m.entrySet().iterator();
             if (it.it.hasNext()) {
-                it.entry = (Map.Entry) it.it.next();
+                it.entry = (Map.Entry<?, ?>) it.it.next();
             }
             return it;
         }
@@ -46,7 +46,7 @@ public class ZFAndroidMapIter {
         _Iter it = (_Iter) iter;
         if (it != null) {
             if (it.it != null && it.it.hasNext()) {
-                it.entry = (Map.Entry) it.it.next();
+                it.entry = (Map.Entry<?, ?>) it.it.next();
             } else {
                 it.entry = null;
             }
@@ -74,8 +74,13 @@ public class ZFAndroidMapIter {
     public static void native_iterValue(Object iter, Object value) {
         _Iter it = (_Iter) iter;
         if (it != null && it.entry != null) {
-            it.m.put(it.entry.getKey(), value);
+            _genericPut(it.m, it.entry.getKey(), value);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <K, V> void _genericPut(Map<K, V> m, Object k, Object v) {
+        m.put((K) k, (V) v);
     }
 
     public static Object native_iterRemove(Object iter) {
@@ -84,7 +89,7 @@ public class ZFAndroidMapIter {
             Object ret = it.entry.getValue();
             it.it.remove();
             if (it.it.hasNext()) {
-                it.entry = (Map.Entry) it.it.next();
+                it.entry = (Map.Entry<?, ?>) it.it.next();
             }
             return ret;
         } else {
@@ -120,9 +125,9 @@ public class ZFAndroidMapIter {
     }
 
     private static class _Iter {
-        public Map m = null;
-        public Iterator it = null;
-        public Map.Entry entry = null;
+        public Map<?, ?> m = null;
+        public Iterator<?> it = null;
+        public Map.Entry<?, ?> entry = null;
     }
 
 }

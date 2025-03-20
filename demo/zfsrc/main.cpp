@@ -24,22 +24,21 @@ ZFMAIN_ENTRY() {
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void) {
     ZFCoreArray<ZFPathInfo> extResList;
-    extResList.add(ZFPathInfo(ZFPathType_file(), zfstr("%s/zfres", ZFPathForModule())));
-    extResList.add(ZFPathInfo(ZFPathType_file(), zfstr("%s/zfres", ZFPathForStorageShared())));
+    extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForModule()));
+    extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForStorageShared()));
 
     ZFLogTrim() << "external res: " << extResList;
     for(zfindex i = 0; i < extResList.count(); ++i) {
         ZFResExtPathAdd(extResList[i]);
     }
 
-    ZFInput input = ZFInputForRes("zf.lua");
-    if(input) {
-        ZFLogTrim() << "redirect to: " << input.callbackId();
-        ZFLogTrim() << "============================================================";
-        ZFLuaExecute(input);
+    ZFInput src = ZFInputForRes("zf.lua");
+    if(src) {
+        ZFLogTrim("redirect to %s", src.callbackId());
+        ZFLuaExecute(src);
         ZFLuaGC();
     }
-    return input;
+    return src;
 }
 
 static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
