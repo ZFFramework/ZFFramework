@@ -1,21 +1,21 @@
-apply plugin: 'com.android.application'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
 
 def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../ZFFramework'
 android {
-    signingConfigs {
-        ZFFramework {
-            keyAlias 'ZFFramework'
-            keyPassword 'ZFFramework'
-            storeFile file(ZF_ROOT_PATH + '/tools/spec/Android/ZFFramework.keystore')
-            storePassword 'ZFFramework'
-        }
-    }
-    compileSdkVersion 29
+    namespace 'com.ZFFramework.Android.{ZFTT_R_proj_name}'
+    compileSdk 35
+
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 29
+        applicationId 'com.ZFFramework.Android.{ZFTT_R_proj_name}'
+        minSdk 21
+        targetSdk 35
         versionCode 1
         versionName '1.0'
+
         externalNativeBuild {
             cmake {
                 cppFlags ''
@@ -31,11 +31,31 @@ android {
             }
         }
     }
+    signingConfigs {
+        ZFFramework {
+            keyAlias 'ZFFramework'
+            keyPassword 'ZFFramework'
+            storeFile file(ZF_ROOT_PATH + '/tools/spec/Android/ZFFramework.keystore')
+            storePassword 'ZFFramework'
+        }
+    }
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.ZFFramework
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    buildFeatures {
+        buildConfig = true
+        compose true
     }
     sourceSets {
         main {

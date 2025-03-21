@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ZFFramework.Android.ZFFramework_test">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,7 +11,9 @@
         android:label="ZFFramework_test"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.ZFFramework.Android.ZFFramework_test.Loader">
+        <activity
+            android:name="com.ZFFramework.Android.ZFFramework_test.Loader"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,14 +23,12 @@
         <activity
             android:name="com.ZFFramework.Android.ZF_impl.ZFMainEntry"
             android:label="ZFFramework"
-            android:launchMode="singleTask" >
-        </activity>
+            android:launchMode="singleTask" />
         <activity
             android:name="com.ZFFramework.Android.ZFUIKit_impl.ZFUISysWindow"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="ZFFramework"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

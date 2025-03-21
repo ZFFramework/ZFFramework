@@ -15,7 +15,7 @@ public class Loader extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             ZFMainEntry.debugMode(true);
         }
         ZFMainEntry.mainEntryFromLoader(this);
