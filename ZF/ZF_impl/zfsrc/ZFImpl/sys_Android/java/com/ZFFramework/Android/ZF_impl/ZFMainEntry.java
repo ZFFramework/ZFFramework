@@ -1,19 +1,14 @@
 package com.ZFFramework.Android.ZF_impl;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * @brief main entry
@@ -59,68 +54,20 @@ public final class ZFMainEntry extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-    }
-
-    private boolean _mainEntryFirstTime = true;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (_mainEntryFirstTime) {
-            _mainEntryFirstTime = false;
-            if (this._requestPermission()) {
-                _mainEntry();
-            }
-        }
+        _appContext = new WeakReference<Context>(this.getApplicationContext());
+        mainEntryActivity(this);
+        ZFFrameworkInit();
+        ZFMainExecute(null);
     }
 
     @Override
     protected void onDestroy() {
-        if (_mainEntryCalled && ZFMainEntry.mainEntryActivity() == this) {
+        if (ZFMainEntry.mainEntryActivity() == this) {
             ZFFrameworkCleanup();
             _app = null;
             _appContext = null;
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        _mainEntry();
-    }
-
-    private boolean _requestPermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        List<String> permissions = new ArrayList<String>();
-        if (ZFMainEntry.sdcardRW()) {
-            if (this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-        }
-        if (permissions.isEmpty()) {
-            return true;
-        }
-        String[] tmp = new String[permissions.size()];
-        permissions.toArray(tmp);
-        this.requestPermissions(tmp, 1);
-        return false;
-    }
-
-    private boolean _mainEntryCalled = false;
-
-    private void _mainEntry() {
-        if (_mainEntryCalled) {
-            return;
-        }
-        _mainEntryCalled = true;
-        _appContext = new WeakReference<Context>(this.getApplicationContext());
-        mainEntryActivity(this);
-        ZFFrameworkInit();
-        ZFMainExecute(null);
     }
 
     // ============================================================
@@ -165,18 +112,6 @@ public final class ZFMainEntry extends Activity {
     }
 
     private native static void native_debugMode(boolean value);
-
-    // ============================================================
-    // whether we need sdcard permission
-    private static boolean _sdcardRW = true;
-
-    public static void sdcardRW(boolean value) {
-        _sdcardRW = value;
-    }
-
-    public static boolean sdcardRW() {
-        return _sdcardRW;
-    }
 
     // ============================================================
     // global state
