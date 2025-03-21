@@ -227,14 +227,12 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 // ============================================================
 // notify update metadata when class data changed
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoUpdate, ZFLevelZFFrameworkNormal) {
-    this->classDataOnUpdateListener = ZFCallbackForFunc(zfself::classDataOnUpdate);
-    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataOnUpdateListener);
+    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), ZFCallbackForFunc(zfself::classDataOnUpdate));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoUpdate) {
-    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataOnUpdateListener);
+    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), ZFCallbackForFunc(zfself::classDataOnUpdate));
 }
 public:
-    ZFListener classDataOnUpdateListener;
     static void classDataOnUpdate(ZF_IN const ZFArgs &zfargs) {
         ZFCoreMutexLocker();
         v_ZFClassDataUpdateData *changed = zfargs.param0();

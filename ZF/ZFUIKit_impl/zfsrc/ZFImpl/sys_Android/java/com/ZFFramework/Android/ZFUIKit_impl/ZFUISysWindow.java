@@ -322,10 +322,7 @@ public final class ZFUISysWindow extends Activity {
         @Override
         public boolean onKey(int keyId, int keyAction, int keyCode, int keyCodeRaw) {
             if (_zfjniPointerOwnerZFUISysWindow != 0) {
-                return (
-                        ZFUIView.native_notifyUIEvent_key(_zfjniPointerOwnerZFUISysWindow, keyId, keyAction, keyCode, keyCodeRaw)
-                                || native_notifyKeyEvent(_zfjniPointerOwnerZFUISysWindow, keyId, keyAction, keyCode, keyCodeRaw)
-                );
+                return native_notifyKeyEvent(_zfjniPointerOwnerZFUISysWindow, keyId, keyAction, keyCode, keyCodeRaw);
             }
             return false;
         }

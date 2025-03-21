@@ -59,14 +59,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFMAIN_PARAM_DISPATCH(regSig) \
     static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs); \
     ZF_GLOBAL_INITIALIZER_INIT(MPD_##regSig) { \
-        this->callback = ZFCallbackForFunc(_ZFP_MPD_##regSig); \
-        ZFGlobalObserver().observerAdd(ZFApp::E_AppParamDispatch(), this->callback); \
+        ZFGlobalObserver().observerAdd(ZFApp::E_AppParamDispatch(), ZFCallbackForFunc(_ZFP_MPD_##regSig)); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(MPD_##regSig) { \
-        ZFGlobalObserver().observerRemove(ZFApp::E_AppParamDispatch(), this->callback); \
+        ZFGlobalObserver().observerRemove(ZFApp::E_AppParamDispatch(), ZFCallbackForFunc(_ZFP_MPD_##regSig)); \
     } \
-    private: \
-        ZFListener callback; \
     ZF_GLOBAL_INITIALIZER_END(MPD_##regSig) \
     static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs)
 

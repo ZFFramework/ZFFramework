@@ -53,7 +53,13 @@ public:
     /**
      * @brief remove object, do nothing if not exist
      */
-    ZFMETHOD_DECLARE_1(void, removeElement
+    ZFMETHOD_DECLARE_1(void, remove
+            , ZFMP_IN(ZFObject *, obj)
+            )
+    /**
+     * @brief remove object, return removed object or null
+     */
+    ZFMETHOD_DECLARE_1(zfauto, removeAndGet
             , ZFMP_IN(ZFObject *, obj)
             )
     /**

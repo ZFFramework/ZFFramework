@@ -222,13 +222,35 @@ void ZFCallback::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 }
 
 ZFCompareResult ZFCallback::objectCompare(ZF_IN const ZFCallback &ref) const {
-    return ((d == ref.d || (
-            this->callbackType() == ref.callbackType()
-            && this->callbackOwnerObject() == ref.callbackOwnerObject()
-            && this->callbackMethod() == ref.callbackMethod()
-            && this->callbackRawFunction() == ref.callbackRawFunction()
-            ))
-        ? ZFCompareEqual : ZFCompareUncomparable);
+    if(d == ref.d) {
+        return ZFCompareEqual;
+    }
+    else if(d && ref.d && d->callbackType == ref.d->callbackType) {
+        _ZFP_ZFCallbackPrivate &d0 = *d;
+        _ZFP_ZFCallbackPrivate &d1 = *(ref.d);
+        switch(d0.callbackType) {
+            case ZFCallbackTypeMethod:
+                return zftrue
+                    && d0.d.callbackMethod == d1.d.callbackMethod
+                    ? ZFCompareEqual : ZFCompareUncomparable;
+            case ZFCallbackTypeMemberMethod:
+                return zftrue
+                    && d0.d.memberType.callbackOwnerObject == d1.d.memberType.callbackOwnerObject
+                    && d0.d.memberType.callbackMethod == d1.d.memberType.callbackMethod
+                    ? ZFCompareEqual : ZFCompareUncomparable;
+            case ZFCallbackTypeRawFunction:
+                return zftrue
+                    && d0.d.callbackRawFunction == d1.d.callbackRawFunction
+                    ? ZFCompareEqual : ZFCompareUncomparable;
+            case ZFCallbackTypeLambda:
+            case ZFCallbackTypeDummy:
+            default:
+                return ZFCompareUncomparable;
+        }
+    }
+    else {
+        return ZFCompareUncomparable;
+    }
 }
 
 void ZFCallback::callbackClear(void) {

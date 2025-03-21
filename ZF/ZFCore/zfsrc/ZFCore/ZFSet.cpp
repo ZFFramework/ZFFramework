@@ -67,7 +67,7 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom
     }
 }
 
-ZFMETHOD_DEFINE_1(ZFSet, void, removeElement
+ZFMETHOD_DEFINE_1(ZFSet, void, remove
         , ZFMP_IN(ZFObject *, obj)
         ) {
     zfiter it = d->iterFind(obj);
@@ -78,12 +78,27 @@ ZFMETHOD_DEFINE_1(ZFSet, void, removeElement
         this->contentOnUpdate();
     }
 }
+ZFMETHOD_DEFINE_1(ZFSet, zfauto, removeAndGet
+        , ZFMP_IN(ZFObject *, obj)
+        ) {
+    zfiter it = d->iterFind(obj);
+    if(it) {
+        zfauto key = d->iterKey(it);
+        d->iterRemove(it);
+        this->contentOnRemove(key);
+        this->contentOnUpdate();
+        return key;
+    }
+    else {
+        return zfnull;
+    }
+}
 ZFMETHOD_DEFINE_0(ZFSet, void, removeAll) {
     if(!d->isEmpty()) {
         ZFCoreArray<zfauto> tmp;
         tmp.capacity(d->count());
         for(zfiter it = d->iter(); it; ++it) {
-            tmp.add(d->iterValue(it));
+            tmp.add(d->iterKey(it));
         }
         d->removeAll();
 
@@ -108,7 +123,7 @@ ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterFind
 ZFMETHOD_DEFINE_1(ZFSet, zfany, iterValue
         , ZFMP_IN(const zfiter &, it)
         ) {
-    return d->iterValue(it);
+    return d->iterKey(it);
 }
 
 ZFMETHOD_DEFINE_2(ZFSet, void, iterValue

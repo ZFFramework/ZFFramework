@@ -15,25 +15,19 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGCImmediately
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCHolder, ZFLevelZFFrameworkHigh) {
-    this->luaStateOnDetachListener = ZFCallbackForFunc(luaStateOnDetach);
-    ZFGlobalObserver().observerAdd(
-        ZFGlobalEvent::E_LuaStateOnDetach(),
-        this->luaStateOnDetachListener);
+    ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
     for(zfstlmap<void *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
         ZFLuaGCImmediately(it->first);
     }
-    ZFGlobalObserver().observerRemove(
-        ZFGlobalEvent::E_LuaStateOnDetach(),
-        this->luaStateOnDetachListener);
+    ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
     if(this->gcTask != zfnull) {
         this->gcTask->stop();
     }
 }
 zfautoT<ZFTimer> gcTask;
 zfstlmap<void *, zfbool> m;
-ZFListener luaStateOnDetachListener;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
     ZFCoreMutexLocker();
     zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;

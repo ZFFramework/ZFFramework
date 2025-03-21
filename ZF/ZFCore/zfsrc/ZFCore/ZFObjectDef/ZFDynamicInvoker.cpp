@@ -282,14 +282,12 @@ static zfstlmap<zfstring, _ZFP_ZFDI_CacheData> _ZFP_ZFDI_cacheMap;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_cache, ZFLevelZFFrameworkEssential) {
     _ZFP_ZFDI_cacheMap.clear();
-    _classOnUpdateListener = ZFCallbackForFunc(zfself::classOnUpdate);
-    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), _classOnUpdateListener);
+    ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), ZFCallbackForFunc(zfself::classOnUpdate));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_cache) {
-    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), _classOnUpdateListener);
+    ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), ZFCallbackForFunc(zfself::classOnUpdate));
 }
 private:
-    ZFListener _classOnUpdateListener;
     static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
         v_ZFClassDataUpdateData *info = zfargs.param0();
         if(info->zfv.changeType == ZFClassDataUpdateTypeDetach) {

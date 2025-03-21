@@ -11,17 +11,12 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFramew
     this->builtinWindow = zfnull;
     this->builtinRenderer = zfnull;
 
-    this->afterListener = ZFCallbackForFunc(zfself::after);
-    ZFGlobalObserver().observerAdd(
-            ZFApp::E_AppEntry(),
-            this->afterListener,
-            ZFLevelZFFrameworkPostEssential
-        );
+    ZFGlobalObserver().observerAdd(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::after), ZFLevelZFFrameworkPostEssential);
 
     zfself::before(this);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
-    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), this->afterListener);
+    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::after));
 
     if(this->builtinWindow != zfnull) {
         SDL_DestroyWindow(this->builtinWindow);
@@ -31,9 +26,6 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
 public:
     SDL_Window *builtinWindow;
     SDL_Renderer *builtinRenderer;
-private:
-    ZFListener beforeListener;
-    ZFListener afterListener;
 private:
     static void before(ZF_IN zfself *d) {
         ZFCoreAssert(d->builtinWindow == zfnull);

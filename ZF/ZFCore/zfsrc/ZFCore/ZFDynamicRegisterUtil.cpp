@@ -628,9 +628,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDynamicClassEventDataHolder, ZFLevelZFFr
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder) {
     if(this->classOnUpdateListener) {
-        ZFClassDataUpdateObserver().observerRemove(
-            ZFGlobalEvent::E_ClassDataUpdate(),
-            this->classOnUpdateListener);
+        ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classOnUpdateListener);
     }
 }
 zfstlmap<const ZFClass *, zfstlmap<zfidentity, zfstldeque<ZFListener> > > classEventMap;
@@ -638,9 +636,7 @@ ZFListener classOnUpdateListener;
 void classOnUpdateCheckAttach(void) {
     if(!this->classOnUpdateListener) {
         this->classOnUpdateListener = ZFCallbackForFunc(zfself::classOnUpdate);
-        ZFClassDataUpdateObserver().observerAdd(
-            ZFGlobalEvent::E_ClassDataUpdate(),
-            this->classOnUpdateListener);
+        ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), this->classOnUpdateListener);
     }
 }
 static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
@@ -648,6 +644,10 @@ static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
     if(data.changeType == ZFClassDataUpdateTypeDetach && data.changedClass != zfnull) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
         d->classEventMap.erase(data.changedClass);
+        if(d->classEventMap.empty()) {
+            ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), d->classOnUpdateListener);
+            d->classOnUpdateListener = zfnull;
+        }
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFDynamicClassEventDataHolder)
