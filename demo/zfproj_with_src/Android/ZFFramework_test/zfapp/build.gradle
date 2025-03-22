@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../ZFFramework'
@@ -51,12 +49,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = '11'
-    }
     buildFeatures {
         buildConfig = true
-        compose true
     }
     sourceSets {
         main {
