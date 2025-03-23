@@ -1,5 +1,5 @@
-#ifndef _ZFI_ZFImpl_sys_SDL_font_h_
-#define _ZFI_ZFImpl_sys_SDL_font_h_
+#ifndef _ZFI_ZFImpl_sys_SDL_Font_h_
+#define _ZFI_ZFImpl_sys_SDL_Font_h_
 
 #include "ZFImpl_sys_SDL_View.h"
 
@@ -98,5 +98,5 @@ extern ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_FontLoader ZFImpl_sys_SDL_fontLoader;
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL
-#endif // #ifndef _ZFI_ZFImpl_sys_SDL_font_h_
+#endif // #ifndef _ZFI_ZFImpl_sys_SDL_Font_h_
 
