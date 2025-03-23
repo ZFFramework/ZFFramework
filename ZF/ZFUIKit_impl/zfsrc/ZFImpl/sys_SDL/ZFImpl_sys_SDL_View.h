@@ -1,14 +1,11 @@
 #ifndef _ZFI_ZFImpl_sys_SDL_View_h_
 #define _ZFI_ZFImpl_sys_SDL_View_h_
 
-#include "../ZFImpl_ZFUIKit_impl.h"
-#include "ZFImpl/sys_SDL/ZFImpl_sys_SDL_ZF_impl.h"
+#include "ZFImpl_sys_SDL_TextureCache.h"
 #include "ZFUIKit/ZFUIView.h"
-
-#if ZF_ENV_sys_SDL
-
 #include "ZFImpl/sys_SDL/ZFMainEntry_sys_SDL.h"
 
+#if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief extra transform for view or animation transform */
@@ -80,6 +77,11 @@ public:
     /** @brief whether #renderRequest called and not rendered */
     zfbool renderRequested;
     /**
+     * @brief whether renderCache valid and no need to redraw,
+     *   reset when #renderRequest and #renderCacheRemove
+     */
+    zfbool renderCacheValid;
+    /**
      * @brief whether this view require to build renderCache
      *
      * when not 0, renderCache would be created and updated if need\n
@@ -87,13 +89,8 @@ public:
      * renderCacheRequired would be reset during #resetForCache
      */
     zft_zfuint16 renderCacheRequired;
-    /**
-     * @brief whether renderCache valid and no need to redraw,
-     *   reset when #renderRequest and #renderCacheRemove
-     */
-    zfbool renderCacheValid;
     /** @brief render cache, used for transform and animation */
-    SDL_Texture *renderCache;
+    ZFImpl_sys_SDL_TextureCache renderCache;
     /** @brief extra transform for view */
     ZFImpl_sys_SDL_Transform *viewTransform;
     /** @brief extra transform for animation impl */
@@ -261,7 +258,6 @@ public:
     /** @brief reset to prepare for cache */
     void resetForCache(void) {
         this->renderCacheRequired = 0;
-        this->renderCacheRemove();
         this->viewTransformRemove();
         this->aniTransformRemove();
         this->sysWindow = zfnull;
@@ -273,22 +269,6 @@ public:
         this->renderRequested = zftrue;
         this->sdlMouseGrabCallback = zfnull;
         this->sdlMeasureCallback = zfnull;
-    }
-
-    /** @brief prepare renderCache */
-    void renderCachePrepare(
-            ZF_IN SDL_Renderer *renderer
-            , ZF_IN int w
-            , ZF_IN int h
-            );
-
-    /** @brief remove renderCache */
-    void renderCacheRemove(void) {
-        if(this->renderCache != zfnull) {
-            SDL_DestroyTexture(this->renderCache);
-            this->renderCache = zfnull;
-            this->renderCacheValid = zffalse;
-        }
     }
 
     /** @brief prepare viewTransform */
@@ -332,17 +312,17 @@ public:
     , viewTransform(zfnull)
     , aniTransform(zfnull)
     , renderRequested(zftrue)
-    , renderCacheRequired(0)
     , renderCacheValid(zffalse)
-    , renderCache(zfnull)
+    , renderCacheRequired(0)
+    , renderCache()
     , children()
     , sdlMouseGrabCallback(zfnull)
     , sdlMeasureCallback(zfnull)
     {
     }
     virtual ~ZFImpl_sys_SDL_View(void) {
-        // reset to cleanup
-        this->resetForCache();
+        this->viewTransformRemove();
+        this->aniTransformRemove();
     }
     /** @endcond */
 };

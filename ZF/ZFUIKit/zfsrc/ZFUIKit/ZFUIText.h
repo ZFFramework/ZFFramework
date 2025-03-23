@@ -52,6 +52,7 @@ public:
 zfclass ZFLIB_ZFUIKit ZFUITextConfig : zfextend ZFStyle, zfimplement ZFUIText {
     ZFOBJECT_DECLARE(ZFUITextConfig, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFUIText)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUITextConfig)
 };
 
 ZF_NAMESPACE_GLOBAL_END

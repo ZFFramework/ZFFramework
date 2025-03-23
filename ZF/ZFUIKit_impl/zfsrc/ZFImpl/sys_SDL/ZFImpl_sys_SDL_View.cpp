@@ -65,38 +65,6 @@ void ZFImpl_sys_SDL_View::layoutRequest(void) {
 }
 
 // ============================================================
-void ZFImpl_sys_SDL_View::renderCachePrepare(
-        ZF_IN SDL_Renderer *renderer
-        , ZF_IN int w
-        , ZF_IN int h
-        ) {
-    const int align = 32;
-    int desiredWidth = (((w - 1) / align) + 1) * align;
-    int desiredHeight = (((h - 1) / align) + 1) * align;
-    if(this->renderCache != zfnull) {
-        int w, h;
-        if(SDL_QueryTexture(this->renderCache, zfnull, zfnull, &w, &h) != 0
-            || w != desiredWidth || h != desiredHeight
-        ) {
-            this->renderCacheRemove();
-        }
-    }
-    if(this->renderCache == zfnull) {
-        SDL_RendererInfo rendererInfo;
-        SDL_GetRendererInfo(renderer, &rendererInfo);
-        this->renderCache = SDL_CreateTexture(
-            renderer,
-            (rendererInfo.num_texture_formats > 0 && rendererInfo.texture_formats[0] != SDL_PIXELFORMAT_UNKNOWN)
-                ? rendererInfo.texture_formats[0]
-                : SDL_PIXELFORMAT_ARGB32,
-            SDL_TEXTUREACCESS_TARGET,
-            desiredWidth,
-            desiredHeight);
-        SDL_SetTextureBlendMode(this->renderCache, SDL_BLENDMODE_BLEND);
-    }
-}
-
-// ============================================================
 static void _ZFP_ZFImpl_sys_SDL_View_render(
         ZF_IN ZFImpl_sys_SDL_View *view
         , ZF_IN SDL_Renderer *renderer
@@ -146,18 +114,18 @@ void ZFImpl_sys_SDL_View::render(
         && this->aniTransform == zfnull
         && this->renderCacheRequired == 0
     ) {
-        this->renderCacheRemove();
+        this->renderCache.release();
         _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
         return;
     }
 
-    this->renderCachePrepare(renderer, this->rect.w, this->rect.h);
-    if(this->renderCache == zfnull) {
+    SDL_Texture *sdlTexture = this->renderCache.obtain(renderer, this->rect.w, this->rect.h);
+    if(sdlTexture == zfnull) {
         _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
         return;
     }
     if(!this->renderCacheValid) {
-        ZFImpl_sys_SDL_zfblockedRenderTarget(success, renderer, this->renderCache);
+        ZFImpl_sys_SDL_zfblockedRenderTarget(success, renderer, sdlTexture);
         if(!success) {
             _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
             return;
@@ -226,7 +194,7 @@ void ZFImpl_sys_SDL_View::render(
     SDL_Rect clipSaved;
     SDL_RenderGetClipRect(renderer, &clipSaved);
     SDL_RenderSetClipRect(renderer, &parentRect);
-    SDL_RenderCopyEx(renderer, this->renderCache, &src, &dst, angle, zfnull, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, sdlTexture, &src, &dst, angle, zfnull, SDL_FLIP_NONE);
     if(clipSaved.w > 0 && clipSaved.h > 0) {
         SDL_RenderSetClipRect(renderer, &clipSaved);
     }

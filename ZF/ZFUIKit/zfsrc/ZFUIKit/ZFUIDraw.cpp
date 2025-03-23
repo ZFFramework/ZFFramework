@@ -143,7 +143,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, drawText
         ) {
     return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawText(*(ZFUIDrawToken *)context
             , text
-            , config
+            , config ? config : zfcast(ZFUITextConfig *, ZFUITextConfig::DefaultStyle())
             , ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
             );
 }

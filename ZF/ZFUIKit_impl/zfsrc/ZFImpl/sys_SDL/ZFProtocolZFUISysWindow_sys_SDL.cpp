@@ -151,14 +151,7 @@ public:
             SDL_SetWindowFullscreen(nativeWindow->sdlWindow, SDL_WINDOW_FULLSCREEN);
         }
         else {
-            if(sysWindow->sysWindowLayoutParam()->sizeParam() == ZFUISizeParamFillFill()
-                    && sysWindow->sysWindowLayoutParam()->sizeHint() == ZFUISizeInvalid()
-                    ) {
-                SDL_SetWindowFullscreen(nativeWindow->sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
-            }
-            else {
-                SDL_SetWindowFullscreen(nativeWindow->sdlWindow, 0);
-            }
+            SDL_SetWindowFullscreen(nativeWindow->sdlWindow, 0);
         }
     }
 

@@ -4,7 +4,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "ZFImpl/sys_SDL/ZFImpl_sys_SDL_font.h"
+#include "ZFImpl/sys_SDL/ZFImpl_sys_SDL_Font.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
