@@ -137,7 +137,7 @@ protected:
 };
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(_ZFP_I_ZFLuaStateHolder, instance, ZFLevelZFFrameworkNormal)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoClean, ZFLevelZFFrameworkEssential) {
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoClean, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoClean) {
     ZFCoreMutexLocker();
