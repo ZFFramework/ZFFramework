@@ -99,23 +99,29 @@ ZFPROTOCOL_INTERFACE_END(ZFUIDrawForImage)
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDraw)
 public:
     /** @brief see #ZFUIDraw::beginForView */
-    virtual void drawClear(
+    virtual zfbool drawClear(
             ZF_IN ZFUIDrawToken &token
             , ZF_IN const ZFUIRect &targetFramePixel
-            ) zfpurevirtual;
+            ) {
+        return zffalse;
+    }
     /** @brief see #ZFUIDraw::beginForView */
-    virtual void drawColor(
+    virtual zfbool drawColor(
             ZF_IN ZFUIDrawToken &token
             , ZF_IN const ZFUIColor &color
             , ZF_IN const ZFUIRect &targetFramePixel
-            ) zfpurevirtual;
+            ) {
+        return zffalse;
+    }
     /** @brief see #ZFUIDraw::beginForView */
-    virtual void drawImage(
+    virtual zfbool drawImage(
             ZF_IN ZFUIDrawToken &token
             , ZF_IN ZFUIImage *image
             , ZF_IN const ZFUIRect &imageFramePixel
             , ZF_IN const ZFUIRect &targetFramePixel
-            ) zfpurevirtual;
+            ) {
+        return zffalse;
+    }
 ZFPROTOCOL_INTERFACE_END(ZFUIDraw)
 
 ZF_NAMESPACE_GLOBAL_END

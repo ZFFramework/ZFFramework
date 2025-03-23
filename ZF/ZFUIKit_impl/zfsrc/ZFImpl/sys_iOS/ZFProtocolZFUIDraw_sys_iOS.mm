@@ -97,15 +97,16 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_iOS, ZFUIDraw, v_ZFProtocolLeve
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void drawClear(
+    virtual zfbool drawClear(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
         CGContextRef context = (CGContextRef)token.impl;
         CGContextClearRect(context,
             ZFImpl_sys_iOS_ZFUIRectToCGRect(targetFramePixel));
+        return zftrue;
     }
-    virtual void drawColor(
+    virtual zfbool drawColor(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIColor &color
             , ZF_IN const ZFUIRect &targetFramePixel
@@ -114,8 +115,9 @@ public:
         CGContextSetFillColorWithColor(context, ZFImpl_sys_iOS_ZFUIColorToUIColor(color).CGColor);
         CGContextFillRect(context,
             ZFImpl_sys_iOS_ZFUIRectToCGRect(targetFramePixel));
+        return zftrue;
     }
-    virtual void drawImage(
+    virtual zfbool drawImage(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN ZFUIImage *image
             , ZF_IN const ZFUIRect &imageFramePixel
@@ -128,6 +130,7 @@ public:
             ZFImpl_sys_iOS_ZFUIRectToCGRect(targetFramePixel),
             subImage);
         CGImageRelease(subImage);
+        return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_iOS)
 

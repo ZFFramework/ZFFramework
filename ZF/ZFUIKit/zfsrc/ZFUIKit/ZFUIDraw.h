@@ -84,20 +84,20 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, endForImage
 // ============================================================
 // draw api
 /** @brief see #ZFUIDraw::beginForView */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, drawClear
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, drawClear
         , ZFMP_IN(void *, context)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         )
 
 /** @brief see #ZFUIDraw::beginForView */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, drawColor
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, zfbool, drawColor
         , ZFMP_IN(void *, context)
         , ZFMP_IN(const ZFUIColor &, color)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         )
 
 /** @brief see #ZFUIDraw::beginForView */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, void, drawImage
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfbool, drawImage
         , ZFMP_IN(void *, context)
         , ZFMP_IN(ZFUIImage *, image)
         , ZFMP_IN_OPT(const ZFUIRect &, imageFrame, ZFUIRectZero())

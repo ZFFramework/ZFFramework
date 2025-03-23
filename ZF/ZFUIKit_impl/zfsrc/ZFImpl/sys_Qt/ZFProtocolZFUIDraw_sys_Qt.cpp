@@ -115,7 +115,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Qt, ZFUIDraw, v_ZFProtocolLevel
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void drawClear(
+    virtual zfbool drawClear(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
@@ -126,8 +126,9 @@ public:
         painter->setCompositionMode(QPainter::CompositionMode_Clear);
         painter->drawRect(targetFramePixel.x, targetFramePixel.y ,targetFramePixel.width, targetFramePixel.height);
         painter->setCompositionMode(oldMode);
+        return zftrue;
     }
-    virtual void drawColor(
+    virtual zfbool drawColor(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIColor &color
             , ZF_IN const ZFUIRect &targetFramePixel
@@ -140,8 +141,9 @@ public:
         painter->setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter->drawRect(targetFramePixel.x, targetFramePixel.y ,targetFramePixel.width, targetFramePixel.height);
         painter->setCompositionMode(oldMode);
+        return zftrue;
     }
-    virtual void drawImage(
+    virtual zfbool drawImage(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN ZFUIImage *image
             , ZF_IN const ZFUIRect &imageFramePixel
@@ -156,6 +158,7 @@ public:
                 ZFImpl_sys_Qt_ZFUIRectToQRect(imageFramePixel)
             );
         painter->setCompositionMode(oldMode);
+        return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_Qt)
 

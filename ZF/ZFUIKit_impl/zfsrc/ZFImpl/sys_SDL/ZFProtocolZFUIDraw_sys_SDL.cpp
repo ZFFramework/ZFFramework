@@ -18,14 +18,6 @@ public:
     }
 
 public:
-    typedef enum {
-        Invalid,
-        View,
-        Image,
-    } Type;
-
-public:
-    Type type;
     SDL_Renderer *sdlRenderer;
     SDL_Rect framePixel;
     zffloat treeAlpha;
@@ -33,8 +25,7 @@ public:
 
 public:
     _ZFP_ZFUIDrawImpl_sys_SDL(void)
-    : type(Invalid)
-    , sdlRenderer(zfnull)
+    : sdlRenderer(zfnull)
     , framePixel()
     , treeAlpha(1)
     , nativeImage(zfnull)
@@ -80,13 +71,10 @@ public:
 public:
     virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)token.target->to<ZFUIView *>()->nativeImplView();
-        drawImpl->type = _ZFP_ZFUIDrawImpl_sys_SDL::View;
         token.impl = drawImpl;
         return zftrue;
     }
     virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)token.target->to<ZFUIDrawableView *>()->nativeImplView();
-        drawImpl->type = _ZFP_ZFUIDrawImpl_sys_SDL::Invalid;
     }
 private:
     static zfbool _renderCallback(
@@ -138,7 +126,6 @@ public:
         }
 
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
-        drawImpl->type = _ZFP_ZFUIDrawImpl_sys_SDL::Image;
         drawImpl->sdlRenderer = sdlRenderer;
         drawImpl->framePixel.x = 0;
         drawImpl->framePixel.y = 0;
@@ -173,7 +160,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_SDL, ZFUIDraw, v_ZFProtocolLeve
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void drawClear(
+    virtual zfbool drawClear(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
@@ -189,8 +176,9 @@ public:
             );
         SDL_RenderFillRect(drawImpl->sdlRenderer, &(drawImpl->framePixel));
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer, rOld, gOld, bOld, aOld);
+        return zftrue;
     }
-    virtual void drawColor(
+    virtual zfbool drawColor(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIColor &color
             , ZF_IN const ZFUIRect &targetFramePixel
@@ -213,8 +201,9 @@ public:
             );
         SDL_RenderFillRect(drawImpl->sdlRenderer, &rect);
         SDL_SetRenderDrawColor(drawImpl->sdlRenderer, rOld, gOld, bOld, aOld);
+        return zftrue;
     }
-    virtual void drawImage(
+    virtual zfbool drawImage(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN ZFUIImage *image
             , ZF_IN const ZFUIRect &imageFramePixel
@@ -232,7 +221,7 @@ public:
         ZFImpl_sys_SDL_View::renderRectCalc(rectClipped, rect, drawImpl->framePixel);;
 
         if(rectClipped.w <= 0 || rectClipped.h <= 0 || imageFramePixel.width <= 0 || imageFramePixel.height <= 0) {
-            return;
+            return zftrue;
         }
 
         SDL_Rect srcRect;
@@ -254,6 +243,7 @@ public:
         }
 
         SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
+        return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_SDL)
 

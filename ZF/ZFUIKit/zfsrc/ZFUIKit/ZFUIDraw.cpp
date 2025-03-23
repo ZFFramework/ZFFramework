@@ -105,49 +105,50 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, endForImage
 
 // ============================================================
 // draw api
-ZFMETHOD_FUNC_DEFINE_2(void, drawClear
+ZFMETHOD_FUNC_DEFINE_2(zfbool, drawClear
         , ZFMP_IN(void *, context)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context,
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context,
         targetFrame == ZFUIRectZero()
             ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
             : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
         );
 }
 
-ZFMETHOD_FUNC_DEFINE_3(void, drawColor
+ZFMETHOD_FUNC_DEFINE_3(zfbool, drawColor
         , ZFMP_IN(void *, context)
         , ZFMP_IN(const ZFUIColor &, color)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context, color,
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context, color,
         targetFrame == ZFUIRectZero()
             ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
             : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
         );
 }
 
-ZFMETHOD_FUNC_DEFINE_4(void, drawImage
+ZFMETHOD_FUNC_DEFINE_4(zfbool, drawImage
         , ZFMP_IN(void *, context)
         , ZFMP_IN(ZFUIImage *, image)
         , ZFMP_IN_OPT(const ZFUIRect &, imageFrame, ZFUIRectZero())
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
     if(image == zfnull) {
-        return;
+        return zffalse;
     }
     zfautoT<ZFUIImage> imageState = image->imageStateUpdate();
-    if(imageState != zfnull) {
-        ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
-            imageFrame == ZFUIRectZero()
-                ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
-                : ZFUIRectApplyScale(imageFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale()),
-            targetFrame == ZFUIRectZero()
-                ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-                : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
-        );
+    if(imageState == zfnull) {
+        return zffalse;
     }
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
+        imageFrame == ZFUIRectZero()
+            ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
+            : ZFUIRectApplyScale(imageFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale()),
+        targetFrame == ZFUIRectZero()
+            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
+            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+    );
 }
 
 ZF_NAMESPACE_END(ZFUIDraw)

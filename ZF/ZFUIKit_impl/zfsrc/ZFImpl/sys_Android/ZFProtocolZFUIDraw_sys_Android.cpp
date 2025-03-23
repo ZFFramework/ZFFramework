@@ -170,7 +170,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Android, ZFUIDraw, v_ZFProtocol
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void drawClear(
+    virtual zfbool drawClear(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
@@ -191,8 +191,9 @@ public:
             , (jint)targetFramePixel.width
             , (jint)targetFramePixel.height
             );
+        return zftrue;
     }
-    virtual void drawColor(
+    virtual zfbool drawColor(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUIColor &color
             , ZF_IN const ZFUIRect &targetFramePixel
@@ -216,8 +217,9 @@ public:
             , (jint)targetFramePixel.width
             , (jint)targetFramePixel.height
             );
+        return zftrue;
     }
-    virtual void drawImage(
+    virtual zfbool drawImage(
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN ZFUIImage *image
             , ZF_IN const ZFUIRect &imageFramePixel
@@ -250,6 +252,7 @@ public:
             , (jint)targetFramePixel.width
             , (jint)targetFramePixel.height
             );
+        return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_Android)
 
