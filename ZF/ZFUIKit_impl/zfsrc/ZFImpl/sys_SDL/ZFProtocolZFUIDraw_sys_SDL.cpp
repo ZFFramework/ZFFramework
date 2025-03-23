@@ -227,8 +227,6 @@ public:
         SDL_Rect srcRect;
 
         ZFImpl_sys_SDL_Image *sdlImg = (ZFImpl_sys_SDL_Image *)image->nativeImage();
-        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(drawImpl->sdlRenderer, sdlImg->sdlSurface());
-        ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
         if(zfmemcmp(&rect, &rectClipped, sizeof(SDL_Rect)) == 0) {
             srcRect.x = (int)imageFramePixel.x;
             srcRect.y = (int)imageFramePixel.y;
@@ -242,7 +240,7 @@ public:
             srcRect.h = (int)((float)imageFramePixel.height * rectClipped.h / rect.h);
         }
 
-        SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
+        SDL_RenderCopy(drawImpl->sdlRenderer, sdlImg->sdlTexture(ZFUISysWindow::mainWindow()), &srcRect, &rectClipped);
         return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_SDL)

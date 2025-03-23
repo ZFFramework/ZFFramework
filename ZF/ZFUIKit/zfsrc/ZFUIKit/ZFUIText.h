@@ -46,6 +46,14 @@ public:
     ZFPROPERTY_ASSIGN(zffloat, textSize, ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
 };
 
+/**
+ * @brief text config
+ */
+zfclass ZFLIB_ZFUIKit ZFUITextConfig : zfextend ZFStyle, zfimplement ZFUIText {
+    ZFOBJECT_DECLARE(ZFUITextConfig, ZFStyle)
+    ZFIMPLEMENT_DECLARE(ZFUIText)
+};
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIText_h_
 

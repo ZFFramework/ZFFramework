@@ -45,13 +45,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, beginForView
     if(view == zfnull) {
         return zfnull;
     }
-    ZFUIDrawToken *token = zfpoolNew(ZFUIDrawToken,
-        ZFUIDrawToken::TypeView,
-        view,
-        ZFUISizeCreate(
-            ZFUISizeApplyScale(view->viewFrame().width, view->UIScaleFixed()),
-            ZFUISizeApplyScale(view->viewFrame().height, view->UIScaleFixed()))
-        );
+    ZFUIDrawToken *token = zfpoolNew(ZFUIDrawToken, ZFUIDrawToken::TypeView, view);
     if(!ZFPROTOCOL_ACCESS(ZFUIDrawForView)->beginForView(*token)) {
         zfpoolDelete(token);
         return zfnull;
@@ -75,10 +69,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, beginForImage
         return zfnull;
     }
     ZFUISize imageSizePixel = ZFUISizeApplyScale(imageSize, ZFUIGlobalStyle::DefaultStyle()->imageScale());
-    ZFUIDrawToken *token = zfpoolNew(ZFUIDrawToken,
-        ZFUIDrawToken::TypeImage,
-        ZFUIImage::ClassData()->newInstance(),
-        imageSizePixel);
+    ZFUIDrawToken *token = zfpoolNew(ZFUIDrawToken, ZFUIDrawToken::TypeImage, ZFUIImage::ClassData()->newInstance());
     if(!ZFPROTOCOL_ACCESS(ZFUIDrawForImage)->beginForImage(*token, imageSizePixel)) {
         zfpoolDelete(token);
         return zfnull;
@@ -109,11 +100,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, drawClear
         , ZFMP_IN(void *, context)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context,
-        targetFrame == ZFUIRectZero()
-            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
-        );
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawClear(*(ZFUIDrawToken *)context
+            , ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+            );
 }
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, drawColor
@@ -121,11 +110,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, drawColor
         , ZFMP_IN(const ZFUIColor &, color)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         ) {
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context, color,
-        targetFrame == ZFUIRectZero()
-            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
-        );
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawColor(*(ZFUIDrawToken *)context
+            , color
+            , ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+            );
 }
 
 ZFMETHOD_FUNC_DEFINE_4(zfbool, drawImage
@@ -141,14 +129,23 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, drawImage
     if(imageState == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context, imageState,
-        imageFrame == ZFUIRectZero()
-            ? ZFUIRectCreate(ZFUIPointZero(), imageState->imageSizeFixed())
-            : ZFUIRectApplyScale(imageFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale()),
-        targetFrame == ZFUIRectZero()
-            ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
-            : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
-    );
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context
+            , imageState
+            , ZFUIRectApplyScale(imageFrame, imageState->imageScaleFixed())
+            , ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+            );
+}
+ZFMETHOD_FUNC_DEFINE_4(zfbool, drawText
+        , ZFMP_IN(void *, context)
+        , ZFMP_IN(const zfstring &, text)
+        , ZFMP_IN_OPT(ZFUITextConfig *, config, zfnull)
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
+        ) {
+    return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawText(*(ZFUIDrawToken *)context
+            , text
+            , config
+            , ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())
+            );
 }
 
 ZF_NAMESPACE_END(ZFUIDraw)

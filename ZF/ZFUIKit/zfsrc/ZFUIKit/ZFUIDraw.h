@@ -8,6 +8,7 @@
 
 #include "ZFUIView.h"
 #include "ZFUIImage.h"
+#include "ZFUIText.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -101,6 +102,14 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfbool, drawImage
         , ZFMP_IN(void *, context)
         , ZFMP_IN(ZFUIImage *, image)
         , ZFMP_IN_OPT(const ZFUIRect &, imageFrame, ZFUIRectZero())
+        , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
+        )
+
+/** @brief see #ZFUIDraw::beginForView */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfbool, drawText
+        , ZFMP_IN(void *, context)
+        , ZFMP_IN(const zfstring &, text)
+        , ZFMP_IN_OPT(ZFUITextConfig *, config, zfnull)
         , ZFMP_IN_OPT(const ZFUIRect &, targetFrame, ZFUIRectZero())
         )
 
