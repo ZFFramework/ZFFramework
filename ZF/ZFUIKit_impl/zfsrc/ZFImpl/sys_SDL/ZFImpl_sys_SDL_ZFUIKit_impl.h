@@ -160,6 +160,15 @@ inline ZFUIColor ZFImpl_sys_SDL_ZFUIColorFromSDL_Color(ZF_IN const SDL_Color sdl
     return ret;
 }
 
+extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_SurfaceToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Surface *sdlSurface
+        );
+extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_TextureToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Texture *sdlTexture
+        );
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL
 #endif // #ifndef _ZFI_ZFImpl_sys_SDL_ZFUIKit_impl_h_

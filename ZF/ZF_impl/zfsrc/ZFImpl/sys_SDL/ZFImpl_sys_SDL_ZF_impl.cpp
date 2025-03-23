@@ -2,7 +2,6 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "SDL_image.h"
 #include "ZFMainEntry_sys_SDL.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -136,32 +135,6 @@ SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const ZFOutput &callback) {
     ret->write = _ZFP_ZFImpl_sys_SDL_RWops_write_ZFOutput;
     ret->close = _ZFP_ZFImpl_sys_SDL_RWops_close_ZFOutput;
     return ret;
-}
-
-// ============================================================
-zfbool ZFImpl_sys_SDL_SurfaceToOutput(
-        ZF_IN const ZFOutput &callback
-        , ZF_IN SDL_Surface *sdlSurface
-        ) {
-    return 0 == IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1);
-}
-zfbool ZFImpl_sys_SDL_TextureToOutput(
-        ZF_IN const ZFOutput &callback
-        , ZF_IN SDL_Texture *sdlTexture
-        ) {
-    int width, height;
-    if(SDL_QueryTexture(sdlTexture, zfnull, zfnull, &width, &height) != 0) {
-        return zffalse;
-    }
-    SDL_Surface *sdlSurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
-    ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
-
-    SDL_Renderer *sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
-    ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture);
-    return success
-        && SDL_RenderReadPixels(sdlRenderer, zfnull, sdlSurface->format->format, sdlSurface->pixels, sdlSurface->pitch) == 0
-        && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
-        ;
 }
 
 ZF_NAMESPACE_GLOBAL_END

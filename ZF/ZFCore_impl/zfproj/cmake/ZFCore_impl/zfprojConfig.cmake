@@ -6,5 +6,5 @@ function(zfprojConfigAfter_ZFCore_impl projName)
         find_package(SDL2 REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
         target_link_libraries(${projName} SDL2::SDL2)
     endif()
-endfunction(zfprojConfigAfter_ZFCore_impl)
+endfunction()
 

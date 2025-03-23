@@ -2,6 +2,8 @@
 
 #if ZF_ENV_sys_SDL
 
+#include "SDL_image.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static void _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, ZFImpl_sys_SDL_View *view, zfindex depth, zfindex siblingIndex) {
@@ -41,6 +43,31 @@ void ZFImpl_sys_SDL_viewTreePrintT(
         _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ret, view, 0, 0);
     }
     ret += "----------------------- SDL view tree ----------------------\n";
+}
+
+zfbool ZFImpl_sys_SDL_SurfaceToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Surface *sdlSurface
+        ) {
+    return 0 == IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1);
+}
+zfbool ZFImpl_sys_SDL_TextureToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Texture *sdlTexture
+        ) {
+    int width, height;
+    if(SDL_QueryTexture(sdlTexture, zfnull, zfnull, &width, &height) != 0) {
+        return zffalse;
+    }
+    SDL_Surface *sdlSurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+    ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
+
+    SDL_Renderer *sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
+    ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture);
+    return success
+        && SDL_RenderReadPixels(sdlRenderer, zfnull, sdlSurface->format->format, sdlSurface->pixels, sdlSurface->pitch) == 0
+        && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
+        ;
 }
 
 ZF_NAMESPACE_GLOBAL_END

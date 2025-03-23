@@ -99,24 +99,6 @@ private:
     SDL_Texture *_sdlTextureSaved;
 };
 
-// ============================================================
-/**
- * @brief util to write sdl surface to output,
- *   usually for debug use only
- */
-extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_SurfaceToOutput(
-        ZF_IN const ZFOutput &callback
-        , ZF_IN SDL_Surface *sdlSurface
-        );
-/**
- * @brief util to write sdl texture to output,
- *   usually for debug use only
- */
-extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_TextureToOutput(
-        ZF_IN const ZFOutput &callback
-        , ZF_IN SDL_Texture *sdlTexture
-        );
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL
 #endif // #ifndef _ZFI_ZFImpl_sys_SDL_ZF_impl_h_

@@ -92,7 +92,7 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
                     input = ZFInputForPathInfo(zfargs.param0().to<v_ZFPathInfo *>()->zfv);
                 }
             } ZFLISTENER_END()
-            ZFPathInfoForEachFile(ZFPathInfo(ZFPathType_res(), "ZF_impl/sys_SDL/font"), impl);
+            ZFPathInfoForEachFile(ZFPathInfo(ZFPathType_res(), "ZFUIKit_impl/sys_SDL/font"), impl);
         }
         if(input) {
             ZFImpl_sys_SDL_FontData *fontData = ZFImpl_sys_SDL_fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsizeFixed, input);
