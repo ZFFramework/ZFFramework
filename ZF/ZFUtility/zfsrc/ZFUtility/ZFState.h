@@ -60,6 +60,12 @@ public:
     ZFMETHOD_DECLARE_1(zfautoT<ZFTaskId>, load
             , ZFMP_IN(const ZFListener &, callback)
             )
+    /**
+     * @brief save and call callback when save complete
+     */
+    ZFMETHOD_DECLARE_1(zfautoT<ZFTaskId>, save
+            , ZFMP_IN(const ZFListener &, callback)
+            )
 
     /**
      * @brief set state

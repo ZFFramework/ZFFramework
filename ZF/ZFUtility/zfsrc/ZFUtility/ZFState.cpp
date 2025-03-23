@@ -15,6 +15,7 @@ public:
 zfclassNotPOD _ZFP_ZFStatePrivate {
 public:
     ZFCoreArray<ZFListener> *loadQueue; // null when ready
+    ZFCoreArray<ZFListener> saveQueue;
     ZFCoreOrderMap pending; // <key, _ZFP_ZFStateData>
     ZFCoreOrderMap m; // <key, _ZFP_ZFStateData>
     zfautoT<ZFTaskId> taskId; // taskId for load or save
@@ -121,6 +122,14 @@ public:
                     ) {
                 _ZFP_ZFStatePrivate *d = owner->d;
                 d->taskId = zfnull;
+                if(d->saveQueue.isEmpty()) {
+                    return;
+                }
+                ZFCoreArray<ZFListener> saveQueue;
+                d->saveQueue.swap(saveQueue);
+                for(zfindex i = 0; i < saveQueue.count(); ++i) {
+                    saveQueue[i].execute();
+                }
             } ZFLISTENER_END()
             d->taskId = zfasync(saveAsync, saveFinish);
         } ZFLISTENER_END()
@@ -257,20 +266,42 @@ ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, load
 
     zfobj<_ZFP_I_ZFStateLoadTaskId> taskId;
     taskId->callback = callback;
-    zfself *owner = this;
-    ZFLISTENER_2(callbackWrap
-            , zfweakT<zfself>, owner
+    ZFLISTENER_1(callbackWrap
             , zfautoT<_ZFP_I_ZFStateLoadTaskId>, taskId
             ) {
         if(taskId->callback) {
-            taskId->callback.execute(ZFArgs()
-                    .sender(owner)
-                    );
+            taskId->callback.execute();
             taskId->callback = zfnull;
         }
     } ZFLISTENER_END()
     d->loadQueue->add(callbackWrap);
     d->loadCheck(this);
+    return taskId;
+}
+
+ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, save
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    if(!callback) {
+        return zfnull;
+    }
+    if(!d->taskId && !d->delayId) {
+        callback.execute();
+        return zfnull;
+    }
+
+    zfobj<_ZFP_I_ZFStateLoadTaskId> taskId;
+    taskId->callback = callback;
+    ZFLISTENER_1(callbackWrap
+            , zfautoT<_ZFP_I_ZFStateLoadTaskId>, taskId
+            ) {
+        if(taskId->callback) {
+            taskId->callback.execute();
+            taskId->callback = zfnull;
+        }
+    } ZFLISTENER_END()
+    d->saveQueue.add(callbackWrap);
+    d->saveCheck(this);
     return taskId;
 }
 

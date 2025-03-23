@@ -222,7 +222,12 @@ void ZFCallback::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 }
 
 ZFCompareResult ZFCallback::objectCompare(ZF_IN const ZFCallback &ref) const {
-    if(d == ref.d) {
+    if(d == ref.d
+            || (zftrue
+                && (d == zfnull || d->callbackType == ZFCallbackTypeDummy)
+                && (ref.d == zfnull || ref.d->callbackType == ZFCallbackTypeDummy)
+                )
+                ) {
         return ZFCompareEqual;
     }
     else if(d && ref.d && d->callbackType == ref.d->callbackType) {
