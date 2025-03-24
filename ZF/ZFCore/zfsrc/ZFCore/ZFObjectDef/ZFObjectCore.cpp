@@ -607,6 +607,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     ZFBitUnset(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateIdle);
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDeallocPrepare);
     this->objectOnDeallocPrepare();
+    this->observerRemoveAll();
     this->_ZFP_ObjI_onDeallocIvk();
     if(d) {
         for(zfstlsize i = d->propertyAccessed.size() - 1; i != (zfstlsize)-1; --i) {
@@ -719,7 +720,7 @@ void ZFObject::_ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *p
 
 void ZFObject::objectPropertyValueOnUpdate(
         ZF_IN const ZFProperty *property
-        , ZF_IN const void *oldValue
+        , ZF_IN void *oldValue
         ) {
     if(!this->objectIsInternalPrivate()
             && (ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)
@@ -727,8 +728,20 @@ void ZFObject::objectPropertyValueOnUpdate(
                 ) {
         v_ZFProperty *param0 = zfunsafe_zfAlloc(v_ZFProperty);
         param0->zfv = property;
-        v_zfptr *param1 = zfunsafe_zfAlloc(v_zfptr);
-        param1->zfv = oldValue;
+        ZFObject *param1 = zfnull;
+        if(oldValue) {
+            if(property->isRetainProperty()) {
+                param1 = zfunsafe_zfRetain((ZFObject *)const_cast<void *>(oldValue));
+            }
+            else {
+                const ZFTypeInfo *typeInfo = ZFTypeInfoForName(property->propertyTypeId());
+                if(typeInfo != zfnull) {
+                    zfautoT<ZFTypeIdWrapper> v = typeInfo->typeIdClass()->newInstance();
+                    v->wrappedValue(oldValue);
+                    param1 = zfunsafe_zfRetain(v);
+                }
+            }
+        }
         this->observerNotify(ZFObject::E_ObjectPropertyValueOnUpdate(), param0, param1);
         zfunsafe_zfRelease(param0);
         zfunsafe_zfRelease(param1);

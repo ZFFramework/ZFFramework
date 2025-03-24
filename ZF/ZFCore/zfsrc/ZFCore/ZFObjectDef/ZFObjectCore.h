@@ -257,8 +257,8 @@ public:
      * param1 is #v_zfptr holds the old property value
      * (holds null when first time accessed)\n
      * the param1 holds these types:
-     * -  for retain property, it points to (const zfauto *)
-     * -  for assign property, it points to (const YourPropertyType *)
+     * -  for retain property, it points to the value itself
+     * -  for assign property, it points to a #ZFTypeIdWrapper that holds the value
      *
      * called when first time accessed, and each time setter is called
      */
@@ -793,7 +793,7 @@ public:
     zffinal void _ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *property);
     zffinal inline void _ZFP_ZFObject_objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property
-            , ZF_IN const void *oldValue
+            , ZF_IN void *oldValue
             ) {
         this->objectPropertyValueOnUpdate(property, oldValue);
     }
@@ -803,7 +803,7 @@ protected:
      */
     virtual void objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property
-            , ZF_IN const void *oldValue
+            , ZF_IN void *oldValue
             );
 
     // ============================================================

@@ -509,7 +509,7 @@ void ZFUIImage::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
 
 void ZFUIImage::objectPropertyValueOnUpdate(
         ZF_IN const ZFProperty *property
-        , ZF_IN const void *oldValue
+        , ZF_IN void *oldValue
         ) {
     zfsuper::objectPropertyValueOnUpdate(property, oldValue);
     if(property->ownerClass() == ZFUIImage::ClassData()) {

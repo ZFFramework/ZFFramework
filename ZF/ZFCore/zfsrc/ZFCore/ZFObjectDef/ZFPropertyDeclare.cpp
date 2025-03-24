@@ -248,7 +248,7 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
         &valueOld);
     if(!accessed) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueAttach(property);}
 
-    propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, &propertyValueOld);
+    propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, propertyValueOld);
 }
 void _ZFP_ZFPropertyLifeCycleCall_setter_assign(
         ZF_IN const ZFProperty *property

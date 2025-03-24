@@ -325,7 +325,7 @@ static void _ZFP_PropDynReg_setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
 
         _ZFP_I_PropDynRetainHolder *holder = valueOld;
         if(holder != zfnull) {
-            ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, &(holder->zfv));
+            ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, holder->zfv.toObject());
         }
         else {
             ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property,

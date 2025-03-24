@@ -35,7 +35,7 @@ void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty) {
 void ZFPropertyUserRegisterNotifyUpdate(
         ZF_IN ZFObject *ownerObject
         , ZF_IN const ZFProperty *property
-        , ZF_IN const void *propertyValueOld
+        , ZF_IN void *propertyValueOld
         ) {
     ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, propertyValueOld);
 }

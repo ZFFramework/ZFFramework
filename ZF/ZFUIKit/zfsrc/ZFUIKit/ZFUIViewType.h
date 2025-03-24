@@ -476,7 +476,7 @@ protected:
     zfoverride
     virtual void objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property
-            , ZF_IN const void *oldValue
+            , ZF_IN void *oldValue
             ) {
         zfsuper::objectPropertyValueOnUpdate(property, oldValue);
         if(oldValue != zfnull) {

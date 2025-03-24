@@ -38,7 +38,7 @@ protected:
 extern ZFLIB_ZFCore void ZFPropertyUserRegisterNotifyUpdate(
         ZF_IN ZFObject *ownerObject
         , ZF_IN const ZFProperty *property
-        , ZF_IN const void *propertyValueOld
+        , ZF_IN void *propertyValueOld
         );
 
 // ============================================================
@@ -77,7 +77,7 @@ public:
                     v ? v->toObject() : zfnull
                 )
             );
-        ZFPropertyUserRegisterNotifyUpdate(ownerObj, property, &oldValue);
+        ZFPropertyUserRegisterNotifyUpdate(ownerObj, property, oldValue.toObject());
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
     static T_Type const &getterInvoker(
