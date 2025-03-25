@@ -6,6 +6,16 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+// ============================================================
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_Font_init, ZFLevelZFFrameworkEssential) {
+    TTF_Init();
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_Font_init) {
+    TTF_Quit();
+}
+ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_Font_init)
+
+// ============================================================
 ZFImpl_sys_SDL_FontLoader ZFImpl_sys_SDL_fontLoader = zfnull;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_fontDataHolder, ZFLevelZFFrameworkNormal) {

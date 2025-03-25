@@ -15,18 +15,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_SDL, ZFUITextView, v_ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        TTF_Init();
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        TTF_Quit();
-        zfsuper::protocolOnDealloc();
-    }
-
-public:
     static void sdlMeasureCallback(
             ZF_OUT ZFUISize &ret
             , ZF_IN ZFImpl_sys_SDL_View *owner

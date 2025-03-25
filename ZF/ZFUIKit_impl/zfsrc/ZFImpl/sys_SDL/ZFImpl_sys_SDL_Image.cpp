@@ -8,6 +8,21 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+// ============================================================
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_Image_init, ZFLevelZFFrameworkEssential) {
+    IMG_Init(0
+            | IMG_INIT_JPG
+            | IMG_INIT_PNG
+            | IMG_INIT_TIF
+            | IMG_INIT_WEBP
+            );
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_Image_init) {
+    IMG_Quit();
+}
+ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_Image_init)
+
+// ============================================================
 typedef zfstlmap<ZFUISysWindow *, SDL_Texture *> _ZFP_ZFImpl_sys_SDL_ImageTextureMap;
 
 ZFImpl_sys_SDL_Image::ZFImpl_sys_SDL_Image(void)

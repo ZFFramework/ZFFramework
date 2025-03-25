@@ -20,6 +20,7 @@ public:
     } Type;
     Type type; /**< @brief type */
     zfauto target; /**< @brief target */
+    ZFUISize targetSizePixel; /**< @brief target size in pixel */
     void *impl; /**< @brief impl */
 
 public:
@@ -27,9 +28,11 @@ public:
     explicit ZFUIDrawToken(
             ZF_IN ZFUIDrawToken::Type type
             , ZF_IN ZFObject *target
+            , ZF_IN ZFUISize targetSizePixel
             )
     : type(type)
     , target(target)
+    , targetSizePixel(targetSizePixel)
     , impl(zfnull)
     {
     }

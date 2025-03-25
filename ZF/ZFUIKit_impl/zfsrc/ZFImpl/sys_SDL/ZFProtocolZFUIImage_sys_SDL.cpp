@@ -11,23 +11,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_SDL, ZFUIImage, v_ZFProtocolLe
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("SDL_image")
 
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        IMG_Init(0
-                | IMG_INIT_JPG
-                | IMG_INIT_PNG
-                | IMG_INIT_TIF
-                | IMG_INIT_WEBP
-            );
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        IMG_Quit();
-        zfsuper::protocolOnDealloc();
-    }
-
-public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         SDL_Surface *sdlSurface = IMG_Load_RW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(inputCallback), 1);
         if(sdlSurface == zfnull) {
