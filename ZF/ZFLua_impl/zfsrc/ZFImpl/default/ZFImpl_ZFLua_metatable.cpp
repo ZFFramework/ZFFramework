@@ -194,7 +194,10 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
         , ZF_OUT zfstring &errorHint
         , ZF_IN lua_State *L
         ) {
-    if(lua_isuserdata(L, 1) && lua_isuserdata(L, 2)) {
+    if(zftrue
+            && (lua_isuserdata(L, 1) || lua_isnil(L, 1))
+            && (lua_isuserdata(L, 2) || lua_isnil(L, 2))
+            ) {
         zfauto v1;
         if(!ZFImpl_ZFLua_toObject(v1, L, 1)) {
             zfstringAppend(errorHint, "[LuaMetatable] unknown param type: %s",

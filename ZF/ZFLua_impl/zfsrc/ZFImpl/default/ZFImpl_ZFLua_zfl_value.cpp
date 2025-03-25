@@ -13,7 +13,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_value(ZF_IN lua_State *L) {
             (zfindex)count);
     }
 
-    if(!lua_isuserdata(L, 1) && lua_islightuserdata(L, 1)) {
+    if(!lua_isuserdata(L, 1)) {
         lua_pushvalue(L, 1);
         return 1;
     }

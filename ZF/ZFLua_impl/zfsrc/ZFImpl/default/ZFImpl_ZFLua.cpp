@@ -527,6 +527,10 @@ zfbool ZFImpl_ZFLua_toObject(
         param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
         return zftrue;
     }
+    else if(lua_isnil(L, luaStackOffset)) {
+        param = zfnull;
+        return zftrue;
+    }
     else {
         return zffalse;
     }
@@ -659,6 +663,9 @@ zfbool ZFImpl_ZFLua_toString(
         return zftrue;
     }
     if(!lua_isuserdata(L, luaStackOffset)) {
+        if(lua_isnil(L, luaStackOffset)) {
+            return allowEmpty;
+        }
         return zffalse;
     }
 
@@ -700,17 +707,21 @@ zfbool ZFImpl_ZFLua_toNumberT(
         , ZF_IN_OPT zfbool allowEmpty /* = zffalse */
         , ZF_OUT_OPT const ZFClass **holderCls /* = zfnull */
         ) {
-    if(holderCls != zfnull) {*holderCls = zfnull;}
     if(lua_isuserdata(L, luaStackOffset)) {
         zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
         return ZFImpl_ZFLua_toNumberT(ret, param, allowEmpty, holderCls);
     }
 
+    if(holderCls != zfnull) {*holderCls = zfnull;}
     int success = 0;
     lua_Number num = lua_tonumberx(L, luaStackOffset, &success);
     if(success) {
         ret = zfobj<v_zfdouble>((zfdouble)num);
         return zftrue;
+    }
+    if(lua_isnil(L, luaStackOffset)) {
+        ret = zfobj<v_zfdouble>(0);
+        return allowEmpty;
     }
     return zffalse;
 }
