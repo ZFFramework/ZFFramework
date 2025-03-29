@@ -26,7 +26,7 @@ jobs:
         arch: x64
 
     - name: get-cmake
-      uses: lukka/get-cmake@latest
+      uses: lukka/get-cmake@v3.31.6
 
     - name: Set up NASM
       uses: ilammy/setup-nasm@v1
