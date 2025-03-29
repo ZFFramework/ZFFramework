@@ -155,6 +155,9 @@ private:
             , ZF_IN int widthHint
             , ZF_IN zffloat textSize
             ) {
+        // result to extra size, to ensure compact text views won't be overlapped
+        const int extraSize = 1;
+
         ZFImpl_sys_SDL_FontType sdlFontType = ZFImpl_sys_SDL_FontType_normal;
         switch(textView->textAppearance()) {
             case v_ZFUITextAppearance::e_Bold:
@@ -177,13 +180,26 @@ private:
         }
 
         int lineSkip = TTF_FontLineSkip(sdlFont);
-        if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0) {
-            return zffalse;
-        }
-        if(widthHint <= 0 || w < widthHint || textView->singleLine()) {
+
+        zfindex p = zfstringFind(text, '\n');
+        if(textView->singleLine()) {
+            if(TTF_SizeUTF8(sdlFont, p != zfindexMax() ? zfstring(text, p) : text, &w, &h) != 0) {
+                return zffalse;
+            }
             h = zfmMax(h, lineSkip);
-            ++w;
+            w += extraSize;
             return zftrue;
+        }
+
+        if(p == zfindexMax()) {
+            if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0) {
+                return zffalse;
+            }
+            if(widthHint <= 0 || w < widthHint) {
+                h = zfmMax(h, lineSkip);
+                w += extraSize;
+                return zftrue;
+            }
         }
 
         zfstring textTmp = text;
@@ -194,6 +210,7 @@ private:
         }
         zfindex iText = 0;
         w = 0;
+        h = 0;
         int line = 0;
         while(iText < textLen) {
             ++line;
@@ -208,8 +225,8 @@ private:
             }
         }
         h = zfmMax(h, lineSkip) + lineSkip * (line - 1);
-        ++w;
-        ++h;
+        w += extraSize;
+        h += extraSize;
         return zftrue;
     }
 

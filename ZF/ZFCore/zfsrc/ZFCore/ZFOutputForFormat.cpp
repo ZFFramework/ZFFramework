@@ -272,6 +272,7 @@ void ZFOutputFormatBasic::format(
     zfbool removeEndl = this->removeEndl();
     while(src < srcEnd) {
         if(removeEndl && (*src == '\n' || *src == '\r')) {
+            ret.append(p, src - p);
             if(*src == '\r') {
                 ret += "\\r";
             }
@@ -279,6 +280,7 @@ void ZFOutputFormatBasic::format(
                 ret += "\\n";
             }
             ++src;
+            p = src;
         }
         else if(*src == '\n') {
             if(_ZFP_needLinePrefix) {
