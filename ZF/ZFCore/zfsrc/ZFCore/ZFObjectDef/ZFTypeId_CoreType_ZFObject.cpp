@@ -778,6 +778,13 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallbackType, ZFCallbackType, {
                 return zffalse;
         }
     })
+ZFEXPORT_RAW_ENUM_DEFINE(ZFCallbackType
+        , ZFCallbackTypeDummy
+        , ZFCallbackTypeMethod
+        , ZFCallbackTypeMemberMethod
+        , ZFCallbackTypeRawFunction
+        , ZFCallbackTypeLambda
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSerializablePropertyType, ZFSerializablePropertyType, {
@@ -828,6 +835,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSerializablePropertyType, ZFSerializablePr
                 return zffalse;
         }
     })
+ZFEXPORT_RAW_ENUM_DEFINE(ZFSerializablePropertyType
+        , ZFSerializablePropertyTypeUnspecified
+        , ZFSerializablePropertyTypeNotSerializable
+        , ZFSerializablePropertyTypeSerializable
+        , ZFSerializablePropertyTypeEmbeded
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE(ZFSerializableData, ZFSerializableData, {

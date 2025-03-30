@@ -562,6 +562,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
                 return zffalse;
         }
     })
+ZFEXPORT_RAW_ENUM_DEFINE(ZFFrameworkState
+        , ZFFrameworkStateNotAvailable
+        , ZFFrameworkStateInitRunning
+        , ZFFrameworkStateAvailable
+        , ZFFrameworkStateCleanupRunning
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFuncAddrType, ZFFuncAddrType)
