@@ -76,19 +76,21 @@ public:
             ZFValueHolder *holder = zfargs.param0();
             ZFCoreOrderMap &mNew = holder->holdedDataRef<ZFCoreOrderMap &>();
             _ZFP_ZFStatePrivate *d = owner->d;
+            d->taskId = zfnull;
             {
                 zfsynchronize(owner);
                 d->m.swap(mNew);
             }
             zfbool changed = d->_resolvePending(owner);
             changed |= d->trim(owner);
-            while(!d->loadQueue->isEmpty()) {
-                ZFListener callback = d->loadQueue->removeAndGet(0);
+
+            ZFCoreArray<ZFListener> *loadQueueTmp = d->loadQueue;
+            d->loadQueue = zfnull;
+            while(!loadQueueTmp->isEmpty()) {
+                ZFListener callback = loadQueueTmp->removeAndGet(0);
                 callback.execute();
             }
-            zfpoolDelete(d->loadQueue);
-            d->loadQueue = zfnull;
-            d->taskId = zfnull;
+            zfpoolDelete(loadQueueTmp);
 
             if(changed) {
                 d->saveCheck(owner);

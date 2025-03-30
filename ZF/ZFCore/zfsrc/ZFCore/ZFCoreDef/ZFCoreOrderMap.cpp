@@ -374,6 +374,9 @@ void ZFCoreOrderMap::iterAdd(
 // ============================================================
 // order map spec
 const ZFCorePointerBase *ZFCoreOrderMap::update(ZF_IN const zfstring &key) const {
+    if(!d) {
+        return zfnull;
+    }
     _ZFP_ZFCoreOrderMapPrivate::MapType::iterator mapIt = d->map.find(key);
     if(mapIt == d->map.end()) {
         return zfnull;
