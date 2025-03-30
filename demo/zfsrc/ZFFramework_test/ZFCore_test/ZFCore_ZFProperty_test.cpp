@@ -21,7 +21,7 @@ public:
     ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFObject>, propertyRetain) {
         ZFLog();
     }
-    ZFPROPERTY_ON_VERIFY_INLINE(zfanyT<ZFObject>, propertyRetain) {
+    ZFPROPERTY_ON_UPDATE_INLINE(zfanyT<ZFObject>, propertyRetain) {
         ZFLog();
     }
     ZFPROPERTY_ON_ATTACH_INLINE(zfanyT<ZFObject>, propertyRetain) {
@@ -32,14 +32,14 @@ public:
     }
 
     ZFPROPERTY_ON_INIT_DECLARE(zfstring, propertyAssign)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zfstring, propertyAssign)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfstring, propertyAssign)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, propertyAssign)
     ZFPROPERTY_ON_DETACH_DECLARE(zfstring, propertyAssign)
 };
 ZFPROPERTY_ON_INIT_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
     ZFLog();
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
+ZFPROPERTY_ON_UPDATE_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
     ZFLog();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {

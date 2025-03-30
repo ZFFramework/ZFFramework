@@ -287,7 +287,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, checkable) {
         this->checked(zffalse);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIButton, zfbool, checked) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIButton, zfbool, checked) {
     if(!this->checkable()) {
         propertyValue = zffalse;
     }

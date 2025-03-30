@@ -18,7 +18,7 @@ zfclassFwd ZFListener;
  */
 typedef enum {
     ZFPropertyLifeCycleOnInit, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-    ZFPropertyLifeCycleOnVerify, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
+    ZFPropertyLifeCycleOnUpdate, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
     ZFPropertyLifeCycleOnAttach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
     ZFPropertyLifeCycleOnDetach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 } ZFPropertyLifeCycle;

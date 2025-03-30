@@ -316,7 +316,7 @@ public:
             , ZF_IN const ZFListener &callback
             );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
-    ZFDynamic &propertyOnVerify(
+    ZFDynamic &propertyOnUpdate(
             ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &callback
             );

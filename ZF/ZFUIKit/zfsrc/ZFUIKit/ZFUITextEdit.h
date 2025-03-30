@@ -191,7 +191,7 @@ public:
      * @brief text edit's cursor position
      */
     ZFPROPERTY_ASSIGN(ZFIndexRange, selectedRange, ZFIndexRangeZero())
-    ZFPROPERTY_ON_VERIFY_DECLARE(ZFIndexRange, selectedRange)
+    ZFPROPERTY_ON_UPDATE_DECLARE(ZFIndexRange, selectedRange)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFIndexRange, selectedRange)
 
     /**
@@ -200,7 +200,7 @@ public:
     ZFPROPERTY_ASSIGN(zfbool, confirmWhenLostFocus, zftrue)
 
 public:
-    ZFPROPERTY_ON_VERIFY_DECLARE(zfstring, text)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfstring, text)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, text)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearance, textAppearance)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)

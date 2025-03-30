@@ -170,7 +170,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  * -  propertyOnInit: called when property first accessed\n
  *   you may change the propertyValue during this step
  *   to modify the property's init value
- * -  propertyOnVerify: called when setter called\n
+ * -  propertyOnUpdate: called when setter called\n
  *   you may verify the property value, and modify propertyValue to correct one
  * -  propertyOnAttach: called when property first accessed or setter called\n
  *   you may do additional attach steps here,
@@ -181,7 +181,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *
  * after override, for detach events (detach/dealloc),
  * subclass's one would be called before parent's one,
- * for others (init/verify/attach),
+ * for others (init/update/attach),
  * parent's one would be called first\n
  * \n
  * \n
@@ -193,7 +193,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  * -  property's setter called:
  *   -# propertyOnDetach
  *   -# store raw value
- *   -# propertyOnVerify
+ *   -# propertyOnUpdate
  *   -# propertyOnAttach
  *   -# #ZFObject::E_ObjectPropertyValueOnUpdate
  * -  property's owner object deallocated:
@@ -235,14 +235,14 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
         ))
 
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-#define ZFPROPERTY_ON_VERIFY_DECLARE(Type, Name) \
-     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, OnVerify, ZFM_EMPTY)
+#define ZFPROPERTY_ON_UPDATE_DECLARE(Type, Name) \
+     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, OnUpdate, ZFM_EMPTY)
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-#define ZFPROPERTY_ON_VERIFY_DEFINE(OwnerClass, Type, Name) \
-     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DEFINE(OwnerClass, Type, Name, OnVerify, ZFM_EMPTY, ZFM_EMPTY())
+#define ZFPROPERTY_ON_UPDATE_DEFINE(OwnerClass, Type, Name) \
+     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DEFINE(OwnerClass, Type, Name, OnUpdate, ZFM_EMPTY, ZFM_EMPTY())
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-#define ZFPROPERTY_ON_VERIFY_INLINE(Type, Name) \
-     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_INLINE(Type, Name, OnVerify, ZFM_EMPTY, ZFM_EMPTY())
+#define ZFPROPERTY_ON_UPDATE_INLINE(Type, Name) \
+     _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_INLINE(Type, Name, OnUpdate, ZFM_EMPTY, ZFM_EMPTY())
 
 /** @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 #define ZFPROPERTY_ON_ATTACH_DECLARE(Type, Name) \

@@ -223,7 +223,7 @@ public:
      * @brief for #v_ZFUIButtonGroupType::e_Tab type only, the checked tab index, zfindexMax() by default
      */
     ZFPROPERTY_ASSIGN(zfindex, buttonTabChecked, zfindexMax())
-    ZFPROPERTY_ON_VERIFY_DECLARE(zfindex, buttonTabChecked)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfindex, buttonTabChecked)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, buttonTabChecked)
 
 public:

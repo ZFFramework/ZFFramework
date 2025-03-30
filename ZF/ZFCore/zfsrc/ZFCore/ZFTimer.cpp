@@ -81,7 +81,7 @@ ZFMETHOD_DEFINE_0(ZFTimer, void *, nativeTimer) {
     return d->nativeTimer;
 }
 
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFTimer, zftimet, interval) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFTimer, zftimet, interval) {
     ZFCoreAssert(!this->started());
     ZFCoreAssert(this->interval() >= 0);
 }

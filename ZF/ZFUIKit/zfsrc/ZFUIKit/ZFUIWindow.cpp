@@ -73,7 +73,7 @@ void ZFUIWindow::objectOnDealloc(void) {
 
 // ============================================================
 // properties
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIWindow, ZFUIWindowLevel, windowLevel) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIWindow, ZFUIWindowLevel, windowLevel) {
     ZFCoreAssertWithMessage(!this->showing(), "you must not change window level while it's showing");
 }
 

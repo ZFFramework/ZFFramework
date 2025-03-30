@@ -67,7 +67,7 @@ ZFProperty::ZFProperty(void)
 , _ZFP_ZFProperty_callbackEnsureInit(zfnull)
 , _ZFP_ZFProperty_callbackDealloc(zfnull)
 , _ZFP_ZFPropertyLifeCycle_OnInit()
-, _ZFP_ZFPropertyLifeCycle_OnVerify()
+, _ZFP_ZFPropertyLifeCycle_OnUpdate()
 , _ZFP_ZFPropertyLifeCycle_OnAttach()
 , _ZFP_ZFPropertyLifeCycle_OnDetach()
 {

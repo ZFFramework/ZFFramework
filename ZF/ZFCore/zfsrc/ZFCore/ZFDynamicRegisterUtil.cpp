@@ -1315,11 +1315,11 @@ ZFDynamic &ZFDynamic::propertyOnInit(
         ) {
     return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnInit, callback);
 }
-ZFDynamic &ZFDynamic::propertyOnVerify(
+ZFDynamic &ZFDynamic::propertyOnUpdate(
         ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &callback
         ) {
-    return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnVerify, callback);
+    return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnUpdate, callback);
 }
 ZFDynamic &ZFDynamic::propertyOnAttach(
         ZF_IN const zfstring &propertyName
@@ -1819,7 +1819,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnIn
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnVerify
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnUpdate
         , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
         )

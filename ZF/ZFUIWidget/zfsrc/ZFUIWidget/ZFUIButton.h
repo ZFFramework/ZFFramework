@@ -132,7 +132,7 @@ public:
      * @brief true if the button is checked, valid only if #checkable, false by default
      */
     ZFPROPERTY_ASSIGN(zfbool, checked, zffalse)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zfbool, checked)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfbool, checked)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, checked)
     /**
      * @brief mouse up tolerance to detect as click, (0 - #ZFUIGlobalStyle::itemMargin) by default

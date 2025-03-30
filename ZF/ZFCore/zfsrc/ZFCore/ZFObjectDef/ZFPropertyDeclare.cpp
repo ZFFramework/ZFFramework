@@ -26,8 +26,8 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
     else if(zfstringIsEqual(lifeCycleName, "OnInit")) {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
     }
-    else if(zfstringIsEqual(lifeCycleName, "OnVerify")) {
-        return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnVerify;
+    else if(zfstringIsEqual(lifeCycleName, "OnUpdate")) {
+        return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnUpdate;
     }
     else if(zfstringIsEqual(lifeCycleName, "OnAttach")) {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnAttach;
@@ -233,7 +233,7 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
 
     rawValueStoreCallback(rawValueStoreToken, valueNew);
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnVerify,
+        property->_ZFP_ZFPropertyLifeCycle_OnUpdate,
         propertyOwnerObject,
         property,
         &valueNew,
@@ -275,7 +275,7 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_assign(
     }
     void *valueRef = rawValueStoreCallback(rawValueStoreToken, propertyValueNew);
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnVerify,
+        property->_ZFP_ZFPropertyLifeCycle_OnUpdate,
         propertyOwnerObject,
         property,
         valueRef,

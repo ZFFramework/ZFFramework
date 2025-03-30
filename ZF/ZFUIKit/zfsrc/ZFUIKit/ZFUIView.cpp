@@ -1046,7 +1046,7 @@ void ZFUIView::_ZFP_ZFUIView_viewTreeInWindow(ZF_IN zfbool viewTreeInWindow) {
             , ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewTreeVisibleInternal)
             );
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, alpha) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, alpha) {
     propertyValue = zfmApplyRange<zffloat>(propertyValue, 0, 1);
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, alpha) {
@@ -1118,7 +1118,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, translateZ) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleX) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, scaleX) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }
@@ -1126,7 +1126,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleX) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleY) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, scaleY) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }
@@ -1134,7 +1134,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleY) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleZ) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, scaleZ) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }
@@ -1142,7 +1142,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, scaleZ) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateX) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateX) {
     while(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1153,7 +1153,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateX) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateY) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateY) {
     while(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1164,7 +1164,7 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateY) {
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, rotateZ) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateZ) {
     while(propertyValue < 0) {
         propertyValue += 360;
     }
@@ -1573,7 +1573,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, void, removeFromParent) {
 
 // ============================================================
 // scale settings
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, UIScale) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, UIScale) {
     if(propertyValue < 0) {
         propertyValue = 0;
     }

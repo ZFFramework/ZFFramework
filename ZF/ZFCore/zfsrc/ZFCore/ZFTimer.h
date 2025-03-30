@@ -81,7 +81,7 @@ public:
      * assert fail if interval is less than 0
      */
     ZFPROPERTY_ASSIGN(zftimet, interval, 1000)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zftimet, interval)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zftimet, interval)
 
     /**
      * @brief whether timer activate on main thread, true by default

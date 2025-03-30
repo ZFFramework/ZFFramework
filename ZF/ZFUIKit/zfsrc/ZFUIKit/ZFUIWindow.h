@@ -140,7 +140,7 @@ public:
      * @brief window's level
      */
     ZFPROPERTY_ASSIGN(ZFUIWindowLevel, windowLevel, v_ZFUIWindowLevel::EnumDefault())
-    ZFPROPERTY_ON_VERIFY_DECLARE(ZFUIWindowLevel, windowLevel)
+    ZFPROPERTY_ON_UPDATE_DECLARE(ZFUIWindowLevel, windowLevel)
 
     /**
      * @brief whether this window update layout according to #ZFUISysWindow::sysWindowMargin,

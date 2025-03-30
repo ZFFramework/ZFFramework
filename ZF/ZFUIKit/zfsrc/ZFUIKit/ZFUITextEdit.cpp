@@ -78,7 +78,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfanyT<ZFRegExp>, editFilter) {
         this->text("");
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, ZFIndexRange, selectedRange) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUITextEdit, ZFIndexRange, selectedRange) {
     zfindex textLength = this->text().length();
     if(propertyValue.start >= textLength) {
         propertyValue = ZFIndexRangeZero();
@@ -96,7 +96,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFIndexRange, selectedRange) {
     }
 }
 
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, zfstring, text) {
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUITextEdit, zfstring, text) {
     if(!this->textShouldUpdate(propertyValue)) {
         propertyValue = propertyValueOld;
     }

@@ -28,7 +28,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterAutoRemove)
 static zfbool _ZFP_ZFPropertyLifeCycleIsReadonly(ZF_IN ZFPropertyLifeCycle lifeCycle) {
     switch(lifeCycle) {
         case ZFPropertyLifeCycleOnInit:
-        case ZFPropertyLifeCycleOnVerify:
+        case ZFPropertyLifeCycleOnUpdate:
             return zffalse;
         default:
             return zftrue;
@@ -41,8 +41,8 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
     switch(lifeCycle) {
         case ZFPropertyLifeCycleOnInit:
             return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
-        case ZFPropertyLifeCycleOnVerify:
-            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnVerify;
+        case ZFPropertyLifeCycleOnUpdate:
+            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnUpdate;
         case ZFPropertyLifeCycleOnAttach:
             return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnAttach;
         case ZFPropertyLifeCycleOnDetach:
@@ -313,14 +313,14 @@ static void _ZFP_PropDynReg_setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
 
     if(firstTime) {
         ownerObject->objectTag(d->tagKey_propertyValue, value);
-        d->propLifeCycle(ZFPropertyLifeCycleOnVerify, ownerObject, property, value, valueOld);
+        d->propLifeCycle(ZFPropertyLifeCycleOnUpdate, ownerObject, property, value, valueOld);
         d->propLifeCycle(ZFPropertyLifeCycleOnAttach, ownerObject, property, value, valueOld);
         ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
     }
     else {
         d->propLifeCycle(ZFPropertyLifeCycleOnDetach, ownerObject, property, valueOld, valueOld);
         ownerObject->objectTag(d->tagKey_propertyValue, value);
-        d->propLifeCycle(ZFPropertyLifeCycleOnVerify, ownerObject, property, value, valueOld);
+        d->propLifeCycle(ZFPropertyLifeCycleOnUpdate, ownerObject, property, value, valueOld);
         d->propLifeCycle(ZFPropertyLifeCycleOnAttach, ownerObject, property, value, valueOld);
 
         _ZFP_I_PropDynRetainHolder *holder = valueOld;

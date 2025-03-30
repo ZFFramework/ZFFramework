@@ -281,7 +281,7 @@ public:
      * @brief view's alpha, 1 by default
      */
     ZFPROPERTY_ASSIGN(zffloat, alpha, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, alpha)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, alpha)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, alpha)
 
     /**
@@ -445,23 +445,23 @@ public:
 
     /** @brief see #transformAvailable */
     ZFPROPERTY_ASSIGN(zffloat, scaleX, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, scaleX)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, scaleX)
     /** @brief see #transformAvailable */
     ZFPROPERTY_ASSIGN(zffloat, scaleY, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, scaleY)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, scaleY)
     /** @brief see #transformAvailable */
     ZFPROPERTY_ASSIGN(zffloat, scaleZ, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, scaleZ)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, scaleZ)
 
     /** @brief see #transformAvailable */
     ZFPROPERTY_ASSIGN(zffloat, rotateX, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateX)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, rotateX)
     /** @brief see #transformAvailable */
     ZFPROPERTY_ASSIGN(zffloat, rotateY, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateY)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, rotateY)
     /** @brief see #transformAvailable */
     ZFPROPERTY_ASSIGN(zffloat, rotateZ, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, rotateZ)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, rotateZ)
 
     // ============================================================
     // util
@@ -789,7 +789,7 @@ public:
      * use #scaleX instead
      */
     ZFPROPERTY_ASSIGN(zffloat, UIScale, 1)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, UIScale)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zffloat, UIScale)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, UIScale)
     /** @brief see #UIScale */
     ZFMETHOD_DECLARE_0(zffloat, UIScaleInherited)
