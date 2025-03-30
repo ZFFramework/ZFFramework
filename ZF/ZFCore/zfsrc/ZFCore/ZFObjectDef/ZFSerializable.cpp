@@ -186,6 +186,8 @@ zfbool ZFSerializable::serializeFromData(
         if(ZFSerializableUtil::printResolveStatus(serializableData, ZFOutputForString(tmp))) {
             #if ZF_ENV_DEBUG
                 ZFCoreCriticalMessageTrim(tmp);
+            #else
+                ZFCoreLogTrim("%s", tmp);
             #endif
         }
     }

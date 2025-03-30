@@ -205,9 +205,6 @@ zfbool printResolveStatus(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_IN_OPT const ZFOutput &outputCallback /* = ZFOutputDefault() */
         ) {
-    if(!ZFSerializableDataResolveCheckEnable) {
-        return zffalse;
-    }
     zfstring tmp = "[ZFSerializable] not all resolved:\n";
     zfbool ret = _ZFP_ZFSerializableUtilPrintResolveStatus(serializableData, ZFOutputForString(tmp), 1);
     if(ret) {

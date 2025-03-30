@@ -7,7 +7,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool ZFSerializableDataResolveCheckEnable = zftrue;
+#if ZF_ENV_DEBUG
+    zfbool ZFSerializableDataResolveCheckEnable = zftrue;
+#else
+    zfbool ZFSerializableDataResolveCheckEnable = zffalse;
+#endif
+ZFEXPORT_VAR_USER_REGISTER(zfbool, ZFSerializableDataResolveCheckEnable)
 
 // ============================================================
 // _ZFP_ZFSerializableDataPrivate
