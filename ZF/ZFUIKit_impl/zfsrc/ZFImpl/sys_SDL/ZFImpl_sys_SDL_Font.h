@@ -53,6 +53,10 @@ public:
             ZF_IN ZFImpl_sys_SDL_FontType fontType
             , ZF_IN zffloat ptsize
             );
+    _ZFP_ZFImpl_sys_SDL_fontAccess(
+            ZF_IN ZFUITextAppearance fontType
+            , ZF_IN zffloat ptsize
+            );
     ~_ZFP_ZFImpl_sys_SDL_fontAccess(void);
 public:
     ZFImpl_sys_SDL_FontData *fontData;
@@ -77,6 +81,11 @@ public:
     zfbool operator != (ZF_IN zfnullT dummy) const {
         return this->fontData != zfnull;
     }
+private:
+    void _load(
+            ZF_IN ZFImpl_sys_SDL_FontType fontType
+            , ZF_IN zffloat ptsize
+            );
 };
 
 // ============================================================

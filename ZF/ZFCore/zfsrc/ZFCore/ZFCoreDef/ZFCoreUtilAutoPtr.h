@@ -122,6 +122,285 @@ void _ZFP_zfblockedDeleteSetup(
     _ZFP_zfblockedDeleteContainer ZFUniqueName(zfblockedDelete_); \
     _ZFP_zfblockedDeleteSetup(&ZFUniqueName(zfblockedDelete_), obj)
 
+// ============================================================
+// zfblockedCleanup
+/**
+ * @brief util to perform custom cleanup action after code block
+ */
+#define zfblockedCleanup_1(action \
+        , P0, p0 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0) \
+        : p0(p0) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+    } ZFUniqueName(zfblockedCleanup_)(p0)
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_2(action \
+        , P0, p0 \
+        , P1, p1 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            )
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_3(action \
+        , P0, p0 \
+        , P1, p1 \
+        , P2, p2 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                , P2 &p2 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        , p2(p2) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+        P2 &p2; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            , p2 \
+            )
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_4(action \
+        , P0, p0 \
+        , P1, p1 \
+        , P2, p2 \
+        , P3, p3 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                , P2 &p2 \
+                , P3 &p3 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        , p2(p2) \
+        , p3(p3) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+        P2 &p2; \
+        P3 &p3; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            , p2 \
+            , p3 \
+            )
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_5(action \
+        , P0, p0 \
+        , P1, p1 \
+        , P2, p2 \
+        , P3, p3 \
+        , P4, p4 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                , P2 &p2 \
+                , P3 &p3 \
+                , P4 &p4 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        , p2(p2) \
+        , p3(p3) \
+        , p4(p4) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+        P2 &p2; \
+        P3 &p3; \
+        P4 &p4; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            , p2 \
+            , p3 \
+            , p4 \
+            )
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_6(action \
+        , P0, p0 \
+        , P1, p1 \
+        , P2, p2 \
+        , P3, p3 \
+        , P4, p4 \
+        , P5, p5 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                , P2 &p2 \
+                , P3 &p3 \
+                , P4 &p4 \
+                , P5 &p5 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        , p2(p2) \
+        , p3(p3) \
+        , p4(p4) \
+        , p5(p5) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+        P2 &p2; \
+        P3 &p3; \
+        P4 &p4; \
+        P5 &p5; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            , p2 \
+            , p3 \
+            , p4 \
+            , p5 \
+            )
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_7(action \
+        , P0, p0 \
+        , P1, p1 \
+        , P2, p2 \
+        , P3, p3 \
+        , P4, p4 \
+        , P5, p5 \
+        , P6, p6 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                , P2 &p2 \
+                , P3 &p3 \
+                , P4 &p4 \
+                , P5 &p5 \
+                , P6 &p6 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        , p2(p2) \
+        , p3(p3) \
+        , p4(p4) \
+        , p5(p5) \
+        , p6(p6) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+        P2 &p2; \
+        P3 &p3; \
+        P4 &p4; \
+        P5 &p5; \
+        P6 &p6; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            , p2 \
+            , p3 \
+            , p4 \
+            , p5 \
+            , p6 \
+            )
+/** @brief see #zfblockedCleanup_1 */
+#define zfblockedCleanup_8(action \
+        , P0, p0 \
+        , P1, p1 \
+        , P2, p2 \
+        , P3, p3 \
+        , P4, p4 \
+        , P5, p5 \
+        , P6, p6 \
+        , P7, p7 \
+        ) \
+    zfclassLikePOD ZFUniqueName(zfblockedCleanup_T) { \
+    public: \
+        ZFUniqueName(zfblockedCleanup_T)(P0 &p0 \
+                , P1 &p1 \
+                , P2 &p2 \
+                , P3 &p3 \
+                , P4 &p4 \
+                , P5 &p5 \
+                , P6 &p6 \
+                , P7 &p7 \
+                ) \
+        : p0(p0) \
+        , p1(p1) \
+        , p2(p2) \
+        , p3(p3) \
+        , p4(p4) \
+        , p5(p5) \
+        , p6(p6) \
+        , p7(p7) \
+        {} \
+        ~ZFUniqueName(zfblockedCleanup_T)(void) { \
+            action \
+        } \
+    private: \
+        P0 &p0; \
+        P1 &p1; \
+        P2 &p2; \
+        P3 &p3; \
+        P4 &p4; \
+        P5 &p5; \
+        P6 &p6; \
+        P7 &p7; \
+    } ZFUniqueName(zfblockedCleanup_)(p0 \
+            , p1 \
+            , p2 \
+            , p3 \
+            , p4 \
+            , p5 \
+            , p6 \
+            , p7 \
+            )
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFCoreUtilAutoPtr_h_

@@ -122,7 +122,7 @@ void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData) {
 }
 
 // ============================================================
-_ZFP_ZFImpl_sys_SDL_fontAccess::_ZFP_ZFImpl_sys_SDL_fontAccess(
+void _ZFP_ZFImpl_sys_SDL_fontAccess::_load(
         ZF_IN ZFImpl_sys_SDL_FontType fontType
         , ZF_IN zffloat ptsize
         ) {
@@ -140,7 +140,34 @@ _ZFP_ZFImpl_sys_SDL_fontAccess::_ZFP_ZFImpl_sys_SDL_fontAccess(
         d->fontCache[fontType] = this->fontData;
     }
 }
+_ZFP_ZFImpl_sys_SDL_fontAccess::_ZFP_ZFImpl_sys_SDL_fontAccess(
+        ZF_IN ZFImpl_sys_SDL_FontType fontType
+        , ZF_IN zffloat ptsize
+        ) {
+    this->_load(fontType, ptsize);
+}
+_ZFP_ZFImpl_sys_SDL_fontAccess::_ZFP_ZFImpl_sys_SDL_fontAccess(
+        ZF_IN ZFUITextAppearance fontType
+        , ZF_IN zffloat ptsize
+        ) {
+    switch(fontType) {
+        case v_ZFUITextAppearance::e_Bold:
+            this->_load(ZFImpl_sys_SDL_FontType_bold, ptsize);
+            break;
+        case v_ZFUITextAppearance::e_Italic:
+            this->_load(ZFImpl_sys_SDL_FontType_italic, ptsize);
+            break;
+        case v_ZFUITextAppearance::e_BoldItalic:
+            this->_load(ZFImpl_sys_SDL_FontType_bold_italic, ptsize);
+            break;
+        case v_ZFUITextAppearance::e_Normal:
+        default:
+            this->_load(ZFImpl_sys_SDL_FontType_normal, ptsize);
+            break;
+    }
+}
 _ZFP_ZFImpl_sys_SDL_fontAccess::~_ZFP_ZFImpl_sys_SDL_fontAccess(void) {
+    // nothing to do
 }
 
 ZF_NAMESPACE_GLOBAL_END

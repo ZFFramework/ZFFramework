@@ -10,6 +10,7 @@
 
 #include "ZFImpl_sys_SDL_Image.h"
 #include "ZFImpl_sys_SDL_Font.h"
+#include "ZFImpl_sys_SDL_Text.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -265,130 +266,23 @@ public:
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
-        ZFUITextConfig *owner = config;
 
-        ZFImpl_sys_SDL_FontType sdlFontType = ZFImpl_sys_SDL_FontType_normal;
-        switch(owner->textAppearance()) {
-            case v_ZFUITextAppearance::e_Bold:
-                sdlFontType = ZFImpl_sys_SDL_FontType_bold;
-                break;
-            case v_ZFUITextAppearance::e_Italic:
-                sdlFontType = ZFImpl_sys_SDL_FontType_italic;
-                break;
-            case v_ZFUITextAppearance::e_BoldItalic:
-                sdlFontType = ZFImpl_sys_SDL_FontType_bold_italic;
-                break;
-            case v_ZFUITextAppearance::e_Normal:
-            default:
-                sdlFontType = ZFImpl_sys_SDL_FontType_normal;
-                break;
-        }
-        ZFImpl_sys_SDL_fontAccess(sdlFont, sdlFontType, owner->textSize());
+        ZFImpl_sys_SDL_fontAccess(sdlFont, config->textAppearance(), config->textSize());
         if(sdlFont == zfnull) {
             return zffalse;
         }
 
-        int sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
-        if(ZFBitTest(owner->textAlign(), v_ZFUIAlign::e_Left)) {
-            sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
-        }
-        else if(ZFBitTest(owner->textAlign(), v_ZFUIAlign::e_Right)) {
-            sdlFontAlign = TTF_WRAPPED_ALIGN_RIGHT;
-        }
-        else {
-            sdlFontAlign = TTF_WRAPPED_ALIGN_CENTER;
-        }
-        TTF_SetFontWrappedAlign(sdlFont, sdlFontAlign);
-
-        SDL_Surface *sdlSurface = TTF_RenderUTF8_Blended(
-                sdlFont
+        ZFImpl_sys_SDL_textRender(
+                drawImpl->sdlRenderer
+                , ZFImpl_sys_SDL_ZFUIRectToSDL_Rect(targetFramePixel)
                 , text
-                , ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor())
+                , sdlFont
+                , config->textAlign()
+                , ZFImpl_sys_SDL_ZFUIColorToSDL_Color(config->textColor())
+                , zffalse
+                , v_ZFUITextTruncateMode::e_Disable
+                , 1
                 );
-        if(sdlSurface == zfnull) {
-            return zffalse;
-        }
-        ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
-
-        SDL_Rect srcRect;
-        SDL_Rect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_Rect(targetFramePixel);
-        SDL_Rect targetRectFixed;
-        ZFUIAlignFlags textAlign = owner->textAlign();
-
-        if(ZFBitTest(textAlign, v_ZFUIAlign::e_Left)) {
-            srcRect.x = 0;
-            targetRectFixed.x = targetRect.x;
-            srcRect.w = targetRectFixed.w = (sdlSurface->w <= targetRect.w ? sdlSurface->w : targetRect.w);
-        }
-        else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Right)) {
-            if(sdlSurface->w <= targetRect.w) {
-                srcRect.x = 0;
-                srcRect.w = sdlSurface->w;
-                targetRectFixed.x = targetRect.x + targetRect.w - sdlSurface->w;
-                targetRectFixed.w = sdlSurface->w;
-            }
-            else {
-                srcRect.x = sdlSurface->w - targetRect.w;
-                srcRect.w = targetRect.w;
-                targetRectFixed.x = targetRect.x;
-                targetRectFixed.w = targetRect.w;
-            }
-        }
-        else {
-            if(sdlSurface->w <= targetRect.w) {
-                srcRect.x = 0;
-                srcRect.w = sdlSurface->w;
-                targetRectFixed.x = targetRect.x + (targetRect.w - sdlSurface->w) / 2;
-                targetRectFixed.w = sdlSurface->w;
-            }
-            else {
-                srcRect.x = (sdlSurface->w - targetRect.w) / 2;
-                srcRect.w = targetRect.w;
-                targetRectFixed.x = targetRect.x;
-                targetRectFixed.w = targetRect.w;
-            }
-        }
-
-        if(ZFBitTest(textAlign, v_ZFUIAlign::e_Top)) {
-            srcRect.y = 0;
-            targetRectFixed.y = targetRect.y;
-            srcRect.h = targetRectFixed.h = (sdlSurface->h <= targetRect.h ? sdlSurface->h : targetRect.h);
-        }
-        else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Bottom)) {
-            if(sdlSurface->h <= targetRect.h) {
-                srcRect.y = 0;
-                srcRect.h = sdlSurface->h;
-                targetRectFixed.y = targetRect.y + targetRect.h - sdlSurface->h;
-                targetRectFixed.h = sdlSurface->h;
-            }
-            else {
-                srcRect.y = sdlSurface->h - targetRect.h;
-                srcRect.h = targetRect.h;
-                targetRectFixed.y = targetRect.y;
-                targetRectFixed.h = targetRect.h;
-            }
-        }
-        else {
-            if(sdlSurface->h <= targetRect.h) {
-                srcRect.y = 0;
-                srcRect.h = sdlSurface->h;
-                targetRectFixed.y = targetRect.y + (targetRect.h - sdlSurface->h) / 2;
-                targetRectFixed.h = sdlSurface->h;
-            }
-            else {
-                srcRect.y = (sdlSurface->h - targetRect.h) / 2;
-                srcRect.h = targetRect.h;
-                targetRectFixed.y = targetRect.y;
-                targetRectFixed.h = targetRect.h;
-            }
-        }
-
-        SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(drawImpl->sdlRenderer, sdlSurface);
-        ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
-        if(drawImpl->treeAlpha != 1) {
-            SDL_SetTextureAlphaMod(sdlTexture, (Uint8)(drawImpl->treeAlpha * 255));
-        }
-        SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &targetRectFixed);
         return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_SDL)
