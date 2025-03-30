@@ -489,31 +489,40 @@ extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(
 /**
  * @brief convenient method to #ZFSerializable::serializeFromString
  */
-extern ZFLIB_ZFCore zfbool ZFSerializeFromString(
+extern ZFLIB_ZFCore zfbool ZFObjectFromStringT(
         ZF_OUT zfauto &result
         , ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
-/** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfauto ZFSerializeFromString(
+/** @brief see #ZFObjectFromStringT */
+inline zfauto ZFObjectFromString(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfstring *errorHint = zfnull
-        );
-/** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfbool ZFSerializeToString(
+        ) {
+    zfauto ret;
+    ZFObjectFromStringT(ret, cls, src, srcLen, errorHint);
+    return ret;
+}
+
+/** @brief see #ZFObjectFromStringT */
+extern ZFLIB_ZFCore zfbool ZFObjectToStringT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
-/** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfstring ZFSerializeToString(
+/** @brief see #ZFObjectFromStringT */
+inline zfstring ZFObjectToString(
         ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfstring *errorHint = zfnull
-        );
+        ) {
+    zfstring ret;
+    ZFObjectToStringT(ret, obj, errorHint);
+    return ret;
+}
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFSerializable_h_

@@ -187,7 +187,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     public: \
         static _ZFP_ZFTypeIdProgressUpdate &_ZFP_ZFTypeId_progressUpdate(void); \
         zfoverride \
-        virtual zfbool progressUpdate( \
+        virtual zfbool progressOnUpdate( \
                 ZF_IN ZFProgressable *from \
                 , ZF_IN ZFProgressable *to \
                 , ZF_IN zffloat progress \
@@ -196,7 +196,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 return zfself::_ZFP_ZFTypeId_progressUpdate()(this, from, to, progress); \
             } \
             else { \
-                return zffalse; \
+                return zfsuper::progressOnUpdate(from, to, progress); \
             } \
         } \
     };

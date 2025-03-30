@@ -57,16 +57,6 @@ zfclass _ZFP_I_PropDynRetainHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRetainHolder, ZFObject)
 public:
     zfauto zfv;
-
-public:
-    zfoverride
-    virtual zfidentity objectHashImpl(void) {
-        return zfidentityCalcPointer(this->zfv.toObject());
-    }
-    zfoverride
-    virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
-        return ZFObjectCompare(this->zfv, anotherObj);
-    }
 };
 zfclass _ZFP_I_PropDynRegData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegData, ZFObject)
@@ -407,18 +397,20 @@ static zfbool _ZFP_PropDynReg_callbackIsInitValue(
     else {
         zfauto initValue;
         if(d->initValue(initValue, property)) {
+            _ZFP_I_PropDynRetainHolder *wrapperTmpCur = zfcast(_ZFP_I_PropDynRetainHolder *, tag);
             _ZFP_I_PropDynRetainHolder *wrapperTmp = initValue;
             if(wrapperTmp != zfnull) {
                 if(outInitValue != zfnull) {
                     *outInitValue = wrapperTmp->zfv;
                 }
+                ret = (ZFObjectCompare(wrapperTmpCur->zfv, wrapperTmp->zfv) == ZFCompareEqual);
             }
             else {
                 if(outInitValue != zfnull) {
                     *outInitValue = initValue;
                 }
+                ret = (tag->objectCompare(initValue) == ZFCompareEqual);
             }
-            ret = (tag->objectCompare(initValue) == ZFCompareEqual);
         }
     }
     return ret;

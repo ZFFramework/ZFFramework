@@ -128,16 +128,6 @@ public:
 
 public:
     zfoverride
-    virtual zfbool progressUpdate(
-            ZF_IN ZFProgressable *from
-            , ZF_IN ZFProgressable *to
-            , ZF_IN zffloat progress
-            ) {
-        return zffalse;
-    }
-
-public:
-    zfoverride
     virtual zfbool objectIsInternal(void) {
         return zftrue;
     }
@@ -211,7 +201,7 @@ protected:
             ZF_IN_OUT zfstring &ret
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
-        return this->zfvToString(ret, errorHint);
+        return this->wrappedValuePreferStringConverter() && this->zfvToString(ret, errorHint);
     }
 };
 

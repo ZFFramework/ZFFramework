@@ -783,6 +783,26 @@ ZFDynamic &ZFDynamic::objectInfoImplByProp(void) {
             , impl
             );
 }
+ZFDynamic &ZFDynamic::objectHashImplByProp(void) {
+    ZFLISTENER(impl) {
+        ZFCoreArray<const ZFProperty *> allProperty = zfargs.sender()->classData()->propertyGetAll();
+        zfobj<v_zfidentity> retHolder;
+        zfidentity &ret = retHolder->zfv;
+        for(zfindex i = 0; i < allProperty.count(); ++i) {
+            zfauto v = allProperty[i]->getterMethod()->methodInvoke(zfargs.sender());
+            if(v) {
+                ret = zfidentityHash(ret, v->objectHash());
+            }
+        }
+        zfargs.result(retHolder);
+    } ZFLISTENER_END()
+    return this->method(
+            ZFTypeId_zfidentity()
+            , "objectHashImpl"
+            , ZFMP()
+            , impl
+            );
+}
 ZFDynamic &ZFDynamic::objectCompareImplByProp(void) {
     ZFLISTENER(impl) {
         zfobj<v_ZFCompareResult> ret;
@@ -1742,6 +1762,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFDynamic, v_ZFDynamic, void, o
         , ZFMP_IN(const ZFArgs &, zfargs)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectInfoImplByProp)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectHashImplByProp)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectCompareImplByProp)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, objectCompareValueImplByProp)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin

@@ -43,8 +43,9 @@ zfbool ZFPropertyAllEqual(
 
     ZFCoreArray<const ZFProperty *> allProperty = cls0->propertyGetAll();
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
-        if(cls1->classIsTypeOf(allProperty[i]->ownerClass())
-                && ZFPropertyCompareValue(allProperty[i], obj0, obj1) != ZFCompareEqual
+        const ZFProperty *prop = allProperty[i];
+        if((!cls1->classIsTypeOf(prop->ownerClass()) && !prop->ownerClass()->classIsTypeOf(cls1))
+                || ZFPropertyCompareValue(prop, obj0, obj1) != ZFCompareEqual
                 ) {
             return zffalse;
         }

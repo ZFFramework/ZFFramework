@@ -24,9 +24,7 @@ public:
     /**
      * @brief the data
      *
-     * the data must store strings that can be converted by:
-     * -  #ZFTypeIdWrapper::zfvFromString
-     * -  #ZFSerializeFromString
+     * the data must store strings that can be converted by #ZFDI_objectFromString
      */
     virtual void zfv(ZF_IN const zfchar *zfv) zfpurevirtual;
     /** @brief see #zfv */
@@ -213,16 +211,6 @@ extern ZFLIB_ZFCore void ZFDI_alloc(
         );
 
 // ============================================================
-/**
- * @brief util to convert object from string
- */
-extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
-        ZF_OUT zfauto &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen = zfindexMax()
-        , ZF_OUT_OPT zfstring *errorHint = zfnull
-        );
 /**
  * @brief util to convert object from string
  */

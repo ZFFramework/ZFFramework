@@ -812,42 +812,6 @@ void ZFDI_alloc(
 
 zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
-        , ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
-        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
-        ) {
-    if(cls == zfnull) {
-        zfstringAppend(errorHint, "null class");
-        return zffalse;
-    }
-    else if(cls->classIsAbstract()) {
-        zfstringAppend(errorHint, "class \"%s\" is abstract", cls->classNameFull());
-        return zffalse;
-    }
-    else if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-        ret = cls->newInstance();
-        ZFTypeIdWrapper *wrapper = ret;
-        if(wrapper != zfnull && wrapper->zfvFromString(src, srcLen)) {
-            return zftrue;
-        }
-        else {
-            zfstringAppend(errorHint, "%s can not be converted from string \"%s\"", cls->classNameFull(), zfstring(src, srcLen));
-            return zffalse;
-        }
-    }
-    else {
-        if(ZFSerializeFromString(ret, cls, src, srcLen, errorHint)) {
-            return zftrue;
-        }
-        else {
-            zfstringAppend(errorHint, "%s can not be converted from string \"%s\"", cls->classNameFull(), zfstring(src, srcLen));
-            return zffalse;
-        }
-    }
-}
-zfbool ZFDI_objectFromString(
-        ZF_OUT zfauto &ret
         , ZF_IN const zfstring &typeId
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
@@ -865,7 +829,7 @@ zfbool ZFDI_objectFromString(
         return zftrue;
     }
     else {
-        return ZFDI_objectFromString(ret, cls, src, srcLen, errorHint);
+        return ZFObjectFromStringT(ret, cls, src, srcLen, errorHint);
     }
 }
 

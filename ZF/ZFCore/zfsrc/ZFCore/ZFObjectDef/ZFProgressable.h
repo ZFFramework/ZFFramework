@@ -23,7 +23,17 @@ public:
             ZF_IN ZFProgressable *from
             , ZF_IN ZFProgressable *to
             , ZF_IN zffloat progress
-            ) zfpurevirtual;
+            );
+
+protected:
+    /** @brief see #ZFProgressable */
+    virtual inline zfbool progressOnUpdate(
+            ZF_IN ZFProgressable *from
+            , ZF_IN ZFProgressable *to
+            , ZF_IN zffloat progress
+            ) {
+        return zffalse;
+    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

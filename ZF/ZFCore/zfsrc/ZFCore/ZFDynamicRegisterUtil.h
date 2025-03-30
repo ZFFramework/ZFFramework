@@ -193,6 +193,8 @@ public:
 
     /** @brief util to implement #ZFObject::objectInfoImpl by #ZFObjectVerboseInfo */
     ZFDynamic &objectInfoImplByProp(void);
+    /** @brief util to implement #ZFObject::objectHashImpl by hash all properties */
+    ZFDynamic &objectHashImplByProp(void);
     /** @brief util to implement #ZFObject::objectCompareImpl by #ZFPropertyAllEqual */
     ZFDynamic &objectCompareImplByProp(void);
     /** @brief util to implement #ZFObject::objectCompareValueImpl by #ZFPropertyAllEqual */
