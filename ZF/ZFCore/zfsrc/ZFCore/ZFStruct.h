@@ -16,7 +16,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  ZFObject::objectCompare / ZFObject::objectCompareValue
  *   would be compared by comparing all property
  * -  ZFObject::objectInfo would print by #ZFObjectVerboseInfoT
- * -  can be construct from string, serialize from/to string
+ * -  can be construct from string, serialize from/to string,
+ *   by serialize all property in declared order
  *
  * typical usage:
  * @code
@@ -26,6 +27,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       :property('zfint', 'value2')
  *       ...
  *       :classEnd()
+ *
+ *   local v = MyData('(1,2)')
+ *   --                 ^ ^
+ *   --                 | value2
+ *   --                 value1
  * @end
  */
 zfclass ZFLIB_ZFCore ZFStruct : zfextend ZFStyle, zfimplement ZFProgressable {

@@ -96,7 +96,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(
         ) {
     static const zfchar *_ZFP_ = "_ZFP_";
     static zfindex _ZFP_len = zfslen(_ZFP_);
-    if(getterMethod->isPrivate() || zfsncmp(name, _ZFP_, _ZFP_len)) {
+    if(getterMethod->isPrivate() || zfsncmp(name, _ZFP_, _ZFP_len) == 0) {
         _ZFP_ZFProperty_isInternal = zftrue;
         _ZFP_ZFProperty_isInternalPrivate = zftrue;
     }
