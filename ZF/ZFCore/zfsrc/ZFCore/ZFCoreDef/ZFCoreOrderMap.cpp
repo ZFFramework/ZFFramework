@@ -257,7 +257,6 @@ void ZFCoreOrderMap::remove(ZF_IN const zfstring &key) {
             const ZFCorePointerBase *savedValue = item->value;
             d->map.erase(it);
             d->arr.erase(item->arrIt);
-            savedValue->refDelete();
             zfpoolDelete(item);
         }
     }
@@ -359,7 +358,6 @@ void ZFCoreOrderMap::iterRemove(ZF_IN_OUT zfiter &it) {
         _ZFP_ZFCoreOrderMapPrivate::Item *item = *(it.impl<_ZFP_ZFCoreOrderMapIter *>()->impl);
         d->map.erase(item->mapIt);
         d->arr.erase(item->arrIt);
-        item->value->refDelete();
         zfpoolDelete(item);
     }
 }
