@@ -270,7 +270,7 @@ protected:
     /**
      * @brief check the property type that serializable should do what while serializing
      *
-     * properties declared in ZFSerializalbe have these types:
+     * properties declared in ZFSerializable have these types:
      * -  not serializable:
      *   -  the property is not serializable and should be manually serialized if necessary
      * -  normal serializable property:
