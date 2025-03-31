@@ -100,11 +100,9 @@ zfbool ZFStruct::serializableOnSerializeToString(
             ret += ",";
         }
         hasOutput = zftrue;
-        if(!ZFPropertyIsInitValue(prop, this)) {
-            zfauto v = prop->getterMethod()->methodInvoke(this);
-            if(!ZFObjectToStringT(ret, v, errorHint)) {
-                return zffalse;
-            }
+        zfauto v = prop->getterMethod()->methodInvoke(this);
+        if(!ZFObjectToStringT(ret, v, errorHint)) {
+            return zffalse;
         }
     }
     ret += ")";
