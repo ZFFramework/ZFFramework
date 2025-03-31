@@ -88,7 +88,7 @@ public:
     static void exportTag(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN_OPT zfbool exportScope = zffalse
-            , ZF_IN_OPT zfbool exportInternal = zffalse
+            , ZF_IN_OPT zfbool exportInternal = zftrue
             );
 
 public:

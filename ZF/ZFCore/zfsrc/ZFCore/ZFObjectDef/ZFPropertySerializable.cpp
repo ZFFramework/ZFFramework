@@ -82,6 +82,14 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFMethod *, setter
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFMethod *, getterMethod)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, isRetainProperty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, const ZFClass *, propertyClassOfRetainProperty)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, isInternal)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProperty, zfbool, isInternalPrivate)
+
+// ============================================================
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFPropertyGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFProperty *>, ZFPropertyGetAll)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -639,10 +639,10 @@ public:
     /**
      * @brief whether the method is internal method
      *
-     * all method that have "_ZFP_" as prefix would be treated as internal method\n
-     * internal method should not be used publicly,
-     * however, you may still apply reflection,
-     * see #isInternalPrivate
+     * methods would be treated as internal if:
+     * -  method name starts with '_'
+     *
+     * see also #isInternalPrivate
      */
     inline zfbool isInternal(void) const {
         return this->_ZFP_ZFMethod_isInternal;
@@ -650,10 +650,11 @@ public:
     /**
      * @brief whether the method is internal private method
      *
-     * all method that have "_ZFP_I_" as prefix would be treated as internal private method\n
-     * internal private method should not be used publicly,
-     * also, it would be ignored from reflection,
-     * see #isInternal
+     * methods would be treated as internal private if:
+     * -  method name starts with '_ZFP_'
+     *
+     * internal methods would be ignored from reflection,
+     * see also #isInternal
      */
     inline zfbool isInternalPrivate(void) const {
         return this->_ZFP_ZFMethod_isInternalPrivate;

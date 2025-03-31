@@ -330,7 +330,7 @@ static void _ZFP_ZFLuaLSPGen_class(
     ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
-        if(!m->isPublic() || m->isInternal()
+        if(!m->isPublic() || m->isInternalPrivate()
                 || zfstringIsEqual(m->methodName(), "objectOnInit")
                 || luaKeywords.find(m->methodName()) != luaKeywords.end()
 #if _ZFP_ZFLuaLSP_supportMultiInherit
@@ -390,7 +390,7 @@ static void _ZFP_ZFLuaLSPGen_allMethod(
     ZFCoreArray<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
-        if(m->isInternal()
+        if(m->isInternalPrivate()
                 || luaKeywords.find(m->methodName()) != luaKeywords.end()
                 ) {
             continue;

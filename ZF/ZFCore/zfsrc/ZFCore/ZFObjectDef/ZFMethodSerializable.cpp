@@ -134,7 +134,51 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, isStatic)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, isVirtual)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, isFuncType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfstring &, methodNamespace)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, isInternal)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, isInternalPrivate)
 
+// ============================================================
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFMethod *>, ZFMethodGetAll)
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodForName
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodForName
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
+        , ZFMP_IN(const zfchar *, paramTypeId0)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId1, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId2, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId3, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId4, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, paramTypeId5, zfnull)
+        /* ZFMETHOD_MAX_PARAM , ZFMP_IN_OPT(const zfchar *, paramTypeId6, zfnull) */
+        /* ZFMETHOD_MAX_PARAM , ZFMP_IN_OPT(const zfchar *, paramTypeId7, zfnull) */
+        )
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFMethodForNameGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFMethod *>, ZFMethodForNameGetAll
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
+        )
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodAlias
+        , ZFMP_IN(const ZFMethod *, method)
+        , ZFMP_IN(const zfstring &, aliasName)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodAliasRemove
+        , ZFMP_IN(const ZFMethod *, aliasMethod)
+        )
+
+// ============================================================
 /* ZFMETHOD_MAX_PARAM */
 const ZFMethod *ZFMethodFromSig(
         ZF_IN const zfstring &classOrNamespace
@@ -227,13 +271,6 @@ zfbool ZFMethodSigSplit(
     }
     return zftrue;
 }
-
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodFromSig
         , ZFMP_IN(const zfstring &, classOrNamespace)
         , ZFMP_IN(const zfstring &, methodName)
@@ -257,5 +294,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFMethodSigSplit
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

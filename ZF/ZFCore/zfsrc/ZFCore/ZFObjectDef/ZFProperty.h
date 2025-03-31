@@ -143,6 +143,30 @@ public:
     }
 
 public:
+    /**
+     * @brief whether the property is internal property
+     *
+     * properties would be treated as internal if:
+     * -  property name starts with '_'
+     * -  getter method is not public
+     *
+     * internal properties would be ignored from serialization,
+     * see also #isInternalPrivate
+     */
+    inline zfbool isInternal(void) const {return _ZFP_ZFProperty_isInternal;}
+    /**
+     * @brief whether the property is internal private property
+     *
+     * properties would be treated as internal private if:
+     * -  property name starts with '_ZFP_'
+     * -  getter method is private
+     *
+     * internal private properties would be ignored from serialization and reflection,
+     * see also #isInternal
+     */
+    inline zfbool isInternalPrivate(void) const {return _ZFP_ZFProperty_isInternalPrivate;}
+
+public:
     /** @brief see #ZFPropertyCallbackIsValueAccessed */
     ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed;
     /** @brief see #ZFPropertyCallbackIsInitValue */
@@ -178,6 +202,8 @@ public:
     }
 public:
     zfuint _ZFP_ZFProperty_refCount;
+    zfbool _ZFP_ZFProperty_isInternal;
+    zfbool _ZFP_ZFProperty_isInternalPrivate;
     zfbool _ZFP_ZFProperty_isUserRegister;
     zfbool _ZFP_ZFProperty_isDynamicRegister;
     ZFSigName _ZFP_ZFProperty_propertyId;

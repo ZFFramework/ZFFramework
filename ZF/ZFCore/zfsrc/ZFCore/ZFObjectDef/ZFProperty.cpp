@@ -50,6 +50,8 @@ ZFProperty::ZFProperty(void)
 , callbackUserRegisterInitValueSetup(zfnull)
 , callbackDynamicRegisterInitValueGetter(zfnull)
 , _ZFP_ZFProperty_refCount(1)
+, _ZFP_ZFProperty_isInternal(zffalse)
+, _ZFP_ZFProperty_isInternalPrivate(zffalse)
 , _ZFP_ZFProperty_isUserRegister(zffalse)
 , _ZFP_ZFProperty_isDynamicRegister(zffalse)
 , _ZFP_ZFProperty_propertyId(zfnull)
@@ -92,6 +94,20 @@ void ZFProperty::_ZFP_ZFPropertyInit(
         , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
         , ZF_IN const ZFClass *propertyClassOfRetainProperty
         ) {
+    static const zfchar *_ZFP_ = "_ZFP_";
+    static zfindex _ZFP_len = zfslen(_ZFP_);
+    if(getterMethod->isPrivate() || zfsncmp(name, _ZFP_, _ZFP_len)) {
+        _ZFP_ZFProperty_isInternal = zftrue;
+        _ZFP_ZFProperty_isInternalPrivate = zftrue;
+    }
+    else if(!getterMethod->isPublic() || name[0] == '_') {
+        _ZFP_ZFProperty_isInternal = zftrue;
+        _ZFP_ZFProperty_isInternalPrivate = zffalse;
+    }
+    else {
+        _ZFP_ZFProperty_isInternal = zffalse;
+        _ZFP_ZFProperty_isInternalPrivate = zffalse;
+    }
     this->_ZFP_ZFProperty_isUserRegister = isUserRegister;
     this->_ZFP_ZFProperty_isDynamicRegister = isDynamicRegister;
     this->_ZFP_ZFProperty_dynamicRegisterUserData = zfRetain(dynamicRegisterUserData);
@@ -281,16 +297,4 @@ void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo) {
 }
 
 ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFPropertyGetAllT
-        , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFProperty *>, ZFPropertyGetAll)
-
-ZF_NAMESPACE_GLOBAL_END
-#endif
 

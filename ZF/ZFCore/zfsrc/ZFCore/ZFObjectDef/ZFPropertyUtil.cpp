@@ -17,9 +17,9 @@ void ZFPropertyCopyAll(
     for(zfindex i = 0; i < allProperty.count(); ++i) {
         const ZFProperty *property = allProperty.get(i);
         if(!srcClass->classIsTypeOf(property->ownerClass())
+                || property->isInternal()
                 || !property->setterMethod()->isPublic()
                 || !property->getterMethod()->isPublic()
-                || property->propertyName()[0] == '_'
                 ) {
             continue;
         }
@@ -44,10 +44,12 @@ zfbool ZFPropertyAllEqual(
     ZFCoreArray<const ZFProperty *> allProperty = cls0->propertyGetAll();
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
         const ZFProperty *prop = allProperty[i];
-        if((!cls1->classIsTypeOf(prop->ownerClass()) && !prop->ownerClass()->classIsTypeOf(cls1))
-                || ZFPropertyCompareValue(prop, obj0, obj1) != ZFCompareEqual
-                ) {
-            return zffalse;
+        if(!prop->isInternal()) {
+            if((!cls1->classIsTypeOf(prop->ownerClass()) && !prop->ownerClass()->classIsTypeOf(cls1))
+                    || ZFPropertyCompareValue(prop, obj0, obj1) != ZFCompareEqual
+                    ) {
+                return zffalse;
+            }
         }
     }
 
@@ -68,7 +70,11 @@ void ZFObjectPropertyInfoT(
     zfindex count = 0;
     zfindex index = 0;
     for( ; index < allProperty.count() && count < maxCount; ++index) {
-        if(ZFPropertyIsInitValue(allProperty[index], obj)) {
+        const ZFProperty *prop = allProperty[index];
+        if(
+                prop->isInternal()
+                || ZFPropertyIsInitValue(prop, obj)
+                ) {
             continue;
         }
 
@@ -83,7 +89,7 @@ void ZFObjectPropertyInfoT(
         ret += token.tokenPairLeft;
         {
             ret += token.tokenKeyLeft;
-            ret += allProperty[index]->propertyName();
+            ret += prop->propertyName();
             ret += token.tokenKeyRight;
         }
         ret += token.tokenPairSeparator;
@@ -91,7 +97,7 @@ void ZFObjectPropertyInfoT(
             ret += token.tokenValueLeft;
             {
                 zfstring s;
-                ZFObjectInfoT(s, allProperty[index]->getterMethod()->methodInvoke(obj));
+                ZFObjectInfoT(s, prop->getterMethod()->methodInvoke(obj));
 
                 zfindex iL = 0;
                 for(zfindex i = 0; i < s.length(); i += zfcharGetSize(s + i)) {

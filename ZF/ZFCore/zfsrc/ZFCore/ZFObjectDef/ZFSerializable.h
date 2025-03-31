@@ -301,9 +301,7 @@ protected:
      * ignored property (i.e. ZFSerializablePropertyTypeNotSerializable) can be manually serialized
      * during #serializableOnSerializeFromData and #serializableOnSerializeToData\n
      * \n
-     * by default, these properties would be treated as not serializable:
-     * -  getter method is private or #ZFMethod::isInternal
-     * -  property name start with "_"
+     * by default, properties would be treated as not serializable if #ZFProperty::isInternal
      */
     virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);
 

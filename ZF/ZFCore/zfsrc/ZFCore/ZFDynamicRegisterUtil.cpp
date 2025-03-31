@@ -383,7 +383,7 @@ zfbool ZFDynamic::operator == (ZF_IN const ZFDynamic &ref) const {
 void ZFDynamic::exportTag(
         ZF_IN_OUT const ZFOutput &output
         , ZF_IN_OPT zfbool exportScope /* = zffalse */
-        , ZF_IN_OPT zfbool exportInternal /* = zffalse */
+        , ZF_IN_OPT zfbool exportInternal /* = zftrue */
         ) {
     if(!output) {
         return;
@@ -402,10 +402,6 @@ void ZFDynamic::exportTag(
     ZFNamespaceGetAllT(allNamespace);
 
     zfstlmap<zfstring, zfbool> tags;
-    const zfchar *zfpFix = "_ZFP_";
-    zfindex zfpFixLen = zfslen(zfpFix);
-    const zfchar *zfpiFix = "_ZFP_I_";
-    zfindex zfpiFixLen = zfslen(zfpiFix);
 
     for(zfindex i = 0; i < allClass.count(); ++i) {
         const ZFClass *t = allClass[i];
@@ -450,9 +446,6 @@ void ZFDynamic::exportTag(
     for(zfindex i = 0; i < allTypeId.count(); ++i) {
         const ZFTypeInfo *t = allTypeId[i];
         if(t->typeIdClass() == zfnull || t->typeIdClass()->classIsInternalPrivate() || (!exportInternal && t->typeIdClass()->classIsInternal())) {
-            continue;
-        }
-        if(zfsncmp(t->typeId(), zfpiFix, zfpiFixLen) == 0 || (!exportInternal && zfsncmp(t->typeId(), zfpFix, zfpFixLen) == 0)) {
             continue;
         }
         tags[t->typeId()] = zftrue;
@@ -789,7 +782,11 @@ ZFDynamic &ZFDynamic::objectHashImplByProp(void) {
         zfobj<v_zfidentity> retHolder;
         zfidentity &ret = retHolder->zfv;
         for(zfindex i = 0; i < allProperty.count(); ++i) {
-            zfauto v = allProperty[i]->getterMethod()->methodInvoke(zfargs.sender());
+            const ZFProperty *prop = allProperty[i];
+            if(prop->isInternal()) {
+                continue;
+            }
+            zfauto v = prop->getterMethod()->methodInvoke(zfargs.sender());
             if(v) {
                 ret = zfidentityHash(ret, v->objectHash());
             }
@@ -1699,7 +1696,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFDynamic, ZFDynamic)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_3(ZFDynamic, v_ZFDynamic, void, exportTag
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN_OPT(zfbool, exportScope, zffalse)
-        , ZFMP_IN_OPT(zfbool, exportInternal, zffalse)
+        , ZFMP_IN_OPT(zfbool, exportInternal, zftrue)
         )
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         ZFDynamic &v = invokerObject.to<v_ZFDynamic *>()->zfv;

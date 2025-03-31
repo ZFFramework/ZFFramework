@@ -19,7 +19,11 @@ zfidentity ZFStruct::objectHashImpl(void) {
     ZFCoreArray<const ZFProperty *> allProperty = this->classData()->propertyGetAll();
     zfidentity ret = 0;
     for(zfindex i = 0; i < allProperty.count(); ++i) {
-        zfauto v = allProperty[i]->getterMethod()->methodInvoke(this);
+        const ZFProperty *prop = allProperty[i];
+        if(prop->isInternal()) {
+            continue;
+        }
+        zfauto v = prop->getterMethod()->methodInvoke(this);
         if(v) {
             ret = zfidentityHash(ret, v->objectHash());
         }
@@ -64,6 +68,9 @@ zfbool ZFStruct::serializableOnSerializeFromString(
     ZFCoreArray<const ZFProperty *> allProperty = this->classData()->propertyGetAll();
     for(zfindex i = 0; i < posList.count() && i < allProperty.count(); ++i) {
         const ZFProperty *prop = allProperty[i];
+        if(prop->isInternal()) {
+            continue;
+        }
         const ZFIndexRange &pos = posList[i];
         if(pos.count == 0) {
             ZFPropertyValueReset(prop, this);
@@ -83,11 +90,16 @@ zfbool ZFStruct::serializableOnSerializeToString(
         ) {
     ret += "(";
     ZFCoreArray<const ZFProperty *> allProperty = this->classData()->propertyGetAll();
+    zfbool hasOutput = zffalse;
     for(zfindex i = 0; i < allProperty.count(); ++i) {
-        if(i != 0) {
+        const ZFProperty *prop = allProperty[i];
+        if(prop->isInternal()) {
+            continue;
+        }
+        if(hasOutput) {
             ret += ",";
         }
-        const ZFProperty *prop = allProperty[i];
+        hasOutput = zftrue;
         if(!ZFPropertyIsInitValue(prop, this)) {
             zfauto v = prop->getterMethod()->methodInvoke(this);
             if(!ZFObjectToStringT(ret, v, errorHint)) {

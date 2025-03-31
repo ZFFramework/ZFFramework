@@ -181,5 +181,20 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, zfauto, classTagRemoveAndGe
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, void, classTagRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfidentity, classId)
 
+// ============================================================
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFClassGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFClass *>, ZFClassGetAll)
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAlias
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN(const zfstring &, aliasNameFull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAliasRemove
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN(const zfstring &, aliasNameFull)
+        )
+
 ZF_NAMESPACE_GLOBAL_END
 
