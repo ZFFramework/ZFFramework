@@ -374,11 +374,11 @@ zfbool ZFTime::serializableOnSerializeFromData(
 }
 zfbool ZFTime::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    zfself *ref = zfcast(zfself *, refOwner);
 
     ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, this->timeValue(), ref->timeValue(), ZFTimeValueZero(), {

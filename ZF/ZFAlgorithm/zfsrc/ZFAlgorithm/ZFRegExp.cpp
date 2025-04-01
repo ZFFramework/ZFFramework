@@ -135,11 +135,11 @@ zfbool ZFRegExp::serializableOnSerializeFromData(
 }
 zfbool ZFRegExp::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    zfself *ref = zfcast(zfself *, refOwner);
 
     ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFRegExp_pattern, zfstring, this->pattern(), ref->pattern(), "", {

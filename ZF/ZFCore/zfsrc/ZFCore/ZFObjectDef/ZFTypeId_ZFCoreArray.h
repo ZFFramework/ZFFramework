@@ -582,14 +582,14 @@ protected:
     zfoverride
     virtual zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             ) {
         if(this->zfv != zfnull && !this->elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
             return this->zfvToData(serializableData, outErrorHint);
         }
         else {
-            return zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint);
+            return zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner);
         }
     }
 };

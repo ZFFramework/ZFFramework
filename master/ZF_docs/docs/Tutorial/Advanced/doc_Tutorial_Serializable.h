@@ -52,10 +52,10 @@
  *       }
  *       virtual zfbool serializableOnSerializeToData(
  *               ZF_IN_OUT ZFSerializableData &serializableData
- *               , ZF_IN ZFSerializable *referencedOwnerOrNull
  *               , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *               , ZF_IN_OPT ZFSerializable *refOwner = zfnull
  *               ) {
- *           if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+ *           if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
  *
  *           // serialize your type to serializableData
  *           // recommended to use ZFSerializableUtilSerializeAttrFromData series

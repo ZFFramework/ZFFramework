@@ -350,7 +350,7 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  *   <MyStyleObject styleKey="MyStyle/MyStyleObject" overridedProp="overridedValue" />
  *
  *   // note the final data is identical with original src data,
- *   // and impl only needs to take care of referencedOwnerOrNull
+ *   // and impl only needs to take care of refOwner
  *   // during #ZFSerializable::serializeToData
  * @endcode
  * \n

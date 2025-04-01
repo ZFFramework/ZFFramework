@@ -163,8 +163,8 @@ protected:
     zfoverride
     virtual zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             );
 
 protected:

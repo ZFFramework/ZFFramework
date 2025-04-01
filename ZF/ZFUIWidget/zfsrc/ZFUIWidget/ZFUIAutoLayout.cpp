@@ -221,11 +221,11 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 }
 zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    zfself *ref = zfcast(zfself *, refOwner);
     _ZFP_ZFUIAutoLayoutRuleEscapeCharMap();
 
     zfstring ruleStr;

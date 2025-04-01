@@ -49,11 +49,11 @@ zfbool ZFEnum::serializableOnSerializeFromData(
 }
 zfbool ZFEnum::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    zfself *ref = zfcast(zfself *, refOwner);
 
     if((ref == zfnull && this->enumValue() != ZFEnumInvalid())
             || (ref != zfnull && this->enumValue() != ref->enumValue())

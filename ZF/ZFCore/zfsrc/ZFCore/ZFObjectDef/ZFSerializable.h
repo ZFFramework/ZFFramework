@@ -139,7 +139,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  *   -  #serializableOnSerializePropertyFromData / #serializableOnSerializePropertyToData
  *   -  #serializableOnSerializeEmbededPropertyFromData / #serializableOnSerializeEmbededPropertyToData
  *   -  #serializableOnSerializeFromData / #serializableOnSerializeToData
- * -  take care of referencedOwnerOrNull while serialize to data,
+ * -  take care of refOwner while serialize to data,
  *   where you should implement reference logic for your custom serialize step\n
  *   see #ZFStyleSet for more info\n
  *   by default, serializable property and embeded property's reference logic
@@ -199,7 +199,7 @@ public:
     zffinal zfbool serializeToData(
             ZF_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
+            , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             );
 
     /**
@@ -338,8 +338,8 @@ protected:
      */
     virtual inline zfbool serializableOnSerializeToData(
             ZF_IN_OUT ZFSerializableData &serializableData
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             ) {
         return zftrue;
     }
@@ -382,8 +382,8 @@ protected:
     virtual zfbool serializableOnSerializePropertyToData(
             ZF_OUT ZFSerializableData &ownerData
             , ZF_IN const ZFProperty *property
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_IN_OPT ZFSerializable *refOwner = zfnull
             );
     /**
      * @brief see #serializableOnCheckPropertyType, usually you have no need to override this method,
@@ -405,7 +405,7 @@ protected:
     virtual zfbool serializableOnSerializeEmbededPropertyToData(
             ZF_OUT ZFSerializableData &ownerData
             , ZF_IN const ZFProperty *property
-            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_IN ZFSerializable *refOwner
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             );
 
@@ -473,14 +473,14 @@ extern ZFLIB_ZFCore zfbool ZFObjectToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
+        , ZF_IN_OPT ZFSerializable *refOwner = zfnull
         );
 /** @brief see #ZFObjectFromDataT */
 extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(
         ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfbool *outSuccess = zfnull
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
+        , ZF_IN_OPT ZFSerializable *refOwner = zfnull
         );
 
 // ============================================================

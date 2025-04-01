@@ -111,11 +111,11 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
 }
 zfbool ZFKeyValueContainer::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    zfself *ref = zfcast(zfself *, refOwner);
 
     if(ref == zfnull) {
         for(zfiter it = this->iter(); it; ++it) {
@@ -140,21 +140,21 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(
         }
     }
     else {
-        return this->serializableOnSerializeToDataWithRef(serializableData, ref, outErrorHint);
+        return this->serializableOnSerializeToDataWithRef(serializableData, outErrorHint, ref);
     }
 
     return zftrue;
 }
 zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, refOwner);
     if(ref == zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint,
             "%s not type of %s",
-            referencedOwnerOrNull->toObject()->objectInfoOfInstance(), ZFKeyValueContainer::ClassData()->classNameFull());
+            refOwner->toObject()->objectInfoOfInstance(), ZFKeyValueContainer::ClassData()->classNameFull());
         return zffalse;
     }
 

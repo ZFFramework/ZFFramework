@@ -262,13 +262,13 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
 }
 zfbool ZFStyleList::serializableOnSerializeToData(
         ZF_IN_OUT ZFSerializableData &serializableData
-        , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuper::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {
+    if(!zfsuper::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {
         return zffalse;
     }
-    if(referencedOwnerOrNull != zfnull) {
+    if(refOwner != zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "reference not supported");
         return zffalse;
     }
