@@ -389,7 +389,7 @@ public:
 public:
     static zfself *attach(ZF_IN const ZFArgs &zfargs) {
         zfstring cacheKey = zfstr("%s:%s", zfself::ClassData()->classId(), zfargs.ownerMethod()->methodId());
-        zfself *cache = zfargs.ownerMethod()->ownerClass()->classTag(cacheKey);
+        zfself *cache = zfargs.ownerMethod()->ownerClass()->dataCache(cacheKey);
         if(cache == zfnull) {
             zfobj<zfself> holder;
             cache = holder;
@@ -402,7 +402,7 @@ public:
             } ZFLISTENER_END()
             cache->classDataUpdateListener = classDataOnUpdate;
             ZFClassDataUpdateObserver().observerAdd(ZFGlobalEvent::E_ClassDataUpdate(), cache->classDataUpdateListener);
-            zfargs.ownerMethod()->ownerClass()->classTag(cacheKey, cache);
+            zfargs.ownerMethod()->ownerClass()->dataCache(cacheKey, cache);
         }
         return cache;
     }
@@ -415,7 +415,7 @@ public:
         this->ownerMethod = zfnull;
         this->superMethod = zfnull;
         ZFClassDataUpdateObserver().observerRemove(ZFGlobalEvent::E_ClassDataUpdate(), this->classDataUpdateListener);
-        cls->classTagRemove(cacheKey);
+        cls->dataCacheRemove(cacheKey);
     }
 protected:
     zfoverride

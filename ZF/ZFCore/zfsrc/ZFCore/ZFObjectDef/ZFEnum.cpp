@@ -223,7 +223,7 @@ public:
 
 public:
     static _ZFP_I_ZFEnum_stringConverterDataHolder *setup(ZF_IN const ZFClass *enumClass) {
-        _ZFP_I_ZFEnum_stringConverterDataHolder *ret = enumClass->classTag(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull());
+        _ZFP_I_ZFEnum_stringConverterDataHolder *ret = enumClass->dataCache(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull());
         if(ret == zfnull) {
             const ZFMethod *enumCountMethod = enumClass->methodForName("EnumCount");
             const ZFMethod *enumValueAtMethod = enumClass->methodForName("EnumValueAt");
@@ -231,7 +231,7 @@ public:
             ZFCoreAssert(enumCountMethod != zfnull && enumValueAtMethod != zfnull && enumNameAtMethod != zfnull);
 
             ret = zfAlloc(_ZFP_I_ZFEnum_stringConverterDataHolder);
-            enumClass->classTag(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull(), ret);
+            enumClass->dataCache(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull(), ret);
             zfRelease(ret);
 
             ret->enumCount = enumCountMethod->methodInvoke().to<v_zfindex *>()->zfv;

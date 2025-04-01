@@ -108,6 +108,7 @@ public:
 
 public:
     _ZFP_ZFClassTagMapType classTagMap;
+    _ZFP_ZFClassTagMapType dataCacheMap;
 
 public:
     zfstlmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
@@ -209,6 +210,7 @@ public:
     , propertyAutoInitMap()
     , propertyInitStepMap()
     , classTagMap()
+    , dataCacheMap()
     , allParent()
     , allChildren()
     , interfaceCastMap()
@@ -434,6 +436,7 @@ static void _ZFP_ZFClass_classTagClear(void) {
     _ZFP_ZFClassMap.allValueT(allClass);
     for(zfindex i = 0; i < allClass.count(); ++i) {
         allClass.get(i)->classTagRemoveAll();
+        allClass.get(i)->dataCacheRemoveAll();
     }
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassTagClearLevelEssential, ZFLevelZFFrameworkEssential) {
@@ -1246,6 +1249,80 @@ void ZFClass::classTagRemoveAll(void) const {
 }
 
 // ============================================================
+void ZFClass::dataCache(
+        ZF_IN const zfstring &key
+        , ZF_IN ZFObject *tag
+        ) const {
+    if(key == zfnull) {
+        return;
+    }
+    if(tag != zfnull && ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) != ZFFrameworkStateAvailable) {
+        // must not store any new tags during cleanup
+        abort();
+    }
+    ZFCoreMutexLocker();
+    _ZFP_ZFClassTagMapType &m = d->dataCacheMap;
+    _ZFP_ZFClassTagMapType::iterator it = m.find(key);
+    if(it == m.end()) {
+        if(tag != zfnull) {
+            m[key] = tag;
+        }
+    }
+    else {
+        ZFObject *obj = zfunsafe_zfRetain(it->second);
+        if(tag == zfnull) {
+            m.erase(it);
+        }
+        else {
+            it->second.zfunsafe_assign(tag);
+        }
+        zfunsafe_zfRelease(obj);
+    }
+}
+zfany ZFClass::dataCache(ZF_IN const zfstring &key) const {
+    if(key != zfnull) {
+        ZFCoreMutexLocker();
+        _ZFP_ZFClassTagMapType::iterator it = d->dataCacheMap.find(key);
+        if(it != d->dataCacheMap.end()) {
+            return it->second;
+        }
+    }
+    return zfnull;
+}
+void ZFClass::dataCacheGetAllKeyValue(
+        ZF_IN_OUT ZFCoreArray<zfstring> &allKey
+        , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
+        ) const {
+    _ZFP_ZFClassTagMapType &m = d->dataCacheMap;
+    allKey.capacity(allKey.count() + m.size());
+    allValue.capacity(allValue.count() + m.size());
+    for(_ZFP_ZFClassTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
+        allKey.add(it->first);
+        allValue.add(it->second);
+    }
+}
+zfauto ZFClass::dataCacheRemoveAndGet(ZF_IN const zfstring &key) const {
+    if(key != zfnull) {
+        ZFCoreMutexLocker();
+        _ZFP_ZFClassTagMapType &m = d->dataCacheMap;
+        _ZFP_ZFClassTagMapType::iterator it = m.find(key);
+        if(it != m.end()) {
+            zfauto ret;
+            ret.zfunsafe_assign(it->second);
+            m.erase(it);
+            return ret;
+        }
+    }
+    return zfnull;
+}
+void ZFClass::dataCacheRemoveAll(void) const {
+    if(!d->dataCacheMap.empty()) {
+        _ZFP_ZFClassTagMapType tmp;
+        tmp.swap(d->dataCacheMap);
+    }
+}
+
+// ============================================================
 // private
 ZFClass::ZFClass(void)
 : d(zfnull)
@@ -1268,6 +1345,10 @@ ZFClass::ZFClass(void)
 ZFClass::~ZFClass(void) {
     this->instanceObserverRemoveAll();
 
+    if(!d->dataCacheMap.empty()) {
+        // class data caches must be removed before destroying a ZFClass
+        abort();
+    }
     if(!d->classTagMap.empty()) {
         // class tags must be removed before destroying a ZFClass
         abort();
@@ -1439,6 +1520,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
     ZFMethodUserUnregister(cls->methodForNameIgnoreParent("ClassData"));
 
     d->classDynamicRegisterUserData = zfnull;
+    cls->dataCacheRemoveAll();
     cls->classTagRemoveAll();
     cls->instanceObserverRemoveAll();
 
@@ -1552,7 +1634,7 @@ zfbool ZFClass::_ZFP_ZFClass_ZFImplementDynamicRegister(ZF_IN const ZFClass *cls
         _ZFP_ZFClassPrivate::classParentCacheUpdate(it->first);
         it->first->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_methodAndPropertyCacheNeedUpdate = zftrue;
     }
-    this->classTagRemoveAll();
+    this->dataCacheRemoveAll();
     return zftrue;
 }
 void ZFClass::_ZFP_ZFClass_ZFImplementDynamicUnregister(ZF_IN const ZFClass *clsToImplement) const {
@@ -1568,7 +1650,7 @@ void ZFClass::_ZFP_ZFClass_ZFImplementDynamicUnregister(ZF_IN const ZFClass *cls
         _ZFP_ZFClassPrivate::classParentCacheUpdate(it->first);
         it->first->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_methodAndPropertyCacheNeedUpdate = zftrue;
     }
-    this->classTagRemoveAll();
+    this->dataCacheRemoveAll();
 }
 
 void ZFClass::_ZFP_ZFClass_objectDesctuct(ZF_IN ZFObject *obj) const {
@@ -1758,11 +1840,11 @@ void _ZFP_ZFClassDataUpdateNotify(
                 , changedMethod ? changedMethod->objectInfo().cString() : ZFTOKEN_zfnull
                 );
         if(changedProperty != zfnull) {
-            changedProperty->ownerClass()->classTagRemoveAll();
+            changedProperty->ownerClass()->dataCacheRemoveAll();
         }
         else if(changedMethod != zfnull) {
             if(changedMethod->ownerClass() != zfnull) {
-                changedMethod->ownerClass()->classTagRemoveAll();
+                changedMethod->ownerClass()->dataCacheRemoveAll();
             }
         }
 

@@ -588,31 +588,23 @@ public:
      * @note all classTags would be removed during #ZFFrameworkCleanup
      *   as #ZFLevelZFFrameworkHigh and #ZFLevelZFFrameworkEssential,
      *   you must ensure the classTag is safe to be deleted at this time
-     * @note usually used to store meta-data for performance use only
-     * @note all tag would be cleared during #ZFGlobalEvent::E_ClassDataUpdate
      */
     void classTag(
             ZF_IN const zfstring &key
             , ZF_IN ZFObject *tag
             ) const;
-    /**
-     * @brief see #classTag
-     */
+    /** @brief see #classTag */
     zfany classTag(ZF_IN const zfstring &key) const;
     /** @brief see #classTag */
     zffinal void classTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
             , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
             ) const;
-    /**
-     * @brief remove tag, same as set tag to null
-     */
+    /** @brief see #classTag */
     inline void classTagRemove(ZF_IN const zfstring &key) const {
         this->classTag(key, zfnull);
     }
-    /**
-     * @brief remove tag, return removed tag or null if not exist
-     */
+    /** @brief see #classTag */
     zffinal zfauto classTagRemoveAndGet(ZF_IN const zfstring &key) const;
     /**
      * @brief see #classTag
@@ -624,6 +616,37 @@ public:
      */
     zffinal void classTagRemoveAll(void) const;
 
+    // ============================================================
+    /**
+     * @brief store class meta data cache, internal use only
+     *
+     * @note all dataCaches would be removed during #ZFFrameworkCleanup
+     *   as #ZFLevelZFFrameworkHigh and #ZFLevelZFFrameworkEssential,
+     *   you must ensure the dataCache is safe to be deleted at this time
+     * @note usually used to store meta-data for performance use only
+     * @note all dataCaches would be cleared during #ZFGlobalEvent::E_ClassDataUpdate
+     */
+    void dataCache(
+            ZF_IN const zfstring &key
+            , ZF_IN ZFObject *tag
+            ) const;
+    /** @brief see #dataCache */
+    zfany dataCache(ZF_IN const zfstring &key) const;
+    /** @brief see #dataCache */
+    zffinal void dataCacheGetAllKeyValue(
+            ZF_IN_OUT ZFCoreArray<zfstring> &allKey
+            , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
+            ) const;
+    /** @brief see #dataCache */
+    inline void dataCacheRemove(ZF_IN const zfstring &key) const {
+        this->dataCache(key, zfnull);
+    }
+    /** @brief see #dataCache */
+    zffinal zfauto dataCacheRemoveAndGet(ZF_IN const zfstring &key) const;
+    /** @brief see #dataCache */
+    zffinal void dataCacheRemoveAll(void) const;
+
+    // ============================================================
     /**
      * @brief a unique id that represents the class
      * @note the id may be reused if owner class unloaded

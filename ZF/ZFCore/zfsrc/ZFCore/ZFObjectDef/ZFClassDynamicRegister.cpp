@@ -85,6 +85,7 @@ void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls) {
     }
     _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(cls->classNamespace()));
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.erase(cls);
+    cls->dataCacheRemoveAll();
     cls->classTagRemoveAll();
     ZFClass::_ZFP_ZFClassUnregister(cls);
 }

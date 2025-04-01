@@ -18,7 +18,7 @@ zfanyT<ZFStyleable> ZFStyleable::defaultStyle(void) {
 }
 
 static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFClass *cls) {
-    v_ZFCoreArray *holder = cls->classTag("_ZFP_ZFStyleable_propList");
+    v_ZFCoreArray *holder = cls->dataCache("_ZFP_ZFStyleable_propList");
     if(holder) {
         return *(const ZFCoreArray<const ZFProperty *> *)holder->zfv;
     }
@@ -42,7 +42,7 @@ static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFC
         }
     }
     zfobj<v_ZFCoreArray> holderTmp(ret);
-    cls->classTag("_ZFP_ZFStyleable_propList", holderTmp);
+    cls->dataCache("_ZFP_ZFStyleable_propList", holderTmp);
     return ret;
 }
 
