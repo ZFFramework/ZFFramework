@@ -224,10 +224,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         )
 
-#define _ZFP_ZFMethod_initClassMemberType_privilege_public ZFMethodAccessTypePublic
-#define _ZFP_ZFMethod_initClassMemberType_privilege_protected ZFMethodAccessTypeProtected
-#define _ZFP_ZFMethod_initClassMemberType_privilege_private ZFMethodAccessTypePrivate
-#define _ZFP_ZFMethod_initClassMemberType_privilege(privilege) _ZFP_ZFMethod_initClassMemberType_privilege_##privilege
+#define _ZFP_ZFMethod_initClassMemberType_accessType_public ZFMethodAccessTypePublic
+#define _ZFP_ZFMethod_initClassMemberType_accessType_protected ZFMethodAccessTypeProtected
+#define _ZFP_ZFMethod_initClassMemberType_accessType_private ZFMethodAccessTypePrivate
+#define _ZFP_ZFMethod_initClassMemberType_accessType(accessType) _ZFP_ZFMethod_initClassMemberType_accessType_##accessType
 
 // ============================================================
 #define _ZFP_ZFMethod_AutoRegister_isAutoRegister(MethodName, RegSig \
@@ -351,7 +351,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdH_##MethodName##_##RegSig) \
                     , ZFMethodType_ \
                     , zfself::ClassData() \
-                    , _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate) \
+                    , _ZFP_ZFMethod_initClassMemberType_accessType(PublicOrProtectedOrPrivate) \
                     , zfnull \
                     , zftext(#MethodName) \
                     , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \
@@ -491,7 +491,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
                 )) { \
-            return _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate); \
+            return _ZFP_ZFMethod_initClassMemberType_accessType(PublicOrProtectedOrPrivate); \
         } \
         static inline ZFMethodType _ZFP_MtdS_T_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \

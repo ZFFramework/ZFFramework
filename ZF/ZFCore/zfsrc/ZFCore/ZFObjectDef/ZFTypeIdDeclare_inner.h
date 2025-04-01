@@ -490,13 +490,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
-            ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType); \
-            t->zfv = v; \
-            obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
-            ZFCoreMutexUnlock(); \
-            return zftrue; \
+            return _ZFP_PropVS<_ZFP_WrapType, _ZFP_PropType>::I(obj, v); \
         } \
         template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \

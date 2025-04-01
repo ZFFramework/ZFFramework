@@ -266,7 +266,7 @@ public:
             );
     void _ZFP_ZFMethod_initClassMemberType(
             ZF_IN const ZFClass *ownerClass
-            , ZF_IN ZFMethodAccessType privilegeType
+            , ZF_IN ZFMethodAccessType accessType
             );
     void _ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace);
     /** @cond ZFPrivateDoc */
@@ -562,6 +562,12 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) const;
 
+    /** @brief check whether this method can be invoke with specified object */
+    zfbool methodInvokeCheck(
+            ZF_IN ZFObject *ownerObjOrNull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) const;
+
     /**
      * @brief see #methodGenericInvoker
      */
@@ -594,14 +600,14 @@ public:
      * @brief get the method's access type
      */
     inline ZFMethodAccessType methodAccessType(void) const {
-        return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType;
+        return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType;
     }
     /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypePublic */
-    inline zfbool isPublic(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType == ZFMethodAccessTypePublic;}
+    inline zfbool isPublic(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType == ZFMethodAccessTypePublic;}
     /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypeProtected */
-    inline zfbool isProtected(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType == ZFMethodAccessTypeProtected;}
+    inline zfbool isProtected(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType == ZFMethodAccessTypeProtected;}
     /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypePrivate */
-    inline zfbool isPrivate(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_privilegeType == ZFMethodAccessTypePrivate;}
+    inline zfbool isPrivate(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType == ZFMethodAccessTypePrivate;}
 
     /**
      * @brief method type
@@ -697,7 +703,7 @@ public:
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type
-    unsigned short /* ZFMethodAccessType */ _ZFP_ZFMethod_privilegeType;
+    unsigned short /* ZFMethodAccessType */ _ZFP_ZFMethod_accessType;
     unsigned short /* ZFMethodType */ _ZFP_ZFMethod_methodType;
     const ZFClass *_ZFP_ZFMethod_ownerClass;
     const ZFProperty *_ZFP_ZFMethod_ownerProperty;

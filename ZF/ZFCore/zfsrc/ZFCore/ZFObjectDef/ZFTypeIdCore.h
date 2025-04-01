@@ -265,6 +265,46 @@ protected:
             ret = (Type)(from + (Type)((to - from) * progress)); \
         })
 
+// ============================================================
+// value store helper
+template<typename T_WrapType, typename T_Type>
+zfclassNotPOD _ZFP_PropVS {
+public:
+    static zfbool I(
+            ZF_OUT zfauto &obj
+            , ZF_IN T_Type const &v
+            ) {
+        ZFCoreMutexLock();
+        T_WrapType *t = zfunsafe_zfAlloc(T_WrapType);
+        t->zfv = v;
+        obj.zfunsafe_assign(t);
+        zfunsafe_zfRelease(t);
+        ZFCoreMutexUnlock();
+        return zftrue;
+    }
+};
+template<typename T_WrapType, typename T_Type>
+zfclassNotPOD _ZFP_PropVS<T_WrapType, T_Type *> {
+public:
+    static zfbool I(
+            ZF_OUT zfauto &obj
+            , ZF_IN T_Type * const &v
+            ) {
+        if(v == zfnull) {
+            obj = zfnull;
+        }
+        else {
+            ZFCoreMutexLock();
+            T_WrapType *t = zfunsafe_zfAlloc(T_WrapType);
+            t->zfv = v;
+            obj.zfunsafe_assign(t);
+            zfunsafe_zfRelease(t);
+            ZFCoreMutexUnlock();
+        }
+        return zftrue;
+    }
+};
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeIdCore_h_
 

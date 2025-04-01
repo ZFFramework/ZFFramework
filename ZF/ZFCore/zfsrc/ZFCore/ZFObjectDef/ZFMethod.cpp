@@ -167,10 +167,10 @@ void ZFMethod::_ZFP_ZFMethod_init(
 }
 void ZFMethod::_ZFP_ZFMethod_initClassMemberType(
         ZF_IN const ZFClass *ownerClass
-        , ZF_IN ZFMethodAccessType privilegeType
+        , ZF_IN ZFMethodAccessType accessType
         ) {
     this->_ZFP_ZFMethod_ownerClass = ownerClass;
-    this->_ZFP_ZFMethod_privilegeType = (unsigned short)privilegeType;
+    this->_ZFP_ZFMethod_accessType = (unsigned short)accessType;
 }
 void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace) {
     if(methodNamespace
@@ -181,7 +181,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace)
     }
 
     this->_ZFP_ZFMethod_ownerClass = zfnull;
-    this->_ZFP_ZFMethod_privilegeType = (unsigned short)ZFMethodAccessTypePublic;
+    this->_ZFP_ZFMethod_accessType = (unsigned short)ZFMethodAccessTypePublic;
 }
 
 ZFMethod::ZFMethod(void)
@@ -202,7 +202,7 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_paramBuf(zfnull)
 , _ZFP_ZFMethod_paramDefaultValueCallbackList(zfnull)
 , _ZFP_ZFMethod_paramDefaultBeginIndex((zfuint)-1)
-, _ZFP_ZFMethod_privilegeType((unsigned short)ZFMethodAccessTypePublic)
+, _ZFP_ZFMethod_accessType((unsigned short)ZFMethodAccessTypePublic)
 , _ZFP_ZFMethod_methodType((unsigned short)ZFMethodTypeNormal)
 , _ZFP_ZFMethod_ownerClass(zfnull)
 , _ZFP_ZFMethod_ownerProperty(zfnull)
@@ -329,6 +329,9 @@ zfbool ZFMethod::paramTypeIdIsMatch(ZF_IN const ZFMethod *method) const {
 zfauto ZFMethod::methodInvoke(
         ZF_IN_OPT ZFObject *ownerObjOrNull /* = zfnull */
         ) const {
+    if(!this->methodInvokeCheck(ownerObjOrNull)) {
+        return zfnull;
+    }
     ZFArgs zfargs;
     zfargs
         .sender(ownerObjOrNull)
@@ -354,6 +357,9 @@ zfauto ZFMethod::methodInvoke(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) const {
+    if(!this->methodInvokeCheck(ownerObjOrNull)) {
+        return zfnull;
+    }
     ZFArgs zfargs;
     zfargs
         .sender(ownerObjOrNull)
@@ -390,6 +396,9 @@ zfbool ZFMethod::methodInvokeT(
         , ZF_IN_OPT ZFObject *param6 /* = ZFMP_DEF() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMP_DEF() */
         ) const {
+    if(!this->methodInvokeCheck(ownerObjOrNull, errorHint)) {
+        return zffalse;
+    }
     ZFArgs zfargs;
     zfargs
         .sender(ownerObjOrNull)
@@ -424,6 +433,9 @@ zfauto ZFMethod::methodInvokeDetail(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) const {
+    if(!this->methodInvokeCheck(ownerObjOrNull)) {
+        return zfnull;
+    }
     ZFArgs zfargs;
     zfargs
         .sender(ownerObjOrNull)
@@ -444,6 +456,27 @@ zfauto ZFMethod::methodInvokeDetail(
         }
         return zfnull;
     }
+}
+
+zfbool ZFMethod::methodInvokeCheck(
+        ZF_IN ZFObject *ownerObjOrNull
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) const {
+    if(this->methodType() != ZFMethodTypeStatic) {
+        if(ownerObjOrNull == zfnull) {
+            if(errorHint) {
+                zfstringAppend(*errorHint, "null object when calling method: %s", this);
+            }
+            return zffalse;
+        }
+        else if(ZFObjectCast(this->ownerClass(), ownerObjOrNull) == zfnull) {
+            if(errorHint) {
+                zfstringAppend(*errorHint, "mismatch object %s when calling method: %s", ownerObjOrNull->objectInfoOfInstance(), this);
+            }
+            return zffalse;
+        }
+    }
+    return zftrue;
 }
 
 const ZFListener &ZFMethod::paramDefaultValueCallbackAt(ZF_IN zfindex index) const {

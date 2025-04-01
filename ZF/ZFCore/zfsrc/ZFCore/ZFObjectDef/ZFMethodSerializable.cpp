@@ -119,6 +119,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethod, zfauto, methodInvokeDetail
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFMethod, zfbool, methodInvokeCheck
+        , ZFMP_IN(ZFObject *, ownerObjOrNull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvokerOrig)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodGenericInvoker
         , ZFMP_IN(ZFMethodGenericInvoker, methodGenericInvoker)

@@ -374,6 +374,9 @@ static zfbool _ZFP_ZFDI_invokeAction(
         , ZF_IN_OUT zfstring *errorHint
         , ZF_IN zfbool convStr
         ) {
+    if(!method->methodInvokeCheck(zfargs.sender(), errorHint)) {
+        return zffalse;
+    }
     if(_ZFP_ZFDI_paramConvert(
                 method
                 , paramBackup

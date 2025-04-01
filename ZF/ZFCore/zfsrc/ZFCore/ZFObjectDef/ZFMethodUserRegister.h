@@ -35,7 +35,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(GenericInvokerOwner) \
         , ZFMethodType_ \
         , ownerClass \
-        , _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate) \
+        , _ZFP_ZFMethod_initClassMemberType_accessType(PublicOrProtectedOrPrivate) \
         , zfnull \
         , methodNameString \
         , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \

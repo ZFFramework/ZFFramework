@@ -661,14 +661,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
-            ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType); \
-            t->zfv = v; \
-            obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
-            ZFCoreMutexUnlock(); \
-            return zftrue; \
+            return _ZFP_PropVS<_ZFP_WrapType, _ZFP_PropType>::I(obj, v); \
         } \
+        /* \
+         * T_Mode:
+         * * 0 : original type, or ref to original type or original pointer \
+         * * 1 : pointer to original type \
+         * * 2 : original type is pointer \
+         */ \
         template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
                 && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \

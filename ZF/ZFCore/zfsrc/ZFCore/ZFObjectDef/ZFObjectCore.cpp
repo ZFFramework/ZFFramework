@@ -798,6 +798,16 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
     }
 }
 
+// ============================================================
+zfany ZFObjectCast(ZF_IN const ZFClass *cls, ZF_IN const zfany &obj) {
+    if(cls == zfnull || obj == zfnull) {
+        return zfnull;
+    }
+    else {
+        return obj->classData()->_ZFP_ZFClass_objectCast(obj, cls);
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG
@@ -947,6 +957,11 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectInitRunning)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectDeallocRunning)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternal)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternalPrivate)
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfany, ZFObjectCast
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN(const zfany &, obj)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

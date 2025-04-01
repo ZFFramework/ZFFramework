@@ -135,6 +135,13 @@ zfbool _ZFP_MtdGIParamCheck(
 
 // ============================================================
 void _ZFP_ZFMethodGenericInvoke(ZF_IN_OUT const ZFArgs &zfargs) {
+    zfstring errorHint;
+    if(!zfargs.ownerMethod()->methodInvokeCheck(zfargs.sender(), !zfargs.ignoreError() ? &errorHint : zfnull)) {
+        if(!zfargs.ignoreError()) {
+            zfargs.errorHint(errorHint);
+        }
+        return;
+    }
     zfargs.ownerMethod()->methodGenericInvoker()(zfargs);
 }
 void _ZFP_ZFMethodGenericInvokeError(
