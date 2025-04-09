@@ -268,7 +268,8 @@ private:
 
 // ============================================================
 /**
- * @brief all event notified by #ZFObject::observerNotify would also be notified to the observers added by this method,
+ * @brief all event notified by #ZFObject::observerNotify
+ *   would also be notified to the observers added by this method,
  *   see #ZFObject::observerNotify
  *
  * use only if necessary, which may cause performance issue
@@ -307,6 +308,7 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   you should use the name of the event to store or pass between apps,
  *   and you can use #ZFEventIdForName or #ZFEventNameForId
  *   to convert them easily
+ * @see ZFEVENT_GLOBAL
  */
 #define ZFEVENT(YourEvent) \
     ZFIDMAP_DETAIL(E_, YourEvent)
@@ -337,12 +339,22 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   zfidentity eventId = YourNamespace::E_YourEvent();
  * @endcode
  * unlike #ZFEVENT, this macro would declare event outside of class scope,
- * typically you should use #ZFEVENT_GLOBAL which have "ZFGlobalEvent" as namespace
+ * typically you should use #ZFEVENT_GLOBAL which have "ZFGlobalEvent" as namespace\n
+ * \n
+ * once declared, use #ZFGlobalObserver to notify or add observer:
+ * @code
+ *   ZFGlobalObserver().observerAdd(YourNamespace::E_YourEvent(), xxx);
+ *   ...
+ *   ZFGlobalObserver().observerNotify(YourNamespace::E_YourEvent(), xxx);
+ * @endcode
+ *
+ * @see ZFEVENT
+ * @see ZFGlobalObserver
  */
 #define ZFEVENT_GLOBAL(ZFLIB_, YourEvent) \
     ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, E_, YourEvent)
 
-/** @brief see #ZFEVENT */
+/** @brief see #ZFEVENT_GLOBAL */
 #define ZFEVENT_GLOBAL_REGISTER(YourEvent) \
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(E_, YourEvent)
 

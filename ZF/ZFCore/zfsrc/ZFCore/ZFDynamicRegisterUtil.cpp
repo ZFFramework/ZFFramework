@@ -593,7 +593,7 @@ ZFDynamic &ZFDynamic::classImplement(ZF_IN const ZFClass *clsToImplement) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
-        d->error("no paired classBegin");
+        d->error("have you forgot classBegin?");
     }
     else {
         ZFImplementDynamicRegister(scope->d.cls, clsToImplement);
