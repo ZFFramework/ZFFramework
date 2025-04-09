@@ -32,7 +32,11 @@ ZFMETHOD_FUNC_DEFINE_1(void, appExit
 }
 
 ZFMETHOD_FUNC_DEFINE_0(void, appRestart) {
-    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppRestart());
+    zfobj<v_zfbool> flag;
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppRestart(), flag);
+    if(flag->zfv) {
+        return;
+    }
     ZFPROTOCOL_INTERFACE_CLASS(ZFApp) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp);
     if(impl != zfnull) {
         impl->appRestart();

@@ -10,7 +10,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGCImmediately
         , ZFMP_IN_OPT(void *, L, zfnull)
         ) {
-    ZFPROTOCOL_ACCESS(ZFLua)->luaGC(L ? L : ZFLuaState());
+    if(L == zfnull) {
+        L = ZFLuaStateCheck();
+        if(L == zfnull) {
+            return;
+        }
+    }
+    ZFPROTOCOL_ACCESS(ZFLua)->luaGC(L);
 }
 
 // ============================================================
@@ -55,7 +61,10 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
         , ZFMP_IN_OPT(void *, L, zfnull)
         ) {
     if(L == zfnull) {
-        L = ZFLuaState();
+        L = ZFLuaStateCheck();
+        if(L == zfnull) {
+            return;
+        }
     }
     if(!ZFThread::implMainThreadTaskAvailable()) {
         ZFLuaGCImmediately(L);

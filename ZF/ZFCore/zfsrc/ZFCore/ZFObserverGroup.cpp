@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFObserverGroupHolderPrivate {
+zfclassNotPOD _ZFP_ZFObserverGroupPrivate {
 public:
     zfuint refCount;
     zfweak owner;
@@ -16,20 +16,20 @@ public:
         this->owner = zfnull;
         this->target = zfnull;
         if(this->targetObserver != zfnull) {
-            zfdelete(this->targetObserver);
+            zfpoolDelete(this->targetObserver);
             this->targetObserver = zfnull;
         }
     }
 
 public:
-    _ZFP_ZFObserverGroupHolderPrivate(void)
+    _ZFP_ZFObserverGroupPrivate(void)
     : refCount(1)
     , owner(zfnull)
     , target(zfnull)
     , targetObserver(zfnull)
     {
     }
-    ~_ZFP_ZFObserverGroupHolderPrivate(void) {
+    ~_ZFP_ZFObserverGroupPrivate(void) {
         this->removeAll();
     }
 };
@@ -69,6 +69,9 @@ public:
     , targetMapPrev(zfnull)
     , targetMapNext(zfnull)
     {
+    }
+    ~_ZFP_ZFObserverGroupTaskData(void) {
+        this->realTarget.observerRemove(this->eventId, this->realObserver);
     }
 };
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObserverGroupDataHolder, ZFLevelZFFrameworkEssential) {
@@ -111,7 +114,7 @@ public:
             , ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &observer
             ) {
-        _ZFP_ZFObserverGroupTaskData *task = zfnew(_ZFP_ZFObserverGroupTaskData
+        _ZFP_ZFObserverGroupTaskData *task = zfpoolNew(_ZFP_ZFObserverGroupTaskData
                 , owner
                 , target
                 , realTarget
@@ -194,7 +197,7 @@ public:
         while(head != zfnull) {
             p = head;
             head = head->ownerMapNext;
-            this->cleanup(p);
+            zfpoolDelete(p);
         }
     }
     void detachByTarget(ZF_IN ZFObject *target) {
@@ -230,7 +233,7 @@ public:
         while(head != zfnull) {
             p = head;
             head = head->targetMapNext;
-            this->cleanup(p);
+            zfpoolDelete(p);
         }
     }
     void detachExact(
@@ -332,16 +335,12 @@ private:
             }
         }
 
-        this->cleanup(task);
-    }
-    void cleanup(ZF_IN _ZFP_ZFObserverGroupTaskData *task) {
-        task->realTarget.observerRemove(task->eventId, task->realObserver);
-        zfdelete(task);
+        zfpoolDelete(task);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFObserverGroupDataHolder)
 
 // ============================================================
-const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAdd(
+const ZFObserverGroup &ZFObserverGroup::observerAdd(
         ZF_IN zfidentity eventId
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
@@ -361,7 +360,7 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAdd(
     }
     return *this;
 }
-const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(
+const ZFObserverGroup &ZFObserverGroup::observerAddForOnce(
         ZF_IN zfidentity eventId
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
@@ -382,6 +381,7 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(
             , ZFListener, observer
             ) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->detachExact(owner, target, realTarget, eventId, observer);
+        target->observerNotifyWithSender(zfargs.sender(), zfargs.eventId(), zfargs.param0(), zfargs.param1());
     } ZFLISTENER_END()
     realTarget.observerAddForOnce(eventId, realObserver, observerLevel);
 
@@ -391,33 +391,101 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(
     return *this;
 }
 
-ZFObserverGroupHolder::ZFObserverGroupHolder(void)
-: d(zfnew(_ZFP_ZFObserverGroupHolderPrivate))
+void ZFObserverGroup::observerRemove(
+        ZF_IN zfidentity eventId
+        , ZF_IN const ZFListener &callback
+        ) const {
+    ZFObject *target = d->target;
+    if(target == zfnull && d->targetObserver == zfnull) {
+        return;
+    }
+    ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->detachExact(d->owner, target, realTarget, eventId, callback);
+}
+void ZFObserverGroup::observerRemoveAll(ZF_IN zfidentity eventId) const {
+    ZFCoreCriticalNotSupported();
+}
+void ZFObserverGroup::observerRemoveAll(void) const {
+    ZFCoreCriticalNotSupported();
+}
+zfbool ZFObserverGroup::observerHasAdd(void) const {
+    ZFCoreCriticalNotSupported();
+    return zffalse;
+}
+zfbool ZFObserverGroup::observerHasAdd(ZF_IN zfidentity eventId) const {
+    ZFCoreCriticalNotSupported();
+    return zffalse;
+}
+void ZFObserverGroup::observerNotify(
+        ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) const {
+    ZFObject *target = d->target;
+    if(target == zfnull && d->targetObserver == zfnull) {
+        return;
+    }
+    ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
+    realTarget.observerNotify(eventId, param0, param1);
+}
+void ZFObserverGroup::observerNotifyWithSender(
+        ZF_IN ZFObject *customSender
+        , ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) const {
+    ZFObject *target = d->target;
+    if(target == zfnull && d->targetObserver == zfnull) {
+        return;
+    }
+    ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
+    realTarget.observerNotifyWithSender(customSender, eventId, param0, param1);
+}
+
+ZFObserverGroup::ZFObserverGroup(
+        ZF_IN ZFObject *owner
+        , ZF_IN const ZFObserver &target
+        )
+: d(zfpoolNew(_ZFP_ZFObserverGroupPrivate))
+{
+    this->_ZFP_update(owner, target);
+}
+ZFObserverGroup::ZFObserverGroup(
+        ZF_IN ZFObject *owner
+        , ZF_IN ZFObject *target
+        )
+: d(zfpoolNew(_ZFP_ZFObserverGroupPrivate))
+{
+    this->_ZFP_update(owner, target);
+}
+
+ZFObserverGroup::ZFObserverGroup(void)
+: d(zfpoolNew(_ZFP_ZFObserverGroupPrivate))
 {
 }
-ZFObserverGroupHolder::ZFObserverGroupHolder(ZF_IN const ZFObserverGroupHolder &ref) {
+ZFObserverGroup::ZFObserverGroup(ZF_IN const ZFObserverGroup &ref) {
     d = ref.d;
     ++(d->refCount);
 }
-ZFObserverGroupHolder::~ZFObserverGroupHolder(void) {
+ZFObserverGroup::~ZFObserverGroup(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 
-ZFObserverGroupHolder &ZFObserverGroupHolder::operator = (ZF_IN const ZFObserverGroupHolder &ref) {
-    _ZFP_ZFObserverGroupHolderPrivate *dTmp = d;
+ZFObserverGroup &ZFObserverGroup::operator = (ZF_IN const ZFObserverGroup &ref) {
+    _ZFP_ZFObserverGroupPrivate *dTmp = d;
     ++(ref.d->refCount);
     d = ref.d;
     --(dTmp->refCount);
     if(dTmp->refCount == 0) {
-        zfdelete(dTmp);
+        zfpoolDelete(dTmp);
     }
     return *this;
 }
 
-void ZFObserverGroupHolder::_ZFP_update(
+void ZFObserverGroup::_ZFP_update(
         ZF_IN ZFObject *owner
         , ZF_IN const ZFObserver &target
         ) {
@@ -429,10 +497,10 @@ void ZFObserverGroupHolder::_ZFP_update(
         *(d->targetObserver) = target;
     }
     else {
-        d->targetObserver = zfnew(ZFObserver, target);
+        d->targetObserver = zfpoolNew(ZFObserver, target);
     }
 }
-void ZFObserverGroupHolder::_ZFP_update(
+void ZFObserverGroup::_ZFP_update(
         ZF_IN ZFObject *owner
         , ZF_IN ZFObject *target
         ) {
@@ -442,7 +510,7 @@ void ZFObserverGroupHolder::_ZFP_update(
         d->owner = owner;
         d->target = target;
         if(d->targetObserver != zfnull) {
-            zfdelete(d->targetObserver);
+            zfpoolDelete(d->targetObserver);
             d->targetObserver = zfnull;
         }
     }
@@ -451,8 +519,8 @@ void ZFObserverGroupHolder::_ZFP_update(
     }
 }
 
-void ZFObserverGroupHolder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    ret += "<ZFObserverGroupHolder:";
+void ZFObserverGroup::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "<ZFObserverGroup:";
     if(d->targetObserver != zfnull) {
         zfstringAppend(ret, "<ZFObserver(%s)>", (const void *)d->targetObserver);
     }
@@ -462,46 +530,89 @@ void ZFObserverGroupHolder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ">";
 }
 
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverGroupHolder, ZFObserverGroupHolder)
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverGroup, ZFObserverGroup)
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, observerAdd
+ZFOBJECT_ON_INIT_USER_REGISTER_2({
+        invokerObject.to<v_ZFObserverGroup *>()->zfv._ZFP_update(owner, target);
+    }, v_ZFObserverGroup
+    , ZFMP_IN(ZFObject *, owner)
+    , ZFMP_IN(const ZFObserver &, target)
+    )
+ZFOBJECT_ON_INIT_USER_REGISTER_2({
+        invokerObject.to<v_ZFObserverGroup *>()->zfv._ZFP_update(owner, target);
+    }, v_ZFObserverGroup
+    , ZFMP_IN(ZFObject *, owner)
+    , ZFMP_IN(ZFObject *, target)
+    )
+
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, observerAdd
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, observerAddForOnce
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, observerAddForOnce
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, on
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserverGroup, void, observerRemove
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, callback)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverGroup, void, observerRemoveAll
+        , ZFMP_IN(zfidentity, eventId)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserverGroup, void, observerRemoveAll)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserverGroup, zfbool, observerHasAdd)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverGroup, zfbool, observerHasAdd
+        , ZFMP_IN(zfidentity, eventId)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotify
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverGroup, void, observerNotifyWithSender
+        , ZFMP_IN(ZFObject *, customSender)
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, on
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, observer)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup
-        , ZFMP_IN(ZFObject *, owner)
-        , ZFMP_IN(const ZFObserver &, target)
-        ) {
-    ZFObserverGroupHolder ret;
-    ret._ZFP_update(owner, target);
-    return ret;
-}
-ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup
-        , ZFMP_IN(ZFObject *, owner)
-        , ZFMP_IN(ZFObject *, target)
-        ) {
-    ZFObserverGroupHolder ret;
-    ret._ZFP_update(owner, target);
-    return ret;
-}
-
 ZFMETHOD_FUNC_DEFINE_1(void, ZFObserverGroupRemove
         , ZFMP_IN(ZFObject *, owner)
         ) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->detachByOwner(owner);
+}
+
+// ============================================================
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFGlobalObserverGroup, ZFLevelZFFrameworkEssential) {
+}
+zfobj<ZFObject> owner;
+ZF_GLOBAL_INITIALIZER_END(ZFGlobalObserverGroup)
+
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFGlobalObserverGroupAutoClean, ZFLevelAppNormal) {
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFGlobalObserverGroupAutoClean) {
+    ZFObserverGroupRemove(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalObserverGroup)->owner);
+}
+ZF_GLOBAL_INITIALIZER_END(ZFGlobalObserverGroupAutoClean)
+
+ZFMETHOD_FUNC_DEFINE_1(ZFObserverGroup, ZFGlobalObserverGroup
+        , ZFMP_IN(const ZFObserver &, target)
+        ) {
+    return ZFObserverGroup(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalObserverGroup)->owner, target);
+}
+ZFMETHOD_FUNC_DEFINE_1(ZFObserverGroup, ZFGlobalObserverGroup
+        , ZFMP_IN(ZFObject *, target)
+        ) {
+    return ZFObserverGroup(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalObserverGroup)->owner, target);
 }
 
 ZF_NAMESPACE_GLOBAL_END

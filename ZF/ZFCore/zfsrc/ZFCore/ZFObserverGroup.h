@@ -10,24 +10,74 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd _ZFP_ZFObserverGroupHolderPrivate;
-/** @brief see #ZFObserverGroup */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverGroupHolder {
+zfclassFwd _ZFP_ZFObserverGroupPrivate;
+/**
+ * @brief util to add multiple observer
+ *
+ * usage:
+ * @code
+ *   ZFObject *owner = xxx;
+ *   ZFObject *target = xxx;
+ *   ZFObserverGroup(owner, target)
+ *       .observerAdd(xxx) // add observer to target
+ *       .observerAdd(xxx)
+ *       ;
+ *
+ *   // when done, remove all observer which attached to owner
+ *   // note the owner is compared by instance
+ *   ZFObserverGroupRemove(owner);
+ *
+ *   // or, remove by the group holder
+ *   ZFObserverGroup holder(owner, target);
+ *   holder.observerAdd(xxx);
+ *   holder.observerRemove(xxx);
+ *   holder.observerRemoveAll();
+ * @endcode
+ */
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverGroup {
 public:
     /** @brief see #ZFObserverGroup */
-    zffinal const ZFObserverGroupHolder &observerAdd(
+    zffinal const ZFObserverGroup &observerAdd(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &observer
             , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
             ) const;
     /** @brief see #ZFObserverGroup */
-    zffinal const ZFObserverGroupHolder &observerAddForOnce(
+    zffinal const ZFObserverGroup &observerAddForOnce(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &observer
             , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
             ) const;
     /** @brief see #ZFObserverGroup */
-    zffinal inline const ZFObserverGroupHolder &on(
+    zffinal void observerRemove(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &callback
+            ) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal void observerRemoveAll(ZF_IN zfidentity eventId) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal void observerRemoveAll(void) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal zfbool observerHasAdd(void) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal zfbool observerHasAdd(ZF_IN zfidentity eventId) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal void observerNotify(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal void observerNotifyWithSender(
+            ZF_IN ZFObject *customSender
+            , ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const;
+
+public:
+    /** @brief see #ZFObserverGroup */
+    zffinal inline const ZFObserverGroup &on(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &observer
             , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
@@ -46,18 +96,30 @@ public:
     }
 
 public:
-    /** @cond ZFPrivateDoc */
-    ZFObserverGroupHolder(void);
-    ZFObserverGroupHolder(ZF_IN const ZFObserverGroupHolder &ref);
-    ~ZFObserverGroupHolder(void);
+    /** @brief see #ZFObserverGroup */
+    ZFObserverGroup(
+            ZF_IN ZFObject *owner
+            , ZF_IN const ZFObserver &target
+            );
+    /** @brief see #ZFObserverGroup */
+    ZFObserverGroup(
+            ZF_IN ZFObject *owner
+            , ZF_IN ZFObject *target
+            );
 
-    zfbool operator == (ZF_IN const ZFObserverGroupHolder &ref) const {return d == ref.d;}
-    zfbool operator != (ZF_IN const ZFObserverGroupHolder &ref) const {return d != ref.d;}
-    ZFObserverGroupHolder &operator = (ZF_IN const ZFObserverGroupHolder &ref);
+public:
+    /** @cond ZFPrivateDoc */
+    ZFObserverGroup(void);
+    ZFObserverGroup(ZF_IN const ZFObserverGroup &ref);
+    ~ZFObserverGroup(void);
+
+    zfbool operator == (ZF_IN const ZFObserverGroup &ref) const {return d == ref.d;}
+    zfbool operator != (ZF_IN const ZFObserverGroup &ref) const {return d != ref.d;}
+    ZFObserverGroup &operator = (ZF_IN const ZFObserverGroup &ref);
     /** @endcond */
 
 private:
-    _ZFP_ZFObserverGroupHolderPrivate *d;;
+    _ZFP_ZFObserverGroupPrivate *d;;
 public:
     void _ZFP_update(
             ZF_IN ZFObject *owner
@@ -69,40 +131,29 @@ public:
             );
 };
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroupHolder)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroupHolder)
-ZFOUTPUT_TYPE(ZFObserverGroupHolder, {v.objectInfoT(s);})
-
-/**
- * @brief util to add multiple observer
- *
- * usage:
- * @code
- *   ZFObject *owner = xxx;
- *   ZFObject *target = xxx;
- *   ZFObserverGroup(owner, target)
- *       ->observerAdd(xxx) // add observer to target
- *       ->observerAdd(xxx)
- *       ;
- *
- *   // when done, remove all observer which attached to owner
- *   // note the owner is compared by instance
- *   ZFObserverGroupRemove(owner);
- * @endcode
- */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroup
-        , ZFMP_IN(ZFObject *, owner)
-        , ZFMP_IN(const ZFObserver &, target)
-        )
-/** @brief see #ZFObserverGroup */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroup
-        , ZFMP_IN(ZFObject *, owner)
-        , ZFMP_IN(ZFObject *, target)
-        )
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserverGroup, ZFObserverGroup)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFObserverGroup, ZFObserverGroup)
+ZFOUTPUT_TYPE(ZFObserverGroup, {v.objectInfoT(s);})
 
 /** @brief see #ZFObserverGroup */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFObserverGroupRemove
         , ZFMP_IN(ZFObject *, owner)
+        )
+
+// ============================================================
+/**
+ * @brief util to create a global #ZFObserverGroup,
+ *   which all of observers would be removed during #ZFFrameworkCleanup as level #ZFLevelAppNormal
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFObserverGroup, ZFGlobalObserverGroup
+        , ZFMP_IN(const ZFObserver &, target)
+        )
+/**
+ * @brief util to create a global #ZFObserverGroup,
+ *   which all of observers would be removed during #ZFFrameworkCleanup
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFObserverGroup, ZFGlobalObserverGroup
+        , ZFMP_IN(ZFObject *, target)
         )
 
 ZF_NAMESPACE_GLOBAL_END

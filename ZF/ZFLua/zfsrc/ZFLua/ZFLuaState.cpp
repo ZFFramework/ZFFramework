@@ -26,6 +26,9 @@ public:
 
 public:
     static _ZFP_I_ZFLuaStateHolder *prepareForCurrentThread(void) {
+        ZFCoreAssertWithMessageTrim(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) == ZFFrameworkStateAvailable
+                , "access lua module while ZFLevelZFFrameworkNormal not available is not allowed"
+                );
         if(!ZFThread::implAvailable()) {
             return _ZFP_I_ZFLuaStateHolder::instance();
         }
@@ -157,7 +160,12 @@ ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaState) {
 }
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaStateCheck) {
     ZFCoreMutexLocker();
-    return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->L;
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) != ZFFrameworkStateAvailable) {
+        return zfnull;
+    }
+    else {
+        return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->L;
+    }
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateChange
@@ -171,7 +179,12 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateChange
 
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<void *>, ZFLuaStateList) {
     ZFCoreMutexLocker();
-    return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LList;
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) != ZFFrameworkStateAvailable) {
+        return ZFCoreArray<void *>();
+    }
+    else {
+        return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LList;
+    }
 }
 ZFMETHOD_FUNC_DEFINE_2(void, ZFLuaStateListForAllThread
         , ZFMP_OUT(ZFCoreArray<void *> &, luaStateList)
