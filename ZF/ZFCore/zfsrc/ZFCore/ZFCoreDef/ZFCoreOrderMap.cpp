@@ -199,8 +199,7 @@ void ZFCoreOrderMap::set(
         _ZFP_ZFCoreOrderMapPrivate::Item *item = zfpoolNew(_ZFP_ZFCoreOrderMapPrivate::Item);
         item->key = key;
         item->value = value.refNew();
-        d->map[key] = item;
-        item->mapIt = d->map.find(key);
+        item->mapIt = d->map.insert(zfstlpair<zfstring, _ZFP_ZFCoreOrderMapPrivate::Item *>(key, item)).first;
         d->arr.push_back(item);
         item->arrIt = d->arr.end();
         --(item->arrIt);
@@ -355,9 +354,11 @@ void ZFCoreOrderMap::iterValue(
 }
 void ZFCoreOrderMap::iterRemove(ZF_IN_OUT zfiter &it) {
     if(it) {
-        _ZFP_ZFCoreOrderMapPrivate::Item *item = *(it.impl<_ZFP_ZFCoreOrderMapIter *>()->impl);
-        d->map.erase(item->mapIt);
-        d->arr.erase(item->arrIt);
+        _ZFP_ZFCoreOrderMapIter *impl = it.impl<_ZFP_ZFCoreOrderMapIter *>();
+        _ZFP_ZFCoreOrderMapPrivate::Item *item = *(impl->impl);
+        ++(impl->impl);
+        d->map.erase((item->mapIt)++);
+        d->arr.erase((item->arrIt)++);
         zfpoolDelete(item);
     }
 }
