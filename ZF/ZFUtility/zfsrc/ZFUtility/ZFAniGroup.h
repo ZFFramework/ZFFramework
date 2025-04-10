@@ -219,10 +219,10 @@ public:
     // util
 public:
     /**
-     * @brief util to add a dummy child animation to wait specified duration
+     * @brief util to add a dummy child animation to delay specified duration
      */
-    ZFMETHOD_DECLARE_1(void, wait
-            , ZFMP_IN(zftimet, duration)
+    ZFMETHOD_DECLARE_1(void, delay
+            , ZFMP_IN_OPT(zftimet, duration, 0)
             )
     /**
      * @brief util to attach callback to animation group

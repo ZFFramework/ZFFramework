@@ -200,7 +200,7 @@ zftimet ZFAniGroup::durationFixed(void) {
     if(this->_ZFP_ZFAniGroup_queueType()) {
         for(zfindex i = 0; i < this->childCount(); ++i) {
             ZFAnimation *ani = this->childAt(i);
-            if(this->autoUpdateDuration()) {
+            if(this->autoUpdateDuration() && this->duration() != 0) {
                 ani->duration(this->duration());
             }
             zftimet childDuration = this->childDurationAt(i);
@@ -210,7 +210,7 @@ zftimet ZFAniGroup::durationFixed(void) {
     else {
         for(zfindex i = 0; i < this->childCount(); ++i) {
             ZFAnimation *ani = this->childAt(i);
-            if(this->autoUpdateDuration()) {
+            if(this->autoUpdateDuration() && this->duration() != 0) {
                 ani->duration(this->duration());
             }
             zftimet childDuration = this->childDurationAt(i);
@@ -298,7 +298,7 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
             ZFSerializableData elementData;
             ZFAnimation *child = this->childAt(i);
 
-            if(this->autoUpdateDuration()) {
+            if(this->autoUpdateDuration() && this->duration() != 0) {
                 ZFPropertyValueReset(ZFPropertyAccess(ZFAnimation, duration), child);
             }
             if(this->autoUpdateCurve() && this->curve()) {
@@ -373,6 +373,7 @@ ZFCompareResult ZFAniGroup::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
             || this->childCount() != another->childCount()
             || this->autoUpdateTarget() != another->autoUpdateTarget()
             || this->autoUpdateDuration() != another->autoUpdateDuration()
+            || this->autoUpdateCurve() != another->autoUpdateCurve()
             ) {
         return ZFCompareUncomparable;
     }
@@ -471,7 +472,9 @@ zfbool ZFAniGroup::aniImplCheckValid(void) {
         if(this->autoUpdateTarget()) {
             ZFObject *childTarget = this->childTargetAt(i);
             if(childTarget == zfnull) {
-                childAni->target(this->target());
+                if(this->target()) {
+                    childAni->target(this->target());
+                }
             }
             else {
                 childAni->target(childTarget);
@@ -480,7 +483,9 @@ zfbool ZFAniGroup::aniImplCheckValid(void) {
         if(this->autoUpdateDuration()) {
             zftimet childDuration = this->childDurationAt(i);
             if(childDuration == 0) {
-                childAni->duration(this->duration());
+                if(this->duration() != 0) {
+                    childAni->duration(this->duration());
+                }
             }
             else {
                 childAni->duration(childDuration);
@@ -567,8 +572,8 @@ ZFMETHOD_DEFINE_1(ZFAniGroup, void, childOnStop
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFAniGroup, void, wait
-        , ZFMP_IN(zftimet, duration)
+ZFMETHOD_DEFINE_1(ZFAniGroup, void, delay
+        , ZFMP_IN_OPT(zftimet, duration, 0)
         ) {
     this->child(zfobj<ZFAnimation>());
     this->childDuration(duration);

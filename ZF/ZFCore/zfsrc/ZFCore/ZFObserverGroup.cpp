@@ -381,7 +381,7 @@ const ZFObserverGroup &ZFObserverGroup::observerAddForOnce(
             , ZFListener, observer
             ) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->detachExact(owner, target, realTarget, eventId, observer);
-        target->observerNotifyWithSender(zfargs.sender(), zfargs.eventId(), zfargs.param0(), zfargs.param1());
+        observer.execute(zfargs);
     } ZFLISTENER_END()
     realTarget.observerAddForOnce(eventId, realObserver, observerLevel);
 

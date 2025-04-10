@@ -78,7 +78,7 @@ void ZFUIScrollThumbDefault::objectOnInit(void) {
 
     d->thumbView = zfobj<ZFUIImageView>();
     d->thumbHideAni = zfobj<ZFAniQueue>();
-    d->thumbHideAni->wait(0);
+    d->thumbHideAni->delay(0);
     d->thumbHideAni->child(zfobj<_ZFP_ZFUIScrollThumbDefault_HideThumbAni>(d->thumbView));
 }
 void ZFUIScrollThumbDefault::objectOnInitFinish(void) {
