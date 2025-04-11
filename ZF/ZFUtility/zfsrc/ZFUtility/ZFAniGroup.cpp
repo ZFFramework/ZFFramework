@@ -217,15 +217,10 @@ zftimet ZFAniGroup::durationFixed(void) {
             ret = zfmMax<zftimet>(ret, childDuration == 0 ? ani->durationFixed() : childDuration);
         }
     }
-    if(ret == 0) {
-        if(this->duration() == 0) {
-            ret = ZFAnimationDurationDefault();
-        }
-        else {
-            ret = this->duration();
-        }
-    }
-    return ret;
+    return (ret != 0)
+        ? ret
+        : zfsuper::durationFixed()
+        ;
 }
 
 // ============================================================

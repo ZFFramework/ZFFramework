@@ -36,22 +36,22 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, thumbImageVertical)
 
     /**
-     * @brief delay to auto hide, #ZFAnimationDurationDefault by default
+     * @brief delay to auto hide, -1 by default
      */
-    ZFPROPERTY_ASSIGN(zftimet, autoHideDelayHorizontal, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDelayHorizontal, -1)
     /**
-     * @brief delay to auto hide, #ZFAnimationDurationDefault by default
+     * @brief delay to auto hide, -1 by default
      */
-    ZFPROPERTY_ASSIGN(zftimet, autoHideDelayVertical, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDelayVertical, -1)
 
     /**
-     * @brief time to auto hide, #ZFAnimationDurationDefault by default, 0 means never hide
+     * @brief time to auto hide, -1 by default, 0 means never hide
      */
-    ZFPROPERTY_ASSIGN(zftimet, autoHideDurationHorizontal, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDurationHorizontal, -1)
     /**
-     * @brief time to auto hide, #ZFAnimationDurationDefault by default, 0 means never hide
+     * @brief time to auto hide, -1 by default, 0 means never hide
      */
-    ZFPROPERTY_ASSIGN(zftimet, autoHideDurationVertical, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, autoHideDurationVertical, -1)
 
 protected:
     zfoverride

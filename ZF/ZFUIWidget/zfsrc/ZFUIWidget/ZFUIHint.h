@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default hint duration, 1500 by default
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zftimet, ZFUIHintDurationDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zftimet, ZFUIHintDuration)
 
 // ============================================================
 zfclassFwd _ZFP_ZFUIHintPrivate;
@@ -89,7 +89,7 @@ public:
     ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, content)
 
     /**
-     * @brief hint duration in miliseconds, 0 to use #ZFUIHintDurationDefault, 0 by default
+     * @brief hint duration in miliseconds, 0 to use #ZFUIHintDuration, 0 by default
      *
      * @note show and hide animation won't be included in #duration
      */

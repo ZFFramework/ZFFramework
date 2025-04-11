@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_DEFINE(zftimet, ZFUIHintDurationDefault, (zftimet)1500)
+ZFEXPORT_VAR_DEFINE(zftimet, ZFUIHintDuration, (zftimet)1500)
 
 // ============================================================
 static ZFArray *_ZFP_ZFUIHint_hintListForRead(ZF_IN ZFUISysWindow *inSysWindow) {
@@ -258,7 +258,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, ZFUIWindow *, hintWindow) {
 }
 
 ZFMETHOD_DEFINE_0(ZFUIHint, zftimet, durationFixed) {
-    return (this->duration() > 0 ? this->duration() : ZFUIHintDurationDefault());
+    return (this->duration() > 0 ? this->duration() : ZFUIHintDuration());
 }
 
 ZFMETHOD_DEFINE_0(ZFUIHint, void, show) {

@@ -26,7 +26,7 @@ public:
     /** @brief image to blink, null to use default */
     ZFCORE_PARAM(zfautoT<ZFUIImage>, blinkImage)
 
-    /** @brief duration to blink, 0 to use #ZFAnimationDurationDefault, 0 by default */
+    /** @brief duration to blink, 0 to use #ZFAniDuration, 0 by default */
     ZFCORE_PARAM(zftimet, blinkDuration)
     /** @brief blink count, 1 by default */
     ZFCORE_PARAM(zfindex, blinkCount, 1)

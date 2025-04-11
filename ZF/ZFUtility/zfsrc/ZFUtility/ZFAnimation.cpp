@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_DEFINE(zftimet, ZFAnimationDurationDefault, 250)
+ZFEXPORT_VAR_DEFINE(zftimet, ZFAniDuration, 250)
 
 // ============================================================
 // _ZFP_ZFAnimationPrivate
@@ -41,7 +41,15 @@ ZFEVENT_REGISTER(ZFAnimation, AniOnLoop)
 ZFEVENT_REGISTER(ZFAnimation, AniOnStop)
 
 ZFMETHOD_DEFINE_0(ZFAnimation, zftimet, durationFixed) {
-    return (this->duration() > 0 ? this->duration() : ZFAnimationDurationDefault());
+    if(this->duration() == 0) {
+        return ZFAniDuration();
+    }
+    else if(this->duration() < 0) {
+        return ZFAniDuration() * (-this->duration());
+    }
+    else {
+        return this->duration();
+    }
 }
 
 ZFMETHOD_DEFINE_1(ZFAnimation, void, target

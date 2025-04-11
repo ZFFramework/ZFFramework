@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief global default animation duration, 250 by default
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUtility, zftimet, ZFAnimationDurationDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUtility, zftimet, ZFAniDuration)
 
 // ============================================================
 zfclassFwd _ZFP_ZFAnimationPrivate;
@@ -50,7 +50,9 @@ public:
     // property
 public:
     /**
-     * @brief animation's duration in miliseconds, 0 to use #ZFAnimationDurationDefault, 0 by default
+     * @brief animation's duration in miliseconds, 0 to use #ZFAniDuration, 0 by default
+     *
+     * specially, if duration < 0, the final duration would be (-duration * ZFAniDuration)
      */
     ZFPROPERTY_ASSIGN(zftimet, duration)
     /**
