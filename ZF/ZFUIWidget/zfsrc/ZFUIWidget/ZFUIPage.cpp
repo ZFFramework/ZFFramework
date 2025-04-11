@@ -12,6 +12,7 @@ ZFEVENT_REGISTER(ZFUIPage, PageOnCreate)
 ZFEVENT_REGISTER(ZFUIPage, PageOnResume)
 ZFEVENT_REGISTER(ZFUIPage, PageOnPause)
 ZFEVENT_REGISTER(ZFUIPage, PageOnDestroy)
+ZFEVENT_REGISTER(ZFUIPage, PageOrientationOnUpdate)
 
 ZFEVENT_REGISTER(ZFUIPage, PageAniOnPrepare)
 ZFEVENT_REGISTER(ZFUIPage, PageAniOnStart)
@@ -63,6 +64,50 @@ ZFMETHOD_DEFINE_0(ZFUIPage, void, pageDestroy) {
     this->pageManager()->pageDestroy(this);
 }
 
+ZFMETHOD_DEFINE_0(ZFUIPage, zfbool, isLandscape) {
+    return _ZFP_ZFUIPage_pageOrientation == (zfbyte)1;
+}
+
+void ZFUIPage::pageOnCreate(void) {
+    this->_ZFP_ZFUIPage_pageCreated = zftrue;
+    zfautoT<ZFUIView> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
+    this->_ZFP_ZFUIPage_pageView = pageView;
+    ZFCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
+    zfRetain(this->_ZFP_ZFUIPage_pageView);
+
+    zfweakT<ZFUIPage> weakSelf = this;
+    ZFLISTENER_1(impl
+            , zfweakT<ZFUIPage>, weakSelf
+            ) {
+        ZFUIPage *p = weakSelf;
+        if(p == zfnull) {
+            return;
+        }
+        const ZFUIRect &viewFrame = p->pageView()->viewFrame();
+        zfbyte tmp = (zfbyte)(viewFrame.width > viewFrame.height ? 1 : 0);
+        if(p->_ZFP_ZFUIPage_pageOrientation != tmp) {
+            p->_ZFP_ZFUIPage_pageOrientation = tmp;
+            p->pageOrientationOnUpdate();
+            p->observerNotify(ZFUIPage::E_PageOrientationOnUpdate());
+            p->pageManager()->observerNotifyWithSender(p, ZFUIPageManager::E_PageOrientationOnUpdate());
+        }
+    } ZFLISTENER_END()
+    ZFObserverGroup(this, pageView).observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), impl);
+}
+void ZFUIPage::pageOnResume(ZF_IN ZFUIPageResumeReason reason) {
+    this->_ZFP_ZFUIPage_pageResumed = zftrue;
+}
+void ZFUIPage::pageOnPause(ZF_IN ZFUIPagePauseReason reason) {
+    this->_ZFP_ZFUIPage_pageResumed = zffalse;
+}
+void ZFUIPage::pageOnDestroy(void) {
+    ZFObserverGroupRemove(this);
+    zfRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
+    zfRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
+    this->_ZFP_ZFUIPage_pageManager = zfnull;
+    this->_ZFP_ZFUIPage_pageCreated = zffalse;
+}
+
 ZFMETHOD_DEFINE_1(ZFUIPage, void, pageAni
         , ZFMP_IN(ZFAnimation *, pageAni)
         ) {
@@ -79,12 +124,14 @@ ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnCreate)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnResume)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnPause)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnDestroy)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerOrientationOnUpdate)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnUpdate)
 
 ZFEVENT_REGISTER(ZFUIPageManager, PageOnCreate)
 ZFEVENT_REGISTER(ZFUIPageManager, PageOnResume)
 ZFEVENT_REGISTER(ZFUIPageManager, PageOnPause)
 ZFEVENT_REGISTER(ZFUIPageManager, PageOnDestroy)
+ZFEVENT_REGISTER(ZFUIPageManager, PageOrientationOnUpdate)
 
 ZFEVENT_REGISTER(ZFUIPageManager, PageAniOnPrepare)
 ZFEVENT_REGISTER(ZFUIPageManager, PageAniOnStart)
@@ -104,9 +151,10 @@ public:
     zfbool managerCreated;
     zfbool managerResumed;
     zfbool managerDestroyRunning;
+    zfbyte managerOrientation; // -1: not initialized, 0: port, 1: land
+    zfbool scheduleResumeRunning;
     zfbool pageRequestRunningFlag;
     ZFCoreArray<ZFListener> pageRequestQueue;
-    zfint managerUIBlocked;
     ZFUIView *managerContainer;
     ZFUIView *pageContainer;
     ZFCoreArray<ZFUIPage *> pageList;
@@ -115,17 +163,18 @@ public:
     zfautoT<ZFAnimation> resumeAni;
     zfautoT<ZFAnimation> pauseAni;
     ZFUIPage *pageMoveLastResumePage;
+    zfint managerUIBlocked;
     zfint pageMoveFlag;
-    zfbool scheduleResumeRunning;
 public:
     _ZFP_ZFUIPageManagerPrivate(void)
     : managerOwnerWindow(zfnull)
     , managerCreated(zffalse)
     , managerResumed(zffalse)
     , managerDestroyRunning(zffalse)
+    , managerOrientation((zfbyte)-1)
+    , scheduleResumeRunning(zffalse)
     , pageRequestRunningFlag(zffalse)
     , pageRequestQueue()
-    , managerUIBlocked(0)
     , managerContainer(zfnull)
     , pageContainer(zfnull)
     , pageList()
@@ -134,8 +183,8 @@ public:
     , resumeAni()
     , pauseAni()
     , pageMoveLastResumePage(zfnull)
+    , managerUIBlocked(0)
     , pageMoveFlag(0)
-    , scheduleResumeRunning(zffalse)
     {
     }
 
@@ -493,8 +542,27 @@ void ZFUIPageManager::managerOnCreate(void) {
     zfRetain(d->pageContainer);
 
     d->managerContainer->child(d->pageContainer)->c_sizeFill();
+
+    zfweakT<ZFUIPageManager> weakSelf = this;
+    ZFLISTENER_1(impl
+            , zfweakT<ZFUIPageManager>, weakSelf
+            ) {
+        ZFUIPageManager *p = weakSelf;
+        if(p == zfnull) {
+            return;
+        }
+        const ZFUIRect &viewFrame = p->managerContainer()->viewFrame();
+        zfbyte tmp = (zfbyte)(viewFrame.width > viewFrame.height ? 1 : 0);
+        if(p->d->managerOrientation != tmp) {
+            p->d->managerOrientation = tmp;
+            p->managerOrientationOnUpdate();
+            p->observerNotify(ZFUIPageManager::E_ManagerOrientationOnUpdate());
+        }
+    } ZFLISTENER_END()
+    ZFObserverGroup(this, d->managerContainer).observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), impl);
 }
 void ZFUIPageManager::managerOnDestroy(void) {
+    ZFObserverGroupRemove(this);
     zfRetainChange(d->pageContainer, zfnull);
     zfRetainChange(d->managerContainer, zfnull);
 }
@@ -563,6 +631,10 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerCreated) {
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerResumed) {
     return d->managerResumed;
+}
+
+ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, isLandscape) {
+    return d->managerOrientation == (zfbyte)1;
 }
 
 ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow

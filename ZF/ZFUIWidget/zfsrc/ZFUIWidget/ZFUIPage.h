@@ -114,6 +114,13 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * called when first time to layout page view and each time #isLandscape really changed
+     */
+    ZFEVENT(PageOrientationOnUpdate)
+
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called when this page resume or pause (only called to page who has higher #pageAniPriority),
      * to prepare #pageAni for this page and sibling page,
      * param0 is the #ZFUIPageResumeReason or #ZFUIPagePauseReason,
@@ -201,32 +208,27 @@ public:
     /** @brief util to #ZFUIPageManager::pageDestroy */
     ZFMETHOD_DECLARE_0(void, pageDestroy)
 
+    /**
+     * @brief whether the page is considered landscape
+     *
+     * page is considered as landscape only if page view's width larger than height
+     */
+    ZFMETHOD_DECLARE_0(zfbool, isLandscape)
+
     // ============================================================
     // page life cycle
 protected:
     /** @brief see #ZFUIPage */
-    virtual void pageOnCreate(void) {
-        this->_ZFP_ZFUIPage_pageCreated = zftrue;
-        zfautoT<ZFUIView> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
-        this->_ZFP_ZFUIPage_pageView = pageView;
-        ZFCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
-        zfRetain(this->_ZFP_ZFUIPage_pageView);
-    }
+    virtual void pageOnCreate(void);
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnResume(ZF_IN ZFUIPageResumeReason reason) {
-        this->_ZFP_ZFUIPage_pageResumed = zftrue;
-    }
+    virtual void pageOnResume(ZF_IN ZFUIPageResumeReason reason);
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnPause(ZF_IN ZFUIPagePauseReason reason) {
-        this->_ZFP_ZFUIPage_pageResumed = zffalse;
-    }
+    virtual void pageOnPause(ZF_IN ZFUIPagePauseReason reason);
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnDestroy(void) {
-        zfRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
-        zfRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
-        this->_ZFP_ZFUIPage_pageManager = zfnull;
-        this->_ZFP_ZFUIPage_pageCreated = zffalse;
-    }
+    virtual void pageOnDestroy(void);
+
+    /** @brief see #E_PageOrientationOnUpdate */
+    virtual inline void pageOrientationOnUpdate(void) {}
 
     // ============================================================
     // page ani
@@ -267,6 +269,7 @@ private:
     ZFUIView *_ZFP_ZFUIPage_pageView;
     zfbool _ZFP_ZFUIPage_pageCreated;
     zfbool _ZFP_ZFUIPage_pageResumed;
+    zfbyte _ZFP_ZFUIPage_pageOrientation; // -1: not initialized, 0: port, 1: land
     ZFAnimation *_ZFP_ZFUIPage_pageAni;
 protected:
     /** @cond ZFPrivateDoc */
@@ -275,6 +278,7 @@ protected:
     , _ZFP_ZFUIPage_pageView(zfnull)
     , _ZFP_ZFUIPage_pageCreated(zffalse)
     , _ZFP_ZFUIPage_pageResumed(zffalse)
+    , _ZFP_ZFUIPage_pageOrientation((zfbyte)-1)
     , _ZFP_ZFUIPage_pageAni(zfnull)
     {
     }
@@ -327,6 +331,13 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * called when first time to layout page view and each time #isLandscape really changed
+     */
+    ZFEVENT(ManagerOrientationOnUpdate)
+
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called when #managerUIBlockedOnUpdate,
      * see #managerUIBlocked
      */
@@ -343,6 +354,8 @@ public:
     ZFEVENT(PageOnPause)
     /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageOnDestroy */
     ZFEVENT(PageOnDestroy)
+    /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageOrientationOnUpdate */
+    ZFEVENT(PageOrientationOnUpdate)
     /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageAniOnPrepare */
     ZFEVENT(PageAniOnPrepare)
     /** @brief see #ZFObject::observerNotify, #ZFUIPage::E_PageAniOnStart */
@@ -383,11 +396,22 @@ protected:
     /** @brief for subclass to do actual works */
     virtual void managerOnDestroy(void);
 
+    /** @brief see #E_ManagerOrientationOnUpdate */
+    virtual inline void managerOrientationOnUpdate(void) {}
+
 public:
     /** @brief true if #managerCreate called */
     ZFMETHOD_DECLARE_0(zfbool, managerCreated)
     /** @brief true if #managerResume called */
     ZFMETHOD_DECLARE_0(zfbool, managerResumed)
+
+    /**
+     * @brief whether the manager is considered landscape
+     *
+     * manager is considered as landscape only if container view's width larger than height\n
+     * note manager's landscape state is not always same as #ZFUIPage::isLandscape
+     */
+    ZFMETHOD_DECLARE_0(zfbool, isLandscape)
 
 public:
     /**
@@ -455,7 +479,11 @@ public:
     ZFMETHOD_DECLARE_0(zfindex, managerUIBlockedCount)
 protected:
     /** @brief see #E_ManagerUIBlockedOnUpdate */
-    virtual inline void managerUIBlockedOnUpdate(void) {}
+    virtual inline void managerUIBlockedOnUpdate(void) {
+        if(this->pageContainer()) {
+            this->pageContainer()->viewUIEnableTree(!this->managerUIBlocked());
+        }
+    }
 
     // ============================================================
     // page access

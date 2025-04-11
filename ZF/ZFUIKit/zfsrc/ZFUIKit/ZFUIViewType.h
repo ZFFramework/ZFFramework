@@ -515,7 +515,7 @@ ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
 // ============================================================
 // ZFUIViewMeasureResult
 /**
- * @brief data used by #ZFUIView::E_ViewLayoutOnMeasureFinish,
+ * @brief data used by #ZFUIView::E_ViewLayoutOnMeasure,
  *   you may modify the #ZFUIViewMeasureResult::measuredSize
  *   to override the measured result
  */

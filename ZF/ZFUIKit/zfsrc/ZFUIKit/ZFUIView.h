@@ -175,7 +175,7 @@ public:
      * param0 is a #ZFUIViewMeasureResult,
      * you may change the measured size to override the measure result
      */
-    ZFEVENT(ViewLayoutOnMeasureFinish)
+    ZFEVENT(ViewLayoutOnMeasure)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -930,7 +930,7 @@ protected:
             , ZF_IN const ZFUISizeParam &sizeParam
             ) {
     }
-    /** @brief see #E_ViewLayoutOnMeasureFinish */
+    /** @brief see #E_ViewLayoutOnMeasure */
     virtual inline void layoutOnMeasureFinish(
             ZF_IN_OUT ZFUISize &measuredSize
             , ZF_IN const ZFUISize &sizeHint
