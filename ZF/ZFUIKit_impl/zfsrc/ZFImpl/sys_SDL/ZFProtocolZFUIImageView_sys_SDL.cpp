@@ -89,8 +89,8 @@ private:
                 srcRect.y = (int)drawData.src.y;
                 srcRect.w = (int)drawData.src.width;
                 srcRect.h = (int)drawData.src.height;
-                dstRect.x = (int)drawData.dst.x;
-                dstRect.y = (int)drawData.dst.y;
+                dstRect.x = (int)(drawData.dst.x + targetRect.x);
+                dstRect.y = (int)(drawData.dst.y + targetRect.y);
                 dstRect.w = (int)drawData.dst.width;
                 dstRect.h = (int)drawData.dst.height;
                 SDL_RenderCopy(renderer, sdlTexture, &srcRect, &dstRect);
