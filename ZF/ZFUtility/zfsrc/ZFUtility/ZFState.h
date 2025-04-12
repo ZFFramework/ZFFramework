@@ -68,6 +68,11 @@ public:
             )
 
     /**
+     * @brief try to save immediately, use only if necessary
+     */
+    ZFMETHOD_DECLARE_0(void, saveImmediately)
+
+    /**
      * @brief set state
      */
     ZFMETHOD_DECLARE_2(void, set
@@ -99,6 +104,13 @@ public:
     ZFMETHOD_DECLARE_2(zfautoT<ZFTaskId>, getAsync
             , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(const ZFListener &, callback)
+            )
+
+    /**
+     * @brief update cache time
+     */
+    ZFMETHOD_DECLARE_1(void, update
+            , ZFMP_IN(const zfstring &, key)
             )
 
     /**

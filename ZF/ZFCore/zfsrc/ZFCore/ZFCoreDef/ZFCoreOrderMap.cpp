@@ -207,12 +207,20 @@ void ZFCoreOrderMap::set(
     else {
         _ZFP_ZFCoreOrderMapPrivate::Item *item = it->second;
         const ZFCorePointerBase *toDelete = item->value;
-        item->value = value.refNew();
-        d->arr.erase(item->arrIt);
-        d->arr.push_back(item);
-        item->arrIt = d->arr.end();
-        --(item->arrIt);
-        toDelete->refDelete();
+        if(toDelete != &value) {
+            item->value = value.refNew();
+            d->arr.erase(item->arrIt);
+            d->arr.push_back(item);
+            item->arrIt = d->arr.end();
+            --(item->arrIt);
+            toDelete->refDelete();
+        }
+        else {
+            d->arr.erase(item->arrIt);
+            d->arr.push_back(item);
+            item->arrIt = d->arr.end();
+            --(item->arrIt);
+        }
     }
 }
 const ZFCorePointerBase *ZFCoreOrderMap::get(ZF_IN const zfstring &key) const {

@@ -181,8 +181,10 @@ void ZFCoreMap::set(
     }
     else {
         const ZFCorePointerBase *toDelete = it->second;
-        it->second = value.refNew();
-        toDelete->refDelete();
+        if(toDelete != &value) {
+            it->second = value.refNew();
+            toDelete->refDelete();
+        }
     }
 }
 const ZFCorePointerBase *ZFCoreMap::get(ZF_IN const zfstring &key) const {

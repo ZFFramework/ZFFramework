@@ -20,6 +20,7 @@ public:
     ZFCoreOrderMap m; // <key, _ZFP_ZFStateData>
     zfautoT<ZFTaskId> taskId; // taskId for load or save
     zfautoT<ZFTimer> delayId; // taskId for delay save
+    zfbool changed;
 
 public:
     _ZFP_ZFStatePrivate(void)
@@ -28,6 +29,7 @@ public:
     , m()
     , taskId()
     , delayId()
+    , changed(zffalse)
     {
     }
     ~_ZFP_ZFStatePrivate(void) {
@@ -38,13 +40,12 @@ public:
     }
 
 public:
-    zfbool trim(ZF_IN ZFState *owner) {
+    void trim(ZF_IN ZFState *owner) {
         zfsynchronize(owner);
         if(this->m.isEmpty()) {
-            return zffalse;
+            return;
         }
         zftimet curTime = ZFTime::currentTime();
-        zfbool changed = zffalse;
         for(zfiter it = this->m.iter(); it; ++it) {
             _ZFP_ZFStateData *data = this->m.iterValue<_ZFP_ZFStateData *>(it);
             if(this->m.count() <= owner->cacheSize()
@@ -53,9 +54,8 @@ public:
                 break;
             }
             this->m.iterRemove(it);
-            changed = zftrue;
+            this->changed = zftrue;
         }
-        return changed;
     }
     void loadCheck(ZF_IN ZFState *owner) {
         if(this->taskId || this->loadQueue == zfnull) {
@@ -81,8 +81,8 @@ public:
                 zfsynchronize(owner);
                 d->m.swap(mNew);
             }
-            zfbool changed = d->_resolvePending(owner);
-            changed |= d->trim(owner);
+            d->_resolvePending(owner);
+            d->trim(owner);
 
             ZFCoreArray<ZFListener> *loadQueueTmp = d->loadQueue;
             d->loadQueue = zfnull;
@@ -92,14 +92,12 @@ public:
             }
             zfpoolDelete(loadQueueTmp);
 
-            if(changed) {
-                d->saveCheck(owner);
-            }
+            d->saveCheck(owner);
         } ZFLISTENER_END()
         this->taskId = zfasync(loadAsync, loadFinish);
     }
     void saveCheck(ZF_IN ZFState *owner) {
-        if(this->taskId || this->loadQueue != zfnull || this->delayId) {
+        if(this->taskId || this->loadQueue != zfnull || this->delayId || !this->changed) {
             return;
         }
         ZFLISTENER_1(onSaveDelay
@@ -110,32 +108,33 @@ public:
             ZFLISTENER_1(saveAsync
                     , zfautoT<ZFState>, owner
                     ) {
-                _ZFP_ZFStatePrivate *d = owner->d;
-                zfsynchronizeLock(owner);
-                ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > l;
-                for(zfiter it = d->m.iter(); it; ++it) {
-                    l.add(*(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)d->m.iterValue(it));
-                }
-                zfsynchronizeUnlock(owner);
-                _saveAsyncImpl(l, owner->stateFileFixed(), zfargs);
+                _saveImpl(owner, zfargs);
             } ZFLISTENER_END()
             ZFLISTENER_1(saveFinish
                     , zfautoT<ZFState>, owner
                     ) {
-                _ZFP_ZFStatePrivate *d = owner->d;
-                d->taskId = zfnull;
-                if(d->saveQueue.isEmpty()) {
-                    return;
-                }
-                ZFCoreArray<ZFListener> saveQueue;
-                d->saveQueue.swap(saveQueue);
-                for(zfindex i = 0; i < saveQueue.count(); ++i) {
-                    saveQueue[i].execute();
-                }
+                _saveFinishImpl(owner);
             } ZFLISTENER_END()
             d->taskId = zfasync(saveAsync, saveFinish);
         } ZFLISTENER_END()
         this->delayId = ZFTimerOnce(3000, onSaveDelay);
+    }
+    void saveImmediately(ZF_IN ZFState *owner) {
+        if(this->loadQueue
+                || this->taskId
+                || !this->changed
+                ) {
+            return;
+        }
+        this->taskId = zfobj<ZFTaskIdBasic>();
+        if(this->delayId) {
+            this->delayId->stop();
+            this->delayId = zfnull;
+        }
+        _saveImpl(owner, ZFArgs()
+                .param0(this->taskId)
+                );
+        _saveFinishImpl(owner);
     }
     void taskCleanup(void) {
         if(this->delayId) {
@@ -147,11 +146,18 @@ public:
             this->taskId = zfnull;
         }
     }
+    void update(ZF_IN const zfstring &key) {
+        const ZFCorePointerBase *item = this->m.get(key);
+        if(item) {
+            item->pointerValueT<_ZFP_ZFStateData *>()->cacheTime = ZFTime::currentTime();
+            this->m.set(key, *item);
+        }
+    }
 
 private:
-    zfbool _resolvePending(ZF_IN ZFState *owner) {
+    void _resolvePending(ZF_IN ZFState *owner) {
         if(this->pending.isEmpty()) {
-            return zffalse;
+            return;
         }
         zfsynchronize(owner);
         for(zfiter it = this->pending.iter(); it; ++it) {
@@ -159,7 +165,7 @@ private:
             this->m.set(item->key, item);
         }
         this->pending.removeAll();
-        return zftrue;
+        this->changed = zftrue;
     }
     // file format:
     //     cacheTime:encode(key):encode(value)
@@ -196,13 +202,20 @@ private:
             mNew.set(data->key, data);
         }
     }
-    static void _saveAsyncImpl(
-            ZF_IN const ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > &l
-            , ZF_IN const ZFPathInfo &pathInfo
+    static void _saveImpl(
+            ZF_IN ZFState *owner
             , ZF_IN const ZFArgs &zfargs
             ) {
+        _ZFP_ZFStatePrivate *d = owner->d;
+        zfsynchronizeLock(owner);
+        ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > l;
+        for(zfiter it = d->m.iter(); it; ++it) {
+            l.add(*(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)d->m.iterValue(it));
+        }
+        zfsynchronizeUnlock(owner);
+
         if(!zfargs.param0()) {return;}
-        ZFOutput output = ZFOutputForPathInfo(pathInfo);
+        ZFOutput output = ZFOutputForPathInfo(owner->stateFileFixed());
         if(!output) {return;}
         zfstring line;
         for(zfindex i = 0; i < l.count(); ++i) {
@@ -213,6 +226,21 @@ private:
             line += ":";
             ZFCoreDataEncode(line, data.value);
             output << line;
+        }
+    }
+    static void _saveFinishImpl(
+            ZF_IN ZFState *owner
+            ) {
+        _ZFP_ZFStatePrivate *d = owner->d;
+        d->taskId = zfnull;
+        d->changed = zffalse;
+        if(d->saveQueue.isEmpty()) {
+            return;
+        }
+        ZFCoreArray<ZFListener> saveQueue;
+        d->saveQueue.swap(saveQueue);
+        for(zfindex i = 0; i < saveQueue.count(); ++i) {
+            saveQueue[i].execute();
         }
     }
 };
@@ -307,6 +335,10 @@ ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, save
     return taskId;
 }
 
+ZFMETHOD_DEFINE_0(ZFState, void, saveImmediately) {
+    d->saveImmediately(this);
+}
+
 ZFMETHOD_DEFINE_2(ZFState, void, set
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)
@@ -314,6 +346,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
     if(!key) {
         return;
     }
+    d->changed = zftrue;
     if(this->ready()) {
         {
             zfsynchronize(this);
@@ -406,6 +439,27 @@ ZFMETHOD_DEFINE_2(ZFState, zfautoT<ZFTaskId>, getAsync
                 );
     } ZFLISTENER_END()
     return this->load(action);
+}
+
+ZFMETHOD_DEFINE_1(ZFState, void, update
+        , ZFMP_IN(const zfstring &, key)
+        ) {
+    if(!key) {
+        return;
+    }
+    if(this->ready()) {
+        d->update(key);
+    }
+    else {
+        zfweakT<ZFState> weakSelf = this;
+        ZFLISTENER_2(action
+                , zfweakT<ZFState>, weakSelf
+                , zfstring, key
+                ) {
+            weakSelf->d->update(key);
+        } ZFLISTENER_END()
+        this->load(action);
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFState, ZFCoreArray<zfstring>, allKey) {
