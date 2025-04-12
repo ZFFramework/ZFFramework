@@ -844,24 +844,22 @@ ZFSerializableData ZFObjectToData(
     return ZFSerializableData();
 }
 
-zfbool ZFObjectFromStringT(
+static ZFSerializable *_ZFP_ZFObjectFromStringPrepare(
         ZF_OUT zfauto &result
         , ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(cls == zfnull) {
         if(errorHint) {
             *errorHint += "null class";
         }
-        return zffalse;
+        return zfnull;
     }
     if(!cls->classIsTypeOf(ZFSerializable::ClassData())) {
         if(errorHint) {
             zfstringAppend(*errorHint, "class is not serializable: %s", cls);
         }
-        return zffalse;
+        return zfnull;
     }
     const ZFMethod *createMethod = cls->methodForName(ZFSerializableKeyword_serializableNewInstance);
     if(createMethod == zfnull) {
@@ -876,9 +874,21 @@ zfbool ZFObjectFromStringT(
         if(errorHint) {
             zfstringAppend(*errorHint, "failed to alloc class: %s", cls);
         }
-        return zffalse;
+        return zfnull;
     }
-    if(!serializable->serializeFromString(src, srcLen, errorHint)) {
+    return serializable;
+}
+zfbool ZFObjectFromStringT(
+        ZF_OUT zfauto &result
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    ZFSerializable *serializable = _ZFP_ZFObjectFromStringPrepare(result, cls, errorHint);
+    if(serializable == zfnull
+            || !serializable->serializeFromString(src, srcLen, errorHint)
+            ) {
         result = zfnull;
         return zffalse;
     }
@@ -900,6 +910,53 @@ zfbool ZFObjectToStringT(
         return zffalse;
     }
     return t->serializeToString(ret, errorHint);
+}
+
+zfbool ZFObjectFromStringOrDataT(
+        ZF_OUT zfauto &result
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    ZFSerializable *serializable = _ZFP_ZFObjectFromStringPrepare(result, cls, errorHint);
+    if(serializable == zfnull) {
+        result = zfnull;
+        return zffalse;
+    }
+    zfstring errorHintTmp;
+    if(serializable->serializeFromString(src, srcLen, errorHint ? &errorHintTmp : zfnull)) {
+        return zftrue;
+    }
+
+    ZFSerializableData sd;
+    if(!ZFSerializableDataFromStringT(sd, src, srcLen)) {
+        if(errorHint) {
+            *errorHint += errorHintTmp;
+        }
+        result = zfnull;
+        return zffalse;
+    }
+    if(!serializable->serializeFromData(sd, errorHint)) {
+        result = zfnull;
+        return zffalse;
+    }
+    return zftrue;
+}
+
+zfbool ZFObjectToStringOrDataT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(ZFObjectToStringT(ret, obj)) {
+        return zftrue;
+    }
+    ZFSerializableData sd;
+    if(!ZFObjectToDataT(sd, obj, errorHint)) {
+        return zffalse;
+    }
+    return ZFSerializableDataToStringT(ret, sd, errorHint);
 }
 
 ZF_NAMESPACE_GLOBAL_END
@@ -993,6 +1050,28 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectToStringT
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFObjectToString
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfbool, ZFObjectFromStringOrDataT
+        , ZFMP_OUT(zfauto &, result)
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFObjectFromStringOrData
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectToStringOrDataT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFObjectToStringOrData
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )

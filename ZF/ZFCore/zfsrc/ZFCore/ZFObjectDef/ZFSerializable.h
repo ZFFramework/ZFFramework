@@ -522,6 +522,45 @@ inline zfstring ZFObjectToString(
     return ret;
 }
 
+// ============================================================
+/**
+ * @brief convenient method to #ZFObjectFromString or #ZFObjectFromData
+ */
+extern ZFLIB_ZFCore zfbool ZFObjectFromStringOrDataT(
+        ZF_OUT zfauto &result
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+/** @brief see #ZFObjectFromStringOrDataT */
+inline zfauto ZFObjectFromStringOrData(
+        ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        ) {
+    zfauto ret;
+    ZFObjectFromStringOrDataT(ret, cls, src, srcLen, errorHint);
+    return ret;
+}
+
+/** @brief see #ZFObjectFromStringOrDataT */
+extern ZFLIB_ZFCore zfbool ZFObjectToStringOrDataT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+/** @brief see #ZFObjectFromStringOrDataT */
+inline zfstring ZFObjectToStringOrData(
+        ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        ) {
+    zfstring ret;
+    ZFObjectToStringOrDataT(ret, obj, errorHint);
+    return ret;
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFSerializable_h_
 

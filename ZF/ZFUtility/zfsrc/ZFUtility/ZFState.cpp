@@ -225,7 +225,8 @@ private:
             ZFCoreDataEncode(line, data.key);
             line += ":";
             ZFCoreDataEncode(line, data.value);
-            output << line;
+            output << line << "\n";
+            line.removeAll();
         }
     }
     static void _saveFinishImpl(
@@ -462,13 +463,26 @@ ZFMETHOD_DEFINE_1(ZFState, void, update
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFState, ZFCoreArray<zfstring>, allKey) {
+ZFMETHOD_DEFINE_0(ZFState, zfautoT<ZFMap>, getAll) {
     zfsynchronize(this);
-    ZFCoreArray<zfstring> ret;
+    zfobj<ZFMap> ret;
     for(zfiter it = d->m.iter(); it; ++it) {
-        ret.add(d->m.iterKey(it));
+        ret->set(
+                zfobj<v_zfstring>(d->m.iterKey(it))
+                , zfobj<v_zfstring>(d->m.iterValue<_ZFP_ZFStateData *>(it)->value)
+                );
     }
     return ret;
+}
+ZFMETHOD_DEFINE_2(ZFState, void, getAllT
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, keys)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, values)
+        ) {
+    zfsynchronize(this);
+    for(zfiter it = d->m.iter(); it; ++it) {
+        keys.add(d->m.iterKey(it));
+        values.add(d->m.iterValue<_ZFP_ZFStateData *>(it)->value);
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

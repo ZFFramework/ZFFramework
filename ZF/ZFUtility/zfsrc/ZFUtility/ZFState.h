@@ -114,9 +114,16 @@ public:
             )
 
     /**
-     * @brief return a copy of all keys, for debug use only
+     * @brief return a copy of all state, for debug use only
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<zfstring>, allKey)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFMap>, getAll)
+    /**
+     * @brief return a copy of all state, for debug use only
+     */
+    ZFMETHOD_DECLARE_2(void, getAllT
+            , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, keys)
+            , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, values)
+            )
 
 protected:
     zfoverride

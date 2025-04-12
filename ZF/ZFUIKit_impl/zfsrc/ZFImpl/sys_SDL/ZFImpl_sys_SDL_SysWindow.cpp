@@ -233,7 +233,8 @@ private:
                 }
                 break;
             }
-            case SDL_WINDOWEVENT_SHOWN: {
+            case SDL_WINDOWEVENT_SHOWN:
+            case SDL_WINDOWEVENT_FOCUS_GAINED: {
                 ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
                 if(sysWindow != zfnull) {
                     ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(sysWindow->ownerZFUISysWindow);
@@ -241,7 +242,8 @@ private:
                 }
                 break;
             }
-            case SDL_WINDOWEVENT_HIDDEN: {
+            case SDL_WINDOWEVENT_HIDDEN:
+            case SDL_WINDOWEVENT_FOCUS_LOST: {
                 ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
                 if(sysWindow != zfnull) {
                     ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnPause(sysWindow->ownerZFUISysWindow);

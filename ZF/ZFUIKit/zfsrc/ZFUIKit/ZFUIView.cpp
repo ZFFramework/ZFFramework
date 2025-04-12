@@ -2352,8 +2352,8 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
     zfblockedRelease(zfRetain(this));
 
     this->viewEventOnEvent(event);
-    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout)
-            || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout)
+    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent)
+            || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent)
             ) {
         this->observerNotify(ZFUIView::E_ViewOnEvent(), event);
     }
@@ -2427,95 +2427,39 @@ void ZFUIView::observerOnAdd(ZF_IN zfidentity eventId) {
     zfsuper::observerOnAdd(eventId);
     if(zffalse) {
     }
-    else if(eventId == ZFUIView::E_ViewOnEvent()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnMeasure()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutRequest()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayout()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutPrepare()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutFinish()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish);
-    }
-    else if(eventId == ZFUIView::E_ViewTreeInWindowOnUpdate()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate);
-    }
-    else if(eventId == ZFUIView::E_ViewTreeVisibleOnUpdate()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate);
-    }
-    else if(eventId == ZFUIView::E_ViewChildOnUpdate()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate);
-    }
-    else if(eventId == ZFUIView::E_ViewChildOnAdd()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd);
-    }
-    else if(eventId == ZFUIView::E_ViewChildOnRemove()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove);
-    }
-    else if(eventId == ZFUIView::E_ViewOnAddToParent()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent);
-    }
-    else if(eventId == ZFUIView::E_ViewOnRemoveFromParent()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent);
-    }
-    else if(eventId == ZFUIView::E_UIScaleOnUpdate()) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate);
-    }
+    else if(eventId == ZFUIView::E_ViewOnEvent()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnMeasure()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutRequest()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutPrepare()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayout()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutFinish()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish);}
+    else if(eventId == ZFUIView::E_ViewTreeInWindowOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate);}
+    else if(eventId == ZFUIView::E_ViewTreeVisibleOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate);}
+    else if(eventId == ZFUIView::E_ViewChildOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate);}
+    else if(eventId == ZFUIView::E_ViewChildOnAdd()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd);}
+    else if(eventId == ZFUIView::E_ViewChildOnRemove()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove);}
+    else if(eventId == ZFUIView::E_ViewOnAddToParent()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent);}
+    else if(eventId == ZFUIView::E_ViewOnRemoveFromParent()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent);}
+    else if(eventId == ZFUIView::E_UIScaleOnUpdate()) {ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate);}
 }
 void ZFUIView::observerOnRemove(ZF_IN zfidentity eventId) {
     zfsuper::observerOnRemove(eventId);
     if(zffalse) {
     }
-    else if(eventId == ZFUIView::E_ViewOnEvent()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnMeasure()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutRequest()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayout()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutPrepare()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare);
-    }
-    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutFinish()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish);
-    }
-    else if(eventId == ZFUIView::E_ViewTreeInWindowOnUpdate()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate);
-    }
-    else if(eventId == ZFUIView::E_ViewTreeVisibleOnUpdate()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate);
-    }
-    else if(eventId == ZFUIView::E_ViewChildOnUpdate()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate);
-    }
-    else if(eventId == ZFUIView::E_ViewChildOnAdd()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd);
-    }
-    else if(eventId == ZFUIView::E_ViewChildOnRemove()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove);
-    }
-    else if(eventId == ZFUIView::E_ViewOnAddToParent()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent);
-    }
-    else if(eventId == ZFUIView::E_ViewOnRemoveFromParent()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent);
-    }
-    else if(eventId == ZFUIView::E_UIScaleOnUpdate()) {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate);
-    }
+    else if(eventId == ZFUIView::E_ViewOnEvent()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnMeasure()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutRequest()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutPrepare()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayout()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout);}
+    else if(eventId == ZFUIView::E_ViewLayoutOnLayoutFinish()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish);}
+    else if(eventId == ZFUIView::E_ViewTreeInWindowOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate);}
+    else if(eventId == ZFUIView::E_ViewTreeVisibleOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate);}
+    else if(eventId == ZFUIView::E_ViewChildOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnUpdate);}
+    else if(eventId == ZFUIView::E_ViewChildOnAdd()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnAdd);}
+    else if(eventId == ZFUIView::E_ViewChildOnRemove()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewChildOnRemove);}
+    else if(eventId == ZFUIView::E_ViewOnAddToParent()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnAddToParent);}
+    else if(eventId == ZFUIView::E_ViewOnRemoveFromParent()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnRemoveFromParent);}
+    else if(eventId == ZFUIView::E_UIScaleOnUpdate()) {ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_UIScaleOnUpdate);}
 }
 
 ZF_NAMESPACE_GLOBAL_END

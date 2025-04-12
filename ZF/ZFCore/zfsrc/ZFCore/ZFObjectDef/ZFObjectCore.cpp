@@ -962,6 +962,17 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfany, ZFObjectCast
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(const zfany &, obj)
         )
+ZFMETHOD_FUNC_USER_REGISTER_2({
+        if(cls == zfnull || obj == zfnull || !obj->classData()->classIsTypeOf(cls)) {
+            return zfnull;
+        }
+        else {
+            return obj;
+        }
+    }, ZFObject *, zfcast
+    , ZFMP_IN(const ZFClass *, cls)
+    , ZFMP_IN(ZFObject *, obj)
+    )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

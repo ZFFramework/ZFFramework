@@ -710,7 +710,11 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
 
         implUserData->callback.execute(zfargs);
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
-            propertyValueHolder->wrappedValueCopy(propertyValue);
+            // get again, since impl may modify propValue
+            propertyValueHolder = zfargs.propValue();
+            if(propertyValueHolder != zfnull) {
+                propertyValueHolder->wrappedValueCopy(propertyValue);
+            }
         }
     }
 }

@@ -4,18 +4,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_2({
-        if(cls == zfnull || obj == zfnull || !obj->classData()->classIsTypeOf(cls)) {
-            return zfnull;
-        }
-        else {
-            return obj;
-        }
-    }, ZFObject *, zfcast
-    , ZFMP_IN(const ZFClass *, cls)
-    , ZFMP_IN(ZFObject *, obj)
-    )
-
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClassDataUpdateType, ZFClassDataUpdateType, {
         const zfchar *tokens[] = ZFM_EXPAND({

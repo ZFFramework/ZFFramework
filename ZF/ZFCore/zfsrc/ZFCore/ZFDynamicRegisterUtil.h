@@ -143,25 +143,30 @@ public:
     /** @brief see #ZFClass::classCanAllocPublic */
     ZFDynamic &classCanAllocPublic(ZF_IN zfbool value);
 
-    /** @brief see #ZFDynamic */
+    /**
+     * @brief see #ZFDynamic
+     *
+     * attach observer to instance of current #classBegin, by #ZFClass::instanceObserverAdd
+     * @note only affect classes that are allocated after this method called
+     */
     ZFDynamic &onEvent(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &callback
             , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
             );
-    /** @brief see #ZFDynamic */
+    /** @brief see #ZFDynamic and #onEvent */
     ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
         return this->onEvent(ZFObject::E_ObjectBeforeAlloc(), callback, ZFLevelZFFrameworkNormal);
     }
-    /** @brief see #ZFDynamic */
+    /** @brief see #ZFDynamic and #onEvent */
     ZFDynamic &onInitFinish(ZF_IN const ZFListener &callback) {
         return this->onEvent(ZFObject::E_ObjectAfterAlloc(), callback, ZFLevelZFFrameworkNormal);
     }
-    /** @brief see #ZFDynamic */
+    /** @brief see #ZFDynamic and #onEvent */
     ZFDynamic &onDeallocPrepare(ZF_IN const ZFListener &callback) {
         return this->onEvent(ZFObject::E_ObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostNormal);
     }
-    /** @brief see #ZFDynamic */
+    /** @brief see #ZFDynamic and #onEvent */
     ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
         return this->onEvent(ZFObject::E_ObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostHigh);
     }
