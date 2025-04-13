@@ -16,8 +16,13 @@ void ZFSDOutputTokenDefault(ZF_IN const ZFSDOutputToken &v) {
     ZFSDOutputTokenDefault() = v;
 }
 
+static ZFSDOutputToken _ZFP_ZFSDOutputTokenTrim(void) {
+    ZFSDOutputToken d;
+    d.prettyPrint = zffalse;
+    return d;
+}
 ZFSDOutputToken &ZFSDOutputTokenTrim(void) {
-    static ZFSDOutputToken d;
+    static ZFSDOutputToken d = _ZFP_ZFSDOutputTokenTrim();
     return d;
 }
 void ZFSDOutputTokenTrim(ZF_IN const ZFSDOutputToken &v) {
