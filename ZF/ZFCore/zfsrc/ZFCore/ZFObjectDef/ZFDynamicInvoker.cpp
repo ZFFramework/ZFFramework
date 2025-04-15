@@ -343,27 +343,6 @@ static zfstring _ZFP_ZFDI_cacheKey(
     }
     return ret;
 }
-static zfstring _ZFP_ZFDI_zfargsInfo(ZF_IN const ZFArgs &zfargs) {
-    zfstring ret;
-    ret += "[";
-    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
-        ZFObject *p = zfargs.paramAt(i);
-        if(p == ZFMP_DEF()) {
-            break;
-        }
-        if(i != 0) {
-            ret += ", ";
-        }
-        if(p) {
-            ret += p->classData()->classNameFull();
-        }
-        else {
-            ret += ZFTOKEN_zfnull;
-        }
-    }
-    ret += "]";
-    return ret;
-}
 #endif
 
 static zfbool _ZFP_ZFDI_invokeAction(
@@ -545,18 +524,29 @@ void ZFDI_invoke(
                 return;
             }
         }
-        ZFCoreLogTrim("[ZFDI] cache call failed: %s, obj: %s, args: %s"
+#if _ZFP_ZFDI_DEBUG
+        // not an error, typical case:
+        //     // declare
+        //     void test(int) {}
+        //     void test(float) {}
+        //     // call
+        //     test('123');
+        //     test('123.456');
+        ZFCoreLogTrim("[ZFDI] cache mismatch: %s, obj: %s, args: [%s], cache cls: %s, cache method: %s"
                 , name
                 , ZFObjectInfoOfInstance(obj)
-                , _ZFP_ZFDI_zfargsInfo(zfargs)
+                , ZFDI_paramInfo(zfargs)
+                , cache.cls
+                , cache.m
                 );
+#endif
     }
 #if _ZFP_ZFDI_DEBUG
     // cache miss debug
-    ZFCoreLogTrim("[ZFDI] cache call miss: %s, obj: %s, args: %s"
+    ZFCoreLogTrim("[ZFDI] cache miss: %s, obj: %s, args: [%s]"
             , name
             , ZFObjectInfoOfInstance(obj)
-            , _ZFP_ZFDI_zfargsInfo(zfargs)
+            , ZFDI_paramInfo(zfargs)
             );
 #endif
 #endif
@@ -847,8 +837,14 @@ zfbool ZFDI_implicitConvertT(
         return zffalse;
     }
     if(value == zfnull) {
-        ret = cls->newInstance();
-        return (ret != zfnull);
+        if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+            ret = cls->newInstance();
+            return (ret != zfnull);
+        }
+        else {
+            ret = zfnull;
+            return zftrue;
+        }
     }
     else if(value->classData()->classIsTypeOf(cls)) {
         ret = value;

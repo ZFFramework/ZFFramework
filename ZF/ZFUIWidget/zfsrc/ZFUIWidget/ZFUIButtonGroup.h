@@ -34,6 +34,7 @@ ZFENUM_REG(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
 
 // ============================================================
 // ZFUIButtonGroup
+zfclassFwd _ZFP_ZFUIButtonGroupPrivate;
 /**
  * @brief button group util
  *
@@ -120,14 +121,6 @@ public:
      */
     ZFMETHOD_DECLARE_0(void, buttonRemoveAll)
 
-public:
-    zffinal inline void _ZFP_ZFUIButtonGroup_buttonGroupOnEvent(
-            ZF_IN ZFUIButton *button
-            , ZF_IN zfindex buttonIndex
-            , ZF_IN zfidentity eventId
-            ) {
-        this->buttonGroupOnEvent(button, buttonIndex, eventId);
-    }
 protected:
     /**
      * @brief called when any of button event are notified
@@ -154,7 +147,7 @@ protected:
      * param0 is the button group itself,
      * param1 is a #v_zfindex which shows the button's index
      */
-    virtual inline void buttonGroupOnEvent(
+    virtual inline void buttonOnEvent(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             , ZF_IN zfidentity eventId
@@ -195,13 +188,13 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * for #v_ZFUIButtonGroupType::e_Tab type only\n
-     * called when #buttonTabChecked changed,
+     * called when #tabChecked changed,
      * sender is the newly clicked button,
      * param0 is the button group itself,
      * param1 is a #v_zfindex which shows the previous checked button index
      * (may be #zfindexMax if nothing checked previously)
      */
-    ZFEVENT(ButtonTabOnUpdate)
+    ZFEVENT(TabOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -211,75 +204,78 @@ public:
      * param0 is the button group itself,
      * param1 is a #v_zfindex which shows the button's index
      */
-    ZFEVENT(ButtonTabOnClickChecked)
+    ZFEVENT(TabOnClickChecked)
 
     /**
      * @brief for #v_ZFUIButtonGroupType::e_Tab type only, whether allow uncheck all button, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, buttonTabAllowUnchecked, zffalse)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, buttonTabAllowUnchecked)
+    ZFPROPERTY_ASSIGN(zfbool, tabAllowUnchecked, zffalse)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, tabAllowUnchecked)
 
     /**
      * @brief for #v_ZFUIButtonGroupType::e_Tab type only, the checked tab index, zfindexMax() by default
      */
-    ZFPROPERTY_ASSIGN(zfindex, buttonTabChecked, zfindexMax())
-    ZFPROPERTY_ON_UPDATE_DECLARE(zfindex, buttonTabChecked)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, buttonTabChecked)
+    ZFPROPERTY_ASSIGN(zfindex, tabChecked, zfindexMax())
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfindex, tabChecked)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, tabChecked)
 
 public:
-    zffinal inline void _ZFP_ZFUIButtonGroup_buttonTabOnUpdate(
-            ZF_IN ZFUIButton *button
-            , ZF_IN zfindex buttonIndexPrev
-            ) {
-        this->buttonTabOnUpdate(button, buttonIndexPrev);
-    }
-    zffinal inline void _ZFP_ZFUIButtonGroup_buttonTabOnClickChecked(
-            ZF_IN ZFUIButton *button
-            , ZF_IN zfindex buttonIndex
-            ) {
-        this->buttonTabOnClickChecked(button, buttonIndex);
-    }
+    /**
+     * @brief util method to attach container to this button group
+     *
+     * if a container is attached:
+     * -  all children of the container would be added as child button of this button group,
+     *   if the child is type of #ZFUIButton
+     * -  when adding or removing child to container,
+     *   the child would also be added or removed to this button group,
+     *   if the child is type of #ZFUIButton
+     */
+    ZFMETHOD_DECLARE_1(void, containerAttach
+            , ZFMP_IN(ZFUIView *, container)
+            )
+    /** @brief detach container, and remove all buttons, see #containerAttach */
+    ZFMETHOD_DECLARE_0(void, containerDetach)
+    /** @brief the container currently attached, see #containerAttach */
+    ZFMETHOD_DECLARE_0(ZFUIView *, container)
+
+    /** @brief construct with #containerAttach */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(ZFUIView *, container)
+            )
+
 protected:
-    /** @brief see #E_ButtonTabOnUpdate */
-    virtual inline void buttonTabOnUpdate(
+    /** @brief see #E_TabOnUpdate */
+    virtual inline void tabOnUpdate(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndexPrev
             ) {
         this->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::E_ButtonTabOnUpdate(),
+            ZFUIButtonGroup::E_TabOnUpdate(),
             this,
             zfobj<v_zfindex>(buttonIndexPrev));
     }
-    /** @brief see #E_ButtonTabOnClickChecked */
-    virtual inline void buttonTabOnClickChecked(
+    /** @brief see #E_TabOnClickChecked */
+    virtual inline void tabOnClickChecked(
             ZF_IN ZFUIButton *button
             , ZF_IN zfindex buttonIndex
             ) {
         this->observerNotifyWithSender(
             button,
-            ZFUIButtonGroup::E_ButtonTabOnClickChecked(),
+            ZFUIButtonGroup::E_TabOnClickChecked(),
             this,
             zfobj<v_zfindex>(buttonIndex));
     }
 
 protected:
     zfoverride
-    virtual void objectOnInit(void) {
-        zfsuper::objectOnInit();
-        _ZFP_buttons = zfAlloc(ZFArray);
-    }
+    virtual void objectOnInit(void);
     zfoverride
-    virtual void objectOnDealloc(void) {
-        zfRelease(_ZFP_buttons);
-        _ZFP_buttons = zfnull;
-        zfsuper::objectOnDealloc();
-    }
+    virtual void objectOnDealloc(void);
 
-public:
-    ZFArray *_ZFP_buttons;
-    ZFListener _ZFP_buttonOnEvent;
-    ZFListener _ZFP_buttonOnClick;
+private:
+    _ZFP_ZFUIButtonGroupPrivate *d;
+    friend zfclassFwd _ZFP_ZFUIButtonGroupPrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END
