@@ -316,23 +316,60 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, bg
     }
 }
 
-ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, labelStyle
-        , ZFMP_IN(ZFUITextView *, style)
+ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, labelStyle
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const zfstring &, styleKey)
         , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
-    this->label(forState)->styleableCopyFrom(style);
+    this->label(forState)->propStyle(propertyName, styleKey);
 }
-ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, iconStyle
-        , ZFMP_IN(ZFUIImageView *, style)
+ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, iconStyle
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const zfstring &, styleKey)
         , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
-    this->icon(forState)->styleableCopyFrom(style);
+    this->icon(forState)->propStyle(propertyName, styleKey);
 }
-ZFMETHOD_DEFINE_2(ZFUIButtonBasic, void, bgStyle
-        , ZFMP_IN(ZFUIImageView *, style)
+ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, bgStyle
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const zfstring &, styleKey)
         , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
         ) {
-    this->bg(forState)->styleableCopyFrom(style);
+    this->bg(forState)->propStyle(propertyName, styleKey);
+}
+
+ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, labelProp
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(ZFObject *, value)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
+        ) {
+    zfauto valueTmp;
+    const ZFProperty *prop = this->label(forState)->classData()->propertyForName(propertyName);
+    if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+        prop->setterMethod()->methodInvoke(this->label(forState), valueTmp);
+    }
+}
+ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, iconProp
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(ZFObject *, value)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
+        ) {
+    zfauto valueTmp;
+    const ZFProperty *prop = this->icon(forState)->classData()->propertyForName(propertyName);
+    if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+        prop->setterMethod()->methodInvoke(this->icon(forState), valueTmp);
+    }
+}
+ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, bgProp
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(ZFObject *, value)
+        , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
+        ) {
+    zfauto valueTmp;
+    const ZFProperty *prop = this->bg(forState)->classData()->propertyForName(propertyName);
+    if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+        prop->setterMethod()->methodInvoke(this->bg(forState), valueTmp);
+    }
 }
 
 void ZFUIButtonBasic::objectOnInit(void) {

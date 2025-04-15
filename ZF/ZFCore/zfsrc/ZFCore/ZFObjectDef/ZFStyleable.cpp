@@ -133,8 +133,9 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
 }
 
 void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
-    if(this->styleKey() == zfnull) {
-        this->styleKey(zfcast(ZFStyleable *, anotherStyleable)->styleKey());
+    ZFStyleable *ref = zfcast(ZFStyleable *, anotherStyleable);
+    if(ref->styleKey()) {
+        this->styleKey(ref->styleKey());
     }
 
     ZFCoreArray<const ZFProperty *> propList = _ZFP_ZFStyleable_propList(this->classData());

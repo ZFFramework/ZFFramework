@@ -184,7 +184,8 @@ public:
      * @code
      *   ZFUIButtonBasic()
      *       :viewId("xxx")
-     *       :labelStyle(ZFUITextView():text("test"))
+     *       :labelStyle("text", "test n")
+     *       :labelStyle("text", "test hl", ZFUIButtonState.e_Highlighted())
      *       :alpha(0.5)
      * @endcode
      * another option is #ZFObject::onInit
@@ -193,23 +194,66 @@ public:
      *       :viewId("xxx")
      *       :onInit(function(zfargs)
      *           local p = zfargs:sender()
-     *           p:label():text("test")
+     *           p:label():propStyle("text", "test n")
      *       end)
      *       :alpha(0.5)
      * @endcode
      */
-    ZFMETHOD_DECLARE_2(void, labelStyle
-            , ZFMP_IN(ZFUITextView *, style)
+    ZFMETHOD_DECLARE_3(void, labelStyle
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(const zfstring &, styleKey)
             , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
     /** @brief see labelStyle */
-    ZFMETHOD_DECLARE_2(void, iconStyle
-            , ZFMP_IN(ZFUIImageView *, style)
+    ZFMETHOD_DECLARE_3(void, iconStyle
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(const zfstring &, styleKey)
             , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
     /** @brief see labelStyle */
-    ZFMETHOD_DECLARE_2(void, bgStyle
-            , ZFMP_IN(ZFUIImageView *, style)
+    ZFMETHOD_DECLARE_3(void, bgStyle
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(const zfstring &, styleKey)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
+            )
+
+    /**
+     * @brief util method to apply label style
+     *
+     * convenient for chained script call, lua for example:
+     * @code
+     *   ZFUIButtonBasic()
+     *       :viewId("xxx")
+     *       :labelProp("text", "text n")
+     *       :labelProp("text", "text hl", ZFUIButtonState.e_Highlighted())
+     *       :alpha(0.5)
+     * @endcode
+     * another option is #ZFObject::onInit
+     * @code
+     *   ZFUIButtonBasic()
+     *       :viewId("xxx")
+     *       :onInit(function(zfargs)
+     *           local p = zfargs:sender()
+     *           p:label():text("text n")
+     *       end)
+     *       :alpha(0.5)
+     * @endcode
+     */
+    ZFMETHOD_DECLARE_3(void, labelProp
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(ZFObject *, value)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
+            )
+    /** @brief see labelProp */
+    ZFMETHOD_DECLARE_3(void, iconProp
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(ZFObject *, value)
+            , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
+            )
+    /** @brief see labelProp */
+    ZFMETHOD_DECLARE_3(void, bgProp
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(ZFObject *, value)
             , ZFMP_IN_OPT(ZFUIButtonState, forState, v_ZFUIButtonState::e_Normal)
             )
 

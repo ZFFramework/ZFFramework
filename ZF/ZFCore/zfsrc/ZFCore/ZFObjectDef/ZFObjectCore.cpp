@@ -926,6 +926,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, on
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, onInit
         , ZFMP_IN(const ZFListener &, impl)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, onDealloc
+        , ZFMP_IN(const ZFListener &, impl)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, observerRemove
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, callback)

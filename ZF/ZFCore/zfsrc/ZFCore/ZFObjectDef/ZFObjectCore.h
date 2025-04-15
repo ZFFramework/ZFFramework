@@ -630,6 +630,12 @@ public:
     zffinal inline void onInit(ZF_IN const ZFListener &impl) {
         impl.execute(ZFArgs().sender(this));
     }
+    /**
+     * @brief util for script to achieve chained call
+     */
+    zffinal inline void onDealloc(ZF_IN const ZFListener &impl) {
+        this->observerAddForOnce(zfself::E_ObjectBeforeDealloc(), impl);
+    }
 
 protected:
     /**
