@@ -2077,7 +2077,7 @@ zfanyT<ZFUILayoutParam> ZFUIView::child(
         , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
         ) {
     ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
-        ? zfcast(ZFUILayoutParam *, view)->ownerParent()
+        ? zfcast(ZFUILayoutParam *, view)->ownerLayout()
         : zfcast(ZFUIView *, view);
     ZFCoreAssertWithMessageTrim(tmp
             , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"

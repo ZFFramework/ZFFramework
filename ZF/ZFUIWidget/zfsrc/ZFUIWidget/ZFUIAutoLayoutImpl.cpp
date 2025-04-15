@@ -672,8 +672,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
                 ZFUISizeApplyRangeT(
                         childSize
                         , sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - marginHead - marginTail)
-                        , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
-                        , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
+                        , xAxis ? layoutParam->ownerView()->viewSizeMin().width : layoutParam->ownerView()->viewSizeMin().height
+                        , xAxis ? layoutParam->ownerView()->viewSizeMax().width : layoutParam->ownerView()->viewSizeMax().height
                         );
             }
             zffloat bias = xAxis ? layoutParam->biasX() : layoutParam->biasY();
@@ -686,8 +686,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
                 ZFUISizeApplyRangeT(
                         childSize
                         , sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - marginHead - marginTail)
-                        , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
-                        , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
+                        , xAxis ? layoutParam->ownerView()->viewSizeMin().width : layoutParam->ownerView()->viewSizeMin().height
+                        , xAxis ? layoutParam->ownerView()->viewSizeMax().width : layoutParam->ownerView()->viewSizeMax().height
                         );
             }
             break;
@@ -696,8 +696,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByRange(
                 ZFUISizeApplyRangeT(
                         childSize
                         , sizeHint >= 0 ? sizeHint : zfmMax<zffloat>(childSize, rangeSize - marginHead - marginTail)
-                        , xAxis ? layoutParam->owner()->viewSizeMin().width : layoutParam->owner()->viewSizeMin().height
-                        , xAxis ? layoutParam->owner()->viewSizeMax().width : layoutParam->owner()->viewSizeMax().height
+                        , xAxis ? layoutParam->ownerView()->viewSizeMin().width : layoutParam->ownerView()->viewSizeMin().height
+                        , xAxis ? layoutParam->ownerView()->viewSizeMax().width : layoutParam->ownerView()->viewSizeMax().height
                         );
             }
             childHead = headPos + rangeSize - marginTail - childSize;

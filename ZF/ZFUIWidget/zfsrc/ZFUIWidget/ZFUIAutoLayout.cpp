@@ -244,7 +244,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
                     );
             return zffalse;
         }
-        _ZFP_ZFUIAutoLayout_targetIdUpdate(rule._ZFP_AL_targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerParent()), this->owner());
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(rule._ZFP_AL_targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerLayout()), this->ownerView());
         if(!rule._ZFP_AL_targetId) {
             ZFSerializableUtilErrorOccurred(outErrorHint
                     , "no target specified"
@@ -290,8 +290,8 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompareValueImpl(ZF_IN ZFObject *anot
         }
         zfstring targetId;
         zfstring targetIdRef;
-        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerParent()), this->owner());
-        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetIdRef, ruleRef, zfcast(ZFUIAutoLayout *, another->ownerParent()), another->owner());
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetId, rule, zfcast(ZFUIAutoLayout *, this->ownerLayout()), this->ownerView());
+        _ZFP_ZFUIAutoLayout_targetIdUpdate(targetIdRef, ruleRef, zfcast(ZFUIAutoLayout *, another->ownerLayout()), another->ownerView());
         if(targetId != targetIdRef) {
             return ZFCompareUncomparable;
         }
@@ -329,10 +329,10 @@ void ZFUIAutoLayout::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
             else {
                 rule.targetPos(ruleRef.targetPos());
                 _ZFP_ZFUIAutoLayout_targetUpdate(ruleRef, another, childRef);
-                if(ruleRef.target() == lpRef->ownerParent()) {
+                if(ruleRef.target() == lpRef->ownerLayout()) {
                     rule.target(this);
                 }
-                else if(ruleRef.target() == lpRef->owner()) {
+                else if(ruleRef.target() == lpRef->ownerView()) {
                     rule.target(this->childAt(iChild));
                 }
                 else {

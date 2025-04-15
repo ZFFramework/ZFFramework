@@ -428,11 +428,11 @@ public:
     /**
      * @brief owner child view of this layout param
      */
-    virtual ZFUIView *owner(void) {return this->_ZFP_LP_owner;}
+    virtual ZFUIView *ownerView(void) {return this->_ZFP_LP_owner;}
     /**
      * @brief owner parent view of this layout param
      */
-    virtual ZFUIView *ownerParent(void);
+    virtual ZFUIView *ownerLayout(void);
 
     /* ZFTAG_TRICKS: util for chained call to build view tree */
     /**

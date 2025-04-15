@@ -448,10 +448,10 @@ ZFMETHOD_DEFINE_2(ZFUILayoutParam, ZFUISize, sizeHintOffset
     return ret;
 }
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, owner)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, ownerParent)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, ownerView)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUILayoutParam, ZFUIView *, ownerLayout)
 
-ZFUIView *ZFUILayoutParam::ownerParent(void) {
+ZFUIView *ZFUILayoutParam::ownerLayout(void) {
     if(_ZFP_LP_owner) {
         return _ZFP_LP_owner->parent();
     }
@@ -469,7 +469,7 @@ zfanyT<ZFUILayoutParam> ZFUILayoutParam::child(
             , this
             );
     ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
-        ? zfcast(ZFUILayoutParam *, view)->ownerParent()
+        ? zfcast(ZFUILayoutParam *, view)->ownerLayout()
         : zfcast(ZFUIView *, view);
     ZFCoreAssertWithMessageTrim(tmp
             , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
