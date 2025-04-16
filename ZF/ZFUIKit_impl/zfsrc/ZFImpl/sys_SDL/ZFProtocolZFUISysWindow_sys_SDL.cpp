@@ -147,6 +147,19 @@ public:
             );
         SDL_SetWindowPosition(nativeWindow->sdlWindow, (int)rect.x, (int)rect.y);
         SDL_SetWindowSize(nativeWindow->sdlWindow, (int)rect.width, (int)rect.height);
+
+        // setting a windows size that exceeds screen size, may cause sdl motion event's x/y to be incorrect
+        if(zffalse
+                || sysWindow->sysWindowLayoutParam()->sizeParam().width == ZFUISizeType::e_Fill
+                || sysWindow->sysWindowLayoutParam()->sizeParam().height == ZFUISizeType::e_Fill
+                ) {
+            int w = 0;
+            int h = 0;
+            SDL_GetWindowSize(nativeWindow->sdlWindow, &w, &h);
+            SDL_SetWindowSize(nativeWindow->sdlWindow, w - 10, h - 10);
+            SDL_SetWindowSize(nativeWindow->sdlWindow, w, h);
+        }
+
         if(sysWindow->preferFullscreen()) {
             SDL_SetWindowFullscreen(nativeWindow->sdlWindow, SDL_WINDOW_FULLSCREEN);
         }

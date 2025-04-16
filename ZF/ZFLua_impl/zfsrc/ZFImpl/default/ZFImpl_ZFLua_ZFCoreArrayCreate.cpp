@@ -6,7 +6,6 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
     ZFCoreArray<zfauto> retArr;
-    zfobj<v_ZFCoreArray> ret(retArr);
     int count = (int)lua_gettop(L);
 
     for(int i = 0; i < count; ++i) {
@@ -29,7 +28,7 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
             ZFImpl_ZFLua_luaObjectInfo(L, i + 1, zftrue));
     }
 
-    ZFImpl_ZFLua_luaPush(L, ret);
+    ZFImpl_ZFLua_luaPush(L, zfobj<v_ZFCoreArray>(retArr));
     return 1;
 }
 
