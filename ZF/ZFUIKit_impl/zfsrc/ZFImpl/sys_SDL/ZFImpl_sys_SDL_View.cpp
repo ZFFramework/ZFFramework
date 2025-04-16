@@ -323,7 +323,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                     event->mouseButton = mouseButton;
                     event->mousePoint.x = (zffloat)sdlEvent->motion.x;
                     event->mousePoint.y = (zffloat)sdlEvent->motion.y;
-                    this->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
+                    mouseState.viewDown->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
                     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(mouseState.viewDown->ownerZFUIView, event);
                 }
             }
@@ -338,7 +338,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                             hoverExit->mouseButton = mouseButton;
                             hoverExit->mousePoint.x = (zffloat)sdlEvent->motion.x;
                             hoverExit->mousePoint.y = (zffloat)sdlEvent->motion.y;
-                            this->posFromGlobal(hoverExit->mousePoint.x, hoverExit->mousePoint.y);
+                            mouseState.viewHover->posFromGlobal(hoverExit->mousePoint.x, hoverExit->mousePoint.y);
                             ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(mouseState.viewHover->ownerZFUIView, hoverExit);
                         }
                         mouseState.viewHover = zfnull;
@@ -357,7 +357,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                         hoverEnter->mouseButton = mouseButton;
                         hoverEnter->mousePoint.x = (zffloat)sdlEvent->motion.x;
                         hoverEnter->mousePoint.y = (zffloat)sdlEvent->motion.y;
-                        this->posFromGlobal(hoverEnter->mousePoint.x, hoverEnter->mousePoint.y);
+                        viewHover->posFromGlobal(hoverEnter->mousePoint.x, hoverEnter->mousePoint.y);
                         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(viewHover->ownerZFUIView, hoverEnter);
                     }
                 }
@@ -370,7 +370,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                     event->mouseButton = mouseButton;
                     event->mousePoint.x = (zffloat)sdlEvent->motion.x;
                     event->mousePoint.y = (zffloat)sdlEvent->motion.y;
-                    this->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
+                    mouseState.viewHover->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
                     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(mouseState.viewHover->ownerZFUIView, event);
                 }
             }
