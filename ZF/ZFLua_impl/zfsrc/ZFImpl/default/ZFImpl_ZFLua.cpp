@@ -339,16 +339,16 @@ void ZFImpl_ZFLua_execute_errorHandle(
 
     // detect error line
     // case 1: (lua syntax error, etc, usually the `123` is correct)
-    //     [string "?"]:123: xxx
-    //     ^^^^^^^^^^^^^^^^^^
+    //     [string "xxx"]:123: xxx
+    //     ^^^^^^^^^^^^^^^^^^^^
     //     lua error header
     //
     // case 2: (by luaL_error, the `123` may be incorrect)
-    //     [string "?"]:123: <<{{456}}>>xxx
-    //     ^^^^^^^^^^^^^^^^^^
+    //     [string "xxx"]:123: <<{{456}}>>xxx
+    //     ^^^^^^^^^^^^^^^^^^^^
     //     lua error header
-    //                       ^^^^^^^
-    //                       special header passed from ZFImpl_ZFLua_luaError
+    //                         ^^^^^^^
+    //                         special header passed from ZFImpl_ZFLua_luaError
     {
         zfindex tokenL = zfindexMax();
         zfindex tokenR = zfindexMax();
@@ -365,7 +365,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
             }
         }
         else {
-            KEY_tokenL = "?\"]:";
+            KEY_tokenL = "\"]:";
             KEY_tokenR = ": ";
             tokenL = zfstringFind((const zfchar *)nativeError, KEY_tokenL);
             if(tokenL != zfindexMax()) {
@@ -373,7 +373,16 @@ void ZFImpl_ZFLua_execute_errorHandle(
                 tokenR = zfstringFind((const zfchar *)nativeError + tokenL, KEY_tokenR);
                 if(tokenR != zfindexMax()) {
                     tokenR += tokenL;
-                    offset = tokenR + zfslen(KEY_tokenR);
+                    zfindex tmp = 0;
+                    if(zfindexFromStringT(tmp, (const zfchar *)nativeError + tokenL, tokenR - tokenL)) {
+                        offset = tokenR + zfslen(KEY_tokenR);
+                    }
+                    else {
+                        tokenL = tokenR = zfindexMax();
+                    }
+                }
+                else {
+                    tokenL = zfindexMax();
                 }
             }
         }

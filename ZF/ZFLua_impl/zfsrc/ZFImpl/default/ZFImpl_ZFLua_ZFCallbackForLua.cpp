@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 //     []
 // stack after: (has lua return value)
 //     [ret]
-static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
+static zfbool _ZFP_ZFCallbackForLua_invoke(
         ZF_IN lua_State *L
         , ZF_IN const ZFArgs &zfargs
         , ZF_IN const ZFPathInfo &ownerPathInfo
@@ -41,7 +41,8 @@ static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
                         zfauto resultTmp;
                         zfstring errorHintTmp;
                         if(!ZFDI_implicitConvertT(resultTmp, zfargs.ownerMethod()->returnTypeId(), result, &errorHintTmp)) {
-                            zfstringAppend(errorHint, "invalid return value, desired type: %s, got value: %s, reason: %s, for method: %s"
+                            zfstringAppend(errorHint, "[%s] invalid return value, desired type: %s, got value: %s, reason: %s, for method: %s"
+                                    , ownerPathInfo ? ZFPathInfoToString(ownerPathInfo) : zftext("ZFCallbackForLua")
                                     , zfargs.ownerMethod()->returnTypeId()
                                     , result
                                     , errorHintTmp
@@ -57,7 +58,8 @@ static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
         }
         else {
             lua_pop(L, stackCount - stackCountPrev);
-            zfstringAppend(errorHint, "only 0 or 1 return value is allowed for ZFCallbackForLua, got: %s%s"
+            zfstringAppend(errorHint, "[%s] only 0 or 1 return value is allowed for ZFCallbackForLua, got: %s%s"
+                    , ownerPathInfo ? ZFPathInfoToString(ownerPathInfo) : zftext("ZFCallbackForLua")
                     , stackCount - stackCountPrev
                     , zfargs.ownerMethod() ? zfstr(", for method: %s", zfargs.ownerMethod()) : zfstring()
                     );
@@ -65,23 +67,6 @@ static zfbool _ZFP_ZFCallbackForLua_invokeImpl(
         }
     }
     return zftrue;
-}
-static zfbool _ZFP_ZFCallbackForLua_invoke(
-        ZF_IN lua_State *L
-        , ZF_IN const ZFArgs &zfargs
-        , ZF_IN const ZFPathInfo &ownerPathInfo
-        ) {
-    zfstring errorHint;
-    if(_ZFP_ZFCallbackForLua_invokeImpl(L, zfargs, ownerPathInfo, errorHint)) {
-        return zftrue;
-    }
-    else {
-        ZFLuaErrorOccurredTrim("[%s] %s"
-                , ownerPathInfo ? ZFPathInfoToString(ownerPathInfo) : zftext("ZFCallbackForLua")
-                , errorHint
-                );
-        return zffalse;
-    }
 }
 
 // ============================================================
@@ -183,7 +168,9 @@ public:
         zfargsHolder->zfv = zfargs;
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
-        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->ownerPathInfo)) {
+        zfstring errorHint;
+        if(!_ZFP_ZFCallbackForLua_invoke(this->ownerL, zfargs, this->ownerPathInfo, errorHint)) {
+            ZFLuaErrorOccurredTrim("%s", errorHint);
             return;
         }
     }
@@ -550,7 +537,9 @@ public:
         }
 
         // finally call, stack: [func, zfargs]
-        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, this->ownerPathInfo)) {
+        zfstring errorHint;
+        if(!_ZFP_ZFCallbackForLua_invoke(L, zfargs, this->ownerPathInfo, errorHint)) {
+            ZFLuaErrorOccurredTrim("%s", errorHint);
             return;
         }
     }
