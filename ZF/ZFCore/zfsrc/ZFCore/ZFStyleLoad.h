@@ -93,7 +93,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
  * the filters can be supplied to ignore some files by file name,
  * by default, these files or dirs would be ignored:
  * -  files or dirs whose name start with '.' or '_' (e.g. '.ignored.xml')
- * -  files whose name contains '_' (e.g. 'ignored_.xml')
+ * -  files whose name end with '_' (e.g. 'ignored_.xml')
  *
  * specially, if the loaded object is type of #ZFStyleList,
  * all of its contents would be appended to current style,

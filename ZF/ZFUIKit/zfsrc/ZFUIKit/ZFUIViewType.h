@@ -354,71 +354,71 @@ public:
             , ZFMP_IN(const ZFUISizeParam &, sizeParam)
             )
 
-    /**
-     * @brief merge two size hint
-     */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMerge
+    /** @brief see #sizeHintMerge */
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMergeT
             , ZFMP_OUT(zffloat &, ret)
             , ZFMP_IN(zffloat, sizeHint0)
             , ZFMP_IN(zffloat, sizeHint1)
             )
-    /** @brief see #sizeHintMerge */
+    /**
+     * @brief merge two size hint
+     */
     ZFMETHOD_DECLARE_STATIC_2(zffloat, sizeHintMerge
             , ZFMP_IN(zffloat, sizeHint0)
             , ZFMP_IN(zffloat, sizeHint1)
             )
 
-    /**
-     * @brief merge two size hint
-     */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMerge
+    /** @brief see #sizeHintMerge */
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMergeT
             , ZFMP_OUT(ZFUISize &, ret)
             , ZFMP_IN(const ZFUISize &, sizeHint0)
             , ZFMP_IN(const ZFUISize &, sizeHint1)
             )
-    /** @brief see #sizeHintMerge */
+    /**
+     * @brief merge two size hint
+     */
     ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintMerge
             , ZFMP_IN(const ZFUISize &, sizeHint0)
             , ZFMP_IN(const ZFUISize &, sizeHint1)
             )
 
-    /**
-     * @brief safely increase or decrease size hint, do nothing if old one is no limit
-     */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset
+    /** @brief see #sizeHintOffset */
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffsetT
             , ZFMP_OUT(zffloat &, ret)
             , ZFMP_IN(zffloat, sizeHint)
             , ZFMP_IN(zffloat, offset)
             )
-    /** @brief see #sizeHintOffset */
+    /**
+     * @brief safely increase or decrease size hint, do nothing if old one is no limit
+     */
     ZFMETHOD_DECLARE_STATIC_2(zffloat, sizeHintOffset
             , ZFMP_IN(zffloat, sizeHint)
             , ZFMP_IN(zffloat, offset)
             )
 
-    /**
-     * @brief safely increase or decrease size hint, do nothing if old one is no limit
-     */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset
+    /** @brief see #sizeHintOffset */
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffsetT
             , ZFMP_OUT(ZFUISize &, ret)
             , ZFMP_IN(const ZFUISize &, sizeHint)
             , ZFMP_IN(const ZFUISize &, offset)
             )
-    /** @brief see #sizeHintOffset */
+    /**
+     * @brief safely increase or decrease size hint, do nothing if old one is no limit
+     */
     ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintOffset
             , ZFMP_IN(const ZFUISize &, sizeHint)
             , ZFMP_IN(const ZFUISize &, offset)
             )
 
-    /**
-     * @brief safely increase or decrease size hint, do nothing if old one is no limit
-     */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset
+    /** @brief see #sizeHintOffset */
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffsetT
             , ZFMP_OUT(ZFUISize &, ret)
             , ZFMP_IN(const ZFUISize &, sizeHint)
             , ZFMP_IN(zffloat, offset)
             )
-    /** @brief see #sizeHintOffset */
+    /**
+     * @brief safely increase or decrease size hint, do nothing if old one is no limit
+     */
     ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintOffset
             , ZFMP_IN(const ZFUISize &, sizeHint)
             , ZFMP_IN(zffloat, offset)
@@ -538,10 +538,7 @@ public:
 
 protected:
     zfoverride
-    virtual inline void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoImplAppend(ret);
-        ZFObjectPropertyInfoT(ret, this);
-    }
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 };
 
 // ============================================================

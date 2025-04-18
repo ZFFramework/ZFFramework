@@ -37,8 +37,8 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
             ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue),
             ZFImpl_ZFLua_luaObjectInfo(L, 2));
     }
-    const zfchar *name = zfnull;
-    if(!ZFImpl_ZFLua_toString(name, L, 2) || zfstringIsEmpty(name)) {
+    zfstring name;
+    if(!ZFImpl_ZFLua_toStringT(name, L, 2) || zfstringIsEmpty(name)) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfl_call] unable to access method name, got: %s",
             ZFImpl_ZFLua_luaObjectInfo(L, 2));

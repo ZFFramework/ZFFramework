@@ -414,14 +414,32 @@ void ZFUIButtonBasic::layoutOnMeasure(
         }
     }
 
-    ZFUISize labelSize = ZFUISizeZero();
-    if(d->labelView != zfnull && d->labelView->visible() && !d->labelView->text().isEmpty()) {
-        labelSize = d->labelView->layoutMeasure(sizeHintTmp, ZFUISizeParamWrapWrap());
-    }
-
     ZFUISize iconSize = ZFUISizeZero();
     if(d->iconView != zfnull && d->iconView->visible() && d->iconView->imageState() != zfnull) {
         iconSize = d->iconView->layoutMeasure(sizeHintTmp, ZFUISizeParamWrapWrap());
+    }
+
+    ZFUISize labelSize = ZFUISizeZero();
+    if(d->labelView != zfnull && d->labelView->visible() && !d->labelView->text().isEmpty()) {
+        ZFUISize sizeHintForLabel = sizeHintTmp;
+        switch(this->iconPosition()) {
+            case v_ZFUIOrientation::e_Left:
+            case v_ZFUIOrientation::e_Right:
+                if(iconSize.width > 0) {
+                    ZFUILayoutParam::sizeHintOffsetT(sizeHintForLabel.width, sizeHintTmp.width, -(iconSize.width + this->contentSpace()));
+                }
+                break;
+            case v_ZFUIOrientation::e_Top:
+            case v_ZFUIOrientation::e_Bottom:
+                if(iconSize.height > 0) {
+                    ZFUILayoutParam::sizeHintOffsetT(sizeHintForLabel.height, sizeHintTmp.height, -(iconSize.height + this->contentSpace()));
+                }
+                break;
+            default:
+                ZFCoreCriticalShouldNotGoHere();
+                return;
+        }
+        labelSize = d->labelView->layoutMeasure(sizeHintForLabel, ZFUISizeParamWrapWrap());
     }
 
     ZFUISize bgSize = ZFUISizeZero();

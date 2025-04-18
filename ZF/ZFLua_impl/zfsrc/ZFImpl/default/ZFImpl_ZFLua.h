@@ -276,6 +276,14 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
+/** @brief see #ZFImpl_ZFLua_toString */
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toStringT(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 /**
  * @brief get params from lua
  *
@@ -283,36 +291,33 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(
  * -  normal lua string
  * -  #v_zfstring
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
-        ZF_IN_OUT zfstring &s
-        , ZF_IN lua_State *L
+inline zfstring ZFImpl_ZFLua_toString(
+        ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         , ZF_IN_OPT zfbool allowEmpty = zffalse
         , ZF_OUT_OPT const ZFClass **holderCls = zfnull
-        );
+        ) {
+    zfstring ret;
+    ZFImpl_ZFLua_toStringT(ret, L, luaStackOffset, allowEmpty, holderCls);
+    return ret;
+}
 /** @brief see #ZFImpl_ZFLua_toString */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toStringT(
         ZF_IN_OUT zfstring &s
         , ZF_IN ZFObject *obj
         , ZF_IN_OPT zfbool allowEmpty = zffalse
         , ZF_OUT_OPT const ZFClass **holderCls = zfnull
         );
-
 /** @brief see #ZFImpl_ZFLua_toString */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
-        ZF_IN_OUT const zfchar *&s
-        , ZF_IN lua_State *L
-        , ZF_IN int luaStackOffset
+inline zfstring ZFImpl_ZFLua_toString(
+        ZF_IN ZFObject *obj
         , ZF_IN_OPT zfbool allowEmpty = zffalse
         , ZF_OUT_OPT const ZFClass **holderCls = zfnull
-        );
-/** @brief see #ZFImpl_ZFLua_toString */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
-        ZF_IN_OUT const zfchar *&s
-        , ZF_IN ZFObject *obj
-        , ZF_IN_OPT zfbool allowEmpty = zffalse
-        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
-        );
+        ) {
+    zfstring ret;
+    ZFImpl_ZFLua_toStringT(ret, obj, allowEmpty, holderCls);
+    return ret;
+}
 
 /** @brief see #ZFImpl_ZFLua_toNumber */
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(

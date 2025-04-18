@@ -142,7 +142,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_concat_action(
         , ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         ) {
-    if(ZFImpl_ZFLua_toString(v, L, luaStackOffset, zftrue)) {
+    if(ZFImpl_ZFLua_toStringT(v, L, luaStackOffset, zftrue)) {
         return zftrue;
     }
     if(lua_isuserdata(L, luaStackOffset)) {
@@ -180,8 +180,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_concat(ZF_IN lua_State *L) {
 static int _ZFP_ZFImpl_ZFLua_metatable_len(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
-    const zfchar *v = zfnull;
-    if(!ZFImpl_ZFLua_toString(v, L, 1, zftrue)) {
+    zfstring v;
+    if(!ZFImpl_ZFLua_toStringT(v, L, 1, zftrue)) {
         return ZFImpl_ZFLua_luaError(L,
             "[LuaMetatable] unknown param type: %s",
             ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue));
@@ -193,93 +193,151 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
         ZF_OUT ZFCompareResult &ret
         , ZF_OUT zfstring &errorHint
         , ZF_IN lua_State *L
+        , ZF_IN zfbool eqOnly
         ) {
-    if(zftrue
-            && (lua_isuserdata(L, 1) || lua_isnil(L, 1))
-            && (lua_isuserdata(L, 2) || lua_isnil(L, 2))
-            ) {
-        zfauto v1;
-        if(!ZFImpl_ZFLua_toObject(v1, L, 1)) {
-            zfstringAppend(errorHint, "[LuaMetatable] unknown param type: %s",
-                ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue));
-            return zffalse;
-        }
-        zfauto v2;
-        if(!ZFImpl_ZFLua_toObject(v2, L, 2)) {
-            zfstringAppend(errorHint, "[LuaMetatable] unknown param type: %s",
-                ZFImpl_ZFLua_luaObjectInfo(L, 2, zftrue));
-            return zffalse;
-        }
+    do {
+        if(zftrue
+                && (lua_isuserdata(L, 1) || lua_isnil(L, 1))
+                && (lua_isuserdata(L, 2) || lua_isnil(L, 2))
+                ) {
+            zfauto v1;
+            if(!ZFImpl_ZFLua_toObject(v1, L, 1)) {
+                break;
+            }
+            zfauto v2;
+            if(!ZFImpl_ZFLua_toObject(v2, L, 2)) {
+                break;
+            }
 
-        if(v1 == zfnull) {
-            if(v2 == zfnull) {
-                ret = ZFCompareEqual;
-            }
-            else {
-                ZFTypeIdWrapper *t = v2;
-                if(t != zfnull && t->zfvIsInit()) {
+            if(v1 == zfnull) {
+                if(v2 == zfnull) {
                     ret = ZFCompareEqual;
                 }
                 else {
-                    ret = ZFCompareUncomparable;
-                }
-            }
-        }
-        else {
-            if(v2 == zfnull) {
-                ZFTypeIdWrapper *t = v1;
-                if(t != zfnull && t->zfvIsInit()) {
-                    ret = ZFCompareEqual;
-                }
-                else {
-                    ret = ZFCompareUncomparable;
-                }
-            }
-            else {
-                if(zffalse
-                        || v1->classData()->classIsTypeOf(v2->classData())
-                        || v2->classData()->classIsTypeOf(v1->classData())
-                        ) {
-                    ret = v1->objectCompare(v2);
-                }
-                else {
-                    zfauto t1;
-                    zfauto t2;
-                    if(ZFImpl_ZFLua_toNumberT(t1, L, 1)
-                            && ZFImpl_ZFLua_toNumberT(t2, L, 2)
-                            ) {
-                        ret = ZFComparerDefault(t1, t2);
+                    ZFTypeIdWrapper *t = v2;
+                    if(t != zfnull && t->zfvIsInit()) {
+                        ret = ZFCompareEqual;
                     }
                     else {
-                        ret = v1->objectCompare(v2);
+                        ret = ZFCompareUncomparable;
                     }
                 }
             }
+            else {
+                if(v2 == zfnull) {
+                    ZFTypeIdWrapper *t = v1;
+                    if(t != zfnull && t->zfvIsInit()) {
+                        ret = ZFCompareEqual;
+                    }
+                    else {
+                        ret = ZFCompareUncomparable;
+                    }
+                }
+                else {
+                    if(zffalse
+                            || v1->classData()->classIsTypeOf(v2->classData())
+                            || v2->classData()->classIsTypeOf(v1->classData())
+                            ) {
+                        ret = v1->objectCompare(v2);
+                    }
+                    else {
+                        zfauto t1;
+                        zfauto t2;
+                        if(ZFImpl_ZFLua_toNumberT(t1, L, 1)
+                                && ZFImpl_ZFLua_toNumberT(t2, L, 2)
+                                ) {
+                            ret = ZFComparerDefault(t1, t2);
+                        }
+                        else {
+                            ret = v1->objectCompare(v2);
+                        }
+                    }
+                }
+            }
+            return zftrue;
         }
-        return zftrue;
-    }
-    else {
-        if(lua_isnumber(L, 1) || lua_isnumber(L, 2)) {
+        else if(lua_isuserdata(L, 1)) {
             zfauto v1;
+            if(!ZFImpl_ZFLua_toObject(v1, L, 1)) {
+                break;
+            }
+            if(v1 == zfnull) {
+                if(zffalse
+                        || (lua_isnumber(L, 2) && lua_tonumber(L, 2) == 0)
+                        || (lua_isboolean(L, 2) && !lua_toboolean(L, 2))
+                        || (lua_isstring(L, 2) && zfstringIsEmpty(lua_tostring(L, 2)))
+                        || lua_isnil(L, 2)
+                        ) {
+                    ret = ZFCompareEqual;
+                }
+                else {
+                    ret = ZFCompareUncomparable;
+                }
+            }
+            else {
+                zfauto v2;
+                zfstring s2;
+                if(!ZFImpl_ZFLua_toStringT(s2, L, 2)
+                        || !ZFDI_implicitConvertT(v2, v1->classData()->classNameFull(), zfobj<ZFDI_WrapperRaw>(s2))
+                        ) {
+                    break;
+                }
+                ret = ZFObjectCompare(v1, v2);
+            }
+            return zftrue;
+        }
+        else if(lua_isuserdata(L, 2)) {
             zfauto v2;
-            if(ZFImpl_ZFLua_toNumberT(v1, L, 1)
-                    && ZFImpl_ZFLua_toNumberT(v2, L, 2)
-                    ) {
-                ret = ZFComparerDefault(v1, v2);
+            if(!ZFImpl_ZFLua_toObject(v2, L, 2)) {
+                break;
+            }
+            if(v2 == zfnull) {
+                if(zffalse
+                        || (lua_isnumber(L, 1) && lua_tonumber(L, 1) == 0)
+                        || (lua_isboolean(L, 1) && !lua_toboolean(L, 1))
+                        || (lua_isstring(L, 1) && zfstringIsEmpty(lua_tostring(L, 1)))
+                        || lua_isnil(L, 1)
+                        ) {
+                    ret = ZFCompareEqual;
+                }
+                else {
+                    ret = ZFCompareUncomparable;
+                }
+            }
+            else {
+                zfauto v1;
+                zfstring s1;
+                if(!ZFImpl_ZFLua_toStringT(s1, L, 1)
+                        || !ZFDI_implicitConvertT(v1, v2->classData()->classNameFull(), zfobj<ZFDI_WrapperRaw>(s1))
+                        ) {
+                    break;
+                }
+                ret = ZFObjectCompare(v1, v2);
+            }
+            return zftrue;
+        }
+        else {
+            if(lua_compare(L, 1, 2, LUA_OPEQ)) {
+                ret = ZFCompareEqual;
                 return zftrue;
             }
-        }
-        if(lua_isstring(L, 1) || lua_isstring(L, 2)) {
-            const zfchar *v1 = zfnull;
-            const zfchar *v2 = zfnull;
-            if(ZFImpl_ZFLua_toString(v1, L, 1, zftrue)
-                    && ZFImpl_ZFLua_toString(v2, L, 2, zftrue)
-                    ) {
-                ret = ZFComparerDefault(v1, v2);
+
+            if(eqOnly) {
+                ret = ZFCompareUncomparable;
                 return zftrue;
             }
+            else {
+                if(lua_compare(L, 1, 2, LUA_OPLT)) {
+                    ret = ZFCompareSmaller;
+                    return zftrue;
+                }
+                else if(lua_compare(L, 2, 1, LUA_OPLT)) {
+                    ret = ZFCompareGreater;
+                    return zftrue;
+                }
+            }
         }
-    }
+    } while(zffalse);
 
     zfstringAppend(errorHint, "[LuaMetatable] unknown param type: %s and %s",
         ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue),
@@ -291,7 +349,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_eq(ZF_IN lua_State *L) {
 
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
-    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L, zftrue)) {
         return ZFImpl_ZFLua_luaError(L,
             "%s",
             errorHint);
@@ -304,7 +362,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_lt(ZF_IN lua_State *L) {
 
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
-    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L, zffalse)) {
         return ZFImpl_ZFLua_luaError(L,
             "%s",
             errorHint);
@@ -317,7 +375,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_le(ZF_IN lua_State *L) {
 
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
-    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L, zffalse)) {
         return ZFImpl_ZFLua_luaError(L,
             "%s",
             errorHint);
@@ -520,7 +578,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_cmp(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
-    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L, zffalse)) {
         return ZFImpl_ZFLua_luaError(L,
             "%s",
             errorHint);
@@ -554,7 +612,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_eq(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
-    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L)) {
+    if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L, zftrue)) {
         return ZFImpl_ZFLua_luaError(L,
             "%s",
             errorHint);

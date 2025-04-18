@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       local buf = zfargs:param0()
  *       local size = zfargs:param1()
  *       local result = zfargs:result()
- *       if size == zfindexMax() then
+ *       if zfl_eq(size, zfindexMax()) then
  *           -- return total input size
  *           result:zfv(yourTotalLength)
  *           return

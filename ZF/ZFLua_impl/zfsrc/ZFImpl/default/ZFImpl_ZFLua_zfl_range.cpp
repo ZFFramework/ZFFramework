@@ -12,7 +12,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_range, ZFM_EXPAND({
                 "    if #args >= 1 then\n"
                 "        i = n\n"
                 "        iEnd = args[1]\n"
-                "        if iEnd == zfindexMax() then\n"
+                "        if zfl_eq(iEnd, zfindexMax()) then\n"
                 "            iEnd = -1\n"
                 "        end\n"
                 "        if #args >= 2 then\n"

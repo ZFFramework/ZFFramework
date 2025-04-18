@@ -352,7 +352,7 @@ ZFMETHOD_DEFINE_3(ZFUILayoutParam, ZFUISize, sizeHintApply
     return ret;
 }
 
-ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintMerge
+ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintMergeT
         , ZFMP_OUT(zffloat &, ret)
         , ZFMP_IN(zffloat, sizeHint0)
         , ZFMP_IN(zffloat, sizeHint1)
@@ -372,28 +372,28 @@ ZFMETHOD_DEFINE_2(ZFUILayoutParam, zffloat, sizeHintMerge
         , ZFMP_IN(zffloat, sizeHint1)
         ) {
     zffloat ret = 0;
-    ZFUILayoutParam::sizeHintMerge(ret, sizeHint0, sizeHint1);
+    ZFUILayoutParam::sizeHintMergeT(ret, sizeHint0, sizeHint1);
     return ret;
 }
 
-ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintMerge
+ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintMergeT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, sizeHint0)
         , ZFMP_IN(const ZFUISize &, sizeHint1)
         ) {
-    ret.width = ZFUILayoutParam::sizeHintMerge(sizeHint0.width, sizeHint1.width);
-    ret.height = ZFUILayoutParam::sizeHintMerge(sizeHint0.height, sizeHint1.height);
+    ZFUILayoutParam::sizeHintMergeT(ret.width, sizeHint0.width, sizeHint1.width);
+    ZFUILayoutParam::sizeHintMergeT(ret.height, sizeHint0.height, sizeHint1.height);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, ZFUISize, sizeHintMerge
         , ZFMP_IN(const ZFUISize &, sizeHint0)
         , ZFMP_IN(const ZFUISize &, sizeHint1)
         ) {
     ZFUISize ret = ZFUISizeZero();
-    ZFUILayoutParam::sizeHintMerge(ret, sizeHint0, sizeHint1);
+    ZFUILayoutParam::sizeHintMergeT(ret, sizeHint0, sizeHint1);
     return ret;
 }
 
-ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffset
+ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffsetT
         , ZFMP_OUT(zffloat &, ret)
         , ZFMP_IN(zffloat, sizeHint)
         , ZFMP_IN(zffloat, offset)
@@ -410,41 +410,41 @@ ZFMETHOD_DEFINE_2(ZFUILayoutParam, zffloat, sizeHintOffset
         , ZFMP_IN(zffloat, offset)
         ) {
     zffloat ret = 0;
-    ZFUILayoutParam::sizeHintOffset(ret, sizeHint, offset);
+    ZFUILayoutParam::sizeHintOffsetT(ret, sizeHint, offset);
     return ret;
 }
 
-ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffset
+ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffsetT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, sizeHint)
         , ZFMP_IN(const ZFUISize &, offset)
         ) {
-    ret.width = ZFUILayoutParam::sizeHintOffset(sizeHint.width, offset.width);
-    ret.height = ZFUILayoutParam::sizeHintOffset(sizeHint.height, offset.height);
+    ZFUILayoutParam::sizeHintOffsetT(ret.width, sizeHint.width, offset.width);
+    ZFUILayoutParam::sizeHintOffsetT(ret.height, sizeHint.height, offset.height);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, ZFUISize, sizeHintOffset
         , ZFMP_IN(const ZFUISize &, sizeHint)
         , ZFMP_IN(const ZFUISize &, offset)
         ) {
     ZFUISize ret = ZFUISizeZero();
-    ZFUILayoutParam::sizeHintOffset(ret, sizeHint, offset);
+    ZFUILayoutParam::sizeHintOffsetT(ret, sizeHint, offset);
     return ret;
 }
 
-ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffset
+ZFMETHOD_DEFINE_3(ZFUILayoutParam, void, sizeHintOffsetT
         , ZFMP_OUT(ZFUISize &, ret)
         , ZFMP_IN(const ZFUISize &, sizeHint)
         , ZFMP_IN(zffloat, offset)
         ) {
-    ret.width = ZFUILayoutParam::sizeHintOffset(sizeHint.width, offset);
-    ret.height = ZFUILayoutParam::sizeHintOffset(sizeHint.height, offset);
+    ZFUILayoutParam::sizeHintOffsetT(ret.width, sizeHint.width, offset);
+    ZFUILayoutParam::sizeHintOffsetT(ret.height, sizeHint.height, offset);
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, ZFUISize, sizeHintOffset
         , ZFMP_IN(const ZFUISize &, sizeHint)
         , ZFMP_IN(zffloat, offset)
         ) {
     ZFUISize ret = ZFUISizeZero();
-    ZFUILayoutParam::sizeHintOffset(ret, sizeHint, offset);
+    ZFUILayoutParam::sizeHintOffsetT(ret, sizeHint, offset);
     return ret;
 }
 
@@ -494,6 +494,16 @@ ZFOBJECT_REGISTER(ZFUIViewMeasureResult)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIViewMeasureResult, ZFUISize, sizeHint)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIViewMeasureResult, ZFUISizeParam, sizeParam)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIViewMeasureResult, ZFUISize, measuredSize)
+
+void ZFUIViewMeasureResult::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+    zfstringAppend(ret, "%sMeasure(%s, %s)=>%s%s"
+            , ZFTOKEN_ZFObjectInfoLeft
+            , this->sizeParam
+            , this->sizeHint
+            , this->measuredSize
+            , ZFTOKEN_ZFObjectInfoRight
+            );
+}
 
 // ============================================================
 ZFENUM_DEFINE_FLAGS(ZFUITransform, ZFUITransformFlags)

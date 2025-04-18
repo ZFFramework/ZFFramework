@@ -27,11 +27,11 @@ local function printUsage()
 end
 
 local localPathInfo = ZFLocalPathInfo()
-if localPathInfo == zfnull then
+if zfl_eq(localPathInfo, zfnull) then
     ZFLogTrim('unable to obtain local path info')
     return
 end
-if localPathInfo:pathType() ~= ZFPathType_file() then
+if not zfl_eq(localPathInfo:pathType(), ZFPathType_file()) then
     ZFLogTrim('only support from file')
     return
 end
@@ -57,7 +57,7 @@ function zfproj_init(ZF_TYPE, PROJ_NAME, DST_PATH)
     local ZF_TYPE = nil
     local ZF_OUTPUT = nil
     local ZF_INPLACE_SRC = nil
-    if ZF_TYPE == 'app' then
+    if zfl_eq(ZF_TYPE, 'app') then
         CONFIG_FILE_PATH = DST_PATH .. '/' .. PROJ_NAME .. '/' .. PROJ_NAME .. '/zfscript/zfautoscript_zfproj.txt'
         ZF_TYPE = 'app'
         ZF_OUTPUT = '../..'
@@ -117,7 +117,7 @@ end
 
 function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     -- formate and read config file
-    if CONFIG_FILE_PATH == nil then
+    if zfl_eq(CONFIG_FILE_PATH, zfnull) then
         printUsage()
         return false
     end
@@ -131,7 +131,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     local line = zfstring()
     local optionPattern = zfstring('^[ \\t]*(ZF_[A-Z_]+)[ \\t]*\\+?=[ \\t]*([^ \\t].*[^ \\t]|[^ \\t]+)[ \\t]*$')
     while ZFInputReadLine(line, configFile) ~= zfindexMax() do
-        if ZFRegExpFind(line, optionPattern) ~= ZFIndexRangeZero() then
+        if not zfl_eq(ZFRegExpFind(line, optionPattern), ZFIndexRangeZero()) then
             local key = ZFRegExpReplace(line, optionPattern, '$1')
             local value = ZFRegExpReplace(line, optionPattern, '$2')
             while ZFRegExpFind(value, '.*\\$([A-Z_]+)\\b.*') ~= ZFIndexRangeZero() do
@@ -140,7 +140,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
                     break
                 end
                 local tmpValue = config:get(tmpKey)
-                if tmpValue == zfnull then
+                if zfl_eq(tmpValue, zfnull) then
                     tmpValue = ''
                 end
                 value = ZFRegExpReplace(value, '\\$' .. tmpKey, tmpValue)
@@ -148,7 +148,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             local isAdd = (ZFRegExpFind(line, '\\+=') ~= ZFIndexRangeZero())
             if isAdd then
                 local l = config:get(key)
-                if l == zfnull then
+                if zfl_eq(l, zfnull) then
                     l = ZFArray()
                     config:set(key, l)
                 end
@@ -197,7 +197,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
 
     ---@type ZFArray
     local ZF_LIB = config:get('ZF_LIB')
-    if ZF_LIB ~= zfnull then
+    if not zfl_eq(ZF_LIB, zfnull) then
         local libIndex = 0
         while libIndex < ZF_LIB:count() do
             local lib = ZF_LIB:get(libIndex)
@@ -208,7 +208,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
     ---@type ZFArray
     local ZF_IMPL = config:get('ZF_IMPL')
-    if ZF_IMPL ~= zfnull then
+    if not zfl_eq(ZF_IMPL, zfnull) then
         local implIndex = 0
         while implIndex < ZF_IMPL:count() do
             local impl = ZF_IMPL:get(implIndex)
@@ -241,7 +241,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
     ---@type ZFArray
     local ZF_LIB_EXT = config:get('ZF_LIB_EXT')
-    if ZF_LIB_EXT ~= zfnull then
+    if not zfl_eq(ZF_LIB_EXT, zfnull) then
         local libExtIndex = 0
         while libExtIndex < ZF_LIB_EXT:count() do
             local libExt = ZF_LIB_EXT:get(libExtIndex)
@@ -253,7 +253,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
     ---@type ZFArray
     local ZF_IMPL_EXT = config:get('ZF_IMPL_EXT')
-    if ZF_IMPL_EXT ~= zfnull then
+    if not zfl_eq(ZF_IMPL_EXT, zfnull) then
         local implExtIndex = 0
         while implExtIndex < ZF_IMPL_EXT:count() do
             local implExt = ZF_IMPL_EXT:get(implExtIndex)
@@ -285,12 +285,12 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local function printState(ZF_TYPE)
             for i=0,32 do
                 local require = param:enableData(ZF_TYPE .. '_require_' .. i)
-                if require == zfnull or not require then
+                if zfl_eq(require, zfnull) or not require then
                     break
                 end
                 local c = param:replaceData(ZF_TYPE .. '_name_' .. i)
                 local value = nil
-                if c == zfnull then
+                if zfl_eq(c, zfnull) then
                     value = ''
                 else
                     value = c
@@ -311,7 +311,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local function printReplaceData(key)
             local c = param:replaceData(key)
             local value = nil
-            if c == zfnull then
+            if zfl_eq(c, zfnull) then
                 value = ''
             else
                 value = c
@@ -355,7 +355,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     end
     ---@type ZFArray
     local ZF_EXCLUDE = config:get('ZF_EXCLUDE')
-    if ZF_EXCLUDE ~= zfnull then
+    if not zfl_eq(ZF_EXCLUDE, zfnull) then
         for i=0,zfl_value(ZF_EXCLUDE:count()) - 1 do
             _SYNC_EXCLUDE:add(ZF_EXCLUDE:get(i))
         end
@@ -382,7 +382,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)) ~= ZFIndexRangeZero() then
+            if not zfl_eq(ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)), ZFIndexRangeZero()) then
                 filtered = zftrue
                 break
             end
@@ -412,7 +412,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)) ~= ZFIndexRangeZero() then
+            if not zfl_eq(ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)), ZFIndexRangeZero()) then
                 filtered = zftrue
                 break
             end
@@ -428,7 +428,7 @@ end
 function zfproj_recursive(SRC_DIR, DST_DIR)
     local ZF_EXCLUDE_FILE = _G['ZF_EXCLUDE_FILE']
     local ZF_EXCLUDE_FILE_TMP = ZFCoreArray()
-    if ZF_EXCLUDE_FILE ~= nil then
+    if not zfl_eq(ZF_EXCLUDE_FILE, zfnull) then
         ZF_EXCLUDE_FILE_TMP:addFrom(ZF_EXCLUDE_FILE)
     end
     ZF_EXCLUDE_FILE_TMP:add('private')
@@ -447,7 +447,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         if not filtered then
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
-                if ZFRegExpFind(relPath, ZF_EXCLUDE_FILE_TMP:get(i)) ~= ZFIndexRangeZero() then
+                if not zfl_eq(ZFRegExpFind(relPath, ZF_EXCLUDE_FILE_TMP:get(i)), ZFIndexRangeZero()) then
                     filtered = zftrue
                     break
                 end
@@ -460,7 +460,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
 end
 
 if #args > 0 then
-    if ZFRegExpFind(args[1], '^(-app|-lib|-impl)$') ~= ZFIndexRangeZero() then
+    if not zfl_eq(ZFRegExpFind(args[1], '^(-app|-lib|-impl)$'), ZFIndexRangeZero()) then
         if #args < 3 then
             printUsage()
             return

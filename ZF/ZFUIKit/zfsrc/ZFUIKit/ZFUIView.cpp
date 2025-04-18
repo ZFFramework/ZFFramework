@@ -1691,8 +1691,10 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
         return d->measureResult->measuredSize;
     }
 
+    ZFUISize sizeHintFixed = ZFUILayoutParam::sizeHintMerge(sizeHint, this->viewSizeMax());
+
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
-            || d->measureResult->sizeHint != sizeHint
+            || d->measureResult->sizeHint != sizeHintFixed
             || d->measureResult->sizeParam != sizeParam
             || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)
             || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_height)
@@ -1706,15 +1708,15 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
             // * prev measure with wrap, and result a size less than size hint
             // * cur measure with a larger size hint than prev
             if(zftrue
-                    && (d->measureResult->sizeHint.width == sizeHint.width
+                    && (d->measureResult->sizeHint.width == sizeHintFixed.width
                         || (sizeParam.width == v_ZFUISizeType::e_Wrap && (
-                                (d->measureResult->sizeHint.width < 0 && (sizeHint.width < 0 || d->measureResult->measuredSize.width <= sizeHint.width))
-                                || (d->measureResult->measuredSize.width < d->measureResult->sizeHint.width && (sizeHint.width == -1 || sizeHint.width >= d->measureResult->sizeHint.width))
+                                (d->measureResult->sizeHint.width < 0 && (sizeHintFixed.width < 0 || d->measureResult->measuredSize.width <= sizeHintFixed.width))
+                                || (d->measureResult->measuredSize.width < d->measureResult->sizeHint.width && (sizeHintFixed.width == -1 || sizeHintFixed.width >= d->measureResult->sizeHint.width))
                                 )))
-                    && (d->measureResult->sizeHint.height == sizeHint.height
+                    && (d->measureResult->sizeHint.height == sizeHintFixed.height
                         || (sizeParam.height == v_ZFUISizeType::e_Wrap && (
-                                (d->measureResult->sizeHint.height < 0 && (sizeHint.height < 0 || d->measureResult->measuredSize.height <= sizeHint.height))
-                                || (d->measureResult->measuredSize.height < d->measureResult->sizeHint.height && (sizeHint.height == -1 || sizeHint.height >= d->measureResult->sizeHint.height))
+                                (d->measureResult->sizeHint.height < 0 && (sizeHintFixed.height < 0 || d->measureResult->measuredSize.height <= sizeHintFixed.height))
+                                || (d->measureResult->measuredSize.height < d->measureResult->sizeHint.height && (sizeHintFixed.height == -1 || sizeHintFixed.height >= d->measureResult->sizeHint.height))
                                 )))
                                 ) {
                 return d->measureResult->measuredSize;
@@ -1722,25 +1724,25 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
         }
 
         d->measureResult->measuredSize = ZFUISizeInvalid();
-        d->measureResult->sizeHint = sizeHint;
+        d->measureResult->sizeHint = sizeHintFixed;
         d->measureResult->sizeParam = sizeParam;
         if(sizeParam.width == v_ZFUISizeType::e_Fill && sizeParam.height == v_ZFUISizeType::e_Fill) {
-            d->measureResult->sizeHint = sizeHint;
+            d->measureResult->sizeHint = sizeHintFixed;
             d->measureResult->measuredSize.width = zfmMax((zffloat)0, d->measureResult->measuredSize.width);
             d->measureResult->measuredSize.height = zfmMax((zffloat)0, d->measureResult->measuredSize.height);
         }
         else {
-            this->layoutOnMeasure(d->measureResult->measuredSize, sizeHint, sizeParam);
+            this->layoutOnMeasure(d->measureResult->measuredSize, sizeHintFixed, sizeParam);
         }
 
-        this->layoutOnMeasureFinish(d->measureResult->measuredSize, sizeHint, sizeParam);
+        this->layoutOnMeasureFinish(d->measureResult->measuredSize, sizeHintFixed, sizeParam);
         if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnMeasure)
                 ) {
             this->observerNotify(ZFUIView::E_ViewLayoutOnMeasure(), d->measureResult);
         }
 
-        ZFUILayoutParam::sizeHintApplyT(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHint, sizeParam);
+        ZFUILayoutParam::sizeHintApplyT(d->measureResult->measuredSize, d->measureResult->measuredSize, sizeHintFixed, sizeParam);
         ZFUISizeApplyRangeT(d->measureResult->measuredSize, d->measureResult->measuredSize, this->viewSizeMin(), this->viewSizeMax());
 
         if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_width)) {
@@ -1829,11 +1831,15 @@ ZFMETHOD_DEFINE_0(ZFUIView, const ZFUIRect &, viewFramePrev) {
 }
 
 ZFMETHOD_DEFINE_0(ZFUIView, zfbool, viewFrameOverrided) {
-    return ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag);
+    return ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag
+            | _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask
+            );
 }
 
 ZFMETHOD_DEFINE_0(ZFUIView, void, viewFrameReset) {
-    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag)) {
+    if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag
+                | _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask
+                )) {
         ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverrideFlag
                 | _ZFP_ZFUIViewPrivate::stateFlag_viewFrameOverride_mask
                 );

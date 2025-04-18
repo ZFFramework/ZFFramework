@@ -18,7 +18,7 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
         }
 
         zfobj<v_zfstring> pTmp;
-        if(ZFImpl_ZFLua_toString(pTmp->zfv, L, i + 1, zftrue)) {
+        if(ZFImpl_ZFLua_toStringT(pTmp->zfv, L, i + 1, zftrue)) {
             retArr.add(pTmp);
             continue;
         }
