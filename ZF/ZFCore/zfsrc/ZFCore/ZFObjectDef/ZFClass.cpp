@@ -1166,11 +1166,47 @@ const ZFMethod *ZFClass::propertyGetterForName(ZF_IN const zfstring &propertyNam
     return zfnull;
 }
 
-zfbool ZFClass::propertyHasOverrideInitStep(void) const {
+zfbool ZFClass::propertyInitStepExist(void) const {
     return !(d->propertyInitStepMap.empty());
 }
-zfbool ZFClass::propertyHasOverrideInitStep(ZF_IN const ZFProperty *property) const {
+zfbool ZFClass::propertyInitStepExist(ZF_IN const ZFProperty *property) const {
     return (d->propertyInitStepMap.find(property) != d->propertyInitStepMap.end());
+}
+zfbool ZFClass::propertyInitStepIsEqual(
+        ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *refClass
+        ) const {
+    if(this == refClass) {
+        return zftrue;
+    }
+    _ZFP_ZFClassPropertyInitStepMapType::iterator data = d->propertyInitStepMap.find(property);
+    _ZFP_ZFClassPropertyInitStepMapType::iterator dataRef = refClass->d->propertyInitStepMap.find(property);
+    if(data == d->propertyInitStepMap.end()) {
+        return (dataRef == refClass->d->propertyInitStepMap.end());
+    }
+    if(dataRef == refClass->d->propertyInitStepMap.end()) {
+        return (data == d->propertyInitStepMap.end());
+    }
+
+    if(data->second.size() != dataRef->second.size()) {
+        return zffalse;
+    }
+    if(data->second.size() == 0) {
+        return zftrue;
+    }
+    if(this->classIsTypeOf(refClass) || refClass->classIsTypeOf(this)) {
+        return zftrue;
+    }
+
+    for(zfstlmap<const ZFClass *, zfbool>::iterator it = data->second.begin(), itRef = dataRef->second.begin();
+            it != data->second.end();
+            ++it, ++itRef
+            ) {
+        if(it->first != itRef->first) {
+            return zffalse;
+        }
+    }
+    return zftrue;
 }
 
 // ============================================================
@@ -1720,42 +1756,6 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
     for(zfstlmap<const ZFClass *, zfbool>::iterator it = d->allChildren.begin(); it != d->allChildren.end(); ++it) {
         it->first->d->propertyInitStepMap[property][this] = zftrue;
     }
-}
-zfbool ZFClass::_ZFP_ZFClass_propertyInitStepIsEqual(
-        ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *refClass
-        ) const {
-    if(this == refClass) {
-        return zftrue;
-    }
-    _ZFP_ZFClassPropertyInitStepMapType::iterator data = d->propertyInitStepMap.find(property);
-    _ZFP_ZFClassPropertyInitStepMapType::iterator dataRef = refClass->d->propertyInitStepMap.find(property);
-    if(data == d->propertyInitStepMap.end()) {
-        return (dataRef == refClass->d->propertyInitStepMap.end());
-    }
-    if(dataRef == refClass->d->propertyInitStepMap.end()) {
-        return (data == d->propertyInitStepMap.end());
-    }
-
-    if(data->second.size() != dataRef->second.size()) {
-        return zffalse;
-    }
-    if(data->second.size() == 0) {
-        return zftrue;
-    }
-    if(this->classIsTypeOf(refClass) || refClass->classIsTypeOf(this)) {
-        return zftrue;
-    }
-
-    for(zfstlmap<const ZFClass *, zfbool>::iterator it = data->second.begin(), itRef = dataRef->second.begin();
-            it != data->second.end();
-            ++it, ++itRef
-            ) {
-        if(it->first != itRef->first) {
-            return zffalse;
-        }
-    }
-    return zftrue;
 }
 
 _ZFP_zfAllocCacheCallback ZFClass::_ZFP_objectAllocWithCacheCallback(void) const {

@@ -573,11 +573,19 @@ public:
     /**
      * @brief whether the property has #ZFPROPERTY_ON_INIT_DECLARE
      */
-    zfbool propertyHasOverrideInitStep(void) const;
+    zfbool propertyInitStepExist(void) const;
     /**
      * @brief whether the property has #ZFPROPERTY_ON_INIT_DECLARE
      */
-    zfbool propertyHasOverrideInitStep(ZF_IN const ZFProperty *property) const;
+    zfbool propertyInitStepExist(ZF_IN const ZFProperty *property) const;
+
+    /**
+     * @brief whether two class has same property init step
+     */
+    zfbool propertyInitStepIsEqual(
+            ZF_IN const ZFProperty *property
+            , ZF_IN const ZFClass *refClass
+            ) const;
 
     // ============================================================
     // class instance methods
@@ -709,10 +717,6 @@ public:
     void _ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *property) const;
     void _ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const;
     void _ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *property) const;
-    zfbool _ZFP_ZFClass_propertyInitStepIsEqual(
-            ZF_IN const ZFProperty *property
-            , ZF_IN const ZFClass *refClass
-            ) const;
 
     _ZFP_zfAllocCacheCallback _ZFP_objectAllocWithCacheCallback(void) const;
     _ZFP_ZFObjectConstructor _ZFP_objectConstructor(void) const;

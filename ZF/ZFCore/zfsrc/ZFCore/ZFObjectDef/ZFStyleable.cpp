@@ -55,6 +55,7 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFObject *anotherStyleable) {
 void ZFStyleable::styleablePropertyGetAllT(
         ZF_OUT ZFCoreArray<const ZFProperty *> &ret
         ) {
+    ret.addFrom(_ZFP_ZFStyleable_propList(this->classData()));
 }
 ZFCoreArray<const ZFProperty *> ZFStyleable::styleablePropertyGetAll(void) {
     ZFCoreArray<const ZFProperty *> ret;
@@ -149,7 +150,7 @@ void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
         if(!anotherCls->classIsTypeOf(property->ownerClass())) {
             continue;
         }
-        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsEqual(property, anotherCls)
+        if(!thisCls->propertyInitStepIsEqual(property, anotherCls)
                 || property->callbackIsValueAccessed(property, anotherStyleableObject)
                 ) {
             this->styleableOnCopyPropertyFrom(anotherStyleable, property);
