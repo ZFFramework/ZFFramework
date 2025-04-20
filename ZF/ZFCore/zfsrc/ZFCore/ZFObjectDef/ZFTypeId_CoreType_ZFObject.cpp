@@ -394,6 +394,17 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserver, void, observerNotifyWith
         , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
         , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserver, void, observerNotifyReversely
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserver, void, observerNotifyReverselyWithSender
+        , ZFMP_IN(ZFObject *, customSender)
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserver, zfany, observerOwner)
 
 // ============================================================

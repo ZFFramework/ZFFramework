@@ -74,6 +74,19 @@ public:
             , ZF_IN_OPT ZFObject *param0 = zfnull
             , ZF_IN_OPT ZFObject *param1 = zfnull
             ) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal void observerNotifyReversely(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const;
+    /** @brief see #ZFObserverGroup */
+    zffinal void observerNotifyReverselyWithSender(
+            ZF_IN ZFObject *customSender
+            , ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const;
 
 public:
     /** @brief see #ZFObserverGroup */

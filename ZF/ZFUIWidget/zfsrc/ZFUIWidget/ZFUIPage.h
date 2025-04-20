@@ -76,7 +76,6 @@ zfclassFwd ZFUIPageManager;
  * -  inherit #ZFUIPage and supply dynamic methods named `pageOnCreateImpl` series,
  *   with same method proto type with the original #pageOnCreate series
  * -  alloc a ZFUIPage directly, #ZFObject::observerAdd to #E_PageOnCreate series
- *   (NOTE: not recommended, you must manually take care of event order)
  */
 zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIPage, ZFObject)
@@ -397,7 +396,6 @@ protected:
      * -  inherit #ZFUIPageManager and supply dynamic methods named `managerOnCreateImpl` series,
      *   with same method proto type with the original #managerOnCreate series
      * -  alloc a ZFUIPageManager directly, #ZFObject::observerAdd to #E_ManagerOnCreate series
-     *   (NOTE: not recommended, you must manually take care of event order)
      */
     virtual void managerOnCreate(void);
     /** @brief see #managerOnCreate */

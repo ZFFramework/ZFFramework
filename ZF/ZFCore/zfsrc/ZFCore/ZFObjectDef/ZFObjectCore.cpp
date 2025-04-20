@@ -436,6 +436,31 @@ void ZFObject::observerNotifyWithSender(
         ZFGlobalObserver().observerNotifyWithSender(customSender, eventId, param0, param1);
     }
 }
+void ZFObject::observerNotifyReversely(
+        ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) {
+    if(d && d->observerHolder) {
+        d->observerHolder->observerNotifyReversely(eventId, param0, param1);
+    }
+    else {
+        ZFGlobalObserver().observerNotifyReverselyWithSender(this, eventId, param0, param1);
+    }
+}
+void ZFObject::observerNotifyReverselyWithSender(
+        ZF_IN ZFObject *customSender
+        , ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) {
+    if(d && d->observerHolder) {
+        d->observerHolder->observerNotifyReverselyWithSender(customSender, eventId, param0, param1);
+    }
+    else {
+        ZFGlobalObserver().observerNotifyReverselyWithSender(customSender, eventId, param0, param1);
+    }
+}
 ZFObserver &ZFObject::observerHolder(void) {
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFObjectPrivate);
@@ -584,7 +609,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
             || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             ) {
         if(_objectRetainCount == 1) {
-            this->observerNotify(ZFObject::E_ObjectBeforeDealloc());
+            this->observerNotifyReversely(ZFObject::E_ObjectBeforeDealloc());
             if(_objectRetainCount > 1) {
                 this->objectOnRelease();
                 this->observerRemoveAll(ZFObject::E_ObjectBeforeDealloc());
@@ -947,6 +972,17 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerNotify
         , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, void, observerNotifyWithSender
+        , ZFMP_IN(ZFObject *, customSender)
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerNotifyReversely
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, void, observerNotifyReverselyWithSender
         , ZFMP_IN(ZFObject *, customSender)
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN_OPT(ZFObject *, param0, zfnull)

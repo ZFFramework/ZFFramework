@@ -327,8 +327,8 @@ public:
             ) {
         if(page->pageResumed()) {
             zfobj<v_ZFUIPagePauseReason> pauseReasonHolder(pauseReason);
-            page->pageManager()->observerNotifyWithSender(page, ZFUIPageManager::E_PageOnPause(), pauseReasonHolder, siblingPage);
-            page->observerNotify(ZFUIPage::E_PageOnPause(), pauseReasonHolder, siblingPage);
+            page->pageManager()->observerNotifyReverselyWithSender(page, ZFUIPageManager::E_PageOnPause(), pauseReasonHolder, siblingPage);
+            page->observerNotifyReversely(ZFUIPage::E_PageOnPause(), pauseReasonHolder, siblingPage);
 
             const ZFMethod *m = page->classData()->methodForName("pageOnPauseImpl");
             if(m) {
@@ -340,8 +340,8 @@ public:
     static void pageOnDestroy(ZF_IN ZFUIPage *page) {
         pageOnPause(page, v_ZFUIPagePauseReason::e_BeforeDestroy, zfnull);
         if(page->pageCreated()) {
-            page->pageManager()->observerNotifyWithSender(page, ZFUIPageManager::E_PageOnDestroy());
-            page->observerNotify(ZFUIPage::E_PageOnDestroy());
+            page->pageManager()->observerNotifyReverselyWithSender(page, ZFUIPageManager::E_PageOnDestroy());
+            page->observerNotifyReversely(ZFUIPage::E_PageOnDestroy());
 
             const ZFMethod *m = page->classData()->methodForName("pageOnDestroyImpl");
             if(m) {
@@ -633,7 +633,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause) {
     this->managerOnPause();
 
     d->managerResumed = zffalse;
-    this->observerNotify(ZFUIPageManager::E_ManagerOnPause());
+    this->observerNotifyReversely(ZFUIPageManager::E_ManagerOnPause());
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
     ZFCoreAssert(d->managerCreated);
@@ -666,7 +666,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
     d->managerCreated = zffalse;
     d->managerDestroyRunning = zffalse;
     d->pageAniOverrideList.removeAll();
-    this->observerNotify(ZFUIPageManager::E_ManagerOnDestroy());
+    this->observerNotifyReversely(ZFUIPageManager::E_ManagerOnDestroy());
     zfRelease(this);
 }
 

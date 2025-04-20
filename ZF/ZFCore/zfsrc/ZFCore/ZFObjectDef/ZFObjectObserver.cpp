@@ -384,6 +384,51 @@ void ZFObserver::observerNotifyWithSender(
         ZFCoreMutexUnlock();
     }
 }
+void ZFObserver::observerNotifyReverselyWithSender(
+        ZF_IN ZFObject *customSender
+        , ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) const {
+    if(eventId == zfidentityInvalid()) {
+        return;
+    }
+
+    ZFCoreMutexLock();
+    zfstldeque<_ZFP_ZFObserverData *> toNotify;
+    _ZFP_ZFObserverData *toDelete = zfnull;
+
+    d->observerNotifyPrepare(toNotify, toDelete, eventId, d->observerOwner);
+    ZFArgs zfargs;
+    zfargs
+        .eventId(eventId)
+        .sender(customSender)
+        .param0(param0)
+        .param1(param1)
+        ;
+    if(d->observerOwner != zfnull) {
+        d->observerOwner->observerOnEvent(zfargs);
+        ZFGlobalObserver().d->observerNotifyPrepare(toNotify, toDelete, eventId, d->observerOwner);
+    }
+    ZFCoreMutexUnlock();
+
+    if(!toNotify.empty()) {
+        for(zfstlsize i = toNotify.size() - 1; i != (zfstlsize)-1 && !zfargs.eventFiltered(); --i) {
+            const _ZFP_ZFObserverData &observerData = *(toNotify[i]);
+            observerData.observer.execute(zfargs);
+        }
+    }
+
+    if(toDelete != zfnull) {
+        ZFCoreMutexLock();
+        do {
+            _ZFP_ZFObserverData *t = toDelete;
+            toDelete = toDelete->pNext;
+            zfpoolDelete(t);
+        } while(toDelete != zfnull);
+        ZFCoreMutexUnlock();
+    }
+}
 
 void ZFObserver::observerHasAddStateAttach(
         ZF_IN zfidentity eventId

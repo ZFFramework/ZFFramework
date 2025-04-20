@@ -441,6 +441,31 @@ void ZFObserverGroup::observerNotifyWithSender(
     ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
     realTarget.observerNotifyWithSender(customSender, eventId, param0, param1);
 }
+void ZFObserverGroup::observerNotifyReversely(
+        ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) const {
+    ZFObject *target = d->target;
+    if(target == zfnull && d->targetObserver == zfnull) {
+        return;
+    }
+    ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
+    realTarget.observerNotifyReversely(eventId, param0, param1);
+}
+void ZFObserverGroup::observerNotifyReverselyWithSender(
+        ZF_IN ZFObject *customSender
+        , ZF_IN zfidentity eventId
+        , ZF_IN_OPT ZFObject *param0 /* = zfnull */
+        , ZF_IN_OPT ZFObject *param1 /* = zfnull */
+        ) const {
+    ZFObject *target = d->target;
+    if(target == zfnull && d->targetObserver == zfnull) {
+        return;
+    }
+    ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
+    realTarget.observerNotifyReverselyWithSender(customSender, eventId, param0, param1);
+}
 
 ZFObserverGroup::ZFObserverGroup(
         ZF_IN ZFObject *owner
@@ -573,6 +598,17 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotif
         , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverGroup, void, observerNotifyWithSender
+        , ZFMP_IN(ZFObject *, customSender)
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, void, observerNotifyReversely
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+        , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverGroup, void, observerNotifyReverselyWithSender
         , ZFMP_IN(ZFObject *, customSender)
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN_OPT(ZFObject *, param0, zfnull)

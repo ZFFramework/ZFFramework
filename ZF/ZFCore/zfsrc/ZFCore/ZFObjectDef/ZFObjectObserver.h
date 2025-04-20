@@ -196,6 +196,21 @@ public:
             , ZF_IN_OPT ZFObject *param0 = zfnull
             , ZF_IN_OPT ZFObject *param1 = zfnull
             ) const;
+    /** @brief see #ZFObject::observerNotify */
+    zffinal inline void observerNotifyReversely(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const {
+        this->observerNotifyReverselyWithSender(this->observerOwner(), eventId, param0, param1);
+    }
+    /** @brief see #ZFObject::observerNotify */
+    zffinal void observerNotifyReverselyWithSender(
+            ZF_IN ZFObject *customSender
+            , ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const;
 
 public:
     /** @brief util to #observerAdd */
