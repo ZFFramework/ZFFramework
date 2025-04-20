@@ -345,7 +345,6 @@ ZFMETHOD_DEFINE_0(ZFUIButtonGroup, ZFUIView *, container) {
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIButtonGroup
         , ZFMP_IN(ZFUIView *, container)
         ) {
-    this->objectOnInit();
     this->containerAttach(container);
 }
 

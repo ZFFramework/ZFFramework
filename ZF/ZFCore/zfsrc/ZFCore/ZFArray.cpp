@@ -17,7 +17,6 @@ ZFOBJECT_REGISTER(ZFArray)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFArray
         , ZFMP_IN(ZFContainer *, another)
         ) {
-    this->objectOnInit();
     zfself::addFrom(another);
 }
 void ZFArray::objectOnInit(void) {

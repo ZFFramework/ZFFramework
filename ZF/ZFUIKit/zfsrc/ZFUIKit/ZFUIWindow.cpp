@@ -52,7 +52,6 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUISysWindow>, sysWindowForView
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIWindow
         , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
         ) {
-    this->objectOnInit();
     if(ownerSysWindow != zfnull) {
         this->ownerSysWindow(ownerSysWindow);
     }

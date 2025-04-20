@@ -651,8 +651,8 @@ zfauto ZFClass::newInstance(void) const {
     else {
         obj = d->objectConstruct();
         if(obj != zfnull) {
-            obj->objectOnInit();
-            obj->_ZFP_ZFObjectCheckOnInit();
+            obj->_ZFP_ZFObject_objectOnInit();
+            obj->_ZFP_ZFObject_objectOnInitFinish();
         }
     }
     zfauto ret;
@@ -670,8 +670,8 @@ zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const
         obj = d->objectConstruct();
         if(obj != zfnull) {
             obj->d = dObj;
-            obj->objectOnInit();
-            obj->_ZFP_ZFObjectCheckOnInit();
+            obj->_ZFP_ZFObject_objectOnInit();
+            obj->_ZFP_ZFObject_objectOnInitFinish();
         }
     }
     zfauto ret;
@@ -738,7 +738,6 @@ zfauto ZFClass::newInstanceDetail(
 }
 
 void *ZFClass::newInstanceGenericBegin(void) const {
-    ZFCoreMutexLocker();
     return d->objectConstruct();
 }
 zfbool ZFClass::newInstanceGenericCheck(
@@ -752,7 +751,10 @@ zfbool ZFClass::newInstanceGenericCheck(
             ) {
         return zffalse;
     }
+
     ZFObject *obj = (ZFObject *)token;
+    obj->_ZFP_ZFObject_objectOnInit();
+
     zfargs._ZFP_ZFArgs_removeConst()
         .sender(obj)
         .ownerMethod(objectOnInitMethod)
@@ -762,33 +764,27 @@ zfbool ZFClass::newInstanceGenericCheck(
     objectOnInitMethod->methodGenericInvoker()(zfargs);
     zfbool success = zfargs.success();
 
-    if(!success && obj->d) {
-        ZFCoreMutexLocker();
-        // since objectOnInit already called,
-        // we must ensure init and destroy the object,
-        // then recreate the token
-        obj->_ZFP_ZFObjectCheckOnInit();
-        zfunsafe_zfRelease(obj);
-        token = d->objectConstruct();
-    }
-    else if(success && obj->d && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
-        ZFCoreMutexLocker();
-        success = zffalse;
-        if(!zfargs.ignoreError()) {
-            v_zfstring *error = obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed);
-            if(error != zfnull) {
-                zfargs.errorHint(error->zfv);
+    if(obj->d) {
+        if(success && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
+            success = zffalse;
+            if(!zfargs.ignoreError()) {
+                v_zfstring *error = obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed);
+                if(error != zfnull) {
+                    zfargs.errorHint(error->zfv);
+                }
             }
+            // remove for safety
+            obj->objectTagRemove(ZFObjectTagKeyword_newInstanceGenericFailed);
         }
-        // remove for safety
-        obj->objectTagRemove(ZFObjectTagKeyword_newInstanceGenericFailed);
 
-        // since objectOnInit already called,
-        // we must ensure init and destroy the object,
-        // then recreate the token
-        obj->_ZFP_ZFObjectCheckOnInit();
-        zfunsafe_zfRelease(obj);
-        token = d->objectConstruct();
+        if(!success) {
+            // since objectOnInit already called,
+            // we must ensure init and destroy the object,
+            // then recreate the token
+            obj->_ZFP_ZFObject_objectOnInitFinish();
+            zfunsafe_zfRelease(obj);
+            token = d->objectConstruct();
+        }
     }
     return success;
 }
@@ -798,7 +794,7 @@ zfauto ZFClass::newInstanceGenericEnd(
         ) const {
     ZFObject *obj = (ZFObject *)token;
     if(objectOnInitMethodInvokeSuccess) {
-        obj->_ZFP_ZFObjectCheckOnInit();
+        obj->_ZFP_ZFObject_objectOnInitFinish();
         zfunsafe_zfblockedRelease(obj);
         return obj;
     }

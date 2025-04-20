@@ -60,7 +60,6 @@ protected:
         ZF_IN void *holdedData
         , ZF_IN ZFValueHolderType holderType
         ) {
-        this->objectOnInit();
         this->holdedData = holdedData;
         this->holderType = holderType;
     }

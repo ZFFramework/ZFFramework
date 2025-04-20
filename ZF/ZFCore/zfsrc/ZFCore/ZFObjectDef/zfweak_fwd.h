@@ -33,7 +33,6 @@ public:
 
 protected:
     virtual void objectOnInit(ZF_IN ZFObject *obj) {
-        this->objectOnInit();
         this->_ZFP_obj = obj;
     }
 

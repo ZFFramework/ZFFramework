@@ -17,7 +17,6 @@ ZFOBJECT_REGISTER(ZFUIImageLoadTask)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIImageLoadTask
         , ZFMP_IN(const ZFInput &, input)
         ) {
-    this->objectOnInit();
     this->input(input);
 }
 

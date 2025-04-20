@@ -39,7 +39,6 @@ ZFOBJECT_REGISTER(ZFMap)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFMap
         , ZFMP_IN(ZFKeyValueContainer *, another)
         ) {
-    this->objectOnInit();
     zfself::addFrom(another);
 }
 void ZFMap::objectOnInit(void) {

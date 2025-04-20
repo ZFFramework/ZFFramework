@@ -72,7 +72,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
         , ZFMP_IN(const ZFListener &, implOnStart)
         , ZFMP_IN_OPT(const ZFListener &, implOnStop, zfnull)
         ) {
-    this->objectOnInit();
     if(implOnStart) {
         this->on(zfself::E_TaskOnStart(), implOnStart);
     }

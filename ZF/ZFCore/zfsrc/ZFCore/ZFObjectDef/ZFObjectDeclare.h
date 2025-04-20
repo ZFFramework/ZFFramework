@@ -250,8 +250,6 @@ public:
 // ============================================================
 /**
  * @brief util macro for subclass to declare #ZFObject::objectOnInit as #ZFMethod
- *
- * note: you must call `this->objectOnInit();` before anything
  */
 #define ZFOBJECT_ON_INIT_INLINE_1( \
       ZFMP_0 \
@@ -624,14 +622,11 @@ public:
 // ============================================================
 /**
  * @brief util macro to declare #ZFObject::objectOnInit as #ZFMETHOD_USER_REGISTER_1
- *
- * note: you must not call `this->objectOnInit();`
  */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_1(methodInvokerAction, ownerClassSig \
     , ZFMP_0 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_1({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -644,7 +639,6 @@ public:
     , ZFMP_1 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_2({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -659,7 +653,6 @@ public:
     , ZFMP_2 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_3({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -676,7 +669,6 @@ public:
     , ZFMP_3 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_4({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -695,7 +687,6 @@ public:
     , ZFMP_4 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_5({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -716,7 +707,6 @@ public:
     , ZFMP_5 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_6({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -739,7 +729,6 @@ public:
     , ZFMP_6 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_7({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -764,7 +753,6 @@ public:
     , ZFMP_7 \
     ) \
     ZFMETHOD_USER_REGISTER_DETAIL_8({ \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
@@ -782,14 +770,11 @@ public:
 // ============================================================
 /**
  * @brief util macro to declare #ZFObject::objectOnInit as #ZFMethodUserRegister_1
- *
- * note: you must not call `this->objectOnInit();`
  */
 #define ZFObjectOnInitUserRegister_1(resultMethod, methodInvokerAction, ownerClass \
     , ZFMP_0 \
     ) \
     ZFMethodUserRegisterDetail_1(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -800,7 +785,6 @@ public:
     , ZFMP_1 \
     ) \
     ZFMethodUserRegisterDetail_2(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -813,7 +797,6 @@ public:
     , ZFMP_2 \
     ) \
     ZFMethodUserRegisterDetail_3(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -828,7 +811,6 @@ public:
     , ZFMP_3 \
     ) \
     ZFMethodUserRegisterDetail_4(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -845,7 +827,6 @@ public:
     , ZFMP_4 \
     ) \
     ZFMethodUserRegisterDetail_5(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -864,7 +845,6 @@ public:
     , ZFMP_5 \
     ) \
     ZFMethodUserRegisterDetail_6(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -885,7 +865,6 @@ public:
     , ZFMP_6 \
     ) \
     ZFMethodUserRegisterDetail_7(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -908,7 +887,6 @@ public:
     , ZFMP_7 \
     ) \
     ZFMethodUserRegisterDetail_8(resultMethod, { \
-            invokerObject->_ZFP_ZFObject_objectOnInit(); \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
@@ -927,8 +905,6 @@ zfclassFwd ZFMP;
 zfclassFwd ZFMethodDynamicRegisterParam;
 /**
  * @brief util to declare #ZFObject::objectOnInit as #ZFMethodDynamicRegister
- *
- * note: you have no need to call `invokerObject->objectOnInit();`
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFObjectOnInitDynamicRegister(
         ZF_IN const ZFClass *cls
@@ -938,8 +914,6 @@ extern ZFLIB_ZFCore const ZFMethod *ZFObjectOnInitDynamicRegister(
         );
 /**
  * @brief util to declare #ZFObject::objectOnInit as #ZFMethodDynamicRegister
- *
- * note: you have no need to call `invokerObject->objectOnInit();`
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFObjectOnInitDynamicRegister(
         ZF_IN const ZFClass *cls

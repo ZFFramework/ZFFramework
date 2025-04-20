@@ -182,7 +182,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFRegExp
         , ZFMP_IN(const zfstring &, pattern)
         , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
         ) {
-    this->objectOnInit();
     zfself::pattern(pattern, flag);
 }
 void ZFRegExp::objectOnInit(void) {

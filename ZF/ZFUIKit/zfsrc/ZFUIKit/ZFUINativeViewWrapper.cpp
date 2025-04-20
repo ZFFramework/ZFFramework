@@ -8,7 +8,6 @@ ZFOBJECT_REGISTER(ZFUINativeViewWrapper)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUINativeViewWrapper
         , ZFMP_IN(void *, nativeImplView)
         ) {
-    this->objectOnInit();
     zfself::nativeImplView(nativeImplView, zfnull, zftrue);
 }
 

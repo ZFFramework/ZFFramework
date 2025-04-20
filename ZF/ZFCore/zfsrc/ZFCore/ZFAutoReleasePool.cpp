@@ -29,7 +29,6 @@ ZF_GLOBAL_INITIALIZER_END(ZFAutoReleasePoolCleanup)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAutoReleasePool
         , ZFMP_IN(zfindex, maxSize)
         ) {
-    this->objectOnInit();
     d->maxSize = maxSize;
 }
 void ZFAutoReleasePool::objectOnInit(void) {

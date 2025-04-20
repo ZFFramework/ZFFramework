@@ -202,14 +202,12 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFAudio, zffloat, volume) {
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
         , ZFMP_IN(const ZFInput &, input)
         ) {
-    this->objectOnInit();
     this->load(input);
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
         , ZFMP_IN(const zfstring &, url)
         ) {
-    this->objectOnInit();
     this->load(url);
 }
 

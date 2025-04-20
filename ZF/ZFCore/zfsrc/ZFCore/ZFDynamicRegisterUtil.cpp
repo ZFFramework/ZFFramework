@@ -727,7 +727,6 @@ ZFDynamic &ZFDynamic::onInit(
         }
         ZFLISTENER(onInit
                 ) {
-            zfargs.sender()->_ZFP_ZFObject_objectOnInit();
             ZFDynamic::onInitImpl(zfargs);
         } ZFLISTENER_END()
         implWrap = onInit;

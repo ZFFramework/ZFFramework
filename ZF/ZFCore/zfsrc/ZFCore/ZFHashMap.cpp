@@ -39,7 +39,6 @@ ZFOBJECT_REGISTER(ZFHashMap)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFHashMap
         , ZFMP_IN(ZFKeyValueContainer *, another)
         ) {
-    this->objectOnInit();
     zfself::addFrom(another);
 }
 void ZFHashMap::objectOnInit(void) {

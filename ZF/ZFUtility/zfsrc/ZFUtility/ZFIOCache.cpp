@@ -374,7 +374,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFIOCacheLoadTask
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
         ) {
-    this->objectOnInit();
     this->input(input);
     this->loadImpl(loadImpl);
 }

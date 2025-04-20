@@ -11,7 +11,6 @@ ZFOBJECT_REGISTER(ZFWaitTask)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFWaitTask
         , ZFMP_IN(zftimet, duration)
         ) {
-    this->objectOnInit();
     this->duration(duration);
 }
 
@@ -44,7 +43,6 @@ ZFOBJECT_REGISTER(ZFAsyncTask)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAsyncTask
         , ZFMP_IN(const ZFListener &, impl)
         ) {
-    this->objectOnInit();
     this->impl(impl);
 }
 
@@ -77,7 +75,6 @@ ZFOBJECT_REGISTER(ZFPostTask)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFPostTask
         , ZFMP_IN(const ZFListener &, impl)
         ) {
-    this->objectOnInit();
     this->impl(impl);
 }
 
@@ -111,7 +108,6 @@ ZFOBJECT_REGISTER(ZFAsyncIOCustomTask)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAsyncIOCustomTask
         , ZFMP_IN(const ZFListener &, impl)
         ) {
-    this->objectOnInit();
     this->impl(impl);
 }
 
@@ -145,7 +141,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFAsyncIOTask
         , ZFMP_IN(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)
         ) {
-    this->objectOnInit();
     this->output(output);
     this->input(input);
 }

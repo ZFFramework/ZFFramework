@@ -17,8 +17,6 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     ZFLISTENER_1(methodImplWrapper
             , ZFListener, methodImpl
             ) {
-        // call `this->objectOnInit();`
-        zfargs.sender()->_ZFP_ZFObject_objectOnInit();
         methodImpl.execute(zfargs);
     } ZFLISTENER_END()
     return ZFMethodDynamicRegister(
@@ -49,6 +47,10 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         zfstringAppend(errorHint, "dynamic objectOnInit must take at least 1 param");
         return zfnull;
     }
+    if(param.methodImpl() == zfnull && param.methodGenericInvoker() == zfnull) {
+        zfstringAppend(errorHint, "dynamic objectOnInit with no impl");
+        return zfnull;
+    }
 
     ZFMethodDynamicRegisterParam paramTmp = param;
     paramTmp.ownerClass(cls);
@@ -57,22 +59,9 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     paramTmp.methodType(ZFMethodTypeVirtual);
     paramTmp.methodAccessType(ZFMethodAccessTypeProtected);
 
-    if(param.methodImpl()) {
-        ZFListener methodImpl = param.methodImpl();
-        ZFLISTENER_1(methodImplWrapper
-                , ZFListener, methodImpl
-                ) {
-            // call `this->objectOnInit();`
-            zfargs.sender()->_ZFP_ZFObject_objectOnInit();
-            methodImpl.execute(zfargs);
-        } ZFLISTENER_END()
-        paramTmp.methodImpl(methodImplWrapper);
-        const ZFMethod *method = ZFMethodDynamicRegister(paramTmp, errorHint);
-        paramTmp.methodImpl(methodImpl);
-        return method;
-    }
-    else if(param.methodGenericInvoker() == zfnull) {
-        return ZFMethodDynamicRegister(param, errorHint);
+    if(param.methodGenericInvoker() == zfnull) {
+        paramTmp.methodImpl(param.methodImpl());
+        return ZFMethodDynamicRegister(paramTmp, errorHint);
     }
 
     ZFMethodGenericInvoker methodGISaved = paramTmp.methodGenericInvoker();

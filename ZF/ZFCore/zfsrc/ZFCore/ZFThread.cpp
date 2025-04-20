@@ -253,7 +253,6 @@ ZFMETHOD_DEFINE_2(ZFThread, ZFThread *, executeInThread
 ZFOBJECT_ON_INIT_DEFINE_1(ZFThread
         , ZFMP_IN(const ZFListener &, runnable)
         ) {
-    this->objectOnInit();
     zfself::threadRunnable(runnable);
 }
 

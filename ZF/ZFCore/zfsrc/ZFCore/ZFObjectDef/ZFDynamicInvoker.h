@@ -57,7 +57,7 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
     /** @brief init with value */
-    virtual void objectOnInit(ZF_IN const zfchar *zfv) {this->objectOnInit(); this->zfv(zfv);}
+    virtual void objectOnInit(ZF_IN const zfchar *zfv) {this->zfv(zfv);}
 };
 /** @brief see #ZFDI_WrapperBase */
 zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextend ZFDI_WrapperBase {

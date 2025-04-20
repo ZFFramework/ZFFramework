@@ -67,7 +67,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFCompress
         , ZFMP_IN(const ZFOutput &, outputZip)
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         ) {
-    this->objectOnInit();
     this->open(outputZip, compressLevel);
 }
 void ZFCompress::objectOnInit(void) {
@@ -182,7 +181,6 @@ ZFMETHOD_DEFINE_1(ZFDecompress, void, findClose
 ZFOBJECT_ON_INIT_DEFINE_1(ZFDecompress
         , ZFMP_IN_OUT(const ZFInput &, inputZip)
         ) {
-    this->objectOnInit();
     this->open(inputZip);
 }
 void ZFDecompress::objectOnInit(void) {

@@ -73,7 +73,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest
         , ZFMP_IN(const zfstring &, url)
         , ZFMP_IN_OPT(ZFHttpMethod, method, v_ZFHttpMethod::e_GET)
         ) {
-    this->objectOnInit();
     this->url(url);
     this->httpMethod(method);
 }

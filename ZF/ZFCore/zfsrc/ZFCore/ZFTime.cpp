@@ -458,7 +458,6 @@ ZFMETHOD_DEFINE_0(ZFTime, const ZFTimeValue &, timeZoneLocal) {
 ZFOBJECT_ON_INIT_DEFINE_1(ZFTime
         , ZFMP_IN(ZFTime *, time)
         ) {
-    this->objectOnInit();
     if(time != zfnull) {
         d->copyFrom(time->d);
     }
@@ -467,7 +466,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFTime
         , ZFMP_IN(const ZFTimeValue &, tv)
         , ZFMP_IN_OPT(const ZFTimeValue &, timeZone, ZFTime::timeZoneLocal())
         ) {
-    this->objectOnInit();
     zfself::timeZone(timeZone);
     zfself::timeValue(tv);
 }
@@ -475,7 +473,6 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFTime
         , ZFMP_IN(const ZFTimeInfo &, ti)
         , ZFMP_IN_OPT(const ZFTimeValue &, timeZone, ZFTime::timeZoneLocal())
         ) {
-    this->objectOnInit();
     zfself::timeInfo(ti, timeZone);
 }
 

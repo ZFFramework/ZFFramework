@@ -76,12 +76,10 @@ zfbool ZFEnum::serializableOnSerializeToData(
 }
 
 void ZFEnum::objectOnInit(ZF_IN zfuint value) {
-    this->objectOnInit();
     zfself::enumValue(value);
 }
 
 void ZFEnum::objectOnInit(ZF_IN ZFEnum *another) {
-    this->objectOnInit();
     if(another != zfnull && another->classData()->classIsTypeOf(this->classData())) {
         zfself::enumValue(another->enumValue());
     }

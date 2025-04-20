@@ -83,7 +83,6 @@ protected:
     /** @brief init with value */
     template<typename T_Type>
     void objectOnInit(ZF_IN const ZFCoreArray<T_Type> &v) {
-        this->objectOnInit();
         this->zfv = v.refNew();
         ZFTypeInfo *t = zfpoolNew(ZFTypeId<T_Type>);
         this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
@@ -92,7 +91,6 @@ protected:
 
     /** @brief init with #elementTypeInit */
     virtual void objectOnInit(ZF_IN const zfstring &elementTypeId) {
-        this->objectOnInit();
         this->elementTypeInit(elementTypeId);
     }
 

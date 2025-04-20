@@ -52,7 +52,6 @@ ZFMETHOD_DEFINE_1(ZFUIImageView, void, measureImageView
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIImageView
         , ZFMP_IN(ZFUIImage *, image)
         ) {
-    this->objectOnInit();
     this->image(image);
 }
 void ZFUIImageView::objectOnInit(void) {

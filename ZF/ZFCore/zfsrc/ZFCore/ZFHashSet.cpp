@@ -10,7 +10,6 @@ ZFOBJECT_REGISTER(ZFHashSet)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFHashSet
         , ZFMP_IN(ZFContainer *, another)
         ) {
-    this->objectOnInit();
     zfself::addFrom(another);
 }
 void ZFHashSet::objectOnInit(void) {

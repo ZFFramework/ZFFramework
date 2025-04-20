@@ -47,7 +47,6 @@ protected:
     }
     /** @brief init with stopImpl */
     virtual inline void objectOnInit(ZF_IN const ZFListener &stopImpl) {
-        this->objectOnInit();
         this->stopImpl(stopImpl);
     }
 private:

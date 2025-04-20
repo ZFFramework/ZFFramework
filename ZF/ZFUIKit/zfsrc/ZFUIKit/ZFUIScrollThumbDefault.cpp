@@ -14,7 +14,6 @@ private:
 
 protected:
     virtual void objectOnInit(ZF_IN ZFUIImageView *thumbView) {
-        this->objectOnInit();
         this->thumbView = thumbView;
     }
     zfoverride

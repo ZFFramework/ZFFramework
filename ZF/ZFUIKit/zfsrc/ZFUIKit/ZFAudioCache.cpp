@@ -88,19 +88,16 @@ ZFMETHOD_DEFINE_1(ZFAudioPlayTask, void, load
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioPlayTask
         , ZFMP_IN(ZFAudio *, impl)
         ) {
-    this->objectOnInit();
     this->load(impl);
 }
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioPlayTask
         , ZFMP_IN(const ZFInput &, input)
         ) {
-    this->objectOnInit();
     this->load(input);
 }
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioPlayTask
         , ZFMP_IN(const zfstring &, url)
         ) {
-    this->objectOnInit();
     this->load(url);
 }
 

@@ -204,7 +204,6 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = v_ZFR
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAnimation
         , ZFMP_IN(ZFObject *, target)
         ) {
-    this->objectOnInit();
     this->target(target);
 }
 
@@ -227,7 +226,6 @@ ZFOBJECT_REGISTER(ZFAniTask)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAniTask
         , ZFMP_IN(ZFAnimation *, impl)
         ) {
-    this->objectOnInit();
     this->impl(impl);
 }
 

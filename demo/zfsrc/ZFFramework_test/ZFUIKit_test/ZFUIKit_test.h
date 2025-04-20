@@ -98,7 +98,6 @@ protected:
             ZF_IN const ZFListener &buttonTextGetter
             , ZF_IN const ZFListener &buttonClickListener
             ) {
-        this->objectOnInit();
         this->buttonTextGetter(buttonTextGetter);
         this->buttonClickListener(buttonClickListener);
     }

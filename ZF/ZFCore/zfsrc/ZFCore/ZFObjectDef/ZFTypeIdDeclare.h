@@ -252,7 +252,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     protected: \
         /** @brief init with value */ \
         virtual void objectOnInit(ZF_IN _ZFP_PropType const &value) { \
-            this->objectOnInit(); \
             this->zfv = value; \
         } \
         zfoverride \

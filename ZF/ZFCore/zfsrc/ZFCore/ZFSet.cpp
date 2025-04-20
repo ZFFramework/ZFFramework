@@ -10,7 +10,6 @@ ZFOBJECT_REGISTER(ZFSet)
 ZFOBJECT_ON_INIT_DEFINE_1(ZFSet
         , ZFMP_IN(ZFContainer *, another)
         ) {
-    this->objectOnInit();
     zfself::addFrom(another);
 }
 void ZFSet::objectOnInit(void) {
