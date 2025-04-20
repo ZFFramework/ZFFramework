@@ -596,44 +596,70 @@ zfbool ZFUIButtonBasic::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
 void ZFUIButtonBasic::buttonStateOnUpdate(void) {
     zfsuper::buttonStateOnUpdate();
 
-    #define _ZFP_ZFUIButtonBasic_buttonStateOn(T_State) \
-        if(d->labelView != zfnull) { \
-            if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, label##T_State), this)) { \
-                d->labelView->styleableCopyFrom(this->label##T_State()); \
+    ZFUIButtonState buttonState = this->buttonState();
+
+    #define _ZFP_ZFUIButtonBasic_buttonStateUpdate(T_Type, T_Component) \
+        if(d->T_Component##View) { \
+            T_Type *stateNormal = this->T_Component(v_ZFUIButtonState::e_Normal); \
+            const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll(); \
+            T_Type *stateCk0 = zfnull; \
+            T_Type *stateCk1 = zfnull; \
+            T_Type *stateCk2 = zfnull; \
+            switch(buttonState) { \
+                case v_ZFUIButtonState::e_Normal: \
+                    break; \
+                case v_ZFUIButtonState::e_Highlighted: \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Highlighted), this)) { \
+                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_Highlighted); \
+                    } \
+                    break; \
+                case v_ZFUIButtonState::e_Checked: \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Checked), this)) { \
+                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_Checked); \
+                    } \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Highlighted), this)) { \
+                        (!stateCk0 ? stateCk0 : stateCk1) = this->T_Component(v_ZFUIButtonState::e_Highlighted); \
+                    } \
+                    break; \
+                case v_ZFUIButtonState::e_CheckedHighlighted: \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##CheckedHighlighted), this)) { \
+                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_CheckedHighlighted); \
+                    } \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Checked), this)) { \
+                        (!stateCk0 ? stateCk0 : stateCk1) = this->T_Component(v_ZFUIButtonState::e_Checked); \
+                    } \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Highlighted), this)) { \
+                        (!stateCk0 ? stateCk0 : (!stateCk1 ? stateCk1 : stateCk2)) = this->T_Component(v_ZFUIButtonState::e_Highlighted); \
+                    } \
+                    break; \
+                case v_ZFUIButtonState::e_Disabled: \
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Disabled), this)) { \
+                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_Disabled); \
+                    } \
+                    break; \
+                default: \
+                    ZFCoreCriticalShouldNotGoHere(); \
+                    break; \
             } \
-            d->labelViewUpdate(); \
-        } \
-        if(d->iconView != zfnull) { \
-            if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, icon##T_State), this)) { \
-                d->iconView->styleableCopyFrom(this->icon##T_State()); \
+            for(zfindex i = 0; i < allProp.count(); ++i) { \
+                const ZFProperty *prop = allProp[i]; \
+                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) { \
+                    ZFPropertyCopy(prop, d->T_Component##View, stateCk0); \
+                } \
+                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) { \
+                    ZFPropertyCopy(prop, d->T_Component##View, stateCk1); \
+                } \
+                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) { \
+                    ZFPropertyCopy(prop, d->T_Component##View, stateCk2); \
+                } \
+                else { \
+                    ZFPropertyCopy(prop, d->T_Component##View, stateNormal); \
+                } \
             } \
-            d->iconViewUpdate(); \
-        } \
-        if(d->bgView != zfnull) { \
-            if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bg##T_State), this)) { \
-                d->bgView->styleableCopyFrom(this->bg##T_State()); \
-            } \
-            d->bgViewUpdate(); \
         }
-    switch(this->buttonState()) {
-        case v_ZFUIButtonState::e_Normal:
-            _ZFP_ZFUIButtonBasic_buttonStateOn(Normal)
-            break;
-        case v_ZFUIButtonState::e_Highlighted:
-            _ZFP_ZFUIButtonBasic_buttonStateOn(Highlighted)
-            break;
-        case v_ZFUIButtonState::e_Checked:
-            _ZFP_ZFUIButtonBasic_buttonStateOn(Checked)
-            break;
-        case v_ZFUIButtonState::e_CheckedHighlighted:
-            _ZFP_ZFUIButtonBasic_buttonStateOn(CheckedHighlighted)
-            break;
-        case v_ZFUIButtonState::e_Disabled:
-            _ZFP_ZFUIButtonBasic_buttonStateOn(Disabled)
-            break;
-        default:
-            break;
-    }
+    _ZFP_ZFUIButtonBasic_buttonStateUpdate(ZFUITextView, label)
+    _ZFP_ZFUIButtonBasic_buttonStateUpdate(ZFUIImageView, icon)
+    _ZFP_ZFUIButtonBasic_buttonStateUpdate(ZFUIImageView, bg)
 }
 
 const ZFClass *ZFUIButtonBasic::labelViewClass(void) {

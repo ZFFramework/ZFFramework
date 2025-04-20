@@ -70,11 +70,13 @@ zfclassFwd ZFUIPageManager;
  * the old one would be paused to background,
  * with a page switch animation implemented by #pageAniOnPrepare\n
  * \n
- * to implement your own page, either:
+ * to implement your own page, by any of these methods:
  * -  inherit #ZFUIPage and override #pageOnCreate series,
  *   construct your page view and add to #pageView
- * -  alloc a ZFUIPage, #ZFObject::observerAdd to #E_PageOnCreate,
- *   and perform additional page create steps
+ * -  inherit #ZFUIPage and supply dynamic methods named `pageOnCreateImpl` series,
+ *   with same method proto type with the original #pageOnCreate series
+ * -  alloc a ZFUIPage directly, #ZFObject::observerAdd to #E_PageOnCreate series
+ *   (NOTE: not recommended, you must manually take care of event order)
  */
 zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIPage, ZFObject)
@@ -387,13 +389,22 @@ public:
     ZFMETHOD_DECLARE_0(void, managerDestroy)
 
 protected:
-    /** @brief for subclass to do actual works */
+    /**
+     * @brief for subclass to do actual works
+     *
+     * similar to #ZFUIPage, you may implement your own page manager, by any of these methods:
+     * -  inherit #ZFUIPageManager and override #managerOnCreate series
+     * -  inherit #ZFUIPageManager and supply dynamic methods named `managerOnCreateImpl` series,
+     *   with same method proto type with the original #managerOnCreate series
+     * -  alloc a ZFUIPageManager directly, #ZFObject::observerAdd to #E_ManagerOnCreate series
+     *   (NOTE: not recommended, you must manually take care of event order)
+     */
     virtual void managerOnCreate(void);
-    /** @brief for subclass to do actual works */
+    /** @brief see #managerOnCreate */
     virtual void managerOnResume(void) {}
-    /** @brief for subclass to do actual works */
+    /** @brief see #managerOnCreate */
     virtual void managerOnPause(void) {}
-    /** @brief for subclass to do actual works */
+    /** @brief see #managerOnCreate */
     virtual void managerOnDestroy(void);
 
     /** @brief see #E_ManagerOrientationOnUpdate */
