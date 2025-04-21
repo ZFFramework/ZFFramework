@@ -647,6 +647,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     this->objectOnDeallocPrepare();
     this->observerRemoveAll();
     this->_ZFP_ObjI_onDeallocIvk();
+    ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc);
     if(d) {
         for(zfstlsize i = d->propertyAccessed.size() - 1; i != (zfstlsize)-1; --i) {
             const ZFProperty *property = d->propertyAccessed[i];
@@ -655,7 +656,6 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
             }
         }
     }
-    ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc);
     this->objectOnDealloc();
     this->classData()->_ZFP_ZFClass_objectDesctuct(this);
 }
@@ -743,6 +743,12 @@ zfbool ZFObject::objectIsInternalPrivate(void) {
 }
 
 void ZFObject::_ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property) {
+    if(ZFBitTest(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc)) {
+        ZFCoreLogTrim("access property during object deallocation would cause memory leak, property: %s, object: %s"
+                , property->propertyName()
+                , this->objectInfoOfInstance()
+                );
+    }
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFObjectPrivate);
     }

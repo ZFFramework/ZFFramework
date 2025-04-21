@@ -90,59 +90,236 @@ public:
     }
 
 public:
-    void labelViewUpdate(void) {
-        zfstring value = this->pimplOwner->label(this->pimplOwner->buttonState())->text();
-        if(value == zfnull) {
-            if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_Checked) {
-                value = this->pimplOwner->labelHighlighted()->text();
+    void labelStateUpdate(ZF_IN_OPT const ZFProperty *changedProp = zfnull) {
+        if(this->labelView) {
+            ZFUITextView *stateNormal = pimplOwner->label(v_ZFUIButtonState::e_Normal);
+            ZFUITextView *stateCk0 = zfnull;
+            ZFUITextView *stateCk1 = zfnull;
+            ZFUITextView *stateCk2 = zfnull;
+            switch(pimplOwner->buttonState()) {
+                case v_ZFUIButtonState::e_Normal:
+                    break;
+                case v_ZFUIButtonState::e_Highlighted:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelHighlighted), pimplOwner)) {
+                        stateCk0 = pimplOwner->label(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_Checked:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelChecked), pimplOwner)) {
+                        stateCk0 = pimplOwner->label(v_ZFUIButtonState::e_Checked);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelHighlighted), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : stateCk1) = pimplOwner->label(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_CheckedHighlighted:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelCheckedHighlighted), pimplOwner)) {
+                        stateCk0 = pimplOwner->label(v_ZFUIButtonState::e_CheckedHighlighted);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelChecked), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : stateCk1) = pimplOwner->label(v_ZFUIButtonState::e_Checked);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelHighlighted), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : (!stateCk1 ? stateCk1 : stateCk2)) = pimplOwner->label(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_Disabled:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, labelDisabled), pimplOwner)) {
+                        stateCk0 = pimplOwner->label(v_ZFUIButtonState::e_Disabled);
+                    }
+                    break;
+                default:
+                    ZFCoreCriticalShouldNotGoHere();
+                    break;
             }
-            else if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_CheckedHighlighted) {
-                value = this->pimplOwner->labelChecked()->text();
-                if(value == zfnull) {
-                    value = this->pimplOwner->labelHighlighted()->text();
+            if(changedProp) {
+                const ZFProperty *prop = changedProp;
+                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                    ZFPropertyCopy(prop, this->labelView, stateCk0);
+                }
+                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                    ZFPropertyCopy(prop, this->labelView, stateCk1);
+                }
+                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                    ZFPropertyCopy(prop, this->labelView, stateCk2);
+                }
+                else {
+                    ZFPropertyCopy(prop, this->labelView, stateNormal);
                 }
             }
-            if(value == zfnull) {
-                value = this->pimplOwner->labelNormal()->text();
+            else {
+                const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll();
+                for(zfindex i = 0; i < allProp.count(); ++i) {
+                    const ZFProperty *prop = allProp[i];
+                    if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                        ZFPropertyCopy(prop, this->labelView, stateCk0);
+                    }
+                    else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                        ZFPropertyCopy(prop, this->labelView, stateCk1);
+                    }
+                    else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                        ZFPropertyCopy(prop, this->labelView, stateCk2);
+                    }
+                    else {
+                        ZFPropertyCopy(prop, this->labelView, stateNormal);
+                    }
+                }
             }
         }
-        this->labelView->text(value);
     }
-    void iconViewUpdate(void) {
-        ZFUIImage *value = this->pimplOwner->icon(this->pimplOwner->buttonState())->imageState();
-        if(value == zfnull) {
-            if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_Checked) {
-                value = this->pimplOwner->iconHighlighted()->imageState();
+    void iconStateUpdate(ZF_IN_OPT const ZFProperty *changedProp = zfnull) {
+        if(this->iconView) {
+            ZFUIImageView *stateNormal = pimplOwner->icon(v_ZFUIButtonState::e_Normal);
+            ZFUIImageView *stateCk0 = zfnull;
+            ZFUIImageView *stateCk1 = zfnull;
+            ZFUIImageView *stateCk2 = zfnull;
+            switch(pimplOwner->buttonState()) {
+                case v_ZFUIButtonState::e_Normal:
+                    break;
+                case v_ZFUIButtonState::e_Highlighted:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconHighlighted), pimplOwner)) {
+                        stateCk0 = pimplOwner->icon(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_Checked:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconChecked), pimplOwner)) {
+                        stateCk0 = pimplOwner->icon(v_ZFUIButtonState::e_Checked);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconHighlighted), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : stateCk1) = pimplOwner->icon(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_CheckedHighlighted:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconCheckedHighlighted), pimplOwner)) {
+                        stateCk0 = pimplOwner->icon(v_ZFUIButtonState::e_CheckedHighlighted);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconChecked), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : stateCk1) = pimplOwner->icon(v_ZFUIButtonState::e_Checked);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconHighlighted), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : (!stateCk1 ? stateCk1 : stateCk2)) = pimplOwner->icon(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_Disabled:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, iconDisabled), pimplOwner)) {
+                        stateCk0 = pimplOwner->icon(v_ZFUIButtonState::e_Disabled);
+                    }
+                    break;
+                default:
+                    ZFCoreCriticalShouldNotGoHere();
+                    break;
             }
-            else if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_CheckedHighlighted) {
-                value = this->pimplOwner->iconChecked()->imageState();
-                if(value == zfnull) {
-                    value = this->pimplOwner->iconHighlighted()->imageState();
+            if(changedProp) {
+                const ZFProperty *prop = changedProp;
+                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                    ZFPropertyCopy(prop, this->iconView, stateCk0);
+                }
+                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                    ZFPropertyCopy(prop, this->iconView, stateCk1);
+                }
+                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                    ZFPropertyCopy(prop, this->iconView, stateCk2);
+                }
+                else {
+                    ZFPropertyCopy(prop, this->iconView, stateNormal);
                 }
             }
-            if(value == zfnull) {
-                value = this->pimplOwner->iconNormal()->imageState();
+            else {
+                const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll();
+                for(zfindex i = 0; i < allProp.count(); ++i) {
+                    const ZFProperty *prop = allProp[i];
+                    if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                        ZFPropertyCopy(prop, this->iconView, stateCk0);
+                    }
+                    else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                        ZFPropertyCopy(prop, this->iconView, stateCk1);
+                    }
+                    else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                        ZFPropertyCopy(prop, this->iconView, stateCk2);
+                    }
+                    else {
+                        ZFPropertyCopy(prop, this->iconView, stateNormal);
+                    }
+                }
             }
         }
-        this->iconView->image(value);
     }
-    void bgViewUpdate(void) {
-        ZFUIImage *value = this->pimplOwner->bg(this->pimplOwner->buttonState())->imageState();
-        if(value == zfnull) {
-            if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_Checked) {
-                value = this->pimplOwner->bgHighlighted()->imageState();
+    void bgStateUpdate(ZF_IN_OPT const ZFProperty *changedProp = zfnull) {
+        if(this->bgView) {
+            ZFUIImageView *stateNormal = pimplOwner->bg(v_ZFUIButtonState::e_Normal);
+            ZFUIImageView *stateCk0 = zfnull;
+            ZFUIImageView *stateCk1 = zfnull;
+            ZFUIImageView *stateCk2 = zfnull;
+            switch(pimplOwner->buttonState()) {
+                case v_ZFUIButtonState::e_Normal:
+                    break;
+                case v_ZFUIButtonState::e_Highlighted:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgHighlighted), pimplOwner)) {
+                        stateCk0 = pimplOwner->bg(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_Checked:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgChecked), pimplOwner)) {
+                        stateCk0 = pimplOwner->bg(v_ZFUIButtonState::e_Checked);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgHighlighted), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : stateCk1) = pimplOwner->bg(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_CheckedHighlighted:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgCheckedHighlighted), pimplOwner)) {
+                        stateCk0 = pimplOwner->bg(v_ZFUIButtonState::e_CheckedHighlighted);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgChecked), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : stateCk1) = pimplOwner->bg(v_ZFUIButtonState::e_Checked);
+                    }
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgHighlighted), pimplOwner)) {
+                        (!stateCk0 ? stateCk0 : (!stateCk1 ? stateCk1 : stateCk2)) = pimplOwner->bg(v_ZFUIButtonState::e_Highlighted);
+                    }
+                    break;
+                case v_ZFUIButtonState::e_Disabled:
+                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, bgDisabled), pimplOwner)) {
+                        stateCk0 = pimplOwner->bg(v_ZFUIButtonState::e_Disabled);
+                    }
+                    break;
+                default:
+                    ZFCoreCriticalShouldNotGoHere();
+                    break;
             }
-            else if(this->pimplOwner->buttonState() == v_ZFUIButtonState::e_CheckedHighlighted) {
-                value = this->pimplOwner->bgChecked()->imageState();
-                if(value == zfnull) {
-                    value = this->pimplOwner->bgHighlighted()->imageState();
+            if(changedProp) {
+                const ZFProperty *prop = changedProp;
+                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                    ZFPropertyCopy(prop, this->bgView, stateCk0);
+                }
+                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                    ZFPropertyCopy(prop, this->bgView, stateCk1);
+                }
+                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                    ZFPropertyCopy(prop, this->bgView, stateCk2);
+                }
+                else {
+                    ZFPropertyCopy(prop, this->bgView, stateNormal);
                 }
             }
-            if(value == zfnull) {
-                value = this->pimplOwner->bgNormal()->imageState();
+            else {
+                const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll();
+                for(zfindex i = 0; i < allProp.count(); ++i) {
+                    const ZFProperty *prop = allProp[i];
+                    if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                        ZFPropertyCopy(prop, this->bgView, stateCk0);
+                    }
+                    else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                        ZFPropertyCopy(prop, this->bgView, stateCk1);
+                    }
+                    else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                        ZFPropertyCopy(prop, this->bgView, stateCk2);
+                    }
+                    else {
+                        ZFPropertyCopy(prop, this->bgView, stateNormal);
+                    }
+                }
             }
         }
-        this->bgView->image(value);
     }
 };
 
@@ -158,14 +335,8 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
             ZFLISTENER_1(callback \
                     , ZFUIButtonBasic *, button \
                     ) { \
-                const ZFProperty *property = zfargs.param0().to<v_ZFProperty *>()->zfv; \
                 button->d->T_Component##ViewPrepare(); \
-                if(button->buttonState() == v_ZFUIButtonState::e_##T_State) { \
-                    ZFPropertyCopy(property, button->T_Component##View()->toObject(), zfargs.sender()); \
-                } \
-                else if(property == ZFPropertyAccess(CkClass, CkProp)) { \
-                    button->d->T_Component##ViewUpdate(); \
-                } \
+                button->d->T_Component##StateUpdate(zfargs.param0().to<v_ZFProperty *>()->zfv); \
             } ZFLISTENER_END() \
             d->T_Component##T_State##OnUpdateListener = callback; \
         } \
@@ -595,71 +766,9 @@ zfbool ZFUIButtonBasic::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
 
 void ZFUIButtonBasic::buttonStateOnUpdate(void) {
     zfsuper::buttonStateOnUpdate();
-
-    ZFUIButtonState buttonState = this->buttonState();
-
-    #define _ZFP_ZFUIButtonBasic_buttonStateUpdate(T_Type, T_Component) \
-        if(d->T_Component##View) { \
-            T_Type *stateNormal = this->T_Component(v_ZFUIButtonState::e_Normal); \
-            const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll(); \
-            T_Type *stateCk0 = zfnull; \
-            T_Type *stateCk1 = zfnull; \
-            T_Type *stateCk2 = zfnull; \
-            switch(buttonState) { \
-                case v_ZFUIButtonState::e_Normal: \
-                    break; \
-                case v_ZFUIButtonState::e_Highlighted: \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Highlighted), this)) { \
-                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_Highlighted); \
-                    } \
-                    break; \
-                case v_ZFUIButtonState::e_Checked: \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Checked), this)) { \
-                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_Checked); \
-                    } \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Highlighted), this)) { \
-                        (!stateCk0 ? stateCk0 : stateCk1) = this->T_Component(v_ZFUIButtonState::e_Highlighted); \
-                    } \
-                    break; \
-                case v_ZFUIButtonState::e_CheckedHighlighted: \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##CheckedHighlighted), this)) { \
-                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_CheckedHighlighted); \
-                    } \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Checked), this)) { \
-                        (!stateCk0 ? stateCk0 : stateCk1) = this->T_Component(v_ZFUIButtonState::e_Checked); \
-                    } \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Highlighted), this)) { \
-                        (!stateCk0 ? stateCk0 : (!stateCk1 ? stateCk1 : stateCk2)) = this->T_Component(v_ZFUIButtonState::e_Highlighted); \
-                    } \
-                    break; \
-                case v_ZFUIButtonState::e_Disabled: \
-                    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(zfself, T_Component##Disabled), this)) { \
-                        stateCk0 = this->T_Component(v_ZFUIButtonState::e_Disabled); \
-                    } \
-                    break; \
-                default: \
-                    ZFCoreCriticalShouldNotGoHere(); \
-                    break; \
-            } \
-            for(zfindex i = 0; i < allProp.count(); ++i) { \
-                const ZFProperty *prop = allProp[i]; \
-                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) { \
-                    ZFPropertyCopy(prop, d->T_Component##View, stateCk0); \
-                } \
-                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) { \
-                    ZFPropertyCopy(prop, d->T_Component##View, stateCk1); \
-                } \
-                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) { \
-                    ZFPropertyCopy(prop, d->T_Component##View, stateCk2); \
-                } \
-                else { \
-                    ZFPropertyCopy(prop, d->T_Component##View, stateNormal); \
-                } \
-            } \
-        }
-    _ZFP_ZFUIButtonBasic_buttonStateUpdate(ZFUITextView, label)
-    _ZFP_ZFUIButtonBasic_buttonStateUpdate(ZFUIImageView, icon)
-    _ZFP_ZFUIButtonBasic_buttonStateUpdate(ZFUIImageView, bg)
+    d->labelStateUpdate();
+    d->iconStateUpdate();
+    d->bgStateUpdate();
 }
 
 const ZFClass *ZFUIButtonBasic::labelViewClass(void) {
