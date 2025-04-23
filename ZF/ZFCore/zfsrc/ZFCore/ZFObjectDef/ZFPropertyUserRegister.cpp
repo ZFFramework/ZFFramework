@@ -7,12 +7,12 @@ void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method) {
     ZFMethodUserUnregister(method);
 }
 
-zfauto _ZFP_I_PropURDIVH::create(
+zfauto _ZFP_I_PropUR::create(
         ZF_IN void *v
         , ZF_IN DeleteCallback deleteCallback
         , ZF_IN_OPT ZFObject *retainValue /* = zfnull */
         ) {
-    zfobj<_ZFP_I_PropURDIVH> holder;
+    zfobj<_ZFP_I_PropUR> holder;
     holder->v = v;
     holder->deleteCallback = deleteCallback;
     holder->retainValueHolder = retainValue;
@@ -35,9 +35,15 @@ void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty) {
 void ZFPropertyUserRegisterNotifyUpdate(
         ZF_IN ZFObject *ownerObject
         , ZF_IN const ZFProperty *property
-        , ZF_IN void *propertyValueOld
+        , ZF_IN const void *propertyValueOld
         ) {
     ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, propertyValueOld);
+}
+void ZFPropertyUserRegisterNotifyReset(
+        ZF_IN ZFObject *ownerObject
+        , ZF_IN const ZFProperty *property
+        ) {
+    ownerObject->_ZFP_ZFObject_objectPropertyValueOnReset(property);
 }
 
 ZF_NAMESPACE_GLOBAL_END

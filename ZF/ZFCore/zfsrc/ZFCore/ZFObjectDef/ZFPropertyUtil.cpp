@@ -162,6 +162,14 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFPropertyIsInitValue
         , ZFMP_IN(const ZFProperty *, propertyInfo)
         , ZFMP_IN(zfany const &, ownerObj)
         )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, ZFPropertyGetInitValue
+        , ZFMP_IN(const ZFProperty *, propertyInfo)
+        , ZFMP_IN(zfany const &, ownerObj)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFPropertyValueReset
+        , ZFMP_IN(const ZFProperty *, propertyInfo)
+        , ZFMP_IN(zfany const &, ownerObj)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCompareResult, ZFPropertyCompare
         , ZFMP_IN(const ZFProperty *, propertyInfo)
         , ZFMP_IN(ZFObject *, obj0)
@@ -174,6 +182,10 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCompareResult, ZFPropertyCompareValue
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFPropertyCopy
         , ZFMP_IN(const ZFProperty *, propertyInfo)
+        , ZFMP_IN(ZFObject *, dstObj)
+        , ZFMP_IN(ZFObject *, srcObj)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFPropertyCopyAll
         , ZFMP_IN(ZFObject *, dstObj)
         , ZFMP_IN(ZFObject *, srcObj)
         )

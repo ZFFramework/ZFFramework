@@ -254,15 +254,22 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * param0 is #v_ZFProperty that value changes\n
-     * param1 is #v_zfptr holds the old property value
-     * (holds null when first time accessed)\n
-     * the param1 holds these types:
-     * -  for retain property, it points to the value itself
-     * -  for assign property, it points to a #ZFTypeIdWrapper that holds the value
+     * param1 is the old property value depends on these conditions:
+     * -  holds #ZFNull when first time accessed (by setter or getter)
+     * -  holds the value itself, for retain property
+     * -  holds a #ZFTypeIdWrapper to the value, for assign property
      *
      * called when first time accessed, and each time setter is called
      */
     ZFEVENT(ObjectPropertyValueOnUpdate)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * param0 is #v_ZFProperty\n
+     * called when #ZFPropertyValueReset (before value actually reset)\n
+     * note, won't be called when object dealloc
+     */
+    ZFEVENT(ObjectPropertyValueOnReset)
 
 public:
     /**
@@ -808,17 +815,31 @@ public:
     zffinal void _ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *property);
     zffinal inline void _ZFP_ZFObject_objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property
-            , ZF_IN void *oldValue
+            , ZF_IN const void *oldValue
             ) {
         this->objectPropertyValueOnUpdate(property, oldValue);
+    }
+    zffinal inline void _ZFP_ZFObject_objectPropertyValueOnReset(
+            ZF_IN const ZFProperty *property
+            ) {
+        this->objectPropertyValueOnReset(property);
     }
 protected:
     /**
      * @brief see #E_ObjectPropertyValueOnUpdate
+     *
+     * oldValue should be:
+     * -  zfnull, if property first time accessed (by getter or setter)
+     * -  addr of zfauto, for retain property
+     * -  addr of raw value, for assign property
      */
     virtual void objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property
-            , ZF_IN void *oldValue
+            , ZF_IN const void *oldValue
+            );
+    /** @brief see #E_ObjectPropertyValueOnReset */
+    virtual void objectPropertyValueOnReset(
+            ZF_IN const ZFProperty *property
             );
 
     // ============================================================

@@ -1,31 +1,25 @@
 #include "ZFUIButtonBasic.h"
 
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFUIButtonBasicPrivate
 zfclassNotPOD _ZFP_ZFUIButtonBasicPrivate {
 public:
+    // <label|icon|bg, <prop, setterCalled> >
+    typedef zfstlmap<ZFObject *, zfstlmap<const ZFProperty *, zfbool> > PropSetterCalledMap;
+public:
     ZFUIButtonBasic *pimplOwner;
     ZFUITextView *labelView;
     ZFUIImageView *iconView;
     ZFUIImageView *bgView;
+    PropSetterCalledMap modMap;
 
-    ZFListener labelNormalOnUpdateListener;
-    ZFListener labelHighlightedOnUpdateListener;
-    ZFListener labelCheckedOnUpdateListener;
-    ZFListener labelCheckedHighlightedOnUpdateListener;
-    ZFListener labelDisabledOnUpdateListener;
-    ZFListener iconNormalOnUpdateListener;
-    ZFListener iconHighlightedOnUpdateListener;
-    ZFListener iconCheckedOnUpdateListener;
-    ZFListener iconCheckedHighlightedOnUpdateListener;
-    ZFListener iconDisabledOnUpdateListener;
-    ZFListener bgNormalOnUpdateListener;
-    ZFListener bgHighlightedOnUpdateListener;
-    ZFListener bgCheckedOnUpdateListener;
-    ZFListener bgCheckedHighlightedOnUpdateListener;
-    ZFListener bgDisabledOnUpdateListener;
+    ZFListener labelOnUpdateListener;
+    ZFListener iconOnUpdateListener;
+    ZFListener bgOnUpdateListener;
 
 public:
     _ZFP_ZFUIButtonBasicPrivate(void)
@@ -33,22 +27,11 @@ public:
     , labelView(zfnull)
     , iconView(zfnull)
     , bgView(zfnull)
+    , modMap()
 
-    , labelNormalOnUpdateListener()
-    , labelHighlightedOnUpdateListener()
-    , labelCheckedOnUpdateListener()
-    , labelCheckedHighlightedOnUpdateListener()
-    , labelDisabledOnUpdateListener()
-    , iconNormalOnUpdateListener()
-    , iconHighlightedOnUpdateListener()
-    , iconCheckedOnUpdateListener()
-    , iconCheckedHighlightedOnUpdateListener()
-    , iconDisabledOnUpdateListener()
-    , bgNormalOnUpdateListener()
-    , bgHighlightedOnUpdateListener()
-    , bgCheckedOnUpdateListener()
-    , bgCheckedHighlightedOnUpdateListener()
-    , bgDisabledOnUpdateListener()
+    , labelOnUpdateListener()
+    , iconOnUpdateListener()
+    , bgOnUpdateListener()
     {
     }
 
@@ -58,6 +41,8 @@ public:
             this->labelView = zfRetain(this->pimplOwner->labelViewClass()->newInstance());
             ZFCoreAssert(this->labelView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->labelView);
+
+            this->labelStateUpdate();
         }
     }
     void iconViewPrepare(void) {
@@ -70,6 +55,8 @@ public:
                 this->pimplOwner->internalBgViewRemove(this->labelView);
                 this->pimplOwner->internalBgViewAdd(this->labelView);
             }
+
+            this->iconStateUpdate();
         }
     }
     void bgViewPrepare(void) {
@@ -86,7 +73,25 @@ public:
                 this->pimplOwner->internalBgViewRemove(this->labelView);
                 this->pimplOwner->internalBgViewAdd(this->labelView);
             }
+
+            this->bgStateUpdate();
         }
+    }
+
+private:
+    inline zfbool _propNeedCopy(
+            ZF_IN const ZFProperty *prop
+            , ZF_IN ZFObject *owner
+            ) {
+        PropSetterCalledMap::iterator it = this->modMap.find(owner);
+        if(it == this->modMap.end()) {
+            return zffalse;
+        }
+        zfstlmap<const ZFProperty *, zfbool>::iterator propIt = it->second.find(prop);
+        if(propIt == it->second.end()) {
+            return zffalse;
+        }
+        return ZFPropertyIsValueAccessed(prop, owner);
     }
 
 public:
@@ -134,13 +139,13 @@ public:
             }
             if(changedProp) {
                 const ZFProperty *prop = changedProp;
-                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                if(stateCk0 && _propNeedCopy(prop, stateCk0)) {
                     ZFPropertyCopy(prop, this->labelView, stateCk0);
                 }
-                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                else if(stateCk1 && _propNeedCopy(prop, stateCk1)) {
                     ZFPropertyCopy(prop, this->labelView, stateCk1);
                 }
-                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                else if(stateCk2 && _propNeedCopy(prop, stateCk2)) {
                     ZFPropertyCopy(prop, this->labelView, stateCk2);
                 }
                 else {
@@ -151,13 +156,13 @@ public:
                 const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll();
                 for(zfindex i = 0; i < allProp.count(); ++i) {
                     const ZFProperty *prop = allProp[i];
-                    if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                    if(stateCk0 && _propNeedCopy(prop, stateCk0)) {
                         ZFPropertyCopy(prop, this->labelView, stateCk0);
                     }
-                    else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                    else if(stateCk1 && _propNeedCopy(prop, stateCk1)) {
                         ZFPropertyCopy(prop, this->labelView, stateCk1);
                     }
-                    else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                    else if(stateCk2 && _propNeedCopy(prop, stateCk2)) {
                         ZFPropertyCopy(prop, this->labelView, stateCk2);
                     }
                     else {
@@ -211,13 +216,13 @@ public:
             }
             if(changedProp) {
                 const ZFProperty *prop = changedProp;
-                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                if(stateCk0 && _propNeedCopy(prop, stateCk0)) {
                     ZFPropertyCopy(prop, this->iconView, stateCk0);
                 }
-                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                else if(stateCk1 && _propNeedCopy(prop, stateCk1)) {
                     ZFPropertyCopy(prop, this->iconView, stateCk1);
                 }
-                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                else if(stateCk2 && _propNeedCopy(prop, stateCk2)) {
                     ZFPropertyCopy(prop, this->iconView, stateCk2);
                 }
                 else {
@@ -228,13 +233,13 @@ public:
                 const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll();
                 for(zfindex i = 0; i < allProp.count(); ++i) {
                     const ZFProperty *prop = allProp[i];
-                    if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                    if(stateCk0 && _propNeedCopy(prop, stateCk0)) {
                         ZFPropertyCopy(prop, this->iconView, stateCk0);
                     }
-                    else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                    else if(stateCk1 && _propNeedCopy(prop, stateCk1)) {
                         ZFPropertyCopy(prop, this->iconView, stateCk1);
                     }
-                    else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                    else if(stateCk2 && _propNeedCopy(prop, stateCk2)) {
                         ZFPropertyCopy(prop, this->iconView, stateCk2);
                     }
                     else {
@@ -288,13 +293,13 @@ public:
             }
             if(changedProp) {
                 const ZFProperty *prop = changedProp;
-                if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                if(stateCk0 && _propNeedCopy(prop, stateCk0)) {
                     ZFPropertyCopy(prop, this->bgView, stateCk0);
                 }
-                else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                else if(stateCk1 && _propNeedCopy(prop, stateCk1)) {
                     ZFPropertyCopy(prop, this->bgView, stateCk1);
                 }
-                else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                else if(stateCk2 && _propNeedCopy(prop, stateCk2)) {
                     ZFPropertyCopy(prop, this->bgView, stateCk2);
                 }
                 else {
@@ -305,13 +310,13 @@ public:
                 const ZFCoreArray<const ZFProperty *> allProp = stateNormal->styleablePropertyGetAll();
                 for(zfindex i = 0; i < allProp.count(); ++i) {
                     const ZFProperty *prop = allProp[i];
-                    if(stateCk0 && ZFPropertyIsValueAccessed(prop, stateCk0)) {
+                    if(stateCk0 && _propNeedCopy(prop, stateCk0)) {
                         ZFPropertyCopy(prop, this->bgView, stateCk0);
                     }
-                    else if(stateCk1 && ZFPropertyIsValueAccessed(prop, stateCk1)) {
+                    else if(stateCk1 && _propNeedCopy(prop, stateCk1)) {
                         ZFPropertyCopy(prop, this->bgView, stateCk1);
                     }
-                    else if(stateCk2 && ZFPropertyIsValueAccessed(prop, stateCk2)) {
+                    else if(stateCk2 && _propNeedCopy(prop, stateCk2)) {
                         ZFPropertyCopy(prop, this->bgView, stateCk2);
                     }
                     else {
@@ -330,24 +335,29 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
 
 #define _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(T_Type, T_Component, T_State, CkClass, CkProp) \
     ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) { \
-        if(!d->T_Component##T_State##OnUpdateListener) { \
-            ZFUIButtonBasic *button = this; \
+        if(!d->T_Component##OnUpdateListener) { \
             ZFLISTENER_1(callback \
-                    , ZFUIButtonBasic *, button \
+                    , _ZFP_ZFUIButtonBasicPrivate *, d \
                     ) { \
-                button->d->T_Component##ViewPrepare(); \
-                button->d->T_Component##StateUpdate(zfargs.param0().to<v_ZFProperty *>()->zfv); \
+                const ZFProperty *prop = zfargs.param0().to<v_ZFProperty *>()->zfv; \
+                d->modMap[zfargs.sender()][prop] = zftrue; \
+                if(d->T_Component##View == zfnull) { \
+                    d->T_Component##ViewPrepare(); \
+                } \
+                else { \
+                    d->T_Component##StateUpdate(prop); \
+                } \
             } ZFLISTENER_END() \
-            d->T_Component##T_State##OnUpdateListener = callback; \
+            d->T_Component##OnUpdateListener = callback; \
         } \
         this->T_Component##T_State()->toObject()->observerAdd( \
             ZFObject::E_ObjectPropertyValueOnUpdate(), \
-            d->T_Component##T_State##OnUpdateListener); \
+            d->T_Component##OnUpdateListener); \
     } \
     ZFPROPERTY_ON_DETACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) { \
         this->T_Component##T_State()->toObject()->observerRemove( \
             ZFObject::E_ObjectPropertyValueOnUpdate(), \
-            d->T_Component##T_State##OnUpdateListener); \
+            d->T_Component##OnUpdateListener); \
     }
 
 _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, Normal, ZFUITextView, text)

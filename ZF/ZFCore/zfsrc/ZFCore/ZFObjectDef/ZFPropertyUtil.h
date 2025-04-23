@@ -34,6 +34,18 @@ inline zfbool ZFPropertyIsInitValue(
     return propertyInfo->callbackIsInitValue(propertyInfo, ownerObj, zfnull);
 }
 
+/**
+ * @brief util for #ZFPropertyCallbackIsInitValue
+ */
+inline zfauto ZFPropertyGetInitValue(
+        ZF_IN const ZFProperty *propertyInfo
+        , ZF_IN zfany const &ownerObj
+        ) {
+    zfauto v;
+    propertyInfo->callbackIsInitValue(propertyInfo, ownerObj, &v);
+    return v;
+}
+
 // ============================================================
 // ZFPropertyValueReset
 /**

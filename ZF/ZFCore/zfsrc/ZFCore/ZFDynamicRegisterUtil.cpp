@@ -1370,7 +1370,7 @@ ZFDynamic &ZFDynamic::propertyLifeCycle(
         return *this;
     }
     zfstring errorHint;
-    if(!ZFPropertyDynamicRegisterLifeCycle(item.property, scope->d.cls, lifeCycle, callback)) {
+    if(!ZFPropertyDynamicRegisterLifeCycle(item.property, scope->d.cls, lifeCycle, callback, &errorHint)) {
         d->error(zfstr("property life cycle register fail for property %s, reason: %s"
                     , propertyName
                     , errorHint

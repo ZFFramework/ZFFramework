@@ -315,7 +315,7 @@ static void _ZFP_PropDynReg_setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
 
         _ZFP_I_PropDynRetainHolder *holder = valueOld;
         if(holder != zfnull) {
-            ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, holder->zfv.toObject());
+            ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, &(holder->zfv));
         }
         else {
             ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property,
@@ -419,6 +419,9 @@ static void _ZFP_PropDynReg_callbackValueReset(
         ZF_IN const ZFProperty *property
         , ZF_IN zfany const &ownerObj
         ) {
+    if(_ZFP_PropDynReg_callbackIsValueAccessed(property, ownerObj)) {
+        ownerObj->_ZFP_ZFObject_objectPropertyValueOnReset(property);
+    }
     _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
     ownerObj->objectTagRemove(d->tagKey_propertyValue);
 }

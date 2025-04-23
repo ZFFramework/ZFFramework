@@ -22,6 +22,7 @@
 #include "ZFSerializable.h"
 #include "ZFEnum.h"
 #include "ZFEnumDeclare.h"
+#include "ZFNull.h"
 #include "ZFValueHolder.h"
 #include "ZFObjectUtil.h"
 #include "ZFExport.h"

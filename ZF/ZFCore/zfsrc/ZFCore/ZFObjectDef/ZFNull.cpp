@@ -34,11 +34,7 @@ public:
     }
 
 private:
-    ZFMETHOD_INLINE_DETAIL_0(private, ZFMethodTypeStatic, ZF_CALLER_LINE
-            , zfauto, ZFSerializableKeyword_serializableNewInstanceId
-            ) {
-        return ZFNull();
-    }
+    ZFMETHOD_DECLARE_DETAIL_0(private, ZFMethodTypeStatic, zfauto, ZFSerializableKeyword_serializableNewInstanceId)
 
 public:
     zfoverride
@@ -49,19 +45,19 @@ public:
 
 ZFOBJECT_REGISTER(ZFNullObject)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkEssential) {
-    this->nullObject = zfAlloc(ZFNullObject);
+ZFMETHOD_DEFINE_0(ZFNullObject, zfauto, ZFSerializableKeyword_serializableNewInstanceId) {
+    return ZFNull();
+}
+
+ZFObject *_ZFP_ZFNull = zfnull;
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkStatic) {
+    _ZFP_ZFNull = zfAlloc(ZFNullObject);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder) {
-    zfRelease(this->nullObject);
-    this->nullObject = zfnull;
+    zfRelease(_ZFP_ZFNull);
+    _ZFP_ZFNull = zfnull;
 }
-public:
-    ZFObject *nullObject;
 ZF_GLOBAL_INITIALIZER_END(zfnullObjHolder)
-ZFObject *_ZFP_ZFNull(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(zfnullObjHolder)->nullObject;
-}
 
 ZF_NAMESPACE_GLOBAL_END
 

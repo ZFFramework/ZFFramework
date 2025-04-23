@@ -564,11 +564,13 @@ public:
                 ) { \
             return zfcast(zfself *, ownerObj)->Name##_PropV._ZFP_accessed(); \
         } \
-    private: \
         static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
+            if(_ZFP_propCbAccessed_##Name(property, owner)) { \
+                owner->_ZFP_ZFObject_objectPropertyValueOnReset(zfself::_ZFP_Prop_##Name()); \
+            } \
             zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zftrue); \
         } \
         static void _ZFP_propCbEnsureInit_##Name( \
