@@ -160,7 +160,7 @@ private:
             return zffalse;
         }
 
-        ZFImpl_sys_SDL_fontAccess(sdlFont, owner->textAppearance(), owner->textSizeCurrent());
+        ZFImpl_sys_SDL_fontAccess(sdlFont, owner->textAppearance(), ZFUISizeApplyScale(owner->textSizeCurrent(), owner->UIScaleFixed()));
         if(sdlFont == zfnull) {
             return zffalse;
         }

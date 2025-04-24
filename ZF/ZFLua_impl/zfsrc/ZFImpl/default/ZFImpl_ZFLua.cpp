@@ -161,9 +161,43 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
         d->setupAttach[i](L, helper);
     }
 
+    // zfl_dbg
     if(ZFResIsExist("ZFLua_impl/debugger.lua")) {
         ZFImpl_ZFLua_execute(L,
-                "zfl_dbg = zfl_value(zfimport('res:ZFLua_impl/debugger.lua'))"
+                "zfl_dbg = zfl_value(zfimport('res:ZFLua_impl/debugger.lua'))\n"
+                "\n"
+                "zfl_dbg.findLast = function(s, pattern)\n"
+                "    local i = 0\n"
+                "    while true do\n"
+                "        local j = string.find(s, pattern, i + 1)\n"
+                "        if not j then\n"
+                "            break\n"
+                "        end\n"
+                "        i = j\n"
+                "    end\n"
+                "    return i\n"
+                "end\n"
+                "local format_stack_frame_info_orig = zfl_dbg.format_stack_frame_info\n"
+                "zfl_dbg.format_stack_frame_info = function(info)\n"
+                "    local pathInfo = info.source:match('{{<<(.-)>>}}')\n"
+                "    if pathInfo == nil then\n"
+                "        return '\\t\\t\\t\\t' .. format_stack_frame_info_orig(info)\n"
+                "    end\n"
+                "    local lineInfo = ''\n"
+                "    local lines = {}\n"
+                "    for line in info.source:gmatch('([^\\n]*)\\n?') do table.insert(lines, line) end\n"
+                "    if lines[info.currentline] ~= nil then\n"
+                "        lineInfo = lines[info.currentline]:gsub('^%s*(.-)%s*$', '%1') .. '\\t\\t\\t'\n"
+                "    end\n"
+                "    local p0 = pathInfo:find(':')\n"
+                "    local p1 = zfl_dbg.findLast(pathInfo, '/')\n"
+                "    if p1 <= 0 or p0 <= 0 then\n"
+                "        source = '[' .. pathInfo .. ']'\n"
+                "    else\n"
+                "        source = '[' .. string.sub(pathInfo, 1, p0) .. string.sub(pathInfo, p1 + 1) .. ']'\n"
+                "    end\n"
+                "    return lineInfo..zfl_dbg.COLOR_BLUE..source..zfl_dbg.COLOR_RESET..':'..zfl_dbg.COLOR_YELLOW..info.currentline..zfl_dbg.COLOR_RESET\n"
+                "end\n"
                 );
     }
 }
