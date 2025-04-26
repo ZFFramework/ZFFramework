@@ -30,7 +30,6 @@ jobs:
       with:
         host: windows
         target: desktop
-        modules: qtwebengine
 
     - name: ZFSetup
       run: |

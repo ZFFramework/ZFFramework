@@ -24,8 +24,6 @@ jobs:
       with:
         host: mac
         target: desktop
-        modules: qtwebengine qtwebchannel qtpositioning
-        version: 6.5.3 # https://bugreports.qt.io/browse/QTBUG-117225
 
     - name: ZFSetup
       run: |

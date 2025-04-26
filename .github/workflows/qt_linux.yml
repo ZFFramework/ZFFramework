@@ -24,7 +24,6 @@ jobs:
       with:
         host: linux
         target: desktop
-        modules: qtwebengine
 
     - name: ZFSetup
       run: |

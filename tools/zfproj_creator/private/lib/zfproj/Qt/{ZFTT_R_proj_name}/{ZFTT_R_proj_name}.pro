@@ -218,8 +218,7 @@ $$ZFAddLib(1, {ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 # QT += gui widgets
 # QT += network
 # qtHaveModule(webenginewidgets) {QT += webenginewidgets} else {qtHaveModule(webkitwidgets) : QT += webkitwidgets}{ZFTT_C_needUIKit}
-QT += gui widgets{ZFTT_CE}{ZFTT_C_needUIWebKit}
-qtHaveModule(webenginewidgets) {QT += webenginewidgets} else {qtHaveModule(webkitwidgets) : QT += webkitwidgets}{ZFTT_CE}{ZFTT_C_needNet}
+QT += gui widgets{ZFTT_CE}{ZFTT_C_needNet}
 QT += network{ZFTT_CE}
 
 

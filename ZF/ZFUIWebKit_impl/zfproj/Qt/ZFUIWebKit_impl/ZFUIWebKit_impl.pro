@@ -97,7 +97,6 @@ $$ZFAddLib(1, ZF_impl)
 # QT += network
 # qtHaveModule(webenginewidgets) {QT += webenginewidgets} else {qtHaveModule(webkitwidgets) : QT += webkitwidgets}
 QT += gui widgets
-qtHaveModule(webenginewidgets) {QT += webenginewidgets} else {qtHaveModule(webkitwidgets) : QT += webkitwidgets}
 
 
 # ======================================================================
