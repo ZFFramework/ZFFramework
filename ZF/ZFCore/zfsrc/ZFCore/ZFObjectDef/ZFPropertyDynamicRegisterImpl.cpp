@@ -271,19 +271,26 @@ static void _ZFP_PropDynReg_setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
         }
         else {
             const ZFClass *propClass = d->typeInfo->typeIdClass();
-            if(propClass != zfnull && !propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-                zfobj<_ZFP_I_PropDynRetainHolder> holder;
-                holder->zfv = valueNew;
-                value = holder;
-            }
-            else {
-                ZFTypeIdWrapper *wrapper = zfcast(ZFTypeIdWrapper *, valueNew);
-                if(wrapper == zfnull
-                        || !zfstringIsEqual(wrapper->zfvTypeId(), property->propertyTypeId())
-                        ) {
-                    break;
+            if(propClass) {
+                if(!propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+                    zfobj<_ZFP_I_PropDynRetainHolder> holder;
+                    holder->zfv = valueNew;
+                    value = holder;
                 }
-                value = valueNew;
+                else {
+                    if(!valueNew) {
+                        value = propClass->newInstance();
+                    }
+                    else {
+                        ZFTypeIdWrapper *wrapper = zfcast(ZFTypeIdWrapper *, valueNew);
+                        if(wrapper == zfnull
+                                || !zfstringIsEqual(wrapper->zfvTypeId(), property->propertyTypeId())
+                                ) {
+                            break;
+                        }
+                        value = valueNew;
+                    }
+                }
             }
         }
     } while(zffalse);
