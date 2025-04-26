@@ -388,11 +388,15 @@ public:
         }
 
         // stop prev
+        zfauto pausePageHolder = pausePage;
         if(manager->d->resumeAni != zfnull) {
             manager->d->resumeAni->stop();
         }
         if(manager->d->pauseAni != zfnull) {
             manager->d->pauseAni->stop();
+        }
+        if(pausePage != zfnull && !pausePage->pageCreated()) {
+            pausePage = zfnull;
         }
 
         // add resume page view

@@ -205,9 +205,11 @@ ZFMETHOD_DEFINE_0(ZFThread, const ZFCoreArray<ZFThread *> &, allThread) {
     return _ZFP_ZFThread_allThread;
 }
 ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, mainThread) {
+    ZFCoreMutexLocker();
     return ZFPROTOCOL_ACCESS(ZFThread)->mainThread();
 }
 ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, currentThread) {
+    ZFCoreMutexLocker();
     return ZFPROTOCOL_ACCESS(ZFThread)->currentThread();
 }
 

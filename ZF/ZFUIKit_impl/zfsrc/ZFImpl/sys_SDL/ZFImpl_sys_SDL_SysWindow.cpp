@@ -79,6 +79,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRender, ZFLevelZFFrameworkPostNormal)
 void _ZFP_ZFImpl_sys_SDL_SysWindowPrivate::renderRequest(void) {
     if(!this->renderPending) {
         this->renderPending = zftrue;
+        this->renderRequested = zftrue;
         ++(this->refCount);
         ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowRender, this, zfnull);
     }

@@ -9,7 +9,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassLikePOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_TextureCache {
 public:
-    SDL_Texture *obtainFixed(ZF_IN SDL_Renderer *renderer, ZF_IN int w, ZF_IN int h);
     SDL_Texture *obtain(ZF_IN SDL_Renderer *renderer, ZF_IN int w, ZF_IN int h);
     void release(void);
 
