@@ -143,6 +143,8 @@ $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFNet_impl)
 # qtHaveModule(webenginewidgets) {QT += webenginewidgets} else {qtHaveModule(webkitwidgets) : QT += webkitwidgets}
 QT += gui widgets
 qtHaveModule(webenginewidgets) {QT += webenginewidgets} else {qtHaveModule(webkitwidgets) : QT += webkitwidgets}
+qtHaveModule(webchannel) {QT += webchannel}
+qtHaveModule(positioning) {QT += positioning}
 QT += network
 
 
