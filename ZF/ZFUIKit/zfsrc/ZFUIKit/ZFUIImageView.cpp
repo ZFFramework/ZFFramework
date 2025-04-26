@@ -74,9 +74,9 @@ void ZFUIImageView::objectOnInit(void) {
         NativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 }
-void ZFUIImageView::objectOnDealloc(void) {
+void ZFUIImageView::objectOnDeallocPrepare(void) {
     this->image(zfnull);
-    zfsuper::objectOnDealloc();
+    zfsuper::objectOnDeallocPrepare();
 }
 
 void ZFUIImageView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {

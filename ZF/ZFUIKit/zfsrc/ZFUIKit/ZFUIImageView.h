@@ -65,7 +65,7 @@ protected:
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
-    virtual void objectOnDealloc(void);
+    virtual void objectOnDeallocPrepare(void);
 
     zfoverride
     virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);

@@ -754,7 +754,7 @@ zfbool ZFObject::objectIsInternalPrivate(void) {
 
 void ZFObject::_ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property) {
     if(ZFBitTest(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc)) {
-        ZFCoreLogTrim("access property during object deallocation would cause memory leak, property: %s, object: %s"
+        ZFCoreLogTrim("access property during object deallocation may cause logical problem, property: %s, object: %s"
                 , property->propertyName()
                 , this->objectInfoOfInstance()
                 );
