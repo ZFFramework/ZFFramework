@@ -28,6 +28,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 
 // ============================================================
@@ -48,6 +52,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 
@@ -70,6 +78,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 
 // ============================================================
@@ -90,6 +102,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 
@@ -112,6 +128,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 
 // ============================================================
@@ -132,6 +152,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 
@@ -164,6 +188,10 @@ protected:
         if(ZFObjectCompareValue(this->curve(), another->curve()) != ZFCompareEqual) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 /**
  * @brief loop with linear curve, see #ZFCurve
@@ -182,6 +210,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 /**
@@ -202,6 +234,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 /**
  * @brief loop with ease out curve, see #ZFCurve
@@ -220,6 +256,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 /**
@@ -240,6 +280,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 /**
  * @brief loop with bounce in curve, see #ZFCurve
@@ -258,6 +302,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 /**
@@ -278,6 +326,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 /**
  * @brief loop with bounce in and out curve, see #ZFCurve
@@ -296,6 +348,10 @@ protected:
         zfself *another = zfcast(zfself *, anotherObj);
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
+    }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
     }
 };
 

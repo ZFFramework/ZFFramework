@@ -58,6 +58,10 @@ protected:
         if(another == zfnull) {return ZFCompareUncomparable;}
         return ZFCompareEqual;
     }
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret = zfself::ClassData()->className();
+    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

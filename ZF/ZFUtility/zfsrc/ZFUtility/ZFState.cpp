@@ -86,9 +86,8 @@ public:
 
             ZFCoreArray<ZFListener> *loadQueueTmp = d->loadQueue;
             d->loadQueue = zfnull;
-            while(!loadQueueTmp->isEmpty()) {
-                ZFListener callback = loadQueueTmp->removeAndGet(0);
-                callback.execute();
+            for(zfindex i = 0; i < loadQueueTmp->count(); ++i) {
+                loadQueueTmp->get(i).execute();
             }
             zfpoolDelete(loadQueueTmp);
 
@@ -385,11 +384,21 @@ ZFMETHOD_DEFINE_1(ZFState, void, remove
 }
 ZFMETHOD_DEFINE_0(ZFState, void, removeAll) {
     d->taskCleanup();
+    ZFCoreArray<ZFListener> *loadQueueTmp = d->loadQueue;
+    d->loadQueue = zfnull;
 
     {
         zfsynchronize(this);
+        d->changed = (!d->pending.isEmpty() || !d->m.isEmpty());
         d->pending.removeAll();
         d->m.removeAll();
+    }
+
+    if(loadQueueTmp) {
+        for(zfindex i = 0; i < loadQueueTmp->count(); ++i) {
+            loadQueueTmp->get(i).execute();
+        }
+        zfpoolDelete(loadQueueTmp);
     }
 
     d->saveCheck(this);
