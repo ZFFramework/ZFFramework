@@ -30,7 +30,7 @@ jobs:
       with:
         host: windows
         target: desktop
-        modules: qtwebengine
+        modules: 'qtwebengine webchannel positioning'
 
     - name: ZFSetup
       run: |
