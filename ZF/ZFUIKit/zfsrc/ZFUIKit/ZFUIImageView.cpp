@@ -146,13 +146,14 @@ void ZFUIImageView::_ZFP_imageStateAttach(void) {
                 }
             } ZFLISTENER_END()
             this->_ZFP_imageStateOnUpdateListener = imageStateOnUpdate;
+            this->image()->imageStateAttach(this->_ZFP_imageStateOnUpdateListener);
         }
-        this->image()->imageStateAttach(this->_ZFP_imageStateOnUpdateListener);
     }
 }
 void ZFUIImageView::_ZFP_imageStateDetach(void) {
     if(this->image() && this->_ZFP_imageStateOnUpdateListener) {
         this->image()->imageStateDetach(this->_ZFP_imageStateOnUpdateListener);
+        this->_ZFP_imageStateOnUpdateListener = zfnull;
     }
 }
 
