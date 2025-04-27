@@ -11,12 +11,8 @@ zfbool ZFCoreDataPairSplitString(
         , ZF_IN_OPT const zfchar *leftTokens /* = "(" */
         , ZF_IN_OPT const zfchar *rightTokens /* = ")" */
         , ZF_IN_OPT zfbool allowEmptyItem /* = zffalse */
-        , ZF_OUT_OPT const zfchar **outErrorPos /* = zfnull */
         ) {
     if(src == zfnull) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = "";
-        }
         return zffalse;
     }
     const zfchar *p = src;
@@ -28,9 +24,6 @@ zfbool ZFCoreDataPairSplitString(
     if(leftTokens != zfnull && *leftTokens != '\0') {
         leftTokenMatch = zfstringFind(leftTokens, *p);
         if(leftTokenMatch == zfindexMax()) {
-            if(outErrorPos != zfnull) {
-                *outErrorPos = p;
-            }
             return zffalse;
         }
         ++p;
@@ -73,9 +66,6 @@ zfbool ZFCoreDataPairSplitString(
                 if(itemTokenMatch.isEmpty()) {
                     if(matchR != leftTokenMatch) {
                         // invalid right token
-                        if(outErrorPos != zfnull) {
-                            *outErrorPos = pr;
-                        }
                         return zffalse;
                     }
                     // reach end
@@ -84,9 +74,6 @@ zfbool ZFCoreDataPairSplitString(
                 }
                 else {
                     if(matchR != itemTokenMatch.getLast()) {
-                        if(outErrorPos != zfnull) {
-                            *outErrorPos = pr;
-                        }
                         return zffalse;
                     }
                     itemTokenMatch.removeLast();
@@ -98,16 +85,10 @@ zfbool ZFCoreDataPairSplitString(
             }
         }
         if(!itemTokenMatch.isEmpty()) {
-            if(outErrorPos != zfnull) {
-                *outErrorPos = pr;
-            }
             return zffalse;
         }
 
         if(!allowEmptyItem && pl <= p) {
-            if(outErrorPos != zfnull) {
-                *outErrorPos = pl;
-            }
             return zffalse;
         }
 
@@ -122,9 +103,6 @@ zfbool ZFCoreDataPairSplitString(
 
     // count check
     if(desiredCountOrIndexMax != zfindexMax() && count != desiredCountOrIndexMax) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = p;
-        }
         return zffalse;
     }
 
@@ -132,9 +110,6 @@ zfbool ZFCoreDataPairSplitString(
     zfcharSkipSpace(p, srcEnd);
     if(rightTokens != zfnull && *rightTokens != '\0') {
         if(p == srcEnd || zfstringFind(rightTokens, *p) == zfindexMax()) {
-            if(outErrorPos != zfnull) {
-                *outErrorPos = p;
-            }
             return zffalse;
         }
         ++p;
@@ -143,9 +118,6 @@ zfbool ZFCoreDataPairSplitString(
     // tail check
     zfcharSkipSpace(p, srcEnd);
     if(p < srcEnd) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = p;
-        }
         return zffalse;
     }
 

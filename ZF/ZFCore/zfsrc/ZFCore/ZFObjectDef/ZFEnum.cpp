@@ -299,23 +299,30 @@ zfbool zfflagsFromStringT(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_IN_OPT zfchar separatorToken /* = '|' */
-        , ZF_OUT_OPT const zfchar **outErrorPos /* = zfnull */
         ) {
     ZFCoreMutexLocker();
     if(enumClass != zfnull && enumClass->classIsTypeOf(ZFEnum::ClassData())) {
         _ZFP_I_ZFEnum_stringConverterDataHolder *d = _ZFP_I_ZFEnum_stringConverterDataHolder::setup(enumClass);
         return zfflagsFromStringT(
-            ret,
-            d->flagList, d->nameList, d->enumCount,
-            src, srcLen, separatorToken,
-            outErrorPos);
+                ret
+                , d->flagList
+                , d->nameList
+                , d->enumCount
+                , src
+                , srcLen
+                , separatorToken
+                );
     }
     else {
         return zfflagsFromStringT(
-            ret,
-            zfnull, zfnull, 0,
-            src, srcLen, separatorToken,
-            outErrorPos);
+                ret
+                , zfnull
+                , zfnull
+                , 0
+                , src
+                , srcLen
+                , separatorToken
+                );
     }
 }
 

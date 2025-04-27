@@ -35,7 +35,6 @@ extern ZFLIB_ZFCore zfbool ZFCoreDataPairSplitString(
         , ZF_IN_OPT const zfchar *leftTokens = "("
         , ZF_IN_OPT const zfchar *rightTokens = ")"
         , ZF_IN_OPT zfbool allowEmptyItem = zffalse
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         );
 
 /**
@@ -51,23 +50,24 @@ zfbool ZFCoreDataPairSplitInt(
         , ZF_IN_OPT const zfchar *leftTokens = "("
         , ZF_IN_OPT const zfchar *rightTokens = ")"
         , ZF_IN_OPT zfbool allowEmptyItem = zffalse
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     ZFCoreArray<ZFIndexRange> splited;
     if(!ZFCoreDataPairSplitString(
-                splited,
-                desiredCountOrIndexMax,
-                src, srcLen,
-                separatorTokens, leftTokens, rightTokens,
-                allowEmptyItem,
-                outErrorPos)
-                ) {
+                splited
+                , desiredCountOrIndexMax
+                , src
+                , srcLen
+                , separatorTokens
+                , leftTokens
+                , rightTokens
+                , allowEmptyItem
+                )) {
         return zffalse;
     }
     for(zfindex i = 0; i < splited.count(); ++i) {
         T_int tmp;
         tmp = 0;
-        if(!zfsToIntT(tmp, src + splited[i].start, splited[i].count, 10, zftrue, outErrorPos)) {
+        if(!zfsToIntT(tmp, src + splited[i].start, splited[i].count, 10, zftrue)) {
             return zffalse;
         }
         outData.add(tmp);
@@ -88,22 +88,23 @@ zfbool ZFCoreDataPairSplitFloat(
         , ZF_IN_OPT const zfchar *leftTokens = "("
         , ZF_IN_OPT const zfchar *rightTokens = ")"
         , ZF_IN_OPT zfbool allowEmptyItem = zffalse
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     ZFCoreArray<ZFIndexRange> splited;
     if(!ZFCoreDataPairSplitString(
-                splited,
-                desiredCountOrIndexMax,
-                src, srcLen,
-                separatorTokens, leftTokens, rightTokens,
-                allowEmptyItem,
-                outErrorPos)
-                ) {
+                splited
+                , desiredCountOrIndexMax
+                , src
+                , srcLen
+                , separatorTokens
+                , leftTokens
+                , rightTokens
+                , allowEmptyItem
+                )) {
         return zffalse;
     }
     for(zfindex i = 0; i < splited.count(); ++i) {
         T_float tmp = 0;
-        if(!zfsToFloatT(tmp, src + splited[i].start, splited[i].count, outErrorPos)) {
+        if(!zfsToFloatT(tmp, src + splited[i].start, splited[i].count)) {
             return zffalse;
         }
         outData.add(tmp);

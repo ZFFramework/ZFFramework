@@ -533,7 +533,7 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
     }
     else if(paramClass0->classIsTypeOf(v_zfbool::ClassData()) || paramClass1->classIsTypeOf(v_zfbool::ClassData())) {
         zfobj<v_zfbool> ret;
-        ret->zfv = (zfmAbs(n) <= zffloatEpsilon);
+        ret->zfv = (zfmAbs(n) > zffloatEpsilon);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }

@@ -49,7 +49,6 @@ extern ZFLIB_ZFCore zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &propertyValue
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
 extern ZFLIB_ZFCore zfbool zfstringToDataT(
         ZF_OUT ZFSerializableData &serializableData
@@ -104,9 +103,7 @@ inline zfstring zfflagsToString(
 /**
  * @brief convert string to zfflags
  *
- * params:
- * -  outErrorPos pointer to first char where error occurred,
- *   a non converted format is not regarded as error
+ * note, a non converted format is not regarded as error
  */
 extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
         ZF_OUT zfflags &ret
@@ -116,7 +113,6 @@ extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_IN_OPT zfchar separatorToken = '|'
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         );
 
 // ============================================================

@@ -3,13 +3,16 @@
 #if ZF_ENV_sys_SDL
 
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
+#include "ZFCore/ZFSTLWrapper/zfstllist.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+
+#define _ZFP_SDL_TextureCache_ENABLE 1
 
 zfclassNotPOD _ZFP_SDL_TextureCacheHolder {
 public:
     SDL_Texture *obtain(ZF_IN SDL_Renderer *renderer, ZF_IN int w, ZF_IN int h) {
+#if _ZFP_SDL_TextureCache_ENABLE
         w = ((int)((w + (AlignSize - 1)) / AlignSize)) * AlignSize;
         h = ((int)((h + (AlignSize - 1)) / AlignSize)) * AlignSize;
 
@@ -31,6 +34,7 @@ public:
                 return ret;
             }
         }
+#endif
 
         SDL_RendererInfo rendererInfo;
         SDL_GetRendererInfo(renderer, &rendererInfo);
@@ -47,6 +51,7 @@ public:
         return texture;
     }
     void release(ZF_IN SDL_Renderer *renderer, ZF_IN SDL_Texture *texture) {
+#if _ZFP_SDL_TextureCache_ENABLE
         Key key;
         key.renderer = renderer;
         SDL_QueryTexture(texture, zfnull, zfnull, &(key.w), &(key.h));
@@ -56,7 +61,7 @@ public:
 
         value->mapIt = m.find(key);
         if(value->mapIt == m.end()) {
-            value->mapIt = m.insert(zfstlpair<Key, zfstlvector<Value *> >(key, ListType())).first;
+            value->mapIt = m.insert(zfstlpair<Key, zfstllist<Value *> >(key, ListType())).first;
         }
         value->mapIt->second.push_back(value);
         value->listIt = value->mapIt->second.end();
@@ -75,6 +80,9 @@ public:
             SDL_DestroyTexture(value->texture);
             zfpoolDelete(value);
         }
+#else
+        SDL_DestroyTexture(texture);
+#endif
     }
 
 private:
@@ -97,8 +105,8 @@ private:
         }
     };
     zfclassFwd Value;
-    typedef zfstlmap<Key, zfstlvector<Value *> > MapType;
-    typedef zfstlvector<Value *> ListType;
+    typedef zfstlmap<Key, zfstllist<Value *> > MapType;
+    typedef zfstllist<Value *> ListType;
     zfclassNotPOD Value {
     public:
         SDL_Texture *texture;

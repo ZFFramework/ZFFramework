@@ -242,7 +242,6 @@ extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_IN_OPT zfchar separatorToken = '|'
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         );
 /**
  * @brief zfflags conversion using ZFEnum as source, see #zfflagsFromStringT
@@ -252,10 +251,9 @@ inline zfflags zfflagsFromString(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_IN_OPT zfchar separatorToken = '|'
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     zfflags ret = 0;
-    zfflagsFromStringT(ret, enumClass, src, srcLen, separatorToken, outErrorPos);
+    zfflagsFromStringT(ret, enumClass, src, srcLen, separatorToken);
     return ret;
 }
 /**

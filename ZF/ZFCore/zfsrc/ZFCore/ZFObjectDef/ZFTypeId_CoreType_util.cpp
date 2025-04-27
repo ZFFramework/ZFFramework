@@ -84,18 +84,14 @@ zfbool zfflagsFromStringT(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_IN_OPT zfchar separatorToken /* = '|' */
-        , ZF_OUT_OPT const zfchar **outErrorPos /* = zfnull */
         ) {
     if(src == zfnull) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = src;
-        }
         return zffalse;
     }
     ZFCoreArray<ZFIndexRange> pos;
     zfstring separatorTokens;
     separatorTokens += separatorToken;
-    if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, separatorTokens, zfnull, zfnull, zffalse, outErrorPos)) {
+    if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, separatorTokens, zfnull, zfnull, zffalse)) {
         return zffalse;
     }
     ret = 0;
@@ -111,15 +107,12 @@ zfbool zfflagsFromStringT(
         if(!recognized) {
             if(pos[iSrc].count > 2 && *(src + pos[iSrc].start) == '0' && *(src + pos[iSrc].start + 1) == 'x') {
                 zfflags tmp = 0;
-                if(!zfsToIntT(tmp, src + pos[iSrc].start + 2, pos[iSrc].count - 2, 16, zftrue, outErrorPos)) {
+                if(!zfsToIntT(tmp, src + pos[iSrc].start + 2, pos[iSrc].count - 2, 16, zftrue)) {
                     return zffalse;
                 }
                 ZFBitSet(ret, tmp);
             }
             else {
-                if(outErrorPos != zfnull) {
-                    *outErrorPos = (src + pos[iSrc].start);
-                }
                 return zffalse;
             }
         }

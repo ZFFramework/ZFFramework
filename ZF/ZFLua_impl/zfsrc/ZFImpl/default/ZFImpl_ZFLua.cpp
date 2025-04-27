@@ -104,6 +104,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
         lua_pop(L, 1);
     }
 
+#if 0
     // zfnull
     zfclassNotPOD _ZFP_ZFImpl_ZFLua_zfnullHolder {
     public:
@@ -121,6 +122,15 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
             "zftrue = true\n"
             "zffalse = false\n"
         );
+#else
+    // zfnull
+    // zftrue, zffalse
+    ZFImpl_ZFLua_execute(L,
+            "zfnull = nil\n"
+            "zftrue = true\n"
+            "zffalse = false\n"
+        );
+#endif
 
     // zfl_L
     zfclassNotPOD _ZFP_ZFImpl_ZFLua_LHolder {

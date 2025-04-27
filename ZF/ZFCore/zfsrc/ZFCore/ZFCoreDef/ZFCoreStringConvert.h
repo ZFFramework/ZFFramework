@@ -96,12 +96,8 @@ zfbool zfsToIntT(
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_IN_OPT zfindex radix = 10
         , ZF_IN_OPT zfbool allowNegative = zftrue
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     if(src == zfnull || srcLen == 0 || radix < 2 || radix > 36) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = src;
-        }
         return zffalse;
     }
 
@@ -111,9 +107,6 @@ zfbool zfsToIntT(
     zfbool negative = zffalse;
     if(*p == '-') {
         if(!allowNegative) {
-            if(outErrorPos != zfnull) {
-                *outErrorPos = p;
-            }
             return zffalse;
         }
         negative = zftrue;
@@ -137,9 +130,6 @@ zfbool zfsToIntT(
         return zftrue;
     }
     else {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = p;
-        }
         return zffalse;
     }
 }
@@ -152,10 +142,9 @@ T_Int zfsToInt(
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_IN_OPT zfindex radix = 10
         , ZF_IN_OPT zfbool allowNegative = zftrue
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     T_Int ret = 0;
-    zfsToIntT(ret, src, srcLen, radix, allowNegative, outErrorPos);
+    zfsToIntT(ret, src, srcLen, radix, allowNegative);
     return ret;
 }
 /**
@@ -166,9 +155,8 @@ inline zfint zfsToInt(
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_IN_OPT zfindex radix = 10
         , ZF_IN_OPT zfbool allowNegative = zftrue
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
-    return zfsToInt<zfint>(src, srcLen, radix, allowNegative, outErrorPos);
+    return zfsToInt<zfint>(src, srcLen, radix, allowNegative);
 }
 
 // ============================================================
@@ -231,12 +219,8 @@ zfbool zfsToFloatT(
         ZF_OUT T_Float &ret
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     if(src == zfnull || srcLen == 0) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = src;
-        }
         return zffalse;
     }
 
@@ -255,9 +239,6 @@ zfbool zfsToFloatT(
         ++p;
     }
     if(*p != '\0' && *p != '.' && p != pEnd) {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = p;
-        }
         return zffalse;
     }
 
@@ -273,10 +254,30 @@ zfbool zfsToFloatT(
             ++p;
         }
         if(*p != '\0' && p != pEnd) {
-            if(outErrorPos != zfnull) {
-                *outErrorPos = p;
-            }
             return zffalse;
+        }
+    }
+
+    // 1.23e+21
+    // 1.23e-21
+    if(*p == 'e') {
+        if(*(p + 1) == '+') {
+            zfint e = -1;
+            if(zfsToIntT(e, p + 2, pEnd - (p + 2), 10, zffalse)
+                    && e > 0
+                    ) {
+                ret *= pow(10, e);
+                p = pEnd;
+            }
+        }
+        else if(*(p + 1) == '-') {
+            zfint e = -1;
+            if(zfsToIntT(e, p + 2, pEnd - (p + 2), 10, zffalse)
+                    && e > 0
+                    ) {
+                ret *= pow(10, -e);
+                p = pEnd;
+            }
         }
     }
 
@@ -288,9 +289,6 @@ zfbool zfsToFloatT(
         return zftrue;
     }
     else {
-        if(outErrorPos != zfnull) {
-            *outErrorPos = p;
-        }
         return zffalse;
     }
 }
@@ -301,10 +299,9 @@ template<typename T_Float>
 T_Float zfsToFloat(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
     T_Float ret = 0;
-    zfsToFloatT(ret, src, srcLen, outErrorPos);
+    zfsToFloatT(ret, src, srcLen);
     return ret;
 }
 /**
@@ -313,9 +310,8 @@ T_Float zfsToFloat(
 inline zffloat zfsToFloat(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
-    return zfsToFloat<zffloat>(src, srcLen, outErrorPos);
+    return zfsToFloat<zffloat>(src, srcLen);
 }
 
 

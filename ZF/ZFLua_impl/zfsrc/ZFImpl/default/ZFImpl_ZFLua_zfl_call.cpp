@@ -78,7 +78,12 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         ;
     ZFDI_invoke(zfargs, name, zftrue);
     if(zfargs.success()) {
-        ZFImpl_ZFLua_luaPush(L, zfargs.result());
+        if(zfargs.result()) {
+            ZFImpl_ZFLua_luaPush(L, zfargs.result());
+        }
+        else {
+            lua_pushnil(L);
+        }
         return 1;
     }
 
