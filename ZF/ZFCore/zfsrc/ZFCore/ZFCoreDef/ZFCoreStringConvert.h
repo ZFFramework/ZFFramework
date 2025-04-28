@@ -266,7 +266,10 @@ zfbool zfsToFloatT(
             if(zfsToIntT(e, p + 2, pEnd - (p + 2), 10, zffalse)
                     && e > 0
                     ) {
-                ret *= pow(10, e);
+                while(e > 0) {
+                    ret *= 10;
+                    --e;
+                }
                 p = pEnd;
             }
         }
@@ -275,7 +278,9 @@ zfbool zfsToFloatT(
             if(zfsToIntT(e, p + 2, pEnd - (p + 2), 10, zffalse)
                     && e > 0
                     ) {
-                ret *= pow(10, -e);
+                while(e > 0) {
+                    ret /= 10;
+                }
                 p = pEnd;
             }
         }
