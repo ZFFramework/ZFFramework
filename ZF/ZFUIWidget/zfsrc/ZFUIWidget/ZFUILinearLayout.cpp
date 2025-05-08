@@ -128,7 +128,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
         ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->visible() && !layoutParam->reserveSpace()) {
-            continue ;
+            continue;
         }
         zffloat prevSpace = (i > 0 ? parent->childSpace() : (zffloat)0);
         if(totalWeight != zfnull) {
@@ -181,7 +181,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
         ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->visible() && !layoutParam->reserveSpace()) {
-            continue ;
+            continue;
         }
         zffloat prevSpace = (i > 0 ? parent->childSpace() : (zffloat)0);
         if(totalWeight != zfnull) {
@@ -235,7 +235,7 @@ static void _ZFP_ZFUILinearLayout_layoutHorizontal(
         ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->visible() && !layoutParam->reserveSpace()) {
-            continue ;
+            continue;
         }
         zffloat prevSpace = (i > 0 ? parent->childSpace() : (zffloat)0);
         zffloat childSize = 0;
@@ -281,7 +281,7 @@ static void _ZFP_ZFUILinearLayout_layoutVertical(
         ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->visible() && !layoutParam->reserveSpace()) {
-            continue ;
+            continue;
         }
         zffloat prevSpace = (i > 0 ? parent->childSpace() : (zffloat)0);
         zffloat childSize = 0;
