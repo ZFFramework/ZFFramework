@@ -4,7 +4,7 @@
 #include "protocol/ZFProtocolZFUIViewTransform.h"
 #include "ZFUIViewFocus.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -13,7 +13,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIView)
 
 // ============================================================
 // _ZFP_ZFUIViewPrivate
-typedef zfstlmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
+typedef zfstlset<zfstring> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate {
 public:
     void *nativeView;
@@ -1104,6 +1104,23 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, viewUIEnableTree) {
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zfbool, mouseHoverEnable) {
     ZFPROTOCOL_ACCESS(ZFUIView)->mouseHoverEnable(this, this->mouseHoverEnable());
+}
+
+ZFMETHOD_DEFINE_0(ZFUIView, zfbool, viewUIEnableFixed) {
+    return this->viewUIEnable() && this->viewUIEnableTreeFixed();
+}
+ZFMETHOD_DEFINE_0(ZFUIView, zfbool, viewUIEnableTreeFixed) {
+    if(!this->viewUIEnableTree()) {
+        return zffalse;
+    }
+    ZFUIView *parent = this->parent();
+    while(parent != zfnull) {
+        if(!parent->viewUIEnableTree()) {
+            return zffalse;
+        }
+        parent = parent->parent();
+    }
+    return zftrue;
 }
 
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewSizeFixed
@@ -2283,7 +2300,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd
         , ZFMP_IN(const zfstring &, tag)
         ) {
     if(tag) {
-        d->internalViewAutoSerializeTags[tag] = zftrue;
+        d->internalViewAutoSerializeTags.insert(tag);
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove
@@ -2304,7 +2321,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagGetAllT
             it != d->internalViewAutoSerializeTags.end();
             ++it
             ) {
-        ret.add(it->first);
+        ret.add(*it);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfstring>, internalViewAutoSerializeTagGetAll) {

@@ -301,6 +301,15 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewUIEnableTree)
 
     /**
+     * @brief true if #viewUIEnable and all of parents are #viewUIEnableTree
+     */
+    ZFMETHOD_DECLARE_0(zfbool, viewUIEnableFixed)
+    /**
+     * @brief true if #viewUIEnableTree and all of parents are #viewUIEnableTree
+     */
+    ZFMETHOD_DECLARE_0(zfbool, viewUIEnableTreeFixed)
+
+    /**
      * @brief whether enable mouse hover event, see #ZFUIView::viewEventOnMouseEvent, false by default
      */
     ZFPROPERTY_ASSIGN(zfbool, mouseHoverEnable)

@@ -5,7 +5,7 @@
 
 #include "protocol/ZFProtocolZFRes.h"
 
-#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -83,7 +83,7 @@ public:
         return (t < 0 || (t == 0 && k1.pathData().compare(k2.pathData()) < 0));
     }
 };
-typedef zfstlmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyCmp> _ZFP_ZFResExtMap;
+typedef zfstlset<ZFPathInfo, _ZFP_ZFResExtKeyCmp> _ZFP_ZFResExtMap;
 static zfbool _ZFP_ZFResExtPathCheck(
         ZF_OUT ZFPathInfo &resExtPath
         , ZF_IN const zfchar *resPath
@@ -95,7 +95,7 @@ static zfbool _ZFP_ZFResExtPathCheck(
         if(m.find(l[i]) != m.end()) {
             continue;
         }
-        m[l[i]] = zftrue;
+        m.insert(l[i]);
         const ZFPathInfo t = l[i];
         ZFCoreMutexUnlock();
 
@@ -170,7 +170,7 @@ zfclassNotPOD _ZFP_ZFResFindData {
 public:
     zfstring resPathSaved;
     _ZFP_ZFResExtMap resExtResolved;
-    zfstlmap<zfstring, zfbool> resExtItemResolved;
+    zfstlset<zfstring> resExtItemResolved;
     ZFFileFindData resExtFd; // valid if resExtPath not empty
     /*
      * if not empty, the file is find from resExtPath
@@ -210,7 +210,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
     if(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, resPath, implUserData->resExtResolved)) {
         ZFPathInfo resPathTmp(implUserData->resExtPath.pathType(), ZFPathInfoToChild(implUserData->resExtPath, resPath));
         if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
-            implUserData->resExtItemResolved[implUserData->resExtFd.name()] = zftrue;
+            implUserData->resExtItemResolved.insert(implUserData->resExtFd.name());
             implUserData->copyToFd(fd.impl());
             return zftrue;
         }
@@ -245,7 +245,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
             if(implUserData->resExtItemResolved.find(implUserData->resExtFd.name()) != implUserData->resExtItemResolved.end()) {
                 continue;
             }
-            implUserData->resExtItemResolved[implUserData->resExtFd.name()] = zftrue;
+            implUserData->resExtItemResolved.insert(implUserData->resExtFd.name());
             implUserData->copyToFd(fd.impl());
             return zftrue;
         }
@@ -259,7 +259,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
                     if(implUserData->resExtItemResolved.find(implUserData->resExtFd.name()) != implUserData->resExtItemResolved.end()) {
                         continue;
                     }
-                    implUserData->resExtItemResolved[implUserData->resExtFd.name()] = zftrue;
+                    implUserData->resExtItemResolved.insert(implUserData->resExtFd.name());
                     implUserData->copyToFd(fd.impl());
                     return zftrue;
                 } while(ZFPathInfoFindNext(resPathTmp, implUserData->resExtFd));

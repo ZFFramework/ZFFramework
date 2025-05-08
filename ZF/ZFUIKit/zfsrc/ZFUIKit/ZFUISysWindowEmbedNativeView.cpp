@@ -1,7 +1,7 @@
 #include "ZFUISysWindow.h"
 #include "protocol/ZFProtocolZFUISysWindowEmbedNativeView.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -60,17 +60,17 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUISysWindowEmbedNativeViewAutoRemove, ZF
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove) {
     while(!m.empty()) {
-        zfstlmap<zfstring, zfbool> tmp;
+        zfstlset<zfstring> tmp;
         tmp.swap(m);
-        for(zfstlmap<zfstring, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
-            const ZFMethod *method = ZFMethodFuncForName(zfnull, it->first);
+        for(zfstlset<zfstring>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
+            const ZFMethod *method = ZFMethodFuncForName(zfnull, *it);
             if(method != zfnull && method->isUserRegister()) {
                 ZFMethodFuncUserUnregister(method);
             }
         }
     }
 }
-zfstlmap<zfstring, zfbool> m;
+zfstlset<zfstring> m;
 ZF_GLOBAL_INITIALIZER_END(ZFUISysWindowEmbedNativeViewAutoRemove)
 ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
         , ZFMP_IN(void *, nativeParent)
@@ -99,7 +99,7 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNative
     } ZFLISTENER_END()
     sysWindow->observerAdd(ZFObject::E_ObjectBeforeDealloc(), sysWindowOnDealloc);
 
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUISysWindowEmbedNativeViewAutoRemove)->m[sysWindowName] = zftrue;
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUISysWindowEmbedNativeViewAutoRemove)->m.insert(sysWindowName);
     return sysWindow;
 }
 ZFMETHOD_DEFINE_1(ZFUISysWindow, void, nativeWindowEmbedNativeViewCleanup

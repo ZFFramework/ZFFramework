@@ -4,7 +4,7 @@
 
 #if ZF_ENV_sys_iOS
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -53,7 +53,7 @@ public:
         _delayTaskMap.erase(view);
     }
 public:
-    zfstlmap<ZFUIView *, zfbool> _delayTaskMap;
+    zfstlset<ZFUIView *> _delayTaskMap;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END

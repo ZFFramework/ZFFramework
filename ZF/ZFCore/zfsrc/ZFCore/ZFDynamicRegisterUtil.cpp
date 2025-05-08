@@ -1,6 +1,7 @@
 #include "ZFDynamicRegisterUtil.h"
 
 #include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstlset.h"
 #include "ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -401,7 +402,7 @@ void ZFDynamic::exportTag(
     ZFCoreArray<zfstring> allNamespace;
     ZFNamespaceGetAllT(allNamespace);
 
-    zfstlmap<zfstring, zfbool> tags;
+    zfstlset<zfstring> tags;
 
     for(zfindex i = 0; i < allClass.count(); ++i) {
         const ZFClass *t = allClass[i];
@@ -409,10 +410,10 @@ void ZFDynamic::exportTag(
             continue;
         }
         if(exportScope && t->classNamespace()) {
-            tags[t->classNameFull()] = zftrue;
+            tags.insert(t->classNameFull());
         }
         else {
-            tags[t->className()] = zftrue;
+            tags.insert(t->className());
         }
     }
     for(zfindex i = 0; i < allMethod.count(); ++i) {
@@ -426,21 +427,21 @@ void ZFDynamic::exportTag(
                 tag += t->ownerClass()->classNameFull();
                 tag += ".";
                 tag += t->methodName();
-                tags[tag] = zftrue;
+                tags.insert(tag);
             }
             else if(t->methodNamespace()) {
                 zfstring tag;
                 tag += t->methodNamespace();
                 tag += ".";
                 tag += t->methodName();
-                tags[tag] = zftrue;
+                tags.insert(tag);
             }
             else {
-                tags[t->methodName()] = zftrue;
+                tags.insert(t->methodName());
             }
         }
         else {
-            tags[t->methodName()] = zftrue;
+            tags.insert(t->methodName());
         }
     }
     for(zfindex i = 0; i < allTypeId.count(); ++i) {
@@ -448,14 +449,14 @@ void ZFDynamic::exportTag(
         if(t->typeIdClass() == zfnull || t->typeIdClass()->classIsInternalPrivate() || (!exportInternal && t->typeIdClass()->classIsInternal())) {
             continue;
         }
-        tags[t->typeId()] = zftrue;
+        tags.insert(t->typeId());
     }
     for(zfindex i = 0; i < allNamespace.count(); ++i) {
-        tags[allNamespace[i]] = zftrue;
+        tags.insert(allNamespace[i]);
     }
 
-    for(zfstlmap<zfstring, zfbool>::iterator it = tags.begin(); it != tags.end(); ++it) {
-        output << it->first << "\n";
+    for(zfstlset<zfstring>::iterator it = tags.begin(); it != tags.end(); ++it) {
+        output << *it << "\n";
     }
 }
 

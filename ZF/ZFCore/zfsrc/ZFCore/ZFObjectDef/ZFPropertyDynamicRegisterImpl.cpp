@@ -1,25 +1,24 @@
 #include "ZFPropertyDynamicRegister.h"
 #include "ZFPropertyDynamicRegisterExtra.h"
 #include "ZFObjectImpl.h"
-#include "ZFListenerDeclare.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
-zfstlmap<const ZFProperty *, zfbool> m;
+zfstlset<const ZFProperty *> m;
 ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFPropertyDynamicRegisterAutoRemove) {
-    zfstlmap<const ZFProperty *, zfbool> t;
+    zfstlset<const ZFProperty *> t;
     t.swap(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m);
-    for(zfstlmap<const ZFProperty *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
-        _ZFP_ZFPropertyUnregister(it->first);
+    for(zfstlset<const ZFProperty *>::iterator it = t.begin(); it != t.end(); ++it) {
+        _ZFP_ZFPropertyUnregister(*it);
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterAutoRemove)
@@ -75,19 +74,19 @@ public:
         if(this->_objAttached.find(obj) == this->_objAttached.end()) {
             obj->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->_objOnDeallocListener);
         }
-        this->_objAttached[obj] = zftrue;
+        this->_objAttached.insert(obj);
     }
     void objectDetach(ZF_IN ZFObject *obj) {
-        zfstlmap<ZFObject *, zfbool>::iterator it = this->_objAttached.find(obj);
+        zfstlset<ZFObject *>::iterator it = this->_objAttached.find(obj);
         ZFCoreAssert(it != this->_objAttached.end());
         this->_objAttached.erase(it);
         this->objectDetachAction(obj);
     }
     void objectDetachAll(void) {
-        zfstlmap<ZFObject *, zfbool> t;
+        zfstlset<ZFObject *> t;
         t.swap(this->_objAttached);
-        for(zfstlmap<ZFObject *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
-            this->objectDetachAction(it->first);
+        for(zfstlset<ZFObject *>::iterator it = t.begin(); it != t.end(); ++it) {
+            this->objectDetachAction(*it);
         }
     }
     void objectDetachAction(ZF_IN ZFObject *obj) {
@@ -204,7 +203,7 @@ public:
         }
     }
 private:
-    zfstlmap<ZFObject *, zfbool> _objAttached;
+    zfstlset<ZFObject *> _objAttached;
     ZFListener _objOnDeallocListener;
     ZFMETHOD_INLINE_1(void, _objOnDealloc
             , ZFMP_IN(const ZFArgs &, zfargs)
@@ -222,7 +221,7 @@ zfclass _ZFP_I_PropDynRegValueStore : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegValueStore, ZFObject)
 
 public:
-    zfstlmap<void *, zfauto> m;
+    zfstlset<void *> m;
 };
 
 // ============================================================
@@ -586,7 +585,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
 
     userDataWrapper->propertySaved = property;
     property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper = zfRetain(userDataWrapper);
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m[property] = zftrue;
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m.insert(property);
     return property;
 }
 void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property) {

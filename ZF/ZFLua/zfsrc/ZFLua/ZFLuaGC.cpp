@@ -2,7 +2,7 @@
 #include "ZFLuaState.h"
 #include "protocol/ZFProtocolZFLua.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -24,8 +24,8 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCHolder, ZFLevelZFFrameworkHigh) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
-    for(zfstlmap<void *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
-        ZFLuaGCImmediately(it->first);
+    for(zfstlset<void *>::iterator it = m.begin(); it != m.end(); ++it) {
+        ZFLuaGCImmediately(*it);
     }
     ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
     if(this->gcTask != zfnull) {
@@ -33,22 +33,22 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
     }
 }
 zfautoT<ZFTimer> gcTask;
-zfstlmap<void *, zfbool> m;
+zfstlset<void *> m;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
     ZFCoreMutexLocker();
-    zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
+    zfstlset<void *> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
     m.erase(const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv));
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 
 static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFArgs &zfargs) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
-    zfstlmap<void *, zfbool> &m = d->m;
+    zfstlset<void *> &m = d->m;
     ZFCoreMutexLock();
     d->gcTask = zfnull;
     while(!m.empty()) {
-        zfstlmap<void *, zfbool>::iterator it = m.begin();
-        void *L = it->first;
+        zfstlset<void *>::iterator it = m.begin();
+        void *L = *it;
         m.erase(it);
 
         ZFCoreMutexUnlock();
@@ -73,9 +73,9 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
 
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
-    zfstlmap<void *, zfbool> &m = d->m;
+    zfstlset<void *> &m = d->m;
     if(m.find(L) == m.end()) {
-        m[L] = zftrue;
+        m.insert(L);
         if(d->gcTask == zfnull) {
             d->gcTask = ZFTimerOnce(1000, ZFCallbackForFunc(_ZFP_ZFLuaGCResolve));
         }

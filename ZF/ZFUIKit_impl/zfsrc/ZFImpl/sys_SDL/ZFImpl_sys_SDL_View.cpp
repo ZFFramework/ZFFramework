@@ -217,7 +217,7 @@ ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseTest(
         }
     }
     if(this->ownerZFUIView == zfnull
-        || !this->ownerZFUIView->viewUIEnableTree()
+        || !this->ownerZFUIView->viewUIEnableTreeFixed()
         || x < 0 || x >= this->rect.w
         || y < 0 || y >= this->rect.h
     ) {
@@ -243,7 +243,7 @@ ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseHoverTest(
         , ZF_IN int y
         ) {
     if(this->ownerZFUIView == zfnull
-        || !this->ownerZFUIView->viewUIEnableTree()
+        || !this->ownerZFUIView->viewUIEnableTreeFixed()
         || x < 0 || x >= this->rect.w
         || y < 0 || y >= this->rect.h
     ) {

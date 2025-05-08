@@ -1,6 +1,6 @@
 #include "ZFIdentityUtil.h"
 #include "ZFCoreArray.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlset.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -9,7 +9,7 @@ zfclassNotPOD _ZFP_ZFIdentityGeneratorPrivate {
 public:
     zfuint refCount;
     zfidentity cur;
-    zfstlmap<zfidentity, zfbool> used;
+    zfstlset<zfidentity> used;
 
 public:
     _ZFP_ZFIdentityGeneratorPrivate(void)
@@ -54,7 +54,7 @@ zfidentity ZFIdentityGenerator::idAcquire(void) {
     do {
         ++(d->cur);
     } while(d->cur == zfidentityInvalid() || d->used.find(d->cur) != d->used.end());
-    d->used[d->cur] = zftrue;
+    d->used.insert(d->cur);
     return d->cur;
 }
 zfbool ZFIdentityGenerator::idRelease(ZF_IN zfidentity identity) {
@@ -66,8 +66,8 @@ zfbool ZFIdentityGenerator::idExist(ZF_IN zfidentity identity) const {
 }
 void ZFIdentityGenerator::idExistGetAll(ZF_IN_OUT ZFCoreArray<zfidentity> &ret) const {
     ret.capacity(ret.capacity() + (zfindex)d->used.size());
-    for(zfstlmap<zfidentity, zfbool>::iterator it = d->used.begin(); it != d->used.end(); ++it) {
-        ret.add(it->first);
+    for(zfstlset<zfidentity>::iterator it = d->used.begin(); it != d->used.end(); ++it) {
+        ret.add(*it);
     }
 }
 
