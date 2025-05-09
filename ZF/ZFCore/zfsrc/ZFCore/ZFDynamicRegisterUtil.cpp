@@ -736,7 +736,6 @@ ZFDynamic &ZFDynamic::onInit(
 }
 
 void ZFDynamic::onInitImpl(ZF_IN const ZFArgs &zfargs) {
-    ZFObject *owner = zfargs.sender();
     const ZFMethod *method = zfargs.ownerMethod();
     for(zfindex i = 0; i < method->paramCount(); ++i) {
         ZFArgs zfargsSetter;

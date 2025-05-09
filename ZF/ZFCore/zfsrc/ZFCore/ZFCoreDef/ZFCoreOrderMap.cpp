@@ -261,7 +261,6 @@ void ZFCoreOrderMap::remove(ZF_IN const zfstring &key) {
         _ZFP_ZFCoreOrderMapPrivate::MapType::iterator it = d->map.find(key);
         if(it != d->map.end()) {
             _ZFP_ZFCoreOrderMapPrivate::Item *item = it->second;
-            const ZFCorePointerBase *savedValue = item->value;
             d->map.erase(it);
             d->arr.erase(item->arrIt);
             zfpoolDelete(item);

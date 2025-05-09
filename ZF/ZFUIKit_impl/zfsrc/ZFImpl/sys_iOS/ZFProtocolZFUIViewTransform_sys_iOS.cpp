@@ -21,7 +21,7 @@ public:
     virtual void viewTransform(ZF_IN ZFUIView *view) {
         // transform won't work when changed immediately after UIView created,
         // delay for some time
-        _delayTaskMap[view] = zftrue;
+        _delayTaskMap.insert(view);
         zfself *thiz = this;
         zfweakT<ZFUIView> holder = view;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

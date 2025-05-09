@@ -144,16 +144,6 @@ static zfstlmap<zfstring, ZFPathInfoImpl> &_ZFP_ZFPathInfoImplMap(void) {
     static zfstlmap<zfstring, ZFPathInfoImpl> d;
     return d;
 }
-static ZFPathInfoImpl *_ZFP_ZFPathInfoImplForPathType(ZF_IN const zfchar *pathType) {
-    zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
-    zfstlmap<zfstring, ZFPathInfoImpl>::iterator it = m.find(pathType);
-    if(it != m.end()) {
-        return &(it->second);
-    }
-    else {
-        return zfnull;
-    }
-}
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFPathInfoIsExist
