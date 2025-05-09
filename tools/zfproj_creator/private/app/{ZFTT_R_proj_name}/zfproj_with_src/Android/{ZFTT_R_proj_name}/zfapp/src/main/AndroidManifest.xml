@@ -8,7 +8,7 @@
         android:label="{ZFTT_R_proj_name}"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.ZFFramework.Android.{ZFTT_R_proj_name}.Loader"
+            android:name="com.ZFFramework.{ZFTT_R_proj_name}.Loader"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,11 +17,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ZFFramework.Android.ZF_impl.ZFMainEntry"
+            android:name="com.ZFFramework.ZF_impl.ZFMainEntry"
             android:label="ZFFramework"
             android:launchMode="singleTask" />
         <activity
-            android:name="com.ZFFramework.Android.ZFUIKit_impl.ZFUISysWindow"
+            android:name="com.ZFFramework.ZFUIKit_impl.ZFUISysWindow"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="ZFFramework"
             android:windowSoftInputMode="adjustResize" />

@@ -79,6 +79,9 @@ elif test "x-$CONFIG_FILE_PATH" = "x--app" || test "x-$CONFIG_FILE_PATH" = "x--l
         echo "ZF_INPLACE_SRC = $ZF_INPLACE_SRC"
         echo "# ZF_EXCLUDE +="
         echo ""
+        echo "ZF_APP_NAME = $PROJ_NAME"
+        echo "ZF_APP_VERSION = 0.0.1"
+        echo ""
         echo "ZF_LIB += ZFCore"
         echo "# ZF_LIB += ZFAlgorithm"
         echo "# ZF_LIB += ZFUtility"
@@ -222,6 +225,24 @@ elif test "x-$ZF_TYPE" = "x-impl" ; then
 else
     echo "ZF_TYPE not set"
     exit 1
+fi
+
+if test "x-$ZF_APP_NAME" = "x-" ; then
+    export ZFTT_R_app_name=$ZF_NAME
+else
+    export ZFTT_R_app_name=$ZF_APP_NAME
+fi
+
+if test "x-$ZF_APP_VERSION" = "x-" ; then
+    export ZFTT_R_app_version="0.0.1"
+else
+    export ZFTT_R_app_version=$ZF_APP_VERSION
+fi
+
+if test "x-$ZF_APP_PACKAGE" = "x-" ; then
+    export ZFTT_R_app_package=$ZF_NAME
+else
+    export ZFTT_R_app_package=$ZF_APP_PACKAGE
 fi
 
 libIndex=0

@@ -4,7 +4,7 @@ plugins {
 
 def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../../ZFFramework'
 android {
-    namespace 'com.ZFFramework.Android.{ZFTT_R_proj_name}'
+    namespace 'com.ZFFramework.{ZFTT_R_proj_name}'
     compileSdk 35
 
     defaultConfig {

@@ -25,12 +25,12 @@
  *   add these activity declaration to your \<application\> node:
  *   @code
  *     <activity
- *         android:name="com.ZFFramework.Android.ZF_impl.ZFMainEntry"
+ *         android:name="com.ZFFramework.ZF_impl.ZFMainEntry"
  *         android:label="ZFFramework"
  *         android:usesCleartextTraffic="true">
  *     </activity>
  *     <activity
- *         android:name="com.ZFFramework.Android.ZFUIKit_impl.ZFUISysWindow"
+ *         android:name="com.ZFFramework.ZFUIKit_impl.ZFUISysWindow"
  *         android:configChanges="orientation|keyboardHidden|screenSize"
  *         android:label="ZFFramework"
  *         android:windowSoftInputMode="adjustResize" >

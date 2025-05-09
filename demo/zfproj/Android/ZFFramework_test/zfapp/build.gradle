@@ -4,11 +4,11 @@ plugins {
 
 def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../ZFFramework'
 android {
-    namespace 'com.ZFFramework.Android.ZFFramework_test'
+    namespace 'com.ZFFramework.ZFFramework_test'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'com.ZFFramework.Android.ZFFramework_test'
+        applicationId 'com.ZFFramework.ZFFramework_test'
         minSdk 21
         targetSdk 35
         versionCode 1

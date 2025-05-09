@@ -86,8 +86,8 @@ using namespace AndroidJNIUtil;
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define ZFImpl_sys_Android_ROOT_JNI_ID com_ZFFramework_Android
-#define ZFImpl_sys_Android_ROOT_JNI_NAME "com.ZFFramework.Android"
+#define ZFImpl_sys_Android_ROOT_JNI_ID com_ZFFramework
+#define ZFImpl_sys_Android_ROOT_JNI_NAME "com.ZFFramework"
 
 // usually used when declare JNI method
 // note: when class name contains `_`, it must be replaced with `_1`

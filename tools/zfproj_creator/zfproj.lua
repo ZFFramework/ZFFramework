@@ -86,6 +86,10 @@ function zfproj_init(ZF_TYPE, PROJ_NAME, DST_PATH)
     o:output('ZF_INPLACE_SRC = ' .. ZF_INPLACE_SRC .. "\n")
     o:output('# ZF_EXCLUDE +=' .. "\n")
     o:output("\n")
+    o:output('ZF_APP_NAME = ' .. PROJ_NAME .. "\n")
+    o:output('ZF_APP_VERSION = 0.0.1' .. "\n")
+    o:output('ZF_APP_PACKAGE = com.ZFFramework.' .. PROJ_NAME .. "\n")
+    o:output("\n")
     o:output('ZF_LIB += ZFCore' .. "\n")
     o:output('# ZF_LIB += ZFAlgorithm' .. "\n")
     o:output('# ZF_LIB += ZFUtility' .. "\n")
@@ -193,6 +197,24 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     else
         ZFLogTrim('ZF_TYPE not set')
         return false
+    end
+
+    if zfstringIsEmpty(config:get('ZF_APP_NAME')) then
+        param:replaceData('app_name', config:get('ZF_NAME'))
+    else
+        param:replaceData('app_name', config:get('ZF_APP_NAME'))
+    end
+
+    if zfstringIsEmpty(config:get('ZF_APP_VERSION')) then
+        param:replaceData('app_version', '0.0.1')
+    else
+        param:replaceData('app_version', config:get('ZF_APP_VERSION'))
+    end
+
+    if zfstringIsEmpty(config:get('ZF_APP_PACKAGE')) then
+        param:replaceData('app_package', 'com.ZFFramework.' .. config:get('ZF_NAME'))
+    else
+        param:replaceData('app_package', config:get('ZF_APP_PACKAGE'))
     end
 
     ---@type ZFArray
