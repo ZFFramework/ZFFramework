@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief time based event driver
  *
- * you may supply a subclass to achive custom curve,
+ * you may supply a subclass to achieve custom curve,
  * but must make sure it is serializable and copyable
  */
 zfabstract ZFLIB_ZFCore ZFCurve : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {

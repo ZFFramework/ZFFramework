@@ -31,7 +31,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 /**
  * @brief util to import resource or class
  *
- * this method is useful for script to achive "import" or "require"
+ * this method is useful for script to achieve "import" or "require"
  * of other script language such as Javascript\n
  * \n
  * what the path and pathInfo means:

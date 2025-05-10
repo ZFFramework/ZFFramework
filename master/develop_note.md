@@ -1,6 +1,7 @@
 # Intro
 
-this file is written as a note for developers that want to know the mechanism of ZFFramework
+this file is written as a note, for developers that want to know the design and mechanism of ZFFramework
+
 
 # Contents
 
@@ -9,7 +10,7 @@ this file is written as a note for developers that want to know the mechanism of
 there are many abbreviations in ZFFramework which keep code style and you should follow:
 
 * `_ZFP_` : `ZF Private` contents, should not be used for public
-* `_ZFP_I_` : `ZF Private Internal` contents, which won't be logged by global observers
+* `_ZFP_I_` : `ZF Private Internal` contents, which can not be reflected
 * `_ZFI_` : `ZF Include`, dummy macro to wrap headers
 * `_ZFT_` : `ZF Type`, used to mark macro defined types
 * `zft_` : `ZF Type`, primitive type wrapper
@@ -41,6 +42,9 @@ the main reason for that is the performance, ZFFramework use multi-inheritance t
 which would cause deep inherit tree, which cause `dynamic_cast` to be very slow
 
 secondly, it reduce the dependency of RTTI, which is not much necessary for ZFFramework
+
+further more, it's used to achieve special `ZFCLASS_EXTEND` logic,
+which can extend existing cpp class, like the category of Object-C
 
 
 ## class namespace
@@ -99,10 +103,10 @@ to export global vars, we use `ZFEXPORT_VAR_DECLARE` / `ZFEXPORT_RAW_ENUM_DEFINE
 which is actually a wrapper to ZFMethod
 
 
-## script binding
+## Script binding
 
 since ZFFramework support reflection,
-we are trying hard to achive script binding by reflection dynamically and automatically
+we are trying hard to achieve script binding by reflection dynamically and automatically
 
 1. all non-ZFObject type should be registered by `ZFTYPEID_DECLARE`
 1. all ZFMethod supply a generic invoker (`ZFMethod::methodGenericInvoker`)
@@ -124,4 +128,21 @@ we are trying hard to achive script binding by reflection dynamically and automa
     1. `myFunc` should be binded automatically by reflecting all `ZFMethod` from `ZFClass` types
     1. when `ZFMethod` called, unknown param type would be serialized to desired type implicitly
     1. finally, `myFunc` would be invoked with all ZFObject type as params and result
+
+
+## Build system
+
+currently, we use special scripts (mainly under `tools` dir) to build ZFFramework,
+mainly because of:
+
+* there are no "official" ways to build "apps" written in cpp,
+    the cmake and cpack is awesome,
+    but it's still hard to combine with other app frameworks, for example:
+    Android impl requires some Java code,
+    which can not be handled by cmake directly
+
+however, we did try hard to make it more easy to compile,
+most of source codes of ZFFramework should be able to compile
+without any other configs or macros,
+to reduce the dependency of build system
 
