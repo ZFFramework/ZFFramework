@@ -140,9 +140,9 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierLinear, ZFBezier(0, 0, 1, 1))
 ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierEaseIn, ZFBezier(0.8f, 0, 1, 1))
 ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierEaseOut, ZFBezier(0, 0, 0.2f, 1))
 ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierEaseInOut, ZFBezier(0.8f, 0, 0.2f, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBounceIn, ZFBezier(0.2f, -0.5f, 1, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBounceOut, ZFBezier(0, 0, 0.8f, 1.5f))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBounceInOut, ZFBezier(0.2f, -0.5f, 0.8f, 1.5f))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBackIn, ZFBezier(0.2f, -0.5f, 1, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBackOut, ZFBezier(0, 0, 0.8f, 1.5f))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBackInOut, ZFBezier(0.2f, -0.5f, 0.8f, 1.5f))
 
 // ============================================================
 ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {

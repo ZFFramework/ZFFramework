@@ -154,17 +154,17 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierEaseOut)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierEaseInOut)
 /**
- * @brief bounce in curve
+ * @brief back in curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceIn)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBackIn)
 /**
- * @brief bounce out curve
+ * @brief back out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBackOut)
 /**
- * @brief bounce in out curve
+ * @brief back in out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceInOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBackInOut)
 
 // ============================================================
 /**

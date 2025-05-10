@@ -54,25 +54,27 @@ this piece of code shows how to show a hello world on UI and log output
 #include "ZFUIWidget.h" // for common UI module
 ZFMAIN_ENTRY() { // app starts from here
     // show a hello world to log output
-    ZFLog() << "hello wolrd";
+    ZFLog("hello %s", "world");
 
-    // show a window (full screen by default)
+    // show a window
     zfobj<ZFUIWindow> window;
     window->show();
 
-    // show a hello world as a text view
-    zfobj<ZFUITextView> textView;
-    window->child(textView)->c_alignTop()->c_margin(40);
-    textView->text("hello world");
+    // build view tree
+    // (the c_xxx is a util for chained call)
+    window
+        ->child(zfobj<ZFUITextView>()
+            ->c_text(zfstr("hello %s", "world"))
+        )->c_alignTop()->c_margin(40)
 
-    // button and click (as observer)
-    zfobj<ZFUIButtonBasic> button;
-    window->child(button)->c_alignBottom()->c_margin(40);
-    button->label()->text("click me");
-    button->onClick([](const ZFArgs &zfargs) {
-        ZFUIButtonBasic *button = zfargs.sender();
-        ZFLogTrim() << "button clicked: " << button;
-    });
+        ->child(zfobj<ZFUIButtonBasic>()
+            ->c_labelProp("text", zfobj<v_zfstring>("click me"))
+            ->c_onClick([](const ZFArgs &zfargs) {
+                ZFUIButtonBasic *button = zfargs.sender();
+                ZFUIHintShow(zfstr("button clicked: %s", button));
+            })
+        )->c_alignBottom()->c_margin(40)
+        ;
 }
 ```
 
@@ -83,21 +85,24 @@ this piece of code shows equivalent lua code to use ZFFramework,
 <b>all the lua bindings are automatically done by reflection!</b>
 
 ```lua
-ZFLog('hello world')
+ZFLog('hello %s', 'world')
 
 local window = ZFUIWindow()
 window:show()
 
-local textView = ZFUITextView.ClassData():newInstance()
-window:child(textView):alignTop():margin(40)
-textView:text('hello wolrd')
+window
+    :child(ZFUITextView()
+        :text(zfstr('hello %s', 'world'))
+    ):alignTop():margin(40)
 
-local button = ZFClass.classForName('ZFUIButtonBasic'):newInstance()
-window:child(button):alignBottom():margin(40)
-button:label():text('click me')
-button:onClick(function (zfargs)
-        ZFLog('button clicked: %s', zfargs:sender())
-    end)
+    :child(ZFUIButtonBasic()
+        :labelProp('text', 'click me')
+        :onClick(function(a)
+                ---@type ZFUIButtonBasic
+                local button = a:sender()
+                ZFUIHintShow(zfstr('button clicked: %s', button))
+            end)
+    ):alignBottom():margin(40)
 ```
 
 
