@@ -11,6 +11,10 @@
  *   ZFMAIN_ENTRY() {
  *       // well, hello world to ZFFramework
  *       ZFLog() << "hello world";
+ *
+ *       // use ZFLog or zfstr and `%s` to print "anything"
+ *       ZFLog("hello %s %s", "world", 2);
+ *       ZFLog(zfstr("hello %s %.2s", "world", 3.1));
  *   }
  * @endcode
  *

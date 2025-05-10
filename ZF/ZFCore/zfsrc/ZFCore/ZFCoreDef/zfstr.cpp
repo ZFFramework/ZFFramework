@@ -142,27 +142,11 @@ static void _ZFP_zfstringAppendAction(
             }
             break;
         case 'p':
-            Fn(s, param);
-            break;
         case 'c':
         case 'C':
-            Fn(s, param);
-            break;
         case 's':
         case 'S':
-            if(option.precision != -1) {
-                zfstring tmp;
-                Fn(tmp, param);
-                if(!zfstringIsEqual(tmp, ZFTOKEN_zfnull)) {
-                    s.append(tmp, zfmMin((zfindex)option.precision, tmp.length()));
-                }
-                else {
-                    s += ZFTOKEN_zfnull;
-                }
-            }
-            else {
-                Fn(s, param);
-            }
+            Fn(s, param);
             break;
         default:
             option.success = zffalse;
