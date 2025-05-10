@@ -86,9 +86,9 @@ function zfproj_init(ZF_TYPE, PROJ_NAME, DST_PATH)
     o:output('ZF_INPLACE_SRC = ' .. ZF_INPLACE_SRC .. "\n")
     o:output('# ZF_EXCLUDE +=' .. "\n")
     o:output("\n")
-    o:output('ZF_APP_NAME = ' .. PROJ_NAME .. "\n")
+    o:output('ZF_APP_NAME = $ZF_NAME' .. "\n")
     o:output('ZF_APP_VERSION = 0.0.1' .. "\n")
-    o:output('ZF_APP_PACKAGE = com.ZFFramework.' .. PROJ_NAME .. "\n")
+    o:output('ZF_APP_PACKAGE = com.ZFFramework.$ZF_NAME' .. "\n")
     o:output("\n")
     o:output('ZF_LIB += ZFCore' .. "\n")
     o:output('# ZF_LIB += ZFAlgorithm' .. "\n")
@@ -210,6 +210,12 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     else
         param:replaceData('app_version', config:get('ZF_APP_VERSION'))
     end
+    local ZF_APP_VERSION_CODE = zfuint(0)
+    for i,e in zfl_iter(zfstringSplit(param:replaceData('app_version'), '.')) do
+        local t = zfuint(e)
+        ZF_APP_VERSION_CODE = ZF_APP_VERSION_CODE * 100 + t
+    end
+    param:replaceData('app_version_code', zfstring(ZF_APP_VERSION_CODE))
 
     if zfstringIsEmpty(config:get('ZF_APP_PACKAGE')) then
         param:replaceData('app_package', 'com.ZFFramework.' .. config:get('ZF_NAME'))
@@ -345,6 +351,10 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         printEnableData('lib_proj')
         printEnableData('impl_proj')
         printReplaceData('proj_name')
+        printReplaceData('app_name')
+        printReplaceData('app_version')
+        printReplaceData('app_version_code')
+        printReplaceData('app_package')
         printEnableData('needUIKit')
         printEnableData('needUIWebKit')
         printEnableData('needNet')

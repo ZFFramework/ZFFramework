@@ -526,7 +526,7 @@
 			dependencies = (
 			);
 			name = {ZFTT_R_proj_name};
-			productName = {ZFTT_R_proj_name};
+			productName = {ZFTT_R_app_name};
 			productReference = 332F88D638391DCF6EC5E545AD032306 /* {ZFTT_R_proj_name}.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -1006,8 +1006,8 @@
 					"-Objc",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ZFFramework.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "{ZFTT_R_app_package}";
+				PRODUCT_NAME = "{ZFTT_R_app_name}";
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SRCROOT}/../../../zfsrc",{ZFTT_C_lib_require_0}
@@ -1164,8 +1164,8 @@
 					"-Objc",
 					"-all_load",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ZFFramework.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "{ZFTT_R_app_package}";
+				PRODUCT_NAME = "{ZFTT_R_app_name}";
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SRCROOT}/../../../zfsrc",{ZFTT_C_lib_require_0}

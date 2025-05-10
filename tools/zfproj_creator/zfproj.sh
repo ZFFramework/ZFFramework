@@ -79,8 +79,9 @@ elif test "x-$CONFIG_FILE_PATH" = "x--app" || test "x-$CONFIG_FILE_PATH" = "x--l
         echo "ZF_INPLACE_SRC = $ZF_INPLACE_SRC"
         echo "# ZF_EXCLUDE +="
         echo ""
-        echo "ZF_APP_NAME = $PROJ_NAME"
+        echo "ZF_APP_NAME = \$ZF_NAME"
         echo "ZF_APP_VERSION = 0.0.1"
+        echo "ZF_APP_PACKAGE = com.ZFFramework.\$ZF_NAME"
         echo ""
         echo "ZF_LIB += ZFCore"
         echo "# ZF_LIB += ZFAlgorithm"
@@ -238,9 +239,16 @@ if test "x-$ZF_APP_VERSION" = "x-" ; then
 else
     export ZFTT_R_app_version=$ZF_APP_VERSION
 fi
+# version to version code
+IFS='.' read -ra _ZF_APP_VERSION_PARTS <<< "$ZFTT_R_app_version"
+ZF_APP_VERSION_CODE=0
+for part in "${_ZF_APP_VERSION_PARTS[@]}"; do
+    ZF_APP_VERSION_CODE=$((ZF_APP_VERSION_CODE * 100 + part))
+done
+export ZFTT_R_app_version_code=$ZF_APP_VERSION_CODE
 
 if test "x-$ZF_APP_PACKAGE" = "x-" ; then
-    export ZFTT_R_app_package=$ZF_NAME
+    export ZFTT_R_app_package=com.ZFFramework.$ZF_NAME
 else
     export ZFTT_R_app_package=$ZF_APP_PACKAGE
 fi
@@ -330,6 +338,10 @@ if test 1 = 1 ; then
     echo "    ZFTT_C_lib_proj = $ZFTT_C_lib_proj"
     echo "    ZFTT_C_impl_proj = $ZFTT_C_impl_proj"
     echo "    ZFTT_R_proj_name = $ZFTT_R_proj_name"
+    echo "    ZFTT_R_app_name = $ZFTT_R_app_name"
+    echo "    ZFTT_R_app_version = $ZFTT_R_app_version"
+    echo "    ZFTT_R_app_version_code = $ZFTT_R_app_version_code"
+    echo "    ZFTT_R_app_package = $ZFTT_R_app_package"
     echo "    ZFTT_C_needUIKit = $ZFTT_C_needUIKit"
     echo "    ZFTT_C_needUIWebKit = $ZFTT_C_needUIWebKit"
     echo "    ZFTT_C_needNet = $ZFTT_C_needNet"

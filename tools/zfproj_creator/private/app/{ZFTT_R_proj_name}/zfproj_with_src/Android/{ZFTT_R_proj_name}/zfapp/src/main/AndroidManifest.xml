@@ -5,7 +5,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="{ZFTT_R_proj_name}"
+        android:label="{ZFTT_R_app_name}"
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.ZFFramework.{ZFTT_R_proj_name}.Loader"

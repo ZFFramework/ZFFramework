@@ -4,15 +4,15 @@ plugins {
 
 def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../ZFFramework'
 android {
-    namespace 'com.ZFFramework.{ZFTT_R_proj_name}'
+    namespace '{ZFTT_R_app_package}'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'com.ZFFramework.{ZFTT_R_proj_name}'
+        applicationId '{ZFTT_R_app_package}'
         minSdk 21
         targetSdk 35
-        versionCode 1
-        versionName '1.0'
+        versionCode {ZFTT_R_app_version_code}
+        versionName '{ZFTT_R_app_version}'
 
         externalNativeBuild {
             cmake {
