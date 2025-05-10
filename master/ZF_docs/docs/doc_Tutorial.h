@@ -1,6 +1,8 @@
 /**
  * @page DocTag_Tutorial Tutorial
  *
+ * @subpage DocTag_Tutorial_HelloWorldWithLua "Hello world with lua"
+ *
  * @subpage DocTag_Tutorial_HelloWorld "Hello world"
  *
  * @subpage DocTag_Tutorial_UsingString "Using string"
