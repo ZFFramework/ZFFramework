@@ -655,6 +655,12 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     ZFBitUnset(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateIdle);
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDeallocPrepare);
     this->objectOnDeallocPrepare();
+    if(_objectRetainCount > 0) {
+        ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateIdle);
+        ZFBitUnset(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDeallocPrepare);
+        return;
+    }
+
     this->observerRemoveAll();
     this->_ZFP_ObjI_onDeallocIvk();
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc);

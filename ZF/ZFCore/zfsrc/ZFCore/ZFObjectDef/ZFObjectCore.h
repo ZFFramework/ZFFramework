@@ -752,6 +752,8 @@ protected:
      * @brief called before #objectOnDealloc, safe to call virtual functions here
      *
      * usually used to cleanup resources attached to this object other than self's internal resources
+     * @note it's ensured safe to retain the object while deallocating,
+     *   but it's not ensured objectOnDeallocPrepare would only called once for each instance
      */
     virtual inline void objectOnDeallocPrepare(void) {
         this->objectTagRemoveAll();
@@ -772,8 +774,8 @@ protected:
      * usually you should not override this method
      */
     virtual inline void objectOnRetain(void) {
-        ZFCoreAssertWithMessageTrim(_objectRetainCount > 0,
-            "[ZFObject] retain an object while deallocating: %s", this->objectInfoOfInstance());
+        ZFCoreAssertWithMessageTrim(_objectRetainCount > 0 || !this->objectInstanceStateCheck(ZFObjectInstanceStateOnDealloc),
+            "[ZFObject] retain an object while objectOnDealloc running: %s", this->objectInfoOfInstance());
         ++_objectRetainCount;
     }
     /**
