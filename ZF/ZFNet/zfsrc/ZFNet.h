@@ -7,6 +7,7 @@
 #define _ZFI_ZFNet_h_
 
 #include "ZFNet/ZFHttpRequest.h"
+#include "ZFNet/ZFHttpServer.h"
 #include "ZFNet/ZFNetDef.h"
 #include "ZFNet/ZFPathType_http.h"
 #include "ZFNet/ZFTcp.h"

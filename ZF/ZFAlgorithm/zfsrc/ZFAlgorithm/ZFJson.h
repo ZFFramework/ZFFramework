@@ -341,7 +341,7 @@ public:
     // quick access
 public:
     /** @brief return #ZFJsonToString */
-    operator zfstring (void) const;
+    inline operator zfstring (void) const {return this->toString();}
     /** @brief return #valid */
     inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
@@ -350,6 +350,9 @@ public:
     inline ZFJson operator [] (ZF_IN const zfstring &key) const {return this->attr(key);}
     /** @brief access #childAt */
     inline ZFJson operator [] (ZF_IN zfindex const &index) const {return this->childAt(index);}
+
+    /** @brief return #ZFJsonToString */
+    zfstring toString(ZF_IN_OPT const ZFJsonOutputToken &token = ZFJsonOutputTokenTrim()) const;
 
 private:
     _ZFP_ZFJsonPrivate *d;

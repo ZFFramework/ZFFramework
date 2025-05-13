@@ -61,8 +61,6 @@ zfclass ZFLIB_ZFCore ZFThreadPoolForIO : zfextend ZFThreadPool {
     ZFOBJECT_DECLARE(ZFThreadPoolForIO, ZFThreadPool)
     ZFOBJECT_SINGLETON_DECLARE(ZFThreadPoolForIO, instance)
 
-    ZFPROPERTY_ON_INIT_DECLARE_NO_AUTO_INIT(zfuint, maxThread)
-
     /**
      * @brief when input size greater than this,
      *   try to split task to different thread

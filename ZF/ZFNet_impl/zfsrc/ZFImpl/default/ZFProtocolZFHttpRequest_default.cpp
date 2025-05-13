@@ -11,6 +11,8 @@
 #define CPPHTTPLIB_NO_EXCEPTIONS
 #include "../../../zf3rd/_repo/cpp-httplib/httplib.h"
 
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_default, ZFHttpRequest, v_ZFProtocolLevel::e_Default)
@@ -33,8 +35,34 @@ private:
         zfstring url;
         ZFHttpMethod httpMethod;
         httplib::Headers headers;
+        zfstlmap<zfstring, zfstring> headersCache;
         zfstring body;
         httplib::Headers responseHeaders;
+        zfstlmap<zfstring, zfstring> responseHeadersCache;
+
+    private:
+        void _headersCacheUpdate(ZF_OUT zfstlmap<zfstring, zfstring> &dst, ZF_IN const httplib::Headers &src) {
+            if(dst.empty() && !src.empty()) {
+                for(auto srcIt = src.begin(); srcIt != src.end(); ++srcIt) {
+                    zfstring key = srcIt->first.c_str();
+                    auto dstIt = dst.find(key);
+                    if(dstIt == dst.end()) {
+                        dst.insert(zfstlpair<zfstring, zfstring>(key, srcIt->second.c_str()));
+                    }
+                    else {
+                        dstIt->second += ", ";
+                        dstIt->second += srcIt->second.c_str();
+                    }
+                }
+            }
+        }
+    public:
+        void headersCacheUpdate(void) {
+            _headersCacheUpdate(headersCache, headers);
+        }
+        void responseHeadersCacheUpdate(void) {
+            _headersCacheUpdate(responseHeadersCache, responseHeaders);
+        }
 
     public:
         NativeTask(
@@ -48,8 +76,10 @@ private:
         , url()
         , httpMethod(v_ZFHttpMethod::e_GET)
         , headers()
+        , headersCache()
         , body()
         , responseHeaders()
+        , responseHeadersCache()
         {
         }
     };
@@ -110,7 +140,10 @@ public:
             , ZF_IN const zfstring &value
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        nativeTaskTmp->headers.insert(std::pair<std::string, std::string>(key.cString(), value.cString()));
+        std::string keyTmp = key.cString();
+        nativeTaskTmp->headers.erase(keyTmp);
+        nativeTaskTmp->headers.insert(std::pair<std::string, std::string>(keyTmp, value.cString()));
+        nativeTaskTmp->headersCache.clear();
     }
 
     virtual void headerRemove(
@@ -119,6 +152,7 @@ public:
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
         nativeTaskTmp->headers.erase(key.cString());
+        nativeTaskTmp->headersCache.clear();
     }
 
     virtual zfstring header(
@@ -126,26 +160,38 @@ public:
             , ZF_IN const zfstring &key
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        auto range = nativeTaskTmp->headers.equal_range(key.cString());
-        zfstring ret;
-        for(auto i = range.first; i != range.second; ++i) {
-            if(!ret.isEmpty()) {
-                ret += ',';
+        if(nativeTaskTmp->headersCache.empty()) {
+            auto range = nativeTaskTmp->headers.equal_range(key.cString());
+            zfstring ret;
+            for(auto i = range.first; i != range.second; ++i) {
+                if(!ret.isEmpty()) {
+                    ret += ", ";
+                }
+                ret += i->second.c_str();
             }
-            ret += i->second.c_str();
+            return ret;
         }
-        return ret;
+        else {
+            auto it = nativeTaskTmp->headersCache.find(key);
+            if(it != nativeTaskTmp->headersCache.end()) {
+                return it->second;
+            }
+            else {
+                return zfnull;
+            }
+        }
     }
 
     virtual zfindex headerCount(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        return (zfindex)nativeTaskTmp->headers.size();
+        nativeTaskTmp->headersCacheUpdate();
+        return (zfindex)nativeTaskTmp->headersCache.size();
     }
 
     zfclassNotPOD _Iter : zfextend zfiter::Impl {
     public:
-        httplib::Headers::iterator it;
-        httplib::Headers::iterator end;
+        zfstlmap<zfstring, zfstring>::iterator it;
+        zfstlmap<zfstring, zfstring>::iterator end;
     public:
         zfoverride
         virtual zfbool valid(void) {
@@ -175,35 +221,43 @@ public:
     virtual zfiter headerIter(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
         _Iter *impl = zfpoolNew(_Iter);
-        impl->it = nativeTaskTmp->headers.begin();
-        impl->end = nativeTaskTmp->headers.end();
+        nativeTaskTmp->headersCacheUpdate();
+        impl->it = nativeTaskTmp->headersCache.begin();
+        impl->end = nativeTaskTmp->headersCache.end();
         return zfiter(impl);
     }
     virtual zfstring headerIterKey(
             ZF_IN void *nativeTask
             , ZF_IN const zfiter &it
             ) {
-        return it.impl<_Iter *>()->it->first.c_str();
+        return it.impl<_Iter *>()->it->first;
     }
     virtual zfstring headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN const zfiter &it
             ) {
-        return it.impl<_Iter *>()->it->second.c_str();
+        return it.impl<_Iter *>()->it->second;
     }
     virtual void headerIterValue(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
             , ZF_IN const zfstring &value
             ) {
-        it.impl<_Iter *>()->it->second = value;
+        NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
+        _Iter *impl = it.impl<_Iter *>();
+        std::string key = impl->it->first.cString();
+        nativeTaskTmp->headers.erase(key);
+        nativeTaskTmp->headers.insert(std::pair<std::string, std::string>(key, value.cString()));
+        impl->it->second = value;
     }
     virtual void headerIterRemove(
             ZF_IN void *nativeTask
             , ZF_IN_OUT zfiter &it
             ) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        nativeTaskTmp->headers.erase((it.impl<_Iter *>()->it)++);
+        _Iter *impl = it.impl<_Iter *>();
+        nativeTaskTmp->headers.erase(impl->it->first.cString());
+        nativeTaskTmp->headersCache.erase((impl->it)++);
     }
 
     virtual void body(
@@ -322,7 +376,7 @@ public:
         zfstring ret;
         for(auto i = range.first; i != range.second; ++i) {
             if(!ret.isEmpty()) {
-                ret += ',';
+                ret += ", ";
             }
             ret += i->second.c_str();
         }
@@ -331,27 +385,29 @@ public:
 
     virtual zfindex responseHeaderCount(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
-        return nativeTaskTmp->responseHeaders.size();
+        nativeTaskTmp->responseHeadersCacheUpdate();
+        return (zfindex)nativeTaskTmp->responseHeadersCache.size();
     }
 
     virtual zfiter responseHeaderIter(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
+        nativeTaskTmp->responseHeadersCacheUpdate();
         _Iter *impl = zfpoolNew(_Iter);
-        impl->it = nativeTaskTmp->responseHeaders.begin();
-        impl->end = nativeTaskTmp->responseHeaders.end();
+        impl->it = nativeTaskTmp->responseHeadersCache.begin();
+        impl->end = nativeTaskTmp->responseHeadersCache.end();
         return zfiter(impl);
     }
     virtual zfstring responseHeaderIterKey(
             ZF_IN void *nativeTask
             , ZF_IN const zfiter &it
             ) {
-        return it.impl<_Iter *>()->it->first.c_str();
+        return it.impl<_Iter *>()->it->first;
     }
     virtual zfstring responseHeaderIterValue(
             ZF_IN void *nativeTask
             , ZF_IN const zfiter &it
             ) {
-        return it.impl<_Iter *>()->it->second.c_str();
+        return it.impl<_Iter *>()->it->second;
     }
 
 public:
@@ -380,7 +436,7 @@ public:
             , ZF_IN const zfchar *url
             , ZF_IN zfindex pHostPath
             , ZF_IN zftimet timeout
-            , ZF_IN httplib::Headers headers
+            , ZF_IN const httplib::Headers &headers
             , ZF_IN const void *body
             , ZF_IN zfindex bodySize
             ) {

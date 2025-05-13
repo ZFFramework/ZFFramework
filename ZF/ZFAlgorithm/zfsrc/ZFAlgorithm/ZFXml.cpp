@@ -476,9 +476,9 @@ zfbool ZFXml::CDATA(void) const {
 }
 
 // ============================================================
-ZFXml::operator zfstring (void) const {
+zfstring ZFXml::toString(ZF_IN_OPT const ZFXmlOutputToken &token /* = ZFXmlOutputTokenTrim() */) const {
     if(this->valid()) {
-        return ZFXmlToString(*this);
+        return ZFXmlToString(*this, token);
     }
     else {
         return zfnull;
@@ -570,6 +570,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, CDATA
         , ZFMP_IN(zfbool, CDATA)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, CDATA)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, toString
+        , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenTrim())
+        )
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlElement

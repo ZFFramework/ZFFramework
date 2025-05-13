@@ -474,13 +474,13 @@ public:
     }
 
 public:
-    /** @brief ensure the string's capacity (excluding tail '\0'), note the result capacity is not ensured same as requested one */
+    /** @brief ensure the string's capacity (including tail '\0'), note the result capacity is not ensured same as requested one */
     inline void capacity(ZF_IN zfindex capacity) {
         if(capacity >= d->capacity) {
-            _capacityChange(capacity, zftrue);
+            _capacityChange(capacity - 1, zftrue);
         }
     }
-    /** @brief get current capacity (excluding tail '\0') */
+    /** @brief get current capacity (including tail '\0') */
     inline zfindex capacity(void) const {
         return (zfindex)d->capacity;
     }
@@ -636,6 +636,7 @@ private:
             capacity = ((capacity / 1024) + 1) * 1024;
         }
     }
+    // capacity: excluding tail '\0'
     void _capacityChange(ZF_IN zfindex capacity, zfbool keepContents) {
         _capacityOptimize(capacity);
         ZFCoreMutexLocker();

@@ -621,9 +621,9 @@ zfindex ZFJson::childFind(ZF_IN const ZFJson &item) const {
     return zfindexMax();
 }
 
-ZFJson::operator zfstring (void) const {
+zfstring ZFJson::toString(ZF_IN_OPT const ZFJsonOutputToken &token /* = ZFJsonOutputTokenTrim() */) const {
     if(this->valid()) {
-        return ZFJsonToString(*this);
+        return ZFJsonToString(*this, token);
     }
     else {
         return zfnull;
@@ -713,6 +713,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, childRemoveAt
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJson &, childRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfindex, childFind
         , ZFMP_IN(const ZFJson &, item)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfstring, toString
+        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenTrim())
         )
 
 // ============================================================

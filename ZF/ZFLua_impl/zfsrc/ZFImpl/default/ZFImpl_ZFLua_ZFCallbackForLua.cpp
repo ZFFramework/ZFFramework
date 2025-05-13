@@ -680,7 +680,7 @@ ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, luaStateOnDetach
 ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, callback
         , ZFMP_IN(const ZFArgs &, zfargs)
         ) {
-    lua_State *L = (lua_State *)ZFLuaStateCheck();
+    lua_State *L = (lua_State *)ZFLuaState();
     if(L) {
         if(this->syncMode.ownerL == L) {
             this->syncMode.invoke(L, zfargs);

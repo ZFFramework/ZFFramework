@@ -76,6 +76,116 @@ ZFENUM_END(ZFLIB_ZFAlgorithm, ZFXmlType)
 ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFXmlType)
 
 // ============================================================
+/**
+ * @brief token used to output a xml document
+ */
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputToken {
+public:
+    zfstring xmlNewLineToken; /**< @brief "\n" by default */
+    zfstring xmlIndentToken; /**< @brief "    " by default */
+
+    zfstring xmlDeclarationTagLeft; /**< @brief "<?xml" by default */
+    zfstring xmlDeclarationTagRight; /**< @brief "?>" by default */
+    zfstring xmlDocTypeTagLeft; /**< @brief "<!DOCTYPE" by default */
+    zfstring xmlDocTypeTagRight; /**< @brief ">" by default */
+    zfstring xmlPITagLeft; /**< @brief "<?" by default */
+    zfstring xmlPITagRight; /**< @brief "?>" by default */
+    zfstring xmlElementBeginTagLeft; /**< @brief "<" by default */
+    zfstring xmlElementBeginTagRight; /**< @brief ">" by default */
+    zfstring xmlElementEndTagLeft; /**< @brief "</" by default */
+    zfstring xmlElementEndTagRight; /**< @brief ">" by default */
+    zfstring xmlElementSingleTagLeft; /**< @brief "<" by default */
+    zfstring xmlElementSingleTagRight; /**< @brief "/>" by default */
+    zfstring xmlAttrEqualTag; /**< @brief "=" by default */
+    zfstring xmlAttrQuoteTagLeft; /**< @brief "\"" by default */
+    zfstring xmlAttrQuoteTagRight; /**< @brief "\"" by default */
+    zfstring xmlTextCDATATagLeft; /**< @brief "<![CDATA[" by default */
+    zfstring xmlTextCDATATagRight; /**< @brief "]]>" by default */
+    zfstring xmlCommentTagLeft; /**< @brief "<!--" by default */
+    zfstring xmlCommentTagRight; /**< @brief "-->" by default */
+
+public:
+    /**
+     * @brief strings added to head of each new line, empty by default
+     */
+    zfstring xmlGlobalLineBeginToken;
+
+    /**
+     * @brief how many attributes before add new line, 3 by default
+     *
+     * e.g. if zfindexMax(), never add new line,
+     * if 0, add before every attributes,
+     * if 1, add before every attributes except first one
+     */
+    zfindex xmlElementAttrCountBeforeAddNewLine;
+    /**
+     * @brief add new line before entering a element if the element isn't single line, zffalse by default
+     */
+    zfbool xmlElementAddNewLineAtHeadIfNotSingleLine;
+    /**
+     * @brief trim "<element></element>" to "<element/>" if no children, zffalse by default
+     */
+    zfbool xmlElementTrimTagIfNoChildren;
+    /**
+     * @brief whether put element's end tag in a same line
+     *   if no child element or only text children, zftrue by default
+     */
+    zfbool xmlElementEndTagAtSameLineIfNoChildElement;
+
+public:
+    /** @cond ZFPrivateDoc */
+    ZFXmlOutputToken(void)
+    : xmlNewLineToken("\n")
+    , xmlIndentToken("    ")
+    , xmlDeclarationTagLeft("<?xml")
+    , xmlDeclarationTagRight("?>")
+    , xmlDocTypeTagLeft("<!DOCTYPE")
+    , xmlDocTypeTagRight(">")
+    , xmlPITagLeft("<?")
+    , xmlPITagRight("?>")
+    , xmlElementBeginTagLeft("<")
+    , xmlElementBeginTagRight(">")
+    , xmlElementEndTagLeft("</")
+    , xmlElementEndTagRight(">")
+    , xmlElementSingleTagLeft("<")
+    , xmlElementSingleTagRight("/>")
+    , xmlAttrEqualTag("=")
+    , xmlAttrQuoteTagLeft("\"")
+    , xmlAttrQuoteTagRight("\"")
+    , xmlTextCDATATagLeft("<![CDATA[")
+    , xmlTextCDATATagRight("]]>")
+    , xmlCommentTagLeft("<!--")
+    , xmlCommentTagRight("-->")
+    , xmlGlobalLineBeginToken()
+    , xmlElementAttrCountBeforeAddNewLine(3)
+    , xmlElementAddNewLineAtHeadIfNotSingleLine(zffalse)
+    , xmlElementTrimTagIfNoChildren(zftrue)
+    , xmlElementEndTagAtSameLineIfNoChildElement(zftrue)
+    {
+    }
+    zfbool operator == (ZF_IN ZFXmlOutputToken const &ref) const;
+    zfbool operator != (ZF_IN ZFXmlOutputToken const &ref) const {
+        return !this->operator == (ref);
+    }
+    /** @endcond */
+};
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
+ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
+
+/**
+ * @brief default xml output token
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDefault)
+/**
+ * @brief xml output token with trim format
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenTrim)
+/**
+ * @brief xml output token with detailed format
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDetail)
+
+// ============================================================
 // ZFXml
 zfclassFwd _ZFP_ZFXmlPrivate;
 /**
@@ -278,7 +388,7 @@ public:
     // quick access
 public:
     /** @brief return #ZFXmlToString */
-    operator zfstring (void) const;
+    inline operator zfstring (void) const {return this->toString();}
     /** @brief return #valid */
     inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
@@ -287,6 +397,9 @@ public:
     inline zfstring operator [] (ZF_IN const zfstring &key) const {return this->attr(key);}
     /** @brief access #childAt */
     inline ZFXml operator [] (ZF_IN zfindex index) const {return this->childAt(index);}
+
+    /** @brief return #ZFXmlToString */
+    zfstring toString(ZF_IN_OPT const ZFXmlOutputToken &token = ZFXmlOutputTokenTrim()) const;
 
 private:
     _ZFP_ZFXmlPrivate *d;
@@ -322,116 +435,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlPI
         , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(const zfstring &, value)
         )
-
-// ============================================================
-/**
- * @brief token used to output a xml document
- */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputToken {
-public:
-    zfstring xmlNewLineToken; /**< @brief "\n" by default */
-    zfstring xmlIndentToken; /**< @brief "    " by default */
-
-    zfstring xmlDeclarationTagLeft; /**< @brief "<?xml" by default */
-    zfstring xmlDeclarationTagRight; /**< @brief "?>" by default */
-    zfstring xmlDocTypeTagLeft; /**< @brief "<!DOCTYPE" by default */
-    zfstring xmlDocTypeTagRight; /**< @brief ">" by default */
-    zfstring xmlPITagLeft; /**< @brief "<?" by default */
-    zfstring xmlPITagRight; /**< @brief "?>" by default */
-    zfstring xmlElementBeginTagLeft; /**< @brief "<" by default */
-    zfstring xmlElementBeginTagRight; /**< @brief ">" by default */
-    zfstring xmlElementEndTagLeft; /**< @brief "</" by default */
-    zfstring xmlElementEndTagRight; /**< @brief ">" by default */
-    zfstring xmlElementSingleTagLeft; /**< @brief "<" by default */
-    zfstring xmlElementSingleTagRight; /**< @brief "/>" by default */
-    zfstring xmlAttrEqualTag; /**< @brief "=" by default */
-    zfstring xmlAttrQuoteTagLeft; /**< @brief "\"" by default */
-    zfstring xmlAttrQuoteTagRight; /**< @brief "\"" by default */
-    zfstring xmlTextCDATATagLeft; /**< @brief "<![CDATA[" by default */
-    zfstring xmlTextCDATATagRight; /**< @brief "]]>" by default */
-    zfstring xmlCommentTagLeft; /**< @brief "<!--" by default */
-    zfstring xmlCommentTagRight; /**< @brief "-->" by default */
-
-public:
-    /**
-     * @brief strings added to head of each new line, empty by default
-     */
-    zfstring xmlGlobalLineBeginToken;
-
-    /**
-     * @brief how many attributes before add new line, 3 by default
-     *
-     * e.g. if zfindexMax(), never add new line,
-     * if 0, add before every attributes,
-     * if 1, add before every attributes except first one
-     */
-    zfindex xmlElementAttrCountBeforeAddNewLine;
-    /**
-     * @brief add new line before entering a element if the element isn't single line, zffalse by default
-     */
-    zfbool xmlElementAddNewLineAtHeadIfNotSingleLine;
-    /**
-     * @brief trim "<element></element>" to "<element/>" if no children, zffalse by default
-     */
-    zfbool xmlElementTrimTagIfNoChildren;
-    /**
-     * @brief whether put element's end tag in a same line
-     *   if no child element or only text children, zftrue by default
-     */
-    zfbool xmlElementEndTagAtSameLineIfNoChildElement;
-
-public:
-    /** @cond ZFPrivateDoc */
-    ZFXmlOutputToken(void)
-    : xmlNewLineToken("\n")
-    , xmlIndentToken("    ")
-    , xmlDeclarationTagLeft("<?xml")
-    , xmlDeclarationTagRight("?>")
-    , xmlDocTypeTagLeft("<!DOCTYPE")
-    , xmlDocTypeTagRight(">")
-    , xmlPITagLeft("<?")
-    , xmlPITagRight("?>")
-    , xmlElementBeginTagLeft("<")
-    , xmlElementBeginTagRight(">")
-    , xmlElementEndTagLeft("</")
-    , xmlElementEndTagRight(">")
-    , xmlElementSingleTagLeft("<")
-    , xmlElementSingleTagRight("/>")
-    , xmlAttrEqualTag("=")
-    , xmlAttrQuoteTagLeft("\"")
-    , xmlAttrQuoteTagRight("\"")
-    , xmlTextCDATATagLeft("<![CDATA[")
-    , xmlTextCDATATagRight("]]>")
-    , xmlCommentTagLeft("<!--")
-    , xmlCommentTagRight("-->")
-    , xmlGlobalLineBeginToken()
-    , xmlElementAttrCountBeforeAddNewLine(3)
-    , xmlElementAddNewLineAtHeadIfNotSingleLine(zffalse)
-    , xmlElementTrimTagIfNoChildren(zftrue)
-    , xmlElementEndTagAtSameLineIfNoChildElement(zftrue)
-    {
-    }
-    zfbool operator == (ZF_IN ZFXmlOutputToken const &ref) const;
-    zfbool operator != (ZF_IN ZFXmlOutputToken const &ref) const {
-        return !this->operator == (ref);
-    }
-    /** @endcond */
-};
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
-
-/**
- * @brief default xml output token
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDefault)
-/**
- * @brief xml output token with trim format
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenTrim)
-/**
- * @brief xml output token with detailed format
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDetail)
 
 // ============================================================
 /**

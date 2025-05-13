@@ -20,7 +20,7 @@ zfclass ZFLIB_ZFCore ZFThreadPool : zfextend ZFObject {
     ZFOBJECT_SINGLETON_DECLARE_DETAIL(private, public, ZFThreadPool, instance)
 
     /** @brief max thread */
-    ZFPROPERTY_ASSIGN(zfuint, maxThread, 8)
+    ZFPROPERTY_ASSIGN(zfuint, maxThread, 4)
 
     /** @brief see #zfasync */
     ZFMETHOD_DECLARE_2(zfautoT<ZFTaskId>, start

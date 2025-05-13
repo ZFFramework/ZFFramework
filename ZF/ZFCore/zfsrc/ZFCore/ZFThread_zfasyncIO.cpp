@@ -19,10 +19,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECT_REGISTER(ZFThreadPoolForIO)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFThreadPoolForIO, instance, ZFLevelZFFrameworkEssential)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFThreadPoolForIO, zfuint, maxThread) {
-    propertyValue = 4;
-}
-
 zfclass _ZFP_I_zfasyncIOTask : zfextend ZFTaskId {
     ZFOBJECT_DECLARE(_ZFP_I_zfasyncIOTask, ZFTaskId)
 public:
