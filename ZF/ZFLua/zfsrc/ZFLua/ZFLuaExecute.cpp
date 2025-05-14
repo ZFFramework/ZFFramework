@@ -73,15 +73,23 @@ static zfbool _ZFP_ZFLuaExecute(
         , ZF_IN const ZFInput &input
         , ZF_IN zfauto *luaResult
         , ZF_IN const ZFCoreArray<zfauto> *luaParams
+        , ZF_OUT_OPT zfstring *errorHint
         , ZF_IN void *L
         ) {
     if(!input) {
         return zffalse;
     }
-    zfstring errHint;
-    if(!ZFPROTOCOL_ACCESS(ZFLua)->luaExecute(L ? L : ZFLuaState(), pathInfoOrNull, input, luaResult, luaParams, &errHint)) {
-        if(!errHint.isEmpty()) {
-            ZFLuaErrorOccurredTrim("%s", errHint);
+    zfstring errorHintTmp;
+    if(!ZFPROTOCOL_ACCESS(ZFLua)->luaExecute(
+                L
+                , pathInfoOrNull
+                , input
+                , luaResult
+                , luaParams
+                , errorHint ? errorHint : &errorHintTmp
+                )) {
+        if(!errorHint && errorHintTmp) {
+            ZFLuaErrorOccurredTrim("%s", errorHintTmp);
         }
         return zffalse;
     }
@@ -90,38 +98,54 @@ static zfbool _ZFP_ZFLuaExecute(
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFLuaExecuteDetail
+ZFMETHOD_FUNC_DEFINE_5(zfauto, ZFLuaExecuteDetail
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, luaParams)
+        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         , ZFMP_IN_OPT(void *, L, zfnull)
         ) {
     if(L == zfnull) {
         L = ZFLuaState();
     }
     zfauto ret;
-    if(_ZFP_ZFLuaExecute(input.pathInfo(), input, &ret, &luaParams, L)) {
+    if(_ZFP_ZFLuaExecute(input.pathInfo(), input, &ret, &luaParams, errorHint, L)) {
+        if(success) {
+            *success = zftrue;
+        }
         ZFLuaGC(L);
         return ret;
     }
     else {
+        if(success) {
+            *success = zffalse;
+        }
         return zfnull;
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFLuaExecuteDetail
+ZFMETHOD_FUNC_DEFINE_5(zfauto, ZFLuaExecuteDetail
         , ZFMP_IN(const zfchar *, buf)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, luaParams)
+        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         , ZFMP_IN_OPT(void *, L, zfnull)
         ) {
     if(L == zfnull) {
         L = ZFLuaState();
     }
     zfauto ret;
-    if(_ZFP_ZFLuaExecute(zfnull, ZFInputForBufferUnsafe(buf), &ret, &luaParams, L)) {
+    if(_ZFP_ZFLuaExecute(zfnull, ZFInputForBufferUnsafe(buf), &ret, &luaParams, errorHint, L)) {
+        if(success) {
+            *success = zftrue;
+        }
         ZFLuaGC(L);
         return ret;
     }
     else {
+        if(success) {
+            *success = zffalse;
+        }
         return zfnull;
     }
 }

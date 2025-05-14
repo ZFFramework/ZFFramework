@@ -13,7 +13,7 @@
  * @brief whether we have stdint
  */
 #ifndef ZF_ENV_STDINT
-    #define ZF_ENV_STDINT 0
+    #define ZF_ENV_STDINT ZF_ENV_CPP11
 #endif
 
 #if ZF_ENV_STDINT

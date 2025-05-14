@@ -57,6 +57,21 @@
 
 // ============================================================
 /**
+ * @brief whether use C++11
+ *
+ * add -DZF_ENV_LAMBDA=1 to compiler to override
+ * @warning must be explicitly declared by compiler,
+ *   also, all libs must be compiled with same config,
+ *   otherwise, unexpected behavior may happen,
+ *   if you don't know what to do,
+ *   just leave it off
+ */
+#ifndef ZF_ENV_CPP11
+    #define ZF_ENV_CPP11 0
+#endif
+
+// ============================================================
+/**
  * @brief true to enable lambda (which require C++11), auto detect by default
  *
  * add -DZF_ENV_LAMBDA=1 to compiler to override

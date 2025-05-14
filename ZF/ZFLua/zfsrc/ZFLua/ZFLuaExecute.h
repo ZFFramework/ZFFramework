@@ -67,7 +67,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     "yourTypeData" store string datas that would be decoded by YourTypeNameFromString\n
  *     "yourTypeData" can be #v_zfstring, or native lua string\n
  *     if your value holder supplys reflectable #ZFObject::objectOnInit
- *     (#ZFOBJECT_ON_INIT_DECLARE_2 series),
+ *     (#ZFOBJECT_ON_INIT_DECLARE_1 series),
  *     the value holder can also be constructed by function like call:
  *     "YourTypeName(param0, param1)"
  *   -  "value:yourFunc()"
@@ -85,7 +85,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  lua number
  *     -  lua boolean
  *   -  these types are automatically converted when return from cpp to lua:
- *     -  v_zfbool => lua boolean
+ *     -  v_zfbool => lua boolean : use #v_zfboolHolder explicitly if necessary
  * -  value comparer
  *   -  "zfl_cmp(v0, v1)"\n
  *     compare two values, including ZFObject types and lua types, return:
@@ -94,7 +94,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  0 : v0 == v1
  *     -  1 : v0 > v1
  *   -  "zfl_eq(v0, v1)"\n
- *     similar to zfl_cmp, compare two values
+ *     similar to zfl_cmp, compare two values\n
+ *     note: due to limitation of lua, `v0 == v1` won't work as expected
+ *     when not all of them are both primitive type or both ZFObject type,
+ *     it's recommended to use zfl_eq for most case
  * -  callback
  *   -  "ZFCallbackForLua(luaFunc)"\n
  *     create a #ZFListener from lua function\n
@@ -232,15 +235,19 @@ ZFMETHOD_FUNC_DECLARE_8(ZFLIB_ZFLua, zfauto, ZFLuaExecute
         // , ZFMP_IN_OPT(ZFObject *, param7, ZFMP_DEF())
         )
 /** @brief see #ZFLuaExecute */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, luaParams)
+        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 /** @brief see #ZFLuaExecute */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail
         , ZFMP_IN(const zfchar *, buf)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, luaParams)
+        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 

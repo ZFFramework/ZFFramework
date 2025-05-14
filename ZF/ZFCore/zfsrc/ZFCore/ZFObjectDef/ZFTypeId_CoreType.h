@@ -129,6 +129,43 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbool, zfbool)
 ZFTYPEID_REG(ZFLIB_ZFCore, zfbool, zfbool)
 
 /**
+ * @brief a dummy class that wraps #v_zfbool
+ *
+ * for script language, #v_zfbool may (or may not) be automatically converted to native boolean type,
+ * which make it not posible to achieve "out param" for #zfbool,
+ * for example, `void func(zfbool *outParam);`\n
+ * this dummy class is designed to solve this problem, an example for lua:
+ * @code
+ *   -- assume you have a reflectable cpp method with this proto type:
+ *   --     void func(zfbool *p) {
+ *   --         *p = zffalse;
+ *   --     }
+ *   -- this code would print:
+ *   --     p0 = true
+ *   --     p1 = true
+ *   --     p2 = false
+ *   -- note: only zfboolHolder can holds result passed from out param
+ *   local p0 = zftrue
+ *   local p1 = zfbool(zftrue)
+ *   local p2 = zfboolHolder(zftrue)
+ *   func(p0); ZFLogTrim('p0 = %s', p0);
+ *   func(p1); ZFLogTrim('p1 = %s', p1);
+ *   func(p2); ZFLogTrim('p2 = %s', p2);
+ *
+ *   -- however, since zfboolHolder is ensured object type now,
+ *   -- you must use `p2:zfv()` to access it's boolean value:
+ *   if p2:zfv() then
+ *       ZFLogTrim('p2 = true')
+ *   else
+ *       ZFLogTrim('p2 = false')
+ *   end
+ * @endcode
+ */
+zfclass ZFLIB_ZFCore v_zfboolHolder : zfextend v_zfbool {
+    ZFOBJECT_DECLARE(v_zfboolHolder, v_zfbool)
+};
+
+/**
  * @brief see #ZFTYPEID_DECLARE
  *
  * serializable data:

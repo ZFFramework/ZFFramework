@@ -54,19 +54,33 @@ extern ZFLIB_ZFCore const zft_zfnullT zft_zfnull;
 /** @endcond */
 
 /**
+ * @brief whether we have nullptr
+ */
+#ifndef ZF_ENV_NULLPTR
+    #define ZF_ENV_NULLPTR ZF_ENV_CPP11
+#endif
+
+/**
+ * @brief whether we use builtin nullptr wrapper
+ */
+#ifndef ZF_ENV_NULLPTR_BUILTIN
+    #define ZF_ENV_NULLPTR_BUILTIN 1
+#endif
+
+/**
  * @def zfnullT
  * @brief type for zfnull, can be used for function overload
  * @def zfnull
  * @brief same as NULL, defined for future use
  */
-#if 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
+#if ZF_ENV_NULLPTR // c++11
     #ifndef zfnullT
         #define zfnullT nullptr_t
     #endif
     #ifndef zfnull
         #define zfnull nullptr
     #endif
-#elif 1
+#elif ZF_ENV_NULLPTR_BUILTIN // tricks
     #ifndef zfnullT
         #define zfnullT zft_zfnullT
     #endif

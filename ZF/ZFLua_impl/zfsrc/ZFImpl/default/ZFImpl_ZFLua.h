@@ -477,9 +477,8 @@ inline void ZFImpl_ZFLua_luaPush(
         ZF_IN lua_State *L
         , ZF_IN zfauto &v
         ) {
-    v_zfbool *t = v;
-    if(t != zfnull) {
-        lua_pushboolean(L, t->zfv);
+    if(v && v->classData() == v_zfbool::ClassData()) {
+        lua_pushboolean(L, zfcast(v_zfbool *, v)->zfv);
         return;
     }
     ELuna::convert2LuaType<zfauto>::convertType(L, v);

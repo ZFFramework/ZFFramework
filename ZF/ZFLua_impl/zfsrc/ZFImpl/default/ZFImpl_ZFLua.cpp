@@ -391,7 +391,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
     //     [string "xxx"]:123: <<{{456}}>>xxx
     //     ^^^^^^^^^^^^^^^^^^^^
     //     lua error header
-    //                         ^^^^^^^
+    //                         ^^^^^^^^^^^
     //                         special header passed from ZFImpl_ZFLua_luaError
     {
         zfindex tokenL = zfindexMax();
@@ -438,14 +438,22 @@ void ZFImpl_ZFLua_execute_errorHandle(
         }
     }
 
-    if(!zfstringIsEmpty(chunkInfo)) {
+    if(!zfstringIsEmpty(chunkInfo) || errorLine != zfindexMax()) {
         *errHint += "[";
-        *errHint += chunkInfo;
+
+        if(!zfstringIsEmpty(chunkInfo)) {
+            *errHint += chunkInfo;
+        }
+        else {
+            *errHint += "?";
+        }
+
         if(errorLine != zfindexMax()) {
             *errHint += " (";
             zfindexToStringT(*errHint, errorLine);
             *errHint += ")";
         }
+
         *errHint += "] ";
     }
     *errHint += nativeError;

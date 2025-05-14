@@ -34,6 +34,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbool, zfbool, {
         return zftrue;
     })
 
+ZFOBJECT_REGISTER(v_zfboolHolder)
+
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbyte, zfbyte, {
         if(!zfsToIntT(v, src, srcLen, 16, zffalse)) {
