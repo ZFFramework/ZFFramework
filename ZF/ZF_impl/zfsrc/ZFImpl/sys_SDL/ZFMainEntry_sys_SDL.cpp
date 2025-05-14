@@ -116,7 +116,8 @@ SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
         , SDL_WINDOW_SHOWN
             | SDL_WINDOW_RESIZABLE
         );
-#if ZF_ENV_DEBUG
+
+#if 0
     if(sdlWindow != zfnull) {
         int windowDisplay = SDL_GetWindowDisplayIndex(sdlWindow);
 
@@ -134,6 +135,7 @@ SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
                 );
     }
 #endif
+
     return sdlWindow;
 }
 

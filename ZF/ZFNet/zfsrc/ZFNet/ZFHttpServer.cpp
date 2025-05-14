@@ -35,6 +35,11 @@ ZFMETHOD_DEFINE_0(ZFHttpServerTask, zfstring, contentInfo) {
 void ZFHttpServerTask::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     ret += ZFTOKEN_ZFObjectInfoLeft;
 
+    ret += this->recvClientAddr();
+    ret += ":";
+    zfuintToStringT(ret, this->recvClientPort());
+    ret += " ";
+
     ZFHttpMethodToStringT(ret, this->recvMethod());
     ret += " ";
     ret += this->recvPath();
