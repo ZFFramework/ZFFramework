@@ -10,14 +10,10 @@
 #include <cfloat>
 
 /**
- * @brief whether we have stdint, true by default if under C++11
+ * @brief whether we have stdint
  */
 #ifndef ZF_ENV_STDINT
-    #if defined(__cplusplus) && (__cplusplus >= 201103L)
-        #define ZF_ENV_STDINT 1
-    #else
-        #define ZF_ENV_STDINT 0
-    #endif
+    #define ZF_ENV_STDINT 0
 #endif
 
 #if ZF_ENV_STDINT
@@ -60,17 +56,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     typedef int64_t zft_zfint64;
     typedef uint64_t zft_zfuint64;
 #else
-    typedef signed char zft_zfint8;
-    typedef unsigned char zft_zfuint8;
+    #ifndef zft_zfint8
+        typedef signed char zft_zfint8;
+    #endif
+    #ifndef zft_zfuint8
+        typedef unsigned char zft_zfuint8;
+    #endif
 
-    typedef signed short int zft_zfint16;
-    typedef unsigned short int zft_zfuint16;
+    #ifndef zft_zfint16
+        typedef signed short int zft_zfint16;
+    #endif
+    #ifndef zft_zfuint16
+        typedef unsigned short int zft_zfuint16;
+    #endif
 
-    typedef signed int zft_zfint32;
-    typedef unsigned int zft_zfuint32;
+    #ifndef zft_zfint32
+        typedef signed int zft_zfint32;
+    #endif
+    #ifndef zft_zfuint32
+        typedef unsigned int zft_zfuint32;
+    #endif
 
-    typedef signed long long int zft_zfint64;
-    typedef unsigned long long int zft_zfuint64;
+    #ifndef zft_zfint64
+        typedef signed long long int zft_zfint64;
+    #endif
+    #ifndef zft_zfuint64
+        typedef unsigned long long int zft_zfuint64;
+    #endif
 #endif // #if ZF_ENV_STDINT
 
 // ============================================================
