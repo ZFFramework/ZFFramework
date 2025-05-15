@@ -11,12 +11,12 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFramew
     this->builtinWindow = zfnull;
     this->builtinRenderer = zfnull;
 
-    ZFGlobalObserver().observerAdd(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::after), ZFLevelZFFrameworkPostEssential);
+    ZFGlobalObserver().observerAdd(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after), ZFLevelZFFrameworkPostEssential);
 
-    zfself::before(this);
+    zfself::_before(this);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
-    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::after));
+    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after));
 
     if(this->builtinWindow != zfnull) {
         SDL_DestroyWindow(this->builtinWindow);
@@ -26,10 +26,13 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
 public:
     SDL_Window *builtinWindow;
     SDL_Renderer *builtinRenderer;
-private:
-    static void before(ZF_IN zfself *d) {
-        ZFCoreAssert(d->builtinWindow == zfnull);
+public:
+    void initUI(void) {
+        zfself::_initUI(this);
+    }
 
+private:
+    static void _before(ZF_IN zfself *d) {
         if(ZFImpl_sys_SDL_embed) {
             return;
         }
@@ -47,7 +50,11 @@ private:
             return;
         } while(zffalse);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-
+    }
+    static void _initUI(ZF_IN zfself *d) {
+        if(d->builtinWindow) {
+            return;
+        }
         d->builtinWindow = ZFImpl_sys_SDL_CreateWindow();
         if(d->builtinWindow == zfnull) {
             ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
@@ -67,9 +74,8 @@ private:
 
         ZFImpl_sys_SDL_embedInit(d->builtinWindow);
     }
-    static void after(ZF_IN const ZFArgs &zfargs) {
+    static void _after(ZF_IN const ZFArgs &zfargs) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
-        ZFCoreAssert(d->builtinWindow != zfnull);
 
         zfbool quitFlag = zffalse;
         SDL_Event event;
@@ -102,9 +108,15 @@ ZF_GLOBAL_INITIALIZER_END(ZFMainEntry_sys_SDL_setup)
 static SDL_Window *_ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
 static SDL_Renderer *_ZFP_ZFImpl_sys_SDL_mainRenderer = zfnull;
 SDL_Window *ZFImpl_sys_SDL_mainWindow(void) {
+    if(!_ZFP_ZFImpl_sys_SDL_mainWindow) {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup)->initUI();
+    }
     return _ZFP_ZFImpl_sys_SDL_mainWindow;
 }
 SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void) {
+    if(!_ZFP_ZFImpl_sys_SDL_mainWindow) {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup)->initUI();
+    }
     return _ZFP_ZFImpl_sys_SDL_mainRenderer;
 }
 
@@ -258,7 +270,6 @@ void ZFImpl_sys_SDL_embedInit(ZF_IN SDL_Window *window) {
     _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetWindowPixelFormat(window);
 }
 void ZFImpl_sys_SDL_embedCleanup(void) {
-    ZFCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow != zfnull);
     _ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
     _ZFP_ZFImpl_sys_SDL_mainRenderer = zfnull;
 }
