@@ -135,10 +135,10 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     local line = zfstring()
     local optionPattern = zfstring('^[ \\t]*(ZF_[A-Z_]+)[ \\t]*\\+?=[ \\t]*([^ \\t].*[^ \\t]|[^ \\t]+)[ \\t]*$')
     while ZFInputReadLine(line, configFile) ~= zfindexMax() do
-        if not zfl_eq(ZFRegExpFind(line, optionPattern), ZFIndexRangeZero()) then
+        if not zfl_eq(ZFRegExpFind(line, optionPattern), ZFIndexRangeMax()) then
             local key = ZFRegExpReplace(line, optionPattern, '$1')
             local value = ZFRegExpReplace(line, optionPattern, '$2')
-            while ZFRegExpFind(value, '.*\\$([A-Z_]+)\\b.*') ~= ZFIndexRangeZero() do
+            while ZFRegExpFind(value, '.*\\$([A-Z_]+)\\b.*') ~= ZFIndexRangeMax() do
                 local tmpKey = ZFRegExpReplace(value, '.*\\$([A-Z_]+)\\b.*', '$1')
                 if zfstringIsEmpty(tmpKey) then
                     break
@@ -149,7 +149,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
                 end
                 value = ZFRegExpReplace(value, '\\$' .. tmpKey, tmpValue)
             end
-            local isAdd = (ZFRegExpFind(line, '\\+=') ~= ZFIndexRangeZero())
+            local isAdd = (ZFRegExpFind(line, '\\+=') ~= ZFIndexRangeMax())
             if isAdd then
                 local l = config:get(key)
                 if zfl_eq(l, zfnull) then
@@ -414,7 +414,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if not zfl_eq(ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)), ZFIndexRangeZero()) then
+            if not zfl_eq(ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)), ZFIndexRangeMax()) then
                 filtered = zftrue
                 break
             end
@@ -444,7 +444,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if not zfl_eq(ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)), ZFIndexRangeZero()) then
+            if not zfl_eq(ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)), ZFIndexRangeMax()) then
                 filtered = zftrue
                 break
             end
@@ -479,7 +479,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         if not filtered then
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
-                if not zfl_eq(ZFRegExpFind(relPath, ZF_EXCLUDE_FILE_TMP:get(i)), ZFIndexRangeZero()) then
+                if not zfl_eq(ZFRegExpFind(relPath, ZF_EXCLUDE_FILE_TMP:get(i)), ZFIndexRangeMax()) then
                     filtered = zftrue
                     break
                 end
@@ -492,13 +492,13 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
 end
 
 if #args > 0 then
-    if not zfl_eq(ZFRegExpFind(args[1], '^(-app|-lib|-impl)$'), ZFIndexRangeZero()) then
+    if not zfl_eq(ZFRegExpFind(args[1], '^(-app|-lib|-impl)$'), ZFIndexRangeMax()) then
         if #args < 3 then
             printUsage()
             return
         end
         zfproj_init(args[1], args[2], args[3])
-    elseif ZFRegExpFind(args[1], '^(-r)$') ~= ZFIndexRangeZero() then
+    elseif ZFRegExpFind(args[1], '^(-r)$') ~= ZFIndexRangeMax() then
         if #args < 2 then
             printUsage()
             return

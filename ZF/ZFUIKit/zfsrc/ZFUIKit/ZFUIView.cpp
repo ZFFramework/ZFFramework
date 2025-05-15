@@ -1991,50 +1991,17 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindById
     if(viewId == zfnull || *viewId == '\0') {
         return zfnull;
     }
-
-    if(!findRecursively) {
-        for(zfindex i = 0; i < d->layerNormal.count(); ++i) {
-            if(zfstringIsEqual(d->layerNormal[i]->viewId(), viewId)) {
-                return d->layerNormal[i];
-            }
+    ZFLISTENER_1(action
+            , const zfstring &, viewId
+            ) {
+        ZFUIView *child = zfargs.param0();
+        if(zfstringIsEqual(child->viewId(), viewId)) {
+            zfargs.eventFiltered(zftrue);
+            zfargs.result(child);
         }
-        if(includeInternalViews) {
-            for(zfindex i = 0; i < d->layerInternalImpl.count(); ++i) {
-                if(zfstringIsEqual(d->layerInternalImpl[i]->viewId(), viewId)) {
-                    return d->layerInternalImpl[i];
-                }
-            }
-            for(zfindex i = 0; i < d->layerInternalBg.count(); ++i) {
-                if(zfstringIsEqual(d->layerInternalBg[i]->viewId(), viewId)) {
-                    return d->layerInternalBg[i];
-                }
-            }
-            for(zfindex i = 0; i < d->layerInternalFg.count(); ++i) {
-                if(zfstringIsEqual(d->layerInternalFg[i]->viewId(), viewId)) {
-                    return d->layerInternalFg[i];
-                }
-            }
-        }
-        return zfnull;
-    }
-
-    ZFCoreQueuePOD<ZFUIView *> toFind;
-    toFind.add(this);
-    while(!toFind.isEmpty()) {
-        ZFUIView *view = toFind.take();
-        if(zfstringIsEqual(view->viewId(), viewId)) {
-            return view;
-        }
-        toFind.addFrom(view->childArray());
-        if(includeInternalViews) {
-            toFind.addFrom(view->d->layerInternalImpl);
-            toFind.addFrom(view->d->layerInternalBg);
-            toFind.addFrom(view->d->layerInternalFg);
-        }
-    }
-    return zfnull;
+    } ZFLISTENER_END()
+    return this->childForEach(action, findRecursively, includeInternalViews);
 }
-
 ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindByClass
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
@@ -2043,27 +2010,57 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindByClass
     if(cls == zfnull) {
         return zfnull;
     }
+    ZFLISTENER_1(action
+            , const ZFClass *, cls
+            ) {
+        ZFUIView *child = zfargs.param0();
+        if(child->classData() == cls) {
+            zfargs.eventFiltered(zftrue);
+            zfargs.result(child);
+        }
+    } ZFLISTENER_END()
+    return this->childForEach(action, findRecursively, includeInternalViews);
+}
+ZFMETHOD_DEFINE_3(ZFUIView, zfauto, childForEach
+        , ZFMP_IN(const ZFListener &, impl)
+        , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
+        , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
+        ) {
+    if(!impl) {
+        return zfnull;
+    }
+
+    ZFArgs zfargs;
+    zfargs.sender(this);
 
     if(!findRecursively) {
         for(zfindex i = 0; i < d->layerNormal.count(); ++i) {
-            if(d->layerNormal[i]->classData() == cls) {
-                return d->layerNormal[i];
+            zfargs.param0(d->layerNormal[i]);
+            impl.execute(zfargs);
+            if(zfargs.eventFiltered()) {
+                return zfargs.result();
             }
         }
         if(includeInternalViews) {
             for(zfindex i = 0; i < d->layerInternalImpl.count(); ++i) {
-                if(d->layerInternalImpl[i]->classData() == cls) {
-                    return d->layerInternalImpl[i];
+                zfargs.param0(d->layerInternalImpl[i]);
+                impl.execute(zfargs);
+                if(zfargs.eventFiltered()) {
+                    return zfargs.result();
                 }
             }
             for(zfindex i = 0; i < d->layerInternalBg.count(); ++i) {
-                if(d->layerInternalBg[i]->classData(), cls) {
-                    return d->layerInternalBg[i];
+                zfargs.param0(d->layerInternalBg[i]);
+                impl.execute(zfargs);
+                if(zfargs.eventFiltered()) {
+                    return zfargs.result();
                 }
             }
             for(zfindex i = 0; i < d->layerInternalFg.count(); ++i) {
-                if(d->layerInternalFg[i]->classData() == cls) {
-                    return d->layerInternalFg[i];
+                zfargs.param0(d->layerInternalFg[i]);
+                impl.execute(zfargs);
+                if(zfargs.eventFiltered()) {
+                    return zfargs.result();
                 }
             }
         }
@@ -2074,8 +2071,10 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindByClass
     toFind.add(this);
     while(!toFind.isEmpty()) {
         ZFUIView *view = toFind.take();
-        if(view->classData() == cls) {
-            return view;
+        zfargs.param0(view);
+        impl.execute(zfargs);
+        if(zfargs.eventFiltered()) {
+            return zfargs.result();
         }
         toFind.addFrom(view->childArray());
         if(includeInternalViews) {

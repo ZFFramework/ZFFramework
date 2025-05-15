@@ -67,7 +67,7 @@ public:
     /**
      * @brief first matched index
      *
-     * would be #ZFIndexRangeZero if not supported
+     * would be #ZFIndexRangeMax if not supported
      */
     ZFIndexRange matchedRange;
     /**
@@ -112,7 +112,7 @@ public:
  * @code
  *   <ZFRegExpResult>
  *       <zfbool category="matched" value="xxx" /> // optional, false by default
- *       <ZFIndexRange category="matchedRange" value="xxx" /> // optional, ZFIndexRangeZero by default
+ *       <ZFIndexRange category="matchedRange" value="xxx" /> // optional, ZFIndexRangeMax by default
  *       <ZFCoreArray category="namedGroups"> // optional, empty by default
  *           <ZFIndexRange /> // each namedGroups
  *       </ZFCoreArray>

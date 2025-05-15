@@ -7,7 +7,7 @@ void ZFRegExpResult::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
     if(this->matched) {
         ret += "matched";
-        if(this->matchedRange != ZFIndexRangeZero()) {
+        if(this->matchedRange != ZFIndexRangeMax()) {
             ret += " in ";
             ZFIndexRangeToStringT(ret, this->matchedRange);
         }
@@ -40,7 +40,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
                     return zffalse;
                 });
 
-        v.matchedRange = ZFIndexRangeZero();
+        v.matchedRange = ZFIndexRangeMax();
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
                 check, ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, {
                     return zffalse;
@@ -66,7 +66,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
                 });
 
         ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, ZFIndexRangeZero(), {
+                ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, ZFIndexRangeMax(), {
                     return zffalse;
                 });
 
@@ -321,7 +321,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit
         ZFRegExpResult result;
         do {
             separatorPattern->find(result, src);
-            if(!result.matched || result.matchedRange == ZFIndexRangeZero()) {
+            if(!result.matched || result.matchedRange == ZFIndexRangeMax()) {
                 if(*src || keepEmpty) {
                     ret.add(src);
                 }

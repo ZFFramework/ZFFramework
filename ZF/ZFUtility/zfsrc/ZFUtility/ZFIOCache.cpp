@@ -56,7 +56,7 @@ public:
             if(impl->implFindFirst(fd, pathInfo.pathData())) {
                 do {
                     zfstring childPath = impl->implToChild(pathInfo.pathData(), fd.name());
-                    if(ZFRegExpFind(fd.name(), pattern) == ZFIndexRangeZero()) {
+                    if(ZFRegExpFind(fd.name(), pattern) == ZFIndexRangeMax()) {
                         impl->implRemove(childPath, zffalse, zftrue, zfnull);
                         continue;
                     }

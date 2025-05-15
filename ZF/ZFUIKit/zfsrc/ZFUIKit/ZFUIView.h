@@ -984,6 +984,19 @@ public:
             , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
             , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
             )
+    /**
+     * @brief call custom impl for each child
+     *
+     * the impl's sender would be the owner parent view that calling this method,
+     * param0 would be each child being checking,
+     * impl should set #ZFArgs::eventFiltered if process done,
+     * and may set #ZFArgs::result which would return as return value of this method
+     */
+    ZFMETHOD_DECLARE_3(zfauto, childForEach
+            , ZFMP_IN(const ZFListener &, impl)
+            , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
+            , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
+            )
 
 public:
     /**

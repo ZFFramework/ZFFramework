@@ -29,8 +29,8 @@ ZFMETHOD_FUNC_DEFINE_0(void, TestCaseRunner) {
 
 ZFMAIN_PARAM_DISPATCH(TestCaseRunner) {
     if(ZFApp::appParams().isEmpty() || (zftrue
-                && ZFRegExpFind(ZFApp::appParams()[0], "-t") == ZFIndexRangeZero()
-                && ZFRegExpFind(ZFApp::appParams()[0], "--test") == ZFIndexRangeZero()
+                && ZFRegExpFind(ZFApp::appParams()[0], "-t") == ZFIndexRangeMax()
+                && ZFRegExpFind(ZFApp::appParams()[0], "--test") == ZFIndexRangeMax()
                 )) {
         return;
     }

@@ -104,7 +104,7 @@ private:
             result.matchedRange = ZFIndexRangeCreate(regexpResult.GetStart(), regexpResult.GetEnd() - regexpResult.GetStart());
         }
         else {
-            result.matchedRange = ZFIndexRangeZero();
+            result.matchedRange = ZFIndexRangeMax();
         }
         zfindex n = regexpResult.MaxGroupNumber() + 1;
         for(zfindex i = 1; i < n; ++i) {
