@@ -1,7 +1,7 @@
 #include "ZFJson.h"
 #include "protocol/ZFProtocolZFJson.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -195,7 +195,7 @@ static void _ZFP_ZFJsonToOutput_output(
 // ============================================================
 zfclassNotPOD _ZFP_ZFJsonPrivate {
 public:
-    typedef zfimplmap<zfstring, ZFJson> AttrMap;
+    typedef zfimplhashmap<zfstring, ZFJson> AttrMap;
     typedef zfstldeque<ZFJson> ChildList;
 public:
     zfuint refCount;

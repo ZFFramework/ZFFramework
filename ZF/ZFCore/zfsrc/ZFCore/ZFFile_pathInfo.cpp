@@ -1,7 +1,7 @@
 #include "ZFFile.h"
 #include "ZFPathType_file.h"
 
-#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -140,8 +140,8 @@ zfindex ZFPathInfoCallbackSizeDefault(ZF_IN void *token) {
 }
 
 // ============================================================
-static zfstlmap<zfstring, ZFPathInfoImpl> &_ZFP_ZFPathInfoImplMap(void) {
-    static zfstlmap<zfstring, ZFPathInfoImpl> d;
+static zfstlhashmap<zfstring, ZFPathInfoImpl> &_ZFP_ZFPathInfoImplMap(void) {
+    static zfstlhashmap<zfstring, ZFPathInfoImpl> d;
     return d;
 }
 
@@ -414,7 +414,7 @@ void _ZFP_ZFPathInfoRegister(
         ZF_IN const zfstring &pathType
         , ZF_IN const ZFPathInfoImpl &impl
         ) {
-    zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
+    zfstlhashmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
     ZFCoreAssertWithMessage(m.find(pathType) == m.end(),
         "pathType \"%s\" already registered",
         pathType);
@@ -444,7 +444,7 @@ void _ZFP_ZFPathInfoRegister(
     m[pathType] = impl;
 }
 void _ZFP_ZFPathInfoUnregister(ZF_IN const zfstring &pathType) {
-    zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
+    zfstlhashmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
     m.erase(pathType);
 }
 
@@ -453,8 +453,8 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPathInfoImpl, const ZFPathInfoImpl *)
 ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfoImpl *, ZFPathInfoImplForPathType
         , ZFMP_IN(const zfchar *, pathType)
         ) {
-    zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
-    zfstlmap<zfstring, ZFPathInfoImpl>::iterator it = m.find(pathType);
+    zfstlhashmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
+    zfstlhashmap<zfstring, ZFPathInfoImpl>::iterator it = m.find(pathType);
     if(it == m.end()) {
         return zfnull;
     }
@@ -465,8 +465,8 @@ ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfoImpl *, ZFPathInfoImplForPathType
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathInfoImplGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
         ) {
-    zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
-    for(zfstlmap<zfstring, ZFPathInfoImpl>::iterator it = m.begin(); it != m.end(); ++it) {
+    zfstlhashmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
+    for(zfstlhashmap<zfstring, ZFPathInfoImpl>::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);
     }
 }

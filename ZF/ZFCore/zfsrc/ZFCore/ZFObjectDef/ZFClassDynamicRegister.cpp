@@ -1,25 +1,25 @@
 #include "ZFClassDynamicRegister.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstlset.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
-zfstlset<const ZFClass *> m;
+zfstlhashmap<const ZFClass *, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFClassDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFClassDynamicRegisterAutoRemove) {
-    zfstlset<const ZFClass *> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m;
+    zfstlhashmap<const ZFClass *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m;
     if(!m.empty()) {
-        zfstlset<const ZFClass *> t;
+        zfstlhashmap<const ZFClass *, zfbool> t;
         t.swap(m);
-        for(zfstlset<const ZFClass *>::iterator it = t.begin(); it != t.end(); ++it) {
-            ZFClass::_ZFP_ZFClassUnregister(*it);
+        for(zfstlhashmap<const ZFClass *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
+            ZFClass::_ZFP_ZFClassUnregister(it->first);
         }
     }
 }
@@ -67,7 +67,7 @@ const ZFClass *ZFClassDynamicRegister(
         zffalse,
         zftrue,
         classDynamicRegisterUserData);
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.insert(cls);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
     const zfchar *classNamespace = ZFNamespaceSkipGlobal(cls->classNamespace());
     if(classNamespace && ZFClass::classForName(classNamespace) == zfnull) {
         _ZFP_ZFNamespaceRegister(zfnull, classNamespace);

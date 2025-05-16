@@ -1,9 +1,8 @@
 #include "ZFStyleable.h"
 #include "ZFObjectImpl.h"
-#include "ZFPropertyUtil.h"
 #include "ZFListenerDeclare.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -11,7 +10,7 @@ zfclass _ZFP_ZFStyleKeyHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFStyleKeyHolder, ZFObject)
 public:
     zfstring styleKey;
-    zfstlmap<zfstring, zfstring> stylePropertyKeyMap;
+    zfstlhashmap<zfstring, zfstring> stylePropertyKeyMap;
     ZFListener styleOnUpdateListener;
     ZFListener stylePropertyOnUpdateListener;
 public:
@@ -138,8 +137,8 @@ void _ZFP_ZFStyleKeyHolder::stylePropertyOnUpdate(
     ZFCoreMutexLocker();
     _ZFP_ZFStyleKeyHolder *holder = owner->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(holder != zfnull) {
-        zfstlmap<zfstring, zfstring> &m = holder->stylePropertyKeyMap;
-        for(zfstlmap<zfstring, zfstring>::iterator it = m.begin(); it != m.end(); ++it) {
+        zfstlhashmap<zfstring, zfstring> &m = holder->stylePropertyKeyMap;
+        for(zfstlhashmap<zfstring, zfstring>::iterator it = m.begin(); it != m.end(); ++it) {
             _ZFP_ZFStylePropertyCopy(owner->toObject(), it->first, it->second);
         }
     }
@@ -213,7 +212,7 @@ const zfstring &ZFStyleable::propStyle(ZF_IN const zfstring &propertyName) {
     ZFCoreMutexLocker();
     _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(holder != zfnull) {
-        zfstlmap<zfstring, zfstring>::iterator it = holder->stylePropertyKeyMap.find(propertyName);
+        zfstlhashmap<zfstring, zfstring>::iterator it = holder->stylePropertyKeyMap.find(propertyName);
         if(it != holder->stylePropertyKeyMap.end()) {
             return it->second;
         }

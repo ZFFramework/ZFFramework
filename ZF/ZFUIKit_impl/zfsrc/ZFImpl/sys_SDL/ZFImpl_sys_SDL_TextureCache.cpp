@@ -2,7 +2,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -95,17 +95,28 @@ private:
         SDL_Renderer *renderer;
         int w;
         int h;
+    };
+    zfclassNotPOD KeyHash {
     public:
-        inline zfbool operator < (ZF_IN const Key &ref) const {
-            return 0
-                + ((const zfbyte *)renderer - (const zfbyte *)ref.renderer)
-                + (w - ref.w)
-                + (h - ref.h)
+        inline zfstlsize operator () (Key const &v) const {
+            return (zfstlsize)zfidentityHash(0
+                    , zfidentityCalcPointer(v.renderer)
+                    , zfidentityCalcPOD(v.w)
+                    , zfidentityCalcPOD(v.h)
+                    );
+        }
+    };
+    zfclassNotPOD KeyEqual {
+    public:
+        inline zfbool operator () (Key const &k1, Key const &k2) const {
+            return k1.renderer == k2.renderer
+                && k1.w == k2.w
+                && k1.h == k2.h
                 ;
         }
     };
     zfclassFwd Value;
-    typedef zfstlmap<Key, zfstllist<Value *> > MapType;
+    typedef zfstlhashmap<Key, zfstllist<Value *>, KeyHash, KeyEqual> MapType;
     typedef zfstllist<Value *> ListType;
     zfclassNotPOD Value {
     public:

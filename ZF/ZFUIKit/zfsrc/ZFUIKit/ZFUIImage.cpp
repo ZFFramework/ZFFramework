@@ -2,12 +2,12 @@
 #include "ZFUIImageIO.h"
 #include "protocol/ZFProtocolZFUIImage.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
+typedef zfstlhashmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
 static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void) {
     static _ZFP_ZFUIImageSerializeDataMapType d;
     return d;

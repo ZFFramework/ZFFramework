@@ -1,11 +1,11 @@
 #include "ZFObjectIO_image.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlset<zfstring> _ZFP_ZFObjectIO_image_imageExtMapType;
+typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFObjectIO_image_imageExtMapType;
 static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(void) {
     static _ZFP_ZFObjectIO_image_imageExtMapType m;
     return m;
@@ -13,7 +13,7 @@ static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(
 
 void ZFObjectIO_image_imageExtAdd(ZF_IN const zfstring &imageExt) {
     ZFCoreAssert(imageExt);
-    _ZFP_ZFObjectIO_image_imageExtMap().insert(imageExt);
+    _ZFP_ZFObjectIO_image_imageExtMap()[imageExt] = zftrue;
 }
 void ZFObjectIO_image_imageExtRemove(ZF_IN const zfstring &imageExt) {
     _ZFP_ZFObjectIO_image_imageExtMap().erase(imageExt);
@@ -21,7 +21,7 @@ void ZFObjectIO_image_imageExtRemove(ZF_IN const zfstring &imageExt) {
 void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
     for(_ZFP_ZFObjectIO_image_imageExtMapType::iterator it = m.begin(); it != m.end(); ++it) {
-        ret.add(*it);
+        ret.add(it->first);
     }
 }
 

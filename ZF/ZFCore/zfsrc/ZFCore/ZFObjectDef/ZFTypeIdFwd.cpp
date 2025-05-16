@@ -3,12 +3,11 @@
 #include "ZFListenerDeclare.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<zfstring, ZFTypeInfo *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFTypeInfoMapType;
+typedef zfstlhashmap<zfstring, ZFTypeInfo *> _ZFP_ZFTypeInfoMapType;
 ZF_STATIC_INITIALIZER_INIT(ZFTypeInfoHolder) {
 }
 ZF_STATIC_INITIALIZER_DESTROY(ZFTypeInfoHolder) {

@@ -5,7 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlhashmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFTypeIdDynamicMapType;
+typedef zfstlhashmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > _ZFP_ZFTypeIdDynamicMapType;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTypeIdDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }

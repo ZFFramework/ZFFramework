@@ -1,6 +1,6 @@
 #include "ZFThreadPool.h"
 
-#include "ZFSTLWrapper/zfstlset.h"
+#include "ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFSTLWrapper/zfstllist.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -10,7 +10,7 @@ ZFOBJECT_REGISTER(ZFThreadPool)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFThreadPool, instance, ZFLevelZFFrameworkEssential)
 
 zfclassFwd _ZFP_I_ZFThreadPoolTaskData;
-typedef zfstlset<_ZFP_I_ZFThreadPoolTaskData *> _ZFP_ZFThreadPoolTaskMapType;
+typedef zfstlhashmap<_ZFP_I_ZFThreadPoolTaskData *, zfbool> _ZFP_ZFThreadPoolTaskMapType;
 typedef zfstllist<_ZFP_I_ZFThreadPoolTaskData *> _ZFP_ZFThreadPoolTaskListType;
 
 zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFTaskId {
@@ -230,7 +230,7 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfautoT<ZFTaskId>, start
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;
     taskData->callerThread = ZFThread::currentThread();
-    taskData->mapIt = d->taskMap.insert(taskData).first;
+    taskData->mapIt = d->taskMap.insert(zfstlpair<_ZFP_I_ZFThreadPoolTaskData *, zfbool>(taskData, zftrue)).first;
     d->taskList.push_back(taskData);
     taskData->listIt = d->taskList.end();
     --(taskData->listIt);

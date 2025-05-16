@@ -1,7 +1,7 @@
 #include "ZFEnvInfo.h"
 #include "protocol/ZFProtocolZFEnvInfo.h"
 
-#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummaryDataHolder, ZFLevelZFFrameworkStatic) {
 }
 public:
-    zfstlmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
+    zfstlhashmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
 ZF_GLOBAL_INITIALIZER_END(ZFEnvSummaryDataHolder)
 
 // ============================================================
@@ -31,8 +31,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, envSummary
     zfstring tmp;
 
     zfbool first = zftrue;
-    zfstlmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
-    for(zfstlmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it) {
+    zfstlhashmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
+    for(zfstlhashmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it) {
         if(first) {
             first = zffalse;
         }

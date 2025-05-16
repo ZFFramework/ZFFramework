@@ -1,7 +1,6 @@
 #include "ZFUIButtonBasic.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -10,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFUIButtonBasicPrivate {
 public:
     // <label|icon|bg, <prop, setterCalled> >
-    typedef zfstlmap<ZFObject *, zfstlset<const ZFProperty *> > PropSetterCalledMap;
+    typedef zfstlhashmap<ZFObject *, zfstlhashmap<const ZFProperty *, zfbool> > PropSetterCalledMap;
 public:
     ZFUIButtonBasic *pimplOwner;
     ZFUITextView *labelView;
@@ -88,7 +87,7 @@ private:
         if(it == this->modMap.end()) {
             return zffalse;
         }
-        zfstlset<const ZFProperty *>::iterator propIt = it->second.find(prop);
+        zfstlhashmap<const ZFProperty *, zfbool>::iterator propIt = it->second.find(prop);
         if(propIt == it->second.end()) {
             return zffalse;
         }
@@ -341,7 +340,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
                     , _ZFP_ZFUIButtonBasicPrivate *, d \
                     ) { \
                 const ZFProperty *prop = zfargs.param0().to<v_ZFProperty *>()->zfv; \
-                d->modMap[zfargs.sender()].insert(prop); \
+                d->modMap[zfargs.sender()][prop] = zftrue; \
                 if(d->T_Component##View == zfnull) { \
                     d->T_Component##ViewPrepare(); \
                 } \

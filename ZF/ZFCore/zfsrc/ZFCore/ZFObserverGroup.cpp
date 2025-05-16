@@ -1,6 +1,6 @@
 #include "ZFObserverGroup.h"
 
-#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -97,7 +97,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFObserverGroupDataHolder) {
     }
 }
 private:
-    typedef zfstlmap<ZFObject *, _ZFP_ZFObserverGroupTaskData *> _TaskMap;
+    typedef zfstlhashmap<ZFObject *, _ZFP_ZFObserverGroupTaskData *> _TaskMap;
     _TaskMap ownerMap; // <owner, taskDataList>
     _TaskMap targetMap; // <target, taskDataList>
 

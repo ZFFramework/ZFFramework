@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_iOS_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFThread.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 #if ZF_ENV_sys_iOS
 
@@ -35,7 +35,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // global data
 typedef void * _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType;
-typedef zfstlmap<_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType;
+typedef zfstlhashmap<_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType;
 
 static _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId(void) {
     return (__bridge void *)[NSThread currentThread];

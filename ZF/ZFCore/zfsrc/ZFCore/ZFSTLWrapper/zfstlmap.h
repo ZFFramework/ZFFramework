@@ -18,7 +18,7 @@
 
 // ============================================================
 /** @cond ZFPrivateDoc */
-template<typename T_Key, typename T_Value, typename T_Compare = zfstl::less<T_Key> >
+template<typename T_Key, typename T_Value, typename T_Compare = zfstlless<T_Key> >
 class zfimplmap : public zfstlmap<T_Key, T_Value, T_Compare> {
 private:
     zfclassNotPOD _Iter : zfextend zfiter::Impl {
@@ -88,7 +88,7 @@ public:
             ZF_IN T_Key const &key
             , ZF_IN T_Value const &value
             ) {
-        this->insert(zfstl::make_pair<T_Key, T_Value>(key, value));
+        this->insert(zfstlpair<T_Key, T_Value>(key, value));
     }
 };
 /** @endcond */

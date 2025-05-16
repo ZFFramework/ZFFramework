@@ -4,7 +4,7 @@
 
 #if ZF_ENV_sys_iOS
 
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -21,7 +21,7 @@ public:
     virtual void viewTransform(ZF_IN ZFUIView *view) {
         // transform won't work when changed immediately after UIView created,
         // delay for some time
-        _delayTaskMap.insert(view);
+        _delayTaskMap[view] = zftrue;
         zfself *thiz = this;
         zfweakT<ZFUIView> holder = view;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -53,7 +53,7 @@ public:
         _delayTaskMap.erase(view);
     }
 public:
-    zfstlset<ZFUIView *> _delayTaskMap;
+    zfstlhashmap<ZFUIView *, zfbool> _delayTaskMap;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END

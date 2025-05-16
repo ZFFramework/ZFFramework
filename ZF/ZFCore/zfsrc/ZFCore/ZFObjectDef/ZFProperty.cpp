@@ -125,7 +125,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(
 }
 
 // ============================================================
-typedef zfstlhashmap<zfstring, ZFProperty *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFPropertyMapType;
+typedef zfstlhashmap<zfstring, ZFProperty *> _ZFP_ZFPropertyMapType;
 static _ZFP_ZFPropertyMapType &_ZFP_ZFPropertyMap(void) {
     static _ZFP_ZFPropertyMapType m;
     return m;

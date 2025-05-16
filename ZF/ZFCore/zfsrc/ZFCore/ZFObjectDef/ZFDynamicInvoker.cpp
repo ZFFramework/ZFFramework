@@ -1,7 +1,7 @@
 #include "ZFDynamicInvoker.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h" // for ZFDI_invoke param convert backup
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 // #define _ZFP_ZFDI_DEBUG 1
 
@@ -19,7 +19,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
+typedef zfstlhashmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFDI_WrapperBase)
@@ -86,7 +86,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_toNumber_DataHolder, ZFLevelZFFramewo
 }
 public:
     _ZFP_ZFDI_toNumberConv check(ZF_IN const ZFClass *cls) {
-        zfstlmap<const ZFClass *, _ZFP_ZFDI_toNumberConv>::iterator it = m.find(cls);
+        zfstlhashmap<const ZFClass *, _ZFP_ZFDI_toNumberConv>::iterator it = m.find(cls);
         if(it != m.end()) {
             return it->second;
         }
@@ -95,7 +95,7 @@ public:
         }
     }
 private:
-    zfstlmap<const ZFClass *, _ZFP_ZFDI_toNumberConv> m;
+    zfstlhashmap<const ZFClass *, _ZFP_ZFDI_toNumberConv> m;
 private:
     static zfbool _conv_zfbool(ZF_OUT zfdouble &ret, ZF_IN ZFObject *obj) {
         ret = zfcast(v_zfbool *, obj)->zfv ? (zft_zfdouble)1 : (zft_zfdouble)0;
@@ -278,7 +278,8 @@ public:
     const ZFClass *cls;
     const ZFMethod *m;
 };
-static zfstlmap<zfstring, _ZFP_ZFDI_CacheData> _ZFP_ZFDI_cacheMap;
+typedef zfstlhashmap<zfstring, _ZFP_ZFDI_CacheData> _ZFP_ZFDI_CacheMapType;
+static _ZFP_ZFDI_CacheMapType _ZFP_ZFDI_cacheMap;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_cache, ZFLevelZFFrameworkEssential) {
     _ZFP_ZFDI_cacheMap.clear();
@@ -295,19 +296,19 @@ private:
             const ZFClass *cls = info->zfv.changedClass;
             if(m) {
                 if(cls) {
-                    for(zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                    for(_ZFP_ZFDI_CacheMapType::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
                         if(it->second.m == m || it->second.cls == cls) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
                     }
                 }
                 else {
-                    for(zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                    for(_ZFP_ZFDI_CacheMapType::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
                         if(it->second.m == m) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
                     }
                 }
             }
             else {
                 if(cls) {
-                    for(zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                    for(_ZFP_ZFDI_CacheMapType::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
                         if(it->second.cls == cls) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
                     }
                 }
@@ -491,7 +492,7 @@ void ZFDI_invoke(
             );
 #if _ZFP_ZFDI_CACHE_ENABLE
     zfstring cacheKey = _ZFP_ZFDI_cacheKey(obj, zfargs, name, convStr);
-    zfstlmap<zfstring, _ZFP_ZFDI_CacheData>::iterator itCache = _ZFP_ZFDI_cacheMap.find(cacheKey);
+    _ZFP_ZFDI_CacheMapType::iterator itCache = _ZFP_ZFDI_cacheMap.find(cacheKey);
     if(itCache != _ZFP_ZFDI_cacheMap.end()) {
         const _ZFP_ZFDI_CacheData &cache = itCache->second;
         if(cache.cls) {

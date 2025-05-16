@@ -1,7 +1,7 @@
 #include "ZFXml.h"
 #include "protocol/ZFProtocolZFXml.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -104,7 +104,7 @@ ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDetail, _ZFP_ZFXmlOutputTo
  */
 zfclassNotPOD _ZFP_ZFXmlPrivate {
 public:
-    typedef zfimplmap<zfstring, zfstring> AttrMap;
+    typedef zfimplhashmap<zfstring, zfstring> AttrMap;
     typedef zfstldeque<ZFXml> ChildList;
 public:
     zfuint refCount;

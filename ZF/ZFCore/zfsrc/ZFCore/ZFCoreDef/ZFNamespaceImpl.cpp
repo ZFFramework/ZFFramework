@@ -1,6 +1,6 @@
 #include "../ZFCoreDef.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 _ZFP_ZFNamespaceHolder::_ZFP_ZFNamespaceHolder(const char *parent, const char *child)
 : _ns(_ZFP_ZFNamespaceRegister(parent, child))
@@ -96,7 +96,7 @@ zfbool ZFNamespaceSplit(
 // ============================================================
 zfclassLikePOD _ZFP_ZFNamespaceTreeType {
 public:
-    typedef zfstlmap<zfstring, ZFCorePointerForPoolObject<_ZFP_ZFNamespaceTreeType *> > MapType;
+    typedef zfstlhashmap<zfstring, ZFCorePointerForPoolObject<_ZFP_ZFNamespaceTreeType *> > MapType;
 public:
     zfuint refCount;
     zfstring ns;

@@ -4,7 +4,7 @@
 
 #include "ZFImpl_sys_SDL_SysWindow.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -23,7 +23,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_Image_init) {
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_Image_init)
 
 // ============================================================
-typedef zfstlmap<ZFUISysWindow *, SDL_Texture *> _ZFP_ZFImpl_sys_SDL_ImageTextureMap;
+typedef zfstlhashmap<ZFUISysWindow *, SDL_Texture *> _ZFP_ZFImpl_sys_SDL_ImageTextureMap;
 
 ZFImpl_sys_SDL_Image::ZFImpl_sys_SDL_Image(void)
 : _refCount(1)

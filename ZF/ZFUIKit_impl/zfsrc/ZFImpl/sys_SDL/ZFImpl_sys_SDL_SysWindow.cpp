@@ -3,7 +3,7 @@
 #include "ZFUIKit/protocol/ZFProtocolZFUIViewFocus.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 #if ZF_ENV_sys_SDL
 
@@ -23,7 +23,7 @@ public:
     zfbool renderRequested;
     zfbool layoutRequested;
 
-    zfstlmap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
+    zfstlhashmap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
 
 public:
     _ZFP_ZFImpl_sys_SDL_SysWindowPrivate(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWindow)

@@ -1,7 +1,7 @@
 #include "ZFObjectCore.h"
 #include "ZFObjectImpl.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -42,13 +42,13 @@ public:
     zfuint *flag;
     zft_zfuint flagBit;
 };
-typedef zfstlmap<zfidentity, zfstldeque<_ZFP_ZFObserverAttachState> > _ZFP_ZFObserverAttachStateMapType;
+typedef zfstlhashmap<zfidentity, zfstldeque<_ZFP_ZFObserverAttachState> > _ZFP_ZFObserverAttachStateMapType;
 
 zfclassNotPOD _ZFP_ZFObserverPrivate {
 public:
     zfuint refCount;
     ZFObject *observerOwner;
-    zfstlmap<zfidentity, _ZFP_ZFObserverData *> observerMap; // <eventId, pList>
+    zfstlhashmap<zfidentity, _ZFP_ZFObserverData *> observerMap; // <eventId, pList>
     _ZFP_ZFObserverAttachStateMapType attachMap;
 public:
     _ZFP_ZFObserverPrivate(void)
@@ -139,7 +139,7 @@ public:
             , ZF_IN zfidentity eventId
             , ZF_IN ZFObject *observerOwner
             ) {
-        zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = this->observerMap.find(eventId);
+        zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = this->observerMap.find(eventId);
         if(it != this->observerMap.end()) {
             _ZFP_ZFObserverData *p = it->second;
             do {
@@ -171,7 +171,7 @@ public:
         }
     }
     void observerDetach(
-            ZF_IN_OUT zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator &it
+            ZF_IN_OUT zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator &it
             , ZF_IN_OUT _ZFP_ZFObserverData *p
             ) {
         if(it->second == p) {
@@ -243,7 +243,7 @@ void ZFObserver::observerRemove(
         ) {
     ZFCoreMutexLocker();
 
-    zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
+    zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
     if(it != d->observerMap.end()) {
         _ZFP_ZFObserverData *p = it->second;
         do {
@@ -266,7 +266,7 @@ void ZFObserver::observerRemove(
 }
 void ZFObserver::observerRemoveAll(ZF_IN zfidentity eventId) {
     ZFCoreMutexLocker();
-    zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
+    zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
     if(it == d->observerMap.end()) {
         return;
     }
@@ -292,12 +292,12 @@ void ZFObserver::observerRemoveAll(void) {
     }
 
     ZFCoreMutexLocker();
-    zfstlmap<zfidentity, _ZFP_ZFObserverData *> tmp;
+    zfstlhashmap<zfidentity, _ZFP_ZFObserverData *> tmp;
     tmp.swap(d->observerMap);
     d->observerMap.clear();
 
     if(d->observerOwner) {
-        for(zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = tmp.begin();
+        for(zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = tmp.begin();
                 it != tmp.end();
                 ++it
                 ) {
@@ -306,7 +306,7 @@ void ZFObserver::observerRemoveAll(void) {
         }
     }
     else {
-        for(zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = tmp.begin();
+        for(zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = tmp.begin();
                 it != tmp.end();
                 ++it
                 ) {
@@ -314,7 +314,7 @@ void ZFObserver::observerRemoveAll(void) {
         }
     }
 
-    for(zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = tmp.begin();
+    for(zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = tmp.begin();
             it != tmp.end();
             ++it
             ) {
@@ -470,7 +470,7 @@ void ZFObserver::objectInfoT(ZF_OUT zfstring &ret) const {
         ret += ">";
     }
     else {
-        for(zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.begin();
+        for(zfstlhashmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.begin();
                 it != d->observerMap.end();
                 ++it
                 ) {

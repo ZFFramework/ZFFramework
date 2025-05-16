@@ -11,8 +11,7 @@
 #define CPPHTTPLIB_NO_EXCEPTIONS
 #include "../../../zf3rd/_repo/cpp-httplib/httplib.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -20,14 +19,15 @@ zfclassNotPOD _ZFP_ZFHttpServerImpl_default_TaskQueue : zfextend httplib::TaskQu
 public:
     zfweakT<ZFHttpServer> owner;
 private:
-    zfclassNotPOD KeyCmp {
+    zfclassNotPOD KeyHash {
     public:
-        inline zfbool operator () (zfauto const &k1, zfauto const &k2) const {
-            return k1.toObject() - k2.toObject() < 0;
+        inline zfstlsize operator () (zfauto const &v) const {
+            return (zfstlsize)zfidentityCalcPointer(v.toObject());
         }
     };
-    zfstlset<zfauto, KeyCmp> taskMap; // [ZFTaskId]
-    zfstlset<zfauto, KeyCmp> semaMap; // [ZFSemaphore]
+    typedef zfstlhashmap<zfauto, zfbool, KeyHash> TaskMapType;
+    TaskMapType taskMap; // <ZFTaskId, dummy>
+    TaskMapType semaMap; // <ZFSemaphore, dummy>
 public:
     virtual bool enqueue(std::function<void()> fn) override {
         _ZFP_ZFHttpServerImpl_default_TaskQueue *taskQueue = this;
@@ -41,7 +41,7 @@ public:
 
             ZFCoreMutexLock();
             zfobj<ZFSemaphore> sema;
-            taskQueue->semaMap.insert(sema);
+            taskQueue->semaMap[sema] = zftrue;
             ZFCoreMutexUnlock();
 
             fn();
@@ -55,7 +55,7 @@ public:
 
         ZFCoreMutexLock();
         zfauto taskId = ZFHttpServerThreadPool::instance()->start(impl, zfnull);
-        this->taskMap.insert(taskId);
+        this->taskMap[taskId] = zftrue;
         ZFCoreMutexUnlock();
         return zftrue;
     }
@@ -63,14 +63,14 @@ public:
     virtual void shutdown() override {
         ZFCoreMutexLock();
         for(auto it = this->taskMap.begin(); it != this->taskMap.end(); ++it) {
-            ZFTaskId *t = *it;
+            ZFTaskId *t = it->first;
             t->stop();
         }
         ZFCoreMutexUnlock();
 
         while(!this->semaMap.empty()) {
             ZFCoreMutexLock();
-            zfautoT<ZFSemaphore> sema = *(this->semaMap.begin());
+            zfautoT<ZFSemaphore> sema = this->semaMap.begin()->first;
             this->semaMap.erase(this->semaMap.begin());
             ZFCoreMutexUnlock();
 
@@ -89,16 +89,16 @@ public:
     const httplib::ContentReader *content_reader;
 
 private:
-    zfstlmap<zfstring, zfstring> _recvHeaderCache;
-    zfstlmap<zfstring, zfstring> _recvParamCache;
+    zfstlhashmap<zfstring, zfstring> _recvHeaderCache;
+    zfstlhashmap<zfstring, zfstring> _recvParamCache;
     ZFHttpMethod _recvMethodCache;
     zfstring *_recvBodyCache;
 
-    zfstlmap<zfstring, zfstring> _respHeaderCache;
+    zfstlhashmap<zfstring, zfstring> _respHeaderCache;
 
 private:
     template<typename T_Multimap>
-    void _headersCacheUpdate(ZF_OUT zfstlmap<zfstring, zfstring> &dst, ZF_IN const T_Multimap &src) {
+    void _headersCacheUpdate(ZF_OUT zfstlhashmap<zfstring, zfstring> &dst, ZF_IN const T_Multimap &src) {
         if(dst.empty() && !src.empty()) {
             for(auto srcIt = src.begin(); srcIt != src.end(); ++srcIt) {
                 zfstring key = srcIt->first.c_str();
@@ -165,8 +165,8 @@ public:
 private:
     zfclassNotPOD _Iter : zfextend zfiter::Impl {
     public:
-        zfstlmap<zfstring, zfstring>::iterator it;
-        zfstlmap<zfstring, zfstring>::iterator end;
+        zfstlhashmap<zfstring, zfstring>::iterator it;
+        zfstlhashmap<zfstring, zfstring>::iterator end;
     public:
         zfoverride
         virtual zfbool valid(void) {

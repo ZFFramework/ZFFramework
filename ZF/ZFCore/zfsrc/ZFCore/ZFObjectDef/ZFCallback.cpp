@@ -1,7 +1,7 @@
 #include "ZFCallback.h"
 #include "ZFObjectImpl.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -11,7 +11,7 @@ void _ZFP_ZFCallback_executeNullCallback(void) {
 
 // ============================================================
 // _ZFP_ZFCallbackPrivate
-typedef zfstlmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
+typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
 
 zfclassNotPOD _ZFP_ZFCallbackPrivateExt {
 public:

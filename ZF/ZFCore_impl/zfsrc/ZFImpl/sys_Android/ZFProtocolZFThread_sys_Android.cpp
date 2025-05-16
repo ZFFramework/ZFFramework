@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Android_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFThread.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 #if ZF_ENV_sys_Android
 
@@ -32,8 +32,8 @@ public:
 // global data
 typedef jlong _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType;
 typedef jint _ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType;
-typedef zfstlmap<_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Android_ThreadMapType;
-typedef zfstlmap<_ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType, _ZFP_ZFThreadImpl_sys_Android_ExecuteData *> _ZFP_ZFThreadImpl_sys_Android_ExecuteDataMapType;
+typedef zfstlhashmap<_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Android_ThreadMapType;
+typedef zfstlhashmap<_ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType, _ZFP_ZFThreadImpl_sys_Android_ExecuteData *> _ZFP_ZFThreadImpl_sys_Android_ExecuteDataMapType;
 
 static _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType _ZFP_ZFThreadImpl_sys_Android_getNativeThreadId(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();

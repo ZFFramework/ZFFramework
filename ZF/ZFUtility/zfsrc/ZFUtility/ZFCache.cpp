@@ -1,8 +1,7 @@
 #include "ZFCache.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -12,12 +11,12 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCacheDataHolder, ZFLevelZFFrameworkStati
 }
 public:
     ZFListener cacheTrimListener;
-    zfstlset<ZFCache *> attachedObject;
+    zfstlhashmap<ZFCache *, zfbool> attachedObject;
 public:
     static void cacheTrim(ZF_IN const ZFArgs &zfargs) {
-        const zfstlset<ZFCache *> &attachedObject = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->attachedObject;
-        for(zfstlset<ZFCache *>::const_iterator it = attachedObject.begin(); it != attachedObject.end(); ++it) {
-            ZFCache *holder = *it;
+        const zfstlhashmap<ZFCache *, zfbool> &attachedObject = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->attachedObject;
+        for(zfstlhashmap<ZFCache *, zfbool>::const_iterator it = attachedObject.begin(); it != attachedObject.end(); ++it) {
+            ZFCache *holder = it->first;
             holder->cacheTrim((zft_zfindex)(holder->cacheMaxSize() * holder->cacheTrimThreshold()));
         }
     }
@@ -28,7 +27,7 @@ public:
         ZFCoreMutexLocker();
 
         if(autoTrim) {
-            this->attachedObject.insert(objectCache);
+            this->attachedObject[objectCache] = zftrue;
         }
         else {
             this->attachedObject.erase(objectCache);
@@ -50,7 +49,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFCacheDataHolder)
 // ============================================================
 zfclassFwd _ZFP_ZFCacheData;
 typedef zfstllist<_ZFP_ZFCacheData *> _ZFP_ZFCacheList;
-typedef zfstlmap<zfstring, _ZFP_ZFCacheList> _ZFP_ZFCacheMap;
+typedef zfstlhashmap<zfstring, _ZFP_ZFCacheList> _ZFP_ZFCacheMap;
 zfclassNotPOD _ZFP_ZFCacheData {
 public:
     ZFObject *cacheValue; // retained only when added to cacheList

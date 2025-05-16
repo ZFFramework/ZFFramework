@@ -19,7 +19,7 @@ zfclassNotPOD _ZFP_ZFCoreOrderMapPrivate {
 public:
     zfclassFwd Item;
 #if ZF_ENV_ZFCOREORDERMAP_USE_HASHMAP
-    typedef zfimplhashmap<zfstring, Item *, zfstring_zfstlHash, zfstring_zfstlEqual> MapType;
+    typedef zfimplhashmap<zfstring, Item *> MapType;
 #else
     typedef zfimplmap<zfstring, Item *> MapType;
 #endif

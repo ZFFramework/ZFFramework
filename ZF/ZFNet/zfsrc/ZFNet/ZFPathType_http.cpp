@@ -1,6 +1,6 @@
 #include "ZFPathType_http.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -30,7 +30,7 @@ public:
         zfstring url;
         zfindex contentLength; // total size of the file, zfindexMax if not available
         zfindex curPos;
-        zfstlmap<zfindex, zfstring> chunkCache; // <chunkAlign, buffer>
+        zfstlhashmap<zfindex, zfstring> chunkCache; // <chunkAlign, buffer>
         ZFCoreArray<zfindex> chunkCacheFIFO;
     public:
         _Token(void)
@@ -66,7 +66,7 @@ public:
             }
             {
                 ZFCoreMutexLocker();
-                zfstlmap<zfindex, zfstring>::iterator it = chunkCache.find(chunkPos);
+                zfstlhashmap<zfindex, zfstring>::iterator it = chunkCache.find(chunkPos);
                 if(it != chunkCache.end()) {
                     chunkCacheFIFO.removeElement(chunkPos);
                     chunkCacheFIFO.add(chunkPos);

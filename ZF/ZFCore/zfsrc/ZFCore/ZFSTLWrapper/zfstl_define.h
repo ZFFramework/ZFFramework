@@ -9,13 +9,6 @@
 #include "../ZFCoreDef.h"
 
 /**
- * @brief namespace wrapper for std
- */
-#ifndef zfstl
-    #define zfstl std
-#endif
-
-/**
  * @brief size_t wrapper
  *
  * take good care of that, zfindex is not ensured same as size_t,
@@ -36,227 +29,108 @@
     #define zfstlsize size_t
 #endif
 
+/** @brief stl wrapper */
+#ifndef zfstlless
+    #define zfstlless std::less
+#endif
+
+/** @brief stl wrapper */
+#ifndef zfstlhash
+    #define zfstlhash std::hash
+#endif
+
+/** @brief stl wrapper */
+#ifndef zfstlequalto
+    #define zfstlequalto std::equal_to
+#endif
+
 // ============================================================
-/**
- * @brief key comparer by string comparation, used in STL
- */
+/** @cond ZFPrivateDoc */
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlLess {
 public:
-    /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfchar * const &k1, const zfchar * const &k2) const {
         return (zfscmp(k1, k2) < 0);
     }
-    /** @endcond */
 };
-/**
- * @brief key comparer by string comparation, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlLess {
-public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (zfchar * const &k1, zfchar * const &k2) const {
-        return (zfscmp(k1, k2) < 0);
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key comparer by string comparation, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlLess {
-public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (const zfstring &k1, const zfstring &k2) const {
-        return (k1.compare(k2) < 0);
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key comparer by string comparation, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlLess {
-public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (ZFSigName const &k1, ZFSigName const &k2) const {
-        return (k1.compare(k2) < 0);
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key comparer by string comparation, used in STL
- */
-template<typename T_Pointer>
-zfclassNotPOD ZFLIB_ZFCore zfpointer_zfstlLess {
-public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (T_Pointer const &k1, T_Pointer const &k2) const {
-        return (const zfbyte *)k1 < (const zfbyte *)k2;
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key comparer by string comparation, used in STL
- */
-template<typename T_POD>
-zfclassNotPOD ZFLIB_ZFCore zfpod_zfstlLess {
-public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (T_POD const &k1, T_POD const &k2) const {
-        return zfcmpPOD(k1, k2) < 0;
-    }
-    /** @endcond */
-};
-
-// ============================================================
-/**
- * @brief key hasher by string value hash, used in STL
- */
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHash {
 public:
-    /** @cond ZFPrivateDoc */
     zfstlsize operator () (const zfchar * const &v) const {
         return (zfstlsize)zfidentityCalcString(v);
     }
-    /** @endcond */
 };
-/**
- * @brief key hasher by string value hash, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHash {
-public:
-    /** @cond ZFPrivateDoc */
-    zfstlsize operator () (zfchar * const &v) const {
-        return (zfstlsize)zfidentityCalcString(v);
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key hasher by string value hash, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHash {
-public:
-    /** @cond ZFPrivateDoc */
-    zfstlsize operator () (zfstring const &v) const {
-        return (zfstlsize)zfidentityCalcString(v.cString());
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key hasher by string value hash, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlHash {
-public:
-    /** @cond ZFPrivateDoc */
-    zfstlsize operator () (ZFSigName const &v) const {
-        return (zfstlsize)zfidentityCalcString(v.cString());
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key hasher by pointer value hash, used in STL
- */
-template<typename T_Pointer>
-zfclassNotPOD zfpointer_zfstlHash {
-public:
-    /** @cond ZFPrivateDoc */
-    zfstlsize operator () (T_Pointer const &v) const {
-        return (zfstlsize)zfidentityCalcPointer((const void *)v);
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key hasher by pointer value hash, used in STL
- */
-template<typename T_POD>
-zfclassNotPOD zfpod_zfstlHash {
-public:
-    /** @cond ZFPrivateDoc */
-    zfstlsize operator () (T_POD const &v) const {
-        return (zfstlsize)zfidentityCalcPOD(v);
-    }
-    /** @endcond */
-};
-
-// ============================================================
-/**
- * @brief key comparer by string comparation, used in STL
- */
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlEqual {
 public:
-    /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfchar * const &k1, const zfchar * const &k2) const {
         return (zfscmp(k1, k2) == 0);
     }
-    /** @endcond */
 };
-/**
- * @brief key comparer by string comparation, used in STL
- */
+
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlLess {
+public:
+    inline zfbool operator () (zfchar * const &k1, zfchar * const &k2) const {
+        return (zfscmp(k1, k2) < 0);
+    }
+};
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHash {
+public:
+    zfstlsize operator () (zfchar * const &v) const {
+        return (zfstlsize)zfidentityCalcString(v);
+    }
+};
 zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlEqual {
 public:
-    /** @cond ZFPrivateDoc */
     inline zfbool operator () (zfchar * const &k1, zfchar * const &k2) const {
         return (zfscmp(k1, k2) == 0);
     }
-    /** @endcond */
 };
 
-/**
- * @brief key comparer by string comparation, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlEqual {
+template<typename T_POD>
+zfclassNotPOD ZFLIB_ZFCore zfpod_zfstlLess {
 public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (const zfstring &k1, const zfstring &k2) const {
-        return (k1.compare(k2) == 0);
+    inline zfbool operator () (T_POD const &k1, T_POD const &k2) const {
+        return zfcmpPOD(k1, k2) < 0;
     }
-    /** @endcond */
 };
-
-/**
- * @brief key comparer by string comparation, used in STL
- */
-zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlEqual {
+template<typename T_POD>
+zfclassNotPOD zfpod_zfstlHash {
 public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (const ZFSigName &k1, const ZFSigName &k2) const {
-        return (k1.compare(k2) == 0);
+    zfstlsize operator () (T_POD const &v) const {
+        return (zfstlsize)zfidentityCalcPOD(v);
     }
-    /** @endcond */
 };
-
-/**
- * @brief key comparer by pointer value comparation, used in STL
- */
-template<typename T_Pointer>
-zfclassNotPOD zfpointer_zfstlEqual {
-public:
-    /** @cond ZFPrivateDoc */
-    inline zfbool operator () (T_Pointer const &k1, T_Pointer const &k2) const {
-        return (k1 == k2);
-    }
-    /** @endcond */
-};
-
-/**
- * @brief key comparer by pointer value comparation, used in STL
- */
 template<typename T_POD>
 zfclassNotPOD zfpod_zfstlEqual {
 public:
-    /** @cond ZFPrivateDoc */
     inline zfbool operator () (T_POD const &k1, T_POD const &k2) const {
         return zfcmpPOD(k1, k2) == 0;
     }
-    /** @endcond */
 };
+/** @endcond */
+
+// ============================================================
+/** @cond ZFPrivateDoc */
+template<>
+zfclassNotPOD zfstlhash<zfidentity> {
+public:
+    zfstlsize operator () (zfidentity const &v) const {
+        return (zfstlsize)zfidentityCalcPOD(v);
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<zfstring> {
+public:
+    zfstlsize operator () (zfstring const &v) const {
+        return (zfstlsize)zfidentityCalcString(v.cString(), v.length());
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<ZFSigName> {
+public:
+    zfstlsize operator () (ZFSigName const &v) const {
+        return (zfstlsize)zfidentityCalcString(v.cString(), v.length());
+    }
+};
+/** @endcond */
 
 #endif // #ifndef _ZFI_zfstl_define_h_
 

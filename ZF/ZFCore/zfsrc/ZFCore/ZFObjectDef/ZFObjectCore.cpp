@@ -2,7 +2,7 @@
 #include "ZFObjectImpl.h"
 #include "ZFDynamicInvoker.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 // #define _ZFP_ZFObjectPrivate_DEBUG 1
@@ -31,7 +31,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFObjectPrivate
-typedef zfstlmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
+typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
 
 zfclassNotPOD _ZFP_ZFObjectPrivate {
 public:
@@ -56,7 +56,7 @@ public:
     ZFObserver *observerHolder;
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
     ZFObject *ZFImplementDynamicOwner;
-    zfstlmap<const ZFClass *, zfauto> ZFImplementDynamicHolder;
+    zfstlhashmap<const ZFClass *, zfauto> ZFImplementDynamicHolder;
 
 public:
     _ZFP_ZFObjectPrivate(void)
@@ -847,7 +847,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFObjectPrivate);
     }
-    zfstlmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder.find(clsToImplement);
+    zfstlhashmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder.find(clsToImplement);
     if(it != d->ZFImplementDynamicHolder.end()) {
         return it->second;
     }

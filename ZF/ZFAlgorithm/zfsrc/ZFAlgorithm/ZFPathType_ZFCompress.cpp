@@ -1,6 +1,6 @@
 #include "ZFPathType_ZFCompress.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -31,7 +31,7 @@ private:
         {
         }
     };
-    typedef zfstlmap<const zfchar *, _TaskData *, zfcharConst_zfstlLess> _TaskMap;
+    typedef zfstlhashmap<const zfchar *, _TaskData *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _TaskMap;
 
     zfclassNotPOD _Token {
     public:

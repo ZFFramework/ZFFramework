@@ -1,6 +1,6 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFThread.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 #include "ZFImpl/ZFImpl_env.h"
 
@@ -64,7 +64,7 @@ static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_defaul
 
 // ============================================================
 // global data
-typedef zfstlmap<_ZFP_ZFThreadImpl_default_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_default_ThreadMapType;
+typedef zfstlhashmap<_ZFP_ZFThreadImpl_default_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_default_ThreadMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_default_DataHolder, ZFLevelZFFrameworkEssential) {
     mainThread = zfAlloc(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_default_getNativeThreadId()] = mainThread;

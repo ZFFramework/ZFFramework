@@ -1,7 +1,5 @@
 #include "ZFImpl_ZFLua_PathInfo.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLocalPathInfo,

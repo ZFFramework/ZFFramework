@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Qt_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFThread.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 #if ZF_ENV_sys_Qt
 #include <QThread>
@@ -79,7 +79,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // global data
 typedef QThread * _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType;
-typedef zfstlmap<_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType;
+typedef zfstlhashmap<_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType;
 
 static _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType _ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId(void) {
     return QThread::currentThread();

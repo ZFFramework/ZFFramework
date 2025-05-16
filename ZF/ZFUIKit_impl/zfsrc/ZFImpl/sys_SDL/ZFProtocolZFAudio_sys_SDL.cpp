@@ -4,7 +4,7 @@
 #if ZF_ENV_sys_SDL
 
 #include "SDL_mixer.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -319,7 +319,7 @@ private:
     static void _implOnFinish(int channel) {
         ZFCoreMutexLock();
         zfself *d = (zfself *)ZFPROTOCOL_ACCESS(ZFAudio);
-        zfstlmap<zfidentity, zfautoT<ZFAudio> >::iterator it = d->_implPlaying.find(channel);
+        zfstlhashmap<zfidentity, zfautoT<ZFAudio> >::iterator it = d->_implPlaying.find(channel);
         if(it == d->_implPlaying.end()) {
             ZFCoreMutexUnlock();
             return;
@@ -345,7 +345,7 @@ private:
     }
 
 private:
-    zfstlmap<zfidentity, zfautoT<ZFAudio> > _implPlaying;
+    zfstlhashmap<zfidentity, zfautoT<ZFAudio> > _implPlaying;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END

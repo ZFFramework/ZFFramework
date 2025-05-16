@@ -1,7 +1,7 @@
 #include "ZFEnum.h"
 #include "ZFObjectImpl.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -336,9 +336,9 @@ ZF_STATIC_INITIALIZER_END(ZFEnumDataHolder)
 // ============================================================
 zfclassNotPOD _ZFP_ZFEnumDataPrivate {
 public:
-    typedef zfstlmap<zfuint, ZFCoreArray<zfstring> > ValueMapType;
+    typedef zfstlhashmap<zfuint, ZFCoreArray<zfstring> > ValueMapType;
     ValueMapType valueMap;
-    typedef zfstlmap<zfstring, zfuint> NameMapType;
+    typedef zfstlhashmap<zfstring, zfuint> NameMapType;
     NameMapType nameMap;
     ZFCoreArray<zfuint> vl; // ensured no duplicated value
     ZFCoreArray<zfstring> nl; // for duplicated value, only first stored

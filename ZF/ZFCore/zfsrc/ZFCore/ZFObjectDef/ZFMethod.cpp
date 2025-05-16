@@ -556,7 +556,7 @@ void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
 }
 
 // ============================================================
-typedef zfstlhashmap<zfstring, ZFMethod *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFMethodMapType;
+typedef zfstlhashmap<zfstring, ZFMethod *> _ZFP_ZFMethodMapType;
 static _ZFP_ZFMethodMapType &_ZFP_ZFMethodMap(void) {
     static _ZFP_ZFMethodMapType m;
     return m;

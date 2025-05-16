@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Windows_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFObjectMutex.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 #if ZF_ENV_sys_Windows
 #include <Windows.h>
@@ -13,7 +13,7 @@ public:
     public:
         CRITICAL_SECTION mutex;
         CRITICAL_SECTION mutexParamLocker;
-        zfstlmap<DWORD, zfindex> lockedThreadCountMap;
+        zfstlhashmap<DWORD, zfindex> lockedThreadCountMap;
         DWORD runningThreadId;
         DWORD INVALID_THREAD_ID;
     };
@@ -48,7 +48,7 @@ public:
             mutex->runningThreadId = curThreadId;
         }
         else {
-            zfstlmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
+            zfstlhashmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
             if(curThreadId == mutex->runningThreadId) {
                 ++(it->second);
                 LeaveCriticalSection(&(mutex->mutexParamLocker));
@@ -76,7 +76,7 @@ public:
 
         EnterCriticalSection(&(mutex->mutexParamLocker));
         DWORD curThreadId = GetCurrentThreadId();
-        zfstlmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
+        zfstlhashmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
         if(curThreadId == mutex->runningThreadId) {
             --(it->second);
             if(it->second == 0) {
@@ -113,7 +113,7 @@ public:
             return zftrue;
         }
         else {
-            zfstlmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
+            zfstlhashmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
             if(curThreadId == mutex->runningThreadId) {
                 ++(it->second);
                 LeaveCriticalSection(&(mutex->mutexParamLocker));

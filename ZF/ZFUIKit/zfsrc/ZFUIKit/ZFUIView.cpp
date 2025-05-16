@@ -4,7 +4,7 @@
 #include "protocol/ZFProtocolZFUIViewTransform.h"
 #include "ZFUIViewFocus.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -13,7 +13,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIView)
 
 // ============================================================
 // _ZFP_ZFUIViewPrivate
-typedef zfstlset<zfstring> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
+typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate {
 public:
     void *nativeView;
@@ -2299,7 +2299,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd
         , ZFMP_IN(const zfstring &, tag)
         ) {
     if(tag) {
-        d->internalViewAutoSerializeTags.insert(tag);
+        d->internalViewAutoSerializeTags[tag] = zftrue;
     }
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove
@@ -2320,7 +2320,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagGetAllT
             it != d->internalViewAutoSerializeTags.end();
             ++it
             ) {
-        ret.add(*it);
+        ret.add(it->first);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfstring>, internalViewAutoSerializeTagGetAll) {

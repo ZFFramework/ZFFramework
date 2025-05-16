@@ -13,12 +13,12 @@
 #ifndef zfstlhashmap
     #define zfstlhashmap std::unordered_map
     #include "zfstl_impl/unordered_map.hpp"
-#endif // #ifndef zfstlhashmap
+#endif
 
 
 // ============================================================
 /** @cond ZFPrivateDoc */
-template<typename T_Key, typename T_Value, typename T_Hash = zfstl::hash<T_Key>, typename T_Equal = zfstl::equal_to<T_Key> >
+template<typename T_Key, typename T_Value, typename T_Hash = zfstlhash<T_Key>, typename T_Equal = zfstlequalto<T_Key> >
 class zfimplhashmap : public zfstlhashmap<T_Key, T_Value, T_Hash, T_Equal> {
 private:
     zfclassNotPOD _Iter : zfextend zfiter::Impl {
@@ -87,7 +87,7 @@ public:
             ZF_IN T_Key const &key
             , ZF_IN T_Value const &value
             ) {
-        this->insert(zfstl::make_pair<T_Key, T_Value>(key, value));
+        this->insert(zfstlpair<T_Key, T_Value>(key, value));
     }
 };
 /** @endcond */

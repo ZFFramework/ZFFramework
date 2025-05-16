@@ -11,7 +11,7 @@
 #define CPPHTTPLIB_NO_EXCEPTIONS
 #include "../../../zf3rd/_repo/cpp-httplib/httplib.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -35,13 +35,13 @@ private:
         zfstring url;
         ZFHttpMethod httpMethod;
         httplib::Headers headers;
-        zfstlmap<zfstring, zfstring> headersCache;
+        zfstlhashmap<zfstring, zfstring> headersCache;
         zfstring body;
         httplib::Headers responseHeaders;
-        zfstlmap<zfstring, zfstring> responseHeadersCache;
+        zfstlhashmap<zfstring, zfstring> responseHeadersCache;
 
     private:
-        void _headersCacheUpdate(ZF_OUT zfstlmap<zfstring, zfstring> &dst, ZF_IN const httplib::Headers &src) {
+        void _headersCacheUpdate(ZF_OUT zfstlhashmap<zfstring, zfstring> &dst, ZF_IN const httplib::Headers &src) {
             if(dst.empty() && !src.empty()) {
                 for(auto srcIt = src.begin(); srcIt != src.end(); ++srcIt) {
                     zfstring key = srcIt->first.c_str();
@@ -190,8 +190,8 @@ public:
 
     zfclassNotPOD _Iter : zfextend zfiter::Impl {
     public:
-        zfstlmap<zfstring, zfstring>::iterator it;
-        zfstlmap<zfstring, zfstring>::iterator end;
+        zfstlhashmap<zfstring, zfstring>::iterator it;
+        zfstlhashmap<zfstring, zfstring>::iterator end;
     public:
         zfoverride
         virtual zfbool valid(void) {

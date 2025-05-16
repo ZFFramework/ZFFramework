@@ -3,7 +3,7 @@
 #include "ZFPropertyUtil.h"
 #include "ZFListenerDeclare.h"
 
-#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -251,8 +251,9 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
 // ============================================================
 // style holder
 static zfbool _ZFP_ZFStyleUpdateFlag = zffalse;
-static zfstlmap<zfstring, zfauto> &_ZFP_ZFStyleHolder(void) {
-    static zfstlmap<zfstring, zfauto> d;
+typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFStyleHolderMapType;
+static _ZFP_ZFStyleHolderMapType &_ZFP_ZFStyleHolder(void) {
+    static _ZFP_ZFStyleHolderMapType d;
     return d;
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleCleanup, ZFLevelZFFrameworkNormal) {
@@ -262,8 +263,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFStyleCleanup) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFStyleCleanup)
 
-static zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &_ZFP_ZFStyleDecoderMap(void) {
-    static zfstlmap<zfstring, _ZFP_ZFStyleDecoder> d;
+typedef zfstlhashmap<zfstring, _ZFP_ZFStyleDecoder> _ZFP_ZFStyleDecoderMapType;
+static _ZFP_ZFStyleDecoderMapType &_ZFP_ZFStyleDecoderMap(void) {
+    static _ZFP_ZFStyleDecoderMapType d;
     return d;
 }
 void _ZFP_ZFStyleDecoderRegister(
@@ -271,7 +273,7 @@ void _ZFP_ZFStyleDecoderRegister(
         , ZF_IN _ZFP_ZFStyleDecoder decoder
         ) {
     ZFCoreMutexLocker();
-    zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
+    _ZFP_ZFStyleDecoderMapType &m = _ZFP_ZFStyleDecoderMap();
     ZFCoreAssert(registerSig != zfnull && decoder != zfnull);
     ZFCoreAssertWithMessageTrim(m.find(registerSig) == m.end(),
         "[ZFSTYLE_DECODER_DEFINE] %s already registered",
@@ -280,7 +282,7 @@ void _ZFP_ZFStyleDecoderRegister(
 }
 void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfstring &registerSig) {
     ZFCoreMutexLocker();
-    zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
+    _ZFP_ZFStyleDecoderMapType &m = _ZFP_ZFStyleDecoderMap();
     m.erase(registerSig);
 }
 
@@ -302,15 +304,15 @@ zfauto ZFStyleGet(ZF_IN const zfstring &styleKey) {
 
     ZFCoreMutexLocker();
     zfauto ret;
-    zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
-    for(zfstlmap<zfstring, _ZFP_ZFStyleDecoder>::iterator it = m.begin(); it != m.end(); ++it) {
+    _ZFP_ZFStyleDecoderMapType &m = _ZFP_ZFStyleDecoderMap();
+    for(_ZFP_ZFStyleDecoderMapType::iterator it = m.begin(); it != m.end(); ++it) {
         if(it->second(ret, styleKey)) {
             return ret;
         }
     }
 
-    zfstlmap<zfstring, zfauto> &d = _ZFP_ZFStyleHolder();
-    zfstlmap<zfstring, zfauto>::iterator it = d.find(styleKey);
+    _ZFP_ZFStyleHolderMapType &d = _ZFP_ZFStyleHolder();
+    _ZFP_ZFStyleHolderMapType::iterator it = d.find(styleKey);
     if(it != d.end()) {
         return it->second;
     }
@@ -323,15 +325,15 @@ void ZFStyleGetAll(
         , ZF_IN_OUT ZFCoreArray<ZFStyleable *> &styleValue
         ) {
     ZFCoreMutexLocker();
-    zfstlmap<zfstring, zfauto> &d = _ZFP_ZFStyleHolder();
-    for(zfstlmap<zfstring, zfauto>::iterator it = d.begin(); it != d.end(); ++it) {
+    _ZFP_ZFStyleHolderMapType &d = _ZFP_ZFStyleHolder();
+    for(_ZFP_ZFStyleHolderMapType::iterator it = d.begin(); it != d.end(); ++it) {
         styleKey.add(it->first);
         styleValue.add(it->second);
     }
 }
 void ZFStyleRemoveAll(void) {
     ZFCoreMutexLock();
-    zfstlmap<zfstring, zfauto> d;
+    _ZFP_ZFStyleHolderMapType d;
     _ZFP_ZFStyleUpdateFlag = zftrue;
     d.swap(_ZFP_ZFStyleHolder());
     ZFCoreMutexUnlock();

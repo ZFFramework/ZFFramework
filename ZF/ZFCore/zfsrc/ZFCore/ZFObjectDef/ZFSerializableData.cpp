@@ -3,7 +3,7 @@
 #include "ZFSerializableDataSerializableConverter.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
-#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -35,8 +35,8 @@ public:
     {
     }
 };
-typedef zfimplmap<zfstring, _ZFP_ZFSerializableDataAttrData> _ZFP_ZFSerializableDataAttrMapType;
-typedef zfstlmap<zfstring, zfauto> _ZFP_ZFSerializableDataTagMapType;
+typedef zfimplhashmap<zfstring, _ZFP_ZFSerializableDataAttrData> _ZFP_ZFSerializableDataAttrMapType;
+typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFSerializableDataTagMapType;
 zfclassNotPOD _ZFP_ZFSerializableDataPrivate {
 public:
     zfuint refCount;

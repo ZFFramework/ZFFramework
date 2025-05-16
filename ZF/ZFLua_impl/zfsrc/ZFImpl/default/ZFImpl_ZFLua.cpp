@@ -2,7 +2,7 @@
 
 #include "ZFImpl_ZFLua_ZFCallbackForLua.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlset.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 // #define _ZFP_ZFImpl_ZFLua_DEBUG 1
 
@@ -34,7 +34,7 @@ ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataUpdate> setupClassDataUpdate;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
 // ============================================================
-typedef zfstlset<zfstring> _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType;
+typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType;
 ZFImpl_ZFLua_ImplSetupHelper::ZFImpl_ZFLua_ImplSetupHelper(ZF_IN lua_State *L)
     : _L(L)
     , _code()
@@ -45,7 +45,7 @@ ZFImpl_ZFLua_ImplSetupHelper::ZFImpl_ZFLua_ImplSetupHelper(ZF_IN lua_State *L)
 ZFImpl_ZFLua_ImplSetupHelper::~ZFImpl_ZFLua_ImplSetupHelper(void) {
     _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType &m = *(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType *)_m;
     for(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType::iterator it = m.begin(); it != m.end(); ++it) {
-        const zfstring &scope = *it;
+        const zfstring &scope = it->first;
         zfstringAppend(_code,
                 "if %s == nil then "
                 "%s = {ZFNS='%s'};"
@@ -67,7 +67,7 @@ ZFImpl_ZFLua_ImplSetupHelper::~ZFImpl_ZFLua_ImplSetupHelper(void) {
 }
 void ZFImpl_ZFLua_ImplSetupHelper::addGlobalScope(ZF_IN const zfstring &scope) {
     if(scope) {
-        (*(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType *)_m).insert(scope);
+        (*(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType *)_m)[scope] = zftrue;
     }
 }
 void ZFImpl_ZFLua_ImplSetupHelper::addGenericScope(ZF_IN const zfstring &genericScope) {
