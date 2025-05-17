@@ -175,6 +175,17 @@ public:
     ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUITextView>, placeholder, ZFPropertyNoInitValue)
     ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUITextView>, placeholder)
 
+    /** @brief util for chained call */
+    ZFMETHOD_DECLARE_2(void, placeholderProp
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(ZFObject *, value)
+            )
+    /** @brief util for chained call */
+    ZFMETHOD_DECLARE_2(void, placeholderStyle
+            , ZFMP_IN(const zfstring &, propertyName)
+            , ZFMP_IN(const zfstring &, styleKey)
+            )
+
     /**
      * @brief text filter, null by default
      *

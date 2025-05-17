@@ -73,6 +73,26 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfanyT<ZFUITextView>, placeholder) {
     placeholder->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorHint());
     placeholder->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
+ZFMETHOD_DEFINE_2(ZFUITextEdit, void, placeholderProp
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(ZFObject *, value)
+        ) {
+    if(this->placeholder()) {
+        zfauto valueTmp;
+        const ZFProperty *prop = this->placeholder()->classData()->propertyForName(propertyName);
+        if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+            prop->setterMethod()->methodInvoke(this->placeholder(), valueTmp);
+        }
+    }
+}
+ZFMETHOD_DEFINE_2(ZFUITextEdit, void, placeholderStyle
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const zfstring &, styleKey)
+        ) {
+    if(this->placeholder()) {
+        this->placeholder()->propStyle(propertyName, styleKey);
+    }
+}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfanyT<ZFRegExp>, editFilter) {
     if(!this->text().isEmpty() && !this->textShouldUpdate(this->text())) {
         this->text("");
