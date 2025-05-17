@@ -18,6 +18,14 @@ ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_Font_init)
 // ============================================================
 ZFImpl_sys_SDL_FontLoader ZFImpl_sys_SDL_fontLoader = zfnull;
 
+zfclassNotPOD _ZFP_ZFImpl_sys_SDL_FontTypeHash {
+public:
+    inline zfstlsize operator () (ZFImpl_sys_SDL_FontType const &v) const {
+        return (zfstlsize)zfidentityCalcPOD(v);
+    }
+};
+typedef zfstlhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *, _ZFP_ZFImpl_sys_SDL_FontTypeHash> _ZFP_ZFImpl_sys_SDL_FontMapType;
+
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_fontDataHolder, ZFLevelZFFrameworkNormal) {
     ZFImpl_sys_SDL_fontLoader = zfnull;
 }
@@ -25,10 +33,10 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_fontDataHolder) {
     this->fontCacheRemoveAll();
 }
 public:
-    zfstlhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *> fontCache;
+    _ZFP_ZFImpl_sys_SDL_FontMapType fontCache;
 public:
     void fontCacheRemoveAll(void) {
-        for(zfstlhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *>::iterator it = this->fontCache.begin(); it != this->fontCache.end(); ++it) {
+        for(_ZFP_ZFImpl_sys_SDL_FontMapType::iterator it = this->fontCache.begin(); it != this->fontCache.end(); ++it) {
             ZFImpl_sys_SDL_fontRelease(it->second);
         }
         this->fontCache.clear();
@@ -128,7 +136,7 @@ void _ZFP_ZFImpl_sys_SDL_fontAccess::_load(
         ) {
     this->fontData = zfnull;
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_sys_SDL_fontDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_SDL_fontDataHolder);
-    zfstlhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *>::iterator it = d->fontCache.find(fontType);
+    _ZFP_ZFImpl_sys_SDL_FontMapType::iterator it = d->fontCache.find(fontType);
     if(it != d->fontCache.end()) {
         this->fontData = it->second;
         this->fontData->ptsize = ptsize;

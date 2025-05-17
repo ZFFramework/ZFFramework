@@ -65,7 +65,7 @@ public:
             for(_TaskMap::iterator it = m.begin(); it != m.end(); ) {
                 if(it->second->ioCount == 0) {
                     toCleanup.add(it->second);
-                    it = m.erase(it);
+                    m.erase(it++);
                 }
                 else {
                     ++it;
