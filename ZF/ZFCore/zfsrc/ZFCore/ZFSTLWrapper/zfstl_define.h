@@ -29,21 +29,6 @@
     #define zfstlsize size_t
 #endif
 
-/** @brief stl wrapper */
-#ifndef zfstlless
-    #define zfstlless std::less
-#endif
-
-/** @brief stl wrapper */
-#ifndef zfstlhash
-    #define zfstlhash std::hash
-#endif
-
-/** @brief stl wrapper */
-#ifndef zfstlequalto
-    #define zfstlequalto std::equal_to
-#endif
-
 // ============================================================
 /** @cond ZFPrivateDoc */
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlLess {
@@ -103,31 +88,6 @@ zfclassNotPOD zfpod_zfstlEqual {
 public:
     inline zfbool operator () (T_POD const &k1, T_POD const &k2) const {
         return zfcmpPOD(k1, k2) == 0;
-    }
-};
-/** @endcond */
-
-// ============================================================
-/** @cond ZFPrivateDoc */
-template<>
-zfclassNotPOD zfstlhash<zfidentity> {
-public:
-    zfstlsize operator () (zfidentity const &v) const {
-        return (zfstlsize)zfidentityCalcPOD(v);
-    }
-};
-template<>
-zfclassNotPOD zfstlhash<zfstring> {
-public:
-    zfstlsize operator () (zfstring const &v) const {
-        return (zfstlsize)zfidentityCalcString(v.cString(), v.length());
-    }
-};
-template<>
-zfclassNotPOD zfstlhash<ZFSigName> {
-public:
-    zfstlsize operator () (ZFSigName const &v) const {
-        return (zfstlsize)zfidentityCalcString(v.cString(), v.length());
     }
 };
 /** @endcond */

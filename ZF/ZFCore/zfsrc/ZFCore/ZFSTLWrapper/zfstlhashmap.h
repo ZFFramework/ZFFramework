@@ -15,6 +15,24 @@
     #include "zfstl_impl/unordered_map.hpp"
 #endif
 
+/** @brief stl wrapper */
+#ifndef zfstlhash
+    #ifdef _ZFT_zfstlhash
+        #define zfstlhash _ZFT_zfstlhash
+    #else
+        #define zfstlhash std::hash
+    #endif
+#endif
+
+/** @brief stl wrapper */
+#ifndef zfstlequalto
+    #ifdef _ZFT_zfstlequalto
+        #define zfstlequalto _ZFT_zfstlequalto
+    #else
+        #define zfstlequalto std::equal_to
+    #endif
+#endif
+
 
 // ============================================================
 /** @cond ZFPrivateDoc */
@@ -88,6 +106,31 @@ public:
             , ZF_IN T_Value const &value
             ) {
         this->insert(zfstlpair<T_Key, T_Value>(key, value));
+    }
+};
+/** @endcond */
+
+// ============================================================
+/** @cond ZFPrivateDoc */
+template<>
+zfclassNotPOD zfstlhash<zfidentity> {
+public:
+    zfstlsize operator () (zfidentity const &v) const {
+        return (zfstlsize)zfidentityCalcPOD(v);
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<zfstring> {
+public:
+    zfstlsize operator () (zfstring const &v) const {
+        return (zfstlsize)zfidentityCalcString(v.cString(), v.length());
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<ZFSigName> {
+public:
+    zfstlsize operator () (ZFSigName const &v) const {
+        return (zfstlsize)zfidentityCalcString(v.cString(), v.length());
     }
 };
 /** @endcond */

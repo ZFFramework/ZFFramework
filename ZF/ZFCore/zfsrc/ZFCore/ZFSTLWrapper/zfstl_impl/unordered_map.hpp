@@ -56,18 +56,26 @@ namespace std { using std::hash_map; }
 // ok
 
 #elif defined(_MSC_VER) && _MSC_VER >= 1500 && _HAS_TR1
+#define _ZFT_zfstlhash std::tr1::hash
+#define _ZFT_zfstlequalto std::tr1::equal_to
 namespace std { using std::tr1::unordered_map; }
 
 #elif defined(_MSC_VER) && _MSC_VER >= 1300
 #define unordered_map hash_map
+#define _ZFT_zfstlhash stdext::hash
+#define _ZFT_zfstlequalto stdext::equal_to
 namespace std { using stdext::hash_map; }
 
 #elif defined(__GNUC__) && (__GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 3)
+#define _ZFT_zfstlhash std::tr1::hash
+#define _ZFT_zfstlequalto std::tr1::equal_to
 namespace std { using std::tr1::unordered_map; }
 
 #elif (defined(__GNUC__) && __GNUC__ >= 3) || defined(__INTEL_COMPILER)
 #include <string>
 #define unordered_map hash_map
+#define _ZFT_zfstlhash __gnu_cxx::hash
+#define _ZFT_zfstlequalto std::equal_to
 namespace std { using __gnu_cxx::hash_map; }
 
     namespace __gnu_cxx {

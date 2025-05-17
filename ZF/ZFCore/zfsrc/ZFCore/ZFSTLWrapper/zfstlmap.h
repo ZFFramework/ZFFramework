@@ -15,6 +15,11 @@
     #define zfstlmap std::map
 #endif
 
+/** @brief stl wrapper */
+#ifndef zfstlless
+    #define zfstlless std::less
+#endif
+
 
 // ============================================================
 /** @cond ZFPrivateDoc */
