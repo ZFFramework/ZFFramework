@@ -170,7 +170,7 @@ ZF_STATIC_INITIALIZER_END(ZFStyleableDefaultStyleDataHolder)
 _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
     ZFCoreMutexLocker();
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
-    const ZFCorePointerBase *v = m.get(name);
+    const ZFCorePointer *v = m.get(name);
     if(v == zfnull) {
         m.set(name, ZFCorePointerForPoolObject<_ZFP_ZFStyleableDefaultPointerHolder *>(zfpoolNew(_ZFP_ZFStyleableDefaultPointerHolder)));
         v = m.get(name);

@@ -19,7 +19,7 @@
  *     // while value type can only be wrapped by ZFCorePointer
  *     zfstring *p = zfnew(zfstring);
  *     map.set("key", ZFCorePointerForObject<zfstring *>(p));
- *     // see #ZFCorePointerBase and #ZFCoreMap for more info
+ *     // see #ZFCorePointer and #ZFCoreMap for more info
  *   @endcode
  * -  ZFContainer/ZFKeyValueContainer\n
  *   container as ZFObject,

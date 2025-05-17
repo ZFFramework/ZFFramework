@@ -39,16 +39,16 @@ public:
 
 // ============================================================
 /**
- * @brief dummy base class for ZFCorePointer
+ * @brief abstract base class for ZFCorePointerT
  *
- * designed for hiding type from ZFCorePointer
+ * designed for hiding type from ZFCorePointerT
  */
-zfclassLikePOD ZFLIB_ZFCore ZFCorePointerBase {
-    ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFCorePointerBase)
+zfclassLikePOD ZFLIB_ZFCore ZFCorePointer {
+    ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFCorePointer)
 public:
     /** @cond ZFPrivateDoc */
-    ZFCorePointerBase(void) {}
-    virtual ~ZFCorePointerBase(void) {}
+    ZFCorePointer(void) {}
+    virtual ~ZFCorePointer(void) {}
     /** @endcond */
 
 public:
@@ -84,7 +84,7 @@ public:
     /**
      * @brief compare by internal pointer value
      */
-    virtual ZFCompareResult objectCompare(ZF_IN const ZFCorePointerBase &another) const {
+    virtual ZFCompareResult objectCompare(ZF_IN const ZFCorePointer &another) const {
         return ((this->pointerValueAccess() == another.pointerValueAccess())
             ? ZFCompareEqual
             : ZFCompareUncomparable);
@@ -101,12 +101,12 @@ public:
      * @note should be (and recommended to be) paired with #refDelete instead of #zfdelete,
      *   if you override default #zfnew and #zfdelete
      */
-    virtual const ZFCorePointerBase *refNew(void) const zfpurevirtual;
+    virtual const ZFCorePointer *refNew(void) const zfpurevirtual;
     /**
      * @brief see #refNew
      */
     virtual void refDelete(void) const {
-        zfdelete(const_cast<ZFCorePointerBase *>(this));
+        zfdelete(const_cast<ZFCorePointer *>(this));
     }
     /**
      * @brief get the internal pointer
@@ -130,7 +130,7 @@ public:
      */
     virtual zfindex objectRetainCount(void) const zfpurevirtual;
 };
-ZFOUTPUT_TYPE(ZFCorePointerBase, {v.objectInfoT(s);})
+ZFOUTPUT_TYPE(ZFCorePointer, {v.objectInfoT(s);})
 
 // ============================================================
 template<typename T_Pointer>
@@ -174,11 +174,11 @@ public:
  *     // i.e. all smart pointer container were deleted
  * @endcode
  *
- * you may store any types in ZFCorePointer, if you are able to supply a custom delete callback,
+ * you may store any types in ZFCorePointerT, if you are able to supply a custom delete callback,
  * to declare your own type, see #ZFCOREPOINTER_DECLARE
  */
 template<typename T_Pointer, typename T_ZFCorePointerType>
-zffinal zfclassLikePOD ZFCorePointer : zfextend ZFCorePointerBase {
+zffinal zfclassLikePOD ZFCorePointerT : zfextend ZFCorePointer {
 public:
     /**
      * @brief set the pointer value
@@ -219,35 +219,35 @@ public:
     inline zfbool operator != (ZF_IN T_Pointer const &p) const {
         return (d->pointerValue != p);
     }
-    inline zfbool operator == (ZF_IN ZFCorePointer<T_Pointer, T_ZFCorePointerType> const &ref) const {
+    inline zfbool operator == (ZF_IN ZFCorePointerT<T_Pointer, T_ZFCorePointerType> const &ref) const {
         return (d->pointerValue == ref.d->pointerValue);
     }
-    inline zfbool operator != (ZF_IN ZFCorePointer<T_Pointer, T_ZFCorePointerType> const &ref) const {
+    inline zfbool operator != (ZF_IN ZFCorePointerT<T_Pointer, T_ZFCorePointerType> const &ref) const {
         return (d->pointerValue == ref.d->pointerValue);
     }
     /** @endcond */
 
 public:
     /** @cond ZFPrivateDoc */
-    ZFCorePointer(void)
+    ZFCorePointerT(void)
     : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
     }
-    ZFCorePointer(ZF_IN zfnullT const &value)
+    ZFCorePointerT(ZF_IN zfnullT const &value)
     : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
     }
-    ZFCorePointer(ZF_IN T_Pointer const &value)
+    ZFCorePointerT(ZF_IN T_Pointer const &value)
     : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
         this->pointerValue(value);
     }
-    ZFCorePointer(ZF_IN const ZFCorePointer<T_Pointer, T_ZFCorePointerType> &ref)
+    ZFCorePointerT(ZF_IN const ZFCorePointerT<T_Pointer, T_ZFCorePointerType> &ref)
     : d(ref.d)
     {
         ++(d->refCount);
     }
-    virtual ~ZFCorePointer(void) {
+    virtual ~ZFCorePointerT(void) {
         --(d->refCount);
         if(d->refCount == 0) {
             if(d->pointerValue != zfnull) {
@@ -256,7 +256,7 @@ public:
             zfdelete(d);
         }
     }
-    ZFCorePointer<T_Pointer, T_ZFCorePointerType> &operator = (ZF_IN const ZFCorePointer<T_Pointer, T_ZFCorePointerType> &ref) {
+    ZFCorePointerT<T_Pointer, T_ZFCorePointerType> &operator = (ZF_IN const ZFCorePointerT<T_Pointer, T_ZFCorePointerType> &ref) {
         _ZFP_ZFCorePointerPrivate<T_Pointer> *dTmp = d;
         d = ref.d;
         ++(ref.d->refCount);
@@ -269,7 +269,7 @@ public:
         }
         return *this;
     }
-    ZFCorePointer<T_Pointer, T_ZFCorePointerType> &operator = (ZF_IN T_Pointer const &value) {
+    ZFCorePointerT<T_Pointer, T_ZFCorePointerType> &operator = (ZF_IN T_Pointer const &value) {
         this->pointerValue(value);
         return *this;
     }
@@ -298,8 +298,8 @@ public:
 
 public:
     zfoverride
-    virtual const ZFCorePointerBase *refNew(void) const {
-        return zfnew((ZFCorePointer<T_Pointer, T_ZFCorePointerType>), *this);
+    virtual const ZFCorePointer *refNew(void) const {
+        return zfnew((ZFCorePointerT<T_Pointer, T_ZFCorePointerType>), *this);
     }
     zfoverride
     virtual inline const void *pointerValueAccess(void) const {
@@ -325,11 +325,11 @@ public:
 private:
     _ZFP_ZFCorePointerPrivate<T_Pointer> *d;
 };
-ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerType), ZFM_EXPAND(ZFCorePointer<T_Pointer, T_ZFCorePointerType>), {v.objectInfoT(s);})
+ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerType), ZFM_EXPAND(ZFCorePointerT<T_Pointer, T_ZFCorePointerType>), {v.objectInfoT(s);})
 
 // ============================================================
 /**
- * @brief declare your custom #ZFCorePointer type
+ * @brief declare your custom #ZFCorePointerT type
  *
  * usage
  * @code
@@ -339,7 +339,7 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
  *           delete p; // define your own delete action here
  *       })
  * @endcode
- * once declared, you can use as normal #ZFCorePointer
+ * once declared, you can use as normal #ZFCorePointerT
  * @code
  *   YourCorePointer sp(zfnew(YourType));
  * @endcode
@@ -353,33 +353,33 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
         static inline void pointerOnDelete(T_Pointer const &p) \
         pointerDeleteAction \
     }; \
-    /** @brief see #ZFCorePointer */ \
+    /** @brief see #ZFCorePointerT */ \
     template<typename T_Pointer> \
-    zfclassLikePOD T_ZFCorePointer : zfextend ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > { \
+    zfclassLikePOD T_ZFCorePointer : zfextend ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > { \
     public: \
         /** @cond ZFPrivateDoc */ \
         T_ZFCorePointer(void) \
-        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >() \
+        : ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >() \
         { \
         } \
         T_ZFCorePointer(ZF_IN T_Pointer const &value) \
-        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >(value) \
+        : ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >(value) \
         { \
         } \
         T_ZFCorePointer(ZF_IN zfnullT const &value) \
-        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >() \
+        : ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >() \
         { \
         } \
-        T_ZFCorePointer(ZF_IN ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > const &ref) \
-        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >(ref) \
+        T_ZFCorePointer(ZF_IN ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > const &ref) \
+        : ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >(ref) \
         { \
         } \
         T_ZFCorePointer<T_Pointer> &operator = (ZF_IN T_Pointer const &value) { \
-            ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >::operator = (value); \
+            ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >::operator = (value); \
             return *this; \
         } \
-        T_ZFCorePointer<T_Pointer> &operator = (ZF_IN ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > const &ref) { \
-            ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >::operator = (ref); \
+        T_ZFCorePointer<T_Pointer> &operator = (ZF_IN ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > const &ref) { \
+            ZFCorePointerT<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >::operator = (ref); \
             return *this; \
         } \
         template<typename T_PointerDesired> \

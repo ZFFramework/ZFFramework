@@ -160,7 +160,7 @@ private:
         static zfanyT<YourStyle> DefaultStyle(void); \
     private: \
         static void _ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance); \
-        static const ZFCorePointerBase *&_ZFP_ZFStyleableDefaultCleaner(void); \
+        static const ZFCorePointer *&_ZFP_ZFStyleableDefaultCleaner(void); \
         static void _ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance); \
     public:
 #define _ZFP_ZFSTYLE_DEFAULT_DEFINE(YourStyle) \
@@ -199,9 +199,9 @@ private:
         if(holder->d == newInstance) { \
             return; \
         } \
-        const ZFCorePointerBase *&cleanerRef = _ZFP_ZFStyleableDefaultCleaner(); \
-        const ZFCorePointerBase *cleanerOld = cleanerRef; \
-        const ZFCorePointerBase *cleanerNew = zfnull; \
+        const ZFCorePointer *&cleanerRef = _ZFP_ZFStyleableDefaultCleaner(); \
+        const ZFCorePointer *cleanerOld = cleanerRef; \
+        const ZFCorePointer *cleanerNew = zfnull; \
         cleanerRef = zfnull; \
         if(newInstance != zfnull) { \
             holder->d = zfRetain(newInstance); \
@@ -216,8 +216,8 @@ private:
             cleanerRef = cleanerNew; \
         } \
     } \
-    const ZFCorePointerBase *&YourStyle::_ZFP_ZFStyleableDefaultCleaner(void) { \
-        static const ZFCorePointerBase *_cleaner = zfnull; \
+    const ZFCorePointer *&YourStyle::_ZFP_ZFStyleableDefaultCleaner(void) { \
+        static const ZFCorePointer *_cleaner = zfnull; \
         return _cleaner; \
     } \
     void YourStyle::_ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance) { \

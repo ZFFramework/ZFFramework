@@ -146,7 +146,7 @@ public:
         }
     }
     void update(ZF_IN const zfstring &key) {
-        const ZFCorePointerBase *item = this->m.get(key);
+        const ZFCorePointer *item = this->m.get(key);
         if(item) {
             item->pointerValueT<_ZFP_ZFStateData *>()->cacheTime = ZFTime::currentTime();
             this->m.set(key, *item);

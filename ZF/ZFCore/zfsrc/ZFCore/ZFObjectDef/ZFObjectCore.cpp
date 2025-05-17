@@ -3,7 +3,7 @@
 #include "ZFDynamicInvoker.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
+#include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 // #define _ZFP_ZFObjectPrivate_DEBUG 1
 
@@ -38,7 +38,7 @@ public:
     _ZFP_I_zfweak *weakHolder;
     void *mutexImpl;
     _ZFP_ZFObjectTagMapType *objectTagMap;
-    zfstlvector<const ZFProperty *> propertyAccessed;
+    zfstldeque<const ZFProperty *> propertyAccessed;
     enum {
         stateFlag_objectIsInternal = 1 << 0,
         stateFlag_objectIsInternalPrivate = 1 << 1,

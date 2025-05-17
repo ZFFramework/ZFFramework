@@ -16,9 +16,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFCoreMapPrivate {
 public:
 #if ZF_ENV_ZFCOREMAP_USE_HASHMAP
-    typedef zfimplhashmap<zfstring, const ZFCorePointerBase *> MapType;
+    typedef zfimplhashmap<zfstring, const ZFCorePointer *> MapType;
 #else
-    typedef zfimplmap<zfstring, const ZFCorePointerBase *> MapType;
+    typedef zfimplmap<zfstring, const ZFCorePointer *> MapType;
 #endif
 
 public:
@@ -109,7 +109,7 @@ void ZFCoreMap::objectInfoOfContentT(
             ret += token.tokenPairSeparator;
             {
                 ret += token.tokenValueLeft;
-                const ZFCorePointerBase *value = this->iterValue(it);
+                const ZFCorePointer *value = this->iterValue(it);
                 if(value == zfnull) {
                     ret += ZFTOKEN_zfnull;
                 }
@@ -169,7 +169,7 @@ void ZFCoreMap::addFrom(ZF_IN const ZFCoreMap &ref) {
 
 void ZFCoreMap::set(
         ZF_IN const zfstring &key
-        , ZF_IN const ZFCorePointerBase &value
+        , ZF_IN const ZFCorePointer &value
         ) {
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFCoreMapPrivate);
@@ -180,14 +180,14 @@ void ZFCoreMap::set(
         d->m[key] = value.refNew();
     }
     else {
-        const ZFCorePointerBase *toDelete = it->second;
+        const ZFCorePointer *toDelete = it->second;
         if(toDelete != &value) {
             it->second = value.refNew();
             toDelete->refDelete();
         }
     }
 }
-const ZFCorePointerBase *ZFCoreMap::get(ZF_IN const zfstring &key) const {
+const ZFCorePointer *ZFCoreMap::get(ZF_IN const zfstring &key) const {
     if(d) {
         _ZFP_ZFCoreMapPrivate::MapType::iterator it = d->m.find(key);
         if(it != d->m.end()) {
@@ -208,7 +208,7 @@ void ZFCoreMap::allKeyT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) const {
         }
     }
 }
-void ZFCoreMap::allValueT(ZF_IN_OUT ZFCoreArray<const ZFCorePointerBase *> &ret) const {
+void ZFCoreMap::allValueT(ZF_IN_OUT ZFCoreArray<const ZFCorePointer *> &ret) const {
     if(d) {
         ret.capacity(ret.count() + this->count());
         for(_ZFP_ZFCoreMapPrivate::MapType::const_iterator it = d->m.begin();
@@ -224,7 +224,7 @@ void ZFCoreMap::remove(ZF_IN const zfstring &key) {
     if(d) {
         _ZFP_ZFCoreMapPrivate::MapType::iterator it = d->m.find(key);
         if(it != d->m.end()) {
-            const ZFCorePointerBase *savedValue = it->second;
+            const ZFCorePointer *savedValue = it->second;
             d->m.erase(it);
             savedValue->refDelete();
         }
@@ -250,23 +250,23 @@ zfiter ZFCoreMap::iterFind(ZF_IN const zfstring &key) const {
 zfstring ZFCoreMap::iterKey(ZF_IN const zfiter &it) const {
     return d ? d->m.iterKey(it) : zfnull;
 }
-const ZFCorePointerBase *ZFCoreMap::iterValue(ZF_IN const zfiter &it) const {
+const ZFCorePointer *ZFCoreMap::iterValue(ZF_IN const zfiter &it) const {
     return d ? d->m.iterValue(it) : zfnull;
 }
 
 void ZFCoreMap::iterValue(
         ZF_IN_OUT zfiter &it
-        , ZF_IN const ZFCorePointerBase &newValue
+        , ZF_IN const ZFCorePointer &newValue
         ) {
     if(d) {
-        const ZFCorePointerBase *old = d->m.iterValue(it);
+        const ZFCorePointer *old = d->m.iterValue(it);
         d->m.iterValue(it, newValue.refNew());
         old->refDelete();
     }
 }
 void ZFCoreMap::iterRemove(ZF_IN_OUT zfiter &it) {
     if(d) {
-        const ZFCorePointerBase *old = d->m.iterValue(it);
+        const ZFCorePointer *old = d->m.iterValue(it);
         d->m.iterRemove(it);
         old->refDelete();
     }
@@ -274,7 +274,7 @@ void ZFCoreMap::iterRemove(ZF_IN_OUT zfiter &it) {
 
 void ZFCoreMap::iterAdd(
         ZF_IN const zfstring &key
-        , ZF_IN const ZFCorePointerBase &value
+        , ZF_IN const ZFCorePointer &value
         ) {
     this->set(key, value);
 }

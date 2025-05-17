@@ -71,7 +71,7 @@ public:
     /** @brief type info for element */
     const ZFTypeInfo *elementType;
 private:
-    const ZFCorePointerBase *_ZFP_elementTypeHolder;
+    const ZFCorePointer *_ZFP_elementTypeHolder;
 
 public:
     /** @brief init element type */
@@ -145,7 +145,7 @@ public:
             return;
         }
         ZFCoreArrayBase *zfvOld = this->zfv;
-        const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
+        const ZFCorePointer *holderOld = this->_ZFP_elementTypeHolder;
         if(t != zfnull && t->zfv != zfnull) {
             this->zfv = t->zfv->refNew();
             this->elementType = t->elementType;
@@ -190,7 +190,7 @@ public:
     template<typename T_Type>
     void wrappedValue(ZF_IN const ZFCoreArray<T_Type> &v) {
         ZFCoreArrayBase *zfvOld = this->zfv;
-        const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
+        const ZFCorePointer *holderOld = this->_ZFP_elementTypeHolder;
         this->zfv = v.refNew();
         ZFTypeInfo *t = zfpoolNew(ZFTypeId<T_Type>);
         this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
@@ -212,7 +212,7 @@ public:
     virtual void zfvReset(void) {
         if(this->zfv) {
             ZFCoreArrayBase *zfvOld = this->zfv;
-            const ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
+            const ZFCorePointer *holderOld = this->_ZFP_elementTypeHolder;
             this->zfv = zfnull;
             this->elementType = zfnull;
             this->_ZFP_elementTypeHolder = zfnull;

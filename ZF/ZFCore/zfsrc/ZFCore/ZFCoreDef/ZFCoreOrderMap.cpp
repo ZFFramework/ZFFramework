@@ -29,7 +29,7 @@ public:
     zfclassNotPOD Item {
     public:
         zfstring key;
-        const ZFCorePointerBase *value;
+        const ZFCorePointer *value;
         MapType::iterator mapIt;
         ArrayType::iterator arrIt;
     public:
@@ -128,7 +128,7 @@ void ZFCoreOrderMap::objectInfoOfContentT(
             ret += token.tokenPairSeparator;
             {
                 ret += token.tokenValueLeft;
-                const ZFCorePointerBase *value = this->iterValue(it);
+                const ZFCorePointer *value = this->iterValue(it);
                 if(value == zfnull) {
                     ret += ZFTOKEN_zfnull;
                 }
@@ -188,7 +188,7 @@ void ZFCoreOrderMap::addFrom(ZF_IN const ZFCoreOrderMap &ref) {
 
 void ZFCoreOrderMap::set(
         ZF_IN const zfstring &key
-        , ZF_IN const ZFCorePointerBase &value
+        , ZF_IN const ZFCorePointer &value
         ) {
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFCoreOrderMapPrivate);
@@ -206,7 +206,7 @@ void ZFCoreOrderMap::set(
     }
     else {
         _ZFP_ZFCoreOrderMapPrivate::Item *item = it->second;
-        const ZFCorePointerBase *toDelete = item->value;
+        const ZFCorePointer *toDelete = item->value;
         if(toDelete != &value) {
             item->value = value.refNew();
             d->arr.erase(item->arrIt);
@@ -223,7 +223,7 @@ void ZFCoreOrderMap::set(
         }
     }
 }
-const ZFCorePointerBase *ZFCoreOrderMap::get(ZF_IN const zfstring &key) const {
+const ZFCorePointer *ZFCoreOrderMap::get(ZF_IN const zfstring &key) const {
     if(d) {
         _ZFP_ZFCoreOrderMapPrivate::MapType::iterator it = d->map.find(key);
         if(it != d->map.end()) {
@@ -244,7 +244,7 @@ void ZFCoreOrderMap::allKeyT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) const {
         }
     }
 }
-void ZFCoreOrderMap::allValueT(ZF_IN_OUT ZFCoreArray<const ZFCorePointerBase *> &ret) const {
+void ZFCoreOrderMap::allValueT(ZF_IN_OUT ZFCoreArray<const ZFCorePointer *> &ret) const {
     if(d) {
         ret.capacity(ret.count() + this->count());
         for(_ZFP_ZFCoreOrderMapPrivate::MapType::const_iterator it = d->map.begin();
@@ -339,7 +339,7 @@ zfstring ZFCoreOrderMap::iterKey(ZF_IN const zfiter &it) const {
         return zfnull;
     }
 }
-const ZFCorePointerBase *ZFCoreOrderMap::iterValue(ZF_IN const zfiter &it) const {
+const ZFCorePointer *ZFCoreOrderMap::iterValue(ZF_IN const zfiter &it) const {
     if(it) {
         return (*(it.impl<_ZFP_ZFCoreOrderMapIter *>()->impl))->value;
     }
@@ -350,11 +350,11 @@ const ZFCorePointerBase *ZFCoreOrderMap::iterValue(ZF_IN const zfiter &it) const
 
 void ZFCoreOrderMap::iterValue(
         ZF_IN_OUT zfiter &it
-        , ZF_IN const ZFCorePointerBase &newValue
+        , ZF_IN const ZFCorePointer &newValue
         ) {
     if(it) {
-        const ZFCorePointerBase *&ref = (*(it.impl<_ZFP_ZFCoreOrderMapIter *>()->impl))->value;
-        const ZFCorePointerBase *old = ref;
+        const ZFCorePointer *&ref = (*(it.impl<_ZFP_ZFCoreOrderMapIter *>()->impl))->value;
+        const ZFCorePointer *old = ref;
         ref = newValue.refNew();
         old->refDelete();
     }
@@ -372,14 +372,14 @@ void ZFCoreOrderMap::iterRemove(ZF_IN_OUT zfiter &it) {
 
 void ZFCoreOrderMap::iterAdd(
         ZF_IN const zfstring &key
-        , ZF_IN const ZFCorePointerBase &value
+        , ZF_IN const ZFCorePointer &value
         ) {
     this->set(key, value);
 }
 
 // ============================================================
 // order map spec
-const ZFCorePointerBase *ZFCoreOrderMap::update(ZF_IN const zfstring &key) const {
+const ZFCorePointer *ZFCoreOrderMap::update(ZF_IN const zfstring &key) const {
     if(!d) {
         return zfnull;
     }

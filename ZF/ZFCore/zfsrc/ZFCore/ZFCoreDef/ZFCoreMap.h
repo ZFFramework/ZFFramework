@@ -20,7 +20,7 @@ zfclassFwd _ZFP_ZFCoreMapPrivate;
  * used to reduce dependency of stl\n
  * use string as key,
  * null key is considered same as empty string\n
- * use #ZFCorePointerBase as value,
+ * use #ZFCorePointer as value,
  * which use retain logic and can hold many types
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFCoreMap {
@@ -121,18 +121,18 @@ public:
      */
     zffinal void set(
             ZF_IN const zfstring &key
-            , ZF_IN const ZFCorePointerBase &value
+            , ZF_IN const ZFCorePointer &value
             );
     /**
      * @brief get value or null if not exist
      */
-    zffinal const ZFCorePointerBase *get(ZF_IN const zfstring &key) const;
+    zffinal const ZFCorePointer *get(ZF_IN const zfstring &key) const;
     /**
      * @brief get value or null if not exist
      */
     template<typename T_Element>
     T_Element get(ZF_IN const zfstring &key) const {
-        const ZFCorePointerBase *t = this->get(key);
+        const ZFCorePointer *t = this->get(key);
         if(t != zfnull) {
             return t->pointerValueT<T_Element>();
         }
@@ -151,12 +151,12 @@ public:
     }
 
     /** @brief see #allValue */
-    zffinal void allValueT(ZF_IN_OUT ZFCoreArray<const ZFCorePointerBase *> &ret) const;
+    zffinal void allValueT(ZF_IN_OUT ZFCoreArray<const ZFCorePointer *> &ret) const;
     /**
      * @brief return a copy of all values
      */
-    inline ZFCoreArray<const ZFCorePointerBase *> allValue(void) const {
-        ZFCoreArray<const ZFCorePointerBase *> ret;
+    inline ZFCoreArray<const ZFCorePointer *> allValue(void) const {
+        ZFCoreArray<const ZFCorePointer *> ret;
         this->allValueT(ret);
         return ret;
     }
@@ -192,12 +192,12 @@ public:
     /** @brief see #zfiter */
     zffinal zfstring iterKey(ZF_IN const zfiter &it) const;
     /** @brief see #zfiter */
-    zffinal const ZFCorePointerBase *iterValue(ZF_IN const zfiter &it) const;
+    zffinal const ZFCorePointer *iterValue(ZF_IN const zfiter &it) const;
 
     /** @brief see #zfiter */
     zffinal void iterValue(
             ZF_IN_OUT zfiter &it
-            , ZF_IN const ZFCorePointerBase &newValue
+            , ZF_IN const ZFCorePointer &newValue
             );
     /** @brief see #zfiter */
     zffinal void iterRemove(ZF_IN_OUT zfiter &it);
@@ -205,13 +205,13 @@ public:
     /** @brief see #zfiter */
     zffinal void iterAdd(
             ZF_IN const zfstring &key
-            , ZF_IN const ZFCorePointerBase &value
+            , ZF_IN const ZFCorePointer &value
             );
 
     /** @brief see #zfiter */
     template<typename T_Element>
     T_Element iterValue(ZF_IN const zfiter &it) const {
-        const ZFCorePointerBase *t = this->iterValue(it);
+        const ZFCorePointer *t = this->iterValue(it);
         if(t != zfnull) {
             return t->pointerValueT<T_Element>();
         }
