@@ -327,15 +327,21 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFNet, zfstring, ZFUrlParamGet
 /**
  * @brief util to fetch head info, or load from cache if available
  *
- * use #ZFHttpHeadCacheClear if necessary
+ * use #ZFHttpHeadCacheRemoveAll if necessary
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFNet, zfautoT<ZFHttpResponse>, ZFHttpHeadCache
-        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const zfstring &, url)
         )
 /**
  * @brief see #ZFHttpHeadCache
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFNet, void, ZFHttpHeadCacheClear)
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFNet, zfautoT<ZFHttpResponse>, ZFHttpHeadCacheRemove
+        , ZFMP_IN(const zfstring &, url)
+        )
+/**
+ * @brief see #ZFHttpHeadCache
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFNet, void, ZFHttpHeadCacheRemoveAll)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFHttpRequest_h_

@@ -21,7 +21,7 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
             , v_ZFHttpMethod::e_GET
             );
     zfautoT<ZFHttpResponse> recv = send->requestSync();
-    if(!recv->success() || !zfstringIsEqual(recv->header("Content-Type"), "text/html")) {
+    if(!ZFHttpIsDir(recv)) {
         return zffalse;
     }
     const zfchar *body = recv->body();

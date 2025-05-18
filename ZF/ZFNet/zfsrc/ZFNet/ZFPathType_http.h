@@ -29,6 +29,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFNet, ZFInput, ZFInputForHttp
     return ret;
 }
 
+/**
+ * @brief util method to check whether specified http response should be treated as dir
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFNet, zfbool, ZFHttpIsDir
+        , ZFMP_IN(ZFHttpResponse *, recv)
+        )
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPathType_http_h_
 

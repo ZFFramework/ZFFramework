@@ -127,7 +127,7 @@ public:
                 ? pathData
                 : zfstr("%s/", pathData).cString()
                 );
-        return recv->success() && zfstringIsEqual(recv->header("Content-Type"), "text/html");
+        return ZFHttpIsDir(recv);
     }
     static zfstring callbackToFileName(
             ZF_IN const zfchar *pathData
@@ -315,6 +315,15 @@ ZFPATHTYPE_FILEIO_REGISTER(http, ZFPathType_http()
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFInput, ZFInputForHttp
         , ZFMP_IN(const zfstring &, url)
         )
+
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFHttpIsDir
+        , ZFMP_IN(ZFHttpResponse *, recv)
+        ) {
+    return recv
+        && recv->success()
+        && ZFRegExpFind(recv->header("Content-Type"), ".*\\btext/html\\b.*") != ZFIndexRangeMax()
+        ;
+}
 
 ZF_NAMESPACE_GLOBAL_END
 
