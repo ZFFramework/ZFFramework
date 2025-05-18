@@ -41,6 +41,7 @@
 #include "ZFCore/ZFPathType_common.h"
 #include "ZFCore/ZFPathType_file.h"
 #include "ZFCore/ZFPathType_res.h"
+#include "ZFCore/ZFPathType_res_raw.h"
 #include "ZFCore/ZFProtocol.h"
 #include "ZFCore/ZFResultType.h"
 #include "ZFCore/ZFSemaphore.h"

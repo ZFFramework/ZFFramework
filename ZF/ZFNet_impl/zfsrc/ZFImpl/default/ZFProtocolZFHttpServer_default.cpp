@@ -470,13 +470,20 @@ public:
 };
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpServerImpl_default, ZFHttpServer, v_ZFProtocolLevel::e_Default)
+private:
+    zfclassNotPOD _TaskToken {
+    public:
+        httplib::Server impl;
+        zfobj<ZFThread> serverThread;
+    };
+
 public:
     zfoverride
     virtual void *start(ZF_IN ZFHttpServer *owner) {
         zfweakT<ZFHttpServer> ownerHolder = owner;
-        httplib::Server *impl = zfnew(httplib::Server);
+        _TaskToken *impl = zfpoolNew(_TaskToken);
 
-        impl->new_task_queue = [=]() -> httplib::TaskQueue * {
+        impl->impl.new_task_queue = [=]() -> httplib::TaskQueue * {
             _ZFP_ZFHttpServerImpl_default_TaskQueue *ret = new _ZFP_ZFHttpServerImpl_default_TaskQueue();
             ret->owner = ownerHolder;
             return ret;
@@ -489,23 +496,38 @@ public:
             _notify(ownerHolder, &req, &res, &content_reader);
         };
 
-        impl->Get(".*", cb2);
-        impl->Post(".*", cb3);
-        impl->Put(".*", cb3);
-        impl->Patch(".*", cb3);
-        impl->Delete(".*", cb3);
-        impl->Options(".*", cb2);
+        impl->impl.Get(".*", cb2);
+        impl->impl.Post(".*", cb3);
+        impl->impl.Put(".*", cb3);
+        impl->impl.Patch(".*", cb3);
+        impl->impl.Delete(".*", cb3);
+        impl->impl.Options(".*", cb2);
 
-        ZFHttpServerThreadPool::instance()->start([=](ZF_IN const ZFArgs &zfargs) {
-            impl->listen(ownerHolder->addr().cString(), ownerHolder->port());
-        }, zfnull);
+        impl->serverThread->threadName(zfstr("HttpServer:%s:%s", owner->addr(), owner->port()));
+
+        ZFLISTENER_2(threadImpl
+                , _TaskToken *, impl
+                , zfweakT<ZFHttpServer>, ownerHolder
+                ) {
+            impl->impl.listen(ownerHolder->addr().cString(), ownerHolder->port());
+        } ZFLISTENER_END()
+        impl->serverThread->threadRunnable(threadImpl);
+
+        ZFLISTENER_1(threadOnStop
+                , _TaskToken *, impl
+                ) {
+            impl->impl.stop();
+        } ZFLISTENER_END()
+        impl->serverThread->observerAdd(ZFThread::E_ThreadOnStopRequested(), threadOnStop);
+
+        impl->serverThread->threadStart();
         return impl;
     }
     zfoverride
     virtual void stop(ZF_IN ZFHttpServer *owner, ZF_IN void *token) {
-        httplib::Server *impl = (httplib::Server *)token;
-        impl->stop();
-        zfdelete(impl);
+        _TaskToken *impl = (_TaskToken *)token;
+        impl->serverThread->threadStop();
+        zfpoolDelete(impl);
     }
 private:
     void _notify(

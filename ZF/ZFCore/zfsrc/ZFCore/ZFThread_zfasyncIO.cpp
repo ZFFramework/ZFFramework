@@ -89,7 +89,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
             , ZFListener, finishCallback
             ) {
         zfbool success = zfargs.param0().to<v_zfbool *>()->zfv;
-        _ZFP_zfasyncIO_log("task stop %s: %s", success ? "success" : "fail", task->input.callbackId().cString());
+        _ZFP_zfasyncIO_log("task stop %s: %s", success ? "success" : "fail", task->input.callbackId());
         if(!success) {
             task->stop();
             finishCallback.execute(ZFArgs()
@@ -106,7 +106,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
                     );
         }
     } ZFLISTENER_END()
-    _ZFP_zfasyncIO_log("task start: %s", task->input.callbackId().cString());
+    _ZFP_zfasyncIO_log("task start: %s", task->input.callbackId());
     for(zfindex splitOffset = 0; splitOffset < srcLen; splitOffset += blockSize) {
         zfindex splitSize = zfmMin(blockSize, srcLen - splitOffset);
         ZFLISTENER_3(impl
@@ -117,15 +117,15 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
             void *buf = zfmalloc(splitSize);
             zfblockedFree(buf);
             do {
-                _ZFP_zfasyncIO_log("split begin (%d %d)", (int)splitOffset, (int)splitSize);
+                _ZFP_zfasyncIO_log("split begin (%s %s)", splitOffset, splitSize);
                 {
                     zfsynchronize(task);
                     if(!task->input.ioSeek(task->inputOffset + splitOffset)) {
-                        _ZFP_zfasyncIO_log("split end (%d %d): input seek fail", (int)splitOffset, (int)splitSize);
+                        _ZFP_zfasyncIO_log("split end (%s %s): input seek fail", splitOffset, splitSize);
                         break;
                     }
                     if(task->input.execute(buf, splitSize) < splitSize) {
-                        _ZFP_zfasyncIO_log("split end (%d %d): input fail", (int)splitOffset, (int)splitSize);
+                        _ZFP_zfasyncIO_log("split end (%s %s): input fail", splitOffset, splitSize);
                         break;
                     }
                 }
@@ -133,17 +133,17 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
                 {
                     zfsynchronize(task->outputMutex);
                     if(!task->output.ioSeek(task->outputOffset + splitOffset)) {
-                        _ZFP_zfasyncIO_log("split end (%d %d): output seek fail", (int)splitOffset, (int)splitSize);
+                        _ZFP_zfasyncIO_log("split end (%s %s): output seek fail", splitOffset, splitSize);
                         break;
                     }
                     if(task->output.execute(buf, splitSize) < splitSize) {
-                        _ZFP_zfasyncIO_log("split end (%d %d): output fail", (int)splitOffset, (int)splitSize);
+                        _ZFP_zfasyncIO_log("split end (%s %s): output fail", splitOffset, splitSize);
                         break;
                     }
                 }
 
                 zfargs.result(zfobj<v_zfbool>(zftrue));
-                _ZFP_zfasyncIO_log("split end (%d %d): success", (int)splitOffset, (int)splitSize);
+                _ZFP_zfasyncIO_log("split end (%s %s): success", splitOffset, splitSize);
                 return;
             } while(zffalse);
             zfargs.result(zfobj<v_zfbool>(zffalse));

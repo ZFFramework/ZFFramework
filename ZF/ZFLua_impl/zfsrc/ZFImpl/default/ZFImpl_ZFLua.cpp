@@ -172,9 +172,9 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     }
 
     // zfl_dbg
-    if(ZFResIsExist("ZFLua_impl/debugger.lua")) {
+    if(ZFResRaw::IsExist("ZFLua_impl/debugger.lua")) {
         ZFImpl_ZFLua_execute(L,
-                "zfl_dbg = zfl_value(zfimport('res:ZFLua_impl/debugger.lua'))\n"
+                "zfl_dbg = zfl_value(zfimport('resraw:ZFLua_impl/debugger.lua'))\n"
                 "\n"
                 "zfl_dbg.findLast = function(s, pattern)\n"
                 "    local i = 0\n"

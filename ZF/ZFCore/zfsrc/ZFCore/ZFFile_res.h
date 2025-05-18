@@ -119,6 +119,10 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResFindClose
  * note that the token is defined same type as the one used by #ZFFileOpen,
  * it's your responsibility to make sure not to misuse it
  * @note path must be well formed, use #ZFPathFormat if necessary
+ *
+ * ADVANCED:\n
+ * resource can be "extended" by #ZFResExtPathAdd,
+ * use #ZFResRaw series to bypass the logic
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void *, ZFResOpen
         , ZFMP_IN(const zfchar *, resPath)

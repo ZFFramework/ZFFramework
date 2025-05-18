@@ -1,0 +1,49 @@
+#include "ZFPathType_res_raw.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+ZFPATHTYPE_DEFINE(resraw)
+
+// ============================================================
+static void *_ZFP_ZFPathInfoOpenForResRaw(
+        ZF_IN const zfchar *filePath
+        , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
+        , ZF_IN_OPT zfbool autoCreateParent = zftrue
+        ) {
+    if(flag != v_ZFFileOpenOption::e_Read) {
+        return zfnull;
+    }
+    return ZFResRaw::Open(filePath);
+}
+ZFPATHTYPE_FILEIO_REGISTER(resraw, ZFPathType_resraw()
+        , ZFResRaw::IsExist
+        , ZFResRaw::IsDir
+        , ZFPathInfoCallbackToFileNameDefault
+        , ZFPathInfoCallbackToChildDefault
+        , ZFPathInfoCallbackToParentDefault
+        , ZFPathInfoCallbackPathCreateDefault
+        , ZFPathInfoCallbackRemoveDefault
+        , ZFPathInfoCallbackMoveDefault
+        , ZFResRaw::FindFirst
+        , ZFResRaw::FindNext
+        , ZFResRaw::FindClose
+        , _ZFP_ZFPathInfoOpenForResRaw
+        , ZFResRaw::Close
+        , ZFResRaw::Tell
+        , ZFResRaw::Seek
+        , ZFResRaw::Read
+        , ZFPathInfoCallbackWriteDefault
+        , ZFPathInfoCallbackFlushDefault
+        , ZFResRaw::IsEof
+        , ZFResRaw::IsError
+        , ZFResRaw::Size
+    )
+
+// ============================================================
+// ZFInputForResRaw
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFInput, ZFInputForResRaw
+        , ZFMP_IN(const zfchar *, resFilePath)
+        )
+
+ZF_NAMESPACE_GLOBAL_END
+

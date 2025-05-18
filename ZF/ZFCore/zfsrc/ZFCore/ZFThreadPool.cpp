@@ -17,7 +17,7 @@ zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFTaskId {
     ZFOBJECT_DECLARE(_ZFP_I_ZFThreadPoolTaskData, ZFTaskId)
 public:
     _ZFP_ZFThreadPoolPrivate *owner;
-    _ZFP_ZFThreadPoolTaskMapType::iterator mapIt;
+    _ZFP_ZFThreadPoolTaskMapType::iterator mapIt; // valid only when owner not null
     _ZFP_ZFThreadPoolTaskListType::iterator listIt;
     ZFArgs zfargsForTask;
     ZFListener callback;
@@ -68,8 +68,11 @@ public:
 
 public:
     void stop(ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData) {
-        this->taskMap.erase(taskData->mapIt);
-        this->taskList.erase(taskData->listIt);
+        if(taskData->owner) {
+            taskData->owner = zfnull;
+            this->taskMap.erase(taskData->mapIt);
+            this->taskList.erase(taskData->listIt);
+        }
         _ZFP_taskCleanup(taskData);
     }
 
@@ -108,6 +111,7 @@ public:
                 ;
             zfstring runningTaskKey = zftext("_ZFP_ZFThreadPoolRunning");
             ownerThread->objectTag(runningTaskKey, taskData);
+            zfunsafe_zfblockedRelease(zfunsafe_zfRetain(taskData));
             ZFCoreMutexUnlock();
 
             taskData->callback.execute(taskData->zfargsForTask);
@@ -155,7 +159,6 @@ public:
             , ZF_IN _ZFP_I_ZFThreadPoolTaskData *taskData
             ) {
         ZFCoreMutexLock();
-        taskData->owner = zfnull;
         if(taskData->zfargsForTask.param0() == zfnull
                 || d->threadOnRun == zfnull
                 ) {
@@ -197,7 +200,6 @@ public:
 void _ZFP_I_ZFThreadPoolTaskData::stop(void) {
     if(this->owner != zfnull) {
         this->owner->stop(this);
-        this->owner = zfnull;
     }
     this->zfargsForTask.param0(zfnull);
     zfsuper::stop();

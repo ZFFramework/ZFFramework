@@ -8,6 +8,7 @@
 
 #include "ZFFile_file.h"
 #include "ZFFile_res.h"
+#include "ZFFile_res_raw.h"
 #include "ZFFile_path.h"
 #include "ZFFile_pathInfo.h"
 #include "ZFFile_util.h"
