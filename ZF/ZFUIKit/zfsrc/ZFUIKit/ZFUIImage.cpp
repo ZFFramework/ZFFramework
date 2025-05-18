@@ -371,7 +371,7 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateAttach
         , ZFMP_IN(const ZFListener &, callback)
         ) {
     d->imageStateObservers.add(callback);
-    if(d->imageStateObservers.count() == 1) {
+    if(d->imageStateObservers.count() == 1 && d->imageStateImpl) {
         d->imageStateImpl.execute(ZFArgs()
                 .sender(this)
                 .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Attach))
@@ -423,6 +423,15 @@ ZFMETHOD_DEFINE_1(ZFUIImage, void, imageStateImpl
                     .sender(this)
                     .param0(zfobj<v_ZFUIImageStateImplAction>(v_ZFUIImageStateImplAction::e_Attach))
                     );
+        }
+    }
+    else {
+        if(!d->imageStateObservers.isEmpty()) {
+            ZFArgs zfargsHolder;
+            zfargsHolder.sender(this);
+            for(zfindex i = 0; i < d->imageStateObservers.count(); ++i) {
+                d->imageStateObservers[i].execute(zfargsHolder);
+            }
         }
     }
 }
@@ -509,7 +518,7 @@ void ZFUIImage::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
 
 void ZFUIImage::objectPropertyValueOnUpdate(
         ZF_IN const ZFProperty *property
-        , ZF_IN void *oldValue
+        , ZF_IN const void *oldValue
         ) {
     zfsuper::objectPropertyValueOnUpdate(property, oldValue);
     if(property->ownerClass() == ZFUIImage::ClassData()) {

@@ -35,7 +35,7 @@ void ZFUITextEditWidget::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     ZFUIImageView *bgView = this->bgView();
-    this->internalImplViewAdd(bgView);
+    this->internalImplViewAdd(bgView, zfnull, zffalse);
     bgView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
     bgView->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
 

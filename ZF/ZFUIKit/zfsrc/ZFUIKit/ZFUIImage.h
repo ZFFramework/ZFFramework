@@ -189,7 +189,7 @@ protected:
     zfoverride
     virtual void objectPropertyValueOnUpdate(
             ZF_IN const ZFProperty *property
-            , ZF_IN void *oldValue
+            , ZF_IN const void *oldValue
             );
 
 public:
