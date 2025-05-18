@@ -74,7 +74,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(void) {
 #define _ZFP_ZFMethodFuncAccess(MethodNamespace, MethodName) \
     _ZFP_ZFMethodFuncAccess_(MethodNamespace, MethodName)
 #define _ZFP_ZFMethodFuncAccess_(MethodNamespace, MethodName) \
-    (MethodNamespace::_ZFP_MtdFA_##MethodName(zfnull))
+    ((MethodNamespace::_ZFP_MtdFA_##MethodName)(zfnull))
 /** @brief see #ZFMETHOD_FUNC_DECLARE_0 */
 #define ZFMethodFuncAccess(MethodName) \
     _ZFP_ZFMethodFuncAccess(ZF_NAMESPACE_GLOBAL_ID, MethodName)
@@ -91,7 +91,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(void) {
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    (MethodNamespace::_ZFP_MtdFA_##MethodName((void (*)( \
+    (((const ZFMethod * (*)(void (*)( \
            ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
            ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
            ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -100,7 +100,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(void) {
            ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
            ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
            ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-        ))zfnull))
+        )))(MethodNamespace::_ZFP_MtdFA_##MethodName))(zfnull))
 /** @brief see #ZFMETHOD_FUNC_DECLARE_0 */
 #define ZFMethodFuncAccessDetail_0(MethodNamespace, MethodName \
     ) \
@@ -446,7 +446,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(void) {
         return _methodHolder.method; \
     } \
     ZF_STATIC_REGISTER_INIT(MtdFR_##MethodName##_##RegSig) { \
-        (_ZFP_MtdFA_##MethodName((void (*)( \
+        (((const ZFMethod * (*)(void (*)( \
                ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -455,7 +455,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(void) {
                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-            ))zfnull)); \
+            )))(_ZFP_MtdFA_##MethodName))(zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdFR_##MethodName##_##RegSig) \
     _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePrefix(isInlineOrNot) ReturnType _ZFP_ZFMETHOD_FUNC_NAME(MethodName)( \

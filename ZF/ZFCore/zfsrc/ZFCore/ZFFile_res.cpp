@@ -127,7 +127,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsExist
         return zftrue;
     }
     else {
-        return ZFResRaw::IsExist(resPath);
+        return ZFResRaw::ZFResIsExist(resPath);
     }
 }
 ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
@@ -139,7 +139,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
         return ZFPathInfoIsDir(resExtPath);
     }
     else {
-        return ZFResRaw::IsDir(resPath);
+        return ZFResRaw::ZFResIsDir(resPath);
     }
 }
 ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
@@ -164,7 +164,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
         return ret;
     }
     else {
-        return ZFResRaw::Copy(resPath, dstPath, isRecursive, isForce, errPos);
+        return ZFResRaw::ZFResCopy(resPath, dstPath, isRecursive, isForce, errPos);
     }
 }
 
@@ -220,7 +220,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
         }
         else {
             implUserData->resExtPath.removeAll();
-            if(!ZFResRaw::FindFirst(fd, resPath)) {
+            if(!ZFResRaw::ZFResFindFirst(fd, resPath)) {
                 fd.implDetach();
                 zfdelete(implUserData);
                 return zffalse;
@@ -230,7 +230,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
         }
     }
     else {
-        if(!ZFResRaw::FindFirst(fd, resPath)) {
+        if(!ZFResRaw::ZFResFindFirst(fd, resPath)) {
             fd.implDetach();
             zfdelete(implUserData);
             return zffalse;
@@ -273,19 +273,19 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
         implUserData->resExtPath.removeAll();
 
         // finally fallback to res
-        if(ZFResRaw::FindFirst(fd, implUserData->resPathSaved)) {
+        if(ZFResRaw::ZFResFindFirst(fd, implUserData->resPathSaved)) {
             implUserData->resFindFirstStarted = zftrue;
             do {
                 if(implUserData->resExtItemResolved.find(fd.name()) != implUserData->resExtItemResolved.end()) {
                     continue;
                 }
                 return zftrue;
-            } while(ZFResRaw::FindNext(fd));
+            } while(ZFResRaw::ZFResFindNext(fd));
         }
         return zffalse;
     }
 
-    while(ZFResRaw::FindNext(fd)) {
+    while(ZFResRaw::ZFResFindNext(fd)) {
         if(implUserData->resExtItemResolved.find(fd.name()) != implUserData->resExtItemResolved.end()) {
             continue;
         }
@@ -303,7 +303,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResFindClose
         implUserData->resExtPath.removeAll();
     }
     if(implUserData->resFindFirstStarted) {
-        ZFResRaw::FindClose(fd);
+        ZFResRaw::ZFResFindClose(fd);
     }
     fd.implDetach();
     zfdelete(implUserData);
@@ -322,7 +322,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
         ret->fd = ZFPathInfoOpen(ret->resExtPath, v_ZFFileOpenOption::e_Read);
     }
     else {
-        ret->fd = ZFResRaw::Open(resPath);
+        ret->fd = ZFResRaw::ZFResOpen(resPath);
     }
     if(ret->fd == zfnull) {
         zfdelete(ret);
@@ -340,7 +340,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     zfblockedDelete(resToken);
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::Close(resToken->fd);
+        return ZFResRaw::ZFResClose(resToken->fd);
     }
     else {
         return ZFPathInfoClose(resToken->resExtPath, resToken->fd);
@@ -355,7 +355,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResTell
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::Tell(resToken->fd);
+        return ZFResRaw::ZFResTell(resToken->fd);
     }
     else {
         return ZFPathInfoTell(resToken->resExtPath, resToken->fd);
@@ -372,7 +372,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFResSeek
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::Seek(resToken->fd, byteSize, position);
+        return ZFResRaw::ZFResSeek(resToken->fd, byteSize, position);
     }
     else {
         return ZFPathInfoSeek(resToken->resExtPath, resToken->fd, byteSize, position);
@@ -388,7 +388,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFResRead
     }
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::Read(resToken->fd, buf, maxByteSize);
+        return ZFResRaw::ZFResRead(resToken->fd, buf, maxByteSize);
     }
     else {
         if(buf == zfnull) {
@@ -418,7 +418,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsEof
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::IsEof(resToken->fd);
+        return ZFResRaw::ZFResIsEof(resToken->fd);
     }
     else {
         return ZFPathInfoIsEof(resToken->resExtPath, resToken->fd);
@@ -433,7 +433,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsError
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::IsError(resToken->fd);
+        return ZFResRaw::ZFResIsError(resToken->fd);
     }
     else {
         return ZFPathInfoIsError(resToken->resExtPath, resToken->fd);
@@ -449,7 +449,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResSize
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::Size(resToken->fd);
+        return ZFResRaw::ZFResSize(resToken->fd);
     }
     else {
         zfindex saved = ZFPathInfoTell(resToken->resExtPath, resToken->fd);

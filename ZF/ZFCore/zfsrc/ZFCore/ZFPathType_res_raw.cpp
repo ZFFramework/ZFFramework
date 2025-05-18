@@ -13,30 +13,30 @@ static void *_ZFP_ZFPathInfoOpenForResRaw(
     if(flag != v_ZFFileOpenOption::e_Read) {
         return zfnull;
     }
-    return ZFResRaw::Open(filePath);
+    return ZFResRaw::ZFResOpen(filePath);
 }
 ZFPATHTYPE_FILEIO_REGISTER(resraw, ZFPathType_resraw()
-        , ZFResRaw::IsExist
-        , ZFResRaw::IsDir
+        , ZFResRaw::ZFResIsExist
+        , ZFResRaw::ZFResIsDir
         , ZFPathInfoCallbackToFileNameDefault
         , ZFPathInfoCallbackToChildDefault
         , ZFPathInfoCallbackToParentDefault
         , ZFPathInfoCallbackPathCreateDefault
         , ZFPathInfoCallbackRemoveDefault
         , ZFPathInfoCallbackMoveDefault
-        , ZFResRaw::FindFirst
-        , ZFResRaw::FindNext
-        , ZFResRaw::FindClose
+        , ZFResRaw::ZFResFindFirst
+        , ZFResRaw::ZFResFindNext
+        , ZFResRaw::ZFResFindClose
         , _ZFP_ZFPathInfoOpenForResRaw
-        , ZFResRaw::Close
-        , ZFResRaw::Tell
-        , ZFResRaw::Seek
-        , ZFResRaw::Read
+        , ZFResRaw::ZFResClose
+        , ZFResRaw::ZFResTell
+        , ZFResRaw::ZFResSeek
+        , ZFResRaw::ZFResRead
         , ZFPathInfoCallbackWriteDefault
         , ZFPathInfoCallbackFlushDefault
-        , ZFResRaw::IsEof
-        , ZFResRaw::IsError
-        , ZFResRaw::Size
+        , ZFResRaw::ZFResIsEof
+        , ZFResRaw::ZFResIsError
+        , ZFResRaw::ZFResSize
     )
 
 // ============================================================

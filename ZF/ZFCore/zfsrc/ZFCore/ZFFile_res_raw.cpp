@@ -6,17 +6,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFResRaw)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(zfbool, IsExist
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsExist
         , ZFMP_IN(const zfchar *, resPath)
         ) {
     return ZFPROTOCOL_ACCESS(ZFRes)->resIsExist(resPath);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, IsDir
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
         , ZFMP_IN(const zfchar *, resPath)
         ) {
     return ZFPROTOCOL_ACCESS(ZFRes)->resIsDir(resPath);
 }
-ZFMETHOD_FUNC_DEFINE_5(zfbool, Copy
+ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
         , ZFMP_IN(const zfchar *, resPath)
         , ZFMP_IN(const zfchar *, dstPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
@@ -26,29 +26,29 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, Copy
     return ZFPROTOCOL_ACCESS(ZFRes)->resCopy(resPath, dstPath, isRecursive, isForce, errPos);
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, FindFirst
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
         , ZFMP_IN_OUT(ZFFileFindData &, fd)
         , ZFMP_IN(const zfchar *, resPath)
         ) {
     return ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), resPath);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, FindNext
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
         , ZFMP_IN_OUT(ZFFileFindData &, fd)
         ) {
     return ZFPROTOCOL_ACCESS(ZFRes)->resFindNext(fd.impl());
 }
-ZFMETHOD_FUNC_DEFINE_1(void, FindClose
+ZFMETHOD_FUNC_DEFINE_1(void, ZFResFindClose
         , ZFMP_IN_OUT(ZFFileFindData &, fd)
         ) {
     ZFPROTOCOL_ACCESS(ZFRes)->resFindClose(fd.impl());
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void *, Open
+ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
         , ZFMP_IN(const zfchar *, resPath)
         ) {
     return ZFPROTOCOL_ACCESS(ZFRes)->resOpen(resPath);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, Close
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose
         , ZFMP_IN(void *, token)
         ) {
     if(token == zfnull) {
@@ -56,7 +56,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, Close
     }
     return ZFPROTOCOL_ACCESS(ZFRes)->resClose(token);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfindex, Tell
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResTell
         , ZFMP_IN(void *, token)
         ) {
     if(token == zfnull) {
@@ -64,7 +64,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, Tell
     }
     return ZFPROTOCOL_ACCESS(ZFRes)->resTell(token);
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, Seek
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFResSeek
         , ZFMP_IN(void *, token)
         , ZFMP_IN(zfindex, byteSize)
         , ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin)
@@ -74,7 +74,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, Seek
     }
     return ZFPROTOCOL_ACCESS(ZFRes)->resSeek(token, byteSize, position);
 }
-ZFMETHOD_FUNC_DEFINE_3(zfindex, Read
+ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFResRead
         , ZFMP_IN(void *, token)
         , ZFMP_IN(void *, buf)
         , ZFMP_IN(zfindex, maxByteSize)
@@ -95,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, Read
     }
     return ZFPROTOCOL_ACCESS(ZFRes)->resRead(token, buf, maxByteSize);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, IsEof
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsEof
         , ZFMP_IN(void *, token)
         ) {
     if(token == zfnull) {
@@ -103,7 +103,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, IsEof
     }
     return ZFPROTOCOL_ACCESS(ZFRes)->resIsEof(token);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, IsError
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsError
         , ZFMP_IN(void *, token)
         ) {
     if(token == zfnull) {
@@ -112,7 +112,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, IsError
     return ZFPROTOCOL_ACCESS(ZFRes)->resIsError(token);
 }
 
-ZFMETHOD_FUNC_DEFINE_1(zfindex, Size
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResSize
         , ZFMP_IN(void *, token)
         ) {
     if(token == zfnull) {
