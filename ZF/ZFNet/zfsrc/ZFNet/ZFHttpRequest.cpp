@@ -4,6 +4,20 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
+// #define _ZFP_ZFHttpRequest_DEBUG 1
+
+#if _ZFP_ZFHttpRequest_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFHttpRequest_log(fmt, ...) \
+        zfimplLog("%s [ZFHttpRequest] %s %s" \
+                , zfimplTime() \
+                , ZFObjectInfo(ZFThread::currentThread()).cString() \
+                , zfstr(fmt, ##__VA_ARGS__).cString() \
+                )
+#else
+    #define _ZFP_ZFHttpRequest_log(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFENUM_DEFINE(ZFHttpMethod)
@@ -13,20 +27,24 @@ public:
     zfuint refCount;
     void *nativeTask;
     zfautoT<ZFThread> ownerThread;
-    zfautoT<ZFHttpResponse> response;
+    zfautoT<ZFHttpResponse> response; // not null when running, null otherwise
     ZFListener callback;
 public:
     _ZFP_ZFHttpRequestPrivate(void)
-    : refCount(2) // for ZFHttpRequest and ZFHttpResponse, one for each
+    : refCount(1)
     , nativeTask(zfnull)
     , ownerThread()
-    , response(ZFHttpResponse::ClassData()->newInstance())
+    , response()
     , callback()
     {
-        this->response->d = this;
     }
 
 public:
+    void requestPrepare(void) {
+        this->response = ZFHttpResponse::ClassData()->newInstance();
+        this->response->d = this;
+        ++(this->refCount); // release on ZFHttpResponse's objectOnDealloc
+    }
     void notifyResponse(ZF_IN ZFHttpRequest *owner, ZF_IN ZFResultType resultType) {
         ZFListener callbackTmp = this->callback;
         this->callback = zfnull;
@@ -153,48 +171,73 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, body) {
 ZFMETHOD_DEFINE_1(ZFHttpRequest, void, request
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
+    if(d->response) {
+        return;
+    }
     zfRetain(this); // release in notifyResponse
 
     if(ZFThread::implAvailable()) {
         d->ownerThread = ZFThread::currentThread();
     }
     d->callback = callback;
+    d->requestPrepare();
+    zftToString(this);
+    _ZFP_ZFHttpRequest_log("request begin: %s %s", this, d->response);
     this->observerNotify(zfself::E_OnRequestPrepare());
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
+    ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask, d->response);
     this->observerNotify(zfself::E_OnRequest());
+    _ZFP_ZFHttpRequest_log("request end: %s %s", this, d->response);
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->requestCancel(d->nativeTask);
-    d->notifyResponse(this, v_ZFResultType::e_Cancel);
+    if(!d->response) {
+        _ZFP_ZFHttpRequest_log("requestCancel begin: %s", this);
+        ZFPROTOCOL_ACCESS(ZFHttpRequest)->requestCancel(d->nativeTask);
+        d->notifyResponse(this, v_ZFResultType::e_Cancel);
+        _ZFP_ZFHttpRequest_log("requestCancel end: %s", this);
+    }
 }
 
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
         , ZFMP_IN_OPT(zftimet, timeout, zftimetInvalid())
         ) {
-    ZFHttpRequest *send = this;
-    zfautoT<ZFHttpResponse> recv;
+    if(d->response) {
+        _ZFP_ZFHttpRequest_log("requestSync but already running: %s %s", this, d->response);
+        return zfnull;
+    }
+
+    zfautoT<ZFHttpRequest> send = this;
+    zfobj<ZFObjectHolder> recv;
     zfobj<ZFSemaphore> waitLock;
     ZFLISTENER_3(onRequest
-            , ZFHttpRequest *, send
+            , zfautoT<ZFHttpRequest>, send
             , ZFSemaphore *, waitLock
-            , zfautoT<ZFHttpResponse> &, recv
+            , zfautoT<ZFObjectHolder>, recv
             ) {
-        ZFLISTENER_2(onResponse
+        ZFLISTENER_3(onResponse
                 , ZFSemaphore *, waitLock
-                , zfautoT<ZFHttpResponse> &, recv
+                , zfautoT<ZFHttpRequest>, send
+                , zfautoT<ZFObjectHolder>, recv
                 ) {
-            recv = zfargs.param0();
+            recv->value(zfargs.param0());
+            _ZFP_ZFHttpRequest_log("requestSync response begin: %s %s", send, zfargs.param0());
             waitLock->lockAndBroadcast();
+            _ZFP_ZFHttpRequest_log("requestSync response end: %s", send);
         } ZFLISTENER_END()
+        _ZFP_ZFHttpRequest_log("requestSync request begin: %s", send);
         send->request(onResponse);
+        _ZFP_ZFHttpRequest_log("requestSync request end: %s", send);
     } ZFLISTENER_END()
+    _ZFP_ZFHttpRequest_log("requestSync begin: %s", this);
     zfasync(onRequest);
 
+    _ZFP_ZFHttpRequest_log("requestSync wait begin: %s", this);
     if(!waitLock->lockAndWait(timeout)) {
         this->requestCancel();
     }
-    return recv;
+    _ZFP_ZFHttpRequest_log("requestSync wait end: %s", this);
+    _ZFP_ZFHttpRequest_log("requestSync end: %s", this);
+    return recv->value();
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo) {
@@ -227,7 +270,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, contentInfo) {
 void ZFHttpRequest::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFHttpRequestPrivate);
-    d->nativeTask = ZFPROTOCOL_ACCESS(ZFHttpRequest)->nativeTaskCreate(this, d->response);
+    d->nativeTask = ZFPROTOCOL_ACCESS(ZFHttpRequest)->nativeTaskCreate(this);
 }
 void ZFHttpRequest::objectOnDealloc(void) {
     --(d->refCount);
@@ -245,19 +288,33 @@ void ZFHttpRequest::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfstringAppend(ret, " body:%s", this->body().length());
 }
 
-void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void) {
+void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(ZF_IN ZFHttpResponse *response) {
+    if(d->response != response) {
+        _ZFP_ZFHttpRequest_log("notifyResponse but task not exist: %s %s", this, response);
+        return;
+    }
+
     if(ZFThread::implAvailable()) {
         ZFHttpRequest *owner = this;
-        ZFLISTENER_2(notifyResponse
+        ZFLISTENER_3(notifyResponse
                 , zfautoT<ZFHttpRequest>, owner
+                , zfautoT<ZFHttpResponse>, response
                 , _ZFP_ZFHttpRequestPrivate *, d
                 ) {
+            if(d->response != response) {
+                _ZFP_ZFHttpRequest_log("notifyResponse but task not exist: %s %s", owner, response);
+                return;
+            }
+            _ZFP_ZFHttpRequest_log("notifyResponse begin: %s %s", owner, response);
             d->notifyResponse(owner, v_ZFResultType::e_Success);
+            _ZFP_ZFHttpRequest_log("notifyResponse end: %s %s", owner, response);
         } ZFLISTENER_END()
         ZFThread::executeInThread(d->ownerThread, notifyResponse);
     }
     else {
+        _ZFP_ZFHttpRequest_log("notifyResponse begin: %s %s", this, response);
         d->notifyResponse(this, v_ZFResultType::e_Success);
+        _ZFP_ZFHttpRequest_log("notifyResponse end: %s %s", this, response);
     }
 }
 

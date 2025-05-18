@@ -26,10 +26,7 @@ public:
     /**
      * @brief create native task
      */
-    virtual void *nativeTaskCreate(
-            ZF_IN ZFHttpRequest *request
-            , ZF_IN ZFHttpResponse *response
-            ) zfpurevirtual;
+    virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request) zfpurevirtual;
     /**
      * @brief destroy native task
      */
@@ -132,7 +129,7 @@ public:
     /**
      * @brief start the http request, impl must notify #notifyResponse even if fail or error
      */
-    virtual void request(ZF_IN void *nativeTask) zfpurevirtual;
+    virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) zfpurevirtual;
 
     /**
      * @brief cancel the request
@@ -151,8 +148,8 @@ public:
      * -  #ZFHttpResponse::errorHint
      * -  #ZFHttpResponse::body
      */
-    zffinal void notifyResponse(ZF_IN ZFHttpRequest *request) {
-        request->_ZFP_ZFHttpRequest_notifyResponse();
+    zffinal void notifyResponse(ZF_IN ZFHttpRequest *request, ZF_IN ZFHttpResponse *response) {
+        request->_ZFP_ZFHttpRequest_notifyResponse(response);
     }
 
     /**

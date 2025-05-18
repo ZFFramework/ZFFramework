@@ -30,12 +30,10 @@ ZFMETHOD_DEFINE_0(ZFSemaphore, void *, nativeSemaphore) {
 }
 
 ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreLock) {
-    zfRetain(this);
     d->impl->semaphoreLock(this);
 }
 ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreUnlock) {
     d->impl->semaphoreUnlock(this);
-    zfRelease(this);
 }
 
 ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreSignal) {
@@ -57,43 +55,33 @@ ZFMETHOD_DEFINE_1(ZFSemaphore, zfbool, semaphoreWait
 }
 
 ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndSignal) {
-    zfRetain(this);
     d->impl->semaphoreLock(this);
     d->impl->semaphoreSignal(this);
     d->impl->semaphoreUnlock(this);
-    zfRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndBroadcast) {
-    zfRetain(this);
     d->impl->semaphoreLock(this);
     d->impl->semaphoreBroadcast(this);
     d->impl->semaphoreUnlock(this);
-    zfRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndWait) {
-    zfRetain(this);
     d->impl->semaphoreLock(this);
     d->impl->semaphoreWait(this);
     d->impl->semaphoreUnlock(this);
-    zfRelease(this);
 }
 ZFMETHOD_DEFINE_1(ZFSemaphore, zfbool, lockAndWait
         , ZFMP_IN(zftimet, miliSecs)
         ) {
     if(miliSecs == zftimetInvalid()) {
-        zfRetain(this);
         d->impl->semaphoreLock(this);
         d->impl->semaphoreWait(this);
         d->impl->semaphoreUnlock(this);
-        zfRelease(this);
         return zftrue;
     }
     else {
-        zfRetain(this);
         d->impl->semaphoreLock(this);
         zfbool ret = d->impl->semaphoreWait(this, miliSecs);
         d->impl->semaphoreUnlock(this);
-        zfRelease(this);
         return ret;
     }
 }

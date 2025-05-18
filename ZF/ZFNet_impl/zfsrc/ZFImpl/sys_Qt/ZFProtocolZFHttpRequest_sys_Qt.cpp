@@ -14,7 +14,7 @@ class _ZFP_ZFHttpRequestImpl_sys_Qt_Task : public QObject {
 
 public:
     ZFHttpRequest *ownerRequest;
-    ZFHttpResponse *ownerResponse;
+    zfautoT<ZFHttpResponse> ownerResponse;
     ZFHttpMethod httpMethod;
     QNetworkAccessManager manager;
     QNetworkRequest request;
@@ -57,7 +57,7 @@ public:
         this->ownerResponse->code(504);
         this->ownerResponse->errorHint("request timeout");
         this->ownerResponse->body(zfnull);
-        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(this->ownerRequest);
+        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(this->ownerRequest, this->ownerResponse);
     }
 
     void _ZFP_notifyCancel() {
@@ -113,7 +113,7 @@ public slots:
         }
 
         this->responseRawHeaderList = nativeResponse->rawHeaderList();
-        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(this->ownerRequest);
+        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(this->ownerRequest, this->ownerResponse);
     }
 };
 
@@ -127,13 +127,9 @@ public:
         return zftrue;
     }
 
-    virtual void *nativeTaskCreate(
-            ZF_IN ZFHttpRequest *request
-            , ZF_IN ZFHttpResponse *response
-            ) {
+    virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = new _ZFP_ZFHttpRequestImpl_sys_Qt_Task();
         task->ownerRequest = request;
-        task->ownerResponse = response;
         return task;
     }
     virtual void nativeTaskDestroy(ZF_IN void *nativeTask) {
@@ -280,8 +276,9 @@ public:
         return zfstring::shared((const zfchar *)task->body.data(), (zfindex)task->body.size());
     }
 
-    virtual void request(ZF_IN void *nativeTask) {
+    virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
+        task->ownerResponse = response;
 
         ZFLISTENER_1(onTimeout
                 , _ZFP_ZFHttpRequestImpl_sys_Qt_Task *, task

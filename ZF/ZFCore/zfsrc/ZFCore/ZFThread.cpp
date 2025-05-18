@@ -10,10 +10,7 @@
 #if _ZFP_ZFThread_DEBUG
     #include "ZFCore/ZFCoreDef/zfimplLog.h"
     #define _ZFP_ZFThread_log(fmt, ...) \
-        zfimplLog("%s [ZFThread] " fmt \
-                , zfimplTime() \
-                , ##__VA_ARGS__ \
-                )
+        zfimplLog("%s [ZFThread] %s", zfimplTime(), zfstr(fmt, ##__VA_ARGS__).cString())
 #else
     #define _ZFP_ZFThread_log(fmt, ...)
 #endif

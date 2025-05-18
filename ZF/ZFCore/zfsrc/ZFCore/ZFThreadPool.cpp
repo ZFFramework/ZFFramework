@@ -248,7 +248,7 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfautoT<ZFTaskId>, start
         --taskCount;
         zfobj<ZFThread> threadPool;
         d->threadPool.add(threadPool);
-        threadPool->threadName(zfstr("ZFThreadPool:%s:%s", (const void *)this, (const void *)threadPool.toObject()));
+        threadPool->threadName(this->threadPoolName());
         threadPool->observerAdd(ZFThread::E_ThreadOnStopRequested(), d->threadOnStopRequested);
         threadPool->taskQueueInit();
         threadPool->threadStart();

@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_END
 // ============================================================
 #if _ZFP_ZFMEM_LOG
 #include "zfimplLog.h"
-#define _ZFP_ZFMemLog(fmt, ...) zfimplLog("[ZFMem] " fmt, ##__VA_ARGS__)
+#define _ZFP_ZFMemLog(fmt, ...) zfimplLog("[ZFMem] %s", zfstr(fmt, ##__VA_ARGS__).cString())
 #include "../ZFSTLWrapper/zfstlmap.h"
 #include "../ZFSTLWrapper/zfstlstring.h"
 #include "../ZFSTLWrapper/zfstldeque.h"

@@ -16,8 +16,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief format path
  *
  * format rules:
- * -  ensured no '/' at tail
- * -  all extra '/' and '\\' would be replaced with single '/'
+ * -  ensured no '/' at tail (except for `xxx://`)
+ * -  all extra '/' and '\\' would be replaced with single '/' (except for `xxx://`)
  * -  strip spaces and tabs at head and tail
  * -  replace these escape chars:
  *   -  '\"' to double quote

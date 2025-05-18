@@ -12,11 +12,20 @@ static zfbool _ZFP_ZFPathFormat(
 
     while(p < srcEnd) {
         if(*p == '/') {
-            do {
-                ++p;
-            } while(p < srcEnd && *p == '/');
-            if(ret.isEmpty() || ret[ret.length() - 1] != '/') {
-                ret += '/';
+            if(p > src && *(p-1) == ':' && *(p+1) == '/') {
+                ret += "//";
+                p += 2;
+                while(p < srcEnd && *p == '/') {
+                    ++p;
+                }
+            }
+            else {
+                do {
+                    ++p;
+                } while(p < srcEnd && *p == '/');
+                if(ret.isEmpty() || ret[ret.length() - 1] != '/') {
+                    ret += '/';
+                }
             }
         }
         else if(*p == '\\') {
@@ -64,7 +73,16 @@ static zfbool _ZFP_ZFPathFormat(
     }
     while(!ret.isEmpty()) {
         zfchar last = ret[ret.length() - 1];
-        if(last == '/' || last == ' ' || last == '\t') {
+        if(last == '/') {
+            if(ret.length() >= 3
+                    && ret[ret.length() - 2] == '/'
+                    && ret[ret.length() - 3] == ':'
+                    ) {
+                break;
+            }
+            ret.remove(ret.length() - 1);
+        }
+        else if(last == ' ' || last == '\t') {
             ret.remove(ret.length() - 1);
         }
         else {

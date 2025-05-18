@@ -30,7 +30,7 @@ private:
     public:
         zfuint refCount;
         ZFHttpRequest *ownerRequest;
-        ZFHttpResponse *ownerResponse;
+        zfautoT<ZFHttpResponse> ownerResponse;
         zfidentity taskId;
         zfstring url;
         ZFHttpMethod httpMethod;
@@ -65,13 +65,10 @@ private:
         }
 
     public:
-        NativeTask(
-            ZF_IN ZFHttpRequest *request
-            , ZF_IN ZFHttpResponse *response
-            )
+        NativeTask(ZF_IN ZFHttpRequest *request)
         : refCount(1)
         , ownerRequest(request)
-        , ownerResponse(response)
+        , ownerResponse()
         , taskId(zfidentityInvalid())
         , url()
         , httpMethod(v_ZFHttpMethod::e_GET)
@@ -104,11 +101,8 @@ public:
         #endif
     }
 
-    virtual void *nativeTaskCreate(
-            ZF_IN ZFHttpRequest *request
-            , ZF_IN ZFHttpResponse *response
-            ) {
-        return zfnew(NativeTask, request, response);
+    virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request) {
+        return zfnew(NativeTask, request);
     }
     virtual void nativeTaskDestroy(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
@@ -274,11 +268,12 @@ public:
         return nativeTaskTmp->body;
     }
 
-    virtual void request(ZF_IN void *nativeTask) {
+    virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) {
         this->requestCancel(nativeTask);
 
         NativeTask *task = (NativeTask *)nativeTask;
         ++(task->refCount);
+        task->ownerResponse = response;
         zfidentity taskId = this->taskIdGen.idAcquire();
         task->taskId = taskId;
         ZFLISTENER_2(asyncRequest
@@ -296,7 +291,7 @@ public:
                     task->ownerResponse->code(-1);
                     task->ownerResponse->errorHint("exceed redirect count");
                     if(taskId == task->taskId) {
-                        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(task->ownerRequest);
+                        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(task->ownerRequest, task->ownerResponse);
                     }
                     break;
                 }
@@ -306,7 +301,7 @@ public:
                     task->ownerResponse->code(-1);
                     task->ownerResponse->errorHint("https not supported");
                     if(taskId == task->taskId) {
-                        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(task->ownerRequest);
+                        ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(task->ownerRequest, task->ownerResponse);
                     }
                     break;
                 }
@@ -334,7 +329,7 @@ public:
                     _ZFP_parseResponse(task, result);
                 }
                 if(taskId == task->taskId) {
-                    ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(task->ownerRequest);
+                    ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(task->ownerRequest, task->ownerResponse);
                 }
                 break;
             }

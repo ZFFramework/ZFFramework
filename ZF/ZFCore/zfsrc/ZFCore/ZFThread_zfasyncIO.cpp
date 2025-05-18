@@ -6,10 +6,7 @@
 #if _ZFP_zfasyncIO_DEBUG
     #include "ZFCore/ZFCoreDef/zfimplLog.h"
     #define _ZFP_zfasyncIO_log(fmt, ...) \
-        zfimplLog("%s [zfasyncIO] " fmt \
-                , zfimplTime() \
-                , ##__VA_ARGS__ \
-                )
+        zfimplLog("%s [zfasyncIO] %s", zfimplTime(), zfstr(fmt, ##__VA_ARGS__).cString())
 #else
     #define _ZFP_zfasyncIO_log(fmt, ...)
 #endif

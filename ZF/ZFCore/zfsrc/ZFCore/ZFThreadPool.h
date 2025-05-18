@@ -34,6 +34,12 @@ zfclass ZFLIB_ZFCore ZFThreadPool : zfextend ZFObject {
     ZFMETHOD_DECLARE_0(void, removeAll)
 
 protected:
+    /** @brief auto update #ZFThread::threadName */
+    virtual zfstring threadPoolName(void) {
+        return zfstr("%s:%s", this->classData()->className(), (const void *)this);
+    }
+
+protected:
     zfoverride
     virtual void objectOnInit(void);
     zfoverride

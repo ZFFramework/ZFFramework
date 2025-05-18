@@ -12,7 +12,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFHttpRequestImpl_sys_Android_Task {
 public:
     zfobj<v_zfbool> running;
-    ZFHttpRequest *request;
+    ZFHttpRequest *ownerRequest;
+    zfautoT<ZFHttpResponse> ownerResponse;
     zfstring body;
     jobject nativeTask;
 };
@@ -25,24 +26,20 @@ public:
         return zftrue;
     }
 
-    virtual void *nativeTaskCreate(
-            ZF_IN ZFHttpRequest *request
-            , ZF_IN ZFHttpResponse *response
-            ) {
+    virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), "native_nativeTaskCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
-                .add(JNIType::S_long())
-                .add(JNIType::S_long())
+                .add(JNIPointerJNIType)
+                .add(JNIPointerJNIType)
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = zfnew(_ZFP_ZFHttpRequestImpl_sys_Android_Task);
         task->running->zfv = zftrue;
-        task->request = request;
+        task->ownerRequest = request;
         task->nativeTask = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , JNIConvertZFObjectToJNIType(jniEnv, request)
-                , JNIConvertZFObjectToJNIType(jniEnv, response)
-            );
+                );
         JNIBlockedDeleteLocalRef((jobject)task->nativeTask);
         task->nativeTask = JNIUtilNewGlobalRef(jniEnv, (jobject)task->nativeTask);
         return task;
@@ -78,7 +75,7 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(url)
-                , (jint)task->request->timeout()
+                , (jint)task->ownerRequest->timeout()
             );
     }
 
@@ -229,8 +226,9 @@ public:
         return task->body;
     }
 
-    virtual void request(ZF_IN void *nativeTask) {
+    virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) {
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
+        task->ownerResponse = response;
         zfautoT<v_zfbool> running = task->running;
         ZFLISTENER_2(run
                 , zfautoT<v_zfbool>, running
@@ -241,6 +239,7 @@ public:
                 JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                     .add(JNIType::S_object_Object())
                     .add(JNIType::S_object_Object())
+                    .add(JNIPointerJNIType)
                 ).c_str());
 
             ZFCoreMutexLock();
@@ -257,6 +256,7 @@ public:
             JNIUtilCallStaticVoidMethod(JNIGetJNIEnv(), ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                     , nativeTask
                     , nativeInput
+                    , JNIConvertZFObjectToJNIType(jniEnv, task->ownerResponse)
                 );
         } ZFLISTENER_END()
         zfasync(run);
@@ -364,7 +364,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest
         ZFInputRead(body, bodyInput);
         response->body(body);
     }
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(request);
+    ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(request, response);
 }
 JNI_METHOD_DECLARE_END()
 

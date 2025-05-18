@@ -10,7 +10,7 @@
 #if _ZFP_ZFCoreGlobalInitializer_DEBUG
     #include "ZFCore/ZFCoreDef/zfimplLog.h"
     #define _ZFP_ZFCoreGlobalInitializer_log(fmt, ...) \
-        zfimplLog("%s [ZFGI] " fmt, zfimplTime(), ##__VA_ARGS__)
+        zfimplLog("%s [ZFGI] %s", zfimplTime(), zfstr(fmt, ##__VA_ARGS__).cString())
 
     #define _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger(fmt, ...) \
         zfimplInvokeTimeLogger("[ZFGI] " fmt \

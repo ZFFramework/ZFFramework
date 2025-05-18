@@ -276,7 +276,7 @@ protected:
 private:
     _ZFP_ZFHttpRequestPrivate *d;
 public:
-    void _ZFP_ZFHttpRequest_notifyResponse(void);
+    void _ZFP_ZFHttpRequest_notifyResponse(ZF_IN ZFHttpResponse *response);
 };
 
 // ============================================================

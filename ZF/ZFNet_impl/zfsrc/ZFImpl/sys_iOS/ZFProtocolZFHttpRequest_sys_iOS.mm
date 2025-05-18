@@ -5,7 +5,7 @@
 
 @interface _ZFP_ZFHttpRequestImpl_sys_iOS_Task : NSObject
 @property (nonatomic, assign) ZFHttpRequest *ownerRequest;
-@property (nonatomic, assign) ZFHttpResponse *ownerResponse;
+@property (nonatomic, assign) zfautoT<ZFHttpResponse> ownerResponse;
 
 @property (nonatomic, strong) NSString *httpMethod;
 @property (nonatomic, strong) NSMutableURLRequest *request;
@@ -27,13 +27,9 @@ public:
         return zftrue;
     }
 
-    virtual void *nativeTaskCreate(
-            ZF_IN ZFHttpRequest *request
-            , ZF_IN ZFHttpResponse *response
-            ) {
+    virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = [_ZFP_ZFHttpRequestImpl_sys_iOS_Task new];
         task.ownerRequest = request;
-        task.ownerResponse = response;
         return (__bridge_retained void *)task;
     }
     virtual void nativeTaskDestroy(ZF_IN void *nativeTask) {
@@ -147,8 +143,9 @@ public:
         return zfstring::shared(task.requestBody.mutableBytes, (zfindex)task.requestBody.length);
     }
 
-    virtual void request(ZF_IN void *nativeTask) {
+    virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
+        task.ownerResponse = response;
         if(task.requestBody.length > 0) {
             task.request.HTTPBody = task.requestBody;
         }
@@ -174,7 +171,7 @@ public:
                 weakTask.responseData = data;
                 weakTask.ownerResponse->body(zfstring::shared(data.bytes, data.length));
             }
-            ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(weakTask.ownerRequest);
+            ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(weakTask.ownerRequest, weakTask.ownerResponse);
         }];
         [task.task resume];
     }

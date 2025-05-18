@@ -64,11 +64,9 @@ public final class ZFHttpRequest {
 
     // ============================================================
     // for request
-    public static Object native_nativeTaskCreate(long zfjniPointerOwnerZFHttpRequest,
-                                                 long zfjniPointerOwnerZFHttpResponse) {
+    public static Object native_nativeTaskCreate(long zfjniPointerOwnerZFHttpRequest) {
         ZFHttpRequest task = new ZFHttpRequest();
         task.zfjniPointerOwnerZFHttpRequest = zfjniPointerOwnerZFHttpRequest;
-        task.zfjniPointerOwnerZFHttpResponse = zfjniPointerOwnerZFHttpResponse;
         return task;
     }
 
@@ -148,8 +146,9 @@ public final class ZFHttpRequest {
         return task.sendHeaderCache;
     }
 
-    public static void native_request(Object nativeTask, Object nativeInput) {
+    public static void native_request(Object nativeTask, Object nativeInput, long zfjniPointerOwnerZFHttpResponse) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
+        task.zfjniPointerOwnerZFHttpResponse = zfjniPointerOwnerZFHttpResponse;
         ZFInputWrapper nativeInputTmp = (ZFInputWrapper) nativeInput;
 
         int code = -1;

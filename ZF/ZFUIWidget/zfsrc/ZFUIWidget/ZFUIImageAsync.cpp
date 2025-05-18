@@ -1,18 +1,6 @@
 #include "ZFUIImageAsync.h"
 #include "ZFUIImageCache.h"
 
-// #define _ZFP_ZFUIImageAsync_DEBUG 1
-
-#if _ZFP_ZFUIImageAsync_DEBUG
-    #include "ZFCore/ZFCoreDef/zfimplLog.h"
-    #define _ZFP_ZFUIImageAsync_log(fmt, ...) \
-        zfimplLog("[ZFUIImageAsync] " fmt \
-                , ##__VA_ARGS__ \
-                )
-#else
-    #define _ZFP_ZFUIImageAsync_log(fmt, ...)
-#endif
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass _ZFP_I_ZFUIImageAsyncTask : zfextend ZFObject {
@@ -115,7 +103,6 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
         return zffalse;
     }
 
-    _ZFP_ZFUIImageAsync_log("%p load begin: %s %s %s", holder, zftToString(src).cString(), zftToString(imageLoadFail).cString(), zftToString(imageLoading).cString());
     zfobj<_ZFP_I_ZFUIImageAsyncTask> task;
     zfobj<_ZFP_I_ZFUIImageAsyncTask::Data> data;
     data->imageLoadFail = imageLoadFail;
@@ -134,7 +121,6 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAsyncT
                 data->ownerList[i]->imageStateImplNotifyUpdate(state);
             }
         }
-        _ZFP_ZFUIImageAsync_log("%p load end: %s", holder, zftToString(zfargs.param0()).cString());
     } ZFLISTENER_END()
     task->data->imageLoadTaskId = ZFUIImageLoad(src, loadOnFinish);
 

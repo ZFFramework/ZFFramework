@@ -100,22 +100,18 @@ static void _ZFP_zfimportDir(
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         ) {
-    zfstring pathFormated;
-    if(!ZFPathFormatT(pathFormated, path)) {
-        return zfnull;
-    }
     ZFPathInfo abs;
-    if(ZFPathInfoFromStringT(abs, pathFormated)) {
+    if(ZFPathInfoFromStringT(abs, path)) {
         if(ZFPathInfoIsDir(abs)) {
             const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(abs.pathType());
             if(impl == zfnull) {
                 return zfnull;
             }
             zfobj<ZFMap> ret;
-            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(abs.pathType(), ""), pathFormated);
+            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(abs.pathType(), ""), path);
             return ret;
         }
         else {
@@ -129,18 +125,18 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         }
     }
     else if(pathInfo == zfnull) {
-        if(ZFResIsDir(pathFormated)) {
+        if(ZFResIsDir(path)) {
             const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(ZFPathType_res());
             if(impl == zfnull) {
                 return zfnull;
             }
             zfobj<ZFMap> ret;
-            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(ZFPathType_res(), ""), pathFormated);
+            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(ZFPathType_res(), ""), path);
             return ret;
         }
         else {
             zfauto ret;
-            if(_ZFP_zfimportFile(ret, ZFInputForRes(pathFormated))) {
+            if(_ZFP_zfimportFile(ret, ZFInputForRes(path))) {
                 return ret;
             }
             else {
@@ -156,10 +152,10 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         zfstring pathData;
         if(!impl->implIsDir(pathInfo.pathData())) {
             pathData = impl->implToParent(pathInfo.pathData());
-            pathData = impl->implToChild(pathData, pathFormated);
+            pathData = impl->implToChild(pathData, path);
         }
         else {
-            pathData = impl->implToChild(pathInfo.pathData(), pathFormated);
+            pathData = impl->implToChild(pathInfo.pathData(), path);
         }
         if(!pathData) {
             return zfnull;
@@ -171,7 +167,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         }
         else {
             zfauto ret;
-            if(_ZFP_zfimportFile(ret, ZFInputForLocal(pathFormated, pathInfo))) {
+            if(_ZFP_zfimportFile(ret, ZFInputForLocal(path, pathInfo))) {
                 return ret;
             }
             else {

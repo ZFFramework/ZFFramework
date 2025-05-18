@@ -56,7 +56,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  when params more than `%s` token,
  *   the exceed param would be discarded
  */
-inline const zfchar *zfstr(
+inline zfstring zfstr(
         ZF_IN const zfchar *fmt = zfnull
         ) {
     return fmt;
