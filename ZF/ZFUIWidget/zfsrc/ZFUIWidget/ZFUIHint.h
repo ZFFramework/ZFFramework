@@ -176,6 +176,8 @@ protected:
     zfoverride
     virtual void objectOnInitFinish(void);
     zfoverride
+    virtual void objectOnDeallocPrepare(void);
+    zfoverride
     virtual void objectOnDealloc(void);
 
 private:

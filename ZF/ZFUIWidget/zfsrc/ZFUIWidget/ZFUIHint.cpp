@@ -67,6 +67,7 @@ zfclassNotPOD _ZFP_ZFUIHintPrivate {
 public:
     ZFUIHint *pimplOwner;
     _ZFP_ZFUIHintWindow *hintWindow;
+    zfbool hintWindowAutoResizeAttached;
     zfbool showing;
     zfbool delaying;
     ZFAnimation *started; // auto retain
@@ -79,6 +80,7 @@ public:
     _ZFP_ZFUIHintPrivate(void)
     : pimplOwner(zfnull)
     , hintWindow(zfnull)
+    , hintWindowAutoResizeAttached(zffalse)
     , showing(zffalse)
     , delaying(zffalse)
     , started(zfnull)
@@ -243,11 +245,15 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, content) {
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, zfbool, hintWindowAutoResize) {
-    if(propertyValue != propertyValueOld) {
-        if(this->hintWindowAutoResize()) {
+    if(this->hintWindowAutoResize()) {
+        if(!d->hintWindowAutoResizeAttached) {
+            d->hintWindowAutoResizeAttached = zftrue;
             ZFUIOnScreenKeyboardAutoResizeStart(this->hintWindow());
         }
-        else {
+    }
+    else {
+        if(d->hintWindowAutoResizeAttached) {
+            d->hintWindowAutoResizeAttached = zffalse;
             ZFUIOnScreenKeyboardAutoResizeStop(this->hintWindow());
         }
     }
@@ -368,13 +374,13 @@ void ZFUIHint::objectOnInit(void) {
 }
 void ZFUIHint::objectOnInitFinish(void) {
     zfsuper::objectOnInitFinish();
-    if(this->hintWindowAutoResize()) {
-        ZFUIOnScreenKeyboardAutoResizeStart(this->hintWindow());
-    }
+
+    // access to init auto resize logic
+    (void)this->hintWindowAutoResize();
+
     this->hintOnInit();
 }
-void ZFUIHint::objectOnDealloc(void) {
-    _ZFP_ZFUIHint_allHint.removeElement(this);
+void ZFUIHint::objectOnDeallocPrepare(void) {
     this->hintWindowAutoResize(zffalse);
     if(d->started != zfnull) {
         d->started->stop();
@@ -385,6 +391,10 @@ void ZFUIHint::objectOnDealloc(void) {
         d->showDelayTimer = zfnull;
     }
     d->hintWindow->hide();
+    zfsuper::objectOnDeallocPrepare();
+}
+void ZFUIHint::objectOnDealloc(void) {
+    _ZFP_ZFUIHint_allHint.removeElement(this);
     zfRetainChange(d->hintWindow, zfnull);
     zfpoolDelete(d);
     d = zfnull;
