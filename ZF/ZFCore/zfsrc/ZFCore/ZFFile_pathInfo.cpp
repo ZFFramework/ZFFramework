@@ -1048,18 +1048,18 @@ const zfchar _ZFP_ZFPathInfoChainCharMap[256] = {
 };
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoChainDecode
-        , ZFMP_IN(const zfchar *, pathDataOrig)
         , ZFMP_OUT(ZFPathInfo &, chainPathInfo)
-        , ZFMP_IN_OUT_OPT(zfstring *, pathData, zfnull)
+        , ZFMP_IN_OUT(zfstring &, pathData)
+        , ZFMP_IN(const zfchar *, pathDataOrig)
         ) {
     zfstring chainPathInfoString;
-    return ZFPathInfoChainDecodeString(pathDataOrig, chainPathInfoString, pathData)
+    return ZFPathInfoChainDecodeString(chainPathInfoString, pathData, pathDataOrig)
         && ZFPathInfoFromStringT(chainPathInfo, chainPathInfoString, chainPathInfoString.length());
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoChainDecodeString
-        , ZFMP_IN(const zfchar *, pathDataOrig)
         , ZFMP_OUT(zfstring &, chainPathInfoString)
-        , ZFMP_IN_OUT_OPT(zfstring *, pathData, zfnull)
+        , ZFMP_IN_OUT(zfstring &, pathData)
+        , ZFMP_IN(const zfchar *, pathDataOrig)
         ) {
     zfindex pos = zfstringFindReversely(pathDataOrig, '|');
     if(pos == zfindexMax()) {
@@ -1067,22 +1067,27 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoChainDecodeString
     }
     chainPathInfoString.capacity(pos);
     ZFCoreDataDecode(chainPathInfoString, pathDataOrig, pos);
-    if(pathData) {
-        *pathData += pathDataOrig + pos + 1;
-    }
+    pathData += pathDataOrig + pos + 1;
     return zftrue;
+}
+ZFMETHOD_FUNC_DEFINE_3(void, ZFPathInfoChainEncodeT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const ZFPathInfo &, chainPathInfo)
+        , ZFMP_IN(const zfchar *, pathData)
+        ) {
+    ret += chainPathInfo.pathType();
+    ret += ZFSerializableKeyword_ZFPathInfo_separator;
+    ZFCoreDataEncode(ret, chainPathInfo.pathData(), chainPathInfo.pathData().length(), ZFPathInfoChainCharMap());
+    ret += '|';
+    ret += pathData;
 }
 ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFPathInfoChainEncode
         , ZFMP_IN(const ZFPathInfo &, chainPathInfo)
         , ZFMP_IN(const zfchar *, pathData)
         ) {
-    zfstring pathDataOrig;
-    pathDataOrig += chainPathInfo.pathType();
-    pathDataOrig += ZFSerializableKeyword_ZFPathInfo_separator;
-    ZFCoreDataEncode(pathDataOrig, chainPathInfo.pathData(), chainPathInfo.pathData().length(), ZFPathInfoChainCharMap());
-    pathDataOrig += '|';
-    pathDataOrig += pathData;
-    return pathDataOrig;
+    zfstring ret;
+    ZFPathInfoChainEncodeT(ret, chainPathInfo, pathData);
+    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END

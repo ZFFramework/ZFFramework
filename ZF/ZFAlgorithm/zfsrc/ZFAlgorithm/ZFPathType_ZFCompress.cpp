@@ -16,7 +16,7 @@ private:
     } _TaskType;
     zfclassNotPOD _TaskData {
     public:
-        zfstring compressFilePathInfo;
+        zfstring compressPathInfo;
         _TaskType taskType;
         zfauto taskToken; // ZFCompress / ZFDecompress token
         zfuint ioCount; // input / output task count
@@ -24,7 +24,7 @@ private:
                         // would be cleaned by _taskIdleCleanup
     public:
         _TaskData(void)
-        : compressFilePathInfo()
+        : compressPathInfo()
         , taskType()
         , taskToken()
         , ioCount(1)
@@ -103,7 +103,7 @@ private:
     }
 
 private:
-    // <compressFilePathInfo, taskData>
+    // <compressPathInfo, taskData>
     static _TaskMap &_taskMap(void) {
         static _TaskMap m;
         return m;
@@ -114,8 +114,8 @@ private:
             , ZF_IN_OUT const zfchar *pathDataOrig
             , ZF_IN _TaskType taskType
             ) {
-        zfstring compressFilePathInfo;
-        if(!ZFPathInfoChainDecodeString(pathDataOrig, compressFilePathInfo, &pathData)) {
+        zfstring compressPathInfo;
+        if(!ZFPathInfoChainDecodeString(compressPathInfo, pathData, pathDataOrig)) {
             return zfnull;
         }
 
@@ -123,7 +123,7 @@ private:
         _TaskMap &m = _taskMap();
         {
             ZFCoreMutexLocker();
-            _TaskMap::iterator it = m.find(compressFilePathInfo.cString());
+            _TaskMap::iterator it = m.find(compressPathInfo.cString());
             if(it != m.end()) {
                 if(it->second->taskType != taskType) {
                     if(it->second->ioCount > 0) {
@@ -141,22 +141,22 @@ private:
                 }
             }
             taskData = zfnew(_TaskData);
-            taskData->compressFilePathInfo.swap(compressFilePathInfo);
-            m[taskData->compressFilePathInfo.cString()] = taskData;
+            taskData->compressPathInfo.swap(compressPathInfo);
+            m[taskData->compressPathInfo.cString()] = taskData;
             taskData->taskType = taskType;
         }
 
         zfbool success = zffalse;
         if(taskType == _TaskTypeCompress) {
             zfobj<ZFCompress> t;
-            if(t->open(ZFOutputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)))) {
+            if(t->open(ZFOutputForPathInfo(ZFPathInfo(taskData->compressPathInfo)))) {
                 taskData->taskToken = t;
                 success = zftrue;
             }
         }
         else {
             zfobj<ZFDecompress> t;
-            if(t->open(ZFInputForPathInfo(ZFPathInfo(taskData->compressFilePathInfo)))) {
+            if(t->open(ZFInputForPathInfo(ZFPathInfo(taskData->compressPathInfo)))) {
                 taskData->taskToken = t;
                 success = zftrue;
             }
@@ -176,7 +176,7 @@ private:
         --(taskData->ioCount);
         if(taskData->ioCount == 0) {
             _TaskMap &m = _taskMap();
-            m.erase(taskData->compressFilePathInfo.cString());
+            m.erase(taskData->compressPathInfo.cString());
             ZFCoreMutexUnlock();
 
             zfdelete(taskData);
@@ -253,16 +253,16 @@ public:
             ZF_IN const zfchar *pathData
             , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        zfstring compressFilePathInfo;
+        zfstring compressPathInfo;
         zfstring pathDataTmp;
-        if(!ZFPathInfoChainDecodeString(pathData, compressFilePathInfo, &pathDataTmp)) {
+        if(!ZFPathInfoChainDecodeString(compressPathInfo, pathDataTmp, pathData)) {
             if(success) {
                 *success = zffalse;
             }
             return zfnull;
         }
         zfstring ret;
-        ZFCoreDataEncode(ret, compressFilePathInfo, compressFilePathInfo.length(), ZFPathInfoChainCharMap());
+        ZFCoreDataEncode(ret, compressPathInfo, compressPathInfo.length(), ZFPathInfoChainCharMap());
         zfbool successTmp = zftrue;
         ret += ZFPathInfoCallbackToParentDefault(pathDataTmp, &successTmp);
         if(success) {
@@ -516,28 +516,28 @@ ZFPATHTYPE_FILEIO_REGISTER(ZFCompress, ZFPathType_ZFCompress()
     )
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompressFile
-        , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
+ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompress
+        , ZFMP_IN(const ZFPathInfo &, compressPathInfo)
         , ZFMP_IN(const zfchar *, relPath)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathInfo(
                 ZFPathType_ZFCompress()
-                , ZFPathInfoChainEncode(compressFilePathInfo, relPath)
+                , ZFPathInfoChainEncode(compressPathInfo, relPath)
                 ), flags);
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompressFile
-        , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
+ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompress
+        , ZFMP_IN(const ZFPathInfo &, compressPathInfo)
         , ZFMP_IN(const zfchar *, relPath)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(ret, ZFPathInfo(
                 ZFPathType_ZFCompress()
-                , ZFPathInfoChainEncode(compressFilePathInfo, relPath)
+                , ZFPathInfoChainEncode(compressPathInfo, relPath)
                 ), flags);
     return ret;
 }

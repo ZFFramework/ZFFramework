@@ -819,15 +819,21 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT
  * @endcode
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoChainDecode
-        , ZFMP_IN(const zfchar *, pathDataOrig)
         , ZFMP_OUT(ZFPathInfo &, chainPathInfo)
-        , ZFMP_IN_OUT_OPT(zfstring *, pathData, zfnull)
+        , ZFMP_IN_OUT(zfstring &, pathData)
+        , ZFMP_IN(const zfchar *, pathDataOrig)
         )
 /** @brief see #ZFPathInfoChainDecode */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoChainDecodeString
-        , ZFMP_IN(const zfchar *, pathDataOrig)
         , ZFMP_OUT(zfstring &, chainPathInfoString)
-        , ZFMP_IN_OUT_OPT(zfstring *, pathData, zfnull)
+        , ZFMP_IN_OUT(zfstring &, pathData)
+        , ZFMP_IN(const zfchar *, pathDataOrig)
+        )
+/** @brief see #ZFPathInfoChainDecode */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void, ZFPathInfoChainEncodeT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const ZFPathInfo &, chainPathInfo)
+        , ZFMP_IN(const zfchar *, pathData)
         )
 /** @brief see #ZFPathInfoChainDecode */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfstring, ZFPathInfoChainEncode
