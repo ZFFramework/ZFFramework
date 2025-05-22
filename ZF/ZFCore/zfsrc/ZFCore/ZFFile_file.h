@@ -29,10 +29,9 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileIsDir
  * @brief make directory
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathCreate
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathCreate
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN_OPT(zfbool, autoMakeParent, zftrue)
-        , ZFMP_OUT_OPT(zfstring *, errPos, zfnull)
         )
 
 /**
@@ -46,12 +45,11 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathCreate
  * override file if dst is an existing file and isForce is zftrue
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileCopy
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFFileCopy
         , ZFMP_IN(const zfchar *, srcPath)
         , ZFMP_IN(const zfchar *, dstPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         )
 /**
  * @brief move a file or directory from srcPath to dstPath
@@ -68,11 +66,10 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileMove
  * fail if isRecursive is zffalse and dst is a dir
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFFileRemove
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileRemove
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         )
 
 /**

@@ -16,14 +16,13 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
         ) {
     return ZFPROTOCOL_ACCESS(ZFRes)->resIsDir(resPath);
 }
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFResCopy
         , ZFMP_IN(const zfchar *, resPath)
         , ZFMP_IN(const zfchar *, dstPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFRes)->resCopy(resPath, dstPath, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFRes)->resCopy(resPath, dstPath, isRecursive, isForce);
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst

@@ -30,7 +30,6 @@ public:
     virtual zfbool filePathCreate(
             ZF_IN const zfchar *path
             , ZF_IN_OPT zfbool autoMakeParent = zffalse
-            , ZF_OUT_OPT zfstring *errPos = zfnull
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileCopy
@@ -40,7 +39,6 @@ public:
             , ZF_IN const zfchar *dstPath
             , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
-            , ZF_IN_OPT zfstring *errPos = zfnull
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileMove
@@ -57,7 +55,6 @@ public:
             ZF_IN const zfchar *path
             , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
-            , ZF_IN_OPT zfstring *errPos = zfnull
             ) zfpurevirtual;
 
     /**

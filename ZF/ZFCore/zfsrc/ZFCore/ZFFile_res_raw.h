@@ -23,12 +23,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsDir
         )
 
 /** @brief raw res process which bypass #ZFResExtPathAdd logic */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFResCopy
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFResCopy
         , ZFMP_IN(const zfchar *, resPath)
         , ZFMP_IN(const zfchar *, dstPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         )
 
 /** @brief raw res process which bypass #ZFResExtPathAdd logic */

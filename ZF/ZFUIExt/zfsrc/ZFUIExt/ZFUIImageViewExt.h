@@ -54,7 +54,7 @@ public:
      * @brief animated image from url, see #ZFUIImageAni
      */
     ZFMETHOD_DECLARE_4(void, imageAniUrl
-            , ZFMP_IN(const zfchar *, url)
+            , ZFMP_IN(const zfstring &, url)
             , ZFMP_IN(const ZFUISize &, frameSize)
             , ZFMP_IN(zfindex, frameCount)
             , ZFMP_IN_OPT(zftimet, frameDuration, 0)

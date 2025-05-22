@@ -12,28 +12,16 @@ zfbool ZFPathInfoCallbackIsExistDefault(ZF_IN const zfchar *pathData) {
 zfbool ZFPathInfoCallbackIsDirDefault(ZF_IN const zfchar *pathData) {
     return zffalse;
 }
-zfstring ZFPathInfoCallbackToFileNameDefault(
-        ZF_IN const zfchar *pathData
-        , ZF_OUT_OPT zfbool *success /* = zfnull */
+zfbool ZFPathInfoCallbackToFileNameDefault(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *pathData
         ) {
-    zfstring ret;
-    if(ZFFileNameOf(ret, pathData)) {
-        if(success) {
-            *success = zftrue;
-        }
-        return ret;
-    }
-    else {
-        if(success) {
-            *success = zffalse;
-        }
-        return zfnull;
-    }
+    return ZFFileNameOfT(ret, pathData);
 }
-zfstring ZFPathInfoCallbackToChildDefault(
-        ZF_IN const zfchar *pathData
+zfbool ZFPathInfoCallbackToChildDefault(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *pathData
         , ZF_IN const zfchar *childName
-        , ZF_OUT_OPT zfbool *success /* = zfnull */
         ) {
     zfstring pathDataChild;
     pathDataChild += pathData;
@@ -41,29 +29,23 @@ zfstring ZFPathInfoCallbackToChildDefault(
         pathDataChild += '/';
     }
     pathDataChild += childName;
-    ZFPathFormatRelativeT(pathDataChild, pathDataChild);
-    if(success) {
-        *success = zftrue;
+    if(pathData >= ret.cString() && pathData < ret.cString() + ret.length()) {
+        ret.removeAll();
     }
-    return pathDataChild;
+    return ZFPathFormatRelativeT(ret, pathDataChild);
 }
-zfstring ZFPathInfoCallbackToParentDefault(
-        ZF_IN const zfchar *pathData
-        , ZF_OUT_OPT zfbool *success /* = zfnull */
+zfbool ZFPathInfoCallbackToParentDefault(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *pathData
         ) {
-    zfstring ret;
-    ZFPathParentOf(ret, pathData);
+    ZFPathParentOfT(ret, pathData);
     // always return true
     // typical case: pathData is file at root path
-    if(success) {
-        *success = zftrue;
-    }
-    return ret;
+    return zftrue;
 }
 zfbool ZFPathInfoCallbackPathCreateDefault(
         ZF_IN const zfchar *pathData
         , ZF_IN_OPT zfbool autoMakeParent /* = zftrue */
-        , ZF_OUT_OPT zfstring *errPos /* = zfnull */
         ) {
     return zffalse;
 }
@@ -71,7 +53,6 @@ zfbool ZFPathInfoCallbackRemoveDefault(
         ZF_IN const zfchar *pathData
         , ZF_IN_OPT zfbool isRecursive /* = zftrue */
         , ZF_IN_OPT zfbool isForce /* = zftrue */
-        , ZF_IN_OPT zfstring *errPos /* = zfnull */
         ) {
     return zffalse;
 }
@@ -168,68 +149,66 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFPathInfoIsDir
         return impl->implIsDir(pathInfo.pathData());
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFPathInfoToFileName
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoToFileName
+        , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         ) {
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
-        return ZFPathInfoCallbackToFileNameDefault(pathInfo.pathData(), success);
+        return ZFPathInfoCallbackToFileNameDefault(ret, pathInfo.pathData());
     }
     else {
-        return impl->implToFileName(pathInfo.pathData(), success);
+        return impl->implToFileName(ret, pathInfo.pathData());
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFPathInfoToChild
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoToChild
+        , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const zfchar *, childName)
-        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         ) {
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
-        return ZFPathInfoCallbackToChildDefault(pathInfo.pathData(), childName, success);
+        return ZFPathInfoCallbackToChildDefault(ret, pathInfo.pathData(), childName);
     }
     else {
-        return impl->implToChild(pathInfo.pathData(), childName, success);
+        return impl->implToChild(ret, pathInfo.pathData(), childName);
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFPathInfoToParent
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoToParent
+        , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         ) {
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
-        return ZFPathInfoCallbackToParentDefault(pathInfo.pathData(), success);
+        return ZFPathInfoCallbackToParentDefault(ret, pathInfo.pathData());
     }
     else {
-        return impl->implToParent(pathInfo.pathData(), success);
+        return impl->implToParent(ret, pathInfo.pathData());
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoPathCreate
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoPathCreate
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(zfbool, autoMakeParent, zftrue)
-        , ZFMP_OUT_OPT(zfstring *, errPos, zfnull)
         ) {
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
-        return ZFPathInfoCallbackPathCreateDefault(pathInfo.pathData(), autoMakeParent, errPos);
+        return ZFPathInfoCallbackPathCreateDefault(pathInfo.pathData(), autoMakeParent);
     }
     else {
-        return impl->implPathCreate(pathInfo.pathData(), autoMakeParent, errPos);
+        return impl->implPathCreate(pathInfo.pathData(), autoMakeParent);
     }
 }
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFPathInfoRemove
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoRemove
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         ) {
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
     if(impl == zfnull) {
-        return ZFPathInfoCallbackRemoveDefault(pathInfo.pathData(), isRecursive, isForce, errPos);
+        return ZFPathInfoCallbackRemoveDefault(pathInfo.pathData(), isRecursive, isForce);
     }
     else {
-        return impl->implRemove(pathInfo.pathData(), isRecursive, isForce, errPos);
+        return impl->implRemove(pathInfo.pathData(), isRecursive, isForce);
     }
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoMove
@@ -451,7 +430,7 @@ void _ZFP_ZFPathInfoUnregister(ZF_IN const zfstring &pathType) {
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPathInfoImpl, const ZFPathInfoImpl *)
 
 ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfoImpl *, ZFPathInfoImplForPathType
-        , ZFMP_IN(const zfchar *, pathType)
+        , ZFMP_IN(const zfstring &, pathType)
         ) {
     zfstlhashmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
     zfstlhashmap<zfstring, ZFPathInfoImpl>::iterator it = m.find(pathType);
@@ -507,21 +486,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalT
     }
     zfbool success = zftrue;
     if(!impl->implIsDir(pathInfo.pathData())) {
-        ret = impl->implToParent(pathInfo.pathData(), &success);
-        if(success) {
-            ret = impl->implToChild(ret, childPath, &success);
-        }
-        if(!success) {
-            ret = zfnull;
-        }
-        return success;
+        return impl->implToParent(ret, pathInfo.pathData())
+            && impl->implToChild(ret, ret, childPath)
+            ;
     }
     else {
-        ret = impl->implToChild(pathInfo.pathData(), childPath, &success);
-        if(!success) {
-            ret = zfnull;
-        }
-        return success;
+        return impl->implToChild(ret, pathInfo.pathData(), childPath);
     }
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFPathInfo, ZFPathInfoForLocal
@@ -544,9 +514,12 @@ zfclass _ZFP_I_ZFInputForPathInfoOwner : zfextend ZFObject {
 private:
     void _cleanup(void) {
         if(this->token != zfnull) {
-            this->impl->implClose(this->token);
+            if(this->autoClose) {
+                this->impl->implClose(this->token);
+            }
             this->impl = zfnull;
             this->token = zfnull;
+            this->autoClose = zftrue;
         }
     }
 
@@ -558,18 +531,20 @@ protected:
     }
 
 public:
-    virtual zfbool openFile(
-            ZF_IN const zfchar *pathType
-            , ZF_IN const zfchar *pathData
-            , ZF_IN ZFFileOpenOptionFlags flags
+    zfbool setup(
+            ZF_IN const ZFPathInfoImpl *impl
+            , ZF_IN void *token
+            , ZF_IN zfbool autoClose
             ) {
-        this->impl = ZFPathInfoImplForPathType(pathType);
-        if(this->impl == zfnull) {
+        if(impl && token) {
+            this->impl = impl;
+            this->token = token;
+            this->autoClose = autoClose;
+            return zftrue;
+        }
+        else {
             return zffalse;
         }
-
-        this->token = this->impl->implOpen(pathData, flags, zftrue);
-        return (this->token != zfnull);
     }
 
     ZFMETHOD_DECLARE_2(zfindex, onInput
@@ -586,10 +561,12 @@ public:
 private:
     const ZFPathInfoImpl *impl;
     void *token;
+    zfbool autoClose;
 protected:
     _ZFP_I_ZFInputForPathInfoOwner(void)
     : impl(zfnull)
     , token(zfnull)
+    , autoClose(zftrue)
     {
     }
 };
@@ -611,21 +588,28 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfindex, ioTell) {
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfindex, ioSize) {
     return this->impl->implSize(this->token);
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForPathInfo
+ZFMETHOD_FUNC_DEFINE_4(ZFInput, ZFInputForPathInfoToken
+        , ZFMP_IN(void *, token)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(zfbool, autoClose, zftrue)
         ) {
     ZFInput ret;
-    ZFInputForPathInfoT(ret, pathInfo, flags);
+    ZFInputForPathInfoTokenT(ret, token, pathInfo, flags, autoClose);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFInputForPathInfoT
+ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFInputForPathInfoTokenT
         , ZFMP_IN_OUT(ZFCallback &, ret)
+        , ZFMP_IN(void *, token)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
+        , ZFMP_IN_OPT(zfbool, autoClose, zftrue)
         ) {
+    if(token == zfnull) {
+        return zffalse;
+    }
     zfobj<_ZFP_I_ZFInputForPathInfoOwner> inputOwner;
-    if(!inputOwner->openFile(pathInfo.pathType(), pathInfo.pathData(), flags)) {
+    if(!inputOwner->setup(ZFPathInfoImplForPathType(pathInfo.pathType()), token, autoClose)) {
         return zffalse;
     }
     ret = ZFCallbackForMemberMethod(
@@ -653,6 +637,21 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFInputForPathInfoT
     }
 
     return ret;
+}
+ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForPathInfo
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
+        ) {
+    ZFInput ret;
+    ZFInputForPathInfoT(ret, pathInfo, flags);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFInputForPathInfoT
+        , ZFMP_IN_OUT(ZFCallback &, ret)
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
+        ) {
+    return ZFInputForPathInfoTokenT(ret, ZFPathInfoOpen(pathInfo, flags, zffalse), pathInfo, flags, zftrue);
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeType_ZFInputForPathInfo) {
     ZFPathInfo pathInfo;
@@ -689,9 +688,12 @@ zfclass _ZFP_I_ZFOutputForPathInfoOwner : zfextend ZFObject {
 private:
     void _cleanup(void) {
         if(this->token != zfnull) {
-            this->impl->implClose(this->token);
+            if(this->autoClose) {
+                this->impl->implClose(this->token);
+            }
             this->impl = zfnull;
             this->token = zfnull;
+            this->autoClose = zftrue;
         }
     }
 
@@ -703,18 +705,20 @@ protected:
     }
 
 public:
-    virtual zfbool openFile(
-            ZF_IN const zfchar *pathType
-            , ZF_IN const zfchar *pathData
-            , ZF_IN ZFFileOpenOptionFlags flags
+    zfbool setup(
+            ZF_IN const ZFPathInfoImpl *impl
+            , ZF_IN void *token
+            , ZF_IN zfbool autoClose
             ) {
-        this->impl = ZFPathInfoImplForPathType(pathType);
-        if(this->impl == zfnull) {
+        if(impl && token) {
+            this->impl = impl;
+            this->token = token;
+            this->autoClose = autoClose;
+            return zftrue;
+        }
+        else {
             return zffalse;
         }
-
-        this->token = this->impl->implOpen(pathData, flags, zftrue);
-        return (this->token != zfnull);
     }
 
     ZFMETHOD_DECLARE_2(zfindex, onOutput
@@ -731,10 +735,12 @@ public:
 private:
     const ZFPathInfoImpl *impl;
     void *token;
+    zfbool autoClose;
 protected:
     _ZFP_I_ZFOutputForPathInfoOwner(void)
     : impl(zfnull)
     , token(zfnull)
+    , autoClose(zftrue)
     {
     }
 };
@@ -756,21 +762,28 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfindex, ioTell) {
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfindex, ioSize) {
     return this->impl->implSize(this->token);
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForPathInfo
+ZFMETHOD_FUNC_DEFINE_4(ZFOutput, ZFOutputForPathInfoToken
+        , ZFMP_IN(void *, token)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(zfbool, autoClose, zftrue)
         ) {
     ZFOutput ret;
-    ZFOutputForPathInfoT(ret, pathInfo, flags);
+    ZFOutputForPathInfoTokenT(ret, token, pathInfo, flags, autoClose);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForPathInfoT
+ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFOutputForPathInfoTokenT
         , ZFMP_IN_OUT(ZFCallback &, ret)
+        , ZFMP_IN(void *, token)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
+        , ZFMP_IN_OPT(zfbool, autoClose, zftrue)
         ) {
+    if(token == zfnull) {
+        return zffalse;
+    }
     zfobj<_ZFP_I_ZFOutputForPathInfoOwner> outputOwner;
-    if(!outputOwner->openFile(pathInfo.pathType(), pathInfo.pathData(), flags)) {
+    if(!outputOwner->setup(ZFPathInfoImplForPathType(pathInfo.pathType()), token, autoClose)) {
         return zffalse;
     }
     ret = ZFCallbackForMemberMethod(
@@ -798,6 +811,21 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForPathInfoT
     }
 
     return ret;
+}
+ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForPathInfo
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
+        ) {
+    ZFOutput ret;
+    ZFOutputForPathInfoT(ret, pathInfo, flags);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForPathInfoT
+        , ZFMP_IN_OUT(ZFCallback &, ret)
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
+        ) {
+    return ZFOutputForPathInfoTokenT(ret, ZFPathInfoOpen(pathInfo, flags, zftrue), pathInfo, flags, zftrue);
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeType_ZFOutputForPathInfo) {
     ZFPathInfo pathInfo;

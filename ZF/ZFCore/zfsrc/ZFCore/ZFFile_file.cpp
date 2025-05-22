@@ -23,10 +23,9 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsDir
     return ZFPROTOCOL_ACCESS(ZFFile)->isDir(path);
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathCreate
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathCreate
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN_OPT(zfbool, autoMakeParent, zftrue)
-        , ZFMP_OUT_OPT(zfstring *, errPos, zfnull)
         ) {
     if(path == zfnull) {
         return zffalse;
@@ -34,20 +33,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathCreate
     if(*path == '\0') {
         return zftrue;
     }
-    return ZFPROTOCOL_ACCESS(ZFFile)->filePathCreate(path, autoMakeParent, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->filePathCreate(path, autoMakeParent);
 }
 
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileCopy
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileCopy
         , ZFMP_IN(const zfchar *, srcPath)
         , ZFMP_IN(const zfchar *, dstPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         ) {
     if(srcPath == zfnull || dstPath == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileCopy(srcPath, dstPath, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileCopy(srcPath, dstPath, isRecursive, isForce);
 }
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileMove
@@ -60,16 +58,15 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileMove
     }
     return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(srcPath, dstPath, isForce);
 }
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileRemove
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileRemove
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         ) {
     if(path == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileRemove(path, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileRemove(path, isRecursive, isForce);
 }
 
 #define _ZFP_ZFFileFindType_file "ZFFileFindFirst"
@@ -113,7 +110,7 @@ ZFMETHOD_FUNC_DEFINE_3(void *, ZFFileOpen
                 || ZFBitTest(flag, v_ZFFileOpenOption::e_Append)
                 )) {
         zfstring parentPath;
-        if(ZFPathParentOf(parentPath, filePath)) {
+        if(ZFPathParentOfT(parentPath, filePath)) {
             ZFPathCreate(parentPath);
         }
     }

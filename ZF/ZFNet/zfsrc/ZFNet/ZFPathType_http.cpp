@@ -129,37 +129,78 @@ public:
                 );
         return ZFHttpIsDir(recv);
     }
-    static zfstring callbackToFileName(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToFileName(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        zfstring ret = ZFPathInfoCallbackToFileNameDefault(pathData, success);
-        zfindex pos = zfstringFindReversely(ret, "?");
-        if(pos != zfindexMax()) {
-            ret.remove(pos);
+        zfindex pos = zfstringFindReversely(pathData, "?");
+        if(pos == zfindexMax()) {
+            return ZFPathInfoCallbackToFileNameDefault(ret, pathData);
         }
-        if(success) {
-            *success = zftrue;
+        else {
+            if(pathData >= ret.cString() && pathData < ret.cString() + ret.length()) {
+                zfstring tmp;
+                if(!ZFPathInfoCallbackToFileNameDefault(tmp, zfstring(pathData, pos))) {
+                    return zffalse;
+                }
+                ret = tmp;
+                return zftrue;
+            }
+            else {
+                return ZFPathInfoCallbackToFileNameDefault(ret, zfstring(pathData, pos));
+            }
         }
-        return ret;
     }
-    static zfstring callbackToChild(
-            ZF_IN const zfchar *pathData
+    static zfbool callbackToChild(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             , ZF_IN const zfchar *childName
-            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToChildDefault(pathData, childName, success);
+        zfindex pos = zfstringFindReversely(pathData, "?");
+        if(pos == zfindexMax()) {
+            return ZFPathInfoCallbackToChildDefault(ret, pathData, childName);
+        }
+        else {
+            zfstring tmp;
+            if(!ZFPathInfoCallbackToChildDefault(tmp, zfstring(pathData, pos), childName)) {
+                return zffalse;
+            }
+            tmp += pathData + pos;
+            if(pathData >= ret.cString() && pathData < ret.cString() + ret.length()) {
+                ret = tmp;
+            }
+            else {
+                ret += tmp;
+            }
+            return zftrue;
+        }
     }
-    static zfstring callbackToParent(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToParent(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        return ZFPathInfoCallbackToParentDefault(pathData, success);
+        zfindex pos = zfstringFindReversely(pathData, "?");
+        if(pos == zfindexMax()) {
+            return ZFPathInfoCallbackToParentDefault(ret, pathData);
+        }
+        else {
+            zfstring tmp;
+            if(!ZFPathInfoCallbackToParentDefault(tmp, zfstring(pathData, pos))) {
+                return zffalse;
+            }
+            tmp += pathData + pos;
+            if(pathData >= ret.cString() && pathData < ret.cString() + ret.length()) {
+                ret = tmp;
+            }
+            else {
+                ret += tmp;
+            }
+            return zftrue;
+        }
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool autoMakeParent
-            , ZF_OUT_OPT zfstring *errPos
             ) {
         return zffalse;
     }
@@ -167,7 +208,6 @@ public:
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
-            , ZF_IN_OPT zfstring *errPos
             ) {
         return zffalse;
     }

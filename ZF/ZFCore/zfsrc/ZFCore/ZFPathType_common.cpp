@@ -20,15 +20,6 @@ ZFPATHTYPE_DEFINE(text)
             ret += '/'; \
             ret += pathData; \
         } \
-        static void pathRevert(ZF_IN_OUT zfstring &pathData) { \
-            const zfchar *prefix = pathPrefixFunc(); \
-            zfindex prefixLen = zfslen(prefix); \
-            if(zfsncmp(pathData, prefix, prefixLen) == 0 \
-                    && pathData[prefixLen] == '/' \
-                    ) { \
-                pathData.remove(0, prefixLen + 1); \
-            } \
-        } \
     }; \
     ZFPATHTYPE_FILEIO_REGISTER(registerSig, pathType \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackIsExist \
@@ -82,38 +73,28 @@ public:
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
         return zffalse;
     }
-    static zfstring callbackToFileName(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToFileName(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        if(success) {
-            *success = zffalse;
-        }
-        return zfnull;
+        return zffalse;
     }
-    static zfstring callbackToChild(
-            ZF_IN const zfchar *pathData
+    static zfbool callbackToChild(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             , ZF_IN const zfchar *childName
-            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        if(success) {
-            *success = zffalse;
-        }
-        return zfnull;
+        return zffalse;
     }
-    static zfstring callbackToParent(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToParent(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        if(success) {
-            *success = zffalse;
-        }
-        return zfnull;
+        return zffalse;
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool autoMakeParent
-            , ZF_OUT_OPT zfstring *errPos
             ) {
         return zffalse;
     }
@@ -121,7 +102,6 @@ public:
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
-            , ZF_IN_OPT zfstring *errPos
             ) {
         return zffalse;
     }

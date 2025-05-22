@@ -42,7 +42,7 @@ ZFPATHTYPE_FILEIO_REGISTER(resraw, ZFPathType_resraw()
 // ============================================================
 // ZFInputForResRaw
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFInput, ZFInputForResRaw
-        , ZFMP_IN(const zfchar *, resFilePath)
+        , ZFMP_IN(const zfstring &, resFilePath)
         )
 
 ZF_NAMESPACE_GLOBAL_END

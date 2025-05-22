@@ -110,34 +110,24 @@ public:
             , ZF_IN const zfchar *dstPath
             , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
-            , ZF_IN_OPT zfstring *errPos = zfnull
             ) {
         zfstring resPathFixed;
         this->resPathFormat(resPathFixed, resPath);
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFRes(), "native_resCopy",
-            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_String())
                 .add(JNIType::S_object_String())
                 .add(JNIType::S_boolean())
                 .add(JNIType::S_boolean())
             ).c_str());
-        jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId
+        return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId
             , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed))
             , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath))
             , (jboolean)isRecursive
             , (jboolean)isForce
             );
-        if(errPosJ == NULL) {
-            return zftrue;
-        }
-        else {
-            if(errPos != zfnull) {
-                ZFImpl_sys_Android_zfstringFromStringT(*errPos, errPosJ);
-            }
-            return zffalse;
-        }
     }
 
     // ============================================================

@@ -15,8 +15,9 @@ ZFMETHOD_DEFINE_1(ZFIOCache, ZFPathInfo, localCachePathInfoForChild
         , ZFMP_IN(const zfchar *, childPath)
         ) {
     ZFPathInfo parent = this->localCachePathInfoFixed();
-    ZFPathInfo ret(parent.pathType(), ZFPathInfoToChild(parent, childPath));
-    return ret;
+    zfstring pathData;
+    ZFPathInfoToChild(pathData, parent, childPath);
+    return ZFPathInfo(parent.pathType(), pathData);
 }
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFIOCache, zfindex, cacheMaxSize) {
@@ -55,15 +56,16 @@ public:
             d->localCacheList.removeAll();
             if(impl->implFindFirst(fd, pathInfo.pathData())) {
                 do {
-                    zfstring childPath = impl->implToChild(pathInfo.pathData(), fd.name());
+                    zfstring childPath;
+                    impl->implToChild(childPath, pathInfo.pathData(), fd.name());
                     if(ZFRegExpFind(fd.name(), pattern) == ZFIndexRangeMax()) {
-                        impl->implRemove(childPath, zffalse, zftrue, zfnull);
+                        impl->implRemove(childPath, zffalse, zftrue);
                         continue;
                     }
                     _ZFP_ZFIOCacheData cacheData;
                     zftimetFromStringT(cacheData.cacheTime, childPath + 32 + 1);
                     if(curTime - cacheData.cacheTime >= cacheTimeMax) {
-                        impl->implRemove(childPath, zffalse, zftrue, zfnull);
+                        impl->implRemove(childPath, zffalse, zftrue);
                         continue;
                     }
                     cacheData.pathInfo.pathType(pathInfo.pathType());

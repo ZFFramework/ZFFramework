@@ -186,7 +186,7 @@ ZFMAIN_ENTRY() {
     // before
     ZFPathInfoTreePrint(ZFPathInfo("res:"));
 
-    ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
+    ZFResExtPathAdd("compress:http:http://192.168.xxx.xxx/xxx.zip|");
 
     // after
     ZFPathInfoTreePrint(ZFPathInfo("res:"));

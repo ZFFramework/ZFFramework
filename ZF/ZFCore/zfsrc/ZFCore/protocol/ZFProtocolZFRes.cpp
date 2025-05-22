@@ -36,27 +36,11 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resCopy(
         , ZF_IN const zfchar *dstPath
         , ZF_IN_OPT zfbool isRecursive /* = zftrue */
         , ZF_IN_OPT zfbool isForce /* = zftrue */
-        , ZF_IN_OPT zfstring *errPos /* = zfnull */
         ) {
     zfstring tmpPath;
     tmpPath += this->resRootPath();
     tmpPath += resPath;
-    if(errPos == zfnull) {
-        return ZFFileCopy(tmpPath, dstPath, isRecursive, isForce, zfnull);
-    }
-    else {
-        zfstring errPosTmp;
-        zfbool ret = ZFFileCopy(tmpPath, dstPath, isRecursive, isForce, &errPosTmp);
-        if(!ret) {
-            if(zfstringFind(errPosTmp, this->resRootPath()) == 0) {
-                *errPos += errPosTmp + this->resRootPath().length();
-            }
-            else {
-                *errPos += errPosTmp;
-            }
-        }
-        return ret;
-    }
+    return ZFFileCopy(tmpPath, dstPath, isRecursive, isForce);
 }
 
 // ============================================================

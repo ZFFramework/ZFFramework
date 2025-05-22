@@ -77,9 +77,6 @@ ZF_NAMESPACE_BEGIN_REGISTER(ZFFileIOImpl, ZF_NAMESPACE_GLOBAL)
  *               ) {
  *           ...
  *       }
- *       static void pathRevert(ZF_IN_OUT zfstring &pathData) {
- *           ...
- *       }
  *   };
  *
  *   // use the file IO callback
@@ -102,36 +99,32 @@ public:
         T_Holder::pathConvert(pathDataAbs, pathData);
         return ZFFileIsDir(pathDataAbs);
     }
-    static zfstring callbackToFileName(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToFileName(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        return ZFPathInfoCallbackToFileNameDefault(pathData, success);
+        return ZFPathInfoCallbackToFileNameDefault(ret, pathData);
     }
-    static zfstring callbackToChild(
-            ZF_IN const zfchar *pathData
+    static zfbool callbackToChild(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             , ZF_IN const zfchar *childName
-            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        return ZFPathInfoCallbackToChildDefault(pathData, childName, success);
+        return ZFPathInfoCallbackToChildDefault(ret, pathData, childName);
     }
-    static zfstring callbackToParent(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToParent(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        return ZFPathInfoCallbackToParentDefault(pathData, success);
+        return ZFPathInfoCallbackToParentDefault(ret, pathData);
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool autoMakeParent
-            , ZF_OUT_OPT zfstring *errPos
             ) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(!ZFPathCreate(pathDataAbs, autoMakeParent, errPos)) {
-            if(errPos != zfnull) {
-                T_Holder::pathRevert(*errPos);
-            }
+        if(!ZFPathCreate(pathDataAbs, autoMakeParent)) {
             return zffalse;
         }
         else {
@@ -142,14 +135,10 @@ public:
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
-            , ZF_IN_OPT zfstring *errPos
             ) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(!ZFFileRemove(pathDataAbs, isRecursive, isForce, errPos)) {
-            if(errPos != zfnull) {
-                T_Holder::pathRevert(*errPos);
-            }
+        if(!ZFFileRemove(pathDataAbs, isRecursive, isForce)) {
             return zffalse;
         }
         else {

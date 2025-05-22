@@ -39,8 +39,8 @@ ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFCompressLevel)
  *   // compress
  *   zfobj<ZFCompress> zip(ZFOutputForFile(xxx));
  *   zfbool success = zip->valid();
- *   success &= zip->add(inputRaw0, filePathInZip0);
- *   success &= zip->add(inputRaw1, filePathInZip1);
+ *   success &= zip->output(filePathInZip0, inputRaw0);
+ *   success &= zip->output(filePathInZip1, inputRaw1);
  *   success &= zip->close();
  *
  *   // decompress
@@ -88,9 +88,9 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, valid)
 
     /** @brief see #ZFCompress */
-    ZFMETHOD_DECLARE_2(zfbool, add
-            , ZFMP_IN_OUT(const ZFInput &, inputRaw)
+    ZFMETHOD_DECLARE_2(zfbool, output
             , ZFMP_IN(const zfstring &, filePathInZip)
+            , ZFMP_IN_OUT(const ZFInput &, inputRaw)
             )
     /** @brief see #ZFCompress */
     ZFMETHOD_DECLARE_1(zfbool, createDir

@@ -74,7 +74,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     }
 
     zfstring fileName;
-    ZFFileNameOf(fileName, path);
+    ZFFileNameOfT(fileName, path);
     zfstring fileNameNew;
     ZFTextTemplateApply(textTemplateParam, ZFOutputForString(fileNameNew), fileName);
     if(fileName.compare(fileNameNew) == 0) {
@@ -87,7 +87,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     }
 
     zfstring pathNew;
-    if(ZFPathParentOf(pathNew, path)) {
+    if(ZFPathParentOfT(pathNew, path)) {
         pathNew += '/';
     }
     pathNew += fileNameNew;

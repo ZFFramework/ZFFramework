@@ -66,11 +66,11 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, zfstring, ZFPathFormatRelative
  *   e.g. "file.ext" from "/path/file.ext"
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileNameOf
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileNameOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         )
-/** @brief see #ZFFileNameOf */
+/** @brief see #ZFFileNameOfT */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileNameOf
         , ZFMP_IN(const zfchar *, src)
         )
@@ -79,11 +79,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileNameOf
  *   e.g. "file.ext0" from "/path/file.ext0.ext1"
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileNameOfWithoutExt
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileNameOfWithoutExtT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         )
-/** @brief see #ZFFileNameOfWithoutExt */
+/** @brief see #ZFFileNameOfWithoutExtT */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileNameOfWithoutExt
         , ZFMP_IN(const zfchar *, src)
         )
@@ -93,11 +93,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileNameOfWithoutExt
  *   or empty if no extension
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileExtOf
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileExtOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         )
-/** @brief see #ZFFileExtOf */
+/** @brief see #ZFFileExtOfT */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileExtOf
         , ZFMP_IN(const zfchar *, src)
         )
@@ -107,11 +107,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileExtOf
  *   or original string if no extension
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathOfWithoutExt
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathOfWithoutExtT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         )
-/** @brief see #ZFFileExtOf */
+/** @brief see #ZFPathOfWithoutExtT */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathOfWithoutExt
         , ZFMP_IN(const zfchar *, src)
         )
@@ -121,11 +121,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathOfWithoutExt
  * return empty string if no parent found
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathParentOf
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathParentOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         )
-/** @brief see #ZFPathParentOf */
+/** @brief see #ZFPathParentOfT */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathParentOf
         , ZFMP_IN(const zfchar *, src)
         )
@@ -134,11 +134,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathParentOf
  *   e.g. {"path", "file.ext"}(as array) from "/path/file.ext"
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathComponentsOf
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathComponentsOfT
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
         , ZFMP_IN(const zfchar *, src)
         )
-/** @brief see #ZFPathComponentsOf */
+/** @brief see #ZFPathComponentsOfT */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFCoreArray<zfstring>, ZFPathComponentsOf
         , ZFMP_IN(const zfchar *, src)
         )

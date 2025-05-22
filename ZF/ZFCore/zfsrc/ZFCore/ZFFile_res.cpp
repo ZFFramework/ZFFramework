@@ -62,7 +62,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
 
         const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
         if(impl) {
-            if(impl->implIsExist(impl->implToChild(t.pathData(), resPath))) {
+            zfstring toCheck;
+            impl->implToChild(toCheck, t.pathData(), resPath);
+            if(impl->implIsExist(toCheck)) {
                 ZFCoreMutexLocker();
                 resExtPath = t;
                 return zftrue;
@@ -105,7 +107,9 @@ static zfbool _ZFP_ZFResExtPathCheck(
 
         const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
         if(impl) {
-            if(impl->implIsExist(impl->implToChild(t.pathData(), resPath))) {
+            zfstring toCheck;
+            impl->implToChild(toCheck, t.pathData(), resPath);
+            if(impl->implIsExist(toCheck)) {
                 ZFCoreMutexLocker();
                 resExtPath = l[i];
                 return zftrue;
@@ -135,36 +139,33 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
         ) {
     ZFPathInfo resExtPath;
     if(ZFResExtPathCheck(resExtPath, resPath)) {
-        resExtPath.pathData(ZFPathInfoToChild(resExtPath, resPath));
+        zfstring tmp;
+        ZFPathInfoToChild(tmp, resExtPath, resPath);
+        resExtPath.pathData(tmp);
         return ZFPathInfoIsDir(resExtPath);
     }
     else {
         return ZFResRaw::ZFResIsDir(resPath);
     }
 }
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFResCopy
         , ZFMP_IN(const zfchar *, resPath)
         , ZFMP_IN(const zfchar *, dstPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         ) {
     ZFPathInfo resExtPath;
     if(ZFResExtPathCheck(resExtPath, resPath)) {
-        ZFPathInfo errPosTmp;
         zfbool ret = ZFPathInfoCopy(
-            ZFPathInfo(ZFPathType_res(), resPath),
-            ZFPathInfo(ZFPathType_file(), dstPath),
-            isRecursive,
-            isForce,
-            errPos != zfnull ? &errPosTmp : zfnull);
-        if(errPos != zfnull && !ret) {
-            *errPos += errPosTmp.pathData();
-        }
+            ZFPathInfo(ZFPathType_res(), resPath)
+            , ZFPathInfo(ZFPathType_file(), dstPath)
+            , isRecursive
+            , isForce
+            );
         return ret;
     }
     else {
-        return ZFResRaw::ZFResCopy(resPath, dstPath, isRecursive, isForce, errPos);
+        return ZFResRaw::ZFResCopy(resPath, dstPath, isRecursive, isForce);
     }
 }
 
@@ -193,11 +194,6 @@ public:
     , resFindFirstStarted(zffalse)
     {
     }
-public:
-    void copyToFd(ZF_OUT ZFFileFindData::Impl &fd) const {
-        fd.name = this->resExtFd.impl().name;
-        fd.isDir = this->resExtFd.impl().isDir;
-    }
 };
 
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
@@ -212,10 +208,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
     implUserData->resPathSaved = resPath;
 
     if(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, resPath, implUserData->resExtResolved)) {
-        ZFPathInfo resPathTmp(implUserData->resExtPath.pathType(), ZFPathInfoToChild(implUserData->resExtPath, resPath));
-        if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
+        zfstring resPathTmp;
+        ZFPathInfoToChild(resPathTmp, implUserData->resExtPath, resPath);
+        if(ZFPathInfoFindFirst(ZFPathInfo(implUserData->resExtPath.pathType(), resPathTmp), implUserData->resExtFd)) {
             implUserData->resExtItemResolved[implUserData->resExtFd.name()] = zftrue;
-            implUserData->copyToFd(fd.impl());
+            fd.implCopy(implUserData->resExtFd);
             return zftrue;
         }
         else {
@@ -250,21 +247,23 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
                 continue;
             }
             implUserData->resExtItemResolved[implUserData->resExtFd.name()] = zftrue;
-            implUserData->copyToFd(fd.impl());
+            fd.implCopy(implUserData->resExtFd);
             return zftrue;
         }
         ZFPathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
 
         // try next resExtPath
         while(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, implUserData->resPathSaved, implUserData->resExtResolved)) {
-            ZFPathInfo resPathTmp(implUserData->resExtPath.pathType(), ZFPathInfoToChild(implUserData->resExtPath, implUserData->resPathSaved));
+            zfstring resPathDataTmp;
+            ZFPathInfoToChild(resPathDataTmp, implUserData->resExtPath, implUserData->resPathSaved);
+            ZFPathInfo resPathTmp(implUserData->resExtPath.pathType(), resPathDataTmp);
             if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
                 do {
                     if(implUserData->resExtItemResolved.find(implUserData->resExtFd.name()) != implUserData->resExtItemResolved.end()) {
                         continue;
                     }
                     implUserData->resExtItemResolved[implUserData->resExtFd.name()] = zftrue;
-                    implUserData->copyToFd(fd.impl());
+                    fd.implCopy(implUserData->resExtFd);
                     return zftrue;
                 } while(ZFPathInfoFindNext(resPathTmp, implUserData->resExtFd));
                 ZFPathInfoFindClose(resPathTmp, implUserData->resExtFd);
@@ -318,7 +317,9 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
 
     _ZFP_ZFFileTokenForRes *ret = zfnew(_ZFP_ZFFileTokenForRes);
     if(ZFResExtPathCheck(ret->resExtPath, resPath)) {
-        ret->resExtPath.pathData(ZFPathInfoToChild(ret->resExtPath, resPath));
+        zfstring tmp;
+        ZFPathInfoToChild(tmp, ret->resExtPath, resPath);
+        ret->resExtPath.pathData(tmp);
         ret->fd = ZFPathInfoOpen(ret->resExtPath, v_ZFFileOpenOption::e_Read);
     }
     else {

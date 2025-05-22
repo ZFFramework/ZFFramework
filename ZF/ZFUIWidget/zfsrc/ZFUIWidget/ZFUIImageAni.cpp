@@ -817,10 +817,13 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageAniLoad
         return zfnull;
     }
 
-    zfstring fileName = (input.pathInfo()
-            ? ZFPathInfoToFileName(input.pathInfo())
-            : input.callbackId()
-            );
+    zfstring fileName;
+    if(input.pathInfo()) {
+        ZFPathInfoToFileName(fileName, input.pathInfo());
+    }
+    else {
+        fileName = input.callbackId();
+    }
 
     // path/test-(40x30-10).png
     // path/test-(40x30-10-33).png
@@ -928,8 +931,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         return zffalse;
     }
 
-    zfstring fileName = ZFFileNameOfWithoutExt(ZFPathInfoToFileName(dst));
-    if(!fileName) {
+    zfstring fileName;
+    if(!ZFPathInfoToFileName(fileName, dst)
+            || ZFFileNameOfWithoutExtT(fileName, fileName)
+            || !fileName
+            ) {
         return zffalse;
     }
     if(frameDuration != 0) {
@@ -947,8 +953,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
                 , frameCount
                 );
     }
-    zfstring fileExt = ZFFileExtOf(pathInfoImpl->implToFileName(dst.pathData()));
-    if(!fileExt) {
+    zfstring fileExt;
+    if(!pathInfoImpl->implToFileName(fileExt, dst.pathData())
+            || !ZFFileExtOfT(fileExt, fileExt)
+            || !fileExt
+            ) {
         return zffalse;
     }
     if(!fileExt) {
@@ -956,9 +965,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         fileName += fileExt;
     }
 
-    zfstring pathData = pathInfoImpl->implToParent(dst.pathData());
-    pathData = pathInfoImpl->implToChild(pathData, fileName);
-    if(!pathData) {
+    zfstring pathData;
+    if(!pathInfoImpl->implToParent(pathData, dst.pathData())
+            || !pathInfoImpl->implToChild(pathData, pathData, fileName)
+            || !pathData
+            ) {
         return zffalse;
     }
     ZFOutput output;

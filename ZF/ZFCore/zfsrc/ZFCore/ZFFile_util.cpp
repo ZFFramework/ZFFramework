@@ -183,7 +183,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(zfstring, ZFPathFormatRelative
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOf
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
@@ -214,10 +214,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileNameOf
         , ZFMP_IN(const zfchar *, src)
         ) {
     zfstring ret;
-    ZFFileNameOf(ret, src);
+    ZFFileNameOfT(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfWithoutExt
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfWithoutExtT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
@@ -260,10 +260,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileNameOfWithoutExt
         , ZFMP_IN(const zfchar *, src)
         ) {
     zfstring ret;
-    ZFFileNameOfWithoutExt(ret, src);
+    ZFFileNameOfWithoutExtT(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileExtOf
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileExtOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
@@ -298,10 +298,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileExtOf
         , ZFMP_IN(const zfchar *, src)
         ) {
     zfstring ret;
-    ZFFileExtOf(ret, src);
+    ZFFileExtOfT(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathOfWithoutExt
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathOfWithoutExtT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
@@ -332,10 +332,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFPathOfWithoutExt
         , ZFMP_IN(const zfchar *, src)
         ) {
     zfstring ret;
-    ZFPathOfWithoutExt(ret, src);
+    ZFPathOfWithoutExtT(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOf
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
@@ -367,10 +367,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFPathParentOf
         , ZFMP_IN(const zfchar *, src)
         ) {
     zfstring ret;
-    ZFPathParentOf(ret, src);
+    ZFPathParentOfT(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathComponentsOf
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathComponentsOfT
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
         , ZFMP_IN(const zfchar *, src)
         ) {
@@ -401,7 +401,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<zfstring>, ZFPathComponentsOf
         , ZFMP_IN(const zfchar *, src)
         ) {
     ZFCoreArray<zfstring> ret;
-    ZFPathComponentsOf(ret, src);
+    ZFPathComponentsOfT(ret, src);
     return ret;
 }
 
@@ -428,7 +428,8 @@ static void _ZFP_ZFFileTreePrint(
 
             if(fd.isDir()) {
                 outputCallback << fd.name() << "/\n";
-                zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
+                zfstring pathDataChild;
+                fileImpl.implToChild(pathDataChild, pathData, fd.name());
                 if(pathDataChild) {
                     _ZFP_ZFFileTreePrint(pathDataChild, outputCallback, headToken, indentToken, indentLevel + 1, fileImpl);
                 }
@@ -466,10 +467,13 @@ public:
         zfobj<v_ZFFileFindData> fd;
         if(impl.implFindFirst(fd->zfv, pathInfo->zfv.pathData())) {
             do {
-                pathInfo->zfv.pathData(impl.implToChild(pathInfo->zfv.pathData(), fd->zfv.name()));
-                if(!pathInfo->zfv.pathData()) {
+                zfstring childPathData;
+                if(!impl.implToChild(childPathData, pathInfo->zfv.pathData(), fd->zfv.name())
+                        || !childPathData
+                        ) {
                     return zffalse;
                 }
+                pathInfo->zfv.pathData(childPathData);
 
                 if((fd->zfv.isDir() && forEachDir) || (!fd->zfv.isDir() && forEachFile)) {
                     ZFArgs zfargs;
@@ -485,10 +489,13 @@ public:
                     action(impl, fileCallback, pathInfo);
                 }
 
-                pathInfo->zfv.pathData(impl.implToParent(pathInfo->zfv.pathData()));
-                if(!pathInfo->zfv.pathData()) {
+                zfstring parentPathData;
+                if(!impl.implToParent(parentPathData, pathInfo->zfv.pathData())
+                        || !parentPathData
+                        ) {
                     return zffalse;
                 }
+                pathInfo->zfv.pathData(parentPathData);
             } while(impl.implFindNext(fd->zfv));
             impl.implFindClose(fd->zfv);
         }

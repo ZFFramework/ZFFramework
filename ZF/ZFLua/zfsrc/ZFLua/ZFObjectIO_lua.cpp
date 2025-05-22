@@ -3,8 +3,11 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(lua, {
-        zfstring fileExt = ZFFileExtOf(ZFPathInfoToFileName(pathInfo));
-        if(!fileExt) {
+        zfstring fileExt;
+        if(!ZFPathInfoToFileName(fileExt, pathInfo)
+                || !ZFFileExtOfT(fileExt, fileExt)
+                || !fileExt
+                ) {
             return zffalse;
         }
         zfstringToLowerT(fileExt);

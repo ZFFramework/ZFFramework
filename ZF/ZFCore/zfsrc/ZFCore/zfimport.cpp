@@ -70,8 +70,10 @@ static void _ZFP_zfimportDir(
         , ZF_IN const ZFPathInfo &pathInfoRoot
         , ZF_IN const zfchar *path
         ) {
-    zfstring pathData = impl.implToChild(pathInfoRoot.pathData(), path);
-    if(!pathData) {
+    zfstring pathData;
+    if(!impl.implToChild(pathData, pathInfoRoot.pathData(), path)
+            || !pathData
+            ) {
         return;
     }
     ZFFileFindData fd;
@@ -151,11 +153,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         }
         zfstring pathData;
         if(!impl->implIsDir(pathInfo.pathData())) {
-            pathData = impl->implToParent(pathInfo.pathData());
-            pathData = impl->implToChild(pathData, path);
+            impl->implToParent(pathData, pathInfo.pathData());
+            impl->implToChild(pathData, pathData, path);
         }
         else {
-            pathData = impl->implToChild(pathInfo.pathData(), path);
+            impl->implToChild(pathData, pathInfo.pathData(), path);
         }
         if(!pathData) {
             return zfnull;

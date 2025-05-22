@@ -62,10 +62,10 @@ public final class ZFRes {
         return false;
     }
 
-    public static String native_resCopy(String resPath,
-                                        String dstPath,
-                                        boolean isRecursive,
-                                        boolean isForce) {
+    public static boolean native_resCopy(String resPath,
+                                         String dstPath,
+                                         boolean isRecursive,
+                                         boolean isForce) {
         AssetManager assetManager = ZFMainEntry.assetManager();
         boolean isDir = false;
         try {
@@ -80,22 +80,17 @@ public final class ZFRes {
             return native_resCopy_dir(assetManager, resPath, dstPath, isRecursive, isForce);
         }
         else {
-            if(native_resCopy_file(assetManager, resPath, dstPath, isRecursive, isForce)) {
-                return null;
-            }
-            else {
-                return resPath;
-            }
+            return native_resCopy_file(assetManager, resPath, dstPath, isRecursive, isForce);
         }
     }
 
-    private static String native_resCopy_dir(AssetManager assetManager,
-                                             String resPath,
-                                             String dstPath,
-                                             boolean isRecursive,
-                                             boolean isForce) {
+    private static boolean native_resCopy_dir(AssetManager assetManager,
+                                              String resPath,
+                                              String dstPath,
+                                              boolean isRecursive,
+                                              boolean isForce) {
         if(!isRecursive) {
-            return resPath;
+            return false;
         }
         File dstFd = new File(dstPath);
         if(isForce) {
@@ -111,16 +106,15 @@ public final class ZFRes {
             dstFd.mkdirs();
         }
         catch(Exception e) {
-            return resPath;
+            return false;
         }
         for(String file : files) {
             String fromAbsPath = String.format("%s/%s", resPath, file);
             InputStream is = native_resCopy_tryReadFile(assetManager, fromAbsPath);
             String toAbsPath = String.format("%s/%s", dstPath, file);
             if(is == null) {
-                String tmp = native_resCopy_dir(assetManager, fromAbsPath, toAbsPath, isRecursive, isForce);
-                if(tmp != null) {
-                    return tmp;
+                if(!native_resCopy_dir(assetManager, fromAbsPath, toAbsPath, isRecursive, isForce)) {
+                    return false;
                 }
             }
             else {
@@ -130,11 +124,11 @@ public final class ZFRes {
                 catch(IOException e) {
                 }
                 if(!native_resCopy_file(assetManager, fromAbsPath, toAbsPath, isRecursive, isForce)) {
-                    return fromAbsPath;
+                    return false;
                 }
             }
         }
-        return null;
+        return true;
     }
 
     private static boolean native_resCopy_file(AssetManager assetManager,

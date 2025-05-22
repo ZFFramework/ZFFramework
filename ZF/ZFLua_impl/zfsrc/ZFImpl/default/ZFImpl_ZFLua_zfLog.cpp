@@ -41,7 +41,9 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFLog, ZFM_EXPAND({
     ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLog,
             "function (f, ...)"
             "  if ZFLogHeaderDefault_logCaller() then"
-            "    return _G['ZFLog']('[' .. ZFPathInfoToFileName(zfl_l or ZFPathInfo('file','unknown')) .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
+            "    local n = zfstring()"
+            "    ZFPathInfoToFileName(n, zfl_l or ZFPathInfo('file','unknown'))"
+            "    return _G['ZFLog']('[' .. n .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
             "  else"
             "    return _G['ZFLog'](f or '', ...);"
             "  end;"
@@ -51,7 +53,9 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFLog, ZFM_EXPAND({
     ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLog,
             "function (f, ...)"
             "  if ZFLogHeaderDefault_logCaller() then"
-            "    return _G['ZFLog']('[' .. ZFPathInfoToFileName(zfl_l or ZFPathInfo('file','unknown')) .. '] ' .. (f or ''), ...);"
+            "    local n = zfstring()"
+            "    ZFPathInfoToFileName(n, zfl_l or ZFPathInfo('file','unknown'))"
+            "    return _G['ZFLog']('[' .. n .. '] ' .. (f or ''), ...);"
             "  else"
             "    return _G['ZFLog'](f or '', ...);"
             "  end;"

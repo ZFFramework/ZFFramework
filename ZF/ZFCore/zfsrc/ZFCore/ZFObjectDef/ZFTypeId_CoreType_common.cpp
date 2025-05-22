@@ -907,8 +907,8 @@ ZFOBJECT_ON_INIT_USER_REGISTER_2({
         zfv.pathType(pathType);
         zfv.pathData(pathData);
     }, v_ZFPathInfo
-    , ZFMP_IN(const zfchar *, pathType)
-    , ZFMP_IN(const zfchar *, pathData)
+    , ZFMP_IN(const zfstring &, pathType)
+    , ZFMP_IN(const zfstring &, pathData)
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPathInfo, ZFPathInfo &, pathType
         , ZFMP_IN(const zfstring &, pathType)

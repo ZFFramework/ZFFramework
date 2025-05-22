@@ -66,7 +66,8 @@ static void _ZFP_ZFStyleLoadImpl(
             }
             relativePathTmp += fd.name();
 
-            zfstring pathDataChild = fileImpl.implToChild(pathData, fd.name());
+            zfstring pathDataChild;
+            fileImpl.implToChild(pathDataChild, pathData, fd.name());
             if(fd.isDir()) {
                 _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, relativePathTmp, allSuccess, errorCallback);
             }
@@ -81,7 +82,7 @@ static void _ZFP_ZFStyleLoadImpl(
                             );
                     continue;
                 }
-                ZFPathOfWithoutExt(relativePathTmp, relativePathTmp);
+                ZFPathOfWithoutExtT(relativePathTmp, relativePathTmp);
                 _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
             }
         } while(fileImpl.implFindNext(fd));
@@ -100,8 +101,10 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
     ZFStyleUpdateBlock();
 
     if(!fileImpl->implIsDir(pathInfo.pathData())) {
-        zfstring fileName = fileImpl->implToFileName(pathInfo.pathData());
-        if(!fileName) {
+        zfstring fileName;
+        if(!fileImpl->implToFileName(fileName, pathInfo.pathData())
+                || !fileName
+                ) {
             return zffalse;
         }
         zfauto styleValue;
@@ -113,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
                     );
             return zffalse;
         }
-        ZFPathOfWithoutExt(fileName, fileName);
+        ZFPathOfWithoutExtT(fileName, fileName);
         _ZFP_ZFStyleLoad_ZFStyleSet(fileName, styleValue);
         return zftrue;
     }

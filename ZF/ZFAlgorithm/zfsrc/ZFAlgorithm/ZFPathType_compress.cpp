@@ -1,14 +1,14 @@
-#include "ZFPathType_ZFCompress.h"
+#include "ZFPathType_compress.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPATHTYPE_DEFINE(ZFCompress)
+ZFPATHTYPE_DEFINE(compress)
 
 // ============================================================
 // ZFCompress
-zfclassNotPOD _ZFP_ZFPathType_ZFCompress {
+zfclassNotPOD _ZFP_ZFPathType_compress {
 private:
     typedef enum {
         _TaskTypeCompress,
@@ -16,7 +16,7 @@ private:
     } _TaskType;
     zfclassNotPOD _TaskData {
     public:
-        zfstring compressPathInfo;
+        zfstring refPathInfo;
         _TaskType taskType;
         zfauto taskToken; // ZFCompress / ZFDecompress token
         zfuint ioCount; // input / output task count
@@ -24,7 +24,7 @@ private:
                         // would be cleaned by _taskIdleCleanup
     public:
         _TaskData(void)
-        : compressPathInfo()
+        : refPathInfo()
         , taskType()
         , taskToken()
         , ioCount(1)
@@ -103,7 +103,7 @@ private:
     }
 
 private:
-    // <compressPathInfo, taskData>
+    // <refPathInfo, taskData>
     static _TaskMap &_taskMap(void) {
         static _TaskMap m;
         return m;
@@ -114,8 +114,8 @@ private:
             , ZF_IN_OUT const zfchar *pathDataOrig
             , ZF_IN _TaskType taskType
             ) {
-        zfstring compressPathInfo;
-        if(!ZFPathInfoChainDecodeString(compressPathInfo, pathData, pathDataOrig)) {
+        zfstring refPathInfo;
+        if(!ZFPathInfoChainDecodeString(refPathInfo, pathData, pathDataOrig)) {
             return zfnull;
         }
 
@@ -123,7 +123,7 @@ private:
         _TaskMap &m = _taskMap();
         {
             ZFCoreMutexLocker();
-            _TaskMap::iterator it = m.find(compressPathInfo.cString());
+            _TaskMap::iterator it = m.find(refPathInfo.cString());
             if(it != m.end()) {
                 if(it->second->taskType != taskType) {
                     if(it->second->ioCount > 0) {
@@ -141,22 +141,22 @@ private:
                 }
             }
             taskData = zfnew(_TaskData);
-            taskData->compressPathInfo.swap(compressPathInfo);
-            m[taskData->compressPathInfo.cString()] = taskData;
+            taskData->refPathInfo.swap(refPathInfo);
+            m[taskData->refPathInfo.cString()] = taskData;
             taskData->taskType = taskType;
         }
 
         zfbool success = zffalse;
         if(taskType == _TaskTypeCompress) {
             zfobj<ZFCompress> t;
-            if(t->open(ZFOutputForPathInfo(ZFPathInfo(taskData->compressPathInfo)))) {
+            if(t->open(ZFOutputForPathInfo(ZFPathInfo(taskData->refPathInfo)))) {
                 taskData->taskToken = t;
                 success = zftrue;
             }
         }
         else {
             zfobj<ZFDecompress> t;
-            if(t->open(ZFInputForPathInfo(ZFPathInfo(taskData->compressPathInfo)))) {
+            if(t->open(ZFInputForPathInfo(ZFPathInfo(taskData->refPathInfo)))) {
                 taskData->taskToken = t;
                 success = zftrue;
             }
@@ -176,7 +176,7 @@ private:
         --(taskData->ioCount);
         if(taskData->ioCount == 0) {
             _TaskMap &m = _taskMap();
-            m.erase(taskData->compressPathInfo.cString());
+            m.erase(taskData->refPathInfo.cString());
             ZFCoreMutexUnlock();
 
             zfdelete(taskData);
@@ -220,65 +220,59 @@ public:
         _taskIdle(taskData);
         return isDir;
     }
-    static zfstring callbackToFileName(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToFileName(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        return ZFPathInfoCallbackToFileNameDefault(pathData, success);
+        zfstring refPathInfo;
+        zfstring selfPathData;
+        if(!ZFPathInfoChainDecodeString(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
+        }
+        return ZFPathInfoCallbackToFileNameDefault(ret, selfPathData);
     }
-    static zfstring callbackToChild(
-            ZF_IN const zfchar *pathData
+    static zfbool callbackToChild(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             , ZF_IN const zfchar *childName
-            , ZF_OUT_OPT zfbool *success = zfnull
             ) {
-        if(zfstringIsEmpty(pathData)) {
-            if(success) {
-                *success = zffalse;
-            }
-            return zfnull;
+        if(zfstringIsEmpty(childName)) {
+            return zftrue;
         }
 
-        zfstring ret;
-        ret += pathData;
-        if(ret[ret.length() - 1] != '|') {
-            ret += '/';
+        zfstring refPathInfo;
+        zfstring selfPathData;
+        if(!ZFPathInfoChainDecodeString(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
+        }
+        if(!(pathData >= ret.cString() && pathData < ret.cString() + ret.length())) {
+            ret += pathData;
+        }
+        if(selfPathData) {
+            ret += "/";
         }
         ret += childName;
-        if(success) {
-            *success = zftrue;
-        }
-        return ret;
+        return zftrue;
     }
-    static zfstring callbackToParent(
-            ZF_IN const zfchar *pathData
-            , ZF_OUT_OPT zfbool *success = zfnull
+    static zfbool callbackToParent(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfchar *pathData
             ) {
-        zfstring compressPathInfo;
-        zfstring pathDataTmp;
-        if(!ZFPathInfoChainDecodeString(compressPathInfo, pathDataTmp, pathData)) {
-            if(success) {
-                *success = zffalse;
-            }
-            return zfnull;
+        ZFPathInfo refPathInfo;
+        zfstring selfPathData;
+        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
         }
-        zfstring ret;
-        ZFCoreDataEncode(ret, compressPathInfo, compressPathInfo.length(), ZFPathInfoChainCharMap());
-        zfbool successTmp = zftrue;
-        ret += ZFPathInfoCallbackToParentDefault(pathDataTmp, &successTmp);
-        if(success) {
-            *success = successTmp;
+        ZFPathInfoCallbackToParentDefault(selfPathData, selfPathData);
+        if(pathData >= ret.cString() && pathData < ret.cString() + ret.length()) {
+            ret.removeAll();
         }
-        if(successTmp) {
-            return ret;
-        }
-        else {
-            return zfnull;
-        }
+        ZFPathInfoChainEncodeT(ret, refPathInfo, selfPathData);
+        return zftrue;
     }
     static zfbool callbackPathCreate(
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool autoMakeParent
-            , ZF_OUT_OPT zfstring *errPos
             ) {
         zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeCompress);
@@ -294,7 +288,6 @@ public:
             ZF_IN const zfchar *pathData
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
-            , ZF_IN_OPT zfstring *errPos
             ) {
         zfstring relPath;
         _TaskData *taskData = _taskCreate(relPath, pathData, _TaskTypeCompress);
@@ -341,7 +334,7 @@ public:
         zfbool ret = t->findFirst(fd, relPath);
         if(ret) {
             zfobj<ZFValueHolder> taskDataHolder(taskData, ZFValueHolderTypePointerRef());
-            fd.implTag("_ZFP_ZFPathType_ZFCompress", taskDataHolder);
+            fd.implTag("_ZFP_ZFPathType_compress", taskDataHolder);
         }
         else {
             _taskIdle(taskData);
@@ -350,7 +343,7 @@ public:
     }
     static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd) {
         _TaskData *taskData = zfnull;
-        ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_ZFCompress");
+        ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_compress");
         if(taskDataHolder != zfnull) {
             taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
         }
@@ -359,7 +352,7 @@ public:
     }
     static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd) {
         _TaskData *taskData = zfnull;
-        ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_ZFCompress");
+        ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_compress");
         if(taskDataHolder != zfnull) {
             taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
         }
@@ -370,7 +363,7 @@ public:
             _taskIdle(taskData);
         }
 
-        fd.implTag("_ZFP_ZFPathType_ZFCompress", zfnull);
+        fd.implTag("_ZFP_ZFPathType_compress", zfnull);
     }
     static void *callbackOpen(
             ZF_IN const zfchar *pathData
@@ -412,8 +405,8 @@ public:
             return zftrue;
         }
         else {
-            ZFDecompress *t = d->owner->taskToken;
-            zfbool ret = t->output(d->ioBuf->input(), d->relPath);
+            ZFCompress *t = d->owner->taskToken;
+            zfbool ret = t->output(d->relPath, d->ioBuf->input());
             zfdelete(d);
             return ret;
         }
@@ -491,53 +484,53 @@ public:
         }
     }
 };
-ZFPATHTYPE_FILEIO_REGISTER(ZFCompress, ZFPathType_ZFCompress()
-        , _ZFP_ZFPathType_ZFCompress::callbackIsExist
-        , _ZFP_ZFPathType_ZFCompress::callbackIsDir
-        , _ZFP_ZFPathType_ZFCompress::callbackToFileName
-        , _ZFP_ZFPathType_ZFCompress::callbackToChild
-        , _ZFP_ZFPathType_ZFCompress::callbackToParent
-        , _ZFP_ZFPathType_ZFCompress::callbackPathCreate
-        , _ZFP_ZFPathType_ZFCompress::callbackRemove
-        , _ZFP_ZFPathType_ZFCompress::callbackMove
-        , _ZFP_ZFPathType_ZFCompress::callbackFindFirst
-        , _ZFP_ZFPathType_ZFCompress::callbackFindNext
-        , _ZFP_ZFPathType_ZFCompress::callbackFindClose
-        , _ZFP_ZFPathType_ZFCompress::callbackOpen
-        , _ZFP_ZFPathType_ZFCompress::callbackClose
-        , _ZFP_ZFPathType_ZFCompress::callbackTell
-        , _ZFP_ZFPathType_ZFCompress::callbackSeek
-        , _ZFP_ZFPathType_ZFCompress::callbackRead
-        , _ZFP_ZFPathType_ZFCompress::callbackWrite
-        , _ZFP_ZFPathType_ZFCompress::callbackFlush
-        , _ZFP_ZFPathType_ZFCompress::callbackIsEof
-        , _ZFP_ZFPathType_ZFCompress::callbackIsError
-        , _ZFP_ZFPathType_ZFCompress::callbackSize
+ZFPATHTYPE_FILEIO_REGISTER(compress, ZFPathType_compress()
+        , _ZFP_ZFPathType_compress::callbackIsExist
+        , _ZFP_ZFPathType_compress::callbackIsDir
+        , _ZFP_ZFPathType_compress::callbackToFileName
+        , _ZFP_ZFPathType_compress::callbackToChild
+        , _ZFP_ZFPathType_compress::callbackToParent
+        , _ZFP_ZFPathType_compress::callbackPathCreate
+        , _ZFP_ZFPathType_compress::callbackRemove
+        , _ZFP_ZFPathType_compress::callbackMove
+        , _ZFP_ZFPathType_compress::callbackFindFirst
+        , _ZFP_ZFPathType_compress::callbackFindNext
+        , _ZFP_ZFPathType_compress::callbackFindClose
+        , _ZFP_ZFPathType_compress::callbackOpen
+        , _ZFP_ZFPathType_compress::callbackClose
+        , _ZFP_ZFPathType_compress::callbackTell
+        , _ZFP_ZFPathType_compress::callbackSeek
+        , _ZFP_ZFPathType_compress::callbackRead
+        , _ZFP_ZFPathType_compress::callbackWrite
+        , _ZFP_ZFPathType_compress::callbackFlush
+        , _ZFP_ZFPathType_compress::callbackIsEof
+        , _ZFP_ZFPathType_compress::callbackIsError
+        , _ZFP_ZFPathType_compress::callbackSize
     )
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForCompress
-        , ZFMP_IN(const ZFPathInfo &, compressPathInfo)
+        , ZFMP_IN(const ZFPathInfo &, refPathInfo)
         , ZFMP_IN(const zfchar *, relPath)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Read)
         ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathInfo(
-                ZFPathType_ZFCompress()
-                , ZFPathInfoChainEncode(compressPathInfo, relPath)
+                ZFPathType_compress()
+                , ZFPathInfoChainEncode(refPathInfo, relPath)
                 ), flags);
     return ret;
 }
 
 ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompress
-        , ZFMP_IN(const ZFPathInfo &, compressPathInfo)
+        , ZFMP_IN(const ZFPathInfo &, refPathInfo)
         , ZFMP_IN(const zfchar *, relPath)
         , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, v_ZFFileOpenOption::e_Create)
         ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(ret, ZFPathInfo(
-                ZFPathType_ZFCompress()
-                , ZFPathInfoChainEncode(compressPathInfo, relPath)
+                ZFPathType_compress()
+                , ZFPathInfoChainEncode(refPathInfo, relPath)
                 ), flags);
     return ret;
 }

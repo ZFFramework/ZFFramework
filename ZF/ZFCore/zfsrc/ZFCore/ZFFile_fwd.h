@@ -103,10 +103,15 @@ public:
         {
         }
         /** @endcond */
+    private:
+        Impl(ZF_IN const Impl &);
+        Impl &operator = (ZF_IN const Impl &);
     };
 public:
     /** @brief the impl */
     Impl &impl(void) const;
+    /** @brief copy the impl data */
+    void implCopy(ZF_IN const ZFFileFindData &ref) const;
     /** @brief name for the impl */
     const zfstring &implName(void) const;
     /** @brief user data passed from #implAttach */

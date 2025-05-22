@@ -80,6 +80,10 @@ void ZFFileFindData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 ZFFileFindData::Impl &ZFFileFindData::impl(void) const {
     return d->impl;
 }
+void ZFFileFindData::implCopy(ZF_IN const ZFFileFindData &ref) const {
+    d->impl.name = ref.d->impl.name;
+    d->impl.isDir = ref.d->impl.isDir;
+}
 const zfstring &ZFFileFindData::implName(void) const {
     return d->implName;
 }
@@ -149,22 +153,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, na
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfbool, isDir)
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, implName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, void *, implUserData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implAttach
-        , ZFMP_IN(const zfstring &, implName)
-        , ZFMP_IN_OPT(void *, implUserData, zfnull)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, void, implDetach)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, void *, implCheck
-        , ZFMP_IN(const zfstring &, implName)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implTag
-        , ZFMP_IN(const zfstring &, key)
-        , ZFMP_IN(ZFObject *, value)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, zfany, implTag
-        , ZFMP_IN(const zfstring &, key)
-        )
 
 ZF_NAMESPACE_GLOBAL_END
 
