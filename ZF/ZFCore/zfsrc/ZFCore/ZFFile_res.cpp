@@ -26,8 +26,13 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFResExtPathDataHolder, ZFLevelZFFramework
 }
 public:
     ZFCoreArray<ZFPathInfo> resExtPathList;
+
+    // store pathData of `res:xxx`, which would cause recursive search
+    // any access to this path would result to fail for safety
+    zfstlhashmap<zfstring, zfuint> recursiveMap;
 ZF_GLOBAL_INITIALIZER_END(ZFResExtPathDataHolder)
 #define _ZFP_ZFResExtPathList (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFResExtPathDataHolder)->resExtPathList)
+#define _ZFP_ZFResExtRecursiveMap (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFResExtPathDataHolder)->recursiveMap)
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
@@ -35,14 +40,10 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd
     if(pathInfo.pathType().isEmpty()) {
         return;
     }
-    if(zfstringIsEqual(pathInfo.pathType(), ZFPathType_res())) {
-        ZFCoreCriticalMessageTrim(
-                "[ZFResExtPathAdd] adding res as res ext would cause recursive error: %s"
-                , pathInfo
-                );
-        return;
-    }
     ZFCoreMutexLocker();
+    if(zfstringIsEqual(pathInfo.pathType(), ZFPathType_res())) {
+        ++(_ZFP_ZFResExtRecursiveMap[pathInfo.pathData()]);
+    }
     _ZFP_ZFResExtPathList.add(pathInfo);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove
@@ -52,6 +53,18 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove
         return;
     }
     ZFCoreMutexLocker();
+    if(zfstringIsEqual(pathInfo.pathType(), ZFPathType_res())) {
+        zfstlhashmap<zfstring, zfuint> &m = _ZFP_ZFResExtRecursiveMap;
+        zfstlhashmap<zfstring, zfuint>::iterator it = m.find(pathInfo.pathData());
+        if(it != m.end()) {
+            if(it->second == 1) {
+                m.erase(it);
+            }
+            else {
+                --(it->second);
+            }
+        }
+    }
     _ZFP_ZFResExtPathList.removeElement(pathInfo);
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFPathInfo>, ZFResExtPathList) {
@@ -62,6 +75,17 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
         , ZFMP_IN(const zfchar *, resPath)
         ) {
     ZFCoreMutexLock();
+    zfstlhashmap<zfstring, zfuint> &m = _ZFP_ZFResExtRecursiveMap;
+    for(zfstlhashmap<zfstring, zfuint>::iterator it = m.begin(); it != m.end(); ++it) {
+        if(zfsncmp(resPath, it->first.cString(), it->first.length()) == 0
+                && resPath[it->first.length()] == '/'
+                && zfsncmp(resPath + it->first.length() + 1, it->first.cString(), it->first.length()) == 0
+                ) {
+            ZFCoreMutexUnlock();
+            return zffalse;
+        }
+    }
+
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
         const ZFPathInfo &t = l[i];
@@ -100,16 +124,27 @@ typedef zfstlhashmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyHash> _ZFP_ZFResExtMap;
 static zfbool _ZFP_ZFResExtPathCheck(
         ZF_OUT ZFPathInfo &resExtPath
         , ZF_IN const zfchar *resPath
-        , ZF_IN_OUT _ZFP_ZFResExtMap &m
+        , ZF_IN_OUT _ZFP_ZFResExtMap &ck
         ) {
     ZFCoreMutexLock();
+    zfstlhashmap<zfstring, zfuint> &m = _ZFP_ZFResExtRecursiveMap;
+    for(zfstlhashmap<zfstring, zfuint>::iterator it = m.begin(); it != m.end(); ++it) {
+        if(zfsncmp(resPath, it->first.cString(), it->first.length()) == 0
+                && resPath[it->first.length()] == '/'
+                && zfsncmp(resPath + it->first.length() + 1, it->first.cString(), it->first.length()) == 0
+                ) {
+            ZFCoreMutexUnlock();
+            return zffalse;
+        }
+    }
+
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
-        if(m.find(l[i]) != m.end()) {
+        const ZFPathInfo &t = l[i];
+        if(ck.find(t) != ck.end()) {
             continue;
         }
-        m[l[i]] = zftrue;
-        const ZFPathInfo t = l[i];
+        ck[t] = zftrue;
         ZFCoreMutexUnlock();
 
         const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
@@ -118,7 +153,7 @@ static zfbool _ZFP_ZFResExtPathCheck(
             impl->implToChild(toCheck, t.pathData(), resPath);
             if(impl->implIsExist(toCheck)) {
                 ZFCoreMutexLocker();
-                resExtPath = l[i];
+                resExtPath = t;
                 return zftrue;
             }
         }

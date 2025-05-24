@@ -100,7 +100,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
     }
     ZFStyleUpdateBlock();
 
-    if(!fileImpl->implIsDir(pathInfo.pathData())) {
+    if(fileImpl->implIsExist(pathInfo.pathData())
+            && !fileImpl->implIsDir(pathInfo.pathData())
+            ) {
         zfstring fileName;
         if(!fileImpl->implToFileName(fileName, pathInfo.pathData())
                 || !fileName
