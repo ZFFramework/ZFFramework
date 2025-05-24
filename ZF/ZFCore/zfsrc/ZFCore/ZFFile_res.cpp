@@ -35,6 +35,13 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd
     if(pathInfo.pathType().isEmpty()) {
         return;
     }
+    if(zfstringIsEqual(pathInfo.pathType(), ZFPathType_res())) {
+        ZFCoreCriticalMessageTrim(
+                "[ZFResExtPathAdd] adding res as res ext would cause recursive error: %s"
+                , pathInfo
+                );
+        return;
+    }
     ZFCoreMutexLocker();
     _ZFP_ZFResExtPathList.add(pathInfo);
 }
@@ -57,7 +64,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
     ZFCoreMutexLock();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
-        const ZFPathInfo t = l[i];
+        const ZFPathInfo &t = l[i];
         ZFCoreMutexUnlock();
 
         const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(t.pathType());
