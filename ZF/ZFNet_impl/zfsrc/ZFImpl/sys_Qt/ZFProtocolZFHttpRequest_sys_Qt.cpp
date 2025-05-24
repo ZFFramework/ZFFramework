@@ -84,7 +84,7 @@ public slots:
 
         bool ok = false;
         int code = nativeResponse->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(&ok);
-        this->ownerResponse->success(nativeResponse->error() == QNetworkReply::NoError);
+        this->ownerResponse->success(nativeResponse->error() == QNetworkReply::NoError && code >= 200 && code < 300);
         if(ok) {
             this->ownerResponse->code((zfint)code);
         }

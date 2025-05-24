@@ -468,7 +468,7 @@ public:
             , ZF_IN const httplib::Result &result
             ) {
         zfbool success = result;
-        task->ownerResponse->success(success);
+        task->ownerResponse->success(success && result.value().status >= 200 && result.value().status < 300);
         if(success) {
             task->responseHeaders = std::move(result.value().headers);
             task->ownerResponse->code((zfint)result.value().status);
