@@ -2,6 +2,16 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+static ZFCoreArray<ZFState *> _ZFP_ZFStateList;
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStateAutoSave, ZFLevelZFFrameworkNormal) {
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFStateAutoSave) {
+    for(zfindex i = _ZFP_ZFStateList.count() - 1; i != zfindexMax(); --i) {
+        _ZFP_ZFStateList[i]->saveImmediately();
+    }
+}
+ZF_GLOBAL_INITIALIZER_END(ZFStateAutoSave)
+
 ZFOBJECT_REGISTER(ZFState)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFState, instance, ZFLevelZFFrameworkEssential)
 
@@ -248,8 +258,10 @@ private:
 void ZFState::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFStatePrivate);
+    _ZFP_ZFStateList.add(this);
 }
 void ZFState::objectOnDealloc(void) {
+    _ZFP_ZFStateList.removeElement(this);
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }

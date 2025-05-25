@@ -82,5 +82,27 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
     }
 }
 
+ZFMETHOD_FUNC_DEFINE_0(void, ZFLuaGCForAllThread) {
+    ZFCoreArray<void *> luaStateList;
+    ZFCoreArray<ZFThread *> threadList;
+    ZFLuaStateListForAllThread(luaStateList, threadList);
+    ZFLISTENER_0(action
+            ) {
+        void *L = ZFLuaStateCheck();
+        if(L) {
+            ZFCoreLogTrim("[ZFLuaGCForAllThread] begin: %s", ZFThread::currentThread());
+            ZFLuaGCImmediately(L);
+            ZFCoreLogTrim("[ZFLuaGCForAllThread]  end : %s", ZFThread::currentThread());
+        }
+        else {
+            ZFCoreLogTrim("[ZFLuaGCForAllThread] no lua state for thread: %s", ZFThread::currentThread());
+        }
+    } ZFLISTENER_END()
+    for(zfindex i = 0; i < threadList.count(); ++i) {
+        ZFCoreLogTrim("[ZFLuaGCForAllThread] post: %s", threadList[i]);
+        zfpost(action, threadList[i]);
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

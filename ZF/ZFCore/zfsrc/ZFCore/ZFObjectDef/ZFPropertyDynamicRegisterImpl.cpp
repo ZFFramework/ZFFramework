@@ -92,7 +92,9 @@ public:
     void objectDetachAction(ZF_IN ZFObject *obj) {
         obj->observerRemove(ZFObject::E_ObjectBeforeDealloc(), this->_objOnDeallocListener);
         zfauto propertyValue = obj->objectTagRemoveAndGet(this->tagKey_propertyValue);
-        this->propLifeCycle(ZFPropertyLifeCycleOnDetach, obj, this->propertySaved, propertyValue, propertyValue);
+        if(propertyValue) {
+            this->propLifeCycle(ZFPropertyLifeCycleOnDetach, obj, this->propertySaved, propertyValue, propertyValue);
+        }
     }
 
     /*

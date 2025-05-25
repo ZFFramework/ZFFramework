@@ -156,7 +156,12 @@ ZF_GLOBAL_INITIALIZER_END(ZFLuaStateAutoClean)
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaState) {
     ZFCoreMutexLocker();
-    return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LInit();
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) != ZFFrameworkStateAvailable) {
+        return zfnull;
+    }
+    else {
+        return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LInit();
+    }
 }
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaStateCheck) {
     ZFCoreMutexLocker();

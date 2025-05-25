@@ -145,7 +145,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
             , JNIConvertZFObjectToJNIType(jniEnv, tmp)
             );
     } ZFLISTENER_END()
-    v_ZFListener *ret = zfAlloc(v_ZFListener, wrap);
+    v_ZFListener *ret = zfAlloc(v_ZFListener, wrap); // should be release by caller
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }
 JNI_METHOD_DECLARE_END()

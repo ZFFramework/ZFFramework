@@ -27,6 +27,11 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaGC
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 
+/**
+ * @brief run gc for all thread, for debug use only
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void, ZFLuaGCForAllThread)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLuaGC_h_
 
