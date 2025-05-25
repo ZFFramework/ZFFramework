@@ -29,6 +29,7 @@
 		8DDA23BA83C17DBF7693CF6AB19F9BF4 /* ZFUIKit_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA36B1D2B30F162E8BEB57385E64B93 /* ZFUIKit_impl.xcframework */; };
 		923EBA8CE0775832E1FCB5338E43721F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */; };
 		BB45B76571AE6F30BD19F3C39E629509 /* ZFUIKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A86DAE671D5A32BA66B8DE555ACB72F /* ZFUIKit.xcframework */; };
+		BC0FA5BEE63ECA3E07533FC481024DEB /* ZFAppUtil.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA180D1E2418CEE5F1C029550B115BB5 /* ZFAppUtil.xcframework */; };
 		D55978FC2F2C331D5CB4ED4BD73ABF4A /* zfgensrc_ZFFramework_test.mm in Sources */ = {isa = PBXBuildFile; fileRef = 432AE8FEE0B1231DC226F217C0DF9873 /* zfgensrc_ZFFramework_test.mm */; };
 		DC334CCC38281A34D3BFDF7C101A12B4 /* ZFCore_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15D28FD2B13681BF3CA43DE63BF3DD11 /* ZFCore_impl.xcframework */; };
 		EB2AC4FE93FBE665A98C59EC46645FD0 /* ZFLua.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 754EFA4B5FB63960CB3D4BE6FF9B852B /* ZFLua.xcframework */; };
@@ -63,6 +64,7 @@
 		8B0EB20273DFFC54E3E2B05F6BA13015 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWebKit_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWebKit_impl.xcframework; sourceTree = "<group>"; };
 		9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFNet_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFNet_impl.xcframework; sourceTree = "<group>"; };
+		AA180D1E2418CEE5F1C029550B115BB5 /* ZFAppUtil.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFAppUtil.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFAppUtil.xcframework; sourceTree = "<group>"; };
 		ACA60027D62B88AEAE715B00485C4449 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B0BF84536DA9FF3CF3EE60E6C803C524 /* ZFUIExt.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIExt.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIExt.xcframework; sourceTree = "<group>"; };
 		D6BB508B5C240484B578BAA4D4509AFA /* ZF_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZF_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZF_impl.xcframework; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				43B9894F1AB11C2B93F78944910067D1 /* WebKit.framework in Frameworks */,
 				2246998311FF87C8890A6AF630EA7A4C /* ZFAlgorithm.xcframework in Frameworks */,
 				4387E5087B17CE000010EC88CFB14670 /* ZFAlgorithm_impl.xcframework in Frameworks */,
+				BC0FA5BEE63ECA3E07533FC481024DEB /* ZFAppUtil.xcframework in Frameworks */,
 				0E3027CB48169AE3CD4F06E87E197B70 /* ZFCore.xcframework in Frameworks */,
 				DC334CCC38281A34D3BFDF7C101A12B4 /* ZFCore_impl.xcframework in Frameworks */,
 				EB2AC4FE93FBE665A98C59EC46645FD0 /* ZFLua.xcframework in Frameworks */,
@@ -142,6 +145,7 @@
 				5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */,
 				64202862A2FB937808A7DCBB2B156FCA /* ZFAlgorithm.xcframework */,
 				7F4A7351B5DCA95651C4F5552D5606F4 /* ZFAlgorithm_impl.xcframework */,
+				AA180D1E2418CEE5F1C029550B115BB5 /* ZFAppUtil.xcframework */,
 				3A64D731726A1ECABE550D19A82BA042 /* ZFCore.xcframework */,
 				15D28FD2B13681BF3CA43DE63BF3DD11 /* ZFCore_impl.xcframework */,
 				754EFA4B5FB63960CB3D4BE6FF9B852B /* ZFLua.xcframework */,

@@ -26,6 +26,7 @@ sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFU
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFLua/zfres" "$RES_DST_PATH"
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFUIWebKit/zfres" "$RES_DST_PATH"
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFNet/zfres" "$RES_DST_PATH"
+sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFAppUtil/zfres" "$RES_DST_PATH"
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZF_impl/zfres" "$RES_DST_PATH"
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFCore_impl/zfres" "$RES_DST_PATH"
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/ZFAlgorithm_impl/zfres" "$RES_DST_PATH"

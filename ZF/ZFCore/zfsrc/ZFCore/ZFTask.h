@@ -12,8 +12,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract task util
  */
-zfclass ZFLIB_ZFCore ZFTask : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFTask, ZFTaskId)
+zfclass ZFLIB_ZFCore ZFTask : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFTask, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 
 public:
     /**

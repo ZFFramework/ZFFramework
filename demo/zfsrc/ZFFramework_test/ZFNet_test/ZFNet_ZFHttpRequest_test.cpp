@@ -42,11 +42,11 @@ protected:
             testCase->stop();
         } ZFLISTENER_END()
         zfobj<ZFHttpRequest>(url, httpMethod)
-            ->c_request(onRecv);
+            ->c_start(onRecv);
 
         zfobj<ZFHttpRequest>(url, httpMethod)
-            ->c_request(onRecv)
-            ->c_requestCancel();
+            ->c_start(onRecv)
+            ->c_stop();
     }
 };
 ZFOBJECT_REGISTER(ZFNet_ZFHttpRequest_test)

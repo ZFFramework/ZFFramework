@@ -484,7 +484,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalT
     if(impl == zfnull) {
         return zffalse;
     }
-    zfbool success = zftrue;
     if(!impl->implIsDir(pathInfo.pathData())) {
         return impl->implToParent(ret, pathInfo.pathData())
             && impl->implToChild(ret, ret, childPath)

@@ -115,11 +115,12 @@ private:
  *           .attr("k", "v")
  *           .toString()
  *       )
- *       ->request(onRecv);
+ *       ->start(onRecv);
  * @endcode
  */
-zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
-    ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyle)
+zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFHttpRequest, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 
     /**
      * @brief called before request
@@ -247,15 +248,15 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyle {
      * param0 is the #ZFHttpResponse or null if timeout,
      * param1 is a #ZFResultType to indicate result type
      */
-    ZFMETHOD_DECLARE_1(void, request
+    ZFMETHOD_DECLARE_1(void, start
             , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
             )
 
     /** @brief cancel the request */
-    ZFMETHOD_DECLARE_0(void, requestCancel)
+    ZFMETHOD_DECLARE_0(void, stop)
 
     /** @brief util to perform sync request, return null if timeout */
-    ZFMETHOD_DECLARE_1(zfautoT<ZFHttpResponse>, requestSync
+    ZFMETHOD_DECLARE_1(zfautoT<ZFHttpResponse>, startSync
             , ZFMP_IN_OPT(zftimet, timeout, zftimetInvalid())
             )
 

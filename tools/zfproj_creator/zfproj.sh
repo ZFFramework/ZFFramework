@@ -92,6 +92,7 @@ elif test "x-$CONFIG_FILE_PATH" = "x--app" || test "x-$CONFIG_FILE_PATH" = "x--l
         echo "# ZF_LIB += ZFLua"
         echo "# ZF_LIB += ZFUIWebKit"
         echo "# ZF_LIB += ZFNet"
+        echo "# ZF_LIB += ZFAppUtil"
         echo ""
         echo "ZF_IMPL += ZF_impl"
         echo "ZF_IMPL += ZFCore_impl"

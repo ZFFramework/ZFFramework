@@ -20,8 +20,9 @@ zfclassFwd _ZFP_ZFTimerPrivate;
  *   zfRelease(timer); // safe to release after start, timer would be auto released after stop
  * @endcode
  */
-zfclass ZFLIB_ZFCore ZFTimer : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(ZFTimer, ZFTaskId)
+zfclass ZFLIB_ZFCore ZFTimer : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFTimer, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
     ZFALLOC_CACHE_RELEASE({
             cache->stop();
             cache->interval(1000);

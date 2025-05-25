@@ -296,8 +296,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFIOCacheLoadTaskAutoClean) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFIOCacheLoadTaskAutoClean)
 
-zfclass _ZFP_I_ZFIOCacheLoadTaskId : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFIOCacheLoadTaskId, ZFTaskId)
+zfclass _ZFP_I_ZFIOCacheLoadTaskId : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFIOCacheLoadTaskId, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 public:
     zfautoT<_ZFP_I_ZFIOCacheLoadTask> owner;
     ZFListener callback;
@@ -309,7 +310,6 @@ public:
         }
         this->owner = zfnull;
         this->callback = zfnull;
-        zfsuper::stop();
     }
 };
 

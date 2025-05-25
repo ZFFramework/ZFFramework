@@ -1,0 +1,98 @@
+#include "ZFDebugServer.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+static zfauto _ZFP_ZFDebugServerImpl(
+        ZF_IN_OUT ZFHttpServerTask *task
+        , ZF_IN const zfstring &run
+        ) {
+    zfbool success = zffalse;
+    zfstring errorHint;
+    zfauto ret = ZFLuaExecuteDetail(run, ZFCoreArray<zfauto>(), &success, &errorHint);
+    task->respBody(ZFJson()
+            .attr("errno", success ? "0" : "-1")
+            .attr("error", success ? "success" : errorHint.cString())
+            .attr("recv", ZFObjectInfo(ret))
+            .toString(), "application/json");
+    return ret;
+}
+
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpServer>, ZFDebugServer
+        , ZFMP_IN(zfuint, port)
+        ) {
+    zfobj<ZFHttpServer> ret;
+    ret->port(port);
+    ZFLISTENER_0(impl
+            ) {
+        ZFHttpServerTask *task = zfargs.param0();
+        ZFJson recv = ZFJsonFromString(task->recvBody());
+        zfstring run = recv.attrValue("run");
+        if(!run) {
+            task->respBody(ZFJson()
+                    .attr("errno", "-1")
+                    .attr("error", "invalid param")
+                    .attr("recv", task->recvBody())
+                    .toString(), "application/json");
+            return;
+        }
+
+        ZFThread *curThread = ZFThread::currentThread();
+        if(curThread && curThread->isMainThread()) {
+            _ZFP_ZFDebugServerImpl(task, run);
+            return;
+        }
+
+        zfobj<ZFSemaphore> sema;
+        ZFLISTENER_3(impl
+                , ZFHttpServerTask *, task
+                , zfstring, run
+                , zfautoT<ZFSemaphore>, sema
+                ) {
+            _ZFP_ZFDebugServerImpl(task, run);
+            sema->lockAndBroadcast();
+        } ZFLISTENER_END()
+        zfpost(impl);
+        sema->lockAndWait();
+    } ZFLISTENER_END()
+    ret->onRequest(impl);
+    ret->start();
+    return ret;
+}
+
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFDebugClient
+        , ZFMP_IN(const zfstring &, url)
+        , ZFMP_IN(const zfstring &, luaCode)
+        , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
+        ) {
+    zfobj<ZFHttpRequest> req(url, v_ZFHttpMethod::e_POST);
+    req->body(ZFJson()
+            .attr("run", luaCode)
+            .toString());
+    if(callback) {
+        req->start(callback);
+    }
+    else {
+        ZFLISTENER_0(onRecv
+                ) {
+            ZFHttpResponse *recv = zfargs.param0();
+            if(recv) {
+                ZFLogTrim("%s", recv->contentInfo());
+            }
+        } ZFLISTENER_END()
+        req->start(onRecv);
+    }
+    return req;
+}
+
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFDebugClient
+        , ZFMP_IN(const zfstring &, url)
+        , ZFMP_IN(const ZFInput &, luaCode)
+        , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
+        ) {
+    zfstring buf;
+    ZFInputRead(buf, luaCode);
+    return ZFDebugClient(url, buf, callback);
+}
+
+ZF_NAMESPACE_GLOBAL_END
+

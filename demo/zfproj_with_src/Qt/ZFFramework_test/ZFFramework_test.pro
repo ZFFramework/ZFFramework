@@ -52,6 +52,7 @@ DEFINES += ZFLIB_ZFUIExt=
 DEFINES += ZFLIB_ZFLua=
 DEFINES += ZFLIB_ZFUIWebKit=
 DEFINES += ZFLIB_ZFNet=
+DEFINES += ZFLIB_ZFAppUtil=
 DEFINES += ZFLIB_ZF_impl=
 DEFINES += ZFLIB_ZFCore_impl=
 DEFINES += ZFLIB_ZFAlgorithm_impl=
@@ -125,6 +126,7 @@ $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFUIExt)
 $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFLua)
 $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFUIWebKit)
 $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFNet)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFAppUtil)
 $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZF_impl)
 $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFCore_impl)
 $$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFAlgorithm_impl)

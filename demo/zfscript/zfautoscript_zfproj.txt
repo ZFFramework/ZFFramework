@@ -18,6 +18,7 @@ ZF_LIB += ZFUIExt
 ZF_LIB += ZFLua
 ZF_LIB += ZFUIWebKit
 ZF_LIB += ZFNet
+ZF_LIB += ZFAppUtil
 
 ZF_IMPL += ZF_impl
 ZF_IMPL += ZFCore_impl

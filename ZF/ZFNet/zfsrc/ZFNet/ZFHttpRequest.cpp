@@ -2,8 +2,6 @@
 
 #include "protocol/ZFProtocolZFHttpRequest.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 // #define _ZFP_ZFHttpRequest_DEBUG 1
 
 #if _ZFP_ZFHttpRequest_DEBUG
@@ -168,7 +166,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, body) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFHttpRequest, void, request
+ZFMETHOD_DEFINE_1(ZFHttpRequest, void, start
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
     if(d->response) {
@@ -189,7 +187,7 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, void, request
     _ZFP_ZFHttpRequest_log("request end: %s %s", this, d->response);
 }
 
-ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
+ZFMETHOD_DEFINE_0(ZFHttpRequest, void, stop) {
     if(!d->response) {
         _ZFP_ZFHttpRequest_log("requestCancel begin: %s", this);
         ZFPROTOCOL_ACCESS(ZFHttpRequest)->requestCancel(d->nativeTask);
@@ -198,11 +196,11 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
     }
 }
 
-ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
+ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, startSync
         , ZFMP_IN_OPT(zftimet, timeout, zftimetInvalid())
         ) {
     if(d->response) {
-        _ZFP_ZFHttpRequest_log("requestSync but already running: %s %s", this, d->response);
+        _ZFP_ZFHttpRequest_log("startSync but already running: %s %s", this, d->response);
         return zfnull;
     }
 
@@ -219,24 +217,25 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
                 , zfautoT<ZFHttpRequest>, send
                 , zfautoT<ZFObjectHolder>, recv
                 ) {
+            ZFUNUSED(send);
             recv->value(zfargs.param0());
-            _ZFP_ZFHttpRequest_log("requestSync response begin: %s %s", send, zfargs.param0());
+            _ZFP_ZFHttpRequest_log("startSync response begin: %s %s", send, zfargs.param0());
             waitLock->lockAndBroadcast();
-            _ZFP_ZFHttpRequest_log("requestSync response end: %s", send);
+            _ZFP_ZFHttpRequest_log("startSync response end: %s", send);
         } ZFLISTENER_END()
-        _ZFP_ZFHttpRequest_log("requestSync request begin: %s", send);
-        send->request(onResponse);
-        _ZFP_ZFHttpRequest_log("requestSync request end: %s", send);
+        _ZFP_ZFHttpRequest_log("startSync request begin: %s", send);
+        send->start(onResponse);
+        _ZFP_ZFHttpRequest_log("startSync request end: %s", send);
     } ZFLISTENER_END()
-    _ZFP_ZFHttpRequest_log("requestSync begin: %s", this);
+    _ZFP_ZFHttpRequest_log("startSync begin: %s", this);
     zfasync(onRequest);
 
-    _ZFP_ZFHttpRequest_log("requestSync wait begin: %s", this);
+    _ZFP_ZFHttpRequest_log("startSync wait begin: %s", this);
     if(!waitLock->lockAndWait(timeout)) {
-        this->requestCancel();
+        this->stop();
     }
-    _ZFP_ZFHttpRequest_log("requestSync wait end: %s", this);
-    _ZFP_ZFHttpRequest_log("requestSync end: %s", this);
+    _ZFP_ZFHttpRequest_log("startSync wait end: %s", this);
+    _ZFP_ZFHttpRequest_log("startSync end: %s", this);
     return recv->value();
 }
 
@@ -547,7 +546,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
     }
 
     // no match, load
-    zfautoT<ZFHttpResponse> recv = zfobj<ZFHttpRequest>(url, v_ZFHttpMethod::e_HEAD)->requestSync();
+    zfautoT<ZFHttpResponse> recv = zfobj<ZFHttpRequest>(url, v_ZFHttpMethod::e_HEAD)->startSync();
 
     // save cache
     if(recv != zfnull) {

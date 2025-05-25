@@ -284,14 +284,14 @@ ZFMETHOD_DEFINE_0(ZFState, zfbool, ready) {
     return d->loadQueue == zfnull;
 }
 
-zfclass _ZFP_I_ZFStateLoadTaskId : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFStateLoadTaskId, ZFTaskId)
+zfclass _ZFP_I_ZFStateLoadTaskId : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFStateLoadTaskId, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 public:
     ZFListener callback;
 public:
     virtual void stop(void) {
         this->callback = zfnull;
-        zfsuper::stop();
     }
 };
 ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, load

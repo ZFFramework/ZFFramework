@@ -13,8 +13,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract task id
  */
-zfabstract ZFLIB_ZFCore ZFTaskId : zfextend ZFObject {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFTaskId, ZFObject)
+zfinterface ZFLIB_ZFCore ZFTaskId : zfextend ZFInterface {
+    ZFINTERFACE_DECLARE(ZFTaskId, ZFInterface)
 public:
     /** @brief stop task */
     virtual void stop(void) zfpurevirtual;
@@ -23,8 +23,9 @@ public:
 /**
  * @brief basic task id for impl
  */
-zfclass ZFLIB_ZFCore ZFTaskIdBasic : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(ZFTaskIdBasic, ZFTaskId)
+zfclass ZFLIB_ZFCore ZFTaskIdBasic : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFTaskIdBasic, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 public:
     /** @brief for impl to implement #ZFTaskId::stop */
     virtual inline void stopImpl(ZF_IN const ZFListener &v) {
@@ -38,7 +39,6 @@ public:
     zfoverride
     virtual void stop(void) {
         _stopImpl.execute(ZFArgs().sender(this));
-        zfsuper::stop();
     }
 protected:
     zfoverride

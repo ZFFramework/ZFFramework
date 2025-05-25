@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
     ZFImpl_sys_Qt_requireLib(ZFLua)
     ZFImpl_sys_Qt_requireLib(ZFUIWebKit)
     ZFImpl_sys_Qt_requireLib(ZFNet)
+    ZFImpl_sys_Qt_requireLib(ZFAppUtil)
     ZFImpl_sys_Qt_requireLib(ZF_impl)
     ZFImpl_sys_Qt_requireLib(ZFCore_impl)
     ZFImpl_sys_Qt_requireLib(ZFAlgorithm_impl)

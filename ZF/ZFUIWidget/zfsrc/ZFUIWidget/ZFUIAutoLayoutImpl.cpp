@@ -251,7 +251,6 @@ void ZFUIAutoLayout::viewChildOnRemove(
         , ZF_IN ZFUIViewChildLayer layer
         ) {
     if(layer == v_ZFUIViewChildLayer::e_Normal) {
-        ZFUIAutoLayoutParam::_ZFP_Data &t = child->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d;
         if(d->_childStateCount > this->childCount() * 4) {
             d->_childStateCount = 0;
         }

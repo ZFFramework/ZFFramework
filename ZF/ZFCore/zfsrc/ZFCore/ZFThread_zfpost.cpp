@@ -2,8 +2,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_zfpostTask : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(_ZFP_zfpostTask, ZFTaskId)
+zfclass _ZFP_zfpostTask : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_zfpostTask, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 public:
     zfautoT<ZFThread> target;
     ZFListener callback;
@@ -15,7 +16,6 @@ public:
             this->target = zfnull;
             this->callback = zfnull;
         }
-        zfsuper::stop();
     }
 };
 

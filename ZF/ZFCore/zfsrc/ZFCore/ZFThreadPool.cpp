@@ -13,8 +13,9 @@ zfclassFwd _ZFP_I_ZFThreadPoolTaskData;
 typedef zfstlhashmap<_ZFP_I_ZFThreadPoolTaskData *, zfbool> _ZFP_ZFThreadPoolTaskMapType;
 typedef zfstllist<_ZFP_I_ZFThreadPoolTaskData *> _ZFP_ZFThreadPoolTaskListType;
 
-zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFThreadPoolTaskData, ZFTaskId)
+zfclass _ZFP_I_ZFThreadPoolTaskData : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_ZFThreadPoolTaskData, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 public:
     _ZFP_ZFThreadPoolPrivate *owner;
     _ZFP_ZFThreadPoolTaskMapType::iterator mapIt; // valid only when owner not null
@@ -202,7 +203,6 @@ void _ZFP_I_ZFThreadPoolTaskData::stop(void) {
         this->owner->stop(this);
     }
     this->zfargsForTask.param0(zfnull);
-    zfsuper::stop();
 }
 
 void ZFThreadPool::objectOnInit(void) {

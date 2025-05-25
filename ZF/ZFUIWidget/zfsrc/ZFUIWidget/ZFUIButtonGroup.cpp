@@ -298,7 +298,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, containerAttach
         }
     }
     d->container = container;
-    ZFUIButtonGroup *owner;
+    ZFUIButtonGroup *owner = this;
 
     ZFLISTENER_1(containerOnDealloc
             , ZFUIButtonGroup *, owner

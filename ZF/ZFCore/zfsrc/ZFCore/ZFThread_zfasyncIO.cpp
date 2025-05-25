@@ -1,5 +1,4 @@
 #include "ZFThread_zfasyncIO.h"
-#include "ZFThreadPool.h"
 
 // #define _ZFP_zfasyncIO_DEBUG 1
 
@@ -16,8 +15,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECT_REGISTER(ZFThreadPoolForIO)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFThreadPoolForIO, instance, ZFLevelZFFrameworkEssential)
 
-zfclass _ZFP_I_zfasyncIOTask : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(_ZFP_I_zfasyncIOTask, ZFTaskId)
+zfclass _ZFP_I_zfasyncIOTask : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(_ZFP_I_zfasyncIOTask, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 public:
     zfobj<ZFObject> outputMutex;
     ZFOutput output;
@@ -34,7 +34,6 @@ public:
             }
             this->blockTask.removeAll();
         }
-        zfsuper::stop();
     }
 };
 ZFOBJECT_REGISTER(_ZFP_I_zfasyncIOTask)

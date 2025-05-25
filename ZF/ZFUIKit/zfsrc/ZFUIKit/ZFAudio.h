@@ -13,8 +13,9 @@ zfclassFwd _ZFP_ZFAudioPrivate;
 /**
  * @brief audio player
  */
-zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFTaskId {
-    ZFOBJECT_DECLARE(ZFAudio, ZFTaskId)
+zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFAudio, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 
 public:
     // ============================================================

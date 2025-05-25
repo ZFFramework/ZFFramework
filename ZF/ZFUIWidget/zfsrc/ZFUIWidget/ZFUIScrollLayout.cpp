@@ -15,7 +15,6 @@ static void _ZFP_ZFUIScrollLayout_measure(
     for(zfindex i = 0; i < owner->childCount(); ++i) {
         ZFUIView *child = owner->childAt(i);
         ZFUILayoutParam *lp = child->layoutParam();
-        const ZFUIAlignFlags &align = lp->align();
         child->layoutMeasure(lp->sizeHint(), lp->sizeParam());
         ret.width = zfmMax<zffloat>(ret.width,
                 child->layoutMeasuredSize().width + lp->margin().left + lp->margin().right

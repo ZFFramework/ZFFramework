@@ -123,8 +123,9 @@ protected:
  *       ->start();
  * @endcode
  */
-zfclass ZFLIB_ZFNet ZFHttpServer : zfextend ZFStyle {
-    ZFOBJECT_DECLARE(ZFHttpServer, ZFStyle)
+zfclass ZFLIB_ZFNet ZFHttpServer : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFHttpServer, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
 
     /**
      * @brief called when receive from client

@@ -149,6 +149,7 @@ task ZFSetup {
         ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFLua')
         ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFUIWebKit')
         ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFNet')
+        ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFAppUtil')
         ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZF_impl')
         ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFCore_impl')
         ZFCopyRes(ZF_ROOT_PATH + '/ZF', 'ZFAlgorithm_impl')

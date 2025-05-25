@@ -20,7 +20,7 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
             len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
             , v_ZFHttpMethod::e_GET
             );
-    zfautoT<ZFHttpResponse> recv = send->requestSync();
+    zfautoT<ZFHttpResponse> recv = send->startSync();
     if(!ZFHttpIsDir(recv)) {
         return zffalse;
     }

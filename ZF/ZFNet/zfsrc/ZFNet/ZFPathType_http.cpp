@@ -81,7 +81,7 @@ public:
             for(zfindex iRetry = 0; iRetry <= ChunkRetry; ++iRetry) {
                 zfobj<ZFHttpRequest> send(url, v_ZFHttpMethod::e_GET);
                 send->header("Range", zfstr("bytes=%s-%s", chunkPos, chunkEnd - 1));
-                zfautoT<ZFHttpResponse> recv = send->requestSync();
+                zfautoT<ZFHttpResponse> recv = send->startSync();
                 if(recv != zfnull && recv->success() && recv->body().length() == chunkEnd - chunkPos) {
                     ZFCoreMutexLocker();
                     zfstring ret;
