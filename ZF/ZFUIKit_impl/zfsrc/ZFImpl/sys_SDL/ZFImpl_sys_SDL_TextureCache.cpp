@@ -64,11 +64,9 @@ public:
             value->mapIt = m.insert(zfstlpair<Key, zfstllist<Value *> >(key, ListType())).first;
         }
         value->mapIt->second.push_back(value);
-        value->listIt = value->mapIt->second.end();
-        --(value->listIt);
+        --(value->listIt = value->mapIt->second.end());
         l.push_back(value);
-        value->orderIt = l.end();
-        --(value->orderIt);
+        --(value->orderIt = l.end());
 
         while(l.size() >= MaxCache) {
             value = *(l.begin());

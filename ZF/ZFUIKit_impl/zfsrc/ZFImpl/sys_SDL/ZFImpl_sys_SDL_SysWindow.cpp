@@ -103,10 +103,12 @@ ZFImpl_sys_SDL_SysWindow::~ZFImpl_sys_SDL_SysWindow(void) {
     this->renderStop();
     if(this->builtinWindow) {
         if(this->sdlRenderer != zfnull) {
+            ZFImpl_sys_SDL_RendererNotifyDestroy(this->sdlRenderer);
             SDL_DestroyRenderer(this->sdlRenderer);
             this->sdlRenderer = zfnull;
         }
         if(this->sdlWindow != zfnull) {
+            ZFImpl_sys_SDL_WindowNotifyDestroy(this->sdlWindow);
             SDL_DestroyWindow(this->sdlWindow);
             this->sdlWindow = zfnull;
         }

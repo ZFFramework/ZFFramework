@@ -201,8 +201,7 @@ void ZFCoreOrderMap::set(
         item->value = value.refNew();
         item->mapIt = d->map.insert(zfstlpair<zfstring, _ZFP_ZFCoreOrderMapPrivate::Item *>(key, item)).first;
         d->arr.push_back(item);
-        item->arrIt = d->arr.end();
-        --(item->arrIt);
+        --(item->arrIt = d->arr.end());
     }
     else {
         _ZFP_ZFCoreOrderMapPrivate::Item *item = it->second;
@@ -211,15 +210,13 @@ void ZFCoreOrderMap::set(
             item->value = value.refNew();
             d->arr.erase(item->arrIt);
             d->arr.push_back(item);
-            item->arrIt = d->arr.end();
-            --(item->arrIt);
+            --(item->arrIt = d->arr.end());
             toDelete->refDelete();
         }
         else {
             d->arr.erase(item->arrIt);
             d->arr.push_back(item);
-            item->arrIt = d->arr.end();
-            --(item->arrIt);
+            --(item->arrIt = d->arr.end());
         }
     }
 }
@@ -390,8 +387,7 @@ const ZFCorePointer *ZFCoreOrderMap::update(ZF_IN const zfstring &key) const {
     _ZFP_ZFCoreOrderMapPrivate::Item *item = mapIt->second;
     d->arr.erase(item->arrIt);
     d->arr.push_back(item);
-    item->arrIt = d->arr.end();
-    --(item->arrIt);
+    --(item->arrIt = d->arr.end());
     return item->value;
 }
 

@@ -99,11 +99,13 @@ public:
         nativeWindow->ownerZFUISysWindow = this->_mainWindow;
         nativeWindow->builtinWindow = zffalse;
         nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow();
+        ZFImpl_sys_SDL_WindowNotifyCreate(nativeWindow->sdlWindow);
         ZFCoreAssert(nativeWindow->sdlWindow != zfnull);
         nativeWindow->sdlRenderer = SDL_CreateRenderer(nativeWindow->sdlWindow, -1, 0
                 | SDL_RENDERER_ACCELERATED
                 | SDL_RENDERER_TARGETTEXTURE
             );
+        ZFImpl_sys_SDL_RendererNotifyCreate(nativeWindow->sdlRenderer);
         ZFCoreAssert(nativeWindow->sdlRenderer != zfnull);
         SDL_SetRenderDrawBlendMode(nativeWindow->sdlRenderer, SDL_BLENDMODE_BLEND);
         this->notifyOnCreate(modalWindow, nativeWindow);

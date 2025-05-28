@@ -143,7 +143,9 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, drawImage
     }
     return ZFPROTOCOL_ACCESS(ZFUIDraw)->drawImage(*(ZFUIDrawToken *)context
             , imageState
-            , ZFUIRectApplyScale(imageFrame, imageState->imageScaleFixed())
+            , imageFrame == ZFUIRectZero()
+                ? ZFUIRectCreate(ZFUIPointZero(), image->imageSizeFixed())
+                : ZFUIRectApplyScale(targetFrame, imageState->imageScaleFixed())
             , targetFrame == ZFUIRectZero()
                 ? ZFUIRectCreate(ZFUIPointZero(), ((ZFUIDrawToken *)context)->targetSizePixel)
                 : ZFUIRectApplyScale(targetFrame, ZFUIGlobalStyle::DefaultStyle()->imageScale())

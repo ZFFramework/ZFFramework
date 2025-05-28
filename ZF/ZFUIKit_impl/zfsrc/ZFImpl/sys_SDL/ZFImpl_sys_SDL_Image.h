@@ -12,25 +12,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassLikePOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_Image {
 public:
+    static void implOwnerDestroyed(ZF_IN SDL_Renderer *owner);
+
     static ZFImpl_sys_SDL_Image *implCreate(void);
     static ZFImpl_sys_SDL_Image *implCreate(ZF_IN SDL_Surface *sdlSurface);
+
     void implRetain(void);
     void implRelease(void);
     void implUpdate(ZF_IN SDL_Surface *sdlSurface);
     SDL_Surface *sdlSurface(void);
-    SDL_Texture *sdlTexture(ZF_IN ZFUISysWindow *owner);
+    /*
+     * result must not be cached
+     * when owner destroyed, must call implOwnerDestroyed(owner) to cleanup
+     */
+    SDL_Texture *sdlTexture(ZF_IN SDL_Renderer *owner);
 
 private:
     zfuint _refCount;
     SDL_Surface *_sdlSurface;
-    SDL_Texture *_sdlTexture;
-    void *_sdlTextureMap;
-    ZFListener _detachListener;
 private:
     ZFImpl_sys_SDL_Image(void);
     ~ZFImpl_sys_SDL_Image(void);
-    void _attach(ZF_IN ZFUISysWindow *owner);
-    void _detach(ZF_IN ZFUISysWindow *owner);
 private:
     typedef ZFImpl_sys_SDL_Image zfself;
     zfpoolDeclareFriend()

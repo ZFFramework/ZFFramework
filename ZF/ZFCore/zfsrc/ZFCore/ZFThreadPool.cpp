@@ -234,8 +234,7 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfautoT<ZFTaskId>, start
     taskData->callerThread = ZFThread::currentThread();
     taskData->mapIt = d->taskMap.insert(zfstlpair<_ZFP_I_ZFThreadPoolTaskData *, zfbool>(taskData, zftrue)).first;
     d->taskList.push_back(taskData);
-    taskData->listIt = d->taskList.end();
-    --(taskData->listIt);
+    --(taskData->listIt = d->taskList.end());
 
     zfindex taskCount = (zfindex)d->taskList.size();
     for(zfindex i = 0; i < d->threadPool.count() && taskCount > 0; ++i) {

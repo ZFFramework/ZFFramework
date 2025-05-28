@@ -28,6 +28,20 @@ extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
  */
 extern ZFLIB_ZF_impl Uint32 ZFImpl_sys_SDL_PixelFormatPreferred(void);
 
+// ============================================================
+typedef zfbool (*ZFImpl_sys_SDL_WindowLifeCycle)(ZF_IN SDL_Window *owner);
+extern ZFLIB_ZF_impl ZFCoreArray<ZFImpl_sys_SDL_WindowLifeCycle> ZFImpl_sys_SDL_WindowOnCreate;
+extern ZFLIB_ZF_impl ZFCoreArray<ZFImpl_sys_SDL_WindowLifeCycle> ZFImpl_sys_SDL_WindowOnDestroy;
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_WindowNotifyCreate(ZF_IN SDL_Window *owner);
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_WindowNotifyDestroy(ZF_IN SDL_Window *owner);
+
+typedef zfbool (*ZFImpl_sys_SDL_RendererLifeCycle)(ZF_IN SDL_Renderer *owner);
+extern ZFLIB_ZF_impl ZFCoreArray<ZFImpl_sys_SDL_RendererLifeCycle> ZFImpl_sys_SDL_RendererOnCreate;
+extern ZFLIB_ZF_impl ZFCoreArray<ZFImpl_sys_SDL_RendererLifeCycle> ZFImpl_sys_SDL_RendererOnDestroy;
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_RendererNotifyCreate(ZF_IN SDL_Renderer *owner);
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_RendererNotifyDestroy(ZF_IN SDL_Renderer *owner);
+
+// ============================================================
 /**
  * @brief event handler for sdl event loop
  *

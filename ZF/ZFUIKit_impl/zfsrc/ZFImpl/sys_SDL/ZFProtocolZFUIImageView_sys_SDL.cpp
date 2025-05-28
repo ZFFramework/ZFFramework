@@ -67,7 +67,7 @@ private:
         targetRect.x += childRect.x;
         targetRect.y += childRect.y;
 
-        SDL_Texture *sdlTexture = nativeImage->sdlTexture(ZFUIWindow::sysWindowForView(owner));
+        SDL_Texture *sdlTexture = nativeImage->sdlTexture(renderer);
         SDL_SetTextureAlphaMod(sdlTexture, treeAlpha != 1 ? (Uint8)(treeAlpha * 255) : (Uint8)255);
         if(imageState->imageNinePatch() == ZFUIMarginZero()) {
             SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);

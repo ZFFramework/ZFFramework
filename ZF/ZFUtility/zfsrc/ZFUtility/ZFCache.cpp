@@ -104,8 +104,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
             }
 
             d->cacheList.push_back(cacheData);
-            cacheData->cacheListIt = d->cacheList.end();
-            --(cacheData->cacheListIt);
+            --(cacheData->cacheListIt = d->cacheList.end());
 
             zfRetain(cacheData->cacheValue);
             // would be removed by retain in E_ObjectBeforeDealloc
@@ -117,14 +116,12 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
         _ZFP_ZFCacheList &cacheList = cacheData->cacheMapIt->second;
 
         cacheList.push_back(cacheData);
-        cacheData->cacheMapListIt = cacheList.end();
-        --(cacheData->cacheMapListIt);
+        --(cacheData->cacheMapListIt = cacheList.end());
 
         cacheData->cacheListIt = d->cacheList.end();
 
         d->aliveList.push_back(cacheData);
-        cacheData->aliveListIt = d->aliveList.end();
-        --(cacheData->aliveListIt);
+        --(cacheData->aliveListIt = d->aliveList.end());
 
         cacheValue->observerAdd(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
     }
@@ -181,8 +178,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
         zfRelease(cacheData->cacheValue);
 
         d->aliveList.push_back(cacheData);
-        cacheData->aliveListIt = d->aliveList.end();
-        --(cacheData->aliveListIt);
+        --(cacheData->aliveListIt = d->aliveList.end());
 
         cacheData->cacheValue->observerAdd(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
     }

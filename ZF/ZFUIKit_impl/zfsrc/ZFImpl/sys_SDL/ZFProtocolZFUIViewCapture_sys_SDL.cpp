@@ -28,12 +28,14 @@ public:
         rect.h = nativeView->rect.h;
         SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, rect.w, rect.h, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
         SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(nativeImage);
+        ZFImpl_sys_SDL_RendererNotifyCreate(renderer);
         zffloat alpha = 1;
         for(ZFUIView *p = view; p != zfnull; p = p->parent()) {
             alpha *= p->alpha();
         }
         nativeView->render(renderer, rect, rect, alpha);
         image->nativeImage(ZFImpl_sys_SDL_Image::implCreate(nativeImage), zffalse);
+        ZFImpl_sys_SDL_RendererNotifyDestroy(renderer);
         SDL_DestroyRenderer(renderer);
         return zftrue;
     }

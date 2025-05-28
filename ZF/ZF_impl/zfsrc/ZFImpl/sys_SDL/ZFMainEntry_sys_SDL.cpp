@@ -19,6 +19,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
     ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after));
 
     if(this->builtinWindow != zfnull) {
+        ZFImpl_sys_SDL_WindowNotifyDestroy(this->builtinWindow);
         SDL_DestroyWindow(this->builtinWindow);
         this->builtinWindow = zfnull;
     }
@@ -60,16 +61,19 @@ private:
             ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
             return;
         }
+        ZFImpl_sys_SDL_WindowNotifyCreate(d->builtinWindow);
         d->builtinRenderer = SDL_CreateRenderer(d->builtinWindow, -1, 0
                 | SDL_RENDERER_ACCELERATED
                 | SDL_RENDERER_TARGETTEXTURE
             );
         if(d->builtinRenderer == zfnull) {
+            ZFImpl_sys_SDL_WindowNotifyDestroy(d->builtinWindow);
             SDL_DestroyWindow(d->builtinWindow);
             d->builtinWindow = zfnull;
             ZFCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
             return;
         }
+        ZFImpl_sys_SDL_RendererNotifyCreate(d->builtinRenderer);
         SDL_SetRenderDrawBlendMode(d->builtinRenderer, SDL_BLENDMODE_BLEND);
 
         ZFImpl_sys_SDL_embedInit(d->builtinWindow);
@@ -93,10 +97,12 @@ private:
         }
         ZFImpl_sys_SDL_embedCleanup();
         if(d->builtinRenderer != zfnull) {
+            ZFImpl_sys_SDL_RendererNotifyDestroy(d->builtinRenderer);
             SDL_DestroyRenderer(d->builtinRenderer);
             d->builtinRenderer = zfnull;
         }
         if(d->builtinWindow != zfnull) {
+            ZFImpl_sys_SDL_WindowNotifyDestroy(d->builtinWindow);
             SDL_DestroyWindow(d->builtinWindow);
             d->builtinWindow = zfnull;;
         }
@@ -149,6 +155,33 @@ SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
 #endif
 
     return sdlWindow;
+}
+
+// ============================================================
+ZFCoreArray<ZFImpl_sys_SDL_WindowLifeCycle> ZFImpl_sys_SDL_WindowOnCreate;
+ZFCoreArray<ZFImpl_sys_SDL_WindowLifeCycle> ZFImpl_sys_SDL_WindowOnDestroy;
+void ZFImpl_sys_SDL_WindowNotifyCreate(ZF_IN SDL_Window *owner) {
+    for(zfindex i = 0; i < ZFImpl_sys_SDL_WindowOnCreate.count(); ++i) {
+        ZFImpl_sys_SDL_WindowOnCreate[i](owner);
+    }
+}
+void ZFImpl_sys_SDL_WindowNotifyDestroy(ZF_IN SDL_Window *owner) {
+    for(zfindex i = 0; i < ZFImpl_sys_SDL_WindowOnDestroy.count(); ++i) {
+        ZFImpl_sys_SDL_WindowOnDestroy[i](owner);
+    }
+}
+
+ZFCoreArray<ZFImpl_sys_SDL_RendererLifeCycle> ZFImpl_sys_SDL_RendererOnCreate;
+ZFCoreArray<ZFImpl_sys_SDL_RendererLifeCycle> ZFImpl_sys_SDL_RendererOnDestroy;
+void ZFImpl_sys_SDL_RendererNotifyCreate(ZF_IN SDL_Renderer *owner) {
+    for(zfindex i = 0; i < ZFImpl_sys_SDL_RendererOnCreate.count(); ++i) {
+        ZFImpl_sys_SDL_RendererOnCreate[i](owner);
+    }
+}
+void ZFImpl_sys_SDL_RendererNotifyDestroy(ZF_IN SDL_Renderer *owner) {
+    for(zfindex i = 0; i < ZFImpl_sys_SDL_RendererOnDestroy.count(); ++i) {
+        ZFImpl_sys_SDL_RendererOnDestroy[i](owner);
+    }
 }
 
 // ============================================================

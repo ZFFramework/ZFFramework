@@ -129,6 +129,7 @@ public:
             SDL_FreeSurface(nativeImage);
             return zffalse;
         }
+        ZFImpl_sys_SDL_RendererNotifyCreate(sdlRenderer);
 
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
         drawImpl->sdlRenderer = sdlRenderer;
@@ -147,6 +148,7 @@ public:
         zfblockedDelete(drawImpl);
 
         if(drawImpl->sdlRenderer != zfnull) {
+            ZFImpl_sys_SDL_RendererNotifyDestroy(drawImpl->sdlRenderer);
             SDL_DestroyRenderer(drawImpl->sdlRenderer);
             drawImpl->sdlRenderer = zfnull;
         }
@@ -245,19 +247,11 @@ public:
             srcRect.h = (int)((float)imageFramePixel.height * rectClipped.h / rect.h);
         }
 
-        ZFUISysWindow *ownerSysWindow = zfnull;
-        {
-            ZFUIDrawableView *target = token.target;
-            if(target) {
-                ownerSysWindow = ZFUIWindow::sysWindowForView(target);
-            }
-        }
-        SDL_Texture *sdlTexture = sdlImg->sdlTexture(ownerSysWindow ? ownerSysWindow : ZFUISysWindow::mainWindow().to<ZFUISysWindow *>());
+        SDL_Texture *sdlTexture = sdlImg->sdlTexture(drawImpl->sdlRenderer);
         if(sdlTexture != zfnull) {
             SDL_SetTextureAlphaMod(sdlTexture, drawImpl->treeAlpha != 1 ? (Uint8)(drawImpl->treeAlpha * 255) : (Uint8)255);
         }
-        SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
-        return zftrue;
+        return 0 == SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
     }
     virtual zfbool drawText(
             ZF_IN ZFUIDrawToken &token
