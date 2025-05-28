@@ -39,6 +39,7 @@ public:
         if(surfaceSubIt != surfaceIt->second.end()) {
             Cache *cache = surfaceSubIt->second.pointerValue();
             l.erase(cache->cacheIt);
+            l.push_back(cache);
             --(cache->cacheIt = l.end());
             return cache->sdlTexture;
         }
