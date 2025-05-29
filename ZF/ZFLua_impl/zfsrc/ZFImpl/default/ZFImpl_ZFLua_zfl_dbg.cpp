@@ -60,7 +60,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
                 impl->invoke("start");
             }
 
-            d->buf = "q";
+            d->buf = "c";
             sema->lockAndWait();
             lua_pushstring(L, d->buf.cString());
             return 1;
@@ -74,7 +74,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
     return 1;
 }
 
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_value, ZFM_EXPAND({
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_dbg, ZFM_EXPAND({
         ZFInput srcInput = ZFInputForResRaw("ZFLua_impl/debugger.lua");
         if(srcInput) {
             ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_zfl_dbg_read", _ZFP_ZFImpl_ZFLua_zfl_dbg_read);
