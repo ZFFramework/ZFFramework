@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * possible values:
  * -  `0` : read command from `stdin`
- * -  `> 0` : start a local http server with specified port, read command from client request
+ * -  `> 0` (and `ZFNet` module available) : start a local http server with specified port, read command from client request
  *
  * @code
  *   // from other client, curl POST with debugger.lua's command as body contents, e.g.:

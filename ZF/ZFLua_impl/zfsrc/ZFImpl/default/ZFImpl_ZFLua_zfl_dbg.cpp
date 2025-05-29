@@ -1,5 +1,4 @@
 #include "ZFImpl_ZFLua_zfl_dbg.h"
-#include "ZFNet.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -10,10 +9,10 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaDebugImpl, ZFLevelZFFrameworkNormal) 
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaDebugImpl) {
     if(impl) {
-        impl->stop();
+        impl->invoke("stop");
     }
 }
-zfautoT<ZFHttpServer> impl;
+zfauto impl; // ZFHttpServer
 zfautoT<ZFSemaphore> sema;
 zfstring buf;
 ZF_GLOBAL_INITIALIZER_END(ZFLuaDebugImpl)
@@ -31,36 +30,47 @@ static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
     zfstring prompt = ZFImpl_ZFLua_toString(L, 1);
     ZFLogTrim("%s", prompt);
 
-    if(ZFLuaDebugPort() == 0) {
-        char buf[256];
-        fgets(buf, sizeof(buf), stdin);
-        buf[strcspn(buf, "\n")] = '\0';
-        lua_pushstring(L, buf);
-        return 1;
+    if(ZFLuaDebugPort() != 0
+            && ZFProtocolIsAvailable("ZFHttpServer")
+            ) {
+        do {
+            ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaDebugImpl) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaDebugImpl);
+            zfauto &impl = d->impl;
+            zfautoT<ZFSemaphore> &sema = d->sema;
+            if(!impl) {
+                impl = ZFClass::classForName("ZFHttpServer")->newInstance();
+                if(!impl) {
+                    break;
+                }
+
+                sema = zfobj<ZFSemaphore>();
+                impl->invoke("port", zfobj<v_zfuint>(ZFLuaDebugPort()));
+                ZFLISTENER_1(onRecv
+                        , zfautoT<ZFSemaphore>, sema
+                        ) {
+                    zfauto task = zfargs.param0();
+                    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaDebugImpl)->buf = task->invoke("recvBody")->to<v_zfstring *>()->zfv;
+                    task->invoke("respBody"
+                            , zfobj<v_zfstring>("{}")
+                            , zfobj<v_zfstring>("application/json")
+                            );
+                    sema->lockAndBroadcast();
+                } ZFLISTENER_END()
+                impl->invoke("onRequest", zfobj<v_ZFCallback>(onRecv));
+                impl->invoke("start");
+            }
+
+            d->buf = "q";
+            sema->lockAndWait();
+            lua_pushstring(L, d->buf.cString());
+            return 1;
+        } while(zffalse);
     }
 
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaDebugImpl) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaDebugImpl);
-    zfautoT<ZFHttpServer> &impl = d->impl;
-    zfautoT<ZFSemaphore> &sema = d->sema;
-    d->buf = "q";
-    if(!impl) {
-        sema = zfobj<ZFSemaphore>();
-        impl = zfobj<ZFHttpServer>();
-        impl->port(ZFLuaDebugPort());
-        ZFLISTENER_1(onRecv
-                , zfautoT<ZFSemaphore>, sema
-                ) {
-            ZFHttpServerTask *task = zfargs.param0();
-            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaDebugImpl)->buf = task->recvBody();
-            task->respBody("{}", "application/json");
-            sema->lockAndBroadcast();
-        } ZFLISTENER_END()
-        impl->onRequest(onRecv);
-        impl->start();
-    }
-
-    sema->lockAndWait();
-    lua_pushstring(L, d->buf.cString());
+    char buf[1024];
+    fgets(buf, sizeof(buf), stdin);
+    buf[strcspn(buf, "\n")] = '\0';
+    lua_pushstring(L, buf);
     return 1;
 }
 

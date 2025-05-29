@@ -30,6 +30,5 @@ endfunction()
 
 ZFAddLib(ZFCore)
 ZFAddLib(ZFLua)
-ZFAddLib(ZFNet)
 ZFAddLib(ZF_impl)
 

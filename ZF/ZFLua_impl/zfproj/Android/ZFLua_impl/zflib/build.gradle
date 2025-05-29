@@ -52,7 +52,6 @@ dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
     implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs', includes: ['*.jar'])
     implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFLua/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFNet/src/main/libs', includes: ['*.jar'])
     implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZF_impl/src/main/libs', includes: ['*.jar'])
 }
 
