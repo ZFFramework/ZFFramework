@@ -7,6 +7,7 @@ ZF_INPLACE_SRC = ZFFramework/ZFModule/$ZF_NAME
 
 ZF_LIB += ZFCore
 ZF_LIB += ZFLua
+ZF_LIB += ZFNet
 
 ZF_IMPL += ZF_impl
 

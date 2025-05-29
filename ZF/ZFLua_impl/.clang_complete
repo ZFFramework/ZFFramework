@@ -3,5 +3,6 @@
 
 -I../../../ZFFramework/ZF/ZFCore/zfsrc
 -I../../../ZFFramework/ZF/ZFLua/zfsrc
+-I../../../ZFFramework/ZF/ZFNet/zfsrc
 -I../../../ZFFramework/ZF/ZF_impl/zfsrc
 

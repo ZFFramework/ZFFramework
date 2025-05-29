@@ -83,6 +83,7 @@ defineReplace(ZFAddLib) {
 # ZF dependency
 $$ZFAddLib(0, ZFCore)
 $$ZFAddLib(0, ZFLua)
+$$ZFAddLib(0, ZFNet)
 $$ZFAddLib(1, ZF_impl)
 
 

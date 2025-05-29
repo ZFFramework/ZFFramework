@@ -283,7 +283,6 @@ public:
 };
 void ZFFrameworkInit(void) {
     _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkInit begin");
-    static _ZFP_ZFFrameworkAutoCleanupHolder _holder;
     zfbool mutexAvailable = ZFCoreMutexImplAvailable();
     if(mutexAvailable) {
         ZFCoreMutexLock();
@@ -396,6 +395,7 @@ void ZFFrameworkInit(void) {
     if(mutexAvailable) {
         ZFCoreMutexUnlock();
     }
+    static _ZFP_ZFFrameworkAutoCleanupHolder _holder;
     _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkInit end");
 }
 void ZFFrameworkCleanup(void) {
