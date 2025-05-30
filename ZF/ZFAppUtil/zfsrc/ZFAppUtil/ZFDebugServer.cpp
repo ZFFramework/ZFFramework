@@ -6,13 +6,22 @@ static zfauto _ZFP_ZFDebugServerImpl(
         ZF_IN_OUT ZFHttpServerTask *task
         , ZF_IN const zfstring &run
         ) {
+    zfstring outputBuf;
+    ZFOutput orig = ZFOutputDefault();
+    ZFOutputForString(outputBuf);
+    ZFOutputDefault(ZFOutputForString(outputBuf));
+
     zfbool success = zffalse;
     zfstring errorHint;
     zfauto ret = ZFLuaExecuteDetail(run, ZFCoreArray<zfauto>(), &success, &errorHint);
+
+    ZFOutputDefault(orig);
+
     task->respBody(ZFJson()
             .attr("errno", success ? "0" : "-1")
             .attr("error", success ? "success" : errorHint.cString())
-            .attr("recv", ZFObjectInfo(ret))
+            .attr("result", ZFObjectInfo(ret))
+            .attr("output", outputBuf)
             .toString(), "application/json");
     return ret;
 }
@@ -31,7 +40,8 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpServer>, ZFDebugServer
             task->respBody(ZFJson()
                     .attr("errno", "-1")
                     .attr("error", "invalid param")
-                    .attr("recv", task->recvBody())
+                    .attr("result", task->recvBody())
+                    .attr("output", "")
                     .toString(), "application/json");
             return;
         }

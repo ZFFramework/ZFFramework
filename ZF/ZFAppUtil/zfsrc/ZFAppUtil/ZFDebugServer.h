@@ -20,6 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   // for the client, post lua code to run on server
  *   ZFDebugClient([](const ZFArgs &zfargs) {
  *           ZFHttpResponse *recv = zfargs.param0();
+ *           ZFLogTrim("%s", recv->body());
  *       }
  *       , "ZFUIViewTreePrint(ZFUISysWindow.mainWindow():rootView())"
  *       , "http://localhost:12345"
@@ -29,6 +30,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   curl -X POST -H "Content-Type:application/json;charset=UTF-8" \
  *       --data '{"run": "ZFUIViewTreePrint(ZFUISysWindow.mainWindow():rootView())"}' \
  *       "http://localhost:12345"
+ *
+ *   // response data:
+ *   {
+ *       "errno" : "0",
+ *       "error" : "success",
+ *       "result" : "result from code",
+ *       "output" : "output from code",
+ *   }
  * @endcode
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFHttpServer>, ZFDebugServer

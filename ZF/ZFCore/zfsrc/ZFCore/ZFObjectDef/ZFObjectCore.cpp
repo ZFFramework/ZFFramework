@@ -588,12 +588,10 @@ zfbool ZFObject::_ZFP_ZFObjectTryLock(void) {
 }
 
 void ZFObject::_ZFP_ZFObject_objectOnInit(void) {
-    ZFCoreMutexLock();
     this->objectOnInit();
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnInitFinish);
     this->classData()->_ZFP_ZFClass_propertyAutoInitAction(this);
     this->_ZFP_ObjI_onInitIvk();
-    ZFCoreMutexUnlock();
 
     if(!this->objectIsInternalPrivate()) {
         this->classData()->_ZFP_ZFClass_instanceObserverNotify(this);

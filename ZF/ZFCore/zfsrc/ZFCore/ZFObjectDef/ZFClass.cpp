@@ -651,8 +651,8 @@ zfauto ZFClass::newInstance(void) const {
     else {
         obj = d->objectConstruct();
         if(obj != zfnull) {
-            obj->_ZFP_ZFObject_objectOnInit();
             ZFCoreMutexUnlock();
+            obj->_ZFP_ZFObject_objectOnInit();
             obj->_ZFP_ZFObject_objectOnInitFinish();
             ZFCoreMutexLock();
         }
@@ -673,8 +673,8 @@ zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const
         obj = d->objectConstruct();
         if(obj != zfnull) {
             obj->d = dObj;
-            obj->_ZFP_ZFObject_objectOnInit();
             ZFCoreMutexUnlock();
+            obj->_ZFP_ZFObject_objectOnInit();
             obj->_ZFP_ZFObject_objectOnInitFinish();
             ZFCoreMutexLock();
         }
@@ -759,7 +759,6 @@ zfbool ZFClass::newInstanceGenericCheck(
         return zffalse;
     }
 
-    ZFCoreMutexLock();
     ZFObject *obj = (ZFObject *)token;
     obj->_ZFP_ZFObject_objectOnInit();
 
@@ -770,7 +769,6 @@ zfbool ZFClass::newInstanceGenericCheck(
         .errorHint(zfnull)
         ;
     objectOnInitMethod->methodGenericInvoker()(zfargs);
-    ZFCoreMutexUnlock();
     zfbool success = zfargs.success();
 
     if(obj->d) {
