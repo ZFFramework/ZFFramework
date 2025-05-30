@@ -20,6 +20,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @code
  *   // from other client, curl POST with debugger.lua's command as body contents, e.g.:
  *   curl -X POST --data 'p myVar' 'http://localhost:30000'
+ *
+ *   // response plain output from debugger
  * @endcode
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFLua_impl, zfuint, ZFLuaDebugPort)

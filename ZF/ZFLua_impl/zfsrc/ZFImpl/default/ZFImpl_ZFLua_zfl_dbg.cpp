@@ -14,7 +14,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaDebugImpl) {
 }
 zfauto impl; // ZFHttpServer
 zfautoT<ZFSemaphore> sema;
-zfstring buf;
+zfstring readBuf;
+zfstring writeBuf;
 ZF_GLOBAL_INITIALIZER_END(ZFLuaDebugImpl)
 
 static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
@@ -28,7 +29,6 @@ static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
     }
 
     zfstring prompt = ZFImpl_ZFLua_toString(L, 1);
-    ZFLogTrim("%s", prompt);
 
     if(ZFLuaDebugPort() != 0
             && ZFProtocolIsAvailable("ZFHttpServer")
@@ -46,23 +46,31 @@ static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
                 sema = zfobj<ZFSemaphore>();
                 impl->invoke("port", zfobj<v_zfuint>(ZFLuaDebugPort()));
                 ZFLISTENER_1(onRecv
-                        , zfautoT<ZFSemaphore>, sema
+                        , ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaDebugImpl) *, d
                         ) {
                     zfauto task = zfargs.param0();
-                    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaDebugImpl)->buf = task->invoke("recvBody")->to<v_zfstring *>()->zfv;
+                    d->readBuf = task->invoke("recvBody")->to<v_zfstring *>()->zfv;
+                    d->sema->lockAndBroadcast();
+
+                    ZFThread::sleep(100); // wait for debugger's output (may or may not have further output)
+                    ZFCoreMutexLock();
+                    zfstring writeBuf = d->writeBuf;
+                    d->writeBuf = zfnull;
+                    ZFCoreMutexUnlock();
+
                     task->invoke("respBody"
-                            , zfobj<v_zfstring>("{}")
+                            , zfobj<v_zfstring>(writeBuf)
                             , zfobj<v_zfstring>("application/json")
                             );
-                    sema->lockAndBroadcast();
                 } ZFLISTENER_END()
                 impl->invoke("onRequest", zfobj<v_ZFCallback>(onRecv));
                 impl->invoke("start");
             }
 
-            d->buf = "c";
+            d->readBuf = "c";
             sema->lockAndWait();
-            lua_pushstring(L, d->buf.cString());
+            ZFLogTrim("%s%s", prompt, d->readBuf);
+            lua_pushstring(L, d->readBuf.cString());
             return 1;
         } while(zffalse);
     }
@@ -71,13 +79,34 @@ static int _ZFP_ZFImpl_ZFLua_zfl_dbg_read(ZF_IN lua_State *L) {
     fgets(buf, sizeof(buf), stdin);
     buf[strcspn(buf, "\n")] = '\0';
     lua_pushstring(L, buf);
+    ZFLogTrim("%s%s", prompt, buf);
     return 1;
+}
+static int _ZFP_ZFImpl_ZFLua_zfl_dbg_write(ZF_IN lua_State *L) {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+    int count = (int)lua_gettop(L);
+    if(count != 1) {
+        return ZFImpl_ZFLua_luaError(L
+                , "zfl_dbg.read(prompt) takes only one param, got %s"
+                , (zfindex)count
+                );
+    }
+
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaDebugImpl) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaDebugImpl);
+    zfstring prompt = ZFImpl_ZFLua_toString(L, 1);
+    d->writeBuf += prompt;
+    if(prompt && prompt[prompt.length() - 1] == '\n') {
+        prompt.remove(prompt.length() - 1);
+    }
+    ZFLogTrim("%s", prompt);
+    return 0;
 }
 
 ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_dbg, ZFM_EXPAND({
         ZFInput srcInput = ZFInputForResRaw("ZFLua_impl/debugger.lua");
         if(srcInput) {
             ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_zfl_dbg_read", _ZFP_ZFImpl_ZFLua_zfl_dbg_read);
+            ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_zfl_dbg_write", _ZFP_ZFImpl_ZFLua_zfl_dbg_write);
 
             zfstring src;
             ZFInputRead(src, srcInput);
@@ -131,6 +160,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_dbg, ZFM_EXPAND({
                     "    return lineInfo..zfl_dbg.COLOR_BLUE..source..zfl_dbg.COLOR_RESET..':'..zfl_dbg.COLOR_YELLOW..info.currentline..zfl_dbg.COLOR_RESET\n"
                     "end\n"
                     "zfl_dbg.read = _ZFP_ZFImpl_ZFLua_zfl_dbg_read\n"
+                    "zfl_dbg.write = _ZFP_ZFImpl_ZFLua_zfl_dbg_write\n"
                     ;
             // load code
             // stack: [dbg] => [dbg, func]

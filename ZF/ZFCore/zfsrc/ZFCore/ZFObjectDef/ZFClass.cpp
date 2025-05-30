@@ -643,7 +643,7 @@ zfany ZFClass::classDynamicRegisterUserData(void) const {
 }
 
 zfauto ZFClass::newInstance(void) const {
-    ZFCoreMutexLocker();
+    ZFCoreMutexLock();
     ZFObject *obj = zfnull;
     if(d->objectAllocWithCacheCallback) {
         obj = d->objectAllocWithCacheCallback();
@@ -652,16 +652,19 @@ zfauto ZFClass::newInstance(void) const {
         obj = d->objectConstruct();
         if(obj != zfnull) {
             obj->_ZFP_ZFObject_objectOnInit();
+            ZFCoreMutexUnlock();
             obj->_ZFP_ZFObject_objectOnInitFinish();
+            ZFCoreMutexLock();
         }
     }
     zfauto ret;
     ret.zfunsafe_assign(obj);
     zfunsafe_zfRelease(obj);
+    ZFCoreMutexUnlock();
     return ret;
 }
 zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const {
-    ZFCoreMutexLocker();
+    ZFCoreMutexLock();
     ZFObject *obj = zfnull;
     if(d->objectAllocWithCacheCallback) {
         obj = d->objectAllocWithCacheCallback();
@@ -671,12 +674,15 @@ zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const
         if(obj != zfnull) {
             obj->d = dObj;
             obj->_ZFP_ZFObject_objectOnInit();
+            ZFCoreMutexUnlock();
             obj->_ZFP_ZFObject_objectOnInitFinish();
+            ZFCoreMutexLock();
         }
     }
     zfauto ret;
     ret.zfunsafe_assign(obj);
     zfunsafe_zfRelease(obj);
+    ZFCoreMutexUnlock();
     return ret;
 }
 
@@ -738,6 +744,7 @@ zfauto ZFClass::newInstanceDetail(
 }
 
 void *ZFClass::newInstanceGenericBegin(void) const {
+    ZFCoreMutexLocker();
     return d->objectConstruct();
 }
 zfbool ZFClass::newInstanceGenericCheck(
@@ -752,6 +759,7 @@ zfbool ZFClass::newInstanceGenericCheck(
         return zffalse;
     }
 
+    ZFCoreMutexLock();
     ZFObject *obj = (ZFObject *)token;
     obj->_ZFP_ZFObject_objectOnInit();
 
@@ -762,6 +770,7 @@ zfbool ZFClass::newInstanceGenericCheck(
         .errorHint(zfnull)
         ;
     objectOnInitMethod->methodGenericInvoker()(zfargs);
+    ZFCoreMutexUnlock();
     zfbool success = zfargs.success();
 
     if(obj->d) {
@@ -782,8 +791,11 @@ zfbool ZFClass::newInstanceGenericCheck(
             // we must ensure init and destroy the object,
             // then recreate the token
             obj->_ZFP_ZFObject_objectOnInitFinish();
+
+            ZFCoreMutexLock();
             zfunsafe_zfRelease(obj);
             token = d->objectConstruct();
+            ZFCoreMutexUnlock();
         }
     }
     return success;
@@ -795,10 +807,11 @@ zfauto ZFClass::newInstanceGenericEnd(
     ZFObject *obj = (ZFObject *)token;
     if(objectOnInitMethodInvokeSuccess) {
         obj->_ZFP_ZFObject_objectOnInitFinish();
-        zfunsafe_zfblockedRelease(obj);
+        zfblockedRelease(obj);
         return obj;
     }
     else {
+        ZFCoreMutexLocker();
         d->destructor(obj);
         return zfnull;
     }

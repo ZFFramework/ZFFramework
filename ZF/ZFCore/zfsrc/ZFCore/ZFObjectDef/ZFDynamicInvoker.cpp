@@ -497,7 +497,6 @@ void ZFDI_invoke(
         const _ZFP_ZFDI_CacheData &cache = itCache->second;
         if(cache.cls) {
             if(cache.m) {
-                ZFCoreMutexLocker();
                 _ZFP_ZFDI_ParamBackupMapType paramBackup;
                 void *token = cache.cls->newInstanceGenericBegin();
                 if(_ZFP_ZFDI_paramConvert(cache.m, paramBackup, zfargs, zfnull, convStr)
@@ -716,7 +715,6 @@ static zfbool _ZFP_ZFDI_alloc(
         return zffalse;
     }
 
-    ZFCoreMutexLocker();
     void *token = cls->newInstanceGenericBegin();
     if(token == zfnull) {
         zfargs.success(zffalse);
