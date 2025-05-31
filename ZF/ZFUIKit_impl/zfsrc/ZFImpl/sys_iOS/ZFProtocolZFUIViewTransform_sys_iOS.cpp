@@ -19,41 +19,27 @@ public:
     }
 
     virtual void viewTransform(ZF_IN ZFUIView *view) {
-        // transform won't work when changed immediately after UIView created,
-        // delay for some time
-        _delayTaskMap[view] = zftrue;
-        zfself *thiz = this;
-        zfweakT<ZFUIView> holder = view;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            ZFUIView *viewTmp = holder;
-            if(viewTmp == zfnull || thiz->_delayTaskMap.find(viewTmp) == thiz->_delayTaskMap.end()) {
-                return;
-            }
-            UIView *nativeView = (__bridge UIView *)viewTmp->nativeView();
-            CATransform3D t = CATransform3DIdentity;
-            if(viewTmp->translateX() != 0 || viewTmp->translateY() != 0) {
-                t = CATransform3DTranslate(t
-                        , viewTmp->translateX() * viewTmp->UIScaleFixed()
-                        , viewTmp->translateY() * viewTmp->UIScaleFixed()
-                        , 0
-                    );
-            }
-            if(viewTmp->rotateZ() != 0) {
-                t = CATransform3DRotate(t, ((int)viewTmp->rotateZ()) * M_PI / 180, 0, 0, 1);
-            }
-            if(viewTmp->scaleX() != 1 || viewTmp->scaleY() != 1) {
-                t = CATransform3DScale(t, viewTmp->scaleX(), viewTmp->scaleY(), 1);
-            }
-            nativeView.layer.transform = t;
-        });
+        UIView *nativeView = (__bridge UIView *)view->nativeView();
+        CATransform3D t = CATransform3DIdentity;
+        if(view->translateX() != 0 || view->translateY() != 0) {
+            t = CATransform3DTranslate(t
+                    , view->translateX() * view->UIScaleFixed()
+                    , view->translateY() * view->UIScaleFixed()
+                    , 0
+                );
+        }
+        if(view->rotateZ() != 0) {
+            t = CATransform3DRotate(t, ((int)view->rotateZ()) * M_PI / 180, 0, 0, 1);
+        }
+        if(view->scaleX() != 1 || view->scaleY() != 1) {
+            t = CATransform3DScale(t, view->scaleX(), view->scaleY(), 1);
+        }
+        nativeView.layer.transform = t;
     }
     virtual void viewTransformReset(ZF_IN ZFUIView *view) {
         UIView *nativeView = (__bridge UIView *)view->nativeView();
         nativeView.layer.transform = CATransform3DIdentity;
-        _delayTaskMap.erase(view);
     }
-public:
-    zfstlhashmap<ZFUIView *, zfbool> _delayTaskMap;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
