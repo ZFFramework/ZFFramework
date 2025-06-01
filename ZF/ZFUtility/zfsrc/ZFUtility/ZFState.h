@@ -35,16 +35,6 @@ public:
      * @brief util to returon #stateFile or default setting if not specified
      */
     ZFMETHOD_DECLARE_0(ZFPathInfo, stateFileFixed)
-    /**
-     * @brief cache time to keep state, in miliseconds
-     *
-     * set <= 0 for infinite cache time
-     */
-    ZFPROPERTY_ASSIGN(zftimet, cacheTime, 7 * 24 * 60 * 60 * 1000)
-    /**
-     * @brief max item to keep, ordered by cache time
-     */
-    ZFPROPERTY_ASSIGN(zfindex, cacheSize, zfindexMax())
 
 public:
     /**
@@ -74,13 +64,18 @@ public:
 
     /**
      * @brief set state
+     *
+     * the optional expire:
+     * -  0 : no expire, always keep the state unless overrided or removed
+     * -  >0 : with specified expire time
      */
-    ZFMETHOD_DECLARE_2(void, set
+    ZFMETHOD_DECLARE_3(void, set
             , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(const zfstring &, value)
+            , ZFMP_IN_OPT(zftimet, expire, 0)
             )
     /**
-     * @brief set state
+     * @brief remove state
      */
     ZFMETHOD_DECLARE_1(void, remove
             , ZFMP_IN(const zfstring &, key)
@@ -107,10 +102,11 @@ public:
             )
 
     /**
-     * @brief update cache time
+     * @brief update cache time if exist
      */
-    ZFMETHOD_DECLARE_1(void, update
+    ZFMETHOD_DECLARE_2(void, update
             , ZFMP_IN(const zfstring &, key)
+            , ZFMP_IN_OPT(zftimet, expire, 0)
             )
 
     /**

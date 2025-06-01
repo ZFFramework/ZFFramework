@@ -17,7 +17,7 @@ ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFState, instance, ZFLevelZFFrameworkEssent
 
 zfclassNotPOD _ZFP_ZFStateData {
 public:
-    zftimet cacheTime;
+    zftimet expireTime; // 0 for infinite
     zfstring key;
     zfstring value;
 };
@@ -26,8 +26,8 @@ zfclassNotPOD _ZFP_ZFStatePrivate {
 public:
     ZFCoreArray<ZFListener> *loadQueue; // null when ready
     ZFCoreArray<ZFListener> saveQueue;
-    ZFCoreOrderMap pending; // <key, _ZFP_ZFStateData>
-    ZFCoreOrderMap m; // <key, _ZFP_ZFStateData>
+    ZFCoreMap pending; // <key, _ZFP_ZFStateData>
+    ZFCoreMap m; // <key, _ZFP_ZFStateData>
     zfautoT<ZFTaskId> taskId; // taskId for load or save
     zfautoT<ZFTimer> delayId; // taskId for delay save
     zfbool changed;
@@ -50,23 +50,6 @@ public:
     }
 
 public:
-    void trim(ZF_IN ZFState *owner) {
-        zfsynchronize(owner);
-        if(this->m.isEmpty()) {
-            return;
-        }
-        zftimet curTime = ZFTime::currentTime();
-        for(zfiter it = this->m.iter(); it; ++it) {
-            _ZFP_ZFStateData *data = this->m.iterValue<_ZFP_ZFStateData *>(it);
-            if(this->m.count() <= owner->cacheSize()
-                    && curTime - data->cacheTime <= owner->cacheTime()
-                    ) {
-                break;
-            }
-            this->m.iterRemove(it);
-            this->changed = zftrue;
-        }
-    }
     void loadCheck(ZF_IN ZFState *owner) {
         if(this->taskId || this->loadQueue == zfnull) {
             return;
@@ -75,8 +58,8 @@ public:
                 , zfautoT<ZFState>, owner
                 ) {
             if(!zfargs.param0()) {return;}
-            ZFCoreOrderMap *mNew = zfpoolNew(ZFCoreOrderMap);
-            zfobj<ZFValueHolder> holder((void *)mNew, ZFValueHolderTypePoolObject(ZFCoreOrderMap *));
+            ZFCoreMap *mNew = zfpoolNew(ZFCoreMap);
+            zfobj<ZFValueHolder> holder((void *)mNew, ZFValueHolderTypePoolObject(ZFCoreMap *));
             _loadAsyncImpl(*mNew, owner->stateFileFixed(), zfargs);
             zfargs.result(holder);
         } ZFLISTENER_END()
@@ -84,7 +67,7 @@ public:
                 , zfautoT<ZFState>, owner
                 ) {
             ZFValueHolder *holder = zfargs.param0();
-            ZFCoreOrderMap &mNew = holder->holdedDataRef<ZFCoreOrderMap &>();
+            ZFCoreMap &mNew = holder->holdedDataRef<ZFCoreMap &>();
             _ZFP_ZFStatePrivate *d = owner->d;
             d->taskId = zfnull;
             {
@@ -92,7 +75,6 @@ public:
                 d->m.swap(mNew);
             }
             d->_resolvePending(owner);
-            d->trim(owner);
 
             ZFCoreArray<ZFListener> *loadQueueTmp = d->loadQueue;
             d->loadQueue = zfnull;
@@ -155,10 +137,13 @@ public:
             this->taskId = zfnull;
         }
     }
-    void update(ZF_IN const zfstring &key) {
+    void update(
+            ZF_IN const zfstring &key
+            , ZF_IN_OPT zftimet expire
+            ) {
         const ZFCorePointer *item = this->m.get(key);
         if(item) {
-            item->pointerValueT<_ZFP_ZFStateData *>()->cacheTime = ZFTime::currentTime();
+            item->pointerValueT<_ZFP_ZFStateData *>()->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
             this->m.set(key, *item);
         }
     }
@@ -177,15 +162,16 @@ private:
         this->changed = zftrue;
     }
     // file format:
-    //     cacheTime:encode(key):encode(value)
+    //     expireTime:encode(key):encode(value)
     static void _loadAsyncImpl(
-            ZF_OUT ZFCoreOrderMap &mNew
+            ZF_OUT ZFCoreMap &mNew
             , ZF_IN const ZFPathInfo &pathInfo
             , ZF_IN const ZFArgs &zfargs
             ) {
         if(!zfargs.param0()) {return;}
         ZFInput input = ZFInputForPathInfo(pathInfo);
         if(!input) {return;}
+        zftimet curTime = ZFTime::currentTime();
         zfstring line;
         ZFCoreArray<ZFIndexRange> pos;
         for( ;
@@ -197,7 +183,10 @@ private:
                 continue;
             }
             ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
-            if(!zftimetFromStringT(data->cacheTime, line + pos[0].start, pos[0].count)) {
+            if(!zftimetFromStringT(data->expireTime, line + pos[0].start, pos[0].count)) {
+                continue;
+            }
+            if(curTime >= data->expireTime) {
                 continue;
             }
             ZFCoreDataDecode(data->key, line + pos[1].start, pos[1].count);
@@ -226,10 +215,14 @@ private:
         if(!zfargs.param0()) {return;}
         ZFOutput output = ZFOutputForPathInfo(owner->stateFileFixed());
         if(!output) {return;}
+        zftimet curTime = ZFTime::currentTime();
         zfstring line;
         for(zfindex i = 0; i < l.count(); ++i) {
             const _ZFP_ZFStateData &data = *((l[i]).pointerValue());
-            zftimetToStringT(line, data.cacheTime);
+            if(curTime >= data.expireTime) {
+                continue;
+            }
+            zftimetToStringT(line, data.expireTime);
             line += ":";
             ZFCoreDataEncode(line, data.key);
             line += ":";
@@ -351,9 +344,10 @@ ZFMETHOD_DEFINE_0(ZFState, void, saveImmediately) {
     d->saveImmediately(this);
 }
 
-ZFMETHOD_DEFINE_2(ZFState, void, set
+ZFMETHOD_DEFINE_3(ZFState, void, set
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)
+        , ZFMP_IN_OPT(zftimet, expire, 0)
         ) {
     if(!key) {
         return;
@@ -363,24 +357,23 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
         {
             zfsynchronize(this);
             _ZFP_ZFStateData *data = zfpoolNew(_ZFP_ZFStateData);
-            data->cacheTime = ZFTime::currentTime();
+            data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
             data->key = key;
             data->value = value;
             d->m.set(key, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>(data));
         }
-        d->trim(this);
         d->saveCheck(this);
     }
     else {
         {
             zfsynchronize(this);
-            _ZFP_ZFStateData *exist = d->pending.update<_ZFP_ZFStateData *>(key);
+            _ZFP_ZFStateData *exist = d->pending.get<_ZFP_ZFStateData *>(key);
             if(exist != zfnull) {
-                exist->cacheTime = ZFTime::currentTime();
+                exist->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
             }
             else {
                 ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
-                data->cacheTime = ZFTime::currentTime();
+                data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
                 data->key = key;
                 data->value = value;
                 d->pending.set(key, data);
@@ -425,7 +418,13 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
     zfsynchronize(this);
     const _ZFP_ZFStateData *data = d->m.get<const _ZFP_ZFStateData *>(key);
     if(data != zfnull) {
-        return data->value;
+        if(ZFTime::currentTime() >= data->expireTime) {
+            d->m.remove(key);
+            return zfnull;
+        }
+        else {
+            return data->value;
+        }
     }
     else {
         return zfnull;
@@ -463,22 +462,24 @@ ZFMETHOD_DEFINE_2(ZFState, zfautoT<ZFTaskId>, getAsync
     return this->load(action);
 }
 
-ZFMETHOD_DEFINE_1(ZFState, void, update
+ZFMETHOD_DEFINE_2(ZFState, void, update
         , ZFMP_IN(const zfstring &, key)
+        , ZFMP_IN(zftimet, expire)
         ) {
     if(!key) {
         return;
     }
     if(this->ready()) {
-        d->update(key);
+        d->update(key, expire);
     }
     else {
         zfweakT<ZFState> weakSelf = this;
-        ZFLISTENER_2(action
+        ZFLISTENER_3(action
+                , zftimet, expire
                 , zfweakT<ZFState>, weakSelf
                 , zfstring, key
                 ) {
-            weakSelf->d->update(key);
+            weakSelf->d->update(key, expire);
         } ZFLISTENER_END()
         this->load(action);
     }
