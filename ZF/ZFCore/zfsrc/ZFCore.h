@@ -34,6 +34,7 @@
 #include "ZFCore/ZFMutex.h"
 #include "ZFCore/ZFObject.h"
 #include "ZFCore/ZFObjectHolder.h"
+#include "ZFCore/ZFObjectIO.h"
 #include "ZFCore/ZFObjectIO_zfsd.h"
 #include "ZFCore/ZFObserverGroup.h"
 #include "ZFCore/ZFOutputForConsole.h"

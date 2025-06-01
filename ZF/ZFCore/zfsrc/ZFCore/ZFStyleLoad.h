@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFStyleLoad_h_
 #define _ZFI_ZFStyleLoad_h_
 
-#include "ZFFile.h"
+#include "ZFObjectIO.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -85,12 +85,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
  * @endcode
  * \n
  * all styles are loaded by #ZFObjectIOLoad,
- * and the file path name without file ext would be used as styleKey for #ZFStyleSet
- * (`~/path1/path2/mybutton.xml` would result `path1/path2/mybutton` as styleKey),
+ * and `ZFPathOfWithoutAllExt` would be used as styleKey for #ZFStyleSet
+ * (`~/path1/path2/mybutton.123.xml` would result `path1/path2/mybutton` as styleKey),
  * if two item with same name exists,
  * the later one would override the first one
  * (but which one is later, is not ensured, try to prevent that)\n
- * the filters can be supplied to ignore some files by file name,
+ * \n
  * by default, these files or dirs would be ignored:
  * -  files or dirs whose name start with '.' or '_' (e.g. '.ignored.xml')
  * -  files whose name end with '_' (e.g. 'ignored_.xml')

@@ -825,9 +825,9 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageAniLoad
         fileName = input.callbackId();
     }
 
-    // path/test-(40x30-10).png
-    // path/test-(40x30-10-33).png
-    zfobj<ZFRegExp> pattern("\\-\\(([0-9]+)x([0-9]+)\\-([0-9]+)(\\-([0-9]+))?\\)");
+    // path/test.40x30-10.png
+    // path/test.40x30-10-33.png
+    zfobj<ZFRegExp> pattern("\\.([0-9]+)x([0-9]+)\\-([0-9]+)(\\-([0-9]+))?\\.");
     ZFRegExpResult match;
     pattern->find(match, fileName);
     if(!match.matched

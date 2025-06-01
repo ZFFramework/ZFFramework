@@ -2,15 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFOBJECTIO_DEFINE(lua, {
-        zfstring fileExt;
-        if(!ZFPathInfoToFileName(fileExt, pathInfo)
-                || !ZFFileExtOfT(fileExt, fileExt)
-                || !fileExt
-                ) {
-            return zffalse;
-        }
-        zfstringToLowerT(fileExt);
+ZFOBJECTIO_DEFINE(lua, ZFLevelZFFrameworkPostNormal, {
         return fileExt == "lua";
     }, {
         ret = ZFLuaExecute(input);

@@ -1,16 +1,16 @@
 #include "ZFObjectIO.h"
-#include "ZFObjectImpl.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFObjectIOData {
 public:
+    ZFLevel level;
     _ZFP_ZFObjectIOCallback_checker checker;
     _ZFP_ZFObjectIOCallback_fromInput fromInput;
     _ZFP_ZFObjectIOCallback_toOutput toOutput;
 };
-static ZFCoreArray<_ZFP_ZFObjectIOData *> &_ZFP_ZFObjectIODataList(void) {
+static ZFCoreArray<_ZFP_ZFObjectIOData *> &_ZFP_ZFObjectIODataList(void) { // higher priority at head
     static ZFCoreArray<_ZFP_ZFObjectIOData *> d;
     return d;
 }
@@ -20,9 +20,11 @@ void _ZFP_ZFObjectIORegister(
         , ZF_IN _ZFP_ZFObjectIOCallback_checker checker
         , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
         , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
+        , ZF_IN ZFLevel level
         ) {
     ZFCoreMutexLocker();
     ZFCoreArray<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
+    zfindex pos = 0;
     for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *item = l[i];
         if(item->checker == checker && item->fromInput == fromInput && item->toOutput == toOutput) {
@@ -30,13 +32,17 @@ void _ZFP_ZFObjectIORegister(
                 registerSig);
             return;
         }
+        if(level <= item->level) {
+            pos = i;
+        }
     }
 
     _ZFP_ZFObjectIOData *data = zfnew(_ZFP_ZFObjectIOData);
+    data->level = level;
     data->checker = checker;
     data->fromInput = fromInput;
     data->toOutput = toOutput;
-    l.add(data);
+    l.add(data, pos);
 }
 void _ZFP_ZFObjectIOUnregister(
         ZF_IN const zfchar *registerSig
@@ -69,18 +75,22 @@ zfbool ZFObjectIOLoadT(
 
     ZFCoreMutexLock();
     ZFCoreArray<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
-    for(zfindex i = l.count() - 1; i != zfindexMax(); --i) {
+    zfstring fileName;
+    zfstring fileExt;
+    {
+        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(input.pathInfo().pathType());
+        if(impl) {
+            if(impl->callbackToFileName(fileName, input.pathInfo().pathData())) {
+                ZFFileExtOfT(fileExt, fileName);
+                zfstringToLowerT(fileExt);
+            }
+        }
+    }
+    for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
-        if(l[i]->checker(input.pathInfo())) {
+        if(l[i]->checker(input.pathInfo(), fileName, fileExt)) {
             if(l[i]->fromInput(ret, input, outErrorHint)) {
-                ZFCoreMutexLock();
-                // move to tail for better search performance
-                if(i + 2 < l.count()) {
-                    l.removeElement(d);
-                    l.add(d);
-                }
-                ZFCoreMutexUnlock();
                 return zftrue;
             }
             else {
@@ -114,18 +124,22 @@ zfbool ZFObjectIOSave(
 
     ZFCoreMutexLock();
     ZFCoreArray<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
-    for(zfindex i = l.count() - 1; i != zfindexMax(); --i) {
+    zfstring fileName;
+    zfstring fileExt;
+    {
+        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(output.pathInfo().pathType());
+        if(impl) {
+            if(impl->callbackToFileName(fileName, output.pathInfo().pathData())) {
+                ZFFileExtOfT(fileExt, fileName);
+                zfstringToLowerT(fileExt);
+            }
+        }
+    }
+    for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
-        if(l[i]->checker(output.pathInfo())) {
+        if(l[i]->checker(output.pathInfo(), fileName, fileExt)) {
             if(l[i]->toOutput(output, obj, outErrorHint)) {
-                ZFCoreMutexLock();
-                // move to tail for better search performance
-                if(i + 2 < l.count()) {
-                    l.removeElement(d);
-                    l.add(d);
-                }
-                ZFCoreMutexUnlock();
                 return zftrue;
             }
             else {
@@ -139,12 +153,6 @@ zfbool ZFObjectIOSave(
         output.pathInfo());
     return zffalse;
 }
-
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectIOLoadT
         , ZFMP_OUT(zfauto &, ret)
@@ -161,6 +169,16 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectIOSave
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
 
+// ============================================================
+ZFSTYLE_DECODER_DEFINE(ZFStyleDecoder_ZFObjectIO, {
+    if(styleKey[0] != '@') {
+        return zffalse;
+    }
+    ZFInput input;
+    input.callbackSerializeDisable(zftrue);
+    return ZFInputForPathInfoT(input, ZFPathInfo(styleKey + 1))
+        && ZFObjectIOLoadT(ret, input);
+})
+
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

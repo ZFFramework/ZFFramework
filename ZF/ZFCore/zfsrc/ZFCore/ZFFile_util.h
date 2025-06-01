@@ -116,6 +116,20 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathOfWithoutExt
         , ZFMP_IN(const zfchar *, src)
         )
 /**
+ * @brief get file path without all ext,
+ *   e.g. "/path/file" from "/path/file.ext0.ext1",
+ *   or original string if no extension
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathOfWithoutAllExtT
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        )
+/** @brief see #ZFPathOfWithoutAllExtT */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathOfWithoutAllExt
+        , ZFMP_IN(const zfchar *, src)
+        )
+/**
  * @brief get parent path
  *
  * return empty string if no parent found

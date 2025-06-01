@@ -1025,17 +1025,6 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOut
 }
 
 // ============================================================
-ZFSTYLE_DECODER_DEFINE(ZFStyleDecoder_pathInfo, {
-    if(styleKey[0] != '@') {
-        return zffalse;
-    }
-    ZFInput input;
-    input.callbackSerializeDisable(zftrue);
-    return ZFInputForPathInfoT(input, ZFPathInfo(styleKey + 1))
-        && ZFObjectIOLoadT(ret, input);
-})
-
-// ============================================================
 // all printable chars (0x20 ~ 0x7E) except:
 //   '%' : 0x25
 //   '|' : 0x7C

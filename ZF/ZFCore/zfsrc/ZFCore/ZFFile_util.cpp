@@ -335,6 +335,44 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFPathOfWithoutExt
     ZFPathOfWithoutExtT(ret, src);
     return ret;
 }
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathOfWithoutAllExtT
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        ) {
+    if(zfstringIsEmpty(src)) {
+        return zffalse;
+    }
+    zfindex dotPos = zfindexMax();
+    for(zfindex i = zfslen(src) - 1; i != zfindexMax(); --i) {
+        if(src[i] == '.') {
+            if(i == 0) {
+                break;
+            }
+            else {
+                dotPos = i;
+            }
+        }
+        else if(src[i] == '/' || src[i] == '\\') {
+            break;
+        }
+    }
+    if(src >= ret.cString() && src < ret.cString() + ret.length()) {
+        if(dotPos != zfindexMax()) {
+            ret.remove(src - ret.cString() + dotPos, zfslen(src) - dotPos);
+        }
+    }
+    else {
+        ret.append(src, dotPos);
+    }
+    return zftrue;
+}
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFPathOfWithoutAllExt
+        , ZFMP_IN(const zfchar *, src)
+        ) {
+    zfstring ret;
+    ZFPathOfWithoutAllExtT(ret, src);
+    return ret;
+}
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOfT
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)

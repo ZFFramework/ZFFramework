@@ -810,16 +810,6 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT
 
 // ============================================================
 /**
- * @brief see #ZFSTYLE_DECODER_DEFINE
- *
- * styleKey should start with '@' and holds a #ZFPathInfo,
- * the result style object would be created by
- * #ZFInputForPathInfo and #ZFObjectIOLoad
- */
-#define ZFStyleDecoder_pathInfo pathInfo
-
-// ============================================================
-/**
  * @brief util for impl to parse chained path data
  *
  * chained path info format: 'pathType1:pathType2:pathData2|pathData1'\n

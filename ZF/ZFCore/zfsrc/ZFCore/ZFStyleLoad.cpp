@@ -82,7 +82,7 @@ static void _ZFP_ZFStyleLoadImpl(
                             );
                     continue;
                 }
-                ZFPathOfWithoutExtT(relativePathTmp, relativePathTmp);
+                ZFPathOfWithoutAllExtT(relativePathTmp, relativePathTmp);
                 _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
             }
         } while(fileImpl.implFindNext(fd));
@@ -118,7 +118,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
                     );
             return zffalse;
         }
-        ZFPathOfWithoutExtT(fileName, fileName);
+        ZFPathOfWithoutAllExtT(fileName, fileName);
         _ZFP_ZFStyleLoad_ZFStyleSet(fileName, styleValue);
         return zftrue;
     }

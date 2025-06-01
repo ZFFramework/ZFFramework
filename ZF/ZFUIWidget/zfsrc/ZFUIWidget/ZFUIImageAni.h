@@ -158,11 +158,11 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAniT
 
 // ============================================================
 /**
- * @brief util function to load animated image with special logic
+ * @brief util function to load animated image with special naming logic
  *
  * the src input must support #ZFCallback::callbackId or #ZFCallback::pathInfo with this naming rule:
- * -  `xxx-(wxh-N).xxx`, for example: `path/test-(40x30-10).png`
- * -  `xxx-(wxh-N-DURATION).xxx`, for example: `path/test-(40x30-10-33).png`
+ * -  `xxx.wxh-N.xxx`, for example: `path/test.40x30-10.png`
+ * -  `xxx.wxh-N-DURATION.xxx`, for example: `path/test.40x30-10-33.png`
  *
  * then the result animated image would have:
  * -  `40x30` as each frame size

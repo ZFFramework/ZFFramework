@@ -370,6 +370,15 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  * \n
  * \n
  * note, by default, all styles would be cleared during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
+ * \n
+ * ADVANCED:\n
+ * you may register your own style decoder by #ZFSTYLE_DECODER_DEFINE
+ * to supply additional style logic\n
+ * by default, we bundled a special load logic by #ZFStyleDecoder_ZFObjectIO,
+ * which would load style from specified path info, for example:
+ * @code
+ *   <MyStyleObject styleKey="@res:my_cfg.xml" />
+ * @endcode
  */
 extern ZFLIB_ZFCore void ZFStyleSet(
         ZF_IN const zfstring &styleKey
@@ -382,8 +391,6 @@ extern ZFLIB_ZFCore void ZFStyleSet(
  *   use #ZFStyleable::styleableCopyFrom or #ZFCopyable::copy
  *   to create new one if necessary,
  *   you should not modify the original object
- * @note you may register your own decoder by #ZFSTYLE_DECODER_DEFINE
- *   to supply additional style
  */
 extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfstring &styleKey);
 /**
