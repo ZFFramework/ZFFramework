@@ -66,7 +66,8 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
  *           // callback to check whether the pathInfo can be used as object IO
  *           // proto type:
  *           //   zfbool checker(
- *           //           ZF_IN const ZFPathInfo &pathInfo
+ *           //           ZF_IN zfbool isOutput
+ *           //           , ZF_IN const ZFPathInfo &pathInfo
  *           //           , ZF_IN const zfstring &fileName
  *           //           , ZF_IN const zfstring &fileExt
  *           //           );
@@ -98,7 +99,8 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
         _ZFP_ZFObjectIOUnregister(zftext(#registerSig), zfself::_ZFP_checker, zfself::_ZFP_fromInput, zfself::_ZFP_toOutput); \
     } \
     static zfbool _ZFP_checker( \
-            ZF_IN const ZFPathInfo &pathInfo \
+            ZF_IN zfbool isOutput \
+            , ZF_IN const ZFPathInfo &pathInfo \
             , ZF_IN const zfstring &fileName \
             , ZF_IN const zfstring &fileExt \
             ) { \
@@ -121,7 +123,8 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
     ZF_STATIC_REGISTER_END(ObjIOReg_##registerSig)
 
 typedef zfbool (*_ZFP_ZFObjectIOCallback_checker)(
-        ZF_IN const ZFPathInfo &pathInfo
+        ZF_IN zfbool isOutput
+        , ZF_IN const ZFPathInfo &pathInfo
         , ZF_IN const zfstring &fileName
         , ZF_IN const zfstring &fileExt
         );

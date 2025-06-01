@@ -32,8 +32,8 @@ void _ZFP_ZFObjectIORegister(
                 registerSig);
             return;
         }
-        if(level <= item->level) {
-            pos = i;
+        if(level >= item->level) {
+            pos = i + 1;
         }
     }
 
@@ -89,7 +89,7 @@ zfbool ZFObjectIOLoadT(
     for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
-        if(l[i]->checker(input.pathInfo(), fileName, fileExt)) {
+        if(l[i]->checker(zffalse, input.pathInfo(), fileName, fileExt)) {
             if(l[i]->fromInput(ret, input, outErrorHint)) {
                 return zftrue;
             }
@@ -138,7 +138,7 @@ zfbool ZFObjectIOSave(
     for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
-        if(l[i]->checker(output.pathInfo(), fileName, fileExt)) {
+        if(l[i]->checker(zftrue, output.pathInfo(), fileName, fileExt)) {
             if(l[i]->toOutput(output, obj, outErrorHint)) {
                 return zftrue;
             }

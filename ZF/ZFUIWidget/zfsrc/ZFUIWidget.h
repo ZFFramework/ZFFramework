@@ -6,6 +6,7 @@
 #ifndef _ZFI_ZFUIWidget_h_
 #define _ZFI_ZFUIWidget_h_
 
+#include "ZFUIWidget/ZFObjectIO_image_ani.h"
 #include "ZFUIWidget/ZFUIAutoLayout.h"
 #include "ZFUIWidget/ZFUIButton.h"
 #include "ZFUIWidget/ZFUIButtonBasic.h"

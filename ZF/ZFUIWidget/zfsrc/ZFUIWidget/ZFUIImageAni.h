@@ -173,6 +173,14 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAniLoad
         , ZFMP_IN(const ZFInput &, input)
         )
 
+/** @brief try parse rules declared in #ZFUIImageAniLoad */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAniLoadCheck
+        , ZFMP_OUT(ZFUISize &, frameSize)
+        , ZFMP_OUT(zfindex &, frameCount)
+        , ZFMP_OUT(zftimet &, frameDuration)
+        , ZFMP_IN(const zfstring &, fileName)
+        )
+
 /**
  * @brief util function to save animated image with special logic
  *
@@ -185,7 +193,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIWidget, zfautoT<ZFUIImage>, ZFUIImageAniLoad
  *
  * a special file name would be appended to dst,
  * for example, if dst is `path/test.png`,
- * then the final dst to output may be `path/test-(40x30-10).png`
+ * then the final dst to output may be `path/test.40x30-10.png`
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAniSave
         , ZFMP_IN(const ZFPathInfo &, dst)

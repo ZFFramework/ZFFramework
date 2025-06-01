@@ -31,6 +31,8 @@ extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtAdd(ZF_IN const zfstring &ima
 /** @brief see #ZFObjectIO_image_imageExtAdd */
 extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtRemove(ZF_IN const zfstring &imageExt);
 /** @brief see #ZFObjectIO_image_imageExtAdd */
+extern ZFLIB_ZFUIKit zfbool ZFObjectIO_image_imageExtCheck(ZF_IN const zfstring &imageExt);
+/** @brief see #ZFObjectIO_image_imageExtAdd */
 extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
 /** @brief see #ZFObjectIO_image_imageExtAdd */
 inline ZFCoreArray<zfstring> ZFObjectIO_image_imageExtGetAll(void) {

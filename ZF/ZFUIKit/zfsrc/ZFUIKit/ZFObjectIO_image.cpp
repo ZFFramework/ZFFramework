@@ -18,6 +18,10 @@ void ZFObjectIO_image_imageExtAdd(ZF_IN const zfstring &imageExt) {
 void ZFObjectIO_image_imageExtRemove(ZF_IN const zfstring &imageExt) {
     _ZFP_ZFObjectIO_image_imageExtMap().erase(imageExt);
 }
+zfbool ZFObjectIO_image_imageExtCheck(ZF_IN const zfstring &imageExt) {
+    _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
+    return m.find(imageExt) != m.end();
+}
 void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
     for(_ZFP_ZFObjectIO_image_imageExtMapType::iterator it = m.begin(); it != m.end(); ++it) {
@@ -34,8 +38,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFObjectIO_image_imageExtDefault)
 
 // ============================================================
 ZFOBJECTIO_DEFINE(image, ZFLevelZFFrameworkPostNormal, ZFM_EXPAND({
-        _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
-        return m.find(fileExt) != m.end();
+        return ZFObjectIO_image_imageExtCheck(fileExt);
     }), {
         ret = ZFUIImageFromInput(input);
         if(ret == zfnull) {

@@ -825,6 +825,21 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageAniLoad
         fileName = input.callbackId();
     }
 
+    ZFUISize frameSize = ZFUISizeZero();
+    zfindex frameCount = 0;
+    zftimet frameDuration = 0;
+    if(!ZFUIImageAniLoadCheck(frameSize, frameCount, frameDuration, fileName)) {
+        return zfnull;
+    }
+    return ZFUIImageAni(input, frameSize, frameCount, frameDuration);
+}
+
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIImageAniLoadCheck
+        , ZFMP_OUT(ZFUISize &, frameSize)
+        , ZFMP_OUT(zfindex &, frameCount)
+        , ZFMP_OUT(zftimet &, frameDuration)
+        , ZFMP_IN(const zfstring &, fileName)
+        ) {
     // path/test.40x30-10.png
     // path/test.40x30-10-33.png
     zfobj<ZFRegExp> pattern("\\.([0-9]+)x([0-9]+)\\-([0-9]+)(\\-([0-9]+))?\\.");
@@ -833,26 +848,22 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageAniLoad
     if(!match.matched
             || (match.namedGroups.count() != 3 && match.namedGroups.count() != 5)
             ) {
-        return zfnull;
+        return zffalse;
     }
-
-    ZFUISize frameSize = ZFUISizeZero();
-    zfindex frameCount = 0;
-    zftimet frameDuration = 0;
 
     if(zffalse
             || !zffloatFromStringT(frameSize.width, fileName + match.namedGroups[0].start, match.namedGroups[0].count)
             || !zffloatFromStringT(frameSize.height, fileName + match.namedGroups[1].start, match.namedGroups[1].count)
             || !zfindexFromStringT(frameCount, fileName + match.namedGroups[2].start, match.namedGroups[2].count)
             ) {
-        return zfnull;
+        return zffalse;
     }
     if(match.namedGroups.count() == 5) {
         if(!zftimetFromStringT(frameDuration, fileName + match.namedGroups[4].start, match.namedGroups[4].count)) {
-            return zfnull;
+            return zffalse;
         }
     }
-    return ZFUIImageAni(input, frameSize, frameCount, frameDuration);
+    return zftrue;
 }
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
@@ -860,7 +871,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         , ZFMP_IN(ZFArray *, images)
         , ZFMP_IN_OPT(zftimet, frameDuration, 0)
         ) {
-    if(images == zfnull || images->isEmpty()) {
+    if(images == zfnull || images->count() <= 1) {
         return zffalse;
     }
     const ZFPathInfoImpl *pathInfoImpl = ZFPathInfoImplForPathType(dst.pathType());
@@ -869,30 +880,21 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
     }
 
     zfuint frameCount = (zfuint)images->count();
-    ZFUISize frameSize = ZFUISizeZero();
-    for(zfuint i = 0; i < frameCount; ++i) {
-        ZFUIImage *image = images->get(i);
-        if(image == zfnull || image->imageSize().width == 0 || image->imageSize().height == 0) {
-            return zffalse;
-        }
-        if(image->imageSize().width > frameSize.width) {
-            frameSize.width = image->imageSize().width;
-        }
-        if(image->imageSize().height > frameSize.height) {
-            frameSize.height = image->imageSize().height;
+    ZFUISize frameSize = images->getFirst()->to<ZFUIImage *>()->imageSize();
+
+    zfuint countPerLine = 1;
+    {
+        zffloat diffMin = -1;
+        for(zfuint t = 1; t <= frameCount; ++t) {
+            zffloat diff = zfmAbs(frameSize.width * t - frameSize.height * (zfuint)((frameCount + t - 1) / t));
+            if(diffMin < 0 || diff < diffMin) {
+                countPerLine = t;
+                diffMin = diff;
+            }
         }
     }
 
-    zfuint x = 1;
-    zffloat diffMin = -1;
-    for(zfuint t = 1; t <= frameCount; ++t) {
-        zffloat diff = zfmAbs(frameSize.width * t - frameSize.height * (zfuint)((frameCount + t - 1) / t));
-        if(diffMin < 0 || diff <= diffMin) {
-            x = t;
-        }
-    }
-
-    ZFUISize imageSize = ZFUISizeCreate(frameSize.width * x, frameSize.height * (zfuint)((frameCount + x - 1) / x));
+    ZFUISize imageSize = ZFUISizeCreate(frameSize.width * countPerLine, frameSize.height * (zfuint)((frameCount + countPerLine - 1) / countPerLine));
     void *token = ZFUIDraw::beginForImage(imageSize);
     zfuint frameIndex = 0;
     for(zffloat y = 0; frameIndex < frameCount; ) {
@@ -906,21 +908,9 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
             }
 
             ZFUIImage *image = images->get(frameIndex);
-            if(image->imageSize() == frameSize) {
-                ZFUIDraw::drawImage(token, image, ZFUIRectZero(), ZFUIRectCreate(
-                            x, y, frameSize.width, frameSize.height
-                            ));
-            }
-            else {
-                const ZFUISize &t = image->imageSize();
-                ZFUIDraw::drawImage(token, image, ZFUIRectZero(), ZFUIRectCreate(
-                            x + (frameSize.width - t.width) / 2
-                            , y + (frameSize.height - t.height) / 2
-                            , t.width
-                            , t.height
-                            ));
-            }
-
+            ZFUIDraw::drawImage(token, image, ZFUIRectZero(), ZFUIRectCreate(
+                        x, y, frameSize.width, frameSize.height
+                        ));
 
             ++frameIndex;
             x += frameSize.width;
@@ -933,13 +923,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
 
     zfstring fileName;
     if(!ZFPathInfoToFileName(fileName, dst)
-            || ZFFileNameOfWithoutExtT(fileName, fileName)
+            || !ZFFileNameOfWithoutExtT(fileName, fileName)
             || !fileName
             ) {
         return zffalse;
     }
     if(frameDuration != 0) {
-        zfstringAppend(fileName, "-(%sx%s-%s-%s)"
+        zfstringAppend(fileName, ".%sx%s-%s-%s"
                 , frameSize.width
                 , frameSize.height
                 , frameCount
@@ -947,7 +937,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
                 );
     }
     else {
-        zfstringAppend(fileName, "-(%sx%s-%s)"
+        zfstringAppend(fileName, ".%sx%s-%s"
                 , frameSize.width
                 , frameSize.height
                 , frameCount
@@ -960,7 +950,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
             ) {
         return zffalse;
     }
-    if(!fileExt) {
+    if(fileExt) {
         fileName += ".";
         fileName += fileExt;
     }
