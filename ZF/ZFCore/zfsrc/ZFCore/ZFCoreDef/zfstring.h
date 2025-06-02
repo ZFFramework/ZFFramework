@@ -204,7 +204,7 @@ public:
     zfbool operator == (ZF_IN zfnullT const &dummy) const {return this->isEmpty();}
     zfbool operator != (ZF_IN zfnullT const &dummy) const {return !this->isEmpty();}
 public:
-    /* ZFTAG_TRICKS: tricks to make zfstlmap<zfstring, xxx> works */
+    /* ZFTAG_TRICKS: tricks to make ZFMap<zfstring, xxx> works */
     inline zfbool operator < (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) < 0;}
     inline zfbool operator <= (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) <= 0;}
     inline zfbool operator > (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) > 0;}

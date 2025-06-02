@@ -14,6 +14,8 @@
 #include "ZFCoreTypeDef_ClassType.h"
 #include "ZFCoreTypeDef_OtherType.h"
 
+#include "ZFCoreTypeDef_Extra.h"
+
 #if !defined(zfimplLogAsGlobal) || zfimplLogAsGlobal
     #include "zfimplLog.h"
 #endif

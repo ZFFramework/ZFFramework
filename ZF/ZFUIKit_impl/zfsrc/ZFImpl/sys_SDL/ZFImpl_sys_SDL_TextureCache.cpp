@@ -98,9 +98,9 @@ private:
     public:
         inline zfstlsize operator () (Key const &v) const {
             return (zfstlsize)zfidentityHash(0
-                    , zfidentityCalcPointer(v.renderer)
-                    , zfidentityCalcPOD(v.w)
-                    , zfidentityCalcPOD(v.h)
+                    , zfidentityCalc(v.renderer)
+                    , zfidentityCalc(v.w)
+                    , zfidentityCalc(v.h)
                     );
         }
     };

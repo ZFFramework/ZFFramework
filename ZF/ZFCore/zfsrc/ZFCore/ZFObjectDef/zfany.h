@@ -96,7 +96,7 @@ public:
 private:
     ZFObject *_ZFP_obj;
 };
-ZFCORE_POD_DECLARE(zfany)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfany)
 
 // ============================================================
 /**
@@ -154,7 +154,7 @@ public:
     }
     /** @endcond */
 };
-ZFCORE_POD_DECLARE_TEMPLATE(typename T_Type, zfanyT<T_Type>)
+ZFCORE_POD_DECLARE_TEMPLATE_NO_COMPARER(typename T_Type, zfanyT<T_Type>)
 
 // ============================================================
 /** @cond ZFPrivateDoc */

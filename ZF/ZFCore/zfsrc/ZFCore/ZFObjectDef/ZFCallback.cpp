@@ -277,7 +277,7 @@ const zfstring &ZFCallback::callbackId(void) const {
 }
 
 zfidentity ZFCallback::callbackHash(void) const {
-    return zfidentityCalcPointer(d);
+    return zfidentityCalc(d);
 }
 
 void ZFCallback::callbackTag(

@@ -23,7 +23,6 @@ public:
     zffloat cellSizeHint; /**< @brief cell's size hint */
 };
 ZFCORE_POD_DECLARE(ZFUICellUpdaterParam)
-ZFCORE_POD_COMPARER_DECLARE(ZFUICellUpdaterParam)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUICellUpdaterParam, ZFUICellUpdaterParam)
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFUIWidget, ZFUICellUpdaterParam, ZFUICellUpdaterParam)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFUIWidget, ZFUICellUpdaterParam)

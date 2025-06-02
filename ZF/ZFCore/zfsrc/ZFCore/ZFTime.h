@@ -19,8 +19,7 @@ public:
     zftimet sec;     /**< second */
     zftimet usec;    /**< micro second */
 };
-ZFCORE_POD_DECLARE(ZFTimeValue)
-ZFCORE_POD_COMPARER_DECLARE(ZFTimeValue)
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFTimeValue)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -199,66 +198,22 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeValueToStringFriend
     return s;
 }
 
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore zfbool operator < (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore zfbool operator <= (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore zfbool operator > (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore zfbool operator >= (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore ZFTimeValue operator + (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore ZFTimeValue operator - (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore void operator += (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore void operator -= (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore ZFTimeValue operator * (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore ZFTimeValue operator / (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore void operator *= (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        );
-/** @brief overrided operator for ZFTimeValue calculate */
-extern ZFLIB_ZFCore void operator /= (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        );
+/** @cond ZFPrivateDoc */
+inline zfbool operator == (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return (ZFTimeValueCompare(v0, v1) == ZFCompareEqual);}
+inline zfbool operator != (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return (ZFTimeValueCompare(v0, v1) != ZFCompareEqual);}
+inline zfbool operator < (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return (ZFTimeValueCompare(v0, v1) == ZFCompareSmaller);}
+inline zfbool operator <= (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return (ZFTimeValueCompare(v0, v1) != ZFCompareGreater);}
+inline zfbool operator > (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return (ZFTimeValueCompare(v0, v1) == ZFCompareGreater);}
+inline zfbool operator >= (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return (ZFTimeValueCompare(v0, v1) != ZFCompareSmaller);}
+inline ZFTimeValue operator + (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return ZFTimeValueInc(v0, v1);}
+inline ZFTimeValue operator - (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {return ZFTimeValueDec(v0, v1);}
+inline void operator += (ZF_IN_OUT ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {ZFTimeValueInc(v0, v0, v1);}
+inline void operator -= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1) {ZFTimeValueDec(v0, v0, v1);}
+inline ZFTimeValue operator * (ZF_IN const ZFTimeValue &v0, ZF_IN zfindex v1) {return ZFTimeValueMul(v0, v1);}
+inline ZFTimeValue operator / (ZF_IN const ZFTimeValue &v0, ZF_IN zfindex v1) {return ZFTimeValueDiv(v0, v1);}
+inline void operator *= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN zfindex v1) {ZFTimeValueMul(v0, v0, v1);}
+inline void operator /= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN zfindex v1) {ZFTimeValueDiv(v0, v0, v1);}
+/** @endcond */
 
 // ============================================================
 // ZFTimeInfo
@@ -277,7 +232,6 @@ public:
     zfuint microSecond;  /**< [0, 999] */
 };
 ZFCORE_POD_DECLARE(ZFTimeInfo)
-ZFCORE_POD_COMPARER_DECLARE(ZFTimeInfo)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfo)
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfo)

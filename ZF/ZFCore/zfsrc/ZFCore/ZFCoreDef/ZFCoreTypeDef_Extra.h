@@ -1,0 +1,37 @@
+/**
+ * @file ZFCoreTypeDef_Extra.h
+ * @brief types for ZFFramework
+ */
+
+#ifndef _ZFI_ZFCoreTypeDef_Extra_h_
+#define _ZFI_ZFCoreTypeDef_Extra_h_
+
+#include "ZFIdentityUtil.h"
+#include "ZFCoreUtilTemplate.h"
+#include "ZFComparer.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+ZFCORE_POD_DECLARE_NO_COMPARER(zfbool)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfchar)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfint)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfuint)
+ZFCORE_POD_DECLARE_NO_COMPARER(zflong)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfulong)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfindex)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfbyte)
+ZFCORE_POD_DECLARE_NO_COMPARER(zffloat)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfdouble)
+ZFCORE_POD_DECLARE_NO_COMPARER(zftimet)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfflags)
+ZFCORE_POD_DECLARE_NO_COMPARER(zfidentity)
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFCompareResult)
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFSeekPos)
+ZFCORE_POD_DECLARE(ZFIndexRange)
+
+ZFHASH_DECLARE(zfstring, {return zfidentityCalcString(v, v.length());})
+
+ZF_NAMESPACE_GLOBAL_END
+
+#endif // #ifndef _ZFI_ZFCoreTypeDef_Extra_h_
+

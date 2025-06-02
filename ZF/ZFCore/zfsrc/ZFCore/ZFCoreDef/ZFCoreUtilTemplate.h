@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFCoreUtilTemplate_h_
 #define _ZFI_ZFCoreUtilTemplate_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFIdentityUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -501,36 +501,99 @@ public:
         Value = !zftIsClass<T_Type>::Value,
     };
 };
-/** @brief explicitly declare as POD */
-#define ZFCORE_POD_DECLARE(Type) \
+
+/** @brief std::hash wrapper */
+template<typename T_Type>
+zfclassNotPOD zftHash {
+public:
+    /** @brief std::hash wrapper */
+    static zfidentity value(ZF_IN const T_Type &v) {
+        return zfidentityCalc(v);
+    }
+};
+/** @brief std::hash wrapper */
+template<typename T_Type>
+inline zfidentity zfhash(ZF_IN const T_Type &v) {
+    return zftHash<T_Type>::value(v);
+}
+/** @brief see #zftHash */
+#define ZFHASH_DECLARE(Type, action) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD zftIsPOD<Type> { \
+    zfclassNotPOD zftHash<Type > { \
     public: \
-        enum { \
-            Value = 1, \
-        }; \
+        static zfidentity value(ZF_IN const Type &v) { \
+            action \
+        } \
     }; \
     /** @endcond */
+/** @brief see #zftHash */
+#define ZFHASH_DECLARE_TEMPLATE(T_Type, Type, action) \
+    /** @cond ZFPrivateDoc */ \
+    template<T_Type > \
+    zfclassNotPOD zftHash<Type > { \
+    public: \
+        static zfidentity value(ZF_IN const Type &v) { \
+            action \
+        } \
+    }; \
+    /** @endcond */
+
+/**
+ * @brief util method to compare two POD type
+ */
+template<typename T_Element>
+inline zfint zfcmpPOD(
+        ZF_IN T_Element const &v0
+        , ZF_IN T_Element const &v1
+        ) {
+    return zfmemcmp(&v0, &v1, sizeof(T_Element));
+}
+
+/** @brief explicitly declare as POD */
+#define ZFCORE_POD_DECLARE(Type) \
+    _ZFP_ZFCORE_POD_DECLARE(template<>, _ZFP_ZFCORE_POD_DECLARE_EXPAND(Type)) \
+    _ZFP_ZFCORE_POD_DECLARE_COMPARER(_ZFP_ZFCORE_POD_DECLARE_EMPTY(), _ZFP_ZFCORE_POD_DECLARE_EXPAND(Type))
 /** @brief explicitly declare as POD */
 #define ZFCORE_POD_DECLARE_TEMPLATE(T_Type, Type) \
+    _ZFP_ZFCORE_POD_DECLARE(_ZFP_ZFCORE_POD_DECLARE_EXPAND(template< T_Type >),_ZFP_ZFCORE_POD_DECLARE_EXPAND(Type)) \
+    _ZFP_ZFCORE_POD_DECLARE_COMPARER(_ZFP_ZFCORE_POD_DECLARE_EXPAND(template< T_Type >), _ZFP_ZFCORE_POD_DECLARE_EXPAND(Type))
+
+/** @brief explicitly declare as POD */
+#define ZFCORE_POD_DECLARE_NO_COMPARER(Type) \
+    _ZFP_ZFCORE_POD_DECLARE(template<>,_ZFP_ZFCORE_POD_DECLARE_EXPAND(Type))
+/** @brief explicitly declare as POD */
+#define ZFCORE_POD_DECLARE_TEMPLATE_NO_COMPARER(T_Type, Type) \
+    _ZFP_ZFCORE_POD_DECLARE(_ZFP_ZFCORE_POD_DECLARE_EXPAND(template< T_Type >),_ZFP_ZFCORE_POD_DECLARE_EXPAND(Type))
+
+#define _ZFP_ZFCORE_POD_DECLARE_EMPTY(...)
+#define _ZFP_ZFCORE_POD_DECLARE_EXPAND(...) __VA_ARGS__
+#define _ZFP_ZFCORE_POD_DECLARE(classFix, Type) \
     /** @cond ZFPrivateDoc */ \
-    template<T_Type> \
+    classFix \
     zfclassNotPOD zftIsPOD<Type > { \
     public: \
         enum { \
             Value = 1, \
         }; \
     }; \
+    classFix \
+    zfclassNotPOD zftHash<Type > { \
+    public: \
+        static zfidentity value(ZF_IN const Type &v) { \
+            return zfidentityCalc(v); \
+        } \
+    }; \
     /** @endcond */
-
-ZFCORE_POD_DECLARE(zflong)
-ZFCORE_POD_DECLARE(zfulong)
-ZFCORE_POD_DECLARE(zfdouble)
-ZFCORE_POD_DECLARE(zftimet)
-ZFCORE_POD_DECLARE(zfflags)
-ZFCORE_POD_DECLARE(zfidentity)
-ZFCORE_POD_DECLARE(ZFIndexRange)
+#define _ZFP_ZFCORE_POD_DECLARE_COMPARER(funcFix, Type) \
+    /** @cond ZFPrivateDoc */ \
+    funcFix inline zfbool operator == (ZF_IN const Type &v0, ZF_IN const Type &v1) {return zfcmpPOD(v0, v1) == 0;} \
+    funcFix inline zfbool operator != (ZF_IN const Type &v0, ZF_IN const Type &v1) {return zfcmpPOD(v0, v1) != 0;} \
+    funcFix inline zfbool operator <  (ZF_IN const Type &v0, ZF_IN const Type &v1) {return zfcmpPOD(v0, v1) <  0;} \
+    funcFix inline zfbool operator <= (ZF_IN const Type &v0, ZF_IN const Type &v1) {return zfcmpPOD(v0, v1) <= 0;} \
+    funcFix inline zfbool operator >  (ZF_IN const Type &v0, ZF_IN const Type &v1) {return zfcmpPOD(v0, v1) >  0;} \
+    funcFix inline zfbool operator >= (ZF_IN const Type &v0, ZF_IN const Type &v1) {return zfcmpPOD(v0, v1) >= 0;} \
+    /** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 

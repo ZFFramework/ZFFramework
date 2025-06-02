@@ -426,7 +426,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type) \
     zfidentity v_##TypeName::objectHashImpl(void) { \
-        return zfidentityCalcPointer(&(this->zfv)); \
+        return zfhash(this->zfv); \
     } \
     ZFCompareResult v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
         ZFTypeIdWrapper *t = zfcast(ZFTypeIdWrapper *, anotherObj); \
@@ -443,7 +443,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \
     zfidentity v_##TypeName::objectHashImpl(void) { \
-        return zfidentityCalcPointer(this); \
+        return zfidentityCalc(this); \
     } \
     ZFCompareResult v_##TypeName::objectCompareImpl(ZF_IN ZFObject *anotherObj) { \
         return this == anotherObj ? ZFCompareEqual : ZFCompareUncomparable; \

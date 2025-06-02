@@ -116,12 +116,5 @@ zfidentity zfidentityCalcBuf(
     return hash;
 }
 
-zfidentity zfidentityCalcPointer(ZF_IN const void *p) {
-    return zfidentityCalcBuf(&p, sizeof(const void *));
-}
-zfidentity zfidentityCalcPointer(ZF_IN ZFFuncAddrType p) {
-    return zfidentityCalcBuf(&p, sizeof(ZFFuncAddrType));
-}
-
 ZF_NAMESPACE_GLOBAL_END
 

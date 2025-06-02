@@ -83,7 +83,7 @@ public:
 
     zfoverride
     virtual inline zfidentity objectHashImpl(void) {
-        return zfidentityCalcPOD(this->enumValue());
+        return zfidentityCalc(this->enumValue());
     }
     /**
      * @brief compare result of two enum values as int,

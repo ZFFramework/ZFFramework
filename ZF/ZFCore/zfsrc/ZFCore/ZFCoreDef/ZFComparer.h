@@ -335,37 +335,6 @@ ZFCOMPARER_DEFAULT_DECLARE(zfstring, zfstring, {
         }
     })
 
-// ============================================================
-/**
- * @brief util method to compare two POD type
- */
-template<typename T_Element>
-inline zfint zfcmpPOD(
-        ZF_IN T_Element const &v0
-        , ZF_IN T_Element const &v1
-        ) {
-    return zfmemcmp(&v0, &v1, sizeof(T_Element));
-}
-
-/**
- * @brief utile macro to declare a operator == comparer of POD type
- */
-#define ZFCORE_POD_COMPARER_DECLARE(Type) \
-    /** @cond ZFPrivateDoc */ \
-    inline zfbool operator == ( \
-            ZF_IN Type const &v0 \
-            , ZF_IN Type const &v1 \
-            ) { \
-        return zfcmpPOD(v0, v1) == 0; \
-    } \
-    inline zfbool operator != ( \
-            ZF_IN Type const &v0 \
-            , ZF_IN Type const &v1 \
-            ) { \
-        return zfcmpPOD(v0, v1) != 0; \
-    } \
-    /** @endcond */
-
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFComparer_h_

@@ -111,12 +111,57 @@ public:
 /** @endcond */
 
 // ============================================================
+/** @brief hash wrapper for #zftHash */
+template<typename T_Type>
+zfclassNotPOD zfstlhashT {
+public:
+    zfstlsize operator () (T_Type const &v) const {
+        return (zfstlsize)zfhash(v);
+    }
+};
+
+// ============================================================
 /** @cond ZFPrivateDoc */
+template<>
+zfclassNotPOD zfstlhash<zffloat> {
+public:
+    zfstlsize operator () (zffloat const &v) const {
+        return (zfstlsize)zfidentityCalc(v);
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<zfdouble> {
+public:
+    zfstlsize operator () (zfdouble const &v) const {
+        return (zfstlsize)zfidentityCalc(v);
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<zftimet> {
+public:
+    zfstlsize operator () (zftimet const &v) const {
+        return (zfstlsize)zfidentityCalc(v);
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<zfflags> {
+public:
+    zfstlsize operator () (zfflags const &v) const {
+        return (zfstlsize)zfidentityCalc(v);
+    }
+};
 template<>
 zfclassNotPOD zfstlhash<zfidentity> {
 public:
     zfstlsize operator () (zfidentity const &v) const {
-        return (zfstlsize)zfidentityCalcPOD(v);
+        return (zfstlsize)zfidentityCalc(v);
+    }
+};
+template<>
+zfclassNotPOD zfstlhash<ZFIndexRange> {
+public:
+    zfstlsize operator () (ZFIndexRange const &v) const {
+        return (zfstlsize)zfidentityCalc(v);
     }
 };
 template<>

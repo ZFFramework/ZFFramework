@@ -494,52 +494,51 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFPathInfoTreePrint
 }
 
 // ============================================================
-template<bool isRecursive, bool forEachFile, bool forEachDir>
-zfclassNotPOD _ZFP_ZFPathInfoForEach {
-public:
-    static zfbool action(
-            ZF_IN const ZFPathInfoImpl &impl
-            , ZF_IN const ZFListener &fileCallback
-            , ZF_IN v_ZFPathInfo *pathInfo
-            ) {
-        zfobj<v_ZFFileFindData> fd;
-        if(impl.implFindFirst(fd->zfv, pathInfo->zfv.pathData())) {
-            do {
-                zfstring childPathData;
-                if(!impl.implToChild(childPathData, pathInfo->zfv.pathData(), fd->zfv.name())
-                        || !childPathData
-                        ) {
-                    return zffalse;
-                }
-                pathInfo->zfv.pathData(childPathData);
+static zfbool _ZFP_ZFPathInfoForEach(
+        ZF_IN const ZFPathInfoImpl &impl
+        , ZF_IN const ZFListener &fileCallback
+        , ZF_IN v_ZFPathInfo *pathInfo
+        , ZF_IN zfbool isRecursive
+        , ZF_IN zfbool forEachFile
+        , ZF_IN zfbool forEachDir
+        ) {
+    zfobj<v_ZFFileFindData> fd;
+    if(impl.implFindFirst(fd->zfv, pathInfo->zfv.pathData())) {
+        do {
+            zfstring childPathData;
+            if(!impl.implToChild(childPathData, pathInfo->zfv.pathData(), fd->zfv.name())
+                    || !childPathData
+                    ) {
+                return zffalse;
+            }
+            pathInfo->zfv.pathData(childPathData);
 
-                if((fd->zfv.isDir() && forEachDir) || (!fd->zfv.isDir() && forEachFile)) {
-                    ZFArgs zfargs;
-                    fileCallback.execute(zfargs
-                            .param0(pathInfo)
-                            .param1(fd)
-                        );
-                    if(zfargs.eventFiltered()) {
-                        break;
-                    }
+            if((fd->zfv.isDir() && forEachDir) || (!fd->zfv.isDir() && forEachFile)) {
+                ZFArgs zfargs;
+                fileCallback.execute(zfargs
+                        .param0(pathInfo)
+                        .param1(fd)
+                    );
+                if(zfargs.eventFiltered()) {
+                    break;
                 }
-                if(isRecursive && fd->zfv.isDir()) {
-                    action(impl, fileCallback, pathInfo);
-                }
+            }
+            if(isRecursive && fd->zfv.isDir()) {
+                _ZFP_ZFPathInfoForEach(impl, fileCallback, pathInfo, isRecursive, forEachFile, forEachDir);
+            }
 
-                zfstring parentPathData;
-                if(!impl.implToParent(parentPathData, pathInfo->zfv.pathData())
-                        || !parentPathData
-                        ) {
-                    return zffalse;
-                }
-                pathInfo->zfv.pathData(parentPathData);
-            } while(impl.implFindNext(fd->zfv));
-            impl.implFindClose(fd->zfv);
-        }
-        return zftrue;
+            zfstring parentPathData;
+            if(!impl.implToParent(parentPathData, pathInfo->zfv.pathData())
+                    || !parentPathData
+                    ) {
+                return zffalse;
+            }
+            pathInfo->zfv.pathData(parentPathData);
+        } while(impl.implFindNext(fd->zfv));
+        impl.implFindClose(fd->zfv);
     }
-};
+    return zftrue;
+}
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEach
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFListener &, fileCallback)
@@ -551,12 +550,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEach
     }
     zfobj<v_ZFPathInfo> pathInfoHolder;
     pathInfoHolder->zfv = pathInfo;
-    if(isRecursive) {
-        return _ZFP_ZFPathInfoForEach<true, true, true>::action(*impl, fileCallback, pathInfoHolder);
-    }
-    else {
-        return _ZFP_ZFPathInfoForEach<false, true, true>::action(*impl, fileCallback, pathInfoHolder);
-    }
+    return _ZFP_ZFPathInfoForEach(*impl, fileCallback, pathInfoHolder, isRecursive, zftrue, zftrue);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachFile
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
@@ -569,12 +563,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachFile
     }
     zfobj<v_ZFPathInfo> pathInfoHolder;
     pathInfoHolder->zfv = pathInfo;
-    if(isRecursive) {
-        return _ZFP_ZFPathInfoForEach<true, true, false>::action(*impl, fileCallback, pathInfoHolder);
-    }
-    else {
-        return _ZFP_ZFPathInfoForEach<false, true, false>::action(*impl, fileCallback, pathInfoHolder);
-    }
+    return _ZFP_ZFPathInfoForEach(*impl, fileCallback, pathInfoHolder, isRecursive, zftrue, zffalse);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachDir
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
@@ -586,12 +575,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachDir
     }
     zfobj<v_ZFPathInfo> pathInfoHolder;
     pathInfoHolder->zfv = pathInfo;
-    if(isRecursive) {
-        return _ZFP_ZFPathInfoForEach<true, false, true>::action(*impl, fileCallback, pathInfoHolder);
-    }
-    else {
-        return _ZFP_ZFPathInfoForEach<false, false, true>::action(*impl, fileCallback, pathInfoHolder);
-    }
+    return _ZFP_ZFPathInfoForEach(*impl, fileCallback, pathInfoHolder, isRecursive, zffalse, zftrue);
 }
 
 ZF_NAMESPACE_GLOBAL_END

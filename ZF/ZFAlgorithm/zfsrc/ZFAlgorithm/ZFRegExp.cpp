@@ -205,7 +205,7 @@ zfidentity ZFRegExp::objectHashImpl(void) {
     ZFRegExpOptionFlags flag = this->options();
     return zfidentityHash(
             zfidentityCalcString(this->pattern())
-            , zfidentityCalcPOD(flag)
+            , zfidentityCalc(flag)
             );
 }
 ZFCompareResult ZFRegExp::objectCompareImpl(ZF_IN ZFObject *anotherObj) {

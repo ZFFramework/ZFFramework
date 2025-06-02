@@ -70,6 +70,35 @@ private:
     _ZFP_ZFPathInfoPrivate *d;
 };
 
+ZFHASH_DECLARE(ZFPathInfo, {return zfidentityHash(zfidentityCalcString(v.pathType()), zfidentityCalcString(v.pathData()));})
+
+/* ZFTAG_TRICKS: tricks to make ZFMap<ZFPathInfo, xxx> works */
+inline zfint _ZFP_ZFPathInfoCompare(ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {
+    zfint t = v0.pathType().compare(v1.pathType());
+    if(t < 0) {
+        return -1;
+    }
+    else if(t > 0) {
+        return 1;
+    }
+    else {
+        t = v0.pathData().compare(v1.pathData());
+        if(t < 0) {
+            return -1;
+        }
+        else if(t > 0) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+}
+inline zfbool operator < (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) < 0;}
+inline zfbool operator <= (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) <= 0;}
+inline zfbool operator > (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) > 0;}
+inline zfbool operator >= (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) >= 0;}
+
 /**
  * @brief see #ZFPathInfo
  */

@@ -65,7 +65,6 @@ public:
     zffloat y;   /**< @brief y */
 };
 ZFCORE_POD_DECLARE(ZFUIPoint)
-ZFCORE_POD_COMPARER_DECLARE(ZFUIPoint)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -153,7 +152,6 @@ public:
     zffloat bottom;  /**< @brief bottom margin */
 };
 ZFCORE_POD_DECLARE(ZFUIMargin)
-ZFCORE_POD_COMPARER_DECLARE(ZFUIMargin)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -402,7 +400,6 @@ public:
     zffloat height;  /**< @brief height */
 };
 ZFCORE_POD_DECLARE(ZFUISize)
-ZFCORE_POD_COMPARER_DECLARE(ZFUISize)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -644,7 +641,6 @@ public:
     zffloat height; /**< @brief height */
 };
 ZFCORE_POD_DECLARE(ZFUIRect)
-ZFCORE_POD_COMPARER_DECLARE(ZFUIRect)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -1186,7 +1182,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIOrientationIsHorizonta
  * but may extend to 64bit for future update
  */
 ZFT_INT_STRONG(zft_zfuint32, ZFUIColor)
-ZFCORE_POD_DECLARE(ZFUIColor)
+ZFCORE_POD_DECLARE_NO_COMPARER(ZFUIColor)
 
 /** @brief zero color */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorZero)

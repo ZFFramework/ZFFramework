@@ -22,7 +22,7 @@ private:
     zfclassNotPOD KeyHash {
     public:
         inline zfstlsize operator () (zfauto const &v) const {
-            return (zfstlsize)zfidentityCalcPointer(v.toObject());
+            return (zfstlsize)zfidentityCalc(v.toObject());
         }
     };
     typedef zfstlhashmap<zfauto, zfbool, KeyHash> TaskMapType;

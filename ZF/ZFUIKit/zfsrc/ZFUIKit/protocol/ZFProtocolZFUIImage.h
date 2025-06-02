@@ -88,7 +88,6 @@ public:
     ZFUIRect dst; /**< @brief dst rect to draw bitmapt to, ensured valid */
 };
 ZFCORE_POD_DECLARE(ZFUIImageImplNinePatchDrawData)
-ZFCORE_POD_COMPARER_DECLARE(ZFUIImageImplNinePatchDrawData)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchDrawData)
 
 /**

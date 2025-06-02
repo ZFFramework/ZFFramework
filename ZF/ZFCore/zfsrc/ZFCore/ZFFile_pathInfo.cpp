@@ -397,29 +397,6 @@ void _ZFP_ZFPathInfoRegister(
     ZFCoreAssertWithMessage(m.find(pathType) == m.end(),
         "pathType \"%s\" already registered",
         pathType);
-    ZFCoreAssert(zftrue
-            && impl.callbackIsExist != zfnull
-            && impl.callbackIsDir != zfnull
-            && impl.callbackToFileName != zfnull
-            && impl.callbackToChild != zfnull
-            && impl.callbackToParent != zfnull
-            && impl.callbackPathCreate != zfnull
-            && impl.callbackRemove != zfnull
-            && impl.callbackMove != zfnull
-            && impl.callbackFindFirst != zfnull
-            && impl.callbackFindNext != zfnull
-            && impl.callbackFindClose != zfnull
-            && impl.callbackOpen != zfnull
-            && impl.callbackClose != zfnull
-            && impl.callbackTell != zfnull
-            && impl.callbackSeek != zfnull
-            && impl.callbackRead != zfnull
-            && impl.callbackWrite != zfnull
-            && impl.callbackFlush != zfnull
-            && impl.callbackIsEof != zfnull
-            && impl.callbackIsError != zfnull
-            && impl.callbackSize != zfnull
-        );
     m[pathType] = impl;
 }
 void _ZFP_ZFPathInfoUnregister(ZF_IN const zfstring &pathType) {

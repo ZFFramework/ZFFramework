@@ -121,7 +121,7 @@ public:
 
     zfoverride
     virtual zfidentity objectHashImpl(void) {
-        return zfidentityCalcPointer(this->zfv ? this->zfv->refImpl() : zfnull);
+        return zfidentityCalc(this->zfv ? this->zfv->refImpl() : zfnull);
     }
     zfoverride
     virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {

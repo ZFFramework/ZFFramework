@@ -48,8 +48,6 @@ ZFOUTPUT_TYPE(ZFCallback, {v.objectInfoT(s);})
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFCallback_callbackType "callbackType"
-/** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFCallback_callbackData "callbackData"
 
 // ============================================================
 ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFListener, ZFListener)

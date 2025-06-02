@@ -887,7 +887,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIImageAniSave
         zffloat diffMin = -1;
         for(zfuint t = 1; t <= frameCount; ++t) {
             zffloat diff = zfmAbs(frameSize.width * t - frameSize.height * (zfuint)((frameCount + t - 1) / t));
-            if(diffMin < 0 || diff < diffMin) {
+            if(diffMin < 0 || diff <= diffMin) {
                 countPerLine = t;
                 diffMin = diff;
             }

@@ -80,7 +80,7 @@ template<typename T_POD>
 zfclassNotPOD zfpod_zfstlHash {
 public:
     zfstlsize operator () (T_POD const &v) const {
-        return (zfstlsize)zfidentityCalcPOD(v);
+        return (zfstlsize)zfidentityCalc(v);
     }
 };
 template<typename T_POD>

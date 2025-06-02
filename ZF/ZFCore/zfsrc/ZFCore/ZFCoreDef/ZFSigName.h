@@ -74,7 +74,7 @@ public:
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return this->isEmpty();}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->isEmpty();}
 public:
-    /* ZFTAG_TRICKS: tricks to make zfstlmap<ZFSigName, xxx> works */
+    /* ZFTAG_TRICKS: tricks to make ZFMap<ZFSigName, xxx> works */
     inline zfbool operator < (ZF_IN const ZFSigName &ref) const {return this->compare(ref) < 0;}
     inline zfbool operator <= (ZF_IN const ZFSigName &ref) const {return this->compare(ref) <= 0;}
     inline zfbool operator > (ZF_IN const ZFSigName &ref) const {return this->compare(ref) > 0;}
@@ -85,6 +85,7 @@ private:
     _ZFP_ZFSigNamePrivate *d;
 };
 ZFOUTPUT_TYPE(ZFSigName, {s += v.cString();})
+ZFHASH_DECLARE(ZFSigName, {return zfidentityCalcString(v.cString(), v.length());})
 
 /** @brief print all state, for debug use only */
 extern ZFLIB_ZFCore void ZFSigNameInfoT(ZF_OUT zfstring &ret);

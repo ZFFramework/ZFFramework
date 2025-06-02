@@ -145,79 +145,6 @@ ZFMETHOD_FUNC_INLINE_DEFINE_1(zfstring, ZFTimeValueToStringFriendly
         , ZFMP_IN(ZFTimeValue const &, v)
         )
 
-zfbool operator < (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    return (ZFTimeValueCompare(v0, v1) == ZFCompareSmaller);
-}
-zfbool operator <= (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    return (ZFTimeValueCompare(v0, v1) != ZFCompareGreater);
-}
-zfbool operator > (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    return (ZFTimeValueCompare(v0, v1) == ZFCompareGreater);
-}
-zfbool operator >= (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    return (ZFTimeValueCompare(v0, v1) != ZFCompareSmaller);
-}
-ZFTimeValue operator + (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    return ZFTimeValueInc(v0, v1);
-}
-ZFTimeValue operator - (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    return ZFTimeValueDec(v0, v1);
-}
-void operator += (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    ZFTimeValueInc(v0, v0, v1);
-}
-void operator -= (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN const ZFTimeValue &v1
-        ) {
-    ZFTimeValueDec(v0, v0, v1);
-}
-ZFTimeValue operator * (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        ) {
-    return ZFTimeValueMul(v0, v1);
-}
-ZFTimeValue operator / (
-        ZF_IN const ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        ) {
-    return ZFTimeValueDiv(v0, v1);
-}
-void operator *= (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        ) {
-    ZFTimeValueMul(v0, v0, v1);
-}
-void operator /= (
-        ZF_IN_OUT ZFTimeValue &v0
-        , ZF_IN zfindex v1
-        ) {
-    ZFTimeValueDiv(v0, v0, v1);
-}
-
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFTimeValue, ZFTimeValue, {
         ZFCoreArray<zftimet> tmp;
@@ -505,7 +432,7 @@ public:
 };
 zfidentity ZFTime::objectHashImpl(void) {
     _ZFP_ZFTime_hash tmp = {d->tv, d->tz};
-    return zfidentityCalcPOD(tmp);
+    return zfidentityCalc(tmp);
 }
 
 ZFCompareResult ZFTime::objectCompareImpl(ZF_IN ZFObject *anotherObj) {

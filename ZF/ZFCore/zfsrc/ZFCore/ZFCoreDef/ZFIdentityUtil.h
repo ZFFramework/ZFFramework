@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFIdentityUtil_h_
 #define _ZFI_ZFIdentityUtil_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFCoreTypeDef_OtherType.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -88,19 +88,10 @@ extern ZFLIB_ZFCore zfidentity zfidentityCalcBuf(
 /**
  * @brief calculate identity from POD object
  */
-template<typename T_POD>
-zfidentity zfidentityCalcPOD(ZF_IN T_POD const &value) {
-    return zfidentityCalcBuf(&value, sizeof(T_POD));
+template<typename T_Type>
+zfidentity zfidentityCalc(ZF_IN T_Type const &v) {
+    return zfidentityCalcBuf(&v, sizeof(T_Type));
 }
-
-/**
- * @brief make a identity from pointer value
- */
-extern ZFLIB_ZFCore zfidentity zfidentityCalcPointer(ZF_IN const void *p);
-/**
- * @brief make a identity from pointer value
- */
-extern ZFLIB_ZFCore zfidentity zfidentityCalcPointer(ZF_IN ZFFuncAddrType p);
 
 ZF_NAMESPACE_GLOBAL_END
 

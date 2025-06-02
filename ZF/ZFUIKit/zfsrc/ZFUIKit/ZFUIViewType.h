@@ -44,7 +44,6 @@ public:
     ZFUISizeType height;  /**< @brief height */
 };
 ZFCORE_POD_DECLARE(ZFUISizeParam)
-ZFCORE_POD_COMPARER_DECLARE(ZFUISizeParam)
 
 /**
  * @brief see #ZFTYPEID_DECLARE

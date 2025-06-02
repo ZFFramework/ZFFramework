@@ -97,20 +97,6 @@ inline zfbool ZFIndexRangeContain(
         ) {
     return (range.count > 0 && index >= range.start && index < range.start + range.count);
 }
-/** @cond ZFPrivateDoc */
-inline zfbool operator == (
-        ZF_IN const ZFIndexRange &v0
-        , ZF_IN const ZFIndexRange &v1
-        ) {
-    return (v0.start == v1.start && v0.count == v1.count);
-}
-inline zfbool operator != (
-        ZF_IN const ZFIndexRange &v0
-        , ZF_IN const ZFIndexRange &v1
-        ) {
-    return (v0.start != v1.start || v0.count != v1.count);
-}
-/** @endcond */
 
 // ============================================================
 /**

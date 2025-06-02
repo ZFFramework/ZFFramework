@@ -176,7 +176,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcBuf
         , ZFMP_IN(const void *, src)
         , ZFMP_IN(zfindex, srcLen)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalcPointer
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalc
         , ZFMP_IN(const void *, p)
         )
 

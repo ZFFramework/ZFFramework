@@ -390,7 +390,7 @@ public:
 protected:
     /** @brief see #objectHash */
     virtual inline zfidentity objectHashImpl(void) {
-        return zfidentityCalcPointer(this);
+        return zfidentityCalc(this);
     }
     /** @brief see #objectCompare */
     virtual inline ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {

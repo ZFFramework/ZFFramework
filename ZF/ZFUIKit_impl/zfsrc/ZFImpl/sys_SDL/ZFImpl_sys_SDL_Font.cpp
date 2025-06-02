@@ -21,7 +21,7 @@ ZFImpl_sys_SDL_FontLoader ZFImpl_sys_SDL_fontLoader = zfnull;
 zfclassNotPOD _ZFP_ZFImpl_sys_SDL_FontTypeHash {
 public:
     inline zfstlsize operator () (ZFImpl_sys_SDL_FontType const &v) const {
-        return (zfstlsize)zfidentityCalcPOD(v);
+        return (zfstlsize)zfidentityCalc(v);
     }
 };
 typedef zfstlhashmap<ZFImpl_sys_SDL_FontType, ZFImpl_sys_SDL_FontData *, _ZFP_ZFImpl_sys_SDL_FontTypeHash> _ZFP_ZFImpl_sys_SDL_FontMapType;

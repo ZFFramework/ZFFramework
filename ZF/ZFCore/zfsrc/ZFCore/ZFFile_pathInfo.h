@@ -339,6 +339,55 @@ public:
     ZFPathInfoCallbackSize callbackSize; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 
 public:
+    /** @cond ZFPrivateDoc */
+    void _ZFP_init(
+            ZF_IN_OPT ZFPathInfoCallbackIsExist callbackIsExist = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackIsDir callbackIsDir = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackToFileName callbackToFileName = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackToChild callbackToChild = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackToParent callbackToParent = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackPathCreate callbackPathCreate = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackRemove callbackRemove = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackMove callbackMove = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackFindFirst callbackFindFirst = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackFindNext callbackFindNext = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackFindClose callbackFindClose = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackOpen callbackOpen = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackClose callbackClose = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackTell callbackTell = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackSeek callbackSeek = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackRead callbackRead = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackWrite callbackWrite = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackFlush callbackFlush = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackIsEof callbackIsEof = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackIsError callbackIsError = zfnull
+            , ZF_IN_OPT ZFPathInfoCallbackSize callbackSize = zfnull
+            ) {
+        this->callbackIsExist = callbackIsExist;
+        this->callbackIsDir = callbackIsDir;
+        this->callbackToFileName = callbackToFileName;
+        this->callbackToChild = callbackToChild;
+        this->callbackToParent = callbackToParent;
+        this->callbackPathCreate = callbackPathCreate;
+        this->callbackRemove = callbackRemove;
+        this->callbackMove = callbackMove;
+        this->callbackFindFirst = callbackFindFirst;
+        this->callbackFindNext = callbackFindNext;
+        this->callbackFindClose = callbackFindClose;
+        this->callbackOpen = callbackOpen;
+        this->callbackClose = callbackClose;
+        this->callbackTell = callbackTell;
+        this->callbackSeek = callbackSeek;
+        this->callbackRead = callbackRead;
+        this->callbackWrite = callbackWrite;
+        this->callbackFlush = callbackFlush;
+        this->callbackIsEof = callbackIsEof;
+        this->callbackIsError = callbackIsError;
+        this->callbackSize = callbackSize;
+    }
+    /** @endcond */
+
+public:
     /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     inline zfbool implIsExist(ZF_IN const zfchar *pathData) const {
         return this->callbackIsExist(pathData);
@@ -483,52 +532,10 @@ extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfstring &pathTyp
  * to use, register your path type by this macro,
  * then use #ZFPathInfoOpen series to process files
  */
-#define ZFPATHTYPE_FILEIO_REGISTER(registerSig, pathType \
-        , callbackIsExist_ \
-        , callbackIsDir_ \
-        , callbackToFileName_ \
-        , callbackToChild_ \
-        , callbackToParent_ \
-        , callbackPathCreate_ \
-        , callbackRemove_ \
-        , callbackMove_ \
-        , callbackFindFirst_ \
-        , callbackFindNext_ \
-        , callbackFindClose_ \
-        , callbackOpen_ \
-        , callbackClose_ \
-        , callbackTell_ \
-        , callbackSeek_ \
-        , callbackRead_ \
-        , callbackWrite_ \
-        , callbackFlush_ \
-        , callbackIsEof_ \
-        , callbackIsError_ \
-        , callbackSize_ \
-    ) \
+#define ZFPATHTYPE_FILEIO_REGISTER(registerSig, pathType, ...) \
     ZF_STATIC_REGISTER_INIT(ZFPathInfoReg_##registerSig) { \
         ZFPathInfoImpl data; \
-        data.callbackIsExist = callbackIsExist_; \
-        data.callbackIsDir = callbackIsDir_; \
-        data.callbackToFileName = callbackToFileName_; \
-        data.callbackToChild = callbackToChild_; \
-        data.callbackToParent = callbackToParent_; \
-        data.callbackPathCreate = callbackPathCreate_; \
-        data.callbackRemove = callbackRemove_; \
-        data.callbackMove = callbackMove_; \
-        data.callbackFindFirst = callbackFindFirst_; \
-        data.callbackFindNext = callbackFindNext_; \
-        data.callbackFindClose = callbackFindClose_; \
-        data.callbackOpen = callbackOpen_; \
-        data.callbackClose = callbackClose_; \
-        data.callbackTell = callbackTell_; \
-        data.callbackSeek = callbackSeek_; \
-        data.callbackRead = callbackRead_; \
-        data.callbackWrite = callbackWrite_; \
-        data.callbackFlush = callbackFlush_; \
-        data.callbackIsEof = callbackIsEof_; \
-        data.callbackIsError = callbackIsError_; \
-        data.callbackSize = callbackSize_; \
+        data._ZFP_init(__VA_ARGS__); \
         _ZFP_ZFPathInfoRegister(pathType, data); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ZFPathInfoReg_##registerSig) { \
