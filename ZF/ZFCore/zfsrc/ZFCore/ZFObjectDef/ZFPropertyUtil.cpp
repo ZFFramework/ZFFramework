@@ -148,6 +148,86 @@ void ZFObjectVerboseInfoT(
     ret += ZFTOKEN_ZFObjectInfoRight;
 }
 
+void ZFObjectPrettyInfoT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        ) {
+    if(obj == zfnull) {
+        ret += ZFTOKEN_zfnull;
+        return;
+    }
+
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    ret += obj->classData()->className();
+    ret += " ";
+    zfindex len = ret.length();
+
+    ZFTokenForKeyValueContainer token;
+    token.tokenLeft = zfnull;
+    token.tokenRight = zfnull;
+    token.tokenSeparator = " ";
+    token.tokenPairSeparator = "=";
+    ZFObjectPropertyInfoT(ret, obj, maxCount, token);
+    if(ret.length() == len) {
+        ret.remove(len - 1);
+    }
+
+    ret += ZFTOKEN_ZFObjectInfoRight;
+}
+
+void ZFObjectShortInfoT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount /* = zfindexMax() */
+        ) {
+    if(obj == zfnull) {
+        ret += ZFTOKEN_zfnull;
+        return;
+    }
+    ret += "(";
+
+    ZFCoreArray<const ZFProperty *> allProperty = obj->classData()->propertyGetAll();
+    zfindex count = 0;
+    zfindex index = 0;
+    for( ; index < allProperty.count() && count < maxCount; ++index) {
+        const ZFProperty *prop = allProperty[index];
+        if(prop->isInternal()) {
+            continue;
+        }
+
+        if(count != 0) {
+            ret += ", ";
+        }
+        ++count;
+
+        {
+            zfstring s;
+            ZFObjectInfoT(s, prop->getterMethod()->methodInvoke(obj));
+
+            zfindex iL = 0;
+            for(zfindex i = 0; i < s.length(); i += zfcharGetSize(s + i)) {
+                if(s[i] == '\n') {
+                    ret.append(s, iL, i + 1 - iL);
+                    iL = i + 1;
+                    ret += "    ";
+                }
+            }
+            if(iL < s.length()) {
+                ret.append(s, iL, s.length() - iL);
+            }
+        }
+    }
+    if(index < allProperty.count()) {
+        if(count > 0) {
+            ret += ", ";
+        }
+        ret += "...";
+    }
+
+    ret += ")";
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG
@@ -215,6 +295,24 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfstring, ZFObjectVerboseInfo
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFObjectPrettyInfoT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFObjectPrettyInfo
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFObjectShortInfoT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFObjectShortInfo
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         )
 
 ZF_NAMESPACE_GLOBAL_END

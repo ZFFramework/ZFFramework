@@ -70,26 +70,29 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementTri
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfbool, xmlElementEndTagAtSameLineIfNoChildElement)
 
 // ============================================================
-ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDefault, ZFXmlOutputToken())
-
 static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenTrimInit(void) {
     static ZFXmlOutputToken d;
+    d.xmlNewLineToken = zfnull;
+    d.xmlIndentToken = zfnull;
     d.xmlElementAttrCountBeforeAddNewLine = zfindexMax();
+    d.xmlElementAddNewLineAtHeadIfNotSingleLine = zffalse;
     d.xmlElementTrimTagIfNoChildren = zftrue;
-    d.xmlNewLineToken.removeAll();
-    d.xmlIndentToken.removeAll();
+    d.xmlElementEndTagAtSameLineIfNoChildElement = zftrue;
     return d;
 }
 ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenTrim, _ZFP_ZFXmlOutputTokenTrimInit())
 
 static const ZFXmlOutputToken &_ZFP_ZFXmlOutputTokenDetailInit(void) {
     static ZFXmlOutputToken d;
-    d.xmlElementAddNewLineAtHeadIfNotSingleLine = zftrue;
     d.xmlElementAttrCountBeforeAddNewLine = 1;
+    d.xmlElementAddNewLineAtHeadIfNotSingleLine = zftrue;
+    d.xmlElementTrimTagIfNoChildren = zftrue;
     d.xmlElementEndTagAtSameLineIfNoChildElement = zftrue;
     return d;
 }
 ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDetail, _ZFP_ZFXmlOutputTokenDetailInit())
+
+ZFEXPORT_VAR_DEFINE(ZFXmlOutputToken, ZFXmlOutputTokenDefault, ZFXmlOutputTokenTrim())
 
 // ============================================================
 /*
@@ -205,7 +208,7 @@ zfbool ZFXml::operator == (ZF_IN const ZFXml &ref) const {
 
 // ============================================================
 void ZFXml::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    ZFXmlToStringT(ret, *this, ZFXmlOutputTokenTrim());
+    ZFXmlToStringT(ret, *this, ZFXmlOutputTokenDefault());
 }
 
 zfindex ZFXml::objectRetainCount(void) const {
@@ -476,7 +479,7 @@ zfbool ZFXml::CDATA(void) const {
 }
 
 // ============================================================
-zfstring ZFXml::toString(ZF_IN_OPT const ZFXmlOutputToken &token /* = ZFXmlOutputTokenTrim() */) const {
+zfstring ZFXml::toString(ZF_IN_OPT const ZFXmlOutputToken &token /* = ZFXmlOutputTokenDefault() */) const {
     if(this->valid()) {
         return ZFXmlToString(*this, token);
     }
@@ -490,7 +493,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXml, ZFXml, {
         v = ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, srcLen, errorHint);
         return v;
     }, {
-        return ZFXmlToStringT(s, v, ZFXmlOutputTokenTrim());
+        return ZFXmlToStringT(s, v, ZFXmlOutputTokenDefault());
     })
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
@@ -571,7 +574,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, CDATA
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, CDATA)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, toString
-        , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenTrim())
+        , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenDefault())
         )
 
 // ============================================================

@@ -66,6 +66,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpServer>, ZFDebugServer
     } ZFLISTENER_END()
     ret->onRequest(impl);
     ret->start();
+    ZFLogTrim("[ZFDebugServer] started on port: %s", port);
     return ret;
 }
 

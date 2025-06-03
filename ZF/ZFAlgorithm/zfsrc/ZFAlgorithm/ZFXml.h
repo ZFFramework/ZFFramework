@@ -173,10 +173,6 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTok
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
 
 /**
- * @brief default xml output token
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDefault)
-/**
  * @brief xml output token with trim format
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenTrim)
@@ -184,6 +180,10 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenTrim)
  * @brief xml output token with detailed format
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDetail)
+/**
+ * @brief default xml output token
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputTokenDefault)
 
 // ============================================================
 // ZFXml
@@ -399,7 +399,7 @@ public:
     inline ZFXml operator [] (ZF_IN zfindex index) const {return this->childAt(index);}
 
     /** @brief return #ZFXmlToString */
-    zfstring toString(ZF_IN_OPT const ZFXmlOutputToken &token = ZFXmlOutputTokenTrim()) const;
+    zfstring toString(ZF_IN_OPT const ZFXmlOutputToken &token = ZFXmlOutputTokenDefault()) const;
 
 private:
     _ZFP_ZFXmlPrivate *d;

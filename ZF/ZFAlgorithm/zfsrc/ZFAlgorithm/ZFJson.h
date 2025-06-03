@@ -144,10 +144,7 @@ public:
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputToken)
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputToken)
-/**
- * @brief default output token for #ZFJsonToOutput
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenDefault)
+
 /**
  * @brief trim output token for #ZFJsonToOutput
  */
@@ -156,6 +153,10 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenTrim
  * @brief detailed output token for #ZFJsonToOutput
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenDetail)
+/**
+ * @brief default output token for #ZFJsonToOutput
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputTokenDefault)
 
 // ============================================================
 // ZFJson
@@ -352,7 +353,7 @@ public:
     inline ZFJson operator [] (ZF_IN zfindex const &index) const {return this->childAt(index);}
 
     /** @brief return #ZFJsonToString */
-    zfstring toString(ZF_IN_OPT const ZFJsonOutputToken &token = ZFJsonOutputTokenTrim()) const;
+    zfstring toString(ZF_IN_OPT const ZFJsonOutputToken &token = ZFJsonOutputTokenDefault()) const;
 
 private:
     _ZFP_ZFJsonPrivate *d;

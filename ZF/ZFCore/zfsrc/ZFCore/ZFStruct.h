@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * designed for script and for convenient, by default:
  * -  ZFObject::objectCompare / ZFObject::objectCompareValue
  *   would be compared by comparing all property
- * -  ZFObject::objectInfo would print by #ZFObjectVerboseInfoT
+ * -  ZFObject::objectInfo would print by #ZFObjectPrettyInfoT
  * -  can be construct from string, serialize from/to string,
  *   by serialize all property in declared order
  *

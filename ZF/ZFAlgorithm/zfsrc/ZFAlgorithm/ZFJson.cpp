@@ -57,20 +57,18 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfbool, jsonArrayCon
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfbool, jsonArrayTagInSameLineIfNoContent)
 
 // ============================================================
-ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenDefault, ZFJsonOutputToken())
-
-static const ZFJsonOutputToken &_ZFP_ZFJsonOutputTokenTrimInit(void) {
-    static ZFJsonOutputToken d;
-    d.jsonNewLineToken.removeAll();
-    d.jsonIndentToken.removeAll();
+static ZFJsonOutputToken _ZFP_ZFJsonOutputTokenTrimInit(void) {
+    ZFJsonOutputToken d;
+    d.jsonNewLineToken = zfnull;
+    d.jsonIndentToken = zfnull;
     d.jsonValueSeparatorToken = ":";
-    d.jsonSeparatorInSameLineToken = ",";
     d.jsonObjectAddNewLineForContent = zffalse;
     d.jsonArrayAddNewLineForContent = zffalse;
     return d;
 }
 ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenTrim, _ZFP_ZFJsonOutputTokenTrimInit())
 ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenDetail, ZFJsonOutputToken())
+ZFEXPORT_VAR_DEFINE(ZFJsonOutputToken, ZFJsonOutputTokenDefault, ZFJsonOutputTokenTrim())
 
 // ============================================================
 static void _ZFP_ZFJsonToOutput_output(
@@ -310,7 +308,7 @@ zfbool ZFJson::operator == (ZF_IN const ZFJson &ref) const {
 
 // ============================================================
 void ZFJson::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    ZFJsonToStringT(ret, *this, ZFJsonOutputTokenTrim());
+    ZFJsonToStringT(ret, *this, ZFJsonOutputTokenDefault());
 }
 
 zfindex ZFJson::objectRetainCount(void) const {
@@ -621,7 +619,7 @@ zfindex ZFJson::childFind(ZF_IN const ZFJson &item) const {
     return zfindexMax();
 }
 
-zfstring ZFJson::toString(ZF_IN_OPT const ZFJsonOutputToken &token /* = ZFJsonOutputTokenTrim() */) const {
+zfstring ZFJson::toString(ZF_IN_OPT const ZFJsonOutputToken &token /* = ZFJsonOutputTokenDefault() */) const {
     if(this->valid()) {
         return ZFJsonToString(*this, token);
     }
@@ -715,7 +713,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfindex, childFind
         , ZFMP_IN(const ZFJson &, item)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfstring, toString
-        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenTrim())
+        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenDefault())
         )
 
 // ============================================================

@@ -191,7 +191,7 @@ extern ZFLIB_ZFCore ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainer
  *
  * output format:
  * @code
- *   {k0 = v0, k1 = v1, ...}
+ *   {k0=v0, k1=v1, ...}
  * @endcode
  */
 #define ZFTokenForKeyValueContainerTrim() _ZFP_ZFTokenForKeyValueContainerTrim

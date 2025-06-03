@@ -43,7 +43,7 @@ ZFCompareResult ZFStruct::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
         ;
 }
 void ZFStruct::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
-    ZFObjectVerboseInfoT(ret, this);
+    ZFObjectPrettyInfoT(ret, this);
 }
 
 zfbool ZFStruct::serializableOnSerializeFromString(

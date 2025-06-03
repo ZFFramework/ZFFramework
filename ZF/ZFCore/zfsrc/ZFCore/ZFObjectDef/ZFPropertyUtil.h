@@ -140,6 +140,11 @@ extern ZFLIB_ZFCore zfbool ZFPropertyAllEqual(
 
 /**
  * @brief use reflect to print all property if the property is not #ZFPropertyIsInitValue
+ *
+ * result looks like:
+ * @code
+ *   {prop1=v1,prop2=v2}
+ * @endcode
  */
 extern ZFLIB_ZFCore void ZFObjectPropertyInfoT(
         ZF_IN_OUT zfstring &ret
@@ -160,6 +165,11 @@ inline zfstring ZFObjectPropertyInfo(
 
 /**
  * @brief print verbose info about the object, using #ZFObjectPropertyInfoT
+ *
+ * result looks like:
+ * @code
+ *   <NS.Obj(0x12345678){prop1=v1,prop2=v2}>
+ * @endcode
  */
 extern ZFLIB_ZFCore void ZFObjectVerboseInfoT(
         ZF_IN_OUT zfstring &ret
@@ -175,6 +185,52 @@ inline zfstring ZFObjectVerboseInfo(
         ) {
     zfstring ret;
     ZFObjectVerboseInfoT(ret, obj, maxCount, token);
+    return ret;
+}
+
+/**
+ * @brief print pretty info about the object, using #ZFObjectPropertyInfoT
+ *
+ * result looks like:
+ * @code
+ *   <Obj prop1=v1 prop2=v2>
+ * @endcode
+ */
+extern ZFLIB_ZFCore void ZFObjectPrettyInfoT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        );
+/** @brief see #ZFObjectPrettyInfoT */
+inline zfstring ZFObjectPrettyInfo(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        ) {
+    zfstring ret;
+    ZFObjectPrettyInfoT(ret, obj, maxCount);
+    return ret;
+}
+
+/**
+ * @brief print short info about the object, using #ZFObjectPropertyInfoT
+ *
+ * result looks like:
+ * @code
+ *   (v1, v2)
+ * @endcode
+ */
+extern ZFLIB_ZFCore void ZFObjectShortInfoT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        );
+/** @brief see #ZFObjectShortInfoT */
+inline zfstring ZFObjectShortInfo(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        ) {
+    zfstring ret;
+    ZFObjectShortInfoT(ret, obj, maxCount);
     return ret;
 }
 
