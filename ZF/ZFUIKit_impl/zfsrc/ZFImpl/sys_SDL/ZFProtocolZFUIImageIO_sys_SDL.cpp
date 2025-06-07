@@ -22,12 +22,18 @@ public:
             ) {
         ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
         SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
-        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)newSize.width, (int)newSize.height, 0, nativeImageOld->format->format);
+        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(
+                0
+                , (int)newSize.width, (int)newSize.height
+                , nativeImageOld->format->BitsPerPixel
+                , nativeImageOld->format->format
+                );
         if(nativeImageNew == zfnull) {
             return zfnull;
         }
+        SDL_SetSurfaceBlendMode(nativeImageOld, SDL_BLENDMODE_NONE);
         if(ninePatch == ZFUIMarginZero()) {
-            SDL_BlitSurface(nativeImageOld, zfnull, nativeImageNew, zfnull);
+            SDL_BlitScaled(nativeImageOld, zfnull, nativeImageNew, zfnull);
             return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
         }
 
@@ -51,7 +57,7 @@ public:
             dstRect.y = (int)drawData.dst.y;
             dstRect.w = (int)drawData.dst.width;
             dstRect.h = (int)drawData.dst.height;
-            SDL_BlitSurface(nativeImageOld, &srcRect, nativeImageNew, &dstRect);
+            SDL_BlitScaled(nativeImageOld, &srcRect, nativeImageNew, &dstRect);
         }
         return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }
