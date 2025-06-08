@@ -27,6 +27,7 @@ public:
         rect.w = nativeView->rect.w;
         rect.h = nativeView->rect.h;
         SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, rect.w, rect.h, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
+        SDL_SetSurfaceBlendMode(nativeImage, SDL_BLENDMODE_BLEND);
         SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(nativeImage);
         ZFImpl_sys_SDL_RendererNotifyCreate(renderer);
         zffloat alpha = 1;

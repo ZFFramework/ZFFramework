@@ -34,31 +34,32 @@ public:
         SDL_SetSurfaceBlendMode(nativeImageOld, SDL_BLENDMODE_NONE);
         if(ninePatch == ZFUIMarginZero()) {
             SDL_BlitScaled(nativeImageOld, zfnull, nativeImageNew, zfnull);
-            return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
         }
+        else {
+            ZFUIImageImplNinePatchDrawData drawDatas[9];
+            zfmemset(drawDatas, 0, sizeof(drawDatas));
+            zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
+                drawDatas,
+                ZFUISizeCreate((zffloat)nativeImageOld->w, (zffloat)nativeImageOld->h),
+                ninePatch,
+                newSize);
 
-        ZFUIImageImplNinePatchDrawData drawDatas[9];
-        zfmemset(drawDatas, 0, sizeof(drawDatas));
-        zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
-            drawDatas,
-            ZFUISizeCreate((zffloat)nativeImageOld->w, (zffloat)nativeImageOld->h),
-            ninePatch,
-            newSize);
-
-        SDL_Rect srcRect;
-        SDL_Rect dstRect;
-        for(zfindex i = 0; i < drawDatasCount; ++i) {
-            const ZFUIImageImplNinePatchDrawData &drawData = drawDatas[i];
-            srcRect.x = (int)drawData.src.x;
-            srcRect.y = (int)drawData.src.y;
-            srcRect.w = (int)drawData.src.width;
-            srcRect.h = (int)drawData.src.height;
-            dstRect.x = (int)drawData.dst.x;
-            dstRect.y = (int)drawData.dst.y;
-            dstRect.w = (int)drawData.dst.width;
-            dstRect.h = (int)drawData.dst.height;
-            SDL_BlitScaled(nativeImageOld, &srcRect, nativeImageNew, &dstRect);
+            SDL_Rect srcRect;
+            SDL_Rect dstRect;
+            for(zfindex i = 0; i < drawDatasCount; ++i) {
+                const ZFUIImageImplNinePatchDrawData &drawData = drawDatas[i];
+                srcRect.x = (int)drawData.src.x;
+                srcRect.y = (int)drawData.src.y;
+                srcRect.w = (int)drawData.src.width;
+                srcRect.h = (int)drawData.src.height;
+                dstRect.x = (int)drawData.dst.x;
+                dstRect.y = (int)drawData.dst.y;
+                dstRect.w = (int)drawData.dst.width;
+                dstRect.h = (int)drawData.dst.height;
+                SDL_BlitScaled(nativeImageOld, &srcRect, nativeImageNew, &dstRect);
+            }
         }
+        SDL_SetSurfaceBlendMode(nativeImageOld, SDL_BLENDMODE_BLEND);
         return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }
     virtual void *imageLoadInFrame(

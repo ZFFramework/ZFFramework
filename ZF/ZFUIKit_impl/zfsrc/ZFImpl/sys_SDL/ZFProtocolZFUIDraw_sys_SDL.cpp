@@ -124,6 +124,7 @@ public:
         if(nativeImage == zfnull) {
             return zffalse;
         }
+        SDL_SetSurfaceBlendMode(nativeImage, SDL_BLENDMODE_BLEND);
         SDL_Renderer *sdlRenderer = SDL_CreateSoftwareRenderer(nativeImage);
         if(sdlRenderer == zfnull) {
             SDL_FreeSurface(nativeImage);

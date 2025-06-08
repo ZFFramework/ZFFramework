@@ -61,6 +61,7 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
     }
     SDL_Surface *sdlSurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
     ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
+    SDL_SetSurfaceBlendMode(sdlSurface, SDL_BLENDMODE_BLEND);
 
     SDL_Renderer *sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
     ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture);

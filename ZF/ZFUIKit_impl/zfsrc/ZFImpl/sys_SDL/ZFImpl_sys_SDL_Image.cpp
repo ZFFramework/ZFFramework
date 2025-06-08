@@ -46,6 +46,7 @@ public:
 
         Cache *cache = zfpoolNew(Cache);
         cache->sdlTexture = SDL_CreateTextureFromSurface(owner, sdlSurface);
+        SDL_SetTextureBlendMode(cache->sdlTexture, SDL_BLENDMODE_BLEND);
         cache->surfaceIt = surfaceIt;
         cache->surfaceSubIt = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, CacheHolder>(owner, CacheHolder(cache))).first;
         cache->rendererIt = r.find(owner);
@@ -170,6 +171,9 @@ void ZFImpl_sys_SDL_Image::implUpdate(ZF_IN SDL_Surface *sdlSurface) {
         _sdlSurface = zfnull;
     }
     _sdlSurface = sdlSurface;
+    if(sdlSurface) {
+        SDL_SetSurfaceBlendMode(sdlSurface, SDL_BLENDMODE_BLEND);
+    }
 }
 SDL_Surface *ZFImpl_sys_SDL_Image::sdlSurface(void) {
     return _sdlSurface;

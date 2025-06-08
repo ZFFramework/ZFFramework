@@ -300,6 +300,7 @@ zfbool ZFImpl_sys_SDL_textRender(
     }
     ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
     SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, sdlSurface);
+    SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
     ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
 
     SDL_Rect srcRect;
