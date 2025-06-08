@@ -29,7 +29,7 @@ public:
     virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
         ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
         SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
-        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, nativeImageOld->w, nativeImageOld->h, 0, nativeImageOld->format->format);
+        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, nativeImageOld->w, nativeImageOld->h, nativeImageOld->format->BitsPerPixel, nativeImageOld->format->format);
         if(nativeImageNew == zfnull) {
             return zfnull;
         }

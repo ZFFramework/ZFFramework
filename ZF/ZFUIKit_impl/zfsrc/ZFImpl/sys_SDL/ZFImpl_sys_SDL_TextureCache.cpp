@@ -4,6 +4,7 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
+#include "ZFImpl/sys_SDL/ZFMainEntry_sys_SDL.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -36,13 +37,9 @@ public:
         }
 #endif
 
-        SDL_RendererInfo rendererInfo;
-        SDL_GetRendererInfo(renderer, &rendererInfo);
         SDL_Texture *texture = SDL_CreateTexture(
                 renderer
-                , (rendererInfo.num_texture_formats > 0 && rendererInfo.texture_formats[0] != SDL_PIXELFORMAT_UNKNOWN)
-                    ? rendererInfo.texture_formats[0]
-                    : SDL_PIXELFORMAT_ARGB32
+                , ZFImpl_sys_SDL_PixelFormatPreferred()
                 , SDL_TEXTUREACCESS_TARGET
                 , w
                 , h

@@ -59,7 +59,7 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
     if(SDL_QueryTexture(sdlTexture, zfnull, zfnull, &width, &height) != 0) {
         return zffalse;
     }
-    SDL_Surface *sdlSurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+    SDL_Surface *sdlSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
     ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
     SDL_SetSurfaceBlendMode(sdlSurface, SDL_BLENDMODE_BLEND);
 
