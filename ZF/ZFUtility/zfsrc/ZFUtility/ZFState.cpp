@@ -186,7 +186,7 @@ private:
             if(!zftimetFromStringT(data->expireTime, line + pos[0].start, pos[0].count)) {
                 continue;
             }
-            if(curTime >= data->expireTime) {
+            if(data->expireTime != 0 && curTime >= data->expireTime) {
                 continue;
             }
             ZFCoreDataDecode(data->key, line + pos[1].start, pos[1].count);
@@ -219,7 +219,7 @@ private:
         zfstring line;
         for(zfindex i = 0; i < l.count(); ++i) {
             const _ZFP_ZFStateData &data = *((l[i]).pointerValue());
-            if(curTime >= data.expireTime) {
+            if(data.expireTime != 0 && curTime >= data.expireTime) {
                 continue;
             }
             zftimetToStringT(line, data.expireTime);
@@ -418,7 +418,7 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
     zfsynchronize(this);
     const _ZFP_ZFStateData *data = d->m.get<const _ZFP_ZFStateData *>(key);
     if(data != zfnull) {
-        if(ZFTime::currentTime() >= data->expireTime) {
+        if(data->expireTime != 0 && ZFTime::currentTime() >= data->expireTime) {
             d->m.remove(key);
             return zfnull;
         }
