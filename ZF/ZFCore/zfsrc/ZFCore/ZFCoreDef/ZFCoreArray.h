@@ -198,11 +198,7 @@ public:
     virtual zfstring objectInfoOfContent(
             ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            ) const {
-        zfstring ret;
-        this->objectInfoOfContentT(ret, maxCount, token);
-        return ret;
-    }
+            ) const zfpurevirtual;
 
     /** @cond ZFPrivateDoc */
     virtual ZFCoreArrayBase &operator = (ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
@@ -458,6 +454,15 @@ public:
             ) const {
         this->objectInfoOfContentT(ret, maxCount, token, zfnull);
     }
+    zfoverride
+    virtual zfstring objectInfoOfContent(
+            ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
+            ) const {
+        zfstring ret;
+        this->objectInfoOfContentT(ret, maxCount, token, zfnull);
+        return ret;
+    }
 
     /** @brief see #objectInfoOfContent */
     void objectInfoOfContentT(
@@ -491,9 +496,9 @@ public:
     }
     /** @brief return content info */
     zfstring objectInfoOfContent(
-            ZF_IN_OPT zfindex maxCount = zfindexMax()
-            , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            , ZF_IN_OPT typename ZFCoreInfoGetter<T_Element>::InfoGetter infoGetter = zfnull
+            ZF_IN_OPT zfindex maxCount
+            , ZF_IN_OPT const ZFTokenForContainer &token
+            , ZF_IN_OPT typename ZFCoreInfoGetter<T_Element>::InfoGetter infoGetter
             ) const {
         zfstring ret;
         this->objectInfoOfContentT(ret, maxCount, token, infoGetter);

@@ -66,29 +66,29 @@ public:
      *
      * return false if the callback doesn't support seek
      */
-    virtual zfbool ioSeek(
+    zfbool ioSeek(
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos pos = ZFSeekPosBegin
             ) const;
     /**
      * @brief similar to FILE's #ZFFileTell, return current's index or zfindexMax() if the callback doesn't support seek
      */
-    virtual zfindex ioTell(void) const;
+    zfindex ioTell(void) const;
     /**
      * @brief calculate the callback's size or return zfindexMax() if not supported
      */
-    virtual zfindex ioSize(void) const;
+    zfindex ioSize(void) const;
 
     /**
      * @brief util to set #ZFCallbackTagKeyword_ioOwner
      */
-    virtual void ioOwner(ZF_IN ZFObject *ioOwner) {
+    void ioOwner(ZF_IN ZFObject *ioOwner) {
         this->callbackTag(ZFCallbackTagKeyword_ioOwner, ioOwner);
     }
     /**
      * @brief util to get #ZFCallbackTagKeyword_ioOwner
      */
-    virtual zfany ioOwner(void) const {
+    zfany ioOwner(void) const {
         return this->callbackTag(ZFCallbackTagKeyword_ioOwner);
     }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
