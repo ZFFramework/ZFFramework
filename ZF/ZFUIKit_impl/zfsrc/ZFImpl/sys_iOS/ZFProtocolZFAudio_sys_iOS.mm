@@ -89,8 +89,9 @@ public:
                 return;
             }
 
-            NSData *data = [NSData dataWithBytesNoCopy:buf.zfunsafe_buffer() length:buf.length() freeWhenDone:YES];
-            buf.zfunsafe_bufferGiveUp();
+            NSData *data = [[NSData alloc] initWithBytesNoCopy:buf.zfunsafe_bufferGiveUp() length:(NSUInteger)buf.length() deallocator:^(void *bytes, NSUInteger length) {
+                zfstring::zfunsafe_bufferFree(bytes);
+            }];
             NSError *error = nil;
             nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];
             if(error != nil) {

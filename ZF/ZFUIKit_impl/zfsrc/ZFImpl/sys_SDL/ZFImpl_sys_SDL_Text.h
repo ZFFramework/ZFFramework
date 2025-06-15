@@ -18,7 +18,7 @@ extern ZFLIB_ZFUIKit_impl zfbool ZFImpl_sys_SDL_textMeasure(
 
 extern ZFLIB_ZFUIKit_impl zfbool ZFImpl_sys_SDL_textRender(
         ZF_IN SDL_Renderer *renderer
-        , ZF_IN const SDL_Rect &targetRect
+        , ZF_IN const SDL_FRect &targetRect
         , ZF_IN const zfstring &text
         , ZF_IN TTF_Font *sdlFont
         , ZF_IN const ZFUIAlignFlags &textAlign

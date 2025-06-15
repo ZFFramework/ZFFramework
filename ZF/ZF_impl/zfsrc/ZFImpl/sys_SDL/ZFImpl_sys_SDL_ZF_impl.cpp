@@ -6,21 +6,20 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFInput(struct SDL_RWops *context) {
-    ZFInput const &callback = *(ZFInput *)context->hidden.unknown.data1;
+static Sint64 _ZFP_ZFImpl_sys_SDL_IOStream_size_ZFInput(void *userdata) {
+    ZFInput const &callback = *(ZFInput *)userdata;
     zfindex size = callback.ioSize();
     return size == zfindexMax() ? (Sint64)-1 : (Sint64)size;
 }
 
-static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput(struct SDL_RWops *context, Sint64 offset,
-                                                     int whence) {
-    ZFInput const &callback = *(ZFInput *)context->hidden.unknown.data1;
+static Sint64 _ZFP_ZFImpl_sys_SDL_IOStream_seek_ZFInput(void *userdata, Sint64 offset, SDL_IOWhence whence) {
+    ZFInput const &callback = *(ZFInput *)userdata;
     ZFSeekPos seekPos = ZFSeekPosBegin;
     switch(whence) {
-        case RW_SEEK_SET:
+        case SDL_IO_SEEK_SET:
             seekPos = ZFSeekPosBegin;
             break;
-        case RW_SEEK_CUR:
+        case SDL_IO_SEEK_CUR:
             if(offset >= 0) {
                 seekPos = ZFSeekPosCur;
             }
@@ -28,7 +27,7 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput(struct SDL_RWops *context, 
                 seekPos = ZFSeekPosCurReversely;
             }
             break;
-        case RW_SEEK_END:
+        case SDL_IO_SEEK_END:
             seekPos = ZFSeekPosEnd;
             break;
         default:
@@ -41,51 +40,51 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput(struct SDL_RWops *context, 
     return cur != zfindexMax() ? (Sint64)cur : (Sint64)-1;
 }
 
-static size_t _ZFP_ZFImpl_sys_SDL_RWops_read_ZFInput(struct SDL_RWops *context, void *ptr,
-                                                     size_t size, size_t maxnum) {
-    ZFInput const &callback = *(ZFInput *)context->hidden.unknown.data1;
-    return (size_t)callback.execute(ptr, size * maxnum);
+static size_t _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFInput(void *userdata, void *ptr, size_t size, SDL_IOStatus *status) {
+    ZFInput const &callback = *(ZFInput *)userdata;
+    size_t ret = (size_t)callback.execute(ptr, size);
+    if(ret < size) {
+        *status = SDL_IO_STATUS_EOF;
+    }
+    return ret;
 }
 
-static size_t _ZFP_ZFImpl_sys_SDL_RWops_write_ZFInput(struct SDL_RWops *context, const void *ptr,
-                                                      size_t size, size_t num) {
+static size_t _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFInput(void *userdata, const void *ptr, size_t size, SDL_IOStatus *status) {
+    *status = SDL_IO_STATUS_READONLY;
     return 0;
 }
 
-static int _ZFP_ZFImpl_sys_SDL_RWops_close_ZFInput(struct SDL_RWops *context) {
-    zfdelete((ZFInput *)context->hidden.unknown.data1);
-    SDL_FreeRW(context);
-    return 0;
+static bool _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFInput(void *userdata) {
+    zfdelete((ZFInput *)userdata);
+    return true;
 }
 
-SDL_RWops *ZFImpl_sys_SDL_ZFInputToSDL_RWops(ZF_IN const ZFInput &callback) {
+SDL_IOStream *ZFImpl_sys_SDL_ZFInputToSDL_IOStream(ZF_IN const ZFInput &callback) {
     if(!callback) {
         return zfnull;
     }
-    SDL_RWops *ret = SDL_AllocRW();
-    ret->hidden.unknown.data1 = zfnew(ZFInput, callback);
-    ret->size = _ZFP_ZFImpl_sys_SDL_RWops_size_ZFInput;
-    ret->seek = _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput;
-    ret->read = _ZFP_ZFImpl_sys_SDL_RWops_read_ZFInput;
-    ret->write = _ZFP_ZFImpl_sys_SDL_RWops_write_ZFInput;
-    ret->close = _ZFP_ZFImpl_sys_SDL_RWops_close_ZFInput;
-    return ret;
+    SDL_IOStreamInterface impl;
+    impl.size = _ZFP_ZFImpl_sys_SDL_IOStream_size_ZFInput;
+    impl.seek = _ZFP_ZFImpl_sys_SDL_IOStream_seek_ZFInput;
+    impl.read = _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFInput;
+    impl.write = _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFInput;
+    impl.close = _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFInput;
+    return SDL_OpenIO(&impl, zfnew(ZFInput, callback));
 }
 
 // ============================================================
-static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFOutput(struct SDL_RWops *context) {
+static Sint64 _ZFP_ZFImpl_sys_SDL_IOStream_size_ZFOutput(void *userdata) {
     return -1;
 }
 
-static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context, Sint64 offset,
-                                                      int whence) {
-    ZFOutput const &callback = *(ZFOutput *)context->hidden.unknown.data1;
+static Sint64 _ZFP_ZFImpl_sys_SDL_IOStream_seek_ZFOutput(void *userdata, Sint64 offset, SDL_IOWhence whence) {
+    ZFOutput const &callback = *(ZFOutput *)userdata;
     ZFSeekPos seekPos = ZFSeekPosBegin;
     switch(whence) {
-        case RW_SEEK_SET:
+        case SDL_IO_SEEK_SET:
             seekPos = ZFSeekPosBegin;
             break;
-        case RW_SEEK_CUR:
+        case SDL_IO_SEEK_CUR:
             if(offset >= 0) {
                 seekPos = ZFSeekPosCur;
             }
@@ -93,7 +92,7 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context,
                 seekPos = ZFSeekPosCurReversely;
             }
             break;
-        case RW_SEEK_END:
+        case SDL_IO_SEEK_END:
             seekPos = ZFSeekPosEnd;
             break;
         default:
@@ -106,35 +105,36 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context,
     return cur != zfindexMax() ? (Sint64)cur : (Sint64)-1;
 }
 
-static size_t _ZFP_ZFImpl_sys_SDL_RWops_read_ZFOutput(struct SDL_RWops *context, void *ptr,
-                                                      size_t size, size_t maxnum) {
+static size_t _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFOutput(void *userdata, void *ptr, size_t size, SDL_IOStatus *status) {
+    *status = SDL_IO_STATUS_WRITEONLY;
     return 0;
 }
 
-static size_t _ZFP_ZFImpl_sys_SDL_RWops_write_ZFOutput(struct SDL_RWops *context, const void *ptr,
-                                                       size_t size, size_t num) {
-    ZFOutput const &callback = *(ZFOutput *)context->hidden.unknown.data1;
-    return (size_t)callback.execute(ptr, size * num);
+static size_t _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFOutput(void *userdata, const void *ptr, size_t size, SDL_IOStatus *status) {
+    ZFOutput const &callback = *(ZFOutput *)userdata;
+    size_t ret = (size_t)callback.execute(ptr, size);
+    if(ret < size) {
+        *status = SDL_IO_STATUS_ERROR;
+    }
+    return ret;
 }
 
-static int _ZFP_ZFImpl_sys_SDL_RWops_close_ZFOutput(struct SDL_RWops *context) {
-    zfdelete((ZFOutput *)context->hidden.unknown.data1);
-    SDL_FreeRW(context);
-    return 0;
+static bool _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFOutput(void *userdata) {
+    zfdelete((ZFOutput *)userdata);
+    return true;
 }
 
-SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const ZFOutput &callback) {
+SDL_IOStream *ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(ZF_IN const ZFOutput &callback) {
     if(!callback) {
         return zfnull;
     }
-    SDL_RWops *ret = SDL_AllocRW();
-    ret->hidden.unknown.data1 = zfnew(ZFOutput, callback);
-    ret->size = _ZFP_ZFImpl_sys_SDL_RWops_size_ZFOutput;
-    ret->seek = _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput;
-    ret->read = _ZFP_ZFImpl_sys_SDL_RWops_read_ZFOutput;
-    ret->write = _ZFP_ZFImpl_sys_SDL_RWops_write_ZFOutput;
-    ret->close = _ZFP_ZFImpl_sys_SDL_RWops_close_ZFOutput;
-    return ret;
+    SDL_IOStreamInterface impl;
+    impl.size = _ZFP_ZFImpl_sys_SDL_IOStream_size_ZFOutput;
+    impl.seek = _ZFP_ZFImpl_sys_SDL_IOStream_seek_ZFOutput;
+    impl.read = _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFOutput;
+    impl.write = _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFOutput;
+    impl.close = _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFOutput;
+    return SDL_OpenIO(&impl, zfnew(ZFOutput, callback));
 }
 
 ZF_NAMESPACE_GLOBAL_END

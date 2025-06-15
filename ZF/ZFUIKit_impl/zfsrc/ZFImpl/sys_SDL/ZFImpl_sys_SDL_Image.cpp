@@ -8,20 +8,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_Image_init, ZFLevelZFFrameworkEssential) {
-    IMG_Init(0
-            | IMG_INIT_JPG
-            | IMG_INIT_PNG
-            | IMG_INIT_TIF
-            | IMG_INIT_WEBP
-            );
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_Image_init) {
-    IMG_Quit();
-}
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_Image_init)
-
-// ============================================================
 zfclassNotPOD _ZFP_ZFImpl_sys_SDL_ImageCache {
 public:
     SDL_Texture *sdlTexture(ZF_IN SDL_Surface *sdlSurface, ZF_IN SDL_Renderer *owner) {
@@ -167,7 +153,7 @@ void ZFImpl_sys_SDL_Image::implRelease(void) {
 void ZFImpl_sys_SDL_Image::implUpdate(ZF_IN SDL_Surface *sdlSurface) {
     if(_sdlSurface) {
         _ZFP_ZFImpl_sys_SDL_ImageCacheObj().implDestroyed(_sdlSurface);
-        SDL_FreeSurface(_sdlSurface);
+        SDL_DestroySurface(_sdlSurface);
         _sdlSurface = zfnull;
     }
     _sdlSurface = sdlSurface;

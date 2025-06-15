@@ -51,7 +51,12 @@ public:
 #if _ZFP_SDL_TextureCache_ENABLE
         Key key;
         key.renderer = renderer;
-        SDL_QueryTexture(texture, zfnull, zfnull, &(key.w), &(key.h));
+        {
+            float w, h;
+            SDL_GetTextureSize(texture, &w, &h);
+            key.w = (int)w;
+            key.h = (int)h;
+        }
 
         Value *value = zfpoolNew(Value);
         value->texture = texture;
@@ -134,8 +139,8 @@ SDL_Texture *ZFImpl_sys_SDL_TextureCache::obtain(ZF_IN SDL_Renderer *renderer, Z
     }
     if(_texture != zfnull) {
         if(_renderer == renderer) {
-            int wOld, hOld;
-            SDL_QueryTexture(_texture, zfnull, zfnull, &wOld, &hOld);
+            float wOld, hOld;
+            SDL_GetTextureSize(_texture, &wOld, &hOld);
             if(w <= wOld && h <= hOld
                     && !((wOld >= 256 && w < wOld / 2) || (hOld >= 256 && h < hOld / 2))
                     ) {

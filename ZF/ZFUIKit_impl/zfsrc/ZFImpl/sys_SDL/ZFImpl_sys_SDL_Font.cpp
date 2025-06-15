@@ -45,10 +45,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_fontDataHolder)
 
 static ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontLoad(
         ZF_IN ZFImpl_sys_SDL_FontType fontType
-        , ZF_IN zfuint ptsize
+        , ZF_IN zffloat ptsize
         , ZF_IN const ZFInput &input
         ) {
-    TTF_Font *font = TTF_OpenFontRW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(input), 1, ptsize);
+    TTF_Font *font = TTF_OpenFontIO(ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input), true, ptsize);
     if(font == zfnull) {
         return zfnull;
     }
@@ -58,7 +58,7 @@ static ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontLoad(
     fontData->font = font;
 
     TTF_SetFontHinting(fontData->font, TTF_HINTING_NORMAL);
-    TTF_SetFontKerning(fontData->font, 1);
+    TTF_SetFontKerning(fontData->font, true);
     TTF_SetFontOutline(fontData->font, 0);
     TTF_SetFontSize(fontData->font, fontData->ptsize);
     switch(fontData->fontType) {
@@ -76,7 +76,7 @@ static ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontLoad(
             TTF_SetFontStyle(fontData->font, TTF_STYLE_NORMAL);
             break;
     }
-    TTF_SetFontWrappedAlign(fontData->font, TTF_WRAPPED_ALIGN_LEFT);
+    TTF_SetFontWrapAlignment(fontData->font, TTF_HORIZONTAL_ALIGN_LEFT);
 
     return fontData;
 }
@@ -84,13 +84,11 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
         ZF_IN ZFImpl_sys_SDL_FontType fontType
         , ZF_IN zffloat ptsize
         ) {
-    zfuint ptsizeFixed = (zfuint)zfmRound(ptsize);
-
     if(ZFImpl_sys_SDL_fontLoader != zfnull) {
         for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp) {
             ZFInput input = ZFImpl_sys_SDL_fontLoader((ZFImpl_sys_SDL_FontType)fontTypeTmp);
             if(input) {
-                ZFImpl_sys_SDL_FontData *fontData = ZFImpl_sys_SDL_fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsizeFixed, input);
+                ZFImpl_sys_SDL_FontData *fontData = ZFImpl_sys_SDL_fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);
                 if(fontData != zfnull) {
                     return fontData;
                 }
@@ -113,7 +111,7 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
             ZFPathInfoForEachFile(ZFPathInfo(ZFPathType_res(), "ZFUIKit_impl/sys_SDL/font"), impl);
         }
         if(input) {
-            ZFImpl_sys_SDL_FontData *fontData = ZFImpl_sys_SDL_fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsizeFixed, input);
+            ZFImpl_sys_SDL_FontData *fontData = ZFImpl_sys_SDL_fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);
             if(fontData != zfnull) {
                 return fontData;
             }

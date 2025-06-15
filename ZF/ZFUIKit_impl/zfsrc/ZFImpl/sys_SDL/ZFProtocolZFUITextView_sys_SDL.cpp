@@ -151,8 +151,8 @@ private:
     static zfbool renderCallback(
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
         ZFUITextView *owner = zfcast(ZFUITextView *, nativeView->ownerZFUIView);
@@ -168,7 +168,7 @@ private:
         ZFUIRect targetRectTmp = ZFUIRectApplyScale(owner->nativeImplViewFrame(), owner->UIScaleFixed());
         targetRectTmp.x += parentRect.x + childRect.x;
         targetRectTmp.y += parentRect.y + childRect.y;
-        SDL_Rect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_Rect(targetRectTmp);
+        SDL_FRect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_FRect(targetRectTmp);
 
         zfobj<ZFUITextConfig> textConfig;
         textConfig->textColor(owner->textColor());

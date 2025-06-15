@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief convert key code from impl
  */
-extern ZFLIB_ZFUIKit_impl ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw);
+extern ZFLIB_ZFUIKit_impl ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_Keycode raw);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL

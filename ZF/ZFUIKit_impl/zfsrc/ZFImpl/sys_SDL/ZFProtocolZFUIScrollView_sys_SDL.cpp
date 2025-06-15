@@ -38,16 +38,16 @@ public:
         if(changeMouseAction) {
             switch(mouseAction) {
                 case v_ZFUIMouseAction::e_Down:
-                    ret->type = SDL_MOUSEBUTTONDOWN;
+                    ret->type = SDL_EVENT_MOUSE_BUTTON_DOWN;
                     break;
                 case v_ZFUIMouseAction::e_Move:
-                    ret->type = SDL_MOUSEMOTION;
+                    ret->type = SDL_EVENT_MOUSE_MOTION;
                     break;
                 case v_ZFUIMouseAction::e_Up:
-                    ret->type = SDL_MOUSEBUTTONUP;
+                    ret->type = SDL_EVENT_MOUSE_BUTTON_UP;
                     break;
                 case v_ZFUIMouseAction::e_Cancel:
-                    ret->type = SDL_MOUSEBUTTONUP;
+                    ret->type = SDL_EVENT_MOUSE_BUTTON_UP;
                     ret->button.x = ZFImpl_sys_SDL_View::MouseCancel;
                     ret->button.y = ZFImpl_sys_SDL_View::MouseCancel;
                     break;
@@ -70,7 +70,7 @@ public:
     }
 
     static zfbool _ZFP_contains(
-            ZF_IN const SDL_Rect &rect
+            ZF_IN const SDL_FRect &rect
             , ZF_IN zffloat x
             , ZF_IN zffloat y
             ) {
@@ -234,13 +234,13 @@ private:
 
         ZFUIMouseAction mouseAction = v_ZFUIMouseAction::e_Down;
         switch(sdlEvent->type) {
-            case SDL_MOUSEBUTTONDOWN:
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
                 mouseAction = v_ZFUIMouseAction::e_Down;
                 break;
-            case SDL_MOUSEMOTION:
+            case SDL_EVENT_MOUSE_MOTION:
                 mouseAction = v_ZFUIMouseAction::e_Move;
                 break;
-            case SDL_MOUSEBUTTONUP:
+            case SDL_EVENT_MOUSE_BUTTON_UP:
                 mouseAction = v_ZFUIMouseAction::e_Up;
                 break;
             default:

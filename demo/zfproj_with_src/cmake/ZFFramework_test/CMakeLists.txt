@@ -95,11 +95,11 @@ install(
     )
 
 file(GLOB_RECURSE SDL_LIBS_
-    "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL2*.*"
+    "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL3*.*"
     )
 foreach(SDL_LIB_ ${SDL_LIBS_})
     if(NOT (SDL_LIB_ MATCHES "_release/cmake/SDL/lib/cmake|_release/cmake/SDL/lib/pkgconfig"))
-        if(NOT (SDL_LIB_ MATCHES "SDL2[^/]*\\.a|SDL2[^/]*\\.lib"))
+        if(NOT (SDL_LIB_ MATCHES "SDL3[^/]*\\.a|SDL3[^/]*\\.lib"))
             install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
         endif()
     endif()

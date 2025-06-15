@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
+ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_Keycode raw) {
     switch(raw) {
         case SDLK_UNKNOWN:
             return v_ZFUIKeyCode::e_kUnknown;
@@ -21,17 +21,17 @@ ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
             return v_ZFUIKeyCode::e_kSpace;
         case SDLK_EXCLAIM:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_QUOTEDBL:
+        case SDLK_DBLAPOSTROPHE:
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_HASH:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_PERCENT:
-            return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_DOLLAR:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_PERCENT:
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_AMPERSAND:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_QUOTE:
+        case SDLK_APOSTROPHE:
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_LEFTPAREN:
             return v_ZFUIKeyCode::e_kUnknown;
@@ -94,61 +94,73 @@ ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_UNDERSCORE:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_BACKQUOTE:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_a:
+        case SDLK_GRAVE:
+            return v_ZFUIKeyCode::e_kGrave;
+        case SDLK_A:
             return v_ZFUIKeyCode::e_kA;
-        case SDLK_b:
+        case SDLK_B:
             return v_ZFUIKeyCode::e_kB;
-        case SDLK_c:
+        case SDLK_C:
             return v_ZFUIKeyCode::e_kC;
-        case SDLK_d:
+        case SDLK_D:
             return v_ZFUIKeyCode::e_kD;
-        case SDLK_e:
+        case SDLK_E:
             return v_ZFUIKeyCode::e_kE;
-        case SDLK_f:
+        case SDLK_F:
             return v_ZFUIKeyCode::e_kF;
-        case SDLK_g:
+        case SDLK_G:
             return v_ZFUIKeyCode::e_kG;
-        case SDLK_h:
+        case SDLK_H:
             return v_ZFUIKeyCode::e_kH;
-        case SDLK_i:
+        case SDLK_I:
             return v_ZFUIKeyCode::e_kI;
-        case SDLK_j:
+        case SDLK_J:
             return v_ZFUIKeyCode::e_kJ;
-        case SDLK_k:
+        case SDLK_K:
             return v_ZFUIKeyCode::e_kK;
-        case SDLK_l:
+        case SDLK_L:
             return v_ZFUIKeyCode::e_kL;
-        case SDLK_m:
+        case SDLK_M:
             return v_ZFUIKeyCode::e_kM;
-        case SDLK_n:
+        case SDLK_N:
             return v_ZFUIKeyCode::e_kN;
-        case SDLK_o:
+        case SDLK_O:
             return v_ZFUIKeyCode::e_kO;
-        case SDLK_p:
+        case SDLK_P:
             return v_ZFUIKeyCode::e_kP;
-        case SDLK_q:
+        case SDLK_Q:
             return v_ZFUIKeyCode::e_kQ;
-        case SDLK_r:
+        case SDLK_R:
             return v_ZFUIKeyCode::e_kR;
-        case SDLK_s:
+        case SDLK_S:
             return v_ZFUIKeyCode::e_kS;
-        case SDLK_t:
+        case SDLK_T:
             return v_ZFUIKeyCode::e_kT;
-        case SDLK_u:
+        case SDLK_U:
             return v_ZFUIKeyCode::e_kU;
-        case SDLK_v:
+        case SDLK_V:
             return v_ZFUIKeyCode::e_kV;
-        case SDLK_w:
+        case SDLK_W:
             return v_ZFUIKeyCode::e_kW;
-        case SDLK_x:
+        case SDLK_X:
             return v_ZFUIKeyCode::e_kX;
-        case SDLK_y:
+        case SDLK_Y:
             return v_ZFUIKeyCode::e_kY;
-        case SDLK_z:
+        case SDLK_Z:
             return v_ZFUIKeyCode::e_kZ;
 
+        case SDLK_LEFTBRACE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_PIPE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_RIGHTBRACE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_TILDE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_DELETE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_PLUSMINUS:
+            return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_CAPSLOCK:
             return v_ZFUIKeyCode::e_kCapsLock;
 
@@ -189,8 +201,6 @@ ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
             return v_ZFUIKeyCode::e_kHome;
         case SDLK_PAGEUP:
             return v_ZFUIKeyCode::e_kPageUp;
-        case SDLK_DELETE:
-            return v_ZFUIKeyCode::e_kDelete;
         case SDLK_END:
             return v_ZFUIKeyCode::e_kEnd;
         case SDLK_PAGEDOWN:
@@ -439,26 +449,51 @@ ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
 
         case SDLK_MODE:
             return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_SLEEP:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_WAKE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_CHANNEL_INCREMENT:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_CHANNEL_DECREMENT:
+            return v_ZFUIKeyCode::e_kUnknown;
 
-        case SDLK_AUDIONEXT:
-            return v_ZFUIKeyCode::e_kMediaNext;
-        case SDLK_AUDIOPREV:
-            return v_ZFUIKeyCode::e_kMediaPrev;
-        case SDLK_AUDIOSTOP:
-            return v_ZFUIKeyCode::e_kMediaStop;
-        case SDLK_AUDIOPLAY:
+        case SDLK_MEDIA_PLAY:
             return v_ZFUIKeyCode::e_kMediaPlay;
-        case SDLK_AUDIOMUTE:
-            return v_ZFUIKeyCode::e_kVolumeMute;
-        case SDLK_MEDIASELECT:
+        case SDLK_MEDIA_PAUSE:
+            return v_ZFUIKeyCode::e_kMediaPause;
+        case SDLK_MEDIA_RECORD:
+            return v_ZFUIKeyCode::e_kMediaRecord;
+        case SDLK_MEDIA_FAST_FORWARD:
+            return v_ZFUIKeyCode::e_kMediaFastForward;
+        case SDLK_MEDIA_REWIND:
+            return v_ZFUIKeyCode::e_kMediaFastRewind;
+        case SDLK_MEDIA_NEXT_TRACK:
+            return v_ZFUIKeyCode::e_kMediaNext;
+        case SDLK_MEDIA_PREVIOUS_TRACK:
+            return v_ZFUIKeyCode::e_kMediaPrev;
+        case SDLK_MEDIA_STOP:
+            return v_ZFUIKeyCode::e_kMediaStop;
+        case SDLK_MEDIA_EJECT:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_WWW:
+        case SDLK_MEDIA_PLAY_PAUSE:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_MAIL:
+        case SDLK_MEDIA_SELECT:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_CALCULATOR:
+
+        case SDLK_AC_NEW:
             return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_COMPUTER:
+        case SDLK_AC_OPEN:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_AC_CLOSE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_AC_EXIT:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_AC_SAVE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_AC_PRINT:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_AC_PROPERTIES:
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_AC_SEARCH:
             return v_ZFUIKeyCode::e_kUnknown;
@@ -474,33 +509,6 @@ ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_AC_BOOKMARKS:
             return v_ZFUIKeyCode::e_kUnknown;
-
-        case SDLK_BRIGHTNESSDOWN:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_BRIGHTNESSUP:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_DISPLAYSWITCH:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_KBDILLUMTOGGLE:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_KBDILLUMDOWN:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_KBDILLUMUP:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_EJECT:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_SLEEP:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_APP1:
-            return v_ZFUIKeyCode::e_kUnknown;
-        case SDLK_APP2:
-            return v_ZFUIKeyCode::e_kUnknown;
-
-        case SDLK_AUDIOREWIND:
-            return v_ZFUIKeyCode::e_kMediaFastRewind;
-        case SDLK_AUDIOFASTFORWARD:
-            return v_ZFUIKeyCode::e_kMediaFastForward;
-
         case SDLK_SOFTLEFT:
             return v_ZFUIKeyCode::e_kUnknown;
         case SDLK_SOFTRIGHT:
@@ -509,6 +517,21 @@ ZFUIKeyCode ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
             return v_ZFUIKeyCode::e_kPhoneCall;
         case SDLK_ENDCALL:
             return v_ZFUIKeyCode::e_kPhoneCallEnd;
+        case SDLK_LEFT_TAB:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_LEVEL5_SHIFT:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_MULTI_KEY_COMPOSE:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_LMETA:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_RMETA:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_LHYPER:
+            return v_ZFUIKeyCode::e_kUnknown;
+        case SDLK_RHYPER:
+            return v_ZFUIKeyCode::e_kUnknown;
+
         default:
             return v_ZFUIKeyCode::e_kUnknown;
     }

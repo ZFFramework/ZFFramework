@@ -29,14 +29,13 @@ protected:
             ZFLISTENER_1(serverRecvThread
                     , zfautoT<ZFUdp>, server
                     ) {
-                zfstring buf;
                 ZFUdpAddr recvAddr;
+                zfuint recvPort;
                 while(server->valid()) {
-                    buf.removeAll();
-                    zfindex recvSize = server->recv(recvAddr, buf, 4096);
-                    if(recvSize > 0) {
-                        ZFLog() << "server recv: " << buf;
-                        server->send(recvAddr, "server reply");
+                    zfstring recv = server->recv(&recvAddr, &recvPort);
+                    if(recv) {
+                        ZFLog() << "server recv: " << recv;
+                        server->send(recvAddr, recvPort, "server reply");
                         break;
                     }
                     ZFThread::sleep(100);
@@ -62,13 +61,12 @@ protected:
                     , zfautoT<ZFTestCase>, testCase
                     , zfautoT<ZFUdp>, client
                     ) {
-                zfstring buf;
                 ZFUdpAddr hostAddr;
+                zfuint hostPort;
                 while(client->valid()) {
-                    buf.removeAll();
-                    zfindex recvSize = client->recv(hostAddr, buf);
-                    if(recvSize > 0) {
-                        ZFLog() << "client recv: " << buf;
+                    zfstring recv = client->recv(&hostAddr, &hostPort);
+                    if(recv) {
+                        ZFLog() << "client recv: " << recv;
 
                         testCase->stop();
                         break;

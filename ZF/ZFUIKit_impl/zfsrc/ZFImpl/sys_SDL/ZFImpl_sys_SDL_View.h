@@ -53,8 +53,8 @@ public:
     typedef zfbool (*RenderCallback)(
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             );
 
@@ -71,7 +71,7 @@ public:
     /** @brief parent */
     ZFImpl_sys_SDL_View *parent;
     /** @brief native rect, relative to parent */
-    SDL_Rect rect;
+    SDL_FRect rect;
     /** @brief callback for impl to render contents */
     ZFCoreArray<RenderCallback> renderImpls;
     /** @brief whether #renderRequest called and not rendered */
@@ -154,9 +154,9 @@ public:
      * childRect and parentRect relative to root renderer
      */
     static void renderRectCalc(
-            ZF_OUT SDL_Rect &ret
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            ZF_OUT SDL_FRect &ret
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             ) {
         ret.x = childRect.x >= parentRect.x
             ? childRect.x
@@ -179,8 +179,8 @@ public:
      */
     void render(
             ZF_IN SDL_Renderer *renderer
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             );
 

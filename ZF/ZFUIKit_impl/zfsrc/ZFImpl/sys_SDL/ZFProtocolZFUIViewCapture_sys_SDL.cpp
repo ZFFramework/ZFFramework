@@ -21,12 +21,12 @@ public:
             , ZF_IN_OUT ZFUIImage *image
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
-        SDL_Rect rect;
+        SDL_FRect rect;
         rect.x = 0;
         rect.y = 0;
         rect.w = nativeView->rect.w;
         rect.h = nativeView->rect.h;
-        SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, rect.w, rect.h, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
+        SDL_Surface *nativeImage = SDL_CreateSurface(rect.w, rect.h, ZFImpl_sys_SDL_PixelFormatPreferred());
         SDL_SetSurfaceBlendMode(nativeImage, SDL_BLENDMODE_BLEND);
         SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(nativeImage);
         ZFImpl_sys_SDL_RendererNotifyCreate(renderer);

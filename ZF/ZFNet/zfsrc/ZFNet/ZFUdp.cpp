@@ -6,17 +6,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFUdpAddrPrivate {
 public:
     zfuint refCount;
-    void *hostAddr;
+    void *addr;
 
 public:
     _ZFP_ZFUdpAddrPrivate(void)
     : refCount(1)
-    , hostAddr(zfnull)
+    , addr(zfnull)
     {
     }
     ~_ZFP_ZFUdpAddrPrivate(void) {
-        if(this->hostAddr) {
-            ZFPROTOCOL_ACCESS(ZFUdp)->hostRelease(this->hostAddr);
+        if(this->addr) {
+            ZFPROTOCOL_ACCESS(ZFUdp)->addrRelease(this->addr);
         }
     }
 };
@@ -55,69 +55,70 @@ ZFUdpAddr &ZFUdpAddr::operator = (ZF_IN const ZFUdpAddr &ref) {
     return *this;
 }
 
-void ZFUdpAddr::_ZFP_hostAddr(ZF_IN void *hostAddr) {
-    void *hostAddrOld = zfnull;
+void ZFUdpAddr::_ZFP_addr(ZF_IN void *addr) {
+    void *addrOld = zfnull;
 
     if(d == zfnull) {
-        if(hostAddr != zfnull) {
+        if(addr != zfnull) {
             d = zfnew(_ZFP_ZFUdpAddrPrivate);
-            d->hostAddr = hostAddr;
+            d->addr = addr;
         }
     }
     else {
-        hostAddrOld = d->hostAddr;
-        d->hostAddr = hostAddr;
+        addrOld = d->addr;
+        d->addr = addr;
     }
 
-    if(hostAddrOld != zfnull) {
-        ZFPROTOCOL_ACCESS(ZFUdp)->hostRelease(hostAddrOld);
+    if(addrOld != zfnull) {
+        ZFPROTOCOL_ACCESS(ZFUdp)->addrRelease(addrOld);
     }
 }
-void *ZFUdpAddr::_ZFP_hostAddr(void) const {
-    return d != zfnull ? d->hostAddr : zfnull;
+void *ZFUdpAddr::_ZFP_addr(void) const {
+    return d != zfnull ? d->addr : zfnull;
 }
 
 zfbool ZFUdpAddr::valid(void) const {
-    return d != zfnull && d->hostAddr != zfnull;
+    return d != zfnull && d->addr != zfnull;
 }
 
 void ZFUdpAddr::clear(void) {
-    if(d != zfnull && d->hostAddr != zfnull) {
-        void *hostAddrOld = d->hostAddr;
-        d->hostAddr = zfnull;
-        ZFPROTOCOL_ACCESS(ZFUdp)->hostRelease(hostAddrOld);
+    if(d != zfnull && d->addr != zfnull) {
+        void *addrOld = d->addr;
+        d->addr = zfnull;
+        ZFPROTOCOL_ACCESS(ZFUdp)->addrRelease(addrOld);
     }
 }
 
-zfbool ZFUdpAddr::remoteInfo(
-        ZF_OUT zfstring &remoteAddr
-        , ZF_OUT zfuint &remotePort
-        ) const {
-    if(d == zfnull || d->hostAddr == zfnull) {
+zfbool ZFUdpAddr::remoteInfoT(ZF_IN_OUT zfstring &remoteAddr) const {
+    if(d == zfnull || d->addr == zfnull) {
         return zffalse;
     }
     else {
-        return ZFPROTOCOL_ACCESS(ZFUdp)->remoteInfo(d->hostAddr, remoteAddr, remotePort);
+        return ZFPROTOCOL_ACCESS(ZFUdp)->remoteInfo(d->addr, remoteAddr);
     }
+}
+zfstring ZFUdpAddr::remoteInfo(void) const {
+    zfstring ret;
+    this->remoteInfoT(ret);
+    return ret;
 }
 
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(ZFUdpAddr, ZFUdpAddr)
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUdpAddr, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUdpAddr, void, clear)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFUdpAddr, zfbool, remoteInfo
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFUdpAddr, zfbool, remoteInfoT
         , ZFMP_OUT(zfstring &, remoteAddr)
-        , ZFMP_OUT(zfuint &, remotePort)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUdpAddr, zfstring, remoteInfo)
 
 void ZFUdpAddr::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     zfstring remoteAddr;
-    zfuint remotePort;
-    if(this->remoteInfo(remoteAddr, remotePort)) {
-        zfstringAppend(ret, "udp:%s:%s", remoteAddr, remotePort);
+    if(this->remoteInfoT(remoteAddr)) {
+        zfstringAppend(ret, "UdpAddr:%s", remoteAddr);
     }
     else {
-        ret += "udp:null";
+        ret += "UdpAddr:null";
     }
 }
 
@@ -173,42 +174,44 @@ ZFMETHOD_DEFINE_0(ZFUdp, zfuint, port) {
     return d->port;
 }
 
-ZFMETHOD_DEFINE_2(ZFUdp, ZFUdpAddr, hostResolve
+ZFMETHOD_DEFINE_1(ZFUdp, ZFUdpAddr, addrResolve
         , ZFMP_IN(const zfstring &, host)
-        , ZFMP_IN(zfuint, port)
         ) {
-    void *hostAddr = ZFPROTOCOL_ACCESS(ZFUdp)->hostResolve(host, port);
+    void *addr = ZFPROTOCOL_ACCESS(ZFUdp)->addrResolve(host);
     ZFUdpAddr ret;
-    if(hostAddr != zfnull) {
-        ret._ZFP_hostAddr(hostAddr);
+    if(addr != zfnull) {
+        ret._ZFP_addr(addr);
     }
     return ret;
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send
-        , ZFMP_IN(const ZFUdpAddr &, hostAddr)
+ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
+        , ZFMP_IN(const ZFUdpAddr &, addr)
+        , ZFMP_IN(zfuint, port)
         , ZFMP_IN(const zfstring &, data)
         ) {
-    return this->send(hostAddr, data.buffer(), data.length());
+    return this->send(addr, port, data.buffer(), data.length());
 }
-ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
-        , ZFMP_IN(const ZFUdpAddr &, hostAddr)
+ZFMETHOD_DEFINE_4(ZFUdp, zfbool, send
+        , ZFMP_IN(const ZFUdpAddr &, addr)
+        , ZFMP_IN(zfuint, port)
         , ZFMP_IN(const void *, data)
         , ZFMP_IN(zfindex, size)
         ) {
-    return hostAddr.valid()
+    return addr.valid()
         && size != zfindexMax()
-        && ZFPROTOCOL_ACCESS(ZFUdp)->send(this, d->nativeSocket, hostAddr._ZFP_hostAddr(), data, size);
+        && ZFPROTOCOL_ACCESS(ZFUdp)->send(this, d->nativeSocket, addr._ZFP_addr(), port, data, size);
 }
-ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send
-        , ZFMP_IN(const ZFUdpAddr &, hostAddr)
+ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
+        , ZFMP_IN(const ZFUdpAddr &, addr)
+        , ZFMP_IN(zfuint, port)
         , ZFMP_IN(const ZFInput &, input)
         ) {
-    if(hostAddr.valid()) {
+    if(addr.valid()) {
         zfstring buf;
         ZFInputRead(buf, input);
-        return this->send(hostAddr, buf.buffer(), buf.length());
+        return this->send(addr, port, buf.buffer(), buf.length());
     }
     else {
         return zffalse;
@@ -221,7 +224,7 @@ ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
         , ZFMP_IN(zfuint, port)
         , ZFMP_IN(const zfstring &, data)
         ) {
-    return this->send(this->hostResolve(host, port), data);
+    return this->send(this->addrResolve(host), port, data);
 }
 ZFMETHOD_DEFINE_4(ZFUdp, zfbool, send
         , ZFMP_IN(const zfstring &, host)
@@ -229,74 +232,42 @@ ZFMETHOD_DEFINE_4(ZFUdp, zfbool, send
         , ZFMP_IN(const void *, data)
         , ZFMP_IN(zfindex, size)
         ) {
-    return this->send(this->hostResolve(host, port), data, size);
+    return this->send(this->addrResolve(host), port, data, size);
 }
 ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
         , ZFMP_IN(const zfstring &, host)
         , ZFMP_IN(zfuint, port)
         , ZFMP_IN(const ZFInput &, input)
         ) {
-    return this->send(this->hostResolve(host, port), input);
+    return this->send(this->addrResolve(host), port, input);
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_4(ZFUdp, zfindex, recv
-        , ZFMP_OUT(ZFUdpAddr &, hostAddr)
-        , ZFMP_IN_OUT(zfstring &, data)
-        , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
+ZFMETHOD_DEFINE_3(ZFUdp, zfstring, recv
+        , ZFMP_OUT_OPT(ZFUdpAddr *, addr, zfnull)
+        , ZFMP_OUT_OPT(zfuint *, port, zfnull)
         , ZFMP_IN_OPT(zftimet, timeout, -1)
         ) {
     if(!this->valid()) {
         ZFLog("calling recv() before open() successfully");
         return 0;
     }
-    if(maxSize == zfindexMax()) {
-        maxSize = 4096;
+    void *addrImpl = zfnull;
+    zfuint portTmp = 0;
+    zfstring ret = ZFPROTOCOL_ACCESS(ZFUdp)->recv(
+            this
+            , d->nativeSocket
+            , addrImpl
+            , portTmp
+            , timeout
+            );
+    if(addr) {
+        addr->_ZFP_addr(addrImpl);
     }
-    data.capacity(data.length() + maxSize);
-    void *hostAddrImpl = zfnull;
-    zfindex recvSize = ZFPROTOCOL_ACCESS(ZFUdp)->recv(
-        this,
-        d->nativeSocket,
-        hostAddrImpl,
-        data.zfunsafe_buffer() + data.length(),
-        maxSize,
-        timeout);
-    data.zfunsafe_length(data.length() + recvSize);
-    data.zfunsafe_buffer()[data.length()] = '\0';
-    hostAddr._ZFP_hostAddr(hostAddrImpl);
-    return recvSize;
-}
-ZFMETHOD_DEFINE_4(ZFUdp, zfindex, recv
-        , ZFMP_OUT(ZFUdpAddr &, hostAddr)
-        , ZFMP_IN_OUT(const ZFOutput &, output)
-        , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
-        , ZFMP_IN_OPT(zftimet, timeout, -1)
-        ) {
-    if(!this->valid()) {
-        ZFLog("calling recv() before open() successfully");
-        return 0;
+    if(port) {
+        *port = portTmp;
     }
-    if(maxSize == zfindexMax()) {
-        maxSize = 4096;
-    }
-
-    zfbyte buf[4096];
-    zfindex sizeRead = 0;
-    do {
-        zfindex sizeToRead = zfmMin((zfindex)sizeof(buf), maxSize - sizeRead);
-        void *hostAddrImpl = zfnull;
-        zfindex size = ZFPROTOCOL_ACCESS(ZFUdp)->recv(this, d->nativeSocket, hostAddrImpl, buf, sizeToRead, timeout);
-        if(hostAddrImpl != zfnull) {
-            hostAddr._ZFP_hostAddr(hostAddrImpl);
-        }
-        size = output.execute(buf, size);
-        sizeRead += size;
-        if(size < sizeToRead || sizeRead >= maxSize) {
-            break;
-        }
-    } while(zftrue);
-    return sizeRead;
+    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END

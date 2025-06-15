@@ -3,57 +3,59 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "SDL_net.h"
+#include "SDL3_net/SDL_net.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUdpImpl_sys_SDL, ZFUdp, v_ZFProtocolLevel::e_SystemHigh)
 public:
+    zfoverride
+    virtual void protocolOnInit(void) {
+        zfsuper::protocolOnInit();
+        NET_Init();
+    }
+    zfoverride
+    virtual void protocolOnDealloc(void) {
+        NET_Quit();
+        zfsuper::protocolOnDealloc();
+    }
+public:
     virtual void *open(
             ZF_IN ZFUdp *owner
             , ZF_IN zfuint port
             ) {
-        return SDLNet_UDP_Open((Uint16)port);
+        return NET_CreateDatagramSocket(zfnull, (Uint16)port);
     }
     virtual void close(
             ZF_IN ZFUdp *owner
             , ZF_IN void *nativeSocket
             ) {
-        SDLNet_UDP_Close((UDPsocket)nativeSocket);
+        NET_DestroyDatagramSocket((NET_DatagramSocket *)nativeSocket);
     }
 
 public:
-    virtual void *hostResolve(
+    virtual void *addrResolve(
             ZF_IN const zfstring &host
-            , ZF_IN zfuint port
             ) {
-        IPaddress *hostAddr = zfnew(IPaddress);
-        SDLNet_ResolveHost(hostAddr, host ? host.cString() : NULL, (Uint16)port);
-        return hostAddr;
+        NET_Address *nativeAddr = NET_ResolveHostname(host);
+        NET_WaitUntilResolved(nativeAddr, 2000);
+        return nativeAddr;
     }
-    virtual void hostRelease(ZF_IN void *hostAddr) {
-        zfdelete((IPaddress *)hostAddr);
+    virtual void addrRelease(ZF_IN void *nativeAddr) {
+        NET_UnrefAddress((NET_Address *)nativeAddr);
     }
 
 public:
     virtual zfbool remoteInfo(
-            ZF_IN void *hostAddr
-            , ZF_OUT zfstring &remoteAddr
-            , ZF_OUT zfuint &remotePort
+            ZF_IN void *nativeAddr
+            , ZF_IN_OUT zfstring &remoteAddr
             ) {
-        IPaddress *nativeIp = (IPaddress *)hostAddr;
-        const zfbyte *pHost = (const zfbyte *)&(nativeIp->host);
-        zfstringAppend(remoteAddr, "%s.%s.%s.%s"
-            , (zfint)*pHost
-            , (zfint)*(pHost + 1)
-            , (zfint)*(pHost + 2)
-            , (zfint)*(pHost + 3)
-            );
-        Uint16 nativePort = nativeIp->port;
-        if(SDL_BYTEORDER != SDL_BIG_ENDIAN) {
-            nativePort = SDL_Swap16(nativePort);
+        NET_Address *addr = (NET_Address *)nativeAddr;
+        const char *result = NET_GetAddressString(addr);
+        if(result == zfnull) {
+            return zffalse;
         }
-        remotePort = (zfuint)nativePort;
+        remoteAddr += result;
         return zftrue;
     }
 
@@ -61,49 +63,42 @@ public:
     virtual zfbool send(
             ZF_IN ZFUdp *owner
             , ZF_IN void *nativeSocket
-            , ZF_IN void *hostAddr
+            , ZF_IN void *nativeAddr
+            , ZF_IN zfuint port
             , ZF_IN const void *data
             , ZF_IN zfindex size
             ) {
-        UDPsocket nativeSocketTmp = (UDPsocket)nativeSocket;
-        UDPpacket *sdlPacket = SDLNet_AllocPacket((int)size);
-        zfmemcpy(&(sdlPacket->address), hostAddr, sizeof(IPaddress));
-        zfmemcpy(sdlPacket->data, data, size);
-        sdlPacket->len = (int)size;
-        zfbool ret = (0 != SDLNet_UDP_Send(nativeSocketTmp, -1, sdlPacket));
-        SDLNet_FreePacket(sdlPacket);
-        return ret;
+        return NET_SendDatagram(
+                (NET_DatagramSocket *)nativeSocket
+                , (NET_Address *)nativeAddr
+                , (Uint16)port
+                , data
+                , (int)size
+                );
     }
-    virtual zfindex recv(
+    virtual zfstring recv(
             ZF_IN ZFUdp *owner
             , ZF_IN void *nativeSocket
-            , ZF_OUT void *&hostAddr
-            , ZF_OUT void *data
-            , ZF_IN zfindex maxSize
+            , ZF_OUT void *&nativeAddr
+            , ZF_OUT zfuint &port
             , ZF_IN_OPT zftimet timeout
             ) {
-        UDPsocket nativeSocketTmp = (UDPsocket)nativeSocket;
-        if(timeout >= 0) {
-            SDLNet_SocketSet ss = SDLNet_AllocSocketSet(1);
-            SDLNet_UDP_AddSocket(ss, nativeSocketTmp);
-            int canRead = SDLNet_CheckSockets(ss, (Uint32)timeout);
-            SDLNet_FreeSocketSet(ss);
-            if(canRead == 0) {
-                return 0;
-            }
+        NET_DatagramSocket *socket = (NET_DatagramSocket *)nativeSocket;
+        int n = NET_WaitUntilInputAvailable((void **)&socket, 1, (Sint32)timeout);
+        if(n <= 0) {
+            return zfnull;
         }
-
-        UDPpacket sdlPacket;
-        zfmemset(&sdlPacket, 0, sizeof(UDPpacket));
-        sdlPacket.data = (Uint8 *)data;
-        sdlPacket.len = 0;
-        sdlPacket.maxlen = (int)maxSize;
-        zfindex recvSize = (zfindex)SDLNet_UDP_Recv(nativeSocketTmp, &sdlPacket);
-        IPaddress *hostAddrTmp = zfnew(IPaddress);
-        hostAddrTmp->host = sdlPacket.address.host;
-        hostAddrTmp->port = sdlPacket.address.port;
-        hostAddr = hostAddrTmp;
-        return recvSize;
+        NET_Datagram *recv = zfnull;
+        if(!NET_ReceiveDatagram((NET_DatagramSocket *)nativeSocket, &recv)
+                || recv == zfnull
+                ) {
+            return zfnull;
+        }
+        nativeAddr = (void *)NET_RefAddress(recv->addr);
+        port = (zfuint)recv->port;
+        zfstring ret((const zfchar *)recv->buf, (zfindex)recv->buflen);
+        NET_DestroyDatagram(recv);
+        return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUdpImpl_sys_SDL)
 

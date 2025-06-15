@@ -15,8 +15,8 @@ public:
     static zfbool renderCallback(
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
         if(nativeView->ownerZFUIView != zfnull) {
@@ -30,7 +30,7 @@ public:
                         , (Uint8)(0xFF * ZFUIColorGetB(bg))
                         , (Uint8)(0xFF * (ZFUIColorGetA(bg) * treeAlpha))
                     );
-                SDL_Rect rect;
+                SDL_FRect rect;
                 ZFImpl_sys_SDL_View::renderRectCalc(rect, childRect, parentRect);
                 SDL_RenderFillRect(renderer, &rect);
                 SDL_SetRenderDrawColor(renderer, rOld, gOld, bOld, aOld);

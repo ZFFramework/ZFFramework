@@ -26,7 +26,7 @@ extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
 /**
  * @brief get preferred pixel format for sdl surface
  */
-extern ZFLIB_ZF_impl Uint32 ZFImpl_sys_SDL_PixelFormatPreferred(void);
+extern ZFLIB_ZF_impl SDL_PixelFormat ZFImpl_sys_SDL_PixelFormatPreferred(void);
 
 // ============================================================
 typedef zfbool (*ZFImpl_sys_SDL_WindowLifeCycle)(ZF_IN SDL_Window *owner);
@@ -88,7 +88,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(
  *   // post the event
  *   SDL_Event e;
  *   SDL_zero(e);
- *   e.type = SDL_USEREVENT;
+ *   e.type = SDL_EVENT_USER;
  *   e.user.code = ZFIMPL_SYS_SDL_USER_EVENT(eventName);
  *   SDL_PushEvent(&e);
  *   // or for short
@@ -119,7 +119,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(
     do { \
         SDL_Event e; \
         SDL_zero(e); \
-        e.type = SDL_USEREVENT; \
+        e.type = SDL_EVENT_USER; \
         e.user.code = ZFIMPL_SYS_SDL_USER_EVENT(name); \
         e.user.data1 = data1_; \
         e.user.data2 = data2_; \

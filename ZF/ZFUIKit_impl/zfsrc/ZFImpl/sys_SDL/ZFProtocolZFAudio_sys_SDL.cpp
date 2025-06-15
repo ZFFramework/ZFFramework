@@ -3,7 +3,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "SDL_mixer.h"
+#include "SDL3_mixer/SDL_mixer.h"
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -120,10 +120,10 @@ public:
         ZFLISTENER_1(onLoad
                 , ZFInput, input
                 ) {
-            Mix_Chunk *impl = Mix_LoadWAV_RW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(input), 1);
+            Mix_Chunk *impl = Mix_LoadWAV_IO(ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input), true);
             zfobj<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> implHolder;
             implHolder->impl(impl);
-            const char *errorHint = Mix_GetError();
+            const char *errorHint = SDL_GetError();
             if(errorHint != zfnull && *errorHint) {
                 implHolder->errorHint(zfobj<v_zfstring>(errorHint));
             }
@@ -184,9 +184,9 @@ public:
 
             if(taskId->zfv == zfidentityInvalid()) {return;}
             if(input) {
-                Mix_Chunk *impl = Mix_LoadWAV_RW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(input), 1);
+                Mix_Chunk *impl = Mix_LoadWAV_IO(ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input), true);
                 implHolder->impl(impl);
-                const char *errorHint = Mix_GetError();
+                const char *errorHint = SDL_GetError();
                 if(errorHint != zfnull && *errorHint) {
                     implHolder->errorHint(zfobj<v_zfstring>(errorHint));
                 }
@@ -220,7 +220,7 @@ public:
         nativeAudio->channel = Mix_PlayChannelTimed(-1, nativeAudio->impl->impl(), 0, (int)_durationForChunk(nativeAudio->impl->impl()));
         if(nativeAudio->channel == -1) {
             zfobj<v_zfstring> errorHint;
-            const char *implError = Mix_GetError();
+            const char *implError = SDL_GetError();
             if(implError != zfnull && *implError) {
                 errorHint->zfv = implError;
             }
@@ -305,7 +305,11 @@ private:
     void _deviceAttach(void) {
         ++_deviceCount;
         if(_deviceCount == 1) {
-            Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+            SDL_AudioSpec spec;
+            spec.format = MIX_DEFAULT_FORMAT;
+            spec.channels = MIX_DEFAULT_CHANNELS;
+            spec.freq = MIX_DEFAULT_FREQUENCY;
+            Mix_OpenAudio(0, &spec);
         }
     }
     void _deviceDetach(void) {

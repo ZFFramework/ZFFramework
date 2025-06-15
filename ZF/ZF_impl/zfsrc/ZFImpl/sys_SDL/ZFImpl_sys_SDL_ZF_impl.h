@@ -5,7 +5,7 @@
 #include "ZFImpl_sys_SDL.h"
 
 #if ZF_ENV_sys_SDL
-#include "SDL.h"
+#include "SDL3/SDL.h"
 #endif
 
 #include "ZFCore.h"
@@ -14,19 +14,19 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief util to create SDL_RWops from ZFInput
+ * @brief util to create SDL_IOStream from ZFInput
  *
  * when result is not null,
- * you must call SDL_RWclose to close and release the SDL_RWops
+ * you must call SDL_CloseIO to close and release the SDL_IOStream
  */
-extern ZFLIB_ZF_impl SDL_RWops *ZFImpl_sys_SDL_ZFInputToSDL_RWops(ZF_IN const ZFInput &callback);
+extern ZFLIB_ZF_impl SDL_IOStream *ZFImpl_sys_SDL_ZFInputToSDL_IOStream(ZF_IN const ZFInput &callback);
 /**
- * @brief util to create SDL_RWops from ZFOutput
+ * @brief util to create SDL_IOStream from ZFOutput
  *
  * when result is not null,
- * you must call SDL_RWclose to close and release the SDL_RWops
+ * you must call SDL_CloseIO to close and release the SDL_IOStream
  */
-extern ZFLIB_ZF_impl SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const ZFOutput &callback);
+extern ZFLIB_ZF_impl SDL_IOStream *ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(ZF_IN const ZFOutput &callback);
 
 // ============================================================
 /**
@@ -42,7 +42,7 @@ public:
     }
     ~_ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface(void) {
         if(d) {
-            SDL_FreeSurface(d);
+            SDL_DestroySurface(d);
         }
     }
 private:
@@ -83,7 +83,7 @@ public:
     : _sdlRenderer(sdlRenderer)
     , _sdlTextureSaved(SDL_GetRenderTarget(sdlRenderer))
     {
-        _success = (SDL_SetRenderTarget(sdlRenderer, sdlTexture) == 0);
+        _success = SDL_SetRenderTarget(sdlRenderer, sdlTexture);
     }
     ~_ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget(void) {
         if(_success) {

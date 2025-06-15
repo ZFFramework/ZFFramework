@@ -5,7 +5,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "SDL_ttf.h"
+#include "SDL3_ttf/SDL_ttf.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -21,7 +21,7 @@ typedef enum {
 zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_FontData {
 public:
     ZFImpl_sys_SDL_FontType fontType; /**< @brief the font type, may differ from desired */
-    zfuint ptsize; /**< @brief desired ptsize */
+    zffloat ptsize; /**< @brief desired ptsize */
     TTF_Font *font; /**< @brief the font */
 public:
     /** @cond ZFPrivateDoc */

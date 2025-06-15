@@ -101,10 +101,7 @@ public:
         nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow();
         ZFImpl_sys_SDL_WindowNotifyCreate(nativeWindow->sdlWindow);
         ZFCoreAssert(nativeWindow->sdlWindow != zfnull);
-        nativeWindow->sdlRenderer = SDL_CreateRenderer(nativeWindow->sdlWindow, -1, 0
-                | SDL_RENDERER_ACCELERATED
-                | SDL_RENDERER_TARGETTEXTURE
-            );
+        nativeWindow->sdlRenderer = SDL_CreateRenderer(nativeWindow->sdlWindow, zfnull);
         ZFImpl_sys_SDL_RendererNotifyCreate(nativeWindow->sdlRenderer);
         ZFCoreAssert(nativeWindow->sdlRenderer != zfnull);
         SDL_SetRenderDrawBlendMode(nativeWindow->sdlRenderer, SDL_BLENDMODE_BLEND);
@@ -130,8 +127,9 @@ public:
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
         SDL_Rect sdlRect;
-        SDL_GetDisplayUsableBounds(0, &sdlRect);
-        sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(sdlRect.w, sdlRect.h));
+        if(SDL_GetDisplayUsableBounds(SDL_GetPrimaryDisplay(), &sdlRect)) {
+            sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(sdlRect.w, sdlRect.h));
+        }
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {
@@ -139,7 +137,12 @@ public:
         }
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         SDL_Rect sdlRect;
-        SDL_GetDisplayUsableBounds(0, &sdlRect);
+        if(!SDL_GetDisplayUsableBounds(SDL_GetDisplayForWindow(nativeWindow->sdlWindow), &sdlRect)) {
+            sdlRect.x = 0;
+            sdlRect.y = 0;
+            sdlRect.w = 640;
+            sdlRect.h = 480;
+        }
         ZFUIRect rect;
         ZFUILayoutParam::layoutParamApplyT(
                 rect

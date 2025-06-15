@@ -46,8 +46,8 @@ private:
     static zfbool renderCallback(
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
         ZFUIImageView *owner = zfcast(ZFUIImageView *, nativeView->ownerZFUIView);
@@ -63,14 +63,14 @@ private:
             return zffalse;
         }
 
-        SDL_Rect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_Rect(ZFUIRectApplyScale(owner->nativeImplViewFrame(), owner->UIScaleFixed()));
+        SDL_FRect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_FRect(ZFUIRectApplyScale(owner->nativeImplViewFrame(), owner->UIScaleFixed()));
         targetRect.x += childRect.x;
         targetRect.y += childRect.y;
 
         SDL_Texture *sdlTexture = nativeImage->sdlTexture(renderer);
         SDL_SetTextureAlphaMod(sdlTexture, treeAlpha != 1 ? (Uint8)(treeAlpha * 255) : (Uint8)255);
         if(imageState->imageNinePatch() == ZFUIMarginZero()) {
-            SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);
+            SDL_RenderTexture(renderer, sdlTexture, zfnull, &targetRect);
         }
         else {
             ZFUIImageImplNinePatchDrawData drawDatas[9];
@@ -81,8 +81,8 @@ private:
                 ZFUIMarginApplyScale(imageState->imageNinePatch(), imageState->imageScaleFixed()),
                 ZFUISizeCreate((zffloat)targetRect.w, (zffloat)targetRect.h));
 
-            SDL_Rect srcRect;
-            SDL_Rect dstRect;
+            SDL_FRect srcRect;
+            SDL_FRect dstRect;
             for(zfindex i = 0; i < drawDatasCount; ++i) {
                 const ZFUIImageImplNinePatchDrawData &drawData = drawDatas[i];
                 srcRect.x = (int)drawData.src.x;
@@ -93,7 +93,7 @@ private:
                 dstRect.y = (int)(drawData.dst.y + targetRect.y);
                 dstRect.w = (int)drawData.dst.width;
                 dstRect.h = (int)drawData.dst.height;
-                SDL_RenderCopy(renderer, sdlTexture, &srcRect, &dstRect);
+                SDL_RenderTexture(renderer, sdlTexture, &srcRect, &dstRect);
             }
         }
         return zffalse;

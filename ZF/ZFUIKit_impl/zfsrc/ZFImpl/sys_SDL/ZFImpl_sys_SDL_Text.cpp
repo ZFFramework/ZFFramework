@@ -24,11 +24,12 @@ zfbool ZFImpl_sys_SDL_textMeasure(
     // result to extra size, to ensure compact text views won't be overlapped
     const int extraSize = 1;
 
-    int lineSkip = TTF_FontLineSkip(sdlFont);
+    int lineSkip = TTF_GetFontLineSkip(sdlFont);
 
     zfindex lineEndPos = zfstringFind(text, '\n');
     if(singleLine) {
-        if(TTF_SizeUTF8(sdlFont, lineEndPos != zfindexMax() ? zfstring(text, lineEndPos) : text, &w, &h) != 0) {
+        zfstring textTmp = (lineEndPos != zfindexMax() ? zfstring(text, lineEndPos) : text);
+        if(!TTF_GetStringSize(sdlFont, textTmp, textTmp.length(), &w, &h)) {
             return zffalse;
         }
         h = zfmMax(h, lineSkip);
@@ -44,14 +45,19 @@ zfbool ZFImpl_sys_SDL_textMeasure(
     int line = 0;
     while(iText < textLen) {
         ++line;
-        int extent, count;
-        if(TTF_MeasureUTF8(
-                    sdlFont
-                    , lineEndPos == zfindexMax() ? text + iText : tmp.assign(text + iText, lineEndPos + 1).cString()
-                    , widthHint
-                    , &extent
-                    , &count
-                    ) != 0) {
+        int extent;
+        size_t count;
+        const zfchar *textTmp;
+        zfindex textLenTmp;
+        if(lineEndPos == zfindexMax()) {
+            textTmp = text + iText;
+            textLenTmp = text.length() - iText;
+        }
+        else {
+            textTmp = tmp.assign(text + iText, lineEndPos + 1);
+            textLenTmp = tmp.length();
+        }
+        if(!TTF_MeasureString(sdlFont, textTmp, textLenTmp, widthHint, &extent, &count)) {
             return zffalse;
         }
         w = zfmMax(w, extent);
@@ -66,9 +72,9 @@ zfbool ZFImpl_sys_SDL_textMeasure(
 
 // ============================================================
 static void _ZFP_ZFImpl_sys_SDL_textAlignApply(
-        ZF_OUT SDL_Rect &srcRect
-        , ZF_OUT SDL_Rect &targetRectFixed
-        , ZF_IN const SDL_Rect &targetRect
+        ZF_OUT SDL_FRect &srcRect
+        , ZF_OUT SDL_FRect &targetRectFixed
+        , ZF_IN const SDL_FRect &targetRect
         , ZF_IN const ZFUIAlignFlags &textAlign
         , ZF_IN int w
         , ZF_IN int h
@@ -96,11 +102,11 @@ static void _ZFP_ZFImpl_sys_SDL_textAlignApply(
         if(w <= targetRect.w) {
             srcRect.x = 0;
             srcRect.w = w;
-            targetRectFixed.x = targetRect.x + (targetRect.w - w) / 2;
+            targetRectFixed.x = (int)(targetRect.x + (targetRect.w - w) / 2);
             targetRectFixed.w = w;
         }
         else {
-            srcRect.x = (w - targetRect.w) / 2;
+            srcRect.x = (int)((w - targetRect.w) / 2);
             srcRect.w = targetRect.w;
             targetRectFixed.x = targetRect.x;
             targetRectFixed.w = targetRect.w;
@@ -130,11 +136,11 @@ static void _ZFP_ZFImpl_sys_SDL_textAlignApply(
         if(h <= targetRect.h) {
             srcRect.y = 0;
             srcRect.h = h;
-            targetRectFixed.y = targetRect.y + (targetRect.h - h) / 2;
+            targetRectFixed.y = (int)(targetRect.y + (targetRect.h - h) / 2);
             targetRectFixed.h = h;
         }
         else {
-            srcRect.y = (h - targetRect.h) / 2;
+            srcRect.y = (int)((h - targetRect.h) / 2);
             srcRect.h = targetRect.h;
             targetRectFixed.y = targetRect.y;
             targetRectFixed.h = targetRect.h;
@@ -144,7 +150,7 @@ static void _ZFP_ZFImpl_sys_SDL_textAlignApply(
 
 static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
         ZF_IN SDL_Renderer *renderer
-        , ZF_IN const SDL_Rect &targetRect
+        , ZF_IN const SDL_FRect &targetRect
         , ZF_IN const zfstring &text
         , ZF_IN TTF_Font *sdlFont
         , ZF_IN SDL_Color textColor
@@ -153,20 +159,20 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
         ) {
     if(textTruncateMode == v_ZFUITextTruncateMode::e_Disable) {
         if(singleLine) {
-            return TTF_RenderUTF8_Blended(sdlFont, text, textColor);
+            return TTF_RenderText_Blended(sdlFont, text, text.length(), textColor);
         }
         else {
-            return TTF_RenderUTF8_Blended_Wrapped(sdlFont, text, textColor, targetRect.w);
+            return TTF_RenderText_Blended_Wrapped(sdlFont, text, text.length(), textColor, targetRect.w);
         }
     }
 
     int w, h;
     if(singleLine) {
-        if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0) {
+        if(!TTF_GetStringSize(sdlFont, text, text.length(), &w, &h)) {
             return zfnull;
         }
         if(w <= targetRect.w) {
-            return TTF_RenderUTF8_Blended(sdlFont, text, textColor);
+            return TTF_RenderText_Blended(sdlFont, text, text.length(), textColor);
         }
     }
     else {
@@ -174,7 +180,7 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
             return zfnull;
         }
         if(w <= targetRect.w && h <= targetRect.h) {
-            return TTF_RenderUTF8_Blended_Wrapped(sdlFont, text, textColor, (Uint32)targetRect.w);
+            return TTF_RenderText_Blended_Wrapped(sdlFont, text, text.length(), textColor, (Uint32)targetRect.w);
         }
     }
 
@@ -206,12 +212,12 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
             textNew.append(text + p + strip, text.length() - p - strip);
         }
         if(singleLine) {
-            if(TTF_SizeUTF8(sdlFont, textNew, &w, &h) != 0) {
+            if(!TTF_GetStringSize(sdlFont, textNew, textNew.length(), &w, &h)) {
                 return zfnull;
             }
             if(w <= targetRect.w) {
                 if(stripMin == stripMax || strip == stripMin + 1) {
-                    return TTF_RenderUTF8_Blended(sdlFont, textNew, textColor);
+                    return TTF_RenderText_Blended(sdlFont, textNew, textNew.length(), textColor);
                 }
                 stripMax = strip;
             }
@@ -225,7 +231,7 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
             }
             if(w <= targetRect.w && h <= targetRect.h) {
                 if(stripMin == stripMax || strip == stripMin + 1) {
-                    return TTF_RenderUTF8_Blended_Wrapped(sdlFont, textNew, textColor, (Uint32)targetRect.w);
+                    return TTF_RenderText_Blended_Wrapped(sdlFont, textNew, textNew.length(), textColor, (Uint32)targetRect.w);
                 }
                 stripMax = strip;
             }
@@ -242,7 +248,7 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
 
 zfbool ZFImpl_sys_SDL_textRender(
         ZF_IN SDL_Renderer *renderer
-        , ZF_IN const SDL_Rect &targetRect
+        , ZF_IN const SDL_FRect &targetRect
         , ZF_IN const zfstring &text
         , ZF_IN TTF_Font *sdlFont
         , ZF_IN const ZFUIAlignFlags &textAlign
@@ -259,17 +265,17 @@ zfbool ZFImpl_sys_SDL_textRender(
         return zffalse;
     }
 
-    int sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
+    TTF_HorizontalAlignment sdlFontAlign = TTF_HORIZONTAL_ALIGN_LEFT;
     if(ZFBitTest(textAlign, v_ZFUIAlign::e_Left)) {
-        sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
+        sdlFontAlign = TTF_HORIZONTAL_ALIGN_LEFT;
     }
     else if(ZFBitTest(textAlign, v_ZFUIAlign::e_Right)) {
-        sdlFontAlign = TTF_WRAPPED_ALIGN_RIGHT;
+        sdlFontAlign = TTF_HORIZONTAL_ALIGN_RIGHT;
     }
     else {
-        sdlFontAlign = TTF_WRAPPED_ALIGN_CENTER;
+        sdlFontAlign = TTF_HORIZONTAL_ALIGN_CENTER;
     }
-    TTF_SetFontWrappedAlign(sdlFont, sdlFontAlign);
+    TTF_SetFontWrapAlignment(sdlFont, sdlFontAlign);
 
     SDL_Surface *sdlSurface = zfnull;
     if(singleLine) {
@@ -303,13 +309,13 @@ zfbool ZFImpl_sys_SDL_textRender(
     SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
     ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
 
-    SDL_Rect srcRect;
-    SDL_Rect targetRectFixed;
+    SDL_FRect srcRect;
+    SDL_FRect targetRectFixed;
     _ZFP_ZFImpl_sys_SDL_textAlignApply(srcRect, targetRectFixed, targetRect, textAlign, sdlSurface->w, sdlSurface->h);
     if(alpha != 1) {
         SDL_SetTextureAlphaMod(sdlTexture, (Uint8)(alpha * 255));
     }
-    SDL_RenderCopy(renderer, sdlTexture, &srcRect, &targetRectFixed);
+    SDL_RenderTexture(renderer, sdlTexture, &srcRect, &targetRectFixed);
     return zftrue;
 }
 

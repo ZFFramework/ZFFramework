@@ -49,7 +49,8 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRenderAction, ZFLevelZFFrameworkPostN
         if(d->layoutRequested) {
             d->layoutRequested = zffalse;
             if(d->sysWindow->rootView != zfnull && d->sysWindow->rootView->ownerZFUIView != zfnull) {
-                int w, h;
+                int w = 0;
+                int h = 0;
                 SDL_GetWindowSize(d->sysWindow->sdlWindow, &w, &h);
                 impl->notifyLayoutView(d->sysWindow->rootView->ownerZFUIView, ZFUIRectCreate(0, 0, w, h));
             }
@@ -191,26 +192,40 @@ ZFImpl_sys_SDL_MouseState &ZFImpl_sys_SDL_SysWindow::mouseState(
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_SysWindow_EventDispatch, ZFLevelZFFrameworkNormal) {
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_WINDOWEVENT, onWindowEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_WINDOW_RESIZED, onWindowResize, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED, onWindowResize, ZFLevelZFFrameworkNormal);
 
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEMOTION, onMouseEvent, ZFLevelZFFrameworkNormal);
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEBUTTONDOWN, onMouseEvent, ZFLevelZFFrameworkNormal);
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEBUTTONUP, onMouseEvent, ZFLevelZFFrameworkNormal);
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEWHEEL, onWheelEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_WINDOW_SHOWN, onWindowResume, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_WINDOW_FOCUS_GAINED, onWindowResume, ZFLevelZFFrameworkNormal);
 
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_KEYDOWN, onKeyEvent, ZFLevelZFFrameworkNormal);
-    ZFImpl_sys_SDL_eventHandlerAdd(SDL_KEYUP, onKeyEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_WINDOW_HIDDEN, onWindowPause, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_WINDOW_FOCUS_LOST, onWindowPause, ZFLevelZFFrameworkNormal);
+
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_MOUSE_MOTION, onMouseEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_MOUSE_BUTTON_DOWN, onMouseEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_MOUSE_BUTTON_UP, onMouseEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_MOUSE_WHEEL, onWheelEvent, ZFLevelZFFrameworkNormal);
+
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_KEY_DOWN, onKeyEvent, ZFLevelZFFrameworkNormal);
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_EVENT_KEY_UP, onKeyEvent, ZFLevelZFFrameworkNormal);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_SysWindow_EventDispatch) {
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_WINDOWEVENT, onWindowEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_WINDOW_RESIZED, onWindowResize);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED, onWindowResize);
 
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEMOTION, onMouseEvent);
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEBUTTONDOWN, onMouseEvent);
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEBUTTONUP, onMouseEvent);
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEWHEEL, onWheelEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_WINDOW_SHOWN, onWindowResume);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_WINDOW_FOCUS_GAINED, onWindowResume);
 
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_KEYDOWN, onKeyEvent);
-    ZFImpl_sys_SDL_eventHandlerRemove(SDL_KEYUP, onKeyEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_WINDOW_HIDDEN, onWindowPause);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_WINDOW_FOCUS_LOST, onWindowPause);
+
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_MOUSE_MOTION, onMouseEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_MOUSE_BUTTON_DOWN, onMouseEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_MOUSE_BUTTON_UP, onMouseEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_MOUSE_WHEEL, onWheelEvent);
+
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_KEY_DOWN, onKeyEvent);
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_EVENT_KEY_UP, onKeyEvent);
 }
 public:
     static ZFImpl_sys_SDL_SysWindow *sysWindowForWindowId(ZF_IN Uint32 sdlWindowId) {
@@ -225,37 +240,27 @@ public:
         return zfnull;
     }
 private:
-    static zfbool onWindowEvent(ZF_IN SDL_Event *sdlEvent) {
-        switch(sdlEvent->window.event) {
-            case SDL_WINDOWEVENT_RESIZED:
-            case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
-                if(sysWindow != zfnull) {
-                    sysWindow->rootView->layoutRequest();
-                    return zftrue;
-                }
-                break;
-            }
-            case SDL_WINDOWEVENT_SHOWN:
-            case SDL_WINDOWEVENT_FOCUS_GAINED: {
-                ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
-                if(sysWindow != zfnull) {
-                    ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(sysWindow->ownerZFUISysWindow);
-                    return zftrue;
-                }
-                break;
-            }
-            case SDL_WINDOWEVENT_HIDDEN:
-            case SDL_WINDOWEVENT_FOCUS_LOST: {
-                ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
-                if(sysWindow != zfnull) {
-                    ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnPause(sysWindow->ownerZFUISysWindow);
-                    return zftrue;
-                }
-                break;
-            }
-            default:
-                break;
+    static zfbool onWindowResize(ZF_IN SDL_Event *sdlEvent) {
+        ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
+        if(sysWindow != zfnull) {
+            sysWindow->rootView->layoutRequest();
+            return zftrue;
+        }
+        return zffalse;
+    }
+    static zfbool onWindowResume(ZF_IN SDL_Event *sdlEvent) {
+        ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
+        if(sysWindow != zfnull) {
+            ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(sysWindow->ownerZFUISysWindow);
+            return zftrue;
+        }
+        return zffalse;
+    }
+    static zfbool onWindowPause(ZF_IN SDL_Event *sdlEvent) {
+        ZFImpl_sys_SDL_SysWindow *sysWindow = sysWindowForWindowId(sdlEvent->window.windowID);
+        if(sysWindow != zfnull) {
+            ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnPause(sysWindow->ownerZFUISysWindow);
+            return zftrue;
         }
         return zffalse;
     }

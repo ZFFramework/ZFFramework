@@ -21,6 +21,7 @@ public:
             ZF_IN ZFTcp *owner
             , ZF_IN const zfstring &host
             , ZF_IN zfuint port
+            , ZF_IN zftimet timeout
             ) zfpurevirtual;
     /** @brief see #ZFTcp::close */
     virtual void close(
@@ -29,17 +30,17 @@ public:
             ) zfpurevirtual;
 
 public:
-    /** @brief see #ZFTcp::accept */
+    /** @brief see #ZFTcp::remoteInfo */
     virtual zfbool remoteInfo(
             ZF_IN ZFTcp *owner
             , ZF_IN void *nativeSocket
-            , ZF_OUT zfstring &remoteAddr
-            , ZF_OUT zfuint &remotePort
+            , ZF_IN_OUT zfstring &remoteAddr
             ) zfpurevirtual;
     /** @brief see #ZFTcp::accept */
     virtual void *accept(
             ZF_IN ZFTcp *owner
             , ZF_IN void *nativeSocket
+            , ZF_IN_OPT zftimet timeout = -1
             ) zfpurevirtual;
 
 public:

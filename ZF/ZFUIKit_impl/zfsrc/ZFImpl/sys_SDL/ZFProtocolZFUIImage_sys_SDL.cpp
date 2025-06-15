@@ -12,7 +12,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_SDL, ZFUIImage, v_ZFProtocolLe
 
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
-        SDL_Surface *sdlSurface = IMG_Load_RW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(inputCallback), 1);
+        SDL_Surface *sdlSurface = IMG_Load_IO(ZFImpl_sys_SDL_ZFInputToSDL_IOStream(inputCallback), true);
         if(sdlSurface == zfnull) {
             return zfnull;
         }
@@ -23,13 +23,13 @@ public:
             , ZF_OUT const ZFOutput &outputCallback
             ) {
         ZFImpl_sys_SDL_Image *sdlImg = (ZFImpl_sys_SDL_Image *)nativeImage;
-        return 0 == IMG_SavePNG_RW(sdlImg->sdlSurface(), ZFImpl_sys_SDL_ZFOutputToSDL_RWops(outputCallback), 1);
+        return IMG_SavePNG_IO(sdlImg->sdlSurface(), ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(outputCallback), true);
     }
 
     virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
         ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
         SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
-        SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, nativeImageOld->w, nativeImageOld->h, nativeImageOld->format->BitsPerPixel, nativeImageOld->format->format);
+        SDL_Surface *nativeImageNew = SDL_CreateSurface(nativeImageOld->w, nativeImageOld->h, nativeImageOld->format);
         if(nativeImageNew == zfnull) {
             return zfnull;
         }
@@ -41,10 +41,10 @@ public:
         rect.h = nativeImageOld->h;
 
         SDL_Rect clipSaved;
-        SDL_GetClipRect(nativeImageOld, &clipSaved);
-        SDL_SetClipRect(nativeImageOld, &rect);
+        SDL_GetSurfaceClipRect(nativeImageOld, &clipSaved);
+        SDL_SetSurfaceClipRect(nativeImageOld, &rect);
         SDL_BlitSurface(nativeImageOld, zfnull, nativeImageNew, zfnull);
-        SDL_SetClipRect(nativeImageOld, &clipSaved);
+        SDL_SetSurfaceClipRect(nativeImageOld, &clipSaved);
 
         return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }

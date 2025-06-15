@@ -28,20 +28,18 @@ public:
             ) zfpurevirtual;
 
 public:
-    /** @brief see #ZFUdp::hostResolve */
-    virtual void *hostResolve(
+    /** @brief see #ZFUdp::addrResolve */
+    virtual void *addrResolve(
             ZF_IN const zfstring &host
-            , ZF_IN zfuint port
             ) zfpurevirtual;
-    /** @brief see #ZFUdp::hostResolve */
-    virtual void hostRelease(ZF_IN void *hostAddr) zfpurevirtual;
+    /** @brief see #ZFUdp::addrResolve */
+    virtual void addrRelease(ZF_IN void *nativeAddr) zfpurevirtual;
 
 public:
     /** @brief see #ZFUdpAddr::remoteInfo */
     virtual zfbool remoteInfo(
-            ZF_IN void *hostAddr
-            , ZF_OUT zfstring &remoteAddr
-            , ZF_OUT zfuint &remotePort
+            ZF_IN void *nativeAddr
+            , ZF_IN_OUT zfstring &remoteAddr
             ) zfpurevirtual;
 
 public:
@@ -49,17 +47,17 @@ public:
     virtual zfbool send(
             ZF_IN ZFUdp *owner
             , ZF_IN void *nativeSocket
-            , ZF_IN void *hostAddr
+            , ZF_IN void *nativeAddr
+            , ZF_IN zfuint port
             , ZF_IN const void *data
             , ZF_IN zfindex size
             ) zfpurevirtual;
     /** @brief see #ZFUdp::recv */
-    virtual zfindex recv(
+    virtual zfstring recv(
             ZF_IN ZFUdp *owner
             , ZF_IN void *nativeSocket
-            , ZF_OUT void *&hostAddr
-            , ZF_OUT void *data
-            , ZF_IN zfindex maxSize
+            , ZF_OUT void *&nativeAddr
+            , ZF_OUT zfuint &port
             , ZF_IN_OPT zftimet timeout
             ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUdp)

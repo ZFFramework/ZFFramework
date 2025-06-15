@@ -15,11 +15,9 @@ public:
         if(dataBuf.buffer() == zfnull) {
             return zfnull;
         }
-        NSData *nsData = [NSData dataWithBytesNoCopy:dataBuf.zfunsafe_buffer() length:(NSUInteger)dataBuf.length() freeWhenDone:YES];
-        if(nsData == nil) {
-            return zfnull;
-        }
-        dataBuf.zfunsafe_bufferGiveUp(); // should be free-ed by nsData
+        NSData *nsData = [[NSData alloc] initWithBytesNoCopy:dataBuf.zfunsafe_bufferGiveUp() length:(NSUInteger)dataBuf.length() deallocator:^(void *bytes, NSUInteger length) {
+            zfstring::zfunsafe_bufferFree(bytes);
+        }];
         UIImage *uiImage = [UIImage imageWithData:nsData scale:ZFUIGlobalStyle::DefaultStyle()->imageScale()];
         if(uiImage == nil) {
             return zfnull;

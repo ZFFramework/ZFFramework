@@ -37,20 +37,17 @@ private:
         if(ZFImpl_sys_SDL_embed) {
             return;
         }
-        unsigned int sdlInitFlag = SDL_INIT_EVERYTHING;
-        do {
-            if(SDL_Init(sdlInitFlag) == 0) {break;}
-            zfstring errorHint = SDL_GetError();
-
-            // ZFCoreLogTrim("[ZFMainEntry_sys_SDL] try init without audio");
-            // sdlInitFlag &= (~SDL_INIT_AUDIO);
-            // if(SDL_Init(sdlInitFlag) == 0) {break;}
-            // zfstringAppend(errorHint, "\n    init without audio: %s", (const zfchar *)SDL_GetError());
-
-            ZFCoreCriticalMessage("SDL init failed: %s", errorHint);
-            return;
-        } while(zffalse);
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+        unsigned int sdlInitFlag = 0
+            | SDL_INIT_AUDIO
+            | SDL_INIT_VIDEO
+            | SDL_INIT_JOYSTICK
+            | SDL_INIT_HAPTIC
+            | SDL_INIT_GAMEPAD
+            | SDL_INIT_EVENTS
+            ;
+        if(!SDL_Init(sdlInitFlag)) {
+            ZFCoreCriticalMessage("SDL init failed: %s", SDL_GetError());
+        }
     }
     static void _initUI(ZF_IN zfself *d) {
         if(d->builtinWindow) {
@@ -62,10 +59,7 @@ private:
             return;
         }
         ZFImpl_sys_SDL_WindowNotifyCreate(d->builtinWindow);
-        d->builtinRenderer = SDL_CreateRenderer(d->builtinWindow, -1, 0
-                | SDL_RENDERER_ACCELERATED
-                | SDL_RENDERER_TARGETTEXTURE
-            );
+        d->builtinRenderer = SDL_CreateRenderer(d->builtinWindow, zfnull);
         if(d->builtinRenderer == zfnull) {
             ZFImpl_sys_SDL_WindowNotifyDestroy(d->builtinWindow);
             SDL_DestroyWindow(d->builtinWindow);
@@ -87,7 +81,7 @@ private:
             while(SDL_WaitEvent(&event)) {
                 do {
                     if(!ZFImpl_sys_SDL_embedEventHandler(&event)) {
-                        if(event.type == SDL_QUIT) {
+                        if(event.type == SDL_EVENT_QUIT) {
                             quitFlag = zftrue;
                             break;
                         }
@@ -129,31 +123,12 @@ SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void) {
 SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
     SDL_Window *sdlWindow = SDL_CreateWindow(
         ""
-        , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
         , 640, 480
-        , SDL_WINDOW_SHOWN
+        , 0
             | SDL_WINDOW_RESIZABLE
+            | SDL_WINDOW_INPUT_FOCUS
+            | SDL_WINDOW_MOUSE_FOCUS
         );
-
-#if 0
-    if(sdlWindow != zfnull) {
-        int windowDisplay = SDL_GetWindowDisplayIndex(sdlWindow);
-
-        int windowW, windowH;
-        SDL_GetWindowSize(sdlWindow, &windowW, &windowH);
-        SDL_Rect client;
-        SDL_GetDisplayUsableBounds(windowDisplay, &client);
-        SDL_Rect screen;
-        SDL_GetDisplayBounds(windowDisplay, &screen);
-        ZFCoreLogTrim("SDL window created, display: %s, window: (%s, %s), client: (%s, %s, %s, %s), screen: (%s, %s, %s, %s)"
-                , windowDisplay
-                , windowW, windowH
-                , client.x, client.y, client.w, client.h
-                , screen.x, screen.y, screen.w, screen.h
-                );
-    }
-#endif
-
     return sdlWindow;
 }
 
@@ -286,8 +261,8 @@ void ZFImpl_sys_SDL_userEventHandlerRemove(
 }
 
 // ============================================================
-static Uint32 _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_PIXELFORMAT_ARGB8888;
-Uint32 ZFImpl_sys_SDL_PixelFormatPreferred(void) {
+static SDL_PixelFormat _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_PIXELFORMAT_ARGB8888;
+SDL_PixelFormat ZFImpl_sys_SDL_PixelFormatPreferred(void) {
     return _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred;
 }
 
@@ -308,7 +283,7 @@ void ZFImpl_sys_SDL_embedCleanup(void) {
 }
 
 zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event) {
-    if(event->type == SDL_USEREVENT) {
+    if(event->type == SDL_EVENT_USER) {
         SDL_UserEvent *userEvent = (SDL_UserEvent *)event;
         _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEvent->code);
         if(it != _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end()) {
@@ -332,10 +307,10 @@ zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event) {
 
     // default impl
     switch(event->type) {
-        case SDL_QUIT:
+        case SDL_EVENT_QUIT:
             ZFApp::appExit();
             return zftrue;
-        case SDL_APP_LOWMEMORY:
+        case SDL_EVENT_LOW_MEMORY:
             ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppOnMemoryLow());
             return zftrue;
         default:

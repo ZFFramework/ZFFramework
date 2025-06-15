@@ -24,7 +24,7 @@ public:
 
 public:
     SDL_Renderer *sdlRenderer;
-    SDL_Rect framePixel;
+    SDL_FRect framePixel;
     zffloat treeAlpha;
     SDL_Surface *nativeImage;
 
@@ -85,8 +85,8 @@ private:
     static zfbool _renderCallback(
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
-            , ZF_IN const SDL_Rect &childRect
-            , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
         ZFUIDrawableView *drawableView = zfcast(ZFUIDrawableView *, nativeView->ownerZFUIView);
@@ -120,14 +120,14 @@ public:
             ZF_IN_OUT ZFUIDrawToken &token
             , ZF_IN const ZFUISize &imageSizePixel
             ) {
-        SDL_Surface *nativeImage = SDL_CreateRGBSurfaceWithFormat(0, (int)imageSizePixel.width, (int)imageSizePixel.height, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
+        SDL_Surface *nativeImage = SDL_CreateSurface((int)imageSizePixel.width, (int)imageSizePixel.height, ZFImpl_sys_SDL_PixelFormatPreferred());
         if(nativeImage == zfnull) {
             return zffalse;
         }
         SDL_SetSurfaceBlendMode(nativeImage, SDL_BLENDMODE_BLEND);
         SDL_Renderer *sdlRenderer = SDL_CreateSoftwareRenderer(nativeImage);
         if(sdlRenderer == zfnull) {
-            SDL_FreeSurface(nativeImage);
+            SDL_DestroySurface(nativeImage);
             return zffalse;
         }
         ZFImpl_sys_SDL_RendererNotifyCreate(sdlRenderer);
@@ -192,7 +192,7 @@ public:
             , ZF_IN const ZFUIRect &targetFramePixel
             ) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
-        SDL_Rect rect;
+        SDL_FRect rect;
         rect.x = (int)(drawImpl->framePixel.x + targetFramePixel.x);
         rect.y = (int)(drawImpl->framePixel.y + targetFramePixel.y);
         rect.w = (int)targetFramePixel.width;
@@ -219,23 +219,23 @@ public:
             ) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
 
-        SDL_Rect rect;
+        SDL_FRect rect;
         rect.x = (int)(drawImpl->framePixel.x + targetFramePixel.x);
         rect.y = (int)(drawImpl->framePixel.y + targetFramePixel.y);
         rect.w = (int)(targetFramePixel.width);
         rect.h = (int)(targetFramePixel.height);
 
-        SDL_Rect rectClipped;
+        SDL_FRect rectClipped;
         ZFImpl_sys_SDL_View::renderRectCalc(rectClipped, rect, drawImpl->framePixel);;
 
         if(rectClipped.w <= 0 || rectClipped.h <= 0 || imageFramePixel.width <= 0 || imageFramePixel.height <= 0) {
             return zftrue;
         }
 
-        SDL_Rect srcRect;
+        SDL_FRect srcRect;
 
         ZFImpl_sys_SDL_Image *sdlImg = (ZFImpl_sys_SDL_Image *)image->nativeImage();
-        if(zfmemcmp(&rect, &rectClipped, sizeof(SDL_Rect)) == 0) {
+        if(zfmemcmp(&rect, &rectClipped, sizeof(SDL_FRect)) == 0) {
             srcRect.x = (int)imageFramePixel.x;
             srcRect.y = (int)imageFramePixel.y;
             srcRect.w = (int)imageFramePixel.width;
@@ -252,7 +252,7 @@ public:
         if(sdlTexture != zfnull) {
             SDL_SetTextureAlphaMod(sdlTexture, drawImpl->treeAlpha != 1 ? (Uint8)(drawImpl->treeAlpha * 255) : (Uint8)255);
         }
-        return 0 == SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
+        return SDL_RenderTexture(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
     }
     virtual zfbool drawText(
             ZF_IN ZFUIDrawToken &token
@@ -269,7 +269,7 @@ public:
 
         ZFImpl_sys_SDL_textRender(
                 drawImpl->sdlRenderer
-                , ZFImpl_sys_SDL_ZFUIRectToSDL_Rect(targetFramePixel)
+                , ZFImpl_sys_SDL_ZFUIRectToSDL_FRect(targetFramePixel)
                 , text
                 , sdlFont
                 , config->textAlign()

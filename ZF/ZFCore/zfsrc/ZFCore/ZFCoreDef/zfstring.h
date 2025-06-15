@@ -563,7 +563,8 @@ public:
     }
 
     /**
-     * @brief give up the buffer's ownership and return the buffer, you should free it manually
+     * @brief give up the buffer's ownership and return the buffer,
+     *   you must free it manually by #zfunsafe_bufferFree
      */
     void *zfunsafe_bufferGiveUp(void) {
         ZFCoreMutexLocker();
@@ -573,6 +574,12 @@ public:
         d = _ZFP_Empty();
         ++(d->refCount);
         return ret;
+    }
+    /**
+     * @brief free buffer returned by #zfunsafe_bufferGiveUp
+     */
+    static void zfunsafe_bufferFree(ZF_IN void *buf) {
+        zffree(buf);
     }
 
     /**

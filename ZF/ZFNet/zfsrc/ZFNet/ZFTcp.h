@@ -45,9 +45,10 @@ public:
      *   try to connect to remote host,
      *   use #send or #recv to communicate with remote host
      */
-    ZFMETHOD_DECLARE_2(zfbool, open
+    ZFMETHOD_DECLARE_3(zfbool, open
             , ZFMP_IN(const zfstring &, host)
             , ZFMP_IN(zfuint, port)
+            , ZFMP_IN_OPT(zftimet, timeout, -1)
             )
     /**
      * @brief close the socket, see #open
@@ -67,23 +68,24 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, valid)
 
     /**
-     * @brief current opened port, or null if not opened
-     *
-     * return "localhost" for server (null host with #open)
+     * @brief current opened port, passed from #open
      */
     ZFMETHOD_DECLARE_0(const zfstring &, host)
     /**
-     * @brief current opened port, or 0 if not opened
+     * @brief current opened port, passed from #open
      */
     ZFMETHOD_DECLARE_0(zfuint, port)
 
     /**
      * @brief get remote addr, always fail if current #type is #v_ZFTcpType::e_Invalid or #v_ZFTcpType::e_Server
      */
-    ZFMETHOD_DECLARE_2(zfbool, remoteInfo
-            , ZFMP_OUT(zfstring &, remoteAddr)
-            , ZFMP_OUT(zfuint &, remotePort)
+    ZFMETHOD_DECLARE_1(zfbool, remoteInfoT
+            , ZFMP_IN_OUT(zfstring &, remoteAddr)
             )
+    /**
+     * @brief get remote addr, always fail if current #type is #v_ZFTcpType::e_Invalid or #v_ZFTcpType::e_Server
+     */
+    ZFMETHOD_DECLARE_0(zfstring, remoteInfo)
 
 public:
     /**
@@ -92,11 +94,14 @@ public:
      * return a new tcp object that can #send and #recv to communicate with client,
      * or null if error or no client connection
      *
-     * note:
-     * -  this method may or may not block current thread (depends on impl),
-     *   recommended to put it in thread and loop with sleep
+     * timeout:
+     * -  `<0` : block current thread until anything received
+     * -  `0` : do not block current thread, return 0 if nothing to receive
+     * -  `>0` : block current thread, until anything received, or reach timeout
      */
-    ZFMETHOD_DECLARE_0(zfautoT<ZFTcp>, accept)
+    ZFMETHOD_DECLARE_1(zfautoT<ZFTcp>, accept
+            , ZFMP_IN_OPT(zftimet, timeout, -1)
+            )
 
     // ============================================================
 public:
@@ -145,7 +150,8 @@ public:
      * -  `0` : do not block current thread, return 0 if nothing to receive
      * -  `>0` : block current thread, until anything received, or reach timeout
      *
-     * note: received data would be appended to buffer
+     * received data would be appended to buffer,
+     * return zfindexMax if error
      */
     ZFMETHOD_DECLARE_3(zfindex, recv
             , ZFMP_IN_OUT(zfstring &, data)
@@ -163,7 +169,8 @@ public:
      * -  `0` : do not block current thread, return 0 if nothing to receive
      * -  `>0` : block current thread, until anything received, or reach timeout
      *
-     * note: received data would be appended to output
+     * received data would be appended to buffer,
+     * return zfindexMax if error
      */
     ZFMETHOD_DECLARE_3(zfindex, recv
             , ZFMP_IN_OUT(const ZFOutput &, output)

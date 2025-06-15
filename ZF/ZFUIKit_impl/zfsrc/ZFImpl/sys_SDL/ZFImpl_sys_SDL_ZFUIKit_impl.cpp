@@ -2,7 +2,7 @@
 
 #if ZF_ENV_sys_SDL
 
-#include "SDL_image.h"
+#include "SDL3_image/SDL_image.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -49,25 +49,25 @@ zfbool ZFImpl_sys_SDL_SurfaceToOutput(
         ZF_IN const ZFOutput &callback
         , ZF_IN SDL_Surface *sdlSurface
         ) {
-    return 0 == IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1);
+    return IMG_SavePNG_IO(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(callback), true);
 }
 zfbool ZFImpl_sys_SDL_TextureToOutput(
         ZF_IN const ZFOutput &callback
         , ZF_IN SDL_Texture *sdlTexture
         ) {
-    int w, h, access;
-    if(SDL_QueryTexture(sdlTexture, zfnull, &access, &w, &h) != 0) {
+    float w, h;
+    SDL_TextureAccess access = (SDL_TextureAccess)SDL_GetNumberProperty(SDL_GetTextureProperties(sdlTexture), SDL_PROP_TEXTURE_ACCESS_NUMBER, -1);
+    if(!SDL_GetTextureSize(sdlTexture, &w, &h)) {
         return zffalse;
     }
     SDL_Renderer *sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
-    SDL_Surface *sdlSurface = SDL_CreateRGBSurfaceWithFormat(0, w, h, 0, ZFImpl_sys_SDL_PixelFormatPreferred());
-    ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
 
     if(ZFBitTest(access, SDL_TEXTUREACCESS_TARGET)) {
         ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture);
+        SDL_Surface *sdlSurface = SDL_RenderReadPixels(sdlRenderer, zfnull);
+        ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
         return success
-            && SDL_RenderReadPixels(sdlRenderer, zfnull, sdlSurface->format->format, sdlSurface->pixels, sdlSurface->pitch) == 0
-            && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
+            && IMG_SavePNG_IO(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(callback), true)
             ;
     }
     else {
@@ -78,15 +78,16 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
             SDL_GetTextureBlendMode(sdlTexture, &blendMode);
             ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, tmp);
             SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_NONE);
-            SDL_RenderCopy(sdlRenderer, sdlTexture, zfnull, zfnull);
+            SDL_RenderTexture(sdlRenderer, sdlTexture, zfnull, zfnull);
             SDL_SetTextureBlendMode(sdlTexture, blendMode);
         }
         sdlTexture = tmp;
 
         ZFImpl_sys_SDL_zfblockedRenderTarget(success, sdlRenderer, sdlTexture);
+        SDL_Surface *sdlSurface = SDL_RenderReadPixels(sdlRenderer, zfnull);
+        ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
         return success
-            && SDL_RenderReadPixels(sdlRenderer, zfnull, sdlSurface->format->format, sdlSurface->pixels, sdlSurface->pitch) == 0
-            && IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1) == 0
+            && IMG_SavePNG_IO(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(callback), true)
             ;
     }
 }
