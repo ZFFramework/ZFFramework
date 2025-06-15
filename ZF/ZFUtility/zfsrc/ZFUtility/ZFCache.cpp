@@ -75,9 +75,9 @@ ZFEVENT_REGISTER(ZFCache, CacheOnRemove)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfindex, cacheMaxSize) {
     this->cacheTrim(this->cacheMaxSize());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfbool, cacheTrimWhenReceiveMemoryWarning) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfbool, cacheTrimWhenMemoryLow) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->cacheTrimListenerSetup(
-        this, this->cacheTrimWhenReceiveMemoryWarning());
+        this, this->cacheTrimWhenMemoryLow());
 }
 
 ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
@@ -278,7 +278,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheGetAllT
 void ZFCache::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFCachePrivate);
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->cacheTrimListenerSetup(this, this->cacheTrimWhenReceiveMemoryWarning());
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->cacheTrimListenerSetup(this, this->cacheTrimWhenMemoryLow());
 }
 void ZFCache::objectOnDealloc(void) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->cacheTrimListenerSetup(this, zffalse);

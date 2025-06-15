@@ -74,7 +74,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAutoHide)
  * memo:
  *
  * _ZFP_I_ZFUIDialogPrivate (ZFUIWindow, handle all key event)
- * ^ dialogWindowBg (internal bg, window ani target)
+ * ^ windowBg (internal bg, window ani target)
  *   dialogClickMask (internal bg, focused if dialogContainer has no focusable child)
  *   _ZFP_ZFUIDialogContentHolder (Ui disable, supply layout logic)
  *   ^ dialogBg
@@ -87,9 +87,9 @@ zfclass _ZFP_I_ZFUIDialogPrivate : zfextend ZFUIWindow {
 
 public:
     ZFUIDialog *pimplOwner;
-    ZFUIView *dialogWindowBg;
-    ZFAnimation *dialogWindowAniShow;
-    ZFAnimation *dialogWindowAniHide;
+    ZFUIView *windowBg;
+    ZFAnimation *windowAniShow;
+    ZFAnimation *windowAniHide;
     ZFUIButton *dialogClickMask;
     ZFUIImageView *dialogBg;
     ZFUIOnScreenKeyboardAutoFitLayout *dialogContainer;
@@ -115,11 +115,11 @@ protected:
 
 public:
     void stop(void) {
-        if(this->dialogWindowAniShow != zfnull) {
-            this->dialogWindowAniShow->stop();
+        if(this->windowAniShow != zfnull) {
+            this->windowAniShow->stop();
         }
-        if(this->dialogWindowAniHide != zfnull) {
-            this->dialogWindowAniHide->stop();
+        if(this->windowAniHide != zfnull) {
+            this->windowAniHide->stop();
         }
         if(this->pimplOwner->aniShow() != zfnull) {
             this->pimplOwner->aniShow()->stop();
@@ -140,8 +140,8 @@ public:
     ZFMETHOD_INLINE_1(void, aniShowOnStop
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        if(!this->dialogWindowAniShow->started()
-                && !this->dialogWindowAniHide->started()
+        if(!this->windowAniShow->started()
+                && !this->windowAniHide->started()
                 && (this->pimplOwner->aniShow() == zfnull || !this->pimplOwner->aniShow()->started())
                 && (this->pimplOwner->aniHide() == zfnull || !this->pimplOwner->aniHide()->started())
                 ) {
@@ -167,8 +167,8 @@ public:
     ZFMETHOD_INLINE_1(void, aniHideOnStop
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        if(!this->dialogWindowAniShow->started()
-                && !this->dialogWindowAniHide->started()
+        if(!this->windowAniShow->started()
+                && !this->windowAniHide->started()
                 && (this->pimplOwner->aniShow() == zfnull || !this->pimplOwner->aniShow()->started())
                 && (this->pimplOwner->aniHide() == zfnull || !this->pimplOwner->aniHide()->started())
                 ) {
@@ -274,8 +274,8 @@ ZFEVENT_REGISTER(ZFUIDialog, DialogBeforeHide)
 ZFEVENT_REGISTER(ZFUIDialog, DialogAfterHide)
 ZFEVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, dialogWindowColor) {
-    d->dialogWindowBg->bgColor(this->dialogWindowColor());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, windowColor) {
+    d->windowBg->bgColor(this->windowColor());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIImage>, bgImage) {
     d->dialogBg->image(this->bgImage());
@@ -291,20 +291,20 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, content) {
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfbool, dialogWindowAutoResize) {
-    if(this->dialogWindowAutoResize()) {
-        this->dialogWindowAutoFit(zffalse);
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfbool, windowAutoResize) {
+    if(this->windowAutoResize()) {
+        this->windowAutoFit(zffalse);
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfbool, dialogWindowAutoFit) {
-    if(this->dialogWindowAutoFit()) {
-        this->dialogWindowAutoResize(zffalse);
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfbool, windowAutoFit) {
+    if(this->windowAutoFit()) {
+        this->windowAutoResize(zffalse);
     }
-    this->dialogWindowAutoFitLayout()->autoFitEnable(this->dialogWindowAutoFit());
+    this->windowAutoFitLayout()->autoFitEnable(this->windowAutoFit());
 }
 
-ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIOnScreenKeyboardAutoFitLayout *, dialogWindowAutoFitLayout) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIOnScreenKeyboardAutoFitLayout *, windowAutoFitLayout) {
     return d->dialogContainer;
 }
 
@@ -319,18 +319,18 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, show) {
     d->stop();
     d->show();
 
-    if(this->dialogWindowAutoResize()) {
-        ZFUIOnScreenKeyboardAutoResizeStart(this->dialogWindow());
+    if(this->windowAutoResize()) {
+        ZFUIOnScreenKeyboardAutoResizeStart(this->window());
     }
 
     d->viewUIEnableTree(zffalse);
     this->dialogBeforeShow();
-    if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
-        d->dialogWindowAniShow->target(d->dialogWindowBg);
-        d->dialogWindowAniShow->observerAddForOnce(
+    if(this->windowColor() != ZFUIColorZero() && this->windowAutoDim()) {
+        d->windowAniShow->target(d->windowBg);
+        d->windowAniShow->observerAddForOnce(
             ZFAnimation::E_AniOnStop(),
             d->aniShowOnStopListener);
-        d->dialogWindowAniShow->start();
+        d->windowAniShow->start();
     }
     if(this->aniShow() != zfnull) {
         this->aniShow()->target(d->dialogBg);
@@ -349,18 +349,18 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, hide) {
         return;
     }
 
-    if(this->dialogWindowAutoResize()) {
-        ZFUIOnScreenKeyboardAutoResizeStop(this->dialogWindow());
+    if(this->windowAutoResize()) {
+        ZFUIOnScreenKeyboardAutoResizeStop(this->window());
     }
 
     d->viewUIEnableTree(zffalse);
     this->dialogBeforeHide();
-    if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
-        d->dialogWindowAniHide->target(d->dialogWindowBg);
-        d->dialogWindowAniHide->observerAddForOnce(
+    if(this->windowColor() != ZFUIColorZero() && this->windowAutoDim()) {
+        d->windowAniHide->target(d->windowBg);
+        d->windowAniHide->observerAddForOnce(
             ZFAnimation::E_AniOnStop(),
             d->aniHideOnStopListener);
-        d->dialogWindowAniHide->start();
+        d->windowAniHide->start();
     }
     if(this->aniHide() != zfnull) {
         this->aniHide()->target(d->dialogBg);
@@ -402,7 +402,7 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, autoHideForButton
         );
 }
 
-ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIWindow *, dialogWindow) {
+ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIWindow *, window) {
     return d;
 }
 
@@ -423,8 +423,8 @@ void ZFUIDialog::objectOnInit(void) {
     d = zfAlloc(_ZFP_I_ZFUIDialogPrivate);
     d->pimplOwner = this;
 
-    d->dialogWindowBg = zfAlloc(ZFUIView);
-    d->internalBgViewAdd(d->dialogWindowBg)->c_sizeFill();
+    d->windowBg = zfAlloc(ZFUIView);
+    d->internalBgViewAdd(d->windowBg)->c_sizeFill();
 
     d->dialogClickMask = zfAlloc(_ZFP_I_ZFUIDialog_DialogClickMask);
     d->internalBgViewAdd(d->dialogClickMask)->c_sizeFill();
@@ -444,13 +444,13 @@ void ZFUIDialog::objectOnInit(void) {
     d->dialogContainer = zfAlloc(ZFUIOnScreenKeyboardAutoFitLayout);
     d->dialogBg->child(d->dialogContainer)->c_sizeFill();
 
-    d->dialogWindowAniShow = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
-    d->dialogWindowAniHide = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
+    d->windowAniShow = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+    d->windowAniHide = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
 
     d->aniShowOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniShowOnStop));
     d->aniHideOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniHideOnStop));
 
-    d->dialogWindowBg->bgColor(this->dialogWindowColor());
+    d->windowBg->bgColor(this->windowColor());
     d->dialogBg->image(this->bgImage());
 
     _ZFP_ZFUIDialogAllDialog.add(this);
@@ -458,13 +458,13 @@ void ZFUIDialog::objectOnInit(void) {
 void ZFUIDialog::objectOnDealloc(void) {
     _ZFP_ZFUIDialogAllDialog.removeElement(this);
 
-    zfRetainChange(d->dialogWindowAniShow, zfnull);
-    zfRetainChange(d->dialogWindowAniHide, zfnull);
+    zfRetainChange(d->windowAniShow, zfnull);
+    zfRetainChange(d->windowAniHide, zfnull);
 
     zfRelease(d->dialogContainer);
     zfRelease(d->dialogBg);
     zfRelease(d->dialogClickMask);
-    zfRelease(d->dialogWindowBg);
+    zfRelease(d->windowBg);
     zfRelease(d);
     d = zfnull;
 

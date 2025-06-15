@@ -98,14 +98,14 @@ public:
     /**
      * @brief dialog's background color, #ZFUIGlobalStyle::colorMask by default
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, dialogWindowColor, ZFUIGlobalStyle::DefaultStyle()->colorMask())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, dialogWindowColor)
+    ZFPROPERTY_ASSIGN(ZFUIColor, windowColor, ZFUIGlobalStyle::DefaultStyle()->colorMask())
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, windowColor)
     /**
      * @brief whether auto dim window background by an alpha change animation, true by default
      *
-     * valid only if #dialogWindowColor is not transparent
+     * valid only if #windowColor is not transparent
      */
-    ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoDim, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, windowAutoDim, zftrue)
 
     /**
      * @brief dialog's layout param
@@ -162,19 +162,19 @@ public:
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoResize, zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, dialogWindowAutoResize)
+    ZFPROPERTY_ASSIGN(zfbool, windowAutoResize, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, windowAutoResize)
 
     /**
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoFitLayout,
      *   false by default
      *
-     * auto fit settings can be changed by #dialogWindowAutoFitLayout
+     * auto fit settings can be changed by #windowAutoFitLayout
      */
-    ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoFit, zffalse)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, dialogWindowAutoFit)
-    /** @brief see #dialogWindowAutoFit */
-    ZFMETHOD_DECLARE_0(ZFUIOnScreenKeyboardAutoFitLayout *, dialogWindowAutoFitLayout)
+    ZFPROPERTY_ASSIGN(zfbool, windowAutoFit, zffalse)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, windowAutoFit)
+    /** @brief see #windowAutoFit */
+    ZFMETHOD_DECLARE_0(ZFUIOnScreenKeyboardAutoFitLayout *, windowAutoFitLayout)
 
 public:
     /**
@@ -211,7 +211,7 @@ public:
      *
      * by default, the dialog's window would have #v_ZFUIWindowLevel::e_AppHigh as #ZFUIWindow::windowLevel
      */
-    ZFMETHOD_DECLARE_0(ZFUIWindow *, dialogWindow)
+    ZFMETHOD_DECLARE_0(ZFUIWindow *, window)
 
 protected:
     /**

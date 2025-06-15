@@ -66,8 +66,8 @@ protected:
 zfclassNotPOD _ZFP_ZFUIHintPrivate {
 public:
     ZFUIHint *pimplOwner;
-    _ZFP_ZFUIHintWindow *hintWindow;
-    zfbool hintWindowAutoResizeAttached;
+    _ZFP_ZFUIHintWindow *window;
+    zfbool windowAutoResizeAttached;
     zfbool showing;
     zfbool delaying;
     ZFAnimation *started; // auto retain
@@ -79,8 +79,8 @@ public:
 public:
     _ZFP_ZFUIHintPrivate(void)
     : pimplOwner(zfnull)
-    , hintWindow(zfnull)
-    , hintWindowAutoResizeAttached(zffalse)
+    , window(zfnull)
+    , windowAutoResizeAttached(zffalse)
     , showing(zffalse)
     , delaying(zffalse)
     , started(zfnull)
@@ -101,7 +101,7 @@ public:
         this->pimplOwner->hintOnShow();
         this->showing = zftrue;
         this->delaying = zffalse;
-        this->pimplOwner->hintWindow()->show();
+        this->pimplOwner->window()->show();
         zfRetainChange(this->started, this->pimplOwner->aniShow());
         if(this->started != zfnull) {
             if(!this->aniShowOnStopListener) {
@@ -115,7 +115,7 @@ public:
             this->started->observerAddForOnce(
                 ZFAnimation::E_AniOnStop(),
                 this->aniShowOnStopListener);
-            this->started->target(this->pimplOwner->hintWindow());
+            this->started->target(this->pimplOwner->window());
             this->started->start();
         }
         else {
@@ -164,7 +164,7 @@ public:
             this->started->observerAddForOnce(
                 ZFAnimation::E_AniOnStop(),
                 this->aniHideOnStopListener);
-            this->started->target(this->pimplOwner->hintWindow());
+            this->started->target(this->pimplOwner->window());
             this->started->start();
         }
         else {
@@ -180,12 +180,12 @@ public:
     void hintDoFinish(void) {
         this->showing = zffalse;
         zfRetainChange(this->started, zfnull);
-        ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->hintWindow()->ownerSysWindow());
+        ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->window()->ownerSysWindow());
         zfRetain(this->pimplOwner);
         zfblockedRelease(this->pimplOwner);
         hintList->removeElement(this->pimplOwner);
         this->pimplOwner->hintOnHide();
-        this->pimplOwner->hintWindow()->hide();
+        this->pimplOwner->window()->hide();
         if(!hintList->isEmpty()) {
             ZFUIHint *hint = hintList->getFirst();
             if(hint->delaying()) {
@@ -236,7 +236,7 @@ ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<zfautoT<ZFUIHint> >, hintList
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, content) {
     if(this->content() != zfnull) {
-        this->hintWindow()->child(this->content());
+        this->window()->child(this->content());
     }
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, content) {
@@ -244,23 +244,23 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, content) {
         this->content()->removeFromParent();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, zfbool, hintWindowAutoResize) {
-    if(this->hintWindowAutoResize()) {
-        if(!d->hintWindowAutoResizeAttached) {
-            d->hintWindowAutoResizeAttached = zftrue;
-            ZFUIOnScreenKeyboardAutoResizeStart(this->hintWindow());
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, zfbool, windowAutoResize) {
+    if(this->windowAutoResize()) {
+        if(!d->windowAutoResizeAttached) {
+            d->windowAutoResizeAttached = zftrue;
+            ZFUIOnScreenKeyboardAutoResizeStart(this->window());
         }
     }
     else {
-        if(d->hintWindowAutoResizeAttached) {
-            d->hintWindowAutoResizeAttached = zffalse;
-            ZFUIOnScreenKeyboardAutoResizeStop(this->hintWindow());
+        if(d->windowAutoResizeAttached) {
+            d->windowAutoResizeAttached = zffalse;
+            ZFUIOnScreenKeyboardAutoResizeStop(this->window());
         }
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFUIHint, ZFUIWindow *, hintWindow) {
-    return d->hintWindow;
+ZFMETHOD_DEFINE_0(ZFUIHint, ZFUIWindow *, window) {
+    return d->window;
 }
 
 ZFMETHOD_DEFINE_0(ZFUIHint, zftimet, durationFixed) {
@@ -274,7 +274,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, show) {
     d->showing = zftrue;
     zfRetain(this);
 
-    ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->hintWindow()->ownerSysWindow());
+    ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->ownerSysWindow());
     hintList->add(this);
     if(hintList->count() == 1) {
         d->hintDoShow();
@@ -290,7 +290,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hide) {
             d->delaying = zffalse;
             zfRetain(this);
             zfblockedRelease(this);
-            ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->hintWindow()->ownerSysWindow());
+            ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->ownerSysWindow());
             hintList->removeElement(this);
             zfRelease(this);
         }
@@ -330,22 +330,22 @@ void ZFUIHint::objectOnInit(void) {
 
     d->pimplOwner = this;
 
-    d->hintWindow = zfAlloc(_ZFP_ZFUIHintWindow);
-    d->hintWindow->windowLevel(v_ZFUIWindowLevel::e_ZFFrameworkFgHighest);
-    d->hintWindow->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
-    d->hintWindow->windowLayoutParam()->align(v_ZFUIAlign::e_Center);
-    d->hintWindow->windowLayoutParam()->sizeParam(ZFUISizeParamWrapWrap());
-    d->hintWindow->windowLayoutParam()->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
-    d->hintWindow->viewUIEnableTree(zffalse);
+    d->window = zfAlloc(_ZFP_ZFUIHintWindow);
+    d->window->windowLevel(v_ZFUIWindowLevel::e_ZFFrameworkFgHighest);
+    d->window->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
+    d->window->windowLayoutParam()->align(v_ZFUIAlign::e_Center);
+    d->window->windowLayoutParam()->sizeParam(ZFUISizeParamWrapWrap());
+    d->window->windowLayoutParam()->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
+    d->window->viewUIEnableTree(zffalse);
 
     ZFUIHint *hint = this;
-    ZFLISTENER_1(hintWindowOnUpdate
+    ZFLISTENER_1(windowOnUpdate
             , ZFUIHint *, hint
             ) {
         ZFCoreAssertWithMessage(!hint->showing(), "you must not change ZFUIHint's window while it's showing or delaying");
         ZFUISysWindow *sysWindowOld = zfargs.param0();
         ZFArray *hintListOld = _ZFP_ZFUIHint_hintListForWrite(sysWindowOld);
-        ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->hintWindow()->ownerSysWindow());
+        ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->window()->ownerSysWindow());
         hintListNew->add(hint);
         hintListOld->removeElement(hint);
         if(!hintListOld->isEmpty()) {
@@ -361,14 +361,14 @@ void ZFUIHint::objectOnInit(void) {
             }
         }
     } ZFLISTENER_END()
-    d->hintWindow->observerAdd(ZFUIWindow::E_WindowOwnerSysWindowOnUpdate(), hintWindowOnUpdate);
+    d->window->observerAdd(ZFUIWindow::E_WindowOwnerSysWindowOnUpdate(), windowOnUpdate);
 
-    ZFLISTENER_1(hintWindowOnLayoutPrepare
+    ZFLISTENER_1(windowOnLayoutPrepare
             , ZFUIHint *, hint
             ) {
         hint->hintOnUpdate();
     } ZFLISTENER_END()
-    d->hintWindow->observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), hintWindowOnLayoutPrepare);
+    d->window->observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), windowOnLayoutPrepare);
 
     _ZFP_ZFUIHint_allHint.add(this);
 }
@@ -376,12 +376,12 @@ void ZFUIHint::objectOnInitFinish(void) {
     zfsuper::objectOnInitFinish();
 
     // access to init auto resize logic
-    (void)this->hintWindowAutoResize();
+    (void)this->windowAutoResize();
 
     this->hintOnInit();
 }
 void ZFUIHint::objectOnDeallocPrepare(void) {
-    this->hintWindowAutoResize(zffalse);
+    this->windowAutoResize(zffalse);
     if(d->started != zfnull) {
         d->started->stop();
         zfRetainChange(d->started, zfnull);
@@ -390,12 +390,12 @@ void ZFUIHint::objectOnDeallocPrepare(void) {
         d->showDelayTimer->stop();
         d->showDelayTimer = zfnull;
     }
-    d->hintWindow->hide();
+    d->window->hide();
     zfsuper::objectOnDeallocPrepare();
 }
 void ZFUIHint::objectOnDealloc(void) {
     _ZFP_ZFUIHint_allHint.removeElement(this);
-    zfRetainChange(d->hintWindow, zfnull);
+    zfRetainChange(d->window, zfnull);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();

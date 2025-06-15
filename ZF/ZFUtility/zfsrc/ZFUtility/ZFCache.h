@@ -45,11 +45,11 @@ public:
     /**
      * @brief whether invoke #cacheTrim when receive #ZFGlobalEvent::E_AppOnMemoryLow, true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, cacheTrimWhenReceiveMemoryWarning, zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, cacheTrimWhenReceiveMemoryWarning)
+    ZFPROPERTY_ASSIGN(zfbool, cacheTrimWhenMemoryLow, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, cacheTrimWhenMemoryLow)
 
     /**
-     * @brief leave how many cache alive while #cacheTrimWhenReceiveMemoryWarning, 0.2 by default
+     * @brief leave how many cache alive while #cacheTrimWhenMemoryLow, 0.2 by default
      */
     ZFPROPERTY_ASSIGN(zffloat, cacheTrimThreshold, 0.2f)
 
