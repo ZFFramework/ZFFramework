@@ -89,7 +89,7 @@ zfindex ZFInputReadChar(
     return ret;
 }
 
-zfbool ZFInputSkipChars(
+zfindex ZFInputSkipChars(
         ZF_OUT zfchar *buf
         , ZF_IN_OUT const ZFInput &input
         , ZF_IN_OPT const zfchar *charSet /* = " \t\r\n" */
@@ -97,13 +97,14 @@ zfbool ZFInputSkipChars(
     zfindex charSetCount = zfslen(charSet);
     zfbool matched = zffalse;
     do {
-        switch(ZFInputReadChar(buf, input)) {
+        zfindex t = ZFInputReadChar(buf, input);
+        switch(t) {
             case 0:
-                return zffalse;
+                return 0;
             case 1:
                 break;
             default:
-                return zftrue;
+                return t;
         }
         matched = zffalse;
         for(zfindex i = 0; i < charSetCount; ++i) {
@@ -113,10 +114,10 @@ zfbool ZFInputSkipChars(
             }
         }
         if(!matched) {
-            return zftrue;
+            return t;
         }
     } while(zftrue);
-    return zffalse;
+    return 0;
 }
 zfindex ZFInputReadUntil(
         ZF_IN_OUT zfstring &ret
@@ -172,17 +173,18 @@ zfindex ZFInputCheckMatch(
         for(zfindex i = 0; i < tokenCount; ++i) {
             maxLen = zfmMax(maxLen, zfslen(tokens[i]));
         }
-        zfchar *buf = (zfchar *)zfmalloc(maxLen);
+        zfchar *buf = (zfchar *)zfmalloc(maxLen + 1);
         zfblockedFree(buf);
 
         zfbool matched = zffalse;
         zfindex firstCharLen = ZFInputSkipChars(buf, input);
-        zfindex matchedLen = 0;
+        zfindex savedFix = input.ioTell() - firstCharLen;
         if(firstCharLen < maxLen) {
-            input.execute(buf + firstCharLen, maxLen - firstCharLen);
+            zfindex read = input.execute(buf + firstCharLen, maxLen - firstCharLen);
             for(zfindex i = 0; i < tokenCount; ++i) {
-                matchedLen = zfslen(tokens[i]);
-                if(zfsncmp(tokens[i], buf, matchedLen) == 0) {
+                zfindex tokenLen = zfslen(tokens[i]);
+                if(zfstringIsEqual(tokens[i], tokenLen, buf, read + firstCharLen)) {
+                    saved = savedFix + tokenLen;
                     matched = zftrue;
                     ret = i;
                     break;
@@ -190,12 +192,7 @@ zfindex ZFInputCheckMatch(
             }
         }
 
-        if(matched) {
-            input.ioSeek(maxLen - matchedLen, ZFSeekPosCurReversely);
-        }
-        else {
-            input.ioSeek(saved, ZFSeekPosBegin);
-        }
+        input.ioSeek(saved, ZFSeekPosBegin);
     }
     return ret;
 }

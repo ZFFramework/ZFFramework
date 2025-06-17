@@ -36,7 +36,7 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
             continue;
         }
         if(!d->relPath.isEmpty()) {
-            if(pathLen == d->relPath.length() || zfsncmp(d->relPath.cString(), path, d->relPath.length()) != 0) {
+            if(pathLen == d->relPath.length() || !zfstringBeginWith(path, d->relPath)) {
                 continue;
             }
             path += d->relPath.length() + 1;
@@ -45,7 +45,7 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
                 continue;
             }
         }
-        zfindex pos = zfstringFind(path, pathLen, '/');
+        zfindex pos = zfstringFind(path, pathLen, "/");
         if(pos != zfindexMax() && pos != pathLen - 1) {
             continue;
         }

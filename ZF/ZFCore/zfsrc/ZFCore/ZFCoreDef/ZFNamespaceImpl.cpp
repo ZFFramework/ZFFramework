@@ -19,11 +19,11 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
     if(zfstringIsEmpty(ns)) {
         return zfnull;
     }
-    else if(zfsncmp(ns, namePrefix, namePrefix.length()) == 0) {
+    else if(zfstringBeginWith(ns, namePrefix)) {
         if(ns[namePrefix.length()] == '\0') {
             return zfnull;
         }
-        else if(zfsncmp(ns + namePrefix.length(), ".", 1) == 0) {
+        else if(ns[namePrefix.length()] == '.') {
             if(ns[namePrefix.length() + 1] == '\0') {
                 return zfnull;
             }
@@ -35,11 +35,11 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
             return ns;
         }
     }
-    else if(zfsncmp(ns, abbrNamePrefix, abbrNamePrefix.length()) == 0) {
+    else if(zfstringBeginWith(ns, abbrNamePrefix)) {
         if(ns[abbrNamePrefix.length()] == '\0') {
             return zfnull;
         }
-        else if(zfsncmp(ns + abbrNamePrefix.length(), ".", 1) == 0) {
+        else if(ns[abbrNamePrefix.length()] == '.') {
             if(ns[abbrNamePrefix.length() + 1] == '\0') {
                 return zfnull;
             }
@@ -70,7 +70,7 @@ zfbool ZFNamespaceSplit(
     const zfchar *pEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
     zfbool hasAdd = zffalse;
     while(p < pEnd) {
-        if(zfsncmp(p, ".", 1) == 0) {
+        if(*p == '.') {
             if(p > pL) {
                 ret.add(ZFIndexRangeCreate(pL - src, p - pL));
             }

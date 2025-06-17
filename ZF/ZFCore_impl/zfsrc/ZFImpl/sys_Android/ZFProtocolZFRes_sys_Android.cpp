@@ -355,12 +355,12 @@ private:
         }
 
         // remove tail "/."
-        while(ret.length() >= 2 && zfsncmp(ret.cString(), "/.", 2) == 0) {
+        while(ret.length() >= 2 && zfstringEndWith(ret, "/.")) {
             ret.remove(ret.length() - 2);
         }
 
         // remove head "./"
-        while(zfsncmp(ret.cString(), "./", 2) == 0) {
+        while(zfstringBeginWith(ret, "./")) {
             ret.remove(0, 2);
         }
 

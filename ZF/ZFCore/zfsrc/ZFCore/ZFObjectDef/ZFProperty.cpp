@@ -94,9 +94,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(
         , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
         , ZF_IN const ZFClass *propertyClassOfRetainProperty
         ) {
-    static const zfchar *_ZFP_ = "_ZFP_";
-    static zfindex _ZFP_len = zfslen(_ZFP_);
-    if(getterMethod->isPrivate() || zfsncmp(name, _ZFP_, _ZFP_len) == 0) {
+    if(getterMethod->isPrivate() || zfstringBeginWith(name, "_ZFP_")) {
         _ZFP_ZFProperty_isInternal = zftrue;
         _ZFP_ZFProperty_isInternalPrivate = zftrue;
     }

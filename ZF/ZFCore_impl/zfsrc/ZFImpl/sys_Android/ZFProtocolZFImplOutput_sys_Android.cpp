@@ -45,7 +45,7 @@ private:
 
         zfindex pL = 0;
         do {
-            zfindex p = zfstringFind(s + pL, s.length() - pL, '\n');
+            zfindex p = zfstringFind(s + pL, s.length() - pL, "\n");
             if(p == zfindexMax()) {
                 break;
             }

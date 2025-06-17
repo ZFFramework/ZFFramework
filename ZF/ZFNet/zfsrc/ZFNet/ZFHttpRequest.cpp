@@ -466,7 +466,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUrlParamSet
     if(p == zfindexMax()) {
         p = zfstringFind(url, zfstr("&%s=", key));
         if(p == zfindexMax()) {
-            url += (zfstringFind(url, '?') != zfindexMax() ? '&' : '?');
+            url += (zfstringFind(url, "?") != zfindexMax() ? '&' : '?');
             url += key;
             url += '=';
             ZFUrlEncodeT(url, value);
@@ -475,7 +475,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUrlParamSet
     }
 
     zfindex start = p + 1 + zfslen(key) + 1;
-    zfindex end = zfstringFind(url + start, '&');
+    zfindex end = zfstringFind(url + start, "&");
     if(end == zfindexMax()) {
         url.remove(start);
         ZFUrlEncodeT(url, value);
@@ -501,7 +501,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFUrlParamGet
     }
     zfindex keyLen = zfslen(key);
     zfindex start = p + 1 + keyLen + 1;
-    zfindex end = zfstringFind(url + start, '&');
+    zfindex end = zfstringFind(url + start, "&");
     if(end == zfindexMax()) {
         return (url + start);
     }

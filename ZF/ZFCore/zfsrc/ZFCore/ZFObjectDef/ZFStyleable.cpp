@@ -326,10 +326,27 @@ void ZFStyleGetAll(
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFStyleHolderMapType &d = _ZFP_ZFStyleHolder();
+    styleKey.capacity(styleKey.count() + d.size());
+    styleValue.capacity(styleValue.count() + d.size());
     for(_ZFP_ZFStyleHolderMapType::iterator it = d.begin(); it != d.end(); ++it) {
         styleKey.add(it->first);
         styleValue.add(it->second);
     }
+}
+void ZFStyleGetAllKeyT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
+        ) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFStyleHolderMapType &d = _ZFP_ZFStyleHolder();
+    styleKey.capacity(styleKey.count() + d.size());
+    for(_ZFP_ZFStyleHolderMapType::iterator it = d.begin(); it != d.end(); ++it) {
+        styleKey.add(it->first);
+    }
+}
+ZFCoreArray<zfstring> ZFStyleGetAllKey(void) {
+    ZFCoreArray<zfstring> ret;
+    ZFStyleGetAllKeyT(ret);
+    return ret;
 }
 void ZFStyleRemoveAll(void) {
     ZFCoreMutexLock();
@@ -409,6 +426,10 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, styleKey)
         , ZFMP_IN_OUT(ZFCoreArray<ZFStyleable *> &, styleValue)
         )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFStyleGetAllKeyT
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, styleKey)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfstring>, ZFStyleGetAllKey)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleRemoveAll)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateBegin)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateEnd)

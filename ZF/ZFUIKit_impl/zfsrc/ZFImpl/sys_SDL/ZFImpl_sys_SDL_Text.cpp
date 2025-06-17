@@ -26,7 +26,7 @@ zfbool ZFImpl_sys_SDL_textMeasure(
 
     int lineSkip = TTF_GetFontLineSkip(sdlFont);
 
-    zfindex lineEndPos = zfstringFind(text, '\n');
+    zfindex lineEndPos = zfstringFind(text, "\n");
     if(singleLine) {
         zfstring textTmp = (lineEndPos != zfindexMax() ? zfstring(text, lineEndPos) : text);
         if(!TTF_GetStringSize(sdlFont, textTmp, textTmp.length(), &w, &h)) {
@@ -62,7 +62,7 @@ zfbool ZFImpl_sys_SDL_textMeasure(
         }
         w = zfmMax(w, extent);
         iText += count;
-        lineEndPos = zfstringFind(text + iText, '\n');
+        lineEndPos = zfstringFind(text + iText, "\n");
     }
     h = zfmMax(h, lineSkip) + lineSkip * (line - 1);
     w += extraSize;
@@ -279,7 +279,7 @@ zfbool ZFImpl_sys_SDL_textRender(
 
     SDL_Surface *sdlSurface = zfnull;
     if(singleLine) {
-        zfindex lineEndPos = zfstringFind(text, '\n');
+        zfindex lineEndPos = zfstringFind(text, "\n");
         sdlSurface = _ZFP_ZFImpl_sys_SDL_textRender(
                 renderer
                 , targetRect

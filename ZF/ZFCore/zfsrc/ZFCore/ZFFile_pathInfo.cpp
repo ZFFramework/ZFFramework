@@ -1054,7 +1054,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoChainDecodeString
         , ZFMP_IN_OUT(zfstring &, pathData)
         , ZFMP_IN(const zfchar *, pathDataOrig)
         ) {
-    zfindex pos = zfstringFindReversely(pathDataOrig, '|');
+    zfindex pos = zfstringFindReversely(pathDataOrig, "|");
     if(pos == zfindexMax()) {
         return zffalse;
     }

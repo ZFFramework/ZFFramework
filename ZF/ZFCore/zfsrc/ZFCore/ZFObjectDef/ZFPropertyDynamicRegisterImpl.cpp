@@ -615,7 +615,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
         return zffalse;
     }
 
-    if(zfsncmp(param.propertyCustomImplSetterMethod()->methodName(), param.propertyName(), zfslen(param.propertyName())) != 0) {
+    if(!zfstringBeginWith(param.propertyCustomImplSetterMethod()->methodName(), param.propertyName())) {
         zfstringAppend(errorHint,
             "setter method name \"%s\" does not match property name \"%s\"",
             param.propertyCustomImplSetterMethod()->methodName(),

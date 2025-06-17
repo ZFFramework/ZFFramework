@@ -22,7 +22,7 @@ zfbool ZFCoreDataPairSplitString(
     zfindex leftTokenMatch = zfindexMax();
     zfcharSkipSpace(p, srcEnd);
     if(leftTokens != zfnull && *leftTokens != '\0') {
-        leftTokenMatch = zfstringFind(leftTokens, *p);
+        leftTokenMatch = zfstringFind(leftTokens, p, 1);
         if(leftTokenMatch == zfindexMax()) {
             return zffalse;
         }
@@ -41,7 +41,7 @@ zfbool ZFCoreDataPairSplitString(
         const zfchar *pr = p;
         zfbool matchEnd = zffalse;
         for( ; pr < srcEnd; ++pr) {
-            if(zfstringFind(separatorTokens, *pr) != zfindexMax()) {
+            if(zfstringFind(separatorTokens, pr, 1) != zfindexMax()) {
                 if(itemTokenMatch.isEmpty()) {
                     // next item
                     break;
@@ -53,7 +53,7 @@ zfbool ZFCoreDataPairSplitString(
                 }
             }
 
-            zfindex matchL = zfstringFind(leftTokens, *pr);
+            zfindex matchL = zfstringFind(leftTokens, pr, 1);
             if(matchL != zfindexMax()) {
                 // paired child item
                 itemTokenMatch.add(matchL);
@@ -61,7 +61,7 @@ zfbool ZFCoreDataPairSplitString(
                 continue;
             }
 
-            zfindex matchR = zfstringFind(rightTokens, *pr);
+            zfindex matchR = zfstringFind(rightTokens, pr, 1);
             if(matchR != zfindexMax()) {
                 if(itemTokenMatch.isEmpty()) {
                     if(matchR != leftTokenMatch) {
@@ -109,7 +109,7 @@ zfbool ZFCoreDataPairSplitString(
     // rightTokens
     zfcharSkipSpace(p, srcEnd);
     if(rightTokens != zfnull && *rightTokens != '\0') {
-        if(p == srcEnd || zfstringFind(rightTokens, *p) == zfindexMax()) {
+        if(p == srcEnd || zfstringFind(rightTokens, p, 1) == zfindexMax()) {
             return zffalse;
         }
         ++p;

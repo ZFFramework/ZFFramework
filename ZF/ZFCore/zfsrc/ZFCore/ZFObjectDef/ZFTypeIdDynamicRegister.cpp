@@ -56,7 +56,7 @@ zfbool ZFTypeIdDynamicRegister(
     zfstring methodName;
     zfstring methodNamespace;
     const ZFClass *ownerClass = zfnull;
-    zfindex dotPos = zfstringFindReversely(typeIdName, '.');
+    zfindex dotPos = zfstringFindReversely(typeIdName, ".");
     if(dotPos != zfindexMax()) {
         methodName.assign(typeIdName + dotPos + 1);
         zfstring tmp(typeIdName, dotPos);
@@ -89,7 +89,7 @@ void ZFTypeIdDynamicUnregister(ZF_IN const zfstring &typeIdName) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
         _ZFP_ZFTypeIdDynamicMapType::iterator it = d->m.find(typeIdName);
         if(it != d->m.end()) {
-            zfindex dotPos = zfstringFindReversely(typeIdName, '.');
+            zfindex dotPos = zfstringFindReversely(typeIdName, ".");
             if(dotPos == zfindexMax()) {
                 ZFMethodDynamicUnregister(ZFMethodFuncForName(
                             zfnull

@@ -17,13 +17,13 @@ public:
             ) {
         if(count == zfindexMax()) {
             printf("%s", s);
-            if(zfstringFind(s, '\n') >= 0) {
+            if(zfstringFind(s, "\n") >= 0) {
                 fflush(stdout);
             }
         }
         else {
             printf("%s", zfstring(s, count).cString());
-            if(zfstringFind(s, count, '\n') >= 0) {
+            if(zfstringFind(s, count, "\n") >= 0) {
                 fflush(stdout);
             }
         }

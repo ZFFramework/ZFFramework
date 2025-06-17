@@ -1428,7 +1428,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     }
 
     zfstring classNameTmp = className;
-    if(zfsncmp(classNameTmp, "v_", 2) == 0) {
+    if(zfstringBeginWith(classNameTmp, "v_")) {
         classNameTmp.remove(0, 2);
     }
 

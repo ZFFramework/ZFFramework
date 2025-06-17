@@ -281,7 +281,7 @@ private:
             , ZF_IN_OPT zfbool excludeLastLevel = zffalse
             ) {
         zfstring pathTmp = path;
-        zfindex indexL = zfstringFindReversely(pathTmp, pathTmp.length(), '/');
+        zfindex indexL = zfstringFindReversely(pathTmp, "/");
         if(indexL == zfindexMax()) {
             if(!excludeLastLevel) {
                 return this->makeDir(pathTmp);
@@ -310,7 +310,7 @@ private:
             if(indexL == zfindexMax()) {
                 break;
             }
-            indexL = zfstringFindReversely(pathTmp, pathTmp.length(), '/');
+            indexL = zfstringFindReversely(pathTmp, "/");
             if(indexL != zfindexMax()) {
                 pathTmp.remove(indexL);
             }

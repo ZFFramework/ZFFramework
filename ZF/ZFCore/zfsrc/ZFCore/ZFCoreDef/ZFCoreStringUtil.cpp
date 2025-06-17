@@ -14,11 +14,11 @@ zfindex zfsCheckMatch(
     if(toCompare == zfnull) {
         return zfindexMax();
     }
-
-    zfindex tmpLen = 0;
+    if(toCompareLength == zfindexMax()) {
+        toCompareLength = zfslen(toCompare);
+    }
     for(zfindex i = 0; i < tokenCount; ++i) {
-        tmpLen = zfslen(tokens[i]);
-        if(tmpLen <= toCompareLength && zfsncmp(tokens[i], toCompare, tmpLen) == 0) {
+        if(zfstringIsEqual(tokens[i], zfslen(tokens[i]), toCompare, toCompareLength)) {
             return i;
         }
     }
@@ -299,6 +299,37 @@ zfstring zfstringReplaceReversely(
         *replacedCount = replacedCountTmp;
     }
     return ret;
+}
+
+
+// ============================================================
+// zfstringBeginWith
+zfbool zfstringBeginWith(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen /* = zfindexMax() */
+        ) {
+    if(findLen == zfindexMax()) {
+        findLen = zfslen(find);
+    }
+    return zfsncmp(src, find, findLen) == 0;
+}
+// ============================================================
+// zfstringEndWith
+zfbool zfstringEndWith(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen /* = zfindexMax() */
+        ) {
+    if(srcLen == zfindexMax()) {
+        srcLen = zfslen(src);
+    }
+    if(findLen == zfindexMax()) {
+        findLen = zfslen(find);
+    }
+    return srcLen >= findLen && zfsncmp(src + srcLen - findLen, find, findLen) == 0;
 }
 
 // ============================================================

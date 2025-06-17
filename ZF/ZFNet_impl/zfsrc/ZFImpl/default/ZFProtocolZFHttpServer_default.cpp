@@ -356,7 +356,7 @@ public:
 
     zfoverride
     virtual void respBody(ZF_IN const zfstring &value, ZF_IN const zfstring &contentType) {
-        this->res->set_content(value.cString(), value.length() * sizeof(zfchar), contentType.cString());
+        this->res->set_content(value.cString(), value.length(), contentType.cString());
     }
     zfoverride
     virtual void respBody(ZF_IN const ZFInput &value, ZF_IN const zfstring &contentType) {

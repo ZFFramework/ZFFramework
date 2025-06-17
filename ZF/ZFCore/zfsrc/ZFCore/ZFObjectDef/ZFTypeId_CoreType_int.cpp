@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         })
 #define _ZFP_ZFTYPEID_DEFINE_int_disallow_negative(TypeName, Type) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, { \
-            if(src != zfnull && zfsncmp(src, "-1", 2) == 0) { \
+            if(src != zfnull && zfstringIsEqual(src, srcLen, "-1", 2)) { \
                 v = (Type)-1; \
                 return zftrue; \
             } \

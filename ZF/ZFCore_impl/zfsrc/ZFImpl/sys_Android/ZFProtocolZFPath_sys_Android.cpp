@@ -14,7 +14,7 @@ public:
     virtual const zfstring &pathForModule(void) {
         if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
-            zfindex pos = zfstringFindReversely(this->_pathForModuleFile, '/');
+            zfindex pos = zfstringFindReversely(this->_pathForModuleFile, "/");
             ZFCoreAssert(pos != zfindexMax());
             this->_pathForModule.assign(this->_pathForModuleFile, pos);
         }

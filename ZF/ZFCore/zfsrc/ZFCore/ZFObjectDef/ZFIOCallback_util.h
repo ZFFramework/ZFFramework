@@ -33,10 +33,10 @@ extern ZFLIB_ZFCore zfindex ZFInputReadChar(
 /**
  * @brief util method to skip chars in set
  *
- * return false if all chars are skipped before end,
+ * return 0 if all chars are skipped before end,
  * other wise, buf stores the first logic char (see #ZFInputReadChar)
  */
-extern ZFLIB_ZFCore zfbool ZFInputSkipChars(
+extern ZFLIB_ZFCore zfindex ZFInputSkipChars(
         ZF_OUT zfchar *buf
         , ZF_IN_OUT const ZFInput &input
         , ZF_IN_OPT const zfchar *charSet = " \t\r\n"

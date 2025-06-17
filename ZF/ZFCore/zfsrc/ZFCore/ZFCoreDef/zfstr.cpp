@@ -240,7 +240,7 @@ void _ZFP_zfstringAppend(
         ++paramIndex;
 
         if(option.precision != -1) {
-            zfindex pos = zfstringFind(tmp, '.');
+            zfindex pos = zfstringFind(tmp, ".");
             if(pos != zfindexMax()) {
                 zfint decimalLen = (zfint)(tmp.length() - pos - 1);
                 if(decimalLen > option.precision) {

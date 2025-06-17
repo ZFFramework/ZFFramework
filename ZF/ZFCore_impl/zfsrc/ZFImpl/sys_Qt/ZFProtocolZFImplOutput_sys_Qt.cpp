@@ -47,7 +47,7 @@ private:
                 s.removeAll();
             }
             else {
-                zfindex index = zfstringFindReversely(s, s.length(), '\n');
+                zfindex index = zfstringFindReversely(s, "\n");
                 if(index != zfindexMax()) {
                     s.set(index, '\0');
                     qDebug() << s.cString();

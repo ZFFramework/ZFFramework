@@ -148,7 +148,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormatRelativeT
             p += 4;
             continue;
         }
-        zfindex pL = zfstringFindReversely(ret.cString() + start, p - start, '/');
+        zfindex pL = zfstringFindReversely(ret.cString() + start, p - start, "/");
         if(pL == zfindexMax()) {
             if(ret[start] == '.' && ret[start + 1] == '.' && ret[start + 2] == '/') { // ../..
                 p += 3;
@@ -190,7 +190,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfT
     if(zfstringIsEmpty(src) || zfstringIsEqual(src, ".")) {
         return zffalse;
     }
-    zfindex pos = zfstringFindReversely(src, zfindexMax(), '/');
+    zfindex pos = zfstringFindReversely(src, "/");
     if(src >= ret.cString() && src < ret.cString() + ret.length()) {
         if(pos != zfindexMax()) {
             ret.remove(0, (src + pos + 1) - ret.cString());
@@ -225,7 +225,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfWithoutExtT
         return zffalse;
     }
     zfindex len = zfslen(src);
-    zfindex pos = zfstringFindReversely(src, len, '/');
+    zfindex pos = zfstringFindReversely(src, len, "/");
     if(pos != zfindexMax()) {
         ++pos;
     }
@@ -270,8 +270,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileExtOfT
     if(zfstringIsEmpty(src) || zfstringIsEqual(src, ".")) {
         return zffalse;
     }
-    zfindex pos = zfstringFindReversely(src, zfindexMax(), '/');
-    zfindex dotPos = zfstringFindReversely(src, zfindexMax(), ".", 1);
+    zfindex pos = zfstringFindReversely(src, "/");
+    zfindex dotPos = zfstringFindReversely(src, ".");
     if(pos != zfindexMax() && dotPos < pos) {
         dotPos = zfindexMax();
     }
@@ -380,7 +380,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOfT
     if(zfstringIsEmpty(src) || zfstringIsEqual(src, ".")) {
         return zffalse;
     }
-    zfindex pos = zfstringFindReversely(src, zfindexMax(), '/');
+    zfindex pos = zfstringFindReversely(src, "/");
     if(src >= ret.cString() && src < ret.cString() + ret.length()) {
         if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == '/' && src[pos-2] == ':')) {
             ret.remove(pos);
@@ -419,7 +419,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathComponentsOfT
     zfindex posL = 0;
     zfindex posR = len;
     do {
-        posL = zfstringFindReversely(src, posR, '/');
+        posL = zfstringFindReversely(src, posR, "/");
         if(posL == zfindexMax()) {
             if(posR > 0) {
                 ret.add(zfstring(src, posR));

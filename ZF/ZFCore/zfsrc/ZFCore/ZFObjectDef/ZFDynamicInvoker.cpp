@@ -564,7 +564,7 @@ void ZFDI_invoke(
                 );
     }
 
-    zfindex dotPos = zfstringFindReversely(name, zfslen(name), ".");
+    zfindex dotPos = zfstringFindReversely(name, ".");
     if(dotPos == zfindexMax()) {
         // ClassName()
         // v_ClassName()

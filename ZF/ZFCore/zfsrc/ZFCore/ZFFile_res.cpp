@@ -76,10 +76,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
         ) {
     ZFCoreMutexLock();
     zfstlhashmap<zfstring, zfuint> &m = _ZFP_ZFResExtRecursiveMap;
+    zfindex resPathLen = zfslen(resPath);
     for(zfstlhashmap<zfstring, zfuint>::iterator it = m.begin(); it != m.end(); ++it) {
-        if(zfsncmp(resPath, it->first.cString(), it->first.length()) == 0
+        if(zfstringBeginWith(resPath, resPathLen, it->first.cString(), it->first.length())
                 && resPath[it->first.length()] == '/'
-                && zfsncmp(resPath + it->first.length() + 1, it->first.cString(), it->first.length()) == 0
+                && zfstringBeginWith(resPath + it->first.length() + 1, resPathLen - (it->first.length() + 1), it->first.cString(), it->first.length())
                 ) {
             ZFCoreMutexUnlock();
             return zffalse;
@@ -128,10 +129,11 @@ static zfbool _ZFP_ZFResExtPathCheck(
         ) {
     ZFCoreMutexLock();
     zfstlhashmap<zfstring, zfuint> &m = _ZFP_ZFResExtRecursiveMap;
+    zfindex resPathLen = zfslen(resPath);
     for(zfstlhashmap<zfstring, zfuint>::iterator it = m.begin(); it != m.end(); ++it) {
-        if(zfsncmp(resPath, it->first.cString(), it->first.length()) == 0
+        if(zfstringBeginWith(resPath, resPathLen, it->first.cString(), it->first.length())
                 && resPath[it->first.length()] == '/'
-                && zfsncmp(resPath + it->first.length() + 1, it->first.cString(), it->first.length()) == 0
+                && zfstringBeginWith(resPath + it->first.length() + 1, resPathLen - (it->first.length() + 1), it->first.cString(), it->first.length())
                 ) {
             ZFCoreMutexUnlock();
             return zffalse;

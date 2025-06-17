@@ -401,6 +401,16 @@ extern ZFLIB_ZFCore void ZFStyleGetAll(
         , ZF_IN_OUT ZFCoreArray<ZFStyleable *> &styleValue
         );
 /**
+ * @brief get all styles, for debug use only, see #ZFStyleSet
+ */
+extern ZFLIB_ZFCore void ZFStyleGetAllKeyT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
+        );
+/**
+ * @brief get all styles, for debug use only, see #ZFStyleSet
+ */
+extern ZFLIB_ZFCore ZFCoreArray<zfstring> ZFStyleGetAllKey(void);
+/**
  * @brief remove all styles, see #ZFStyleSet
  */
 extern ZFLIB_ZFCore void ZFStyleRemoveAll(void);

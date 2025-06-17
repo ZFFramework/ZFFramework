@@ -53,7 +53,7 @@ static void _ZFP_ZFStyleLoadImpl(
             if(*fd.name() == '.' || *fd.name() == '_') {
                 continue;
             }
-            zfindex dotPos = zfstringFindReversely(fd.name(), '.');
+            zfindex dotPos = zfstringFindReversely(fd.name(), ".");
             if(dotPos != zfindexMax()
                     && (dotPos > 0 && fd.name()[dotPos - 1] == '_')
                     ) {

@@ -406,7 +406,7 @@ public:
     }
 
 public:
-    static zfindex _ZFP_urlParse(ZF_IN const zfchar *url) {
+    static zfindex _ZFP_urlParse(ZF_IN const zfstring &url) {
         zfindex p = zfstringFind(url, "://");
         if(p != zfindexMax()) {
             p += 3;
@@ -417,7 +417,7 @@ public:
                 ++p;
             }
         }
-        zfindex t = zfstringFind(url + p, '/');
+        zfindex t = zfstringFind(url + p, "/");
         if(t != zfindexMax()) {
             return p + t;
         }
@@ -428,7 +428,7 @@ public:
 
     static httplib::Result _ZFP_asyncRequest(
             ZF_IN ZFHttpMethod httpMethod
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             , ZF_IN zfindex pHostPath
             , ZF_IN zftimet timeout
             , ZF_IN const httplib::Headers &headers

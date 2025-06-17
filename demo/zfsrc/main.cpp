@@ -111,7 +111,7 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
         ZFCoreArray<const ZFClass *> subModule;
         zfstring subModuleName = allTestCase[0]->classNameFull();
         {
-            zfindex t = zfstringFind(subModuleName, '_');
+            zfindex t = zfstringFind(subModuleName, "_");
             if(t == zfindexMax()) {
                 subModuleName.removeAll();
             }
@@ -120,7 +120,7 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
             }
         }
         for(zfindex i = 0; i < allTestCase.count(); ++i) {
-            if(zfsncmp(allTestCase[i]->classNameFull(), subModuleName.cString(), subModuleName.length()) == 0) {
+            if(zfstringBeginWith(allTestCase[i]->classNameFull(), subModuleName)) {
                 subModule.add(allTestCase[i]);
                 allTestCase.remove(i);
                 --i;

@@ -71,7 +71,7 @@ void ZFImpl_ZFLua_ImplSetupHelper::addGlobalScope(ZF_IN const zfstring &scope) {
     }
 }
 void ZFImpl_ZFLua_ImplSetupHelper::addGenericScope(ZF_IN const zfstring &genericScope) {
-    zfindex dotPos = zfstringFind(genericScope, '.');
+    zfindex dotPos = zfstringFind(genericScope, ".");
     this->addGlobalScope(dotPos != zfindexMax()
             ? zfstring(genericScope, dotPos)
             : genericScope
@@ -446,7 +446,7 @@ zfbool ZFImpl_ZFLua_stacktraceT(
                 zfstring chunkInfo;
                 const zfchar *KEY_tokenL = "{{<<";
                 const zfchar *KEY_tokenR = ">>}}";
-                if(zfsncmp(source, KEY_tokenL, zfslen(KEY_tokenL)) == 0) {
+                if(zfstringBeginWith(source, KEY_tokenL)) {
                     zfindex p = zfstringFind(source, KEY_tokenR);
                     if(p != zfindexMax()) {
                         chunkInfo.assign(source + zfslen(KEY_tokenL), p - zfslen(KEY_tokenL));

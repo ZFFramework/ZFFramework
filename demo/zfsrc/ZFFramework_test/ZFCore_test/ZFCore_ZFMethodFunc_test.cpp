@@ -112,10 +112,8 @@ protected:
 
         ZFCoreArray<const ZFMethod *> methods;
         ZFMethodFuncGetAllT(methods);
-        const zfchar *prefix = "ZFCore_ZFMethodFunc_test_";
-        const zfindex prefixLen = zfslen(prefix);
         for(zfindex i = methods.count() - 1; i != zfindexMax(); --i) {
-            if(zfsncmp(methods[i]->methodName(), prefix, prefixLen) != 0) {
+            if(!zfstringBeginWith(methods[i]->methodName(), "ZFCore_ZFMethodFunc_test_")) {
                 methods.remove(i);
             }
         }

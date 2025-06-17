@@ -98,7 +98,7 @@ zfbool zfflagsFromStringT(
     for(zfindex iSrc = 0; iSrc < pos.count(); ++iSrc) {
         zfbool recognized = zffalse;
         for(zfindex iList = 0; iList < listCount; ++iList) {
-            if(zfsncmp(src + pos[iSrc].start, nameList[iList], pos[iSrc].count) == 0) {
+            if(zfstringIsEqual(src + pos[iSrc].start, pos[iSrc].count, nameList[iList], zfindexMax())) {
                 recognized = zftrue;
                 ZFBitSet(ret, flagList[iList]);
                 break;

@@ -166,7 +166,7 @@ zfbool ZFEnum::zfvFromString(
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    if(zfsncmp(ZFEnumNameInvalid(), src, srcLen == zfindexMax() ? zfslen(src) : srcLen) == 0) {
+    if(zfstringIsEqual(ZFEnumNameInvalid(), zfindexMax(), src, srcLen)) {
         this->enumValue(ZFEnumInvalid());
         return zftrue;
     }

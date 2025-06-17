@@ -150,9 +150,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
     }
 
     // internal
-    static const zfchar *_ZFP_ = "_ZFP_";
-    static zfindex _ZFP_len = zfslen(_ZFP_);
-    if(zfsncmp(methodName, _ZFP_, _ZFP_len) == 0) {
+    if(zfstringBeginWith(methodName, "_ZFP_")) {
         this->_ZFP_ZFMethod_isInternal = zftrue;
         this->_ZFP_ZFMethod_isInternalPrivate = zftrue;
     }

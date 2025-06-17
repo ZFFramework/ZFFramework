@@ -77,7 +77,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfindex, ZFTextTemplateApply
         }
         if(!(
                     (zfindex)(pEnd - p) > _ZFP_ZFTextTemplate_tagLSize
-                    && zfsncmp(p, _ZFP_ZFTextTemplate_tagL, _ZFP_ZFTextTemplate_tagLSize) == 0
+                    && zfstringBeginWith(p, pEnd - p, _ZFP_ZFTextTemplate_tagL, _ZFP_ZFTextTemplate_tagLSize)
                     )) {
             ++p;
             continue;
@@ -215,7 +215,7 @@ static void _ZFP_ZFTextTemplateApply_enableData(
         }
         if(!(
                     (zfindex)(pEnd - p) > _ZFP_ZFTextTemplate_tagLSize
-                    && zfsncmp(p, _ZFP_ZFTextTemplate_tagL, _ZFP_ZFTextTemplate_tagLSize) == 0
+                    && zfstringBeginWith(p, pEnd - p, _ZFP_ZFTextTemplate_tagL, _ZFP_ZFTextTemplate_tagLSize)
                     )) {
             ++p;
             continue;

@@ -407,7 +407,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
+        if(zfstringIsEqual(src, srcLen, ZFEnumNameInvalid(), zfindexMax())) { \
             ret = zfobj<v_##EnumName>(ZFEnumInvalid()); \
             return zftrue; \
         } \
@@ -601,7 +601,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFENUM_TYPEID_DEFINE(EnumName) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumName, EnumName, { \
-            if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
+            if(zfstringIsEqual(src, srcLen, ZFEnumNameInvalid(), zfindexMax())) { \
                 v = (EnumName)ZFEnumInvalid(); \
                 return zftrue; \
             } \
