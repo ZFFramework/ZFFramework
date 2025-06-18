@@ -968,14 +968,14 @@ static void _ZFP_ZFDynamicEventGI(ZF_IN_OUT const ZFArgs &zfargs) {
     }
     zfargs.result(zfargs.ownerMethod()->dynamicRegisterUserData());
 }
-ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
+ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &name) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope != zfnull && scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
         d->error(zfstr("event() can not be called within enumBegin, enum: %s", scope->d.enumInfo->enumClassNameFull));
         return *this;
     }
-    if(!eventName) {
+    if(!name) {
         d->error("empty event name");
         return *this;
     }
@@ -995,7 +995,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
         cls = scope->d.cls;
     }
     idName += ".E_";
-    idName += eventName;
+    idName += name;
     zfidentity idValue = ZFEventIdForName(idName);
     if(idValue != zfidentityInvalid()) {
         d->error(zfstr("event %s already exists", idName));
@@ -1011,7 +1011,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
             .dynamicRegisterUserData(t)
             .ownerClass(cls)
             .methodNamespace(NS)
-            .methodName(zfstr("E_%s", eventName))
+            .methodName(zfstr("E_%s", name))
             .returnTypeId(ZFTypeId_zfidentity())
             .methodType(ZFMethodTypeStatic)
         );
@@ -1792,7 +1792,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, enumEnd
         , ZFMP_IN_OPT(zfuint, enumDefault, ZFEnumInvalid())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, event
-        , ZFMP_IN(const zfstring &, eventName)
+        , ZFMP_IN(const zfstring &, name)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const zfstring &, returnTypeId)

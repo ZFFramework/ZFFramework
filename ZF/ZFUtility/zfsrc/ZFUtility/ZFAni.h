@@ -36,7 +36,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
  * @code
  *   ZFAni("yourProp", from, to)->target(target)->start();
  * @endcode
- * -  yourPropName can be:
+ * -  yourProp can be:
  *   -  name of #ZFProperty
  *   -  name of #ZFMethod,
  *     but target must have proper setter and getter method
@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
  *   -  v_zfstring or ZFDI_WrapperBase that can be serialized by #ZFSerializable::serializeFromString
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
-        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         )

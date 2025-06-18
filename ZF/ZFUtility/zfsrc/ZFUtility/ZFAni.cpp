@@ -16,12 +16,12 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFAniForTimer>, ZFAni
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFAniForTimer>, ZFAni
-        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         ) {
     zfobj<ZFAniForGeneric> ani;
-    ani->name(name);
+    ani->name(propertyName);
     ani->fromValue(from);
     ani->toValue(to);
     return ani;

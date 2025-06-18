@@ -20,7 +20,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  * @code
  *   ZFDynamic()
  *       .classBegin(className [, parent, classDynamicRegisterUserData])
- *           .event(eventName)
+ *           .event(name)
  *           .method(returnTypeId, methodName, ZFMP()
  *               .mp(paramTypeId0 [, paramName0, paramDefault0])
  *               , methodImpl
@@ -32,7 +32,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  *           .singleton()
  *       .classEnd()
  *       .NSBegin(methodNamespace)
- *           .event(eventName)
+ *           .event(name)
  *           .method(returnTypeId, methodName, ZFMP()
  *               .mp(paramTypeId0 [, paramName0, paramDefault0])
  *               , methodImpl
@@ -237,7 +237,7 @@ public:
      * -  an event registered by #ZFEventDynamicRegister
      * -  a #ZFMethod to access the event
      */
-    ZFDynamic &event(ZF_IN const zfstring &eventName);
+    ZFDynamic &event(ZF_IN const zfstring &name);
 
 public:
     /**

@@ -503,7 +503,7 @@ public:
      */
     ZFMETHOD_DECLARE_2(void, bind
             , ZFMP_IN(ZFObject *, owner)
-            , ZFMP_IN(const zfstring &, name)
+            , ZFMP_IN(const zfstring &, propertyName)
             )
     /**
      * @brief util method to bind this view's event to owner's method

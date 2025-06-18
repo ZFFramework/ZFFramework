@@ -46,6 +46,22 @@ extern ZFLIB_ZFCore void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
         , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
         );
+/** @brief see #ZFIdMapGetAll */
+extern ZFLIB_ZFCore void ZFIdMapGetAllValueT(ZF_IN_OUT ZFCoreArray<zfidentity> &idValues);
+/** @brief see #ZFIdMapGetAll */
+inline ZFCoreArray<zfidentity> ZFIdMapGetAllValue(void) {
+    ZFCoreArray<zfidentity> ret;
+    ZFIdMapGetAllValueT(ret);
+    return ret;
+}
+/** @brief see #ZFIdMapGetAll */
+extern ZFLIB_ZFCore void ZFIdMapGetAllNameT(ZF_IN_OUT ZFCoreArray<zfstring> &idNames);
+/** @brief see #ZFIdMapGetAll */
+inline ZFCoreArray<zfstring> ZFIdMapGetAllName(void) {
+    ZFCoreArray<zfstring> ret;
+    ZFIdMapGetAllNameT(ret);
+    return ret;
+}
 
 /**
  * @brief dynamically register your own id

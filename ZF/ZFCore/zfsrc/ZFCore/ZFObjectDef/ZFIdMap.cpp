@@ -171,11 +171,26 @@ void ZFIdMapGetAll(
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
-
     idValues.capacity(idValues.count() + moduleData.dataIdMap.size());
     idNames.capacity(idNames.count() + moduleData.dataIdMap.size());
     for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
         idValues.add(it->second->idValue);
+        idNames.add(it->second->idName);
+    }
+}
+void ZFIdMapGetAllValueT(ZF_IN_OUT ZFCoreArray<zfidentity> &idValues) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
+    idValues.capacity(idValues.count() + moduleData.dataIdMap.size());
+    for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
+        idValues.add(it->second->idValue);
+    }
+}
+void ZFIdMapGetAllNameT(ZF_IN_OUT ZFCoreArray<zfstring> &idNames) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
+    idNames.capacity(idNames.count() + moduleData.dataIdMap.size());
+    for(_ZFP_ZFIdMapDataIdMapType::iterator it = moduleData.dataIdMap.begin(); it != moduleData.dataIdMap.end(); ++it) {
         idNames.add(it->second->idName);
     }
 }
@@ -203,6 +218,14 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFIdMapGetAll
         , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
         )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFIdMapGetAllValueT
+        , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfidentity>, ZFIdMapGetAllValue)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFIdMapGetAllNameT
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfstring>, ZFIdMapGetAllName)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapDynamicRegister
         , ZFMP_IN(const zfstring &, idName)
         )

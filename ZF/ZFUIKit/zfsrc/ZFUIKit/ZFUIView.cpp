@@ -1231,13 +1231,13 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateZ) {
 
 ZFMETHOD_DEFINE_2(ZFUIView, void, bind
         , ZFMP_IN(ZFObject *, owner)
-        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN(const zfstring &, propertyName)
         ) {
     if(owner) {
-        owner->invoke(name, this);
+        owner->invoke(propertyName, this);
     }
     if(!this->viewId()) {
-        this->viewId(name);
+        this->viewId(propertyName);
     }
 }
 

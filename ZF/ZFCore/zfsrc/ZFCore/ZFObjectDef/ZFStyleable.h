@@ -334,15 +334,15 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  *
  *   // serialize from data
  *   // step 1: load style and copy style to target object
- *   <MyStyleObject someProp="styledValue" overridedProp="styledValue" />
+ *   <MyStyleObject someProp="styleValue" overridedProp="styleValue" />
  *   // step 2: serialize as normal
- *   <MyStyleObject someProp="styledValue" overridedProp="overridedValue" />
+ *   <MyStyleObject someProp="styleValue" overridedProp="overridedValue" />
  *
  *   // serialize back to data
  *   // step 1: serialize as normal
- *   <MyStyleObject someProp="styledValue" overridedProp="overridedValue" />
+ *   <MyStyleObject someProp="styleValue" overridedProp="overridedValue" />
  *   // step 2: load referenced style object if exists
- *   <ReferencedStyle someProp="styledValue" overridedProp="styledValue" />
+ *   <ReferencedStyle someProp="styleValue" overridedProp="styleValue" />
  *   // step 3: compare the target and referenced style object,
  *   //         remove duplicate attributes
  *   <MyStyleObject overridedProp="overridedValue" />
@@ -398,18 +398,29 @@ extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfstring &styleKey);
  */
 extern ZFLIB_ZFCore void ZFStyleGetAll(
         ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
-        , ZF_IN_OUT ZFCoreArray<ZFStyleable *> &styleValue
+        , ZF_IN_OUT ZFCoreArray<zfauto> &styleValue
         );
-/**
- * @brief get all styles, for debug use only, see #ZFStyleSet
- */
+/** @brief see #ZFStyleGetAll */
 extern ZFLIB_ZFCore void ZFStyleGetAllKeyT(
         ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
         );
-/**
- * @brief get all styles, for debug use only, see #ZFStyleSet
- */
-extern ZFLIB_ZFCore ZFCoreArray<zfstring> ZFStyleGetAllKey(void);
+/** @brief see #ZFStyleGetAll */
+inline ZFCoreArray<zfstring> ZFStyleGetAllKey(void) {
+    ZFCoreArray<zfstring> ret;
+    ZFStyleGetAllKeyT(ret);
+    return ret;
+}
+/** @brief see #ZFStyleGetAll */
+extern ZFLIB_ZFCore void ZFStyleGetAllValueT(
+        ZF_IN_OUT ZFCoreArray<zfauto> &styleValue
+        );
+/** @brief see #ZFStyleGetAll */
+inline ZFCoreArray<zfauto> ZFStyleGetAllValue(void) {
+    ZFCoreArray<zfauto> ret;
+    ZFStyleGetAllValueT(ret);
+    return ret;
+}
+
 /**
  * @brief remove all styles, see #ZFStyleSet
  */
