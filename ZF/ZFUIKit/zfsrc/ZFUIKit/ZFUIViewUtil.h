@@ -54,12 +54,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewAtPos
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, viewRectToParentT
         , ZFMP_OUT(ZFUIRect &, rect)
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN(ZFUIView *, parent)
+        , ZFMP_IN_OPT(ZFUIView *, parent, zfnull)
         )
 /** @brief see #viewRectToParentT */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, viewRectToParent
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN(ZFUIView *, parent)
+        , ZFMP_IN_OPT(ZFUIView *, parent, zfnull)
         )
 
 ZF_NAMESPACE_END(ZFUIViewUtil)

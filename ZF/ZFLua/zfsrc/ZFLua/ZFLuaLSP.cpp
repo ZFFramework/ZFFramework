@@ -7,7 +7,94 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFLuaLSP_supportMultiInherit 1
 #define _ZFP_ZFLuaLSP_supportOptionalParam 1
 #define _ZFP_ZFLuaLSP_supportTypeWithDot 1
+#define _ZFP_ZFLuaLSP_supportParamCandidate 1
 
+static void _ZFP_ZFLuaLSPGen_paramCandidate(
+        ZF_IN_OUT zfstring &paramSig
+        , ZF_IN const zfstring &typeId
+        , ZF_IN const zfstring &paramName
+        ) {
+    if(zffalse) {}
+    else if(zffalse
+            || typeId == ZFTypeId_ZFClass()
+            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "className") != zfindexMax())
+            ) {
+        ZFCoreArray<const ZFClass *> all = ZFClassGetAll();
+        for(zfindex i = 0; i < all.count(); ++i) {
+            const ZFClass *item = all[i];
+            if(!item->classIsInternal()) {
+                paramSig += "|'";
+                paramSig += item->classNameFull();
+                paramSig += "'";
+            }
+        }
+    }
+    else if(zffalse
+            || typeId == ZFTypeId_ZFProperty()
+            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "propertyName") != zfindexMax())
+            ) {
+        ZFCoreArray<const ZFProperty *> all = ZFPropertyGetAll();
+        for(zfindex i = 0; i < all.count(); ++i) {
+            const ZFProperty *item = all[i];
+            if(!item->isInternal() && !item->ownerClass()->classIsInternal()) {
+                paramSig += "|'";
+                paramSig += item->propertyName();
+                paramSig += "'";
+            }
+        }
+    }
+    else if(zffalse
+            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "eventName") != zfindexMax())
+            ) {
+        ZFCoreArray<zfstring> all = ZFIdMapGetAllName();
+        for(zfindex i = 0; i < all.count(); ++i) {
+            const zfstring &item = all[i];
+            // Cls.E_name
+            zfindex pos = zfstringFind(item, ".E_");
+            if(pos != zfindexMax() && ZFEventIdForName(item) != zfidentityInvalid()) {
+                paramSig += "|'";
+                paramSig += item + pos + 3;
+                paramSig += "'";
+            }
+        }
+    }
+    else if(zffalse
+            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "styleKey") != zfindexMax())
+            ) {
+        ZFCoreArray<zfstring> all = ZFStyleGetAllKey();
+        for(zfindex i = 0; i < all.count(); ++i) {
+            paramSig += "|'";
+            paramSig += all[i];
+            paramSig += "'";
+        }
+    }
+    else {
+        const ZFClass *cls = ZFClass::classForName(typeId);
+        if(cls != zfnull && cls->classIsTypeOf(ZFEnum::ClassData())) {
+            const ZFMethod *mEnumCount = cls->methodForName("EnumCount");
+            const ZFMethod *mEnumNameAt = cls->methodForName("EnumNameAt");
+            if(mEnumCount && mEnumNameAt) {
+                zfauto enumCountHolder = mEnumCount->methodInvoke();
+                v_zfindex *enumCount = enumCountHolder;
+                if(enumCount) {
+                    zfobj<v_zfindex> iHolder;
+                    for(zfindex i = 0; i < enumCount->zfv; ++i) {
+                        iHolder->zfv = i;
+                        zfauto enumNameHolder = mEnumNameAt->methodInvoke(zfnull, iHolder);
+                        v_zfstring *enumName = enumNameHolder;
+                        if(enumName) {
+                            paramSig += "|'";
+                            paramSig += enumName->zfv;
+                            paramSig += "'";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ============================================================
 template<typename T_str>
 static zfstring _ZFP_ZFLuaLSPGen_luaKeywordsEscape(
         ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
@@ -45,9 +132,10 @@ static zfstring _ZFP_ZFLuaLSPGen_typeIdToSig(ZF_IN const zfstring &typeId) {
     }
 }
 
-static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
+static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId, ZF_IN const zfstring &paramName) {
+    zfstring ret;
     if(typeId == ZFTypeId_ZFCallback()) {
-        return zfstr("%s|fun(zfargs:ZFArgs):any", typeId);
+        zfstringAppend(ret, "%s|fun(zfargs:ZFArgs):any", typeId);
     }
     else {
         const ZFClass *cls = ZFClass::classForName(typeId);
@@ -55,12 +143,16 @@ static zfstring _ZFP_ZFLuaLSPGen_paramSig(ZF_IN const zfstring &typeId) {
                     || cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())
                     || cls == ZFObject::ClassData()
                     )) {
-            return zfstr("%s|string|number", _ZFP_ZFLuaLSPGen_typeIdToSig(cls));
+            zfstringAppend(ret, "%s|string|number", _ZFP_ZFLuaLSPGen_typeIdToSig(cls));
         }
         else {
-            return _ZFP_ZFLuaLSPGen_typeIdToSig(typeId);
+            ret += _ZFP_ZFLuaLSPGen_typeIdToSig(typeId);
         }
     }
+#if _ZFP_ZFLuaLSP_supportParamCandidate
+    _ZFP_ZFLuaLSPGen_paramCandidate(ret, typeId, paramName);
+#endif
+    return ret;
 }
 static zfbool _ZFP_ZFLuaLSPGen_isChainedRet(ZF_IN const ZFMethod *m) {
     return (m->returnTypeId() == ZFTypeId_void()
@@ -87,6 +179,8 @@ static zfstring _ZFP_ZFLuaLSPGen_retSig(ZF_IN const ZFMethod *m) {
         }
     }
 }
+
+// ============================================================
 static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlhashmap<zfstring, zfbool> &luaKeywords
@@ -108,7 +202,7 @@ static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
             output
                 << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i))
                 << ":"
-                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i))
+                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i), m->paramNameAt(i))
                 ;
         }
         output << ")";
@@ -166,7 +260,7 @@ static void _ZFP_ZFLuaLSPGen_method(
                 << (i >= m->paramCountMin() ? "?" : "")
 #endif
                 << " "
-                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i))
+                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i), m->paramNameAt(i))
                 << "\n"
                 ;
         }

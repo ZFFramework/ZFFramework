@@ -98,15 +98,18 @@ ZFMETHOD_FUNC_DEFINE_4(zfanyT<ZFUIView>, viewAtPos
 ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParentT
         , ZFMP_OUT(ZFUIRect &, rect)
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN(ZFUIView *, parent)
+        , ZFMP_IN_OPT(ZFUIView *, parent, zfnull)
         ) {
-    if(view == zfnull || parent == zfnull) {
+    if(view == zfnull) {
         rect = ZFUIRectZero();
         return;
     }
     rect = view->viewFrame();
-    while(view->parent() != zfnull && view != parent) {
+    while(view != parent) {
         view = view->parent();
+        if(!view) {
+            break;
+        }
         ZFUIPoint layoutChildOffset = view->layoutChildOffset();
         rect.x += layoutChildOffset.x;
         rect.y += layoutChildOffset.y;
@@ -117,7 +120,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParentT
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFUIRect, viewRectToParent
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN(ZFUIView *, parent)
+        , ZFMP_IN_OPT(ZFUIView *, parent, zfnull)
         ) {
     ZFUIRect ret = ZFUIRectZero();
     ZFUIViewUtil::viewRectToParentT(ret, view, parent);
