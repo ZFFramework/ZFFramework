@@ -38,7 +38,6 @@
  *   @endcode
  *   and these permission:
  *   @code
- *     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
  *     <uses-permission android:name="android.permission.INTERNET" />
  *   @endcode
  * -# in your Android project,
