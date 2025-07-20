@@ -1,5 +1,8 @@
 #include "ZFDebugServer.h"
 
+#include "ZFNet/protocol/ZFProtocolZFHttpServer.h"
+#include "ZFNet/protocol/ZFProtocolZFHttpRequest.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static zfauto _ZFP_ZFDebugServerImpl(
@@ -29,6 +32,10 @@ static zfauto _ZFP_ZFDebugServerImpl(
 ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpServer>, ZFDebugServer
         , ZFMP_IN(zfuint, port)
         ) {
+    if(!ZFPROTOCOL_IS_AVAILABLE(ZFHttpServer)) {
+        return zfnull;
+    }
+
     zfobj<ZFHttpServer> ret;
     ret->port(port);
     ZFLISTENER_0(impl
@@ -75,6 +82,16 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFDebugClient
         , ZFMP_IN(const zfstring &, luaCode)
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
+    if(!ZFPROTOCOL_IS_AVAILABLE(ZFHttpRequest)) {
+        if(callback) {
+            callback.execute(ZFArgs()
+                    .param0(zfnull)
+                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
+                    );
+        }
+        return zfnull;
+    }
+
     zfobj<ZFHttpRequest> req(url, v_ZFHttpMethod::e_POST);
     req->body(ZFJson()
             .attr("run", luaCode)
