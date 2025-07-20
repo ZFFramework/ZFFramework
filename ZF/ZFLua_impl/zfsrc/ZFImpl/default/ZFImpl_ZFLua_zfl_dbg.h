@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief debug port for lua, 30000 by default
+ * @brief debug port for lua, 32199 by default
  *
  * possible values:
  * -  `0` : read command from `stdin`
@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * @code
  *   // from other client, curl POST with debugger.lua's command as body contents, e.g.:
- *   curl -X POST --data 'p myVar' 'http://localhost:30000'
+ *   curl -X POST --data 'p myVar' 'http://localhost:32199'
  *
  *   // response plain output from debugger
  * @endcode

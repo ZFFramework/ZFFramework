@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_DEFINE(zfuint, ZFLuaDebugPort, 30000)
+ZFEXPORT_VAR_DEFINE(zfuint, ZFLuaDebugPort, 32199)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaDebugImpl, ZFLevelZFFrameworkNormal) {

@@ -23,7 +23,7 @@ ZFMAIN_ENTRY() {
             if(ZFPathInfoFromStringT(custom, ZFState::instance()->get("ZFCustomResExt"))) {
                 ZFResExtPathAdd(custom);
             }
-            ZFDebugServer(30000);
+            ZFDebugServer(32100);
         }
         if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
             zfauto containerView = _ZFP_ZFFramework_test_containerViewPrepare();
