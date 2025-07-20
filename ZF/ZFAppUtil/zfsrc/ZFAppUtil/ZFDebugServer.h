@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * typical usage:
  * @code
  *   // start the debug server
- *   ZFDebugServer(12345)
+ *   ZFDebugServer(32100)
  *
  *   // for the client, post lua code to run on server
  *   ZFDebugClient([](const ZFArgs &zfargs) {
@@ -23,13 +23,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           ZFLogTrim("%s", recv->body());
  *       }
  *       , "ZFUIViewTreePrint(ZFUISysWindow.mainWindow():rootView())"
- *       , "http://localhost:12345"
+ *       , "http://localhost:32100"
  *       );
  *
  *   // or, use plain curl
  *   curl -X POST -H "Content-Type:application/json;charset=UTF-8" \
  *       --data '{"run": "ZFUIViewTreePrint(ZFUISysWindow.mainWindow():rootView())"}' \
- *       "http://localhost:12345"
+ *       "http://localhost:32100"
  *
  *   // response data:
  *   {
