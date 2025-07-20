@@ -64,6 +64,7 @@ if "%_GIT_VALID%" == "1" (
         if "!_SUCCESS!" == "0" (
             call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git"
         )
+        exit /b !_SUCCESS!
     )
 ) else (
     rmdir /s/q "%DST_PATH%" >nul 2>&1
@@ -82,6 +83,7 @@ if "%_GIT_VALID%" == "1" (
     if "!_SUCCESS!" == "0" (
         call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git"
     )
+    exit /b !_SUCCESS!
 )
 
 exit /b 0

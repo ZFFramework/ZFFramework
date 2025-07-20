@@ -59,6 +59,7 @@ if test "$_GIT_VALID" = "1"; then
         if test "$_SUCCESS" = "0"; then
             sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git"
         fi
+        exit $_SUCCESS
     fi
 else
     rm -rf "$DST_PATH" >/dev/null 2>&1
@@ -77,5 +78,8 @@ else
     if test "$_SUCCESS" = "0"; then
         sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git"
     fi
+    exit $_SUCCESS
 fi
+
+exit 0
 
