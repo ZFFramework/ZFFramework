@@ -64,8 +64,6 @@ public final class ZFMainEntry extends Activity {
     protected void onDestroy() {
         if (ZFMainEntry.mainEntryActivity() == this) {
             ZFFrameworkCleanup();
-            _app = null;
-            _appContext = null;
         }
         super.onDestroy();
     }
@@ -93,8 +91,6 @@ public final class ZFMainEntry extends Activity {
             return;
         }
         ZFFrameworkCleanup();
-        _app = null;
-        _appContext = null;
         mainEntryActivity(null);
     }
 
@@ -159,6 +155,7 @@ public final class ZFMainEntry extends Activity {
         if (_mainEntryIsStarted) {
             _mainEntryIsStarted = false;
             native_ZFFrameworkCleanup();
+            _app = null;
         }
     }
 

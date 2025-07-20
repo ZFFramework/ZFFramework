@@ -39,10 +39,10 @@ static zfbool _ZFP_ZFFramework_test_luaTest(void) {
     extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForStorage()));
     extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForStorageShared()));
 
-    ZFLogTrim() << "external res: " << extResList;
     for(zfindex i = 0; i < extResList.count(); ++i) {
         ZFResExtPathAdd(extResList[i]);
     }
+    ZFLogTrim() << "external res: " << ZFResExtPathList();
 
     ZFInput src = ZFInputForRes("zf.lua");
     if(src) {
