@@ -8,6 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(AppExit)
 ZFEVENT_GLOBAL_REGISTER(AppRestart)
+ZFEVENT_GLOBAL_REGISTER(AppCrash)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

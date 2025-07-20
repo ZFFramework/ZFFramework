@@ -25,6 +25,13 @@ public:
      * @brief see #ZFApp::appRestart
      */
     virtual void appRestart(void);
+public:
+    /**
+     * @brief implementation must notify when app crashed
+     */
+    zffinal void notifyAppCrash(ZF_IN const zfstring &hint) {
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppCrash(), zfobj<v_zfstring>(hint));
+    }
 ZFPROTOCOL_INTERFACE_END(ZFApp)
 
 ZF_NAMESPACE_GLOBAL_END

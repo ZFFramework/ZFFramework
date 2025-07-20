@@ -24,6 +24,12 @@ ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppExit)
  * param0 is a #v_zfbool, set to true to override and ignore default impl
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppRestart)
+/**
+ * @brief called when app crashed
+ *
+ * param0 is a #v_zfstring holds the crash info, which depends on impl
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, AppCrash)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
