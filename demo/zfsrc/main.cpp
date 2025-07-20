@@ -17,12 +17,20 @@ static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void);
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView);
 
 ZFMAIN_ENTRY() {
-    ZFDebugServer(30000);
-
-    if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
-        zfauto containerView = _ZFP_ZFFramework_test_containerViewPrepare();
-        _ZFP_ZFFramework_test_prepareTestCase(containerView);
-    }
+    ZFLISTENER(onLoad) {
+        {
+            ZFPathInfo custom;
+            if(ZFPathInfoFromStringT(custom, ZFState::instance()->get("ZFCustomResExt"))) {
+                ZFResExtPathAdd(custom);
+            }
+            ZFDebugServer(30000);
+        }
+        if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
+            zfauto containerView = _ZFP_ZFFramework_test_containerViewPrepare();
+            _ZFP_ZFFramework_test_prepareTestCase(containerView);
+        }
+    } ZFLISTENER_END()
+    ZFState::instance()->load(onLoad);
 }
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void) {
