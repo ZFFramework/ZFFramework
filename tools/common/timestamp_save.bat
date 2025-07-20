@@ -19,6 +19,7 @@ call :GetUnixTime _CUR_TIME
 mkdir "%DIR_TO_CHECK%" >nul 2>&1
 echo %_CUR_TIME% > "%DIR_TO_CHECK%\%TIMESTAMP_FILE_NAME%"
 >"%DIR_TO_CHECK%\%TIMESTAMP_FILE_NAME%" set /p=%_CUR_TIME%<nul
+exit /b 0
 
 goto :EOF
 :GetUnixTime
