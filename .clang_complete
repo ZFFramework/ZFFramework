@@ -9,6 +9,7 @@
 -I../ZFFramework/ZF/ZFLua/zfsrc
 -I../ZFFramework/ZF/ZFUIWebKit/zfsrc
 -I../ZFFramework/ZF/ZFNet/zfsrc
+-I../ZFFramework/ZF/ZFAppUtil/zfsrc
 -I../ZFFramework/ZF/ZF_impl/zfsrc
 -I../ZFFramework/ZF/ZFCore_impl/zfsrc
 -I../ZFFramework/ZF/ZFAlgorithm_impl/zfsrc

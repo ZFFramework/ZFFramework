@@ -6,6 +6,7 @@
 #include "ZFUIWebKit.h"
 #include "ZFNet.h"
 #include "ZFLua.h"
+#include "ZFAppUtil.h"
 
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
@@ -16,6 +17,8 @@ static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void);
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView);
 
 ZFMAIN_ENTRY() {
+    ZFDebugServer(30000);
+
     if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
         zfauto containerView = _ZFP_ZFFramework_test_containerViewPrepare();
         _ZFP_ZFFramework_test_prepareTestCase(containerView);
