@@ -34,14 +34,9 @@ ZFMAIN_ENTRY() {
 }
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void) {
-    ZFCoreArray<ZFPathInfo> extResList;
-    extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForModule()));
-    extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForStorage()));
-    extResList.add(ZFPathInfo(ZFPathType_file(), ZFPathForStorageShared()));
-
-    for(zfindex i = 0; i < extResList.count(); ++i) {
-        ZFResExtPathAdd(extResList[i]);
-    }
+    ZFResExtPathAdd(ZFPathInfo(ZFPathType_file(), ZFPathForModule()));
+    ZFResExtPathAdd(ZFPathInfo(ZFPathType_file(), ZFPathForStorage()));
+    ZFResExtPathAdd(ZFPathInfo(ZFPathType_file(), ZFPathForStorageShared()));
     ZFLogTrim() << "external res: " << ZFResExtPathList();
 
     ZFInput src = ZFInputForRes("zf.lua");
