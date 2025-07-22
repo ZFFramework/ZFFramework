@@ -156,6 +156,7 @@ public final class ZFMainEntry extends Activity {
             _mainEntryIsStarted = false;
             native_ZFFrameworkCleanup();
             _app = null;
+            System.exit(0);
         }
     }
 

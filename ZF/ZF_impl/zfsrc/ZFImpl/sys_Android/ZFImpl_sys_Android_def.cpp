@@ -8,6 +8,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFAndroid_JNIGlobalRef, JNIGlobalRef)
 ZFTYPEID_ALIAS_DEFINE(ZFAndroid_JNIGlobalRef, JNIGlobalRef, ZFAndroid_jobject, jobject)
 
+ZFOBJECT_ON_INIT_USER_REGISTER_1({
+         JNIGlobalRef &v = invokerObject.to<v_ZFAndroid_JNIGlobalRef *>()->zfv;
+         v = (jobject)ref;
+     }, v_ZFAndroid_JNIGlobalRef
+     , ZFMP_IN(void *, ref)
+     )
+
 ZFMETHOD_USER_REGISTER_0({
     v_ZFAndroid_JNIGlobalRef *owner = invokerObject;
     return owner->zfv;
