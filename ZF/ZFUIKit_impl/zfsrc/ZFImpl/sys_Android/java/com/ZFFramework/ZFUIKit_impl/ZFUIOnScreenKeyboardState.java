@@ -204,7 +204,7 @@ public class ZFUIOnScreenKeyboardState {
         outKeyboardFrame[0] = 0;
         outKeyboardFrame[1] = rect.bottom;
         outKeyboardFrame[2] = screenSize.width;
-        outKeyboardFrame[3] = screenSize.height - rect.bottom;
+        outKeyboardFrame[3] = Math.max(0, screenSize.height - rect.bottom);
     }
 
     private static native void native_notifyKeyboardStateOnUpdate();

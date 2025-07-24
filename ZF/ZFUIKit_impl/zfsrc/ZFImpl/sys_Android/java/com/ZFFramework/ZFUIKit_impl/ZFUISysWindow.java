@@ -197,7 +197,7 @@ public final class ZFUISysWindow extends Activity {
         public MainLayout(ZFUISysWindow owner) {
             super(owner);
             _owner = owner;
-            this.setBackgroundColor(Color.WHITE);
+            this.setBackgroundColor(Color.BLACK);
         }
 
         private static int[] _rectCache = new int[4];

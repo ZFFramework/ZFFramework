@@ -148,6 +148,12 @@ public:
             this->viewTreeVisibleUpdateRecursive(owner, viewTreeInWindow, viewTreeVisibleInternal);
         }
         else if(ZFBitTest(this->stateFlag, stateFlag_viewTreeVisibleInternal) != viewTreeVisibleInternal) {
+            if(viewTreeVisibleInternal) {
+                ZFBitSet(this->stateFlag, stateFlag_viewTreeVisibleInternal);
+            }
+            else {
+                ZFBitUnset(this->stateFlag, stateFlag_viewTreeVisibleInternal);
+            }
             owner->viewTreeVisibleOnUpdate();
             this->viewTreeVisibleUpdateRecursive(owner, viewTreeInWindow, viewTreeVisibleInternal);
         }

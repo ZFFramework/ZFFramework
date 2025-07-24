@@ -1,9 +1,7 @@
 package com.ZFFramework.ZFUIKit_impl;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
@@ -61,18 +59,12 @@ public final class ZFUIImageView extends ImageView {
         super.setImageDrawable(drawable);
     }
 
-    private static final Rect _srcRectCache = new Rect();
-    private static final Rect _dstRectCache = new Rect();
-
     @Override
     protected void onDraw(Canvas canvas) {
         if (_image == null) {
             // nothing to do
         } else if (_ninePatchLeft == 0 && _ninePatchTop == 0 && _ninePatchRight == 0 && _ninePatchBottom == 0) {
-            Bitmap src = ((BitmapDrawable) _image).getBitmap();
-            _srcRectCache.set(0, 0, src.getWidth(), src.getHeight());
-            _dstRectCache.set(0, 0, this.getWidth(), this.getHeight());
-            canvas.drawBitmap(src, _srcRectCache, _dstRectCache, null);
+            super.onDraw(canvas);
         } else {
             ZFAndroidNinePatch.drawNinePatch(
                     ((BitmapDrawable) _image).getBitmap(),
