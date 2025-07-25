@@ -10,15 +10,15 @@ ZFOBJECT_REGISTER(ZFValueHolder)
 void ZFValueHolder::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoImplAppend(ret);
     ret += " ";
-    zfsFromPointerT(ret, this->holdedData);
+    zfsFromPointerT(ret, _value);
 }
 ZFCompareResult ZFValueHolder::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
-    if(this->holdedData == another->holdedData
-            && this->holderType == another->holderType
+    if(this->_value == another->_value
+            && this->_type == another->_type
             ) {
         return ZFCompareEqual;
     }

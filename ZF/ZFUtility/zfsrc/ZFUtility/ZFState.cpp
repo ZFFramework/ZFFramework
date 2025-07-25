@@ -67,7 +67,7 @@ public:
                 , zfautoT<ZFState>, owner
                 ) {
             ZFValueHolder *holder = zfargs.param0();
-            ZFCoreMap &mNew = holder->holdedDataRef<ZFCoreMap &>();
+            ZFCoreMap &mNew = holder->valueRef<ZFCoreMap &>();
             _ZFP_ZFStatePrivate *d = owner->d;
             d->taskId = zfnull;
             {

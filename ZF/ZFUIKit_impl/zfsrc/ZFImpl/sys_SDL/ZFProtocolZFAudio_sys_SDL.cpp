@@ -4,47 +4,8 @@
 #if ZF_ENV_sys_SDL
 
 #include "SDL3_mixer/SDL_mixer.h"
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-
-zfclass _ZFP_ZFAudioImpl_sys_SDL_ImplHolder : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_ZFAudioImpl_sys_SDL_ImplHolder, ZFObject)
-
-public:
-    ZFPROPERTY_RETAIN(zfanyT<v_zfstring>, errorHint)
-
-public:
-    void impl(ZF_IN Mix_Chunk *impl) {
-        if(_ZFP_impl != impl) {
-            if(_ZFP_impl != zfnull) {
-                Mix_FreeChunk(_ZFP_impl);
-            }
-            _ZFP_impl = impl;
-        }
-    }
-    Mix_Chunk *impl(void) {
-        return _ZFP_impl;
-    }
-
-protected:
-    zfoverride
-    virtual void objectOnInit(void) {
-        zfsuper::objectOnInit();
-        _ZFP_impl = zfnull;
-    }
-    zfoverride
-    virtual void objectOnDealloc(void) {
-        if(_ZFP_impl != zfnull) {
-            Mix_FreeChunk(_ZFP_impl);
-            _ZFP_impl = zfnull;
-        }
-        zfsuper::objectOnDealloc();
-    }
-
-private:
-    Mix_Chunk *_ZFP_impl;
-};
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_SDL, ZFAudio, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("SDL_mixer")
@@ -53,61 +14,52 @@ public:
     zfoverride
     virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
-        _deviceCount = 0;
-
-        Mix_Init(0
-            | MIX_INIT_MP3
-            | MIX_INIT_OGG
-            );
-
-        Mix_AllocateChannels(64);
-        Mix_ChannelFinished(zfself::_implOnFinish);
+        _implFade = 500;
+        MIX_Init();
+        _implMixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, zfnull);
     }
     zfoverride
     virtual void protocolOnDealloc(void) {
-        Mix_ChannelFinished(zfnull);
-        Mix_Quit();
+        MIX_DestroyMixer(_implMixer);
+        MIX_Quit();
         zfsuper::protocolOnDealloc();
     }
 
-public:
+private:
     zfclassNotPOD NativeAudio {
     public:
+        MIX_Track *implTrack;
+        zfautoT<ZFValueHolder> implAudio; // MIX_Audio
         zfautoT<ZFTaskId> loadTaskId;
-        zfautoT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> impl;
-        int channel;
-        zftimet position_resumeTime;
-        zftimet position_prev;
-
-    public:
-        void position_udpate(void) {
-            if(this->position_resumeTime != 0) {
-                zftimet curTime = ZFTime::timestamp();
-                this->position_prev += curTime - this->position_resumeTime;
-                this->position_resumeTime = curTime;
-            }
-        }
-
     public:
         NativeAudio(void)
-        : loadTaskId(zfnull)
-        , impl()
-        , channel(-1)
-        , position_resumeTime(0)
-        , position_prev(0)
+        : implTrack(zfnull)
+        , implAudio(zfnull)
+        , loadTaskId(zfnull)
         {
         }
     };
+    static void _implAudioOnDealloc(ZF_IN void *v) {
+        if(v) {
+            MIX_DestroyAudio((MIX_Audio *)v);
+        }
+    }
 
 public:
     virtual void *nativeAudioCreate(ZF_IN ZFAudio *audio) {
-        _deviceAttach();
-        return zfnew(NativeAudio);
+        NativeAudio *nativeAudio = zfpoolNew(NativeAudio);
+        nativeAudio->implTrack = MIX_CreateTrack(_implMixer);
+        return nativeAudio;
     }
     virtual void nativeAudioDestroy(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        zfdelete(nativeAudio);
-        _deviceDetach();
+        if(nativeAudio->loadTaskId) {
+            nativeAudio->loadTaskId->stop();
+        }
+        if(nativeAudio->implTrack) {
+            MIX_DestroyTrack(nativeAudio->implTrack);
+        }
+        zfpoolDelete(nativeAudio);
     }
 
     virtual void nativeAudioLoad(
@@ -115,33 +67,58 @@ public:
             , ZF_IN const ZFInput &input
             ) {
         zfself *owner = this;
-        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
 
-        ZFLISTENER_1(onLoad
+        ZFLISTENER_3(onLoad
+                , zfself *, owner
+                , zfautoT<ZFAudio>, audio
                 , ZFInput, input
                 ) {
-            Mix_Chunk *impl = Mix_LoadWAV_IO(ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input), true);
-            zfobj<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> implHolder;
-            implHolder->impl(impl);
-            const char *errorHint = SDL_GetError();
-            if(errorHint != zfnull && *errorHint) {
-                implHolder->errorHint(zfobj<v_zfstring>(errorHint));
+            if(zfargs.param0() == zfnull) {
+                return;
             }
-            zfargs.result(implHolder);
+            NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
+            if(nativeAudio == zfnull) {
+                return;
+            }
+            MIX_Audio *implAudio = MIX_LoadAudio_IO(owner->_implMixer, ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input), zffalse, zftrue);
+            if(implAudio == zfnull) {
+                zfargs.result(zfobj<v_zfstring>(SDL_GetError()));
+                return;
+            }
+            zfargs.result(zfobj<ZFValueHolder>(implAudio, _implAudioOnDealloc));
         } ZFLISTENER_END()
 
         ZFLISTENER_2(onLoadFinish
                 , zfself *, owner
-                , ZFAudio *, audio
+                , zfautoT<ZFAudio>, audio
                 ) {
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
             nativeAudio->loadTaskId = zfnull;
 
-            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
-            nativeAudio->impl = implHolder;
-            owner->notifyAudioOnLoad(audio, implHolder->impl() != zfnull, implHolder->errorHint());
+            v_zfstring *errorHint = zfargs.param0();
+            if(errorHint) {
+                owner->notifyAudioOnLoad(audio, zffalse, errorHint);
+                return;
+            }
+
+            nativeAudio->implAudio = zfargs.param0();
+            if(!nativeAudio->implAudio) {
+                MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
+                owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>("unable to load audio"));
+                return;
+            }
+
+            if(!MIX_SetTrackAudio(nativeAudio->implTrack, nativeAudio->implAudio->valueT<MIX_Audio *>())) {
+                zfstring errorHint = SDL_GetError();
+                MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
+                owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>(errorHint));
+                return;
+            }
+
+            owner->notifyAudioOnLoad(audio, zftrue, zfnull);
         } ZFLISTENER_END()
 
+        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->loadTaskId = zfasync(onLoad, onLoadFinish);
     }
     virtual void nativeAudioLoad(
@@ -149,62 +126,53 @@ public:
             , ZF_IN const zfstring &url
             ) {
         zfself *owner = this;
-        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        const ZFMethod *loaderMethod = ZFMethodFuncForName(zfnull, "ZFInputForHttp");
-        if(loaderMethod == zfnull || !ZFProtocolIsAvailable("ZFHttpRequest")) {
-            zfobj<v_zfstring> errorHint;
-            errorHint->zfv = "net load depends on ZFHttpRequest impl";
-            this->notifyAudioOnLoad(audio, zffalse, errorHint);
-            return;
-        }
 
         ZFLISTENER_1(onLoad
                 , zfstring, url
                 ) {
-            v_zfidentity *taskId = zfargs.param0();
-            if(taskId->zfv == zfidentityInvalid()) {return;}
-            zfobj<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> implHolder;
-            zfargs.result(implHolder);
+            if(zfargs.param0() == zfnull) {return;}
 
-            ZFInput input;
             const ZFMethod *loaderMethod = ZFMethodFuncForName(zfnull, "ZFInputForHttp");
             if(loaderMethod == zfnull || !ZFProtocolIsAvailable("ZFHttpRequest")) {
-                implHolder->errorHint(zfobj<v_zfstring>("net load depends on ZFHttpRequest impl"));
-            }
-            else {
-                zfauto inputHolder = ZFInvoke("ZFInputForHttp", zfobj<v_zfstring>(url));
-                v_ZFInput *inputTmp = inputHolder;
-                if(inputTmp == zfnull || !inputTmp->zfv) {
-                    implHolder->errorHint(zfobj<v_zfstring>(zfstr("unable to load from url: %s", url)));
-                }
-                else {
-                    input = inputTmp->zfv;
-                }
+                zfargs.result(zfobj<v_zfstring>("net load depends on ZFHttpRequest impl"));
+                return;
             }
 
-            if(taskId->zfv == zfidentityInvalid()) {return;}
-            if(input) {
-                Mix_Chunk *impl = Mix_LoadWAV_IO(ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input), true);
-                implHolder->impl(impl);
-                const char *errorHint = SDL_GetError();
-                if(errorHint != zfnull && *errorHint) {
-                    implHolder->errorHint(zfobj<v_zfstring>(errorHint));
-                }
+            zfauto inputHolder = ZFInvoke("ZFInputForHttp", zfobj<v_zfstring>(url));
+            v_ZFInput *inputTmp = inputHolder;
+            if(inputTmp == zfnull || !inputTmp->zfv) {
+                zfargs.result(zfobj<v_zfstring>(zfstr("unable to load from url: %s", url)));
+                return;
             }
+
+            zfargs.result(inputHolder);
         } ZFLISTENER_END()
 
         ZFLISTENER_2(onLoadFinish
                 , zfself *, owner
-                , ZFAudio *, audio
+                , zfautoT<ZFAudio>, audio
                 ) {
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
             nativeAudio->loadTaskId = zfnull;
 
-            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
-            nativeAudio->impl = implHolder;
-            owner->notifyAudioOnLoad(audio, implHolder->impl() != zfnull, implHolder->errorHint());
+            v_ZFInput *input = zfargs.param0();
+            if(input == zfnull || !input->zfv) {
+                MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
+                owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>("unable to load from url"));
+                return;
+            }
+
+            if(!MIX_SetTrackIOStream(nativeAudio->implTrack, ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input->zfv), zftrue)) {
+                zfstring errorHint = SDL_GetError();
+                MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
+                owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>(errorHint));
+                return;
+            }
+
+            owner->notifyAudioOnLoad(audio, zftrue, zfnull);
         } ZFLISTENER_END()
 
+        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->loadTaskId = zfasync(onLoad, onLoadFinish);
     }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
@@ -217,73 +185,54 @@ public:
 
     virtual void nativeAudioStart(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        nativeAudio->channel = Mix_PlayChannelTimed(-1, nativeAudio->impl->impl(), 0, (int)_durationForChunk(nativeAudio->impl->impl()));
-        if(nativeAudio->channel == -1) {
-            zfobj<v_zfstring> errorHint;
-            const char *implError = SDL_GetError();
-            if(implError != zfnull && *implError) {
-                errorHint->zfv = implError;
+
+        zfclassNotPOD Cb {
+        public:
+            static void a(void *userdata, MIX_Track *track) {
+                ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop((ZFAudio *)userdata, zftrue, zfnull);
             }
-            else {
-                errorHint->zfv = "unable to play audio";
-            }
-            this->notifyAudioOnStop(audio, zffalse, errorHint);
-        }
-        else {
-            this->_implAttach(audio);
-            nativeAudio->position_resumeTime = ZFTime::timestamp();
-            nativeAudio->position_prev = 0;
-            this->notifyAudioOnResume(audio);
-        }
+        };
+        MIX_SetTrackStoppedCallback(nativeAudio->implTrack, Cb::a, audio);
+
+        MIX_PlayTrack(nativeAudio->implTrack, 0);
     }
     virtual void nativeAudioStop(ZF_IN ZFAudio *audio) {
-        zfblockedRelease(zfRetain(audio));
-
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        int channel = nativeAudio->channel;
-        _implDetach(audio);
-        if(channel != -1) {
-            Mix_HaltChannel(channel);
-        }
-        nativeAudio->position_udpate();
+        MIX_SetTrackStoppedCallback(nativeAudio->implTrack, zfnull, zfnull);
+        MIX_StopTrack(nativeAudio->implTrack, MIX_TrackMSToFrames(nativeAudio->implTrack, _implFade));
     }
     virtual void nativeAudioResume(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        if(nativeAudio->channel != -1) {
-            Mix_Resume(nativeAudio->channel);
-        }
-        nativeAudio->position_resumeTime = ZFTime::timestamp();
+        MIX_ResumeTrack(nativeAudio->implTrack);
         this->notifyAudioOnResume(audio);
     }
     virtual void nativeAudioPause(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        Mix_Pause(nativeAudio->channel);
-        nativeAudio->position_udpate();
+        MIX_PauseTrack(nativeAudio->implTrack);
         this->notifyAudioOnPause(audio);
     }
 
     virtual zftimet nativeAudioDuration(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        if(nativeAudio->impl == zfnull || nativeAudio->impl->impl() == zfnull) {
-            return 0;
-        }
-        return _durationForChunk(nativeAudio->impl->impl());
+        Sint64 played = MIX_GetTrackPlaybackPosition(nativeAudio->implTrack);
+        Sint64 remain = MIX_GetTrackRemaining(nativeAudio->implTrack);
+        return (zftimet)MIX_TrackFramesToMS(nativeAudio->implTrack
+                , (Uint64)(0
+                    + played >= 0 ? played : 0
+                    + remain >= 0 ? remain : 0
+                    ));
     }
     virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        if(nativeAudio->position_resumeTime == 0) {
-            return nativeAudio->position_prev;
-        }
-        else {
-            zftimet curTime = ZFTime::timestamp();
-            return nativeAudio->position_prev + (curTime - nativeAudio->position_resumeTime);
-        }
+        Sint64 played = MIX_GetTrackPlaybackPosition(nativeAudio->implTrack);
+        return (zftimet)MIX_TrackFramesToMS(nativeAudio->implTrack, (Uint64)(played >= 0 ? played : 0));
     }
     virtual void nativeAudioPosition(
             ZF_IN ZFAudio *audio
             , ZF_IN zftimet position
             ) {
-        // not supported
+        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
+        MIX_SetTrackPlaybackPosition(nativeAudio->implTrack, MIX_TrackMSToFrames(nativeAudio->implTrack, (Uint64)position));
     }
 
     virtual void nativeAudioVolume(
@@ -291,65 +240,12 @@ public:
             , ZF_IN zffloat volume
             ) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        Mix_VolumeChunk(nativeAudio->impl->impl(), (int)(volume * MIX_MAX_VOLUME));
+        MIX_SetTrackGain(nativeAudio->implTrack, (float)volume);
     }
 
 private:
-    zftimet _durationForChunk(ZF_IN Mix_Chunk *impl) {
-        // MIX_DEFAULT_FORMAT is 16 bit, 2 bytes
-        return 1000 * (zftimet)impl->alen / MIX_DEFAULT_FREQUENCY / 2 / MIX_DEFAULT_CHANNELS;
-    }
-
-private:
-    zfindex _deviceCount;
-    void _deviceAttach(void) {
-        ++_deviceCount;
-        if(_deviceCount == 1) {
-            SDL_AudioSpec spec;
-            spec.format = MIX_DEFAULT_FORMAT;
-            spec.channels = MIX_DEFAULT_CHANNELS;
-            spec.freq = MIX_DEFAULT_FREQUENCY;
-            Mix_OpenAudio(0, &spec);
-        }
-    }
-    void _deviceDetach(void) {
-        --_deviceCount;
-        if(_deviceCount == 0) {
-            Mix_CloseAudio();
-        }
-    }
-
-private:
-    static void _implOnFinish(int channel) {
-        ZFCoreMutexLock();
-        zfself *d = (zfself *)ZFPROTOCOL_ACCESS(ZFAudio);
-        zfstlhashmap<zfidentity, zfautoT<ZFAudio> >::iterator it = d->_implPlaying.find(channel);
-        if(it == d->_implPlaying.end()) {
-            ZFCoreMutexUnlock();
-            return;
-        }
-        zfautoT<ZFAudio> audio = it->second;
-        d->_implPlaying.erase(it);
-        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        nativeAudio->channel = -1;
-        ZFCoreMutexUnlock();
-
-        d->notifyAudioOnStop(audio, zftrue, zfnull);
-    }
-    void _implAttach(ZF_IN ZFAudio *audio) {
-        ZFCoreMutexLocker();
-        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        ZFCoreAssert(nativeAudio->channel != -1);
-        _implPlaying[nativeAudio->channel] = audio;
-    }
-    void _implDetach(ZF_IN ZFAudio *audio) {
-        ZFCoreMutexLocker();
-        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        _implPlaying.erase(nativeAudio->channel);
-    }
-
-private:
-    zfstlhashmap<zfidentity, zfautoT<ZFAudio> > _implPlaying;
+    Uint64 _implFade;
+    MIX_Mixer *_implMixer;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END

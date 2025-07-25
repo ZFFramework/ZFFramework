@@ -35,7 +35,7 @@ static void _ZFP_ZFObjectOnInitGI(ZF_IN_OUT const ZFArgs &zfargs) {
     ZFValueHolder *valueHolder = zfargs.ownerMethod()->dynamicRegisterUserData()->objectTag("_ZFP_ZFObjectOnInitGI");
     ZFCoreAssert(valueHolder != zfnull);
     zfargs.sender()->_ZFP_ZFObject_objectOnInit();
-    ZFMethodGenericInvoker methodGI = *valueHolder->holdedDataPointer<ZFMethodGenericInvoker *>();
+    ZFMethodGenericInvoker methodGI = valueHolder->valueT<ZFMethodGenericInvoker>();
     methodGI(zfargs);
 }
 const ZFMethod *ZFObjectOnInitDynamicRegister(
@@ -72,11 +72,9 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         userData = zfobj<ZFObject>();
         paramTmp.dynamicRegisterUserData(userData);
     }
-    ZFMethodGenericInvoker *methodGI = (ZFMethodGenericInvoker *)zfmalloc(sizeof(ZFMethodGenericInvoker));
-    *methodGI = methodGISaved;
     userData->objectTag("_ZFP_ZFObjectOnInitGI", zfobj<ZFValueHolder>(
-                methodGI
-                , ZFValueHolderTypePOD()
+                (void *)methodGISaved
+                , ZFValueHolderTypePointerRef()
                 ));
 
     return ZFMethodDynamicRegister(paramTmp, errorHint);

@@ -17,12 +17,13 @@ zfclassFwd ZFValueHolder;
  * @brief type for #ZFValueHolder
  *
  * to achieve custom #ZFValueHolder, supply a function with following proto type,
- * which cleanup the internal #ZFValueHolder::holdedData:
+ * which cleanup the internal #ZFValueHolder::value:
  * @code
- *   void type(ZF_IN void *holdedData);
+ *   void type(ZF_IN void *value);
  * @endcode
  */
-typedef void (*ZFValueHolderType)(ZF_IN void *holdedData);
+typedef void (*ZFValueHolderType)(ZF_IN void *value);
+
 /**
  * @brief used to hold a non ZFObject type for performance
  */
@@ -32,23 +33,25 @@ public:
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFValueHolder, ZFObject)
 
 protected:
-    ZFValueHolder(void) : holdedData(zfnull), holderType(zfnull) {}
+    ZFValueHolder(void) : _value(zfnull), _type(zfnull) {}
 
     ZFALLOC_CACHE_RELEASE({
         cache->_cleanup();
     })
 private:
+    void *_value;
+    ZFValueHolderType _type;
     void _cleanup(void) {
-        if(this->holdedData && this->holderType) {
-            void *holdedData = this->holdedData;
-            ZFValueHolderType holderType = this->holderType;
-            this->holdedData = zfnull;
-            this->holderType = zfnull;
-            holderType(holdedData);
+        if(_value && _type) {
+            void *value = _value;
+            ZFValueHolderType type = _type;
+            _value = zfnull;
+            _type = zfnull;
+            type(value);
         }
         else {
-            this->holdedData = zfnull;
-            this->holderType = zfnull;
+            _value = zfnull;
+            _type = zfnull;
         }
     }
 
@@ -57,11 +60,11 @@ protected:
      * @brief init with object
      */
     virtual void objectOnInit(
-        ZF_IN void *holdedData
-        , ZF_IN ZFValueHolderType holderType
+        ZF_IN void *value
+        , ZF_IN ZFValueHolderType type
         ) {
-        this->holdedData = holdedData;
-        this->holderType = holderType;
+        _value = value;
+        _type = type;
     }
     zfoverride
     virtual void objectOnInit(void) {
@@ -75,28 +78,46 @@ protected:
 
 public:
     /**
+     * @brief change the value
+     */
+    void value(ZF_IN void *value, ZF_IN ZFValueHolderType type) {
+        if(_value && _type) {
+            void *value = _value;
+            ZFValueHolderType type = _type;
+            _value = value;
+            _type = type;
+            type(value);
+        }
+        else {
+            _value = value;
+            _type = type;
+        }
+    }
+
+public:
+    /**
      * @brief used to hold the raw pointer
      *
      * you must ensure it's valid during the holder object's life cycle,
-     * would be cleared by #holderType when the holder object deallocated
+     * would be cleared by #type when the holder object deallocated
      */
-    void *holdedData;
+    void *value(void) {return _value;}
     /**
-     * @brief delete callback to clear the #holdedData
+     * @brief delete callback to clear the #value
      */
-    ZFValueHolderType holderType;
+    ZFValueHolderType type(void) {return _type;}
 
 public:
-    /** @brief util method to cast #holdedData */
+    /** @brief util method to cast #value */
     template<typename T_RawType>
-    inline T_RawType holdedDataPointer(void) {
-        return (T_RawType)this->holdedData;
+    inline T_RawType valueT(void) {
+        return (T_RawType)_value;
     }
-    /** @brief util method to cast #holdedData */
+    /** @brief util method to cast #value */
     template<typename T_RawType>
-    inline T_RawType holdedDataRef(void) {
+    inline T_RawType valueRef(void) {
         typedef typename zftTraits<T_RawType>::TrPtr T_RawTypePointer;
-        return *(T_RawTypePointer)this->holdedData;
+        return *(T_RawTypePointer)_value;
     }
 
 protected:
@@ -108,22 +129,20 @@ public:
 };
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueHolderType {
 public:
-    static void TypePointerRef(ZF_IN void *holdedData) {
-    }
-    static void TypePOD(ZF_IN void *holdedData) {
-        zffree(holdedData);
+    static void TypePOD(ZF_IN void *value) {
+        zffree(value);
     }
     template<typename T_Object>
-    static void TypeObject(ZF_IN void *holdedData) {
-        zfdelete((T_Object)holdedData);
+    static void TypeObject(ZF_IN void *value) {
+        zfdelete((T_Object)value);
     }
     template<typename T_Object>
-    static void TypePoolObject(ZF_IN void *holdedData) {
-        zfpoolDelete((T_Object)holdedData);
+    static void TypePoolObject(ZF_IN void *value) {
+        zfpoolDelete((T_Object)value);
     }
 };
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypePointerRef() _ZFP_ZFValueHolderType::TypePointerRef
+#define ZFValueHolderTypePointerRef() zfnull
 /** @brief see #ZFValueHolderType */
 #define ZFValueHolderTypePOD() _ZFP_ZFValueHolderType::TypePOD
 /** @brief see #ZFValueHolderType */

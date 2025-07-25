@@ -345,7 +345,7 @@ public:
         _TaskData *taskData = zfnull;
         ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_compress");
         if(taskDataHolder != zfnull) {
-            taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
+            taskData = taskDataHolder->valueT<_TaskData *>();
         }
         ZFDecompress *t = taskData->taskToken;
         return t->findNext(fd);
@@ -354,7 +354,7 @@ public:
         _TaskData *taskData = zfnull;
         ZFValueHolder *taskDataHolder = fd.implTag("_ZFP_ZFPathType_compress");
         if(taskDataHolder != zfnull) {
-            taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
+            taskData = taskDataHolder->valueT<_TaskData *>();
         }
         ZFDecompress *t = taskData->taskToken;
         t->findClose(fd);
