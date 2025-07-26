@@ -596,10 +596,10 @@ public:
     /** @brief see #zfconv */
     zfconvImpl zfconvCheck(ZF_IN const ZFClass *dstCls) const;
 
-    friend zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
-    friend zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
-    friend zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
-    friend zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+    friend ZFLIB_ZFCore zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+    friend ZFLIB_ZFCore zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+    friend ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+    friend ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
 
     // ============================================================
     // class instance methods
