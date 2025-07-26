@@ -214,7 +214,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, zfconvT
         , ZFMP_IN(const zfstring &, cls)
         , ZFMP_IN(ZFObject *, obj)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfauto, zfconvT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, zfconvT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(ZFObject *, obj)
