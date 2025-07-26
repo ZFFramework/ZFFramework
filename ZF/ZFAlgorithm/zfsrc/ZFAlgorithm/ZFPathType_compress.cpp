@@ -411,6 +411,15 @@ public:
             return ret;
         }
     }
+    static zfindex callbackSize(ZF_IN void *token) {
+        _Token *d = (_Token *)token;
+        if(d->owner->taskType == _TaskTypeDecompress) {
+            return d->ioBuf->input().ioSize();
+        }
+        else {
+            return d->ioBuf->output().ioSize();
+        }
+    }
     static zfindex callbackTell(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         if(d->owner->taskType == _TaskTypeDecompress) {
@@ -460,29 +469,6 @@ public:
             return d->ioBuf->output().execute(src, maxByteSize);
         }
     }
-    static void callbackFlush(ZF_IN void *token) {
-    }
-    static zfbool callbackIsEof(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        if(d->owner->taskType == _TaskTypeDecompress) {
-            return d->ioBuf->input().ioTell() == d->ioBuf->input().ioSize();
-        }
-        else {
-            return zffalse;
-        }
-    }
-    static zfbool callbackIsError(ZF_IN void *token) {
-        return zffalse;
-    }
-    static zfindex callbackSize(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        if(d->owner->taskType == _TaskTypeDecompress) {
-            return d->ioBuf->input().ioSize();
-        }
-        else {
-            return d->ioBuf->output().ioSize();
-        }
-    }
 };
 ZFPATHTYPE_FILEIO_REGISTER(compress, ZFPathType_compress()
         , _ZFP_ZFPathType_compress::callbackIsExist
@@ -498,14 +484,11 @@ ZFPATHTYPE_FILEIO_REGISTER(compress, ZFPathType_compress()
         , _ZFP_ZFPathType_compress::callbackFindClose
         , _ZFP_ZFPathType_compress::callbackOpen
         , _ZFP_ZFPathType_compress::callbackClose
+        , _ZFP_ZFPathType_compress::callbackSize
         , _ZFP_ZFPathType_compress::callbackTell
         , _ZFP_ZFPathType_compress::callbackSeek
         , _ZFP_ZFPathType_compress::callbackRead
         , _ZFP_ZFPathType_compress::callbackWrite
-        , _ZFP_ZFPathType_compress::callbackFlush
-        , _ZFP_ZFPathType_compress::callbackIsEof
-        , _ZFP_ZFPathType_compress::callbackIsError
-        , _ZFP_ZFPathType_compress::callbackSize
     )
 
 // ============================================================

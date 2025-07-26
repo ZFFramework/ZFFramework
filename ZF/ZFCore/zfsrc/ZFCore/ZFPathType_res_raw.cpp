@@ -29,14 +29,11 @@ ZFPATHTYPE_FILEIO_REGISTER(resraw, ZFPathType_resraw()
         , ZFResRaw::ZFResFindClose
         , _ZFP_ZFPathInfoOpenForResRaw
         , ZFResRaw::ZFResClose
+        , ZFResRaw::ZFResSize
         , ZFResRaw::ZFResTell
         , ZFResRaw::ZFResSeek
         , ZFResRaw::ZFResRead
         , ZFPathInfoCallbackWriteDefault
-        , ZFPathInfoCallbackFlushDefault
-        , ZFResRaw::ZFResIsEof
-        , ZFResRaw::ZFResIsError
-        , ZFResRaw::ZFResSize
     )
 
 // ============================================================

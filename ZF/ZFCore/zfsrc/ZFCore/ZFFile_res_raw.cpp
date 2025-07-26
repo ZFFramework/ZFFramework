@@ -94,22 +94,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFResRead
     }
     return ZFPROTOCOL_ACCESS(ZFRes)->resRead(token, buf, maxByteSize);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsEof
-        , ZFMP_IN(void *, token)
-        ) {
-    if(token == zfnull) {
-        return zffalse;
-    }
-    return ZFPROTOCOL_ACCESS(ZFRes)->resIsEof(token);
-}
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsError
-        , ZFMP_IN(void *, token)
-        ) {
-    if(token == zfnull) {
-        return zffalse;
-    }
-    return ZFPROTOCOL_ACCESS(ZFRes)->resIsError(token);
-}
 
 ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResSize
         , ZFMP_IN(void *, token)

@@ -30,15 +30,11 @@ public:
     JNIGlobalRef assetManagerHolder;
     AAssetManager *assetManager;
     AAsset *token;
-    zfbool isEof;
-    zfbool isError;
 public:
     _ZFP_ZFProtocolZFRes_sys_Android_FileToken(void)
     : assetManagerHolder()
     , assetManager(NULL)
     , token(NULL)
-    , isEof(zffalse)
-    , isError(zffalse)
     {
     }
 };
@@ -214,32 +210,11 @@ public:
             return 0;
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
-        if(d->isEof || d->isError) {
-            return 0;
-        }
         zfint ret = AAsset_read(d->token, buf, maxByteSize);
         if(ret < 0) {
-            d->isError = zftrue;
             ret = 0;
         }
-        else if(ret == 0 || ret < maxByteSize) {
-            d->isEof = zftrue;
-        }
-        return ret;
-    }
-    virtual zfbool resIsEof(ZF_IN void *token) {
-        if(token == zfnull) {
-            return zffalse;
-        }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
-        return d->isEof;
-    }
-    virtual zfbool resIsError(ZF_IN void *token) {
-        if(token == zfnull) {
-            return zffalse;
-        }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
-        return d->isError;
+        return (zfindex)ret;
     }
 
     // ============================================================

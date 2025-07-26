@@ -121,6 +121,23 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileClose
         ) {
     return ZFPROTOCOL_ACCESS(ZFFile)->fileClose(token);
 }
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileSize
+        , ZFMP_IN(void *, token)
+        ) {
+    if(token == zfnull) {
+        return zfindexMax();
+    }
+    zfindex saved = ZFFileTell(token);
+    if(saved == zfindexMax()) {
+        return zfindexMax();
+    }
+    if(!ZFFileSeek(token, 0, ZFSeekPosEnd)) {
+        return zfindexMax();
+    }
+    zfindex size = ZFFileTell(token);
+    ZFFileSeek(token, saved, ZFSeekPosBegin);
+    return size;
+}
 ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileTell
         , ZFMP_IN(void *, token)
         ) {
@@ -161,38 +178,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileWrite
     }
     return ZFPROTOCOL_ACCESS(ZFFile)->fileWrite(token, src,
         (maxByteSize == zfindexMax()) ? zfslen((const zfchar *)src) : maxByteSize);
-}
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFlush
-        , ZFMP_IN(void *, token)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileFlush(token);
-}
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsEof
-        , ZFMP_IN(void *, token)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsEof(token);
-}
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsError
-        , ZFMP_IN(void *, token)
-        ) {
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsError(token);
-}
-ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileSize
-        , ZFMP_IN(void *, token)
-        ) {
-    if(token == zfnull) {
-        return zfindexMax();
-    }
-    zfindex saved = ZFFileTell(token);
-    if(saved == zfindexMax()) {
-        return zfindexMax();
-    }
-    if(!ZFFileSeek(token, 0, ZFSeekPosEnd)) {
-        return zfindexMax();
-    }
-    zfindex size = ZFFileTell(token);
-    ZFFileSeek(token, saved, ZFSeekPosBegin);
-    return size;
 }
 
 ZF_NAMESPACE_GLOBAL_END

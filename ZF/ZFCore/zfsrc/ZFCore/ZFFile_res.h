@@ -158,19 +158,6 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFResRead
         )
 
 /**
- * @brief see #ZFResOpen #ZFFileIsEof
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsEof
-        , ZFMP_IN(void *, token)
-        )
-/**
- * @brief see #ZFResOpen #ZFFileIsEof
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsError
-        , ZFMP_IN(void *, token)
-        )
-
-/**
  * @brief see #ZFResOpen, #ZFFileSize
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResSize

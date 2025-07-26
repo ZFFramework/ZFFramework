@@ -84,6 +84,9 @@ void *ZFPathInfoCallbackOpenDefault(
 zfbool ZFPathInfoCallbackCloseDefault(ZF_IN void *token) {
     return zffalse;
 }
+zfindex ZFPathInfoCallbackSizeDefault(ZF_IN void *token) {
+    return zfindexMax();
+}
 zfindex ZFPathInfoCallbackTellDefault(ZF_IN void *token) {
     return zfindexMax();
 }
@@ -107,17 +110,6 @@ zfindex ZFPathInfoCallbackWriteDefault(
         , ZF_IN_OPT zfindex maxByteSize /* = zfindexMax() */
         ) {
     return 0;
-}
-void ZFPathInfoCallbackFlushDefault(ZF_IN void *token) {
-}
-zfbool ZFPathInfoCallbackIsEofDefault(ZF_IN void *token) {
-    return zftrue;
-}
-zfbool ZFPathInfoCallbackIsErrorDefault(ZF_IN void *token) {
-    return zftrue;
-}
-zfindex ZFPathInfoCallbackSizeDefault(ZF_IN void *token) {
-    return zfindexMax();
 }
 
 // ============================================================
@@ -285,6 +277,18 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoClose
         return impl->implClose(token);
     }
 }
+ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFPathInfoSize
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN(void *, token)
+        ) {
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
+    if(impl == zfnull) {
+        return ZFPathInfoCallbackSizeDefault(token);
+    }
+    else {
+        return impl->implSize(token);
+    }
+}
 ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFPathInfoTell
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(void *, token)
@@ -337,54 +341,6 @@ ZFMETHOD_FUNC_DEFINE_4(zfindex, ZFPathInfoWrite
     }
     else {
         return impl->implWrite(token, src, maxByteSize);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_2(void, ZFPathInfoFlush
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(void *, token)
-        ) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
-    if(impl == zfnull) {
-        ZFPathInfoCallbackFlushDefault(token);
-    }
-    else {
-        impl->implFlush(token);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoIsEof
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(void *, token)
-        ) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
-    if(impl == zfnull) {
-        return ZFPathInfoCallbackIsEofDefault(token);
-    }
-    else {
-        return impl->implIsEof(token);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoIsError
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(void *, token)
-        ) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
-    if(impl == zfnull) {
-        return ZFPathInfoCallbackIsErrorDefault(token);
-    }
-    else {
-        return impl->implIsError(token);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFPathInfoSize
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(void *, token)
-        ) {
-    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
-    if(impl == zfnull) {
-        return ZFPathInfoCallbackSizeDefault(token);
-    }
-    else {
-        return impl->implSize(token);
     }
 }
 

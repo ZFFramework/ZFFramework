@@ -192,6 +192,9 @@ public:
     static zfbool callbackClose(ZF_IN void *token) {
         return ZFFileClose(token);
     }
+    static zfindex callbackSize(ZF_IN void *token) {
+        return ZFFileSize(token);
+    }
     static zfindex callbackTell(ZF_IN void *token) {
         return ZFFileTell(token);
     }
@@ -215,18 +218,6 @@ public:
             , ZF_IN_OPT zfindex maxByteSize
             ) {
         return ZFFileWrite(token, src, maxByteSize);
-    }
-    static void callbackFlush(ZF_IN void *token) {
-        ZFFileFlush(token);
-    }
-    static zfbool callbackIsEof(ZF_IN void *token) {
-        return ZFFileIsEof(token);
-    }
-    static zfbool callbackIsError(ZF_IN void *token) {
-        return ZFFileIsError(token);
-    }
-    static zfindex callbackSize(ZF_IN void *token) {
-        return ZFFileSize(token);
     }
     /** @endcond */
 };

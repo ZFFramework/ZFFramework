@@ -87,18 +87,18 @@ public:
             return;
         }
 
-        ZFUIRect orgRect = ZFUIViewPositionOnScreen(this->pimplOwner);
-        if(orgRect.width != this->pimplOwner->viewFrame().width
-                || orgRect.height != this->pimplOwner->viewFrame().height
+        ZFUIRect origRect = ZFUIViewPositionOnScreen(this->pimplOwner);
+        if(origRect.width != this->pimplOwner->viewFrame().width
+                || origRect.height != this->pimplOwner->viewFrame().height
                 ) {
             return;
         }
-        orgRect.x -= this->autoFitMargin.left;
-        orgRect.width += this->autoFitMargin.left + this->autoFitMargin.right;
-        orgRect.y -= this->autoFitMargin.top;
-        orgRect.height += this->autoFitMargin.top + this->autoFitMargin.bottom;
+        origRect.x -= this->autoFitMargin.left;
+        origRect.width += this->autoFitMargin.left + this->autoFitMargin.right;
+        origRect.y -= this->autoFitMargin.top;
+        origRect.height += this->autoFitMargin.top + this->autoFitMargin.bottom;
 
-        this->autoFitMarginCalc(this->autoFitMargin, orgRect, ZFUIOnScreenKeyboardState::instanceForView(this->pimplOwner));
+        this->autoFitMarginCalc(this->autoFitMargin, origRect, ZFUIOnScreenKeyboardState::instanceForView(this->pimplOwner));
         #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
             ZFLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin changed to " << this->autoFitMargin;
         #endif
@@ -106,23 +106,23 @@ public:
     }
     void autoFitMarginCalc(
             ZF_OUT ZFUIMargin &ret
-            , ZF_IN const ZFUIRect &orgRect
+            , ZF_IN const ZFUIRect &origRect
             , ZF_IN ZFUIOnScreenKeyboardState *keyboardState
             ) {
         ret = ZFUIMarginZero();
         if(keyboardState->keyboardShowing()) {
             ZFUIRect clientFrame = keyboardState->keyboardFixClientFrame();
-            if(ZFUIRectGetLeft(clientFrame) > ZFUIRectGetLeft(orgRect)) {
-                ret.left += ZFUIRectGetLeft(clientFrame) - ZFUIRectGetLeft(orgRect);
+            if(ZFUIRectGetLeft(clientFrame) > ZFUIRectGetLeft(origRect)) {
+                ret.left += ZFUIRectGetLeft(clientFrame) - ZFUIRectGetLeft(origRect);
             }
-            if(ZFUIRectGetTop(clientFrame) > ZFUIRectGetTop(orgRect)) {
-                ret.top += ZFUIRectGetTop(clientFrame) - ZFUIRectGetTop(orgRect);
+            if(ZFUIRectGetTop(clientFrame) > ZFUIRectGetTop(origRect)) {
+                ret.top += ZFUIRectGetTop(clientFrame) - ZFUIRectGetTop(origRect);
             }
-            if(ZFUIRectGetRight(clientFrame) < ZFUIRectGetRight(orgRect)) {
-                ret.right += ZFUIRectGetRight(orgRect) - ZFUIRectGetRight(clientFrame);
+            if(ZFUIRectGetRight(clientFrame) < ZFUIRectGetRight(origRect)) {
+                ret.right += ZFUIRectGetRight(origRect) - ZFUIRectGetRight(clientFrame);
             }
-            if(ZFUIRectGetBottom(clientFrame) < ZFUIRectGetBottom(orgRect)) {
-                ret.bottom += ZFUIRectGetBottom(orgRect) - ZFUIRectGetBottom(clientFrame);
+            if(ZFUIRectGetBottom(clientFrame) < ZFUIRectGetBottom(origRect)) {
+                ret.bottom += ZFUIRectGetBottom(origRect) - ZFUIRectGetBottom(clientFrame);
             }
         }
     }

@@ -131,6 +131,17 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileClose
         )
 
 /**
+ * @brief util method to get file's total size (not left size)
+ *
+ * #ZFFileSeek to end, #ZFFileTell, then #ZFFileSeek to restore,
+ * return zfindexMax() if error\n
+ * note that result is not ensured if file is opened in append mode
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileSize
+        , ZFMP_IN(void *, token)
+        )
+
+/**
  * @brief get current file's position or zfindexMax() if error
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileTell
@@ -148,22 +159,11 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileSeek
 /**
  * @brief read file
  *
- * return size read, even if error occurred
- * (whether error occurred or eof,
- * could be accessed by #ZFFileIsError and #ZFFileIsEof)\n
- * typical usage:
+ * return size read, even if error occurred, typical usage:
  * @code
  *   zfindex sizeRead = 0;
- *   while((sizeRead = ZFFileRead(token, buf)) > 0
- *           && !ZFFileIsError(token)
- *           ) {
+ *   while((sizeRead = ZFFileRead(token, buf)) > 0) {
  *       // do something with buf
- *   }
- *   if(ZFFileIsError(token)) {
- *       // exit because of error occurred, read fail
- *   }
- *   else if(ZFFileIsEof(token)) {
- *       // exit because of eof, read success
  *   }
  * @endcode
  *
@@ -181,15 +181,9 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFFileRead
 /**
  * @brief write file, see #ZFFileRead
  *
- * return size written, even if error occurred
- * (whether error occurred or not,
- * could be accessed by #ZFFileIsError)\n
- * typical usage:
+ * return size written, even if error occurred, typical usage:
  * @code
  *   zfindex sizeWritten = ZFFileWrite(token, src, size);
- *   if(ZFFileIsError(token)) {
- *       // write fail
- *   }
  *   if(sizeWritten != size) { // you can also check by sizeWritten
  *       // write fail
  *   }
@@ -203,35 +197,6 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFFileWrite
         , ZFMP_IN(void *, token)
         , ZFMP_IN(const void *, src)
         , ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax())
-        )
-/**
- * @brief flush the file, useful only for files opened for write
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileFlush
-        , ZFMP_IN(void *, token)
-        )
-/**
- * @brief see #ZFFileRead
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileIsEof
-        , ZFMP_IN(void *, token)
-        )
-/**
- * @brief see #ZFFileRead
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileIsError
-        , ZFMP_IN(void *, token)
-        )
-
-/**
- * @brief util method to get file's total size (not left size)
- *
- * #ZFFileSeek to end, #ZFFileTell, then #ZFFileSeek to restore,
- * return zfindexMax() if error\n
- * note that result is not ensured if file is opened in append mode
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileSize
-        , ZFMP_IN(void *, token)
         )
 
 ZF_NAMESPACE_GLOBAL_END

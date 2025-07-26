@@ -47,7 +47,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * return an index start from 0 (offset is included), ensured range in [offset, length]
  */
-extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcFSeek(
+extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcSeek(
         ZF_IN zfindex offset
         , ZF_IN zfindex length
         , ZF_IN zfindex curPos

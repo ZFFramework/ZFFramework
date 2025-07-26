@@ -79,7 +79,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForInputInRangeOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
         , ZFMP_IN(ZFSeekPos, pos)
         ) {
-    curPos = ZFIOCallbackCalcFSeek(srcStart, srcCount, curPos, byteSize, pos);
+    curPos = ZFIOCallbackCalcSeek(srcStart, srcCount, curPos, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, ioTell) {
@@ -264,7 +264,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferUnsafeOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
         , ZFMP_IN(ZFSeekPos, pos)
         ) {
-    p = pStart + ZFIOCallbackCalcFSeek(0, pEnd - pStart, p - pStart, byteSize, pos);
+    p = pStart + ZFIOCallbackCalcSeek(0, pEnd - pStart, p - pStart, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, ioTell) {

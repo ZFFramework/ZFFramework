@@ -113,12 +113,6 @@ public:
             , ZF_IN const void *src
             , ZF_IN zfindex maxByteSize
             ) zfpurevirtual;
-    /** @brief see #ZFFileFlush */
-    virtual void fileFlush(ZF_IN void *token) zfpurevirtual;
-    /** @brief see #ZFFileIsEof */
-    virtual zfbool fileIsEof(ZF_IN void *token) zfpurevirtual;
-    /** @brief see #ZFFileIsError */
-    virtual zfbool fileIsError(ZF_IN void *token) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFFile)
 
 ZF_NAMESPACE_GLOBAL_END

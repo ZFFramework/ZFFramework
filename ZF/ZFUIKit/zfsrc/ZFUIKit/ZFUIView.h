@@ -789,7 +789,7 @@ public:
      *
      * \n
      * since scale may affect impl's pixel size,
-     * size-related property should be flushed manually while scale changed,
+     * size-related property should be updated manually while scale changed,
      * subclass should override #UIScaleOnUpdate to update them,
      * which would be called if #UIScaleFixed really changed
      * \n

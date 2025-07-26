@@ -247,6 +247,11 @@ public:
         zfdelete(d);
         return zftrue;
     }
+    static zfindex callbackSize(ZF_IN void *token) {
+        _Token *d = (_Token *)token;
+        d->update();
+        return d->contentLength;
+    }
     static zfindex callbackTell(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         d->update();
@@ -262,7 +267,7 @@ public:
         if(d->contentLength == zfindexMax()) {
             return zffalse;
         }
-        d->curPos = ZFIOCallbackCalcFSeek(0, d->contentLength, d->curPos, byteSize, position);
+        d->curPos = ZFIOCallbackCalcSeek(0, d->contentLength, d->curPos, byteSize, position);
         return zftrue;
     }
     static zfindex callbackRead(
@@ -308,23 +313,6 @@ public:
             ) {
         return 0;
     }
-    static void callbackFlush(ZF_IN void *token) {
-    }
-    static zfbool callbackIsEof(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        d->update();
-        return d->curPos >= d->contentLength;
-    }
-    static zfbool callbackIsError(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        d->update();
-        return d->contentLength == zfindexMax();
-    }
-    static zfindex callbackSize(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        d->update();
-        return d->contentLength;
-    }
 };
 ZFPATHTYPE_FILEIO_REGISTER(http, ZFPathType_http()
         , _ZFP_ZFPathType_http::callbackIsExist
@@ -340,14 +328,11 @@ ZFPATHTYPE_FILEIO_REGISTER(http, ZFPathType_http()
         , _ZFP_ZFPathType_http::callbackFindClose
         , _ZFP_ZFPathType_http::callbackOpen
         , _ZFP_ZFPathType_http::callbackClose
+        , _ZFP_ZFPathType_http::callbackSize
         , _ZFP_ZFPathType_http::callbackTell
         , _ZFP_ZFPathType_http::callbackSeek
         , _ZFP_ZFPathType_http::callbackRead
         , _ZFP_ZFPathType_http::callbackWrite
-        , _ZFP_ZFPathType_http::callbackFlush
-        , _ZFP_ZFPathType_http::callbackIsEof
-        , _ZFP_ZFPathType_http::callbackIsError
-        , _ZFP_ZFPathType_http::callbackSize
     )
 
 // ============================================================

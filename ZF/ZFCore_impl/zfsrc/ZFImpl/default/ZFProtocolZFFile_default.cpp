@@ -654,17 +654,6 @@ public:
             return (zfindex)fwrite(src, 1, (size_t)maxByteSize, (FILE *)token);
         }
     }
-    virtual void fileFlush(ZF_IN void *token) {
-        if(token != zfnull) {
-            fflush((FILE *)token);
-        }
-    }
-    virtual zfbool fileIsEof(ZF_IN void *token) {
-        return (feof((FILE *)token) != 0);
-    }
-    virtual zfbool fileIsError(ZF_IN void *token) {
-        return (ferror((FILE *)token) != 0);
-    }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END

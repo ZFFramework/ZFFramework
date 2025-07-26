@@ -455,12 +455,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeCreate
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRangeT
         , ZFMP_OUT(ZFUISize &, ret)
-        , ZFMP_IN(const ZFUISize &, orgSize)
+        , ZFMP_IN(const ZFUISize &, origSize)
         , ZFMP_IN(const ZFUISize &, minSize)
         , ZFMP_IN(const ZFUISize &, maxSize)
         ) {
-    ret.width = zfmApplyRange(orgSize.width, minSize.width < 0 ? (zffloat)0 : minSize.width, maxSize.width < 0 ? orgSize.width : maxSize.width);
-    ret.height = zfmApplyRange(orgSize.height, minSize.height < 0 ? (zffloat)0 : minSize.height, maxSize.height < 0 ? orgSize.height : maxSize.height);
+    ret.width = zfmApplyRange(origSize.width, minSize.width < 0 ? (zffloat)0 : minSize.width, maxSize.width < 0 ? origSize.width : maxSize.width);
+    ret.height = zfmApplyRange(origSize.height, minSize.height < 0 ? (zffloat)0 : minSize.height, maxSize.height < 0 ? origSize.height : maxSize.height);
 }
 /**
  * @brief check and apply size range
@@ -469,12 +469,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRangeT
  * or return value in range [minSize, infinite) minSize > maxSize
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyRange
-        , ZFMP_IN(const ZFUISize &, orgSize)
+        , ZFMP_IN(const ZFUISize &, origSize)
         , ZFMP_IN(const ZFUISize &, minSize)
         , ZFMP_IN(const ZFUISize &, maxSize)
         ) {
     ZFUISize ret;
-    ZFUISizeApplyRangeT(ret, orgSize, minSize, maxSize);
+    ZFUISizeApplyRangeT(ret, origSize, minSize, maxSize);
     return ret;
 }
 /**
@@ -485,11 +485,11 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, ZFUISize, ZFUISizeApplyRange
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRangeT
         , ZFMP_OUT(zffloat &, ret)
-        , ZFMP_IN(const zffloat &, orgSize)
+        , ZFMP_IN(const zffloat &, origSize)
         , ZFMP_IN(const zffloat &, minSize)
         , ZFMP_IN(const zffloat &, maxSize)
         ) {
-    ret = zfmApplyRange(orgSize, minSize < 0 ? (zffloat)0 : minSize, maxSize < 0 ? orgSize : maxSize);
+    ret = zfmApplyRange(origSize, minSize < 0 ? (zffloat)0 : minSize, maxSize < 0 ? origSize : maxSize);
 }
 /**
  * @brief check and apply size range
@@ -498,12 +498,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUISizeApplyRangeT
  * or return value in range [minSize, infinite) minSize > maxSize
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, zffloat, ZFUISizeApplyRange
-        , ZFMP_IN(const zffloat &, orgSize)
+        , ZFMP_IN(const zffloat &, origSize)
         , ZFMP_IN(const zffloat &, minSize)
         , ZFMP_IN(const zffloat &, maxSize)
         ) {
-    zffloat ret = orgSize;
-    ZFUISizeApplyRangeT(ret, orgSize, minSize, maxSize);
+    zffloat ret = origSize;
+    ZFUISizeApplyRangeT(ret, origSize, minSize, maxSize);
     return ret;
 }
 /**

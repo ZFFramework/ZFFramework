@@ -454,36 +454,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFResRead
         return ZFPathInfoRead(resToken->resExtPath, resToken->fd, buf, maxByteSize);
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsEof
-        , ZFMP_IN(void *, token)
-        ) {
-    if(token == zfnull) {
-        return zffalse;
-    }
-
-    _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::ZFResIsEof(resToken->fd);
-    }
-    else {
-        return ZFPathInfoIsEof(resToken->resExtPath, resToken->fd);
-    }
-}
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsError
-        , ZFMP_IN(void *, token)
-        ) {
-    if(token == zfnull) {
-        return zffalse;
-    }
-
-    _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    if(resToken->resExtPath.pathType().isEmpty()) {
-        return ZFResRaw::ZFResIsError(resToken->fd);
-    }
-    else {
-        return ZFPathInfoIsError(resToken->resExtPath, resToken->fd);
-    }
-}
 
 ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResSize
         , ZFMP_IN(void *, token)

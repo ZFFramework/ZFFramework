@@ -22,14 +22,11 @@ ZFPATHTYPE_FILEIO_REGISTER(file, ZFPathType_file()
         , ZFFileFindClose
         , ZFFileOpen
         , ZFFileClose
+        , ZFFileSize
         , ZFFileTell
         , ZFFileSeek
         , ZFFileRead
         , ZFFileWrite
-        , ZFFileFlush
-        , ZFFileIsEof
-        , ZFFileIsError
-        , ZFFileSize
     )
 
 // ============================================================

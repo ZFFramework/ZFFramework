@@ -77,15 +77,6 @@ public:
             );
 
     /**
-     * @brief see #ZFResIsEof
-     */
-    virtual zfbool resIsEof(ZF_IN void *token);
-    /**
-     * @brief see #ZFResIsError
-     */
-    virtual zfbool resIsError(ZF_IN void *token);
-
-    /**
      * @brief see #ZFResFindFirst, #ZFFileFindFirst
      */
     virtual zfbool resFindFirst(

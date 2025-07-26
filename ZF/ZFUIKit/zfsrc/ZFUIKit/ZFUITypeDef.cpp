@@ -171,12 +171,12 @@ ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUISize, ZFUISizeCreate
         )
 ZFMETHOD_FUNC_INLINE_DEFINE_4(void, ZFUISizeApplyRangeT
         , ZFMP_OUT(ZFUISize &, ret)
-        , ZFMP_IN(const ZFUISize &, orgSize)
+        , ZFMP_IN(const ZFUISize &, origSize)
         , ZFMP_IN(const ZFUISize &, minSize)
         , ZFMP_IN(const ZFUISize &, maxSize)
         )
 ZFMETHOD_FUNC_INLINE_DEFINE_3(ZFUISize, ZFUISizeApplyRange
-        , ZFMP_IN(const ZFUISize &, orgSize)
+        , ZFMP_IN(const ZFUISize &, origSize)
         , ZFMP_IN(const ZFUISize &, minSize)
         , ZFMP_IN(const ZFUISize &, maxSize)
         )

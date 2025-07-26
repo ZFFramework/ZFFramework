@@ -72,15 +72,6 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFResRead
         )
 
 /** @brief raw res process which bypass #ZFResExtPathAdd logic */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsEof
-        , ZFMP_IN(void *, token)
-        )
-/** @brief raw res process which bypass #ZFResExtPathAdd logic */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsError
-        , ZFMP_IN(void *, token)
-        )
-
-/** @brief raw res process which bypass #ZFResExtPathAdd logic */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResSize
         , ZFMP_IN(void *, token)
         )

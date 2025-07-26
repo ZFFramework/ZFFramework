@@ -127,7 +127,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfbool, ioSeek
             , ZFMP_IN(zfindex, byteSize)
             , ZFMP_IN(ZFSeekPos, pos)
             ) {
-    d->inputIndex = ZFIOCallbackCalcFSeek(0, d->ioBuf.length(), d->inputIndex, byteSize, pos);
+    d->inputIndex = ZFIOCallbackCalcSeek(0, d->ioBuf.length(), d->inputIndex, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_input, zfindex, ioTell) {
@@ -154,7 +154,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfbool, ioSeek
             , ZFMP_IN(zfindex, byteSize)
             , ZFMP_IN(ZFSeekPos, pos)
             ) {
-    d->outputIndex = ZFIOCallbackCalcFSeek(0, d->ioBuf.length(), d->outputIndex, byteSize, pos);
+    d->outputIndex = ZFIOCallbackCalcSeek(0, d->ioBuf.length(), d->outputIndex, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_output, zfindex, ioTell) {

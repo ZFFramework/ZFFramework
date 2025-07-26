@@ -151,7 +151,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_input, zfbool, ioSeek
     if(d->token == zfnull) {
         return zffalse;
     }
-    d->inputIndex = ZFIOCallbackCalcFSeek(0, d->fileSize, d->inputIndex, byteSize, pos);
+    d->inputIndex = ZFIOCallbackCalcSeek(0, d->fileSize, d->inputIndex, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_input, zfindex, ioTell) {
@@ -185,7 +185,7 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_output, zfbool, ioSeek
     if(d->token == zfnull) {
         return zffalse;
     }
-    d->outputIndex = ZFIOCallbackCalcFSeek(0, d->fileSize, d->outputIndex, byteSize, pos);
+    d->outputIndex = ZFIOCallbackCalcSeek(0, d->fileSize, d->outputIndex, byteSize, pos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_output, zfindex, ioTell) {

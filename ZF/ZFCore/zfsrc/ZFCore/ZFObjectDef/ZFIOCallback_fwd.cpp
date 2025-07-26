@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfindex ZFIOCallbackCalcFSeek(
+zfindex ZFIOCallbackCalcSeek(
         ZF_IN zfindex offset
         , ZF_IN zfindex length
         , ZF_IN zfindex curPos

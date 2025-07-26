@@ -17,8 +17,6 @@ ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFAlgorithm, ZFEncrypt)
 public:
     /**
      * @brief see #ZFEncrypt
-     *
-     * result must contain printable chars only, encoded with base64 is recommended
      */
     virtual zfbool encrypt(
             ZF_IN_OUT const ZFOutput &output

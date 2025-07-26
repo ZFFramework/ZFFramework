@@ -35,14 +35,11 @@ ZFPATHTYPE_DEFINE(text)
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackFindClose \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackOpen \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackClose \
+            , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackSize \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackTell \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackSeek \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackRead \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackWrite \
-            , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackFlush \
-            , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackIsEof \
-            , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackIsError \
-            , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackSize \
         )
 
 _ZFP_ZFPathType_common_DEFINE(modulePath, ZFPathType_modulePath(), ZFPathForModule)
@@ -141,6 +138,10 @@ public:
         zfdelete((_Token *)token);
         return zftrue;
     }
+    static zfindex callbackSize(ZF_IN void *token) {
+        _Token *d = (_Token *)token;
+        return d->bufSize;
+    }
     static zfindex callbackTell(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         return d->pos;
@@ -151,7 +152,7 @@ public:
             , ZF_IN_OPT ZFSeekPos position
             ) {
         _Token *d = (_Token *)token;
-        d->pos = ZFIOCallbackCalcFSeek(0, d->bufSize, d->pos, byteSize, position);
+        d->pos = ZFIOCallbackCalcSeek(0, d->bufSize, d->pos, byteSize, position);
         return zftrue;
     }
     static zfindex callbackRead(
@@ -175,19 +176,6 @@ public:
             ) {
         return 0;
     }
-    static void callbackFlush(ZF_IN void *token) {
-    }
-    static zfbool callbackIsEof(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        return (d->pos >= d->bufSize);
-    }
-    static zfbool callbackIsError(ZF_IN void *token) {
-        return zffalse;
-    }
-    static zfindex callbackSize(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        return d->bufSize;
-    }
 };
 ZFPATHTYPE_FILEIO_REGISTER(text, ZFPathType_text()
         , _ZFP_ZFPathType_text::callbackIsExist
@@ -203,14 +191,11 @@ ZFPATHTYPE_FILEIO_REGISTER(text, ZFPathType_text()
         , _ZFP_ZFPathType_text::callbackFindClose
         , _ZFP_ZFPathType_text::callbackOpen
         , _ZFP_ZFPathType_text::callbackClose
+        , _ZFP_ZFPathType_text::callbackSize
         , _ZFP_ZFPathType_text::callbackTell
         , _ZFP_ZFPathType_text::callbackSeek
         , _ZFP_ZFPathType_text::callbackRead
         , _ZFP_ZFPathType_text::callbackWrite
-        , _ZFP_ZFPathType_text::callbackFlush
-        , _ZFP_ZFPathType_text::callbackIsEof
-        , _ZFP_ZFPathType_text::callbackIsError
-        , _ZFP_ZFPathType_text::callbackSize
     )
 
 ZF_NAMESPACE_GLOBAL_END

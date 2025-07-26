@@ -226,6 +226,13 @@ public:
         zfpoolDelete(impl);
         return ret;
     }
+    static zfindex callbackSize(ZF_IN void *token) {
+        _IOTask *impl = (_IOTask *)token;
+        if(!impl) {
+            return zfindexMax();
+        }
+        return impl->io->input().ioSize();
+    }
     static zfindex callbackTell(ZF_IN void *token) {
         _IOTask *impl = (_IOTask *)token;
         if(!impl) {
@@ -276,25 +283,6 @@ public:
         impl->io->input().ioSeek(impl->io->output().ioTell());
         return ret;
     }
-    static void callbackFlush(ZF_IN void *token) {
-    }
-    static zfbool callbackIsEof(ZF_IN void *token) {
-        _IOTask *impl = (_IOTask *)token;
-        if(!impl) {
-            return zffalse;
-        }
-        return impl->io->input().ioTell() == impl->io->input().ioSize();
-    }
-    static zfbool callbackIsError(ZF_IN void *token) {
-        return zffalse;
-    }
-    static zfindex callbackSize(ZF_IN void *token) {
-        _IOTask *impl = (_IOTask *)token;
-        if(!impl) {
-            return zfindexMax();
-        }
-        return impl->io->input().ioSize();
-    }
 };
 ZFPATHTYPE_FILEIO_REGISTER(encrypt, ZFPathType_encrypt()
         , _ZFP_ZFPathType_encrypt::callbackIsExist
@@ -310,14 +298,11 @@ ZFPATHTYPE_FILEIO_REGISTER(encrypt, ZFPathType_encrypt()
         , _ZFP_ZFPathType_encrypt::callbackFindClose
         , _ZFP_ZFPathType_encrypt::callbackOpen
         , _ZFP_ZFPathType_encrypt::callbackClose
+        , _ZFP_ZFPathType_encrypt::callbackSize
         , _ZFP_ZFPathType_encrypt::callbackTell
         , _ZFP_ZFPathType_encrypt::callbackSeek
         , _ZFP_ZFPathType_encrypt::callbackRead
         , _ZFP_ZFPathType_encrypt::callbackWrite
-        , _ZFP_ZFPathType_encrypt::callbackFlush
-        , _ZFP_ZFPathType_encrypt::callbackIsEof
-        , _ZFP_ZFPathType_encrypt::callbackIsError
-        , _ZFP_ZFPathType_encrypt::callbackSize
     )
 
 // ============================================================

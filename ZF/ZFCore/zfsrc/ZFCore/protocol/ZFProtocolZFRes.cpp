@@ -71,12 +71,6 @@ zfindex ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resRead(
         ) {
     return ZFFileRead(token, buf, maxByteSize);
 }
-zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resIsEof(ZF_IN void *token) {
-    return ZFFileIsEof(token);
-}
-zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resIsError(ZF_IN void *token) {
-    return ZFFileIsError(token);
-}
 
 // ============================================================
 // res find

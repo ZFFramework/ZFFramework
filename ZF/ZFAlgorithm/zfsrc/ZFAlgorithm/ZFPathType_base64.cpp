@@ -95,6 +95,10 @@ public:
         zfdelete((_Token *)token);
         return zftrue;
     }
+    static zfindex callbackSize(ZF_IN void *token) {
+        _Token *d = (_Token *)token;
+        return d->bufSize;
+    }
     static zfindex callbackTell(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         return d->pos;
@@ -105,7 +109,7 @@ public:
             , ZF_IN_OPT ZFSeekPos position
             ) {
         _Token *d = (_Token *)token;
-        d->pos = ZFIOCallbackCalcFSeek(0, d->bufSize, d->pos, byteSize, position);
+        d->pos = ZFIOCallbackCalcSeek(0, d->bufSize, d->pos, byteSize, position);
         return zftrue;
     }
     static zfindex callbackRead(
@@ -129,19 +133,6 @@ public:
             ) {
         return 0;
     }
-    static void callbackFlush(ZF_IN void *token) {
-    }
-    static zfbool callbackIsEof(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        return (d->pos >= d->bufSize);
-    }
-    static zfbool callbackIsError(ZF_IN void *token) {
-        return zffalse;
-    }
-    static zfindex callbackSize(ZF_IN void *token) {
-        _Token *d = (_Token *)token;
-        return d->bufSize;
-    }
 };
 ZFPATHTYPE_FILEIO_REGISTER(base64, ZFPathType_base64()
         , _ZFP_ZFPathType_base64::callbackIsExist
@@ -157,14 +148,11 @@ ZFPATHTYPE_FILEIO_REGISTER(base64, ZFPathType_base64()
         , _ZFP_ZFPathType_base64::callbackFindClose
         , _ZFP_ZFPathType_base64::callbackOpen
         , _ZFP_ZFPathType_base64::callbackClose
+        , _ZFP_ZFPathType_base64::callbackSize
         , _ZFP_ZFPathType_base64::callbackTell
         , _ZFP_ZFPathType_base64::callbackSeek
         , _ZFP_ZFPathType_base64::callbackRead
         , _ZFP_ZFPathType_base64::callbackWrite
-        , _ZFP_ZFPathType_base64::callbackFlush
-        , _ZFP_ZFPathType_base64::callbackIsEof
-        , _ZFP_ZFPathType_base64::callbackIsError
-        , _ZFP_ZFPathType_base64::callbackSize
     )
 
 ZF_NAMESPACE_GLOBAL_END

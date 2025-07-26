@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief encrypt util, result value is ensured to have printable chars only
+ * @brief encrypt util
  *
  * which encrypt algorithm would be used, is depends on ZFEncrypt protocol
  */
