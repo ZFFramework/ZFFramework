@@ -228,12 +228,7 @@ void ZFObjectShortInfoT(
     ret += ")";
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFPropertyIsValueAccessed
         , ZFMP_IN(const ZFProperty *, propertyInfo)
         , ZFMP_IN(zfany const &, ownerObj)
@@ -316,5 +311,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFObjectShortInfo
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

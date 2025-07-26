@@ -106,12 +106,7 @@ void ZFImplementDynamicUnregister(
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(const ZFClass *, ZFClassDynamicRegister
         , ZFMP_IN(const zfstring &, classNameFull)
         , ZFMP_IN_OPT(const ZFClass *, parent, zfnull)
@@ -132,5 +127,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFImplementDynamicUnregister
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

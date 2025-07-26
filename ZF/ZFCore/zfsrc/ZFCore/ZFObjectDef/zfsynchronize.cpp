@@ -95,12 +95,7 @@ void _ZFP_zfsynchronizeUnlockWithLog(
 }
 #endif // #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeLock
         , ZFMP_IN(zfany const &, obj)
         )
@@ -109,5 +104,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeUnlock
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

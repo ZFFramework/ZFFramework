@@ -383,12 +383,7 @@ void ZFMP::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ")";
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
@@ -418,5 +413,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodDynamicUnregister
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

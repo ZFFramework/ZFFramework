@@ -511,12 +511,8 @@ ZFObserver &ZFGlobalObserver(void) {
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZF_NAMESPACE_END(ZFGlobalEvent)
-ZF_NAMESPACE_GLOBAL_END
 
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFObserver &, ZFGlobalObserver)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFEventNameForId
@@ -533,5 +529,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFEventDynamicUnregister
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

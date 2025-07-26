@@ -232,24 +232,49 @@ static zfbool _ZFP_ZFDI_paramConvert(
             return zffalse;
         }
 
+        ZFDI_WrapperBase *wrapper = zfcast(ZFDI_WrapperBase *, param);
+
+        // zfconv
+        if(wrapper != zfnull) {
+            zfconvImpl impl = v_zfstring::ClassData()->zfconvCheck(method->paramTypeIdAt(iParam));
+            if(impl) {
+                zfauto paramTmp;
+                if(impl(paramTmp, zfobj<v_zfstring>(wrapper->zfv()))) {
+                    paramBackup[iParam] = param;
+                    zfargs.param(iParam, paramTmp);
+                    continue;
+                }
+            }
+        }
+        else {
+            zfauto paramTmp;
+            if(zfconvT(paramTmp, method->paramTypeIdAt(iParam), param)) {
+                paramBackup[iParam] = param;
+                zfargs.param(iParam, paramTmp);
+                continue;
+            }
+        }
+
+        // string/native conversion
         const zfchar *s = zfnull;
-        ZFDI_WrapperBase *wrapper = zfargs.paramAt(iParam);
         if(wrapper != zfnull) {
             s = wrapper->zfv();
             if(s == zfnull) {
                 s = "";
             }
         }
-        else if(convStr) {
-            v_zfstring *holder = zfargs.paramAt(iParam);
-            if(holder) {
-                const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(iParam));
-                if(cls != ZFObject::ClassData()
-                        && !v_zfstring::ClassData()->classIsTypeOf(cls)
-                        ) {
-                    s = holder->zfv;
-                    if(s == zfnull) {
-                        s = "";
+        else {
+            if(convStr) {
+                v_zfstring *holder = zfcast(v_zfstring *, param);
+                if(holder) {
+                    const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(iParam));
+                    if(cls != ZFObject::ClassData()
+                            && !v_zfstring::ClassData()->classIsTypeOf(cls)
+                            ) {
+                        s = holder->zfv;
+                        if(s == zfnull) {
+                            s = "";
+                        }
                     }
                 }
             }
@@ -261,7 +286,7 @@ static zfbool _ZFP_ZFDI_paramConvert(
                         ) {
                 return zffalse;
             }
-            paramBackup[iParam] = zfargs.paramAt(iParam);
+            paramBackup[iParam] = param;
             zfargs.param(iParam, paramTmp);
             continue;
         }
@@ -970,12 +995,7 @@ zfauto ZFInvokeDetail(
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<ZFOutput> &, ZFDI_errorCallbacks)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFInvoke
         , ZFMP_IN(const zfstring &, name)
@@ -1014,5 +1034,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeDetail
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

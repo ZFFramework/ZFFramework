@@ -22,12 +22,7 @@ zfbool ZFProgressable::progressUpdate(
     return this->progressOnUpdate(from, to, progress);
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFProgressable, zfbool, progressUpdate
         , ZFMP_IN(ZFProgressable *, from)
         , ZFMP_IN(ZFProgressable *, to)
@@ -35,5 +30,4 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFProgressable, zfbool, progressUpdat
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

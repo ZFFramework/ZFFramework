@@ -21,17 +21,11 @@ void ZFOutputDefault(ZF_IN const ZFOutput &v) {
     _ZFP_ZFOutputDefault = v;
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const ZFOutput &, ZFOutputDefault)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFOutputDefault
         , ZFMP_IN(const ZFOutput &, v)
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

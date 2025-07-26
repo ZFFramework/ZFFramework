@@ -200,5 +200,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAliasRemove
         , ZFMP_IN(const zfstring &, aliasNameFull)
         )
 
+// ============================================================
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, zfconv
+        , ZFMP_IN(const zfstring &, cls)
+        , ZFMP_IN(ZFObject *, obj)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, zfconv
+        , ZFMP_IN(const ZFClass *, cls)
+        , ZFMP_IN(ZFObject *, obj)
+        )
+
 ZF_NAMESPACE_GLOBAL_END
 

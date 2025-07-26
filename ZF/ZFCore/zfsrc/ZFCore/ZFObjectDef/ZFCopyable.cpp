@@ -20,12 +20,7 @@ void ZFCopyable::copyFrom(ZF_IN ZFObject *anotherObj) {
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFCopyable, zfautoT<ZFCopyable>, copy)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCopyable, void, copyFrom
         , ZFMP_IN(ZFObject *, anotherObj)
@@ -36,5 +31,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFObjectCopy
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

@@ -158,12 +158,7 @@ void ZFMethodFuncGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) {
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodFuncForName
         , ZFMP_IN(const zfstring &, methodNamespace)
         , ZFMP_IN(const zfstring &, methodName)
@@ -197,5 +192,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<const ZFMethod *>, ZFMethodFu
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

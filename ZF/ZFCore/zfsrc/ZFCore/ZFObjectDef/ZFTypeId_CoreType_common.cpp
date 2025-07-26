@@ -112,6 +112,21 @@ ZFOBJECT_ON_INIT_USER_REGISTER_3({
     , ZFMP_IN(zfindex, pos)
     , ZFMP_IN(zfindex, len)
     )
+ZFOBJECT_ON_INIT_USER_REGISTER_2({
+        zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
+        zfv.assign((const zfchar *)src, len);
+    }, v_zfstring
+    , ZFMP_IN(const void *, src)
+    , ZFMP_IN(zfindex, len)
+    )
+ZFOBJECT_ON_INIT_USER_REGISTER_3({
+        zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
+        zfv.assign(((const zfchar *)src) + pos, len);
+    }, v_zfstring
+    , ZFMP_IN(const void *, src)
+    , ZFMP_IN(zfindex, pos)
+    , ZFMP_IN(zfindex, len)
+    )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_0(zfstring, v_zfstring, const zfstring &, Empty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(zfstring, v_zfstring, zfstring, shared
         , ZFMP_IN(const zfchar *, sLiteral)

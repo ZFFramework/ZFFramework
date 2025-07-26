@@ -167,14 +167,8 @@ void _ZFP_ZFMethodGenericInvokeError(
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_0({return ZFMP_DEF();}, ZFObject *, ZFMP_DEF)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

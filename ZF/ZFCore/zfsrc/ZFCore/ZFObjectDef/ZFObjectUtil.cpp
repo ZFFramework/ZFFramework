@@ -3,12 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFObjectCompare
         , ZFMP_IN(ZFObject *, e0)
         , ZFMP_IN(ZFObject *, e1)
@@ -41,5 +36,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, ZFObjectCreator
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

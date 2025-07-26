@@ -117,6 +117,9 @@ public:
 public:
     zfstlhashmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback> interfaceCastMap; // self implemented interface
 
+public:
+    zfstlhashmap<const ZFClass *, zfconvImpl> zfconvMap;
+
     // ============================================================
     // instance observer
 public:
@@ -214,6 +217,7 @@ public:
     , allParent()
     , allChildren()
     , interfaceCastMap()
+    , zfconvMap()
     , instanceObserver()
     , instanceObserverCached()
     , parentClassCache()
@@ -1217,6 +1221,32 @@ zfbool ZFClass::propertyInitStepIsEqual(
 }
 
 // ============================================================
+void ZFClass::zfconvRegister(ZF_IN const ZFClass *dstCls, ZF_IN zfconvImpl impl) const {
+    d->zfconvMap[dstCls] = impl;
+}
+void ZFClass::zfconvUnregister(ZF_IN const ZFClass *dstCls) const {
+    d->zfconvMap.erase(dstCls);
+}
+zfconvImpl ZFClass::zfconvCheck(ZF_IN const zfstring &dstCls) const {
+    if(!d->zfconvMap.empty()) {
+        zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = d->zfconvMap.find(ZFClass::classForName(dstCls));
+        if(it != d->zfconvMap.end()) {
+            return it->second;
+        }
+    }
+    return zfnull;
+}
+zfconvImpl ZFClass::zfconvCheck(ZF_IN const ZFClass *dstCls) const {
+    if(!d->zfconvMap.empty()) {
+        zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = d->zfconvMap.find(dstCls);
+        if(it != d->zfconvMap.end()) {
+            return it->second;
+        }
+    }
+    return zfnull;
+}
+
+// ============================================================
 // class instance methods
 void ZFClass::classTag(
         ZF_IN const zfstring &key
@@ -1901,6 +1931,63 @@ void ZFClassAliasRemove(
     cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.remove(index);
 
     _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasDetach, cls, zfnull, zfnull, aliasNameFull);
+}
+
+// ============================================================
+zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj) {
+    if(cls && obj) {
+        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
+        if(!m.empty()) {
+            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(ZFClass::classForName(cls));
+            if(it != m.end()) {
+                zfauto ret;
+                if(it->second(ret, obj)) {
+                    return ret;
+                }
+            }
+        }
+    }
+    return obj;
+}
+zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj) {
+    if(cls && obj) {
+        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
+        if(!m.empty()) {
+            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(cls);
+            if(it != m.end()) {
+                zfauto ret;
+                if(it->second(ret, obj)) {
+                    return ret;
+                }
+            }
+        }
+    }
+    return obj;
+}
+
+zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj) {
+    if(cls && obj) {
+        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
+        if(!m.empty()) {
+            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(ZFClass::classForName(cls));
+            if(it != m.end()) {
+                return it->second(ret, obj);
+            }
+        }
+    }
+    return zffalse;
+}
+zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj) {
+    if(cls && obj) {
+        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
+        if(!m.empty()) {
+            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(cls);
+            if(it != m.end()) {
+                return it->second(ret, obj);
+            }
+        }
+    }
+    return zffalse;
 }
 
 ZF_NAMESPACE_GLOBAL_END

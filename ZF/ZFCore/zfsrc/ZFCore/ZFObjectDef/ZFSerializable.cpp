@@ -955,12 +955,7 @@ zfbool ZFObjectToStringOrDataT(
     return ZFSerializableDataToStringT(ret, sd, errorHint);
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFSerializable, zfbool, serializable)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFSerializable, zfbool, serializeFromData
         , ZFMP_IN(const ZFSerializableData &, serializableData)
@@ -1073,5 +1068,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFObjectToStringOrData
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

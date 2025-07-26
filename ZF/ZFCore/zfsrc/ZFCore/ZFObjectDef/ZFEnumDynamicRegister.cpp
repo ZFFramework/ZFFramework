@@ -219,12 +219,7 @@ void ZFEnumDynamicUnregister(ZF_IN const ZFClass *enumClass) {
     ZFClassDynamicUnregister(enumClass);
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFClass *, ZFEnumDynamicRegister
         , ZFMP_IN(const zfstring &, enumClassName)
         , ZFMP_IN(const ZFCoreArray<zfuint> &, enumValues)
@@ -238,5 +233,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFEnumDynamicUnregister
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

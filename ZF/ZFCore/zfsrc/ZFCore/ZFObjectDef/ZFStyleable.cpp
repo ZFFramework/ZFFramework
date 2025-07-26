@@ -389,12 +389,7 @@ ZFEVENT_GLOBAL_REGISTER(ZFStyleOnUpdate)
 ZFEVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfanyT<ZFStyleable>, defaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
         , ZFMP_IN(ZFObject *, anotherStyleable)
@@ -444,5 +439,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateBegin)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleUpdateEnd)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

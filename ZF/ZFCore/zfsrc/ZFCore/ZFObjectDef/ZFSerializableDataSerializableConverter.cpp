@@ -579,12 +579,7 @@ zfbool ZFObjectToZFSD(
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataFromZFSD
         , ZFMP_OUT(ZFSerializableData &, serializableData)
         , ZFMP_IN(const ZFInput &, input)
@@ -638,5 +633,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToZFSD
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

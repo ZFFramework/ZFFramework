@@ -63,12 +63,6 @@ zfindex ZFIOCallback::ioSize(void) const {
     return method->executeExact<zfindex>(owner);
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
 // ============================================================
 ZFMETHOD_USER_REGISTER_2({
         return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, pos);
@@ -95,5 +89,4 @@ ZFMETHOD_USER_REGISTER_0({
     )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

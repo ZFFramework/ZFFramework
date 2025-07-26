@@ -322,17 +322,11 @@ static void _ZFP_ZFPropertyWeakDetach(
         holder->zfv);
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFProperty *, ZFPropertyForName
         , ZFMP_IN(const zfstring &, classNameOrFullName)
         , ZFMP_IN(const zfstring &, propertyName)
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

@@ -889,12 +889,7 @@ zfany ZFObjectCast(ZF_IN const ZFClass *cls, ZF_IN const zfany &obj) {
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, const ZFClass *, classData)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectInfoOfInstanceT
         , ZFMP_IN_OUT(zfstring &, ret)
@@ -1070,5 +1065,4 @@ ZFMETHOD_FUNC_USER_REGISTER_2({
     )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

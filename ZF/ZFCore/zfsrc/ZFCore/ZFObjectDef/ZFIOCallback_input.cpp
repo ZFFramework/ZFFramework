@@ -348,12 +348,7 @@ ZFInput ZFInputForString(
     return ret;
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_USER_REGISTER_3({
         v_ZFCallback *owner = invokerObject;
         ZFInput input = owner->zfv;
@@ -398,5 +393,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFInput, ZFInputForString
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

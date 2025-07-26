@@ -59,14 +59,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder) {
 }
 ZF_GLOBAL_INITIALIZER_END(zfnullObjHolder)
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_0({return ZFNull();}, ZFObject *, ZFNull)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

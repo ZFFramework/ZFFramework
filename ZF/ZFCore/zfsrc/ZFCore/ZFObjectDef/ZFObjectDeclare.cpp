@@ -80,12 +80,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     return ZFMethodDynamicRegister(paramTmp, errorHint);
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(const ZFMethod *, ZFObjectOnInitDynamicRegister
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(const ZFMP &, methodParam)
@@ -99,5 +94,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(const ZFMethod *, ZFObjectOnInitDynamicRe
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

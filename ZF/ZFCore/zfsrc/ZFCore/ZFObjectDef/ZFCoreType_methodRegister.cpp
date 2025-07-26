@@ -1,15 +1,11 @@
 #include "ZFCoreType_methodRegister.h"
 #include "ZFTypeId_CoreType.h"
+#include "ZFDynamicInvoker.h"
 #include "ZFObjectImpl.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFEXPORT_VAR_READONLY_DEFINE(zfint, ZF_ENV_ZFVERSION_MAIN, ZF_ENV_ZFVERSION_MAIN())
 ZFEXPORT_VAR_READONLY_DEFINE(zfint, ZF_ENV_ZFVERSION_SUB, ZF_ENV_ZFVERSION_SUB())
 ZFEXPORT_VAR_READONLY_DEFINE(zfint, ZF_ENV_ZFVERSION_MINOR, ZF_ENV_ZFVERSION_MINOR())
@@ -655,5 +651,4 @@ ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKey
 ZFEXPORT_VAR_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerDefault)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

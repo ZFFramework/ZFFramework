@@ -519,12 +519,7 @@ void _ZFP_ZFEnumMethodReg(
     }
 }
 
-ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
+// ============================================================
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         invokerObject->to<ZFEnum *>()->_ZFP_enumValue((zfuint)value);
     }, ZFEnum
@@ -608,5 +603,4 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(zfstring, zfflagsToString
         )
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
 

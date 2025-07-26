@@ -11,11 +11,10 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassFwd ZFObject;
-zfclassFwd ZFInterface;
-zfclassFwd ZFMethod;
-zfclassFwd ZFProperty;
+/** @brief see #zfconv */
+typedef zfbool (*zfconvImpl)(ZF_OUT zfauto &ret, ZF_IN ZFObject *obj);
 
+// ============================================================
 typedef ZFObject *(*_ZFP_ZFObjectConstructor)(void);
 typedef void (*_ZFP_ZFObjectDestructor)(ZF_IN ZFObject *obj);
 typedef void (*_ZFP_ZFObjectCheckInitImplementationListCallback)(ZF_IN_OUT ZFClass *cls);
@@ -587,6 +586,21 @@ public:
             , ZF_IN const ZFClass *refClass
             ) const;
 
+public:
+    /** @brief see #zfconv */
+    void zfconvRegister(ZF_IN const ZFClass *dstCls, ZF_IN zfconvImpl impl) const;
+    /** @brief see #zfconv */
+    void zfconvUnregister(ZF_IN const ZFClass *dstCls) const;
+    /** @brief see #zfconv */
+    zfconvImpl zfconvCheck(ZF_IN const zfstring &dstCls) const;
+    /** @brief see #zfconv */
+    zfconvImpl zfconvCheck(ZF_IN const ZFClass *dstCls) const;
+
+    friend zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+    friend zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+    friend zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+    friend zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+
     // ============================================================
     // class instance methods
 public:
@@ -883,6 +897,56 @@ extern ZFLIB_ZFCore void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfstring &aliasNameFull
         );
+
+// ============================================================
+/**
+ * @brief object conversion
+ *
+ * some objects can be cast implicitly, `zfstring` to `const void *` for example,
+ * this method was designed for this, usage:
+ * @code
+ *   // register once
+ *   ZFCONV_REG(v_zfptr, v_zfstring) {
+ *       ret = zfobj<v_zfptr>(obj->zfv.cString());
+ *
+ *       // usually, the result object should retain the obj,
+ *       // to prevent unsafe pointer reference
+ *       ret->objectTag("zfconv", obj);
+ *
+ *       return zftrue;
+ *   }
+ *
+ *   // use
+ *   // note, when convert failed, the original object would be returned
+ *   zfauto converted = zfconv("void", zfobj<v_zfstring>());
+ *
+ *   // or use with explicit check
+ *   zfauto ret;
+ *   if(zfconvT(ret, "void", zfobj<v_zfstring>())) {
+ *       // conversion was success
+ *   }
+ * @endcode
+ */
+extern ZFLIB_ZFCore zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+/** @brief see #zfconv */
+extern ZFLIB_ZFCore zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+
+/** @brief see #zfconv */
+extern ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+/** @brief see #zfconv */
+extern ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+
+/** @brief see #zfconv */
+#define ZFCONV_REG(dstCls, srcCls) \
+    static zfbool _ZFP_zfconv_##dstCls##_##srcCls(ZF_OUT zfauto &ret, ZF_IN ZFObject *obj); \
+    ZF_STATIC_REGISTER_INIT(zfconv_##dstCls##_##srcCls) { \
+        srcCls::ClassData()->zfconvRegister(dstCls::ClassData(), _ZFP_zfconv_##dstCls##_##srcCls); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(zfconv_##dstCls##_##srcCls) { \
+        srcCls::ClassData()->zfconvUnregister(dstCls::ClassData()); \
+    } \
+    ZF_STATIC_REGISTER_END(zfconv_##dstCls##_##srcCls) \
+    static zfbool _ZFP_zfconv_##dstCls##_##srcCls(ZF_OUT zfauto &ret, ZF_IN ZFObject *obj)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFClass_h_
