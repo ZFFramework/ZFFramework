@@ -54,7 +54,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject urlTmp = JNIUtilNewStringUTF(jniEnv, url);
-        JNIBlockedDeleteLocalRef(urlTmp);
+        JNIScopeDeleteLocalRef(urlTmp);
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId
             , (jobject)webView->nativeImplView()
             , urlTmp
@@ -73,9 +73,9 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject htmlTmp = JNIUtilNewStringUTF(jniEnv, html);
-        JNIBlockedDeleteLocalRef(htmlTmp);
+        JNIScopeDeleteLocalRef(htmlTmp);
         jobject baseUrlTmp = ((baseUrl == zfnull) ? NULL : JNIUtilNewStringUTF(jniEnv, baseUrl));
-        JNIBlockedDeleteLocalRef(baseUrlTmp);
+        JNIScopeDeleteLocalRef(baseUrlTmp);
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId
             , (jobject)webView->nativeImplView()
             , htmlTmp

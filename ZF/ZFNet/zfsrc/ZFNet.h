@@ -8,8 +8,8 @@
 
 #include "ZFNet/ZFHttpRequest.h"
 #include "ZFNet/ZFHttpServer.h"
+#include "ZFNet/ZFIO_http.h"
 #include "ZFNet/ZFNetDef.h"
-#include "ZFNet/ZFPathType_http.h"
 #include "ZFNet/ZFTcp.h"
 #include "ZFNet/ZFUdp.h"
 #include "ZFNet/ZFWebSocket.h"

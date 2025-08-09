@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFObjectIO_h_
 #define _ZFI_ZFObjectIO_h_
 
-#include "ZFFile.h"
+#include "ZFIODef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

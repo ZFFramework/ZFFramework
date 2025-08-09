@@ -67,10 +67,6 @@
  *   // after end of this code line
  *   func(zfobj<MyObject>());
  *
- *   MyObject *obj = zfAlloc(MyObject);
- *   // release the object automatically after end of this code line
- *   func(zflineRelease(obj));
- *
  *   obj = zfAlloc(MyObject);
  *   // most powerful auto release logic similar to autorelease in Object-C
  *   // however, requires ZFThread,

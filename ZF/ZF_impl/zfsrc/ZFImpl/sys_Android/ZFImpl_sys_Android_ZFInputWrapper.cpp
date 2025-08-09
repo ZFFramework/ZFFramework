@@ -69,11 +69,11 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , jboolean, native_1nativeInputSeek
         , JNIPointer zfjniPointerOwnerZFInput
         , jlong size
-        , jint pos
+        , jint seekPos
         ) {
     v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     ZFInput input = inputHolder->zfv;
-    return (jboolean)input.ioSeek((zfindex)size, (ZFSeekPos)pos);
+    return (jboolean)input.ioSeek((zfindex)size, (ZFSeekPos)seekPos);
 }
 JNI_METHOD_DECLARE_END()
 

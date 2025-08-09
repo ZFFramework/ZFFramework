@@ -7,10 +7,6 @@
 #define _ZFI_ZFTypeId_CoreType_h_
 
 #include "ZFTypeId_spec.h"
-#include "ZFFilterForZFClass.h"
-#include "ZFFilterForZFObject.h"
-#include "ZFFilterForZFMethod.h"
-#include "ZFFilterForZFProperty.h"
 #include "ZFMethodDynamicRegister.h"
 #include "ZFPropertyDynamicRegister.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -435,37 +431,6 @@ ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenerator)
  *
  * serializable data:
  * @code
- *   <ZFFilterType value="value" />
- * @endcode
- */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
-ZFTYPEID_REG(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
-
-/**
- * @brief see #ZFTYPEID_DECLARE
- *
- * serializable data:
- * @code
- *   <ZFFilterResult value="value" />
- * @endcode
- */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterResult, ZFFilterResult)
-ZFTYPEID_REG(ZFLIB_ZFCore, ZFFilterResult, ZFFilterResult)
-
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIdentity, ZFFilterForIdentity)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForIdentity, ZFFilterForIdentity)
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
-
-/**
- * @brief see #ZFTYPEID_DECLARE
- *
- * serializable data:
- * @code
  *   <ZFPathInfo value="pathType:pathData" />
  * @endcode
  */
@@ -572,18 +537,6 @@ ZFOUTPUT_TYPE(ZFClassDataUpdateData, {v.objectInfoT(s);})
  *
  * serializable data:
  * @code
- *   <ZFFilterForZFClassType value="value" />
- * @endcode
- */
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClassType, ZFFilterForZFClassType)
-ZFTYPEID_REG(ZFLIB_ZFCore, ZFFilterForZFClassType, ZFFilterForZFClassType)
-ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToStringT(s, v);})
-
-/**
- * @brief see #ZFTYPEID_DECLARE
- *
- * serializable data:
- * @code
  *   <ZFMethodAccessType value="value" />
  * @endcode
  */
@@ -610,22 +563,6 @@ ZFOUTPUT_TYPE(ZFArgs, {v.objectInfoT(s);})
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserver, ZFObserver)
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFObserver, ZFObserver)
 ZFOUTPUT_TYPE(ZFObserver, {v.objectInfoT(s);})
-
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClass, ZFFilterForZFClass)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFClass, ZFFilterForZFClass)
-ZFOUTPUT_TYPE(ZFFilterForZFClass, {v.objectInfoT(s);})
-
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFMethod, ZFFilterForZFMethod)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFMethod, ZFFilterForZFMethod)
-ZFOUTPUT_TYPE(ZFFilterForZFMethod, {v.objectInfoT(s);})
-
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFProperty, ZFFilterForZFProperty)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFProperty, ZFFilterForZFProperty)
-ZFOUTPUT_TYPE(ZFFilterForZFProperty, {v.objectInfoT(s);})
-
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFObject, ZFFilterForZFObject)
-ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFFilterForZFObject, ZFFilterForZFObject)
-ZFOUTPUT_TYPE(ZFFilterForZFObject, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodGenericInvoker, ZFMethodGenericInvoker)
 ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFMethodGenericInvoker, ZFMethodGenericInvoker)

@@ -56,10 +56,11 @@ public:
             )
     ZFMETHOD_DECLARE_2(zfbool, ioSeek
             , ZFMP_IN(zfindex, byteSize)
-            , ZFMP_IN(ZFSeekPos, pos)
+            , ZFMP_IN(ZFSeekPos, seekPos)
             )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
+    ZFMETHOD_DECLARE_0(zfbool, ioClose)
 };
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, onInput
         , ZFMP_IN(void *, buf)
@@ -77,9 +78,9 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, onInput
 }
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForInputInRangeOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
-        , ZFMP_IN(ZFSeekPos, pos)
+        , ZFMP_IN(ZFSeekPos, seekPos)
         ) {
-    curPos = ZFIOCallbackCalcSeek(srcStart, srcCount, curPos, byteSize, pos);
+    curPos = ZFIOCallbackCalcSeek(srcStart, srcCount, curPos, byteSize, seekPos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, ioTell) {
@@ -87,6 +88,9 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, ioTell) {
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, ioSize) {
     return srcCount;
+}
+ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfbool, ioClose) {
+    return this->src.ioClose();
 }
 ZFInput ZFInputForInputInRange(
         ZF_IN const ZFInput &inputCallback
@@ -240,7 +244,7 @@ public:
             )
     ZFMETHOD_DECLARE_2(zfbool, ioSeek
             , ZFMP_IN(zfindex, byteSize)
-            , ZFMP_IN(ZFSeekPos, pos)
+            , ZFMP_IN(ZFSeekPos, seekPos)
             )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
@@ -262,9 +266,9 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, onInput
 }
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferUnsafeOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
-        , ZFMP_IN(ZFSeekPos, pos)
+        , ZFMP_IN(ZFSeekPos, seekPos)
         ) {
-    p = pStart + ZFIOCallbackCalcSeek(0, pEnd - pStart, p - pStart, byteSize, pos);
+    p = pStart + ZFIOCallbackCalcSeek(0, pEnd - pStart, p - pStart, byteSize, seekPos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, ioTell) {

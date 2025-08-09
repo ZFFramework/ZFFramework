@@ -1,5 +1,6 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFRes.h"
+#include "ZFCore/ZFIO_file.h"
 
 #include "ZFImpl/ZFImpl_env.h"
 

@@ -65,10 +65,11 @@ static void *_ZFP_ZFUIImageFromInput(ZF_IN const ZFInput &input) {
 ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIImageFromBase64
         , ZFMP_IN(const ZFInput &, inputCallback)
         ) {
-    zfobj<ZFIOBufferByCacheFile> io;
+    zfobj<ZFIOBuffer> io;
     zfautoT<ZFUIImage> ret = ZFUIImage::ClassData()->newInstance();
     ZFUIImage *image = ret;
     if(image != zfnull && ZFBase64Decode(io->output(), inputCallback)) {
+        io->input().ioSeek(0);
         void *nativeImage = _ZFP_ZFUIImageFromInput(io->input());
         if(nativeImage != zfnull) {
             image->nativeImage(nativeImage, zffalse);
@@ -82,10 +83,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFUIImageToBase64
         , ZFMP_IN(ZFUIImage *, image)
         ) {
     if(image != zfnull && image->nativeImage() != zfnull && outputCallback) {
-        zfobj<ZFIOBufferByCacheFile> io;
+        zfobj<ZFIOBuffer> io;
         if(!ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageToOutput(image->nativeImage(), io->output())) {
             return zffalse;
         }
+        io->input().ioSeek(0);
         return ZFBase64Encode(outputCallback, io->input());
     }
     return zffalse;

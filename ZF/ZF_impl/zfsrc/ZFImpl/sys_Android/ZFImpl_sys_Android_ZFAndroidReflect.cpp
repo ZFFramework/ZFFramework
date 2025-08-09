@@ -343,7 +343,7 @@ jobject ZFAndroidReflect::implInterface(ZF_IN const zfchar *interfaceClass, ZF_I
         ).c_str());
 
     jstring jInterfaceClass = JNIUtilNewStringUTF(jniEnv, interfaceClass);
-    JNIBlockedDeleteLocalRef(jInterfaceClass);
+    JNIScopeDeleteLocalRef(jInterfaceClass);
 
     // release in native_implInterface
     v_ZFListener *implHolder = zfAlloc(v_ZFListener, impl);

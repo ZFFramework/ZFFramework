@@ -22,7 +22,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  ioSeek, similar to FILE's #ZFFileSeek, proto type:\n
  *   zfbool ioSeek(
  *           ZF_IN zfindex byteSize
- *           , ZF_IN ZFSeekPos pos
+ *           , ZF_IN ZFSeekPos seekPos
  *           );\n
  *   return false if the callback doesn't support seek or error occurred
  * -  ioTell, similar to FILE's #ZFFileTell, proto type:\n
@@ -35,6 +35,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   @note for ouput callbacks, the size shows the current size of the output,
  *     it may or may not be the actual size written to the output,
  *     usually it has no actual meaning
+ * -  ioClose, close the callback, proto type:\n
+ *   zfbool ioClose(void);\n
  */
 #define ZFCallbackTagKeyword_ioOwner "ZFCallbackTagKeyword_ioOwner"
 /**
@@ -68,7 +70,7 @@ public:
      */
     zfbool ioSeek(
             ZF_IN zfindex byteSize
-            , ZF_IN_OPT ZFSeekPos pos = ZFSeekPosBegin
+            , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             ) const;
     /**
      * @brief similar to FILE's #ZFFileTell, return current's index or zfindexMax() if the callback doesn't support seek
@@ -78,6 +80,11 @@ public:
      * @brief calculate the callback's size or return zfindexMax() if not supported
      */
     zfindex ioSize(void) const;
+
+    /**
+     * @brief close the io callback
+     */
+    zfbool ioClose(void) const;
 
     /**
      * @brief util to set #ZFCallbackTagKeyword_ioOwner

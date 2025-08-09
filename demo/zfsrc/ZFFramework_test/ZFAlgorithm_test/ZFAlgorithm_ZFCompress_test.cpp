@@ -14,9 +14,9 @@ protected:
         this->outputSeparator();
         this->output("compress buffer");
         {
-            zfobj<ZFIOBufferByMemory> io;
-            ZFCompressContent(io->output(), ZFInputForBufferUnsafe("uncompressed text"));
-            ZFDecompressContent(ZFOutputDefault(), io->input());
+            zfstring buf;
+            ZFInputRead(ZFOutputForCompress(ZFOutputForString(buf)), ZFInputForString("uncompressed text"));
+            ZFInputRead(ZFOutputDefault(), ZFInputForCompress(ZFInputForString(buf)));
             ZFOutputDefault() << "\n";
         }
 
@@ -25,20 +25,20 @@ protected:
         {
             ZFPathInfo pathInfoSrc(ZFPathType_res(), ".");
             ZFPathInfo pathInfoDst(ZFPathType_cachePath(), "ZFCompress_test");
+            ZFPathInfo pathInfoZip(ZFPathType_cachePath(), "ZFCompress_test.zip");
 
             this->output("original src tree:");
-            ZFPathInfoTreePrint(pathInfoSrc, ZFOutputDefault(), "    ");
+            ZFIOTreePrint(pathInfoSrc, ZFOutputDefault(), "    ");
             this->output("original dst tree:");
-            ZFPathInfoTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
+            ZFIOTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
 
-            zfobj<ZFIOBufferByCacheFile> io;
-            ZFCompressDir(io->output(), pathInfoSrc, "");
+            ZFCompressDir(pathInfoZip, pathInfoSrc, "");
 
-            ZFDecompressDir(pathInfoDst, io->input());
+            ZFDecompressDir(pathInfoDst, pathInfoDst);
             this->output("decompressed dst tree:");
-            ZFPathInfoTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
+            ZFIOTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
 
-            ZFPathInfoRemove(pathInfoDst);
+            ZFIORemove(pathInfoDst);
         }
 
         this->stop();

@@ -84,7 +84,7 @@ public:
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, resPathFixed.cString());
-        JNIBlockedDeleteLocalRef(param);
+        JNIScopeDeleteLocalRef(param);
         return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
     }
     virtual zfbool resIsDir(ZF_IN const zfchar *resPath) {
@@ -97,33 +97,8 @@ public:
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, resPathFixed.cString());
-        JNIBlockedDeleteLocalRef(param);
+        JNIScopeDeleteLocalRef(param);
         return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
-    }
-
-    virtual zfbool resCopy(
-            ZF_IN const zfchar *resPath
-            , ZF_IN const zfchar *dstPath
-            , ZF_IN_OPT zfbool isRecursive = zftrue
-            , ZF_IN_OPT zfbool isForce = zftrue
-            ) {
-        zfstring resPathFixed;
-        this->resPathFormat(resPathFixed, resPath);
-
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFRes(), "native_resCopy",
-            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
-                .add(JNIType::S_object_String())
-                .add(JNIType::S_object_String())
-                .add(JNIType::S_boolean())
-                .add(JNIType::S_boolean())
-            ).c_str());
-        return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId
-            , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed))
-            , JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath))
-            , (jboolean)isRecursive
-            , (jboolean)isForce
-            );
     }
 
     // ============================================================
@@ -173,7 +148,7 @@ public:
     virtual zfbool resSeek(
             ZF_IN void *token
             , ZF_IN zfindex byteSize
-            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             ) {
         if(token == zfnull) {
             return zffalse;
@@ -181,7 +156,7 @@ public:
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         zfint seekPos = SEEK_SET;
         long seekSize = (long)byteSize;
-        switch(position) {
+        switch(seekPos) {
             case ZFSeekPosBegin:
                 seekPos = SEEK_SET;
                 break;
@@ -220,7 +195,7 @@ public:
     // ============================================================
     // res find
     virtual zfbool resFindFirst(
-            ZF_IN_OUT ZFFileFindData::Impl &fd
+            ZF_IN_OUT ZFIOFindData::Impl &fd
             , ZF_IN const zfchar *resPath
             ) {
         zfstring absPath;
@@ -236,9 +211,9 @@ public:
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, absPath.cString());
-        JNIBlockedDeleteLocalRef(param);
+        JNIScopeDeleteLocalRef(param);
         jobjectArray files = (jobjectArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
-        JNIBlockedDeleteLocalRef(files);
+        JNIScopeDeleteLocalRef(files);
         zfbool success = zffalse;
         if(files != NULL) {
             d->files = (jobjectArray)JNIUtilNewGlobalRef(jniEnv, files);
@@ -249,7 +224,7 @@ public:
         }
         return success;
     }
-    virtual zfbool resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) {
+    virtual zfbool resFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         if(fd.nativeFd == zfnull) {
             return zffalse;
         }
@@ -289,7 +264,7 @@ public:
 
         return zftrue;
     }
-    virtual void resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {
+    virtual void resFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         if(fd.nativeFd == zfnull) {
             return;
         }

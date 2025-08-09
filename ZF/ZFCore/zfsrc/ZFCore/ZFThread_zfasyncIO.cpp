@@ -114,7 +114,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
                 , zfindex, splitSize
                 ) {
             void *buf = zfmalloc(splitSize);
-            zfblockedFree(buf);
+            zfscopeFree(buf);
             do {
                 _ZFP_zfasyncIO_log("split begin (%s %s)", splitOffset, splitSize);
                 {

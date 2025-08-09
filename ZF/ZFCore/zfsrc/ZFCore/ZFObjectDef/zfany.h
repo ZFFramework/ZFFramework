@@ -66,6 +66,9 @@ public:
     inline ZFObject *operator -> (void) const {
         return _ZFP_obj;
     }
+    inline operator zfbool (void) const {
+        return _ZFP_obj != zfnull;
+    }
     inline operator ZFObject * (void) const {
         return _ZFP_obj;
     }

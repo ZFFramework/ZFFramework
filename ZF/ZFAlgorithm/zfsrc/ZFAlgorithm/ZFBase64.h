@@ -13,22 +13,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief char table for ZFBase64, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" by default
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, const zfchar *, ZFBase64TableDefault)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfstring, ZFBase64Table)
 
 /**
  * @brief pad token for ZFBase64, '=' by default
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfchar, ZFBase64PadDefault)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfchar, ZFBase64Pad)
 
+/**
+ * @brief line break position for ZFBase64, zfindexMax by default
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFAlgorithm, zfindex, ZFBase64LineBreakPos)
 /**
  * @brief standard line break position for ZFBase64, 76 by default
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfindex, ZFBase64LineBreakPosStandard)
-
-/**
- * @brief no line break for ZFBase64
- */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfindex, ZFBase64LineBreakPosNone)
 
 // ============================================================
 // encode
@@ -40,7 +39,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfindex, ZFBase64LineBreakPosNo
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfindex, ZFBase64EncodeCalcSize
         , ZFMP_IN(zfindex, srcLen)
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         )
 
 /**
@@ -51,9 +50,9 @@ extern ZFLIB_ZFAlgorithm zfbool ZFBase64Encode(
         , ZF_IN const void *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfindex *outResultSize = zfnull
-        , ZF_IN_OPT const zfchar *table = ZFBase64TableDefault()
-        , ZF_IN_OPT zfchar pad = ZFBase64PadDefault()
-        , ZF_IN_OPT zfindex lineBreakPos = ZFBase64LineBreakPosNone()
+        , ZF_IN_OPT const zfchar *table = ZFBase64Table()
+        , ZF_IN_OPT zfchar pad = ZFBase64Pad()
+        , ZF_IN_OPT zfindex lineBreakPos = ZFBase64LineBreakPos()
         );
 /**
  * @brief encode base64, return byte size written even if error occurred
@@ -62,9 +61,9 @@ ZFMETHOD_FUNC_DECLARE_6(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Encode
         , ZFMP_IN_OUT(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFInput &, inputCallback)
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         )
 
 /**
@@ -75,9 +74,9 @@ ZFMETHOD_FUNC_DECLARE_7(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Encode
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         )
 
 // ============================================================
@@ -90,7 +89,7 @@ ZFMETHOD_FUNC_DECLARE_7(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Encode
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfindex, ZFBase64DecodeCalcSize
         , ZFMP_IN(zfindex, srcLen)
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         )
 /**
  * @brief encode base64, return byte size written even if error occurred
@@ -103,8 +102,8 @@ extern ZFLIB_ZFAlgorithm zfbool ZFBase64Decode(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfindex *outResultSize = zfnull
-        , ZF_IN_OPT const zfchar *table = ZFBase64TableDefault()
-        , ZF_IN_OPT zfchar pad = ZFBase64PadDefault()
+        , ZF_IN_OPT const zfchar *table = ZFBase64Table()
+        , ZF_IN_OPT zfchar pad = ZFBase64Pad()
         );
 /**
  * @brief encode base64, return byte size written even if error occurred
@@ -113,8 +112,8 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Decode
         , ZFMP_IN_OUT(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFInput &, inputCallback)
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
         )
 
 /**
@@ -125,8 +124,8 @@ ZFMETHOD_FUNC_DECLARE_6(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Decode
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
         )
 
 // ============================================================
@@ -138,12 +137,12 @@ zfclass ZFLIB_ZFAlgorithm ZFBase64 : zfextend ZFObject, zfimplement ZFSerializab
     ZFIMPLEMENT_DECLARE(ZFSerializable)
 
 public:
-    /** @brief see #ZFBase64TableDefault */
-    ZFPROPERTY_ASSIGN(zfstring, table, ZFBase64TableDefault())
-    /** @brief see #ZFBase64PadDefault */
-    ZFPROPERTY_ASSIGN(zfchar, pad, ZFBase64PadDefault())
-    /** @brief see #ZFBase64LineBreakPosNone */
-    ZFPROPERTY_ASSIGN(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+    /** @brief see #ZFBase64Table */
+    ZFPROPERTY_ASSIGN(zfstring, table, ZFBase64Table())
+    /** @brief see #ZFBase64Pad */
+    ZFPROPERTY_ASSIGN(zfchar, pad, ZFBase64Pad())
+    /** @brief see #ZFBase64LineBreakPos */
+    ZFPROPERTY_ASSIGN(zfindex, lineBreakPos, ZFBase64LineBreakPos())
 
 public:
     /** @brief see #ZFBase64EncodeCalcSize */

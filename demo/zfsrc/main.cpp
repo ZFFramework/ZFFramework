@@ -221,7 +221,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
 
 // ============================================================
 ZFMAIN_PARAM_DISPATCH(LuaRunner) {
-    if(ZFApp::appParams().isEmpty() || ZFRegExpFind(ZFApp::appParams()[0], ".*\\.lua$") == ZFIndexRangeMax()) {
+    if(ZFApp::appParams().isEmpty() || !ZFRegExpMatch(ZFApp::appParams()[0], ".*\\.lua$")) {
         return;
     }
     zfargs.eventFiltered(zftrue);

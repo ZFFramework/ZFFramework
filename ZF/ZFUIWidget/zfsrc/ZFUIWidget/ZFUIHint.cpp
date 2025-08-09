@@ -182,7 +182,7 @@ public:
         zfRetainChange(this->started, zfnull);
         ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->window()->ownerSysWindow());
         zfRetain(this->pimplOwner);
-        zfblockedRelease(this->pimplOwner);
+        zfscopeRelease(this->pimplOwner);
         hintList->removeElement(this->pimplOwner);
         this->pimplOwner->hintOnHide();
         this->pimplOwner->window()->hide();
@@ -289,7 +289,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hide) {
             d->showing = zffalse;
             d->delaying = zffalse;
             zfRetain(this);
-            zfblockedRelease(this);
+            zfscopeRelease(this);
             ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->ownerSysWindow());
             hintList->removeElement(this);
             zfRelease(this);

@@ -112,7 +112,7 @@ public:
                 ;
             zfstring runningTaskKey = zftext("_ZFP_ZFThreadPoolRunning");
             ownerThread->objectTag(runningTaskKey, taskData);
-            zfunsafe_zfblockedRelease(zfunsafe_zfRetain(taskData));
+            zfunsafe_zfscopeRelease(zfunsafe_zfRetain(taskData));
             ZFCoreMutexUnlock();
 
             taskData->callback.execute(taskData->zfargsForTask);

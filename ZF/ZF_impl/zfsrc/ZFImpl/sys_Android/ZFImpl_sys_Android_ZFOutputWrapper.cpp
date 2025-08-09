@@ -60,11 +60,11 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , jboolean, native_1nativeOutputSeek
         , JNIPointer zfjniPointerOwnerZFOutput
         , jlong size
-        , jint pos
+        , jint seekPos
         ) {
     v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     ZFOutput output = outputHolder->zfv;
-    return (jboolean)output.ioSeek((zfindex)size, (ZFSeekPos)pos);
+    return (jboolean)output.ioSeek((zfindex)size, (ZFSeekPos)seekPos);
 }
 JNI_METHOD_DECLARE_END()
 

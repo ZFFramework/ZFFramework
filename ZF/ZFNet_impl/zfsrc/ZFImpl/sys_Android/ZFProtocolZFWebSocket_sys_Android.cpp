@@ -25,7 +25,7 @@ public:
                 , JNIConvertZFObjectToJNIType(jniEnv, owner)
                 , ZFImpl_sys_Android_zfstringToString(url)
             );
-        JNIBlockedDeleteLocalRef(nativeWebSocket);
+        JNIScopeDeleteLocalRef(nativeWebSocket);
         return JNIUtilNewGlobalRef(jniEnv, nativeWebSocket);
     }
     virtual void close(
@@ -56,7 +56,7 @@ public:
                     .add(JNIType::S_object_Object())
                     ).c_str());
         jbyteArray nativeBuf = JNIUtilNewByteArray(jniEnv, size);
-        JNIBlockedDeleteLocalRef(nativeBuf);
+        JNIScopeDeleteLocalRef(nativeBuf);
         JNIUtilSetByteArrayRegion(jniEnv, nativeBuf, 0, (jint)size, (const jbyte *)data);
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), jmId
                 , (jobject)nativeWebSocket
@@ -76,7 +76,7 @@ public:
                     .add(JNIType::S_object_Object())
                     ).c_str());
         jbyteArray nativeBuf = JNIUtilNewByteArray(jniEnv, size);
-        JNIBlockedDeleteLocalRef(nativeBuf);
+        JNIScopeDeleteLocalRef(nativeBuf);
         JNIUtilSetByteArrayRegion(jniEnv, nativeBuf, 0, (jint)size, (const jbyte *)data);
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFWebSocket(), jmId
                 , (jobject)nativeWebSocket

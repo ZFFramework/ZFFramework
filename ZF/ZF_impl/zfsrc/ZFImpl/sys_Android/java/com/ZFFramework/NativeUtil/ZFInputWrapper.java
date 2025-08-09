@@ -12,11 +12,11 @@ import java.io.InputStream;
  */
 public class ZFInputWrapper extends InputStream {
 
-    public boolean ioSeek(long size, int pos) {
+    public boolean ioSeek(long size, int seekPos) {
         if (this.zfjniPointerOwnerZFInput == 0) {
             return false;
         } else {
-            return native_nativeInputSeek(this.zfjniPointerOwnerZFInput, size, pos);
+            return native_nativeInputSeek(this.zfjniPointerOwnerZFInput, size, seekPos);
         }
     }
 
@@ -51,8 +51,8 @@ public class ZFInputWrapper extends InputStream {
 
     public static native void native_nativeInputClose(long zfjniPointerOwnerZFInput);
 
-    // pos: ZFSeekPos
-    public static native boolean native_nativeInputSeek(long zfjniPointerOwnerZFInput, long size, int pos);
+    // seekPos: ZFSeekPos
+    public static native boolean native_nativeInputSeek(long zfjniPointerOwnerZFInput, long size, int seekPos);
 
     public static native long native_nativeInputTell(long zfjniPointerOwnerZFInput);
 

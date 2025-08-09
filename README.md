@@ -184,12 +184,12 @@ example: chain http and zip file, and R/W contents in the zip file just like nor
 #include "ZFCore.h"
 ZFMAIN_ENTRY() {
     // before
-    ZFPathInfoTreePrint(ZFPathInfo("res:"));
+    ZFIOTreePrint(ZFPathInfo("res:"));
 
     ZFResExtPathAdd("compress:http:http://192.168.xxx.xxx/xxx.zip|");
 
     // after
-    ZFPathInfoTreePrint(ZFPathInfo("res:"));
+    ZFIOTreePrint(ZFPathInfo("res:"));
     ZFInputRead(ZFLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
 }
 ```

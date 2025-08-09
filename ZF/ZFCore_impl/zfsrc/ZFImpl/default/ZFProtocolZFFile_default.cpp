@@ -1,7 +1,7 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFFile.h"
 #include "ZFCore/zfstringW.h"
-#include "ZFCore/ZFFile.h"
+#include "ZFCore/ZFIO_file.h"
 
 #include "ZFImpl/ZFImpl_env.h"
 
@@ -42,9 +42,9 @@ public:
 
     virtual zfbool filePathCreate(
             ZF_IN const zfchar *path
-            , ZF_IN_OPT zfbool autoMakeParent = zffalse
+            , ZF_IN_OPT zfbool autoCreateParent = zffalse
             ) {
-        if(autoMakeParent) {
+        if(autoCreateParent) {
             return this->makePath(path);
         }
         else {
@@ -96,18 +96,6 @@ private:
         }
     }
 public:
-    virtual zfbool fileCopy(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
-            , ZF_IN_OPT zfbool isRecursive = zftrue
-            , ZF_IN_OPT zfbool isForce = zftrue
-            ) {
-        zfstring dstPathParent;
-        if(ZFPathParentOfT(dstPathParent, dstPath)) {
-            ZFPathCreate(dstPathParent);
-        }
-        return this->cp_or_mv(zftrue, srcPath, dstPath, isRecursive, isForce);
-    }
     virtual zfbool fileMove(
             ZF_IN const zfchar *srcPath
             , ZF_IN const zfchar *dstPath
@@ -142,7 +130,7 @@ public:
         }
         WIN32_FIND_DATAW fd;
         HANDLE hFind;
-        void setup(ZFFileFindData::Impl &zfd) {
+        void setup(ZFIOFindData::Impl &zfd) {
             zfd.name.removeAll();
             zfstringToUTF8(zfd.name, fd.cFileName, v_ZFStringEncoding::e_UTF16);
 
@@ -161,7 +149,7 @@ public:
         DIR *pDir;
         struct dirent *pDirent;
         struct stat fStat;
-        void setup(ZFFileFindData::Impl &zfd) {
+        void setup(ZFIOFindData::Impl &zfd) {
             zfd.name = pDirent->d_name;
 
             zfstring filePath = this->parentPath;
@@ -174,7 +162,7 @@ public:
     };
 
     virtual zfbool fileFindFirst(
-            ZF_IN_OUT ZFFileFindData::Impl &fd
+            ZF_IN_OUT ZFIOFindData::Impl &fd
             , ZF_IN const zfchar *path
             ) {
         if(path == zfnull) {return zffalse;}
@@ -221,7 +209,7 @@ public:
             return zffalse;
         }
     }
-    virtual zfbool fileFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) {
+    virtual zfbool fileFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
         #if ZF_ENV_sys_Windows
             if(!FindNextFileW(nativeFd->hFind, &(nativeFd->fd))) {return zffalse;}
@@ -238,7 +226,7 @@ public:
         }
         return zftrue;
     }
-    virtual void fileFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {
+    virtual void fileFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
 
         #if ZF_ENV_sys_Windows
@@ -414,7 +402,7 @@ private:
                 return zffalse;
             }
 
-            ZFFileFindData::Impl fd;
+            ZFIOFindData::Impl fd;
             if(this->fileFindFirst(fd, srcDir)) {
                 do {
                     zfstring srcTmp;
@@ -490,7 +478,7 @@ private:
                 #endif // #if ZF_ENV_sys_Windows #else
             }
 
-            ZFFileFindData::Impl fd;
+            ZFIOFindData::Impl fd;
             if(this->fileFindFirst(fd, dirPath)) {
                 do {
                     zfstring filePath;
@@ -531,34 +519,28 @@ private:
 public:
     virtual void *fileOpen(
             ZF_IN const zfchar *filePath
-            , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
+            , ZF_IN ZFIOOpenOptionFlags flags
             ) {
         const zfchar *sFlag = zfnull;
-        if(ZFBitTest(flag, v_ZFFileOpenOption::e_Append)) {
-            if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
-                sFlag = "a+b";
+        if(zffalse) {
+        }
+        else if(ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
+            if(this->fileIsExist(filePath)) {
+                sFlag = "r+b";
             }
             else {
-                sFlag = "ab";
+                sFlag = "w+b";
             }
         }
-        else if(ZFBitTest(flag, v_ZFFileOpenOption::e_Create)) {
-            if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
+        else if(ZFBitTest(flags, v_ZFIOOpenOption::e_Write)) {
+            if(ZFBitTest(flags, v_ZFIOOpenOption::e_Read)) {
                 sFlag = "w+b";
             }
             else {
                 sFlag = "wb";
             }
         }
-        else if(ZFBitTest(flag, v_ZFFileOpenOption::e_Write)) {
-            if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
-                sFlag = "r+b";
-            }
-            else {
-                sFlag = "wb";
-            }
-        }
-        else if(ZFBitTest(flag, v_ZFFileOpenOption::e_Read)) {
+        else if(ZFBitTest(flags, v_ZFIOOpenOption::e_Read)) {
             sFlag = "rb";
         }
         else {
@@ -601,14 +583,14 @@ public:
     virtual zfbool fileSeek(
             ZF_IN void *token
             , ZF_IN zfindex byteSize
-            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             ) {
         if(token == zfnull) {
             return zffalse;
         }
         int tmpPos = 0;
         long seekSize = (long)byteSize;
-        switch(position) {
+        switch(seekPos) {
             case ZFSeekPosBegin:
                 tmpPos = SEEK_SET;
                 break;

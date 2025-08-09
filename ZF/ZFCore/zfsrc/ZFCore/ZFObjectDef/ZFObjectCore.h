@@ -87,11 +87,7 @@ zfclassFwd _ZFP_I_zfweak;
  *   -  #ZFAutoReleasePool:
  *     similar to NSAutoReleasePool, release after pool release,
  *     zfautoRelease depends on it, and all ZFThread has a pool internally
- *   -  #zflineRelease:
- *     release after code line end, usually used for temporary object
- *   -  #zflineAlloc:
- *     same as zflineRelease(zfAlloc(...)) defined for short
- *   -  #zfblockedRelease:
+ *   -  #zfscopeRelease:
  *     release after nearest code block
  *   -  #zfobj:
  *     declare a ZFObject which looks like allocated in stack,

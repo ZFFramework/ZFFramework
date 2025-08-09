@@ -204,7 +204,7 @@ public:
         JNIEnv *jniEnv = JNIGetJNIEnv();
         cls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(className).c_str());
         ZFCoreAssertWithMessage(cls != NULL, "no class named: %s, for jclass: %s", className, funcName);
-        JNIBlockedDeleteLocalRef(cls);
+        JNIScopeDeleteLocalRef(cls);
         cls = (jclass)JNIUtilNewGlobalRef(jniEnv, cls);
     }
     ~_ZFP_ZFImpl_sys_Android_jclass(void) {

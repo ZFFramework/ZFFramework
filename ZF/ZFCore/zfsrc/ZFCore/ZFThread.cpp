@@ -25,7 +25,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
     ZFCoreMutexLock();
     while(!_ZFP_ZFThread_allThread.isEmpty()) {
         ZFThread *zfThread = _ZFP_ZFThread_allThread.getLast();
-        zfblockedRelease(zfRetain(zfThread));
+        zfscopeRelease(zfRetain(zfThread));
         ZFCoreAssert(zfThread->threadStarted());
         ZFCoreMutexUnlock();
         zfThread->threadStop();

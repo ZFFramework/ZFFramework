@@ -262,6 +262,17 @@ private:
 };
 
 /** @brief util to find by regexp */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfbool, ZFRegExpMatch
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(ZFRegExp *, pattern)
+        )
+/** @brief util to find by regexp */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfbool, ZFRegExpMatch
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, pattern)
+        )
+
+/** @brief util to find by regexp */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(ZFRegExp *, pattern)

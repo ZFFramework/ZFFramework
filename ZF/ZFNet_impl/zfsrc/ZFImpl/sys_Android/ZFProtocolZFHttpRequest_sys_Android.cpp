@@ -39,7 +39,7 @@ public:
         task->nativeTask = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , JNIConvertZFObjectToJNIType(jniEnv, request)
                 );
-        JNIBlockedDeleteLocalRef((jobject)task->nativeTask);
+        JNIScopeDeleteLocalRef((jobject)task->nativeTask);
         task->nativeTask = JNIUtilNewGlobalRef(jniEnv, (jobject)task->nativeTask);
         return task;
     }
@@ -151,7 +151,7 @@ public:
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(key)
             );
-        JNIBlockedDeleteLocalRef(jString);
+        JNIScopeDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
 
@@ -179,7 +179,7 @@ public:
         jobject nativeMap = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , (jobject)task->nativeTask
             );
-        JNIBlockedDeleteLocalRef(nativeMap);
+        JNIScopeDeleteLocalRef(nativeMap);
         return ZFImpl_sys_Android_MapIter(nativeMap);
     }
     virtual zfstring headerIterKey(
@@ -187,7 +187,7 @@ public:
             , ZF_IN const zfiter &it
             ) {
         jobject nativeKey = ZFImpl_sys_Android_MapIterKey(it);
-        JNIBlockedDeleteLocalRef(nativeKey);
+        JNIScopeDeleteLocalRef(nativeKey);
         return ZFImpl_sys_Android_zfstringFromString(nativeKey);
     }
     virtual zfstring headerIterValue(
@@ -195,7 +195,7 @@ public:
             , ZF_IN const zfiter &it
             ) {
         jobject nativeKey = ZFImpl_sys_Android_MapIterValue(it);
-        JNIBlockedDeleteLocalRef(nativeKey);
+        JNIScopeDeleteLocalRef(nativeKey);
         return ZFImpl_sys_Android_zfstringFromString(nativeKey);
     }
     virtual void headerIterValue(
@@ -293,7 +293,7 @@ public:
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(key)
             );
-        JNIBlockedDeleteLocalRef(jString);
+        JNIScopeDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
 
@@ -321,7 +321,7 @@ public:
         jobject nativeMap = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
                 , (jobject)task->nativeTask
             );
-        JNIBlockedDeleteLocalRef(nativeMap);
+        JNIScopeDeleteLocalRef(nativeMap);
         return ZFImpl_sys_Android_MapIter(nativeMap);
     }
     virtual zfstring responseHeaderIterKey(
@@ -329,7 +329,7 @@ public:
             , ZF_IN const zfiter &it
             ) {
         jobject nativeKey = ZFImpl_sys_Android_MapIterKey(it);
-        JNIBlockedDeleteLocalRef(nativeKey);
+        JNIScopeDeleteLocalRef(nativeKey);
         return ZFImpl_sys_Android_zfstringFromString(nativeKey);
     }
     virtual zfstring responseHeaderIterValue(
@@ -337,7 +337,7 @@ public:
             , ZF_IN const zfiter &it
             ) {
         jobject nativeKey = ZFImpl_sys_Android_MapIterKey(it);
-        JNIBlockedDeleteLocalRef(nativeKey);
+        JNIScopeDeleteLocalRef(nativeKey);
         return ZFImpl_sys_Android_zfstringFromString(nativeKey);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_sys_Android)

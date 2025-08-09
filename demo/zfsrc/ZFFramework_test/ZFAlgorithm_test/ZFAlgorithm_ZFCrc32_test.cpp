@@ -18,34 +18,32 @@ protected:
         this->output(zfstr("CRC32 of array \"%s\": %s", testString, value));
         ZFTestCaseAssert(value == testValue);
 
-        zfstring tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32.txt");
-        void *fp = ZFFileOpen(tmpFilePath, v_ZFFileOpenOption::e_Write);
+        ZFPathInfo tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32.txt");
+        zfautoT<ZFIOToken> fp = ZFIOOpen(tmpFilePath, v_ZFIOOpenOption::e_Write);
         if(fp != zfnull) {
-            ZFFileWrite(fp, testString);
-            ZFFileClose(fp);
+            fp->ioWrite(testString);
             fp = zfnull;
         }
         this->output(zfstr("write it to file %s, file's CRC32: %s"
                     , tmpFilePath
-                    , ZFCrc32(ZFInputForFile(tmpFilePath))
+                    , ZFCrc32(ZFInputForPathInfo(tmpFilePath))
                     ));
 
         this->outputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32_big.txt");
-        fp = ZFFileOpen(tmpFilePath, v_ZFFileOpenOption::e_Write);
+        fp = ZFIOOpen(tmpFilePath, v_ZFIOOpenOption::e_Write);
         zfindex fileSize = 0;
         if(fp != zfnull) {
             for(zfindex i = 0; i < 1000; i++) {
                 for(zfindex j = 0; j < 1000; j++) {
-                    ZFFileWrite(fp, testString);
+                    fp->ioWrite(testString);
                 }
             }
-            fileSize = ZFFileTell(fp);
-            ZFFileClose(fp);
+            fileSize = fp->ioTell();
             fp = zfnull;
         }
         ZFTimeValue tv1 = ZFTime::currentTimeValue();
-        zfflags CRC32BigFile = ZFCrc32(ZFInputForFile(tmpFilePath));
+        zfflags CRC32BigFile = ZFCrc32(ZFInputForPathInfo(tmpFilePath));
         ZFTimeValue tv2 = ZFTimeValueDec(ZFTime::currentTimeValue(), tv1);
         this->output(zfstr("write it 1000*1000 times to file %s, file's size: %s, CRC32: %X, time: %s.%03s %03s"
                     , tmpFilePath

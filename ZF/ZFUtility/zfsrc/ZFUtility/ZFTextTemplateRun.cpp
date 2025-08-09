@@ -2,86 +2,76 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTextTemplateRunParam, ZFTextTemplateRunParam)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, dirNameFilter)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, dirContentFilter)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, fileNameFilter)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, fileContentFilter)
-
-ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefault(void) {
-    static ZFTextTemplateRunParam d;
-    return d;
-}
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTextTemplateRunParamCleaner, ZFLevelZFFrameworkEssential) {
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFTextTemplateRunParamCleaner) {
-    ZFTextTemplateRunParam &d = ZFTextTemplateRunParamDefault();
-    d.dirNameFilter = ZFFilterForString();
-    d.dirContentFilter = ZFFilterForString();
-    d.fileNameFilter = ZFFilterForString();
-    d.fileContentFilter = ZFFilterForString();
-}
-ZF_GLOBAL_INITIALIZER_END(ZFTextTemplateRunParamCleaner)
-
 // ============================================================
 static zfbool _ZFP_ZFTextTemplateRun_applyName(
-        ZF_IN_OUT zfstring &path
+        ZF_IN ZFIOImpl *ioImpl
+        , ZF_IN_OUT zfstring &path
         , ZF_IN const ZFTextTemplateParam &textTemplateParam
-        , ZF_IN const ZFFilterForString &nameFilter
+        , ZF_IN ZFArray *nameFilter
         , ZF_OUT zfstring *outErrorHint
         );
 static zfbool _ZFP_ZFTextTemplateRun_applyDir(
-        ZF_IN_OUT zfstring &path
+        ZF_IN ZFIOImpl *ioImpl
+        , ZF_IN_OUT zfstring &path
         , ZF_IN const ZFTextTemplateParam &textTemplateParam
-        , ZF_IN const ZFTextTemplateRunParam &runParam
+        , ZF_IN ZFTextTemplateRunFilter *runFilter
         , ZF_OUT zfstring *outErrorHint
         );
 static zfbool _ZFP_ZFTextTemplateRun_applyFile(
-        ZF_IN_OUT zfstring &path
+        ZF_IN ZFIOImpl *ioImpl
+        , ZF_IN_OUT zfstring &path
         , ZF_IN const ZFTextTemplateParam &textTemplateParam
-        , ZF_IN const ZFTextTemplateRunParam &runParam
+        , ZF_IN ZFTextTemplateRunFilter *runFilter
         , ZF_OUT zfstring *outErrorHint
         );
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFTextTemplateRun
-        , ZFMP_IN(const zfchar *, path)
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFTextTemplateRun
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFTextTemplateParam &, textTemplateParam)
-        , ZFMP_IN_OPT(const ZFTextTemplateRunParam &, runParam, ZFTextTemplateRunParam())
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         ) {
-    zfstring pathTmp = ZFPathFormat(path);
-    if(!ZFFileIsExist(pathTmp)) {
-        zfstringAppend(outErrorHint, "path not exist: \"%s\"", path);
+    zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+    if(!ioImpl) {
+        zfstringAppend(outErrorHint, "IO impl not available: \"%s\"", pathInfo.pathType());
+        return zffalse;
+    }
+    if(!ioImpl->ioIsExist(pathInfo.pathData())) {
+        zfstringAppend(outErrorHint, "path not exist: \"%s\"", pathInfo);
         return zffalse;
     }
 
-    if(ZFFileIsDir(pathTmp)) {
-        return _ZFP_ZFTextTemplateRun_applyDir(pathTmp, textTemplateParam, runParam, outErrorHint);
+    zfstring path = pathInfo.pathData();
+    if(ioImpl->ioIsDir(pathInfo.pathData())) {
+        return _ZFP_ZFTextTemplateRun_applyDir(ioImpl, path, textTemplateParam, ZFTextTemplateRunFilter::instance(), outErrorHint);
     }
     else {
-        return _ZFP_ZFTextTemplateRun_applyFile(pathTmp, textTemplateParam, runParam, outErrorHint);
+        return _ZFP_ZFTextTemplateRun_applyFile(ioImpl, path, textTemplateParam, ZFTextTemplateRunFilter::instance(), outErrorHint);
     }
 }
 
 // ============================================================
 static zfbool _ZFP_ZFTextTemplateRun_applyName(
-        ZF_IN_OUT zfstring &path
+        ZF_IN ZFIOImpl *ioImpl
+        , ZF_IN_OUT zfstring &path
         , ZF_IN const ZFTextTemplateParam &textTemplateParam
-        , ZF_IN const ZFFilterForString &nameFilter
+        , ZF_IN ZFArray *nameFilter
         , ZF_OUT zfstring *outErrorHint
         ) {
-    if(!nameFilter.filterPassed(path)) {
-        return zftrue;
+    for(zfindex i = 0; i < nameFilter->count(); ++i) {
+        ZFRegExp *filter = nameFilter->get(i);
+        if(filter && ZFRegExpMatch(path, filter)) {
+            return zftrue;
+        }
     }
 
     zfstring fileName;
-    ZFFileNameOfT(fileName, path);
+    ioImpl->ioToFileName(fileName, path);
     zfstring fileNameNew;
     ZFTextTemplateApply(textTemplateParam, ZFOutputForString(fileNameNew), fileName);
     if(fileName.compare(fileNameNew) == 0) {
         return zftrue;
     }
     if(fileNameNew.isEmpty()) {
-        ZFFileRemove(path);
+        ioImpl->ioRemove(path);
         path.removeAll();
         return zftrue;
     }
@@ -92,7 +82,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     }
     pathNew += fileNameNew;
 
-    if(!ZFFileMove(path, pathNew)) {
+    if(!ioImpl->ioMove(path, pathNew)) {
         zfstringAppend(outErrorHint,
             "failed to move from \"%s\" to \"%s\"",
             path, pathNew);
@@ -103,93 +93,92 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     return zftrue;
 }
 static zfbool _ZFP_ZFTextTemplateRun_applyDir(
-        ZF_IN_OUT zfstring &path
+        ZF_IN ZFIOImpl *ioImpl
+        , ZF_IN_OUT zfstring &path
         , ZF_IN const ZFTextTemplateParam &textTemplateParam
-        , ZF_IN const ZFTextTemplateRunParam &runParam
+        , ZF_IN ZFTextTemplateRunFilter *runFilter
         , ZF_OUT zfstring *outErrorHint
         ) {
-    if(!_ZFP_ZFTextTemplateRun_applyName(path, textTemplateParam, runParam.dirNameFilter, outErrorHint)) {
+    if(!_ZFP_ZFTextTemplateRun_applyName(ioImpl, path, textTemplateParam, runFilter->dirNameFilter(), outErrorHint)) {
         return zffalse;
     }
     if(path.isEmpty()) {
         return zftrue;
     }
-    if(!runParam.dirContentFilter.filterPassed(path)) {
-        return zftrue;
+    for(zfindex i = 0; i < runFilter->dirContentFilter()->count(); ++i) {
+        ZFRegExp *filter = runFilter->dirContentFilter()->get(i);
+        if(filter && ZFRegExpMatch(path, filter)) {
+            return zftrue;
+        }
     }
 
     zfbool ret = zftrue;
-    ZFFileFindData fd;
-    if(ZFFileFindFirst(fd, path)) {
+    ZFIOFindData fd;
+    if(ioImpl->ioFindFirst(fd, path)) {
         do {
-            zfstring fullPath = path;
-            fullPath += '/';
-            fullPath += fd.name();
+            zfstring fullPath;
+            ioImpl->ioToChild(fullPath, path, fd.name());
             if(fd.isDir()) {
-                if(!_ZFP_ZFTextTemplateRun_applyDir(fullPath, textTemplateParam, runParam, outErrorHint)) {
+                if(!_ZFP_ZFTextTemplateRun_applyDir(ioImpl, fullPath, textTemplateParam, runFilter, outErrorHint)) {
                     ret = zffalse;
                     break;
                 }
             }
             else {
-                if(!_ZFP_ZFTextTemplateRun_applyFile(fullPath, textTemplateParam, runParam, outErrorHint)) {
+                if(!_ZFP_ZFTextTemplateRun_applyFile(ioImpl, fullPath, textTemplateParam, runFilter, outErrorHint)) {
                     ret = zffalse;
                     break;
                 }
             }
-        } while(ZFFileFindNext(fd));
-        ZFFileFindClose(fd);
+        } while(ioImpl->ioFindNext(fd));
+        ioImpl->ioFindClose(fd);
     }
     return ret;
 }
 static zfbool _ZFP_ZFTextTemplateRun_applyFile(
-        ZF_IN_OUT zfstring &path
+        ZF_IN ZFIOImpl *ioImpl
+        , ZF_IN_OUT zfstring &path
         , ZF_IN const ZFTextTemplateParam &textTemplateParam
-        , ZF_IN const ZFTextTemplateRunParam &runParam
+        , ZF_IN ZFTextTemplateRunFilter *runFilter
         , ZF_OUT zfstring *outErrorHint
         ) {
-    if(!_ZFP_ZFTextTemplateRun_applyName(path, textTemplateParam, runParam.fileNameFilter, outErrorHint)) {
+    if(!_ZFP_ZFTextTemplateRun_applyName(ioImpl, path, textTemplateParam, runFilter->fileNameFilter(), outErrorHint)) {
         return zffalse;
     }
     if(path.isEmpty()) {
         return zftrue;
     }
-    if(!runParam.fileContentFilter.filterPassed(path)) {
-        return zftrue;
+    for(zfindex i = 0; i < runFilter->fileContentFilter()->count(); ++i) {
+        ZFRegExp *filter = runFilter->fileContentFilter()->get(i);
+        if(filter && ZFRegExpMatch(path, filter)) {
+            return zftrue;
+        }
     }
 
     // read entire file to buffer
-    zfchar *buf = zfnull;
-    zfchar *bufEnd = zfnull;
+    zfstring buf;
     {
-        void *token = ZFFileOpen(path, v_ZFFileOpenOption::e_Read);
-        if(token == zfnull) {
+        zfautoT<ZFIOToken> ioToken = ioImpl->ioOpen(path, v_ZFIOOpenOption::e_Read);
+        if(ioToken == zfnull) {
             zfstringAppend(outErrorHint, "failed to open file %s", path);
             return zffalse;
         }
-        ZFFileCloseHolder(token);
 
-        zfindex fileSize = ZFFileSize(token);
+        zfindex fileSize = ioToken->ioSize();
         if(fileSize == 0) {
             return zftrue;
         }
+        buf.capacity(fileSize);
 
-        buf = (zfchar *)zfmalloc(fileSize);
-        if(buf == zfnull) {
-            zfstringAppend(outErrorHint, "failed to malloc buffer for size %s", fileSize);
-            return zffalse;
-        }
-
-        if(ZFFileRead(token, buf, fileSize) != fileSize) {
+        if(buf.capacity() < fileSize || ioToken->ioRead(buf.zfunsafe_buffer(), fileSize) != fileSize) {
             zfstringAppend(outErrorHint, "failed to read file %s", path);
-            zffree(buf);
             return zffalse;
         }
-        bufEnd = buf + fileSize;
+        buf.zfunsafe_length(fileSize);
+        buf.zfunsafe_buffer()[fileSize] = '\0';
     }
-    zfblockedFree(buf);
 
-    if(ZFTextTemplateApply(textTemplateParam, ZFOutputForFile(path), buf, bufEnd - buf) == zfindexMax()) {
+    if(ZFTextTemplateApply(textTemplateParam, ZFOutputForFile(path), buf, buf.length()) == zfindexMax()) {
         zfstringAppend(outErrorHint, "failed to update template for %s", path);
         return zffalse;
     }

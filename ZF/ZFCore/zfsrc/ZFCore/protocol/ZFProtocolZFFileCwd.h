@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFFileCwd_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFFile.h"
+#include "ZFCore/ZFIODef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

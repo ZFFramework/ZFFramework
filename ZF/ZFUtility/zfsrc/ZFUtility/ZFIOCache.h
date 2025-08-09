@@ -22,7 +22,7 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
      * by default, temp file would be stored as local cache file to speed up next time load,
      * which is not necessary for files already stored in local,
      * you may add them (as #v_zfstring) to this config to prevent extra local file cache logic,
-     * see #ZFPATHTYPE_DECLARE
+     * see #ZFIO_DECLARE
      */
     ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFSet>, localCacheExclude, zfobj<ZFSet>()
             ->c_add(zfobj<v_zfstring>(ZFPathType_file()))
@@ -47,7 +47,7 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
      *
      * the path info must support:
      * -  #ZFInputForPathInfo / #ZFOutputForPathInfo
-     * -  #ZFPathInfoFindFirst series
+     * -  #ZFIOImpl::ioFindFirst series
      */
     ZFPROPERTY_ASSIGN(ZFPathInfo, localCachePathInfo)
     /**

@@ -88,8 +88,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowMainWindowCleanup) {
     if(impl != zfnull) {
         impl->mainWindowOnCleanup();
     }
-    zfblockedRelease(_ZFP_ZFUISysWindow_mainWindowRegistered);
-    zfblockedRelease(_ZFP_ZFUISysWindow_keyWindow);
+    zfscopeRelease(_ZFP_ZFUISysWindow_mainWindowRegistered);
+    zfscopeRelease(_ZFP_ZFUISysWindow_keyWindow);
 
     _ZFP_ZFUISysWindow_mainWindowRegistered = zfnull;
     _ZFP_ZFUISysWindow_mainWindowBuiltin = zfnull;
@@ -104,7 +104,7 @@ void ZFUISysWindow::mainWindowRegister(ZF_IN ZFUISysWindow *window) {
     ZFCoreAssertWithMessage(window != zfnull,
         "[ZFUISysWindow] mainWindowRegister called with null window");
 
-    zfblockedRelease(_ZFP_ZFUISysWindow_mainWindowRegistered);
+    zfscopeRelease(_ZFP_ZFUISysWindow_mainWindowRegistered);
     _ZFP_ZFUISysWindow_mainWindowRegistered = zfRetain(window);
     _ZFP_ZFUISysWindow_mainWindow = _ZFP_ZFUISysWindow_mainWindowRegistered;
 
@@ -169,7 +169,7 @@ void ZFUISysWindow::objectOnInit(void) {
     d = zfpoolNew(_ZFP_ZFUISysWindowPrivate);
     d->windowRootView = ZFUIRootView::ClassData()->newInstance();
     d->windowRootView->_ZFP_ZFUIRootView_rootViewOwnerSysWindow = this;
-    d->sysWindowLayoutParam = zflineAlloc(ZFUILayoutParam);
+    d->sysWindowLayoutParam = zfobj<ZFUILayoutParam>();
     d->sysWindowLayoutParam->sizeParam(ZFUISizeParamFillFill());
 }
 void ZFUISysWindow::objectOnInitFinish(void) {
@@ -305,7 +305,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, void, modalWindowFinish) {
     else {
         ZFPROTOCOL_ACCESS(ZFUISysWindow)->modalWindowFinish(d->modalWindowOwner, this);
     }
-    zfblockedRelease(zfRetain(d->modalWindowOwner->d->modalWindowShowing));
+    zfscopeRelease(zfRetain(d->modalWindowOwner->d->modalWindowShowing));
     d->modalWindowOwner->d->modalWindowShowing = zfnull;
     d->modalWindowOwner = zfnull;
 

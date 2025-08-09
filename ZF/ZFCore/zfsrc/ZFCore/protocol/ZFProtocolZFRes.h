@@ -37,15 +37,6 @@ public:
     virtual zfbool resIsDir(ZF_IN const zfchar *resPath);
 
     /**
-     * @brief see #ZFResCopy
-     */
-    virtual zfbool resCopy(
-            ZF_IN const zfchar *resPath
-            , ZF_IN const zfchar *dstPath
-            , ZF_IN_OPT zfbool isRecursive = zftrue
-            , ZF_IN_OPT zfbool isForce = zftrue
-            );
-    /**
      * @brief see #ZFResOpen
      */
     virtual void *resOpen(ZF_IN const zfchar *resPath);
@@ -64,7 +55,7 @@ public:
     virtual zfbool resSeek(
             ZF_IN void *token
             , ZF_IN zfindex byteSize
-            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             );
 
     /**
@@ -80,17 +71,17 @@ public:
      * @brief see #ZFResFindFirst, #ZFFileFindFirst
      */
     virtual zfbool resFindFirst(
-            ZF_IN_OUT ZFFileFindData::Impl &fd
+            ZF_IN_OUT ZFIOFindData::Impl &fd
             , ZF_IN const zfchar *resPath
             );
     /**
      * @brief see #ZFResFindNext, #ZFFileFindNext
      */
-    virtual zfbool resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd);
+    virtual zfbool resFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd);
     /**
      * @brief see #ZFResFindClose, #ZFFileFindClose
      */
-    virtual void resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd);
+    virtual void resFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd);
 ZFPROTOCOL_INTERFACE_END(ZFRes)
 
 ZF_NAMESPACE_GLOBAL_END

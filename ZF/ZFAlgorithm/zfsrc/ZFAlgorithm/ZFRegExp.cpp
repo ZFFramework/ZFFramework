@@ -269,6 +269,23 @@ ZFMETHOD_DEFINE_6(ZFRegExp, void, replace
 }
 
 // ============================================================
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFRegExpMatch
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(ZFRegExp *, pattern)
+        ) {
+    ZFRegExpResult result;
+    if(pattern) {
+        pattern->find(result, src);
+    }
+    return result.matched;
+}
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFRegExpMatch
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, pattern)
+        ) {
+    return ZFRegExpMatch(src, zfobj<ZFRegExp>(pattern));
+}
+
 ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(ZFRegExp *, pattern)

@@ -99,7 +99,7 @@ public:
             if(this->_mainWindow->nativeWindowIsResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
-            zfblockedRelease(this->_mainWindow);
+            zfscopeRelease(this->_mainWindow);
             QGraphicsWidget *nativeWindow = ZFImpl_sys_Qt_rootWindow();
             nativeWindow->removeEventFilter(&_eventWrapper);
             ZFImpl_sys_Qt_QObjectZFObjectTag(nativeWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", zfnull);

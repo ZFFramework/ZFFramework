@@ -14,6 +14,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // zftValue
 /**
  * @brief util wrapper class to hold a type
+ *
+ * designed to ensure the value would be initialized by default constructor
  */
 template<typename T_Type>
 zfclassLikePOD zftValue {

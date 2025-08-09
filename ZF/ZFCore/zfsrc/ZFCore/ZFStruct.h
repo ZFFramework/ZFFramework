@@ -32,7 +32,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   --                 ^ ^
  *   --                 | value2
  *   --                 value1
- * @end
+ * @endcode
  */
 zfclass ZFLIB_ZFCore ZFStruct : zfextend ZFStyle, zfimplement ZFProgressable {
     ZFOBJECT_DECLARE(ZFStruct, ZFStyle)

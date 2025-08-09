@@ -1,4 +1,5 @@
 #include "ZFProtocolZFRes.h"
+#include "ZFCore/ZFIO_file.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -31,17 +32,6 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resIsDir(ZF_IN const zfchar *resPath) 
     tmpPath += resPath;
     return ZFFileIsDir(tmpPath);
 }
-zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resCopy(
-        ZF_IN const zfchar *resPath
-        , ZF_IN const zfchar *dstPath
-        , ZF_IN_OPT zfbool isRecursive /* = zftrue */
-        , ZF_IN_OPT zfbool isForce /* = zftrue */
-        ) {
-    zfstring tmpPath;
-    tmpPath += this->resRootPath();
-    tmpPath += resPath;
-    return ZFFileCopy(tmpPath, dstPath, isRecursive, isForce);
-}
 
 // ============================================================
 // res RW
@@ -49,7 +39,7 @@ void *ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resOpen(ZF_IN const zfchar *resPath) {
     zfstring tmpPath;
     tmpPath += this->resRootPath();
     tmpPath += resPath;
-    return ZFFileOpen(tmpPath, v_ZFFileOpenOption::e_Read);
+    return ZFFileOpen(tmpPath, v_ZFIOOpenOption::e_Read);
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resClose(ZF_IN void *token) {
     return ZFFileClose(token);
@@ -60,9 +50,9 @@ zfindex ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resTell(ZF_IN void *token) {
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resSeek(
         ZF_IN void *token
         , ZF_IN zfindex byteSize
-        , ZF_IN_OPT ZFSeekPos position /* = ZFSeekPosBegin */
+        , ZF_IN_OPT ZFSeekPos seekPos /* = ZFSeekPosBegin */
         ) {
-    return ZFFileSeek(token, byteSize, position);
+    return ZFFileSeek(token, byteSize, seekPos);
 }
 zfindex ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resRead(
         ZF_IN void *token
@@ -75,10 +65,10 @@ zfindex ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resRead(
 // ============================================================
 // res find
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindFirst(
-        ZF_IN_OUT ZFFileFindData::Impl &fd
+        ZF_IN_OUT ZFIOFindData::Impl &fd
         , ZF_IN const zfchar *resPath
         ) {
-    ZFFileFindData::Impl *normalFd = zfnew(ZFFileFindData::Impl);
+    ZFIOFindData::Impl *normalFd = zfnew(ZFIOFindData::Impl);
     zfstring findPath;
     findPath += this->resRootPath();
     findPath += resPath;
@@ -91,8 +81,8 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindFirst(
     fd.nativeFd = normalFd;
     return zftrue;
 }
-zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) {
-    ZFFileFindData::Impl *normalFd = (ZFFileFindData::Impl *)fd.nativeFd;
+zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd) {
+    ZFIOFindData::Impl *normalFd = (ZFIOFindData::Impl *)fd.nativeFd;
     if(!ZFPROTOCOL_ACCESS(ZFFile)->fileFindNext(*normalFd)) {
         return zffalse;
     }
@@ -100,8 +90,8 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFFileFindData::
     fd.isDir = normalFd->isDir;
     return zftrue;
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {
-    ZFFileFindData::Impl *normalFd = (ZFFileFindData::Impl *)fd.nativeFd;
+void ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
+    ZFIOFindData::Impl *normalFd = (ZFIOFindData::Impl *)fd.nativeFd;
     ZFPROTOCOL_ACCESS(ZFFile)->fileFindClose(*normalFd);
     zfdelete(normalFd);
     fd.nativeFd = zfnull;

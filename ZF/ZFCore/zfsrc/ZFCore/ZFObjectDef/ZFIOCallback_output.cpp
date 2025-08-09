@@ -36,7 +36,7 @@ public:
             )
     ZFMETHOD_DECLARE_2(zfbool, ioSeek
             , ZFMP_IN(zfindex, byteSize)
-            , ZFMP_IN(ZFSeekPos, pos)
+            , ZFMP_IN(ZFSeekPos, seekPos)
             )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
@@ -54,9 +54,9 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForStringOwner, zfindex, onOutput
 }
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForStringOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
-        , ZFMP_IN(ZFSeekPos, pos)
+        , ZFMP_IN(ZFSeekPos, seekPos)
         ) {
-    this->curPos = ZFIOCallbackCalcSeek(this->savedLength, this->pString->length(), this->curPos, byteSize, pos);
+    this->curPos = ZFIOCallbackCalcSeek(this->savedLength, this->pString->length(), this->curPos, byteSize, seekPos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForStringOwner, zfindex, ioTell) {
@@ -98,7 +98,7 @@ public:
             )
     ZFMETHOD_DECLARE_2(zfbool, ioSeek
             , ZFMP_IN(zfindex, byteSize)
-            , ZFMP_IN(ZFSeekPos, pos)
+            , ZFMP_IN(ZFSeekPos, seekPos)
             )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
@@ -134,9 +134,9 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferUnsafeOwner, zfindex, onOutput
 }
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferUnsafeOwner, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
-        , ZFMP_IN(ZFSeekPos, pos)
+        , ZFMP_IN(ZFSeekPos, seekPos)
         ) {
-    p = pStart + ZFIOCallbackCalcSeek(0, pEnd - pStart, p - pStart, byteSize, pos);
+    p = pStart + ZFIOCallbackCalcSeek(0, pEnd - pStart, p - pStart, byteSize, seekPos);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferUnsafeOwner, zfindex, ioTell) {

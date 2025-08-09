@@ -15,7 +15,7 @@ void ZFUIKit_test_prepareTestWindow(
         , ZF_IN ZFTestCase *testCaseToStop
         ) {
     window = zfAlloc(ZFUIKit_test_Window);
-    zfblockedRelease(window);
+    zfscopeRelease(window);
     window->show();
 
     // close button
@@ -33,7 +33,7 @@ void ZFUIKit_test_prepareTestWindow(
 
     // container
     container = zfAlloc(ZFUIView);
-    zfblockedRelease(container);
+    zfscopeRelease(container);
     window->child(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
 }
 

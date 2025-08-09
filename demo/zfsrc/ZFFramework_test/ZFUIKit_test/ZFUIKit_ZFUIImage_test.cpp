@@ -23,8 +23,9 @@ protected:
 
         // encode image to binary and load it again to test
         zfauto imageHolder = zfres("test_normal.png");
-        zfobj<ZFIOBufferByMemory> io;
+        zfobj<ZFIOBuffer> io;
         ZFUIImageToOutput(io->output(), imageHolder);
+        io->input().ioSeek(0);
         zfauto imageNew = ZFUIImageFromInput(io->input());
         view->image(imageNew);
 

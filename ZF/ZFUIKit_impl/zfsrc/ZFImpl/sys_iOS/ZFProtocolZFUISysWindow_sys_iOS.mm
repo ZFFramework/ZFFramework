@@ -224,7 +224,7 @@ public:
             if(this->_mainWindow->nativeWindowIsResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
-            zfblockedRelease(this->_mainWindow);
+            zfscopeRelease(this->_mainWindow);
             this->notifyOnDestroy(this->_mainWindow);
             this->_mainWindow = zfnull;
             nativeWindow = nil;

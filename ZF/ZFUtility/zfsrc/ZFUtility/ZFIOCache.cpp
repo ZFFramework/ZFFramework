@@ -16,7 +16,7 @@ ZFMETHOD_DEFINE_1(ZFIOCache, ZFPathInfo, localCachePathInfoForChild
         ) {
     ZFPathInfo parent = this->localCachePathInfoFixed();
     zfstring pathData;
-    ZFPathInfoToChild(pathData, parent, childPath);
+    ZFIOToChild(pathData, parent, childPath);
     return ZFPathInfo(parent.pathType(), pathData);
 }
 
@@ -45,34 +45,34 @@ public:
                 , zfself *, d
                 ) {
             const ZFPathInfo pathInfo = ZFIOCache::instance()->localCachePathInfoFixed();
-            const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType());
+            zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(pathInfo.pathType());
             if(impl == zfnull) {
                 return;
             }
             zftimet cacheTimeMax = ZFIOCache::instance()->localCacheTime();
             zftimet curTime = ZFTime::currentTime();
-            ZFFileFindData fd;
+            ZFIOFindData fd;
             zfobj<ZFRegExp> pattern("^[0-9a-fA-F]{32}_[0-9]+$");
             d->localCacheList.removeAll();
-            if(impl->implFindFirst(fd, pathInfo.pathData())) {
+            if(impl->ioFindFirst(fd, pathInfo.pathData())) {
                 do {
                     zfstring childPath;
-                    impl->implToChild(childPath, pathInfo.pathData(), fd.name());
-                    if(ZFRegExpFind(fd.name(), pattern) == ZFIndexRangeMax()) {
-                        impl->implRemove(childPath, zffalse, zftrue);
+                    impl->ioToChild(childPath, pathInfo.pathData(), fd.name());
+                    if(!ZFRegExpMatch(fd.name(), pattern)) {
+                        impl->ioRemove(childPath, zffalse, zftrue);
                         continue;
                     }
                     _ZFP_ZFIOCacheData cacheData;
                     zftimetFromStringT(cacheData.cacheTime, childPath + 32 + 1);
                     if(curTime - cacheData.cacheTime >= cacheTimeMax) {
-                        impl->implRemove(childPath, zffalse, zftrue);
+                        impl->ioRemove(childPath, zffalse, zftrue);
                         continue;
                     }
                     cacheData.pathInfo.pathType(pathInfo.pathType());
                     cacheData.pathInfo.pathData(childPath);
                     d->localCacheList.add(cacheData);
-                } while(impl->implFindNext(fd));
-                impl->implFindClose(fd);
+                } while(impl->ioFindNext(fd));
+                impl->ioFindClose(fd);
             }
         } ZFLISTENER_END()
         ZFLISTENER_1(finish
@@ -218,7 +218,7 @@ public:
                 }
                 else {
                     // cache file invalid, remove it
-                    ZFPathInfoRemove(localPathInfo);
+                    ZFIORemove(localPathInfo);
                 }
             }
         }
@@ -238,7 +238,7 @@ public:
             }
             if(!success) {
                 tmpDst = zfnull;
-                ZFPathInfoRemove(localPathInfo);
+                ZFIORemove(localPathInfo);
                 return;
             }
         }
@@ -253,7 +253,7 @@ public:
             }
         }
         if(!_result) {
-            ZFPathInfoRemove(localPathInfo);
+            ZFIORemove(localPathInfo);
             return;
         }
 
@@ -268,7 +268,7 @@ public:
             while(d->localCacheList.count() > ZFIOCache::instance()->localCacheMaxSize()) {
                 _ZFP_ZFIOCacheData toRemove = d->localCacheList.removeAndGet(0);
                 ZFCoreMutexUnlock();
-                ZFPathInfoRemove(toRemove.pathInfo);
+                ZFIORemove(toRemove.pathInfo);
                 ZFCoreMutexLock();
             }
             ZFCoreMutexUnlock();

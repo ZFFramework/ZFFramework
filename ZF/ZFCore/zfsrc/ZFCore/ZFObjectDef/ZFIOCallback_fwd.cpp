@@ -28,7 +28,7 @@ zfindex ZFIOCallbackCalcSeek(
 // ============================================================
 zfbool ZFIOCallback::ioSeek(
         ZF_IN zfindex byteSize
-        , ZF_IN_OPT ZFSeekPos pos /* = ZFSeekPosBegin */
+        , ZF_IN_OPT ZFSeekPos seekPos /* = ZFSeekPosBegin */
         ) const {
     ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
     if(owner == zfnull) {
@@ -38,7 +38,7 @@ zfbool ZFIOCallback::ioSeek(
     if(method == zfnull) {
         return zffalse;
     }
-    return method->executeExact<zfbool, zfindex, ZFSeekPos>(owner, byteSize, pos);
+    return method->executeExact<zfbool, zfindex, ZFSeekPos>(owner, byteSize, seekPos);
 }
 zfindex ZFIOCallback::ioTell(void) const {
     ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
@@ -62,13 +62,25 @@ zfindex ZFIOCallback::ioSize(void) const {
     }
     return method->executeExact<zfindex>(owner);
 }
+zfbool ZFIOCallback::ioClose(void) const {
+    zfbool ret = zftrue;
+    ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
+    if(owner != zfnull) {
+        const ZFMethod *method = owner->classData()->methodForName("ioClose");
+        if(method != zfnull) {
+            ret = method->executeExact<zfbool>(owner);
+        }
+    }
+    const_cast<ZFIOCallback *>(this)->callbackClear();
+    return ret;
+}
 
 // ============================================================
 ZFMETHOD_USER_REGISTER_2({
-        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, pos);
+        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, seekPos);
     }, v_ZFCallback, zfbool, ioSeek
     , ZFMP_IN(zfindex, byteSize)
-    , ZFMP_IN_OPT(ZFSeekPos, pos, ZFSeekPosBegin)
+    , ZFMP_IN_OPT(ZFSeekPos, seekPos, ZFSeekPosBegin)
     )
 ZFMETHOD_USER_REGISTER_0({
         return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioTell();
@@ -77,6 +89,20 @@ ZFMETHOD_USER_REGISTER_0({
 ZFMETHOD_USER_REGISTER_0({
         return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSize();
     }, v_ZFCallback, zfindex, ioSize
+    )
+ZFMETHOD_USER_REGISTER_0({
+        ZFCallback &v = invokerObject->to<v_ZFCallback *>()->zfv;
+        zfbool ret = zftrue;
+        ZFObject *owner = v.callbackTag(ZFCallbackTagKeyword_ioOwner);
+        if(owner != zfnull) {
+            const ZFMethod *method = owner->classData()->methodForName("ioClose");
+            if(method != zfnull) {
+                ret = method->executeExact<zfbool>(owner);
+            }
+        }
+        v.callbackClear();
+        return ret;
+    }, v_ZFCallback, zfbool, ioClose
     )
 ZFMETHOD_USER_REGISTER_1({
         return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner(ioOwner);

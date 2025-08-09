@@ -38,7 +38,7 @@ public:
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
         zfRetain(this);
-        zfblockedRelease(this);
+        zfscopeRelease(this);
         zfidentity curId = zfargs.param0().to<v_zfidentity *>()->zfv;
         ZFThread *curThread = ZFThread::currentThread();
 

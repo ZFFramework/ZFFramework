@@ -28,7 +28,7 @@ public:
 public:
     /**
      * @brief implementation must notify when receive client request,
-     *   in thread of #ZFHttpServer::threadPool
+     *   in thread of #ZFHttpServerThreadPool
      */
     zffinal void notifyOnRequest(
             ZF_IN ZFHttpServer *owner

@@ -10,11 +10,11 @@ import java.io.OutputStream;
  */
 public class ZFOutputWrapper extends OutputStream {
 
-    public boolean ioSeek(long size, int pos) {
+    public boolean ioSeek(long size, int seekPos) {
         if (this.zfjniPointerOwnerZFOutput == 0) {
             return false;
         } else {
-            return native_nativeOutputSeek(this.zfjniPointerOwnerZFOutput, size, pos);
+            return native_nativeOutputSeek(this.zfjniPointerOwnerZFOutput, size, seekPos);
         }
     }
 
@@ -47,8 +47,8 @@ public class ZFOutputWrapper extends OutputStream {
 
     public static native void native_nativeOutputClose(long zfjniPointerOwnerZFOutput);
 
-    // pos: ZFSeekPos
-    public static native boolean native_nativeOutputSeek(long zfjniPointerOwnerZFOutput, long size, int pos);
+    // seekPos: ZFSeekPos
+    public static native boolean native_nativeOutputSeek(long zfjniPointerOwnerZFOutput, long size, int seekPos);
 
     public static native long native_nativeOutputTell(long zfjniPointerOwnerZFOutput);
 

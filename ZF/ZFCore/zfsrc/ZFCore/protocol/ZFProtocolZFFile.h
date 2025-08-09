@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFFile_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFFile.h"
+#include "ZFCore/ZFIODef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -25,20 +25,11 @@ public:
     virtual zfbool isDir(ZF_IN const zfchar *path) zfpurevirtual;
 
     /**
-     * @brief see #ZFPathCreate
+     * @brief see #ZFFilePathCreate
      */
     virtual zfbool filePathCreate(
             ZF_IN const zfchar *path
-            , ZF_IN_OPT zfbool autoMakeParent = zffalse
-            ) zfpurevirtual;
-    /**
-     * @brief see #ZFFileCopy
-     */
-    virtual zfbool fileCopy(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
-            , ZF_IN_OPT zfbool isRecursive = zftrue
-            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN_OPT zfbool autoCreateParent = zffalse
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileMove
@@ -60,7 +51,7 @@ public:
     /**
      * @brief see #ZFFileFindFirst
      *
-     * use ZFFileFindData::Impl to store find result\n
+     * use ZFIOFindData::Impl to store find result\n
      * remember that you must remove the dir "." and "..",
      * and if there is only two dir named "." and "..",
      * you should return false for fileFindFirst\n
@@ -71,22 +62,22 @@ public:
      *   you must deallocate the nativeFd (if allocated) before return
      */
     virtual zfbool fileFindFirst(
-            ZF_IN_OUT ZFFileFindData::Impl &fd
+            ZF_IN_OUT ZFIOFindData::Impl &fd
             , ZF_IN const zfchar *path
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileFindNext, fileFindFirst
      */
-    virtual zfbool fileFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) zfpurevirtual;
+    virtual zfbool fileFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd) zfpurevirtual;
     /**
      * @brief see #ZFFileFindClose, fileFindFirst
      */
-    virtual void fileFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) zfpurevirtual;
+    virtual void fileFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) zfpurevirtual;
 
     /** @brief see #ZFFileOpen */
     virtual void *fileOpen(
             ZF_IN const zfchar *filePath
-            , ZF_IN_OPT ZFFileOpenOptionFlags flag = v_ZFFileOpenOption::e_Read
+            , ZF_IN ZFIOOpenOptionFlags flags
             ) zfpurevirtual;
     /** @brief see #ZFFileClose */
     virtual zfbool fileClose(ZF_IN void *token) zfpurevirtual;
@@ -97,7 +88,7 @@ public:
     virtual zfbool fileSeek(
             ZF_IN void *token
             , ZF_IN zfindex byteSize
-            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             ) zfpurevirtual;
 
     /** @brief see #ZFFileRead */

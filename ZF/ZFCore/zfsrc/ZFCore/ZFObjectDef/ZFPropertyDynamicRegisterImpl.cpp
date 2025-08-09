@@ -594,7 +594,7 @@ void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property) {
     if(property != zfnull) {
         ZFCoreAssert(property->isDynamicRegister());
         ZFCoreMutexLocker();
-        zfblockedRelease(property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+        zfscopeRelease(property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m.erase(property);
         _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
         d->objectDetachAll();

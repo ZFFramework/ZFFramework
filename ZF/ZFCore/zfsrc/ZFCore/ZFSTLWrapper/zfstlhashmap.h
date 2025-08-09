@@ -115,6 +115,7 @@ public:
 template<typename T_Type>
 zfclassNotPOD zfstlhashT {
 public:
+    /** @brief hash wrapper for #zftHash */
     zfstlsize operator () (T_Type const &v) const {
         return (zfstlsize)zfhash(v);
     }

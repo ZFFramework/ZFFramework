@@ -187,9 +187,9 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIWidget, zfbool, ZFUIImageAniLoadCheck
  * save to a single large image with special naming rule, see #ZFUIImageAniLoad\n
  * \n
  * the dst path info must support these to achieve the special naming rule:
- * -  #ZFPathInfoToFileName
- * -  #ZFPathInfoToParent
- * -  #ZFPathInfoToChild
+ * -  #ZFIOToFileName
+ * -  #ZFIOToParent
+ * -  #ZFIOToChild
  *
  * a special file name would be appended to dst,
  * for example, if dst is `path/test.png`,

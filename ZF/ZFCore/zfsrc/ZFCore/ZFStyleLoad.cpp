@@ -40,15 +40,15 @@ static void _ZFP_ZFStyleLoad_ZFStyleSet(
     }
 }
 static void _ZFP_ZFStyleLoadImpl(
-        ZF_IN const ZFPathInfoImpl &fileImpl
+        ZF_IN ZFIOImpl *fileImpl
         , ZF_IN const zfstring &pathType
         , ZF_IN const zfstring &pathData
         , ZF_IN const zfstring &relativePath
         , ZF_IN_OUT zfbool &allSuccess
         , ZF_IN const ZFListener &errorCallback
         ) {
-    ZFFileFindData fd;
-    if(fileImpl.implFindFirst(fd, pathData)) {
+    ZFIOFindData fd;
+    if(fileImpl->ioFindFirst(fd, pathData)) {
         do {
             if(*fd.name() == '.' || *fd.name() == '_') {
                 continue;
@@ -67,7 +67,7 @@ static void _ZFP_ZFStyleLoadImpl(
             relativePathTmp += fd.name();
 
             zfstring pathDataChild;
-            fileImpl.implToChild(pathDataChild, pathData, fd.name());
+            fileImpl->ioToChild(pathDataChild, pathData, fd.name());
             if(fd.isDir()) {
                 _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, relativePathTmp, allSuccess, errorCallback);
             }
@@ -85,8 +85,8 @@ static void _ZFP_ZFStyleLoadImpl(
                 ZFPathOfWithoutAllExtT(relativePathTmp, relativePathTmp);
                 _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
             }
-        } while(fileImpl.implFindNext(fd));
-        fileImpl.implFindClose(fd);
+        } while(fileImpl->ioFindNext(fd));
+        fileImpl->ioFindClose(fd);
     }
 }
 
@@ -94,17 +94,17 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         ) {
-    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(pathInfo.pathType());
+    zfautoT<ZFIOImpl> fileImpl = ZFIOImplForPathType(pathInfo.pathType());
     if(fileImpl == zfnull) {
         return zffalse;
     }
     ZFStyleUpdateBlock();
 
-    if(fileImpl->implIsExist(pathInfo.pathData())
-            && !fileImpl->implIsDir(pathInfo.pathData())
+    if(fileImpl->ioIsExist(pathInfo.pathData())
+            && !fileImpl->ioIsDir(pathInfo.pathData())
             ) {
         zfstring fileName;
-        if(!fileImpl->implToFileName(fileName, pathInfo.pathData())
+        if(!fileImpl->ioToFileName(fileName, pathInfo.pathData())
                 || !fileName
                 ) {
             return zffalse;
@@ -124,7 +124,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
     }
 
     zfbool allSuccess = zftrue;
-    _ZFP_ZFStyleLoadImpl(*fileImpl, pathInfo.pathType(), pathInfo.pathData(), zfnull, allSuccess, errorCallback);
+    _ZFP_ZFStyleLoadImpl(fileImpl, pathInfo.pathType(), pathInfo.pathData(), zfnull, allSuccess, errorCallback);
     return allSuccess;
 }
 

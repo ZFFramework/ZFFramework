@@ -35,7 +35,7 @@ public:
             , (jint)newSize.width, (jint)newSize.height
             , (jint)ninePatch.left, (jint)ninePatch.top, (jint)ninePatch.right, (jint)ninePatch.bottom
             );
-        JNIBlockedDeleteLocalRef(tmp);
+        JNIScopeDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
     virtual void *imageLoadInFrame(
@@ -55,7 +55,7 @@ public:
             , (jobject)nativeImage
             , (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height
             );
-        JNIBlockedDeleteLocalRef(tmp);
+        JNIScopeDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
     virtual void *imageLoadFromColor(
@@ -74,7 +74,7 @@ public:
             , (jint)size.width
             , (jint)size.height
             );
-        JNIBlockedDeleteLocalRef(tmp);
+        JNIScopeDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageIOImpl_sys_Android)

@@ -288,7 +288,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
     ZFCoreAssertIndexRange(index, this->count());
     if(count == 1) {
         ZFObject *tmp = d->data[index];
-        zfblockedRelease(tmp);
+        zfscopeRelease(tmp);
         d->data.erase(d->data.begin() + index);
 
         this->contentOnRemove(tmp);

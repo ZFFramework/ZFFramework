@@ -943,7 +943,7 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
         return *this;
     }
     d->scopeList.removeLast();
-    zfblockedDelete(scope);
+    zfscopeDelete(scope);
 
     zfstring errorHint;
     const ZFClass *enumClass = ZFEnumDynamicRegister(

@@ -27,9 +27,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  (zfindex) max byte size to read (excluding '\0')
  *
  * return:
- * -  (zfindex) if buffer is null,
- *   return max byte size in the input or zfindexMax if not available\n
- *   if buffer is not null, return byte size actually read even if error (excluding '\0')
+ * -  (zfindex) byte size actually read even if error (excluding '\0')
  *
  * ADVANCED:\n
  * for implementations, see #ZFCallbackTagKeyword_ioOwner if need support seek
@@ -80,28 +78,17 @@ public:
             , ZF_IN zfindex count
             , ZF_OUT_OPT zfindex *result = zfnull
             ) const {
-        if(count == zfindexMax()) {
-            count = this->execute(zfnull, zfindexMax());
-            if(count == zfindexMax()) {
-                if(result != zfnull) {
-                    *result = zfindexMax();
-                }
-                return *this;
+        for(zfindex blockSize = zfmMin(count, (zfindex)128); blockSize > 0; ) {
+            buf.capacity(buf.length() + blockSize + 1);
+            zfindex read = this->execute(buf.zfunsafe_buffer() + buf.length(), blockSize);
+            if(read == 0) {
+                break;
             }
-        }
-        void *bufTmp = zfmalloc(count);
-        zfindex read = this->execute(bufTmp, count);
-        if(read > count) {
-            zffree(bufTmp);
-            if(result != zfnull) {
-                *result = zfindexMax();
+            buf.zfunsafe_length(buf.length() + read);
+            buf.zfunsafe_buffer()[buf.length()] = '\0';
+            if(count != zfindexMax()) {
+                count -= blockSize;
             }
-            return *this;
-        }
-        buf.append((const zfchar *)bufTmp, read);
-        zffree(bufTmp);
-        if(result != zfnull) {
-            *result = read;
         }
         return *this;
     }

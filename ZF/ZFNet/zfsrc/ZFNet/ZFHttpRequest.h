@@ -126,14 +126,14 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFObject, zfimplement ZFTaskId {
      * @brief called before request
      *
      * sender is the #ZFHttpRequest\n
-     * call in the same thread that #request was called
+     * call in the same thread that #start was called
      */
     ZFEVENT(OnRequestPrepare)
     /**
      * @brief called after request
      *
      * sender is the #ZFHttpRequest\n
-     * call in the same thread that #request was called
+     * call in the same thread that #start was called
      */
     ZFEVENT(OnRequest)
 
@@ -143,7 +143,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFObject, zfimplement ZFTaskId {
      * sender is the #ZFHttpRequest,
      * param0 is the #ZFHttpResponse or null if timeout,
      * param1 is a #ZFResultType to indicate result type\n
-     * call in the same thread that #request was called
+     * call in the same thread that #start was called
      */
     ZFEVENT(OnResponsePrepare)
     /**
@@ -152,7 +152,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFObject, zfimplement ZFTaskId {
      * sender is the #ZFHttpRequest,
      * param0 is the #ZFHttpResponse or null if timeout,
      * param1 is a #ZFResultType to indicate result type\n
-     * call in the same thread that #request was called
+     * call in the same thread that #start was called
      */
     ZFEVENT(OnResponse)
 

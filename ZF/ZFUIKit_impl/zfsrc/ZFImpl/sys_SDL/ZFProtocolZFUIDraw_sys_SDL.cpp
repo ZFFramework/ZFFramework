@@ -146,7 +146,7 @@ public:
     }
     virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
-        zfblockedDelete(drawImpl);
+        zfscopeDelete(drawImpl);
 
         if(drawImpl->sdlRenderer != zfnull) {
             ZFImpl_sys_SDL_RendererNotifyDestroy(drawImpl->sdlRenderer);

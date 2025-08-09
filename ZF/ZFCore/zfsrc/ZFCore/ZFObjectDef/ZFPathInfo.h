@@ -15,8 +15,7 @@ zfclassFwd _ZFP_ZFPathInfoPrivate;
  * @brief path related info storage for impl,
  *   actual meaning of the info depends on impl
  *
- * recommend to use #ZFPATHTYPE_DECLARE/#ZFPATHTYPE_DEFINE for each of your path type,
- * and additionally use #ZFPATHTYPE_FILEIO_REGISTER to register your own IO type\n
+ * recommend to use #ZFIO_DECLARE/#ZFIO_DEFINE for each of your path type\n
  * \n
  * path info may describe any abstract files, including:
  * -  normal file
@@ -25,7 +24,7 @@ zfclassFwd _ZFP_ZFPathInfoPrivate;
  * -  compressed or encrypted file
  *
  * all file IO are abstracted as these operation:
- * -  #ZFPATHTYPE_FILEIO_REGISTER : supply low level file IO
+ * -  #ZFIOOpen : supply low level file IO
  * -  #ZFInputForPathInfo / #ZFOutputForPathInfo :
  *   supply high level data IO
  *
@@ -94,25 +93,12 @@ inline zfint _ZFP_ZFPathInfoCompare(ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPa
         }
     }
 }
+/** @cond ZFPrivateDoc */
 inline zfbool operator < (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) < 0;}
 inline zfbool operator <= (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) <= 0;}
 inline zfbool operator > (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) > 0;}
 inline zfbool operator >= (ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {return _ZFP_ZFPathInfoCompare(v0, v1) >= 0;}
-
-/**
- * @brief see #ZFPathInfo
- */
-#define ZFPATHTYPE_DECLARE(ZFLIB_, pathType) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_, const zfstring &, ZFPathType_##pathType) { \
-        static zfstring ret = zftext(ZFM_TOSTRING(pathType)); \
-        return ret; \
-    }
-
-/**
- * @brief see #ZFPathInfo
- */
-#define ZFPATHTYPE_DEFINE(pathType) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_0(const zfstring &, ZFPathType_##pathType)
+/** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 

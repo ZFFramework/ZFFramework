@@ -148,11 +148,11 @@ namespace JNIUtilMethodWrapperPrivate {
 #define JNILineDeleteGlobalRef(obj_) \
     (JNIUtilMethodWrapperPrivate::GlobalRefDel(obj_, __FILE__, __FUNCTION__, __LINE__).objSaved)
 
-#undef JNIBlockedDeleteLocalRef
-#define JNIBlockedDeleteLocalRef(obj_) \
+#undef JNIScopeDeleteLocalRef
+#define JNIScopeDeleteLocalRef(obj_) \
     JNIUtilMethodWrapperPrivate::LocalRefDel _JNIUtil_uniqueName(jniRef)(obj_, __FILE__, __FUNCTION__, __LINE__)
-#undef JNIBlockedDeleteGlobalRef
-#define JNIBlockedDeleteGlobalRef(obj_) \
+#undef JNIScopeDeleteGlobalRef
+#define JNIScopeDeleteGlobalRef(obj_) \
     JNIUtilMethodWrapperPrivate::GlobalRefDel _JNIUtil_uniqueName(jniRef)(obj_, __FILE__, __FUNCTION__, __LINE__)
 #endif // #if JNIUtilWrap_Enable
 

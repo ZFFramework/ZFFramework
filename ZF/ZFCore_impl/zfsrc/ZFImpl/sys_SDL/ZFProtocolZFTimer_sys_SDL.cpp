@@ -43,7 +43,7 @@ public:
 private:
     static Uint32 _ZFP_timerCallback(void *userdata, SDL_TimerID timerID, Uint32 interval) {
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)userdata;
-        zfblockedRelease(zfRetain(nativeTimer));
+        zfscopeRelease(zfRetain(nativeTimer));
         if(nativeTimer->timer->eventOnMainThread()) {
             if(!nativeTimer->timerMainThreadListener) {
                 ZFLISTENER_1(mainThreadCallback

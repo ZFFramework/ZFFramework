@@ -131,12 +131,13 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     // imageBin
     zfstring imageBin = ZFSerializableUtil::checkAttr(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
     if(imageBin != zfnull) {
-        zfobj<ZFIOBufferByCacheFile> io;
+        zfobj<ZFIOBuffer> io;
         if(!ZFBase64Decode(io->output(), ZFInputForString(imageBin))) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "invalid base64 data: \"%s\"", imageBin);
             return zffalse;
         }
+        io->input().ioSeek(0);
         void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(io->input());
         if(nativeImage == zfnull) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,

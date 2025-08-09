@@ -206,7 +206,7 @@ ZFMETHOD_DEFINE_1(ZFHashMap, zfauto, removeAndGet
             this->contentOnUpdate();
 
             zfRelease(tmpKey);
-            zfblockedRelease(tmpValue);
+            zfscopeRelease(tmpValue);
             return tmpValue;
         }
     }

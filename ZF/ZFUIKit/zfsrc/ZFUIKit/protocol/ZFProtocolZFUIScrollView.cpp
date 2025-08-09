@@ -225,7 +225,7 @@ void ZFUIScrollViewImplHelper::interceptMouse(
         ZF_IN void *nativeMouseEvent
         , ZF_IN ZFUIMouseAction mouseAction
         ) {
-    zfblockedRelease(zfRetain(this->scrollView));
+    zfscopeRelease(zfRetain(this->scrollView));
 
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     ZFLogTrim() << ZFLogCurTimeString() << " [ScrollImpl] " << ZF_CALLER_LINE << " " << d->pimplOwner->scrollView << " intercept " << mouseAction
@@ -289,7 +289,7 @@ void ZFUIScrollViewImplHelper::trackDelayNotifyTimeout(void) {
     d->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateIgnored;
 
     // restore mouse down
-    zfblockedRelease(zfRetain(this->scrollView));
+    zfscopeRelease(zfRetain(this->scrollView));
     d->mouseDownResend();
 }
 

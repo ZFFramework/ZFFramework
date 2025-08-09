@@ -125,7 +125,7 @@ void ZFImpl_sys_SDL_View::render(
         return;
     }
     if(!this->renderCacheValid) {
-        ZFImpl_sys_SDL_zfblockedRenderTarget(success, renderer, sdlTexture);
+        ZFImpl_sys_SDL_zfscopeRenderTarget(success, renderer, sdlTexture);
         if(!success) {
             _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
             return;

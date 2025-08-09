@@ -32,7 +32,6 @@
 #include "ZFCoreDef/ZFCoreUtilMacro.h"
 #include "ZFCoreDef/ZFCoreUtilMath.h"
 #include "ZFCoreDef/ZFCoreUtilTemplate.h"
-#include "ZFCoreDef/ZFFilter.h"
 #include "ZFCoreDef/ZFIdentityUtil.h"
 #include "ZFCoreDef/ZFLevel.h"
 #include "ZFCoreDef/ZFMemPool.h"

@@ -809,7 +809,7 @@ zfauto ZFClass::newInstanceGenericEnd(
     ZFObject *obj = (ZFObject *)token;
     if(objectOnInitMethodInvokeSuccess) {
         obj->_ZFP_ZFObject_objectOnInitFinish();
-        zfblockedRelease(obj);
+        zfscopeRelease(obj);
         return obj;
     }
     else {

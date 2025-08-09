@@ -10,23 +10,16 @@ zfabstract ZFFramework_test_TestCase : zfextend ZFTestCase {
 
 protected:
     zfoverride
-    virtual void objectOnInit(void);
-    zfoverride
-    virtual void objectOnDealloc(void);
-    zfoverride
     virtual void objectOnDeallocPrepare(void);
     zfoverride
     virtual void testCaseOnStop(ZF_IN ZFResultType testCaseResult);
 
 public:
     virtual void outputSeparator(void);
-    virtual const zfstring &testCaseTmpPath(void);
-    virtual zfstring testCaseUseTmpFile(ZF_IN const zfchar *fileName);
-    virtual void testCaseAddFileToRemove(ZF_IN const zfchar *filePath);
+    virtual ZFPathInfo testCaseUseTmpFile(ZF_IN const zfchar *fileName);
 
 private:
-    ZFCoreArray<zfstring> _filesToRemove;
-    zfstring _testCaseTmpPath;
+    ZFCoreArray<ZFPathInfo> _filesToRemove;
 };
 
 ZFEXPORT_VAR_DECLARE(ZFLIB_APP, zfbool, ZFFramework_test_asyncTestAvailable)

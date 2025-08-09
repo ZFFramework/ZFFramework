@@ -78,9 +78,9 @@ zfbool ZFObjectIOLoadT(
     zfstring fileName;
     zfstring fileExt;
     {
-        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(input.pathInfo().pathType());
+        zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(input.pathInfo().pathType());
         if(impl) {
-            if(impl->callbackToFileName(fileName, input.pathInfo().pathData())) {
+            if(impl->ioToFileName(fileName, input.pathInfo().pathData())) {
                 ZFFileExtOfT(fileExt, fileName);
                 zfstringToLowerT(fileExt);
             }
@@ -127,9 +127,9 @@ zfbool ZFObjectIOSave(
     zfstring fileName;
     zfstring fileExt;
     {
-        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(output.pathInfo().pathType());
+        zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(output.pathInfo().pathType());
         if(impl) {
-            if(impl->callbackToFileName(fileName, output.pathInfo().pathData())) {
+            if(impl->ioToFileName(fileName, output.pathInfo().pathData())) {
                 ZFFileExtOfT(fileExt, fileName);
                 zfstringToLowerT(fileExt);
             }

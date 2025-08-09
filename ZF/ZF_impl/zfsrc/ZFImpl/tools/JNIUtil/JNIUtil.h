@@ -469,10 +469,10 @@ namespace JNIUtilPrivate {
     (JNIUtilPrivate::GlobalRefDel(obj_).objSaved)
 
 /** @brief util macro to delete object after code block for JNI local object */
-#define JNIBlockedDeleteLocalRef(obj_) \
+#define JNIScopeDeleteLocalRef(obj_) \
     JNIUtilPrivate::LocalRefDel _JNIUtil_uniqueName(jniRef)(obj_)
 /** @brief util macro to delete object after code block for JNI global object */
-#define JNIBlockedDeleteGlobalRef(obj_) \
+#define JNIScopeDeleteGlobalRef(obj_) \
     JNIUtilPrivate::GlobalRefDel _JNIUtil_uniqueName(jniRef)(obj_)
 
 } // namespace JNIUtil

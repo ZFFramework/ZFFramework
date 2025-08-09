@@ -403,34 +403,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   int ZFUniqueName(a) = 0; // same as "int _ZFP_zUniqueName_a_2 = 0;"
  *   int ZFUniqueName(a) = 0; // same as "int _ZFP_zUniqueName_a_3 = 0;"
  * @endcode
- * this is usually used to declare a tmp variable, such as:
- * @code
- *   class MyClass {
- *   public:
- *       zfbool flag;
- *       MyClass() : flag(zftrue) {}
- *   };
- *   #define MyClassBlock for(MyClass ZFUniqueName(cls); \\
- *       ZFUniqueName(cls).flag; \\
- *       ZFUniqueName(cls).flag = zffalse)
- *
- *   // to use the blocked code
- *   MyClassBlock {
- *       // code block
- *       // there'll be a instance of MyClass named _ZFP_zUniqueName_cls_123
- *   } // and the MyClass's instance will be deconstructed after the brace
- * @endcode
- *
- * REMARKS:\n
- * when used under Windows with embeded macros
- * @code
- *   int ZFM_EXPAND(ZFUniqueName(n)) = 0;
- * @endcode
- * a C2065 "__LINE__Var undeclared identifier" may (or may not) occurred\n
- * this is a compiler bug\n
- * to solve it, turn "Program Database for edit and continue (/ZI)"
- * to "Program Database (/Zi)" in your project setting\n
- * or, prevent use it within other macros
  */
 #define ZFUniqueName(name) _ZFP_ZFUniqueName2(name, __LINE__)
 #define _ZFP_ZFUniqueName2(name, line) _ZFP_ZFUniqueName3(name, line)

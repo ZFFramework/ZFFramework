@@ -369,7 +369,11 @@ public:
             }
         }
         if(len > 0) {
-            _capacityChange(len, zffalse);
+            if(len >= d->capacity || d->refCount > 1
+                    || (d->capacity >= 128 && len < d->capacity / 3)
+                    ) {
+                _capacityChange(len, zffalse);
+            }
             d->length = (zfuint)len;
             zfmemcpy(d->d.buf, s, len * sizeof(T_Char));
             d->d.buf[len] = '\0';
@@ -486,7 +490,7 @@ public:
     }
     /** @brief trim to a proper capacity to save memory */
     inline void capacityTrim(void) {
-        if(d->capacity >= 128 && d->length <= 32) {
+        if(d->capacity >= 128 && d->length < d->capacity / 3) {
             _capacityChange(this->length(), zftrue);
         }
     }
@@ -509,16 +513,22 @@ public:
         }
     }
     /** @brief remove all content of the string */
-    inline void removeAll(void) {
+    void removeAll(void) {
         if(!this->isEmpty()) {
             ZFCoreMutexLocker();
             if(d->refCount == 1) {
-                if(d->capacity > 0) {
+                if(d->capacity >= 128) {
+                    zffree(d->d.buf);
+                    zfpoolDelete(d);
+                    d = _ZFP_Empty();
+                    ++(d->refCount);
+                }
+                else if(d->capacity > 0) {
                     d->d.buf[0] = '\0';
                     d->length = 0;
                 }
                 else {
-                    d->d.ptr = zfnull;
+                    d->d.ptr = "";
                     d->length = 0;
                 }
             }
@@ -680,9 +690,9 @@ private:
             d->length = 0;
         }
     }
-    inline void _prepareWrite(ZF_IN zfindex capacity) {
-        if(capacity >= d->capacity || d->refCount > 1) {
-            _capacityChange(capacity, zftrue);
+    inline void _prepareWrite(ZF_IN zfindex len) {
+        if(len >= d->capacity || d->refCount > 1) {
+            _capacityChange(len, zftrue);
         }
     }
 };

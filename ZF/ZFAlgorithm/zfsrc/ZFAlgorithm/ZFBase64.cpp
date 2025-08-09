@@ -2,22 +2,22 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_READONLY_DEFINE(const zfchar *, ZFBase64TableDefault, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
-ZFEXPORT_VAR_READONLY_DEFINE(zfchar, ZFBase64PadDefault, '=')
+ZFEXPORT_VAR_READONLY_DEFINE(zfstring, ZFBase64Table, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
+ZFEXPORT_VAR_READONLY_DEFINE(zfchar, ZFBase64Pad, '=')
+ZFEXPORT_VAR_DEFINE(zfindex, ZFBase64LineBreakPos, zfindexMax())
 ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFBase64LineBreakPosStandard, 76)
-ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFBase64LineBreakPosNone, zfindexMax())
 
 // ============================================================
 // encode
 ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFBase64EncodeCalcSize
         , ZFMP_IN(zfindex, srcLen)
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         ) {
     if(srcLen == zfindexMax()) {
         return zfindexMax();
     }
     srcLen = ((srcLen * 4) + 2) / 3;
-    if(lineBreakPos != ZFBase64LineBreakPosNone() && srcLen > 0) {
+    if(lineBreakPos != ZFBase64LineBreakPos() && srcLen > 0) {
         srcLen += (srcLen - 1) / lineBreakPos;
     }
     return (srcLen + 1);
@@ -28,9 +28,9 @@ zfbool ZFBase64Encode(
         , ZF_IN const void *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfindex *outResultSize /* = zfnull */
-        , ZF_IN_OPT const zfchar *table /* = ZFBase64TableDefault() */
-        , ZF_IN_OPT zfchar pad /* = ZFBase64PadDefault() */
-        , ZF_IN_OPT zfindex lineBreakPos /* = ZFBase64LineBreakPosNone() */
+        , ZF_IN_OPT const zfchar *table /* = ZFBase64Table() */
+        , ZF_IN_OPT zfchar pad /* = ZFBase64Pad() */
+        , ZF_IN_OPT zfindex lineBreakPos /* = ZFBase64LineBreakPos() */
         ) {
     return ZFBase64Encode(ZFOutputForBufferUnsafe(buf), ZFInputForBufferUnsafe(src, srcLen), outResultSize, table, pad, lineBreakPos);
 }
@@ -38,9 +38,9 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Encode
         , ZFMP_IN_OUT(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFInput &, inputCallback)
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         ) {
     if(!outputCallback || !inputCallback) {
         return zffalse;
@@ -106,9 +106,9 @@ ZFMETHOD_FUNC_DEFINE_7(zfbool, ZFBase64Encode
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         ) {
     return ZFBase64Encode(ZFOutputForString(buf), ZFInputForBufferUnsafe(src, srcLen), outResultSize, table, pad, lineBreakPos);
 }
@@ -117,7 +117,7 @@ ZFMETHOD_FUNC_DEFINE_7(zfbool, ZFBase64Encode
 // decode
 ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFBase64DecodeCalcSize
         , ZFMP_IN(zfindex, srcLen)
-        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPos())
         ) {
     if(srcLen == zfindexMax()) {
         return zfindexMax();
@@ -129,8 +129,8 @@ zfbool ZFBase64Decode(
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfindex *outResultSize /* = zfnull */
-        , ZF_IN_OPT const zfchar *table /* = ZFBase64TableDefault() */
-        , ZF_IN_OPT zfchar pad /* = ZFBase64PadDefault() */
+        , ZF_IN_OPT const zfchar *table /* = ZFBase64Table() */
+        , ZF_IN_OPT zfchar pad /* = ZFBase64Pad() */
         ) {
     return ZFBase64Decode(ZFOutputForBufferUnsafe(buf), ZFInputForBufferUnsafe(src, srcLen), outResultSize, table, pad);
 }
@@ -138,8 +138,8 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFBase64Decode
         , ZFMP_IN_OUT(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFInput &, inputCallback)
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
         ) {
     if(!outputCallback || !inputCallback) {
         return zffalse;
@@ -224,8 +224,8 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Decode
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
-        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64Table())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64Pad())
         ) {
     return ZFBase64Decode(ZFOutputForString(buf), ZFInputForBufferUnsafe(src, srcLen), outResultSize, table, pad);
 }

@@ -73,7 +73,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *     if not set, the built-in value would be set,
  *     e.g. zffalse for zfbool, empty string for zfstring
  *     (for retain property, the init value must be auto released object,
- *     use #zfauto or #zflineAlloc or #zflineRelease is recommended)\n
+ *     use #zfauto or #zfobj is recommended)\n
  *   the SetterAccessType/GetterAccessType could be
  *     public/protected/private\n
  *   for example:

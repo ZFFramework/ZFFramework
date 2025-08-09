@@ -54,7 +54,7 @@ public:
                 this->notifyOnPause(this->_mainWindow);
             }
             this->notifyOnDestroy(this->_mainWindow);
-            zfblockedRelease(this->_mainWindow);
+            zfscopeRelease(this->_mainWindow);
             this->_mainWindow = zfnull;
             zfdelete(nativeWindow);
         }
