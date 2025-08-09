@@ -154,27 +154,27 @@ public:
             return zffalse;
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
-        zfint seekPos = SEEK_SET;
+        zfint nativeSeekPos = SEEK_SET;
         long seekSize = (long)byteSize;
         switch(seekPos) {
             case ZFSeekPosBegin:
-                seekPos = SEEK_SET;
+                nativeSeekPos = SEEK_SET;
                 break;
             case ZFSeekPosCur:
-                seekPos = SEEK_CUR;
+                nativeSeekPos = SEEK_CUR;
                 break;
             case ZFSeekPosCurReversely:
-                seekPos = SEEK_CUR;
+                nativeSeekPos = SEEK_CUR;
                 seekSize = -seekSize;
                 break;
             case ZFSeekPosEnd:
-                seekPos = SEEK_END;
+                nativeSeekPos = SEEK_END;
                 break;
             default:
                 ZFCoreCriticalShouldNotGoHere();
                 break;
         }
-        return (AAsset_seek(d->token, seekSize, seekPos) != -1);
+        return (AAsset_seek(d->token, seekSize, nativeSeekPos) != -1);
     }
     virtual zfindex resRead(
             ZF_IN void *token
