@@ -38,7 +38,7 @@ ZFENUM_REG(ZFLIB_ZFCore, ZFOutputFormatStep)
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */
-zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextend ZFInterface {
+zfabstract ZFLIB_ZFCore ZFOutputFormat : zfextend ZFStyle {
     ZFINTERFACE_DECLARE(ZFOutputFormat, ZFInterface)
 
 public:
@@ -135,9 +135,8 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat
 /**
  * @brief basic output format
  */
-zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextend ZFStyle, zfimplement ZFOutputFormat {
-    ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFStyle)
-    ZFIMPLEMENT_DECLARE(ZFOutputFormat)
+zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextend ZFOutputFormat {
+    ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFOutputFormat)
 
 public:
     /** @brief contents write before entire output */
@@ -148,8 +147,8 @@ public:
     ZFPROPERTY_ASSIGN(zfstring, linePostfix)
     /** @brief contents write after entire output */
     ZFPROPERTY_ASSIGN(zfstring, outputPostfix)
-    /** @brief whether ignore tail endl */
-    ZFPROPERTY_ASSIGN(zfbool, removeEndl)
+    /** @brief whether to escape endl with `\n` */
+    ZFPROPERTY_ASSIGN(zfbool, escapeEndl)
 
 protected:
     zfoverride

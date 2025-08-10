@@ -48,7 +48,7 @@ public:
         if(!this->cacheFile) {
             this->cacheFile = ZFIOOpen(ZFPathInfo(ZFPathType_cachePath(), zfstr("ZFIOBuffer/%s_%s"
                             , zfidentityCalc(this)
-                            , zfmRand(30000)
+                            , zfmRand()
                             )), v_ZFIOOpenOption::e_Read | v_ZFIOOpenOption::e_Write);
         }
         if(!this->cacheFile) {

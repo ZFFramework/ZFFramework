@@ -1,7 +1,7 @@
 #include "ZFImpl_default_ZFAlgorithm_impl.h"
 #include "ZFAlgorithm/protocol/ZFProtocolZFEncrypt.h"
 
-#include "ZFAlgorithm.h"
+#include "../_repo/tiny-AES-c/aes.hpp"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -13,63 +13,55 @@ public:
             , ZF_IN const ZFInput &input
             , ZF_IN const zfstring &key
             ) {
-        zfindex inputSize = input.ioSize();
-        if(inputSize != zfindexMax()) {
-            zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputSize, 16));
-            output.execute(sizeCheck.cString(), sizeCheck.length());
-            return ZFBase64Encode(output, input, zfnull, this->tableForKey(key));
-        }
-        else {
-            zfstring inputBuf;
-            ZFInputRead(inputBuf, input);
-            if(inputBuf.buffer() == zfnull) {
-                return zffalse;
+        struct AES_ctx ctx;
+        zfbyte iv[AES_BLOCKLEN];
+        zfmemset(iv, 0, sizeof(iv));
+        AES_init_ctx_iv(&ctx, (const uint8_t *)key.cString(), iv);
+
+        zfbyte buf[AES_BLOCKLEN * 256];
+        zfindex read;
+        // the first two bytes always store current block's actual size
+        while((read = input.execute(buf + 2, AES_BLOCKLEN * 256 - 2)) > 0) {
+            buf[0] = ((read >> 8) & 0xFF);
+            buf[1] = ((read >> 0) & 0xFF);
+            read += 2;
+            if((read % AES_BLOCKLEN) != 0) {
+                zfindex align = AES_BLOCKLEN - (read % AES_BLOCKLEN);
+                zfmemset(buf + read, 0, align);
+                read += align;
             }
-            zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputBuf.length(), 16));
-            output.execute(sizeCheck.cString(), sizeCheck.length());
-            return ZFBase64Encode(output, ZFInputForBuffer(inputBuf), zfnull, this->tableForKey(key));
+            AES_CBC_encrypt_buffer(&ctx, buf, read / AES_BLOCKLEN);
+            output.execute(buf, read);
         }
+        return zftrue;
     }
     virtual zfbool decrypt(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const ZFInput &input
             , ZF_IN const zfstring &key
             ) {
-        zfchar sizeCheckBuf[16] = {0};
-        for(zfindex i = 0; i < 10; ++i) {
-            if(input.execute(sizeCheckBuf + i, 1) != 1) {
+        struct AES_ctx ctx;
+        zfbyte iv[AES_BLOCKLEN];
+        zfmemset(iv, 0, sizeof(iv));
+        AES_init_ctx_iv(&ctx, (const uint8_t *)key.cString(), iv);
+
+        zfbyte buf[AES_BLOCKLEN * 256];
+        zfindex read;
+        while((read = input.execute(buf, AES_BLOCKLEN * 256)) > 0) {
+            if(read <= 2 || (read % AES_BLOCKLEN) != 0) {
                 return zffalse;
             }
-            if(sizeCheckBuf[i] == '+') {
-                sizeCheckBuf[i] = '\0';
-                break;
+            AES_CBC_decrypt_buffer(&ctx, buf, read / AES_BLOCKLEN);
+            zfindex blockSize = 0
+                | (buf[0] << 8) & 0xFF00
+                | (buf[1] << 0) & 0xFF
+                ;
+            if(blockSize == 0 || blockSize > read - 2) {
+                return zffalse;
             }
+            output.execute(buf + 2, blockSize);
         }
-        zfindex sizeCheck = 0;
-        if(!zfsToIntT(sizeCheck, sizeCheckBuf, zfindexMax(), 16)) {
-            return zffalse;
-        }
-        zfindex size = 0;
-        if(!ZFBase64Decode(output, input, &size, this->tableForKey(key))) {
-            return zffalse;
-        }
-        return (size == sizeCheck);
-    }
-private:
-    zfstring tableForKey(ZF_IN const zfstring &key) {
-        zfstring table = ZFBase64Table();
-        zfstring keyTmp = zfstr("%s%s", key, key.length());
-        keyTmp = ZFMd5(keyTmp, keyTmp.length());
-        const zfbyte *p = (const zfbyte *)keyTmp.cString();
-        const zfbyte *pEnd = p + keyTmp.length();
-        for( ; p < pEnd; p += 2) {
-            zfindex pos0 = (zfindex)(p[0] % 64);
-            zfindex pos1 = (zfindex)(p[1] % 64);
-            zfchar t = table[pos0];
-            table.set(pos0, table[pos1]);
-            table.set(pos1, t);
-        }
-        return table;
+        return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEncryptImpl_default)
 

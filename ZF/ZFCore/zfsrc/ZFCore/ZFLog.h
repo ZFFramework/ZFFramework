@@ -88,9 +88,8 @@ extern ZFLIB_ZFCore ZFOutput _ZFP_ZFLog(
 /**
  * @brief output format for #ZFLog
  */
-zfclass ZFLIB_ZFCore ZFLogFormat : zfextend ZFObject, zfimplement ZFOutputFormat {
-    ZFOBJECT_DECLARE(ZFLogFormat, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFOutputFormat)
+zfclass ZFLIB_ZFCore ZFLogFormat : zfextend ZFOutputFormat {
+    ZFOBJECT_DECLARE(ZFLogFormat, ZFOutputFormat)
 
 public:
     /** @brief whether auto append endl for each #ZFLog call */

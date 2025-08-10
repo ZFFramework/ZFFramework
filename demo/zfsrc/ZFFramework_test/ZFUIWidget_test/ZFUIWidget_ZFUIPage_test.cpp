@@ -156,9 +156,9 @@ protected:
                 }
             } ZFLISTENER_END()
             button->observerAdd(ZFUIButton::E_ButtonOnClick(), buttonOnClick);
-            zffloat r = zfmRand(255) / 255.0f;
-            zffloat g = zfmRand(255) / 255.0f;
-            zffloat b = zfmRand(255) / 255.0f;
+            zffloat r = zfmRandFloat();
+            zffloat g = zfmRandFloat();
+            zffloat b = zfmRandFloat();
             button->bgNormal()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b, 0.25f)));
             button->bgHighlighted()->image(ZFUIImageFromColor(ZFUIColorCreate(r, g, b)));
         }

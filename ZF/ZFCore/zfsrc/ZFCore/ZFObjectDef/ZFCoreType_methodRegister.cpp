@@ -560,7 +560,9 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRound
         , ZFMP_IN(zffloat const &, v)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zffloat, zfmRand)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zffloat, zfmRandFloat)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfint, zfmRandMax)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfint, zfmRand)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, zfmRand
         , ZFMP_IN(zfindex const &, range)

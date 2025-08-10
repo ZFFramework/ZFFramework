@@ -1,0 +1,6 @@
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/kokke/tiny-AES-c" master "<ZF_WORK_DIR>\_repo\tiny-AES-c"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_repo\tiny-AES-c\aes.h" "<ZF_WORK_DIR>\..\zfsrc\ZFImpl\_repo\tiny-AES-c\aes.h"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_repo\tiny-AES-c\aes.hpp" "<ZF_WORK_DIR>\..\zfsrc\ZFImpl\_repo\tiny-AES-c\aes.hpp"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_repo\tiny-AES-c\aes.c" "<ZF_WORK_DIR>\..\zfsrc\ZFImpl\_repo\tiny-AES-c\aes.c"
+

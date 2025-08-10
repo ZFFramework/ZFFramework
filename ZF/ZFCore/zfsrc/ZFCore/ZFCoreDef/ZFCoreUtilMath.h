@@ -99,16 +99,24 @@ inline T_zffloat zfmRound(ZF_IN const T_zffloat &v) {
 /**
  * @brief return a random float in range [0, 1]
  */
-extern ZFLIB_ZFCore zffloat zfmRand(void);
+extern ZFLIB_ZFCore zffloat zfmRandFloat(void);
 /**
- * @brief return a random number range [0, range) or 0 if range is 0 or negative
+ * @brief max value for #zfmRand
+ */
+extern ZFLIB_ZFCore zfint zfmRandMax(void);
+/**
+ * @brief return a random integer in range [0, zfmRandMax]
+ */
+extern ZFLIB_ZFCore zfint zfmRand(void);
+/**
+ * @brief return a random number range [0, range]
  */
 template<typename T_int>
 T_int zfmRand(ZF_IN T_int const &range) {
-    return (T_int)(range * zfmRand());
+    return (T_int)(range * zfmRandFloat());
 }
 /**
- * @brief return a random number range [start, end) or 0 if range invalid
+ * @brief return a random number range [start, end]
  */
 template<typename T_int>
 T_int zfmRand(

@@ -52,7 +52,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         return;
     }
 
-    ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zfobj<ZFOutputFormatBasic>()->c_removeEndl(zftrue));
+    ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zfobj<ZFOutputFormatBasic>()->c_escapeEndl(zftrue));
 
     ZFCoreArray<_ZFP_ZFUIViewTreePrintPrintData> printDatas;
     _ZFP_ZFUIViewTreePrintPrintData rootPrintData;

@@ -410,7 +410,7 @@ ZFMETHOD_FUNC_DEFINE_0(ZFPathInfo, ZFIO_genCachePathInfo) {
     return ZFPathInfo(ZFPathType_cachePath(), zfstr(
                 "ZFIOBuffer/%s_%s"
                 , ++_counter
-                , zfmRand(30000)
+                , zfmRand()
                 ));
 }
 

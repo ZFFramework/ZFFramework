@@ -7,15 +7,6 @@ ZFENUM_DEFINE(ZFOutputFormatStep)
 // ============================================================
 ZFOBJECT_REGISTER(ZFOutputFormat)
 
-void ZFOutputFormat::format(
-        ZF_IN_OUT zfstring &ret
-        , ZF_IN ZFOutputFormatStep outputStep
-        , ZF_IN const zfchar *src
-        , ZF_IN zfindex srcLen
-        ) {
-    // nothing to do
-}
-
 // ============================================================
 zfclass _ZFP_I_ZFOutputForFormatOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFOutputForFormatOwner, ZFObject)
@@ -269,9 +260,9 @@ void ZFOutputFormatBasic::format(
 
     const zfchar *srcEnd = src + srcLen;
     const zfchar *p = src;
-    zfbool removeEndl = this->removeEndl();
+    zfbool escapeEndl = this->escapeEndl();
     while(src < srcEnd) {
-        if(removeEndl && (*src == '\n' || *src == '\r')) {
+        if(escapeEndl && (*src == '\n' || *src == '\r')) {
             ret.append(p, src - p);
             if(*src == '\r') {
                 ret += "\\r";
