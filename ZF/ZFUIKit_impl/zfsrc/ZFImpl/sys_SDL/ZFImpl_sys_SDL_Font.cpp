@@ -102,7 +102,7 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
             ZFLISTENER_1(impl
                     , ZFInput &, input
                     ) {
-                const ZFIOFindData &fd = zfargs.param1().to<v_ZFIOFindData *>()->zfv;
+                const ZFIOFindData &fd = zfargs.sender().to<v_ZFIOFindData *>()->zfv;
                 if(fd.name().length() > 4 && zfstringIsEqual(fd.name() + (fd.name().length() - 4), ".ttf")) {
                     zfargs.eventFiltered(zftrue);
                     input = ZFInputForPathInfo(zfargs.param0().to<v_ZFPathInfo *>()->zfv);

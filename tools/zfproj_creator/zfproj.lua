@@ -408,10 +408,10 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
 
     local _TMP_DIR_SRC_FORMATED = ZFPathFormat(_TMP_DIR_SRC)
     ZFIOForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_SRC_FORMATED), function(zfargs)
+        ---@type ZFIOFindData
+        local fd = zfargs:sender()
         ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        ---@type ZFIOFindData
-        local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
@@ -438,10 +438,10 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     ZFLogTrim('sync to target')
     local _TMP_DIR_FORMATED = ZFPathFormat(_TMP_DIR .. '/' .. config:get('ZF_INPLACE_SRC'))
     ZFIOForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_FORMATED), function(zfargs)
+        ---@type ZFIOFindData
+        local fd = zfargs:sender()
         ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        ---@type ZFIOFindData
-        local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
@@ -472,10 +472,10 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
     local SRC_DIR_FORMATED = ZFPathFormat(SRC_DIR)
     local DST_DIR_FORMATED = ZFPathFormat(DST_DIR)
     ZFIOForEach(ZFPathInfo(ZFPathType_file(), SRC_DIR_FORMATED), function(zfargs)
+        ---@type ZFIOFindData
+        local fd = zfargs:sender()
         ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        ---@type ZFIOFindData
-        local fd = zfargs:param1()
         local relPath = zfstring(pathInfo:pathData(), SRC_DIR_FORMATED:length(), zfindexMax())
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         if not filtered then

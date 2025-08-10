@@ -181,8 +181,9 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFIOTreePrint
  *   ZFIOForEach(pathInfo, fileCallback);
  * @endcode
  *
- * fileCallback's param0 is #v_ZFPathInfo that describe the child file or dir,
- * and param1 is #v_ZFIOFindData,
+ * fileCallback's sender would be the #v_ZFIOFindData,
+ * param0 is #v_ZFPathInfo that describe the child file or dir,
+ * and param1 is a #v_zfstring stores the relative path to source pathInfo,
  * set #ZFArgs::eventFiltered to indicates process done
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFIOForEach
