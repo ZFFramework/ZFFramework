@@ -1934,59 +1934,86 @@ void ZFClassAliasRemove(
 }
 
 // ============================================================
-zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj) {
-    if(cls && obj) {
-        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
-        if(!m.empty()) {
-            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(ZFClass::classForName(cls));
-            if(it != m.end()) {
-                zfauto ret;
-                if(it->second(ret, obj)) {
-                    return ret;
-                }
-            }
-        }
-    }
-    return obj;
+zfauto zfconv(
+        ZF_IN const zfstring &cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
+        ) {
+    zfauto ret;
+    zfconvT(ret, ZFClass::classForName(cls), obj, implicitConv);
+    return ret;
 }
-zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj) {
-    if(cls && obj) {
-        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
-        if(!m.empty()) {
-            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(cls);
-            if(it != m.end()) {
-                zfauto ret;
-                if(it->second(ret, obj)) {
-                    return ret;
-                }
-            }
-        }
-    }
-    return obj;
+zfauto zfconv(
+        ZF_IN const ZFClass *cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
+        ) {
+    zfauto ret;
+    zfconvT(ret, cls, obj, implicitConv);
+    return ret;
 }
 
-zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj) {
-    if(cls && obj) {
-        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
-        if(!m.empty()) {
-            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(ZFClass::classForName(cls));
-            if(it != m.end()) {
-                return it->second(ret, obj);
-            }
-        }
-    }
-    return zffalse;
+zfbool zfconvT(
+        ZF_OUT zfauto &ret
+        , ZF_IN const zfstring &cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
+        ) {
+    return zfconvT(ret, ZFClass::classForName(cls), obj, implicitConv);
 }
-zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj) {
-    if(cls && obj) {
-        zfstlhashmap<const ZFClass *, zfconvImpl> &m = obj->classData()->d->zfconvMap;
-        if(!m.empty()) {
-            zfstlhashmap<const ZFClass *, zfconvImpl>::iterator it = m.find(cls);
-            if(it != m.end()) {
-                return it->second(ret, obj);
-            }
+zfbool zfconvT(
+        ZF_OUT zfauto &ret
+        , ZF_IN const ZFClass *cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
+        ) {
+    if(cls == zfnull) {
+        return zffalse;
+    }
+    else if(obj == zfnull) {
+        if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+            ret = cls->newInstance();
+            return (ret != zfnull);
+        }
+        else {
+            ret = zfnull;
+            return zftrue;
         }
     }
+    else if(obj->classData()->classIsTypeOf(cls)) {
+        ret = obj;
+        return zftrue;
+    }
+
+    // try ZFCONV_REG
+    zfconvImpl impl = obj->classData()->zfconvCheck(cls);
+    if(impl && impl(ret, obj)) {
+        return zftrue;
+    }
+
+    if(!implicitConv) {
+        return zffalse;
+    }
+
+    // try constructor
+    ZFArgs zfargs;
+    zfargs
+        .paramInit()
+        .param0(obj)
+        .ignoreErrorEvent(zftrue)
+        ;
+    ZFDI_alloc(zfargs, cls, zftrue);
+    if(zfargs.success()) {
+        ret = zfargs.result();
+        return zftrue;
+    }
+
+    // try serialize from string
+    v_zfstring *s = zfcast(v_zfstring *, obj);
+    if(s && ZFDI_objectFromString(ret, cls->classNameFull(), s->zfv)) {
+        return zftrue;
+    }
+
     return zffalse;
 }
 

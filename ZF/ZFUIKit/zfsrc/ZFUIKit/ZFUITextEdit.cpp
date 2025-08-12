@@ -80,7 +80,7 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, placeholderProp
     if(this->placeholder()) {
         zfauto valueTmp;
         const ZFProperty *prop = this->placeholder()->classData()->propertyForName(propertyName);
-        if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+        if(prop && zfconvT(valueTmp, prop->propertyTypeId(), value)) {
             prop->setterMethod()->methodInvoke(this->placeholder(), valueTmp);
         }
     }

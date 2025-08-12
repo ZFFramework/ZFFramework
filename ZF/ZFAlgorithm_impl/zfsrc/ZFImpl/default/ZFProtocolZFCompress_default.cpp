@@ -73,11 +73,15 @@ public:
 
         do {
             if(ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
-                if(!mz_zip_reader_init(&_impl, (mz_uint64)fileSize, MZ_ZIP_FLAG_CASE_SENSITIVE)) {
-                    break;
+                if(mz_zip_reader_init(&_impl, (mz_uint64)fileSize, MZ_ZIP_FLAG_CASE_SENSITIVE)) {
+                    if(!mz_zip_writer_init_from_reader(&_impl, zfnull)) {
+                        break;
+                    }
                 }
-                if(!mz_zip_writer_init_from_reader(&_impl, zfnull)) {
-                    break;
+                else {
+                    if(!mz_zip_writer_init(&_impl, 0)) {
+                        break;
+                    }
                 }
                 return zftrue;
             }

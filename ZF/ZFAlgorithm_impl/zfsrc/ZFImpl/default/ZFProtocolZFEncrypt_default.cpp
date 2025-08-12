@@ -30,7 +30,7 @@ public:
                 zfmemset(buf + read, 0, align);
                 read += align;
             }
-            AES_CBC_encrypt_buffer(&ctx, buf, read / AES_BLOCKLEN);
+            AES_CBC_encrypt_buffer(&ctx, buf, read);
             output.execute(buf, read);
         }
         return zftrue;
@@ -51,7 +51,7 @@ public:
             if(read <= 2 || (read % AES_BLOCKLEN) != 0) {
                 return zffalse;
             }
-            AES_CBC_decrypt_buffer(&ctx, buf, read / AES_BLOCKLEN);
+            AES_CBC_decrypt_buffer(&ctx, buf, read);
             zfindex blockSize = 0
                 | (buf[0] << 8) & 0xFF00
                 | (buf[1] << 0) & 0xFF

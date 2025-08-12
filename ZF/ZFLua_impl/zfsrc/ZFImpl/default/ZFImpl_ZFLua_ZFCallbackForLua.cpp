@@ -39,13 +39,11 @@ static zfbool _ZFP_ZFCallbackForLua_invoke(
                     }
                     else {
                         zfauto resultTmp;
-                        zfstring errorHintTmp;
-                        if(!ZFDI_implicitConvertT(resultTmp, zfargs.ownerMethod()->returnTypeId(), result, &errorHintTmp)) {
-                            zfstringAppend(errorHint, "[%s] invalid return value, desired type: %s, got value: %s, reason: %s, for method: %s"
+                        if(!zfconvT(resultTmp, zfargs.ownerMethod()->returnTypeId(), result)) {
+                            zfstringAppend(errorHint, "[%s] invalid return value, desired type: %s, got value: %s, for method: %s"
                                     , ownerPathInfo ? ZFPathInfoToString(ownerPathInfo) : zftext("ZFCallbackForLua")
                                     , zfargs.ownerMethod()->returnTypeId()
                                     , result
-                                    , errorHintTmp
                                     , zfargs.ownerMethod()
                                     );
                             return zffalse;

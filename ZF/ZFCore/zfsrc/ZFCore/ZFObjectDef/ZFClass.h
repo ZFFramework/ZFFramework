@@ -596,11 +596,6 @@ public:
     /** @brief see #zfconv */
     zfconvImpl zfconvCheck(ZF_IN const ZFClass *dstCls) const;
 
-    friend ZFLIB_ZFCore zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
-    friend ZFLIB_ZFCore zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
-    friend ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
-    friend ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
-
     // ============================================================
     // class instance methods
 public:
@@ -902,7 +897,8 @@ extern ZFLIB_ZFCore void ZFClassAliasRemove(
 /**
  * @brief object conversion
  *
- * some objects can be cast implicitly, `zfstring` to `const void *` for example,
+ * some objects can be cast implicitly,
+ * `zfstring` to `const void *` for example,
  * this method was designed for this, usage:
  * @code
  *   // register once
@@ -916,25 +912,52 @@ extern ZFLIB_ZFCore void ZFClassAliasRemove(
  *       return zftrue;
  *   }
  *
- *   // use
- *   // note, when convert failed, the original object would be returned
- *   zfauto converted = zfconv("void", zfobj<v_zfstring>());
+ *   // use, return converted object, or null if not available or convert failed
+ *   zfauto converted = zfconv(ZFTypeId_zfptr(), zfobj<v_zfstring>());
  *
  *   // or use with explicit check
  *   zfauto ret;
- *   if(zfconvT(ret, "void", zfobj<v_zfstring>())) {
+ *   if(zfconvT(ret, ZFTypeId_zfptr(), zfobj<v_zfstring>())) {
  *       // conversion was success
  *   }
  * @endcode
+ *
+ * possible returns:
+ * -  original object, if can be cast by #zfcast
+ * -  empty object, if cls is #ZFTypeIdWrapper and obj is null
+ * -  null, if obj is null
+ * -  new object converted by #ZFCONV_REG
+ *
+ * extra possible returns if implicitConv is true:
+ * -  new object by invoking constructor of desired class with source object as param
+ * -  new object by #ZFDI_objectFromString
  */
-extern ZFLIB_ZFCore zfauto zfconv(ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfauto zfconv(
+        ZF_IN const zfstring &cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv = zftrue
+        );
 /** @brief see #zfconv */
-extern ZFLIB_ZFCore zfauto zfconv(ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfauto zfconv(
+        ZF_IN const ZFClass *cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv = zftrue
+        );
 
 /** @brief see #zfconv */
-extern ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const zfstring &cls, ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfbool zfconvT(
+        ZF_OUT zfauto &ret
+        , ZF_IN const zfstring &cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv = zftrue
+        );
 /** @brief see #zfconv */
-extern ZFLIB_ZFCore zfbool zfconvT(ZF_OUT zfauto &ret, ZF_IN const ZFClass *cls, ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfbool zfconvT(
+        ZF_OUT zfauto &ret
+        , ZF_IN const ZFClass *cls
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool implicitConv = zftrue
+        );
 
 /** @brief see #zfconv */
 #define ZFCONV_REG(dstCls, srcCls) \

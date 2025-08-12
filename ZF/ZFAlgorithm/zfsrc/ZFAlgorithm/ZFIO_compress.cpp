@@ -30,7 +30,7 @@ public:
                 _itemPath = zfnull;
                 return zffalse;
             }
-            _buf->output().ioSeek(0);
+            _buf->input().ioSeek(0);
         }
         else if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Write)) {
             if(!_refIOToken->read(_buf->output(), itemPath)) {
@@ -39,6 +39,7 @@ public:
                 _itemPath = zfnull;
                 return zffalse;
             }
+            _buf->input().ioSeek(0);
         }
 
         return zftrue;
@@ -323,7 +324,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForCompress
     ZFInput ret;
     ZFInputForPathInfoTokenT(
             ret
-            , ZFIOOpen(ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath)), v_ZFIOOpenOption::e_Modify)
+            , ZFIOOpen(ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath)), v_ZFIOOpenOption::e_Read)
             );
     return ret;
 }

@@ -83,7 +83,10 @@ private:
                 return this->copyDir(srcPath, dstPath, isForce);
             }
             else {
-                return this->moveDir(srcPath, dstPath, isForce);
+                if(isForce) {
+                    this->removeDir(dstPath, isForce);
+                }
+                return this->moveDir(srcPath, dstPath);
             }
         }
         else {
@@ -91,7 +94,10 @@ private:
                 return this->copyFile(srcPath, dstPath, isForce);
             }
             else {
-                return this->moveFile(srcPath, dstPath, isForce);
+                if(isForce) {
+                    this->removeFile(dstPath, isForce);
+                }
+                return this->moveFile(srcPath, dstPath);
             }
         }
     }
@@ -357,11 +363,7 @@ private:
     zfbool moveFile(
             ZF_IN const zfchar *srcPath
             , ZF_IN const zfchar *dstPath
-            , ZF_IN zfbool isForce
             ) {
-        if(isForce) {
-            this->removeFile(dstPath, isForce);
-        }
         #if ZF_ENV_sys_Windows
             if(MoveFileW(
                     zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
@@ -380,9 +382,8 @@ private:
     zfbool moveDir(
             ZF_IN const zfchar *srcPath
             , ZF_IN const zfchar *dstPath
-            , ZF_IN zfbool isForce
             ) {
-        return this->moveFile(srcPath, dstPath, isForce);
+        return this->moveFile(srcPath, dstPath);
     }
     zfbool copyDir(
             ZF_IN const zfchar *srcPath

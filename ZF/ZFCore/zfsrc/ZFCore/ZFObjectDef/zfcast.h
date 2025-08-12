@@ -1,10 +1,10 @@
 /**
- * @file ZFObjectCast.h
+ * @file zfcast.h
  * @brief zfcast declarations
  */
 
-#ifndef _ZFI_ZFObjectCast_h_
-#define _ZFI_ZFObjectCast_h_
+#ifndef _ZFI_zfcast_h_
+#define _ZFI_zfcast_h_
 
 #include "ZFObjectClassTypeFwd.h"
 
@@ -205,5 +205,5 @@ public:
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_ZFObjectCast_h_
+#endif // #ifndef _ZFI_zfcast_h_
 

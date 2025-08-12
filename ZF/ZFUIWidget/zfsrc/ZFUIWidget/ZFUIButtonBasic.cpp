@@ -521,7 +521,7 @@ ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, labelProp
         ) {
     zfauto valueTmp;
     const ZFProperty *prop = this->label(forState)->classData()->propertyForName(propertyName);
-    if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+    if(prop && zfconvT(valueTmp, prop->propertyTypeId(), value)) {
         prop->setterMethod()->methodInvoke(this->label(forState), valueTmp);
     }
 }
@@ -532,7 +532,7 @@ ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, iconProp
         ) {
     zfauto valueTmp;
     const ZFProperty *prop = this->icon(forState)->classData()->propertyForName(propertyName);
-    if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+    if(prop && zfconvT(valueTmp, prop->propertyTypeId(), value)) {
         prop->setterMethod()->methodInvoke(this->icon(forState), valueTmp);
     }
 }
@@ -543,7 +543,7 @@ ZFMETHOD_DEFINE_3(ZFUIButtonBasic, void, bgProp
         ) {
     zfauto valueTmp;
     const ZFProperty *prop = this->bg(forState)->classData()->propertyForName(propertyName);
-    if(prop && ZFDI_implicitConvertT(valueTmp, prop->propertyTypeId(), value)) {
+    if(prop && zfconvT(valueTmp, prop->propertyTypeId(), value)) {
         prop->setterMethod()->methodInvoke(this->bg(forState), valueTmp);
     }
 }

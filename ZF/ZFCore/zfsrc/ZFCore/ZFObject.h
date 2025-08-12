@@ -33,7 +33,6 @@
 #include "ZFObjectDef/ZFMethodUserRegister.h"
 #include "ZFObjectDef/ZFNull.h"
 #include "ZFObjectDef/ZFObjectAutoPtr.h"
-#include "ZFObjectDef/ZFObjectCast.h"
 #include "ZFObjectDef/ZFObjectClassTypeFwd.h"
 #include "ZFObjectDef/ZFObjectCore.h"
 #include "ZFObjectDef/ZFObjectDeclare.h"
@@ -66,6 +65,7 @@
 #include "ZFObjectDef/zfany.h"
 #include "ZFObjectDef/zfauto.h"
 #include "ZFObjectDef/zfautoFwd.h"
+#include "ZFObjectDef/zfcast.h"
 #include "ZFObjectDef/zfsynchronize.h"
 #include "ZFObjectDef/zfweak.h"
 

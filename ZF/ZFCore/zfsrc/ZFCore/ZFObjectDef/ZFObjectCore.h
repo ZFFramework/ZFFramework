@@ -875,11 +875,6 @@ protected:
     /** @endcond */
 };
 
-/**
- * @brief generic version of object cast
- */
-extern ZFLIB_ZFCore zfany ZFObjectCast(ZF_IN const ZFClass *cls, ZF_IN const zfany &obj);
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectCore_h_
 

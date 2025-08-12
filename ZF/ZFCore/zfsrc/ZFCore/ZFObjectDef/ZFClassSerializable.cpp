@@ -201,23 +201,27 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAliasRemove
         )
 
 // ============================================================
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, zfconv
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfauto, zfconv
         , ZFMP_IN(const zfstring &, cls)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfbool, implicitConv, zftrue)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, zfconv
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfauto, zfconv
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfbool, implicitConv, zftrue)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, zfconvT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, zfconvT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const zfstring &, cls)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfbool, implicitConv, zftrue)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, zfconvT
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, zfconvT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN_OPT(zfbool, implicitConv, zftrue)
         )
 
 ZF_NAMESPACE_GLOBAL_END

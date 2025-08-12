@@ -278,7 +278,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
                 zfauto v2;
                 zfstring s2;
                 if(!ZFImpl_ZFLua_toStringT(s2, L, 2)
-                        || !ZFDI_implicitConvertT(v2, v1->classData()->classNameFull(), zfobj<ZFDI_WrapperRaw>(s2))
+                        || !zfconvT(v2, v1->classData()->classNameFull(), zfobj<ZFDI_WrapperRaw>(s2))
                         ) {
                     break;
                 }
@@ -308,7 +308,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
                 zfauto v1;
                 zfstring s1;
                 if(!ZFImpl_ZFLua_toStringT(s1, L, 1)
-                        || !ZFDI_implicitConvertT(v1, v2->classData()->classNameFull(), zfobj<ZFDI_WrapperRaw>(s1))
+                        || !zfconvT(v1, v2->classData()->classNameFull(), zfobj<ZFDI_WrapperRaw>(s1))
                         ) {
                     break;
                 }

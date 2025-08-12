@@ -6,7 +6,7 @@
 #ifndef _ZFI_zfany_h_
 #define _ZFI_zfany_h_
 
-#include "ZFObjectCast.h"
+#include "zfcast.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFObject;

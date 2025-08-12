@@ -104,7 +104,7 @@ static zfbool _ZFP_ZFCompressDir(
                 break;
             }
             zfstring itemPath;
-            if(!itemPathRel) {
+            if(itemPathRel) {
                 itemPath += itemPathRel;
                 itemPath += "/";
             }

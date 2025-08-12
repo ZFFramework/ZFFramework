@@ -78,7 +78,8 @@ public:
             , ZF_IN zfindex count
             , ZF_OUT_OPT zfindex *result = zfnull
             ) const {
-        for(zfindex blockSize = zfmMin(count, (zfindex)128); blockSize > 0; ) {
+        zfindex blockSize = zfmMin(count, (zfindex)128);
+        do {
             buf.capacity(buf.length() + blockSize + 1);
             zfindex read = this->execute(buf.zfunsafe_buffer() + buf.length(), blockSize);
             if(read == 0) {
@@ -88,8 +89,11 @@ public:
             buf.zfunsafe_buffer()[buf.length()] = '\0';
             if(count != zfindexMax()) {
                 count -= blockSize;
+                if(count == 0) {
+                    break;
+                }
             }
-        }
+        } while(zftrue);
         return *this;
     }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)

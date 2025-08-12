@@ -248,7 +248,12 @@ static zfbool _ZFP_ZFDI_paramConvert(
         }
         else {
             zfauto paramTmp;
-            if(zfconvT(paramTmp, method->paramTypeIdAt(iParam), param)) {
+            if(zfconvT(
+                        paramTmp
+                        , method->paramTypeIdAt(iParam)
+                        , param
+                        , zffalse // must not perform implicitConv, may cause recursive construct
+                        )) {
                 paramBackup[iParam] = param;
                 zfargs.param(iParam, paramTmp);
                 continue;
@@ -849,51 +854,6 @@ zfbool ZFDI_objectFromString(
     }
     else {
         return ZFObjectFromStringT(ret, cls, src, srcLen, errorHint);
-    }
-}
-
-zfbool ZFDI_implicitConvertT(
-        ZF_OUT zfauto &ret
-        , ZF_IN const zfstring &desiredTypeId
-        , ZF_IN ZFObject *value
-        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
-        ) {
-    const ZFClass *cls = ZFClass::classForName(desiredTypeId);
-    if(cls == zfnull) {
-        return zffalse;
-    }
-    if(value == zfnull) {
-        if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-            ret = cls->newInstance();
-            return (ret != zfnull);
-        }
-        else {
-            ret = zfnull;
-            return zftrue;
-        }
-    }
-    else if(value->classData()->classIsTypeOf(cls)) {
-        ret = value;
-        return zftrue;
-    }
-    else {
-        // try to convert by construct new value
-        ZFArgs zfargs;
-        zfargs
-            .paramInit()
-            .param0(value)
-            .ignoreErrorEvent(errorHint != zfnull)
-            ;
-        ZFDI_alloc(zfargs, cls, zftrue);
-        if(zfargs.success()) {
-            ret = zfargs.result();
-        }
-        else {
-            if(errorHint != zfnull) {
-                *errorHint += zfargs.errorHint();
-            }
-        }
-        return zfargs.success();
     }
 }
 

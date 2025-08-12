@@ -880,16 +880,6 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
 }
 
 // ============================================================
-zfany ZFObjectCast(ZF_IN const ZFClass *cls, ZF_IN const zfany &obj) {
-    if(cls == zfnull || obj == zfnull) {
-        return zfnull;
-    }
-    else {
-        return obj->classData()->_ZFP_ZFClass_objectCast(obj, cls);
-    }
-}
-
-// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, const ZFClass *, classData)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectInfoOfInstanceT
         , ZFMP_IN_OUT(zfstring &, ret)
@@ -1048,10 +1038,6 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectDeallocRunnin
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternal)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternalPrivate)
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfany, ZFObjectCast
-        , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN(const zfany &, obj)
-        )
 ZFMETHOD_FUNC_USER_REGISTER_2({
         if(cls == zfnull || obj == zfnull || !obj->classData()->classIsTypeOf(cls)) {
             return zfnull;

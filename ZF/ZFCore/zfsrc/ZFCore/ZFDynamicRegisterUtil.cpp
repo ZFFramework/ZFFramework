@@ -1186,7 +1186,7 @@ ZFDynamic &ZFDynamic::property(
     param.propertySetterType(setterAccessType);
     param.propertyGetterType(getterAccessType);
     if(propertyInitValue != zfnull) {
-        zfauto wrap = ZFDI_implicitConvert(propertyTypeIdFix, propertyInitValue);
+        zfauto wrap = zfconv(propertyTypeIdFix, propertyInitValue);
         if(wrap == zfnull) {
             d->error(zfstr("invalid init value (%s)\"%s\" for property: (%s)%s::%s"
                         , propertyInitValue->classData()->classNameFull()
@@ -1227,7 +1227,7 @@ ZFDynamic &ZFDynamic::property(
     param.propertySetterType(setterAccessType);
     param.propertyGetterType(getterAccessType);
     if(propertyInitValue != zfnull) {
-        zfauto wrap = ZFDI_implicitConvert(propertyClassOfRetainProperty->classNameFull(), propertyInitValue);
+        zfauto wrap = zfconv(propertyClassOfRetainProperty->classNameFull(), propertyInitValue);
         if(!wrap || !wrap->classData()->classIsTypeOf(propertyClassOfRetainProperty)) {
             d->error(zfstr("init value (%s)%s is not type of %s for property: %s::%s"
                         , propertyInitValue->classData()->classNameFull()
@@ -1466,7 +1466,7 @@ ZFDynamic &ZFDynamic::staticProperty(
     const zfstring &propertyTypeId = propertyClassOfRetainProperty->classNameFull();
     zfobj<_ZFP_I_ZFDynamicStaticPropertyValueHolder> wrap;
     if(propertyInitValue != zfnull) {
-        wrap->value = ZFDI_implicitConvert(propertyTypeId, propertyInitValue);
+        wrap->value = zfconv(propertyTypeId, propertyInitValue);
         if(wrap->value == zfnull) {
             d->error(zfstr("invalid init value (%s)\"%s\" for staticProperty: (%s)%s::%s"
                         , propertyInitValue->classData()->classNameFull()

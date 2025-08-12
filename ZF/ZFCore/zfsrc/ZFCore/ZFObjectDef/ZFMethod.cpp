@@ -467,7 +467,7 @@ zfbool ZFMethod::methodInvokeCheck(
             }
             return zffalse;
         }
-        else if(ZFObjectCast(this->ownerClass(), ownerObjOrNull) == zfnull) {
+        else if(!ownerObjOrNull->classData()->classIsTypeOf(this->ownerClass())) {
             if(errorHint) {
                 zfstringAppend(*errorHint, "mismatch object %s when calling method: %s", ownerObjOrNull->objectInfoOfInstance(), this);
             }

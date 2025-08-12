@@ -7,7 +7,7 @@
 #define _ZFI_ZFCallback_h_
 
 #include "ZFMethod.h"
-#include "ZFObjectCast.h"
+#include "zfcast.h"
 #include "ZFSerializableData.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN

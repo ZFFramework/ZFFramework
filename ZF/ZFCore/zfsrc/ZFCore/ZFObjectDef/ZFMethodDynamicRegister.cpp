@@ -289,7 +289,7 @@ ZFMP &ZFMP::mp(
         , ZF_IN ZFObject *paramDefaultValue
         ) {
     zfauto wrap;
-    if(!ZFDI_implicitConvertT(wrap, paramTypeId, paramDefaultValue)) {
+    if(!zfconvT(wrap, paramTypeId, paramDefaultValue)) {
         ZFCoreLogTrim("invalid param default value: \"%s\", desired: %s"
                 , paramDefaultValue
                 , paramTypeId
