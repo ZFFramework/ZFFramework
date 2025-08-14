@@ -35,8 +35,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   @note for ouput callbacks, the size shows the current size of the output,
  *     it may or may not be the actual size written to the output,
  *     usually it has no actual meaning
- * -  ioClose, close the callback, proto type:\n
- *   zfbool ioClose(void);\n
  */
 #define ZFCallbackTagKeyword_ioOwner "ZFCallbackTagKeyword_ioOwner"
 /**

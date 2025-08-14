@@ -163,9 +163,21 @@ zfclassFwd ZFIOImpl;
 /** @brief see #ZFIOImplForPathType */
 zfabstract ZFLIB_ZFCore ZFIOToken : zfextend ZFObject {
     ZFOBJECT_DECLARE_ABSTRACT(ZFIOToken, ZFObject)
-    ZFALLOC_CACHE_RELEASE_ABSTRACT({
-        cache->ioClose();
-    })
+
+public:
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called before #ioClose
+     */
+    ZFEVENT(IOCloseOnPrepare)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called after #ioClose
+     */
+    ZFEVENT(IOCloseOnFinish)
+
 protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void) {
@@ -190,15 +202,25 @@ public:
     virtual zfstring pathData(void) zfpurevirtual;
     /** @brief open flags for this token */
     virtual ZFIOOpenOptionFlags ioFlags(void) zfpurevirtual;
+
+protected:
+    /** @brief see #ioClose */
+    virtual zfbool ioCloseImpl(void) zfpurevirtual;
 public:
     /**
      * @brief see #ZFIOImplForPathType
      *
      * note:
-     * -  when done, ioClose must be exactly called once to release io resource
+     * -  when done, ioClose can be called exactly once to release io resource
+     * -  ioClose would be called automatically when token deallocated
      * -  you must not access the token after ioClose was called
      */
-    virtual zfbool ioClose(void) zfpurevirtual;
+    zffinal zfbool ioClose(void) {
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
+        zfbool ret = this->ioCloseImpl();
+        this->observerNotify(zfself::E_IOCloseOnFinish());
+        return ret;
+    }
     /**
      * @brief see #ZFIOImplForPathType
      *

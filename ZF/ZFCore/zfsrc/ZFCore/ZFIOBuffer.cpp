@@ -344,6 +344,19 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFIOBufferInput
     ioOwner->convCallback = convCallback;
     ZFInput ret = ZFCallbackForMemberMethod(ioOwner, ZFMethodAccess(_ZFP_I_ZFIOBufferInputOwner, onInput));
     ret.ioOwner(ioOwner);
+
+    ret.callbackTag("_ZFP_ZFIOBufferOutput_refInput", zfobj<v_ZFCallback>(refInput));
+    zfobj<ZFCallbackWeakRef> retHolder(ret);
+    ZFLISTENER_1(refOnDealloc
+            , zfautoT<ZFCallbackWeakRef>, retHolder
+            ) {
+        ZFOutput t = retHolder->get();
+        if(t) {
+            t.ioClose();
+        }
+    } ZFLISTENER_END()
+    refInput.callbackClearPrepareAdd(refOnDealloc);
+
     return ret;
 }
 
@@ -408,6 +421,19 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFIOBufferOutput
     ioOwner->convCallback = convCallback;
     ZFOutput ret = ZFCallbackForMemberMethod(ioOwner, ZFMethodAccess(_ZFP_I_ZFIOBufferOutputOwner, onOutput));
     ret.ioOwner(ioOwner);
+
+    ret.callbackTag("_ZFP_ZFIOBufferOutput_refOutput", zfobj<v_ZFCallback>(refOutput));
+    zfobj<ZFCallbackWeakRef> retHolder(ret);
+    ZFLISTENER_1(refOnDealloc
+            , zfautoT<ZFCallbackWeakRef>, retHolder
+            ) {
+        ZFOutput t = retHolder->get();
+        if(t) {
+            t.ioClose();
+        }
+    } ZFLISTENER_END()
+    refOutput.callbackClearPrepareAdd(refOnDealloc);
+
     return ret;
 }
 

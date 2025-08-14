@@ -16,6 +16,7 @@
 #include "ZFMethodSerializable.h"
 #include "ZFPropertySerializable.h"
 #include "ZFCallbackSerializable.h"
+#include "ZFCallbackWeakRef.h"
 #include "ZFListenerDeclare.h"
 #include "ZFObjectAutoPtr.h"
 #include "ZFIOCallback.h"

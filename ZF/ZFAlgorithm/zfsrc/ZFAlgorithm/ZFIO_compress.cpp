@@ -24,7 +24,7 @@ public:
         _buf = zfobj<ZFIOBuffer>();
 
         if(ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
-            if(!_refIOToken->read(_buf->output(), itemPath)) {
+            if(!_refIOToken->ioRead(_buf->output(), itemPath)) {
                 _refIOToken = zfnull;
                 _refPathInfo = zfnull;
                 _itemPath = zfnull;
@@ -33,7 +33,7 @@ public:
             _buf->input().ioSeek(0);
         }
         else if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Write)) {
-            if(!_refIOToken->read(_buf->output(), itemPath)) {
+            if(!_refIOToken->ioRead(_buf->output(), itemPath)) {
                 _refIOToken = zfnull;
                 _refPathInfo = zfnull;
                 _itemPath = zfnull;
@@ -78,14 +78,14 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return _refOpenFlags;
     }
-public:
+protected:
     zfoverride
-    virtual zfbool ioClose(void) {
+    virtual zfbool ioCloseImpl(void) {
         zfbool ret = zftrue;
         if(_refIOToken) {
             if(_refModified) {
                 _buf->input().ioSeek(0);
-                ret = _refIOToken->write(_itemPath, _buf->input());
+                ret = _refIOToken->ioWrite(_itemPath, _buf->input());
                 _refModified = zffalse;
             }
             _refIOToken = zfnull;
@@ -93,6 +93,7 @@ public:
         _buf = zfnull;
         return ret;
     }
+public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf
@@ -381,7 +382,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForCompress
 
         ZFPathInfo cachePath = ZFIO_genCachePathInfo();
         zfautoT<ZFCompressToken> compress = ZFCompressOpen(cachePath, v_ZFIOOpenOption::e_Write);
-        compress->write(itemPath, buf->input());
+        compress->ioWrite(itemPath, buf->input());
         compress = zfnull;
 
         ZFInputRead(refOutput, ZFInputForPathInfo(cachePath));

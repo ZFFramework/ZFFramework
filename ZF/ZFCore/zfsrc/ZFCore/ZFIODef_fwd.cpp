@@ -161,6 +161,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFIOFindData, const zfstring &, impl
 // ============================================================
 ZFOBJECT_REGISTER(ZFIOToken)
 
+ZFEVENT_REGISTER(ZFIOToken, IOCloseOnPrepare)
+ZFEVENT_REGISTER(ZFIOToken, IOCloseOnFinish)
+
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOToken, zfstring, pathType)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOToken, zfstring, pathData)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOToken, zfbool, ioClose)

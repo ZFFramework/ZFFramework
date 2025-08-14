@@ -29,9 +29,9 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return v_ZFIOOpenOption::e_Read;
     }
-public:
+protected:
     zfoverride
-    virtual zfbool ioClose(void) {
+    virtual zfbool ioCloseImpl(void) {
         _pathData = zfnull;
         if(_ioToken) {
             void *ioToken = _ioToken;
@@ -42,6 +42,7 @@ public:
             return zffalse;
         }
     }
+public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf

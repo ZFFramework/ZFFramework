@@ -213,7 +213,6 @@ public:
             )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
-    ZFMETHOD_DECLARE_0(zfbool, ioClose)
 
 private:
     zfautoT<ZFIOImpl> ioImpl;
@@ -261,14 +260,6 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfindex, ioSize) {
     }
     else {
         return zfindexMax();
-    }
-}
-ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfbool, ioClose) {
-    if(this->ioToken) {
-        return this->ioToken->ioClose();
-    }
-    else {
-        return zftrue;
     }
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForPathInfoToken
@@ -373,7 +364,6 @@ public:
             )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
-    ZFMETHOD_DECLARE_0(zfbool, ioClose)
 
 private:
     zfautoT<ZFIOImpl> ioImpl;
@@ -421,14 +411,6 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfindex, ioSize) {
     }
     else {
         return zfindexMax();
-    }
-}
-ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfbool, ioClose) {
-    if(this->ioToken) {
-        return this->ioToken->ioClose();
-    }
-    else {
-        return zftrue;
     }
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForPathInfoToken

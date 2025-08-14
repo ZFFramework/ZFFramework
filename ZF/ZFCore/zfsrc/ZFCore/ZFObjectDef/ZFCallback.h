@@ -12,6 +12,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclassFwd ZFListener;
+
 // ============================================================
 /**
  * @brief callback type of ZFCallback
@@ -107,6 +109,12 @@ public:
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return (d == zfnull);}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return (d != zfnull);}
     operator bool (void) const {return this->valid();}
+    inline void _ZFP_ZFCallback_d(ZF_IN _ZFP_ZFCallbackPrivate *d) {
+        this->d = d;
+    }
+    inline _ZFP_ZFCallbackPrivate *_ZFP_ZFCallback_d(void) const {
+        return d;
+    }
     static ZFCallback _ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbackMethod);
     static ZFCallback _ZFP_ZFCallbackCreateMemberMethod(
             ZF_IN ZFObject *callbackOwnerObject
@@ -165,11 +173,24 @@ public:
 
 public:
     /**
-     * @brief explicitly clear reference of this callback
+     * @brief explicitly clear all reference of this callback
      *
-     * useful for script with GC logic, to explicitly release reference of callback
+     * useful for script with GC logic, to explicitly release all reference of callback
      */
     zffinal void callbackClear(void);
+
+    /**
+     * @brief see #callbackClear
+     *
+     * observer's sender would be the #v_ZFCallback,
+     * you must not store it for further use
+     */
+    zffinal void callbackClearPrepareAdd(
+            ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            ) const;
+    /** @brief see #callbackClear */
+    zffinal void callbackClearPrepareRemove(ZF_IN const ZFListener &observer) const;
 
     /**
      * @brief an unique id for the callback, used for cache logic

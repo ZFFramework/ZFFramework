@@ -12,12 +12,14 @@ zfclass _ZFP_I_ZFCompressToken_default : zfextend ZFCompressToken {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFCompressToken_default, ZFCompressToken)
 private:
     zfautoT<ZFIOToken> _refIOToken;
+    ZFPathInfo _refPathInfo;
     ZFIOOpenOptionFlags _refOpenFlags;
     mz_uint _compressLevel;
     mz_zip_archive _impl;
 protected:
     _ZFP_I_ZFCompressToken_default(void)
     : _refIOToken()
+    , _refPathInfo()
     , _refOpenFlags(v_ZFIOOpenOption::e_Read)
     , _compressLevel(MZ_DEFAULT_COMPRESSION)
     , _impl()
@@ -40,6 +42,7 @@ public:
             return zffalse;
         }
 
+        _refPathInfo = pathInfo;
         _refOpenFlags = flags;
 
         switch(compressLevel) {
@@ -103,7 +106,7 @@ public:
         } while(zffalse);
 
         // fail, cleanup
-        this->close();
+        this->ioClose();
         return zffalse;
     }
 
@@ -138,7 +141,21 @@ private:
 
 public:
     zfoverride
-    virtual zfbool close(void) {
+    virtual zfstring pathType(void) {
+        return _refPathInfo.pathType();
+    }
+    zfoverride
+    virtual zfstring pathData(void) {
+        return _refPathInfo.pathType();
+    }
+    zfoverride
+    virtual ZFIOOpenOptionFlags ioFlags(void) {
+        return _refOpenFlags;
+    }
+
+protected:
+    zfoverride
+    virtual zfbool ioCloseImpl(void) {
         zfbool ret = zftrue;
         if(_impl.m_zip_mode != MZ_ZIP_MODE_INVALID) {
             mz_zip_writer_finalize_archive(&_impl);
@@ -148,8 +165,9 @@ public:
         return ret;
     }
 
+public:
     zfoverride
-    virtual zfbool read(
+    virtual zfbool ioRead(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const zfstring &itemPath
             ) {
@@ -163,7 +181,7 @@ public:
                 );
     }
     zfoverride
-    virtual zfbool write(
+    virtual zfbool ioWrite(
             ZF_IN const zfstring &itemPath
             , ZF_IN const ZFInput &input
             ) {
@@ -199,7 +217,7 @@ public:
     }
 
     zfoverride
-    virtual zfbool pathCreate(ZF_IN const zfstring &itemPath) {
+    virtual zfbool ioPathCreate(ZF_IN const zfstring &itemPath) {
         if(!itemPath) {
             return zffalse;
         }
@@ -213,12 +231,12 @@ public:
         }
     }
     zfoverride
-    virtual zfbool remove(ZF_IN const zfstring &itemPath) {
+    virtual zfbool ioRemove(ZF_IN const zfstring &itemPath) {
         // not implemented yet
         return zffalse;
     }
     zfoverride
-    virtual zfbool move(
+    virtual zfbool ioMove(
             ZF_IN const zfstring &itemPathFrom
             , ZF_IN const zfstring &itemPathTo
             ) {
@@ -275,14 +293,14 @@ private:
             // found
             d->lastIndex = i;
             fd.impl().name.assign(path, pos == zfindexMax() ? pathLen : pos);
-            fd.impl().isDir = this->itemIsDirAt(i);
+            fd.impl().isDir = this->ioIsDirAt(i);
             return zftrue;
         }
         return zffalse;
     }
 public:
     zfoverride
-    virtual zfbool itemFindFirst(
+    virtual zfbool ioFindFirst(
             ZF_IN_OUT ZFIOFindData &fd
             , ZF_IN const zfstring &itemPath
             ) {
@@ -302,25 +320,25 @@ public:
         }
     }
     zfoverride
-    virtual zfbool itemFindNext(ZF_IN_OUT ZFIOFindData &fd) {
+    virtual zfbool ioFindNext(ZF_IN_OUT ZFIOFindData &fd) {
         _FindData *d = (_FindData *)fd.implUserData();
         return this->_itemFindNext(fd, d);
     }
     zfoverride
-    virtual void itemFindClose(ZF_IN_OUT ZFIOFindData &fd) {
+    virtual void ioFindClose(ZF_IN_OUT ZFIOFindData &fd) {
         _FindData *d = (_FindData *)fd.implUserData();
         fd.implDetach();
         zfpoolDelete(d);
     }
 
     zfoverride
-    virtual zfbool itemIsDir(ZF_IN const zfstring &itemPath) {
+    virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) {
         mz_zip_archive_file_stat stat;
         return (mz_zip_reader_file_stat(&_impl, (mz_uint)this->itemIndex(itemPath), &stat) && stat.m_is_directory);
     }
 
     zfoverride
-    virtual zfbool itemIsDirAt(ZF_IN zfindex itemIndex) {
+    virtual zfbool ioIsDirAt(ZF_IN zfindex itemIndex) {
         mz_zip_archive_file_stat stat;
         return (mz_zip_reader_file_stat(&_impl, (mz_uint)itemIndex, &stat) && stat.m_is_directory);
     }

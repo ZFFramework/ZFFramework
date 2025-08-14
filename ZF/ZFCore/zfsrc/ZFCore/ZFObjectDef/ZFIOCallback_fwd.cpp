@@ -63,16 +63,8 @@ zfindex ZFIOCallback::ioSize(void) const {
     return method->executeExact<zfindex>(owner);
 }
 zfbool ZFIOCallback::ioClose(void) const {
-    zfbool ret = zftrue;
-    ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
-    if(owner != zfnull) {
-        const ZFMethod *method = owner->classData()->methodForName("ioClose");
-        if(method != zfnull) {
-            ret = method->executeExact<zfbool>(owner);
-        }
-    }
     const_cast<ZFIOCallback *>(this)->callbackClear();
-    return ret;
+    return zftrue;
 }
 
 // ============================================================
@@ -91,17 +83,8 @@ ZFMETHOD_USER_REGISTER_0({
     }, v_ZFCallback, zfindex, ioSize
     )
 ZFMETHOD_USER_REGISTER_0({
-        ZFCallback &v = invokerObject->to<v_ZFCallback *>()->zfv;
-        zfbool ret = zftrue;
-        ZFObject *owner = v.callbackTag(ZFCallbackTagKeyword_ioOwner);
-        if(owner != zfnull) {
-            const ZFMethod *method = owner->classData()->methodForName("ioClose");
-            if(method != zfnull) {
-                ret = method->executeExact<zfbool>(owner);
-            }
-        }
-        v.callbackClear();
-        return ret;
+        invokerObject->to<v_ZFCallback *>()->zfv.callbackClear();
+        return zftrue;
     }, v_ZFCallback, zfbool, ioClose
     )
 ZFMETHOD_USER_REGISTER_1({

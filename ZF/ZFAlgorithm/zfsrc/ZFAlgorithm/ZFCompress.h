@@ -30,57 +30,72 @@ ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFAlgorithm, ZFCompressLevel, Normal)
 ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFCompressLevel)
 
 /** @brief see #ZFCompressOpen */
-zfabstract ZFLIB_ZFAlgorithm ZFCompressToken : zfextend ZFObject {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFCompressToken, ZFObject)
+zfabstract ZFLIB_ZFAlgorithm ZFCompressToken : zfextend ZFIOToken {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFCompressToken, ZFIOToken)
+
 protected:
     zfoverride
-    virtual void objectOnDeallocPrepare(void) {
-        this->close();
-        zfsuper::objectOnDeallocPrepare();
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret += "(compress)";
+        ret += this->pathType();
+        ret += ":";
+        ret += this->pathData();
     }
+
+#if 0
+public:
+    virtual zfstring pathType(void) zfpurevirtual;
+    virtual zfstring pathData(void) zfpurevirtual;
+    virtual ZFIOOpenOptionFlags ioFlags(void) zfpurevirtual;
+protected:
+    virtual zfbool ioCloseImpl(void) zfpurevirtual;
+#endif
+
 public:
     /** @brief see #ZFCompressOpen */
-    virtual zfbool close(void) zfpurevirtual;
-
-    /** @brief see #ZFCompressOpen */
-    virtual zfbool read(
+    virtual zfbool ioRead(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const zfstring &itemPath
             ) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfbool write(
+    virtual zfbool ioWrite(
             ZF_IN const zfstring &itemPath
             , ZF_IN const ZFInput &input
             ) zfpurevirtual;
 
+    /** @brief get input of specified item */
+    virtual ZFInput input(ZF_IN const zfstring &itemPath);
+    /** @brief get output of specified item */
+    virtual ZFOutput output(ZF_IN const zfstring &itemPath);
+
     /** @brief see #ZFCompressOpen */
-    virtual zfbool pathCreate(ZF_IN const zfstring &itemPath) zfpurevirtual;
+    virtual zfbool ioPathCreate(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfbool remove(ZF_IN const zfstring &itemPath) zfpurevirtual;
+    virtual zfbool ioRemove(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfbool move(
+    virtual zfbool ioMove(
             ZF_IN const zfstring &itemPathFrom
             , ZF_IN const zfstring &itemPathTo
             ) zfpurevirtual;
 
     /** @brief see #ZFCompressOpen */
-    virtual zfbool itemFindFirst(
+    virtual zfbool ioFindFirst(
             ZF_IN_OUT ZFIOFindData &fd
             , ZF_IN const zfstring &itemPath
             ) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfbool itemFindNext(ZF_IN_OUT ZFIOFindData &fd) zfpurevirtual;
+    virtual zfbool ioFindNext(ZF_IN_OUT ZFIOFindData &fd) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual void itemFindClose(ZF_IN_OUT ZFIOFindData &fd) zfpurevirtual;
+    virtual void ioFindClose(ZF_IN_OUT ZFIOFindData &fd) zfpurevirtual;
 
     /** @brief see #ZFCompressOpen */
-    virtual zfbool itemIsExist(ZF_IN const zfstring &itemPath) {
+    virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) {
         return this->itemIndex(itemPath) != zfindexMax();
     }
     /** @brief see #ZFCompressOpen */
-    virtual zfbool itemIsDir(ZF_IN const zfstring &itemPath) zfpurevirtual;
+    virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfbool itemIsDirAt(ZF_IN zfindex itemIndex) zfpurevirtual;
+    virtual zfbool ioIsDirAt(ZF_IN zfindex itemIndex) zfpurevirtual;
 
     /** @brief see #ZFCompressOpen */
     virtual zfindex itemCount(void) zfpurevirtual;
@@ -101,6 +116,42 @@ public:
             ZF_IN_OUT zfstring &itemPath
             , ZF_IN zfindex itemIndex
             ) zfpurevirtual;
+
+private:
+    zfoverride
+    virtual zfindex ioRead(
+            ZF_OUT void *buf
+            , ZF_IN zfindex maxByteSize
+            ) {
+        ZFCoreCriticalNotSupported();
+        return 0;
+    }
+    zfoverride
+    virtual zfindex ioWrite(
+            ZF_IN const void *src
+            , ZF_IN_OPT zfindex maxByteSize = zfindexMax()
+            ) {
+        ZFCoreCriticalNotSupported();
+        return 0;
+    }
+    zfoverride
+    virtual zfbool ioSeek(
+            ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
+            ) {
+        ZFCoreCriticalNotSupported();
+        return zffalse;
+    }
+    zfoverride
+    virtual zfindex ioTell(void) {
+        ZFCoreCriticalNotSupported();
+        return zfindexMax();
+    }
+    zfoverride
+    virtual zfindex ioSize(void) {
+        ZFCoreCriticalNotSupported();
+        return zfindexMax();
+    }
 };
 
 // ============================================================

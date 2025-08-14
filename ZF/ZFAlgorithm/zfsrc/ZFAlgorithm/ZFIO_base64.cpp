@@ -27,7 +27,7 @@ public:
                 _refPathInfo = zfnull;
                 return zffalse;
             }
-            _buf->output().ioSeek(0);
+            _buf->input().ioSeek(0);
         }
         else if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Write)) {
             if(!ZFBase64Decode(_buf->output(), ZFInputForPathInfoToken(_refIOToken))) {
@@ -35,6 +35,7 @@ public:
                 _refPathInfo = zfnull;
                 return zffalse;
             }
+            _buf->input().ioSeek(0);
         }
 
         return zftrue;
@@ -72,9 +73,9 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return _refOpenFlags;
     }
-public:
+protected:
     zfoverride
-    virtual zfbool ioClose(void) {
+    virtual zfbool ioCloseImpl(void) {
         zfbool ret = zftrue;
         if(_refIOToken) {
             if(_refModified) {
@@ -93,6 +94,7 @@ public:
         _buf = zfnull;
         return ret;
     }
+public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf

@@ -9,42 +9,84 @@ ZFENUM_DEFINE(ZFCompressLevel)
 // ZFCompressToken
 ZFOBJECT_REGISTER(ZFCompressToken)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFCompressToken, zfbool, close)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, read
+ZFInput ZFCompressToken::input(ZF_IN const zfstring &itemPath) {
+    zfautoT<ZFIOBuffer> buf;
+    if(this->ioRead(buf->output(), itemPath)) {
+        buf->input().ioSeek(0);
+        return buf->input();
+    }
+    else {
+        return zfnull;
+    }
+}
+ZFOutput ZFCompressToken::output(ZF_IN const zfstring &itemPath) {
+    if(!ZFBitTest(this->ioFlags(), v_ZFIOOpenOption::e_Write | v_ZFIOOpenOption::e_Modify)) {
+        return zfnull;
+    }
+    zfself *owner = this;
+    ZFLISTENER_2(conv
+            , zfweakT<zfself>, owner
+            , zfstring, itemPath
+            ) {
+        if(owner) {
+            ZFIOBuffer *buf = zfargs.sender();
+            buf->input().ioSeek(0);
+            owner->ioWrite(itemPath, buf->input());
+        }
+    } ZFLISTENER_END()
+    ZFOutput ret = ZFIOBufferOutput(zfnull, conv);
+
+    ZFLISTENER_1(ownerOnClose
+            , ZFOutput, ret
+            ) {
+        ret.ioClose();
+    } ZFLISTENER_END()
+    this->observerAddForOnce(zfself::E_IOCloseOnPrepare(), ownerOnClose);
+
+    return ret;
+}
+
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, ioRead
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, write
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, ioWrite
         , ZFMP_IN(const zfstring &, itemPath)
         , ZFMP_IN(const ZFInput &, input)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, pathCreate
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, ZFInput, input
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, remove
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, ZFOutput, output
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, move
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioPathCreate
+        , ZFMP_IN(const zfstring &, itemPath)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioRemove
+        , ZFMP_IN(const zfstring &, itemPath)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, ioMove
         , ZFMP_IN(const zfstring &, itemPathFrom)
         , ZFMP_IN(const zfstring &, itemPathTo)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, itemFindFirst
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, ioFindFirst
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, itemFindNext
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioFindNext
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, void, itemFindClose
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, void, ioFindClose
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, itemIsExist
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioIsExist
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, itemIsDir
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioIsDir
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, itemIsDirAt
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioIsDirAt
         , ZFMP_IN(zfindex, itemIndex)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFCompressToken, zfindex, itemCount)
@@ -77,7 +119,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompressFile
         , ZFMP_IN_OPT(ZFCompressLevel, compressLevel, v_ZFCompressLevel::EnumDefault())
         ) {
     zfautoT<ZFCompressToken> compress = ZFCompressOpen(outputCompress, v_ZFIOOpenOption::e_Modify, compressLevel);
-    return compress && compress->write(itemPath, inputRaw);
+    return compress && compress->ioWrite(itemPath, inputRaw);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContent
         , ZFMP_IN_OUT(const ZFOutput &, outputRaw)
@@ -85,7 +127,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContent
         , ZFMP_IN_OPT(const zfstring &, itemPath, zftext("content"))
         ) {
     zfautoT<ZFCompressToken> compress = ZFCompressOpen(inputCompress, v_ZFIOOpenOption::e_Read);
-    return compress && compress->read(outputRaw, itemPath);
+    return compress && compress->ioRead(outputRaw, itemPath);
 }
 
 static zfbool _ZFP_ZFCompressDir(
@@ -116,7 +158,7 @@ static zfbool _ZFP_ZFCompressDir(
                 }
             }
             else {
-                if(!compress->write(itemPath, ZFInputForPathInfo(ZFPathInfo(ioImpl->pathType(), pathDataChild)))) {
+                if(!compress->ioWrite(itemPath, ZFInputForPathInfo(ZFPathInfo(ioImpl->pathType(), pathDataChild)))) {
                     success = zffalse;
                     break;
                 }
@@ -158,13 +200,13 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFCompressDir
     }
     else if(ioImpl->ioIsExist(inputPathInfo.pathData())) {
         if(itemPath && !zfstringIsEqual(itemPath, ".")) {
-            return compress->write(itemPath, ZFInputForPathInfo(inputPathInfo));
+            return compress->ioWrite(itemPath, ZFInputForPathInfo(inputPathInfo));
         }
         else {
             zfstring fileName;
             return ioImpl->ioToFileName(fileName, inputPathInfo.pathData())
                 && fileName
-                && compress->write(fileName, ZFInputForPathInfo(inputPathInfo));
+                && compress->ioWrite(fileName, ZFInputForPathInfo(inputPathInfo));
         }
         return zftrue;
     }
@@ -208,7 +250,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
             if(!ioImpl->ioPathCreate(outputParentPath)) {
                 return zffalse;
             }
-            if(!compress->read(ZFOutputForPathInfo(ZFPathInfo(outputPathInfo.pathType(), outputPath)), itemPath)) {
+            if(!compress->ioRead(ZFOutputForPathInfo(ZFPathInfo(outputPathInfo.pathType(), outputPath)), itemPath)) {
                 return zffalse;
             }
         }

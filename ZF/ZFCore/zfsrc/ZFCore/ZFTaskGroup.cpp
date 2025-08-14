@@ -57,7 +57,9 @@ void ZFTaskGroup::taskOnStart(void) {
         return;
     }
     zfobj<ZFArray> childRunning;
-    childRunning->addFrom(this->childArray());
+    for(zfindex i = this->childArray()->count() - 1; i != zfindexMax(); --i) {
+        childRunning->add(this->childArray()->get(i));
+    }
     this->objectTag("_ZFP_ZFTaskGroupImpl", childRunning);
     zfweakT<zfself> owner = this;
     ZFLISTENER_2(childOnStop
@@ -72,7 +74,7 @@ void ZFTaskGroup::taskOnStart(void) {
             }
         }
     } ZFLISTENER_END()
-    for(zfindex i = 0; i < childRunning->count(); ++i) {
+    for(zfindex i = childRunning->count() - 1; i != zfindexMax(); --i) {
         ZFTask *child = childRunning->get(i);
         child->start(childOnStop);
     }
