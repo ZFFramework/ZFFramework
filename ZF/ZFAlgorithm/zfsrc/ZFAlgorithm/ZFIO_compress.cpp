@@ -3,6 +3,59 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCompressTokenCache, ZFLevelZFFrameworkLow) {
+}
+public:
+    zfautoT<ZFCompressToken> open(
+            ZF_IN const ZFPathInfo &refPathInfo
+            ) {
+        {
+            ZFCoreMutexLocker();
+            for(zfindex i = _cache.count() - 1; i != zfindexMax(); --i) {
+                if(_cache[i].pointerValue()->refPathInfo == refPathInfo) {
+                    if(i == _cache.count() - 1) {
+                        return _cache[i].pointerValue()->compressToken;
+                    }
+                    else {
+                        ZFCorePointerForObject<CacheData *> t = _cache[i];
+                        _cache.remove(i);
+                        _cache.add(t);
+                        return t.pointerValue()->compressToken;
+                    }
+                }
+            }
+        }
+        zfautoT<ZFCompressToken> ret = ZFCompressOpen(refPathInfo, v_ZFIOOpenOption::e_Read);
+        if(!ret) {
+            return zfnull;
+        }
+        ZFCoreMutexLocker();
+        CacheData *t = zfnew(CacheData);
+        t->refPathInfo = refPathInfo;
+        t->compressToken = ret;
+        _cache.add(ZFCorePointerForObject<CacheData *>(t));
+        return ret;
+    }
+private:
+    zfclassNotPOD CacheData {
+    public:
+        ZFPathInfo refPathInfo;
+        zfautoT<ZFCompressToken> compressToken;
+    };
+    ZFCoreArray<ZFCorePointerForObject<CacheData *> > _cache; // latest accessed at tail
+ZF_GLOBAL_INITIALIZER_END(ZFCompressTokenCache)
+
+static zfautoT<ZFCompressToken> _ZFP_ZFCompressTokenCache(
+        ZF_IN const ZFPathInfo &refPathInfo
+        , ZF_IN ZFIOOpenOptionFlags flags
+        ) {
+    if(flags != v_ZFIOOpenOption::e_Read) {
+        return ZFCompressOpen(refPathInfo, flags);
+    }
+    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->open(refPathInfo);
+}
+
+// ============================================================
 zfclass _ZFP_I_ZFIOToken_compress : zfextend ZFIOToken {
     ZFOBJECT_DECLARE(_ZFP_I_ZFIOToken_compress, ZFIOToken)
 public:
@@ -14,7 +67,7 @@ public:
             ) {
         this->ioClose();
 
-        _refIOToken = ZFCompressOpen(refPathInfo, flags);
+        _refIOToken = _ZFP_ZFCompressTokenCache(refPathInfo, flags);
         if(_refIOToken == zfnull) {
             return zffalse;
         }
@@ -78,22 +131,24 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return _refOpenFlags;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
-        zfbool ret = zftrue;
-        if(_refIOToken) {
-            if(_refModified) {
-                _buf->input().ioSeek(0);
-                ret = _refIOToken->ioWrite(_itemPath, _buf->input());
-                _refModified = zffalse;
-            }
-            _refIOToken = zfnull;
+    virtual zfbool ioClose(void) {
+        if(!_refIOToken) {
+            return zftrue;
         }
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
+        zfbool ret = zftrue;
+        if(_refModified) {
+            _buf->input().ioSeek(0);
+            ret = _refIOToken->ioWrite(_itemPath, _buf->input());
+            _refModified = zffalse;
+        }
+        _refIOToken = zfnull;
         _buf = zfnull;
+        this->observerNotify(zfself::E_IOCloseOnFinish());
         return ret;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf
@@ -380,7 +435,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForCompress
         buf->input().ioSeek(0);
         ZFOutput refOutput = zfargs.param0().to<v_ZFOutput *>()->zfv;
 
-        ZFPathInfo cachePath = ZFIO_genCachePathInfo();
+        ZFPathInfo cachePath = ZFIO_cachePathGen();
         zfautoT<ZFCompressToken> compress = ZFCompressOpen(cachePath, v_ZFIOOpenOption::e_Write);
         compress->ioWrite(itemPath, buf->input());
         compress = zfnull;

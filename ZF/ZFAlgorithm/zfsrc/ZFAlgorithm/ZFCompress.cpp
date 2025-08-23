@@ -10,7 +10,7 @@ ZFENUM_DEFINE(ZFCompressLevel)
 ZFOBJECT_REGISTER(ZFCompressToken)
 
 ZFInput ZFCompressToken::input(ZF_IN const zfstring &itemPath) {
-    zfautoT<ZFIOBuffer> buf;
+    zfobj<ZFIOBuffer> buf;
     if(this->ioRead(buf->output(), itemPath)) {
         buf->input().ioSeek(0);
         return buf->input();

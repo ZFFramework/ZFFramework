@@ -47,13 +47,17 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return v_ZFIOOpenOption::e_Read;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
+    virtual zfbool ioClose(void) {
+        if(_pos == zfindexMax()) {
+            return zftrue;
+        }
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
         _pos = zfindexMax();
+        this->observerNotify(zfself::E_IOCloseOnFinish());
         return zftrue;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf
@@ -180,14 +184,18 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return v_ZFIOOpenOption::e_Read;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
+    virtual zfbool ioClose(void) {
+        if(_pos == zfindexMax()) {
+            return zftrue;
+        }
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
         _bin = zfnull;
         _pos = zfindexMax();
+        this->observerNotify(zfself::E_IOCloseOnFinish());
         return zftrue;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf
@@ -319,24 +327,26 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return _flags;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
-        if(_impl) {
-            if(_autoRemove) {
-                ZFPathInfo tmp = _impl->pathInfo();
-                _impl->ioClose();
-                _impl = zfnull;
-                ZFIORemove(tmp);
-            }
-            else {
-                _impl->ioClose();
-                _impl = zfnull;
-            }
+    virtual zfbool ioClose(void) {
+        if(!_impl) {
+            return zftrue;
         }
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
+        if(_autoRemove) {
+            ZFPathInfo tmp = _impl->pathInfo();
+            _impl->ioClose();
+            _impl = zfnull;
+            ZFIORemove(tmp);
+        }
+        else {
+            _impl->ioClose();
+            _impl = zfnull;
+        }
+        this->observerNotify(zfself::E_IOCloseOnFinish());
         return zftrue;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf
@@ -397,7 +407,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFIOToken>, ZFIOOpenCache
         , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Read | v_ZFIOOpenOption::e_Write)
         , ZFMP_IN_OPT(zfbool, autoRemove, zftrue)
         ) {
-    zfautoT<ZFIOToken> impl = ZFIOOpen(pathInfo ? pathInfo : ZFIO_genCachePathInfo(), flags);
+    zfautoT<ZFIOToken> impl = ZFIOOpen(pathInfo ? pathInfo : ZFIO_cachePathGen(), flags);
     if(!impl) {
         return zfnull;
     }
@@ -408,7 +418,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFIOToken>, ZFIOOpenCache
     ret->_autoRemove = autoRemove;
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_0(ZFPathInfo, ZFIO_genCachePathInfo) {
+ZFMETHOD_FUNC_DEFINE_0(ZFPathInfo, ZFIO_cachePathGen) {
     static zfindex _counter = 0;
     return ZFPathInfo(ZFPathType_cachePath(), zfstr(
                 "ZFIOBuffer/%s_%s"

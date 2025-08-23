@@ -145,6 +145,7 @@ public:
             do {
                 toNotify.push_back(p);
                 if(p->once) {
+                    _ZFP_ZFObserverData *pNext = p->pNext;
                     this->observerDetach(it, p);
 
                     if(toDelete == zfnull) {
@@ -157,8 +158,11 @@ public:
                         toDelete->pPrev = p;
                         toDelete = p;
                     }
+                    p = pNext;
                 }
-                p = p->pNext;
+                else {
+                    p = p->pNext;
+                }
             } while(p != zfnull);
 
             if(it->second == zfnull) {

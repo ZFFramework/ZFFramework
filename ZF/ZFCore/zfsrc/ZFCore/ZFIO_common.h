@@ -82,7 +82,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoT<ZFIOToken>, ZFIOOpenCache
 /**
  * @brief generate a cache pathInfo, which ensured not same for each call
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFPathInfo, ZFIO_genCachePathInfo)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFPathInfo, ZFIO_cachePathGen)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIO_common_h_

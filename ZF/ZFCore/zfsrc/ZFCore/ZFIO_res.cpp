@@ -29,20 +29,20 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return v_ZFIOOpenOption::e_Read;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
-        _pathData = zfnull;
-        if(_ioToken) {
-            void *ioToken = _ioToken;
-            _ioToken = zfnull;
-            return ZFResClose(ioToken);
-        }
-        else {
+    virtual zfbool ioClose(void) {
+        if(!_ioToken) {
             return zffalse;
         }
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
+        _pathData = zfnull;
+        void *ioToken = _ioToken;
+        _ioToken = zfnull;
+        ZFResClose(ioToken);
+        this->observerNotify(zfself::E_IOCloseOnFinish());
+        return zftrue;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf

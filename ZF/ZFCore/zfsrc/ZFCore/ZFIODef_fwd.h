@@ -203,9 +203,6 @@ public:
     /** @brief open flags for this token */
     virtual ZFIOOpenOptionFlags ioFlags(void) zfpurevirtual;
 
-protected:
-    /** @brief see #ioClose */
-    virtual zfbool ioCloseImpl(void) zfpurevirtual;
 public:
     /**
      * @brief see #ZFIOImplForPathType
@@ -214,13 +211,12 @@ public:
      * -  when done, ioClose can be called exactly once to release io resource
      * -  ioClose would be called automatically when token deallocated
      * -  you must not access the token after ioClose was called
+     *
+     * impl must:
+     * -  do nothing for invalid token or already closed, and return true
+     * -  notify #E_IOCloseOnPrepare and #E_IOCloseOnFinish
      */
-    zffinal zfbool ioClose(void) {
-        this->observerNotify(zfself::E_IOCloseOnPrepare());
-        zfbool ret = this->ioCloseImpl();
-        this->observerNotify(zfself::E_IOCloseOnFinish());
-        return ret;
-    }
+    virtual zfbool ioClose(void) zfpurevirtual;
     /**
      * @brief see #ZFIOImplForPathType
      *

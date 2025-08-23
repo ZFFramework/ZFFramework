@@ -78,26 +78,28 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return _refOpenFlags;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
-        zfbool ret = zftrue;
-        if(_refIOToken) {
-            if(_refModified) {
-                _buf->input().ioSeek(0);
-                ret = ZFEncrypt(
-                        ZFOutputForPathInfoToken(_refIOToken)
-                        , _buf->input()
-                        , _encryptKey
-                        );
-                _refModified = zffalse;
-            }
-            _refIOToken = zfnull;
+    virtual zfbool ioClose(void) {
+        if(!_refIOToken) {
+            return zftrue;
         }
+        this->observerNotify(zfself::E_IOCloseOnPrepare());
+        zfbool ret = zftrue;
+        if(_refModified) {
+            _buf->input().ioSeek(0);
+            ret = ZFEncrypt(
+                    ZFOutputForPathInfoToken(_refIOToken)
+                    , _buf->input()
+                    , _encryptKey
+                    );
+            _refModified = zffalse;
+        }
+        _refIOToken = zfnull;
         _buf = zfnull;
+        this->observerNotify(zfself::E_IOCloseOnFinish());
         return ret;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf

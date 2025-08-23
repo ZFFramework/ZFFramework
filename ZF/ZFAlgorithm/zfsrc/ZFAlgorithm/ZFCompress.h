@@ -33,22 +33,13 @@ ZFENUM_REG(ZFLIB_ZFAlgorithm, ZFCompressLevel)
 zfabstract ZFLIB_ZFAlgorithm ZFCompressToken : zfextend ZFIOToken {
     ZFOBJECT_DECLARE_ABSTRACT(ZFCompressToken, ZFIOToken)
 
-protected:
-    zfoverride
-    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
-        ret += "(compress)";
-        ret += this->pathType();
-        ret += ":";
-        ret += this->pathData();
-    }
-
 #if 0
 public:
     virtual zfstring pathType(void) zfpurevirtual;
     virtual zfstring pathData(void) zfpurevirtual;
     virtual ZFIOOpenOptionFlags ioFlags(void) zfpurevirtual;
-protected:
-    virtual zfbool ioCloseImpl(void) zfpurevirtual;
+public:
+    virtual zfbool ioClose(void) zfpurevirtual;
 #endif
 
 public:

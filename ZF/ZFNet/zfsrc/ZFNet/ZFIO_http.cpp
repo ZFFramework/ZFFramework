@@ -107,15 +107,19 @@ public:
     virtual ZFIOOpenOptionFlags ioFlags(void) {
         return v_ZFIOOpenOption::e_Read;
     }
-protected:
+public:
     zfoverride
-    virtual zfbool ioCloseImpl(void) {
+    virtual zfbool ioClose(void) {
+        if(!_url) {
+            return zftrue;
+        }
+        this->observerNotify(E_IOCloseOnPrepare());
         _url = zfnull;
         _chunkCache.clear();
         _chunkCacheIndex.removeAll();
+        this->observerNotify(E_IOCloseOnFinish());
         return zftrue;
     }
-public:
     zfoverride
     virtual zfindex ioRead(
             ZF_OUT void *buf
