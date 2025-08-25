@@ -473,7 +473,7 @@ public:
         for(zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.begin(); itExist != _itemToKeep.end(); ) {
             if(_isSameOrChildOf(itExist->first, itemPathTmp)) {
                 _modified = zftrue;
-                itExist = _itemToKeep.erase(itExist);
+                _itemToKeep.erase(itExist++);
             }
             else {
                 ++itExist;
@@ -483,7 +483,7 @@ public:
         for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ) {
             if(_isSameOrChildOf(itMod->first, itemPathTmp)) {
                 _modified = zftrue;
-                itMod = _itemToAdd.erase(itMod);
+                _itemToAdd.erase(itMod++);
             }
             else {
                 ++itMod;
