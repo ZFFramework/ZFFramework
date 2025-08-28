@@ -23,8 +23,6 @@ public:
     ZFEVENT(TaskOnStart)
     /**
      * @brief called when task started
-     *
-     * param0 is a #ZFResultType to show the result
      */
     ZFEVENT(TaskOnStop)
 
@@ -72,6 +70,19 @@ public:
             , ZFMP_IN_OPT(ZFObject *, result, zfnull)
             )
 
+    /**
+     * @brief util to check #resultType
+     */
+    ZFMETHOD_DECLARE_0(zfbool, success)
+    /**
+     * @brief util to check #resultType
+     */
+    ZFMETHOD_DECLARE_0(zfbool, canceled)
+    /**
+     * @brief util to check #resultType
+     */
+    ZFMETHOD_DECLARE_0(zfbool, failed)
+
 public:
     /**
      * @brief for task impl to store task result, actual result depends on task,
@@ -92,7 +103,7 @@ public:
     virtual inline void taskOnStart(void) {
     }
     /** @brief called to stop task */
-    virtual inline void taskOnStop(ZF_IN ZFResultType resultType) {
+    virtual inline void taskOnStop(void) {
     }
 
 protected:

@@ -145,12 +145,12 @@ void ZFAudioPlayTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAudioPlayTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFAudioPlayTask::taskOnStop(void) {
     ZFObserverGroupRemove(_holder);
     if(this->_impl) {
         this->_impl->stop();
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 // ============================================================

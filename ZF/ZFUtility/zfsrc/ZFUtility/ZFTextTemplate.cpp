@@ -116,8 +116,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFTextTemplateApply
         , ZFMP_IN(const ZFInput &, input)
         ) {
     zfstring buffer;
-    ZFInputRead(buffer, input);
-    if(buffer.buffer() == zfnull) {
+    if(ZFInputRead(buffer, input) == zfindexMax() || buffer.isEmpty()) {
         return zfindexMax();
     }
     return ZFTextTemplateApply(param, output, buffer.cString(), buffer.length());

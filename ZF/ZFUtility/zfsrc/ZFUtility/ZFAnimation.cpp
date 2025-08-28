@@ -244,11 +244,11 @@ void ZFAniTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAniTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFAniTask::taskOnStop(void) {
     if(this->impl()) {
         this->impl()->stop();
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 void ZFAniTask::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
     if(this->impl()) {

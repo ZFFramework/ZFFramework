@@ -412,7 +412,9 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForCompress
 
     zfobj<ZFIOBuffer> buf;
     buf->bufferSize(0);
-    ZFInputRead(buf->output(), refInput);
+    if(ZFInputRead(buf->output(), refInput) == zfindexMax()) {
+        return zfnull;
+    }
 
     ZFInput ret;
     ret.callbackSerializeDisable(zftrue);

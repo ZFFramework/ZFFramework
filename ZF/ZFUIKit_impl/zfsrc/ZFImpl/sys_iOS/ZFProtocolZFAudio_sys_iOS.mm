@@ -81,8 +81,7 @@ public:
             _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
             zfstring buf;
-            ZFInputRead(buf, input);
-            if(buf.length() == 0) {
+            if(ZFInputRead(buf, input) == zfindexMax() || buf.isEmpty()) {
                 zfobj<v_zfstring> errorHint;
                 errorHint->zfv = "unable to load from input";
                 zfargs.result(errorHint);

@@ -22,7 +22,9 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         zfstring buf;
-        ZFInputRead(buf, inputCallback);
+        if(ZFInputRead(buf, inputCallback) == zfindexMax()) {
+            return zfnull;
+        }
         return this->xmlParse(buf, errorHint);
     }
 private:

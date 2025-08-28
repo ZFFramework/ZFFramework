@@ -27,7 +27,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  (zfindex) max byte size to read (excluding '\0')
  *
  * return:
- * -  (zfindex) byte size actually read even if error (excluding '\0')
+ * -  (zfindex) byte size actually read if success (excluding '\0'),
+ *   or zfindexMax if error
  *
  * ADVANCED:\n
  * for implementations, see #ZFCallbackTagKeyword_ioOwner if need support seek
@@ -43,7 +44,7 @@ public:
             return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
         }
         else {
-            return 0;
+            return zfindexMax();
         }
     }
     /** @brief see #ZFInput */
@@ -55,7 +56,7 @@ public:
             return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
         }
         else {
-            return 0;
+            return zfindexMax();
         }
     }
     /** @brief see #ZFInput */
@@ -82,7 +83,7 @@ public:
         do {
             buf.capacity(buf.length() + blockSize + 1);
             zfindex read = this->execute(buf.zfunsafe_buffer() + buf.length(), blockSize);
-            if(read == 0) {
+            if(read == 0 || read == zfindexMax()) {
                 break;
             }
             buf.zfunsafe_length(buf.length() + read);

@@ -33,13 +33,12 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
     ZFListener onStopSaved = _ZFP_onStop;
     _ZFP_onStop = zfnull;
     this->resultType(resultType);
-    this->taskOnStop(resultType);
+    this->taskOnStop();
     this->observerNotify(zfself::E_TaskOnStop());
     if(onStopSaved) {
         onStopSaved.execute(ZFArgs()
                 .sender(this)
                 .eventId(zfself::E_TaskOnStop())
-                .param0(zfobj<v_ZFResultType>(resultType))
                 );
     }
     zfRelease(this);
@@ -66,7 +65,15 @@ ZFMETHOD_DEFINE_2(ZFTask, void, notifyFail
         this->stop(v_ZFResultType::e_Fail);
     }
 }
-
+ZFMETHOD_DEFINE_0(ZFTask, zfbool, success) {
+    return this->resultType() == v_ZFResultType::e_Success;
+}
+ZFMETHOD_DEFINE_0(ZFTask, zfbool, canceled) {
+    return this->resultType() == v_ZFResultType::e_Cancel;
+}
+ZFMETHOD_DEFINE_0(ZFTask, zfbool, failed) {
+    return this->resultType() == v_ZFResultType::e_Fail;
+}
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
         , ZFMP_IN(const ZFListener &, implOnStart)

@@ -74,22 +74,6 @@ public:
 
     /** @cond ZFPrivateDoc */
 public:
-    ZFListener(
-            ZF_IN ZFObject *owner
-            , ZF_IN const ZFMethod *f) {
-        ZFCallback::operator = (ZFCallbackForMemberMethod(owner, f));
-    }
-    ZFListener(ZF_IN const ZFMethod *f) {
-        ZFCallback::operator = (ZFCallbackForMethod(f));
-    }
-    ZFListener &operator = (ZF_IN const ZFMethod *f) {
-        ZFCallback::operator = (ZFCallbackForMethod(f));
-        return *this;
-    }
-    /** @endcond */
-
-    /** @cond ZFPrivateDoc */
-public:
     typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
     ZFListener(ZF_IN FUNC_TYPE f) {
         FUNC_TYPE fTmp = f;
@@ -115,8 +99,7 @@ public:
     /** @cond ZFPrivateDoc */
 #if ZF_ENV_LAMBDA
 public:
-    template<typename T_Func>
-    ZFListener(ZF_IN T_Func f) {
+    ZFListener(ZF_IN std::function<void(const ZFArgs &)> const &f) {
         ZFLISTENER_1(wrapper
                 , std::function<void(const ZFArgs &)>, f
                 ) {
@@ -124,8 +107,7 @@ public:
         } ZFLISTENER_END()
         ZFCallback::operator = ((const ZFCallback &)wrapper);
     }
-    template<typename T_Func>
-    ZFListener &operator = (ZF_IN T_Func f) {
+    ZFListener &operator = (ZF_IN std::function<void(const ZFArgs &)> const &f) {
         ZFLISTENER_1(wrapper
                 , std::function<void(const ZFArgs &)>, f
                 ) {

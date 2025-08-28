@@ -173,7 +173,9 @@ ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
             , ZFMP_IN(const ZFInput &, input)
             ) {
     zfstring buf;
-    ZFInputRead(buf, input);
+    if(ZFInputRead(buf, input) == zfindexMax()) {
+        return zffalse;
+    }
     return this->send(buf.buffer(), buf.length());
 }
 ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv

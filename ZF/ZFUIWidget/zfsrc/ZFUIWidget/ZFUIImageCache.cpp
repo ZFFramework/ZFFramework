@@ -44,12 +44,12 @@ void ZFUIImageLoadTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFUIImageLoadTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFUIImageLoadTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 ZF_NAMESPACE_GLOBAL_END

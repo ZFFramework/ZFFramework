@@ -41,7 +41,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTaskId>, zfasyncIOCustom
  *
  * for the finishCallback:
  * -  #ZFArgs::sender is the taskId returned from #zfasyncIO
- * -  #ZFArgs::param0 is a #v_zfbool indicates IO result
+ * -  #ZFArgs::param0 is a #v_zfindex indicates size written, or zfindexMax if failed
  *
  * when #ZFTaskId::stop called after this method,
  * the callback may or may not be canceled,

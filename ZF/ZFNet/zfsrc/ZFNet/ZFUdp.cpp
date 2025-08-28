@@ -210,7 +210,9 @@ ZFMETHOD_DEFINE_3(ZFUdp, zfbool, send
         ) {
     if(addr.valid()) {
         zfstring buf;
-        ZFInputRead(buf, input);
+        if(ZFInputRead(buf, input) == zfindexMax()) {
+            return zffalse;
+        }
         return this->send(addr, port, buf.buffer(), buf.length());
     }
     else {

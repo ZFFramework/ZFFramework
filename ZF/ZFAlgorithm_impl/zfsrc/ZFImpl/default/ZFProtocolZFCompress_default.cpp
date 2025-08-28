@@ -405,7 +405,7 @@ public:
         }
         zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.find(itemPathTmp);
         if(itMod != _itemToAdd.end()) {
-            return ZFInputRead(output, ZFInputForPathInfo(itMod->second));
+            return ZFInputRead(output, ZFInputForPathInfo(itMod->second)) != zfindexMax();
         }
         return zffalse;
     }
@@ -432,10 +432,10 @@ public:
             if(!itMod->second) {
                 itMod->second = ZFIO_cachePathGen();
             }
-            return ZFInputRead(ZFOutputForPathInfo(itMod->second), input);
+            return ZFInputRead(ZFOutputForPathInfo(itMod->second), input) != zfindexMax();
         }
         else {
-            return ZFInputRead(ZFOutputForPathInfo(_itemToAdd[itemPathTmp] = ZFIO_cachePathGen()), input);
+            return ZFInputRead(ZFOutputForPathInfo(_itemToAdd[itemPathTmp] = ZFIO_cachePathGen()), input) != zfindexMax();
         }
     }
 

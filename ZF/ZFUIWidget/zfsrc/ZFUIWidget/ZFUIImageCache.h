@@ -24,6 +24,8 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFTaskId>, ZFUIImageLoad
 // ============================================================
 /**
  * @brief io load task
+ *
+ * #ZFTask::result would be the result #ZFUIImage if success
  */
 zfclass ZFLIB_ZFUIWidget ZFUIImageLoadTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFUIImageLoadTask, ZFTask)
@@ -46,7 +48,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };

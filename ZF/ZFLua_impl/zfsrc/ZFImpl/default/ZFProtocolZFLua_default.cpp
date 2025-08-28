@@ -45,7 +45,13 @@ public:
 
         zfstring buf;
         ZFImpl_ZFLua_implPathInfoSetup((lua_State *)L, buf, pathInfoOrNull);
-        ZFInputRead(buf, input);
+        if(ZFInputRead(buf, input) == zfindexMax()) {
+            ZFLuaErrorOccurredTrim(
+                "unable to load from: %s"
+                , input
+                );
+            return zffalse;
+        }
         return ZFImpl_ZFLua_execute((lua_State *)L, buf, buf.length(), luaResult, luaParams, errorHint, input.callbackId());
     }
 

@@ -111,8 +111,7 @@ zfbool ZFSerializableDataFromZFSD(
         return zffalse;
     }
     zfstring buf;
-    ZFInputRead(buf, input);
-    if(buf.buffer() == zfnull) {
+    if(ZFInputRead(buf, input) == zfindexMax() || buf.isEmpty()) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "unable to load data from input");
         return zffalse;
     }

@@ -17,15 +17,9 @@ zfclass _ZFP_I_ZFIOToken_http : zfextend ZFIOToken {
 public:
     zfbool open(ZF_IN const zfstring &url) {
         this->ioClose();
-        zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(_url);
-        if(recv == zfnull || !recv->success()) {
+        if(!url) {
             return zffalse;
         }
-        zfstring sizeText = recv->header("Content-Length");
-        if(sizeText.isEmpty()) {
-            return zffalse;
-        }
-        zfindexFromStringT(_contentLength, sizeText);
         _url = url;
         return zftrue;
     }
@@ -52,6 +46,21 @@ protected:
     }
 
 private:
+    zfbool _checkLoadContentLength(void) {
+        if(_contentLength != zfindexMax()) {
+            return zftrue;
+        }
+        zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(_url);
+        if(recv == zfnull || !recv->success()) {
+            return zffalse;
+        }
+        zfstring sizeText = recv->header("Content-Length");
+        if(sizeText.isEmpty()) {
+            return zffalse;
+        }
+        zfindexFromStringT(_contentLength, sizeText);
+        return (_contentLength != zfindexMax());
+    }
     inline zfindex _chunkAlign(ZF_IN zfindex p) {
         return (p / _ChunkSize) * _ChunkSize;
     }
@@ -115,6 +124,7 @@ public:
         }
         this->observerNotify(E_IOCloseOnPrepare());
         _url = zfnull;
+        _contentLength = zfindexMax();
         _chunkCache.clear();
         _chunkCacheIndex.removeAll();
         this->observerNotify(E_IOCloseOnFinish());
@@ -125,7 +135,7 @@ public:
             ZF_OUT void *buf
             , ZF_IN zfindex maxByteSize
             ) {
-        if(!_url || buf == zfnull) {
+        if(buf == zfnull || !_checkLoadContentLength()) {
             return 0;
         }
         if(maxByteSize == zfindexMax() || _pos + maxByteSize > _contentLength) {
@@ -163,7 +173,7 @@ public:
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             ) {
-        if(!_url) {
+        if(!_checkLoadContentLength()) {
             return zffalse;
         }
         _pos = ZFIOCallbackCalcSeek(0, _contentLength, _pos, byteSize, seekPos);
@@ -171,14 +181,14 @@ public:
     }
     zfoverride
     virtual zfindex ioTell(void) {
-        if(!_url) {
+        if(!_checkLoadContentLength()) {
             return zfindexMax();
         }
         return _pos;
     }
     zfoverride
     virtual zfindex ioSize(void) {
-        if(!_url) {
+        if(!_checkLoadContentLength()) {
             return zfindexMax();
         }
         return _contentLength;

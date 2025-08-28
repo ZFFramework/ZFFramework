@@ -360,7 +360,9 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest
     if(nativeBodyInput != NULL) {
         ZFInput bodyInput = ZFImpl_sys_Android_ZFInputFromZFAndroidInput(nativeBodyInput);
         zfstring body;
-        ZFInputRead(body, bodyInput);
+        if(ZFInputRead(body, bodyInput) == zfindexMax()) {
+            response->success(zffalse);
+        }
         response->body(body);
     }
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(request, response);

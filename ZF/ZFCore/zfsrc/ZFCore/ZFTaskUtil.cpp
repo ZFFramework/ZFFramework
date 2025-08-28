@@ -30,12 +30,12 @@ void ZFWaitTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFWaitTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFWaitTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 // ============================================================
@@ -62,12 +62,12 @@ void ZFAsyncTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAsyncTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFAsyncTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 // ============================================================
@@ -95,12 +95,12 @@ void ZFPostTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFPostTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFPostTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 // ============================================================
@@ -127,12 +127,12 @@ void ZFAsyncIOCustomTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAsyncIOCustomTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFAsyncIOCustomTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 // ============================================================
@@ -153,8 +153,8 @@ void ZFAsyncIOTask::taskOnStart(void) {
                 , zfweakT<zfself>, owner
                 ) {
             owner->_implTaskId = zfnull;
-            v_zfbool *result = zfargs.result();
-            if(result->zfv) {
+            v_zfindex *result = zfargs.result();
+            if(result->zfv != zfindexMax()) {
                 owner->notifySuccess(result);
             }
             else {
@@ -170,12 +170,12 @@ void ZFAsyncIOTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAsyncIOTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFAsyncIOTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -34,7 +34,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };
@@ -42,6 +42,8 @@ private:
 // ============================================================
 /**
  * @brief async task by #zfasync
+ *
+ * #ZFTask::result would be the #ZFArgs::result of the impl
  */
 zfclass ZFLIB_ZFCore ZFAsyncTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFAsyncTask, ZFTask)
@@ -64,7 +66,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };
@@ -72,6 +74,8 @@ private:
 // ============================================================
 /**
  * @brief post task by #zfpost
+ *
+ * #ZFTask::result would be the #ZFArgs::result of the impl
  */
 zfclass ZFLIB_ZFCore ZFPostTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFPostTask, ZFTask)
@@ -94,7 +98,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };
@@ -102,6 +106,8 @@ private:
 // ============================================================
 /**
  * @brief async io task by #zfasyncIOCustom
+ *
+ * #ZFTask::result would be the #ZFArgs::result of the impl
  */
 zfclass ZFLIB_ZFCore ZFAsyncIOCustomTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFAsyncIOCustomTask, ZFTask)
@@ -124,7 +130,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };
@@ -132,6 +138,8 @@ private:
 // ============================================================
 /**
  * @brief async io task by #zfasyncIO
+ *
+ * #ZFTask::result would be a #v_zfindex store the size written, or zfindexMax if error
  */
 zfclass ZFLIB_ZFCore ZFAsyncIOTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFAsyncIOTask, ZFTask)
@@ -157,7 +165,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };

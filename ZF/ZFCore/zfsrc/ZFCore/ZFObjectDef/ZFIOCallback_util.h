@@ -76,7 +76,7 @@ extern ZFLIB_ZFCore zfindex ZFInputCheckMatch(
 /**
  * @brief util method to read contents of input to output
  *
- * return size already written to output even if error occurred
+ * return size already written to output, or zfindexMax if error occurred
  */
 extern ZFLIB_ZFCore zfindex ZFInputRead(
         ZF_IN_OUT const ZFOutput &output
@@ -86,7 +86,7 @@ extern ZFLIB_ZFCore zfindex ZFInputRead(
 /**
  * @brief util method to read contents from input to string
  *
- * return size appended to string
+ * return size appended to string, or zfindexMax if error occurred
  */
 extern ZFLIB_ZFCore zfindex ZFInputRead(
         ZF_IN_OUT zfstring &ret

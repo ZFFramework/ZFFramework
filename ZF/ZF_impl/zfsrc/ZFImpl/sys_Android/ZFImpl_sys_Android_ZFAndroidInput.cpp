@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ZFAndroidInput
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidInput, ZFImpl_sys_Android_JNI_NAME_ZFAndroidInput)
 
-#define _ZFP_ZFAndroidInputBufSize 256
+#define _ZFP_ZFAndroidInputBufSize 1024
 zfclass _ZFP_I_ZFAndroidInput : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidInput, ZFObject)
     ZFALLOC_CACHE_RELEASE({
@@ -66,9 +66,6 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
     if(buf == zfnull) {
         return zfindexMax(); // not supported
     }
-    if(count == zfindexMax()) {
-        return 0;
-    }
 
     JNIEnv *jniEnv = JNIGetJNIEnv();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidInput(), "native_nativeInputRead",
@@ -79,25 +76,26 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
         ).c_str());
 
     jbyte *writeBuf = (jbyte *)buf;
-    jint toRead = (jint)count;
-    while(toRead > 0) {
-        jint blockSize = (toRead > _ZFP_ZFAndroidInputBufSize ? _ZFP_ZFAndroidInputBufSize : toRead);
+    zfindex read = 0;
+    while(count != 0) {
+        jint blockSize = (count > _ZFP_ZFAndroidInputBufSize ? _ZFP_ZFAndroidInputBufSize : (jint)count);
         jint nativeRead = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidInput(), jmId
             , this->nativeInputWrapper
             , this->nativeBuf
             , blockSize
             );
         if(nativeRead == -1) {
-            break;
+            return zfindexMax();
         }
         JNIUtilGetByteArrayRegion(jniEnv, this->nativeBuf, 0, nativeRead, writeBuf);
-        toRead -= nativeRead;
+        count -= (zfindex)nativeRead;
+        read += (zfindex)nativeRead;
         writeBuf += nativeRead;
         if(nativeRead != blockSize) {
             break;
         }
     }
-    return count - toRead;
+    return read;
 }
 
 ZFInput ZFImpl_sys_Android_ZFInputFromZFAndroidInput(ZF_IN jobject nativeInputWrapper) {

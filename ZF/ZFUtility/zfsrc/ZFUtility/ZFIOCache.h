@@ -72,7 +72,8 @@ zfclass ZFLIB_ZFUtility ZFIOCache : zfextend ZFCache {
  * use #ZFIOCache to config the cache logic\n
  * \n
  * callback's param0 would be the result object if success,
- * param1 would be a #ZFResultType indicates load result\n
+ * param1 would be a #ZFResultType indicates load result,
+ * callback won't be called if canceled\n
  * \n
  * the loadImpl's param0 would be a ZFInput points to local cache file or original src,
  * param1 would be the original src input,
@@ -88,6 +89,8 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFTaskId>, ZFIOCacheLoad
 // ============================================================
 /**
  * @brief io load task
+ *
+ * #ZFTask::result would be the loaded object if success
  */
 zfclass ZFLIB_ZFUtility ZFIOCacheLoadTask : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFIOCacheLoadTask, ZFTask)
@@ -113,7 +116,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
 private:
     zfautoT<ZFTaskId> _implTaskId;
 };

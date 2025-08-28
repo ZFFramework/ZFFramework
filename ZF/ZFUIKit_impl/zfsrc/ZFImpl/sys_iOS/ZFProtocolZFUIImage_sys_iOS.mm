@@ -11,8 +11,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_iOS, ZFUIImage, v_ZFProtocolLe
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         zfstring dataBuf;
-        ZFInputRead(dataBuf, inputCallback);
-        if(dataBuf.buffer() == zfnull) {
+        if(ZFInputRead(dataBuf, inputCallback) == zfindexMax() || dataBuf.isEmpty()) {
             return zfnull;
         }
         NSData *nsData = [[NSData alloc] initWithBytesNoCopy:dataBuf.zfunsafe_bufferGiveUp() length:(NSUInteger)dataBuf.length() deallocator:^(void *bytes, NSUInteger length) {

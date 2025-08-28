@@ -67,7 +67,7 @@ void ZFTaskGroup::taskOnStart(void) {
             , zfautoT<ZFArray>, childRunning
             ) {
         ZFTask *child = zfargs.sender();
-        if(child->resultType() != v_ZFResultType::e_Cancel) {
+        if(!child->canceled()) {
             childRunning->removeElement(child);
             if(childRunning->isEmpty()) {
                 owner->stop(v_ZFResultType::e_Success);
@@ -79,7 +79,7 @@ void ZFTaskGroup::taskOnStart(void) {
         child->start(childOnStop);
     }
 }
-void ZFTaskGroup::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFTaskGroup::taskOnStop(void) {
     zfautoT<ZFArray> childRunning = this->objectTagRemoveAndGet("_ZFP_ZFTaskGroupImpl");
     if(childRunning != zfnull) {
         for(zfindex i = 0; i < childRunning->count(); ++i) {
@@ -87,7 +87,7 @@ void ZFTaskGroup::taskOnStop(ZF_IN ZFResultType resultType) {
             child->stop(v_ZFResultType::e_Cancel);
         }
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 void ZFTaskGroup::objectInfoImpl(ZF_IN_OUT zfstring &ret) {

@@ -203,7 +203,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFIOBuffer_input, zfindex, onInput
         , ZFMP_IN(zfindex, count)
         ) {
     if(buf == zfnull) {
-        return 0;
+        return zfindexMax();
     }
     count = zfmMin<zfindex>(count, d->contentSize - d->contentIndex);
     if(d->cacheFile) {

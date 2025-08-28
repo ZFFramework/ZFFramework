@@ -218,9 +218,15 @@ zfindex ZFInputRead(
                 toRead = size - read;
             }
             readCount = input.execute(buf, toRead);
+            if(readCount == zfindexMax()) {
+                return zfindexMax();
+            }
             writeCount = output.execute(buf, readCount);
+            if(writeCount < readCount) {
+                return zfindexMax();
+            }
             read += writeCount;
-            if(readCount < toRead || writeCount < readCount || read >= size) {
+            if(readCount < toRead || read >= size) {
                 break;
             }
         } while(zftrue);
@@ -246,6 +252,9 @@ zfindex ZFInputRead(
             }
             ret.capacity(ret.length() + (read + toRead));
             readCount = input.execute(ret.zfunsafe_buffer() + ret.length(), toRead);
+            if(readCount == zfindexMax()) {
+                return zfindexMax();
+            }
             read += readCount;
             ret.zfunsafe_length(ret.length() + readCount);
             if(readCount < toRead) {

@@ -16,8 +16,9 @@ public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         QImage *nativeImage = new QImage();
         zfstring buf;
-        ZFInputRead(buf, inputCallback);
-        if(!nativeImage->loadFromData((const uchar *)buf.buffer(), buf.length())) {
+        if(ZFInputRead(buf, inputCallback) == zfindexMax()
+                || !nativeImage->loadFromData((const uchar *)buf.buffer(), buf.length())
+                ) {
             delete nativeImage;
             return zfnull;
         }

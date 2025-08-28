@@ -59,7 +59,7 @@
 /**
  * @brief whether use C++11
  *
- * add -DZF_ENV_LAMBDA=1 to compiler to override
+ * add -DZF_ENV_CPP11=1 to compiler to override
  * @warning must be explicitly declared by compiler,
  *   also, all libs must be compiled with same config,
  *   otherwise, unexpected behavior may happen,
@@ -72,16 +72,12 @@
 
 // ============================================================
 /**
- * @brief true to enable lambda (which require C++11), auto detect by default
+ * @brief true to enable lambda (which require C++11)
  *
  * add -DZF_ENV_LAMBDA=1 to compiler to override
  */
 #ifndef ZF_ENV_LAMBDA
-    #if defined(__cplusplus) && (__cplusplus >= 201103L)
-        #define ZF_ENV_LAMBDA 1
-    #else
-        #define ZF_ENV_LAMBDA 0
-    #endif
+    #define ZF_ENV_LAMBDA ZF_ENV_CPP11
 #endif
 
 // ============================================================

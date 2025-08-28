@@ -151,8 +151,8 @@ private:
 public:
     void _loadAction(void) {
         _implTask = zfasync(
-                ZFListener(this, ZFMethodAccess(zfself, _implRun))
-                , ZFListener(this, ZFMethodAccess(zfself, _implFinish))
+                ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, _implRun))
+                , ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, _implFinish))
                 );
     }
     void _implFinishAction(void) {
@@ -230,7 +230,11 @@ public:
             if(tmpDst) {
                 const zfindex sizeToRead = 1024;
                 do {
-                    if(ZFInputRead(tmpDst, this->src, sizeToRead) != sizeToRead) {
+                    zfindex read = ZFInputRead(tmpDst, this->src, sizeToRead);
+                    if(read == zfindexMax()) {
+                        break;
+                    }
+                    else if(read < sizeToRead) {
                         success = zftrue;
                         break;
                     }
@@ -404,12 +408,12 @@ void ZFIOCacheLoadTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFIOCacheLoadTask::taskOnStop(ZF_IN ZFResultType resultType) {
+void ZFIOCacheLoadTask::taskOnStop(void) {
     if(this->_implTaskId) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
-    zfsuper::taskOnStop(resultType);
+    zfsuper::taskOnStop();
 }
 
 ZF_NAMESPACE_GLOBAL_END

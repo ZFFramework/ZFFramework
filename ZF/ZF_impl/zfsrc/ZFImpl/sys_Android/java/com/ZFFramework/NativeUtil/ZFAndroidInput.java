@@ -22,7 +22,7 @@ public class ZFAndroidInput {
         }
         ZFAndroidInput nativeInputTmp = (ZFAndroidInput) nativeInput;
         if (nativeInputTmp.input == null) {
-            return 0;
+            return -1;
         }
         int offset = 0;
         do {

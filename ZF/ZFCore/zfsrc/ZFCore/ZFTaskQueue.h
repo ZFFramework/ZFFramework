@@ -51,7 +51,7 @@ public:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
-    virtual void taskOnStop(ZF_IN ZFResultType resultType);
+    virtual void taskOnStop(void);
     zfoverride
     virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 };
