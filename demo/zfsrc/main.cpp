@@ -34,7 +34,6 @@ ZFMAIN_ENTRY() {
 }
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void) {
-    ZFResExtPathAdd(ZFPathInfo(ZFPathType_file(), ZFPathForModule()));
     ZFResExtPathAdd(ZFPathInfo(ZFPathType_file(), ZFPathForStorage()));
     ZFResExtPathAdd(ZFPathInfo(ZFPathType_file(), ZFPathForStorageShared()));
     ZFLogTrim() << "external res: " << ZFResExtPathList();

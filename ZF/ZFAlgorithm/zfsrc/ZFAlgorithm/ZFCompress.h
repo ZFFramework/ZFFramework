@@ -80,9 +80,7 @@ public:
     virtual void ioFindClose(ZF_IN_OUT ZFIOFindData &fd) zfpurevirtual;
 
     /** @brief see #ZFCompressOpen */
-    virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) {
-        return this->itemIndex(itemPath) != zfindexMax();
-    }
+    virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
     virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */

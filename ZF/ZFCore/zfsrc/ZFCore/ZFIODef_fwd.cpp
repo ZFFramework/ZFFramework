@@ -1,5 +1,6 @@
 #include "ZFIODef_fwd.h"
 #include "ZFIODef_util.h"
+#include "ZFIODef_pathInfo.h"
 
 #include "ZFSTLWrapper/zfstlhashmap.h"
 
@@ -138,7 +139,7 @@ void ZFIOFindData::implTag(
     }
 }
 zfany ZFIOFindData::implTag(ZF_IN const zfstring &key) const {
-    if(!key || d->implTagMap) {
+    if(!key || !d->implTagMap) {
         return zfnull;
     }
     else {
@@ -183,7 +184,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOToken, zfindex, ioTell)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOToken, zfindex, ioSize)
 
 // ============================================================
-// ZFIOImpl
+// default/dummy impl
 zfbool ZFIOImpl::ioIsExistDefault(ZF_IN const zfstring &pathData) {
     return zffalse;
 }
@@ -291,6 +292,147 @@ zfindex ZFIOImpl::ioSizeDefault(ZF_IN void *token) {
 }
 
 // ============================================================
+// default impl for chained path info
+zfbool ZFIOImpl::ioIsExistForChained(ZF_IN const zfstring &pathData) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
+        && ZFIOIsExist(refPathInfo);
+}
+zfbool ZFIOImpl::ioIsDirForChained(ZF_IN const zfstring &pathData) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
+        && ZFIOIsDir(refPathInfo);
+}
+zfbool ZFIOImpl::ioToFileNameForChained(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfstring &pathData
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+        return zffalse;
+    }
+    if(&ret == &pathData) {
+        zfstring tmp;
+        if(!ZFIOToFileName(tmp, refPathInfo)) {
+            return zffalse;
+        }
+        ret = tmp;
+        return zftrue;
+    }
+    else {
+        return ZFIOToFileName(ret, refPathInfo);
+    }
+}
+zfbool ZFIOImpl::ioToChildForChained(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfstring &pathData
+        , ZF_IN const zfstring &childName
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+        return zffalse;
+    }
+    zfstring tmp;
+    if(!ZFIOToChild(tmp, refPathInfo, childName)) {
+        return zffalse;
+    }
+    refPathInfo.pathData(tmp);
+    if(&ret == &pathData) {
+        ret = ZFPathInfoChainEncode(refPathInfo, selfPathData);
+    }
+    else {
+        ZFPathInfoChainEncodeT(ret, refPathInfo, selfPathData);
+    }
+    return zftrue;
+}
+zfbool ZFIOImpl::ioToParentForChained(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfstring &pathData
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+        return zffalse;
+    }
+    zfstring tmp;
+    if(!ZFIOToParent(tmp, refPathInfo)) {
+        return zffalse;
+    }
+    refPathInfo.pathData(tmp);
+    if(&ret == &pathData) {
+        ret = ZFPathInfoChainEncode(refPathInfo, selfPathData);
+    }
+    else {
+        ZFPathInfoChainEncodeT(ret, refPathInfo, selfPathData);
+    }
+    return zftrue;
+}
+zfbool ZFIOImpl::ioPathCreateForChained(
+        ZF_IN const zfstring &pathData
+        , ZF_IN_OPT zfbool autoCreateParent /* = zftrue */
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
+        && ZFIOPathCreate(refPathInfo, autoCreateParent);
+}
+zfbool ZFIOImpl::ioRemoveForChained(
+        ZF_IN const zfstring &pathData
+        , ZF_IN_OPT zfbool isRecursive /* = zftrue */
+        , ZF_IN_OPT zfbool isForce /* = zftrue */
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
+        && ZFIORemove(refPathInfo, isRecursive, isForce);
+}
+zfbool ZFIOImpl::ioMoveForChained(
+        ZF_IN const zfstring &pathDataFrom
+        , ZF_IN const zfstring &pathDataTo
+        , ZF_IN_OPT zfbool isForce /* = zftrue */
+        ) {
+    ZFPathInfo refPathInfoFrom;
+    zfstring selfPathDataFrom;
+    ZFPathInfo refPathInfoTo;
+    zfstring selfPathDataTo;
+    return ZFPathInfoChainDecode(refPathInfoFrom, selfPathDataFrom, pathDataFrom)
+        && ZFPathInfoChainDecode(refPathInfoTo, selfPathDataTo, pathDataTo)
+        && refPathInfoFrom.pathType() == refPathInfoTo.pathType()
+        && ZFIOMove(refPathInfoFrom, refPathInfoTo.pathData(), isForce);
+}
+zfbool ZFIOImpl::ioFindFirstForChained(
+        ZF_IN_OUT ZFIOFindData &fd
+        , ZF_IN const zfstring &pathData
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+        return zffalse;
+    }
+    zfautoT<ZFIOImpl> refIOImpl = ZFIOImplForPathType(refPathInfo.pathType());
+    if(refIOImpl == zfnull || !refIOImpl->ioFindFirst(fd, refPathInfo.pathData())) {
+        return zffalse;
+    }
+    fd.implTag("ZFIOForChained", refIOImpl);
+    return zftrue;
+}
+zfbool ZFIOImpl::ioFindNextForChained(ZF_IN_OUT ZFIOFindData &fd) {
+    zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIOForChained");
+    return refIOImpl && refIOImpl->ioFindNext(fd);
+}
+void ZFIOImpl::ioFindCloseForChained(ZF_IN_OUT ZFIOFindData &fd) {
+    zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIOForChained");
+    if(refIOImpl) {
+        refIOImpl->ioFindClose(fd);
+        fd.implTag("ZFIOForChained", zfnull);
+    }
+}
+
+// ============================================================
 ZFOBJECT_REGISTER(ZFIOImpl)
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOImpl, zfstring, pathType)
@@ -341,6 +483,125 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFIOImpl, zfautoT<ZFIOToken>, ioOpen
         , ZFMP_IN(const zfstring &, pathData)
         , ZFMP_IN(ZFIOOpenOptionFlags, flags)
         , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
+        )
+
+// ============================================================
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioIsExistDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioIsDirDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioToFileNameDefault
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioToChildDefault
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(const zfstring &, childName)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioToParentDefault
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioPathCreateDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioRemoveDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioMoveDefault
+        , ZFMP_IN(const zfstring &, pathDataFrom)
+        , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioFindFirstDefault
+        , ZFMP_IN_OUT(ZFIOFindData &, fd)
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioFindNextDefault
+        , ZFMP_IN_OUT(ZFIOFindData &, fd)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, void, ioFindCloseDefault
+        , ZFMP_IN_OUT(ZFIOFindData &, fd)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfautoT<ZFIOToken>, ioOpenDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(ZFIOOpenOptionFlags, flags)
+        , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioCloseDefault
+        , ZFMP_IN(void *, token)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfindex, ioReadDefault
+        , ZFMP_IN(void *, token)
+        , ZFMP_IN(void *, buf)
+        , ZFMP_IN(zfindex, maxByteSize)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfindex, ioWriteDefault
+        , ZFMP_IN(void *, token)
+        , ZFMP_IN(const void *, src)
+        , ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioSeekDefault
+        , ZFMP_IN(void *, token)
+        , ZFMP_IN(zfindex, byteSize)
+        , ZFMP_IN_OPT(ZFSeekPos, seekPos, ZFSeekPosBegin)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfindex, ioTellDefault
+        , ZFMP_IN(void *, token)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfindex, ioSizeDefault
+        , ZFMP_IN(void *, token)
+        )
+
+// ============================================================
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioIsExistForChained
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioIsDirForChained
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioToFileNameForChained
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioToChildForChained
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(const zfstring &, childName)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioToParentForChained
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioPathCreateForChained
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioRemoveForChained
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioMoveForChained
+        , ZFMP_IN(const zfstring &, pathDataFrom)
+        , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioFindFirstForChained
+        , ZFMP_IN_OUT(ZFIOFindData &, fd)
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zfbool, ioFindNextForChained
+        , ZFMP_IN_OUT(ZFIOFindData &, fd)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, void, ioFindCloseForChained
+        , ZFMP_IN_OUT(ZFIOFindData &, fd)
         )
 
 // ============================================================

@@ -6,21 +6,50 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCompressTokenCache, ZFLevelZFFrameworkLow) {
 }
 public:
-    zfautoT<ZFCompressToken> open(
+    zfautoT<ZFCompressToken> obtain(
             ZF_IN const ZFPathInfo &refPathInfo
+            , ZF_IN_OPT ZFIOOpenOptionFlags flags = v_ZFIOOpenOption::e_Read
             ) {
+        if(flags != v_ZFIOOpenOption::e_Read) {
+            return ZFCompressOpen(refPathInfo, flags);
+        }
+        else {
+            return _accessReadonly(refPathInfo);
+        }
+    }
+    void remove(ZF_IN const ZFPathInfo &refPathInfo) {
+        ZFCoreMutexLocker();
+        for(zfindex i = 0; i < _cache.count(); ++i) {
+            if(refPathInfo == _cache[i]->refPathInfo) {
+                _cache.remove(i);
+            }
+        }
+    }
+private:
+    zfclassNotPOD CacheData {
+    public:
+        ZFPathInfo refPathInfo;
+        zfautoT<ZFCompressToken> compressToken;
+        zftimet lastAccessed;
+    };
+    ZFCoreArray<ZFCorePointerForObject<CacheData *> > _cache; // latest accessed at tail
+private:
+    zfautoT<ZFCompressToken> _accessReadonly(ZF_IN const ZFPathInfo &refPathInfo) {
         {
             ZFCoreMutexLocker();
             for(zfindex i = _cache.count() - 1; i != zfindexMax(); --i) {
-                if(_cache[i].pointerValue()->refPathInfo == refPathInfo) {
+                if(_cache[i]->refPathInfo == refPathInfo) {
+                    ZFCorePointerForObject<CacheData *> cache = _cache[i];
+                    cache->lastAccessed = ZFTime::currentTime();
                     if(i == _cache.count() - 1) {
-                        return _cache[i].pointerValue()->compressToken;
+                        _cacheTrim(cache->lastAccessed);
+                        return cache->compressToken;
                     }
                     else {
-                        ZFCorePointerForObject<CacheData *> t = _cache[i];
                         _cache.remove(i);
-                        _cache.add(t);
-                        return t.pointerValue()->compressToken;
+                        _cache.add(cache);
+                        _cacheTrim(cache->lastAccessed);
+                        return cache->compressToken;
                     }
                 }
             }
@@ -33,27 +62,36 @@ public:
         CacheData *t = zfnew(CacheData);
         t->refPathInfo = refPathInfo;
         t->compressToken = ret;
+        t->lastAccessed = ZFTime::currentTime();
         _cache.add(ZFCorePointerForObject<CacheData *>(t));
+        ZFLISTENER(onClose
+                ) {
+            zfautoT<ZFCompressToken> token = zfargs.sender();
+            if(token) {
+                ZFCoreMutexLocker();
+                ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache);
+                for(zfindex i = 0; i < d->_cache.count(); ++i) {
+                    if(token == d->_cache[i]->compressToken) {
+                        d->_cache.remove(i);
+                        break;
+                    }
+                }
+            }
+        } ZFLISTENER_END()
+        ret->observerAddForOnce(ZFIOToken::E_IOCloseOnPrepare(), onClose);
+        _cacheTrim(t->lastAccessed);
         return ret;
     }
-private:
-    zfclassNotPOD CacheData {
-    public:
-        ZFPathInfo refPathInfo;
-        zfautoT<ZFCompressToken> compressToken;
-    };
-    ZFCoreArray<ZFCorePointerForObject<CacheData *> > _cache; // latest accessed at tail
-ZF_GLOBAL_INITIALIZER_END(ZFCompressTokenCache)
-
-static zfautoT<ZFCompressToken> _ZFP_ZFCompressTokenCache(
-        ZF_IN const ZFPathInfo &refPathInfo
-        , ZF_IN ZFIOOpenOptionFlags flags
-        ) {
-    if(flags != v_ZFIOOpenOption::e_Read) {
-        return ZFCompressOpen(refPathInfo, flags);
+    void _cacheTrim(ZF_IN zftimet curTime) {
+        while(_cache.count() > 8
+                || (!_cache.isEmpty()
+                    && curTime - _cache[0]->lastAccessed >= 5 * 60 * 1000
+                    )
+                ) {
+            _cache.remove(0);
+        }
     }
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->open(refPathInfo);
-}
+ZF_GLOBAL_INITIALIZER_END(ZFCompressTokenCache)
 
 // ============================================================
 zfclass _ZFP_I_ZFIOToken_compress : zfextend ZFIOToken {
@@ -67,7 +105,7 @@ public:
             ) {
         this->ioClose();
 
-        _refIOToken = _ZFP_ZFCompressTokenCache(refPathInfo, flags);
+        _refIOToken = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo, flags);
         if(_refIOToken == zfnull) {
             return zffalse;
         }
@@ -209,15 +247,21 @@ public:
     virtual zfbool ioIsExist(ZF_IN const zfstring &pathData) {
         ZFPathInfo refPathInfo;
         zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIOIsExist(refPathInfo);
+        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
+        }
+        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo);
+        return token && token->ioIsExist(selfPathData);
     }
     zfoverride
     virtual zfbool ioIsDir(ZF_IN const zfstring &pathData) {
         ZFPathInfo refPathInfo;
         zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIOIsDir(refPathInfo);
+        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
+        }
+        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo);
+        return token && token->ioIsDir(selfPathData);
     }
     zfoverride
     virtual zfbool ioToFileName(
@@ -229,17 +273,7 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        if(&ret == &pathData) {
-            zfstring tmp;
-            if(!ZFIOToFileName(tmp, refPathInfo)) {
-                return zffalse;
-            }
-            ret = tmp;
-            return zftrue;
-        }
-        else {
-            return ZFIOToFileName(ret, refPathInfo);
-        }
+        return ZFFileNameOfT(ret, selfPathData);
     }
     zfoverride
     virtual zfbool ioToChild(
@@ -252,17 +286,11 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        if(&ret == &pathData) {
-            zfstring tmp;
-            if(!ZFIOToChild(tmp, refPathInfo, childName)) {
-                return zffalse;
-            }
-            ret = tmp;
-            return zftrue;
+        if(!ZFIOImpl::ioToChildDefault(selfPathData, selfPathData, childName)) {
+            return zffalse;
         }
-        else {
-            return ZFIOToChild(ret, refPathInfo, childName);
-        }
+        ZFPathInfoChainEncodeT(ret, refPathInfo, selfPathData);
+        return zftrue;
     }
     zfoverride
     virtual zfbool ioToParent(
@@ -274,17 +302,11 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        if(&ret == &pathData) {
-            zfstring tmp;
-            if(!ZFIOToParent(tmp, refPathInfo)) {
-                return zffalse;
-            }
-            ret = tmp;
-            return zftrue;
+        if(!ZFIOImpl::ioToParentDefault(selfPathData, selfPathData)) {
+            return zffalse;
         }
-        else {
-            return ZFIOToParent(ret, refPathInfo);
-        }
+        ZFPathInfoChainEncodeT(ret, refPathInfo, selfPathData);
+        return zftrue;
     }
     zfoverride
     virtual zfbool ioPathCreate(
@@ -293,8 +315,15 @@ public:
             ) {
         ZFPathInfo refPathInfo;
         zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIOPathCreate(refPathInfo, autoCreateParent);
+        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
+        }
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->remove(refPathInfo);
+        zfautoT<ZFCompressToken> token = ZFCompressOpen(refPathInfo, v_ZFIOOpenOption::e_Modify);
+        if(!token) {
+            return zffalse;
+        }
+        return token->ioPathCreate(selfPathData);
     }
     zfoverride
     virtual zfbool ioRemove(
@@ -304,8 +333,15 @@ public:
             ) {
         ZFPathInfo refPathInfo;
         zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIORemove(refPathInfo, isRecursive, isForce);
+        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+            return zffalse;
+        }
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->remove(refPathInfo);
+        zfautoT<ZFCompressToken> token = ZFCompressOpen(refPathInfo, v_ZFIOOpenOption::e_Modify);
+        if(!token) {
+            return zffalse;
+        }
+        return token->ioRemove(selfPathData);
     }
     zfoverride
     virtual zfbool ioMove(
@@ -315,12 +351,23 @@ public:
             ) {
         ZFPathInfo refPathInfoFrom;
         zfstring selfPathDataFrom;
+        if(!ZFPathInfoChainDecode(refPathInfoFrom, selfPathDataFrom, pathDataFrom)) {
+            return zffalse;
+        }
         ZFPathInfo refPathInfoTo;
         zfstring selfPathDataTo;
-        return ZFPathInfoChainDecode(refPathInfoFrom, selfPathDataFrom, pathDataFrom)
-            && ZFPathInfoChainDecode(refPathInfoTo, selfPathDataTo, pathDataTo)
-            && refPathInfoFrom.pathType() == refPathInfoTo.pathType()
-            && ZFIOMove(refPathInfoFrom, refPathInfoTo.pathData(), isForce);
+        if(!ZFPathInfoChainDecode(refPathInfoTo, selfPathDataTo, pathDataTo)) {
+            return zffalse;
+        }
+        if(refPathInfoFrom != refPathInfoTo) {
+            return zffalse;
+        }
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->remove(refPathInfoFrom);
+        zfautoT<ZFCompressToken> token = ZFCompressOpen(refPathInfoFrom, v_ZFIOOpenOption::e_Modify);
+        if(!token) {
+            return zffalse;
+        }
+        return token->ioMove(selfPathDataFrom, selfPathDataTo);
     }
     zfoverride
     virtual zfbool ioFindFirst(
@@ -332,24 +379,27 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        zfautoT<ZFIOImpl> refIOImpl = ZFIOImplForPathType(refPathInfo.pathType());
-        if(refIOImpl == zfnull || !refIOImpl->ioFindFirst(fd, refPathInfo.pathData())) {
+        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo);
+        if(!token) {
             return zffalse;
         }
-        fd.implTag("ZFIO_compress_fd", refIOImpl);
+        if(!token->ioFindFirst(fd, selfPathData)) {
+            return zffalse;
+        }
+        fd.implTag("_ZFP_ZFIO_compress_ioFindOwner", token);
         return zftrue;
     }
     zfoverride
     virtual zfbool ioFindNext(ZF_IN_OUT ZFIOFindData &fd) {
-        zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIO_compress_fd");
-        return refIOImpl && refIOImpl->ioFindNext(fd);
+        zfautoT<ZFCompressToken> token = fd.implTag("_ZFP_ZFIO_compress_ioFindOwner");
+        return token && token->ioFindNext(fd);
     }
     zfoverride
     virtual void ioFindClose(ZF_IN_OUT ZFIOFindData &fd) {
-        zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIO_compress_fd");
-        if(refIOImpl) {
-            refIOImpl->ioFindClose(fd);
-            fd.implTag("ZFIO_compress_fd", zfnull);
+        zfautoT<ZFCompressToken> token = fd.implTag("_ZFP_ZFIO_compress_ioFindOwner");
+        if(token) {
+            fd.implTag("_ZFP_ZFIO_compress_ioFindOwner", zfnull);
+            token->ioFindClose(fd);
         }
     }
     zfoverride

@@ -479,6 +479,56 @@ public:
     static zfindex ioTellDefault(ZF_IN void *token);
     /** @brief see #ZFIOImplForPathType */
     static zfindex ioSizeDefault(ZF_IN void *token);
+
+    // ============================================================
+    // default impl for chained path info
+public:
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioIsExistForChained(ZF_IN const zfstring &pathData);
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioIsDirForChained(ZF_IN const zfstring &pathData);
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioToFileNameForChained(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfstring &pathData
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioToChildForChained(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfstring &pathData
+            , ZF_IN const zfstring &childName
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioToParentForChained(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfstring &pathData
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioPathCreateForChained(
+            ZF_IN const zfstring &pathData
+            , ZF_IN_OPT zfbool autoCreateParent = zftrue
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioRemoveForChained(
+            ZF_IN const zfstring &pathData
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioMoveForChained(
+            ZF_IN const zfstring &pathDataFrom
+            , ZF_IN const zfstring &pathDataTo
+            , ZF_IN_OPT zfbool isForce = zftrue
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioFindFirstForChained(
+            ZF_IN_OUT ZFIOFindData &fd
+            , ZF_IN const zfstring &pathData
+            );
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioFindNextForChained(ZF_IN_OUT ZFIOFindData &fd);
+    /** @brief see #ZFIOImplForPathType */
+    static void ioFindCloseForChained(ZF_IN_OUT ZFIOFindData &fd);
 };
 
 // ============================================================

@@ -360,9 +360,6 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         , ZFMP_IN(const zfstring &, resPath)
         ) {
-    if(resPath == zfnull) {
-        return zffalse;
-    }
     _ZFP_ZFResFindData *implUserData = zfnew(_ZFP_ZFResFindData);
     fd.implAttach(_ZFP_ZFIOFindType_res, implUserData);
     implUserData->resPathSaved = resPath;

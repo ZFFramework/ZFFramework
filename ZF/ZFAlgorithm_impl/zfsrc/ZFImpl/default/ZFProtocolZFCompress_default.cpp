@@ -639,12 +639,61 @@ public:
     }
 
     zfoverride
+    virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) {
+        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
+            return zffalse;
+        }
+        zfstring itemPathTmp = _itemPathFormat(itemPath);
+        if(!itemPathTmp) {
+            // empty is valid root dir
+            return zftrue;
+        }
+        zfstring buf;
+        for(mz_uint itemIndex = 0; itemIndex < _impl.m_total_files; ++itemIndex) {
+            zfindex size = (zfindex)mz_zip_reader_get_filename(&_impl, itemIndex, zfnull, 0);
+            if(size == 0) {
+                continue;
+            }
+            buf.capacity(size);
+            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), size);
+            buf.zfunsafe_length(size - 1);
+            if(_isSameOrChildOf(buf, itemPathTmp)) {
+                return zftrue;
+            }
+        }
+        return zffalse;
+    }
+
+    zfoverride
     virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) {
         if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
             return zffalse;
         }
-        mz_zip_archive_file_stat stat;
-        return (mz_zip_reader_file_stat(&_impl, (mz_uint)this->itemIndex(itemPath), &stat) && stat.m_is_directory);
+        zfstring itemPathTmp = _itemPathFormat(itemPath);
+        if(!itemPathTmp) {
+            // empty is valid root dir
+            return zftrue;
+        }
+        zfstring buf;
+        for(mz_uint itemIndex = 0; itemIndex < _impl.m_total_files; ++itemIndex) {
+            zfindex size = (zfindex)mz_zip_reader_get_filename(&_impl, itemIndex, zfnull, 0);
+            if(size == 0) {
+                continue;
+            }
+            buf.capacity(size);
+            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), size);
+            buf.zfunsafe_length(size - 1);
+            if(zfstringBeginWith(buf, itemPathTmp)) {
+                if(buf.length() == itemPathTmp.length()) {
+                    mz_zip_archive_file_stat stat;
+                    return (mz_zip_reader_file_stat(&_impl, itemIndex, &stat) && stat.m_is_directory);
+                }
+                else if(buf[itemPathTmp.length()] == '/') {
+                    return zftrue;
+                }
+            }
+        }
+        return zffalse;
     }
 
     zfoverride

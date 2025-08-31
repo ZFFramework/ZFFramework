@@ -93,8 +93,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         )
-
-// ============================================================
 #define _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC(...) \
     _ZFP_MtdD_EXPAND(_ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_(__VA_ARGS__))
 #define _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_( \
@@ -134,6 +132,82 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         )
 
 // ============================================================
+#define _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(...) \
+    _ZFP_MtdD_EXPAND(_ZFP_ZFMethodUserRegisterForZFObjectFuncStatic_(__VA_ARGS__))
+#define _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic_( \
+        resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
+        , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
+        , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \
+        , ParamExpandOrEmpty3, ParamType3, param3, DefaultExpandOrEmpty3, DefaultValueFix3 \
+        , ParamExpandOrEmpty4, ParamType4, param4, DefaultExpandOrEmpty4, DefaultValueFix4 \
+        , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
+        , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
+        , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
+    ) \
+    _ZFP_ZFMethodUserRegister(resultMethod, { \
+            return (ReturnType)ownerClassSig::methodName( \
+                    ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
+                    ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                    ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                    ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                    ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                    ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                    ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                    ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+                ); \
+        }, ownerClass, \
+        public, ZFMethodTypeStatic, \
+        ReturnType, zftext(#methodName) \
+        , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
+        , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
+        , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \
+        , ParamExpandOrEmpty3, ParamType3, param3, DefaultExpandOrEmpty3, DefaultValueFix3 \
+        , ParamExpandOrEmpty4, ParamType4, param4, DefaultExpandOrEmpty4, DefaultValueFix4 \
+        , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
+        , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
+        , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
+        )
+#define _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(...) \
+    _ZFP_MtdD_EXPAND(_ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_(__VA_ARGS__))
+#define _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_( \
+        ownerClassSig, \
+        ReturnType, methodName \
+        , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
+        , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
+        , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \
+        , ParamExpandOrEmpty3, ParamType3, param3, DefaultExpandOrEmpty3, DefaultValueFix3 \
+        , ParamExpandOrEmpty4, ParamType4, param4, DefaultExpandOrEmpty4, DefaultValueFix4 \
+        , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
+        , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
+        , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER({ \
+                return (ReturnType)ownerClassSig::methodName( \
+                        ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
+                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+                    ); \
+            }, ownerClassSig, \
+            public, ZFMethodTypeStatic, ZF_CALLER_LINE, \
+            ReturnType, methodName \
+            , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
+            , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
+            , ParamExpandOrEmpty2, ParamType2, param2, DefaultExpandOrEmpty2, DefaultValueFix2 \
+            , ParamExpandOrEmpty3, ParamType3, param3, DefaultExpandOrEmpty3, DefaultValueFix3 \
+            , ParamExpandOrEmpty4, ParamType4, param4, DefaultExpandOrEmpty4, DefaultValueFix4 \
+            , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
+            , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
+            , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
+        )
+
+// ============================================================
 // 0 param
 /** @brief see #ZFMethodUserRegister_0 */
 #define ZFMethodUserRegisterForZFObjectFunc_0(resultMethod, ownerClassSig, \
@@ -155,6 +229,36 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ReturnType, methodName \
     ) \
     _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_0(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_0(ownerClassSig, \
+    ReturnType, methodName \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
         ReturnType, methodName \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -200,6 +304,38 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_1(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
 
 // ============================================================
 // 2 param
@@ -227,6 +363,40 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_1 \
     ) \
     _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_2(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
         ReturnType, methodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -276,6 +446,42 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_3(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
 
 // ============================================================
 // 4 param
@@ -307,6 +513,44 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     ) \
     _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_4(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_4(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
         ReturnType, methodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -360,6 +604,46 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_5(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_5(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
 
 // ============================================================
 // 6 param
@@ -395,6 +679,48 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     ) \
     _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_6(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_ZFMP_DUMMY() \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_6(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
         ReturnType, methodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
@@ -452,6 +778,50 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , _ZFP_MtdP_EXPAND(ZFMP_6) \
         , _ZFP_ZFMP_DUMMY() \
         )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_7(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    , ZFMP_6 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_ZFMP_DUMMY() \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_7(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    , ZFMP_6 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_ZFMP_DUMMY() \
+        )
 
 // ============================================================
 // 8 param
@@ -491,6 +861,52 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_7 \
     ) \
     _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC(ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMethodUserRegisterForZFObjectFuncStatic_8(resultMethod, ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    , ZFMP_6 \
+    , ZFMP_7 \
+    ) \
+    _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(resultMethod, ownerClassSig, \
+        ReturnType, methodName \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        )
+/** @brief see #ZFMethodUserRegister_0 */
+#define ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_8(ownerClassSig, \
+    ReturnType, methodName \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    , ZFMP_6 \
+    , ZFMP_7 \
+    ) \
+    _ZFP_ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC(ownerClassSig, \
         ReturnType, methodName \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \

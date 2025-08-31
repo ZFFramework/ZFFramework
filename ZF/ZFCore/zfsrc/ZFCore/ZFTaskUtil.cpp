@@ -153,7 +153,7 @@ void ZFAsyncIOTask::taskOnStart(void) {
                 , zfweakT<zfself>, owner
                 ) {
             owner->_implTaskId = zfnull;
-            v_zfindex *result = zfargs.result();
+            v_zfindex *result = zfargs.param0();
             if(result->zfv != zfindexMax()) {
                 owner->notifySuccess(result);
             }

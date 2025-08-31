@@ -158,39 +158,18 @@ public:
 
     zfoverride
     virtual zfbool ioIsExist(ZF_IN const zfstring &pathData) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIOIsExist(refPathInfo);
+        return ZFIOImpl::ioIsExistForChained(pathData);
     }
     zfoverride
     virtual zfbool ioIsDir(ZF_IN const zfstring &pathData) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIOIsDir(refPathInfo);
+        return ZFIOImpl::ioIsDirForChained(pathData);
     }
     zfoverride
     virtual zfbool ioToFileName(
             ZF_IN_OUT zfstring &ret
             , ZF_IN const zfstring &pathData
             ) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
-            return zffalse;
-        }
-        if(&ret == &pathData) {
-            zfstring tmp;
-            if(!ZFIOToFileName(tmp, refPathInfo)) {
-                return zffalse;
-            }
-            ret = tmp;
-            return zftrue;
-        }
-        else {
-            return ZFIOToFileName(ret, refPathInfo);
-        }
+        return ZFIOImpl::ioToFileNameForChained(ret, pathData);
     }
     zfoverride
     virtual zfbool ioToChild(
@@ -198,54 +177,21 @@ public:
             , ZF_IN const zfstring &pathData
             , ZF_IN const zfstring &childName
             ) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
-            return zffalse;
-        }
-        if(&ret == &pathData) {
-            zfstring tmp;
-            if(!ZFIOToChild(tmp, refPathInfo, childName)) {
-                return zffalse;
-            }
-            ret = tmp;
-            return zftrue;
-        }
-        else {
-            return ZFIOToChild(ret, refPathInfo, childName);
-        }
+        return ZFIOImpl::ioToChildForChained(ret, pathData, childName);
     }
     zfoverride
     virtual zfbool ioToParent(
             ZF_IN_OUT zfstring &ret
             , ZF_IN const zfstring &pathData
             ) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
-            return zffalse;
-        }
-        if(&ret == &pathData) {
-            zfstring tmp;
-            if(!ZFIOToParent(tmp, refPathInfo)) {
-                return zffalse;
-            }
-            ret = tmp;
-            return zftrue;
-        }
-        else {
-            return ZFIOToParent(ret, refPathInfo);
-        }
+        return ZFIOImpl::ioToParentForChained(ret, pathData);
     }
     zfoverride
     virtual zfbool ioPathCreate(
             ZF_IN const zfstring &pathData
             , ZF_IN_OPT zfbool autoCreateParent = zftrue
             ) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIOPathCreate(refPathInfo, autoCreateParent);
+        return ZFIOImpl::ioPathCreateForChained(pathData, autoCreateParent);
     }
     zfoverride
     virtual zfbool ioRemove(
@@ -253,10 +199,7 @@ public:
             , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
-            && ZFIORemove(refPathInfo, isRecursive, isForce);
+        return ZFIOImpl::ioRemoveForChained(pathData, isRecursive, isForce);
     }
     zfoverride
     virtual zfbool ioMove(
@@ -264,44 +207,22 @@ public:
             , ZF_IN const zfstring &pathDataTo
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
-        ZFPathInfo refPathInfoFrom;
-        zfstring selfPathDataFrom;
-        ZFPathInfo refPathInfoTo;
-        zfstring selfPathDataTo;
-        return ZFPathInfoChainDecode(refPathInfoFrom, selfPathDataFrom, pathDataFrom)
-            && ZFPathInfoChainDecode(refPathInfoTo, selfPathDataTo, pathDataTo)
-            && refPathInfoFrom.pathType() == refPathInfoTo.pathType()
-            && ZFIOMove(refPathInfoFrom, refPathInfoTo.pathData(), isForce);
+        return ZFIOImpl::ioMoveForChained(pathDataFrom, pathDataTo, isForce);
     }
     zfoverride
     virtual zfbool ioFindFirst(
             ZF_IN_OUT ZFIOFindData &fd
             , ZF_IN const zfstring &pathData
             ) {
-        ZFPathInfo refPathInfo;
-        zfstring selfPathData;
-        if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
-            return zffalse;
-        }
-        zfautoT<ZFIOImpl> refIOImpl = ZFIOImplForPathType(refPathInfo.pathType());
-        if(refIOImpl == zfnull || !refIOImpl->ioFindFirst(fd, refPathInfo.pathData())) {
-            return zffalse;
-        }
-        fd.implTag("ZFIO_encrypt_fd", refIOImpl);
-        return zftrue;
+        return ZFIOImpl::ioFindFirstForChained(fd, pathData);
     }
     zfoverride
     virtual zfbool ioFindNext(ZF_IN_OUT ZFIOFindData &fd) {
-        zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIO_encrypt_fd");
-        return refIOImpl && refIOImpl->ioFindNext(fd);
+        return ZFIOImpl::ioFindNextForChained(fd);
     }
     zfoverride
     virtual void ioFindClose(ZF_IN_OUT ZFIOFindData &fd) {
-        zfautoT<ZFIOImpl> refIOImpl = fd.implTag("ZFIO_encrypt_fd");
-        if(refIOImpl) {
-            refIOImpl->ioFindClose(fd);
-            fd.implTag("ZFIO_encrypt_fd", zfnull);
-        }
+        return ZFIOImpl::ioFindCloseForChained(fd);
     }
     zfoverride
     virtual zfautoT<ZFIOToken> ioOpen(

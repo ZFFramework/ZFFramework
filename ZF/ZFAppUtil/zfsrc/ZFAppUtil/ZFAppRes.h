@@ -20,11 +20,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           // request your server API to obtain download url and password
  *           // can be async task
  *           ...
- *           o->packageSrc(xxx);
- *           o->packagePwd(xxx);
  *
  *           // notifyFinish must be called exactly once
- *           o->notifyFinish();
+ *           o->notifyFinish(src, pwd);
  *       }, "my_module_name");
  * @endcode
  *
@@ -67,17 +65,10 @@ public:
 
 public:
     /** @brief see #ZFAppRes */
-    ZFMETHOD_DECLARE_0(void, notifyFinish)
-
-public:
-    /**
-     * @brief source for the package, should be set by #packageGetter
-     */
-    ZFPROPERTY_ASSIGN(ZFPathInfo, packageSrc)
-    /**
-     * @brief (optional) password for the package, should be set by #packageGetter
-     */
-    ZFPROPERTY_ASSIGN(zfstring, packagePwd)
+    ZFMETHOD_DECLARE_2(void, notifyFinish
+            , ZFMP_IN(const ZFPathInfo &, packageSrc)
+            , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+            )
 
 public:
     zfstring _ZFP_ZFAppRes_moduleName;

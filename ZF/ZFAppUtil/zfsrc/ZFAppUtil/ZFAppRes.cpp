@@ -31,7 +31,7 @@ public:
     ZFPROPERTY_ASSIGN(zfstring, moduleName)
     ZFPROPERTY_ASSIGN(ZFPathInfo, packageSrc)
     ZFPROPERTY_ASSIGN(zfstring, packagePwd)
-    ZFPROPERTY_ASSIGN(zfindex, fileSize) // downloaded file size, zfindexMax if not done, also used to verify the file
+    ZFPROPERTY_ASSIGN(zfindex, fileSize, zfindexMax()) // downloaded file size, zfindexMax if not done, also used to verify the file
 
 public:
     zfbool attached(void) {
@@ -48,6 +48,9 @@ public:
                     ioToken = zfnull;
                     ZFResExtPathAdd(_resExtPathInfo());
                 }
+                else {
+                    this->fileSize(zfindexMax());
+                }
             }
         }
     }
@@ -63,7 +66,9 @@ public:
             ZF_IN const ZFPathInfo &packageSrc
             , ZF_IN const zfstring &packagePwd
             ) {
-        if(packageSrc == this->packageSrc() && packagePwd == this->packagePwd()) {
+        if(packageSrc == this->packageSrc() && packagePwd == this->packagePwd()
+                && (_downloadTaskId || (this->fileSize() != zfindexMax() && ZFIOIsExist(_localFilePath())))
+                ) {
             return zffalse;
         }
         if(_downloadTaskId) {
@@ -80,13 +85,16 @@ public:
         ZFLISTENER_1(downloadFinish
                 , zfweakT<zfself>, owner
                 ) {
+            owner->_downloadTaskId = zfnull;
             ZFTask *task = zfargs.sender();
             if(task->success()) {
                 v_zfindex *result = task->result();
                 if(result != zfnull && result->zfv != zfindexMax()
                         && owner
                         ) {
-                    owner->fileSize(result->zfv);
+                    if(ZFIOMove(owner->_localCachePath(), owner->_localFilePath().pathData())) {
+                        owner->fileSize(result->zfv);
+                    }
                 }
             }
         } ZFLISTENER_END()
@@ -128,6 +136,7 @@ private:
         }
     }
 };
+ZFOBJECT_REGISTER(_ZFP_I_ZFAppResData)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAppResDataHolder, ZFLevelZFFrameworkNormal) {
     _modulesChanged = zffalse;
@@ -194,21 +203,23 @@ public:
         zfobj<_ZFP_I_ZFAppResData> dataHolder;
         data = dataHolder;
         _modules->add(data);
-        _modulesChanged = _modulesChanged
-            || data->update(packageSrc, packagePwd);
+        data->attach();
+        data->moduleName(moduleName);
+        data->update(packageSrc, packagePwd);
+        _modulesChanged = zftrue;
         _localStateSave();
     }
 private:
     ZFPathInfo _localStatePath(void) {
-        return ZFPathInfo(ZFPathType_storagePath(), "ZFAppRes/state");
+        return ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(ZFPathInfo(ZFPathType_storagePath(), "ZFAppRes/state"), "ZFAppRes"));
     }
     void _localStateLoad(void) {
         if(_modules != zfnull) {
             return;
         }
         zfstring data;
-        ZFInputRead(data, ZFInputForEncrypt(_localStatePath(), "ZFAppRes"));
-        _modules = ZFObjectFromStringOrData(ZFMap::ClassData(), data, data.length());
+        ZFInputRead(data, ZFInputForPathInfo(_localStatePath()));
+        _modules = ZFObjectFromStringOrData(ZFArray::ClassData(), data, data.length());
         if(!_modules) {
             _modules = zfobj<ZFArray>();
         }
@@ -219,7 +230,7 @@ private:
         }
         zfstring data = ZFObjectToStringOrData(_modules);
         if(data) {
-            ZFOutputForEncrypt(_localStatePath(), "ZFAppRes").output(data, data.length());
+            ZFOutputForPathInfo(_localStatePath()).output(data, data.length());
         }
     }
 ZF_GLOBAL_INITIALIZER_END(ZFAppResDataHolder)
@@ -229,17 +240,22 @@ ZFMETHOD_DEFINE_2(ZFAppRes, void, start
         , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
         ) {
     zfobj<ZFAppRes> owner;
-    owner->_ZFP_ZFAppRes_moduleName = moduleName ? moduleName : "default";
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->attach(moduleName);
+    owner->_ZFP_ZFAppRes_moduleName = moduleName ? moduleName : zftext("default");
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->attach(owner->_ZFP_ZFAppRes_moduleName);
     packageGetter.execute(ZFArgs().sender(owner));
 }
 
-ZFMETHOD_DEFINE_0(ZFAppRes, void, notifyFinish) {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->notifyFinish(
-            _ZFP_ZFAppRes_moduleName
-            , this->packageSrc()
-            , this->packagePwd()
-            );
+ZFMETHOD_DEFINE_2(ZFAppRes, void, notifyFinish
+        , ZFMP_IN(const ZFPathInfo &, packageSrc)
+        , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+        ) {
+    if(packageSrc) {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->notifyFinish(
+                _ZFP_ZFAppRes_moduleName
+                , packageSrc
+                , packagePwd
+                );
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END
