@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileImpl_default, ZFFile, v_ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("nativeAPI")
 public:
-    virtual zfbool fileIsExist(ZF_IN const zfchar *path) {
+    virtual zfbool fileIsExist(ZF_IN const zfstring &path) {
         if(path == zfnull) {return zffalse;}
         #if ZF_ENV_sys_Windows
             return (GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
@@ -27,7 +27,7 @@ public:
             return (access(path, F_OK) != -1);
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    virtual zfbool isDir(ZF_IN const zfchar *path) {
+    virtual zfbool isDir(ZF_IN const zfstring &path) {
         #if ZF_ENV_sys_Windows
             return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
                 & FILE_ATTRIBUTE_DIRECTORY) != 0);
@@ -41,7 +41,7 @@ public:
     }
 
     virtual zfbool filePathCreate(
-            ZF_IN const zfchar *path
+            ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool autoCreateParent = zffalse
             ) {
         if(autoCreateParent) {
@@ -54,8 +54,8 @@ public:
 private:
     zfbool cp_or_mv(
             ZF_IN zfbool isCopy
-            , ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            , ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
             ) {
@@ -103,14 +103,14 @@ private:
     }
 public:
     virtual zfbool fileMove(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
         return this->cp_or_mv(zffalse, srcPath, dstPath, zftrue, isForce);
     }
     virtual zfbool fileRemove(
-            ZF_IN const zfchar *path
+            ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
@@ -169,7 +169,7 @@ public:
 
     virtual zfbool fileFindFirst(
             ZF_IN_OUT ZFIOFindData::Impl &fd
-            , ZF_IN const zfchar *path
+            , ZF_IN const zfstring &path
             ) {
         if(path == zfnull) {return zffalse;}
         _ZFP_ZFFileNativeFd *nativeFd = zfnew(_ZFP_ZFFileNativeFd);
@@ -251,7 +251,7 @@ public:
 
 private:
     zfbool makeDir(
-            ZF_IN const zfchar *path
+            ZF_IN const zfstring &path
             ) {
         if(this->fileIsExist(path)) {
             if(!this->isDir(path)) {
@@ -271,7 +271,7 @@ private:
         return zftrue;
     }
     zfbool makePath(
-            ZF_IN const zfchar *path
+            ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool excludeLastLevel = zffalse
             ) {
         zfstring pathTmp = path;
@@ -317,8 +317,8 @@ private:
         return zftrue;
     }
     zfbool copyFile(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             , ZF_IN zfbool isForce
             ) {
         if(isForce) {
@@ -361,8 +361,8 @@ private:
         #endif // #if ZF_ENV_sys_Windows #else
     }
     zfbool moveFile(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             ) {
         #if ZF_ENV_sys_Windows
             if(MoveFileW(
@@ -380,14 +380,14 @@ private:
         #endif // #if ZF_ENV_sys_Windows #else
     }
     zfbool moveDir(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             ) {
         return this->moveFile(srcPath, dstPath);
     }
     zfbool copyDir(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             , ZF_IN zfbool isForce
             ) {
         ZFCoreArray<zfstring> stacksDirSrc;
@@ -433,7 +433,7 @@ private:
         return zftrue;
     }
     zfbool removeFile(
-            ZF_IN const zfchar *srcPath
+            ZF_IN const zfstring &srcPath
             , ZF_IN zfbool isForce
             ) {
         #if ZF_ENV_sys_Windows
@@ -457,7 +457,7 @@ private:
         #endif // #if ZF_ENV_sys_Windows #else
     }
     zfbool removeDir(
-            ZF_IN const zfchar *srcPath
+            ZF_IN const zfstring &srcPath
             , ZF_IN zfbool isForce
             ) {
         ZFCoreArray<zfstring> dirsToCheck;
@@ -519,7 +519,7 @@ private:
 
 public:
     virtual void *fileOpen(
-            ZF_IN const zfchar *filePath
+            ZF_IN const zfstring &filePath
             , ZF_IN ZFIOOpenOptionFlags flags
             ) {
         const zfchar *sFlag = zfnull;

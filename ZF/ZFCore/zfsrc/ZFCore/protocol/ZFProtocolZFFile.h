@@ -18,32 +18,32 @@ public:
     /**
      * @brief see #ZFFileIsExist
      */
-    virtual zfbool fileIsExist(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual zfbool fileIsExist(ZF_IN const zfstring &path) zfpurevirtual;
     /**
      * @brief see #ZFFileIsDir
      */
-    virtual zfbool isDir(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual zfbool isDir(ZF_IN const zfstring &path) zfpurevirtual;
 
     /**
      * @brief see #ZFFilePathCreate
      */
     virtual zfbool filePathCreate(
-            ZF_IN const zfchar *path
+            ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool autoCreateParent = zffalse
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileMove
      */
     virtual zfbool fileMove(
-            ZF_IN const zfchar *srcPath
-            , ZF_IN const zfchar *dstPath
+            ZF_IN const zfstring &srcPath
+            , ZF_IN const zfstring &dstPath
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileRemove
      */
     virtual zfbool fileRemove(
-            ZF_IN const zfchar *path
+            ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
@@ -63,7 +63,7 @@ public:
      */
     virtual zfbool fileFindFirst(
             ZF_IN_OUT ZFIOFindData::Impl &fd
-            , ZF_IN const zfchar *path
+            , ZF_IN const zfstring &path
             ) zfpurevirtual;
     /**
      * @brief see #ZFFileFindNext, fileFindFirst
@@ -76,7 +76,7 @@ public:
 
     /** @brief see #ZFFileOpen */
     virtual void *fileOpen(
-            ZF_IN const zfchar *filePath
+            ZF_IN const zfstring &filePath
             , ZF_IN ZFIOOpenOptionFlags flags
             ) zfpurevirtual;
     /** @brief see #ZFFileClose */
