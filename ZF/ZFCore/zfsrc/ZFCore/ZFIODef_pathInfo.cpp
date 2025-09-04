@@ -232,7 +232,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForPathInfoOwner, zfindex, onInput
         return this->ioToken->ioRead(buf, count);
     }
     else {
-        return zfindexMax();
+        return 0;
     }
 }
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForPathInfoOwner, zfbool, ioSeek

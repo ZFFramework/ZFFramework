@@ -66,7 +66,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, onInput
         , ZFMP_IN(zfindex, count)
         ) {
     if(buf == zfnull) {
-        return zfindexMax();
+        return 0;
     }
     if(curPos - srcStart + count > srcCount) {
         count = srcCount - curPos + srcStart;
@@ -251,7 +251,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, onInput
         , ZFMP_IN(zfindex, count)
         ) {
     if(buf == zfnull) {
-        return zfindexMax();
+        return 0;
     }
     if(p + count > pEnd) {
         count = pEnd - p;

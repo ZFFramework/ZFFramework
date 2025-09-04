@@ -64,7 +64,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
         , ZFMP_IN(zfindex, count)
         ) {
     if(buf == zfnull) {
-        return zfindexMax(); // not supported
+        return 0;
     }
 
     JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -85,7 +85,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
             , blockSize
             );
         if(nativeRead == -1) {
-            return zfindexMax();
+            return 0;
         }
         JNIUtilGetByteArrayRegion(jniEnv, this->nativeBuf, 0, nativeRead, writeBuf);
         count -= (zfindex)nativeRead;

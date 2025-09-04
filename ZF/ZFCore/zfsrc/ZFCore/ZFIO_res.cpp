@@ -52,7 +52,7 @@ public:
     virtual zfindex ioWrite(
             ZF_IN const void *src
             , ZF_IN_OPT zfindex maxByteSize = zfindexMax()
-            ) {return zfindexMax();}
+            ) {return 0;}
     zfoverride
     virtual zfbool ioSeek(
             ZF_IN zfindex byteSize

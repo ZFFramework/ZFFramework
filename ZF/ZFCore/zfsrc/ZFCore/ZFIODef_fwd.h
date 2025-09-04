@@ -220,7 +220,7 @@ public:
     /**
      * @brief see #ZFIOImplForPathType
      *
-     * return size read, even if error occurred, typical usage:
+     * return size read, or 0 if error occurred, typical usage:
      * @code
      *   zfindex sizeRead = 0;
      *   while((sizeRead = impl->ioRead(token, buf)) > 0) {
@@ -240,7 +240,7 @@ public:
     /**
      * @brief see #ZFIOImplForPathType
      *
-     * return size written, even if error occurred, typical usage:
+     * return size written, or 0 if error occurred, typical usage:
      * @code
      *   zfindex sizeWritten = impl->ioWrite(token, src, size);
      *   if(sizeWritten != size) { // you can also check by sizeWritten

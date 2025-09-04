@@ -66,7 +66,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForImplOwner, zfindex, onInput
         return this->_resultCache->zfv;
     }
     else {
-        return zfindexMax();
+        return 0;
     }
 }
 

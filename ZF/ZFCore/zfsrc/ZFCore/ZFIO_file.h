@@ -161,7 +161,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileClose
 /**
  * @brief read file
  *
- * return size read, even if error occurred, typical usage:
+ * return size read, or zfindexMax if error occurred, typical usage:
  * @code
  *   zfindex sizeRead = 0;
  *   while((sizeRead = ZFFileRead(token, buf)) > 0) {

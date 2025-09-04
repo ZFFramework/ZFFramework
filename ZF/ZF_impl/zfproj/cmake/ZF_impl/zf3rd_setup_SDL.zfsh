@@ -19,7 +19,7 @@
 <ZF_SET> _CMAKE_PREFIX_DIR=<ZF_PL>_INSTALL_DIR<ZF_PR>
 
 
-<ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_check.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_check.<ZF_SH_EXT>" "<ZF_PL>_INSTALL_DIR<ZF_PR>"
 <ZF_IF_SUCCESS_BEGIN>
     echo ZFSDL: cache available, build skipped
     <ZF_EXIT_SUCCESS>
@@ -100,5 +100,5 @@ ninja install
 
 
 echo ZFSDL: build finish
-<ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_save.<ZF_SH_EXT>" "<ZF_PL>_BUILD_DIR<ZF_PR>"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\timestamp_save.<ZF_SH_EXT>" "<ZF_PL>_INSTALL_DIR<ZF_PR>"
 
