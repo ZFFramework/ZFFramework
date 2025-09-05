@@ -10,6 +10,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/stat.h>
+#include <sys/file.h>
 #include <fcntl.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
