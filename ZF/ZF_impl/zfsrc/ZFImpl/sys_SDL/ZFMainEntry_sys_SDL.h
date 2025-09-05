@@ -24,9 +24,13 @@ extern ZFLIB_ZF_impl SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void);
 extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
 
 /**
- * @brief get preferred pixel format for sdl surface
+ * @brief get preferred pixel format for app
  */
 extern ZFLIB_ZF_impl SDL_PixelFormat ZFImpl_sys_SDL_PixelFormatPreferred(void);
+/**
+ * @brief set preferred pixel format for app
+ */
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_PixelFormatPreferred(ZF_IN SDL_PixelFormat f);
 
 // ============================================================
 typedef zfbool (*ZFImpl_sys_SDL_WindowLifeCycle)(ZF_IN SDL_Window *owner);

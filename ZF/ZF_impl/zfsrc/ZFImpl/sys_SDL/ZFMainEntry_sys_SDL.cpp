@@ -275,7 +275,37 @@ void ZFImpl_sys_SDL_embedInit(ZF_IN SDL_Window *window) {
     ZFCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow == zfnull);
     _ZFP_ZFImpl_sys_SDL_mainWindow = window;
     _ZFP_ZFImpl_sys_SDL_mainRenderer = renderer;
-    _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetWindowPixelFormat(window);
+    SDL_PixelFormat nativePixelFormat = SDL_GetWindowPixelFormat(window);
+
+    const SDL_PixelFormatDetails *d = SDL_GetPixelFormatDetails(nativePixelFormat);
+    // fix:
+    //     RGBX => RGBA
+    //     XRGB => ARGB
+    if(d != NULL
+            && d->bits_per_pixel == 32
+            && d->Abits == 0
+            ) {
+        if(zffalse) {
+        }
+        else if(!ZFBitTest(0xFF, d->Rmask|d->Gmask|d->Bmask)) {
+            _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetPixelFormatForMasks(32, d->Rmask, d->Gmask, d->Bmask, 0xFF);
+        }
+        else if(!ZFBitTest(0xFF00, d->Rmask|d->Gmask|d->Bmask)) {
+            _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetPixelFormatForMasks(32, d->Rmask, d->Gmask, d->Bmask, 0xFF00);
+        }
+        else if(!ZFBitTest(0xFF0000, d->Rmask|d->Gmask|d->Bmask)) {
+            _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetPixelFormatForMasks(32, d->Rmask, d->Gmask, d->Bmask, 0xFF0000);
+        }
+        else if(!ZFBitTest(0xFF000000, d->Rmask|d->Gmask|d->Bmask)) {
+            _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_GetPixelFormatForMasks(32, d->Rmask, d->Gmask, d->Bmask, 0xFF000000);
+        }
+        else {
+            _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_PIXELFORMAT_RGBA8888;
+        }
+    }
+    else {
+        _ZFP_ZFImpl_sys_SDL_PixelFormatPreferred = SDL_PIXELFORMAT_RGBA8888;
+    }
 }
 void ZFImpl_sys_SDL_embedCleanup(void) {
     _ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
