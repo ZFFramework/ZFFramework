@@ -530,12 +530,12 @@ public:
         _FileToken *impl = (_FileToken *)token;
         LARGE_INTEGER li;
         li.QuadPart = 0;
-        li.LowPart = SetFilePointer(impl->h, 0, &li.HighPart, FILE_CURRENT);
-        if(li.LowPart == INVALID_SET_FILE_POINTER && GetLastError() != NO_ERROR) {
-            return zfindexMax();
+        li.LowPart = SetFilePointer(impl->h, li.LowPart, &li.HighPart, FILE_CURRENT);
+        if(li.LowPart != INVALID_SET_FILE_POINTER || GetLastError() == NO_ERROR) {
+            return (zfindex)li.QuadPart;
         }
         else {
-            return (zfindex)li.QuadPart;
+            return zfindexMax();
         }
     }
     virtual zfbool fileSeek(
@@ -569,8 +569,8 @@ public:
                 ZFCoreCriticalShouldNotGoHere();
                 break;
         }
-        DWORD result = SetFilePointer(impl->h, li.LowPart, &li.HighPart, tmpPos);
-        return (result != INVALID_SET_FILE_POINTER && GetLastError() == NO_ERROR);
+        li.LowPart = SetFilePointer(impl->h, li.LowPart, &li.HighPart, tmpPos);
+        return (li.LowPart != INVALID_SET_FILE_POINTER || GetLastError() == NO_ERROR);
     }
 
     virtual zfindex fileRead(
