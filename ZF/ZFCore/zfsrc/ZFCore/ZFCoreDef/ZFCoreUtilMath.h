@@ -123,7 +123,7 @@ T_int zfmRand(
         ZF_IN T_int const &start
         , ZF_IN T_int const &end
         ) {
-    return start + (T_int)((end - start) * zfmRand());
+    return start + (T_int)((end - start) * zfmRandFloat());
 }
 
 // ============================================================

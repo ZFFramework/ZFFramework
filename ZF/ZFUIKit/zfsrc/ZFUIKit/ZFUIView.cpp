@@ -6,6 +6,8 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
+#include <cmath> // for fmod on rotation
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static zfuint _ZFP_ZFUIView_stateFlags = 0;
@@ -1202,33 +1204,27 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, scaleZ) {
     }
 }
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateX) {
-    while(propertyValue < 0) {
+    propertyValue = (zffloat)fmod(propertyValue, 360);
+    if(propertyValue < 0) {
         propertyValue += 360;
-    }
-    while(propertyValue >= 360) {
-        propertyValue -= 360;
     }
     if(propertyValue != propertyValueOld) {
         d->viewTransformUpdate(this);
     }
 }
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateY) {
-    while(propertyValue < 0) {
+    propertyValue = (zffloat)fmod(propertyValue, 360);
+    if(propertyValue < 0) {
         propertyValue += 360;
-    }
-    while(propertyValue >= 360) {
-        propertyValue -= 360;
     }
     if(propertyValue != propertyValueOld) {
         d->viewTransformUpdate(this);
     }
 }
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIView, zffloat, rotateZ) {
-    while(propertyValue < 0) {
+    propertyValue = (zffloat)fmod(propertyValue, 360);
+    if(propertyValue < 0) {
         propertyValue += 360;
-    }
-    while(propertyValue >= 360) {
-        propertyValue -= 360;
     }
     if(propertyValue != propertyValueOld) {
         d->viewTransformUpdate(this);
