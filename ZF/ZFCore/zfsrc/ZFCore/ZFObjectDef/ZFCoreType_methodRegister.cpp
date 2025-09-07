@@ -440,6 +440,14 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFIndexRangeContain
 
 // ============================================================
 // ZFCoreUtilMath
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMax
+        , ZFMP_IN(zfint const &, n0)
+        , ZFMP_IN(zfint const &, n1)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfmMax
+        , ZFMP_IN(zfuint const &, n0)
+        , ZFMP_IN(zfuint const &, n1)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfmMax
         , ZFMP_IN(zfindex const &, n0)
         , ZFMP_IN(zfindex const &, n1)
@@ -452,15 +460,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zftimet, zfmMax
         , ZFMP_IN(zftimet const &, n0)
         , ZFMP_IN(zftimet const &, n1)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMax
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMin
         , ZFMP_IN(zfint const &, n0)
         , ZFMP_IN(zfint const &, n1)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfmMax
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfmMin
         , ZFMP_IN(zfuint const &, n0)
         , ZFMP_IN(zfuint const &, n1)
         )
-
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfmMin
         , ZFMP_IN(zfindex const &, n0)
         , ZFMP_IN(zfindex const &, n1)
@@ -473,15 +481,13 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zftimet, zfmMin
         , ZFMP_IN(zftimet const &, n0)
         , ZFMP_IN(zftimet const &, n1)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMin
-        , ZFMP_IN(zfint const &, n0)
-        , ZFMP_IN(zfint const &, n1)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfmMin
-        , ZFMP_IN(zfuint const &, n0)
-        , ZFMP_IN(zfuint const &, n1)
-        )
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmAbs
+        , ZFMP_IN(zfint const &, n0)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfuint, zfmAbs
+        , ZFMP_IN(zfuint const &, n0)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, zfmAbs
         , ZFMP_IN(zfindex const &, n0)
         )
@@ -491,13 +497,17 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmAbs
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zftimet, zfmAbs
         , ZFMP_IN(zftimet const &, n0)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmAbs
-        , ZFMP_IN(zfint const &, n0)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfuint, zfmAbs
-        , ZFMP_IN(zfuint const &, n0)
-        )
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyRange
+        , ZFMP_IN(zfint const &, n)
+        , ZFMP_IN(zfint const &, nMin)
+        , ZFMP_IN(zfint const &, nMax)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfuint, zfmApplyRange
+        , ZFMP_IN(zfuint const &, n)
+        , ZFMP_IN(zfuint const &, nMin)
+        , ZFMP_IN(zfuint const &, nMax)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfmApplyRange
         , ZFMP_IN(zfindex const &, n)
         , ZFMP_IN(zfindex const &, nMin)
@@ -513,17 +523,17 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zftimet, zfmApplyRange
         , ZFMP_IN(zftimet const &, nMin)
         , ZFMP_IN(zftimet const &, nMax)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyRange
-        , ZFMP_IN(zfint const &, n)
-        , ZFMP_IN(zfint const &, nMin)
-        , ZFMP_IN(zfint const &, nMax)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfuint, zfmApplyRange
-        , ZFMP_IN(zfuint const &, n)
-        , ZFMP_IN(zfuint const &, nMin)
-        , ZFMP_IN(zfuint const &, nMax)
-        )
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyProgress
+        , ZFMP_IN(zfint const &, start)
+        , ZFMP_IN(zfint const &, end)
+        , ZFMP_IN(zffloat const &, progress)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfuint, zfmApplyProgress
+        , ZFMP_IN(zfuint const &, start)
+        , ZFMP_IN(zfuint const &, end)
+        , ZFMP_IN(zffloat const &, progress)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfmApplyProgress
         , ZFMP_IN(zfindex const &, start)
         , ZFMP_IN(zfindex const &, end)
@@ -537,16 +547,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zffloat, zfmApplyProgress
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zftimet, zfmApplyProgress
         , ZFMP_IN(zftimet const &, start)
         , ZFMP_IN(zftimet const &, end)
-        , ZFMP_IN(zffloat const &, progress)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyProgress
-        , ZFMP_IN(zfint const &, start)
-        , ZFMP_IN(zfint const &, end)
-        , ZFMP_IN(zffloat const &, progress)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfuint, zfmApplyProgress
-        , ZFMP_IN(zfuint const &, start)
-        , ZFMP_IN(zfuint const &, end)
         , ZFMP_IN(zffloat const &, progress)
         )
 
@@ -564,6 +564,20 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zffloat, zfmRandFloat)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfint, zfmRandMax)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfint, zfmRand)
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmRand
+        , ZFMP_IN(zfint const &, range)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmRand
+        , ZFMP_IN(zfint const &, start)
+        , ZFMP_IN(zfint const &, end)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfuint, zfmRand
+        , ZFMP_IN(zfuint const &, range)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfmRand
+        , ZFMP_IN(zfuint const &, start)
+        , ZFMP_IN(zfuint const &, end)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, zfmRand
         , ZFMP_IN(zfindex const &, range)
         )
@@ -584,20 +598,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zftimet, zfmRand
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zftimet, zfmRand
         , ZFMP_IN(zftimet const &, start)
         , ZFMP_IN(zftimet const &, end)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmRand
-        , ZFMP_IN(zfint const &, range)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmRand
-        , ZFMP_IN(zfint const &, start)
-        , ZFMP_IN(zfint const &, end)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfuint, zfmRand
-        , ZFMP_IN(zfuint const &, range)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfmRand
-        , ZFMP_IN(zfuint const &, start)
-        , ZFMP_IN(zfuint const &, end)
         )
 
 // ============================================================

@@ -376,6 +376,27 @@ static zfstring _ZFP_ZFDI_cacheKey(
 }
 #endif
 
+static zfbool _ZFP_ZFDI_exactMatch(
+        ZF_IN const ZFArgs &zfargs
+        , ZF_IN const ZFMethod *method
+        ) {
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        ZFObject *param = zfargs.paramAt(i);
+        if(param == ZFMP_DEF()) {
+            return i >= method->paramCountMin();
+        }
+        else if(i >= method->paramCount()
+                || (param && param->classData()->classNameFull() != method->paramTypeIdAt(i))
+                ) {
+            return zffalse;
+        }
+        else if(param && param->classData()->classIsTypeOf(ZFDI_WrapperBase::ClassData())) {
+            return zftrue;
+        }
+    }
+    return zftrue;
+}
+
 static zfbool _ZFP_ZFDI_invokeAction(
         ZF_IN ZFObject *obj
         , ZF_IN const ZFArgs &zfargs
@@ -459,23 +480,44 @@ static void _ZFP_ZFDI_invoke(
     zfstring errorHint;
     {
         _ZFP_ZFDI_ParamBackupMapType paramBackup;
-        for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod) {
-            const ZFMethod *method = methodList[iMethod];
-            if(!zfargs.ignoreError() && !errorHint.isEmpty()) {
-                errorHint += "\n    ";
-            }
+        for(zfint loop = 0, exactMatch = -1; loop < 2; ++loop) {
+            for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod) {
+                const ZFMethod *method = methodList[iMethod];
 
-            if(_ZFP_ZFDI_invokeAction(obj, zfargs, method, paramBackup, &errorHint, convStr)) {
-#if _ZFP_ZFDI_CACHE_ENABLE
-                for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
-                    zfargs.param(it->first, it->second);
+                if(loop == 0) {
+                    // first time, try run exact match only
+                    if(exactMatch != -1) {
+                        break;
+                    }
+                    else if(_ZFP_ZFDI_exactMatch(zfargs, method)) {
+                        exactMatch = iMethod;
+                    }
+                    else {
+                        continue;
+                    }
                 }
-                paramBackup.clear();
-                _ZFP_ZFDI_CacheData &cache = _ZFP_ZFDI_cacheMap[cacheKey];
-                cache.cls = zfnull;
-                cache.m = method;
+                else {
+                    // second time, try run all except exact match
+                    if(iMethod == (zfindex)exactMatch) {
+                        continue;
+                    }
+                }
+
+                if(!zfargs.ignoreError() && !errorHint.isEmpty()) {
+                    errorHint += "\n    ";
+                }
+                if(_ZFP_ZFDI_invokeAction(obj, zfargs, method, paramBackup, &errorHint, convStr)) {
+#if _ZFP_ZFDI_CACHE_ENABLE
+                    for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
+                        zfargs.param(it->first, it->second);
+                    }
+                    paramBackup.clear();
+                    _ZFP_ZFDI_CacheData &cache = _ZFP_ZFDI_cacheMap[cacheKey];
+                    cache.cls = zfnull;
+                    cache.m = method;
 #endif
-                return;
+                    return;
+                }
             }
         }
     }
@@ -760,38 +802,60 @@ static zfbool _ZFP_ZFDI_alloc(
     zfstring errorHint;
     {
         _ZFP_ZFDI_ParamBackupMapType paramBackup;
-        for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod) {
-            const ZFMethod *method = methodList[iMethod];
-            if(!zfargs.ignoreError() && !errorHint.isEmpty()) {
-                errorHint += "\n    ";
-            }
+        for(zfint loop = 0, exactMatch = -1; loop < 2; ++loop) {
+            for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod) {
+                const ZFMethod *method = methodList[iMethod];
 
-            zfargs.errorHint(zfnull);
-            if(_ZFP_ZFDI_paramConvert(
-                        method
-                        , paramBackup
-                        , zfargs
-                        , !zfargs.ignoreError() ? &errorHint : zfnull
-                        , convStr
-                        )) {
-                if(cls->newInstanceGenericCheck(token, method, zfargs)) {
-                    zfargs.result(cls->newInstanceGenericEnd(token, zftrue));
-                    if(ctorMethod) {
-                        *ctorMethod = method;
+                if(loop == 0) {
+                    // first time, try run exact match only
+                    if(exactMatch != -1) {
+                        break;
                     }
-                    return zftrue;
+                    else if(_ZFP_ZFDI_exactMatch(zfargs, method)) {
+                        exactMatch = iMethod;
+                    }
+                    else {
+                        continue;
+                    }
                 }
                 else {
-                    if(!zfargs.ignoreError()) {
-                        errorHint += zfargs.errorHint();
+                    // second time, try run all except exact match
+                    if(iMethod == (zfindex)exactMatch) {
+                        continue;
                     }
                 }
-            }
 
-            for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
-                zfargs.param(it->first, it->second);
+                if(!zfargs.ignoreError() && !errorHint.isEmpty()) {
+                    errorHint += "\n    ";
+                }
+
+                zfargs.errorHint(zfnull);
+                if(_ZFP_ZFDI_paramConvert(
+                            method
+                            , paramBackup
+                            , zfargs
+                            , !zfargs.ignoreError() ? &errorHint : zfnull
+                            , convStr
+                            )) {
+                    if(cls->newInstanceGenericCheck(token, method, zfargs)) {
+                        zfargs.result(cls->newInstanceGenericEnd(token, zftrue));
+                        if(ctorMethod) {
+                            *ctorMethod = method;
+                        }
+                        return zftrue;
+                    }
+                    else {
+                        if(!zfargs.ignoreError()) {
+                            errorHint += zfargs.errorHint();
+                        }
+                    }
+                }
+
+                for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it) {
+                    zfargs.param(it->first, it->second);
+                }
+                paramBackup.clear();
             }
-            paramBackup.clear();
         }
     }
     cls->newInstanceGenericEnd(token, zffalse);
