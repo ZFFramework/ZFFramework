@@ -59,12 +59,6 @@ public:
      * @brief see #ZFPathForCache
      */
     virtual void pathForCache(ZF_IN const zfstring &path) zfpurevirtual;
-    /**
-     * @brief see #ZFPathForCacheClear
-     */
-    virtual void pathForCacheClear(void) {
-        ZFFileRemove(this->pathForCache(), ZF_HINT("isRecursive")zftrue, ZF_HINT("isForce")zftrue);
-    }
 ZFPROTOCOL_INTERFACE_END(ZFPath)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -35,7 +35,7 @@ public:
             if(this->_pathForSetting.isEmpty()) {
                 this->_pathForSetting = this->pathForModule();
             }
-            this->_pathForSetting += "/zfsetting";
+            this->_pathForSetting += "/.zfsetting";
         }
         return this->_pathForSetting;
     }
@@ -77,7 +77,7 @@ public:
             if(this->_pathForCache.isEmpty()) {
                 this->_pathForCache = this->pathForModule();
             }
-            this->_pathForCache += "/zfcache";
+            this->_pathForCache += "/.zfcache";
         }
         return this->_pathForCache;
     }

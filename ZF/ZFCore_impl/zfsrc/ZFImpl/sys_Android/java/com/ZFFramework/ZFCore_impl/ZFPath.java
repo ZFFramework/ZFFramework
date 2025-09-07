@@ -16,7 +16,7 @@ public final class ZFPath {
         return null;
     }
     public static Object native_pathForSetting() {
-        return ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/zfsetting";
+        return ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/.zfsetting";
     }
     public static Object native_pathForStorage() {
         return ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/zfstorage";
@@ -32,6 +32,6 @@ public final class ZFPath {
         return ret;
     }
     public static Object native_pathForCache() {
-        return ZFMainEntry.appContext().getCacheDir().getAbsolutePath() + "/zfcache";
+        return ZFMainEntry.appContext().getCacheDir().getAbsolutePath() + "/.zfcache";
     }
 }

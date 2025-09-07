@@ -78,7 +78,7 @@ public:
     virtual const zfstring &pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
             this->_pathForSetting = this->pathForModule();
-            this->_pathForSetting += "/zfsetting";
+            this->_pathForSetting += "/.zfsetting";
         }
         return this->_pathForSetting;
     }
@@ -111,7 +111,7 @@ public:
     virtual const zfstring &pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
             this->_pathForCache = this->pathForModule();
-            this->_pathForCache += "/zfcache";
+            this->_pathForCache += "/.zfcache";
         }
         return this->_pathForCache;
     }

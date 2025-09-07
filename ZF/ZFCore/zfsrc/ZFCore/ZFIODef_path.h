@@ -146,18 +146,6 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * notified to #ZFGlobalObserver only
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheOnUpdate)
-/**
- * @brief see #ZFObject::observerNotify
- *
- * notified to #ZFGlobalObserver only
- */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheBeforeClear)
-/**
- * @brief see #ZFObject::observerNotify
- *
- * notified to #ZFGlobalObserver only
- */
-ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheAfterClear)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -175,10 +163,6 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForCache)
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForCache
         , ZFMP_IN(const zfstring &, path)
         )
-/**
- * @brief clear all caches under #ZFPathForCache
- */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFPathForCacheClear)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIODef_path_h_

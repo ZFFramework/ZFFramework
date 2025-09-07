@@ -446,8 +446,9 @@ public:
             int fd = open(
                     filePath
                     , ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)
-                    ? O_RDWR | O_CREAT
-                    : O_RDWR | O_CREAT | O_TRUNC
+                    ? O_RDWR | O_CREAT | O_TRUNC
+                    : O_RDWR | O_CREAT
+                    , 0644
                     );
             if(fd == -1) {
                 return zfnull;

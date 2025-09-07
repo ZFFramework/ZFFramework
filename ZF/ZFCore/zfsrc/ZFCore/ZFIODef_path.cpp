@@ -116,32 +116,79 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorageShared
 // cache
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheOnUpdate)
-ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheBeforeClear)
-ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheAfterClear)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
+ZF_STATIC_INITIALIZER_INIT(ZFPathForCache) {
+}
+ZF_STATIC_INITIALIZER_DESTROY(ZFPathForCache) {
+}
+public:
+    const zfstring &get(void) {
+        if(_realPath) {
+            return _realPath;
+        }
+        zfstring path = ZFPROTOCOL_ACCESS(ZFPath)->pathForCache();
+        ZFCoreAssert(path);
+        _update(path);
+        return _realPath;
+    }
+    void set(ZF_IN const zfstring &path) {
+        if(_rootPath == path) {
+            return;
+        }
+        ZFPROTOCOL_ACCESS(ZFPath)->pathForCache(path);
+        _update(path);
+    }
+private:
+    zfstring _rootPath;
+    zfstring _realPath; // _rootPath/randName
+    void *_lockToken;
+private:
+    static void _rootPathCleanup(ZF_IN const zfstring &rootPath) {
+        ZFIOFindData fd;
+        if(ZFFileFindFirst(fd, rootPath)) {
+            do {
+                if(fd.name() && fd.isDir()) {
+                    zfstring lockPath = zfstr("%s/%s/.ZF.lock", rootPath, fd.name());
+                    void *lockToken = ZFFileOpen(lockPath, v_ZFIOOpenOption::e_Write);
+                    if(lockToken) {
+                        ZFFileClose(lockToken);
+                        ZFFileRemove(zfstr("%s/%s", rootPath, fd.name()));
+                    }
+                }
+            } while(ZFFileFindNext(fd));
+            ZFFileFindClose(fd);
+        }
+    }
+    void _update(ZF_IN const zfstring &path) {
+        zfstring old = _realPath;
+        if(_rootPath) {
+            if(_lockToken) {
+                ZFFileClose(_lockToken);
+                _lockToken = zfnull;
+            }
+            _rootPathCleanup(_rootPath);
+        }
+        _rootPath = path;
+        _rootPathCleanup(_rootPath);
+        do {
+            _realPath = zfstr("%s/%x"
+                    , _rootPath
+                    , zfidentityHash(zfidentityCalc(zfmRand()), zfidentityCalc(this))
+                    );
+            _lockToken = ZFFileOpen(zfstr("%s/.ZF.lock", _realPath), v_ZFIOOpenOption::e_Write);
+        } while(!_lockToken);
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheOnUpdate(), zfobj<v_zfstring>(old));
+    }
+ZF_STATIC_INITIALIZER_END(ZFPathForCache)
+
 ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForCache) {
-    return ZFPROTOCOL_ACCESS(ZFPath)->pathForCache();
+    return ZF_STATIC_INITIALIZER_INSTANCE(ZFPathForCache)->get();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForCache
         , ZFMP_IN_OPT(const zfstring &, path, zfnull)
         ) {
-    if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::E_ZFPathForCacheOnUpdate())) {
-        zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForCache());
-        ZFPROTOCOL_ACCESS(ZFPath)->pathForCache(path);
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheOnUpdate(), old);
-    }
-    else {
-        ZFPROTOCOL_ACCESS(ZFPath)->pathForCache(path);
-    }
-}
-
-ZFMETHOD_FUNC_DEFINE_0(void, ZFPathForCacheClear) {
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFPath)) {
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheBeforeClear());
-        ZFPROTOCOL_ACCESS(ZFPath)->pathForCacheClear();
-        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheAfterClear());
-    }
+    ZF_STATIC_INITIALIZER_INSTANCE(ZFPathForCache)->set(path);
 }
 
 ZF_NAMESPACE_GLOBAL_END

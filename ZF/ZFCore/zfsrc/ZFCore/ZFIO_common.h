@@ -46,7 +46,7 @@ ZFIO_DECLARE(ZFLIB_ZFCore, storageSharedPath)
  *
  * pathData is file's relative path within #ZFPathForCache
  *
- * note, the cache path's content would be removed according to #ZFPathForCacheClear
+ * note, all of the cache path's content would be removed when app started next time
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFIO_DECLARE(ZFLIB_ZFCore, cachePath)

@@ -214,6 +214,16 @@ private:
 
         if(!zfargs.param0()) {return;}
         ZFOutput output = ZFOutputForPathInfo(owner->stateFileFixed());
+        if(!output) {
+            // other process may be writting, retry some times
+            for(zfindex i = 0; i < 2; ++i) {
+                ZFThread::sleep(200);
+                output = ZFOutputForPathInfo(owner->stateFileFixed());
+                if(output) {
+                    break;
+                }
+            }
+        }
         if(!output) {return;}
         zftimet curTime = ZFTime::currentTime();
         zfstring line;
