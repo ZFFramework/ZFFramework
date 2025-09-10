@@ -113,7 +113,7 @@ public:
         zfstring parentPath;
         _ZFP_ZFFileNativeFd(void) {
             zfmemset(&this->fd, 0, sizeof(WIN32_FIND_DATAW));
-            this->hFind = zfnull;
+            this->hFind = INVALID_HANDLE_VALUE;
         }
         WIN32_FIND_DATAW fd;
         HANDLE hFind;
@@ -180,7 +180,7 @@ public:
     }
     virtual void fileFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
-        if(nativeFd->hFind != zfnull) {
+        if(nativeFd->hFind != INVALID_HANDLE_VALUE) {
             FindClose(nativeFd->hFind);
         }
         zfdelete(nativeFd);
@@ -476,7 +476,7 @@ public:
             ZFCoreCriticalShouldNotGoHere();
             return zfnull;
         }
-        if(token.h == NULL) {
+        if(token.h == INVALID_HANDLE_VALUE) {
             return zfnull;
         }
 
