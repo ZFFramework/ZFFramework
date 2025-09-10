@@ -49,7 +49,7 @@ public:
             if(this->_pathForStorage.isEmpty()) {
                 this->_pathForStorage = this->pathForModule();
             }
-            this->_pathForStorage += "/zfstorage";
+            this->_pathForStorage += "/.zfstorage";
         }
         return this->_pathForStorage;
     }
@@ -62,7 +62,7 @@ public:
             ZFPathFormatT(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
             if(this->_pathForStorageShared.isEmpty()) {
                 this->_pathForStorageShared = this->pathForModule();
-                this->_pathForStorageShared += "/zfstorage";
+                this->_pathForStorageShared += "/zfshared";
             }
         }
         return this->_pathForStorageShared;

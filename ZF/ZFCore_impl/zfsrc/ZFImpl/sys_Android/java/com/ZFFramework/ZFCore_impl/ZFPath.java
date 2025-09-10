@@ -19,7 +19,7 @@ public final class ZFPath {
         return ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/.zfsetting";
     }
     public static Object native_pathForStorage() {
-        return ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/zfstorage";
+        return ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/.zfstorage";
     }
     public static Object native_pathForStorageShared() {
         String ret = null;
@@ -27,7 +27,7 @@ public final class ZFPath {
             ret = Environment.getExternalStorageDirectory().getAbsolutePath();
         }
         else {
-            ret = ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/zfstorageshared";
+            ret = ZFMainEntry.appContext().getFilesDir().getAbsolutePath() + "/zfshared";
         }
         return ret;
     }

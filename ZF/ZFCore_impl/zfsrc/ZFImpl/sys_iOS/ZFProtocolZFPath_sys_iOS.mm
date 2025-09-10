@@ -42,7 +42,7 @@ public:
     virtual const zfstring &pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             this->_pathForStorage = this->nativeDocumentPath();
-            this->_pathForStorage += "/zfstorage";
+            this->_pathForStorage += "/.zfstorage";
         }
         return this->_pathForStorage;
     }

@@ -89,7 +89,7 @@ public:
     virtual const zfstring &pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             this->_pathForStorage = this->pathForModule();
-            this->_pathForStorage += "/zfstorage";
+            this->_pathForStorage += "/.zfstorage";
         }
         return this->_pathForStorage;
     }
@@ -100,7 +100,7 @@ public:
     virtual const zfstring &pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
             this->_pathForStorageShared = this->pathForModule();
-            this->_pathForStorageShared += "/zfstorageshared";
+            this->_pathForStorageShared += "/zfshared";
         }
         return this->_pathForStorageShared;
     }
