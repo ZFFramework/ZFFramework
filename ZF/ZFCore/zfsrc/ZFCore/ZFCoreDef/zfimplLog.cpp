@@ -78,6 +78,7 @@ _ZFP_zfimplTimeStr _ZFP_zfimplTime(void) {
     #endif
 
     _ZFP_zfimplTimeStr ret;
+    ret.buf[0] = '\0';
     struct tm *tm = gmtime(&sec);
     if(tm == NULL) {
         return ret;

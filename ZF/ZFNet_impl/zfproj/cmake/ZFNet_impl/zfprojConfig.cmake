@@ -12,6 +12,9 @@ endfunction()
 
 function(zfprojConfigAfter_ZFNet_impl projName)
     set_target_properties(${projName} PROPERTIES CXX_STANDARD 11)
+    if(MSVC)
+        target_compile_options(${projName} PRIVATE /Zc:__cplusplus)
+    endif()
 
     find_package(OpenSSL MODULE)
     if(OPENSSL_FOUND)
