@@ -66,7 +66,7 @@ protected:
             ZFMP_IN(const zfstring &, url)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride

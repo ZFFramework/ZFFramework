@@ -237,7 +237,7 @@ protected:
             ZFMP_IN(ZFAnimation *, impl)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride

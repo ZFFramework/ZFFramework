@@ -16,6 +16,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFLIB_ZFCore ZFTaskQueue : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFTaskQueue, ZFTask)
 
+public:
+    /**
+     * @brief called when child task started
+     *
+     * sender is the owner task queue,
+     * param0 is the child task
+     */
+    ZFEVENT(ChildOnStart)
+    /**
+     * @brief called when child task stopped
+     *
+     * sender is the owner task queue,
+     * param0 is the child task
+     */
+    ZFEVENT(ChildOnStop)
+
+public:
     /** @brief add child */
     ZFMETHOD_DECLARE_1(void, child
             , ZFMP_IN(ZFTask *, child)
@@ -47,7 +64,14 @@ public:
     /** @brief child array */
     ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFArray>, childArray, zfobj<ZFArray>())
 
-public:
+protected:
+    /** @brief see #E_ChildOnStart */
+    virtual inline void childOnStart(ZF_IN ZFTask *child) {
+    }
+    /** @brief see #E_ChildOnStop */
+    virtual inline void childOnStop(ZF_IN ZFTask *child) {
+    }
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride

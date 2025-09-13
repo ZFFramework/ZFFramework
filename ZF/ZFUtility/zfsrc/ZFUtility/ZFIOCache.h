@@ -112,7 +112,7 @@ protected:
             , ZFMP_IN_OPT(const ZFListener &, loadImpl, zfnull)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride

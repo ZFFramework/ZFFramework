@@ -5,6 +5,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFTaskQueue)
 
+ZFEVENT_REGISTER(ZFTaskQueue, ChildOnStart)
+ZFEVENT_REGISTER(ZFTaskQueue, ChildOnStop)
+
 ZFMETHOD_DEFINE_1(ZFTaskQueue, void, child
         , ZFMP_IN(ZFTask *, child)
         ) {
@@ -49,30 +52,6 @@ ZFMETHOD_DEFINE_0(ZFTaskQueue, void, childRemoveAll) {
     this->childArray()->removeAll();
 }
 
-static void _ZFP_ZFTaskQueue_startNext(
-        ZF_IN ZFTaskQueue *owner
-        ) {
-    ZFLISTENER_1(childOnStop
-            , zfweakT<ZFTaskQueue>, owner
-            ) {
-        ZFTask *child = zfargs.sender();
-        if(!child->canceled()) {
-            ZFArray *childQueue = owner->objectTag("_ZFP_ZFTaskQueueImpl");
-            if(childQueue->getFirst() == child) {
-                childQueue->removeFirst();
-            }
-            if(childQueue->isEmpty()) {
-                owner->stop(v_ZFResultType::e_Success);
-            }
-            else {
-                _ZFP_ZFTaskQueue_startNext(owner);
-            }
-        }
-    } ZFLISTENER_END()
-    ZFArray *childQueue = owner->objectTag("_ZFP_ZFTaskQueueImpl");
-    zfautoT<ZFTask> child = childQueue->getFirst();
-    child->start(childOnStop);
-}
 void ZFTaskQueue::taskOnStart(void) {
     zfsuper::taskOnStart();
     if(this->childArray()->isEmpty()) {
@@ -82,7 +61,44 @@ void ZFTaskQueue::taskOnStart(void) {
     zfobj<ZFArray> childQueue;
     childQueue->addFrom(this->childArray());
     this->objectTag("_ZFP_ZFTaskQueueImpl", childQueue);
-    _ZFP_ZFTaskQueue_startNext(this);
+
+    zfclassNotPOD _ZFP_startNext {
+    public:
+        static void a(
+                ZF_IN ZFTaskQueue *owner
+                , ZF_IN const zfautoT<ZFArray> &childQueue
+                ) {
+            ZFLISTENER_2(childOnStop
+                    , zfweakT<ZFTaskQueue>, owner
+                    , zfautoT<ZFArray>, childQueue
+                    ) {
+                ZFTask *child = zfargs.sender();
+                owner->childOnStop(child);
+                owner->observerNotify(zfself::E_ChildOnStop(), child);
+                if(!child->canceled() && owner->started()) {
+                    if(childQueue->getFirst() == child) {
+                        childQueue->removeFirst();
+                    }
+                    if(child->success()) {
+                        if(childQueue->isEmpty()) {
+                            owner->stop(v_ZFResultType::e_Success);
+                        }
+                        else {
+                            _ZFP_startNext::a(owner, childQueue);
+                        }
+                    }
+                    else {
+                        owner->stop(v_ZFResultType::e_Fail);
+                    }
+                }
+            } ZFLISTENER_END()
+            zfautoT<ZFTask> child = childQueue->getFirst();
+            child->start(childOnStop);
+            owner->childOnStart(child);
+            owner->observerNotify(zfself::E_ChildOnStart(), child);
+        }
+    };
+    _ZFP_startNext::a(this, childQueue);
 }
 void ZFTaskQueue::taskOnStop(void) {
     zfautoT<ZFArray> childQueue = this->objectTagRemoveAndGet("_ZFP_ZFTaskQueueImpl");

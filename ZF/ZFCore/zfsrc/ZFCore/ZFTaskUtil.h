@@ -30,7 +30,7 @@ protected:
             ZFMP_IN(zftimet, duration)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
@@ -62,7 +62,7 @@ protected:
             ZFMP_IN(const ZFListener &, impl)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
@@ -94,7 +94,7 @@ protected:
             ZFMP_IN(const ZFListener &, impl)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
@@ -126,7 +126,7 @@ protected:
             ZFMP_IN(const ZFListener &, impl)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
@@ -161,7 +161,7 @@ protected:
             , ZFMP_IN(const ZFInput &, input)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride

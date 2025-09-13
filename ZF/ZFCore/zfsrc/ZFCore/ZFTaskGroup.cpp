@@ -6,6 +6,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFOBJECT_REGISTER(ZFTaskGroup)
 
+ZFEVENT_REGISTER(ZFTaskGroup, ChildOnStart)
+ZFEVENT_REGISTER(ZFTaskGroup, ChildOnStop)
+
 ZFMETHOD_DEFINE_1(ZFTaskGroup, void, child
         , ZFMP_IN(ZFTask *, child)
         ) {
@@ -56,31 +59,79 @@ void ZFTaskGroup::taskOnStart(void) {
         this->stop(v_ZFResultType::e_Success);
         return;
     }
-    zfobj<ZFArray> childRunning;
-    for(zfindex i = this->childArray()->count() - 1; i != zfindexMax(); --i) {
-        childRunning->add(this->childArray()->get(i));
+    zfindex concurrentCount = this->concurrentCount();
+    if(concurrentCount == 0) {
+        concurrentCount = zfindexMax();
     }
-    this->objectTag("_ZFP_ZFTaskGroupImpl", childRunning);
-    zfweakT<zfself> owner = this;
-    ZFLISTENER_2(childOnStop
-            , zfweakT<zfself>, owner
-            , zfautoT<ZFArray>, childRunning
-            ) {
-        ZFTask *child = zfargs.sender();
-        if(!child->canceled()) {
-            childRunning->removeElement(child);
-            if(childRunning->isEmpty()) {
-                owner->stop(v_ZFResultType::e_Success);
-            }
+    zfobj<ZFArray> childRunning;
+    zfobj<ZFArray> childQueued;
+    if(concurrentCount == zfindexMax()) {
+        childRunning->addFrom(this->childArray());
+    }
+    else {
+        for(zfindex i = 0; i < concurrentCount; ++i) {
+            childRunning->add(this->childAt(i));
         }
-    } ZFLISTENER_END()
-    for(zfindex i = childRunning->count() - 1; i != zfindexMax(); --i) {
+    }
+    this->objectTag("_ZFP_ZFTaskGroup_running", childRunning);
+    this->objectTag("_ZFP_ZFTaskGroup_queued", childQueued);
+
+    zfclassNotPOD _ZFP_childOnStop {
+    public:
+        static ZFListener a(
+                ZF_IN const zfweakT<ZFTaskGroup> &owner
+                , ZF_IN zfindex concurrentCount
+                , ZF_IN const zfautoT<ZFArray> &childRunning
+                , ZF_IN const zfautoT<ZFArray> &childQueued
+                ) {
+            ZFLISTENER_4(childOnStop
+                    , zfweakT<ZFTaskGroup>, owner
+                    , zfindex, concurrentCount
+                    , zfautoT<ZFArray>, childRunning
+                    , zfautoT<ZFArray>, childQueued
+                    ) {
+                ZFTask *child = zfargs.sender();
+                owner->childOnStop(child);
+                owner->observerNotify(zfself::E_ChildOnStop(), child);
+                if(!child->canceled() && owner->started()) {
+                    childRunning->removeElement(child);
+                    if(child->success()) {
+                        while(zftrue
+                                && !childQueued->isEmpty()
+                                && childRunning->count() <concurrentCount
+                                ) {
+                            zfautoT<ZFTask> child = childQueued->removeFirstAndGet();
+                            childRunning->add(child);
+                            child->start(_ZFP_childOnStop::a(owner, concurrentCount, childRunning, childQueued));
+                            owner->childOnStart(child);
+                            owner->observerNotify(zfself::E_ChildOnStart(), child);
+                        }
+                        if(childRunning->isEmpty()
+                                && owner
+                                && childRunning == owner->objectTag("_ZFP_ZFTaskGroup_running")
+                                ) {
+                            owner->stop(v_ZFResultType::e_Success);
+                        }
+                    }
+                    else {
+                        owner->stop(v_ZFResultType::e_Fail);
+                    }
+                }
+            } ZFLISTENER_END()
+            return childOnStop;
+        }
+    };
+    ZFListener childOnStop = _ZFP_childOnStop::a(this, concurrentCount, childRunning, childQueued);
+    for(zfindex i = 0; i < childRunning->count(); ++i) {
         ZFTask *child = childRunning->get(i);
         child->start(childOnStop);
+        this->childOnStart(child);
+        this->observerNotify(zfself::E_ChildOnStart(), child);
     }
 }
 void ZFTaskGroup::taskOnStop(void) {
-    zfautoT<ZFArray> childRunning = this->objectTagRemoveAndGet("_ZFP_ZFTaskGroupImpl");
+    zfautoT<ZFArray> childRunning = this->objectTagRemoveAndGet("_ZFP_ZFTaskGroup_running");
+    zfautoT<ZFArray> childQueued = this->objectTagRemoveAndGet("_ZFP_ZFTaskGroup_queued");
     if(childRunning != zfnull) {
         for(zfindex i = 0; i < childRunning->count(); ++i) {
             ZFTask *child = childRunning->get(i);

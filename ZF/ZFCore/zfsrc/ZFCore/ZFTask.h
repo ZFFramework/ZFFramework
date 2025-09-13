@@ -22,7 +22,7 @@ public:
      */
     ZFEVENT(TaskOnStart)
     /**
-     * @brief called when task started
+     * @brief called when task stopped
      */
     ZFEVENT(TaskOnStop)
 
@@ -98,7 +98,7 @@ public:
      */
     ZFPROPERTY_ASSIGN(zfstring, errorHint)
 
-public:
+protected:
     /** @brief called to start task */
     virtual inline void taskOnStart(void) {
     }

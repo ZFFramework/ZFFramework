@@ -16,6 +16,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFLIB_ZFCore ZFTaskGroup : zfextend ZFTask {
     ZFOBJECT_DECLARE(ZFTaskGroup, ZFTask)
 
+public:
+    /**
+     * @brief called when child task started
+     *
+     * sender is the owner task queue,
+     * param0 is the child task
+     */
+    ZFEVENT(ChildOnStart)
+    /**
+     * @brief called when child task stopped
+     *
+     * sender is the owner task queue,
+     * param0 is the child task
+     */
+    ZFEVENT(ChildOnStop)
+
+public:
     /** @brief add child */
     ZFMETHOD_DECLARE_1(void, child
             , ZFMP_IN(ZFTask *, child)
@@ -47,7 +64,22 @@ public:
     /** @brief child array */
     ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFArray>, childArray, zfobj<ZFArray>())
 
-public:
+    /**
+     * @brief max child task to run at the same time, 8 by default
+     *
+     * 0 or zfindexMax means no limit,
+     * 1 act like #ZFTaskQueue
+     */
+    ZFPROPERTY_ASSIGN(zfindex, concurrentCount, 8)
+
+protected:
+    /** @brief see #E_ChildOnStart */
+    virtual inline void childOnStart(ZF_IN ZFTask *child) {
+    }
+    /** @brief see #E_ChildOnStop */
+    virtual inline void childOnStop(ZF_IN ZFTask *child) {
+    }
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride

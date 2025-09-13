@@ -22,21 +22,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           ...
  *
  *           // notifyFinish must be called exactly once
- *           o->notifyFinish(src, pwd);
+ *           o->notifyFinish(srcList, pwd);
  *       }, "my_module_name");
  * @endcode
  *
  * how it works:
  * -  preparing the package
- *   -# package should be built by #ZFAppRes::build
+ *   -  package should be built by #ZFAppRes::build
  * -  using the package
- *   -# updating the #ZFAppRes::packageSrc and #ZFAppRes::packagePwd,
- *     by supplying #ZFAppRes::packageGetter,
- *     usually this should be done by requesting your own server API
- *   -# call #ZFAppRes::start to start the resource module,
+ *   -  call #ZFAppRes::start to start the resource module,
  *     which would use local cache if available,
- *     and use remote one for next app launch,
- *     the package would be used as #ZFResExtPathAdd
+ *     and use remote one for next app launch
+ *   -  within the packageGetter,
+ *     usually you should request your own server's API
+ *     to obtain package download url,
+ *     which is a list containing all download mirrors,
+ *     all of the download mirrors would be tried one by one,
+ *     until one download successfully
+ *   -  finally, the package would be used as #ZFResExtPathAdd
  */
 zfclass ZFLIB_ZFAppUtil ZFAppRes : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFAppRes, ZFObject)
@@ -66,7 +69,7 @@ public:
 public:
     /** @brief see #ZFAppRes */
     ZFMETHOD_DECLARE_2(void, notifyFinish
-            , ZFMP_IN(const ZFPathInfo &, packageSrc)
+            , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageSrc)
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
             )
 

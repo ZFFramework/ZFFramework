@@ -44,7 +44,7 @@ protected:
             ZFMP_IN(const ZFInput &, input)
             )
 
-public:
+protected:
     zfoverride
     virtual void taskOnStart(void);
     zfoverride
