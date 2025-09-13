@@ -11,9 +11,10 @@ function(zfprojConfigBefore_ZFNet_impl projName ZF_SRC_FILES)
 endfunction()
 
 function(zfprojConfigAfter_ZFNet_impl projName)
+    set_target_properties(${projName} PROPERTIES CXX_STANDARD 11)
+
     find_package(OpenSSL MODULE)
     if(OPENSSL_FOUND)
-        set_target_properties(${projName} PROPERTIES CXX_STANDARD 11)
         target_compile_options(${projName} PUBLIC -DZF_ENV_HTTPS=1)
         target_link_libraries(${projName} ${OPENSSL_LIBRARIES})
     endif()
