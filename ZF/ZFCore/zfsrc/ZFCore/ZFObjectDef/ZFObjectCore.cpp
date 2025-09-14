@@ -491,7 +491,7 @@ void ZFObject::on(
     }
     ZFCoreArray<const ZFClass *> allParent = this->classData()->parentGetAll();
     for(zfindex i = 0; i < allParent.count(); ++i) {
-        eventId = ZFIdMapIdForName(zfstr("%s.E_%s", this->classData()->classNameFull(), eventName));
+        eventId = ZFIdMapIdForName(zfstr("%s.E_%s", allParent[i]->classNameFull(), eventName));
         if(eventId != zfidentityInvalid()) {
             return this->observerAdd(eventId, observer, observerLevel);
         }
