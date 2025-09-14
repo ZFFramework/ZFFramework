@@ -236,8 +236,8 @@ zfbool ZFIOImpl::ioRemoveDefault(
     return zffalse;
 }
 zfbool ZFIOImpl::ioMoveDefault(
-        ZF_IN const zfstring &pathDataFrom
-        , ZF_IN const zfstring &pathDataTo
+        ZF_IN const zfstring &pathDataTo
+        , ZF_IN const zfstring &pathDataFrom
         , ZF_IN_OPT zfbool isForce /* = zftrue */
         ) {
     return zffalse;
@@ -391,8 +391,8 @@ zfbool ZFIOImpl::ioRemoveForChained(
         && ZFIORemove(refPathInfo, isRecursive, isForce);
 }
 zfbool ZFIOImpl::ioMoveForChained(
-        ZF_IN const zfstring &pathDataFrom
-        , ZF_IN const zfstring &pathDataTo
+        ZF_IN const zfstring &pathDataTo
+        , ZF_IN const zfstring &pathDataFrom
         , ZF_IN_OPT zfbool isForce /* = zftrue */
         ) {
     ZFPathInfo refPathInfoFrom;
@@ -402,7 +402,7 @@ zfbool ZFIOImpl::ioMoveForChained(
     return ZFPathInfoChainDecode(refPathInfoFrom, selfPathDataFrom, pathDataFrom)
         && ZFPathInfoChainDecode(refPathInfoTo, selfPathDataTo, pathDataTo)
         && refPathInfoFrom.pathType() == refPathInfoTo.pathType()
-        && ZFIOMove(refPathInfoFrom, refPathInfoTo.pathData(), isForce);
+        && ZFIOMove(refPathInfoTo.pathData(), refPathInfoFrom, isForce);
 }
 zfbool ZFIOImpl::ioFindFirstForChained(
         ZF_IN_OUT ZFIOFindData &fd
@@ -465,8 +465,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFIOImpl, zfbool, ioRemove
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFIOImpl, zfbool, ioMove
-        , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFIOImpl, zfbool, ioFindFirst
@@ -515,8 +515,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioRemoveDefa
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioMoveDefault
-        , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioFindFirstDefault
@@ -589,8 +589,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioRemoveForC
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioMoveForChained
-        , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioFindFirstForChained

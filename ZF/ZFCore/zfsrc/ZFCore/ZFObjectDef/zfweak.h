@@ -89,7 +89,7 @@ public:
         return this->toObject();
     }
     inline operator zfbool (void) const {
-        return (zfbool)_ZFP_obj;
+        return this->toObject() != zfnull;
     }
     inline operator ZFObject * (void) const {
         return this->toObject();

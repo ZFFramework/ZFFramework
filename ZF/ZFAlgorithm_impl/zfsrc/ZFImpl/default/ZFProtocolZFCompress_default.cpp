@@ -337,7 +337,7 @@ private:
 
         if(cacheIO) {
             cacheIO = zfnull;
-            ret = ret && ZFIOMove(cachePath, _refPathInfo.pathData());
+            ret = ret && ZFIOMove(_refPathInfo.pathData(), cachePath);
         }
 
         for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ++itMod) {
@@ -493,8 +493,8 @@ public:
     }
     zfoverride
     virtual zfbool ioMove(
-            ZF_IN const zfstring &itemPathFrom
-            , ZF_IN const zfstring &itemPathTo
+            ZF_IN const zfstring &itemPathTo
+            , ZF_IN const zfstring &itemPathFrom
             ) {
         if(!itemPathFrom || !itemPathTo || itemPathFrom == itemPathTo) {
             return zffalse;

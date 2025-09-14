@@ -421,7 +421,11 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             end
         end
         if not filtered then
-            ZFIOCopy(ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_SRC .. relPath), ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_DST .. relPath), zffalse)
+            ZFIOCopy(
+                ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_DST .. relPath)
+                , ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_SRC .. relPath)
+                , zffalse
+            )
         end
     end)
 
@@ -451,7 +455,11 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             end
         end
         if not filtered then
-            ZFIOCopy(ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_FORMATED .. relPath), ZFPathInfo(localPathInfo:pathType(), DST_PATH .. relPath), zffalse)
+            ZFIOCopy(
+                ZFPathInfo(localPathInfo:pathType(), DST_PATH .. relPath)
+                , ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_FORMATED .. relPath)
+                , zffalse
+            )
         end
     end)
 

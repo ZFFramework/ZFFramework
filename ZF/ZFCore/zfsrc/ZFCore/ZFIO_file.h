@@ -95,8 +95,8 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileRemove
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileMove
-        , ZFMP_IN(const zfstring &, srcPath)
         , ZFMP_IN(const zfstring &, dstPath)
+        , ZFMP_IN(const zfstring &, srcPath)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 
@@ -270,10 +270,10 @@ public:
             ) {return ZFFileRemove(pathConvert(pathData), isRecursive, isForce);}
     zfoverride
     virtual zfbool ioMove(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
-            ) {return ZFFileMove(pathConvert(pathDataFrom), pathConvert(pathDataTo), isForce);}
+            ) {return ZFFileMove(pathConvert(pathDataTo), pathConvert(pathDataFrom), isForce);}
     zfoverride
     virtual zfbool ioFindFirst(
             ZF_IN_OUT ZFIOFindData &fd

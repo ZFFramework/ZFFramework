@@ -93,7 +93,7 @@ void ZFTaskGroup::taskOnStart(void) {
                 ZFTask *child = zfargs.sender();
                 owner->childOnStop(child);
                 owner->observerNotify(zfself::E_ChildOnStop(), child);
-                if(!child->canceled() && owner->started()) {
+                if(!child->canceled() && owner && owner->started()) {
                     childRunning->removeElement(child);
                     if(child->success()) {
                         while(zftrue

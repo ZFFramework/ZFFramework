@@ -44,8 +44,8 @@ public:
 private:
     zfbool cp_or_mv(
             ZF_IN zfbool isCopy
-            , ZF_IN const zfstring &srcPath
             , ZF_IN const zfstring &dstPath
+            , ZF_IN const zfstring &srcPath
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
             ) {
@@ -93,11 +93,11 @@ private:
     }
 public:
     virtual zfbool fileMove(
-            ZF_IN const zfstring &srcPath
-            , ZF_IN const zfstring &dstPath
+            ZF_IN const zfstring &dstPath
+            , ZF_IN const zfstring &srcPath
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
-        return this->cp_or_mv(zffalse, srcPath, dstPath, zftrue, isForce);
+        return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
     }
     virtual zfbool fileRemove(
             ZF_IN const zfstring &path

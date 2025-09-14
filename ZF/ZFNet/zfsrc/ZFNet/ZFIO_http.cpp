@@ -332,8 +332,8 @@ public:
     }
     zfoverride
     virtual zfbool ioMove(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
         return zffalse;

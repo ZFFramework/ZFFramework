@@ -364,8 +364,8 @@ public:
      * convert to child pathData from specified pathData
      */
     virtual zfbool ioMove(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
     /**
@@ -436,8 +436,8 @@ public:
             );
     /** @brief see #ZFIOImplForPathType */
     static zfbool ioMoveDefault(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             );
     /** @brief see #ZFIOImplForPathType */
@@ -516,8 +516,8 @@ public:
             );
     /** @brief see #ZFIOImplForPathType */
     static zfbool ioMoveForChained(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             );
     /** @brief see #ZFIOImplForPathType */

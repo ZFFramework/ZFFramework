@@ -167,6 +167,7 @@ public:
             ZFCoreMutexUnlock();
             return;
         }
+        taskData->callback = zfnull;
         ZFCoreMutexUnlock();
 
         taskData->finishCallback.execute(ZFArgs()

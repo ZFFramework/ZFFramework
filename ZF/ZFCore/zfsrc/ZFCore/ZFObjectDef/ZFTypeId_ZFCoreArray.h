@@ -232,75 +232,23 @@ public:
             ZF_IN const ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
-            ) {
-        if(this->zfv == zfnull) {
-            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-                "not available for plain array type");
-            return zffalse;
-        }
-        return _ZFP_ZFCoreArrayFromDataT(
-                *this->elementType
-                , *(this->zfv)
-                , serializableData
-                , outErrorHint
-                , outErrorPos
-                );
-    }
+            );
     zfoverride
     virtual zfbool zfvToData(
             ZF_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-            ) {
-        if(this->zfv == zfnull) {
-            ZFSerializableUtilErrorOccurred(outErrorHint,
-                "not available for plain array type");
-            return zffalse;
-        }
-        return _ZFP_ZFCoreArrayToDataT(
-                *this->elementType
-                , serializableData
-                , *(this->zfv)
-                , outErrorHint
-                );
-    }
+            );
     zfoverride
     virtual zfbool zfvFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
             , ZF_OUT_OPT zfstring *errorHint = zfnull
-            ) {
-        if(this->zfv == zfnull) {
-            if(errorHint) {
-                *errorHint += "not available for plain array type";
-            }
-            return zffalse;
-        }
-        return _ZFP_ZFCoreArrayFromStringT(
-                *this->elementType
-                , *(this->zfv)
-                , src
-                , srcLen
-                , errorHint
-                );
-    }
+            );
     zfoverride
     virtual zfbool zfvToString(
             ZF_IN_OUT zfstring &s
             , ZF_OUT_OPT zfstring *errorHint = zfnull
-            ) {
-        if(this->zfv == zfnull) {
-            if(errorHint) {
-                *errorHint += "not available for plain array type";
-            }
-            return zffalse;
-        }
-        return _ZFP_ZFCoreArrayToStringT(
-                *this->elementType
-                , s
-                , *(this->zfv)
-                , errorHint
-                );
-    }
+            );
 
 public:
     /** @cond ZFPrivateDoc */

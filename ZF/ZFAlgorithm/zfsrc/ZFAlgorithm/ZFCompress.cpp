@@ -67,8 +67,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioRemove
         , ZFMP_IN(const zfstring &, itemPath)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, ioMove
-        , ZFMP_IN(const zfstring &, itemPathFrom)
         , ZFMP_IN(const zfstring &, itemPathTo)
+        , ZFMP_IN(const zfstring &, itemPathFrom)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, ioFindFirst
         , ZFMP_IN_OUT(ZFIOFindData &, fd)

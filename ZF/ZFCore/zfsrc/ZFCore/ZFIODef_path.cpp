@@ -139,6 +139,17 @@ public:
         ZFPROTOCOL_ACCESS(ZFPath)->pathForCache(path);
         _update(path);
     }
+    void cleanup(void) {
+        if(_rootPath) {
+            if(_lockToken) {
+                ZFFileClose(_lockToken);
+                _lockToken = zfnull;
+            }
+            _rootPathCleanup(_rootPath);
+            _rootPath = zfnull;
+            _realPath = zfnull;
+        }
+    }
 private:
     zfstring _rootPath;
     zfstring _realPath; // _rootPath/randName
@@ -181,6 +192,13 @@ private:
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFPathForCacheOnUpdate(), zfobj<v_zfstring>(old));
     }
 ZF_STATIC_INITIALIZER_END(ZFPathForCache)
+
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPathForCacheAutoCleanup, ZFLevelZFFrameworkPostStatic) {
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFPathForCacheAutoCleanup) {
+    ZF_STATIC_INITIALIZER_INSTANCE(ZFPathForCache)->cleanup();
+}
+ZF_GLOBAL_INITIALIZER_END(ZFPathForCacheAutoCleanup)
 
 ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForCache) {
     return ZF_STATIC_INITIALIZER_INSTANCE(ZFPathForCache)->get();

@@ -345,8 +345,8 @@ public:
     }
     zfoverride
     virtual zfbool ioMove(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
         ZFPathInfo refPathInfoFrom;
@@ -367,7 +367,7 @@ public:
         if(!token) {
             return zffalse;
         }
-        return token->ioMove(selfPathDataFrom, selfPathDataTo);
+        return token->ioMove(selfPathDataTo, selfPathDataFrom);
     }
     zfoverride
     virtual zfbool ioFindFirst(

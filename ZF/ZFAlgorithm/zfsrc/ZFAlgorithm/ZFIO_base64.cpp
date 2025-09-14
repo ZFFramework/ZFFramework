@@ -249,8 +249,8 @@ public:
     }
     zfoverride
     virtual zfbool ioMove(
-            ZF_IN const zfstring &pathDataFrom
-            , ZF_IN const zfstring &pathDataTo
+            ZF_IN const zfstring &pathDataTo
+            , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
         ZFPathInfo refPathInfoFrom;
@@ -258,7 +258,7 @@ public:
         return ZFPathInfoFromStringT(refPathInfoFrom, pathDataFrom)
             && ZFPathInfoFromStringT(refPathInfoTo, pathDataTo)
             && refPathInfoFrom.pathType() == refPathInfoTo.pathType()
-            && ZFIOMove(refPathInfoFrom, refPathInfoTo.pathData(), isForce);
+            && ZFIOMove(refPathInfoTo.pathData(), refPathInfoFrom, isForce);
     }
     zfoverride
     virtual zfbool ioFindFirst(

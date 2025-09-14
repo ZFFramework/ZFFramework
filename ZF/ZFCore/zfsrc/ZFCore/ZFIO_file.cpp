@@ -137,14 +137,14 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileRemove
     return ZFPROTOCOL_ACCESS(ZFFile)->fileRemove(path, isRecursive, isForce);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileMove
-        , ZFMP_IN(const zfstring &, srcPath)
         , ZFMP_IN(const zfstring &, dstPath)
+        , ZFMP_IN(const zfstring &, srcPath)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         ) {
     if(srcPath == zfnull || dstPath == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(srcPath, dstPath, isForce);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(dstPath, srcPath, isForce);
 }
 
 #define _ZFP_ZFIOFindType_file "ZFFileFindFirst"

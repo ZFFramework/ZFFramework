@@ -34,6 +34,8 @@ public:
             }
             this->blockTask.removeAll();
         }
+        this->output = zfnull;
+        this->input = zfnull;
     }
 };
 ZFOBJECT_REGISTER(_ZFP_I_zfasyncIOTask)

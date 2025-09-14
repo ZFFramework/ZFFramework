@@ -72,13 +72,13 @@ void ZFTaskQueue::taskOnStart(void) {
                     , zfweakT<ZFTaskQueue>, owner
                     , zfautoT<ZFArray>, childQueue
                     ) {
-                ZFTask *child = zfargs.sender();
+                zfautoT<ZFTask> child = zfargs.sender();
+                if(childQueue->getFirst() == child) {
+                    childQueue->removeFirst();
+                }
                 owner->childOnStop(child);
                 owner->observerNotify(zfself::E_ChildOnStop(), child);
-                if(!child->canceled() && owner->started()) {
-                    if(childQueue->getFirst() == child) {
-                        childQueue->removeFirst();
-                    }
+                if(!child->canceled() && owner && owner->started()) {
                     if(child->success()) {
                         if(childQueue->isEmpty()) {
                             owner->stop(v_ZFResultType::e_Success);

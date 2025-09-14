@@ -591,10 +591,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFIOForEachDir
 
 // ============================================================
 static zfbool _ZFP_ZFIOCopy_copyFile(
-        ZF_IN const ZFPathInfo &srcPath
+        ZF_IN ZFIOImpl *dstImpl
         , ZF_IN const ZFPathInfo &dstPath
         , ZF_IN ZFIOImpl *srcImpl
-        , ZF_IN ZFIOImpl *dstImpl
+        , ZF_IN const ZFPathInfo &srcPath
         , ZF_IN zfbool isForce
         ) {
     if(isForce) {
@@ -621,10 +621,10 @@ static zfbool _ZFP_ZFIOCopy_copyFile(
 }
 
 static zfbool _ZFP_ZFIOCopy_copyDir(
-        ZF_IN const ZFPathInfo &srcPath
+        ZF_IN ZFIOImpl *dstImpl
         , ZF_IN const ZFPathInfo &dstPath
         , ZF_IN ZFIOImpl *srcImpl
-        , ZF_IN ZFIOImpl *dstImpl
+        , ZF_IN const ZFPathInfo &srcPath
         , ZF_IN zfbool isForce
         ) {
     ZFCoreArray<zfstring> stacksDirSrc;
@@ -660,7 +660,7 @@ static zfbool _ZFP_ZFIOCopy_copyDir(
                     stacksDirDst.add(dstTmp.pathData());
                 }
                 else {
-                    if(!_ZFP_ZFIOCopy_copyFile(srcTmp, dstTmp, srcImpl, dstImpl, isForce)) {
+                    if(!_ZFP_ZFIOCopy_copyFile(dstImpl, dstTmp, srcImpl, srcTmp, isForce)) {
                         srcImpl->ioFindClose(fd);
                         return zffalse;
                     }
@@ -674,8 +674,8 @@ static zfbool _ZFP_ZFIOCopy_copyDir(
 }
 
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFIOCopy
-        , ZFMP_IN(const ZFPathInfo &, srcPath)
         , ZFMP_IN(const ZFPathInfo &, dstPath)
+        , ZFMP_IN(const ZFPathInfo &, srcPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         ) {
@@ -718,10 +718,10 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFIOCopy
     }
 
     if(srcIsDir) {
-        return _ZFP_ZFIOCopy_copyDir(srcPath, dstPath, srcImpl, dstImpl, isForce);
+        return _ZFP_ZFIOCopy_copyDir(dstImpl, dstPath, srcImpl, srcPath, isForce);
     }
     else {
-        return _ZFP_ZFIOCopy_copyFile(srcPath, dstPath, srcImpl, dstImpl, isForce);
+        return _ZFP_ZFIOCopy_copyFile(dstImpl, dstPath, srcImpl, srcPath, isForce);
     }
 }
 

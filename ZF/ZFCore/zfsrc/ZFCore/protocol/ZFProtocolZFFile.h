@@ -35,8 +35,8 @@ public:
      * @brief see #ZFFileMove
      */
     virtual zfbool fileMove(
-            ZF_IN const zfstring &srcPath
-            , ZF_IN const zfstring &dstPath
+            ZF_IN const zfstring &dstPath
+            , ZF_IN const zfstring &srcPath
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
     /**

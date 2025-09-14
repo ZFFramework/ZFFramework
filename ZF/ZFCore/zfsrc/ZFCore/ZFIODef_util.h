@@ -218,8 +218,8 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFIOForEachDir
  * @note always use read/write to copy files
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFIOCopy
-        , ZFMP_IN(const ZFPathInfo &, srcPath)
         , ZFMP_IN(const ZFPathInfo &, dstPath)
+        , ZFMP_IN(const ZFPathInfo &, srcPath)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )

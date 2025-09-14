@@ -48,8 +48,8 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFIORemove
         )
 /** @brief see #ZFIOImplForPathType */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFIOMove
-        , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
         , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 

@@ -65,8 +65,8 @@ public:
     virtual zfbool ioRemove(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
     virtual zfbool ioMove(
-            ZF_IN const zfstring &itemPathFrom
-            , ZF_IN const zfstring &itemPathTo
+            ZF_IN const zfstring &itemPathTo
+            , ZF_IN const zfstring &itemPathFrom
             ) zfpurevirtual;
 
     /** @brief see #ZFCompressOpen */

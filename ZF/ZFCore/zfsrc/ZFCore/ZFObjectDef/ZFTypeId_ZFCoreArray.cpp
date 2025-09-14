@@ -3,6 +3,92 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfbool v_ZFCoreArray::zfvFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
+    if(this->zfv == zfnull) {
+        if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), outErrorHint, outErrorPos)) {
+            return zffalse;
+        }
+
+        if(serializableData.childCount() == 0) {
+            return zftrue;
+        }
+        zfstring itemClass = serializableData.childAt(0).itemClass();
+        if(!this->elementTypeInit(itemClass)
+                || this->zfv == zfnull
+                ) {
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData
+                    , "unable to detect array type from item class: %s"
+                    , itemClass
+                    );
+            return zffalse;
+        }
+    }
+    return _ZFP_ZFCoreArrayFromDataT(
+            *this->elementType
+            , *(this->zfv)
+            , serializableData
+            , outErrorHint
+            , outErrorPos
+            );
+}
+zfbool v_ZFCoreArray::zfvToData(
+        ZF_OUT ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
+    if(this->zfv == zfnull) {
+        serializableData.itemClass(ZFTypeId_ZFCoreArray());
+        return zftrue;
+    }
+    return _ZFP_ZFCoreArrayToDataT(
+            *this->elementType
+            , serializableData
+            , *(this->zfv)
+            , outErrorHint
+            );
+}
+zfbool v_ZFCoreArray::zfvFromString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(this->zfv == zfnull) {
+        if(zfstringIsEqual(src, srcLen, "[]", 2)) {
+            return zftrue;
+        }
+        if(errorHint) {
+            *errorHint += "not available for plain array type";
+        }
+        return zffalse;
+    }
+    return _ZFP_ZFCoreArrayFromStringT(
+            *this->elementType
+            , *(this->zfv)
+            , src
+            , srcLen
+            , errorHint
+            );
+}
+zfbool v_ZFCoreArray::zfvToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(this->zfv == zfnull) {
+        s += "[]";
+        return zftrue;
+    }
+    return _ZFP_ZFCoreArrayToStringT(
+            *this->elementType
+            , s
+            , *(this->zfv)
+            , errorHint
+            );
+}
+
+// ============================================================
 zfbool _ZFP_ZFCoreArrayFromStringT(
         ZF_IN const ZFTypeInfo &elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
@@ -149,6 +235,8 @@ zfbool _ZFP_ZFCoreArrayFromDataT(
             elementType.genericAccessFinish(e, eGeneric);
         }
     }
+
+    serializableData.resolveMark();
     return zftrue;
 }
 zfbool _ZFP_ZFCoreArrayToDataT(

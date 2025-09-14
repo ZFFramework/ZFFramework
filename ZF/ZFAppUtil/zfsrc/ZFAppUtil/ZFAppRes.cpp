@@ -25,6 +25,8 @@ ZFMETHOD_DEFINE_3(ZFAppRes, void, build
 }
 
 // ============================================================
+static void _ZFP_ZFAppRes_localStateSave(void);
+
 zfclass _ZFP_I_ZFAppResData : zfextend ZFStyle {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAppResData, ZFStyle)
 public:
@@ -115,13 +117,14 @@ public:
                 return;
             }
             ZFPathInfo localFilePath = owner->_localFilePath(fileIndex->zfv);
-            if(ZFIOMove(localFilePath, owner->_localCachePath(fileIndex->zfv).pathData())) {
+            if(ZFIOMove(localFilePath.pathData(), owner->_localCachePath(fileIndex->zfv))) {
                 zfautoT<ZFIOToken> token = ZFIOOpen(localFilePath, v_ZFIOOpenOption::e_Read);
                 if(token) {
                     zfindex fileSize = token->ioSize();
                     if(fileSize != zfindexMax()) {
                         owner->fileIndex(fileIndex->zfv);
                         owner->fileSize(fileSize);
+                        _ZFP_ZFAppRes_localStateSave();
                     }
                 }
             }
@@ -195,12 +198,13 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFAppResDataHolder) {
                 ++i;
             }
         }
-        _localStateSave();
+        _localStateSave(zftrue);
     }
 }
 private:
     zfautoT<ZFArray> _modules; // [_ZFP_I_ZFAppResData], null when not loaded
     zfbool _modulesChanged;
+    zfautoT<ZFTaskId> _modulesSaveDelayId;
 public:
     void attach(ZF_IN const zfstring &moduleName) {
         _localStateLoad();
@@ -239,6 +243,7 @@ public:
         if(data != zfnull) {
             _modulesChanged = _modulesChanged
                 || data->update(packageSrc, packagePwd);
+            _localStateSave();
             return;
         }
         zfobj<_ZFP_I_ZFAppResData> dataHolder;
@@ -247,6 +252,10 @@ public:
         data->attach();
         data->moduleName(moduleName);
         data->update(packageSrc, packagePwd);
+        _modulesChanged = zftrue;
+        _localStateSave();
+    }
+    void localStateSave(void) {
         _modulesChanged = zftrue;
         _localStateSave();
     }
@@ -265,16 +274,32 @@ private:
             _modules = zfobj<ZFArray>();
         }
     }
-    void _localStateSave(void) {
-        if(_modules == zfnull || !_modulesChanged) {
+    void _localStateSave(ZF_IN_OPT zfbool immediately = zffalse) {
+        if(_modules == zfnull || !_modulesChanged
+                || (_modulesSaveDelayId && !immediately)
+                ) {
             return;
         }
-        zfstring data = ZFObjectToStringOrData(_modules);
-        if(data) {
-            ZFOutputForPathInfo(_localStatePath()).output(data, data.length());
+        if(_modulesSaveDelayId) {
+            _modulesSaveDelayId->stop();
         }
+        zfself *owner = this;
+        ZFLISTENER_1(onSave
+                , zfself *, owner
+                ) {
+            owner->_modulesSaveDelayId = zfnull;
+            owner->_modulesChanged = zffalse;
+            zfstring data = ZFObjectToStringOrData(owner->_modules);
+            if(data) {
+                ZFOutputForPathInfo(owner->_localStatePath()).output(data, data.length());
+            }
+        } ZFLISTENER_END()
+        _modulesSaveDelayId = ZFTimerOnce(2000, onSave);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFAppResDataHolder)
+static void _ZFP_ZFAppRes_localStateSave(void) {
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->localStateSave();
+}
 
 ZFMETHOD_DEFINE_2(ZFAppRes, void, start
         , ZFMP_IN(const ZFListener &, packageGetter)

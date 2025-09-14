@@ -90,16 +90,16 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFIORemove
     }
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFIOMove
-        , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
         , ZFMP_IN(const zfstring &, pathDataTo)
+        , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         ) {
     zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfoFrom.pathType());
     if(ioImpl == zfnull) {
-        return ZFIOImpl::ioMoveDefault(pathInfoFrom.pathData(), pathDataTo, isForce);
+        return ZFIOImpl::ioMoveDefault(pathDataTo, pathInfoFrom.pathData(), isForce);
     }
     else {
-        return ioImpl->ioMove(pathInfoFrom.pathData(), pathDataTo, isForce);
+        return ioImpl->ioMove(pathDataTo, pathInfoFrom.pathData(), isForce);
     }
 }
 ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFIOToken>, ZFIOOpen

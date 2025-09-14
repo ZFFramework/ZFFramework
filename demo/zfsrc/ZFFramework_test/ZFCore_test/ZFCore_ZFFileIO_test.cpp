@@ -26,7 +26,10 @@ protected:
 
         ZFLogTrim() << "============================================================";
         ZFLogTrim() << "copy to cache dir, tree:";
-        ZFIOCopy(ZFPathInfo(ZFPathType_res(), testPath), ZFPathInfo(ZFPathType_cachePath(), testPath));
+        ZFIOCopy(
+                ZFPathInfo(ZFPathType_cachePath(), testPath)
+                , ZFPathInfo(ZFPathType_res(), testPath)
+                );
         ZFIOTreePrint(ZFPathInfo(ZFPathType_cachePath(), testPath), ZFOutputDefault(), "  ");
 
         ZFLogTrim() << "try read content:";

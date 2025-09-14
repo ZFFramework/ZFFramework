@@ -82,7 +82,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     }
     pathNew += fileNameNew;
 
-    if(!ioImpl->ioMove(path, pathNew)) {
+    if(!ioImpl->ioMove(pathNew, path)) {
         zfstringAppend(outErrorHint,
             "failed to move from \"%s\" to \"%s\"",
             path, pathNew);

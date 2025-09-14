@@ -124,7 +124,7 @@ void ZFAsyncIOCustomTask::taskOnStart(void) {
         this->_implTaskId = zfasyncIOCustom(this->impl(), implOnStop);
     }
     else {
-        this->notifySuccess();
+        this->notifyFail("null impl");
     }
 }
 void ZFAsyncIOCustomTask::taskOnStop(void) {
@@ -155,19 +155,32 @@ void ZFAsyncIOTask::taskOnStart(void) {
             owner->_implTaskId = zfnull;
             v_zfindex *result = zfargs.param0();
             if(result->zfv != zfindexMax()) {
+                owner->output(zfnull);
+                owner->input(zfnull);
                 owner->notifySuccess(result);
             }
             else {
-                owner->notifyFail(zfstr("IO fail \"%s\" => \"%s\""
-                            , owner->input()
-                            , owner->output()
-                            ), result);
+                zfstring errorHint = zfstr("IO fail \"%s\" => \"%s\""
+                        , owner->input()
+                        , owner->output()
+                        );
+                owner->output(zfnull);
+                owner->input(zfnull);
+                owner->notifyFail(errorHint, result);
             }
         } ZFLISTENER_END()
         this->_implTaskId = zfasyncIO(this->output(), this->input(), implOnStop);
     }
     else {
-        this->notifySuccess();
+        if(!this->output()) {
+            this->notifyFail("null output");
+        }
+        else if(!this->input()) {
+            this->notifyFail("null input");
+        }
+        else {
+            this->notifyFail("null impl");
+        }
     }
 }
 void ZFAsyncIOTask::taskOnStop(void) {
