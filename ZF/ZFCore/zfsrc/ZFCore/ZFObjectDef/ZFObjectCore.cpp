@@ -628,7 +628,12 @@ void ZFObject::_ZFP_ZFObject_objectOnInitFromCache(void) {
 }
 
 void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
-    if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
+    if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDeallocPrepare)) {
+        // retain and release during objectOnDeallocPrepare
+        this->objectOnRelease();
+        return;
+    }
+    else if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             ) {
         if(_objectRetainCount == 1) {
