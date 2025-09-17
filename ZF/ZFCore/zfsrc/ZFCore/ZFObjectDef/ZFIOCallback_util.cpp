@@ -346,6 +346,12 @@ zfclass _ZFP_I_ZFOutputChain : zfextend ZFObject {
             , ZFMP_OUT(const void *, src)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
             )
+    ZFMETHOD_DECLARE_2(zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, seekPos)
+            )
+    ZFMETHOD_DECLARE_0(zfindex, ioTell)
+    ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
 ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputChain, zfindex, onOutput
         , ZFMP_OUT(const void *, src)
@@ -356,6 +362,62 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputChain, zfindex, onOutput
     }
     return count;
 }
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputChain, zfbool, ioSeek
+        , ZFMP_IN(zfindex, byteSize)
+        , ZFMP_IN(ZFSeekPos, seekPos)
+        ) {
+    if(o.isEmpty()) {
+        return zffalse;
+    }
+    ZFCoreArray<zfindex> posSaved;
+    posSaved.capacity(o.count());
+    zfbool success = zftrue;
+    for(zfindex i = 0; i < o.count(); ++i) {
+        const ZFOutput &t = o[i];
+        zfindex pos = t.ioTell();
+        if(pos == zfindexMax()) {
+            success = zffalse;
+            break;
+        }
+        posSaved.add(pos);
+        if(!t.ioSeek(byteSize, seekPos)) {
+            success = zffalse;
+            break;
+        }
+    }
+    if(!success) {
+        for(zfindex i = 0; i < posSaved.count(); ++i) {
+            o[i].ioSeek(posSaved[i]);
+        }
+    }
+    return success;
+}
+ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputChain, zfindex, ioTell) {
+    if(o.isEmpty()) {
+        return zfindexMax();
+    }
+    zfindex prev = o[0].ioTell();
+    for(zfindex i = 1; i < o.count(); ++i) {
+        zfindex p = o[i].ioTell();
+        if(p == zfindexMax() || p != prev) {
+            return zfindexMax();
+        }
+    }
+    return prev;
+}
+ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputChain, zfindex, ioSize) {
+    if(o.isEmpty()) {
+        return zfindexMax();
+    }
+    zfindex prev = o[0].ioSize();
+    for(zfindex i = 1; i < o.count(); ++i) {
+        zfindex p = o[i].ioSize();
+        if(p == zfindexMax() || p != prev) {
+            return zfindexMax();
+        }
+    }
+    return prev;
+}
 ZFOutput ZFOutputChain(
         ZF_IN const ZFCoreArray<ZFOutput> &o
         ) {
@@ -364,7 +426,7 @@ ZFOutput ZFOutputChain(
     zfobj<_ZFP_I_ZFOutputChain> owner;
     owner->o.addFrom(o);
     ZFOutput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFOutputChain, onOutput));
-    ret.callbackOwnerObjectRetain();
+    ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
     return ret;
 }
 
