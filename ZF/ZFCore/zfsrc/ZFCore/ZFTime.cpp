@@ -173,10 +173,22 @@ ZFTYPEID_PROGRESS_DEFINE(ZFTimeValue, ZFTimeValue, {
         ZFTimeValueNormalize(ret);
     })
 
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeValue, zftimet, sec)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeValue, zftimet, usec)
+
 // ============================================================
 // ZFTimeInfo
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTimeInfo, ZFTimeInfo)
 ZFOUTPUT_TYPE_DEFINE(ZFTimeInfo, {ZFTimeInfoToStringT(s, v);})
+
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfint, year)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, month)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, day)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, hour)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, minute)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, second)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, miliSecond)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTimeInfo, zfuint, microSecond)
 
 ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeInfo, ZFTimeInfoZero, ZFTimeInfoCreate(0, 0, 0, 0, 0, 0, 0, 0))
 
