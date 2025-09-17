@@ -12,9 +12,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     ZFCoreArray<zfstring> params;
     ZFCoreArgSplit(params, lpCmdLine);
-    if(params.count() > 0) {
-        params.removeFirst();
-    }
     zfint ret = ZFMainExecute(params);
 
     ZFFrameworkCleanup();
