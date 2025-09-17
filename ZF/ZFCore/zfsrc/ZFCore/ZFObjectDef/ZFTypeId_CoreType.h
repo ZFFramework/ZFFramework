@@ -431,14 +431,14 @@ ZFTYPEID_ACCESS_ONLY_REG(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenerator)
  *
  * serializable data:
  * @code
- *   <ZFPathInfo value="pathType:pathData" />
+ *   <ZFPathInfo value="pathType!!pathData" />
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfo)
 ZFTYPEID_REG(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfo)
 ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToStringT(s, v);})
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFPathInfo_separator ":"
+#define ZFSerializableKeyword_ZFPathInfo_separator "!!"
 
 /**
  * @brief see #ZFTYPEID_DECLARE

@@ -14,9 +14,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * pathData is the refPathInfo, a typical case:
  * @code
- *   base64:file:some/path/to/a.zip
- *   base64:res:some/path/to/a.zip
- *   base64:http:http://abc.com/some/path/to/a.zip
+ *   base64!!file!!some/path/to/a.zip
+ *   base64!!res!!some/path/to/a.zip
+ *   base64!!http!!http://abc.com/some/path/to/a.zip
  * @endcode
  */
 ZFIO_DECLARE(ZFLIB_ZFAlgorithm, base64)

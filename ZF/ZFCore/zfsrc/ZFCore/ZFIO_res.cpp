@@ -161,7 +161,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFResExtPathDataHolder, ZFLevelZFFramework
 public:
     ZFCoreArray<ZFPathInfo> resExtPathList;
 
-    // store pathData of `res:xxx`, which would cause recursive search
+    // store pathData of `res!!xxx`, which would cause recursive search
     // any access to this path would result to fail for safety
     zfstlhashmap<zfstring, zfuint> recursiveMap;
 ZF_GLOBAL_INITIALIZER_END(ZFResExtPathDataHolder)

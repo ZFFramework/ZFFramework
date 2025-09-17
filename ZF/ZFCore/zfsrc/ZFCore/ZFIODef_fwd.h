@@ -188,7 +188,7 @@ protected:
     zfoverride
     virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
         ret += this->pathType();
-        ret += ":";
+        ret += ZFSerializableKeyword_ZFPathInfo_separator;
         ret += this->pathData();
     }
 public:

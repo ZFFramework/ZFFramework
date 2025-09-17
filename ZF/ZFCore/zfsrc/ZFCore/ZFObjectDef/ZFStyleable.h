@@ -377,7 +377,7 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  * by default, we bundled a special load logic by #ZFStyleDecoder_ZFObjectIO,
  * which would load style from specified path info, for example:
  * @code
- *   <MyStyleObject styleKey="@res:my_cfg.xml" />
+ *   <MyStyleObject styleKey="@res!!my_cfg.xml" />
  * @endcode
  */
 extern ZFLIB_ZFCore void ZFStyleSet(

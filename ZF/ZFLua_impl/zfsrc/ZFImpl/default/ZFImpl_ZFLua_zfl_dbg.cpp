@@ -150,7 +150,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_dbg, ZFM_EXPAND({
                     "    if lines[info.currentline] ~= nil then\n"
                     "        lineInfo = lines[info.currentline]:gsub('^%s*(.-)%s*$', '%1') .. '\\t\\t\\t'\n"
                     "    end\n"
-                    "    local p0 = pathInfo:find(':')\n"
+                    "    local p0 = pathInfo:find('!!')\n"
                     "    local p1 = findLast(pathInfo, '/')\n"
                     "    if p1 <= 0 or p0 <= 0 then\n"
                     "        source = '[' .. pathInfo .. ']'\n"

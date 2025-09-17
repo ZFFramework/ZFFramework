@@ -17,9 +17,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * typical case:
  * @code
- *   encrypt:file:some/path/to/file|encryptKey
- *   encrypt:res:some/path/to/file|encryptKey
- *   encrypt:http:http://abc.com/some/path/to/file|encryptKey
+ *   encrypt!!file!!some/path/to/file|encryptKey
+ *   encrypt!!res!!some/path/to/file|encryptKey
+ *   encrypt!!http!!http://abc.com/some/path/to/file|encryptKey
  * @endcode
  */
 ZFIO_DECLARE(ZFLIB_ZFAlgorithm, encrypt)

@@ -703,22 +703,23 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, void, idExistGe
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {
-        const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
-        const zfchar *p = src;
-        while(*p != ZFSerializableKeyword_ZFPathInfo_separator[0] && p < srcEnd) {++p;}
-        if(*p != ZFSerializableKeyword_ZFPathInfo_separator[0]) {
+        if(srcLen == zfindexMax()) {
+            srcLen = zfslen(src);
+        }
+        zfindex pos = zfstringFind(src, srcLen, ZFSerializableKeyword_ZFPathInfo_separator);
+        if(pos == 0 || pos == zfindexMax()) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
             }
             return zffalse;
         }
-        v.pathType(zfstring(src, p - src));
-        ++p;
-        v.pathData(zfstring(p, srcEnd - p));
+        v.pathType(zfstring(src, pos));
+        pos += zfslen(ZFSerializableKeyword_ZFPathInfo_separator);
+        v.pathData(zfstring(src + pos, srcLen - pos));
         return zftrue;
     }, {
         s += v.pathType();
-        s += ZFSerializableKeyword_ZFPathInfo_separator[0];
+        s += ZFSerializableKeyword_ZFPathInfo_separator;
         s += v.pathData();
         return zftrue;
     })

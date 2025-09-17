@@ -17,9 +17,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * typical case:
  * @code
- *   compress:file:some/path/to/file.zip|item/path
- *   compress:res:some/path/to/file.zip|item/path
- *   compress:http:http://abc.com/some/path/to/file.zip|item/path
+ *   compress!!file!!some/path/to/file.zip|item/path
+ *   compress!!res!!some/path/to/file.zip|item/path
+ *   compress!!http!!http://abc.com/some/path/to/file.zip|item/path
  * @endcode
  */
 ZFIO_DECLARE(ZFLIB_ZFAlgorithm, compress)
