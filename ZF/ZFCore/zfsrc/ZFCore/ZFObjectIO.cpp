@@ -89,8 +89,8 @@ zfbool ZFObjectIOLoadT(
     for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
-        if(l[i]->checker(zffalse, input.pathInfo(), fileName, fileExt)) {
-            if(l[i]->fromInput(ret, input, outErrorHint)) {
+        if(d->checker(zffalse, input.pathInfo(), fileName, fileExt)) {
+            if(d->fromInput(ret, input, outErrorHint)) {
                 return zftrue;
             }
             else {
@@ -138,8 +138,8 @@ zfbool ZFObjectIOSave(
     for(zfindex i = 0; i < l.count(); ++i) {
         _ZFP_ZFObjectIOData *d = l[i];
         ZFCoreMutexUnlock();
-        if(l[i]->checker(zftrue, output.pathInfo(), fileName, fileExt)) {
-            if(l[i]->toOutput(output, obj, outErrorHint)) {
+        if(d->checker(zftrue, output.pathInfo(), fileName, fileExt)) {
+            if(d->toOutput(output, obj, outErrorHint)) {
                 return zftrue;
             }
             else {
