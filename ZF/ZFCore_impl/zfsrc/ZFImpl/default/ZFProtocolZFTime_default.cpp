@@ -156,13 +156,14 @@ public:
     }
     virtual void currentTimeValue(ZF_OUT ZFTimeValue &tv) {
         #if ZF_ENV_sys_Windows
-            union {
-                zft_zfuint16 ns100;
-                FILETIME ft;
-            } now;
-            GetSystemTimeAsFileTime(&now.ft);
-            tv.sec = (time_t)((now.ns100 - 116444736000000000LL) / 10000000LL);
-            tv.usec = (time_t)((now.ns100 / 10LL) % 1000000LL);
+            FILETIME ft;
+            GetSystemTimeAsFileTime(&ft);
+            ULARGE_INTEGER uli;
+            uli.LowPart = ft.dwLowDateTime;
+            uli.HighPart = ft.dwHighDateTime;
+            const ULONGLONG EPOCH_OFFSET = 116444736000000000ULL;
+            tv.sec = (zftimet)((uli.QuadPart - EPOCH_OFFSET) / 10000000ULL);
+            tv.usec = (zftimet)(((uli.QuadPart - EPOCH_OFFSET) / 10ULL) % 1000000ULL);
         #else
             struct timeval tvTmp;
             gettimeofday(&tvTmp, zfnull);
