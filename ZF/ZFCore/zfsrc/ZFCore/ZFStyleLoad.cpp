@@ -50,16 +50,9 @@ static void _ZFP_ZFStyleLoadImpl(
     ZFIOFindData fd;
     if(fileImpl->ioFindFirst(fd, pathData)) {
         do {
-            if(fd.name()[0] == '.' || fd.name()[0] == '_') {
+            if(!ZFStyleLoadCheck(fd.name())) {
                 continue;
             }
-            zfindex dotPos = zfstringFindReversely(fd.name(), ".");
-            if(dotPos != zfindexMax()
-                    && (dotPos > 0 && fd.name()[dotPos - 1] == '_')
-                    ) {
-                continue;
-            }
-
             zfstring relativePathTmp = relativePath;
             if(!relativePathTmp.isEmpty()) {
                 relativePathTmp += '/';
@@ -90,6 +83,24 @@ static void _ZFP_ZFStyleLoadImpl(
     }
 }
 
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadCheck
+        , ZFMP_IN(const zfstring &, fileName)
+        ) {
+    if(fileName.isEmpty()
+            || fileName[0] == '.'
+            || fileName[0] == '_'
+            ) {
+        return zffalse;
+    }
+    zfindex dotPos = zfstringFindReversely(fileName, ".");
+    if(dotPos != zfindexMax()
+            && (dotPos > 0 && fileName[dotPos - 1] == '_')
+            ) {
+        return zffalse;
+    }
+    return zftrue;
+}
+
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
@@ -98,7 +109,6 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
     if(fileImpl == zfnull) {
         return zffalse;
     }
-    ZFStyleUpdateBlock();
 
     if(fileImpl->ioIsExist(pathInfo.pathData())
             && !fileImpl->ioIsDir(pathInfo.pathData())
@@ -119,13 +129,50 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
             return zffalse;
         }
         ZFPathOfWithoutAllExtT(fileName, fileName);
+        ZFStyleUpdateBlock();
         _ZFP_ZFStyleLoad_ZFStyleSet(fileName, styleValue);
         return zftrue;
     }
 
+    ZFStyleUpdateBlock();
     zfbool allSuccess = zftrue;
     _ZFP_ZFStyleLoadImpl(fileImpl, pathInfo.pathType(), pathInfo.pathData(), zfnull, allSuccess, errorCallback);
     return allSuccess;
+}
+
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadFile
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN(const zfstring &, childPath)
+        ) {
+    zfautoT<ZFIOImpl> fileImpl = ZFIOImplForPathType(pathInfo.pathType());
+    if(fileImpl == zfnull) {
+        return zffalse;
+    }
+    zfstring childPathAbs;
+    if(!(fileImpl->ioToChild(childPathAbs, pathInfo.pathData(), childPath)
+                && fileImpl->ioIsExist(childPathAbs)
+                && !fileImpl->ioIsDir(childPathAbs)
+                )) {
+        return zffalse;
+    }
+    zfstring styleKey;
+    ZFPathFormatT(styleKey, childPath);
+    while(!styleKey.isEmpty() && styleKey[0] == '/') {
+        styleKey.remove(0);
+    }
+    if(!ZFPathOfWithoutAllExtT(styleKey, styleKey)
+            || styleKey.isEmpty()
+            ) {
+        return zffalse;
+    }
+
+    zfauto styleValue;
+    if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathInfo.pathType(), childPathAbs)))) {
+        return zffalse;
+    }
+    ZFStyleUpdateBlock();
+    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
+    return zftrue;
 }
 
 // ============================================================

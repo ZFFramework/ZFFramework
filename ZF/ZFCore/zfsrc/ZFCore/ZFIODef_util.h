@@ -119,6 +119,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFPathOfWithoutExt
  *   e.g. "/path/file" from "/path/file.ext0.ext1",
  *   or original string if no extension
  * @note path must be well formed, use #ZFPathFormat if necessary
+ * @note `/path/.file.ext` would result to `/path/`
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathOfWithoutAllExtT
         , ZFMP_OUT(zfstring &, ret)

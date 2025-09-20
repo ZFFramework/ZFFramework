@@ -71,9 +71,24 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
 
 // ============================================================
 /**
+ * @brief check whether the item should be load as style
+ *
+ * by default, these files or dirs would be ignored:
+ * -  files or dirs whose name start with '.' or '_' (e.g. '.ignored.xml')
+ *   -  `.ignored.xml`
+ *   -  `_ignored.xml`
+ * -  files whose name end with '_'
+ *   -  `ignored_.xml`
+ *   -  `ignored_`
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadCheck
+        , ZFMP_IN(const zfstring &, fileName)
+        )
+
+/**
  * @brief util to load multiple styles from directory
  *
- * pathInfo must points to a directory that contains styles,
+ * pathInfo must points to a file or directory that contains styles,
  * example:
  * @code
  *   ~/
@@ -85,15 +100,16 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
  * @endcode
  * \n
  * all styles are loaded by #ZFObjectIOLoad,
- * and `ZFPathOfWithoutAllExt` would be used as styleKey for #ZFStyleSet
- * (`~/path1/path2/mybutton.123.xml` would result `path1/path2/mybutton` as styleKey),
+ * and #ZFPathOfWithoutAllExt would be used to transform relative path to styleKey for #ZFStyleSet,
+ * for example: `~/path1/path2/mybutton.123.xml` would result `path1/path2/mybutton` as styleKey,
+ * you may also use #ZFStyleLoadFile for loading single one file in deep file tree\n
+ * \n
  * if two item with same name exists,
  * the later one would override the first one
  * (but which one is later, is not ensured, try to prevent that)\n
  * \n
- * by default, these files or dirs would be ignored:
- * -  files or dirs whose name start with '.' or '_' (e.g. '.ignored.xml')
- * -  files whose name end with '_' (e.g. 'ignored_.xml')
+ * by default, files or dirs would be filtered by #ZFStyleLoadCheck
+ * \n
  *
  * specially, if the loaded object is type of #ZFStyleList,
  * all of its contents would be appended to current style,
@@ -107,6 +123,14 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
+        )
+
+/**
+ * @brief explicitly load specified file, see #ZFStyleLoad
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoadFile
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN(const zfstring &, childPath)
         )
 
 /**
