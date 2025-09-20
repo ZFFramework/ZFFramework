@@ -17,7 +17,10 @@ static void _ZFP_ZFLuaLSPGen_paramCandidate(
     if(zffalse) {}
     else if(zffalse
             || typeId == ZFTypeId_ZFClass()
-            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "className") != zfindexMax())
+            || (typeId == ZFTypeId_zfstring() && (zffalse
+                    || zfstringFind(paramName, "className") != zfindexMax()
+                    || zfstringFind(paramName, "TypeId") != zfindexMax()
+                    ))
             ) {
         ZFCoreArray<const ZFClass *> all = ZFClassGetAll();
         for(zfindex i = 0; i < all.count(); ++i) {
@@ -31,7 +34,9 @@ static void _ZFP_ZFLuaLSPGen_paramCandidate(
     }
     else if(zffalse
             || typeId == ZFTypeId_ZFProperty()
-            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "propertyName") != zfindexMax())
+            || (typeId == ZFTypeId_zfstring() && (zffalse
+                    || zfstringFind(paramName, "propertyName") != zfindexMax()
+                    ))
             ) {
         ZFCoreArray<const ZFProperty *> all = ZFPropertyGetAll();
         for(zfindex i = 0; i < all.count(); ++i) {
@@ -44,7 +49,9 @@ static void _ZFP_ZFLuaLSPGen_paramCandidate(
         }
     }
     else if(zffalse
-            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "eventName") != zfindexMax())
+            || (typeId == ZFTypeId_zfstring() && (zffalse
+                    || zfstringFind(paramName, "eventName") != zfindexMax()
+                    ))
             ) {
         ZFCoreArray<zfstring> all = ZFIdMapGetAllName();
         for(zfindex i = 0; i < all.count(); ++i) {
@@ -59,7 +66,9 @@ static void _ZFP_ZFLuaLSPGen_paramCandidate(
         }
     }
     else if(zffalse
-            || (typeId == ZFTypeId_zfstring() && zfstringFind(paramName, "styleKey") != zfindexMax())
+            || (typeId == ZFTypeId_zfstring() && (zffalse
+                    || zfstringFind(paramName, "styleKey") != zfindexMax()
+                    ))
             ) {
         ZFCoreArray<zfstring> all = ZFStyleGetAllKey();
         for(zfindex i = 0; i < all.count(); ++i) {
