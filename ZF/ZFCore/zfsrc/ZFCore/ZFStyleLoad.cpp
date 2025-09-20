@@ -50,7 +50,7 @@ static void _ZFP_ZFStyleLoadImpl(
     ZFIOFindData fd;
     if(fileImpl->ioFindFirst(fd, pathData)) {
         do {
-            if(*fd.name() == '.' || *fd.name() == '_') {
+            if(fd.name()[0] == '.' || fd.name()[0] == '_') {
                 continue;
             }
             zfindex dotPos = zfstringFindReversely(fd.name(), ".");
