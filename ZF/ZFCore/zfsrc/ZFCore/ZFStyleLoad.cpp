@@ -149,16 +149,30 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadFile
         return zffalse;
     }
     zfstring childPathAbs;
-    if(!(fileImpl->ioToChild(childPathAbs, pathInfo.pathData(), childPath)
-                && fileImpl->ioIsExist(childPathAbs)
-                && !fileImpl->ioIsDir(childPathAbs)
-                )) {
-        return zffalse;
+    if(fileImpl->ioIsExist(pathInfo.pathData())
+            && !fileImpl->ioIsDir(pathInfo.pathData())) {
+        childPathAbs = pathInfo.pathData();
     }
+    else {
+        if(!(fileImpl->ioToChild(childPathAbs, pathInfo.pathData(), childPath)
+                    && fileImpl->ioIsExist(childPathAbs)
+                    && !fileImpl->ioIsDir(childPathAbs)
+                    )) {
+            return zffalse;
+        }
+    }
+
     zfstring styleKey;
-    ZFPathFormatT(styleKey, childPath);
-    while(!styleKey.isEmpty() && styleKey[0] == '/') {
-        styleKey.remove(0, 1);
+    if(childPath.isEmpty()) {
+        if(!fileImpl->ioToFileName(styleKey, pathInfo.pathData())) {
+            return zffalse;
+        }
+    }
+    else {
+        ZFPathFormatT(styleKey, childPath);
+        while(!styleKey.isEmpty() && styleKey[0] == '/') {
+            styleKey.remove(0, 1);
+        }
     }
     if(!ZFPathOfWithoutAllExtT(styleKey, styleKey)
             || styleKey.isEmpty()
