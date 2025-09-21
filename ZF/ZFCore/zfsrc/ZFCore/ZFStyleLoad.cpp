@@ -158,7 +158,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadFile
     zfstring styleKey;
     ZFPathFormatT(styleKey, childPath);
     while(!styleKey.isEmpty() && styleKey[0] == '/') {
-        styleKey.remove(0);
+        styleKey.remove(0, 1);
     }
     if(!ZFPathOfWithoutAllExtT(styleKey, styleKey)
             || styleKey.isEmpty()
