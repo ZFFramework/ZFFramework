@@ -102,7 +102,7 @@ ZFImpl_sys_SDL_SysWindow::~ZFImpl_sys_SDL_SysWindow(void) {
     allWindow().removeElement(this);
 
     this->renderStop();
-    if(this->builtinWindow) {
+    if(!this->builtinWindow) {
         if(this->sdlRenderer != zfnull) {
             ZFImpl_sys_SDL_RendererNotifyDestroy(this->sdlRenderer);
             SDL_DestroyRenderer(this->sdlRenderer);

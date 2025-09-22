@@ -129,6 +129,14 @@ static _ZFP_ZFImpl_sys_SDL_ImageCache &_ZFP_ZFImpl_sys_SDL_ImageCacheObj(void) {
 void ZFImpl_sys_SDL_Image::implOwnerDestroyed(ZF_IN SDL_Renderer *owner) {
     _ZFP_ZFImpl_sys_SDL_ImageCacheObj().implOwnerDestroyed(owner);
 }
+ZF_STATIC_REGISTER_INIT(ZFImpl_sys_SDL_Image_AutoCleanup) {
+    ZFImpl_sys_SDL_RendererOnDestroy.add(zfself::_implOwnerDestroyed);
+}
+private:
+    static void _implOwnerDestroyed(ZF_IN SDL_Renderer *owner) {
+        _ZFP_ZFImpl_sys_SDL_ImageCacheObj().implOwnerDestroyed(owner);
+    }
+ZF_STATIC_REGISTER_END(ZFImpl_sys_SDL_Image_AutoCleanup)
 
 ZFImpl_sys_SDL_Image *ZFImpl_sys_SDL_Image::implCreate(void) {
     return zfpoolNew(ZFImpl_sys_SDL_Image);

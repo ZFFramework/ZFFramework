@@ -15,7 +15,7 @@ protected:
             this->outputSeparator();
             this->output("try execute dynamically registered method");
 
-            ZFMethodFuncUserRegisterDetail_1(method, {
+            ZFMethodFuncUserRegister_1(method, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -23,14 +23,14 @@ protected:
                 , ZFMP_IN(zfstring const &, param0)
                 );
 
-            ZFMethodFuncUserRegisterDetail_0(method0, {
+            ZFMethodFuncUserRegister_0(method0, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
                 zfstring, "funcDynamic0"
                 );
 
-            ZFMethodFuncUserRegisterDetail_1(method1, {
+            ZFMethodFuncUserRegister_1(method1, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -38,7 +38,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param0)
                 );
 
-            ZFMethodFuncUserRegisterDetail_2(method2, {
+            ZFMethodFuncUserRegister_2(method2, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -47,7 +47,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param1)
                 );
 
-            ZFMethodFuncUserRegisterDetail_3(method3, {
+            ZFMethodFuncUserRegister_3(method3, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -57,7 +57,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param2)
                 );
 
-            ZFMethodFuncUserRegisterDetail_4(method4, {
+            ZFMethodFuncUserRegister_4(method4, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -68,7 +68,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param3)
                 );
 
-            ZFMethodFuncUserRegisterDetail_5(method5, {
+            ZFMethodFuncUserRegister_5(method5, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -80,7 +80,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param4)
                 );
 
-            ZFMethodFuncUserRegisterDetail_6(method6, {
+            ZFMethodFuncUserRegister_6(method6, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -93,7 +93,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param5)
                 );
 
-            ZFMethodFuncUserRegisterDetail_7(method7, {
+            ZFMethodFuncUserRegister_7(method7, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",
@@ -107,7 +107,7 @@ protected:
                 , ZFMP_IN(zfstring const &, param6)
                 );
 
-            ZFMethodFuncUserRegisterDetail_8(method8, {
+            ZFMethodFuncUserRegister_8(method8, {
                     ZFLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace",

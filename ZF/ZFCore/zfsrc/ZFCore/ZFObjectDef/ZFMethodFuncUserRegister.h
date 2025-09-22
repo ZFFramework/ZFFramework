@@ -283,7 +283,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
  * @code
  *   // register it, using ZF_GLOBAL_INITIALIZER_INIT is recommended
  *   ZF_GLOBAL_INITIALIZER_INIT(MyMethodRegister) {
- *       ZFMethodFuncUserRegisterDetail_2(resultMethod, {
+ *       ZFMethodFuncUserRegister_2(resultMethod, {
  *               return (ReturnType)yourInvoker(invokerMethod, invokerObject, param0, param1);
  *           }, "MyMethodNamespace",
  *           ReturnType, "myMethodName"
@@ -346,23 +346,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
     _ZFP_ZFMETHOD_FUNC_USER_REGISTER(methodInvokerAction, \
         ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE, \
         ReturnType, methodName \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_0(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -461,24 +444,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_1(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
 #define ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1(methodInvokerAction, \
     methodNamespaceString, RegSig, \
     ReturnType, methodName \
@@ -562,25 +527,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
     _ZFP_ZFMETHOD_FUNC_USER_REGISTER(methodInvokerAction, \
         ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE, \
         ReturnType, methodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_2(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
@@ -689,26 +635,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_3(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    , ZFMP_2 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
 #define ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3(methodInvokerAction, \
     methodNamespaceString, RegSig, \
     ReturnType, methodName \
@@ -802,27 +728,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
     _ZFP_ZFMETHOD_FUNC_USER_REGISTER(methodInvokerAction, \
         ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE, \
         ReturnType, methodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_4(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    , ZFMP_2 \
-    , ZFMP_3 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
         , _ZFP_MtdP_EXPAND(ZFMP_2) \
@@ -941,28 +846,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_5(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    , ZFMP_2 \
-    , ZFMP_3 \
-    , ZFMP_4 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
 #define ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5(methodInvokerAction, \
     methodNamespaceString, RegSig, \
     ReturnType, methodName \
@@ -1066,29 +949,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
     _ZFP_ZFMETHOD_FUNC_USER_REGISTER(methodInvokerAction, \
         ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE, \
         ReturnType, methodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_6(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    , ZFMP_2 \
-    , ZFMP_3 \
-    , ZFMP_4 \
-    , ZFMP_5 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
         , _ZFP_MtdP_EXPAND(ZFMP_2) \
@@ -1217,30 +1077,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_7(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    , ZFMP_2 \
-    , ZFMP_3 \
-    , ZFMP_4 \
-    , ZFMP_5 \
-    , ZFMP_6 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_ZFMP_DUMMY() \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
 #define ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7(methodInvokerAction, \
     methodNamespaceString, RegSig, \
     ReturnType, methodName \
@@ -1354,31 +1190,6 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
     _ZFP_ZFMETHOD_FUNC_USER_REGISTER(methodInvokerAction, \
         ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE, \
         ReturnType, methodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
-        )
-/** @brief see #ZFMethodFuncUserRegister_0 */
-#define ZFMethodFuncUserRegisterDetail_8(resultMethod, methodInvokerAction, \
-    methodNamespaceString, \
-    ReturnType, methodNameString \
-    , ZFMP_0 \
-    , ZFMP_1 \
-    , ZFMP_2 \
-    , ZFMP_3 \
-    , ZFMP_4 \
-    , ZFMP_5 \
-    , ZFMP_6 \
-    , ZFMP_7 \
-    ) \
-    _ZFP_ZFMethodFuncUserRegister(resultMethod, methodInvokerAction, \
-        methodNamespaceString, \
-        ReturnType, methodNameString \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
         , _ZFP_MtdP_EXPAND(ZFMP_2) \

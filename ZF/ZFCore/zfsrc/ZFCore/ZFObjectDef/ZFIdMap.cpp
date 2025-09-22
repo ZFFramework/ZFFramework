@@ -14,22 +14,18 @@ _ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(
 )
 : idValue(_ZFP_ZFIdMapRegister(idName))
 {
-    zfclassNotPOD _ZFP_IdMap_GI {
-    public:
-        static void GI(ZF_IN_OUT const ZFArgs &zfargs) {
-            zfargs.result(zfargs.ownerMethod()->dynamicRegisterUserData());
-        }
-    };
-    ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
-            .ownerClass(ownerClass)
-            .methodNamespace(ownerNamespace)
-            .methodType(ZFMethodTypeStatic)
-            .returnTypeId(ZFTypeId_zfidentity())
-            .methodName(methodName)
-            .methodGenericInvoker(_ZFP_IdMap_GI::GI)
-            .dynamicRegisterUserData(zfobj<v_zfidentity>(*idValue))
-            .zfunsafe_disableChecker(zftrue)
-            );
+    if(ownerClass) {
+        ZFMethodUserRegisterDetail_0(result, {
+                return invokerMethod->userRegisterUserData()->to<v_zfidentity *>()->zfv;
+            }, ownerClass, public, ZFMethodTypeStatic, zfidentity, methodName);
+        result->userRegisterUserData(zfobj<v_zfidentity>(*idValue));
+    }
+    else {
+        ZFMethodFuncUserRegister_0(result, {
+                return invokerMethod->userRegisterUserData()->to<v_zfidentity *>()->zfv;
+            }, ownerNamespace, zfidentity, methodName);
+        result->userRegisterUserData(zfobj<v_zfidentity>(*idValue));
+    }
 }
 _ZFP_ZFIdMapHolder::~_ZFP_ZFIdMapHolder(void) {
     zfstring idName = ZFIdMapNameForId(*idValue);
@@ -40,7 +36,12 @@ _ZFP_ZFIdMapHolder::~_ZFP_ZFIdMapHolder(void) {
             : ZFMethodForName(zfnull, idName)
             ;
         if(method != zfnull) {
-            ZFMethodDynamicUnregister(method);
+            if(method->isFuncType()) {
+                ZFMethodFuncUserUnregister(method);
+            }
+            else {
+                ZFMethodUserUnregister(method);
+            }
         }
     }
     _ZFP_ZFIdMapUnregister(*idValue);
