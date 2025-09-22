@@ -7,7 +7,6 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
         ZF_IN_OUT ZFImpl_ZFLua_ImplSetupHelper &helper
         , ZF_IN const ZFMethod *method
         ) {
-    printf("zfzfzf reg: %s\n", method->objectInfo().cString());
     if(method->methodNamespace()) {
         helper.addGenericScope(method->methodNamespace());
     }

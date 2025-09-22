@@ -80,9 +80,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void) {
             ZFCoreArray<zfstring> appParamsSaved;
             appParamsSaved.copyFrom(ZFApp::appParams());
             ZFFrameworkCleanup();
-            printf("zfzfzf restart begin\n");
             ZFFrameworkInit();
-            printf("zfzfzf restart end\n");
             ZFMainExecute(appParamsSaved);
 
             zfdelete(taskData);

@@ -66,9 +66,6 @@ ZFImpl_ZFLua_ImplSetupHelper::~ZFImpl_ZFLua_ImplSetupHelper(void) {
     zfdelete(&m);
 }
 void ZFImpl_ZFLua_ImplSetupHelper::addGlobalScope(ZF_IN const zfstring &scope) {
-    if(scope == "ZFGlobalEvent") {
-        printf(""); // zfzfzf
-    }
     if(scope) {
         (*(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType *)_m)[scope] = zftrue;
     }
