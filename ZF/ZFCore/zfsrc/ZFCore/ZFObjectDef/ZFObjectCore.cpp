@@ -709,6 +709,9 @@ void ZFObject::objectOnDealloc(void) {
 
         if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
             if(d->objectTagMap) {
+                for(zfstlhashmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder.begin(); it != d->ZFImplementDynamicHolder.end(); ++it) {
+                    it->second->d->objectTagMap = zfnull;
+                }
                 zfpoolDelete(d->objectTagMap);
             }
             if(d->observerHolder) {
@@ -720,6 +723,9 @@ void ZFObject::objectOnDealloc(void) {
             }
         }
         else {
+            if(d->observerHolder) {
+                zfpoolDelete(d->observerHolder);
+            }
             if(d->weakHolder) {
                 zfRelease(d->weakHolder);
             }

@@ -34,6 +34,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
         _ZFP_ZFThread_log("global threadWait begin: %p", zfThread);
         zfThread->threadWait();
         _ZFP_ZFThread_log("global threadWait end: %p", zfThread);
+        ZFCoreMutexLock();
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFThread_allThreadCleanup)
