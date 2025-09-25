@@ -32,4 +32,7 @@
 **/*.ncb
 **/*.suo
 **/*.vcproj.*.user
+**/.vs
+**/zfproj/cmake/**/out
+**/zfproj_with_src/cmake/**/out
 
