@@ -26,12 +26,6 @@ zfclassFwd _ZFP_ZFObserverGroupPrivate;
  *   // when done, remove all observer which attached to owner
  *   // note the owner is compared by instance
  *   ZFObserverGroupRemove(owner);
- *
- *   // or, remove by the group holder
- *   ZFObserverGroup holder(owner, target);
- *   holder.observerAdd(xxx);
- *   holder.observerRemove(xxx);
- *   holder.observerRemoveAll();
  * @endcode
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverGroup {
