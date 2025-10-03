@@ -56,7 +56,7 @@ public:
     ZFObserver *observerHolder;
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
     ZFObject *ZFImplementDynamicOwner;
-    zfstlhashmap<const ZFClass *, zfauto> ZFImplementDynamicHolder;
+    zfstlhashmap<const ZFClass *, ZFObject *> ZFImplementDynamicHolder; // manual retain
 
 public:
     _ZFP_ZFObjectPrivate(void)
@@ -709,8 +709,12 @@ void ZFObject::objectOnDealloc(void) {
 
         if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
             if(d->objectTagMap) {
-                for(zfstlhashmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder.begin(); it != d->ZFImplementDynamicHolder.end(); ++it) {
+                for(zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicHolder.begin(); it != d->ZFImplementDynamicHolder.end(); ++it) {
                     it->second->d->objectTagMap = zfnull;
+
+                    // release, but keep pointer instance,
+                    // since it's possible to access zfcast during the dyn object being deallocate
+                    zfRelease(it->second);
                 }
                 zfpoolDelete(d->objectTagMap);
             }
@@ -858,7 +862,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFObjectPrivate);
     }
-    zfstlhashmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder.find(clsToImplement);
+    zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicHolder.find(clsToImplement);
     if(it != d->ZFImplementDynamicHolder.end()) {
         return it->second;
     }
@@ -885,7 +889,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
         }
 
         zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
-        d->ZFImplementDynamicHolder[clsToImplement] = holder;
+        d->ZFImplementDynamicHolder[clsToImplement] = zfRetain(holder);
         return holder;
     }
 }

@@ -2,6 +2,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFOBJECT_REGISTER(ZFUIViewLayout)
+
 void ZFUIViewLayout::layoutOnMeasure(
         ZF_OUT ZFUISize &ret
         , ZF_IN const ZFUISize &sizeHint
