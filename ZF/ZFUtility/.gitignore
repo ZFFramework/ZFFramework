@@ -24,6 +24,7 @@
 **/*xcuserdata*
 
 # Qt
+**/Qt/**/build
 **/Qt/**/build-*
 **/*.pro.user
 
@@ -31,4 +32,7 @@
 **/*.ncb
 **/*.suo
 **/*.vcproj.*.user
+**/.vs
+**/zfproj/cmake/**/out
+**/zfproj_with_src/cmake/**/out
 
