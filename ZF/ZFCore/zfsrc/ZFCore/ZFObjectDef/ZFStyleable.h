@@ -96,8 +96,6 @@ public:
     zffinal const zfstring &propStyle(ZF_IN const zfstring &propertyName);
 private:
     friend zfclassFwd _ZFP_ZFStyleKeyHolder;
-protected:
-    ZFINTERFACE_ON_DEALLOC_DECLARE();
 };
 
 // ============================================================

@@ -142,7 +142,7 @@ SDL_Texture *ZFImpl_sys_SDL_TextureCache::obtain(ZF_IN SDL_Renderer *renderer, Z
             float wOld, hOld;
             SDL_GetTextureSize(_texture, &wOld, &hOld);
             if(w <= wOld && h <= hOld
-                    && !((wOld >= 256 && w < wOld / 2) || (hOld >= 256 && h < hOld / 2))
+                    && !((wOld >= 256 && w <= wOld / 2) || (hOld >= 256 && h <= hOld / 2))
                     ) {
                 return _texture;
             }

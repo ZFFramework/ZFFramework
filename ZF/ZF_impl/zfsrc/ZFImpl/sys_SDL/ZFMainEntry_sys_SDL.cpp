@@ -16,7 +16,22 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFramew
     }
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
-    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after));
+    if(builtinInitFlag()) {
+        builtinInitFlag() = zffalse;
+        ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after));
+
+        ZFImpl_sys_SDL_embedCleanup();
+        if(builtinRenderer() != zfnull) {
+            ZFImpl_sys_SDL_RendererNotifyDestroy(builtinRenderer());
+            SDL_DestroyRenderer(builtinRenderer());
+            builtinRenderer() = zfnull;
+        }
+        if(builtinWindow() != zfnull) {
+            ZFImpl_sys_SDL_WindowNotifyDestroy(builtinWindow());
+            SDL_DestroyWindow(builtinWindow());
+            builtinWindow() = zfnull;;
+        }
+    }
 }
 public:
     static zfbool &builtinInitFlag(void) {
@@ -91,18 +106,6 @@ private:
                 }
             } while(SDL_PollEvent(&event));
         }
-        ZFImpl_sys_SDL_embedCleanup();
-        if(builtinRenderer() != zfnull) {
-            ZFImpl_sys_SDL_RendererNotifyDestroy(builtinRenderer());
-            SDL_DestroyRenderer(builtinRenderer());
-            builtinRenderer() = zfnull;
-        }
-        if(builtinWindow() != zfnull) {
-            ZFImpl_sys_SDL_WindowNotifyDestroy(builtinWindow());
-            SDL_DestroyWindow(builtinWindow());
-            builtinWindow() = zfnull;;
-        }
-        SDL_Quit();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFMainEntry_sys_SDL_setup)
 
