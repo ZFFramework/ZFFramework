@@ -53,8 +53,8 @@ public:
             }
             AES_CBC_decrypt_buffer(&ctx, buf, read);
             zfindex blockSize = 0
-                | (buf[0] << 8) & 0xFF00
-                | (buf[1] << 0) & 0xFF
+                | ((buf[0] << 8) & 0xFF00)
+                | ((buf[1] << 0) & 0xFF)
                 ;
             if(blockSize == 0 || blockSize > read - 2) {
                 return zffalse;

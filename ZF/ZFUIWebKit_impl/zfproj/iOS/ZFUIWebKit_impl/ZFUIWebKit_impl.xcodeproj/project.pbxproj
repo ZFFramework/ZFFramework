@@ -147,7 +147,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = ZFFramework;
 				TargetAttributes = {
 					9B07243A204F6E44F4951FFD5D460AAD = {
@@ -255,7 +255,11 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) ${SRCROOT}/../../../zfsrc ${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SRCROOT}/../../../zfsrc",
+					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
+				);
 				WARNING_CFLAGS = "-Wpartial-availability";
 			};
 			name = Debug;
@@ -293,6 +297,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -304,6 +309,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -325,7 +331,11 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "$(inherited) ${SRCROOT}/../../../zfsrc ${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SRCROOT}/../../../zfsrc",
+					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
+				);
 				WARNING_CFLAGS = "-Wpartial-availability";
 			};
 			name = Release;
@@ -377,6 +387,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -395,6 +406,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
 			name = Debug;
 		};

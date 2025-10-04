@@ -655,7 +655,7 @@ public:
                 continue;
             }
             buf.capacity(size);
-            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), size);
+            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), (mz_uint)size);
             buf.zfunsafe_length(size - 1);
             if(_isSameOrChildOf(buf, itemPathTmp)) {
                 return zftrue;
@@ -681,7 +681,7 @@ public:
                 continue;
             }
             buf.capacity(size);
-            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), size);
+            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), (mz_uint)size);
             buf.zfunsafe_length(size - 1);
             if(zfstringBeginWith(buf, itemPathTmp)) {
                 if(buf.length() == itemPathTmp.length()) {
@@ -739,7 +739,7 @@ public:
             return zffalse;
         }
         itemPath.capacity(itemPath.length() + size);
-        mz_zip_reader_get_filename(&_impl, (mz_uint)itemIndex, itemPath.zfunsafe_buffer() + itemPath.length(), size);
+        mz_zip_reader_get_filename(&_impl, (mz_uint)itemIndex, itemPath.zfunsafe_buffer() + itemPath.length(), (mz_uint)size);
         itemPath.zfunsafe_length(itemPath.length() + size - 1);
         return zftrue;
     }

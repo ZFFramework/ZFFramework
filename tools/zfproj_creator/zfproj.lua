@@ -152,7 +152,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
                 end
                 value = ZFRegExpReplace(value, '\\$' .. tmpKey, tmpValue)
             end
-            local isAdd = ZFRegExpMatch(line, '\\+=')
+            local isAdd = ZFRegExpMatch(line, '.*\\+=.*')
             if isAdd then
                 local l = config:get(key)
                 if zfl_eq(l, zfnull) then
@@ -414,7 +414,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if ZFRegExpMatch(relPath, _SYNC_EXCLUDE:get(i)) then
+            if ZFRegExpMatch(relPath, '.*\\b' .. _SYNC_EXCLUDE:get(i) .. '\\b.*') then
                 filtered = zftrue
                 break
             end
@@ -455,7 +455,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if ZFRegExpMatch(relPath, _SYNC_EXCLUDE:get(i)) then
+            if ZFRegExpMatch(relPath, '.*\\b' .. _SYNC_EXCLUDE:get(i) .. '\\b.*') then
                 filtered = zftrue
                 break
             end
@@ -481,6 +481,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
     ZF_EXCLUDE_FILE_TMP:add('private')
     ZF_EXCLUDE_FILE_TMP:add('zfres')
     ZF_EXCLUDE_FILE_TMP:add('_release')
+    ZF_EXCLUDE_FILE_TMP:add('_repo')
     ZF_EXCLUDE_FILE_TMP:add('_tmp')
 
     local SRC_DIR_FORMATED = ZFPathFormat(SRC_DIR)
@@ -494,7 +495,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         if not filtered then
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
-                if ZFRegExpMatch(relPath, ZF_EXCLUDE_FILE_TMP:get(i)) then
+                if ZFRegExpMatch(relPath, '.*\\b' .. ZF_EXCLUDE_FILE_TMP:get(i) .. '\\b.*') then
                     filtered = zftrue
                     break
                 end
@@ -532,7 +533,14 @@ appIconSetup = function(dstPath, CONFIG_FILE_PATH, config)
     if zfl_eq(ZF_NAME, zfnull) then
         return
     end
+    if not zfl_eq(config:get('ZF_TYPE'), 'app') then
+        return
+    end
+
     local iconPathInfo = ZFPathInfoForLocal(ZFPathInfo(ZFPathType_file(), CONFIG_FILE_PATH), 'AppIcon.png')
+    if not ZFIOIsExist(iconPathInfo) then
+        iconPathInfo = ZFPathInfoForLocal(ZFPathInfo(ZFPathType_file(), ZF_ROOT_PATH), 'master/tools/AppIcon.png')
+    end
     if not ZFIOIsExist(iconPathInfo) then
         return
     end
@@ -540,28 +548,27 @@ appIconSetup = function(dstPath, CONFIG_FILE_PATH, config)
     if zfl_eq(icon, zfnull) then
         return
     end
+    ZFLogTrim('generating icon from: %s', iconPathInfo)
 
     local iconSize = function(size)
         return ZFUISizeCreate(size / 2)
     end
+    local iconConv = function(relPath, size)
+        local output = ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, relPath))
+        ZFUIImageToOutput(output, ZFUIImageScale(icon, iconSize(size)))
+        output:ioClose()
+    end
 
-    ZFUIImageToOutput(
-        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME)))
-        , ZFUIImageScale(icon, iconSize(192))
-        )
-    ZFUIImageToOutput(
-        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj_with_src/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME)))
-        , ZFUIImageScale(icon, iconSize(192))
-        )
+    iconConv(zfstr('%s/zfproj/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME), 192)
+    iconConv(zfstr('%s/zfproj_with_src/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME), 192)
 
-    ZFUIImageToOutput(
-        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME)))
-        , ZFUIImageScale(icon, iconSize(256))
-        )
-    ZFUIImageToOutput(
-        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj_with_src/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME)))
-        , ZFUIImageScale(icon, iconSize(256))
-        )
+    iconConv(zfstr('%s/zfproj/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME), 192)
+    iconConv(zfstr('%s/zfproj_with_src/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME), 192)
+
+    iconConv(zfstr('%s/zfproj/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_256.png', ZF_NAME, ZF_NAME), 256)
+    iconConv(zfstr('%s/zfproj/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_1024.png', ZF_NAME, ZF_NAME), 1024)
+    iconConv(zfstr('%s/zfproj_with_src/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_256.png', ZF_NAME, ZF_NAME), 256)
+    iconConv(zfstr('%s/zfproj_with_src/iOS/%s/ProjectFiles/Assets.xcassets/AppIcon.appiconset/AppIcon_1024.png', ZF_NAME, ZF_NAME), 1024)
 end
 
 zfproj_entry()

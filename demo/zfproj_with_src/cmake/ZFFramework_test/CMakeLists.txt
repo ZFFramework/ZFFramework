@@ -94,6 +94,11 @@ install(
     DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
     )
 
+file(GLOB AppIconPath "${PROJECT_SOURCE_DIR}/AppIcon.png")
+if(NOT "${AppIconPath}" STREQUAL "")
+    install(FILES ${AppIconPath} DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres")
+endif()
+
 file(GLOB_RECURSE SDL_LIBS_
     "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL3*.*"
     )

@@ -490,7 +490,7 @@ static void _ZFP_ZFDI_invoke(
                         break;
                     }
                     else if(_ZFP_ZFDI_exactMatch(zfargs, method)) {
-                        exactMatch = iMethod;
+                        exactMatch = (zfint)iMethod;
                     }
                     else {
                         continue;
@@ -812,7 +812,7 @@ static zfbool _ZFP_ZFDI_alloc(
                         break;
                     }
                     else if(_ZFP_ZFDI_exactMatch(zfargs, method)) {
-                        exactMatch = iMethod;
+                        exactMatch = (zfint)iMethod;
                     }
                     else {
                         continue;

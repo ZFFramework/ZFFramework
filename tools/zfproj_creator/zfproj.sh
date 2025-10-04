@@ -126,16 +126,16 @@ elif test "x-$CONFIG_FILE_PATH" = "x--r" ; then
     # ============================================================
     # default exclude dirs
     ZF_EXCLUDE_FILE_TMP=$ZF_EXCLUDE_FILE
-    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP private zfres _release _tmp"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP private zfres _release _repo _tmp"
 
     # ============================================================
     ZF_ROOT_PATH=$WORK_DIR/../../../ZFFramework
 
-    _FULL_CMD="find '$SRC_DIR' -name 'zfautoscript_zfproj.txt' | grep -v '\(_zf_dummy_\)"
+    _FULL_CMD="find '$SRC_DIR' -name 'zfautoscript_zfproj.txt' | grep -v '^\(_zf_dummy_"
     for e in $ZF_EXCLUDE_FILE_TMP ; do
-        _FULL_CMD="${_FULL_CMD}\|\(/$e/\)"
+        _FULL_CMD="${_FULL_CMD}\|$e"
     done
-    _FULL_CMD="${_FULL_CMD}'"
+    _FULL_CMD="${_FULL_CMD}\)$'"
 
     for f in `eval $_FULL_CMD` ; do
         sh "$WORK_DIR/zfproj.sh" "$f" "$DST_DIR"
@@ -378,9 +378,6 @@ if ! test "x-$ZF_INPLACE" = "x-" ; then
     if test -e "$DST_PATH/.gitignore" || test -e "$DST_PATH/zfres" || test -e "$DST_PATH/zfsrc" ; then
         _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"zfsrc\""
         _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"zfres\""
-        _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"*.png\""
-        _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"*.icns\""
-        _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"*.ico\""
     fi
 fi
 eval "rsync $_SYNC_EXCLUDE -r \"$_TMP_DIR_SRC\" \"$_TMP_DIR_DST\" >/dev/null 2>&1"

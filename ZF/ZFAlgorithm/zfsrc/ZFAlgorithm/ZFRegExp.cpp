@@ -273,11 +273,12 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFRegExpMatch
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(ZFRegExp *, pattern)
         ) {
+    zfindex srcLen = zfslen(src);
     ZFRegExpResult result;
     if(pattern) {
-        pattern->find(result, src);
+        pattern->find(result, src, srcLen);
     }
-    return result.matched;
+    return result.matchedRange.start == 0 && result.matchedRange.count == srcLen;
 }
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFRegExpMatch
         , ZFMP_IN(const zfchar *, src)
