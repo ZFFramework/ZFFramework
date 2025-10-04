@@ -26,6 +26,8 @@ local function printUsage()
     ZFLogTrim('the "private" template dir must be in the same dir of zfproj.lua')
 end
 
+local appIconSetup = nil
+
 local localPathInfo = ZFLocalPathInfo()
 if zfl_eq(localPathInfo, zfnull) then
     ZFLogTrim('unable to obtain local path info')
@@ -36,7 +38,7 @@ if not zfl_eq(localPathInfo:pathType(), ZFPathType_file()) then
     return
 end
 local WORK_DIR = ZFPathInfoForLocal(localPathInfo, '.'):pathData()
-ZF_ROOT_PATH = ZFPathInfoForLocal(localPathInfo, '../..'):pathData()
+local ZF_ROOT_PATH = ZFPathInfoForLocal(localPathInfo, '../..'):pathData()
 
 local _PY = nil
 if os.execute('python --version >/dev/null 2>&1') then
@@ -400,9 +402,6 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             then
             _SYNC_EXCLUDE:add('zfsrc')
             _SYNC_EXCLUDE:add('zfres')
-            _SYNC_EXCLUDE:add('.*\\.png')
-            _SYNC_EXCLUDE:add('.*\\.icns')
-            _SYNC_EXCLUDE:add('.*\\.ico')
         end
     end
 
@@ -437,6 +436,13 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         ZFLogTrim('unique iOS project...')
         os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj_recursive.sh" "' .. _TMP_DIR .. '"')
     end
+
+    -- appIcon
+    appIconSetup(
+        ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_DST)
+        , CONFIG_FILE_PATH
+        , config
+        )
 
     -- finally sync to dst
     ZFLogTrim('sync to target')
@@ -500,22 +506,63 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
     end)
 end
 
-if #args > 0 then
-    if ZFRegExpMatch(args[1], '^(-app|-lib|-impl)$') then
-        if #args < 3 then
-            printUsage()
-            return
+local function zfproj_entry()
+    if #args > 0 then
+        if ZFRegExpMatch(args[1], '^(-app|-lib|-impl)$') then
+            if #args < 3 then
+                printUsage()
+                return
+            end
+            zfproj_init(args[1], args[2], args[3])
+        elseif ZFRegExpMatch(args[1], '^(-r)$') then
+            if #args < 2 then
+                printUsage()
+                return
+            end
+            zfproj_recursive(args[2], args[3])
+        else
+            zfproj_creator(args[1], args[2])
         end
-        zfproj_init(args[1], args[2], args[3])
-    elseif ZFRegExpMatch(args[1], '^(-r)$') then
-        if #args < 2 then
-            printUsage()
-            return
-        end
-        zfproj_recursive(args[2], args[3])
-    else
-        zfproj_creator(args[1], args[2])
+        ZFApp.appExit(0)
     end
-    ZFApp.appExit(0)
 end
+
+appIconSetup = function(dstPath, CONFIG_FILE_PATH, config)
+    local ZF_NAME = config:get('ZF_NAME')
+    if zfl_eq(ZF_NAME, zfnull) then
+        return
+    end
+    local iconPathInfo = ZFPathInfoForLocal(ZFPathInfo(ZFPathType_file(), CONFIG_FILE_PATH), 'AppIcon.png')
+    if not ZFIOIsExist(iconPathInfo) then
+        return
+    end
+    local icon = ZFUIImageFromInput(ZFInputForPathInfo(iconPathInfo))
+    if zfl_eq(icon, zfnull) then
+        return
+    end
+
+    local iconSize = function(size)
+        return ZFUISizeCreate(size / 2)
+    end
+
+    ZFUIImageToOutput(
+        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME)))
+        , ZFUIImageScale(icon, iconSize(192))
+        )
+    ZFUIImageToOutput(
+        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj_with_src/Android/%s/zfapp/src/main/res/mipmap-xxxhdpi/ic_launcher.png', ZF_NAME, ZF_NAME)))
+        , ZFUIImageScale(icon, iconSize(192))
+        )
+
+    ZFUIImageToOutput(
+        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME)))
+        , ZFUIImageScale(icon, iconSize(256))
+        )
+    ZFUIImageToOutput(
+        ZFOutputForPathInfo(ZFPathInfoForLocal(dstPath, zfstr('%s/zfproj_with_src/cmake/%s/AppIcon.png', ZF_NAME, ZF_NAME)))
+        , ZFUIImageScale(icon, iconSize(256))
+        )
+end
+
+zfproj_entry()
 
