@@ -14,7 +14,7 @@ public:
     zfoverride
     virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
-        _implFade = 500;
+        _implFade = 300;
         MIX_Init();
         _implMixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, zfnull);
     }
@@ -189,12 +189,16 @@ public:
         zfclassNotPOD Cb {
         public:
             static void a(void *userdata, MIX_Track *track) {
-                ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop((ZFAudio *)userdata, zftrue, zfnull);
+                ZFPROTOCOL_INTERFACE_CLASS(ZFAudio) *d = ZFPROTOCOL_TRY_ACCESS(ZFAudio);
+                if(d) {
+                    d->notifyAudioOnStop((ZFAudio *)userdata, zftrue, zfnull);
+                }
             }
         };
         MIX_SetTrackStoppedCallback(nativeAudio->implTrack, Cb::a, audio);
 
         MIX_PlayTrack(nativeAudio->implTrack, 0);
+        this->notifyAudioOnResume(audio);
     }
     virtual void nativeAudioStop(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
