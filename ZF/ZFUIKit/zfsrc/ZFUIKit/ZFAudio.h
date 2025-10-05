@@ -141,7 +141,7 @@ public:
             )
 
     /** @brief current volume */
-    ZFPROPERTY_ASSIGN(zffloat, volume)
+    ZFPROPERTY_ASSIGN(zffloat, volume, 1)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, volume)
 
     /**

@@ -1,6 +1,8 @@
 #include "ZFAudio.h"
 #include "protocol/ZFProtocolZFAudio.h"
 
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFAudioPrivate {
@@ -28,6 +30,23 @@ public:
     {
     }
 };
+
+static zfstlmap<ZFAudio *, zfbool> &_ZFP_ZFAudio_playing(void) {
+    static zfstlmap<ZFAudio *, zfbool> d;
+    return d;
+}
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAudioAutoStop, ZFLevelZFFrameworkNormal) {
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFAudioAutoStop) {
+    if(!_ZFP_ZFAudio_playing().empty()) {
+        zfstlmap<ZFAudio *, zfbool> m;
+        m.swap(_ZFP_ZFAudio_playing());
+        for(zfstlmap<ZFAudio *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
+            it->first->stop();
+        }
+    }
+}
+ZF_GLOBAL_INITIALIZER_END(ZFAudioAutoStop)
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAudio)
@@ -114,6 +133,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         d->loopCur = 0;
+        _ZFP_ZFAudio_playing()[this] = zftrue;
         this->audioOnStart();
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
@@ -255,6 +275,7 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
 
         if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
+            _ZFP_ZFAudio_playing()[this] = zftrue;
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioVolume(this, this->volume());
         }
@@ -276,10 +297,12 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ++d->loopCur;
     }
     if(result != v_ZFResultType::e_Cancel && (this->loop() == zfindexMax() || d->loopCur <= this->loop())) {
+        _ZFP_ZFAudio_playing()[this] = zftrue;
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
         this->audioOnLoop();
     }
     else {
+        _ZFP_ZFAudio_playing().erase(this);
         if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
             this->_ZFP_ZFAudio_OnPause();
         }
