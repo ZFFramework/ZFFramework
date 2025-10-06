@@ -222,8 +222,8 @@ public:
         Sint64 remain = MIX_GetTrackRemaining(nativeAudio->implTrack);
         return (zftimet)MIX_TrackFramesToMS(nativeAudio->implTrack
                 , (Uint64)(0
-                    + played >= 0 ? played : 0
-                    + remain >= 0 ? remain : 0
+                    + (played > 0 ? played : 0)
+                    + (remain > 0 ? remain : 0)
                     ));
     }
     virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio) {
