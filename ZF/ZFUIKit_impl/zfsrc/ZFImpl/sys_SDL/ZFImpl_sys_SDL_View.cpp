@@ -72,6 +72,9 @@ static void _ZFP_ZFImpl_sys_SDL_View_render(
         , ZF_IN const SDL_FRect &parentRect
         , ZF_IN zffloat treeAlpha
         ) {
+    if(view->ownerZFUIView && view->ownerZFUIView->alpha() != 1) {
+        treeAlpha *= view->ownerZFUIView->alpha();
+    }
     zfbool done = zffalse;
     for(zfindex i = 0; i < view->renderImpls.count(); ++i) {
         done |= view->renderImpls[i](renderer, view, childRect, parentRect, treeAlpha);
@@ -87,7 +90,7 @@ static void _ZFP_ZFImpl_sys_SDL_View_render(
             childRectNew.y = childRect.y + child->rect.y;
             childRectNew.w = child->rect.w;
             childRectNew.h = child->rect.h;
-            child->render(renderer, childRectNew, parentRectNew, child->ownerZFUIView != zfnull ? treeAlpha * child->ownerZFUIView->alpha() : 1);
+            child->render(renderer, childRectNew, parentRectNew, treeAlpha);
         }
     }
 }
@@ -125,11 +128,13 @@ void ZFImpl_sys_SDL_View::render(
         return;
     }
     if(!this->renderCacheValid) {
+        SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
         ZFImpl_sys_SDL_zfscopeRenderTarget(success, renderer, sdlTexture);
         if(!success) {
             _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
             return;
         }
+        this->renderCacheValid = zftrue;
 
         Uint8 rOld, gOld, bOld, aOld;
         SDL_GetRenderDrawColor(renderer, &rOld, &gOld, &bOld, &aOld);
@@ -142,7 +147,7 @@ void ZFImpl_sys_SDL_View::render(
         cacheRect.y = 0;
         cacheRect.w = childRect.w;
         cacheRect.h = childRect.h;
-        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, cacheRect, cacheRect, treeAlpha);
+        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, cacheRect, cacheRect, this->ownerZFUIView ? this->ownerZFUIView->alpha() : 1);
     }
 
     // support 2D transform only
@@ -202,7 +207,9 @@ void ZFImpl_sys_SDL_View::render(
     parentRectTmp.h = (int)parentRect.h;
     SDL_SetRenderClipRect(renderer, &parentRectTmp);
     SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND_PREMULTIPLIED);
+    SDL_SetTextureAlphaModFloat(sdlTexture, treeAlpha);
     SDL_RenderTextureRotated(renderer, sdlTexture, &src, &dst, angle, zfnull, SDL_FLIP_NONE);
+    SDL_SetTextureAlphaModFloat(sdlTexture, 1);
 
     if(clipSaved.w > 0 && clipSaved.h > 0) {
         SDL_SetRenderClipRect(renderer, &clipSaved);

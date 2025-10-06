@@ -292,6 +292,7 @@ static void _ZFP_ZFImpl_sys_SDL_ensureUI(void) {
     ZFImpl_sys_SDL_embedInit(_ZFP_ZFImpl_sys_SDL_builtinWindow);
 }
 
+static SDL_AppResult _ZFP_ZFImpl_sys_SDL_AppResult = SDL_APP_CONTINUE;
 SDL_AppResult ZFImpl_sys_SDL_AppInit(void **appstate, int argc, char *argv[]) {
     if(!SDL_Init(0
                 | SDL_INIT_AUDIO
@@ -313,18 +314,19 @@ SDL_AppResult ZFImpl_sys_SDL_AppInit(void **appstate, int argc, char *argv[]) {
     }
     zfint ret = ZFMainExecute(params);
 
-    return (ret == 0 ? SDL_APP_CONTINUE : SDL_APP_FAILURE);
+    return (ret == 0 ? _ZFP_ZFImpl_sys_SDL_AppResult : SDL_APP_FAILURE);
 }
 SDL_AppResult ZFImpl_sys_SDL_AppEvent(void *appstate, SDL_Event *event) {
     if(!ZFImpl_sys_SDL_embedEventHandler(event)) {
         if(event->type == SDL_EVENT_QUIT) {
-            return SDL_APP_SUCCESS;
+            _ZFP_ZFImpl_sys_SDL_AppResult = SDL_APP_SUCCESS;
         }
     }
-    return SDL_APP_CONTINUE;
+    return _ZFP_ZFImpl_sys_SDL_AppResult;
 }
 SDL_AppResult ZFImpl_sys_SDL_AppIterate(void *appstate) {
-    return SDL_APP_CONTINUE;
+    SDL_WaitEvent(NULL);
+    return _ZFP_ZFImpl_sys_SDL_AppResult;
 }
 void ZFImpl_sys_SDL_AppQuit(void *appstate, SDL_AppResult result) {
     ZFFrameworkCleanup();

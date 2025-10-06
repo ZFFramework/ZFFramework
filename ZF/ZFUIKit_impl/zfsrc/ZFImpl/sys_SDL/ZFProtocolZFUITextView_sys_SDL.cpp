@@ -181,7 +181,8 @@ private:
                 , ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor())
                 , owner->singleLine()
                 , owner->textTruncateMode()
-                , treeAlpha);
+                , treeAlpha
+                );
         return zffalse;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_SDL)

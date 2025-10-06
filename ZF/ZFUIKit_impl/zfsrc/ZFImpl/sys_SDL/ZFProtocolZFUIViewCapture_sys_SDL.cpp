@@ -31,7 +31,7 @@ public:
         SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(nativeImage);
         ZFImpl_sys_SDL_RendererNotifyCreate(renderer);
         zffloat alpha = 1;
-        for(ZFUIView *p = view; p != zfnull; p = p->parent()) {
+        for(ZFUIView *p = view->parent(); p != zfnull; p = p->parent()) {
             alpha *= p->alpha();
         }
         nativeView->render(renderer, rect, rect, alpha);
