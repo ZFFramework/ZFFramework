@@ -8,7 +8,7 @@ if test "x-$PROJ_NAME" = "x-" || test "x-$PROJ_PATH" = "x-" ; then
 fi
 
 if test "x-$CMAKE_BUILD_TYPE" = "x-" ; then
-    _CONFIG=Release
+    _CONFIG=RelWithDebInfo
 else
     _CONFIG=$CMAKE_BUILD_TYPE
 fi

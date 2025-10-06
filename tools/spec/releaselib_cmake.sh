@@ -18,7 +18,7 @@ _OLD_DIR=$(pwd)
 
 mkdir -p "$ZF_ROOT_PATH/_tmp/cmake/$PROJ_NAME/build" >/dev/null 2>&1
 cd "$ZF_ROOT_PATH/_tmp/cmake/$PROJ_NAME/build"
-cmake "$PROJ_PATH/cmake/$PROJ_NAME" -DCMAKE_BUILD_TYPE=Release
+cmake "$PROJ_PATH/cmake/$PROJ_NAME" -DCMAKE_BUILD_TYPE=RelWithDebInfo
 make -j4
 make install
 RESULT=$?

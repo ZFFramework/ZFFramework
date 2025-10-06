@@ -25,7 +25,7 @@ set _OLD_DIR=%cd%
 
 mkdir "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\build" >nul 2>&1
 cd /d "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\build"
-cmake -G "Ninja" "%PROJ_PATH%\cmake\%PROJ_NAME%" -DCMAKE_BUILD_TYPE=Release
+cmake -G "Ninja" "%PROJ_PATH%\cmake\%PROJ_NAME%" -DCMAKE_BUILD_TYPE=RelWithDebInfo
 ninja
 ninja install
 set RESULT=%errorlevel%

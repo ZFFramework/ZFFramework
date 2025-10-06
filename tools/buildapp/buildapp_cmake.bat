@@ -15,7 +15,7 @@ exit /b 1
 :run
 
 if "%CMAKE_BUILD_TYPE%" == "" (
-    set _CONFIG=Release
+    set _CONFIG=RelWithDebInfo
 ) else (
     set _CONFIG=%CMAKE_BUILD_TYPE%
 )

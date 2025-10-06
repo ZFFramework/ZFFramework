@@ -88,16 +88,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFCoreLog(
 /**
  * @brief callback which would be called if ZFCoreCriticalError is called
  */
-typedef void (*ZFCoreCriticalErrorCallback)(ZF_IN const ZFCallerInfo &callerInfo);
-
-/**
- * @brief see #ZFCoreCriticalErrorCallback
- */
-extern ZFLIB_ZFCore void ZFCoreCriticalErrorPrepareCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
-/**
- * @brief see #ZFCoreCriticalErrorCallback
- */
-extern ZFLIB_ZFCore void ZFCoreCriticalErrorPrepareCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
+typedef void (*ZFCoreCriticalErrorCallback)(ZF_IN const ZFCallerInfo &callerInfo, ZF_IN_OUT zfstring &errorHint);
 
 /**
  * @brief see #ZFCoreCriticalErrorCallback
@@ -108,23 +99,7 @@ extern ZFLIB_ZFCore void ZFCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErro
  */
 extern ZFLIB_ZFCore void ZFCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
 
-extern ZFLIB_ZFCore void _ZFP_ZFCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo);
-extern ZFLIB_ZFCore void _ZFP_ZFCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo);
-/**
- * @brief ready to output critical error, see #ZFCoreCriticalError
- *
- * usage:
- * @code
- *   ZFCoreCriticalErrorPrepare();
- *   ZFCoreLog(xxx);
- *   ZFCoreCriticalError();
- * @endcode
- * this is useful to redirect #ZFCoreLog by #ZFCoreLogOutputCallback,
- * to save critical error messages to proper location
- */
-#define ZFCoreCriticalErrorPrepare() _ZFP_ZFCoreCriticalErrorPrepare(ZFCallerInfoCreate())
-/** @brief see #ZFCoreCriticalErrorPrepare */
-#define ZFCoreCriticalErrorPrepareDetail(callerInfo) _ZFP_ZFCoreCriticalErrorPrepare(callerInfo)
+extern ZFLIB_ZFCore void _ZFP_ZFCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo, ZF_IN const zfchar *errorHint);
 
 /**
  * @brief used when error occurred, to terminate the application
@@ -132,9 +107,9 @@ extern ZFLIB_ZFCore void _ZFP_ZFCoreCriticalError(ZF_IN const ZFCallerInfo &call
  * @warning this function is for internal use,
  *   calling this method would cause app to be terminated
  */
-#define ZFCoreCriticalError() _ZFP_ZFCoreCriticalError(ZFCallerInfoCreate())
+#define ZFCoreCriticalError(errorHint) _ZFP_ZFCoreCriticalError(ZFCallerInfoCreate(), errorHint)
 /** @brief see #ZFCoreCriticalError */
-#define ZFCoreCriticalErrorDetail(callerInfo) _ZFP_ZFCoreCriticalError(callerInfo)
+#define ZFCoreCriticalErrorDetail(callerInfo, errorHint) _ZFP_ZFCoreCriticalError(callerInfo, errorHint)
 
 ZF_NAMESPACE_GLOBAL_END
 

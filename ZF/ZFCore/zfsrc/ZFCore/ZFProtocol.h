@@ -339,7 +339,6 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     const zfchar *mismatchProtocolName = zfnull; \
                     ZFProtocol *mismatchImpl = zfnull; \
                     if(!_d.implInstance->_ZFP_ZFProtocol_checkImplDependency(desiredImplPlatformHint, mismatchProtocolName, mismatchImpl)) { \
-                        ZFCoreCriticalErrorPrepare(); \
                         zfstring err; \
                         zfstringAppend(err, "(%s)%s depends on (%s)\"%s\"", \
                             _d.implInstance->protocolName(), \
@@ -354,7 +353,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                                 mismatchImpl->protocolImplPlatformHint()); \
                         } \
                         ZFCoreLogTrim(err); \
-                        ZFCoreCriticalError(); \
+                        ZFCoreCriticalError(err); \
                         zfdelete(_d.implInstance); \
                         _d.implInstance = zfnull; \
                         return zfnull; \

@@ -996,19 +996,26 @@ zfstring ZFImpl_ZFLua_luaStackInfo(
     return ret;
 }
 
-ZF_STATIC_INITIALIZER_INIT(ZFImpl_ZFLua_criticalErrorHandler) {
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_criticalErrorHandler, ZFLevelZFFrameworkEssential) {
     ZFCoreCriticalErrorCallbackAdd(zfself::impl);
 }
-static void impl(const ZFCallerInfo &callerInfo) {
-    lua_State *L = (lua_State *)ZFLuaStateCheck();
-    if(L != NULL) {
-        zfstring info;
-        if(ZFImpl_ZFLua_stacktraceT(L, info)) {
-            ZFCoreLogTrim("%s", info);
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_criticalErrorHandler) {
+    ZFCoreCriticalErrorCallbackRemove(zfself::impl);
+}
+private:
+    static void impl(ZF_IN const ZFCallerInfo &callerInfo, ZF_IN_OUT zfstring &errorHint) {
+        lua_State *L = (lua_State *)ZFLuaStateCheck();
+        if(L != NULL) {
+            zfstring info;
+            if(ZFImpl_ZFLua_stacktraceT(L, info)) {
+                ZFCoreLogTrim("%s", info);
+
+                errorHint += "\n";
+                errorHint += info;
+            }
         }
     }
-}
-ZF_STATIC_INITIALIZER_END(ZFImpl_ZFLua_criticalErrorHandler)
+ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_criticalErrorHandler)
 
 ZF_NAMESPACE_GLOBAL_END
 
