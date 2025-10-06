@@ -2,9 +2,6 @@
 #define _ZFI_ZFImpl_sys_SDL_h_
 
 #include "ZFCore/ZFCoreDef.h"
-#include "../sys_Android/ZFImpl_sys_Android.h"
-#include "../sys_iOS/ZFImpl_sys_iOS.h"
-#include "../sys_Qt/ZFImpl_sys_Qt.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
