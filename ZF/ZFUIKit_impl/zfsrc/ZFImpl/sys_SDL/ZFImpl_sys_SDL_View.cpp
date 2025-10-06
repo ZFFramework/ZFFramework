@@ -147,7 +147,7 @@ void ZFImpl_sys_SDL_View::render(
         cacheRect.y = 0;
         cacheRect.w = childRect.w;
         cacheRect.h = childRect.h;
-        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, cacheRect, cacheRect, this->ownerZFUIView ? this->ownerZFUIView->alpha() : 1);
+        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, cacheRect, cacheRect, this->ownerZFUIView ? this->ownerZFUIView->alpha() : (zffloat)1);
     }
 
     // support 2D transform only

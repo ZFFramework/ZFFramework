@@ -20,6 +20,7 @@ public:
     zftimet positionToUpdate;
     zfuint state; // StateFlag
     zfuint loopCur;
+    zfidentity audioTaskId;
 
 public:
     _ZFP_ZFAudioPrivate(void)
@@ -27,6 +28,7 @@ public:
     , positionToUpdate(-1)
     , state(0)
     , loopCur(0)
+    , audioTaskId((zfidentity)zfmRand())
     {
     }
 };
@@ -121,6 +123,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         return;
     }
+    ++(d->audioTaskId);
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         zfRetain(this); // release when OnStop
 
@@ -146,6 +149,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, stop) {
     if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag) && !ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         return;
     }
+    zfRetain(this);
     d->positionToUpdate = -1;
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::StartFlag);
@@ -163,6 +167,8 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, stop) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnStop(v_ZFResultType::e_Cancel, zfnull);
     }
+    ++(d->audioTaskId);
+    zfRelease(this);
 }
 
 ZFMETHOD_DEFINE_0(ZFAudio, void, resume) {
@@ -250,6 +256,10 @@ ZFMETHOD_DEFINE_0(ZFAudio, const zfchar *, stateHint) {
     else {
         return "idle";
     }
+}
+
+ZFMETHOD_DEFINE_0(ZFAudio, zfidentity, audioTaskId) {
+    return d->audioTaskId;
 }
 
 // ============================================================

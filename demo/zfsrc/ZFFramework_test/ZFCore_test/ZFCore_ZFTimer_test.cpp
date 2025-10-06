@@ -32,7 +32,7 @@ protected:
                         ) {
                     owner->stop();
                 } ZFLISTENER_END()
-                ZFThread::mainThread()->taskQueueAdd(action);
+                zfpost(action);
             }
         } ZFLISTENER_END()
         timer->observerAdd(ZFTimer::E_TimerOnActivate(), timerOnActivate);

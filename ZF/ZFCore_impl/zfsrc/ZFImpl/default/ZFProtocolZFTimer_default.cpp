@@ -1,6 +1,7 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFTimer.h"
 #include "ZFCore/ZFThread.h"
+#include "ZFCore/ZFThread_zfpost.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -58,7 +59,7 @@ public:
             while(curId == this->timer->timerImplId() && !curThread->threadStopRequested()) {
                 ZFThread::sleep(this->timer->interval());
                 if(this->timer->timerImplId() == curId && !curThread->threadStopRequested()) {
-                    ZFThread::mainThread()->taskQueueAdd(timerMainThread);
+                    zfpost(timerMainThread);
                 }
             }
         }

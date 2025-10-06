@@ -197,7 +197,10 @@ public:
         };
         MIX_SetTrackStoppedCallback(nativeAudio->implTrack, Cb::a, audio);
 
-        MIX_PlayTrack(nativeAudio->implTrack, 0);
+        if(!MIX_PlayTrack(nativeAudio->implTrack, 0)) {
+            this->notifyAudioOnStop(audio, zffalse, zfobj<v_zfstring>(SDL_GetError()));
+            return;
+        }
         this->notifyAudioOnResume(audio);
     }
     virtual void nativeAudioStop(ZF_IN ZFAudio *audio) {

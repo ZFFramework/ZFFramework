@@ -153,6 +153,9 @@ public:
     /** @brief return a state hint for debug */
     ZFMETHOD_DECLARE_0(const zfchar *, stateHint)
 
+    /** @brief an unique task id for impl, changed each time #start or #stop called */
+    ZFMETHOD_DECLARE_0(zfidentity, audioTaskId)
+
 protected:
     /** @brief load from input */
     ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const ZFInput &, input))

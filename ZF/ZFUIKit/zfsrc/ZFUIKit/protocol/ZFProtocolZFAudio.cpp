@@ -9,44 +9,60 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(
         , ZF_IN zfbool success
         , ZF_IN v_zfstring *errorHint
         ) {
-    ZFLISTENER_3(action
+    zfidentity audioTaskId = audio->audioTaskId();
+    ZFLISTENER_4(action
+            , zfidentity, audioTaskId
             , zfautoT<ZFAudio>, audio
             , zfbool, success
             , zfautoT<v_zfstring>, errorHint
             ) {
-        audio->_ZFP_ZFAudio_OnLoad(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
+        if(audioTaskId == audio->audioTaskId()) {
+            audio->_ZFP_ZFAudio_OnLoad(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
+        }
     } ZFLISTENER_END()
-    ZFThread::mainThread()->taskQueueAdd(action);
+    zfpost(action);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(
         ZF_IN ZFAudio *audio
         , ZF_IN zfbool success
         , ZF_IN v_zfstring *errorHint
         ) {
-    ZFLISTENER_3(action
+    zfidentity audioTaskId = audio->audioTaskId();
+    ZFLISTENER_4(action
+            , zfidentity, audioTaskId
             , zfautoT<ZFAudio>, audio
             , zfbool, success
             , zfautoT<v_zfstring>, errorHint
             ) {
-        audio->_ZFP_ZFAudio_OnStop(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
+        if(audioTaskId == audio->audioTaskId()) {
+            audio->_ZFP_ZFAudio_OnStop(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
+        }
     } ZFLISTENER_END()
-    ZFThread::mainThread()->taskQueueAdd(action);
+    zfpost(action);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *audio) {
-    ZFLISTENER_1(action
+    zfidentity audioTaskId = audio->audioTaskId();
+    ZFLISTENER_2(action
+            , zfidentity, audioTaskId
             , zfautoT<ZFAudio>, audio
             ) {
-        audio->_ZFP_ZFAudio_OnResume();
+        if(audioTaskId == audio->audioTaskId()) {
+            audio->_ZFP_ZFAudio_OnResume();
+        }
     } ZFLISTENER_END()
-    ZFThread::mainThread()->taskQueueAdd(action);
+    zfpost(action);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnPause(ZF_IN ZFAudio *audio) {
-    ZFLISTENER_1(action
+    zfidentity audioTaskId = audio->audioTaskId();
+    ZFLISTENER_2(action
+            , zfidentity, audioTaskId
             , zfautoT<ZFAudio>, audio
             ) {
-        audio->_ZFP_ZFAudio_OnPause();
+        if(audioTaskId == audio->audioTaskId()) {
+            audio->_ZFP_ZFAudio_OnPause();
+        }
     } ZFLISTENER_END()
-    ZFThread::mainThread()->taskQueueAdd(action);
+    zfpost(action);
 }
 
 ZF_NAMESPACE_GLOBAL_END

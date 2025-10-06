@@ -36,6 +36,44 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
         , ZFMP_IN(const zfstring &, url)
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
+    ZFPathInfo pathInfo;
+    if(ZFPathInfoFromStringT(pathInfo, url)) {
+        zfautoT<ZFAudio> impl;
+        {
+            impl = ZFAudioCache::instance()->cacheGet(url);
+            if(!impl) {
+                ZFInput input = ZFInputForPathInfo(pathInfo);
+                if(!input) {
+                    callback.execute(ZFArgs()
+                            .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
+                            .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
+                                        , url
+                                        )))
+                            );
+                    return zfnull;
+                }
+
+                impl = zfobj<ZFAudio>();
+                impl->load(input);
+            }
+        }
+        if(!impl->startable()) {
+            callback.execute(ZFArgs()
+                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
+                    .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
+                                , url
+                                )))
+                    );
+            return zfnull;
+        }
+        ZFAudioCache::instance()->cacheAdd(url, impl);
+        if(callback) {
+            impl->observerAddForOnce(ZFAudio::E_AudioOnStop(), callback);
+        }
+        impl->start();
+        return impl;
+    }
+
     zfautoT<ZFAudio> impl;
     if(url) {
         impl = ZFAudioCache::instance()->cacheGet(url);
