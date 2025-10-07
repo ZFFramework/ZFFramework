@@ -299,7 +299,7 @@ public:
 public:
     zfoverride
     virtual const ZFCorePointer *refNew(void) const {
-        return zfnew((ZFCorePointerT<T_Pointer, T_ZFCorePointerType>), *this);
+        return zfnew(ZFCorePointerT<T_Pointer ZFM_COMMA() T_ZFCorePointerType>, *this);
     }
     zfoverride
     virtual inline const void *pointerValueAccess(void) const {

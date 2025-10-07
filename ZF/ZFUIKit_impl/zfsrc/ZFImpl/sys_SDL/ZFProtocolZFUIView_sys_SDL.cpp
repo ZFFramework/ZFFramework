@@ -98,10 +98,11 @@ public:
         }
     }
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
-        return 1;
+        return this->UIScaleForPixel(nativeView);
     }
     virtual zffloat UIScaleForPixel(ZF_IN void *nativeView) {
-        return 1;
+        ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)nativeView;
+        return (zffloat)SDL_GetWindowDisplayScale(nativeViewTmp->sysWindow->sdlWindow);
     }
 
     // ============================================================
