@@ -15,9 +15,9 @@ public:
             ZF_IN const zfchar *s
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) {
-        if(count == zfindexMax()) {
+        if(count == zfindexMax() || s[count] == '\0') {
             printf("%s", s);
-            if(zfstringFind(s, "\n") >= 0) {
+            if(zfstringFind(s, count == zfindexMax() ? zfslen(s) : count, "\n") >= 0) {
                 fflush(stdout);
             }
         }

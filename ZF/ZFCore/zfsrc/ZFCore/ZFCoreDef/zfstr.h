@@ -59,7 +59,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 inline zfstring zfstr(
         ZF_IN const zfchar *fmt = zfnull
         ) {
-    return fmt;
+    if(fmt == zfnull || *fmt == '\0') {
+        return zfstring();
+    }
+    else {
+        return zftext(fmt);
+    }
 }
 
 /** @brief see #zfstr */
