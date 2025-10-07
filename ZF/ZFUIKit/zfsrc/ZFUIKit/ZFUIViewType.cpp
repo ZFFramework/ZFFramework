@@ -267,26 +267,11 @@ ZFMETHOD_DEFINE_4(ZFUILayoutParam, void, layoutParamApplyT
         , ZFMP_IN(ZFUIView *, child)
         , ZFMP_IN(ZFUILayoutParam *, lp)
         ) {
-    ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, lp->margin()));
-    if(refSizeTmp.width < 0) {
-        refSizeTmp.width = 0;
-    }
-    if(refSizeTmp.height < 0) {
-        refSizeTmp.height = 0;
-    }
-    if(lp->sizeHint().width >= 0) {
-        refSizeTmp.width = zfmMin(lp->sizeHint().width, refSizeTmp.width);
-    }
-    if(lp->sizeHint().height >= 0) {
-        refSizeTmp.height = zfmMin(lp->sizeHint().height, refSizeTmp.height);
-    }
-
-    child->layoutMeasure(refSizeTmp, lp->sizeParam());
-    ZFUIAlignApplyT(
-            ret
+    ZFUILayoutParam::layoutParamApplyT(ret, rect, child
+            , lp->sizeHint()
+            , lp->sizeParam()
             , lp->align()
-            , ZFUIRectApplyMargin(rect, lp->margin())
-            , child->layoutMeasuredSize()
+            , lp->margin()
             );
 }
 ZFMETHOD_DEFINE_3(ZFUILayoutParam, ZFUIRect, layoutParamApply
@@ -295,7 +280,60 @@ ZFMETHOD_DEFINE_3(ZFUILayoutParam, ZFUIRect, layoutParamApply
         , ZFMP_IN(ZFUILayoutParam *, lp)
         ) {
     ZFUIRect ret = ZFUIRectZero();
-    ZFUILayoutParam::layoutParamApplyT(ret, rect, child, lp);
+    ZFUILayoutParam::layoutParamApplyT(ret, rect, child
+            , lp->sizeHint()
+            , lp->sizeParam()
+            , lp->align()
+            , lp->margin()
+            );
+    return ret;
+}
+ZFMETHOD_DEFINE_7(ZFUILayoutParam, void, layoutParamApplyT
+        , ZFMP_OUT(ZFUIRect &, ret)
+        , ZFMP_IN(const ZFUIRect &, rect)
+        , ZFMP_IN(ZFUIView *, child)
+        , ZFMP_IN(const ZFUISize &, sizeHint)
+        , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+        , ZFMP_IN(const ZFUIAlignFlags &, align)
+        , ZFMP_IN(const ZFUIMargin &, margin)
+        ) {
+    ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, margin));
+    if(refSizeTmp.width < 0) {
+        refSizeTmp.width = 0;
+    }
+    if(refSizeTmp.height < 0) {
+        refSizeTmp.height = 0;
+    }
+    if(sizeHint.width >= 0) {
+        refSizeTmp.width = zfmMin(sizeHint.width, refSizeTmp.width);
+    }
+    if(sizeHint.height >= 0) {
+        refSizeTmp.height = zfmMin(sizeHint.height, refSizeTmp.height);
+    }
+
+    child->layoutMeasure(refSizeTmp, sizeParam);
+    ZFUIAlignApplyT(
+            ret
+            , align
+            , ZFUIRectApplyMargin(rect, margin)
+            , child->layoutMeasuredSize()
+            );
+}
+ZFMETHOD_DEFINE_6(ZFUILayoutParam, ZFUIRect, layoutParamApply
+        , ZFMP_IN(const ZFUIRect &, rect)
+        , ZFMP_IN(ZFUIView *, child)
+        , ZFMP_IN(const ZFUISize &, sizeHint)
+        , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+        , ZFMP_IN(const ZFUIAlignFlags &, align)
+        , ZFMP_IN(const ZFUIMargin &, margin)
+        ) {
+    ZFUIRect ret = ZFUIRectZero();
+    ZFUILayoutParam::layoutParamApplyT(ret, rect, child
+            , sizeHint
+            , sizeParam
+            , align
+            , margin
+            );
     return ret;
 }
 

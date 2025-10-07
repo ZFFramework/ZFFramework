@@ -7,19 +7,109 @@
 #if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFrameworkStatic) {
+    ZFGlobalObserver().observerAddForOnce(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after), ZFLevelZFFrameworkPostEssential);
+    zfself::_before();
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
+    ZFGlobalObserver().observerRemove(ZFApp::E_AppEntry(), ZFCallbackForFunc(zfself::_after));
+
+    ZFImpl_sys_SDL_embedCleanup();
+    if(builtinRenderer() != zfnull) {
+        ZFImpl_sys_SDL_RendererNotifyDestroy(builtinRenderer());
+        SDL_DestroyRenderer(builtinRenderer());
+        builtinRenderer() = zfnull;
+    }
+    if(builtinWindow() != zfnull) {
+        ZFImpl_sys_SDL_WindowNotifyDestroy(builtinWindow());
+        SDL_DestroyWindow(builtinWindow());
+        builtinWindow() = zfnull;;
+    }
+}
+public:
+    static SDL_Window *&builtinWindow(void) {
+        static SDL_Window *d = zfnull;
+        return d;
+    }
+    static SDL_Renderer *&builtinRenderer(void) {
+        static SDL_Renderer *d = zfnull;
+        return d;
+    }
+public:
+    void initUI(void) {
+        zfself::_initUI();
+    }
+
+private:
+    static void _before(void) {
+        if(ZFImpl_sys_SDL_embed) {
+            return;
+        }
+        unsigned int sdlInitFlag = 0
+            | SDL_INIT_AUDIO
+            | SDL_INIT_VIDEO
+            | SDL_INIT_JOYSTICK
+            | SDL_INIT_HAPTIC
+            | SDL_INIT_GAMEPAD
+            | SDL_INIT_EVENTS
+            ;
+        if(!SDL_Init(sdlInitFlag)) {
+            ZFCoreCriticalMessage("SDL init failed: %s", SDL_GetError());
+        }
+    }
+    static void _initUI(void) {
+        if(ZFImpl_sys_SDL_mainWindow()) {
+            return;
+        }
+        builtinWindow() = ZFImpl_sys_SDL_CreateWindow();
+        if(builtinWindow() == zfnull) {
+            ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
+            return;
+        }
+        ZFImpl_sys_SDL_WindowNotifyCreate(builtinWindow());
+        builtinRenderer() = SDL_CreateRenderer(builtinWindow(), zfnull);
+        if(builtinRenderer() == zfnull) {
+            ZFImpl_sys_SDL_WindowNotifyDestroy(builtinWindow());
+            SDL_DestroyWindow(builtinWindow());
+            builtinWindow() = zfnull;
+            ZFCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
+            return;
+        }
+        ZFImpl_sys_SDL_RendererNotifyCreate(builtinRenderer());
+        SDL_SetRenderDrawBlendMode(builtinRenderer(), SDL_BLENDMODE_BLEND);
+
+        ZFImpl_sys_SDL_embedInit(builtinWindow());
+    }
+    static void _after(ZF_IN const ZFArgs &zfargs) {
+        ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
+
+        zfbool quitFlag = zffalse;
+        SDL_Event event;
+        while(!quitFlag && SDL_WaitEvent(&event)) {
+            do {
+                if(!ZFImpl_sys_SDL_embedEventHandler(&event)) {
+                    if(event.type == SDL_EVENT_QUIT) {
+                        quitFlag = zftrue;
+                        break;
+                    }
+                }
+            } while(SDL_PollEvent(&event));
+        }
+    }
+ZF_GLOBAL_INITIALIZER_END(ZFMainEntry_sys_SDL_setup)
+
 // ============================================================
 static SDL_Window *_ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
 static SDL_Renderer *_ZFP_ZFImpl_sys_SDL_mainRenderer = zfnull;
-static void _ZFP_ZFImpl_sys_SDL_ensureUI(void);
 SDL_Window *ZFImpl_sys_SDL_mainWindow(void) {
-    if(_ZFP_ZFImpl_sys_SDL_mainWindow == zfnull) {
-        _ZFP_ZFImpl_sys_SDL_ensureUI();
+    if(!_ZFP_ZFImpl_sys_SDL_mainWindow) {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup)->initUI();
     }
     return _ZFP_ZFImpl_sys_SDL_mainWindow;
 }
 SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void) {
-    if(_ZFP_ZFImpl_sys_SDL_mainRenderer == zfnull) {
-        _ZFP_ZFImpl_sys_SDL_ensureUI();
+    if(!_ZFP_ZFImpl_sys_SDL_mainWindow) {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup)->initUI();
     }
     return _ZFP_ZFImpl_sys_SDL_mainRenderer;
 }
@@ -249,87 +339,6 @@ zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event) {
     }
 
     return zffalse;
-}
-
-// ============================================================
-static SDL_Window *_ZFP_ZFImpl_sys_SDL_builtinWindow = zfnull;
-static SDL_Renderer *_ZFP_ZFImpl_sys_SDL_builtinRenderer = zfnull;
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_builtinUI, ZFLevelZFFrameworkStatic) {
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_builtinUI) {
-    ZFImpl_sys_SDL_embedCleanup();
-    if(_ZFP_ZFImpl_sys_SDL_builtinRenderer != zfnull) {
-        ZFImpl_sys_SDL_RendererNotifyDestroy(_ZFP_ZFImpl_sys_SDL_builtinRenderer);
-        SDL_DestroyRenderer(_ZFP_ZFImpl_sys_SDL_builtinRenderer);
-        _ZFP_ZFImpl_sys_SDL_builtinRenderer = zfnull;
-    }
-    if(_ZFP_ZFImpl_sys_SDL_builtinWindow != zfnull) {
-        ZFImpl_sys_SDL_WindowNotifyDestroy(_ZFP_ZFImpl_sys_SDL_builtinWindow);
-        SDL_DestroyWindow(_ZFP_ZFImpl_sys_SDL_builtinWindow);
-        _ZFP_ZFImpl_sys_SDL_builtinWindow = zfnull;;
-    }
-}
-ZF_GLOBAL_INITIALIZER_END(ZFMainEntry_sys_SDL_builtinUI)
-
-static void _ZFP_ZFImpl_sys_SDL_ensureUI(void) {
-    _ZFP_ZFImpl_sys_SDL_builtinWindow = ZFImpl_sys_SDL_CreateWindow();
-    if(_ZFP_ZFImpl_sys_SDL_builtinWindow == zfnull) {
-        ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
-        return;
-    }
-    ZFImpl_sys_SDL_WindowNotifyCreate(_ZFP_ZFImpl_sys_SDL_builtinWindow);
-    _ZFP_ZFImpl_sys_SDL_builtinRenderer = SDL_CreateRenderer(_ZFP_ZFImpl_sys_SDL_builtinWindow, zfnull);
-    if(_ZFP_ZFImpl_sys_SDL_builtinRenderer == zfnull) {
-        ZFImpl_sys_SDL_WindowNotifyDestroy(_ZFP_ZFImpl_sys_SDL_builtinWindow);
-        SDL_DestroyWindow(_ZFP_ZFImpl_sys_SDL_builtinWindow);
-        _ZFP_ZFImpl_sys_SDL_builtinWindow = zfnull;
-        ZFCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
-        return;
-    }
-    ZFImpl_sys_SDL_RendererNotifyCreate(_ZFP_ZFImpl_sys_SDL_builtinRenderer);
-    SDL_SetRenderDrawBlendMode(_ZFP_ZFImpl_sys_SDL_builtinRenderer, SDL_BLENDMODE_BLEND);
-
-    ZFImpl_sys_SDL_embedInit(_ZFP_ZFImpl_sys_SDL_builtinWindow);
-}
-
-static SDL_AppResult _ZFP_ZFImpl_sys_SDL_AppResult = SDL_APP_CONTINUE;
-SDL_AppResult ZFImpl_sys_SDL_AppInit(void **appstate, int argc, char *argv[]) {
-    if(!SDL_Init(0
-                | SDL_INIT_AUDIO
-                | SDL_INIT_VIDEO
-                | SDL_INIT_JOYSTICK
-                | SDL_INIT_HAPTIC
-                | SDL_INIT_GAMEPAD
-                | SDL_INIT_EVENTS
-                )) {
-        ZFCoreCriticalMessage("SDL init failed: %s", SDL_GetError());
-        return SDL_APP_FAILURE;
-    }
-
-    ZFFrameworkInit();
-
-    ZFCoreArray<zfstring> params;
-    for(int i = 1; i < argc; ++i) {
-        params.add(argv[i]);
-    }
-    zfint ret = ZFMainExecute(params);
-
-    return (ret == 0 ? _ZFP_ZFImpl_sys_SDL_AppResult : SDL_APP_FAILURE);
-}
-SDL_AppResult ZFImpl_sys_SDL_AppEvent(void *appstate, SDL_Event *event) {
-    if(!ZFImpl_sys_SDL_embedEventHandler(event)) {
-        if(event->type == SDL_EVENT_QUIT) {
-            _ZFP_ZFImpl_sys_SDL_AppResult = SDL_APP_SUCCESS;
-        }
-    }
-    return _ZFP_ZFImpl_sys_SDL_AppResult;
-}
-SDL_AppResult ZFImpl_sys_SDL_AppIterate(void *appstate) {
-    SDL_WaitEvent(NULL);
-    return _ZFP_ZFImpl_sys_SDL_AppResult;
-}
-void ZFImpl_sys_SDL_AppQuit(void *appstate, SDL_AppResult result) {
-    ZFFrameworkCleanup();
 }
 
 ZF_NAMESPACE_GLOBAL_END

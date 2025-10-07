@@ -156,13 +156,6 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_embedCleanup(void);
  */
 extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event);
 
-// ============================================================
-// SDL main entry
-extern ZFLIB_ZF_impl SDL_AppResult ZFImpl_sys_SDL_AppInit(void **appstate, int argc, char *argv[]);
-extern ZFLIB_ZF_impl SDL_AppResult ZFImpl_sys_SDL_AppEvent(void *appstate, SDL_Event *event);
-extern ZFLIB_ZF_impl SDL_AppResult ZFImpl_sys_SDL_AppIterate(void *appstate);
-extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_AppQuit(void *appstate, SDL_AppResult result);
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL
 #endif // #ifndef _ZFI_ZFMainEntry_sys_SDL_h_

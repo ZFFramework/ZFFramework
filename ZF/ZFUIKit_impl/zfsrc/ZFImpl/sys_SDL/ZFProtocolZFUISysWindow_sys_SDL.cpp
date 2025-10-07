@@ -126,16 +126,14 @@ public:
     }
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
-        SDL_Rect sdlRect;
-        if(SDL_GetDisplayUsableBounds(SDL_GetPrimaryDisplay(), &sdlRect)) {
-            sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeCreate(sdlRect.w, sdlRect.h));
-        }
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {
             return;
         }
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
+        ZFUILayoutParam *lp = sysWindow->sysWindowLayoutParam();
+        zffloat UIScale = (zffloat)SDL_GetWindowDisplayScale(nativeWindow->sdlWindow);
         SDL_Rect sdlRect;
         if(!SDL_GetDisplayUsableBounds(SDL_GetDisplayForWindow(nativeWindow->sdlWindow), &sdlRect)) {
             sdlRect.x = 0;
@@ -148,15 +146,18 @@ public:
                 rect
                 , ZFUIRectCreate(sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h)
                 , sysWindow->rootView()
-                , sysWindow->sysWindowLayoutParam()
+                , ZFUISizeApplyScale(lp->sizeHint(), UIScale)
+                , lp->sizeParam()
+                , lp->align()
+                , ZFUIMarginApplyScale(lp->margin(), UIScale)
             );
         SDL_SetWindowPosition(nativeWindow->sdlWindow, (int)rect.x, (int)rect.y);
         SDL_SetWindowSize(nativeWindow->sdlWindow, (int)rect.width, (int)rect.height);
 
         // setting a windows size that exceeds screen size, may cause sdl motion event's x/y to be incorrect
         if(zffalse
-                || sysWindow->sysWindowLayoutParam()->sizeParam().width == ZFUISizeType::e_Fill
-                || sysWindow->sysWindowLayoutParam()->sizeParam().height == ZFUISizeType::e_Fill
+                || lp->sizeParam().width == ZFUISizeType::e_Fill
+                || lp->sizeParam().height == ZFUISizeType::e_Fill
                 ) {
             int w = 0;
             int h = 0;

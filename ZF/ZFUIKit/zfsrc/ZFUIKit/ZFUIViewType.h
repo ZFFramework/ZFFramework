@@ -321,6 +321,26 @@ public:
             , ZFMP_IN(ZFUILayoutParam *, lp)
             )
 
+    /** @brief see #layoutParamApply */
+    ZFMETHOD_DECLARE_STATIC_7(void, layoutParamApplyT
+            , ZFMP_OUT(ZFUIRect &, ret)
+            , ZFMP_IN(const ZFUIRect &, rect)
+            , ZFMP_IN(ZFUIView *, child)
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+            , ZFMP_IN(const ZFUIAlignFlags &, align)
+            , ZFMP_IN(const ZFUIMargin &, margin)
+            )
+    /** @brief see #layoutParamApply */
+    ZFMETHOD_DECLARE_STATIC_6(ZFUIRect, layoutParamApply
+            , ZFMP_IN(const ZFUIRect &, rect)
+            , ZFMP_IN(ZFUIView *, child)
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+            , ZFMP_IN(const ZFUIAlignFlags &, align)
+            , ZFMP_IN(const ZFUIMargin &, margin)
+            )
+
     /**
      * @brief util method to apply sizeHint according sizeParam
      */
