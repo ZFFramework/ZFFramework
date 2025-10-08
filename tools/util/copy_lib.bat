@@ -20,6 +20,7 @@ mkdir "%DST_PATH%" >nul 2>&1
 copy /y "%SRC_PATH%\\*.a" "%DST_PATH%" >nul 2>&1
 copy /y "%SRC_PATH%\\*.dll" "%DST_PATH%" >nul 2>&1
 copy /y "%SRC_PATH%\\*.lib" "%DST_PATH%" >nul 2>&1
+copy /y "%SRC_PATH%\\*.pdb" "%DST_PATH%" >nul 2>&1
 
 exit /b 0
 

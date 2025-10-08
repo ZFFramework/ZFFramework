@@ -58,9 +58,6 @@ private:
         }
     }
     static void _initUI(void) {
-        if(ZFImpl_sys_SDL_mainWindow()) {
-            return;
-        }
         builtinWindow() = ZFImpl_sys_SDL_CreateWindow();
         if(builtinWindow() == zfnull) {
             ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
