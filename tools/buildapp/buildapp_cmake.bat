@@ -38,7 +38,7 @@ if "%CMAKE_CXX_FLAGS%" == "" (
 )
 ninja
 ninja install
-set _RESULT=%errorlevel%
+set _RESULT=%ERRORLEVEL%
 cd /d "%_OLD_DIR%"
 
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\zfdist" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"

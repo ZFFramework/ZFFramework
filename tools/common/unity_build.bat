@@ -50,7 +50,7 @@ del /f/s/q %TARGET_FILE%.tmp >nul 2>&1
 move %TARGET_FILE%.tmp2 %TARGET_FILE%.tmp >nul 2>&1
 
 echo n|comp %TARGET_FILE% %TARGET_FILE%.tmp >nul 2>&1
-if not "%errorlevel%" == "0" (
+if not "%ERRORLEVEL%" == "0" (
     rem changed
     del /f/s/q %TARGET_FILE% >nul 2>&1
     move %TARGET_FILE%.tmp %TARGET_FILE% >nul 2>&1

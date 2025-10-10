@@ -61,9 +61,9 @@ for /f "tokens=*" %%a in ('type "%ZFSH_PATH%"') do (
     set line=!line:^<ZF_PR^>=%%!
     set line=!line:^<ZF_EXIT_SUCCESS^>=exit /b 0!
     set line=!line:^<ZF_EXIT_FAILED^>=exit /b 1!
-    set line=!line:^<ZF_IF_SUCCESS_BEGIN^>=if "%%errorlevel%%" == "0" (!
+    set line=!line:^<ZF_IF_SUCCESS_BEGIN^>=if "%%ERRORLEVEL%%" == "0" (!
     set line=!line:^<ZF_IF_SUCCESS_END^>=^)!
-    set line=!line:^<ZF_IF_FAILED_BEGIN^>=if not "%%errorlevel%%" == "0" (!
+    set line=!line:^<ZF_IF_FAILED_BEGIN^>=if not "%%ERRORLEVEL%%" == "0" (!
     set line=!line:^<ZF_IF_FAILED_END^>=^)!
     set line=!line:^<ZF_ELSE^>=^) else (!
     set line=!line:^<ZF_IGNORE_OUTPUT^>=^>nul 2^>^&1!
@@ -75,7 +75,7 @@ for /f "tokens=*" %%a in ('type "%ZFSH_PATH%"') do (
 
 for /f "tokens=2,* delims= " %%a in ("%*") do set ALL_BUT_FIRST=%%a
 call "%TMP_PATH%" %ALL_BUT_FIRST%
-set RESULT=%errorlevel%
+set RESULT=%ERRORLEVEL%
 del /f/s/q "%TMP_PATH%" >nul 2>&1
 exit /b %RESULT%
 

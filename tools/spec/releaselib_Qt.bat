@@ -17,7 +17,7 @@ exit /b 1
 setlocal enabledelayedexpansion
 if not defined ZF_QT_MAKE (
     where /q nmake
-    if "!errorlevel!" == "0" (
+    if "!ERRORLEVEL!" == "0" (
         rem MSVC
         set CL=/MP
         set ZF_QT_MAKE=nmake
@@ -30,7 +30,7 @@ if not defined ZF_QT_MAKE (
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 
 call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%ZF_ROOT_PATH%\_release\Qt\module\%PROJ_NAME%\lib" "*%PROJ_NAME%*"
-if "%errorlevel%" == "0" (
+if "%ERRORLEVEL%" == "0" (
     goto :EOF
 )
 
@@ -41,7 +41,7 @@ del /f/s/q ".\*.dll" /f/s/q/a >nul 2>&1
 del /f/s/q ".\*.a" /f/s/q/a >nul 2>&1
 qmake "%PROJ_PATH%\Qt\%PROJ_NAME%\%PROJ_NAME%.pro" CONFIG+=release
 %ZF_QT_MAKE%
-set RESULT=%errorlevel%
+set RESULT=%ERRORLEVEL%
 cd /d "%_OLD_DIR%"
 
 exit /b %RESULT%

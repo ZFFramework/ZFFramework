@@ -11,7 +11,7 @@ goto :run
 :usage
 echo usage:
 echo   timestamp_check.bat DIR_TO_CHECK [TIMESTAMP_FILE_NAME CHECK_INTERVAL]
-echo return by "errorlevel":
+echo return by "ERRORLEVEL":
 echo   0: not expired
 echo   1: expired
 exit /b 1

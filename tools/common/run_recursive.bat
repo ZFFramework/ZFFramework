@@ -38,7 +38,7 @@ for %%f in (%ZF_EXCLUDE_TMP%) do (
 if "%_excluded%" == "0" (
     echo running %1
     call "%1" "%WORK_DIR%\..\.." %ALL_VAR%
-    if not "!errorlevel!" == "0" (
+    if not "!ERRORLEVEL!" == "0" (
         exit /b 1
     )
 )

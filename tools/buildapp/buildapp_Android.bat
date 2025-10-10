@@ -19,7 +19,7 @@ set ZF_ROOT_PATH=%WORK_DIR%\..\..
 set _OLD_DIR=%cd%
 cd /d "%PROJ_PATH%\Android\%PROJ_NAME%"
 call gradlew.bat
-set _RESULT=%errorlevel%
+set _RESULT=%ERRORLEVEL%
 cd /d "%_OLD_DIR%"
 
 exit /b %_RESULT%

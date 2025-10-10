@@ -17,7 +17,7 @@ exit /b 1
 setlocal enabledelayedexpansion
 if not defined ZF_QT_MAKE (
     where /q nmake
-    if "!errorlevel!" == "0" (
+    if "!ERRORLEVEL!" == "0" (
         rem MSVC
         set CL=/MP
         set ZF_QT_MAKE=nmake
@@ -40,7 +40,7 @@ mkdir "%_TMP_PATH%" >nul 2>&1
 cd /d "%_TMP_PATH%"
 qmake "%_PROJ_PATH%\%PROJ_NAME%.pro" CONFIG+=release
 %ZF_QT_MAKE%
-set _RESULT=%errorlevel%
+set _RESULT=%ERRORLEVEL%
 cd /d "%_OLD_DIR%"
 
 exit /b %_RESULT%

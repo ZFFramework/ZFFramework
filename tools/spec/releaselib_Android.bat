@@ -17,7 +17,7 @@ exit /b 1
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 
 call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\aar" "*.aar"
-if "%errorlevel%" == "0" (
+if "%ERRORLEVEL%" == "0" (
     exit /b 0
 )
 
@@ -25,7 +25,7 @@ set _OLD_DIR=%cd%
 
 cd /d "%PROJ_PATH%\Android\%PROJ_NAME%"
 call "gradlew.bat" assembleRelease
-set RESULT=%errorlevel%
+set RESULT=%ERRORLEVEL%
 
 cd /d "%_OLD_DIR%"
 

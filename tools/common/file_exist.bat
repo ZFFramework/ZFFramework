@@ -11,7 +11,7 @@ goto :run
 :usage
 echo usage:
 echo   file_exist.bat PATH_TO_CHECK FILE_PATTERN
-echo return by "errorlevel":
+echo return by "ERRORLEVEL":
 echo   0: exist
 echo   1: not exist
 exit /b 1

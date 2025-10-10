@@ -30,7 +30,7 @@ rem ============================================================
 for /f "tokens=3,* delims= " %%a in ("%*") do set ALL_VAR=%%a
 for /f "tokens=*" %%f in ('dir /a-d/s/b "%SRC_DIR%\%FILE_NAME%" 2^>nul') do (
     call :run_with_filter %%f
-    if not "!errorlevel!" == "0" (
+    if not "!ERRORLEVEL!" == "0" (
         exit /b 1
     )
 )
@@ -45,7 +45,7 @@ for %%f in (%ZF_EXCLUDE_TMP%) do (
 if "%_excluded%" == "0" (
     echo running %1
     call "%WORK_DIR%\zfsh.bat" "%1" %ALL_VAR%
-    if not "!errorlevel!" == "0" (
+    if not "!ERRORLEVEL!" == "0" (
         echo error occurred when running %1
         exit /b 1
     )

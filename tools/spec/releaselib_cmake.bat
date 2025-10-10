@@ -17,7 +17,7 @@ exit /b 1
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 
 call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\lib" "*%PROJ_NAME%*"
-if "%errorlevel%" == "0" (
+if "%ERRORLEVEL%" == "0" (
     goto :EOF
 )
 
@@ -28,7 +28,7 @@ cd /d "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\build"
 cmake -G "Ninja" "%PROJ_PATH%\cmake\%PROJ_NAME%" -DCMAKE_BUILD_TYPE=RelWithDebInfo
 ninja
 ninja install
-set RESULT=%errorlevel%
+set RESULT=%ERRORLEVEL%
 
 cd /d "%_OLD_DIR%"
 
