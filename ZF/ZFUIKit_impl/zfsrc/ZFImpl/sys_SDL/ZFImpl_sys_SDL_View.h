@@ -257,6 +257,7 @@ public:
 public:
     /** @brief reset to prepare for cache */
     void resetForCache(void) {
+        this->renderCacheValid = zffalse;
         this->renderCacheRequired = 0;
         this->viewTransformRemove();
         this->aniTransformRemove();
