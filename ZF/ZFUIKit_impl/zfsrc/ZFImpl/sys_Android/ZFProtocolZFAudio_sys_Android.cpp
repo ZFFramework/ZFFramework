@@ -52,23 +52,6 @@ public:
             , ZFImpl_sys_Android_ZFInputWrapperFromZFInput(input)
             );
     }
-    virtual void nativeAudioLoad(
-            ZF_IN ZFAudio *audio
-            , ZF_IN const zfstring &url
-            ) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioLoad",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_object_Object())
-                .add(JNIType::S_object_String())
-            ).c_str());
-        jstring jniUrl = JNIUtilNewStringUTF(jniEnv, url);
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId
-            , (jobject)audio->nativeAudio()
-            , jniUrl
-            );
-        JNIUtilDeleteLocalRef(jniEnv, jniUrl);
-    }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioLoadCancel",

@@ -20,6 +20,7 @@ public:
     zftimet positionToUpdate;
     zfuint state; // StateFlag
     zfuint loopCur;
+    ZFPathInfo pathInfo;
     zfidentity audioTaskId;
 
 public:
@@ -28,6 +29,7 @@ public:
     , positionToUpdate(-1)
     , state(0)
     , loopCur(0)
+    , pathInfo()
     , audioTaskId((zfidentity)zfmRand())
     {
     }
@@ -95,25 +97,23 @@ ZFMETHOD_DEFINE_0(ZFAudio, zfindex, loopCur) {
 }
 
 ZFMETHOD_DEFINE_1(ZFAudio, void, load
-        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
-    zfRetain(this); // release when OnLoad
-    this->stop();
-
-    ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
-    ZFBitSet(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
-    ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioLoad(this, input);
+    this->load(ZFInputForPathInfo(pathInfo));
 }
 
 ZFMETHOD_DEFINE_1(ZFAudio, void, load
-        , ZFMP_IN(const zfstring &, url)
+        , ZFMP_IN(const ZFInput &, input)
         ) {
-    zfRetain(this); // release when OnLoad
-    this->stop();
+    if(input.pathInfo() != d->pathInfo) {
+        zfRetain(this); // release when OnLoad
+        this->stop();
+        d->pathInfo = input.pathInfo();
 
-    ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
-    ZFBitSet(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
-    ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioLoad(this, url);
+        ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
+        ZFBitSet(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
+        ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioLoad(this, input);
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
@@ -226,15 +226,19 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFAudio, zffloat, volume) {
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        ) {
+    this->load(pathInfo);
+}
+
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
         , ZFMP_IN(const ZFInput &, input)
         ) {
     this->load(input);
 }
 
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
-        , ZFMP_IN(const zfstring &, url)
-        ) {
-    this->load(url);
+ZFMETHOD_DEFINE_0(ZFAudio, const ZFPathInfo &, pathInfo) {
+    return d->pathInfo;
 }
 
 ZFMETHOD_DEFINE_0(ZFAudio, const zfchar *, stateHint) {
@@ -273,6 +277,53 @@ void ZFAudio::objectOnDealloc(void) {
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
+}
+void ZFAudio::objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    ret += this->classData()->className();
+    ret += "(";
+    if(this->pathInfo()) {
+        ZFPathInfoToStringT(ret, this->pathInfo());
+    }
+    else {
+        zfsFromPointerT(ret, this);
+    }
+    ret += ") ";
+    ret += this->stateHint();
+    if(this->started()) {
+        ret += " ";
+        zftimetToStringT(ret, this->position() / 1000);
+        ret += "/";
+        zftimetToStringT(ret, this->duration() / 1000);
+    }
+    ret += ZFTOKEN_ZFObjectInfoRight;
+}
+
+zfbool ZFAudio::serializableOnSerializeFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
+    if(!zfsuper::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {
+        return zffalse;
+    }
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos
+            , check, "src", ZFPathInfo, d->pathInfo, {
+                return zffalse;
+            });
+    return zftrue;
+}
+zfbool ZFAudio::serializableOnSerializeToData(
+        ZF_IN_OUT ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
+        ) {
+    zfself *ref = zfcast(zfself *, refOwner);
+    ZFSerializableUtilSerializeAttrToData(serializableData, outErrorHint, ref
+            , "src", ZFPathInfo, this->pathInfo(), ref->pathInfo(), ZFPathInfo(), {
+                return zffalse;
+            });
+    return zfsuper::serializableOnSerializeToData(serializableData, outErrorHint, refOwner);
 }
 
 void ZFAudio::_ZFP_ZFAudio_OnLoad(

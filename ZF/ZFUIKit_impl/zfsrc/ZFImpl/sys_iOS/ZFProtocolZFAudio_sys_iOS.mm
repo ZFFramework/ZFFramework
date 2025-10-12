@@ -125,32 +125,6 @@ public:
 
         nativeAudio.loadTaskId = zfasync(onLoad, onLoadFinish);
     }
-    virtual void nativeAudioLoad(
-            ZF_IN ZFAudio *audio
-            , ZF_IN const zfstring &url
-            ) {
-        _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
-
-        NSError *error = nil;
-        nativeAudio.audio = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(url)] error:&error];
-        if(error != nil) {
-            zfobj<v_zfstring> errorHint;
-            ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
-            nativeAudio.audio = nil;
-            this->notifyAudioOnLoad(audio, zffalse, errorHint);
-            return;
-        }
-        [nativeAudio audioAttach];
-        if(![nativeAudio.audio play]) {
-            [nativeAudio audioDetach];
-            zfobj<v_zfstring> errorHint;
-            errorHint->zfv = "unable to play audio";
-            this->notifyAudioOnLoad(audio, zffalse, errorHint);
-            return;
-        }
-        [nativeAudio.audio pause];
-        this->notifyAudioOnLoad(audio, zftrue, zfnull);
-    }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         if(nativeAudio.loadTaskId) {

@@ -12,9 +12,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd _ZFP_ZFAudioPrivate;
 /**
  * @brief audio player
+ *
+ * serializable data:
+ * @code
+ *   <ZFAudio
+ *       src="xxx"
+ *       volume="xxx"
+ *       loop="xxx"
+ *       />
+ * @endcode
  */
-zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFObject, zfimplement ZFTaskId {
-    ZFOBJECT_DECLARE(ZFAudio, ZFObject)
+zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFStyle, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFAudio, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFTaskId)
 
 public:
@@ -90,14 +99,14 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, paused)
 
 public:
+    /** @brief load from pathInfo */
+    ZFMETHOD_DECLARE_1(void, load
+            , ZFMP_IN(const ZFPathInfo &, pathInfo)
+            )
+
     /** @brief load from input */
     ZFMETHOD_DECLARE_1(void, load
             , ZFMP_IN(const ZFInput &, input)
-            )
-
-    /** @brief load from url */
-    ZFMETHOD_DECLARE_1(void, load
-            , ZFMP_IN(const zfstring &, url)
             )
 
     /**
@@ -150,6 +159,9 @@ public:
      */
     ZFPROPERTY_ASSIGN(zfindex, loop, 0)
 
+    /** @brief pathInfo of this audio */
+    ZFMETHOD_DECLARE_0(const ZFPathInfo &, pathInfo)
+
     /** @brief return a state hint for debug */
     ZFMETHOD_DECLARE_0(const zfchar *, stateHint)
 
@@ -157,28 +169,30 @@ public:
     ZFMETHOD_DECLARE_0(zfidentity, audioTaskId)
 
 protected:
+    /** @brief load from pathInfo */
+    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const ZFPathInfo &, pathInfo))
     /** @brief load from input */
     ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const ZFInput &, input))
-    /** @brief load from url */
-    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const zfstring &, url))
 protected:
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
     virtual void objectOnDealloc(void);
+    zfoverride
+    virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);
 
     zfoverride
-    virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
-        zfsuper::objectInfoImplAppend(ret);
-        ret += " ";
-        ret += this->stateHint();
-        if(this->started()) {
-            ret += " ";
-            zftimetToStringT(ret, this->position() / 1000);
-            ret += "/";
-            zftimetToStringT(ret, this->duration() / 1000);
-        }
-    }
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
+    zfoverride
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_IN_OPT ZFSerializable *refOwner = zfnull
+            );
 
 protected:
     /** @brief see #E_AudioOnLoad */

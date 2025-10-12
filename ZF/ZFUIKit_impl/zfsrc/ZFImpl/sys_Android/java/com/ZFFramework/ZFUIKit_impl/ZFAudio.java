@@ -92,40 +92,6 @@ public final class ZFAudio {
         });
     }
 
-    public static void native_nativeAudioLoad(Object nativeAudio, String url) {
-        ZFAudio nativeAudioTmp = (ZFAudio) nativeAudio;
-        nativeAudioTmp._mpAttach();
-        int mpTaskId = nativeAudioTmp._mpTaskId;
-        ZFAndroidTaskQueue.instance().run(new Runnable() {
-            @Override
-            public void run() {
-                if (mpTaskId == nativeAudioTmp._mpTaskId) {
-                    try {
-                        nativeAudioTmp.mp.setDataSource(url);
-                    } catch (Exception e) {
-                        if (mpTaskId == nativeAudioTmp._mpTaskId) {
-                            native_notifyAudioOnLoad(nativeAudioTmp.zfjniPointerOwnerZFAudio, false, e.toString());
-                        }
-                        return;
-                    }
-                }
-                if (mpTaskId == nativeAudioTmp._mpTaskId) {
-                    try {
-                        nativeAudioTmp.mp.prepare();
-                    } catch (Exception e) {
-                        if (mpTaskId == nativeAudioTmp._mpTaskId) {
-                            native_notifyAudioOnLoad(nativeAudioTmp.zfjniPointerOwnerZFAudio, false, e.toString());
-                        }
-                        return;
-                    }
-                }
-                if (mpTaskId == nativeAudioTmp._mpTaskId) {
-                    native_notifyAudioOnLoad(nativeAudioTmp.zfjniPointerOwnerZFAudio, true, null);
-                }
-            }
-        });
-    }
-
     public static void native_nativeAudioLoadCancel(Object nativeAudio) {
         ZFAudio nativeAudioTmp = (ZFAudio) nativeAudio;
         nativeAudioTmp._mpDetach();

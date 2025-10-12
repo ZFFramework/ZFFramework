@@ -10,17 +10,30 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
+ * @brief access audio with cache logic
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioLoad
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        )
+/**
+ * @brief access audio with cache logic
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioLoad
+        , ZFMP_IN(const ZFInput &, src)
+        )
+
+/**
  * @brief play audio with cache logic, auto stop prev audio task with same src
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioPlay
-        , ZFMP_IN(const ZFInput &, src)
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioStart
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         )
 /**
  * @brief play audio with cache logic, auto stop prev audio task with same src
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioPlay
-        , ZFMP_IN(const zfstring &, url)
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioStart
+        , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         )
 
@@ -28,21 +41,21 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoT<ZFAudio>, ZFAudioPlay
 /**
  * @brief audio play task
  */
-zfclass ZFLIB_ZFUIKit ZFAudioPlayTask : zfextend ZFTask {
-    ZFOBJECT_DECLARE(ZFAudioPlayTask, ZFTask)
+zfclass ZFLIB_ZFUIKit ZFAudioStartTask : zfextend ZFTask {
+    ZFOBJECT_DECLARE(ZFAudioStartTask, ZFTask)
 
 public:
     /** @brief load by impl */
     ZFMETHOD_DECLARE_1(void, load
             , ZFMP_IN(ZFAudio *, impl)
             )
+    /** @brief load by pathInfo */
+    ZFMETHOD_DECLARE_1(void, load
+            , ZFMP_IN(const ZFPathInfo &, pathInfo)
+            )
     /** @brief load by input */
     ZFMETHOD_DECLARE_1(void, load
             , ZFMP_IN(const ZFInput &, input)
-            )
-    /** @brief load by url */
-    ZFMETHOD_DECLARE_1(void, load
-            , ZFMP_IN(const zfstring &, url)
             )
 
     /** @brief see #ZFAudio::loop */
@@ -57,13 +70,13 @@ protected:
     ZFOBJECT_ON_INIT_DECLARE_1(
             ZFMP_IN(ZFAudio *, impl)
             )
+    /** @brief construct with pathInfo */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(const ZFPathInfo &, pathInfo)
+            )
     /** @brief construct with impl */
     ZFOBJECT_ON_INIT_DECLARE_1(
             ZFMP_IN(const ZFInput &, input)
-            )
-    /** @brief construct with url */
-    ZFOBJECT_ON_INIT_DECLARE_1(
-            ZFMP_IN(const zfstring &, url)
             )
 
 protected:

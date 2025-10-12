@@ -25,11 +25,6 @@ public:
             ZF_IN ZFAudio *audio
             , ZF_IN const ZFInput &input
             ) zfpurevirtual;
-    /** @brief load native audio from input */
-    virtual void nativeAudioLoad(
-            ZF_IN ZFAudio *audio
-            , ZF_IN const zfstring &url
-            ) zfpurevirtual;
     /** @brief cancel load native audio */
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) zfpurevirtual;
 

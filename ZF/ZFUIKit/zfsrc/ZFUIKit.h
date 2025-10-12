@@ -9,6 +9,7 @@
 #include "ZFUIKit/ZFAniForNative.h"
 #include "ZFUIKit/ZFAudio.h"
 #include "ZFUIKit/ZFEnvInfo_ZFUIKit.h"
+#include "ZFUIKit/ZFObjectIO_audio.h"
 #include "ZFUIKit/ZFObjectIO_image.h"
 #include "ZFUIKit/ZFUIDraw.h"
 #include "ZFUIKit/ZFUIEvent.h"

@@ -121,60 +121,6 @@ public:
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->loadTaskId = zfasync(onLoad, onLoadFinish);
     }
-    virtual void nativeAudioLoad(
-            ZF_IN ZFAudio *audio
-            , ZF_IN const zfstring &url
-            ) {
-        zfself *owner = this;
-
-        ZFLISTENER_1(onLoad
-                , zfstring, url
-                ) {
-            if(zfargs.param0() == zfnull) {return;}
-
-            const ZFMethod *loaderMethod = ZFMethodFuncForName(zfnull, "ZFInputForHttp");
-            if(loaderMethod == zfnull || !ZFProtocolIsAvailable("ZFHttpRequest")) {
-                zfargs.result(zfobj<v_zfstring>("net load depends on ZFHttpRequest impl"));
-                return;
-            }
-
-            zfauto inputHolder = ZFInvoke("ZFInputForHttp", zfobj<v_zfstring>(url));
-            v_ZFInput *inputTmp = inputHolder;
-            if(inputTmp == zfnull || !inputTmp->zfv) {
-                zfargs.result(zfobj<v_zfstring>(zfstr("unable to load from url: %s", url)));
-                return;
-            }
-
-            zfargs.result(inputHolder);
-        } ZFLISTENER_END()
-
-        ZFLISTENER_2(onLoadFinish
-                , zfself *, owner
-                , zfautoT<ZFAudio>, audio
-                ) {
-            NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-            nativeAudio->loadTaskId = zfnull;
-
-            v_ZFInput *input = zfargs.param0();
-            if(input == zfnull || !input->zfv) {
-                MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
-                owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>("unable to load from url"));
-                return;
-            }
-
-            if(!MIX_SetTrackIOStream(nativeAudio->implTrack, ZFImpl_sys_SDL_ZFInputToSDL_IOStream(input->zfv), zftrue)) {
-                zfstring errorHint = SDL_GetError();
-                MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
-                owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>(errorHint));
-                return;
-            }
-
-            owner->notifyAudioOnLoad(audio, zftrue, zfnull);
-        } ZFLISTENER_END()
-
-        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        nativeAudio->loadTaskId = zfasync(onLoad, onLoadFinish);
-    }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         if(nativeAudio->loadTaskId) {

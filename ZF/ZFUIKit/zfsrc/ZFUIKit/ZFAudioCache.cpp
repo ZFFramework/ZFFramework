@@ -2,9 +2,28 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFAudio>, ZFAudioLoad
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        ) {
+    zfstring key = ZFPathInfoToString(pathInfo);
+    zfautoT<ZFAudio> impl = ZFAudioCache::instance()->cacheGet(key);
+    if(!impl) {
+        ZFInput input = ZFInputForPathInfo(pathInfo);
+        if(!input) {
+            return zfnull;
+        }
+
+        impl = zfobj<ZFAudio>();
+        impl->load(input);
+    }
+    if(!impl->startable()) {
+        return zfnull;
+    }
+    ZFAudioCache::instance()->cacheAdd(key, impl);
+    return impl;
+}
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFAudio>, ZFAudioLoad
         , ZFMP_IN(const ZFInput &, src)
-        , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
     zfautoT<ZFAudio> impl;
     if(src.callbackId()) {
@@ -15,6 +34,20 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
         impl->load(src);
     }
     if(!impl->startable()) {
+        return zfnull;
+    }
+    if(src.callbackId()) {
+        ZFAudioCache::instance()->cacheAdd(src.callbackId(), impl);
+    }
+    return impl;
+}
+
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioStart
+        , ZFMP_IN(const ZFInput &, src)
+        , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
+        ) {
+    zfautoT<ZFAudio> impl = ZFAudioLoad(src);
+    if(!impl) {
         callback.execute(ZFArgs()
                 .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
                 .param1(zfobj<v_zfstring>(zfstr("unable to load audio from input: %s"
@@ -23,75 +56,26 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
                 );
         return zfnull;
     }
-    if(src.callbackId()) {
-        ZFAudioCache::instance()->cacheAdd(src.callbackId(), impl);
-    }
     if(callback) {
         impl->observerAddForOnce(ZFAudio::E_AudioOnStop(), callback);
     }
     impl->start();
     return impl;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
-        , ZFMP_IN(const zfstring &, url)
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioStart
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
-    ZFPathInfo pathInfo;
-    if(ZFPathInfoFromStringT(pathInfo, url)) {
-        zfautoT<ZFAudio> impl;
-        {
-            impl = ZFAudioCache::instance()->cacheGet(url);
-            if(!impl) {
-                ZFInput input = ZFInputForPathInfo(pathInfo);
-                if(!input) {
-                    callback.execute(ZFArgs()
-                            .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
-                            .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
-                                        , url
-                                        )))
-                            );
-                    return zfnull;
-                }
-
-                impl = zfobj<ZFAudio>();
-                impl->load(input);
-            }
-        }
-        if(!impl->startable()) {
-            callback.execute(ZFArgs()
-                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
-                    .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
-                                , url
-                                )))
-                    );
-            return zfnull;
-        }
-        ZFAudioCache::instance()->cacheAdd(url, impl);
-        if(callback) {
-            impl->observerAddForOnce(ZFAudio::E_AudioOnStop(), callback);
-        }
-        impl->start();
-        return impl;
-    }
-
-    zfautoT<ZFAudio> impl;
-    if(url) {
-        impl = ZFAudioCache::instance()->cacheGet(url);
-        if(!impl) {
-            impl = zfobj<ZFAudio>();
-            impl->load(url);
-        }
-    }
-    if(!impl->startable()) {
+    zfautoT<ZFAudio> impl = ZFAudioLoad(pathInfo);
+    if(!impl) {
         callback.execute(ZFArgs()
                 .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Fail))
-                .param1(zfobj<v_zfstring>(zfstr("unable to load audio from url: %s"
-                            , url
+                .param1(zfobj<v_zfstring>(zfstr("unable to load audio from pathInfo: %s"
+                            , pathInfo
                             )))
                 );
         return zfnull;
     }
-    ZFAudioCache::instance()->cacheAdd(url, impl);
     if(callback) {
         impl->observerAddForOnce(ZFAudio::E_AudioOnStop(), callback);
     }
@@ -100,46 +84,46 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAudio>, ZFAudioPlay
 }
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFAudioPlayTask)
+ZFOBJECT_REGISTER(ZFAudioStartTask)
 
-ZFMETHOD_DEFINE_1(ZFAudioPlayTask, void, load
+ZFMETHOD_DEFINE_1(ZFAudioStartTask, void, load
         , ZFMP_IN(ZFAudio *, impl)
         ) {
     this->stop();
     _impl = impl;
 }
-ZFMETHOD_DEFINE_1(ZFAudioPlayTask, void, load
+ZFMETHOD_DEFINE_1(ZFAudioStartTask, void, load
         , ZFMP_IN(const ZFInput &, input)
         ) {
     this->stop();
     _impl = zfobj<ZFAudio>();
     _impl->load(input);
 }
-ZFMETHOD_DEFINE_1(ZFAudioPlayTask, void, load
-        , ZFMP_IN(const zfstring &, url)
+ZFMETHOD_DEFINE_1(ZFAudioStartTask, void, load
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
     this->stop();
     _impl = zfobj<ZFAudio>();
-    _impl->load(url);
+    _impl->load(pathInfo);
 }
 
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioPlayTask
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioStartTask
         , ZFMP_IN(ZFAudio *, impl)
         ) {
     this->load(impl);
 }
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioPlayTask
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioStartTask
         , ZFMP_IN(const ZFInput &, input)
         ) {
     this->load(input);
 }
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioPlayTask
-        , ZFMP_IN(const zfstring &, url)
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAudioStartTask
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
-    this->load(url);
+    this->load(pathInfo);
 }
 
-void ZFAudioPlayTask::taskOnStart(void) {
+void ZFAudioStartTask::taskOnStart(void) {
     zfsuper::taskOnStart();
     if(_impl && _impl->startable()) {
         _impl->loop(this->loop());
@@ -183,7 +167,7 @@ void ZFAudioPlayTask::taskOnStart(void) {
         this->notifySuccess();
     }
 }
-void ZFAudioPlayTask::taskOnStop(void) {
+void ZFAudioStartTask::taskOnStop(void) {
     ZFObserverGroupRemove(_holder);
     if(this->_impl) {
         this->_impl->stop();
