@@ -54,6 +54,15 @@ public:
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
             )
 
+    /**
+     * @brief obtain a pathInfo points to root of "zfres" dir of the specified package
+     *   built by #build
+     */
+    ZFMETHOD_DECLARE_STATIC_2(ZFPathInfo, pathInfoForPackage
+            , ZFMP_IN(const ZFPathInfo &, packagePathInfo)
+            , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+            )
+
 public:
     /**
      * @brief start and attach this res moudle

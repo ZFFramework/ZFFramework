@@ -126,6 +126,9 @@ public:
     }
 
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
+        ZFUILayoutParam *lp = sysWindow->sysWindowLayoutParam();
+        lp->sizeFill(960, 720);
+        lp->alignCenter();
     }
     virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
         if(sysWindow->nativeWindow() == zfnull) {

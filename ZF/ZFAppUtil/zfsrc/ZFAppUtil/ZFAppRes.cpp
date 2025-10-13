@@ -13,6 +13,9 @@ ZFMETHOD_DEFINE_3(ZFAppRes, void, build
             , zfstring, packagePwd
             ) {
         zfstring itemPath = zfstr("zfres/%s", zfargs.param1().to<v_zfstring *>()->zfv);
+        if(zfstringEndWith(itemPath, "ZF_PUT_RES_FILES_HERE")) {
+            return;
+        }
         ZFInput input = ZFInputForPathInfo(zfargs.param0()->to<v_ZFPathInfo *>()->zfv);
         if(packagePwd) {
             ZFInputRead(ZFOutputForEncrypt(ioToken->output(itemPath), packagePwd), input);
@@ -22,6 +25,21 @@ ZFMETHOD_DEFINE_3(ZFAppRes, void, build
         }
     } ZFLISTENER_END()
     ZFIOForEachFile(sourceDir, impl);
+}
+
+ZFMETHOD_DEFINE_2(ZFAppRes, ZFPathInfo, pathInfoForPackage
+        , ZFMP_IN(const ZFPathInfo &, packagePathInfo)
+        , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+        ) {
+    if(packagePwd) {
+        return ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(
+                    ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(packagePathInfo, "zfres"))
+                    , packagePwd
+                    ));
+    }
+    else {
+        return ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(packagePathInfo, "zfres"));
+    }
 }
 
 // ============================================================
@@ -152,15 +170,7 @@ private:
         return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s.tmp", ZFMd5(ZFPathInfoToString(this->packageSrc().get(fileIndex)))));
     }
     ZFPathInfo _resExtPathInfo(ZF_IN zfindex fileIndex) {
-        if(this->packagePwd()) {
-            return ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(
-                        ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(_localFilePath(fileIndex), "zfres"))
-                        , this->packagePwd()
-                        ));
-        }
-        else {
-            return ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(_localFilePath(fileIndex), "zfres"));
-        }
+        return ZFAppRes::pathInfoForPackage(_localFilePath(fileIndex), this->packagePwd());
     }
     void _cleanup(void) {
         if(_downloadTaskId) {
