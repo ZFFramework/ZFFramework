@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUITextView_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUITextView.h"
+#include "../ZFUITextView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

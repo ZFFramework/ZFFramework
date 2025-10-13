@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFWebSocket_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFNet/ZFWebSocket.h"
+#include "../ZFWebSocket.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

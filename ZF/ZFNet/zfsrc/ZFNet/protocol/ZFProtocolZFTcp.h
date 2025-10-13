@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFTcp_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFNet/ZFTcp.h"
+#include "../ZFTcp.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

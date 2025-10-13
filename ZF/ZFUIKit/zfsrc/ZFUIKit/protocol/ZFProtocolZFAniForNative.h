@@ -7,8 +7,8 @@
 #define _ZFI_ZFProtocolZFAniForNative_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFAniForNative.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
+#include "../ZFAniForNative.h"
+#include "ZFProtocolZFUIView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

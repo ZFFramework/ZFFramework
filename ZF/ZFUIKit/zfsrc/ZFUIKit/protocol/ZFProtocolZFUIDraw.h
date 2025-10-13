@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUIDraw_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIDraw.h"
+#include "../ZFUIDraw.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief token for impl */

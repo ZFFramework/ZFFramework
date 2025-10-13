@@ -7,8 +7,8 @@
 #define _ZFI_ZFProtocolZFUIOnScreenKeyboardState_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIOnScreenKeyboardState.h"
-#include "ZFUIKit/ZFUIViewPositionOnScreen.h"
+#include "../ZFUIOnScreenKeyboardState.h"
+#include "../ZFUIViewPositionOnScreen.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

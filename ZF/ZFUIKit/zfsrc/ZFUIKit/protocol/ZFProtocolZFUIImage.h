@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUIImage_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIImage.h"
+#include "../ZFUIImage.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

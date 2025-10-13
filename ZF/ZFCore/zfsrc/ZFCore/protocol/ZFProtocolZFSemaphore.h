@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFSemaphore_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFSemaphore.h"
+#include "../ZFSemaphore.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

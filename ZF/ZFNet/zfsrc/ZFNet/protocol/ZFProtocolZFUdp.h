@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUdp_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFNet/ZFUdp.h"
+#include "../ZFUdp.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

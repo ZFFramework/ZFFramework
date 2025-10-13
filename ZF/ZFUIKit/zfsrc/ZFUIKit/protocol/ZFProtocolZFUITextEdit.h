@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUITextEdit_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUITextEdit.h"
+#include "../ZFUITextEdit.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

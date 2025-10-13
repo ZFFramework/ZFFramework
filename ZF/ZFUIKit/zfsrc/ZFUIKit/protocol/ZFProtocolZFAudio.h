@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFAudio_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFAudio.h"
+#include "../ZFAudio.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

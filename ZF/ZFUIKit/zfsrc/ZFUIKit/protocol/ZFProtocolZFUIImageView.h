@@ -7,8 +7,8 @@
 #define _ZFI_ZFProtocolZFUIImageView_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIImageView.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
+#include "../ZFUIImageView.h"
+#include "ZFProtocolZFUIImage.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

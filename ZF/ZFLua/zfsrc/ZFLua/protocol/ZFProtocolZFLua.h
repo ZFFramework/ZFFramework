@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFLua_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFLua/ZFLuaDef.h"
+#include "../ZFLuaDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

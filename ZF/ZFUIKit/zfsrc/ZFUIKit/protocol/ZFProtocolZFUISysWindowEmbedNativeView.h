@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUISysWindowEmbedNativeView_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUISysWindow.h"
+#include "../ZFUISysWindow.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

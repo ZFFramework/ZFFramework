@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFTimer_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFTimer.h"
+#include "../ZFTimer.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

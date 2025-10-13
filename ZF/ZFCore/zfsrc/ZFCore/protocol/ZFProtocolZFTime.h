@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFTime_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFTime.h"
+#include "../ZFTime.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

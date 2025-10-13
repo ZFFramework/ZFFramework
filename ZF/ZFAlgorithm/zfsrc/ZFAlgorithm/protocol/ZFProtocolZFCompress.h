@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFCompress_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFAlgorithm/ZFCompress.h"
+#include "../ZFCompress.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

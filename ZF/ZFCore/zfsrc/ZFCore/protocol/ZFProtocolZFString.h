@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFString_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/zfstringW.h"
+#include "../zfstringW.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

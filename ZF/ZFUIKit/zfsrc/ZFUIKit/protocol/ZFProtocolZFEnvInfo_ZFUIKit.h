@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFEnvInfo_ZFUIKit_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFEnvInfo_ZFUIKit.h"
+#include "../ZFEnvInfo_ZFUIKit.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

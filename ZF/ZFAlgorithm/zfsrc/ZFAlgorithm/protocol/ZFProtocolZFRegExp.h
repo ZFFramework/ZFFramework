@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFRegExp_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFAlgorithm/ZFRegExp.h"
+#include "../ZFRegExp.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

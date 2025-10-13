@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFObjectMutex_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFObject.h"
+#include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

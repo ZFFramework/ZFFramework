@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFEncrypt_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFAlgorithm/ZFEncrypt.h"
+#include "../ZFEncrypt.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

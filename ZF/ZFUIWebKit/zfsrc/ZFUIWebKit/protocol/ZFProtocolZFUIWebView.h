@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUIWebView_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIWebKit/ZFUIWebView.h"
+#include "../ZFUIWebView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFThread_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFThread.h"
+#include "../ZFThread.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

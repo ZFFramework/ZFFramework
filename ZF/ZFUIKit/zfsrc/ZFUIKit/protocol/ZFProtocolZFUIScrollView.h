@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUIScrollView_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIScrollView.h"
+#include "../ZFUIScrollView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView);

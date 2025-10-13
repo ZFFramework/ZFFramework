@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFHttpServer_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFNet/ZFHttpServer.h"
+#include "../ZFHttpServer.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

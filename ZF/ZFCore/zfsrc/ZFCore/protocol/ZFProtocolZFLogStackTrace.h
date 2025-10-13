@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFLogStackTrace_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFLog.h"
+#include "../ZFLog.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

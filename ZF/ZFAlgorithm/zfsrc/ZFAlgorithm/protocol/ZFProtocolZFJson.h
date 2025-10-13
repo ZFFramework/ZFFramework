@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFJson_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFAlgorithm/ZFJson.h"
+#include "../ZFJson.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUIWebJSBridge_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIWebKit/ZFUIWebJSBridge.h"
+#include "../ZFUIWebJSBridge.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

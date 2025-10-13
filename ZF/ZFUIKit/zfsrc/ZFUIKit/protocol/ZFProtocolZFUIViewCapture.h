@@ -7,7 +7,7 @@
 #define _ZFI_ZFProtocolZFUIViewCapture_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIViewCapture.h"
+#include "../ZFUIViewCapture.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

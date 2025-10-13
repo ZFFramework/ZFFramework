@@ -7,9 +7,9 @@
 #define _ZFI_ZFProtocolZFUIKeyboardState_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFUIKit/ZFUIKeyboardState.h"
-#include "ZFUIKit/ZFUIView.h"
-#include "ZFUIKit/ZFUIKeyEvent.h"
+#include "../ZFUIKeyboardState.h"
+#include "../ZFUIView.h"
+#include "../ZFUIKeyEvent.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
