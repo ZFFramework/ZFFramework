@@ -48,10 +48,11 @@ public:
     /**
      * @brief build package with sourceDir
      */
-    ZFMETHOD_DECLARE_STATIC_3(void, build
+    ZFMETHOD_DECLARE_STATIC_4(void, build
             , ZFMP_OUT(const ZFPathInfo &, resultPackage)
             , ZFMP_IN(const ZFPathInfo &, sourceDir)
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+            , ZFMP_IN_OPT(const zfstring &, relPathInPackage, zfnull)
             )
 
     /**

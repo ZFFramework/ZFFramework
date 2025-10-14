@@ -2,17 +2,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_DEFINE_3(ZFAppRes, void, build
+ZFMETHOD_DEFINE_4(ZFAppRes, void, build
         , ZFMP_OUT(const ZFPathInfo &, resultPackage)
         , ZFMP_IN(const ZFPathInfo &, sourceDir)
         , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, relPathInPackage, zfnull)
         ) {
     zfautoT<ZFCompressToken> ioToken = ZFCompressOpen(resultPackage, v_ZFIOOpenOption::e_Write);
-    ZFLISTENER_2(impl
+    zfstring prefix = "zfres/";
+    if(relPathInPackage) {
+        prefix += relPathInPackage;
+        prefix += "/";
+    }
+    ZFLISTENER_3(impl
             , zfautoT<ZFCompressToken>, ioToken
             , zfstring, packagePwd
+            , zfstring, prefix
             ) {
-        zfstring itemPath = zfstr("zfres/%s", zfargs.param1().to<v_zfstring *>()->zfv);
+        zfstring itemPath = zfstr("%s%s", prefix, zfargs.param1().to<v_zfstring *>()->zfv);
         if(zfstringEndWith(itemPath, "ZF_PUT_RES_FILES_HERE")) {
             return;
         }
