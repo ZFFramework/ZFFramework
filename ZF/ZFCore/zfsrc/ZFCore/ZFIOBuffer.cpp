@@ -40,11 +40,13 @@ public:
         if(this->cacheFile) {
             return;
         }
-        this->cacheFile = ZFIOOpenCache(
-                this->cacheFilePath
-                , v_ZFIOOpenOption::e_Read | v_ZFIOOpenOption::e_Write
-                , this->cacheFileAutoRemove
-                );
+        if(this->cacheFilePath) {
+            this->cacheFile = ZFIOOpenCache(
+                    this->cacheFilePath
+                    , v_ZFIOOpenOption::e_Read | v_ZFIOOpenOption::e_Write
+                    , this->cacheFileAutoRemove
+                    );
+        }
         if(!this->cacheFile) {
             this->cacheFile = ZFIOOpen(ZFPathInfo(ZFPathType_cachePath(), zfstr("ZFIOBuffer/%s_%s"
                             , zfidentityCalc(this)
@@ -153,7 +155,8 @@ void ZFIOBuffer::objectOnDealloc(void) {
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFIOBuffer, zfindex, bufferSize) {
-    if(propertyValue <= d->bufferSize) {
+    d->bufferSize = propertyValue;
+    if(propertyValue <= d->contentSize) {
         d->changeToCacheFile();
     }
 }
@@ -164,7 +167,7 @@ ZFMETHOD_DEFINE_2(ZFIOBuffer, void, cacheFilePath
         ) {
     if(!d->cacheFile) {
         d->cacheFilePath = value;
-        d->cacheFileAutoRemove = zftrue;
+        d->cacheFileAutoRemove = autoRemove;
     }
 }
 ZFMETHOD_DEFINE_0(ZFIOBuffer, ZFPathInfo, cacheFilePath) {
@@ -220,6 +223,9 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFIOBuffer_input, zfbool, ioSeek
         , ZFMP_IN(ZFSeekPos, seekPos)
         ) {
     d->contentIndex = ZFIOCallbackCalcSeek(0, d->contentSize, d->contentIndex, byteSize, seekPos);
+    if(d->cacheFile) {
+        d->cacheFile->ioSeek(d->contentIndex, ZFSeekPosBegin);
+    }
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFIOBuffer_input, zfindex, ioTell) {
@@ -259,6 +265,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFIOBuffer_output, zfindex, onOutput
             zfmemcpy(d->buf.zfunsafe_buffer() + d->contentIndex, buf, count);
             d->contentIndex += count;
             d->contentSize = zfmMax(d->contentSize, d->contentIndex);
+            d->buf.zfunsafe_length(d->contentSize);
             return count;
         }
     }
