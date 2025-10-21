@@ -213,7 +213,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFIOBuffer_input, zfindex, onInput
         count = d->cacheFile->ioRead(buf, count);
     }
     else {
-        zfmemcpy(buf, d->buf.cString(), count);
+        zfmemcpy(buf, d->buf.cString() + d->contentIndex, count);
     }
     d->contentIndex += count;
     return count;
