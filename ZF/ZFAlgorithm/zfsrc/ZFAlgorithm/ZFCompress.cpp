@@ -86,19 +86,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioIsExist
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioIsDir
         , ZFMP_IN(const zfstring &, itemPath)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, ioIsDirAt
-        , ZFMP_IN(zfindex, itemIndex)
-        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFCompressToken, zfindex, itemCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfindex, itemIndex
-        , ZFMP_IN(const zfstring &, itemPath)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFCompressToken, zfiter, itemIter)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, itemIsDir
+        , ZFMP_IN(const zfiter &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfstring, itemPath
-        , ZFMP_IN(zfindex, itemIndex)
-        )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFCompressToken, zfbool, itemPathT
-        , ZFMP_IN_OUT(zfstring &, itemPath)
-        , ZFMP_IN(zfindex, itemIndex)
+        , ZFMP_IN(const zfiter &, it)
         )
 
 // ============================================================
@@ -226,8 +220,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
     if(!compress) {
         return zffalse;
     }
-    for(zfindex i = 0; i < compress->itemCount(); ++i) {
-        zfstring itemPath = compress->itemPath(i);
+    for(zfiter it = compress->itemIter(); it; ++it) {
+        zfstring itemPath = compress->itemPath(it);
         if(!itemPath) {
             return zffalse;
         }

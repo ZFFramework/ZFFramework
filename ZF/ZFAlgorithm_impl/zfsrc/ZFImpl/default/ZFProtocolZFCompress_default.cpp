@@ -151,8 +151,19 @@ private:
         }
         _itemLoaded = zftrue;
         if(_impl.m_zip_mode != MZ_ZIP_MODE_INVALID) {
-            for(zfindex i = 0, itemCount = this->itemCount(); i < itemCount; ++i) {
-                _itemToKeep[this->itemPath(i)] = this->ioIsDirAt(i);
+            for(mz_uint itemIndex = 0, itemCount = mz_zip_reader_get_num_files(&_impl); itemIndex < itemCount; ++itemIndex) {
+                // note the size contains '\0'
+                zfindex size = (zfindex)mz_zip_reader_get_filename(&_impl, itemIndex, zfnull, 0);
+                if(size == 0) {
+                    continue;
+                }
+                zfstring itemPath;
+                itemPath.capacity(itemPath.length() + size);
+                mz_zip_reader_get_filename(&_impl, itemIndex, itemPath.zfunsafe_buffer() + itemPath.length(), (mz_uint)size);
+                itemPath.zfunsafe_length(itemPath.length() + size - 1);
+
+                mz_zip_archive_file_stat stat;
+                _itemToKeep[itemPath] = (mz_zip_reader_file_stat(&_impl, itemIndex, &stat) && stat.m_is_directory);
             }
         }
     }
@@ -218,9 +229,9 @@ private:
             zfstlhashmap<zfstring, zfbool> dirToCreate;
 
             ret = zftrue;
-            for(zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.begin(); itExist != _itemToKeep.end(); ++itExist) {
-                if(itExist->second) {
-                    dirToCreate[itExist->first] = zftrue;
+            for(zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.begin(); itToKeep != _itemToKeep.end(); ++itToKeep) {
+                if(itToKeep->second) {
+                    dirToCreate[itToKeep->first] = zftrue;
                     continue;
                 }
 
@@ -228,7 +239,7 @@ private:
                 ZFOutput bufOutput = buf->output();
                 zfbool success = mz_zip_reader_extract_file_to_callback(
                         &_impl
-                        , itExist->first
+                        , itToKeep->first
                         , zfself::_implWrite_ZFOutput
                         , &bufOutput
                         , MZ_ZIP_FLAG_CASE_SENSITIVE
@@ -246,7 +257,7 @@ private:
                 }
                 success = mz_zip_writer_add_read_buf_callback(
                         &implCache
-                        , itExist->first
+                        , itToKeep->first
                         , zfself::_implRead_ZFInput
                         , &bufInput
                         , (mz_uint64)fileSize
@@ -269,13 +280,13 @@ private:
                 break;
             }
 
-            for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ++itMod) {
-                if(!(itMod->second)) {
-                    dirToCreate[itMod->first] = zftrue;
+            for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ++itToAdd) {
+                if(!(itToAdd->second)) {
+                    dirToCreate[itToAdd->first] = zftrue;
                     continue;
                 }
 
-                ZFInput bufInput = ZFInputForPathInfo(itMod->second);
+                ZFInput bufInput = ZFInputForPathInfo(itToAdd->second);
                 zfindex fileSize = bufInput.ioSize();
                 if(fileSize == zfindexMax()) {
                     ret = zffalse;
@@ -283,7 +294,7 @@ private:
                 }
                 zfbool success = mz_zip_writer_add_read_buf_callback(
                         &implCache
-                        , itMod->first
+                        , itToAdd->first
                         , zfself::_implRead_ZFInput
                         , &bufInput
                         , (mz_uint64)fileSize
@@ -305,15 +316,15 @@ private:
 
             for(zfstlhashmap<zfstring, zfbool>::iterator it = dirToCreate.begin(); it != dirToCreate.end(); ++it) {
                 zfbool hasChild = zffalse;
-                for(zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.begin(); itExist != _itemToKeep.end(); ++itExist) {
-                    if(_isChildOf(itExist->first, it->first)) {
+                for(zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.begin(); itToKeep != _itemToKeep.end(); ++itToKeep) {
+                    if(_isChildOf(itToKeep->first, it->first)) {
                         hasChild = zftrue;
                         break;
                     }
                 }
                 if(!hasChild) {
-                    for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ++itMod) {
-                        if(_isChildOf(itMod->first, it->first)) {
+                    for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ++itToAdd) {
+                        if(_isChildOf(itToAdd->first, it->first)) {
                             hasChild = zftrue;
                             break;
                         }
@@ -344,9 +355,9 @@ private:
             ret = ret && ZFIOMove(_refPathInfo.pathData(), cachePath);
         }
 
-        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ++itMod) {
-            if(itMod->second) {
-                ZFIORemove(itMod->second);
+        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ++itToAdd) {
+            if(itToAdd->second) {
+                ZFIORemove(itToAdd->second);
             }
         }
         _refPathInfo = zfnull;
@@ -390,9 +401,9 @@ public:
                     , MZ_ZIP_FLAG_CASE_SENSITIVE
                     );
         }
-        zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.find(itemPathTmp);
-        if(itExist != _itemToKeep.end()) {
-            if(itExist->second) {
+        zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.find(itemPathTmp);
+        if(itToKeep != _itemToKeep.end()) {
+            if(itToKeep->second) {
                 return zffalse;
             }
             if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
@@ -407,9 +418,9 @@ public:
                     , MZ_ZIP_FLAG_CASE_SENSITIVE
                     );
         }
-        zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.find(itemPathTmp);
-        if(itMod != _itemToAdd.end()) {
-            return ZFInputRead(output, ZFInputForPathInfo(itMod->second)) != zfindexMax();
+        zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.find(itemPathTmp);
+        if(itToAdd != _itemToAdd.end()) {
+            return ZFInputRead(output, ZFInputForPathInfo(itToAdd->second)) != zfindexMax();
         }
         return zffalse;
     }
@@ -426,17 +437,17 @@ public:
         _itemLoadCheck();
         _modified = zftrue;
 
-        zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.find(itemPathTmp);
-        if(itExist != _itemToKeep.end()) {
-            _itemToKeep.erase(itExist);
+        zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.find(itemPathTmp);
+        if(itToKeep != _itemToKeep.end()) {
+            _itemToKeep.erase(itToKeep);
         }
 
-        zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.find(itemPathTmp);
-        if(itMod != _itemToAdd.end()) {
-            if(!itMod->second) {
-                itMod->second = ZFIO_cachePathGen();
+        zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.find(itemPathTmp);
+        if(itToAdd != _itemToAdd.end()) {
+            if(!itToAdd->second) {
+                itToAdd->second = ZFIO_cachePathGen();
             }
-            return ZFInputRead(ZFOutputForPathInfo(itMod->second), input) != zfindexMax();
+            return ZFInputRead(ZFOutputForPathInfo(itToAdd->second), input) != zfindexMax();
         }
         else {
             return ZFInputRead(ZFOutputForPathInfo(_itemToAdd[itemPathTmp] = ZFIO_cachePathGen()), input) != zfindexMax();
@@ -451,14 +462,14 @@ public:
         }
         _itemLoadCheck();
 
-        zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.find(itemPathTmp);
-        if(itExist != _itemToKeep.end()) {
-            return itExist->second;
+        zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.find(itemPathTmp);
+        if(itToKeep != _itemToKeep.end()) {
+            return itToKeep->second;
         }
 
-        zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.find(itemPathTmp);
-        if(itMod != _itemToAdd.end()) {
-            return !(itMod->second);
+        zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.find(itemPathTmp);
+        if(itToAdd != _itemToAdd.end()) {
+            return !(itToAdd->second);
         }
 
         _modified = zftrue;
@@ -474,23 +485,23 @@ public:
 
         _itemLoadCheck();
 
-        for(zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.begin(); itExist != _itemToKeep.end(); ) {
-            if(_isSameOrChildOf(itExist->first, itemPathTmp)) {
+        for(zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.begin(); itToKeep != _itemToKeep.end(); ) {
+            if(_isSameOrChildOf(itToKeep->first, itemPathTmp)) {
                 _modified = zftrue;
-                _itemToKeep.erase(itExist++);
+                _itemToKeep.erase(itToKeep++);
             }
             else {
-                ++itExist;
+                ++itToKeep;
             }
         }
 
-        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ) {
-            if(_isSameOrChildOf(itMod->first, itemPathTmp)) {
+        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ) {
+            if(_isSameOrChildOf(itToAdd->first, itemPathTmp)) {
                 _modified = zftrue;
-                _itemToAdd.erase(itMod++);
+                _itemToAdd.erase(itToAdd++);
             }
             else {
-                ++itMod;
+                ++itToAdd;
             }
         }
         return zftrue;
@@ -512,22 +523,22 @@ public:
         zfstlhashmap<zfstring, zfbool> existToRemove; // <itemPath, dummy>
         zfstlhashmap<zfstring, zfbool> modToRemove; // <itemPath, dummy>
 
-        for(zfstlhashmap<zfstring, zfbool>::iterator itExist = _itemToKeep.begin(); itExist != _itemToKeep.end(); ++itExist) {
-            if(_isSameOrChildOf(itExist->first, itemPathFrom)) {
+        for(zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.begin(); itToKeep != _itemToKeep.end(); ++itToKeep) {
+            if(_isSameOrChildOf(itToKeep->first, itemPathFrom)) {
                 moved = zftrue;
-                existToMove[itExist->first] = itExist->second;
+                existToMove[itToKeep->first] = itToKeep->second;
             }
-            else if(_isSameOrChildOf(itExist->first, itemPathTo)) {
-                existToRemove[itExist->first] = zftrue;
+            else if(_isSameOrChildOf(itToKeep->first, itemPathTo)) {
+                existToRemove[itToKeep->first] = zftrue;
             }
         }
-        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.begin(); itMod != _itemToAdd.end(); ++itMod) {
-            if(_isSameOrChildOf(itMod->first, itemPathFrom)) {
+        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ++itToAdd) {
+            if(_isSameOrChildOf(itToAdd->first, itemPathFrom)) {
                 moved = zftrue;
-                modToMove[itMod->first] = itMod->second;
+                modToMove[itToAdd->first] = itToAdd->second;
             }
-            else if(_isSameOrChildOf(itMod->first, itemPathTo)) {
-                modToRemove[itMod->first] = zftrue;
+            else if(_isSameOrChildOf(itToAdd->first, itemPathTo)) {
+                modToRemove[itToAdd->first] = zftrue;
             }
         }
         if(!moved) {
@@ -539,10 +550,10 @@ public:
             _itemToKeep.erase(it->first);
         }
         for(zfstlhashmap<zfstring, zfbool>::iterator it = modToRemove.begin(); it != modToRemove.end(); ++it) {
-            zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.find(it->first);
-            if(itMod != _itemToAdd.end() && itMod->second) {
-                ZFIORemove(itMod->second);
-                _itemToAdd.erase(itMod);
+            zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.find(it->first);
+            if(itToAdd != _itemToAdd.end() && itToAdd->second) {
+                ZFIORemove(itToAdd->second);
+                _itemToAdd.erase(itToAdd);
             }
         }
 
@@ -566,10 +577,10 @@ public:
                     : zfstr("%s/%s", itemPathTo, it->first.cString() + itemPathFrom.length() + 1)
                     );
             if(it->second) {
-                zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod = _itemToAdd.find(it->first);
-                ZFCoreAssert(itMod != _itemToAdd.end());
-                _itemToAdd[itemPath] = itMod->second;
-                _itemToAdd.erase(itMod);
+                zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.find(it->first);
+                ZFCoreAssert(itToAdd != _itemToAdd.end());
+                _itemToAdd[itemPath] = itToAdd->second;
+                _itemToAdd.erase(itToAdd);
             }
             else {
                 _itemToAdd[itemPath] = zfnull;
@@ -583,30 +594,30 @@ private:
     zfclassNotPOD _FindData {
     public:
         zfstring itemPath;
-        zfstlhashmap<zfstring, zfbool>::iterator itExist;
-        zfstlhashmap<zfstring, ZFPathInfo>::iterator itMod;
+        zfstlhashmap<zfstring, zfbool>::iterator itToKeep;
+        zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd;
     };
     zfbool _itemFindNext(
             ZF_IN_OUT ZFIOFindData &fd
             , ZF_IN_OUT _FindData *d
             ) {
-        while(d->itExist != _itemToKeep.end()) {
-            if(_isDirectChildOf(d->itExist->first, d->itemPath)) {
-                fd.impl().name = ZFFileNameOf(d->itExist->first);
-                fd.impl().isDir = d->itExist->second;
-                ++(d->itExist);
+        while(d->itToKeep != _itemToKeep.end()) {
+            if(_isDirectChildOf(d->itToKeep->first, d->itemPath)) {
+                fd.impl().name = ZFFileNameOf(d->itToKeep->first);
+                fd.impl().isDir = d->itToKeep->second;
+                ++(d->itToKeep);
                 return zftrue;
             }
-            ++(d->itExist);
+            ++(d->itToKeep);
         }
-        while(d->itMod != _itemToAdd.end()) {
-            if(_isDirectChildOf(d->itMod->first, d->itemPath)) {
-                fd.impl().name = ZFFileNameOf(d->itMod->first);
-                fd.impl().isDir = !(d->itMod->second);
-                ++(d->itMod);
+        while(d->itToAdd != _itemToAdd.end()) {
+            if(_isDirectChildOf(d->itToAdd->first, d->itemPath)) {
+                fd.impl().name = ZFFileNameOf(d->itToAdd->first);
+                fd.impl().isDir = !(d->itToAdd->second);
+                ++(d->itToAdd);
                 return zftrue;
             }
-            ++(d->itMod);
+            ++(d->itToAdd);
         }
         return zffalse;
     }
@@ -619,8 +630,8 @@ public:
         _itemLoadCheck();
         _FindData *d = zfpoolNew(_FindData);
         d->itemPath = _itemPathFormat(itemPath);
-        d->itExist = _itemToKeep.begin();
-        d->itMod = _itemToAdd.begin();
+        d->itToKeep = _itemToKeep.begin();
+        d->itToAdd = _itemToAdd.begin();
         if(this->_itemFindNext(fd, d)) {
             fd.implAttach("ZFCompressToken_default", d);
             return zftrue;
@@ -644,24 +655,14 @@ public:
 
     zfoverride
     virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) {
-        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
-            return zffalse;
-        }
-        zfstring itemPathTmp = _itemPathFormat(itemPath);
-        if(!itemPathTmp) {
-            // empty is valid root dir
-            return zftrue;
-        }
-        zfstring buf;
-        for(mz_uint itemIndex = 0; itemIndex < _impl.m_total_files; ++itemIndex) {
-            zfindex size = (zfindex)mz_zip_reader_get_filename(&_impl, itemIndex, zfnull, 0);
-            if(size == 0) {
-                continue;
+        _itemLoadCheck();
+        for(zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.begin(); itToKeep != _itemToKeep.end(); ++itToKeep) {
+            if(_isSameOrChildOf(itToKeep->first, itemPath)) {
+                return zftrue;
             }
-            buf.capacity(size);
-            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), (mz_uint)size);
-            buf.zfunsafe_length(size - 1);
-            if(_isSameOrChildOf(buf, itemPathTmp)) {
+        }
+        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ++itToAdd) {
+            if(_isSameOrChildOf(itToAdd->first, itemPath)) {
                 return zftrue;
             }
         }
@@ -670,82 +671,101 @@ public:
 
     zfoverride
     virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) {
-        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
-            return zffalse;
-        }
-        zfstring itemPathTmp = _itemPathFormat(itemPath);
-        if(!itemPathTmp) {
-            // empty is valid root dir
-            return zftrue;
-        }
-        zfstring buf;
-        for(mz_uint itemIndex = 0; itemIndex < _impl.m_total_files; ++itemIndex) {
-            zfindex size = (zfindex)mz_zip_reader_get_filename(&_impl, itemIndex, zfnull, 0);
-            if(size == 0) {
-                continue;
+        _itemLoadCheck();
+        for(zfstlhashmap<zfstring, zfbool>::iterator itToKeep = _itemToKeep.begin(); itToKeep != _itemToKeep.end(); ++itToKeep) {
+            if(_isChildOf(itToKeep->first, itemPath)) {
+                return zftrue;
             }
-            buf.capacity(size);
-            mz_zip_reader_get_filename(&_impl, itemIndex, buf.zfunsafe_buffer(), (mz_uint)size);
-            buf.zfunsafe_length(size - 1);
-            if(zfstringBeginWith(buf, itemPathTmp)) {
-                if(buf.length() == itemPathTmp.length()) {
-                    mz_zip_archive_file_stat stat;
-                    return (mz_zip_reader_file_stat(&_impl, itemIndex, &stat) && stat.m_is_directory);
-                }
-                else if(buf[itemPathTmp.length()] == '/') {
-                    return zftrue;
-                }
+            else if(itToKeep->first == itemPath) {
+                return itToKeep->second;
+            }
+        }
+        for(zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd = _itemToAdd.begin(); itToAdd != _itemToAdd.end(); ++itToAdd) {
+            if(_isChildOf(itToAdd->first, itemPath)) {
+                return zftrue;
+            }
+            else if(itToAdd->first == itemPath) {
+                return itToAdd->second == zfnull;
             }
         }
         return zffalse;
     }
 
     zfoverride
-    virtual zfbool ioIsDirAt(ZF_IN zfindex itemIndex) {
-        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
-            return zffalse;
-        }
-        mz_zip_archive_file_stat stat;
-        return (mz_zip_reader_file_stat(&_impl, (mz_uint)itemIndex, &stat) && stat.m_is_directory);
+    virtual zfindex itemCount(void) {
+        _itemLoadCheck();
+        return (zfindex)(_itemToKeep.size() + _itemToAdd.size());
     }
 
-    zfoverride
-    virtual zfindex itemCount(void) {
-        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
-            return 0;
+    zfclassNotPOD _Iter : zfextend zfiter::Impl {
+    public:
+        zfstlhashmap<zfstring, zfbool>::iterator itToKeep;
+        zfstlhashmap<zfstring, zfbool>::iterator itToKeepEnd;
+        zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAdd;
+        zfstlhashmap<zfstring, ZFPathInfo>::iterator itToAddEnd;
+    public:
+        zfoverride
+        virtual zfbool valid(void) {
+            return itToKeep != itToKeepEnd || itToAdd != itToAddEnd;
         }
-        return (zfindex)mz_zip_reader_get_num_files(&_impl);
+        zfoverride
+        virtual void next(void) {
+            if(itToKeep != itToKeepEnd) {
+                ++itToKeep;
+            }
+            else if(itToAdd != itToAddEnd) {
+                ++itToAdd;
+            }
+        }
+        zfoverride
+        virtual Impl *copy(void) {
+            _Iter *ret = zfpoolNew(_Iter);
+            ret->itToKeep = itToKeep;
+            ret->itToKeepEnd = itToKeepEnd;
+            ret->itToAdd = itToAdd;
+            ret->itToAddEnd = itToAddEnd;
+            return ret;
+        }
+        zfoverride
+        virtual void destroy(void) {
+            zfpoolDelete(this);
+        }
+        zfoverride
+        virtual zfbool isEqual(ZF_IN Impl *d) {
+            _Iter *t = (_Iter *)d;
+            return itToKeep == t->itToKeep && itToAdd == t->itToAdd;
+        }
+    };
+    zfoverride
+    virtual zfiter itemIter(void) {
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->itToKeep = _itemToKeep.begin();
+        impl->itToKeepEnd = _itemToKeep.end();
+        impl->itToAdd = _itemToAdd.begin();
+        impl->itToAddEnd = _itemToAdd.end();
+        return zfiter(impl);
     }
     zfoverride
-    virtual zfindex itemIndex(ZF_IN const zfstring &itemPath) {
-        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
-            return zfindexMax();
+    virtual zfbool itemIsDir(ZF_IN const zfiter &it) {
+        _Iter *impl = it.impl<_Iter *>();
+        if(impl->itToKeep != impl->itToKeepEnd) {
+            return impl->itToKeep->second;
         }
-        int ret = mz_zip_reader_locate_file(&_impl, itemPath, zfnull, MZ_ZIP_FLAG_CASE_SENSITIVE);
-        if(ret < 0) {
-            return zfindexMax();
+        if(impl->itToAdd != impl->itToAddEnd) {
+            return impl->itToAdd->second == zfnull;
         }
-        else {
-            return (zfindex)ret;
-        }
+        return zffalse;
     }
     zfoverride
-    virtual zfbool itemPathT(
-            ZF_IN_OUT zfstring &itemPath
-            , ZF_IN zfindex itemIndex
-            ) {
-        if(_impl.m_zip_mode == MZ_ZIP_MODE_INVALID) {
-            return zffalse;
+    virtual zfstring itemPath(ZF_IN const zfiter &it) {
+        _Iter *impl = it.impl<_Iter *>();
+        if(impl->itToKeep != impl->itToKeepEnd) {
+            return impl->itToKeep->first;
         }
-        // note the size contains '\0'
-        zfindex size = (zfindex)mz_zip_reader_get_filename(&_impl, (mz_uint)itemIndex, zfnull, 0);
-        if(size == 0) {
-            return zffalse;
+        if(impl->itToAdd != impl->itToAddEnd) {
+            return impl->itToAdd->first;
         }
-        itemPath.capacity(itemPath.length() + size);
-        mz_zip_reader_get_filename(&_impl, (mz_uint)itemIndex, itemPath.zfunsafe_buffer() + itemPath.length(), (mz_uint)size);
-        itemPath.zfunsafe_length(itemPath.length() + size - 1);
-        return zftrue;
+        return zfnull;
     }
 };
 

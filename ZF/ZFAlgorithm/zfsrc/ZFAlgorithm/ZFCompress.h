@@ -83,28 +83,15 @@ public:
     virtual zfbool ioIsExist(ZF_IN const zfstring &itemPath) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
     virtual zfbool ioIsDir(ZF_IN const zfstring &itemPath) zfpurevirtual;
-    /** @brief see #ZFCompressOpen */
-    virtual zfbool ioIsDirAt(ZF_IN zfindex itemIndex) zfpurevirtual;
 
     /** @brief see #ZFCompressOpen */
     virtual zfindex itemCount(void) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfindex itemIndex(ZF_IN const zfstring &itemPath) zfpurevirtual;
+    virtual zfiter itemIter(void) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfstring itemPath(ZF_IN zfindex itemIndex) {
-        zfstring ret;
-        if(this->itemPathT(ret, itemIndex)) {
-            return ret;
-        }
-        else {
-            return zfnull;
-        }
-    }
+    virtual zfbool itemIsDir(ZF_IN const zfiter &it) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
-    virtual zfbool itemPathT(
-            ZF_IN_OUT zfstring &itemPath
-            , ZF_IN zfindex itemIndex
-            ) zfpurevirtual;
+    virtual zfstring itemPath(ZF_IN const zfiter &it) zfpurevirtual;
 
 private:
     zfoverride
@@ -165,8 +152,9 @@ private:
  *   }
  *
  *   // iterate items (files or dirs)
- *   for(zfindex i = 0; i < compress->itemCount(); ++i) {
- *       zfstring itemPath = compress->itemPath(i);
+ *   for(zfiter it = compress->itemIter(); it; ++it) {
+ *       zfstring itemPath = compress->itemPath(it);
+ *       zfbool isDir = compress->itemIsDir(it);
  *   }
  *
  *   // explicitly close
