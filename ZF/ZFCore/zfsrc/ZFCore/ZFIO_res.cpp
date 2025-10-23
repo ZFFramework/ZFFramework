@@ -193,27 +193,31 @@ public:
                 , zfidentityCalcString(v.pathData(), v.pathData().length())
                 );
     }
-    inline zfbool operator () (ZFPathInfo const &k1, ZFPathInfo const &k2) const {
-        zfint t = k1.pathType().compare(k2.pathType());
-        return (t < 0 || (t == 0 && k1.pathData().compare(k2.pathData()) < 0));
-    }
 };
 typedef zfstlhashmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyHash> _ZFP_ZFResExtMap;
+typedef zfstlhashmap<zfstring, _ZFP_ZFResExtMap> _ZFP_ZFResExtCkMap;
 static zfbool _ZFP_ZFResExtPathCheck(
         ZF_OUT ZFPathInfo &resExtPath
         , ZF_IN const zfstring &resPath
-        , ZF_IN_OUT _ZFP_ZFResExtMap &ck
+        , ZF_IN_OUT _ZFP_ZFResExtCkMap &ck
         ) {
     ZFCoreMutexLock();
     zfindex resPathLen = zfslen(resPath);
 
+    _ZFP_ZFResExtMap &ckTmp = ck[resPath];
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
         const ZFPathInfo &t = l[i];
-        if(ck.find(t) != ck.end()) {
+        if(t.pathType() == ZFPathType_res() && (zffalse
+                    || (t.pathData().length() == resPath.length() && t.pathData() == resPath)
+                    || (t.pathData().length() < resPath.length() && resPath[t.pathData().length()] == '/' && zfstringBeginWith(resPath, t.pathData()))
+                    )) {
             continue;
         }
-        ck[t] = zftrue;
+        if(ckTmp.find(t) != ckTmp.end()) {
+            continue;
+        }
+        ckTmp[t] = zftrue;
         ZFCoreMutexUnlock();
 
         zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(t.pathType());
@@ -237,7 +241,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
         , ZFMP_IN(const zfstring &, resPath)
         ) {
     ZFCoreMutexLocker();
-    static _ZFP_ZFResExtMap ck;
+    static _ZFP_ZFResExtCkMap ck;
     static zfuint ckCount = 0;
     ++ckCount;
     zfbool result = _ZFP_ZFResExtPathCheck(resExtPath, resPath, ck);
@@ -280,7 +284,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir
 zfclassNotPOD _ZFP_ZFResFindData {
 public:
     zfstring resPathSaved;
-    _ZFP_ZFResExtMap resExtResolved;
+    _ZFP_ZFResExtCkMap resExtResolved;
     zfstlhashmap<zfstring, zfbool> resExtItemResolved;
     ZFIOFindData resExtFd; // valid if resExtImpl not empty
     /*
