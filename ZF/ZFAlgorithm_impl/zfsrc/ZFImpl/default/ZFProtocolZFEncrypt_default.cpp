@@ -16,7 +16,9 @@ public:
         struct AES_ctx ctx;
         zfbyte iv[AES_BLOCKLEN];
         zfmemset(iv, 0, sizeof(iv));
-        AES_init_ctx_iv(&ctx, (const uint8_t *)key.cString(), iv);
+        zfbyte implKey[AES_BLOCKLEN];
+        _keyInit(implKey, key);
+        AES_init_ctx_iv(&ctx, (const uint8_t *)implKey, iv);
 
         zfbyte buf[AES_BLOCKLEN * 256];
         zfindex read;
@@ -43,7 +45,9 @@ public:
         struct AES_ctx ctx;
         zfbyte iv[AES_BLOCKLEN];
         zfmemset(iv, 0, sizeof(iv));
-        AES_init_ctx_iv(&ctx, (const uint8_t *)key.cString(), iv);
+        zfbyte implKey[AES_BLOCKLEN];
+        _keyInit(implKey, key);
+        AES_init_ctx_iv(&ctx, (const uint8_t *)implKey, iv);
 
         zfbyte buf[AES_BLOCKLEN * 256];
         zfindex read;
@@ -62,6 +66,18 @@ public:
             output.execute(buf + 2, blockSize);
         }
         return zftrue;
+    }
+private:
+    static void _keyInit(ZF_OUT zfbyte *implKey, ZF_IN const zfstring &key) {
+        zfmemset(implKey, 0, AES_BLOCKLEN);
+        const zfchar *k = key.cString();
+        const zfchar *kEnd = k + key.length();
+        while(k < kEnd) {
+            for(zfindex i = 0, iEnd = zfmMin<zfindex>(16, kEnd - k); i < iEnd; ++i) {
+                implKey[i] ^= k[i];
+            }
+            k += AES_BLOCKLEN;
+        }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEncryptImpl_default)
 
