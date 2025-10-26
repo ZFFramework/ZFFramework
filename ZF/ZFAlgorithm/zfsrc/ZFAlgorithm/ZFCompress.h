@@ -92,6 +92,8 @@ public:
     virtual zfbool itemIsDir(ZF_IN const zfiter &it) zfpurevirtual;
     /** @brief see #ZFCompressOpen */
     virtual zfstring itemPath(ZF_IN const zfiter &it) zfpurevirtual;
+    /** @brief see #ZFCompressOpen */
+    virtual void itemRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
 
 private:
     zfoverride

@@ -94,6 +94,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfbool, itemIsDir
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, zfstring, itemPath
         , ZFMP_IN(const zfiter &, it)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCompressToken, void, itemRemove
+        , ZFMP_IN_OUT(zfiter &, it)
+        )
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFCompressToken>, ZFCompressOpen
