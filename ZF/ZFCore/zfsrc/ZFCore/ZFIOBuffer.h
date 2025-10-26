@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
  * @brief default value for #ZFIOBuffer::bufferSize,
- *   256KB by default
+ *   1MB by default
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, zfindex, ZFIOBufferSize)
 

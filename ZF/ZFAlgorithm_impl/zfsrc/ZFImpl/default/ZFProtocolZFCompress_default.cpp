@@ -265,7 +265,7 @@ private:
                 const zfstring &itemPath = itItem->first;
                 const ItemInfo &itemInfo = itItem->second;
                 switch(itemInfo.itemType) {
-                    case ItemType_FileToAdd: {
+                    case ItemType_FileToKeep: {
                         zfobj<ZFIOBuffer> buf;
                         ZFOutput bufOutput = buf->output();
                         zfbool success = mz_zip_reader_extract_file_to_callback(
@@ -308,7 +308,7 @@ private:
                         }
                         break;
                     }
-                    case ItemType_FileToKeep: {
+                    case ItemType_FileToAdd: {
                         ZFInput bufInput = ZFInputForPathInfo(itemInfo.fileToAdd);
                         zfindex fileSize = bufInput.ioSize();
                         if(fileSize == zfindexMax()) {

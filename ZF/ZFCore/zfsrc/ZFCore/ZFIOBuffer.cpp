@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_DEFINE(zfindex, ZFIOBufferSize, 256 * 1024)
+ZFEXPORT_VAR_DEFINE(zfindex, ZFIOBufferSize, 1024 * 1024)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFIOBufferPrivate {
