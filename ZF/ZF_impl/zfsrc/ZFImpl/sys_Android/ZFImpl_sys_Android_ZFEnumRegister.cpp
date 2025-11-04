@@ -38,7 +38,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum
     do {
         const ZFMethod *method = ZFMethodForName(rawEnumNamespaceT, rawEnumValueNameT);
         if(method == zfnull) {break;}
-        ret = method->methodInvoke().to<v_zfuint *>()->zfv;
+        ret = *(const zfuint *)method->methodInvoke().to<ZFTypeIdWrapper *>()->wrappedValue();
     } while(zffalse);
     if(rawEnumNamespaceT != NULL) {
         JNIUtilReleaseStringUTFChars(jniEnv, rawEnumNamespace, rawEnumNamespaceT);
