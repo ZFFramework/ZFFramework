@@ -292,7 +292,7 @@ public:
      * @brief whether prefer fullscreen
      */
     ZFPROPERTY_ASSIGN(zfbool, preferFullscreen, zffalse)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, preferFullscreen)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfbool, preferFullscreen)
 
 public:
     /**

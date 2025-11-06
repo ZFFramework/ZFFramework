@@ -56,11 +56,12 @@ public:
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
         ZFImpl_sys_SDL_View *nativeView = zfnew(ZFImpl_sys_SDL_View);
         nativeView->ownerZFUIView = view;
-        nativeView->renderImpl = zfnull;
+        nativeView->renderImpl = zfself::renderCallback;
         return nativeView;
     }
     virtual void nativeViewDestroy(ZF_IN void *nativeView) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)nativeView;
+        nativeViewTmp->renderImpl = zfnull;
         zfdelete(nativeViewTmp);
     }
 

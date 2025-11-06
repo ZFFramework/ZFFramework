@@ -22,6 +22,8 @@ public:
     zfbool renderPending;
     zfbool renderRequested;
     zfbool layoutRequested;
+    zfint lastWidth;
+    zfint lastHeight;
 
     zfstlhashmap<zfidentity, ZFImpl_sys_SDL_MouseState> mouseState;
 
@@ -33,6 +35,8 @@ public:
     , renderPending(zffalse)
     , renderRequested(zftrue)
     , layoutRequested(zftrue)
+    , lastWidth(0)
+    , lastHeight(0)
     , mouseState()
     {
     }
@@ -242,8 +246,14 @@ private:
     static zfbool onWindowResize(ZF_IN SDL_Event *sdlEvent) {
         ZFImpl_sys_SDL_RootWindow *rootWindow = rootWindowForWindowId(sdlEvent->window.windowID);
         if(rootWindow != zfnull) {
-            rootWindow->rootView->layoutRequest();
-            return zftrue;
+            if(zffalse
+                    || sdlEvent->window.data1 != rootWindow->_ZFP_ZFImpl_sys_SDL_RootWindow_d()->lastWidth
+                    || sdlEvent->window.data2 != rootWindow->_ZFP_ZFImpl_sys_SDL_RootWindow_d()->lastHeight
+                    ) {
+                rootWindow->_ZFP_ZFImpl_sys_SDL_RootWindow_d()->lastWidth = sdlEvent->window.data1;
+                rootWindow->_ZFP_ZFImpl_sys_SDL_RootWindow_d()->lastHeight = sdlEvent->window.data2;
+                rootWindow->rootView->layoutRequest();
+            }
         }
         return zffalse;
     }
@@ -251,7 +261,6 @@ private:
         ZFImpl_sys_SDL_RootWindow *rootWindow = rootWindowForWindowId(sdlEvent->window.windowID);
         if(rootWindow != zfnull) {
             ZFPROTOCOL_ACCESS(ZFUIRootWindow)->notifyOnResume(rootWindow->ownerZFUIRootWindow);
-            return zftrue;
         }
         return zffalse;
     }
@@ -259,7 +268,6 @@ private:
         ZFImpl_sys_SDL_RootWindow *rootWindow = rootWindowForWindowId(sdlEvent->window.windowID);
         if(rootWindow != zfnull) {
             ZFPROTOCOL_ACCESS(ZFUIRootWindow)->notifyOnPause(rootWindow->ownerZFUIRootWindow);
-            return zftrue;
         }
         return zffalse;
     }

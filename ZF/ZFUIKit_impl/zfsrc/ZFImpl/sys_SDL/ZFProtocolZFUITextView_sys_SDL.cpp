@@ -165,16 +165,11 @@ private:
             return zffalse;
         }
 
-        ZFUIRect targetRectTmp = ZFUIRectApplyScale(owner->nativeImplViewFrame(), owner->UIScaleFixed());
-        targetRectTmp.x += parentRect.x + childRect.x;
-        targetRectTmp.y += parentRect.y + childRect.y;
-        SDL_FRect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_FRect(targetRectTmp);
-
         zfobj<ZFUITextConfig> textConfig;
         textConfig->textColor(owner->textColor());
         ZFImpl_sys_SDL_textRender(
                 renderer
-                , targetRect
+                , childRect
                 , owner->text()
                 , sdlFont
                 , owner->textAlign()

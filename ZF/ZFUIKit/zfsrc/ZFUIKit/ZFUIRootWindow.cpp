@@ -22,6 +22,7 @@ public:
     ZFListener layoutParamOnUpdateListener;
     zfbool nativeWindowCreated;
     zfbool nativeWindowResumed;
+    zfbool nativeWindowLayoutUpdated;
     ZFUISize windowSize;
     ZFUIMargin windowMargin;
 
@@ -37,6 +38,7 @@ public:
     , layoutParamOnUpdateListener()
     , nativeWindowCreated(zffalse)
     , nativeWindowResumed(zffalse)
+    , nativeWindowLayoutUpdated(zftrue)
     , windowSize()
     , windowMargin()
     {
@@ -273,9 +275,9 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, const ZFUIOrientationFlags &, windowOrientatio
     return d->windowOrientationFlags;
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIRootWindow, zfbool, preferFullscreen) {
-    if(this->nativeWindowIsResumed()) {
-        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->layoutParamOnUpdate(this);
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIRootWindow, zfbool, preferFullscreen) {
+    if(propertyValue != propertyValueOld) {
+        this->_ZFP_ZFUIRootWindow_layoutUpdate();
     }
 }
 
@@ -351,6 +353,7 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onCreate(ZF_IN void *nativeWindow) {
         ZFPROTOCOL_ACCESS(ZFUIRootWindow)->nativeWindowRootViewOnAdd(this, nativeParentView);
     }
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(this->rootView(), nativeParentView);
+    this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zftrue);
 
     this->observerNotify(ZFUIRootWindow::E_WindowOnCreate());
 }
@@ -369,7 +372,7 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onDestroy(void) {
     else {
         ZFPROTOCOL_ACCESS(ZFUIRootWindow)->nativeWindowRootViewOnRemove(this);
     }
-
+    this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zffalse);
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyRemove(this->rootView());
 
     this->observerNotify(ZFUIRootWindow::E_WindowOnDestroy());
@@ -386,9 +389,9 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onResume(void) {
 
     d->nativeWindowResumed = zftrue;
     this->observerNotify(ZFUIRootWindow::E_WindowOnResume());
-    this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zftrue);
-
-    ZFPROTOCOL_ACCESS(ZFUIRootWindow)->layoutParamOnUpdate(this);
+    if(d->nativeWindowLayoutUpdated) {
+        this->_ZFP_ZFUIRootWindow_layoutUpdate();
+    }
 }
 void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onPause(void) {
     if(!d->nativeWindowResumed) {
@@ -397,12 +400,12 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onPause(void) {
 
     d->nativeWindowResumed = zffalse;
     this->observerNotify(ZFUIRootWindow::E_WindowOnPause());
-    this->rootView()->_ZFP_ZFUIView_viewTreeInWindow(zffalse);
 }
 void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onRotate(void) {
     ZFCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
     ZFCoreAssertWithMessage(d->nativeWindowResumed, "window not resumed");
     this->observerNotify(ZFUIRootWindow::E_WindowOnRotate());
+    this->_ZFP_ZFUIRootWindow_layoutUpdate();
 
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i) {
         ZFUIWindow *window = this->rootView()->childAt(i);
@@ -413,12 +416,16 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onRotate(void) {
 }
 void ZFUIRootWindow::_ZFP_ZFUIRootWindow_layoutUpdate(void) {
     if(this->nativeWindowIsResumed()) {
+        d->nativeWindowLayoutUpdated = zffalse;
         if(this->nativeWindowEmbedImpl() != zfnull) {
             this->nativeWindowEmbedImpl()->layoutParamOnUpdate(this);
         }
         else {
             ZFPROTOCOL_ACCESS(ZFUIRootWindow)->layoutParamOnUpdate(this);
         }
+    }
+    else {
+        d->nativeWindowLayoutUpdated = zftrue;
     }
 }
 

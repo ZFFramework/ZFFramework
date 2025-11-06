@@ -144,16 +144,11 @@ public:
             sdlRect.w = 640;
             sdlRect.h = 480;
         }
-        ZFUIRect rect;
-        ZFUILayoutParam::layoutParamApplyT(
-                rect
+        ZFUIRect rect = this->notifyMeasureWindow(
+                rootWindow
                 , ZFUIRectCreate(sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h)
-                , rootWindow->rootView()
-                , ZFUISizeApplyScale(lp->sizeHint(), UIScale)
-                , lp->sizeParam()
-                , lp->align()
-                , ZFUIMarginApplyScale(lp->margin(), UIScale)
-            );
+                , ZFUIMarginZero()
+                );
         SDL_SetWindowPosition(nativeWindow->sdlWindow, (int)rect.x, (int)rect.y);
         SDL_SetWindowSize(nativeWindow->sdlWindow, (int)rect.width, (int)rect.height);
 

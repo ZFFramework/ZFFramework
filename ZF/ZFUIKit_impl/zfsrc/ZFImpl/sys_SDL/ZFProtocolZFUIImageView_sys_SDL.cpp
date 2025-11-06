@@ -62,14 +62,10 @@ private:
             return zffalse;
         }
 
-        SDL_FRect targetRect = ZFImpl_sys_SDL_ZFUIRectToSDL_FRect(ZFUIRectApplyScale(owner->nativeImplViewFrame(), owner->UIScaleFixed()));
-        targetRect.x += childRect.x;
-        targetRect.y += childRect.y;
-
         SDL_Texture *sdlTexture = nativeImage->sdlTexture(renderer);
         SDL_SetTextureAlphaMod(sdlTexture, treeAlpha != 1 ? (Uint8)(treeAlpha * 255) : (Uint8)255);
         if(imageState->imageNinePatch() == ZFUIMarginZero()) {
-            SDL_RenderTexture(renderer, sdlTexture, zfnull, &targetRect);
+            SDL_RenderTexture(renderer, sdlTexture, zfnull, &childRect);
         }
         else {
             ZFUIImageImplNinePatchDrawData drawDatas[9];
@@ -78,7 +74,7 @@ private:
                 drawDatas,
                 ZFUISizeCreate((zffloat)nativeImage->sdlSurface()->w, (zffloat)nativeImage->sdlSurface()->h),
                 ZFUIMarginApplyScale(imageState->imageNinePatch(), imageState->imageScaleFixed()),
-                ZFUISizeCreate((zffloat)targetRect.w, (zffloat)targetRect.h));
+                ZFUISizeCreate((zffloat)childRect.w, (zffloat)childRect.h));
 
             SDL_FRect srcRect;
             SDL_FRect dstRect;
@@ -88,8 +84,8 @@ private:
                 srcRect.y = (int)drawData.src.y;
                 srcRect.w = (int)drawData.src.width;
                 srcRect.h = (int)drawData.src.height;
-                dstRect.x = (int)(drawData.dst.x + targetRect.x);
-                dstRect.y = (int)(drawData.dst.y + targetRect.y);
+                dstRect.x = (int)(drawData.dst.x + childRect.x);
+                dstRect.y = (int)(drawData.dst.y + childRect.y);
                 dstRect.w = (int)drawData.dst.width;
                 dstRect.h = (int)drawData.dst.height;
                 SDL_RenderTexture(renderer, sdlTexture, &srcRect, &dstRect);
