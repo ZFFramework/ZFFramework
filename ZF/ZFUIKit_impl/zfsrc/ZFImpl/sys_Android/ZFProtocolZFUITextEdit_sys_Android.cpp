@@ -15,7 +15,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Android, ZFUITextEdit, v_ZF
 public:
     virtual void *nativeTextEditCreate(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_nativeTextEditCreate",

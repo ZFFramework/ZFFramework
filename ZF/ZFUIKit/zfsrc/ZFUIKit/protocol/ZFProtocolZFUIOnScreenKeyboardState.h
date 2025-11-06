@@ -34,8 +34,8 @@ public:
             , ZF_IN const ZFUIRect &keyboardFrame
             , ZF_OUT ZFUIRect &clientFrame
             ) {
-        ZFUIViewPositionOnScreen(clientFrame, keyboardState->keyboardOwnerSysWindow()->rootView());
-        ZFUIRectApplyScaleT(clientFrame, clientFrame, keyboardState->keyboardOwnerSysWindow()->rootView()->UIScaleFixed());
+        ZFUIViewPositionOnScreen(clientFrame, keyboardState->rootWindow()->rootView());
+        ZFUIRectApplyScaleT(clientFrame, clientFrame, keyboardState->rootWindow()->rootView()->UIScaleFixed());
         if(ZFUIRectGetBottom(clientFrame) > ZFUIRectGetTop(keyboardFrame)) {
             clientFrame.height -= ZFUIRectGetBottom(clientFrame) - ZFUIRectGetTop(keyboardFrame);
         }
@@ -48,7 +48,7 @@ public:
      * @brief implementations must notify when keyboard's showing state or frame changed
      */
     zffinal void notifyKeyboardStateOnUpdate(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
-        zffloat scale = keyboardState->keyboardOwnerSysWindow()->rootView()->UIScaleFixed();
+        zffloat scale = keyboardState->rootWindow()->rootView()->UIScaleFixed();
         zfbool keyboardShowingNew = this->keyboardShowing(keyboardState);
         ZFUIRect keyboardFrameNew = ZFUIRectApplyScaleReversely(this->keyboardFrame(keyboardState), scale);
         if(keyboardShowingNew == keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardShowing

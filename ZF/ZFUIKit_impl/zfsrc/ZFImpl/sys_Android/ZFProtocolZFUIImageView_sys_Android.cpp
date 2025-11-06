@@ -19,7 +19,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_Android, ZFUIImageView, v_
 public:
     virtual void *nativeImageViewCreate(
             ZF_IN ZFUIImageView *imageView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), "native_nativeImageViewCreate",

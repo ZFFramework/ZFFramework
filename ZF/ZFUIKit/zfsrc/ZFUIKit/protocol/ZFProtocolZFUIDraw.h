@@ -49,7 +49,6 @@ public:
      */
     virtual void *nativeDrawableViewCreate(
             ZF_IN ZFUIDrawableView *drawableView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) zfpurevirtual;
     /**
      * @brief destroy native text view

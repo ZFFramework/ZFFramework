@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_SDL_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
+#include "ZFUIKit/protocol/ZFProtocolZFUIRootWindow.h"
 
 #if ZF_ENV_sys_SDL
 
@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_SDL, ZFUIView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
-    ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUISysWindow, "ZFImpl_sys_SDL_SysWindow")
+    ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIRootWindow, "ZFImpl_sys_SDL_RootWindow")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
     static zfbool renderCallback(
@@ -51,12 +51,12 @@ public:
             ) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)nativeView;
         nativeViewTmp->ownerZFUIView = view;
-        nativeViewTmp->renderImpls.add(zfself::renderCallback);
+        nativeViewTmp->renderImpl = zfself::renderCallback;
     }
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
         ZFImpl_sys_SDL_View *nativeView = zfnew(ZFImpl_sys_SDL_View);
         nativeView->ownerZFUIView = view;
-        nativeView->renderImpls.add(zfself::renderCallback);
+        nativeView->renderImpl = zfnull;
         return nativeView;
     }
     virtual void nativeViewDestroy(ZF_IN void *nativeView) {
@@ -69,14 +69,12 @@ public:
             , ZF_IN void *nativeImplViewOld
             , ZF_IN void *nativeImplView
             , ZF_IN zfindex virtualIndex
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
-        // support, but recommended to use ZFImpl_sys_SDL_View::renderImpls instead
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
         if(nativeImplViewOld != zfnull) {
             nativeView->childDetach(virtualIndex);
         }
-        if(nativeImplViewRequireVirtualIndex && nativeImplView != zfnull) {
+        if(nativeImplView != zfnull) {
             ZFImpl_sys_SDL_View *nativeImplViewTmp = (ZFImpl_sys_SDL_View *)nativeImplView;
             nativeView->childAttach(virtualIndex, nativeImplViewTmp);
         }
@@ -102,7 +100,7 @@ public:
     }
     virtual zffloat UIScaleForPixel(ZF_IN void *nativeView) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)nativeView;
-        return (zffloat)SDL_GetWindowDisplayScale(nativeViewTmp->sysWindow->sdlWindow);
+        return (zffloat)SDL_GetWindowDisplayScale(nativeViewTmp->rootWindow->sdlWindow);
     }
 
     // ============================================================
@@ -177,8 +175,8 @@ public:
                 ZFImpl_sys_SDL_View *nativeChild = nativeParent->children[i];
                 if(nativeChild != nativeImplView) {
                     nativeChild->parent = zfnull;
-                    if(nativeChild->sysWindow != zfnull) {
-                        nativeChild->sysWindowDetach();
+                    if(nativeChild->rootWindow != zfnull) {
+                        nativeChild->rootWindowDetach();
                     }
                 }
             }

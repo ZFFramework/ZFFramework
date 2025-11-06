@@ -16,16 +16,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = zfargs.sender();
-            ZFUIViewTreePrint(sysWindow->rootView());
+            ZFUIRootWindow *rootWindow = zfargs.sender();
+            ZFUIViewTreePrint(rootWindow->rootView());
         } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(
-            ZFUISysWindow::E_SysWindowOnPause(), this->windowOnPauseListener);
+            ZFUIRootWindow::E_WindowOnPause(), this->windowOnPauseListener);
     }
     ZF_GLOBAL_INITIALIZER_DESTROY(main_setting_autoPrintViewTree) {
         ZFGlobalObserver().observerRemove(
-            ZFUISysWindow::E_SysWindowOnPause(), this->windowOnPauseListener);
+            ZFUIRootWindow::E_WindowOnPause(), this->windowOnPauseListener);
     }
     private:
         ZFListener windowOnPauseListener;

@@ -86,12 +86,10 @@ void ZFUITextView::objectOnInit(void) {
             ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewDestroy(view, nativeImplView);
         }
     };
-    zfbool nativeImplViewRequireVirtualIndex = zftrue;
-    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
-        nativeImplView,
-        NativeImplViewDestroy::action,
-        nativeImplViewRequireVirtualIndex);
+            ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewCreate(this)
+            , NativeImplViewDestroy::action
+            );
 }
 void ZFUITextView::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();

@@ -57,13 +57,13 @@ public:
     virtual void nativeViewDestroy(ZF_IN void *nativeView) zfpurevirtual;
 
     /**
-     * @brief attach a native view to this view, see #ZFUINativeViewWrapper
+     * @brief attach a native view to this view, see #ZFUINativeView
      *
      * set null to remove the attached native view,
      * and it's ensured set null before view destroy\n
      * \n
      * nativeImplView has two use:
-     * -  used to store native view for #ZFUINativeViewWrapper
+     * -  used to store native view for #ZFUINativeView
      * -  used to store native view for different view's implementation
      *   such as EditText
      */
@@ -72,7 +72,6 @@ public:
             , ZF_IN void *nativeImplViewOld
             , ZF_IN void *nativeImplView
             , ZF_IN zfindex virtualIndex
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) zfpurevirtual;
     /**
      * @brief see #ZFUIView::nativeImplViewMarginUpdate
@@ -189,7 +188,7 @@ public:
     virtual void layoutRequest(ZF_IN ZFUIView *view) zfpurevirtual;
 
     /**
-     * @brief measure a native view, only called by #ZFUINativeViewWrapper
+     * @brief measure a native view, only called by #ZFUINativeView
      */
     virtual void measureNativeView(
             ZF_OUT ZFUISize &ret

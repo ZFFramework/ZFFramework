@@ -159,7 +159,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Qt, ZFUITextEdit, v_ZFProto
 public:
     virtual void *nativeTextEditCreate(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         proxy->setWidget(new _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit(textEdit));

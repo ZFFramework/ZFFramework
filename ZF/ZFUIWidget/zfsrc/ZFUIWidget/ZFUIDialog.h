@@ -90,10 +90,10 @@ public:
     // ============================================================
     // properties
     /**
-     * @brief whether this dialog update layout according to #ZFUISysWindow::sysWindowMargin,
+     * @brief whether this dialog update layout according to #ZFUIRootWindow::windowMargin,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, sysWindowMarginShouldApply, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, windowMarginShouldApply, zftrue)
 
     /**
      * @brief dialog's background color, #ZFUIGlobalStyle::colorMask by default

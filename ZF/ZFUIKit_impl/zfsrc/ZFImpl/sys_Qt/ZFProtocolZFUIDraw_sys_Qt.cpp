@@ -43,7 +43,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Qt, ZFUIDrawForView, v_Z
 public:
     virtual void *nativeDrawableViewCreate(
             ZF_IN ZFUIDrawableView *drawableView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         return new _ZFP_ZFUIDrawableViewImpl_sys_Qt(drawableView);
     }

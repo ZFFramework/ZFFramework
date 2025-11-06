@@ -68,7 +68,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_iOS, ZFUIImageView, v_ZFPr
 public:
     virtual void *nativeImageViewCreate(
             ZF_IN ZFUIImageView *imageView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         return (__bridge_retained void *)[_ZFP_ZFUIImageViewImpl_sys_iOS_ImageView new];
     }

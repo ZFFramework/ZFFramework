@@ -7,27 +7,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFEXPORT_VAR_DEFINE(zftimet, ZFUIHintDuration, (zftimet)1500)
 
 // ============================================================
-static ZFArray *_ZFP_ZFUIHint_hintListForRead(ZF_IN ZFUISysWindow *inSysWindow) {
-    if(inSysWindow == zfnull) {
-        inSysWindow = ZFUISysWindow::mainWindow();
+static ZFArray *_ZFP_ZFUIHint_hintListForRead(ZF_IN ZFUIRootWindow *rootWindow) {
+    if(rootWindow == zfnull) {
+        rootWindow = ZFUIRootWindow::mainWindow();
     }
-    if(inSysWindow == zfnull) {
+    if(rootWindow == zfnull) {
         return zfnull;
     }
-    return inSysWindow->objectTag("_ZFP_ZFUIHint_hintList");
+    return rootWindow->objectTag("_ZFP_ZFUIHint_hintList");
 }
-static ZFArray *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSysWindow) {
-    if(inSysWindow == zfnull) {
-        inSysWindow = ZFUISysWindow::mainWindow();
+static ZFArray *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUIRootWindow *rootWindow) {
+    if(rootWindow == zfnull) {
+        rootWindow = ZFUIRootWindow::mainWindow();
     }
-    if(inSysWindow == zfnull) {
+    if(rootWindow == zfnull) {
         return zfnull;
     }
-    ZFArray *hintList = inSysWindow->objectTag("_ZFP_ZFUIHint_hintList");
+    ZFArray *hintList = rootWindow->objectTag("_ZFP_ZFUIHint_hintList");
     if(hintList == zfnull) {
         zfobj<ZFArray> hintListTmp;
         hintList = hintListTmp;
-        inSysWindow->objectTag("_ZFP_ZFUIHint_hintList", hintList);
+        rootWindow->objectTag("_ZFP_ZFUIHint_hintList", hintList);
     }
     return hintList;
 }
@@ -180,7 +180,7 @@ public:
     void hintDoFinish(void) {
         this->showing = zffalse;
         zfRetainChange(this->started, zfnull);
-        ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->window()->ownerSysWindow());
+        ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->window()->rootWindow());
         zfRetain(this->pimplOwner);
         zfscopeRelease(this->pimplOwner);
         hintList->removeElement(this->pimplOwner);
@@ -218,11 +218,11 @@ ZFEVENT_REGISTER(ZFUIHint, HintOnShow)
 ZFEVENT_REGISTER(ZFUIHint, HintOnHide)
 
 ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<zfautoT<ZFUIHint> >, hintList
-        , ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull)
+        , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
         ) {
     ZFCoreArray<zfautoT<ZFUIHint> > ret;
 
-    ZFArray *hintList = _ZFP_ZFUIHint_hintListForRead(inSysWindow);
+    ZFArray *hintList = _ZFP_ZFUIHint_hintListForRead(rootWindow);
     if(hintList == zfnull) {
         return ret;
     }
@@ -274,7 +274,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, show) {
     d->showing = zftrue;
     zfRetain(this);
 
-    ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->ownerSysWindow());
+    ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->rootWindow());
     hintList->add(this);
     if(hintList->count() == 1) {
         d->hintDoShow();
@@ -290,7 +290,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hide) {
             d->delaying = zffalse;
             zfRetain(this);
             zfscopeRelease(this);
-            ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->ownerSysWindow());
+            ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->rootWindow());
             hintList->removeElement(this);
             zfRelease(this);
         }
@@ -333,9 +333,9 @@ void ZFUIHint::objectOnInit(void) {
     d->window = zfAlloc(_ZFP_ZFUIHintWindow);
     d->window->windowLevel(v_ZFUIWindowLevel::e_ZFFrameworkFgHighest);
     d->window->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
-    d->window->windowLayoutParam()->align(v_ZFUIAlign::e_Center);
-    d->window->windowLayoutParam()->sizeParam(ZFUISizeParamWrapWrap());
-    d->window->windowLayoutParam()->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
+    d->window->layoutParam()->align(v_ZFUIAlign::e_Center);
+    d->window->layoutParam()->sizeParam(ZFUISizeParamWrapWrap());
+    d->window->layoutParam()->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     d->window->viewUIEnableTree(zffalse);
 
     ZFUIHint *hint = this;
@@ -343,9 +343,9 @@ void ZFUIHint::objectOnInit(void) {
             , ZFUIHint *, hint
             ) {
         ZFCoreAssertWithMessage(!hint->showing(), "you must not change ZFUIHint's window while it's showing or delaying");
-        ZFUISysWindow *sysWindowOld = zfargs.param0();
-        ZFArray *hintListOld = _ZFP_ZFUIHint_hintListForWrite(sysWindowOld);
-        ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->window()->ownerSysWindow());
+        ZFUIRootWindow *rootWindowOld = zfargs.param0();
+        ZFArray *hintListOld = _ZFP_ZFUIHint_hintListForWrite(rootWindowOld);
+        ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->window()->rootWindow());
         hintListNew->add(hint);
         hintListOld->removeElement(hint);
         if(!hintListOld->isEmpty()) {
@@ -361,7 +361,7 @@ void ZFUIHint::objectOnInit(void) {
             }
         }
     } ZFLISTENER_END()
-    d->window->observerAdd(ZFUIWindow::E_WindowOwnerSysWindowOnUpdate(), windowOnUpdate);
+    d->window->observerAdd(ZFUIWindow::E_RootWindowOnUpdate(), windowOnUpdate);
 
     ZFLISTENER_1(windowOnLayoutPrepare
             , ZFUIHint *, hint

@@ -204,24 +204,24 @@ void ZFImpl_sys_Android_viewTreePrintT(
 ZF_NAMESPACE_GLOBAL_END
 
 #if 0
-    #include "ZFUIKit/ZFUISysWindow.h"
+    #include "ZFUIKit/ZFUIRootWindow.h"
     ZF_GLOBAL_INITIALIZER_INIT(ZFImpl_sys_Android_autoPrintViewTree) {
         if(!ZFProtocolIsAvailable("ZFUIView")) {
             return;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = zfargs.sender();
+            ZFUIRootWindow *rootWindow = zfargs.sender();
             zfstring s;
-            ZFImpl_sys_Android_viewTreePrintT(s, (jobject)sysWindow->rootView()->nativeView());
+            ZFImpl_sys_Android_viewTreePrintT(s, (jobject)rootWindow->rootView()->nativeView());
             ZFLogTrim() << s;
         } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(
-            ZFUISysWindow::E_SysWindowOnPause(), this->windowOnPauseListener);
+            ZFUIRootWindow::E_WindowOnPause(), this->windowOnPauseListener);
     }
     ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_autoPrintViewTree) {
         ZFGlobalObserver().observerRemove(
-            ZFUISysWindow::E_SysWindowOnPause(), this->windowOnPauseListener);
+            ZFUIRootWindow::E_WindowOnPause(), this->windowOnPauseListener);
     }
     private:
         ZFListener windowOnPauseListener;

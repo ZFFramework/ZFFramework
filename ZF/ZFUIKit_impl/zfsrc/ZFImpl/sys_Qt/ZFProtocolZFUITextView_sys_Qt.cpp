@@ -47,7 +47,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Qt, ZFUITextView, v_ZFProto
 public:
     virtual void *nativeTextViewCreate(
             ZF_IN ZFUITextView *textView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         proxy->setWidget(new _ZFP_ZFUITextViewImpl_sys_Qt_TextView());

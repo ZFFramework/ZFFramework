@@ -49,27 +49,22 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_SDL, ZFUIDrawForView, v_
 public:
     virtual void *nativeDrawableViewCreate(
             ZF_IN ZFUIDrawableView *drawableView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)drawableView->nativeView();
-        nativeView->renderImpls.add(zfself::_renderCallback);
-
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
+        drawImpl->renderImpl = zfself::_renderCallback;
         return (void *)(ZFImpl_sys_SDL_View *)drawImpl;
     }
     virtual void nativeDrawableViewDestroy(
             ZF_IN ZFUIDrawableView *drawableView
             , ZF_IN void *nativeDrawableView
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)drawableView->nativeView();
-        nativeView->renderImpls.removeElement(zfself::_renderCallback);
-
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)nativeDrawableView;
+        drawImpl->renderImpl = zfnull;
         zfdelete(drawImpl);
     }
 
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)drawableView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)drawableView->nativeImplView();
         nativeView->renderRequest();
     }
 
@@ -80,6 +75,7 @@ public:
         return zftrue;
     }
     virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
+        token.impl = zfnull;
     }
 private:
     static zfbool _renderCallback(
@@ -275,8 +271,8 @@ public:
                 , config->textAlign()
                 , ZFImpl_sys_SDL_ZFUIColorToSDL_Color(config->textColor())
                 , zffalse
-                , v_ZFUITextTruncateMode::e_Disable
                 , 1
+                , v_ZFUITextTruncateMode::e_Disable
                 );
         return zftrue;
     }

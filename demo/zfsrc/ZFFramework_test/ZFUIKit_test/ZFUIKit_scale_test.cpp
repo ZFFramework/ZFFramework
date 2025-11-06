@@ -34,11 +34,11 @@ private:
                 v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr(
                     "scale: %s",
-                    ZFUISysWindow::mainWindow()->rootView()->UIScale());
+                    ZFUIRootWindow::mainWindow()->rootView()->UIScale());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
             ZFLISTENER(buttonClickListener) {
-                ZFUIRootView *rootView = ZFUISysWindow::mainWindow()->rootView();
+                ZFUIRootView *rootView = ZFUIRootWindow::mainWindow()->rootView();
                 if(rootView->UIScale() == 1) {
                     rootView->UIScale(2);
                 }

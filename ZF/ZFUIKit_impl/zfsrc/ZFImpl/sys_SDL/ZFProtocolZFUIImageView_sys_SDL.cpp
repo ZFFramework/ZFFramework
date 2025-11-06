@@ -19,19 +19,18 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_SDL, ZFUIImageView, v_ZFPr
 public:
     virtual void *nativeImageViewCreate(
             ZF_IN ZFUIImageView *imageView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
-        nativeView->renderImpls.add(zfself::renderCallback);
-
-        // no actual impl view, use renderImpls
-        return zfnull;
+        ZFImpl_sys_SDL_View *nativeImageView = zfpoolNew(ZFImpl_sys_SDL_View);
+        nativeImageView->renderImpl = zfself::renderCallback;
+        return nativeImageView;
     }
     virtual void nativeImageViewDestroy(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN void *nativeImageView
             ) {
-        // nothing to do
+        ZFImpl_sys_SDL_View *nativeImageViewTmp = (ZFImpl_sys_SDL_View *)nativeImageView;
+        nativeImageViewTmp->renderImpl = zfnull;
+        zfpoolDelete(nativeImageViewTmp);
     }
 
     virtual void image(
@@ -50,7 +49,7 @@ private:
             , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
-        ZFUIImageView *owner = zfcast(ZFUIImageView *, nativeView->ownerZFUIView);
+        ZFUIImageView *owner = zfcast(ZFUIImageView *, nativeView->parent->ownerZFUIView);
         if(owner == zfnull) {
             return zffalse;
         }

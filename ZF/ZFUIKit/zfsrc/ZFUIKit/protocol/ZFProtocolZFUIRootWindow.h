@@ -1,30 +1,30 @@
 /**
- * @file ZFProtocolZFUISysWindow.h
- * @brief protocol for ZFUISysWindow
+ * @file ZFProtocolZFUIRootWindow.h
+ * @brief protocol for ZFUIRootWindow
  */
 
-#ifndef _ZFI_ZFProtocolZFUISysWindow_h_
-#define _ZFI_ZFProtocolZFUISysWindow_h_
+#ifndef _ZFI_ZFProtocolZFUIRootWindow_h_
+#define _ZFI_ZFProtocolZFUIRootWindow_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "../ZFUISysWindow.h"
+#include "../ZFUIRootWindow.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief protocol for ZFUISysWindow
+ * @brief protocol for ZFUIRootWindow
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUISysWindow)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIRootWindow)
     // ============================================================
     // main window impl
 public:
     /**
-     * @brief see #ZFUISysWindow::mainWindow
+     * @brief see #ZFUIRootWindow::mainWindow
      *
      * for implementations,
      * you should create a new window if not initialized,
      * or return the created one if exist
      */
-    virtual ZFUISysWindow *mainWindow(void) zfpurevirtual;
+    virtual ZFUIRootWindow *mainWindow(void) zfpurevirtual;
     /**
      * @brief called to cleanup native main window
      *
@@ -41,9 +41,9 @@ public:
     // ============================================================
 public:
     /**
-     * @brief called when owner #ZFUISysWindow is about to destroy
+     * @brief called when owner #ZFUIRootWindow is about to destroy
      */
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUIRootWindow *rootWindow) {
     }
 
     /**
@@ -53,48 +53,48 @@ public:
      * it would be used to copy some settings to the window's root view
      */
     virtual void nativeWindowRootViewOnAdd(
-            ZF_IN ZFUISysWindow *sysWindow
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) zfpurevirtual;
     /**
      * @brief called to remove root view to native window container
      */
-    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) zfpurevirtual;
+    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUIRootWindow *rootWindow) zfpurevirtual;
 
     /**
-     * @brief see #ZFUISysWindow::modalWindowShow
+     * @brief see #ZFUIRootWindow::modalWindowShow
      */
-    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) zfpurevirtual;
+    virtual zfauto modalWindowShow(ZF_IN ZFUIRootWindow *owner) zfpurevirtual;
     /**
-     * @brief see #ZFUISysWindow::modalWindowFinish
+     * @brief see #ZFUIRootWindow::modalWindowHide
      */
-    virtual void modalWindowFinish(
-            ZF_IN ZFUISysWindow *sysWindowOwner
-            , ZF_IN ZFUISysWindow *sysWindowToFinish
+    virtual void modalWindowHide(
+            ZF_IN ZFUIRootWindow *owner
+            , ZF_IN ZFUIRootWindow *toHide
             ) zfpurevirtual;
 
     /**
      * @brief called to update suggested window layout param,
      *   fill with no margin by default
      */
-    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void layoutParamOnInit(ZF_IN ZFUIRootWindow *rootWindow) {
     }
     /**
      * @brief called when window layout param changed
      */
-    virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void layoutParamOnUpdate(ZF_IN ZFUIRootWindow *rootWindow) {
     }
 
     /**
-     * @brief see #ZFUISysWindow::sysWindowOrientation
+     * @brief see #ZFUIRootWindow::windowOrientation
      */
-    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) zfpurevirtual;
+    virtual ZFUIOrientation windowOrientation(ZF_IN ZFUIRootWindow *rootWindow) zfpurevirtual;
     /**
-     * @brief see #ZFUISysWindow::sysWindowOrientationFlags,
+     * @brief see #ZFUIRootWindow::windowOrientationFlags,
      *  impl should have #v_ZFUIOrientation::e_Top as init value
      */
-    virtual void sysWindowOrientationFlags(
-            ZF_IN ZFUISysWindow *sysWindow
+    virtual void windowOrientationFlags(
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIOrientationFlags &flags
             ) zfpurevirtual;
 
@@ -106,59 +106,59 @@ public:
      *   and layout window using the result frame
      */
     zffinal ZFUIRect notifyMeasureWindow(
-            ZF_IN ZFUISysWindow *sysWindow
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIRect &rootRefRect
-            , ZF_IN const ZFUIMargin &sysWindowMargin
+            , ZF_IN const ZFUIMargin &windowMargin
             ) {
-        sysWindow->_ZFP_ZFUISysWindow_sysWindowMargin(sysWindowMargin);
-        return sysWindow->_ZFP_ZFUISysWindow_measureWindow(rootRefRect);
+        rootWindow->_ZFP_ZFUIRootWindow_windowMargin(windowMargin);
+        return rootWindow->_ZFP_ZFUIRootWindow_measureWindow(rootRefRect);
     }
     /**
      * @brief implementation must call this to notify after window create
      */
     zffinal void notifyOnCreate(
-            ZF_IN ZFUISysWindow *sysWindow
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN void *nativeWindow
             ) {
-        sysWindow->_ZFP_ZFUISysWindow_onCreate(nativeWindow);
+        rootWindow->_ZFP_ZFUIRootWindow_onCreate(nativeWindow);
     }
     /**
      * @brief implementation must call this to notify before window destroy
      */
-    zffinal void notifyOnDestroy(ZF_IN ZFUISysWindow *sysWindow) {
-        sysWindow->_ZFP_ZFUISysWindow_onDestroy();
+    zffinal void notifyOnDestroy(ZF_IN ZFUIRootWindow *rootWindow) {
+        rootWindow->_ZFP_ZFUIRootWindow_onDestroy();
     }
     /**
      * @brief implementation must call this to notify after window resume,
      *   note that rotate a window should not notify this
      */
-    zffinal void notifyOnResume(ZF_IN ZFUISysWindow *sysWindow) {
-        sysWindow->_ZFP_ZFUISysWindow_onResume();
+    zffinal void notifyOnResume(ZF_IN ZFUIRootWindow *rootWindow) {
+        rootWindow->_ZFP_ZFUIRootWindow_onResume();
     }
     /**
      * @brief implementation must call this to notify before window pause,
      *   note that rotate a window should not notify this
      */
-    zffinal void notifyOnPause(ZF_IN ZFUISysWindow *sysWindow) {
-        sysWindow->_ZFP_ZFUISysWindow_onPause();
+    zffinal void notifyOnPause(ZF_IN ZFUIRootWindow *rootWindow) {
+        rootWindow->_ZFP_ZFUIRootWindow_onPause();
     }
     /**
      * @brief implementation must call this to notify when window rotate
      */
-    zffinal void notifyOnRotate(ZF_IN ZFUISysWindow *sysWindow) {
-        sysWindow->_ZFP_ZFUISysWindow_onRotate();
+    zffinal void notifyOnRotate(ZF_IN ZFUIRootWindow *rootWindow) {
+        rootWindow->_ZFP_ZFUIRootWindow_onRotate();
     }
     /**
      * @brief implementation must call this to notify key event
      */
     zffinal void notifyKeyEvent(
-            ZF_IN ZFUISysWindow *sysWindow
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN ZFUIKeyEvent *event
             ) {
-        sysWindow->_ZFP_ZFUISysWindow_keyEvent(event);
+        rootWindow->_ZFP_ZFUIRootWindow_keyEvent(event);
     }
-ZFPROTOCOL_INTERFACE_END(ZFUISysWindow)
+ZFPROTOCOL_INTERFACE_END(ZFUIRootWindow)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFProtocolZFUISysWindow_h_
+#endif // #ifndef _ZFI_ZFProtocolZFUIRootWindow_h_
 

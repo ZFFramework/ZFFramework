@@ -5,7 +5,7 @@
 
 #include "ZFImpl/sys_SDL/ZFImpl_sys_SDL_ZF_impl.h"
 
-#include "ZFImpl_sys_SDL_SysWindow.h"
+#include "ZFImpl_sys_SDL_RootWindow.h"
 
 #if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN

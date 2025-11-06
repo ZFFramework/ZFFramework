@@ -27,7 +27,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_iOS, ZFUIDrawForView, v_
 public:
     virtual void *nativeDrawableViewCreate(
             ZF_IN ZFUIDrawableView *drawableView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         _ZFP_ZFUIDrawableViewImpl_sys_iOS *nativeDrawableView = [_ZFP_ZFUIDrawableViewImpl_sys_iOS new];
         nativeDrawableView._ZFP_owner = drawableView;

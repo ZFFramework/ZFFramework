@@ -155,9 +155,10 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
         , ZF_IN TTF_Font *sdlFont
         , ZF_IN SDL_Color textColor
         , ZF_IN zfbool singleLine
-        , ZF_IN ZFUITextTruncateMode textTruncateMode
+        , ZF_IN ZFUITextTruncateMode truncateMode
+        , ZF_IN_OPT const zfchar *truncateText /* = ".." */
         ) {
-    if(textTruncateMode == v_ZFUITextTruncateMode::e_Disable) {
+    if(truncateMode == v_ZFUITextTruncateMode::e_Disable) {
         if(singleLine) {
             return TTF_RenderText_Blended(sdlFont, text, text.length(), textColor);
         }
@@ -185,7 +186,7 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
     }
 
     zfindex p;
-    switch(textTruncateMode) {
+    switch(truncateMode) {
         case v_ZFUITextTruncateMode::e_Head:
             p = 0;
             break;
@@ -207,7 +208,7 @@ static SDL_Surface *_ZFP_ZFImpl_sys_SDL_textRender(
         if(strip < p) {
             textNew.append(text, p - strip);
         }
-        textNew.append("..");
+        textNew.append(truncateText);
         if(p + strip < text.length()) {
             textNew.append(text + p + strip, text.length() - p - strip);
         }
@@ -254,8 +255,9 @@ zfbool ZFImpl_sys_SDL_textRender(
         , ZF_IN const ZFUIAlignFlags &textAlign
         , ZF_IN SDL_Color textColor
         , ZF_IN zfbool singleLine
-        , ZF_IN ZFUITextTruncateMode textTruncateMode
         , ZF_IN zffloat alpha
+        , ZF_IN ZFUITextTruncateMode truncateMode
+        , ZF_IN_OPT const zfchar *truncateText /* = ".." */
         ) {
     if(text.isEmpty()) {
         return zftrue;
@@ -287,7 +289,8 @@ zfbool ZFImpl_sys_SDL_textRender(
                 , sdlFont
                 , textColor
                 , singleLine
-                , textTruncateMode
+                , truncateMode
+                , truncateText
                 );
     }
     else {
@@ -298,7 +301,8 @@ zfbool ZFImpl_sys_SDL_textRender(
                 , sdlFont
                 , textColor
                 , singleLine
-                , textTruncateMode
+                , truncateMode
+                , truncateText
                 );
     }
     if(sdlSurface == zfnull) {

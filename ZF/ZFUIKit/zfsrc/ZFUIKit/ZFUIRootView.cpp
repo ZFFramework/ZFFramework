@@ -1,5 +1,5 @@
 #include "ZFUIRootView.h"
-#include "ZFUISysWindow.h"
+#include "ZFUIRootWindow.h"
 #include "ZFUIWindow.h"
 
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
@@ -8,7 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIRootView)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIRootView, zfanyT<ZFUISysWindow> const &, rootViewOwnerSysWindow)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIRootView, zfanyT<ZFUIRootWindow> const &, rootWindow)
 
 ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArray<zfautoT<ZFUIWindow> > &, windowList) {
     return _ZFP_ZFUIRootView_windowList;
@@ -38,9 +38,9 @@ static void _ZFP_ZFUIRootView_layoutParamApplyT(
         , ZF_IN const ZFUIRect &rect
         , ZF_IN ZFUIView *child
         , ZF_IN ZFUILayoutParam *lp
-        , ZF_IN const ZFUIMargin &sysWindowMargin
+        , ZF_IN const ZFUIMargin &windowMargin
         ) {
-    ZFUIMargin totalMargin = ZFUIMarginInc(lp->margin(), sysWindowMargin);
+    ZFUIMargin totalMargin = ZFUIMarginInc(lp->margin(), windowMargin);
     ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, totalMargin));
     if(refSizeTmp.width < 0) {
         refSizeTmp.width = 0;
@@ -67,7 +67,7 @@ void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     for(zfindex i = 0; i < this->childCount(); ++i) {
         zfanyT<ZFUIView> child = this->childAt(i);
         ZFUIWindow *window = child;
-        if(window == zfnull || !window->sysWindowMarginShouldApply()) {
+        if(window == zfnull || !window->windowMarginShouldApply()) {
             child->viewFrame(
                 ZFUILayoutParam::layoutParamApply(
                     bounds,
@@ -82,7 +82,7 @@ void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
             bounds,
             child,
             child->layoutParam(),
-            window->ownerSysWindow()->sysWindowMargin());
+            window->rootWindow()->windowMargin());
         child->viewFrame(result);
     }
 }

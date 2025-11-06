@@ -15,7 +15,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Android, ZFUIScrollView, 
 public:
     virtual void *nativeScrollViewCreate(
             ZF_IN ZFUIScrollView *view
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), "native_nativeScrollViewCreate",

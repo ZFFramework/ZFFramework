@@ -1,23 +1,23 @@
 #include "ZFImpl_sys_SDL_ZFUIKit_impl.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
+#include "ZFUIKit/protocol/ZFProtocolZFUIRootWindow.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 
 #if ZF_ENV_sys_SDL
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowResume, ZFLevelZFFrameworkPostNormal) {
-    zfweakT<ZFUISysWindow> *sysWindowHolder = (zfweakT<ZFUISysWindow> *)sdlEvent->user.data1;
-    ZFUISysWindow *sysWindow = *sysWindowHolder;
-    if(sysWindow && !sysWindow->nativeWindowIsResumed()) {
-        ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(sysWindow);
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowResume, ZFLevelZFFrameworkPostNormal) {
+    zfweakT<ZFUIRootWindow> *rootWindowHolder = (zfweakT<ZFUIRootWindow> *)sdlEvent->user.data1;
+    ZFUIRootWindow *rootWindow = *rootWindowHolder;
+    if(rootWindow && !rootWindow->nativeWindowIsResumed()) {
+        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->notifyOnResume(rootWindow);
     }
-    zfdelete(sysWindowHolder);
+    zfdelete(rootWindowHolder);
     return zftrue;
 }
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_SDL, ZFUISysWindow, v_ZFProtocolLevel::e_SystemNormal)
-    ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_SysWindow")
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIRootWindowImpl_sys_SDL, ZFUIRootWindow, v_ZFProtocolLevel::e_SystemNormal)
+    ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_RootWindow")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
@@ -33,23 +33,23 @@ public:
         zfsuper::protocolOnDeallocPrepare();
     }
 public:
-    virtual ZFUISysWindow *mainWindow(void) {
+    virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
-            this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
-            ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
-            nativeWindow->ownerZFUISysWindow = this->_mainWindow;
+            this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+            ZFImpl_sys_SDL_RootWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_RootWindow);
+            nativeWindow->ownerZFUIRootWindow = this->_mainWindow;
             nativeWindow->builtinWindow = zftrue;
             nativeWindow->sdlWindow = ZFImpl_sys_SDL_mainWindow();
             nativeWindow->sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
             this->notifyOnCreate(this->_mainWindow, nativeWindow);
 
-            ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfweakT<ZFUISysWindow>, this->_mainWindow), zfnull);
+            ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowResume, zfnew(zfweakT<ZFUIRootWindow>, this->_mainWindow), zfnull);
         }
         return this->_mainWindow;
     }
     virtual void mainWindowOnCleanup(void) {
         if(this->_mainWindow != zfnull) {
-            ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)this->_mainWindow->nativeWindow();
+            ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)this->_mainWindow->nativeWindow();
             if(this->_mainWindow->nativeWindowIsResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
@@ -65,38 +65,38 @@ public:
 
     // ============================================================
 public:
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUIRootWindow *rootWindow) {
     }
 
     virtual void nativeWindowRootViewOnAdd(
-            ZF_IN ZFUISysWindow *sysWindow
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) {
-        if(sysWindow->nativeWindow() == zfnull) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
-        nativeWindow->rootView = (ZFImpl_sys_SDL_View *)sysWindow->rootView()->nativeView();
-        nativeWindow->rootView->sysWindowAttach(nativeWindow);
+        ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)rootWindow->nativeWindow();
+        nativeWindow->rootView = (ZFImpl_sys_SDL_View *)rootWindow->rootView()->nativeView();
+        nativeWindow->rootView->rootWindowAttach(nativeWindow);
         nativeWindow->renderStart();
     }
-    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
-        if(sysWindow->nativeWindow() == zfnull) {
+    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUIRootWindow *rootWindow) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
-        nativeWindow->rootView->sysWindowDetach();
+        ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)rootWindow->nativeWindow();
+        nativeWindow->rootView->rootWindowDetach();
         nativeWindow->renderStop();
         nativeWindow->rootView = zfnull;
     }
 
-    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
-        if(sysWindowOwner->nativeWindow() == zfnull) {
+    virtual zfauto modalWindowShow(ZF_IN ZFUIRootWindow *owner) {
+        if(owner->nativeWindow() == zfnull) {
             return zfnull;
         }
-        zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
-        ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
-        nativeWindow->ownerZFUISysWindow = this->_mainWindow;
+        zfauto modalWindow = ZFUIRootWindow::ClassData()->newInstance();
+        ZFImpl_sys_SDL_RootWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_RootWindow);
+        nativeWindow->ownerZFUIRootWindow = this->_mainWindow;
         nativeWindow->builtinWindow = zffalse;
         nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow();
         ZFImpl_sys_SDL_WindowNotifyCreate(nativeWindow->sdlWindow);
@@ -107,35 +107,35 @@ public:
         SDL_SetRenderDrawBlendMode(nativeWindow->sdlRenderer, SDL_BLENDMODE_BLEND);
         this->notifyOnCreate(modalWindow, nativeWindow);
 
-        ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfweakT<ZFUISysWindow>, modalWindow), zfnull);
+        ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowResume, zfnew(zfweakT<ZFUIRootWindow>, modalWindow), zfnull);
         return modalWindow;
     }
-    virtual void modalWindowFinish(
-            ZF_IN ZFUISysWindow *sysWindowOwner
-            , ZF_IN ZFUISysWindow *sysWindowToFinish
+    virtual void modalWindowHide(
+            ZF_IN ZFUIRootWindow *owner
+            , ZF_IN ZFUIRootWindow *toHide
             ) {
-        if(sysWindowToFinish->nativeWindow() == zfnull) {
+        if(toHide->nativeWindow() == zfnull) {
             return;
         }
-        ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindowToFinish->nativeWindow();
-        if(sysWindowToFinish->nativeWindowIsResumed()) {
-            this->notifyOnPause(sysWindowToFinish);
+        ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)toHide->nativeWindow();
+        if(toHide->nativeWindowIsResumed()) {
+            this->notifyOnPause(toHide);
         }
-        this->notifyOnDestroy(sysWindowToFinish);
+        this->notifyOnDestroy(toHide);
         zfdelete(nativeWindow);
     }
 
-    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
-        ZFUILayoutParam *lp = sysWindow->sysWindowLayoutParam();
+    virtual void layoutParamOnInit(ZF_IN ZFUIRootWindow *rootWindow) {
+        ZFUILayoutParam *lp = rootWindow->layoutParam();
         lp->sizeFill(960, 720);
         lp->alignCenter();
     }
-    virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
-        if(sysWindow->nativeWindow() == zfnull) {
+    virtual void layoutParamOnUpdate(ZF_IN ZFUIRootWindow *rootWindow) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
-        ZFUILayoutParam *lp = sysWindow->sysWindowLayoutParam();
+        ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)rootWindow->nativeWindow();
+        ZFUILayoutParam *lp = rootWindow->layoutParam();
         zffloat UIScale = (zffloat)SDL_GetWindowDisplayScale(nativeWindow->sdlWindow);
         SDL_Rect sdlRect;
         if(!SDL_GetDisplayUsableBounds(SDL_GetDisplayForWindow(nativeWindow->sdlWindow), &sdlRect)) {
@@ -148,7 +148,7 @@ public:
         ZFUILayoutParam::layoutParamApplyT(
                 rect
                 , ZFUIRectCreate(sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h)
-                , sysWindow->rootView()
+                , rootWindow->rootView()
                 , ZFUISizeApplyScale(lp->sizeHint(), UIScale)
                 , lp->sizeParam()
                 , lp->align()
@@ -169,7 +169,7 @@ public:
             SDL_SetWindowSize(nativeWindow->sdlWindow, w, h);
         }
 
-        if(sysWindow->preferFullscreen()) {
+        if(rootWindow->preferFullscreen()) {
             SDL_SetWindowFullscreen(nativeWindow->sdlWindow, SDL_WINDOW_FULLSCREEN);
         }
         else {
@@ -177,18 +177,18 @@ public:
         }
     }
 
-    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual ZFUIOrientation windowOrientation(ZF_IN ZFUIRootWindow *rootWindow) {
         return v_ZFUIOrientation::e_Top;
     }
-    virtual void sysWindowOrientationFlags(
-            ZF_IN ZFUISysWindow *sysWindow
+    virtual void windowOrientationFlags(
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIOrientationFlags &flags
             ) {
     }
 
 private:
-    ZFUISysWindow *_mainWindow;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowImpl_sys_SDL)
+    ZFUIRootWindow *_mainWindow;
+ZFPROTOCOL_IMPLEMENTATION_END(ZFUIRootWindowImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

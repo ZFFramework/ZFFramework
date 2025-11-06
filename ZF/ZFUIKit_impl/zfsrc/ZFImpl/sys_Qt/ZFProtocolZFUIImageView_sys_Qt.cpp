@@ -60,7 +60,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_Qt, ZFUIImageView, v_ZFPro
 public:
     virtual void *nativeImageViewCreate(
             ZF_IN ZFUIImageView *imageView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         return new _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView();
     }

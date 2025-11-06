@@ -56,10 +56,10 @@ public:
 
 public:
     /**
-     * @brief get hint list in specified #ZFUISysWindow
+     * @brief get hint list in specified #ZFUIRootWindow
      */
     ZFMETHOD_DECLARE_STATIC_1(ZFCoreArray<zfautoT<ZFUIHint> >, hintList
-            , ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull)
+            , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
             )
 
 public:
@@ -70,7 +70,7 @@ public:
      * -  have #v_ZFUIWindowLevel::e_ZFFrameworkFgHighest as #ZFUIWindow::windowLevel
      * -  have #ZFUIView::viewUIEnableTree been disabled
      * -  have #ZFUIGlobalStyle::itemSizeText as #ZFUIView::viewSizeMin
-     * -  have #ZFUIWindow::windowLayoutParam as:
+     * -  have #ZFUIWindow::layoutParam as:
      *   -  #ZFUISizeParamWrapWrap as #ZFUILayoutParam::sizeParam
      *   -  #v_ZFUIAlign::e_Center as #ZFUILayoutParam::align
      *   -  #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::margin

@@ -11,14 +11,12 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIWindow)
 // _ZFP_ZFUIWindowPrivate
 zfclassNotPOD _ZFP_ZFUIWindowPrivate {
 public:
-    ZFUISysWindow *ownerSysWindow;
-    ZFUILayoutParam *windowLayoutParam;
+    ZFUIRootWindow *rootWindow;
     zfbool windowRemoveOverrideFlag;
 
 public:
     _ZFP_ZFUIWindowPrivate(void)
-    : ownerSysWindow(zfnull)
-    , windowLayoutParam(zfnull)
+    : rootWindow(zfnull)
     , windowRemoveOverrideFlag(zffalse)
     {
     }
@@ -28,10 +26,10 @@ public:
 // ZFUIWindow
 ZFOBJECT_REGISTER(ZFUIWindow)
 
-ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnUpdate)
+ZFEVENT_REGISTER(ZFUIWindow, RootWindowOnUpdate)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOnShow)
 ZFEVENT_REGISTER(ZFUIWindow, WindowOnHide)
-ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnRotate)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerWindowOnRotate)
 
 ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
         , ZFMP_IN(ZFUIView *, forView)
@@ -42,29 +40,26 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
     return forView;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUISysWindow>, sysWindowForView
+ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIRootWindow>, rootWindowForView
         , ZFMP_IN(ZFUIView *, view)
         ) {
     zfanyT<ZFUIWindow> window = ZFUIWindow::windowForView(view);
-    return ((window != zfnull) ? window->ownerSysWindow() : zfnull);
+    return ((window != zfnull) ? window->rootWindow() : zfnull);
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFUIWindow
-        , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
+        , ZFMP_IN(ZFUIRootWindow *, rootWindow)
         ) {
-    if(ownerSysWindow != zfnull) {
-        this->ownerSysWindow(ownerSysWindow);
+    if(rootWindow != zfnull) {
+        this->rootWindow(rootWindow);
     }
 }
 
 void ZFUIWindow::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIWindowPrivate);
-    d->windowLayoutParam = zfAlloc(ZFUILayoutParam);
-    d->windowLayoutParam->sizeParam(ZFUISizeParamFillFill());
 }
 void ZFUIWindow::objectOnDealloc(void) {
-    zfRelease(d->windowLayoutParam);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -76,27 +71,27 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIWindow, ZFUIWindowLevel, windowLevel) {
     ZFCoreAssertWithMessage(!this->showing(), "you must not change window level while it's showing");
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWindow, void, ownerSysWindow
-        , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
+ZFMETHOD_DEFINE_1(ZFUIWindow, void, rootWindow
+        , ZFMP_IN(ZFUIRootWindow *, rootWindow)
         ) {
-    if(d->ownerSysWindow != ownerSysWindow) {
+    if(d->rootWindow != rootWindow) {
         ZFCoreAssertWithMessage(!this->showing(), "you must not change window's owner while it's showing");
-        ZFCoreAssertWithMessage(ownerSysWindow != zfnull, "null owner sys window");
+        ZFCoreAssertWithMessage(rootWindow != zfnull, "null owner sys window");
 
-        ZFUISysWindow *oldSysWindow = d->ownerSysWindow;
-        d->ownerSysWindow = ownerSysWindow;
-        if(!(oldSysWindow == ownerSysWindow
-                    || (oldSysWindow == zfnull && ZFUISysWindow::mainWindowAttached() && ownerSysWindow == ZFUISysWindow::mainWindow()))
+        ZFUIRootWindow *rootWindowOld = d->rootWindow;
+        d->rootWindow = rootWindow;
+        if(!(rootWindowOld == rootWindow
+                    || (rootWindowOld == zfnull && ZFUIRootWindow::mainWindowAttached() && rootWindow == ZFUIRootWindow::mainWindow()))
                     ) {
-            this->ownerSysWindowOnUpdate(oldSysWindow);
+            this->rootWindowOnUpdate(rootWindowOld);
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUISysWindow>, ownerSysWindow) {
-    if(d->ownerSysWindow == zfnull) {
-        d->ownerSysWindow = ZFUISysWindow::keyWindow();
+ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUIRootWindow>, rootWindow) {
+    if(d->rootWindow == zfnull) {
+        d->rootWindow = ZFUIRootWindow::keyWindow();
     }
-    return d->ownerSysWindow;
+    return d->rootWindow;
 }
 
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, show) {
@@ -105,7 +100,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, show) {
     }
     zfindex windowIndex = 0;
     zfindex addToIndex = 0;
-    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->rootWindow()->rootView()->childArray();
     for(zfindex i = 0; i < tmpArray.count(); ++i) {
         ZFUIWindow *tmpWindow = tmpArray[i];
         if(tmpWindow != zfnull) {
@@ -118,8 +113,8 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, show) {
             }
         }
     }
-    this->ownerSysWindow()->rootView()->childWithParam(this, d->windowLayoutParam, addToIndex);
-    this->ownerSysWindow()->rootView()->_ZFP_ZFUIRootView_windowList.add(this, windowIndex);
+    this->rootWindow()->rootView()->childWithParam(this, this->layoutParam(), addToIndex);
+    this->rootWindow()->rootView()->_ZFP_ZFUIRootView_windowList.add(this, windowIndex);
 }
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, hide) {
     if(!this->showing()) {
@@ -145,7 +140,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
         return;
     }
 
-    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->rootWindow()->rootView()->childArray();
     ZFUIWindowLevel selfWindowLevel = this->windowLevel();
     zfindex topIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
@@ -162,7 +157,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
         }
     }
     if(topIndex != selfIndex && topIndex != zfindexMax() && selfIndex != zfindexMax()) {
-        this->ownerSysWindow()->rootView()->childMove(selfIndex, topIndex);
+        this->rootWindow()->rootView()->childMove(selfIndex, topIndex);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
@@ -170,7 +165,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
         return;
     }
 
-    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->ownerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->rootWindow()->rootView()->childArray();
     ZFUIWindowLevel selfWindowLevel = this->windowLevel();
     zfindex bottomIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
@@ -187,12 +182,24 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
         }
     }
     if(bottomIndex != selfIndex && bottomIndex != zfindexMax() && selfIndex != zfindexMax()) {
-        this->ownerSysWindow()->rootView()->childMove(selfIndex, bottomIndex);
+        this->rootWindow()->rootView()->childMove(selfIndex, bottomIndex);
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUILayoutParam>, windowLayoutParam) {
-    return d->windowLayoutParam;
+void ZFUIWindow::layoutParam(ZF_IN ZFUILayoutParam *layoutParam) {
+    zfsuper::layoutParam(layoutParam);
+}
+zfanyT<ZFUILayoutParam> ZFUIWindow::layoutParam(void) {
+    zfanyT<ZFUILayoutParam> ret = zfsuper::layoutParam();
+    if(ret == zfnull) {
+        zfobj<ZFUILayoutParam> tmp;
+        tmp->sizeParam(ZFUISizeParamFillFill());
+        zfsuper::layoutParam(tmp);
+        return tmp;
+    }
+    else {
+        return ret;
+    }
 }
 
 void ZFUIWindow::viewOnAddToParent(ZF_IN ZFUIView *parent) {

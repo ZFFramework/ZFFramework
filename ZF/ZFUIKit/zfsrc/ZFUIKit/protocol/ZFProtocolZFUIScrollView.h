@@ -31,7 +31,6 @@ public:
      */
     virtual void *nativeScrollViewCreate(
             ZF_IN ZFUIScrollView *scrollView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) zfpurevirtual;
     /**
      * @brief destroy native scroll view

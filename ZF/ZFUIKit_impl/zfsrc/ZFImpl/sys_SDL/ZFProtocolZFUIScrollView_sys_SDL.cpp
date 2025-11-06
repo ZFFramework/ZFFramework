@@ -254,7 +254,6 @@ private:
 public:
     virtual void *nativeScrollViewCreate(
             ZF_IN ZFUIScrollView *scrollView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = zfnew(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView);
         nativeScrollView->_ZFP_scrollViewImplHelper.scrollView = scrollView;
@@ -326,8 +325,8 @@ public:
         for(zfindex i = 0; i < nativeParent->children.count(); ++i) {
             ZFImpl_sys_SDL_View *nativeChild = nativeParent->children[i];
             nativeChild->parent = zfnull;
-            if(nativeChild->sysWindow != zfnull) {
-                nativeChild->sysWindowDetach();
+            if(nativeChild->rootWindow != zfnull) {
+                nativeChild->rootWindowDetach();
             }
         }
         nativeParent->children.removeAll();

@@ -1,34 +1,34 @@
 /**
- * @file ZFUINativeViewWrapper.h
+ * @file ZFUINativeView.h
  * @brief native view wrapper
  */
 
-#ifndef _ZFI_ZFUINativeViewWrapper_h_
-#define _ZFI_ZFUINativeViewWrapper_h_
+#ifndef _ZFI_ZFUINativeView_h_
+#define _ZFI_ZFUINativeView_h_
 
 #include "ZFUIView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFUINativeViewWrapper
+// ZFUINativeView
 /**
  * @brief view container to hold a native view
  *
  * used to hold a native view in ZFUIKit environment,
- * what you should do is create a #ZFUINativeViewWrapper
+ * what you should do is create a #ZFUINativeView
  * and store native view by #nativeImplView\n
- * the embeded native view would be layouted to fill #ZFUINativeViewWrapper's frame,
+ * the embeded native view would be layouted to fill #ZFUINativeView's frame,
  * to change it's layout logic, you should use it as a #ZFUIView\n
- * the #ZFUINativeViewWrapper itself is serializable,
+ * the #ZFUINativeView itself is serializable,
  * however the native view itself can not be serialized,
  * it should be initialized by app manually
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUINativeViewWrapper : zfextend ZFUIView {
-    ZFOBJECT_DECLARE(ZFUINativeViewWrapper, ZFUIView)
+zffinal zfclass ZFLIB_ZFUIKit ZFUINativeView : zfextend ZFUIView {
+    ZFOBJECT_DECLARE(ZFUINativeView, ZFUIView)
 
 protected:
     /**
-     * @brief init with native view, see #ZFUINativeViewWrapper
+     * @brief init with native view, see #ZFUINativeView
      */
     ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(void *, nativeImplView))
 
@@ -52,9 +52,8 @@ public:
     virtual void nativeImplView(
             ZF_IN void *nativeImplView
             , ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback = zfnull
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex = zftrue
             ) {
-        zfsuper::nativeImplView(nativeImplView, nativeImplViewDeleteCallback, nativeImplViewRequireVirtualIndex);
+        zfsuper::nativeImplView(nativeImplView, nativeImplViewDeleteCallback);
     }
 
     /**
@@ -75,5 +74,5 @@ protected:
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFUINativeViewWrapper_h_
+#endif // #ifndef _ZFI_ZFUINativeView_h_
 

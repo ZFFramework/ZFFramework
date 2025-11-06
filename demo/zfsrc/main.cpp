@@ -9,7 +9,7 @@
 #include "ZFAppUtil.h"
 
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
+#include "ZFUIKit/protocol/ZFProtocolZFUIRootWindow.h"
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void);
 static zfbool _ZFP_ZFFramework_test_protocolCheck(void);
@@ -71,7 +71,7 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
         }
     }
     if(!ZFPROTOCOL_IS_AVAILABLE(ZFUIView)
-       || !ZFPROTOCOL_IS_AVAILABLE(ZFUISysWindow)
+       || !ZFPROTOCOL_IS_AVAILABLE(ZFUIRootWindow)
     ) {
         ZFTestCaseRunAllStart();
         return zffalse;

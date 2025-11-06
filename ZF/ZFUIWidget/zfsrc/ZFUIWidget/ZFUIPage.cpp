@@ -686,9 +686,9 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, isLandscape) {
 }
 
 ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
-        , ZFMP_IN_OPT(ZFUISysWindow *, ownerSysWindow, zfnull)
+        , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
         ) {
-    zfobj<ZFUIWindow> window(ownerSysWindow);
+    zfobj<ZFUIWindow> window(rootWindow);
     d->managerOwnerWindow = window;
 
     this->managerCreate();
@@ -723,27 +723,27 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
         .observerAdd(ZFUIWindow::E_ObjectBeforeDealloc(), onDestroy)
         ;
 
-    ZFLISTENER_1(sysWindowOnPause
+    ZFLISTENER_1(rootWindowOnPause
             , ZFUIPageManager *, owner
             ) {
         if(owner->managerResumed()) {
             owner->managerPause();
         }
     } ZFLISTENER_END()
-    ZFLISTENER_1(sysWindowOnResume
+    ZFLISTENER_1(rootWindowOnResume
             , ZFUIPageManager *, owner
             ) {
         if(owner->managerCreated() && !owner->managerResumed()) {
             owner->managerResume();
         }
     } ZFLISTENER_END()
-    ZFObserverGroup(this, window->ownerSysWindow())
-        .observerAdd(ZFUISysWindow::E_SysWindowOnPause(), sysWindowOnPause)
-        .observerAdd(ZFUISysWindow::E_SysWindowOnResume(), sysWindowOnResume)
+    ZFObserverGroup(this, window->rootWindow())
+        .observerAdd(ZFUIRootWindow::E_WindowOnPause(), rootWindowOnPause)
+        .observerAdd(ZFUIRootWindow::E_WindowOnResume(), rootWindowOnResume)
         ;
 
     window->show();
-    if(window->ownerSysWindow()->nativeWindowIsResumed()
+    if(window->rootWindow()->nativeWindowIsResumed()
             && !this->managerResumed()
             ) {
         this->managerResume();

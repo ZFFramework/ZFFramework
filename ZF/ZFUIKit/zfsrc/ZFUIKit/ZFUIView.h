@@ -86,9 +86,9 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * \n
  * ADVANCED:\n
  * we allow add native view to ZFUIView environment,
- * for how to, refer to #ZFUINativeViewWrapper\n
+ * for how to, refer to #ZFUINativeView\n
  * we also allow add ZFUIView to native view,
- * for how to, refer to #ZFUISysWindow::nativeWindowEmbed
+ * for how to, refer to #ZFUIRootWindow::nativeWindowEmbed
  */
 zfclass ZFLIB_ZFUIKit ZFUIView : zfextend ZFStyle {
     ZFOBJECT_DECLARE(ZFUIView, ZFStyle)
@@ -265,13 +265,13 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, visible)
 
     /**
-     * @brief true if added to ZFUISysWindow
+     * @brief true if added to ZFUIRootWindow
      *
      * see #E_ViewTreeInWindowOnUpdate
      */
     ZFMETHOD_DECLARE_0(zfbool, viewTreeInWindow)
     /**
-     * @brief true only if added to ZFUISysWindow and all of parents are visible
+     * @brief true only if added to ZFUIRootWindow and all of parents are visible
      *
      * see #E_ViewTreeVisibleOnUpdate
      */
@@ -581,10 +581,6 @@ public:
      */
     ZFMETHOD_DECLARE_0(void *, nativeImplView)
     /**
-     * @brief whether the #nativeImplView cost one virtualIndex
-     */
-    ZFMETHOD_DECLARE_0(zfbool, nativeImplViewRequireVirtualIndex)
-    /**
      * @brief inner margin between #ZFUIView and the internal #nativeImplView
      *
      * use #nativeImplViewMarginUpdate to update this value,
@@ -617,7 +613,6 @@ protected:
     virtual void nativeImplView(
             ZF_IN void *nativeImplView
             , ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             );
     /**
      * @brief see #nativeImplViewMargin,
@@ -688,7 +683,7 @@ public:
      * and it's not recommended to use in your application\n
      * \n
      * for how to add ZFUIView to native view, please refer to #ZFUIView\n
-     * for how to add native view to ZFUIView, please refer to #ZFUINativeViewWrapper\n
+     * for how to add native view to ZFUIView, please refer to #ZFUINativeView\n
      * for how to access native implementation, please refer to #nativeImplView
      */
     ZFMETHOD_DECLARE_0(void *, nativeView)
@@ -855,7 +850,7 @@ public:
     /**
      * @brief get self's layout param, valid only while the view has parent
      *
-     * return null if the view has no parent,
+     * may (or may not) return null if the view has no parent,
      * automatically invoke the view's #layoutRequest if the layout param's property changed
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUILayoutParam>, layoutParam)

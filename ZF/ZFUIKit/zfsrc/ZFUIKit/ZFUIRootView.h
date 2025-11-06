@@ -9,7 +9,7 @@
 #include "ZFUIView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd ZFUISysWindow;
+zfclassFwd ZFUIRootWindow;
 zfclassFwd ZFUIWindow;
 /**
  * @brief root view for holding a ZFUIView's tree
@@ -19,14 +19,14 @@ zfclassFwd ZFUIWindow;
  */
 zffinal zfclass ZFLIB_ZFUIKit ZFUIRootView : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIRootView, ZFUIView)
-    ZFOBJECT_PRIVATE_ALLOC("can only be created by owner ZFUISysWindow")
+    ZFOBJECT_PRIVATE_ALLOC("can only be created by owner ZFUIRootWindow")
 
 public:
     /**
-     * @brief owner #ZFUISysWindow
+     * @brief owner #ZFUIRootWindow
      */
-    zffinal zfanyT<ZFUISysWindow> const &rootViewOwnerSysWindow(void) {
-        return this->_ZFP_ZFUIRootView_rootViewOwnerSysWindow;
+    zffinal zfanyT<ZFUIRootWindow> const &rootWindow(void) {
+        return this->_ZFP_ZFUIRootView_rootWindow;
     }
 
     /**
@@ -54,7 +54,7 @@ protected:
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
 public:
-    zfanyT<ZFUISysWindow> _ZFP_ZFUIRootView_rootViewOwnerSysWindow;
+    zfanyT<ZFUIRootWindow> _ZFP_ZFUIRootView_rootWindow;
     ZFCoreArray<zfautoT<ZFUIWindow> > _ZFP_ZFUIRootView_windowList;
 };
 

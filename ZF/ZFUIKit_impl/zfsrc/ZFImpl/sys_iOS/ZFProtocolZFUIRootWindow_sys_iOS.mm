@@ -1,14 +1,14 @@
 #include "ZFImpl_sys_iOS_ZFUIKit_impl.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
+#include "ZFUIKit/protocol/ZFProtocolZFUIRootWindow.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 #include "ZFImpl/sys_iOS/ZFMainEntry_sys_iOS.h"
 
 #if ZF_ENV_sys_iOS
 
-@interface _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow_Dummy : UIViewController
+@interface _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow_Dummy : UIViewController
 @property (nonatomic, weak) UIViewController *_ZFP_owner;
 @end
-@implementation _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow_Dummy
+@implementation _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow_Dummy
 - (BOOL)shouldAutorotate {
     return [self._ZFP_owner shouldAutorotate];
 }
@@ -17,38 +17,38 @@
 }
 @end
 
-@interface _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow : UIViewController
-@property (nonatomic, assign) ZFPROTOCOL_INTERFACE_CLASS(ZFUISysWindow) *impl;
-@property (nonatomic, assign) ZFUISysWindow *ownerZFUISysWindow;
-@property (nonatomic, assign) ZFUIOrientation sysWindowOrientation;
-@property (nonatomic, assign) ZFUIOrientationFlags sysWindowOrientationFlags;
+@interface _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow : UIViewController
+@property (nonatomic, assign) ZFPROTOCOL_INTERFACE_CLASS(ZFUIRootWindow) *impl;
+@property (nonatomic, assign) ZFUIRootWindow *ownerZFUIRootWindow;
+@property (nonatomic, assign) ZFUIOrientation windowOrientation;
+@property (nonatomic, assign) ZFUIOrientationFlags windowOrientationFlags;
 @property (nonatomic, assign) zfint _ZFP_windowRotateOverrideFlag;
 - (void)_ZFP_updateLayout;
 @end
-@implementation _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow
-- (void)setSysWindowOrientationFlags:(ZFUIOrientationFlags)sysWindowOrientationFlags {
-    if(self->_sysWindowOrientationFlags == sysWindowOrientationFlags) {
+@implementation _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow
+- (void)setWindowOrientationFlags:(ZFUIOrientationFlags)windowOrientationFlags {
+    if(self->_windowOrientationFlags == windowOrientationFlags) {
         return;
     }
-    self->_sysWindowOrientationFlags = sysWindowOrientationFlags;
+    self->_windowOrientationFlags = windowOrientationFlags;
 
     [UIViewController attemptRotationToDeviceOrientation];
 #if 1 // force to refresh orientation state
-    if(self.ownerZFUISysWindow != zfnull && self.ownerZFUISysWindow->nativeWindowIsResumed()) {
+    if(self.ownerZFUIRootWindow != zfnull && self.ownerZFUIRootWindow->nativeWindowIsResumed()) {
         self._ZFP_windowRotateOverrideFlag += 1;
-        _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow_Dummy *dummy = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow_Dummy new];
+        _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow_Dummy *dummy = [_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow_Dummy new];
         UIViewController *t = self;
         while(t.presentedViewController != nil) {
             t = t.presentedViewController;
         }
         dummy._ZFP_owner = t;
         [t presentViewController:dummy animated:NO completion:nil];
-        __block _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *weakSelf = self;
+        __block _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *weakSelf = self;
         [t dismissViewControllerAnimated:NO completion:^{
             weakSelf._ZFP_windowRotateOverrideFlag -= 1;
-            if(weakSelf.ownerZFUISysWindow != zfnull) {
-                if(!weakSelf.ownerZFUISysWindow->nativeWindowIsResumed()) {
-                    weakSelf.impl->notifyOnResume(weakSelf.ownerZFUISysWindow);
+            if(weakSelf.ownerZFUIRootWindow != zfnull) {
+                if(!weakSelf.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+                    weakSelf.impl->notifyOnResume(weakSelf.ownerZFUIRootWindow);
                 }
             }
         }];
@@ -57,8 +57,8 @@
 }
 // ============================================================
 - (void)_ZFP_updateLayout {
-    if(self.ownerZFUISysWindow != zfnull) {
-        ZFUIMargin sysWindowMargin = ZFUIMarginZero();
+    if(self.ownerZFUIRootWindow != zfnull) {
+        ZFUIMargin windowMargin = ZFUIMarginZero();
 
         UIView *tmpView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
         if([tmpView respondsToSelector:@selector(safeAreaInsets)]) {
@@ -70,20 +70,20 @@
             UIEdgeInsets t = UIEdgeInsetsZero;
             [invocation getReturnValue:&t];
 
-            sysWindowMargin.left = t.left;
-            sysWindowMargin.top = t.top;
-            sysWindowMargin.right = t.right;
-            sysWindowMargin.bottom = t.bottom;
+            windowMargin.left = t.left;
+            windowMargin.top = t.top;
+            windowMargin.right = t.right;
+            windowMargin.bottom = t.bottom;
         }
         else {
-            sysWindowMargin.top = [UIApplication sharedApplication].statusBarFrame.size.height;
+            windowMargin.top = [UIApplication sharedApplication].statusBarFrame.size.height;
         }
 
-        UIView *nativeRootView = (__bridge UIView *)self.ownerZFUISysWindow->rootView()->nativeView();
+        UIView *nativeRootView = (__bridge UIView *)self.ownerZFUIRootWindow->rootView()->nativeView();
         nativeRootView.frame = ZFImpl_sys_iOS_ZFUIRectToCGRect(self.impl->notifyMeasureWindow(
-            self.ownerZFUISysWindow,
+            self.ownerZFUIRootWindow,
             ZFImpl_sys_iOS_ZFUIRectFromCGRect(self.view.bounds),
-            sysWindowMargin));
+            windowMargin));
     }
 }
 // ============================================================
@@ -91,8 +91,8 @@
 - (id)init {
     self = [super init];
     if(self) {
-        self.sysWindowOrientation = v_ZFUIOrientation::e_Top;
-        self->_sysWindowOrientationFlags = v_ZFUIOrientation::e_Top;
+        self.windowOrientation = v_ZFUIOrientation::e_Top;
+        self->_windowOrientationFlags = v_ZFUIOrientation::e_Top;
     }
     return self;
 }
@@ -101,23 +101,23 @@
     UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     switch(toInterfaceOrientation) {
         case UIInterfaceOrientationPortrait:
-            self.sysWindowOrientation = v_ZFUIOrientation::e_Top;
+            self.windowOrientation = v_ZFUIOrientation::e_Top;
             break;
         case UIInterfaceOrientationPortraitUpsideDown:
-            self.sysWindowOrientation = v_ZFUIOrientation::e_Bottom;
+            self.windowOrientation = v_ZFUIOrientation::e_Bottom;
             break;
         case UIInterfaceOrientationLandscapeLeft:
-            self.sysWindowOrientation = v_ZFUIOrientation::e_Left;
+            self.windowOrientation = v_ZFUIOrientation::e_Left;
             break;
         case UIInterfaceOrientationLandscapeRight:
-            self.sysWindowOrientation = v_ZFUIOrientation::e_Right;
+            self.windowOrientation = v_ZFUIOrientation::e_Right;
             break;
         default:
-            self.sysWindowOrientation = v_ZFUIOrientation::e_Top;
+            self.windowOrientation = v_ZFUIOrientation::e_Top;
             break;
     }
-    if(self.ownerZFUISysWindow != zfnull) {
-        self.impl->notifyOnRotate(self.ownerZFUISysWindow);
+    if(self.ownerZFUIRootWindow != zfnull) {
+        self.impl->notifyOnRotate(self.ownerZFUIRootWindow);
     }
 }
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
@@ -126,16 +126,16 @@
     }
 
     UIInterfaceOrientationMask ret = 0;
-    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Top)) {
+    if(ZFBitTest(self.windowOrientationFlags, v_ZFUIOrientation::e_Top)) {
         ret |= UIInterfaceOrientationMaskPortrait;
     }
-    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Left)) {
+    if(ZFBitTest(self.windowOrientationFlags, v_ZFUIOrientation::e_Left)) {
         ret |= UIInterfaceOrientationMaskLandscapeLeft;
     }
-    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Right)) {
+    if(ZFBitTest(self.windowOrientationFlags, v_ZFUIOrientation::e_Right)) {
         ret |= UIInterfaceOrientationMaskLandscapeRight;
     }
-    if(ZFBitTest(self.sysWindowOrientationFlags, v_ZFUIOrientation::e_Bottom)) {
+    if(ZFBitTest(self.windowOrientationFlags, v_ZFUIOrientation::e_Bottom)) {
         ret |= UIInterfaceOrientationMaskPortraitUpsideDown;
     }
     if(ret == 0) {
@@ -157,17 +157,17 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if(self.ownerZFUISysWindow != zfnull && self._ZFP_windowRotateOverrideFlag == 0) {
-        if(!self.ownerZFUISysWindow->nativeWindowIsResumed()) {
-            self.impl->notifyOnResume(self.ownerZFUISysWindow);
+    if(self.ownerZFUIRootWindow != zfnull && self._ZFP_windowRotateOverrideFlag == 0) {
+        if(!self.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+            self.impl->notifyOnResume(self.ownerZFUIRootWindow);
         }
     }
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if(self.ownerZFUISysWindow != zfnull && self._ZFP_windowRotateOverrideFlag == 0) {
-        if(self.ownerZFUISysWindow->nativeWindowIsResumed()) {
-            self.impl->notifyOnPause(self.ownerZFUISysWindow);
+    if(self.ownerZFUIRootWindow != zfnull && self._ZFP_windowRotateOverrideFlag == 0) {
+        if(self.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+            self.impl->notifyOnPause(self.ownerZFUIRootWindow);
         }
     }
 }
@@ -175,7 +175,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_iOS, ZFUISysWindow, v_ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIRootWindowImpl_sys_iOS, ZFUIRootWindow, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIViewController")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
@@ -193,11 +193,11 @@ public:
         zfsuper::protocolOnDeallocPrepare();
     }
 public:
-    virtual ZFUISysWindow *mainWindow(void) {
+    virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
-            this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
-            _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeWindow = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow new];
-            nativeWindow.ownerZFUISysWindow = this->_mainWindow;
+            this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+            _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = [_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow new];
+            nativeWindow.ownerZFUIRootWindow = this->_mainWindow;
 
             // delay to create, because:
             // * allow app to change orientation before actually show,
@@ -215,8 +215,8 @@ public:
     }
     virtual void mainWindowOnCleanup(void) {
         if(this->_mainWindow != zfnull) {
-            _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge_transfer _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)this->_mainWindow->nativeWindow();
-            nativeWindow.ownerZFUISysWindow = zfnull;
+            _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge_transfer _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)this->_mainWindow->nativeWindow();
+            nativeWindow.ownerZFUIRootWindow = zfnull;
             if(ZFImpl_sys_iOS_rootWindow().rootViewController == nativeWindow) {
                 ZFImpl_sys_iOS_rootWindow().rootViewController = nil;
             }
@@ -236,80 +236,80 @@ public:
 
     // ============================================================
 public:
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUIRootWindow *rootWindow) {
     }
 
     virtual void nativeWindowRootViewOnAdd(
-            ZF_IN ZFUISysWindow *sysWindow
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) {
-        if(sysWindow->nativeWindow() == zfnull) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow();
+        _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow();
 
-        UIView *nativeRootView = (__bridge UIView *)sysWindow->rootView()->nativeView();
+        UIView *nativeRootView = (__bridge UIView *)rootWindow->rootView()->nativeView();
         [nativeWindow.view addSubview:nativeRootView];
         [nativeWindow _ZFP_updateLayout];
         nativeParentView = (__bridge void *)nativeWindow.view;
     }
-    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
-        if(sysWindow->nativeWindow() == zfnull) {
+    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUIRootWindow *rootWindow) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        UIView *nativeRootView = (__bridge UIView *)sysWindow->rootView()->nativeView();
+        UIView *nativeRootView = (__bridge UIView *)rootWindow->rootView()->nativeView();
         [nativeRootView removeFromSuperview];
     }
 
-    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
-        if(sysWindowOwner->nativeWindow() == zfnull) {
+    virtual zfauto modalWindowShow(ZF_IN ZFUIRootWindow *owner) {
+        if(owner->nativeWindow() == zfnull) {
             return zfnull;
         }
-        zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
-        _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeModalWindow = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow new];
-        nativeModalWindow.ownerZFUISysWindow = modalWindow;
+        zfauto modalWindow = ZFUIRootWindow::ClassData()->newInstance();
+        _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeModalWindow = [_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow new];
+        nativeModalWindow.ownerZFUIRootWindow = modalWindow;
 
         this->notifyOnCreate(modalWindow, (__bridge_retained void *)nativeModalWindow);
-        [(__bridge UIViewController *)sysWindowOwner->nativeWindow() presentViewController:nativeModalWindow animated:YES completion:nil];
+        [(__bridge UIViewController *)owner->nativeWindow() presentViewController:nativeModalWindow animated:YES completion:nil];
 
         return modalWindow;
     }
-    virtual void modalWindowFinish(
-            ZF_IN ZFUISysWindow *sysWindowOwner
-            , ZF_IN ZFUISysWindow *sysWindowToFinish
+    virtual void modalWindowHide(
+            ZF_IN ZFUIRootWindow *owner
+            , ZF_IN ZFUIRootWindow *toHide
             ) {
-        if(sysWindowToFinish->nativeWindow() == zfnull) {
+        if(toHide->nativeWindow() == zfnull) {
             return;
         }
-        [(__bridge UIViewController *)sysWindowOwner->nativeWindow() dismissViewControllerAnimated:YES completion:nil];
-        this->notifyOnDestroy(sysWindowToFinish);
+        [(__bridge UIViewController *)owner->nativeWindow() dismissViewControllerAnimated:YES completion:nil];
+        this->notifyOnDestroy(toHide);
     }
 
-    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
+    virtual void layoutParamOnInit(ZF_IN ZFUIRootWindow *rootWindow) {
     }
-    virtual void sysWindowLayoutParamOnUpdate(ZF_IN ZFUISysWindow *sysWindow) {
-        if(sysWindow->nativeWindow() == zfnull) {
+    virtual void layoutParamOnUpdate(ZF_IN ZFUIRootWindow *rootWindow) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        [(__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow() _ZFP_updateLayout];
+        [(__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow() _ZFP_updateLayout];
     }
 
-    virtual ZFUIOrientation sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
-        return ((__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow()).sysWindowOrientation;
+    virtual ZFUIOrientation windowOrientation(ZF_IN ZFUIRootWindow *rootWindow) {
+        return ((__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow()).windowOrientation;
     }
-    virtual void sysWindowOrientationFlags(
-            ZF_IN ZFUISysWindow *sysWindow
+    virtual void windowOrientationFlags(
+            ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIOrientationFlags &flags
             ) {
-        if(sysWindow->nativeWindow() == zfnull) {
+        if(rootWindow->nativeWindow() == zfnull) {
             return;
         }
-        ((__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow()).sysWindowOrientationFlags = flags;
+        ((__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow()).windowOrientationFlags = flags;
     }
 
 private:
-    ZFUISysWindow *_mainWindow;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowImpl_sys_iOS)
+    ZFUIRootWindow *_mainWindow;
+ZFPROTOCOL_IMPLEMENTATION_END(ZFUIRootWindowImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

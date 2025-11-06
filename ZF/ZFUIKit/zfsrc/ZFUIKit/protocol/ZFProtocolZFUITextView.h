@@ -20,7 +20,6 @@ public:
      */
     virtual void *nativeTextViewCreate(
             ZF_IN ZFUITextView *textView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) zfpurevirtual;
     /**
      * @brief destroy native text view

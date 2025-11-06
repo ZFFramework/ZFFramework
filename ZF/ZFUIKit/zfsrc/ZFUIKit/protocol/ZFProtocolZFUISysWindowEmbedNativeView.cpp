@@ -1,8 +1,0 @@
-#include "ZFProtocolZFUISysWindowEmbedNativeView.h"
-
-ZF_NAMESPACE_GLOBAL_BEGIN
-
-ZFPROTOCOL_INTERFACE_REGISTER(ZFUISysWindowEmbedNativeView)
-
-ZF_NAMESPACE_GLOBAL_END
-

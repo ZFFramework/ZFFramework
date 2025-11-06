@@ -30,22 +30,22 @@ public:
 public:
     virtual void *nativeTextViewCreate(
             ZF_IN ZFUITextView *textView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
-        nativeView->renderImpls.add(zfself::renderCallback);
         nativeView->sdlMeasureCallback = zfself::sdlMeasureCallback;
         ++nativeView->renderCacheRequired;
 
-        // no actual impl view, use renderImpls
-        nativeImplViewRequireVirtualIndex = zffalse;
-        return zfnull;
+        ZFImpl_sys_SDL_View *nativeTextView = zfpoolNew(ZFImpl_sys_SDL_View);
+        nativeTextView->renderImpl = zfself::renderCallback;
+        return nativeTextView;
     }
     virtual void nativeTextViewDestroy(
             ZF_IN ZFUITextView *textView
             , ZF_IN void *nativeTextView
             ) {
-        // nothing to do
+        ZFImpl_sys_SDL_View *nativeTextViewTmp = (ZFImpl_sys_SDL_View *)nativeTextView;
+        nativeTextViewTmp->renderImpl = zfnull;
+        zfpoolDelete(nativeTextViewTmp);
     }
 
 // ============================================================
@@ -155,7 +155,7 @@ private:
             , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
-        ZFUITextView *owner = zfcast(ZFUITextView *, nativeView->ownerZFUIView);
+        ZFUITextView *owner = zfcast(ZFUITextView *, nativeView->parent->ownerZFUIView);
         if(owner == zfnull || owner->text().isEmpty()) {
             return zffalse;
         }
@@ -180,8 +180,8 @@ private:
                 , owner->textAlign()
                 , ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor())
                 , owner->singleLine()
-                , owner->textTruncateMode()
                 , treeAlpha
+                , owner->textTruncateMode()
                 );
         return zffalse;
     }

@@ -169,12 +169,10 @@ void ZFUITextEdit::objectOnInit(void) {
             ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view, nativeImplView);
         }
     };
-    zfbool nativeImplViewRequireVirtualIndex = zftrue;
-    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
-        nativeImplView,
-        NativeImplViewDestroy::action,
-        nativeImplViewRequireVirtualIndex);
+        ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditCreate(this)
+        , NativeImplViewDestroy::action
+        );
 
     ZFUIView *placeholderTmp = this->placeholder();
     if(placeholderTmp == zfnull) {

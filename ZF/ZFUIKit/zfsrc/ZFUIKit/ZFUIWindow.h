@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFUIWindow_h_
 #define _ZFI_ZFUIWindow_h_
 
-#include "ZFUISysWindow.h"
+#include "ZFUIRootWindow.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -54,21 +54,21 @@ zfclassFwd _ZFP_ZFUIWindowPrivate;
  * @brief window as a ZFUIView
  *
  * a ZFUIWindow is a ZFUIView's manager for showing view tree on screen,
- * it's a ZFUIView in fact, added to #ZFUISysWindow::rootView as a normal view,
+ * it's a ZFUIView in fact, added to #ZFUIRootWindow::rootView as a normal view,
  * with internal management\n
  * your app should always start with a ZFUIWindow as root view,
  * then build your own view tree\n
  * \n
  * to show a window, simply create a ZFUIWindow's instance and invoke #show,
- * which would internally add this window to #ZFUISysWindow,
+ * which would internally add this window to #ZFUIRootWindow,
  * you must not add ZFUIWindow to any other view manully\n
  * \n
  * after show, window would be automatically retained and you may release it,
  * and it would be released automatically when you hide window by #hide\n
  * \n
  * ADVANCED:\n
- * ZFUIWindow would be attached to #ZFUISysWindow::keyWindow by default,
- * you may change its owner ZFUISysWindow by #ownerSysWindow,
+ * ZFUIWindow would be attached to #ZFUIRootWindow::keyWindow by default,
+ * you may change its owner ZFUIRootWindow by #rootWindow,
  * but only before #show is called
  */
 zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextend ZFUIView {
@@ -81,10 +81,10 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * notified when window's ownerSysWindow changed,
+     * notified when window's rootWindow changed,
      * param0 is the old value
      */
-    ZFEVENT(WindowOwnerSysWindowOnUpdate)
+    ZFEVENT(RootWindowOnUpdate)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -102,9 +102,9 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * notified when #ZFUISysWindow::E_SysWindowOnRotate
+     * notified when #ZFUIRootWindow::E_WindowOnRotate
      */
-    ZFEVENT(WindowOwnerSysWindowOnRotate)
+    ZFEVENT(WindowOwnerWindowOnRotate)
 
 public:
     /**
@@ -118,16 +118,16 @@ public:
      * @brief util method to get owner sys window for the view,
      *   return null if not in view tree or failed to get
      */
-    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUISysWindow>, sysWindowForView
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIRootWindow>, rootWindowForView
             , ZFMP_IN(ZFUIView *, view)
             )
 
 protected:
     /**
-     * @brief init with custom #ownerSysWindow,
-     *   null to use #ZFUISysWindow::keyWindow
+     * @brief init with custom #rootWindow,
+     *   null to use #ZFUIRootWindow::keyWindow
      */
-    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(ZFUISysWindow *, ownerSysWindow))
+    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(ZFUIRootWindow *, rootWindow))
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
@@ -143,32 +143,32 @@ public:
     ZFPROPERTY_ON_UPDATE_DECLARE(ZFUIWindowLevel, windowLevel)
 
     /**
-     * @brief whether this window update layout according to #ZFUISysWindow::sysWindowMargin,
+     * @brief whether this window update layout according to #ZFUIRootWindow::windowMargin,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, sysWindowMarginShouldApply, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, windowMarginShouldApply, zftrue)
 
 public:
     /**
-     * @brief change owner #ZFUISysWindow, must be called before #show is called
+     * @brief change owner #ZFUIRootWindow, must be called before #show is called
      *
-     * usually you should have only one #ZFUISysWindow in your app
+     * usually you should have only one #ZFUIRootWindow in your app
      * so you have no need to care about this method
      */
-    ZFMETHOD_DECLARE_1(void, ownerSysWindow
-            , ZFMP_IN(ZFUISysWindow *, ownerSysWindow)
+    ZFMETHOD_DECLARE_1(void, rootWindow
+            , ZFMP_IN(ZFUIRootWindow *, rootWindow)
             )
     /**
-     * @brief get the owner #ZFUISysWindow, even if not showing
+     * @brief get the owner #ZFUIRootWindow, even if not showing
      *
-     * usually you should have only one #ZFUISysWindow in your app
+     * usually you should have only one #ZFUIRootWindow in your app
      * so you have no need to care about this method
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, ownerSysWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIRootWindow>, rootWindow)
 protected:
-    /** @brief see #E_WindowOwnerSysWindowOnUpdate */
-    virtual inline void ownerSysWindowOnUpdate(ZF_IN ZFUISysWindow *oldSysWindow) {
-        this->observerNotify(ZFUIWindow::E_WindowOwnerSysWindowOnUpdate(), oldSysWindow);
+    /** @brief see #E_RootWindowOnUpdate */
+    virtual inline void rootWindowOnUpdate(ZF_IN ZFUIRootWindow *rootWindowOld) {
+        this->observerNotify(ZFUIWindow::E_RootWindowOnUpdate(), rootWindowOld);
     }
 
 public:
@@ -196,13 +196,10 @@ public:
     ZFMETHOD_DECLARE_0(void, windowMoveToBottom)
 
 public:
-    /**
-     * @brief access window's layout param,
-     *   automatically call #ZFUIView::layoutRequest
-     *
-     * default param is fill parent (with sizeWeight (1, 1) and all others zero)
-     */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUILayoutParam>, windowLayoutParam)
+    zfoverride
+    virtual void layoutParam(ZF_IN ZFUILayoutParam *layoutParam);
+    zfoverride
+    virtual zfanyT<ZFUILayoutParam> layoutParam(void);
 
 protected:
     /** @brief see #E_WindowOnShow */
@@ -214,9 +211,9 @@ protected:
         this->observerNotify(ZFUIWindow::E_WindowOnHide());
     }
 
-    /** @brief see #E_WindowOwnerSysWindowOnRotate */
-    virtual inline void ownerSysWindowOnRotate(void) {
-        this->observerNotify(ZFUIWindow::E_WindowOwnerSysWindowOnRotate());
+    /** @brief see #E_WindowOwnerWindowOnRotate */
+    virtual inline void ownerWindowOnRotate(void) {
+        this->observerNotify(ZFUIWindow::E_WindowOwnerWindowOnRotate());
     }
 
 protected:
@@ -227,7 +224,7 @@ protected:
 
 private:
     _ZFP_ZFUIWindowPrivate *d;
-    friend zfclassFwd ZFUISysWindow;
+    friend zfclassFwd ZFUIRootWindow;
 };
 
 ZF_NAMESPACE_GLOBAL_END

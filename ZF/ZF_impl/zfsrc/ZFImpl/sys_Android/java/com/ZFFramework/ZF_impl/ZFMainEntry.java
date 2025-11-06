@@ -29,7 +29,7 @@ import java.lang.ref.WeakReference;
  *
  *   -  attach to existing UI, without create new Activity
  *     -# ZFMainEntry.mainEntryEmbedAttach
- *     -# ZFUISysWindow.mainWindowRegisterForNativeView
+ *     -# ZFUIRootWindow.mainWindowRegisterForNativeView
  *     -# ZFMainEntry.mainEntryEmbedExecute
  *     -# ZFMainEntry.mainEntryEmbedDetach
  */

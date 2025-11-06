@@ -8,17 +8,17 @@ ZFOBJECT_REGISTER(ZFUIOnScreenKeyboardState)
 
 ZFEVENT_REGISTER(ZFUIOnScreenKeyboardState, KeyboardStateOnUpdate)
 
-ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, instanceForSysWindow
-        , ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull)
+ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, instanceForRootWindow
+        , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
         ) {
-    if(sysWindow == zfnull) {
-        sysWindow = ZFUISysWindow::mainWindow();
+    if(rootWindow == zfnull) {
+        rootWindow = ZFUIRootWindow::mainWindow();
     }
-    ZFUIOnScreenKeyboardState *ret = sysWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState");
+    ZFUIOnScreenKeyboardState *ret = rootWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState");
     if(ret == zfnull) {
         zfobj<ZFUIOnScreenKeyboardState> tmp;
-        sysWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState", tmp);
-        tmp->_ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow = sysWindow;
+        rootWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState", tmp);
+        tmp->_ZFP_ZFUIOnScreenKeyboardState_rootWindow = rootWindow;
         ret = tmp;
     }
     return ret;
@@ -26,11 +26,11 @@ ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, 
 ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, instanceForView
         , ZFMP_IN_OPT(ZFUIView *, view, zfnull)
         ) {
-    return ZFUIOnScreenKeyboardState::instanceForSysWindow(ZFUIWindow::sysWindowForView(view));
+    return ZFUIOnScreenKeyboardState::instanceForRootWindow(ZFUIWindow::rootWindowForView(view));
 }
 
-ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, zfanyT<ZFUISysWindow>, keyboardOwnerSysWindow) {
-    return _ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow;
+ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, zfanyT<ZFUIRootWindow>, rootWindow) {
+    return _ZFP_ZFUIOnScreenKeyboardState_rootWindow;
 }
 
 ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, zfbool, keyboardShowing) {
@@ -46,7 +46,7 @@ ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, const ZFUIRect &, keyboardFramePrev
 ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, void, keyboardFixClientFrameT
         , ZFMP_OUT(ZFUIRect &, clientFrame)
         ) {
-    zffloat scale = this->keyboardOwnerSysWindow()->rootView()->UIScaleFixed();
+    zffloat scale = this->rootWindow()->rootView()->UIScaleFixed();
     ZFPROTOCOL_ACCESS(ZFUIOnScreenKeyboardState)->keyboardFixClientFrame(
         this,
         ZFUIRectApplyScale(this->keyboardFrame(), scale),
@@ -60,7 +60,7 @@ ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, ZFUIRect, keyboardFixClientFrame) {
 }
 
 void ZFUIOnScreenKeyboardState::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
-    zfsFromPointerT(ret, this->keyboardOwnerSysWindow());
+    zfsFromPointerT(ret, this->rootWindow());
     if(this->keyboardShowing()) {
         ret += " keyboardFrame: ";
         ZFUIRectToStringT(ret, this->keyboardFrame());

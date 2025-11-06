@@ -6,22 +6,41 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCompressTokenCache, ZFLevelZFFrameworkLow) {
 }
 public:
-    zfautoT<ZFCompressToken> obtain(
+    static zfautoT<ZFCompressToken> obtain(
             ZF_IN const ZFPathInfo &refPathInfo
             , ZF_IN_OPT ZFIOOpenOptionFlags flags = v_ZFIOOpenOption::e_Read
             ) {
-        if(flags != v_ZFIOOpenOption::e_Read) {
+        if(flags != v_ZFIOOpenOption::e_Read
+                || ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) != ZFFrameworkStateAvailable
+                ) {
             return ZFCompressOpen(refPathInfo, flags);
         }
         else {
-            return _accessReadonly(refPathInfo);
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_accessReadonly(refPathInfo);
         }
     }
-    void remove(ZF_IN const ZFPathInfo &refPathInfo) {
+    static void remove(ZF_IN const ZFPathInfo &refPathInfo) {
+        if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) != ZFFrameworkStateAvailable) {
+            return;
+        }
         ZFCoreMutexLocker();
-        for(zfindex i = 0; i < _cache.count(); ++i) {
-            if(refPathInfo == _cache[i]->refPathInfo) {
-                _cache.remove(i);
+        ZFCoreArray<ZFCorePointerForObject<CacheData *> > &cache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_cache;
+        for(zfindex i = 0; i < cache.count(); ++i) {
+            if(refPathInfo == cache[i]->refPathInfo) {
+                cache.remove(i);
+            }
+        }
+    }
+    static void remove(ZF_IN ZFObject *token) {
+        if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) != ZFFrameworkStateAvailable) {
+            return;
+        }
+        ZFCoreMutexLocker();
+        ZFCoreArray<ZFCorePointerForObject<CacheData *> > &cache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_cache;
+        for(zfindex i = 0; i < cache.count(); ++i) {
+            if(token == cache[i]->compressToken) {
+                cache.remove(i);
+                break;
             }
         }
     }
@@ -68,14 +87,7 @@ private:
                 ) {
             zfautoT<ZFCompressToken> token = zfargs.sender();
             if(token) {
-                ZFCoreMutexLocker();
-                ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache);
-                for(zfindex i = 0; i < d->_cache.count(); ++i) {
-                    if(token == d->_cache[i]->compressToken) {
-                        d->_cache.remove(i);
-                        break;
-                    }
-                }
+                ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::remove(token);
             }
         } ZFLISTENER_END()
         ret->observerAddForOnce(ZFIOToken::E_IOCloseOnPrepare(), onClose);
@@ -105,7 +117,7 @@ public:
             ) {
         this->ioClose();
 
-        _refIOToken = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo, flags);
+        _refIOToken = ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::obtain(refPathInfo, flags);
         if(_refIOToken == zfnull) {
             return zffalse;
         }
@@ -250,7 +262,7 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo);
+        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::obtain(refPathInfo);
         return token && token->ioIsExist(selfPathData);
     }
     zfoverride
@@ -260,7 +272,7 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo);
+        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::obtain(refPathInfo);
         return token && token->ioIsDir(selfPathData);
     }
     zfoverride
@@ -318,7 +330,7 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->remove(refPathInfo);
+        ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::remove(refPathInfo);
         zfautoT<ZFCompressToken> token = ZFCompressOpen(refPathInfo, v_ZFIOOpenOption::e_Modify);
         if(!token) {
             return zffalse;
@@ -336,7 +348,7 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->remove(refPathInfo);
+        ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::remove(refPathInfo);
         zfautoT<ZFCompressToken> token = ZFCompressOpen(refPathInfo, v_ZFIOOpenOption::e_Modify);
         if(!token) {
             return zffalse;
@@ -362,7 +374,7 @@ public:
         if(refPathInfoFrom != refPathInfoTo) {
             return zffalse;
         }
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->remove(refPathInfoFrom);
+        ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::remove(refPathInfoFrom);
         zfautoT<ZFCompressToken> token = ZFCompressOpen(refPathInfoFrom, v_ZFIOOpenOption::e_Modify);
         if(!token) {
             return zffalse;
@@ -379,7 +391,7 @@ public:
         if(!ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
             return zffalse;
         }
-        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->obtain(refPathInfo);
+        zfautoT<ZFCompressToken> token = ZF_GLOBAL_INITIALIZER_CLASS(ZFCompressTokenCache)::obtain(refPathInfo);
         if(!token) {
             return zffalse;
         }

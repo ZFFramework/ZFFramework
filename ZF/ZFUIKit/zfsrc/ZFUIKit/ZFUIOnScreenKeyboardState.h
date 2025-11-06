@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFUIOnScreenKeyboardState_h_
 #define _ZFI_ZFUIOnScreenKeyboardState_h_
 
-#include "ZFUISysWindow.h"
+#include "ZFUIRootWindow.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -20,8 +20,8 @@ public:
     /**
      * @brief access keyboard state for sys window
      */
-    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIOnScreenKeyboardState>, instanceForSysWindow
-            , ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull)
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIOnScreenKeyboardState>, instanceForRootWindow
+            , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
             )
     /**
      * @brief access keyboard state for view
@@ -32,10 +32,10 @@ public:
 
 public:
     /**
-     * @brief owner sys window, null and invalid if not accessed by #instanceForSysWindow
+     * @brief owner sys window, null and invalid if not accessed by #instanceForRootWindow
      *   (which is typically not allowed)
      */
-    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, keyboardOwnerSysWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIRootWindow>, rootWindow)
 
 public:
     /**
@@ -77,14 +77,14 @@ protected:
     virtual void objectInfoImplAppend(ZF_IN_OUT zfstring &ret);
 
 public:
-    ZFUISysWindow *_ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow;
+    ZFUIRootWindow *_ZFP_ZFUIOnScreenKeyboardState_rootWindow;
     zfbool _ZFP_ZFUIOnScreenKeyboardState_keyboardShowing;
     ZFUIRect _ZFP_ZFUIOnScreenKeyboardState_keyboardFrame;
     ZFUIRect _ZFP_ZFUIOnScreenKeyboardState_keyboardFramePrev;
 protected:
     /** @cond ZFPrivateDoc */
     ZFUIOnScreenKeyboardState(void)
-    : _ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow(zfnull)
+    : _ZFP_ZFUIOnScreenKeyboardState_rootWindow(zfnull)
     , _ZFP_ZFUIOnScreenKeyboardState_keyboardShowing(zffalse)
     , _ZFP_ZFUIOnScreenKeyboardState_keyboardFrame(ZFUIRectZero())
     , _ZFP_ZFUIOnScreenKeyboardState_keyboardFramePrev(ZFUIRectZero())

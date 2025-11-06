@@ -3,7 +3,7 @@ package com.ZFFramework.ZFUIKit_impl;
 import android.view.View;
 import android.view.ViewGroup;
 
-public final class ZFUISysWindowEmbedNativeView {
+public final class ZFUIRootWindowEmbedNativeView {
     public static void native_nativeViewAdd(Object parent,
                                             Object child) {
         View childTmp = (View)child;

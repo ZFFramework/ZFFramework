@@ -307,7 +307,6 @@ public:
             , ZF_IN void *nativeImplViewOld
             , ZF_IN void *nativeImplView
             , ZF_IN zfindex virtualIndex
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         if(nativeView._ZFP_nativeImplView != nil) {
@@ -315,7 +314,7 @@ public:
         }
         nativeView._ZFP_nativeImplView = (__bridge UIView *)nativeImplView;
 
-        if(nativeImplViewRequireVirtualIndex && nativeView._ZFP_nativeImplView != nil) {
+        if(nativeView._ZFP_nativeImplView != nil) {
             [nativeView insertSubview:nativeView._ZFP_nativeImplView atIndex:virtualIndex];
         }
     }

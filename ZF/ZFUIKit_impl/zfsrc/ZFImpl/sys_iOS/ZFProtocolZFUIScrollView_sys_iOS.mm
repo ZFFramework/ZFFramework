@@ -145,7 +145,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_iOS, ZFUIScrollView, v_ZF
 public:
     virtual void *nativeScrollViewCreate(
             ZF_IN ZFUIScrollView *scrollView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         _ZFP_ZFUIScrollViewImpl_sys_iOS_ScrollView *nativeScrollView = [_ZFP_ZFUIScrollViewImpl_sys_iOS_ScrollView new];
         nativeScrollView._ZFP_impl = this;

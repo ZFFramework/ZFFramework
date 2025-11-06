@@ -33,7 +33,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Android, ZFUIDrawForView
 public:
     virtual void *nativeDrawableViewCreate(
             ZF_IN ZFUIDrawableView *drawableView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), "native_nativeDrawableViewCreate",

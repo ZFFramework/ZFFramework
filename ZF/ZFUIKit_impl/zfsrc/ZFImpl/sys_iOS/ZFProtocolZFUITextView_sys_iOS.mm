@@ -46,7 +46,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_iOS, ZFUITextView, v_ZFProt
 public:
     virtual void *nativeTextViewCreate(
             ZF_IN ZFUITextView *textView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         return (__bridge_retained void *)[_ZFP_ZFUITextViewImpl_sys_iOS_TextView new];
     }

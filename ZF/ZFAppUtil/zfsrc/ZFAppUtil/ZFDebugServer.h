@@ -22,13 +22,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           ZFHttpResponse *recv = zfargs.param0();
  *           ZFLogTrim("%s", recv->body());
  *       }
- *       , "ZFUIViewTreePrint(ZFUISysWindow.mainWindow():rootView())"
+ *       , "ZFUIViewTreePrint(ZFUIRootWindow.mainWindow():rootView())"
  *       , "http://localhost:32100"
  *       );
  *
  *   // or, use plain curl
  *   curl -X POST -H "Content-Type:application/json;charset=UTF-8" \
- *       --data '{"run": "ZFUIViewTreePrint(ZFUISysWindow.mainWindow():rootView())"}' \
+ *       --data '{"run": "ZFUIViewTreePrint(ZFUIRootWindow.mainWindow():rootView())"}' \
  *       "http://localhost:32100"
  *
  *   // response data:

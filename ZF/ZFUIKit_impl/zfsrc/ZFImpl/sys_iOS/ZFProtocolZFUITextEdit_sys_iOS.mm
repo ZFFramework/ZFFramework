@@ -103,7 +103,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_iOS, ZFUITextEdit, v_ZFProt
 public:
     virtual void *nativeTextEditCreate(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = [_ZFP_ZFUITextEditImpl_sys_iOS_TextEdit new];
         nativeImplView.ownerZFUITextEdit = textEdit;

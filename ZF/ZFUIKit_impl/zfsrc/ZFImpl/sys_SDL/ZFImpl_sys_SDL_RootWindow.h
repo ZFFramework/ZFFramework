@@ -1,8 +1,8 @@
-#ifndef _ZFI_ZFImpl_sys_SDL_SysWindow_h_
-#define _ZFI_ZFImpl_sys_SDL_SysWindow_h_
+#ifndef _ZFI_ZFImpl_sys_SDL_RootWindow_h_
+#define _ZFI_ZFImpl_sys_SDL_RootWindow_h_
 
 #include "ZFImpl_sys_SDL_View.h"
-#include "ZFUIKit/ZFUISysWindow.h"
+#include "ZFUIKit/ZFUIRootWindow.h"
 
 #if ZF_ENV_sys_SDL
 
@@ -34,20 +34,20 @@ public:
     /** @endcond */
 };
 
-zfclassFwd _ZFP_ZFImpl_sys_SDL_SysWindowPrivate;
+zfclassFwd _ZFP_ZFImpl_sys_SDL_RootWindowPrivate;
 /**
  * @brief native view impl for SDL
  */
-zffinal zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_SysWindow {
+zffinal zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_RootWindow {
 public:
     /** @brief access all window instance */
-    static ZFCoreArray<ZFImpl_sys_SDL_SysWindow *> &allWindow(void);
+    static ZFCoreArray<ZFImpl_sys_SDL_RootWindow *> &allWindow(void);
 
 private:
-    _ZFP_ZFImpl_sys_SDL_SysWindowPrivate *d;
+    _ZFP_ZFImpl_sys_SDL_RootWindowPrivate *d;
 public:
     /** @brief the owner sys window */
-    ZFUISysWindow *ownerZFUISysWindow;
+    ZFUIRootWindow *ownerZFUIRootWindow;
     /** @brief whether builtin window created by ZFFramework */
     zfbool builtinWindow;
     /** @brief sdl window */
@@ -74,7 +74,7 @@ public:
     /** @brief schedule a render task */
     void renderRequest(void);
 
-    /** @brief schedule a layout task to notify layout the ZFUISysWindow::rootView */
+    /** @brief schedule a layout task to notify layout the ZFUIRootWindow::rootView */
     void layoutRequest(void);
 
 public:
@@ -99,12 +99,12 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    ZFImpl_sys_SDL_SysWindow(void);
-    ~ZFImpl_sys_SDL_SysWindow(void);
+    ZFImpl_sys_SDL_RootWindow(void);
+    ~ZFImpl_sys_SDL_RootWindow(void);
     /** @endcond */
 };
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL
-#endif // #ifndef _ZFI_ZFImpl_sys_SDL_SysWindow_h_
+#endif // #ifndef _ZFI_ZFImpl_sys_SDL_RootWindow_h_
 

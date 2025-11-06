@@ -367,7 +367,6 @@ public:
             , ZF_IN void *nativeImplViewOld
             , ZF_IN void *nativeImplView
             , ZF_IN zfindex virtualIndex
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = (_ZFP_ZFUIViewImpl_sys_Qt_View *)view->nativeView();
         QGraphicsWidget *v = (QGraphicsWidget *)nativeImplView;
@@ -377,7 +376,7 @@ public:
         }
         nativeView->_ZFP_nativeImplView = v;
 
-        if(nativeImplViewRequireVirtualIndex && nativeView->_ZFP_nativeImplView != zfnull) {
+        if(nativeView->_ZFP_nativeImplView != zfnull) {
             nativeView->_ZFP_layoutProxy->child(nativeView->_ZFP_nativeImplView, virtualIndex);
             nativeView->_ZFP_focusProxyToken = _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_attach(
                 view, nativeView, nativeView->_ZFP_nativeImplView, nativeView->_ZFP_focusProxyToken);

@@ -20,7 +20,6 @@ public:
      */
     virtual void *nativeTextEditCreate(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) zfpurevirtual;
     /**
      * @brief destroy native text edit view

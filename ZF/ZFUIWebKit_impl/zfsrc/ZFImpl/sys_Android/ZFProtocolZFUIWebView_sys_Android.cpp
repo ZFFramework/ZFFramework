@@ -15,7 +15,6 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_Android, ZFUIWebView, v_ZFPr
 public:
     virtual void *nativeWebViewCreate(
             ZF_IN ZFUIWebView *webView
-            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_nativeWebViewCreate",

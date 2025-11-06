@@ -78,7 +78,6 @@ public:
             , ZF_IN void *nativeImplViewOld
             , ZF_IN void *nativeImplView
             , ZF_IN zfindex virtualIndex
-            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), "native_nativeImplView",
@@ -92,7 +91,6 @@ public:
             , (jobject)view->nativeView()
             , (jobject)nativeImplView
             , (jint)virtualIndex
-            , (jboolean)nativeImplViewRequireVirtualIndex
             );
     }
     virtual void nativeImplViewFrame(

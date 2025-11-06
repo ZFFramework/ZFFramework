@@ -101,12 +101,12 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->windowLevel(v_ZFUIWindowLevel::e_AppHigh);
-        this->sysWindowMarginShouldApply(zffalse);
+        this->windowMarginShouldApply(zffalse);
     }
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
-        if(this->pimplOwner->sysWindowMarginShouldApply()) {
-            zfsuper::layoutOnLayout(ZFUIRectApplyMargin(bounds, this->ownerSysWindow()->sysWindowMargin()));
+        if(this->pimplOwner->windowMarginShouldApply()) {
+            zfsuper::layoutOnLayout(ZFUIRectApplyMargin(bounds, this->rootWindow()->windowMargin()));
         }
         else {
             zfsuper::layoutOnLayout(bounds);

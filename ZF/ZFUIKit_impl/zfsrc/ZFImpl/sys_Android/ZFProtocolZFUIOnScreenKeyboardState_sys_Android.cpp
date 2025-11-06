@@ -59,7 +59,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIOnScreenKeyboardState
         return;
     }
     ZFPROTOCOL_ACCESS(ZFUIOnScreenKeyboardState)->notifyKeyboardStateOnUpdate(
-        ZFUIOnScreenKeyboardState::instanceForSysWindow());
+        ZFUIOnScreenKeyboardState::instanceForRootWindow());
 }
 JNI_METHOD_DECLARE_END()
 

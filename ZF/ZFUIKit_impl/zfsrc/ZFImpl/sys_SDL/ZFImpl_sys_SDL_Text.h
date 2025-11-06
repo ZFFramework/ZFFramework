@@ -24,8 +24,9 @@ extern ZFLIB_ZFUIKit_impl zfbool ZFImpl_sys_SDL_textRender(
         , ZF_IN const ZFUIAlignFlags &textAlign
         , ZF_IN SDL_Color textColor
         , ZF_IN zfbool singleLine
-        , ZF_IN ZFUITextTruncateMode textTruncateMode
         , ZF_IN zffloat alpha
+        , ZF_IN ZFUITextTruncateMode truncateMode
+        , ZF_IN_OPT const zfchar *truncateText = ".."
         );
 
 ZF_NAMESPACE_GLOBAL_END

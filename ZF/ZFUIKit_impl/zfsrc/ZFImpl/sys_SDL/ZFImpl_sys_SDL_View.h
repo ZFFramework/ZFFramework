@@ -37,7 +37,7 @@ public:
     /** @endcond */
 };
 
-zfclassFwd ZFImpl_sys_SDL_SysWindow;
+zfclassFwd ZFImpl_sys_SDL_RootWindow;
 /**
  * @brief native view impl for SDL
  */
@@ -65,7 +65,7 @@ public:
 
 public:
     /** @brief owner sys window, valid when added to window */
-    ZFImpl_sys_SDL_SysWindow *sysWindow;
+    ZFImpl_sys_SDL_RootWindow *rootWindow;
     /** @brief owner view, null for #ZFUIView::nativeImplView */
     ZFUIView *ownerZFUIView;
     /** @brief parent */
@@ -73,7 +73,7 @@ public:
     /** @brief native rect, relative to parent */
     SDL_FRect rect;
     /** @brief callback for impl to render contents */
-    ZFCoreArray<RenderCallback> renderImpls;
+    RenderCallback renderImpl;
     /** @brief whether #renderRequest called and not rendered */
     zfbool renderRequested;
     /**
@@ -128,10 +128,10 @@ public:
     }
 
 public:
-    /** @brief attached to sysWindow */
-    void sysWindowAttach(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWindow);
-    /** @brief detached from sysWindow */
-    void sysWindowDetach(void);
+    /** @brief attached to rootWindow */
+    void rootWindowAttach(ZF_IN ZFImpl_sys_SDL_RootWindow *rootWindow);
+    /** @brief detached from rootWindow */
+    void rootWindowDetach(void);
 
     /** @brief child attached */
     void childAttach(
@@ -261,11 +261,11 @@ public:
         this->renderCacheRequired = 0;
         this->viewTransformRemove();
         this->aniTransformRemove();
-        this->sysWindow = zfnull;
+        this->rootWindow = zfnull;
         this->ownerZFUIView = zfnull;
         this->parent = zfnull;
         this->rect.x = this->rect.y = this->rect.w = this->rect.h = 0;
-        this->renderImpls.removeAll();
+        this->renderImpl = zfnull;
         this->children.removeAll();
         this->renderRequested = zftrue;
         this->sdlMouseGrabCallback = zfnull;
@@ -305,11 +305,11 @@ public:
     /** @cond ZFPrivateDoc */
 public:
     ZFImpl_sys_SDL_View(void)
-    : sysWindow(zfnull)
+    : rootWindow(zfnull)
     , ownerZFUIView(zfnull)
     , parent(zfnull)
     , rect()
-    , renderImpls()
+    , renderImpl()
     , viewTransform(zfnull)
     , aniTransform(zfnull)
     , renderRequested(zftrue)

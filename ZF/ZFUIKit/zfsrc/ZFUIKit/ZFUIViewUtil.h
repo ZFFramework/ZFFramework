@@ -48,7 +48,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, viewAtPos
  * result value would be invalid until whole layout step finished\n
  * unlike #ZFUIViewPositionOnScreen,
  * this method does not depends on impl,
- * however, result may be invalid if view's parent contains #ZFUINativeViewWrapper\n
+ * however, result may be invalid if view's parent contains #ZFUINativeView\n
  * this method would calculate rect depends on #ZFUIView::layoutChildOffset recursively
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, viewRectToParentT

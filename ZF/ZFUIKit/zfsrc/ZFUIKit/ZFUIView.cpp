@@ -49,19 +49,18 @@ public:
     ZFListener layoutParamOnUpdate;
 
     enum {
-        stateFlag_nativeImplViewRequireVirtualIndex = 1 << 0,
-        stateFlag_layoutRequested = 1 << 1,
-        stateFlag_layoutRequestedRecursively = 1 << 2,
-        stateFlag_layouting = 1 << 3,
-        stateFlag_viewTreeInWindow = 1 << 4,
-        stateFlag_viewTreeVisibleInternal = 1 << 5, // this flag detects visible only, without checking viewTreeInWindow
-        stateFlag_viewFrameOverrideFlag = 1 << 6,
-        stateFlag_viewFrameOverride_x = 1 << 7,
-        stateFlag_viewFrameOverride_y = 1 << 8,
-        stateFlag_viewFrameOverride_width = 1 << 9,
-        stateFlag_viewFrameOverride_height = 1 << 10,
-        stateFlag_viewFrameOverride_centerX = 1 << 11,
-        stateFlag_viewFrameOverride_centerY = 1 << 12,
+        stateFlag_layoutRequested = 1 << 0,
+        stateFlag_layoutRequestedRecursively = 1 << 1,
+        stateFlag_layouting = 1 << 2,
+        stateFlag_viewTreeInWindow = 1 << 3,
+        stateFlag_viewTreeVisibleInternal = 1 << 4, // this flag detects visible only, without checking viewTreeInWindow
+        stateFlag_viewFrameOverrideFlag = 1 << 5,
+        stateFlag_viewFrameOverride_x = 1 << 6,
+        stateFlag_viewFrameOverride_y = 1 << 7,
+        stateFlag_viewFrameOverride_width = 1 << 8,
+        stateFlag_viewFrameOverride_height = 1 << 9,
+        stateFlag_viewFrameOverride_centerX = 1 << 10,
+        stateFlag_viewFrameOverride_centerY = 1 << 11,
         stateFlag_viewFrameOverride_mask = 0
             | stateFlag_viewFrameOverride_x
             | stateFlag_viewFrameOverride_y
@@ -70,23 +69,23 @@ public:
             | stateFlag_viewFrameOverride_centerX
             | stateFlag_viewFrameOverride_centerY
             ,
-        stateFlag_UIScaleOnUpdate = 1 << 13,
-        stateFlag_viewTransformUpdate = 1 << 14,
-        stateFlag_viewTransformModified = 1 << 15,
-        stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate = 1 << 16,
-        stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate = 1 << 17,
-        stateFlag_observerHasAddFlag_ViewChildOnUpdate = 1 << 18,
-        stateFlag_observerHasAddFlag_ViewChildOnAdd = 1 << 19,
-        stateFlag_observerHasAddFlag_ViewChildOnRemove = 1 << 20,
-        stateFlag_observerHasAddFlag_ViewOnAddToParent = 1 << 21,
-        stateFlag_observerHasAddFlag_ViewOnRemoveFromParent = 1 << 22,
-        stateFlag_observerHasAddFlag_UIScaleOnUpdate = 1 << 23,
-        stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest = 1 << 24,
-        stateFlag_observerHasAddFlag_ViewLayoutOnMeasure = 1 << 25,
-        stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare = 1 << 26,
-        stateFlag_observerHasAddFlag_ViewLayoutOnLayout = 1 << 27,
-        stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish = 1 << 28,
-        stateFlag_observerHasAddFlag_ViewOnEvent = 1 << 29,
+        stateFlag_UIScaleOnUpdate = 1 << 12,
+        stateFlag_viewTransformUpdate = 1 << 13,
+        stateFlag_viewTransformModified = 1 << 14,
+        stateFlag_observerHasAddFlag_ViewTreeInWindowOnUpdate = 1 << 15,
+        stateFlag_observerHasAddFlag_ViewTreeVisibleOnUpdate = 1 << 16,
+        stateFlag_observerHasAddFlag_ViewChildOnUpdate = 1 << 17,
+        stateFlag_observerHasAddFlag_ViewChildOnAdd = 1 << 18,
+        stateFlag_observerHasAddFlag_ViewChildOnRemove = 1 << 19,
+        stateFlag_observerHasAddFlag_ViewOnAddToParent = 1 << 20,
+        stateFlag_observerHasAddFlag_ViewOnRemoveFromParent = 1 << 21,
+        stateFlag_observerHasAddFlag_UIScaleOnUpdate = 1 << 22,
+        stateFlag_observerHasAddFlag_ViewLayoutOnLayoutRequest = 1 << 23,
+        stateFlag_observerHasAddFlag_ViewLayoutOnMeasure = 1 << 24,
+        stateFlag_observerHasAddFlag_ViewLayoutOnLayoutPrepare = 1 << 25,
+        stateFlag_observerHasAddFlag_ViewLayoutOnLayout = 1 << 26,
+        stateFlag_observerHasAddFlag_ViewLayoutOnLayoutFinish = 1 << 27,
+        stateFlag_observerHasAddFlag_ViewOnEvent = 1 << 28,
     };
     zfuint stateFlag;
 
@@ -371,7 +370,7 @@ public:
         }
     }
     zfindex viewLayerPrevCount(ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer) {
-        zfindex nativeImplFix = (this->nativeImplView && ZFBitTest(this->stateFlag, stateFlag_nativeImplViewRequireVirtualIndex) ? 1 : 0);
+        zfindex nativeImplFix = (this->nativeImplView ? 1 : 0);
         if(&layer == &(this->layerNormal)) {
             return this->layerInternalImpl.count() + nativeImplFix
                 + this->layerInternalBg.count();
@@ -1353,7 +1352,7 @@ void ZFUIView::objectOnDealloc(void) {
         }
     }
 
-    this->nativeImplView(zfnull, zfnull, zffalse);
+    this->nativeImplView(zfnull, zfnull);
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) == ZFFrameworkStateAvailable
             && ZFPROTOCOL_ACCESS(ZFUIView)->nativeViewCacheOnSave(d->nativeView)
             && ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewNativeViewCache)->nativeViewCache.count() < 100
@@ -1445,25 +1444,15 @@ void ZFUIView::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
 ZFMETHOD_DEFINE_0(ZFUIView, void *, nativeImplView) {
     return d->nativeImplView;
 }
-ZFMETHOD_DEFINE_0(ZFUIView, zfbool, nativeImplViewRequireVirtualIndex) {
-    return ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_nativeImplViewRequireVirtualIndex);
-}
 void ZFUIView::nativeImplView(
         ZF_IN void *nativeImplView
         , ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback
-        , ZF_IN zfbool nativeImplViewRequireVirtualIndex
         ) {
     void *nativeImplViewOld = d->nativeImplView;
     ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallbackOld = d->nativeImplViewDeleteCallback;
     d->nativeImplView = nativeImplView;
     d->nativeImplViewDeleteCallback = nativeImplViewDeleteCallback;
-    if(nativeImplViewRequireVirtualIndex) {
-        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_nativeImplViewRequireVirtualIndex);
-    }
-    else {
-        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_nativeImplViewRequireVirtualIndex);
-    }
-    ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplView(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.count(), nativeImplViewRequireVirtualIndex);
+    ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplView(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.count());
     if(nativeImplViewOld && nativeImplViewDeleteCallbackOld) {
         nativeImplViewDeleteCallbackOld(this, nativeImplViewOld);
     }
