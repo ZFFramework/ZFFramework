@@ -19,8 +19,8 @@ public:
     virtual void viewTransform(ZF_IN ZFUIView *view) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
         nativeView->viewTransformPrepare();
-        nativeView->viewTransform->translateX = view->translateX();
-        nativeView->viewTransform->translateY = view->translateY();
+        nativeView->viewTransform->translateX = view->translateX() * view->UIScaleFixed();
+        nativeView->viewTransform->translateY = view->translateY() * view->UIScaleFixed();
         nativeView->viewTransform->scaleX = view->scaleX();
         nativeView->viewTransform->scaleY = view->scaleY();
         nativeView->viewTransform->rotateZ = view->rotateZ();
