@@ -20,8 +20,9 @@ exit /b 1
 if not defined CLONE_OPTION set CLONE_OPTION=--depth=1
 
 set _OLD_DIR=%cd%
-set _GIT_VALID=0
+set _NEED_PULL=0
 
+set _GIT_VALID=0
 if exist "%DST_PATH%\.git" (
     set _GIT_PATH_DESIRED=%DST_PATH%\.git
     cd /d "%_GIT_PATH_DESIRED%" >nul 2>&1
@@ -39,52 +40,57 @@ if exist "%DST_PATH%\.git" (
         set _GIT_VALID=1
     )
 )
-
 if "%_GIT_VALID%" == "1" (
     call "%WORK_DIR%\timestamp_check.bat" "%DST_PATH%\.git"
-
     if not "!ERRORLEVEL!" == "0" (
-        cd /d "%DST_PATH%"
-        git stash
-        git checkout .
-        git reset --hard
-        git fetch --all && git pull
-        set _SUCCESS=!ERRORLEVEL!
-        if "!ERRORLEVEL!" == "0" (
-            if exist ".gitmodules" (
-                git submodule update --init --recursive --depth=1
-                set _SUCCESS=!ERRORLEVEL!
-            )
-        )
-        set _SUCCESS=!ERRORLEVEL!
-        git checkout "%GIT_BRANCH%"
-        git stash pop
-        cd /d "%_OLD_DIR%"
-
-        if "!_SUCCESS!" == "0" (
-            call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git"
-        )
-        exit /b !_SUCCESS!
+        set _NEED_PULL=1
     )
 ) else (
-    rmdir /s/q "%DST_PATH%" >nul 2>&1
+    set _NEED_PULL=1
+    rmdir /s/q "%DST_PATH%\.git_check_tmp" >nul 2>&1
     mkdir "%DST_PATH%" >nul 2>&1
-    git clone -b "%GIT_BRANCH%" %CLONE_OPTION% "%PROJ_GIT%" "%DST_PATH%"
+    set _DST_HAS_CONTENT=0
+    for /f "delims=" %%i in ('dir /b /a "%DST_PATH%" 2^>nul') do (
+        set _DST_HAS_CONTENT=1
+    )
+    git clone -b "%GIT_BRANCH%" %CLONE_OPTION% "%PROJ_GIT%" "%DST_PATH%\.git_check_tmp"
+    set _CLONE_SUCCESS=!ERRORLEVEL!
+    if not "!_CLONE_SUCCESS!" == "0" (
+        rmdir /s/q "%DST_PATH%\.git_check_tmp" >nul 2>&1
+        exit /b !_CLONE_SUCCESS!
+    )
+    rmdir /s/q "%DST_PATH%\.git" >nul 2>&1
+    robocopy "%DST_PATH%\.git_check_tmp\.git" "%DST_PATH%\.git" /E /MOVE >nul 2>&1
+    rmdir /s/q "%DST_PATH%\.git_check_tmp" >nul 2>&1
+    if "!_DST_HAS_CONTENT!" == "0" (
+        cd "%DST_PATH%"
+        git checkout .
+        cd "%_OLD_DIR%"
+    )
+)
+
+if "!_NEED_PULL!" == "1" (
+    cd /d "%DST_PATH%"
+    git stash
+    git checkout .
+    git reset --hard
+    git fetch --all && git pull
     set _SUCCESS=!ERRORLEVEL!
     if "!ERRORLEVEL!" == "0" (
-        cd /d "%DST_PATH%"
         if exist ".gitmodules" (
             git submodule update --init --recursive --depth=1
             set _SUCCESS=!ERRORLEVEL!
         )
-        cd /d "%_OLD_DIR%"
     )
+    set _SUCCESS=!ERRORLEVEL!
+    git checkout "%GIT_BRANCH%"
+    git stash pop
+    cd /d "%_OLD_DIR%"
 
     if "!_SUCCESS!" == "0" (
         call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git"
     )
     exit /b !_SUCCESS!
 )
-
 exit /b 0
 
