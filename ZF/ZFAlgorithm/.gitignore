@@ -1,13 +1,13 @@
 # common
-**/.classpath
-**/.project
-**/.settings
-**/.svn
-**/_impl
-**/_release
-**/_repo
-**/_tmp
-**/zfgensrc_*
+.classpath
+.project
+.settings
+.svn
+_impl
+_release
+_repo
+_tmp
+zfgensrc_*
 
 # Android
 **/Android/**/*.iml
@@ -20,19 +20,19 @@
 **/Android/**/src/main/assets
 
 # iOS
-**/.DS_Store
-**/*xcuserdata*
+*xcuserdata*
+.DS_Store
 
 # Qt
 **/Qt/**/build
 **/Qt/**/build-*
-**/*.pro.user
+*.pro.user
 
 # Windows
-**/*.ncb
-**/*.suo
-**/*.vcproj.*.user
-**/.vs
 **/zfproj/cmake/**/out
 **/zfproj_with_src/cmake/**/out
+*.ncb
+*.suo
+*.vcproj.*.user
+.vs
 
