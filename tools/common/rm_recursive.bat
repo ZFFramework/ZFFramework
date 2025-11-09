@@ -11,7 +11,7 @@ if not defined FILE_NAME goto :usage
 goto :run
 :usage
 echo usage:
-echo   rm_recursive.sh SRC_DIR FILE_NAME
+echo   rm_recursive.bat SRC_DIR FILE_NAME
 echo set ZF_EXCLUDE to exclude dirs, separated by space, match exact, e.g.
 echo   set ZF_EXCLUDE=f0 f1
 exit /b 1

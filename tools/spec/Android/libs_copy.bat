@@ -17,21 +17,25 @@ exit /b 1
 set ZF_ROOT_PATH=%WORK_DIR%\..\..\..
 
 mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\jniLibs" >nul 2>&1
-call "%ZF_ROOT_PATH%\tools\common\copy_file_in_tree.sh" "lib%PROJ_NAME%.so" "%PROJ_PATH%\zflib\build\intermediates\library_and_local_jars_jni\release\jni" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\jniLibs" >nul 2>&1
-call "%ZF_ROOT_PATH%\tools\common\copy_file_in_tree.sh" "lib%PROJ_NAME%.so" "%PROJ_PATH%\zflib\build\intermediates\library_and_local_jars_jni\release\copyReleaseJniLibsProjectAndLocalJars\jni" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\jniLibs" >nul 2>&1
+call "%ZF_ROOT_PATH%\tools\common\copy_file_in_tree.bat" "lib%PROJ_NAME%.so" "%PROJ_PATH%\zflib\build\intermediates\library_and_local_jars_jni\release\jni" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\jniLibs" >nul 2>&1
+call "%ZF_ROOT_PATH%\tools\common\copy_file_in_tree.bat" "lib%PROJ_NAME%.so" "%PROJ_PATH%\zflib\build\intermediates\library_and_local_jars_jni\release\copyReleaseJniLibsProjectAndLocalJars\jni" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\jniLibs" >nul 2>&1
 call "%ZF_ROOT_PATH%\tools\util\copy_header.bat" "%PROJ_PATH%\..\..\..\zfsrc" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\cpp\include" >nul 2>&1
 call "%ZF_ROOT_PATH%\tools\util\copy_res.bat" "%PROJ_PATH%\..\..\..\zfres" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\assets\zfres" >nul 2>&1
 
 for /f "delims=" %%a in ("%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\classes.jar") do set JAR_FILE_SIZE=%%~za
-if %JAR_FILE_SIZE% gtr 1024 (
-    mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs" >nul 2>&1
-    xcopy /s/e/y/r/h "%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\classes.jar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs\%PROJ_NAME%.jar" >nul 2>&1
+if defined JAR_FILE_SIZE (
+    if !JAR_FILE_SIZE! gtr 1024 (
+        mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs" >nul 2>&1
+        xcopy /s/e/y/r/h "%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\classes.jar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs\%PROJ_NAME%.jar" >nul 2>&1
+    )
 )
 
 for /f "delims=" %%a in ("%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\syncReleaseLibJars\classes.jar") do set JAR_FILE_SIZE=%%~za
-if %JAR_FILE_SIZE% gtr 1024 (
-    mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs" >nul 2>&1
-    xcopy /s/e/y/r/h "%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\syncReleaseLibJars\classes.jar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs\%PROJ_NAME%.jar" >nul 2>&1
+if defined JAR_FILE_SIZE (
+    if !JAR_FILE_SIZE! gtr 1024 (
+        mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs" >nul 2>&1
+        xcopy /s/e/y/r/h "%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\syncReleaseLibJars\classes.jar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs\%PROJ_NAME%.jar" >nul 2>&1
+    )
 )
 
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%PROJ_PATH%\zflib\build\outputs\aar\zflib-release.aar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\aar\%PROJ_NAME%.aar" >nul 2>&1

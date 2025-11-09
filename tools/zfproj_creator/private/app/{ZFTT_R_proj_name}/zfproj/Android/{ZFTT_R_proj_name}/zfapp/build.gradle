@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId '{ZFTT_R_app_package}'
-        minSdk 21
+        minSdk 24
         targetSdk 35
         versionCode {ZFTT_R_app_version_code}
         versionName '{ZFTT_R_app_version}'

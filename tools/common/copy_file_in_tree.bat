@@ -12,7 +12,7 @@ if not defined TO_PATH goto :usage
 goto :run
 :usage
 echo usage:
-echo   copy_file_in_tree.sh FILE_NAME FROM_PATH TO_PATH
+echo   copy_file_in_tree.bat FILE_NAME FROM_PATH TO_PATH
 echo .
 echo FROM_PATH and TO_PATH must not end with '/'
 exit /b 1
