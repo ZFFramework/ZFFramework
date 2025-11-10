@@ -14,5 +14,9 @@ echo   cp.bat SRC_PATH DST_PATH
 exit /b 1
 :run
 
-xcopy /s/e/y/r/h "%SRC_PATH%" "%DST_PATH%" >nul 2>&1
+if exist "%SRC_PATH%" if not exist "%SRC_PATH%\" (
+    copy /y "%SRC_PATH%" "%DST_PATH%" >nul 2>&1
+) else (
+    xcopy /s/e/y/r/h "%SRC_PATH%" "%DST_PATH%" >nul 2>&1
+)
 
