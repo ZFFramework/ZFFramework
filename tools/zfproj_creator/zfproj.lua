@@ -411,15 +411,18 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local fd = zfargs:sender()
         ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
-        for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if ZFRegExpMatch(relPath, '.*\\b' .. _SYNC_EXCLUDE:get(i) .. '\\b.*') then
-                filtered = zftrue
-                break
+        if fd:isDir() then
+            for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
+                if zfstringIsEqual(fd:name(), _SYNC_EXCLUDE:get(i)) then
+                    filtered = zftrue
+                    pathInfo:zfv(zfnull)
+                    break
+                end
             end
         end
         if not filtered then
+            local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
             ZFIOCopy(
                 ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_DST .. relPath)
                 , ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_SRC .. relPath)
@@ -452,15 +455,18 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local fd = zfargs:sender()
         ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
-        for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
-            if ZFRegExpMatch(relPath, '.*\\b' .. _SYNC_EXCLUDE:get(i) .. '\\b.*') then
-                filtered = zftrue
-                break
+        if fd:isDir() then
+            for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
+                if zfstringIsEqual(fd:name(), _SYNC_EXCLUDE:get(i)) then
+                    filtered = zftrue
+                    pathInfo:zfv(zfnull)
+                    break
+                end
             end
         end
         if not filtered then
+            local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
             ZFIOCopy(
                 ZFPathInfo(localPathInfo:pathType(), DST_PATH .. relPath)
                 , ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_FORMATED .. relPath)
@@ -478,11 +484,19 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
     if not zfl_eq(ZF_EXCLUDE_FILE, zfnull) then
         ZF_EXCLUDE_FILE_TMP:addFrom(ZF_EXCLUDE_FILE)
     end
+    ZF_EXCLUDE_FILE_TMP:add('.git')
     ZF_EXCLUDE_FILE_TMP:add('private')
     ZF_EXCLUDE_FILE_TMP:add('zfres')
     ZF_EXCLUDE_FILE_TMP:add('_release')
     ZF_EXCLUDE_FILE_TMP:add('_repo')
     ZF_EXCLUDE_FILE_TMP:add('_tmp')
+
+    ZF_EXCLUDE_FILE_TMP:add('.cxx')
+    ZF_EXCLUDE_FILE_TMP:add('.externalNativeBuild')
+    ZF_EXCLUDE_FILE_TMP:add('.gradle')
+    ZF_EXCLUDE_FILE_TMP:add('.idea')
+    ZF_EXCLUDE_FILE_TMP:add('build')
+    ZF_EXCLUDE_FILE_TMP:add('out')
 
     local SRC_DIR_FORMATED = ZFPathFormat(SRC_DIR)
     local DST_DIR_FORMATED = ZFPathFormat(DST_DIR)
@@ -491,15 +505,17 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         local fd = zfargs:sender()
         ---@type ZFPathInfo
         local pathInfo = zfargs:param0()
-        local relPath = zfstring(pathInfo:pathData(), SRC_DIR_FORMATED:length(), zfindexMax())
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
-        if not filtered then
+        if fd:isDir() then
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
-                if ZFRegExpMatch(relPath, '.*\\b' .. ZF_EXCLUDE_FILE_TMP:get(i) .. '\\b.*') then
+                if zfstringIsEqual(fd:name(), ZF_EXCLUDE_FILE_TMP:get(i)) then
                     filtered = zftrue
+                    pathInfo:zfv(zfnull)
                     break
                 end
             end
+        else
+            filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         end
         if not filtered then
             zfproj_creator(pathInfo:pathData(), DST_DIR_FORMATED)

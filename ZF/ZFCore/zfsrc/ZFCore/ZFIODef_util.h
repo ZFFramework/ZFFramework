@@ -185,7 +185,8 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFIOTreePrint
  * fileCallback's sender would be the #v_ZFIOFindData,
  * param0 is #v_ZFPathInfo that describe the child file or dir,
  * and param1 is a #v_zfstring stores the relative path to source pathInfo,
- * set #ZFArgs::eventFiltered to indicates process done
+ * set #ZFArgs::eventFiltered to indicate process done,
+ * set param0 or param1 to null to indicate stop processing child of current item
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFIOForEach
         , ZFMP_IN(const ZFPathInfo &, pathInfo)

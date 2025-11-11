@@ -529,7 +529,10 @@ static zfbool _ZFP_ZFIOForEach(
                     break;
                 }
             }
-            if(isRecursive && fd->zfv.isDir()) {
+            if(isRecursive && fd->zfv.isDir()
+                    && !pathInfoHolder->zfv.isEmpty()
+                    && !relPathTmp.isEmpty()
+                    ) {
                 _ZFP_ZFIOForEach(
                         ioImpl
                         , fileCallback

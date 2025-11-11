@@ -126,7 +126,19 @@ elif test "x-$CONFIG_FILE_PATH" = "x--r" ; then
     # ============================================================
     # default exclude dirs
     ZF_EXCLUDE_FILE_TMP=$ZF_EXCLUDE_FILE
-    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP private zfres _release _repo _tmp"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP .git"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP private"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP zfres"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP _release"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP _repo"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP _tmp"
+
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP .cxx"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP .externalNativeBuild"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP .gradle"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP .idea"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP build"
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP out"
 
     # ============================================================
     ZF_ROOT_PATH=$WORK_DIR/../../../ZFFramework

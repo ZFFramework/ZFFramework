@@ -25,7 +25,7 @@ call "%ZF_ROOT_PATH%\tools\util\copy_res.bat" "%PROJ_PATH%\..\..\..\zfres" "%ZF_
 
 for /f "delims=" %%a in ("%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\classes.jar") do set JAR_FILE_SIZE=%%~za
 if not "x-!JAR_FILE_SIZE!" == "x-" (
-    if !JAR_FILE_SIZE! gtr 1024 (
+    if !JAR_FILE_SIZE! gtr 256 (
         mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs" >nul 2>&1
         copy /y "%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\classes.jar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs\%PROJ_NAME%.jar" >nul 2>&1
     )
@@ -33,7 +33,7 @@ if not "x-!JAR_FILE_SIZE!" == "x-" (
 
 for /f "delims=" %%a in ("%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\syncReleaseLibJars\classes.jar") do set JAR_FILE_SIZE=%%~za
 if not "x-!JAR_FILE_SIZE!" == "x-" (
-    if !JAR_FILE_SIZE! gtr 1024 (
+    if !JAR_FILE_SIZE! gtr 256 (
         mkdir "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs" >nul 2>&1
         copy /y "%PROJ_PATH%\zflib\build\intermediates\aar_main_jar\release\syncReleaseLibJars\classes.jar" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\src\main\libs\%PROJ_NAME%.jar" >nul 2>&1
     )

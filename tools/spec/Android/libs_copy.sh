@@ -16,13 +16,13 @@ sh "$ZF_ROOT_PATH/tools/util/copy_header.sh" "$PROJ_PATH/../../../zfsrc" "$ZF_RO
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$PROJ_PATH/../../../zfres" "$ZF_ROOT_PATH/_release/Android/module/$PROJ_NAME/src/main/assets/zfres" >/dev/null 2>&1
 
 JAR_FILE_SIZE=`wc -c "$PROJ_PATH/zflib/build/intermediates/aar_main_jar/release/classes.jar" 2>/dev/null | awk '{print $1}' 2>/dev/null`
-if test ! "x-$JAR_FILE_SIZE" = "x-" && test $JAR_FILE_SIZE -ge 1024 ; then
+if test ! "x-$JAR_FILE_SIZE" = "x-" && test $JAR_FILE_SIZE -ge 256 ; then
     mkdir -p "$ZF_ROOT_PATH/_release/Android/module/$PROJ_NAME/src/main/libs" >/dev/null 2>&1
     cp "$PROJ_PATH/zflib/build/intermediates/aar_main_jar/release/classes.jar" "$ZF_ROOT_PATH/_release/Android/module/$PROJ_NAME/src/main/libs/$PROJ_NAME.jar" >/dev/null 2>&1
 fi
 
 JAR_FILE_SIZE=`wc -c "$PROJ_PATH/zflib/build/intermediates/aar_main_jar/release/syncReleaseLibJars/classes.jar" 2>/dev/null | awk '{print $1}' 2>/dev/null`
-if test ! "x-$JAR_FILE_SIZE" = "x-" && test $JAR_FILE_SIZE -ge 1024 ; then
+if test ! "x-$JAR_FILE_SIZE" = "x-" && test $JAR_FILE_SIZE -ge 256 ; then
     mkdir -p "$ZF_ROOT_PATH/_release/Android/module/$PROJ_NAME/src/main/libs" >/dev/null 2>&1
     cp "$PROJ_PATH/zflib/build/intermediates/aar_main_jar/release/syncReleaseLibJars/classes.jar" "$ZF_ROOT_PATH/_release/Android/module/$PROJ_NAME/src/main/libs/$PROJ_NAME.jar" >/dev/null 2>&1
 fi
