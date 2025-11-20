@@ -202,7 +202,6 @@ static zfbool _ZFP_ZFResExtPathCheck(
         , ZF_IN_OUT _ZFP_ZFResExtCkMap &ck
         ) {
     ZFCoreMutexLock();
-    zfindex resPathLen = zfslen(resPath);
 
     _ZFP_ZFResExtMap &ckTmp = ck[resPath];
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;

@@ -6,21 +6,8 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		51A630FE1A63617CDC1E194D288083B9 /* ZFUIWidget_aggregate */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 7EF92CFE632BEE27526CD87D69C7A7F5 /* Build configuration list for PBXAggregateTarget "ZFUIWidget_aggregate" */;
-			buildPhases = (
-				54C34A84E40C3A2CCE5170E1BEF6C03F /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = ZFUIWidget_aggregate;
-			productName = ZFUIWidget_aggregate;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
+		C2418B7996C5DD35C83C1416D5F77CB6 /* Pods_ZFUIWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92879C292E2833EE199E2DCBD5BA42B5 /* Pods_ZFUIWidget.framework */; };
 		CCFF5AF1BBEC8C0426DEFFB7FD1DA203 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B1591844008106D61612FF9D787154 /* Foundation.framework */; };
 		DC4D05E29309522E9AF8188F51E8F088 /* zfgensrc_ZFUIWidget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4CDD6EC2D225FFC5EA9BE9CBBFDA6EB9 /* zfgensrc_ZFUIWidget.mm */; };
 /* End PBXBuildFile section */
@@ -38,9 +25,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		11069B8FBE4EE5FE042E8EC3970402AC /* Pods-ZFUIWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFUIWidget.release.xcconfig"; path = "Target Support Files/Pods-ZFUIWidget/Pods-ZFUIWidget.release.xcconfig"; sourceTree = "<group>"; };
 		4CDD6EC2D225FFC5EA9BE9CBBFDA6EB9 /* zfgensrc_ZFUIWidget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFUIWidget.mm; sourceTree = "<group>"; };
 		5926779DB34108909BC151E98FDA6C87 /* libZFUIWidget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFUIWidget.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		92879C292E2833EE199E2DCBD5BA42B5 /* Pods_ZFUIWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFUIWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7B1591844008106D61612FF9D787154 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DD7F0614FDF02A0CA9BA3931EBE551CA /* Pods-ZFUIWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFUIWidget.debug.xcconfig"; path = "Target Support Files/Pods-ZFUIWidget/Pods-ZFUIWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		EA18C7C2BA37AF8E5A4BC7F0C23465CD /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,6 +40,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCFF5AF1BBEC8C0426DEFFB7FD1DA203 /* Foundation.framework in Frameworks */,
+				C2418B7996C5DD35C83C1416D5F77CB6 /* Pods_ZFUIWidget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,10 +71,20 @@
 			path = ProjectFiles;
 			sourceTree = "<group>";
 		};
+		9798DAD69E8AD5C2401A4947FCE43687 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DD7F0614FDF02A0CA9BA3931EBE551CA /* Pods-ZFUIWidget.debug.xcconfig */,
+				11069B8FBE4EE5FE042E8EC3970402AC /* Pods-ZFUIWidget.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		AA0362ADCF4DBFAAE832A44E1C7FCB2D = {
 			isa = PBXGroup;
 			children = (
 				B90F1455D1EEEA490C6CEDA8C1A94AF9 /* Frameworks */,
+				9798DAD69E8AD5C2401A4947FCE43687 /* Pods */,
 				0C54FB59AEE9DB88F83A23C7F1E38DD8 /* Products */,
 				5963EDC5F9EEBC13EE86900778880381 /* ProjectFiles */,
 				5153D8AC39EDD66164551CDEAB36A498 /* ZFUIWidget */,
@@ -94,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				B7B1591844008106D61612FF9D787154 /* Foundation.framework */,
+				92879C292E2833EE199E2DCBD5BA42B5 /* Pods_ZFUIWidget.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -105,6 +107,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B24D59F6A0B2E24A74FBE9ED85626D48 /* Build configuration list for PBXNativeTarget "ZFUIWidget" */;
 			buildPhases = (
+				9FC3C928C2A65D8723348239FCF868DC /* [CP] Check Pods Manifest.lock */,
 				CBBE3623358F93848F0AC5521455BF41 /* ZFCompileSource */,
 				8D0A9F6DA9665B443B3F7D51FD351C76 /* Sources */,
 				EB3CCD82DA2027459D4D50AB3B6F8A79 /* Frameworks */,
@@ -134,10 +137,6 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
-					51A630FE1A63617CDC1E194D288083B9 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 0B326D297A3D25007D725FB831581AD0 /* Build configuration list for PBXProject "ZFUIWidget" */;
@@ -154,25 +153,11 @@
 			projectRoot = "";
 			targets = (
 				3127F585EA74067096FB0A21518C97C9 /* ZFUIWidget */,
-				51A630FE1A63617CDC1E194D288083B9 /* ZFUIWidget_aggregate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		54C34A84E40C3A2CCE5170E1BEF6C03F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
-		};
 		70ABBCF207DCC560335ACBA94E2C53FB /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -187,6 +172,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
+		};
+		9FC3C928C2A65D8723348239FCF868DC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZFUIWidget-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 		CBBE3623358F93848F0AC5521455BF41 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -218,15 +225,9 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		09E44E115CCCB8446D99C4E55172E687 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		1E8FEE585FA034BBECA0F0DB2994B5EF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD7F0614FDF02A0CA9BA3931EBE551CA /* Pods-ZFUIWidget.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -309,6 +310,7 @@
 		};
 		6E5C34AAB450320B17189D3CDE0B542D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 11069B8FBE4EE5FE042E8EC3970402AC /* Pods-ZFUIWidget.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -332,13 +334,6 @@
 				WARNING_CFLAGS = "-Wpartial-availability";
 			};
 			name = Release;
-		};
-		9FB0B11F7FBD8BACF38D55804DCE57FA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
 		};
 		C66E47566656F88C2F59B1C7224996AC /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -398,15 +393,6 @@
 			buildConfigurations = (
 				3020D242771304F43571B34AC8E3751C /* Debug */,
 				C66E47566656F88C2F59B1C7224996AC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		7EF92CFE632BEE27526CD87D69C7A7F5 /* Build configuration list for PBXAggregateTarget "ZFUIWidget_aggregate" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9FB0B11F7FBD8BACF38D55804DCE57FA /* Debug */,
-				09E44E115CCCB8446D99C4E55172E687 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

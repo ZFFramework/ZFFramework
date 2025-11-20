@@ -1,0 +1,32 @@
+platform :ios, '12.0'
+
+# zfprojConfig.rb
+#     def zfprojConfig_PROJ_NAME(target)
+#       target.pod 'xxx'
+#     end
+
+def zfprojConfig(target, cwd, type, proj_name)
+  if type == 'local'
+    path = File.join(cwd, 'zfprojConfig.rb')
+  else
+    path = File.join(cwd, '../../../../../ZFFramework', type, proj_name, 'zfproj/iOS', proj_name, 'zfprojConfig.rb')
+  end
+  if File.file?(path)
+    require path
+    send('zfprojConfig_' + proj_name, self)
+  end
+end
+
+target 'ZF_impl' do
+  use_frameworks!
+  zfprojConfig(self, __dir__, 'local', 'ZF_impl')
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
+end
+

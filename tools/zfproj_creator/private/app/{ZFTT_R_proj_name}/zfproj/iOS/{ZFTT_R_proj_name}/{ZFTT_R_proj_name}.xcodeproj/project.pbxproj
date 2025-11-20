@@ -12,6 +12,7 @@
 		1A5C8F19FB797592E3ECDCC4DACC03BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C9BFA88C08E42779AD4884FC1C06585 /* AppDelegate.mm */; };
 		1381B0090EE2FFC94CEBCC26FD0BB659 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */; };
 		8C685169DF0F9CAEA05119F61AA2CC7D /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */; };
+		0592957BAF09A3E9C8377CEAB5E9D6D5 /* Pods_{ZFTT_R_proj_name}.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD7A9616044D367A8F0108B847623434 /* Pods_{ZFTT_R_proj_name}.framework */; };
 		9114F54B3293CB2D81EC41BA424E0C80 /* zfgensrc_{ZFTT_R_proj_name}.mm in Sources */ = {isa = PBXBuildFile; fileRef = FD5801B28AC8914DA65F53FCC0475CBF /* zfgensrc_{ZFTT_R_proj_name}.mm */; };
 		225992AB450843CE0ACBB110B9E2E8D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */; };{ZFTT_C_needUIKit}
 		414DAB3B5425C363571BAC3280F9B493 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */; };
@@ -166,6 +167,9 @@
 		332F88D638391DCF6EC5E545AD032306 /* {ZFTT_R_proj_name}.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = {ZFTT_R_proj_name}.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D84A94F492E5CF1040BE8E0AD33146D /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
 		FD5801B28AC8914DA65F53FCC0475CBF /* zfgensrc_{ZFTT_R_proj_name}.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_{ZFTT_R_proj_name}.mm; sourceTree = "<group>"; };
+		70C18C12B56F8D9B0CF3FAB29793C385 /* Pods-{ZFTT_R_proj_name}.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-{ZFTT_R_proj_name}.release.xcconfig"; path = "Target Support Files/Pods-{ZFTT_R_proj_name}/Pods-{ZFTT_R_proj_name}.release.xcconfig"; sourceTree = "<group>"; };
+		8658B857171BA4B59195367C9419C898 /* Pods-{ZFTT_R_proj_name}.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-{ZFTT_R_proj_name}.debug.xcconfig"; path = "Target Support Files/Pods-{ZFTT_R_proj_name}/Pods-{ZFTT_R_proj_name}.debug.xcconfig"; sourceTree = "<group>"; };
+		CD7A9616044D367A8F0108B847623434 /* Pods_{ZFTT_R_proj_name}.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_{ZFTT_R_proj_name}.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };{ZFTT_C_needUIKit}
 		4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2892976B8339E3FA1FD985A8D1914114 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -311,6 +315,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0592957BAF09A3E9C8377CEAB5E9D6D5 /* Pods_{ZFTT_R_proj_name}.framework in Frameworks */,
 				225992AB450843CE0ACBB110B9E2E8D1 /* Foundation.framework in Frameworks */,{ZFTT_C_needUIKit}
 				414DAB3B5425C363571BAC3280F9B493 /* UIKit.framework in Frameworks */,
 				8C96A57C5B6340131DA41923C240B8F5 /* QuartzCore.framework in Frameworks */,
@@ -485,6 +490,7 @@
 			children = (
 				04F6D1038DD1D1755550E27474C194AF /* {ZFTT_R_proj_name} */,
 				883D6BB6385F397034ED3577242B5E9C /* Frameworks */,
+				3D879996A01FD421708FF2F5F916A5DC /* Pods */,
 				D9F873AE9F196DF9F0A9F740B10BA381 /* Products */,
 				2BCD38EE40866E70988CCF4783293232 /* ProjectFiles */,
 			);
@@ -501,6 +507,7 @@
 		883D6BB6385F397034ED3577242B5E9C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CD7A9616044D367A8F0108B847623434 /* Pods_{ZFTT_R_proj_name}.framework */,
 				FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */,{ZFTT_C_needUIKit}
 				4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */,
 				2892976B8339E3FA1FD985A8D1914114 /* QuartzCore.framework */,
@@ -643,6 +650,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3D879996A01FD421708FF2F5F916A5DC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8658B857171BA4B59195367C9419C898 /* Pods-{ZFTT_R_proj_name}.debug.xcconfig */,
+				70C18C12B56F8D9B0CF3FAB29793C385 /* Pods-{ZFTT_R_proj_name}.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -650,6 +666,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6C56FBC0DC6036E8305DCC84AE3C834B /* Build configuration list for PBXNativeTarget "{ZFTT_R_proj_name}" */;
 			buildPhases = (
+				F1A45B9A5C033E90D31136BB27C25E92 /* [CP] Check Pods Manifest.lock */,
 				FAC36CE8250CE5F63FB4486546E0BDFE /* ZFSetup */,
 				48035B9BE25F058CB1922A275F64497C /* Sources */,
 				AB253EEB7391933EE216A96D56C7380A /* Frameworks */,
@@ -661,7 +678,7 @@
 			dependencies = (
 			);
 			name = {ZFTT_R_proj_name};
-			productName = {ZFTT_R_app_name};
+			productName = {ZFTT_R_proj_name};
 			productReference = 332F88D638391DCF6EC5E545AD032306 /* {ZFTT_R_proj_name}.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -742,6 +759,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
+		};
+		F1A45B9A5C033E90D31136BB27C25E92 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-{ZFTT_R_proj_name}-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -868,6 +907,7 @@
 		};
 		D5B1E1904AFFF3178379623D0640EBCB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8658B857171BA4B59195367C9419C898 /* Pods-{ZFTT_R_proj_name}.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -892,7 +932,7 @@
 					"-all_load",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = {ZFTT_R_app_package};
-				PRODUCT_NAME = {ZFTT_R_app_name};
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SRCROOT}/../../../zfsrc",
@@ -904,6 +944,7 @@
 		};
 		9AE41D2558A0860CF936CE56A75EFCCA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 70C18C12B56F8D9B0CF3FAB29793C385 /* Pods-{ZFTT_R_proj_name}.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -928,7 +969,7 @@
 					"-all_load",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = {ZFTT_R_app_package};
-				PRODUCT_NAME = {ZFTT_R_app_name};
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SRCROOT}/../../../zfsrc",

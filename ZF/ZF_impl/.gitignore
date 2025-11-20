@@ -22,6 +22,8 @@ zfgensrc_*
 # iOS
 *xcuserdata*
 .DS_Store
+Podfile.lock
+Pods
 
 # Qt
 **/Qt/**/build

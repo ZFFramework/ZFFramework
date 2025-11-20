@@ -6,24 +6,11 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		EA4CA32E6E08F1E9A83A98EF533749E8 /* ZFUIWebKit_impl_aggregate */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 50B45561AB3AE3296944D92820A3DFC9 /* Build configuration list for PBXAggregateTarget "ZFUIWebKit_impl_aggregate" */;
-			buildPhases = (
-				514CA90484F8635100448291EFFD32BA /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = ZFUIWebKit_impl_aggregate;
-			productName = ZFUIWebKit_impl_aggregate;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		06202CE3797DCA7F3C4D34D3BD8A80BD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4740D2A9C56EE4E2E17836F91D1BB6A2 /* AVFoundation.framework */; };
 		0C307A08A34C03086369D2884C7C4B38 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4592796FCEEC6F94084CA356415709F8 /* WebKit.framework */; };
 		46739532ED961BA232ABC1BDBC669E1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 337993A657D8985C66690A89A87D1680 /* Foundation.framework */; };
+		525B7797624291639C4BC607D57FF9FC /* Pods_ZFUIWebKit_impl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3431F295DBAFC08142C6C203E742ABA5 /* Pods_ZFUIWebKit_impl.framework */; };
 		686D8856423561714460A99F543D4B3A /* zfgensrc_ZFUIWebKit_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 22F620278645B172C699389FFADE5226 /* zfgensrc_ZFUIWebKit_impl.mm */; };
 		A1A5F19B5F75FD5287FE69D14492166F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64A6B9415A287BCFEC0D61682F2AD8EC /* UIKit.framework */; };
 		C59A11C945486AE7843FBADCA1B8BC37 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4568CFBF9B549582FB311EB35530406 /* CoreGraphics.framework */; };
@@ -43,8 +30,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		04416E5FFAB369D4B9478F68A75DA5C2 /* Pods-ZFUIWebKit_impl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFUIWebKit_impl.release.xcconfig"; path = "Target Support Files/Pods-ZFUIWebKit_impl/Pods-ZFUIWebKit_impl.release.xcconfig"; sourceTree = "<group>"; };
 		22F620278645B172C699389FFADE5226 /* zfgensrc_ZFUIWebKit_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFUIWebKit_impl.mm; sourceTree = "<group>"; };
 		337993A657D8985C66690A89A87D1680 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3431F295DBAFC08142C6C203E742ABA5 /* Pods_ZFUIWebKit_impl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFUIWebKit_impl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4592796FCEEC6F94084CA356415709F8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		4740D2A9C56EE4E2E17836F91D1BB6A2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		631AACD0158D5668557972B206A81B31 /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
@@ -52,6 +41,7 @@
 		6B89D6D019D5AE1FC8A831255B8C40A9 /* libZFUIWebKit_impl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFUIWebKit_impl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7ED1C5E0ACB936651AF80E0C2660B87 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E4568CFBF9B549582FB311EB35530406 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FE7C739A3BABD97C9B0E4F8C0793CA79 /* Pods-ZFUIWebKit_impl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFUIWebKit_impl.debug.xcconfig"; path = "Target Support Files/Pods-ZFUIWebKit_impl/Pods-ZFUIWebKit_impl.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +52,7 @@
 				06202CE3797DCA7F3C4D34D3BD8A80BD /* AVFoundation.framework in Frameworks */,
 				C59A11C945486AE7843FBADCA1B8BC37 /* CoreGraphics.framework in Frameworks */,
 				46739532ED961BA232ABC1BDBC669E1B /* Foundation.framework in Frameworks */,
+				525B7797624291639C4BC607D57FF9FC /* Pods_ZFUIWebKit_impl.framework in Frameworks */,
 				E83B31A199C4EB7153DF4F1A97D26E63 /* QuartzCore.framework in Frameworks */,
 				A1A5F19B5F75FD5287FE69D14492166F /* UIKit.framework in Frameworks */,
 				0C307A08A34C03086369D2884C7C4B38 /* WebKit.framework in Frameworks */,
@@ -77,6 +68,7 @@
 				4740D2A9C56EE4E2E17836F91D1BB6A2 /* AVFoundation.framework */,
 				E4568CFBF9B549582FB311EB35530406 /* CoreGraphics.framework */,
 				337993A657D8985C66690A89A87D1680 /* Foundation.framework */,
+				3431F295DBAFC08142C6C203E742ABA5 /* Pods_ZFUIWebKit_impl.framework */,
 				B7ED1C5E0ACB936651AF80E0C2660B87 /* QuartzCore.framework */,
 				64A6B9415A287BCFEC0D61682F2AD8EC /* UIKit.framework */,
 				4592796FCEEC6F94084CA356415709F8 /* WebKit.framework */,
@@ -88,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				2C9876E639E9CC9CC8743DF1725C0A38 /* Frameworks */,
+				91D52E5789FF26F9074EF29C37572E6D /* Pods */,
 				4A8B947DAEEF919C8C80EC86F658F9B0 /* Products */,
 				B97E149241B27F6DFEE7CCE6CA181C38 /* ProjectFiles */,
 				E07BC88F2533FEC1A9C20D685BD6639A /* ZFUIWebKit_impl */,
@@ -100,6 +93,15 @@
 				6B89D6D019D5AE1FC8A831255B8C40A9 /* libZFUIWebKit_impl.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		91D52E5789FF26F9074EF29C37572E6D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FE7C739A3BABD97C9B0E4F8C0793CA79 /* Pods-ZFUIWebKit_impl.debug.xcconfig */,
+				04416E5FFAB369D4B9478F68A75DA5C2 /* Pods-ZFUIWebKit_impl.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		B97E149241B27F6DFEE7CCE6CA181C38 /* ProjectFiles */ = {
@@ -125,6 +127,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A975B493E79EAD494CF5D7A75AE4DF5D /* Build configuration list for PBXNativeTarget "ZFUIWebKit_impl" */;
 			buildPhases = (
+				14190A4726FD10F14A7B857C072C516B /* [CP] Check Pods Manifest.lock */,
 				3FA13EA50A7E961FBC133C3715F88A0A /* ZFCompileSource */,
 				FC2D1D16C58E1058A33CDB0C1EA4114C /* Sources */,
 				F24C4312F09AC3C1D5B32CD929A40E57 /* Frameworks */,
@@ -154,10 +157,6 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
-					EA4CA32E6E08F1E9A83A98EF533749E8 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 629C15B48E692F9059EA9B411438BBC2 /* Build configuration list for PBXProject "ZFUIWebKit_impl" */;
@@ -174,12 +173,33 @@
 			projectRoot = "";
 			targets = (
 				9B07243A204F6E44F4951FFD5D460AAD /* ZFUIWebKit_impl */,
-				EA4CA32E6E08F1E9A83A98EF533749E8 /* ZFUIWebKit_impl_aggregate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		14190A4726FD10F14A7B857C072C516B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZFUIWebKit_impl-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3FA13EA50A7E961FBC133C3715F88A0A /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -195,19 +215,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFUIWebKit_impl.mm\" \"${SRCROOT}/../../../zfsrc\"";
-		};
-		514CA90484F8635100448291EFFD32BA /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
 		};
 		783471EF36F7CD91AEFD8763244B3BFA /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -240,6 +247,7 @@
 /* Begin XCBuildConfiguration section */
 		101617026EA08CE83F621F46984B740A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE7C739A3BABD97C9B0E4F8C0793CA79 /* Pods-ZFUIWebKit_impl.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -316,6 +324,7 @@
 		};
 		4A223AF8F157065243D552B0681EE754 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 04416E5FFAB369D4B9478F68A75DA5C2 /* Pods-ZFUIWebKit_impl.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -339,20 +348,6 @@
 				WARNING_CFLAGS = "-Wpartial-availability";
 			};
 			name = Release;
-		};
-		7CD1F02104BA11347112AF1DB91377DE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		99AF77A6F005729449E886BEAE6FF9D0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
 		};
 		C996DCBB9EFD6781C40E6097841E2FA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -413,15 +408,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		50B45561AB3AE3296944D92820A3DFC9 /* Build configuration list for PBXAggregateTarget "ZFUIWebKit_impl_aggregate" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				99AF77A6F005729449E886BEAE6FF9D0 /* Debug */,
-				7CD1F02104BA11347112AF1DB91377DE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		629C15B48E692F9059EA9B411438BBC2 /* Build configuration list for PBXProject "ZFUIWebKit_impl" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

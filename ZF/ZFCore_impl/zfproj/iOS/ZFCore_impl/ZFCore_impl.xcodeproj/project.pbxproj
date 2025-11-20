@@ -6,21 +6,8 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		EBFFD585C8BF8DADFE59E10AB261ABC8 /* ZFCore_impl_aggregate */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 722348E5154549B2A59C94EE4D45D6E2 /* Build configuration list for PBXAggregateTarget "ZFCore_impl_aggregate" */;
-			buildPhases = (
-				690D4F60CD82FCDB1D3C3E30F9EFE238 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = ZFCore_impl_aggregate;
-			productName = ZFCore_impl_aggregate;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
+		9161C75AF3BC0802BC876002153F2D59 /* Pods_ZFCore_impl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00D3F9DC771ADC44F33C6DF3E271D0 /* Pods_ZFCore_impl.framework */; };
 		BA7B63B6CAC586DBE419633E1FC1120D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */; };
 		FD849548C293C56862381085CD4A8748 /* zfgensrc_ZFCore_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8E8CBE299CB03361B41AE2F4B92F6 /* zfgensrc_ZFCore_impl.mm */; };
 /* End PBXBuildFile section */
@@ -39,9 +26,12 @@
 
 /* Begin PBXFileReference section */
 		0FC8E8CBE299CB03361B41AE2F4B92F6 /* zfgensrc_ZFCore_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFCore_impl.mm; sourceTree = "<group>"; };
+		36FD7DA07D926FE508B333DEB9BDBED5 /* Pods-ZFCore_impl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFCore_impl.debug.xcconfig"; path = "Target Support Files/Pods-ZFCore_impl/Pods-ZFCore_impl.debug.xcconfig"; sourceTree = "<group>"; };
 		49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7682ECA540538D7967E1EDCAEFB2724C /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
 		91E75A039BFDF2634D48C617012E0DC9 /* libZFCore_impl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFCore_impl.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE00D3F9DC771ADC44F33C6DF3E271D0 /* Pods_ZFCore_impl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFCore_impl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9C886E60019933A2D5F44A5A1A8F556 /* Pods-ZFCore_impl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFCore_impl.release.xcconfig"; path = "Target Support Files/Pods-ZFCore_impl/Pods-ZFCore_impl.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +40,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA7B63B6CAC586DBE419633E1FC1120D /* Foundation.framework in Frameworks */,
+				9161C75AF3BC0802BC876002153F2D59 /* Pods_ZFCore_impl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */,
+				AE00D3F9DC771ADC44F33C6DF3E271D0 /* Pods_ZFCore_impl.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,10 +72,20 @@
 			path = ProjectFiles;
 			sourceTree = "<group>";
 		};
+		413ED22A9A603CC2DA3FDEAE5A945E48 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				36FD7DA07D926FE508B333DEB9BDBED5 /* Pods-ZFCore_impl.debug.xcconfig */,
+				F9C886E60019933A2D5F44A5A1A8F556 /* Pods-ZFCore_impl.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		4C486DEE241A0B967570B263E17C4498 = {
 			isa = PBXGroup;
 			children = (
 				16D87A7EB3A9BB416F0F485A1FE4A2D1 /* Frameworks */,
+				413ED22A9A603CC2DA3FDEAE5A945E48 /* Pods */,
 				2979503BFE0925D31B473A28BBD9D9C7 /* Products */,
 				37414DFF69CCD81AA378DB31BF37DB41 /* ProjectFiles */,
 				A92D436CE64D1570A88F4547D21C693E /* ZFCore_impl */,
@@ -105,6 +107,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19AD24E840B17D409C3C02D394D0CADC /* Build configuration list for PBXNativeTarget "ZFCore_impl" */;
 			buildPhases = (
+				2C4FE478CD41E5C6050D810A6C3C6CD8 /* [CP] Check Pods Manifest.lock */,
 				54E0D2B51BE483FFE934BA757306AE04 /* ZFCompileSource */,
 				307D6D7DAA20A2EAA298C38D4FA913D7 /* Sources */,
 				E57AE03DA31272B3C772934ED459EB9E /* Frameworks */,
@@ -134,10 +137,6 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
-					EBFFD585C8BF8DADFE59E10AB261ABC8 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 7F6DB67531AA0C3B55257664312D7491 /* Build configuration list for PBXProject "ZFCore_impl" */;
@@ -154,12 +153,33 @@
 			projectRoot = "";
 			targets = (
 				6DD17F423A14185D13B7E913E1B6002C /* ZFCore_impl */,
-				EBFFD585C8BF8DADFE59E10AB261ABC8 /* ZFCore_impl_aggregate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2C4FE478CD41E5C6050D810A6C3C6CD8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZFCore_impl-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		54E0D2B51BE483FFE934BA757306AE04 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -175,19 +195,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFCore_impl.mm\" \"${SRCROOT}/../../../zfsrc\"";
-		};
-		690D4F60CD82FCDB1D3C3E30F9EFE238 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
 		};
 		A06988102698F5093EAE75C17F048683 /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -220,6 +227,7 @@
 /* Begin XCBuildConfiguration section */
 		238A0D3F47CDD2C591AD242CC33519BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9C886E60019933A2D5F44A5A1A8F556 /* Pods-ZFCore_impl.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -241,13 +249,6 @@
 					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
 				);
 				WARNING_CFLAGS = "-Wpartial-availability";
-			};
-			name = Release;
-		};
-		2B81CE82ADD646FE7F5F6D9087D77C7C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -301,15 +302,9 @@
 			};
 			name = Release;
 		};
-		5681A955A21C7630A3F1E7C62BFF3460 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
 		5AA90D3CCF3B07F4E8114A0690F4A940 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36FD7DA07D926FE508B333DEB9BDBED5 /* Pods-ZFCore_impl.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -398,15 +393,6 @@
 			buildConfigurations = (
 				5AA90D3CCF3B07F4E8114A0690F4A940 /* Debug */,
 				238A0D3F47CDD2C591AD242CC33519BC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		722348E5154549B2A59C94EE4D45D6E2 /* Build configuration list for PBXAggregateTarget "ZFCore_impl_aggregate" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5681A955A21C7630A3F1E7C62BFF3460 /* Debug */,
-				2B81CE82ADD646FE7F5F6D9087D77C7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

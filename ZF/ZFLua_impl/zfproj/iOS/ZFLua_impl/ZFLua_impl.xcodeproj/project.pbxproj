@@ -6,23 +6,10 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		38DF3F43891781F7AFE35C1C00ED2964 /* ZFLua_impl_aggregate */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 24A243CE1D2AE6B039F4F045508ADCF7 /* Build configuration list for PBXAggregateTarget "ZFLua_impl_aggregate" */;
-			buildPhases = (
-				CF4F59FCC3FAFDF09CEE028678EF9146 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = ZFLua_impl_aggregate;
-			productName = ZFLua_impl_aggregate;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		23EFEA6ED35DD29CCCF52DBD0E481D77 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD8D98D2A28901D433921D5D688CF24 /* Foundation.framework */; };
 		4D7265AB50E2B075EE8DFDFFAE337343 /* zfgensrc_ZFLua_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = A2C0E78C33D05E4B22E6EEAD307694D7 /* zfgensrc_ZFLua_impl.mm */; };
+		57CE1026A46EABC6DF5C7109938738DF /* Pods_ZFLua_impl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26589085A0183E4B4FB515FA89D47C03 /* Pods_ZFLua_impl.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,10 +25,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		26589085A0183E4B4FB515FA89D47C03 /* Pods_ZFLua_impl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFLua_impl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EFFD10BA37BC469556D11893F4E87EF /* Pods-ZFLua_impl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFLua_impl.release.xcconfig"; path = "Target Support Files/Pods-ZFLua_impl/Pods-ZFLua_impl.release.xcconfig"; sourceTree = "<group>"; };
 		7DD8D98D2A28901D433921D5D688CF24 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A2C0E78C33D05E4B22E6EEAD307694D7 /* zfgensrc_ZFLua_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFLua_impl.mm; sourceTree = "<group>"; };
 		AFD39296BA6EA1DC9644A6D2A3891A60 /* libZFLua_impl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFLua_impl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF09ABC3783F6BBA9508B894F967A88 /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
+		CEE21FE68C831A779A32F06FEEBB21A9 /* Pods-ZFLua_impl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFLua_impl.debug.xcconfig"; path = "Target Support Files/Pods-ZFLua_impl/Pods-ZFLua_impl.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +40,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23EFEA6ED35DD29CCCF52DBD0E481D77 /* Foundation.framework in Frameworks */,
+				57CE1026A46EABC6DF5C7109938738DF /* Pods_ZFLua_impl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,10 +51,20 @@
 			isa = PBXGroup;
 			children = (
 				F112C17F68FE938679FACDF1FF1E46C4 /* Frameworks */,
+				88BCAD5BDB30C1FA4792882D2F4FC6E2 /* Pods */,
 				8FC62F2EC3B1FA58C5E4E2286726EC70 /* Products */,
 				E33B5F7BA6FC6F63F536739567B4F4A9 /* ProjectFiles */,
 				DFE58B1E7FDE05B1386CAC9C4CFC2E47 /* ZFLua_impl */,
 			);
+			sourceTree = "<group>";
+		};
+		88BCAD5BDB30C1FA4792882D2F4FC6E2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CEE21FE68C831A779A32F06FEEBB21A9 /* Pods-ZFLua_impl.debug.xcconfig */,
+				2EFFD10BA37BC469556D11893F4E87EF /* Pods-ZFLua_impl.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		8FC62F2EC3B1FA58C5E4E2286726EC70 /* Products */ = {
@@ -94,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				7DD8D98D2A28901D433921D5D688CF24 /* Foundation.framework */,
+				26589085A0183E4B4FB515FA89D47C03 /* Pods_ZFLua_impl.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -105,6 +107,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 11E5B48D6355A2E6E883CE065EC72AC9 /* Build configuration list for PBXNativeTarget "ZFLua_impl" */;
 			buildPhases = (
+				85545D3CB8280CF6673F2502BF086BEC /* [CP] Check Pods Manifest.lock */,
 				5B27A97044187D7F9FEEF1239D291DF3 /* ZFCompileSource */,
 				0682D0309B19710F8588C27C95190B8B /* Sources */,
 				DE799F2A946D55E623C561BED50D83B2 /* Frameworks */,
@@ -134,10 +137,6 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
-					38DF3F43891781F7AFE35C1C00ED2964 = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 98A0C722A19A07A0D87D3E97AF916376 /* Build configuration list for PBXProject "ZFLua_impl" */;
@@ -154,7 +153,6 @@
 			projectRoot = "";
 			targets = (
 				6BE8EEB49F5936C4A5B54D5FB0C7EFA9 /* ZFLua_impl */,
-				38DF3F43891781F7AFE35C1C00ED2964 /* ZFLua_impl_aggregate */,
 			);
 		};
 /* End PBXProject section */
@@ -191,18 +189,27 @@
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
-		CF4F59FCC3FAFDF09CEE028678EF9146 /* ShellScript */ = {
+		85545D3CB8280CF6673F2502BF086BEC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZFLua_impl-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -218,22 +225,9 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		08D5B249D030ED235047B93280085401 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		1B1419BBD9A454E6CD380E74A2CFCE9F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		58044703057A682727FA16ED30283E52 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CEE21FE68C831A779A32F06FEEBB21A9 /* Pods-ZFLua_impl.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -310,6 +304,7 @@
 		};
 		AF4340DAE07A7E6A7D060902AEF95A96 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EFFD10BA37BC469556D11893F4E87EF /* Pods-ZFLua_impl.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -398,15 +393,6 @@
 			buildConfigurations = (
 				58044703057A682727FA16ED30283E52 /* Debug */,
 				AF4340DAE07A7E6A7D060902AEF95A96 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		24A243CE1D2AE6B039F4F045508ADCF7 /* Build configuration list for PBXAggregateTarget "ZFLua_impl_aggregate" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				08D5B249D030ED235047B93280085401 /* Debug */,
-				1B1419BBD9A454E6CD380E74A2CFCE9F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
