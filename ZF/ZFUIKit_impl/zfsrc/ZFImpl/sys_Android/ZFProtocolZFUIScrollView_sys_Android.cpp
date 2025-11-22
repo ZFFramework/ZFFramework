@@ -13,9 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Android, ZFUIScrollView, 
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
 
 public:
-    virtual void *nativeScrollViewCreate(
-            ZF_IN ZFUIScrollView *view
-            ) {
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIScrollView(), "native_nativeScrollViewCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -28,10 +26,7 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
     }
-    virtual void nativeScrollViewDestroy(
-            ZF_IN ZFUIScrollView *view
-            , ZF_IN void *nativeView
-            ) {
+    virtual void nativeScrollViewDestroy(ZF_IN ZFUIScrollView *view) {
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();

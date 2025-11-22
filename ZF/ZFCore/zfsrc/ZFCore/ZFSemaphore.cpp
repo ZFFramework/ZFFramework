@@ -19,7 +19,7 @@ void ZFSemaphore::objectOnInit(void) {
     d->nativeSemaphore = d->impl->nativeSemaphoreCreate(this);
 }
 void ZFSemaphore::objectOnDealloc(void) {
-    d->impl->nativeSemaphoreDestroy(this, d->nativeSemaphore);
+    d->impl->nativeSemaphoreDestroy(this);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();

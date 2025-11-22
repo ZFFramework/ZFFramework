@@ -47,18 +47,13 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_SDL, ZFUIDrawForView, v_
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeDrawableViewCreate(
-            ZF_IN ZFUIDrawableView *drawableView
-            ) {
+    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
         drawImpl->renderImpl = zfself::_renderCallback;
         return (void *)(ZFImpl_sys_SDL_View *)drawImpl;
     }
-    virtual void nativeDrawableViewDestroy(
-            ZF_IN ZFUIDrawableView *drawableView
-            , ZF_IN void *nativeDrawableView
-            ) {
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)nativeDrawableView;
+    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView) {
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)drawableView->nativeImplView();
         drawImpl->renderImpl = zfnull;
         zfdelete(drawImpl);
     }

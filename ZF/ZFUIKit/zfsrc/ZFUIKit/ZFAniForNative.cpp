@@ -28,7 +28,7 @@ void ZFAniForNative::objectOnInit(void) {
     d->nativeAni = ZFPROTOCOL_ACCESS(ZFAniForNative)->nativeAniCreate(this);
 }
 void ZFAniForNative::objectOnDealloc(void) {
-    ZFPROTOCOL_ACCESS(ZFAniForNative)->nativeAniDestroy(this, d->nativeAni);
+    ZFPROTOCOL_ACCESS(ZFAniForNative)->nativeAniDestroy(this);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -37,7 +37,7 @@ void ZFAniForNative::objectOnDealloc(void) {
 void ZFAniForNative::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoImplAppend(ret);
     ret += "-";
-    zfsFromPointerT(ret, this->nativeAnimation());
+    zfsFromPointerT(ret, this->nativeAni());
     ZFObjectPropertyInfoT(ret, this);
 }
 ZFCompareResult ZFAniForNative::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
@@ -69,7 +69,7 @@ ZFCompareResult ZFAniForNative::objectCompareValueImpl(ZF_IN ZFObject *anotherOb
     return ZFCompareUncomparable;
 }
 
-ZFMETHOD_DEFINE_0(ZFAniForNative, void *, nativeAnimation) {
+ZFMETHOD_DEFINE_0(ZFAniForNative, void *, nativeAni) {
     return d->nativeAni;
 }
 

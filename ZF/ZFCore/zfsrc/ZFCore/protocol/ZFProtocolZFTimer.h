@@ -22,10 +22,7 @@ public:
     /**
      * @brief destroy native timer
      */
-    virtual void nativeTimerDestroy(
-            ZF_IN ZFTimer *timer
-            , ZF_IN void *nativeTimer
-            ) zfpurevirtual;
+    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) zfpurevirtual;
     /**
      * @brief start timer
      */

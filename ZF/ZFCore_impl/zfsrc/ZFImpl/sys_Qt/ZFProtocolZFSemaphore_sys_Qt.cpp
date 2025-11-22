@@ -23,11 +23,8 @@ public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
         return zfnew(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore);
     }
-    virtual void nativeSemaphoreDestroy(
-            ZF_IN ZFSemaphore *semaphore
-            , ZF_IN void *nativeSemaphore
-            ) {
-        zfdelete((_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)nativeSemaphore);
+    virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore) {
+        zfdelete((_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore());
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {

@@ -18,16 +18,11 @@ public:
     /**
      * @brief create native text edit view
      */
-    virtual void *nativeTextEditCreate(
-            ZF_IN ZFUITextEdit *textEdit
-            ) zfpurevirtual;
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
     /**
      * @brief destroy native text edit view
      */
-    virtual void nativeTextEditDestroy(
-            ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN void *nativeTextEdit
-            ) zfpurevirtual;
+    virtual void nativeTextEditDestroy(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
 
     // ============================================================
     // properties

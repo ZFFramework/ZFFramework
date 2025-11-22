@@ -22,11 +22,8 @@ public:
         InitializeCriticalSection(&(semaphoreToken->semaMutex));
         return semaphoreToken;
     }
-    virtual void nativeSemaphoreDestroy(
-            ZF_IN ZFSemaphore *semaphore
-            , ZF_IN void *nativeSemaphore
-            ) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)nativeSemaphore;
+    virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore) {
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
         CloseHandle(semaphoreToken->sema);
         DeleteCriticalSection(&(semaphoreToken->semaMutex));
         zfdelete(semaphoreToken);

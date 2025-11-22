@@ -31,9 +31,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Android, ZFUIDrawForView
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
 
 public:
-    virtual void *nativeDrawableViewCreate(
-            ZF_IN ZFUIDrawableView *drawableView
-            ) {
+    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIDrawableView(), "native_nativeDrawableViewCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -46,15 +44,12 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
     }
-    virtual void nativeDrawableViewDestroy(
-            ZF_IN ZFUIDrawableView *drawableView
-            , ZF_IN void *nativeDrawableView
-            ) {
+    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView) {
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject nativeDrawableViewTmp = (jobject)nativeDrawableView;
-        JNIUtilDeleteGlobalRef(jniEnv, nativeDrawableViewTmp);
+        jobject nativeDrawableView = (jobject)drawableView->nativeImplView();
+        JNIUtilDeleteGlobalRef(jniEnv, nativeDrawableView);
     }
 
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {

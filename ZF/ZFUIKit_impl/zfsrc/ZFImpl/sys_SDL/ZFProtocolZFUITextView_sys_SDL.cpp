@@ -28,9 +28,7 @@ public:
     }
 
 public:
-    virtual void *nativeTextViewCreate(
-            ZF_IN ZFUITextView *textView
-            ) {
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->sdlMeasureCallback = zfself::sdlMeasureCallback;
         ++nativeView->renderCacheRequired;
@@ -39,13 +37,10 @@ public:
         nativeTextView->renderImpl = zfself::renderCallback;
         return nativeTextView;
     }
-    virtual void nativeTextViewDestroy(
-            ZF_IN ZFUITextView *textView
-            , ZF_IN void *nativeTextView
-            ) {
-        ZFImpl_sys_SDL_View *nativeTextViewTmp = (ZFImpl_sys_SDL_View *)nativeTextView;
-        nativeTextViewTmp->renderImpl = zfnull;
-        zfpoolDelete(nativeTextViewTmp);
+    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView) {
+        ZFImpl_sys_SDL_View *nativeTextView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
+        nativeTextView->renderImpl = zfnull;
+        zfpoolDelete(nativeTextView);
     }
 
 // ============================================================
@@ -55,63 +50,63 @@ public:
             ZF_IN ZFUITextView *textView
             , ZF_IN const zfstring &text
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
             , ZF_IN ZFUITextAppearance const &textAppearance
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textAlign(
             ZF_IN ZFUITextView *textView
             , ZF_IN ZFUIAlignFlags const &textAlign
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textColor(
             ZF_IN ZFUITextView *textView
             , ZF_IN ZFUIColor const &textColor
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textSize(
             ZF_IN ZFUITextView *textView
             , ZF_IN zffloat textSize
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textSizeAutoMin(
             ZF_IN ZFUITextView *textView
             , ZF_IN zffloat textSizeAutoMin
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textSizeAutoMax(
             ZF_IN ZFUITextView *textView
             , ZF_IN zffloat textSizeAutoMax
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void singleLine(
             ZF_IN ZFUITextView *textView
             , ZF_IN zfbool singleLine
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
             , ZF_IN ZFUITextTruncateMode const &textTruncateMode
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeImplView();
         nativeView->renderRequest();
     }
 
@@ -142,7 +137,6 @@ public:
             ZF_IN ZFUITextView *textView
             , ZF_IN const ZFUISize &viewSize
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         zffloat textSizeCurrent = this->calcTextSizeAuto(textView, viewSize);
         textView->objectTag("_ZFP_ZFImpl_sys_SDL_textSize", zfobj<v_zffloat>(textSizeCurrent));
     }

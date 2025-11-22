@@ -17,27 +17,22 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_SDL, ZFUIImageView, v_ZFPr
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(
-            ZF_IN ZFUIImageView *imageView
-            ) {
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView) {
         ZFImpl_sys_SDL_View *nativeImageView = zfpoolNew(ZFImpl_sys_SDL_View);
         nativeImageView->renderImpl = zfself::renderCallback;
         return nativeImageView;
     }
-    virtual void nativeImageViewDestroy(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN void *nativeImageView
-            ) {
-        ZFImpl_sys_SDL_View *nativeImageViewTmp = (ZFImpl_sys_SDL_View *)nativeImageView;
-        nativeImageViewTmp->renderImpl = zfnull;
-        zfpoolDelete(nativeImageViewTmp);
+    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView) {
+        ZFImpl_sys_SDL_View *nativeImageView = (ZFImpl_sys_SDL_View *)imageView->nativeImplView();
+        nativeImageView->renderImpl = zfnull;
+        zfpoolDelete(nativeImageView);
     }
 
     virtual void image(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN ZFUIImage *image
             ) {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeImplView();
         nativeView->renderRequest();
     }
 

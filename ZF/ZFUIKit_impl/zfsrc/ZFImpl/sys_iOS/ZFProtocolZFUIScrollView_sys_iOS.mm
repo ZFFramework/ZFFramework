@@ -143,20 +143,15 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_iOS, ZFUIScrollView, v_ZF
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UIScrollView")
 
 public:
-    virtual void *nativeScrollViewCreate(
-            ZF_IN ZFUIScrollView *scrollView
-            ) {
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView) {
         _ZFP_ZFUIScrollViewImpl_sys_iOS_ScrollView *nativeScrollView = [_ZFP_ZFUIScrollViewImpl_sys_iOS_ScrollView new];
         nativeScrollView._ZFP_impl = this;
         nativeScrollView._ZFP_ownerZFUIScrollView = scrollView;
         return (__bridge_retained void *)nativeScrollView;
     }
-    virtual void nativeScrollViewDestroy(
-            ZF_IN ZFUIScrollView *scrollView
-            , ZF_IN void *nativeScrollView
-            ) {
-        UIView *tmp = (__bridge_transfer UIView *)nativeScrollView;
-        tmp = nil;
+    virtual void nativeScrollViewDestroy(ZF_IN ZFUIScrollView *scrollView) {
+        UIView *nativeScrollView = (__bridge_transfer UIView *)scrollView->nativeImplView();
+        nativeScrollView = nil;
     }
 
 public:

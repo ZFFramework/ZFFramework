@@ -44,16 +44,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_iOS, ZFUITextView, v_ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UILabel")
 
 public:
-    virtual void *nativeTextViewCreate(
-            ZF_IN ZFUITextView *textView
-            ) {
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView) {
         return (__bridge_retained void *)[_ZFP_ZFUITextViewImpl_sys_iOS_TextView new];
     }
-    virtual void nativeTextViewDestroy(
-            ZF_IN ZFUITextView *textView
-            , ZF_IN void *nativeTextView
-            ) {
-        _ZFP_ZFUITextViewImpl_sys_iOS_TextView *tmp = (__bridge_transfer _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)nativeTextView;
+    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView) {
+        _ZFP_ZFUITextViewImpl_sys_iOS_TextView *tmp = (__bridge_transfer _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         tmp = nil;
     }
 

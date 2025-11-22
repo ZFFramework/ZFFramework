@@ -58,16 +58,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_Qt, ZFUIImageView, v_ZFPro
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(
-            ZF_IN ZFUIImageView *imageView
-            ) {
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView) {
         return new _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView();
     }
-    virtual void nativeImageViewDestroy(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN void *nativeImageView
-            ) {
-        delete (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)nativeImageView;
+    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView) {
+        delete (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)imageView->nativeImplView();
     }
 
     virtual void image(

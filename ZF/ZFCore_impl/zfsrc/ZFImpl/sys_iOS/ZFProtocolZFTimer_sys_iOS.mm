@@ -52,11 +52,8 @@ public:
         timerOwner.ownerZFTimer = timer;
         return (__bridge_retained void *)timerOwner;
     }
-    virtual void nativeTimerDestroy(
-            ZF_IN ZFTimer *timer
-            , ZF_IN void *nativeTimer
-            ) {
-        _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *tmp = (__bridge_transfer _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)nativeTimer;
+    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
+        _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *tmp = (__bridge_transfer _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer();
         tmp = nil;
     }
     virtual void start(

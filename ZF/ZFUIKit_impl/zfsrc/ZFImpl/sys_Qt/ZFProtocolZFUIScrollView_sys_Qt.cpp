@@ -493,9 +493,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Qt, ZFUIScrollView, v_ZFP
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
-    virtual void *nativeScrollViewCreate(
-            ZF_IN ZFUIScrollView *scrollView
-            ) {
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView) {
         _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *nativeScrollView = new _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView();
         nativeScrollView->_ZFP_impl = this;
         nativeScrollView->_ZFP_ownerZFUIScrollView = scrollView;
@@ -503,12 +501,9 @@ public:
         nativeScrollView->_ZFP_scrollViewImplHelper.scrollView = scrollView;
         return nativeScrollView;
     }
-    virtual void nativeScrollViewDestroy(
-            ZF_IN ZFUIScrollView *scrollView
-            , ZF_IN void *nativeScrollView
-            ) {
-        _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *nativeScrollViewTmp = (_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *)nativeScrollView;
-        delete nativeScrollViewTmp;
+    virtual void nativeScrollViewDestroy(ZF_IN ZFUIScrollView *scrollView) {
+        _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *)scrollView->nativeImplView();
+        delete nativeScrollView;
     }
 
 public:

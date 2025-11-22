@@ -252,9 +252,7 @@ private:
         return zftrue;
     }
 public:
-    virtual void *nativeScrollViewCreate(
-            ZF_IN ZFUIScrollView *scrollView
-            ) {
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView) {
         _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = zfnew(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView);
         nativeScrollView->_ZFP_scrollViewImplHelper.scrollView = scrollView;
         nativeScrollView->_ZFP_scrollViewImplHelper.implProtocol = nativeScrollView;
@@ -262,11 +260,8 @@ public:
 
         return (void *)(ZFImpl_sys_SDL_View *)nativeScrollView;
     }
-    virtual void nativeScrollViewDestroy(
-            ZF_IN ZFUIScrollView *scrollView
-            , ZF_IN void *nativeScrollView
-            ) {
-        zfdelete((_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)nativeScrollView);
+    virtual void nativeScrollViewDestroy(ZF_IN ZFUIScrollView *scrollView) {
+        zfdelete((_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)(ZFImpl_sys_SDL_View *)scrollView->nativeImplView());
     }
 
 public:

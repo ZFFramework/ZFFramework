@@ -47,16 +47,11 @@ public:
     /**
      * @brief create native drawable view
      */
-    virtual void *nativeDrawableViewCreate(
-            ZF_IN ZFUIDrawableView *drawableView
-            ) zfpurevirtual;
+    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView) zfpurevirtual;
     /**
      * @brief destroy native text view
      */
-    virtual void nativeDrawableViewDestroy(
-            ZF_IN ZFUIDrawableView *drawableView
-            , ZF_IN void *nativeDrawableView
-            ) zfpurevirtual;
+    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView) zfpurevirtual;
 
     /** @brief see #ZFUIDrawableView::drawRequest */
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) zfpurevirtual;

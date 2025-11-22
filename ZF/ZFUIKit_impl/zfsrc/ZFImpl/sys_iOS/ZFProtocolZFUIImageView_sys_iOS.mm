@@ -66,26 +66,21 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_iOS, ZFUIImageView, v_ZFPr
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(
-            ZF_IN ZFUIImageView *imageView
-            ) {
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView) {
         return (__bridge_retained void *)[_ZFP_ZFUIImageViewImpl_sys_iOS_ImageView new];
     }
-    virtual void nativeImageViewDestroy(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN void *nativeImageView
-            ) {
-        UIView *tmp = (__bridge_transfer UIView *)nativeImageView;
-        tmp = nil;
+    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView) {
+        UIView *nativeImageView = (__bridge_transfer UIView *)imageView->nativeImplView();
+        nativeImageView = nil;
     }
 
     virtual void image(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN ZFUIImage *image
             ) {
-        _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *nativeImplView = (__bridge _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *)imageView->nativeImplView();
-        nativeImplView.ownerZFUIImage = image;
-        [nativeImplView updateImageWithNinePatch];
+        _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *nativeImageView = (__bridge _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *)imageView->nativeImplView();
+        nativeImageView.ownerZFUIImage = image;
+        [nativeImageView updateImageWithNinePatch];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_iOS)
 

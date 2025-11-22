@@ -17,9 +17,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_Android, ZFUIImageView, v_
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(
-            ZF_IN ZFUIImageView *imageView
-            ) {
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), "native_nativeImageViewCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -29,18 +27,15 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
     }
-    virtual void nativeImageViewDestroy(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN void *nativeImageView
-            ) {
+    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), "native_nativeImageViewDestroy",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject nativeImageViewTmp = (jobject)nativeImageView;
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), jmId, nativeImageViewTmp);
-        JNIUtilDeleteGlobalRef(jniEnv, nativeImageViewTmp);
+        jobject nativeImageView = (jobject)imageView->nativeImplView();
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageView(), jmId, nativeImageView);
+        JNIUtilDeleteGlobalRef(jniEnv, nativeImageView);
     }
 
     virtual void image(

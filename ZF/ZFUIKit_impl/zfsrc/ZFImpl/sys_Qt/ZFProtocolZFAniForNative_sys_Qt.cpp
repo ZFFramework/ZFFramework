@@ -232,11 +232,8 @@ public:
     virtual void *nativeAniCreate(ZF_IN ZFAniForNative *ani) {
         return new _ZFP_ZFAniForNativeImpl_sys_Qt_Ani(ani);
     }
-    virtual void nativeAniDestroy(
-            ZF_IN ZFAniForNative *ani
-            , ZF_IN void *nativeAni
-            ) {
-        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAniTmp = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)nativeAni;
+    virtual void nativeAniDestroy(ZF_IN ZFAniForNative *ani) {
+        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAniTmp = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAni();
         nativeAniTmp->deleteLater();
     }
 
@@ -244,12 +241,12 @@ public:
             ZF_IN ZFAniForNative *ani
             , ZF_IN zffloat nativeAniScale
             ) {
-        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAnimation();
+        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAni();
         nativeAni->nativeAniScale = nativeAniScale;
         nativeAni->nativeAniStart();
     }
     virtual void nativeAniStop(ZF_IN ZFAniForNative *ani) {
-        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAnimation();
+        _ZFP_ZFAniForNativeImpl_sys_Qt_Ani *nativeAni = (_ZFP_ZFAniForNativeImpl_sys_Qt_Ani *)ani->nativeAni();
         nativeAni->nativeAniStop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAniForNativeImpl_sys_Qt)

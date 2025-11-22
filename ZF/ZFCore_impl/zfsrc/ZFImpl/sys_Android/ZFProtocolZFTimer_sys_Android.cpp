@@ -23,13 +23,10 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
     }
-    virtual void nativeTimerDestroy(
-            ZF_IN ZFTimer *timer
-            , ZF_IN void *nativeTimer
-            ) {
+    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject nativeTimerTmp = (jobject)nativeTimer;
-        JNIUtilDeleteGlobalRef(jniEnv, nativeTimerTmp);
+        jobject nativeTimer = (jobject)timer->nativeTimer();
+        JNIUtilDeleteGlobalRef(jniEnv, nativeTimer);
     }
 
     virtual void start(

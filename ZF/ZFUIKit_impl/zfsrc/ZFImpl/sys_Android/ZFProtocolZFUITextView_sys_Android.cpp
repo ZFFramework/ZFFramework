@@ -13,9 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Android, ZFUITextView, v_ZF
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:TextView")
 
 public:
-    virtual void *nativeTextViewCreate(
-            ZF_IN ZFUITextView *textView
-            ) {
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_nativeTextViewCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -25,18 +23,15 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
     }
-    virtual void nativeTextViewDestroy(
-            ZF_IN ZFUITextView *textView
-            , ZF_IN void *nativeTextView
-            ) {
+    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), "native_nativeTextViewDestroy",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject nativeTextViewTmp = (jobject)nativeTextView;
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), jmId, nativeTextViewTmp);
-        JNIUtilDeleteGlobalRef(jniEnv, nativeTextViewTmp);
+        jobject nativeTextView = (jobject)textView->nativeImplView();
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextView(), jmId, nativeTextView);
+        JNIUtilDeleteGlobalRef(jniEnv, nativeTextView);
     }
 
     // ============================================================

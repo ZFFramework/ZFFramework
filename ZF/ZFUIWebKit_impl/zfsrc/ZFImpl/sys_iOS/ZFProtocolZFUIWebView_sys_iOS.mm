@@ -77,9 +77,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_iOS, ZFUIWebView, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:WKWebView")
 public:
-    virtual void *nativeWebViewCreate(
-            ZF_IN ZFUIWebView *webView
-            ) {
+    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = [_ZFP_ZFUIWebViewImpl_sys_iOS_View new];
         nativeWebView.navigationDelegate = nativeWebView;
         nativeWebView.UIDelegate = nativeWebView;
@@ -87,14 +85,11 @@ public:
         nativeWebView._ZFP_impl = this;
         return (__bridge_retained void *)nativeWebView;
     }
-    virtual void nativeWebViewDestroy(
-            ZF_IN ZFUIWebView *webView
-            , ZF_IN void *nativeWebView
-            ) {
-        _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebViewTmp = (__bridge_transfer _ZFP_ZFUIWebViewImpl_sys_iOS_View *)nativeWebView;
+    virtual void nativeWebViewDestroy(ZF_IN ZFUIWebView *webView) {
+        _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge_transfer _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         // load empty data to reduce memory usage
-        [nativeWebViewTmp loadHTMLString:@"" baseURL:nil];
-        nativeWebViewTmp = nil;
+        [nativeWebView loadHTMLString:@"" baseURL:nil];
+        nativeWebView = nil;
     }
 
     virtual void loadUrl(

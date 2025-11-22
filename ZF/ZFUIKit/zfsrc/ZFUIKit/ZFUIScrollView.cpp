@@ -617,11 +617,8 @@ void ZFUIScrollView::objectOnInit(void) {
 
     zfclassNotPOD NativeImplViewDestroy {
     public:
-        static void action(
-                ZF_IN zfanyT<ZFUIView> const &view
-                , ZF_IN void *nativeImplView
-                ) {
-            ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewDestroy(view, nativeImplView);
+        static void action(ZF_IN zfanyT<ZFUIView> const &view) {
+            ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewDestroy(view);
         }
     };
     this->nativeImplView(

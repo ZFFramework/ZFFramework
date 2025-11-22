@@ -34,7 +34,7 @@ public class ZFAniForNative {
 
         private NativeAnimationListener _animationListener = null;
 
-        public void nativeAnimationListener(NativeAnimationListener listener) {
+        public void nativeAniListener(NativeAnimationListener listener) {
             if (this._animationListener != null) {
                 this._animationListener.nativeAniDetach();
             }
@@ -42,7 +42,7 @@ public class ZFAniForNative {
             super.setAnimationListener(listener);
         }
 
-        public NativeAnimationListener nativeAnimationListener() {
+        public NativeAnimationListener nativeAniListener() {
             return _animationListener;
         }
 
@@ -83,7 +83,7 @@ public class ZFAniForNative {
                     || this.rotateZFrom != 0 || this.rotateZTo != 0);
         }
 
-        public void nativeAnimationReset() {
+        public void nativeAniReset() {
             // alpha
             this.alphaFrom = 1;
             this.alphaTo = 1;
@@ -255,14 +255,14 @@ public class ZFAniForNative {
         return new NativeAnimation(zfjniPointerOwnerZFAniForNative);
     }
 
-    public static void native_nativeAniDestroy(Object nativeAnimation) {
+    public static void native_nativeAniDestroy(Object nativeAni) {
     }
 
-    public static void native_nativeAniStart(Object nativeAnimation,
+    public static void native_nativeAniStart(Object nativeAni,
                                              Object nativeView) {
-        NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
+        NativeAnimation nativeAniTmp = (NativeAnimation) nativeAni;
         View nativeViewTmp = (View) nativeView;
-        nativeAnimationTmp.nativeAnimationListener(new NativeAnimationListener(nativeAnimationTmp, nativeViewTmp));
+        nativeAniTmp.nativeAniListener(new NativeAnimationListener(nativeAniTmp, nativeViewTmp));
 
         AnimationSet as = null;
         boolean asNeedStart = false;
@@ -278,8 +278,8 @@ public class ZFAniForNative {
             attached = new ArrayList<NativeAnimation>();
             _anis.put(nativeViewTmp, attached);
         }
-        attached.add(nativeAnimationTmp);
-        as.addAnimation(nativeAnimationTmp);
+        attached.add(nativeAniTmp);
+        as.addAnimation(nativeAniTmp);
 
         if (asNeedStart) {
             nativeViewTmp.startAnimation(as);
@@ -303,10 +303,10 @@ public class ZFAniForNative {
 
     private static ArrayList<Animation> _anisCache = new ArrayList<Animation>();
 
-    public static void native_nativeAniStop(Object nativeAnimation,
+    public static void native_nativeAniStop(Object nativeAni,
                                             Object nativeView) {
-        NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
-        nativeAnimationTmp.nativeAnimationListener(null);
+        NativeAnimation nativeAniTmp = (NativeAnimation) nativeAni;
+        nativeAniTmp.nativeAniListener(null);
         View nativeViewTmp = (View) nativeView;
 
         List<NativeAnimation> attached = _anis.get(nativeViewTmp);
@@ -314,7 +314,7 @@ public class ZFAniForNative {
             nativeViewTmp.setAnimation(null);
             return;
         }
-        attached.remove(nativeAnimationTmp);
+        attached.remove(nativeAniTmp);
         if (attached.isEmpty()) {
             _anis.remove(nativeViewTmp);
             nativeViewTmp.setAnimation(null);
@@ -329,26 +329,26 @@ public class ZFAniForNative {
     private static _CurveEaseInOut _curveEaseInOut = new _CurveEaseInOut();
 
     public static void native_setup(
-            Object nativeAnimation
+            Object nativeAni
             , int nativeCurve
             , int duration
     ) {
-        NativeAnimation nativeAnimationTmp = (NativeAnimation) nativeAnimation;
-        nativeAnimationTmp.nativeAnimationReset();
+        NativeAnimation nativeAniTmp = (NativeAnimation) nativeAni;
+        nativeAniTmp.nativeAniReset();
 
         if (nativeCurve == ZFAniForNativeCurve.e_Linear) {
-            nativeAnimationTmp.setInterpolator(_curveLinear);
+            nativeAniTmp.setInterpolator(_curveLinear);
         } else if (nativeCurve == ZFAniForNativeCurve.e_EaseInOut) {
-            nativeAnimationTmp.setInterpolator(_curveEaseInOut);
+            nativeAniTmp.setInterpolator(_curveEaseInOut);
         } else if (nativeCurve == ZFAniForNativeCurve.e_EaseIn) {
-            nativeAnimationTmp.setInterpolator(_curveEaseIn);
+            nativeAniTmp.setInterpolator(_curveEaseIn);
         } else if (nativeCurve == ZFAniForNativeCurve.e_EaseOut) {
-            nativeAnimationTmp.setInterpolator(_curveEaseOut);
+            nativeAniTmp.setInterpolator(_curveEaseOut);
         } else {
             ZFAndroidLog.shouldNotGoHere();
         }
 
-        nativeAnimationTmp.setDuration(duration);
+        nativeAniTmp.setDuration(duration);
     }
 
     // ============================================================

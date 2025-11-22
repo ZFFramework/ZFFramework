@@ -29,16 +29,11 @@ public:
     /**
      * @brief create native scroll view
      */
-    virtual void *nativeScrollViewCreate(
-            ZF_IN ZFUIScrollView *scrollView
-            ) zfpurevirtual;
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView) zfpurevirtual;
     /**
      * @brief destroy native scroll view
      */
-    virtual void nativeScrollViewDestroy(
-            ZF_IN ZFUIScrollView *scrollView
-            , ZF_IN void *nativeScrollView
-            ) zfpurevirtual;
+    virtual void nativeScrollViewDestroy(ZF_IN ZFUIScrollView *scrollView) zfpurevirtual;
 
 public:
     /**

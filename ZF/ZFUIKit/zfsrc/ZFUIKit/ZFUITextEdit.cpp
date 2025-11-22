@@ -162,11 +162,8 @@ void ZFUITextEdit::objectOnInit(void) {
     ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
     public:
-        static void action(
-                ZF_IN zfanyT<ZFUIView> const &view
-                , ZF_IN void *nativeImplView
-                ) {
-            ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view, nativeImplView);
+        static void action(ZF_IN zfanyT<ZFUIView> const &view) {
+            ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view);
         }
     };
     this->nativeImplView(

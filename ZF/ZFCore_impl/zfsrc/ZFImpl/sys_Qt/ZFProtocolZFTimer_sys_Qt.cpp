@@ -52,12 +52,9 @@ public:
         nativeTimer->ownerZFTimer = timer;
         return nativeTimer;
     }
-    virtual void nativeTimerDestroy(
-            ZF_IN ZFTimer *timer
-            , ZF_IN void *nativeTimer
-            ) {
-        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimerTmp = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)nativeTimer;
-        zfdelete(nativeTimerTmp);
+    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
+        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
+        zfdelete(nativeTimer);
     }
     virtual void start(
             ZF_IN ZFTimer *timer

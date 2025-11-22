@@ -23,10 +23,7 @@ public:
     /**
      * @brief destroy native animation
      */
-    virtual void nativeAniDestroy(
-            ZF_IN ZFAniForNative *ani
-            , ZF_IN void *nativeAni
-            ) zfpurevirtual;
+    virtual void nativeAniDestroy(ZF_IN ZFAniForNative *ani) zfpurevirtual;
 
     /**
      * @brief start native animation

@@ -34,18 +34,15 @@ public:
         nativeDrawableView.backgroundColor = [UIColor clearColor];
         return (__bridge_retained void *)nativeDrawableView;
     }
-    virtual void nativeDrawableViewDestroy(
-            ZF_IN ZFUIDrawableView *drawableView
-            , ZF_IN void *nativeDrawableView
-            ) {
-        _ZFP_ZFUIDrawableViewImpl_sys_iOS *nativeDrawableViewTmp = (__bridge_transfer _ZFP_ZFUIDrawableViewImpl_sys_iOS *)nativeDrawableView;
-        nativeDrawableViewTmp._ZFP_owner = zfnull;
-        nativeDrawableViewTmp = nil;
+    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView) {
+        _ZFP_ZFUIDrawableViewImpl_sys_iOS *nativeDrawableView = (__bridge_transfer _ZFP_ZFUIDrawableViewImpl_sys_iOS *)drawableView->nativeImplView();
+        nativeDrawableView._ZFP_owner = zfnull;
+        nativeDrawableView = nil;
     }
 
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {
-        _ZFP_ZFUIDrawableViewImpl_sys_iOS *nativeDrawableViewTmp = (__bridge_transfer _ZFP_ZFUIDrawableViewImpl_sys_iOS *)drawableView->nativeImplView();
-        [nativeDrawableViewTmp setNeedsDisplay];
+        _ZFP_ZFUIDrawableViewImpl_sys_iOS *nativeDrawableView = (__bridge_transfer _ZFP_ZFUIDrawableViewImpl_sys_iOS *)drawableView->nativeImplView();
+        [nativeDrawableView setNeedsDisplay];
     }
 
 public:

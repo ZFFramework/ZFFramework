@@ -30,10 +30,7 @@ zfclassFwd ZFUIView;
 /**
  * @brief see #ZFUIView::nativeImplView
  */
-typedef void (*ZFUIViewNativeImplViewDeleteCallback)(
-        ZF_IN zfanyT<ZFUIView> const &view
-        , ZF_IN void *nativeImplView
-        );
+typedef void (*ZFUIViewNativeImplViewDeleteCallback)(ZF_IN zfanyT<ZFUIView> const &view);
 
 // ============================================================
 // ZFUIView

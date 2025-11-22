@@ -91,11 +91,8 @@ public:
         token->timer = timer;
         return token;
     }
-    virtual void nativeTimerDestroy(
-            ZF_IN ZFTimer *timer
-            , ZF_IN void *nativeTimer
-            ) {
-        _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)nativeTimer;
+    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
+        _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)timer->nativeTimer();
         zfRelease(token);
     }
     virtual void start(

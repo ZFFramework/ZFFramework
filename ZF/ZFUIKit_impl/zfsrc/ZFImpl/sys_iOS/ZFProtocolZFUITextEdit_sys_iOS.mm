@@ -101,18 +101,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_iOS, ZFUITextEdit, v_ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UITextField")
 public:
-    virtual void *nativeTextEditCreate(
-            ZF_IN ZFUITextEdit *textEdit
-            ) {
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = [_ZFP_ZFUITextEditImpl_sys_iOS_TextEdit new];
         nativeImplView.ownerZFUITextEdit = textEdit;
         return (__bridge_retained void *)nativeImplView;
     }
-    virtual void nativeTextEditDestroy(
-            ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN void *nativeTextEdit
-            ) {
-        _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *tmp = (__bridge_transfer _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)nativeTextEdit;
+    virtual void nativeTextEditDestroy(ZF_IN ZFUITextEdit *textEdit) {
+        _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *tmp = (__bridge_transfer _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         tmp = nil;
     }
 

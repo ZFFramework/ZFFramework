@@ -22,10 +22,7 @@ public:
     /**
      * @brief destroy native web JS bridge
      */
-    virtual void nativeWebJSBridgeDestroy(
-            ZF_IN ZFUIWebJSBridge *webJSBridge
-            , ZF_IN void *nativeWebJSBridge
-            ) zfpurevirtual;
+    virtual void nativeWebJSBridgeDestroy(ZF_IN ZFUIWebJSBridge *webJSBridge) zfpurevirtual;
 
 public:
     /** @brief see #ZFUIWebJSBridge::send */

@@ -45,18 +45,13 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Qt, ZFUITextView, v_ZFProto
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsProxyWidget:QLabel")
 
 public:
-    virtual void *nativeTextViewCreate(
-            ZF_IN ZFUITextView *textView
-            ) {
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView) {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         proxy->setWidget(new _ZFP_ZFUITextViewImpl_sys_Qt_TextView());
         return proxy;
     }
-    virtual void nativeTextViewDestroy(
-            ZF_IN ZFUITextView *textView
-            , ZF_IN void *nativeTextView
-            ) {
-        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)nativeTextView;
+    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView) {
+        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)textView->nativeImplView();
         delete proxy;
     }
 private:

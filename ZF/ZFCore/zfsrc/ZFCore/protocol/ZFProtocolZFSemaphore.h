@@ -22,10 +22,7 @@ public:
     /**
      * @brief create native semaphore
      */
-    virtual void nativeSemaphoreDestroy(
-            ZF_IN ZFSemaphore *semaphore
-            , ZF_IN void *nativeSemaphore
-            ) zfpurevirtual;
+    virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore) zfpurevirtual;
 
     /**
      * @brief called before signal / broadcast / wait

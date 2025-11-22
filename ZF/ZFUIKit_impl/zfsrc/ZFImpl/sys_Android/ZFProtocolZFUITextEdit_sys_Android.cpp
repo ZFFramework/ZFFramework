@@ -13,9 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Android, ZFUITextEdit, v_ZF
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:EditText")
 
 public:
-    virtual void *nativeTextEditCreate(
-            ZF_IN ZFUITextEdit *textEdit
-            ) {
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_nativeTextEditCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -28,18 +26,15 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
     }
-    virtual void nativeTextEditDestroy(
-            ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN void *nativeTextEdit
-            ) {
+    virtual void nativeTextEditDestroy(ZF_IN ZFUITextEdit *textEdit) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_nativeTextEditDestroy",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject nativeTextEditTmp = (jobject)nativeTextEdit;
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId, nativeTextEditTmp);
-        JNIUtilDeleteGlobalRef(jniEnv, nativeTextEditTmp);
+        jobject nativeTextEdit = (jobject)textEdit->nativeImplView();
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), jmId, nativeTextEdit);
+        JNIUtilDeleteGlobalRef(jniEnv, nativeTextEdit);
     }
 
     // ============================================================

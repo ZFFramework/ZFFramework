@@ -41,16 +41,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Qt, ZFUIDrawForView, v_Z
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
-    virtual void *nativeDrawableViewCreate(
-            ZF_IN ZFUIDrawableView *drawableView
-            ) {
+    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView) {
         return new _ZFP_ZFUIDrawableViewImpl_sys_Qt(drawableView);
     }
-    virtual void nativeDrawableViewDestroy(
-            ZF_IN ZFUIDrawableView *drawableView
-            , ZF_IN void *nativeDrawableView
-            ) {
-        delete (_ZFP_ZFUIDrawableViewImpl_sys_Qt *)nativeDrawableView;
+    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView) {
+        delete (_ZFP_ZFUIDrawableViewImpl_sys_Qt *)drawableView->nativeImplView();
     }
 
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {

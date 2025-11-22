@@ -22,10 +22,7 @@ public:
     /**
      * @brief destroy a native reg exp
      */
-    virtual void nativeRegExpDestroy(
-            ZF_IN ZFRegExp *regExp
-            , ZF_IN void *nativeRegExp
-            ) zfpurevirtual;
+    virtual void nativeRegExpDestroy(ZF_IN ZFRegExp *regExp) zfpurevirtual;
 
     /** @brief see ZFRegExp::pattern */
     virtual void pattern(

@@ -157,18 +157,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Qt, ZFUITextEdit, v_ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsProxyWidget:QLineEdit")
 public:
-    virtual void *nativeTextEditCreate(
-            ZF_IN ZFUITextEdit *textEdit
-            ) {
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit) {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         proxy->setWidget(new _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit(textEdit));
         return proxy;
     }
-    virtual void nativeTextEditDestroy(
-            ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN void *nativeTextEdit
-            ) {
-        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)nativeTextEdit;
+    virtual void nativeTextEditDestroy(ZF_IN ZFUITextEdit *textEdit) {
+        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)textEdit->nativeImplView();
         delete proxy;
     }
 private:

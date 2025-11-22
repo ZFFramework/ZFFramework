@@ -23,11 +23,8 @@ public:
         pthread_mutex_init(&(semaphoreToken->semaLocker), zfnull);
         return semaphoreToken;
     }
-    virtual void nativeSemaphoreDestroy(
-            ZF_IN ZFSemaphore *semaphore
-            , ZF_IN void *nativeSemaphore
-            ) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)nativeSemaphore;
+    virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore) {
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
         pthread_cond_destroy(&(semaphoreToken->sema));
         pthread_mutex_destroy(&(semaphoreToken->semaLocker));
         zfdelete(semaphoreToken);

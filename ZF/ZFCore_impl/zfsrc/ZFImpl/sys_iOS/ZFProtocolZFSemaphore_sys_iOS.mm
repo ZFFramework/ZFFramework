@@ -11,11 +11,8 @@ public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
         return (__bridge_retained void *)[NSCondition new];
     }
-    virtual void nativeSemaphoreDestroy(
-            ZF_IN ZFSemaphore *semaphore
-            , ZF_IN void *nativeSemaphore
-            ) {
-        NSCondition *tmp = (__bridge_transfer NSCondition *)nativeSemaphore;
+    virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore) {
+        NSCondition *tmp = (__bridge_transfer NSCondition *)semaphore->nativeSemaphore();
         tmp = nil;
     }
 

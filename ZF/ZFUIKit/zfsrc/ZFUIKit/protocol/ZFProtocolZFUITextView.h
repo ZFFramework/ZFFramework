@@ -18,16 +18,11 @@ public:
     /**
      * @brief create native text view
      */
-    virtual void *nativeTextViewCreate(
-            ZF_IN ZFUITextView *textView
-            ) zfpurevirtual;
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView) zfpurevirtual;
     /**
      * @brief destroy native text view
      */
-    virtual void nativeTextViewDestroy(
-            ZF_IN ZFUITextView *textView
-            , ZF_IN void *nativeTextView
-            ) zfpurevirtual;
+    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView) zfpurevirtual;
 
     // ============================================================
     // properties

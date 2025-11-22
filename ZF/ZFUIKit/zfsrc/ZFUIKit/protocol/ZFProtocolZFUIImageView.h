@@ -19,16 +19,11 @@ public:
     /**
      * @brief create native image view
      */
-    virtual void *nativeImageViewCreate(
-            ZF_IN ZFUIImageView *imageView
-            ) zfpurevirtual;
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView) zfpurevirtual;
     /**
      * @brief destroy native image view
      */
-    virtual void nativeImageViewDestroy(
-            ZF_IN ZFUIImageView *imageView
-            , ZF_IN void *nativeImageView
-            ) zfpurevirtual;
+    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView) zfpurevirtual;
 
     /**
      * @brief set the image

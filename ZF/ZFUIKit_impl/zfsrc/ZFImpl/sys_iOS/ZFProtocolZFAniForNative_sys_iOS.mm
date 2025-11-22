@@ -70,7 +70,7 @@
             break;
     }
     NSTimeInterval nativeDuration = (NSTimeInterval)self.ownerAni->durationFixed() / 1000;
-    NSMutableArray *nativeAnimations = [NSMutableArray array];
+    NSMutableArray *nativeAnis = [NSMutableArray array];
 
     {
         CATransform3D transformFrom = CATransform3DIdentity;
@@ -114,7 +114,7 @@
         }
 
         CABasicAnimation *nativeTransformAni = [CABasicAnimation animationWithKeyPath:@"transform"];
-        [nativeAnimations addObject:nativeTransformAni];
+        [nativeAnis addObject:nativeTransformAni];
         nativeTransformAni.fromValue = [NSValue valueWithCATransform3D:transformFrom];
         nativeTransformAni.toValue = [NSValue valueWithCATransform3D:transformTo];
         nativeTransformAni.additive = YES;
@@ -122,17 +122,17 @@
 
     if(self.ownerAni->alphaFrom() != 1 || self.ownerAni->alphaTo() != 1) {
         CABasicAnimation *nativeAlphaAni = [CABasicAnimation animationWithKeyPath:@"opacity"];
-        [nativeAnimations addObject:nativeAlphaAni];
+        [nativeAnis addObject:nativeAlphaAni];
         nativeAlphaAni.fromValue = [NSNumber numberWithFloat:self.ownerAni->alphaFrom()];
         nativeAlphaAni.toValue = [NSNumber numberWithFloat:self.ownerAni->alphaTo()];
     }
 
-    for(NSUInteger i = 0; i < [nativeAnimations count]; ++i) {
-        CABasicAnimation *ani = (CABasicAnimation *)[nativeAnimations objectAtIndex:i];
+    for(NSUInteger i = 0; i < [nativeAnis count]; ++i) {
+        CABasicAnimation *ani = (CABasicAnimation *)[nativeAnis objectAtIndex:i];
         ani.duration = nativeDuration;
         ani.timingFunction = nativeCurve;
     }
-    self.animations = nativeAnimations;
+    self.animations = nativeAnis;
     self.duration = nativeDuration;
     self.timingFunction = nativeCurve;
 
@@ -175,11 +175,8 @@ public:
         nativeAni.ownerAni = ani;
         return (__bridge_retained void *)nativeAni;
     }
-    virtual void nativeAniDestroy(
-            ZF_IN ZFAniForNative *ani
-            , ZF_IN void *nativeAni
-            ) {
-        NSObject *tmp = (__bridge_transfer NSObject *)nativeAni;
+    virtual void nativeAniDestroy(ZF_IN ZFAniForNative *ani) {
+        NSObject *tmp = (__bridge_transfer NSObject *)ani->nativeAni();
         tmp = nil;
     }
 
@@ -187,12 +184,12 @@ public:
             ZF_IN ZFAniForNative *ani
             , ZF_IN zffloat nativeAniScale
             ) {
-        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *)ani->nativeAnimation();
+        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *)ani->nativeAni();
         nativeAni.nativeAniScale = nativeAniScale;
         [nativeAni nativeAniStart];
     }
     virtual void nativeAniStop(ZF_IN ZFAniForNative *ani) {
-        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *)ani->nativeAnimation();
+        _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAniForNativeImpl_sys_iOS_Ani *)ani->nativeAni();
         [nativeAni nativeAniStop];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAniForNativeImpl_sys_iOS)

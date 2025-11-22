@@ -52,11 +52,8 @@ void ZFUIWebView::objectOnInit(void) {
     ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
     public:
-        static void action(
-                ZF_IN zfanyT<ZFUIView> const &view
-                , ZF_IN void *nativeImplView
-                ) {
-            ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewDestroy(view, nativeImplView);
+        static void action(ZF_IN zfanyT<ZFUIView> const &view) {
+            ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewDestroy(view);
         }
     };
     this->nativeImplView(

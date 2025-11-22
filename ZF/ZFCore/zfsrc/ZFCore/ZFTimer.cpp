@@ -65,7 +65,7 @@ void ZFTimer::objectOnInit(void) {
     d->nativeTimer = ZFPROTOCOL_ACCESS(ZFTimer)->nativeTimerCreate(this);
 }
 void ZFTimer::objectOnDealloc(void) {
-    ZFPROTOCOL_ACCESS(ZFTimer)->nativeTimerDestroy(this, d->nativeTimer);
+    ZFPROTOCOL_ACCESS(ZFTimer)->nativeTimerDestroy(this);
     d->nativeTimer = zfnull;
     zfpoolDelete(d);
     d = zfnull;

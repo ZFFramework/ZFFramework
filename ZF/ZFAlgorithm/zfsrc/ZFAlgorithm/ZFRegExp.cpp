@@ -190,7 +190,7 @@ void ZFRegExp::objectOnInit(void) {
     d->nativeRegExp = ZFPROTOCOL_ACCESS(ZFRegExp)->nativeRegExpCreate(this);
 }
 void ZFRegExp::objectOnDealloc(void) {
-    ZFPROTOCOL_ACCESS(ZFRegExp)->nativeRegExpDestroy(this, d->nativeRegExp);
+    ZFPROTOCOL_ACCESS(ZFRegExp)->nativeRegExpDestroy(this);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();

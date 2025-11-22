@@ -56,7 +56,7 @@ void ZFUIWebJSBridge::objectOnInit(void) {
     d->nativeWebJSBridge = ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->nativeWebJSBridgeCreate(this);
 }
 void ZFUIWebJSBridge::objectOnDealloc(void) {
-    ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->nativeWebJSBridgeDestroy(this, d->nativeWebJSBridge);
+    ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->nativeWebJSBridgeDestroy(this);
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }

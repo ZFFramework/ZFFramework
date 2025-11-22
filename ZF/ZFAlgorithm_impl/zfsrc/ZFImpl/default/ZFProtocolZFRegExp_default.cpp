@@ -15,11 +15,8 @@ public:
     virtual void *nativeRegExpCreate(ZF_IN ZFRegExp *regExp) {
         return zfnew(CRegexpT<zfchar>);
     }
-    virtual void nativeRegExpDestroy(
-            ZF_IN ZFRegExp *regExp
-            , ZF_IN void *nativeRegExp
-            ) {
-        zfdelete((CRegexpT<zfchar> *)nativeRegExp);
+    virtual void nativeRegExpDestroy(ZF_IN ZFRegExp *regExp) {
+        zfdelete((CRegexpT<zfchar> *)regExp->nativeRegExp());
     }
 
     virtual void pattern(

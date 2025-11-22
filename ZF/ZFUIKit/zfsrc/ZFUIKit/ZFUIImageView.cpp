@@ -60,11 +60,8 @@ void ZFUIImageView::objectOnInit(void) {
     ZFCoreAssert(this->nativeImplView() == zfnull);
     zfclassNotPOD NativeImplViewDestroy {
     public:
-        static void action(
-                ZF_IN zfanyT<ZFUIView> const &view
-                , ZF_IN void *nativeImplView
-                ) {
-            ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewDestroy(view, nativeImplView);
+        static void action(ZF_IN zfanyT<ZFUIView> const &view) {
+            ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewDestroy(view);
         }
     };
     this->nativeImplView(

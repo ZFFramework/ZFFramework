@@ -13,9 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_Android, ZFUIWebView, v_ZFPr
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:WebView")
 
 public:
-    virtual void *nativeWebViewCreate(
-            ZF_IN ZFUIWebView *webView
-            ) {
+    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_nativeWebViewCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -28,18 +26,15 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return (void *)ret;
     }
-    virtual void nativeWebViewDestroy(
-            ZF_IN ZFUIWebView *webView
-            , ZF_IN void *nativeWebView
-            ) {
+    virtual void nativeWebViewDestroy(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), "native_nativeWebViewDestroy",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject nativeWebViewTmp = (jobject)nativeWebView;
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId, nativeWebViewTmp);
-        JNIUtilDeleteGlobalRef(jniEnv, nativeWebViewTmp);
+        jobject nativeWebView = (jobject)webView->nativeImplView();
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIWebView(), jmId, nativeWebView);
+        JNIUtilDeleteGlobalRef(jniEnv, nativeWebView);
     }
 
     virtual void loadUrl(

@@ -21,11 +21,8 @@ public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {
         return zfAlloc(_ZFP_I_ZFTimerImpl_sys_SDL_TimerData);
     }
-    virtual void nativeTimerDestroy(
-            ZF_IN ZFTimer *timer
-            , ZF_IN void *nativeTimer
-            ) {
-        zfRelease((_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)nativeTimer);
+    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
+        zfRelease((_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer());
     }
     virtual void start(
             ZF_IN ZFTimer *timer
