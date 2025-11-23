@@ -30,7 +30,7 @@ public:
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject nativeViewTmp = (jobject)nativeView;
+        jobject nativeViewTmp = (jobject)view->nativeImplView();
         JNIUtilDeleteGlobalRef(jniEnv, nativeViewTmp);
     }
 
