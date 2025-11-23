@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_Qt_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIDraw.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
 
 #if ZF_ENV_sys_Qt
 

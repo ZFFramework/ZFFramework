@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_SDL_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIRootWindow.h"
 
 #if ZF_ENV_sys_SDL
 

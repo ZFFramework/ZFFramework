@@ -200,6 +200,13 @@ extern ZFLIB_ZFCore _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(
         );
 extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplDataUnregister(const zfchar *protocolName);
 extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
+extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplFail(
+        ZF_IN const zfchar *protocolName
+        , ZF_IN const zfchar *protocolImplName
+        , ZF_IN const zfchar *mismatchProtocolName
+        , ZF_IN const zfchar *desiredImplPlatformHint
+        , ZF_IN ZFProtocol *mismatchImpl
+        );
 
 // ============================================================
 /**
@@ -339,21 +346,13 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     const zfchar *mismatchProtocolName = zfnull; \
                     ZFProtocol *mismatchImpl = zfnull; \
                     if(!_d.implInstance->_ZFP_ZFProtocol_checkImplDependency(desiredImplPlatformHint, mismatchProtocolName, mismatchImpl)) { \
-                        zfstring err; \
-                        zfstringAppend(err, "(%s)%s depends on (%s)\"%s\"", \
-                            _d.implInstance->protocolName(), \
-                            _d.implInstance->protocolImplName(), \
-                            mismatchProtocolName, \
-                            desiredImplPlatformHint); \
-                        if(mismatchImpl == zfnull) { \
-                            zfstringAppend(err, " but it's not implemented"); \
-                        } \
-                        else { \
-                            zfstringAppend(err, " but it's implementation \"%s\" mismatch", \
-                                mismatchImpl->protocolImplPlatformHint()); \
-                        } \
-                        ZFCoreLogTrim(err); \
-                        ZFCoreCriticalError(err); \
+                        _ZFP_ZFProtocolImplFail( \
+                                _d.implInstance->protocolName() \
+                                , _d.implInstance->protocolImplName() \
+                                , mismatchProtocolName \
+                                , desiredImplPlatformHint \
+                                , mismatchImpl \
+                                ); \
                         zfdelete(_d.implInstance); \
                         _d.implInstance = zfnull; \
                         return zfnull; \
@@ -605,12 +604,10 @@ private:
             }
 /** @brief see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN */
 #define ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(Protocol, DependencyPlatformHint) \
-            if(ZFPROTOCOL_TRY_ACCESS(Protocol) == zfnull \
-                    || !zfstringIsEqual(ZFPROTOCOL_ACCESS(Protocol)->protocolImplPlatformHint(), DependencyPlatformHint) \
-                    ) { \
+            if(ZFProtocolTryAccess(ZFM_TOSTRING(Protocol), DependencyPlatformHint) == zfnull) { \
                 desiredImplPlatformHint = DependencyPlatformHint; \
                 mismatchProtocolName = ZFM_TOSTRING(Protocol); \
-                mismatchImpl = ZFPROTOCOL_TRY_ACCESS(Protocol); \
+                mismatchImpl = ZFProtocolTryAccess(ZFM_TOSTRING(Protocol)); \
                 return zffalse; \
             }
 /** @brief see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN */
@@ -740,7 +737,14 @@ private:
  * second param desiredImpl can be assigned to check whether the protocol matches what you want,
  * see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFProtocol *, ZFProtocolForName
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFProtocol *, ZFProtocolTryAccess
+        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
+        )
+/**
+ * @brief similar to #ZFProtocolTryAccess, but assert fail if no implementation
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFProtocol *, ZFProtocolAccess
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
         )

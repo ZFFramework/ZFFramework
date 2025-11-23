@@ -90,9 +90,33 @@ void _ZFP_ZFProtocolImplAccess(void) {
         (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFProtocolImplCleanup_protocolOnDeallocPrepare);
     }
 }
+void _ZFP_ZFProtocolImplFail(
+        ZF_IN const zfchar *protocolName
+        , ZF_IN const zfchar *protocolImplName
+        , ZF_IN const zfchar *mismatchProtocolName
+        , ZF_IN const zfchar *desiredImplPlatformHint
+        , ZF_IN ZFProtocol *mismatchImpl
+        ) {
+    zfstring err;
+    zfstringAppend(err
+            , "ZFProtocol (%s)%s depends on (%s)\"%s\""
+            , protocolName
+            , protocolImplName
+            , mismatchProtocolName
+            , desiredImplPlatformHint
+            );
+    if(mismatchImpl == zfnull) {
+        zfstringAppend(err, " but it's not implemented");
+    }
+    else {
+        zfstringAppend(err, " but it's implementation \"%s\" mismatch",
+                mismatchImpl->protocolImplPlatformHint());
+    }
+    ZFCoreCriticalMessageTrim("%s", err);
+}
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolForName
+ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolTryAccess
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
         ) {
@@ -110,11 +134,34 @@ ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolForName
     }
     return zfnull;
 }
+ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolAccess
+        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
+        ) {
+    ZFProtocol *ret = ZFProtocolTryAccess(name, desiredImpl);
+    if(ret == zfnull) {
+        ZFProtocol *mismatchImpl = ZFProtocolTryAccess(name);
+        if(mismatchImpl == zfnull) {
+            ZFCoreCriticalMessageTrim("ZFProtocol (%s)%s mismatch with current impl \"%s\""
+                    , name
+                    , desiredImpl
+                    , mismatchImpl->protocolImplPlatformHint()
+                    );
+        }
+        else {
+            ZFCoreCriticalMessageTrim("ZFProtocol (%s)%s not registered"
+                    , name
+                    , desiredImpl
+                    );
+        }
+    }
+    return ret;
+}
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFProtocolIsAvailable
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
         ) {
-    return (ZFProtocolForName(name, desiredImpl) != zfnull);
+    return (ZFProtocolTryAccess(name, desiredImpl) != zfnull);
 }
 
 // ============================================================

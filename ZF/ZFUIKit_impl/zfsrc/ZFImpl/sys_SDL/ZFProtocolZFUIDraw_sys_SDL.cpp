@@ -2,9 +2,7 @@
 
 #include "ZFUIKit/ZFUIWindow.h"
 
-#include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIDraw.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
 
 #if ZF_ENV_sys_SDL
 

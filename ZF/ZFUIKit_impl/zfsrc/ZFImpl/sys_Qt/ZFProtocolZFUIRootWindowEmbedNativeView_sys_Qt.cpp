@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_Qt_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIRootWindowEmbedNativeView.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 
 #if ZF_ENV_sys_Qt
 

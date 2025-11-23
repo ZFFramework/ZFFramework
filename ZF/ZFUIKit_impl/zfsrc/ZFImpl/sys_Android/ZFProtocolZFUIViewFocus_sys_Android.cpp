@@ -1,6 +1,5 @@
 #include "ZFImpl_sys_Android_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIViewFocus.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 
 #if ZF_ENV_sys_Android
 

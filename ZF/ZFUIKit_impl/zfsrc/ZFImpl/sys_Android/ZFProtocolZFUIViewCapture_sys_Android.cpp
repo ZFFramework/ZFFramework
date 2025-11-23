@@ -1,7 +1,5 @@
 #include "ZFImpl_sys_Android_ZFUIKit_impl.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUIViewCapture.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
-#include "ZFUIKit/protocol/ZFProtocolZFUIImage.h"
 
 #if ZF_ENV_sys_Android
 
