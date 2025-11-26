@@ -212,8 +212,6 @@
 				3C8782C48508D2AB3E45AA571B89A89B /* Frameworks */,
 				83745D09F71B763541FB81C529246249 /* Resources */,
 				A16DE20B96CBE954C8CC5C6A9470BF6B /* ZFUniqueProj */,
-				DB8FB213C863B63BD858735326837530 /* [CP] Embed Pods Frameworks */,
-				DB95EF1BF30479360D53DE8C020C261E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -301,44 +299,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
-		};
-		DB8FB213C863B63BD858735326837530 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ZFFramework_test/Pods-ZFFramework_test-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZFFramework_test/Pods-ZFFramework_test-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DB95EF1BF30479360D53DE8C020C261E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ZFFramework_test/Pods-ZFFramework_test-resources.sh",
-				"${PODS_ROOT}/Ads-CN/SDK/LICENSE",
-				"${PODS_ROOT}/Ads-CN/SDK/BUAdSDK.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/LICENSE",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/BUAdSDK.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZFFramework_test/Pods-ZFFramework_test-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		E112A492EF2D21CC93906E4E75736144 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
