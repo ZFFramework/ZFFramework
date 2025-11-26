@@ -1,8 +1,9 @@
 WORK_DIR=$(cd "$(dirname "$0")"; pwd)
 PROJ_PATH=$1
+POD_INSTALL=$2
 if test "x-$PROJ_PATH" = "x-" ; then
     echo "usage:"
-    echo "  unique_proj.sh PROJ_PATH"
+    echo "  unique_proj.sh PROJ_PATH [POD_INSTALL]"
     exit 1
 fi
 
@@ -29,6 +30,16 @@ else
     _SRC_PATH="$PROJ_PATH"
     _TMP_PATH="${PROJ_PATH%[/\\]*}/zfxunique_tmp"
     _DST_PATH="$_TMP_PATH/project.pbxproj"
+fi
+
+if test "x-$POD_INSTALL" = "x-1" ; then
+    _POD_PATH="${PROJ_PATH%[/\\]*}/.."
+    if test -e "$_POD_PATH/Podfile" ; then
+        _OLD_DIR=$(pwd)
+        cd "$_POD_PATH"
+        pod install
+        cd "$_OLD_DIR"
+    fi
 fi
 
 rm -rf "$_TMP_PATH" >/dev/null 2>&1

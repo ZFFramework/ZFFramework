@@ -435,9 +435,11 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     ZFTextTemplateRun(ZFPathInfo(localPathInfo:pathType(), _TMP_DIR_DST), param)
 
     -- xUnique if necessary
-    if not zfstringIsEmpty(_PY) then
-        ZFLogTrim('unique iOS project...')
-        os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj_recursive.sh" "' .. _TMP_DIR .. '"')
+    if not zfl_eq(config:get('ZF_TYPE'), 'app') then
+        if not zfstringIsEmpty(_PY) then
+            ZFLogTrim('unique iOS project...')
+            os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj_recursive.sh" "' .. _TMP_DIR .. '"')
+        end
     end
 
     -- appIcon
@@ -474,6 +476,33 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             )
         end
     end)
+
+    -- xUnique if necessary, with pod install
+    if zfl_eq(config:get('ZF_TYPE'), 'app') and not zfstringIsEmpty(_PY) then
+        ZFIOForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_FORMATED), function(zfargs)
+            ---@type ZFIOFindData
+            local fd = zfargs:sender()
+            ---@type ZFPathInfo
+            local pathInfo = zfargs:param0()
+            local filtered = zffalse
+            if fd:isDir() then
+                for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
+                    if zfstringIsEqual(fd:name(), _SYNC_EXCLUDE:get(i)) then
+                        filtered = zftrue
+                        pathInfo:zfv(zfnull)
+                        break
+                    end
+                end
+            end
+            if not filtered then
+                local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
+                if zfstringEndWith(relPath, 'project.pbxproj') then
+                    ZFLogTrim('unique iOS project: %s', relPath)
+                    os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj.sh" "' .. DST_PATH .. relPath .. '" 1')
+                end
+            end
+        end)
+    end
 
     ZFFileRemove(_TMP_DIR)
 end
