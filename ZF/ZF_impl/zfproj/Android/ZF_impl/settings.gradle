@@ -21,3 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "ZF_impl"
 include ':zflib'
+if (file('zflib/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig:ZF_impl'
+    project(':zfprojConfig:ZF_impl').projectDir = new File('zfprojConfigHelper')
+}
+

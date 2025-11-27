@@ -75,34 +75,60 @@ android {
     }
 }
 
+def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.xml").exists()) {
+        owner.implementation project(":zfprojConfig:${name}")
+    }
+}
+
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFCore')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFAlgorithm')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUtility')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUIKit')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUIWidget')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUIExt')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFLua')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUIWebKit')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFNet')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFAppUtil')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZF_impl')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFCore_impl')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFAlgorithm_impl')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUIKit_impl')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFLua_impl')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUIWebKit_impl')
+    zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFNet_impl')
 }
 
 if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
     apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
 }
-if (file(ZF_ROOT_PATH + '/ZF/ZF_impl/zfproj/Android/ZF_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZF_impl/zfproj/Android/ZF_impl/zflib/zfprojConfig.gradle'
+
+def zfprojConfig_gradle(ZF_ROOT_PATH, type, name) {
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.gradle").exists()) {
+        apply from: "${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.gradle"
+    }
 }
-if (file(ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfproj/Android/ZFCore_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfproj/Android/ZFCore_impl/zflib/zfprojConfig.gradle'
-}
-if (file(ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfproj/Android/ZFAlgorithm_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfproj/Android/ZFAlgorithm_impl/zflib/zfprojConfig.gradle'
-}
-if (file(ZF_ROOT_PATH + '/ZF/ZFUIKit_impl/zfproj/Android/ZFUIKit_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZFUIKit_impl/zfproj/Android/ZFUIKit_impl/zflib/zfprojConfig.gradle'
-}
-if (file(ZF_ROOT_PATH + '/ZF/ZFLua_impl/zfproj/Android/ZFLua_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZFLua_impl/zfproj/Android/ZFLua_impl/zflib/zfprojConfig.gradle'
-}
-if (file(ZF_ROOT_PATH + '/ZF/ZFUIWebKit_impl/zfproj/Android/ZFUIWebKit_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZFUIWebKit_impl/zfproj/Android/ZFUIWebKit_impl/zflib/zfprojConfig.gradle'
-}
-if (file(ZF_ROOT_PATH + '/ZF/ZFNet_impl/zfproj/Android/ZFNet_impl/zflib/zfprojConfig.gradle').exists()) {
-    apply from: ZF_ROOT_PATH + '/ZF/ZFNet_impl/zfproj/Android/ZFNet_impl/zflib/zfprojConfig.gradle'
-}
+
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFCore')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFAlgorithm')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUtility')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIKit')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIWidget')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIExt')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFLua')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIWebKit')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFNet')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFAppUtil')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZF_impl')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFCore_impl')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFAlgorithm_impl')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIKit_impl')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFLua_impl')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIWebKit_impl')
+zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFNet_impl')
 
 import org.apache.tools.ant.taskdefs.condition.Os
 

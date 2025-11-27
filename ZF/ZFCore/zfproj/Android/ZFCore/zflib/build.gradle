@@ -50,6 +50,9 @@ android {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
+        implementation project(':zfprojConfig:ZFCore')
+    }
 }
 
 if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {

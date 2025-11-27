@@ -50,15 +50,18 @@ android {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUtility/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWidget/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIExt/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFLua/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWebKit/src/main/libs', includes: ['*.jar'])
-    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFNet/src/main/libs', includes: ['*.jar'])
+    if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
+        implementation project(':zfprojConfig:ZFAppUtil')
+    }
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUtility/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWidget/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIExt/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFLua/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIWebKit/src/main/libs')
+    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFNet/src/main/libs')
 }
 
 if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {

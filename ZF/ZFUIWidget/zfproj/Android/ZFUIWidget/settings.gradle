@@ -21,3 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "ZFUIWidget"
 include ':zflib'
+if (file('zflib/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig:ZFUIWidget'
+    project(':zfprojConfig:ZFUIWidget').projectDir = new File('zfprojConfigHelper')
+}
+
