@@ -21,8 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ZFUtility"
 include ':zflib'
-if (file('zflib/zfprojConfig.xml').exists()) {
-    include ':zfprojConfig:ZFUtility'
-    project(':zfprojConfig:ZFUtility').projectDir = new File('zfprojConfigHelper')
-}
 

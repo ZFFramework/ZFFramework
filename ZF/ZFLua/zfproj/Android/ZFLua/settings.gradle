@@ -21,8 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ZFLua"
 include ':zflib'
-if (file('zflib/zfprojConfig.xml').exists()) {
-    include ':zfprojConfig:ZFLua'
-    project(':zfprojConfig:ZFLua').projectDir = new File('zfprojConfigHelper')
-}
 

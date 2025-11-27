@@ -39,6 +39,9 @@ android {
         main {
             java.srcDirs += this.projectDir.getAbsolutePath() + '/../../../../zfsrc/ZFImpl/sys_Android/java'
             assets.srcDirs += ['assets']
+            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig.xml'
+            }
         }
     }
     externalNativeBuild {
@@ -50,9 +53,6 @@ android {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
-    if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
-        implementation project(':zfprojConfig:ZFCore')
-    }
 }
 
 if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {

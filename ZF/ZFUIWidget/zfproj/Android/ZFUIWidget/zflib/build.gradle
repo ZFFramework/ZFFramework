@@ -39,6 +39,9 @@ android {
         main {
             java.srcDirs += this.projectDir.getAbsolutePath() + '/../../../../zfsrc/ZFImpl/sys_Android/java'
             assets.srcDirs += ['assets']
+            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig.xml'
+            }
         }
     }
     externalNativeBuild {
@@ -50,13 +53,10 @@ android {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
-    if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
-        implementation project(':zfprojConfig:ZFUIWidget')
-    }
-    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs')
-    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/src/main/libs')
-    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUtility/src/main/libs')
-    implementation fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit/src/main/libs')
+    compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs')
+    compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/src/main/libs')
+    compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUtility/src/main/libs')
+    compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit/src/main/libs')
 }
 
 if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
