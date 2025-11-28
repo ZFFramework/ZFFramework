@@ -20,7 +20,7 @@ public:
     virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         NSString *resRootDirTmp = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"zfres"];
-        this->_resRootPath = resRootDirTmp.UTF8String;
+        this->_resRootPath = ZFImpl_sys_iOS_zfstringFromNSString(resRootDirTmp);
         this->_resRootPath += '/';
     }
 

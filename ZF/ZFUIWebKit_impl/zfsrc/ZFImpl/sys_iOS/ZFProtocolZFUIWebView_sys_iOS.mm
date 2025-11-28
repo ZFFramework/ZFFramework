@@ -97,7 +97,7 @@ public:
             , ZF_IN const zfchar *url
             ) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
-        [nativeWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithCString:url encoding:NSUTF8StringEncoding]]]];
+        [nativeWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(url)]]];
     }
     virtual void loadHtml(
             ZF_IN ZFUIWebView *webView
@@ -107,9 +107,9 @@ public:
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();
         NSURL *baseUrlTmp = nil;
         if(baseUrl != zfnull) {
-            baseUrlTmp = [NSURL URLWithString:[NSString stringWithCString:baseUrl encoding:NSUTF8StringEncoding]];
+            baseUrlTmp = [NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(baseUrl)];
         }
-        [nativeWebView loadHTMLString:[NSString stringWithCString:html encoding:NSUTF8StringEncoding] baseURL:baseUrlTmp];
+        [nativeWebView loadHTMLString:ZFImpl_sys_iOS_zfstringToNSString(html) baseURL:baseUrlTmp];
     }
     virtual void reload(ZF_IN ZFUIWebView *webView) {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = (__bridge _ZFP_ZFUIWebViewImpl_sys_iOS_View *)webView->nativeImplView();

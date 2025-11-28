@@ -52,53 +52,47 @@ static void _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, U
         s += "| ";
     }
 
-    NSString *viewInfo = [NSString stringWithFormat:@"<%@ %08X>", [view class], (zfuint)[view hash]];
-    viewInfo = [viewInfo stringByAppendingFormat:@" (%d, %d, %d, %d)"
-        , (int)zfmRound(view.frame.origin.x)
-        , (int)zfmRound(view.frame.origin.y)
-        , (int)zfmRound(view.frame.size.width)
-        , (int)zfmRound(view.frame.size.height)
-    ];
-
-#if 0 // test
-#define _TEST_PROPERTY
-    if([view respondsToSelector:@selector(_TEST_PROPERTY)]) {
-        id value = [view performSelector:@selector(_TEST_PROPERTY)];
-        if(value != nil) {
-            viewInfo = [viewInfo stringByAppendingFormat:@" %s:%@", ZFM_TOSTRING(_TEST_PROPERTY), value];
-        }
-    }
-#endif // test
+    zfstringAppend(s
+            , "<%s %08X> (%s, %s, %s, %s)"
+            , ZFImpl_sys_iOS_zfstringFromNSString([NSString stringWithFormat:@"%@", [view class]])
+            , (zfuint)[view hash]
+            , (zfint)zfmRound(view.frame.origin.x)
+            , (zfint)zfmRound(view.frame.origin.y)
+            , (zfint)zfmRound(view.frame.size.width)
+            , (zfint)zfmRound(view.frame.size.height)
+            );
 
 #if 1 // scroll content
     if([view isKindOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)view;
-        zfstring info = zfstr("(%d, %d, %d, %d)"
-            , (zfint)zfmRound(scrollView.contentOffset.x)
-            , (zfint)zfmRound(scrollView.contentOffset.y)
-            , (zfint)zfmRound(scrollView.contentSize.width)
-            , (zfint)zfmRound(scrollView.contentSize.height)
-            );
-        viewInfo = [viewInfo stringByAppendingFormat:@" scroll:%@", [NSString stringWithUTF8String:info]];
+        zfstringAppend(s
+                , " scroll:(%s, %s, %s, %s)"
+                , (zfint)zfmRound(scrollView.contentOffset.x)
+                , (zfint)zfmRound(scrollView.contentOffset.y)
+                , (zfint)zfmRound(scrollView.contentSize.width)
+                , (zfint)zfmRound(scrollView.contentSize.height)
+                );
     }
 #endif // scroll content
 
 #if 1 // bg
     if(view.backgroundColor != nil) {
-        zfstring colorInfo = ZFUIColorToString(ZFImpl_sys_iOS_ZFUIColorFromUIColor(view.backgroundColor));
-        viewInfo = [viewInfo stringByAppendingFormat:@" bg:%@", [NSString stringWithUTF8String:colorInfo]];
+        zfstringAppend(s
+                , " bg:%s"
+                , ZFImpl_sys_iOS_ZFUIColorFromUIColor(view.backgroundColor)
+                );
     }
 #endif // bg
 
 #if 1 // hidden
     if(view.hidden) {
-        viewInfo = [viewInfo stringByAppendingString:@" hidden"];
+        s += " hidden";
     }
 #endif // hidden
 
 #if 1 // UIDisabled
     if(!view.userInteractionEnabled) {
-        viewInfo = [viewInfo stringByAppendingString:@" UIDisabled"];
+        s += " UIDisabled";
     }
 #endif // UIDisabled
 
@@ -106,7 +100,10 @@ static void _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, U
     if([view respondsToSelector:@selector(text)]) {
         id value = [view performSelector:@selector(text)];
         if(value != nil) {
-            viewInfo = [viewInfo stringByAppendingFormat:@" text:\"%@\"", value];
+            zfstringAppend(s
+                    , " text:\"%s\""
+                    , ZFImpl_sys_iOS_zfstringFromNSString([NSString stringWithFormat:@"%@", value])
+                    );
         }
     }
 #endif // text
@@ -115,18 +112,23 @@ static void _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, U
     if([view respondsToSelector:@selector(currentTitle)]) {
         id value = [view performSelector:@selector(currentTitle)];
         if(value != nil) {
-            viewInfo = [viewInfo stringByAppendingFormat:@" currentTitle:%@", value];
+            zfstringAppend(s
+                    , " currentTitle:\"%s\""
+                    , ZFImpl_sys_iOS_zfstringFromNSString([NSString stringWithFormat:@"%@", value])
+                    );
         }
     }
     else if([view respondsToSelector:@selector(titleLabel)]) {
         id value = ((UILabel *)[view performSelector:@selector(titleLabel)]).text;
         if(value != nil) {
-            viewInfo = [viewInfo stringByAppendingFormat:@" titleLabel:%@", value];
+            zfstringAppend(s
+                    , " titleLabel:\"%s\""
+                    , ZFImpl_sys_iOS_zfstringFromNSString([NSString stringWithFormat:@"%@", value])
+                    );
         }
     }
 #endif // title
 
-    s += [viewInfo UTF8String];
     s += "\n";
 
     NSArray *subviews = view.subviews;

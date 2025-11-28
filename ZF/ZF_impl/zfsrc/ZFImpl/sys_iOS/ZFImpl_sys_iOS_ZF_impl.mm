@@ -59,7 +59,7 @@ NSString *ZFImpl_sys_iOS_objectInfoNative(
                 continue;
             }
 
-            NSString *propertyName = [NSString stringWithCString:property_getName(allProperty[i]) encoding:NSUTF8StringEncoding];
+            NSString *propertyName = ZFImpl_sys_iOS_zfstringToNSString(property_getName(allProperty[i]));;
             if([ignorePropertyNames count] > 0 && [ignorePropertyNames indexOfObject:propertyName] != NSNotFound) {
                 continue;
             }

@@ -71,13 +71,13 @@
         return;
     }
 
-    zfstring text = textField.text.UTF8String;
+    zfstring text = ZFImpl_sys_iOS_zfstringFromNSString(textField.text);
     if(textField.markedTextRange != nil) {
         NSInteger start = [textField offsetFromPosition:textField.beginningOfDocument toPosition:textField.markedTextRange.start];
         NSInteger count = [textField offsetFromPosition:textField.markedTextRange.start toPosition:textField.markedTextRange.end];
         NSMutableString *s = [NSMutableString stringWithString:textField.text];
         [s replaceCharactersInRange:NSMakeRange(start, count) withString:@""];
-        text = s.UTF8String;
+        text = ZFImpl_sys_iOS_zfstringFromNSString(s);
     }
 
     if(self.lastText.compare(text) == 0) {
@@ -86,7 +86,7 @@
 
     if(!ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldUpdate(self.ownerZFUITextEdit, text)) {
         self.textOverrideFlag = zftrue;
-        textField.text = [NSString stringWithUTF8String:text.cString()];
+        textField.text = ZFImpl_sys_iOS_zfstringToNSString(text.cString());
         self.textOverrideFlag = zffalse;
         return;
     }

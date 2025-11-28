@@ -10,20 +10,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_systemInfoImpl_sys_iOS, ZFEnvInfo_systemInfo, v_ZFProtocolLevel::e_SystemNormal)
 public:
     virtual void systemName(ZF_IN_OUT zfstring &ret) {
-        ret += [[UIDevice currentDevice] systemName].UTF8String;
+        ZFImpl_sys_iOS_zfstringFromNSString(ret, [[UIDevice currentDevice] systemName]);
     }
     virtual void systemVersion(ZF_IN_OUT zfstring &ret) {
-        ret += [[UIDevice currentDevice] systemVersion].UTF8String;
+        ZFImpl_sys_iOS_zfstringFromNSString(ret, [[UIDevice currentDevice] systemVersion]);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_systemInfoImpl_sys_iOS)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_sys_iOS, ZFEnvInfo_frameworkInfo, v_ZFProtocolLevel::e_SystemNormal)
 public:
     virtual void frameworkName(ZF_IN_OUT zfstring &ret) {
-        ret += [[UIDevice currentDevice] systemName].UTF8String;
+        ZFImpl_sys_iOS_zfstringFromNSString(ret, [[UIDevice currentDevice] systemName]);
     }
     virtual void frameworkVersion(ZF_IN_OUT zfstring &ret) {
-        ret += [[UIDevice currentDevice] systemVersion].UTF8String;
+        ZFImpl_sys_iOS_zfstringFromNSString(ret, [[UIDevice currentDevice] systemVersion]);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_frameworkInfoImpl_sys_iOS)
 
