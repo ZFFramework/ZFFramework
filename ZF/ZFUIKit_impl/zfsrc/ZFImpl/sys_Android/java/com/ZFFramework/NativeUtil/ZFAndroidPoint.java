@@ -16,12 +16,14 @@ public final class ZFAndroidPoint {
 
     public ZFAndroidPoint() {
     }
+
     public ZFAndroidPoint(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
     public ZFAndroidPoint(ZFAndroidPoint point) {
-        if(point != null) {
+        if (point != null) {
             this.x = point.x;
             this.y = point.y;
         }
@@ -31,12 +33,12 @@ public final class ZFAndroidPoint {
         this.x = x;
         this.y = y;
     }
+
     public void set(ZFAndroidPoint point) {
-        if(point == null) {
+        if (point == null) {
             this.x = 0;
             this.y = 0;
-        }
-        else {
+        } else {
             this.x = point.x;
             this.y = point.y;
         }

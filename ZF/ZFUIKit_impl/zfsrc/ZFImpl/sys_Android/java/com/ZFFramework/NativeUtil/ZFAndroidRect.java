@@ -18,14 +18,16 @@ public final class ZFAndroidRect {
 
     public ZFAndroidRect() {
     }
+
     public ZFAndroidRect(ZFAndroidRect rect) {
-        if(rect != null) {
+        if (rect != null) {
             this.x = rect.x;
             this.y = rect.y;
             this.width = rect.width;
             this.height = rect.height;
         }
     }
+
     public ZFAndroidRect(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -34,13 +36,14 @@ public final class ZFAndroidRect {
     }
 
     public void set(ZFAndroidRect rect) {
-        if(rect != null) {
+        if (rect != null) {
             this.x = rect.x;
             this.y = rect.y;
             this.width = rect.width;
             this.height = rect.height;
         }
     }
+
     public void set(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;

@@ -30,10 +30,10 @@ public class ZFLua {
         return paramsTmp;
     }
 
-    private static native long native_ZFLuaExecute_buf(String buf, long[] params);
+    public static native long native_ZFLuaExecute_buf(String buf, long[] params);
 
-    private static native long native_ZFLuaExecute_input(Object input, long[] params);
+    public static native long native_ZFLuaExecute_input(Object input, long[] params);
 
-    private static native long native_ZFLuaExecute(long zfjniPointerZFInput, long[] params);
+    public static native long native_ZFLuaExecute(long zfjniPointerZFInput, long[] params);
 
 }

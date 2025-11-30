@@ -30,18 +30,18 @@ public final class ZFThread {
 
     private static Handler _mainThreadHandler = new Handler(Looper.getMainLooper());
 
-    protected static Object native_executeInMainThread(int executeDataId) {
+    public static Object native_executeInMainThread(int executeDataId) {
         _MainThreadRunnable taskData = new _MainThreadRunnable(executeDataId);
         _mainThreadHandler.post(taskData);
         return taskData;
     }
 
-    protected static void native_executeInMainThreadCleanup(Object nativeToken) {
+    public static void native_executeInMainThreadCleanup(Object nativeToken) {
         _MainThreadRunnable taskData = (_MainThreadRunnable) nativeToken;
         taskData.running = false;
     }
 
-    private native static void native_doExecuteInMainThread(int executeDataId, long sysThread);
+    public native static void native_doExecuteInMainThread(int executeDataId, long sysThread);
 
     // ============================================================
     // executeInNewThread
@@ -62,22 +62,22 @@ public final class ZFThread {
         }
     }
 
-    protected static Object native_executeInNewThread(int executeDataId) {
+    public static Object native_executeInNewThread(int executeDataId) {
         _NewThread thread = new _NewThread(executeDataId);
         thread.start();
         return thread;
     }
 
-    protected static void native_executeInNewThreadCleanup(Object nativeToken) {
+    public static void native_executeInNewThreadCleanup(Object nativeToken) {
         _NewThread thread = (_NewThread) nativeToken;
         thread.running = false;
     }
 
-    private native static void native_doExecuteInNewThread(int executeDataId, long sysThread);
+    public native static void native_doExecuteInNewThread(int executeDataId, long sysThread);
 
     // ============================================================
     // other native communication
-    protected static long native_currentThread() {
+    public static long native_currentThread() {
         return ZFThread.currentThreadId();
     }
 }

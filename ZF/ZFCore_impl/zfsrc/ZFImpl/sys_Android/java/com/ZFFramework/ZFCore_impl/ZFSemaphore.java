@@ -14,23 +14,25 @@ public final class ZFSemaphore {
         return _sema;
     }
 
-    protected void native_semaphoreLock() {
+    public void native_semaphoreLock() {
         _paramLocker.lock();
     }
-    protected void native_semaphoreUnlock() {
+
+    public void native_semaphoreUnlock() {
         _paramLocker.unlock();
     }
 
-    protected void native_semaphoreSignal() {
-        if(_waiterCount > 0) {
+    public void native_semaphoreSignal() {
+        if (_waiterCount > 0) {
             --_waiterCount;
             _paramLocker.unlock();
             _sema.release();
             _paramLocker.lock();
         }
     }
-    protected void native_semaphoreBroadcast() {
-        if(_waiterCount > 0) {
+
+    public void native_semaphoreBroadcast() {
+        if (_waiterCount > 0) {
             int tmp = _waiterCount;
             _waiterCount = 0;
             _paramLocker.unlock();
@@ -38,30 +40,30 @@ public final class ZFSemaphore {
         }
         _paramLocker.lock();
     }
-    protected void native_semaphoreWait() {
+
+    public void native_semaphoreWait() {
         ++_waiterCount;
         _paramLocker.unlock();
         try {
             _sema.acquire();
-        }
-        catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
             --_waiterCount;
         }
         _paramLocker.lock();
     }
-    protected boolean native_semaphoreWait(long miliSecs) {
+
+    public boolean native_semaphoreWait(long miliSecs) {
         ++_waiterCount;
         _paramLocker.unlock();
         boolean result = false;
         try {
             result = _sema.tryAcquire(miliSecs, TimeUnit.MILLISECONDS);
-        }
-        catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         _paramLocker.lock();
-        if(!result) {
+        if (!result) {
             --_waiterCount;
         }
         return result;

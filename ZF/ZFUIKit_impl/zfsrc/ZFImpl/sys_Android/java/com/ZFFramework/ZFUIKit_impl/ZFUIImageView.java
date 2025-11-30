@@ -18,13 +18,15 @@ public final class ZFUIImageView extends ImageView {
         ((ZFUIImageView) nativeImageView).setImageDrawable(null);
     }
 
-    public static void native_image(Object nativeImageView,
-                                    Object nativeImage,
-                                    float imageScale,
-                                    int ninePatch_left,
-                                    int ninePatch_top,
-                                    int ninePatch_right,
-                                    int ninePatch_bottom) {
+    public static void native_image(
+            Object nativeImageView
+            , Object nativeImage
+            , float imageScale
+            , int ninePatch_left
+            , int ninePatch_top
+            , int ninePatch_right
+            , int ninePatch_bottom
+    ) {
         ZFUIImageView nativeImageViewTmp = (ZFUIImageView) nativeImageView;
         nativeImageViewTmp.setImageDrawable((Drawable) nativeImage);
         nativeImageViewTmp._imageScale = imageScale;

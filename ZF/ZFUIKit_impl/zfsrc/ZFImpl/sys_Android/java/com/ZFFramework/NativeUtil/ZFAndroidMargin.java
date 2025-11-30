@@ -18,26 +18,30 @@ public final class ZFAndroidMargin {
 
     public ZFAndroidMargin() {
     }
+
     public ZFAndroidMargin(ZFAndroidMargin margin) {
-        if(margin != null) {
+        if (margin != null) {
             this.left = margin.left;
             this.top = margin.top;
             this.right = margin.right;
             this.bottom = margin.bottom;
         }
     }
+
     public ZFAndroidMargin(int margin) {
         this.left = margin;
         this.top = margin;
         this.right = margin;
         this.bottom = margin;
     }
+
     public ZFAndroidMargin(int x, int y) {
         this.left = x;
         this.top = y;
         this.right = x;
         this.bottom = y;
     }
+
     public ZFAndroidMargin(int left, int top, int right, int bottom) {
         this.left = left;
         this.top = top;
@@ -46,25 +50,28 @@ public final class ZFAndroidMargin {
     }
 
     public void set(ZFAndroidMargin margin) {
-        if(margin != null) {
+        if (margin != null) {
             this.left = margin.left;
             this.top = margin.top;
             this.right = margin.right;
             this.bottom = margin.bottom;
         }
     }
+
     public void set(int margin) {
         this.left = margin;
         this.top = margin;
         this.right = margin;
         this.bottom = margin;
     }
+
     public void set(int x, int y) {
         this.left = x;
         this.top = y;
         this.right = x;
         this.bottom = y;
     }
+
     public void set(int left, int top, int right, int bottom) {
         this.left = left;
         this.top = top;

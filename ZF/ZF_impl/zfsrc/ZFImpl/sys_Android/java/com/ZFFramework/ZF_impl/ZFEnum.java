@@ -45,13 +45,13 @@ public class ZFEnum {
         return ret;
     }
 
-    private native static void native_enumInvalid(String rawEnumNamespace, String rawEnumValueName);
+    public native static void native_enumInvalid(String rawEnumNamespace, String rawEnumValueName);
 
-    private native static int native_rawEnumValue(String rawEnumNamespace, String rawEnumValueName);
+    public native static int native_rawEnumValue(String rawEnumNamespace, String rawEnumValueName);
 
-    private native static int native_enumValue(String enumClassName, String enumValueName);
+    public native static int native_enumValue(String enumClassName, String enumValueName);
 
-    private native static int native_enumDefault(String enumClassName);
+    public native static int native_enumDefault(String enumClassName);
 
-    private native static String native_enumName(String enumClassName, int enumValue);
+    public native static String native_enumName(String enumClassName, int enumValue);
 }

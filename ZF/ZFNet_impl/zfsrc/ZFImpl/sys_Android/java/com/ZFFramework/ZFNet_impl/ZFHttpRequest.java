@@ -56,11 +56,13 @@ public final class ZFHttpRequest {
     }
 
     // ============================================================
-    public static native void native_notifyResponse(long zfjniPointerOwnerZFHttpRequest,
-                                                    long zfjniPointerOwnerZFHttpResponse,
-                                                    int code,
-                                                    String errorHint,
-                                                    Object nativeBodyInput);
+    public static native void native_notifyResponse(
+            long zfjniPointerOwnerZFHttpRequest
+            , long zfjniPointerOwnerZFHttpResponse
+            , int code
+            , String errorHint
+            , Object nativeBodyInput
+    );
 
     // ============================================================
     // for request
@@ -230,7 +232,7 @@ public final class ZFHttpRequest {
         }
     }
 
-    private static String native_request_write(ZFHttpRequest task, ZFInputWrapper input) {
+    public static String native_request_write(ZFHttpRequest task, ZFInputWrapper input) {
         OutputStream output = null;
         if (task.connection != null) {
             try {

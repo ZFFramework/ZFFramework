@@ -83,20 +83,17 @@ public final class ZFUIRootWindow extends Activity {
         ZFMainEntry.mainEntryActivity().startActivity(intent);
     }
 
-    public static Object native_nativeWindowRootViewOnAdd(Object nativeWindow,
-                                                          Object nativeWindowRootView) {
+    public static Object native_nativeWindowRootViewOnAdd(Object nativeWindow, Object nativeWindowRootView) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
         nativeWindowTmp._containerView.addView((View) nativeWindowRootView);
         return nativeWindowTmp._containerView;
     }
 
-    public static void native_nativeWindowRootViewOnRemove(Object nativeWindow,
-                                                           Object nativeWindowRootView) {
+    public static void native_nativeWindowRootViewOnRemove(Object nativeWindow, Object nativeWindowRootView) {
         ((ZFUIRootWindow) nativeWindow)._containerView.removeView((View) nativeWindowRootView);
     }
 
-    public static void native_modalWindowShow(Object nativeWindow,
-                                              long zfjniPointerOwnerZFUIRootWindow) {
+    public static void native_modalWindowShow(Object nativeWindow, long zfjniPointerOwnerZFUIRootWindow) {
         Intent intent = new Intent((ZFUIRootWindow) nativeWindow, ZFUIRootWindow.class);
         intent.putExtra(_key_zfjniPointerOwnerZFUIRootWindow, zfjniPointerOwnerZFUIRootWindow);
         ((ZFUIRootWindow) nativeWindow).startActivity(intent);
@@ -123,8 +120,7 @@ public final class ZFUIRootWindow extends Activity {
         return ((ZFUIRootWindow) nativeWindow)._windowOrientation;
     }
 
-    public static void native_windowOrientationFlags(Object nativeWindow,
-                                                        int windowOrientationFlags) {
+    public static void native_windowOrientationFlags(Object nativeWindow, int windowOrientationFlags) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
 
         boolean left = ((windowOrientationFlags & ZFUIOrientation.e_Left) != 0);
@@ -159,32 +155,34 @@ public final class ZFUIRootWindow extends Activity {
     }
 
     // ============================================================
-    private static native void native_mainWindowRegisterForNativeView(Object nativeParent);
+    public static native void native_mainWindowRegisterForNativeView(Object nativeParent);
 
-    private static native void native_nativeWindowEmbedNativeView(Object nativeParent,
-                                                                  Object rootWindowName);
+    public static native void native_nativeWindowEmbedNativeView(Object nativeParent, Object rootWindowName);
 
-    private static native void native_notifyMeasureWindow(long zfjniPointerOwnerZFUIRootWindow,
-                                                          int refWidth,
-                                                          int refHeight,
-                                                          int[] resultRect);
+    public static native void native_notifyMeasureWindow(
+            long zfjniPointerOwnerZFUIRootWindow
+            , int refWidth
+            , int refHeight
+            , int[] resultRect
+    );
 
-    private static native void native_notifyOnCreate(long zfjniPointerOwnerZFUIRootWindow,
-                                                     Object nativeWindow);
+    public static native void native_notifyOnCreate(long zfjniPointerOwnerZFUIRootWindow, Object nativeWindow);
 
-    private static native void native_notifyOnDestroy(long zfjniPointerOwnerZFUIRootWindow);
+    public static native void native_notifyOnDestroy(long zfjniPointerOwnerZFUIRootWindow);
 
-    private static native void native_notifyOnResume(long zfjniPointerOwnerZFUIRootWindow);
+    public static native void native_notifyOnResume(long zfjniPointerOwnerZFUIRootWindow);
 
-    private static native void native_notifyOnPause(long zfjniPointerOwnerZFUIRootWindow);
+    public static native void native_notifyOnPause(long zfjniPointerOwnerZFUIRootWindow);
 
-    private static native void native_notifyOnRotate(long zfjniPointerOwnerZFUIRootWindow);
+    public static native void native_notifyOnRotate(long zfjniPointerOwnerZFUIRootWindow);
 
-    private static native boolean native_notifyKeyEvent(long zfjniPointerOwnerZFUIRootWindow,
-                                                        int keyId,
-                                                        int keyAction,
-                                                        int keyCode,
-                                                        int keyCodeRaw);
+    public static native boolean native_notifyKeyEvent(
+            long zfjniPointerOwnerZFUIRootWindow
+            , int keyId
+            , int keyAction
+            , int keyCode
+            , int keyCodeRaw
+    );
 
     // ============================================================
     private static class MainLayout extends FrameLayout {

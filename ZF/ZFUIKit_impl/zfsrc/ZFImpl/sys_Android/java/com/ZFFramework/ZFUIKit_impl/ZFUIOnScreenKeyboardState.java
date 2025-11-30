@@ -53,14 +53,14 @@ public class ZFUIOnScreenKeyboardState {
         }
     };
 
-    protected static void native_keyboardStaticInit() {
+    public static void native_keyboardStaticInit() {
         ZFMainEntry.app().registerActivityLifecycleCallbacks(_activityLifecycleCallback);
         if (ZFMainEntry.mainEntryActivity() != null) {
             ZFUIOnScreenKeyboardState.keyboardStateRegister(ZFMainEntry.mainEntryActivity());
         }
     }
 
-    protected static void native_keyboardStaticCleanup() {
+    public static void native_keyboardStaticCleanup() {
         ZFMainEntry.app().unregisterActivityLifecycleCallbacks(_activityLifecycleCallback);
 
         Iterator<Map.Entry<Activity, _RegisterFlagData>> entries = _keyboardStateRegisterFlag.entrySet().iterator();
@@ -207,5 +207,5 @@ public class ZFUIOnScreenKeyboardState {
         outKeyboardFrame[3] = Math.max(0, screenSize.height - rect.bottom);
     }
 
-    private static native void native_notifyKeyboardStateOnUpdate();
+    public static native void native_notifyKeyboardStateOnUpdate();
 }

@@ -9,10 +9,16 @@ import com.ZFFramework.NativeUtil.ZFAndroidNinePatch;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
 
 public final class ZFUIImageIO {
-    public static Object native_imageApplyScale(float imageScale,
-                                                Object nativeImage,
-                                                int newSize_width, int newSize_height,
-                                                int ninePatch_left, int ninePatch_top, int ninePatch_right, int ninePatch_bottom) {
+    public static Object native_imageApplyScale(
+            float imageScale
+            , Object nativeImage
+            , int newSize_width
+            , int newSize_height
+            , int ninePatch_left
+            , int ninePatch_top
+            , int ninePatch_right
+            , int ninePatch_bottom
+    ) {
         Bitmap bmp = Bitmap.createBitmap(newSize_width, newSize_height, Config.ARGB_8888);
         Canvas canvas = new Canvas(bmp);
         ZFAndroidNinePatch.drawNinePatch(
@@ -24,15 +30,19 @@ public final class ZFUIImageIO {
         return new BitmapDrawable(ZFMainEntry.appContext().getResources(), bmp);
     }
 
-    public static Object native_imageLoadInFrame(float imageScale,
-                                                 Object nativeImage,
-                                                 int frame_x, int frame_y, int frame_width, int frame_height) {
+    public static Object native_imageLoadInFrame(
+            float imageScale
+            , Object nativeImage
+            , int frame_x
+            , int frame_y
+            , int frame_width
+            , int frame_height
+    ) {
         Bitmap bmp = Bitmap.createBitmap(((BitmapDrawable) nativeImage).getBitmap(), frame_x, frame_y, frame_width, frame_height);
         return new BitmapDrawable(ZFMainEntry.appContext().getResources(), bmp);
     }
 
-    public static Object native_imageLoadFromColor(int color,
-                                                   int size_width, int size_height) {
+    public static Object native_imageLoadFromColor(int color, int size_width, int size_height) {
         Bitmap bmp = Bitmap.createBitmap(size_width, size_height, Config.ARGB_8888);
         Canvas canvas = new Canvas(bmp);
         canvas.drawColor(color);

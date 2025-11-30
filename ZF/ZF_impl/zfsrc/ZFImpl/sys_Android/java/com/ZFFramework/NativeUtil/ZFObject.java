@@ -43,7 +43,7 @@ public class ZFObject {
         return native_toListener(listener);
     }
 
-    private static native long native_toListener(Object listener);
+    public static native long native_toListener(Object listener);
 
     // ============================================================
     private static long[] _paramsConvert(long... params) {
@@ -64,8 +64,8 @@ public class ZFObject {
         return paramsTmp;
     }
 
-    private static native long native_invoke(long zfjniPointer, String methodName, long[] params);
+    public static native long native_invoke(long zfjniPointer, String methodName, long[] params);
 
-    private static native long native_invoke_generic(long zfjniPointer, String methodName, Object[] params);
+    public static native long native_invoke_generic(long zfjniPointer, String methodName, Object[] params);
 
 }

@@ -14,7 +14,7 @@ public final class ZFTimer {
         return this.timer;
     }
 
-    protected static Object native_nativeTimerCreate() {
+    public static Object native_nativeTimerCreate() {
         return new ZFTimer();
     }
 
@@ -55,7 +55,7 @@ public final class ZFTimer {
         }
     }
 
-    protected static void native_start(Object nativeTimer, long zfjniPointerToken, long interval, long timerImplId) {
+    public static void native_start(Object nativeTimer, long zfjniPointerToken, long interval, long timerImplId) {
         ZFTimer holder = (ZFTimer) nativeTimer;
         holder.timer = new Timer();
         holder.timerTask = new ZFTimerTask(zfjniPointerToken);
@@ -63,7 +63,7 @@ public final class ZFTimer {
         holder.timer.schedule(holder.timerTask, interval, interval > 0 ? interval : 1);
     }
 
-    protected static void native_stop(Object nativeTimer) {
+    public static void native_stop(Object nativeTimer) {
         ZFTimer holder = (ZFTimer) nativeTimer;
         holder.timerTask.cancel();
         holder.timer.cancel();
@@ -72,6 +72,6 @@ public final class ZFTimer {
         holder.timerTask = null;
     }
 
-    protected native static void native_notifyTimerActivate(long zfjniPointerToken, long timerImplId);
+    public native static void native_notifyTimerActivate(long zfjniPointerToken, long timerImplId);
 
 }

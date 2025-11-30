@@ -107,10 +107,7 @@ public class ZFAniForNative {
         }
 
         @Override
-        public void initialize(int width,
-                               int height,
-                               int parentWidth,
-                               int parentHeight) {
+        public void initialize(int width, int height, int parentWidth, int parentHeight) {
             super.initialize(width, height, parentWidth, parentHeight);
             m_width = width;
             m_height = height;
@@ -258,8 +255,7 @@ public class ZFAniForNative {
     public static void native_nativeAniDestroy(Object nativeAni) {
     }
 
-    public static void native_nativeAniStart(Object nativeAni,
-                                             Object nativeView) {
+    public static void native_nativeAniStart(Object nativeAni, Object nativeView) {
         NativeAnimation nativeAniTmp = (NativeAnimation) nativeAni;
         View nativeViewTmp = (View) nativeView;
         nativeAniTmp.nativeAniListener(new NativeAnimationListener(nativeAniTmp, nativeViewTmp));
@@ -303,8 +299,7 @@ public class ZFAniForNative {
 
     private static ArrayList<Animation> _anisCache = new ArrayList<Animation>();
 
-    public static void native_nativeAniStop(Object nativeAni,
-                                            Object nativeView) {
+    public static void native_nativeAniStop(Object nativeAni, Object nativeView) {
         NativeAnimation nativeAniTmp = (NativeAnimation) nativeAni;
         nativeAniTmp.nativeAniListener(null);
         View nativeViewTmp = (View) nativeView;
@@ -321,7 +316,7 @@ public class ZFAniForNative {
         }
     }
 
-    private static native void native_notifyAniStop(long zfjniPointerOwnerZFAniForNative);
+    public static native void native_notifyAniStop(long zfjniPointerOwnerZFAniForNative);
 
     private static _CurveLinear _curveLinear = new _CurveLinear();
     private static _CurveEaseIn _curveEaseIn = new _CurveEaseIn();
@@ -363,14 +358,16 @@ public class ZFAniForNative {
         return (float) Math.pow(x, n);
     }
 
-    private static float _curve(float x,
-                                float y0,
-                                float y1,
-                                float y2,
-                                float y3,
-                                float y4,
-                                float y5,
-                                float y6) {
+    private static float _curve(
+            float x
+            , float y0
+            , float y1
+            , float y2
+            , float y3
+            , float y4
+            , float y5
+            , float y6
+    ) {
         return (float) (0
                 + y0 * _pow(1 - x, 6)
                 + 6 * y1 * x * _pow(1 - x, 5)
@@ -382,23 +379,25 @@ public class ZFAniForNative {
         );
     }
 
-    private static float _curve(float x,
-                                float y0,
-                                float y1,
-                                float y2,
-                                float y3,
-                                float y4,
-                                float y5,
-                                float y6,
-                                float y7,
-                                float y8,
-                                float y9,
-                                float y10,
-                                float y11,
-                                float y12,
-                                float y13,
-                                float y14,
-                                float y15) {
+    private static float _curve(
+            float x
+            , float y0
+            , float y1
+            , float y2
+            , float y3
+            , float y4
+            , float y5
+            , float y6
+            , float y7
+            , float y8
+            , float y9
+            , float y10
+            , float y11
+            , float y12
+            , float y13
+            , float y14
+            , float y15
+    ) {
         return (float) (0
                 + y0 * _pow(1 - x, 15)
                 + 15 * y1 * x * _pow(1 - x, 14)

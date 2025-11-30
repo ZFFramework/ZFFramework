@@ -16,7 +16,7 @@ public final class ZFApp {
         }, 100);
     }
 
-    private native static void native_appRestart();
+    public native static void native_appRestart();
 
 }
 

@@ -110,12 +110,12 @@ public final class ZFWebSocket {
         ws.ws.send(ByteString.of(tmp, 0, tmp.length));
     }
 
-    private static native void native_notifyOnOpen(long zfjniPointerOwnerZFWebSocket);
+    public static native void native_notifyOnOpen(long zfjniPointerOwnerZFWebSocket);
 
-    private static native void native_notifyOnClose(long zfjniPointerOwnerZFWebSocket, int result, String reasonHint);
+    public static native void native_notifyOnClose(long zfjniPointerOwnerZFWebSocket, int result, String reasonHint);
 
-    private static native void native_notifyOnRecv(long zfjniPointerOwnerZFWebSocket, Object data);
+    public static native void native_notifyOnRecv(long zfjniPointerOwnerZFWebSocket, Object data);
 
-    private static native void native_notifyOnRecvBin(long zfjniPointerOwnerZFWebSocket, Object data);
+    public static native void native_notifyOnRecvBin(long zfjniPointerOwnerZFWebSocket, Object data);
 
 }

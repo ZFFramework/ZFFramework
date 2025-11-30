@@ -102,7 +102,7 @@ public class ZFAndroidReflect {
     // ============================================================
     private static final List<InvokeResult> _cache = new ArrayList<>();
 
-    private static Object native_obtainInvokeResult() {
+    public static Object native_obtainInvokeResult() {
         synchronized (_cache) {
             if (_cache.isEmpty()) {
                 return new InvokeResult();
@@ -112,7 +112,7 @@ public class ZFAndroidReflect {
         }
     }
 
-    private static void native_releaseInvokeResult(Object invokeResult) {
+    public static void native_releaseInvokeResult(Object invokeResult) {
         InvokeResult tmp = (InvokeResult) invokeResult;
         tmp.result = null;
         tmp.success = false;
@@ -132,7 +132,7 @@ public class ZFAndroidReflect {
      * note:
      * * for inner class: `OuterClass$InnerClass.someMethod`
      */
-    private static void native_invoke(Object invokeResultTmp, Object obj, String name, Object[] params) {
+    public static void native_invoke(Object invokeResultTmp, Object obj, String name, Object[] params) {
         InvokeResult invokeResult = (InvokeResult) invokeResultTmp;
         int paramCount = params != null ? params.length : 0;
         try {
@@ -301,7 +301,7 @@ public class ZFAndroidReflect {
     }
 
     // ============================================================
-    private static Object native_implInterface(String interfaceClass, long zfjniPointerImpl) {
+    public static Object native_implInterface(String interfaceClass, long zfjniPointerImpl) {
         Class<?> cls = null;
         try {
             cls = Class.forName(interfaceClass);
@@ -349,6 +349,6 @@ public class ZFAndroidReflect {
         return null;
     }
 
-    private static native Object native_implInterfaceCallback(long zfjniPointerImpl, Object proxy, String methodName, Object method, Object[] args);
+    public static native Object native_implInterfaceCallback(long zfjniPointerImpl, Object proxy, String methodName, Object method, Object[] args);
 
 }

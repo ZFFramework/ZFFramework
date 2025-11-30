@@ -107,7 +107,7 @@ public final class ZFMainEntry extends Activity {
         return _debugMode;
     }
 
-    private native static void native_debugMode(boolean value);
+    public native static void native_debugMode(boolean value);
 
     // ============================================================
     // global state
@@ -166,26 +166,26 @@ public final class ZFMainEntry extends Activity {
 
     // ============================================================
     // native communication
-    protected static Object native_app() {
+    public static Object native_app() {
         return ZFMainEntry.app();
     }
 
-    protected static Object native_appContext() {
+    public static Object native_appContext() {
         return ZFMainEntry.appContext();
     }
 
-    protected static Object native_assetManager() {
+    public static Object native_assetManager() {
         return ZFMainEntry.assetManager();
     }
 
-    protected static Object native_mainEntryActivity() {
+    public static Object native_mainEntryActivity() {
         return ZFMainEntry.mainEntryActivity();
     }
 
-    private native static void native_ZFFrameworkInit();
+    public native static void native_ZFFrameworkInit();
 
-    private native static void native_ZFFrameworkCleanup();
+    public native static void native_ZFFrameworkCleanup();
 
-    private native static int native_ZFMainExecute(String[] params);
+    public native static int native_ZFMainExecute(String[] params);
 
 }

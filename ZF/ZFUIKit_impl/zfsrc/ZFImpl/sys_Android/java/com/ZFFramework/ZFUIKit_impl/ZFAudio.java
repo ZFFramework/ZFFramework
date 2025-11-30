@@ -182,13 +182,17 @@ public final class ZFAudio {
         }
     }
 
-    public static native void native_notifyAudioOnLoad(long zfjniPointerOwnerZFAudio,
-                                                       boolean success,
-                                                       String errorHint);
+    public static native void native_notifyAudioOnLoad(
+            long zfjniPointerOwnerZFAudio
+            , boolean success
+            , String errorHint
+    );
 
-    public static native void native_notifyAudioOnStop(long zfjniPointerOwnerZFAudio,
-                                                       boolean success,
-                                                       String errorHint);
+    public static native void native_notifyAudioOnStop(
+            long zfjniPointerOwnerZFAudio
+            , boolean success
+            , String errorHint
+    );
 
     public static native void native_notifyAudioOnResume(long zfjniPointerOwnerZFAudio);
 

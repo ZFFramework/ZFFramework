@@ -16,12 +16,14 @@ public final class ZFAndroidSize {
 
     public ZFAndroidSize() {
     }
+
     public ZFAndroidSize(int width, int height) {
         this.width = width;
         this.height = height;
     }
+
     public ZFAndroidSize(ZFAndroidSize size) {
-        if(size != null) {
+        if (size != null) {
             this.width = size.width;
             this.height = size.height;
         }
@@ -31,12 +33,12 @@ public final class ZFAndroidSize {
         this.width = width;
         this.height = height;
     }
+
     public void set(ZFAndroidSize size) {
-        if(size == null) {
+        if (size == null) {
             this.width = 0;
             this.height = 0;
-        }
-        else {
+        } else {
             this.width = size.width;
             this.height = size.height;
         }

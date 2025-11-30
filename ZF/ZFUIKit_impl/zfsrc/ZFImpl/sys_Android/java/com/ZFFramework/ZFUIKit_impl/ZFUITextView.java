@@ -22,13 +22,11 @@ public final class ZFUITextView extends TextView {
         ((ZFUITextView) nativeTextView).setText(null);
     }
 
-    public static void native_text(Object nativeTextView,
-                                   Object nativeText) {
+    public static void native_text(Object nativeTextView, Object nativeText) {
         ((ZFUITextView) nativeTextView).setText((String) nativeText);
     }
 
-    public static void native_textAppearance(Object nativeTextView,
-                                             int textAppearance) {
+    public static void native_textAppearance(Object nativeTextView, int textAppearance) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         if (textAppearance == ZFUITextAppearance.e_Normal) {
             nativeTextViewTmp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
@@ -44,8 +42,7 @@ public final class ZFUITextView extends TextView {
         }
     }
 
-    public static void native_textAlign(Object nativeTextView,
-                                        int textAlign) {
+    public static void native_textAlign(Object nativeTextView, int textAlign) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         if ((textAlign & ZFUIAlign.e_Left) == ZFUIAlign.e_Left) {
             nativeTextViewTmp.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
@@ -58,20 +55,17 @@ public final class ZFUITextView extends TextView {
         }
     }
 
-    public static void native_textColor(Object nativeTextView,
-                                        int textColor) {
+    public static void native_textColor(Object nativeTextView, int textColor) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         nativeTextViewTmp.setTextColor(textColor);
     }
 
-    public static void native_singleLine(Object nativeTextView,
-                                             boolean singleLine) {
+    public static void native_singleLine(Object nativeTextView, boolean singleLine) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         nativeTextViewTmp.setSingleLine(singleLine);
     }
 
-    public static void native_textTruncateMode(Object nativeTextView,
-                                               int textTruncateMode) {
+    public static void native_textTruncateMode(Object nativeTextView, int textTruncateMode) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         if (textTruncateMode == ZFUITextTruncateMode.e_Disable) {
             nativeTextViewTmp.setEllipsize(TruncateAt.END);
@@ -88,10 +82,12 @@ public final class ZFUITextView extends TextView {
 
     private static int[] _native_measureNativeTextView_sizeCache = new int[2]; // width, height
 
-    public static int[] native_measureNativeTextView(Object nativeTextView,
-                                                     int maxWidthOrNegative,
-                                                     int maxHeightOrNegative,
-                                                     int textSize) {
+    public static int[] native_measureNativeTextView(
+            Object nativeTextView
+            , int maxWidthOrNegative
+            , int maxHeightOrNegative
+            , int textSize
+    ) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         int widthOld = nativeTextViewTmp.getMeasuredWidth();
         int heightOld = nativeTextViewTmp.getMeasuredHeight();
@@ -124,8 +120,7 @@ public final class ZFUITextView extends TextView {
         return (int) (nativeTextViewTmp.getTextSize());
     }
 
-    public static void native_textSizeAuto_update(Object nativeTextView,
-                                                  int textSizeCurrent) {
+    public static void native_textSizeAuto_update(Object nativeTextView, int textSizeCurrent) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         nativeTextViewTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeCurrent);
     }

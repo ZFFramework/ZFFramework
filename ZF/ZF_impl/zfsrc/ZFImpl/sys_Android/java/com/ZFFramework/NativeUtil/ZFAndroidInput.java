@@ -15,7 +15,7 @@ public class ZFAndroidInput {
     }
 
     // ============================================================
-    private static int native_nativeInputRead(Object nativeInput, byte[] buf, int count) {
+    public static int native_nativeInputRead(Object nativeInput, byte[] buf, int count) {
         if (buf == null) {
             // not supported
             return -1;
@@ -38,7 +38,7 @@ public class ZFAndroidInput {
         return offset;
     }
 
-    private static void native_nativeInputClose(Object nativeInput) {
+    public static void native_nativeInputClose(Object nativeInput) {
         ZFAndroidInput nativeInputTmp = (ZFAndroidInput) nativeInput;
         if (nativeInputTmp.input == null) {
             return;
