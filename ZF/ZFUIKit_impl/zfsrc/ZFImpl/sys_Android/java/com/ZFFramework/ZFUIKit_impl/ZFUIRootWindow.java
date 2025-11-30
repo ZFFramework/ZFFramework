@@ -68,11 +68,21 @@ public final class ZFUIRootWindow extends Activity {
     }
 
     // ============================================================
+    public FrameLayout rootContainer() {
+        return _rootContainer;
+    }
+
+    public FrameLayout mainContainer() {
+        return _mainContainer;
+    }
+
+    // ============================================================
     private static final String _key_isMainWindow = "isMainWindow";
     private static final String _key_zfjniPointerOwnerZFUIRootWindow = "zfjniPointerOwnerZFUIRootWindow";
     private boolean _isMainWindow = false;
     private long _zfjniPointerOwnerZFUIRootWindow = 0;
-    private MainLayout _containerView = null;
+    private FrameLayout _rootContainer = null;
+    private MainLayout _mainContainer = null;
     private int _windowOrientation = ZFUIOrientation.e_Top;
 
     // ============================================================
@@ -85,12 +95,12 @@ public final class ZFUIRootWindow extends Activity {
 
     public static Object native_nativeWindowRootViewOnAdd(Object nativeWindow, Object nativeWindowRootView) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
-        nativeWindowTmp._containerView.addView((View) nativeWindowRootView);
-        return nativeWindowTmp._containerView;
+        nativeWindowTmp._mainContainer.addView((View) nativeWindowRootView);
+        return nativeWindowTmp._mainContainer;
     }
 
     public static void native_nativeWindowRootViewOnRemove(Object nativeWindow, Object nativeWindowRootView) {
-        ((ZFUIRootWindow) nativeWindow)._containerView.removeView((View) nativeWindowRootView);
+        ((ZFUIRootWindow) nativeWindow)._mainContainer.removeView((View) nativeWindowRootView);
     }
 
     public static void native_modalWindowShow(Object nativeWindow, long zfjniPointerOwnerZFUIRootWindow) {
@@ -105,7 +115,7 @@ public final class ZFUIRootWindow extends Activity {
 
     public static void native_layoutParamOnUpdate(Object nativeWindow) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
-        nativeWindowTmp._containerView.requestLayout();
+        nativeWindowTmp._mainContainer.requestLayout();
     }
 
     public static int native_windowOrientation(Object nativeWindow) {
@@ -253,9 +263,12 @@ public final class ZFUIRootWindow extends Activity {
             ZFMainEntry.mainEntryActivity(this);
         }
 
-        _containerView = new MainLayout(this);
+        _rootContainer = new FrameLayout(this);
+        this.setContentView(_rootContainer);
+
+        _mainContainer = new MainLayout(this);
+        _rootContainer.addView(_mainContainer, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         ZFUIRootWindow.native_notifyOnCreate(_zfjniPointerOwnerZFUIRootWindow, this);
-        this.setContentView(_containerView);
     }
 
     @Override
@@ -264,8 +277,9 @@ public final class ZFUIRootWindow extends Activity {
 
         ZFUIRootWindow.native_notifyOnDestroy(_zfjniPointerOwnerZFUIRootWindow);
 
-        _containerView._owner = null;
-        _containerView = null;
+        _rootContainer = null;
+        _mainContainer._owner = null;
+        _mainContainer = null;
 
         if (needDestroyMainEntry && ZFMainEntry.mainEntryActivity() == this) {
             ZFMainEntry.ZFFrameworkCleanup();

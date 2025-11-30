@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name="com.ZFFramework.ZF_impl.ZFMainEntry"
+            android:label="ZFFramework"
+            android:launchMode="singleTask" />
+        <activity
+            android:name="com.ZFFramework.ZFUIKit_impl.ZFUIRootWindow"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="ZFFramework"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+
+</manifest>
+

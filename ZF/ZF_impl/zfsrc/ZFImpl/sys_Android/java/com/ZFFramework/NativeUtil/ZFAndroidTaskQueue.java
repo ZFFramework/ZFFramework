@@ -8,11 +8,15 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class ZFAndroidTaskQueue {
 
+    public ZFAndroidTaskQueue(String name) {
+        _name = name != null && !name.isEmpty() ? name : "ZFAndroidTaskQueue";
+    }
+
     private static ZFAndroidTaskQueue _instance = null;
 
     public static ZFAndroidTaskQueue instance() {
         if (_instance == null) {
-            _instance = new ZFAndroidTaskQueue();
+            _instance = new ZFAndroidTaskQueue("ZFAndroidTaskQueue");
         }
         return _instance;
     }
@@ -24,7 +28,7 @@ public class ZFAndroidTaskQueue {
         if (_thread == null) {
             synchronized (_queue) {
                 if (_thread == null) {
-                    _thread = new Thread("ZFAndroidTaskQueue") {
+                    _thread = new Thread(_name) {
                         @Override
                         public void run() {
                             super.run();
@@ -59,8 +63,9 @@ public class ZFAndroidTaskQueue {
         _running = false;
     }
 
+    private final String _name;
     private final BlockingQueue<Runnable> _queue = new LinkedBlockingDeque<>();
-    private Thread _thread = null;
+    private volatile Thread _thread = null;
     private boolean _running = true;
 
 }

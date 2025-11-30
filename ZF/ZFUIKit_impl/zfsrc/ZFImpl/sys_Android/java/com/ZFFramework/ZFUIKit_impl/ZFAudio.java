@@ -4,6 +4,7 @@ import android.media.MediaDataSource;
 import android.media.MediaPlayer;
 import android.os.Build;
 
+import com.ZFFramework.NativeUtil.ZFAndroidAsync;
 import com.ZFFramework.NativeUtil.ZFAndroidTaskQueue;
 import com.ZFFramework.NativeUtil.ZFInputWrapper;
 import com.ZFFramework.ZF_impl.ZFSeekPos;
@@ -40,7 +41,7 @@ public final class ZFAudio {
         nativeAudioTmp._mpAttach();
         int mpTaskId = nativeAudioTmp._mpTaskId;
         ZFInputWrapper input = (ZFInputWrapper) nativeInput;
-        ZFAndroidTaskQueue.instance().run(new Runnable() {
+        ZFAndroidAsync.run(new Runnable() {
             @Override
             public void run() {
                 if (mpTaskId != nativeAudioTmp._mpTaskId) {

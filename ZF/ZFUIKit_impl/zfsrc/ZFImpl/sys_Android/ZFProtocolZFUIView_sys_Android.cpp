@@ -85,7 +85,6 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
-                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIView(), jmId
             , (jobject)view->nativeView()

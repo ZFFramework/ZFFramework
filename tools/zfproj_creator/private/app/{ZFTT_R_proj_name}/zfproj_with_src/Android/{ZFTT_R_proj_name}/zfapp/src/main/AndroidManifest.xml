@@ -14,15 +14,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.ZFFramework.ZF_impl.ZFMainEntry"
-            android:label="ZFFramework"
-            android:launchMode="singleTask" />
-        <activity
-            android:name="com.ZFFramework.ZFUIKit_impl.ZFUIRootWindow"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="ZFFramework"
-            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
