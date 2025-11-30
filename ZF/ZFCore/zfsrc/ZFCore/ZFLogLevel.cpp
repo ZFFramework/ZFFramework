@@ -33,5 +33,13 @@ ZFMETHOD_FUNC_INLINE_DEFINE_1(zfbool, ZFLogLevelIsActive
         , ZFMP_IN(ZFLogLevel, level)
         )
 
+// ============================================================
+ZFMETHOD_FUNC_DEFINE_0(zfbool, ZFLogV) {return ZFLogV();}
+ZFMETHOD_FUNC_DEFINE_0(zfbool, ZFLogD) {return ZFLogD();}
+ZFMETHOD_FUNC_DEFINE_0(zfbool, ZFLogI) {return ZFLogI();}
+ZFMETHOD_FUNC_DEFINE_0(zfbool, ZFLogW) {return ZFLogW();}
+ZFMETHOD_FUNC_DEFINE_0(zfbool, ZFLogE) {return ZFLogE();}
+ZFMETHOD_FUNC_DEFINE_0(zfbool, ZFLogA) {return ZFLogA();}
+
 ZF_NAMESPACE_GLOBAL_END
 
