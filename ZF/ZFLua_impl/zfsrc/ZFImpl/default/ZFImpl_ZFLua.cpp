@@ -236,7 +236,7 @@ static const zfchar *_ZFP_ZFImpl_ZFLua_sourceInfo(
     if(srcInfo) {
         return srcInfo;
     }
-    else if(ZFLogLevelIsActive(v_ZFLogLevel::e_Debug) && chunkInfo) {
+    else if(ZFLogD() && chunkInfo) {
         // append special pathInfo, for stack trace when critical error in cpp
         sourceHolder += "{{<<";
         sourceHolder += chunkInfo;
@@ -244,7 +244,7 @@ static const zfchar *_ZFP_ZFImpl_ZFLua_sourceInfo(
         sourceHolder.append(buf, bufLen);
         return sourceHolder;
     }
-    else if(ZFLogLevelIsActive(v_ZFLogLevel::e_Error)) {
+    else if(ZFLogE()) {
         if(bufLen == zfindexMax() || buf[bufLen] == '\0') {
             return buf;
         }

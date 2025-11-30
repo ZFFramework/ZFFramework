@@ -61,6 +61,19 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFLogLevelIsActive
     return (ZFLogLevelDefault() <= level);
 }
 
+/** @brief util to check log level */
+#define ZFLogV() ZFLogLevelIsActive(v_ZFLogLevel::e_Verbose)
+/** @brief util to check log level */
+#define ZFLogD() ZFLogLevelIsActive(v_ZFLogLevel::e_Debug)
+/** @brief util to check log level */
+#define ZFLogI() ZFLogLevelIsActive(v_ZFLogLevel::e_Info)
+/** @brief util to check log level */
+#define ZFLogW() ZFLogLevelIsActive(v_ZFLogLevel::e_Warning)
+/** @brief util to check log level */
+#define ZFLogE() ZFLogLevelIsActive(v_ZFLogLevel::e_Error)
+/** @brief util to check log level */
+#define ZFLogA() ZFLogLevelIsActive(v_ZFLogLevel::e_Assert)
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFLogLevel_h_

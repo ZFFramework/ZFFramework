@@ -46,7 +46,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
 
     ZFArgs zfargs;
     zfargs.paramInit();
-    if(ZFLogLevelIsActive(v_ZFLogLevel::e_Debug)) {
+    if(ZFLogD()) {
         zfstring errorHint;
         for(int i = 0; i < paramCount; ++i) {
             errorHint.removeAll();

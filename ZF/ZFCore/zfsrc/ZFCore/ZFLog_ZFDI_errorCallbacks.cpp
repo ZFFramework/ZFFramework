@@ -29,7 +29,7 @@ private:
     }
     static void _update(ZF_IN const ZFOutput &o) {
         ZFDI_errorCallbacks().removeElement(o);
-        if(ZFLogLevelIsActive(v_ZFLogLevel::e_Debug)) {
+        if(ZFLogD()) {
             ZFDI_errorCallbacks().add(o);
         }
     }
