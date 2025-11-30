@@ -37,7 +37,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, envSummary
             first = zffalse;
         }
         else {
-            ret += ", ";
+            ret += "\n";
         }
         ret += it->first;
         ret += ": ";

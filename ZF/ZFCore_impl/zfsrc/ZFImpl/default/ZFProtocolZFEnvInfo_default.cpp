@@ -8,6 +8,10 @@
     #include <QString>
 #endif
 
+#if ZF_ENV_sys_SDL
+    #include "SDL3/SDL.h"
+#endif
+
 #if ZF_ENV_sys_Windows
     #include <Windows.h>
 #endif
@@ -24,6 +28,13 @@ public:
         #if ZF_ENV_sys_Qt
         {
             ret += QSysInfo::productType().toStdString().c_str();
+            return;
+        }
+        #endif
+
+        #if ZF_ENV_sys_SDL
+        {
+            ret += SDL_GetPlatform();
             return;
         }
         #endif
@@ -49,6 +60,12 @@ public:
         #if ZF_ENV_sys_Qt
         {
             ret += QSysInfo::productVersion().toStdString().c_str();
+            return;
+        }
+        #endif
+
+        #if ZF_ENV_sys_SDL
+        {
             return;
         }
         #endif
@@ -90,11 +107,25 @@ public:
             return;
         }
         #endif
+
+        #if ZF_ENV_sys_SDL
+        {
+            ret += "SDL";
+            return;
+        }
+        #endif
     }
     virtual void frameworkVersion(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt
         {
             ret += QT_VERSION_STR;
+            return;
+        }
+        #endif
+
+        #if ZF_ENV_sys_SDL
+        {
+            ret += zfstr("%s", SDL_GetRevision());
             return;
         }
         #endif
