@@ -19,9 +19,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, isChildOf
         , ZFMP_IN(ZFUIView *, parentToCheck)
         ) {
     if(view != zfnull) {
-        ZFUIView *tmp = parentToCheck;
+        ZFUIView *tmp = view;
         do {
-            if(tmp == view) {
+            if(tmp == parentToCheck) {
                 return zftrue;
             }
             tmp = tmp->parent();

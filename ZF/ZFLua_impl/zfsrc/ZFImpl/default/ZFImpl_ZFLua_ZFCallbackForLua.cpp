@@ -17,6 +17,7 @@ static zfbool _ZFP_ZFCallbackForLua_invoke(
         ) {
     int stackCountPrev = lua_gettop(L) - 2;
     int error = lua_pcall(L, 1, LUA_MULTRET, 0);
+    ZFLuaGC(L);
     if(error != 0) {
         ZFImpl_ZFLua_execute_errorHandle(L
                 , error
@@ -514,6 +515,7 @@ public:
                 int error = luaL_loadbuffer(L, code.cString(), code.length(), code.cString());
                 ZFCoreAssert(error == 0);
                 error = lua_pcall(L, 0, (int)luaLocalFuncNameList.count(), 0);
+                ZFLuaGC(L);
                 ZFCoreAssert(error == 0);
             }
 
@@ -592,6 +594,7 @@ public:
                     lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
                     lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
                     lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
+                    ZFLuaGC(L);
                     zfauto pathInfoHolder;
                     ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
                     lua_pop(L, 2); // []
@@ -607,6 +610,7 @@ public:
                 }
                 else if(strcmp(varName, "ZFLocalPathInfo") == 0) {
                     int error = lua_pcall(L, 0, 1, 0); // [pathInfoObj]
+                    ZFLuaGC(L);
                     if(error != 0) {
                         lua_pop(L, 1);
                         zfstringAppend(errorHint,

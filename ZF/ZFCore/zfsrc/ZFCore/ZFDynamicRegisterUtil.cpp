@@ -1492,9 +1492,7 @@ ZFDynamic &ZFDynamic::staticProperty(
         d->error(zfstr("unable to register staticProperty getter: %s::%s", scope ? scope->scopeNS() : "", propertyName));
         return *this;
     }
-    if(setterAccessType == ZFMethodAccessTypePublic
-            && (scope == zfnull || scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS)
-            ) {
+    if(setterAccessType == ZFMethodAccessTypePublic) {
         const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
                 .methodGenericInvoker(_ZFP_ZFDynamicStaticPropertyGI_setter)
                 .dynamicRegisterUserData(wrap)

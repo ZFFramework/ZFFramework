@@ -30,6 +30,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
     ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
     if(this->gcTask != zfnull) {
         this->gcTask->stop();
+        this->gcTask = zfnull;
     }
 }
 zfautoT<ZFTimer> gcTask;

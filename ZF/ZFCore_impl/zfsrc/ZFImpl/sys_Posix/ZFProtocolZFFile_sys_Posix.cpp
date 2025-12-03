@@ -443,20 +443,39 @@ public:
         }
 
         if(ZFBitTest(flags, v_ZFIOOpenOption::e_Write | v_ZFIOOpenOption::e_Modify)) {
-            int fd = open(
-                    filePath
-                    , ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)
-                    ? O_RDWR | O_CREAT
-                    : O_RDWR | O_CREAT | O_TRUNC
-                    , 0644
-                    );
-            if(fd == -1) {
-                return zfnull;
+            int fd = -1;
+            {
+                zfsynchronize(_lock);
+                fd = open(
+                        filePath
+                        , O_RDWR | O_CREAT
+                        , 0644
+                        );
+                if(fd == -1) {
+                    return zfnull;
+                }
+                if(flock(fd, LOCK_EX | LOCK_NB) == -1) {
+                    close(fd);
+                    return zfnull;
+                }
+
+                if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
+                    close(fd);
+                    int fd = open(
+                            filePath
+                            , O_RDWR | O_CREAT | O_TRUNC
+                            , 0644
+                            );
+                    if(fd == -1) {
+                        return zfnull;
+                    }
+                    if(flock(fd, LOCK_EX | LOCK_NB) == -1) {
+                        close(fd);
+                        return zfnull;
+                    }
+                }
             }
-            if(flock(fd, LOCK_EX | LOCK_NB) == -1) {
-                close(fd);
-                return zfnull;
-            }
+
             FILE *fp = fdopen(fd, sFlag);
             if(fp == NULL) {
                 close(fd);
@@ -541,6 +560,8 @@ public:
             return (zfindex)fwrite(src, 1, (size_t)maxByteSize, (FILE *)token);
         }
     }
+private:
+    zfobj<ZFObject> _lock;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END

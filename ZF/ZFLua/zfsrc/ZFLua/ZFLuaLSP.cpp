@@ -559,6 +559,9 @@ static void _ZFP_ZFLuaLSPGen_spec(
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGen
         , ZFMP_IN(const ZFOutput &, output)
         ) {
+    if(!output) {
+        return;
+    }
     zfstlhashmap<zfstring, zfbool> luaKeywords;
     luaKeywords["and"] = zftrue;
     luaKeywords["break"] = zftrue;
