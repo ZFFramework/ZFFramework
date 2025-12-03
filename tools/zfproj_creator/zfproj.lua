@@ -416,7 +416,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
                 if zfstringIsEqual(fd:name(), _SYNC_EXCLUDE:get(i)) then
                     filtered = zftrue
-                    pathInfo:zfv(zfnull)
+                    zfargs:param0(zfnull)
                     break
                 end
             end
@@ -462,7 +462,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
                 if zfstringIsEqual(fd:name(), _SYNC_EXCLUDE:get(i)) then
                     filtered = zftrue
-                    pathInfo:zfv(zfnull)
+                    zfargs:param0(zfnull)
                     break
                 end
             end
@@ -489,7 +489,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
                 for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
                     if zfstringIsEqual(fd:name(), _SYNC_EXCLUDE:get(i)) then
                         filtered = zftrue
-                        pathInfo:zfv(zfnull)
+                        zfargs:param0(zfnull)
                         break
                     end
                 end
@@ -539,7 +539,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
                 if zfstringIsEqual(fd:name(), ZF_EXCLUDE_FILE_TMP:get(i)) then
                     filtered = zftrue
-                    pathInfo:zfv(zfnull)
+                    zfargs:param0(zfnull)
                     break
                 end
             end

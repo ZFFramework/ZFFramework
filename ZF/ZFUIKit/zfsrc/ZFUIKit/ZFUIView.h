@@ -980,9 +980,12 @@ public:
      * @brief call custom impl for each child
      *
      * the impl's sender would be the owner parent view that calling this method,
-     * param0 would be each child being checking,
-     * impl should set #ZFArgs::eventFiltered if process done,
-     * and may set #ZFArgs::result which would return as return value of this method
+     * param0 would be each child being checking\n
+     * impl can:
+     * -  set #ZFArgs::param0 to null, to prevent checking children of the view (if findRecursively)
+     * -  set #ZFArgs::eventFiltered if process done
+     * -  set #ZFArgs::result, which would return as return value of this method,
+     *   note: the result would be kept acrossing different calls
      */
     ZFMETHOD_DECLARE_3(zfauto, childForEach
             , ZFMP_IN(const ZFListener &, impl)

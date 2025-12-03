@@ -2054,7 +2054,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfauto, childForEach
                 }
             }
         }
-        return zfnull;
+        return zfargs.result();
     }
 
     ZFCoreQueuePOD<ZFUIView *> toFind;
@@ -2066,14 +2066,16 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfauto, childForEach
         if(zfargs.eventFiltered()) {
             return zfargs.result();
         }
-        toFind.addFrom(view->childArray());
-        if(includeInternalViews) {
-            toFind.addFrom(view->d->layerInternalImpl);
-            toFind.addFrom(view->d->layerInternalBg);
-            toFind.addFrom(view->d->layerInternalFg);
+        if(zfargs.param0()) {
+            toFind.addFrom(view->childArray());
+            if(includeInternalViews) {
+                toFind.addFrom(view->d->layerInternalImpl);
+                toFind.addFrom(view->d->layerInternalBg);
+                toFind.addFrom(view->d->layerInternalFg);
+            }
         }
     }
-    return zfnull;
+    return zfargs.result();
 }
 
 ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childWithParam
