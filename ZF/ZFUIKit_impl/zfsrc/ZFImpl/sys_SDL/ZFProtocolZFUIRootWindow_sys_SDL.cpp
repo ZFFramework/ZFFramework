@@ -97,7 +97,7 @@ public:
         ZFImpl_sys_SDL_RootWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_RootWindow);
         nativeWindow->ownerZFUIRootWindow = this->_mainWindow;
         nativeWindow->builtinWindow = zffalse;
-        nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow();
+        nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow(SDL_WINDOW_MODAL);
         ZFImpl_sys_SDL_WindowNotifyCreate(nativeWindow->sdlWindow);
         ZFCoreAssert(nativeWindow->sdlWindow != zfnull);
         nativeWindow->sdlRenderer = SDL_CreateRenderer(nativeWindow->sdlWindow, zfnull);

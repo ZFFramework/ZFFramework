@@ -63,6 +63,7 @@ private:
             ZFCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
             return;
         }
+        SDL_RaiseWindow(builtinWindow());
         ZFImpl_sys_SDL_WindowNotifyCreate(builtinWindow());
         builtinRenderer() = SDL_CreateRenderer(builtinWindow(), zfnull);
         if(builtinRenderer() == zfnull) {
@@ -111,11 +112,11 @@ SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void) {
     return _ZFP_ZFImpl_sys_SDL_mainRenderer;
 }
 
-SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
+SDL_Window *ZFImpl_sys_SDL_CreateWindow(ZF_IN_OPT zfuint windowFlags /* = 0 */) {
     SDL_Window *sdlWindow = SDL_CreateWindow(
         ""
         , 640, 480
-        , 0
+        , windowFlags
             | SDL_WINDOW_RESIZABLE
             | SDL_WINDOW_INPUT_FOCUS
             | SDL_WINDOW_MOUSE_FOCUS

@@ -45,7 +45,7 @@ public:
     void renderRequest(void);
 };
 
-ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowRenderAction, ZFLevelZFFrameworkPostNormal) {
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowRender, ZFLevelZFFrameworkPostNormal) {
     _ZFP_ZFImpl_sys_SDL_RootWindowPrivate *d = (_ZFP_ZFImpl_sys_SDL_RootWindowPrivate *)sdlEvent->user.data1;
     d->renderPending = zffalse;
     if(d->rootWindow != zfnull) {
@@ -74,12 +74,6 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowRenderAction, ZFLevelZFFrameworkPost
     }
     return zftrue;
 }
-ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowRender, ZFLevelZFFrameworkPostNormal) {
-    _ZFP_ZFImpl_sys_SDL_RootWindowPrivate *d = (_ZFP_ZFImpl_sys_SDL_RootWindowPrivate *)sdlEvent->user.data1;
-    ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowRenderAction, d, zfnull);
-    return zftrue;
-}
-
 void _ZFP_ZFImpl_sys_SDL_RootWindowPrivate::renderRequest(void) {
     if(!this->renderPending) {
         this->renderPending = zftrue;

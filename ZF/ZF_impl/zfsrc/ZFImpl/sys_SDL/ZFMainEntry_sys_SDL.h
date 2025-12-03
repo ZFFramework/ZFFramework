@@ -21,7 +21,7 @@ extern ZFLIB_ZF_impl SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void);
 /**
  * @brief create window by default setting
  */
-extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
+extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(ZF_IN_OPT zfuint windowFlags = 0);
 
 /**
  * @brief get preferred pixel format for app
