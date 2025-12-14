@@ -169,6 +169,15 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * param0 is a #v_ZFUISize indicates sizeHintOrig
+     * (max size this view can take, before applying #ZFUILayoutParam::margin),
+     * param1 is a #v_ZFUISizeParam indicates sizeParam,
+     * you may even modify this view's #layoutParam during this method
+     */
+    ZFEVENT(ViewLayoutOnMeasurePrepare)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * param0 is a #ZFUIViewMeasureResult,
      * you may change the measured size to override the measure result
      */
@@ -178,7 +187,8 @@ public:
      *
      * #viewFrame would be updated before this method,
      * use #viewFramePrev if necessary,
-     * you may safely modify children's #layoutParam during this method
+     * you may safely modify children's #layoutParam during this method,
+     * use #E_ViewLayoutOnMeasurePrepare if you want to modify this view's #layoutParam
      */
     ZFEVENT(ViewLayoutOnLayoutPrepare)
     /**
@@ -583,8 +593,7 @@ public:
      * use #nativeImplViewMarginUpdate to update this value,
      * and it's ensured to be called during #ZFObject::objectOnInitFinish\n
      * subclass should override #nativeImplViewMarginImplUpdate to implement custom margin,
-     * and manually call #nativeImplViewMarginUpdate if necessary\n
-     * this value can also be controlled by app level code by #nativeImplViewMarginCustom
+     * and manually call #nativeImplViewMarginUpdate if necessary
      */
     ZFMETHOD_DECLARE_0(const ZFUIMargin &, nativeImplViewMargin)
     /**
@@ -596,12 +605,6 @@ public:
      * @brief frame of #nativeImplView
      */
     ZFMETHOD_DECLARE_0(const ZFUIRect &, nativeImplViewFrame)
-
-    /**
-     * @brief see #nativeImplViewMargin, #ZFUIMarginZero by default
-     */
-    ZFPROPERTY_ASSIGN(ZFUIMargin, nativeImplViewMarginCustom)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, nativeImplViewMarginCustom)
 
 protected:
     /**
@@ -869,11 +872,13 @@ public:
      * @brief measure the view
      *
      * call #layoutOnMeasure to see the needed size for this view\n
+     * note the sizeHintOrig is the max size this view can take,
+     * before applying #ZFUILayoutParam::margin of this view\n
      * note that internal views won't be measured
      * @see layoutMeasuredSize
      */
     ZFMETHOD_DECLARE_2(const ZFUISize &, layoutMeasure
-            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISize &, sizeHintOrig)
             , ZFMP_IN(const ZFUISizeParam &, sizeParam)
             )
     /**
@@ -903,6 +908,14 @@ protected:
      * @brief called during #layoutRequest
      */
     virtual void layoutOnLayoutRequest(void);
+    /**
+     * @brief called during #layoutMeasure
+     */
+    virtual inline void layoutOnMeasurePrepare(
+            ZF_IN const ZFUISize &sizeHintOrig
+            , ZF_IN const ZFUISizeParam &sizeParam
+            ) {
+    }
     /**
      * @brief called by #layoutMeasure to decide the view's size
      *

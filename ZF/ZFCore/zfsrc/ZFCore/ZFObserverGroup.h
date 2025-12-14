@@ -84,6 +84,12 @@ public:
 
 public:
     /** @brief see #ZFObserverGroup */
+    zffinal const ZFObserverGroup &on(
+            ZF_IN const zfstring &eventName
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            ) const;
+    /** @brief see #ZFObserverGroup */
     zffinal inline const ZFObserverGroup &on(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &observer

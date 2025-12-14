@@ -302,11 +302,10 @@ public:
 public:
     // ============================================================
     /** @brief see #layoutParamApply */
-    ZFMETHOD_DECLARE_STATIC_4(void, layoutParamApplyT
+    ZFMETHOD_DECLARE_STATIC_3(void, layoutParamApplyT
             , ZFMP_OUT(ZFUIRect &, ret)
             , ZFMP_IN(const ZFUIRect &, rect)
             , ZFMP_IN(ZFUIView *, child)
-            , ZFMP_IN(ZFUILayoutParam *, lp)
             )
     /**
      * @brief calculate single child's frame using logic of #ZFUILayoutParam
@@ -315,30 +314,9 @@ public:
      * it's declared for convenient for subclass to layout child
      * using parent's layout logic
      */
-    ZFMETHOD_DECLARE_STATIC_3(ZFUIRect, layoutParamApply
+    ZFMETHOD_DECLARE_STATIC_2(ZFUIRect, layoutParamApply
             , ZFMP_IN(const ZFUIRect &, rect)
             , ZFMP_IN(ZFUIView *, child)
-            , ZFMP_IN(ZFUILayoutParam *, lp)
-            )
-
-    /** @brief see #layoutParamApply */
-    ZFMETHOD_DECLARE_STATIC_7(void, layoutParamApplyT
-            , ZFMP_OUT(ZFUIRect &, ret)
-            , ZFMP_IN(const ZFUIRect &, rect)
-            , ZFMP_IN(ZFUIView *, child)
-            , ZFMP_IN(const ZFUISize &, sizeHint)
-            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
-            , ZFMP_IN(const ZFUIAlignFlags &, align)
-            , ZFMP_IN(const ZFUIMargin &, margin)
-            )
-    /** @brief see #layoutParamApply */
-    ZFMETHOD_DECLARE_STATIC_6(ZFUIRect, layoutParamApply
-            , ZFMP_IN(const ZFUIRect &, rect)
-            , ZFMP_IN(ZFUIView *, child)
-            , ZFMP_IN(const ZFUISize &, sizeHint)
-            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
-            , ZFMP_IN(const ZFUIAlignFlags &, align)
-            , ZFMP_IN(const ZFUIMargin &, margin)
             )
 
     /**

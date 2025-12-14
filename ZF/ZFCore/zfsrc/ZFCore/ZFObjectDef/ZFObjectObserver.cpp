@@ -389,6 +389,21 @@ void ZFObserver::observerNotifyReverselyWithSender(
     }
 }
 
+void ZFObserver::on(
+        ZF_IN const zfstring &eventName
+        , ZF_IN const ZFListener &observer
+        , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
+        ) {
+    const ZFClass *cls = this->observerOwner() ? this->observerOwner()->classData() : zfnull;
+    zfidentity eventId = ZFEventIdForEventName(eventName, cls);
+    ZFCoreAssertWithMessage(eventId != zfidentityInvalid()
+            , "no such event \"%s\" for class: %s"
+            , eventName
+            , cls
+            );
+    this->observerAdd(eventId, observer, observerLevel);
+}
+
 void ZFObserver::observerHasAddStateAttach(
         ZF_IN zfidentity eventId
         , ZF_IN_OUT zfuint *flag
@@ -469,6 +484,31 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
+zfidentity ZFEventIdForEventName(
+        ZF_IN const zfstring &eventName
+        , ZF_IN const ZFClass *cls
+        ) {
+    zfidentity eventId = ZFIdMapIdForName(eventName);
+    if(eventId != zfidentityInvalid()) {
+        return eventId;
+    }
+    if(cls != zfnull) {
+        eventId = ZFIdMapIdForName(zfstr("%s.E_%s", cls->classNameFull(), eventName));
+        if(eventId != zfidentityInvalid()) {
+            return eventId;
+        }
+        ZFCoreArray<const ZFClass *> allParent = cls->parentGetAll();
+        for(zfindex i = 0; i < allParent.count(); ++i) {
+            eventId = ZFIdMapIdForName(zfstr("%s.E_%s", allParent[i]->classNameFull(), eventName));
+            if(eventId != zfidentityInvalid()) {
+                return eventId;
+            }
+        }
+    }
+    return ZFIdMapIdForName(zfstr("%s.E_%s", ZF_NAMESPACE_NAME(ZFGlobalEvent), eventName));
+}
+
+// ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFObserver &, ZFGlobalObserver)
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFEventNameForId
@@ -482,6 +522,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFEventDynamicRegister
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFEventDynamicUnregister
         , ZFMP_IN(zfidentity, idValue)
+        )
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, ZFEventIdForEventName
+        , ZFMP_IN(const zfstring &, eventName)
+        , ZFMP_IN(const ZFClass *, cls)
         )
 
 ZF_NAMESPACE_GLOBAL_END

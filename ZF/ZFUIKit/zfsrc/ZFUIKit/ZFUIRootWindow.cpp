@@ -330,9 +330,9 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfanyT<ZFUIRootView>, rootView) {
 ZFUIRect ZFUIRootWindow::_ZFP_ZFUIRootWindow_measureWindow(ZF_IN const ZFUIRect &rootRefRect) {
     // use UIScaleForImpl instead of UIScaleFixed, to ensure native window's size unit
     ZFUIRect ret = ZFUILayoutParam::layoutParamApply(
-        ZFUIRectApplyScaleReversely(rootRefRect, this->rootView()->UIScaleForImpl()),
-        this->rootView(),
-        this->layoutParam());
+        ZFUIRectApplyScaleReversely(rootRefRect, this->rootView()->UIScaleForImpl())
+        , this->rootView()
+        );
     d->windowSize.width = ret.width;
     d->windowSize.height = ret.height;
     return ZFUIRectApplyScale(ret, this->rootView()->UIScaleForImpl());

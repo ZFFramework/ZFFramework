@@ -45,7 +45,6 @@ static void _ZFP_ZFUICellView_measureContent(
     ZFUISize cellCenterSizeHint = sizeHint;
     if(cellCenterSizeHint.width >= 0) {
         cellCenterSizeHint.width -= cellIconSize.width + cellAccessorySize.width;
-        cellCenterSizeHint.width -= ZFUIMarginGetWidth(view->cellCenterContainer()->layoutParam()->margin());
         if(cellCenterSizeHint.width < 0) {
             cellCenterSizeHint.width = 0;
         }

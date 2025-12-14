@@ -34,6 +34,12 @@ public:
      */
     ZFMETHOD_DECLARE_0(const ZFCoreArray<zfautoT<ZFUIWindow> > &, windowList)
 
+public:
+    zfoverride
+    virtual void layoutParam(ZF_IN ZFUILayoutParam *layoutParam);
+    zfoverride
+    virtual zfanyT<ZFUILayoutParam> layoutParam(void);
+
 protected:
     zfoverride
     virtual void viewOnAddToParent(ZF_IN ZFUIView *parent);

@@ -467,6 +467,20 @@ void ZFObserverGroup::observerNotifyReverselyWithSender(
     realTarget.observerNotifyReverselyWithSender(customSender, eventId, param0, param1);
 }
 
+const ZFObserverGroup &ZFObserverGroup::on(
+        ZF_IN const zfstring &eventName
+        , ZF_IN const ZFListener &observer
+        , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
+        ) const {
+    if(d->target) {
+        d->target->on(eventName, observer, observerLevel);
+    }
+    else if(d->targetObserver) {
+        d->targetObserver->on(eventName, observer, observerLevel);
+    }
+    return *this;
+}
+
 ZFObserverGroup::ZFObserverGroup(
         ZF_IN ZFObject *owner
         , ZF_IN const ZFObserver &target
@@ -613,6 +627,11 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverGroup, void, observerNotif
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
         , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, on
+        , ZFMP_IN(const zfstring &, eventName)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, on
         , ZFMP_IN(zfidentity, eventId)

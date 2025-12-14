@@ -196,6 +196,12 @@ public:
 
 public:
     /** @brief util to #observerAdd */
+    zffinal void on(
+            ZF_IN const zfstring &eventName
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            );
+    /** @brief util to #observerAdd */
     zffinal inline void on(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &observer
@@ -396,6 +402,25 @@ inline void ZFEventDynamicUnregister(ZF_IN zfidentity idValue) {
 
 ZF_NAMESPACE_BEGIN_REGISTER(ZFGlobalEvent, ZF_NAMESPACE_GLOBAL)
 ZF_NAMESPACE_END(ZFGlobalEvent)
+
+// ============================================================
+/**
+ * @brief recursively find evnet id by simple event name
+ *
+ * compared to #ZFEventIdForName:
+ * -  the idName for #ZFEventIdForName should be like `YourClass.E_YourEventName`
+ * -  the eventName for #ZFEventIdForEventName should be like `YourEventName`
+ *
+ * further more, this method would recursively search from cls
+ * to all of its parent classes, and finally #ZFGlobalEvent
+ * until found a match
+ *
+ * this method was designed for convenient only, take care of performance
+ */
+extern ZFLIB_ZFCore zfidentity ZFEventIdForEventName(
+        ZF_IN const zfstring &eventName
+        , ZF_IN const ZFClass *cls
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectObserver_h_

@@ -481,22 +481,13 @@ void ZFObject::on(
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) {
-    zfidentity eventId = ZFIdMapIdForName(eventName);
-    if(eventId != zfidentityInvalid()) {
-        return this->observerAdd(eventId, observer, observerLevel);
-    }
-    eventId = ZFIdMapIdForName(zfstr("%s.E_%s", this->classData()->classNameFull(), eventName));
-    if(eventId != zfidentityInvalid()) {
-        return this->observerAdd(eventId, observer, observerLevel);
-    }
-    ZFCoreArray<const ZFClass *> allParent = this->classData()->parentGetAll();
-    for(zfindex i = 0; i < allParent.count(); ++i) {
-        eventId = ZFIdMapIdForName(zfstr("%s.E_%s", allParent[i]->classNameFull(), eventName));
-        if(eventId != zfidentityInvalid()) {
-            return this->observerAdd(eventId, observer, observerLevel);
-        }
-    }
-    ZFCoreLogTrim("no such event \"%s\" for class: %s", eventName, this->classData()->classNameFull());
+    zfidentity eventId = ZFEventIdForEventName(eventName, this->classData());
+    ZFCoreAssertWithMessage(eventId != zfidentityInvalid()
+            , "no such event \"%s\" for class: %s"
+            , eventName
+            , this->classData()
+            );
+    this->observerAdd(eventId, observer, observerLevel);
 }
 
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId) {

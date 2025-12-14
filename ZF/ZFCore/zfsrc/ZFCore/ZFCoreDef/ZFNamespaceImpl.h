@@ -30,6 +30,10 @@ extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns);
 #define ZF_NAMESPACE_CURRENT() \
     _ZFP_ZF_NAMESPACE_NOT_REGISTERED<void>()
 
+/** @brief see #ZF_NAMESPACE_CURRENT */
+#define ZF_NAMESPACE_NAME(ns) \
+    ns::_ZFP_ZF_NAMESPACE_NOT_REGISTERED<void>()
+
 // ============================================================
 /**
  * @brief skip "zf." in "zf.NS0.NS1.funcName"
