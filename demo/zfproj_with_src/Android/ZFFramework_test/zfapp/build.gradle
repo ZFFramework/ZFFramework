@@ -59,6 +59,9 @@ android {
     }
     sourceSets {
         main {
+            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
+            }
             java.srcDirs += ZF_ROOT_PATH + '/ZF/ZF_impl/zfsrc/ZFImpl/sys_Android/java'
             java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfsrc/ZFImpl/sys_Android/java'
             java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfsrc/ZFImpl/sys_Android/java'
@@ -76,7 +79,7 @@ android {
 }
 
 def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
-    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.xml").exists()) {
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.xml").exists()) {
         owner.implementation project(":zfprojConfig:${name}")
     }
 }
@@ -102,13 +105,13 @@ dependencies {
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFNet_impl')
 }
 
-if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
-    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
+if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle'
 }
 
 def zfprojConfig_gradle(ZF_ROOT_PATH, type, name) {
-    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.gradle").exists()) {
-        apply from: "${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.gradle"
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.gradle").exists()) {
+        apply from: "${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.gradle"
     }
 }
 

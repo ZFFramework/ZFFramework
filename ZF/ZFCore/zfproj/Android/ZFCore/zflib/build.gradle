@@ -39,8 +39,8 @@ android {
         main {
             java.srcDirs += this.projectDir.getAbsolutePath() + '/../../../../zfsrc/ZFImpl/sys_Android/java'
             assets.srcDirs += ['assets']
-            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.xml').exists()) {
-                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig.xml'
+            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
             }
         }
     }
@@ -55,8 +55,8 @@ dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
 }
 
-if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
-    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
+if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle'
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os

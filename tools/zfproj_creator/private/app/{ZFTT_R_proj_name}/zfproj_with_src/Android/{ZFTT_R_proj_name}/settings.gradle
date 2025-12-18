@@ -25,7 +25,7 @@ include ':zfapp'
 def ZF_ROOT_PATH = file('../../../../../ZFFramework').absolutePath
 
 def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
-    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.xml").exists()) {
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.xml").exists()) {
         owner.include ":zfprojConfig:${name}"
         owner.project(":zfprojConfig:${name}").projectDir = new File("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zfprojConfigHelper")
     }

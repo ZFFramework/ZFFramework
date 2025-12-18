@@ -58,7 +58,10 @@ android {
         buildConfig = true
     }
     sourceSets {
-        main {{ZFTT_C_impl_require_0}
+        main {
+            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
+            }{ZFTT_C_impl_require_0}
             java.srcDirs += ZF_ROOT_PATH + '/ZF/{ZFTT_R_impl_name_0}/zfsrc/ZFImpl/sys_Android/java'{ZFTT_CE}{ZFTT_C_impl_require_1}
             java.srcDirs += ZF_ROOT_PATH + '/ZF/{ZFTT_R_impl_name_1}/zfsrc/ZFImpl/sys_Android/java'{ZFTT_CE}{ZFTT_C_impl_require_2}
             java.srcDirs += ZF_ROOT_PATH + '/ZF/{ZFTT_R_impl_name_2}/zfsrc/ZFImpl/sys_Android/java'{ZFTT_CE}{ZFTT_C_impl_require_3}
@@ -133,7 +136,7 @@ android {
 }
 
 def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
-    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.xml").exists()) {
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.xml").exists()) {
         owner.implementation project(":zfprojConfig:${name}")
     }
 }
@@ -270,13 +273,13 @@ dependencies {
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZFModule', '{ZFTT_R_impl_ext_name_31}'){ZFTT_CE}
 }
 
-if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
-    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
+if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle'
 }
 
 def zfprojConfig_gradle(ZF_ROOT_PATH, type, name) {
-    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.gradle").exists()) {
-        apply from: "${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig.gradle"
+    if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.gradle").exists()) {
+        apply from: "${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.gradle"
     }
 }
 {ZFTT_C_lib_require_0}

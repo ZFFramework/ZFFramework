@@ -58,6 +58,9 @@ android {
     }
     sourceSets {
         main {
+            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
+            }
         }
     }
     externalNativeBuild {
@@ -88,8 +91,8 @@ dependencies {
     implementation fileTree(includes: ['*.aar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFNet_impl/aar')
 }
 
-if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle').exists()) {
-    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig.gradle'
+if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle'
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace 'com.ZFFramework.ZFNet'
+    namespace 'com.ZFFramework.zfprojConfig.ZFNet'
     compileSdk 35
     sourceSets {
         main {
-            if (file(this.projectDir.getAbsolutePath() + '/../zflib/zfprojConfig.xml').exists()) {
-                manifest.srcFile this.projectDir.getAbsolutePath() + '/../zflib/zfprojConfig.xml'
+            if (file(this.projectDir.getAbsolutePath() + '/../zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/../zflib/zfprojConfig/zfprojConfig.xml'
             }
         }
     }
