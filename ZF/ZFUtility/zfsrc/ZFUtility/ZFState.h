@@ -19,6 +19,18 @@ zfclass ZFLIB_ZFUtility ZFState : zfextend ZFObject {
     ZFOBJECT_SINGLETON_DECLARE(ZFState, instance)
 
 public:
+    // ============================================================
+    // events
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called before reading or writting local state file,
+     * param0 is the pathInfo about to be opened,
+     * you may modify it to achieve advanced forward
+     */
+    ZFEVENT(StateFileUpdate)
+
+public:
     /**
      * @brief path to store state file
      *

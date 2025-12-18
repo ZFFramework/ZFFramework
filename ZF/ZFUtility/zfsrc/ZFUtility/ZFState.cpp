@@ -15,6 +15,8 @@ ZF_GLOBAL_INITIALIZER_END(ZFStateAutoSave)
 ZFOBJECT_REGISTER(ZFState)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFState, instance, ZFLevelZFFrameworkEssential)
 
+ZFEVENT_REGISTER(ZFState, StateFileUpdate)
+
 zfclassNotPOD _ZFP_ZFStateData {
 public:
     zftimet expireTime; // 0 for infinite
@@ -60,7 +62,11 @@ public:
             if(!zfargs.param0()) {return;}
             ZFCoreMap *mNew = zfpoolNew(ZFCoreMap);
             zfobj<ZFValueHolder> holder((void *)mNew, ZFValueHolderTypePoolObject(ZFCoreMap *));
-            _loadAsyncImpl(*mNew, owner->stateFileFixed(), zfargs);
+            _loadImpl(
+                    *mNew
+                    , _stateFileIO(zfargs, owner->stateFileFixed(), zftrue)
+                    , zfargs
+                    );
             zfargs.result(holder);
         } ZFLISTENER_END()
         ZFLISTENER_1(loadFinish
@@ -161,15 +167,39 @@ private:
         this->pending.removeAll();
         this->changed = zftrue;
     }
+    static zfautoT<ZFIOToken> _stateFileIO(
+            ZF_IN const ZFArgs &zfargs
+            , ZF_IN const ZFPathInfo &pathInfo
+            , ZF_IN zfbool readOnly
+            ) {
+        if(readOnly && !ZFIOIsExist(pathInfo)) {
+            return zfnull;
+        }
+        // use modify to prevent concurrent R/W
+        zfautoT<ZFIOToken> io = ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Modify);
+        if(!io) {
+            // other process may be writting, retry some times
+            for(zfindex i = 0; i < 2; ++i) {
+                if(!zfargs.param0()) {return zfnull;}
+                ZFThread::sleep(200);
+                if(!zfargs.param0()) {return zfnull;}
+                io = ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Modify);
+                if(io) {
+                    return io;
+                }
+            }
+        }
+        return zfnull;
+    }
     // file format:
     //     expireTime:encode(key):encode(value)
-    static void _loadAsyncImpl(
+    static void _loadImpl(
             ZF_OUT ZFCoreMap &mNew
-            , ZF_IN const ZFPathInfo &pathInfo
+            , ZF_IN ZFIOToken *io
             , ZF_IN const ZFArgs &zfargs
             ) {
         if(!zfargs.param0()) {return;}
-        ZFInput input = ZFInputForPathInfo(pathInfo);
+        ZFInput input = ZFInputForPathInfoToken(io);
         if(!input) {return;}
         zftimet curTime = ZFTime::currentTime();
         zfstring line;
@@ -204,7 +234,36 @@ private:
             ZF_IN ZFState *owner
             , ZF_IN const ZFArgs &zfargs
             ) {
+
+        // try open
+        if(!zfargs.param0()) {return;}
+        zfautoT<ZFIOToken> io = _stateFileIO(zfargs, owner->stateFileFixed(), zffalse);
+        if(!io) {return;}
         _ZFP_ZFStatePrivate *d = owner->d;
+
+        // load and merge, to prevent concurrent save/load across different process
+        if(!zfargs.param0()) {return;}
+        ZFCoreMap mNew;
+        _loadImpl(mNew, io, zfargs);
+        if(!zfargs.param0()) {return;}
+        zfsynchronizeLock(owner);
+        for(zfiter it = mNew.iter(); it; ++it) {
+            zfiter itExist = d->m.iterFind(mNew.iterKey(it));
+            if(itExist) {
+                _ZFP_ZFStateData *item = mNew.iterValue<_ZFP_ZFStateData *>(it);
+                _ZFP_ZFStateData *itemExist = d->m.iterValue<_ZFP_ZFStateData *>(itExist);
+                if(zffalse
+                        || (item->expireTime > itemExist->expireTime)
+                        || (item->expireTime == 0 && item->value != itemExist->value)
+                        ) {
+                    d->m.iterValue(itExist, *(mNew.iterValue(it)));
+                }
+            }
+        }
+        zfsynchronizeUnlock(owner);
+
+        // save
+        if(!zfargs.param0()) {return;}
         zfsynchronizeLock(owner);
         ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > l;
         for(zfiter it = d->m.iter(); it; ++it) {
@@ -212,18 +271,7 @@ private:
         }
         zfsynchronizeUnlock(owner);
 
-        if(!zfargs.param0()) {return;}
-        ZFOutput output = ZFOutputForPathInfo(owner->stateFileFixed());
-        if(!output) {
-            // other process may be writting, retry some times
-            for(zfindex i = 0; i < 2; ++i) {
-                ZFThread::sleep(200);
-                output = ZFOutputForPathInfo(owner->stateFileFixed());
-                if(output) {
-                    break;
-                }
-            }
-        }
+        ZFOutput output = ZFOutputForPathInfoToken(io);
         if(!output) {return;}
         zftimet curTime = ZFTime::currentTime();
         zfstring line;
@@ -275,12 +323,17 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFState, ZFPathInfo, stateFile) {
     }
 }
 ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileFixed) {
+    zfobj<v_ZFPathInfo> tmp;
     if(this->stateFile().isEmpty()) {
-        return ZFPathInfo(ZFPathType_settingPath(), "ZFState");
+        tmp->zfv.pathType(ZFPathType_settingPath());
+        tmp->zfv.pathData("ZFState");
     }
     else {
-        return this->stateFile();
+        tmp->zfv.pathType(this->stateFile().pathType());
+        tmp->zfv.pathData(this->stateFile().pathData());
     }
+    this->observerNotify(zfself::E_StateFileUpdate(), tmp);
+    return tmp->zfv;
 }
 
 ZFMETHOD_DEFINE_0(ZFState, zfbool, ready) {
