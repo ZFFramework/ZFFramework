@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZFAlgorithm_impl"
+rootProject.name = 'ZFAlgorithm_impl'
 include ':zflib'
 

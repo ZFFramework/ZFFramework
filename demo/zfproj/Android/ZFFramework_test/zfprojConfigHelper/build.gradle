@@ -1,0 +1,16 @@
+plugins {
+    alias(libs.plugins.android.library)
+}
+
+android {
+    namespace 'com.ZFFramework.zfprojConfig.ZFFramework_test'
+    compileSdk 35
+    sourceSets {
+        main {
+            if (file(this.projectDir.getAbsolutePath() + '/../zfapp/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.getAbsolutePath() + '/../zfapp/zfprojConfig/zfprojConfig.xml'
+            }
+        }
+    }
+}
+

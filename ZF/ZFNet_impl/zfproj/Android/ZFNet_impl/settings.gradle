@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZFNet_impl"
+rootProject.name = 'ZFNet_impl'
 include ':zflib'
 

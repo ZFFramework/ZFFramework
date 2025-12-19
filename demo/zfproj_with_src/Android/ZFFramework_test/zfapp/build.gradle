@@ -59,9 +59,6 @@ android {
     }
     sourceSets {
         main {
-            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
-                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
-            }
             java.srcDirs += ZF_ROOT_PATH + '/ZF/ZF_impl/zfsrc/ZFImpl/sys_Android/java'
             java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFCore_impl/zfsrc/ZFImpl/sys_Android/java'
             java.srcDirs += ZF_ROOT_PATH + '/ZF/ZFAlgorithm_impl/zfsrc/ZFImpl/sys_Android/java'
@@ -86,6 +83,9 @@ def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    if (file('./zfprojConfig/zfprojConfig.xml').exists()) {
+        implementation project(':zfprojConfig:ZFFramework_test')
+    }
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFCore')
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFAlgorithm')
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFUtility')

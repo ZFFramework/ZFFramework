@@ -22,16 +22,23 @@ rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\build" >nul 2>&1
 del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\local.properties" >nul 2>&1
 del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\*.iml" >nul 2>&1
 
+rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zflib\.cxx" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zflib\.externalNativeBuild" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zflib\build" >nul 2>&1
-rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zflib\.cxx" >nul 2>&1
 del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\zflib\*.iml" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zflib\src\main\assets\zfres" >nul 2>&1
 
+rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfapp\.cxx" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfapp\.externalNativeBuild" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfapp\build" >nul 2>&1
 del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\zfapp\*.iml" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfapp\src\main\assets\zfres" >nul 2>&1
+
+rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfprojConfigHelper\.cxx" >nul 2>&1
+rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfprojConfigHelper\.externalNativeBuild" >nul 2>&1
+rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfprojConfigHelper\build" >nul 2>&1
+del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\zfprojConfigHelper\*.iml" >nul 2>&1
+rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\zfprojConfigHelper\src\main\assets\zfres" >nul 2>&1
 
 exit /b 0
 

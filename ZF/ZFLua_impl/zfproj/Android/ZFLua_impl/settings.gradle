@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZFLua_impl"
+rootProject.name = 'ZFLua_impl'
 include ':zflib'
 

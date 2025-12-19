@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZFUIKit_impl"
+rootProject.name = 'ZFUIKit_impl'
 include ':zflib'
 

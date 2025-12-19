@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZFAppUtil"
+rootProject.name = 'ZFAppUtil'
 include ':zflib'
 

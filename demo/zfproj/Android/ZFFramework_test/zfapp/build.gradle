@@ -58,9 +58,6 @@ android {
     }
     sourceSets {
         main {
-            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
-                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
-            }
         }
     }
     externalNativeBuild {
@@ -72,6 +69,9 @@ android {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    if (file('./zfprojConfig/zfprojConfig.xml').exists()) {
+        implementation project(':zfprojConfig:ZFFramework_test')
+    }
     implementation fileTree(includes: ['*.aar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/aar')
     implementation fileTree(includes: ['*.aar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/aar')
     implementation fileTree(includes: ['*.aar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFUtility/aar')

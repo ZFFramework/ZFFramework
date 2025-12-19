@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ZFUIWidget"
+rootProject.name = 'ZFUIWidget'
 include ':zflib'
 

@@ -19,5 +19,11 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "{ZFTT_R_proj_name}"
+rootProject.name = '{ZFTT_R_proj_name}'
 include ':zfapp'
+
+if (file('./zfapp/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig:{ZFTT_R_proj_name}'
+    project(':zfprojConfig:{ZFTT_R_proj_name}').projectDir = new File(file('./zfprojConfigHelper').absolutePath)
+}
+

@@ -58,10 +58,7 @@ android {
         buildConfig = true
     }
     sourceSets {
-        main {
-            if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
-                manifest.srcFile this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml'
-            }{ZFTT_C_impl_require_0}
+        main {{ZFTT_C_impl_require_0}
             java.srcDirs += ZF_ROOT_PATH + '/ZF/{ZFTT_R_impl_name_0}/zfsrc/ZFImpl/sys_Android/java'{ZFTT_CE}{ZFTT_C_impl_require_1}
             java.srcDirs += ZF_ROOT_PATH + '/ZF/{ZFTT_R_impl_name_1}/zfsrc/ZFImpl/sys_Android/java'{ZFTT_CE}{ZFTT_C_impl_require_2}
             java.srcDirs += ZF_ROOT_PATH + '/ZF/{ZFTT_R_impl_name_2}/zfsrc/ZFImpl/sys_Android/java'{ZFTT_CE}{ZFTT_C_impl_require_3}
@@ -142,7 +139,10 @@ def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
 }
 
 dependencies {
-    implementation fileTree(includes: ['*.jar'], dir: 'libs'){ZFTT_C_lib_require_0}
+    implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    if (file('./zfprojConfig/zfprojConfig.xml').exists()) {
+        implementation project(':zfprojConfig:{ZFTT_R_proj_name}')
+    }{ZFTT_C_lib_require_0}
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', '{ZFTT_R_lib_name_0}'){ZFTT_CE}{ZFTT_C_lib_require_1}
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', '{ZFTT_R_lib_name_1}'){ZFTT_CE}{ZFTT_C_lib_require_2}
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', '{ZFTT_R_lib_name_2}'){ZFTT_CE}{ZFTT_C_lib_require_3}
