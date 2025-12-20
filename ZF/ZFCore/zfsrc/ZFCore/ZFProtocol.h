@@ -537,13 +537,17 @@ private:
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass) \
     }; \
-    ZFOUTPUT_TYPE(ImplementationClass, {zftToStringT(s, (ZFProtocol const &)v);}) \
+    ZFOUTPUT_TYPE(ImplementationClass, {zftToStringT(s, (ZFProtocol const &)v);})
+#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
+    _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
+
+#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_REG_(ImplementationName, ImplementationClass) \
     ZF_STATIC_REGISTER_INIT(ZFPImplReg_##ImplementationClass) { \
         ImplementationClass::_ZFP_ZFProtocolRegister(); \
     } \
     ZF_STATIC_REGISTER_END(ZFPImplReg_##ImplementationClass)
-#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
-    _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
+#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_REG(ImplementationName, ImplementationClass) \
+    _ZFP_ZFPROTOCOL_IMPLEMENTATION_REG_(ImplementationName, ImplementationClass)
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction) \
     static zfbool _ZFP_ZFProtocolIsAvailableCk(void) { \
@@ -706,6 +710,12 @@ private:
  * @brief for more information, please refer to #ZFPROTOCOL_IMPLEMENTATION_BEGIN
  */
 #define ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName) \
+    _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName)) \
+    _ZFP_ZFPROTOCOL_IMPLEMENTATION_REG(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName))
+/**
+ * @brief for more information, please refer to #ZFPROTOCOL_IMPLEMENTATION_BEGIN
+ */
+#define ZFPROTOCOL_IMPLEMENTATION_END_WITHOUT_REG(ImplementationName) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName))
 /**
  * @brief for more information, please refer to #ZFPROTOCOL_IMPLEMENTATION_BEGIN
