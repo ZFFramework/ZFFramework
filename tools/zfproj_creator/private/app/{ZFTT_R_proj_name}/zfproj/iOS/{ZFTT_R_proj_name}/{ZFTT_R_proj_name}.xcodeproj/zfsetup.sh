@@ -12,11 +12,144 @@ sh "${iOS_SRCROOT}/../../../../zfsetup.sh"
 
 ZF_ROOT_PATH=${iOS_SRCROOT}/../../../../../ZFFramework
 
-COMPILE_DST_PATH=${iOS_SRCROOT}/ProjectFiles
-sh $ZF_ROOT_PATH/tools/common/unity_build.sh "${COMPILE_DST_PATH}/zfgensrc_{ZFTT_R_proj_name}.mm" "${iOS_SRCROOT}/../../../zfsrc"
+PLIST_DST_PATH=${iOS_SRCROOT}/Info_tmp.plist
+cp -f "${iOS_SRCROOT}/Info_base.plist" "$PLIST_DST_PATH" >/dev/null 2>&1{ZFTT_C_lib_require_0}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_0}/zfproj/iOS/{ZFTT_R_lib_name_0}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_0}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_0}/zfproj/iOS/{ZFTT_R_lib_name_0}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_1}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_1}/zfproj/iOS/{ZFTT_R_lib_name_1}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_2}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_2}/zfproj/iOS/{ZFTT_R_lib_name_2}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_3}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_3}/zfproj/iOS/{ZFTT_R_lib_name_3}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_4}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_4}/zfproj/iOS/{ZFTT_R_lib_name_4}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_5}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_5}/zfproj/iOS/{ZFTT_R_lib_name_5}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_6}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_6}/zfproj/iOS/{ZFTT_R_lib_name_6}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_7}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_7}/zfproj/iOS/{ZFTT_R_lib_name_7}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_8}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_8}/zfproj/iOS/{ZFTT_R_lib_name_8}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_9}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_9}/zfproj/iOS/{ZFTT_R_lib_name_9}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_10}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_10}/zfproj/iOS/{ZFTT_R_lib_name_10}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_11}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_11}/zfproj/iOS/{ZFTT_R_lib_name_11}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_12}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_12}/zfproj/iOS/{ZFTT_R_lib_name_12}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_13}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_13}/zfproj/iOS/{ZFTT_R_lib_name_13}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_14}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_14}/zfproj/iOS/{ZFTT_R_lib_name_14}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_15}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_15}/zfproj/iOS/{ZFTT_R_lib_name_15}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_16}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_16}/zfproj/iOS/{ZFTT_R_lib_name_16}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_17}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_17}/zfproj/iOS/{ZFTT_R_lib_name_17}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_18}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_18}/zfproj/iOS/{ZFTT_R_lib_name_18}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_19}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_19}/zfproj/iOS/{ZFTT_R_lib_name_19}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_20}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_20}/zfproj/iOS/{ZFTT_R_lib_name_20}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_21}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_21}/zfproj/iOS/{ZFTT_R_lib_name_21}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_22}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_22}/zfproj/iOS/{ZFTT_R_lib_name_22}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_23}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_23}/zfproj/iOS/{ZFTT_R_lib_name_23}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_24}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_24}/zfproj/iOS/{ZFTT_R_lib_name_24}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_25}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_25}/zfproj/iOS/{ZFTT_R_lib_name_25}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_26}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_26}/zfproj/iOS/{ZFTT_R_lib_name_26}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_27}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_27}/zfproj/iOS/{ZFTT_R_lib_name_27}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_28}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_28}/zfproj/iOS/{ZFTT_R_lib_name_28}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_29}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_29}/zfproj/iOS/{ZFTT_R_lib_name_29}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_30}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_30}/zfproj/iOS/{ZFTT_R_lib_name_30}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_require_31}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_name_31}/zfproj/iOS/{ZFTT_R_lib_name_31}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_0}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_0}/zfproj/iOS/{ZFTT_R_impl_name_0}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_1}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_1}/zfproj/iOS/{ZFTT_R_impl_name_1}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_2}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_2}/zfproj/iOS/{ZFTT_R_impl_name_2}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_3}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_3}/zfproj/iOS/{ZFTT_R_impl_name_3}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_4}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_4}/zfproj/iOS/{ZFTT_R_impl_name_4}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_5}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_5}/zfproj/iOS/{ZFTT_R_impl_name_5}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_6}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_6}/zfproj/iOS/{ZFTT_R_impl_name_6}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_7}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_7}/zfproj/iOS/{ZFTT_R_impl_name_7}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_8}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_8}/zfproj/iOS/{ZFTT_R_impl_name_8}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_9}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_9}/zfproj/iOS/{ZFTT_R_impl_name_9}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_10}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_10}/zfproj/iOS/{ZFTT_R_impl_name_10}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_11}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_11}/zfproj/iOS/{ZFTT_R_impl_name_11}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_12}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_12}/zfproj/iOS/{ZFTT_R_impl_name_12}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_13}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_13}/zfproj/iOS/{ZFTT_R_impl_name_13}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_14}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_14}/zfproj/iOS/{ZFTT_R_impl_name_14}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_15}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_15}/zfproj/iOS/{ZFTT_R_impl_name_15}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_16}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_16}/zfproj/iOS/{ZFTT_R_impl_name_16}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_17}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_17}/zfproj/iOS/{ZFTT_R_impl_name_17}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_18}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_18}/zfproj/iOS/{ZFTT_R_impl_name_18}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_19}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_19}/zfproj/iOS/{ZFTT_R_impl_name_19}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_20}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_20}/zfproj/iOS/{ZFTT_R_impl_name_20}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_21}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_21}/zfproj/iOS/{ZFTT_R_impl_name_21}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_22}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_22}/zfproj/iOS/{ZFTT_R_impl_name_22}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_23}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_23}/zfproj/iOS/{ZFTT_R_impl_name_23}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_24}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_24}/zfproj/iOS/{ZFTT_R_impl_name_24}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_25}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_25}/zfproj/iOS/{ZFTT_R_impl_name_25}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_26}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_26}/zfproj/iOS/{ZFTT_R_impl_name_26}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_27}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_27}/zfproj/iOS/{ZFTT_R_impl_name_27}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_28}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_28}/zfproj/iOS/{ZFTT_R_impl_name_28}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_29}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_29}/zfproj/iOS/{ZFTT_R_impl_name_29}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_30}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_30}/zfproj/iOS/{ZFTT_R_impl_name_30}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_require_31}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_name_31}/zfproj/iOS/{ZFTT_R_impl_name_31}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_0}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_0}/zfproj/iOS/{ZFTT_R_lib_ext_name_0}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_1}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_1}/zfproj/iOS/{ZFTT_R_lib_ext_name_1}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_2}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_2}/zfproj/iOS/{ZFTT_R_lib_ext_name_2}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_3}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_3}/zfproj/iOS/{ZFTT_R_lib_ext_name_3}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_4}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_4}/zfproj/iOS/{ZFTT_R_lib_ext_name_4}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_5}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_5}/zfproj/iOS/{ZFTT_R_lib_ext_name_5}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_6}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_6}/zfproj/iOS/{ZFTT_R_lib_ext_name_6}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_7}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_7}/zfproj/iOS/{ZFTT_R_lib_ext_name_7}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_8}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_8}/zfproj/iOS/{ZFTT_R_lib_ext_name_8}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_9}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_9}/zfproj/iOS/{ZFTT_R_lib_ext_name_9}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_10}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_10}/zfproj/iOS/{ZFTT_R_lib_ext_name_10}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_11}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_11}/zfproj/iOS/{ZFTT_R_lib_ext_name_11}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_12}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_12}/zfproj/iOS/{ZFTT_R_lib_ext_name_12}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_13}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_13}/zfproj/iOS/{ZFTT_R_lib_ext_name_13}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_14}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_14}/zfproj/iOS/{ZFTT_R_lib_ext_name_14}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_15}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_15}/zfproj/iOS/{ZFTT_R_lib_ext_name_15}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_16}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_16}/zfproj/iOS/{ZFTT_R_lib_ext_name_16}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_17}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_17}/zfproj/iOS/{ZFTT_R_lib_ext_name_17}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_18}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_18}/zfproj/iOS/{ZFTT_R_lib_ext_name_18}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_19}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_19}/zfproj/iOS/{ZFTT_R_lib_ext_name_19}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_20}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_20}/zfproj/iOS/{ZFTT_R_lib_ext_name_20}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_21}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_21}/zfproj/iOS/{ZFTT_R_lib_ext_name_21}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_22}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_22}/zfproj/iOS/{ZFTT_R_lib_ext_name_22}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_23}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_23}/zfproj/iOS/{ZFTT_R_lib_ext_name_23}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_24}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_24}/zfproj/iOS/{ZFTT_R_lib_ext_name_24}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_25}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_25}/zfproj/iOS/{ZFTT_R_lib_ext_name_25}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_26}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_26}/zfproj/iOS/{ZFTT_R_lib_ext_name_26}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_27}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_27}/zfproj/iOS/{ZFTT_R_lib_ext_name_27}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_28}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_28}/zfproj/iOS/{ZFTT_R_lib_ext_name_28}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_29}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_29}/zfproj/iOS/{ZFTT_R_lib_ext_name_29}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_30}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_30}/zfproj/iOS/{ZFTT_R_lib_ext_name_30}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_lib_ext_require_31}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_lib_ext_name_31}/zfproj/iOS/{ZFTT_R_lib_ext_name_31}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_0}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_0}/zfproj/iOS/{ZFTT_R_impl_ext_name_0}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_1}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_1}/zfproj/iOS/{ZFTT_R_impl_ext_name_1}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_2}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_2}/zfproj/iOS/{ZFTT_R_impl_ext_name_2}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_3}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_3}/zfproj/iOS/{ZFTT_R_impl_ext_name_3}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_4}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_4}/zfproj/iOS/{ZFTT_R_impl_ext_name_4}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_5}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_5}/zfproj/iOS/{ZFTT_R_impl_ext_name_5}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_6}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_6}/zfproj/iOS/{ZFTT_R_impl_ext_name_6}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_7}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_7}/zfproj/iOS/{ZFTT_R_impl_ext_name_7}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_8}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_8}/zfproj/iOS/{ZFTT_R_impl_ext_name_8}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_9}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_9}/zfproj/iOS/{ZFTT_R_impl_ext_name_9}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_10}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_10}/zfproj/iOS/{ZFTT_R_impl_ext_name_10}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_11}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_11}/zfproj/iOS/{ZFTT_R_impl_ext_name_11}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_12}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_12}/zfproj/iOS/{ZFTT_R_impl_ext_name_12}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_13}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_13}/zfproj/iOS/{ZFTT_R_impl_ext_name_13}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_14}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_14}/zfproj/iOS/{ZFTT_R_impl_ext_name_14}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_15}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_15}/zfproj/iOS/{ZFTT_R_impl_ext_name_15}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_16}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_16}/zfproj/iOS/{ZFTT_R_impl_ext_name_16}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_17}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_17}/zfproj/iOS/{ZFTT_R_impl_ext_name_17}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_18}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_18}/zfproj/iOS/{ZFTT_R_impl_ext_name_18}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_19}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_19}/zfproj/iOS/{ZFTT_R_impl_ext_name_19}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_20}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_20}/zfproj/iOS/{ZFTT_R_impl_ext_name_20}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_21}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_21}/zfproj/iOS/{ZFTT_R_impl_ext_name_21}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_22}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_22}/zfproj/iOS/{ZFTT_R_impl_ext_name_22}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_23}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_23}/zfproj/iOS/{ZFTT_R_impl_ext_name_23}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_24}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_24}/zfproj/iOS/{ZFTT_R_impl_ext_name_24}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_25}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_25}/zfproj/iOS/{ZFTT_R_impl_ext_name_25}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_26}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_26}/zfproj/iOS/{ZFTT_R_impl_ext_name_26}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_27}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_27}/zfproj/iOS/{ZFTT_R_impl_ext_name_27}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_28}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_28}/zfproj/iOS/{ZFTT_R_impl_ext_name_28}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_29}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_29}/zfproj/iOS/{ZFTT_R_impl_ext_name_29}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_30}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_30}/zfproj/iOS/{ZFTT_R_impl_ext_name_30}/zfprojConfig.plist"{ZFTT_CE}{ZFTT_C_impl_ext_require_31}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "$ZF_ROOT_PATH/ZF/{ZFTT_R_impl_ext_name_31}/zfproj/iOS/{ZFTT_R_impl_ext_name_31}/zfprojConfig.plist"{ZFTT_CE}
+sh "$ZF_ROOT_PATH/tools/spec/iOS/plist_merge.sh" "$PLIST_DST_PATH" "${iOS_SRCROOT}/zfprojConfig.plist"
+mv -f "$PLIST_DST_PATH" "${iOS_SRCROOT}/ProjectFiles/Info.plist"
 
-RES_DST_PATH=${iOS_CONFIGURATION_BUILD_DIR}/${iOS_CONTENTS_FOLDER_PATH}/zfres
-{ZFTT_C_lib_require_0}
+COMPILE_DST_PATH=${iOS_SRCROOT}/ProjectFiles
+sh "$ZF_ROOT_PATH/tools/common/unity_build.sh" "${COMPILE_DST_PATH}/zfgensrc_{ZFTT_R_proj_name}.mm" "${iOS_SRCROOT}/../../../zfsrc"
+
+RES_DST_PATH=${iOS_CONFIGURATION_BUILD_DIR}/${iOS_CONTENTS_FOLDER_PATH}/zfres{ZFTT_C_lib_require_0}
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZFTT_R_lib_name_0}/zfres" "$RES_DST_PATH"{ZFTT_CE}{ZFTT_C_lib_require_1}
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZFTT_R_lib_name_1}/zfres" "$RES_DST_PATH"{ZFTT_CE}{ZFTT_C_lib_require_2}
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZFTT_R_lib_name_2}/zfres" "$RES_DST_PATH"{ZFTT_CE}{ZFTT_C_lib_require_3}
@@ -145,6 +278,5 @@ sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZF
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZFTT_R_impl_ext_name_29}/zfres" "$RES_DST_PATH"{ZFTT_CE}{ZFTT_C_impl_ext_require_30}
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZFTT_R_impl_ext_name_30}/zfres" "$RES_DST_PATH"{ZFTT_CE}{ZFTT_C_impl_ext_require_31}
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/{ZFTT_R_impl_ext_name_31}/zfres" "$RES_DST_PATH"{ZFTT_CE}
-
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "${iOS_SRCROOT}/../../../zfres" "$RES_DST_PATH"
 

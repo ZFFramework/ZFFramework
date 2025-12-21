@@ -607,6 +607,7 @@
 			);
 			name = ZFSetup;
 			outputPaths = (
+				"$(SRCROOT)/ProjectFiles/Info.plist",
 				"$(SRCROOT)/ProjectFiles/zfgensrc_{ZFTT_R_proj_name}.mm",{ZFTT_C_lib_require_0}
 				"$(SRCROOT)/ProjectFiles/zfgensrc_{ZFTT_R_lib_name_0}.mm",{ZFTT_CE}{ZFTT_C_lib_require_1}
 				"$(SRCROOT)/ProjectFiles/zfgensrc_{ZFTT_R_lib_name_1}.mm",{ZFTT_CE}{ZFTT_C_lib_require_2}

@@ -739,6 +739,7 @@
 			);
 			name = ZFSetup;
 			outputPaths = (
+				"$(SRCROOT)/ProjectFiles/Info.plist",
 				"$(SRCROOT)/ProjectFiles/zfgensrc_{ZFTT_R_proj_name}.mm",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

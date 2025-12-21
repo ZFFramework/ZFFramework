@@ -279,6 +279,7 @@
 			);
 			name = ZFSetup;
 			outputPaths = (
+				"$(SRCROOT)/ProjectFiles/Info.plist",
 				"$(SRCROOT)/ProjectFiles/zfgensrc_ZFFramework_test.mm",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
