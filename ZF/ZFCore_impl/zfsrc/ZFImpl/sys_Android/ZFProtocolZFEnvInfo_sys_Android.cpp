@@ -14,7 +14,7 @@ public:
     }
     virtual void systemVersion(ZF_IN_OUT zfstring &ret) {
         char value[PROP_VALUE_MAX];
-        int success = __system_property_get("ro.build.version.release", value);
+        int success = __system_property_get("ro.build.version.sdk", value);
         if (success <= 0) {
             return;
         }
