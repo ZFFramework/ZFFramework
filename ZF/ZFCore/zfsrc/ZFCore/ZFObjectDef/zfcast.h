@@ -10,10 +10,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd ZFClass;
-zfclassFwd ZFObject;
-zfclassFwd ZFInterface;
-
 // ============================================================
 /**
  * @brief safely cast ZFObject types, return null if not desired type

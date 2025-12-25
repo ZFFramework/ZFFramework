@@ -162,7 +162,7 @@ zfbool ZFPropertyDynamicRegisterParam::zfunsafe_disableChecker(void) const {
 
 // ============================================================
 ZFPropertyDynamicRegisterParam::ZFPropertyDynamicRegisterParam(void)
-: d(zfnew(_ZFP_ZFPropertyDynamicRegisterParamPrivate))
+: d(zfpoolNew(_ZFP_ZFPropertyDynamicRegisterParamPrivate))
 {
 }
 ZFPropertyDynamicRegisterParam::ZFPropertyDynamicRegisterParam(ZF_IN ZFPropertyDynamicRegisterParam const &ref)
@@ -173,14 +173,14 @@ ZFPropertyDynamicRegisterParam::ZFPropertyDynamicRegisterParam(ZF_IN ZFPropertyD
 ZFPropertyDynamicRegisterParam::~ZFPropertyDynamicRegisterParam(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::operator = (ZF_IN ZFPropertyDynamicRegisterParam const &ref) {
     ++(ref.d->refCount);
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
     d = ref.d;
     return *this;

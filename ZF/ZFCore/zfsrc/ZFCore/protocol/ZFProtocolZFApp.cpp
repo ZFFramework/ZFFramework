@@ -19,7 +19,7 @@ public:
 };
 
 void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
-    _ZFP_ZFThreadImpl_default_TaskData *taskData = zfnew(_ZFP_ZFThreadImpl_default_TaskData);
+    _ZFP_ZFThreadImpl_default_TaskData *taskData = zfpoolNew(_ZFP_ZFThreadImpl_default_TaskData);
 
     ZFLISTENER_1(runnable
             , _ZFP_ZFThreadImpl_default_TaskData *, taskData
@@ -44,7 +44,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
             }
 
             ZFFrameworkCleanup();
-            zfdelete(taskData);
+            zfpoolDelete(taskData);
             exit(0);
         } ZFLISTENER_END()
         taskData->mainThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThread(mainThreadRunnable);
@@ -53,7 +53,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
     taskData->threadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThread(runnable, zfnull);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void) {
-    _ZFP_ZFThreadImpl_default_TaskData *taskData = zfnew(_ZFP_ZFThreadImpl_default_TaskData);
+    _ZFP_ZFThreadImpl_default_TaskData *taskData = zfpoolNew(_ZFP_ZFThreadImpl_default_TaskData);
 
     ZFLISTENER_1(runnable
             , _ZFP_ZFThreadImpl_default_TaskData *, taskData
@@ -83,7 +83,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void) {
             ZFFrameworkInit();
             ZFMainExecute(appParamsSaved);
 
-            zfdelete(taskData);
+            zfpoolDelete(taskData);
         } ZFLISTENER_END()
         taskData->mainThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThread(mainThreadRunnable);
     } ZFLISTENER_END()

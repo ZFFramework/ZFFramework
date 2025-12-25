@@ -52,7 +52,7 @@ static ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontLoad(
     if(font == zfnull) {
         return zfnull;
     }
-    ZFImpl_sys_SDL_FontData *fontData = zfnew(ZFImpl_sys_SDL_FontData);
+    ZFImpl_sys_SDL_FontData *fontData = zfpoolNew(ZFImpl_sys_SDL_FontData);
     fontData->fontType = fontType;
     fontData->ptsize = ptsize;
     fontData->font = font;
@@ -123,7 +123,7 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
 
 void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData) {
     if(fontData != zfnull) {
-        zfdelete(fontData);
+        zfpoolDelete(fontData);
     }
 }
 

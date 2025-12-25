@@ -46,6 +46,10 @@ public:
         _ZFP_obj = obj._ZFP_obj;
         return *this;
     }
+    inline zfany &operator = (ZF_IN ZFObject *obj) {
+        _ZFP_obj = obj;
+        return *this;
+    }
     template<typename T_ZFObject>
     inline zfany &operator = (ZF_IN T_ZFObject const &obj) {
         _ZFP_obj = _ZFP_zfanyCast(obj);

@@ -36,7 +36,6 @@ zffinal zfclassLikePOD ZFLIB_ZFCore zfauto {
 public:
     zfauto(void) : _ZFP_obj(zfnull) {}
     zfauto(ZF_IN zfauto const &obj);
-    zfauto(ZF_IN ZFObject *obj);
     template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject const &obj);
     zffinal ~zfauto(void);
@@ -48,23 +47,19 @@ public:
 
 public:
     template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
-        return this->toObject() == _ZFP_zfanyCast(obj);
-    }
+    zfbool operator == (ZF_IN T_ZFObject const &obj) const;
     template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
-        return this->toObject() != _ZFP_zfanyCast(obj);
-    }
+    zfbool operator != (ZF_IN T_ZFObject const &obj) const;
 
 public:
     inline ZFObject *operator -> (void) const {
-        return this->toObject();
+        return _ZFP_obj;
     }
     inline operator zfbool (void) const {
         return (zfbool)_ZFP_obj;
     }
     inline operator ZFObject * (void) const {
-        return this->toObject();
+        return _ZFP_obj;
     }
     template<typename T_ZFObject>
     inline operator T_ZFObject * (void) const;
@@ -77,7 +72,7 @@ public:
     /**
      * @brief access as #zfany
      */
-    const zfany &asAny(void) const {
+    inline const zfany &asAny(void) const {
         return _ZFP_obj;
     }
     /**
@@ -115,8 +110,7 @@ zffinal zfclassLikePOD zfautoT : zfextend zfauto {
 public:
     zfautoT(void) : zfauto() {}
     zfautoT(ZF_IN zfauto const &obj) : zfauto(obj) {}
-    zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto((zfauto const &)obj) {}
-    zfautoT(ZF_IN ZFObject *obj) : zfauto(obj) {}
+    zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto(obj) {}
     template<typename T_ZFObject>
     zfautoT(ZF_IN T_ZFObject const &obj) : zfauto(obj) {}
 
@@ -126,7 +120,7 @@ public:
         return *this;
     }
     inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN zfautoT<T_ZFObjectBase> const &obj) {
-        zfauto::operator = ((zfauto const &)obj);
+        zfauto::operator = (obj);
         return *this;
     }
     template<typename T_ZFObject>
@@ -138,11 +132,11 @@ public:
 public:
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
-        return this->toObject() == _ZFP_zfanyCast(obj);
+        return zfauto::operator == (obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
-        return this->toObject() != _ZFP_zfanyCast(obj);
+        return zfauto::operator != (obj);
     }
 
 public:

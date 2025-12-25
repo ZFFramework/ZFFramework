@@ -143,7 +143,7 @@ public:
             , ZF_IN const zfstring &path
             ) {
         if(path == zfnull) {return zffalse;}
-        _ZFP_ZFFileNativeFd *nativeFd = zfnew(_ZFP_ZFFileNativeFd);
+        _ZFP_ZFFileNativeFd *nativeFd = zfpoolNew(_ZFP_ZFFileNativeFd);
         nativeFd->parentPath = path;
         fd.nativeFd = nativeFd;
 
@@ -190,7 +190,7 @@ public:
         if(nativeFd->pDir != zfnull) {
             closedir(nativeFd->pDir);
         }
-        zfdelete(nativeFd);
+        zfpoolDelete(nativeFd);
         fd.nativeFd = zfnull;
     }
 

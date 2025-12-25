@@ -37,49 +37,6 @@ private:
     _ZFP_zfscopeFreeContainer ZFUniqueName(zfscopeFree_)(obj)
 
 // ============================================================
-// zfscopeDelete
-typedef void (*_ZFP_zfscopeDeleteCallback)(ZF_IN void *p);
-template<typename T_Object>
-void _ZFP_zfscopeDeleteOnDelete(ZF_IN void *p) {
-    zfdelete((T_Object *)p);
-}
-zfclassLikePOD ZFLIB_ZFCore _ZFP_zfscopeDeleteContainer {
-public:
-    _ZFP_zfscopeDeleteContainer(void) : p(zfnull), deleteCallback(zfnull) {}
-    ~_ZFP_zfscopeDeleteContainer(void) {
-        if(this->p != zfnull) {
-            this->deleteCallback(this->p);
-        }
-    }
-public:
-    void *p;
-    _ZFP_zfscopeDeleteCallback deleteCallback;
-};
-template<typename T_Object>
-void _ZFP_zfscopeDeleteSetup(
-        ZF_IN _ZFP_zfscopeDeleteContainer *container
-        , ZF_IN T_Object * const &p
-        ) {
-    container->p = (void *)p;
-    container->deleteCallback = _ZFP_zfscopeDeleteOnDelete<T_Object>;
-}
-/**
- * @brief util macro to make a non-ZFObject object automatically deleted
- *   after code block, using #zfdelete
- *
- * usage:
- * @code
- *   { // code block
- *       NonePODObject *obj = zfnew(NonePODObject);
- *       zfscopeDelete(obj); // must be placed in single line
- *   } // buf would be released by #zfdelete after code block
- * @endcode
- */
-#define zfscopeDelete(obj) \
-    _ZFP_zfscopeDeleteContainer ZFUniqueName(zfscopeDelete_); \
-    _ZFP_zfscopeDeleteSetup(&ZFUniqueName(zfscopeDelete_), obj)
-
-// ============================================================
 // zfscopeCleanup
 /**
  * @brief util to perform custom cleanup action after code block

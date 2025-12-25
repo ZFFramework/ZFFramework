@@ -11,7 +11,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowResume, ZFLevelZFFrameworkPostNormal
     if(rootWindow && !rootWindow->nativeWindowIsResumed()) {
         ZFPROTOCOL_ACCESS(ZFUIRootWindow)->notifyOnResume(rootWindow);
     }
-    zfdelete(rootWindowHolder);
+    zfpoolDelete(rootWindowHolder);
     return zftrue;
 }
 
@@ -35,14 +35,14 @@ public:
     virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
             this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
-            ZFImpl_sys_SDL_RootWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_RootWindow);
+            ZFImpl_sys_SDL_RootWindow *nativeWindow = zfpoolNew(ZFImpl_sys_SDL_RootWindow);
             nativeWindow->ownerZFUIRootWindow = this->_mainWindow;
             nativeWindow->builtinWindow = zftrue;
             nativeWindow->sdlWindow = ZFImpl_sys_SDL_mainWindow();
             nativeWindow->sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
             this->notifyOnCreate(this->_mainWindow, nativeWindow);
 
-            ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowResume, zfnew(zfweakT<ZFUIRootWindow>, this->_mainWindow), zfnull);
+            ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowResume, zfpoolNew(zfweakT<ZFUIRootWindow>, this->_mainWindow), zfnull);
         }
         return this->_mainWindow;
     }
@@ -55,7 +55,7 @@ public:
             this->notifyOnDestroy(this->_mainWindow);
             zfscopeRelease(this->_mainWindow);
             this->_mainWindow = zfnull;
-            zfdelete(nativeWindow);
+            zfpoolDelete(nativeWindow);
         }
     }
     virtual void mainWindowOnDestroy(void) {
@@ -94,7 +94,7 @@ public:
             return zfnull;
         }
         zfauto modalWindow = ZFUIRootWindow::ClassData()->newInstance();
-        ZFImpl_sys_SDL_RootWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_RootWindow);
+        ZFImpl_sys_SDL_RootWindow *nativeWindow = zfpoolNew(ZFImpl_sys_SDL_RootWindow);
         nativeWindow->ownerZFUIRootWindow = this->_mainWindow;
         nativeWindow->builtinWindow = zffalse;
         nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow(SDL_WINDOW_MODAL);
@@ -106,7 +106,7 @@ public:
         SDL_SetRenderDrawBlendMode(nativeWindow->sdlRenderer, SDL_BLENDMODE_BLEND);
         this->notifyOnCreate(modalWindow, nativeWindow);
 
-        ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowResume, zfnew(zfweakT<ZFUIRootWindow>, modalWindow), zfnull);
+        ZFIMPL_SYS_SDL_USER_EVENT_POST(RootWindowResume, zfpoolNew(zfweakT<ZFUIRootWindow>, modalWindow), zfnull);
         return modalWindow;
     }
     virtual void modalWindowHide(
@@ -121,7 +121,7 @@ public:
             this->notifyOnPause(toHide);
         }
         this->notifyOnDestroy(toHide);
-        zfdelete(nativeWindow);
+        zfpoolDelete(nativeWindow);
     }
 
     virtual void layoutParamOnInit(ZF_IN ZFUIRootWindow *rootWindow) {

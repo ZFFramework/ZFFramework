@@ -53,7 +53,6 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
     zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
-    zfweak(ZF_IN ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->_ZFP_ZFObject_weakHolder()) : zfnull) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
@@ -195,7 +194,6 @@ public:
     zfweakT(void) : zfweak() {}
     zfweakT(ZF_IN zfweak const &obj) : zfweak(obj) {}
     zfweakT(ZF_IN zfweakT<T_ZFObjectBase> const &obj) : zfweak((zfweak const &)obj) {}
-    zfweakT(ZF_IN ZFObject *obj) : zfweak(obj) {}
     template<typename T_ZFObject>
     zfweakT(ZF_IN T_ZFObject const &obj) : zfweak(obj) {}
 
@@ -291,28 +289,28 @@ public:
         >
     zfclassNotPOD Value {
     public:
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return ZFTypeId<zfweak>::Value<zfweak &>::zfvAccessAvailable(obj);
         }
-        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
+        static T_Access zfvAccess(ZF_IN const zfauto &obj) {
             // zfweakT ensured safe for reinterpret cast
             return (T_Access)ZFTypeId<zfweak>::Value<zfweak &>::zfvAccess(obj);
         }
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) {
             ZFTypeId<zfweak>::Value<zfweak &>::zfvAccessFinish(obj);
         }
     };
     template<typename T_Access>
     zfclassNotPOD Value<T_Access, 1> {
     public:
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return ZFTypeId<zfweak>::Value<zfweak *>::zfvAccessAvailable(obj);
         }
-        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
+        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) {
             // zfweakT ensured safe for reinterpret cast
             return (typename zftTraits<T_Access>::TrNoRef)ZFTypeId<zfweak>::Value<zfweak *>::zfvAccess(obj);
         }
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) {
             ZFTypeId<zfweak>::Value<zfweak *>::zfvAccessFinish(obj);
         }
     };
@@ -322,20 +320,20 @@ public:
         return ValueStore(obj, *(const zfweakT<T_ZFObject> *)v);
     }
     zfoverride
-    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+    virtual void *genericAccess(ZF_IN const zfauto &obj) const {
         if(!Value<zfweakT<T_ZFObject> >::zfvAccessAvailable(obj)) {
             return zfnull;
         }
-        return (void *)zfnew(zfweakT<T_ZFObject>, Value<zfweakT<T_ZFObject> >::zfvAccess(obj));
+        return (void *)zfpoolNew(zfweakT<T_ZFObject>, Value<zfweakT<T_ZFObject> >::zfvAccess(obj));
     }
     zfoverride
-    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
-        zfdelete((zfweakT<T_ZFObject> *)v);
+    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
+        zfpoolDelete((zfweakT<T_ZFObject> *)v);
         Value<zfweakT<T_ZFObject> >::zfvAccessFinish(obj);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfnew(ZFCoreArray<zfweakT<T_ZFObject> >);
+        return ZFCoreArray<zfweakT<T_ZFObject> >().refNew();
     }
 };
 /** @endcond */

@@ -158,7 +158,7 @@ zfbool ZFMethodDynamicRegisterParam::zfunsafe_disableChecker(void) const {
 }
 
 ZFMethodDynamicRegisterParam::ZFMethodDynamicRegisterParam(void)
-: d(zfnew(_ZFP_ZFMethodDynamicRegisterParamPrivate))
+: d(zfpoolNew(_ZFP_ZFMethodDynamicRegisterParamPrivate))
 {
 }
 ZFMethodDynamicRegisterParam::ZFMethodDynamicRegisterParam(ZF_IN ZFMethodDynamicRegisterParam const &ref)
@@ -169,14 +169,14 @@ ZFMethodDynamicRegisterParam::ZFMethodDynamicRegisterParam(ZF_IN ZFMethodDynamic
 ZFMethodDynamicRegisterParam::~ZFMethodDynamicRegisterParam(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::operator = (ZF_IN ZFMethodDynamicRegisterParam const &ref) {
     ++(ref.d->refCount);
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
     d = ref.d;
     return *this;
@@ -329,7 +329,7 @@ const ZFListener &ZFMP::paramDefaultValueCallbackAt(ZF_IN zfindex index) const {
 }
 
 ZFMP::ZFMP(void)
-: d(zfnew(_ZFP_ZFMPPrivate))
+: d(zfpoolNew(_ZFP_ZFMPPrivate))
 {
 }
 ZFMP::ZFMP(ZF_IN const ZFMP &ref)
@@ -340,7 +340,7 @@ ZFMP::ZFMP(ZF_IN const ZFMP &ref)
 ZFMP::~ZFMP(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 ZFMP &ZFMP::operator = (ZF_IN const ZFMP &ref) {
@@ -349,7 +349,7 @@ ZFMP &ZFMP::operator = (ZF_IN const ZFMP &ref) {
     ++(d->refCount);
     --(dTmp->refCount);
     if(dTmp->refCount == 0) {
-        zfdelete(dTmp);
+        zfpoolDelete(dTmp);
     }
     return *this;
 }

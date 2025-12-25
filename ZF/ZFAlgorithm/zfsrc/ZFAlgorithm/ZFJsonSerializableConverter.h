@@ -73,12 +73,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToJson
 /**
  * @brief util method to parse object from input with json format
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFObjectFromJson
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFObjectFromJsonT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-/** @brief see #ZFObjectFromJson */
+/** @brief see #ZFObjectFromJsonT */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfauto, ZFObjectFromJson
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)

@@ -22,7 +22,7 @@ public:
 
 // ============================================================
 ZFIdentityGenerator::ZFIdentityGenerator(void)
-: d(zfnew(_ZFP_ZFIdentityGeneratorPrivate))
+: d(zfpoolNew(_ZFP_ZFIdentityGeneratorPrivate))
 {
 }
 ZFIdentityGenerator::ZFIdentityGenerator(ZF_IN ZFIdentityGenerator const &ref)
@@ -36,7 +36,7 @@ ZFIdentityGenerator &ZFIdentityGenerator::operator = (ZF_IN ZFIdentityGenerator 
     ++(ref.d->refCount);
     --(dTmp->refCount);
     if(dTmp->refCount == 0) {
-        zfdelete(dTmp);
+        zfpoolDelete(dTmp);
     }
     return *this;
 }
@@ -46,7 +46,7 @@ zfbool ZFIdentityGenerator::operator == (ZF_IN ZFIdentityGenerator const &ref) c
 ZFIdentityGenerator::~ZFIdentityGenerator(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 

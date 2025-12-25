@@ -98,8 +98,7 @@ public:
      * old one should be deleted manually\n
      * after the newly created instance and the old one both been deleted,
      * the object would be deleted finally
-     * @note should be (and recommended to be) paired with #refDelete instead of #zfdelete,
-     *   if you override default #zfnew and #zfdelete
+     * @note should be paired with #refDelete
      */
     virtual const ZFCorePointer *refNew(void) const zfpurevirtual;
     /**

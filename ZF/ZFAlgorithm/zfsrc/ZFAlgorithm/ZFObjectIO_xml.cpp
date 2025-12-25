@@ -6,7 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECTIO_DEFINE(xml, ZFLevelZFFrameworkPostNormal, {
         return fileExt == "xml";
     }, {
-        return ZFObjectFromXml(ret, input, outErrorHint);
+        return ZFObjectFromXmlT(ret, input, outErrorHint);
     }, {
         return ZFObjectToXml(output, obj, outErrorHint);
     })

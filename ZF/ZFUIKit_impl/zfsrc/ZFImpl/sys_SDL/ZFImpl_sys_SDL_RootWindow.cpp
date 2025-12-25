@@ -70,7 +70,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowRender, ZFLevelZFFrameworkPostNormal
     }
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
     return zftrue;
 }
@@ -84,7 +84,7 @@ void _ZFP_ZFImpl_sys_SDL_RootWindowPrivate::renderRequest(void) {
 }
 
 ZFImpl_sys_SDL_RootWindow::ZFImpl_sys_SDL_RootWindow(void)
-: d(zfnew(_ZFP_ZFImpl_sys_SDL_RootWindowPrivate, this))
+: d(zfpoolNew(_ZFP_ZFImpl_sys_SDL_RootWindowPrivate, this))
 , ownerZFUIRootWindow(zfnull)
 , builtinWindow(zffalse)
 , sdlWindow(zfnull)
@@ -115,7 +115,7 @@ ZFImpl_sys_SDL_RootWindow::~ZFImpl_sys_SDL_RootWindow(void) {
     d->rootWindow = zfnull;
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 

@@ -36,7 +36,7 @@ ZFUdpAddr::~ZFUdpAddr(void) {
     if(d != zfnull) {
         --(d->refCount);
         if(d->refCount == 0) {
-            zfdelete(d);
+            zfpoolDelete(d);
         }
     }
 }
@@ -49,7 +49,7 @@ ZFUdpAddr &ZFUdpAddr::operator = (ZF_IN const ZFUdpAddr &ref) {
     if(dTmp != zfnull) {
         --(dTmp->refCount);
         if(dTmp->refCount == 0) {
-            zfdelete(d);
+            zfpoolDelete(d);
         }
     }
     return *this;
@@ -60,7 +60,7 @@ void ZFUdpAddr::_ZFP_addr(ZF_IN void *addr) {
 
     if(d == zfnull) {
         if(addr != zfnull) {
-            d = zfnew(_ZFP_ZFUdpAddrPrivate);
+            d = zfpoolNew(_ZFP_ZFUdpAddrPrivate);
             d->addr = addr;
         }
     }

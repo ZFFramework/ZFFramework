@@ -46,14 +46,14 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_SDL, ZFUIDrawForView, v_
 
 public:
     virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView) {
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfpoolNew(_ZFP_ZFUIDrawImpl_sys_SDL);
         drawImpl->renderImpl = zfself::_renderCallback;
         return (void *)(ZFImpl_sys_SDL_View *)drawImpl;
     }
     virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)(ZFImpl_sys_SDL_View *)drawableView->nativeImplView();
         drawImpl->renderImpl = zfnull;
-        zfdelete(drawImpl);
+        zfpoolDelete(drawImpl);
     }
 
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {
@@ -121,7 +121,7 @@ public:
         }
         ZFImpl_sys_SDL_RendererNotifyCreate(sdlRenderer);
 
-        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfnew(_ZFP_ZFUIDrawImpl_sys_SDL);
+        _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = zfpoolNew(_ZFP_ZFUIDrawImpl_sys_SDL);
         drawImpl->sdlRenderer = sdlRenderer;
         drawImpl->framePixel.x = 0;
         drawImpl->framePixel.y = 0;
@@ -135,7 +135,11 @@ public:
     }
     virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
-        zfscopeDelete(drawImpl);
+        zfscopeCleanup_1({
+                zfpoolDelete(drawImpl);
+            }
+            , _ZFP_ZFUIDrawImpl_sys_SDL *, drawImpl
+            );
 
         if(drawImpl->sdlRenderer != zfnull) {
             ZFImpl_sys_SDL_RendererNotifyDestroy(drawImpl->sdlRenderer);

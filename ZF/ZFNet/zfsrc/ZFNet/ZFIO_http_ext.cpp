@@ -29,7 +29,7 @@ zfbool _ZFP_ZFIO_http_FindFirst(
     zfobj<ZFRegExp> pattern("(?<=<a .*href=\")([^\"]+)(?=\")");
     zfobj<ZFRegExp> ignorePattern("^/|^[a-z]+://|[\\?&=~]|\\./|^\\.+$");
 
-    _ZFP_ZFIO_http_FindData *impl = zfnew(_ZFP_ZFIO_http_FindData);
+    _ZFP_ZFIO_http_FindData *impl = zfpoolNew(_ZFP_ZFIO_http_FindData);
     while(*body) {
         ZFRegExpResult match;
         pattern->find(match, body);
@@ -68,7 +68,7 @@ zfbool _ZFP_ZFIO_http_FindFirst(
     }
 
     if(impl->dirs.isEmpty() && impl->files.isEmpty()) {
-        zfdelete(impl);
+        zfpoolDelete(impl);
         return zffalse;
     }
     fd.implAttach("ZFHttpFindFirst", impl);
@@ -102,7 +102,7 @@ zfbool _ZFP_ZFIO_http_FindNext(ZF_IN_OUT ZFIOFindData &fd) {
 void _ZFP_ZFIO_http_FindClose(ZF_IN_OUT ZFIOFindData &fd) {
     fd.implDetach();
     _ZFP_ZFIO_http_FindData *impl = (_ZFP_ZFIO_http_FindData *)fd.implUserData();
-    zfdelete(impl);
+    zfpoolDelete(impl);
 }
 
 ZF_NAMESPACE_GLOBAL_END

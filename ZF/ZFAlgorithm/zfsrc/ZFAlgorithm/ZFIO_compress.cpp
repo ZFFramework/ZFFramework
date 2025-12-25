@@ -24,7 +24,7 @@ public:
             return;
         }
         ZFCoreMutexLocker();
-        ZFCoreArray<ZFCorePointerForObject<CacheData *> > &cache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_cache;
+        ZFCoreArray<ZFCorePointerForPoolObject<CacheData *> > &cache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_cache;
         for(zfindex i = 0; i < cache.count(); ++i) {
             if(refPathInfo == cache[i]->refPathInfo) {
                 cache.remove(i);
@@ -36,7 +36,7 @@ public:
             return;
         }
         ZFCoreMutexLocker();
-        ZFCoreArray<ZFCorePointerForObject<CacheData *> > &cache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_cache;
+        ZFCoreArray<ZFCorePointerForPoolObject<CacheData *> > &cache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCompressTokenCache)->_cache;
         for(zfindex i = 0; i < cache.count(); ++i) {
             if(token == cache[i]->compressToken) {
                 cache.remove(i);
@@ -51,14 +51,14 @@ private:
         zfautoT<ZFCompressToken> compressToken;
         zftimet lastAccessed;
     };
-    ZFCoreArray<ZFCorePointerForObject<CacheData *> > _cache; // latest accessed at tail
+    ZFCoreArray<ZFCorePointerForPoolObject<CacheData *> > _cache; // latest accessed at tail
 private:
     zfautoT<ZFCompressToken> _accessReadonly(ZF_IN const ZFPathInfo &refPathInfo) {
         {
             ZFCoreMutexLocker();
             for(zfindex i = _cache.count() - 1; i != zfindexMax(); --i) {
                 if(_cache[i]->refPathInfo == refPathInfo) {
-                    ZFCorePointerForObject<CacheData *> cache = _cache[i];
+                    ZFCorePointerForPoolObject<CacheData *> cache = _cache[i];
                     cache->lastAccessed = ZFTime::currentTime();
                     if(i == _cache.count() - 1) {
                         _cacheTrim(cache->lastAccessed);
@@ -78,11 +78,11 @@ private:
             return zfnull;
         }
         ZFCoreMutexLocker();
-        CacheData *t = zfnew(CacheData);
+        CacheData *t = zfpoolNew(CacheData);
         t->refPathInfo = refPathInfo;
         t->compressToken = ret;
         t->lastAccessed = ZFTime::currentTime();
-        _cache.add(ZFCorePointerForObject<CacheData *>(t));
+        _cache.add(ZFCorePointerForPoolObject<CacheData *>(t));
         ZFLISTENER(onClose
                 ) {
             zfautoT<ZFCompressToken> token = zfargs.sender();

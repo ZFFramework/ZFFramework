@@ -55,7 +55,7 @@ private:
     static void _deleteCallback(ZF_IN void *p) {
         T_Type *t = (T_Type *)p;
         zfRelease(*t);
-        zfdelete(t);
+        zfpoolDelete(t);
     }
 public:
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
@@ -75,7 +75,7 @@ public:
         zfbool firstTime = (holder == zfnull);
         zfauto oldValue = holder ? holder->retainValueHolder : zfnull;
         ownerObj->objectTag(key, _ZFP_I_PropUR::create(
-                    zfnew(T_Type, zfRetain(v))
+                    zfpoolNew(T_Type, zfRetain(v))
                     , _deleteCallback
                     , v ? v->toObject() : zfnull
                     ));
@@ -100,7 +100,7 @@ public:
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
             zfauto holderTmp = _ZFP_I_PropUR::create(
-                    zfnew(T_Type, zfRetain(tmp))
+                    zfpoolNew(T_Type, zfRetain(tmp))
                     , _deleteCallback
                     , tmp
                     );
@@ -170,7 +170,7 @@ zfclassNotPOD ZFPropertyUserRegisterDefaultImplAssign {
 private:
     static void _deleteCallback(ZF_IN void *p) {
         T_Type *t = (T_Type *)p;
-        zfdelete(t);
+        zfpoolDelete(t);
     }
 public:
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
@@ -190,7 +190,7 @@ public:
         zfbool firstTime = (holder == zfnull);
         T_Type oldValue = holder ? (*(T_Type *)holder->v) : T_Type();
         ownerObj->objectTag(key, _ZFP_I_PropUR::create(
-                    zfnew(T_Type, v)
+                    zfpoolNew(T_Type, v)
                     , _deleteCallback
                     ));
         ZFPropertyUserRegisterNotifyUpdate(ownerObj, property, firstTime ? zfnull : &oldValue);
@@ -214,7 +214,7 @@ public:
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
             zfauto holderTmp = _ZFP_I_PropUR::create(
-                    zfnew(T_Type, tmp)
+                    zfpoolNew(T_Type, tmp)
                     , _deleteCallback
                     );
             ownerObj->objectTag(key, holderTmp);

@@ -69,6 +69,7 @@
 #include "ZFObjectDef/zfcast.h"
 #include "ZFObjectDef/zfsynchronize.h"
 #include "ZFObjectDef/zfweak.h"
+#include "ZFObjectDef/zfwrap.h"
 
 #endif // #ifndef _ZFI_ZFObject_h_
 

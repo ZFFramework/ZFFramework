@@ -206,37 +206,37 @@ ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *
         > \
     zfclassNotPOD Value { \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
             return obj == zfnull || (zfcast(v_zfstring *, obj) != zfnull); \
         } \
-        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
+        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
             return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
         } \
     }; \
     template<typename T_Access> \
     zfclassNotPOD Value<T_Access, 1> { \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
             return zffalse; \
         } \
-        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
+        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
             return zfnull; \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
         } \
     }; \
     template<typename T_Access> \
     zfclassNotPOD Value<T_Access, 2> { \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
             return obj == zfnull || (zfcast(v_zfstring *, obj) != zfnull); \
         } \
-        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
+        static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
             return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
         } \
     };
 ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString)

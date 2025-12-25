@@ -67,12 +67,14 @@ public:
      */
     virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const zfpurevirtual;
     /** @brief see #genericValueStore */
-    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const zfpurevirtual;
+    virtual void *genericAccess(ZF_IN const zfauto &obj) const zfpurevirtual;
     /** @brief see #genericValueStore */
-    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const zfpurevirtual;
+    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const zfpurevirtual;
 
     /**
      * @brief create generic array type
+     *
+     * impl must create by #ZFCoreArrayBase::refNew
      */
     virtual ZFCoreArrayBase *genericArrayNew(void) const zfpurevirtual;
 };
@@ -201,11 +203,11 @@ public:
     zfclassNotPOD Value {
     public:
         /** @brief try access as raw value, see #ZFTypeId::Value */
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj);
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj);
         /** @brief try access as raw value, see #ZFTypeId::Value */
-        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj);
+        static T_Access zfvAccess(ZF_IN const zfauto &obj);
         /** @brief finish access as raw value, see #ZFTypeId::Value */
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj);
+        static void zfvAccessFinish(ZF_IN const zfauto &obj);
     };
     /*
      * if available, the templates above should handle these types,

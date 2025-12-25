@@ -37,13 +37,13 @@ public:
             , this->implName
             );
         if(this->implTagMap != zfnull) {
-            zfdelete(this->implTagMap);
+            zfpoolDelete(this->implTagMap);
         }
     }
 };
 
 ZFIOFindData::ZFIOFindData(void)
-: d(zfnew(_ZFP_ZFIOFindDataPrivate))
+: d(zfpoolNew(_ZFP_ZFIOFindDataPrivate))
 {
 }
 ZFIOFindData::ZFIOFindData(ZF_IN ZFIOFindData const &ref)
@@ -55,7 +55,7 @@ ZFIOFindData &ZFIOFindData::operator = (ZF_IN ZFIOFindData const &ref) {
     ++(ref.d->refCount);
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
     d = ref.d;
     return *this;
@@ -66,7 +66,7 @@ zfbool ZFIOFindData::operator == (ZF_IN ZFIOFindData const &ref) const {
 ZFIOFindData::~ZFIOFindData(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 
@@ -133,7 +133,7 @@ void ZFIOFindData::implTag(
     }
     else {
         if(d->implTagMap == zfnull) {
-            d->implTagMap = zfnew(_ZFP_ZFIOFindDataPrivate::ImplTagMapType);
+            d->implTagMap = zfpoolNew(_ZFP_ZFIOFindDataPrivate::ImplTagMapType);
         }
         (*(d->implTagMap))[key] = value;
     }

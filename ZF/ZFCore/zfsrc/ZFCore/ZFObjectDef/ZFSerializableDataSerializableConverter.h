@@ -119,12 +119,12 @@ extern ZFLIB_ZFCore zfstring ZFSerializableDataToZFSD(
 /**
  * @brief util method to parse object from input with zfsd format
  */
-extern ZFLIB_ZFCore zfbool ZFObjectFromZFSD(
+extern ZFLIB_ZFCore zfbool ZFObjectFromZFSDT(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         );
-/** @brief see #ZFObjectFromZFSD */
+/** @brief see #ZFObjectFromZFSDT */
 extern ZFLIB_ZFCore zfauto ZFObjectFromZFSD(
         ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull

@@ -77,7 +77,7 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
         return d;
     }
     else {
-        _ZFP_ZFSigNamePrivate *d = zfnew(_ZFP_ZFSigNamePrivate);
+        _ZFP_ZFSigNamePrivate *d = zfpoolNew(_ZFP_ZFSigNamePrivate);
         d->refCount = 1;
         d->sigId = zfidentityInvalid();
         d->s = s;
@@ -102,7 +102,7 @@ static void _ZFP_ZFSigNameDetach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
                     _ZFP_ZFSigNameIdMap().erase(d->sigId);
                     _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zfnull;
                 }
-                zfdelete(d);
+                zfpoolDelete(d);
             }
         }
     }

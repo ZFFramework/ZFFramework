@@ -53,7 +53,7 @@ public:
         nativeViewTmp->renderImpl = zfself::renderCallback;
     }
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
-        ZFImpl_sys_SDL_View *nativeView = zfnew(ZFImpl_sys_SDL_View);
+        ZFImpl_sys_SDL_View *nativeView = zfpoolNew(ZFImpl_sys_SDL_View);
         nativeView->ownerZFUIView = view;
         nativeView->renderImpl = zfself::renderCallback;
         return nativeView;
@@ -61,7 +61,7 @@ public:
     virtual void nativeViewDestroy(ZF_IN void *nativeView) {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)nativeView;
         nativeViewTmp->renderImpl = zfnull;
-        zfdelete(nativeViewTmp);
+        zfpoolDelete(nativeViewTmp);
     }
 
     virtual void nativeImplView(

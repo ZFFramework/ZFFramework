@@ -62,15 +62,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             paramName##_PropT(void) \
             : holder(initValue) \
             { \
-                this->value = zfnew(ImplType, this->holder); \
+                this->value = zfpoolNew(ImplType, this->holder); \
             } \
             paramName##_PropT(ZF_IN const paramName##_PropT &ref) \
             : holder(ref.holder) \
             { \
-                this->value = zfnew(ImplType, this->holder); \
+                this->value = zfpoolNew(ImplType, this->holder); \
             } \
             ~paramName##_PropT(void) { \
-                zfdelete(this->value); \
+                zfpoolDelete(this->value); \
             } \
             paramName##_PropT &operator = (ZF_IN const paramName##_PropT &ref) { \
                 this->holder = ref.holder; \
@@ -98,6 +98,7 @@ zfclassFwd ZFClass;
 zfclassFwd ZFProperty;
 zfclassFwd ZFMethod;
 zfclassFwd zfauto;
+zfclassFwd zfwrap;
 
 // ============================================================
 /**

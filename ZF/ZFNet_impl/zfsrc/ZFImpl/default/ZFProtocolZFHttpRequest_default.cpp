@@ -102,13 +102,13 @@ public:
     }
 
     virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request) {
-        return zfnew(NativeTask, request);
+        return zfpoolNew(NativeTask, request);
     }
     virtual void nativeTaskDestroy(ZF_IN void *nativeTask) {
         NativeTask *nativeTaskTmp = (NativeTask *)nativeTask;
         --(nativeTaskTmp->refCount);
         if(nativeTaskTmp->refCount == 0) {
-            zfdelete(nativeTaskTmp);
+            zfpoolDelete(nativeTaskTmp);
         }
     }
 
@@ -345,7 +345,7 @@ public:
             }
             --(task->refCount);
             if(task->refCount == 0) {
-                zfdelete(task);
+                zfpoolDelete(task);
             }
         } ZFLISTENER_END()
         zfasync(asyncRequest, asyncRequestOnFinish);

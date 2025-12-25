@@ -38,7 +38,7 @@ typedef zfstlhashmap<zfstring, zfbool> _ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType
 ZFImpl_ZFLua_ImplSetupHelper::ZFImpl_ZFLua_ImplSetupHelper(ZF_IN lua_State *L)
     : _L(L)
     , _code()
-    , _m(zfnew(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType))
+    , _m(zfpoolNew(_ZFP_ZFImpl_ZFLua_ImplSetupHelper_MapType))
 {
     _code.capacity(1000);
 }
@@ -63,7 +63,7 @@ ZFImpl_ZFLua_ImplSetupHelper::~ZFImpl_ZFLua_ImplSetupHelper(void) {
     if(_code) {
         _commit();
     }
-    zfdelete(&m);
+    zfpoolDelete(&m);
 }
 void ZFImpl_ZFLua_ImplSetupHelper::addGlobalScope(ZF_IN const zfstring &scope) {
     if(scope) {

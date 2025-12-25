@@ -33,7 +33,7 @@ public:
                 .add(JNIPointerJNIType)
             ).c_str());
 
-        _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = zfnew(_ZFP_ZFHttpRequestImpl_sys_Android_Task);
+        _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = zfpoolNew(_ZFP_ZFHttpRequestImpl_sys_Android_Task);
         task->running->zfv = zftrue;
         task->ownerRequest = request;
         task->nativeTask = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId
@@ -55,7 +55,7 @@ public:
         task->running->zfv = zffalse;
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFHttpRequest(), jmId, (jobject)task->nativeTask);
         JNIUtilDeleteGlobalRef(jniEnv, (jobject)task->nativeTask);
-        zfdelete(task);
+        zfpoolDelete(task);
     }
 
     virtual void url(

@@ -68,12 +68,12 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindFirst(
         ZF_IN_OUT ZFIOFindData::Impl &fd
         , ZF_IN const zfchar *resPath
         ) {
-    ZFIOFindData::Impl *normalFd = zfnew(ZFIOFindData::Impl);
+    ZFIOFindData::Impl *normalFd = zfpoolNew(ZFIOFindData::Impl);
     zfstring findPath;
     findPath += this->resRootPath();
     findPath += resPath;
     if(!ZFPROTOCOL_ACCESS(ZFFile)->fileFindFirst(*normalFd, findPath)) {
-        zfdelete(normalFd);
+        zfpoolDelete(normalFd);
         return zffalse;
     }
     fd.name = normalFd->name;
@@ -93,7 +93,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFIOFindData::Im
 void ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
     ZFIOFindData::Impl *normalFd = (ZFIOFindData::Impl *)fd.nativeFd;
     ZFPROTOCOL_ACCESS(ZFFile)->fileFindClose(*normalFd);
-    zfdelete(normalFd);
+    zfpoolDelete(normalFd);
     fd.nativeFd = zfnull;
 }
 

@@ -13,10 +13,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFRegExpImpl_default, ZFRegExp, v_ZFProtocolLeve
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("deelx")
 public:
     virtual void *nativeRegExpCreate(ZF_IN ZFRegExp *regExp) {
-        return zfnew(CRegexpT<zfchar>);
+        return zfpoolNew(CRegexpT<zfchar>);
     }
     virtual void nativeRegExpDestroy(ZF_IN ZFRegExp *regExp) {
-        zfdelete((CRegexpT<zfchar> *)regExp->nativeRegExp());
+        zfpoolDelete((CRegexpT<zfchar> *)regExp->nativeRegExp());
     }
 
     virtual void pattern(

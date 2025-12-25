@@ -541,7 +541,7 @@ static zfbool _ZFP_ZFSerializableDataToZFSDPretty(
     return zftrue;
 }
 
-zfbool ZFObjectFromZFSD(
+zfbool ZFObjectFromZFSDT(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -559,7 +559,7 @@ zfauto ZFObjectFromZFSD(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     zfauto ret;
-    ZFObjectFromZFSD(ret, input, outErrorHint);
+    ZFObjectFromZFSDT(ret, input, outErrorHint);
     return ret;
 }
 
@@ -615,7 +615,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFSerializableDataToZFSD
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectFromZFSD
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectFromZFSDT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)

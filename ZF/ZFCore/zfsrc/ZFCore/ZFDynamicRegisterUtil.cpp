@@ -67,7 +67,7 @@ public:
     : scopeType(scopeType)
     {
         if(scopeType == ScopeType_enum) {
-            d.enumInfo = zfnew(EnumInfo);
+            d.enumInfo = zfpoolNew(EnumInfo);
         }
         else {
             zfmemset(&d, 0, sizeof(D));
@@ -76,12 +76,12 @@ public:
     ~_ZFP_ZFDynamicRegScopeInfo(void) {
         switch(scopeType) {
             case ScopeType_NS:
-                zfdelete(d.NS);
+                zfpoolDelete(d.NS);
                 break;
             case ScopeType_class:
                 break;
             case ScopeType_enum:
-                zfdelete(d.enumInfo);
+                zfpoolDelete(d.enumInfo);
                 break;
             default:
                 break;
@@ -128,7 +128,7 @@ public:
         }
         while(!this->scopeList.isEmpty()) {
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.removeLastAndGet();
-            zfdelete(scope);
+            zfpoolDelete(scope);
         }
     }
 public:
@@ -311,7 +311,7 @@ public:
 
         while(!this->scopeList.isEmpty()) {
             _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.removeLastAndGet();
-            zfdelete(scope);
+            zfpoolDelete(scope);
         }
     }
 public:
@@ -333,7 +333,7 @@ public:
                 _ZFP_ZFDynamicPrivate *impl = allImpl[i];
                 impl->removeAll();
                 if(impl->refCount == 1) {
-                    zfdelete(impl);
+                    zfpoolDelete(impl);
                 }
             }
         }
@@ -348,11 +348,11 @@ void _ZFP_ZFDynamicPrivate::attachGlobal(void) {
 
 // ============================================================
 ZFDynamic::ZFDynamic(void)
-: d(zfnew(_ZFP_ZFDynamicPrivate))
+: d(zfpoolNew(_ZFP_ZFDynamicPrivate))
 {
 }
 ZFDynamic::ZFDynamic(ZF_IN const zfstring &regTag)
-: d(zfnew(_ZFP_ZFDynamicPrivate))
+: d(zfpoolNew(_ZFP_ZFDynamicPrivate))
 {
     this->regTag(regTag);
 }
@@ -364,14 +364,14 @@ ZFDynamic::ZFDynamic(ZF_IN const ZFDynamic &ref)
 ZFDynamic::~ZFDynamic(void) {
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
 }
 ZFDynamic &ZFDynamic::operator = (ZF_IN const ZFDynamic &ref) {
     ++(ref.d->refCount);
     --(d->refCount);
     if(d->refCount == 0) {
-        zfdelete(d);
+        zfpoolDelete(d);
     }
     d = ref.d;
     return *this;
@@ -537,7 +537,7 @@ ZFDynamic &ZFDynamic::classBegin(
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     const ZFClass *cls = ZFClass::classForName(className, scopePrev ? scopePrev->scopeNS() : zfnull);
     if(cls != zfnull) {
-        _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
+        _ZFP_ZFDynamicRegScopeInfo *scope = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
         d->scopeList.add(scope);
         scope->d.cls = cls;
     }
@@ -555,7 +555,7 @@ ZFDynamic &ZFDynamic::classBegin(
         else {
             d->allClass.add(dynClass);
 
-            _ZFP_ZFDynamicRegScopeInfo *scopeNew = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
+            _ZFP_ZFDynamicRegScopeInfo *scopeNew = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
             d->scopeList.add(scopeNew);
             scopeNew->d.cls = dynClass;
         }
@@ -569,7 +569,7 @@ ZFDynamic &ZFDynamic::classBegin(ZF_IN const ZFClass *cls) {
         d->error("null class");
     }
     else {
-        _ZFP_ZFDynamicRegScopeInfo *scopeNew = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
+        _ZFP_ZFDynamicRegScopeInfo *scopeNew = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
         d->scopeList.add(scopeNew);
         scopeNew->scopeType = _ZFP_ZFDynamicRegScopeInfo::ScopeType_class;
         scopeNew->d.cls = cls;
@@ -584,7 +584,7 @@ ZFDynamic &ZFDynamic::classEnd(void) {
     }
     else {
         d->scopeList.removeLast();
-        zfdelete(scope);
+        zfpoolDelete(scope);
     }
     return *this;
 }
@@ -856,17 +856,17 @@ ZFDynamic &ZFDynamic::NSBegin(ZF_IN const zfstring &methodNamespace) {
         return *this;
     }
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
     d->scopeList.add(scope);
     if(scopePrev != zfnull) {
-        scope->d.NS = zfnew(zfstring);
+        scope->d.NS = zfpoolNew(zfstring);
         zfstring &tmp = *(scope->d.NS);
         tmp += scope->scopeNS();
         tmp += ".";
         tmp += methodNamespaceTmp;
     }
     else {
-        scope->d.NS = zfnew(zfstring, methodNamespaceTmp);
+        scope->d.NS = zfpoolNew(zfstring, methodNamespaceTmp);
     }
     return *this;
 }
@@ -878,7 +878,7 @@ ZFDynamic &ZFDynamic::NSEnd(void) {
     }
     else {
         d->scopeList.removeLast();
-        zfdelete(scope);
+        zfpoolDelete(scope);
     }
     return *this;
 }
@@ -888,7 +888,7 @@ ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_enum()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum);
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum);
     d->scopeList.add(scope);
     if(scopePrev != zfnull) {
         scope->d.enumInfo->enumClassNameFull += scopePrev->scopeNS();
@@ -902,7 +902,7 @@ ZFDynamic &ZFDynamic::enumBeginFlags(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_enum()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum);
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum);
     d->scopeList.add(scope);
     if(scopePrev != zfnull) {
         scope->d.enumInfo->enumClassNameFull += scopePrev->scopeNS();
@@ -943,7 +943,11 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
         return *this;
     }
     d->scopeList.removeLast();
-    zfscopeDelete(scope);
+    zfscopeCleanup_1({
+            zfpoolDelete(scope);
+        }
+        , _ZFP_ZFDynamicRegScopeInfo *, scope
+        );
 
     zfstring errorHint;
     const ZFClass *enumClass = ZFEnumDynamicRegister(

@@ -205,20 +205,20 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, startSync
     }
 
     zfautoT<ZFHttpRequest> send = this;
-    zfobj<ZFObjectHolder> recv;
+    zfobj<v_zfwrap> recv;
     zfobj<ZFSemaphore> waitLock;
     ZFLISTENER_3(onRequest
             , zfautoT<ZFHttpRequest>, send
             , ZFSemaphore *, waitLock
-            , zfautoT<ZFObjectHolder>, recv
+            , zfautoT<v_zfwrap>, recv
             ) {
         ZFLISTENER_3(onResponse
                 , ZFSemaphore *, waitLock
                 , zfautoT<ZFHttpRequest>, send
-                , zfautoT<ZFObjectHolder>, recv
+                , zfautoT<v_zfwrap>, recv
                 ) {
             ZFUNUSED(send);
-            recv->value(zfargs.param0());
+            recv->zfv = zfargs.param0();
             _ZFP_ZFHttpRequest_log("startSync response begin: %s %s", send, zfargs.param0());
             waitLock->lockAndBroadcast();
             _ZFP_ZFHttpRequest_log("startSync response end: %s", send);
@@ -236,7 +236,7 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, startSync
     }
     _ZFP_ZFHttpRequest_log("startSync wait end: %s", this);
     _ZFP_ZFHttpRequest_log("startSync end: %s", this);
-    return recv->value();
+    return recv->zfv;
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo) {

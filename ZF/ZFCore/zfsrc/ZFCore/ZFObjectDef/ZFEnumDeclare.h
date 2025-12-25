@@ -546,23 +546,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             > \
         zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
                 return (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(_ZFP_WrapType *, obj)->_ZFP_ZFEnum_value)); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
             } \
         }; \
         template<typename T_Access> \
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
                 return obj == zfnull || (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
-            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
                 if(obj == zfnull) { \
                     return zfnull; \
                 } \
@@ -572,7 +572,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     return (typename zftTraits<T_Access>::TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 } \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
             } \
         }; \
         zfoverride \
@@ -580,20 +580,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ValueStore(obj, *(const _ZFP_PropType *)v); \
         } \
         zfoverride \
-        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+        virtual void *genericAccess(ZF_IN const zfauto &obj) const { \
             if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
+            return (void *)zfpoolNew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
         } \
         zfoverride \
-        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((_ZFP_PropType *)v); \
+        virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const { \
+            zfpoolDelete((_ZFP_PropType *)v); \
             Value<_ZFP_PropType>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<_ZFP_PropType>); \
+            return ZFCoreArray<_ZFP_PropType>().refNew(); \
         } \
     }; \
     /** @endcond */ \
@@ -704,23 +704,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             > \
         zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
                 return (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(_ZFP_WrapType *, obj)->_ZFP_ZFEnum_value)); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
             } \
         }; \
         template<typename T_Access> \
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
                 return obj == zfnull || (zfcast(_ZFP_WrapType *, obj) != zfnull); \
             } \
-            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
                 if(obj == zfnull) { \
                     return zfnull; \
                 } \
@@ -730,7 +730,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     return (typename zftTraits<T_Access>::TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 } \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
             } \
         }; \
         zfoverride \
@@ -738,20 +738,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ValueStore(obj, *(const _ZFP_PropType *)v); \
         } \
         zfoverride \
-        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+        virtual void *genericAccess(ZF_IN const zfauto &obj) const { \
             if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfnew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
+            return (void *)zfpoolNew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
         } \
         zfoverride \
-        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
-            zfdelete((_ZFP_PropType *)v); \
+        virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const { \
+            zfpoolDelete((_ZFP_PropType *)v); \
             Value<_ZFP_PropType>::zfvAccessFinish(obj); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
-            return zfnew(ZFCoreArray<_ZFP_PropType>); \
+            return ZFCoreArray<_ZFP_PropType>().refNew(); \
         } \
     }; \
     /** @endcond */ \

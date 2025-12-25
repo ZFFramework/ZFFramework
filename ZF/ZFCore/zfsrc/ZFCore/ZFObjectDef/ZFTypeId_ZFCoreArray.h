@@ -587,34 +587,34 @@ public:
         >
     zfclassNotPOD Value {
     public:
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             v_ZFCoreArray *t = obj;
             return t != zfnull && (
                     t->elementType == zfnull
                     || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
                     );
         }
-        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
+        static T_Access zfvAccess(ZF_IN const zfauto &obj) {
             v_ZFCoreArray *t = obj;
             if(t->zfv == zfnull) {
                 t->wrappedValue(typename zftTraits<T_Access>::TrType());
             }
             return (T_Access)(ZFCoreArray<T_Type> &)(*(t->zfv));
         }
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
     template<typename T_Access>
     zfclassNotPOD Value<T_Access, 1> {
     public:
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+        static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             v_ZFCoreArray *t = obj;
             return obj == zfnull || (t != zfnull && (
                         t->elementType == zfnull
                         || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
                         ));
         }
-        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
+        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) {
             if(obj == zfnull) {
                 return zfnull;
             }
@@ -626,7 +626,7 @@ public:
                 return (typename zftTraits<T_Access>::TrNoRef)(ZFCoreArray<T_Type> *)(t->zfv);
             }
         }
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
 public:
@@ -635,20 +635,20 @@ public:
         return ValueStore(obj, *(const ZFCoreArray<T_Type> *)v);
     }
     zfoverride
-    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+    virtual void *genericAccess(ZF_IN const zfauto &obj) const {
         if(!Value<ZFCoreArray<T_Type> >::zfvAccessAvailable(obj)) {
             return zfnull;
         }
         return (void *)zfpoolNew(ZFCoreArray<T_Type>, Value<ZFCoreArray<T_Type> >::zfvAccess(obj));
     }
     zfoverride
-    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
         zfpoolDelete((ZFCoreArray<T_Type> *)v);
         Value<ZFCoreArray<T_Type> >::zfvAccessFinish(obj);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfpoolNew(ZFCoreArray<ZFCoreArray<T_Type> >);
+        return ZFCoreArray<ZFCoreArray<T_Type> >().refNew();
     }
 };
 /** @endcond */

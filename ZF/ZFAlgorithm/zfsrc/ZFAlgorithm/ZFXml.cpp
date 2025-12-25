@@ -147,7 +147,7 @@ ZFXml::ZFXml(ZF_IN _ZFP_ZFXmlPrivate *ref)
 }
 
 ZFXml::ZFXml(void)
-: d(zfnew(_ZFP_ZFXmlPrivate, v_ZFXmlType::e_Element))
+: d(zfpoolNew(_ZFP_ZFXmlPrivate, v_ZFXmlType::e_Element))
 {
 }
 ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
@@ -156,7 +156,7 @@ ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
 }
 ZFXml::ZFXml(ZF_IN ZFXmlType type) {
     if(type != v_ZFXmlType::e_Null) {
-        d = zfnew(_ZFP_ZFXmlPrivate, type);
+        d = zfpoolNew(_ZFP_ZFXmlPrivate, type);
     }
     else {
         d = zfnull;
@@ -173,7 +173,7 @@ ZFXml::~ZFXml(void) {
     if(d) {
         --(d->refCount);
         if(d->refCount == 0) {
-            zfdelete(d);
+            zfpoolDelete(d);
         }
     }
 }
@@ -187,7 +187,7 @@ ZFXml &ZFXml::operator = (ZF_IN const ZFXml &ref) {
     if(dTmp) {
         --(dTmp->refCount);
         if(dTmp->refCount == 0) {
-            zfdelete(dTmp);
+            zfpoolDelete(dTmp);
         }
     }
     return *this;
@@ -196,7 +196,7 @@ ZFXml &ZFXml::operator = (ZF_IN const zfnullT &dummy) {
     if(d) {
         --(d->refCount);
         if(d->refCount == 0) {
-            zfdelete(d);
+            zfpoolDelete(d);
         }
         d = zfnull;
     }
@@ -222,7 +222,7 @@ void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlType type) {
             d->type = type;
         }
         else {
-            d = zfnew(_ZFP_ZFXmlPrivate, type);
+            d = zfpoolNew(_ZFP_ZFXmlPrivate, type);
         }
     }
 }

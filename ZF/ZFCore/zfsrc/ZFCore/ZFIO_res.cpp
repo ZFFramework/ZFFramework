@@ -311,7 +311,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         , ZFMP_IN(const zfstring &, resPath)
         ) {
-    _ZFP_ZFResFindData *implUserData = zfnew(_ZFP_ZFResFindData);
+    _ZFP_ZFResFindData *implUserData = zfpoolNew(_ZFP_ZFResFindData);
     fd.implAttach(_ZFP_ZFIOFindType_res, implUserData);
     implUserData->resPathSaved = resPath;
 
@@ -330,7 +330,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
             implUserData->resExtImpl = zfnull;
             if(!ZFResRaw::ZFResFindFirst(fd, resPath)) {
                 fd.implDetach();
-                zfdelete(implUserData);
+                zfpoolDelete(implUserData);
                 return zffalse;
             }
             implUserData->resFindFirstStarted = zftrue;
@@ -340,7 +340,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
     else {
         if(!ZFResRaw::ZFResFindFirst(fd, resPath)) {
             fd.implDetach();
-            zfdelete(implUserData);
+            zfpoolDelete(implUserData);
             return zffalse;
         }
         implUserData->resFindFirstStarted = zftrue;
@@ -421,7 +421,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResFindClose
         ZFResRaw::ZFResFindClose(fd);
     }
     fd.implDetach();
-    zfdelete(implUserData);
+    zfpoolDelete(implUserData);
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
@@ -431,7 +431,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
         return zfnull;
     }
 
-    _ZFP_ZFFileTokenForRes *ret = zfnew(_ZFP_ZFFileTokenForRes);
+    _ZFP_ZFFileTokenForRes *ret = zfpoolNew(_ZFP_ZFFileTokenForRes);
     ZFPathInfo resExtPath;
     if(ZFResExtPathCheck(resExtPath, resPath)) {
         ret->resExtImpl = ZFIOImplForPathType(resExtPath.pathType());
@@ -442,14 +442,14 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen
             }
         }
         if(ret->resExtToken == zfnull) {
-            zfdelete(ret);
+            zfpoolDelete(ret);
             ret = zfnull;
         }
     }
     else {
         ret->fd = ZFResRaw::ZFResOpen(resPath);
         if(ret->fd == zfnull) {
-            zfdelete(ret);
+            zfpoolDelete(ret);
             ret = zfnull;
         }
     }
@@ -463,7 +463,11 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    zfscopeDelete(resToken);
+    zfscopeCleanup_1({
+            zfpoolDelete(resToken);
+        }
+        , _ZFP_ZFFileTokenForRes *, resToken
+        );
     if(resToken->resExtToken != zfnull) {
         zfbool ret = resToken->resExtToken->ioClose();;
         resToken->resExtToken = zfnull;

@@ -98,7 +98,7 @@ public:
         return zftrue;
     }
     zfoverride
-    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+    virtual void *genericAccess(ZF_IN const zfauto &obj) const {
         ZFEnum *p = obj;
         if(p == zfnull) {
             return zfnull;
@@ -106,12 +106,12 @@ public:
         return (void *)zfpoolNew(zfuint, p->enumValue());
     }
     zfoverride
-    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
         zfpoolDelete((zfuint *)v);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfpoolNew(ZFCoreArray<zfuint>);
+        return ZFCoreArray<zfuint>().refNew();
     }
 };
 

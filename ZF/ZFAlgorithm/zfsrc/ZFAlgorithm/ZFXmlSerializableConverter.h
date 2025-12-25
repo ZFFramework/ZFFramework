@@ -73,12 +73,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToXml
 /**
  * @brief util method to parse object from input with xml format
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFObjectFromXml
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFObjectFromXmlT
         , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         )
-/** @brief see #ZFObjectFromXml */
+/** @brief see #ZFObjectFromXmlT */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfauto, ZFObjectFromXml
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)

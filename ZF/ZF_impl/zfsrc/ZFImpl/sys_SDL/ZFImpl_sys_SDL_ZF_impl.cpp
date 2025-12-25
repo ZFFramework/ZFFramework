@@ -55,7 +55,7 @@ static size_t _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFInput(void *userdata, const v
 }
 
 static bool _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFInput(void *userdata) {
-    zfdelete((ZFInput *)userdata);
+    zfpoolDelete((ZFInput *)userdata);
     return true;
 }
 
@@ -69,7 +69,7 @@ SDL_IOStream *ZFImpl_sys_SDL_ZFInputToSDL_IOStream(ZF_IN const ZFInput &callback
     impl.read = _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFInput;
     impl.write = _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFInput;
     impl.close = _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFInput;
-    return SDL_OpenIO(&impl, zfnew(ZFInput, callback));
+    return SDL_OpenIO(&impl, zfpoolNew(ZFInput, callback));
 }
 
 // ============================================================
@@ -120,7 +120,7 @@ static size_t _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFOutput(void *userdata, const 
 }
 
 static bool _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFOutput(void *userdata) {
-    zfdelete((ZFOutput *)userdata);
+    zfpoolDelete((ZFOutput *)userdata);
     return true;
 }
 
@@ -134,7 +134,7 @@ SDL_IOStream *ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(ZF_IN const ZFOutput &callba
     impl.read = _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFOutput;
     impl.write = _ZFP_ZFImpl_sys_SDL_IOStream_write_ZFOutput;
     impl.close = _ZFP_ZFImpl_sys_SDL_IOStream_close_ZFOutput;
-    return SDL_OpenIO(&impl, zfnew(ZFOutput, callback));
+    return SDL_OpenIO(&impl, zfpoolNew(ZFOutput, callback));
 }
 
 ZF_NAMESPACE_GLOBAL_END
