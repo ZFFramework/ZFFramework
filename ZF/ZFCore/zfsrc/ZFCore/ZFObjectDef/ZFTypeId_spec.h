@@ -344,8 +344,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<const zfauto &, 0> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, const zfauto &>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return zftrue;
@@ -356,8 +356,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<const zfauto *, 1> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 1, typename zftEnableIf<zftIsSame<T_Access, const zfauto *>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return zftrue;
@@ -368,8 +368,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<zfauto &, 0> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, zfauto &>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return _ZFP_zfwrapAccess(obj) != zfnull;
@@ -380,8 +380,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<zfauto *, 1> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 1, typename zftEnableIf<zftIsSame<T_Access, zfauto *>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return _ZFP_zfwrapAccess(obj) != zfnull;
@@ -479,8 +479,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<const zfautoT<T_ZFObject> &, 0> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, const zfautoT<T_ZFObject> &>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return zftrue;
@@ -492,8 +492,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<const zfautoT<T_ZFObject> *, 1> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 1, typename zftEnableIf<zftIsSame<T_Access, const zfautoT<T_ZFObject> *>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return zftrue;
@@ -505,8 +505,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<zfautoT<T_ZFObject> &, 0> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, zfautoT<T_ZFObject> &>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return _ZFP_zfwrapAccess(obj) != zfnull;
@@ -518,8 +518,8 @@ public:
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<zfautoT<T_ZFObject> *, 1> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 1, typename zftEnableIf<zftIsSame<T_Access, zfautoT<T_ZFObject> *>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return _ZFP_zfwrapAccess(obj) != zfnull;
@@ -617,13 +617,13 @@ public:
             return zftrue;
         }
         static T_Access zfvAccess(ZF_IN const zfauto &obj) {
-            return const_cast<zfany &>(obj.asAny());
+            return obj.asAny();
         }
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<const zfany &, 0> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, const zfany &>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return zftrue;
@@ -635,8 +635,8 @@ public:
         }
     };
     // can not modify, can not be pointer, use zfwrap or zfauto instead
-    template<>
-    zfclassNotPOD Value<zfany &, 0> {};
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, zfany &>::Value>::Value> {};
     template<typename T_Access>
     zfclassNotPOD Value<T_Access, 1> {};
 public:
@@ -718,13 +718,13 @@ public:
         }
         static T_Access zfvAccess(ZF_IN const zfauto &obj) {
             /* ZFTAG_TRICKS: zfanyT ensured safe for reinterpret cast */
-            return (T_Access)const_cast<zfany &>(obj.asAny());
+            return *(const zfanyT<T_ZFObject> *)&(obj.asAny());
         }
         static void zfvAccessFinish(ZF_IN const zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<const zfanyT<T_ZFObject> &, 0> {
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, const zfanyT<T_ZFObject> &>::Value>::Value> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) {
             return zftrue;
@@ -737,8 +737,8 @@ public:
         }
     };
     // can not modify, can not be pointer, use zfwrap or zfauto instead
-    template<>
-    zfclassNotPOD Value<zfanyT<T_ZFObject> &, 0> {};
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 0, typename zftEnableIf<zftIsSame<T_Access, zfanyT<T_ZFObject> &>::Value>::Value> {};
     template<typename T_Access>
     zfclassNotPOD Value<T_Access, 1> {};
 public:
