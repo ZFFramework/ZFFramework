@@ -799,6 +799,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
+                ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessFinish(obj); \
                 return *v; \
             } \
             static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
@@ -841,6 +842,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
+                ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessFinish(obj); \
                 return *p; \
             } \
             static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
@@ -884,6 +886,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
+                ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessFinish(obj); \
                 return *v; \
             } \
             static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
