@@ -74,7 +74,7 @@ public:
         }
         return *this;
     }
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
+_ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 
 /** @cond ZFPrivateDoc */
 template<typename T>

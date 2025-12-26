@@ -97,7 +97,7 @@ public:
         } while(zftrue);
         return *this;
     }
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
+_ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 
 // ============================================================
 // ZFInputDummy

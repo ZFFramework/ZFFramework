@@ -452,10 +452,10 @@ ZFCOMPARER_DEFAULT_DECLARE(ZFCallback, ZFCallback, {
  */
 #define ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
     _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
+    _ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_, CallbackTypeName, ParentType)
+#define _ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_, CallbackTypeName, ParentType) \
     ZFTYPEID_ALIAS_DECLARE(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName) \
-    ZFTYPEID_ALIAS_REG(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName)
-#define _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_, CallbackTypeName, ParentType) \
-    _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType)
+    ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_REINTERPRET_CAST)
 
 /**
  * @brief util macro to declare a child type of ZFCallback

@@ -119,10 +119,10 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
     })
 
 // ============================================================
-ZFTYPEID_ALIAS_DEFINE(ZFCallback, ZFCallback, ZFListener, ZFListener)
-ZFTYPEID_ALIAS_DEFINE(ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
-ZFTYPEID_ALIAS_DEFINE(ZFCallback, ZFCallback, ZFOutput, ZFOutput)
-ZFTYPEID_ALIAS_DEFINE(ZFCallback, ZFCallback, ZFInput, ZFInput)
+ZFCALLBACK_DEFINE(ZFListener, ZFCallback)
+ZFCALLBACK_DEFINE(ZFIOCallback, ZFCallback)
+ZFCALLBACK_DEFINE(ZFOutput, ZFIOCallback)
+ZFCALLBACK_DEFINE(ZFInput, ZFIOCallback)
 
 // ============================================================
 // custom serialize logic

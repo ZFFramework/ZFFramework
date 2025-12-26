@@ -96,7 +96,7 @@ public:
     zfany ioOwner(void) const {
         return this->callbackTag(ZFCallbackTagKeyword_ioOwner);
     }
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
+_ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCallback_fwd_h_

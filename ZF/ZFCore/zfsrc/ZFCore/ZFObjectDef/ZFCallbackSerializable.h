@@ -50,14 +50,10 @@ ZFOUTPUT_TYPE(ZFCallback, {v.objectInfoT(s);})
 #define ZFSerializableKeyword_ZFCallback_callbackType "callbackType"
 
 // ============================================================
-ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFListener, ZFListener)
-ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFListener, ZFListener)
-ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
-ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
-ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFOutput, ZFOutput)
-ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFOutput, ZFOutput)
-ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFInput, ZFInput)
-ZFTYPEID_ALIAS_REG(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFInput, ZFInput)
+_ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_ZFCore, ZFListener, ZFCallback)
+_ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
+_ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
+_ZFP_ZFCALLBACK_DECLARE_END_REG(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 
 // ============================================================
 // custom serialize logic

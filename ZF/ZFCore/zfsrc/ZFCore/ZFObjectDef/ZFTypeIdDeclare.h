@@ -1002,7 +1002,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         template<typename T_Access> \
         zfclassNotPOD Value<T_Access, 1> { \
         private: \
-             typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
+            typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
                 return (obj != zfnull && ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj)); \
@@ -1084,6 +1084,57 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessFinish(objTmp); \
                 } \
                 zfpoolDelete(vTmp); \
+            } \
+        };
+
+#define _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_REINTERPRET_CAST(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+        template<typename T_Access = _ZFP_PropType \
+            , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
+                && !zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value) ? 1 \
+                : ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
+                    && zftIsSame<typename zftTraits<T_Access>::TrNoRef, _ZFP_PropType>::Value \
+                    && !zftTraits<T_Access>::TrIsRef) ? 2 : 0)) \
+            , typename T_Fix = void \
+            > \
+        zfclassNotPOD Value { \
+        public: \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
+                return ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj); \
+            } \
+            static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
+                AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(obj); \
+                return *(_ZFP_PropType *)&aliasValue; \
+            } \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            } \
+        }; \
+        template<typename T_Access> \
+        zfclassNotPOD Value<T_Access, 1> { \
+        public: \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
+                return ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj); \
+            } \
+            static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
+                AliasToType *aliasValue = ZFTypeId<AliasToType>::Value<AliasToType *>::zfvAccess(obj); \
+                return (_ZFP_PropType *)aliasValue; \
+            } \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            } \
+        }; \
+        template<typename T_Access> \
+        zfclassNotPOD Value<T_Access, 2> { \
+        public: \
+            static zfbool zfvAccessAvailable(ZF_IN const zfauto &obj) { \
+                return obj == zfnull || (ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj)); \
+            } \
+            static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
+                if(obj == zfnull) { \
+                    return zfnull; \
+                } \
+                AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(obj); \
+                return (_ZFP_PropType &)aliasValue; \
+            } \
+            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
             } \
         };
 

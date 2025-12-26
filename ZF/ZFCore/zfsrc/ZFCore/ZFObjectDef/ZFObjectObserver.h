@@ -118,7 +118,7 @@ public:
     }
 #endif
     /** @endcond */
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFListener, ZFCallback)
+_ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_ZFCore, ZFListener, ZFCallback)
 
 // ============================================================
 // ZFObserver
