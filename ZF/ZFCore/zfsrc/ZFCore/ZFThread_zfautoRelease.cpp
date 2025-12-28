@@ -19,11 +19,18 @@ void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj) {
         }
         else {
             ZFAutoReleasePool::instance()->poolAdd(obj);
-            ZFCoreLogTrim("[zfautoRelease] zfautoRelease called while no auto drain logic support, object %s would not be released normally",
-                obj->objectInfoOfInstance());
         }
     }
 }
+
+ZF_STATIC_INITIALIZER_INIT(zfvAccessFinishDelayImpl) {
+    _ZFP_zfvAccessFinishDelayImpl() = zfself::a;
+}
+private:
+    static void a(ZF_IN const zfauto &obj) {
+        zfautoRelease(zfRetain(obj));
+    }
+ZF_STATIC_INITIALIZER_END(zfvAccessFinishDelayImpl)
 
 ZF_NAMESPACE_GLOBAL_END
 

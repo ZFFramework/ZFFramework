@@ -212,7 +212,8 @@ ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *
         static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
             return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+        static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            return zfnull; \
         } \
     }; \
     template<typename T_Access> \
@@ -224,7 +225,8 @@ ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *
         static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
             return zfnull; \
         } \
-        static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+        static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            return zfnull; \
         } \
     }; \
     template<typename T_Access> \
@@ -236,7 +238,8 @@ ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *
         static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
             return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+        static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            return zfnull; \
         } \
     };
 ZFTYPEID_ALIAS_REG_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_VALUE_ACCESS_cString)

@@ -601,7 +601,8 @@ public:
             }
             return (T_Access)(ZFCoreArray<T_Type> &)(*(t->zfv));
         }
-        static void zfvAccessFinish(ZF_IN const zfauto &obj) {
+        static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) {
+            return zfnull;
         }
     };
     template<typename T_Access>
@@ -626,7 +627,8 @@ public:
                 return (typename zftTraits<T_Access>::TrNoRef)(ZFCoreArray<T_Type> *)(t->zfv);
             }
         }
-        static void zfvAccessFinish(ZF_IN const zfauto &obj) {
+        static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) {
+            return zfnull;
         }
     };
 public:
@@ -639,12 +641,13 @@ public:
         if(!Value<ZFCoreArray<T_Type> >::zfvAccessAvailable(obj)) {
             return zfnull;
         }
-        return (void *)zfpoolNew(ZFCoreArray<T_Type>, Value<ZFCoreArray<T_Type> >::zfvAccess(obj));
+        else {
+            return _ZFP_genericAccessWrap<ZFCoreArray<T_Type> >(Value<ZFCoreArray<T_Type> >::zfvAccess(obj));
+        }
     }
     zfoverride
-    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
-        zfpoolDelete((ZFCoreArray<T_Type> *)v);
-        Value<ZFCoreArray<T_Type> >::zfvAccessFinish(obj);
+    virtual zfauto genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
+        return _ZFP_genericAccessFinishWrap(Value<ZFCoreArray<T_Type> >::zfvAccessFinish(obj), v, _ZFP_genericAccessFinish<ZFCoreArray<T_Type> >);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {

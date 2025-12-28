@@ -357,7 +357,9 @@ public:
         if(!ZFTypeId<_T_ReturnType>::template Value<T_ReturnType>::zfvAccessAvailable(zfargs.result())) {
             _ZFP_ZFMethodGenericInvokeError(-2, zfargs);
         }
-        return ZFTypeId<_T_ReturnType>::template Value<T_ReturnType>::zfvAccess(zfargs.result());
+        T_ReturnType ret = ZFTypeId<_T_ReturnType>::template Value<T_ReturnType>::zfvAccess(zfargs.result());
+        _ZFP_zfvAccessFinishDelay(ZFTypeId<_T_ReturnType>::template Value<T_ReturnType>::zfvAccessFinish(zfargs.result()));
+        return ret;
     }
 };
 template<>

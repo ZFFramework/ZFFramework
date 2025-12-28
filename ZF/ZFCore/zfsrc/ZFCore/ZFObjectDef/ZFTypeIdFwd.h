@@ -69,7 +69,7 @@ public:
     /** @brief see #genericValueStore */
     virtual void *genericAccess(ZF_IN const zfauto &obj) const zfpurevirtual;
     /** @brief see #genericValueStore */
-    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const zfpurevirtual;
+    virtual zfauto genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const zfpurevirtual;
 
     /**
      * @brief create generic array type
@@ -207,7 +207,7 @@ public:
         /** @brief try access as raw value, see #ZFTypeId::Value */
         static T_Access zfvAccess(ZF_IN const zfauto &obj);
         /** @brief finish access as raw value, see #ZFTypeId::Value */
-        static void zfvAccessFinish(ZF_IN const zfauto &obj);
+        static zfauto zfvAccessFinish(ZF_IN const zfauto &obj);
     };
     /*
      * if available, the templates above should handle these types,
@@ -245,7 +245,7 @@ extern ZFLIB_ZFCore void _ZFP_PropAliasAttach(
         , ZF_IN const zfstring &tagKey
         , ZF_IN _ZFP_PropAliasDetachCallback detachCallback
         );
-extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(
+extern ZFLIB_ZFCore zfauto _ZFP_PropAliasDetach(
         ZF_IN ZFObject *obj
         , ZF_IN const zfstring &tagKey
         );

@@ -103,11 +103,11 @@ public:
         if(p == zfnull) {
             return zfnull;
         }
-        return (void *)zfpoolNew(zfuint, p->enumValue());
+        return _ZFP_genericAccessWrap<zfuint>(p->enumValue());
     }
     zfoverride
-    virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
-        zfpoolDelete((zfuint *)v);
+    virtual zfauto genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const {
+        return _ZFP_genericAccessFinishWrap(zfnull, v, _ZFP_genericAccessFinish<zfuint>);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {

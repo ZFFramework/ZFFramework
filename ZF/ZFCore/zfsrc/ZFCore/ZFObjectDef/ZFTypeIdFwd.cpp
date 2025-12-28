@@ -113,11 +113,11 @@ void _ZFP_PropAliasAttach(
     d->ownerOnDealloc = ownerOnDealloc;
     obj->observerAddForOnce(ZFObject::E_ObjectBeforeDealloc(), ownerOnDealloc);
 }
-void _ZFP_PropAliasDetach(
+zfauto _ZFP_PropAliasDetach(
         ZF_IN ZFObject *obj
         , ZF_IN const zfstring &tagKey
         ) {
-    obj->objectTagRemove(tagKey);
+    return obj->objectTagRemoveAndGet(tagKey);
 }
 
 ZF_NAMESPACE_GLOBAL_END

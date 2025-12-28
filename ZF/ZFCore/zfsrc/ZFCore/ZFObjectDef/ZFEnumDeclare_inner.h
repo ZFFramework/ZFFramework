@@ -419,7 +419,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(_ZFP_WrapType *, obj)->_ZFP_ZFEnum_value)); \
             } \
-            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+                return zfnull; \
             } \
         }; \
         template<typename T_Access> \
@@ -438,7 +439,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     return (typename zftTraits<T_Access>::TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 } \
             } \
-            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+                return zfnull; \
             } \
         }; \
         zfoverride \
@@ -450,12 +452,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfpoolNew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
+            else { \
+                return _ZFP_genericAccessWrap<_ZFP_PropType>(Value<_ZFP_PropType>::zfvAccess(obj)); \
+            } \
         } \
         zfoverride \
-        virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const { \
-            zfpoolDelete((_ZFP_PropType *)v); \
-            Value<_ZFP_PropType>::zfvAccessFinish(obj); \
+        virtual zfauto genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const { \
+            return _ZFP_genericAccessFinishWrap(Value<_ZFP_PropType>::zfvAccessFinish(obj), v, _ZFP_genericAccessFinish<_ZFP_PropType>); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
@@ -577,7 +580,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(_ZFP_WrapType *, obj)->_ZFP_ZFEnum_value)); \
             } \
-            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+                return zfnull; \
             } \
         }; \
         template<typename T_Access> \
@@ -596,7 +600,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     return (typename zftTraits<T_Access>::TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 } \
             } \
-            static void zfvAccessFinish(ZF_IN const zfauto &obj) { \
+            static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
+                return zfnull; \
             } \
         }; \
         zfoverride \
@@ -608,12 +613,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             if(!Value<_ZFP_PropType>::zfvAccessAvailable(obj)) { \
                 return zfnull; \
             } \
-            return (void *)zfpoolNew(_ZFP_PropType, Value<_ZFP_PropType>::zfvAccess(obj)); \
+            else { \
+                return _ZFP_genericAccessWrap<_ZFP_PropType>(Value<_ZFP_PropType>::zfvAccess(obj)); \
+            } \
         } \
         zfoverride \
-        virtual void genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const { \
-            zfpoolDelete((_ZFP_PropType *)v); \
-            Value<_ZFP_PropType>::zfvAccessFinish(obj); \
+        virtual zfauto genericAccessFinish(ZF_IN const zfauto &obj, ZF_IN void *v) const { \
+            return _ZFP_genericAccessFinishWrap(Value<_ZFP_PropType>::zfvAccessFinish(obj), v, _ZFP_genericAccessFinish<_ZFP_PropType>); \
         } \
         zfoverride \
         virtual ZFCoreArrayBase *genericArrayNew(void) const { \
