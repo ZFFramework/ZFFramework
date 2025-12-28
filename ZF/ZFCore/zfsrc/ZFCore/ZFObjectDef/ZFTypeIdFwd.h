@@ -197,7 +197,11 @@ public:
      *   and the impl value would be copied back to original value during zfvAccessFinish,
      *   thus, the reflection performance of aliased type may be much worse than original type
      * -  when access aliased type as return value,
-     *   the zfvAccessFinish won't be called until the original holder object deallocated
+     *   the temp object may (or may not) be released on different condition,
+     *   take care of life cycle:
+     *   -  if #ZFThread impl is available : release by #zfautoRelease
+     *   -  if #ZFThread impl is not available : added to #ZFAutoReleasePool,
+     *     you must release it at proper time
      */
     template<typename T_Access = T_Type>
     zfclassNotPOD Value {
