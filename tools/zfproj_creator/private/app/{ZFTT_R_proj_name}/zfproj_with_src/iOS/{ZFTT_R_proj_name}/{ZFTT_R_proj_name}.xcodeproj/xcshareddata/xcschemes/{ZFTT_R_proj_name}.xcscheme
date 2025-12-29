@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "2600"
+   LastUpgradeVersion = "2620"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3B2EB083DB3C1AF83A72FED3B2D72C78"
+               BlueprintIdentifier = "633E2442CF46B438E8BAA91292886FE3"
                BuildableName = "{ZFTT_R_proj_name}.app"
                BlueprintName = "{ZFTT_R_proj_name}"
                ReferencedContainer = "container:{ZFTT_R_proj_name}.xcodeproj">
@@ -30,7 +30,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3B2EB083DB3C1AF83A72FED3B2D72C78"
+            BlueprintIdentifier = "633E2442CF46B438E8BAA91292886FE3"
             BuildableName = "{ZFTT_R_proj_name}.app"
             BlueprintName = "{ZFTT_R_proj_name}"
             ReferencedContainer = "container:{ZFTT_R_proj_name}.xcodeproj">
@@ -54,7 +54,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3B2EB083DB3C1AF83A72FED3B2D72C78"
+            BlueprintIdentifier = "633E2442CF46B438E8BAA91292886FE3"
             BuildableName = "{ZFTT_R_proj_name}.app"
             BlueprintName = "{ZFTT_R_proj_name}"
             ReferencedContainer = "container:{ZFTT_R_proj_name}.xcodeproj">
@@ -78,7 +78,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3B2EB083DB3C1AF83A72FED3B2D72C78"
+            BlueprintIdentifier = "633E2442CF46B438E8BAA91292886FE3"
             BuildableName = "{ZFTT_R_proj_name}.app"
             BlueprintName = "{ZFTT_R_proj_name}"
             ReferencedContainer = "container:{ZFTT_R_proj_name}.xcodeproj">

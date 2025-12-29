@@ -28,7 +28,7 @@ ZF_NAMESPACE_GLOBAL_END
 @implementation _ZFP_ZFImpl_sys_iOS_AppEventHolder
 - (void)appOnCreate:(NSNotification *)notification {
     _ZFP_ZFImpl_sys_iOS_application = [UIApplication sharedApplication];
-    _ZFP_ZFImpl_sys_iOS_rootWindow = _ZFP_ZFImpl_sys_iOS_application.keyWindow;
+    _ZFP_ZFImpl_sys_iOS_rootWindow = _ZFP_ZFImpl_sys_iOS_application.delegate.window;
 
     if(_ZFP_ZFImpl_sys_iOS_rootWindow.backgroundColor == nil) {
         _ZFP_ZFImpl_sys_iOS_rootWindow.backgroundColor = [UIColor whiteColor];

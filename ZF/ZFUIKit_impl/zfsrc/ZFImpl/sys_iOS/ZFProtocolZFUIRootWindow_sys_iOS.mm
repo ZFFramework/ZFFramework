@@ -59,7 +59,7 @@
     if(self.ownerZFUIRootWindow != zfnull) {
         ZFUIMargin windowMargin = ZFUIMarginZero();
 
-        UIView *tmpView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+        UIView *tmpView = [UIApplication sharedApplication].delegate.window.rootViewController.view;
         if([tmpView respondsToSelector:@selector(safeAreaInsets)]) {
             NSMethodSignature *methodSig = [tmpView methodSignatureForSelector:@selector(safeAreaInsets)];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
@@ -75,7 +75,7 @@
             windowMargin.bottom = t.bottom;
         }
         else {
-            windowMargin.top = [UIApplication sharedApplication].statusBarFrame.size.height;
+            windowMargin.top = [UIApplication sharedApplication].delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
         }
 
         UIView *nativeRootView = (__bridge UIView *)self.ownerZFUIRootWindow->rootView()->nativeView();
@@ -97,7 +97,7 @@
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-    UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation toInterfaceOrientation = [UIApplication sharedApplication].delegate.window.windowScene.interfaceOrientation;
     switch(toInterfaceOrientation) {
         case UIInterfaceOrientationPortrait:
             self.windowOrientation = v_ZFUIOrientation::e_Top;

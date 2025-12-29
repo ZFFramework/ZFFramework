@@ -28,7 +28,7 @@ static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStat
     ZFUIRect keyboardFrameNew = ZFImpl_sys_iOS_ZFUIRectFromCGRect(rect);
 
     self.keyboardShowing = (keyboardFrameNew.height > 0
-        && keyboardFrameNew.y < (zffloat)[UIApplication sharedApplication].keyWindow.frame.size.height);
+        && keyboardFrameNew.y < (zffloat)[UIApplication sharedApplication].delegate.window.frame.size.height);
     if(keyboardFrameNew != self.keyboardFrame) {
         self.keyboardFrame = keyboardFrameNew;
 
