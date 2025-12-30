@@ -576,14 +576,14 @@ public:
      * @brief give up the buffer's ownership and return the buffer,
      *   you must free it manually by #zfunsafe_bufferFree
      */
-    void *zfunsafe_bufferGiveUp(void) {
+    void zfunsafe_bufferGiveUp(ZF_OUT void *&ret, ZF_OUT zfindex &length) {
         ZFCoreMutexLocker();
         _prepareWrite(this->length());
-        T_Char *ret = d->d.buf;
+        ret = (void *)d->d.buf;
+        length = d->length;
         zfpoolDelete(d);
         d = _ZFP_Empty();
         ++(d->refCount);
-        return ret;
     }
     /**
      * @brief free buffer returned by #zfunsafe_bufferGiveUp

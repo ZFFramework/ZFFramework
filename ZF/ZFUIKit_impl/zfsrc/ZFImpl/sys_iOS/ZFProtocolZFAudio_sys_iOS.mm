@@ -88,7 +88,10 @@ public:
                 return;
             }
 
-            NSData *data = [[NSData alloc] initWithBytesNoCopy:buf.zfunsafe_bufferGiveUp() length:(NSUInteger)buf.length() deallocator:^(void *bytes, NSUInteger length) {
+            void *tmpBuf = zfnull;
+            zfindex tmpLength = 0;
+            buf.zfunsafe_bufferGiveUp(tmpBuf, tmpLength);
+            NSData *data = [[NSData alloc] initWithBytesNoCopy:tmpBuf length:(NSUInteger)tmpLength deallocator:^(void *bytes, NSUInteger length) {
                 zfstring::zfunsafe_bufferFree(bytes);
             }];
             NSError *error = nil;

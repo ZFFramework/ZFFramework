@@ -219,7 +219,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, zfint, compare
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, const void *, buffer)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, void *, zfunsafe_bufferGiveUp)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, zfunsafe_bufferGiveUp
+        , ZFMP_OUT(void *&, ret)
+        , ZFMP_OUT(zfindex &, length)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(zfstring, v_zfstring, void, zfunsafe_bufferFree
         , ZFMP_IN(void *, buf)
         )
