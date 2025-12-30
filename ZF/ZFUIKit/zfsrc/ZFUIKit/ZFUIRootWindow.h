@@ -209,6 +209,16 @@ public:
 
 public:
     /**
+     * @brief window background color, #ZFUIColorZero by default
+     *
+     * this is the bottom most container's color, which may exceeds #windowMargin\n
+     * this may (or may not) same to window root view's bgColor
+     */
+    ZFPROPERTY_ASSIGN(ZFUIColor, windowColor, ZFUIColorZero())
+    ZFPROPERTY_ON_UPDATE_DECLARE(ZFUIColor, windowColor)
+
+public:
+    /**
      * @brief native window margin according to impl
      *
      * the margin usually used for mobile phones,
@@ -430,6 +440,13 @@ public:
             ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIOrientationFlags &flags
             ) {
+    }
+
+    /**
+     * @brief called when #ZFUIRootWindow::windowColor changed
+     */
+    virtual void windowColor(ZF_IN ZFUIRootWindow *rootWindow) {
+        rootWindow->rootView()->bgColor(rootWindow->windowColor());
     }
 
     // ============================================================

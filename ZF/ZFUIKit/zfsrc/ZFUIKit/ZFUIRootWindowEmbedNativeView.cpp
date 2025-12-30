@@ -15,9 +15,11 @@ public:
 
     // ============================================================
 public:
+    zfoverride
     virtual void nativeWindowOnCleanup(ZF_IN ZFUIRootWindow *rootWindow) {
     }
 
+    zfoverride
     virtual void nativeWindowRootViewOnAdd(
             ZF_IN ZFUIRootWindow *rootWindow
             , ZF_OUT_OPT void *&nativeParentView
@@ -26,14 +28,17 @@ public:
             rootWindow, this->nativeParent, rootWindow->rootView()->nativeView());
         nativeParentView = this->nativeParent;
     }
+    zfoverride
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUIRootWindow *rootWindow) {
         ZFPROTOCOL_ACCESS(ZFUIRootWindowEmbedNativeView)->nativeViewRemove(
             rootWindow, this->nativeParent, rootWindow->rootView()->nativeView());
     }
 
+    zfoverride
     virtual zfautoT<ZFUIRootWindow> modalWindowShow(ZF_IN ZFUIRootWindow *owner) {
         return ZFUIRootWindow::nativeWindowEmbedNativeView(this->nativeParent);
     }
+    zfoverride
     virtual void modalWindowHide(
             ZF_IN ZFUIRootWindow *owner
             , ZF_IN ZFUIRootWindow *toHide

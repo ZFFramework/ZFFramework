@@ -192,6 +192,7 @@ public:
         zfsuper::protocolOnDeallocPrepare();
     }
 public:
+    zfoverride
     virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
             this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
@@ -212,6 +213,7 @@ public:
         }
         return this->_mainWindow;
     }
+    zfoverride
     virtual void mainWindowOnCleanup(void) {
         if(this->_mainWindow != zfnull) {
             _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge_transfer _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)this->_mainWindow->nativeWindow();
@@ -229,15 +231,18 @@ public:
             nativeWindow = nil;
         }
     }
+    zfoverride
     virtual void mainWindowOnDestroy(void) {
         this->_mainWindow = zfnull;
     }
 
     // ============================================================
 public:
+    zfoverride
     virtual void nativeWindowOnCleanup(ZF_IN ZFUIRootWindow *rootWindow) {
     }
 
+    zfoverride
     virtual void nativeWindowRootViewOnAdd(
             ZF_IN ZFUIRootWindow *rootWindow
             , ZF_OUT_OPT void *&nativeParentView
@@ -252,6 +257,7 @@ public:
         [nativeWindow _ZFP_updateLayout];
         nativeParentView = (__bridge void *)nativeWindow.view;
     }
+    zfoverride
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUIRootWindow *rootWindow) {
         if(rootWindow->nativeWindow() == zfnull) {
             return;
@@ -260,6 +266,7 @@ public:
         [nativeRootView removeFromSuperview];
     }
 
+    zfoverride
     virtual zfauto modalWindowShow(ZF_IN ZFUIRootWindow *owner) {
         if(owner->nativeWindow() == zfnull) {
             return zfnull;
@@ -273,6 +280,7 @@ public:
 
         return modalWindow;
     }
+    zfoverride
     virtual void modalWindowHide(
             ZF_IN ZFUIRootWindow *owner
             , ZF_IN ZFUIRootWindow *toHide
@@ -284,8 +292,10 @@ public:
         this->notifyOnDestroy(toHide);
     }
 
+    zfoverride
     virtual void layoutParamOnInit(ZF_IN ZFUIRootWindow *rootWindow) {
     }
+    zfoverride
     virtual void layoutParamOnUpdate(ZF_IN ZFUIRootWindow *rootWindow) {
         if(rootWindow->nativeWindow() == zfnull) {
             return;
@@ -293,9 +303,11 @@ public:
         [(__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow() _ZFP_updateLayout];
     }
 
+    zfoverride
     virtual ZFUIOrientation windowOrientation(ZF_IN ZFUIRootWindow *rootWindow) {
         return ((__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow()).windowOrientation;
     }
+    zfoverride
     virtual void windowOrientationFlags(
             ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIOrientationFlags &flags
@@ -304,6 +316,11 @@ public:
             return;
         }
         ((__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow()).windowOrientationFlags = flags;
+    }
+    zfoverride
+    virtual void windowColor(ZF_IN ZFUIRootWindow *rootWindow) {
+        _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow();
+        nativeWindow.view.backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(rootWindow->windowColor());
     }
 
 private:

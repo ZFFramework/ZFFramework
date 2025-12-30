@@ -98,6 +98,13 @@ public:
             , ZF_IN const ZFUIOrientationFlags &flags
             ) zfpurevirtual;
 
+    /**
+     * @brief called when #ZFUIRootWindow::windowColor changed
+     */
+    virtual void windowColor(ZF_IN ZFUIRootWindow *rootWindow) {
+        rootWindow->rootView()->bgColor(rootWindow->windowColor());
+    }
+
     // ============================================================
     // callbacks that implementations must notify
 public:

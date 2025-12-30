@@ -149,6 +149,15 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, const ZFUISize &, windowSize) {
     return d->windowSize;
 }
 
+ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIRootWindow, ZFUIColor, windowColor) {
+    if(this->nativeWindowEmbedImpl() != zfnull) {
+        this->nativeWindowEmbedImpl()->windowColor(this);
+    }
+    else {
+        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->windowColor(this);
+    }
+}
+
 // ============================================================
 ZFMETHOD_DEFINE_0(ZFUIRootWindow, const ZFUIMargin &, windowMargin) {
     return d->windowMargin;
