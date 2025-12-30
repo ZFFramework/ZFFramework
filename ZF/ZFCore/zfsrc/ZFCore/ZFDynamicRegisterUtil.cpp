@@ -1075,9 +1075,12 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     const ZFMethod *dynMethod = ZFMethodDynamicRegister(param, &errorHint);
     if(dynMethod == zfnull) {
         d->error(zfstr("unable to register method, scope: %s, reason: %s"
-                    , scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_class
-                        ? scope->d.cls->classNameFull()
-                        : *(scope->d.NS)
+                    , scope
+                        ? (scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_class
+                            ? scope->d.cls->classNameFull()
+                            : *(scope->d.NS)
+                            )
+                        : ZFTOKEN_zfnull
                     , errorHint
                     ));
     }
