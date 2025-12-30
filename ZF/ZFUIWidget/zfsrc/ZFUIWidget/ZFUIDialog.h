@@ -20,21 +20,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  have #v_ZFUIAlign::e_Center as #ZFUILayoutParam::align
  * -  have #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::margin
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogDefaultLayoutParamCreator)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogLayoutParamCreator)
 /**
  * @brief default animation for #ZFUIDialog::aniShow
  *
  * by default, the animation would be #ZFAniForGeneric
  * with alpha change
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogDefaultAniShowCreator)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogAniShowCreator)
 /**
  * @brief default animation for #ZFUIDialog::aniHide
  *
  * by default, the animation would be #ZFAniForGeneric
  * with alpha change
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogDefaultAniHideCreator)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogAniHideCreator)
+/**
+ * @brief default #ZFUIWindow::windowLevel for #ZFUIDialog, 1000 by default
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zfint, ZFUIDialogWindowLevel)
 
 // ============================================================
 // ZFUIDialog
@@ -110,17 +114,17 @@ public:
     /**
      * @brief dialog's layout param
      */
-    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUILayoutParam>, layoutParam, ZFObjectCreator(ZFUIDialogDefaultLayoutParamCreator()))
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUILayoutParam>, layoutParam, ZFObjectCreator(ZFUIDialogLayoutParamCreator()))
 
     /**
      * @brief dialog's show animation
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniShow, ZFObjectCreator(ZFUIDialogDefaultAniShowCreator()))
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniShow, ZFObjectCreator(ZFUIDialogAniShowCreator()))
 
     /**
      * @brief dialog's hide animation
      */
-    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniHide, ZFObjectCreator(ZFUIDialogDefaultAniHideCreator()))
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, aniHide, ZFObjectCreator(ZFUIDialogAniHideCreator()))
 
     /**
      * @brief dialog's background image
@@ -209,7 +213,7 @@ public:
     /**
      * @brief directly access the window of this dialog
      *
-     * by default, the dialog's window would have #v_ZFUIWindowLevel::e_AppHigh as #ZFUIWindow::windowLevel
+     * by default, the dialog's window would have #ZFUIDialogWindowLevel as #ZFUIWindow::windowLevel
      */
     ZFMETHOD_DECLARE_0(ZFUIWindow *, window)
 

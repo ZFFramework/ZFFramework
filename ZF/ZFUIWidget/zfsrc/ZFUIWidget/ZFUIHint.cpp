@@ -5,6 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFEXPORT_VAR_DEFINE(zftimet, ZFUIHintDuration, (zftimet)1500)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIHintWindowLevel, 2000)
 
 // ============================================================
 static ZFArray *_ZFP_ZFUIHint_hintListForRead(ZF_IN ZFUIRootWindow *rootWindow) {
@@ -331,7 +332,7 @@ void ZFUIHint::objectOnInit(void) {
     d->pimplOwner = this;
 
     d->window = zfAlloc(_ZFP_ZFUIHintWindow);
-    d->window->windowLevel(v_ZFUIWindowLevel::e_ZFFrameworkFgHighest);
+    d->window->windowLevel(ZFUIHintWindowLevel());
     d->window->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
     d->window->layoutParam()->align(v_ZFUIAlign::e_Center);
     d->window->layoutParam()->sizeParam(ZFUISizeParamWrapWrap());

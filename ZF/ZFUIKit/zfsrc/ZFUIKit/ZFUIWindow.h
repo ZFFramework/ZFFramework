@@ -9,44 +9,6 @@
 #include "ZFUIRootWindow.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/**
- * @brief window level for #ZFUIWindow, value is ensured from low to high
- */
-ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIWindowLevel)
-    ZFENUM_VALUE(ZFFrameworkBgLowest)
-    ZFENUM_VALUE(ZFFrameworkBgLow)
-    ZFENUM_VALUE(ZFFrameworkBgNormal)
-    ZFENUM_VALUE(ZFFrameworkBgHigh)
-    ZFENUM_VALUE(ZFFrameworkBgHighest)
-    ZFENUM_VALUE(AppLowest)
-    ZFENUM_VALUE(AppLow)
-    ZFENUM_VALUE(AppNormal)
-    ZFENUM_VALUE(AppHigh)
-    ZFENUM_VALUE(AppHighest)
-    ZFENUM_VALUE(ZFFrameworkFgLowest)
-    ZFENUM_VALUE(ZFFrameworkFgLow)
-    ZFENUM_VALUE(ZFFrameworkFgNormal)
-    ZFENUM_VALUE(ZFFrameworkFgHigh)
-    ZFENUM_VALUE(ZFFrameworkFgHighest)
-ZFENUM_SEPARATOR()
-    ZFENUM_VALUE_REGISTER(ZFFrameworkBgLowest)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkBgLow)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkBgNormal)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkBgHigh)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkBgHighest)
-    ZFENUM_VALUE_REGISTER(AppLowest)
-    ZFENUM_VALUE_REGISTER(AppLow)
-    ZFENUM_VALUE_REGISTER(AppNormal)
-    ZFENUM_VALUE_REGISTER(AppHigh)
-    ZFENUM_VALUE_REGISTER(AppHighest)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkFgLowest)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkFgLow)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkFgNormal)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkFgHigh)
-    ZFENUM_VALUE_REGISTER(ZFFrameworkFgHighest)
-ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUIWindowLevel, AppNormal)
-ZFENUM_REG(ZFLIB_ZFUIKit, ZFUIWindowLevel)
-
 // ============================================================
 // ZFUIWindow
 zfclassFwd _ZFP_ZFUIWindowPrivate;
@@ -137,10 +99,12 @@ protected:
     // properties
 public:
     /**
-     * @brief window's level
+     * @brief window's level, 0 by default
+     *
+     * larger value means window on top
      */
-    ZFPROPERTY_ASSIGN(ZFUIWindowLevel, windowLevel, v_ZFUIWindowLevel::EnumDefault())
-    ZFPROPERTY_ON_UPDATE_DECLARE(ZFUIWindowLevel, windowLevel)
+    ZFPROPERTY_ASSIGN(zfint, windowLevel)
+    ZFPROPERTY_ON_UPDATE_DECLARE(zfint, windowLevel)
 
     /**
      * @brief whether this window update layout according to #ZFUIRootWindow::windowMargin,

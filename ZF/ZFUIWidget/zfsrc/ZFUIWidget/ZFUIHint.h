@@ -13,6 +13,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief default hint duration, 1500 by default
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zftimet, ZFUIHintDuration)
+/**
+ * @brief default #ZFUIWindow::windowLevel for #ZFUIHint, 2000 by default
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zfint, ZFUIHintWindowLevel)
 
 // ============================================================
 zfclassFwd _ZFP_ZFUIHintPrivate;

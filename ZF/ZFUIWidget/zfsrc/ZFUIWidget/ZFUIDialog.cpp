@@ -5,11 +5,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogDefaultLayoutParamCreator, zfnull)
-ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogDefaultAniShowCreator, zfnull)
-ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogDefaultAniHideCreator, zfnull)
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogLayoutParamCreator, zfnull)
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogAniShowCreator, zfnull)
+ZFEXPORT_VAR_DEFINE(ZFListener, ZFUIDialogAniHideCreator, zfnull)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIDialogWindowLevel, 1000)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultConfig, ZFLevelZFFrameworkHigh) {
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogConfig, ZFLevelZFFrameworkHigh) {
     {
         ZFLISTENER(impl) {
             zfobj<ZFUILayoutParam> lp;
@@ -17,22 +18,22 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultConfig, ZFLevelZFFramewor
             lp->margin(ZFUIMarginCreate(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
             zfargs.result(lp);
         } ZFLISTENER_END()
-        ZFUIDialogDefaultLayoutParamCreator(impl);
+        ZFUIDialogLayoutParamCreator(impl);
     }
     {
         ZFLISTENER(impl) {
             zfargs.result(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
         } ZFLISTENER_END()
-        ZFUIDialogDefaultAniShowCreator(impl);
+        ZFUIDialogAniShowCreator(impl);
     }
     {
         ZFLISTENER(impl) {
             zfargs.result(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
         } ZFLISTENER_END()
-        ZFUIDialogDefaultAniHideCreator(impl);
+        ZFUIDialogAniHideCreator(impl);
     }
 }
-ZF_GLOBAL_INITIALIZER_END(ZFUIDialogDefaultConfig)
+ZF_GLOBAL_INITIALIZER_END(ZFUIDialogConfig)
 
 // ============================================================
 // ZFUIDialog
@@ -100,7 +101,7 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->windowLevel(v_ZFUIWindowLevel::e_AppHigh);
+        this->windowLevel(ZFUIDialogWindowLevel());
         this->windowMarginShouldApply(zffalse);
     }
     zfoverride
