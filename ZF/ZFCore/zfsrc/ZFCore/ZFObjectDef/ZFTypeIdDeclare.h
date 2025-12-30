@@ -1077,7 +1077,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
             static zfauto zfvAccessFinish(ZF_IN const zfauto &obj) { \
                 if(obj) { \
-                    _ZFP_PropAliasDetach(obj \
+                    return _ZFP_PropAliasDetach(obj \
                         , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                         ); \
                 } \
