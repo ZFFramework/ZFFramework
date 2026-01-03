@@ -61,7 +61,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowRender, ZFLevelZFFrameworkPostNormal
         if(d->renderRequested) {
             d->renderRequested = zffalse;
             if(d->rootWindow->rootView != zfnull) {
-                SDL_SetRenderDrawColor(d->rootWindow->sdlRenderer, 255, 255, 255, 0);
+                SDL_SetRenderDrawColor(d->rootWindow->sdlRenderer, 0, 0, 0, 0);
                 SDL_RenderClear(d->rootWindow->sdlRenderer);
                 d->rootWindow->rootView->render(d->rootWindow->sdlRenderer, d->rootWindow->rootView->rect, d->rootWindow->rootView->rect, 1);
                 SDL_RenderPresent(d->rootWindow->sdlRenderer);

@@ -51,6 +51,29 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFEnvDeviceUIType, deviceUIType
         , ZFMP_IN_OPT(ZFEnvDeviceUIType, defaultValue, v_ZFEnvDeviceUIType::e_Desktop)
         )
 
+// ============================================================
+/**
+ * @brief locale info, e.g. "cn"
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, localeInfoT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        )
+/**
+ * @brief see #localeInfoT
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeInfo)
+
+/**
+ * @brief locale language info, e.g. "zh"
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, localeLangInfoT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        )
+/**
+ * @brief see #localeLangInfoT
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeLangInfo)
+
 ZF_NAMESPACE_END(ZFEnvInfo)
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnvInfo_ZFUIKit_h_

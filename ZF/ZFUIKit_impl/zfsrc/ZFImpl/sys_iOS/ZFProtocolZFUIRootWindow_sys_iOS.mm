@@ -323,7 +323,7 @@ public:
             , ZF_IN const ZFUIColor &color
             ) {
         _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow();
-        nativeWindow.view.backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(color);
+        nativeWindow.view.backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(ZFUIColorGetA(color) == 0 ? ZFUIColorBlack() : color);
     }
 
 private:

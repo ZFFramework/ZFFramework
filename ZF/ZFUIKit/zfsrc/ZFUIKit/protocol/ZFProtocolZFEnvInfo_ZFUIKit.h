@@ -25,6 +25,34 @@ public:
     }
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_deviceUIInfo)
 
+// ============================================================
+/**
+ * @brief protocol for ZFEnvInfo
+ */
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFEnvInfo_localeInfo)
+ZFPROTOCOL_INTERFACE_OPTIONAL
+public:
+    /**
+     * @brief device type
+     */
+    virtual void localeInfo(ZF_IN_OUT zfstring &ret) {
+    }
+ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_localeInfo)
+
+// ============================================================
+/**
+ * @brief protocol for ZFEnvInfo
+ */
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFEnvInfo_localeLangInfo)
+ZFPROTOCOL_INTERFACE_OPTIONAL
+public:
+    /**
+     * @brief device type
+     */
+    virtual void localeLangInfo(ZF_IN_OUT zfstring &ret) {
+    }
+ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_localeLangInfo)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFEnvInfo_ZFUIKit_h_
 

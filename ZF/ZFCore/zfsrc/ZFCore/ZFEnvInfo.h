@@ -18,16 +18,16 @@ ZF_NAMESPACE_BEGIN_REGISTER(ZFEnvInfo, ZF_NAMESPACE_GLOBAL)
 /**
  * @brief util method to get summary info
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, envSummary
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, envSummaryT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 /**
- * @brief see #envSummary
+ * @brief see #envSummaryT
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, envSummary)
 
 /**
- * @brief register a callback to output custom env info, see #envSummary
+ * @brief register a callback to output custom env info, see #envSummaryT
  */
 extern ZFLIB_ZFCore void envSummaryCallbackRegister(
         ZF_IN const zfstring &name
@@ -40,21 +40,21 @@ extern ZFLIB_ZFCore void envSummaryCallbackUnregister(ZF_IN const zfstring &name
 /**
  * @brief name of native system, e.g. "iOS", empty if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, systemName
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, systemNameT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 /**
- * @brief see #systemName
+ * @brief see #systemNameT
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, systemName)
 /**
  * @brief version of native system, e.g. "9.0.1", empty if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, systemVersion
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, systemVersionT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 /**
- * @brief see #systemVersion
+ * @brief see #systemVersionT
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, systemVersion)
 
@@ -62,21 +62,21 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, systemVersion)
 /**
  * @brief name of native framework, e.g. "Qt", empty if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, frameworkName
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, frameworkNameT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 /**
- * @brief see #frameworkName
+ * @brief see #frameworkNameT
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, frameworkName)
 /**
  * @brief version of native framework, e.g. "9.0.1", empty if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, frameworkVersion
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, frameworkVersionT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 /**
- * @brief see #frameworkVersion
+ * @brief see #frameworkVersionT
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, frameworkVersion)
 
