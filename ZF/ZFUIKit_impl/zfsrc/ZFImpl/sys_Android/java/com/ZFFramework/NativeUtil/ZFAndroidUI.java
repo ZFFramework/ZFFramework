@@ -3,8 +3,10 @@ package com.ZFFramework.NativeUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -61,36 +63,24 @@ public class ZFAndroidUI {
     }
 
     public static void viewTreePrintToLog(View view) {
-        viewTreePrintToLog("", view);
-    }
-
-    public static void viewTreePrintToLog(final String sTag, View view) {
         viewTreePrint(new ViewTreeOutput() {
             @Override
             public void outputLine(String s) {
-                ZFAndroidLog.p(sTag, s);
+                ZFAndroidLog.p(s);
             }
         }, view);
     }
 
-    public static void viewTreePrintToLogAfterDelay(long delayInMiliSeconds, String sTag, View view) {
-        _ViewTreePrintData data = new _ViewTreePrintData();
-        data.tag = sTag;
-        data.view = view;
-        _viewTreePrintAfterDelayHandler.sendMessageDelayed(Message.obtain(_viewTreePrintAfterDelayHandler, 0, data), delayInMiliSeconds);
+    public static void viewTreePrintToLogAfterDelay(long delayInMiliSeconds, View view) {
+        _viewTreePrintAfterDelayHandler.sendMessageDelayed(Message.obtain(_viewTreePrintAfterDelayHandler, 0, view), delayInMiliSeconds);
     }
 
-    private static class _ViewTreePrintData {
-        public String tag = null;
-        public View view = null;
-    }
-
-    private static Handler _viewTreePrintAfterDelayHandler = new Handler(Looper.getMainLooper()) {
+    private static final Handler _viewTreePrintAfterDelayHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            _ViewTreePrintData data = (_ViewTreePrintData) msg.obj;
-            viewTreePrintToLog(data.tag, data.view);
+            View view = (View) msg.obj;
+            viewTreePrintToLog(view);
         }
     };
 
@@ -106,24 +96,29 @@ public class ZFAndroidUI {
 
         String sDetail = "";
         if (view.getTag() != null && (view.getTag() instanceof String)) {
-            sDetail += " (" + ((String) view.getTag()) + ")";
+            sDetail += " (" + view.getTag() + ")";
+        }
+        if (view.getBackground() instanceof ColorDrawable) {
+            int c = ((ColorDrawable) view.getBackground()).getColor();
+            sDetail += String.format(" #%02x%02x%02x%02x", Color.alpha(c), Color.red(c), Color.green(c), Color.blue(c));
         }
         if (view instanceof TextView) {
-            sDetail += " \"" + ((TextView) view).getText().toString() + "\"";
-        }
-        if (view.isFocusable()) {
-            sDetail += " focusable";
+            TextView tv = (TextView) view;
+            if (tv.getText().length() > 0) {
+                sDetail += " \"" + tv.getText() + "\"";
+            }
         }
 
-        output.outputLine(String.format("|%2d %s[%s %08X (%d, %d, %d, %d)%s]%s%s",
-                index,
-                sIndent,
-                ZFAndroidLog.className(view.getClass()),
-                view.hashCode(),
-                view.getLeft(), view.getTop(), view.getWidth(), view.getHeight(),
-                sDetail,
-                (view.getVisibility() == View.VISIBLE) ? "" : (" " + ZFAndroidUI.visibilityToString(view.getVisibility())),
-                view.isEnabled() ? "" : " Disabled"
+        output.outputLine(String.format("|%2d %s[%s %08X (%d, %d, %d, %d)%s]%s%s%s"
+                , index
+                , sIndent
+                , ZFAndroidLog.className(view.getClass())
+                , view.hashCode()
+                , view.getLeft(), view.getTop(), view.getWidth(), view.getHeight()
+                , sDetail
+                , (view.getVisibility() == View.VISIBLE) ? "" : (" " + ZFAndroidUI.visibilityToString(view.getVisibility()))
+                , view.isEnabled() ? "" : " Disabled"
+                , view.isFocusable() ? (view.isFocused() ? " Focused" : " Focusable") : ""
         ));
 
         if (view instanceof ViewGroup) {

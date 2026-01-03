@@ -114,9 +114,36 @@ public final class ZFUIRootWindow extends Activity {
 
     public static void native_layoutParamOnUpdate(Object nativeWindow, boolean preferFullscreen) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
-        nativeWindowTmp.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, preferFullscreen ? WindowManager.LayoutParams.FLAG_FULLSCREEN : 0);
         nativeWindowTmp._preferFullscreen = preferFullscreen;
         nativeWindowTmp._mainContainer.requestLayout();
+
+        nativeWindowTmp.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, preferFullscreen ? WindowManager.LayoutParams.FLAG_FULLSCREEN : 0);
+        {
+            int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
+            if (preferFullscreen) {
+//                uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+//                uiFlags |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+                uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+                uiFlags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+                uiFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            } else {
+//                uiFlags &= ~View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+//                uiFlags &= ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+                uiFlags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+                uiFlags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
+                uiFlags &= ~View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            }
+            nativeWindowTmp.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowManager.LayoutParams lp = nativeWindowTmp.getWindow().getAttributes();
+            lp.layoutInDisplayCutoutMode = preferFullscreen
+                    ? WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+                    : WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT
+            ;
+            nativeWindowTmp.getWindow().setAttributes(lp);
+        }
     }
 
     public static int native_windowOrientation(Object nativeWindow) {
@@ -167,7 +194,33 @@ public final class ZFUIRootWindow extends Activity {
 
     public static void native_windowColor(Object nativeWindow, int windowColor) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
+        if (Color.alpha(windowColor) == 0) {
+            windowColor = Color.BLACK;
+        }
         nativeWindowTmp.rootContainer().setBackgroundColor(windowColor);
+        boolean isDarkBg = (Color.red(windowColor) < 32 && Color.green(windowColor) < 32 && Color.blue(windowColor) < 32);
+
+        {
+            nativeWindowTmp.getWindow().setStatusBarColor(windowColor);
+            int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
+            if (!isDarkBg) {
+                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            nativeWindowTmp.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            nativeWindowTmp.getWindow().setNavigationBarColor(windowColor);
+            int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
+            if (!isDarkBg) {
+                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            nativeWindowTmp.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+        }
     }
 
     // ============================================================
@@ -200,7 +253,6 @@ public final class ZFUIRootWindow extends Activity {
         public MainLayout(ZFUIRootWindow owner) {
             super(owner);
             _owner = owner;
-            this.setBackgroundColor(Color.WHITE);
         }
 
         private static final int[] _rectCache = new int[4];
