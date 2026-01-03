@@ -19,10 +19,15 @@ ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFEnvDeviceUIType)
      */
     ZFENUM_VALUE(Desktop)
     /**
-     * @brief handheld devices such as mobiles phones,
+     * @brief pad devices,
+     *   usually have middle display and have touch device as input
+     */
+    ZFENUM_VALUE(Pad)
+    /**
+     * @brief mobile phone devices,
      *   usually have smaller display and have touch device as input
      */
-    ZFENUM_VALUE(Handheld)
+    ZFENUM_VALUE(Phone)
     /**
      * @brief wearable devices such as watches,
      *   usually have tiny display and have touch device and little buttons as input
@@ -35,7 +40,8 @@ ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFEnvDeviceUIType)
     ZFENUM_VALUE(TV)
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Desktop)
-    ZFENUM_VALUE_REGISTER(Handheld)
+    ZFENUM_VALUE_REGISTER(Pad)
+    ZFENUM_VALUE_REGISTER(Phone)
     ZFENUM_VALUE_REGISTER(Wearable)
     ZFENUM_VALUE_REGISTER(TV)
 ZFENUM_END(ZFLIB_ZFUIKit, ZFEnvDeviceUIType)

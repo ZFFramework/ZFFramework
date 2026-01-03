@@ -11,7 +11,7 @@ public:
         #if ZF_ENV_sys_Qt || ZF_ENV_sys_SDL
             return v_ZFEnvDeviceUIType::e_Desktop;
         #else // #if ZF_ENV_sys_Qt
-            return v_ZFEnvDeviceUIType::e_Handheld;
+            return v_ZFEnvDeviceUIType::e_Phone;
         #endif // #if ZF_ENV_sys_Qt #else
         return defaultValue;
     }
