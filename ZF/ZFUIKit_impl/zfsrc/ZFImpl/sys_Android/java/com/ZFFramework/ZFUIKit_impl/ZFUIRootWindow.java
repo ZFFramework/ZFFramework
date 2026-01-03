@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.DisplayCutout;
 import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
@@ -56,12 +59,7 @@ public final class ZFUIRootWindow extends Activity {
     public static boolean nativeWindowNotifyKeyEvent(String rootWindowName, int keyCode, KeyEvent event) {
         long zfjniPointerRootWindow = ZFObject.invoke(rootWindowName != null ? rootWindowName : "ZFUIRootWindow.mainWindow");
         if (zfjniPointerRootWindow != 0) {
-            return native_notifyKeyEvent(zfjniPointerRootWindow
-                    , (int) event.getDownTime()
-                    , ZFUIKeyAction.keyActionFromKeyActionRaw(event.getAction())
-                    , ZFUIKeyCode.keyCodeFromKeyCodeRaw(keyCode)
-                    , keyCode
-            );
+            return native_notifyKeyEvent(zfjniPointerRootWindow, (int) event.getDownTime(), ZFUIKeyAction.keyActionFromKeyActionRaw(event.getAction()), ZFUIKeyCode.keyCodeFromKeyCodeRaw(keyCode), keyCode);
         } else {
             return false;
         }
@@ -84,6 +82,7 @@ public final class ZFUIRootWindow extends Activity {
     private FrameLayout _rootContainer = null;
     private MainLayout _mainContainer = null;
     private int _windowOrientation = ZFUIOrientation.e_Top;
+    private boolean _preferFullscreen = false;
 
     // ============================================================
     public static void native_nativeMainWindowCreate(long zfjniPointerOwnerZFUIRootWindow) {
@@ -113,8 +112,10 @@ public final class ZFUIRootWindow extends Activity {
         ((ZFUIRootWindow) nativeWindow).finish();
     }
 
-    public static void native_layoutParamOnUpdate(Object nativeWindow) {
+    public static void native_layoutParamOnUpdate(Object nativeWindow, boolean preferFullscreen) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
+        nativeWindowTmp.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, preferFullscreen ? WindowManager.LayoutParams.FLAG_FULLSCREEN : 0);
+        nativeWindowTmp._preferFullscreen = preferFullscreen;
         nativeWindowTmp._mainContainer.requestLayout();
     }
 
@@ -164,17 +165,17 @@ public final class ZFUIRootWindow extends Activity {
         }
     }
 
+    public static void native_windowColor(Object nativeWindow, int windowColor) {
+        ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
+        nativeWindowTmp.rootContainer().setBackgroundColor(windowColor);
+    }
+
     // ============================================================
     public static native void native_mainWindowRegisterForNativeView(Object nativeParent);
 
     public static native void native_nativeWindowEmbedNativeView(Object nativeParent, Object rootWindowName);
 
-    public static native void native_notifyMeasureWindow(
-            long zfjniPointerOwnerZFUIRootWindow
-            , int refWidth
-            , int refHeight
-            , int[] resultRect
-    );
+    public static native void native_notifyMeasureWindow(long zfjniPointerOwnerZFUIRootWindow, int refWidth, int refHeight, int marginLeft, int marginTop, int marginRight, int marginBottom, int[] resultRect);
 
     public static native void native_notifyOnCreate(long zfjniPointerOwnerZFUIRootWindow, Object nativeWindow);
 
@@ -186,13 +187,7 @@ public final class ZFUIRootWindow extends Activity {
 
     public static native void native_notifyOnRotate(long zfjniPointerOwnerZFUIRootWindow);
 
-    public static native boolean native_notifyKeyEvent(
-            long zfjniPointerOwnerZFUIRootWindow
-            , int keyId
-            , int keyAction
-            , int keyCode
-            , int keyCodeRaw
-    );
+    public static native boolean native_notifyKeyEvent(long zfjniPointerOwnerZFUIRootWindow, int keyId, int keyAction, int keyCode, int keyCodeRaw);
 
     // ============================================================
     private static class MainLayout extends FrameLayout {
@@ -208,7 +203,7 @@ public final class ZFUIRootWindow extends Activity {
             this.setBackgroundColor(Color.WHITE);
         }
 
-        private static int[] _rectCache = new int[4];
+        private static final int[] _rectCache = new int[4];
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -221,7 +216,26 @@ public final class ZFUIRootWindow extends Activity {
             height += keyboardHeight;
 
             if (_owner != null && _owner._zfjniPointerOwnerZFUIRootWindow != 0) {
-                ZFUIRootWindow.native_notifyMeasureWindow(_owner._zfjniPointerOwnerZFUIRootWindow, width, height, _rectCache);
+                int safeAreaLeft = 0;
+                int safeAreaTop = 0;
+                int safeAreaRight = 0;
+                int safeAreaBottom = 0;
+                if (_owner._preferFullscreen) {
+                    WindowInsets insets = _owner.getWindow().getDecorView().getRootWindowInsets();
+                    if (insets != null) {
+                        DisplayCutout cutout = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            cutout = insets.getDisplayCutout();
+                            if (cutout != null) {
+                                safeAreaLeft = cutout.getSafeInsetLeft();
+                                safeAreaTop = cutout.getSafeInsetTop();
+                                safeAreaRight = cutout.getSafeInsetRight();
+                                safeAreaBottom = cutout.getSafeInsetBottom();
+                            }
+                        }
+                    }
+                }
+                ZFUIRootWindow.native_notifyMeasureWindow(_owner._zfjniPointerOwnerZFUIRootWindow, width, height, safeAreaLeft, safeAreaTop, safeAreaRight, safeAreaBottom, _rectCache);
                 _left = _rectCache[0];
                 _top = _rectCache[1];
                 _right = _rectCache[0] + _rectCache[2];
@@ -247,6 +261,7 @@ public final class ZFUIRootWindow extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
         Bundle params = this.getIntent().getExtras();
         if (params == null) {
             ZFAndroidLog.shouldNotGoHere();
@@ -342,20 +357,17 @@ public final class ZFUIRootWindow extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return _keyEventImpl.onKeyDown(keyCode, event)
-                || super.onKeyDown(keyCode, event);
+        return _keyEventImpl.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
     @Override
     public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
-        return _keyEventImpl.onKeyMultiple(keyCode, repeatCount, event)
-                || super.onKeyMultiple(keyCode, repeatCount, event);
+        return _keyEventImpl.onKeyMultiple(keyCode, repeatCount, event) || super.onKeyMultiple(keyCode, repeatCount, event);
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return _keyEventImpl.onKeyUp(keyCode, event)
-                || super.onKeyUp(keyCode, event);
+        return _keyEventImpl.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }
 
 }

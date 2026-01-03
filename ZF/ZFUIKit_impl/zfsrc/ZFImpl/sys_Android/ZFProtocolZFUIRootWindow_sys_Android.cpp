@@ -143,9 +143,11 @@ public:
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIRootWindow(), "native_layoutParamOnUpdate",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIRootWindow(), jmId
             , (jobject)rootWindow->nativeWindow()
+            , (jboolean)rootWindow->preferFullscreen()
             );
     }
 
@@ -183,6 +185,25 @@ public:
             , (jint)flags
             );
     }
+    zfoverride
+    virtual void windowColor(
+            ZF_IN ZFUIRootWindow *rootWindow
+            , ZF_IN const ZFUIColor &color
+            ) {
+        if(rootWindow->nativeWindow() == zfnull) {
+            return;
+        }
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIRootWindow(), "native_windowColor",
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+            ).c_str());
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIRootWindow(), jmId
+            , (jobject)rootWindow->nativeWindow()
+            , (jint)ZFImpl_sys_Android_ZFUIColorToColor(color)
+            );
+    }
 
 private:
     ZFUIRootWindow *_mainWindow;
@@ -211,12 +232,17 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIRootWindow
         , JNIPointer zfjniPointerOwnerZFUIRootWindow
         , jint refWidth
         , jint refHeight
+        , jint marginLeft
+        , jint marginTop
+        , jint marginRight
+        , jint marginBottom
         , jintArray resultRect
         ) {
     ZFUIRect result = ZFPROTOCOL_ACCESS(ZFUIRootWindow)->notifyMeasureWindow(
-        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIRootWindow),
-        ZFUIRectCreate(0, 0, refWidth, refHeight),
-        ZFUIMarginZero());
+        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIRootWindow)
+        , ZFUIRectCreate(0, 0, refWidth, refHeight)
+        , ZFUIMarginCreate(marginLeft, marginTop, marginRight, marginBottom)
+        );
     jint buf[] = {(jint)result.x, (jint)result.y, (jint)result.width, (jint)result.height};
     JNIUtilSetIntArrayRegion(jniEnv, resultRect, 0, 4, buf);
 }

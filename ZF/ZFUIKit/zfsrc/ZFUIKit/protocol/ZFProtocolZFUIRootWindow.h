@@ -101,8 +101,11 @@ public:
     /**
      * @brief called when #ZFUIRootWindow::windowColor changed
      */
-    virtual void windowColor(ZF_IN ZFUIRootWindow *rootWindow) {
-        rootWindow->rootView()->bgColor(rootWindow->windowColor());
+    virtual void windowColor(
+            ZF_IN ZFUIRootWindow *rootWindow
+            , ZF_IN const ZFUIColor &color
+            ) {
+        rootWindow->rootView()->bgColor(color);
     }
 
     // ============================================================

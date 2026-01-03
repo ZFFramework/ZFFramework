@@ -151,10 +151,10 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, const ZFUISize &, windowSize) {
 
 ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIRootWindow, ZFUIColor, windowColor) {
     if(this->nativeWindowEmbedImpl() != zfnull) {
-        this->nativeWindowEmbedImpl()->windowColor(this);
+        this->nativeWindowEmbedImpl()->windowColor(this, propertyValue);
     }
     else {
-        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->windowColor(this);
+        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->windowColor(this, propertyValue);
     }
 }
 
@@ -354,11 +354,13 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onCreate(ZF_IN void *nativeWindow) {
 
     void *nativeParentView = zfnull;
     if(d->embedImpl != zfnull) {
-        d->embedImpl->windowOrientationFlags(this, d->windowOrientationFlags);
+        d->embedImpl->windowOrientationFlags(this, this->windowOrientationFlags());
+        d->embedImpl->windowColor(this, this->windowColor());
         d->embedImpl->nativeWindowRootViewOnAdd(this, nativeParentView);
     }
     else {
-        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->windowOrientationFlags(this, d->windowOrientationFlags);
+        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->windowOrientationFlags(this, this->windowOrientationFlags());
+        ZFPROTOCOL_ACCESS(ZFUIRootWindow)->windowColor(this, this->windowColor());
         ZFPROTOCOL_ACCESS(ZFUIRootWindow)->nativeWindowRootViewOnAdd(this, nativeParentView);
     }
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(this->rootView(), nativeParentView);

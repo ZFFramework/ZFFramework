@@ -318,9 +318,12 @@ public:
         ((__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow()).windowOrientationFlags = flags;
     }
     zfoverride
-    virtual void windowColor(ZF_IN ZFUIRootWindow *rootWindow) {
+    virtual void windowColor(
+            ZF_IN ZFUIRootWindow *rootWindow
+            , ZF_IN const ZFUIColor &color
+            ) {
         _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)rootWindow->nativeWindow();
-        nativeWindow.view.backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(rootWindow->windowColor());
+        nativeWindow.view.backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(color);
     }
 
 private:
