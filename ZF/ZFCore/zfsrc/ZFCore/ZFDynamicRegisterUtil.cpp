@@ -1080,7 +1080,7 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
                             ? scope->d.cls->classNameFull()
                             : *(scope->d.NS)
                             )
-                        : ZFTOKEN_zfnull
+                        : zftext(ZFTOKEN_zfnull)
                     , errorHint
                     ));
     }
