@@ -64,12 +64,6 @@ public:
         }
         #endif
 
-        #if ZF_ENV_sys_SDL
-        {
-            return;
-        }
-        #endif
-
         #if ZF_ENV_sys_Windows
         {
             OSVERSIONINFO osvi;
@@ -91,7 +85,7 @@ public:
             struct utsname buf;
             zfmemset(&buf, 0, sizeof(struct utsname));
             uname(&buf);
-            ret += buf.version;
+            ret += buf.release;
             return;
         }
         #endif
@@ -125,7 +119,12 @@ public:
 
         #if ZF_ENV_sys_SDL
         {
-            ret += zfstr("%s", SDL_GetRevision());
+            int v = SDL_GetVersion();
+            ret += zfstr("%s.%s.%s"
+                    , (zfint)SDL_VERSIONNUM_MAJOR(v)
+                    , (zfint)SDL_VERSIONNUM_MINOR(v)
+                    , (zfint)SDL_VERSIONNUM_MICRO(v)
+                    );
             return;
         }
         #endif

@@ -43,6 +43,25 @@ public:
                     }
                 }
             }
+        #elif defined(__APPLE__) && defined(__MACH__)
+            // zh-Hans-CN
+            FILE *fp = popen("defaults read -g AppleLanguages | head -n2 | tail -n1 | tr -d ' \t\",'", "r");
+            if(fp) {
+                zfchar buf[64] = {0};
+                if(fgets(buf, sizeof(buf), fp)) {
+                    zfindex pos = zfstringFindReversely(buf, "-");
+                    if(pos != zfindexMax()) {
+                        zfindex posEnd = zfslen(buf);
+                        while(posEnd != zfindexMax() && (buf[posEnd - 1] == '\r' || buf[posEnd - 1] == '\n')) {
+                            --posEnd;
+                        }
+                        if(posEnd != zfindexMax()) {
+                            zfstringToUpperT(ret, buf + pos + 1, posEnd - (pos + 1));
+                        }
+                    }
+                }
+                pclose(fp);
+            }
         #else // #if ZF_ENV_sys_Windows
             // en_US.UTF-8
             const zfchar *env = getenv("LANG");
@@ -53,7 +72,7 @@ public:
                     zfstringToUpperT(ret, env + sepPos + 1, dotPos - (sepPos + 1));
                 }
             }
-        #endif // #if ZF_ENV_sys_Windows #else
+        #endif // #if ZF_ENV_sys_Windows
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeInfoImpl_default)
 
@@ -77,6 +96,19 @@ public:
                     }
                 }
             }
+        #elif defined(__APPLE__) && defined(__MACH__)
+            // zh-Hans-CN
+            FILE *fp = popen("defaults read -g AppleLanguages | head -n2 | tail -n1 | tr -d ' \t\",'", "r");
+            if(fp) {
+                zfchar buf[64] = {0};
+                if(fgets(buf, sizeof(buf), fp)) {
+                    zfindex pos = zfstringFind(buf, "-");
+                    if(pos != zfindexMax()) {
+                        zfstringToLowerT(ret, buf, pos);
+                    }
+                }
+                pclose(fp);
+            }
         #else // #if ZF_ENV_sys_Windows
             // en_US.UTF-8
             const zfchar *env = getenv("LANG");
@@ -87,7 +119,7 @@ public:
                     zfstringToLowerT(ret, env, sepPos);
                 }
             }
-        #endif // #if ZF_ENV_sys_Windows #else
+        #endif // #if ZF_ENV_sys_Windows
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeLangInfoImpl_default)
 
