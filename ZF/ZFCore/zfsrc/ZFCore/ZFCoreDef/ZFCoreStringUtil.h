@@ -516,23 +516,35 @@ inline ZFCoreArray<ZFIndexRange> zfstringSplitIndex(
 /** @brief to lower case */
 extern ZFLIB_ZFCore void zfstringToLowerT(ZF_IN_OUT zfstring &ret);
 /** @brief to lower case */
+extern ZFLIB_ZFCore void zfstringToLowerT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
+/** @brief to lower case */
 inline zfstring zfstringToLower(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         ) {
-    zfstring ret(src, srcLen);
-    zfstringToLowerT(ret);
+    zfstring ret;
+    zfstringToLowerT(ret, src, srcLen);
     return ret;
 }
 /** @brief to upper case */
 extern ZFLIB_ZFCore void zfstringToUpperT(ZF_IN_OUT zfstring &ret);
 /** @brief to upper case */
+extern ZFLIB_ZFCore void zfstringToUpperT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
+/** @brief to upper case */
 inline zfstring zfstringToUpper(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         ) {
-    zfstring ret(src, srcLen);
-    zfstringToUpperT(ret);
+    zfstring ret;
+    zfstringToUpperT(ret, src, srcLen);
     return ret;
 }
 

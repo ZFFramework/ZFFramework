@@ -373,19 +373,29 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArray<ZFIndexRange>, zfstringSplitI
         , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToLower
-        , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
-        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfstringToLowerT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToUpper
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToLowerT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToLower
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfstringToUpperT
         , ZFMP_IN_OUT(zfstring &, ret)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToUpperT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToUpper
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringRepeatT
         , ZFMP_IN_OUT(zfstring &, ret)
