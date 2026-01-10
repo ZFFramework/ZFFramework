@@ -224,6 +224,31 @@ jobject ZFAndroidReflect::invoke(ZF_IN_OPT jobject obj, ZF_IN const zfchar *name
     return this->invokeDetail(obj, name, params);
 }
 
+jobject ZFAndroidReflect::vBoolean(ZF_IN zfbool v) const {
+    return ZFImpl_sys_Android_newBoolean((jboolean)v);
+}
+jobject ZFAndroidReflect::vChar(ZF_IN zfchar v) const {
+    return ZFImpl_sys_Android_newCharacter((jchar)v);
+}
+jobject ZFAndroidReflect::vByte(ZF_IN zfbyte v) const {
+    return ZFImpl_sys_Android_newByte((jbyte)v);
+}
+jobject ZFAndroidReflect::vShort(ZF_IN zfint v) const {
+    return ZFImpl_sys_Android_newShort((jshort)v);
+}
+jobject ZFAndroidReflect::vInt(ZF_IN zfint v) const {
+    return ZFImpl_sys_Android_newInteger((jint)v);
+}
+jobject ZFAndroidReflect::vLong(ZF_IN zflong v) const {
+    return ZFImpl_sys_Android_newLong((jlong)v);
+}
+jobject ZFAndroidReflect::vFloat(ZF_IN zffloat v) const {
+    return ZFImpl_sys_Android_newFloat((jfloat)v);
+}
+jobject ZFAndroidReflect::vDouble(ZF_IN zfdouble v) const {
+    return ZFImpl_sys_Android_newDouble((jdouble)v);
+}
+
 zfint ZFAndroidReflect::asInt(ZF_IN jobject v, ZF_IN_OPT zfint def /* = -1 */) const {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), "asInt",
@@ -418,6 +443,30 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFAndroidReflect, jobject, invoke
         , ZFMP_IN(jobject, p3)
         , ZFMP_IN(jobject, p4)
         , ZFMP_IN(jobject, p5)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vBoolean
+        , ZFMP_IN(zfbool, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vChar
+        , ZFMP_IN(zfchar, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vByte
+        , ZFMP_IN(zfbyte, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vShort
+        , ZFMP_IN(zfint, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vInt
+        , ZFMP_IN(zfint, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vLong
+        , ZFMP_IN(zflong, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vFloat
+        , ZFMP_IN(zffloat, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAndroidReflect, jobject, vDouble
+        , ZFMP_IN(zfdouble, v)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFAndroidReflect, zfint, asInt
         , ZFMP_IN(jobject, v)

@@ -91,6 +91,15 @@ public:
             , ZF_IN jobject p7
             );
 
+    jobject vBoolean(ZF_IN zfbool v) const;
+    jobject vChar(ZF_IN zfchar v) const;
+    jobject vByte(ZF_IN zfbyte v) const;
+    jobject vShort(ZF_IN zfint v) const;
+    jobject vInt(ZF_IN zfint v) const;
+    jobject vLong(ZF_IN zflong v) const;
+    jobject vFloat(ZF_IN zffloat v) const;
+    jobject vDouble(ZF_IN zfdouble v) const;
+
     zfint asInt(ZF_IN jobject v, ZF_IN_OPT zfint def = -1) const;
     zfuint asUInt(ZF_IN jobject v, ZF_IN_OPT zfuint def = (zfuint)-1) const;
     zfindex asIndex(ZF_IN jobject v, ZF_IN_OPT zfindex def = zfindexMax()) const;
