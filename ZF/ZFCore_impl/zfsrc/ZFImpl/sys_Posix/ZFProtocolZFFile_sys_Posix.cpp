@@ -122,18 +122,18 @@ public:
         return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
     }
     zfoverride
-    virtual zftimet fileModTime(ZF_IN const zfstring &pathData) {
+    virtual zftimet fileModTime(ZF_IN const zfstring &path) {
         struct stat statInfo;
-        if(stat(pathData.cString(), &statInfo) == -1) {
+        if(stat(path.cString(), &statInfo) == -1) {
             return zftimetInvalid();
         }
         return (zftimet)(statInfo.st_mtime * 1000);
     }
     zfoverride
-    virtual zfbool fileModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
+    virtual zfbool fileModTime(ZF_IN const zfstring &path, ZF_IN zftimet time) {
         struct utimbuf updateBuf;
         updateBuf.actime = updateBuf.modtime = (time_t)(time / 1000);
-        return utime(pathData.cString(), &updateBuf) == 0;
+        return utime(path.cString(), &updateBuf) == 0;
     }
 
 private:

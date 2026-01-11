@@ -113,12 +113,42 @@ public:
         return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
     }
     zfoverride
-    virtual zftimet ioModTime(ZF_IN const zfstring &pathData) {
-        return zftimetInvalid();
+    virtual zftimet fileModTime(ZF_IN const zfstring &path) {
+        WIN32_FILE_ATTRIBUTE_DATA fileInfo;
+        if(!GetFileAttributesExW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString(), GetFileExInfoStandard, &fileInfo)) {
+            return zftimetInvalid();
+        }
+        ULARGE_INTEGER uli;
+        uli.LowPart = fileInfo.ftLastWriteTime.dwLowDateTime;
+        uli.HighPart = fileInfo.ftLastWriteTime.dwHighDateTime;
+        return (zftimet)(uli.QuadPart / 10000ULL - 11644473600000ULL);
     }
     zfoverride
-    virtual zfbool ioModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
-        return zffalse;
+    virtual zfbool fileModTime(ZF_IN const zfstring &path, ZF_IN zftimet time) {
+        HANDLE hFile = CreateFileW(
+                zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()
+                , GENERIC_WRITE
+                , FILE_SHARE_READ | FILE_SHARE_WRITE
+                , NULL
+                , OPEN_EXISTING
+                , FILE_ATTRIBUTE_NORMAL
+                , NULL
+                );
+        if(hFile == NULL) {
+            return zffalse;
+        }
+        FILETIME ft;
+        zfulong tmp = (time + 11644473600000ULL) * 10000ULL;
+        ft.dwLowDateTime = (DWORD)(tmp & 0xFFFFFFFF);
+        ft.dwHighDateTime = (DWORD)(tmp >> 32);
+        zfbool ret = SetFileTime(
+                hFile
+                , NULL
+                , NULL
+                , &ft
+                );
+        CloseHandle(hFile);
+        return ret;
     }
 
 private:
