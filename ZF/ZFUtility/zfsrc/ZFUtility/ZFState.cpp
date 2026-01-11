@@ -77,7 +77,7 @@ public:
             _ZFP_ZFStatePrivate *d = owner->d;
             d->taskId = zfnull;
             {
-                zfsynchronize(owner);
+                ZFObjectLocker(owner);
                 d->m.swap(mNew);
             }
             d->_resolvePending(owner);
@@ -159,7 +159,7 @@ private:
         if(this->pending.isEmpty()) {
             return;
         }
-        zfsynchronize(owner);
+        ZFObjectLocker(owner);
         for(zfiter it = this->pending.iter(); it; ++it) {
             const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> &item = *(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)this->pending.iterValue(it);
             this->m.set(item->key, item);
@@ -246,7 +246,7 @@ private:
         ZFCoreMap mNew;
         _loadImpl(mNew, io, zfargs);
         if(!zfargs.param0()) {return;}
-        zfsynchronizeLock(owner);
+        ZFObjectLock(owner);
         for(zfiter it = mNew.iter(); it; ++it) {
             zfiter itExist = d->m.iterFind(mNew.iterKey(it));
             if(itExist) {
@@ -260,16 +260,16 @@ private:
                 }
             }
         }
-        zfsynchronizeUnlock(owner);
+        ZFObjectUnlock(owner);
 
         // save
         if(!zfargs.param0()) {return;}
-        zfsynchronizeLock(owner);
+        ZFObjectLock(owner);
         ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > l;
         for(zfiter it = d->m.iter(); it; ++it) {
             l.add(*(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)d->m.iterValue(it));
         }
-        zfsynchronizeUnlock(owner);
+        ZFObjectUnlock(owner);
 
         ZFOutput output = ZFOutputForPathInfoToken(io);
         if(!output) {return;}
@@ -418,7 +418,7 @@ ZFMETHOD_DEFINE_3(ZFState, void, set
     d->changed = zftrue;
     if(this->ready()) {
         {
-            zfsynchronize(this);
+            ZFObjectLocker(this);
             _ZFP_ZFStateData *data = zfpoolNew(_ZFP_ZFStateData);
             data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
             data->key = key;
@@ -429,7 +429,7 @@ ZFMETHOD_DEFINE_3(ZFState, void, set
     }
     else {
         {
-            zfsynchronize(this);
+            ZFObjectLocker(this);
             _ZFP_ZFStateData *exist = d->pending.get<_ZFP_ZFStateData *>(key);
             if(exist != zfnull) {
                 exist->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
@@ -456,7 +456,7 @@ ZFMETHOD_DEFINE_0(ZFState, void, removeAll) {
     d->loadQueue = zfnull;
 
     {
-        zfsynchronize(this);
+        ZFObjectLocker(this);
         d->changed = (!d->pending.isEmpty() || !d->m.isEmpty());
         d->pending.removeAll();
         d->m.removeAll();
@@ -478,7 +478,7 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
     if(!key) {
         return zfnull;
     }
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     const _ZFP_ZFStateData *data = d->m.get<const _ZFP_ZFStateData *>(key);
     if(data != zfnull) {
         if(data->expireTime != 0 && ZFTime::currentTime() >= data->expireTime) {
@@ -549,7 +549,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, update
 }
 
 ZFMETHOD_DEFINE_0(ZFState, zfautoT<ZFMap>, getAll) {
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     zfobj<ZFMap> ret;
     for(zfiter it = d->m.iter(); it; ++it) {
         ret->set(
@@ -563,7 +563,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, getAllT
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, keys)
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, values)
         ) {
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     for(zfiter it = d->m.iter(); it; ++it) {
         keys.add(d->m.iterKey(it));
         values.add(d->m.iterValue<_ZFP_ZFStateData *>(it)->value);

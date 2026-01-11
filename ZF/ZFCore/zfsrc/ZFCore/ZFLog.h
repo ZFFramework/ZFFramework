@@ -7,7 +7,6 @@
 #define _ZFI_ZFLog_h_
 
 #include "ZFLogLevel.h"
-#include "ZFMutex.h"
 #include "ZFOutputForFormat.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -18,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * note, the mutex would be initialized only after #ZFLevelZFFrameworkEssential
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFMutex *, ZFLogMutex)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFObject *, ZFLogMutex)
 
 /** @brief see #ZFLogHeader */
 typedef zfstring (*ZFLogHeaderFunc)(ZF_IN const ZFCallerInfo &callerInfo);

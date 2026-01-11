@@ -445,7 +445,7 @@ public:
         if(ZFBitTest(flags, v_ZFIOOpenOption::e_Write | v_ZFIOOpenOption::e_Modify)) {
             int fd = -1;
             {
-                zfsynchronize(_lock);
+                ZFObjectLocker(_lock);
                 fd = open(
                         filePath
                         , O_RDWR | O_CREAT

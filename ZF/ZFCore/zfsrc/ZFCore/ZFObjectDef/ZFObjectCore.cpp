@@ -529,9 +529,6 @@ void ZFObject::observerOnRemove(ZF_IN zfidentity eventId) {
     }
 }
 
-void *ZFObject::_ZFP_ZFObjectMutexImpl(void) {
-    return d ? d->mutexImpl : zfnull;
-}
 void ZFObject::_ZFP_ZFObjectLock(void) {
     if(d && d->mutexImpl) {
         _ZFP_ZFObjectMutexImplLock(d->mutexImpl);
@@ -1055,6 +1052,22 @@ ZFMETHOD_FUNC_USER_REGISTER_2({
     , ZFMP_IN(const ZFClass *, cls)
     , ZFMP_IN(ZFObject *, obj)
     )
+
+ZFMETHOD_FUNC_DEFINE_1(void, ZFObjectLock
+        , ZFMP_IN(ZFObject *, obj)
+        ) {
+    ZFObjectLock(obj);
+}
+ZFMETHOD_FUNC_DEFINE_1(void, ZFObjectUnlock
+        , ZFMP_IN(ZFObject *, obj)
+        ) {
+    ZFObjectUnlock(obj);
+}
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFObjectTryLock
+        , ZFMP_IN(ZFObject *, obj)
+        ) {
+    return ZFObjectTryLock(obj);
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

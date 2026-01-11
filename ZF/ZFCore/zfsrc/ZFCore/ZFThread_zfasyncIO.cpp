@@ -133,7 +133,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
             do {
                 _ZFP_zfasyncIO_log("split begin (%s %s)", splitOffset, splitSize);
                 {
-                    zfsynchronize(task);
+                    ZFObjectLocker(task);
                     if(!task->input.ioSeek(task->inputOffset + splitOffset)) {
                         _ZFP_zfasyncIO_log("split end (%s %s): input seek fail", splitOffset, splitSize);
                         break;
@@ -145,7 +145,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfasyncIO
                 }
 
                 {
-                    zfsynchronize(task->outputMutex);
+                    ZFObjectLocker(task->outputMutex);
                     if(!task->output.ioSeek(task->outputOffset + splitOffset)) {
                         _ZFP_zfasyncIO_log("split end (%s %s): output seek fail", splitOffset, splitSize);
                         break;

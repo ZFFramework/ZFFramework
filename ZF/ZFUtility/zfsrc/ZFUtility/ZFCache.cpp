@@ -89,7 +89,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
     }
 
     {
-        zfsynchronize(this);
+        ZFObjectLocker(this);
         _ZFP_ZFCacheData *cacheData = zfpoolNew(_ZFP_ZFCacheData);
         cacheData->cacheValue = cacheValue;
         ZFLISTENER_2(cacheOnDealloc
@@ -140,7 +140,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
     if(cacheKey == zfnull) {
         return zfnull;
     }
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
     if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {
         return zfnull;
@@ -168,7 +168,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
     if(cacheKey == zfnull) {
         return zfnull;
     }
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
     if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {
         return zfnull;
@@ -194,7 +194,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
 ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
         , ZFMP_IN(const zfstring &, cacheKey)
         ) {
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
     if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {
         return;
@@ -220,7 +220,7 @@ ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
 }
 
 ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     if(d->cacheList.empty()) {
         return;
     }
@@ -251,7 +251,7 @@ ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
 ZFMETHOD_DEFINE_1(ZFCache, void, cacheTrim
         , ZFMP_IN(zfindex, size)
         ) {
-    zfsynchronize(this);
+    ZFObjectLocker(this);
     if(d->cacheList.size() <= (zfstlsize)size) {
         return;
     }

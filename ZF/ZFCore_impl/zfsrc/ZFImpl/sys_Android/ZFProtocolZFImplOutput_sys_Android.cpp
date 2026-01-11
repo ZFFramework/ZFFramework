@@ -24,14 +24,14 @@ public:
 public:
     virtual void outputCoreLog(ZF_IN const zfchar *s) {
         zfstring tmp = s;
-        zfsynchronize(this->syncObj);
+        ZFObjectLocker(this->syncObj);
         this->checkOutput(tmp);
     }
     virtual void outputLog(
             ZF_IN const zfchar *s
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) {
-        zfsynchronize(this->syncObj);
+        ZFObjectLocker(this->syncObj);
         this->savedString.append(s, count);
         this->checkOutput(this->savedString);
     }

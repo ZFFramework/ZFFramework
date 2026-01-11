@@ -123,7 +123,7 @@ public:
             else {
                 LeaveCriticalSection(&(mutex->mutexParamLocker));
                 // lock while another thread acquiring the lock,
-                // just return false for mutexTryLock
+                // just return false
                 return zffalse;
             }
         }

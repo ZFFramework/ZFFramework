@@ -27,7 +27,6 @@ public:
 private:
     enum {
         _ChunkSize = 1 * 1024 * 1024,
-        _ChunkCacheCount = 4,
         _ChunkRetry = 1,
     };
 private:
@@ -94,7 +93,8 @@ private:
                 _chunkCacheIndex.removeElement(chunkPos);
                 _chunkCacheIndex.add(chunkPos);
 
-                while(_chunkCacheIndex.count() > _ChunkCacheCount) {
+                zfindex cacheLimit = ZFThreadPoolForIO::instance()->maxThread() * 2;
+                while(_chunkCacheIndex.count() > cacheLimit) {
                     _chunkCache.erase(_chunkCacheIndex.removeAndGet(0));
                 }
                 return ret;

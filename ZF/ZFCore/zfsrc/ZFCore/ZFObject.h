@@ -67,7 +67,6 @@
 #include "ZFObjectDef/zfauto.h"
 #include "ZFObjectDef/zfautoFwd.h"
 #include "ZFObjectDef/zfcast.h"
-#include "ZFObjectDef/zfsynchronize.h"
 #include "ZFObjectDef/zfweak.h"
 #include "ZFObjectDef/zfwrap.h"
 

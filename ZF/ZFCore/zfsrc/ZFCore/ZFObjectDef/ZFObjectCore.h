@@ -178,15 +178,6 @@ zfclassFwd _ZFP_I_zfweak;
  *     yourClassInstance->classData();
  *     ZFClass::classForName(name);
  *   @endcode
- * -  ZFObject is synchronizable object, you can make it mutable by:
- *   @code
- *     {
- *         zfsynchronize(obj)
- *         // mutable operation
- *     }
- *   @endcode
- *   for advanced mutable operation, use ZFMutex instead\n
- *   for global mutable operation, use #ZFCoreMutexLock instead
  *
  * \n
  * ADVANCED:\n
@@ -669,7 +660,6 @@ protected:
     }
 
 public:
-    void *_ZFP_ZFObjectMutexImpl(void);
     void _ZFP_ZFObjectLock(void);
     void _ZFP_ZFObjectUnlock(void);
     zfbool _ZFP_ZFObjectTryLock(void);
@@ -874,6 +864,52 @@ protected:
     }
     /** @endcond */
 };
+
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFObjectLocker {
+public:
+    _ZFP_ZFObjectLocker(ZF_IN ZFObject *obj)
+    : _obj(obj)
+    {
+        _obj->_ZFP_ZFObjectLock();
+    }
+    ~_ZFP_ZFObjectLocker(void) {
+        _obj->_ZFP_ZFObjectUnlock();
+    }
+private:
+    ZFObject *_obj;
+};
+/**
+ * @brief lock object for thread safe operation, must paired with objectUnlock
+ *
+ * usage:
+ * @code
+ *   ZFObjectLock(obj);
+ *   // thread safe operation (on obj only)
+ *   ZFObjectUnlock(obj);
+ *
+ *   // or, use helper
+ *   {
+ *       ZFObjectLocker(obj);
+ *       // thread safe operation
+ *   }
+ *
+ *   // or, try lock to check
+ *   if(ZFObjectTryLock(obj)) {
+ *       // thread safe operation
+ *       ZFObjectUnlock(obj);
+ *   }
+ *   else {
+ *       // unable to obtain lock, other thread has locked obj
+ *   }
+ * @endcode
+ */
+#define ZFObjectLocker(obj) _ZFP_ZFObjectLocker(_ZFP_zfanyCast(obj))
+/** @brief see #ZFObject::objectLock */
+#define ZFObjectLock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectLock()
+/** @brief see #ZFObject::objectLock */
+#define ZFObjectUnlock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectUnlock()
+/** @brief see #ZFObject::objectLock */
+#define ZFObjectTryLock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectTryLock()
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectCore_h_

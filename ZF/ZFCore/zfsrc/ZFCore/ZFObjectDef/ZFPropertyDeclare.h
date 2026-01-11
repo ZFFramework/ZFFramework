@@ -8,7 +8,6 @@
 
 #include "ZFMethodDeclare.h"
 #include "ZFObjectUtil.h"
-#include "zfsynchronize.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -619,7 +618,7 @@ public:
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 ) { \
-            zfsynchronizeLock(this); \
+            ZFObjectLock(this); \
             zfbool accessed = Name##_PropV._ZFP_accessed(); \
             ZFObject *valueOld = zfcast(ZFObject *, Name##_PropV._ZFP_init(this->toObject(), zffalse)); \
             _ZFP_ZFPropertyLifeCycleCall_setter_retain( \
@@ -630,7 +629,7 @@ public:
                 zfcast(ZFObject *, propertyValue), \
                 _ZFP_PropRVSC_r<zfself::_ZFP_PropVT_##Name>::f, \
                 Name##_PropV._ZFP_v); \
-            zfsynchronizeUnlock(this); \
+            ZFObjectUnlock(this); \
         } \
     public:
 #define _ZFP_ZFPROPERTY_SETTER_ASSIGN(AccessType, Type, Name) \
@@ -648,7 +647,7 @@ public:
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 ) { \
-            zfsynchronizeLock(this); \
+            ZFObjectLock(this); \
             zfbool accessed = Name##_PropV._ZFP_accessed(); \
             Type valueOld = Name##_PropV._ZFP_init(this->toObject(), zffalse); \
             _ZFP_ZFPropertyLifeCycleCall_setter_assign( \
@@ -661,7 +660,7 @@ public:
                 Name##_PropV._ZFP_v, \
                 _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(valueOld), \
                 _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(propertyValue)); \
-            zfsynchronizeUnlock(this); \
+            ZFObjectUnlock(this); \
         } \
     public:
 #define _ZFP_ZFPROPERTY_GETTER_RETAIN(AccessType, Type, Name) \
@@ -679,7 +678,7 @@ public:
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 ) { \
-            zfsynchronize(this); \
+            ZFObjectLocker(this); \
             return Name##_PropV._ZFP_init(this->toObject(), zftrue); \
         } \
     public:
@@ -699,7 +698,7 @@ public:
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 ) { \
-            zfsynchronize(this); \
+            ZFObjectLocker(this); \
             return Name##_PropV._ZFP_init(this->toObject(), zftrue); \
         } \
     public:

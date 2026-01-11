@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static ZFMutex *_ZFP_ZFLogMutex = zfnull;
+static ZFObject *_ZFP_ZFLogMutex = zfnull;
 static ZFLogFormat *_ZFP_ZFLogFormatHolder = zfnull;
 
 // ============================================================
@@ -18,13 +18,13 @@ void ZFLogFormat::format(
     switch(outputStep) {
         case v_ZFOutputFormatStep::e_OnInit:
             if(_ZFP_ZFLogMutex != zfnull) {
-                _ZFP_ZFLogMutex->mutexLock();
+                ZFObjectLock(_ZFP_ZFLogMutex);
             }
             break;
         case v_ZFOutputFormatStep::e_OnDealloc:
             this->autoEndl(zftrue);
             if(_ZFP_ZFLogMutex != zfnull) {
-                _ZFP_ZFLogMutex->mutexUnlock();
+                ZFObjectUnlock(_ZFP_ZFLogMutex);
             }
             break;
         case v_ZFOutputFormatStep::e_OnOutput:
@@ -43,7 +43,7 @@ void ZFLogFormat::format(
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogDataHolder, ZFLevelZFFrameworkEssential) {
-    _ZFP_ZFLogMutex = zfAlloc(ZFMutex);
+    _ZFP_ZFLogMutex = zfAlloc(ZFObject);
     _ZFP_ZFLogFormatHolder = zfAlloc(ZFLogFormat);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder) {
@@ -54,7 +54,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLogDataHolder)
 
-ZFMETHOD_FUNC_DEFINE_0(ZFMutex *, ZFLogMutex) {
+ZFMETHOD_FUNC_DEFINE_0(ZFObject *, ZFLogMutex) {
     return _ZFP_ZFLogMutex;
 }
 

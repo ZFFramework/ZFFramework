@@ -65,7 +65,7 @@ zfclass ZFLIB_ZFCore ZFThreadPoolForIO : zfextend ZFThreadPool {
      * @brief when input size greater than this,
      *   try to split task to different thread
      */
-    ZFPROPERTY_ASSIGN(zfindex, blockSize, 5 * 1024 * 1024)
+    ZFPROPERTY_ASSIGN(zfindex, blockSize, 4 * 1024 * 1024)
 };
 
 ZF_NAMESPACE_GLOBAL_END
