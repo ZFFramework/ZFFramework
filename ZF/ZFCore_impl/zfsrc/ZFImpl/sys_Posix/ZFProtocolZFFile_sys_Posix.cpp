@@ -12,16 +12,19 @@
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <fcntl.h>
+#include <utime.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileImpl_sys_Posix, ZFFile, v_ZFProtocolLevel::e_SystemLow)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("nativeAPI")
 public:
+    zfoverride
     virtual zfbool fileIsExist(ZF_IN const zfstring &path) {
         if(path == zfnull) {return zffalse;}
         return (access(path, F_OK) != -1);
     }
+    zfoverride
     virtual zfbool isDir(ZF_IN const zfstring &path) {
         zfstring tmp = path;
         tmp += '/';
@@ -30,6 +33,7 @@ public:
         return S_ISDIR(statbuf.st_mode);
     }
 
+    zfoverride
     virtual zfbool filePathCreate(
             ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool autoCreateParent = zffalse
@@ -92,13 +96,7 @@ private:
         }
     }
 public:
-    virtual zfbool fileMove(
-            ZF_IN const zfstring &dstPath
-            , ZF_IN const zfstring &srcPath
-            , ZF_IN_OPT zfbool isForce = zftrue
-            ) {
-        return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
-    }
+    zfoverride
     virtual zfbool fileRemove(
             ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool isRecursive = zftrue
@@ -115,7 +113,30 @@ public:
             return this->removeFile(path, isForce);
         }
     }
+    zfoverride
+    virtual zfbool fileMove(
+            ZF_IN const zfstring &dstPath
+            , ZF_IN const zfstring &srcPath
+            , ZF_IN_OPT zfbool isForce = zftrue
+            ) {
+        return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
+    }
+    zfoverride
+    virtual zftimet fileModTime(ZF_IN const zfstring &pathData) {
+        struct stat statInfo;
+        if(stat(pathData.cString(), &statInfo) == -1) {
+            return zftimetInvalid();
+        }
+        return (zftimet)(statInfo.st_mtime * 1000);
+    }
+    zfoverride
+    virtual zfbool fileModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
+        struct utimbuf updateBuf;
+        updateBuf.actime = updateBuf.modtime = (time_t)(time / 1000);
+        return utime(pathData.cString(), &updateBuf) == 0;
+    }
 
+private:
     zfclassNotPOD _ZFP_ZFFileNativeFd {
     public:
         zfstring parentPath;
@@ -138,6 +159,7 @@ public:
         }
     };
 
+    zfoverride
     virtual zfbool fileFindFirst(
             ZF_IN_OUT ZFIOFindData::Impl &fd
             , ZF_IN const zfstring &path
@@ -173,6 +195,7 @@ public:
             return zffalse;
         }
     }
+    zfoverride
     virtual zfbool fileFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
         nativeFd->pDirent = readdir(nativeFd->pDir);
@@ -185,6 +208,7 @@ public:
         }
         return zftrue;
     }
+    zfoverride
     virtual void fileFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
         if(nativeFd->pDir != zfnull) {
@@ -411,6 +435,7 @@ private:
     }
 
 public:
+    zfoverride
     virtual void *fileOpen(
             ZF_IN const zfstring &filePath
             , ZF_IN ZFIOOpenOptionFlags flags
@@ -487,6 +512,7 @@ public:
             return fopen(filePath, sFlag);
         }
     }
+    zfoverride
     virtual zfbool fileClose(ZF_IN void *token) {
         if(token == zfnull) {
             return zftrue;
@@ -494,6 +520,7 @@ public:
         return (fclose((FILE *)token) == 0);
     }
 
+    zfoverride
     virtual zfindex fileTell(ZF_IN void *token) {
         if(token == zfnull) {
             return zfindexMax();
@@ -504,6 +531,7 @@ public:
         }
         return (zfindex)result;
     }
+    zfoverride
     virtual zfbool fileSeek(
             ZF_IN void *token
             , ZF_IN zfindex byteSize
@@ -535,6 +563,7 @@ public:
         return (fseek((FILE *)token, seekSize, tmpPos) == 0);
     }
 
+    zfoverride
     virtual zfindex fileRead(
             ZF_IN void *token
             , ZF_IN void *buf
@@ -548,6 +577,7 @@ public:
         }
     }
 
+    zfoverride
     virtual zfindex fileWrite(
             ZF_IN void *token
             , ZF_IN const void *src
@@ -558,6 +588,12 @@ public:
         }
         else {
             return (zfindex)fwrite(src, 1, (size_t)maxByteSize, (FILE *)token);
+        }
+    }
+    zfoverride
+    virtual void fileFlush(ZF_IN void *token) {
+        if(token != zfnull) {
+            fflush((FILE *)token);
         }
     }
 private:

@@ -221,6 +221,16 @@ public:
         return _buf->output().execute(src, maxByteSize);
     }
     zfoverride
+    virtual void ioFlush(void) {
+        if(!ZFBitTest(_refOpenFlags, 0
+                    | v_ZFIOOpenOption::e_Write
+                    | v_ZFIOOpenOption::e_Modify
+                    )) {
+            return;
+        }
+        _buf->output().ioFlush();
+    }
+    zfoverride
     virtual zfbool ioSeek(
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
@@ -380,6 +390,14 @@ public:
             return zffalse;
         }
         return token->ioMove(selfPathDataTo, selfPathDataFrom);
+    }
+    zfoverride
+    virtual zftimet ioModTime(ZF_IN const zfstring &pathData) {
+        return zftimetInvalid();
+    }
+    zfoverride
+    virtual zfbool ioModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
+        return zffalse;
     }
     zfoverride
     virtual zfbool ioFindFirst(

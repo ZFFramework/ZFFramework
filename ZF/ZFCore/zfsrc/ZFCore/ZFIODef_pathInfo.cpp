@@ -102,6 +102,29 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFIOMove
         return ioImpl->ioMove(pathDataTo, pathInfoFrom.pathData(), isForce);
     }
 }
+ZFMETHOD_FUNC_DEFINE_1(zftimet, ZFIOModTime
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        ) {
+    zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+    if(ioImpl == zfnull) {
+        return ZFIOImpl::ioModTimeDefault(pathInfo.pathData());
+    }
+    else {
+        return ioImpl->ioModTime(pathInfo.pathData());
+    }
+}
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFIOModTime
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN(zftimet, time)
+        ) {
+    zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+    if(ioImpl == zfnull) {
+        return ZFIOImpl::ioModTimeDefault(pathInfo.pathData(), time);
+    }
+    else {
+        return ioImpl->ioModTime(pathInfo.pathData(), time);
+    }
+}
 ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFIOToken>, ZFIOOpen
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(ZFIOOpenOptionFlags, flags)

@@ -141,7 +141,7 @@ public:
     }
     virtual zftimet timestamp(void) {
         #if ZF_ENV_sys_Windows
-            return (zftimet)GetTickCount();
+            return (zftimet)GetTickCount64();
         #elif __APPLE__
             static mach_timebase_info_data_t _timebaseInfo;
             if(_timebaseInfo.denom == 0) {

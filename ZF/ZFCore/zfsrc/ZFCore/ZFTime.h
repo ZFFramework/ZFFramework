@@ -350,7 +350,8 @@ public:
      * @brief get timestamp in mili seconds
      *
      * use this instead of #currentTimeValue if you only care about time interval,
-     * this value is a relative value, what 0 means is not ensured\n
+     * this value is a relative value, what 0 means is not ensured,
+     * also, values between different process launch are not ensured comparable\n
      * \n
      * typically, this method would have better performance and accuracy than #currentTimeValue
      */

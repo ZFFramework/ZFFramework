@@ -13,15 +13,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileImpl_sys_Windows, ZFFile, v_ZFProtocolLevel::e_SystemLow)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("nativeAPI")
 public:
+    zfoverride
     virtual zfbool fileIsExist(ZF_IN const zfstring &path) {
         if(path == zfnull) {return zffalse;}
         return (GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
     }
+    zfoverride
     virtual zfbool isDir(ZF_IN const zfstring &path) {
         return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
                     & FILE_ATTRIBUTE_DIRECTORY) != 0);
     }
 
+    zfoverride
     virtual zfbool filePathCreate(
             ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool autoCreateParent = zffalse
@@ -84,13 +87,7 @@ private:
         }
     }
 public:
-    virtual zfbool fileMove(
-            ZF_IN const zfstring &dstPath
-            , ZF_IN const zfstring &srcPath
-            , ZF_IN_OPT zfbool isForce = zftrue
-            ) {
-        return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
-    }
+    zfoverride
     virtual zfbool fileRemove(
             ZF_IN const zfstring &path
             , ZF_IN_OPT zfbool isRecursive = zftrue
@@ -107,7 +104,24 @@ public:
             return this->removeFile(path, isForce);
         }
     }
+    zfoverride
+    virtual zfbool fileMove(
+            ZF_IN const zfstring &dstPath
+            , ZF_IN const zfstring &srcPath
+            , ZF_IN_OPT zfbool isForce = zftrue
+            ) {
+        return this->cp_or_mv(zffalse, dstPath, srcPath, zftrue, isForce);
+    }
+    zfoverride
+    virtual zftimet ioModTime(ZF_IN const zfstring &pathData) {
+        return zftimetInvalid();
+    }
+    zfoverride
+    virtual zfbool ioModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
+        return zffalse;
+    }
 
+private:
     zfclassNotPOD _ZFP_ZFFileNativeFd {
     public:
         zfstring parentPath;
@@ -129,6 +143,7 @@ public:
         }
     };
 
+    zfoverride
     virtual zfbool fileFindFirst(
             ZF_IN_OUT ZFIOFindData::Impl &fd
             , ZF_IN const zfstring &path
@@ -167,6 +182,7 @@ public:
             return zffalse;
         }
     }
+    zfoverride
     virtual zfbool fileFindNext(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
         if(!FindNextFileW(nativeFd->hFind, &(nativeFd->fd))) {return zffalse;}
@@ -178,6 +194,7 @@ public:
         }
         return zftrue;
     }
+    zfoverride
     virtual void fileFindClose(ZF_IN_OUT ZFIOFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
         if(nativeFd->hFind != INVALID_HANDLE_VALUE) {
@@ -401,6 +418,7 @@ private:
         zfbool locked;
     };
 public:
+    zfoverride
     virtual void *fileOpen(
             ZF_IN const zfstring &filePath
             , ZF_IN ZFIOOpenOptionFlags flags
@@ -501,6 +519,7 @@ public:
         zfmemcpy(impl, &token, sizeof(_FileToken));
         return impl;
     }
+    zfoverride
     virtual zfbool fileClose(ZF_IN void *token) {
         if(token == zfnull) {
             return zftrue;
@@ -523,6 +542,7 @@ public:
         return ret;
     }
 
+    zfoverride
     virtual zfindex fileTell(ZF_IN void *token) {
         if(token == zfnull) {
             return zfindexMax();
@@ -538,6 +558,7 @@ public:
             return zfindexMax();
         }
     }
+    zfoverride
     virtual zfbool fileSeek(
             ZF_IN void *token
             , ZF_IN zfindex byteSize
@@ -573,6 +594,7 @@ public:
         return (li.LowPart != INVALID_SET_FILE_POINTER || GetLastError() == NO_ERROR);
     }
 
+    zfoverride
     virtual zfindex fileRead(
             ZF_IN void *token
             , ZF_IN void *buf
@@ -591,6 +613,7 @@ public:
         }
     }
 
+    zfoverride
     virtual zfindex fileWrite(
             ZF_IN void *token
             , ZF_IN const void *src
@@ -606,6 +629,13 @@ public:
         }
         else {
             return (zfindex)written;
+        }
+    }
+    zfoverride
+    virtual void fileFlush(ZF_IN void *token) {
+        if(token != zfnull) {
+            _FileToken *impl = (_FileToken *)token;
+            FlushFileBuffers(impl->h);
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileImpl_sys_Windows)

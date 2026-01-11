@@ -176,6 +176,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFIOToken, zfindex, ioWrite
         , ZFMP_OUT(const void *, src)
         , ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax())
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFIOToken, void, ioFlush)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFIOToken, zfbool, ioSeek
         , ZFMP_IN(zfindex, byteSize)
         , ZFMP_IN_OPT(ZFSeekPos, seekPos, ZFSeekPosBegin)
@@ -242,6 +243,12 @@ zfbool ZFIOImpl::ioMoveDefault(
         ) {
     return zffalse;
 }
+zftimet ZFIOImpl::ioModTimeDefault(ZF_IN const zfstring &pathData) {
+    return zftimetInvalid();
+}
+zfbool ZFIOImpl::ioModTimeDefault(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
+    return zffalse;
+}
 zfbool ZFIOImpl::ioFindFirstDefault(
         ZF_IN_OUT ZFIOFindData &fd
         , ZF_IN const zfstring &pathData
@@ -276,6 +283,8 @@ zfindex ZFIOImpl::ioWriteDefault(
         , ZF_IN_OPT zfindex maxByteSize /* = zfindexMax() */
         ) {
     return 0;
+}
+void ZFIOImpl::ioFlushDefault(ZF_IN void *token) {
 }
 zfbool ZFIOImpl::ioSeekDefault(
         ZF_IN void *token
@@ -404,6 +413,25 @@ zfbool ZFIOImpl::ioMoveForChained(
         && refPathInfoFrom.pathType() == refPathInfoTo.pathType()
         && ZFIOMove(refPathInfoTo.pathData(), refPathInfoFrom, isForce);
 }
+zftimet ZFIOImpl::ioModTimeForChained(ZF_IN const zfstring &pathData) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    if(ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)) {
+        return ZFIOModTime(refPathInfo);
+    }
+    else {
+        return zftimetInvalid();
+    }
+}
+zfbool ZFIOImpl::ioModTimeForChained(
+        ZF_IN const zfstring &pathData
+        , ZF_IN zftimet time
+        ) {
+    ZFPathInfo refPathInfo;
+    zfstring selfPathData;
+    return ZFPathInfoChainDecode(refPathInfo, selfPathData, pathData)
+        && ZFIOModTime(refPathInfo, time);
+}
 zfbool ZFIOImpl::ioFindFirstForChained(
         ZF_IN_OUT ZFIOFindData &fd
         , ZF_IN const zfstring &pathData
@@ -469,6 +497,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFIOImpl, zfbool, ioMove
         , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFIOImpl, zftimet, ioModTime
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFIOImpl, zfbool, ioModTime
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(zftimet, time)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFIOImpl, zfbool, ioFindFirst
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         , ZFMP_IN(const zfstring &, pathData)
@@ -519,6 +554,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioMoveDefaul
         , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zftimet, ioModTimeDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioModTimeDefault
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(zftimet, time)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioFindFirstDefault
         , ZFMP_IN_OUT(ZFIOFindData &, fd)
         , ZFMP_IN(const zfstring &, pathData)
@@ -546,6 +588,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfindex, ioWriteDefa
         , ZFMP_IN(void *, token)
         , ZFMP_IN(const void *, src)
         , ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, void, ioFlushDefault
+        , ZFMP_IN(void *, token)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioSeekDefault
         , ZFMP_IN(void *, token)
@@ -592,6 +637,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_3(ZFIOImpl, zfbool, ioMoveForCha
         , ZFMP_IN(const zfstring &, pathDataTo)
         , ZFMP_IN(const zfstring &, pathDataFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_1(ZFIOImpl, zftimet, ioModTimeForChained
+        , ZFMP_IN(const zfstring &, pathData)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioModTimeForChained
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN(zftimet, time)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_STATIC_2(ZFIOImpl, zfbool, ioFindFirstForChained
         , ZFMP_IN_OUT(ZFIOFindData &, fd)

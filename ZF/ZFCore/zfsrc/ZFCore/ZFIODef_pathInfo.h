@@ -52,6 +52,15 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFIOMove
         , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
+/** @brief see #ZFIOImplForPathType */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zftimet, ZFIOModTime
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        )
+/** @brief see #ZFIOImplForPathType */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFIOModTime
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN(zftimet, time)
+        )
 
 /** @brief see #ZFIOImplForPathType */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoT<ZFIOToken>, ZFIOOpen

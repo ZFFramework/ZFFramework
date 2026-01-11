@@ -26,6 +26,17 @@ zfindex ZFIOCallbackCalcSeek(
 }
 
 // ============================================================
+void ZFIOCallback::ioFlush(void) const {
+    ZFObject *owner = this->callbackTag(ZFCallbackTagKeyword_ioOwner);
+    if(owner == zfnull) {
+        return;
+    }
+    const ZFMethod *method = owner->classData()->methodForName("ioFlush");
+    if(method == zfnull) {
+        return;
+    }
+    return method->executeExact<void>(owner);
+}
 zfbool ZFIOCallback::ioSeek(
         ZF_IN zfindex byteSize
         , ZF_IN_OPT ZFSeekPos seekPos /* = ZFSeekPosBegin */
@@ -68,6 +79,10 @@ zfbool ZFIOCallback::ioClose(void) const {
 }
 
 // ============================================================
+ZFMETHOD_USER_REGISTER_0({
+        ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioFlush();
+    }, v_ZFCallback, void, ioFlush
+    )
 ZFMETHOD_USER_REGISTER_2({
         return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, seekPos);
     }, v_ZFCallback, zfbool, ioSeek

@@ -113,6 +113,10 @@ private:
         return 0;
     }
     zfoverride
+    virtual void ioFlush(void) {
+        ZFCoreCriticalNotSupported();
+    }
+    zfoverride
     virtual zfbool ioSeek(
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin

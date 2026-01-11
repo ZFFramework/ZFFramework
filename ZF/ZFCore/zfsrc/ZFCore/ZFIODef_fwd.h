@@ -257,6 +257,11 @@ public:
             , ZF_IN_OPT zfindex maxByteSize = zfindexMax()
             ) zfpurevirtual;
     /**
+     * @brief flush write buffer, do nothing if impl not supported
+     */
+    virtual void ioFlush(void) {
+    }
+    /**
      * @brief see #ZFIOImplForPathType
      *
      * seek to specified position, return false if error or not available
@@ -276,7 +281,16 @@ public:
      *
      * return total size or zfindexMax if error or not available
      */
-    virtual zfindex ioSize(void) zfpurevirtual;
+    virtual zfindex ioSize(void) {
+        zfindex cur = this->ioTell();
+        if(cur == zfindexMax()) {
+            return zfindexMax();
+        }
+        this->ioSeek(0, ZFSeekPosEnd);
+        zfindex size = this->ioTell();
+        this->ioSeek(cur);
+        return size;
+    }
 };
 
 // ============================================================
@@ -369,6 +383,14 @@ public:
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
     /**
+     * @brief return last modified time, or #zftimetInvalid if error or not available
+     */
+    virtual zftimet ioModTime(ZF_IN const zfstring &pathData) {return zftimetInvalid();}
+    /**
+     * @brief change last modified time, do nothing if error or not available
+     */
+    virtual zfbool ioModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {return zffalse;}
+    /**
      * @brief see #ZFIOImplForPathType
      *
      * see #ZFIOFindData
@@ -441,6 +463,10 @@ public:
             , ZF_IN_OPT zfbool isForce = zftrue
             );
     /** @brief see #ZFIOImplForPathType */
+    static zftimet ioModTimeDefault(ZF_IN const zfstring &pathData);
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioModTimeDefault(ZF_IN const zfstring &pathData, ZF_IN zftimet time);
+    /** @brief see #ZFIOImplForPathType */
     static zfbool ioFindFirstDefault(
             ZF_IN_OUT ZFIOFindData &fd
             , ZF_IN const zfstring &pathData
@@ -469,6 +495,8 @@ public:
             , ZF_IN const void *src
             , ZF_IN_OPT zfindex maxByteSize = zfindexMax()
             );
+    /** @brief see #ZFIOImplForPathType */
+    static void ioFlushDefault(ZF_IN void *token);
     /** @brief see #ZFIOImplForPathType */
     static zfbool ioSeekDefault(
             ZF_IN void *token
@@ -520,6 +548,10 @@ public:
             , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             );
+    /** @brief see #ZFIOImplForPathType */
+    static zftimet ioModTimeForChained(ZF_IN const zfstring &pathData);
+    /** @brief see #ZFIOImplForPathType */
+    static zfbool ioModTimeForChained(ZF_IN const zfstring &pathData, ZF_IN zftimet time);
     /** @brief see #ZFIOImplForPathType */
     static zfbool ioFindFirstForChained(
             ZF_IN_OUT ZFIOFindData &fd

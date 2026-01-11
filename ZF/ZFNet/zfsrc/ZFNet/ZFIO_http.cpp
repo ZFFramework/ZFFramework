@@ -169,6 +169,8 @@ public:
         return 0;
     }
     zfoverride
+    virtual void ioFlush(void) {}
+    zfoverride
     virtual zfbool ioSeek(
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
@@ -336,6 +338,14 @@ public:
             , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {
+        return zffalse;
+    }
+    zfoverride
+    virtual zftimet ioModTime(ZF_IN const zfstring &pathData) {
+        return zftimetInvalid();
+    }
+    zfoverride
+    virtual zfbool ioModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
         return zffalse;
     }
     zfoverride

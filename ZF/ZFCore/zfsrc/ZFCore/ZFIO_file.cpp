@@ -56,6 +56,8 @@ public:
             , ZF_IN_OPT zfindex maxByteSize = zfindexMax()
             ) {return ZFFileWrite(_ioToken, src, maxByteSize);}
     zfoverride
+    virtual void ioFlush(void) {ZFFileFlush(_ioToken);}
+    zfoverride
     virtual zfbool ioSeek(
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
@@ -145,6 +147,23 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileMove
         return zffalse;
     }
     return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(dstPath, srcPath, isForce);
+}
+ZFMETHOD_FUNC_DEFINE_1(zftimet, ZFFileModTime
+        , ZFMP_IN(const zfstring &, path)
+        ) {
+    if(path == zfnull) {
+        return zftimetInvalid();
+    }
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileModTime(path);
+}
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileModTime
+        , ZFMP_IN(const zfstring &, path)
+        , ZFMP_IN(zftimet, time)
+        ) {
+    if(path == zfnull) {
+        return zftimetInvalid();
+    }
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileModTime(path, time);
 }
 
 #define _ZFP_ZFIOFindType_file "ZFFileFindFirst"
@@ -238,6 +257,11 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileTell
         , ZFMP_IN(void *, token)
         ) {
     return ZFPROTOCOL_ACCESS(ZFFile)->fileTell(token);
+}
+ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFlush
+        , ZFMP_IN(void *, token)
+        ) {
+    ZFPROTOCOL_ACCESS(ZFFile)->fileFlush(token);
 }
 ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileSize
         , ZFMP_IN(void *, token)

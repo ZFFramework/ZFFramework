@@ -19,6 +19,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * set an auto released data by #ZFCallback::callbackTag,
  * whose key is #ZFCallbackTagKeyword_ioOwner and value is a ZFObject
  * that optionally implement those method (as #ZFMethod):
+ * -  ioFlush, similar to FILE's #ZFFileFlush, proto type:\n
+ *   void ioFlush(void);
  * -  ioSeek, similar to FILE's #ZFFileSeek, proto type:\n
  *   zfbool ioSeek(
  *           ZF_IN zfindex byteSize
@@ -61,6 +63,10 @@ extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcSeek(
  */
 ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
 public:
+    /**
+     * @brief similar to FILE's #ZFFileFlush
+     */
+    void ioFlush(void) const;
     /**
      * @brief similar to FILE's #ZFFileSeek
      *

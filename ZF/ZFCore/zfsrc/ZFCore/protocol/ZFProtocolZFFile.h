@@ -32,6 +32,14 @@ public:
             , ZF_IN_OPT zfbool autoCreateParent = zffalse
             ) zfpurevirtual;
     /**
+     * @brief see #ZFFileRemove
+     */
+    virtual zfbool fileRemove(
+            ZF_IN const zfstring &path
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            ) zfpurevirtual;
+    /**
      * @brief see #ZFFileMove
      */
     virtual zfbool fileMove(
@@ -40,12 +48,15 @@ public:
             , ZF_IN_OPT zfbool isForce = zftrue
             ) zfpurevirtual;
     /**
-     * @brief see #ZFFileRemove
+     * @brief see #ZFFileModTime
      */
-    virtual zfbool fileRemove(
+    virtual zftimet fileModTime(ZF_IN const zfstring &path) zfpurevirtual;
+    /**
+     * @brief see #ZFFileModTime
+     */
+    virtual zfbool fileModTime(
             ZF_IN const zfstring &path
-            , ZF_IN_OPT zfbool isRecursive = zftrue
-            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN zftimet time
             ) zfpurevirtual;
 
     /**
@@ -104,6 +115,8 @@ public:
             , ZF_IN const void *src
             , ZF_IN zfindex maxByteSize
             ) zfpurevirtual;
+    /** @brief see #ZFFileFlush */
+    virtual void fileFlush(ZF_IN void *token) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFFile)
 
 ZF_NAMESPACE_GLOBAL_END

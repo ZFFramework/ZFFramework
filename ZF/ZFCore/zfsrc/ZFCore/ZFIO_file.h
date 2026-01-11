@@ -99,6 +99,21 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileMove
         , ZFMP_IN(const zfstring &, srcPath)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
+/**
+ * @brief return last modified time, or #zftimetInvalid if error or not available
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zftimet, ZFFileModTime
+        , ZFMP_IN(const zfstring &, path)
+        )
+/**
+ * @brief change last modified time
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileModTime
+        , ZFMP_IN(const zfstring &, path)
+        , ZFMP_IN(zftimet, time)
+        )
 
 /**
  * @brief find file or directory, similar to FindFirstFile under Windows
@@ -200,6 +215,12 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFFileWrite
         , ZFMP_IN(const void *, src)
         , ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax())
         )
+/**
+ * @brief flush write buffer
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileFlush
+        , ZFMP_IN(void *, token)
+        )
 
 /**
  * @brief similar to fseek, return false if seek out of range
@@ -274,6 +295,14 @@ public:
             , ZF_IN const zfstring &pathDataFrom
             , ZF_IN_OPT zfbool isForce = zftrue
             ) {return ZFFileMove(pathConvert(pathDataTo), pathConvert(pathDataFrom), isForce);}
+    zfoverride
+    virtual zftimet ioModTime(ZF_IN const zfstring &pathData) {
+        return ZFFileModTime(pathConvert(pathData));
+    }
+    zfoverride
+    virtual zfbool ioModTime(ZF_IN const zfstring &pathData, ZF_IN zftimet time) {
+        return ZFFileModTime(pathConvert(pathData), time);
+    }
     zfoverride
     virtual zfbool ioFindFirst(
             ZF_IN_OUT ZFIOFindData &fd
