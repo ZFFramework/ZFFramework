@@ -865,16 +865,19 @@ protected:
     /** @endcond */
 };
 
-zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFObjectLocker {
+/** @brief see #ZFObjectLocker */
+zffinal zfclassNotPOD ZFLIB_ZFCore ZFObjectLockerHolder {
 public:
-    _ZFP_ZFObjectLocker(ZF_IN ZFObject *obj)
+    /** @cond ZFPrivateDoc */
+    ZFObjectLockerHolder(ZF_IN ZFObject *obj)
     : _obj(obj)
     {
         _obj->_ZFP_ZFObjectLock();
     }
-    ~_ZFP_ZFObjectLocker(void) {
+    ~ZFObjectLockerHolder(void) {
         _obj->_ZFP_ZFObjectUnlock();
     }
+    /** @endcond */
 private:
     ZFObject *_obj;
 };
@@ -903,7 +906,7 @@ private:
  *   }
  * @endcode
  */
-#define ZFObjectLocker(obj) _ZFP_ZFObjectLocker(_ZFP_zfanyCast(obj))
+#define ZFObjectLocker(obj) ZFObjectLockerHolder ZFUniqueName(ObjLk)(_ZFP_zfanyCast(obj))
 /** @brief see #ZFObject::objectLock */
 #define ZFObjectLock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectLock()
 /** @brief see #ZFObject::objectLock */

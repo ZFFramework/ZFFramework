@@ -21,6 +21,7 @@ public:
     static void implDealloc(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
         pthread_mutex_destroy(mutex);
+        zffree(mutex);
     }
     static void implLock(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
