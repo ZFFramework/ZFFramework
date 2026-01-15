@@ -169,7 +169,7 @@ ZFMETHOD_DEFINE_2(ZFHashMap, void, set
         zfRetain(key);
         zfRetain(value);
         (d->data)[key] = value;
-        this->contentOnAdd(it->first, it->second);
+        this->contentOnAdd(key, value);
     }
 
     this->contentOnUpdate();

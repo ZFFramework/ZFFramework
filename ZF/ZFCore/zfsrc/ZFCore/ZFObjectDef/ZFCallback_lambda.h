@@ -75,14 +75,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam0, capture0 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -100,14 +108,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam1, capture1 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -126,14 +142,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam2, capture2 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -153,14 +177,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam3, capture3 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -181,14 +213,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam4, capture4 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -210,14 +250,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam5, capture5 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -240,14 +288,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam6, capture6 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -271,14 +327,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam7, capture7 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -303,15 +367,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam8, capture8 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -337,16 +408,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam9, capture9 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -373,17 +450,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam10, capture10 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -411,18 +493,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam11, capture11 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -451,19 +537,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam12, capture12 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -493,20 +582,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam13, capture13 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -537,21 +628,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam14, capture14 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
+        , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam15, capture15 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -583,1046 +675,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam15, capture15 \
     , ReturnType, ...) \
     _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3 , capture3 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4 , capture4 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5 , capture5 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6 , capture6 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7 , capture7 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8 , capture8 \
+        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9 , capture9 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_17(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_18(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_19(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_20(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_21(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_22(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_23(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_24(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_25(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_26(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_27(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , CaptureParam26, capture26 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam26, capture26 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_28(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , CaptureParam26, capture26 \
-    , CaptureParam27, capture27 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam26, capture26 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam27, capture27 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_29(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , CaptureParam26, capture26 \
-    , CaptureParam27, capture27 \
-    , CaptureParam28, capture28 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam26, capture26 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam27, capture27 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam28, capture28 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_30(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , CaptureParam26, capture26 \
-    , CaptureParam27, capture27 \
-    , CaptureParam28, capture28 \
-    , CaptureParam29, capture29 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam26, capture26 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam27, capture27 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam28, capture28 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam29, capture29 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_31(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , CaptureParam26, capture26 \
-    , CaptureParam27, capture27 \
-    , CaptureParam28, capture28 \
-    , CaptureParam29, capture29 \
-    , CaptureParam30, capture30 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam26, capture26 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam27, capture27 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam28, capture28 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam29, capture29 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam30, capture30 \
-        , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-        , _ZFP_ZFMP_DUMMY() \
-    )
-
-/** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_32(name \
-    , CaptureParam0, capture0 \
-    , CaptureParam1, capture1 \
-    , CaptureParam2, capture2 \
-    , CaptureParam3, capture3 \
-    , CaptureParam4, capture4 \
-    , CaptureParam5, capture5 \
-    , CaptureParam6, capture6 \
-    , CaptureParam7, capture7 \
-    , CaptureParam8, capture8 \
-    , CaptureParam9, capture9 \
-    , CaptureParam10, capture10 \
-    , CaptureParam11, capture11 \
-    , CaptureParam12, capture12 \
-    , CaptureParam13, capture13 \
-    , CaptureParam14, capture14 \
-    , CaptureParam15, capture15 \
-    , CaptureParam16, capture16 \
-    , CaptureParam17, capture17 \
-    , CaptureParam18, capture18 \
-    , CaptureParam19, capture19 \
-    , CaptureParam20, capture20 \
-    , CaptureParam21, capture21 \
-    , CaptureParam22, capture22 \
-    , CaptureParam23, capture23 \
-    , CaptureParam24, capture24 \
-    , CaptureParam25, capture25 \
-    , CaptureParam26, capture26 \
-    , CaptureParam27, capture27 \
-    , CaptureParam28, capture28 \
-    , CaptureParam29, capture29 \
-    , CaptureParam30, capture30 \
-    , CaptureParam31, capture31 \
-    , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0, capture0 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1, capture1 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2, capture2 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam3, capture3 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam4, capture4 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam5, capture5 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam6, capture6 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam7, capture7 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam8, capture8 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam9, capture9 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam10, capture10 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam11, capture11 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam12, capture12 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam13, capture13 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam14, capture14 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam15, capture15 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam16, capture16 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam17, capture17 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam18, capture18 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam19, capture19 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam20, capture20 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam21, capture21 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam22, capture22 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam23, capture23 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam24, capture24 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam25, capture25 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam26, capture26 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam27, capture27 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam28, capture28 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam29, capture29 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam30, capture30 \
-        , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam31, capture31 \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -1668,6 +736,14 @@ public:
         , CaptureExpandOrEmpty5, CaptureType5, capture5 \
         , CaptureExpandOrEmpty6, CaptureType6, capture6 \
         , CaptureExpandOrEmpty7, CaptureType7, capture7 \
+        , CaptureExpandOrEmpty8, CaptureType8, capture8 \
+        , CaptureExpandOrEmpty9, CaptureType9, capture9 \
+        , CaptureExpandOrEmpty10, CaptureType10, capture10 \
+        , CaptureExpandOrEmpty11, CaptureType11, capture11 \
+        , CaptureExpandOrEmpty12, CaptureType12, capture12 \
+        , CaptureExpandOrEmpty13, CaptureType13, capture13 \
+        , CaptureExpandOrEmpty14, CaptureType14, capture14 \
+        , CaptureExpandOrEmpty15, CaptureType15, capture15 \
         , ReturnType \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
@@ -1691,6 +767,14 @@ public:
             CaptureExpandOrEmpty5(CaptureType5 capture5;) \
             CaptureExpandOrEmpty6(CaptureType6 capture6;) \
             CaptureExpandOrEmpty7(CaptureType7 capture7;) \
+            CaptureExpandOrEmpty8(CaptureType8 capture8;) \
+            CaptureExpandOrEmpty9(CaptureType9 capture9;) \
+            CaptureExpandOrEmpty10(CaptureType10 capture10;) \
+            CaptureExpandOrEmpty11(CaptureType11 capture11;) \
+            CaptureExpandOrEmpty12(CaptureType12 capture12;) \
+            CaptureExpandOrEmpty13(CaptureType13 capture13;) \
+            CaptureExpandOrEmpty14(CaptureType14 capture14;) \
+            CaptureExpandOrEmpty15(CaptureType15 capture15;) \
         public: \
             _ZFP_Lbd_D_##name( \
                 CaptureExpandOrEmpty0(ZFM_EMPTY() CaptureType0 capture0) \
@@ -1701,6 +785,14 @@ public:
                 CaptureExpandOrEmpty5(ZFM_COMMA() CaptureType5 capture5) \
                 CaptureExpandOrEmpty6(ZFM_COMMA() CaptureType6 capture6) \
                 CaptureExpandOrEmpty7(ZFM_COMMA() CaptureType7 capture7) \
+                CaptureExpandOrEmpty8(ZFM_COMMA() CaptureType8 capture8) \
+                CaptureExpandOrEmpty9(ZFM_COMMA() CaptureType9 capture9) \
+                CaptureExpandOrEmpty10(ZFM_COMMA() CaptureType10 capture10) \
+                CaptureExpandOrEmpty11(ZFM_COMMA() CaptureType11 capture11) \
+                CaptureExpandOrEmpty12(ZFM_COMMA() CaptureType12 capture12) \
+                CaptureExpandOrEmpty13(ZFM_COMMA() CaptureType13 capture13) \
+                CaptureExpandOrEmpty14(ZFM_COMMA() CaptureType14 capture14) \
+                CaptureExpandOrEmpty15(ZFM_COMMA() CaptureType15 capture15) \
             ) \
             CaptureExpandOrEmpty0(          : capture0(capture0)) \
             CaptureExpandOrEmpty1(ZFM_COMMA() capture1(capture1)) \
@@ -1710,6 +802,14 @@ public:
             CaptureExpandOrEmpty5(ZFM_COMMA() capture5(capture5)) \
             CaptureExpandOrEmpty6(ZFM_COMMA() capture6(capture6)) \
             CaptureExpandOrEmpty7(ZFM_COMMA() capture7(capture7)) \
+            CaptureExpandOrEmpty8(ZFM_COMMA() capture8(capture8)) \
+            CaptureExpandOrEmpty9(ZFM_COMMA() capture9(capture9)) \
+            CaptureExpandOrEmpty10(ZFM_COMMA() capture10(capture10)) \
+            CaptureExpandOrEmpty11(ZFM_COMMA() capture11(capture11)) \
+            CaptureExpandOrEmpty12(ZFM_COMMA() capture12(capture12)) \
+            CaptureExpandOrEmpty13(ZFM_COMMA() capture13(capture13)) \
+            CaptureExpandOrEmpty14(ZFM_COMMA() capture14(capture14)) \
+            CaptureExpandOrEmpty15(ZFM_COMMA() capture15(capture15)) \
             { \
             } \
         public: \
@@ -1727,6 +827,14 @@ public:
                 CaptureExpandOrEmpty5(ZFM_COMMA() capture5) \
                 CaptureExpandOrEmpty6(ZFM_COMMA() capture6) \
                 CaptureExpandOrEmpty7(ZFM_COMMA() capture7) \
+                CaptureExpandOrEmpty8(ZFM_COMMA() capture8) \
+                CaptureExpandOrEmpty9(ZFM_COMMA() capture9) \
+                CaptureExpandOrEmpty10(ZFM_COMMA() capture10) \
+                CaptureExpandOrEmpty11(ZFM_COMMA() capture11) \
+                CaptureExpandOrEmpty12(ZFM_COMMA() capture12) \
+                CaptureExpandOrEmpty13(ZFM_COMMA() capture13) \
+                CaptureExpandOrEmpty14(ZFM_COMMA() capture14) \
+                CaptureExpandOrEmpty15(ZFM_COMMA() capture15) \
             ), \
             _ZFP_Lbd_D_##name::_ZFP_d, \
             zfnull); \
@@ -1755,6 +863,14 @@ public:
                 CaptureExpandOrEmpty5(_ZFP_ZFLAMBDA_TR<CaptureType5>::T capture5 = _ZFP_d->capture5;) \
                 CaptureExpandOrEmpty6(_ZFP_ZFLAMBDA_TR<CaptureType6>::T capture6 = _ZFP_d->capture6;) \
                 CaptureExpandOrEmpty7(_ZFP_ZFLAMBDA_TR<CaptureType7>::T capture7 = _ZFP_d->capture7;) \
+                CaptureExpandOrEmpty8(_ZFP_ZFLAMBDA_TR<CaptureType8>::T capture8 = _ZFP_d->capture8;) \
+                CaptureExpandOrEmpty9(_ZFP_ZFLAMBDA_TR<CaptureType9>::T capture9 = _ZFP_d->capture9;) \
+                CaptureExpandOrEmpty10(_ZFP_ZFLAMBDA_TR<CaptureType10>::T capture10 = _ZFP_d->capture10;) \
+                CaptureExpandOrEmpty11(_ZFP_ZFLAMBDA_TR<CaptureType11>::T capture11 = _ZFP_d->capture11;) \
+                CaptureExpandOrEmpty12(_ZFP_ZFLAMBDA_TR<CaptureType12>::T capture12 = _ZFP_d->capture12;) \
+                CaptureExpandOrEmpty13(_ZFP_ZFLAMBDA_TR<CaptureType13>::T capture13 = _ZFP_d->capture13;) \
+                CaptureExpandOrEmpty14(_ZFP_ZFLAMBDA_TR<CaptureType14>::T capture14 = _ZFP_d->capture14;) \
+                CaptureExpandOrEmpty15(_ZFP_ZFLAMBDA_TR<CaptureType15>::T capture15 = _ZFP_d->capture15;) \
                 {
 #define _ZFP_ZFLAMBDA_END() \
                 } \
