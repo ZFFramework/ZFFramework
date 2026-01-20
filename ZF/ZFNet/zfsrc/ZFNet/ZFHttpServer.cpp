@@ -142,6 +142,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, void, respHeaderIte
 ZFOBJECT_REGISTER(ZFHttpServer)
 
 ZFEVENT_REGISTER(ZFHttpServer, OnRequest)
+ZFEVENT_REGISTER(ZFHttpServer, OnStart)
+ZFEVENT_REGISTER(ZFHttpServer, OnStop)
+ZFEVENT_REGISTER(ZFHttpServer, OnError)
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFHttpServer
         , ZFMP_IN(zfuint, port)
@@ -162,6 +165,7 @@ ZFMETHOD_DEFINE_0(ZFHttpServer, void, start) {
         if(d) {
             zfRetain(this);
         }
+        this->observerNotify(zfself::E_OnStart());
     }
 }
 ZFMETHOD_DEFINE_0(ZFHttpServer, void, stop) {
@@ -169,6 +173,7 @@ ZFMETHOD_DEFINE_0(ZFHttpServer, void, stop) {
         void *t = d;
         d = zfnull;
         ZFPROTOCOL_ACCESS(ZFHttpServer)->stop(this, t);
+        this->observerNotify(zfself::E_OnStop());
         zfRelease(this);
     }
 }
@@ -180,6 +185,16 @@ ZFMETHOD_DEFINE_1(ZFHttpServer, void, onRequest
         , ZFMP_IN(const ZFListener &, impl)
         ) {
     this->observerAdd(zfself::E_OnRequest(), impl);
+}
+
+void ZFHttpServer::_ZFP_ZFHttpServer_onError(ZF_IN const zfstring &errorHint) {
+    if(d) {
+        void *t = d;
+        d = zfnull;
+        ZFPROTOCOL_ACCESS(ZFHttpServer)->stop(this, t);
+        this->observerNotify(zfself::E_OnError(), zfobj<v_zfstring>(errorHint));
+        zfRelease(this);
+    }
 }
 
 void ZFHttpServer::objectOnInit(void) {

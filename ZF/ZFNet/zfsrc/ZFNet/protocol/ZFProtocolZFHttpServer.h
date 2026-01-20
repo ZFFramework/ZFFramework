@@ -34,7 +34,16 @@ public:
             ZF_IN ZFHttpServer *owner
             , ZF_IN ZFHttpServerTask *task
             ) {
-        owner->_ZFP_ZFHttpServer_onRequest(task);
+        owner->observerNotify(ZFHttpServer::E_OnRequest(), task);
+    }
+    /**
+     * @brief implementation must notify when server start fail or error occurred
+     */
+    zffinal void notifyOnError(
+            ZF_IN ZFHttpServer *owner
+            , ZF_IN const zfstring &errorHint
+            ) {
+        owner->_ZFP_ZFHttpServer_onError(errorHint);
     }
 ZFPROTOCOL_INTERFACE_END(ZFHttpServer)
 

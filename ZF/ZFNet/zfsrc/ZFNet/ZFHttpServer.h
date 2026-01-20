@@ -135,6 +135,22 @@ zfclass ZFLIB_ZFNet ZFHttpServer : zfextend ZFObject, zfimplement ZFTaskId {
      */
     ZFEVENT(OnRequest)
 
+    /**
+     * @brief called when server actually started
+     */
+    ZFEVENT(OnStart)
+    /**
+     * @brief called when server stopped
+     */
+    ZFEVENT(OnStop)
+    /**
+     * @brief called when server start failed or error occurred
+     *
+     * param0 is a #v_zfstring holds error hint\n
+     * note, it depends on impl for this event would be called in which thread
+     */
+    ZFEVENT(OnError)
+
 public:
     /**
      * @brief init with port
@@ -183,15 +199,8 @@ public:
             , ZFMP_IN(const ZFListener &, impl)
             )
 
-protected:
-    /** @brief see #E_OnRequest */
-    virtual void onRequest(ZF_IN ZFHttpServerTask *task) {
-        this->observerNotify(zfself::E_OnRequest(), task);
-    }
 public:
-    zffinal void _ZFP_ZFHttpServer_onRequest(ZF_IN ZFHttpServerTask *task) {
-        this->onRequest(task);
-    }
+    zffinal void _ZFP_ZFHttpServer_onError(ZF_IN const zfstring &errorHint);
 
 protected:
     zfoverride

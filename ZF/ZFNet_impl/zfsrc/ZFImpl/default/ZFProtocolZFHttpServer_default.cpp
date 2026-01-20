@@ -509,7 +509,19 @@ public:
                 , _TaskToken *, impl
                 , zfweakT<ZFHttpServer>, ownerHolder
                 ) {
-            impl->impl.listen(ownerHolder->addr().cString(), ownerHolder->port());
+            {
+                ZFThread *owner = zfargs.sender();
+                if(owner == zfnull || owner->threadStopRequested()) {
+                    zfpoolDelete(impl);
+                    return;
+                }
+            }
+            if(!impl->impl.listen(ownerHolder->addr().cString(), ownerHolder->port())) {
+                if(ownerHolder && ownerHolder->started()) {
+                    ZFPROTOCOL_ACCESS(ZFHttpServer)->notifyOnError(ownerHolder, zftext("server start failed"));
+                }
+            }
+            zfpoolDelete(impl);
         } ZFLISTENER_END()
         impl->serverThread->threadRunnable(threadImpl);
 
@@ -526,8 +538,7 @@ public:
     zfoverride
     virtual void stop(ZF_IN ZFHttpServer *owner, ZF_IN void *token) {
         _TaskToken *impl = (_TaskToken *)token;
-        impl->serverThread->threadStop();
-        zfpoolDelete(impl);
+        impl->impl.stop();
     }
 private:
     void _notify(
