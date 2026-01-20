@@ -100,14 +100,13 @@ public:
             ZF_IN _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken
             , ZF_IN zftimet miliSecs
             ) {
-        timeval timev;
         timespec t;
-        gettimeofday(&timev, zfnull);
-        t.tv_sec = (time_t)(timev.tv_sec + (miliSecs / 1000));
-        t.tv_nsec = (time_t)(timev.tv_usec * 1000 + (miliSecs % 1000) * 1000 * 1000);
-        if(t.tv_nsec >= 1000000000LL) {
-            t.tv_sec += (t.tv_nsec / 1000000000LL);
-            t.tv_nsec = (t.tv_nsec % 1000000000LL);
+        clock_gettime(CLOCK_REALTIME, &t);
+        t.tv_sec += (long)(miliSecs / 1000);
+        t.tv_nsec += (long)((miliSecs % 1000) * 1000000L);
+        if(t.tv_nsec >= 1000000000L) {
+            t.tv_sec += t.tv_nsec / 1000000000L;
+            t.tv_nsec = (t.tv_nsec % 1000000000L);
         }
         return (pthread_cond_timedwait(&(semaphoreToken->sema), &(semaphoreToken->semaLocker), &t) == 0);
     }

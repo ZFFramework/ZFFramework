@@ -7,6 +7,7 @@
 #define _ZFI_ZFTaskUtil_h_
 
 #include "ZFTask.h"
+#include "ZFThread_zfasyncIO.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -149,6 +150,10 @@ public:
     ZFPROPERTY_ASSIGN(ZFOutput, output)
     /** @brief the impl */
     ZFPROPERTY_ASSIGN(ZFInput, input)
+    /** @brief the impl */
+    ZFPROPERTY_ASSIGN(ZFListener, onProgress)
+    /** @brief the impl */
+    ZFPROPERTY_RETAIN(zfanyT<ZFAsyncIOResumable>, resumable)
 
 protected:
     zfoverride
@@ -156,9 +161,11 @@ protected:
         zfsuper::objectOnInit();
     }
     /** @brief construct with impl */
-    ZFOBJECT_ON_INIT_DECLARE_2(
+    ZFOBJECT_ON_INIT_DECLARE_4(
             ZFMP_IN(const ZFOutput &, output)
             , ZFMP_IN(const ZFInput &, input)
+            , ZFMP_IN_OPT(const ZFListener &, onProgress, zfnull)
+            , ZFMP_IN_OPT(ZFAsyncIOResumable *, resumable, zfnull)
             )
 
 protected:

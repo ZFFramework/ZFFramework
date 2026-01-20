@@ -137,12 +137,16 @@ void ZFAsyncIOCustomTask::taskOnStop(void) {
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFAsyncIOTask)
-ZFOBJECT_ON_INIT_DEFINE_2(ZFAsyncIOTask
+ZFOBJECT_ON_INIT_DEFINE_4(ZFAsyncIOTask
         , ZFMP_IN(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN_OPT(const ZFListener &, onProgress, zfnull)
+        , ZFMP_IN_OPT(ZFAsyncIOResumable *, resumable, zfnull)
         ) {
     this->output(output);
     this->input(input);
+    this->onProgress(onProgress);
+    this->resumable(resumable);
 }
 
 void ZFAsyncIOTask::taskOnStart(void) {
@@ -169,7 +173,13 @@ void ZFAsyncIOTask::taskOnStart(void) {
                 owner->notifyFail(errorHint, result);
             }
         } ZFLISTENER_END()
-        this->_implTaskId = zfasyncIO(this->output(), this->input(), implOnStop);
+        this->_implTaskId = zfasyncIO(
+                this->output()
+                , this->input()
+                , implOnStop
+                , this->onProgress()
+                , this->resumable()
+                );
     }
     else {
         if(!this->output()) {

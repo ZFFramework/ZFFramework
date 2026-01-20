@@ -3,7 +3,7 @@
 #include "ZFHashSet.h"
 
 // #define _ZFP_zfasyncIO_DEBUG 1
-// #define _ZFP_zfasyncIO_DEBUG_simulateSlow 1
+// #define _ZFP_zfasyncIO_DEBUG_simulateSlow 500
 
 #if _ZFP_zfasyncIO_DEBUG
     #include "ZFCore/ZFCoreDef/zfimplLog.h"
@@ -11,12 +11,6 @@
         zfimplLog("%s [zfasyncIO] %s", zfimplTime(), zfstr(fmt, ##__VA_ARGS__).cString())
 #else
     #define _ZFP_zfasyncIO_log(fmt, ...)
-#endif
-
-#if _ZFP_zfasyncIO_DEBUG_simulateSlow
-    #define _ZFP_zfasyncIO_simulateSlow() ZFThread::sleep(200)
-#else
-    #define _ZFP_zfasyncIO_simulateSlow()
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -94,45 +88,49 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_simple(
                 } ZFLISTENER_END()
                 zfpost(onProgress, ownerThread);
             }
+            zfobj<v_zfindex> block((zfindex)(sizeWritten->zfv / blockSize));
 
             // skip successed block
             if(successBlocks
                     && (sizeWritten->zfv % blockSize) == 0
-                    && (ZFObjectLockerHolder(successBlocks), successBlocks->isContain(zfobj<v_zfindex>(sizeWritten->zfv / blockSize)))
+                    && (ZFObjectLockerHolder(successBlocks), successBlocks->isContain(block))
                     ) {
                 output.ioSeek(outputOffset + sizeWritten->zfv);
                 input.ioSeek(inputOffset + sizeWritten->zfv);
                 sizeWritten->zfv += blockSize;
-                _ZFP_zfasyncIO_log("simple task block %s resume, written: %s", block, sizeWritten->zfv);
+                _ZFP_zfasyncIO_log("simple task block %s skipped", block->zfv);
                 continue;
             }
 
             zfindex size = input.execute(buf, sizeof(buf));
-            _ZFP_zfasyncIO_simulateSlow();
+#if _ZFP_zfasyncIO_DEBUG_simulateSlow
+            if((sizeWritten->zfv % blockSize) == 0) {
+                ZFThread::sleep(_ZFP_zfasyncIO_DEBUG_simulateSlow);
+            }
+#endif
             if(size == zfindexMax()) {
-                _ZFP_zfasyncIO_log("simple task input fail, written: %s", sizeWritten->zfv);
+                _ZFP_zfasyncIO_log("simple task block %s input fail: %s", block->zfv, sizeWritten->zfv);
                 sizeWritten->zfv = zfindexMax();
                 return;
             }
             if(!zfargs.param0()) {break;}
             if(output.execute(buf, size) != size) {
                 sizeWritten->zfv = zfindexMax();
-                _ZFP_zfasyncIO_log("simple task output fail, written: %s", sizeWritten->zfv);
+                _ZFP_zfasyncIO_log("simple task block %s output fail: %s", block->zfv, sizeWritten->zfv);
                 return;
             }
-            sizeWritten->zfv += size;
 
             // update resumable
             if(successBlocks && (sizeWritten->zfv % blockSize) == 0) {
                 output.ioFlush();
-                zfindex block = (zfindex)((sizeWritten->zfv - blockSize) / blockSize);
                 {
                     ZFObjectLocker(successBlocks);
-                    successBlocks->add(zfobj<v_zfindex>(block));
+                    successBlocks->add(block);
                 }
-                _ZFP_zfasyncIO_log("simple task block %s finish, written: %s", block, sizeWritten->zfv);
+                _ZFP_zfasyncIO_log("simple task block %s finish", block->zfv);
             }
 
+            sizeWritten->zfv += size;
             if(size < sizeof(buf)) {
                 break;
             }
@@ -145,13 +143,14 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_simple(
             , ZFListener, finishCallback
             , zfautoT<ZFAsyncIOResumable>, resumable
             ) {
-        _ZFP_zfasyncIO_log("simple task finish, written: %s", zfargs.param0());
+        _ZFP_zfasyncIO_log("simple task stop, written: %s", zfargs.param0());
         finishCallback.execute(ZFArgs()
                 .sender(zfargs.sender())
                 .param0(zfargs.param0() ? zfargs.param0() : zfobj<v_zfindex>(zfindexMax()))
                 .param1(resumable)
                 );
     } ZFLISTENER_END()
+    _ZFP_zfasyncIO_log("simple task start: %s => %s", input.callbackId(), output.callbackId());
     return zfasyncIOCustom(impl, implOnFinish);
 }
 
@@ -234,7 +233,6 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
             , ZFListener, finishCallback
             ) {
         v_zfindex *splitOffset = zfargs.param0();
-        _ZFP_zfasyncIO_log("split task stop %s: %s", (splitOffset && splitOffset->zfv != zfindexMax()) ? "success" : "fail", task->input.callbackId());
         if(splitOffset == zfnull || splitOffset->zfv == zfindexMax()) {
             task->stop();
             finishCallback.execute(ZFArgs()
@@ -246,6 +244,7 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
         }
         task->blockTask.removeElement(zfargs.sender());
         if(task->blockTask.isEmpty()) {
+            _ZFP_zfasyncIO_log("split task stop, written: %s", task->sizeWritten);
             finishCallback.execute(ZFArgs()
                     .sender(task)
                     .param0(zfobj<v_zfindex>(task->sizeWritten == task->totalSize ? task->totalSize : zfindexMax()))
@@ -260,63 +259,68 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
         successBlocks = task->resumable->successBlocks();
     }
 
-    _ZFP_zfasyncIO_log("split task start: %s", task->input.callbackId());
+    _ZFP_zfasyncIO_log("split task start: %s => %s", task->input.callbackId(), task->output.callbackId());
     for(zfindex splitOffset = 0; splitOffset < totalSize; splitOffset += blockSize) {
         zfindex splitSize = zfmMin(blockSize, totalSize - splitOffset);
 
         // skip successed block
         if(successBlocks
-                && (ZFObjectLockerHolder(successBlocks), successBlocks->isContain(zfobj<v_zfindex>(splitOffset)))
+                && (ZFObjectLockerHolder(successBlocks), successBlocks->isContain(zfobj<v_zfindex>(splitOffset / blockSize)))
                 ) {
             {
                 ZFObjectLocker(task->outputMutex);
                 task->sizeWritten += splitSize;
             }
             task->progressPost(progressCallback);
+            _ZFP_zfasyncIO_log("split task block %s skipped", (zfindex)(splitOffset / blockSize));
             continue;
         }
 
-        ZFLISTENER_5(impl
+        ZFLISTENER_6(impl
                 , zfautoT<_ZFP_I_zfasyncIOSplitTask>, task
                 , zfindex, splitOffset
                 , zfindex, splitSize
+                , zfindex, blockSize
                 , zfautoT<ZFHashSet>, successBlocks
                 , ZFListener, progressCallback
                 ) {
             zfbyte buf[4096];
-            _ZFP_zfasyncIO_log("split begin (%s %s)", splitOffset, splitSize);
             for(zfindex index = splitOffset; index < splitOffset + splitSize; index += sizeof(buf)) {
                 zfindex size = zfmMin(splitOffset + splitSize - index, (zfindex)sizeof(buf));
                 {
                     if(!task->output) {return;}
                     ZFObjectLocker(task);
                     if(!task->input.ioSeek(task->inputOffset + index)) {
-                        _ZFP_zfasyncIO_log("split end (%s %s) %s: input seek fail", splitOffset, splitSize, index);
+                        _ZFP_zfasyncIO_log("split task block %s input seek fail: %s", (zfindex)(splitOffset / blockSize), index);
                         return;
                     }
                     if(task->input.execute(buf, size) < size) {
-                        _ZFP_zfasyncIO_log("split end (%s %s) %s: input fail", splitOffset, splitSize, index);
+                        _ZFP_zfasyncIO_log("split task block %s input fail: %s", (zfindex)(splitOffset / blockSize), index);
                         return;
                     }
-                    _ZFP_zfasyncIO_simulateSlow();
+#if _ZFP_zfasyncIO_DEBUG_simulateSlow
+                    if(index == splitOffset) {
+                        ZFThread::sleep(_ZFP_zfasyncIO_DEBUG_simulateSlow);
+                    }
+#endif
                 }
 
                 {
                     if(!task->output) {return;}
                     ZFObjectLocker(task->outputMutex);
                     if(!task->output.ioSeek(task->outputOffset + index)) {
-                        _ZFP_zfasyncIO_log("split end (%s %s) %s: output seek fail", splitOffset, splitSize, index);
+                        _ZFP_zfasyncIO_log("split task block %s output seek fail: %s", (zfindex)(splitOffset / blockSize), index);
                         return;
                     }
                     if(task->output.execute(buf, size) < size) {
-                        _ZFP_zfasyncIO_log("split end (%s %s) %s: output fail", splitOffset, splitSize, index);
+                        _ZFP_zfasyncIO_log("split task block %s output fail: %s", (zfindex)(splitOffset / blockSize), index);
                         return;
                     }
                     task->sizeWritten += splitSize;
                 }
                 task->progressPost(progressCallback);
             }
-            _ZFP_zfasyncIO_log("split end (%s %s): success", splitOffset, splitSize);
+            _ZFP_zfasyncIO_log("split task block %s finish", (zfindex)(splitOffset / blockSize));
             {
                 if(!task->output) {return;}
                 ZFObjectLocker(task->outputMutex);
@@ -327,12 +331,21 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
             // update resumable
             {
                 ZFObjectLocker(successBlocks);
-                successBlocks->add(zfobj<v_zfindex>(splitOffset));
+                successBlocks->add(zfobj<v_zfindex>(splitOffset / blockSize));
             }
 
             zfargs.result(zfobj<v_zfindex>(splitOffset));
         } ZFLISTENER_END()
         task->blockTask.add(zfasyncIOCustom(impl, implOnFinish));
+    }
+    if(task->blockTask.isEmpty()) {
+        _ZFP_zfasyncIO_log("split task stop, written: %s", task->sizeWritten);
+        finishCallback.execute(ZFArgs()
+                .sender(task)
+                .param0(zfobj<v_zfindex>(task->sizeWritten == task->totalSize ? task->totalSize : zfindexMax()))
+                .param1(task->resumable)
+                );
+        task->output = zfnull;
     }
     return task;
 }
