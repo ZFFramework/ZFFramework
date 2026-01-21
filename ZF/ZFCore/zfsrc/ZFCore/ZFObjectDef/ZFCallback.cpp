@@ -328,6 +328,11 @@ ZFCompareResult ZFCallback::objectCompare(ZF_IN const ZFCallback &ref) const {
     }
 }
 
+void ZFCallback::callbackRelease(void) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFCallbackPrivateDataChange(d, zfnull);
+}
+
 void ZFCallback::callbackClear(void) {
     ZFCoreMutexLocker();
     if(d->refCount == 1) {

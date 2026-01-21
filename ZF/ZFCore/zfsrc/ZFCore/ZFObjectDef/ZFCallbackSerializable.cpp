@@ -165,6 +165,7 @@ ZFMETHOD_USER_REGISTER_1({
     zfbool, execute
     , ZFMP_IN(const ZFArgs &, zfargs)
     )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackRelease)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackClear)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackId
         , ZFMP_IN(const zfstring &, callbackId)

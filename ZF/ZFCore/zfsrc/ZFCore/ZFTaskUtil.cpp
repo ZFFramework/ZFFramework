@@ -159,18 +159,13 @@ void ZFAsyncIOTask::taskOnStart(void) {
             owner->_implTaskId = zfnull;
             v_zfindex *result = zfargs.param0();
             if(result->zfv != zfindexMax()) {
-                owner->output(zfnull);
-                owner->input(zfnull);
                 owner->notifySuccess(result);
             }
             else {
-                zfstring errorHint = zfstr("IO fail \"%s\" => \"%s\""
-                        , owner->input()
-                        , owner->output()
-                        );
-                owner->output(zfnull);
-                owner->input(zfnull);
-                owner->notifyFail(errorHint, result);
+                owner->notifyFail(zfstr("IO fail \"%s\" => \"%s\""
+                            , owner->input()
+                            , owner->output()
+                            ), result);
             }
         } ZFLISTENER_END()
         this->_implTaskId = zfasyncIO(
@@ -198,6 +193,8 @@ void ZFAsyncIOTask::taskOnStop(void) {
         this->_implTaskId->stop();
         this->_implTaskId = zfnull;
     }
+    this->output(zfnull);
+    this->input(zfnull);
     zfsuper::taskOnStop();
 }
 

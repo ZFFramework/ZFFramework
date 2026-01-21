@@ -173,9 +173,18 @@ public:
 
 public:
     /**
+     * @brief explicitly clear reference of this callback
+     *
+     * useful for script with GC logic, to explicitly release reference of callback,
+     * see #callbackClear
+     */
+    zffinal void callbackRelease(void);
+
+    /**
      * @brief explicitly clear all reference of this callback
      *
-     * useful for script with GC logic, to explicitly release all reference of callback
+     * useful for script with GC logic, to explicitly release all reference of callback,
+     * see #callbackRelease
      */
     zffinal void callbackClear(void);
 

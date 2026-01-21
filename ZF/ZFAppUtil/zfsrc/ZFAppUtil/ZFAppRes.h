@@ -78,9 +78,10 @@ public:
 
 public:
     /** @brief see #ZFAppRes */
-    ZFMETHOD_DECLARE_2(void, notifyFinish
+    ZFMETHOD_DECLARE_3(void, notifyFinish
             , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageSrc)
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+            , ZFMP_IN_OPT(const zfstring &, packageMd5, zfnull)
             )
 
 public:

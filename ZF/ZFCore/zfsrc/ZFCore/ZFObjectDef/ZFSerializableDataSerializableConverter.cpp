@@ -9,7 +9,7 @@ ZFEXPORT_VAR_USER_REGISTER_FOR_FUNC(ZFSDOutputToken, ZFSDOutputTokenTrim)
 ZFEXPORT_VAR_USER_REGISTER_FOR_FUNC(ZFSDOutputToken, ZFSDOutputTokenDetail)
 
 ZFSDOutputToken &ZFSDOutputTokenDefault(void) {
-    static ZFSDOutputToken d;
+    static ZFSDOutputToken d = ZFSDOutputTokenTrim();
     return d;
 }
 void ZFSDOutputTokenDefault(ZF_IN const ZFSDOutputToken &v) {
