@@ -561,18 +561,27 @@ private:
 };
 
 // ============================================================
-/** @brief in seconds */
-#define zftimetOneMinute 60LL
-/** @brief in seconds */
-#define zftimetOneHour 3600LL // 60 * 60
-/** @brief in seconds */
-#define zftimetOneDay 86400LL // 60 * 60 * 24
-/** @brief in seconds */
-#define zftimetOneWeek 604800LL // 60 * 60 * 24 * 7
-/** @brief 30 days in seconds */
-#define zftimetOneMonth 2592000LL // 60 * 60 * 24 * 30
-/** @brief 365 days in seconds */
-#define zftimetOneYear 31536000LL // 60 * 60 * 24 * 365
+/** @brief in mili seconds */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneMinute)
+/** @brief in mili seconds */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneHour)
+/** @brief in mili seconds */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneDay)
+/** @brief in mili seconds */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneWeek)
+/** @brief 30 days in mili seconds */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneMonth)
+/** @brief 365 days in mili seconds */
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneYear)
+
+/** @cond ZFPrivateDoc */
+#define zftimetOneMinute() 60LL
+#define zftimetOneHour() 3600LL // 60 * 60
+#define zftimetOneDay() 86400LL // 60 * 60 * 24
+#define zftimetOneWeek() 604800LL // 60 * 60 * 24 * 7
+#define zftimetOneMonth() 2592000LL // 60 * 60 * 24 * 30
+#define zftimetOneYear() 31536000LL // 60 * 60 * 24 * 365
+/** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTime_h_

@@ -56,12 +56,12 @@ protected:
 
         zfobj<ZFUIView> outputViewContainer;
         container->child(outputViewContainer)->c_sizeFill()->c_margin(0, 50, 0, 0);
-        outputViewContainer->bgColor(ZFUIColorBlack());
+        outputViewContainer->bgColor(ZFUIColorCreateRGB(0x000000));
 
         zfobj<ZFUITextView> outputView;
         outputViewContainer->child(outputView)->c_widthFill();
         outputView->singleLine(zffalse);
-        outputView->textColor(ZFUIColorWhite());
+        outputView->textColor(ZFUIColorCreateRGB(0xFFFFFF));
         outputView->text("press start");
 
         zfobj<ZFUIKit_test_Button> startButton;
@@ -160,7 +160,7 @@ public:
             }
             case 1: {
                 zfobj<ZFUIImageView> v;
-                v->image(ZFUIImageFromColor(ZFUIColorRed()));
+                v->image(ZFUIImageFromColor(ZFUIColorCreateRGB(0xFF0000)));
                 return v;
             }
             case 2:

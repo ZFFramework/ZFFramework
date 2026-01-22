@@ -11,7 +11,7 @@ public:
             , ZF_IN const ZFUISize &ownerSize
             ) {
         ZFUIDraw::drawColor(context,
-            ZFUIColorBlue(),
+            ZFUIColorCreateRGB(0x0000FF),
             ZFUIRectCreate(0, 0, ownerSize.width, ownerSize.height));
         ZFUIDraw::drawImage(context,
             zfres("test_normal.png"),

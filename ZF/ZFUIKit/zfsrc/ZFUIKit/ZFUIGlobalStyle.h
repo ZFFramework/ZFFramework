@@ -131,65 +131,65 @@ public:
     /**
      * @brief default background color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, colorBgDefault, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorBgDefault, ZFUIColorCreateRGB(0xAAAAAA))
     /**
      * @brief item background color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, colorBgItem, ZFUIColorWhite())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorBgItem, ZFUIColorCreateRGB(0xFFFFFF))
     /**
      * @brief separator color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, colorSeparator, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorSeparator, ZFUIColorCreateRGB(0xAAAAAA))
     /**
      * @brief shadow color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, colorShadow, ZFUIColorWithA(ZFUIColorBlack(), 0.5f))
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorShadow, ZFUIColorWithA(ZFUIColorCreateRGB(0x000000), 0.5f))
     /**
      * @brief mask color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, colorMask, ZFUIColorWithA(ZFUIColorBlack(), 0.5f))
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorMask, ZFUIColorWithA(ZFUIColorCreateRGB(0x000000), 0.5f))
     /**
      * @brief tint color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, colorTint, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorTint, ZFUIColorCreateRGB(0xAAAAAA))
 
     // ============================================================
     // text colors
     /**
      * @brief default text color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, textColorDefault, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorDefault, ZFUIColorCreateRGB(0x000000))
     /**
      * @brief secondary default text color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, textColorSecondary, ZFUIColorGray())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorSecondary, ZFUIColorCreateRGB(0x808080))
     /**
      * @brief hint text color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, textColorHint, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorHint, ZFUIColorCreateRGB(0xAAAAAA))
 
     // ============================================================
     // control
     /**
      * @brief normal control color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorNormal, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorNormal, ZFUIColorCreateRGB(0x000000))
     /**
      * @brief highlighted control color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorHighlighted, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorHighlighted, ZFUIColorCreateRGB(0x000000))
     /**
      * @brief checked control color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorChecked, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorChecked, ZFUIColorCreateRGB(0x000000))
     /**
      * @brief checked highlighted control color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorCheckedHighlighted, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorCheckedHighlighted, ZFUIColorCreateRGB(0x000000))
     /**
      * @brief disabled control color
      */
-    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorDisabled, ZFUIColorGray())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorDisabled, ZFUIColorCreateRGB(0x808080))
 };
 
 ZF_NAMESPACE_GLOBAL_END

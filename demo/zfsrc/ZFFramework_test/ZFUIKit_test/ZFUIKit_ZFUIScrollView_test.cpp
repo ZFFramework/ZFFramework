@@ -19,7 +19,7 @@ protected:
 
         zfobj<ZFUIScrollView> scrollView;
         container->child(scrollView)->c_sizeFill()->c_margin(40);
-        scrollView->bgColor(ZFUIColorRed());
+        scrollView->bgColor(ZFUIColorCreateRGB(0xFF0000));
 
         this->setupScrollListener(scrollView);
         this->setupScrollContent(scrollView, ZFUISizeCreate(120), ZFUISizeCreate(60), ZFUISizeCreate(10));

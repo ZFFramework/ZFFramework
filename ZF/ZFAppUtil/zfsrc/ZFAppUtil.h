@@ -8,6 +8,7 @@
 
 #include "ZFAppUtil/ZFAppRes.h"
 #include "ZFAppUtil/ZFDebugServer.h"
+#include "ZFAppUtil/ZFIOUtil.h"
 
 #endif // #ifndef _ZFI_ZFAppUtil_h_
 

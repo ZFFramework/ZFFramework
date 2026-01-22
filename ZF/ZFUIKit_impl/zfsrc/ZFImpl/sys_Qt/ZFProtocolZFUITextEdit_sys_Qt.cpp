@@ -32,7 +32,7 @@ public:
     {
         this->connect(this, SIGNAL(textChanged(QString)), this, SLOT(_ZFP_textOnUpdate(QString)));
         this->connect(this, SIGNAL(cursorPositiOnChanged(int,int)), this, SLOT(_ZFP_selectedRangeOnUpdate(int,int)));
-        this->_ZFP_textColor(ZFUIColorBlack());
+        this->_ZFP_textColor(ZFUIColorCreateRGB(0x000000));
         this->setFrame(false);
         this->setAttribute(Qt::WA_MacShowFocusRect, false);
 

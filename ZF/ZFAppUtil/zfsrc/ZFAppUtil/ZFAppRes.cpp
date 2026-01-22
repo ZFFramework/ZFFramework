@@ -1,4 +1,5 @@
 #include "ZFAppRes.h"
+#include "ZFIOUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -242,6 +243,7 @@ private:
 ZFOBJECT_REGISTER(_ZFP_I_ZFAppResData)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAppResDataHolder, ZFLevelZFFrameworkNormal) {
+    _cleanupHasRun = zffalse;
     _modulesChanged = zffalse;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFAppResDataHolder) {
@@ -261,11 +263,16 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFAppResDataHolder) {
     }
 }
 private:
-    zfautoT<ZFArray> _modules; // [_ZFP_I_ZFAppResData], null when not loaded
+    zfbool _cleanupHasRun;
     zfbool _modulesChanged;
+    zfautoT<ZFArray> _modules; // [_ZFP_I_ZFAppResData], null when not loaded
     zfautoT<ZFTaskId> _modulesSaveDelayId;
 public:
     void attach(ZF_IN const zfstring &moduleName) {
+        if(!_cleanupHasRun) {
+            _cleanupHasRun = zftrue;
+            ZFIORemoveOutdate(ZFPathInfo(ZFPathType_storagePath(), "ZFAppRes"));
+        }
         _localStateLoad();
         _ZFP_I_ZFAppResData *data = zfnull;
         for(zfindex i = 0; i < _modules->count(); ++i) {

@@ -18,7 +18,7 @@ protected:
 
         zfobj<ZFUILinearLayout> layout;
         container->child(layout)->c_margin(40);
-        layout->bgColor(ZFUIColorRed());
+        layout->bgColor(ZFUIColorCreateRGB(0xFF0000));
 
         this->prepareChildren(layout);
 

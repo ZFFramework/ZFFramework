@@ -531,5 +531,13 @@ ZFMETHOD_DEFINE_0(ZFTime, zfuint, microSecond) {
     return d->ti.microSecond;
 }
 
+// ============================================================
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetOneMinute, zftimetOneMinute())
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetOneHour, zftimetOneHour())
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetOneDay, zftimetOneDay())
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetOneWeek, zftimetOneWeek())
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetOneMonth, zftimetOneMonth())
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetOneYear, zftimetOneYear())
+
 ZF_NAMESPACE_GLOBAL_END
 

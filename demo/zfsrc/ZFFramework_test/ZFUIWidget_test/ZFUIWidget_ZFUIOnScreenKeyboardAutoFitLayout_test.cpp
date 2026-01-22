@@ -20,7 +20,7 @@ protected:
         container->child(layout)->c_sizeFill();
         this->prepareSettingButton(window, layout);
 
-        layout->bgColor(ZFUIColorGreen());
+        layout->bgColor(ZFUIColorCreateRGB(0x00FF00));
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextEdit> view;
             layout->child(view)->c_widthFill()->c_margin(10);

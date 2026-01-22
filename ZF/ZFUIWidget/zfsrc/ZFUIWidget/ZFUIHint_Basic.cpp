@@ -17,7 +17,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUISize, viewSizeMin) {
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUITextView>, labelNormal) {
     ZFUITextView *value = propertyValue;
-    value->textColor(ZFUIColorWhite());
+    value->textColor(ZFUIColorCreateRGB(0xFFFFFF));
     value->singleLine(zffalse);
     value->textSizeAutoMin(0);
 }

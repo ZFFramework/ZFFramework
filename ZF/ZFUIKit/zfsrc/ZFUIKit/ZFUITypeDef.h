@@ -1235,7 +1235,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorCreate
 /**
  * @brief make a color for hex int
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorMakeARGB
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorCreateARGB
         , ZFMP_IN(zfuint, argb)
         ) {
     return ZFUIColor((zft_ZFUIColor)(argb));
@@ -1243,7 +1243,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorMakeARGB
 /**
  * @brief make a color for hex int
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorMakeRGB
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorCreateRGB
         , ZFMP_IN(zfuint, rgb)
         ) {
     return ZFUIColor((zft_ZFUIColor)(0xFF000000 | (rgb)));
@@ -1364,32 +1364,6 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorRandom
         ) {
     return ZFUIColorCreate(zfmRand(0xFF) / (zft_zffloat)0xFF, zfmRand(0xFF) / (zft_zffloat)0xFF, zfmRand(0xFF) / (zft_zffloat)0xFF, alpha);
 }
-
-// ============================================================
-// common colors
-/** @brief 0x000000 */
-#define ZFUIColorBlack() ZFUIColorMakeRGB(0x000000)
-/** @brief 0x555555 */
-#define ZFUIColorGrayDark() ZFUIColorMakeRGB(0x555555)
-/** @brief 0x808080 */
-#define ZFUIColorGray() ZFUIColorMakeRGB(0x808080)
-/** @brief 0xAAAAAA */
-#define ZFUIColorGrayLight() ZFUIColorMakeRGB(0xAAAAAA)
-/** @brief 0xFFFFFF */
-#define ZFUIColorWhite() ZFUIColorMakeRGB(0xFFFFFF)
-
-/** @brief 0xFF0000 */
-#define ZFUIColorRed() ZFUIColorMakeRGB(0xFF0000)
-/** @brief 0x00FF00 */
-#define ZFUIColorGreen() ZFUIColorMakeRGB(0x00FF00)
-/** @brief 0x0000FF */
-#define ZFUIColorBlue() ZFUIColorMakeRGB(0x0000FF)
-/** @brief 0xFFFF00 */
-#define ZFUIColorYellow() ZFUIColorMakeRGB(0xFFFF00)
-/** @brief 0xFF00FF */
-#define ZFUIColorMagenta() ZFUIColorMakeRGB(0xFF00FF)
-/** @brief 0x00FFFF */
-#define ZFUIColorCyan() ZFUIColorMakeRGB(0x00FFFF)
 
 // ============================================================
 // ZFUITextAppearance

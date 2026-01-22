@@ -16,7 +16,7 @@ public:
     _ZFP_ZFUITextViewImpl_sys_Qt_TextView(void)
     : QLabel()
     {
-        this->_ZFP_textColor(ZFUIColorBlack());
+        this->_ZFP_textColor(ZFUIColorCreateRGB(0x000000));
         this->_ZFP_textSize(14);
         this->setWordWrap(false);
         this->setGraphicsEffect(zfnull);

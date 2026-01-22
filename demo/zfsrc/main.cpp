@@ -156,7 +156,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
             , zfautoT<_ZFP_ZFFramework_test_TestCaseSubModuleData>, subModuleData
             ) {
         zfobj<ZFUIWindow> subModuleWindow;
-        subModuleWindow->bgColor(ZFUIColorWhite());
+        subModuleWindow->bgColor(ZFUIColorCreateRGB(0xFFFFFF));
         subModuleWindow->show();
         zfobj<ZFUIKit_test_ListView> containerView;
         subModuleWindow->child(containerView)->c_sizeFill();
@@ -171,13 +171,13 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
                 subModuleWindow->hide();
             } ZFLISTENER_END()
             closeButton->observerAdd(ZFUIButton::E_ButtonOnClick(), closeButtonOnClick);
-            closeButton->bg()->bgColor(ZFUIColorRed());
+            closeButton->bg()->bgColor(ZFUIColorCreateRGB(0xFF0000));
 
             zfobj<ZFUIView> separator;
             containerView->child(separator);
             separator->viewSizeMin(ZFUISizeCreate(0, 5));
             separator->viewSizeMax(ZFUISizeCreate(-1, 5));
-            separator->bgColor(ZFUIColorGray());
+            separator->bgColor(ZFUIColorCreateRGB(0x808080));
         }
 
         for(zfindex i = 0; i < subModuleData->testCases.count(); ++i) {

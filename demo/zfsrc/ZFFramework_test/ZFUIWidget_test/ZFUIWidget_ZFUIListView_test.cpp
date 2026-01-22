@@ -70,13 +70,13 @@ protected:
 
         zfobj<ZFUIListView> listView;
         container->child(listView)->c_sizeFill()->c_margin(40);
-        listView->bgColor(ZFUIColorRed());
+        listView->bgColor(ZFUIColorCreateRGB(0xFF0000));
         listView->cellAdapter(this->cellAdapter());
         {
             zfobj<ZFUIListViewCellUpdater> cellUpdater;
             listView->cellUpdater()->add(cellUpdater);
             cellUpdater->separatorSize(5);
-            cellUpdater->separatorColor(ZFUIColorRed());
+            cellUpdater->separatorColor(ZFUIColorCreateRGB(0xFF0000));
         }
 
         this->setupScrollListener(listView);

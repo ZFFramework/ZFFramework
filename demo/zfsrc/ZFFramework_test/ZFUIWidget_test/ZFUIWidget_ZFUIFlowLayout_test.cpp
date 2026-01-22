@@ -18,7 +18,7 @@ protected:
 
         zfobj<ZFUIFlowLayout> layout;
         container->child(layout)->c_margin(40, 40 + ZFUIGlobalStyle::DefaultStyle()->itemSizeButton(), 40, 40);
-        layout->bgColor(ZFUIColorRed());
+        layout->bgColor(ZFUIColorCreateRGB(0xFF0000));
 
         this->prepareAddRemoveButton(container, layout);
 

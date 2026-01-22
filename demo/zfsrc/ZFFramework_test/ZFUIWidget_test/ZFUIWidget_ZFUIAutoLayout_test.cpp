@@ -18,7 +18,7 @@ protected:
 
         zfobj<ZFUIAutoLayout> layout;
         container->child(layout)->c_sizeFill()->c_margin(40);
-        layout->bgColor(ZFUIColorRed());
+        layout->bgColor(ZFUIColorCreateRGB(0xFF0000));
 
         ZFCoreArray<zfauto> v;
         for(zfindex i = 0; i < 5; ++i) {

@@ -18,7 +18,7 @@ protected:
 
         ZFUIOnScreenKeyboardAutoResizeStart(window);
 
-        container->bgColor(ZFUIColorGreen());
+        container->bgColor(ZFUIColorCreateRGB(0x00FF00));
         for(zfindex i = 0; i < 3; ++i) {
             zfobj<ZFUITextEdit> view;
             container->child(view)->c_widthFill()->c_margin(10);

@@ -671,10 +671,10 @@ ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIColor, ZFUIColorCreate
         , ZFMP_IN_OPT(zffloat, a, 1.0f)
         )
 
-ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorMakeARGB
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorCreateARGB
         , ZFMP_IN(zfuint, argb)
         )
-ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorMakeRGB
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorCreateRGB
         , ZFMP_IN(zfuint, rgb)
         )
 

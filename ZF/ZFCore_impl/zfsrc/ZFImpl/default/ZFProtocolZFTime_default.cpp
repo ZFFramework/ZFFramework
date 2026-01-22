@@ -47,18 +47,18 @@ static inline zfint _ZFP_ZFTimeImpl_default_calcLeapYearBetween1900(zfint year) 
 #endif
 
 static const zftimet _ZFP_ZFTimeImpl_default_MonthToSec[] = {
-    (zftimet)(0 * zftimetOneDay),   // 1
-    (zftimet)(31 * zftimetOneDay),  // 2
-    (zftimet)(59 * zftimetOneDay),  // 3
-    (zftimet)(90 * zftimetOneDay),  // 4
-    (zftimet)(120 * zftimetOneDay), // 5
-    (zftimet)(151 * zftimetOneDay), // 6
-    (zftimet)(181 * zftimetOneDay), // 7
-    (zftimet)(212 * zftimetOneDay), // 8
-    (zftimet)(243 * zftimetOneDay), // 9
-    (zftimet)(273 * zftimetOneDay), // 10
-    (zftimet)(304 * zftimetOneDay), // 11
-    (zftimet)(334 * zftimetOneDay), // 12
+    (zftimet)(0   * (zftimetOneDay() / 1000)), // 1
+    (zftimet)(31  * (zftimetOneDay() / 1000)), // 2
+    (zftimet)(59  * (zftimetOneDay() / 1000)), // 3
+    (zftimet)(90  * (zftimetOneDay() / 1000)), // 4
+    (zftimet)(120 * (zftimetOneDay() / 1000)), // 5
+    (zftimet)(151 * (zftimetOneDay() / 1000)), // 6
+    (zftimet)(181 * (zftimetOneDay() / 1000)), // 7
+    (zftimet)(212 * (zftimetOneDay() / 1000)), // 8
+    (zftimet)(243 * (zftimetOneDay() / 1000)), // 9
+    (zftimet)(273 * (zftimetOneDay() / 1000)), // 10
+    (zftimet)(304 * (zftimetOneDay() / 1000)), // 11
+    (zftimet)(334 * (zftimetOneDay() / 1000)), // 12
 };
 static const zfuint _ZFP_ZFTimeImpl_default_MonthToDay[] = {
     (zfuint)(0),      // 1
@@ -182,17 +182,17 @@ public:
         zfbool leapYear = zffalse;
 
         // year
-        ti.year = (zfint)(secTmp / zftimetOneYear) + 1970;
+        ti.year = (zfint)(secTmp / (zftimetOneYear() / 1000)) + 1970;
         zfint leapYearNum = _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year);
         ti.year -= (zfint)(leapYearNum / 365);
         leapYearNum = _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year);
-        secTmp -= ((ti.year - 1970) * zftimetOneYear + leapYearNum * zftimetOneDay);
+        secTmp -= ((ti.year - 1970) * (zftimetOneYear() / 1000) + leapYearNum * (zftimetOneDay() / 1000));
         if(secTmp < 0) {
             while(secTmp < 0) {
-                secTmp += zftimetOneYear;
+                secTmp += zftimetOneYear() / 1000;
                 --ti.year;
                 if(_ZFP_ZFTimeImpl_default_leapYear(ti.year)) {
-                    secTmp += zftimetOneDay;
+                    secTmp += zftimetOneDay() / 1000;
                 }
             }
         }
@@ -209,8 +209,8 @@ public:
         secTmp -= _ZFP_ZFTimeImpl_default_MonthToSec[ti.month];
 
         // day
-        ti.day = (zfuint)(secTmp / zftimetOneDay);
-        secTmp -= ti.day * zftimetOneDay;
+        ti.day = (zfuint)(secTmp / (zftimetOneDay() / 1000));
+        secTmp -= ti.day * (zftimetOneDay() / 1000);
         if(leapYear && ti.month > 1) {
             if(ti.day == 0) {
                 --ti.month;
@@ -227,12 +227,12 @@ public:
         }
 
         // hour
-        ti.hour = (zfuint)(secTmp / zftimetOneHour);
-        secTmp -= ti.hour * zftimetOneHour;
+        ti.hour = (zfuint)(secTmp / (zftimetOneHour() / 1000));
+        secTmp -= ti.hour * (zftimetOneHour() / 1000);
 
         // minute
-        ti.minute = (zfuint)(secTmp / zftimetOneMinute);
-        secTmp -= ti.minute * zftimetOneMinute;
+        ti.minute = (zfuint)(secTmp / (zftimetOneMinute() / 1000));
+        secTmp -= ti.minute * (zftimetOneMinute() / 1000);
 
         // second
         ti.second = (zfuint)secTmp;
@@ -276,18 +276,18 @@ public:
         }
 
         tv.sec =
-            (ti.year - 1970) * zftimetOneYear + _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year) * zftimetOneDay
+            (ti.year - 1970) * (zftimetOneYear() / 1000) + _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year) * (zftimetOneDay() / 1000)
             + _ZFP_ZFTimeImpl_default_MonthToSec[ti.month]
-            + ti.day * zftimetOneDay
-            + ti.hour * zftimetOneHour
-            + ti.minute * zftimetOneMinute
+            + ti.day * (zftimetOneDay() / 1000)
+            + ti.hour * (zftimetOneHour() / 1000)
+            + ti.minute * (zftimetOneMinute() / 1000)
             + ti.second;
         if(_ZFP_ZFTimeImpl_default_leapYear(ti.year)) {
             if(ti.year > 1970 && (ti.month > 1 || (ti.month == 1 && ti.day == 28))) {
-                tv.sec += zftimetOneDay;
+                tv.sec += (zftimetOneDay() / 1000);
             }
             else if(ti.year < 1970 && (ti.month < 1 || (ti.month == 1 && ti.day < 28))) {
-                tv.sec -= zftimetOneDay;
+                tv.sec -= (zftimetOneDay() / 1000);
             }
         }
 
@@ -316,7 +316,7 @@ public:
         #if ZF_ENV_sys_Windows
             TIME_ZONE_INFORMATION tzInfo;
             if(GetTimeZoneInformation(&tzInfo) != TIME_ZONE_ID_INVALID) {
-                tv.sec += -tzInfo.Bias * zftimetOneMinute;
+                tv.sec += -tzInfo.Bias * (zftimetOneMinute() / 1000);
             }
         #else
             tv.sec += tm.tm_gmtoff;
@@ -330,14 +330,14 @@ public:
         #if ZF_ENV_sys_Windows
             TIME_ZONE_INFORMATION tzInfo;
             if(GetTimeZoneInformation(&tzInfo) != TIME_ZONE_ID_INVALID) {
-                _tv.sec = -tzInfo.Bias * zftimetOneMinute;
+                _tv.sec = -tzInfo.Bias * (zftimetOneMinute() / 1000);
                 _tv.usec = 0;
             }
         #else
             struct timeval tvDummy;
             struct timezone tz;
             if(gettimeofday(&tvDummy,&tz) == 0) {
-                _tv.sec = -tz.tz_minuteswest * zftimetOneMinute;
+                _tv.sec = -tz.tz_minuteswest * (zftimetOneMinute() / 1000);
                 _tv.usec = 0;
             }
         #endif
@@ -350,7 +350,7 @@ public:
         // dayOfWeek of 1970-01-01
         #define _ZFP_ZFTimeImpl_default_baseDayOfWeek 4
         return ((
-                 (zfuint)((_ZFP_ZFTimeImpl_default_baseDayOfWeek + (tv.sec / zftimetOneDay)) % 7)
+                 (zfuint)((_ZFP_ZFTimeImpl_default_baseDayOfWeek + (tv.sec / (zftimetOneDay() / 1000))) % 7)
                  + 7) % 7);
     }
     virtual zfuint dayOfYear(
