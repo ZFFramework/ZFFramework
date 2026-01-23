@@ -18,7 +18,6 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
 
 ZFMAIN_ENTRY() {
     ZFLISTENER(onLoad) {
-        ZFDebugServer(32100);
         {
             ZFPathInfo custom;
             if(ZFPathInfoFromStringT(custom, ZFState::instance()->get("ZFCustomResExt"))) {
