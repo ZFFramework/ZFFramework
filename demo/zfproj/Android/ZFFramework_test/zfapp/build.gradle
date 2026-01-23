@@ -65,6 +65,11 @@ android {
             path 'CMakeLists.txt'
         }
     }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
 }
 
 dependencies {

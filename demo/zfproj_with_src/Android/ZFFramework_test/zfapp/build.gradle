@@ -73,6 +73,11 @@ android {
             path 'CMakeLists.txt'
         }
     }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
 }
 
 def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
