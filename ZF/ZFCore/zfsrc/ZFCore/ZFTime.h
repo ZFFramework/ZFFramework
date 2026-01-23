@@ -575,12 +575,12 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneMonth)
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetOneYear)
 
 /** @cond ZFPrivateDoc */
-#define zftimetOneMinute() 60LL
-#define zftimetOneHour() 3600LL // 60 * 60
-#define zftimetOneDay() 86400LL // 60 * 60 * 24
-#define zftimetOneWeek() 604800LL // 60 * 60 * 24 * 7
-#define zftimetOneMonth() 2592000LL // 60 * 60 * 24 * 30
-#define zftimetOneYear() 31536000LL // 60 * 60 * 24 * 365
+#define zftimetOneMinute() 60000LL // 60 * 1000
+#define zftimetOneHour() 3600000LL // 60 * 60 * 1000
+#define zftimetOneDay() 86400000LL // 60 * 60 * 24 * 1000
+#define zftimetOneWeek() 604800000LL // 60 * 60 * 24 * 7 * 1000
+#define zftimetOneMonth() 2592000000LL // 60 * 60 * 24 * 30 * 1000
+#define zftimetOneYear() 31536000000LL // 60 * 60 * 24 * 365 * 1000
 /** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
