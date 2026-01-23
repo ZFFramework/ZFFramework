@@ -24,7 +24,7 @@ public:
         _buf = zfobj<ZFIOBuffer>();
 
         if(ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
-            if(!ZFDecrypt(_buf->output(), ZFInputForPathInfoToken(_refIOToken), encryptKey)) {
+            if(!ZFDecrypt(_buf->output(), ZFInputForIOToken(_refIOToken), encryptKey)) {
                 _refIOToken = zfnull;
                 _encryptKey = zfnull;
                 _refPathInfo = zfnull;
@@ -33,7 +33,7 @@ public:
             _buf->input().ioSeek(0);
         }
         else if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Write)) {
-            if(!ZFDecrypt(_buf->output(), ZFInputForPathInfoToken(_refIOToken), encryptKey)) {
+            if(!ZFDecrypt(_buf->output(), ZFInputForIOToken(_refIOToken), encryptKey)) {
                 _refIOToken = zfnull;
                 _encryptKey = zfnull;
                 _refPathInfo = zfnull;
@@ -89,7 +89,7 @@ public:
         if(_refModified) {
             _buf->input().ioSeek(0);
             ret = ZFEncrypt(
-                    ZFOutputForPathInfoToken(_refIOToken)
+                    ZFOutputForIOToken(_refIOToken)
                     , _buf->input()
                     , _encryptKey
                     );
@@ -275,14 +275,16 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForEncrypt
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForEncrypt
+ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForEncrypt
         , ZFMP_IN(const ZFPathInfo &, refPathInfo)
         , ZFMP_IN(const zfstring &, encryptKey)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(
             ret
             , ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(refPathInfo, encryptKey))
+            , flags
             );
     return ret;
 }

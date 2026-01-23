@@ -49,9 +49,10 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForEncrypt
  *   see #ZFPathType_encrypt for more info
  * -  (const zfstring &)encryptKey : the encrypt key to use
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForEncrypt
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForEncrypt
         , ZFMP_IN(const ZFPathInfo &, refPathInfo)
         , ZFMP_IN(const zfstring &, encryptKey)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 
 // ============================================================

@@ -1,6 +1,7 @@
 #include "ZFThread_zfasyncIO.h"
 #include "ZFThread_zfpost.h"
 #include "ZFHashSet.h"
+#include "ZFTime.h"
 
 // #define _ZFP_zfasyncIO_DEBUG 1
 // #define _ZFP_zfasyncIO_DEBUG_simulateSlow 500
@@ -60,7 +61,7 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_simple(
             ) {
         zfbyte buf[4096];
         zfobj<v_ZFArgs> zfargsHolder(zfargs);
-        zfobj<v_zfbool> progressCallbackPending;
+        zfobj<v_zftimet> progressCallbackLastTime;
         zfobj<v_zfindex> sizeWritten;
         // non null if can resume
         zfautoT<ZFHashSet> successBlocks;
@@ -69,12 +70,15 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_simple(
         }
         do {
             if(!zfargs.param0()) {break;}
-            if(progressCallback && !progressCallbackPending->zfv) {
-                progressCallbackPending->zfv = zftrue;
+            if(progressCallback
+                    && progressCallbackLastTime->zfv != zftimetInvalid()
+                    && ZFTime::currentTime() - progressCallbackLastTime->zfv >= 500
+                    ) {
+                progressCallbackLastTime->zfv = zftimetInvalid();
                 ZFLISTENER_5(onProgress
                         , ZFListener, progressCallback
                         , zfautoT<v_ZFArgs>, zfargsHolder
-                        , zfautoT<v_zfbool>, progressCallbackPending
+                        , zfautoT<v_zftimet>, progressCallbackLastTime
                         , zfautoT<v_zfindex>, sizeWritten
                         , zfindex, totalSize
                         ) {
@@ -84,7 +88,7 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_simple(
                             .param0(sizeWritten)
                             .param1(zfobj<v_zfindex>(totalSize))
                             );
-                    progressCallbackPending->zfv = zffalse;
+                    progressCallbackLastTime->zfv = ZFTime::currentTime();
                 } ZFLISTENER_END()
                 zfpost(onProgress, ownerThread);
             }
@@ -166,14 +170,17 @@ public:
     zfindex blockSize;
     zfindex totalSize;
     zfindex sizeWritten;
-    zfbool progressCallbackPending;
+    zftimet progressCallbackLastTime;
     zfautoT<ZFAsyncIOResumable> resumable;
     ZFCoreArray<zfautoT<ZFTaskId> > blockTask;
     zfautoT<ZFThread> ownerThread;
 public:
     void progressPost(ZF_IN const ZFListener &progressCallback) {
-        if(progressCallback && !this->progressCallbackPending) {
-            this->progressCallbackPending = zftrue;
+        if(progressCallback
+                && this->progressCallbackLastTime != zftimetInvalid()
+                && ZFTime::currentTime() - this->progressCallbackLastTime > 500
+                ) {
+            this->progressCallbackLastTime = zftimetInvalid();
             zfweakT<zfself> owner = this;
             ZFLISTENER_2(onProgress
                     , zfweakT<zfself>, owner
@@ -183,8 +190,9 @@ public:
                 progressCallback.execute(ZFArgs()
                         .sender(owner.get())
                         .param0(zfobj<v_zfindex>(owner->sizeWritten))
+                        .param1(zfobj<v_zfindex>(owner->totalSize))
                         );
-                owner->progressCallbackPending = zffalse;
+                owner->progressCallbackLastTime = ZFTime::currentTime();
             } ZFLISTENER_END()
             zfpost(onProgress, this->ownerThread);
         }
@@ -224,7 +232,7 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
     task->blockSize = blockSize;
     task->totalSize = totalSize;
     task->sizeWritten = 0;
-    task->progressCallbackPending = zffalse;
+    task->progressCallbackLastTime = 0;
     task->resumable = resumable;
     task->ownerThread = ZFThread::currentThread();
 
@@ -316,7 +324,10 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
                         _ZFP_zfasyncIO_log("split task block %s output fail: %s", (zfindex)(splitOffset / blockSize), index);
                         return;
                     }
-                    task->sizeWritten += splitSize;
+                    {
+                        ZFObjectLocker(task->outputMutex);
+                        task->sizeWritten += size;
+                    }
                 }
                 task->progressPost(progressCallback);
             }
@@ -376,6 +387,20 @@ ZFMETHOD_FUNC_DEFINE_5(zfautoT<ZFTaskId>, zfasyncIO
         if(resumable) {
             if(!needReset && resumable->outputId() && resumable->outputId() != output.callbackId()) {
                 needReset = zftrue;
+            }
+            if(!needReset && resumable) {
+                ZFHashSet *successBlocks = resumable->successBlocks();
+                if(successBlocks) {
+                    zfindex outputSize = output.ioSize();
+                    if(outputSize != zfindexMax()) {
+                        for(zfiter it = successBlocks->iter(); it; ++it) {
+                            v_zfindex *block = successBlocks->iterValue(it);
+                            if(block->zfv * blockSize > outputSize) {
+                                needReset = zftrue;
+                            }
+                        }
+                    }
+                }
             }
             resumable->outputId(output.callbackId());
         }

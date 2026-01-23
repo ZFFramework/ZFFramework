@@ -32,6 +32,7 @@ private:
 private:
     zfstring _url; // null when open fail or closed
     zfindex _contentLength; // total size of the file, zfindexMax if not available
+    zfbool _supportSeek;
     zfindex _pos;
     zfstlhashmap<zfindex, zfstring> _chunkCache; // <chunkAlign, buffer>
     ZFCoreArray<zfindex> _chunkCacheIndex; // last accessed at tail
@@ -41,6 +42,7 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         _contentLength = zfindexMax();
+        _supportSeek = zffalse;
         _pos = 0;
     }
 
@@ -57,6 +59,7 @@ private:
         if(sizeText.isEmpty()) {
             return zffalse;
         }
+        _supportSeek = (zfsicmp(recv->header("Accept-Ranges"), "bytes") == 0);
         zfindexFromStringT(_contentLength, sizeText);
         return (_contentLength != zfindexMax());
     }
@@ -175,7 +178,9 @@ public:
             ZF_IN zfindex byteSize
             , ZF_IN_OPT ZFSeekPos seekPos = ZFSeekPosBegin
             ) {
-        if(!_checkLoadContentLength()) {
+        if(!_checkLoadContentLength()
+                || !_supportSeek
+                ) {
             return zffalse;
         }
         _pos = ZFIOCallbackCalcSeek(0, _contentLength, _pos, byteSize, seekPos);
@@ -183,14 +188,18 @@ public:
     }
     zfoverride
     virtual zfindex ioTell(void) {
-        if(!_checkLoadContentLength()) {
+        if(!_checkLoadContentLength()
+                || !_supportSeek
+                ) {
             return zfindexMax();
         }
         return _pos;
     }
     zfoverride
     virtual zfindex ioSize(void) {
-        if(!_checkLoadContentLength()) {
+        if(!_checkLoadContentLength()
+                || !_supportSeek
+                ) {
             return zfindexMax();
         }
         return _contentLength;

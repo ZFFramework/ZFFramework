@@ -285,14 +285,14 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfindex, ioSize) {
         return zfindexMax();
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForPathInfoToken
+ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForIOToken
         , ZFMP_IN(ZFIOToken *, token)
         ) {
     ZFInput ret;
-    ZFInputForPathInfoTokenT(ret, token);
+    ZFInputForIOTokenT(ret, token);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFInputForPathInfoTokenT
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFInputForIOTokenT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(ZFIOToken *, token)
         ) {
@@ -307,7 +307,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFInputForPathInfoTokenT
         inputOwner, ZFMethodAccess(_ZFP_I_ZFInputForPathInfoOwner, onInput));
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, inputOwner);
 
-    ZFInputMarkSerializable(ret, token->pathInfo(), token->ioFlags());
+    ZFInputMarkSerializable(ret, token->pathInfo());
     return ret;
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForPathInfo
@@ -321,7 +321,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFInputForPathInfoT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
-    return ZFInputForPathInfoTokenT(ret, ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Read, zffalse));
+    return ZFInputForIOTokenT(ret, ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Read, zffalse));
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeType_ZFInputForPathInfo) {
     ZFPathInfo pathInfo;
@@ -436,14 +436,14 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfindex, ioSize) {
         return zfindexMax();
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForPathInfoToken
+ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForIOToken
         , ZFMP_IN(ZFIOToken *, token)
         ) {
     ZFOutput ret;
-    ZFOutputForPathInfoTokenT(ret, token);
+    ZFOutputForIOTokenT(ret, token);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFOutputForPathInfoTokenT
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFOutputForIOTokenT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(ZFIOToken *, token)
         ) {
@@ -461,18 +461,20 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFOutputForPathInfoTokenT
     ZFOutputMarkSerializable(ret, token->pathInfo(), token->ioFlags());
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForPathInfo
+ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForPathInfo
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
     ZFOutput ret;
-    ZFOutputForPathInfoT(ret, pathInfo);
+    ZFOutputForPathInfoT(ret, pathInfo, flags);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFOutputForPathInfoT
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForPathInfoT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
-    return ZFOutputForPathInfoTokenT(ret, ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Write, zftrue));
+    return ZFOutputForIOTokenT(ret, ZFIOOpen(pathInfo, flags, zftrue));
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeType_ZFOutputForPathInfo) {
     ZFPathInfo pathInfo;
@@ -481,8 +483,14 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeType_ZF
                 return zffalse;
             });
 
+    ZFIOOpenOptionFlags flags;
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+            check, ZFSerializableKeyword_ZFIO_flags, ZFIOOpenOptionFlags, flags, {
+                return zffalse;
+            });
+
     ret.callbackSerializeDisable(zftrue);
-    ZFOutputForPathInfoT(ret, pathInfo);
+    ZFOutputForPathInfoT(ret, pathInfo, flags);
     if(!ret) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "failed to open file: %s", pathInfo);
@@ -535,17 +543,17 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFInputForLocalT
     return zftrue;
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeType_ZFInputForLocal) {
-    const ZFPathInfo pathInfo = serializableData.pathInfoCheck();
-    if(pathInfo == zfnull) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-            "serializableData does not contain path info");
-        return zffalse;
-    }
+    ZFPathInfo pathInfo;
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+            require, ZFSerializableKeyword_ZFIO_pathInfo, ZFPathInfo, pathInfo, {
+                return zffalse;
+            });
 
-    zfstring localPath = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFIO_localPath, outErrorHint, outErrorPos);
-    if(localPath == zfnull) {
-        return zffalse;
-    }
+    zfstring localPath;
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+            require, ZFSerializableKeyword_ZFIO_localPath, zfstring, localPath, {
+                return zffalse;
+            });
 
     ret.callbackSerializeDisable(zftrue);
     zfstring pathDataAbs;
@@ -568,24 +576,26 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeType_ZFInpu
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForLocal
+ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForLocal
         , ZFMP_IN(const zfstring &, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
     ZFOutput ret;
-    ZFOutputForLocalT(ret, localPath, pathInfo);
+    ZFOutputForLocalT(ret, localPath, pathInfo, flags);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForLocalT
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT
         , ZFMP_OUT(ZFCallback &, ret)
         , ZFMP_IN(const zfstring &, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
     if(zfstringIsEmpty(localPath)) {
         return zffalse;
     }
     if(!pathInfo) {
-        return ZFOutputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), localPath));
+        return ZFOutputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), localPath), flags);
     }
 
     zfstring pathDataAbs;
@@ -594,7 +604,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForLocalT
     }
     zfbool callbackSerializeDisable = ret.callbackSerializeDisable();
     ret.callbackSerializeDisable(zftrue);
-    if(!ZFOutputForPathInfoT(ret, ZFPathInfo(pathInfo.pathType(), pathDataAbs))) {
+    if(!ZFOutputForPathInfoT(ret, ZFPathInfo(pathInfo.pathType(), pathDataAbs), flags)) {
         return zffalse;
     }
 
@@ -610,17 +620,23 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForLocalT
     return zftrue;
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOutputForLocal) {
-    const ZFPathInfo pathInfo = serializableData.pathInfoCheck();
-    if(pathInfo == zfnull) {
-        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-            "serializableData does not contain path info");
-        return zffalse;
-    }
+    ZFPathInfo pathInfo;
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+            require, ZFSerializableKeyword_ZFIO_pathInfo, ZFPathInfo, pathInfo, {
+                return zffalse;
+            });
 
-    zfstring localPath = ZFSerializableUtil::requireAttr(serializableData, ZFSerializableKeyword_ZFIO_localPath, outErrorHint, outErrorPos);
-    if(localPath == zfnull) {
-        return zffalse;
-    }
+    zfstring localPath;
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+            require, ZFSerializableKeyword_ZFIO_localPath, zfstring, localPath, {
+                return zffalse;
+            });
+
+    ZFIOOpenOptionFlags flags = v_ZFIOOpenOption::e_Write;
+    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
+            check, ZFSerializableKeyword_ZFIO_flags, ZFIOOpenOptionFlags, flags, {
+                return zffalse;
+            });
 
     ret.callbackSerializeDisable(zftrue);
     zfstring pathDataAbs;
@@ -631,7 +647,7 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOut
             localPath);
         return zffalse;
     }
-    ZFOutputForPathInfoT(ret, ZFPathInfo(pathInfo.pathType(), pathDataAbs));
+    ZFOutputForPathInfoT(ret, ZFPathInfo(pathInfo.pathType(), pathDataAbs), flags);
     if(!ret) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "failed to open file: %s",
@@ -643,10 +659,9 @@ ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOut
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(void, ZFInputMarkSerializable
+ZFMETHOD_FUNC_DEFINE_2(void, ZFInputMarkSerializable
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Read)
         ) {
     ret.pathInfo(pathInfo);
 
@@ -658,9 +673,6 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFInputMarkSerializable
         ZFSerializableData customData;
 
         customData.attr(ZFSerializableKeyword_ZFIO_pathInfo, pathInfoString);
-        if(flags != v_ZFIOOpenOption::e_Read) {
-            customData.attr(ZFSerializableKeyword_ZFIO_flags, ZFIOOpenOptionFlagsToString(flags));
-        }
 
         ret.callbackSerializeType(ZFCallbackSerializeType_ZFInputForPathInfo);
         ret.callbackSerializeData(customData);

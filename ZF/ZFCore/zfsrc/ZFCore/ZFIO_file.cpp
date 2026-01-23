@@ -92,8 +92,9 @@ ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFInput, ZFInputForFile
 
 // ============================================================
 // ZFOutputForFile
-ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFOutput, ZFOutputForFile
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFOutput, ZFOutputForFile
         , ZFMP_IN(const zfstring &, filePath)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 
 // ============================================================

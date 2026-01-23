@@ -199,7 +199,7 @@ private:
             , ZF_IN const ZFArgs &zfargs
             ) {
         if(!zfargs.param0()) {return;}
-        ZFInput input = ZFInputForPathInfoToken(io);
+        ZFInput input = ZFInputForIOToken(io);
         if(!input) {return;}
         zftimet curTime = ZFTime::currentTime();
         zfstring line;
@@ -271,7 +271,7 @@ private:
         }
         ZFObjectUnlock(owner);
 
-        ZFOutput output = ZFOutputForPathInfoToken(io);
+        ZFOutput output = ZFOutputForIOToken(io);
         if(!output) {return;}
         zftimet curTime = ZFTime::currentTime();
         zfstring line;

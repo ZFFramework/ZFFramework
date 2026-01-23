@@ -147,11 +147,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
         )
 
 /** @brief see #ZFInputForPathInfo */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForPathInfoToken
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForIOToken
         , ZFMP_IN(ZFIOToken *, token)
         )
 /** @brief see #ZFInputForPathInfo */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoTokenT
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFInputForIOTokenT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(ZFIOToken *, token)
         )
@@ -166,6 +166,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoTokenT
  *   <ZFCallback
  *       callbackType="ZFOutputForPathInfo"
  *       pathInfo="ZFPathInfo" // required, the path info
+ *       flags="Write" // optional, open option
  *   >
  *   </ZFCallback>
  * @endcode
@@ -182,8 +183,9 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoTokenT
  * \n
  * note, additional impl can be attached by #ZFIO_DECLARE
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForPathInfo
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForPathInfo
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 /**
  * @brief see #ZFOutputForPathInfo
@@ -192,17 +194,18 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForPathInfo
  * -  allow set #ZFCallback::callbackSerializeDisable
  * -  less extra copy on pathInfo
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 
 /** @brief see #ZFOutputForPathInfo */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForPathInfoToken
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForIOToken
         , ZFMP_IN(ZFIOToken *, token)
         )
 /** @brief see #ZFOutputForPathInfo */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoTokenT
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFOutputForIOTokenT
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(ZFIOToken *, token)
         )
@@ -258,6 +261,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFInputForLocalT
  *   <ZFCallback
  *       callbackType="ZFOutputForLocal"
  *       localPath="zfstring" // required, the local path
+ *       flags="Write" // optional, open option
  *   >
  *   </ZFCallback>
  * @endcode
@@ -277,27 +281,28 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFInputForLocalT
  * \n
  * note, additional impl can be attached by #ZFIO_DECLARE
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForLocal
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFOutput, ZFOutputForLocal
         , ZFMP_IN(const zfstring &, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 /**
  * @brief see #ZFOutputForLocal
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT
         , ZFMP_OUT(ZFCallback &, ret)
         , ZFMP_IN(const zfstring &, localPath)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 
 // ============================================================
 /**
  * @brief util to mark a ZFInput serializable with specified pathInfo
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void, ZFInputMarkSerializable
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFInputMarkSerializable
         , ZFMP_IN_OUT(ZFCallback &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Read)
         )
 /**
  * @brief util to mark a ZFOutput serializable with specified pathInfo

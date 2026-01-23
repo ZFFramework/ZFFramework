@@ -43,8 +43,9 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForBase64
  * -  (const ZFPathInfo &)refPathInfo: the base64 file path to use,
  *   see #ZFPathType_base64 for more info
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForBase64
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForBase64
         , ZFMP_IN(const ZFPathInfo &, refPathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         )
 
 // ============================================================

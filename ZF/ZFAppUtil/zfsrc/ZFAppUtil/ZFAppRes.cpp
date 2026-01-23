@@ -117,7 +117,7 @@ public:
             zfobj<ZFTaskQueue> childQueue;
 
             zfobj<ZFAsyncIOTask> child(
-                    ZFOutputForPathInfoToken(ZFIOOpen(_localCachePath(fileIndex), v_ZFIOOpenOption::e_Modify))
+                    ZFOutputForIOToken(ZFIOOpen(_localCachePath(fileIndex), v_ZFIOOpenOption::e_Modify))
                     , ZFInputForPathInfo(packageSrc[fileIndex])
                     );
             child->resumable(ZFObjectFromZFSD(ZFInputForPathInfo(_localCacheResumablePath(fileIndex))));

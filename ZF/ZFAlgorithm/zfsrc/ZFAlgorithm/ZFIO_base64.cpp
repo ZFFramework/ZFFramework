@@ -22,7 +22,7 @@ public:
         _buf = zfobj<ZFIOBuffer>();
 
         if(ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
-            if(!ZFBase64Decode(_buf->output(), ZFInputForPathInfoToken(_refIOToken))) {
+            if(!ZFBase64Decode(_buf->output(), ZFInputForIOToken(_refIOToken))) {
                 _refIOToken = zfnull;
                 _refPathInfo = zfnull;
                 return zffalse;
@@ -30,7 +30,7 @@ public:
             _buf->input().ioSeek(0);
         }
         else if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Write)) {
-            if(!ZFBase64Decode(_buf->output(), ZFInputForPathInfoToken(_refIOToken))) {
+            if(!ZFBase64Decode(_buf->output(), ZFInputForIOToken(_refIOToken))) {
                 _refIOToken = zfnull;
                 _refPathInfo = zfnull;
                 return zffalse;
@@ -84,7 +84,7 @@ public:
         if(_refModified) {
             _buf->input().ioSeek(0);
             ret = ZFBase64Encode(
-                    ZFOutputForPathInfoToken(_refIOToken)
+                    ZFOutputForIOToken(_refIOToken)
                     , _buf->input()
                     , zfnull
                     , ZFBase64Table()
@@ -338,13 +338,15 @@ ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForBase64
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForBase64
+ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForBase64
         , ZFMP_IN(const ZFPathInfo &, refPathInfo)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(
             ret
             , ZFPathInfo(ZFPathType_base64(), ZFPathInfoToString(refPathInfo))
+            , flags
             );
     return ret;
 }

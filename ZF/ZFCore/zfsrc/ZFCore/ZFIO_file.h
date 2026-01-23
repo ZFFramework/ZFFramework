@@ -46,11 +46,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForFile
  *
  * auto open and auto close files, may return a null callback if open file error
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile
         , ZFMP_IN(const zfstring &, filePath)
+        , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Write)
         ) {
     ZFOutput ret;
-    ZFOutputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), filePath));
+    ZFOutputForPathInfoT(ret, ZFPathInfo(ZFPathType_file(), filePath), flags);
     return ret;
 }
 

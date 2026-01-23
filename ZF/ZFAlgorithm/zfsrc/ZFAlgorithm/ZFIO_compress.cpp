@@ -458,7 +458,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForCompress
         , ZFMP_IN_OPT(const zfstring &, itemPath, zftext("content"))
         ) {
     ZFInput ret;
-    ZFInputForPathInfoTokenT(
+    ZFInputForIOTokenT(
             ret
             , ZFIOOpen(ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath)), v_ZFIOOpenOption::e_Read)
             );
@@ -471,7 +471,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompress
         , ZFMP_IN_OPT(ZFIOOpenOptionFlags, flags, v_ZFIOOpenOption::e_Modify)
         ) {
     ZFOutput ret;
-    ZFOutputForPathInfoTokenT(
+    ZFOutputForIOTokenT(
             ret
             , ZFIOOpen(ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath)), flags)
             );
