@@ -17,8 +17,11 @@ zfclass ZFLIB_ZFCore ZFCallbackWeakRef : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFCallbackWeakRef, ZFObject)
 
 public:
+    /** @brief get the callback */
     ZFCallback get(void);
+    /** @brief set the callback */
     void set(ZF_IN const ZFCallback &v);
+    /** @brief set to null */
     void set(ZF_IN const zfnullT &v);
 
 private:

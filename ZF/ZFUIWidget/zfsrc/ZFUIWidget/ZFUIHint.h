@@ -71,7 +71,7 @@ public:
      * @brief the window to hold the #content
      *
      * by default, the window would:
-     * -  have #v_ZFUIWindowLevel::e_ZFFrameworkFgHighest as #ZFUIWindow::windowLevel
+     * -  have #ZFUIHintWindowLevel as #ZFUIWindow::windowLevel
      * -  have #ZFUIView::viewUIEnableTree been disabled
      * -  have #ZFUIGlobalStyle::itemSizeText as #ZFUIView::viewSizeMin
      * -  have #ZFUIWindow::layoutParam as:

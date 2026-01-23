@@ -907,11 +907,11 @@ private:
  * @endcode
  */
 #define ZFObjectLocker(obj) ZFObjectLockerHolder ZFUniqueName(ObjLk)(_ZFP_zfanyCast(obj))
-/** @brief see #ZFObject::objectLock */
+/** @brief see #ZFObjectLocker */
 #define ZFObjectLock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectLock()
-/** @brief see #ZFObject::objectLock */
+/** @brief see #ZFObjectLocker */
 #define ZFObjectUnlock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectUnlock()
-/** @brief see #ZFObject::objectLock */
+/** @brief see #ZFObjectLocker */
 #define ZFObjectTryLock(obj) _ZFP_zfanyCast(obj)->_ZFP_ZFObjectTryLock()
 
 ZF_NAMESPACE_GLOBAL_END
