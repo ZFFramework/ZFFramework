@@ -31,7 +31,7 @@ protected:
 public:
     static const ZFClass *ClassData(void) {return zfnull;}
 public:
-    static void _ZFP_Obj_initImpl(ZFClass *cls) {}
+    static void _ZFP_ObjI_reg(ZFClass *cls) {}
 public:
     static void _ZFP_ObjI_ICk(void) {}
 };
@@ -46,18 +46,18 @@ public:
         /** @brief typedef for self */ \
         typedef InterfaceName zfself; \
     private: \
-        static void _ZFP_Obj_initImplCk(ZF_IN ZFClass *cls) { \
+        static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
             if(cls->_ZFP_ZFClass_implListNeedInit) { \
                 cls->_ZFP_ZFClass_implListNeedInit = zffalse; \
-                if(zfself::_ZFP_Obj_initImpl != zfsuper::_ZFP_Obj_initImpl) { \
-                    zfself::_ZFP_Obj_initImpl(cls); \
+                if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \
+                    zfself::_ZFP_ObjI_reg(cls); \
                 } \
             } \
         } \
     public: \
         /** @brief get class info */ \
         static const ZFClass *ClassData(void) { \
-            static _ZFP_ZFClassRegisterHolder _holder( \
+            static _ZFP_ZFClassRegisterHolder h( \
                     ZF_NAMESPACE_CURRENT(), \
                     zftext(#InterfaceName), \
                     ParentInterface::ClassData(), \
@@ -66,10 +66,10 @@ public:
                     zfnull, \
                     zfnull, \
                     zfnull, \
-                    &zfself::_ZFP_Obj_initImplCk, \
+                    &zfself::_ZFP_ObjI_regCk, \
                     zftrue \
                 ); \
-            return _holder.cls; \
+            return h.cls; \
         } \
     protected: \
         virtual void _ZFP_ObjI_ICk(void) { \
@@ -152,7 +152,7 @@ public:
     Interface::_ZFP_ObjI_onDealloc();
 #define _ZFP_ZFIMPLEMENT_DECLARE(ImplementedInterfaces, ...) \
     public: \
-        static void _ZFP_Obj_initImpl(ZFClass *cls) { \
+        static void _ZFP_ObjI_reg(ZFClass *cls) { \
             if(cls->_ZFP_ZFClass_interfaceNeedRegister()) { \
                 cls->_ZFP_ZFClass_interfaceRegister(0 \
                     ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENT_DECLARE_EXPAND_PARAM, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
@@ -169,13 +169,13 @@ public:
 #define ZFIMPLEMENT_DECLARE(ImplementedInterfaces, ...) \
         _ZFP_ZFIMPLEMENT_DECLARE(ImplementedInterfaces, ##__VA_ARGS__) \
     public: \
-        virtual inline void _ZFP_ObjI_onInitIvk(void) { \
-            zfsuper::_ZFP_ObjI_onInitIvk(); \
+        virtual inline void _ZFP_ObjI_ctor(void) { \
+            zfsuper::_ZFP_ObjI_ctor(); \
             ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENT_DECLARE_EXPAND_INTERFACE_ON_INIT, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
         } \
-        virtual inline void _ZFP_ObjI_onDeallocIvk(void) { \
+        virtual inline void _ZFP_ObjI_dtor(void) { \
             ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENT_DECLARE_EXPAND_INTERFACE_ON_DEALLOC, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
-            zfsuper::_ZFP_ObjI_onDeallocIvk(); \
+            zfsuper::_ZFP_ObjI_dtor(); \
         } \
     public:
 
@@ -257,7 +257,7 @@ protected:
     /** @endcond */
 
 public:
-    static void _ZFP_Obj_initImpl(ZFClass *cls) {}
+    static void _ZFP_ObjI_reg(ZFClass *cls) {}
     zffinal inline void _ZFP_ObjI_onInit(void) {}
     zffinal inline void _ZFP_ObjI_onDealloc(void) {}
 

@@ -56,11 +56,11 @@ public:
     static const ZFClass *ClassData(void) {
         return zfnull;
     }
-    static void _ZFP_Obj_initImpl(ZFClass *cls) {}
-    static ZFObject *_ZFP_zfAllocCacheIvk(void) {return zfnull;}
+    static void _ZFP_ObjI_reg(ZFClass *cls) {}
+    static ZFObject *_ZFP_ObjACIvk(void) {return zfnull;}
 };
 template<typename T_ZFObject, int valid>
-zfclassNotPOD _ZFP_Obj_AllocCk;
+zfclassNotPOD _ZFP_ObjACk;
 zfclassFwd _ZFP_ZFObjectPrivate;
 zfclassFwd _ZFP_I_zfweak;
 /**
@@ -200,11 +200,11 @@ zfclass ZFLIB_ZFCore ZFObject {
 public:
     /** @cond ZFPrivateDoc */
     enum {_ZFP_ZFObjectCanAllocPublic = 1};
-    static void _ZFP_Obj_initImpl(ZFClass *cls) {}
-    static ZFObject *_ZFP_zfAllocCacheIvk(void) {return zfnull;}
-    static inline void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *_obj) {}
-    virtual inline void _ZFP_ObjI_onInitIvk(void) {}
-    virtual inline void _ZFP_ObjI_onDeallocIvk(void) {}
+    static void _ZFP_ObjI_reg(ZFClass *cls) {} // interface reg
+    static ZFObject *_ZFP_ObjACIvk(void) {return zfnull;} // alloc cache invoker
+    static inline void _ZFP_ObjACR(ZF_IN ZFObject *_obj) {} // alloc cache release
+    virtual inline void _ZFP_ObjI_ctor(void) {} // onInit
+    virtual inline void _ZFP_ObjI_dtor(void) {} // onDealloc
     /** @endcond */
 
     // ============================================================
@@ -842,7 +842,7 @@ private:
     friend zfclassFwd ZFObserver;
     friend zfclassFwd _ZFP_ZFObserverPrivate;
     template<typename T_ZFObject, int valid>
-    friend zfclassFwd _ZFP_Obj_AllocCk;
+    friend zfclassFwd _ZFP_ObjACk;
     friend void _ZFP_zfRetainAction(ZF_IN ZFObject *obj);
     friend void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj);
 public:

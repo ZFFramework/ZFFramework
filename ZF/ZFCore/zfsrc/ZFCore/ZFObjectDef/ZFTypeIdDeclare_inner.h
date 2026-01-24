@@ -489,7 +489,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
-            return _ZFP_PropVS<_ZFP_WrapType, _ZFP_PropType>::I(obj, v); \
+            return _ZFP_TidVS<_ZFP_WrapType, _ZFP_PropType>::I(obj, v); \
         } \
         template<typename T_Access = _ZFP_PropType \
             , int T_Mode = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
@@ -566,7 +566,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFTYPEID_INNER_REG_IMPL(OuterClass, TypeName, Type, 1)
 
 #define _ZFP_ZFTYPEID_INNER_ID_DATA_REGISTER(OuterClass, TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropTIReg_##OuterClass##_##TypeName) { \
+    ZF_STATIC_REGISTER_INIT(TidReg_##OuterClass##_##TypeName) { \
         _ZFP_ZFTypeInfoRegister(OuterClass::ZFTypeId_##TypeName(), \
             zfnew(ZFTypeId<OuterClass::_ZFP_PropTypeW_##TypeName>)); \
         ZFMethodUserRegisterDetail_0(dummy, { \
@@ -575,15 +575,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName)) \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##OuterClass##_##TypeName) { \
+    ZF_STATIC_REGISTER_DESTROY(TidReg_##OuterClass##_##TypeName) { \
         ZFMethodUserUnregister(OuterClass::ClassData()->methodForNameIgnoreParent(ZFM_TOSTRING(ZFTypeId_##TypeName))); \
         zfdelete(_ZFP_ZFTypeInfoUnregister(OuterClass::ZFTypeId_##TypeName())); \
     } \
-    ZF_STATIC_REGISTER_END(PropTIReg_##OuterClass##_##TypeName)
+    ZF_STATIC_REGISTER_END(TidReg_##OuterClass##_##TypeName)
 
 // ============================================================
 #define _ZFP_ZFTYPEID_INNER_METHOD_REGISTER(OuterClass, TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropMtdReg_##OuterClass##_##TypeName) { \
+    ZF_STATIC_REGISTER_INIT(TidMReg_##OuterClass##_##TypeName) { \
         ZFMethodUserRegisterDetail_4(method_FromDataT, { \
                 return OuterClass::TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
             }, OuterClass::ClassData(), public, ZFMethodTypeStatic \
@@ -649,7 +649,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropMtdReg_##OuterClass##_##TypeName) { \
+    ZF_STATIC_REGISTER_DESTROY(TidMReg_##OuterClass##_##TypeName) { \
         const ZFClass *cls = OuterClass::ClassData(); \
         ZFMethodUserUnregister(cls->methodForNameIgnoreParent(ZFM_TOSTRING(TypeName##FromDataT) \
                     , OuterClass::ZFTypeId_##TypeName() \
@@ -692,7 +692,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , ZFTypeId_zfstring() \
                     )); \
     } \
-    ZF_STATIC_REGISTER_END(PropMtdReg_##OuterClass##_##TypeName)
+    ZF_STATIC_REGISTER_END(TidMReg_##OuterClass##_##TypeName)
 
 #define _ZFP_ZFTYPEID_INNER_DEFINE(OuterClass, TypeName, Type, preferStringConverter) \
     _ZFP_ZFTYPEID_INNER_WRAPPER_DEFINE_COMMON(OuterClass, TypeName, Type) \

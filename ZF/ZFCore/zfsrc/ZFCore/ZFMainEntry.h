@@ -57,15 +57,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 #define ZFMAIN_PARAM_DISPATCH(regSig) \
-    static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs); \
+    static void _ZFP_MainParamDispatch_##regSig(ZF_IN const ZFArgs &zfargs); \
     ZF_GLOBAL_INITIALIZER_INIT(MPD_##regSig) { \
-        ZFGlobalObserver().observerAdd(ZFApp::E_AppParamDispatch(), ZFCallbackForFunc(_ZFP_MPD_##regSig)); \
+        ZFGlobalObserver().observerAdd(ZFApp::E_AppParamDispatch(), ZFCallbackForFunc(_ZFP_MainParamDispatch_##regSig)); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(MPD_##regSig) { \
-        ZFGlobalObserver().observerRemove(ZFApp::E_AppParamDispatch(), ZFCallbackForFunc(_ZFP_MPD_##regSig)); \
+        ZFGlobalObserver().observerRemove(ZFApp::E_AppParamDispatch(), ZFCallbackForFunc(_ZFP_MainParamDispatch_##regSig)); \
     } \
     ZF_GLOBAL_INITIALIZER_END(MPD_##regSig) \
-    static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs)
+    static void _ZFP_MainParamDispatch_##regSig(ZF_IN const ZFArgs &zfargs)
 
 // ============================================================
 ZF_NAMESPACE_BEGIN_REGISTER(ZFApp, ZF_NAMESPACE_GLOBAL)

@@ -59,11 +59,11 @@ public:
             return this->_ZFP_ZFObject_classDynamic ? this->_ZFP_ZFObject_classDynamic : zfself::ClassData(); \
         } \
     private: \
-        static void _ZFP_Obj_initImplCk(ZF_IN ZFClass *cls) { \
+        static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
             if(cls->_ZFP_ZFClass_implListNeedInit) { \
                 cls->_ZFP_ZFClass_implListNeedInit = zffalse; \
-                if(zfself::_ZFP_Obj_initImpl != zfsuper::_ZFP_Obj_initImpl) { \
-                    zfself::_ZFP_Obj_initImpl(cls); \
+                if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \
+                    zfself::_ZFP_ObjI_reg(cls); \
                 } \
             } \
         } \
@@ -73,8 +73,8 @@ public:
         enum {_ZFP_ZFObjectCanAlloc = 1}; \
     public: \
         zfpoolDeclareFriend() \
-        friend zfclassFwd _ZFP_Obj_AllocCk<zfself, 0>; \
-        friend zfclassFwd _ZFP_Obj_AllocCk<zfself, 1>; \
+        friend zfclassFwd _ZFP_ObjACk<zfself, 0>; \
+        friend zfclassFwd _ZFP_ObjACk<zfself, 1>; \
         static ZFObject *_ZFP_Obj_ctor(void) { \
             return zfpoolNew(zfself); \
         } \
@@ -83,20 +83,20 @@ public:
         } \
         /** @brief get class info */ \
         static const ZFClass *ClassData(void) { \
-            static _ZFP_ZFClassRegisterHolder _holder( \
+            static _ZFP_ZFClassRegisterHolder h( \
                     ZF_NAMESPACE_CURRENT(), \
                     zftext(#ChildClass), \
                     zfsuper::ClassData(), \
                     OuterClass::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
-                    (&zfself::_ZFP_zfAllocCacheIvk != &zfsuper::_ZFP_zfAllocCacheIvk) \
-                        ? &zfself::_ZFP_zfAllocCacheIvk \
+                    (&zfself::_ZFP_ObjACIvk != &zfsuper::_ZFP_ObjACIvk) \
+                        ? &zfself::_ZFP_ObjACIvk \
                         : zfnull, \
                     &zfself::_ZFP_Obj_ctor, \
                     &zfself::_ZFP_Obj_dtor, \
-                    &zfself::_ZFP_Obj_initImplCk \
+                    &zfself::_ZFP_ObjI_regCk \
                 ); \
-            return _holder.cls; \
+            return h.cls; \
         }
 #define _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, OuterClass, ...) \
     public: \
@@ -104,7 +104,7 @@ public:
     public: \
         /** @brief get class info */ \
         static const ZFClass *ClassData(void) { \
-            static _ZFP_ZFClassRegisterHolder _holder( \
+            static _ZFP_ZFClassRegisterHolder h( \
                     ZF_NAMESPACE_CURRENT(), \
                     zftext(#ChildClass), \
                     zfsuper::ClassData(), \
@@ -113,9 +113,9 @@ public:
                     zfnull, \
                     zfnull, \
                     zfnull, \
-                    &zfself::_ZFP_Obj_initImplCk \
+                    &zfself::_ZFP_ObjI_regCk \
                 ); \
-            return _holder.cls; \
+            return h.cls; \
         }
 /**
  * @brief necessary for every class inherit from ZFObject
@@ -257,7 +257,7 @@ public:
     ZFMETHOD_INLINE_DETAIL_1( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_1( \
@@ -266,14 +266,14 @@ public:
     ZFMETHOD_DECLARE_DETAIL_1( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_1(OwnerClass \
     , ZFMP_0 \
     ) \
     ZFMETHOD_DEFINE_1(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_2( \
@@ -283,8 +283,8 @@ public:
     ZFMETHOD_INLINE_DETAIL_2( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_2( \
@@ -294,8 +294,8 @@ public:
     ZFMETHOD_DECLARE_DETAIL_2( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_2(OwnerClass \
@@ -303,8 +303,8 @@ public:
     , ZFMP_1 \
     ) \
     ZFMETHOD_DEFINE_2(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_3( \
@@ -315,9 +315,9 @@ public:
     ZFMETHOD_INLINE_DETAIL_3( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_3( \
@@ -328,9 +328,9 @@ public:
     ZFMETHOD_DECLARE_DETAIL_3( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_3(OwnerClass \
@@ -339,9 +339,9 @@ public:
     , ZFMP_2 \
     ) \
     ZFMETHOD_DEFINE_3(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_4( \
@@ -353,10 +353,10 @@ public:
     ZFMETHOD_INLINE_DETAIL_4( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_4( \
@@ -368,10 +368,10 @@ public:
     ZFMETHOD_DECLARE_DETAIL_4( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_4(OwnerClass \
@@ -381,10 +381,10 @@ public:
     , ZFMP_3 \
     ) \
     ZFMETHOD_DEFINE_4(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_5( \
@@ -397,11 +397,11 @@ public:
     ZFMETHOD_INLINE_DETAIL_5( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_5( \
@@ -414,11 +414,11 @@ public:
     ZFMETHOD_DECLARE_DETAIL_5( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_5(OwnerClass \
@@ -429,11 +429,11 @@ public:
     , ZFMP_4 \
     ) \
     ZFMETHOD_DEFINE_5(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_6( \
@@ -447,12 +447,12 @@ public:
     ZFMETHOD_INLINE_DETAIL_6( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_6( \
@@ -466,12 +466,12 @@ public:
     ZFMETHOD_DECLARE_DETAIL_6( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_6(OwnerClass \
@@ -483,12 +483,12 @@ public:
     , ZFMP_5 \
     ) \
     ZFMETHOD_DEFINE_6(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_7( \
@@ -503,13 +503,13 @@ public:
     ZFMETHOD_INLINE_DETAIL_7( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_7( \
@@ -524,13 +524,13 @@ public:
     ZFMETHOD_DECLARE_DETAIL_7( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_7(OwnerClass \
@@ -543,13 +543,13 @@ public:
     , ZFMP_6 \
     ) \
     ZFMETHOD_DEFINE_7(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_INLINE_8( \
@@ -565,14 +565,14 @@ public:
     ZFMETHOD_INLINE_DETAIL_8( \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DECLARE_8( \
@@ -588,14 +588,14 @@ public:
     ZFMETHOD_DECLARE_DETAIL_8( \
         protected, ZFMethodTypeVirtual, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_INLINE_1 */
 #define ZFOBJECT_ON_INIT_DEFINE_8(OwnerClass \
@@ -609,14 +609,14 @@ public:
     , ZFMP_7 \
     ) \
     ZFMETHOD_DEFINE_8(OwnerClass, void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 
 // ============================================================
@@ -631,7 +631,7 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_2(methodInvokerAction, ownerClassSig \
@@ -643,8 +643,8 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_3(methodInvokerAction, ownerClassSig \
@@ -657,9 +657,9 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_4(methodInvokerAction, ownerClassSig \
@@ -673,10 +673,10 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_5(methodInvokerAction, ownerClassSig \
@@ -691,11 +691,11 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_6(methodInvokerAction, ownerClassSig \
@@ -711,12 +711,12 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_7(methodInvokerAction, ownerClassSig \
@@ -733,13 +733,13 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_8(methodInvokerAction, ownerClassSig \
@@ -757,14 +757,14 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 
 // ============================================================
@@ -777,7 +777,7 @@ public:
     ZFMethodUserRegisterDetail_1(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_2(resultMethod, methodInvokerAction, ownerClass \
@@ -787,8 +787,8 @@ public:
     ZFMethodUserRegisterDetail_2(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_3(resultMethod, methodInvokerAction, ownerClass \
@@ -799,9 +799,9 @@ public:
     ZFMethodUserRegisterDetail_3(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_4(resultMethod, methodInvokerAction, ownerClass \
@@ -813,10 +813,10 @@ public:
     ZFMethodUserRegisterDetail_4(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_5(resultMethod, methodInvokerAction, ownerClass \
@@ -829,11 +829,11 @@ public:
     ZFMethodUserRegisterDetail_5(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_6(resultMethod, methodInvokerAction, ownerClass \
@@ -847,12 +847,12 @@ public:
     ZFMethodUserRegisterDetail_6(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_7(resultMethod, methodInvokerAction, ownerClass \
@@ -867,13 +867,13 @@ public:
     ZFMethodUserRegisterDetail_7(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         )
 /** @brief see #ZFObjectOnInitUserRegister_1 */
 #define ZFObjectOnInitUserRegister_8(resultMethod, methodInvokerAction, ownerClass \
@@ -889,14 +889,14 @@ public:
     ZFMethodUserRegisterDetail_8(resultMethod, { \
             methodInvokerAction \
         }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 
 // ============================================================

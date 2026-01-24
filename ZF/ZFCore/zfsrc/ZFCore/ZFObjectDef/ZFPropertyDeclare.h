@@ -609,7 +609,7 @@ public:
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, S \
                 , void, Name \
-                , _ZFP_MtdP_EXPAND(ZFMP_IN(Type const &, propertyValue)) \
+                , _ZFP_mP_EXPAND(ZFMP_IN(Type const &, propertyValue)) \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
@@ -638,7 +638,7 @@ public:
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, S \
                 , void, Name \
-                , _ZFP_MtdP_EXPAND(ZFMP_IN(Type const &, propertyValue)) \
+                , _ZFP_mP_EXPAND(ZFMP_IN(Type const &, propertyValue)) \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \

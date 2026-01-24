@@ -66,7 +66,7 @@ zfclassFwd ZFClass;
                 (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
         } \
         else { \
-            return _ZFP_MtdGII<T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)>(\
+            return _ZFP_mGII<T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)>(\
                     this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA) \
                 ); \
         } \
@@ -86,10 +86,10 @@ zfclassFwd ZFClass;
     = (DefaultValue) ZFM_EMPTY
 
 // tricks to solve recursive macro
-#define _ZFP_MtdM_EMPTY(...)
-#define _ZFP_MtdM_EXPAND(...) __VA_ARGS__
-#define _ZFP_MtdP_EXPAND(...) __VA_ARGS__
-#define _ZFP_MtdD_EXPAND(...) __VA_ARGS__
+#define _ZFP_mM_EMPTY(...) // for ZFMP
+#define _ZFP_mM_EXPAND(...) __VA_ARGS__ // for ZFMP
+#define _ZFP_mP_EXPAND(...) __VA_ARGS__ // for param expand
+#define _ZFP_mD_EXPAND(...) __VA_ARGS__ // for method declare expand
 /**
  * @brief macro to wrap param types for #ZFMETHOD_INLINE_0 series
  *
@@ -103,25 +103,25 @@ zfclassFwd ZFClass;
  * -  #ZFMP_IN_OUT_OPT
  */
 #define ZFMP_IN(ParamType, paramName) \
-    _ZFP_MtdM_EXPAND, ParamType, paramName, _ZFP_MtdM_EMPTY, _ZFP_ZFMethodNoDefaultParam
+    _ZFP_mM_EXPAND, ParamType, paramName, _ZFP_mM_EMPTY, _ZFP_ZFMethodNoDefaultParam
 /** @brief see #ZFMP_IN */
 #define ZFMP_IN_OPT(ParamType, paramName, DefaultValue) \
-    _ZFP_MtdM_EXPAND, ParamType, paramName, _ZFP_MtdM_EXPAND, _ZFP_ZFMethodDefaultParam(DefaultValue)
+    _ZFP_mM_EXPAND, ParamType, paramName, _ZFP_mM_EXPAND, _ZFP_ZFMethodDefaultParam(DefaultValue)
 /** @brief see #ZFMP_IN */
 #define ZFMP_OUT(ParamType, paramName) \
-    _ZFP_MtdM_EXPAND, ParamType, paramName, _ZFP_MtdM_EMPTY, _ZFP_ZFMethodNoDefaultParam
+    _ZFP_mM_EXPAND, ParamType, paramName, _ZFP_mM_EMPTY, _ZFP_ZFMethodNoDefaultParam
 /** @brief see #ZFMP_IN */
 #define ZFMP_OUT_OPT(ParamType, paramName, DefaultValue) \
-    _ZFP_MtdM_EXPAND, ParamType, paramName, _ZFP_MtdM_EXPAND, _ZFP_ZFMethodDefaultParam(DefaultValue)
+    _ZFP_mM_EXPAND, ParamType, paramName, _ZFP_mM_EXPAND, _ZFP_ZFMethodDefaultParam(DefaultValue)
 /** @brief see #ZFMP_IN */
 #define ZFMP_IN_OUT(ParamType, paramName) \
-    _ZFP_MtdM_EXPAND, ParamType, paramName, _ZFP_MtdM_EMPTY, _ZFP_ZFMethodNoDefaultParam
+    _ZFP_mM_EXPAND, ParamType, paramName, _ZFP_mM_EMPTY, _ZFP_ZFMethodNoDefaultParam
 /** @brief see #ZFMP_IN */
 #define ZFMP_IN_OUT_OPT(ParamType, paramName, DefaultValue) \
-    _ZFP_MtdM_EXPAND, ParamType, paramName, _ZFP_MtdM_EXPAND, _ZFP_ZFMethodDefaultParam(DefaultValue)
+    _ZFP_mM_EXPAND, ParamType, paramName, _ZFP_mM_EXPAND, _ZFP_ZFMethodDefaultParam(DefaultValue)
 
 #define _ZFP_ZFMP_DUMMY() \
-    _ZFP_MtdM_EMPTY, ParamType, paramName, _ZFP_MtdM_EMPTY, _ZFP_ZFMethodNoDefaultParam
+    _ZFP_mM_EMPTY, ParamType, paramName, _ZFP_mM_EMPTY, _ZFP_ZFMethodNoDefaultParam
 
 // ============================================================
 zfclassFwd ZFListener;

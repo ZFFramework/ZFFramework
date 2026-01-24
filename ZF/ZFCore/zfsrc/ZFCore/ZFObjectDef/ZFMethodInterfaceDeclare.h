@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFMETHOD_IMPL_notInline() ;
 
 #define _ZFP_ZFMETHOD_IMPL_DECLARE(...) \
-    _ZFP_MtdD_EXPAND(_ZFP_ZFMETHOD_IMPL_DECLARE_(__VA_ARGS__))
+    _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_IMPL_DECLARE_(__VA_ARGS__))
 #define _ZFP_ZFMETHOD_IMPL_DECLARE_( \
         inlineOrNot \
         , ReturnType, MethodName \
@@ -39,7 +39,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ) inlineOrNot()
 
 #define _ZFP_ZFMETHOD_IMPL_DEFINE(...) \
-    _ZFP_MtdD_EXPAND(_ZFP_ZFMETHOD_IMPL_DEFINE_(__VA_ARGS__))
+    _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_IMPL_DEFINE_(__VA_ARGS__))
 #define _ZFP_ZFMETHOD_IMPL_DEFINE_( \
         OwnerClass, ReturnType, MethodName \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -148,7 +148,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -164,7 +164,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -180,7 +180,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -196,7 +196,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -211,7 +211,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_0 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -231,8 +231,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -248,8 +248,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -265,8 +265,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -282,8 +282,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -298,8 +298,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_1 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -319,9 +319,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -337,9 +337,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -355,9 +355,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -373,9 +373,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -390,9 +390,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_2 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -412,10 +412,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -431,10 +431,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -450,10 +450,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -469,10 +469,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -487,10 +487,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_3 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -510,11 +510,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -530,11 +530,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -550,11 +550,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -570,11 +570,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -589,11 +589,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_4 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -613,12 +613,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
@@ -634,12 +634,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
@@ -655,12 +655,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
@@ -676,12 +676,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
@@ -696,12 +696,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_5 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
         )
@@ -721,13 +721,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
@@ -743,13 +743,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
@@ -765,13 +765,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
@@ -787,13 +787,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethod */
@@ -808,13 +808,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_6 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
         , _ZFP_ZFMP_DUMMY() \
         )
 
@@ -834,14 +834,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_DECLARE( \
         public, ZFMethodTypeVirtual, _ZFP_ZFMETHOD_DECLARE_isPureVirtual, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_INTERFACE_DEFINE_8(OwnerClass, \
@@ -857,14 +857,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     _ZFP_ZFMETHOD_DEFINE(OwnerClass, _ZFP_ZFMETHOD_DEFINE_isPureVirtual, ZF_CALLER_LINE, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_IMPL_DECLARE_8(ReturnType, MethodName \
@@ -880,14 +880,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_notInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_IMPL_INLINE_8(ReturnType, MethodName \
@@ -903,14 +903,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFMETHOD_IMPL_DECLARE( \
         _ZFP_ZFMETHOD_IMPL_isInline, \
         ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethod */
 #define ZFMETHOD_IMPL_DEFINE_8(OwnerClass, \
@@ -925,14 +925,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , ZFMP_7 \
     ) \
     _ZFP_ZFMETHOD_IMPL_DEFINE(OwnerClass, ReturnType, MethodName \
-        , _ZFP_MtdP_EXPAND(ZFMP_0) \
-        , _ZFP_MtdP_EXPAND(ZFMP_1) \
-        , _ZFP_MtdP_EXPAND(ZFMP_2) \
-        , _ZFP_MtdP_EXPAND(ZFMP_3) \
-        , _ZFP_MtdP_EXPAND(ZFMP_4) \
-        , _ZFP_MtdP_EXPAND(ZFMP_5) \
-        , _ZFP_MtdP_EXPAND(ZFMP_6) \
-        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        , _ZFP_mP_EXPAND(ZFMP_0) \
+        , _ZFP_mP_EXPAND(ZFMP_1) \
+        , _ZFP_mP_EXPAND(ZFMP_2) \
+        , _ZFP_mP_EXPAND(ZFMP_3) \
+        , _ZFP_mP_EXPAND(ZFMP_4) \
+        , _ZFP_mP_EXPAND(ZFMP_5) \
+        , _ZFP_mP_EXPAND(ZFMP_6) \
+        , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 
 /* ZFMETHOD_MAX_PARAM */

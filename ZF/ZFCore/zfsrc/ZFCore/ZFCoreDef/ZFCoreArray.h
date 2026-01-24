@@ -198,7 +198,11 @@ public:
     virtual zfstring objectInfoOfContent(
             ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            ) const zfpurevirtual;
+            ) const  {
+        zfstring ret;
+        this->objectInfoOfContentT(ret, maxCount, token);
+        return ret;
+    }
 
     /** @cond ZFPrivateDoc */
     virtual ZFCoreArrayBase &operator = (ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
@@ -238,15 +242,23 @@ public:
     /**
      * @brief remove first, assert fail if out of range
      */
-    virtual void removeFirst(void) zfpurevirtual;
+    virtual void removeFirst(void) {
+        this->remove(0);
+    }
     /**
      * @brief remove last, assert fail if out of range
      */
-    virtual void removeLast(void) zfpurevirtual;
+    virtual void removeLast(void) {
+        this->remove(this->count() - 1);
+    }
     /**
      * @brief remove all content
      */
-    virtual void removeAll(void) zfpurevirtual;
+    virtual void removeAll(void) {
+        if(!this->isEmpty()) {
+            this->remove(0, this->count());
+        }
+    }
     /**
      * @brief move element
      */
@@ -261,7 +273,9 @@ public:
     /**
      * @brief true if empty
      */
-    virtual zfbool isEmpty(void) const zfpurevirtual;
+    virtual zfbool isEmpty(void) const {
+        return this->count() != 0;
+    }
     /**
      * @brief sort
      */
@@ -287,16 +301,13 @@ public:
     /** @brief generic version */
     virtual zfindex genericFindReversely(ZF_IN const void *e) zfpurevirtual;
     /** @brief generic version */
-    virtual void genericAdd(ZF_IN const void *e) zfpurevirtual;
+    virtual void genericAdd(ZF_IN const void *e) {
+        this->genericAdd(e, zfindexMax());
+    }
     /** @brief generic version */
     virtual void genericAdd(
             ZF_IN const void *e
             , ZF_IN zfindex index
-            ) zfpurevirtual;
-    /** @brief generic version */
-    virtual void genericAddFrom(
-            ZF_IN const void *e
-            , ZF_IN zfindex count
             ) zfpurevirtual;
     /** @brief generic version */
     virtual void genericAddFrom(ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
@@ -789,10 +800,6 @@ public:
         this->remove(index);
         return t;
     }
-    zfoverride
-    virtual void removeFirst(void) {
-        this->remove(0);
-    }
     /**
      * @brief remove first and return the removed value,
      *   or assert fail if empty
@@ -802,10 +809,6 @@ public:
         this->removeFirst();
         return t;
     }
-    zfoverride
-    virtual void removeLast(void) {
-        this->remove(this->count() - 1);
-    }
     /**
      * @brief remove last and return the removed value,
      *   or assert fail if empty
@@ -814,13 +817,6 @@ public:
         T_Element t = this->getLast();
         this->removeLast();
         return t;
-    }
-    zfoverride
-    virtual void removeAll(void) {
-        if(d && d->count != 0) {
-            _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
-            d->count = 0;
-        }
     }
 
     zfoverride
@@ -986,17 +982,10 @@ public:
     zfoverride
     virtual zfindex genericFindReversely(ZF_IN const void *e) {return this->findReversely(*(const T_Element *)e);}
     zfoverride
-    virtual void genericAdd(ZF_IN const void *e) {this->add(*(const T_Element *)e);}
-    zfoverride
     virtual void genericAdd(
             ZF_IN const void *e
             , ZF_IN zfindex index
             ) {this->add(*(const T_Element *)e, index);}
-    zfoverride
-    virtual void genericAddFrom(
-            ZF_IN const void *e
-            , ZF_IN zfindex count
-            ) {this->addFrom((const T_Element *)e, count);}
     zfoverride
     virtual void genericAddFrom(ZF_IN const ZFCoreArrayBase &ref) {this->addFrom((const ZFCoreArray<T_Element> &)ref);}
     zfoverride

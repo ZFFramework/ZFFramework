@@ -3,7 +3,7 @@
  *
  * @section DocTag_Setup_QuickSetup Quick setup
  *
- * it's recommended to use <a href="https://github.com/ZFFramework/ZFFramework/blob/master/tools/zfproj_creator/zfproj_creator.sh">zfproj_creator.sh</a> for quick setup\n
+ * it's recommended to use <a href="https://github.com/ZFFramework/ZFFramework/blob/master/tools/zfproj_creator/zfproj.sh">zfproj.sh</a> for quick setup\n
  * \n
  * the tools would help you create all necessary project files for you,
  * however, you still need to setup proper IDE and system settings manually,

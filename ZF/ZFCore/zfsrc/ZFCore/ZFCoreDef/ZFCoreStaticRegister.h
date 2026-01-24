@@ -54,18 +54,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZF_STATIC_REGISTER_INIT(Name) \
     /** @cond ZFPrivateDoc */ \
-    zfclassNotPOD _ZFP_SR_##Name { \
+    zfclassNotPOD _ZFP_R_##Name { \
     protected: \
-        typedef _ZFP_SR_##Name zfself; \
+        typedef _ZFP_R_##Name zfself; \
     public: \
-        _ZFP_SR_##Name(void)
+        _ZFP_R_##Name(void)
 /** @brief see ZF_STATIC_REGISTER_INIT */
 #define ZF_STATIC_REGISTER_DESTROY(Name) \
-        ~_ZFP_SR_##Name(void)
+        ~_ZFP_R_##Name(void)
 /** @brief see ZF_STATIC_REGISTER_INIT */
 #define ZF_STATIC_REGISTER_END(Name) \
     }; \
-    static _ZFP_SR_##Name _ZFP_SRI_##Name; \
+    static _ZFP_R_##Name _ZFP_RI_##Name; \
     /** @endcond */
 
 #if _ZFP_ZFCoreStaticRegister_DEBUG
@@ -75,24 +75,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
     #define ZF_STATIC_REGISTER_INIT(Name) \
         /** @cond ZFPrivateDoc */ \
-        zfclassNotPOD _ZFP_SR_##Name { \
+        zfclassNotPOD _ZFP_R_##Name { \
         protected: \
-            typedef _ZFP_SR_##Name zfself; \
+            typedef _ZFP_R_##Name zfself; \
         public: \
-            _ZFP_SR_##Name(void) { \
+            _ZFP_R_##Name(void) { \
                 _ZFP_ZFCoreStaticRegister_invokeTimeLogger("reg: %s", #Name); \
-                _ZFP_SR_Reg(); \
+                _ZFP_R_Reg(); \
             } \
-            void _ZFP_SR_Reg(void)
+            void _ZFP_R_Reg(void)
     #define ZF_STATIC_REGISTER_DESTROY(Name) \
-            ~_ZFP_SR_##Name(void) { \
+            ~_ZFP_R_##Name(void) { \
                 _ZFP_ZFCoreStaticRegister_invokeTimeLogger("unreg: %s", #Name); \
-                _ZFP_SR_Unreg(); \
+                _ZFP_R_Unreg(); \
             } \
-            void _ZFP_SR_Unreg(void)
+            void _ZFP_R_Unreg(void)
     #define ZF_STATIC_REGISTER_END(Name) \
         }; \
-        static _ZFP_SR_##Name _ZFP_SRI_##Name; \
+        static _ZFP_R_##Name _ZFP_RI_##Name; \
         /** @endcond */
 #endif
 

@@ -579,7 +579,7 @@ void ZFObject::_ZFP_ZFObject_objectOnInit(void) {
     this->objectOnInit();
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnInitFinish);
     this->classData()->_ZFP_ZFClass_propertyAutoInitAction(this);
-    this->_ZFP_ObjI_onInitIvk();
+    this->_ZFP_ObjI_ctor();
 
     if(!this->objectIsInternalPrivate()) {
         this->classData()->_ZFP_ZFClass_instanceObserverNotify(this);
@@ -655,7 +655,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     }
 
     this->observerRemoveAll();
-    this->_ZFP_ObjI_onDeallocIvk();
+    this->_ZFP_ObjI_dtor();
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDealloc);
     if(d) {
         for(zfstlsize i = d->propertyAccessed.size() - 1; i != (zfstlsize)-1; --i) {

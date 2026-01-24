@@ -1495,7 +1495,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
 
         cls->d->classIsDynamicRegister = classIsDynamicRegister;
         cls->d->classDynamicRegisterUserData = classDynamicRegisterUserData;
-        if(objectAllocWithCacheCallback == ZFObject::_ZFP_zfAllocCacheIvk) {
+        if(objectAllocWithCacheCallback == ZFObject::_ZFP_ObjACIvk) {
             cls->d->objectAllocWithCacheCallback = zfnull;
         }
         else {

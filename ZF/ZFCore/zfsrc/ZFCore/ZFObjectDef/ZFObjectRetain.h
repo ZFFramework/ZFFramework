@@ -13,11 +13,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // zfAlloc
 /* ZFMETHOD_MAX_PARAM */
 template<typename T_ZFObject, int valid>
-zfclassNotPOD _ZFP_Obj_AllocCk;
+zfclassNotPOD _ZFP_ObjACk; // alloc check
 template<typename T_ZFObject>
-zfclassNotPOD _ZFP_Obj_AllocCk<T_ZFObject, 1> {
+zfclassNotPOD _ZFP_ObjACk<T_ZFObject, 1> {
 public:
-    static inline T_ZFObject *Alloc(void) {
+    static inline T_ZFObject *A(void) {
         ZFObject *obj = T_ZFObject::_ZFP_Obj_ctor();
         obj->_ZFP_ZFObject_objectOnInit();
         obj->_ZFP_ZFObject_objectOnInitFinish();
@@ -91,10 +91,10 @@ public:
     }
 };
 template<typename T_ZFObject>
-zfclassNotPOD _ZFP_Obj_AllocCk<T_ZFObject, 0> {
+zfclassNotPOD _ZFP_ObjACk<T_ZFObject, 0> {
 };
 #define _ZFP_zfAlloc(T_ZFObject, ...) \
-    _ZFP_Obj_AllocCk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::CanAlloc(__VA_ARGS__)
+    _ZFP_ObjACk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::CanAlloc(__VA_ARGS__)
 /**
  * @brief alloc an object, see #ZFObject
  *
@@ -108,7 +108,7 @@ zfclassNotPOD _ZFP_Obj_AllocCk<T_ZFObject, 0> {
     _ZFP_zfAlloc(T_ZFObject, ##__VA_ARGS__)
 
 #define _ZFP_zfAllocInternal(T_ZFObject) \
-    _ZFP_Obj_AllocCk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::Alloc()
+    _ZFP_ObjACk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::A()
 
 // ============================================================
 // zfRetain
@@ -186,11 +186,11 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
 #define ZFALLOC_CACHE_RELEASE(action) \
     public: \
         /** @cond ZFPrivateDoc */ \
-        static ZFObject *_ZFP_zfAllocCacheIvk(void) { \
-            return _ZFP_zfAllocCache<zfself>::Alloc(); \
+        static ZFObject *_ZFP_ObjACIvk(void) { \
+            return _ZFP_ObjAC<zfself>::A(); \
         } \
-        static void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *_obj) { \
-            zfsuper::_ZFP_zfAllocCacheRelease(_obj); \
+        static void _ZFP_ObjACR(ZF_IN ZFObject *_obj) { \
+            zfsuper::_ZFP_ObjACR(_obj); \
             zfself *cache = zfcast(zfself *, _obj); \
             ZFUNUSED(cache); \
             action \
@@ -201,8 +201,8 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
 #define ZFALLOC_CACHE_RELEASE_ABSTRACT(action) \
     public: \
         /** @cond ZFPrivateDoc */ \
-        static void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *_obj) { \
-            zfsuper::_ZFP_zfAllocCacheRelease(_obj); \
+        static void _ZFP_ObjACR(ZF_IN ZFObject *_obj) { \
+            zfsuper::_ZFP_ObjACR(_obj); \
             zfself *cache = zfcast(zfself *, _obj); \
             ZFUNUSED(cache); \
             action \
@@ -221,23 +221,23 @@ extern ZFLIB_ZFCore void _ZFP_zfAllocCacheImplRegister(
         );
 extern ZFLIB_ZFCore void _ZFP_zfAllocCacheImplUnregister(ZF_IN_OUT zfbool &enableFlag);
 template<typename T_ZFObject, int T_MaxCache = 16>
-zfclassNotPOD _ZFP_zfAllocCache {
+zfclassNotPOD _ZFP_ObjAC { // alloc cache
 private:
-    typedef _ZFP_zfAllocCache<T_ZFObject, T_MaxCache> zfself;
+    typedef _ZFP_ObjAC<T_ZFObject, T_MaxCache> zfself;
 public:
-    static T_ZFObject *Alloc(void) {
-        static RegHolder _dummy;
-        ZFUNUSED(_dummy);
+    static T_ZFObject *A(void) {
+        static RegH r;
+        ZFUNUSED(r);
         if(enableFlag()) {
             if(cacheCount() > 0) {
                 ZFObject *ret = cache()[--(cacheCount())];
-                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_zfAllocCacheRelease);
+                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_ObjACR);
                 ret->_ZFP_ZFObject_objectOnInitFromCache();
                 return zfcast(T_ZFObject *, ret);
             }
             else {
                 T_ZFObject *ret = _ZFP_zfAllocInternal(T_ZFObject);
-                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_zfAllocCacheRelease);
+                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_ObjACR);
                 return ret;
             }
         }
@@ -245,19 +245,20 @@ public:
             return _ZFP_zfAllocInternal(T_ZFObject);
         }
     }
-    static void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *obj) {
+    static void _ZFP_ObjACR(ZF_IN ZFObject *obj) {
         obj->_ZFP_ZFObject_zfAllocCacheRelease(zfnull);
         if(enableFlag() && cacheCount() < T_MaxCache) {
-            T_ZFObject::_ZFP_zfAllocCacheRelease(obj);
+            T_ZFObject::_ZFP_ObjACR(obj);
             cache()[cacheCount()++] = obj;
         }
         else {
             zfunsafe_zfRelease(obj);
         }
     }
+private:
     static zfbool &enableFlag(void) {
-        static zfbool enableFlag = zffalse;
-        return enableFlag;
+        static zfbool E = zffalse;
+        return E;
     }
     static ZFObject **cache(void) {
         static ZFObject *cache[T_MaxCache];
@@ -268,24 +269,24 @@ public:
         return cacheCount;
     }
 private:
-    zfclassNotPOD RegHolder {
+    zfclassNotPOD RegH {
     public:
-        RegHolder(void) {
+        RegH(void) {
             _ZFP_zfAllocCacheImplRegister(enableFlag(), cache(), cacheCount());
         }
-        ~RegHolder(void) {
+        ~RegH(void) {
             _ZFP_zfAllocCacheImplUnregister(enableFlag());
         }
     };
 };
 
 template<typename T_ZFObject>
-T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
-    if(&T_ZFObject::_ZFP_zfAllocCacheIvk != T_ZFObject::zfsuper::_ZFP_zfAllocCacheIvk) {
-        return _ZFP_zfAllocCache<T_ZFObject>::Alloc();
+T_ZFObject *_ZFP_ObjACk<T_ZFObject, 1>::CanAlloc(void) {
+    if(&T_ZFObject::_ZFP_ObjACIvk != T_ZFObject::zfsuper::_ZFP_ObjACIvk) {
+        return _ZFP_ObjAC<T_ZFObject>::A();
     }
     else {
-        return _ZFP_Obj_AllocCk<T_ZFObject, 1>::Alloc();
+        return _ZFP_ObjACk<T_ZFObject, 1>::A();
     }
 }
 

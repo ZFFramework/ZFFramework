@@ -107,7 +107,7 @@ zfbool ZFMethodGenericInvokerParamsCheck(ZF_IN_OUT const ZFArgs &zfargs) {
 }
 
 // ============================================================
-zfbool _ZFP_MtdGIParamCheck(
+zfbool _ZFP_mGIParamCheck(
         ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN zfbool zfvAccessAvailable
         , ZF_IN zfindex paramIndex

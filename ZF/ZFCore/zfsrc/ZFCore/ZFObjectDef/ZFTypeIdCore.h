@@ -268,7 +268,7 @@ protected:
 // ============================================================
 // value store helper
 template<typename T_WrapType, typename T_Type>
-zfclassNotPOD _ZFP_PropVS {
+zfclassNotPOD _ZFP_TidVS {
 public:
     static zfbool I(
             ZF_OUT zfauto &obj
@@ -284,7 +284,7 @@ public:
     }
 };
 template<typename T_WrapType, typename T_Type>
-zfclassNotPOD _ZFP_PropVS<T_WrapType, T_Type *> {
+zfclassNotPOD _ZFP_TidVS<T_WrapType, T_Type *> {
 public:
     static zfbool I(
             ZF_OUT zfauto &obj

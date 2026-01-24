@@ -660,7 +660,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
-            return _ZFP_PropVS<_ZFP_WrapType, _ZFP_PropType>::I(obj, v); \
+            return _ZFP_TidVS<_ZFP_WrapType, _ZFP_PropType>::I(obj, v); \
         } \
         /* \
          * T_Mode:
@@ -751,7 +751,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFTYPEID_REG_IMPL(ZFLIB_, TypeName, Type, 1, __VA_ARGS__ ::)
 
 #define _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
+    ZF_STATIC_REGISTER_INIT(TidReg_##TypeName) { \
         _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \
             zfnew(ZFTypeId<_ZFP_PropTypeW_##TypeName>)); \
         ZFMethodFuncUserRegister_0(dummy, { \
@@ -759,15 +759,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             }, ZF_NAMESPACE_CURRENT(), const zfchar *, zftext(ZFM_TOSTRING(ZFTypeId_##TypeName)) \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
+    ZF_STATIC_REGISTER_DESTROY(TidReg_##TypeName) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
         zfdelete(_ZFP_ZFTypeInfoUnregister(ZFTypeId_##TypeName())); \
     } \
-    ZF_STATIC_REGISTER_END(PropTIReg_##TypeName)
+    ZF_STATIC_REGISTER_END(TidReg_##TypeName)
 
 // ============================================================
 #define _ZFP_ZFTYPEID_METHOD_REGISTER(TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropMtdReg_##TypeName) { \
+    ZF_STATIC_REGISTER_INIT(TidMReg_##TypeName) { \
         ZFMethodFuncUserRegister_4(method_FromDataT, { \
                 return TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
             }, ZF_NAMESPACE_CURRENT(), zfbool, zftext(ZFM_TOSTRING(TypeName##FromDataT)) \
@@ -825,7 +825,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropMtdReg_##TypeName) { \
+    ZF_STATIC_REGISTER_DESTROY(TidMReg_##TypeName) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromDataT) \
                     , ZFTypeId_##TypeName() \
                     , ZFTypeId_ZFSerializableData() \
@@ -867,7 +867,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , ZFTypeId_zfstring() \
                     )); \
     } \
-    ZF_STATIC_REGISTER_END(PropMtdReg_##TypeName)
+    ZF_STATIC_REGISTER_END(TidMReg_##TypeName)
 
 #define _ZFP_ZFTYPEID_DEFINE(TypeName, Type, preferStringConverter) \
     _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \

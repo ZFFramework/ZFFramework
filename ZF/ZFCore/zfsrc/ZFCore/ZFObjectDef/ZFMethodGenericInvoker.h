@@ -42,14 +42,14 @@ extern ZFLIB_ZFCore zfbool ZFMethodGenericInvokerParamsCheck(ZF_IN_OUT const ZFA
 
 // ============================================================
 template<typename T_Dummy, int n>
-zfclassNotPOD _ZFP_MtdGICk { // check whether type registered
+zfclassNotPOD _ZFP_mGICk { // check whether type registered
 };
 template<typename T_Dummy>
-zfclassNotPOD _ZFP_MtdGICk<T_Dummy, 1> {
+zfclassNotPOD _ZFP_mGICk<T_Dummy, 1> {
 public:
     typedef zfindex TypeNotRegisteredBy_ZFTYPEID;
 };
-extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
+extern ZFLIB_ZFCore zfbool _ZFP_mGIParamCheck(
         ZF_IN_OUT const ZFArgs &zfargs
         , ZF_IN zfbool zfvAccessAvailable
         , ZF_IN zfindex paramIndex
@@ -58,24 +58,24 @@ extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_DECLARE_EXPAND(N, ParamType) \
     typedef ParamType _T##N; \
     typedef zftTraits<ParamType>::TrNoRef _TR##N; \
-    typedef _ZFP_MtdGICk< \
+    typedef _ZFP_mGICk< \
             _TR##N, \
             ZFTypeId<_TR##N>::TypeIdRegistered \
         >::TypeNotRegisteredBy_ZFTYPEID _Ck##N;
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_PREPARE_EXPAND(N, DefaultExpandOrEmpty, ParamType) \
-    _ZFP_MtdGIParamCheck( \
+    _ZFP_mGIParamCheck( \
             zfargs \
             , ZFTypeId<_TR##N>::Value<_T##N>::zfvAccessAvailable(zfargs.paramAt(N)) \
             , (_Ck##N)N \
             , #ParamType \
             )
 template<typename T_Type, typename T_Access>
-zfclassNotPOD _ZFP_MtdGIPA { // Param Access
+zfclassNotPOD _ZFP_mGIPA { // Param Access
 public:
     typedef zfauto (Cb_pDef)(void);
     zfauto obj;
 public:
-    explicit _ZFP_MtdGIPA(ZF_IN const zfauto &obj) : obj(obj) {}
+    explicit _ZFP_mGIPA(ZF_IN const zfauto &obj) : obj(obj) {}
     T_Access a(void) {
         return ZFTypeId<T_Type>::template Value<T_Access>::zfvAccess(this->obj);
     }
@@ -86,12 +86,12 @@ public:
         return ZFTypeId<T_Type>::template Value<T_Access>::zfvAccess(this->obj);
     }
 public:
-    ~_ZFP_MtdGIPA(void) {
+    ~_ZFP_mGIPA(void) {
         ZFTypeId<T_Type>::template Value<T_Access>::zfvAccessFinish(this->obj);
     }
 };
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_ACCESS_EXPAND(N, DefaultExpandOrEmpty, ParamType) \
-    _ZFP_MtdGIPA<_TR##N, _T##N>(zfargs.paramAt(N)).a(DefaultExpandOrEmpty(pDef##N))
+    _ZFP_mGIPA<_TR##N, _T##N>(zfargs.paramAt(N)).a(DefaultExpandOrEmpty(pDef##N))
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(N, DefaultExpandOrEmpty, ParamType, DefaultValueFix) \
     DefaultExpandOrEmpty( \
         static zfauto pDef##N(void) { \
@@ -109,7 +109,7 @@ public:
 
 // ============================================================
 template<typename T_ReturnType>
-zfclassNotPOD _ZFP_MtdGIA { // Access with raw invoker
+zfclassNotPOD _ZFP_mGIA { // Access with raw invoker
 public:
     typedef T_ReturnType (*Ivk)(ZF_IN_OUT const ZFArgs &zfargs);
 public:
@@ -135,7 +135,7 @@ public:
     }
 };
 template<>
-zfclassNotPOD _ZFP_MtdGIA<void> {
+zfclassNotPOD _ZFP_mGIA<void> {
 public:
     typedef void (*Ivk)(ZF_IN_OUT const ZFArgs &zfargs);
 public:
@@ -193,10 +193,10 @@ public:
                     return; \
                 } \
             ) \
-            _ZFP_MtdGIA<ReturnType>::A(I, zfargs); \
+            _ZFP_mGIA<ReturnType>::A(Gi, zfargs); \
         } \
     private: \
-        static ReturnType I(ZF_IN_OUT const ZFArgs &zfargs) { \
+        static ReturnType Gi(ZF_IN_OUT const ZFArgs &zfargs) { \
             return zfargs.ownerMethod()->_ZFP_execute<ReturnType \
                     ParamExpandOrEmpty0(ZFM_COMMA() ParamType0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
@@ -242,11 +242,11 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
             } \
         }
 #define _ZFP_ZFMethodGenericInvoke_REPEAT2(N) \
-        _ZFP_MtdGII_P<Type##N, zftIsZFObject(typename zftTraits<Type##N>::TrType)>::p(param##N, zfargs.paramAt(N));
+        _ZFP_mGII_P<Type##N, zftIsZFObject(typename zftTraits<Type##N>::TrType)>::p(param##N, zfargs.paramAt(N));
 
 #define _ZFP_ZFMethodGenericInvoke_DECLARE(N) \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
-    T_ReturnType _ZFP_MtdGII( \
+    T_ReturnType _ZFP_mGII( \
             ZF_IN const ZFMethod *method \
             , ZF_IN zfany const &obj \
             ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA) \
@@ -263,13 +263,13 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
             _ZFP_ZFMethodGenericInvokeError(-1, zfargs); \
         } \
         ZFM_REPEAT(N, _ZFP_ZFMethodGenericInvoke_REPEAT2, ZFM_EMPTY, ZFM_EMPTY) \
-        return _ZFP_MtdGII_R<T_ReturnType>::r(zfargs); \
+        return _ZFP_mGII_R<T_ReturnType>::r(zfargs); \
     }
 
 template<typename T_ParamType, int isZFObject>
-zfclassNotPOD _ZFP_MtdGII_P; // Param access
+zfclassNotPOD _ZFP_mGII_P; // Param access
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 0> {
+zfclassNotPOD _ZFP_mGII_P<T_ParamType, 0> {
 public:
     static inline void p(
             ZF_IN_OUT T_ParamType p
@@ -278,7 +278,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 1> {
+zfclassNotPOD _ZFP_mGII_P<T_ParamType, 1> {
 public:
     static inline void p(
             ZF_IN_OUT T_ParamType p
@@ -287,7 +287,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType const &, 0> {
+zfclassNotPOD _ZFP_mGII_P<T_ParamType const &, 0> {
 public:
     static inline void p(
             ZF_IN_OUT T_ParamType const &p
@@ -296,7 +296,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<const T_ParamType *, 0> {
+zfclassNotPOD _ZFP_mGII_P<const T_ParamType *, 0> {
 public:
     static inline void p(
             ZF_IN_OUT const T_ParamType *p
@@ -305,7 +305,7 @@ public:
     }
 };
 template<>
-zfclassNotPOD _ZFP_MtdGII_P<const void *, 0> {
+zfclassNotPOD _ZFP_mGII_P<const void *, 0> {
 public:
     static inline void p(
             ZF_IN_OUT const void *p
@@ -314,7 +314,7 @@ public:
     }
 };
 template<>
-zfclassNotPOD _ZFP_MtdGII_P<void *, 0> {
+zfclassNotPOD _ZFP_mGII_P<void *, 0> {
 public:
     static inline void p(
             ZF_IN_OUT void *p
@@ -323,7 +323,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType &, 0> {
+zfclassNotPOD _ZFP_mGII_P<T_ParamType &, 0> {
 public:
     static void p(
             ZF_IN_OUT T_ParamType &p
@@ -335,7 +335,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType *, 0> {
+zfclassNotPOD _ZFP_mGII_P<T_ParamType *, 0> {
 public:
     static void p(
             ZF_IN_OUT T_ParamType *p
@@ -350,7 +350,7 @@ public:
 };
 
 template<typename T_ReturnType>
-zfclassNotPOD _ZFP_MtdGII_R { // Return access
+zfclassNotPOD _ZFP_mGII_R { // Return access
 public:
     static T_ReturnType r(ZF_IN const ZFArgs &zfargs) {
         typedef typename zftTraits<T_ReturnType>::TrNoRef _T_ReturnType;
@@ -363,7 +363,7 @@ public:
     }
 };
 template<>
-zfclassNotPOD _ZFP_MtdGII_R<void> {
+zfclassNotPOD _ZFP_mGII_R<void> {
 public:
     static void r(ZF_IN const ZFArgs &zfargs) {
     }
