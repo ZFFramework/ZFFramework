@@ -98,6 +98,23 @@ public:
      */
     ZFPROPERTY_ASSIGN(zfstring, errorHint)
 
+public:
+    /**
+     * @brief make the task pending
+     *
+     * if impl call #stop immediately inside #taskOnStart or #E_TaskOnStart,
+     * it may cause logic problem,
+     * typically #E_TaskOnStop notified before #E_TaskOnStart\n
+     * this method was designed to solve this problem, by:
+     * if a task is in pending state,
+     * #stop won't stop immediately until all pendign states are cleared\n
+     * by default, #ZFTask / #ZFTaskQueue / #ZFTaskGroup has done everything for you,
+     * it's safe to call #stop immediately in any of #taskOnStart or #E_TaskOnStart
+     */
+    ZFMETHOD_DECLARE_1(void, taskPending
+            , ZFMP_IN(zfbool, pending)
+            )
+
 protected:
     /** @brief called to start task */
     virtual inline void taskOnStart(void) {
@@ -130,12 +147,12 @@ protected:
 
 private:
     zfbool _ZFP_started;
-    ZFListener _ZFP_onStop;
+    zfuint _ZFP_pending;
 protected:
     /** @cond ZFPrivateDoc */
     ZFTask(void)
     : _ZFP_started(zffalse)
-    , _ZFP_onStop()
+    , _ZFP_pending(0)
     {
     }
     /** @endcond */

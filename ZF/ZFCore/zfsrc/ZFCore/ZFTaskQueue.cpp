@@ -72,13 +72,14 @@ void ZFTaskQueue::taskOnStart(void) {
                     , zfweakT<ZFTaskQueue>, owner
                     , zfautoT<ZFArray>, childQueue
                     ) {
+                zfauto ownerHolder = owner;
                 zfautoT<ZFTask> child = zfargs.sender();
                 if(childQueue->getFirst() == child) {
                     childQueue->removeFirst();
                 }
                 owner->childOnStop(child);
                 owner->observerNotify(zfself::E_ChildOnStop(), child);
-                if(!child->canceled() && owner && owner->started()) {
+                if(!child->canceled() && owner->started()) {
                     if(child->success()) {
                         if(childQueue->isEmpty()) {
                             owner->stop(v_ZFResultType::e_Success);
@@ -93,9 +94,11 @@ void ZFTaskQueue::taskOnStart(void) {
                 }
             } ZFLISTENER_END()
             zfautoT<ZFTask> child = childQueue->getFirst();
+            child->taskPending(zftrue);
             child->start(childOnStop);
             owner->childOnStart(child);
             owner->observerNotify(zfself::E_ChildOnStart(), child);
+            child->taskPending(zffalse);
         }
     };
     _ZFP_startNext::a(this, childQueue);

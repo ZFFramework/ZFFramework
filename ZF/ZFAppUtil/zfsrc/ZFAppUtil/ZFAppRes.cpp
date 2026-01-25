@@ -57,10 +57,10 @@ zfclass _ZFP_I_ZFAppResData : zfextend ZFStyle {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAppResData, ZFStyle)
 public:
     ZFPROPERTY_ASSIGN(zfstring, moduleName)
-    ZFPROPERTY_ASSIGN(ZFCoreArray<ZFPathInfo>, packageSrc)
+    ZFPROPERTY_ASSIGN(ZFCoreArray<ZFPathInfo>, packageSrcList)
     ZFPROPERTY_ASSIGN(zfstring, packagePwd)
     ZFPROPERTY_ASSIGN(zfstring, packageMd5)
-    ZFPROPERTY_ASSIGN(zfindex, fileIndex, zfindexMax()) // downloaded file index of packageSrc, zfindexMax if not done
+    ZFPROPERTY_ASSIGN(zfindex, fileIndex, zfindexMax()) // downloaded file index of packageSrcList, zfindexMax if not done
     ZFPROPERTY_ASSIGN(zfindex, fileSize, zfindexMax()) // downloaded file size, zfindexMax if not done, also used to verify the file
 
 public:
@@ -94,31 +94,31 @@ public:
         _attached = zffalse;
     }
     zfbool update(
-            ZF_IN const ZFCoreArray<ZFPathInfo> &packageSrc
+            ZF_IN const ZFCoreArray<ZFPathInfo> &packageSrcList
             , ZF_IN const zfstring &packagePwd
             , ZF_IN const zfstring &packageMd5
             ) {
         if(packagePwd == this->packagePwd()
                 && packageMd5 == this->packageMd5()
-                && packageSrc.objectCompareValue(this->packageSrc()) == ZFCompareEqual
+                && packageSrcList.objectCompareValue(this->packageSrcList()) == ZFCompareEqual
                 && (_downloadTaskId || (this->fileIndex() != zfindexMax() && ZFIOIsExist(_localFilePath(this->fileIndex()))))
                 ) {
             return zffalse;
         }
         _cleanup();
-        this->packageSrc().copyFrom(packageSrc);
+        this->packageSrcList().copyFrom(packageSrcList);
         this->packagePwd(packagePwd);
         this->packageMd5(packageMd5);
 
         zfself *owner = this;
         zfobj<ZFTaskQueue> downloadTask;
         _downloadTaskId = downloadTask;
-        for(zfindex fileIndex = 0; fileIndex < packageSrc.count(); ++fileIndex) {
+        for(zfindex fileIndex = 0; fileIndex < packageSrcList.count(); ++fileIndex) {
             zfobj<ZFTaskQueue> childQueue;
 
             zfobj<ZFAsyncIOTask> child(
                     ZFOutputForIOToken(ZFIOOpen(_localCachePath(fileIndex), v_ZFIOOpenOption::e_Modify))
-                    , ZFInputForPathInfo(packageSrc[fileIndex])
+                    , ZFInputForPathInfo(packageSrcList[fileIndex])
                     );
             child->resumable(ZFObjectFromZFSD(ZFInputForPathInfo(_localCacheResumablePath(fileIndex))));
             child->objectTag("_ZFP_ZFAppRes_fileIndex", zfobj<v_zfindex>(fileIndex));
@@ -153,7 +153,7 @@ public:
             ZFAsyncIOTask *child = childQueue->childAt(0);
             v_zfindex *fileIndex = child->objectTag("_ZFP_ZFAppRes_fileIndex");
             if(childQueue->success()) {
-                if(fileIndex && fileIndex->zfv < owner->packageSrc().count()) {
+                if(fileIndex && fileIndex->zfv < owner->packageSrcList().count()) {
                     downloadTask->notifySuccess(fileIndex);
                 }
             }
@@ -163,7 +163,7 @@ public:
             }
 
             // save resumable, no matter success or not
-            if(fileIndex && fileIndex->zfv < owner->packageSrc().count()) {
+            if(fileIndex && fileIndex->zfv < owner->packageSrcList().count()) {
                 ZFObjectToZFSD(ZFOutputForPathInfo(owner->_localCacheResumablePath(fileIndex->zfv)), child->resumable());
             }
         } ZFLISTENER_END()
@@ -175,7 +175,7 @@ public:
             owner->_downloadTaskId = zfnull;
             ZFTaskQueue *downloadTask = zfargs.sender();
             v_zfindex *fileIndex = downloadTask->result();
-            if(downloadTask->canceled() || fileIndex == zfnull || fileIndex->zfv >= owner->packageSrc().count()) {
+            if(downloadTask->canceled() || fileIndex == zfnull || fileIndex->zfv >= owner->packageSrcList().count()) {
                 return;
             }
             ZFPathInfo localFilePath = owner->_localFilePath(fileIndex->zfv);
@@ -208,15 +208,15 @@ protected:
 private:
     // downloaded file
     ZFPathInfo _localFilePath(ZF_IN zfindex fileIndex) {
-        return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s", ZFMd5(ZFPathInfoToString(this->packageSrc().get(fileIndex)))));
+        return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s", ZFMd5(ZFPathInfoToString(this->packageSrcList().get(fileIndex)))));
     }
     // tmp file while downloading, moved to _localFilePath if valid, during next app launch
     ZFPathInfo _localCachePath(ZF_IN zfindex fileIndex) {
-        return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s.tmp", ZFMd5(ZFPathInfoToString(this->packageSrc().get(fileIndex)))));
+        return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s.tmp", ZFMd5(ZFPathInfoToString(this->packageSrcList().get(fileIndex)))));
     }
     // store resumable for async io
     ZFPathInfo _localCacheResumablePath(ZF_IN zfindex fileIndex) {
-        return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s.state", ZFMd5(ZFPathInfoToString(this->packageSrc().get(fileIndex)))));
+        return ZFPathInfo(ZFPathType_storagePath(), zfstr("ZFAppRes/%s.state", ZFMd5(ZFPathInfoToString(this->packageSrcList().get(fileIndex)))));
     }
     ZFPathInfo _resExtPathInfo(ZF_IN zfindex fileIndex) {
         return ZFAppRes::pathInfoForPackage(_localFilePath(fileIndex), this->packagePwd());
@@ -226,11 +226,11 @@ private:
             _downloadTaskId->stop();
             _downloadTaskId = zfnull;
         }
-        if(!this->packageSrc().isEmpty()) {
+        if(!this->packageSrcList().isEmpty()) {
             if(this->fileIndex() != zfindexMax()) {
                 ZFResExtPathRemove(_resExtPathInfo(this->fileIndex()));
             }
-            for(zfindex i = 0; i <  this->packageSrc().count(); ++i) {
+            for(zfindex i = 0; i <  this->packageSrcList().count(); ++i) {
                 ZFIORemove(_localFilePath(i));
                 ZFIORemove(_localCachePath(i));
                 ZFIORemove(_localCacheResumablePath(i));
@@ -294,7 +294,7 @@ public:
     }
     void notifyFinish(
             ZF_IN const zfstring &moduleName
-            , ZF_IN const ZFCoreArray<ZFPathInfo> &packageSrc
+            , ZF_IN const ZFCoreArray<ZFPathInfo> &packageSrcList
             , ZF_IN const zfstring &packagePwd
             , ZF_IN const zfstring &packageMd5
             ) {
@@ -309,7 +309,7 @@ public:
         }
         if(data != zfnull) {
             _modulesChanged = _modulesChanged
-                || data->update(packageSrc, packagePwd, packageMd5);
+                || data->update(packageSrcList, packagePwd, packageMd5);
             _localStateSave();
             return;
         }
@@ -318,7 +318,7 @@ public:
         _modules->add(data);
         data->attach();
         data->moduleName(moduleName);
-        data->update(packageSrc, packagePwd, packageMd5);
+        data->update(packageSrcList, packagePwd, packageMd5);
         _modulesChanged = zftrue;
         _localStateSave();
     }
@@ -373,24 +373,89 @@ ZFMETHOD_DEFINE_2(ZFAppRes, void, start
         , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
         ) {
     zfobj<ZFAppRes> owner;
-    owner->_ZFP_ZFAppRes_moduleName = moduleName ? moduleName : zftext("default");
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->attach(owner->_ZFP_ZFAppRes_moduleName);
+    zfobj<v_zfstring> moduleNameTmp(moduleName ? moduleName : zftext("default"));
+    owner->objectTag("_ZFP_ZFAppRes_moduleName", moduleNameTmp);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->attach(moduleNameTmp->zfv);
     packageGetter.execute(ZFArgs().sender(owner));
 }
 
 ZFMETHOD_DEFINE_3(ZFAppRes, void, notifyFinish
-        , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageSrc)
+        , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageSrcList)
         , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
         , ZFMP_IN_OPT(const zfstring &, packageMd5, zfnull)
         ) {
-    if(!packageSrc.isEmpty()) {
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->notifyFinish(
-                _ZFP_ZFAppRes_moduleName
-                , packageSrc
-                , packagePwd
-                , packageMd5
-                );
+    if(!packageSrcList.isEmpty()) {
+        v_zfstring *moduleName = this->objectTag("_ZFP_ZFAppRes_moduleName");
+        if(moduleName) {
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppResDataHolder)->notifyFinish(
+                    moduleName->zfv
+                    , packageSrcList
+                    , packagePwd
+                    , packageMd5
+                    );
+        }
     }
+}
+
+// ============================================================
+ZFMETHOD_DEFINE_3(ZFAppRes, void, start
+        , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageInfoList)
+        , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
+        ) {
+    if(packageInfoList.isEmpty()) {
+        return;
+    }
+    ZFLISTENER_2(packageGetter
+            , ZFCoreArray<ZFPathInfo>, packageInfoList
+            , zfstring, packagePwd
+            ) {
+        zfautoT<ZFAppRes> o = zfargs.sender();
+
+        zfobj<ZFTaskGroup> task;
+        ZFCoreArray<ZFPathInfo> packageSrcList;
+        zfobj<v_zfstring> packageMd5;
+        for(zfindex i = 0; i < packageInfoList.count(); ++i) {
+            const ZFPathInfo &pathInfo = packageInfoList[i];
+            ZFLISTENER_3(childTask
+                    , ZFCoreArray<ZFPathInfo>, packageSrcList
+                    , zfautoT<v_zfstring>, packageMd5
+                    , ZFPathInfo, pathInfo
+                    ) {
+                ZFJson info = ZFJsonFromInput(ZFInputForPathInfo(pathInfo));
+                zfstring src = info.attrValue("src");
+                if(!src) {
+                    return;
+                }
+                ZFPathInfo srcPathInfo;
+                if(!ZFPathInfoFromStringT(srcPathInfo, src)) {
+                    return;
+                }
+                zfstring md5 = info.attrValue("md5");
+                {
+                    ZFObjectLocker(packageMd5);
+                    if(packageMd5->zfv && md5 && packageMd5->zfv != md5) {
+                        return;
+                    }
+                    if(md5) {
+                        packageMd5->zfv = md5;
+                    }
+                    packageSrcList.add(srcPathInfo);
+                }
+            } ZFLISTENER_END()
+            task->child(zfobj<ZFAsyncTask>()->c_impl(childTask));
+        }
+        ZFLISTENER_4(taskOnStop
+                , zfautoT<ZFAppRes>, o
+                , zfstring, packagePwd
+                , ZFCoreArray<ZFPathInfo>, packageSrcList
+                , zfautoT<v_zfstring>, packageMd5
+                ) {
+            o->notifyFinish(packageSrcList, packagePwd, packageMd5->zfv);
+        } ZFLISTENER_END()
+        task->start(taskOnStop);
+    } ZFLISTENER_END()
+    zfself::start(packageGetter, moduleName);
 }
 
 ZF_NAMESPACE_GLOBAL_END

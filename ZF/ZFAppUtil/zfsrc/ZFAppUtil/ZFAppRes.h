@@ -64,6 +64,7 @@ public:
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
             )
 
+    // ============================================================
 public:
     /**
      * @brief start and attach this res moudle
@@ -75,17 +76,35 @@ public:
             , ZFMP_IN(const ZFListener &, packageGetter)
             , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
             )
-
-public:
     /** @brief see #ZFAppRes */
     ZFMETHOD_DECLARE_3(void, notifyFinish
-            , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageSrc)
+            , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageSrcList)
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
             , ZFMP_IN_OPT(const zfstring &, packageMd5, zfnull)
             )
 
+    // ============================================================
 public:
-    zfstring _ZFP_ZFAppRes_moduleName;
+    /**
+     * @brief start and attach this res moudle
+     *
+     * when moduleName is empty, "default" is used instead\n
+     * \n
+     * packageInfoList holds meta info of the package,
+     * typically points to a http file in your server,
+     * and it must be a valid json file containing the meta info or package:
+     * @code
+     *   {
+     *     "src" : "http!!https://xxx/xxx.zip", // required, pathInfo of the package
+     *     "md5" : "xxx", // optional, md5 of the package
+     *   }
+     * @endcode
+     */
+    ZFMETHOD_DECLARE_STATIC_3(void, start
+            , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageInfoList)
+            , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
+            , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
+            )
 };
 
 ZF_NAMESPACE_GLOBAL_END

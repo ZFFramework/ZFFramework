@@ -90,10 +90,11 @@ void ZFTaskGroup::taskOnStart(void) {
                     , zfautoT<ZFArray>, childRunning
                     , zfautoT<ZFArray>, childQueued
                     ) {
+                zfauto ownerHolder = owner;
                 ZFTask *child = zfargs.sender();
                 owner->childOnStop(child);
                 owner->observerNotify(zfself::E_ChildOnStop(), child);
-                if(!child->canceled() && owner && owner->started()) {
+                if(!child->canceled() && owner->started()) {
                     childRunning->removeElement(child);
                     if(child->success()) {
                         while(zftrue
@@ -102,12 +103,13 @@ void ZFTaskGroup::taskOnStart(void) {
                                 ) {
                             zfautoT<ZFTask> child = childQueued->removeFirstAndGet();
                             childRunning->add(child);
+                            child->taskPending(zftrue);
                             child->start(_ZFP_childOnStop::a(owner, concurrentCount, childRunning, childQueued));
                             owner->childOnStart(child);
                             owner->observerNotify(zfself::E_ChildOnStart(), child);
+                            child->taskPending(zffalse);
                         }
                         if(childRunning->isEmpty()
-                                && owner
                                 && childRunning == owner->objectTag("_ZFP_ZFTaskGroup_running")
                                 ) {
                             owner->stop(v_ZFResultType::e_Success);
@@ -124,9 +126,11 @@ void ZFTaskGroup::taskOnStart(void) {
     ZFListener childOnStop = _ZFP_childOnStop::a(this, concurrentCount, childRunning, childQueued);
     for(zfindex i = 0; i < childRunning->count(); ++i) {
         ZFTask *child = childRunning->get(i);
+        child->taskPending(zftrue);
         child->start(childOnStop);
         this->childOnStart(child);
         this->observerNotify(zfself::E_ChildOnStart(), child);
+        child->taskPending(zffalse);
     }
 }
 void ZFTaskGroup::taskOnStop(void) {

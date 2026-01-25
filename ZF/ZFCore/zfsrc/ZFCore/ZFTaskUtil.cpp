@@ -16,19 +16,14 @@ ZFOBJECT_ON_INIT_DEFINE_1(ZFWaitTask
 
 void ZFWaitTask::taskOnStart(void) {
     zfsuper::taskOnStart();
-    if(this->duration() > 0) {
-        zfweakT<zfself> owner = this;
-        ZFLISTENER_1(implOnStop
-                , zfweakT<zfself>, owner
-                ) {
-            owner->_implTaskId = zfnull;
-            owner->notifySuccess(zfargs.param0());
-        } ZFLISTENER_END()
-        this->_implTaskId = ZFTimerOnce(this->duration(), implOnStop);
-    }
-    else {
-        this->notifySuccess();
-    }
+    zfweakT<zfself> owner = this;
+    ZFLISTENER_1(implOnStop
+            , zfweakT<zfself>, owner
+            ) {
+        owner->_implTaskId = zfnull;
+        owner->notifySuccess(zfargs.param0());
+    } ZFLISTENER_END()
+    this->_implTaskId = ZFTimerOnce(this->duration(), implOnStop);
 }
 void ZFWaitTask::taskOnStop(void) {
     if(this->_implTaskId) {

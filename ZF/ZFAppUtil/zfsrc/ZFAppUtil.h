@@ -6,6 +6,7 @@
 #ifndef _ZFI_ZFAppUtil_h_
 #define _ZFI_ZFAppUtil_h_
 
+#include "ZFAppUtil/ZFAppEntry.h"
 #include "ZFAppUtil/ZFAppRes.h"
 #include "ZFAppUtil/ZFDebugServer.h"
 #include "ZFAppUtil/ZFIOUtil.h"

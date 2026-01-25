@@ -11,9 +11,12 @@ ZFEVENT_REGISTER(ZFTask, TaskOnStop)
 ZFMETHOD_DEFINE_1(ZFTask, void, start
         , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)
         ) {
+    ZFCoreAssertWithMessageTrim(!_ZFP_pending || !_ZFP_started, "start a pending task: %s", this);
     this->stop();
     _ZFP_started = zftrue;
-    _ZFP_onStop = onStop;
+    if(onStop) {
+        this->observerAdd(zfself::E_TaskOnStop(), onStop, ZFLevelZFFrameworkPostStatic);
+    }
 
     this->result(zfnull);
     this->resultType(v_ZFResultType::e_Success);
@@ -29,22 +32,36 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
     if(!_ZFP_started) {
         return;
     }
+    else if(_ZFP_pending) {
+        this->resultType(resultType);
+        return;
+    }
     _ZFP_started = zffalse;
-    ZFListener onStopSaved = _ZFP_onStop;
-    _ZFP_onStop = zfnull;
     this->resultType(resultType);
     this->taskOnStop();
     this->observerNotify(zfself::E_TaskOnStop());
-    if(onStopSaved) {
-        onStopSaved.execute(ZFArgs()
-                .sender(this)
-                .eventId(zfself::E_TaskOnStop())
-                );
-    }
     zfRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFTask, zfbool, started) {
     return _ZFP_started;
+}
+
+ZFMETHOD_DEFINE_1(ZFTask, void, taskPending
+        , ZFMP_IN(zfbool, pending)
+        ) {
+    if(pending) {
+        ++_ZFP_pending;
+    }
+    else {
+        ZFCoreAssert(_ZFP_pending);
+        --_ZFP_pending;
+        if(!_ZFP_pending && _ZFP_started) {
+            _ZFP_started = zffalse;
+            this->taskOnStop();
+            this->observerNotify(zfself::E_TaskOnStop());
+            zfRelease(this);
+        }
+    }
 }
 
 ZFMETHOD_DEFINE_1(ZFTask, void, notifySuccess
