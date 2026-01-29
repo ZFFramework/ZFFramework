@@ -35,10 +35,6 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogAniShowCreator)
  * with alpha change
  */
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, ZFListener, ZFUIDialogAniHideCreator)
-/**
- * @brief default #ZFUIWindow::windowLevel for #ZFUIDialog, 1000 by default
- */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zfint, ZFUIDialogWindowLevel)
 
 // ============================================================
 // ZFUIDialog
@@ -213,7 +209,7 @@ public:
     /**
      * @brief directly access the window of this dialog
      *
-     * by default, the dialog's window would have #ZFUIDialogWindowLevel as #ZFUIWindow::windowLevel
+     * by default, the dialog's window would have #ZFUIWindowLevelDialog as #ZFUIWindow::windowLevel
      */
     ZFMETHOD_DECLARE_0(ZFUIWindow *, window)
 

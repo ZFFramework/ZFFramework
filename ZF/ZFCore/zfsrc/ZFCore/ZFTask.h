@@ -147,11 +147,13 @@ protected:
 
 private:
     zfbool _ZFP_started;
+    zfbool _ZFP_stopped;
     zfuint _ZFP_pending;
 protected:
     /** @cond ZFPrivateDoc */
     ZFTask(void)
     : _ZFP_started(zffalse)
+    , _ZFP_stopped(zffalse)
     , _ZFP_pending(0)
     {
     }

@@ -9,6 +9,19 @@
 #include "ZFUIRootWindow.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/** @brief see #ZFUIWindow::windowLevel */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelBg)
+/** @brief see #ZFUIWindow::windowLevel */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelNormal)
+/** @brief see #ZFUIWindow::windowLevel */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelFg)
+/** @brief see #ZFUIWindow::windowLevel */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelDialog)
+/** @brief see #ZFUIWindow::windowLevel */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelOverlay)
+/** @brief see #ZFUIWindow::windowLevel */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelHint)
+
 // ============================================================
 // ZFUIWindow
 zfclassFwd _ZFP_ZFUIWindowPrivate;
@@ -99,11 +112,19 @@ protected:
     // properties
 public:
     /**
-     * @brief window's level, 0 by default
+     * @brief window's level, #ZFUIWindowLevelNormal by default
      *
-     * larger value means window on top
+     * larger value means window on top\n
+     * \n
+     * list of builtin levels:
+     * -# ZFUIWindowLevelBg : behind normal window
+     * -# ZFUIWindowLevelNormal : default window level
+     * -# ZFUIWindowLevelFg : above normal window
+     * -# ZFUIWindowLevelDialog : for dialogs
+     * -# ZFUIWindowLevelOverlay : for overlay, effect, splash ad, etc
+     * -# ZFUIWindowLevelHint : for short hints
      */
-    ZFPROPERTY_ASSIGN(zfint, windowLevel)
+    ZFPROPERTY_ASSIGN(zfint, windowLevel, ZFUIWindowLevelNormal())
     ZFPROPERTY_ON_UPDATE_DECLARE(zfint, windowLevel)
 
     /**

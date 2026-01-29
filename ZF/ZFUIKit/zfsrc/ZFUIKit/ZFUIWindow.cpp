@@ -3,6 +3,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelBg, -1000)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelNormal, 0)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelFg, 1000)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelDialog, 2000)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelOverlay, 3000)
+ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelHint, 4000)
+
 ZFSTYLE_DEFAULT_DEFINE(ZFUIWindow)
 
 // ============================================================

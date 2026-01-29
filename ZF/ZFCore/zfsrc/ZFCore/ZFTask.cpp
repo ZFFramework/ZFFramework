@@ -11,9 +11,10 @@ ZFEVENT_REGISTER(ZFTask, TaskOnStop)
 ZFMETHOD_DEFINE_1(ZFTask, void, start
         , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)
         ) {
-    ZFCoreAssertWithMessageTrim(!_ZFP_pending || !_ZFP_started, "start a pending task: %s", this);
+    ZFCoreAssertWithMessageTrim(!_ZFP_started || !_ZFP_pending, "start a pending task: %s", this);
     this->stop();
     _ZFP_started = zftrue;
+    _ZFP_stopped = zffalse;
     if(onStop) {
         this->observerAdd(zfself::E_TaskOnStop(), onStop, ZFLevelZFFrameworkPostStatic);
     }
@@ -33,6 +34,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
         return;
     }
     else if(_ZFP_pending) {
+        _ZFP_stopped = zftrue;
         this->resultType(resultType);
         return;
     }
@@ -55,8 +57,9 @@ ZFMETHOD_DEFINE_1(ZFTask, void, taskPending
     else {
         ZFCoreAssert(_ZFP_pending);
         --_ZFP_pending;
-        if(!_ZFP_pending && _ZFP_started) {
+        if(!_ZFP_pending && _ZFP_started && _ZFP_stopped) {
             _ZFP_started = zffalse;
+            _ZFP_stopped = zffalse;
             this->taskOnStop();
             this->observerNotify(zfself::E_TaskOnStop());
             zfRelease(this);
