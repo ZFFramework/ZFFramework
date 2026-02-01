@@ -37,7 +37,7 @@ protected:
         this->output(zfstr("try execute %s", this->callbackFunction.objectInfo()));
         this->callbackFunction.executeExact<void>();
 
-        ZFLAMBDA(localCallback
+        ZFLAMBDA(ZFCallback, localCallback
                 , void
                 , ZFMP_IN(const zfstring &, param)
                 ) {

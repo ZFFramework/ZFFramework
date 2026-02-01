@@ -11,7 +11,7 @@ protected:
         zfsuper::testCaseOnStart();
 
         zfstring capture = "init";
-        ZFLAMBDA_1(refCapture
+        ZFLAMBDA_1(ZFCallback, refCapture
                 , zfstring &, capture
                 , void
                 ) {
@@ -25,7 +25,7 @@ protected:
         {
             zfstring value = "init";
             ZFTestCase *testCase = this;
-            ZFLAMBDA_2(valueCapture
+            ZFLAMBDA_2(ZFCallback, valueCapture
                     , zfstring, value
                     , ZFTestCase *, testCase
                     , void
@@ -37,7 +37,7 @@ protected:
         outer.executeExact<void>();
 
 
-        ZFLAMBDA_0(lambdaWithZeroParam
+        ZFLAMBDA_0(ZFCallback, lambdaWithZeroParam
                 , void
                 ) {
         } ZFLAMBDA_END()
