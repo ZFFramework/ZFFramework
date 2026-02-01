@@ -8,7 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(RootWindowResume, ZFLevelZFFrameworkPostNormal) {
     zfweakT<ZFUIRootWindow> *rootWindowHolder = (zfweakT<ZFUIRootWindow> *)sdlEvent->user.data1;
     ZFUIRootWindow *rootWindow = *rootWindowHolder;
-    if(rootWindow && !rootWindow->nativeWindowIsResumed()) {
+    if(rootWindow && !rootWindow->windowResumed()) {
         ZFPROTOCOL_ACCESS(ZFUIRootWindow)->notifyOnResume(rootWindow);
     }
     zfpoolDelete(rootWindowHolder);
@@ -49,7 +49,7 @@ public:
     virtual void mainWindowOnCleanup(void) {
         if(this->_mainWindow != zfnull) {
             ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)this->_mainWindow->nativeWindow();
-            if(this->_mainWindow->nativeWindowIsResumed()) {
+            if(this->_mainWindow->windowResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
             this->notifyOnDestroy(this->_mainWindow);
@@ -117,7 +117,7 @@ public:
             return;
         }
         ZFImpl_sys_SDL_RootWindow *nativeWindow = (ZFImpl_sys_SDL_RootWindow *)toHide->nativeWindow();
-        if(toHide->nativeWindowIsResumed()) {
+        if(toHide->windowResumed()) {
             this->notifyOnPause(toHide);
         }
         this->notifyOnDestroy(toHide);

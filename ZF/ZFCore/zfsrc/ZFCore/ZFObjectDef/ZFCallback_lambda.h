@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   CaptureParam1 capture1;
  *   CaptureParam2 capture2;
  *
- *   ZFLAMBDA_3(myCallback
+ *   ZFLAMBDA_3(T_ZFCallback, myCallback
  *           , CaptureParam0, capture0
  *           , CaptureParam1 &, capture1
  *           , CaptureParam2 const &, capture2
@@ -41,9 +41,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   myCallback.executeExact<ReturnType, ParamType0, ParamType1>(p0, p1);
  * @endcode
  */
-#define ZFLAMBDA(name \
+#define ZFLAMBDA(T_ZFCallback, name \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN_0(name \
+    _ZFP_ZFLAMBDA_BEGIN_0(T_ZFCallback, name \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -56,9 +56,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_0(name \
+#define ZFLAMBDA_0(T_ZFCallback, name \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN_0(name \
+    _ZFP_ZFLAMBDA_BEGIN_0(T_ZFCallback, name \
         , ReturnType _ZFP_ZFLAMBDA_N_VA_EXPAND(__VA_ARGS__) \
         , _ZFP_ZFMP_DUMMY() \
         , _ZFP_ZFMP_DUMMY() \
@@ -71,10 +71,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_1(name \
+#define ZFLAMBDA_1(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam2 , capture2 \
@@ -103,11 +103,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_2(name \
+#define ZFLAMBDA_2(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EMPTY , CaptureParam2 , capture2 \
@@ -136,12 +136,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_3(name \
+#define ZFLAMBDA_3(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -170,13 +170,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_4(name \
+#define ZFLAMBDA_4(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
     , CaptureParam3, capture3 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -205,14 +205,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_5(name \
+#define ZFLAMBDA_5(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
     , CaptureParam3, capture3 \
     , CaptureParam4, capture4 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -241,7 +241,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_6(name \
+#define ZFLAMBDA_6(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -249,7 +249,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam4, capture4 \
     , CaptureParam5, capture5 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -278,7 +278,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_7(name \
+#define ZFLAMBDA_7(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -287,7 +287,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam5, capture5 \
     , CaptureParam6, capture6 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -316,7 +316,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_8(name \
+#define ZFLAMBDA_8(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -326,7 +326,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam6, capture6 \
     , CaptureParam7, capture7 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -355,7 +355,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_9(name \
+#define ZFLAMBDA_9(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -366,7 +366,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam7, capture7 \
     , CaptureParam8, capture8 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -395,7 +395,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_10(name \
+#define ZFLAMBDA_10(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -407,7 +407,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam8, capture8 \
     , CaptureParam9, capture9 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -436,7 +436,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_11(name \
+#define ZFLAMBDA_11(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -449,7 +449,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam9, capture9 \
     , CaptureParam10, capture10 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -478,7 +478,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_12(name \
+#define ZFLAMBDA_12(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -492,7 +492,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam10, capture10 \
     , CaptureParam11, capture11 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -521,7 +521,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_13(name \
+#define ZFLAMBDA_13(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -536,7 +536,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam11, capture11 \
     , CaptureParam12, capture12 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -565,7 +565,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_14(name \
+#define ZFLAMBDA_14(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -581,7 +581,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam12, capture12 \
     , CaptureParam13, capture13 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -610,7 +610,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_15(name \
+#define ZFLAMBDA_15(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -627,7 +627,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam13, capture13 \
     , CaptureParam14, capture14 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -656,7 +656,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     )
 
 /** @brief see #ZFLAMBDA */
-#define ZFLAMBDA_16(name \
+#define ZFLAMBDA_16(T_ZFCallback, name \
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
@@ -674,7 +674,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam14, capture14 \
     , CaptureParam15, capture15 \
     , ReturnType, ...) \
-    _ZFP_ZFLAMBDA_BEGIN(name \
+    _ZFP_ZFLAMBDA_BEGIN(T_ZFCallback, name \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam0 , capture0 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam1 , capture1 \
         , _ZFP_ZFLambdaCapture_EXPAND, CaptureParam2 , capture2 \
@@ -727,7 +727,7 @@ public:
 #define _ZFP_ZFLAMBDA_BEGIN_EXPAND(...) __VA_ARGS__
 #define _ZFP_ZFLAMBDA_BEGIN(...) \
     _ZFP_ZFLAMBDA_BEGIN_EXPAND(_ZFP_ZFLAMBDA_BEGIN_(__VA_ARGS__))
-#define _ZFP_ZFLAMBDA_BEGIN_(name \
+#define _ZFP_ZFLAMBDA_BEGIN_(T_ZFCallback, name \
         , CaptureExpandOrEmpty0, CaptureType0, capture0 \
         , CaptureExpandOrEmpty1, CaptureType1, capture1 \
         , CaptureExpandOrEmpty2, CaptureType2, capture2 \
@@ -755,7 +755,7 @@ public:
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         , ... \
     ) \
-    ZFCallback name; \
+    T_ZFCallback name; \
     { \
         zfclassNotPOD _ZFP_Lbd_D_##name { \
         public: \
@@ -882,7 +882,7 @@ public:
 #define _ZFP_ZFLAMBDA_BEGIN_0_EXPAND(...) __VA_ARGS__
 #define _ZFP_ZFLAMBDA_BEGIN_0(...) \
     _ZFP_ZFLAMBDA_BEGIN_0_EXPAND(_ZFP_ZFLAMBDA_BEGIN_0_(__VA_ARGS__))
-#define _ZFP_ZFLAMBDA_BEGIN_0_(name \
+#define _ZFP_ZFLAMBDA_BEGIN_0_(T_ZFCallback, name \
         , ReturnType \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
         , ParamExpandOrEmpty1, ParamType1, param1, DefaultExpandOrEmpty1, DefaultValueFix1 \
@@ -894,7 +894,7 @@ public:
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         , ... \
     ) \
-    ZFCallback name; \
+    T_ZFCallback name; \
     { \
         ZFCallback _ZFP_Lbd_v = ZFCallback::_ZFP_ZFCallbackCreateLambda( \
             zfnull, \

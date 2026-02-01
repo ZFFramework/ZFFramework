@@ -90,7 +90,7 @@ public:
             )
 
     /**
-     * @brief util method to get owner sys window for the view,
+     * @brief util method to get owner root window for the view,
      *   return null if not in view tree or failed to get
      */
     ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIRootWindow>, rootWindowForView

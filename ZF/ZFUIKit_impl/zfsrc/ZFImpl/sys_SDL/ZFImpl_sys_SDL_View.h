@@ -64,7 +64,7 @@ public:
     };
 
 public:
-    /** @brief owner sys window, valid when added to window */
+    /** @brief owner root window, valid when added to window */
     ZFImpl_sys_SDL_RootWindow *rootWindow;
     /** @brief owner view, null for #ZFUIView::nativeImplView */
     ZFUIView *ownerZFUIView;

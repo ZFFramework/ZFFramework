@@ -69,10 +69,10 @@ ZFUIRootWindowEmbedImpl *ZFUIRootWindow::nativeWindowEmbedImpl(void) {
 
 ZFMETHOD_DEFINE_0(ZFUIRootWindow, void, nativeWindowEmbedImplDestroy) {
     if(this->nativeWindowEmbedImpl() != zfnull) {
-        if(this->nativeWindowIsResumed()) {
+        if(this->windowResumed()) {
             this->nativeWindowEmbedImpl()->notifyOnPause(this);
         }
-        if(this->nativeWindowIsCreated()) {
+        if(this->windowCreated()) {
             this->nativeWindowEmbedImpl()->notifyOnDestroy(this);
         }
     }
@@ -232,10 +232,10 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, void *, nativeWindow) {
     return d->nativeWindow;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfbool, nativeWindowIsCreated) {
+ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfbool, windowCreated) {
     return d->nativeWindowCreated;
 }
-ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfbool, nativeWindowIsResumed) {
+ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfbool, windowResumed) {
     return d->nativeWindowResumed;
 }
 
@@ -426,7 +426,7 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onRotate(void) {
     }
 }
 void ZFUIRootWindow::_ZFP_ZFUIRootWindow_layoutUpdate(void) {
-    if(this->nativeWindowIsResumed()) {
+    if(this->windowResumed()) {
         d->nativeWindowLayoutUpdated = zffalse;
         if(this->nativeWindowEmbedImpl() != zfnull) {
             this->nativeWindowEmbedImpl()->layoutParamOnUpdate(this);

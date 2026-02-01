@@ -33,7 +33,7 @@
 
     [UIViewController attemptRotationToDeviceOrientation];
 #if 1 // force to refresh orientation state
-    if(self.ownerZFUIRootWindow != zfnull && self.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+    if(self.ownerZFUIRootWindow != zfnull && self.ownerZFUIRootWindow->windowResumed()) {
         self._ZFP_windowRotateOverrideFlag += 1;
         _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow_Dummy *dummy = [_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow_Dummy new];
         UIViewController *t = self;
@@ -46,7 +46,7 @@
         [t dismissViewControllerAnimated:NO completion:^{
             weakSelf._ZFP_windowRotateOverrideFlag -= 1;
             if(weakSelf.ownerZFUIRootWindow != zfnull) {
-                if(!weakSelf.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+                if(!weakSelf.ownerZFUIRootWindow->windowResumed()) {
                     weakSelf.impl->notifyOnResume(weakSelf.ownerZFUIRootWindow);
                 }
             }
@@ -157,7 +157,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if(self.ownerZFUIRootWindow != zfnull && self._ZFP_windowRotateOverrideFlag == 0) {
-        if(!self.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+        if(!self.ownerZFUIRootWindow->windowResumed()) {
             self.impl->notifyOnResume(self.ownerZFUIRootWindow);
         }
     }
@@ -165,7 +165,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if(self.ownerZFUIRootWindow != zfnull && self._ZFP_windowRotateOverrideFlag == 0) {
-        if(self.ownerZFUIRootWindow->nativeWindowIsResumed()) {
+        if(self.ownerZFUIRootWindow->windowResumed()) {
             self.impl->notifyOnPause(self.ownerZFUIRootWindow);
         }
     }
@@ -222,7 +222,7 @@ public:
                 ZFImpl_sys_iOS_rootWindow().rootViewController = nil;
             }
 
-            if(this->_mainWindow->nativeWindowIsResumed()) {
+            if(this->_mainWindow->windowResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
             zfscopeRelease(this->_mainWindow);

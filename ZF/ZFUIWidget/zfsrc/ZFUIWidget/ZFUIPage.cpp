@@ -743,7 +743,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
         ;
 
     window->show();
-    if(window->rootWindow()->nativeWindowIsResumed()
+    if(window->rootWindow()->windowResumed()
             && !this->managerResumed()
             ) {
         this->managerResume();

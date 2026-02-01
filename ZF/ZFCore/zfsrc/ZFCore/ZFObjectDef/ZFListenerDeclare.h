@@ -52,7 +52,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFLISTENER(name \
     ) \
-    ZFLAMBDA(name \
+    ZFLAMBDA(ZFListener, name \
         , void \
         , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
@@ -60,7 +60,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFLISTENER */
 #define ZFLISTENER_0(name \
     ) \
-    ZFLAMBDA_0(name \
+    ZFLAMBDA_0(ZFListener, name \
         , void \
         , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
@@ -69,7 +69,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFLISTENER_1(name \
     , CaptureParam0, capture0 \
     ) \
-    ZFLAMBDA_1(name \
+    ZFLAMBDA_1(ZFListener, name \
         , CaptureParam0, capture0 \
         , void \
         , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
@@ -80,7 +80,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam0, capture0 \
     , CaptureParam1, capture1 \
     ) \
-    ZFLAMBDA_2(name \
+    ZFLAMBDA_2(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , void \
@@ -93,7 +93,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam1, capture1 \
     , CaptureParam2, capture2 \
     ) \
-    ZFLAMBDA_3(name \
+    ZFLAMBDA_3(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -108,7 +108,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam2, capture2 \
     , CaptureParam3, capture3 \
     ) \
-    ZFLAMBDA_4(name \
+    ZFLAMBDA_4(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -125,7 +125,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam3, capture3 \
     , CaptureParam4, capture4 \
     ) \
-    ZFLAMBDA_5(name \
+    ZFLAMBDA_5(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -144,7 +144,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam4, capture4 \
     , CaptureParam5, capture5 \
     ) \
-    ZFLAMBDA_6(name \
+    ZFLAMBDA_6(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -165,7 +165,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam5, capture5 \
     , CaptureParam6, capture6 \
     ) \
-    ZFLAMBDA_7(name \
+    ZFLAMBDA_7(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -188,7 +188,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam6, capture6 \
     , CaptureParam7, capture7 \
     ) \
-    ZFLAMBDA_8(name \
+    ZFLAMBDA_8(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -213,7 +213,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam7, capture7 \
     , CaptureParam8, capture8 \
     ) \
-    ZFLAMBDA_9(name \
+    ZFLAMBDA_9(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -240,7 +240,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam8, capture8 \
     , CaptureParam9, capture9 \
     ) \
-    ZFLAMBDA_10(name \
+    ZFLAMBDA_10(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -269,7 +269,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam9, capture9 \
     , CaptureParam10, capture10 \
     ) \
-    ZFLAMBDA_11(name \
+    ZFLAMBDA_11(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -300,7 +300,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam10, capture10 \
     , CaptureParam11, capture11 \
     ) \
-    ZFLAMBDA_12(name \
+    ZFLAMBDA_12(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -333,7 +333,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam11, capture11 \
     , CaptureParam12, capture12 \
     ) \
-    ZFLAMBDA_13(name \
+    ZFLAMBDA_13(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -368,7 +368,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam12, capture12 \
     , CaptureParam13, capture13 \
     ) \
-    ZFLAMBDA_14(name \
+    ZFLAMBDA_14(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -405,7 +405,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam13, capture13 \
     , CaptureParam14, capture14 \
     ) \
-    ZFLAMBDA_15(name \
+    ZFLAMBDA_15(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
@@ -444,7 +444,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     , CaptureParam14, capture14 \
     , CaptureParam15, capture15 \
     ) \
-    ZFLAMBDA_16(name \
+    ZFLAMBDA_16(ZFListener, name \
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \

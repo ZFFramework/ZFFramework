@@ -18,7 +18,7 @@ zffinal zfclass ZFLIB_ZFUIKit ZFUIOnScreenKeyboardState : zfextend ZFObject {
 
 public:
     /**
-     * @brief access keyboard state for sys window
+     * @brief access keyboard state for root window
      */
     ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIOnScreenKeyboardState>, instanceForRootWindow
             , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
@@ -32,7 +32,7 @@ public:
 
 public:
     /**
-     * @brief owner sys window, null and invalid if not accessed by #instanceForRootWindow
+     * @brief owner root window, null and invalid if not accessed by #instanceForRootWindow
      *   (which is typically not allowed)
      */
     ZFMETHOD_DECLARE_0(zfanyT<ZFUIRootWindow>, rootWindow)

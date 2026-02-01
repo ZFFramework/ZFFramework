@@ -97,7 +97,7 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_simple(
             // skip successed block
             if(successBlocks
                     && (sizeWritten->zfv % blockSize) == 0
-                    && (ZFObjectLockerHolder(successBlocks), successBlocks->isContain(block))
+                    && ((void)ZFObjectLockerHolder(successBlocks), successBlocks->isContain(block))
                     ) {
                 output.ioSeek(outputOffset + sizeWritten->zfv);
                 input.ioSeek(inputOffset + sizeWritten->zfv);
@@ -273,7 +273,7 @@ static zfautoT<ZFTaskId> _ZFP_zfasyncIO_split(
 
         // skip successed block
         if(successBlocks
-                && (ZFObjectLockerHolder(successBlocks), successBlocks->isContain(zfobj<v_zfindex>(splitOffset / blockSize)))
+                && ((void)ZFObjectLockerHolder(successBlocks), successBlocks->isContain(zfobj<v_zfindex>(splitOffset / blockSize)))
                 ) {
             {
                 ZFObjectLocker(task->outputMutex);

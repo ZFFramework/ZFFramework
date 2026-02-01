@@ -41,7 +41,7 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * notified when window created,
-     * see #nativeWindowIsCreated for more info
+     * see #windowCreated for more info
      */
     ZFEVENT(WindowOnCreate)
     /**
@@ -257,7 +257,7 @@ public:
 
 public:
     /**
-     * @brief true if sys window created
+     * @brief true if root window created
      *
      * @note for some implementation,
      *   creating a ZFUIRootWindow may or may not create native window immediately,
@@ -265,7 +265,7 @@ public:
      *   typical usage:
      *   @code
      *       ZFUIRootWindow *newWindow = ZFUIRootWindow::mainWindow()->modalWindowShow();
-     *       if(!newWindow->nativeWindowIsCreated()) {
+     *       if(!newWindow->windowCreated()) {
      *           ZFListener observer = ... {
      *               initWindow();
      *           };
@@ -276,11 +276,11 @@ public:
      *       }
      *   @endcode
      */
-    ZFMETHOD_DECLARE_0(zfbool, nativeWindowIsCreated)
+    ZFMETHOD_DECLARE_0(zfbool, windowCreated)
     /**
-     * @brief true if sys window resumed
+     * @brief true if root window resumed
      */
-    ZFMETHOD_DECLARE_0(zfbool, nativeWindowIsResumed)
+    ZFMETHOD_DECLARE_0(zfbool, windowResumed)
 
 public:
     /**

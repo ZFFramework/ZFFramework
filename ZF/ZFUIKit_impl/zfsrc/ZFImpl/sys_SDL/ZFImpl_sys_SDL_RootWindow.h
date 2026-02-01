@@ -48,7 +48,7 @@ private:
 public:
     inline _ZFP_ZFImpl_sys_SDL_RootWindowPrivate *_ZFP_ZFImpl_sys_SDL_RootWindow_d(void) {return d;}
 public:
-    /** @brief the owner sys window */
+    /** @brief the owner root window */
     ZFUIRootWindow *ownerZFUIRootWindow;
     /** @brief whether builtin window created by ZFFramework */
     zfbool builtinWindow;

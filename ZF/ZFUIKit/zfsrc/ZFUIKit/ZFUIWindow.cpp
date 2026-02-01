@@ -81,7 +81,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, void, rootWindow
         ) {
     if(d->rootWindow != rootWindow) {
         ZFCoreAssertWithMessage(!this->showing(), "you must not change window's owner while it's showing");
-        ZFCoreAssertWithMessage(rootWindow != zfnull, "null owner sys window");
+        ZFCoreAssertWithMessage(rootWindow != zfnull, "null owner root window");
 
         ZFUIRootWindow *rootWindowOld = d->rootWindow;
         d->rootWindow = rootWindow;
@@ -215,7 +215,7 @@ void ZFUIWindow::viewOnAddToParent(ZF_IN ZFUIView *parent) {
 }
 void ZFUIWindow::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
     // should not check remove here,
-    // since it's all right to remove this window when owner sys window deallocated or when hide window
+    // since it's all right to remove this window when owner root window deallocated or when hide window
     zfsuper::viewOnRemoveFromParent(parent);
 
     if(d->windowRemoveOverrideFlag) {

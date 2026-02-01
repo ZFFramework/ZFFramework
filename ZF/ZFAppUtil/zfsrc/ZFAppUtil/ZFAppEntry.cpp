@@ -89,12 +89,9 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
 
     { // state
         _ZFP_ZFAppEntry_step(task, owner, zfself::E_OnLoadState());
-        ZFLISTENER_1(loadImpl
-                , zfautoT<zfself>, owner
-                ) {
+        ZFLISTENER(loadImpl) {
             ZFTask *ownerTask = zfargs.sender();
-            ZFLISTENER_2(onFinish
-                    , zfautoT<zfself>, owner
+            ZFLISTENER_1(onFinish
                     , zfautoT<ZFTask>, ownerTask
                     ) {
                 ownerTask->notifySuccess();

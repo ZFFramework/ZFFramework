@@ -95,7 +95,7 @@ public:
     }
     virtual void mainWindowOnCleanup(void) {
         if(this->_mainWindow != zfnull) {
-            if(this->_mainWindow->nativeWindowIsResumed()) {
+            if(this->_mainWindow->windowResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
             zfscopeRelease(this->_mainWindow);
