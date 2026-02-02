@@ -166,6 +166,7 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_windowMargin(ZF_IN const ZFUIMargin &wi
     ZFUIMargin windowMarginOld = d->windowMargin;
     ZFUIMarginApplyScaleReverselyT(d->windowMargin, windowMargin, this->rootView()->UIScaleFixed());
     if(d->windowMargin != windowMarginOld) {
+        this->rootView()->layoutRequest();
         this->windowMarginOnUpdate(windowMarginOld);
     }
 }
@@ -342,8 +343,14 @@ ZFUIRect ZFUIRootWindow::_ZFP_ZFUIRootWindow_measureWindow(ZF_IN const ZFUIRect 
         ZFUIRectApplyScaleReversely(rootRefRect, this->rootView()->UIScaleForImpl())
         , this->rootView()
         );
-    d->windowSize.width = ret.width;
-    d->windowSize.height = ret.height;
+    if(zffalse
+            || d->windowSize.width != ret.width
+            || d->windowSize.height != ret.height
+            ) {
+        d->windowSize.width = ret.width;
+        d->windowSize.height = ret.height;
+        this->rootView()->layoutRequest();
+    }
     return ZFUIRectApplyScale(ret, this->rootView()->UIScaleForImpl());
 }
 void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onCreate(ZF_IN void *nativeWindow) {
@@ -414,7 +421,6 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onPause(void) {
 }
 void ZFUIRootWindow::_ZFP_ZFUIRootWindow_onRotate(void) {
     ZFCoreAssertWithMessage(d->nativeWindowCreated, "window not created");
-    ZFCoreAssertWithMessage(d->nativeWindowResumed, "window not resumed");
     this->observerNotify(ZFUIRootWindow::E_WindowOnRotate());
     this->_ZFP_ZFUIRootWindow_layoutUpdate();
 
