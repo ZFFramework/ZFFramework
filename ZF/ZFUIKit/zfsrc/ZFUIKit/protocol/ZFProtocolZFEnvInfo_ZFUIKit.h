@@ -35,8 +35,7 @@ public:
     /**
      * @brief device type
      */
-    virtual void localeInfo(ZF_IN_OUT zfstring &ret) {
-    }
+    virtual zfstring localeInfo(void) {return zfnull;}
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_localeInfo)
 
 // ============================================================
@@ -49,8 +48,7 @@ public:
     /**
      * @brief device type
      */
-    virtual void localeLangInfo(ZF_IN_OUT zfstring &ret) {
-    }
+    virtual zfstring localeLangInfo(void) {return zfnull;}
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_localeLangInfo)
 
 ZF_NAMESPACE_GLOBAL_END

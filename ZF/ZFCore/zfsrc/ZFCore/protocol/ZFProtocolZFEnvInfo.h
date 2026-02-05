@@ -20,11 +20,11 @@ public:
     /**
      * @brief name of native system, e.g. "iOS", empty if not available
      */
-    virtual void systemName(ZF_IN_OUT zfstring &ret) {}
+    virtual zfstring systemName(void) {return zfnull;}
     /**
      * @brief version of native system, e.g. "9.0.1", empty if not available
      */
-    virtual void systemVersion(ZF_IN_OUT zfstring &ret) {}
+    virtual zfstring systemVersion(void) {return zfnull;}
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_systemInfo)
 
 // ============================================================
@@ -37,11 +37,11 @@ public:
     /**
      * @brief name of native framework, e.g. "Qt", empty if not available
      */
-    virtual void frameworkName(ZF_IN_OUT zfstring &ret) {}
+    virtual zfstring frameworkName(void) {return zfnull;}
     /**
      * @brief version of native framework, e.g. "9.0.1", empty if not available
      */
-    virtual void frameworkVersion(ZF_IN_OUT zfstring &ret) {}
+    virtual zfstring frameworkVersion(void) {return zfnull;}
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_frameworkInfo)
 
 ZF_NAMESPACE_GLOBAL_END

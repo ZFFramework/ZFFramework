@@ -24,25 +24,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_systemInfoImpl_default, ZFEnvInfo_systemInfo, v_ZFProtocolLevel::e_Default)
 public:
-    virtual void systemName(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring systemName(void) {
         #if ZF_ENV_sys_Qt
         {
-            ret += QSysInfo::productType().toStdString().c_str();
-            return;
+            return QSysInfo::productType().toStdString().c_str();
         }
         #endif
 
         #if ZF_ENV_sys_SDL
         {
-            ret += SDL_GetPlatform();
-            return;
+            return SDL_GetPlatform();
         }
         #endif
 
         #if ZF_ENV_sys_Windows
         {
-            ret += "Windows";
-            return;
+            return zftext("Windows");
         }
         #endif
 
@@ -51,16 +48,16 @@ public:
             struct utsname buf;
             zfmemset(&buf, 0, sizeof(struct utsname));
             uname(&buf);
-            ret += buf.sysname;
-            return;
+            return buf.sysname;
         }
         #endif
+
+        return zfnull;
     }
-    virtual void systemVersion(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring systemVersion(void) {
         #if ZF_ENV_sys_Qt
         {
-            ret += QSysInfo::productVersion().toStdString().c_str();
-            return;
+            return QSysInfo::productVersion().toStdString().c_str();
         }
         #endif
 
@@ -75,8 +72,7 @@ public:
             ZFVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMajorVersion);
             ZFVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMinorVersion);
             ZFVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwBuildNumber);
-            ret += tmp;
-            return;
+            return tmp;
         }
         #endif
 
@@ -85,49 +81,50 @@ public:
             struct utsname buf;
             zfmemset(&buf, 0, sizeof(struct utsname));
             uname(&buf);
-            ret += buf.release;
-            return;
+            return buf.release;
         }
         #endif
+
+        return zfnull;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_systemInfoImpl_default)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_default, ZFEnvInfo_frameworkInfo, v_ZFProtocolLevel::e_Default)
 public:
-    virtual void frameworkName(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring frameworkName(void) {
         #if ZF_ENV_sys_Qt
         {
-            ret += "Qt";
-            return;
+            return zftext("Qt");
         }
         #endif
 
         #if ZF_ENV_sys_SDL
         {
-            ret += "SDL";
-            return;
+            return zftext("SDL");
         }
         #endif
+
+        return zfnull;
     }
-    virtual void frameworkVersion(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring frameworkVersion(void) {
         #if ZF_ENV_sys_Qt
         {
-            ret += QT_VERSION_STR;
-            return;
+            return QT_VERSION_STR;
         }
         #endif
 
         #if ZF_ENV_sys_SDL
         {
             int v = SDL_GetVersion();
-            ret += zfstr("%s.%s.%s"
+            return zfstr("%s.%s.%s"
                     , (zfint)SDL_VERSIONNUM_MAJOR(v)
                     , (zfint)SDL_VERSIONNUM_MINOR(v)
                     , (zfint)SDL_VERSIONNUM_MICRO(v)
                     );
-            return;
         }
         #endif
+
+        return zfnull;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_frameworkInfoImpl_default)
 

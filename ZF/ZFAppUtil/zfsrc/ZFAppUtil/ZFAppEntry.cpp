@@ -51,6 +51,21 @@ ZFMETHOD_DEFINE_3(ZFAppEntry, void, resPack
 }
 
 // ============================================================
+ZFMETHOD_DEFINE_1(ZFAppEntry, void, task
+        , ZFMP_IN(ZFTask *, task)
+        ) {
+    if(!task) {
+        return;
+    }
+    zfautoT<ZFArray> holder = this->objectTag("ZFAppEntryCustomTask");
+    if(!holder) {
+        holder = zfobj<ZFArray>();
+        this->objectTag("ZFAppEntryCustomTask", holder);
+    }
+    holder->add(task);
+}
+
+// ============================================================
 static void _ZFP_ZFAppEntry_step(
         ZF_IN ZFTaskQueue *task
         , ZF_IN ZFAppEntry *owner
@@ -82,9 +97,9 @@ static void _ZFP_ZFAppEntry_step(
 ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
         ) {
-    ZFCoreAssert(this->objectTag("ZFAppEntryTask") == zfnull);
+    ZFCoreAssert(this->objectTag("ZFAppEntryMainTask") == zfnull);
     zfobj<ZFTaskQueue> task;
-    this->objectTag("ZFAppEntryTask", task);
+    this->objectTag("ZFAppEntryMainTask", task);
     zfself *owner = this;
 
     { // state
@@ -99,6 +114,15 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
             ZFState::instance()->load(onFinish);
         } ZFLISTENER_END()
         task->child(loadImpl);
+    }
+
+    { // custom task
+        zfautoT<ZFArray> holder = this->objectTag("ZFAppEntryCustomTask");
+        if(holder) {
+            for(zfindex i = 0; i < holder->count(); ++i) {
+                task->child(holder->get(i));
+            }
+        }
     }
 
     { // entry
@@ -130,7 +154,8 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
         finishCallback.execute(ZFArgs()
                 .sender(owner)
                 );
-        owner->objectTagRemove("ZFAppEntryTask");
+        owner->objectTagRemove("ZFAppEntryCustomTask");
+        owner->objectTagRemove("ZFAppEntryMainTask");
     } ZFLISTENER_END()
     task->start(onStop);
 }

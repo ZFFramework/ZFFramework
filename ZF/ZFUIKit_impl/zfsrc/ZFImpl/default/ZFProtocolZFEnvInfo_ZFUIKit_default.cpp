@@ -26,7 +26,9 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_deviceUIInfoImpl_default)
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_localeInfoImpl_default, ZFEnvInfo_localeInfo, v_ZFProtocolLevel::e_Default)
 public:
     zfoverride
-    virtual void localeInfo(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring localeInfo(void) {
+        zfstring ret;
+
         #if ZF_ENV_sys_Windows
             WCHAR wszLocale[LOCALE_NAME_MAX_LENGTH] = {0};
             if(GetUserDefaultLocaleName(wszLocale, LOCALE_NAME_MAX_LENGTH)) {
@@ -73,13 +75,17 @@ public:
                 }
             }
         #endif // #if ZF_ENV_sys_Windows
+
+        return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeInfoImpl_default)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_localeLangInfoImpl_default, ZFEnvInfo_localeLangInfo, v_ZFProtocolLevel::e_Default)
 public:
     zfoverride
-    virtual void localeLangInfo(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring localeLangInfo(void) {
+        zfstring ret;
+
         #if ZF_ENV_sys_Windows
             WCHAR wszLocale[LOCALE_NAME_MAX_LENGTH] = {0};
             if(GetUserDefaultLocaleName(wszLocale, LOCALE_NAME_MAX_LENGTH)) {
@@ -120,6 +126,8 @@ public:
                 }
             }
         #endif // #if ZF_ENV_sys_Windows
+
+        return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeLangInfoImpl_default)
 

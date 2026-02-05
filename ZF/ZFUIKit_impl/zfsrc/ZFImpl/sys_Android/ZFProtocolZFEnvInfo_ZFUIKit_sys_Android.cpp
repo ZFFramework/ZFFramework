@@ -12,28 +12,30 @@ ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFEnvInfo_ZFUIKit, ZFI
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_localeInfoImpl_sys_Android, ZFEnvInfo_localeInfo, v_ZFProtocolLevel::e_SystemNormal)
 public:
     zfoverride
-    virtual void localeInfo(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring localeInfo(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFEnvInfo_ZFUIKit(), "native_localeInfo",
             JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
             ).c_str());
         jobject info = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFEnvInfo_ZFUIKit(), jmId);
-        ZFImpl_sys_Android_zfstringFromStringT(ret, info);
+        zfstring ret = ZFImpl_sys_Android_zfstringFromString(info);
         JNIUtilDeleteLocalRef(jniEnv, info);
+        return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeInfoImpl_sys_Android)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_localeLangInfoImpl_sys_Android, ZFEnvInfo_localeLangInfo, v_ZFProtocolLevel::e_SystemNormal)
 public:
     zfoverride
-    virtual void localeLangInfo(ZF_IN_OUT zfstring &ret) {
+    virtual zfstring localeLangInfo(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFEnvInfo_ZFUIKit(), "native_localeLangInfo",
             JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
             ).c_str());
         jobject info = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFEnvInfo_ZFUIKit(), jmId);
-        ZFImpl_sys_Android_zfstringFromStringT(ret, info);
+        zfstring ret = ZFImpl_sys_Android_zfstringFromString(info);
         JNIUtilDeleteLocalRef(jniEnv, info);
+        return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeLangInfoImpl_sys_Android)
 

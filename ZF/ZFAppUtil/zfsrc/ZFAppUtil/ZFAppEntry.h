@@ -106,6 +106,15 @@ public:
     // ============================================================
 public:
     /**
+     * @brief util to run custom task, just before #E_OnLoadEntry
+     */
+    ZFMETHOD_DECLARE_1(void, task
+            , ZFMP_IN(ZFTask *, task)
+            )
+
+    // ============================================================
+public:
+    /**
      * @brief see #ZFAppEntry
      */
     ZFMETHOD_DECLARE_1(void, start

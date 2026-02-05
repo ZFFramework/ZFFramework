@@ -61,22 +61,10 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFEnvDeviceUIType, deviceUIType
 /**
  * @brief locale info, e.g. "CN"
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, localeInfoT
-        , ZFMP_IN_OUT(zfstring &, ret)
-        )
-/**
- * @brief see #localeInfoT
- */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeInfo)
 
 /**
  * @brief locale language info, e.g. "zh"
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, localeLangInfoT
-        , ZFMP_IN_OUT(zfstring &, ret)
-        )
-/**
- * @brief see #localeLangInfoT
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeLangInfo)
 

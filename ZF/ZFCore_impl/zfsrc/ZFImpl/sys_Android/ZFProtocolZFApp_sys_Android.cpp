@@ -24,16 +24,5 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFApp
-        , void, native_1appRestart
-        ) {
-    ZFCoreArray<zfstring> appParamsSaved;
-    appParamsSaved.copyFrom(ZFApp::appParams());
-    ZFFrameworkCleanup();
-    ZFFrameworkInit();
-    ZFMainExecute(appParamsSaved);
-}
-JNI_METHOD_DECLARE_END()
-
 #endif // #if ZF_ENV_sys_Android
 
