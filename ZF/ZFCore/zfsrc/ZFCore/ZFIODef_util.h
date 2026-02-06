@@ -184,7 +184,8 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFIOTreePrint
  *
  * fileCallback's sender would be the #v_ZFIOFindData,
  * param0 is #v_ZFPathInfo that describe the child file or dir,
- * and param1 is a #v_zfstring stores the relative path to source pathInfo\n
+ * and param1 is a #v_zfstring stores the relative path to source pathInfo
+ * (may be empty string if pathInfo already points to a file)\n
  * impl can:
  * -  set #ZFArgs::param0 or #ZFArgs::param1 to null, to prevent checking children of the file or dir (if isRecursive)
  * -  set #ZFArgs::eventFiltered if process done

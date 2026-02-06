@@ -570,8 +570,18 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOForEach
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         ) {
     zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
-    if(ioImpl == zfnull) {
+    if(ioImpl == zfnull
+            || !ioImpl->ioIsExist(pathInfo.pathData())
+            ) {
         return zfnull;
+    }
+    if(!ioImpl->ioIsDir(pathInfo.pathData())) {
+        ZFArgs zfargs;
+        fileCallback.execute(zfargs
+                .param0(zfobj<v_ZFPathInfo>(pathInfo))
+                .param1(zfobj<v_zfstring>())
+                );
+        return zfargs.result();
     }
     ZFArgs zfargs;
     _ZFP_ZFIOForEach(zfargs, ioImpl, fileCallback, pathInfo.pathType(), pathInfo.pathData(), "", isRecursive, zftrue, zftrue);
@@ -583,8 +593,18 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOForEachFile
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         ) {
     zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
-    if(ioImpl == zfnull) {
+    if(ioImpl == zfnull
+            || !ioImpl->ioIsExist(pathInfo.pathData())
+            ) {
         return zfnull;
+    }
+    if(!ioImpl->ioIsDir(pathInfo.pathData())) {
+        ZFArgs zfargs;
+        fileCallback.execute(zfargs
+                .param0(zfobj<v_ZFPathInfo>(pathInfo))
+                .param1(zfobj<v_zfstring>())
+                );
+        return zfargs.result();
     }
     ZFArgs zfargs;
     _ZFP_ZFIOForEach(zfargs, ioImpl, fileCallback, pathInfo.pathType(), pathInfo.pathData(), "", isRecursive, zftrue, zffalse);
@@ -595,7 +615,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOForEachDir
         , ZFMP_IN(const ZFListener &, fileCallback)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)) {
     zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
-    if(ioImpl == zfnull) {
+    if(ioImpl == zfnull
+            || !ioImpl->ioIsExist(pathInfo.pathData())
+            ) {
+        return zfnull;
+    }
+    if(!ioImpl->ioIsDir(pathInfo.pathData())) {
         return zfnull;
     }
     ZFArgs zfargs;

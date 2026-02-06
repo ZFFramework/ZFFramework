@@ -1,6 +1,7 @@
 #include "zfimport.h"
 #include "ZFMap.h"
 #include "ZFIO_res.h"
+#include "ZFIO_file.h"
 
 #include "ZFSTLWrapper/zfstlhashmap.h"
 
@@ -20,24 +21,25 @@ public:
     _ZFP_zfimportCacheMapType cacheMap;
 ZF_GLOBAL_INITIALIZER_END(zfimportDataHolder)
 
-static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) {
+static zfauto _ZFP_zfimportFile(
+        ZF_IN_OUT _ZFP_zfimportCacheMapType &cacheMap
+        , ZF_IN const ZFPathInfo &pathInfo
+        ) {
+    ZFInput input = ZFInputForPathInfo(pathInfo);
     if(!input) {
         return zffalse;
     }
-    ZF_GLOBAL_INITIALIZER_CLASS(zfimportDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder);
-    _ZFP_zfimportCacheMapType &cacheMap = d->cacheMap;
     zfstring callbackId = input.callbackId();
     if(callbackId) {
         ZFCoreMutexLocker();
         _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(callbackId);
         if(it != cacheMap.end()) {
             if(it->second == ZFNull()) {
-                ret = zfnull;
+                return zfnull;
             }
             else {
-                ret = it->second;
+                return it->second;
             }
-            return zftrue;
         }
 
         // mark loading
@@ -47,6 +49,7 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
     zfobj<v_ZFInput> inputHolder;
     inputHolder->zfv = input;
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFImportBegin(), inputHolder);
+    zfauto ret;
     zfbool success = ZFObjectIOLoadT(ret, input);
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFImportEnd(), inputHolder, ret);
 
@@ -60,122 +63,72 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
             cacheMap.erase(callbackId);
         }
     }
-
-    return success;
+    return ret;
 }
-static void _ZFP_zfimportDir(
-        ZF_IN_OUT ZFMap *ret
-        , ZF_IN ZFIOImpl *impl
-        , ZF_IN const ZFPathInfo &pathInfoRoot
-        , ZF_IN const zfchar *path
-        ) {
-    zfstring pathData;
-    if(!impl->ioToChild(pathData, pathInfoRoot.pathData(), path)
-            || !pathData
-            ) {
-        return;
-    }
-    ZFIOFindData fd;
-    if(impl->ioFindFirst(fd, pathData)) {
-        do {
-            zfstring relPath;
-            if(!zfstringIsEmpty(path)) {
-                relPath += path;
-                relPath += "/";
-            }
-            relPath += fd.name();
-            if(fd.isDir()) {
-                _ZFP_zfimportDir(ret, impl, pathInfoRoot, relPath);
-            }
-            else {
-                zfauto obj;
-                if(_ZFP_zfimportFile(obj, ZFInputForLocal(relPath, pathInfoRoot))) {
-                    zfobj<v_zfstring> key;
-                    key->zfv = relPath;
-                    ret->set(key, obj != zfnull ? obj.toObject() : ZFNull());
-                }
-            }
-        } while(impl->ioFindNext(fd));
-        impl->ioFindClose(fd);
-    }
-}
-
 ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         , ZFMP_IN(const zfstring &, path)
         , ZFMP_IN_OPT(const ZFPathInfo &, pathInfo, zfnull)
         ) {
     ZFPathInfo abs;
     if(ZFPathInfoFromStringT(abs, path)) {
-        if(ZFIOIsDir(abs)) {
-            zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(abs.pathType());
-            if(impl == zfnull) {
-                return zfnull;
-            }
-            zfobj<ZFMap> ret;
-            _ZFP_zfimportDir(ret, impl, ZFPathInfo(abs.pathType(), ""), path);
-            return ret;
-        }
-        else {
-            zfauto ret;
-            if(_ZFP_zfimportFile(ret, ZFInputForPathInfo(abs))) {
-                return ret;
-            }
-            else {
-                return zfnull;
-            }
-        }
+        // done
     }
     else if(pathInfo == zfnull) {
         if(ZFResIsDir(path)) {
-            zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(ZFPathType_res());
-            if(impl == zfnull) {
-                return zfnull;
-            }
-            zfobj<ZFMap> ret;
-            _ZFP_zfimportDir(ret, impl, ZFPathInfo(ZFPathType_res(), ""), path);
-            return ret;
+            abs.pathType(ZFPathType_res());
         }
         else {
-            zfauto ret;
-            if(_ZFP_zfimportFile(ret, ZFInputForRes(path))) {
-                return ret;
-            }
-            else {
-                return zfnull;
-            }
+            abs.pathType(ZFPathType_file());
         }
+        abs.pathData(path);
     }
     else {
-        zfautoT<ZFIOImpl> impl = ZFIOImplForPathType(pathInfo.pathType());
-        if(impl == zfnull) {
+        zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+        if(ioImpl == zfnull) {
             return zfnull;
         }
         zfstring pathData;
-        if(!impl->ioIsDir(pathInfo.pathData())) {
-            impl->ioToParent(pathData, pathInfo.pathData());
-            impl->ioToChild(pathData, pathData, path);
+        if(!ioImpl->ioIsDir(pathInfo.pathData())) {
+            ioImpl->ioToParent(pathData, pathInfo.pathData());
+            ioImpl->ioToChild(pathData, pathData, path);
         }
         else {
-            impl->ioToChild(pathData, pathInfo.pathData(), path);
+            ioImpl->ioToChild(pathData, pathInfo.pathData(), path);
         }
         if(!pathData) {
             return zfnull;
         }
-        if(impl->ioIsDir(pathData)) {
-            zfobj<ZFMap> ret;
-            _ZFP_zfimportDir(ret, impl, ZFPathInfo(pathInfo.pathType(), pathData), "");
-            return ret;
+        abs.pathType(pathInfo.pathType());
+        abs.pathData(pathData);
+    }
+
+    {
+        zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(abs.pathType());
+        if(!ioImpl
+                || !ioImpl->ioIsExist(abs.pathData())
+                ) {
+            return zfnull;
         }
-        else {
-            zfauto ret;
-            if(_ZFP_zfimportFile(ret, ZFInputForLocal(path, pathInfo))) {
-                return ret;
-            }
-            else {
-                return zfnull;
-            }
+        if(!ioImpl->ioIsDir(abs.pathData())) {
+            return _ZFP_zfimportFile(ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap, abs);
         }
     }
+
+    zfobj<ZFMap> retMap;
+    _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
+    ZFLISTENER_2(impl
+            , zfautoT<ZFMap>, retMap
+            , _ZFP_zfimportCacheMapType &, cacheMap
+            ) {
+        const ZFPathInfo &pathInfo = zfargs.param0().to<v_ZFPathInfo *>()->zfv;
+        const zfstring &relPath = zfargs.param1().to<v_zfstring *>()->zfv;
+        zfauto ret = _ZFP_zfimportFile(cacheMap, pathInfo);
+        if(ret) {
+            retMap->set(zfobj<v_zfstring>(relPath), ret);
+        }
+    } ZFLISTENER_END()
+    ZFIOForEachFile(abs, impl);
+    return retMap;
 }
 
 ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove

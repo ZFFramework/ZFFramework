@@ -2,236 +2,11 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void _ZFP_ZFStyleLoadErrorCallbackForConsole(ZF_IN const ZFArgs &zfargs) {
-    ZFStyleLoadErrorHint(ZFOutputDefault(), zfargs);
-}
-
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFListener, ZFStyleLoadErrorCallbackForConsole)
-ZFEXPORT_VAR_DEFINE(ZFListener, ZFStyleLoadErrorCallbackDefault, ZFStyleLoadErrorCallbackForConsole())
-ZFMETHOD_FUNC_DEFINE_2(void, ZFStyleLoadErrorHint
-        , ZFMP_IN_OUT(const ZFOutput &, output)
-        , ZFMP_IN(const ZFArgs &, zfargs)
-        ) {
-    v_ZFSerializableData *pos = zfargs.param0();
-    v_zfstring *errorHint = zfargs.param1();
-
-    output << "style load failed: ";
-
-    if(pos != zfnull) {
-        output << ZFSerializableDataToString(pos->zfv);
-    }
-    else {
-        output << zfargs.param0();
-    }
-
-    output << ", reason: " << errorHint << "\n";
-}
-
-// ============================================================
-static void _ZFP_ZFStyleLoad_ZFStyleSet(
-        ZF_IN const zfstring &styleKey
-        , ZF_IN ZFStyleable *styleValue
-        ) {
-    if(styleValue != zfnull && styleValue->classData()->classIsTypeOf(ZFStyleList::ClassData())) {
-        ZFStyleLoad(zfcast(ZFStyleList *, styleValue));
-    }
-    else {
-        ZFStyleSet(styleKey, styleValue);
-    }
-}
-static void _ZFP_ZFStyleLoadImpl(
-        ZF_IN ZFIOImpl *fileImpl
-        , ZF_IN const zfstring &pathType
-        , ZF_IN const zfstring &pathData
-        , ZF_IN const zfstring &relativePath
-        , ZF_IN_OUT zfbool &allSuccess
-        , ZF_IN const ZFListener &errorCallback
-        ) {
-    ZFIOFindData fd;
-    if(fileImpl->ioFindFirst(fd, pathData)) {
-        do {
-            if(!ZFStyleLoadCheck(fd.name())) {
-                continue;
-            }
-            zfstring relativePathTmp = relativePath;
-            if(!relativePathTmp.isEmpty()) {
-                relativePathTmp += '/';
-            }
-            relativePathTmp += fd.name();
-
-            zfstring pathDataChild;
-            fileImpl->ioToChild(pathDataChild, pathData, fd.name());
-            if(fd.isDir()) {
-                _ZFP_ZFStyleLoadImpl(fileImpl, pathType, pathDataChild, relativePathTmp, allSuccess, errorCallback);
-            }
-            else {
-                zfauto styleValue;
-                zfstring errorHint;
-                if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathType, pathDataChild)), &errorHint)) {
-                    allSuccess = zffalse;
-                    errorCallback.execute(ZFArgs()
-                            .param0(zfobj<v_ZFPathInfo>(ZFPathInfo(pathType, pathDataChild)))
-                            .param1(zfobj<v_zfstring>(errorHint))
-                            );
-                    continue;
-                }
-                ZFPathOfWithoutAllExtT(relativePathTmp, relativePathTmp);
-                _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
-            }
-        } while(fileImpl->ioFindNext(fd));
-        fileImpl->ioFindClose(fd);
-    }
-}
-
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadCheck
-        , ZFMP_IN(const zfstring &, fileName)
-        ) {
-    if(fileName.isEmpty()
-            || fileName[0] == '.'
-            || fileName[0] == '_'
-            ) {
-        return zffalse;
-    }
-    zfindex dotPos = zfstringFindReversely(fileName, ".");
-    if(dotPos != zfindexMax()
-            && (dotPos > 0 && fileName[dotPos - 1] == '_')
-            ) {
-        return zffalse;
-    }
-    return zftrue;
-}
-
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        ) {
-    zfautoT<ZFIOImpl> fileImpl = ZFIOImplForPathType(pathInfo.pathType());
-    if(fileImpl == zfnull) {
-        return zffalse;
-    }
-
-    if(fileImpl->ioIsExist(pathInfo.pathData())
-            && !fileImpl->ioIsDir(pathInfo.pathData())
-            ) {
-        zfstring fileName;
-        if(!fileImpl->ioToFileName(fileName, pathInfo.pathData())
-                || !fileName
-                ) {
-            return zffalse;
-        }
-        zfauto styleValue;
-        zfstring errorHint;
-        if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(pathInfo), &errorHint)) {
-            errorCallback.execute(ZFArgs()
-                    .param0(zfobj<v_ZFPathInfo>(pathInfo))
-                    .param1(zfobj<v_zfstring>(errorHint))
-                    );
-            return zffalse;
-        }
-        ZFPathOfWithoutAllExtT(fileName, fileName);
-        ZFStyleUpdateBlock();
-        _ZFP_ZFStyleLoad_ZFStyleSet(fileName, styleValue);
-        return zftrue;
-    }
-
-    ZFStyleUpdateBlock();
-    zfbool allSuccess = zftrue;
-    _ZFP_ZFStyleLoadImpl(fileImpl, pathInfo.pathType(), pathInfo.pathData(), zfnull, allSuccess, errorCallback);
-    return allSuccess;
-}
-
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadFile
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(const zfstring &, childPath)
-        ) {
-    zfautoT<ZFIOImpl> fileImpl = ZFIOImplForPathType(pathInfo.pathType());
-    if(fileImpl == zfnull) {
-        return zffalse;
-    }
-    zfstring childPathAbs;
-    if(fileImpl->ioIsExist(pathInfo.pathData())
-            && !fileImpl->ioIsDir(pathInfo.pathData())) {
-        childPathAbs = pathInfo.pathData();
-    }
-    else {
-        if(!(fileImpl->ioToChild(childPathAbs, pathInfo.pathData(), childPath)
-                    && fileImpl->ioIsExist(childPathAbs)
-                    && !fileImpl->ioIsDir(childPathAbs)
-                    )) {
-            return zffalse;
-        }
-    }
-
-    zfstring styleKey;
-    if(childPath.isEmpty()) {
-        if(!fileImpl->ioToFileName(styleKey, pathInfo.pathData())) {
-            return zffalse;
-        }
-    }
-    else {
-        ZFPathFormatT(styleKey, childPath);
-        while(!styleKey.isEmpty() && styleKey[0] == '/') {
-            styleKey.remove(0, 1);
-        }
-    }
-    if(!ZFPathOfWithoutAllExtT(styleKey, styleKey)
-            || styleKey.isEmpty()
-            ) {
-        return zffalse;
-    }
-
-    zfauto styleValue;
-    if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathInfo.pathType(), childPathAbs)))) {
-        return zffalse;
-    }
-    ZFStyleUpdateBlock();
-    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
-    return zftrue;
-}
-
-// ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
-        , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        ) {
-    zfbool allSuccess = zftrue;
-    if(serializableData.childCount() > 0) {
-        ZFStyleUpdateBlock();
-        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
-            const ZFSerializableData &child = serializableData.childAt(i);
-            zfstring styleKey = ZFSerializableUtil::checkPropertyName(child);
-            if(styleKey != zfnull) {
-                zfauto styleValueHolder;
-                zfstring errorHint;
-                if(!ZFObjectFromDataT(styleValueHolder, child, &errorHint)) {
-                    allSuccess = zffalse;
-                    errorCallback.execute(ZFArgs()
-                            .param0(zfobj<v_ZFSerializableData>(child))
-                            .param1(zfobj<v_zfstring>(errorHint))
-                            );
-                    continue;
-                }
-                ZFStyleable *styleValue = styleValueHolder;
-                if(styleValue != zfnull) {
-                    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
-                }
-            }
-        }
-    }
-    return allSuccess;
-}
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoad
-        , ZFMP_IN(ZFStyleList *, styleList)
-        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        ) {
-    if(styleList != zfnull && styleList->itemCount() > 0) {
-        ZFStyleUpdateBlock();
-        for(zfindex i = 0; i < styleList->itemCount(); ++i) {
-            _ZFP_ZFStyleLoad_ZFStyleSet(styleList->itemKeyAt(i), styleList->itemValueAt(i));
-        }
-    }
-    return zftrue;
-}
+ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleLoadItemBegin)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleLoadItemEnd)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleLoadItemError)
+ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFStyleListPrivate {
@@ -347,6 +122,167 @@ zfbool ZFStyleList::serializableOnSerializeToData(
         serializableData.child(elementData);
     }
     return zftrue;
+}
+
+// ============================================================
+static void _ZFP_ZFStyleLoad_ZFStyleSet(
+        ZF_IN const zfstring &styleKey
+        , ZF_IN ZFStyleable *styleValue
+        ) {
+    if(styleValue != zfnull && styleValue->classData()->classIsTypeOf(ZFStyleList::ClassData())) {
+        ZFStyleLoadItem(zfcast(ZFStyleList *, styleValue));
+    }
+    else {
+        ZFStyleSet(styleKey, styleValue);
+    }
+}
+
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadCheck
+        , ZFMP_IN(const zfstring &, fileName)
+        ) {
+    if(fileName.isEmpty()
+            || fileName[0] == '.'
+            || fileName[0] == '_'
+            ) {
+        return zffalse;
+    }
+    zfindex dotPos = zfstringFindReversely(fileName, ".");
+    if(dotPos != zfindexMax()
+            && (dotPos > 0 && fileName[dotPos - 1] == '_')
+            ) {
+        return zffalse;
+    }
+    return zftrue;
+}
+
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadItem
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        ) {
+    return ZFStyleLoadItem(ZFIOImplForPathType(pathInfo.pathType()), pathInfo.pathData(), childPath);
+}
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoadItem
+        , ZFMP_IN(ZFIOImpl *, ioImpl)
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        ) {
+    zfstring pathDataAbs;
+    zfstring styleKey;
+    if(childPath) {
+        if(ioImpl->ioIsDir(pathData)) {
+            if(!ioImpl->ioToChild(pathDataAbs, pathData, childPath)
+                    || !ZFPathOfWithoutAllExtT(styleKey, childPath)
+                    ) {
+                return zffalse;
+            }
+        }
+        else {
+            if(!ioImpl->ioToParent(pathDataAbs, pathData)
+                    || !ioImpl->ioToChild(pathDataAbs, pathDataAbs, childPath)
+                    || !ZFPathOfWithoutAllExtT(styleKey, childPath)
+                    ) {
+                return zffalse;
+            }
+        }
+    }
+    else {
+        if(!ioImpl->ioToFileName(styleKey, pathData)
+                || !ZFPathOfWithoutAllExtT(styleKey, styleKey)
+                ) {
+            return zffalse;
+        }
+        pathDataAbs = pathData;
+    }
+    zfobj<v_ZFInput> input(ZFInputForIOToken(ioImpl->ioOpen(pathDataAbs, v_ZFIOOpenOption::e_Read)));
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemBegin(), input);
+    zfauto styleValue;
+    zfstring errorHint;
+    if(!ZFObjectIOLoadT(styleValue, input->zfv, &errorHint)) {
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemError(), input, zfobj<v_zfstring>(errorHint));
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemEnd(), input, zfnull);
+        return zffalse;
+    }
+    ZFStyleUpdateBlock();
+    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemEnd(), input, styleValue);
+    return zftrue;
+}
+
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadItem
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        ) {
+    zfbool allSuccess = zftrue;
+    if(serializableData.childCount() > 0) {
+        ZFStyleUpdateBlock();
+        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
+            const ZFSerializableData &child = serializableData.childAt(i);
+            zfstring styleKey = ZFSerializableUtil::checkPropertyName(child);
+            if(styleKey != zfnull) {
+                zfauto styleValueHolder;
+                zfstring errorHint;
+                if(!ZFObjectFromDataT(styleValueHolder, child, &errorHint)) {
+                    allSuccess = zffalse;
+                    ZFGlobalObserver().observerNotify(
+                            ZFGlobalEvent::E_ZFStyleLoadItemError()
+                            , zfobj<v_ZFSerializableData>(child)
+                            , zfobj<v_zfstring>(errorHint)
+                            );
+                    continue;
+                }
+                ZFStyleable *styleValue = styleValueHolder;
+                if(styleValue != zfnull) {
+                    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
+                }
+            }
+        }
+    }
+    return allSuccess;
+}
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadItem
+        , ZFMP_IN(ZFStyleList *, styleList)
+        ) {
+    if(styleList != zfnull && styleList->itemCount() > 0) {
+        ZFStyleUpdateBlock();
+        for(zfindex i = 0; i < styleList->itemCount(); ++i) {
+            _ZFP_ZFStyleLoad_ZFStyleSet(styleList->itemKeyAt(i), styleList->itemValueAt(i));
+        }
+    }
+    return zftrue;
+}
+
+// ============================================================
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        ) {
+    zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+    if(!ioImpl) {
+        return zffalse;
+    }
+    zfstring pathDataBase = pathInfo.pathData();
+    zfbool allSuccess = zftrue;
+    ZFLISTENER_3(impl
+            , zfautoT<ZFIOImpl>, ioImpl
+            , zfstring, pathDataBase
+            , zfbool &, allSuccess
+            ) {
+        zfstring fileName;
+        const ZFPathInfo &pathInfo = zfargs.param0().to<v_ZFPathInfo *>()->zfv;
+        if(!ioImpl->ioToFileName(fileName, pathInfo.pathData())) {
+            return;
+        }
+        if(!ZFStyleLoadCheck(fileName)) {
+            zfargs.param0(zfnull);
+            return;
+        }
+        if(ioImpl->ioIsDir(pathInfo.pathData())) {
+            return;
+        }
+        if(!ZFStyleLoadItem(ioImpl, pathDataBase, zfargs.param1().to<v_zfstring *>()->zfv)) {
+            allSuccess = zffalse;
+        }
+    } ZFLISTENER_END()
+    ZFIOForEach(pathInfo, impl);
+    return allSuccess;
 }
 
 ZF_NAMESPACE_GLOBAL_END

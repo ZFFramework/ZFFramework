@@ -451,6 +451,12 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 /**
  * @brief see #ZFObject::observerNotify
  *
+ * notified when #ZFStyleUpdateBegin
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnUpdateBegin)
+/**
+ * @brief see #ZFObject::observerNotify
+ *
  * notified when #ZFStyleUpdateEnd
  */
 ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnUpdate)

@@ -9,6 +9,33 @@
 #include "ZFObjectIO.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
+/**
+ * @brief see #ZFObject::observerNotify
+ *
+ * notified during #ZFStyleLoad or #ZFStyleLoadItem\n
+ * param0 is a #v_ZFInput holds the item being load
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleLoadItemBegin)
+/**
+ * @brief see #ZFObject::observerNotify
+ *
+ * notified during #ZFStyleLoad or #ZFStyleLoadItem\n
+ * param0 is a #v_ZFInput holds the item being load,
+ * param1 is a #ZFObject holds the load result
+ * (may be #ZFStyleList which needs further load)
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleLoadItemEnd)
+/**
+ * @brief see #ZFObject::observerNotify
+ *
+ * notified during #ZFStyleLoad or #ZFStyleLoadItem\n
+ * param0 is a #v_ZFInput or #v_ZFSerializableData depends on load source,
+ * param1 is a #v_zfstring holds the error hint
+ */
+ZFEVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleLoadItemError)
+ZF_NAMESPACE_END(ZFGlobalEvent)
+
 // ============================================================
 zfclassFwd _ZFP_ZFStyleListPrivate;
 /**
@@ -58,17 +85,6 @@ private:
     _ZFP_ZFStyleListPrivate *d;
 };
 
-extern ZFLIB_ZFCore void _ZFP_ZFStyleLoadErrorCallbackForConsole(ZF_IN const ZFArgs &zfargs);
-/** @brief error callback for #ZFStyleLoad */
-#define ZFStyleLoadErrorCallbackForConsole() ZFCallbackForFunc(_ZFP_ZFStyleLoadErrorCallbackForConsole)
-/** @brief default error callback for #ZFStyleLoad */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, ZFListener, ZFStyleLoadErrorCallbackDefault)
-/** @brief util for impl to output error hint */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFStyleLoadErrorHint
-        , ZFMP_IN_OUT(const ZFOutput &, output)
-        , ZFMP_IN(const ZFArgs &, zfargs)
-        )
-
 // ============================================================
 /**
  * @brief check whether the item should be load as style
@@ -86,6 +102,47 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadCheck
         )
 
 /**
+ * @brief explicitly load specified file (bypass #ZFStyleLoadCheck), see #ZFStyleLoad
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        )
+/**
+ * @brief explicitly load specified file (bypass #ZFStyleLoadCheck), see #ZFStyleLoad
+ */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
+        , ZFMP_IN(ZFIOImpl *, ioImpl)
+        , ZFMP_IN(const zfstring &, pathData)
+        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        )
+
+/**
+ * @brief load multiple style from serializableData
+ *
+ * data should contains:
+ * @code
+ *   <ZFStyleList>
+ *       <Style1 prop="styleKey1" ... />
+ *       <Style2 prop="styleKey2" ... />
+ *   </ZFStyleList>
+ * @endcode
+ *
+ * the #ZFStyleList is a dummy holder to make the serializable data itself serializable
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        )
+
+/**
+ * @brief see #ZFStyleLoad
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
+        , ZFMP_IN(ZFStyleList *, styleList)
+        )
+
+// ============================================================
+/**
  * @brief util to load multiple styles from directory
  *
  * pathInfo must points to a file or directory that contains styles,
@@ -102,7 +159,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadCheck
  * all styles are loaded by #ZFObjectIOLoad,
  * and #ZFPathOfWithoutAllExt would be used to transform relative path to styleKey for #ZFStyleSet,
  * for example: `~/path1/path2/mybutton.123.xml` would result `path1/path2/mybutton` as styleKey,
- * you may also use #ZFStyleLoadFile for loading single one file in deep file tree\n
+ * you may also use #ZFStyleLoadItem for loading single one file in deep file tree\n
  * \n
  * if two item with same name exists,
  * the later one would override the first one
@@ -113,50 +170,10 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadCheck
  *
  * specially, if the loaded object is type of #ZFStyleList,
  * all of its contents would be appended to current style,
- * instead of setting #ZFStyleList itself as a style value\n
- * \n
- * the errorCallback would be called when anything load failed,
- * param0 would be the error location
- * (ZFPathInfo or ZFSerializableData or zfstring, depends on load method),
- * param1 would be a zfstring contains error hint
+ * instead of setting #ZFStyleList itself as a style value
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        )
-
-/**
- * @brief explicitly load specified file, see #ZFStyleLoad
- */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoadFile
-        , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(const zfstring &, childPath)
-        )
-
-/**
- * @brief load multiple style from serializableData
- *
- * data should contains:
- * @code
- *   <ZFStyleList>
- *       <Style1 prop="styleKey1" ... />
- *       <Style2 prop="styleKey2" ... />
- *   </ZFStyleList>
- * @endcode
- *
- * the #ZFStyleList is a dummy holder to make the serializable data itself serializable
- */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
-        , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
-        )
-
-/**
- * @brief see #ZFStyleLoad
- */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoad
-        , ZFMP_IN(ZFStyleList *, styleList)
-        , ZFMP_IN_OPT(const ZFListener &, errorCallback, ZFStyleLoadErrorCallbackDefault())
         )
 
 ZF_NAMESPACE_GLOBAL_END

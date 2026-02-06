@@ -363,12 +363,17 @@ void ZFStyleRemoveAll(void) {
 
 static zfint _ZFP_ZFStyleUpdateBeginFlag = 0;
 void ZFStyleUpdateBegin() {
+    zfbool needNotify = zffalse;
     ZFCoreMutexLock();
     ++_ZFP_ZFStyleUpdateBeginFlag;
     if(_ZFP_ZFStyleUpdateBeginFlag == 1) {
         _ZFP_ZFStyleUpdateFlag = zffalse;
+        needNotify = zftrue;
     }
     ZFCoreMutexUnlock();
+    if(needNotify) {
+        ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleOnUpdateBegin());
+    }
 }
 void ZFStyleUpdateEnd() {
     ZFCoreAssertWithMessageTrim(_ZFP_ZFStyleUpdateBeginFlag != 0,
@@ -385,6 +390,7 @@ void ZFStyleUpdateEnd() {
 }
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleOnUpdateBegin)
 ZFEVENT_GLOBAL_REGISTER(ZFStyleOnUpdate)
 ZFEVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)

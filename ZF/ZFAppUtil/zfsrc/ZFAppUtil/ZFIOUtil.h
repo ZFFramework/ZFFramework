@@ -13,10 +13,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief remove outdated files
  *
  * filter would be called before removing each file,
- * param0 is #v_ZFPathInfo that describe the child file or dir,
+ * param0 is #v_ZFPathInfo that describe the child file,
  * and param1 is a #v_zfstring stores the relative path to source pathInfo\n
  * impl can:
- * -  set #ZFArgs::param0 or #ZFArgs::param1 to null, to prevent checking children of the file or dir (if isRecursive)
  * -  set #ZFArgs::eventFiltered if process done
  * -  set #ZFArgs::result to any valid object, to prevent the file from being removed
  */
