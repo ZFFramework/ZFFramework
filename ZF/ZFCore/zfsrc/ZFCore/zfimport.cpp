@@ -27,7 +27,7 @@ static zfauto _ZFP_zfimportFile(
         ) {
     ZFInput input = ZFInputForPathInfo(pathInfo);
     if(!input) {
-        return zffalse;
+        return zfnull;
     }
     zfstring callbackId = input.callbackId();
     if(callbackId) {
