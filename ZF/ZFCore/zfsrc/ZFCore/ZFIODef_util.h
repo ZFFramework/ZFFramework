@@ -168,6 +168,25 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFIOTreePrint
         , ZFMP_IN_OPT(const zfchar *, indentToken, "  ")
         )
 
+/**
+ * @brief copy a file or directory from srcPath to dstPath
+ *
+ * if both src and dst exist, but one is file and another is dir,
+ * return zffalse\n
+ * merge directory if dst is an existing dir
+ * (if isForce not set,
+ * would return false if dst has a child file with the same path in src)\n
+ * override file if dst is an existing file and isForce is zftrue
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ * @note always use read/write to copy files
+ */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFIOCopy
+        , ZFMP_IN(const ZFPathInfo &, dstPath)
+        , ZFMP_IN(const ZFPathInfo &, srcPath)
+        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
+
 // ============================================================
 /**
  * @brief util method to loop each child file or dir in specified pathInfo
@@ -182,12 +201,13 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFIOTreePrint
  *   ZFIOForEach(pathInfo, fileCallback);
  * @endcode
  *
- * fileCallback's sender would be the #v_ZFIOFindData,
+ * fileCallback's sender would be the #v_ZFIOFindData
+ * (may be null if pathInfo already points to a file),
  * param0 is #v_ZFPathInfo that describe the child file or dir,
  * and param1 is a #v_zfstring stores the relative path to source pathInfo
  * (may be empty string if pathInfo already points to a file)\n
  * impl can:
- * -  set #ZFArgs::param0 or #ZFArgs::param1 to null, to prevent checking children of the file or dir (if isRecursive)
+ * -  set #ZFArgs::param0 to null, to prevent checking children of the file or dir (if isRecursive)
  * -  set #ZFArgs::eventFiltered if process done
  * -  set #ZFArgs::result, which would return as return value of this method,
  *   note: the result would be kept acrossing different calls
@@ -208,26 +228,6 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfauto, ZFIOForEachDir
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFListener &, fileCallback)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
-        )
-
-// ============================================================
-/**
- * @brief copy a file or directory from srcPath to dstPath
- *
- * if both src and dst exist, but one is file and another is dir,
- * return zffalse\n
- * merge directory if dst is an existing dir
- * (if isForce not set,
- * would return false if dst has a child file with the same path in src)\n
- * override file if dst is an existing file and isForce is zftrue
- * @note path must be well formed, use #ZFPathFormat if necessary
- * @note always use read/write to copy files
- */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFIOCopy
-        , ZFMP_IN(const ZFPathInfo &, dstPath)
-        , ZFMP_IN(const ZFPathInfo &, srcPath)
-        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
-        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 
 ZF_NAMESPACE_GLOBAL_END

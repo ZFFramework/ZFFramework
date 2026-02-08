@@ -494,6 +494,140 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFIOTreePrint
 }
 
 // ============================================================
+static zfbool _ZFP_ZFIOCopy_copyFile(
+        ZF_IN ZFIOImpl *dstImpl
+        , ZF_IN const ZFPathInfo &dstPath
+        , ZF_IN ZFIOImpl *srcImpl
+        , ZF_IN const ZFPathInfo &srcPath
+        , ZF_IN zfbool isForce
+        ) {
+    if(isForce) {
+        dstImpl->ioRemove(dstPath.pathData(), zffalse, isForce);
+    }
+    zfautoT<ZFIOToken> srcFd = srcImpl->ioOpen(srcPath.pathData(), v_ZFIOOpenOption::e_Read, zffalse);
+    if(srcFd == zfnull) {
+        return zffalse;
+    }
+    zfautoT<ZFIOToken> dstFd = dstImpl->ioOpen(dstPath.pathData(), v_ZFIOOpenOption::e_Write, zftrue);
+    if(dstFd == zfnull) {
+        return zffalse;
+    }
+
+    const zfindex bufSize = 1024;
+    zfchar buf[1024];
+    zfindex size = 0;
+    while((size = srcFd->ioRead(buf, bufSize)) > 0) {
+        if(dstFd->ioWrite(buf, size) < size) {
+            return zffalse;
+        }
+    }
+    return zftrue;
+}
+static zfbool _ZFP_ZFIOCopy_copyDir(
+        ZF_IN ZFIOImpl *dstImpl
+        , ZF_IN const ZFPathInfo &dstPath
+        , ZF_IN ZFIOImpl *srcImpl
+        , ZF_IN const ZFPathInfo &srcPath
+        , ZF_IN zfbool isForce
+        ) {
+    ZFCoreArray<zfstring> stacksDirSrc;
+    ZFCoreArray<zfstring> stacksDirDst;
+    stacksDirSrc.add(srcPath.pathData());
+    stacksDirDst.add(dstPath.pathData());
+
+    ZFPathInfo srcDir(srcPath.pathType(), zfnull);
+    ZFPathInfo dstDir(dstPath.pathType(), zfnull);
+    while(!stacksDirSrc.isEmpty()) {
+        srcDir.pathData(stacksDirSrc.removeLastAndGet());
+        dstDir.pathData(stacksDirDst.removeLastAndGet());
+
+        if(!dstImpl->ioPathCreate(dstDir.pathData(), zftrue)) {
+            return zffalse;
+        }
+
+        ZFIOFindData fd;
+        if(srcImpl->ioFindFirst(fd, srcDir.pathData())) {
+            ZFPathInfo srcTmp(srcDir.pathType(), zfnull);
+            ZFPathInfo dstTmp(dstDir.pathType(), zfnull);
+            do {
+                zfstring srcPathData;
+                srcImpl->ioToChild(srcPathData, srcDir.pathData(), fd.name());
+                srcTmp.pathData(srcPathData);
+
+                zfstring dstPathData;
+                dstImpl->ioToChild(dstPathData, dstDir.pathData(), fd.name());
+                dstTmp.pathData(dstPathData);
+
+                if(srcImpl->ioIsDir(srcTmp.pathData())) {
+                    stacksDirSrc.add(srcTmp.pathData());
+                    stacksDirDst.add(dstTmp.pathData());
+                }
+                else {
+                    if(!_ZFP_ZFIOCopy_copyFile(dstImpl, dstTmp, srcImpl, srcTmp, isForce)) {
+                        srcImpl->ioFindClose(fd);
+                        return zffalse;
+                    }
+                }
+            } while(srcImpl->ioFindNext(fd));
+            srcImpl->ioFindClose(fd);
+        }
+    } // while(!stacksDirSrc.isEmpty())
+
+    return zftrue;
+}
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFIOCopy
+        , ZFMP_IN(const ZFPathInfo &, dstPath)
+        , ZFMP_IN(const ZFPathInfo &, srcPath)
+        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        ) {
+    if(srcPath == zfnull || dstPath == zfnull) {
+        return zffalse;
+    }
+    zfautoT<ZFIOImpl> srcImpl = ZFIOImplForPathType(srcPath.pathType());
+    zfautoT<ZFIOImpl> dstImpl = ZFIOImplForPathType(dstPath.pathType());
+    if(srcImpl == zfnull) {
+        return zffalse;
+    }
+    if(dstImpl == zfnull) {
+        return zffalse;
+    }
+
+    if(!srcImpl->ioIsExist(srcPath.pathData())) {
+        return zffalse;
+    }
+    zfbool srcIsDir = srcImpl->ioIsDir(srcPath.pathData());
+    if(srcIsDir && !isRecursive) {
+        return zffalse;
+    }
+    zfbool dstExist = dstImpl->ioIsExist(dstPath.pathData());
+    zfbool dstIsDir = dstImpl->ioIsDir(dstPath.pathData());
+    if(dstExist && srcIsDir != dstIsDir) {
+        return zffalse;
+    }
+
+    {
+        zfstring dstPathDataParent;
+        if(srcIsDir) {
+            dstPathDataParent = dstPath.pathData();
+        }
+        else {
+            dstImpl->ioToParent(dstPathDataParent, dstPath.pathData());
+        }
+        if(!dstImpl->ioPathCreate(dstPathDataParent, zftrue)) {
+            return zffalse;
+        }
+    }
+
+    if(srcIsDir) {
+        return _ZFP_ZFIOCopy_copyDir(dstImpl, dstPath, srcImpl, srcPath, isForce);
+    }
+    else {
+        return _ZFP_ZFIOCopy_copyFile(dstImpl, dstPath, srcImpl, srcPath, isForce);
+    }
+}
+
+// ============================================================
 static void _ZFP_ZFIOForEach(
         ZF_IN_OUT ZFArgs &zfargs
         , ZF_IN ZFIOImpl *ioImpl
@@ -542,11 +676,10 @@ static void _ZFP_ZFIOForEach(
                     break;
                 }
             }
+            v_ZFPathInfo *tmp = zfargs.param0();
             if(isRecursive && fd->zfv.isDir()
-                    && zfargs.param0()
-                    && zfargs.param0().to<v_ZFPathInfo *>()->zfv
-                    && zfargs.param1()
-                    && zfargs.param1().to<v_zfstring *>()->zfv
+                    && tmp
+                    && tmp->zfv
                     ) {
                 _ZFP_ZFIOForEach(
                         zfargs
@@ -626,142 +759,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOForEachDir
     ZFArgs zfargs;
     _ZFP_ZFIOForEach(zfargs, ioImpl, fileCallback, pathInfo.pathType(), pathInfo.pathData(), "", isRecursive, zffalse, zftrue);
     return zfargs.result();
-}
-
-// ============================================================
-static zfbool _ZFP_ZFIOCopy_copyFile(
-        ZF_IN ZFIOImpl *dstImpl
-        , ZF_IN const ZFPathInfo &dstPath
-        , ZF_IN ZFIOImpl *srcImpl
-        , ZF_IN const ZFPathInfo &srcPath
-        , ZF_IN zfbool isForce
-        ) {
-    if(isForce) {
-        dstImpl->ioRemove(dstPath.pathData(), zffalse, isForce);
-    }
-    zfautoT<ZFIOToken> srcFd = srcImpl->ioOpen(srcPath.pathData(), v_ZFIOOpenOption::e_Read, zffalse);
-    if(srcFd == zfnull) {
-        return zffalse;
-    }
-    zfautoT<ZFIOToken> dstFd = dstImpl->ioOpen(dstPath.pathData(), v_ZFIOOpenOption::e_Write, zftrue);
-    if(dstFd == zfnull) {
-        return zffalse;
-    }
-
-    const zfindex bufSize = 1024;
-    zfchar buf[1024];
-    zfindex size = 0;
-    while((size = srcFd->ioRead(buf, bufSize)) > 0) {
-        if(dstFd->ioWrite(buf, size) < size) {
-            return zffalse;
-        }
-    }
-    return zftrue;
-}
-
-static zfbool _ZFP_ZFIOCopy_copyDir(
-        ZF_IN ZFIOImpl *dstImpl
-        , ZF_IN const ZFPathInfo &dstPath
-        , ZF_IN ZFIOImpl *srcImpl
-        , ZF_IN const ZFPathInfo &srcPath
-        , ZF_IN zfbool isForce
-        ) {
-    ZFCoreArray<zfstring> stacksDirSrc;
-    ZFCoreArray<zfstring> stacksDirDst;
-    stacksDirSrc.add(srcPath.pathData());
-    stacksDirDst.add(dstPath.pathData());
-
-    ZFPathInfo srcDir(srcPath.pathType(), zfnull);
-    ZFPathInfo dstDir(dstPath.pathType(), zfnull);
-    while(!stacksDirSrc.isEmpty()) {
-        srcDir.pathData(stacksDirSrc.removeLastAndGet());
-        dstDir.pathData(stacksDirDst.removeLastAndGet());
-
-        if(!dstImpl->ioPathCreate(dstDir.pathData(), zftrue)) {
-            return zffalse;
-        }
-
-        ZFIOFindData fd;
-        if(srcImpl->ioFindFirst(fd, srcDir.pathData())) {
-            ZFPathInfo srcTmp(srcDir.pathType(), zfnull);
-            ZFPathInfo dstTmp(dstDir.pathType(), zfnull);
-            do {
-                zfstring srcPathData;
-                srcImpl->ioToChild(srcPathData, srcDir.pathData(), fd.name());
-                srcTmp.pathData(srcPathData);
-
-                zfstring dstPathData;
-                dstImpl->ioToChild(dstPathData, dstDir.pathData(), fd.name());
-                dstTmp.pathData(dstPathData);
-
-                if(srcImpl->ioIsDir(srcTmp.pathData())) {
-                    stacksDirSrc.add(srcTmp.pathData());
-                    stacksDirDst.add(dstTmp.pathData());
-                }
-                else {
-                    if(!_ZFP_ZFIOCopy_copyFile(dstImpl, dstTmp, srcImpl, srcTmp, isForce)) {
-                        srcImpl->ioFindClose(fd);
-                        return zffalse;
-                    }
-                }
-            } while(srcImpl->ioFindNext(fd));
-            srcImpl->ioFindClose(fd);
-        }
-    } // while(!stacksDirSrc.isEmpty())
-
-    return zftrue;
-}
-
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFIOCopy
-        , ZFMP_IN(const ZFPathInfo &, dstPath)
-        , ZFMP_IN(const ZFPathInfo &, srcPath)
-        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
-        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        ) {
-    if(srcPath == zfnull || dstPath == zfnull) {
-        return zffalse;
-    }
-    zfautoT<ZFIOImpl> srcImpl = ZFIOImplForPathType(srcPath.pathType());
-    zfautoT<ZFIOImpl> dstImpl = ZFIOImplForPathType(dstPath.pathType());
-    if(srcImpl == zfnull) {
-        return zffalse;
-    }
-    if(dstImpl == zfnull) {
-        return zffalse;
-    }
-
-    if(!srcImpl->ioIsExist(srcPath.pathData())) {
-        return zffalse;
-    }
-    zfbool srcIsDir = srcImpl->ioIsDir(srcPath.pathData());
-    if(srcIsDir && !isRecursive) {
-        return zffalse;
-    }
-    zfbool dstExist = dstImpl->ioIsExist(dstPath.pathData());
-    zfbool dstIsDir = dstImpl->ioIsDir(dstPath.pathData());
-    if(dstExist && srcIsDir != dstIsDir) {
-        return zffalse;
-    }
-
-    {
-        zfstring dstPathDataParent;
-        if(srcIsDir) {
-            dstPathDataParent = dstPath.pathData();
-        }
-        else {
-            dstImpl->ioToParent(dstPathDataParent, dstPath.pathData());
-        }
-        if(!dstImpl->ioPathCreate(dstPathDataParent, zftrue)) {
-            return zffalse;
-        }
-    }
-
-    if(srcIsDir) {
-        return _ZFP_ZFIOCopy_copyDir(dstImpl, dstPath, srcImpl, srcPath, isForce);
-    }
-    else {
-        return _ZFP_ZFIOCopy_copyFile(dstImpl, dstPath, srcImpl, srcPath, isForce);
-    }
 }
 
 ZF_NAMESPACE_GLOBAL_END
