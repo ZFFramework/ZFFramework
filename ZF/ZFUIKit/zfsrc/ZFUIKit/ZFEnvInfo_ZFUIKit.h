@@ -61,12 +61,12 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFEnvDeviceUIType, deviceUIType
 /**
  * @brief locale info, e.g. "CN"
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeInfo)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeId)
 
 /**
  * @brief locale language info, e.g. "zh"
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeLangInfo)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfstring, localeLangId)
 
 ZF_NAMESPACE_END(ZFEnvInfo)
 ZF_NAMESPACE_GLOBAL_END

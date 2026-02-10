@@ -115,6 +115,7 @@ public:
                 ) {
             finishCallback.execute(ZFArgs()
                     .param0(zfnull)
+                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
                     );
             return zffalse;
         }
@@ -128,6 +129,7 @@ public:
             }
             finishCallback.execute(ZFArgs()
                     .param0(zfargs.result())
+                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
                     );
             return zffalse;
         }
@@ -136,6 +138,7 @@ public:
         if(!_ioImpl->ioFindFirst(fd, pathInfo.pathData())) {
             finishCallback.execute(ZFArgs()
                     .param0(zfnull)
+                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
                     );
             return zffalse;
         }
@@ -167,27 +170,7 @@ public:
     }
     zfoverride
     virtual void stop(void) {
-        if(!_started) {
-            return;
-        }
-        _started = zffalse;
-
-        if(_customTask) {
-            _customTask->stop();
-            _customTask = zfnull;
-        }
-        for(zfindex i = _fdStack->count() - 1; i != zfindexMax(); --i) {
-            v_ZFIOFindData *fd = _fdStack->get(i);
-            _ioImpl->ioFindClose(fd->zfv);
-        }
-
-        _ioImpl = zfnull;
-        _pathDataBase = zfnull;
-        _fdStack->removeAll();
-        _parentRelPathStack->removeAll();
-        _zfargsCacheReset();
-        _fileCallback = zfnull;
-        _finishCallback = zfnull;
+        _notifyFinish(v_ZFResultType::e_Cancel);
     }
 private:
     zfautoT<ZFIOImpl> _ioImpl;
@@ -213,12 +196,34 @@ private:
             .eventFiltered(zffalse)
             ;
     }
-    void _notifyFinish(void) {
+    void _notifyFinish(ZF_IN_OPT ZFResultType resultType = v_ZFResultType::e_Success) {
+        if(!_started) {
+            return;
+        }
+        _started = zffalse;
         ZFListener finishCallback = _finishCallback;
         zfauto result = _zfargsCache.result();
-        this->stop();
+
+        if(_customTask) {
+            _customTask->stop();
+            _customTask = zfnull;
+        }
+        for(zfindex i = _fdStack->count() - 1; i != zfindexMax(); --i) {
+            v_ZFIOFindData *fd = _fdStack->get(i);
+            _ioImpl->ioFindClose(fd->zfv);
+        }
+
+        _ioImpl = zfnull;
+        _pathDataBase = zfnull;
+        _fdStack->removeAll();
+        _parentRelPathStack->removeAll();
+        _zfargsCacheReset();
+        _fileCallback = zfnull;
+        _finishCallback = zfnull;
+
         finishCallback.execute(ZFArgs()
                 .param0(result)
+                .param1(zfobj<v_ZFResultType>(resultType))
                 );
     }
     void _next(void) {
@@ -385,6 +390,131 @@ ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFTaskId>, ZFIOForEachDirAsync
     else {
         return zfnull;
     }
+}
+
+// ============================================================
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, ZFStyleLoadAsync
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        ) {
+    ZFStyleUpdateBegin();
+    ZFLISTENER(impl) {
+        const ZFIOFindData &fd = zfargs.sender().to<v_ZFIOFindData *>()->zfv;
+        const ZFPathInfo &pathInfo = zfargs.param0().to<v_ZFPathInfo *>()->zfv;
+        const zfstring &relPath = zfargs.param0().to<v_zfstring *>()->zfv;
+        if(!ZFStyleLoadCheck(fd.name())) {
+            zfargs.param0(zfnull);
+            return;
+        }
+        if(!fd.isDir()) {
+            ZFStyleLoadItem(pathInfo, relPath);
+        }
+    } ZFLISTENER_END()
+    ZFLISTENER_1(onFinish
+            , ZFListener, finishCallback
+            ) {
+        ZFStyleUpdateEnd();
+        finishCallback.execute(ZFArgs()
+                .param0(zfargs.param0())
+                );
+    } ZFLISTENER_END()
+    return ZFIOForEachAsync(pathInfo, impl, onFinish);
+}
+
+// ============================================================
+ZFOBJECT_REGISTER(ZFStyleLoadAsyncTask)
+
+ZFMETHOD_DEFINE_1(ZFStyleLoadAsyncTask, void, child
+        , ZFMP_IN(const ZFPathInfo &, child)
+        ) {
+    if(child) {
+        if(!this->taskList()) {
+            this->taskList(zfobj<ZFArray>());
+        }
+        this->taskList()->add(zfobj<v_ZFPathInfo>(child));
+    }
+}
+ZFMETHOD_DEFINE_1(ZFStyleLoadAsyncTask, void, child
+        , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, child)
+        ) {
+    if(!this->taskList()) {
+        this->taskList(zfobj<ZFArray>());
+    }
+    for(zfindex i = 0; i < child.count(); ++i) {
+        this->taskList()->add(zfobj<v_ZFPathInfo>(child[i]));
+    }
+}
+ZFMETHOD_DEFINE_1(ZFStyleLoadAsyncTask, void, child
+        , ZFMP_IN(ZFArray *, child)
+        ) {
+    if(!this->taskList()) {
+        this->taskList(zfobj<ZFArray>());
+    }
+    this->taskList()->addFrom(child);
+}
+
+ZFOBJECT_ON_INIT_DEFINE_1(ZFStyleLoadAsyncTask
+        , ZFMP_IN(const ZFPathInfo &, child)
+        ) {
+    this->child(child);
+}
+ZFOBJECT_ON_INIT_DEFINE_1(ZFStyleLoadAsyncTask
+        , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, child)
+        ) {
+    this->child(child);
+}
+ZFOBJECT_ON_INIT_DEFINE_1(ZFStyleLoadAsyncTask
+        , ZFMP_IN(ZFArray *, child)
+        ) {
+    this->child(child);
+}
+
+void ZFStyleLoadAsyncTask::taskOnStart(void) {
+    zfsuper::taskOnStart();
+    if(this->taskList() == zfnull || this->taskList()->isEmpty()) {
+        this->notifySuccess();
+        return;
+    }
+    zfobj<ZFArray> taskList(this->taskList());
+    zfclassNotPOD _Impl {
+    public:
+        static void next(
+                ZF_IN const zfweakT<zfself> &owner
+                , ZF_IN const zfautoT<ZFArray> &taskList
+                , ZF_IN zfindex index
+                ) {
+            if(index >= taskList->count()) {
+                owner->stop(v_ZFResultType::e_Success);
+                return;
+            }
+            v_ZFPathInfo *pathInfo = taskList->get(index);
+            if(pathInfo == zfnull || pathInfo->zfv.isEmpty()) {
+                next(owner, taskList, index + 1);
+                return;
+            }
+
+            ZFLISTENER_3(onFinish
+                    , zfweakT<zfself>, owner
+                    , zfautoT<ZFArray>, taskList
+                    , zfindex, index
+                    ) {
+                ZFResultType resultType = zfargs.param0().to<v_ZFResultType *>()->zfv();
+                owner->_task = zfnull;
+                if(resultType != v_ZFResultType::e_Cancel) {
+                    next(owner, taskList, index + 1);
+                }
+            } ZFLISTENER_END()
+            owner->_task = ZFStyleLoadAsync(pathInfo->zfv, onFinish);
+        }
+    };
+    _Impl::next(this, taskList, 0);
+}
+void ZFStyleLoadAsyncTask::taskOnStop(void) {
+    if(_task) {
+        _task->stop();
+        _task = zfnull;
+    }
+    zfsuper::taskOnStop();
 }
 
 ZF_NAMESPACE_GLOBAL_END

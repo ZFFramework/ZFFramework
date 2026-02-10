@@ -20,19 +20,19 @@ ZFMETHOD_FUNC_DEFINE_1(ZFEnvDeviceUIType, deviceUIType
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_0(zfstring, localeInfo) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, localeId) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_localeInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_localeInfo);
     if(impl != zfnull) {
-        return impl->localeInfo();
+        return impl->localeId();
     }
     else {
         return zfnull;
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, localeLangInfo) {
-    ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_localeLangInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_localeLangInfo);
+ZFMETHOD_FUNC_DEFINE_0(zfstring, localeLangId) {
+    ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_localeInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_localeInfo);
     if(impl != zfnull) {
-        return impl->localeLangInfo();
+        return impl->localeLangId();
     }
     else {
         return zfnull;
@@ -44,13 +44,13 @@ ZF_NAMESPACE_END(ZFEnvInfo)
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummary_ZFUIKit, ZFLevelZFFrameworkNormal) {
     ZFEnvInfo::envSummaryCallbackRegister("deviceUIType", zfself::deviceUITypeSummary);
-    ZFEnvInfo::envSummaryCallbackRegister("localeInfo", ZFEnvInfo::localeInfo);
-    ZFEnvInfo::envSummaryCallbackRegister("localeLangInfo", ZFEnvInfo::localeLangInfo);
+    ZFEnvInfo::envSummaryCallbackRegister("localeId", ZFEnvInfo::localeId);
+    ZFEnvInfo::envSummaryCallbackRegister("localeLangId", ZFEnvInfo::localeLangId);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFEnvSummary_ZFUIKit) {
     ZFEnvInfo::envSummaryCallbackUnregister("deviceUIType");
-    ZFEnvInfo::envSummaryCallbackUnregister("localeInfo");
-    ZFEnvInfo::envSummaryCallbackUnregister("localeLangInfo");
+    ZFEnvInfo::envSummaryCallbackUnregister("localeId");
+    ZFEnvInfo::envSummaryCallbackUnregister("localeLangId");
 }
 public:
     static zfstring deviceUITypeSummary(void) {

@@ -18,9 +18,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  *
  * what it does:
- * -# resolve #ZFAppEntry::res and #ZFAppEntry::resPack
+ * -# resolve #ZFAppEntry::res and #ZFAppEntry::resPack immediately
  * -# notify #ZFAppEntry::E_OnLoadState
  * -# load #ZFState
+ * -# load #ZFAppLangInit
+ * -# load #ZFAppSkinInit
  * -# notify #ZFAppEntry::E_OnLoadEntry
  * -# load main entry, by this order,
  *   all of them can return `zftrue` to prevent further load task of this group:

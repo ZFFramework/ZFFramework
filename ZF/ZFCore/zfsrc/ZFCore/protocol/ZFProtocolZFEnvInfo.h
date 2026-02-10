@@ -17,13 +17,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFEnvInfo_systemInfo)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
-    /**
-     * @brief name of native system, e.g. "iOS", empty if not available
-     */
+    /** @brief see #ZFEnvInfo::systemName */
     virtual zfstring systemName(void) {return zfnull;}
-    /**
-     * @brief version of native system, e.g. "9.0.1", empty if not available
-     */
+    /** @brief see #ZFEnvInfo::systemVersion */
     virtual zfstring systemVersion(void) {return zfnull;}
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_systemInfo)
 
@@ -34,13 +30,9 @@ ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_systemInfo)
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFEnvInfo_frameworkInfo)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
-    /**
-     * @brief name of native framework, e.g. "Qt", empty if not available
-     */
+    /** @brief see #ZFEnvInfo::frameworkName */
     virtual zfstring frameworkName(void) {return zfnull;}
-    /**
-     * @brief version of native framework, e.g. "9.0.1", empty if not available
-     */
+    /** @brief see #ZFEnvInfo::frameworkVersion */
     virtual zfstring frameworkVersion(void) {return zfnull;}
 ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_frameworkInfo)
 

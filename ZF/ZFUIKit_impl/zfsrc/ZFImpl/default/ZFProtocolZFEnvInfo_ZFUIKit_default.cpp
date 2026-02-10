@@ -26,7 +26,7 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_deviceUIInfoImpl_default)
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_localeInfoImpl_default, ZFEnvInfo_localeInfo, v_ZFProtocolLevel::e_Default)
 public:
     zfoverride
-    virtual zfstring localeInfo(void) {
+    virtual zfstring localeId(void) {
         zfstring ret;
 
         #if ZF_ENV_sys_Windows
@@ -78,12 +78,8 @@ public:
 
         return ret;
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeInfoImpl_default)
-
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_localeLangInfoImpl_default, ZFEnvInfo_localeLangInfo, v_ZFProtocolLevel::e_Default)
-public:
     zfoverride
-    virtual zfstring localeLangInfo(void) {
+    virtual zfstring localeLangId(void) {
         zfstring ret;
 
         #if ZF_ENV_sys_Windows
@@ -129,7 +125,7 @@ public:
 
         return ret;
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeLangInfoImpl_default)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_localeInfoImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -6,11 +6,11 @@ import java.util.Locale;
 
 public class ZFEnvInfo_ZFUIKit {
 
-    public static String native_localeInfo() {
+    public static String native_localeId() {
         return _locale().getCountry();
     }
 
-    public static String native_localeLangInfo() {
+    public static String native_localeLangId() {
         return _locale().getLanguage();
     }
 

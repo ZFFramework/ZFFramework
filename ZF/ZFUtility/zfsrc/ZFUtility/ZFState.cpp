@@ -162,7 +162,12 @@ private:
         ZFObjectLocker(owner);
         for(zfiter it = this->pending.iter(); it; ++it) {
             const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> &item = *(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)this->pending.iterValue(it);
-            this->m.set(item->key, item);
+            if(item->value) {
+                this->m.set(item->key, item);
+            }
+            else {
+                this->m.remove(item->key);
+            }
         }
         this->pending.removeAll();
         this->changed = zftrue;
@@ -419,11 +424,16 @@ ZFMETHOD_DEFINE_3(ZFState, void, set
     if(this->ready()) {
         {
             ZFObjectLocker(this);
-            _ZFP_ZFStateData *data = zfpoolNew(_ZFP_ZFStateData);
-            data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
-            data->key = key;
-            data->value = value;
-            d->m.set(key, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>(data));
+            if(value) {
+                _ZFP_ZFStateData *data = zfpoolNew(_ZFP_ZFStateData);
+                data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
+                data->key = key;
+                data->value = value;
+                d->m.set(key, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>(data));
+            }
+            else {
+                d->m.remove(key);
+            }
         }
         d->saveCheck(this);
     }

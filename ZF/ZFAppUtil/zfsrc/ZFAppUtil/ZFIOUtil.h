@@ -57,8 +57,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFIORemoveEmptyDir
  * -  set #ZFArgs::param0 to null, to prevent checking children of the file or dir (if isRecursive)
  * -  set #ZFArgs::param0 to a #ZFTask, to perform custom task
  * -  set #ZFArgs::eventFiltered if process done
- * -  set #ZFArgs::result, which would be passed as param0 to finishCallback,
+ * -  set #ZFArgs::result, which would be passed as param1 to finishCallback,
  *   note: the result would be kept acrossing different calls
+ *
+ * finishCallback's param0 would be a #v_ZFResultType indicates result type,
+ * param1 would be the result passed from fileCallback
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFIOForEachAsync
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
@@ -80,6 +83,82 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFIOForEachDirAsync
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         )
+
+// ============================================================
+/**
+ * @brief async version of #ZFStyleLoad
+ *
+ * all items would still be loaded in main thread,
+ * but would wait some time between each load task,
+ * so that it's possible to update your UI during heavy load task,
+ * item load events:
+ * -  #ZFGlobalEvent::E_ZFStyleLoadItemBegin
+ * -  #ZFGlobalEvent::E_ZFStyleLoadItemEnd
+ *
+ * finishCallback's param0 would be a #v_ZFResultType indicates result type
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFStyleLoadAsync
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        )
+
+/**
+ * @brief util to perform #ZFStyleLoadAsync
+ */
+zfclass ZFLIB_ZFAppUtil ZFStyleLoadAsyncTask : zfextend ZFTask {
+    ZFOBJECT_DECLARE(ZFStyleLoadAsyncTask, ZFTask)
+
+public:
+    /**
+     * @brief array of #v_ZFPathInfo
+     */
+    ZFPROPERTY_RETAIN(zfanyT<ZFArray>, taskList)
+
+public:
+    /**
+     * @brief util to add task
+     */
+    ZFMETHOD_DECLARE_1(void, child
+            , ZFMP_IN(const ZFPathInfo &, child)
+            )
+    /**
+     * @brief util to add task
+     */
+    ZFMETHOD_DECLARE_1(void, child
+            , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, child)
+            )
+    /**
+     * @brief util to add task
+     */
+    ZFMETHOD_DECLARE_1(void, child
+            , ZFMP_IN(ZFArray *, child)
+            )
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
+    /** @brief construct with task */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(const ZFPathInfo &, child)
+            )
+    /** @brief construct with task */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, child)
+            )
+    /** @brief construct with task */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(ZFArray *, child)
+            )
+protected:
+    zfoverride
+    virtual void taskOnStart(void);
+    zfoverride
+    virtual void taskOnStop(void);
+private:
+    zfautoT<ZFTaskId> _task;
+};
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOUtil_h_

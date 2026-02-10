@@ -1,5 +1,7 @@
 #include "ZFAppEntry.h"
 #include "ZFAppRes.h"
+#include "ZFAppLang.h"
+#include "ZFAppSkin.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -114,6 +116,16 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
             ZFState::instance()->load(onFinish);
         } ZFLISTENER_END()
         task->child(loadImpl);
+    }
+
+    { // ZFAppLangInit
+        task->child(ZFAppLangInitTask());
+        task->child(zfobj<ZFWaitTask>());
+    }
+
+    { // ZFAppSkinInit
+        task->child(ZFAppSkinInitTask());
+        task->child(zfobj<ZFWaitTask>());
     }
 
     { // custom task

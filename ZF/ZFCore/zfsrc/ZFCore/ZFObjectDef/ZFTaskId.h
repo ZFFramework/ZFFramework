@@ -21,6 +21,30 @@ public:
 };
 
 /**
+ * @brief dummy task id that only holds a stop flag value
+ */
+zfclass ZFLIB_ZFCore ZFTaskIdDummy : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFTaskIdDummy, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
+public:
+    /** @brief for impl to implement #ZFTaskId::stop */
+    virtual inline void stopped(ZF_IN const zfbool &v) {
+        _stopped = v;
+    }
+    /** @brief see #stopImpl */
+    virtual inline const zfbool &stopped(void) {
+        return _stopped;
+    }
+public:
+    zfoverride
+    virtual void stop(void) {
+        _stopped = zftrue;
+    }
+private:
+    zfbool _stopped;
+};
+
+/**
  * @brief basic task id for impl
  */
 zfclass ZFLIB_ZFCore ZFTaskIdBasic : zfextend ZFObject, zfimplement ZFTaskId {
