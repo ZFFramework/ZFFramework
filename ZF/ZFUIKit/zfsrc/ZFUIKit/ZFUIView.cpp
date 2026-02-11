@@ -1443,13 +1443,15 @@ void ZFUIView::nativeImplView(
         ZF_IN void *nativeImplView
         , ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback
         ) {
-    void *nativeImplViewOld = d->nativeImplView;
-    if(d->nativeImplView && d->nativeImplViewDeleteCallback) {
-        d->nativeImplViewDeleteCallback(this);
+    if(d->nativeImplView != nativeImplView || d->nativeImplViewDeleteCallback != nativeImplViewDeleteCallback) {
+        void *nativeImplViewOld = d->nativeImplView;
+        if(d->nativeImplView && d->nativeImplViewDeleteCallback) {
+            d->nativeImplViewDeleteCallback(this);
+        }
+        d->nativeImplView = nativeImplView;
+        d->nativeImplViewDeleteCallback = nativeImplViewDeleteCallback;
+        ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplView(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.count());
     }
-    d->nativeImplView = nativeImplView;
-    d->nativeImplViewDeleteCallback = nativeImplViewDeleteCallback;
-    ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplView(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.count());
 }
 ZFMETHOD_DEFINE_0(ZFUIView, const ZFUIMargin &, nativeImplViewMargin) {
     return d->nativeImplViewMargin;

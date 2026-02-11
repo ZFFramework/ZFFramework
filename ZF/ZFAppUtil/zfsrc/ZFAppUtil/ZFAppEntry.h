@@ -21,8 +21,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# resolve #ZFAppEntry::res and #ZFAppEntry::resPack immediately
  * -# notify #ZFAppEntry::E_OnLoadState
  * -# load #ZFState
- * -# load #ZFAppLangInit
- * -# load #ZFAppSkinInit
+ * -# notify #ZFAppEntry::E_OnLoadLang
+ * -# load #ZFAppLangLoad
+ * -# notify #ZFAppEntry::E_OnLoadSkin
+ * -# load #ZFAppSkinLoad
+ * -# load custom #task
  * -# notify #ZFAppEntry::E_OnLoadEntry
  * -# load main entry, by this order,
  *   all of them can return `zftrue` to prevent further load task of this group:
@@ -41,6 +44,10 @@ public:
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadState)
     /** @brief see #ZFAppEntry */
+    ZFEVENT(OnLoadLang)
+    /** @brief see #ZFAppEntry */
+    ZFEVENT(OnLoadSkin)
+    /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadEntry)
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadStop)
@@ -48,6 +55,14 @@ public:
 public:
     /** @brief load event helper */
     ZFMETHOD_DECLARE_1(void, onLoadState
+            , ZFMP_IN(const ZFListener &, callback)
+            )
+    /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadLang
+            , ZFMP_IN(const ZFListener &, callback)
+            )
+    /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadSkin
             , ZFMP_IN(const ZFListener &, callback)
             )
     /** @brief load event helper */
@@ -104,6 +119,12 @@ public:
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
             , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
             )
+
+public:
+    /** @brief empty to use default */
+    ZFPROPERTY_ASSIGN(ZFPathInfo, langPath)
+    /** @brief empty to use default */
+    ZFPROPERTY_ASSIGN(ZFPathInfo, skinPath)
 
     // ============================================================
 public:

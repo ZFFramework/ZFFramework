@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief skin info for #ZFAppSkinDataList
+ * @brief skin info for #ZFAppSkinList
  */
 zfclass ZFLIB_ZFAppUtil ZFAppSkinData : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFAppSkinData, ZFObject)
@@ -23,6 +23,12 @@ public:
 public:
     /** @brief list of items to load */
     zfobj<ZFArray> resList; // v_ZFPathInfo
+
+protected:
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret += this->skinId();
+    }
 };
 
 /**
@@ -42,8 +48,8 @@ public:
  *       with this format:
  *       @code
  *         <ZFStyleList>
- *             <zfstring prop="skin_<skinId>" value="<skinName>" />
- *             <zfstring prop="skin_your_skin_id" value="YourSkinName" />
+ *             <zfstring prop="skinName_<skinId>" value="<skinName>" />
+ *             <zfstring prop="skinName_your_skin_id" value="YourSkinName" />
  *             ...
  *         </ZFStyleList>
  *       @endcode
@@ -51,14 +57,11 @@ public:
  *
  * typical usage:
  * @code
- *   // init and load default skin
- *   ZFAppSkinInit();
- *
  *   // list available skin
- *   zfautoT<ZFArray> skinList = ZFAppSkinDataList();
+ *   zfautoT<ZFArray> skinList = ZFAppSkinList();
  *
  *   // get current skin, empty for default
- *   zfstring cur = ZFAppSkinCur();
+ *   zfstring cur = ZFAppSkin();
  *
  *   // let user to choose,
  *   // or fallback to use default
@@ -74,37 +77,33 @@ public:
  *   v->propStyle("text", "some_style_key");
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppSkinDataList)
-/**
- * @brief see #ZFAppSkinDataList
- *
- * finishCallback's param0 would be a #v_ZFResultType indicates result
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppSkinInit
-        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppSkinList
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 /**
- * @brief see #ZFAppSkinDataList
+ * @brief see #ZFAppSkinList
  *
+ * empty skinId would load previous #ZFAppSkin stored in #ZFState\n
  * finishCallback's param0 would be a #v_ZFResultType indicates result
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppSkinLoad
-        , ZFMP_IN(const zfstring &, skinId)
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppSkinLoad
+        , ZFMP_IN_OPT(const zfstring &, skinId, zfnull)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
-/** @brief see #ZFAppSkinDataList */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, const zfstring &, ZFAppSkinCur)
+/** @brief see #ZFAppSkinList */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfstring, ZFAppSkin)
 
 // ============================================================
 /**
- * @brief util to create a task for #ZFAppSkinInit
- */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppSkinInitTask)
-/**
  * @brief util to create a task for #ZFAppSkinLoad
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppSkinLoadTask
-        , ZFMP_IN(const zfstring &, langId)
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppSkinLoadTask
+        , ZFMP_IN_OPT(const zfstring &, skinId, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 
 ZF_NAMESPACE_GLOBAL_END

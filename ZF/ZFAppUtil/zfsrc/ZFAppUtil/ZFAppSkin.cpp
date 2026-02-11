@@ -6,32 +6,41 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAppSkinDataHolder, ZFLevelZFFrameworkNormal) {
 }
 public:
-    zfstring skinIdCur;
-public:
-    zfautoT<ZFAppSkinData> dataForSkin(ZF_IN const zfstring &skinId) {
-        zfautoT<ZFArray> dataList = this->dataList();
+    zfautoT<ZFAppSkinData> data(
+            ZF_IN const zfstring &skinId
+            , ZF_IN ZFArray *dataList
+            ) {
         for(zfindex i = 0; i < dataList->count(); ++i) {
-            zfautoT<ZFAppSkinData> data = dataList->get(i);
-            if(data->skinName() == skinId) {
+            ZFAppSkinData *data = dataList->get(i);
+            if(data->skinId() == skinId) {
                 return data;
             }
         }
         return zfnull;
     }
-    zfautoT<ZFArray> dataList(void) {
-        if(!_dataList) {
-            _init();
+    zfautoT<ZFArray> dataList(
+            ZF_IN const ZFPathInfo &base
+            , ZF_IN zfbool enableCache
+            ) {
+        zfobj<v_ZFPathInfo> key(base ? base : ZFPathInfo(ZFPathType_res(), "skin"));
+        if(enableCache) {
+            zfautoT<ZFArray> cache = _cache->get(key);
+            if(cache) {
+                return cache;
+            }
         }
-        return _dataList;
+        zfautoT<ZFArray> dataList = _load(key->zfv);
+        _cache->set(key, dataList);
+        return dataList;
     }
 private:
-    zfautoT<ZFArray> _dataList; // ZFAppSkinData
+    zfautoT<ZFMap> _cache; // <v_ZFPathInfo, ZFArray<ZFAppSkinData>>
 private:
-    void _init(void) {
-        _dataList = zfobj<ZFArray>();
-        zfself *owner = this;
+    zfautoT<ZFArray> _load(ZF_IN const ZFPathInfo &base) {
+        ZFStyleUpdateBlock();
+        zfobj<ZFArray> dataList;
         ZFLISTENER_1(impl
-                , zfself *, owner
+                , zfautoT<ZFArray>, dataList
                 ) {
             v_ZFIOFindData *fd = zfargs.sender();
             v_ZFPathInfo *pathInfo = zfargs.param0();
@@ -40,28 +49,28 @@ private:
                 ZFStyleLoad(pathInfo->zfv);
                 return;
             }
-            zfautoT<ZFAppSkinData> data = owner->_attach(skinId);
+            zfautoT<ZFAppSkinData> data;
+            for(zfindex i = 0; i < dataList->count(); ++i) {
+                ZFAppSkinData *tmp = dataList->get(i);
+                if(tmp->skinId() == skinId) {
+                    data = tmp;
+                    break;
+                }
+            }
+            if(data == zfnull) {
+                data = zfobj<ZFAppSkinData>();
+                dataList->add(data);
+            }
             data->resList->add(pathInfo);
         } ZFLISTENER_END()
-        ZFIOForEach(ZFPathInfo(ZFPathType_res(), "skin"), impl, zffalse);
-    }
-    zfautoT<ZFAppSkinData> _attach(ZF_IN const zfstring &skinId) {
-        zfautoT<ZFAppSkinData> data = this->dataForSkin(skinId);
-        if(data) {
-            return data;
-        }
-        else {
-            data = zfobj<ZFAppSkinData>();
-            data->skinId(skinId);
-            _dataList->add(data);
-            return data;
-        }
+        ZFIOForEach(base, impl, zffalse);
+        return dataList;
     }
 ZF_GLOBAL_INITIALIZER_END(ZFAppSkinDataHolder)
 
 ZFOBJECT_REGISTER(ZFAppSkinData)
 ZFMETHOD_DEFINE_0(ZFAppSkinData, zfstring, skinName) {
-    v_zfstring *ret = ZFStyleGet(zfstr("skin_%s", this->skinId()));
+    v_zfstring *ret = ZFStyleGet(zfstr("skinName_%s", this->skinId()));
     if(ret && ret->zfv) {
         return ret->zfv;
     }
@@ -70,47 +79,41 @@ ZFMETHOD_DEFINE_0(ZFAppSkinData, zfstring, skinName) {
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_0(zfautoT<ZFArray>, ZFAppSkinDataList) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppSkinDataHolder)->dataList();
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFArray>, ZFAppSkinList
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
+        ) {
+    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppSkinDataHolder)->dataList(base, enableCache);
 }
 
-static zfautoT<ZFTaskId> _ZFP_ZFAppSkinLoad(
-        ZF_IN const zfstring &skinId
-        , ZF_IN const ZFListener &finishCallback
-        , ZF_IN zfbool forceLoad
+ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFTaskId>, ZFAppSkinLoad
+        , ZFMP_IN_OPT(const zfstring &, skinId, zfnull)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         ) {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFAppSkinDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppSkinDataHolder);
-    if(skinId == "default" || skinId == zfnull) {
-        if(!forceLoad && d->skinIdCur == zfnull) {
-            finishCallback.execute(ZFArgs()
-                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
-                    );
-            return zfnull;
-        }
-        d->skinIdCur = zfnull;
+    zfstring skinIdCur;
+    if(skinId == zfnull) {
+        skinIdCur = ZFAppSkin();
     }
     else {
-        if(!forceLoad && d->skinIdCur == skinId) {
-            finishCallback.execute(ZFArgs()
-                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
-                    );
-            return zfnull;
-        }
-        d->skinIdCur = skinId;
+        skinIdCur = skinId;
     }
-    ZFState::instance()->set("ZFAppSkin", d->skinIdCur);
+    ZFState::instance()->set("ZFAppSkin", skinIdCur);
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFAppSkinDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppSkinDataHolder);
+    zfautoT<ZFArray> dataList = d->dataList(base, enableCache);
 
     ZFStyleUpdateBlock();
-    zfautoT<ZFAppSkinData> data;
     zfobj<ZFArray> taskList;
+    zfautoT<ZFAppSkinData> data;
 
-    data = d->dataForSkin("default");
+    data = d->data("default", dataList);
     if(data) {
         taskList->addFrom(data->resList);
     }
 
     if(skinId != "default") {
-        data = d->dataForSkin(skinId);
+        data = d->data(skinId, dataList);
         if(data) {
             taskList->addFrom(data->resList);
         }
@@ -132,57 +135,22 @@ static zfautoT<ZFTaskId> _ZFP_ZFAppSkinLoad(
         return zfnull;
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTaskId>, ZFAppSkinInit
-        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-        ) {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppSkinDataHolder)->dataList();
-    return _ZFP_ZFAppSkinLoad(ZFState::instance()->get("ZFAppSkin"), finishCallback, zftrue);
-}
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, ZFAppSkinLoad
-        , ZFMP_IN(const zfstring &, skinId)
-        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-        ) {
-    return _ZFP_ZFAppSkinLoad(skinId, finishCallback, zffalse);
-}
-ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFAppSkinCur) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppSkinDataHolder)->skinIdCur;
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFAppSkin) {
+    return ZFState::instance()->get("ZFAppSkin");
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_0(zfautoT<ZFTask>, ZFAppSkinInitTask) {
-    zfwrap implTaskId;
-    ZFLISTENER_1(onStart
-            , zfwrap, implTaskId
-            ) {
-        zfweakT<ZFTask> ownerTask = zfargs.sender();
-        ZFLISTENER_2(implOnStop
-                , zfweakT<ZFTask>, ownerTask
-                , zfwrap, implTaskId
-                ) {
-            ownerTask->notifySuccess();
-            implTaskId = zfnull;
-        } ZFLISTENER_END()
-        implTaskId = ZFAppSkinInit(implOnStop);
-    } ZFLISTENER_END()
-    ZFLISTENER_1(onStop
-            , zfwrap, implTaskId
-            ) {
-        if(implTaskId) {
-            implTaskId.to<ZFTask *>()->stop();
-        }
-    } ZFLISTENER_END()
-    zfobj<ZFTask> task;
-    task->observerAdd(ZFTask::E_TaskOnStart(), onStart);
-    task->observerAdd(ZFTask::E_TaskOnStart(), onStop);
-    return task;
-}
-ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTask>, ZFAppSkinLoadTask
-        , ZFMP_IN(const zfstring &, langId)
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTask>, ZFAppSkinLoadTask
+        , ZFMP_IN_OPT(const zfstring &, skinId, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         ) {
     zfwrap implTaskId;
-    ZFLISTENER_2(onStart
+    ZFLISTENER_4(onStart
             , zfwrap, implTaskId
-            , zfstring, langId
+            , zfstring, skinId
+            , ZFPathInfo, base
+            , zfbool, enableCache
             ) {
         zfweakT<ZFTask> ownerTask = zfargs.sender();
         ZFLISTENER_2(implOnStop
@@ -192,7 +160,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTask>, ZFAppSkinLoadTask
             ownerTask->notifySuccess();
             implTaskId = zfnull;
         } ZFLISTENER_END()
-        implTaskId = ZFAppSkinLoad(langId, implOnStop);
+        implTaskId = ZFAppSkinLoad(skinId, implOnStop, base, enableCache);
     } ZFLISTENER_END()
     ZFLISTENER_1(onStop
             , zfwrap, implTaskId
@@ -203,7 +171,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTask>, ZFAppSkinLoadTask
     } ZFLISTENER_END()
     zfobj<ZFTask> task;
     task->observerAdd(ZFTask::E_TaskOnStart(), onStart);
-    task->observerAdd(ZFTask::E_TaskOnStart(), onStop);
+    task->observerAdd(ZFTask::E_TaskOnStop(), onStop);
     return task;
 }
 

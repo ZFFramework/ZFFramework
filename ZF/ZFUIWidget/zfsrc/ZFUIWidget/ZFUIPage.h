@@ -339,10 +339,10 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when #managerUIBlockedOnUpdate,
-     * see #managerUIBlocked
+     * called when #managerUIBlockOnUpdate,
+     * see #managerUIBlock
      */
-    ZFEVENT(ManagerUIBlockedOnUpdate)
+    ZFEVENT(ManagerUIBlockOnUpdate)
 
     // ============================================================
     // page observers
@@ -479,18 +479,18 @@ public:
      * this method can be embeded but must be paired,
      * last time you call this method to restore enable state would finally restore enable state
      */
-    ZFMETHOD_DECLARE_1(void, managerUIBlocked
+    ZFMETHOD_DECLARE_1(void, managerUIBlock
             , ZFMP_IN(zfbool, value)
             )
-    /** @brief see #managerUIBlocked */
-    ZFMETHOD_DECLARE_0(zfbool, managerUIBlocked)
-    /** @brief see #managerUIBlocked */
-    ZFMETHOD_DECLARE_0(zfindex, managerUIBlockedCount)
+    /** @brief see #managerUIBlock */
+    ZFMETHOD_DECLARE_0(zfbool, managerUIBlock)
+    /** @brief see #managerUIBlock */
+    ZFMETHOD_DECLARE_0(zfindex, managerUIBlockCount)
 protected:
-    /** @brief see #E_ManagerUIBlockedOnUpdate */
-    virtual inline void managerUIBlockedOnUpdate(void) {
+    /** @brief see #E_ManagerUIBlockOnUpdate */
+    virtual inline void managerUIBlockOnUpdate(void) {
         if(this->pageContainer()) {
-            this->pageContainer()->viewUIEnableTree(!this->managerUIBlocked());
+            this->pageContainer()->viewUIEnableTree(!this->managerUIBlock());
         }
     }
 

@@ -258,6 +258,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
     if(!ioImpl) {
         return zffalse;
     }
+    ZFStyleUpdateBlock();
     zfstring pathDataBase = pathInfo.pathData();
     zfbool allSuccess = zftrue;
     ZFLISTENER_3(impl

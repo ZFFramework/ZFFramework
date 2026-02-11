@@ -125,7 +125,7 @@ ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnResume)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnPause)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnDestroy)
 ZFEVENT_REGISTER(ZFUIPageManager, ManagerOrientationOnUpdate)
-ZFEVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnUpdate)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerUIBlockOnUpdate)
 
 ZFEVENT_REGISTER(ZFUIPageManager, PageOnCreate)
 ZFEVENT_REGISTER(ZFUIPageManager, PageOnResume)
@@ -163,7 +163,7 @@ public:
     zfautoT<ZFAnimation> resumeAni;
     zfautoT<ZFAnimation> pauseAni;
     ZFUIPage *pageMoveLastResumePage;
-    zfint managerUIBlocked;
+    zfint managerUIBlock;
     zfint pageMoveFlag;
 public:
     _ZFP_ZFUIPageManagerPrivate(void)
@@ -183,7 +183,7 @@ public:
     , resumeAni()
     , pauseAni()
     , pageMoveLastResumePage(zfnull)
-    , managerUIBlocked(0)
+    , managerUIBlock(0)
     , pageMoveFlag(0)
     {
     }
@@ -765,29 +765,29 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFUIView *, pageContainer) {
 
 // ============================================================
 // manager control
-ZFMETHOD_DEFINE_1(ZFUIPageManager, void, managerUIBlocked
+ZFMETHOD_DEFINE_1(ZFUIPageManager, void, managerUIBlock
         , ZFMP_IN(zfbool, value)
         ) {
     if(value) {
-        ++d->managerUIBlocked;
-        if(d->managerUIBlocked == 1) {
-            this->managerUIBlockedOnUpdate();
-            this->observerNotify(ZFUIPageManager::E_ManagerUIBlockedOnUpdate());
+        ++d->managerUIBlock;
+        if(d->managerUIBlock == 1) {
+            this->managerUIBlockOnUpdate();
+            this->observerNotify(ZFUIPageManager::E_ManagerUIBlockOnUpdate());
         }
     }
     else {
-        --d->managerUIBlocked;
-        if(d->managerUIBlocked == 0) {
-            this->managerUIBlockedOnUpdate();
-            this->observerNotify(ZFUIPageManager::E_ManagerUIBlockedOnUpdate());
+        --d->managerUIBlock;
+        if(d->managerUIBlock == 0) {
+            this->managerUIBlockOnUpdate();
+            this->observerNotify(ZFUIPageManager::E_ManagerUIBlockOnUpdate());
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerUIBlocked) {
-    return d->managerUIBlocked != 0;
+ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerUIBlock) {
+    return d->managerUIBlock != 0;
 }
-ZFMETHOD_DEFINE_0(ZFUIPageManager, zfindex, managerUIBlockedCount) {
-    return (zfindex)d->managerUIBlocked;
+ZFMETHOD_DEFINE_0(ZFUIPageManager, zfindex, managerUIBlockCount) {
+    return (zfindex)d->managerUIBlock;
 }
 
 // ============================================================

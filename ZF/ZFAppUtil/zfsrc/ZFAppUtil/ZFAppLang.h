@@ -1,6 +1,6 @@
 /**
  * @file ZFAppLang.h
- * @brief helper for quickly update app language
+ * @brief helper for quickly update app lang
  */
 
 #ifndef _ZFI_ZFAppLang_h_
@@ -10,102 +10,100 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief language info for #ZFAppLangDataList
+ * @brief lang info for #ZFAppLangList
  */
 zfclass ZFLIB_ZFAppUtil ZFAppLangData : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFAppLangData, ZFObject)
 public:
-    /** @brief see #ZFEnvInfo::localeLangId */
+    /** @brief langId according to child dir name of lang dir */
     ZFPROPERTY_ASSIGN(zfstring, langId)
-    /** @brief language name for display, same as #langId if not available */
+    /** @brief lang name for display, same as #langId if not available */
     ZFMETHOD_DECLARE_0(zfstring, langName)
 
 public:
     /** @brief list of items to load */
     zfobj<ZFArray> resList; // v_ZFPathInfo
+
+protected:
+    zfoverride
+    virtual inline void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
+        ret += this->langId();
+    }
 };
 
 /**
- * @brief get a list of supported language
+ * @brief get a list of supported lang
  *
  * how it works:
- * -# you should prepare your language files in `lang` dir of #ZFPathType_res
- * -# the language files' file name should match this rule:
+ * -# you should prepare your lang files in `lang` dir of #ZFPathType_res
+ * -# the lang files' file name should match this rule:
  *   -  `<langId>.*` file,
- *     e.g. `lang/en.xml` or `lang/en.xxx.xml`
+ *     e.g. `lang/your_lang_id.xml` or `lang/your_lang_id.xxx.xml`
  *   -  `<langId>.*` dir,
- *     e.g. `lang/en/` or `lang/en.xxx/`
+ *     e.g. `lang/your_lang_id/` or `lang/your_lang_id.xxx/`
  *   -  specially:
  *     -  `lang/default.*` file or `lang/default.*` dir would be loaded
- *       before loading each language
+ *       before loading each lang
  *     -  `lang/config.*` file would be loaded to detect each lang names for display,
  *       with this format:
  *       @code
  *         <ZFStyleList>
- *             <zfstring prop="lang_<langId>" value="<langName>" />
- *             <zfstring prop="lang_en" value="English" />
+ *             <zfstring prop="langName_<langId>" value="<langName>" />
+ *             <zfstring prop="langName_your_lang_id" value="YourLangName" />
  *             ...
  *         </ZFStyleList>
  *       @endcode
- * -# #ZFStyleLoadAsync would be called to load the language files
+ * -# #ZFStyleLoadAsync would be called to load the lang files
  *
  * typical usage:
  * @code
- *   // init and load default or previous language
- *   ZFAppLangInit();
+ *   // list available lang
+ *   zfautoT<ZFArray> langList = ZFAppLangList();
  *
- *   // list available languages
- *   zfautoT<ZFArray> langList = ZFAppLangDataList();
- *
- *   // get current language, empty for default
- *   zfstring cur = ZFAppLangCur();
+ *   // get current lang, empty for default
+ *   zfstring cur = ZFAppLang();
  *
  *   // let user to choose,
- *   // or use #ZFEnvInfo::localeLangId to check best match,
  *   // or fallback to use default
  *   zfstring desired = xxx;
  *
- *   // change language, empty for default language
- *   // the desired language would be saved to #ZFState,
+ *   // change lang, empty for default lang
+ *   // the desired lang would be saved to #ZFState,
  *   // and would be applied when next time app launch with #ZFAppLangInit
  *   ZFAppLangLoad(desired);
  *
- *   // use the language as #ZFStyleable::propStyle
+ *   // use the lang as #ZFStyleable::propStyle
  *   ZFUITextView *v = xxx;
  *   v->propStyle("text", "some_style_key");
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppLangDataList)
-/**
- * @brief see #ZFAppLangDataList
- *
- * finishCallback's param0 would be a #v_ZFResultType indicates result
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppLangInit
-        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppLangList
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 /**
- * @brief see #ZFAppLangDataList
+ * @brief see #ZFAppLangList
  *
+ * empty langId would load previous #ZFAppLang stored in #ZFState\n
  * finishCallback's param0 would be a #v_ZFResultType indicates result
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppLangLoad
-        , ZFMP_IN(const zfstring &, langId)
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppLangLoad
+        , ZFMP_IN_OPT(const zfstring &, langId, zfnull)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
-/** @brief see #ZFAppLangDataList */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, const zfstring &, ZFAppLangCur)
+/** @brief see #ZFAppLangList */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfstring, ZFAppLang)
 
 // ============================================================
 /**
- * @brief util to create a task for #ZFAppLangInit
- */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppLangInitTask)
-/**
  * @brief util to create a task for #ZFAppLangLoad
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppLangLoadTask
-        , ZFMP_IN(const zfstring &, langId)
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppLangLoadTask
+        , ZFMP_IN_OPT(const zfstring &, langId, zfnull)
+        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+        , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 
 ZF_NAMESPACE_GLOBAL_END

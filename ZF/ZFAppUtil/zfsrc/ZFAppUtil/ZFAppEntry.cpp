@@ -7,6 +7,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFAppEntry)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadState)
+ZFEVENT_REGISTER(ZFAppEntry, OnLoadLang)
+ZFEVENT_REGISTER(ZFAppEntry, OnLoadSkin)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadEntry)
 ZFEVENT_REGISTER(ZFAppEntry, OnLoadStop)
 
@@ -14,6 +16,16 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadState
         , ZFMP_IN(const ZFListener &, callback)
         ) {
     this->observerAdd(zfself::E_OnLoadState(), callback);
+}
+ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadLang
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    this->observerAdd(zfself::E_OnLoadLang(), callback);
+}
+ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadSkin
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    this->observerAdd(zfself::E_OnLoadSkin(), callback);
 }
 ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadEntry
         , ZFMP_IN(const ZFListener &, callback)
@@ -118,14 +130,25 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
         task->child(loadImpl);
     }
 
-    { // ZFAppLangInit
-        task->child(ZFAppLangInitTask());
-        task->child(zfobj<ZFWaitTask>());
-    }
+    { // lang and skin
+        zfobj<ZFTaskQueue> wrap;
+        task->child(wrap);
+        ZFLISTENER(onStart) {
+            ZFStyleUpdateBegin();
+        } ZFLISTENER_END()
+        ZFLISTENER(onStop) {
+            ZFStyleUpdateEnd();
+        } ZFLISTENER_END()
+        wrap->observerAdd(ZFTask::E_TaskOnStart(), onStart);
+        wrap->observerAdd(ZFTask::E_TaskOnStop(), onStop);
 
-    { // ZFAppSkinInit
-        task->child(ZFAppSkinInitTask());
-        task->child(zfobj<ZFWaitTask>());
+        _ZFP_ZFAppEntry_step(wrap, owner, zfself::E_OnLoadLang());
+        wrap->child(ZFAppLangLoadTask());
+        wrap->child(zfobj<ZFWaitTask>());
+
+        _ZFP_ZFAppEntry_step(wrap, owner, zfself::E_OnLoadSkin());
+        wrap->child(ZFAppSkinLoadTask());
+        wrap->child(zfobj<ZFWaitTask>());
     }
 
     { // custom task
