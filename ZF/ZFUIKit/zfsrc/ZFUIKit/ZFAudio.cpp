@@ -106,7 +106,7 @@ ZFMETHOD_DEFINE_1(ZFAudio, void, load
         , ZFMP_IN(const ZFInput &, input)
         ) {
     if(input.pathInfo() != d->pathInfo) {
-        zfRetain(this); // release when OnLoad
+        zfobjRetain(this); // release when OnLoad
         this->stop();
         d->pathInfo = input.pathInfo();
 
@@ -125,14 +125,14 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
     }
     ++(d->audioTaskId);
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
-        zfRetain(this); // release when OnStop
+        zfobjRetain(this); // release when OnStop
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         d->loopCur = 0;
         this->audioOnStart();
     }
     else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded)) {
-        zfRetain(this); // release when OnStop
+        zfobjRetain(this); // release when OnStop
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         d->loopCur = 0;
@@ -149,7 +149,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, stop) {
     if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag) && !ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         return;
     }
-    zfRetain(this);
+    zfobjReleaseInScope(zfobjRetain(this));
     d->positionToUpdate = -1;
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::StartFlag);
@@ -168,7 +168,6 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, stop) {
         this->audioOnStop(v_ZFResultType::e_Cancel, zfnull);
     }
     ++(d->audioTaskId);
-    zfRelease(this);
 }
 
 ZFMETHOD_DEFINE_0(ZFAudio, void, resume) {
@@ -347,7 +346,7 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(
     }
 
     this->audioOnLoad(result, errorHint);
-    zfRelease(this); // retained when load
+    zfobjRelease(this); // retained when load
 }
 void ZFAudio::_ZFP_ZFAudio_OnStop(
         ZF_IN ZFResultType result
@@ -372,7 +371,7 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnStop(result, errorHint);
 
-        zfRelease(this); // retained when start
+        zfobjRelease(this); // retained when start
     }
 }
 void ZFAudio::_ZFP_ZFAudio_OnResume(void) {

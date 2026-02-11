@@ -586,7 +586,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
     }
 
     userDataWrapper->propertySaved = property;
-    property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper = zfRetain(userDataWrapper);
+    property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper = zfobjRetain(userDataWrapper);
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m[property] = zftrue;
     return property;
 }
@@ -594,7 +594,7 @@ void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property) {
     if(property != zfnull) {
         ZFCoreAssert(property->isDynamicRegister());
         ZFCoreMutexLocker();
-        zfscopeRelease(property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+        zfobjReleaseInScope(property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m.erase(property);
         _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
         d->objectDetachAll();

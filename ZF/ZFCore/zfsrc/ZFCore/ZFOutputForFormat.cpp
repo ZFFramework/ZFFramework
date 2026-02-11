@@ -17,14 +17,14 @@ public:
     ZFOutputFormatStep outputStep;
 
 public:
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         if(cache->format != zfnull) {
             cache->outputEnd();
         }
 
         cache->output = zfnull;
         if(cache->format != zfnull) {
-            zfRelease(cache->format);
+            zfobjRelease(cache->format);
             cache->format = zfnull;
         }
         cache->outputStep = v_ZFOutputFormatStep::e_OnInit;
@@ -43,7 +43,7 @@ protected:
     virtual void objectOnDealloc(void) {
         if(this->format != zfnull) {
             this->outputEnd();
-            zfRelease(this->format);
+            zfobjRelease(this->format);
             this->format = zfnull;
         }
         zfsuper::objectOnDealloc();
@@ -120,13 +120,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT
         return zffalse;
     }
 
-    _ZFP_I_ZFOutputForFormatOwner *outputOwner = zfAlloc(_ZFP_I_ZFOutputForFormatOwner);
+    _ZFP_I_ZFOutputForFormatOwner *outputOwner = zfobjAlloc(_ZFP_I_ZFOutputForFormatOwner);
     outputOwner->output = output;
-    outputOwner->format = zfRetain(format);
+    outputOwner->format = zfobjRetain(format);
     ret = ZFCallbackForMemberMethod(outputOwner, ZFMethodAccess(_ZFP_I_ZFOutputForFormatOwner, onOutput));
     ret.callbackOwnerObjectRetain();
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, output.callbackTag(ZFCallbackTagKeyword_ioOwner));
-    zfRelease(outputOwner);
+    zfobjRelease(outputOwner);
 
     if(!ret.callbackSerializeDisable()) {
         ZFSerializableData outputData;

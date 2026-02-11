@@ -86,11 +86,11 @@ static _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType _ZFP_ZFThreadImpl_sys_Qt_getN
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_Qt_DataHolder, ZFLevelZFFrameworkEssential) {
-    mainThread = zfAlloc(ZFThreadMainThread);
+    mainThread = zfobjAlloc(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId()] = mainThread;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_Qt_DataHolder) {
-    zfRelease(mainThread);
+    zfobjRelease(mainThread);
     mainThread = zfnull;
 }
 public:

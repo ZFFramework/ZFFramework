@@ -943,7 +943,7 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
         return *this;
     }
     d->scopeList.removeLast();
-    zfscopeCleanup_1({
+    zfcleanupInScope_1({
             zfpoolDelete(scope);
         }
         , _ZFP_ZFDynamicRegScopeInfo *, scope

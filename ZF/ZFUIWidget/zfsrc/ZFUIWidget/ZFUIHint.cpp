@@ -102,7 +102,7 @@ public:
         this->showing = zftrue;
         this->delaying = zffalse;
         this->pimplOwner->window()->show();
-        zfRetainChange(this->started, this->pimplOwner->aniShow());
+        zfobjRetainChange(this->started, this->pimplOwner->aniShow());
         if(this->started != zfnull) {
             if(!this->aniShowOnStopListener) {
                 ZFLISTENER_1(callback
@@ -129,7 +129,7 @@ public:
         hint->d->hintDoShowDelay();
     }
     void hintDoShowDelay(void) {
-        zfRetainChange(this->started, zfnull);
+        zfobjRetainChange(this->started, zfnull);
 
         if(!this->showDelayTimeoutListener) {
             ZFLISTENER_1(callback
@@ -151,7 +151,7 @@ public:
         hint->d->hintDoHide();
     }
     void hintDoHide(void) {
-        zfRetainChange(this->started, this->pimplOwner->aniHide());
+        zfobjRetainChange(this->started, this->pimplOwner->aniHide());
         if(this->started != zfnull) {
             if(!this->aniHideOnStopListener) {
                 ZFLISTENER_1(callback
@@ -179,10 +179,10 @@ public:
     }
     void hintDoFinish(void) {
         this->showing = zffalse;
-        zfRetainChange(this->started, zfnull);
+        zfobjRetainChange(this->started, zfnull);
         ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->pimplOwner->window()->rootWindow());
-        zfRetain(this->pimplOwner);
-        zfscopeRelease(this->pimplOwner);
+        zfobjRetain(this->pimplOwner);
+        zfobjReleaseInScope(this->pimplOwner);
         hintList->removeElement(this->pimplOwner);
         this->pimplOwner->hintOnHide();
         this->pimplOwner->window()->hide();
@@ -192,7 +192,7 @@ public:
                 hint->d->hintDoShow();
             }
         }
-        zfRelease(this->pimplOwner);
+        zfobjRelease(this->pimplOwner);
     }
 };
 
@@ -272,7 +272,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, show) {
         return;
     }
     d->showing = zftrue;
-    zfRetain(this);
+    zfobjRetain(this);
 
     ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->rootWindow());
     hintList->add(this);
@@ -288,11 +288,11 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hide) {
         if(d->delaying) {
             d->showing = zffalse;
             d->delaying = zffalse;
-            zfRetain(this);
-            zfscopeRelease(this);
+            zfobjRetain(this);
+            zfobjReleaseInScope(this);
             ZFArray *hintList = _ZFP_ZFUIHint_hintListForWrite(this->window()->rootWindow());
             hintList->removeElement(this);
-            zfRelease(this);
+            zfobjRelease(this);
         }
         else {
             if(d->showDelayTimer != zfnull) {
@@ -305,12 +305,12 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hide) {
                 ZFAnimation *hintAniTmp = d->started;
                 d->started = zfnull;
                 hintAniTmp->stop();
-                zfRelease(hintAniTmp);
+                zfobjRelease(hintAniTmp);
             }
             d->showing = zffalse;
             d->delaying = zffalse;
             this->hintOnHide();
-            zfRelease(this);
+            zfobjRelease(this);
         }
     }
 }
@@ -330,7 +330,7 @@ void ZFUIHint::objectOnInit(void) {
 
     d->pimplOwner = this;
 
-    d->window = zfAlloc(_ZFP_ZFUIHintWindow);
+    d->window = zfobjAlloc(_ZFP_ZFUIHintWindow);
     d->window->windowLevel(ZFUIWindowLevelHint());
     d->window->viewSizeMin(ZFUISizeCreate(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
     d->window->layoutParam()->align(v_ZFUIAlign::e_Center);
@@ -384,7 +384,7 @@ void ZFUIHint::objectOnDeallocPrepare(void) {
     this->windowAutoResize(zffalse);
     if(d->started != zfnull) {
         d->started->stop();
-        zfRetainChange(d->started, zfnull);
+        zfobjRetainChange(d->started, zfnull);
     }
     if(d->showDelayTimer != zfnull) {
         d->showDelayTimer->stop();
@@ -395,7 +395,7 @@ void ZFUIHint::objectOnDeallocPrepare(void) {
 }
 void ZFUIHint::objectOnDealloc(void) {
     _ZFP_ZFUIHint_allHint.removeElement(this);
-    zfRetainChange(d->window, zfnull);
+    zfobjRetainChange(d->window, zfnull);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();

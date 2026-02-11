@@ -43,13 +43,13 @@ void ZFLogFormat::format(
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogDataHolder, ZFLevelZFFrameworkEssential) {
-    _ZFP_ZFLogMutex = zfAlloc(ZFObject);
-    _ZFP_ZFLogFormatHolder = zfAlloc(ZFLogFormat);
+    _ZFP_ZFLogMutex = zfobjAlloc(ZFObject);
+    _ZFP_ZFLogFormatHolder = zfobjAlloc(ZFLogFormat);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder) {
-    zfRelease(_ZFP_ZFLogFormatHolder);
+    zfobjRelease(_ZFP_ZFLogFormatHolder);
     _ZFP_ZFLogFormatHolder = zfnull;
-    zfRelease(_ZFP_ZFLogMutex);
+    zfobjRelease(_ZFP_ZFLogMutex);
     _ZFP_ZFLogMutex = zfnull;
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLogDataHolder)
@@ -63,7 +63,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLogFormatDefault
         ) {
     if(fmt != zfnull)
     {
-        zfRetainChange(_ZFP_ZFLogFormatHolder, fmt);
+        zfobjRetainChange(_ZFP_ZFLogFormatHolder, fmt);
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(ZFLogFormat *, ZFLogFormatDefault) {

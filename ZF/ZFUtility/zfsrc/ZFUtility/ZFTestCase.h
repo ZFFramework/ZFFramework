@@ -75,7 +75,7 @@ protected:
     /** @brief see #E_TestCaseOnStop */
     virtual inline void testCaseOnStop(ZF_IN ZFResultType testCaseResult) {
         this->observerNotify(ZFTestCase::E_TestCaseOnStop(), zfobj<v_ZFResultType>(testCaseResult));
-        zfRelease(this);
+        zfobjRelease(this);
     }
 
 public:

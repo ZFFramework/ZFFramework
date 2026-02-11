@@ -23,23 +23,23 @@ protected:
 
 public:
     zffinal void start(ZF_IN zfidentity timerImplId) {
-        zfRetain(this);
-        this->timerThread = zfAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
+        zfobjRetain(this);
+        this->timerThread = zfobjAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
         this->timerThread->threadName("ZFTimerImpl_default");
         this->timerThread->threadStart(zfobj<v_zfidentity>(this->timer->timerImplId()));
     }
     zffinal void stop(void) {
         this->timerThread->threadStop();
-        zfRelease(this->timerThread);
-        zfRelease(this);
+        zfobjRelease(this->timerThread);
+        zfobjRelease(this);
     }
 
 public:
     ZFMETHOD_INLINE_1(void, threadCallback
             , ZFMP_IN(const ZFArgs &, zfargs)
             ) {
-        zfRetain(this);
-        zfscopeRelease(this);
+        zfobjRetain(this);
+        zfobjReleaseInScope(this);
         zfidentity curId = zfargs.param0().to<v_zfidentity *>()->zfv;
         ZFThread *curThread = ZFThread::currentThread();
 
@@ -86,14 +86,14 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_default, ZFTimer, v_ZFProtocolLevel:
 
 public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {
-        _ZFP_ZFTimerImpl_default_Timer *token = zfAlloc(_ZFP_ZFTimerImpl_default_Timer);
+        _ZFP_ZFTimerImpl_default_Timer *token = zfobjAlloc(_ZFP_ZFTimerImpl_default_Timer);
         token->impl = this;
         token->timer = timer;
         return token;
     }
     virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
         _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)timer->nativeTimer();
-        zfRelease(token);
+        zfobjRelease(token);
     }
     virtual void start(
             ZF_IN ZFTimer *timer

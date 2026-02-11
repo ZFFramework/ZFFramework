@@ -247,7 +247,7 @@ public:
     /**
      * @brief add object to auto release pool attached to this thread
      *
-     * usually this method is called by #zfautoRelease
+     * usually this method is called by #zfobjAutoRelease
      * @see ZFAutoReleasePool
      */
     virtual void autoReleasePoolAdd(ZF_IN ZFObject *obj);

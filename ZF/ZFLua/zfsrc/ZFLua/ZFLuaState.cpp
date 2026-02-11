@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // state for thread
 zfclass _ZFP_I_ZFLuaStateHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFLuaStateHolder, ZFObject)
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->_cleanup();
     })
     ZFOBJECT_SINGLETON_DECLARE(_ZFP_I_ZFLuaStateHolder, instance)
@@ -38,9 +38,9 @@ public:
         }
         _ZFP_I_ZFLuaStateHolder *holder = curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className());
         if(holder == zfnull) {
-            holder = zfAlloc(_ZFP_I_ZFLuaStateHolder);
+            holder = zfobjAlloc(_ZFP_I_ZFLuaStateHolder);
             curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), holder);
-            zfRelease(holder);
+            zfobjRelease(holder);
             _ZFP_I_ZFLuaStateHolder::attachList().add(holder);
 
             holder->ownerThread = curThread;

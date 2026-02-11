@@ -79,7 +79,7 @@ public:
     zfbool classIsDynamicRegister;
     zfauto classDynamicRegisterUserData;
     zfstlhashmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
-    _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback;
+    _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback;
     _ZFP_ZFObjectConstructor constructor;
     _ZFP_ZFObjectDestructor destructor;
 
@@ -663,7 +663,7 @@ zfauto ZFClass::newInstance(void) const {
     }
     zfauto ret;
     ret.zfunsafe_assign(obj);
-    zfunsafe_zfRelease(obj);
+    zfunsafe_zfobjRelease(obj);
     ZFCoreMutexUnlock();
     return ret;
 }
@@ -685,7 +685,7 @@ zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const
     }
     zfauto ret;
     ret.zfunsafe_assign(obj);
-    zfunsafe_zfRelease(obj);
+    zfunsafe_zfobjRelease(obj);
     ZFCoreMutexUnlock();
     return ret;
 }
@@ -795,7 +795,7 @@ zfbool ZFClass::newInstanceGenericCheck(
             obj->_ZFP_ZFObject_objectOnInitFinish();
 
             ZFCoreMutexLock();
-            zfunsafe_zfRelease(obj);
+            zfunsafe_zfobjRelease(obj);
             token = d->objectConstruct();
             ZFCoreMutexUnlock();
         }
@@ -809,7 +809,7 @@ zfauto ZFClass::newInstanceGenericEnd(
     ZFObject *obj = (ZFObject *)token;
     if(objectOnInitMethodInvokeSuccess) {
         obj->_ZFP_ZFObject_objectOnInitFinish();
-        zfscopeRelease(obj);
+        zfobjReleaseInScope(obj);
         return obj;
     }
     else {
@@ -1268,14 +1268,14 @@ void ZFClass::classTag(
         }
     }
     else {
-        ZFObject *obj = zfunsafe_zfRetain(it->second);
+        ZFObject *obj = zfunsafe_zfobjRetain(it->second);
         if(tag == zfnull) {
             m.erase(it);
         }
         else {
             it->second.zfunsafe_assign(tag);
         }
-        zfunsafe_zfRelease(obj);
+        zfunsafe_zfobjRelease(obj);
     }
 }
 zfany ZFClass::classTag(ZF_IN const zfstring &key) const {
@@ -1342,14 +1342,14 @@ void ZFClass::dataCache(
         }
     }
     else {
-        ZFObject *obj = zfunsafe_zfRetain(it->second);
+        ZFObject *obj = zfunsafe_zfobjRetain(it->second);
         if(tag == zfnull) {
             m.erase(it);
         }
         else {
             it->second.zfunsafe_assign(tag);
         }
-        zfunsafe_zfRelease(obj);
+        zfunsafe_zfobjRelease(obj);
     }
 }
 zfany ZFClass::dataCache(ZF_IN const zfstring &key) const {
@@ -1442,7 +1442,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
-        , ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback
+        , ZF_IN _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback
         , ZF_IN _ZFP_ZFObjectConstructor constructor
         , ZF_IN _ZFP_ZFObjectDestructor destructor
         , ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback
@@ -1795,7 +1795,7 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
     }
 }
 
-_ZFP_zfAllocCacheCallback ZFClass::_ZFP_objectAllocWithCacheCallback(void) const {
+_ZFP_zfobjAllocCacheCallback ZFClass::_ZFP_objectAllocWithCacheCallback(void) const {
     return d->objectAllocWithCacheCallback;
 }
 _ZFP_ZFObjectConstructor ZFClass::_ZFP_objectConstructor(void) const {
@@ -1815,7 +1815,7 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
-        , ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback
+        , ZF_IN _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback
         , ZF_IN _ZFP_ZFObjectConstructor constructor
         , ZF_IN _ZFP_ZFObjectDestructor destructor
         , ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback
@@ -1885,14 +1885,14 @@ void _ZFP_ZFClassDataUpdateNotify(
             }
         }
 
-        v_ZFClassDataUpdateData *holder = zfunsafe_zfAlloc(v_ZFClassDataUpdateData);
+        v_ZFClassDataUpdateData *holder = zfunsafe_zfobjAlloc(v_ZFClassDataUpdateData);
         holder->zfv.changeType = changeType;
         holder->zfv.changedClass = changedClass;
         holder->zfv.changedProperty = changedProperty;
         holder->zfv.changedMethod = changedMethod;
         holder->zfv.name = name;
         ZFClassDataUpdateObserver().observerNotify(ZFGlobalEvent::E_ClassDataUpdate(), holder);
-        zfunsafe_zfRelease(holder);
+        zfunsafe_zfobjRelease(holder);
     }
 }
 

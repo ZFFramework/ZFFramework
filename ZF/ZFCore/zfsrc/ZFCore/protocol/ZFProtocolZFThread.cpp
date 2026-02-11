@@ -6,10 +6,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_REGISTER(ZFThread)
 
 void *ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleepTokenCreate(void) {
-    return zfAlloc(ZFSemaphore);
+    return zfobjAlloc(ZFSemaphore);
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleepTokenDestroy(ZF_IN void *sleepToken) {
-    zfRelease((ZFSemaphore *)sleepToken);
+    zfobjRelease((ZFSemaphore *)sleepToken);
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleep(
             ZF_IN void *sleepToken

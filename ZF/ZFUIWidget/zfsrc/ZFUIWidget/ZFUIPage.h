@@ -286,8 +286,8 @@ protected:
     /** @endcond */
     zfoverride
     virtual void objectOnDealloc(void) {
-        zfRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
-        zfRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
+        zfobjRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
+        zfobjRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
         zfsuper::objectOnDealloc();
     }
 private:

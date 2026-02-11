@@ -32,7 +32,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFLua
 
     zfauto ret = ZFLuaExecuteDetail(bufZF, paramsZF);
     if(ret) {
-        zfautoRelease(zfRetain(ret));
+        zfobjAutoRelease(zfobjRetain(ret));
     }
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }
@@ -58,7 +58,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFLua
 
     zfauto ret = ZFLuaExecuteDetail(inputZF, paramsZF);
     if(ret) {
-        zfautoRelease(zfRetain(ret));
+        zfobjAutoRelease(zfobjRetain(ret));
     }
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }
@@ -87,7 +87,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFLua
 
     zfauto ret = ZFLuaExecuteDetail(inputZF->zfv, paramsZF);
     if(ret) {
-        zfautoRelease(zfRetain(ret));
+        zfobjAutoRelease(zfobjRetain(ret));
     }
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }

@@ -19,7 +19,7 @@ jobject ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZF_IN const ZFInput &input)
             .add(JNIPointerJNIType)
             .add(JNIType::S_boolean())
         ).c_str());
-    v_ZFInput *inputHolder = zfAlloc(v_ZFInput); // release when nativeInputClose
+    v_ZFInput *inputHolder = zfobjAlloc(v_ZFInput); // release when nativeInputClose
     inputHolder->zfv = input;
     return JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFInputWrapper(), jmId
         , JNIConvertZFObjectToJNIType(jniEnv, inputHolder)
@@ -61,7 +61,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , JNIPointer zfjniPointerOwnerZFInput
         ) {
     v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
-    zfRelease(inputHolder);
+    zfobjRelease(inputHolder);
 }
 JNI_METHOD_DECLARE_END()
 

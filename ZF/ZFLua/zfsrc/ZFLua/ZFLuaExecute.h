@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * to invoke the method without knowing all actual types\n
  * \n
  * here is a list of functions available in lua to communicate with ZFFramework:
- * -  "zfAlloc("ClassName" [params...])"
+ * -  "zfl_alloc("ClassName" [params...])"
  *   or "ClassName([params...])"\n
  *   alloc a ZFObject type\n
  *   "ClassName" can be #v_ZFClass, #v_zfstring, or native lua string\n
@@ -59,8 +59,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     create enum flags
  * -  value holder
  *   -  "value = YourTypeName("yourTypeData")"
- *     or "value = zfAlloc("YourTypeName")"
- *     or "value = YourTypeName()"\n
+ *     or "value = YourTypeName()"
+ *     or "value = zfl_alloc("YourTypeName")"\n
  *     create a non-ZFObject type registered by #ZFTYPEID_DECLARE,
  *     return the associated "YourTypeName" that holds the value\n
  *     "YourTypeName" represents the type name in #ZFTYPEID_DECLARE\n

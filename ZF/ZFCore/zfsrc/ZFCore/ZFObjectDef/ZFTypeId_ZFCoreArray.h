@@ -62,7 +62,7 @@ inline const zfstring &ZFTypeId_ZFCoreArray(void) {
 /** @brief type wrapper for #ZFTypeId::Value */
 zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextend ZFTypeIdWrapper {
     ZFOBJECT_DECLARE(v_ZFCoreArray, ZFTypeIdWrapper)
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->zfvReset();
     })
 public:
@@ -571,9 +571,9 @@ public:
             , ZF_IN ZFCoreArray<T_Type> const &v
             ) {
         ZFCoreMutexLock();
-        v_ZFCoreArray *holder = zfunsafe_zfAlloc(v_ZFCoreArray, v);
+        v_ZFCoreArray *holder = zfunsafe_zfobjAlloc(v_ZFCoreArray, v);
         obj = holder;
-        zfunsafe_zfRelease(holder);
+        zfunsafe_zfobjRelease(holder);
         ZFCoreMutexUnlock();
         return zftrue;
     }

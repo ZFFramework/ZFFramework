@@ -79,8 +79,8 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, start
         return;
     }
 
-    zfRetain(this);
-    zfRetain(this->target());
+    zfobjRetain(this);
+    zfobjRetain(this->target());
 
     ++(d->aniId);
     d->started = zftrue;
@@ -197,8 +197,8 @@ void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultType resultType /* = v_ZFR
                 );
     }
 
-    zfRelease(targetToRelease);
-    zfRelease(this);
+    zfobjRelease(targetToRelease);
+    zfobjRelease(this);
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAnimation

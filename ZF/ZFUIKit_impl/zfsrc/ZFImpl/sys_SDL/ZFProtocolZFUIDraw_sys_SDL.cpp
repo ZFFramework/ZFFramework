@@ -135,7 +135,7 @@ public:
     }
     virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) {
         _ZFP_ZFUIDrawImpl_sys_SDL *drawImpl = (_ZFP_ZFUIDrawImpl_sys_SDL *)token.impl;
-        zfscopeCleanup_1({
+        zfcleanupInScope_1({
                 zfpoolDelete(drawImpl);
             }
             , _ZFP_ZFUIDrawImpl_sys_SDL *, drawImpl

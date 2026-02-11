@@ -51,10 +51,10 @@ ZFMETHOD_DEFINE_0(ZFNullObject, zfauto, ZFSerializableKeyword_serializableNewIns
 
 ZFObject *_ZFP_ZFNull = zfnull;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkStatic) {
-    _ZFP_ZFNull = zfAlloc(ZFNullObject);
+    _ZFP_ZFNull = zfobjAlloc(ZFNullObject);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder) {
-    zfRelease(_ZFP_ZFNull);
+    zfobjRelease(_ZFP_ZFNull);
     _ZFP_ZFNull = zfnull;
 }
 ZF_GLOBAL_INITIALIZER_END(zfnullObjHolder)

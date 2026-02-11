@@ -175,7 +175,7 @@ public:
             this->viewUIEnableTree(zftrue);
             this->hide();
             this->pimplOwner->dialogAfterHide();
-            zfRelease(this->pimplOwner);
+            zfobjRelease(this->pimplOwner);
         }
     }
 
@@ -315,7 +315,7 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, show) {
     if(d->showing()) {
         return;
     }
-    zfRetain(this);
+    zfobjRetain(this);
     d->stop();
     d->show();
 
@@ -372,14 +372,14 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, hide) {
 }
 ZFMETHOD_DEFINE_0(ZFUIDialog, void, hideImmediately) {
     if(d->showing()) {
-        zfRetain(this);
+        zfobjRetain(this);
         d->stop();
         if(d->showing()) {
             this->dialogBeforeHide();
             d->hide();
             this->dialogAfterHide();
         }
-        zfRelease(this);
+        zfobjRelease(this);
     }
 }
 
@@ -420,13 +420,13 @@ zfanyT<ZFUIView> ZFUIDialog::dialogFocusOnUpdate(void) {
 
 void ZFUIDialog::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfAlloc(_ZFP_I_ZFUIDialogPrivate);
+    d = zfobjAlloc(_ZFP_I_ZFUIDialogPrivate);
     d->pimplOwner = this;
 
-    d->windowBg = zfAlloc(ZFUIView);
+    d->windowBg = zfobjAlloc(ZFUIView);
     d->internalBgViewAdd(d->windowBg)->c_sizeFill();
 
-    d->dialogClickMask = zfAlloc(_ZFP_I_ZFUIDialog_DialogClickMask);
+    d->dialogClickMask = zfobjAlloc(_ZFP_I_ZFUIDialog_DialogClickMask);
     d->internalBgViewAdd(d->dialogClickMask)->c_sizeFill();
     d->dialogClickMask->observerAdd(ZFUIButton::E_ButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
@@ -436,16 +436,16 @@ void ZFUIDialog::objectOnInit(void) {
     dialogContentHolder->pimplOwner = d;
     dialogContentHolder->viewUIEnable(zffalse);
 
-    d->dialogBg = zfAlloc(ZFUIImageView);
+    d->dialogBg = zfobjAlloc(ZFUIImageView);
     dialogContentHolder->child(d->dialogBg);
     d->dialogBg->viewUIEnableTree(zftrue);
     d->dialogBg->viewUIEnable(zftrue);
 
-    d->dialogContainer = zfAlloc(ZFUIOnScreenKeyboardAutoFitLayout);
+    d->dialogContainer = zfobjAlloc(ZFUIOnScreenKeyboardAutoFitLayout);
     d->dialogBg->child(d->dialogContainer)->c_sizeFill();
 
-    d->windowAniShow = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
-    d->windowAniHide = zfRetain(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
+    d->windowAniShow = zfobjRetain(ZFAni("alpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+    d->windowAniHide = zfobjRetain(ZFAni("alpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
 
     d->aniShowOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniShowOnStop));
     d->aniHideOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniHideOnStop));
@@ -458,14 +458,14 @@ void ZFUIDialog::objectOnInit(void) {
 void ZFUIDialog::objectOnDealloc(void) {
     _ZFP_ZFUIDialogAllDialog.removeElement(this);
 
-    zfRetainChange(d->windowAniShow, zfnull);
-    zfRetainChange(d->windowAniHide, zfnull);
+    zfobjRetainChange(d->windowAniShow, zfnull);
+    zfobjRetainChange(d->windowAniHide, zfnull);
 
-    zfRelease(d->dialogContainer);
-    zfRelease(d->dialogBg);
-    zfRelease(d->dialogClickMask);
-    zfRelease(d->windowBg);
-    zfRelease(d);
+    zfobjRelease(d->dialogContainer);
+    zfobjRelease(d->dialogBg);
+    zfobjRelease(d->dialogClickMask);
+    zfobjRelease(d->windowBg);
+    zfobjRelease(d);
     d = zfnull;
 
     zfsuper::objectOnDealloc();

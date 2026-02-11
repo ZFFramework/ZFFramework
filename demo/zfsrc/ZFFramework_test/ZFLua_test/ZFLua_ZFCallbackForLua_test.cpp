@@ -49,7 +49,7 @@ protected:
         {
             ZFCoreStatisticInvokeTimeLoggerOneTime("run lua code");
             ZFLuaExecute(
-                    "local obj = zfAlloc('_ZFP_ZFLua_ZFCallbackForLua_test_Object')\n"
+                    "local obj = _ZFP_ZFLua_ZFCallbackForLua_test_Object()\n"
                     "local callback = function(zfargs)"
                     "        print(zfargs)\n"
                     "    end\n"

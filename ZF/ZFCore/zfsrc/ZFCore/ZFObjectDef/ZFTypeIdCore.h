@@ -34,7 +34,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyle, zfimplement ZFProgressable {
     ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFProgressable)
-    ZFALLOC_CACHE_RELEASE_ABSTRACT({
+    ZFOBJECT_CACHE_RELEASE_ABSTRACT({
         cache->zfvReset();
     })
 
@@ -275,10 +275,10 @@ public:
             , ZF_IN T_Type const &v
             ) {
         ZFCoreMutexLock();
-        T_WrapType *t = zfunsafe_zfAlloc(T_WrapType);
+        T_WrapType *t = zfunsafe_zfobjAlloc(T_WrapType);
         t->zfv = v;
         obj.zfunsafe_assign(t);
-        zfunsafe_zfRelease(t);
+        zfunsafe_zfobjRelease(t);
         ZFCoreMutexUnlock();
         return zftrue;
     }
@@ -295,10 +295,10 @@ public:
         }
         else {
             ZFCoreMutexLock();
-            T_WrapType *t = zfunsafe_zfAlloc(T_WrapType);
+            T_WrapType *t = zfunsafe_zfobjAlloc(T_WrapType);
             t->zfv = v;
             obj.zfunsafe_assign(t);
-            zfunsafe_zfRelease(t);
+            zfunsafe_zfobjRelease(t);
             ZFCoreMutexUnlock();
         }
         return zftrue;

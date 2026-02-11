@@ -37,7 +37,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFTimerList) {
     ZFCoreArray<ZFTimer *> &d = _ZFP_ZFTimerList();
     while(!d.isEmpty()) {
         ZFTimer *timer = d.removeLastAndGet();
-        zfscopeRelease(zfRetain(timer));
+        zfobjReleaseInScope(zfobjRetain(timer));
         ZFCoreMutexUnlock();
         timer->stop();
         ZFCoreMutexLock();
@@ -91,7 +91,7 @@ ZFMETHOD_DEFINE_0(ZFTimer, void, start) {
     }
     d->started = zftrue;
 
-    zfRetain(this);
+    zfobjRetain(this);
 
     d->activatedCount = 0;
     ZFPROTOCOL_ACCESS(ZFTimer)->start(this, (zfidentity)d->timerImplId);
@@ -110,7 +110,7 @@ ZFMETHOD_DEFINE_0(ZFTimer, void, stop) {
             ZFThread::nativeThreadUnregister(d->timerThreadToken);
             d->timerThreadToken = zfnull;
         }
-        zfRelease(this);
+        zfobjRelease(this);
     }
 }
 
@@ -131,8 +131,8 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(ZF_IN zfidentity timerImplId) {
         return;
     }
 
-    zfRetain(this);
-    zfscopeRelease(this);
+    zfobjRetain(this);
+    zfobjReleaseInScope(this);
 
     ZFCoreMutexLock();
     if(d->activatedCount == 0) {

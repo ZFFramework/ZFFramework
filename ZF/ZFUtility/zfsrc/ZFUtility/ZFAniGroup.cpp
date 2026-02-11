@@ -346,11 +346,11 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
 // object
 void ZFAniGroup::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfAlloc(_ZFP_ZFAniGroupPrivate);
+    d = zfobjAlloc(_ZFP_ZFAniGroupPrivate);
     d->pimplOwner = this;
 }
 void ZFAniGroup::objectOnDealloc(void) {
-    zfRelease(d);
+    zfobjRelease(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }

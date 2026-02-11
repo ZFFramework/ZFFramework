@@ -108,7 +108,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(
     }
     this->_ZFP_ZFProperty_isUserRegister = isUserRegister;
     this->_ZFP_ZFProperty_isDynamicRegister = isDynamicRegister;
-    this->_ZFP_ZFProperty_dynamicRegisterUserData = zfRetain(dynamicRegisterUserData);
+    this->_ZFP_ZFProperty_dynamicRegisterUserData = zfobjRetain(dynamicRegisterUserData);
     this->_ZFP_ZFProperty_ownerClass = ownerClass;
     this->_ZFP_ZFProperty_name = name;
     this->_ZFP_ZFProperty_typeName = typeName;
@@ -287,7 +287,7 @@ void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo) {
         v->_ZFP_ZFProperty_getterMethodCleanup(v->getterMethod());
     }
     v->ownerClass()->_ZFP_ZFClass_propertyUnregister(v);
-    zfRetainChange(v->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserData, zfnull);
+    zfobjRetainChange(v->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserData, zfnull);
 
     _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeDetach, zfnull, v, zfnull);
 

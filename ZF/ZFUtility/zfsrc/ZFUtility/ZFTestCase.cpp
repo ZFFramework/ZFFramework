@@ -28,7 +28,7 @@ ZFMETHOD_DEFINE_0(ZFTestCase, void, start) {
         return;
     }
     this->_started = zftrue;
-    zfRetain(this);
+    zfobjRetain(this);
     this->testCaseOnStart();
 }
 
@@ -40,7 +40,7 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, notifyProgress
     }
     this->testCaseOnProgress(progress);
 
-    zfRelease(progress);
+    zfobjRelease(progress);
 }
 
 ZFMETHOD_DEFINE_1(ZFTestCase, void, stop

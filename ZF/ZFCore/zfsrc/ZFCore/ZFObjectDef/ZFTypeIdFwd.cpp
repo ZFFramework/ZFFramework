@@ -89,12 +89,12 @@ void _ZFP_PropAliasAttach(
         , ZF_IN const zfstring &tagKey
         , ZF_IN _ZFP_PropAliasDetachCallback detachCallback
         ) {
-    _ZFP_I_PropAliasHolder *d = zfAlloc(_ZFP_I_PropAliasHolder);
+    _ZFP_I_PropAliasHolder *d = zfobjAlloc(_ZFP_I_PropAliasHolder);
     d->obj = obj;
     d->v = v;
     d->detachCallback = detachCallback;
     obj->objectTag(tagKey, d);
-    zfRelease(d);
+    zfobjRelease(d);
 
     // solve this issue:
     // 1. attach

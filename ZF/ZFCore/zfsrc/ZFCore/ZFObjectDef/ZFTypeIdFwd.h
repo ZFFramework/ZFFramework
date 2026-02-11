@@ -171,7 +171,7 @@ public:
      * @code
      *   zfclass v_YourType : zfextend ZFTypeIdWrapper {
      *       ZFOBJECT_DECLARE(v_YourType, ZFTypeIdWrapper)
-     *       ZFALLOC_CACHE_RELEASE({
+     *       ZFOBJECT_CACHE_RELEASE({
      *           cache->zfvReset();
      *       })
      *   public:
@@ -199,7 +199,7 @@ public:
      * -  when access aliased type as return value,
      *   the temp object may (or may not) be released on different condition,
      *   take care of life cycle:
-     *   -  if #ZFThread impl is available : release by #zfautoRelease
+     *   -  if #ZFThread impl is available : release by #zfobjAutoRelease
      *   -  if #ZFThread impl is not available : added to #ZFAutoReleasePool,
      *     you must release it at proper time
      */

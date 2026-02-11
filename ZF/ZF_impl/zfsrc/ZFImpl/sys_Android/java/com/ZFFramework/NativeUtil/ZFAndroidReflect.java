@@ -307,7 +307,7 @@ public class ZFAndroidReflect {
             cls = Class.forName(interfaceClass);
         } catch (Exception ignored) {
             ZFAndroidLog.p("[ZFAndroidReflect] no interface class for name: %s", interfaceClass);
-            ZFObject.zfRelease(zfjniPointerImpl);
+            ZFObject.zfobjRelease(zfjniPointerImpl);
             return null;
         }
         ZFAndroidValue<Long> zfjniPointerImplHolder = new ZFAndroidValue<>(zfjniPointerImpl);
@@ -333,7 +333,7 @@ public class ZFAndroidReflect {
                     if (zfjniPointerImplHolder.value != 0) {
                         long tmp = zfjniPointerImplHolder.value;
                         zfjniPointerImplHolder.value = 0L;
-                        ZFObject.zfRelease(tmp);
+                        ZFObject.zfobjRelease(tmp);
                     }
                     super.finalize();
                 }
@@ -344,7 +344,7 @@ public class ZFAndroidReflect {
         if (zfjniPointerImplHolder.value != 0) {
             long tmp = zfjniPointerImplHolder.value;
             zfjniPointerImplHolder.value = 0L;
-            ZFObject.zfRelease(tmp);
+            ZFObject.zfobjRelease(tmp);
         }
         return null;
     }

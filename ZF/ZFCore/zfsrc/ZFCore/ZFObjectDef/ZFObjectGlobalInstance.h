@@ -212,7 +212,7 @@ public:
     _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, \
                                   AccessTypeName, ObjectTypeName, sig, _ZFP_ZFObjectSingleton_##accessMethodName, \
                                   ZFLevel_, \
-                                  zfAlloc, zfRetain, zfRelease) \
+                                  zfobjAlloc, zfobjRetain, zfobjRelease) \
     ZFMETHOD_DEFINE_DETAIL_0(OwnerClass, G, \
             AccessTypeName *, accessMethodName \
             ) { \

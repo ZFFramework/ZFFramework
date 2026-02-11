@@ -25,7 +25,7 @@ public:
     {
     }
     ~_ZFP_ZFAniForTimerPrivate(void) {
-        zfRetainChange(this->builtinTimer, zfnull);
+        zfobjRetainChange(this->builtinTimer, zfnull);
     }
 
 public:
@@ -46,7 +46,7 @@ public:
         else {
             owner->d->useGlobalTimer = zffalse;
             if(owner->d->builtinTimer == zfnull) {
-                owner->d->builtinTimer = zfAlloc(ZFTimer);
+                owner->d->builtinTimer = zfobjAlloc(ZFTimer);
 
                 ZFLISTENER_1(builtinTimerOnActivate
                         , ZFAniForTimer *, owner

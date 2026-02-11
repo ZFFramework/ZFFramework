@@ -371,7 +371,7 @@ jobject ZFAndroidReflect::implInterface(ZF_IN const zfchar *interfaceClass, ZF_I
     JNIScopeDeleteLocalRef(jInterfaceClass);
 
     // release in native_implInterface
-    v_ZFListener *implHolder = zfAlloc(v_ZFListener, impl);
+    v_ZFListener *implHolder = zfobjAlloc(v_ZFListener, impl);
 
     return JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), jmId
             , jInterfaceClass

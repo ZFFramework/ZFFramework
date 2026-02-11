@@ -32,11 +32,11 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        d = zfAlloc(ZFArray);
+        d = zfobjAlloc(ZFArray);
     }
     zfoverride
     virtual void objectOnDealloc(void) {
-        zfRelease(d);
+        zfobjRelease(d);
         zfsuper::objectOnDealloc();
     }
     zfoverride

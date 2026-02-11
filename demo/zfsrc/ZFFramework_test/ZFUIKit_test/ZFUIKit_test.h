@@ -70,8 +70,8 @@ protected:
 };
 
 extern void ZFUIKit_test_prepareTestWindow(
-        ZF_OUT ZFUIWindow *&window
-        , ZF_OUT ZFUIView *&container
+        ZF_OUT zfautoT<ZFUIWindow> &window
+        , ZF_OUT zfautoT<ZFUIView> &container
         , ZF_IN ZFTestCase *testCaseToStop
         );
 

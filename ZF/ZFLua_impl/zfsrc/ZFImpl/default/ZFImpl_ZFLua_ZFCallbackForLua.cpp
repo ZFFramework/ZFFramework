@@ -215,7 +215,7 @@ public:
             case ValueType_ENV:
                 break;
             case ValueType_ZFObject:
-                zfRelease(v.v.objectValue);
+                zfobjRelease(v.v.objectValue);
                 break;
             case ValueType_localFunc:
                 zffree(v.v.localFuncName);
@@ -345,7 +345,7 @@ private:
             if(!ZFImpl_ZFLua_toObject(obj, L, -1)) {
                 return zffalse;
             }
-            ret.v.objectValue = zfRetain(obj);
+            ret.v.objectValue = zfobjRetain(obj);
             ret.valueType = ValueType_ZFObject;
         }
         else if(lua_isfunction(L, -1)) {
@@ -548,7 +548,7 @@ public:
 // ============================================================
 zfclass _ZFP_I_ZFCallbackForLuaCallback : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFCallbackForLuaCallback, ZFObject)
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->_cleanup();
     })
 

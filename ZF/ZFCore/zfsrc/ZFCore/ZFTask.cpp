@@ -23,7 +23,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, start
     this->resultType(v_ZFResultType::e_Success);
     this->errorHint("");
 
-    zfRetain(this);
+    zfobjRetain(this);
     this->taskOnStart();
     this->observerNotify(zfself::E_TaskOnStart());
 }
@@ -42,7 +42,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, stop
     this->resultType(resultType);
     this->taskOnStop();
     this->observerNotify(zfself::E_TaskOnStop());
-    zfRelease(this);
+    zfobjRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFTask, zfbool, started) {
     return _ZFP_started;
@@ -62,7 +62,7 @@ ZFMETHOD_DEFINE_1(ZFTask, void, taskPending
             _ZFP_stopped = zffalse;
             this->taskOnStop();
             this->observerNotify(zfself::E_TaskOnStop());
-            zfRelease(this);
+            zfobjRelease(this);
         }
     }
 }

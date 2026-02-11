@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFLIB_ZFUIKit ZFUIEvent : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIEvent, ZFObject)
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->eventResolved(zffalse);
     })
 

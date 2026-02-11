@@ -13,18 +13,18 @@ public:
     {
     }
     _ZFP_ZFImpl_sys_Qt_ValueWrapper(ZF_IN ZFObject *obj)
-    : value(zfRetain(obj))
+    : value(zfobjRetain(obj))
     {
     }
     _ZFP_ZFImpl_sys_Qt_ValueWrapper(ZF_IN const _ZFP_ZFImpl_sys_Qt_ValueWrapper &ref)
-    : value(zfRetain(ref.value))
+    : value(zfobjRetain(ref.value))
     {
     }
     ~_ZFP_ZFImpl_sys_Qt_ValueWrapper(void) {
-        zfRelease(this->value);
+        zfobjRelease(this->value);
     }
     _ZFP_ZFImpl_sys_Qt_ValueWrapper &operator = (ZF_IN const _ZFP_ZFImpl_sys_Qt_ValueWrapper &ref) {
-        zfRetainChange(this->value, ref.value);
+        zfobjRetainChange(this->value, ref.value);
         return *this;
     }
 };

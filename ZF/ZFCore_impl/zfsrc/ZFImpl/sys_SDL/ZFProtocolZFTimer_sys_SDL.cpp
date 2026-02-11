@@ -19,10 +19,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_SDL, ZFTimer, v_ZFProtocolLevel:
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("SDL:Timer")
 public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {
-        return zfAlloc(_ZFP_I_ZFTimerImpl_sys_SDL_TimerData);
+        return zfobjAlloc(_ZFP_I_ZFTimerImpl_sys_SDL_TimerData);
     }
     virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
-        zfRelease((_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer());
+        zfobjRelease((_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)timer->nativeTimer());
     }
     virtual void start(
             ZF_IN ZFTimer *timer
@@ -40,7 +40,7 @@ public:
 private:
     static Uint32 _ZFP_timerCallback(void *userdata, SDL_TimerID timerID, Uint32 interval) {
         _ZFP_I_ZFTimerImpl_sys_SDL_TimerData *nativeTimer = (_ZFP_I_ZFTimerImpl_sys_SDL_TimerData *)userdata;
-        zfscopeRelease(zfRetain(nativeTimer));
+        zfobjReleaseInScope(zfobjRetain(nativeTimer));
         if(nativeTimer->timer->eventOnMainThread()) {
             if(!nativeTimer->timerMainThreadListener) {
                 ZFLISTENER_1(mainThreadCallback

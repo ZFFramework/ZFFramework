@@ -37,7 +37,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
             : obj->invokeDetail(methodNameZF, paramsZF)
             );
     if(ret) {
-        zfautoRelease(zfRetain(ret));
+        zfobjAutoRelease(zfobjRetain(ret));
     }
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }
@@ -70,7 +70,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
             : obj->invokeDetail(methodNameZF, paramsZF)
             );
     if(ret) {
-        zfautoRelease(zfRetain(ret));
+        zfobjAutoRelease(zfobjRetain(ret));
     }
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }
@@ -78,30 +78,30 @@ JNI_METHOD_DECLARE_END()
 
 // ============================================================
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
-        , JNIPointer, zfRetain
+        , JNIPointer, zfobjRetain
         , JNIPointer zfjniPointer
         ) {
     ZFObject *obj = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer);
-    zfRetain(obj);
+    zfobjRetain(obj);
     return zfjniPointer;
 }
 JNI_METHOD_DECLARE_END()
 
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
-        , void, zfRelease
+        , void, zfobjRelease
         , JNIPointer zfjniPointer
         ) {
     ZFObject *obj = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer);
-    zfRelease(obj);
+    zfobjRelease(obj);
 }
 JNI_METHOD_DECLARE_END()
 
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
-        , JNIPointer, zfautoRelease
+        , JNIPointer, zfobjAutoRelease
         , JNIPointer zfjniPointer
         ) {
     ZFObject *obj = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer);
-    zfautoRelease(obj);
+    zfobjAutoRelease(obj);
     return zfjniPointer;
 }
 JNI_METHOD_DECLARE_END()
@@ -145,7 +145,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
             , JNIConvertZFObjectToJNIType(jniEnv, tmp)
             );
     } ZFLISTENER_END()
-    v_ZFListener *ret = zfAlloc(v_ZFListener, wrap); // should be release by caller
+    v_ZFListener *ret = zfobjAlloc(v_ZFListener, wrap); // should be release by caller
     return JNIConvertZFObjectToJNIType(jniEnv, ret);
 }
 JNI_METHOD_DECLARE_END()

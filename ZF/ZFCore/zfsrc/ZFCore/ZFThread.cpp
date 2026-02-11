@@ -25,7 +25,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
     ZFCoreMutexLock();
     while(!_ZFP_ZFThread_allThread.isEmpty()) {
         ZFThread *zfThread = _ZFP_ZFThread_allThread.getLast();
-        zfscopeRelease(zfRetain(zfThread));
+        zfobjReleaseInScope(zfobjRetain(zfThread));
         ZFCoreAssert(zfThread->threadStarted());
         ZFCoreMutexUnlock();
         zfThread->threadStop();
@@ -64,8 +64,8 @@ public:
     : startFlag(zffalse)
     , runningFlag(zffalse)
     , stopRequestedFlag(zffalse)
-    , autoReleasePool(zfAlloc(ZFAutoReleasePool))
-    , threadWaitSema(zfAlloc(ZFSemaphore))
+    , autoReleasePool(zfobjAlloc(ZFAutoReleasePool))
+    , threadWaitSema(zfobjAlloc(ZFSemaphore))
     , taskQueueInitFlag(zffalse)
     , taskQueueRunning(zffalse)
     , taskQueueSema(zfnull)
@@ -77,9 +77,9 @@ public:
     {
     }
     ~_ZFP_ZFThreadPrivate(void) {
-        zfRelease(this->autoReleasePool);
-        zfRelease(this->threadWaitSema);
-        zfRelease(this->taskQueueSema);
+        zfobjRelease(this->autoReleasePool);
+        zfobjRelease(this->threadWaitSema);
+        zfobjRelease(this->taskQueueSema);
     }
 
 public:
@@ -142,7 +142,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void *, nativeThreadRegister
     ZFThread *zfThread = ZFThread::currentThread();
     ZFCoreAssert(zfThread == zfnull);
 
-    zfThread = zfAlloc(_ZFP_I_ZFThreadNativeRegisterThread);
+    zfThread = zfobjAlloc(_ZFP_I_ZFThreadNativeRegisterThread);
     zfThread->threadName(threadName);
     void *ret = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(zfThread);
     _ZFP_ZFThread_allThread.add(zfThread);
@@ -183,7 +183,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister
     zfThread->threadOnUnregister();
     _ZFP_ZFThread_allThread.removeElement(zfThread);
     ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(token);
-    zfunsafe_zfRelease(zfThread);
+    zfunsafe_zfobjRelease(zfThread);
 }
 
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, implAvailable) {
@@ -311,7 +311,7 @@ ZFMETHOD_DEFINE_2(ZFThread, void, threadStart
         return;
     }
     d->startFlag = zftrue;
-    zfunsafe_zfRetain(this);
+    zfunsafe_zfobjRetain(this);
     ZFThread *zfThread = this;
     _ZFP_ZFThread_log("executeInNewThread begin %p", this);
     ZFLISTENER_3(threadCallback
@@ -410,8 +410,8 @@ ZFMETHOD_DEFINE_0(ZFThread, void, taskQueueInit) {
         return;
     }
     d->taskQueueInitFlag = zftrue;
-    d->taskQueueSema = zfunsafe_zfAlloc(ZFSemaphore);
-    zfunsafe_zfRetain(this);
+    d->taskQueueSema = zfunsafe_zfobjAlloc(ZFSemaphore);
+    zfunsafe_zfobjRetain(this);
 }
 ZFMETHOD_DEFINE_0(ZFThread, void, taskQueueCleanup) {
     if(this->isMainThread()) {
@@ -425,7 +425,7 @@ ZFMETHOD_DEFINE_0(ZFThread, void, taskQueueCleanup) {
     ZFCoreMutexUnlock();
     d->taskQueueInitFlag = zffalse;
     d->taskQueueSema->lockAndBroadcast();
-    zfunsafe_zfRelease(this);
+    zfunsafe_zfobjRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, taskQueueAvailable) {
     return (this->isMainThread() || d->taskQueueInitFlag);
@@ -583,7 +583,7 @@ void _ZFP_ZFThreadPrivate::threadCleanupCallback(ZF_IN ZFThread *zfThread) {
     d->threadWaitSema->lockAndBroadcast();
 
     _ZFP_ZFThread_log("executeInNewThread exit %p", zfThread);
-    zfunsafe_zfRelease(zfThread);
+    zfunsafe_zfobjRelease(zfThread);
 }
 
 void _ZFP_ZFThreadPrivate::mainThreadCallback(ZF_IN ZFThread *zfThread) {

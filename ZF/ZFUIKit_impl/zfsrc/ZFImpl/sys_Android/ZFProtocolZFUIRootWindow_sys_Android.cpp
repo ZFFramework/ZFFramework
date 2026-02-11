@@ -25,7 +25,7 @@ public:
     zfoverride
     virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
-            this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+            this->_mainWindow = zfobjRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
 
             JNIEnv *jniEnv = JNIGetJNIEnv();
             static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIRootWindow(), "native_nativeMainWindowCreate",
@@ -43,7 +43,7 @@ public:
         if(this->_mainWindow != zfnull) {
             ZFUIRootWindow *mainWindowTmp = this->_mainWindow;
             this->_mainWindow = zfnull;
-            zfRelease(mainWindowTmp);
+            zfobjRelease(mainWindowTmp);
         }
     }
     zfoverride

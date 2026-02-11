@@ -48,12 +48,12 @@ static _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType _ZFP_ZFThreadImpl_sys_An
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_Android_DataHolder, ZFLevelZFFrameworkEssential) {
-    mainThread = zfAlloc(ZFThreadMainThread);
+    mainThread = zfobjAlloc(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_sys_Android_getNativeThreadId()] = mainThread;
     executeId = 1;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_Android_DataHolder) {
-    zfRelease(mainThread);
+    zfobjRelease(mainThread);
     mainThread = zfnull;
 }
 public:

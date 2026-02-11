@@ -228,9 +228,9 @@ public:
             const ZFMethod *enumNameAtMethod = enumClass->methodForName("EnumNameAt");
             ZFCoreAssert(enumCountMethod != zfnull && enumValueAtMethod != zfnull && enumNameAtMethod != zfnull);
 
-            ret = zfAlloc(_ZFP_I_ZFEnum_stringConverterDataHolder);
+            ret = zfobjAlloc(_ZFP_I_ZFEnum_stringConverterDataHolder);
             enumClass->dataCache(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull(), ret);
-            zfRelease(ret);
+            zfobjRelease(ret);
 
             ret->enumCount = enumCountMethod->methodInvoke().to<v_zfindex *>()->zfv;
             ZFCoreAssert(ret->enumCount > 0);

@@ -34,7 +34,7 @@ public:
 public:
     virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
-            this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+            this->_mainWindow = zfobjRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
             ZFImpl_sys_SDL_RootWindow *nativeWindow = zfpoolNew(ZFImpl_sys_SDL_RootWindow);
             nativeWindow->ownerZFUIRootWindow = this->_mainWindow;
             nativeWindow->builtinWindow = zftrue;
@@ -53,7 +53,7 @@ public:
                 this->notifyOnPause(this->_mainWindow);
             }
             this->notifyOnDestroy(this->_mainWindow);
-            zfscopeRelease(this->_mainWindow);
+            zfobjReleaseInScope(this->_mainWindow);
             this->_mainWindow = zfnull;
             zfpoolDelete(nativeWindow);
         }

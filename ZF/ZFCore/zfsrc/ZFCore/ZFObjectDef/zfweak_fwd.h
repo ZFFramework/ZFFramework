@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zffinal zfclass ZFLIB_ZFCore _ZFP_I_zfweak : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_zfweak, ZFObject)
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->set(zfnull);
     })
 

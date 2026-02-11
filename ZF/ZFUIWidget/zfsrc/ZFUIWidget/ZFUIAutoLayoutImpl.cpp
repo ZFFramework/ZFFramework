@@ -591,7 +591,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
 
     zffloat fixedSize = 0;
     zffloat *childSizeCache = (zffloat *)zfmalloc(sizeof(zffloat) * parent->childCount());
-    zfscopeFree(childSizeCache);
+    zffreeInScope(childSizeCache);
     for(zfindex i = chain.count() - 1; i != zfindexMax(); --i) {
         zfindex childIndex = chain[i];
         ZFUIAutoLayoutRule *ruleList = parent->childAt(childIndex)->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;

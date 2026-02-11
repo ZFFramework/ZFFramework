@@ -30,7 +30,7 @@ public:
     zfindex savedPos;
     zfindex curPos; // ensured init with start
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->_cleanup();
         cache->src = zfnull;
     })
@@ -120,7 +120,7 @@ ZFInput ZFInputForInputInRange(
         return zfnull;
     }
 
-    _ZFP_I_ZFInputForInputInRangeOwner *owner = zfAlloc(_ZFP_I_ZFInputForInputInRangeOwner);
+    _ZFP_I_ZFInputForInputInRangeOwner *owner = zfobjAlloc(_ZFP_I_ZFInputForInputInRangeOwner);
     owner->src = inputCallback;
     owner->srcStart = start;
     owner->srcCount = countFixed;
@@ -130,7 +130,7 @@ ZFInput ZFInputForInputInRange(
     ZFInput ret = ZFCallbackForMemberMethod(
         owner, ZFMethodAccess(_ZFP_I_ZFInputForInputInRangeOwner, onInput));
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
-    zfRelease(owner);
+    zfobjRelease(owner);
 
     if(inputCallback.callbackId() != zfnull) {
         ret.callbackId(zfstr("ZFInputForInputInRange[%s, %s]:%s", start, count, inputCallback.callbackId()));
@@ -227,7 +227,7 @@ public:
     const zfbyte *pEnd; // ensured valid
     const zfbyte *p;
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->pStart = zfnull;
         cache->pEnd = zfnull;
         cache->p = zfnull;

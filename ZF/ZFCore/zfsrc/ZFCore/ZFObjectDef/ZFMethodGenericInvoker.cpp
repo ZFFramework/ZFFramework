@@ -15,10 +15,10 @@ protected:
 };
 ZFObject *_ZFP_ZFMP_DEF = zfnull;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMP_DEF_Init, ZFLevelZFFrameworkStatic) {
-    _ZFP_ZFMP_DEF = zfAlloc(_ZFP_I_ZFMP_DEF_Type);
+    _ZFP_ZFMP_DEF = zfobjAlloc(_ZFP_I_ZFMP_DEF_Type);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMP_DEF_Init) {
-    zfRelease(_ZFP_ZFMP_DEF);
+    zfobjRelease(_ZFP_ZFMP_DEF);
     _ZFP_ZFMP_DEF = zfnull;
 }
 ZF_GLOBAL_INITIALIZER_END(ZFMP_DEF_Init)

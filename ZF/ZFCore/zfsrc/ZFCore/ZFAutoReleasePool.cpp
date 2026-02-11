@@ -58,7 +58,7 @@ void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj) {
             ZFCoreLogTrim("warning, auto release pool full, trying to release old object");
             _ZFP_ZFAutoReleasePoolData data = d->array.get(0);
             d->array.remove(0);
-            zfRelease(data.obj);
+            zfobjRelease(data.obj);
         }
         _ZFP_ZFAutoReleasePoolData data;
         data.obj = obj;
@@ -73,7 +73,7 @@ void ZFAutoReleasePool::poolDrain() {
         ZFCoreMutexUnlock();
 
         for(zfindex i = 0; i < tmp.count(); ++i) {
-            zfRelease(tmp[i].obj);
+            zfobjRelease(tmp[i].obj);
         }
     }
 }

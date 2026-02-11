@@ -28,11 +28,9 @@ void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(
         ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl
         , ZF_IN ZFUIScrollView *scrollView
         ) {
-    v_ZFListener *scrollTimer = scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
-    zfRetain(scrollTimer);
+    zfautoT<v_ZFListener> scrollTimer = scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
     scrollView->objectTagRemove("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
     ZFGlobalTimerDetach(scrollTimer->zfv);
-    zfRelease(scrollTimer);
 }
 
 // ============================================================
@@ -42,7 +40,7 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(
         , ZF_IN ZFUIScrollViewImplHelper *owner
         ) {
     if(owner->_trackDelayDefaultImplTimer == zfnull) {
-        owner->_trackDelayDefaultImplTimer = zfAlloc(ZFTimer);
+        owner->_trackDelayDefaultImplTimer = zfobjAlloc(ZFTimer);
         owner->_trackDelayDefaultImplTimer->interval(timeoutMiliSeconds);
         ZFLISTENER_1(timerActivated
                 , ZFUIScrollViewImplHelper *, owner
@@ -215,7 +213,7 @@ ZFUIScrollViewImplHelper::ZFUIScrollViewImplHelper(void)
 ZFUIScrollViewImplHelper::~ZFUIScrollViewImplHelper(void) {
     if(_trackDelayDefaultImplTimer != zfnull) {
         _trackDelayDefaultImplTimer->stop();
-        zfRelease(_trackDelayDefaultImplTimer);
+        zfobjRelease(_trackDelayDefaultImplTimer);
         _trackDelayDefaultImplTimer = zfnull;
     }
     zfpoolDelete(d);
@@ -225,7 +223,7 @@ void ZFUIScrollViewImplHelper::interceptMouse(
         ZF_IN void *nativeMouseEvent
         , ZF_IN ZFUIMouseAction mouseAction
         ) {
-    zfscopeRelease(zfRetain(this->scrollView));
+    zfobjReleaseInScope(zfobjRetain(this->scrollView));
 
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     ZFLogTrim() << ZFLogCurTimeString() << " [ScrollImpl] " << ZF_CALLER_LINE << " " << d->pimplOwner->scrollView << " intercept " << mouseAction
@@ -289,7 +287,7 @@ void ZFUIScrollViewImplHelper::trackDelayNotifyTimeout(void) {
     d->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateIgnored;
 
     // restore mouse down
-    zfscopeRelease(zfRetain(this->scrollView));
+    zfobjReleaseInScope(zfobjRetain(this->scrollView));
     d->mouseDownResend();
 }
 

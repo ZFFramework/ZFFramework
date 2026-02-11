@@ -15,15 +15,15 @@ zfclassFwd _ZFP_ZFTimerPrivate;
  *
  * usage:
  * @code
- *   ZFTimer *timer = zfAlloc(ZFTimer, ...);
+ *   ZFTimer *timer = zfobjAlloc(ZFTimer, ...);
  *   timer->start();
- *   zfRelease(timer); // safe to release after start, timer would be auto released after stop
+ *   zfobjRelease(timer); // safe to release after start, timer would be auto released after stop
  * @endcode
  */
 zfclass ZFLIB_ZFCore ZFTimer : zfextend ZFObject, zfimplement ZFTaskId {
     ZFOBJECT_DECLARE(ZFTimer, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFTaskId)
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
             cache->stop();
             cache->interval(1000);
         })

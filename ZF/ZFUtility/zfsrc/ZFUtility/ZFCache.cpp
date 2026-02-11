@@ -111,7 +111,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
             d->cacheList.push_back(cacheData);
             --(cacheData->cacheListIt = d->cacheList.end());
 
-            zfRetain(cacheData->cacheValue);
+            zfobjRetain(cacheData->cacheValue);
             // would be removed by retain in E_ObjectBeforeDealloc
             // cacheData->cacheValue->observerRemove(ZFObject::E_ObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
         } ZFLISTENER_END()
@@ -154,7 +154,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
     }
     if(cacheData->cacheListIt != d->cacheList.end()) {
         d->cacheList.erase(cacheData->cacheListIt);
-        zfRelease(cacheData->cacheValue);
+        zfobjRelease(cacheData->cacheValue);
     }
     cacheData->cacheMapIt->second.erase(cacheData->cacheMapListIt);
     zfpoolDelete(cacheData);
@@ -180,7 +180,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
     if(cacheData->aliveListIt == d->aliveList.end()) {
         d->cacheList.erase(cacheData->cacheListIt);
         cacheData->cacheListIt = d->cacheList.end();
-        zfRelease(cacheData->cacheValue);
+        zfobjRelease(cacheData->cacheValue);
 
         d->aliveList.push_back(cacheData);
         --(cacheData->aliveListIt = d->aliveList.end());
@@ -207,7 +207,7 @@ ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
         cacheList.erase(cacheData->cacheMapListIt);
         if(cacheData->cacheListIt != d->cacheList.end()) {
             d->cacheList.erase(cacheData->cacheListIt);
-            zfRelease(cacheData->cacheValue);
+            zfobjRelease(cacheData->cacheValue);
         }
         if(cacheData->aliveListIt != d->aliveList.end()) {
             d->aliveList.erase(cacheData->aliveListIt);
@@ -234,7 +234,7 @@ ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
                 cacheList.erase(cacheData->cacheMapListIt);
                 if(cacheData->cacheListIt != d->cacheList.end()) {
                     d->cacheList.erase(cacheData->cacheListIt);
-                    zfRelease(cacheData->cacheValue);
+                    zfobjRelease(cacheData->cacheValue);
                 }
                 if(cacheData->aliveListIt != d->aliveList.end()) {
                     d->aliveList.erase(cacheData->aliveListIt);
@@ -260,7 +260,7 @@ ZFMETHOD_DEFINE_1(ZFCache, void, cacheTrim
         cacheData->cacheMapIt->second.erase(cacheData->cacheMapListIt);
         d->cacheList.erase(cacheData->cacheListIt);
         this->cacheOnRemove(cacheData->cacheValue);
-        zfRelease(cacheData->cacheValue);
+        zfobjRelease(cacheData->cacheValue);
         zfpoolDelete(cacheData);
     } while(d->cacheList.size() > (zfstlsize)size);
 }

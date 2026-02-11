@@ -15,9 +15,9 @@ protected:
 
         zfobj<v_zfstring> testObserver0("testObserver0");
         ZFObserver testObserver1;
-        ZFObject *testObserver2 = zfAlloc(v_zfstring, "testObserver2");
+        zfobj<v_zfstring> testObserver2("testObserver2");
         zfobj<v_zfstring> testObserver3("testObserver3");
-        ZFObject *owner = zfAlloc(ZFObject);
+        zfobj<ZFObject> owner;
 
         ZFLISTENER(observer
                 ) {
@@ -51,13 +51,13 @@ protected:
         testObserver3->observerNotify(zfself::E_ZFObserverGroupTest1());
 
         this->outputSeparator();
-        zfRelease(owner);
+        owner = zfnull;
         this->output("owner released, all related observer should be removed");
         testObserver3->observerNotify(zfself::E_ZFObserverGroupTest0());
         testObserver3->observerNotify(zfself::E_ZFObserverGroupTest1());
 
         this->outputSeparator();
-        zfRelease(testObserver2);
+        testObserver2 = zfnull;
         this->output("target released, all related observer should be removed");
 
         this->outputSeparator();

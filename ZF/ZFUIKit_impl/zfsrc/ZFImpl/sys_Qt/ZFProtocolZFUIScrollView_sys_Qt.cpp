@@ -242,8 +242,8 @@ protected:
             return true;
         }
 
-        zfRetain(this->_ZFP_ownerZFUIScrollView);
-        zfscopeRelease(this->_ZFP_ownerZFUIScrollView);
+        zfobjRetain(this->_ZFP_ownerZFUIScrollView);
+        zfobjReleaseInScope(this->_ZFP_ownerZFUIScrollView);
 
         // cloned even if no extra processing
         // to ensure tag map would be cleaned to the event

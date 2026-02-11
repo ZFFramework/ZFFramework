@@ -99,7 +99,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
         ZFCoreAssertIndexRange(indexAddTo, this->count() + 1);
     }
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
-    zfRetain(obj);
+    zfobjRetain(obj);
     d->data.insert(d->data.begin() + indexAddTo, obj);
 
     this->contentOnAdd(obj);
@@ -109,7 +109,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, add
         , ZFMP_IN(ZFObject *, obj)
         ) {
     ZFCoreAssertWithMessage(obj != zfnull, "insert null object");
-    zfRetain(obj);
+    zfobjRetain(obj);
     d->data.push_back(obj);
 
     this->contentOnAdd(obj);
@@ -124,7 +124,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, addFrom
     ZFObject *obj = zfnull;
     for(zfiter it = another->iter(); it; ++it) {
         obj = another->iterValue(it);
-        zfRetain(obj);
+        zfobjRetain(obj);
         d->data.push_back(obj);
         this->contentOnAdd(obj);
     }
@@ -139,7 +139,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
         ) {
     ZFCoreAssertIndexRange(index, this->count());
     ZFCoreAssertWithMessage(obj != zfnull, "set null object");
-    zfRetain(obj);
+    zfobjRetain(obj);
 
     ZFObject *old = d->data[index];
     d->data[index] = obj;
@@ -148,7 +148,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
     this->contentOnAdd(obj);
     this->contentOnUpdate();
 
-    zfRelease(old);
+    zfobjRelease(old);
 }
 
 ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElement
@@ -159,7 +159,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElement
             if((*it)->objectCompare(obj) == ZFCompareEqual) {
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfRelease(toRelease);
+                zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnUpdate();
@@ -181,7 +181,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
             if(comparer(*it, obj) == ZFCompareEqual) {
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfRelease(toRelease);
+                zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnUpdate();
@@ -202,7 +202,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElementRevsersely
             if(d->data[i]->objectCompare(obj) == ZFCompareEqual) {
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
-                zfRelease(toRelease);
+                zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnUpdate();
@@ -221,7 +221,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementRevsersely
             if(comparer(d->data[i], obj) == ZFCompareEqual) {
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
-                zfRelease(toRelease);
+                zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnUpdate();
@@ -241,7 +241,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfindex, removeElementAll
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfRelease(toRelease);
+                zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
             }
@@ -266,7 +266,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, removeElementAll
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfRelease(toRelease);
+                zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
             }
@@ -288,7 +288,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
     ZFCoreAssertIndexRange(index, this->count());
     if(count == 1) {
         ZFObject *tmp = d->data[index];
-        zfscopeRelease(tmp);
+        zfobjReleaseInScope(tmp);
         d->data.erase(d->data.begin() + index);
 
         this->contentOnRemove(tmp);
@@ -304,7 +304,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         d->data.erase(d->data.begin() + index, d->data.begin() + (index + count));
         for(zfstldeque<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
             this->contentOnRemove(*it);
-            zfRelease(*it);
+            zfobjRelease(*it);
         }
 
         if(!tmp.empty()) {
@@ -344,7 +344,7 @@ ZFMETHOD_DEFINE_0(ZFArray, void, removeAll) {
 
         for(zfstldeque<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
             this->contentOnRemove(*it);
-            zfRelease(*it);
+            zfobjRelease(*it);
         }
     }
 }

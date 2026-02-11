@@ -195,7 +195,7 @@ public:
     zfoverride
     virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
-            this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+            this->_mainWindow = zfobjRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
             _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = [_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow new];
             nativeWindow.ownerZFUIRootWindow = this->_mainWindow;
 
@@ -225,7 +225,7 @@ public:
             if(this->_mainWindow->windowResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
-            zfscopeRelease(this->_mainWindow);
+            zfobjReleaseInScope(this->_mainWindow);
             this->notifyOnDestroy(this->_mainWindow);
             this->_mainWindow = zfnull;
             nativeWindow = nil;

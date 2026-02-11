@@ -68,26 +68,26 @@ zfclassFwd _ZFP_I_zfweak;
  *
  * -  ZFObject is a Object-C-like class, using objectRetainCount to manage memory:
  *   @code
- *     ZFObject *myObj = zfAlloc(ZFObject); // objectRetainCount = 1
- *     anotherObj = zfRetain(myObj);        // objectRetainCount = 2
- *     zfRelease(myObj);                    // objectRetainCount = 1
- *     zfRelease(anotherObject);            // objectRetainCount = 0, delete
+ *     ZFObject *myObj = zfobjAlloc(ZFObject); // objectRetainCount = 1
+ *     anotherObj = zfobjRetain(myObj);        // objectRetainCount = 2
+ *     zfobjRelease(myObj);                    // objectRetainCount = 1
+ *     zfobjRelease(anotherObject);            // objectRetainCount = 0, delete
  *   @endcode
- *   you should always use #zfAlloc to create a ZFObject or its subclass,
- *   and use #zfRetain and #zfRelease to manage memory
- *   @see zfRetain, zfRelease, ZFAutoReleasePool
+ *   you should always use #zfobjAlloc to create a ZFObject or its subclass,
+ *   and use #zfobjRetain and #zfobjRelease to manage memory
+ *   @see zfobjRetain, zfobjRelease, ZFAutoReleasePool
  *
  *   ADVANCED:\n
  *   we are trying hard to simulate the autorelease in Object-C world:
- *   -  #zfautoRelease:
+ *   -  #zfobjAutoRelease:
  *     the most powerful and most similar one to autorelease in Object-C,
  *     however it depends on ZFThread,
  *     so most of functions won't use this to return a autoreleased object,
- *     see #zfautoRelease for more info
+ *     see #zfobjAutoRelease for more info
  *   -  #ZFAutoReleasePool:
  *     similar to NSAutoReleasePool, release after pool release,
- *     zfautoRelease depends on it, and all ZFThread has a pool internally
- *   -  #zfscopeRelease:
+ *     zfobjAutoRelease depends on it, and all ZFThread has a pool internally
+ *   -  #zfobjReleaseInScope:
  *     release after nearest code block
  *   -  #zfobj:
  *     declare a ZFObject which looks like allocated in stack,
@@ -261,7 +261,7 @@ public:
 public:
     /**
      * @brief return the object's retain count
-     * @see zfRetain, zfRelease
+     * @see zfobjRetain, zfobjRelease
      */
     zffinal inline zfindex objectRetainCount(void) {
         return _objectRetainCount;
@@ -721,7 +721,7 @@ protected:
      *         }
      *     };
      *     static void func(void) {
-     *         // MyObject *obj = zfAlloc(MyObject); // would compile error
+     *         // MyObject *obj = zfobjAlloc(MyObject); // would compile error
      *         zfauto obj = MyObject::instanceForXxx(xxx); // OK
      *     }
      *   @endcode
@@ -832,8 +832,8 @@ protected:
 
     // ============================================================
 public:
-    zffinal void _ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback);
-    zffinal _ZFP_zfAllocCacheReleaseCallback _ZFP_ZFObject_zfAllocCacheRelease(void);
+    zffinal void _ZFP_ZFObject_zfobjAllocCacheRelease(ZF_IN _ZFP_zfobjAllocCacheReleaseCallback callback);
+    zffinal _ZFP_zfobjAllocCacheReleaseCallback _ZFP_ZFObject_zfobjAllocCacheRelease(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement);
 
@@ -843,8 +843,8 @@ private:
     friend zfclassFwd _ZFP_ZFObserverPrivate;
     template<typename T_ZFObject, int valid>
     friend zfclassFwd _ZFP_ObjACk;
-    friend void _ZFP_zfRetainAction(ZF_IN ZFObject *obj);
-    friend void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj);
+    friend void _ZFP_zfobjRetainAction(ZF_IN ZFObject *obj);
+    friend void _ZFP_zfobjReleaseAction(ZF_IN ZFObject *obj);
 public:
     const ZFClass *_ZFP_ZFObject_classDynamic;
 private:

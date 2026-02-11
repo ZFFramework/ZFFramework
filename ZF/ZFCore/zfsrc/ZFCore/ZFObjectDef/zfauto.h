@@ -14,16 +14,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // zfauto
 /** @cond ZFPrivateDoc */
 inline zfauto::zfauto(ZF_IN zfauto const &obj)
-: _ZFP_obj(zfRetain(_ZFP_zfanyCast(obj)))
+: _ZFP_obj(zfobjRetain(_ZFP_zfanyCast(obj)))
 {
 }
 template<typename T_ZFObject>
 zfauto::zfauto(ZF_IN T_ZFObject const &obj)
-: _ZFP_obj(zfRetain(_ZFP_zfanyCast(obj)))
+: _ZFP_obj(zfobjRetain(_ZFP_zfanyCast(obj)))
 {
 }
 inline zfauto::~zfauto(void) {
-    zfRelease(_ZFP_obj);
+    zfobjRelease(_ZFP_obj);
 }
 
 inline zfauto &zfauto::operator = (ZF_IN zfauto const &obj) {
@@ -60,8 +60,8 @@ inline const ZFClass *zfauto::ClassData(void) {
 
 inline void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {
     ZFObject *t = _ZFP_obj;
-    _ZFP_obj = zfunsafe_zfRetain(obj);
-    zfunsafe_zfRelease(t);
+    _ZFP_obj = zfunsafe_zfobjRetain(obj);
+    zfunsafe_zfobjRelease(t);
 }
 
 inline zfindex zfauto::objectRetainCount(void) const {

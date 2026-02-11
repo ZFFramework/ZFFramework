@@ -61,7 +61,7 @@ public:
                 );
         }
         owner->observerNotify(ZFHttpRequest::E_OnResponse(), responseTmp, resultTypeTmp);
-        zfRelease(owner);
+        zfobjRelease(owner);
     }
 };
 
@@ -172,7 +172,7 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, void, start
     if(d->response) {
         return;
     }
-    zfRetain(this); // release in notifyResponse
+    zfobjRetain(this); // release in notifyResponse
 
     if(ZFThread::implAvailable()) {
         d->ownerThread = ZFThread::currentThread();

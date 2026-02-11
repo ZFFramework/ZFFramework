@@ -234,9 +234,9 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
             _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle
                 ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
             if(taskData == zfnull) {
-                taskData = zfAlloc(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData);
+                taskData = zfobjAlloc(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData);
                 defaultStyle->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull(), taskData);
-                zfRelease(taskData);
+                zfobjRelease(taskData);
 
                 defaultStyle->observerAdd(ZFObject::E_ObjectPropertyValueOnUpdate(),
                     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnUpdateListener);

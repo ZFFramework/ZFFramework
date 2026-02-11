@@ -90,8 +90,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIRootWindowMainWindowCleanup) {
     if(impl != zfnull) {
         impl->mainWindowOnCleanup();
     }
-    zfscopeRelease(_ZFP_ZFUIRootWindow_mainWindowRegistered);
-    zfscopeRelease(_ZFP_ZFUIRootWindow_keyWindow);
+    zfobjReleaseInScope(_ZFP_ZFUIRootWindow_mainWindowRegistered);
+    zfobjReleaseInScope(_ZFP_ZFUIRootWindow_keyWindow);
 
     _ZFP_ZFUIRootWindow_mainWindowRegistered = zfnull;
     _ZFP_ZFUIRootWindow_mainWindowBuiltin = zfnull;
@@ -106,8 +106,8 @@ void ZFUIRootWindow::mainWindowRegister(ZF_IN ZFUIRootWindow *window) {
     ZFCoreAssertWithMessage(window != zfnull,
         "[ZFUIRootWindow] mainWindowRegister called with null window");
 
-    zfscopeRelease(_ZFP_ZFUIRootWindow_mainWindowRegistered);
-    _ZFP_ZFUIRootWindow_mainWindowRegistered = zfRetain(window);
+    zfobjReleaseInScope(_ZFP_ZFUIRootWindow_mainWindowRegistered);
+    _ZFP_ZFUIRootWindow_mainWindowRegistered = zfobjRetain(window);
     _ZFP_ZFUIRootWindow_mainWindow = _ZFP_ZFUIRootWindow_mainWindowRegistered;
 
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_MainWindowOnAttach());
@@ -317,11 +317,11 @@ ZFMETHOD_DEFINE_0(ZFUIRootWindow, void, modalWindowHide) {
     else {
         ZFPROTOCOL_ACCESS(ZFUIRootWindow)->modalWindowHide(d->modalWindowOwner, this);
     }
-    zfscopeRelease(zfRetain(d->modalWindowOwner->d->modalWindowShowing));
+    zfobjReleaseInScope(zfobjRetain(d->modalWindowOwner->d->modalWindowShowing));
     d->modalWindowOwner->d->modalWindowShowing = zfnull;
     d->modalWindowOwner = zfnull;
 
-    zfRelease(this);
+    zfobjRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFUIRootWindow, zfanyT<ZFUIRootWindow>, modalWindowShowing) {
     return d->modalWindowShowing;

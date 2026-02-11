@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// zfAlloc
+// zfobjAlloc
 /* ZFMETHOD_MAX_PARAM */
 template<typename T_ZFObject, int valid>
 zfclassNotPOD _ZFP_ObjACk; // alloc check
@@ -93,66 +93,66 @@ public:
 template<typename T_ZFObject>
 zfclassNotPOD _ZFP_ObjACk<T_ZFObject, 0> {
 };
-#define _ZFP_zfAlloc(T_ZFObject, ...) \
+#define _ZFP_zfobjAlloc(T_ZFObject, ...) \
     _ZFP_ObjACk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::CanAlloc(__VA_ARGS__)
 /**
  * @brief alloc an object, see #ZFObject
  *
- * if your class has declared #ZFALLOC_CACHE_RELEASE,
- * then zfAlloc would automatically has cache logic
+ * if your class has declared #ZFOBJECT_CACHE_RELEASE,
+ * then zfobjAlloc would automatically has cache logic
  */
-#define zfAlloc(T_ZFObject, ...) \
-    zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__)
-/** @brief no lock version of #zfAlloc, use with caution */
-#define zfunsafe_zfAlloc(T_ZFObject, ...) \
-    _ZFP_zfAlloc(T_ZFObject, ##__VA_ARGS__)
+#define zfobjAlloc(T_ZFObject, ...) \
+    zfunsafe_zfobjAlloc(T_ZFObject, ##__VA_ARGS__)
+/** @brief no lock version of #zfobjAlloc, use with caution */
+#define zfunsafe_zfobjAlloc(T_ZFObject, ...) \
+    _ZFP_zfobjAlloc(T_ZFObject, ##__VA_ARGS__)
 
-#define _ZFP_zfAllocInternal(T_ZFObject) \
+#define _ZFP_zfobjAllocInternal(T_ZFObject) \
     _ZFP_ObjACk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::A()
 
 // ============================================================
-// zfRetain
-inline void _ZFP_zfRetainAction(ZF_IN ZFObject *obj) {
+// zfobjRetain
+inline void _ZFP_zfobjRetainAction(ZF_IN ZFObject *obj) {
     if(obj) {
         obj->objectOnRetain();
     }
 }
 template<typename T_ZFObject>
-inline T_ZFObject const &_ZFP_zfRetain(ZF_IN T_ZFObject const &obj) {
-    _ZFP_zfRetainAction(zfcast(ZFObject *, obj));
+inline T_ZFObject const &_ZFP_zfobjRetain(ZF_IN T_ZFObject const &obj) {
+    _ZFP_zfobjRetainAction(zfcast(ZFObject *, obj));
     return obj;
 }
 /**
  * @brief retain an object, see #ZFObject
  */
-#define zfRetain(obj) \
-    (ZFCoreMutexLockerHolder(), zfunsafe_zfRetain(obj))
-/** @brief no lock version of #zfRetain, use with caution */
-#define zfunsafe_zfRetain(obj) \
-    _ZFP_zfRetain(obj)
+#define zfobjRetain(obj) \
+    (ZFCoreMutexLockerHolder(), zfunsafe_zfobjRetain(obj))
+/** @brief no lock version of #zfobjRetain, use with caution */
+#define zfunsafe_zfobjRetain(obj) \
+    _ZFP_zfobjRetain(obj)
 
 // ============================================================
-// zfRelease
-inline void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj) {
+// zfobjRelease
+inline void _ZFP_zfobjReleaseAction(ZF_IN ZFObject *obj) {
     if(obj) {
         obj->_ZFP_ZFObjectCheckRelease();
     }
 }
 template<typename T_ZFObject>
-inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
-    _ZFP_zfReleaseAction(zfcast(ZFObject *, obj));
+inline void _ZFP_zfobjRelease(ZF_IN T_ZFObject const &obj) {
+    _ZFP_zfobjReleaseAction(zfcast(ZFObject *, obj));
 }
 /**
  * @brief release an object, see #ZFObject
  */
-#define zfRelease(obj) \
-    (ZFCoreMutexLockerHolder(), zfunsafe_zfRelease(obj))
-/** @brief no lock version of #zfRelease, use with caution */
-#define zfunsafe_zfRelease(obj) \
-    _ZFP_zfRelease(obj)
+#define zfobjRelease(obj) \
+    (ZFCoreMutexLockerHolder(), zfunsafe_zfobjRelease(obj))
+/** @brief no lock version of #zfobjRelease, use with caution */
+#define zfunsafe_zfobjRelease(obj) \
+    _ZFP_zfobjRelease(obj)
 
 // ============================================================
-// ZFALLOC_CACHE_RELEASE
+// ZFOBJECT_CACHE_RELEASE
 /**
  * @brief mark class that it should apply cache logic when alloc
  *
@@ -160,7 +160,7 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
  * @code
  *   zfclass YourObject : zfextend SomeParent {
  *       ZFOBJECT_DECLARE(YourObject, SomeParent)
- *       ZFALLOC_CACHE_RELEASE({
+ *       ZFOBJECT_CACHE_RELEASE({
  *           cache->yourCacheCleanupAction();
  *       })
  *   };
@@ -169,21 +169,21 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
  * once declared, when you alloc object with no extra param,
  * the cache logic would automatically take effect:
  * @code
- *   ZFObject *obj = zfAlloc(YourObject); // first time alloc
- *   zfRelease(obj); // release, and the object would be cached
+ *   ZFObject *obj = zfobjAlloc(YourObject); // first time alloc
+ *   zfobjRelease(obj); // release, and the object would be cached
  *
- *   obj = zfAlloc(YourObject); // second time alloc, the previously cached object would be returned
- *   zfRelease(obj);
+ *   obj = zfobjAlloc(YourObject); // second time alloc, the previously cached object would be returned
+ *   zfobjRelease(obj);
  *
- *   obj = zfAlloc(YourObject, someParam); // alloc with extra param, no cache logic would be applied
- *   zfRelease(obj);
+ *   obj = zfobjAlloc(YourObject, someParam); // alloc with extra param, no cache logic would be applied
+ *   zfobjRelease(obj);
  * @endcode
  *
  * note the alloc cache logic is explicitly attached to class,
- * parent class' #ZFALLOC_CACHE_RELEASE does not make child class cacheable,
- * the child class must also explicitly declare #ZFALLOC_CACHE_RELEASE to enable cache logic
+ * parent class' #ZFOBJECT_CACHE_RELEASE does not make child class cacheable,
+ * the child class must also explicitly declare #ZFOBJECT_CACHE_RELEASE to enable cache logic
  */
-#define ZFALLOC_CACHE_RELEASE(action) \
+#define ZFOBJECT_CACHE_RELEASE(action) \
     public: \
         /** @cond ZFPrivateDoc */ \
         static ZFObject *_ZFP_ObjACIvk(void) { \
@@ -197,8 +197,8 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
         } \
         /** @endcond */
 
-/** @brief #ZFALLOC_CACHE_RELEASE for abstract class */
-#define ZFALLOC_CACHE_RELEASE_ABSTRACT(action) \
+/** @brief #ZFOBJECT_CACHE_RELEASE for abstract class */
+#define ZFOBJECT_CACHE_RELEASE_ABSTRACT(action) \
     public: \
         /** @cond ZFPrivateDoc */ \
         static void _ZFP_ObjACR(ZF_IN ZFObject *_obj) { \
@@ -210,16 +210,16 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
         /** @endcond */
 
 /**
- * @brief remove all object cache, see #ZFALLOC_CACHE_RELEASE
+ * @brief remove all object cache, see #ZFOBJECT_CACHE_RELEASE
  */
-extern ZFLIB_ZFCore void zfAllocCacheRemoveAll(void);
+extern ZFLIB_ZFCore void zfobjAllocCacheRemoveAll(void);
 
-extern ZFLIB_ZFCore void _ZFP_zfAllocCacheImplRegister(
+extern ZFLIB_ZFCore void _ZFP_zfobjAllocCacheImplRegister(
         ZF_IN_OUT zfbool &enableFlag
         , ZF_IN_OUT ZFObject **cache
         , ZF_IN_OUT zfindex &cacheCount
         );
-extern ZFLIB_ZFCore void _ZFP_zfAllocCacheImplUnregister(ZF_IN_OUT zfbool &enableFlag);
+extern ZFLIB_ZFCore void _ZFP_zfobjAllocCacheImplUnregister(ZF_IN_OUT zfbool &enableFlag);
 template<typename T_ZFObject, int T_MaxCache = 16>
 zfclassNotPOD _ZFP_ObjAC { // alloc cache
 private:
@@ -231,28 +231,28 @@ public:
         if(enableFlag()) {
             if(cacheCount() > 0) {
                 ZFObject *ret = cache()[--(cacheCount())];
-                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_ObjACR);
+                ret->_ZFP_ZFObject_zfobjAllocCacheRelease(zfself::_ZFP_ObjACR);
                 ret->_ZFP_ZFObject_objectOnInitFromCache();
                 return zfcast(T_ZFObject *, ret);
             }
             else {
-                T_ZFObject *ret = _ZFP_zfAllocInternal(T_ZFObject);
-                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_ObjACR);
+                T_ZFObject *ret = _ZFP_zfobjAllocInternal(T_ZFObject);
+                ret->_ZFP_ZFObject_zfobjAllocCacheRelease(zfself::_ZFP_ObjACR);
                 return ret;
             }
         }
         else {
-            return _ZFP_zfAllocInternal(T_ZFObject);
+            return _ZFP_zfobjAllocInternal(T_ZFObject);
         }
     }
     static void _ZFP_ObjACR(ZF_IN ZFObject *obj) {
-        obj->_ZFP_ZFObject_zfAllocCacheRelease(zfnull);
+        obj->_ZFP_ZFObject_zfobjAllocCacheRelease(zfnull);
         if(enableFlag() && cacheCount() < T_MaxCache) {
             T_ZFObject::_ZFP_ObjACR(obj);
             cache()[cacheCount()++] = obj;
         }
         else {
-            zfunsafe_zfRelease(obj);
+            zfunsafe_zfobjRelease(obj);
         }
     }
 private:
@@ -272,10 +272,10 @@ private:
     zfclassNotPOD RegH {
     public:
         RegH(void) {
-            _ZFP_zfAllocCacheImplRegister(enableFlag(), cache(), cacheCount());
+            _ZFP_zfobjAllocCacheImplRegister(enableFlag(), cache(), cacheCount());
         }
         ~RegH(void) {
-            _ZFP_zfAllocCacheImplUnregister(enableFlag());
+            _ZFP_zfobjAllocCacheImplUnregister(enableFlag());
         }
     };
 };
@@ -302,40 +302,40 @@ template<typename T_ZFObject> void _ZFP_zfweakCk(T_ZFObject &t);
  *   ZFObject *newProperty = ...;
  *
  *   // OK, release property, retain newProperty, then set to property
- *   zfRetainChange(property, newProperty);
+ *   zfobjRetainChange(property, newProperty);
  *
  *   // OK, use return value of a function as new value
  *   // but keep it in mind, that the new value will be retained
- *   zfRetainChange(property, funcThatReturnZFObject());
+ *   zfobjRetainChange(property, funcThatReturnZFObject());
  *
  *   // OK, same as release old property and set it to zfnull
- *   zfRetainChange(property, zfnull);
+ *   zfobjRetainChange(property, zfnull);
  *
  *   // error, new value must be ZFObject
- *   // zfRetainChange(property, 123);
+ *   // zfobjRetainChange(property, 123);
  *
  *   // error, property must be a variable contains a (ZFObject *)
- *   // zfRetainChange(zfnull, newProperty);
- *   // zfRetainChange(funcThatReturnZFObject(), newProperty);
+ *   // zfobjRetainChange(zfnull, newProperty);
+ *   // zfobjRetainChange(funcThatReturnZFObject(), newProperty);
  * @endcode
- * @see zfRetain, zfRelease, ZFPROPERTY_RETAIN
+ * @see zfobjRetain, zfobjRelease, ZFPROPERTY_RETAIN
  */
 template<typename T_ZFObject, typename T_ZFObject2>
-inline void zfRetainChange(ZF_IN T_ZFObject &obj, ZF_IN T_ZFObject2 const &v) {
+inline void zfobjRetainChange(ZF_IN T_ZFObject &obj, ZF_IN T_ZFObject2 const &v) {
     ZFCoreMutexLock();
     _ZFP_zfweakCk(obj);
     ZFObject *tmp = zfcast(ZFObject *, obj);
-    zfunsafe_zfRetain(obj = v);
-    zfunsafe_zfRelease(tmp);
+    zfunsafe_zfobjRetain(obj = v);
+    zfunsafe_zfobjRelease(tmp);
     ZFCoreMutexUnlock();
 }
-/** @brief no lock version of #zfRetainChange, use with caution */
+/** @brief no lock version of #zfobjRetainChange, use with caution */
 template<typename T_ZFObject, typename T_ZFObject2>
-inline void zfunsafe_zfRetainChange(ZF_IN T_ZFObject &obj, ZF_IN T_ZFObject2 const &v) {
+inline void zfunsafe_zfobjRetainChange(ZF_IN T_ZFObject &obj, ZF_IN T_ZFObject2 const &v) {
     _ZFP_zfweakCk(obj);
     ZFObject *tmp = zfcast(ZFObject *, obj);
-    zfunsafe_zfRetain(obj = v);
-    zfunsafe_zfRelease(tmp);
+    zfunsafe_zfobjRetain(obj = v);
+    zfunsafe_zfobjRelease(tmp);
 }
 
 ZF_NAMESPACE_GLOBAL_END

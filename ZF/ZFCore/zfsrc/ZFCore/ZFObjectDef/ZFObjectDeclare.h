@@ -239,7 +239,7 @@ public:
  *   };
  * @endcode
  *
- * when declared, the object can not be allocated by #zfAlloc series directly,
+ * when declared, the object can not be allocated by #zfobjAlloc series directly,
  * and can only be allocated by reflection (#ZFClass::newInstance)
  */
 #define ZFOBJECT_PRIVATE_ALLOC(...) \

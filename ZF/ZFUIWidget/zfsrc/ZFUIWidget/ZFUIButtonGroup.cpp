@@ -241,7 +241,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt
     }
     ZFCoreAssertIndexRange(buttonIndex, this->buttonCount());
     ZFUIButton *button = this->buttonAt(buttonIndex);
-    zfRetain(button);
+    zfobjRetain(button);
     switch(this->type()) {
         case v_ZFUIButtonGroupType::e_Normal:
             for(zfindex i = 0; i < this->buttonCount(); ++i) {
@@ -259,7 +259,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt
     }
     d->buttons->remove(buttonIndex);
     this->buttonOnRemove(button, buttonIndex);
-    zfRelease(button);
+    zfobjRelease(button);
 }
 ZFMETHOD_DEFINE_0(ZFUIButtonGroup, void, buttonRemoveAll) {
     while(this->buttonCount() > 0) {
@@ -270,11 +270,11 @@ ZFMETHOD_DEFINE_0(ZFUIButtonGroup, void, buttonRemoveAll) {
 void ZFUIButtonGroup::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIButtonGroupPrivate);
-    d->buttons = zfAlloc(ZFArray);
+    d->buttons = zfobjAlloc(ZFArray);
 }
 void ZFUIButtonGroup::objectOnDealloc(void) {
     this->containerDetach();
-    zfRelease(d->buttons);
+    zfobjRelease(d->buttons);
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }

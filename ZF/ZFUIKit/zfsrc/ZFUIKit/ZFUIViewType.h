@@ -527,7 +527,7 @@ public:
     /** @brief see #ZFUIViewMeasureResult */
     ZFUISize measuredSize;
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->sizeHint = ZFUISizeZero();
         cache->sizeParam = ZFUISizeParamZero();
         cache->measuredSize = ZFUISizeZero();

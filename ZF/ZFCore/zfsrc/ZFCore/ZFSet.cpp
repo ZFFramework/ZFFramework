@@ -14,10 +14,10 @@ ZFOBJECT_ON_INIT_DEFINE_1(ZFSet
 }
 void ZFSet::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfAlloc(ZFMap);
+    d = zfobjAlloc(ZFMap);
 }
 void ZFSet::objectOnDealloc(void) {
-    zfRelease(d);
+    zfobjRelease(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
@@ -129,10 +129,10 @@ ZFMETHOD_DEFINE_2(ZFSet, void, iterValue
         , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    zfRetain(value);
+    zfobjRetain(value);
     this->iterRemove(it);
     this->add(value);
-    zfRelease(value);
+    zfobjRelease(value);
 }
 ZFMETHOD_DEFINE_1(ZFSet, void, iterRemove
         , ZFMP_IN_OUT(zfiter &, it)

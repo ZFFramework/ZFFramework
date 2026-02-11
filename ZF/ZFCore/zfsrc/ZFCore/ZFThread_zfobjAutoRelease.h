@@ -1,19 +1,19 @@
 /**
- * @file ZFThread_zfautoRelease.h
+ * @file ZFThread_zfobjAutoRelease.h
  * @brief thread utility
  */
 
-#ifndef _ZFI_ZFThread_zfautoRelease_h_
-#define _ZFI_ZFThread_zfautoRelease_h_
+#ifndef _ZFI_ZFThread_zfobjAutoRelease_h_
+#define _ZFI_ZFThread_zfobjAutoRelease_h_
 
 #include "ZFThread.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-extern ZFLIB_ZFCore void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore void _ZFP_zfobjAutoReleaseAction(ZF_IN ZFObject *obj);
 template<typename T_ZFObject>
-inline T_ZFObject _ZFP_zfautoRelease(ZF_IN T_ZFObject obj) {
-    _ZFP_zfautoReleaseAction(zfcast(ZFObject *, obj));
+inline T_ZFObject _ZFP_zfobjAutoRelease(ZF_IN T_ZFObject obj) {
+    _ZFP_zfobjAutoReleaseAction(zfcast(ZFObject *, obj));
     return obj;
 }
 /**
@@ -22,7 +22,7 @@ inline T_ZFObject _ZFP_zfautoRelease(ZF_IN T_ZFObject obj) {
  * calling this function will add the object to current thread's autorelease pool\n
  * assert failure if current thread isn't started or registered by ZFThread\n
  * note that which time to release the objects in pool, is depends on implementation
- * @see zfRetain, zfRelease
+ * @see zfobjRetain, zfobjRelease
  *
  * ADVANCED:\n
  * this method depends on ZFThread's implementation\n
@@ -35,10 +35,10 @@ inline T_ZFObject _ZFP_zfautoRelease(ZF_IN T_ZFObject obj) {
  * -  it have lower performance than other release methods
  *   (see #ZFObject for more info about other release methods)
  */
-#define zfautoRelease(obj) _ZFP_zfautoRelease(obj)
-/** @see zfautoRelease */
-#define zfautoRelease(obj) _ZFP_zfautoRelease(obj)
+#define zfobjAutoRelease(obj) _ZFP_zfobjAutoRelease(obj)
+/** @see zfobjAutoRelease */
+#define zfobjAutoRelease(obj) _ZFP_zfobjAutoRelease(obj)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFThread_zfautoRelease_h_
+#endif // #ifndef _ZFI_ZFThread_zfobjAutoRelease_h_
 

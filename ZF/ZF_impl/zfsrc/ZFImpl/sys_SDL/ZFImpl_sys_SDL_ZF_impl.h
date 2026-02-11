@@ -32,15 +32,15 @@ extern ZFLIB_ZF_impl SDL_IOStream *ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(ZF_IN c
 /**
  * @brief util to destroy surface when code block end
  */
-#define ZFImpl_sys_SDL_zfscopeDestroySurface(sdlSurface) \
-    _ZFP_ZFImpl_sys_SDL_zfscopeDestroySurface ZFUniqueName(sdl_surface)(sdlSurface)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfscopeDestroySurface {
+#define ZFImpl_sys_SDL_DestroySurfaceInScope(sdlSurface) \
+    _ZFP_ZFImpl_sys_SDL_DestroySurfaceInScope ZFUniqueName(sdl_surface)(sdlSurface)
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_DestroySurfaceInScope {
 public:
-    _ZFP_ZFImpl_sys_SDL_zfscopeDestroySurface(ZF_IN SDL_Surface *sdlSurface)
+    _ZFP_ZFImpl_sys_SDL_DestroySurfaceInScope(ZF_IN SDL_Surface *sdlSurface)
     : d(sdlSurface)
     {
     }
-    ~_ZFP_ZFImpl_sys_SDL_zfscopeDestroySurface(void) {
+    ~_ZFP_ZFImpl_sys_SDL_DestroySurfaceInScope(void) {
         if(d) {
             SDL_DestroySurface(d);
         }
@@ -52,15 +52,15 @@ private:
 /**
  * @brief util to destroy texture when code block end
  */
-#define ZFImpl_sys_SDL_zfscopeDestroyTexture(sdlTexture) \
-    _ZFP_ZFImpl_sys_SDL_zfscopeDestroyTexture ZFUniqueName(sdl_texture)(sdlTexture)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfscopeDestroyTexture {
+#define ZFImpl_sys_SDL_DestroyTextureInScope(sdlTexture) \
+    _ZFP_ZFImpl_sys_SDL_DestroyTextureInScope ZFUniqueName(sdl_texture)(sdlTexture)
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_DestroyTextureInScope {
 public:
-    _ZFP_ZFImpl_sys_SDL_zfscopeDestroyTexture(ZF_IN SDL_Texture *sdlTexture)
+    _ZFP_ZFImpl_sys_SDL_DestroyTextureInScope(ZF_IN SDL_Texture *sdlTexture)
     : d(sdlTexture)
     {
     }
-    ~_ZFP_ZFImpl_sys_SDL_zfscopeDestroyTexture(void) {
+    ~_ZFP_ZFImpl_sys_SDL_DestroyTextureInScope(void) {
         if(d) {
             SDL_DestroyTexture(d);
         }
@@ -72,11 +72,11 @@ private:
 /**
  * @brief util to change render target within code block
  */
-#define ZFImpl_sys_SDL_zfscopeRenderTarget(success, sdlRenderer, sdlTexture) \
-    _ZFP_ZFImpl_sys_SDL_zfscopeRenderTarget success(sdlRenderer, sdlTexture)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfscopeRenderTarget {
+#define ZFImpl_sys_SDL_SetRenderTargetInScope(success, sdlRenderer, sdlTexture) \
+    _ZFP_ZFImpl_sys_SDL_SetRenderTargetInScope success(sdlRenderer, sdlTexture)
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_SetRenderTargetInScope {
 public:
-    _ZFP_ZFImpl_sys_SDL_zfscopeRenderTarget(
+    _ZFP_ZFImpl_sys_SDL_SetRenderTargetInScope(
             ZF_IN SDL_Renderer *sdlRenderer
             , ZF_IN SDL_Texture *sdlTexture
             )
@@ -85,7 +85,7 @@ public:
     {
         _success = SDL_SetRenderTarget(sdlRenderer, sdlTexture);
     }
-    ~_ZFP_ZFImpl_sys_SDL_zfscopeRenderTarget(void) {
+    ~_ZFP_ZFImpl_sys_SDL_SetRenderTargetInScope(void) {
         if(_success) {
             SDL_SetRenderTarget(_sdlRenderer, _sdlTextureSaved);
         }

@@ -19,22 +19,22 @@
  *
  *   // allocate an object,
  *   // the newly allocated object would have 1 as retain count
- *   obj = zfAlloc(ZFObject);
+ *   obj = zfobjAlloc(ZFObject);
  *
  *   // retain an object,
  *   // which would increase the object's retain count by 1,
  *   // would be 2 here in this example
- *   zfRetain(obj);
+ *   zfobjRetain(obj);
  *
  *   // release an object,
  *   // which would decrease the object's retain count by 1,
  *   // would be 1 here in this example
- *   zfRelease(obj);
+ *   zfobjRelease(obj);
  *
  *   // continue to release the object,
  *   // decreasing the retain count to 0,
  *   // and the object would be deleted finally
- *   zfRelease(obj);
+ *   zfobjRelease(obj);
  *
  *   // after the object being deleted,
  *   // set it to null is recommended,
@@ -55,7 +55,7 @@
  * @code
  *   {
  *       // similar to shared_ptr in C++ world
- *       zfauto obj = zfobj<MyObject>();
+ *       zfautoT<MyObject> obj = zfobj<MyObject>();
  *   } // obj would be released automatically after this code block
  *
  *   {
@@ -67,11 +67,11 @@
  *   // after end of this code line
  *   func(zfobj<MyObject>());
  *
- *   obj = zfAlloc(MyObject);
+ *   obj = zfobjAlloc(MyObject);
  *   // most powerful auto release logic similar to autorelease in Object-C
  *   // however, requires ZFThread,
  *   // and may affect performance for a little
- *   func(zfautoRelease(obj)); // obj would be released at future
+ *   func(zfobjAutoRelease(obj)); // obj would be released at future
  * @endcode
  * \n
  * it's recommended to use #zfauto for API design

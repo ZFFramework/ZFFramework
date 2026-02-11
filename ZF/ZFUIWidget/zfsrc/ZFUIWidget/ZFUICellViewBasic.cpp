@@ -75,27 +75,27 @@ void ZFUICellViewBasic::objectOnInit(void) {
 
     d = zfpoolNew(_ZFP_ZFUICellViewBasicPrivate);
 
-    d->cellIconContainer = zfAlloc(ZFUIViewLayout);
+    d->cellIconContainer = zfobjAlloc(ZFUIViewLayout);
 
     {
-        d->cellCenterContainer = zfAlloc(ZFUILinearLayout);
+        d->cellCenterContainer = zfobjAlloc(ZFUILinearLayout);
         d->cellCenterContainer->orientation(v_ZFUIOrientation::e_Top);
 
-        d->cellLabelMainContainer = zfAlloc(ZFUIViewLayout);
+        d->cellLabelMainContainer = zfobjAlloc(ZFUIViewLayout);
         d->cellCenterContainer->child(d->cellLabelMainContainer)->c_alignLeft();
 
-        d->cellLabelSubContainer = zfAlloc(ZFUIViewLayout);
+        d->cellLabelSubContainer = zfobjAlloc(ZFUIViewLayout);
         d->cellCenterContainer->child(d->cellLabelSubContainer)->c_alignLeft();
     }
 
-    d->cellAccessoryContainer = zfAlloc(ZFUIViewLayout);
+    d->cellAccessoryContainer = zfobjAlloc(ZFUIViewLayout);
 }
 void ZFUICellViewBasic::objectOnDealloc(void) {
-    zfRelease(d->cellIconContainer);
-    zfRelease(d->cellCenterContainer);
-    zfRelease(d->cellLabelMainContainer);
-    zfRelease(d->cellLabelSubContainer);
-    zfRelease(d->cellAccessoryContainer);
+    zfobjRelease(d->cellIconContainer);
+    zfobjRelease(d->cellCenterContainer);
+    zfobjRelease(d->cellLabelMainContainer);
+    zfobjRelease(d->cellLabelSubContainer);
+    zfobjRelease(d->cellAccessoryContainer);
 
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();

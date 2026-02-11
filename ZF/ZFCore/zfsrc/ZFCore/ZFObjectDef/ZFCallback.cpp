@@ -98,7 +98,7 @@ public:
         switch(dTmp.callbackType) {
             case ZFCallbackTypeMemberMethod:
                 if(dTmp.d.memberType.callbackOwnerObjectRetainFlag != 0) {
-                    zfRelease(dTmp.d.memberType.callbackOwnerObject);
+                    zfobjRelease(dTmp.d.memberType.callbackOwnerObject);
                 }
                 break;
             case ZFCallbackTypeLambda:
@@ -499,7 +499,7 @@ void ZFCallback::callbackOwnerObjectRetain(void) const {
     if(d && d->d.callbackType == ZFCallbackTypeMemberMethod && d->d.d.memberType.callbackOwnerObject) {
         ++(d->d.d.memberType.callbackOwnerObjectRetainFlag);
         if(d->d.d.memberType.callbackOwnerObjectRetainFlag == 1) {
-            zfunsafe_zfRetain(d->d.d.memberType.callbackOwnerObject);
+            zfunsafe_zfobjRetain(d->d.d.memberType.callbackOwnerObject);
         }
     }
 }
@@ -508,7 +508,7 @@ void ZFCallback::callbackOwnerObjectRelease(void) const {
     if(d && d->d.callbackType == ZFCallbackTypeMemberMethod && d->d.d.memberType.callbackOwnerObjectRetainFlag > 0) {
         --(d->d.d.memberType.callbackOwnerObjectRetainFlag);
         if(d->d.d.memberType.callbackOwnerObjectRetainFlag == 0) {
-            zfRelease(d->d.d.memberType.callbackOwnerObject);
+            zfobjRelease(d->d.d.memberType.callbackOwnerObject);
         }
     }
 }

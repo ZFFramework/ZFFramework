@@ -28,9 +28,9 @@ ZFMETHOD_DEFINE_2(ZFUICellUpdater, void, itemCacheRecycle
     _ZFP_ZFUICellUpdater_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList == zfnull) {
-        cacheList = zfAlloc(ZFArray);
+        cacheList = zfobjAlloc(ZFArray);
         this->toObject()->objectTag(cacheKey, cacheList);
-        zfRelease(cacheList);
+        zfobjRelease(cacheList);
     }
     cacheList->add(cache);
 }

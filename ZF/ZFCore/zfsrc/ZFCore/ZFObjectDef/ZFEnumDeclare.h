@@ -63,20 +63,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   @endcode
  * -  use v_EnumName to store the enum value as a ZFObject
  *   @code
- *     v_EnumName *e = zfAlloc(v_EnumName());
+ *     v_EnumName *e = zfobjAlloc(v_EnumName());
  *     e->enumValue(v_EnumName::e_Value1);
  *     zfuint value = e->enumValue();
  *     const zfchar *name = e->enumName();
- *     zfRelease(e);
+ *     zfobjRelease(e);
  *   @endcode
  * -  use base class ZFEnum to achieve dynamic binding
  *   @code
  *     zfuint value;
  *     const zfchar *name;
  *
- *     ZFEnum *e = zfAlloc(EnumName, v_EnumName::e_Value1);
+ *     ZFEnum *e = zfobjAlloc(EnumName, v_EnumName::e_Value1);
  *     value = e->enumValue(); // return the value stored as EnumName
- *     zfRelease(e);
+ *     zfobjRelease(e);
  *
  *     zfauto tmp = ZFClass::classForName("EnumName")->newInstance(); // see #ZFOBJECT_REGISTER for more info
  *     e = tmp;
@@ -86,7 +86,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     }
  *     value = e->enumValueForName("Value1"); // OK, value from EnumName
  *     name = e->enumNameForValue(value); // OK, name from EnumName
- *     zfRelease(e);
+ *     zfobjRelease(e);
  *   @endcode
  * -  you can access the internal enum type by EnumName
  * -  usually, it's highly recommended to use the internal enum type for performance:
@@ -519,9 +519,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -530,9 +530,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -669,9 +669,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -680,9 +680,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN _ZFP_PropTypeOrig const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -691,9 +691,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \

@@ -473,7 +473,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose
     }
 
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
-    zfscopeCleanup_1({
+    zfcleanupInScope_1({
             zfpoolDelete(resToken);
         }
         , _ZFP_ZFFileTokenForRes *, resToken

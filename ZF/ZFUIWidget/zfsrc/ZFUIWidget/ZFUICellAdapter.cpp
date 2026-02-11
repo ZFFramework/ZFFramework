@@ -74,9 +74,9 @@ ZFMETHOD_DEFINE_2(ZFUICellAdapter, void, cellCacheDefaultRecycle
     _ZFP_ZFUICellAdapter_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList == zfnull) {
-        cacheList = zfAlloc(ZFArray);
+        cacheList = zfobjAlloc(ZFArray);
         this->toObject()->objectTag(cacheKey, cacheList);
-        zfRelease(cacheList);
+        zfobjRelease(cacheList);
     }
     cacheList->add(cell);
 }

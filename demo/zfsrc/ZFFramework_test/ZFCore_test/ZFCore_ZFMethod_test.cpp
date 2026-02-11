@@ -283,8 +283,8 @@ protected:
     }
 
 private:
-    _ZFP_ZFCore_ZFMethod_test_TestBase *pBase;
-    _ZFP_ZFCore_ZFMethod_test_TestChild *pChild;
+    zfautoT<_ZFP_ZFCore_ZFMethod_test_TestBase> pBase;
+    zfautoT<_ZFP_ZFCore_ZFMethod_test_TestChild> pChild;
     _ZFP_ZFCore_ZFMethod_test_TestBase *pBasePointToChild;
 protected:
     zfoverride
@@ -304,13 +304,13 @@ private:
     void prepareInstance(void) {
         this->destroyInstance();
 
-        this->pBase = zfAlloc(_ZFP_ZFCore_ZFMethod_test_TestBase);
-        this->pChild = zfAlloc(_ZFP_ZFCore_ZFMethod_test_TestChild);
+        this->pBase = zfobj<_ZFP_ZFCore_ZFMethod_test_TestBase>();
+        this->pChild = zfobj<_ZFP_ZFCore_ZFMethod_test_TestChild>();
         this->pBasePointToChild = this->pChild;
     }
     void destroyInstance(void) {
-        zfRelease(this->pBase);
-        zfRelease(this->pChild);
+        this->pBase = zfnull;
+        this->pChild = zfnull;
 
         this->pBase = zfnull;
         this->pChild = zfnull;

@@ -55,8 +55,8 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIImageView);
         ZFFramework_test_asyncTestCheck();
 
-        ZFUIWindow *window = zfnull;
-        ZFUIView *container = zfnull;
+        zfautoT<ZFUIWindow> window;
+        zfautoT<ZFUIView> container;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfobj<ZFUIKit_ZFUIImageView_imageScaleType_test_Container> layout;

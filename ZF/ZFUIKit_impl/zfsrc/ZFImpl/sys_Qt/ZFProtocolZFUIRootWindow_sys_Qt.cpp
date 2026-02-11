@@ -81,7 +81,7 @@ public:
 public:
     virtual ZFUIRootWindow *mainWindow(void) {
         if(this->_mainWindow == zfnull) {
-            this->_mainWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+            this->_mainWindow = zfobjRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
             QGraphicsWidget *nativeWindow = ZFImpl_sys_Qt_rootWindow();
             ZFImpl_sys_Qt_QObjectZFObjectTag(nativeWindow, "_ZFP_ZFUIRootWindowImpl_sys_Qt_ownerZFUIRootWindow", zfobj<v_zfweak>(this->_mainWindow));
             nativeWindow->installEventFilter(&_eventWrapper);
@@ -98,7 +98,7 @@ public:
             if(this->_mainWindow->windowResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
-            zfscopeRelease(this->_mainWindow);
+            zfobjReleaseInScope(this->_mainWindow);
             QGraphicsWidget *nativeWindow = ZFImpl_sys_Qt_rootWindow();
             nativeWindow->removeEventFilter(&_eventWrapper);
             ZFImpl_sys_Qt_QObjectZFObjectTag(nativeWindow, "_ZFP_ZFUIRootWindowImpl_sys_Qt_ownerZFUIRootWindow", zfnull);
@@ -142,7 +142,7 @@ public:
     }
 
     virtual zfauto modalWindowShow(ZF_IN ZFUIRootWindow *owner) {
-        zfauto modalWindow = zfRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
+        zfauto modalWindow = zfobjRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
         ZFImpl_sys_Qt_Window *nativeModalWindow = new ZFImpl_sys_Qt_Window();
         ZFImpl_sys_Qt_QObjectZFObjectTag(nativeModalWindow, "_ZFP_ZFUIRootWindowImpl_sys_Qt_ownerZFUIRootWindow", zfobj<v_zfweak>(modalWindow));
         nativeModalWindow->installEventFilter(&_eventWrapper);

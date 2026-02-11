@@ -38,14 +38,14 @@ public:
 public:
     void labelViewPrepare(void) {
         if(this->labelView == zfnull) {
-            this->labelView = zfRetain(this->pimplOwner->labelViewClass()->newInstance());
+            this->labelView = zfobjRetain(this->pimplOwner->labelViewClass()->newInstance());
             ZFCoreAssert(this->labelView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->labelView);
         }
     }
     void iconViewPrepare(void) {
         if(this->iconView == zfnull) {
-            this->iconView = zfRetain(this->pimplOwner->iconViewClass()->newInstance());
+            this->iconView = zfobjRetain(this->pimplOwner->iconViewClass()->newInstance());
             ZFCoreAssert(this->iconView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->iconView);
 
@@ -57,7 +57,7 @@ public:
     }
     void bgViewPrepare(void) {
         if(this->bgView == zfnull) {
-            this->bgView = zfRetain(this->pimplOwner->bgViewClass()->newInstance());
+            this->bgView = zfobjRetain(this->pimplOwner->bgViewClass()->newInstance());
             ZFCoreAssert(this->bgView != zfnull);
             this->pimplOwner->internalBgViewAdd(this->bgView);
 
@@ -555,9 +555,9 @@ void ZFUIButtonBasic::objectOnInit(void) {
 }
 
 void ZFUIButtonBasic::objectOnDealloc(void) {
-    zfRelease(d->labelView);
-    zfRelease(d->iconView);
-    zfRelease(d->bgView);
+    zfobjRelease(d->labelView);
+    zfobjRelease(d->iconView);
+    zfobjRelease(d->bgView);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();

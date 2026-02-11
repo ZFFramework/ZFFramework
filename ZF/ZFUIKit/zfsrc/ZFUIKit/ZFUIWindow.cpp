@@ -126,7 +126,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, hide) {
         return;
     }
 
-    zfRetain(this);
+    zfobjReleaseInScope(zfobjRetain(this));
     ZFUIRootView *rootView = this->parent();
     if(rootView != zfnull) {
         rootView->_ZFP_ZFUIRootView_windowList.removeElement(this);
@@ -134,7 +134,6 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, hide) {
     d->windowRemoveOverrideFlag = zftrue;
     this->removeFromParent();
     d->windowRemoveOverrideFlag = zffalse;
-    zfRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFUIWindow, zfbool, showing) {
     return (this->parent() != zfnull);

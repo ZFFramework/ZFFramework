@@ -19,7 +19,7 @@ jobject ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(ZF_IN const ZFOutput &out
         JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
             .add(JNIPointerJNIType)
         ).c_str());
-    v_ZFOutput *outputHolder = zfAlloc(v_ZFOutput); // release when nativeOutputClose
+    v_ZFOutput *outputHolder = zfobjAlloc(v_ZFOutput); // release when nativeOutputClose
     outputHolder->zfv = output;
     return JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFOutputWrapper(), jmId
         , JNIConvertZFObjectToJNIType(jniEnv, outputHolder)
@@ -52,7 +52,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , JNIPointer zfjniPointerOwnerZFOutput
         ) {
     v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
-    zfRelease(outputHolder);
+    zfobjRelease(outputHolder);
 }
 JNI_METHOD_DECLARE_END()
 

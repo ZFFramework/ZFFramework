@@ -308,10 +308,10 @@ zfbool ZFImpl_sys_SDL_textRender(
     if(sdlSurface == zfnull) {
         return zffalse;
     }
-    ZFImpl_sys_SDL_zfscopeDestroySurface(sdlSurface);
+    ZFImpl_sys_SDL_DestroySurfaceInScope(sdlSurface);
     SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, sdlSurface);
     SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_BLEND);
-    ZFImpl_sys_SDL_zfscopeDestroyTexture(sdlTexture);
+    ZFImpl_sys_SDL_DestroyTextureInScope(sdlTexture);
 
     SDL_FRect srcRect;
     SDL_FRect targetRectFixed;

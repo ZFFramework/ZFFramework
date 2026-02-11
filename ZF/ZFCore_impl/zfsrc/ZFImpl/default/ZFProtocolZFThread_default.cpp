@@ -66,11 +66,11 @@ static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_defaul
 // global data
 typedef zfstlhashmap<_ZFP_ZFThreadImpl_default_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_default_ThreadMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_default_DataHolder, ZFLevelZFFrameworkEssential) {
-    mainThread = zfAlloc(ZFThreadMainThread);
+    mainThread = zfobjAlloc(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_default_getNativeThreadId()] = mainThread;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_default_DataHolder) {
-    zfRelease(mainThread);
+    zfobjRelease(mainThread);
 }
 public:
     ZFThread *mainThread;

@@ -10,12 +10,11 @@ ZFOBJECT_REGISTER(ZFUIKit_test_SettingData)
 ZFEVENT_REGISTER(ZFUIKit_test_SettingData, SettingOnUpdate)
 
 void ZFUIKit_test_prepareTestWindow(
-        ZF_OUT ZFUIWindow *&window
-        , ZF_OUT ZFUIView *&container
+        ZF_OUT zfautoT<ZFUIWindow> &window
+        , ZF_OUT zfautoT<ZFUIView> &container
         , ZF_IN ZFTestCase *testCaseToStop
         ) {
-    window = zfAlloc(ZFUIKit_test_Window);
-    zfscopeRelease(window);
+    window = zfobj<ZFUIKit_test_Window>();
     window->show();
 
     // close button
@@ -32,8 +31,7 @@ void ZFUIKit_test_prepareTestWindow(
     closeButton->observerAdd(ZFUIButton::E_ButtonOnClick(), onClickCloseButton);
 
     // container
-    container = zfAlloc(ZFUIView);
-    zfscopeRelease(container);
+    container = zfobj<ZFUIView>();
     window->child(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
 }
 

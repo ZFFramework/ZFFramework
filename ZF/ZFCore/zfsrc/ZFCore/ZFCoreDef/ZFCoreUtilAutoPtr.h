@@ -11,11 +11,11 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// zfscopeFree
-zfclassLikePOD ZFLIB_ZFCore _ZFP_zfscopeFreeContainer {
+// zffreeInScope
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zffreeInScopeContainer {
 public:
-    _ZFP_zfscopeFreeContainer(ZF_IN void *p) : p(p) {}
-    ~_ZFP_zfscopeFreeContainer(void) {
+    _ZFP_zffreeInScopeContainer(ZF_IN void *p) : p(p) {}
+    ~_ZFP_zffreeInScopeContainer(void) {
         zffree(this->p);
     }
 private:
@@ -29,63 +29,63 @@ private:
  * @code
  *   { // code block
  *       zfbyte *buf = (zfbyte *)zfmalloc(size);
- *       zfscopeFree(buf); // must be placed in single line
+ *       zffreeInScope(buf); // must be placed in single line
  *   } // buf would be released by #zffree after code block
  * @endcode
  */
-#define zfscopeFree(obj) \
-    _ZFP_zfscopeFreeContainer ZFUniqueName(zfscopeFree_)(obj)
+#define zffreeInScope(obj) \
+    _ZFP_zffreeInScopeContainer ZFUniqueName(zffreeInScope_)(obj)
 
 // ============================================================
-// zfscopeCleanup
+// zfcleanupInScope
 /**
  * @brief util to perform custom cleanup action after code block
  */
-#define zfscopeCleanup_1(action \
+#define zfcleanupInScope_1(action \
         , P0, p0 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0) \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0) \
         : p0(p0) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
         P0 &p0; \
-    } ZFUniqueName(zfscopeCleanup_)(p0)
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_2(action \
+    } ZFUniqueName(zfcleanupInScope_)(p0)
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_2(action \
         , P0, p0 \
         , P1, p1 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 ) \
         : p0(p0) \
         , p1(p1) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
         P0 &p0; \
         P1 &p1; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             )
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_3(action \
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_3(action \
         , P0, p0 \
         , P1, p1 \
         , P2, p2 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 , P2 &p2 \
                 ) \
@@ -93,27 +93,27 @@ private:
         , p1(p1) \
         , p2(p2) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
         P0 &p0; \
         P1 &p1; \
         P2 &p2; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             , p2 \
             )
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_4(action \
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_4(action \
         , P0, p0 \
         , P1, p1 \
         , P2, p2 \
         , P3, p3 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 , P2 &p2 \
                 , P3 &p3 \
@@ -123,7 +123,7 @@ private:
         , p2(p2) \
         , p3(p3) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
@@ -131,22 +131,22 @@ private:
         P1 &p1; \
         P2 &p2; \
         P3 &p3; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             , p2 \
             , p3 \
             )
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_5(action \
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_5(action \
         , P0, p0 \
         , P1, p1 \
         , P2, p2 \
         , P3, p3 \
         , P4, p4 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 , P2 &p2 \
                 , P3 &p3 \
@@ -158,7 +158,7 @@ private:
         , p3(p3) \
         , p4(p4) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
@@ -167,14 +167,14 @@ private:
         P2 &p2; \
         P3 &p3; \
         P4 &p4; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             , p2 \
             , p3 \
             , p4 \
             )
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_6(action \
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_6(action \
         , P0, p0 \
         , P1, p1 \
         , P2, p2 \
@@ -182,9 +182,9 @@ private:
         , P4, p4 \
         , P5, p5 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 , P2 &p2 \
                 , P3 &p3 \
@@ -198,7 +198,7 @@ private:
         , p4(p4) \
         , p5(p5) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
@@ -208,15 +208,15 @@ private:
         P3 &p3; \
         P4 &p4; \
         P5 &p5; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             , p2 \
             , p3 \
             , p4 \
             , p5 \
             )
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_7(action \
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_7(action \
         , P0, p0 \
         , P1, p1 \
         , P2, p2 \
@@ -225,9 +225,9 @@ private:
         , P5, p5 \
         , P6, p6 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 , P2 &p2 \
                 , P3 &p3 \
@@ -243,7 +243,7 @@ private:
         , p5(p5) \
         , p6(p6) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
@@ -254,7 +254,7 @@ private:
         P4 &p4; \
         P5 &p5; \
         P6 &p6; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             , p2 \
             , p3 \
@@ -262,8 +262,8 @@ private:
             , p5 \
             , p6 \
             )
-/** @brief see #zfscopeCleanup_1 */
-#define zfscopeCleanup_8(action \
+/** @brief see #zfcleanupInScope_1 */
+#define zfcleanupInScope_8(action \
         , P0, p0 \
         , P1, p1 \
         , P2, p2 \
@@ -273,9 +273,9 @@ private:
         , P6, p6 \
         , P7, p7 \
         ) \
-    zfclassLikePOD ZFUniqueName(zfscopeCleanup_T) { \
+    zfclassLikePOD ZFUniqueName(zfcleanupInScope_T) { \
     public: \
-        ZFUniqueName(zfscopeCleanup_T)(P0 &p0 \
+        ZFUniqueName(zfcleanupInScope_T)(P0 &p0 \
                 , P1 &p1 \
                 , P2 &p2 \
                 , P3 &p3 \
@@ -293,7 +293,7 @@ private:
         , p6(p6) \
         , p7(p7) \
         {} \
-        ~ZFUniqueName(zfscopeCleanup_T)(void) { \
+        ~ZFUniqueName(zfcleanupInScope_T)(void) { \
             action \
         } \
     private: \
@@ -305,7 +305,7 @@ private:
         P5 &p5; \
         P6 &p6; \
         P7 &p7; \
-    } ZFUniqueName(zfscopeCleanup_)(p0 \
+    } ZFUniqueName(zfcleanupInScope_)(p0 \
             , p1 \
             , p2 \
             , p3 \

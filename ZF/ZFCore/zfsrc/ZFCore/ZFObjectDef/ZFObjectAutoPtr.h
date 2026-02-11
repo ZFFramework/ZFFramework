@@ -13,34 +13,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
-        zfRetain(p);
+        zfobjRetain(p);
     }, {
-        zfRelease(p);
+        zfobjRelease(p);
     })
 
 // ============================================================
-zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfscopeReleaseContainer {
+zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfobjReleaseInScopeContainer {
 public:
     template<typename T_ZFObject>
-    _ZFP_zfscopeReleaseContainer(ZF_IN T_ZFObject obj)
+    _ZFP_zfobjReleaseInScopeContainer(ZF_IN T_ZFObject obj)
     : obj(zfcast(ZFObject *, obj))
     {
     }
-    ~_ZFP_zfscopeReleaseContainer(void) {
-        zfRelease(this->obj);
+    ~_ZFP_zfobjReleaseInScopeContainer(void) {
+        zfobjRelease(this->obj);
     }
 private:
     ZFObject *obj;
 };
-zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfscopeReleaseContainer {
+zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfobjReleaseInScopeContainer {
 public:
     template<typename T_ZFObject>
-    _ZFP_zfunsafe_zfscopeReleaseContainer(ZF_IN T_ZFObject obj)
+    _ZFP_zfunsafe_zfobjReleaseInScopeContainer(ZF_IN T_ZFObject obj)
     : obj(zfcast(ZFObject *, obj))
     {
     }
-    ~_ZFP_zfunsafe_zfscopeReleaseContainer(void) {
-        zfRelease(this->obj);
+    ~_ZFP_zfunsafe_zfobjReleaseInScopeContainer(void) {
+        zfobjRelease(this->obj);
     }
 private:
     ZFObject *obj;
@@ -51,16 +51,16 @@ private:
  * @code
  *   { // code block
  *       ZFObject *obj = ...;
- *       zfscopeRelease(obj); // mark release, must be single line
+ *       zfobjReleaseInScope(obj); // mark release, must be single line
  *       return; // safe to return, auto released after exiting code block
  *   } // obj would be released after here
  * @endcode
  */
-#define zfscopeRelease(obj) \
-    _ZFP_zfscopeReleaseContainer ZFUniqueName(zfscopeRelease) (obj)
-/** @brief no lock version of #zfscopeRelease, use with caution */
-#define zfunsafe_zfscopeRelease(obj) \
-    _ZFP_zfunsafe_zfscopeReleaseContainer ZFUniqueName(zfscopeRelease) (obj)
+#define zfobjReleaseInScope(obj) \
+    _ZFP_zfobjReleaseInScopeContainer ZFUniqueName(zfobjReleaseInScope) (obj)
+/** @brief no lock version of #zfobjReleaseInScope, use with caution */
+#define zfunsafe_zfobjReleaseInScope(obj) \
+    _ZFP_zfunsafe_zfobjReleaseInScopeContainer ZFUniqueName(zfobjReleaseInScope) (obj)
 
 /**
  * @brief util class to alloc and hold ZFObject type
@@ -81,47 +81,47 @@ zfclassLikePOD zfobj : zfextend zfautoT<T_ZFObjectBase> {
 public:
     zfobj(void)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0>
     zfobj(P0 const &p0)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1>
     zfobj(P0 const &p0, P1 const &p1)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1, typename P2>
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1, p2); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1, p2); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1, typename P2, typename P3>
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1, p2, p3); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1, p2, p3); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1, typename P2, typename P3, typename P4>
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5>
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
     template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6, P7 const &p7)
     : zfautoT<T_ZFObjectBase>()
-    {T_ZFObjectBase *v = zfunsafe_zfAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6, p7); this->zfunsafe_assign(v); zfunsafe_zfRelease(v);}
+    {T_ZFObjectBase *v = zfunsafe_zfobjAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6, p7); this->zfunsafe_assign(v); zfunsafe_zfobjRelease(v);}
 
 public:
     inline zfobj<T_ZFObjectBase> &operator = (ZF_IN zfauto const &obj) {

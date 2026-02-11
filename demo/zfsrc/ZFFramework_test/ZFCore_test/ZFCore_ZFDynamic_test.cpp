@@ -18,7 +18,7 @@ protected:
             zfobj<v_zfstring> ret;
             ret->zfv += zfargs.param0()->to<v_zfstring *>()->zfv;
             ret->zfv += "(modified)";
-            zfautoRelease(zfRetain(ret)); // take care of this
+            zfobjAutoRelease(zfobjRetain(ret)); // take care of this
             zfargs.result(ret);
         } ZFLISTENER_END()
         ZFDynamic d = ZFDynamic()

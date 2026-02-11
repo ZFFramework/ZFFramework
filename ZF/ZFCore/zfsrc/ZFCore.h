@@ -53,7 +53,7 @@
 #include "ZFCore/ZFThreadPool.h"
 #include "ZFCore/ZFThread_zfasync.h"
 #include "ZFCore/ZFThread_zfasyncIO.h"
-#include "ZFCore/ZFThread_zfautoRelease.h"
+#include "ZFCore/ZFThread_zfobjAutoRelease.h"
 #include "ZFCore/ZFThread_zfpost.h"
 #include "ZFCore/ZFTime.h"
 #include "ZFCore/ZFTimer.h"

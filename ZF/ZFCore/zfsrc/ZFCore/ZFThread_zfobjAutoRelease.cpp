@@ -1,18 +1,18 @@
-#include "ZFThread_zfautoRelease.h"
+#include "ZFThread_zfobjAutoRelease.h"
 #include "ZFAutoReleasePool.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// zfautoRelease
-void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj) {
+// zfobjAutoRelease
+void _ZFP_zfobjAutoReleaseAction(ZF_IN ZFObject *obj) {
     if(obj) {
         ZFCoreMutexLocker();
 
         if(ZFThread::implAvailable()) {
             ZFThread *threadCur = ZFThread::currentThread();
             if(threadCur == zfnull) {
-                ZFCoreCriticalMessageTrim("[zfautoRelease] current thread is null, make sure the thread is started or registered by ZFThread");
+                ZFCoreCriticalMessageTrim("[zfobjAutoRelease] current thread is null, make sure the thread is started or registered by ZFThread");
                 return;
             }
             threadCur->autoReleasePoolAdd(obj);
@@ -28,7 +28,7 @@ ZF_STATIC_INITIALIZER_INIT(zfvAccessFinishDelayImpl) {
 }
 private:
     static void a(ZF_IN const zfauto &obj) {
-        zfautoRelease(zfRetain(obj));
+        zfobjAutoRelease(zfobjRetain(obj));
     }
 ZF_STATIC_INITIALIZER_END(zfvAccessFinishDelayImpl)
 

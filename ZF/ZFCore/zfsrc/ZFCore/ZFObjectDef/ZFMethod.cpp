@@ -88,7 +88,7 @@ ZFMethodGenericInvoker ZFMethod::methodGenericInvokerOrig(void) const {
 void ZFMethod::userRegisterUserData(ZF_IN ZFObject *userRegisterUserData) const {
     ZFCoreAssertWithMessage(this->isUserRegister(),
         "userRegisterUserData can only be changed for user registered method");
-    zfRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserData, userRegisterUserData);
+    zfobjRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserData, userRegisterUserData);
 }
 
 void ZFMethod::_ZFP_ZFMethod_init(
@@ -106,7 +106,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
 
     this->_ZFP_ZFMethod_isUserRegister = isUserRegister;
     this->_ZFP_ZFMethod_isDynamicRegister = isDynamicRegister;
-    this->_ZFP_ZFMethod_methodUserData = zfRetain(dynamicRegisterUserData);
+    this->_ZFP_ZFMethod_methodUserData = zfobjRetain(dynamicRegisterUserData);
     this->_ZFP_ZFMethod_invoker = invoker;
     this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodType = (unsigned short)methodType;
@@ -208,7 +208,7 @@ ZFMethod::ZFMethod(void)
 {
 }
 ZFMethod::~ZFMethod(void) {
-    zfRelease(this->_ZFP_ZFMethod_methodUserData);
+    zfobjRelease(this->_ZFP_ZFMethod_methodUserData);
 
     if(_ZFP_ZFMethod_ext) {
         zfpoolDelete(_ZFP_ZFMethod_ext);

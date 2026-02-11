@@ -73,7 +73,7 @@ void ZFUIPage::pageOnCreate(void) {
     zfautoT<ZFUIView> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
     this->_ZFP_ZFUIPage_pageView = pageView;
     ZFCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
-    zfRetain(this->_ZFP_ZFUIPage_pageView);
+    zfobjRetain(this->_ZFP_ZFUIPage_pageView);
 
     zfweakT<ZFUIPage> weakSelf = this;
     ZFLISTENER_1(impl
@@ -102,8 +102,8 @@ void ZFUIPage::pageOnPause(ZF_IN ZFUIPagePauseReason reason) {
 }
 void ZFUIPage::pageOnDestroy(void) {
     ZFObserverGroupRemove(this);
-    zfRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
-    zfRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
+    zfobjRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
+    zfobjRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
     this->_ZFP_ZFUIPage_pageManager = zfnull;
     this->_ZFP_ZFUIPage_pageCreated = zffalse;
 }
@@ -111,7 +111,7 @@ void ZFUIPage::pageOnDestroy(void) {
 ZFMETHOD_DEFINE_1(ZFUIPage, void, pageAni
         , ZFMP_IN(ZFAnimation *, pageAni)
         ) {
-    zfRetainChange(this->_ZFP_ZFUIPage_pageAni, pageAni);
+    zfobjRetainChange(this->_ZFP_ZFUIPage_pageAni, pageAni);
 }
 ZFMETHOD_DEFINE_0(ZFUIPage, ZFAnimation *, pageAni) {
     return this->_ZFP_ZFUIPage_pageAni;
@@ -290,7 +290,7 @@ public:
 public:
     static void pageOnCreate(ZF_IN ZFUIPage *page) {
         if(!page->pageCreated()) {
-            zfRetain(page);
+            zfobjRetain(page);
 
             page->pageOnCreate();
             const ZFMethod *m = page->classData()->methodForName("pageOnCreateImpl");
@@ -349,7 +349,7 @@ public:
             }
             page->pageOnDestroy();
 
-            zfRelease(page);
+            zfobjRelease(page);
         }
     }
 
@@ -551,8 +551,8 @@ void ZFUIPageManager::objectOnInit(void) {
     d = zfpoolNew(_ZFP_ZFUIPageManagerPrivate);
 }
 void ZFUIPageManager::objectOnDealloc(void) {
-    zfRetainChange(d->pageContainer, zfnull);
-    zfRetainChange(d->managerContainer, zfnull);
+    zfobjRetainChange(d->pageContainer, zfnull);
+    zfobjRetainChange(d->managerContainer, zfnull);
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }
@@ -564,8 +564,8 @@ void ZFUIPageManager::managerOnCreate(void) {
     d->pageContainer = pageContainer;
     ZFCoreAssertWithMessage(d->managerContainer != zfnull, "managerContainerClass must be type of %s", ZFUIView::ClassData()->className());
     ZFCoreAssertWithMessage(d->pageContainer != zfnull, "pageContainerClass must be type of %s", ZFUIView::ClassData()->className());
-    zfRetain(d->managerContainer);
-    zfRetain(d->pageContainer);
+    zfobjRetain(d->managerContainer);
+    zfobjRetain(d->pageContainer);
 
     d->managerContainer->child(d->pageContainer)->c_sizeFill();
 
@@ -589,15 +589,15 @@ void ZFUIPageManager::managerOnCreate(void) {
 }
 void ZFUIPageManager::managerOnDestroy(void) {
     ZFObserverGroupRemove(this);
-    zfRetainChange(d->pageContainer, zfnull);
-    zfRetainChange(d->managerContainer, zfnull);
+    zfobjRetainChange(d->pageContainer, zfnull);
+    zfobjRetainChange(d->managerContainer, zfnull);
 }
 
 // ============================================================
 // manager creation
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerCreate) {
     ZFCoreAssert(!d->managerCreated);
-    zfRetain(this);
+    zfobjRetain(this);
     d->managerCreated = zftrue;
 
     this->managerOnCreate();
@@ -671,7 +671,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
     d->managerDestroyRunning = zffalse;
     d->pageAniOverrideList.removeAll();
     this->observerNotifyReversely(ZFUIPageManager::E_ManagerOnDestroy());
-    zfRelease(this);
+    zfobjRelease(this);
 }
 
 ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerCreated) {

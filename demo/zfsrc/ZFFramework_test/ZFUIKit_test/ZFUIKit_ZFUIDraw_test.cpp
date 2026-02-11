@@ -42,8 +42,8 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIDraw);
         ZFFramework_test_asyncTestCheck();
 
-        ZFUIWindow *window = zfnull;
-        ZFUIView *container = zfnull;
+        zfautoT<ZFUIWindow> window;
+        zfautoT<ZFUIView> container;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         container->bgColor(ZFUIColorRandom(1));

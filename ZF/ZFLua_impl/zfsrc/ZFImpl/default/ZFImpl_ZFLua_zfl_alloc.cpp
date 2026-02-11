@@ -1,8 +1,8 @@
-#include "ZFImpl_ZFLua_zfAlloc.h"
+#include "ZFImpl_ZFLua_zfl_alloc.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool ZFImpl_ZFLua_zfAlloc(
+zfbool ZFImpl_ZFLua_zfl_alloc(
         ZF_OUT zfauto &ret
         , ZF_IN lua_State *L
         , ZF_IN const ZFClass *cls
@@ -37,26 +37,26 @@ zfbool ZFImpl_ZFLua_zfAlloc(
 }
 
 // ============================================================
-static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
+static int _ZFP_ZFImpl_ZFLua_zfl_alloc(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
     static const int luaParamOffset = 2;
     int count = (int)lua_gettop(L);
     if(count < luaParamOffset - 1) {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfAlloc] takes at least one param");
+            "[zfl_alloc] takes at least one param");
     }
     int paramCount = (count - (luaParamOffset - 1));
 
     zfstring clsName;
     if(!ZFImpl_ZFLua_toStringT(clsName, L, 1) || zfstringIsEmpty(clsName)) {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfAlloc] unable to access class name");
+            "[zfl_alloc] unable to access class name");
     }
     const ZFClass *cls = ZFClass::classForName(clsName, zfnull);
     if(cls == zfnull) {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfAlloc] unable to find class: %s", clsName);
+            "[zfl_alloc] unable to find class: %s", clsName);
     }
 
     ZFArgs zfargs;
@@ -64,7 +64,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
     for(int i = 0; i < paramCount; ++i) {
         if(!ZFImpl_ZFLua_toGeneric(zfargs.paramAt(i), L, luaParamOffset + i)) {
             return ZFImpl_ZFLua_luaError(L,
-                "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i));
+                "[zfl_alloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i));
         }
     }
 
@@ -92,8 +92,8 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfAlloc, ZFM_EXPAND({
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfAlloc", _ZFP_ZFImpl_ZFLua_zfAlloc);
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_alloc, ZFM_EXPAND({
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_alloc", _ZFP_ZFImpl_ZFLua_zfl_alloc);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
     }))

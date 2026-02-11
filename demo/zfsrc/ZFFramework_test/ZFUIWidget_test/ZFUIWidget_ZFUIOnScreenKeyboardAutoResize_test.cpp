@@ -12,8 +12,8 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
 
-        ZFUIWindow *window = zfnull;
-        ZFUIView *container = zfnull;
+        zfautoT<ZFUIWindow> window;
+        zfautoT<ZFUIView> container;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         ZFUIOnScreenKeyboardAutoResizeStart(window);

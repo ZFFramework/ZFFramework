@@ -163,7 +163,7 @@ ZFMETHOD_DEFINE_0(ZFHttpServer, void, start) {
     if(d == zfnull) {
         d = ZFPROTOCOL_ACCESS(ZFHttpServer)->start(this);
         if(d) {
-            zfRetain(this);
+            zfobjRetain(this);
         }
         this->observerNotify(zfself::E_OnStart());
     }
@@ -174,7 +174,7 @@ ZFMETHOD_DEFINE_0(ZFHttpServer, void, stop) {
         d = zfnull;
         ZFPROTOCOL_ACCESS(ZFHttpServer)->stop(this, t);
         this->observerNotify(zfself::E_OnStop());
-        zfRelease(this);
+        zfobjRelease(this);
     }
 }
 ZFMETHOD_DEFINE_0(ZFHttpServer, zfbool, started) {
@@ -193,7 +193,7 @@ void ZFHttpServer::_ZFP_ZFHttpServer_onError(ZF_IN const zfstring &errorHint) {
         d = zfnull;
         ZFPROTOCOL_ACCESS(ZFHttpServer)->stop(this, t);
         this->observerNotify(zfself::E_OnError(), zfobj<v_zfstring>(errorHint));
-        zfRelease(this);
+        zfobjRelease(this);
     }
 }
 

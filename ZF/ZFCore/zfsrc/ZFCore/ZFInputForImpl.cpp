@@ -6,7 +6,7 @@ zfclass _ZFP_I_ZFInputForImplOwner : zfextend ZFObject {
 public:
     ZFOBJECT_DECLARE(_ZFP_I_ZFInputForImplOwner, ZFObject)
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->_bufCache->zfv.removeAll();
         cache->_countCache->zfv = 0;
         cache->_resultCache->zfv = 0;
@@ -25,15 +25,15 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->_bufCache = zfunsafe_zfAlloc(v_zfstring);
-        this->_countCache = zfunsafe_zfAlloc(v_zfindex);
-        this->_resultCache = zfunsafe_zfAlloc(v_zfindex);
+        this->_bufCache = zfunsafe_zfobjAlloc(v_zfstring);
+        this->_countCache = zfunsafe_zfobjAlloc(v_zfindex);
+        this->_resultCache = zfunsafe_zfobjAlloc(v_zfindex);
     }
     zfoverride
     virtual void objectOnDealloc(void) {
-        zfunsafe_zfRelease(this->_bufCache);
-        zfunsafe_zfRelease(this->_countCache);
-        zfunsafe_zfRelease(this->_resultCache);
+        zfunsafe_zfobjRelease(this->_bufCache);
+        zfunsafe_zfobjRelease(this->_countCache);
+        zfunsafe_zfobjRelease(this->_resultCache);
         zfsuper::objectOnDealloc();
     }
 

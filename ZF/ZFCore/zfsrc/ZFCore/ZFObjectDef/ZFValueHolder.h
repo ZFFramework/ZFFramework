@@ -35,7 +35,7 @@ public:
 protected:
     ZFValueHolder(void) : _value(zfnull), _type(zfnull) {}
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
         cache->_cleanup();
     })
 private:

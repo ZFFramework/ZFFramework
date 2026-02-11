@@ -23,7 +23,7 @@ ZFOutput ZFOutputDummy(void) {
 zfclass _ZFP_I_ZFOutputForStringOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForStringOwner, ZFObject)
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
     })
 
 public:
@@ -66,14 +66,14 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForStringOwner, zfindex, ioSize) {
     return this->pString->length();
 }
 ZFOutput ZFOutputForString(ZF_IN zfstring &s) {
-    _ZFP_I_ZFOutputForStringOwner *owner = zfAlloc(_ZFP_I_ZFOutputForStringOwner);
+    _ZFP_I_ZFOutputForStringOwner *owner = zfobjAlloc(_ZFP_I_ZFOutputForStringOwner);
     owner->pString = &s;
     owner->savedLength = s.length();
     owner->curPos = s.length();
     ZFOutput ret = ZFCallbackForMemberMethod(
         owner, ZFMethodAccess(_ZFP_I_ZFOutputForStringOwner, onOutput));
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
-    zfRelease(owner);
+    zfobjRelease(owner);
     return ret;
 }
 
@@ -82,7 +82,7 @@ ZFOutput ZFOutputForString(ZF_IN zfstring &s) {
 zfclass _ZFP_I_ZFOutputForBufferUnsafeOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForBufferUnsafeOwner, ZFObject)
 
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
     })
 
 public:
@@ -153,7 +153,7 @@ ZFOutput ZFOutputForBufferUnsafe(
     if(buf == zfnull || maxCount == 0 || (maxCount == 1 && autoAppendNullToken)) {
         return zfnull;
     }
-    _ZFP_I_ZFOutputForBufferUnsafeOwner *owner = zfAlloc(_ZFP_I_ZFOutputForBufferUnsafeOwner);
+    _ZFP_I_ZFOutputForBufferUnsafeOwner *owner = zfobjAlloc(_ZFP_I_ZFOutputForBufferUnsafeOwner);
     owner->autoAppendNullToken = autoAppendNullToken;
     owner->pStart = (zfbyte *)buf;
     if(maxCount == zfindexMax()) {
@@ -170,7 +170,7 @@ ZFOutput ZFOutputForBufferUnsafe(
     ZFOutput ret = ZFCallbackForMemberMethod(
         owner, ZFMethodAccess(_ZFP_I_ZFOutputForBufferUnsafeOwner, onOutput));
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
-    zfRelease(owner);
+    zfobjRelease(owner);
     return ret;
 }
 

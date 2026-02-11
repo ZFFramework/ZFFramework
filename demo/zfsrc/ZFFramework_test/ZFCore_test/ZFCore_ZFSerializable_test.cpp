@@ -71,30 +71,26 @@ protected:
         zfsuper::objectOnDealloc();
     }
 private:
-    _ZFP_ZFCore_ZFSerializable_test_TestClass *obj;
-    _ZFP_ZFCore_ZFSerializable_test_TestClassChild *objChild;
-    _ZFP_ZFCore_ZFSerializable_test_TestClassContainer *objContainer;
+    zfautoT<_ZFP_ZFCore_ZFSerializable_test_TestClass> obj;
+    zfautoT<_ZFP_ZFCore_ZFSerializable_test_TestClassChild> objChild;
+    zfautoT<_ZFP_ZFCore_ZFSerializable_test_TestClassContainer> objContainer;
     void memberPrepare(void) {
-        this->obj = zfAlloc(_ZFP_ZFCore_ZFSerializable_test_TestClass);
+        this->obj = zfobj<_ZFP_ZFCore_ZFSerializable_test_TestClass>();
         this->obj->stringInParent("base's string, with unicode chars: \"啊哦\"");
 
-        this->objChild = zfAlloc(_ZFP_ZFCore_ZFSerializable_test_TestClassChild);
+        this->objChild = zfobj<_ZFP_ZFCore_ZFSerializable_test_TestClassChild>();
         this->objChild->stringInParent("child's string");
         this->objChild->stringInChild("child's string in child");
 
-        this->objContainer = zfAlloc(_ZFP_ZFCore_ZFSerializable_test_TestClassContainer);
-        _ZFP_ZFCore_ZFSerializable_test_TestClassChild *objTmp = zfAlloc(_ZFP_ZFCore_ZFSerializable_test_TestClassChild);
+        this->objContainer = zfobj<_ZFP_ZFCore_ZFSerializable_test_TestClassContainer>();
+        zfobj<_ZFP_ZFCore_ZFSerializable_test_TestClassChild> objTmp;
         objTmp->stringInParent("container's string");
         objTmp->stringInChild("container's string");
         this->objContainer->serializableMember(objTmp);
-        zfRelease(objTmp);
     }
     void memberDestroy(void) {
-        zfRelease(this->obj);
         this->obj = zfnull;
-        zfRelease(this->objChild);
         this->objChild = zfnull;
-        zfRelease(this->objContainer);
         this->objContainer = zfnull;
     }
     void test(ZFSerializable *serializableObj) {

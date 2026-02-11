@@ -107,7 +107,7 @@ public:
                     );
         }
 
-        zfRetain(this);
+        zfobjRetain(this);
 
         if(d->localCacheReady) {
             _loadAction();
@@ -173,7 +173,7 @@ public:
         _implTask = zfnull;
         _result = zfnull;
 
-        zfRelease(this);
+        zfobjRelease(this);
     }
     void _loadImplAction(ZF_IN const ZFInput &localSrc) {
         ZFArgs zfargsLoadImpl;

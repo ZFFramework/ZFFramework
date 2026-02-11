@@ -52,14 +52,14 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
-    zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
+    zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfobjRetain(obj._ZFP_obj)) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
-        _ZFP_obj = t ? zfRetain(t->_ZFP_ZFObject_weakHolder()) : zfnull;
+        _ZFP_obj = t ? zfobjRetain(t->_ZFP_ZFObject_weakHolder()) : zfnull;
     }
     ~zfweak(void) {
-        zfRelease(_ZFP_obj);
+        zfobjRelease(_ZFP_obj);
     }
 
 public:
@@ -125,8 +125,8 @@ public:
     void set(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
         _ZFP_I_zfweak *old = _ZFP_obj;
-        _ZFP_obj = (t ? zfRetain(t->_ZFP_ZFObject_weakHolder()) : zfnull);
-        zfRelease(old);
+        _ZFP_obj = (t ? zfobjRetain(t->_ZFP_ZFObject_weakHolder()) : zfnull);
+        zfobjRelease(old);
     }
     /**
      * @brief set the holded object
@@ -140,7 +140,7 @@ public:
     void set(ZF_IN zfnullT const &) {
         _ZFP_I_zfweak *old = _ZFP_obj;
         _ZFP_obj = zfnull;
-        zfRelease(old);
+        zfobjRelease(old);
     }
 
 public:

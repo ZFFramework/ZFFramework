@@ -35,10 +35,10 @@ ZFMETHOD_DEFINE_2(ZFStyleList, void, itemForKey
     for(zfindex i = 0; i < d->keyList.count(); ++i) {
         if(zfstringIsEqual(d->keyList[i], key)) {
             if(value == zfnull) {
-                zfRelease(d->valueList.removeAndGet(i));
+                zfobjRelease(d->valueList.removeAndGet(i));
             }
             else {
-                zfRetainChange(d->valueList[i], value);
+                zfobjRetainChange(d->valueList[i], value);
             }
             return;
         }
@@ -46,7 +46,7 @@ ZFMETHOD_DEFINE_2(ZFStyleList, void, itemForKey
 
     if(value != zfnull) {
         d->keyList.add(key);
-        d->valueList.add(zfRetain(value));
+        d->valueList.add(zfobjRetain(value));
     }
 }
 
@@ -61,7 +61,7 @@ void ZFStyleList::objectOnDealloc(void) {
         ZFCoreArray<ZFStyleable *> valueListTmp = d->valueList;
         d->valueList = ZFCoreArray<ZFStyleable *>();
         for(zfindex i = 0; i < keyListTmp.count(); ++i) {
-            zfRelease(valueListTmp[i]);
+            zfobjRelease(valueListTmp[i]);
         }
     }
     zfpoolDelete(d);

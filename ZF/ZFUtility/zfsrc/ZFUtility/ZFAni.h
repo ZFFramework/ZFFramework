@@ -82,11 +82,11 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->_ZFP_progressHolder = zfAlloc(v_zffloat);
+        this->_ZFP_progressHolder = zfobjAlloc(v_zffloat);
     }
     zfoverride
     virtual void objectOnDealloc(void) {
-        zfRetainChange(this->_ZFP_progressHolder, zfnull);
+        zfobjRetainChange(this->_ZFP_progressHolder, zfnull);
         zfsuper::objectOnDealloc();
     }
     zfoverride

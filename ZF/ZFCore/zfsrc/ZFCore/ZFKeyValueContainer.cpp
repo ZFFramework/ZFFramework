@@ -181,7 +181,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
     }
 
     ZFKeyValueContainer *tmp = this->classData()->newInstance();
-    zfscopeRelease(tmp);
+    zfobjReleaseInScope(tmp);
     tmp->addFrom(ref);
     for(zfiter it = this->iter(); it; ++it) {
         ZFObject *key = this->iterKey(it);

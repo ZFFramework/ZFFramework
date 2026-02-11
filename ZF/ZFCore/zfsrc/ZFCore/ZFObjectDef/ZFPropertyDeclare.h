@@ -48,7 +48,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *       virtual void yourPropName(Type const &propertyValue); // (reflectable)\n
  *       virtual Type const &yourPropName(void); // (reflectable)
  *   -  for a retain property, Type must be ZFObject or ZFObject's subclass,
- *     and value is set by #zfRetainChange,
+ *     and value is set by #zfobjRetainChange,
  *     and would automatically be released when owner object deallocated
  *   -  for a assign property, Type could be any type except for const type
  *   -  when declare assign property as ZFObject type,
@@ -269,8 +269,8 @@ zfclassNotPOD _ZFP_PropRVH { // RetainValueHolder
 public:
     void value(ZF_IN ZFObject *obj) {
         T_ZFObject old = this->_value;
-        this->_value = zfcast(T_ZFObject, zfunsafe_zfRetain(obj));
-        zfunsafe_zfRelease(old);
+        this->_value = zfcast(T_ZFObject, zfunsafe_zfobjRetain(obj));
+        zfunsafe_zfobjRelease(old);
     }
     T_ZFObject &value(void) {
         return this->_value;
@@ -282,11 +282,11 @@ public:
     }
     template<typename T_ZFObject2>
     _ZFP_PropRVH(ZF_IN T_ZFObject2 obj)
-    : _value(zfunsafe_zfRetain(zfcast(T_ZFObject, obj)))
+    : _value(zfunsafe_zfobjRetain(zfcast(T_ZFObject, obj)))
     {
     }
     ~_ZFP_PropRVH(void) {
-        zfunsafe_zfRelease(this->_value);
+        zfunsafe_zfobjRelease(this->_value);
     }
 private:
     T_ZFObject _value;

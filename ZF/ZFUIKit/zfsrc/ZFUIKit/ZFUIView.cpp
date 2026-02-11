@@ -434,7 +434,7 @@ public:
                 "[ZFUIView] add child during parent's dealloc is not allowed");
         ZFCoreAssertWithMessageTrim(child != zfnull, "[ZFUIView] add null child");
         ZFCoreAssertWithMessageTrim(child->parent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
-        zfscopeRelease(zfRetain(child));
+        zfobjReleaseInScope(zfobjRetain(child));
 
         if(this->serializableRefLayoutParamCache == zfnull) {
             this->serializableRefLayoutParamCache = owner->layoutParamCreate();
@@ -1534,7 +1534,7 @@ void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(
         ) {
     ZFCoreAssert(view != zfnull);
 
-    zfRetain(view);
+    zfobjRetain(view);
     zffloat UIScaleForImpl = ZFPROTOCOL_ACCESS(ZFUIView)->UIScaleForImpl(nativeParentView != zfnull ? nativeParentView : view->nativeView());
     if(view->d->UIScaleForImpl != UIScaleForImpl) {
         view->d->UIScaleForImpl = UIScaleForImpl;
@@ -1543,7 +1543,7 @@ void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(
 }
 void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyRemove(ZF_IN ZFUIView *view) {
     ZFCoreAssert(view != zfnull);
-    zfRelease(view);
+    zfobjRelease(view);
 }
 
 // ============================================================
@@ -2350,7 +2350,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
         return;
     }
 
-    zfscopeRelease(zfRetain(this));
+    zfobjReleaseInScope(zfobjRetain(this));
 
     this->viewEventOnEvent(event);
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewOnEvent)

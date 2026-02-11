@@ -51,7 +51,7 @@ protected:
     }
 
 private:
-    _ZFP_ZFCore_ZFCallback_test_Class *ownerClass;
+    zfobj<_ZFP_ZFCore_ZFCallback_test_Class> ownerClass;
     ZFCallback callbackClassMember;
     ZFCallback callbackClassStaticMember;
     ZFCallback callbackFunction;
@@ -60,7 +60,6 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
-        this->ownerClass = zfAlloc(_ZFP_ZFCore_ZFCallback_test_Class);
 
         this->callbackClassMember = ZFCallbackForMemberMethod(
             this->ownerClass,
@@ -70,12 +69,6 @@ protected:
             _ZFP_ZFCore_ZFCallback_test_Class::ClassData()->methodForName("classStaticMember"));
 
         this->callbackFunction = ZFCallbackForFunc(_ZFP_ZFCore_ZFCallback_test_StaticFunction);
-    }
-    zfoverride
-    virtual void objectOnDealloc(void) {
-        zfRelease(this->ownerClass);
-        this->ownerClass = zfnull;
-        zfsuper::objectOnDealloc();
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFCallback_test)

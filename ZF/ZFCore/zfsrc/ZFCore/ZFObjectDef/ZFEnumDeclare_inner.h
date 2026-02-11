@@ -385,9 +385,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -396,9 +396,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -535,9 +535,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN zfuint const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -546,9 +546,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN _ZFP_PropTypeOrig const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \
@@ -557,9 +557,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ZF_IN _ZFP_PropType const &v \
                 ) { \
             ZFCoreMutexLock(); \
-            _ZFP_WrapType *t = zfunsafe_zfAlloc(_ZFP_WrapType, (zfuint)v); \
+            _ZFP_WrapType *t = zfunsafe_zfobjAlloc(_ZFP_WrapType, (zfuint)v); \
             obj.zfunsafe_assign(t); \
-            zfunsafe_zfRelease(t); \
+            zfunsafe_zfobjRelease(t); \
             ZFCoreMutexUnlock(); \
             return zftrue; \
         } \

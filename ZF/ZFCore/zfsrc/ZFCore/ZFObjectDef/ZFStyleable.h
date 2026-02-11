@@ -202,7 +202,7 @@ private:
         const ZFCorePointer *cleanerNew = zfnull; \
         cleanerRef = zfnull; \
         if(newInstance != zfnull) { \
-            holder->d = zfRetain(newInstance); \
+            holder->d = zfobjRetain(newInstance); \
             cleanerNew = ZFObjectGlobalInstanceAdd(ZFCorePointerForObject<_ZFP_ZFStyleableDefaultDeleteCallbackHolder *>( \
                 zfnew(_ZFP_ZFStyleableDefaultDeleteCallbackHolder, YourStyle::_ZFP_ZFStyleableDefaultOnDelete, holder->d)), \
                 _ZFP_ZFStyleableDefault_level); \
@@ -222,7 +222,7 @@ private:
         YourStyle::_ZFP_ZFStyleableDefaultCleaner() = zfnull; \
         _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(#YourStyle); \
         holder->d = zfnull; \
-        zfRelease((YourStyle *)instance); \
+        zfobjRelease((YourStyle *)instance); \
     }
 
 /**

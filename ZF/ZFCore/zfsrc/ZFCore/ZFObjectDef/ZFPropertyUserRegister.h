@@ -54,7 +54,7 @@ zfclassNotPOD ZFPropertyUserRegisterDefaultImplRetain {
 private:
     static void _deleteCallback(ZF_IN void *p) {
         T_Type *t = (T_Type *)p;
-        zfRelease(*t);
+        zfobjRelease(*t);
         zfpoolDelete(t);
     }
 public:
@@ -75,7 +75,7 @@ public:
         zfbool firstTime = (holder == zfnull);
         zfauto oldValue = holder ? holder->retainValueHolder : zfnull;
         ownerObj->objectTag(key, _ZFP_I_PropUR::create(
-                    zfpoolNew(T_Type, zfRetain(v))
+                    zfpoolNew(T_Type, zfobjRetain(v))
                     , _deleteCallback
                     , v ? v->toObject() : zfnull
                     ));
@@ -100,7 +100,7 @@ public:
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
             zfauto holderTmp = _ZFP_I_PropUR::create(
-                    zfpoolNew(T_Type, zfRetain(tmp))
+                    zfpoolNew(T_Type, zfobjRetain(tmp))
                     , _deleteCallback
                     , tmp
                     );

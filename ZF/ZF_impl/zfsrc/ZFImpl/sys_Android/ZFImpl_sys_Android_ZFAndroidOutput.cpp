@@ -12,7 +12,7 @@ ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidOutput, ZFImp
 #define _ZFP_ZFAndroidOutputBufSize 1024
 zfclass _ZFP_I_ZFAndroidOutput : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidOutput, ZFObject)
-    ZFALLOC_CACHE_RELEASE({
+    ZFOBJECT_CACHE_RELEASE({
             cache->removeAll();
         })
 

@@ -63,29 +63,29 @@ zfbool ZFImpl_sys_SDL_TextureToOutput(
     SDL_Renderer *sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
 
     if(ZFBitTest(access, SDL_TEXTUREACCESS_TARGET)) {
-        ZFImpl_sys_SDL_zfscopeRenderTarget(success, sdlRenderer, sdlTexture);
+        ZFImpl_sys_SDL_SetRenderTargetInScope(success, sdlRenderer, sdlTexture);
         SDL_Surface *sdlSurface = SDL_RenderReadPixels(sdlRenderer, zfnull);
-        ZFImpl_sys_SDL_zfscopeDestroySurface(sdlSurface);
+        ZFImpl_sys_SDL_DestroySurfaceInScope(sdlSurface);
         return success
             && IMG_SavePNG_IO(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(callback), true)
             ;
     }
     else {
         SDL_Texture *tmp = SDL_CreateTexture(sdlRenderer, ZFImpl_sys_SDL_PixelFormatPreferred(), SDL_TEXTUREACCESS_TARGET, w, h);
-        ZFImpl_sys_SDL_zfscopeDestroyTexture(tmp);
+        ZFImpl_sys_SDL_DestroyTextureInScope(tmp);
         {
             SDL_BlendMode blendMode;
             SDL_GetTextureBlendMode(sdlTexture, &blendMode);
-            ZFImpl_sys_SDL_zfscopeRenderTarget(success, sdlRenderer, tmp);
+            ZFImpl_sys_SDL_SetRenderTargetInScope(success, sdlRenderer, tmp);
             SDL_SetTextureBlendMode(sdlTexture, SDL_BLENDMODE_NONE);
             SDL_RenderTexture(sdlRenderer, sdlTexture, zfnull, zfnull);
             SDL_SetTextureBlendMode(sdlTexture, blendMode);
         }
         sdlTexture = tmp;
 
-        ZFImpl_sys_SDL_zfscopeRenderTarget(success, sdlRenderer, sdlTexture);
+        ZFImpl_sys_SDL_SetRenderTargetInScope(success, sdlRenderer, sdlTexture);
         SDL_Surface *sdlSurface = SDL_RenderReadPixels(sdlRenderer, zfnull);
-        ZFImpl_sys_SDL_zfscopeDestroySurface(sdlSurface);
+        ZFImpl_sys_SDL_DestroySurfaceInScope(sdlSurface);
         return success
             && IMG_SavePNG_IO(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(callback), true)
             ;

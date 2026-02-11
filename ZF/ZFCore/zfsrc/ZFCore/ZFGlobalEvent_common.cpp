@@ -25,16 +25,16 @@ ZF_STATIC_REGISTER_DESTROY(_ZFP_ZFGlobalEvent_common_register) {
 }
 ZF_STATIC_REGISTER_END(_ZFP_ZFGlobalEvent_common_register)
 
-ZF_GLOBAL_INITIALIZER_INIT(zfAllocWithCache_autoClean) {
+ZF_GLOBAL_INITIALIZER_INIT(zfobjAllocWithCache_autoClean) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_AppOnMemoryLow(), ZFCallbackForFunc(zfself::clean));
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(zfAllocWithCache_autoClean) {
+ZF_GLOBAL_INITIALIZER_DESTROY(zfobjAllocWithCache_autoClean) {
     ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_AppOnMemoryLow(), ZFCallbackForFunc(zfself::clean));
 }
 static void clean(ZF_IN const ZFArgs &zfargs) {
-    zfAllocCacheRemoveAll();
+    zfobjAllocCacheRemoveAll();
 }
-ZF_GLOBAL_INITIALIZER_END(zfAllocWithCache_autoClean)
+ZF_GLOBAL_INITIALIZER_END(zfobjAllocWithCache_autoClean)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -112,7 +112,7 @@ public:
                 ;
             zfstring runningTaskKey = zftext("_ZFP_ZFThreadPoolRunning");
             ownerThread->objectTag(runningTaskKey, taskData);
-            zfunsafe_zfscopeRelease(zfunsafe_zfRetain(taskData));
+            zfunsafe_zfobjReleaseInScope(zfunsafe_zfobjRetain(taskData));
             ZFCoreMutexUnlock();
 
             taskData->callback.execute(taskData->zfargsForTask);
@@ -184,7 +184,7 @@ public:
         taskData->result = zfnull;
         taskData->finishCallback = zfnull;
         taskData->callerThread = zfnull;
-        zfunsafe_zfRelease(taskData);
+        zfunsafe_zfobjRelease(taskData);
     }
     static void _ZFP_threadOnStopRequested(
             ZF_IN ZFThread *ownerThread
@@ -228,7 +228,7 @@ ZFMETHOD_DEFINE_2(ZFThreadPool, zfautoT<ZFTaskId>, start
         d = zfpoolNew(_ZFP_ZFThreadPoolPrivate);
     }
 
-    _ZFP_I_ZFThreadPoolTaskData *taskData = zfunsafe_zfAlloc(_ZFP_I_ZFThreadPoolTaskData);
+    _ZFP_I_ZFThreadPoolTaskData *taskData = zfunsafe_zfobjAlloc(_ZFP_I_ZFThreadPoolTaskData);
     taskData->owner = d;
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;

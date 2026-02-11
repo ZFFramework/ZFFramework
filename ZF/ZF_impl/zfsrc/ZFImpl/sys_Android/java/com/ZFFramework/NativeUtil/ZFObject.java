@@ -27,11 +27,11 @@ public class ZFObject {
     }
 
     // ============================================================
-    public static native long zfRetain(long zfjniPointer);
+    public static native long zfobjRetain(long zfjniPointer);
 
-    public static native void zfRelease(long zfjniPointer);
+    public static native void zfobjRelease(long zfjniPointer);
 
-    public static native long zfautoRelease(long zfjniPointer);
+    public static native long zfobjAutoRelease(long zfjniPointer);
 
     // ============================================================
     public static native String toString(long zfjniPointer);

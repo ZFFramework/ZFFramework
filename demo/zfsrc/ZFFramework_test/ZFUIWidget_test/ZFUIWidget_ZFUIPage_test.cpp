@@ -170,7 +170,7 @@ zfclass ZFUIWidget_ZFUIPage_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test, ZFFramework_test_TestCase)
 
 private:
-    ZFUIPageManager *_pageManager;
+    zfautoT<ZFUIPageManager> _pageManager;
 
 protected:
     zfoverride
@@ -179,11 +179,11 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
 
-        ZFUIWindow *window = zfnull;
-        ZFUIView *container = zfnull;
+        zfautoT<ZFUIWindow> window;
+        zfautoT<ZFUIView> container;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        this->_pageManager = zfAlloc(ZFUIWidget_ZFUIPage_test_PageManager);
+        this->_pageManager = zfobj<ZFUIWidget_ZFUIPage_test_PageManager>();
         this->_pageManager->managerCreate();
         container->child(this->_pageManager->managerContainer())->c_sizeFill()->c_margin(20);
         this->_pageManager->managerResume();
@@ -195,7 +195,6 @@ protected:
         if(this->_pageManager != zfnull) {
             this->_pageManager->managerPause();
             this->_pageManager->managerDestroy();
-            zfRelease(this->_pageManager);
             this->_pageManager = zfnull;
         }
         zfsuper::testCaseOnStop(testCaseResult);
