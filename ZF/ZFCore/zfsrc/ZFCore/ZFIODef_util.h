@@ -201,8 +201,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFIOCopy
  *   ZFIOForEach(pathInfo, fileCallback);
  * @endcode
  *
- * fileCallback's sender would be the #v_ZFIOFindData
- * (may be null if pathInfo already points to a file),
+ * fileCallback's sender would be the #v_ZFIOFindData,
  * param0 is #v_ZFPathInfo that describe the child file or dir,
  * and param1 is a #v_zfstring stores the relative path to source pathInfo
  * (may be empty string if pathInfo already points to a file)\n

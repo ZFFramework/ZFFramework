@@ -77,8 +77,7 @@ protected:
  *   v->propStyle("text", "some_style_key");
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppLangList
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppLangList
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 /**
@@ -87,10 +86,9 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppLangList
  * empty langId would load previous #ZFAppLang stored in #ZFState\n
  * finishCallback's param0 would be a #v_ZFResultType indicates result
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppLangLoad
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppLangLoad
         , ZFMP_IN_OPT(const zfstring &, langId, zfnull)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 /** @brief see #ZFAppLangList */
@@ -100,9 +98,8 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfstring, ZFAppLang)
 /**
  * @brief util to create a task for #ZFAppLangLoad
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppLangLoadTask
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppLangLoadTask
         , ZFMP_IN_OPT(const zfstring &, langId, zfnull)
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 

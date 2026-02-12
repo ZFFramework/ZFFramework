@@ -120,12 +120,6 @@ public:
             , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
             )
 
-public:
-    /** @brief empty to use default */
-    ZFPROPERTY_ASSIGN(ZFPathInfo, langPath)
-    /** @brief empty to use default */
-    ZFPROPERTY_ASSIGN(ZFPathInfo, skinPath)
-
     // ============================================================
 public:
     /**

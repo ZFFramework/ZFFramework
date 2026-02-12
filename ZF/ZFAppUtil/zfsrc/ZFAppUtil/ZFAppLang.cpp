@@ -18,25 +18,17 @@ public:
         }
         return zfnull;
     }
-    zfautoT<ZFArray> dataList(
-            ZF_IN const ZFPathInfo &base
-            , ZF_IN zfbool enableCache
-            ) {
-        zfobj<v_ZFPathInfo> key(base ? base : ZFPathInfo(ZFPathType_res(), "lang"));
-        if(enableCache) {
-            zfautoT<ZFArray> cache = _cache->get(key);
-            if(cache) {
-                return cache;
-            }
+    zfautoT<ZFArray> dataList(ZF_IN zfbool enableCache) {
+        if(enableCache && _cache) {
+            return _cache;
         }
-        zfautoT<ZFArray> dataList = _load(key->zfv);
-        _cache->set(key, dataList);
-        return dataList;
+        _cache = _load();
+        return _cache;
     }
 private:
-    zfautoT<ZFMap> _cache; // <v_ZFPathInfo, ZFArray<ZFAppLangData>>
+    zfautoT<ZFArray> _cache; // ZFAppLangData
 private:
-    zfautoT<ZFArray> _load(ZF_IN const ZFPathInfo &base) {
+    zfautoT<ZFArray> _load(void) {
         ZFStyleUpdateBlock();
         zfobj<ZFArray> dataList;
         ZFLISTENER_1(impl
@@ -45,7 +37,10 @@ private:
             v_ZFIOFindData *fd = zfargs.sender();
             v_ZFPathInfo *pathInfo = zfargs.param0();
             zfstring langId = ZFPathOfWithoutAllExt(fd->zfv.name());
-            if(langId == "config") {
+            if(!langId) {
+                return;
+            }
+            else if(langId == "config") {
                 ZFStyleLoad(pathInfo->zfv);
                 return;
             }
@@ -60,10 +55,11 @@ private:
             if(data == zfnull) {
                 data = zfobj<ZFAppLangData>();
                 dataList->add(data);
+                data->langId(langId);
             }
             data->resList->add(pathInfo);
         } ZFLISTENER_END()
-        ZFIOForEach(base, impl, zffalse);
+        ZFIOForEach(ZFPathInfo(ZFPathType_res(), "lang"), impl, zffalse);
         return dataList;
     }
 ZF_GLOBAL_INITIALIZER_END(ZFAppLangDataHolder)
@@ -79,17 +75,15 @@ ZFMETHOD_DEFINE_0(ZFAppLangData, zfstring, langName) {
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFArray>, ZFAppLangList
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFArray>, ZFAppLangList
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         ) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppLangDataHolder)->dataList(base, enableCache);
+    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppLangDataHolder)->dataList(enableCache);
 }
 
-ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFTaskId>, ZFAppLangLoad
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFAppLangLoad
         , ZFMP_IN_OPT(const zfstring &, langId, zfnull)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         ) {
     zfstring langIdCur;
@@ -101,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFTaskId>, ZFAppLangLoad
     }
     ZFState::instance()->set("ZFAppLang", langIdCur);
     ZF_GLOBAL_INITIALIZER_CLASS(ZFAppLangDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAppLangDataHolder);
-    zfautoT<ZFArray> dataList = d->dataList(base, enableCache);
+    zfautoT<ZFArray> dataList = d->dataList(enableCache);
 
     ZFStyleUpdateBlock();
     zfobj<ZFArray> taskList;
@@ -112,8 +106,8 @@ ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFTaskId>, ZFAppLangLoad
         taskList->addFrom(data->resList);
     }
 
-    if(langId != "default") {
-        data = d->data(langId, dataList);
+    if(langIdCur != "default") {
+        data = d->data(langIdCur, dataList);
         if(data) {
             taskList->addFrom(data->resList);
         }
@@ -146,16 +140,14 @@ ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFAppLang) {
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTask>, ZFAppLangLoadTask
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTask>, ZFAppLangLoadTask
         , ZFMP_IN_OPT(const zfstring &, langId, zfnull)
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         ) {
     zfwrap implTaskId;
-    ZFLISTENER_4(onStart
+    ZFLISTENER_3(onStart
             , zfwrap, implTaskId
             , zfstring, langId
-            , ZFPathInfo, base
             , zfbool, enableCache
             ) {
         zfweakT<ZFTask> ownerTask = zfargs.sender();
@@ -166,7 +158,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTask>, ZFAppLangLoadTask
             ownerTask->notifySuccess();
             implTaskId = zfnull;
         } ZFLISTENER_END()
-        implTaskId = ZFAppLangLoad(langId, implOnStop, base, enableCache);
+        implTaskId = ZFAppLangLoad(langId, implOnStop, enableCache);
     } ZFLISTENER_END()
     ZFLISTENER_1(onStop
             , zfwrap, implTaskId

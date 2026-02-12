@@ -648,12 +648,7 @@ static void _ZFP_ZFIOForEach(
                     ) {
                 break;
             }
-            if(!zfargs.param0()) {
-                zfargs.param0(zfobj<v_ZFPathInfo>(ZFPathInfo(pathType, childPathData)));
-            }
-            else {
-                zfargs.param0().to<v_ZFPathInfo *>()->zfv.pathData(childPathData);
-            }
+            zfargs.param0(zfobj<v_ZFPathInfo>(ZFPathInfo(pathType, childPathData)));
 
             zfstring childRelPath;
             if(relPath) {
@@ -661,12 +656,7 @@ static void _ZFP_ZFIOForEach(
                 childRelPath += "/";
             }
             childRelPath += fd->zfv.name();
-            if(!zfargs.param1()) {
-                zfargs.param1(zfobj<v_zfstring>(childRelPath));
-            }
-            else {
-                zfargs.param1().to<v_zfstring *>()->zfv = childRelPath;
-            }
+            zfargs.param1(zfobj<v_zfstring>(childRelPath));
 
             if((fd->zfv.isDir() && forEachDir) || (!fd->zfv.isDir() && forEachFile)) {
                 fileCallback.execute(zfargs
@@ -710,7 +700,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOForEach
     }
     if(!ioImpl->ioIsDir(pathInfo.pathData())) {
         ZFArgs zfargs;
+        ZFIOFindData fd;
+        ioImpl->ioToFileName(fd.impl().name, pathInfo.pathData());
+        fd.impl().isDir = zffalse;
         fileCallback.execute(zfargs
+                .sender(zfobj<v_ZFIOFindData>(fd))
                 .param0(zfobj<v_ZFPathInfo>(pathInfo))
                 .param1(zfobj<v_zfstring>())
                 );
@@ -733,7 +727,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOForEachFile
     }
     if(!ioImpl->ioIsDir(pathInfo.pathData())) {
         ZFArgs zfargs;
+        ZFIOFindData fd;
+        ioImpl->ioToFileName(fd.impl().name, pathInfo.pathData());
+        fd.impl().isDir = zffalse;
         fileCallback.execute(zfargs
+                .sender(zfobj<v_ZFIOFindData>(fd))
                 .param0(zfobj<v_ZFPathInfo>(pathInfo))
                 .param1(zfobj<v_zfstring>())
                 );

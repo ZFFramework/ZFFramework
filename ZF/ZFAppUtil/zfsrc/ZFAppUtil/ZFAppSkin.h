@@ -77,8 +77,7 @@ protected:
  *   v->propStyle("text", "some_style_key");
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppSkinList
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppSkinList
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 /**
@@ -87,10 +86,9 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFArray>, ZFAppSkinList
  * empty skinId would load previous #ZFAppSkin stored in #ZFState\n
  * finishCallback's param0 would be a #v_ZFResultType indicates result
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppSkinLoad
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAppUtil, zfautoT<ZFTaskId>, ZFAppSkinLoad
         , ZFMP_IN_OPT(const zfstring &, skinId, zfnull)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 /** @brief see #ZFAppSkinList */
@@ -100,9 +98,8 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAppUtil, zfstring, ZFAppSkin)
 /**
  * @brief util to create a task for #ZFAppSkinLoad
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppSkinLoadTask
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAppUtil, zfautoT<ZFTask>, ZFAppSkinLoadTask
         , ZFMP_IN_OPT(const zfstring &, skinId, zfnull)
-        , ZFMP_IN_OPT(const ZFPathInfo &, base, zfnull)
         , ZFMP_IN_OPT(zfbool, enableCache, zftrue)
         )
 

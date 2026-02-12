@@ -114,22 +114,26 @@ public:
                 || !_ioImpl->ioIsExist(pathInfo.pathData())
                 ) {
             finishCallback.execute(ZFArgs()
-                    .param0(zfnull)
-                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
+                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
+                    .param1(zfnull)
                     );
             return zffalse;
         }
         if(!_ioImpl->ioIsDir(pathInfo.pathData())) {
             ZFArgs zfargs;
             if(forEachFile) {
+                ZFIOFindData fd;
+                _ioImpl->ioToFileName(fd.impl().name, pathInfo.pathData());
+                fd.impl().isDir = zffalse;
                 fileCallback.execute(zfargs
+                        .sender(zfobj<v_ZFIOFindData>(fd))
                         .param0(zfobj<v_ZFPathInfo>(pathInfo))
                         .param1(zfobj<v_zfstring>())
                         );
             }
             finishCallback.execute(ZFArgs()
-                    .param0(zfargs.result())
-                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
+                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
+                    .param1(zfargs.result())
                     );
             return zffalse;
         }
@@ -137,8 +141,8 @@ public:
         ZFIOFindData fd;
         if(!_ioImpl->ioFindFirst(fd, pathInfo.pathData())) {
             finishCallback.execute(ZFArgs()
-                    .param0(zfnull)
-                    .param1(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
+                    .param0(zfobj<v_ZFResultType>(v_ZFResultType::e_Success))
+                    .param1(zfnull)
                     );
             return zffalse;
         }
@@ -222,8 +226,8 @@ private:
         _finishCallback = zfnull;
 
         finishCallback.execute(ZFArgs()
-                .param0(result)
-                .param1(zfobj<v_ZFResultType>(resultType))
+                .param0(zfobj<v_ZFResultType>(resultType))
+                .param1(result)
                 );
     }
     void _next(void) {
@@ -397,17 +401,24 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, ZFStyleLoadAsync
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
         ) {
+    zfautoT<ZFIOImpl> ioImpl = ZFIOImplForPathType(pathInfo.pathType());
+    if(!ioImpl) {
+        return zfnull;
+    }
     ZFStyleUpdateBegin();
-    ZFLISTENER(impl) {
+    zfstring pathDataBase = pathInfo.pathData();
+    ZFLISTENER_2(impl
+            , zfautoT<ZFIOImpl>, ioImpl
+            , zfstring, pathDataBase
+            ) {
         const ZFIOFindData &fd = zfargs.sender().to<v_ZFIOFindData *>()->zfv;
-        const ZFPathInfo &pathInfo = zfargs.param0().to<v_ZFPathInfo *>()->zfv;
-        const zfstring &relPath = zfargs.param0().to<v_zfstring *>()->zfv;
+        const zfstring &relPath = zfargs.param1().to<v_zfstring *>()->zfv;
         if(!ZFStyleLoadCheck(fd.name())) {
             zfargs.param0(zfnull);
             return;
         }
         if(!fd.isDir()) {
-            ZFStyleLoadItem(pathInfo, relPath);
+            ZFStyleLoadItem(ioImpl, pathDataBase, relPath);
         }
     } ZFLISTENER_END()
     ZFLISTENER_1(onFinish
