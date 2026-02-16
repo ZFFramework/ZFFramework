@@ -40,13 +40,10 @@ ZFMETHOD_DEFINE_2(ZFAppRes, ZFPathInfo, pathInfoForPackage
         , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
         ) {
     if(packagePwd) {
-        return ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(
-                    ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(packagePathInfo, "zfres"))
-                    , packagePwd
-                    ));
+        return ZFPathInfoForEncrypt(ZFPathInfoForCompress(packagePathInfo, "zfres"), packagePwd);
     }
     else {
-        return ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(packagePathInfo, "zfres"));
+        return ZFPathInfoForCompress(packagePathInfo, "zfres");
     }
 }
 
@@ -328,7 +325,7 @@ public:
     }
 private:
     ZFPathInfo _localStatePath(void) {
-        return ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(ZFPathInfo(ZFPathType_storagePath(), "ZFAppRes/state"), "ZFAppRes"));
+        return ZFPathInfoForEncrypt(ZFPathInfo(ZFPathType_storagePath(), "ZFAppRes/state"), "ZFAppRes");
     }
     void _localStateLoad(void) {
         if(_modules != zfnull) {

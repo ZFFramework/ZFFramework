@@ -3,6 +3,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFMETHOD_FUNC_DEFINE_2(ZFPathInfo, ZFPathInfoForEncrypt
+        , ZFMP_IN(const ZFPathInfo &, refPathInfo)
+        , ZFMP_IN(const zfstring &, encryptKey)
+        ) {
+    return ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(refPathInfo, encryptKey));
+}
+
 zfclass _ZFP_I_ZFIOToken_encrypt : zfextend ZFIOToken {
     ZFOBJECT_DECLARE(_ZFP_I_ZFIOToken_encrypt, ZFIOToken)
 public:
@@ -270,7 +277,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForEncrypt
     ZFInput ret;
     ZFInputForPathInfoT(
             ret
-            , ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(refPathInfo, encryptKey))
+            , ZFPathInfoForEncrypt(refPathInfo, encryptKey)
             );
     return ret;
 }
@@ -283,7 +290,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForEncrypt
     ZFOutput ret;
     ZFOutputForPathInfoT(
             ret
-            , ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(refPathInfo, encryptKey))
+            , ZFPathInfoForEncrypt(refPathInfo, encryptKey)
             , flags
             );
     return ret;
@@ -307,7 +314,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForEncrypt
     } ZFLISTENER_END()
     ZFInput ret = ZFIOBufferInput(refInput, conv);
     if(refInput.pathInfo()) {
-        ZFInputMarkSerializable(ret, ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(refInput.pathInfo(), encryptKey)));
+        ZFInputMarkSerializable(ret, ZFPathInfoForEncrypt(refInput.pathInfo(), encryptKey));
     }
     return ret;
 }
@@ -329,7 +336,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForEncrypt
     } ZFLISTENER_END()
     ZFOutput ret = ZFIOBufferOutput(refOutput, conv);
     if(refOutput.pathInfo()) {
-        ZFOutputMarkSerializable(ret, ZFPathInfo(ZFPathType_encrypt(), ZFPathInfoChainEncode(refOutput.pathInfo(), encryptKey)));
+        ZFOutputMarkSerializable(ret, ZFPathInfoForEncrypt(refOutput.pathInfo(), encryptKey));
     }
     return ret;
 }

@@ -3,6 +3,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFMETHOD_FUNC_DEFINE_2(ZFPathInfo, ZFPathInfoForCompress
+        , ZFMP_IN(const ZFPathInfo &, refPathInfo)
+        , ZFMP_IN(const zfstring &, itemPath)
+        ) {
+    return ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath));
+}
+
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFCompressTokenCache, ZFLevelZFFrameworkLow) {
 }
 public:
@@ -460,7 +467,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForCompress
     ZFInput ret;
     ZFInputForIOTokenT(
             ret
-            , ZFIOOpen(ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath)), v_ZFIOOpenOption::e_Read)
+            , ZFIOOpen(ZFPathInfoForCompress(refPathInfo, itemPath), v_ZFIOOpenOption::e_Read)
             );
     return ret;
 }
@@ -473,7 +480,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForCompress
     ZFOutput ret;
     ZFOutputForIOTokenT(
             ret
-            , ZFIOOpen(ZFPathInfo(ZFPathType_compress(), ZFPathInfoChainEncode(refPathInfo, itemPath)), flags)
+            , ZFIOOpen(ZFPathInfoForCompress(refPathInfo, itemPath), flags)
             );
     return ret;
 }

@@ -32,6 +32,12 @@ public:
 
 public:
     /**
+     * @brief default #stateFile,
+     *  always `ZFPathInfo(ZFPathType_settingPath, 'ZFState')`
+     */
+    ZFMETHOD_DECLARE_STATIC_0(ZFPathInfo, stateFileDefault)
+
+    /**
      * @brief path to store state file
      *
      * when invalid, `ZFPathInfo(ZFPathType_settingPath, 'ZFState')`

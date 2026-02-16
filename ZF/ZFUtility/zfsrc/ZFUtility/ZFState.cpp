@@ -322,6 +322,9 @@ void ZFState::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
+ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileDefault) {
+    return ZFPathInfo(ZFPathType_settingPath(), "ZFState");
+}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFState, ZFPathInfo, stateFile) {
     if(propertyValue != propertyValueOld) {
         d->saveCheck(this);
@@ -330,8 +333,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFState, ZFPathInfo, stateFile) {
 ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileFixed) {
     zfobj<v_ZFPathInfo> tmp;
     if(this->stateFile().isEmpty()) {
-        tmp->zfv.pathType(ZFPathType_settingPath());
-        tmp->zfv.pathData("ZFState");
+        tmp->zfv = zfself::stateFileDefault();
     }
     else {
         tmp->zfv.pathType(this->stateFile().pathType());

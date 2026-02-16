@@ -24,6 +24,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFIO_DECLARE(ZFLIB_ZFAlgorithm, encrypt)
 
+/**
+ * @brief util to create chained path info
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFPathInfo, ZFPathInfoForEncrypt
+        , ZFMP_IN(const ZFPathInfo &, refPathInfo)
+        , ZFMP_IN(const zfstring &, encryptKey)
+        )
+
 // ============================================================
 // ZFInputForEncrypt
 /**
