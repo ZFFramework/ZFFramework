@@ -41,6 +41,10 @@ zfbool zfsFromIntT(
         // tricks to solve the unsigned type warnings
         if(n != (T_Int)0) {
             s += '-';
+            if(n == (T_Int)0 - n) {
+                s += '1';
+                return zftrue;
+            }
             n = (T_Int)0 - n;
         }
         else {

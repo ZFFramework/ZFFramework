@@ -766,7 +766,7 @@ static void _ZFP_ZFUIScaleTypeApply_FillX(
         ) {
     ZFUIAlignApplyT(ret, alignFlags, bounds, ZFUISizeCreate(
         bounds.width,
-        bounds.width * contentSize.height / contentSize.width
+        contentSize.width > 0 ? bounds.width * contentSize.height / contentSize.width : 0
         ));
 }
 static void _ZFP_ZFUIScaleTypeApply_FillY(
@@ -776,7 +776,7 @@ static void _ZFP_ZFUIScaleTypeApply_FillY(
         , ZF_IN const ZFUIAlignFlags &alignFlags
         ) {
     ZFUIAlignApplyT(ret, alignFlags, bounds, ZFUISizeCreate(
-        contentSize.width * bounds.height / contentSize.height,
+        contentSize.height > 0 ? contentSize.width * bounds.height / contentSize.height : 0,
         bounds.height
         ));
 }
