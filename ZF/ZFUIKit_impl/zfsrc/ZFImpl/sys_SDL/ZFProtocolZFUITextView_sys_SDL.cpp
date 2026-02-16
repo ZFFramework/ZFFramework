@@ -145,7 +145,6 @@ private:
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
             , ZF_IN const SDL_FRect &childRect
-            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
         ZFUITextView *owner = zfcast(ZFUITextView *, nativeView->parent->ownerZFUIView);

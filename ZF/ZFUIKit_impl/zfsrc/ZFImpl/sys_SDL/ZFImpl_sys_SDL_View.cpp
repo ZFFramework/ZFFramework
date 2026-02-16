@@ -65,6 +65,24 @@ void ZFImpl_sys_SDL_View::layoutRequest(void) {
 }
 
 // ============================================================
+static zfbool _ZFP_ZFImpl_sys_SDL_View_render(
+        ZF_IN SDL_Renderer *renderer
+        , ZF_IN ZFImpl_sys_SDL_View *view
+        , ZF_IN const SDL_FRect &childRect
+        , ZF_IN const SDL_FRect &parentRect
+        , ZF_IN zffloat treeAlpha
+        ) {
+    SDL_Rect clipOld;
+    SDL_GetRenderClipRect(renderer, &clipOld);
+    SDL_Rect clipNew;
+    ZFImpl_sys_SDL_View::renderRectCalc(clipNew, childRect, parentRect);
+    SDL_SetRenderClipRect(renderer, &clipNew);
+
+    zfbool ret = view->renderImpl(renderer, view, childRect, treeAlpha);
+
+    SDL_SetRenderClipRect(renderer, &clipOld);
+    return ret;
+}
 static void _ZFP_ZFImpl_sys_SDL_View_render(
         ZF_IN ZFImpl_sys_SDL_View *view
         , ZF_IN SDL_Renderer *renderer
@@ -76,7 +94,7 @@ static void _ZFP_ZFImpl_sys_SDL_View_render(
         treeAlpha *= view->ownerZFUIView->alpha();
     }
     if(view->renderImpl == zfnull
-            || !view->renderImpl(renderer, view, childRect, parentRect, treeAlpha)
+            || !_ZFP_ZFImpl_sys_SDL_View_render(renderer, view, childRect, parentRect, treeAlpha)
             ) {
         SDL_FRect parentRectNew;
         ZFImpl_sys_SDL_View::renderRectCalc(parentRectNew, childRect, parentRect);

@@ -46,7 +46,7 @@ public:
     /**
      * @brief callback for impl to render contents
      *
-     * childRect and parentRect relative to root renderer\n
+     * childRect relative to root renderer\n
      * return true if the impl has done all necessary render task,
      * no child should be rendered any more
      */
@@ -54,7 +54,6 @@ public:
             ZF_IN SDL_Renderer *renderer
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
             , ZF_IN const SDL_FRect &childRect
-            , ZF_IN const SDL_FRect &parentRect
             , ZF_IN zffloat treeAlpha
             );
 
@@ -170,6 +169,29 @@ public:
         ret.h = childRect.y + childRect.h <= parentRect.y + parentRect.h
             ? childRect.y + childRect.h - ret.y
             : parentRect.y + parentRect.h - ret.y;
+    }
+    /**
+     * @brief util for impl to calc render rect
+     *
+     * childRect and parentRect relative to root renderer
+     */
+    static void renderRectCalc(
+            ZF_OUT SDL_Rect &ret
+            , ZF_IN const SDL_FRect &childRect
+            , ZF_IN const SDL_FRect &parentRect
+            ) {
+        ret.x = (int)zfmRound(childRect.x >= parentRect.x
+                ? childRect.x
+                : parentRect.x);
+        ret.y = (int)zfmRound(childRect.y >= parentRect.y
+                ? childRect.y
+                : parentRect.y);
+        ret.w = (int)zfmRound(childRect.x + childRect.w <= parentRect.x + parentRect.w
+                ? childRect.x + childRect.w - ret.x
+                : parentRect.x + parentRect.w - ret.x);
+        ret.h = (int)zfmRound(childRect.y + childRect.h <= parentRect.y + parentRect.h
+                ? childRect.y + childRect.h - ret.y
+                : parentRect.y + parentRect.h - ret.y);
     }
 
     /**
