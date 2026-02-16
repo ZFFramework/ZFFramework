@@ -8,7 +8,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(AppExit)
 ZFEVENT_GLOBAL_REGISTER(AppRestart)
-ZFEVENT_GLOBAL_REGISTER(AppCrash)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
@@ -22,7 +21,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, appExit
     if(flag->zfv) {
         return;
     }
-    ZFPROTOCOL_INTERFACE_CLASS(ZFApp) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp);
+    ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appExit) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp_appExit);
     if(impl != zfnull) {
         impl->appExit(appExitCode);
     }
@@ -38,7 +37,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, appRestart) {
     if(flag->zfv) {
         return;
     }
-    ZFPROTOCOL_INTERFACE_CLASS(ZFApp) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp);
+    ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appRestart) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp_appRestart);
     if(impl != zfnull) {
         impl->appRestart();
     }

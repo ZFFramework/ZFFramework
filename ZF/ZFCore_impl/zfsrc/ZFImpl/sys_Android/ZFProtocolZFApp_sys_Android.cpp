@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFApp ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFApp)
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFApp, ZFImpl_sys_Android_JNI_NAME_ZFApp)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_Android, ZFApp, v_ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFApp_appRestartImpl_sys_Android, ZFApp_appRestart, v_ZFProtocolLevel::e_SystemNormal)
 public:
     virtual void appRestart(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -20,7 +20,7 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFApp(), jmId);
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_Android)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFApp_appRestartImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

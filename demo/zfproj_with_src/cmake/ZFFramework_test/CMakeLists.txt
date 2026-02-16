@@ -96,7 +96,7 @@ install(
 
 file(GLOB AppIconPath "${PROJECT_SOURCE_DIR}/AppIcon.png")
 if(NOT "${AppIconPath}" STREQUAL "")
-    install(FILES ${AppIconPath} DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres")
+    install(FILES ${AppIconPath} DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres/ZFUIKit_impl/sys_SDL")
 endif()
 
 file(GLOB_RECURSE SDL_LIBS_

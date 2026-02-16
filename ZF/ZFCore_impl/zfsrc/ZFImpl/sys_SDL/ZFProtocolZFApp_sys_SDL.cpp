@@ -4,7 +4,7 @@
 #if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_SDL, ZFApp, v_ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFApp_appExitImpl_sys_SDL, ZFApp_appExit, v_ZFProtocolLevel::e_SystemHigh)
 public:
     zfoverride
     virtual void appExit(ZF_IN zfint appExitCode) {
@@ -13,7 +13,7 @@ public:
         e.type = SDL_EVENT_QUIT;
         SDL_PushEvent(&e);
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_SDL)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFApp_appExitImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL

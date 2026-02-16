@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_INTERFACE_REGISTER(ZFApp)
+ZFPROTOCOL_INTERFACE_REGISTER(ZFApp_appExit)
 
 zfclassNotPOD _ZFP_ZFThreadImpl_default_TaskData {
 public:
@@ -18,7 +18,7 @@ public:
     }
 };
 
-void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
+void ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appExit)::appExit(ZF_IN zfint appExitCode) {
     _ZFP_ZFThreadImpl_default_TaskData *taskData = zfpoolNew(_ZFP_ZFThreadImpl_default_TaskData);
 
     ZFLISTENER_1(runnable
@@ -52,7 +52,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
 
     taskData->threadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThread(runnable, zfnull);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void) {
+void ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appRestart)::appRestart(void) {
     _ZFP_ZFThreadImpl_default_TaskData *taskData = zfpoolNew(_ZFP_ZFThreadImpl_default_TaskData);
 
     ZFLISTENER_1(runnable

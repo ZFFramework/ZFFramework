@@ -9,7 +9,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_Qt, ZFApp, v_ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFApp_appRestartImpl_sys_Qt, ZFApp_appRestart, v_ZFProtocolLevel::e_SystemHigh)
 public:
     virtual void appRestart(void) {
         QTimer::singleShot(100, _ZFP_appRestart);
@@ -21,7 +21,7 @@ public:
         ZFFrameworkInit();
         ZFMainExecute(appParamsSaved);
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_Qt)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFApp_appRestartImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Qt
