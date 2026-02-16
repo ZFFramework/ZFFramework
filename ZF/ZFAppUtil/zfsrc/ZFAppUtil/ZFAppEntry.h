@@ -21,9 +21,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# resolve #ZFAppEntry::res and #ZFAppEntry::resPack immediately
  * -# notify #ZFAppEntry::E_OnLoadState
  * -# load #ZFState
- * -# notify #ZFAppEntry::E_OnLoadLang
+ * -# notify #ZFAppEntry::E_OnLoadRes
  * -# load #ZFAppLangLoad
- * -# notify #ZFAppEntry::E_OnLoadSkin
  * -# load #ZFAppSkinLoad
  * -# load custom #task
  * -# notify #ZFAppEntry::E_OnLoadEntry
@@ -44,25 +43,20 @@ public:
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadState)
     /** @brief see #ZFAppEntry */
-    ZFEVENT(OnLoadLang)
-    /** @brief see #ZFAppEntry */
-    ZFEVENT(OnLoadSkin)
+    ZFEVENT(OnLoadRes)
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadEntry)
     /** @brief see #ZFAppEntry */
     ZFEVENT(OnLoadStop)
 
+    // ============================================================
 public:
     /** @brief load event helper */
     ZFMETHOD_DECLARE_1(void, onLoadState
             , ZFMP_IN(const ZFListener &, callback)
             )
     /** @brief load event helper */
-    ZFMETHOD_DECLARE_1(void, onLoadLang
-            , ZFMP_IN(const ZFListener &, callback)
-            )
-    /** @brief load event helper */
-    ZFMETHOD_DECLARE_1(void, onLoadSkin
+    ZFMETHOD_DECLARE_1(void, onLoadRes
             , ZFMP_IN(const ZFListener &, callback)
             )
     /** @brief load event helper */
@@ -72,6 +66,25 @@ public:
     /** @brief load event helper */
     ZFMETHOD_DECLARE_1(void, onLoadStop
             , ZFMP_IN(const ZFListener &, callback)
+            )
+
+    // ============================================================
+public:
+    /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadState
+            , ZFMP_IN(ZFTask *, task)
+            )
+    /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadRes
+            , ZFMP_IN(ZFTask *, task)
+            )
+    /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadEntry
+            , ZFMP_IN(ZFTask *, task)
+            )
+    /** @brief load event helper */
+    ZFMETHOD_DECLARE_1(void, onLoadStop
+            , ZFMP_IN(ZFTask *, task)
             )
 
     // ============================================================
@@ -118,15 +131,6 @@ public:
             , ZFMP_IN(const ZFCoreArray<ZFPathInfo> &, packageInfoList)
             , ZFMP_IN_OPT(const zfstring &, packagePwd, zfnull)
             , ZFMP_IN_OPT(const zfstring &, moduleName, zfnull)
-            )
-
-    // ============================================================
-public:
-    /**
-     * @brief util to run custom task, just before #E_OnLoadEntry
-     */
-    ZFMETHOD_DECLARE_1(void, task
-            , ZFMP_IN(ZFTask *, task)
             )
 
     // ============================================================
