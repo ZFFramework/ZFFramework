@@ -24,7 +24,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# notify #ZFAppEntry::E_OnLoadRes
  * -# load #ZFAppLangLoad
  * -# load #ZFAppSkinLoad
- * -# load custom #task
  * -# notify #ZFAppEntry::E_OnLoadEntry
  * -# load main entry, by this order,
  *   all of them can return `zftrue` to prevent further load task of this group:

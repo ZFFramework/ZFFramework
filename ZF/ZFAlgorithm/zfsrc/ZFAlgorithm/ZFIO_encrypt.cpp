@@ -32,10 +32,13 @@ public:
 
         if(ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
             if(!ZFDecrypt(_buf->output(), ZFInputForIOToken(_refIOToken), encryptKey)) {
-                _refIOToken = zfnull;
-                _encryptKey = zfnull;
-                _refPathInfo = zfnull;
-                return zffalse;
+                _refIOToken->ioClose();
+                _refIOToken = ZFIOOpen(refPathInfo, v_ZFIOOpenOption::e_Write | ZFBitGet(flags, v_ZFIOOpenOption::e_Read), autoCreateParent);
+                if(_refIOToken == zfnull) {
+                    _encryptKey = zfnull;
+                    _refPathInfo = zfnull;
+                    return zffalse;
+                }
             }
             _buf->input().ioSeek(0);
         }

@@ -194,7 +194,7 @@ private:
                 }
             }
         }
-        return zfnull;
+        return io;
     }
     // file format:
     //     expireTime:encode(key):encode(value)
@@ -491,10 +491,11 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
         return zfnull;
     }
     ZFObjectLocker(this);
-    const _ZFP_ZFStateData *data = d->m.get<const _ZFP_ZFStateData *>(key);
+    ZFCoreMap &m = (this->ready() ? d->m : d->pending);
+    const _ZFP_ZFStateData *data = m.get<const _ZFP_ZFStateData *>(key);
     if(data != zfnull) {
         if(data->expireTime != 0 && ZFTime::currentTime() >= data->expireTime) {
-            d->m.remove(key);
+            m.remove(key);
             return zfnull;
         }
         else {
