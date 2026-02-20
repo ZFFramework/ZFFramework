@@ -916,7 +916,7 @@ zfbool ZFImpl_ZFLua_zfstringAppend(
                 pFmtL = pToken + 2;
                 if(i <= count) {
                     fmtTmp.assign(pFmt, pFmtL - pFmt);
-                    zfstringAppend(s, fmtTmp, (zfindex)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                    zfstringAppend(s, fmtTmp, zft_uintConv<zfindex>(_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i)));
                 }
                 break;
             case 'd':
@@ -934,7 +934,7 @@ zfbool ZFImpl_ZFLua_zfstringAppend(
                 pFmtL = pToken + 1;
                 if(i <= count) {
                     fmtTmp.assign(pFmt, pFmtL - pFmt);
-                    zfstringAppend(s, fmtTmp, (zfuint)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                    zfstringAppend(s, fmtTmp, zft_uintConv<zfuint>(_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i)));
                 }
                 break;
             case 'f':

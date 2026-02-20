@@ -518,13 +518,17 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
 
     if(paramClass0->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass0->newInstance();
-        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>((zfuint)n));
+        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret
+                , zfobj<v_zfuint>(zft_uintConv<zfuint>::from(n))
+                );
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
     if(paramClass1->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass1->newInstance();
-        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret, zfobj<v_zfuint>((zfuint)n));
+        ret->classData()->propertySetterForName("enumValue")->methodInvoke(ret
+                , zfobj<v_zfuint>(zft_uintConv<zfuint>::from(n))
+                );
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
@@ -533,37 +537,37 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
     }
     else if(paramClass0->classIsTypeOf(v_zfbool::ClassData()) || paramClass1->classIsTypeOf(v_zfbool::ClassData())) {
         zfobj<v_zfbool> ret;
-        ret->zfv = (zfmAbs(n) > zffloatEpsilon);
+        ret->zfv = (zffloatCmp(n, (lua_Number)0) != 0);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfflags::ClassData()) || paramClass1->classIsTypeOf(v_zfflags::ClassData())) {
         zfobj<v_zfflags> ret;
-        ret->zfv = (zfflags)n;
+        ret->zfv = zft_uintConv<zfflags>::from(n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfidentity::ClassData()) || paramClass1->classIsTypeOf(v_zfidentity::ClassData())) {
         zfobj<v_zfidentity> ret;
-        ret->zfv = (zfidentity)n;
+        ret->zfv = zft_uintConv<zfuint>::from(n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfindex::ClassData()) || paramClass1->classIsTypeOf(v_zfindex::ClassData())) {
         zfobj<v_zfindex> ret;
-        ret->zfv = (zfindex)n;
+        ret->zfv = zft_uintConv<zfindex>::from(n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zftimet::ClassData()) || paramClass1->classIsTypeOf(v_zftimet::ClassData())) {
         zfobj<v_zftimet> ret;
-        ret->zfv = (zftimet)n;
+        ret->zfv = zft_uintConv<zfuint>::from(n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfbyte::ClassData()) || paramClass1->classIsTypeOf(v_zfbyte::ClassData())) {
         zfobj<v_zfbyte> ret;
-        ret->zfv = (zfbyte)n;
+        ret->zfv = zft_uintConv<zfbyte>::from(n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }

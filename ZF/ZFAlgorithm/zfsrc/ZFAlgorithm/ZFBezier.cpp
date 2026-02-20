@@ -49,11 +49,11 @@ zffloat ZFBezier::t_by_x(ZF_IN zffloat x) const {
 
     for(zfindex i = 0; i < 8; ++i) {
         x2 = this->x_by_t(t2) - x;
-        if(zfmAbs(x2) < zffloatEpsilon) {
+        if(x2 == 0) {
             return t2;
         }
         d2 = ((3.0f * ax * t2 + 2.0f * bx) * t2 + cx);
-        if(zfmAbs(d2) < zffloatEpsilon) {
+        if(d2 == 0) {
             break;
         }
         t2 = t2 - x2 / d2;
@@ -70,9 +70,9 @@ zffloat ZFBezier::t_by_x(ZF_IN zffloat x) const {
         return t1;
     }
 
-    while(t0 < t1 - zffloatEpsilon) {
+    while(t0 < t1) {
         x2 = this->x_by_t(t2);
-        if(zfmAbs(x2 - x) < zffloatEpsilon) {
+        if(x2 == x) {
             return t2;
         }
         if(x > x2) {
@@ -96,11 +96,11 @@ zffloat ZFBezier::t_by_y(ZF_IN zffloat y) const {
 
     for(zfindex i = 0; i < 8; ++i) {
         y2 = this->y_by_t(t2) - y;
-        if(zfmAbs(y2) < zffloatEpsilon) {
+        if(y2 == 0) {
             return t2;
         }
         d2 = ((3.0f * ay * t2 + 2.0f * by) * t2 + cy);
-        if(zfmAbs(d2) < zffloatEpsilon) {
+        if(d2 == 0) {
             break;
         }
         t2 = t2 - y2 / d2;
@@ -117,9 +117,9 @@ zffloat ZFBezier::t_by_y(ZF_IN zffloat y) const {
         return t1;
     }
 
-    while(t0 < t1 - zffloatEpsilon) {
+    while(t0 < t1) {
         y2 = this->y_by_t(t2);
-        if(zfmAbs(y2 - y) < zffloatEpsilon) {
+        if(y2 == y) {
             return t2;
         }
         if(y > y2) {

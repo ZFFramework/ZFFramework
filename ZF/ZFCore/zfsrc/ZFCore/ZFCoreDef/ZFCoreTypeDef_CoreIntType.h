@@ -159,6 +159,21 @@ public:
     static inline T_zffloat v(void) {return zffloatEpsilon;}
 };
 
+/** @brief util to compare float types */
+template<typename T_zffloat>
+int zffloatCmp(T_zffloat const &v0, T_zffloat const &v1) {
+    T_zffloat t = v0 - v1;
+    if(t <= 0 - zffloatEpsilonT<T_zffloat>::v()) {
+        return -1;
+    }
+    else if(t < zffloatEpsilonT<T_zffloat>::v()) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+
 // ============================================================
 /**
  * @brief declare a strong wrapper type for float types, similar to boost's BOOST_STRONG_TYPEDEF
@@ -215,7 +230,75 @@ public:
     public: \
         static inline D v(void) {return epsilon;} \
     }; \
+    template<typename T_Dst> \
+    class ZFT_uintConv<T_Dst, D> { \
+    public: \
+        static T_Dst from(D const &src) { \
+            if(zffloatCmp(src, (D)-1) == 0) { \
+                return (T_Dst)-1; \
+            } \
+            else { \
+                return (T_Dst)src; \
+            } \
+        } \
+    }; \
     /** @endcond */
+
+/** @cond ZFPrivateDoc */
+template<typename T_Dst, typename T_Src>
+class ZFT_uintConv {
+public:
+    static T_Dst from(T_Src const &src) {
+        if(src == (T_Src)-1) {
+            return (T_Dst)-1;
+        }
+        else {
+            return (T_Dst)src;
+        }
+    }
+};
+template<typename T_Dst>
+class ZFT_uintConv<T_Dst, float> {
+public:
+    static T_Dst from(float const &src) {
+        if(zffloatCmp(src, (float)-1) == 0) {
+            return (T_Dst)-1;
+        }
+        else {
+            return (T_Dst)src;
+        }
+    }
+};
+template<typename T_Dst>
+class ZFT_uintConv<T_Dst, double> {
+public:
+    static T_Dst from(double const &src) {
+        if(zffloatCmp(src, (double)-1) == 0) {
+            return (T_Dst)-1;
+        }
+        else {
+            return (T_Dst)src;
+        }
+    }
+};
+template<typename T_Dst>
+class ZFT_uintConv<T_Dst, long double> {
+public:
+    static T_Dst from(long double const &src) {
+        if(zffloatCmp(src, (long double)-1) == 0) {
+            return (T_Dst)-1;
+        }
+        else {
+            return (T_Dst)src;
+        }
+    }
+};
+/** @endcond */
+/** @brief util to convert unsigned type from other type */
+template<typename T_Dst, typename T_Src>
+T_Dst zft_uintConv(T_Src const &v) {
+    return ZFT_uintConv<T_Dst, T_Src>(v);
+}
 
 ZF_NAMESPACE_GLOBAL_END
 
