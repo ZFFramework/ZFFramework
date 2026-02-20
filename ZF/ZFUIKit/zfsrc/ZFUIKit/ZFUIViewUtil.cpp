@@ -111,8 +111,8 @@ ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParentT
             break;
         }
         ZFUIPoint layoutChildOffset = view->layoutChildOffset();
-        rect.x += layoutChildOffset.x;
-        rect.y += layoutChildOffset.y;
+        rect.x += view->viewFrame().x + layoutChildOffset.x;
+        rect.y += view->viewFrame().y + layoutChildOffset.y;
     }
     if(view != parent) {
         rect = ZFUIRectZero();

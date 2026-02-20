@@ -701,6 +701,8 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectUnion
         , ZFMP_IN(const ZFUIRect &, rect1)
         , ZFMP_IN(const ZFUIRect &, rect2)
         ) {
+    if(ZFUIRectIsEmpty(rect1)) {return rect2;}
+    if(ZFUIRectIsEmpty(rect2)) {return rect1;}
     ZFUIRect ret = {
         (rect1.x < rect2.x) ? rect1.x : rect2.x,
         (rect1.y < rect2.y) ? rect1.y : rect2.y,
@@ -725,6 +727,8 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectIntersection
         , ZFMP_IN(const ZFUIRect &, rect1)
         , ZFMP_IN(const ZFUIRect &, rect2)
         ) {
+    if(ZFUIRectIsEmpty(rect1)) {return rect2;}
+    if(ZFUIRectIsEmpty(rect2)) {return rect1;}
     ZFUIRect ret = {
         (rect1.x > rect2.x) ? rect1.x : rect2.x,
         (rect1.y > rect2.y) ? rect1.y : rect2.y,
