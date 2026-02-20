@@ -29,23 +29,10 @@ public:
     virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
         ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
         SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
-        SDL_Surface *nativeImageNew = SDL_CreateSurface(nativeImageOld->w, nativeImageOld->h, nativeImageOld->format);
+        SDL_Surface *nativeImageNew = SDL_DuplicateSurface(nativeImageOld);
         if(nativeImageNew == zfnull) {
             return zfnull;
         }
-
-        SDL_Rect rect;
-        rect.x = 0;
-        rect.y = 0;
-        rect.w = nativeImageOld->w;
-        rect.h = nativeImageOld->h;
-
-        SDL_Rect clipSaved;
-        SDL_GetSurfaceClipRect(nativeImageOld, &clipSaved);
-        SDL_SetSurfaceClipRect(nativeImageOld, &rect);
-        SDL_BlitSurface(nativeImageOld, zfnull, nativeImageNew, zfnull);
-        SDL_SetSurfaceClipRect(nativeImageOld, &clipSaved);
-
         return ZFImpl_sys_SDL_Image::implCreate(nativeImageNew);
     }
 

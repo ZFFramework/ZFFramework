@@ -64,6 +64,7 @@ SDL_IOStream *ZFImpl_sys_SDL_ZFInputToSDL_IOStream(ZF_IN const ZFInput &callback
         return zfnull;
     }
     SDL_IOStreamInterface impl;
+    SDL_INIT_INTERFACE(&impl);
     impl.size = _ZFP_ZFImpl_sys_SDL_IOStream_size_ZFInput;
     impl.seek = _ZFP_ZFImpl_sys_SDL_IOStream_seek_ZFInput;
     impl.read = _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFInput;
@@ -129,6 +130,7 @@ SDL_IOStream *ZFImpl_sys_SDL_ZFOutputToSDL_IOStream(ZF_IN const ZFOutput &callba
         return zfnull;
     }
     SDL_IOStreamInterface impl;
+    SDL_INIT_INTERFACE(&impl);
     impl.size = _ZFP_ZFImpl_sys_SDL_IOStream_size_ZFOutput;
     impl.seek = _ZFP_ZFImpl_sys_SDL_IOStream_seek_ZFOutput;
     impl.read = _ZFP_ZFImpl_sys_SDL_IOStream_read_ZFOutput;

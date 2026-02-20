@@ -22,11 +22,21 @@ public:
             ) {
         ZFImpl_sys_SDL_Image *sdlImgOld = (ZFImpl_sys_SDL_Image *)nativeImage;
         SDL_Surface *nativeImageOld = sdlImgOld->sdlSurface();
-        ;
+
         SDL_Surface *nativeImageNew = SDL_CreateSurface((int)newSize.width, (int)newSize.height, nativeImageOld->format);
         if(nativeImageNew == zfnull) {
             return zfnull;
         }
+        if(SDL_ISPIXELFORMAT_INDEXED(nativeImageOld->format)) {
+            SDL_Palette *sdlPaletteOld = SDL_GetSurfacePalette(nativeImageOld);
+            if(sdlPaletteOld == zfnull) {
+                SDL_DestroySurface(nativeImageNew);
+                return zfnull;
+            }
+            SDL_Palette *sdlPaletteNew = SDL_CreateSurfacePalette(nativeImageNew);
+            SDL_SetPaletteColors(sdlPaletteNew, sdlPaletteOld->colors, 0, sdlPaletteOld->ncolors);
+        }
+
         SDL_SetSurfaceBlendMode(nativeImageOld, SDL_BLENDMODE_NONE);
         if(ninePatch == ZFUIMarginZero()) {
             SDL_BlitSurfaceScaled(nativeImageOld, zfnull, nativeImageNew, zfnull, SDL_SCALEMODE_LINEAR);
