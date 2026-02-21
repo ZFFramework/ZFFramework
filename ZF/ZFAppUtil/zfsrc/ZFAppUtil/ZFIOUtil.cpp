@@ -406,19 +406,18 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, ZFStyleLoadAsync
         return zfnull;
     }
     ZFStyleUpdateBegin();
-    zfstring pathDataBase = pathInfo.pathData();
-    ZFLISTENER_2(impl
+    ZFLISTENER_1(impl
             , zfautoT<ZFIOImpl>, ioImpl
-            , zfstring, pathDataBase
             ) {
         const ZFIOFindData &fd = zfargs.sender().to<v_ZFIOFindData *>()->zfv;
+        const ZFPathInfo &pathInfo = zfargs.param0().to<v_ZFPathInfo *>()->zfv;
         const zfstring &relPath = zfargs.param1().to<v_zfstring *>()->zfv;
         if(!ZFStyleLoadCheck(fd.name())) {
             zfargs.param0(zfnull);
             return;
         }
         if(!fd.isDir()) {
-            ZFStyleLoadItem(ioImpl, pathDataBase, relPath);
+            ZFStyleLoadItem(ioImpl, pathInfo, relPath);
         }
     } ZFLISTENER_END()
     ZFLISTENER_1(onFinish

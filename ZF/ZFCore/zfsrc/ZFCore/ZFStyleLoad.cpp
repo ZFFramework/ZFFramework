@@ -157,43 +157,33 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadCheck
 
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadItem
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
         ) {
-    return ZFStyleLoadItem(ZFIOImplForPathType(pathInfo.pathType()), pathInfo.pathData(), childPath);
+    return ZFStyleLoadItem(ZFIOImplForPathType(pathInfo.pathType()), pathInfo.pathData(), styleKey);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoadItem
         , ZFMP_IN(ZFIOImpl *, ioImpl)
         , ZFMP_IN(const zfstring &, pathData)
-        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
         ) {
-    zfstring pathDataAbs;
-    zfstring styleKey;
-    if(childPath) {
-        if(ioImpl->ioIsDir(pathData)) {
-            if(!ioImpl->ioToChild(pathDataAbs, pathData, childPath)
-                    || !ZFPathOfWithoutAllExtT(styleKey, childPath)
-                    ) {
-                return zffalse;
-            }
-        }
-        else {
-            if(!ioImpl->ioToParent(pathDataAbs, pathData)
-                    || !ioImpl->ioToChild(pathDataAbs, pathDataAbs, childPath)
-                    || !ZFPathOfWithoutAllExtT(styleKey, childPath)
-                    ) {
-                return zffalse;
-            }
-        }
+    if(!ioImpl
+            || !ioImpl->ioIsExist(pathData)
+            || ioImpl->ioIsDir(pathData)
+            ) {
+        return zffalse;
+    }
+    zfstring styleKeyTmp;
+    if(styleKey) {
+        styleKeyTmp = styleKey;
     }
     else {
-        if(!ioImpl->ioToFileName(styleKey, pathData)
-                || !ZFPathOfWithoutAllExtT(styleKey, styleKey)
+        if(!ioImpl->ioToFileName(styleKeyTmp, pathData)
+                || !ZFPathOfWithoutAllExtT(styleKeyTmp, styleKeyTmp)
                 ) {
             return zffalse;
         }
-        pathDataAbs = pathData;
     }
-    zfobj<v_ZFInput> input(ZFInputForIOToken(ioImpl->ioOpen(pathDataAbs, v_ZFIOOpenOption::e_Read)));
+    zfobj<v_ZFInput> input(ZFInputForIOToken(ioImpl->ioOpen(pathData, v_ZFIOOpenOption::e_Read)));
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_ZFStyleLoadItemBegin(), input);
     zfauto styleValue;
     zfstring errorHint;
@@ -259,11 +249,9 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
         return zffalse;
     }
     ZFStyleUpdateBlock();
-    zfstring pathDataBase = pathInfo.pathData();
     zfbool allSuccess = zftrue;
-    ZFLISTENER_3(impl
+    ZFLISTENER_2(impl
             , zfautoT<ZFIOImpl>, ioImpl
-            , zfstring, pathDataBase
             , zfbool &, allSuccess
             ) {
         zfstring fileName;
@@ -278,7 +266,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
         if(ioImpl->ioIsDir(pathInfo.pathData())) {
             return;
         }
-        if(!ZFStyleLoadItem(ioImpl, pathDataBase, zfargs.param1().to<v_zfstring *>()->zfv)) {
+        if(!ZFStyleLoadItem(ioImpl, pathInfo.pathData(), zfargs.param1().to<v_zfstring *>()->zfv)) {
             allSuccess = zffalse;
         }
     } ZFLISTENER_END()

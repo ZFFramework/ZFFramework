@@ -106,7 +106,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadCheck
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
         )
 /**
  * @brief explicitly load specified file (bypass #ZFStyleLoadCheck), see #ZFStyleLoad
@@ -114,7 +114,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
         , ZFMP_IN(ZFIOImpl *, ioImpl)
         , ZFMP_IN(const zfstring &, pathData)
-        , ZFMP_IN_OPT(const zfstring &, childPath, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
         )
 
 /**
