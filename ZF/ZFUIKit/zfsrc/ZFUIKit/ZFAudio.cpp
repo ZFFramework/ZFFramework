@@ -123,7 +123,6 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         return;
     }
-    ++(d->audioTaskId);
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         zfobjRetain(this); // release when OnStop
 
@@ -141,7 +140,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
     else {
-        ZFLogTrim() << this << " start called before load success";
+        ZFLogTrim() << this << " start called before load";
     }
 }
 
@@ -329,7 +328,12 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(
         ZF_IN ZFResultType result
         , ZF_IN v_zfstring *errorHint
         ) {
-    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag));
+    ZFCoreAssertWithMessage(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)
+            , "invalid audio state: %s (%s, %s)"
+            , d->state
+            , result
+            , errorHint
+            );
     ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
     if(result == v_ZFResultType::e_Success) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
@@ -352,7 +356,12 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ZF_IN ZFResultType result
         , ZF_IN v_zfstring *errorHint
         ) {
-    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
+    ZFCoreAssertWithMessage(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)
+            , "invalid audio state: %s (%s, %s)"
+            , d->state
+            , result
+            , errorHint
+            );
     if(result != v_ZFResultType::e_Cancel) {
         ++d->loopCur;
     }
@@ -371,11 +380,15 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnStop(result, errorHint);
 
+        ++(d->audioTaskId);
         zfobjRelease(this); // retained when start
     }
 }
 void ZFAudio::_ZFP_ZFAudio_OnResume(void) {
-    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
+    ZFCoreAssertWithMessage(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)
+            , "invalid audio state: %s"
+            , d->state
+            );
     if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnResume();
@@ -386,7 +399,10 @@ void ZFAudio::_ZFP_ZFAudio_OnResume(void) {
     }
 }
 void ZFAudio::_ZFP_ZFAudio_OnPause(void) {
-    ZFCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
+    ZFCoreAssertWithMessage(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)
+            , "invalid audio state: %s"
+            , d->state
+            );
     if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnPause();

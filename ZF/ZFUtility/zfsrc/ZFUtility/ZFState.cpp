@@ -19,6 +19,7 @@ ZFEVENT_REGISTER(ZFState, StateFileUpdate)
 
 zfclassNotPOD _ZFP_ZFStateData {
 public:
+    zftimet updateTime;
     zftimet expireTime; // 0 for infinite
     zfstring key;
     zfstring value;
@@ -149,7 +150,9 @@ public:
             ) {
         const ZFCorePointer *item = this->m.get(key);
         if(item) {
-            item->pointerValueT<_ZFP_ZFStateData *>()->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
+            _ZFP_ZFStateData *tmp = item->pointerValueT<_ZFP_ZFStateData *>();
+            tmp->updateTime = ZFTime::currentTime();
+            tmp->expireTime = (expire > 0 ? tmp->updateTime + expire : 0);
             this->m.set(key, *item);
         }
     }
@@ -197,7 +200,7 @@ private:
         return io;
     }
     // file format:
-    //     expireTime:encode(key):encode(value)
+    //     updateTime:expireTime:encode(key):encode(value)
     static void _loadImpl(
             ZF_OUT ZFCoreMap &mNew
             , ZF_IN ZFIOToken *io
@@ -214,21 +217,24 @@ private:
                 line.removeAll(), pos.removeAll()
                 ) {
             zfstringSplitIndexT(pos, line, ":");
-            if(pos.count() != 3) {
+            if(pos.count() != 4) {
                 continue;
             }
             ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
-            if(!zftimetFromStringT(data->expireTime, line + pos[0].start, pos[0].count)) {
+            if(!zftimetFromStringT(data->updateTime, line + pos[0].start, pos[0].count)) {
+                continue;
+            }
+            if(!zftimetFromStringT(data->expireTime, line + pos[1].start, pos[1].count)) {
                 continue;
             }
             if(data->expireTime != 0 && curTime >= data->expireTime) {
                 continue;
             }
-            ZFCoreDataDecode(data->key, line + pos[1].start, pos[1].count);
+            ZFCoreDataDecode(data->key, line + pos[2].start, pos[2].count);
             if(data->key.isEmpty()) {
                 continue;
             }
-            ZFCoreDataDecode(data->value, line + pos[2].start, pos[2].count);
+            ZFCoreDataDecode(data->value, line + pos[3].start, pos[3].count);
             if(data->value.isEmpty()) {
                 continue;
             }
@@ -239,12 +245,12 @@ private:
             ZF_IN ZFState *owner
             , ZF_IN const ZFArgs &zfargs
             ) {
-
         // try open
         if(!zfargs.param0()) {return;}
         zfautoT<ZFIOToken> io = _stateFileIO(zfargs, owner->stateFileFixed(), zffalse);
         if(!io) {return;}
         _ZFP_ZFStatePrivate *d = owner->d;
+        zftimet curTime = ZFTime::currentTime();
 
         // load and merge, to prevent concurrent save/load across different process
         if(!zfargs.param0()) {return;}
@@ -257,9 +263,8 @@ private:
             if(itExist) {
                 _ZFP_ZFStateData *item = mNew.iterValue<_ZFP_ZFStateData *>(it);
                 _ZFP_ZFStateData *itemExist = d->m.iterValue<_ZFP_ZFStateData *>(itExist);
-                if(zffalse
-                        || (item->expireTime > itemExist->expireTime)
-                        || (item->expireTime == 0 && item->value != itemExist->value)
+                if(item->updateTime > itemExist->updateTime
+                        && (item->expireTime == 0 || curTime > item->expireTime)
                         ) {
                     d->m.iterValue(itExist, *(mNew.iterValue(it)));
                 }
@@ -278,13 +283,14 @@ private:
 
         ZFOutput output = ZFOutputForIOToken(io);
         if(!output) {return;}
-        zftimet curTime = ZFTime::currentTime();
         zfstring line;
         for(zfindex i = 0; i < l.count(); ++i) {
             const _ZFP_ZFStateData &data = *((l[i]).pointerValue());
             if(data.expireTime != 0 && curTime >= data.expireTime) {
                 continue;
             }
+            zftimetToStringT(line, data.updateTime);
+            line += ":";
             zftimetToStringT(line, data.expireTime);
             line += ":";
             ZFCoreDataEncode(line, data.key);
@@ -428,7 +434,8 @@ ZFMETHOD_DEFINE_3(ZFState, void, set
             ZFObjectLocker(this);
             if(value) {
                 _ZFP_ZFStateData *data = zfpoolNew(_ZFP_ZFStateData);
-                data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
+                data->updateTime = ZFTime::currentTime();
+                data->expireTime = (expire > 0 ? data->updateTime + expire : 0);
                 data->key = key;
                 data->value = value;
                 d->m.set(key, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>(data));
@@ -444,11 +451,13 @@ ZFMETHOD_DEFINE_3(ZFState, void, set
             ZFObjectLocker(this);
             _ZFP_ZFStateData *exist = d->pending.get<_ZFP_ZFStateData *>(key);
             if(exist != zfnull) {
-                exist->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
+                exist->updateTime = ZFTime::currentTime();
+                exist->expireTime = (expire > 0 ? exist->updateTime + expire : 0);
             }
             else {
                 ZFCorePointerForPoolObject<_ZFP_ZFStateData *> data = zfpoolNew(_ZFP_ZFStateData);
-                data->expireTime = (expire > 0 ? ZFTime::currentTime() + expire : 0);
+                data->updateTime = ZFTime::currentTime();
+                data->expireTime = (expire > 0 ? data->updateTime + expire : 0);
                 data->key = key;
                 data->value = value;
                 d->pending.set(key, data);
