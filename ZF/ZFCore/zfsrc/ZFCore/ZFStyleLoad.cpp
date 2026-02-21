@@ -179,7 +179,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoadItem
         }
     }
     else {
-        if(!ioImpl->ioToFileName(styleKey, relPath)
+        if(!ioImpl->ioToFileName(styleKey, pathData)
                 || !ZFPathOfWithoutAllExtT(styleKey, styleKey)
                 ) {
             return zffalse;
