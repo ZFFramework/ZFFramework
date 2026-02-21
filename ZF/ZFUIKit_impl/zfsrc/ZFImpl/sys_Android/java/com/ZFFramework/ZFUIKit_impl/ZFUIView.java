@@ -283,7 +283,9 @@ public class ZFUIView extends ViewGroup {
         if (!this.viewUIEnableTree) {
             return false;
         }
-        if (this.viewUIEnable) {
+        if (this.viewUIEnable
+                || (ev.getAction() != MotionEvent.ACTION_DOWN && ev.getAction() != MotionEvent.ACTION_POINTER_DOWN)
+        ) {
             return super.dispatchTouchEvent(ev);
         }
 
