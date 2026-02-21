@@ -34,7 +34,9 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(
             , zfbool, success
             , zfautoT<v_zfstring>, errorHint
             ) {
-        if(audioTaskId == audio->audioTaskId()) {
+        if(audioTaskId == audio->audioTaskId()
+                && audio->started()
+                ) {
             audio->_ZFP_ZFAudio_OnStop(success ? v_ZFResultType::e_Success : v_ZFResultType::e_Fail, errorHint);
         }
     } ZFLISTENER_END()
