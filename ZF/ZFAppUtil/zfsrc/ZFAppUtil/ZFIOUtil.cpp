@@ -417,7 +417,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, ZFStyleLoadAsync
             return;
         }
         if(!fd.isDir()) {
-            ZFStyleLoadItem(ioImpl, pathInfo, relPath);
+            ZFStyleLoadItem(ioImpl, pathInfo.pathData(), relPath);
         }
     } ZFLISTENER_END()
     ZFLISTENER_1(onFinish
