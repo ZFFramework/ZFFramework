@@ -297,7 +297,7 @@ public:
 /** @brief util to convert unsigned type from other type */
 template<typename T_Dst, typename T_Src>
 T_Dst zft_uintConv(T_Src const &v) {
-    return ZFT_uintConv<T_Dst, T_Src>(v);
+    return ZFT_uintConv<T_Dst, T_Src>::from(v);
 }
 
 ZF_NAMESPACE_GLOBAL_END
