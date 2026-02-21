@@ -157,14 +157,14 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoadCheck
 
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFStyleLoadItem
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, relPath, zfnull)
         ) {
-    return ZFStyleLoadItem(ZFIOImplForPathType(pathInfo.pathType()), pathInfo.pathData(), styleKey);
+    return ZFStyleLoadItem(ZFIOImplForPathType(pathInfo.pathType()), pathInfo.pathData(), relPath);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoadItem
         , ZFMP_IN(ZFIOImpl *, ioImpl)
         , ZFMP_IN(const zfstring &, pathData)
-        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, relPath, zfnull)
         ) {
     if(!ioImpl
             || !ioImpl->ioIsExist(pathData)
@@ -172,13 +172,15 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoadItem
             ) {
         return zffalse;
     }
-    zfstring styleKeyTmp;
-    if(styleKey) {
-        styleKeyTmp = styleKey;
+    zfstring styleKey;
+    if(relPath) {
+        if(!ZFPathOfWithoutAllExtT(styleKey, relPath)) {
+            return zffalse;
+        }
     }
     else {
-        if(!ioImpl->ioToFileName(styleKeyTmp, pathData)
-                || !ZFPathOfWithoutAllExtT(styleKeyTmp, styleKeyTmp)
+        if(!ioImpl->ioToFileName(styleKey, relPath)
+                || !ZFPathOfWithoutAllExtT(styleKey, styleKey)
                 ) {
             return zffalse;
         }

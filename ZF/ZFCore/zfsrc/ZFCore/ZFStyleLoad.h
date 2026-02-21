@@ -103,18 +103,24 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoadCheck
 
 /**
  * @brief explicitly load specified file (bypass #ZFStyleLoadCheck), see #ZFStyleLoad
+ *
+ * #ZFPathOfWithoutAllExt would be used to obtain styleKey of #ZFStyleSet,
+ * from relPath if supplied, or from file name of pathInfo
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, relPath, zfnull)
         )
 /**
  * @brief explicitly load specified file (bypass #ZFStyleLoadCheck), see #ZFStyleLoad
+ *
+ * #ZFPathOfWithoutAllExt would be used to obtain styleKey of #ZFStyleSet,
+ * from relPath if supplied, or from file name of pathInfo
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoadItem
         , ZFMP_IN(ZFIOImpl *, ioImpl)
         , ZFMP_IN(const zfstring &, pathData)
-        , ZFMP_IN_OPT(const zfstring &, styleKey, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, relPath, zfnull)
         )
 
 /**

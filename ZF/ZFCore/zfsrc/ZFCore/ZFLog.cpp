@@ -95,7 +95,7 @@ zfstring ZFLogHeaderDefault(ZF_IN const ZFCallerInfo &callerInfo) {
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogHeaderInit, ZFLevelZFFrameworkStatic) {
     ZFLogHeader = ZFLogHeaderDefault;
     ZFLogHeaderDefault_logTime(zftrue);
-    ZFLogHeaderDefault_logCaller(ZFLogV());
+    ZFLogHeaderDefault_logCaller(zftrue);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogHeaderInit) {
     ZFLogHeader = zfnull;
