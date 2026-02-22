@@ -604,6 +604,10 @@ public:
     ItemRef operator [] (ZF_IN zfindex index) const {
         return ItemRef(owner, index);
     }
+public:
+    static ZFCompareResult comparer(ZF_IN zfauto const &v0, ZF_IN zfauto const &v1) {
+        return ZFObjectCompare(v0, v1);
+    }
 };
 ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sort
         , ZFMP_IN(zfindex, start)
@@ -620,7 +624,7 @@ ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sort
                 holder
                 , start
                 , (count > owner->count() - start) ? (owner->count() - 1) : (start + count - 1)
-                , ZFObjectCompare
+                , _ZFP_ZFCoreArrayItemHolder::comparer
                 );
     }
 }
@@ -639,7 +643,7 @@ ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sortReversely
                 holder
                 , start
                 , (count > owner->count() - start) ? (owner->count() - 1) : (start + count - 1)
-                , ZFObjectCompare
+                , _ZFP_ZFCoreArrayItemHolder::comparer
                 );
     }
 }
