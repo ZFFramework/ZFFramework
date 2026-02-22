@@ -157,12 +157,12 @@ public:
         _forEachDir = forEachDir;
         _started = zftrue;
 
-        zfself *owenr = this;
+        zfself *owner = this;
         ZFLISTENER_1(impl
-                , zfweakT<zfself>, owenr
+                , zfweakT<zfself>, owner
                 ) {
-            if(owenr && owenr->_started) {
-                owenr->_next();
+            if(owner && owner->_started) {
+                owner->_next();
             }
         } ZFLISTENER_END()
         _nextCallback = impl;

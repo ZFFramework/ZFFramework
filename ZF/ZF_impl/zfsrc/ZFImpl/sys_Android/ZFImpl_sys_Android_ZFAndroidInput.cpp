@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ZFAndroidInput
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidInput, ZFImpl_sys_Android_JNI_NAME_ZFAndroidInput)
 
-#define _ZFP_ZFAndroidInputBufSize 1024
+#define _ZFP_ZFAndroidInputBufSize 4096
 zfclass _ZFP_I_ZFAndroidInput : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidInput, ZFObject)
     ZFOBJECT_CACHE_RELEASE({

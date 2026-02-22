@@ -5,6 +5,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+#define _ZFP_ZFAndroidInputWrapperBufSize 4096
+
 // ============================================================
 // ZFInputWrapper
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFInputWrapper, ZFImpl_sys_Android_JNI_NAME_ZFInputWrapper)
@@ -39,10 +41,10 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
     v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     ZFInput input = inputHolder->zfv;
 
-    jbyte rawBuf[64];
+    jbyte rawBuf[_ZFP_ZFAndroidInputWrapperBufSize];
     zfindex total = 0;
     while(size > 0) {
-        jlong toRead = size < 64 ? size : 64;
+        jlong toRead = size < _ZFP_ZFAndroidInputWrapperBufSize ? size : _ZFP_ZFAndroidInputWrapperBufSize;
         jlong read = (jlong)input.execute(rawBuf, toRead);
         if(read == 0) {
             break;

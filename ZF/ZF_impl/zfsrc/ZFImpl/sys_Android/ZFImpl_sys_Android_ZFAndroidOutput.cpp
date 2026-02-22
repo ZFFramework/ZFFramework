@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ZFAndroidOutput
 ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidOutput, ZFImpl_sys_Android_JNI_NAME_ZFAndroidOutput)
 
-#define _ZFP_ZFAndroidOutputBufSize 1024
+#define _ZFP_ZFAndroidOutputBufSize 4096
 zfclass _ZFP_I_ZFAndroidOutput : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidOutput, ZFObject)
     ZFOBJECT_CACHE_RELEASE({
