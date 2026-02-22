@@ -39,7 +39,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appExit)::appExit(ZF_IN zfint appExitCode)
                 , _ZFP_ZFThreadImpl_default_TaskData *, taskData
                 ) {
             if(taskData->mainThreadToken != zfnull) {
-                ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(taskData->mainThreadToken);
+                ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(taskData->mainThreadToken, zffalse);
                 taskData->mainThreadToken = zfnull;
             }
 
@@ -73,7 +73,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp_appRestart)::appRestart(void) {
                 , _ZFP_ZFThreadImpl_default_TaskData *, taskData
                 ) {
             if(taskData->mainThreadToken != zfnull) {
-                ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(taskData->mainThreadToken);
+                ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(taskData->mainThreadToken, zffalse);
                 taskData->mainThreadToken = zfnull;
             }
 

@@ -149,7 +149,7 @@ public:
         this->_mainThreadHolder.executeInMainThread(listenerHolder);
         return listenerHolder;
     }
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken, ZF_IN zfbool needCancel) {
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = (_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *)nativeToken;
         listenerHolder->runnable = zfnull;
         zfdelete(listenerHolder);

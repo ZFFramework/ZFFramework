@@ -118,7 +118,7 @@ public:
 #endif
         return (__bridge_retained void *)threadOwner;
     }
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken, ZF_IN zfbool needCancel) {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = (__bridge_transfer _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *)nativeToken;
         threadOwner.cancelFlag = YES;
         threadOwner = nil;

@@ -170,6 +170,8 @@ public:
         _fdStack->add(zfobj<v_ZFIOFindData>(fd));
         _parentRelPathStack->add(zfobj<v_zfstring>());
         zfpost(_nextCallback);
+
+        zfobjRetain(this); // release in _notifyFinish
         return zftrue;
     }
     zfoverride
@@ -229,6 +231,8 @@ private:
                 .param0(zfobj<v_ZFResultType>(resultType))
                 .param1(result)
                 );
+
+        zfobjRelease(this); // retain in start
     }
     void _next(void) {
         v_ZFIOFindData *fd = _fdStack->getLast();

@@ -77,7 +77,7 @@ public:
     /**
      * @brief used to cleanup nativeToken
      */
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) zfpurevirtual;
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken, ZF_IN zfbool needCancel) zfpurevirtual;
 
     /**
      * @brief run the runnable in new thread

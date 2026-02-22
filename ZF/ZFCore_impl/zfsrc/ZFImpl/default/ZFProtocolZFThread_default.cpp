@@ -132,7 +132,7 @@ public:
         }
         return ZFMainThreadTaskImplGetExecute()(runnable);
     }
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken, ZF_IN zfbool needCancel) {
         if(ZFMainThreadTaskImplGetCleanup() != zfnull) {
             ZFMainThreadTaskImplGetCleanup()(nativeToken);
         }

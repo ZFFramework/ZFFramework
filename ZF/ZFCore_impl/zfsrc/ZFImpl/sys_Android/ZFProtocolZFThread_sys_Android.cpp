@@ -141,15 +141,16 @@ public:
             );
         return JNIUtilNewGlobalRef(jniEnv, nativeToken);
     }
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken, ZF_IN zfbool needCancel) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInMainThreadCleanup",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_object_Object())
-            ).c_str());
-
         jobject nativeTokenTmp = (jobject)nativeToken;
-        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFThread(), jmId, nativeTokenTmp);
+        if(needCancel) {
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInMainThreadCleanup",
+                JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                    .add(JNIType::S_object_Object())
+                ).c_str());
+            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFThread(), jmId, nativeTokenTmp);
+        }
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }
 
