@@ -184,19 +184,43 @@ public:
 
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
+     *
+     * comparer's sender would be the owner array,
+     * param0 and param1 would be the child to be compared,
+     * impl must set #ZFArgs::result to #v_ZFCompareResult
      */
     ZFMETHOD_DECLARE_3(void, sort
             , ZFMP_IN_OPT(zfindex, start, 0)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+            , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
+            )
+    /**
+     * @brief sort content in range [start, start + count), all of content must be comparable
+     */
+    ZFMETHOD_DECLARE_3(void, sort
+            , ZFMP_IN(zfindex, start)
+            , ZFMP_IN(zfindex, count)
+            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+            )
+    /**
+     * @brief sort content in range [start, start + count), all of content must be comparable
+     *
+     * comparer's sender would be the owner array,
+     * param0 and param1 would be the child to be compared,
+     * impl must set #ZFArgs::result to #v_ZFCompareResult
+     */
+    ZFMETHOD_DECLARE_3(void, sortReversely
+            , ZFMP_IN_OPT(zfindex, start, 0)
+            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+            , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
             )
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
      */
     ZFMETHOD_DECLARE_3(void, sortReversely
-            , ZFMP_IN_OPT(zfindex, start, 0)
-            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+            , ZFMP_IN(zfindex, start)
+            , ZFMP_IN(zfindex, count)
+            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
             )
 
     // ============================================================

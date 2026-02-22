@@ -623,38 +623,32 @@ public:
 /**
  * @brief util macro to declare #ZFObject::objectOnInit as #ZFMETHOD_USER_REGISTER_1
  */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_1(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_1(ownerClassSig \
     , ZFMP_0 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_1({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_1(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_2(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_2(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_2({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_2(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
         , _ZFP_mP_EXPAND(ZFMP_1) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_3(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_3(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_3({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_3(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -662,15 +656,13 @@ public:
         , _ZFP_mP_EXPAND(ZFMP_2) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_4(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_4(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_4({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_4(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -679,16 +671,14 @@ public:
         , _ZFP_mP_EXPAND(ZFMP_3) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_5(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_5(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     , ZFMP_4 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_5({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_5(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -698,7 +688,7 @@ public:
         , _ZFP_mP_EXPAND(ZFMP_4) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_6(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_6(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -706,9 +696,7 @@ public:
     , ZFMP_4 \
     , ZFMP_5 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_6({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_6(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -719,7 +707,7 @@ public:
         , _ZFP_mP_EXPAND(ZFMP_5) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_7(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_7(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -728,9 +716,7 @@ public:
     , ZFMP_5 \
     , ZFMP_6 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_7({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_7(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -742,7 +728,7 @@ public:
         , _ZFP_mP_EXPAND(ZFMP_6) \
         )
 /** @brief see #ZFOBJECT_ON_INIT_USER_REGISTER_1 */
-#define ZFOBJECT_ON_INIT_USER_REGISTER_8(methodInvokerAction, ownerClassSig \
+#define ZFOBJECT_ON_INIT_USER_REGISTER_8(ownerClassSig \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
@@ -752,9 +738,7 @@ public:
     , ZFMP_6 \
     , ZFMP_7 \
     ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_8({ \
-            methodInvokerAction \
-        }, ownerClassSig, \
+    ZFMETHOD_USER_REGISTER_DETAIL_8(ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
         , _ZFP_mP_EXPAND(ZFMP_0) \

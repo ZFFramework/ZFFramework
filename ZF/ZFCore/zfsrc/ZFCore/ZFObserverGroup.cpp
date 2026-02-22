@@ -571,18 +571,18 @@ void ZFObserverGroup::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverGroup, ZFObserverGroup)
 
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        invokerObject.to<v_ZFObserverGroup *>()->zfv._ZFP_update(owner, target);
-    }, v_ZFObserverGroup
+ZFOBJECT_ON_INIT_USER_REGISTER_2(v_ZFObserverGroup
     , ZFMP_IN(ZFObject *, owner)
     , ZFMP_IN(const ZFObserver &, target)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        invokerObject.to<v_ZFObserverGroup *>()->zfv._ZFP_update(owner, target);
-    }, v_ZFObserverGroup
+    ) {
+    invokerObject.to<v_ZFObserverGroup *>()->zfv._ZFP_update(owner, target);
+}
+ZFOBJECT_ON_INIT_USER_REGISTER_2(v_ZFObserverGroup
     , ZFMP_IN(ZFObject *, owner)
     , ZFMP_IN(ZFObject *, target)
-    )
+    ) {
+    invokerObject.to<v_ZFObserverGroup *>()->zfv._ZFP_update(owner, target);
+}
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroup, const ZFObserverGroup &, observerAdd
         , ZFMP_IN(zfidentity, eventId)

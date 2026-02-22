@@ -636,12 +636,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFJson, ZFJson, {
         return ZFJsonToOutput(ZFOutputForString(s), v);
     })
 
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        v_ZFJson *v = invokerObject;
-        v->zfv._ZFP_ZFJson_jsonType(type);
-    }, v_ZFJson
+ZFOBJECT_ON_INIT_USER_REGISTER_1(v_ZFJson
     , ZFMP_IN(ZFJsonType, type)
-    )
+    ) {
+    v_ZFJson *v = invokerObject;
+    v->zfv._ZFP_ZFJson_jsonType(type);
+}
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, void, objectInfoT
         , ZFMP_IN_OUT(zfstring &, ret)

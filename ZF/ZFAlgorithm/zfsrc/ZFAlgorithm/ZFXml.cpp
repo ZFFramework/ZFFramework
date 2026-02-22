@@ -496,12 +496,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXml, ZFXml, {
         return ZFXmlToStringT(s, v, ZFXmlOutputTokenDefault());
     })
 
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        v_ZFXml *v = invokerObject;
-        v->zfv._ZFP_ZFXml_xmlType(type);
-    }, v_ZFXml
+ZFOBJECT_ON_INIT_USER_REGISTER_1(v_ZFXml
     , ZFMP_IN(ZFXmlType, type)
-    )
+    ) {
+    v_ZFXml *v = invokerObject;
+    v->zfv._ZFP_ZFXml_xmlType(type);
+}
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, objectInfoT
         , ZFMP_IN_OUT(zfstring &, ret)

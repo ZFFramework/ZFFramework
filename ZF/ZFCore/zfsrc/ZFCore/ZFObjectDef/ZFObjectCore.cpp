@@ -892,32 +892,32 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectInfoT
         , ZFMP_IN_OUT(zfstring &, ret)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfstring, objectInfo)
-ZFMETHOD_USER_REGISTER_DETAIL_1({
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFObject, protected, ZFMethodTypeVirtual, _, void, objectInfoImpl
+    , ZFMP_IN_OUT(zfstring &, ret)
+    ) {
     invokerObject->_ZFP_ZFObject_objectInfoImpl(ret);
-}, ZFObject, protected, ZFMethodTypeVirtual, _, void, objectInfoImpl
-, ZFMP_IN_OUT(zfstring &, ret)
-)
+}
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfidentity, objectHash)
-ZFMETHOD_USER_REGISTER_DETAIL_0({
+ZFMETHOD_USER_REGISTER_DETAIL_0(ZFObject, protected, ZFMethodTypeVirtual, _, zfidentity, objectHashImpl
+    ) {
     return invokerObject->_ZFP_ZFObject_objectHashImpl();
-}, ZFObject, protected, ZFMethodTypeVirtual, _, zfidentity, objectHashImpl
-)
+}
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectCompare
         , ZFMP_IN(ZFObject *, anotherObj)
         )
-ZFMETHOD_USER_REGISTER_DETAIL_1({
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFObject, protected, ZFMethodTypeVirtual, _, ZFCompareResult, objectCompareImpl
+    , ZFMP_IN(ZFObject *, anotherObj)
+    ) {
     return invokerObject->_ZFP_ZFObject_objectCompareImpl(anotherObj);
-}, ZFObject, protected, ZFMethodTypeVirtual, _, ZFCompareResult, objectCompareImpl
-, ZFMP_IN(ZFObject *, anotherObj)
-)
+}
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectCompareValue
         , ZFMP_IN(ZFObject *, anotherObj)
         )
-ZFMETHOD_USER_REGISTER_DETAIL_1({
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFObject, protected, ZFMethodTypeVirtual, _, ZFCompareResult, objectCompareValueImpl
+    , ZFMP_IN(ZFObject *, anotherObj)
+    ) {
     return invokerObject->_ZFP_ZFObject_objectCompareValueImpl(anotherObj);
-}, ZFObject, protected, ZFMethodTypeVirtual, _, ZFCompareResult, objectCompareValueImpl
-, ZFMP_IN(ZFObject *, anotherObj)
-)
+}
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfauto, invoke
         , ZFMP_IN(const zfstring &, methodName)
         )
@@ -1041,17 +1041,17 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectDeallocRunnin
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternal)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternalPrivate)
 
-ZFMETHOD_FUNC_USER_REGISTER_2({
-        if(cls == zfnull || obj == zfnull || !obj->classData()->classIsTypeOf(cls)) {
-            return zfnull;
-        }
-        else {
-            return obj;
-        }
-    }, ZFObject *, zfcast
+ZFMETHOD_FUNC_USER_REGISTER_2(ZFObject *, zfcast
     , ZFMP_IN(const ZFClass *, cls)
     , ZFMP_IN(ZFObject *, obj)
-    )
+    ) {
+    if(cls == zfnull || obj == zfnull || !obj->classData()->classIsTypeOf(cls)) {
+        return zfnull;
+    }
+    else {
+        return obj;
+    }
+}
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFObjectLock
         , ZFMP_IN(ZFObject *, obj)

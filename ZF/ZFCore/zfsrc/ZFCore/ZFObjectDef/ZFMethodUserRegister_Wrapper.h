@@ -154,18 +154,7 @@ inline T_Wrapper const &_ZFP_mUR_zfv(const T_Wrapper *zfv) {
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER({ \
-                return (ReturnType)_ZFP_mUR_zfv(invokerObject->to<WrapperClass *>()->zfv).methodName( \
-                        ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
-                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
-                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
-                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
-                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
-                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
-                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
-                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
-                    ); \
-            }, WrapperClass, \
+    _ZFP_ZFMETHOD_USER_REGISTER(WrapperClass, \
             public, ZFMethodTypeVirtual, RegSig, \
             ReturnType, methodName \
             , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -176,7 +165,18 @@ inline T_Wrapper const &_ZFP_mUR_zfv(const T_Wrapper *zfv) {
             , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
             , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
-        )
+        ) { \
+        return (ReturnType)_ZFP_mUR_zfv(invokerObject->to<WrapperClass *>()->zfv).methodName( \
+                ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+            ); \
+    }
 
 // ============================================================
 #define _ZFP_ZFMethodUserRegisterForWrapperFuncStatic(...) \
@@ -228,18 +228,7 @@ inline T_Wrapper const &_ZFP_mUR_zfv(const T_Wrapper *zfv) {
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER({ \
-                return (ReturnType)OriginalClass::methodName( \
-                        ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
-                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
-                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
-                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
-                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
-                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
-                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
-                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
-                    ); \
-            }, WrapperClass, \
+    _ZFP_ZFMETHOD_USER_REGISTER(WrapperClass, \
             public, ZFMethodTypeStatic, ZF_CALLER_LINE, \
             ReturnType, methodName \
             , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -250,7 +239,18 @@ inline T_Wrapper const &_ZFP_mUR_zfv(const T_Wrapper *zfv) {
             , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
             , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
-        )
+        ) { \
+        return (ReturnType)OriginalClass::methodName( \
+                ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+            ); \
+    }
 
 // ============================================================
 // 0 param

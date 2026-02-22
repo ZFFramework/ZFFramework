@@ -520,16 +520,16 @@ void _ZFP_ZFEnumMethodReg(
 }
 
 // ============================================================
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<ZFEnum *>()->_ZFP_enumValue((zfuint)value);
-    }, ZFEnum
+ZFOBJECT_ON_INIT_USER_REGISTER_1(ZFEnum
     , ZFMP_IN(zfflags, value)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<ZFEnum *>()->_ZFP_enumValue(value);
-    }, ZFEnum
+    ) {
+    invokerObject->to<ZFEnum *>()->_ZFP_enumValue((zfuint)value);
+}
+ZFOBJECT_ON_INIT_USER_REGISTER_1(ZFEnum
     , ZFMP_IN(zfuint, value)
-    )
+    ) {
+    invokerObject->to<ZFEnum *>()->_ZFP_enumValue(value);
+}
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfindex, enumCount)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfindex, enumIndexForValue
@@ -554,22 +554,22 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfbool, enumIsFlags)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint, enumDefault)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint const &, enumValue)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, const zfstring &, enumName)
-ZFMETHOD_USER_REGISTER_DETAIL_1({
-        invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value;
-    }, ZFEnum,
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFEnum,
     protected, ZFMethodTypeVirtual, ZF_CALLER_LINE,
     void, enumValue
     , ZFMP_IN(zfuint const &, value)
-    )
-ZFMETHOD_USER_REGISTER_DETAIL_1({
-        if(value != zfnull) {
-            invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value->enumValue();
-        }
-    }, ZFEnum,
+    ) {
+    invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value;
+}
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFEnum,
     protected, ZFMethodTypeVirtual, ZF_CALLER_LINE,
     void, enumValue
     , ZFMP_IN(ZFEnum *, value)
-    )
+    ) {
+    if(value != zfnull) {
+        invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value->enumValue();
+    }
+}
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfbool, zfflagsFromStringT
         , ZFMP_OUT(zfflags &, ret)

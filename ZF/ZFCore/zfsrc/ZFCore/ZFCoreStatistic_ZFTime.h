@@ -33,30 +33,40 @@ ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
  *   }
  * @endcode
  */
-extern ZFLIB_ZFCore void invokeTimeLogBegin(ZF_IN const zfstring &key);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, invokeTimeLogBegin
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore void invokeTimeLogEnd(ZF_IN const zfstring &key);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, invokeTimeLogEnd
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore void invokeTimeRemove(ZF_IN const zfstring &key);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, invokeTimeRemove
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore void invokeTimeRemoveAll(void);
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, invokeTimeRemoveAll)
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore zfindex invokeTimeGetInvokeCount(ZF_IN const zfstring &key);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, invokeTimeGetInvokeCount
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore ZFTimeValue invokeTimeGetAverageTime(ZF_IN const zfstring &key);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFTimeValue, invokeTimeGetAverageTime
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore ZFTimeValue invokeTimeGetTotalTime(ZF_IN const zfstring &key);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFTimeValue, invokeTimeGetTotalTime
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore void invokeTimeGetSummary(
-        ZF_OUT zfstring &ret
-        , ZF_IN const zfstring &key
-        );
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, invokeTimeGetSummaryT
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, key)
+        )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-inline zfstring invokeTimeGetSummary(ZF_IN const zfstring &key) {
-    zfstring ret;
-    ZFCoreStatistic::invokeTimeGetSummary(ret, key);
-    return ret;
-}
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, invokeTimeGetSummary
+        , ZFMP_IN(const zfstring &, key)
+        )
 
 // ============================================================
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLogger {

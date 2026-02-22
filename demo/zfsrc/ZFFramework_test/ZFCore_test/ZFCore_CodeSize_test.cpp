@@ -789,211 +789,211 @@ ZFMETHOD_FUNC_DEFINE_0(void, _ZFP_ZFCore_CodeSize_test_f99) {}
 zfclass _ZFP_ZFCore_CodeSize_test_MethodUserRegister : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, ZFObject)
 };
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f0)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f1)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f2)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f3)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f4)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f5)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f6)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f7)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f8)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f9)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f10)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f11)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f12)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f13)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f14)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f15)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f16)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f17)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f18)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f19)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f20)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f21)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f22)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f23)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f24)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f25)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f26)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f27)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f28)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f29)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f30)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f31)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f32)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f33)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f34)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f35)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f36)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f37)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f38)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f39)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f40)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f41)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f42)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f43)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f44)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f45)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f46)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f47)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f48)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f49)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f50)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f51)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f52)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f53)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f54)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f55)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f56)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f57)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f58)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f59)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f60)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f61)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f62)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f63)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f64)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f65)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f66)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f67)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f68)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f69)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f70)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f71)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f72)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f73)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f74)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f75)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f76)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f77)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f78)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f79)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f80)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f81)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f82)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f83)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f84)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f85)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f86)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f87)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f88)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f89)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f90)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f91)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f92)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f93)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f94)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f95)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f96)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f97)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f98)
-ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f99)
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f0) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f1) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f2) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f3) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f4) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f5) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f6) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f7) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f8) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f9) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f10) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f11) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f12) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f13) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f14) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f15) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f16) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f17) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f18) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f19) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f20) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f21) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f22) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f23) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f24) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f25) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f26) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f27) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f28) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f29) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f30) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f31) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f32) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f33) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f34) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f35) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f36) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f37) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f38) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f39) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f40) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f41) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f42) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f43) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f44) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f45) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f46) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f47) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f48) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f49) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f50) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f51) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f52) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f53) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f54) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f55) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f56) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f57) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f58) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f59) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f60) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f61) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f62) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f63) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f64) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f65) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f66) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f67) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f68) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f69) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f70) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f71) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f72) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f73) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f74) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f75) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f76) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f77) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f78) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f79) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f80) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f81) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f82) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f83) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f84) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f85) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f86) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f87) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f88) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f89) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f90) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f91) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f92) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f93) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f94) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f95) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f96) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f97) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f98) {}
+ZFMETHOD_USER_REGISTER_0(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f99) {}
 #endif
 
 // ============================================================
 // method func user register
 #if _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_ENABLE
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f0)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f1)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f2)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f3)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f4)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f5)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f6)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f7)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f8)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f9)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f10)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f11)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f12)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f13)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f14)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f15)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f16)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f17)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f18)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f19)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f20)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f21)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f22)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f23)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f24)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f25)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f26)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f27)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f28)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f29)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f30)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f31)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f32)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f33)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f34)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f35)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f36)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f37)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f38)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f39)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f40)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f41)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f42)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f43)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f44)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f45)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f46)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f47)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f48)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f49)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f50)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f51)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f52)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f53)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f54)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f55)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f56)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f57)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f58)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f59)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f60)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f61)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f62)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f63)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f64)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f65)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f66)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f67)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f68)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f69)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f70)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f71)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f72)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f73)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f74)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f75)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f76)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f77)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f78)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f79)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f80)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f81)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f82)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f83)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f84)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f85)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f86)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f87)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f88)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f89)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f90)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f91)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f92)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f93)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f94)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f95)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f96)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f97)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f98)
-ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f99)
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f0) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f1) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f2) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f3) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f4) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f5) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f6) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f7) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f8) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f9) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f10) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f11) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f12) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f13) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f14) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f15) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f16) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f17) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f18) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f19) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f20) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f21) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f22) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f23) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f24) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f25) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f26) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f27) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f28) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f29) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f30) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f31) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f32) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f33) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f34) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f35) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f36) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f37) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f38) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f39) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f40) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f41) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f42) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f43) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f44) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f45) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f46) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f47) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f48) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f49) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f50) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f51) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f52) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f53) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f54) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f55) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f56) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f57) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f58) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f59) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f60) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f61) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f62) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f63) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f64) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f65) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f66) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f67) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f68) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f69) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f70) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f71) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f72) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f73) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f74) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f75) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f76) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f77) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f78) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f79) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f80) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f81) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f82) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f83) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f84) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f85) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f86) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f87) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f88) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f89) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f90) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f91) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f92) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f93) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f94) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f95) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f96) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f97) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f98) {}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_f99) {}
 #endif
 
 // ============================================================

@@ -175,26 +175,26 @@ ZFOutput ZFOutputForBufferUnsafe(
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_3({
-        v_ZFCallback *owner = invokerObject;
-        ZFOutput output = owner->zfv;
-        output.output(src, size, result);
-        return owner;
-    }, v_ZFCallback, v_ZFCallback *, output
+ZFMETHOD_USER_REGISTER_3(v_ZFCallback, v_ZFCallback *, output
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN_OPT(zfindex, size, zfindexMax())
     , ZFMP_OUT_OPT(zfindex *, result, zfnull)
-    )
-ZFMETHOD_USER_REGISTER_3({
-        v_ZFCallback *owner = invokerObject;
-        ZFOutput output = owner->zfv;
-        output.output(src, size, result);
-        return owner;
-    }, v_ZFCallback, v_ZFCallback *, output
+    ) {
+    v_ZFCallback *owner = invokerObject;
+    ZFOutput output = owner->zfv;
+    output.output(src, size, result);
+    return owner;
+}
+ZFMETHOD_USER_REGISTER_3(v_ZFCallback, v_ZFCallback *, output
     , ZFMP_IN(const void *, src)
     , ZFMP_IN_OPT(zfindex, size, zfindexMax())
     , ZFMP_OUT_OPT(zfindex *, result, zfnull)
-    )
+    ) {
+    v_ZFCallback *owner = invokerObject;
+    ZFOutput output = owner->zfv;
+    output.output(src, size, result);
+    return owner;
+}
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFOutput, ZFOutputDummy)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFOutput, ZFOutputForString

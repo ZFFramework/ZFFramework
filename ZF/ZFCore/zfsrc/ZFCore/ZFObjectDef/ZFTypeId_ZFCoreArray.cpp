@@ -351,11 +351,11 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
 typedef ZFCoreArray<zfauto> _ZFP_PropTypeW_ZFCoreArray;
 _ZFP_ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
 
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
+ZFOBJECT_ON_INIT_USER_REGISTER_1(v_ZFCoreArray
+    , ZFMP_IN(const zfstring &, elementTypeId)
+    ) {
     invokerObject->to<v_ZFCoreArray *>()->elementTypeInit(elementTypeId);
-}, v_ZFCoreArray
-, ZFMP_IN(const zfstring &, elementTypeId)
-)
+}
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, swap
         , ZFMP_IN(v_ZFCoreArray *, ref)

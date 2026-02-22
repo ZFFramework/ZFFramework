@@ -19,12 +19,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTaskIdDummy, const zfbool &, stoppe
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFTaskIdBasic)
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
+ZFOBJECT_ON_INIT_USER_REGISTER_1(ZFTaskIdBasic
+    , ZFMP_IN(const ZFListener &, stopImpl)
+    ) {
     ZFTaskIdBasic *v = invokerObject;
     v->stopImpl(stopImpl);
-}, ZFTaskIdBasic
-, ZFMP_IN(const ZFListener &, stopImpl)
-)
+}
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTaskIdBasic, void, stopImpl
         , ZFMP_IN(const ZFListener &, v)
         )

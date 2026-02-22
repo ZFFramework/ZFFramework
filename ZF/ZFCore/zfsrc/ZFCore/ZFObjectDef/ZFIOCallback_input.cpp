@@ -349,26 +349,26 @@ ZFInput ZFInputForString(
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_3({
-        v_ZFCallback *owner = invokerObject;
-        ZFInput input = owner->zfv;
-        input.input(buf, count, result);
-        return owner;
-    }, v_ZFCallback, v_ZFCallback *, input
+ZFMETHOD_USER_REGISTER_3(v_ZFCallback, v_ZFCallback *, input
     , ZFMP_OUT(zfstring &, buf)
     , ZFMP_IN(zfindex, count)
     , ZFMP_OUT_OPT(zfindex *, result, zfnull)
-    )
-ZFMETHOD_USER_REGISTER_3({
-        v_ZFCallback *owner = invokerObject;
-        ZFInput input = owner->zfv;
-        input.input(buf, count, result);
-        return owner;
-    }, v_ZFCallback, v_ZFCallback *, input
+    ) {
+    v_ZFCallback *owner = invokerObject;
+    ZFInput input = owner->zfv;
+    input.input(buf, count, result);
+    return owner;
+}
+ZFMETHOD_USER_REGISTER_3(v_ZFCallback, v_ZFCallback *, input
     , ZFMP_OUT(void *, buf)
     , ZFMP_IN(zfindex, count)
     , ZFMP_OUT_OPT(zfindex *, result, zfnull)
-    )
+    ) {
+    v_ZFCallback *owner = invokerObject;
+    ZFInput input = owner->zfv;
+    input.input(buf, count, result);
+    return owner;
+}
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFInput, ZFInputDummy)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(ZFInput, ZFInputForInputInRange

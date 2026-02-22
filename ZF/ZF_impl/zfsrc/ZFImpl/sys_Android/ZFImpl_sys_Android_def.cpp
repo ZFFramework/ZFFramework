@@ -13,10 +13,10 @@ ZFCONV_REG(v_ZFAndroid_JNIGlobalRef, v_zfptr) {
     return zftrue;
 }
 
-ZFMETHOD_USER_REGISTER_0({
+ZFMETHOD_USER_REGISTER_0(v_ZFAndroid_JNIGlobalRef, zfbool, valid) {
     v_ZFAndroid_JNIGlobalRef *owner = invokerObject;
     return owner->zfv;
-}, v_ZFAndroid_JNIGlobalRef, zfbool, valid)
+}
 
 ZFOUTPUT_TYPE_DEFINE(JNIGlobalRef, {
     ZFImpl_sys_Android_objectInfoT(s, v);

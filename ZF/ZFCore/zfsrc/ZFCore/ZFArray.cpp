@@ -379,33 +379,92 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
     this->contentOnUpdate();
 }
 
+zfclassLikePOD _ZFP_ZFArrayItemComparer {
+public:
+    zfweak owner;
+    ZFListener impl;
+public:
+    ZFCompareResult operator() (ZF_IN ZFObject *v0, ZF_IN ZFObject *v1) const {
+        ZFArgs zfargs;
+        impl.execute(zfargs
+                .sender(owner)
+                .param0(v0)
+                .param1(v1)
+                );
+        v_ZFCompareResult *result = zfargs.result();
+        ZFCoreAssertWithMessageTrim(result
+                , "custom comparer must return ZFCompareResult, got: %s, while compareing (%s, %s), on array: %s"
+                , zfargs.result()
+                , v0
+                , v1
+                , owner->objectInfoOfInstance()
+                );
+        return result->zfv;
+    }
+};
 ZFMETHOD_DEFINE_3(ZFArray, void, sort
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+        , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
+        ) {
+    if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
+        _ZFP_ZFArrayItemComparer comparerWrap;
+        comparerWrap.owner = this;
+        comparerWrap.impl = comparer;
+        zfmSort<ZFObject *>(
+                d->data
+                , start
+                , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
+                , comparerWrap
+                );
+        this->contentOnUpdate();
+    }
+}
+ZFMETHOD_DEFINE_3(ZFArray, void, sort
+        , ZFMP_IN(zfindex, start)
+        , ZFMP_IN(zfindex, count)
+        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
         ) {
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSort<ZFObject *>(
-            d->data,
-            start,
-            (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1),
-            comparer);
-
+                d->data
+                , start
+                , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
+                , comparer
+                );
         this->contentOnUpdate();
     }
 }
 ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+        , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
+        ) {
+    if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
+        _ZFP_ZFArrayItemComparer comparerWrap;
+        comparerWrap.owner = this;
+        comparerWrap.impl = comparer;
+        zfmSortReversely<ZFObject *>(
+                d->data
+                , start
+                , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
+                , comparerWrap
+                );
+        this->contentOnUpdate();
+    }
+}
+ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
+        , ZFMP_IN(zfindex, start)
+        , ZFMP_IN(zfindex, count)
+        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
         ) {
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSortReversely<ZFObject *>(
-            d->data,
-            start,
-            (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1),
-            comparer);
-
+                d->data
+                , start
+                , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
+                , comparer
+                );
         this->contentOnUpdate();
     }
 }

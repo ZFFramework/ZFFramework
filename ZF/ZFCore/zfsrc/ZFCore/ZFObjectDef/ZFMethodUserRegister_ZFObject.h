@@ -107,18 +107,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER({ \
-                return (ReturnType)zfcast(ownerClassSig *, invokerObject)->methodName( \
-                        ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
-                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
-                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
-                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
-                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
-                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
-                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
-                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
-                    ); \
-            }, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
             public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
             ReturnType, methodName \
             , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -129,7 +118,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
             , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
-        )
+        ) { \
+        return (ReturnType)zfcast(ownerClassSig *, invokerObject)->methodName( \
+                ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+            ); \
+    }
 
 // ============================================================
 #define _ZFP_ZFMethodUserRegisterForZFObjectFuncStatic(...) \
@@ -183,18 +183,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER({ \
-                return (ReturnType)ownerClassSig::methodName( \
-                        ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
-                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
-                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
-                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
-                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
-                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
-                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
-                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
-                    ); \
-            }, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
             public, ZFMethodTypeStatic, ZF_CALLER_LINE, \
             ReturnType, methodName \
             , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -205,7 +194,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
             , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
-        )
+        ) { \
+        return (ReturnType)ownerClassSig::methodName( \
+                ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+            ); \
+    }
 
 // ============================================================
 // 0 param

@@ -30,44 +30,44 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, zfvToString
         , ZFMP_IN_OUT(zfstring &, s)
         )
 
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        if(src != zfnull) {
-            if(src->classData()->classIsTypeOf(invokerObject->classData())
-                || (
-                    invokerObject->classData()->classIsTypeOf(src->classData())
-                    && zfstringIsEqual(src->zfvTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->zfvTypeId())
-                )
-            ) {
-                invokerObject->to<ZFTypeIdWrapper *>()->zfvAssign(src);
-            }
-            else {
-                zfbool success = zffalse;
-                zfstring s;
-                if(src->zfvToString(s)) {
-                    success = invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(s);
-                }
-                if(!success) {
-                    zfobj<v_zfstring> errorHint;
-                    zfstringAppend(errorHint->zfv, "unable to construct %s from (%s)%s",
-                        invokerObject->classData()->className(),
-                        src->classData()->className(),
-                        src);
-                    invokerObject->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed, errorHint);
-                }
-            }
-        }
-    }, ZFTypeIdWrapper
+ZFOBJECT_ON_INIT_USER_REGISTER_1(ZFTypeIdWrapper
     , ZFMP_IN(ZFTypeIdWrapper *, src)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        zfstring errorHint;
-        if(!invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen, &errorHint)) {
-            invokerObject->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed, zfobj<v_zfstring>(errorHint));
+    ) {
+    if(src != zfnull) {
+        if(src->classData()->classIsTypeOf(invokerObject->classData())
+            || (
+                invokerObject->classData()->classIsTypeOf(src->classData())
+                && zfstringIsEqual(src->zfvTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->zfvTypeId())
+            )
+        ) {
+            invokerObject->to<ZFTypeIdWrapper *>()->zfvAssign(src);
         }
-    }, ZFTypeIdWrapper
+        else {
+            zfbool success = zffalse;
+            zfstring s;
+            if(src->zfvToString(s)) {
+                success = invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(s);
+            }
+            if(!success) {
+                zfobj<v_zfstring> errorHint;
+                zfstringAppend(errorHint->zfv, "unable to construct %s from (%s)%s",
+                    invokerObject->classData()->className(),
+                    src->classData()->className(),
+                    src);
+                invokerObject->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed, errorHint);
+            }
+        }
+    }
+}
+ZFOBJECT_ON_INIT_USER_REGISTER_2(ZFTypeIdWrapper
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
-    )
+    ) {
+    zfstring errorHint;
+    if(!invokerObject->to<ZFTypeIdWrapper *>()->zfvFromString(src, srcLen, &errorHint)) {
+        invokerObject->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed, zfobj<v_zfstring>(errorHint));
+    }
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

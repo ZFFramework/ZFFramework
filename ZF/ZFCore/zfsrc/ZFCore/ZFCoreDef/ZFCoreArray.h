@@ -945,14 +945,15 @@ public:
     void sort(
             ZF_IN zfindex start
             , ZF_IN zfindex count
-            , ZF_IN typename ZFComparer<T_Element>::Comparer elementComparer
+            , ZF_IN typename ZFComparer<T_Element>::Comparer comparer
             ) {
         if(!this->isEmpty() && start + 1 < this->count() && count > 1) {
             zfmSort<T_Element>(
-                d->buf,
-                start,
-                (count > this->count() - start) ? (this->count() - 1) : (start + count - 1),
-                elementComparer);
+                    d->buf
+                    , start
+                    , (count > this->count() - start) ? (this->count() - 1) : (start + count - 1)
+                    , comparer
+                    );
         }
     }
     /**
@@ -961,14 +962,15 @@ public:
     void sortReversely(
             ZF_IN zfindex start
             , ZF_IN zfindex count
-            , ZF_IN typename ZFComparer<T_Element>::Comparer elementComparer
+            , ZF_IN typename ZFComparer<T_Element>::Comparer comparer
             ) {
         if(!this->isEmpty() && start + 1 < this->count() && count > 1) {
             zfmSortReversely<T_Element>(
-                d->buf,
-                start,
-                (count > this->count() - start) ? (this->count() - 1) : (start + count - 1),
-                elementComparer);
+                    d->buf
+                    , start
+                    , (count > this->count() - start) ? (this->count() - 1) : (start + count - 1)
+                    , comparer
+                    );
         }
     }
 

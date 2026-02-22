@@ -97,36 +97,36 @@ ZFTYPEID_PROGRESS_DEFINE(zfstring, zfstring, {
     }
 })
 
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
-        zfv.assign(src, len);
-    }, v_zfstring
+ZFOBJECT_ON_INIT_USER_REGISTER_2(v_zfstring
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN(zfindex, len)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_3({
-        zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
-        zfv.assign(src + pos, len);
-    }, v_zfstring
+    ) {
+    zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
+    zfv.assign(src, len);
+}
+ZFOBJECT_ON_INIT_USER_REGISTER_3(v_zfstring
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN(zfindex, pos)
     , ZFMP_IN(zfindex, len)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
-        zfv.assign((const zfchar *)src, len);
-    }, v_zfstring
+    ) {
+    zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
+    zfv.assign(src + pos, len);
+}
+ZFOBJECT_ON_INIT_USER_REGISTER_2(v_zfstring
     , ZFMP_IN(const void *, src)
     , ZFMP_IN(zfindex, len)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_3({
-        zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
-        zfv.assign(((const zfchar *)src) + pos, len);
-    }, v_zfstring
+    ) {
+    zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
+    zfv.assign((const zfchar *)src, len);
+}
+ZFOBJECT_ON_INIT_USER_REGISTER_3(v_zfstring
     , ZFMP_IN(const void *, src)
     , ZFMP_IN(zfindex, pos)
     , ZFMP_IN(zfindex, len)
-    )
+    ) {
+    zfstring &zfv = invokerObject.to<v_zfstring *>()->zfv;
+    zfv.assign(((const zfchar *)src) + pos, len);
+}
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_0(zfstring, v_zfstring, const zfstring &, Empty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(zfstring, v_zfstring, zfstring, shared
         , ZFMP_IN(const zfchar *, sLiteral)
@@ -726,14 +726,14 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {
         s += v.pathData();
         return zftrue;
     })
-ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        ZFPathInfo &zfv = invokerObject.to<v_ZFPathInfo *>()->zfv;
-        zfv.pathType(pathType);
-        zfv.pathData(pathData);
-    }, v_ZFPathInfo
+ZFOBJECT_ON_INIT_USER_REGISTER_2(v_ZFPathInfo
     , ZFMP_IN(const zfstring &, pathType)
     , ZFMP_IN(const zfstring &, pathData)
-    )
+    ) {
+    ZFPathInfo &zfv = invokerObject.to<v_ZFPathInfo *>()->zfv;
+    zfv.pathType(pathType);
+    zfv.pathData(pathData);
+}
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPathInfo, ZFPathInfo &, pathType
         , ZFMP_IN(const zfstring &, pathType)
         )
@@ -810,8 +810,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, tokenValueRight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, tokenEtc)
 
-ZFMETHOD_FUNC_USER_REGISTER_0({ZFCoreMutexLock();}, void, ZFCoreMutexLock)
-ZFMETHOD_FUNC_USER_REGISTER_0({ZFCoreMutexUnlock();}, void, ZFCoreMutexUnlock)
+ZFMETHOD_FUNC_USER_REGISTER_0(void, ZFCoreMutexLock) {ZFCoreMutexLock();}
+ZFMETHOD_FUNC_USER_REGISTER_0(void, ZFCoreMutexUnlock) {ZFCoreMutexUnlock();}
 
 ZF_NAMESPACE_GLOBAL_END
 

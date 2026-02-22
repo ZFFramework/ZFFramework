@@ -40,11 +40,11 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFCore_ZFMethod_order_test_ObjectReg) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFCore_ZFMethod_order_test_ObjectReg)
 
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        ZFLogTrim("UserReg::objectOnInit(int)");
-    }, ZFCore_ZFMethod_order_test_Object
+ZFOBJECT_ON_INIT_USER_REGISTER_1(ZFCore_ZFMethod_order_test_Object
     , ZFMP_IN(zfint, p0)
-    )
+    ) {
+    ZFLogTrim("UserReg::objectOnInit(int)");
+}
 
 // ============================================================
 zfclass ZFCore_ZFMethod_order_test : zfextend ZFFramework_test_TestCase {

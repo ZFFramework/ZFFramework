@@ -184,11 +184,11 @@ private:
         } \
         return (YourStyle *)holder->d; \
     } \
-    ZFMETHOD_USER_REGISTER_DETAIL_0({ \
-            return YourStyle::DefaultStyle(); \
-        }, YourStyle, \
+    ZFMETHOD_USER_REGISTER_DETAIL_0(YourStyle, \
         public, ZFMethodTypeStatic, s, \
-        zfanyT<YourStyle>, DefaultStyle) \
+        zfanyT<YourStyle>, DefaultStyle) { \
+        return YourStyle::DefaultStyle(); \
+    } \
     void YourStyle::_ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance) { \
         if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
             return; \

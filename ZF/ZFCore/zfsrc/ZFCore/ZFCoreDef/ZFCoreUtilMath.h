@@ -127,12 +127,12 @@ T_int zfmRand(
 }
 
 // ============================================================
-template<typename T_Element, typename T_Holder>
+template<typename T_Element, typename T_Holder, typename T_Comparer>
 zfindex _ZFP_zfmSort(
         ZF_IN T_Holder &holder
         , ZF_IN zfindex left
         , ZF_IN zfindex right
-        , ZF_IN typename ZFComparer<T_Element>::Comparer comparer
+        , ZF_IN T_Comparer const &comparer
         , ZF_IN zfbool ascending
         ) {
     ZFCompareResult cmpToken = (ascending ? ZFCompareGreater : ZFCompareSmaller);
@@ -170,12 +170,12 @@ zfindex _ZFP_zfmSort(
 /**
  * @brief sort with custom comparer in range [left, right], holder must support operator []
  */
-template<typename T_Element, typename T_Holder>
+template<typename T_Element, typename T_Holder, typename T_Comparer>
 zfbool zfmSort(
         ZF_IN T_Holder &holder
         , ZF_IN zfindex left
         , ZF_IN zfindex right
-        , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
+        , ZF_IN T_Comparer const &comparer
         ) {
     if(left < right) {
         zfindex mid = _ZFP_zfmSort<T_Element>(holder, left, right, comparer, zftrue);
@@ -196,12 +196,12 @@ zfbool zfmSort(
 /**
  * @brief sort with custom comparer in range [left, right], holder must support operator []
  */
-template<typename T_Element, typename T_Holder>
+template<typename T_Element, typename T_Holder, typename T_Comparer>
 zfbool zfmSortReversely(
         ZF_IN T_Holder &holder
         , ZF_IN zfindex left
         , ZF_IN zfindex right
-        , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
+        , ZF_IN T_Comparer const &comparer
         ) {
     if(left < right) {
         zfindex mid = _ZFP_zfmSort<T_Element>(holder, left, right, comparer, zffalse);

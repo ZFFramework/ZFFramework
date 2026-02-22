@@ -16,7 +16,9 @@ static ZFCoreMap &_ZFP_ZFCoreStatisticInvokeTimeDataMap(void) {
     return m;
 }
 
-void invokeTimeLogBegin(ZF_IN const zfstring &key) {
+ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogBegin
+        , ZFMP_IN(const zfstring &, key)
+        ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get<_ZFP_ZFCoreStatisticInvokeTimeData *>(key);
     if(data == zfnull) {
@@ -38,7 +40,9 @@ void invokeTimeLogBegin(ZF_IN const zfstring &key) {
         }
     }
 }
-void invokeTimeLogEnd(ZF_IN const zfstring &key) {
+ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogEnd
+        , ZFMP_IN(const zfstring &, key)
+        ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get<_ZFP_ZFCoreStatisticInvokeTimeData *>(key);
     if(data != zfnull) {
@@ -51,15 +55,19 @@ void invokeTimeLogEnd(ZF_IN const zfstring &key) {
         }
     }
 }
-void invokeTimeRemove(ZF_IN const zfstring &key) {
+ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeRemove
+        , ZFMP_IN(const zfstring &, key)
+        ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     m.remove(key);
 }
-void invokeTimeRemoveAll(void) {
+ZFMETHOD_FUNC_DEFINE_0(void, invokeTimeRemoveAll) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     m.removeAll();
 }
-zfindex invokeTimeGetInvokeCount(ZF_IN const zfstring &key) {
+ZFMETHOD_FUNC_DEFINE_1(zfindex, invokeTimeGetInvokeCount
+        , ZFMP_IN(const zfstring &, key)
+        ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get<_ZFP_ZFCoreStatisticInvokeTimeData *>(key);
     if(data != zfnull) {
@@ -67,7 +75,9 @@ zfindex invokeTimeGetInvokeCount(ZF_IN const zfstring &key) {
     }
     return 0;
 }
-ZFTimeValue invokeTimeGetAverageTime(ZF_IN const zfstring &key) {
+ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetAverageTime
+        , ZFMP_IN(const zfstring &, key)
+        ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get<_ZFP_ZFCoreStatisticInvokeTimeData *>(key);
     if(data != zfnull && data->invokeCount > 0) {
@@ -75,7 +85,9 @@ ZFTimeValue invokeTimeGetAverageTime(ZF_IN const zfstring &key) {
     }
     return ZFTimeValueZero();
 }
-ZFTimeValue invokeTimeGetTotalTime(ZF_IN const zfstring &key) {
+ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetTotalTime
+        , ZFMP_IN(const zfstring &, key)
+        ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get<_ZFP_ZFCoreStatisticInvokeTimeData *>(key);
     if(data != zfnull) {
@@ -83,9 +95,9 @@ ZFTimeValue invokeTimeGetTotalTime(ZF_IN const zfstring &key) {
     }
     return ZFTimeValueZero();
 }
-void invokeTimeGetSummary(
-        ZF_OUT zfstring &ret
-        , ZF_IN const zfstring &key
+ZFMETHOD_FUNC_DEFINE_2(void, invokeTimeGetSummaryT
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get<_ZFP_ZFCoreStatisticInvokeTimeData *>(key);
@@ -104,6 +116,13 @@ void invokeTimeGetSummary(
             (key == zfnull) ? ZFTOKEN_zfnull : key.cString(),
             ZFTimeValueToStringFriendly(invokeTotalTime));
     }
+}
+ZFMETHOD_FUNC_DEFINE_1(zfstring, invokeTimeGetSummary
+        , ZFMP_IN(const zfstring &, key)
+        ) {
+    zfstring ret;
+    invokeTimeGetSummaryT(ret, key);
+    return ret;
 }
 
 ZF_NAMESPACE_END(ZFCoreStatistic)

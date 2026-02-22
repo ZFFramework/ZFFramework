@@ -79,38 +79,33 @@ zfbool ZFIOCallback::ioClose(void) const {
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_0({
-        ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioFlush();
-    }, v_ZFCallback, void, ioFlush
-    )
-ZFMETHOD_USER_REGISTER_2({
-        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, seekPos);
-    }, v_ZFCallback, zfbool, ioSeek
+ZFMETHOD_USER_REGISTER_0(v_ZFCallback, void, ioFlush) {
+    ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioFlush();
+}
+ZFMETHOD_USER_REGISTER_2(v_ZFCallback, zfbool, ioSeek
     , ZFMP_IN(zfindex, byteSize)
     , ZFMP_IN_OPT(ZFSeekPos, seekPos, ZFSeekPosBegin)
-    )
-ZFMETHOD_USER_REGISTER_0({
-        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioTell();
-    }, v_ZFCallback, zfindex, ioTell
-    )
-ZFMETHOD_USER_REGISTER_0({
-        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSize();
-    }, v_ZFCallback, zfindex, ioSize
-    )
-ZFMETHOD_USER_REGISTER_0({
-        invokerObject->to<v_ZFCallback *>()->zfv.callbackClear();
-        return zftrue;
-    }, v_ZFCallback, zfbool, ioClose
-    )
-ZFMETHOD_USER_REGISTER_1({
-        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner(ioOwner);
-    }, v_ZFCallback, void, ioOwner
+    ) {
+    return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, seekPos);
+}
+ZFMETHOD_USER_REGISTER_0(v_ZFCallback, zfindex, ioTell) {
+    return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioTell();
+}
+ZFMETHOD_USER_REGISTER_0(v_ZFCallback, zfindex, ioSize) {
+    return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSize();
+}
+ZFMETHOD_USER_REGISTER_0(v_ZFCallback, zfbool, ioClose) {
+    invokerObject->to<v_ZFCallback *>()->zfv.callbackClear();
+    return zftrue;
+}
+ZFMETHOD_USER_REGISTER_1(v_ZFCallback, void, ioOwner
     , ZFMP_IN(ZFObject *, ioOwner)
-    )
-ZFMETHOD_USER_REGISTER_0({
-        return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner();
-    }, v_ZFCallback, ZFObject *, ioOwner
-    )
+    ) {
+    return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner(ioOwner);
+}
+ZFMETHOD_USER_REGISTER_0(v_ZFCallback, ZFObject *, ioOwner) {
+    return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner();
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

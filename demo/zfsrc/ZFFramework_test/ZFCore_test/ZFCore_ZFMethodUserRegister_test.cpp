@@ -161,75 +161,72 @@ protected:
 };
 ZFOBJECT_REGISTER(ZFCore_ZFMethodUserRegister_test)
 
-ZFMETHOD_USER_REGISTER_DETAIL_1({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic
     , ZFMP_IN(zfstring const &, param0)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_0({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_0(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic0
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_1({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_1(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic1
     , ZFMP_IN(zfstring const &, param0)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_2({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_2(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic2
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_3({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_3(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic3
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
     , ZFMP_IN(zfstring const &, param2)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_4({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_4(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic4
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
     , ZFMP_IN(zfstring const &, param2)
     , ZFMP_IN(zfstring const &, param3)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_5({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_5(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic5
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
     , ZFMP_IN(zfstring const &, param2)
     , ZFMP_IN(zfstring const &, param3)
     , ZFMP_IN(zfstring const &, param4)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_6({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_6(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic6
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
@@ -237,12 +234,12 @@ ZFMETHOD_USER_REGISTER_DETAIL_6({
     , ZFMP_IN(zfstring const &, param3)
     , ZFMP_IN(zfstring const &, param4)
     , ZFMP_IN(zfstring const &, param5)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_7({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_7(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic7
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
@@ -251,12 +248,12 @@ ZFMETHOD_USER_REGISTER_DETAIL_7({
     , ZFMP_IN(zfstring const &, param4)
     , ZFMP_IN(zfstring const &, param5)
     , ZFMP_IN(zfstring const &, param6)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_USER_REGISTER_DETAIL_8({
-        ZFLog();
-        return "returnValue";
-    }, ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
+ZFMETHOD_USER_REGISTER_DETAIL_8(ZFCore_ZFMethodUserRegister_test, public, ZFMethodTypeStatic, ZF_CALLER_LINE,
     zfstring, funcStatic8
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
@@ -266,7 +263,10 @@ ZFMETHOD_USER_REGISTER_DETAIL_8({
     , ZFMP_IN(zfstring const &, param5)
     , ZFMP_IN(zfstring const &, param6)
     , ZFMP_IN(zfstring const &, param7)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

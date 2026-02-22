@@ -174,75 +174,72 @@ ZFOBJECT_REGISTER(ZFCore_ZFMethodFuncUserRegister_test)
 
 ZF_NAMESPACE_BEGIN_REGISTER(ZFCore_ZFMethodFuncUserRegister_testNamespace, ZF_NAMESPACE_GLOBAL)
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic
     , ZFMP_IN(zfstring const &, param0)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_0({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_0(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic0
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic1
     , ZFMP_IN(zfstring const &, param0)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_2({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_2(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic2
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic3
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
     , ZFMP_IN(zfstring const &, param2)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_4({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_4(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic4
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
     , ZFMP_IN(zfstring const &, param2)
     , ZFMP_IN(zfstring const &, param3)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic5
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
     , ZFMP_IN(zfstring const &, param2)
     , ZFMP_IN(zfstring const &, param3)
     , ZFMP_IN(zfstring const &, param4)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic6
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
@@ -250,12 +247,12 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6({
     , ZFMP_IN(zfstring const &, param3)
     , ZFMP_IN(zfstring const &, param4)
     , ZFMP_IN(zfstring const &, param5)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic7
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
@@ -264,12 +261,12 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7({
     , ZFMP_IN(zfstring const &, param4)
     , ZFMP_IN(zfstring const &, param5)
     , ZFMP_IN(zfstring const &, param6)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
-ZFMETHOD_FUNC_USER_REGISTER_DETAIL_8({
-        ZFLog();
-        return "returnValue";
-    }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
+ZFMETHOD_FUNC_USER_REGISTER_DETAIL_8(ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic8
     , ZFMP_IN(zfstring const &, param0)
     , ZFMP_IN(zfstring const &, param1)
@@ -279,7 +276,10 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_8({
     , ZFMP_IN(zfstring const &, param5)
     , ZFMP_IN(zfstring const &, param6)
     , ZFMP_IN(zfstring const &, param7)
-    )
+    ) {
+    ZFLog();
+    return "returnValue";
+}
 
 ZF_NAMESPACE_END(ZFCore_ZFMethodFuncUserRegister_testNamespace)
 

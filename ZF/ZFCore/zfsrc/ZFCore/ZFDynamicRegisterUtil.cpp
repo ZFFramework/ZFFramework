@@ -1714,12 +1714,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_3(ZFDynamic, v_ZFDynamic, void, e
         , ZFMP_IN_OPT(zfbool, exportScope, zffalse)
         , ZFMP_IN_OPT(zfbool, exportInternal, zftrue)
         )
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        ZFDynamic &v = invokerObject.to<v_ZFDynamic *>()->zfv;
-        v.regTag(regTag);
-    }, v_ZFDynamic
+ZFOBJECT_ON_INIT_USER_REGISTER_1(v_ZFDynamic
     , ZFMP_IN(const zfstring &, regTag)
-    )
+    ) {
+    ZFDynamic &v = invokerObject.to<v_ZFDynamic *>()->zfv;
+    v.regTag(regTag);
+}
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
         , ZFMP_IN(const zfstring &, regTag)
         )

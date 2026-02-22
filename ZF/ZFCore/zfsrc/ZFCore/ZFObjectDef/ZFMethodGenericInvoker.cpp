@@ -168,7 +168,7 @@ void _ZFP_ZFMethodGenericInvokeError(
 }
 
 // ============================================================
-ZFMETHOD_FUNC_USER_REGISTER_0({return ZFMP_DEF();}, ZFObject *, ZFMP_DEF)
+ZFMETHOD_FUNC_USER_REGISTER_0(ZFObject *, ZFMP_DEF) {return ZFMP_DEF();}
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -575,11 +575,11 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFCallbackWeakRef, ZFCallback, get)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFCallbackWeakRef, void, set
         , ZFMP_IN(const ZFCallback &, v)
         )
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject.to<ZFCallbackWeakRef *>()->set(v);
-    }, ZFCallbackWeakRef
+ZFOBJECT_ON_INIT_USER_REGISTER_1(ZFCallbackWeakRef
     , ZFMP_IN(const ZFCallback &, v)
-    )
+    ) {
+    invokerObject.to<ZFCallbackWeakRef *>()->set(v);
+}
 
 ZFCallback ZFCallbackWeakRef::get(void) {
     ZFCoreMutexLocker();

@@ -155,16 +155,16 @@ _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName
 }
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_0({
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute();
-    }, v_ZFCallback,
-    zfbool, execute)
-ZFMETHOD_USER_REGISTER_1({
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(zfargs);
-    }, v_ZFCallback,
+ZFMETHOD_USER_REGISTER_0(v_ZFCallback,
+    zfbool, execute) {
+    return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute();
+}
+ZFMETHOD_USER_REGISTER_1(v_ZFCallback,
     zfbool, execute
     , ZFMP_IN(const ZFArgs &, zfargs)
-    )
+    ) {
+    return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(zfargs);
+}
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackRelease)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackClear)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackId

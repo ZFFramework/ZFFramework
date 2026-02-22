@@ -146,7 +146,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
 #define _ZFP_ZFMETHOD_USER_REGISTER(...) \
     _ZFP_mD_EXPAND(_ZFP_ZFMETHOD_USER_REGISTER_(__VA_ARGS__))
 #define _ZFP_ZFMETHOD_USER_REGISTER_( \
-        methodInvokerAction, ownerClassSig, \
+        ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -171,9 +171,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-                ) { \
-            methodInvokerAction \
-        } \
+                ); \
         _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
                 ReturnType \
                 , ParamExpandOrEmpty0, ParamType0, param0, DefaultExpandOrEmpty0, DefaultValueFix0 \
@@ -201,7 +199,19 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
             , ParamExpandOrEmpty5, ParamType5, param5, DefaultExpandOrEmpty5, DefaultValueFix5 \
             , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
             , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
-        );
+        ); \
+    ReturnType _ZFP_mURIvk_##ownerClassSig##_##methodName##_##RegSig::I( \
+            ZF_IN const ZFMethod *invokerMethod \
+            , ZF_IN zfany const &invokerObject \
+            ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
+            ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
+            ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
+            ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
+            ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
+            ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
+            ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
+            ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
+            )
 
 // ============================================================
 // 0 param
@@ -229,13 +239,14 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
  *   ZF_GLOBAL_INITIALIZER_END(MyMethodRegister)
  *
  *   // or, you may use this macro for short, at cpp files only
- *   ZFMETHOD_USER_REGISTER_DETAIL_2({
- *           return (ReturnType)yourInvoker(invokerMethod, invokerObject, param0, param1);
- *       }, MyClassToAttachTheMethod::ClassData(),
+ *   ZFMETHOD_USER_REGISTER_DETAIL_2(MyClassToAttachTheMethod::ClassData(),
  *       public, ZFMethodTypeStatic, ZF_CALLER_LINE,
  *       ReturnType, "myMethodName"
  *       , ZFMP_IN(ParamType0, param0)
- *       , ZFMP_IN(ParamType1, param1))
+ *       , ZFMP_IN(ParamType1, param1)
+ *       ) {
+ *       return (ReturnType)yourInvoker(invokerMethod, invokerObject, param0, param1);
+ *   }
  * @endcode
  *
  * note:
@@ -283,10 +294,10 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_0(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_0(ownerClassSig, \
     ReturnType, methodName \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_ZFMP_DUMMY() \
@@ -299,11 +310,11 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_0(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_0(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_ZFMP_DUMMY() \
@@ -354,11 +365,11 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_1(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_1(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -371,12 +382,12 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_1(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_1(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -429,12 +440,12 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_2(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_2(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -447,13 +458,13 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_2(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_2(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -508,13 +519,13 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_3(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_3(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -527,14 +538,14 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_3(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_3(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -591,14 +602,14 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_4(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_4(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
     , ZFMP_2 \
     , ZFMP_3 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -611,7 +622,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_4(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_4(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
@@ -619,7 +630,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_2 \
     , ZFMP_3 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -678,7 +689,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_5(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_5(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -686,7 +697,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_3 \
     , ZFMP_4 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -699,7 +710,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_5(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_5(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
@@ -708,7 +719,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_3 \
     , ZFMP_4 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -769,7 +780,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_6(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_6(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -778,7 +789,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_4 \
     , ZFMP_5 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -791,7 +802,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_6(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_6(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
@@ -801,7 +812,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_4 \
     , ZFMP_5 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -864,7 +875,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_7(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_7(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -874,7 +885,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_5 \
     , ZFMP_6 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -887,7 +898,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_ZFMP_DUMMY() \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_7(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_7(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
@@ -898,7 +909,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_5 \
     , ZFMP_6 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -963,7 +974,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_8(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_8(ownerClassSig, \
     ReturnType, methodName \
     , ZFMP_0 \
     , ZFMP_1 \
@@ -974,7 +985,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_6 \
     , ZFMP_7 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         public, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
@@ -987,7 +998,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , _ZFP_mP_EXPAND(ZFMP_7) \
         )
 /** @brief see #ZFMethodUserRegister_0 */
-#define ZFMETHOD_USER_REGISTER_DETAIL_8(methodInvokerAction, ownerClassSig, \
+#define ZFMETHOD_USER_REGISTER_DETAIL_8(ownerClassSig, \
     PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
     ReturnType, methodName \
     , ZFMP_0 \
@@ -999,7 +1010,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     , ZFMP_6 \
     , ZFMP_7 \
     ) \
-    _ZFP_ZFMETHOD_USER_REGISTER(methodInvokerAction, ownerClassSig, \
+    _ZFP_ZFMETHOD_USER_REGISTER(ownerClassSig, \
         PublicOrProtectedOrPrivate, ZFMethodType_, RegSig, \
         ReturnType, methodName \
         , _ZFP_mP_EXPAND(ZFMP_0) \
