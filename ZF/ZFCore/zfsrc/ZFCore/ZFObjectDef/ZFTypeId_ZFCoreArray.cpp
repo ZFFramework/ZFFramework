@@ -592,12 +592,29 @@ public:
         {
         }
     public:
+        zfauto get(void) const {
+            return owner->get(index);
+        }
+    public:
         operator zfauto (void) const {
             return owner->get(index);
         }
-        ItemRef &operator = (ZF_IN ZFObject *v) {
+        ItemRef &operator = (ZF_IN zfauto const &v) {
             owner->set(index, v);
             return *this;
+        }
+    };
+    zfclassLikePOD Item {
+    public:
+        zfauto v;
+    public:
+        explicit Item(ZF_IN ItemRef const &ref)
+        : v(ref.get())
+        {
+        }
+    public:
+        operator zfauto const &(void) const {
+            return v;
         }
     };
 public:
@@ -620,7 +637,7 @@ ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sort
     }
     if(!owner->isEmpty() && start + 1 < owner->count() && count > 1) {
         _ZFP_ZFCoreArrayItemHolder holder(owner);
-        zfmSort<zfauto>(
+        zfmSort<_ZFP_ZFCoreArrayItemHolder::Item>(
                 holder
                 , start
                 , (count > owner->count() - start) ? (owner->count() - 1) : (start + count - 1)
@@ -639,7 +656,7 @@ ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sortReversely
     }
     if(!owner->isEmpty() && start + 1 < owner->count() && count > 1) {
         _ZFP_ZFCoreArrayItemHolder holder(owner);
-        zfmSortReversely<zfauto>(
+        zfmSortReversely<_ZFP_ZFCoreArrayItemHolder::Item>(
                 holder
                 , start
                 , (count > owner->count() - start) ? (owner->count() - 1) : (start + count - 1)
