@@ -68,6 +68,9 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, invokeTimeGetSummary
         , ZFMP_IN(const zfstring &, key)
         )
 
+/** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<zfstring>, invokeTimeGetAllKey)
+
 // ============================================================
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLogger {
 public:

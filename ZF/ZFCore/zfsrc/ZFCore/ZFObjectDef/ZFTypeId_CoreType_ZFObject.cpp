@@ -470,9 +470,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, ZFPr
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, zfbool, zfunsafe_disableChecker)
 
 // ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFComparer_ZFObject, ZFComparer<ZFObject *>::Comparer)
-
-// ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFObjectInstanceState, ZFObjectInstanceState, {
         const zfchar *tokens[] = ZFM_EXPAND({
             ZFTOKEN_ZFObjectInstanceStateOnInit,

@@ -10,6 +10,39 @@ public:
     zfstldeque<ZFObject *> data;
 };
 
+zfclassLikePOD _ZFP_ZFArrayItemComparer {
+public:
+    ZFArray *owner;
+    ZFListener comparer;
+public:
+    explicit _ZFP_ZFArrayItemComparer(
+            ZF_IN ZFArray *owner
+            , ZF_IN const ZFListener &comparer
+            )
+    : owner(owner)
+    , comparer(comparer)
+    {
+    }
+public:
+    ZFCompareResult operator() (ZF_IN ZFObject *v0, ZF_IN ZFObject *v1) const {
+        ZFArgs zfargs;
+        comparer.execute(zfargs
+                .sender(owner)
+                .param0(v0)
+                .param1(v1)
+                );
+        v_ZFCompareResult *result = zfargs.result();
+        ZFCoreAssertWithMessageTrim(result
+                , "custom comparer must return ZFCompareResult, got: %s, while compareing (%s, %s), on array: %s"
+                , zfargs.result()
+                , v0
+                , v1
+                , owner->objectInfoOfInstance()
+                );
+        return result->zfv;
+    }
+};
+
 // ============================================================
 // ZFArray
 ZFOBJECT_REGISTER(ZFArray)
@@ -36,9 +69,18 @@ ZFMETHOD_DEFINE_0(ZFArray, zfindex, count) {
 ZFMETHOD_DEFINE_0(ZFArray, zfbool, isEmpty) {
     return d->data.empty();
 }
+zfbool ZFArray::isContain(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
+        ) {
+    return (this->find(obj, comparer) != zfindexMax());
+}
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfbool, isContain
+        , ZFMP_IN(ZFObject *, obj)
+        )
 ZFMETHOD_DEFINE_2(ZFArray, zfbool, isContain
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+        , ZFMP_IN(const ZFListener &, comparer)
         ) {
     return (this->find(obj, comparer) != zfindexMax());
 }
@@ -60,12 +102,12 @@ ZFMETHOD_DEFINE_0(ZFArray, zfany, getLast) {
     }
     return d->data[d->data.size() - 1];
 }
-ZFMETHOD_DEFINE_2(ZFArray, zfindex, find
-        , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+zfindex ZFArray::find(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
         ) {
-    if(comparer == zfnull) {
-        return zfindexMax();
+    if(!comparer) {
+        comparer = ZFComparerDefault;
     }
     for(zfstlsize i = 0; i < d->data.size(); ++i) {
         if(comparer(d->data[i], obj) == ZFCompareEqual) {
@@ -74,15 +116,51 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, find
     }
     return zfindexMax();
 }
-ZFMETHOD_DEFINE_2(ZFArray, zfindex, findReversely
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfindex, find
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+        )
+ZFMETHOD_DEFINE_2(ZFArray, zfindex, find
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(const ZFListener &, comparer)
         ) {
-    if(comparer == zfnull) {
-        return zfindexMax();
+    if(!comparer) {
+        return this->find(obj, ZFComparerDefault);
+    }
+    _ZFP_ZFArrayItemComparer comparerWrap(this, comparer);
+    for(zfstlsize i = 0; i < d->data.size(); ++i) {
+        if(comparerWrap(d->data[i], obj) == ZFCompareEqual) {
+            return (zfindex)i;
+        }
+    }
+    return zfindexMax();
+}
+zfindex ZFArray::findReversely(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
+        ) {
+    if(!comparer) {
+        comparer = ZFComparerDefault;
     }
     for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
         if(comparer(d->data[i], obj) == ZFCompareEqual) {
+            return (zfindex)i;
+        }
+    }
+    return zfindexMax();
+}
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfindex, findReversely
+        , ZFMP_IN(ZFObject *, obj)
+        )
+ZFMETHOD_DEFINE_2(ZFArray, zfindex, findReversely
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    if(!comparer) {
+        return this->findReversely(obj, ZFComparerDefault);
+    }
+    _ZFP_ZFArrayItemComparer comparerWrap(this, comparer);
+    for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
+        if(comparerWrap(d->data[i], obj) == ZFCompareEqual) {
             return (zfindex)i;
         }
     }
@@ -151,32 +229,14 @@ ZFMETHOD_DEFINE_2(ZFArray, void, set
     zfobjRelease(old);
 }
 
-ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElement
-        , ZFMP_IN(ZFObject *, obj)
+zfbool ZFArray::removeElement(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
         ) {
-    if(obj) {
-        for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if((*it)->objectCompare(obj) == ZFCompareEqual) {
-                ZFObject *toRelease = *it;
-                it = d->data.erase(it);
-                zfobjRelease(toRelease);
-
-                this->contentOnRemove(toRelease);
-                this->contentOnUpdate();
-                return zftrue;
-            }
-            else {
-                ++it;
-            }
-        }
+    if(!comparer) {
+        comparer = ZFComparerDefault;
     }
-    return zffalse;
-}
-ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
-        , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
-        ) {
-    if(obj && comparer) {
+    if(obj) {
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
             if(comparer(*it, obj) == ZFCompareEqual) {
                 ZFObject *toRelease = *it;
@@ -194,29 +254,43 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
     }
     return zffalse;
 }
-ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElementRevsersely
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfbool, removeElement
         , ZFMP_IN(ZFObject *, obj)
+        )
+ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(const ZFListener &, comparer)
         ) {
+    if(!comparer) {
+        return this->removeElement(obj, ZFComparerDefault);
+    }
     if(obj) {
-        for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
-            if(d->data[i]->objectCompare(obj) == ZFCompareEqual) {
-                ZFObject *toRelease = d->data[i];
-                d->data.erase(d->data.begin() + i);
+        _ZFP_ZFArrayItemComparer comparerWrap(this, comparer);
+        for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
+            if(comparerWrap(*it, obj) == ZFCompareEqual) {
+                ZFObject *toRelease = *it;
+                it = d->data.erase(it);
                 zfobjRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnUpdate();
                 return zftrue;
             }
+            else {
+                ++it;
+            }
         }
     }
     return zffalse;
 }
-ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementRevsersely
-        , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+zfbool ZFArray::removeElementReversely(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
         ) {
-    if(obj && comparer) {
+    if(!comparer) {
+        comparer = ZFComparerDefault;
+    }
+    if(obj) {
         for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
             if(comparer(d->data[i], obj) == ZFCompareEqual) {
                 ZFObject *toRelease = d->data[i];
@@ -231,13 +305,43 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementRevsersely
     }
     return zffalse;
 }
-ZFMETHOD_DEFINE_1(ZFArray, zfindex, removeElementAll
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfbool, removeElementReversely
         , ZFMP_IN(ZFObject *, obj)
+        )
+ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementReversely
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    if(!comparer) {
+        return this->removeElementReversely(obj, ZFComparerDefault);
+    }
+    if(obj) {
+        _ZFP_ZFArrayItemComparer comparerWrap(this, comparer);
+        for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
+            if(comparerWrap(d->data[i], obj) == ZFCompareEqual) {
+                ZFObject *toRelease = d->data[i];
+                d->data.erase(d->data.begin() + i);
+                zfobjRelease(toRelease);
+
+                this->contentOnRemove(toRelease);
+                this->contentOnUpdate();
+                return zftrue;
+            }
+        }
+    }
+    return zffalse;
+}
+zfindex ZFArray::removeElementAll(
+        ZF_IN ZFObject *obj
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
         ) {
     zfindex removedCount = 0;
+    if(!comparer) {
+        comparer = ZFComparerDefault;
+    }
     if(obj) {
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if((*it)->objectCompare(obj) == ZFCompareEqual) {
+            if(comparer(*it, obj) == ZFCompareEqual) {
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
@@ -255,14 +359,21 @@ ZFMETHOD_DEFINE_1(ZFArray, zfindex, removeElementAll
     }
     return removedCount;
 }
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFArray, zfindex, removeElementAll
+        , ZFMP_IN(ZFObject *, obj)
+        )
 ZFMETHOD_DEFINE_2(ZFArray, zfindex, removeElementAll
         , ZFMP_IN(ZFObject *, obj)
-        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+        , ZFMP_IN(const ZFListener &, comparer)
         ) {
+    if(!comparer) {
+        return this->removeElementAll(obj, ZFComparerDefault);
+    }
     zfindex removedCount = 0;
-    if(obj && comparer) {
+    if(obj) {
+        _ZFP_ZFArrayItemComparer comparerWrap(this, comparer);
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if(comparer(*it, obj) == ZFCompareEqual) {
+            if(comparerWrap(*it, obj) == ZFCompareEqual) {
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
@@ -379,51 +490,10 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
     this->contentOnUpdate();
 }
 
-zfclassLikePOD _ZFP_ZFArrayItemComparer {
-public:
-    zfweak owner;
-    ZFListener impl;
-public:
-    ZFCompareResult operator() (ZF_IN ZFObject *v0, ZF_IN ZFObject *v1) const {
-        ZFArgs zfargs;
-        impl.execute(zfargs
-                .sender(owner)
-                .param0(v0)
-                .param1(v1)
-                );
-        v_ZFCompareResult *result = zfargs.result();
-        ZFCoreAssertWithMessageTrim(result
-                , "custom comparer must return ZFCompareResult, got: %s, while compareing (%s, %s), on array: %s"
-                , zfargs.result()
-                , v0
-                , v1
-                , owner->objectInfoOfInstance()
-                );
-        return result->zfv;
-    }
-};
-ZFMETHOD_DEFINE_3(ZFArray, void, sort
-        , ZFMP_IN_OPT(zfindex, start, 0)
-        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-        , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
-        ) {
-    if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
-        _ZFP_ZFArrayItemComparer comparerWrap;
-        comparerWrap.owner = this;
-        comparerWrap.impl = comparer;
-        zfmSort<ZFObject *>(
-                d->data
-                , start
-                , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
-                , comparerWrap
-                );
-        this->contentOnUpdate();
-    }
-}
-ZFMETHOD_DEFINE_3(ZFArray, void, sort
-        , ZFMP_IN(zfindex, start)
-        , ZFMP_IN(zfindex, count)
-        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+void ZFArray::sort(
+        ZF_IN_OPT zfindex start /* = 0 */
+        , ZF_IN_OPT zfindex count /* = zfindexMax() */
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
         ) {
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSort<ZFObject *>(
@@ -435,28 +505,32 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sort
         this->contentOnUpdate();
     }
 }
-ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFArray, void, sort
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-        , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
+        )
+ZFMETHOD_DEFINE_3(ZFArray, void, sort
+        , ZFMP_IN(zfindex, start)
+        , ZFMP_IN(zfindex, count)
+        , ZFMP_IN(const ZFListener &, comparer)
         ) {
+    if(!comparer) {
+        return this->sort(start, count, ZFComparerDefault);
+    }
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
-        _ZFP_ZFArrayItemComparer comparerWrap;
-        comparerWrap.owner = this;
-        comparerWrap.impl = comparer;
-        zfmSortReversely<ZFObject *>(
+        zfmSort<ZFObject *>(
                 d->data
                 , start
                 , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
-                , comparerWrap
+                , _ZFP_ZFArrayItemComparer(this, comparer)
                 );
         this->contentOnUpdate();
     }
 }
-ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
-        , ZFMP_IN(zfindex, start)
-        , ZFMP_IN(zfindex, count)
-        , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+void ZFArray::sortReversely(
+        ZF_IN_OPT zfindex start /* = 0 */
+        , ZF_IN_OPT zfindex count /* = zfindexMax() */
+        , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer /* = ZFComparerDefault */
         ) {
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSortReversely<ZFObject *>(
@@ -464,6 +538,28 @@ ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
                 , start
                 , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
                 , comparer
+                );
+        this->contentOnUpdate();
+    }
+}
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFArray, void, sortReversely
+        , ZFMP_IN_OPT(zfindex, start, 0)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
+ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
+        , ZFMP_IN_OPT(zfindex, start, 0)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
+        ) {
+    if(!comparer) {
+        return this->sortReversely(start, count, ZFComparerDefault);
+    }
+    if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
+        zfmSortReversely<ZFObject *>(
+                d->data
+                , start
+                , (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1)
+                , _ZFP_ZFArrayItemComparer(this, comparer)
                 );
         this->contentOnUpdate();
     }

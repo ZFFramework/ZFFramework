@@ -186,6 +186,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountRemove
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, invokeCountRemoveAll)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfstring>, invokeCountGetAllKey)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, invokeCountGet
         , ZFMP_IN(const zfstring &, key)
         )

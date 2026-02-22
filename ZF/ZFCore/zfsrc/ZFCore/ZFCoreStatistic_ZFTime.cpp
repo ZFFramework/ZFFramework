@@ -125,6 +125,10 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, invokeTimeGetSummary
     return ret;
 }
 
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<zfstring>, invokeTimeGetAllKey) {
+    return _ZFP_ZFCoreStatisticInvokeTimeDataMap().allKey();
+}
+
 ZF_NAMESPACE_END(ZFCoreStatistic)
 ZF_NAMESPACE_GLOBAL_END
 

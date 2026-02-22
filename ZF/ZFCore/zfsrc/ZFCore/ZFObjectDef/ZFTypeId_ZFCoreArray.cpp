@@ -393,6 +393,15 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, find
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, findReversely
         , ZFMP_IN(ZFObject *, e)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfbool, removeElement
+        , ZFMP_IN(ZFObject *, e)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfbool, removeElementReversely
+        , ZFMP_IN(ZFObject *, e)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, removeElementAll
+        , ZFMP_IN(ZFObject *, e)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, remove
         , ZFMP_IN(zfindex, index)
         )
@@ -423,7 +432,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, getFirst)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, getLast)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfindex, count)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfbool, isEmpty)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfindex, isContain
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfbool, isContain
         , ZFMP_IN(ZFObject *, e)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, sort
@@ -434,6 +443,206 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, sortReversely
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
         )
+
+// ============================================================
+// ZFCoreArray comparer spec
+zfclassLikePOD _ZFP_ZFCoreArrayItemComparer {
+public:
+    v_ZFCoreArray *owner;
+    ZFListener comparer;
+public:
+    explicit _ZFP_ZFCoreArrayItemComparer(
+            ZF_IN v_ZFCoreArray *owner
+            , ZF_IN const ZFListener &comparer
+            )
+    : owner(owner)
+    , comparer(comparer)
+    {
+    }
+public:
+    ZFCompareResult operator() (ZF_IN ZFObject *v0, ZF_IN ZFObject *v1) const {
+        ZFArgs zfargs;
+        comparer.execute(zfargs
+                .sender(owner)
+                .param0(v0)
+                .param1(v1)
+                );
+        v_ZFCompareResult *result = zfargs.result();
+        ZFCoreAssertWithMessageTrim(result
+                , "custom comparer must return ZFCompareResult, got: %s, while compareing (%s, %s), on array: %s"
+                , zfargs.result()
+                , v0
+                , v1
+                , owner->objectInfoOfInstance()
+                );
+        return result->zfv;
+    }
+};
+ZFMETHOD_USER_REGISTER_2(v_ZFCoreArray, zfbool, isContain
+        , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {return owner->isContain(e);}
+    _ZFP_ZFCoreArrayItemComparer comparerWrap(owner, comparer);
+    for(zfindex i = 0; i < owner->count(); ++i) {
+        if(comparerWrap(owner->get(i), e) == ZFCompareEqual) {
+            return zftrue;
+        }
+    }
+    return zffalse;
+}
+ZFMETHOD_USER_REGISTER_2(v_ZFCoreArray, zfindex, find
+        , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {return owner->find(e);}
+    _ZFP_ZFCoreArrayItemComparer comparerWrap(owner, comparer);
+    for(zfindex i = 0; i < owner->count(); ++i) {
+        if(comparerWrap(owner->get(i), e) == ZFCompareEqual) {
+            return i;
+        }
+    }
+    return zfindexMax();
+}
+ZFMETHOD_USER_REGISTER_2(v_ZFCoreArray, zfindex, findReversely
+        , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {return owner->findReversely(e);}
+    _ZFP_ZFCoreArrayItemComparer comparerWrap(owner, comparer);
+    for(zfindex i = owner->count() - 1; i != zfindexMax(); --i) {
+        if(comparerWrap(owner->get(i), e) == ZFCompareEqual) {
+            return i;
+        }
+    }
+    return zfindexMax();
+}
+ZFMETHOD_USER_REGISTER_2(v_ZFCoreArray, zfbool, removeElement
+        , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {return owner->removeElement(e);}
+    _ZFP_ZFCoreArrayItemComparer comparerWrap(owner, comparer);
+    for(zfindex i = 0; i < owner->count(); ++i) {
+        if(comparerWrap(owner->get(i), e) == ZFCompareEqual) {
+            owner->remove(i);
+            return zftrue;
+        }
+    }
+    return zffalse;
+}
+ZFMETHOD_USER_REGISTER_2(v_ZFCoreArray, zfbool, removeElementReversely
+        , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {return owner->removeElementReversely(e);}
+    _ZFP_ZFCoreArrayItemComparer comparerWrap(owner, comparer);
+    for(zfindex i = owner->count() - 1; i != zfindexMax(); --i) {
+        if(comparerWrap(owner->get(i), e) == ZFCompareEqual) {
+            owner->remove(i);
+            return zftrue;
+        }
+    }
+    return zffalse;
+}
+ZFMETHOD_USER_REGISTER_2(v_ZFCoreArray, zfindex, removeElementAll
+        , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {return owner->removeElementAll(e);}
+    _ZFP_ZFCoreArrayItemComparer comparerWrap(owner, comparer);
+    zfindex removedCount = 0;
+    for(zfindex i = 0; i < owner->count(); ++i) {
+        if(comparerWrap(owner->get(i), e) == ZFCompareEqual) {
+            ++removedCount;
+            owner->remove(i);
+            --i;
+        }
+    }
+    return removedCount;
+}
+
+// ============================================================
+zfclassLikePOD _ZFP_ZFCoreArrayItemHolder {
+public:
+    v_ZFCoreArray *owner;
+public:
+    explicit _ZFP_ZFCoreArrayItemHolder(ZF_IN v_ZFCoreArray *owner)
+    : owner(owner)
+    {
+    }
+public:
+    zfclassLikePOD ItemRef {
+    public:
+        v_ZFCoreArray *owner;
+        zfindex index;
+    public:
+        explicit ItemRef(
+                ZF_IN v_ZFCoreArray *owner
+                , ZF_IN zfindex index
+                )
+        : owner(owner)
+        , index(index)
+        {
+        }
+    public:
+        operator zfauto (void) const {
+            return owner->get(index);
+        }
+        ItemRef &operator = (ZF_IN ZFObject *v) {
+            owner->set(index, v);
+            return *this;
+        }
+    };
+public:
+    ItemRef operator [] (ZF_IN zfindex index) const {
+        return ItemRef(owner, index);
+    }
+};
+ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sort
+        , ZFMP_IN(zfindex, start)
+        , ZFMP_IN(zfindex, count)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {
+        return owner->sort(start, count);
+    }
+    if(!owner->isEmpty() && start + 1 < owner->count() && count > 1) {
+        _ZFP_ZFCoreArrayItemHolder holder(owner);
+        zfmSort<zfauto>(
+                holder
+                , start
+                , (count > owner->count() - start) ? (owner->count() - 1) : (start + count - 1)
+                , ZFObjectCompare
+                );
+    }
+}
+ZFMETHOD_USER_REGISTER_3(v_ZFCoreArray, void, sortReversely
+        , ZFMP_IN(zfindex, start)
+        , ZFMP_IN(zfindex, count)
+        , ZFMP_IN(const ZFListener &, comparer)
+        ) {
+    v_ZFCoreArray *owner = invokerObject->to<v_ZFCoreArray *>();
+    if(!comparer) {
+        return owner->sortReversely(start, count);
+    }
+    if(!owner->isEmpty() && start + 1 < owner->count() && count > 1) {
+        _ZFP_ZFCoreArrayItemHolder holder(owner);
+        zfmSortReversely<zfauto>(
+                holder
+                , start
+                , (count > owner->count() - start) ? (owner->count() - 1) : (start + count - 1)
+                , ZFObjectCompare
+                );
+    }
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

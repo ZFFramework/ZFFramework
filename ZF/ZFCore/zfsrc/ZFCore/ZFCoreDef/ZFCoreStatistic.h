@@ -36,6 +36,9 @@ extern ZFLIB_ZFCore void invokeCountRemoveAll(void);
  */
 extern ZFLIB_ZFCore zfindex invokeCountGet(ZF_IN const zfstring &key);
 
+/** @brief see #ZFCoreStatistic::invokeCountGet */
+extern ZFLIB_ZFCore ZFCoreArray<zfstring> invokeCountGetAllKey(void);
+
 ZF_NAMESPACE_END(ZFCoreStatistic)
 ZF_NAMESPACE_GLOBAL_END
 

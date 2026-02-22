@@ -301,6 +301,8 @@ public:
     /** @brief generic version */
     virtual zfindex genericFindReversely(ZF_IN const void *e) zfpurevirtual;
     /** @brief generic version */
+    virtual zfindex genericRemoveElementAll(ZF_IN const void *e) zfpurevirtual;
+    /** @brief generic version */
     virtual void genericAdd(ZF_IN const void *e) {
         this->genericAdd(e, zfindexMax());
     }
@@ -983,6 +985,8 @@ public:
     virtual zfindex genericFind(ZF_IN const void *e) {return this->find(*(const T_Element *)e);}
     zfoverride
     virtual zfindex genericFindReversely(ZF_IN const void *e) {return this->findReversely(*(const T_Element *)e);}
+    zfoverride
+    virtual zfindex genericRemoveElementAll(ZF_IN const void *e) {return this->removeElementAll(*(const T_Element *)e);}
     zfoverride
     virtual void genericAdd(
             ZF_IN const void *e

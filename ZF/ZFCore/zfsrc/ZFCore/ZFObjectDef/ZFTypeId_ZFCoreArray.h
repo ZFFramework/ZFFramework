@@ -387,6 +387,41 @@ public:
         this->elementType->genericAccessFinish(t, v);
         return ret;
     }
+    zfbool removeElement(ZF_IN ZFObject *e) {
+        zfindex index = this->find(e);
+        if(index != zfindexMax()) {
+            this->remove(index);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
+    }
+    zfbool removeElementReversely(ZF_IN ZFObject *e) {
+        zfindex index = this->findReversely(e);
+        if(index != zfindexMax()) {
+            this->remove(index);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
+    }
+    zfindex removeElementAll(ZF_IN ZFObject *e) {
+        zfauto t = _ZFP_elementTypeCheck(e);
+        if(!t) {
+            return 0;
+        }
+        void *v = this->elementType->genericAccess(t);
+        ZFCoreAssertWithMessageTrim(v != zfnull
+                , "removeElementAll with different element type, desired: %s, got: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , e ? e->classData()->classNameFull() : zfnull
+                );
+        zfindex ret = this->zfv->genericRemoveElementAll(v);
+        this->elementType->genericAccessFinish(t, v);
+        return ret;
+    }
     void remove(ZF_IN zfindex index) {
         if(this->zfv != zfnull) {
             this->zfv->remove(index);

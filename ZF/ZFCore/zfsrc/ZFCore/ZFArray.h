@@ -13,6 +13,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd _ZFP_ZFArrayPrivate;
 /**
  * @brief container of ZFObject, see #ZFContainer
+ *
+ * for the comparer of #isContain, #removeElement, etc:
+ * -  sender is the owner container
+ * -  param0 and param1 is the item being compared
+ * -  the comparer must set result to #v_ZFCompareResult
  */
 zfclass ZFLIB_ZFCore ZFArray : zfextend ZFContainer {
     ZFOBJECT_DECLARE(ZFArray, ZFContainer)
@@ -32,9 +37,17 @@ public:
      * @brief return true if contains the object,
      *   compared by instance compare by default
      */
+    virtual zfbool isContain(
+            ZF_IN ZFObject *obj
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
+    /**
+     * @brief return true if contains the object,
+     *   compared by instance compare by default
+     */
     ZFMETHOD_DECLARE_2(zfbool, isContain
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
 
     /**
@@ -57,16 +70,31 @@ public:
     /**
      * @brief find element, compared by instance compare by default
      */
+    virtual zfindex find(
+            ZF_IN ZFObject *obj
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
+    /**
+     * @brief find element, compared by instance compare by default
+     */
     ZFMETHOD_DECLARE_2(zfindex, find
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
+
+    /**
+     * @brief find element, compared by instance compare by default
+     */
+    virtual zfindex findReversely(
+            ZF_IN ZFObject *obj
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
     /**
      * @brief find element, compared by instance compare by default
      */
     ZFMETHOD_DECLARE_2(zfindex, findReversely
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerDefault)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
 
 public:
@@ -103,41 +131,44 @@ public:
     /**
      * @brief remove first matched object, return whether the element removed
      */
-    ZFMETHOD_DECLARE_1(zfbool, removeElement
-            , ZFMP_IN(ZFObject *, obj)
-            )
+    virtual zfbool removeElement(
+            ZF_IN ZFObject *obj
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
     /**
      * @brief remove first matched object, return whether the element removed
      */
     ZFMETHOD_DECLARE_2(zfbool, removeElement
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
     /**
      * @brief remove last matched object, return whether the element removed
      */
-    ZFMETHOD_DECLARE_1(zfbool, removeElementRevsersely
-            , ZFMP_IN(ZFObject *, obj)
-            )
+    virtual zfbool removeElementReversely(
+            ZF_IN ZFObject *obj
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
     /**
      * @brief remove last matched object, return whether the element removed
      */
-    ZFMETHOD_DECLARE_2(zfbool, removeElementRevsersely
+    ZFMETHOD_DECLARE_2(zfbool, removeElementReversely
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
     /**
      * @brief remove all matched object, return number of element removed
      */
-    ZFMETHOD_DECLARE_1(zfindex, removeElementAll
-            , ZFMP_IN(ZFObject *, obj)
-            )
+    virtual zfindex removeElementAll(
+            ZF_IN ZFObject *obj
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
     /**
      * @brief remove all matched object, return number of element removed
      */
     ZFMETHOD_DECLARE_2(zfindex, removeElementAll
             , ZFMP_IN(ZFObject *, obj)
-            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
 
     /**
@@ -184,43 +215,35 @@ public:
 
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
-     *
-     * comparer's sender would be the owner array,
-     * param0 and param1 would be the child to be compared,
-     * impl must set #ZFArgs::result to #v_ZFCompareResult
      */
-    ZFMETHOD_DECLARE_3(void, sort
-            , ZFMP_IN_OPT(zfindex, start, 0)
-            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
-            )
+    virtual void sort(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
      */
     ZFMETHOD_DECLARE_3(void, sort
             , ZFMP_IN(zfindex, start)
             , ZFMP_IN(zfindex, count)
-            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
-     *
-     * comparer's sender would be the owner array,
-     * param0 and param1 would be the child to be compared,
-     * impl must set #ZFArgs::result to #v_ZFCompareResult
      */
-    ZFMETHOD_DECLARE_3(void, sortReversely
-            , ZFMP_IN_OPT(zfindex, start, 0)
-            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
-            , ZFMP_IN_OPT(const ZFListener &, comparer, zfnull)
-            )
+    virtual void sortReversely(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            , ZF_IN_OPT ZFComparer<ZFObject *>::Comparer comparer = ZFComparerDefault
+            );
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
      */
     ZFMETHOD_DECLARE_3(void, sortReversely
             , ZFMP_IN(zfindex, start)
             , ZFMP_IN(zfindex, count)
-            , ZFMP_IN(ZFComparer<ZFObject *>::Comparer, comparer)
+            , ZFMP_IN(const ZFListener &, comparer)
             )
 
     // ============================================================
