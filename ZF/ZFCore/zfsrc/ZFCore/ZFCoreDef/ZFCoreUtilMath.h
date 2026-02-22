@@ -136,7 +136,7 @@ zfindex _ZFP_zfmSort(
         , ZF_IN zfbool ascending
         ) {
     ZFCompareResult cmpToken = (ascending ? ZFCompareGreater : ZFCompareSmaller);
-    T_Element pivot = holder[left];
+    T_Element pivot = (T_Element)holder[left];
     ZFCompareResult cmpTmp = ZFCompareUncomparable;
     while(left < right) {
         while(left < right) {
