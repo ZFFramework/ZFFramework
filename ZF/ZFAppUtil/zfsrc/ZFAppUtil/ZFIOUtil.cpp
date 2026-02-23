@@ -438,6 +438,21 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, ZFStyleLoadAsync
 // ============================================================
 ZFOBJECT_REGISTER(ZFStyleLoadAsyncTask)
 
+ZFMETHOD_DEFINE_2(ZFStyleLoadAsyncTask, void, child
+        , ZFMP_IN(const ZFPathInfo &, child)
+        , ZFMP_IN(const zfstring &, relPath)
+        ) {
+    if(child) {
+        if(!this->taskList()) {
+            this->taskList(zfobj<ZFArray>());
+        }
+        zfobj<v_ZFPathInfo> tmp(child);
+        if(relPath) {
+            tmp->objectTag("relPath", zfobj<v_zfstring>(relPath));
+        }
+        this->taskList()->add(tmp);
+    }
+}
 ZFMETHOD_DEFINE_1(ZFStyleLoadAsyncTask, void, child
         , ZFMP_IN(const ZFPathInfo &, child)
         ) {
@@ -467,6 +482,12 @@ ZFMETHOD_DEFINE_1(ZFStyleLoadAsyncTask, void, child
     this->taskList()->addFrom(child);
 }
 
+ZFOBJECT_ON_INIT_DEFINE_2(ZFStyleLoadAsyncTask
+        , ZFMP_IN(const ZFPathInfo &, child)
+        , ZFMP_IN(const zfstring &, relPath)
+        ) {
+    this->child(child, relPath);
+}
 ZFOBJECT_ON_INIT_DEFINE_1(ZFStyleLoadAsyncTask
         , ZFMP_IN(const ZFPathInfo &, child)
         ) {
@@ -504,6 +525,23 @@ void ZFStyleLoadAsyncTask::taskOnStart(void) {
             v_ZFPathInfo *pathInfo = taskList->get(index);
             if(pathInfo == zfnull || pathInfo->zfv.isEmpty()) {
                 next(owner, taskList, index + 1);
+                return;
+            }
+
+            v_zfstring *relPath = pathInfo->objectTag("relPath");
+            if(relPath && relPath->zfv) {
+                ZFLISTENER_5(onLoad
+                        , zfautoT<v_ZFPathInfo>, pathInfo
+                        , zfautoT<v_zfstring>, relPath
+                        , zfweakT<zfself>, owner
+                        , zfautoT<ZFArray>, taskList
+                        , zfindex, index
+                        ) {
+                    owner->_task = zfnull;
+                    ZFStyleLoadItem(pathInfo->zfv, relPath->zfv);
+                    next(owner, taskList, index + 1);
+                } ZFLISTENER_END()
+                owner->_task = zfpost(onLoad);
                 return;
             }
 

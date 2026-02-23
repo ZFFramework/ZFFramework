@@ -117,6 +117,13 @@ public:
     /**
      * @brief util to add task
      */
+    ZFMETHOD_DECLARE_2(void, child
+            , ZFMP_IN(const ZFPathInfo &, child)
+            , ZFMP_IN(const zfstring &, relPath)
+            )
+    /**
+     * @brief util to add task
+     */
     ZFMETHOD_DECLARE_1(void, child
             , ZFMP_IN(const ZFPathInfo &, child)
             )
@@ -138,6 +145,11 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
+    /** @brief construct with task */
+    ZFOBJECT_ON_INIT_DECLARE_2(
+            ZFMP_IN(const ZFPathInfo &, child)
+            , ZFMP_IN(const zfstring &, relPath)
+            )
     /** @brief construct with task */
     ZFOBJECT_ON_INIT_DECLARE_1(
             ZFMP_IN(const ZFPathInfo &, child)
