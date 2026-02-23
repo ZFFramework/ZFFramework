@@ -33,5 +33,19 @@ function(zfprojConfigAfter_ZFNet_impl projName)
         find_package(SDL3_net REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
         target_link_libraries(${projName} SDL3_net::SDL3_net)
     endif()
+
+    # cpp-httplib require CoreFoundation and Security on mac
+    if(APPLE)
+        # add_library(MacOS::CoreFoundation INTERFACE IMPORTED GLOBAL)
+        # add_library(MacOS::Security INTERFACE IMPORTED GLOBAL)
+        # target_link_libraries(${projName}
+        #     MacOS::CoreFoundation
+        #     MacOS::Security
+        # )
+        target_link_libraries(${projName}
+            "-framework CoreFoundation"
+            "-framework Security"
+        )
+    endif()
 endfunction()
 
