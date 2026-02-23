@@ -82,14 +82,14 @@ android {
 
 def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
     if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.xml").exists()) {
-        owner.implementation project(":zfprojConfig:${name}")
+        owner.implementation project(":zfprojConfig_${name}")
     }
 }
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
     if (file('./zfprojConfig/zfprojConfig.xml').exists()) {
-        implementation project(':zfprojConfig:ZFFramework_test')
+        implementation project(':zfprojConfig_ZFFramework_test')
     }
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFCore')
     zfprojConfig_xml(this.dependencies, ZF_ROOT_PATH, 'ZF', 'ZFAlgorithm')

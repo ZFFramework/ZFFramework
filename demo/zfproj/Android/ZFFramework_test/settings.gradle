@@ -23,7 +23,7 @@ rootProject.name = 'ZFFramework_test'
 include ':zfapp'
 
 if (file('./zfapp/zfprojConfig/zfprojConfig.xml').exists()) {
-    include ':zfprojConfig:ZFFramework_test'
-    project(':zfprojConfig:ZFFramework_test').projectDir = new File(file('./zfprojConfigHelper').absolutePath)
+    include ':zfprojConfig_ZFFramework_test'
+    project(':zfprojConfig_ZFFramework_test').projectDir = new File(file('./zfprojConfigHelper').absolutePath)
 }
 

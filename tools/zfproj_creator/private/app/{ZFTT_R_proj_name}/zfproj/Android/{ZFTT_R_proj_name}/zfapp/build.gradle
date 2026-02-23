@@ -75,7 +75,7 @@ android {
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
     if (file('./zfprojConfig/zfprojConfig.xml').exists()) {
-        implementation project(':zfprojConfig:{ZFTT_R_proj_name}')
+        implementation project(':zfprojConfig_{ZFTT_R_proj_name}')
     }{ZFTT_C_lib_require_0}
     implementation fileTree(includes: ['*.aar'], dir: ZF_ROOT_PATH + '/_release/Android/module/{ZFTT_R_lib_name_0}/aar'){ZFTT_CE}{ZFTT_C_lib_require_1}
     implementation fileTree(includes: ['*.aar'], dir: ZF_ROOT_PATH + '/_release/Android/module/{ZFTT_R_lib_name_1}/aar'){ZFTT_CE}{ZFTT_C_lib_require_2}
