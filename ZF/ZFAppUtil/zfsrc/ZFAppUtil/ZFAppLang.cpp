@@ -135,7 +135,13 @@ ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFAppLang) {
         return ret;
     }
     else {
-        return ZFEnvInfo::localeLangId();
+        ret = ZFEnvInfo::localeLangId();
+        if(ret) {
+            return ret;
+        }
+        else {
+            return "default";
+        }
     }
 }
 

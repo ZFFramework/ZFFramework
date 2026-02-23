@@ -130,7 +130,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, ZFAppSkinLoad
     }
 }
 ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFAppSkin) {
-    return ZFState::instance()->get("ZFAppSkin");
+    zfstring ret = ZFState::instance()->get("ZFAppSkin");
+    if(ret) {
+        return ret;
+    }
+    else {
+        return "default";
+    }
 }
 
 // ============================================================
