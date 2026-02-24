@@ -24,7 +24,7 @@ include ':zfapp'
 
 if (file('./zfapp/zfprojConfig/zfprojConfig.xml').exists()) {
     include ':zfprojConfig_{ZFTT_R_proj_name}'
-    project(':zfprojConfig_{ZFTT_R_proj_name}').projectDir = new File(file('./zfprojConfigHelper').absolutePath)
+    project(':zfprojConfig_{ZFTT_R_proj_name}').projectDir = file(file('./zfprojConfigHelper').absolutePath)
 }
 
 def ZF_ROOT_PATH = file('../../../../../ZFFramework').absolutePath
@@ -32,7 +32,7 @@ def ZF_ROOT_PATH = file('../../../../../ZFFramework').absolutePath
 def zfprojConfig_xml(owner, ZF_ROOT_PATH, type, name) {
     if (file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zflib/zfprojConfig/zfprojConfig.xml").exists()) {
         owner.include ":zfprojConfig_${name}"
-        owner.project(":zfprojConfig_${name}").projectDir = new File("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zfprojConfigHelper")
+        owner.project(":zfprojConfig_${name}").projectDir = file(file("${ZF_ROOT_PATH}/${type}/${name}/zfproj/Android/${name}/zfprojConfigHelper").absolutePath)
     }
 }
 {ZFTT_C_lib_require_0}

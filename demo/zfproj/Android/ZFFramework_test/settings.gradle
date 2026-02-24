@@ -24,6 +24,6 @@ include ':zfapp'
 
 if (file('./zfapp/zfprojConfig/zfprojConfig.xml').exists()) {
     include ':zfprojConfig_ZFFramework_test'
-    project(':zfprojConfig_ZFFramework_test').projectDir = new File(file('./zfprojConfigHelper').absolutePath)
+    project(':zfprojConfig_ZFFramework_test').projectDir = file(file('./zfprojConfigHelper').absolutePath)
 }
 

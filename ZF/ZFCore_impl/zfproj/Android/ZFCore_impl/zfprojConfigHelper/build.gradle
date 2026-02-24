@@ -7,8 +7,8 @@ android {
     compileSdk 35
     sourceSets {
         main {
-            if (file(this.projectDir.getAbsolutePath() + '/../zflib/zfprojConfig/zfprojConfig.xml').exists()) {
-                manifest.srcFile this.projectDir.getAbsolutePath() + '/../zflib/zfprojConfig/zfprojConfig.xml'
+            if (file(this.projectDir.absolutePath + '/../zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+                manifest.srcFile this.projectDir.absolutePath + '/../zflib/zfprojConfig/zfprojConfig.xml'
             }
         }
     }

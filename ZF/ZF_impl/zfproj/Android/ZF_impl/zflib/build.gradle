@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-def ZF_ROOT_PATH = this.projectDir.getAbsolutePath() + '/../../../../../../../ZFFramework'
+def ZF_ROOT_PATH = file(this.projectDir.absolutePath + '/../../../../../../../ZFFramework').absolutePath
 android {
     namespace 'com.ZFFramework.ZF_impl'
     compileSdk 35
@@ -37,7 +37,7 @@ android {
     }
     sourceSets {
         main {
-            java.srcDirs += this.projectDir.getAbsolutePath() + '/../../../../zfsrc/ZFImpl/sys_Android/java'
+            java.srcDirs += this.projectDir.absolutePath + '/../../../../zfsrc/ZFImpl/sys_Android/java'
         }
     }
     externalNativeBuild {
@@ -49,30 +49,30 @@ android {
 
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
-    if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.xml').exists()) {
+    if (file(this.projectDir.absolutePath + '/zfprojConfig/zfprojConfig.xml').exists()) {
         implementation project(':zfprojConfig_ZF_impl')
     }
     compileOnly fileTree(includes: ['*.jar'], dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs')
 }
 
-if (file(this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle').exists()) {
-    apply from: this.projectDir.getAbsolutePath() + '/zfprojConfig/zfprojConfig.gradle'
+if (file(this.projectDir.absolutePath + '/zfprojConfig/zfprojConfig.gradle').exists()) {
+    apply from: this.projectDir.absolutePath + '/zfprojConfig/zfprojConfig.gradle'
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os
 
-static def ZFCmd(cmd, args) {
+def ZFCmd(cmd, args) {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        return ['cmd.exe', '/c', "${cmd}.bat"] + args
+        return ['cmd.exe', '/c', file("${cmd}.bat").absolutePath] + args
     } else {
-        return ['sh', "${cmd}.sh"] + args
+        return ['sh', file("${cmd}.sh").absolutePath] + args
     }
 }
 
 tasks.register('ZFCopyRes_ZF_impl', Exec) {
     commandLine ZFCmd(ZF_ROOT_PATH + '/tools/util/copy_res', [
-            this.projectDir.getAbsolutePath() + '/../../../../zfres',
-            this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
+            file(this.projectDir.absolutePath + '/../../../../zfres').absolutePath,
+            file(this.projectDir.absolutePath + '/src/main/assets/zfres').absolutePath,
     ])
 }
 tasks.matching { it.name.startsWith('pre') && it.name.endsWith('Build') }.configureEach {
@@ -82,7 +82,7 @@ tasks.matching { it.name.startsWith('pre') && it.name.endsWith('Build') }.config
 tasks.register('ZFCopyLib_ZF_impl', Exec) {
     commandLine ZFCmd(ZF_ROOT_PATH + '/tools/spec/Android/libs_copy', [
             'ZF_impl',
-            this.projectDir.getAbsolutePath() + '/..',
+            file(this.projectDir.absolutePath + '/..').absolutePath,
     ])
 }
 tasks.matching { it.name.startsWith('assemble') }.configureEach {
