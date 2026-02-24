@@ -18,26 +18,13 @@ mkdir "%DST_PATH%" >nul 2>&1
 xcopy /s/e/y/r/h "%SRC_PATH%" "%DST_PATH%" >nul 2>&1
 
 for /f "tokens=*" %%i in ('dir /s/b/a-d "%DST_PATH%" 2^>nul') do (
-    if "%%~ni" == "_repo" (
-        rmdir /s/q "%%i" >nul 2>&1
-    )
-    if "%%~ni" == "_tmp" (
-        rmdir /s/q "%%i" >nul 2>&1
-    )
     if "%%~ni" == "ZF_PUT_RES_FILES_HERE" (
         del /f/s/q "%%i" >nul 2>&1
     )
 )
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
-for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || rmdir "%%a"
+
+:RMDIR_LOOP
+for /d /r "%DST_PATH%" %%a in (*) do dir /b/a "%%a" 2>nul | findstr . >nul || (rmdir "%%a" && goto :RMDIR_LOOP)
 
 exit /b 0
 

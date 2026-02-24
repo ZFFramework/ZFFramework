@@ -14,8 +14,6 @@ if test -e "$SRC_PATH"; then
     cp -rf "$SRC_PATH/." "$DST_PATH/" >/dev/null 2>&1
 fi
 
-find "$DST_PATH" -type d -name "_repo" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
-find "$DST_PATH" -type d -name "_tmp" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
 find "$DST_PATH" -type f -name "ZF_PUT_RES_FILES_HERE" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
 find "$DST_PATH" -depth -type d -empty -exec rm -rf {} ';' >/dev/null 2>&1
 
