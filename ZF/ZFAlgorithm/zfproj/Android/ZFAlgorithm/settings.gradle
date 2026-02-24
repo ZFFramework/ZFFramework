@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = 'ZFAlgorithm'
 include ':zflib'
 
+if (file('./zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig_ZFAlgorithm'
+    project(':zfprojConfig_ZFAlgorithm').projectDir = file('./zfprojConfigHelper')
+}
+

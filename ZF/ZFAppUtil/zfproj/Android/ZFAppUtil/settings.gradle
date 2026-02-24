@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = 'ZFAppUtil'
 include ':zflib'
 
+if (file('./zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig_ZFAppUtil'
+    project(':zfprojConfig_ZFAppUtil').projectDir = file('./zfprojConfigHelper')
+}
+

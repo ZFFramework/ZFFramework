@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = 'ZFUIWebKit'
 include ':zflib'
 
+if (file('./zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig_ZFUIWebKit'
+    project(':zfprojConfig_ZFUIWebKit').projectDir = file('./zfprojConfigHelper')
+}
+

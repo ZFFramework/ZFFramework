@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = 'ZFNet_impl'
 include ':zflib'
 
+if (file('./zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig_ZFNet_impl'
+    project(':zfprojConfig_ZFNet_impl').projectDir = file('./zfprojConfigHelper')
+}
+

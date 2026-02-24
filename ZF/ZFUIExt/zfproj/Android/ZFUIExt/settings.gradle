@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = 'ZFUIExt'
 include ':zflib'
 
+if (file('./zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig_ZFUIExt'
+    project(':zfprojConfig_ZFUIExt').projectDir = file('./zfprojConfigHelper')
+}
+

@@ -22,3 +22,8 @@ dependencyResolutionManagement {
 rootProject.name = '{ZFTT_R_proj_name}'
 include ':zflib'
 
+if (file('./zflib/zfprojConfig/zfprojConfig.xml').exists()) {
+    include ':zfprojConfig_{ZFTT_R_proj_name}'
+    project(':zfprojConfig_{ZFTT_R_proj_name}').projectDir = file('./zfprojConfigHelper')
+}
+
