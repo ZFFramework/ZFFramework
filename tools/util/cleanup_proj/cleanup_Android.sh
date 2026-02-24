@@ -11,6 +11,7 @@ fi
 rm -rf "$PROJ_ROOT/$PROJ_NAME/.gradle" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/.idea" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/build" >/dev/null 2>&1
+rm -rf "$PROJ_ROOT/$PROJ_NAME/gradle-daemon-jvm.properties" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/local.properties" >/dev/null 2>&1
 find "$PROJ_ROOT/$PROJ_NAME" -name "*.iml" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
 

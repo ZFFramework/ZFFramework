@@ -19,6 +19,7 @@ rem Android
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\.gradle" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\.idea" >nul 2>&1
 rmdir /s/q "%PROJ_ROOT%\%PROJ_NAME%\build" >nul 2>&1
+del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\gradle-daemon-jvm.properties" >nul 2>&1
 del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\local.properties" >nul 2>&1
 del /f/s/q "%PROJ_ROOT%\%PROJ_NAME%\*.iml" >nul 2>&1
 
