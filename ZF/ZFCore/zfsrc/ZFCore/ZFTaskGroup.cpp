@@ -72,6 +72,9 @@ void ZFTaskGroup::taskOnStart(void) {
         for(zfindex i = 0; i < concurrentCount; ++i) {
             childRunning->add(this->childAt(i));
         }
+        for(zfindex i = concurrentCount; i < this->childCount(); ++i) {
+            childQueued->add(this->childAt(i));
+        }
     }
     this->objectTag("_ZFP_ZFTaskGroup_running", childRunning);
     this->objectTag("_ZFP_ZFTaskGroup_queued", childQueued);
@@ -99,7 +102,7 @@ void ZFTaskGroup::taskOnStart(void) {
                     if(child->success()) {
                         while(zftrue
                                 && !childQueued->isEmpty()
-                                && childRunning->count() <concurrentCount
+                                && childRunning->count() < concurrentCount
                                 ) {
                             zfautoT<ZFTask> child = childQueued->removeFirstAndGet();
                             childRunning->add(child);
