@@ -16,7 +16,7 @@ set_target_properties(ZFNet PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)
 find_library(android-lib android)
-target_link_libraries(ZFNet ${android-lib} ${log-lib})
+target_link_libraries(ZFNet PRIVATE ${android-lib} ${log-lib})
 
 target_include_directories(ZFNet PRIVATE "${PROJECT_SOURCE_DIR}/../../../../zfsrc")
 
@@ -24,7 +24,7 @@ function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(ZFNet PRIVATE "${ZF_ROOT_PATH}/_release/Android/all/src/main/cpp/include")
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION "${ZF_ROOT_PATH}/_release/Android/all/src/main/jniLibs/${ANDROID_ABI}/lib${ZF_LIB_NAME_}.so")
-    target_link_libraries(ZFNet ${ZF_LIB_NAME_})
+    target_link_libraries(ZFNet PRIVATE ${ZF_LIB_NAME_})
 endfunction()
 
 

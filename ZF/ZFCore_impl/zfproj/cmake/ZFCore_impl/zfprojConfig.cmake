@@ -4,7 +4,7 @@ function(zfprojConfigAfter_ZFCore_impl projName)
 
     if(NOT TARGET SDL3::SDL3)
         find_package(SDL3 REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
-        target_link_libraries(${projName} SDL3::SDL3)
+        target_link_libraries(${projName} PRIVATE SDL3::SDL3)
     endif()
 endfunction()
 

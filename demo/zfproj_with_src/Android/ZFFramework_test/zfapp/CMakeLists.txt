@@ -42,5 +42,5 @@ set_target_properties(ZFFramework_test PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)
 find_library(android-lib android)
-target_link_libraries(ZFFramework_test ${android-lib} ${log-lib})
+target_link_libraries(ZFFramework_test PRIVATE ${android-lib} ${log-lib})
 

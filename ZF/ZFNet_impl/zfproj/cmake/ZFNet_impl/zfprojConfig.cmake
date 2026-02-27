@@ -19,32 +19,26 @@ function(zfprojConfigAfter_ZFNet_impl projName)
     find_package(OpenSSL MODULE)
     if(OPENSSL_FOUND)
         target_compile_options(${projName} PUBLIC -DZF_ENV_HTTPS=1)
-        target_link_libraries(${projName} ${OPENSSL_LIBRARIES})
+        target_link_libraries(${projName} PRIVATE ${OPENSSL_LIBRARIES})
     endif()
 
     target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
 
     if(NOT TARGET SDL3::SDL3)
         find_package(SDL3 REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
-        target_link_libraries(${projName} SDL3::SDL3)
+        target_link_libraries(${projName} PRIVATE SDL3::SDL3)
     endif()
 
     if(NOT TARGET SDL3_net::SDL3_net)
         find_package(SDL3_net REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
-        target_link_libraries(${projName} SDL3_net::SDL3_net)
+        target_link_libraries(${projName} PRIVATE SDL3_net::SDL3_net)
     endif()
 
     # cpp-httplib require CoreFoundation and Security on mac
     if(APPLE)
-        # add_library(MacOS::CoreFoundation INTERFACE IMPORTED GLOBAL)
-        # add_library(MacOS::Security INTERFACE IMPORTED GLOBAL)
-        # target_link_libraries(${projName}
-        #     MacOS::CoreFoundation
-        #     MacOS::Security
-        # )
         target_link_libraries(${projName}
-            "-framework CoreFoundation"
-            "-framework Security"
+            PRIVATE "-framework CoreFoundation"
+            PRIVATE "-framework Security"
         )
     endif()
 endfunction()

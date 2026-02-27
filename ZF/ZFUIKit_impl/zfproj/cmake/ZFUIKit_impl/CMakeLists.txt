@@ -29,7 +29,7 @@ function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(ZFUIKit_impl PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
 
     target_link_directories(ZFUIKit_impl PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
-    target_link_libraries(ZFUIKit_impl ${ZF_LIB_NAME_})
+    target_link_libraries(ZFUIKit_impl PRIVATE ${ZF_LIB_NAME_})
 endfunction()
 
 ZFAddLib(ZFCore)

@@ -153,5 +153,5 @@ set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)
 find_library(android-lib android)
-target_link_libraries({ZFTT_R_proj_name} ${android-lib} ${log-lib})
+target_link_libraries({ZFTT_R_proj_name} PRIVATE ${android-lib} ${log-lib})
 
