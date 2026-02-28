@@ -1,4 +1,13 @@
 
+function(zfprojCxxStandard target stdCfg)
+    get_property(stdTmp TARGET ${target} PROPERTY CXX_STANDARD)
+    if(NOT stdTmp)
+        set_property(TARGET ${target} PROPERTY CXX_STANDARD ${stdCfg})
+    elseif(stdCfg GREATER stdTmp)
+        set_property(TARGET ${target} PROPERTY CXX_STANDARD ${stdCfg})
+    endif()
+endfunction()
+
 function(zfprojStripFILE targetName)
     if(WIN32)
         target_compile_options(${targetName} PUBLIC "/wd4117;")

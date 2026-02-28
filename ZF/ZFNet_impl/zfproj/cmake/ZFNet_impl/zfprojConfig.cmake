@@ -11,7 +11,7 @@ function(zfprojConfigBefore_ZFNet_impl projName ZF_SRC_FILES)
 endfunction()
 
 function(zfprojConfigAfter_ZFNet_impl projName)
-    set_target_properties(${projName} PROPERTIES CXX_STANDARD 11)
+    zfprojCxxStandard(${projName} 11)
     if(MSVC)
         target_compile_options(${projName} PRIVATE /Zc:__cplusplus)
     endif()
