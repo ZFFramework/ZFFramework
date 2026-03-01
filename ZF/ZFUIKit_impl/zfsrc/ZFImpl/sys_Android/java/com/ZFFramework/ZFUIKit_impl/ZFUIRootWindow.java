@@ -20,8 +20,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
-
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.NativeUtil.ZFObject;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
@@ -401,7 +399,7 @@ public final class ZFUIRootWindow extends Activity {
     }
 
     private class _RootContainer extends FrameLayout {
-        public _RootContainer(@NonNull Context context) {
+        public _RootContainer(Context context) {
             super(context);
             _bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             _canvas = new Canvas(_bmp);
@@ -412,7 +410,7 @@ public final class ZFUIRootWindow extends Activity {
         private final Canvas _canvas;
 
         @Override
-        protected void dispatchDraw(@NonNull Canvas canvas) {
+        protected void dispatchDraw(Canvas canvas) {
             super.dispatchDraw(canvas);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
