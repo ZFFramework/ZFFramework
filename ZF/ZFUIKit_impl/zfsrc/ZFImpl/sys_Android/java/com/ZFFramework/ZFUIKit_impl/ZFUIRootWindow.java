@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.DisplayCutout;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -191,6 +192,16 @@ public final class ZFUIRootWindow extends Activity {
             nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else if (bottom) {
             nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+        } else {
+            DisplayMetrics metrics = ZFMainEntry.appContext().getResources().getDisplayMetrics();
+            float widthInches = metrics.widthPixels / metrics.xdpi;
+            float heightInches = metrics.heightPixels / metrics.ydpi;
+            float diagonal = (float) Math.sqrt(widthInches * widthInches + heightInches * heightInches);
+            if (diagonal >= 7.0) {
+                nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+            } else {
+                nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
         }
     }
 

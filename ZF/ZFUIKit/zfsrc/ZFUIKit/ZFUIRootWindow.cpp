@@ -31,7 +31,7 @@ public:
     : embedImpl(zfnull)
     , nativeWindow(zfnull)
     , windowRootView(zfnull)
-    , windowOrientationFlags(v_ZFUIOrientation::e_Top)
+    , windowOrientationFlags(0)
     , modalWindowOwner(zfnull)
     , modalWindowShowing(zfnull)
     , layoutParam(zfnull)
