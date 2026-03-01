@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
+import com.ZFFramework.NativeUtil.ZFAndroidPost;
 import com.ZFFramework.NativeUtil.ZFObject;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
 
@@ -384,12 +385,36 @@ public final class ZFUIRootWindow extends Activity {
         }
     }
 
+    private int _backToExitTaskId = -1;
     private final ZFUIKeyEventUtil _keyEventImpl = new ZFUIKeyEventUtil(new ZFUIKeyEventUtil.Impl() {
         @Override
         public boolean onKey(int keyId, int keyAction, int keyCode, int keyCodeRaw) {
             if (_zfjniPointerOwnerZFUIRootWindow != 0) {
-                return native_notifyKeyEvent(_zfjniPointerOwnerZFUIRootWindow, keyId, keyAction, keyCode, keyCodeRaw);
+                if (native_notifyKeyEvent(_zfjniPointerOwnerZFUIRootWindow, keyId, keyAction, keyCode, keyCodeRaw)) {
+                    return true;
+                }
             }
+
+            if (keyCode == ZFUIKeyCode.e_kPhoneBack) {
+                if (_backToExitTaskId != -1) {
+                    if (keyAction == ZFUIKeyAction.e_Up) {
+                        ZFAndroidPost.cancel(_backToExitTaskId);
+                        _backToExitTaskId = -1;
+                        finish();
+                    }
+                } else {
+                    if (keyAction == ZFUIKeyAction.e_Up) {
+                        _backToExitTaskId = ZFAndroidPost.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                _backToExitTaskId = -1;
+                            }
+                        }, 2000);
+                    }
+                }
+                return true;
+            }
+
             return false;
         }
     });
