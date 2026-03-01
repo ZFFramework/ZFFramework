@@ -221,7 +221,17 @@
         ret |= UIInterfaceOrientationMaskPortraitUpsideDown;
     }
     if(ret == 0) {
-        ret = UIInterfaceOrientationMaskPortrait;
+        if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+            ret = 0
+                | UIInterfaceOrientationMaskPortrait
+                | UIInterfaceOrientationMaskLandscapeLeft
+                | UIInterfaceOrientationMaskLandscapeRight
+                | UIInterfaceOrientationMaskPortraitUpsideDown
+                ;
+        }
+        else {
+            ret = UIInterfaceOrientationMaskPortrait;
+        }
     }
     return ret;
 }
