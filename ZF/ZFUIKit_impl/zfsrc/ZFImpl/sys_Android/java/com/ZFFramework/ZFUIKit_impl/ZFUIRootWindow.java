@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,8 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
 
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.NativeUtil.ZFObject;
@@ -83,6 +87,8 @@ public final class ZFUIRootWindow extends Activity {
     private MainLayout _mainContainer = null;
     private int _windowOrientation = ZFUIOrientation.e_Top;
     private boolean _preferFullscreen = false;
+    private int _windowColorTopDetected = 0;
+    private int _windowColorBottomDetected = 0;
 
     // ============================================================
     public static void native_nativeMainWindowCreate(long zfjniPointerOwnerZFUIRootWindow) {
@@ -118,17 +124,15 @@ public final class ZFUIRootWindow extends Activity {
         nativeWindowTmp._mainContainer.requestLayout();
 
         nativeWindowTmp.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, preferFullscreen ? WindowManager.LayoutParams.FLAG_FULLSCREEN : 0);
+        nativeWindowTmp.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        nativeWindowTmp.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         {
             int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
             if (preferFullscreen) {
-//                uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-//                uiFlags |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
                 uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
                 uiFlags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
                 uiFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             } else {
-//                uiFlags &= ~View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-//                uiFlags &= ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
                 uiFlags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
                 uiFlags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
                 uiFlags &= ~View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
@@ -194,33 +198,7 @@ public final class ZFUIRootWindow extends Activity {
 
     public static void native_windowColor(Object nativeWindow, int windowColor) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
-        if (Color.alpha(windowColor) == 0) {
-            windowColor = Color.BLACK;
-        }
-        nativeWindowTmp.rootContainer().setBackgroundColor(windowColor);
-        boolean isDarkBg = (Color.red(windowColor) < 32 && Color.green(windowColor) < 32 && Color.blue(windowColor) < 32);
-
-        {
-            nativeWindowTmp.getWindow().setStatusBarColor(windowColor);
-            int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
-            if (!isDarkBg) {
-                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            } else {
-                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            }
-            nativeWindowTmp.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            nativeWindowTmp.getWindow().setNavigationBarColor(windowColor);
-            int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
-            if (!isDarkBg) {
-                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            } else {
-                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            }
-            nativeWindowTmp.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
-        }
+        nativeWindowTmp._rootContainer.setBackgroundColor(Color.alpha(windowColor) != 0 ? windowColor : Color.BLACK);
     }
 
     // ============================================================
@@ -330,7 +308,7 @@ public final class ZFUIRootWindow extends Activity {
             ZFMainEntry.mainEntryActivity(this);
         }
 
-        _rootContainer = new FrameLayout(this);
+        _rootContainer = new _RootContainer(this);
         this.setContentView(_rootContainer);
 
         _mainContainer = new MainLayout(this);
@@ -420,6 +398,78 @@ public final class ZFUIRootWindow extends Activity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         return _keyEventImpl.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
+    }
+
+    private class _RootContainer extends FrameLayout {
+        public _RootContainer(@NonNull Context context) {
+            super(context);
+            _bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+            _canvas = new Canvas(_bmp);
+            this.setBackgroundColor(Color.BLACK);
+        }
+
+        private final Bitmap _bmp;
+        private final Canvas _canvas;
+
+        @Override
+        protected void dispatchDraw(@NonNull Canvas canvas) {
+            super.dispatchDraw(canvas);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                boolean changed = false;
+
+                _bmp.eraseColor(Color.TRANSPARENT);
+                _canvas.save();
+                super.dispatchDraw(_canvas);
+                _canvas.restore();
+                int windowColor = _bmp.getColor(0, 0).toArgb();
+                if (_windowColorTopDetected != windowColor) {
+                    _windowColorTopDetected = windowColor;
+                    changed = true;
+                }
+
+                _bmp.eraseColor(Color.TRANSPARENT);
+                _canvas.save();
+                _canvas.translate(0, -(getHeight() - _bmp.getHeight()));
+                super.dispatchDraw(_canvas);
+                _canvas.restore();
+                windowColor = _bmp.getColor(0, 0).toArgb();
+                if (_windowColorBottomDetected != windowColor) {
+                    _windowColorBottomDetected = windowColor;
+                    changed = true;
+                }
+
+                if (changed) {
+                    _windowColorUpdate();
+                }
+            }
+        }
+    }
+
+    private void _windowColorUpdate() {
+        boolean isDarkBgTop = (Color.red(_windowColorTopDetected) < 32 && Color.green(_windowColorTopDetected) < 32 && Color.blue(_windowColorTopDetected) < 32);
+
+        {
+            this.getWindow().setStatusBarColor(_windowColorTopDetected);
+            int uiFlags = this.getWindow().getDecorView().getSystemUiVisibility();
+            if (!isDarkBgTop) {
+                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            this.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            this.getWindow().setNavigationBarColor(_windowColorBottomDetected);
+            int uiFlags = this.getWindow().getDecorView().getSystemUiVisibility();
+            if (!isDarkBgTop) {
+                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            this.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+        }
     }
 
 }
