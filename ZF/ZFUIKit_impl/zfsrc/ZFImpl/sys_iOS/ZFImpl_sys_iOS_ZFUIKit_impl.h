@@ -156,6 +156,10 @@ inline zfstring ZFImpl_sys_iOS_viewTreePrint(ZF_IN UIView *view) {
     return ret;
 }
 
+// ============================================================
+// spec
+extern ZFLIB_ZFUIKit_impl void ZFImpl_sys_iOS_windowColorUpdate(ZF_IN UIView *view);
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS
 #endif // #ifndef _ZFI_ZFImpl_sys_iOS_ZFUIKit_impl_h_

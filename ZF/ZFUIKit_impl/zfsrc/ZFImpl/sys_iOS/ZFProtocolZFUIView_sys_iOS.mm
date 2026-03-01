@@ -61,6 +61,7 @@
         && (self._ZFP_ownerZFUIView->parent() == zfnull || !self._ZFP_ownerZFUIView->parent()->layoutRequested())
     ) {
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyLayoutView(self._ZFP_ownerZFUIView, ZFImpl_sys_iOS_ZFUIRectFromCGRect(self.frame));
+        ZFImpl_sys_iOS_windowColorUpdate(self);
     }
 }
 
@@ -341,12 +342,14 @@ public:
             , ZF_IN zfbool visible
             ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).hidden = !visible;
+        ZFImpl_sys_iOS_windowColorUpdate(((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()));
     }
     virtual void alpha(
             ZF_IN ZFUIView *view
             , ZF_IN zffloat alpha
             ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).alpha = alpha;
+        ZFImpl_sys_iOS_windowColorUpdate(((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()));
     }
     virtual void viewUIEnable(
             ZF_IN ZFUIView *view
@@ -365,6 +368,7 @@ public:
             , ZF_IN const ZFUIColor &bgColor
             ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(bgColor);
+        ZFImpl_sys_iOS_windowColorUpdate(((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()));
     }
 
 public:

@@ -54,6 +54,7 @@
         }
         self.image = [tmpImage resizableImageWithCapInsets:ninePatch resizingMode:UIImageResizingModeStretch];
     }
+    ZFImpl_sys_iOS_windowColorUpdate(self);
 }
 @end
 

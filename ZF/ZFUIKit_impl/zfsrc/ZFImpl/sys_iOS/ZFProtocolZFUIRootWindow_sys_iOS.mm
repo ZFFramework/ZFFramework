@@ -22,7 +22,11 @@
 @property (nonatomic, assign) ZFUIOrientation windowOrientation;
 @property (nonatomic, assign) ZFUIOrientationFlags windowOrientationFlags;
 @property (nonatomic, assign) zfint _ZFP_windowRotateOverrideFlag;
+@property (nonatomic, assign) zfbool _ZFP_windowColorUpdatePending;
+@property (nonatomic, strong) UIView *_ZFP_windowColorTopView;
+@property (nonatomic, strong) UIView *_ZFP_windowColorBottomView;
 - (void)_ZFP_updateLayout;
+- (void)_ZFP_updateWindowColor;
 @end
 @implementation _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow
 - (void)setWindowOrientationFlags:(ZFUIOrientationFlags)windowOrientationFlags {
@@ -59,7 +63,7 @@
     if(self.ownerZFUIRootWindow != zfnull) {
         ZFUIMargin windowMargin = ZFUIMarginZero();
 
-        UIView *tmpView = [UIApplication sharedApplication].delegate.window.rootViewController.view;
+        UIView *tmpView = self.view.window.rootViewController.view;
         if([tmpView respondsToSelector:@selector(safeAreaInsets)]) {
             NSMethodSignature *methodSig = [tmpView methodSignatureForSelector:@selector(safeAreaInsets)];
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
@@ -73,6 +77,9 @@
             windowMargin.top = t.top;
             windowMargin.right = t.right;
             windowMargin.bottom = t.bottom;
+
+            self._ZFP_windowColorTopView.frame = CGRectMake(0, 0, self.view.bounds.size.width, t.top);
+            self._ZFP_windowColorBottomView.frame = CGRectMake(0, self.view.bounds.size.height - t.bottom, self.view.bounds.size.width, t.bottom);
         }
         else {
             windowMargin.top = [UIApplication sharedApplication].delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
@@ -83,8 +90,71 @@
             self.ownerZFUIRootWindow,
             ZFImpl_sys_iOS_ZFUIRectFromCGRect(self.view.bounds),
             windowMargin));
+        [self _ZFP_updateWindowColor];
     }
 }
+
+// ============================================================
+- (void)_ZFP_updateWindowColor {
+    if(!self._ZFP_windowColorUpdatePending) {
+        self._ZFP_windowColorUpdatePending = zftrue;
+        [self performSelector:@selector(_ZFP_updateWindowColorAction) withObject:nil afterDelay:0];
+    }
+}
+- (void)_ZFP_updateWindowColorAction {
+    UIColor *windowColor = [self _colorAtPoint:CGPointMake(
+            0
+            , self._ZFP_windowColorTopView.frame.size.height + 1
+            )];
+    if(![self _colorIsEqual:windowColor ref:self._ZFP_windowColorTopView.backgroundColor]) {
+        self._ZFP_windowColorTopView.backgroundColor = windowColor;
+    }
+
+    windowColor = [self _colorAtPoint:CGPointMake(
+            0
+            , self.view.frame.size.height - self._ZFP_windowColorBottomView.frame.size.height - 1
+            )];
+    if(![self _colorIsEqual:windowColor ref:self._ZFP_windowColorBottomView.backgroundColor]) {
+        self._ZFP_windowColorBottomView.backgroundColor = windowColor;
+    }
+    self._ZFP_windowColorUpdatePending = zffalse;
+}
+- (UIColor *)_colorAtPoint:(CGPoint)point {
+    unsigned char pixelData[4] = {0};
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(
+            pixelData
+            , 1
+            , 1
+            , 8
+            , 4
+            , colorSpace
+            , kCGImageAlphaPremultipliedLast
+            );
+    CGColorSpaceRelease(colorSpace);
+    if(!context) {return nil;}
+    CGContextTranslateCTM(context, -point.x, -point.y);
+    [self.view.layer renderInContext:context];
+    CGContextRelease(context);
+    CGFloat r = pixelData[0] / 255.0f;
+    CGFloat g = pixelData[1] / 255.0f;
+    CGFloat b = pixelData[2] / 255.0f;
+    CGFloat a = pixelData[3] / 255.0f;
+    return [UIColor colorWithRed:r green:g blue:b alpha:a];
+}
+- (BOOL)_colorIsEqual:(UIColor *)v0 ref:(UIColor *)v1 {
+    CGFloat buf[8];
+    zfmemset(buf, 0, sizeof(buf));
+    [v0 getRed:(buf + 0) green:(buf + 1) blue:(buf + 2) alpha:(buf + 3)];
+    [v1 getRed:(buf + 4) green:(buf + 5) blue:(buf + 6) alpha:(buf + 7)];
+    return (YES
+            && buf[0] == buf[4]
+            && buf[1] == buf[5]
+            && buf[2] == buf[6]
+            && buf[3] == buf[7]
+            );
+}
+
 // ============================================================
 // init and dealloc
 - (id)init {
@@ -94,6 +164,19 @@
         self->_windowOrientationFlags = v_ZFUIOrientation::e_Top;
     }
     return self;
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    self._ZFP_windowColorTopView = [UIView new];
+    [self.view addSubview:self._ZFP_windowColorTopView];
+    self._ZFP_windowColorTopView.backgroundColor = [UIColor clearColor];
+    self._ZFP_windowColorTopView.frame = CGRectZero;
+
+    self._ZFP_windowColorBottomView = [UIView new];
+    [self.view addSubview:self._ZFP_windowColorBottomView];
+    self._ZFP_windowColorBottomView.backgroundColor = [UIColor clearColor];
+    self._ZFP_windowColorBottomView.frame = CGRectZero;
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
@@ -161,6 +244,7 @@
             self.impl->notifyOnResume(self.ownerZFUIRootWindow);
         }
     }
+    [self _ZFP_updateWindowColor];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -198,6 +282,7 @@ public:
             this->_mainWindow = zfobjRetain(ZFUIRootWindow::ClassData()->newInstance().to<ZFUIRootWindow *>());
             _ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *nativeWindow = [_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow new];
             nativeWindow.ownerZFUIRootWindow = this->_mainWindow;
+            nativeWindow.view.backgroundColor = [UIColor blackColor];
 
             // delay to create, because:
             // * allow app to change orientation before actually show,
@@ -329,6 +414,12 @@ public:
 private:
     ZFUIRootWindow *_mainWindow;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIRootWindowImpl_sys_iOS)
+
+void ZFImpl_sys_iOS_windowColorUpdate(ZF_IN UIView *view) {
+    if([view.window.rootViewController isKindOfClass:[_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow class]]) {
+        [(_ZFP_ZFUIRootWindowImpl_sys_iOS_NativeWindow *)view.window.rootViewController _ZFP_updateWindowColor];
+    }
+}
 
 ZF_NAMESPACE_GLOBAL_END
 
