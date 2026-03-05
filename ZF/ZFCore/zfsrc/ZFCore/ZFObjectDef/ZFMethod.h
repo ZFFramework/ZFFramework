@@ -147,7 +147,7 @@ private:
 };
 
 // ============================================================
-zfclassFwd _ZFP_ZFMethodPrivateExt;
+zfclassFwd _ZFP_ZFMethodPrivate;
 /**
  * @brief reflectable method for ZFObject
  *
@@ -690,7 +690,7 @@ public:
     zfany _ZFP_ZFMethod_methodUserData;
 
     ZFSigName _ZFP_ZFMethod_methodId;
-    _ZFP_ZFMethodPrivateExt *_ZFP_ZFMethod_ext;
+    _ZFP_ZFMethodPrivate *_ZFP_ZFMethod_ext;
 
     ZFFuncAddrType _ZFP_ZFMethod_invoker;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;

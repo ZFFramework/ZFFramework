@@ -164,40 +164,40 @@ public:
 
 public:
     /** @brief see #ZFClassAlias */
-    inline const ZFCoreArray<zfstring> &classAliasTo(void) const {
-        return this->_ZFP_ZFClass_classAliasTo;
-    }
+    const ZFCoreArray<zfstring> &classAliasTo(void) const;
 
     /**
      * @brief class namespace, null or empty string for global scope class
      */
     inline const zfstring &classNamespace(void) const {
-        return this->_ZFP_ZFClass_classNamespace;
+        return this->_classNamespace;
     }
     /**
      * @brief class name, e.g. "ZFObject"
      */
     inline const zfstring &className(void) const {
-        return this->_ZFP_ZFClass_className;
+        return this->_className;
     }
     /**
      * @brief class full name, e.g. "NS0.NS1.YourObject"
      */
     inline const zfstring &classNameFull(void) const {
-        return this->_ZFP_ZFClass_classNameFull;
+        return this->_classNameFull;
     }
 
     /**
      * @brief class's parent, zfnull if none
      */
     inline const ZFClass *classParent(void) const {
-        return this->_ZFP_ZFClass_classParent;
+        return this->_classParent;
     }
 
     /**
      * @brief true if class is registered by #ZFClassDynamicRegister
      */
-    zfbool classIsDynamicRegister(void) const;
+    zfbool classIsDynamicRegister(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_classIsDynamicRegister);
+    }
     /**
      * @brief see #ZFClassDynamicRegister
      */
@@ -208,13 +208,13 @@ public:
      * #newInstance would return zfnull if the class is abstract
      */
     inline zfbool classIsAbstract(void) const {
-        return this->_ZFP_ZFClass_classIsAbstract;
+        return ZFBitTest(_stateFlags, _stateFlags_classIsAbstract);
     }
     /**
      * @brief true if the class is an interface
      */
     inline zfbool classIsInterface(void) const {
-        return this->_ZFP_ZFClass_classIsInterface;
+        return ZFBitTest(_stateFlags, _stateFlags_classIsInterface);
     }
     /**
      * @brief whether the class is internal class
@@ -225,7 +225,7 @@ public:
      * see #classIsInternalPrivate
      */
     inline zfbool classIsInternal(void) const {
-        return this->_ZFP_ZFClass_classIsInternal;
+        return ZFBitTest(_stateFlags, _stateFlags_classIsInternal);
     }
     /**
      * @brief whether the class is internal private class
@@ -236,7 +236,7 @@ public:
      * see #classIsInternal
      */
     inline zfbool classIsInternalPrivate(void) const {
-        return this->_ZFP_ZFClass_classIsInternalPrivate;
+        return ZFBitTest(_stateFlags, _stateFlags_classIsInternalPrivate);
     }
 
     /**
@@ -250,7 +250,7 @@ public:
      * i.e. #newInstance series
      */
     inline zfbool classCanAllocPublic(void) const {
-        return this->_ZFP_ZFClass_classCanAllocPublic;
+        return !this->_ZFP_ZFClass_classCanNotAllocPublic();
     }
 
     /**
@@ -669,7 +669,7 @@ public:
      * @note the id may be reused if owner class unloaded
      */
     zffinal zfidentity classId(void) const {
-        return _ZFP_ZFClass_classNameFull.sigId();
+        return _classNameFull.sigId();
     }
 
     // ============================================================
@@ -695,7 +695,20 @@ public:
     ~ZFClass(void);
     /** @endcond */
     void _ZFP_ZFClass_autoRegister(void) const;
-    zfbool _ZFP_ZFClass_interfaceNeedRegister(void);
+    inline zfbool _ZFP_ZFClass_interfaceHasRegisterCk(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_interfaceHasRegisterCk);
+    }
+    inline void _ZFP_ZFClass_interfaceHasRegisterCk(ZF_IN zfbool v) {
+        if(v) {
+            ZFBitSet(_stateFlags, _stateFlags_interfaceHasRegisterCk);
+        }
+        else {
+            ZFBitUnset(_stateFlags, _stateFlags_interfaceHasRegisterCk);
+        }
+    }
+    zfbool _ZFP_ZFClass_interfaceHasRegister(void) {
+        return ZFBitTest(_stateFlags, _stateFlags_interfaceHasRegister);
+    }
     void _ZFP_ZFClass_interfaceRegister(
             ZF_IN zfint dummy
             , ZF_IN const ZFClass *cls
@@ -715,7 +728,7 @@ public:
     void _ZFP_ZFClass_ZFImplementDynamicUnregister(ZF_IN const ZFClass *clsToImplement) const;
 
     void _ZFP_ZFClass_objectDesctuct(ZF_IN ZFObject *obj) const;
-    ZFClass *_ZFP_ZFClass_removeConst(void) const {
+    inline ZFClass *_ZFP_ZFClass_removeConst(void) const {
         return const_cast<ZFClass *>(this);
     }
 
@@ -732,22 +745,40 @@ public:
     _ZFP_ZFObjectDestructor _ZFP_objectDestructor(void) const;
     void _ZFP_classDynamicRegisterObjectInstanceDetach(ZF_IN ZFObject *obj) const;
 
+    inline zfbool _ZFP_ZFClass_classCanNotAllocPublic(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_classCanNotAllocPublic);
+    }
+    inline void _ZFP_ZFClass_classCanNotAllocPublic(ZF_IN zfbool v) {
+        if(v) {
+            ZFBitSet(_stateFlags, _stateFlags_classCanNotAllocPublic);
+        }
+        else {
+            ZFBitUnset(_stateFlags, _stateFlags_classCanNotAllocPublic);
+        }
+    }
+
+private:
+    friend zfclassFwd _ZFP_ZFClassPrivate;
+    enum {
+        _stateFlags_classIsAbstract = 1 << 0,
+        _stateFlags_classIsInterface = 1 << 1,
+        _stateFlags_classIsInternal = 1 << 2,
+        _stateFlags_classIsInternalPrivate = 1 << 3,
+        _stateFlags_classIsDynamicRegister = 1 << 4,
+        _stateFlags_classCanNotAllocPublic = 1 << 5,
+        _stateFlags_interfaceHasRegisterCk = 1 << 6,
+        _stateFlags_interfaceHasRegister = 1 << 7,
+        _stateFlags_methodAndPropertyCacheNeedUpdate = 1 << 8,
+        _stateFlags_hasAutoRegister = 1 << 9,
+    };
 private:
     _ZFP_ZFClassPrivate *d;
-    friend zfclassFwd _ZFP_ZFClassPrivate;
-    const ZFClass *_ZFP_ZFClass_classParent;
-    ZFSigName _ZFP_ZFClass_classNamespace;
-    ZFSigName _ZFP_ZFClass_className;
-    ZFSigName _ZFP_ZFClass_classNameFull;
-    zfbool _ZFP_ZFClass_classIsAbstract;
-    zfbool _ZFP_ZFClass_classIsInterface;
-    zfbool _ZFP_ZFClass_classIsInternal;
-    zfbool _ZFP_ZFClass_classIsInternalPrivate;
-    zfbool _ZFP_ZFClass_methodAndPropertyCacheNeedUpdate;
-public:
-    zfbool _ZFP_ZFClass_implListNeedInit;
-    zfbool _ZFP_ZFClass_classCanAllocPublic;
-    ZFCoreArray<zfstring> _ZFP_ZFClass_classAliasTo;
+    zfuint _refCount;
+    zfuint _stateFlags;
+    const ZFClass *_classParent;
+    ZFSigName _classNamespace;
+    ZFSigName _className;
+    ZFSigName _classNameFull;
 };
 
 /**

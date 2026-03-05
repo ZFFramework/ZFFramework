@@ -121,7 +121,7 @@ _ZFP_I_zfweak *ZFObject::_ZFP_ZFObject_weakHolder(void) {
 }
 
 void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    if(this->_ZFP_ZFObject_classDynamic) {
+    if(this->classDynamic()) {
         const ZFMethod *m = this->classData()->methodForName("objectInfoImpl");
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             zfobj<v_zfstring> retHolder;
@@ -134,7 +134,7 @@ void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
 }
 
 zfidentity ZFObject::objectHash(void) {
-    if(this->_ZFP_ZFObject_classDynamic) {
+    if(this->classDynamic()) {
         const ZFMethod *m = this->classData()->methodForName("objectHashImpl");
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this).to<v_zfidentity *>()->zfv;
@@ -143,7 +143,7 @@ zfidentity ZFObject::objectHash(void) {
     return this->objectHashImpl();
 }
 ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this->_ZFP_ZFObject_classDynamic) {
+    if(this->classDynamic()) {
         const ZFMethod *m = this->classData()->methodForName("objectCompareImpl");
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
@@ -152,7 +152,7 @@ ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
     return this->objectCompareImpl(anotherObj);
 }
 ZFCompareResult ZFObject::objectCompareValue(ZF_IN ZFObject *anotherObj) {
-    if(this->_ZFP_ZFObject_classDynamic) {
+    if(this->classDynamic()) {
         const ZFMethod *m = this->classData()->methodForName("objectCompareValueImpl");
         if(m && m->ownerClass() != ZFObject::ClassData()) {
             return m->methodInvoke(this, anotherObj).to<v_ZFCompareResult *>()->zfv;
@@ -685,8 +685,8 @@ void ZFObject::objectOnDealloc(void) {
 #if _ZFP_ZFObjectPrivate_DEBUG
         --_ZFP_ZFObjectCount;
 #endif
-    if(_ZFP_ZFObject_classDynamic) {
-        _ZFP_ZFObject_classDynamic->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
+    if(classDynamic()) {
+        classDynamic()->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
     }
 
     if(d) {

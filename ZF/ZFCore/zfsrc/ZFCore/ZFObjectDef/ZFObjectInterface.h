@@ -47,8 +47,8 @@ public:
         typedef InterfaceName zfself; \
     private: \
         static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
-            if(cls->_ZFP_ZFClass_implListNeedInit) { \
-                cls->_ZFP_ZFClass_implListNeedInit = zffalse; \
+            if(!cls->_ZFP_ZFClass_interfaceHasRegisterCk()) { \
+                cls->_ZFP_ZFClass_interfaceHasRegisterCk(zftrue); \
                 if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \
                     zfself::_ZFP_ObjI_reg(cls); \
                 } \
@@ -153,7 +153,7 @@ public:
 #define _ZFP_ZFIMPLEMENT_DECLARE(ImplementedInterfaces, ...) \
     public: \
         static void _ZFP_ObjI_reg(ZFClass *cls) { \
-            if(cls->_ZFP_ZFClass_interfaceNeedRegister()) { \
+            if(!cls->_ZFP_ZFClass_interfaceHasRegister()) { \
                 cls->_ZFP_ZFClass_interfaceRegister(0 \
                     ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENT_DECLARE_EXPAND_PARAM, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
                     , (const ZFClass *)zfnull \

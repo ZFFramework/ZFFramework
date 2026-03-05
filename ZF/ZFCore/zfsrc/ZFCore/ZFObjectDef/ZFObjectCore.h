@@ -260,6 +260,13 @@ public:
 
 public:
     /**
+     * @brief dynamic class of this object, see #ZFClassDynamicRegister
+     */
+    zffinal inline const ZFClass *classDynamic(void) {
+        return _classDynamic;
+    }
+
+    /**
      * @brief return the object's retain count
      * @see zfobjRetain, zfobjRelease
      */
@@ -839,22 +846,22 @@ public:
 
 private:
     friend zfclassFwd ZFClass;
+    friend zfclassFwd _ZFP_ZFClassPrivate;
     friend zfclassFwd ZFObserver;
     friend zfclassFwd _ZFP_ZFObserverPrivate;
     template<typename T_ZFObject, int valid>
     friend zfclassFwd _ZFP_ObjACk;
     friend void _ZFP_zfobjRetainAction(ZF_IN ZFObject *obj);
     friend void _ZFP_zfobjReleaseAction(ZF_IN ZFObject *obj);
-public:
-    const ZFClass *_ZFP_ZFObject_classDynamic;
 private:
+    const ZFClass *_classDynamic;
     _ZFP_ZFObjectPrivate *d;
     zfuint _objectRetainCount;
     zfuint _stateFlags;
 protected:
     /** @cond ZFPrivateDoc */
     ZFObject(void)
-    : _ZFP_ZFObject_classDynamic(zfnull)
+    : _classDynamic(zfnull)
     , d(zfnull)
     , _objectRetainCount(1)
     , _stateFlags(0)

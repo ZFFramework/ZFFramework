@@ -609,7 +609,7 @@ ZFDynamic &ZFDynamic::classCanAllocPublic(ZF_IN zfbool value) {
     }
     else {
         if(scope->d.cls->classIsDynamicRegister()) {
-            scope->d.cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classCanAllocPublic = value;
+            scope->d.cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classCanNotAllocPublic(!value);
         }
     }
     return *this;

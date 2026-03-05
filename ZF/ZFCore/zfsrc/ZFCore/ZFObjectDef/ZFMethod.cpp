@@ -47,14 +47,14 @@ _ZFP_ZFMethodMP::~_ZFP_ZFMethodMP(void) {
 }
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFMethodPrivateExt {
+zfclassNotPOD _ZFP_ZFMethodPrivate {
 public:
     const ZFMethod *aliasFrom;
     ZFCoreArray<const ZFMethod *> aliasTo;
     ZFFuncAddrType invokerOrig;
     ZFMethodGenericInvoker methodGenericInvokerOrig;
 public:
-    _ZFP_ZFMethodPrivateExt(void)
+    _ZFP_ZFMethodPrivate(void)
     : aliasFrom(zfnull)
     , aliasTo()
     , invokerOrig(zfnull)
@@ -520,7 +520,7 @@ void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericIn
     ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
     if(methodGenericInvoker != zfnull) {
         if(_ZFP_ZFMethod_ext == zfnull) {
-            owner->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivateExt);
+            owner->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
         }
         if(owner->_ZFP_ZFMethod_ext->methodGenericInvokerOrig == zfnull) {
             owner->_ZFP_ZFMethod_ext->methodGenericInvokerOrig = _ZFP_ZFMethod_methodGenericInvoker;
@@ -539,7 +539,7 @@ void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
     ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
     if(methodInvoker != zfnull) {
         if(_ZFP_ZFMethod_ext == zfnull) {
-            owner->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivateExt);
+            owner->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
         }
         if(owner->_ZFP_ZFMethod_ext->invokerOrig == zfnull) {
             owner->_ZFP_ZFMethod_ext->invokerOrig = _ZFP_ZFMethod_invoker;
@@ -921,10 +921,10 @@ const ZFMethod *ZFMethodAlias(
         return zfnull;
     }
     if(ret->_ZFP_ZFMethod_ext == zfnull) {
-        ret->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivateExt);
+        ret->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
     }
     if(method->_ZFP_ZFMethod_ext == zfnull) {
-        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivateExt);
+        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
     }
     ret->_ZFP_ZFMethod_ext->aliasFrom = method;
     method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_ext->aliasTo.add(ret);

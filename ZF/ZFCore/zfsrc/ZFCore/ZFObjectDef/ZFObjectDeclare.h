@@ -56,12 +56,12 @@ public:
     public: \
         /** @brief get instance's class info */ \
         virtual inline const ZFClass *classData(void) { \
-            return this->_ZFP_ZFObject_classDynamic ? this->_ZFP_ZFObject_classDynamic : zfself::ClassData(); \
+            return this->classDynamic() ? this->classDynamic() : zfself::ClassData(); \
         } \
     private: \
         static void _ZFP_ObjI_regCk(ZF_IN ZFClass *cls) { \
-            if(cls->_ZFP_ZFClass_implListNeedInit) { \
-                cls->_ZFP_ZFClass_implListNeedInit = zffalse; \
+            if(!cls->_ZFP_ZFClass_interfaceHasRegisterCk()) { \
+                cls->_ZFP_ZFClass_interfaceHasRegisterCk(zftrue); \
                 if(zfself::_ZFP_ObjI_reg != zfsuper::_ZFP_ObjI_reg) { \
                     zfself::_ZFP_ObjI_reg(cls); \
                 } \
