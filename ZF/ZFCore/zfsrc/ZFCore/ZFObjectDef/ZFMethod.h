@@ -308,19 +308,19 @@ public:
      * @brief internal method id, for debug use only
      */
     inline zfidentity methodId(void) const {
-        return this->_ZFP_ZFMethod_methodId.sigId();
+        return _methodId.sigId();
     }
     /**
      * @brief whether the method is registered by #ZFMethodUserRegister_0
      */
     inline zfbool isUserRegister(void) const {
-        return this->_ZFP_ZFMethod_isUserRegister;
+        return ZFBitTest(_stateFlags, _stateFlags_isUserRegister);
     }
     /**
      * @brief store impl state for #ZFMethodUserRegister_0
      */
     inline zfany userRegisterUserData(void) const {
-        return this->_ZFP_ZFMethod_isUserRegister ? this->_ZFP_ZFMethod_methodUserData : zfnull;
+        return this->isUserRegister() ? _methodUserData : zfnull;
     }
     /**
      * @brief store impl state for #ZFMethodUserRegister_0
@@ -330,40 +330,40 @@ public:
      * @brief whether the method is registered by #ZFMethodDynamicRegister
      */
     inline zfbool isDynamicRegister(void) const {
-        return this->_ZFP_ZFMethod_isDynamicRegister;
+        return ZFBitTest(_stateFlags, _stateFlags_isDynamicRegister);
     }
     /**
      * @brief see #ZFMethodDynamicRegister
      */
     inline zfany dynamicRegisterUserData(void) const {
-        return this->_ZFP_ZFMethod_isDynamicRegister ? this->_ZFP_ZFMethod_methodUserData : zfnull;
+        return this->isDynamicRegister() ? _methodUserData : zfnull;
     }
     /**
      * @brief get the method's name
      */
     inline const zfstring &methodName(void) const {
-        return this->_ZFP_ZFMethod_methodName;
+        return _methodName;
     }
 
     /**
      * @brief get the method's return value's type id
      */
     inline const zfstring &returnTypeId(void) const {
-        return this->_ZFP_ZFMethod_returnTypeId;
+        return _returnTypeId;
     }
 
     /**
      * @brief get the method's param num
      */
     inline zfindex paramCount(void) const {
-        return (zfindex)this->_ZFP_ZFMethod_paramCount;
+        return (zfindex)_paramCount;
     }
     /**
      * @brief get the method's minimum param num,
      *   same as #paramCount if no default param
      */
     inline zfindex paramCountMin(void) const {
-        return (zfindex)this->_ZFP_ZFMethod_paramCountMin;
+        return (zfindex)_paramCountMin;
     }
     /**
      * @brief check whether method param type id matches
@@ -408,7 +408,7 @@ public:
      * @brief return the first default param's index, or #zfindexMax if no default param
      */
     inline zfindex paramDefaultBeginIndex(void) const {
-        return (this->_ZFP_ZFMethod_paramDefaultBeginIndex == (zfuint)-1 ? zfindexMax() : (zfindex)this->_ZFP_ZFMethod_paramDefaultBeginIndex);
+        return (_paramDefaultBeginIndex == (zfbyte)-1 ? zfindexMax() : (zfindex)_paramDefaultBeginIndex);
     }
 
     /**
@@ -444,7 +444,7 @@ public:
      *   you may change it by #methodInvoker
      */
     inline ZFFuncAddrType methodInvoker(void) const {
-        return this->_ZFP_ZFMethod_invoker;
+        return _invoker;
     }
     /**
      * @brief override original #methodInvoker
@@ -516,7 +516,7 @@ public:
      * @endcode
      */
     inline ZFMethodGenericInvoker methodGenericInvoker(void) const {
-        return this->_ZFP_ZFMethod_methodGenericInvoker;
+        return _methodGenericInvoker;
     }
     /* ZFMETHOD_MAX_PARAM */
     /**
@@ -587,40 +587,40 @@ public:
      * @brief method's owner class, null for function type method
      */
     inline const ZFClass *ownerClass(void) const {
-        return this->_ZFP_ZFMethod_ownerClass;
+        return _ownerClass;
     }
     /**
      * @brief method's owner proeprty, null if none
      */
     inline const ZFProperty *ownerProperty(void) const {
-        return this->_ZFP_ZFMethod_ownerProperty;
+        return _ownerProperty;
     }
 
     /**
      * @brief get the method's access type
      */
     inline ZFMethodAccessType methodAccessType(void) const {
-        return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType;
+        return (ZFMethodAccessType)_methodAccessType;
     }
     /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypePublic */
-    inline zfbool isPublic(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType == ZFMethodAccessTypePublic;}
+    inline zfbool isPublic(void) const {return (ZFMethodAccessType)_methodAccessType == ZFMethodAccessTypePublic;}
     /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypeProtected */
-    inline zfbool isProtected(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType == ZFMethodAccessTypeProtected;}
+    inline zfbool isProtected(void) const {return (ZFMethodAccessType)_methodAccessType == ZFMethodAccessTypeProtected;}
     /** @brief util to check whether #methodAccessType is #ZFMethodAccessTypePrivate */
-    inline zfbool isPrivate(void) const {return (ZFMethodAccessType)this->_ZFP_ZFMethod_accessType == ZFMethodAccessTypePrivate;}
+    inline zfbool isPrivate(void) const {return (ZFMethodAccessType)_methodAccessType == ZFMethodAccessTypePrivate;}
 
     /**
      * @brief method type
      */
     inline ZFMethodType methodType(void) const {
-        return (ZFMethodType)this->_ZFP_ZFMethod_methodType;
+        return (ZFMethodType)_methodType;
     }
     /** @brief util to check whether #methodType is #ZFMethodTypeNormal */
-    inline zfbool isNormal(void) const {return (ZFMethodType)this->_ZFP_ZFMethod_methodType == ZFMethodTypeNormal;}
+    inline zfbool isNormal(void) const {return (ZFMethodType)_methodType == ZFMethodTypeNormal;}
     /** @brief util to check whether #methodType is #ZFMethodTypeStatic */
-    inline zfbool isStatic(void) const {return (ZFMethodType)this->_ZFP_ZFMethod_methodType == ZFMethodTypeStatic;}
+    inline zfbool isStatic(void) const {return (ZFMethodType)_methodType == ZFMethodTypeStatic;}
     /** @brief util to check whether #methodType is #ZFMethodTypeVirtual */
-    inline zfbool isVirtual(void) const {return (ZFMethodType)this->_ZFP_ZFMethod_methodType == ZFMethodTypeVirtual;}
+    inline zfbool isVirtual(void) const {return (ZFMethodType)_methodType == ZFMethodTypeVirtual;}
 
     // ============================================================
     // func type
@@ -629,14 +629,14 @@ public:
      * @brief true if this method is function type (declared by ZFMETHOD_FUNC_DECLARE_XXX series)
      */
     inline zfbool isFuncType(void) const {
-        return (this->_ZFP_ZFMethod_ownerClass == zfnull);
+        return (_ownerClass == zfnull);
     }
     /**
      * @brief get the method namespace, for func type only,
      *   null or empty string for global scope (#ZF_NAMESPACE_GLOBAL)
      */
     inline const zfstring &methodNamespace(void) const {
-        return this->_ZFP_ZFMethod_methodNamespace;
+        return _methodNamespace;
     }
 
     // ============================================================
@@ -651,7 +651,7 @@ public:
      * see also #isInternalPrivate
      */
     inline zfbool isInternal(void) const {
-        return this->_ZFP_ZFMethod_isInternal;
+        return ZFBitTest(_stateFlags, _stateFlags_isInternal);
     }
     /**
      * @brief whether the method is internal private method
@@ -663,72 +663,78 @@ public:
      * see also #isInternal
      */
     inline zfbool isInternalPrivate(void) const {
-        return this->_ZFP_ZFMethod_isInternalPrivate;
+        return ZFBitTest(_stateFlags, _stateFlags_isInternalPrivate);
     }
 
 public:
+    static ZFMethod *_ZFP_ZFMethodRegister(
+            ZF_IN zfbool isUserRegister
+            , ZF_IN zfbool isDynamicRegister
+            , ZF_IN ZFObject *dynamicRegisterUserData
+            , ZF_IN ZFFuncAddrType methodInvoker
+            , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
+            , ZF_IN ZFMethodType methodType
+            , ZF_IN const ZFClass *ownerClass
+            , ZF_IN ZFMethodAccessType methodAccessType
+            , ZF_IN const zfstring &methodNamespace
+            , ZF_IN const zfstring &methodName
+            , ZF_IN const zfstring &returnTypeId
+            , ZF_IN const _ZFP_ZFMethodMP &mp
+            );
+    static void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
+
     ZFMethod *_ZFP_ZFMethod_removeConst(void) const {
         return const_cast<ZFMethod *>(this);
     }
-
-public:
+    _ZFP_ZFMethodPrivate *_ZFP_ZFMethod_extInit(void);
+    inline _ZFP_ZFMethodPrivate *_ZFP_ZFMethod_ext(void) const {
+        return _ext;
+    }
     inline ZFSigName *_ZFP_ZFMethod_paramTypeIdList(void) const {
-        return _ZFP_ZFMethod_paramBuf;
+        return _paramBuf;
     }
     inline ZFSigName *_ZFP_ZFMethod_paramNameList(void) const {
-        return _ZFP_ZFMethod_paramBuf + ZFMETHOD_MAX_PARAM;
+        return _paramBuf + ZFMETHOD_MAX_PARAM;
+    }
+    void _ZFP_ZFMethod_ownerProperty(ZF_IN const ZFProperty *ownerProperty) const {
+        this->_ZFP_ZFMethod_removeConst()->_ownerProperty = ownerProperty;
     }
 
-public:
-    // general
-    zfuint _ZFP_ZFMethod_refCount;
-
-    zfbool _ZFP_ZFMethod_isInternal;
-    zfbool _ZFP_ZFMethod_isInternalPrivate;
-    zfbool _ZFP_ZFMethod_isUserRegister;
-    zfbool _ZFP_ZFMethod_isDynamicRegister;
-    zfany _ZFP_ZFMethod_methodUserData;
-
-    ZFSigName _ZFP_ZFMethod_methodId;
-    _ZFP_ZFMethodPrivate *_ZFP_ZFMethod_ext;
-
-    ZFFuncAddrType _ZFP_ZFMethod_invoker;
-    ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
-    ZFSigName _ZFP_ZFMethod_methodName;
-    ZFSigName _ZFP_ZFMethod_returnTypeId;
-    zfuint _ZFP_ZFMethod_paramCount;
-    zfuint _ZFP_ZFMethod_paramCountMin;
-    ZFSigName *_ZFP_ZFMethod_paramBuf;
-    ZFListener *_ZFP_ZFMethod_paramDefaultValueCallbackList;
-    zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
+private:
+    enum {
+        _stateFlags_isInternal = 1 << 0,
+        _stateFlags_isInternalPrivate = 1 << 1,
+        _stateFlags_isUserRegister = 1 << 2,
+        _stateFlags_isDynamicRegister = 1 << 3,
+    };
+private:
+    zfuint _refCount;
+    zfuint _stateFlags;
+    ZFObject *_methodUserData;
+    ZFSigName _methodId;
+    _ZFP_ZFMethodPrivate *_ext;
+    ZFFuncAddrType _invoker;
+    ZFMethodGenericInvoker _methodGenericInvoker;
+    ZFSigName _methodName;
+    ZFSigName _returnTypeId;
+    ZFSigName *_paramBuf;
+    ZFListener *_paramDefaultValueCallbackList;
+    zfbyte _paramCount;
+    zfbyte _paramCountMin;
+    zfbyte _paramDefaultBeginIndex;
 
     // for class member type
-    unsigned short /* ZFMethodAccessType */ _ZFP_ZFMethod_accessType;
-    unsigned short /* ZFMethodType */ _ZFP_ZFMethod_methodType;
-    const ZFClass *_ZFP_ZFMethod_ownerClass;
-    const ZFProperty *_ZFP_ZFMethod_ownerProperty;
+    zfbyte _methodAccessType; // ZFMethodAccessType
+    zfbyte _methodType; // ZFMethodType
+    const ZFClass *_ownerClass;
+    const ZFProperty *_ownerProperty;
 
     // for func type
-    ZFSigName _ZFP_ZFMethod_methodNamespace;
+    ZFSigName _methodNamespace;
 };
 
 // ============================================================
 extern ZFLIB_ZFCore void _ZFP_ZFMethodDataHolderInit(void);
-extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(
-        ZF_IN zfbool isUserRegister
-        , ZF_IN zfbool isDynamicRegister
-        , ZF_IN ZFObject *dynamicRegisterUserData
-        , ZF_IN ZFFuncAddrType methodInvoker
-        , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-        , ZF_IN ZFMethodType methodType
-        , ZF_IN const ZFClass *ownerClass
-        , ZF_IN ZFMethodAccessType methodAccessType
-        , ZF_IN const zfstring &methodNamespace
-        , ZF_IN const zfstring &methodName
-        , ZF_IN const zfstring &returnTypeId
-        , ZF_IN const _ZFP_ZFMethodMP &mp
-        );
-extern ZFLIB_ZFCore void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
 
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFMethodRegisterHolder {
 public:

@@ -129,20 +129,22 @@ void _ZFP_ZFPropertyLifeCycleCall_init_retain(
         ) {
     zfauto valueHolder = value;
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnInit,
-        propertyOwnerObject,
-        property,
-        &valueHolder,
-        &valueHolder);
+            property->_ZFP_ZFPropertyLifeCycle_OnInit
+            , propertyOwnerObject
+            , property
+            , &valueHolder
+            , &valueHolder
+            );
     rawValueStoreCallback(rawValueStoreToken, valueHolder);
 
     if(notifyOwnerAttach) {
         _ZFP_ZFPropertyLifeCycleCallAction(
-            property->_ZFP_ZFPropertyLifeCycle_OnAttach,
-            propertyOwnerObject,
-            property,
-            &valueHolder,
-            &valueHolder);
+                property->_ZFP_ZFPropertyLifeCycle_OnAttach
+                , propertyOwnerObject
+                , property
+                , &valueHolder
+                , &valueHolder
+                );
 
         propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueAttach(property);
         propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
@@ -156,20 +158,22 @@ void _ZFP_ZFPropertyLifeCycleCall_init_assign(
         , ZF_IN ZFObject *weakProp
         ) {
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnInit,
-        propertyOwnerObject,
-        property,
-        value,
-        value);
+            property->_ZFP_ZFPropertyLifeCycle_OnInit
+            , propertyOwnerObject
+            , property
+            , value
+            , value
+            );
 
     if(notifyOwnerAttach) {
         if(weakProp) {_ZFP_ZFPropertyWeakAttach(propertyOwnerObject, property, weakProp);}
         _ZFP_ZFPropertyLifeCycleCallAction(
-            property->_ZFP_ZFPropertyLifeCycle_OnAttach,
-            propertyOwnerObject,
-            property,
-            value,
-            value);
+                property->_ZFP_ZFPropertyLifeCycle_OnAttach
+                , propertyOwnerObject
+                , property
+                , value
+                , value
+                );
 
         propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueAttach(property);
         propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
@@ -183,12 +187,13 @@ void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(
         ) {
     zfauto valueHolder = value;
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnDetach,
-        propertyOwnerObject,
-        property,
-        &valueHolder,
-        &valueHolder,
-        zftrue);
+            property->_ZFP_ZFPropertyLifeCycle_OnDetach
+            , propertyOwnerObject
+            , property
+            , &valueHolder
+            , &valueHolder
+            , zftrue
+            );
     if(notifyOwnerDetach) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueDetach(property);}
 }
 void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(
@@ -200,12 +205,13 @@ void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(
         ) {
     if(weakProp) {_ZFP_ZFPropertyWeakDetach(propertyOwnerObject, property, weakProp);}
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnDetach,
-        propertyOwnerObject,
-        property,
-        value,
-        value,
-        zftrue);
+            property->_ZFP_ZFPropertyLifeCycle_OnDetach
+            , propertyOwnerObject
+            , property
+            , value
+            , value
+            , zftrue
+            );
     if(notifyOwnerDetach) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueDetach(property);}
 }
 void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
@@ -223,29 +229,32 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
     zfauto valueNew = propertyValueNew;
     if(accessed) {
         _ZFP_ZFPropertyLifeCycleCallAction(
-            property->_ZFP_ZFPropertyLifeCycle_OnDetach,
-            propertyOwnerObject,
-            property,
-            &valueOld,
-            &valueOld,
-            zftrue);
+                property->_ZFP_ZFPropertyLifeCycle_OnDetach
+                , propertyOwnerObject
+                , property
+                , &valueOld
+                , &valueOld
+                , zftrue
+                );
     }
 
     rawValueStoreCallback(rawValueStoreToken, valueNew);
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnUpdate,
-        propertyOwnerObject,
-        property,
-        &valueNew,
-        &valueOld);
+            property->_ZFP_ZFPropertyLifeCycle_OnUpdate
+            , propertyOwnerObject
+            , property
+            , &valueNew
+            , &valueOld
+            );
     rawValueStoreCallback(rawValueStoreToken, valueNew);
 
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnAttach,
-        propertyOwnerObject,
-        property,
-        &valueNew,
-        &valueOld);
+            property->_ZFP_ZFPropertyLifeCycle_OnAttach
+            , propertyOwnerObject
+            , property
+            , &valueNew
+            , &valueOld
+            );
     if(!accessed) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueAttach(property);}
 
     propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, &valueOld);
@@ -266,28 +275,31 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_assign(
     if(accessed) {
         if(weakPropOld) {_ZFP_ZFPropertyWeakDetach(propertyOwnerObject, property, weakPropOld);}
         _ZFP_ZFPropertyLifeCycleCallAction(
-            property->_ZFP_ZFPropertyLifeCycle_OnDetach,
-            propertyOwnerObject,
-            property,
-            propertyValueOld,
-            propertyValueOld,
-            zftrue);
+                property->_ZFP_ZFPropertyLifeCycle_OnDetach
+                , propertyOwnerObject
+                , property
+                , propertyValueOld
+                , propertyValueOld
+                , zftrue
+                );
     }
     void *valueRef = rawValueStoreCallback(rawValueStoreToken, propertyValueNew);
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnUpdate,
-        propertyOwnerObject,
-        property,
-        valueRef,
-        propertyValueOld);
+            property->_ZFP_ZFPropertyLifeCycle_OnUpdate
+            , propertyOwnerObject
+            , property
+            , valueRef
+            , propertyValueOld
+            );
 
     if(weakPropNew) {_ZFP_ZFPropertyWeakAttach(propertyOwnerObject, property, weakPropNew);}
     _ZFP_ZFPropertyLifeCycleCallAction(
-        property->_ZFP_ZFPropertyLifeCycle_OnAttach,
-        propertyOwnerObject,
-        property,
-        valueRef,
-        propertyValueOld);
+            property->_ZFP_ZFPropertyLifeCycle_OnAttach
+            , propertyOwnerObject
+            , property
+            , valueRef
+            , propertyValueOld
+            );
     if(!accessed) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueAttach(property);}
     propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, propertyValueOld);
 }

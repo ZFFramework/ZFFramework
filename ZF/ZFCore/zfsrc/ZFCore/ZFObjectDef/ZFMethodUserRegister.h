@@ -126,7 +126,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
                     , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
                 ) \
         }; \
-        resultMethod = _ZFP_ZFMethodRegister _ZFP_ZFMethodUserRegisterParamExpand( \
+        resultMethod = ZFMethod::_ZFP_ZFMethodRegister _ZFP_ZFMethodUserRegisterParamExpand( \
                 _ZFP_mUR, _ZFP_mUR::I, ownerClass, \
                 PublicOrProtectedOrPrivate, ZFMethodType_, \
                 ReturnType, methodNameString \

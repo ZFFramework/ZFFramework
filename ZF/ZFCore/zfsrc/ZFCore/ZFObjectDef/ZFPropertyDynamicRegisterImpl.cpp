@@ -18,7 +18,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFPropertyDynamicRegisterAutoRemove) {
     zfstlhashmap<const ZFProperty *, zfbool> t;
     t.swap(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m);
     for(zfstlhashmap<const ZFProperty *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
-        _ZFP_ZFPropertyUnregister(it->first);
+        ZFProperty::_ZFP_ZFPropertyUnregister(it->first);
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterAutoRemove)
@@ -233,7 +233,7 @@ static void _ZFP_PropDynReg_setterGI(ZF_IN_OUT const ZFArgs &zfargs) {
     }
     ZFObject *ownerObject = zfargs.sender();
     const ZFProperty *property = zfargs.ownerMethod()->ownerProperty();
-    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper());
     zfauto valueOld = ownerObject->objectTag(d->tagKey_propertyValue);
     zfbool firstTime = (valueOld == zfnull);
 
@@ -341,7 +341,7 @@ static void _ZFP_PropDynReg_getterGI(ZF_IN_OUT const ZFArgs &zfargs) {
     //   we would store the value to owner object's tag,
     //   see #ZFMethodDynamicRegister for the reason for this behavior
     const ZFProperty *property = zfargs.ownerMethod()->ownerProperty();
-    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper());
     ZFObject *wrapper = ownerObject->objectTag(d->tagKey_propertyValue);
     zfbool firstTime = (wrapper == zfnull);
     if(firstTime) {
@@ -376,7 +376,7 @@ static zfbool _ZFP_PropDynReg_callbackIsValueAccessed(
         ZF_IN const ZFProperty *property
         , ZF_IN zfany const &ownerObj
         ) {
-    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper());
     return (ownerObj->objectTag(d->tagKey_propertyValue) != zfnull);
 }
 static zfbool _ZFP_PropDynReg_callbackIsInitValue(
@@ -384,7 +384,7 @@ static zfbool _ZFP_PropDynReg_callbackIsInitValue(
         , ZF_IN zfany const &ownerObj
         , ZF_OUT_OPT zfauto *outInitValue /* = zfnull */
         ) {
-    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper());
     zfbool ret = zffalse;
     ZFObject *tag = ownerObj->objectTag(d->tagKey_propertyValue);
     if(tag == zfnull) {
@@ -430,7 +430,7 @@ static void _ZFP_PropDynReg_callbackValueReset(
     if(_ZFP_PropDynReg_callbackIsValueAccessed(property, ownerObj)) {
         ownerObj->_ZFP_ZFObject_objectPropertyValueOnReset(property);
     }
-    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+    _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper());
     ownerObj->objectTagRemove(d->tagKey_propertyValue);
 }
 
@@ -439,9 +439,6 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
         ZF_IN const ZFPropertyDynamicRegisterParam &param
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
-static void _ZFP_ZFPropertyMethodCleanup_DynamicReg(ZF_IN const ZFMethod *method) {
-    ZFMethodDynamicUnregister(method);
-}
 const ZFProperty *ZFPropertyDynamicRegister(
         ZF_IN const ZFPropertyDynamicRegisterParam &param
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -507,7 +504,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
         if(!_ZFP_ZFPropertyDynamicRegisterCustomImplCheck(param, errorHint)) {
             return zfnull;
         }
-        property = _ZFP_ZFPropertyRegister(zffalse
+        property = ZFProperty::_ZFP_ZFPropertyRegister(zffalse
             , zftrue
             , param.dynamicRegisterUserData()
             , param.ownerClass()
@@ -516,8 +513,6 @@ const ZFProperty *ZFPropertyDynamicRegister(
             , param.propertyTypeId()
             , param.propertyCustomImplSetterMethod()
             , param.propertyCustomImplGetterMethod()
-            , zfnull
-            , zfnull
             , param.propertyClassOfRetainProperty()
             , param.propertyCustomImplCallbackIsValueAccessed()
             , param.propertyCustomImplCallbackIsInitValue()
@@ -563,7 +558,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
             return zfnull;
         }
 
-        property = _ZFP_ZFPropertyRegister(zffalse
+        property = ZFProperty::_ZFP_ZFPropertyRegister(zffalse
             , zftrue
             , param.dynamicRegisterUserData()
             , param.ownerClass()
@@ -572,8 +567,6 @@ const ZFProperty *ZFPropertyDynamicRegister(
             , param.propertyTypeId()
             , setterMethod
             , getterMethod
-            , _ZFP_ZFPropertyMethodCleanup_DynamicReg
-            , _ZFP_ZFPropertyMethodCleanup_DynamicReg
             , param.propertyClassOfRetainProperty()
             , _ZFP_PropDynReg_callbackIsValueAccessed
             , _ZFP_PropDynReg_callbackIsInitValue
@@ -586,7 +579,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
     }
 
     userDataWrapper->propertySaved = property;
-    property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper = zfobjRetain(userDataWrapper);
+    property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper(userDataWrapper);
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m[property] = zftrue;
     return property;
 }
@@ -594,11 +587,10 @@ void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property) {
     if(property != zfnull) {
         ZFCoreAssert(property->isDynamicRegister());
         ZFCoreMutexLocker();
-        zfobjReleaseInScope(property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m.erase(property);
-        _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper);
+        _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_dynamicRegisterUserDataWrapper());
         d->objectDetachAll();
-        _ZFP_ZFPropertyUnregister(property);
+        ZFProperty::_ZFP_ZFPropertyUnregister(property);
     }
 }
 

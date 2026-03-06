@@ -64,23 +64,23 @@ public:
 };
 
 const ZFMethod *ZFMethod::aliasFrom(void) const {
-    return _ZFP_ZFMethod_ext ? _ZFP_ZFMethod_ext->aliasFrom : zfnull;
+    return _ext ? _ext->aliasFrom : zfnull;
 }
 const ZFCoreArray<const ZFMethod *> &ZFMethod::aliasTo(void) const {
     static ZFCoreArray<const ZFMethod *> dummy;
-    return _ZFP_ZFMethod_ext ? _ZFP_ZFMethod_ext->aliasTo : dummy;
+    return _ext ? _ext->aliasTo : dummy;
 }
 
 ZFFuncAddrType ZFMethod::methodInvokerOrig(void) const {
-    return _ZFP_ZFMethod_ext && _ZFP_ZFMethod_ext->invokerOrig
-        ? _ZFP_ZFMethod_ext->invokerOrig
-        : _ZFP_ZFMethod_invoker
+    return _ext && _ext->invokerOrig
+        ? _ext->invokerOrig
+        : _invoker
         ;
 }
 ZFMethodGenericInvoker ZFMethod::methodGenericInvokerOrig(void) const {
-    return _ZFP_ZFMethod_ext && _ZFP_ZFMethod_ext->methodGenericInvokerOrig
-        ? _ZFP_ZFMethod_ext->methodGenericInvokerOrig
-        : _ZFP_ZFMethod_methodGenericInvoker
+    return _ext && _ext->methodGenericInvokerOrig
+        ? _ext->methodGenericInvokerOrig
+        : _methodGenericInvoker
         ;
 }
 
@@ -88,7 +88,7 @@ ZFMethodGenericInvoker ZFMethod::methodGenericInvokerOrig(void) const {
 void ZFMethod::userRegisterUserData(ZF_IN ZFObject *userRegisterUserData) const {
     ZFCoreAssertWithMessage(this->isUserRegister(),
         "userRegisterUserData can only be changed for user registered method");
-    zfobjRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserData, userRegisterUserData);
+    zfobjRetainChange(this->_ZFP_ZFMethod_removeConst()->_methodUserData, userRegisterUserData);
 }
 
 void ZFMethod::_ZFP_ZFMethod_init(
@@ -104,35 +104,39 @@ void ZFMethod::_ZFP_ZFMethod_init(
         ) {
     ZFCoreAssert(methodGenericInvoker != zfnull);
 
-    this->_ZFP_ZFMethod_isUserRegister = isUserRegister;
-    this->_ZFP_ZFMethod_isDynamicRegister = isDynamicRegister;
-    this->_ZFP_ZFMethod_methodUserData = zfobjRetain(dynamicRegisterUserData);
-    this->_ZFP_ZFMethod_invoker = invoker;
-    this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
-    this->_ZFP_ZFMethod_methodType = (unsigned short)methodType;
-    this->_ZFP_ZFMethod_methodName = methodName;
-    this->_ZFP_ZFMethod_returnTypeId = returnTypeId;
+    if(isUserRegister) {
+        ZFBitSet(_stateFlags, _stateFlags_isUserRegister);
+    }
+    if(isDynamicRegister) {
+        ZFBitSet(_stateFlags, _stateFlags_isDynamicRegister);
+    }
+    this->_methodUserData = zfobjRetain(dynamicRegisterUserData);
+    _invoker = invoker;
+    _methodGenericInvoker = methodGenericInvoker;
+    _methodType = (zfbyte)methodType;
+    _methodName = methodName;
+    _returnTypeId = returnTypeId;
 
     // update param count
     for(zfuint i = 0; i < mp.paramCount; ++i) {
         if(*(mp.paramDefaultValueCallback[i]) != zfnull) {
-            _ZFP_ZFMethod_paramDefaultBeginIndex = (zfuint)i;
+            _paramDefaultBeginIndex = (zfbyte)i;
             break;
         }
     }
-    _ZFP_ZFMethod_paramCount = mp.paramCount;
-    if(_ZFP_ZFMethod_paramDefaultBeginIndex == (zfuint)-1) {
-        _ZFP_ZFMethod_paramCountMin = _ZFP_ZFMethod_paramCount;
+    _paramCount = (zfbyte)mp.paramCount;
+    if(_paramDefaultBeginIndex == (zfbyte)-1) {
+        _paramCountMin = _paramCount;
     }
     else {
-        _ZFP_ZFMethod_paramCountMin = _ZFP_ZFMethod_paramDefaultBeginIndex;
+        _paramCountMin = _paramDefaultBeginIndex;
     }
 
     // store param data
     if(mp.paramCount > 0) {
-        _ZFP_ZFMethod_paramBuf = (ZFSigName *)zfmalloc((ZFMETHOD_MAX_PARAM + mp.paramCount) * sizeof(ZFSigName));
+        _paramBuf = (ZFSigName *)zfmalloc((ZFMETHOD_MAX_PARAM + mp.paramCount) * sizeof(ZFSigName));
 
-        ZFSigName *paramTypeIdList = _ZFP_ZFMethod_paramBuf;
+        ZFSigName *paramTypeIdList = _paramBuf;
         ZFSigName *paramNameList = paramTypeIdList + ZFMETHOD_MAX_PARAM;
 
         for(zfuint i = 0; i < mp.paramCount; ++i) {
@@ -143,91 +147,83 @@ void ZFMethod::_ZFP_ZFMethod_init(
             zfnewPlacement(paramTypeIdList + i, ZFSigName);
         }
 
-        _ZFP_ZFMethod_paramDefaultValueCallbackList = (ZFListener *)zfmalloc(sizeof(ZFListener) * mp.paramCount);
+        _paramDefaultValueCallbackList = (ZFListener *)zfmalloc(sizeof(ZFListener) * mp.paramCount);
         for(zfindex i = 0; i < mp.paramCount; ++i) {
-            zfnewPlacement(_ZFP_ZFMethod_paramDefaultValueCallbackList + i, ZFListener, *(mp.paramDefaultValueCallback[i]));
+            zfnewPlacement(_paramDefaultValueCallbackList + i, ZFListener, *(mp.paramDefaultValueCallback[i]));
         }
     }
 
     // internal
     if(zfstringBeginWith(methodName, "_ZFP_")) {
-        this->_ZFP_ZFMethod_isInternal = zftrue;
-        this->_ZFP_ZFMethod_isInternalPrivate = zftrue;
+        ZFBitSet(_stateFlags, _stateFlags_isInternal);
+        ZFBitSet(_stateFlags, _stateFlags_isInternalPrivate);
     }
     else if(methodName[0] == '_') {
-        this->_ZFP_ZFMethod_isInternal = zftrue;
-        this->_ZFP_ZFMethod_isInternalPrivate = zffalse;
-    }
-    else {
-        this->_ZFP_ZFMethod_isInternal = zffalse;
-        this->_ZFP_ZFMethod_isInternalPrivate = zffalse;
+        ZFBitSet(_stateFlags, _stateFlags_isInternal);
     }
 }
 void ZFMethod::_ZFP_ZFMethod_initClassMemberType(
         ZF_IN const ZFClass *ownerClass
         , ZF_IN ZFMethodAccessType accessType
         ) {
-    this->_ZFP_ZFMethod_ownerClass = ownerClass;
-    this->_ZFP_ZFMethod_accessType = (unsigned short)accessType;
+    _ownerClass = ownerClass;
+    _methodAccessType = (zfbyte)accessType;
 }
 void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace) {
     if(methodNamespace
         && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
         && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
-        this->_ZFP_ZFMethod_methodNamespace = methodNamespace;
+        _methodNamespace = methodNamespace;
     }
 
-    this->_ZFP_ZFMethod_ownerClass = zfnull;
-    this->_ZFP_ZFMethod_accessType = (unsigned short)ZFMethodAccessTypePublic;
+    _ownerClass = zfnull;
+    _methodAccessType = (zfbyte)ZFMethodAccessTypePublic;
 }
 
 ZFMethod::ZFMethod(void)
-: _ZFP_ZFMethod_refCount(1)
-, _ZFP_ZFMethod_isInternal(zffalse)
-, _ZFP_ZFMethod_isInternalPrivate(zffalse)
-, _ZFP_ZFMethod_isUserRegister(zffalse)
-, _ZFP_ZFMethod_isDynamicRegister(zffalse)
-, _ZFP_ZFMethod_methodUserData(zfnull)
-, _ZFP_ZFMethod_methodId(zfnull)
-, _ZFP_ZFMethod_ext(zfnull)
-, _ZFP_ZFMethod_invoker(zfnull)
-, _ZFP_ZFMethod_methodGenericInvoker(zfnull)
-, _ZFP_ZFMethod_methodName(zfnull)
-, _ZFP_ZFMethod_returnTypeId(zfnull)
-, _ZFP_ZFMethod_paramCount(0)
-, _ZFP_ZFMethod_paramCountMin(0)
-, _ZFP_ZFMethod_paramBuf(zfnull)
-, _ZFP_ZFMethod_paramDefaultValueCallbackList(zfnull)
-, _ZFP_ZFMethod_paramDefaultBeginIndex((zfuint)-1)
-, _ZFP_ZFMethod_accessType((unsigned short)ZFMethodAccessTypePublic)
-, _ZFP_ZFMethod_methodType((unsigned short)ZFMethodTypeNormal)
-, _ZFP_ZFMethod_ownerClass(zfnull)
-, _ZFP_ZFMethod_ownerProperty(zfnull)
-, _ZFP_ZFMethod_methodNamespace(zfnull)
+: _refCount(1)
+, _stateFlags(0)
+, _methodUserData(zfnull)
+, _methodId(zfnull)
+, _ext(zfnull)
+, _invoker(zfnull)
+, _methodGenericInvoker(zfnull)
+, _methodName(zfnull)
+, _returnTypeId(zfnull)
+, _paramBuf(zfnull)
+, _paramDefaultValueCallbackList(zfnull)
+, _paramCount(0)
+, _paramCountMin(0)
+, _paramDefaultBeginIndex((zfbyte)-1)
+, _methodAccessType((zfbyte)ZFMethodAccessTypePublic)
+, _methodType((zfbyte)ZFMethodTypeNormal)
+, _ownerClass(zfnull)
+, _ownerProperty(zfnull)
+, _methodNamespace(zfnull)
 {
 }
 ZFMethod::~ZFMethod(void) {
-    zfobjRelease(this->_ZFP_ZFMethod_methodUserData);
+    zfobjRelease(this->_methodUserData);
 
-    if(_ZFP_ZFMethod_ext) {
-        zfpoolDelete(_ZFP_ZFMethod_ext);
+    if(_ext) {
+        zfpoolDelete(_ext);
     }
 
     // paramTypeIdList : ZFMETHOD_MAX_PARAM, fixed length for performance
     // paramNameList : paramCount
-    if(_ZFP_ZFMethod_paramBuf != zfnull) {
+    if(_paramBuf != zfnull) {
         for(zfindex i = 0, count = ZFMETHOD_MAX_PARAM + paramCount(); i < count; ++i) {
-            zfdeletePlacement(_ZFP_ZFMethod_paramBuf + i);
+            zfdeletePlacement(_paramBuf + i);
         }
-        zffree(_ZFP_ZFMethod_paramBuf);
+        zffree(_paramBuf);
     }
 
-    if(_ZFP_ZFMethod_paramCount > 0) {
-        for(zfindex i = 0; i < _ZFP_ZFMethod_paramCount; ++i) {
-            zfdeletePlacement(_ZFP_ZFMethod_paramDefaultValueCallbackList + i);
+    if(_paramCount > 0) {
+        for(zfindex i = 0; i < (zfindex)_paramCount; ++i) {
+            zfdeletePlacement(_paramDefaultValueCallbackList + i);
         }
-        zffree(_ZFP_ZFMethod_paramDefaultValueCallbackList);
+        zffree(_paramDefaultValueCallbackList);
     }
 }
 
@@ -479,7 +475,7 @@ zfbool ZFMethod::methodInvokeCheck(
 
 const ZFListener &ZFMethod::paramDefaultValueCallbackAt(ZF_IN zfindex index) const {
     ZFCoreAssert(index < this->paramCount());
-    return this->_ZFP_ZFMethod_paramDefaultValueCallbackList[index];
+    return _paramDefaultValueCallbackList[index];
 }
 zfauto ZFMethod::paramDefaultValueAt(ZF_IN zfindex index) const {
     ZFCoreAssert(index < this->paramCount());
@@ -519,17 +515,17 @@ void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericIn
     ZFCoreMutexLocker();
     ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
     if(methodGenericInvoker != zfnull) {
-        if(_ZFP_ZFMethod_ext == zfnull) {
-            owner->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
+        if(_ext == zfnull) {
+            owner->_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
         }
-        if(owner->_ZFP_ZFMethod_ext->methodGenericInvokerOrig == zfnull) {
-            owner->_ZFP_ZFMethod_ext->methodGenericInvokerOrig = _ZFP_ZFMethod_methodGenericInvoker;
+        if(owner->_ext->methodGenericInvokerOrig == zfnull) {
+            owner->_ext->methodGenericInvokerOrig = _methodGenericInvoker;
         }
-        owner->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
+        owner->_methodGenericInvoker = methodGenericInvoker;
     }
     else {
-        if(_ZFP_ZFMethod_ext && _ZFP_ZFMethod_ext->methodGenericInvokerOrig) {
-            owner->_ZFP_ZFMethod_methodGenericInvoker = _ZFP_ZFMethod_ext->methodGenericInvokerOrig;
+        if(_ext && _ext->methodGenericInvokerOrig) {
+            owner->_methodGenericInvoker = _ext->methodGenericInvokerOrig;
         }
     }
 }
@@ -538,17 +534,17 @@ void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
     ZFCoreMutexLocker();
     ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
     if(methodInvoker != zfnull) {
-        if(_ZFP_ZFMethod_ext == zfnull) {
-            owner->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
+        if(_ext == zfnull) {
+            owner->_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
         }
-        if(owner->_ZFP_ZFMethod_ext->invokerOrig == zfnull) {
-            owner->_ZFP_ZFMethod_ext->invokerOrig = _ZFP_ZFMethod_invoker;
+        if(owner->_ext->invokerOrig == zfnull) {
+            owner->_ext->invokerOrig = _invoker;
         }
-        owner->_ZFP_ZFMethod_invoker = methodInvoker;
+        owner->_invoker = methodInvoker;
     }
     else {
-        if(_ZFP_ZFMethod_ext && _ZFP_ZFMethod_ext->invokerOrig) {
-            owner->_ZFP_ZFMethod_invoker = _ZFP_ZFMethod_ext->invokerOrig;
+        if(_ext && _ext->invokerOrig) {
+            owner->_invoker = _ext->invokerOrig;
         }
     }
 }
@@ -564,7 +560,6 @@ void _ZFP_ZFMethodDataHolderInit(void) {
     _ZFP_ZFMethodMap();
 }
 
-// ============================================================
 static void _ZFP_ZFMethodInstanceSig(
         ZF_OUT zfstring &ret
         , ZF_IN const ZFSigName &methodScope
@@ -586,24 +581,7 @@ static void _ZFP_ZFMethodInstanceSig(
     }
 }
 
-static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfstring &methodId) {
-    ZFCoreMutexLocker();
-    _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
-    _ZFP_ZFMethodMapType::iterator it = m.find(methodId);
-    if(it != m.end()) {
-        ZFMethod *v = it->second;
-        ++(v->_ZFP_ZFMethod_refCount);
-        return v;
-    }
-    else {
-        ZFMethod *v = zfnew(ZFMethod);
-        v->_ZFP_ZFMethod_methodId = methodId;
-        m[methodId] = v;
-        return v;
-    }
-}
-
-ZFMethod *_ZFP_ZFMethodRegister(
+ZFMethod *ZFMethod::_ZFP_ZFMethodRegister(
         ZF_IN zfbool isUserRegister
         , ZF_IN zfbool isDynamicRegister
         , ZF_IN ZFObject *dynamicRegisterUserData
@@ -700,12 +678,24 @@ ZFMethod *_ZFP_ZFMethodRegister(
             methodId,
             method);
 
-        ++method->_ZFP_ZFMethod_refCount;
+        ++(method->_refCount);
     }
     else {
-        method = _ZFP_ZFMethodInstanceAccess(methodId);
+        {
+            _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
+            _ZFP_ZFMethodMapType::iterator it = m.find(methodId);
+            if(it != m.end()) {
+                method = it->second;
+                ++(method->_refCount);
+            }
+            else {
+                method = zfnew(ZFMethod);
+                method->_methodId = methodId;
+                m[methodId] = method;
+            }
+        }
 
-        if(method->_ZFP_ZFMethod_methodName == zfnull) {
+        if(method->_methodName == zfnull) {
             method->_ZFP_ZFMethod_init(isUserRegister
                     , isDynamicRegister
                     , dynamicRegisterUserData
@@ -732,18 +722,18 @@ ZFMethod *_ZFP_ZFMethodRegister(
 
     return method;
 }
-void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
+void ZFMethod::_ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method) {
     _ZFP_ZFMethod_invokeTimeLogger("unreg: %s", method->methodName().cString());
     ZFCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
-    _ZFP_ZFMethodMapType::iterator it = m.find(method->_ZFP_ZFMethod_methodId);
+    _ZFP_ZFMethodMapType::iterator it = m.find(method->_methodId);
     if(it == m.end()) {
         return;
     }
 
     ZFMethod *v = it->second;
-    --(v->_ZFP_ZFMethod_refCount);
-    if(v->_ZFP_ZFMethod_refCount != 0) {
+    --(v->_refCount);
+    if(v->_refCount != 0) {
         return;
     }
     m.erase(it);
@@ -777,7 +767,7 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
         )
 : method(zfnull)
 {
-    method = _ZFP_ZFMethodRegister(isUserRegister
+    method = ZFMethod::_ZFP_ZFMethodRegister(isUserRegister
             , isDynamicRegister
             , dynamicRegisterUserData
             , methodInvoker
@@ -792,7 +782,15 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
         );
 }
 _ZFP_ZFMethodRegisterHolder::~_ZFP_ZFMethodRegisterHolder(void) {
-    _ZFP_ZFMethodUnregister(this->method);
+    ZFMethod::_ZFP_ZFMethodUnregister(this->method);
+}
+
+// ============================================================
+_ZFP_ZFMethodPrivate *ZFMethod::_ZFP_ZFMethod_extInit(void) {
+    if(_ext == zfnull) {
+        _ext = zfpoolNew(_ZFP_ZFMethodPrivate);
+    }
+    return _ext;
 }
 
 // ============================================================
@@ -903,7 +901,7 @@ const ZFMethod *ZFMethodAlias(
                 , method->paramDefaultValueCallbackAt(i)
                 );
     }
-    ZFMethod *ret = _ZFP_ZFMethodRegister(
+    ZFMethod *ret = ZFMethod::_ZFP_ZFMethodRegister(
             method->isUserRegister()
             , method->isDynamicRegister()
             , method->dynamicRegisterUserData()
@@ -920,14 +918,8 @@ const ZFMethod *ZFMethodAlias(
     if(ret == zfnull) {
         return zfnull;
     }
-    if(ret->_ZFP_ZFMethod_ext == zfnull) {
-        ret->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
-    }
-    if(method->_ZFP_ZFMethod_ext == zfnull) {
-        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
-    }
-    ret->_ZFP_ZFMethod_ext->aliasFrom = method;
-    method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_ext->aliasTo.add(ret);
+    ret->_ZFP_ZFMethod_extInit()->aliasFrom = method;
+    method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_extInit()->aliasTo.add(ret);
     return ret;
 }
 static void _ZFP_ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
@@ -936,21 +928,21 @@ static void _ZFP_ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
     }
     ZFMethod *from = aliasMethod->aliasFrom()->_ZFP_ZFMethod_removeConst();
     ZFMethod *to = aliasMethod->_ZFP_ZFMethod_removeConst();
-    from->_ZFP_ZFMethod_ext->aliasTo.removeElement(to);
-    to->_ZFP_ZFMethod_ext->aliasFrom = zfnull;
+    from->_ZFP_ZFMethod_ext()->aliasTo.removeElement(to);
+    to->_ZFP_ZFMethod_ext()->aliasFrom = zfnull;
 
     if(!to->aliasTo().isEmpty()) {
-        ZFCoreArray<const ZFMethod *> chain = to->_ZFP_ZFMethod_ext->aliasTo;
-        to->_ZFP_ZFMethod_ext->aliasTo = ZFCoreArray<const ZFMethod *>();
+        ZFCoreArray<const ZFMethod *> chain = to->_ZFP_ZFMethod_ext()->aliasTo;
+        to->_ZFP_ZFMethod_ext()->aliasTo = ZFCoreArray<const ZFMethod *>();
 
         for(zfindex i = 0; i < chain.count(); ++i) {
             ZFMethod *chainTmp = chain[i]->_ZFP_ZFMethod_removeConst();
-            chainTmp->_ZFP_ZFMethod_ext->aliasFrom = zfnull;
+            chainTmp->_ZFP_ZFMethod_ext()->aliasFrom = zfnull;
             _ZFP_ZFMethodAliasRemove(chainTmp);
         }
     }
 
-    _ZFP_ZFMethodUnregister(aliasMethod);
+    ZFMethod::_ZFP_ZFMethodUnregister(aliasMethod);
 }
 void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
     ZFCoreMutexLocker();

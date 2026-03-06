@@ -312,8 +312,6 @@ public:
         , ZFTypeId_noneOrType \
         , setterMethod \
         , getterMethod \
-        , _ZFP_ZFPropertyMethodCleanup_UserReg \
-        , _ZFP_ZFPropertyMethodCleanup_UserReg \
         , propertyClassOfRetainProperty \
         , Func_ZFPropertyCallbackIsValueAccessed \
         , Func_ZFPropertyCallbackIsInitValue \
@@ -345,8 +343,6 @@ public:
         , ZFTypeId_noneOrType \
         , setterMethod \
         , getterMethod \
-        , _ZFP_ZFPropertyMethodCleanup_UserReg \
-        , _ZFP_ZFPropertyMethodCleanup_UserReg \
         , propertyClassOfRetainProperty \
         , Func_ZFPropertyCallbackIsValueAccessed \
         , Func_ZFPropertyCallbackIsInitValue \
@@ -358,7 +354,6 @@ public:
     )
 
 // ============================================================
-extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method);
 #define _ZFP_ZFPropertyUserRegister(resultProperty, ownerClass, \
         Type, propertyNameString, InitValueOrEmpty, \
         SetterAccessType, GetterAccessType, \
@@ -387,7 +382,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
             }, _ownerClass, GetterAccessType, ZFMethodTypeVirtual, \
             Type const &, _propertyName); \
         _ZFP_ZFPropertyUserRegister_PropInit_##RetainOrAssign(_, Type, InitValueOrEmpty) \
-        resultProperty = _ZFP_ZFPropertyRegister _ZFP_ZFPropertyUserRegister_ParamExpand_##RetainOrAssign( \
+        resultProperty = ZFProperty::_ZFP_ZFPropertyRegister _ZFP_ZFPropertyUserRegister_ParamExpand_##RetainOrAssign( \
                 _, _ownerClass, \
                 Type, _propertyName, \
                 ZFTypeId_noneOrType, \

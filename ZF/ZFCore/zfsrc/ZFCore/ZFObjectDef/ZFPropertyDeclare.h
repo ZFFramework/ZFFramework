@@ -357,8 +357,6 @@ public:
                         , ZFMP_IN(Type const &, propertyValue) \
                         ) \
                     , ZFMethodAccessDetail_0(zfself, Name) \
-                    , zfnull \
-                    , zfnull \
                     , propertyClassOfRetainProperty \
                     , zfself::_ZFP_propCbAccessed_##Name \
                     , zfself::_ZFP_propCbIsInit_##Name \
@@ -385,8 +383,6 @@ public:
                         , ZFMP_IN(Type const &, propertyValue) \
                         ) \
                     , ZFMethodAccessDetail_0(zfself, Name) \
-                    , zfnull \
-                    , zfnull \
                     , propertyClassOfRetainProperty \
                     , zfself::_ZFP_propCbAccessed_##Name \
                     , zfself::_ZFP_propCbIsInit_##Name \

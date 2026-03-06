@@ -17,7 +17,7 @@ void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method) {
             method
         );
 
-    _ZFP_ZFMethodUnregister(method);
+    ZFMethod::_ZFP_ZFMethodUnregister(method);
 }
 
 ZF_NAMESPACE_GLOBAL_END

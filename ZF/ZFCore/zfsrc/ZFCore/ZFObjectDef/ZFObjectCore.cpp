@@ -660,8 +660,8 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     if(d) {
         for(zfstlsize i = d->propertyAccessed.size() - 1; i != (zfstlsize)-1; --i) {
             const ZFProperty *property = d->propertyAccessed[i];
-            if(property->_ZFP_ZFProperty_callbackDealloc) {
-                property->_ZFP_ZFProperty_callbackDealloc(property, this);
+            if(property->_ZFP_ZFProperty_callbackDealloc()) {
+                property->_ZFP_ZFProperty_callbackDealloc()(property, this);
             }
         }
     }

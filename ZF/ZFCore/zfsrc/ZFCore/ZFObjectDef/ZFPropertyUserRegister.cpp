@@ -3,10 +3,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method) {
-    ZFMethodUserUnregister(method);
-}
-
 zfauto _ZFP_I_PropUR::create(
         ZF_IN void *v
         , ZF_IN DeleteCallback deleteCallback
@@ -29,7 +25,7 @@ void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty) {
             zfproperty
         );
 
-    _ZFP_ZFPropertyUnregister(zfproperty);
+    ZFProperty::_ZFP_ZFPropertyUnregister(zfproperty);
 }
 
 void ZFPropertyUserRegisterNotifyUpdate(

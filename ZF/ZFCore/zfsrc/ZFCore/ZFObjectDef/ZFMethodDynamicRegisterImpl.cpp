@@ -20,7 +20,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove) {
     _ZFP_ZFMethodDynRegMapType t;
     t.swap(_ZFP_ZFMethodDynRegData());
     for(_ZFP_ZFMethodDynRegMapType::iterator it = t.begin(); it != t.end(); ++it) {
-        _ZFP_ZFMethodUnregister(it->first);
+        ZFMethod::_ZFP_ZFMethodUnregister(it->first);
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterAutoRemove)
@@ -142,7 +142,7 @@ const ZFMethod *ZFMethodDynamicRegister(
                 , param.paramDefaultValueCallbackAt(i)
                 );
     }
-    ZFMethod *method = _ZFP_ZFMethodRegister(zffalse
+    ZFMethod *method = ZFMethod::_ZFP_ZFMethodRegister(zffalse
             , zftrue
             , methodImplValid
                 ? zfobj<v_ZFListener>(param.methodImpl()).toObject()
@@ -225,7 +225,7 @@ void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method) {
         ZFCoreMutexLocker();
         _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(method->methodNamespace()));
         _ZFP_ZFMethodDynRegData().erase(method);
-        _ZFP_ZFMethodUnregister(method);
+        ZFMethod::_ZFP_ZFMethodUnregister(method);
     }
 }
 

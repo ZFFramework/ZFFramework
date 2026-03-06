@@ -1761,8 +1761,8 @@ void ZFClass::_ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const {
     // access getter to ensure property value created
     for(zfstlhashmap<const ZFProperty *, zfbool>::iterator it = d->propertyAutoInitMap.begin(); it != d->propertyAutoInitMap.end(); ++it) {
         const ZFProperty *property = it->first;
-        if(property->_ZFP_ZFProperty_callbackEnsureInit) {
-            property->_ZFP_ZFProperty_callbackEnsureInit(property, owner);
+        if(property->_ZFP_ZFProperty_callbackEnsureInit()) {
+            property->_ZFP_ZFProperty_callbackEnsureInit()(property, owner);
         }
     }
 }

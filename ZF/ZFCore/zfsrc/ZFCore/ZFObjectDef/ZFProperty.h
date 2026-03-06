@@ -21,7 +21,6 @@ typedef void (*_ZFP_ZFPropertyCallbackDealloc)(
         ZF_IN const ZFProperty *property
         , ZF_IN zfany const &owner
         );
-typedef void (*_ZFP_ZFPropertyMethodCleanup)(ZF_IN const ZFMethod *method);
 /**
  * @brief info for a property for ZFObject, see #ZFPROPERTY_RETAIN for more info
  */
@@ -45,25 +44,25 @@ public:
      * @brief internal property id, for debug use only
      */
     inline zfidentity propertyId(void) const {
-        return this->_ZFP_ZFProperty_propertyId.sigId();
+        return _propertyId.sigId();
     }
     /**
      * @brief true if this property is registered by #ZFPropertyUserRegisterRetain
      */
     inline zfbool isUserRegister(void) const {
-        return this->_ZFP_ZFProperty_isUserRegister;
+        return ZFBitTest(_stateFlags, _stateFlags_isUserRegister);
     }
     /**
      * @brief true if this property is registered by #ZFPropertyDynamicRegister
      */
     inline zfbool isDynamicRegister(void) const {
-        return this->_ZFP_ZFProperty_isDynamicRegister;
+        return ZFBitTest(_stateFlags, _stateFlags_isDynamicRegister);
     }
     /**
      * @brief see #ZFPropertyDynamicRegister
      */
     inline zfany dynamicRegisterUserData(void) const {
-        return this->_ZFP_ZFProperty_dynamicRegisterUserData;
+        return _dynamicRegisterUserData;
     }
     /**
      * @brief true if the property is serializable
@@ -81,13 +80,13 @@ public:
      * @brief get the property's owner class
      */
     inline const ZFClass *ownerClass(void) const {
-        return this->_ZFP_ZFProperty_ownerClass;
+        return _ownerClass;
     }
     /**
      * @brief name for the property
      */
     inline const zfstring &propertyName(void) const {
-        return this->_ZFP_ZFProperty_name;
+        return _propertyName;
     }
 
     /**
@@ -98,7 +97,7 @@ public:
      * usually for debug use only
      */
     inline const zfstring &propertyTypeName(void) const {
-        return this->_ZFP_ZFProperty_typeName ? this->_ZFP_ZFProperty_typeName : this->_ZFP_ZFProperty_typeId;
+        return _propertyTypeName ? _propertyTypeName : _propertyTypeId;
     }
     /**
      * @brief type id string declared in ZFPROPERTY_XXX
@@ -109,19 +108,19 @@ public:
      * @note for retain property, this value is always the class name of the #propertyClassOfRetainProperty
      */
     inline const zfstring &propertyTypeId(void) const {
-        return this->_ZFP_ZFProperty_typeId;
+        return _propertyTypeId;
     }
     /**
      * @brief get the getter method
      */
     inline const ZFMethod *setterMethod(void) const {
-        return this->_ZFP_ZFProperty_setterMethod;
+        return _setterMethod;
     }
     /**
      * @brief get the getter method
      */
     inline const ZFMethod *getterMethod(void) const {
-        return this->_ZFP_ZFProperty_getterMethod;
+        return _getterMethod;
     }
 
     /**
@@ -131,7 +130,7 @@ public:
      * it also have a getter method named "propertyName"
      */
     inline zfbool isRetainProperty(void) const {
-        return (this->_ZFP_ZFProperty_propertyClassOfRetainProperty != zfnull);
+        return (_propertyClassOfRetainProperty != zfnull);
     }
     /**
      * @brief for retain property only, get the retain property's declared class
@@ -139,7 +138,7 @@ public:
      * note it's the declared class, property's value may be subclass of it
      */
     inline const ZFClass *propertyClassOfRetainProperty(void) const {
-        return this->_ZFP_ZFProperty_propertyClassOfRetainProperty;
+        return _propertyClassOfRetainProperty;
     }
 
 public:
@@ -153,7 +152,9 @@ public:
      * internal properties would be ignored from serialization,
      * see also #isInternalPrivate
      */
-    inline zfbool isInternal(void) const {return _ZFP_ZFProperty_isInternal;}
+    inline zfbool isInternal(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_isInternal);
+    }
     /**
      * @brief whether the property is internal private property
      *
@@ -164,7 +165,9 @@ public:
      * internal private properties would be ignored from serialization and reflection,
      * see also #isInternal
      */
-    inline zfbool isInternalPrivate(void) const {return _ZFP_ZFProperty_isInternalPrivate;}
+    inline zfbool isInternalPrivate(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_isInternalPrivate);
+    }
 
 public:
     /** @brief see #ZFPropertyCallbackIsValueAccessed */
@@ -183,6 +186,29 @@ public:
     ZFProperty(void);
     ~ZFProperty(void);
     /** @endcond */
+
+public:
+    static ZFProperty *_ZFP_ZFPropertyRegister(
+            ZF_IN zfbool isUserRegister
+            , ZF_IN zfbool isDynamicRegister
+            , ZF_IN ZFObject *dynamicRegisterUserData
+            , ZF_IN const ZFClass *ownerClass
+            , ZF_IN const zfstring &name
+            , ZF_IN const zfstring &typeName
+            , ZF_IN const zfstring &typeIdName
+            , ZF_IN const ZFMethod *setterMethod
+            , ZF_IN const ZFMethod *getterMethod
+            , ZF_IN const ZFClass *propertyClassOfRetainProperty
+            , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
+            , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
+            , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
+            , ZF_IN ZFPropertyCallbackUserRegisterInitValueSetup callbackUserRegisterInitValueSetup
+            , ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter callbackDynamicRegisterInitValueGetter
+            , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
+            , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
+            );
+    static void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo);
+
     void _ZFP_ZFPropertyInit(
             ZF_IN zfbool isUserRegister
             , ZF_IN zfbool isDynamicRegister
@@ -193,33 +219,46 @@ public:
             , ZF_IN const zfstring &typeIdName
             , ZF_IN const ZFMethod *setterMethod
             , ZF_IN const ZFMethod *getterMethod
-            , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
-            , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
             , ZF_IN const ZFClass *propertyClassOfRetainProperty
             );
     ZFProperty *_ZFP_ZFProperty_removeConst(void) const {
         return const_cast<ZFProperty *>(this);
     }
+    inline ZFObject *_ZFP_ZFProperty_dynamicRegisterUserDataWrapper(void) const {
+        return _dynamicRegisterUserDataWrapper;
+    }
+    void _ZFP_ZFProperty_dynamicRegisterUserDataWrapper(ZF_IN ZFObject *v) const;
+
+    _ZFP_ZFPropertyCallbackEnsureInit _ZFP_ZFProperty_callbackEnsureInit(void) const {
+        return _callbackEnsureInit;
+    }
+    _ZFP_ZFPropertyCallbackDealloc _ZFP_ZFProperty_callbackDealloc(void) const {
+        return _callbackDealloc;
+    }
+
+private:
+    enum {
+        _stateFlags_isInternal = 1 << 0,
+        _stateFlags_isInternalPrivate = 1 << 1,
+        _stateFlags_isUserRegister = 1 << 2,
+        _stateFlags_isDynamicRegister = 1 << 3,
+    };
+private:
+    zfuint _refCount;
+    zfuint _stateFlags;
+    ZFSigName _propertyId;
+    ZFObject *_dynamicRegisterUserData;
+    ZFObject *_dynamicRegisterUserDataWrapper;
+    const ZFClass *_ownerClass;
+    ZFSigName _propertyName;
+    ZFSigName _propertyTypeName;
+    ZFSigName _propertyTypeId;
+    const ZFMethod *_setterMethod;
+    const ZFMethod *_getterMethod;
+    const ZFClass *_propertyClassOfRetainProperty;
+    _ZFP_ZFPropertyCallbackEnsureInit _callbackEnsureInit;
+    _ZFP_ZFPropertyCallbackDealloc _callbackDealloc;
 public:
-    zfuint _ZFP_ZFProperty_refCount;
-    zfbool _ZFP_ZFProperty_isInternal;
-    zfbool _ZFP_ZFProperty_isInternalPrivate;
-    zfbool _ZFP_ZFProperty_isUserRegister;
-    zfbool _ZFP_ZFProperty_isDynamicRegister;
-    ZFSigName _ZFP_ZFProperty_propertyId;
-    ZFObject *_ZFP_ZFProperty_dynamicRegisterUserData;
-    ZFObject *_ZFP_ZFProperty_dynamicRegisterUserDataWrapper;
-    const ZFClass *_ZFP_ZFProperty_ownerClass;
-    ZFSigName _ZFP_ZFProperty_name;
-    ZFSigName _ZFP_ZFProperty_typeName;
-    ZFSigName _ZFP_ZFProperty_typeId;
-    const ZFMethod *_ZFP_ZFProperty_setterMethod;
-    const ZFMethod *_ZFP_ZFProperty_getterMethod;
-    _ZFP_ZFPropertyMethodCleanup _ZFP_ZFProperty_setterMethodCleanup;
-    _ZFP_ZFPropertyMethodCleanup _ZFP_ZFProperty_getterMethodCleanup;
-    const ZFClass *_ZFP_ZFProperty_propertyClassOfRetainProperty;
-    _ZFP_ZFPropertyCallbackEnsureInit _ZFP_ZFProperty_callbackEnsureInit;
-    _ZFP_ZFPropertyCallbackDealloc _ZFP_ZFProperty_callbackDealloc;
     ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnInit; // ordered from parent to child
     ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnUpdate;
     ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnAttach;
@@ -239,29 +278,6 @@ inline ZFCoreArray<const ZFProperty *> ZFPropertyGetAll(void) {
 }
 
 // ============================================================
-extern ZFLIB_ZFCore ZFProperty *_ZFP_ZFPropertyRegister(
-        ZF_IN zfbool isUserRegister
-        , ZF_IN zfbool isDynamicRegister
-        , ZF_IN ZFObject *dynamicRegisterUserData
-        , ZF_IN const ZFClass *ownerClass
-        , ZF_IN const zfstring &name
-        , ZF_IN const zfstring &typeName
-        , ZF_IN const zfstring &typeIdName
-        , ZF_IN const ZFMethod *setterMethod
-        , ZF_IN const ZFMethod *getterMethod
-        , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
-        , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
-        , ZF_IN const ZFClass *propertyClassOfRetainProperty
-        , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
-        , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
-        , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
-        , ZF_IN ZFPropertyCallbackUserRegisterInitValueSetup callbackUserRegisterInitValueSetup
-        , ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter callbackDynamicRegisterInitValueGetter
-        , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
-        , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
-        );
-extern ZFLIB_ZFCore void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo);
-
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFPropertyRegisterHolder {
 public:
     _ZFP_ZFPropertyRegisterHolder(
@@ -274,8 +290,6 @@ public:
             , ZF_IN const zfstring &typeIdName
             , ZF_IN const ZFMethod *setterMethod
             , ZF_IN const ZFMethod *getterMethod
-            , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
-            , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
             , ZF_IN const ZFClass *propertyClassOfRetainProperty
             , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
             , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
@@ -285,7 +299,7 @@ public:
             , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
             , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
             )
-    : propertyInfo(_ZFP_ZFPropertyRegister(
+    : propertyInfo(ZFProperty::_ZFP_ZFPropertyRegister(
         isUserRegister
         , isDynamicRegister
         , dynamicRegisterUserData
@@ -295,8 +309,6 @@ public:
         , typeIdName
         , setterMethod
         , getterMethod
-        , setterMethodCleanup
-        , getterMethodCleanup
         , propertyClassOfRetainProperty
         , callbackIsValueAccessed
         , callbackIsInitValue
@@ -308,7 +320,7 @@ public:
         )) {
     }
     ~_ZFP_ZFPropertyRegisterHolder(void) {
-        _ZFP_ZFPropertyUnregister(this->propertyInfo);
+        ZFProperty::_ZFP_ZFPropertyUnregister(this->propertyInfo);
     }
 public:
     ZFProperty *propertyInfo;
