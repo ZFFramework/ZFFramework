@@ -217,10 +217,6 @@ public:
     }
 
 private:
-    mz_uint32 _fileAttr(void) {
-        // UNX_IFREG | 0644
-        return (mz_uint32)(0100644 << 16);
-    }
     zfbool _ioCloseImpl(void) {
         zfbool ret = zffalse;;
         ZFPathInfo cachePath;
@@ -296,7 +292,6 @@ private:
                                 , zfnull
                                 , 0
                                 , _compressLevel
-                                , _fileAttr()
                                 , zfnull
                                 , 0
                                 , zfnull
@@ -325,7 +320,6 @@ private:
                                 , zfnull
                                 , 0
                                 , _compressLevel
-                                , _fileAttr()
                                 , zfnull
                                 , 0
                                 , zfnull
@@ -686,6 +680,7 @@ public:
     };
     zfoverride
     virtual zfiter itemIter(void) {
+        _itemLoadCheck();
         _Iter *impl = zfpoolNew(_Iter);
         impl->itItem = _itemMap.begin();
         impl->itItemEnd = _itemMap.end();
