@@ -59,7 +59,7 @@ zfclassFwd ZFClass;
     /** @brief see #ZFMethod */ \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
     inline T_ReturnType executeExact(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
-        if(this->methodInvoker()) { \
+        if(!this->preferGenericInvoker()) { \
             return reinterpret_cast< \
                     T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
                     >(this->methodInvoker()) \
@@ -257,7 +257,7 @@ public:
             ZF_IN zfbool isUserRegister
             , ZF_IN zfbool isDynamicRegister
             , ZF_IN ZFObject *dynamicRegisterUserData
-            , ZF_IN ZFFuncAddrType invoker
+            , ZF_IN ZFFuncAddrType methodInvoker
             , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
             , ZF_IN ZFMethodType methodType
             , ZF_IN const zfstring &methodName
@@ -444,41 +444,8 @@ public:
      *   you may change it by #methodInvoker
      */
     inline ZFFuncAddrType methodInvoker(void) const {
-        return _invoker;
+        return _methodInvoker;
     }
-    /**
-     * @brief override original #methodInvoker
-     *
-     * set null to remove the overrided value,
-     * the original invoker can be accessed by #methodInvokerOrig
-     * @note no safe check for the method's proto type,
-     *   you must ensure it's valid and safe to be called
-     * @note assume the original method's proto type is:
-     *   @code
-     *     ReturnType method(ParamType0, ParamType1, ...);
-     *   @endcode
-     *   then the invoker's proto type must be:
-     *   @code
-     *     ReturnType method(
-     *         const ZFMethod *invokerMethod
-     *         , zfany const &invokerObject
-     *         , ParamType0 param0
-     *         , ParamType1 param1
-     *         , ...
-     *         );
-     *   @endcode
-     * @note overriding the invoker only affect methods when they are reflected,
-     *   calling it directly won't be affected
-     *   @code
-     *     obj->myMethod(); // won't be affected
-     *     method->executeExact<void>(obj); // would be affected
-     *   @endcode
-     */
-    void methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const;
-    /**
-     * @brief see #methodInvoker
-     */
-    ZFFuncAddrType methodInvokerOrig(void) const;
 
     /**
      * @brief generic invoker for advanced reflection
@@ -569,16 +536,20 @@ public:
             ) const;
 
     /**
-     * @brief see #methodGenericInvoker
+     * @brief see #ZFMethodImplReplace
      */
     ZFMethodGenericInvoker methodGenericInvokerOrig(void) const;
 
     /**
-     * @brief change default impl for #methodGenericInvoker
+     * @brief whether prefer generic invoker when invoke
      *
-     * the original invoker can be accessed by #methodGenericInvokerOrig
+     * true if:
+     * -  method was dynamically registerd (by #ZFMethodDynamicRegister)
+     * -  method impl was replaced by #ZFMethodImplReplace
      */
-    void methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericInvoker) const;
+    inline zfbool preferGenericInvoker(void) const {
+        return ZFBitTest(_stateFlags, _stateFlags_preferGenericInvoker);
+    }
 
     // ============================================================
     // class member type
@@ -700,12 +671,17 @@ public:
         this->_ZFP_ZFMethod_removeConst()->_ownerProperty = ownerProperty;
     }
 
+    void _ZFP_ZFMethodImplReplace_invoke(ZF_IN const ZFArgs &zfargs);
+    void _ZFP_ZFMethodImplReplace_attach(ZF_IN const ZFListener &impl);
+    void _ZFP_ZFMethodImplReplace_detach(ZF_IN const ZFListener &impl);
+
 private:
     enum {
         _stateFlags_isInternal = 1 << 0,
         _stateFlags_isInternalPrivate = 1 << 1,
         _stateFlags_isUserRegister = 1 << 2,
         _stateFlags_isDynamicRegister = 1 << 3,
+        _stateFlags_preferGenericInvoker = 1 << 4,
     };
 private:
     zfuint _refCount;
@@ -713,7 +689,7 @@ private:
     ZFObject *_methodUserData;
     ZFSigName _methodId;
     _ZFP_ZFMethodPrivate *_ext;
-    ZFFuncAddrType _invoker;
+    ZFFuncAddrType _methodInvoker;
     ZFMethodGenericInvoker _methodGenericInvoker;
     ZFSigName _methodName;
     ZFSigName _returnTypeId;
@@ -852,6 +828,28 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodAlias(
  * @brief see #ZFMethodAlias
  */
 extern ZFLIB_ZFCore void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod);
+
+// ============================================================
+/**
+ * @brief dynamically replace impl for method
+ *
+ * the zfargs of original method generic invoker would be passed to impl,
+ * the impl may (and may not) call original method by #ZFArgs::callOrigMethod\n
+ *
+ * it's possible to replace more than one time,
+ * and can be restored by #ZFMethodImplRestore
+ */
+extern ZFLIB_ZFCore ZFListener ZFMethodImplReplace(
+        ZF_IN const ZFMethod *method
+        , ZF_IN const ZFListener &impl
+        );
+/**
+ * @brief see #ZFMethodImplReplace
+ */
+extern ZFLIB_ZFCore void ZFMethodImplRestore(
+        ZF_IN const ZFMethod *method
+        , ZF_IN const ZFListener &impl
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFMethod_h_

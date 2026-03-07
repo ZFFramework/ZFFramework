@@ -245,6 +245,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, eventFiltered
         , ZFMP_IN(zfbool, v)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfauto, callSuper)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, void, callOrigMethod)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, ZFArgs &, paramInit)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFArgs, ZFArgs &, paramInit
         , ZFMP_IN(ZFObject *, param0)

@@ -8,6 +8,7 @@
 #include "ZFCoreTypeDef.h"
 #include "ZFCoreUtilMacro.h"
 #include "zfstr.h"
+#include "ZFMemPool.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -105,7 +106,7 @@ public:
      * @brief see #refNew
      */
     virtual void refDelete(void) const {
-        zfdelete(const_cast<ZFCorePointer *>(this));
+        zfpoolDelete(const_cast<ZFCorePointer *>(this));
     }
     /**
      * @brief get the internal pointer
@@ -229,15 +230,15 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     ZFCorePointerT(void)
-    : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
+    : d(zfpoolNew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
     }
     ZFCorePointerT(ZF_IN zfnullT const &value)
-    : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
+    : d(zfpoolNew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
     }
     ZFCorePointerT(ZF_IN T_Pointer const &value)
-    : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
+    : d(zfpoolNew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
         this->pointerValue(value);
     }
@@ -252,7 +253,7 @@ public:
             if(d->pointerValue != zfnull) {
                 T_ZFCorePointerType::pointerOnDelete(d->pointerValue);
             }
-            zfdelete(d);
+            zfpoolDelete(d);
         }
     }
     ZFCorePointerT<T_Pointer, T_ZFCorePointerType> &operator = (ZF_IN const ZFCorePointerT<T_Pointer, T_ZFCorePointerType> &ref) {
@@ -264,7 +265,7 @@ public:
             if(dTmp->pointerValue != zfnull) {
                 T_ZFCorePointerType::pointerOnDelete(dTmp->pointerValue);
             }
-            zfdelete(dTmp);
+            zfpoolDelete(dTmp);
         }
         return *this;
     }
@@ -298,7 +299,8 @@ public:
 public:
     zfoverride
     virtual const ZFCorePointer *refNew(void) const {
-        return zfnew(ZFCorePointerT<T_Pointer ZFM_COMMA() T_ZFCorePointerType>, *this);
+        typedef ZFCorePointerT<T_Pointer, T_ZFCorePointerType> T_Tmp;
+        return zfpoolNew(T_Tmp, *this);
     }
     zfoverride
     virtual inline const void *pointerValueAccess(void) const {

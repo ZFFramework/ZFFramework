@@ -6,6 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFArgsPrivate {
 public:
     zfuint refCount;
+    zfuint methodImplReplaceIndex;
     zfbool success;
     zfbool ignoreError;
     zfbool ignoreErrorEvent;
@@ -20,6 +21,7 @@ public:
 public:
     _ZFP_ZFArgsPrivate(void)
     : refCount(1)
+    , methodImplReplaceIndex(0)
     , success(zftrue)
     , ignoreError(zffalse)
     , ignoreErrorEvent(zffalse)
@@ -487,6 +489,14 @@ zfauto ZFArgs::callSuper(void) const {
     else {
         return zfnull;
     }
+}
+
+void ZFArgs::callOrigMethod(void) const {
+    this->ownerMethod()->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethodImplReplace_invoke(*this);
+}
+
+zfuint &ZFArgs::_ZFP_ZFMethodImplReplace_index(void) const {
+    return d->methodImplReplaceIndex;
 }
 
 ZF_NAMESPACE_GLOBAL_END

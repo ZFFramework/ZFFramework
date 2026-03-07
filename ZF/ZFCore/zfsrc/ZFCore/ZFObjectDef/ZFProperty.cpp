@@ -263,18 +263,22 @@ void ZFProperty::_ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
     }
     m.erase(it);
 
-    if(v->setterMethod()->isUserRegister()) {
-        ZFMethodUserUnregister(v->setterMethod());
-    }
-    else if(v->setterMethod()->isDynamicRegister()) {
-        ZFMethodDynamicUnregister(v->setterMethod());
+    if(v->setterMethod()->aliasFrom() == zfnull) {
+        if(v->setterMethod()->isUserRegister()) {
+            ZFMethodUserUnregister(v->setterMethod());
+        }
+        else if(v->setterMethod()->isDynamicRegister()) {
+            ZFMethodDynamicUnregister(v->setterMethod());
+        }
     }
 
-    if(v->getterMethod()->isUserRegister()) {
-        ZFMethodUserUnregister(v->getterMethod());
-    }
-    else if(v->getterMethod()->isDynamicRegister()) {
-        ZFMethodDynamicUnregister(v->getterMethod());
+    if(v->getterMethod()->aliasFrom() == zfnull) {
+        if(v->getterMethod()->isUserRegister()) {
+            ZFMethodUserUnregister(v->getterMethod());
+        }
+        else if(v->getterMethod()->isDynamicRegister()) {
+            ZFMethodDynamicUnregister(v->getterMethod());
+        }
     }
 
     v->ownerClass()->_ZFP_ZFClass_propertyUnregister(v);

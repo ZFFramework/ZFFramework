@@ -185,6 +185,11 @@ public:
     zfauto callSuper(void) const;
 
     /**
+     * @brief util to call original method from #ZFMethodImplReplace
+     */
+    void callOrigMethod(void) const;
+
+    /**
      * @brief util for impl to init all params with #ZFMP_DEF
      */
     ZFArgs &paramInit(void);
@@ -265,6 +270,7 @@ public:
     ZFArgs &_ZFP_ZFArgs_removeConst(void) const {
         return const_cast<ZFArgs &>(*this);
     }
+    zfuint &_ZFP_ZFMethodImplReplace_index(void) const;
 
 private:
     _ZFP_ZFArgsPrivate *d;

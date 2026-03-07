@@ -51,14 +51,14 @@ zfclassNotPOD _ZFP_ZFMethodPrivate {
 public:
     const ZFMethod *aliasFrom;
     ZFCoreArray<const ZFMethod *> aliasTo;
-    ZFFuncAddrType invokerOrig;
     ZFMethodGenericInvoker methodGenericInvokerOrig;
+    ZFCoreArray<ZFListener> methodImplReplaceList; // latest at head
 public:
     _ZFP_ZFMethodPrivate(void)
     : aliasFrom(zfnull)
     , aliasTo()
-    , invokerOrig(zfnull)
     , methodGenericInvokerOrig(zfnull)
+    , methodImplReplaceList()
     {
     }
 };
@@ -71,12 +71,6 @@ const ZFCoreArray<const ZFMethod *> &ZFMethod::aliasTo(void) const {
     return _ext ? _ext->aliasTo : dummy;
 }
 
-ZFFuncAddrType ZFMethod::methodInvokerOrig(void) const {
-    return _ext && _ext->invokerOrig
-        ? _ext->invokerOrig
-        : _invoker
-        ;
-}
 ZFMethodGenericInvoker ZFMethod::methodGenericInvokerOrig(void) const {
     return _ext && _ext->methodGenericInvokerOrig
         ? _ext->methodGenericInvokerOrig
@@ -95,7 +89,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
         ZF_IN zfbool isUserRegister
         , ZF_IN zfbool isDynamicRegister
         , ZF_IN ZFObject *dynamicRegisterUserData
-        , ZF_IN ZFFuncAddrType invoker
+        , ZF_IN ZFFuncAddrType methodInvoker
         , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
         , ZF_IN ZFMethodType methodType
         , ZF_IN const zfstring &methodName
@@ -111,7 +105,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
         ZFBitSet(_stateFlags, _stateFlags_isDynamicRegister);
     }
     this->_methodUserData = zfobjRetain(dynamicRegisterUserData);
-    _invoker = invoker;
+    _methodInvoker = methodInvoker;
     _methodGenericInvoker = methodGenericInvoker;
     _methodType = (zfbyte)methodType;
     _methodName = methodName;
@@ -187,7 +181,7 @@ ZFMethod::ZFMethod(void)
 , _methodUserData(zfnull)
 , _methodId(zfnull)
 , _ext(zfnull)
-, _invoker(zfnull)
+, _methodInvoker(zfnull)
 , _methodGenericInvoker(zfnull)
 , _methodName(zfnull)
 , _returnTypeId(zfnull)
@@ -507,44 +501,6 @@ void ZFMethod::paramInfoT(ZF_IN_OUT zfstring &ret) const {
             else {
                 v->objectInfoT(ret);
             }
-        }
-    }
-}
-
-void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericInvoker) const {
-    ZFCoreMutexLocker();
-    ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
-    if(methodGenericInvoker != zfnull) {
-        if(_ext == zfnull) {
-            owner->_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
-        }
-        if(owner->_ext->methodGenericInvokerOrig == zfnull) {
-            owner->_ext->methodGenericInvokerOrig = _methodGenericInvoker;
-        }
-        owner->_methodGenericInvoker = methodGenericInvoker;
-    }
-    else {
-        if(_ext && _ext->methodGenericInvokerOrig) {
-            owner->_methodGenericInvoker = _ext->methodGenericInvokerOrig;
-        }
-    }
-}
-
-void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
-    ZFCoreMutexLocker();
-    ZFMethod *owner = this->_ZFP_ZFMethod_removeConst();
-    if(methodInvoker != zfnull) {
-        if(_ext == zfnull) {
-            owner->_ext = zfpoolNew(_ZFP_ZFMethodPrivate);
-        }
-        if(owner->_ext->invokerOrig == zfnull) {
-            owner->_ext->invokerOrig = _invoker;
-        }
-        owner->_invoker = methodInvoker;
-    }
-    else {
-        if(_ext && _ext->invokerOrig) {
-            owner->_invoker = _ext->invokerOrig;
         }
     }
 }
@@ -905,7 +861,7 @@ const ZFMethod *ZFMethodAlias(
             method->isUserRegister()
             , method->isDynamicRegister()
             , method->dynamicRegisterUserData()
-            , method->methodInvokerOrig()
+            , method->methodInvoker()
             , method->methodGenericInvokerOrig()
             , method->methodType()
             , method->ownerClass()
@@ -947,6 +903,69 @@ static void _ZFP_ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
 void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethodAliasRemove(aliasMethod);
+}
+
+// ============================================================
+static void _ZFP_ZFMethodImplReplace_GI(ZF_IN const ZFArgs &zfargs) {
+    if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {
+        return;
+    }
+    zfargs._ZFP_ZFMethodImplReplace_index() = 0;
+    zfargs.ownerMethod()->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethodImplReplace_invoke(zfargs);
+}
+void ZFMethod::_ZFP_ZFMethodImplReplace_invoke(ZF_IN const ZFArgs &zfargs) {
+    ZFCoreMutexLock();
+    zfuint &index = zfargs._ZFP_ZFMethodImplReplace_index();
+    if(index >= _ext->methodImplReplaceList.count()) {
+        ZFCoreMutexUnlock();
+        _ext->methodGenericInvokerOrig(zfargs);
+        return;
+    }
+    ZFListener impl = _ext->methodImplReplaceList.get(index++);
+    ZFCoreMutexUnlock();
+
+    impl.execute(zfargs);
+}
+void ZFMethod::_ZFP_ZFMethodImplReplace_attach(ZF_IN const ZFListener &impl) {
+    ZFCoreMutexLocker();
+    _ZFP_ZFMethod_extInit();
+    _ext->methodImplReplaceList.add(impl, 0);
+    ZFBitSet(_stateFlags, _stateFlags_preferGenericInvoker);
+    if(_ext->methodGenericInvokerOrig == zfnull) {
+        _ext->methodGenericInvokerOrig = _methodGenericInvoker;
+        _methodGenericInvoker = _ZFP_ZFMethodImplReplace_GI;
+    }
+}
+void ZFMethod::_ZFP_ZFMethodImplReplace_detach(ZF_IN const ZFListener &impl) {
+    ZFCoreMutexLocker();
+    _ext->methodImplReplaceList.removeElement(impl);
+    if(_ext->methodImplReplaceList.isEmpty()) {
+        _methodGenericInvoker = _ext->methodGenericInvokerOrig;
+        _ext->methodGenericInvokerOrig = zfnull;
+        if(_methodInvoker) {
+            ZFBitUnset(_stateFlags, _stateFlags_preferGenericInvoker);
+        }
+    }
+}
+ZFListener ZFMethodImplReplace(
+        ZF_IN const ZFMethod *method
+        , ZF_IN const ZFListener &impl
+        ) {
+    if(method && impl) {
+        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethodImplReplace_attach(impl);
+        return impl;
+    }
+    else {
+        return zfnull;
+    }
+}
+void ZFMethodImplRestore(
+        ZF_IN const ZFMethod *method
+        , ZF_IN const ZFListener &impl
+        ) {
+    if(method && impl) {
+        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethodImplReplace_detach(impl);
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

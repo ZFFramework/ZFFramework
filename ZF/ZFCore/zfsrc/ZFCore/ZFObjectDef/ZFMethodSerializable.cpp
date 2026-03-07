@@ -79,10 +79,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, paramInfoT
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfstring, paramInfo)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfindex, paramDefaultBeginIndex)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFFuncAddrType, methodInvoker)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodInvoker
-        , ZFMP_IN(ZFFuncAddrType, methodInvoker)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFFuncAddrType, methodInvokerOrig)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvoker)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfauto, methodInvoke
         , ZFMP_IN_OPT(ZFObject *, ownerObjOrNull, zfnull)
@@ -124,9 +120,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFMethod, zfbool, methodInvokeCheck
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvokerOrig)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodGenericInvoker
-        , ZFMP_IN(ZFMethodGenericInvoker, methodGenericInvoker)
-        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, preferGenericInvoker)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const ZFClass *, ownerClass)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodAccessType, methodAccessType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, isPublic)
@@ -180,6 +174,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodAlias
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodAliasRemove
         , ZFMP_IN(const ZFMethod *, aliasMethod)
+        )
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFMethodImplReplace
+        , ZFMP_IN(const ZFMethod *, method)
+        , ZFMP_IN(const ZFListener &, impl)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFMethodImplRestore
+        , ZFMP_IN(const ZFMethod *, method)
+        , ZFMP_IN(const ZFListener &, impl)
         )
 
 // ============================================================
