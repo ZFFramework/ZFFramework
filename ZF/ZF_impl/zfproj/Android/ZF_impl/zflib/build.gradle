@@ -59,10 +59,10 @@ if (file(this.projectDir.absolutePath + '/zfprojConfig/zfprojConfig.gradle').exi
     apply from: this.projectDir.absolutePath + '/zfprojConfig/zfprojConfig.gradle'
 }
 
-import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.internal.os.OperatingSystem
 
 def ZFCmd(cmd, args) {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    if (OperatingSystem.current().isWindows()) {
         return ['cmd.exe', '/c', file("${cmd}.bat").absolutePath] + args
     } else {
         return ['sh', file("${cmd}.sh").absolutePath] + args

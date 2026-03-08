@@ -417,10 +417,10 @@ zfprojConfig_gradle(ZF_ROOT_PATH, 'ZFModule', '{ZFTT_R_impl_ext_name_29}'){ZFTT_
 zfprojConfig_gradle(ZF_ROOT_PATH, 'ZFModule', '{ZFTT_R_impl_ext_name_30}'){ZFTT_CE}{ZFTT_C_impl_ext_require_31}
 zfprojConfig_gradle(ZF_ROOT_PATH, 'ZFModule', '{ZFTT_R_impl_ext_name_31}'){ZFTT_CE}
 
-import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.internal.os.OperatingSystem
 
 def ZFCmd(cmd, args) {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    if (OperatingSystem.current().isWindows()) {
         return ['cmd.exe', '/c', file("${cmd}.bat").absolutePath] + args
     } else {
         return ['sh', file("${cmd}.sh").absolutePath] + args

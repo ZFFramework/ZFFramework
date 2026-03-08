@@ -138,10 +138,10 @@ zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFLua_impl')
 zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFUIWebKit_impl')
 zfprojConfig_gradle(ZF_ROOT_PATH, 'ZF', 'ZFNet_impl')
 
-import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.internal.os.OperatingSystem
 
 def ZFCmd(cmd, args) {
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    if (OperatingSystem.current().isWindows()) {
         return ['cmd.exe', '/c', file("${cmd}.bat").absolutePath] + args
     } else {
         return ['sh', file("${cmd}.sh").absolutePath] + args
