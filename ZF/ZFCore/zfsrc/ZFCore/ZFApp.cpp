@@ -16,7 +16,7 @@ ZF_NAMESPACE_BEGIN(ZFApp)
 ZFMETHOD_FUNC_DEFINE_1(void, appExit
         , ZFMP_IN_OPT(zfint, appExitCode, ZFApp::appExitCode())
         ) {
-    zfobj<v_zfbool> flag;
+    zfobj<v_zfboolHolder> flag;
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppExit(), zfobj<v_zfint>(appExitCode), flag);
     if(flag->zfv) {
         return;
@@ -32,7 +32,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, appExit
 }
 
 ZFMETHOD_FUNC_DEFINE_0(void, appRestart) {
-    zfobj<v_zfbool> flag;
+    zfobj<v_zfboolHolder> flag;
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppRestart(), flag);
     if(flag->zfv) {
         return;

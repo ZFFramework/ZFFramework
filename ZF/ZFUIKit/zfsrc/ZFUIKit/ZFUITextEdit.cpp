@@ -354,7 +354,7 @@ void ZFUITextEdit::textOnUpdateCheck(
     }
 
     if(this->observerHasAdd(ZFUITextEdit::E_TextOnUpdateCheck())) {
-        zfobj<v_zfbool> t(shouldUpdate);
+        zfobj<v_zfboolHolder> t(shouldUpdate);
         this->observerNotify(ZFUITextEdit::E_TextOnUpdateCheck(), zfobj<v_zfstring>(newText), t);
         shouldUpdate = t->zfv;
     }

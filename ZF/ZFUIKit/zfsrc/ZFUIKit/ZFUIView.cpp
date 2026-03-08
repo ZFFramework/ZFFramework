@@ -239,7 +239,7 @@ public:
         if(ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout)
                 || ZFBitTest(_ZFP_ZFUIView_stateFlags, _ZFP_ZFUIViewPrivate::stateFlag_observerHasAddFlag_ViewLayoutOnLayout)
                 ) {
-            zfobj<v_zfbool> done;
+            zfobj<v_zfboolHolder> done;
             view->observerNotify(ZFUIView::E_ViewLayoutOnLayout(), done);
             if(!done->zfv) {
                 view->layoutOnLayout(bounds);

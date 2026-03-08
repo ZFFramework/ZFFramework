@@ -108,6 +108,7 @@ extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
  *
  * support these types:
  * -  #v_zfbool
+ * -  #v_zfboolHolder
  * -  #v_zfindex
  * -  #v_zfint
  * -  #v_zfuint

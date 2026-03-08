@@ -108,7 +108,7 @@ public:
      *
      * called when text is about to change\n
      * param0 is the text (as #v_zfstring) that about to change\n
-     * param1 is a #v_zfbool
+     * param1 is a #v_zfboolHolder
      * shows whether the text should change,
      * set to false to show the text should not be changed\n
      * @note if #ZFUITextEdit::editFilter has been set,
