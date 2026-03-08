@@ -582,7 +582,7 @@ zfbool ZFImpl_ZFLua_toGeneric(
             wrapper->zfv(zfsFromInt((long)n));
         }
         else {
-            wrapper->zfv(lua_tostring(L, luaStackOffset));
+            wrapper->zfv(zfsFromFloat(n));
         }
         param = wrapper;
         return zftrue;

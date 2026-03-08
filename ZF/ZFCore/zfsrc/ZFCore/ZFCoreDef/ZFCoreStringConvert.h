@@ -177,7 +177,7 @@ zfbool zfsFromFloatT(
         , ZF_IN T_Float n
         ) {
     zfchar buf[64] = {0};
-    snprintf(buf, sizeof(buf), "%lf", (double)n);
+    snprintf(buf, sizeof(buf), "%.15lf", (double)n);
     const zfchar *p = buf;
     while(*p && *p != '.') {++p;}
     if(*p == '\0') {
