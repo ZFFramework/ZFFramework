@@ -21,8 +21,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import androidx.annotation.RequiresApi;
-
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.NativeUtil.ZFAndroidPost;
 import com.ZFFramework.NativeUtil.ZFObject;
@@ -486,7 +484,6 @@ public final class ZFUIRootWindow extends Activity {
             }
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         private void _windowColorUpdateAction() {
             boolean changed = false;
 

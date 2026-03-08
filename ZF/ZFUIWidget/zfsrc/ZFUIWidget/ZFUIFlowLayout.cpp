@@ -251,8 +251,10 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
                     ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().height, sizeHint.height)
                     ),
                 ZFUISizeParamCreate(
-                    v_ZFUISizeType::e_Wrap,
-                    heightParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
+                    layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill && layoutParam->sizeHint().width >= 0
+                        ? v_ZFUISizeType::e_Fill
+                        : v_ZFUISizeType::e_Wrap
+                    , heightParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
                         ? v_ZFUISizeType::e_Fill
                         : v_ZFUISizeType::e_Wrap
                     ));
@@ -326,8 +328,10 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
                 ZFUISizeParamCreate(
                     widthParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill
                         ? v_ZFUISizeType::e_Fill
-                        : v_ZFUISizeType::e_Wrap,
-                    v_ZFUISizeType::e_Wrap
+                        : v_ZFUISizeType::e_Wrap
+                    , layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill && layoutParam->sizeHint().height >= 0
+                        ? v_ZFUISizeType::e_Fill
+                        : v_ZFUISizeType::e_Wrap
                     ));
         if(parent->gridMode()) {
             maxCellSize.width = zfmMax<zffloat>(

@@ -146,8 +146,10 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
                         ZFUILayoutParam::sizeHintOffset(sizeHint.height, 0 - parentMarginY)
                         )),
                 ZFUISizeParamCreate(
-                    v_ZFUISizeType::e_Wrap,
-                    heightParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
+                    layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill && layoutParam->sizeHint().width >= 0
+                        ? v_ZFUISizeType::e_Fill
+                        : v_ZFUISizeType::e_Wrap
+                    , heightParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
                         ? v_ZFUISizeType::e_Fill
                         : v_ZFUISizeType::e_Wrap
                     ));
@@ -201,8 +203,10 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
                 ZFUISizeParamCreate(
                     widthParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill
                         ? v_ZFUISizeType::e_Fill
-                        : v_ZFUISizeType::e_Wrap,
-                    v_ZFUISizeType::e_Wrap
+                        : v_ZFUISizeType::e_Wrap
+                    , layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill && layoutParam->sizeHint().height >= 0
+                        ? v_ZFUISizeType::e_Fill
+                        : v_ZFUISizeType::e_Wrap
                     ));
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->margin());
         zffloat marginY = ZFUIMarginGetHeight(layoutParam->margin());
