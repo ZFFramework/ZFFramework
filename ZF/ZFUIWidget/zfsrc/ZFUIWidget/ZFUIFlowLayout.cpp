@@ -225,6 +225,10 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         , ZF_OUT zfbool &hasFillChildX
         , ZF_OUT zfbool &hasFillChildY
         ) {
+    zffloat sizeHintTmp = (parent->gridMode() && parent->childCountPerLine() > 1)
+            ? (zffloat)((sizeHint.width + parent->childSpaceX()) / parent->childCountPerLine() - parent->childSpaceX())
+            : sizeHint.width
+            ;
     ZFUISize lineSize = ZFUISizeZero();
     childIndexStop = parent->childCount();
     for(zfindex i = childIndexStart, count = 0; i < parent->childCount(); ++i) {
@@ -243,7 +247,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
 
         child->layoutMeasure(
                 ZFUISizeCreate(
-                    ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().width, sizeHint.width),
+                    ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().width, sizeHintTmp),
                     ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().height, sizeHint.height)
                     ),
                 ZFUISizeParamCreate(
@@ -265,8 +269,8 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->margin());
         zffloat marginY = ZFUIMarginGetHeight(layoutParam->margin());
         if(i > childIndexStart
-                && sizeHint.width >= 0
-                && lineSize.width + prevSpace + child->layoutMeasuredSize().width + marginX > sizeHint.width
+                && sizeHintTmp >= 0
+                && lineSize.width + prevSpace + child->layoutMeasuredSize().width + marginX > sizeHintTmp
                 ) {
             childIndexStop = i;
             break;
@@ -275,7 +279,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
         lineSize.height = zfmMax<zffloat>(lineSize.height, child->layoutMeasuredSize().height + marginY);
         ++count;
         if(layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill
-                || (sizeHint.width >= 0 && lineSize.width >= sizeHint.width)
+                || (sizeHintTmp >= 0 && lineSize.width >= sizeHintTmp)
                 || (parent->childCountPerLine() > 0 && count >= parent->childCountPerLine())
                 ) {
             childIndexStop = i + 1;
@@ -294,6 +298,10 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         , ZF_OUT zfbool &hasFillChildX
         , ZF_OUT zfbool &hasFillChildY
         ) {
+    zffloat sizeHintTmp = (parent->gridMode() && parent->childCountPerLine() > 1)
+            ? (zffloat)((sizeHint.height + parent->childSpaceY()) / parent->childCountPerLine() - parent->childSpaceY())
+            : sizeHint.height
+            ;
     ZFUISize lineSize = ZFUISizeZero();
     childIndexStop = parent->childCount();
     for(zfindex i = childIndexStart, count = 0; i < parent->childCount(); ++i) {
@@ -313,7 +321,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         child->layoutMeasure(
                 ZFUISizeCreate(
                     ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().width, sizeHint.width),
-                    ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().height, sizeHint.height)
+                    ZFUILayoutParam::sizeHintMerge(layoutParam->sizeHint().height, sizeHintTmp)
                     ),
                 ZFUISizeParamCreate(
                     widthParam == v_ZFUISizeType::e_Fill && layoutParam->sizeParam().width == v_ZFUISizeType::e_Fill
@@ -334,8 +342,8 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         zffloat marginX = ZFUIMarginGetWidth(layoutParam->margin());
         zffloat marginY = ZFUIMarginGetHeight(layoutParam->margin());
         if(i > childIndexStart
-                && sizeHint.height >= 0
-                && lineSize.height + prevSpace + child->layoutMeasuredSize().height + marginY > sizeHint.height
+                && sizeHintTmp >= 0
+                && lineSize.height + prevSpace + child->layoutMeasuredSize().height + marginY > sizeHintTmp
                 ) {
             childIndexStop = i;
             break;
@@ -344,7 +352,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
         lineSize.height += prevSpace + child->layoutMeasuredSize().height + marginY;
         ++count;
         if(layoutParam->sizeParam().height == v_ZFUISizeType::e_Fill
-                || (sizeHint.height >= 0 && lineSize.height >= sizeHint.height)
+                || (sizeHintTmp >= 0 && lineSize.height >= sizeHintTmp)
                 || (parent->childCountPerLine() > 0 && count >= parent->childCountPerLine())
                 ) {
             childIndexStop = i + 1;

@@ -21,10 +21,15 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import androidx.annotation.RequiresApi;
+
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.NativeUtil.ZFAndroidPost;
 import com.ZFFramework.NativeUtil.ZFObject;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @brief window as a Activity in Android
@@ -69,6 +74,20 @@ public final class ZFUIRootWindow extends Activity {
         }
     }
 
+    public static void windowColorUpdate() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && _windowColorUpdateTaskId == -1) {
+            _windowColorUpdateTaskId = ZFAndroidPost.run(new Runnable() {
+                @Override
+                public void run() {
+                    _windowColorUpdateTaskId = -1;
+                    for (_RootContainer v : _windowColorHolders) {
+                        v._windowColorUpdateAction();
+                    }
+                }
+            });
+        }
+    }
+
     // ============================================================
     public FrameLayout rootContainer() {
         return _rootContainer;
@@ -83,7 +102,7 @@ public final class ZFUIRootWindow extends Activity {
     private static final String _key_zfjniPointerOwnerZFUIRootWindow = "zfjniPointerOwnerZFUIRootWindow";
     private boolean _isMainWindow = false;
     private long _zfjniPointerOwnerZFUIRootWindow = 0;
-    private FrameLayout _rootContainer = null;
+    private _RootContainer _rootContainer = null;
     private MainLayout _mainContainer = null;
     private int _windowOrientation = ZFUIOrientation.e_Top;
     private boolean _preferFullscreen = false;
@@ -348,10 +367,13 @@ public final class ZFUIRootWindow extends Activity {
     protected void onResume() {
         super.onResume();
         ZFUIRootWindow.native_notifyOnResume(_zfjniPointerOwnerZFUIRootWindow);
+        _windowColorHolders.add(_rootContainer);
+        windowColorUpdate();
     }
 
     @Override
     protected void onPause() {
+        _windowColorHolders.remove(_rootContainer);
         _keyEventImpl.onKeyCancel();
         ZFUIRootWindow.native_notifyOnPause(_zfjniPointerOwnerZFUIRootWindow);
         super.onPause();
@@ -434,6 +456,10 @@ public final class ZFUIRootWindow extends Activity {
         return _keyEventImpl.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }
 
+    // ============================================================
+    private static final List<_RootContainer> _windowColorHolders = new ArrayList<>();
+    private static int _windowColorUpdateTaskId = -1;
+
     private class _RootContainer extends FrameLayout {
         public _RootContainer(Context context) {
             super(context);
@@ -444,43 +470,58 @@ public final class ZFUIRootWindow extends Activity {
 
         private final Bitmap _bmp;
         private final Canvas _canvas;
+        private int _drawOverride = 0;
+
+        @Override
+        protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+            super.onLayout(changed, left, top, right, bottom);
+            windowColorUpdate();
+        }
 
         @Override
         protected void dispatchDraw(Canvas canvas) {
             super.dispatchDraw(canvas);
+            if (_drawOverride == 0) {
+                windowColorUpdate();
+            }
+        }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                boolean changed = false;
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private void _windowColorUpdateAction() {
+            boolean changed = false;
 
-                _bmp.eraseColor(Color.TRANSPARENT);
-                _canvas.save();
-                super.dispatchDraw(_canvas);
-                _canvas.restore();
-                int windowColor = _bmp.getColor(0, 0).toArgb();
-                if (_windowColorTopDetected != windowColor) {
-                    _windowColorTopDetected = windowColor;
-                    changed = true;
-                }
+            _bmp.eraseColor(Color.TRANSPARENT);
+            _canvas.save();
+            ++_drawOverride;
+            this.draw(_canvas);
+            --_drawOverride;
+            _canvas.restore();
+            int windowColor = _bmp.getColor(0, 0).toArgb();
+            if (_windowColorTopDetected != windowColor) {
+                _windowColorTopDetected = windowColor;
+                changed = true;
+            }
 
-                _bmp.eraseColor(Color.TRANSPARENT);
-                _canvas.save();
-                _canvas.translate(0, -(getHeight() - _bmp.getHeight()));
-                super.dispatchDraw(_canvas);
-                _canvas.restore();
-                windowColor = _bmp.getColor(0, 0).toArgb();
-                if (_windowColorBottomDetected != windowColor) {
-                    _windowColorBottomDetected = windowColor;
-                    changed = true;
-                }
+            _bmp.eraseColor(Color.TRANSPARENT);
+            _canvas.save();
+            _canvas.translate(0, -(getHeight() - _bmp.getHeight()));
+            ++_drawOverride;
+            this.draw(_canvas);
+            --_drawOverride;
+            _canvas.restore();
+            windowColor = _bmp.getColor(0, 0).toArgb();
+            if (_windowColorBottomDetected != windowColor) {
+                _windowColorBottomDetected = windowColor;
+                changed = true;
+            }
 
-                if (changed) {
-                    _windowColorUpdate();
-                }
+            if (changed) {
+                _windowColorImplUpdate();
             }
         }
     }
 
-    private void _windowColorUpdate() {
+    private void _windowColorImplUpdate() {
         boolean isDarkBgTop = (Color.red(_windowColorTopDetected) < 32 && Color.green(_windowColorTopDetected) < 32 && Color.blue(_windowColorTopDetected) < 32);
 
         {
