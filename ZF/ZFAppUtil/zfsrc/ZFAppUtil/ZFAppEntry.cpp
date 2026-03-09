@@ -163,10 +163,6 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
         ZFLISTENER_1(loadImpl
                 , zfweakT<zfself>, owner
                 ) {
-            if(owner->stateEncryptKey()) {
-                ZFState::instance()->stateFile(ZFPathInfoForEncrypt(ZFState::stateFileDefault(), owner->stateEncryptKey()));
-            }
-
             ZFTask *ownerTask = zfargs.sender();
             ZFLISTENER_1(onFinish
                     , zfautoT<ZFTask>, ownerTask
