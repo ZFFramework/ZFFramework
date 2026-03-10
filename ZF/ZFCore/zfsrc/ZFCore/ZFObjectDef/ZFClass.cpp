@@ -344,10 +344,7 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
 }
 
 void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls) {
-    if(!ZFBitTest(cls->_stateFlags, ZFClass::_stateFlags_methodAndPropertyCacheNeedUpdate)
-            || ZFFrameworkStateCheck() == ZFFrameworkStateCleanupRunning
-            || ZFFrameworkStateCheck() == ZFFrameworkStateNotAvailable
-            ) {
+    if(!ZFBitTest(cls->_stateFlags, ZFClass::_stateFlags_methodAndPropertyCacheNeedUpdate)) {
         return;
     }
     ZFCoreMutexLocker();
