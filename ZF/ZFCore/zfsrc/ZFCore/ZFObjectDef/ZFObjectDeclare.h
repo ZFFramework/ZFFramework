@@ -215,7 +215,7 @@ public:
     _ZFP_ZFOBJECT_REGISTER_(regSig, clsSig)
 #define _ZFP_ZFOBJECT_REGISTER_(regSig, clsSig) \
     ZF_STATIC_REGISTER_INIT(regSig) { \
-        clsSig ClassData()/* ->_ZFP_ZFClass_autoRegister() */; \
+        clsSig ClassData(); \
     } \
     ZF_STATIC_REGISTER_END(regSig)
 

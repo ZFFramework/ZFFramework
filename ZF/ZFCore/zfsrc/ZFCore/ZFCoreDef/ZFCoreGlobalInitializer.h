@@ -176,10 +176,11 @@ private:
 #define _ZFP_ZF_GLOBAL_INITIALIZER_END(Name) \
     }; \
     static void *_ZFP_GI_ctor_##Name(void) { \
-        return (void *)zfnew(_ZFP_GI_##Name); \
+        static zfbyte d[sizeof(_ZFP_GI_##Name)]; \
+        return (void *)zfnewPlacement(d, _ZFP_GI_##Name); \
     } \
     static void _ZFP_GI_dtor_##Name(ZF_IN void *p) { \
-        zfdelete((_ZFP_GI_##Name *)p); \
+        zfdeletePlacement((_ZFP_GI_##Name *)p); \
     }
 /**
  * @brief see #ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL

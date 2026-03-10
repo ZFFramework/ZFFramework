@@ -23,14 +23,14 @@ void _ZFP_zfobjAutoReleaseAction(ZF_IN ZFObject *obj) {
     }
 }
 
-ZF_STATIC_INITIALIZER_INIT(zfvAccessFinishDelayImpl) {
+ZF_STATIC_REGISTER_INIT(zfvAccessFinishDelayImpl) {
     _ZFP_zfvAccessFinishDelayImpl() = zfself::a;
 }
 private:
     static void a(ZF_IN const zfauto &obj) {
         zfobjAutoRelease(zfobjRetain(obj));
     }
-ZF_STATIC_INITIALIZER_END(zfvAccessFinishDelayImpl)
+ZF_STATIC_REGISTER_END(zfvAccessFinishDelayImpl)
 
 ZF_NAMESPACE_GLOBAL_END
 

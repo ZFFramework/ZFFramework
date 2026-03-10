@@ -100,10 +100,10 @@ static zfbool _ZFP_ZFUIViewImpl_sys_Qt_isMouseCancel(ZF_IN QGraphicsSceneMouseEv
     _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventTagData *tag = _ZFP_ZFUIScrollViewImpl_sys_Qt_MouseEventTagCheck(event);
     return (tag != zfnull && tag->cancelFlag);
 }
-ZF_STATIC_INITIALIZER_INIT(ZFUIViewImpl_sys_Qt_isMouseCancel) {
+ZF_STATIC_REGISTER_INIT(ZFUIViewImpl_sys_Qt_isMouseCancel) {
     ZFUIViewImpl_sys_Qt_isMouseCancel = _ZFP_ZFUIViewImpl_sys_Qt_isMouseCancel;
 }
-ZF_STATIC_INITIALIZER_END(ZFUIViewImpl_sys_Qt_isMouseCancel)
+ZF_STATIC_REGISTER_END(ZFUIViewImpl_sys_Qt_isMouseCancel)
 
 // ============================================================
 // QApplication::sendEvent would cause recursive event dispatch,

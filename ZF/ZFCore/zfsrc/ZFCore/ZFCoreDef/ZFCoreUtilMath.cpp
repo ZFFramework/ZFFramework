@@ -1,5 +1,5 @@
 #include "ZFCoreUtilMath.h"
-#include "ZFCoreStaticInitializer.h"
+#include "ZFCoreStaticRegister.h"
 #include <ctime>
 #include <cstdlib>
 
