@@ -77,7 +77,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAutoHide)
  * ^ windowBg (internal bg, window ani target)
  *   dialogClickMask (internal bg, focused if dialogContainer has no focusable child)
  *   _ZFP_ZFUIDialogContentHolder (Ui disable, supply layout logic)
- *   ^ dialogBg
+ *   ^ dialogBg (aniShow/aniHide target)
  *     ^ dialogContainer (dialogContainer)
  *       ^ content
  *         subclass impl views
@@ -101,16 +101,6 @@ protected:
     virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->windowLevel(ZFUIWindowLevelDialog());
-        this->windowMarginShouldApply(zffalse);
-    }
-    zfoverride
-    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
-        if(this->pimplOwner->windowMarginShouldApply()) {
-            zfsuper::layoutOnLayout(ZFUIRectApplyMargin(bounds, this->rootWindow()->windowMargin()));
-        }
-        else {
-            zfsuper::layoutOnLayout(bounds);
-        }
     }
 
 public:
@@ -274,6 +264,9 @@ ZFEVENT_REGISTER(ZFUIDialog, DialogBeforeHide)
 ZFEVENT_REGISTER(ZFUIDialog, DialogAfterHide)
 ZFEVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
 
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfbool, safeAreaAdapt) {
+    d->childAt(0)->layoutParam()->to<ZFUIWindowLayoutParam *>()->safeAreaAdapt(propertyValue);
+}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, windowColor) {
     d->windowBg->bgColor(this->windowColor());
 }
@@ -432,7 +425,7 @@ void ZFUIDialog::objectOnInit(void) {
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
 
     zfobj<_ZFP_ZFUIDialogContentHolder> dialogContentHolder;
-    d->child(dialogContentHolder)->c_sizeFill();
+    d->child(dialogContentHolder)->sizeFill();
     dialogContentHolder->pimplOwner = d;
     dialogContentHolder->viewUIEnable(zffalse);
 

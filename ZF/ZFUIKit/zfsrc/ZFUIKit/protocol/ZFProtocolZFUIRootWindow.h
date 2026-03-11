@@ -118,9 +118,9 @@ public:
     zffinal ZFUIRect notifyMeasureWindow(
             ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIRect &rootRefRect
-            , ZF_IN const ZFUIMargin &windowMargin
+            , ZF_IN const ZFUIMargin &safeArea
             ) {
-        rootWindow->_ZFP_ZFUIRootWindow_windowMargin(windowMargin);
+        rootWindow->_ZFP_ZFUIRootWindow_safeArea(safeArea);
         return rootWindow->_ZFP_ZFUIRootWindow_measureWindow(rootRefRect);
     }
     /**

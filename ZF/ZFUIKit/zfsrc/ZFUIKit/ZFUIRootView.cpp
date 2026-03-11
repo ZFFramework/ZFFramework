@@ -46,18 +46,5 @@ void ZFUIRootView::layoutOnMeasure(
     ret = sizeHint;
 }
 
-void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
-    for(zfindex i = 0; i < this->childCount(); ++i) {
-        zfanyT<ZFUIView> child = this->childAt(i);
-        ZFUIWindow *window = child;
-        child->viewFrame(ZFUILayoutParam::layoutParamApply(
-                    (window == zfnull || !window->windowMarginShouldApply())
-                        ? bounds
-                        : ZFUIRectApplyMargin(bounds, window->rootWindow()->windowMargin())
-                    , child
-                    ));
-    }
-}
-
 ZF_NAMESPACE_GLOBAL_END
 

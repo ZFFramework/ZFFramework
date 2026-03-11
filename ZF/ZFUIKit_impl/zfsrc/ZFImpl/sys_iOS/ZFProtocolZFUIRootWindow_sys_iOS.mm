@@ -61,7 +61,7 @@
 // ============================================================
 - (void)_ZFP_updateLayout {
     if(self.ownerZFUIRootWindow != zfnull) {
-        ZFUIMargin windowMargin = ZFUIMarginZero();
+        ZFUIMargin safeArea = ZFUIMarginZero();
 
         UIView *tmpView = self.view.window.rootViewController.view;
         if([tmpView respondsToSelector:@selector(safeAreaInsets)]) {
@@ -73,23 +73,23 @@
             UIEdgeInsets t = UIEdgeInsetsZero;
             [invocation getReturnValue:&t];
 
-            windowMargin.left = t.left;
-            windowMargin.top = t.top;
-            windowMargin.right = t.right;
-            windowMargin.bottom = t.bottom;
+            safeArea.left = t.left;
+            safeArea.top = t.top;
+            safeArea.right = t.right;
+            safeArea.bottom = t.bottom;
 
             self._ZFP_windowColorTopView.frame = CGRectMake(0, 0, self.view.bounds.size.width, t.top);
             self._ZFP_windowColorBottomView.frame = CGRectMake(0, self.view.bounds.size.height - t.bottom, self.view.bounds.size.width, t.bottom);
         }
         else {
-            windowMargin.top = [UIApplication sharedApplication].delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
+            safeArea.top = [UIApplication sharedApplication].delegate.window.windowScene.statusBarManager.statusBarFrame.size.height;
         }
 
         UIView *nativeRootView = (__bridge UIView *)self.ownerZFUIRootWindow->rootView()->nativeView();
         nativeRootView.frame = ZFImpl_sys_iOS_ZFUIRectToCGRect(self.impl->notifyMeasureWindow(
             self.ownerZFUIRootWindow,
             ZFImpl_sys_iOS_ZFUIRectFromCGRect(self.view.bounds),
-            windowMargin));
+            safeArea));
         [self _ZFP_updateWindowColor];
     }
 }

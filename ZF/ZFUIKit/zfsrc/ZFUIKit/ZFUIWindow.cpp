@@ -13,6 +13,28 @@ ZFEXPORT_VAR_DEFINE(zfint, ZFUIWindowLevelHint, 4000)
 ZFSTYLE_DEFAULT_DEFINE(ZFUIWindow)
 
 // ============================================================
+// ZFUIWindowLayoutParam
+ZFOBJECT_REGISTER(ZFUIWindowLayoutParam)
+
+/* ZFTAG_TRICKS: util for chained call to build view tree */
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIWindowLayoutParam, zfanyT<ZFUIWindowLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIWindowLayoutParam, zfanyT<ZFUIWindowLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIWindow, zfanyT<ZFUIWindowLayoutParam>, child
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIWindow, zfanyT<ZFUIWindowLayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+
+// ============================================================
 // _ZFP_ZFUIWindowPrivate
 zfclassNotPOD _ZFP_ZFUIWindowPrivate {
 public:
@@ -222,6 +244,47 @@ void ZFUIWindow::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
     }
     else {
         this->hide();
+    }
+}
+
+void ZFUIWindow::layoutOnMeasure(
+        ZF_OUT ZFUISize &ret
+        , ZF_IN const ZFUISize &sizeHint
+        , ZF_IN const ZFUISizeParam &sizeParam
+        ) {
+    ret = sizeHint;
+}
+void ZFUIWindow::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
+    const ZFUIMargin &safeAreaOrig = this->rootWindow()->safeArea();
+    const ZFUIRect &viewFrame = this->viewFrame();
+    ZFUIMargin safeAreaFixed;
+    safeAreaFixed.left = safeAreaOrig.left - viewFrame.x;
+    safeAreaFixed.top = safeAreaOrig.top - viewFrame.y;
+    safeAreaFixed.right = safeAreaOrig.right - (this->parent()->width() - ZFUIRectGetRight(viewFrame));
+    safeAreaFixed.bottom = safeAreaOrig.bottom - (this->parent()->height() - ZFUIRectGetBottom(viewFrame));
+    for(zfindex i = 0; i < this->childCount(); ++i) {
+        ZFUIView *child = this->childAt(i);
+        ZFUIWindowLayoutParam *lp = child->layoutParam();
+        ZFUIRect childFrame;
+        if(lp->safeAreaAdapt()) {
+            child->layoutMeasure(
+                    ZFUISizeCreate(
+                        bounds.width - safeAreaFixed.left - safeAreaFixed.right
+                        , bounds.height - safeAreaFixed.top - safeAreaFixed.bottom
+                        )
+                    , lp->sizeParam()
+                    );
+            ZFUIAlignApplyT(
+                    childFrame
+                    , lp->align()
+                    , ZFUIRectApplyMargin(bounds, safeAreaFixed)
+                    , child->layoutMeasuredSize()
+                    );
+        }
+        else {
+            ZFUILayoutParam::layoutParamApplyT(childFrame, bounds, child);
+        }
+        child->viewFrame(childFrame);
     }
 }
 

@@ -24,7 +24,7 @@ public:
     zfbool nativeWindowResumed;
     zfbool nativeWindowLayoutUpdated;
     ZFUISize windowSize;
-    ZFUIMargin windowMargin;
+    ZFUIMargin safeArea;
 
 public:
     _ZFP_ZFUIRootWindowPrivate(void)
@@ -40,7 +40,7 @@ public:
     , nativeWindowResumed(zffalse)
     , nativeWindowLayoutUpdated(zftrue)
     , windowSize()
-    , windowMargin()
+    , safeArea()
     {
     }
 };
@@ -159,20 +159,20 @@ ZFPROPERTY_ON_UPDATE_DEFINE(ZFUIRootWindow, ZFUIColor, windowColor) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFUIRootWindow, const ZFUIMargin &, windowMargin) {
-    return d->windowMargin;
+ZFMETHOD_DEFINE_0(ZFUIRootWindow, const ZFUIMargin &, safeArea) {
+    return d->safeArea;
 }
-void ZFUIRootWindow::_ZFP_ZFUIRootWindow_windowMargin(ZF_IN const ZFUIMargin &windowMargin) {
-    ZFUIMargin windowMarginOld = d->windowMargin;
-    ZFUIMarginApplyScaleReverselyT(d->windowMargin, windowMargin, this->rootView()->UIScaleFixed());
-    if(d->windowMargin != windowMarginOld) {
+void ZFUIRootWindow::_ZFP_ZFUIRootWindow_safeArea(ZF_IN const ZFUIMargin &safeArea) {
+    ZFUIMargin safeAreaOld = d->safeArea;
+    ZFUIMarginApplyScaleReverselyT(d->safeArea, safeArea, this->rootView()->UIScaleFixed());
+    if(d->safeArea != safeAreaOld) {
         this->rootView()->layoutRequest();
-        this->windowMarginOnUpdate(windowMarginOld);
+        this->safeAreaOnUpdate(safeAreaOld);
     }
 }
-void ZFUIRootWindow::windowMarginOnUpdate(ZF_IN const ZFUIMargin &windowMarginOld) {
+void ZFUIRootWindow::safeAreaOnUpdate(ZF_IN const ZFUIMargin &safeAreaOld) {
     if(this->observerHasAdd(ZFUIRootWindow::E_WindowMarginOnUpdate())) {
-        this->observerNotify(ZFUIRootWindow::E_WindowMarginOnUpdate(), zfobj<v_ZFUIMargin>(windowMarginOld));
+        this->observerNotify(ZFUIRootWindow::E_WindowMarginOnUpdate(), zfobj<v_ZFUIMargin>(safeAreaOld));
     }
 }
 

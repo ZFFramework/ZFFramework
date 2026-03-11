@@ -56,8 +56,6 @@ protected:
             , ZF_IN const ZFUISize &sizeHint
             , ZF_IN const ZFUISizeParam &sizeParam
             );
-    zfoverride
-    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
 public:
     zfanyT<ZFUIRootWindow> _ZFP_ZFUIRootView_rootWindow;

@@ -90,10 +90,11 @@ public:
     // ============================================================
     // properties
     /**
-     * @brief whether this dialog update layout according to #ZFUIRootWindow::windowMargin,
+     * @brief whether this dialog update layout according to #ZFUIRootWindow::safeArea,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, windowMarginShouldApply, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, safeAreaAdapt, zftrue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, safeAreaAdapt)
 
     /**
      * @brief dialog's background color, #ZFUIGlobalStyle::colorMask by default

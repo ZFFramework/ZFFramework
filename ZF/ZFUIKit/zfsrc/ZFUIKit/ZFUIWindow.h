@@ -23,6 +23,31 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelOverlay)
 ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfint, ZFUIWindowLevelHint)
 
 // ============================================================
+// ZFUIWindowLayoutParam
+/**
+ * @brief layout param for child of #ZFUIWindow
+ */
+zfclass ZFLIB_ZFUIKit ZFUIWindowLayoutParam : zfextend ZFUILayoutParam {
+    ZFOBJECT_DECLARE(ZFUIWindowLayoutParam, ZFUILayoutParam)
+
+    /**
+     * @brief whether exclude from #ZFUIRootWindow::safeArea, true by default
+     */
+    ZFPROPERTY_ASSIGN(zfbool, safeAreaAdapt, zftrue)
+
+public:
+    /** @cond ZFPrivateDoc */
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    inline zfanyT<ZFUIWindowLayoutParam> child(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
+        return zfsuper::child(view, atIndex);
+    }
+    /** @endcond */
+};
+
+// ============================================================
 // ZFUIWindow
 zfclassFwd _ZFP_ZFUIWindowPrivate;
 /**
@@ -127,12 +152,6 @@ public:
     ZFPROPERTY_ASSIGN(zfint, windowLevel, ZFUIWindowLevelNormal())
     ZFPROPERTY_ON_UPDATE_DECLARE(zfint, windowLevel)
 
-    /**
-     * @brief whether this window update layout according to #ZFUIRootWindow::windowMargin,
-     *   true by default
-     */
-    ZFPROPERTY_ASSIGN(zfbool, windowMarginShouldApply, zftrue)
-
 public:
     /**
      * @brief change owner #ZFUIRootWindow, must be called before #show is called
@@ -206,6 +225,33 @@ protected:
     virtual void viewOnAddToParent(ZF_IN ZFUIView *parent);
     zfoverride
     virtual void viewOnRemoveFromParent(ZF_IN ZFUIView *parent);
+
+    // ============================================================
+    // override ZFUIView
+public:
+    /** @cond ZFPrivateDoc */
+    /* ZFTAG_TRICKS: util for chained call to build view tree */
+    inline zfanyT<ZFUIWindowLayoutParam> child(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
+        return zfsuper::child(view, atIndex);
+    }
+    /** @endcond */
+protected:
+    zfoverride
+    virtual const ZFClass *layoutParamClass(void) {
+        return ZFUIWindowLayoutParam::ClassData();
+    }
+
+    zfoverride
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
+    zfoverride
+    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
 private:
     _ZFP_ZFUIWindowPrivate *d;

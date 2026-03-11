@@ -72,7 +72,7 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * notified when #windowMargin changed,
+     * notified when #safeArea changed,
      * param0 is a #v_ZFUIMargin that holds the old window margin
      */
     ZFEVENT(WindowMarginOnUpdate)
@@ -211,7 +211,7 @@ public:
     /**
      * @brief window background color, #ZFUIColorZero by default
      *
-     * this is the bottom most container's color, which may exceeds #windowMargin\n
+     * this is the bottom most container's color, which may exceeds #safeArea\n
      * this may (or may not) same to window root view's bgColor
      */
     ZFPROPERTY_ASSIGN(ZFUIColor, windowColor, ZFUIColorZero())
@@ -224,15 +224,15 @@ public:
      * the margin usually used for mobile phones,
      * whose edge contains virtual button or front camera\n
      * by default, #ZFUIWindow would automatically exclude the margin,
-     * you may change it by #ZFUIWindow::windowMarginShouldApply
+     * see #ZFUIWindowLayoutParam::safeAreaAdapt
      */
-    ZFMETHOD_DECLARE_0(const ZFUIMargin &, windowMargin)
-    void _ZFP_ZFUIRootWindow_windowMargin(ZF_IN const ZFUIMargin &windowMargin);
+    ZFMETHOD_DECLARE_0(const ZFUIMargin &, safeArea)
+    void _ZFP_ZFUIRootWindow_safeArea(ZF_IN const ZFUIMargin &safeArea);
 protected:
     /**
      * @brief see #E_WindowMarginOnUpdate
      */
-    virtual void windowMarginOnUpdate(ZF_IN const ZFUIMargin &windowMarginOld);
+    virtual void safeAreaOnUpdate(ZF_IN const ZFUIMargin &safeAreaOld);
 
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFUIRootWindow::modalWindowShow")
 protected:
@@ -465,9 +465,9 @@ public:
     zffinal ZFUIRect notifyMeasureWindow(
             ZF_IN ZFUIRootWindow *rootWindow
             , ZF_IN const ZFUIRect &rootRefRect
-            , ZF_IN const ZFUIMargin &windowMargin
+            , ZF_IN const ZFUIMargin &safeArea
             ) {
-        rootWindow->_ZFP_ZFUIRootWindow_windowMargin(windowMargin);
+        rootWindow->_ZFP_ZFUIRootWindow_safeArea(safeArea);
         return rootWindow->_ZFP_ZFUIRootWindow_measureWindow(rootRefRect);
     }
     /**
