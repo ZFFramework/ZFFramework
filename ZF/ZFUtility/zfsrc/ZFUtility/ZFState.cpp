@@ -61,25 +61,36 @@ public:
                 , zfautoT<ZFState>, owner
                 ) {
             if(!zfargs.param0()) {return;}
-            ZFCoreMap *mNew = zfpoolNew(ZFCoreMap);
-            zfobj<ZFValueHolder> holder((void *)mNew, ZFValueHolderTypePoolObject(ZFCoreMap *));
-            _loadImpl(
-                    *mNew
-                    , _stateFileIO(zfargs, owner->stateFileFixed(), zftrue)
-                    , zfargs
-                    );
-            zfargs.result(holder);
+            zfautoT<ZFIOImpl> ioImpl;
+            zfstring stateFilePathData;
+            zfstring tmpFilePathData;
+            zfstring lockFilePathData;
+            if(!_preparePathInfo(ioImpl, stateFilePathData, tmpFilePathData, lockFilePathData, owner->stateFileFixed())) {return;}
+            zfautoT<ZFIOToken> ioLock = _stateFileLocker(zfargs, ioImpl, lockFilePathData);
+            if(ioLock) {
+                ZFCoreMap *mNew = zfpoolNew(ZFCoreMap);
+                zfobj<ZFValueHolder> holder((void *)mNew, ZFValueHolderTypePoolObject(ZFCoreMap *));
+                _loadImpl(
+                        *mNew
+                        , zfargs
+                        , ioImpl
+                        , stateFilePathData
+                        , tmpFilePathData
+                        );
+                zfargs.result(holder);
+            }
         } ZFLISTENER_END()
         ZFLISTENER_1(loadFinish
                 , zfautoT<ZFState>, owner
                 ) {
-            ZFValueHolder *holder = zfargs.param0();
-            ZFCoreMap &mNew = holder->valueRef<ZFCoreMap &>();
             _ZFP_ZFStatePrivate *d = owner->d;
             d->taskId = zfnull;
             {
                 ZFObjectLocker(owner);
-                d->m.swap(mNew);
+                ZFValueHolder *holder = zfargs.param0();
+                if(holder) {
+                    d->m.swap(holder->valueRef<ZFCoreMap &>());
+                }
             }
             d->_resolvePending(owner);
 
@@ -103,16 +114,55 @@ public:
                 ) {
             _ZFP_ZFStatePrivate *d = owner->d;
             d->delayId = zfnull;
-            ZFLISTENER_1(saveAsync
+
+            zfobj<v_zfwrap> ioLock;
+            zfautoT<ZFIOImpl> ioImpl;
+            zfstring stateFilePathData;
+            zfstring tmpFilePathData;
+            zfstring lockFilePathData;
+            if(!_preparePathInfo(ioImpl, stateFilePathData, tmpFilePathData, lockFilePathData, owner->stateFileFixed())) {return;}
+            ZFLISTENER_6(saveAsync
                     , zfautoT<ZFState>, owner
+                    , zfautoT<v_zfwrap>, ioLock
+                    , zfautoT<ZFIOImpl>, ioImpl
+                    , zfstring, stateFilePathData
+                    , zfstring, tmpFilePathData
+                    , zfstring, lockFilePathData
                     ) {
-                _saveImpl(owner, zfargs);
+                ioLock->zfv = _stateFileLocker(
+                        ZFArgs().param0(owner->d->taskId)
+                        , ioImpl
+                        , lockFilePathData
+                        );
+                if(!ioLock) {return;}
+                _saveImpl(
+                        owner
+                        , zfargs
+                        , ioLock->zfv
+                        , ioImpl
+                        , stateFilePathData
+                        , tmpFilePathData
+                        );
             } ZFLISTENER_END()
-            ZFLISTENER_1(saveFinish
+
+            ZFLISTENER_6(saveFinish
                     , zfautoT<ZFState>, owner
+                    , zfautoT<v_zfwrap>, ioLock
+                    , zfautoT<ZFIOImpl>, ioImpl
+                    , zfstring, stateFilePathData
+                    , zfstring, tmpFilePathData
+                    , zfstring, lockFilePathData
                     ) {
-                _saveFinishImpl(owner);
+                _saveFinishImpl(
+                        owner
+                        , ioLock->zfv
+                        , ioImpl
+                        , stateFilePathData
+                        , tmpFilePathData
+                        , lockFilePathData
+                        );
             } ZFLISTENER_END()
+
             d->taskId = zfasync(saveAsync, saveFinish);
         } ZFLISTENER_END()
         this->delayId = ZFTimerOnce(3000, onSaveDelay);
@@ -129,10 +179,35 @@ public:
             this->delayId->stop();
             this->delayId = zfnull;
         }
-        _saveImpl(owner, ZFArgs()
-                .param0(this->taskId)
+
+        zfautoT<ZFIOImpl> ioImpl;
+        zfstring stateFilePathData;
+        zfstring tmpFilePathData;
+        zfstring lockFilePathData;
+        if(!_preparePathInfo(ioImpl, stateFilePathData, tmpFilePathData, lockFilePathData, owner->stateFileFixed())) {return;}
+        zfwrap ioLock = _stateFileLocker(
+                ZFArgs().param0(this->taskId)
+                , ioImpl
+                , lockFilePathData
+                , 0
                 );
-        _saveFinishImpl(owner);
+        if(!ioLock) {return;}
+        _saveImpl(
+                owner
+                , ZFArgs().param0(this->taskId)
+                , ioLock
+                , ioImpl
+                , stateFilePathData
+                , tmpFilePathData
+                );
+        _saveFinishImpl(
+                owner
+                , ioLock
+                , ioImpl
+                , stateFilePathData
+                , tmpFilePathData
+                , lockFilePathData
+                );
     }
     void taskCleanup(void) {
         if(this->delayId) {
@@ -154,6 +229,7 @@ public:
             tmp->updateTime = ZFTime::currentTime();
             tmp->expireTime = (expire > 0 ? tmp->updateTime + expire : 0);
             this->m.set(key, *item);
+            this->changed = zftrue;
         }
     }
 
@@ -175,23 +251,23 @@ private:
         this->pending.removeAll();
         this->changed = zftrue;
     }
-    static zfautoT<ZFIOToken> _stateFileIO(
+    static zfautoT<ZFIOToken> _stateFileLocker(
             ZF_IN const ZFArgs &zfargs
-            , ZF_IN const ZFPathInfo &pathInfo
-            , ZF_IN zfbool readOnly
+            , ZF_IN ZFIOImpl *ioImpl
+            , ZF_IN const zfstring &lockFilePathData
+            , ZF_IN_OPT zfindex retry = 3
             ) {
-        if(readOnly && !ZFIOIsExist(pathInfo)) {
+        if(!ioImpl) {
             return zfnull;
         }
-        // use modify to prevent concurrent R/W
-        zfautoT<ZFIOToken> io = ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Modify);
+        zfautoT<ZFIOToken> io = ioImpl->ioOpen(lockFilePathData, v_ZFIOOpenOption::e_Write);
         if(!io) {
-            // other process may be writting, retry some times
-            for(zfindex i = 0; i < 2; ++i) {
+            // other process may be processing, retry some times
+            for(zfindex i = 1; i <= retry; ++i) {
                 if(!zfargs.param0()) {return zfnull;}
-                ZFThread::sleep(200);
+                ZFThread::sleep((zftimet)(100 * i));
                 if(!zfargs.param0()) {return zfnull;}
-                io = ZFIOOpen(pathInfo, v_ZFIOOpenOption::e_Modify);
+                io = ioImpl->ioOpen(lockFilePathData, v_ZFIOOpenOption::e_Write);
                 if(io) {
                     return io;
                 }
@@ -199,16 +275,56 @@ private:
         }
         return io;
     }
+    static zfbool _preparePathInfo(
+            ZF_OUT zfautoT<ZFIOImpl> &ioImpl
+            , ZF_OUT zfstring &stateFilePathData
+            , ZF_OUT zfstring &lockFilePathData
+            , ZF_OUT zfstring &tmpFilePathData
+            , ZF_IN const ZFPathInfo &stateFileFixed
+            ) {
+        ioImpl = ZFIOImplForPathType(stateFileFixed.pathType());
+        if(!ioImpl) {return zffalse;}
+        stateFilePathData = stateFileFixed.pathData();
+        zfstring parentPath;
+        zfstring fileName;
+        return (zftrue
+                && ioImpl->ioToParent(parentPath, stateFilePathData)
+                && ioImpl->ioToFileName(fileName, stateFilePathData)
+                && ioImpl->ioToChild(lockFilePathData, parentPath, zfstr("%s.lock", fileName))
+                && ioImpl->ioToChild(tmpFilePathData, parentPath, zfstr("%s.tmp", fileName))
+                );
+    }
     // file format:
     //     updateTime:expireTime:encode(key):encode(value)
     static void _loadImpl(
             ZF_OUT ZFCoreMap &mNew
-            , ZF_IN ZFIOToken *io
             , ZF_IN const ZFArgs &zfargs
+            , ZF_IN ZFIOImpl *ioImpl
+            , ZF_IN const zfstring &stateFilePathData
+            , ZF_IN const zfstring &tmpFilePathData
             ) {
+        _loadImpl(
+                mNew
+                , zfargs
+                , ZFInputForIOToken(ioImpl->ioOpen(stateFilePathData, v_ZFIOOpenOption::e_Read))
+                );
         if(!zfargs.param0()) {return;}
-        ZFInput input = ZFInputForIOToken(io);
+        if(ioImpl->ioIsExist(tmpFilePathData)) {
+            _loadImpl(
+                    mNew
+                    , zfargs
+                    , ZFInputForIOToken(ioImpl->ioOpen(tmpFilePathData, v_ZFIOOpenOption::e_Read))
+                    );
+            ioImpl->ioRemove(tmpFilePathData);
+        }
+    }
+    static void _loadImpl(
+            ZF_OUT ZFCoreMap &mNew
+            , ZF_IN const ZFArgs &zfargs
+            , ZF_IN const ZFInput &input
+            ) {
         if(!input) {return;}
+        if(!zfargs.param0()) {return;}
         zftimet curTime = ZFTime::currentTime();
         zfstring line;
         ZFCoreArray<ZFIndexRange> pos;
@@ -238,41 +354,54 @@ private:
             if(data->value.isEmpty()) {
                 continue;
             }
-            mNew.set(data->key, data);
+            _ZFP_ZFStateData *exist = mNew.get<_ZFP_ZFStateData *>(data->key);
+            if(exist == zfnull || exist->updateTime < data->updateTime) {
+                mNew.set(data->key, data);
+            }
         }
     }
     static void _saveImpl(
             ZF_IN ZFState *owner
             , ZF_IN const ZFArgs &zfargs
+            , ZF_IN_OUT zfwrap &ioLock
+            , ZF_IN ZFIOImpl *ioImpl
+            , ZF_IN const zfstring &stateFilePathData
+            , ZF_IN const zfstring &tmpFilePathData
             ) {
-        // try open
         if(!zfargs.param0()) {return;}
-        zfautoT<ZFIOToken> io = _stateFileIO(zfargs, owner->stateFileFixed(), zffalse);
-        if(!io) {return;}
         _ZFP_ZFStatePrivate *d = owner->d;
         zftimet curTime = ZFTime::currentTime();
 
         // load and merge, to prevent concurrent save/load across different process
         if(!zfargs.param0()) {return;}
-        ZFCoreMap mNew;
-        _loadImpl(mNew, io, zfargs);
-        if(!zfargs.param0()) {return;}
-        ZFObjectLock(owner);
-        for(zfiter it = mNew.iter(); it; ++it) {
-            zfiter itExist = d->m.iterFind(mNew.iterKey(it));
-            if(itExist) {
-                _ZFP_ZFStateData *item = mNew.iterValue<_ZFP_ZFStateData *>(it);
-                _ZFP_ZFStateData *itemExist = d->m.iterValue<_ZFP_ZFStateData *>(itExist);
-                if(item->updateTime > itemExist->updateTime
-                        && (item->expireTime == 0 || curTime > item->expireTime)
-                        ) {
-                    d->m.iterValue(itExist, *(mNew.iterValue(it)));
+        {
+            ZFCoreMap mNew;
+            _loadImpl(
+                    mNew
+                    , zfargs
+                    , ioImpl
+                    , stateFilePathData
+                    , tmpFilePathData
+                    );
+            if(!zfargs.param0()) {return;}
+            ZFObjectLock(owner);
+            for(zfiter it = mNew.iter(); it; ++it) {
+                zfiter itExist = d->m.iterFind(mNew.iterKey(it));
+                if(itExist) {
+                    _ZFP_ZFStateData *item = mNew.iterValue<_ZFP_ZFStateData *>(it);
+                    _ZFP_ZFStateData *itemExist = d->m.iterValue<_ZFP_ZFStateData *>(itExist);
+                    if(item->updateTime > itemExist->updateTime
+                            && (item->expireTime == 0 || curTime > item->expireTime)
+                            ) {
+                        d->m.iterValue(itExist, *(mNew.iterValue(it)));
+                    }
                 }
             }
+            ZFObjectUnlock(owner);
         }
-        ZFObjectUnlock(owner);
 
-        // save
+        // save to tmp file
+        // would finally be moved to target during _saveFinishImpl
         if(!zfargs.param0()) {return;}
         ZFObjectLock(owner);
         ZFCoreArray<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > l;
@@ -280,39 +409,48 @@ private:
             l.add(*(const ZFCorePointerForPoolObject<_ZFP_ZFStateData *> *)d->m.iterValue(it));
         }
         ZFObjectUnlock(owner);
-
-        ZFOutput output = ZFOutputForIOToken(io);
-        if(!output) {return;}
-        zfstring line;
-        for(zfindex i = 0; i < l.count(); ++i) {
-            const _ZFP_ZFStateData &data = *((l[i]).pointerValue());
-            if(data.expireTime != 0 && curTime >= data.expireTime) {
-                continue;
+        {
+            ZFOutput output = ZFOutputForIOToken(ioImpl->ioOpen(tmpFilePathData, v_ZFIOOpenOption::e_Write));
+            if(!output) {return;}
+            zfstring line;
+            for(zfindex i = 0; i < l.count(); ++i) {
+                const _ZFP_ZFStateData &data = *((l[i]).pointerValue());
+                if(data.expireTime != 0 && curTime >= data.expireTime) {
+                    continue;
+                }
+                zftimetToStringT(line, data.updateTime);
+                line += ":";
+                zftimetToStringT(line, data.expireTime);
+                line += ":";
+                ZFCoreDataEncode(line, data.key);
+                line += ":";
+                ZFCoreDataEncode(line, data.value);
+                output << line << "\n";
+                line.removeAll();
             }
-            zftimetToStringT(line, data.updateTime);
-            line += ":";
-            zftimetToStringT(line, data.expireTime);
-            line += ":";
-            ZFCoreDataEncode(line, data.key);
-            line += ":";
-            ZFCoreDataEncode(line, data.value);
-            output << line << "\n";
-            line.removeAll();
         }
     }
     static void _saveFinishImpl(
             ZF_IN ZFState *owner
+            , ZF_IN_OUT zfwrap &ioLock
+            , ZF_IN ZFIOImpl *ioImpl
+            , ZF_IN const zfstring &stateFilePathData
+            , ZF_IN const zfstring &tmpFilePathData
+            , ZF_IN const zfstring &lockFilePathData
             ) {
         _ZFP_ZFStatePrivate *d = owner->d;
         d->taskId = zfnull;
         d->changed = zffalse;
-        if(d->saveQueue.isEmpty()) {
-            return;
-        }
-        ZFCoreArray<ZFListener> saveQueue;
-        d->saveQueue.swap(saveQueue);
-        for(zfindex i = 0; i < saveQueue.count(); ++i) {
-            saveQueue[i].execute();
+        ioImpl->ioMove(stateFilePathData, tmpFilePathData);
+        ioLock.set(zfnull);
+        ioImpl->ioRemove(lockFilePathData);
+
+        if(!d->saveQueue.isEmpty()) {
+            ZFCoreArray<ZFListener> saveQueue;
+            d->saveQueue.swap(saveQueue);
+            for(zfindex i = 0; i < saveQueue.count(); ++i) {
+                saveQueue[i].execute();
+            }
         }
     }
 };
