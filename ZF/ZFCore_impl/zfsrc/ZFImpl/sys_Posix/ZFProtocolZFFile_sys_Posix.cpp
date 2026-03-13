@@ -378,13 +378,27 @@ private:
             ZF_IN const zfstring &srcPath
             , ZF_IN zfbool isForce
             ) {
+        ZFObjectLocker(_lock);
+        int fd = open(
+                srcPath
+                , O_RDWR
+                , 0644
+                );
+        if(fd == -1) {
+            return zftrue;
+        }
+        if(flock(fd, LOCK_EX | LOCK_NB) == -1) {
+            close(fd);
+            return zffalse;
+        }
+
         if(isForce) {
             chmod(srcPath, 0777);
         }
-        if(remove(srcPath) != 0) {
-            return zffalse;
-        }
-        return zftrue;
+        zfbool success = (remove(srcPath) == 0);
+
+        close(fd);
+        return success;
     }
     zfbool removeDir(
             ZF_IN const zfstring &srcPath
