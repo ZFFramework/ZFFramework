@@ -1,5 +1,5 @@
 #include "zfimport.h"
-#include "ZFMap.h"
+#include "ZFHashMap.h"
 #include "ZFIO_res.h"
 #include "ZFIO_file.h"
 
@@ -114,10 +114,10 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         }
     }
 
-    zfobj<ZFMap> retMap;
+    zfobj<ZFHashMap> retMap;
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
     ZFLISTENER_2(impl
-            , zfautoT<ZFMap>, retMap
+            , zfautoT<ZFHashMap>, retMap
             , _ZFP_zfimportCacheMapType &, cacheMap
             ) {
         const ZFPathInfo &pathInfo = zfargs.param0().to<v_ZFPathInfo *>()->zfv;

@@ -2,6 +2,8 @@
 #include "ZFObjectImpl.h"
 #include "ZFPropertyUtil.h"
 
+#include "../ZFSTLWrapper/zfstlordermap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -13,22 +15,30 @@ public:
     public:
         const ZFProperty *property;
         ZFSerializablePropertyType propertyType;
-    public:
-        Data(ZF_IN const ZFProperty *property, ZF_IN ZFSerializablePropertyType propertyType)
-        : property(property)
-        , propertyType(propertyType)
-        {
-        }
     };
 public:
-    ZFCoreOrderMap m; // <propertyName, Data>
+    typedef zfstlordermap<zfstring, Data> MapType;
+    MapType m; // <propertyName, Data>
 
 public:
     void addData(
             ZF_IN const ZFProperty *property
             , ZF_IN ZFSerializablePropertyType propertyType
             ) {
-        m.set(property->propertyName(), ZFCorePointerForPoolObject<Data *>(zfpoolNew(Data, property, propertyType)));
+        zfstlpair<zfstring, Data> entry;
+        entry.first = property->propertyName();
+        entry.second.property = property;
+        entry.second.propertyType = propertyType;
+        m.insert(entry);
+    }
+    Data *get(ZF_IN const zfstring &propertyName) {
+        MapType::iterator it = m.find(propertyName);
+        if(it != m.end()) {
+            return &(it->second);
+        }
+        else {
+            return zfnull;
+        }
     }
 };
 
@@ -84,7 +94,7 @@ zfbool ZFSerializable::serializeFromData(
 
     // property
     {
-        const ZFCoreOrderMap &propertyMap = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
+        _ZFP_I_ZFSerializablePropertyTypeHolder *holder = this->_ZFP_ZFSerializable_getPropertyTypeHolder();
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
             const ZFSerializableData &element = serializableData.childAt(i);
             if(element.resolved() || element.category() != zfnull) {
@@ -94,7 +104,7 @@ zfbool ZFSerializable::serializeFromData(
             if(propertyName == zfnull) {
                 continue;
             }
-            _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = propertyMap.get<_ZFP_I_ZFSerializablePropertyTypeHolder::Data *>(propertyName);
+            _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = holder->get(propertyName);
             if(data == zfnull) {
                 continue;
             }
@@ -218,9 +228,9 @@ zfbool ZFSerializable::serializeToData(
 
     // property
     {
-        const ZFCoreOrderMap &propertyMap = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
-        for(zfiter it = propertyMap.iter(); it; ++it) {
-            _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = propertyMap.iterValue<_ZFP_I_ZFSerializablePropertyTypeHolder::Data *>(it);
+        _ZFP_I_ZFSerializablePropertyTypeHolder::MapType &propertyMap = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
+        for(_ZFP_I_ZFSerializablePropertyTypeHolder::MapType::iterator it = propertyMap.begin(); it != propertyMap.end(); ++it) {
+            _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = &(it->second);
             switch(data->propertyType) {
                 case ZFSerializablePropertyTypeSerializable:
                     if(styleable != zfnull) {
@@ -358,9 +368,9 @@ void ZFSerializable::serializablePropertyTypeGetAll(
         , ZF_OUT ZFCoreArray<const ZFProperty *> &serializableProperty
         , ZF_OUT ZFCoreArray<const ZFProperty *> &embededProperty
         ) {
-    const ZFCoreOrderMap &m = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
-    for(zfiter it = m.iter(); it; ++it) {
-        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = m.iterValue<_ZFP_I_ZFSerializablePropertyTypeHolder::Data *>(it);
+    _ZFP_I_ZFSerializablePropertyTypeHolder::MapType &m = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
+    for(_ZFP_I_ZFSerializablePropertyTypeHolder::MapType::iterator it = m.begin(); it != m.end(); ++it) {
+        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = &(it->second);
         switch(data->propertyType) {
             case ZFSerializablePropertyTypeNotSerializable:
                 notSerializableProperty.add(data->property);
@@ -480,18 +490,18 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
     return holder;
 }
 void ZFSerializable::serializableGetAllSerializablePropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
-    const ZFCoreOrderMap &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
-    for(zfiter it = tmp.iter(); it; ++it) {
-        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = tmp.iterValue<_ZFP_I_ZFSerializablePropertyTypeHolder::Data *>(it);
+    _ZFP_I_ZFSerializablePropertyTypeHolder::MapType &m = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
+    for(_ZFP_I_ZFSerializablePropertyTypeHolder::MapType::iterator it = m.begin(); it != m.end(); ++it) {
+        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = &(it->second);
         if(data->propertyType == ZFSerializablePropertyTypeSerializable) {
             ret.add(data->property);
         }
     }
 }
 void ZFSerializable::serializableGetAllSerializableEmbededPropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
-    const ZFCoreOrderMap &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
-    for(zfiter it = tmp.iter(); it; ++it) {
-        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = tmp.iterValue<_ZFP_I_ZFSerializablePropertyTypeHolder::Data *>(it);
+    _ZFP_I_ZFSerializablePropertyTypeHolder::MapType &m = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->m;
+    for(_ZFP_I_ZFSerializablePropertyTypeHolder::MapType::iterator it = m.begin(); it != m.end(); ++it) {
+        _ZFP_I_ZFSerializablePropertyTypeHolder::Data *data = &(it->second);
         if(data->propertyType == ZFSerializablePropertyTypeEmbeded) {
             ret.add(data->property);
         }

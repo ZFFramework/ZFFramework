@@ -34,7 +34,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFIOCacheLoadTaskMap, ZFLevelZFFrameworkEs
     this->localCacheReady = zffalse;
 }
 public:
-    zfobj<ZFMap> taskMap; // <v_zfstring(callbackId), _ZFP_I_ZFIOCacheLoadTask>
+    zfobj<ZFHashMap> taskMap; // <v_zfstring(callbackId), _ZFP_I_ZFIOCacheLoadTask>
     ZFCoreArray<_ZFP_ZFIOCacheData> localCacheList;
     zfbool localCacheReady;
     ZFCoreArray<ZFListener> localCacheCallback;

@@ -72,9 +72,9 @@ we use zfstring as low level string container, which is reproduce of std::string
 * suit for ZFFramework's design
 
 
-## ZFCoreArray/ZFCoreMap
+## ZFCoreArray
 
-we use ZFCoreArray as low level array/list container, and ZFCoreMap for map/unordered_map,
+we use ZFCoreArray as low level array/list container,
 mainly to reduce dependency for STL
 
 however, the performance is not so good comparing to STL containers,

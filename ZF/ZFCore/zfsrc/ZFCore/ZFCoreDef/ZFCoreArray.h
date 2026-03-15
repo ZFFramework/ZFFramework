@@ -344,6 +344,12 @@ template<typename T_Element>
 zffinal zfclassLikePOD ZFCoreArray : zfextend ZFCoreArrayBase {
 public:
     /**
+     * @brief value type
+     */
+    typedef T_Element ValueType;
+
+public:
+    /**
      * @brief main constructor
      */
     ZFCoreArray(void) : d(zfnull) {}

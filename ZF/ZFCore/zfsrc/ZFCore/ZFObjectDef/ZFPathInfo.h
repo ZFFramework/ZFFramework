@@ -71,7 +71,7 @@ private:
 
 ZFHASH_DECLARE(ZFPathInfo, {return zfidentityHash(zfidentityCalcString(v.pathType()), zfidentityCalcString(v.pathData()));})
 
-/* ZFTAG_TRICKS: tricks to make ZFMap<ZFPathInfo, xxx> works */
+/* ZFTAG_TRICKS: tricks to make zfstlmap<ZFPathInfo, xxx> works */
 inline zfint _ZFP_ZFPathInfoCompare(ZF_IN const ZFPathInfo &v0, ZF_IN const ZFPathInfo &v1) {
     zfint t = v0.pathType().compare(v1.pathType());
     if(t < 0) {

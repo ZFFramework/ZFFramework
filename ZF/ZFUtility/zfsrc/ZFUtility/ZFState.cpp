@@ -708,9 +708,9 @@ ZFMETHOD_DEFINE_2(ZFState, void, update
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFState, zfautoT<ZFMap>, getAll) {
+ZFMETHOD_DEFINE_0(ZFState, zfautoT<ZFHashMap>, getAll) {
     ZFObjectLocker(this);
-    zfobj<ZFMap> ret;
+    zfobj<ZFHashMap> ret;
     for(zfiter it = d->m.iter(); it; ++it) {
         ret->set(
                 zfobj<v_zfstring>(d->m.iterKey(it))

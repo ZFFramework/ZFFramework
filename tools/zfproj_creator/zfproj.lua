@@ -134,7 +134,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         return false
     end
 
-    local config = ZFMap()
+    local config = ZFHashMap()
     local line = zfstring()
     local optionPattern = zfstring('^[ \\t]*(ZF_[A-Z_]+)[ \\t]*\\+?=[ \\t]*([^ \\t].*[^ \\t]|[^ \\t]+)[ \\t]*$')
     while ZFInputReadLine(line, configFile) ~= zfindexMax() do

@@ -49,12 +49,12 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * -  when pathInfo/path points to a directory
  *   -  #ZFObjectIOLoad would be called
  *     for each file under the directory,
- *     and a #ZFMap would be returned,
+ *     and a #ZFKeyValueContainer would be returned,
  *     contains all the result,
  *     key is a #v_zfstring holds the relative path name to pathInfo/path,
  *     and value is the result returned by #ZFObjectIOLoad
  *   -  when any content load failed, nothing happen,
- *     and a #ZFMap would be returned contains all successful loaded item
+ *     and a #ZFKeyValueContainer would be returned contains all successful loaded item
  *
  * \n
  * about cache logic:

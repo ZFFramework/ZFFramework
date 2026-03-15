@@ -524,7 +524,7 @@ inline zfidentity zfhash(ZF_IN const T_Type &v) {
     template<> \
     zfclassNotPOD zftHash<Type > { \
     public: \
-        static zfidentity value(ZF_IN const Type &v) { \
+        static zfidentity value(ZF_IN Type const &v) { \
             action \
         } \
     }; \
@@ -535,7 +535,7 @@ inline zfidentity zfhash(ZF_IN const T_Type &v) {
     template<T_Type > \
     zfclassNotPOD zftHash<Type > { \
     public: \
-        static zfidentity value(ZF_IN const Type &v) { \
+        static zfidentity value(ZF_IN Type const &v) { \
             action \
         } \
     }; \

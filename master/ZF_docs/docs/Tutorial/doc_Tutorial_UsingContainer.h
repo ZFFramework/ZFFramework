@@ -3,9 +3,10 @@
  *
  * ZFFramework use these container types:
  * -  all other C++ containers, such as std::vector,
- *   can be used directly
- * -  ZFCoreArray/ZFCoreMap\n
- *   C++-style container similar to std::vector / std::map,
+ *   can be used directly,
+ *   but must not be exported in header
+ * -  ZFCoreArray\n
+ *   C++-style container similar to std::vector,
  *   may not so efficient compared to STL containers,
  *   used to reduce dependency,
  *   use only if necessary
@@ -13,13 +14,6 @@
  *     ZFCoreArray<zfstring> array;
  *     array.add("element");
  *     const zfstring &e = array[0];
- *
- *     ZFCoreMap map;
- *     // can hold string as key type and any type as value type,
- *     // while value type can only be wrapped by ZFCorePointer
- *     zfstring *p = zfnew(zfstring);
- *     map.set("key", ZFCorePointerForObject<zfstring *>(p));
- *     // see #ZFCorePointer and #ZFCoreMap for more info
  *   @endcode
  * -  ZFContainer/ZFKeyValueContainer\n
  *   container as ZFObject,

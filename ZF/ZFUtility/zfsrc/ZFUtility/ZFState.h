@@ -130,7 +130,7 @@ public:
     /**
      * @brief return a copy of all state, for debug use only
      */
-    ZFMETHOD_DECLARE_0(zfautoT<ZFMap>, getAll)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFHashMap>, getAll)
     /**
      * @brief return a copy of all state, for debug use only
      */
