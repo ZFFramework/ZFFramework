@@ -1,52 +1,27 @@
 #include "ZFCoreMap.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlordermap.h"
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassPOD _ZFP_ZFCoreMapKey {
-public:
-    const _ZFP_ZFCoreMapPrivate *owner;
-    const void *key;
-};
-
 zfclassNotPOD _ZFP_ZFCoreMapHash {
 public:
-    zfstlsize operator () (ZF_IN const _ZFP_ZFCoreMapKey &key) const {
-        return key.owner->fn_Hash(key.key);
+    zfstlsize operator () (ZF_IN const _ZFP_ZFCoreMap::BaseKey *key) const {
+        return key->implHash();
     }
 };
 zfclassNotPOD _ZFP_ZFCoreMapEqual {
 public:
-    zfbool operator () (ZF_IN const _ZFP_ZFCoreMapKey &key0, ZF_IN const _ZFP_ZFCoreMapKey &key1) const {
-        return key0.owner->fn_Equal(key0.key, key1.key);
+    zfbool operator () (ZF_IN const _ZFP_ZFCoreMap::BaseKey *key0, ZF_IN const _ZFP_ZFCoreMap::BaseKey *key1) const {
+        return key0->implEqual(key1);
     }
 };
 
-typedef zfimplhashmap<_ZFP_ZFCoreMapKey, void *, _ZFP_ZFCoreMapHash, _ZFP_ZFCoreMapEqual> _ZFP_ZFCoreMapType;
+typedef zfimplordermap<const _ZFP_ZFCoreMap::BaseKey *, _ZFP_ZFCoreMap::BaseValue *, _ZFP_ZFCoreMapHash, _ZFP_ZFCoreMapEqual> _ZFP_ZFCoreMapType;
 
-zfclassNotPOD _ZFP_ZFCoreMapImpl : zfextend _ZFP_ZFCoreMapPrivate {
+zfclassNotPOD _ZFP_ZFCoreMapImpl : zfextend _ZFP_ZFCoreMap {
 public:
-    _ZFP_ZFCoreMapImpl(
-            ZF_IN Fn_Hash fn_Hash
-            , ZF_IN Fn_Equal fn_Equal
-            , ZF_IN Fn_KeyCopy fn_KeyCopy
-            , ZF_IN Fn_KeyDestroy fn_KeyDestroy
-            , ZF_IN Fn_ValueCopy fn_ValueCopy
-            , ZF_IN Fn_ValueDestroy fn_ValueDestroy
-            )
-    : _ZFP_ZFCoreMapPrivate(
-            fn_Hash
-            , fn_Equal
-            , fn_KeyCopy
-            , fn_KeyDestroy
-            , fn_ValueCopy
-            , fn_ValueDestroy
-            )
-    , m()
-    {
-    }
     virtual ~_ZFP_ZFCoreMapImpl(void) {
         _ZFP_ZFCoreMapImpl::removeAll();
     }
@@ -59,8 +34,6 @@ public:
             ZF_IN_OUT zfstring &ret
             , ZF_IN zfindex maxCount
             , ZF_IN const ZFTokenForKeyValueContainer &token
-            , ZF_IN Fn_KeyInfo fn_KeyInfo
-            , ZF_IN Fn_ValueInfo fn_ValueInfo
             ) {
         zfindex count = 0;
         if(!this->isEmpty()) {
@@ -72,13 +45,13 @@ public:
                 ret += token.tokenPairLeft;
                 {
                     ret += token.tokenKeyLeft;
-                    fn_KeyInfo(ret, this->iterKey(it));
+                    this->iterKey(it)->implInfo(ret);
                     ret += token.tokenKeyRight;
                 }
                 ret += token.tokenPairSeparator;
                 {
                     ret += token.tokenValueLeft;
-                    fn_ValueInfo(ret, this->iterValue(it));
+                    this->iterValue(it)->implInfo(ret);
                     ret += token.tokenValueRight;
                 }
                 ret += token.tokenPairRight;
@@ -92,24 +65,21 @@ public:
         }
     }
     zfoverride
-    virtual ZFCompareResult objectCompareValue(
-            ZF_IN const _ZFP_ZFCoreMapPrivate *ref
-            , ZF_IN Fn_ValueEqual fn_ValueEqual
-            ) {
+    virtual ZFCompareResult objectCompareValue(ZF_IN const _ZFP_ZFCoreMap *ref) {
         _ZFP_ZFCoreMapType const &mRef = ((const _ZFP_ZFCoreMapImpl *)ref)->m;
         if(m.size() != mRef.size()) {
             return ZFCompareUncomparable;
         }
         for(_ZFP_ZFCoreMapType::const_iterator itRef = mRef.begin(); itRef != mRef.end(); ++itRef) {
             _ZFP_ZFCoreMapType::iterator it = m.find(itRef->first);
-            if(it == m.end() || !fn_ValueEqual(it->second, itRef->second)) {
+            if(it == m.end() || !it->second->implEqual(itRef->second)) {
                 return ZFCompareUncomparable;
             }
         }
         return ZFCompareEqual;
     }
     zfoverride
-    virtual void copyFrom(ZF_IN_OUT _ZFP_ZFCoreMapPrivate *ref) {
+    virtual void copyFrom(ZF_IN_OUT _ZFP_ZFCoreMap *ref) {
         this->removeAll();
         this->addFrom(ref);
     }
@@ -122,53 +92,46 @@ public:
         return m.empty();
     }
     zfoverride
-    virtual zfbool isContain(ZF_IN const void *key) {
-        _ZFP_ZFCoreMapKey keyWrap;
-        keyWrap.owner = this;
-        keyWrap.key = key;
-        return m.find(keyWrap) == m.end();
+    virtual zfbool isContain(ZF_IN _ZFP_ZFCoreMap::BaseKey *key) {
+        if(m.find(key) != m.end()) {
+            key->implDestroy();
+            return zftrue;
+        }
+        else {
+            key->implDestroy();
+            return zffalse;
+        }
     }
     zfoverride
-    virtual void addFrom(ZF_IN_OUT _ZFP_ZFCoreMapPrivate *ref) {
+    virtual void addFrom(ZF_IN_OUT _ZFP_ZFCoreMap *ref) {
         _ZFP_ZFCoreMapType &mRef = ((_ZFP_ZFCoreMapImpl *)ref)->m;
         m.reserve(m.size() + mRef.size());
         for(_ZFP_ZFCoreMapType::iterator itRef = mRef.begin(); itRef != mRef.end(); ++itRef) {
             _ZFP_ZFCoreMapType::iterator it = m.find(itRef->first);
             if(it != m.end()) {
-                fn_ValueCopy(it->second, itRef->second);
+                it->second->implCopy(itRef->second);
             }
             else {
-                _ZFP_ZFCoreMapKey keyWrap;
-                keyWrap.owner = this;
-                keyWrap.key = fn_KeyCopy(itRef->first.key);
-                void *value = fn_ValueCopy(zfnull, itRef->second);
-                m.insert(zfstlpair<_ZFP_ZFCoreMapKey, void *>(keyWrap, value));
+                m[itRef->first->implCopy()] = itRef->second->implCopy();
             }
         }
     }
     zfoverride
-    virtual void set(ZF_IN const void *key, ZF_IN const void *value) {
-        _ZFP_ZFCoreMapKey keyWrap;
-        keyWrap.owner = this;
-        keyWrap.key = key;
-        _ZFP_ZFCoreMapType::iterator it = m.find(keyWrap);
+    virtual void set(ZF_IN _ZFP_ZFCoreMap::BaseKey *key, ZF_IN _ZFP_ZFCoreMap::BaseValue *value) {
+        _ZFP_ZFCoreMapType::iterator it = m.find(key);
         if(it != m.end()) {
-            fn_ValueCopy(it->second, value);
+            _ZFP_ZFCoreMap::BaseValue *tmp = it->second;
+            it->second = value;
+            tmp->implDestroy();
         }
         else {
-            _ZFP_ZFCoreMapKey keyWrapNew;
-            keyWrapNew.owner = this;
-            keyWrapNew.key = fn_KeyCopy(key);
-            void *valueNew = fn_ValueCopy(zfnull, value);
-            m.insert(zfstlpair<_ZFP_ZFCoreMapKey, void *>(keyWrapNew, valueNew));
+            m[key] = value;
         }
     }
     zfoverride
-    virtual void *get(ZF_IN const void *key) {
-        _ZFP_ZFCoreMapKey keyWrap;
-        keyWrap.owner = this;
-        keyWrap.key = key;
-        _ZFP_ZFCoreMapType::iterator it = m.find(keyWrap);
+    virtual _ZFP_ZFCoreMap::BaseValue *get(ZF_IN _ZFP_ZFCoreMap::BaseKey *key) {
+        _ZFP_ZFCoreMapType::iterator it = m.find(key);
+        key->implDestroy();
         if(it != m.end()) {
             return it->second;
         }
@@ -177,52 +140,43 @@ public:
         }
     }
     zfoverride
-    virtual void *access(ZF_IN const void *key) {
-        _ZFP_ZFCoreMapKey keyWrap;
-        keyWrap.owner = this;
-        keyWrap.key = key;
-        _ZFP_ZFCoreMapType::iterator it = m.find(keyWrap);
+    virtual _ZFP_ZFCoreMap::BaseValue *access(ZF_IN _ZFP_ZFCoreMap::BaseKey *key, ZF_IN Fn_ValueCreate fn_ValueCreate) {
+        _ZFP_ZFCoreMapType::iterator it = m.find(key);
         if(it != m.end()) {
+            key->implDestroy();
             return it->second;
         }
         else {
-            _ZFP_ZFCoreMapKey keyWrapNew;
-            keyWrapNew.owner = this;
-            keyWrapNew.key = fn_KeyCopy(key);
-            void *valueNew = fn_ValueCopy(zfnull, zfnull);
-            m.insert(zfstlpair<_ZFP_ZFCoreMapKey, void *>(keyWrapNew, valueNew));
-            return valueNew;
+            return (m[key] = fn_ValueCreate());
         }
     }
     zfoverride
-    virtual void remove(ZF_IN const void *key) {
-        _ZFP_ZFCoreMapKey keyWrap;
-        keyWrap.owner = this;
-        keyWrap.key = key;
-        _ZFP_ZFCoreMapType::iterator it = m.find(keyWrap);
+    virtual void remove(ZF_IN _ZFP_ZFCoreMap::BaseKey *key) {
+        _ZFP_ZFCoreMapType::iterator it = m.find(key);
+        key->implDestroy();
         if(it != m.end()) {
-            void *keyTmp = const_cast<void *>(it->first.key);
-            void *valueTmp = it->second;
+            _ZFP_ZFCoreMap::BaseKey *keyTmp = const_cast<_ZFP_ZFCoreMap::BaseKey *>(it->first);
+            _ZFP_ZFCoreMap::BaseValue *valueTmp = it->second;
             m.erase(it);
-            fn_KeyDestroy(keyTmp);
-            fn_ValueDestroy(valueTmp);
+            keyTmp->implDestroy();
+            valueTmp->implDestroy();
         }
     }
     zfoverride
     virtual void removeAll(void) {
         if(!m.empty()) {
-            zfstlvector<void *> tmpKey;
+            zfstlvector<_ZFP_ZFCoreMap::BaseKey *> tmpKey;
             tmpKey.reserve(m.size());
-            zfstlvector<void *> tmpValue;
+            zfstlvector<_ZFP_ZFCoreMap::BaseValue *> tmpValue;
             tmpValue.reserve(m.size());
             for(_ZFP_ZFCoreMapType::iterator it = m.begin(); it != m.end(); ++it) {
-                tmpKey.push_back(const_cast<void *>(it->first.key));
+                tmpKey.push_back(const_cast<_ZFP_ZFCoreMap::BaseKey *>(it->first));
                 tmpValue.push_back(it->second);
             }
             m.clear();
             for(zfstlsize i = 0; i < tmpKey.size(); ++i) {
-                fn_KeyDestroy(tmpKey[i]);
-                fn_ValueDestroy(tmpValue[i]);
+                tmpKey[i]->implDestroy();
+                tmpValue[i]->implDestroy();
             }
         }
     }
@@ -265,58 +219,50 @@ public:
         return zfiter(impl);
     }
     zfoverride
-    virtual zfiter iterFind(ZF_IN const void *key) {
-        _Iter *impl = zfpoolNew(_Iter);
-        _ZFP_ZFCoreMapKey keyWrap;
-        keyWrap.owner = this;
-        keyWrap.key = key;
-        impl->it = m.find(keyWrap);
-        impl->end = m.end();
-        return zfiter(impl);
+    virtual zfiter iterFind(ZF_IN _ZFP_ZFCoreMap::BaseKey *key) {
+        _ZFP_ZFCoreMapType::iterator it = m.find(key);
+        key->implDestroy();
+        if(it != m.end()) {
+            _Iter *impl = zfpoolNew(_Iter);
+            impl->it = it;
+            impl->end = m.end();
+            return zfiter(impl);
+        }
+        else {
+            return zfnull;
+        }
     }
     zfoverride
-    virtual const void *iterKey(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->first.key;
+    virtual const _ZFP_ZFCoreMap::BaseKey *iterKey(ZF_IN const zfiter &it) {
+        return it.impl<_Iter *>()->it->first;
     }
     zfoverride
-    virtual void *iterValue(ZF_IN const zfiter &it) {
+    virtual _ZFP_ZFCoreMap::BaseValue *iterValue(ZF_IN const zfiter &it) {
         return it.impl<_Iter *>()->it->second;
     }
     zfoverride
-    virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN const void *value) {
-        fn_ValueCopy(it.impl<_Iter *>()->it->second, value);
+    virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN _ZFP_ZFCoreMap::BaseValue *value) {
+        _Iter *impl = it.impl<_Iter *>();
+        _ZFP_ZFCoreMap::BaseValue *tmp = impl->it->second;
+        impl->it->second = value;
+        tmp->implDestroy();
     }
     zfoverride
     virtual void iterRemove(ZF_IN_OUT zfiter &it) {
         _Iter *impl = it.impl<_Iter *>();
-        void *key = const_cast<void *>(impl->it->first.key);
-        void *value = impl->it->second;
+        _ZFP_ZFCoreMap::BaseKey *key = const_cast<_ZFP_ZFCoreMap::BaseKey *>(impl->it->first);
+        _ZFP_ZFCoreMap::BaseValue *value = impl->it->second;
         m.erase((impl->it)++);
-        fn_KeyDestroy(key);
-        fn_ValueDestroy(value);
+        key->implDestroy();
+        value->implDestroy();
     }
 };
 
 // ============================================================
-_ZFP_ZFCoreMapPrivate *_ZFP_ZFCoreMapPrivate::create(
-        ZF_IN Fn_Hash fn_Hash
-        , ZF_IN Fn_Equal fn_Equal
-        , ZF_IN Fn_KeyCopy fn_KeyCopy
-        , ZF_IN Fn_KeyDestroy fn_KeyDestroy
-        , ZF_IN Fn_ValueCopy fn_ValueCopy
-        , ZF_IN Fn_ValueDestroy fn_ValueDestroy
-        )
-{
-    return zfpoolNew(_ZFP_ZFCoreMapImpl
-            , fn_Hash
-            , fn_Equal
-            , fn_KeyCopy
-            , fn_KeyDestroy
-            , fn_ValueCopy
-            , fn_ValueDestroy
-            );
+_ZFP_ZFCoreMap *_ZFP_ZFCoreMap::create(void) {
+    return zfpoolNew(_ZFP_ZFCoreMapImpl);
 }
-void _ZFP_ZFCoreMapPrivate::destroy(ZF_IN _ZFP_ZFCoreMapPrivate *d) {
+void _ZFP_ZFCoreMap::destroy(ZF_IN _ZFP_ZFCoreMap *d) {
     zfpoolDelete((_ZFP_ZFCoreMapImpl *)d);
 }
 
