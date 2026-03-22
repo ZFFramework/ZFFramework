@@ -81,7 +81,7 @@ public:
     ZFSerializableData &operator = (ZF_IN const zfnullT &dummy);
     ZFSerializableData &operator = (ZF_IN const ZFSerializableData &ref);
     zfbool operator == (ZF_IN const ZFSerializableData &ref) const;
-    inline zfbool operator != (ZF_IN const ZFSerializableData &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFSerializableData &ref) const {return !(this->operator == (ref));}
     inline zfbool operator == (ZF_IN const zfnullT &dummy) const {return !this->valid();}
     inline zfbool operator != (ZF_IN const zfnullT &dummy) const {return this->valid();}
     inline operator bool (void) const {return this->valid();}

@@ -60,7 +60,7 @@ public:
     ZFPathInfo &operator = (ZF_IN const ZFPathInfo &ref);
     ZFPathInfo &operator = (ZF_IN const zfnullT &dummy);
     zfbool operator == (ZF_IN const ZFPathInfo &ref) const;
-    zfbool operator != (ZF_IN const ZFPathInfo &ref) const {return !this->operator == (ref);}
+    zfbool operator != (ZF_IN const ZFPathInfo &ref) const {return !(this->operator == (ref));}
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return this->isEmpty();}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->isEmpty();}
     inline operator zfbool (void) const {return !this->isEmpty();}

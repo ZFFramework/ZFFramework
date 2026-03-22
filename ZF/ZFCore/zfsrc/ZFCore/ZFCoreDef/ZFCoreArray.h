@@ -394,7 +394,7 @@ public:
     }
     /** @cond ZFPrivateDoc */
     zfbool operator == (ZF_IN const ZFCoreArray<T_Element> &ref) const {return (d == ref.d);}
-    inline zfbool operator != (ZF_IN const ZFCoreArray<T_Element> &ref) const {return !this->operator == (ref);}
+    zfbool operator != (ZF_IN const ZFCoreArray<T_Element> &ref) const {return (d != ref.d);}
     zfoverride
     virtual ZFCoreArrayBase &operator = (ZF_IN const ZFCoreArrayBase &ref) {
         return this->operator = ((const ZFCoreArray<T_Element> &)ref);

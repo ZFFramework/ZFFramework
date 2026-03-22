@@ -63,7 +63,7 @@ public:
             );
     }
     zfbool operator != (ZF_IN const ZFUIViewFocusNextParam &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 };

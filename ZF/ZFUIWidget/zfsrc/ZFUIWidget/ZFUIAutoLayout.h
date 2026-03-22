@@ -71,7 +71,7 @@ public:
             );
     }
     inline zfbool operator != (ZF_IN const ZFUIAutoLayoutRule &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 

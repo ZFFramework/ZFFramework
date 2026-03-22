@@ -88,7 +88,7 @@ public:
                 && this->indexFlag == ref.indexFlag
             );
     }
-    inline zfbool operator != (ZF_IN const ZFTextTemplateIndexData &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFTextTemplateIndexData &ref) const {return !(this->operator == (ref));}
     /** @endcond */
 
 public:
@@ -225,7 +225,7 @@ public:
 
     /** @cond ZFPrivateDoc */
     zfbool operator == (ZF_IN const ZFTextTemplateParam &ref) const;
-    inline zfbool operator != (ZF_IN const ZFTextTemplateParam &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFTextTemplateParam &ref) const {return !(this->operator == (ref));}
     /** @endcond */
 
 public:

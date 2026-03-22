@@ -253,7 +253,7 @@ public:
     zffinal ~ZFArgs(void);
     ZFArgs &operator = (ZF_IN const ZFArgs &ref);
     zfbool operator == (ZF_IN const ZFArgs &ref) const;
-    inline zfbool operator != (ZF_IN const ZFArgs &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFArgs &ref) const {return !(this->operator == (ref));}
     /** @endcond */
 
 public:

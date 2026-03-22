@@ -62,7 +62,7 @@ public:
             && this->p1y == ref.p1y
             );
     }
-    inline zfbool operator != (ZF_IN const ZFBezier &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFBezier &ref) const {return !(this->operator == (ref));}
     /** @endcond */
 
 public:

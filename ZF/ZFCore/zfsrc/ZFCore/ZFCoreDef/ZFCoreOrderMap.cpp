@@ -276,7 +276,12 @@ public:
     zfoverride
     virtual void removeAt(ZF_IN zfindex index) {
         ZFCoreAssertIndexRange(index, (zfindex)m.size());
-        m.erase(m.begin() + index);
+        _ZFP_ZFCoreOrderMapType::iterator it = m.begin() + index;
+        _ZFP_ZFCoreOrderMap::BaseKey *key = const_cast<_ZFP_ZFCoreOrderMap::BaseKey *>(it->first);
+        _ZFP_ZFCoreOrderMap::BaseValue *value = it->second;
+        m.erase(it);
+        key->implDestroy();
+        value->implDestroy();
     }
     zfoverride
     virtual zfiter iterAt(ZF_IN zfindex index) {

@@ -176,7 +176,7 @@ public:
             return ref.d != zfnull && d->isEqual(ref.d);
         }
     }
-    inline zfbool operator != (ZF_IN const zfiter &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const zfiter &ref) const {return !(this->operator == (ref));}
     /** @endcond */
 private:
     Impl *d;

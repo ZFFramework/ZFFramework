@@ -36,7 +36,7 @@ private:
     public:
         Item(void) : entry(), mapIt(), arrIt() {}
         Item(ZF_IN const zfstlpair<T_Key, T_Value> &entry) : entry(entry), mapIt(), arrIt() {}
-        Item(ZF_IN const T_Key &key, ZF_IN const T_Value &value) : entry(zfstlpair<T_Key, T_Value>(value)), mapIt(), arrIt() {}
+        Item(ZF_IN const T_Key &key, ZF_IN const T_Value &value) : entry(zfstlpair<T_Key, T_Value>(key, value)), mapIt(), arrIt() {}
     };
 
 public:
@@ -310,7 +310,7 @@ public:
         return zftrue;
     }
     zfbool operator != (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
 
 private:

@@ -29,7 +29,7 @@ public:
     ZFIdentityGenerator(ZF_IN ZFIdentityGenerator const &ref);
     ZFIdentityGenerator &operator = (ZF_IN ZFIdentityGenerator const &ref);
     zfbool operator == (ZF_IN ZFIdentityGenerator const &ref) const;
-    inline zfbool operator != (ZF_IN ZFIdentityGenerator const &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN ZFIdentityGenerator const &ref) const {return !(this->operator == (ref));}
     ~ZFIdentityGenerator(void);
     /** @endcond */
 

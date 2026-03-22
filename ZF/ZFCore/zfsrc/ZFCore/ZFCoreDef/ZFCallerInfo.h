@@ -79,7 +79,7 @@ public:
     ~ZFCallerInfo(void);
     ZFCallerInfo &operator = (ZF_IN const ZFCallerInfo &ref);
     zfbool operator == (ZF_IN const ZFCallerInfo &ref) const;
-    inline zfbool operator != (ZF_IN const ZFCallerInfo &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFCallerInfo &ref) const {return !(this->operator == (ref));}
     inline operator zfbool (void) const {return this->valid();}
     /** @endcond */
 

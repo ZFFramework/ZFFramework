@@ -51,7 +51,7 @@ public:
             );
     }
     zfbool operator != (ZF_IN ZFClassInstanceObserverAddParam const &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 };

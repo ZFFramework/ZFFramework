@@ -165,7 +165,7 @@ public:
     }
     zfbool operator == (ZF_IN ZFXmlOutputToken const &ref) const;
     zfbool operator != (ZF_IN ZFXmlOutputToken const &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 };

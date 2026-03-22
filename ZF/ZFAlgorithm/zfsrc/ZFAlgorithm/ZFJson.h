@@ -138,7 +138,7 @@ public:
     }
     zfbool operator == (ZF_IN ZFJsonOutputToken const &ref) const;
     zfbool operator != (ZF_IN ZFJsonOutputToken const &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 };

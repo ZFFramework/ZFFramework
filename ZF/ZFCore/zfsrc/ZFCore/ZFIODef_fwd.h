@@ -76,7 +76,7 @@ public:
     ZFIOFindData &operator = (ZF_IN ZFIOFindData const &ref);
     zfbool operator == (ZF_IN ZFIOFindData const &ref) const;
     zfbool operator != (ZF_IN ZFIOFindData const &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
     ~ZFIOFindData(void);

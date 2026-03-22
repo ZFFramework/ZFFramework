@@ -65,7 +65,7 @@ public:
     ~ZFDynamic(void);
     ZFDynamic &operator = (ZF_IN const ZFDynamic &ref);
     zfbool operator == (ZF_IN const ZFDynamic &ref) const;
-    zfbool operator != (ZF_IN const ZFDynamic &ref) const {return !this->operator == (ref);}
+    zfbool operator != (ZF_IN const ZFDynamic &ref) const {return !(this->operator == (ref));}
     /** @endcond */
 
 public:

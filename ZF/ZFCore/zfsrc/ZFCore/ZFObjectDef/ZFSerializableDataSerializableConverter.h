@@ -32,7 +32,7 @@ public:
             ;
     }
     zfbool operator != (ZF_IN ZFSDOutputToken const &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 };

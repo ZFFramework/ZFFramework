@@ -809,7 +809,7 @@ public:
             );
     }
     zfbool operator != (ZF_IN const ZFProtocolImplInfo &ref) const {
-        return !this->operator == (ref);
+        return !(this->operator == (ref));
     }
     /** @endcond */
 };
