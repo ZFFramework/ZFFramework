@@ -468,7 +468,7 @@ private:
         ImplKey(ZF_IN T_Key const &v) : v(v) {}
     public:
         virtual zfidentity implHash(void) const {return zfhash(v);}
-        virtual zfbool implEqual(ZF_IN const BaseKey *ref) const {return ZFComparerDefault(v, ((ImplKey *)ref)->v);}
+        virtual zfbool implEqual(ZF_IN const BaseKey *ref) const {return ZFComparerDefault(v, ((ImplKey *)ref)->v) == ZFCompareEqual;}
         virtual void implInfo(ZF_IN_OUT zfstring &ret) const {return zftToStringT(ret, v);}
         virtual BaseKey *implCopy(void) const {return zfpoolNew(ImplKey, v);}
         virtual void implDestroy(void) {zfpoolDelete(this);}
@@ -480,7 +480,7 @@ private:
         ImplValue(ZF_IN T_Value const &v) : v(v) {}
     public:
         virtual void implCopy(ZF_IN const BaseValue *ref) {v = ((ImplValue *)ref)->v;}
-        virtual zfbool implEqual(ZF_IN const BaseValue *ref) const {return ZFComparerDefault(v, ((ImplValue *)ref)->v);}
+        virtual zfbool implEqual(ZF_IN const BaseValue *ref) const {return ZFComparerDefault(v, ((ImplValue *)ref)->v) == ZFCompareEqual;}
         virtual void implInfo(ZF_IN_OUT zfstring &ret) const {return zftToStringT(ret, v);}
         virtual BaseValue *implCopy(void) const {return zfpoolNew(ImplValue, v);}
         virtual void implDestroy(void) {zfpoolDelete(this);}
