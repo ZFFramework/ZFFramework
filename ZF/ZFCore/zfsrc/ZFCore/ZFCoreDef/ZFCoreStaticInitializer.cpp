@@ -1,7 +1,6 @@
 #include "ZFCoreStaticInitializer.h"
 #include "ZFCoreArray.h"
 #include "ZFCoreMutex.h"
-#include "ZFCorePointer.h"
 
 // #define _ZFP_ZFCoreStaticInitializer_DEBUG 1
 

@@ -22,10 +22,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFClass's global data
+typedef zfimplhashmap<zfstring, ZFCoreValue<ZFClass> > _ZFP_ZFClassMapType;
 zfclassNotPOD _ZFP_ZFClassDataHolder {
 public:
-    ZFCoreMap classMap; // <classNameFull, ZFClass *>
-    ZFCoreMap delayDeleteMap; // <classNameFull, ZFClass *>
+    _ZFP_ZFClassMapType classMap; // <classNameFull, cls>
+    _ZFP_ZFClassMapType delayDeleteMap; // <classNameFull, cls>
     /*
      * delay delete a class
      * ZFClass may be registered by different module,
@@ -45,13 +46,12 @@ public:
         ZFSigName dummy(zftext("ZFObject"));
     }
     ~_ZFP_ZFClassDataHolder(void) {
-        ZFCoreMap classMapTmp = this->classMap;
-        ZFCoreMap delayDeleteMapTmp = this->delayDeleteMap;
-        this->classMap = ZFCoreMap();
-        this->delayDeleteMap = ZFCoreMap();
-
-        delayDeleteMapTmp.removeAll();
-        classMapTmp.removeAll();
+        _ZFP_ZFClassMapType classMapTmp;
+        _ZFP_ZFClassMapType delayDeleteMapTmp;
+        classMapTmp.swap(this->classMap);
+        delayDeleteMapTmp.swap(this->delayDeleteMap);
+        delayDeleteMapTmp.clear();
+        classMapTmp.clear();
     }
 };
 static _ZFP_ZFClassDataHolder &_ZFP_ZFClassData(void) {
@@ -426,11 +426,10 @@ void _ZFP_ZFClassPrivate::propertyCacheRemoveAction(ZF_IN const ZFClass *cls, ZF
 // ============================================================
 // clear class tag both in ZFLevelZFFrameworkEssential and ZFLevelZFFrameworkHigh
 static void _ZFP_ZFClass_classTagClear(void) {
-    ZFCoreArray<const ZFClass *> allClass;
-    _ZFP_ZFClassMap.allValueT(allClass);
-    for(zfindex i = 0; i < allClass.count(); ++i) {
-        allClass.get(i)->classTagRemoveAll();
-        allClass.get(i)->dataCacheRemoveAll();
+    for(_ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.begin(); it != _ZFP_ZFClassMap.end(); ++it) {
+        ZFClass &cls = it->second.value();
+        cls.classTagRemoveAll();
+        cls.dataCacheRemoveAll();
     }
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassTagClearLevelEssential, ZFLevelZFFrameworkEssential) {
@@ -453,7 +452,13 @@ const ZFClass *ZFClass::classForName(ZF_IN const zfstring &className) {
         return zfnull;
     }
     else {
-        return _ZFP_ZFClassMap.get<const ZFClass *>(ZFNamespaceSkipGlobal(className));
+        _ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.find(ZFNamespaceSkipGlobal(className));
+        if(it != _ZFP_ZFClassMap.end()) {
+            return &(it->second.value());
+        }
+        else {
+            return zfnull;
+        }
     }
 }
 const ZFClass *ZFClass::classForName(
@@ -466,10 +471,22 @@ const ZFClass *ZFClass::classForName(
         classNameFull += classNamespaceTmp;
         classNameFull += ".";
         classNameFull += className;
-        return _ZFP_ZFClassMap.get<const ZFClass *>(classNameFull);
+        _ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.find(classNameFull);
+        if(it != _ZFP_ZFClassMap.end()) {
+            return &(it->second.value());
+        }
+        else {
+            return zfnull;
+        }
     }
     else {
-        return _ZFP_ZFClassMap.get<const ZFClass *>(ZFNamespaceSkipGlobal(className));
+        _ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.find(ZFNamespaceSkipGlobal(className));
+        if(it != _ZFP_ZFClassMap.end()) {
+            return &(it->second.value());
+        }
+        else {
+            return zfnull;
+        }
     }
 }
 
@@ -1454,11 +1471,11 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         classNameFull = classNameTmp;
     }
 
-    const ZFCorePointer *d = _ZFP_ZFClassMap.get(classNameFull);
+    _ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.find(classNameFull);
     ZFClass *cls = zfnull;
     zfbool needFinalInit = zffalse;
-    if(d != zfnull) {
-        cls = d->pointerValueT<ZFClass *>();
+    if(it != _ZFP_ZFClassMap.end()) {
+        cls = &(it->second.value());
         if(cls->classIsInterface() != classIsInterface || cls->classParent() != parent) {
             ZFCoreCriticalMessageTrim("[ZFClass] register a class that already registered: %s", classNameTmp);
             return zfnull;
@@ -1467,8 +1484,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     }
     else {
         needFinalInit = zftrue;
-        cls = zfnew(ZFClass);
-        _ZFP_ZFClassMap.set(classNameFull, ZFCorePointerForObject<ZFClass *>(cls));
+        cls = &(_ZFP_ZFClassMap[classNameFull].value());
 
         if(classIsDynamicRegister) {
             ZFBitSet(cls->_stateFlags, _stateFlags_classIsDynamicRegister);
@@ -1550,8 +1566,8 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
         cls->d->classDynamicRegisterObjectInstanceMap.clear();
     }
 
-    zfiter itClass = _ZFP_ZFClassMap.iterFind(cls->classNameFull());
-    if(!itClass) {
+    _ZFP_ZFClassMapType::iterator itClass = _ZFP_ZFClassMap.find(cls->classNameFull());
+    if(itClass == _ZFP_ZFClassMap.end()) {
         ZFCoreCriticalShouldNotGoHere();
         return;
     }
@@ -1568,9 +1584,8 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
         ZFClassAliasRemove(cls, cls->classAliasTo().getLast());
     }
 
-    _ZFP_ZFClassDelayDeleteMap.set(cls->classNameFull(),
-        *_ZFP_ZFClassMap.iterValue(itClass));
-    _ZFP_ZFClassMap.iterRemove(itClass);
+    _ZFP_ZFClassDelayDeleteMap[cls->classNameFull()] = itClass->second;
+    _ZFP_ZFClassMap.erase(itClass);
 
     ZFBitUnset(cls->_ZFP_ZFClass_removeConst()->_stateFlags, _stateFlags_methodAndPropertyCacheNeedUpdate);
     ZFMethodUserUnregister(cls->methodForNameIgnoreParent("ClassData"));
@@ -1829,7 +1844,9 @@ void ZFClassGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret
         ) {
     ZFCoreMutexLocker();
-    _ZFP_ZFClassMap.allValueT(ret);
+    for(_ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.begin(); it != _ZFP_ZFClassMap.end(); ++it) {
+        ret.add(&(it->second.value()));
+    }
 }
 
 // ============================================================
@@ -1890,7 +1907,11 @@ void ZFClassAlias(
     ) {
         return;
     }
-    _ZFP_ZFClassMap.set(aliasNameFull, ZFCorePointerForPointerRef<const ZFClass *>(cls));
+    _ZFP_ZFClassMapType::iterator it = _ZFP_ZFClassMap.find(cls->classNameFull());
+    if(it == _ZFP_ZFClassMap.end()) {
+        return;
+    }
+    _ZFP_ZFClassMap[aliasNameFull] = it->second;
     ZFCoreArray<zfstring> t = cls->classAliasTo();
     t.add(aliasNameFull);
 
@@ -1909,9 +1930,9 @@ void ZFClassAliasRemove(
         return;
     }
 
-    _ZFP_ZFClassMap.remove(aliasNameFull);
     ZFCoreArray<zfstring> t = cls->classAliasTo();
     t.remove(index);
+    _ZFP_ZFClassMap.erase(aliasNameFull);
 
     _ZFP_ZFClassDataUpdateNotify(ZFClassDataUpdateTypeClassAliasDetach, cls, zfnull, zfnull, aliasNameFull);
 }

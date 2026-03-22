@@ -7,7 +7,7 @@
 #define _ZFI_zfstlordermap_h_
 
 #include "zfstlhashmap.h"
-#include "zfstllist.h"
+#include "zfstlvector.h"
 
 /** @cond ZFPrivateDoc */
 template<typename T_Key, typename T_Value, typename T_Hash = zfstlhash<T_Key>, typename T_Equal = zfstlequalto<T_Key> >
@@ -27,7 +27,7 @@ private:
     };
     zfclassFwd Item;
     typedef zfstlhashmap<const T_Key *, Item *, T_HashWrap, T_EqualWrap> MapType;
-    typedef zfstllist<Item *> ArrayType;
+    typedef zfstlvector<Item *> ArrayType;
     zfclassNotPOD Item {
     public:
         zfstlpair<T_Key, T_Value> entry;
@@ -71,6 +71,24 @@ public:
             iterator t(implIt);
             --implIt;
             return t;
+        }
+        template<typename T_Int>
+        iterator operator + (ZF_IN T_Int const &i) const {
+            return iterator(implIt + i);
+        }
+        template<typename T_Int>
+        iterator operator - (ZF_IN T_Int const &i) const {
+            return iterator(implIt - i);
+        }
+        template<typename T_Int>
+        iterator &operator += (ZF_IN T_Int const &i) {
+            implIt += i;
+            return *this;
+        }
+        template<typename T_Int>
+        iterator &operator -= (ZF_IN T_Int const &i) {
+            implIt -= i;
+            return *this;
         }
         zfbool operator == (ZF_IN const iterator &it) const {
             return implIt == it.implIt;
@@ -156,7 +174,7 @@ public:
     }
     iterator begin(void) {
         if(!map.empty()) {
-            return iterator((*(arr.begin()))->arrIt);
+            return iterator(arr.begin());
         }
         else {
             return iterator(arr.end());
@@ -164,7 +182,7 @@ public:
     }
     const_iterator begin(void) const {
         if(!map.empty()) {
-            return const_iterator((*(arr.begin()))->arrIt);
+            return const_iterator(arr.begin());
         }
         else {
             return const_iterator(arr.end());
@@ -192,6 +210,15 @@ public:
             arr.push_back(item);
             --(item->arrIt = arr.end());
             return zfstlpair<iterator, zfbool>(iterator(item->arrIt), zffalse);
+        }
+    }
+    T_Value &operator [] (ZF_IN T_Key const &key) {
+        iterator it = this->find(key);
+        if(it != this->end()) {
+            return it->second;
+        }
+        else {
+            return this->insert(zfstlpair<T_Key, T_Value>(key, T_Value())).first->second;
         }
     }
     iterator erase(ZF_IN iterator it) {
@@ -234,39 +261,57 @@ public:
     // ============================================================
     // order map spec
 public:
-    iterator update(ZF_IN iterator it) {
-        if(it.implIt != arr.end()) {
-            Item *item = *(it.implIt);
-            arr.erase(item->arrIt);
-            arr.push_back(item);
-            --(item->arrIt = arr.end());
-            return iterator(item->arrIt);
-        }
-        else {
-            return iterator(arr.end());
-        }
-    }
-    iterator update(ZF_IN const T_Key &key) {
-        typename MapType::iterator mapIt = map.find(&key);
-        if(mapIt != map.end()) {
-            Item *item = mapIt->second;
-            arr.erase(item->arrIt);
-            arr.push_back(item);
-            --(item->arrIt = arr.end());
-            return iterator(item->arrIt);
-        }
-        else {
-            return iterator(arr.end());
+    void move(
+            ZF_IN zfstlsize from
+            , ZF_IN zfstlsize to
+            ) {
+        if(!arr.empty()) {
+            if(from >= arr.size()) {
+                from = arr.size() - 1;
+            }
+            if(to >= arr.size()) {
+                to = arr.size() - 1;
+            }
+            if(from != to) {
+                Item *item = arr[from];
+                arr.erase(arr.begin() + from);
+                arr.insert(arr.begin() + to, item);
+            }
         }
     }
 
 public:
     zfstlordermap(void) : map(), arr() {}
-private:
-    zfstlordermap(ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &);
-    zfstlordermap &operator = (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &);
-    zfbool operator == (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &) const;
-    zfbool operator != (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &) const;
+    zfstlordermap(ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &ref) {
+        this->operator = (ref);
+    }
+    zfstlordermap &operator = (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &ref) {
+        if(this == &ref) {
+            return *this;
+        }
+        if(!ref.empty()) {
+            zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> tmp;
+            for(const_iterator it = ref.begin(); it != ref.end(); ++it) {
+                tmp.insert(*it);
+            }
+            swap(tmp);
+        }
+        return *this;
+    }
+    zfbool operator == (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &ref) const {
+        if(this == &ref) {return zftrue;}
+        if(this->size() != ref.size()) {return zffalse;}
+        for(const_iterator it = ref.begin(); it != ref.end(); ++it) {
+            const_iterator itSelf = this->find(it->first);
+            if(itSelf == this->end() || it->second != itSelf->second) {
+                return zffalse;
+            }
+        }
+        return zftrue;
+    }
+    zfbool operator != (ZF_IN const zfstlordermap<T_Key, T_Value, T_Hash, T_Equal> &ref) const {
+        return !this->operator == (ref);
+    }
 
 private:
     MapType map;
@@ -310,38 +355,38 @@ private:
         }
     };
 public:
-    zffinal inline zfiter iter(void) {
+    inline zfiter iter(void) {
         _Iter *impl = zfpoolNew(_Iter);
         impl->it = this->begin();
         impl->end = this->end();
         return zfiter(impl);
     }
 
-    zffinal inline zfiter iterFind(ZF_IN T_Key const &key) {
+    inline zfiter iterFind(ZF_IN T_Key const &key) {
         _Iter *impl = zfpoolNew(_Iter);
         impl->it = this->find(key);
         impl->end = this->end();
         return zfiter(impl);
     }
 
-    zffinal inline T_Key const &iterKey(ZF_IN const zfiter &it) {
+    inline T_Key const &iterKey(ZF_IN const zfiter &it) {
         return it.impl<_Iter *>()->it->first;
     }
-    zffinal inline T_Value &iterValue(ZF_IN const zfiter &it) {
+    inline T_Value &iterValue(ZF_IN const zfiter &it) {
         return it.impl<_Iter *>()->it->second;
     }
 
-    zffinal inline void iterValue(
+    inline void iterValue(
             ZF_IN_OUT zfiter &it
             , ZF_IN T_Value const &newValue
             ) {
         it.impl<_Iter *>()->it->second = newValue;
     }
-    zffinal inline void iterRemove(ZF_IN_OUT zfiter &it) {
+    inline void iterRemove(ZF_IN_OUT zfiter &it) {
         this->erase((it.impl<_Iter *>()->it)++);
     }
 
-    zffinal inline void iterAdd(
+    inline void iterAdd(
             ZF_IN T_Key const &key
             , ZF_IN T_Value const &value
             ) {
@@ -351,24 +396,22 @@ public:
     // ============================================================
     // order map spec
 public:
-    zfiter iterUpdate(ZF_IN_OUT zfiter &it) {
-        if(it) {
-            _Iter *impl = it.impl<_Iter *>();
-            impl->it = this->update(impl->it);
-        }
-        return it;
-    }
-    zfiter iterUpdate(ZF_IN const T_Key &key) {
-        typename zfimplordermap<T_Key, T_Value, T_Hash, T_Equal>::iterator it = this->find(key);
-        if(it != this->end()) {
-            it = this->update(it);
+    zfiter iterAt(ZF_IN zfstlsize index) {
+        if(index < this->size()) {
             _Iter *impl = zfpoolNew(_Iter);
-            impl->it = it;
+            impl->it = this->begin() + index;
             impl->end = this->end();
             return zfiter(impl);
         }
+        return zfnull;
+    }
+    zfindex iterIndex(ZF_IN const zfiter &it) {
+        if(it) {
+            _Iter *impl = it.impl<_Iter *>();
+            return &(*(impl->it)) - &(*(this->begin()));
+        }
         else {
-            return zfnull;
+            return zfindexMax();
         }
     }
 };

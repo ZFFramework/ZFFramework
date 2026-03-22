@@ -108,7 +108,7 @@ public:
                 return;
             }
 
-            if(!MIX_SetTrackAudio(nativeAudio->implTrack, nativeAudio->implAudio->valueT<MIX_Audio *>())) {
+            if(!MIX_SetTrackAudio(nativeAudio->implTrack, (MIX_Audio *)nativeAudio->implAudio->value())) {
                 zfstring errorHint = SDL_GetError();
                 MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
                 owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>(errorHint));

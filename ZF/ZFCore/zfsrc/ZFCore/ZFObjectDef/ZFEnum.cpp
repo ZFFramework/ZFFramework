@@ -329,7 +329,7 @@ zfbool zfflagsFromStringT(
 // ============================================================
 ZF_STATIC_INITIALIZER_INIT(ZFEnumDataHolder) {
 }
-ZFCoreMap enumDataMap;
+ZFCoreMap<zfstring, _ZFP_ZFEnumData> enumDataMap; // <classNameFull, _ZFP_ZFEnumData>
 ZF_STATIC_INITIALIZER_END(ZFEnumDataHolder)
 #define _ZFP_ZFEnumDataMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFEnumDataHolder)->enumDataMap)
 
@@ -427,12 +427,11 @@ const zfstring &_ZFP_ZFEnumData::enumNameForValue(ZF_IN zfuint value) const {
 
 _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass) {
     ZFCoreMutexLocker();
-    _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataMap.get<_ZFP_ZFEnumData *>(ownerClass->classNameFull());
+    _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataMap.get(ownerClass->classNameFull());
     if(d != zfnull) {
         return d;
     }
-    d = zfnew(_ZFP_ZFEnumData);
-    _ZFP_ZFEnumDataMap.set(ownerClass->classNameFull(), ZFCorePointerForObject<_ZFP_ZFEnumData *>(d));
+    d = &(_ZFP_ZFEnumDataMap.access(ownerClass->classNameFull()));
     d->ownerClass = ownerClass;
     return d;
 }
@@ -442,7 +441,7 @@ void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass) {
 
 // ============================================================
 const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass) {
-    return _ZFP_ZFEnumDataMap.get<_ZFP_ZFEnumData *>(enumClass->classNameFull());
+    return _ZFP_ZFEnumDataMap.get(enumClass->classNameFull());
 }
 void _ZFP_ZFEnumMethodReg(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret

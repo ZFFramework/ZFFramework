@@ -1,7 +1,6 @@
 #include "ZFStyleable.h"
 #include "ZFObjectImpl.h"
 #include "ZFPropertyUtil.h"
-#include "ZFListenerDeclare.h"
 
 #include "../ZFSTLWrapper/zfstlhashmap.h"
 
@@ -164,18 +163,13 @@ ZFOBJECT_REGISTER(ZFStyle)
 // ============================================================
 ZF_STATIC_INITIALIZER_INIT(ZFStyleableDefaultStyleDataHolder) {
 }
-ZFCoreMap instanceDataMap; // _ZFP_ZFStyleableDefaultPointerHolder *
+ZFCoreMap<zfstring, ZFCoreValue<void *> > instanceDataMap; // <styleName, instanceHolder>
 ZF_STATIC_INITIALIZER_END(ZFStyleableDefaultStyleDataHolder)
 
-_ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
+ZFCoreValue<void *> _ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
     ZFCoreMutexLocker();
-    ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
-    const ZFCorePointer *v = m.get(name);
-    if(v == zfnull) {
-        m.set(name, ZFCorePointerForPoolObject<_ZFP_ZFStyleableDefaultPointerHolder *>(zfpoolNew(_ZFP_ZFStyleableDefaultPointerHolder)));
-        v = m.get(name);
-    }
-    return v->pointerValueT<_ZFP_ZFStyleableDefaultPointerHolder *>();
+    ZFCoreMap<zfstring, ZFCoreValue<void *> > &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
+    return m.access(name);
 }
 
 // ============================================================

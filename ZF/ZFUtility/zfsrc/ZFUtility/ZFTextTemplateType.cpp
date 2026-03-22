@@ -113,46 +113,25 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, zfindex, index
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateIndexData, ZFTextTemplateIndexFlag, indexFlag)
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFTextTemplateReplaceData {
-public:
-    zfstring key;
-    zfstring value;
-};
-zfclassNotPOD _ZFP_ZFTextTemplateEnableData {
-public:
-    zfstring key;
-    zfbool value;
-};
-zfclassNotPOD _ZFP_ZFTextTemplateIndexData {
-public:
-    zfstring key;
-    ZFTextTemplateIndexData value;
-};
 zfclassNotPOD _ZFP_ZFTextTemplateParamPrivate {
 public:
     zfuint refCount;
 
-    ZFCoreArray<_ZFP_ZFTextTemplateReplaceData *> replaceDataList;
-    ZFCoreMap replaceDataMap; // map to _ZFP_ZFTextTemplateReplaceData *
+    ZFCoreOrderMap<zfstring, zfstring> replaceDataMap;
 
     zfbool enableDataDefault;
-    ZFCoreArray<_ZFP_ZFTextTemplateEnableData *> enableDataList;
-    ZFCoreMap enableDataMap; // map to _ZFP_ZFTextTemplateEnableData *
+    ZFCoreOrderMap<zfstring, zfbool> enableDataMap;
 
     ZFTextTemplateIndexData indexDataDefault;
-    ZFCoreArray<_ZFP_ZFTextTemplateIndexData *> indexDataList;
-    ZFCoreMap indexDataMap; // map to _ZFP_ZFTextTemplateIndexData *
+    ZFCoreOrderMap<zfstring, ZFTextTemplateIndexData> indexDataMap;
 
 public:
     _ZFP_ZFTextTemplateParamPrivate(void)
     : refCount(1)
-    , replaceDataList()
     , replaceDataMap()
     , enableDataDefault(zffalse)
-    , enableDataList()
     , enableDataMap()
     , indexDataDefault()
-    , indexDataList()
     , indexDataMap()
     {
     }
@@ -197,29 +176,23 @@ void ZFTextTemplateParam::replaceData(
     }
     zfiter it = d->replaceDataMap.iterFind(key);
     if(it) {
-        _ZFP_ZFTextTemplateReplaceData *replaceData = d->replaceDataMap.iterValue<_ZFP_ZFTextTemplateReplaceData *>(it);
-        if(value == zfnull) {
-            d->replaceDataList.removeElement(replaceData);
-            d->replaceDataMap.iterRemove(it);
+        if(value) {
+            d->replaceDataMap.iterValue(it, value);
         }
         else {
-            replaceData->value = value;
+            d->replaceDataMap.iterRemove(it);
         }
     }
     else {
-        if(value != zfnull) {
-            _ZFP_ZFTextTemplateReplaceData *replaceData = zfpoolNew(_ZFP_ZFTextTemplateReplaceData);
-            replaceData->key = key;
-            replaceData->value = value;
-            d->replaceDataList.add(replaceData);
-            d->replaceDataMap.set(key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateReplaceData *>(replaceData));
+        if(!value) {
+            d->replaceDataMap.set(key, value);
         }
     }
 }
 const zfstring &ZFTextTemplateParam::replaceData(ZF_IN const zfstring &key) const {
-    _ZFP_ZFTextTemplateReplaceData *replaceData = d->replaceDataMap.get<_ZFP_ZFTextTemplateReplaceData *>(key);
-    if(replaceData != zfnull) {
-        return replaceData->value;
+    zfiter it = d->replaceDataMap.iterFind(key);
+    if(it) {
+        return d->replaceDataMap.iterValue(it);
     }
     else {
         return zfstring::Empty();
@@ -229,25 +202,18 @@ zfindex ZFTextTemplateParam::replaceDataCount(void) const {
     return d->replaceDataMap.count();
 }
 const zfstring &ZFTextTemplateParam::replaceDataNameAt(ZF_IN zfindex index) const {
-    return d->replaceDataList.get(index)->key;
+    return d->replaceDataMap.keyAt(index);
 }
 const zfstring &ZFTextTemplateParam::replaceDataAt(ZF_IN zfindex index) const {
-    return d->replaceDataList.get(index)->value;
+    return d->replaceDataMap.valueAt(index);
 }
 void ZFTextTemplateParam::replaceDataRemove(ZF_IN const zfstring &key) {
-    zfiter it = d->replaceDataMap.iterFind(key);
-    if(it) {
-        d->replaceDataList.removeElement(d->replaceDataMap.iterValue<_ZFP_ZFTextTemplateReplaceData *>(it));
-        d->replaceDataMap.iterRemove(it);
-    }
-}
-void ZFTextTemplateParam::replaceDataRemoveAt(ZF_IN zfindex index) {
-    zfstring key = d->replaceDataList.get(index)->key;
-    d->replaceDataList.remove(index);
     d->replaceDataMap.remove(key);
 }
+void ZFTextTemplateParam::replaceDataRemoveAt(ZF_IN zfindex index) {
+    d->replaceDataMap.removeAt(index);
+}
 void ZFTextTemplateParam::replaceDataRemoveAll(void) {
-    d->replaceDataList.removeAll();
     d->replaceDataMap.removeAll();
 }
 
@@ -268,58 +234,46 @@ void ZFTextTemplateParam::enableData(
     }
     zfiter it = d->enableDataMap.iterFind(key);
     if(it) {
-        _ZFP_ZFTextTemplateEnableData *enableData = d->enableDataMap.iterValue<_ZFP_ZFTextTemplateEnableData *>(it);
-        enableData->value = value;
+        d->enableDataMap.iterValue(it, value);
     }
     else {
-        _ZFP_ZFTextTemplateEnableData *enableData = zfpoolNew(_ZFP_ZFTextTemplateEnableData);
-        enableData->key = key;
-        enableData->value = value;
-        d->enableDataList.add(enableData);
-        d->enableDataMap.set(key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateEnableData *>(enableData));
+        d->enableDataMap.set(key, value);
     }
 }
 const zfbool *ZFTextTemplateParam::enableData(ZF_IN const zfstring &key) const {
-    _ZFP_ZFTextTemplateEnableData *enableData = d->enableDataMap.get<_ZFP_ZFTextTemplateEnableData *>(key);
-    if(enableData != zfnull) {
-        return &(enableData->value);
+    zfiter it = d->enableDataMap.iterFind(key);
+    if(it) {
+        return &(d->enableDataMap.iterValue(it));
     }
     else {
         return zfnull;
     }
 }
 zfbool ZFTextTemplateParam::enableDataValue(ZF_IN const zfstring &key) const {
-    const zfbool *value = this->enableData(key);
-    if(value == zfnull) {
-        return this->enableDataDefault();
+    zfiter it = d->enableDataMap.iterFind(key);
+    if(it) {
+        return d->enableDataMap.iterValue(it);
     }
     else {
-        return *value;
+        return zffalse;
     }
 }
 zfindex ZFTextTemplateParam::enableDataCount(void) const {
     return d->enableDataMap.count();
 }
 const zfstring &ZFTextTemplateParam::enableDataNameAt(ZF_IN zfindex index) const {
-    return d->enableDataList.get(index)->key;
+    return d->enableDataMap.keyAt(index);
 }
 zfbool ZFTextTemplateParam::enableDataAt(ZF_IN zfindex index) const {
-    return d->enableDataList.get(index)->value;
+    return d->enableDataMap.valueAt(index);
 }
 void ZFTextTemplateParam::enableDataRemove(ZF_IN const zfstring &key) {
-    zfiter it = d->enableDataMap.iterFind(key);
-    if(it) {
-        d->enableDataList.removeElement(d->enableDataMap.iterValue<_ZFP_ZFTextTemplateEnableData *>(it));
-        d->enableDataMap.iterRemove(it);
-    }
-}
-void ZFTextTemplateParam::enableDataRemoveAt(ZF_IN zfindex index) {
-    zfstring key = d->enableDataList.get(index)->key;
-    d->enableDataList.remove(index);
     d->enableDataMap.remove(key);
 }
+void ZFTextTemplateParam::enableDataRemoveAt(ZF_IN zfindex index) {
+    d->enableDataMap.removeAt(index);
+}
 void ZFTextTemplateParam::enableDataRemoveAll(void) {
-    d->enableDataList.removeAll();
     d->enableDataMap.removeAll();
 }
 
@@ -340,30 +294,25 @@ void ZFTextTemplateParam::indexData(
     }
     zfiter it = d->indexDataMap.iterFind(key);
     if(it) {
-        _ZFP_ZFTextTemplateIndexData *indexData = d->indexDataMap.iterValue<_ZFP_ZFTextTemplateIndexData *>(it);
-        indexData->value = value;
+        d->indexDataMap.iterValue(it, value);
     }
     else {
-        _ZFP_ZFTextTemplateIndexData *indexData = zfpoolNew(_ZFP_ZFTextTemplateIndexData);
-        indexData->key = key;
-        indexData->value = value;
-        d->indexDataList.add(indexData);
-        d->indexDataMap.set(key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateIndexData *>(indexData));
+        d->indexDataMap.set(key, value);
     }
 }
 const ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &key) const {
-    _ZFP_ZFTextTemplateIndexData *indexData = d->indexDataMap.get<_ZFP_ZFTextTemplateIndexData *>(key);
-    if(indexData != zfnull) {
-        return &(indexData->value);
+    zfiter it = d->indexDataMap.iterFind(key);
+    if(it) {
+        return &(d->indexDataMap.iterValue(it));
     }
     else {
         return zfnull;
     }
 }
 ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &key) {
-    _ZFP_ZFTextTemplateIndexData *indexData = d->indexDataMap.get<_ZFP_ZFTextTemplateIndexData *>(key);
-    if(indexData != zfnull) {
-        return &(indexData->value);
+    zfiter it = d->indexDataMap.iterFind(key);
+    if(it) {
+        return &(d->indexDataMap.iterValue(it));
     }
     else {
         return zfnull;
@@ -373,28 +322,21 @@ zfindex ZFTextTemplateParam::indexDataCount(void) const {
     return d->indexDataMap.count();
 }
 const zfstring &ZFTextTemplateParam::indexDataNameAt(ZF_IN zfindex index) const {
-    return d->indexDataList.get(index)->key;
+    return d->indexDataMap.keyAt(index);
 }
 const ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index) const {
-    return &(d->indexDataList.get(index)->value);
+    return &(d->indexDataMap.valueAt(index));
 }
 ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index) {
-    return &(d->indexDataList.get(index)->value);
+    return &(d->indexDataMap.valueAt(index));
 }
 void ZFTextTemplateParam::indexDataRemove(ZF_IN const zfstring &key) {
-    zfiter it = d->indexDataMap.iterFind(key);
-    if(it) {
-        d->indexDataList.removeElement(d->indexDataMap.iterValue<_ZFP_ZFTextTemplateIndexData *>(it));
-        d->indexDataMap.iterRemove(it);
-    }
-}
-void ZFTextTemplateParam::indexDataRemoveAt(ZF_IN zfindex index) {
-    zfstring key = d->indexDataList.get(index)->key;
-    d->indexDataList.remove(index);
     d->indexDataMap.remove(key);
 }
+void ZFTextTemplateParam::indexDataRemoveAt(ZF_IN zfindex index) {
+    d->indexDataMap.removeAt(index);
+}
 void ZFTextTemplateParam::indexDataRemoveAll(void) {
-    d->indexDataList.removeAll();
     d->indexDataMap.removeAll();
 }
 
@@ -404,110 +346,59 @@ void ZFTextTemplateParam::copyFrom(ZF_IN const ZFTextTemplateParam &ref) {
         return;
     }
 
-    d->replaceDataList.removeAll();
-    d->replaceDataMap.removeAll();
-    for(zfindex i = 0; i < ref.d->replaceDataList.count(); ++i) {
-        const _ZFP_ZFTextTemplateReplaceData *replaceDataRef = ref.d->replaceDataList[i];
-        _ZFP_ZFTextTemplateReplaceData *replaceData = zfpoolNew(_ZFP_ZFTextTemplateReplaceData);
-        replaceData->key = replaceDataRef->key;
-        replaceData->value = replaceDataRef->value;
-        d->replaceDataList.add(replaceData);
-        d->replaceDataMap.set(replaceData->key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateReplaceData *>(replaceData));
-    }
+    d->replaceDataMap.copyFrom(ref.d->replaceDataMap);
 
     d->enableDataDefault = ref.d->enableDataDefault;
+    d->enableDataMap.copyFrom(ref.d->enableDataMap);
 
-    d->enableDataList.removeAll();
-    d->enableDataMap.removeAll();
-    for(zfindex i = 0; i < ref.d->enableDataList.count(); ++i) {
-        const _ZFP_ZFTextTemplateEnableData *enableDataRef = ref.d->enableDataList[i];
-        _ZFP_ZFTextTemplateEnableData *enableData = zfpoolNew(_ZFP_ZFTextTemplateEnableData);
-        enableData->key = enableDataRef->key;
-        enableData->value = enableDataRef->value;
-        d->enableDataList.add(enableData);
-        d->enableDataMap.set(enableData->key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateEnableData *>(enableData));
-    }
-
-    d->indexDataDefault.copyFrom(ref.d->indexDataDefault);
-
-    d->indexDataList.removeAll();
-    d->indexDataMap.removeAll();
-    for(zfindex i = 0; i < ref.d->indexDataList.count(); ++i) {
-        const _ZFP_ZFTextTemplateIndexData *indexDataRef = ref.d->indexDataList[i];
-        _ZFP_ZFTextTemplateIndexData *indexData = zfpoolNew(_ZFP_ZFTextTemplateIndexData);
-        indexData->key = indexDataRef->key;
-        indexData->value.copyFrom(indexDataRef->value);
-        d->indexDataList.add(indexData);
-        d->indexDataMap.set(indexData->key, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateIndexData *>(indexData));
-    }
+    d->indexDataDefault = ref.d->indexDataDefault;
+    d->indexDataMap.copyFrom(ref.d->indexDataMap);
 }
 
 zfbool ZFTextTemplateParam::operator == (ZF_IN const ZFTextTemplateParam &ref) const {
     if(d == ref.d) {
         return zftrue;
     }
-    if(d->replaceDataList.count() != ref.d->replaceDataList.count()
-            || d->enableDataDefault != ref.d->enableDataDefault
-            || d->enableDataList.count() != ref.d->enableDataList.count()
-            || d->indexDataDefault != ref.d->indexDataDefault
-            || d->indexDataList.count() != ref.d->indexDataList.count()
-            ) {
-        return zffalse;
-    }
-    for(zfindex i = 0; i < d->replaceDataList.count(); ++i) {
-        const _ZFP_ZFTextTemplateReplaceData *replaceData = d->replaceDataList[i];
-        const _ZFP_ZFTextTemplateReplaceData *replaceDataRef = ref.d->replaceDataList[i];
-        if(replaceData->key != replaceDataRef->key || replaceData->value != replaceDataRef->value) {
-            return zffalse;
-        }
-    }
-    for(zfindex i = 0; i < d->enableDataList.count(); ++i) {
-        const _ZFP_ZFTextTemplateEnableData *enableData = d->enableDataList[i];
-        const _ZFP_ZFTextTemplateEnableData *enableDataRef = ref.d->enableDataList[i];
-        if(enableData->key != enableDataRef->key || enableData->value != enableDataRef->value) {
-            return zffalse;
-        }
-    }
-    for(zfindex i = 0; i < d->indexDataList.count(); ++i) {
-        const _ZFP_ZFTextTemplateIndexData *indexData = d->indexDataList[i];
-        const _ZFP_ZFTextTemplateIndexData *indexDataRef = ref.d->indexDataList[i];
-        if(indexData->key != indexDataRef->key || indexData->value != indexDataRef->value) {
-            return zffalse;
-        }
-    }
-    return zftrue;
+    return (zftrue
+            && d->replaceDataMap.count() == ref.d->replaceDataMap.count()
+            && d->enableDataDefault == ref.d->enableDataDefault
+            && d->enableDataMap.count() == ref.d->enableDataMap.count()
+            && d->indexDataDefault == ref.d->indexDataDefault
+            && d->indexDataMap.count() == ref.d->indexDataMap.count()
+            && d->replaceDataMap.objectCompareValue(ref.d->replaceDataMap) == ZFCompareEqual
+            && d->enableDataMap.objectCompareValue(ref.d->enableDataMap) == ZFCompareEqual
+            && d->indexDataMap.objectCompareValue(ref.d->indexDataMap) == ZFCompareEqual
+            );
 }
 
 void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
     zfbool first = zftrue;
 
-    if(!d->replaceDataList.isEmpty()) {
+    if(!d->replaceDataMap.isEmpty()) {
         if(first) {first = zffalse;}
         else {ret += ", ";}
 
         ret += "replace: [";
-        for(zfindex i = 0; i < d->replaceDataList.count(); ++i) {
+        for(zfindex i = 0; i < d->replaceDataMap.count(); ++i) {
             if(i > 0) {
                 ret += ", ";
             }
-            const _ZFP_ZFTextTemplateReplaceData *replaceData = d->replaceDataList[i];
-            zfstringAppend(ret, "<%s, %s>", replaceData->key, replaceData->value);
+            zfstringAppend(ret, "<%s, %s>", d->replaceDataMap.keyAt(i), d->replaceDataMap.valueAt(i));
         }
         ret += "]";
     }
 
-    if(!d->enableDataList.isEmpty()) {
+    if(!d->enableDataMap.isEmpty()) {
         if(first) {first = zffalse;}
         else {ret += ", ";}
 
         ret += "enable: [";
-        for(zfindex i = 0; i < d->enableDataList.count(); ++i) {
+        for(zfindex i = 0; i < d->enableDataMap.count(); ++i) {
             if(i > 0) {
                 ret += ", ";
             }
-            const _ZFP_ZFTextTemplateEnableData *enableData = d->enableDataList[i];
-            zfstringAppend(ret, "<%s, %s>", enableData->key, enableData->value);
+            zfstringAppend(ret, "<%s, %s>", d->enableDataMap.keyAt(i), d->enableDataMap.valueAt(i));
         }
         ret += "]";
     }
@@ -520,20 +411,19 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         zfboolToStringT(ret, this->enableDataDefault());
     }
 
-    if(!d->indexDataList.isEmpty()) {
+    if(!d->indexDataMap.isEmpty()) {
         if(first) {first = zffalse;}
         else {ret += ", ";}
 
         ret += "index: ";
-        for(zfindex i = 0; i < d->indexDataList.count(); ++i) {
+        for(zfindex i = 0; i < d->indexDataMap.count(); ++i) {
             if(i > 0) {
                 ret += ", ";
             }
-            const _ZFP_ZFTextTemplateIndexData *indexData = d->indexDataList[i];
             ret += "<";
-            ret += indexData->key;
+            ret += d->indexDataMap.keyAt(i);
             ret += ", ";
-            indexData->value.objectInfoT(ret);
+            d->indexDataMap.valueAt(i).objectInfoT(ret);
             ret += ">";
         }
         ret += "]";

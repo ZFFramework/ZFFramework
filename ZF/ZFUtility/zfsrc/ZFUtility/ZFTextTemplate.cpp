@@ -22,7 +22,6 @@ public:
 
 static void _ZFP_ZFTextTemplateApply_replaceData(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -31,7 +30,6 @@ static void _ZFP_ZFTextTemplateApply_replaceData(
         );
 static void _ZFP_ZFTextTemplateApply_enableData(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -41,7 +39,7 @@ static void _ZFP_ZFTextTemplateApply_enableData(
         );
 static void _ZFP_ZFTextTemplateApply_indexData(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
+        , ZF_IN_OUT ZFCoreMap<zfstring, _ZFP_ZFTextTemplateIndexDataState> &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -64,7 +62,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfindex, ZFTextTemplateApply
     zfindex size = 0;
     const zfchar *p = data;
     const zfchar *pEnd = (data + ((dataSize == zfindexMax()) ? zfslen(data) : dataSize));
-    ZFCoreMap stateMap;
+    ZFCoreMap<zfstring, _ZFP_ZFTextTemplateIndexDataState> stateMap;
     do {
         if(p >= pEnd) {
             if(p > data) {
@@ -93,11 +91,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfindex, ZFTextTemplateApply
         switch(p[_ZFP_ZFTextTemplate_tagLSize]) {
             case 'R':
                 p += _ZFP_ZFTextTemplate_tagLSize + 1;
-                _ZFP_ZFTextTemplateApply_replaceData(param, stateMap, output, pEnd, data, p, size);
+                _ZFP_ZFTextTemplateApply_replaceData(param, output, pEnd, data, p, size);
                 break;
             case 'C':
                 p += _ZFP_ZFTextTemplate_tagLSize + 1;
-                _ZFP_ZFTextTemplateApply_enableData(param, stateMap, output, pEnd, data, p, size, condCount);
+                _ZFP_ZFTextTemplateApply_enableData(param, output, pEnd, data, p, size, condCount);
                 break;
             case 'I':
                 p += _ZFP_ZFTextTemplate_tagLSize + 1;
@@ -140,7 +138,6 @@ static zfindex _ZFP_ZFTextTemplateApply_keyLength(
 // ============================================================
 static void _ZFP_ZFTextTemplateApply_replaceData(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -171,7 +168,6 @@ static void _ZFP_ZFTextTemplateApply_replaceData(
 }
 static void _ZFP_ZFTextTemplateApply_enableData(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -251,7 +247,7 @@ static void _ZFP_ZFTextTemplateApply_enableData(
 // ============================================================
 static void _ZFP_ZFTextTemplateApply_indexData_reset(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
+        , ZF_IN_OUT ZFCoreMap<zfstring, _ZFP_ZFTextTemplateIndexDataState> &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -260,7 +256,7 @@ static void _ZFP_ZFTextTemplateApply_indexData_reset(
         );
 static void _ZFP_ZFTextTemplateApply_indexData(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
+        , ZF_IN_OUT ZFCoreMap<zfstring, _ZFP_ZFTextTemplateIndexDataState> &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -285,18 +281,14 @@ static void _ZFP_ZFTextTemplateApply_indexData(
 
     zfstring value;
     {
-        zfstring indexDataStateKey = zfstr("indexData:%s", key);
-        _ZFP_ZFTextTemplateIndexDataState *indexDataState = stateMap.get<_ZFP_ZFTextTemplateIndexDataState *>(indexDataStateKey);
+        _ZFP_ZFTextTemplateIndexDataState *indexDataState = stateMap.get(key);
         if(indexDataState == zfnull) {
-            indexDataState = zfpoolNew(_ZFP_ZFTextTemplateIndexDataState);
+            indexDataState = &(stateMap.access(key));
             indexDataState->indexData = param.indexData(key);
             if(indexDataState->indexData == zfnull) {
                 indexDataState->indexData = &(param.indexDataDefault());
             }
-
             indexDataState->indexCur = indexDataState->indexData->indexStart;
-
-            stateMap.set(indexDataStateKey, ZFCorePointerForPoolObject<_ZFP_ZFTextTemplateIndexDataState *>(indexDataState));
         }
 
         zfstring fmt;
@@ -338,7 +330,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(
 }
 static void _ZFP_ZFTextTemplateApply_indexData_reset(
         ZF_IN const ZFTextTemplateParam &param
-        , ZF_IN_OUT ZFCoreMap &stateMap
+        , ZF_IN_OUT ZFCoreMap<zfstring, _ZFP_ZFTextTemplateIndexDataState> &stateMap
         , ZF_IN const ZFOutput &output
         , ZF_IN const zfchar *pEnd
         , ZF_IN_OUT const zfchar *&data
@@ -357,8 +349,7 @@ static void _ZFP_ZFTextTemplateApply_indexData_reset(
     p += keySize + 1;
     data = p;
 
-    zfstring indexDataStateKey = zfstr("indexData:%s", key);
-    stateMap.remove(indexDataStateKey);
+    stateMap.remove(key);
 }
 
 ZF_NAMESPACE_GLOBAL_END

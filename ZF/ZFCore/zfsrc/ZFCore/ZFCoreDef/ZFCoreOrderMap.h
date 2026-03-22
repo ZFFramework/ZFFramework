@@ -1,10 +1,10 @@
 /**
- * @file ZFCoreMap.h
+ * @file ZFCoreOrderMap.h
  * @brief core map type for private use only
  */
 
-#ifndef _ZFI_ZFCoreMap_h_
-#define _ZFI_ZFCoreMap_h_
+#ifndef _ZFI_ZFCoreOrderMap_h_
+#define _ZFI_ZFCoreOrderMap_h_
 
 #include "ZFMemPool.h"
 #include "ZFCoreArray.h"
@@ -14,7 +14,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFCoreMapPrivate {
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFCoreOrderMapPrivate {
 public:
     typedef zfidentity (*Fn_Hash)(ZF_IN const void *key);
     typedef zfbool (*Fn_Equal)(ZF_IN const void *key0, ZF_IN const void *key1);
@@ -34,7 +34,7 @@ public:
     Fn_ValueCopy fn_ValueCopy;
     Fn_ValueDestroy fn_ValueDestroy;
 public:
-    static _ZFP_ZFCoreMapPrivate *create(
+    static _ZFP_ZFCoreOrderMapPrivate *create(
             ZF_IN Fn_Hash fn_Hash
             , ZF_IN Fn_Equal fn_Equal
             , ZF_IN Fn_KeyCopy fn_KeyCopy
@@ -42,8 +42,8 @@ public:
             , ZF_IN Fn_ValueCopy fn_ValueCopy
             , ZF_IN Fn_ValueDestroy fn_ValueDestroy
             );
-    static void destroy(ZF_IN _ZFP_ZFCoreMapPrivate *d);
-    _ZFP_ZFCoreMapPrivate(
+    static void destroy(ZF_IN _ZFP_ZFCoreOrderMapPrivate *d);
+    _ZFP_ZFCoreOrderMapPrivate(
             ZF_IN Fn_Hash fn_Hash
             , ZF_IN Fn_Equal fn_Equal
             , ZF_IN Fn_KeyCopy fn_KeyCopy
@@ -60,7 +60,7 @@ public:
     , fn_ValueDestroy(fn_ValueDestroy)
     {
     }
-    virtual ~_ZFP_ZFCoreMapPrivate(void) {}
+    virtual ~_ZFP_ZFCoreOrderMapPrivate(void) {}
 public:
     virtual void objectInfoOfContentT(
             ZF_IN_OUT zfstring &ret
@@ -70,14 +70,14 @@ public:
             , ZF_IN Fn_ValueInfo fn_ValueInfo
             ) zfpurevirtual;
     virtual ZFCompareResult objectCompareValue(
-            ZF_IN const _ZFP_ZFCoreMapPrivate *ref
+            ZF_IN const _ZFP_ZFCoreOrderMapPrivate *ref
             , ZF_IN Fn_ValueEqual fn_ValueEqual
             ) zfpurevirtual;
-    virtual void copyFrom(ZF_IN_OUT _ZFP_ZFCoreMapPrivate *ref) zfpurevirtual;
+    virtual void copyFrom(ZF_IN_OUT _ZFP_ZFCoreOrderMapPrivate *ref) zfpurevirtual;
     virtual zfindex count(void) zfpurevirtual;
     virtual zfbool isEmpty(void) zfpurevirtual;
     virtual zfbool isContain(ZF_IN const void *key) zfpurevirtual;
-    virtual void addFrom(ZF_IN_OUT _ZFP_ZFCoreMapPrivate *ref) zfpurevirtual;
+    virtual void addFrom(ZF_IN_OUT _ZFP_ZFCoreOrderMapPrivate *ref) zfpurevirtual;
     virtual void set(ZF_IN const void *key, ZF_IN const void *value) zfpurevirtual;
     virtual void *get(ZF_IN const void *key) zfpurevirtual;
     virtual void *access(ZF_IN const void *key) zfpurevirtual;
@@ -90,6 +90,16 @@ public:
     virtual void *iterValue(ZF_IN const zfiter &it) zfpurevirtual;
     virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN const void *value) zfpurevirtual;
     virtual void iterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
+public:
+    virtual void move(
+            ZF_IN zfindex from
+            , ZF_IN zfindex to
+            ) zfpurevirtual;
+    virtual const void *keyAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual void *valueAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual void removeAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual zfiter iterAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual zfindex iterIndex(ZF_IN const zfiter &it) zfpurevirtual;
 };
 /**
  * @brief core map type for private use only
@@ -98,16 +108,16 @@ public:
  * key must support #zftHash and `operator ==`
  */
 template<typename T_Key, typename T_Value>
-zfclassLikePOD ZFLIB_ZFCore ZFCoreMap {
+zfclassLikePOD ZFLIB_ZFCore ZFCoreOrderMap {
 public:
     /**
      * @brief construct an empty map
      */
-    ZFCoreMap(void) : d(zfnull) {}
+    ZFCoreOrderMap(void) : d(zfnull) {}
     /**
      * @brief retain the ref, to copy, use #copyFrom
      */
-    ZFCoreMap(ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) : d(ref.d) {
+    ZFCoreOrderMap(ZF_IN const ZFCoreOrderMap<T_Key, T_Value> &ref) : d(ref.d) {
         if(d) {
             ++(d->refCount);
         }
@@ -115,28 +125,28 @@ public:
     /**
      * @brief retain the ref, to copy, use #copyFrom
      */
-    ZFCoreMap &operator = (ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) {
-        _ZFP_ZFCoreMapPrivate *dTmp = d;
+    ZFCoreOrderMap &operator = (ZF_IN const ZFCoreOrderMap<T_Key, T_Value> &ref) {
+        _ZFP_ZFCoreOrderMapPrivate *dTmp = d;
         d = ref.d;
         if(d) {
             ++(d->refCount);
         }
         if(dTmp && (--(dTmp->refCount)) == 0) {
-            _ZFP_ZFCoreMapPrivate::destroy(dTmp);
+            _ZFP_ZFCoreOrderMapPrivate::destroy(dTmp);
         }
         return *this;
     }
     /**
      * @brief true if same ref
      */
-    zfbool operator == (ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) const {return d == ref.d;}
+    zfbool operator == (ZF_IN const ZFCoreOrderMap<T_Key, T_Value> &ref) const {return d == ref.d;}
     /**
      * @brief true if not same ref
      */
-    zfbool operator != (ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) const {return d != ref.d;}
-    ~ZFCoreMap(void) {
+    zfbool operator != (ZF_IN const ZFCoreOrderMap<T_Key, T_Value> &ref) const {return d != ref.d;}
+    ~ZFCoreOrderMap(void) {
         if(d && (--(d->refCount)) == 0) {
-            _ZFP_ZFCoreMapPrivate::destroy(d);
+            _ZFP_ZFCoreOrderMapPrivate::destroy(d);
         }
     }
 
@@ -152,11 +162,11 @@ public:
         return ret;
     }
     /** @brief compare by instance */
-    ZFCompareResult objectCompare(ZF_IN ZFCoreMap<T_Key, T_Value> const &ref) const {
+    ZFCompareResult objectCompare(ZF_IN ZFCoreOrderMap<T_Key, T_Value> const &ref) const {
         return d == ref.d ? ZFCompareEqual : ZFCompareUncomparable;
     }
     /** @brief compare by instance */
-    ZFCompareResult objectCompareValue(ZF_IN ZFCoreMap<T_Key, T_Value> const &ref) const {
+    ZFCompareResult objectCompareValue(ZF_IN ZFCoreOrderMap<T_Key, T_Value> const &ref) const {
         if(d) {
             if(ref.d) {
                 return d->objectCompareValue(ref.d, _ValueEqual);
@@ -202,9 +212,9 @@ public:
     /**
      * @brief swap internal data
      */
-    void swap(ZF_IN_OUT ZFCoreMap<T_Key, T_Value> &ref) {
+    void swap(ZF_IN_OUT ZFCoreOrderMap<T_Key, T_Value> &ref) {
         if(d != ref.d) {
-            _ZFP_ZFCoreMapPrivate *dTmp = d;
+            _ZFP_ZFCoreOrderMapPrivate *dTmp = d;
             d = ref.d;
             ref.d = dTmp;
         }
@@ -214,7 +224,7 @@ public:
     /**
      * @brief copy all contents from ref, remove all before copy
      */
-    void copyFrom(ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) {
+    void copyFrom(ZF_IN const ZFCoreOrderMap<T_Key, T_Value> &ref) {
         if(d != ref.d) {
             if(d) {
                 if(ref.d) {
@@ -258,7 +268,7 @@ public:
     /**
      * @brief add elements from ref
      */
-    void addFrom(ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) {
+    void addFrom(ZF_IN const ZFCoreOrderMap<T_Key, T_Value> &ref) {
         if(d != ref.d) {
             if(d) {
                 if(ref.d) {
@@ -416,6 +426,57 @@ public:
         this->set(key, value);
     }
 
+    // ============================================================
+    // order map spec
+public:
+    /** @brief move order */
+    void move(
+            ZF_IN zfindex from
+            , ZF_IN zfindex to
+            ) {
+        if(d) {
+            d->move(from, to);
+        }
+    }
+    /** @brief key at index */
+    T_Key const &keyAt(ZF_IN zfindex index) const {
+        ZFCoreAssert(d);
+        return *(const T_Key *)d->keyAt(index);
+    }
+    /** @brief value at index */
+    T_Value const &valueAt(ZF_IN zfindex index) const {
+        ZFCoreAssert(d);
+        return *(const T_Value *)d->valueAt(index);
+    }
+    /** @brief value at index */
+    T_Value &valueAt(ZF_IN zfindex index) {
+        ZFCoreAssert(d);
+        return *(T_Value *)d->valueAt(index);
+    }
+    /** @brief remove at index */
+    void removeAt(ZF_IN zfindex index) {
+        ZFCoreAssert(d);
+        d->removeAt(index);
+    }
+    /** @brief see #zfiter */
+    zfiter iterAt(ZF_IN zfindex index) const {
+        if(d) {
+            return d->iterAt(index);
+        }
+        else {
+            return zfnull;
+        }
+    }
+    /** @brief see #zfiter */
+    zfindex iterIndex(ZF_IN const zfiter &it) const {
+        if(d) {
+            return d->iterIndex(it);
+        }
+        else {
+            return zfindexMax();
+        }
+    }
+
 private:
     static zfidentity _Hash(ZF_IN const void *key) {
         return zfhash(*(const T_Key *)key);
@@ -429,7 +490,7 @@ private:
     static void _KeyDestroy(ZF_IN void *key) {
         zfpoolDelete((T_Key *)key);
     }
-    static void *_ValueCopy(ZF_IN_OUT_OPT void *exist, ZF_IN_OPT const void *value) {
+    static void *_ValueCopy(ZF_IN_OUT_OPT void *exist, ZF_IN const void *value) {
         if(exist) {
             if(value) {
                 *(T_Value *)exist = *(const T_Value *)value;
@@ -463,7 +524,7 @@ private:
 private:
     inline void _dInit(void) {
         if(!d) {
-            d = _ZFP_ZFCoreMapPrivate::create(
+            d = _ZFP_ZFCoreOrderMapPrivate::create(
                     _Hash
                     , _Equal
                     , _KeyCopy
@@ -475,11 +536,11 @@ private:
     }
 
 private:
-    _ZFP_ZFCoreMapPrivate *d;
+    _ZFP_ZFCoreOrderMapPrivate *d;
 };
-ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Key, typename T_Value), ZFM_EXPAND(ZFCoreMap<T_Key, T_Value>), {v.objectInfoT(s);})
+ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Key, typename T_Value), ZFM_EXPAND(ZFCoreOrderMap<T_Key, T_Value>), {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_ZFCoreMap_h_
+#endif // #ifndef _ZFI_ZFCoreOrderMap_h_
 

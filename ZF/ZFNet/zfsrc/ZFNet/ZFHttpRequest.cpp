@@ -1,7 +1,6 @@
 #include "ZFHttpRequest.h"
 
 #include "protocol/ZFProtocolZFHttpRequest.h"
-#include "ZFCore/ZFSTLWrapper/zfstlordermap.h"
 
 // #define _ZFP_ZFHttpRequest_DEBUG 1
 
@@ -520,8 +519,8 @@ public:
     zftimet cacheTime;
     zfautoT<ZFHttpResponse> cache;
 };
-typedef zfstlordermap<zfstring, _ZFP_ZFHttpHeadCache> _ZFP_ZFHttpHeadCacheMapType;
-static zfstlordermap<zfstring, _ZFP_ZFHttpHeadCache> _ZFP_ZFHttpHeadCacheMap; // <url, cache>
+typedef ZFCoreOrderMap<zfstring, _ZFP_ZFHttpHeadCache> _ZFP_ZFHttpHeadCacheMapType;
+static _ZFP_ZFHttpHeadCacheMapType _ZFP_ZFHttpHeadCacheMap; // <url, cache>
 
 ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
         , ZFMP_IN(const zfstring &, url)
@@ -529,14 +528,17 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
     zftimet curTime = ZFTime::currentTime();
     {
         ZFCoreMutexLocker();
-        _ZFP_ZFHttpHeadCacheMapType::iterator it = _ZFP_ZFHttpHeadCacheMap.find(url);
-        if(it != _ZFP_ZFHttpHeadCacheMap.end()) {
-            if(it->second.cacheTime + _ZFP_ZFHttpHeadCacheTime > curTime) {
-                // cache valid, move to head
-                it = _ZFP_ZFHttpHeadCacheMap.update(it);
-                return it->second.cache;
+        zfiter it = _ZFP_ZFHttpHeadCacheMap.iterFind(url);
+        if(it) {
+            if(_ZFP_ZFHttpHeadCacheMap.iterValue(it).cacheTime + _ZFP_ZFHttpHeadCacheTime > curTime) {
+                // cache valid, move to latest
+                zfautoT<ZFHttpResponse> cache = _ZFP_ZFHttpHeadCacheMap.iterValue(it).cache;
+                _ZFP_ZFHttpHeadCacheMap.move(_ZFP_ZFHttpHeadCacheMap.iterIndex(it), zfindexMax());
+                return cache;
             }
-            _ZFP_ZFHttpHeadCacheMap.erase(it);
+            else {
+                _ZFP_ZFHttpHeadCacheMap.iterRemove(it);
+            }
         }
     }
 
@@ -546,11 +548,9 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
     // save cache
     if(recv != zfnull) {
         ZFCoreMutexLocker();
-        zfstlpair<zfstring, _ZFP_ZFHttpHeadCache> entry;
-        entry.first = url;
-        entry.second.cacheTime = curTime;
-        entry.second.cache = recv;
-        _ZFP_ZFHttpHeadCacheMap.insert(entry);
+        _ZFP_ZFHttpHeadCache &cache = _ZFP_ZFHttpHeadCacheMap.access(url);
+        cache.cacheTime = curTime;
+        cache.cache = recv;
     }
 
     return recv;
@@ -559,17 +559,19 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCacheRemove
         , ZFMP_IN(const zfstring &, url)
         ) {
     ZFCoreMutexLocker();
-    _ZFP_ZFHttpHeadCacheMapType::iterator it = _ZFP_ZFHttpHeadCacheMap.find(url);
-    if(it == _ZFP_ZFHttpHeadCacheMap.end()) {
+    zfiter it = _ZFP_ZFHttpHeadCacheMap.iterFind(url);
+    if(it) {
+        zfautoT<ZFHttpResponse> ret = _ZFP_ZFHttpHeadCacheMap.iterValue(it).cache;
+        _ZFP_ZFHttpHeadCacheMap.iterRemove(it);
+        return ret;
+    }
+    else {
         return zfnull;
     }
-    zfautoT<ZFHttpResponse> ret = it->second.cache;
-    _ZFP_ZFHttpHeadCacheMap.erase(it);
-    return ret;
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFHttpHeadCacheRemoveAll) {
     ZFCoreMutexLocker();
-    _ZFP_ZFHttpHeadCacheMap.clear();
+    _ZFP_ZFHttpHeadCacheMap.removeAll();
 }
 
 ZF_NAMESPACE_GLOBAL_END

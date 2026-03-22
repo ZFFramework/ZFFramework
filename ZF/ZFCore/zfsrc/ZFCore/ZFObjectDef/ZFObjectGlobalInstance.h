@@ -36,14 +36,8 @@ extern ZFLIB_ZFCore void ZFObjectGlobalInstanceRemove(
 
 // ============================================================
 // private
-zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFClassSingletonPointerHolder {
-public:
-    void *d;
-public:
-    _ZFP_ZFClassSingletonPointerHolder(void) : d(zfnull) {}
-};
 typedef void (*_ZFP_ZFClassSingletonDeleteCallback)(ZF_IN void *instance);
-extern ZFLIB_ZFCore _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig);
+extern ZFLIB_ZFCore ZFCoreValue<void *> _ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig);
 
 zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFClassSingletonDeleteCallbackHolder {
 public:
@@ -83,8 +77,8 @@ public:
                                       ZFLevel_, \
                                       newAction, retainAction, releaseAction) \
     AccessTypeName *OwnerClass::accessMethodName(void) { \
-        static _ZFP_ZFClassSingletonPointerHolder *holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
-        if(holder->d == zfnull) { \
+        static ZFCoreValue<void *> holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
+        if(holder.value() == zfnull) { \
             if(ZFFrameworkStateCheck(ZFLevel_) == ZFFrameworkStateNotAvailable) { \
                 return zfnull; \
             } \
@@ -92,14 +86,14 @@ public:
             OwnerClass::accessMethodName(t); \
             releaseAction(t); \
         } \
-        return (AccessTypeName *)holder->d; \
+        return (AccessTypeName *)holder.value(); \
     } \
     void OwnerClass::accessMethodName(ZF_IN AccessTypeName *newInstance) { \
         if(ZFFrameworkStateCheck(ZFLevel_) == ZFFrameworkStateNotAvailable) { \
             return; \
         } \
-        _ZFP_ZFClassSingletonPointerHolder *holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
-        if(holder->d == newInstance) { \
+        ZFCoreValue<void *> holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
+        if(holder.value() == newInstance) { \
             return; \
         } \
         ZFCoreMutexLocker(); \
@@ -110,15 +104,15 @@ public:
         AccessTypeName *newInstanceValue = zfnull; \
         if(newInstance != zfnull) { \
             newInstanceValue = retainAction(newInstance); \
-            holder->d = newInstanceValue; \
+            holder.value() = newInstanceValue; \
             cleanerNew = ZFObjectGlobalInstanceAdd(ZFCorePointerForObject<_ZFP_ZFClassSingletonDeleteCallbackHolder *>( \
-                zfnew(_ZFP_ZFClassSingletonDeleteCallbackHolder, OwnerClass::_ZFP_ZFClassSingletonOnDelete_##accessMethodName, holder->d)), \
+                zfnew(_ZFP_ZFClassSingletonDeleteCallbackHolder, OwnerClass::_ZFP_ZFClassSingletonOnDelete_##accessMethodName, holder.value())), \
                 ZFLevel_); \
             cleanerRef = cleanerNew; \
         } \
         if(cleanerOld != zfnull) { \
             ZFObjectGlobalInstanceRemove(cleanerOld, ZFLevel_); \
-            holder->d = newInstanceValue; \
+            holder.value() = newInstanceValue; \
             cleanerRef = cleanerNew; \
         } \
     } \
@@ -128,8 +122,8 @@ public:
     } \
     void OwnerClass::_ZFP_ZFClassSingletonOnDelete_##accessMethodName(ZF_IN void *instance) { \
         OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName() = zfnull; \
-        _ZFP_ZFClassSingletonPointerHolder *holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
-        holder->d = zfnull; \
+        ZFCoreValue<void *> holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
+        holder.value() = zfnull; \
         releaseAction((AccessTypeName *)instance); \
     }
 /**

@@ -19,6 +19,7 @@
 #include "ZFCoreDef/ZFCoreLog_CommonLog.h"
 #include "ZFCoreDef/ZFCoreMap.h"
 #include "ZFCoreDef/ZFCoreMutex.h"
+#include "ZFCoreDef/ZFCoreOrderMap.h"
 #include "ZFCoreDef/ZFCorePointer.h"
 #include "ZFCoreDef/ZFCoreQueue.h"
 #include "ZFCoreDef/ZFCoreStaticInitializer.h"

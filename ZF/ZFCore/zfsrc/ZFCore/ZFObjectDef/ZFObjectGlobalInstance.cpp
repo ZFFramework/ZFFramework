@@ -109,18 +109,13 @@ void ZFObjectGlobalInstanceRemove(
 // ============================================================
 ZF_STATIC_INITIALIZER_INIT(ZFClassSingletonInstanceRefHolder) {
 }
-ZFCoreMap singletonInstanceMap; // _ZFP_ZFClassSingletonPointerHolder *
+ZFCoreMap<zfstring, ZFCoreValue<void *> > singletonInstanceMap;
 ZF_STATIC_INITIALIZER_END(ZFClassSingletonInstanceRefHolder)
 
-_ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig) {
+ZFCoreValue<void *> _ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig) {
     ZFCoreMutexLocker();
-    ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassSingletonInstanceRefHolder)->singletonInstanceMap;
-    const ZFCorePointer *v = m.get(sig);
-    if(v == zfnull) {
-        m.set(sig, ZFCorePointerForObject<_ZFP_ZFClassSingletonPointerHolder *>(zfnew(_ZFP_ZFClassSingletonPointerHolder)));
-        v = m.get(sig);
-    }
-    return v->pointerValueT<_ZFP_ZFClassSingletonPointerHolder *>();
+    ZFCoreMap<zfstring, ZFCoreValue<void *> > &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassSingletonInstanceRefHolder)->singletonInstanceMap;
+    return m.access(sig);
 }
 
 ZF_NAMESPACE_GLOBAL_END

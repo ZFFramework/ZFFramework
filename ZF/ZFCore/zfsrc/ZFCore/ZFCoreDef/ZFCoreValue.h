@@ -22,6 +22,13 @@ public:
     typedef T_Value ValueType;
 
 public:
+    /**
+     * @brief whether the value has been initialized
+     */
+    zfbool valid(void) const {
+        return d;
+    }
+
     /** @brief access the value */
     T_Value &value(void) {
         if(d) {
@@ -52,11 +59,19 @@ public:
         }
         return *this;
     }
+    void removeAll(void) {
+        if(d) {
+            D *dTmp = d;
+            d = zfnull;
+            if(--(dTmp->refCount) == 0) {
+                zfpoolDelete(dTmp);
+            }
+        }
+    }
 
 public:
     /** @cond ZFPrivateDoc */
     ZFCoreValue(void) : d(zfnull) {}
-    ZFCoreValue(ZF_IN T_Value const &v) : d(zfpoolNew(D, v)) {}
     ZFCoreValue(ZF_IN ZFCoreValue<T_Value> const &ref) : d(ref.d) {
         if(ref.d) {
             ++(ref.d->refCount);
@@ -69,6 +84,19 @@ public:
     }
     zfbool operator == (ZF_IN ZFCoreValue<T_Value> const &ref) const {return d == ref.d;}
     zfbool operator != (ZF_IN ZFCoreValue<T_Value> const &ref) const {return d != ref.d;}
+    ZFCoreValue<T_Value> &operator = (ZF_IN ZFCoreValue<T_Value> const &ref) {
+        if(d != ref.d) {
+            D *dTmp = d;
+            d = ref.d;
+            if(d) {
+                ++(d->refCount);
+            }
+            if(dTmp && --(dTmp->refCount) == 0) {
+                zfpoolDelete(dTmp);
+            }
+        }
+        return *this;
+    }
     /** @endcond */
 
 private:

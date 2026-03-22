@@ -142,13 +142,30 @@ public:
     // ============================================================
     // order map spec
 public:
-    /** @brief update value order by moving to tail */
-    ZFMETHOD_DECLARE_1(zfiter, update
-            , ZFMP_IN_OUT(zfiter &, it)
+    /** @brief move order */
+    ZFMETHOD_DECLARE_2(void, move
+            , ZFMP_IN(zfindex, from)
+            , ZFMP_IN(zfindex, to)
             )
-    /** @brief update value order by moving to tail */
-    ZFMETHOD_DECLARE_1(zfiter, update
-            , ZFMP_IN(ZFObject *, key)
+    /** @brief key at index */
+    ZFMETHOD_DECLARE_1(zfany, keyAt
+            , ZFMP_IN(zfindex, index)
+            )
+    /** @brief value at index */
+    ZFMETHOD_DECLARE_1(zfany, valueAt
+            , ZFMP_IN(zfindex, index)
+            )
+    /** @brief remove at index */
+    ZFMETHOD_DECLARE_1(void, removeAt
+            , ZFMP_IN(zfindex, index)
+            )
+    /** @brief see #zfiter */
+    ZFMETHOD_DECLARE_1(zfiter, iterAt
+            , ZFMP_IN(zfindex, index)
+            )
+    /** @brief see #zfiter */
+    ZFMETHOD_DECLARE_1(zfindex, iterIndex
+            , ZFMP_IN(const zfiter &, it)
             )
 
 protected:
