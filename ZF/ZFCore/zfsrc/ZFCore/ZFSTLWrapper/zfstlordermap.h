@@ -173,20 +173,10 @@ public:
         }
     }
     iterator begin(void) {
-        if(!map.empty()) {
-            return iterator(arr.begin());
-        }
-        else {
-            return iterator(arr.end());
-        }
+        return iterator(arr.begin());
     }
     const_iterator begin(void) const {
-        if(!map.empty()) {
-            return const_iterator(arr.begin());
-        }
-        else {
-            return const_iterator(arr.end());
-        }
+        return const_iterator(arr.begin());
     }
     iterator end(void) {
         return iterator(arr.end());
@@ -256,6 +246,7 @@ public:
     }
     void reserve(ZF_IN zfstlsize n) {
         map.reserve(n);
+        arr.reserve(n);
     }
 
     // ============================================================
