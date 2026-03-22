@@ -151,15 +151,19 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex replaceDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfstring &replaceDataNameAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFTextTemplateApply */
-    const zfstring &replaceDataAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFTextTemplateApply */
     void replaceDataRemove(ZF_IN const zfstring &key);
     /** @brief see #ZFTextTemplateApply */
-    void replaceDataRemoveAt(ZF_IN zfindex index);
-    /** @brief see #ZFTextTemplateApply */
     void replaceDataRemoveAll(void);
+    /** @brief see #ZFTextTemplateApply */
+    zfiter replaceDataIter(void) const;
+    /** @brief see #ZFTextTemplateApply */
+    const zfstring &replaceDataIterKey(ZF_IN const zfiter &it) const;
+    /** @brief see #ZFTextTemplateApply */
+    const zfstring &replaceDataIterValue(ZF_IN const zfiter &it) const;
+    /** @brief see #ZFTextTemplateApply */
+    void replaceDataIterValue(ZF_IN_OUT zfiter &it, ZF_IN const zfstring &v);
+    /** @brief see #ZFTextTemplateApply */
+    void replaceDataIterRemove(ZF_IN_OUT zfiter &it);
 
     // ============================================================
     /** @brief see #ZFTextTemplateApply */
@@ -179,15 +183,19 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex enableDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfstring &enableDataNameAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFTextTemplateApply */
-    zfbool enableDataAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFTextTemplateApply */
     void enableDataRemove(ZF_IN const zfstring &key);
     /** @brief see #ZFTextTemplateApply */
-    void enableDataRemoveAt(ZF_IN zfindex index);
-    /** @brief see #ZFTextTemplateApply */
     void enableDataRemoveAll(void);
+    /** @brief see #ZFTextTemplateApply */
+    zfiter enableDataIter(void) const;
+    /** @brief see #ZFTextTemplateApply */
+    const zfstring &enableDataIterKey(ZF_IN const zfiter &it) const;
+    /** @brief see #ZFTextTemplateApply */
+    zfbool enableDataIterValue(ZF_IN const zfiter &it) const;
+    /** @brief see #ZFTextTemplateApply */
+    void enableDataIterValue(ZF_IN_OUT zfiter &it, ZF_IN zfbool v);
+    /** @brief see #ZFTextTemplateApply */
+    void enableDataIterRemove(ZF_IN_OUT zfiter &it);
 
     // ============================================================
     /** @brief see #ZFTextTemplateApply */
@@ -207,17 +215,19 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex indexDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfstring &indexDataNameAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFTextTemplateApply */
-    const ZFTextTemplateIndexData *indexDataAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFTextTemplateApply */
-    ZFTextTemplateIndexData *indexDataAt(ZF_IN zfindex index);
-    /** @brief see #ZFTextTemplateApply */
     void indexDataRemove(ZF_IN const zfstring &key);
     /** @brief see #ZFTextTemplateApply */
-    void indexDataRemoveAt(ZF_IN zfindex index);
-    /** @brief see #ZFTextTemplateApply */
     void indexDataRemoveAll(void);
+    /** @brief see #ZFTextTemplateApply */
+    zfiter indexDataIter(void) const;
+    /** @brief see #ZFTextTemplateApply */
+    const zfstring &indexDataIterKey(ZF_IN const zfiter &it) const;
+    /** @brief see #ZFTextTemplateApply */
+    const ZFTextTemplateIndexData &indexDataIterValue(ZF_IN const zfiter &it) const;
+    /** @brief see #ZFTextTemplateApply */
+    void indexDataIterValue(ZF_IN_OUT zfiter &it, ZF_IN const ZFTextTemplateIndexData &v);
+    /** @brief see #ZFTextTemplateApply */
+    void indexDataIterRemove(ZF_IN_OUT zfiter &it);
 
 public:
     /** @brief copy from another */

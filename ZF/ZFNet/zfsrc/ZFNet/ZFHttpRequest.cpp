@@ -533,7 +533,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
             if(_ZFP_ZFHttpHeadCacheMap.iterValue(it).cacheTime + _ZFP_ZFHttpHeadCacheTime > curTime) {
                 // cache valid, move to latest
                 zfautoT<ZFHttpResponse> cache = _ZFP_ZFHttpHeadCacheMap.iterValue(it).cache;
-                _ZFP_ZFHttpHeadCacheMap.move(_ZFP_ZFHttpHeadCacheMap.iterIndex(it), zfindexMax());
+                _ZFP_ZFHttpHeadCacheMap.move(it, zfnull);
                 return cache;
             }
             else {

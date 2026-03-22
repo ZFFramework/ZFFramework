@@ -285,41 +285,10 @@ ZFMETHOD_DEFINE_2(ZFOrderMap, void, iterAdd
 // ============================================================
 // order map spec
 ZFMETHOD_DEFINE_2(ZFOrderMap, void, move
-        , ZFMP_IN(zfindex, from)
-        , ZFMP_IN(zfindex, to)
+        , ZFMP_IN_OUT(zfiter &, from)
+        , ZFMP_IN(const zfiter &, to)
         ) {
-    d->data.move((zfstlsize)from, (zfstlsize)to);
-}
-ZFMETHOD_DEFINE_1(ZFOrderMap, zfany, keyAt
-        , ZFMP_IN(zfindex, index)
-        ) {
-    ZFCoreAssertIndexRange(index, this->count());
-    return (d->data.begin() + index)->first;
-}
-ZFMETHOD_DEFINE_1(ZFOrderMap, zfany, valueAt
-        , ZFMP_IN(zfindex, index)
-        ) {
-    ZFCoreAssertIndexRange(index, this->count());
-    return (d->data.begin() + index)->second;
-}
-ZFMETHOD_DEFINE_1(ZFOrderMap, void, removeAt
-        , ZFMP_IN(zfindex, index)
-        ) {
-    ZFCoreAssertIndexRange(index, this->count());
-    d->data.erase(d->data.begin());
-}
-ZFMETHOD_DEFINE_1(ZFOrderMap, zfiter, iterAt
-        , ZFMP_IN(zfindex, index)
-        ) {
-    if(index >= this->count()) {
-        return zfnull;
-    }
-    return d->data.iterAt((zfstlsize)index);
-}
-ZFMETHOD_DEFINE_1(ZFOrderMap, zfindex, iterIndex
-        , ZFMP_IN(const zfiter &, it)
-        ) {
-    return d->data.iterIndex(it);
+    d->data.iterMove(from, to);
 }
 
 ZF_NAMESPACE_GLOBAL_END

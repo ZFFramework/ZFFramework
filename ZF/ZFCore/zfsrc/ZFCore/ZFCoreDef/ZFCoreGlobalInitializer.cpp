@@ -2,8 +2,9 @@
 #include "ZFCoreMutex.h"
 #include "ZFCoreArray.h"
 #include "ZFCoreValue.h"
-#include "ZFCoreOrderMap.h"
 #include "zfstr.h"
+
+#include "../ZFSTLWrapper/zfstlordermap.h"
 
 // #define _ZFP_ZFCoreGlobalInitializer_DEBUG 1
 
@@ -60,34 +61,37 @@ public:
         }
     }
 };
-typedef ZFCoreOrderMap<zfstring, ZFCoreValue<_ZFP_GI_Data> > _ZFP_GI_DataMap;
+typedef zfstlordermap<zfstring, ZFCoreValue<_ZFP_GI_Data> > _ZFP_GI_DataMap;
 
 static void _ZFP_GI_instanceInit(_ZFP_GI_DataMap &m) {
-    if(!m.isEmpty()) {
+    if(!m.empty()) {
         // array may be changed during init step, copy it first
-        _ZFP_GI_DataMap tmp;
-        tmp.copyFrom(m);
-        for(zfindex i = 0; i < tmp.count(); ++i) {
-            _ZFP_GI_Data &data = tmp.valueAt(i).value();
+        _ZFP_GI_DataMap tmp = m;
+        for(_ZFP_GI_DataMap::iterator it = tmp.begin(); it != tmp.end(); ++it) {
+            _ZFP_GI_Data &data = it->second.value();
             if(data.instance == zfnull) {
-                _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data->name.cString());
+                _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data.name.cString());
                 data.instance = data.constructor();
             }
         }
     }
 }
 static void _ZFP_GI_instanceDealloc(_ZFP_GI_DataMap &m) {
-    zfbool hasDataToClean = zftrue;
+    zfbool hasDataToClean = zffalse;
     do {
         hasDataToClean = zffalse;
-        for(zfindex i = m.count() - 1; i != zfindexMax(); --i) {
-            _ZFP_GI_Data &data = m.valueAt(i).value();
-            if(data.instance != zfnull) {
-                hasDataToClean = zftrue;
-                void *tmp = data.instance;
-                data.instance = zfnull;
-                _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("destroy %s", data->name.cString());
-                data.destructor(tmp);
+        if(!m.empty()) {
+            _ZFP_GI_DataMap::iterator it = m.end();
+            --it;
+            for( ; it != m.end(); --it) {
+                _ZFP_GI_Data &data = it->second.value();
+                if(data.instance != zfnull) {
+                    hasDataToClean = zftrue;
+                    void *tmp = data.instance;
+                    data.instance = zfnull;
+                    _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("destroy %s", data.name.cString());
+                    data.destructor(tmp);
+                }
             }
         }
     } while(hasDataToClean);
@@ -497,14 +501,14 @@ static void _ZFP_GI_dataRegister(
 
     _ZFP_GI_Data *data = zfnull;
     {
-        zfiter it = dataMap.iterFind(name);
-        if(it) {
-            data = &(dataMap.iterValue(it).value());
+        _ZFP_GI_DataMap::iterator it = dataMap.find(name);
+        if(it != dataMap.end()) {
+            data = &(it->second.value());
             ZFCoreAssert(level == data->level);
             ++(data->refCount);
         }
         else {
-            data = &(dataMap.access(name).value());
+            data = &(dataMap[name].value());
             data->name = name;
             data->level = level;
             data->constructor = constructor;
@@ -546,15 +550,15 @@ static void _ZFP_GI_dataUnregister(
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
     _ZFP_GI_DataMap &dataMap = holder.dataMapForLevel(level);
 
-    zfiter it = dataMap.iterFind(name);
-    if(!it) {
+    _ZFP_GI_DataMap::iterator it = dataMap.find(name);
+    if(it == dataMap.end()) {
         ZFCoreCriticalShouldNotGoHere();
         return;
     }
-    _ZFP_GI_Data &data = dataMap.iterValue(it).value();
+    _ZFP_GI_Data &data = it->second.value();
     --(data.refCount);
     if(data.refCount == 0) {
-        dataMap.iterRemove(it);
+        dataMap.erase(it);
     }
 }
 
@@ -577,13 +581,13 @@ static void **_ZFP_GI_instanceAccess(
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
     _ZFP_GI_DataMap &dataMap = holder.dataMapForLevel(level);
 
-    zfiter it = dataMap.iterFind(name);
-    if(!it) {
+    _ZFP_GI_DataMap::iterator it = dataMap.find(name);
+    if(it == dataMap.end()) {
         ZFCoreCriticalShouldNotGoHere();
         return &dummy;
     }
 
-    _ZFP_GI_Data &data = dataMap.iterValue(it).value();
+    _ZFP_GI_Data &data = it->second.value();
     if(data.instance == zfnull) {
         _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data.name.cString());
         data.instance = data.constructor();
@@ -594,9 +598,9 @@ static void **_ZFP_GI_instanceAccess(
 }
 
 static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(_ZFP_GI_DataMap &data) {
-    for(zfindex i = 0; i < data.count(); ++i) {
-        if(data.valueAt(i).value().instance == zfnull) {
-            return &(data.valueAt(i).value());
+    for(_ZFP_GI_DataMap::iterator it = data.begin(); it != data.end(); ++it) {
+        if(it->second.value().instance == zfnull) {
+            return &(it->second.value());
         }
     }
     return zfnull;
@@ -666,20 +670,26 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data &data) {
         return;
     }
 
-    // reorder in same level
+    // reorder in same level, move self before first null instance
     _ZFP_GI_DataMap &dataMap = d.dataMapForLevel(data.level);
-    zfindex prevNull = zfindexMax();
-    zfindex self = 0;
-    for(zfindex i = 0; i < dataMap.count(); ++i) {
-        if(&(dataMap.valueAt(i).value()) == &data) {
-            self = i;
+    _ZFP_GI_DataMap::iterator prevNull = dataMap.end();
+    _ZFP_GI_DataMap::iterator selfPos = dataMap.end();
+    for(_ZFP_GI_DataMap::iterator it = dataMap.begin(); it != dataMap.end(); ++it) {
+        if(&(it->second.value()) == &data) {
+            selfPos = it;
+            if(prevNull != dataMap.end()) {
+                break;
+            }
         }
-        else if(prevNull == zfindexMax() && dataMap.valueAt(i).value().instance == zfnull) {
-            prevNull = i;
+        else if(prevNull == dataMap.end() && it->second.value().instance == zfnull) {
+            if(selfPos != dataMap.end()) {
+                break;
+            }
+            prevNull = it;
         }
     }
-    if(prevNull < self) {
-        dataMap.move(self, prevNull);
+    if(selfPos != dataMap.end() && prevNull != dataMap.end()) {
+        dataMap.move(selfPos, prevNull);
     }
 }
 

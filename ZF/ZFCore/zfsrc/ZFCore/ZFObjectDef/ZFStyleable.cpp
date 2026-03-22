@@ -163,13 +163,13 @@ ZFOBJECT_REGISTER(ZFStyle)
 // ============================================================
 ZF_STATIC_INITIALIZER_INIT(ZFStyleableDefaultStyleDataHolder) {
 }
-ZFCoreMap<zfstring, ZFCoreValue<void *> > instanceDataMap; // <styleName, instanceHolder>
+ZFCoreMap<zfstring, void *> instanceDataMap; // <styleName, instanceHolder>
 ZF_STATIC_INITIALIZER_END(ZFStyleableDefaultStyleDataHolder)
 
-ZFCoreValue<void *> _ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
+void **_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, ZFCoreValue<void *> > &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
-    return m.access(name);
+    ZFCoreMap<zfstring, void *> &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
+    return &(m.access(name));
 }
 
 // ============================================================

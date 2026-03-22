@@ -181,78 +181,35 @@ public:
         }
     }
 
-    zfclassNotPOD _Iter : zfextend zfiter::Impl {
-    public:
-        _ZFP_ZFCoreMapType::iterator it;
-        _ZFP_ZFCoreMapType::iterator end;
-    public:
-        zfoverride
-        virtual zfbool valid(void) {
-            return it != end;
-        }
-        zfoverride
-        virtual void next(void) {
-            ++it;
-        }
-        zfoverride
-        virtual Impl *copy(void) {
-            _Iter *ret = zfpoolNew(_Iter);
-            ret->it = it;
-            ret->end = end;
-            return ret;
-        }
-        zfoverride
-        virtual void destroy(void) {
-            zfpoolDelete(this);
-        }
-        zfoverride
-        virtual zfbool isEqual(ZF_IN Impl *d) {
-            _Iter *t = (_Iter *)d;
-            return it == t->it;
-        }
-    };
     zfoverride
     virtual zfiter iter(void) {
-        _Iter *impl = zfpoolNew(_Iter);
-        impl->it = m.begin();
-        impl->end = m.end();
-        return zfiter(impl);
+        return m.iter();
     }
     zfoverride
     virtual zfiter iterFind(ZF_IN _ZFP_ZFCoreMap::BaseKey *key) {
-        _ZFP_ZFCoreMapType::iterator it = m.find(key);
+        zfiter it = m.iterFind(key);
         key->implDestroy();
-        if(it != m.end()) {
-            _Iter *impl = zfpoolNew(_Iter);
-            impl->it = it;
-            impl->end = m.end();
-            return zfiter(impl);
-        }
-        else {
-            return zfnull;
-        }
+        return it;
     }
     zfoverride
     virtual const _ZFP_ZFCoreMap::BaseKey *iterKey(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->first;
+        return m.iterKey(it);
     }
     zfoverride
     virtual _ZFP_ZFCoreMap::BaseValue *iterValue(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->second;
+        return m.iterValue(it);
     }
     zfoverride
     virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN _ZFP_ZFCoreMap::BaseValue *value) {
-        _Iter *impl = it.impl<_Iter *>();
-        _ZFP_ZFCoreMap::BaseValue *tmp = impl->it->second;
-        impl->it->second = value;
+        _ZFP_ZFCoreMap::BaseValue *tmp = m.iterValue(it);
+        m.iterValue(it, value);
         tmp->implDestroy();
     }
     zfoverride
     virtual void iterRemove(ZF_IN_OUT zfiter &it) {
-        _Iter *impl = it.impl<_Iter *>();
-        _ZFP_ZFCoreMap::BaseKey *key = const_cast<_ZFP_ZFCoreMap::BaseKey *>(impl->it->first);
-        _ZFP_ZFCoreMap::BaseValue *value = impl->it->second;
-        m.erase((impl->it)++);
+        _ZFP_ZFCoreMap::BaseKey *key = const_cast<_ZFP_ZFCoreMap::BaseKey *>(m.iterKey(it));
+        _ZFP_ZFCoreMap::BaseValue *value = m.iterValue(it);
+        m.iterRemove(it);
         key->implDestroy();
         value->implDestroy();
     }

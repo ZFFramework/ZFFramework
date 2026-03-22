@@ -72,12 +72,7 @@ public:
 public:
     // ============================================================
     // order map spec
-    virtual void move(ZF_IN zfindex from, ZF_IN zfindex to) zfpurevirtual;
-    virtual const BaseKey *keyAt(ZF_IN zfindex index) zfpurevirtual;
-    virtual BaseValue *valueAt(ZF_IN zfindex index) zfpurevirtual;
-    virtual void removeAt(ZF_IN zfindex index) zfpurevirtual;
-    virtual zfiter iterAt(ZF_IN zfindex index) zfpurevirtual;
-    virtual zfindex iterIndex(ZF_IN const zfiter &it) zfpurevirtual;
+    virtual void move(ZF_IN_OUT zfiter &from, ZF_IN const zfiter &to) zfpurevirtual;
 };
 /**
  * @brief core map type for private use only
@@ -372,18 +367,15 @@ public:
 
     /** @brief see #zfiter */
     const T_Key &iterKey(ZF_IN const zfiter &it) const {
-        ZFCoreAssert(d && it);
         return ((const ImplKey *)d->iterKey(it))->v;
     }
     /** @brief see #zfiter */
     const T_Value &iterValue(ZF_IN const zfiter &it) const {
-        ZFCoreAssert(d && it);
         return ((const ImplValue *)d->iterValue(it))->v;
     }
 
     /** @brief see #zfiter */
     T_Value &iterValue(ZF_IN const zfiter &it) {
-        ZFCoreAssert(d && it);
         return ((ImplValue *)d->iterValue(it))->v;
     }
     /** @brief see #zfiter */
@@ -413,51 +405,13 @@ public:
     // ============================================================
     // order map spec
 public:
-    /** @brief move order */
-    void move(
-            ZF_IN zfindex from
-            , ZF_IN zfindex to
-            ) {
+    /**
+     * @brief move `from` to position before `to`,
+     *   or move to tail if `to` not valid
+     */
+    void move(ZF_IN_OUT zfiter &from, ZF_IN const zfiter &to) {
         if(d) {
             d->move(from, to);
-        }
-    }
-    /** @brief key at index */
-    T_Key const &keyAt(ZF_IN zfindex index) const {
-        ZFCoreAssert(d);
-        return ((const ImplKey *)d->keyAt(index))->v;
-    }
-    /** @brief value at index */
-    T_Value const &valueAt(ZF_IN zfindex index) const {
-        ZFCoreAssert(d);
-        return ((const ImplValue *)d->valueAt(index))->v;
-    }
-    /** @brief value at index */
-    T_Value &valueAt(ZF_IN zfindex index) {
-        ZFCoreAssert(d);
-        return ((ImplValue *)d->valueAt(index))->v;
-    }
-    /** @brief remove at index */
-    void removeAt(ZF_IN zfindex index) {
-        ZFCoreAssert(d);
-        d->removeAt(index);
-    }
-    /** @brief see #zfiter */
-    zfiter iterAt(ZF_IN zfindex index) const {
-        if(d) {
-            return d->iterAt(index);
-        }
-        else {
-            return zfnull;
-        }
-    }
-    /** @brief see #zfiter */
-    zfindex iterIndex(ZF_IN const zfiter &it) const {
-        if(d) {
-            return d->iterIndex(it);
-        }
-        else {
-            return zfindexMax();
         }
     }
 

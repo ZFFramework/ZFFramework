@@ -201,20 +201,26 @@ const zfstring &ZFTextTemplateParam::replaceData(ZF_IN const zfstring &key) cons
 zfindex ZFTextTemplateParam::replaceDataCount(void) const {
     return d->replaceDataMap.count();
 }
-const zfstring &ZFTextTemplateParam::replaceDataNameAt(ZF_IN zfindex index) const {
-    return d->replaceDataMap.keyAt(index);
-}
-const zfstring &ZFTextTemplateParam::replaceDataAt(ZF_IN zfindex index) const {
-    return d->replaceDataMap.valueAt(index);
-}
 void ZFTextTemplateParam::replaceDataRemove(ZF_IN const zfstring &key) {
     d->replaceDataMap.remove(key);
 }
-void ZFTextTemplateParam::replaceDataRemoveAt(ZF_IN zfindex index) {
-    d->replaceDataMap.removeAt(index);
-}
 void ZFTextTemplateParam::replaceDataRemoveAll(void) {
     d->replaceDataMap.removeAll();
+}
+zfiter ZFTextTemplateParam::replaceDataIter(void) const {
+    return d->replaceDataMap.iter();
+}
+const zfstring &ZFTextTemplateParam::replaceDataIterKey(ZF_IN const zfiter &it) const {
+    return d->replaceDataMap.iterKey(it);
+}
+const zfstring &ZFTextTemplateParam::replaceDataIterValue(ZF_IN const zfiter &it) const {
+    return d->replaceDataMap.iterValue(it);
+}
+void ZFTextTemplateParam::replaceDataIterValue(ZF_IN_OUT zfiter &it, ZF_IN const zfstring &v) {
+    d->replaceDataMap.iterValue(it, v);
+}
+void ZFTextTemplateParam::replaceDataIterRemove(ZF_IN_OUT zfiter &it) {
+    d->replaceDataMap.iterRemove(it);
 }
 
 // ============================================================
@@ -261,20 +267,26 @@ zfbool ZFTextTemplateParam::enableDataValue(ZF_IN const zfstring &key) const {
 zfindex ZFTextTemplateParam::enableDataCount(void) const {
     return d->enableDataMap.count();
 }
-const zfstring &ZFTextTemplateParam::enableDataNameAt(ZF_IN zfindex index) const {
-    return d->enableDataMap.keyAt(index);
-}
-zfbool ZFTextTemplateParam::enableDataAt(ZF_IN zfindex index) const {
-    return d->enableDataMap.valueAt(index);
-}
 void ZFTextTemplateParam::enableDataRemove(ZF_IN const zfstring &key) {
     d->enableDataMap.remove(key);
 }
-void ZFTextTemplateParam::enableDataRemoveAt(ZF_IN zfindex index) {
-    d->enableDataMap.removeAt(index);
-}
 void ZFTextTemplateParam::enableDataRemoveAll(void) {
     d->enableDataMap.removeAll();
+}
+zfiter ZFTextTemplateParam::enableDataIter(void) const {
+    return d->enableDataMap.iter();
+}
+const zfstring &ZFTextTemplateParam::enableDataIterKey(ZF_IN const zfiter &it) const {
+    return d->enableDataMap.iterKey(it);
+}
+zfbool ZFTextTemplateParam::enableDataIterValue(ZF_IN const zfiter &it) const {
+    return d->enableDataMap.iterValue(it);
+}
+void ZFTextTemplateParam::enableDataIterValue(ZF_IN_OUT zfiter &it, ZF_IN zfbool v) {
+    d->enableDataMap.iterValue(it, v);
+}
+void ZFTextTemplateParam::enableDataIterRemove(ZF_IN_OUT zfiter &it) {
+    d->enableDataMap.iterRemove(it);
 }
 
 // ============================================================
@@ -321,23 +333,26 @@ ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &ke
 zfindex ZFTextTemplateParam::indexDataCount(void) const {
     return d->indexDataMap.count();
 }
-const zfstring &ZFTextTemplateParam::indexDataNameAt(ZF_IN zfindex index) const {
-    return d->indexDataMap.keyAt(index);
-}
-const ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index) const {
-    return &(d->indexDataMap.valueAt(index));
-}
-ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index) {
-    return &(d->indexDataMap.valueAt(index));
-}
 void ZFTextTemplateParam::indexDataRemove(ZF_IN const zfstring &key) {
     d->indexDataMap.remove(key);
 }
-void ZFTextTemplateParam::indexDataRemoveAt(ZF_IN zfindex index) {
-    d->indexDataMap.removeAt(index);
-}
 void ZFTextTemplateParam::indexDataRemoveAll(void) {
     d->indexDataMap.removeAll();
+}
+zfiter ZFTextTemplateParam::indexDataIter(void) const {
+    return d->indexDataMap.iter();
+}
+const zfstring &ZFTextTemplateParam::indexDataIterKey(ZF_IN const zfiter &it) const {
+    return d->indexDataMap.iterKey(it);
+}
+const ZFTextTemplateIndexData &ZFTextTemplateParam::indexDataIterValue(ZF_IN const zfiter &it) const {
+    return d->indexDataMap.iterValue(it);
+}
+void ZFTextTemplateParam::indexDataIterValue(ZF_IN_OUT zfiter &it, ZF_IN const ZFTextTemplateIndexData &v) {
+    d->indexDataMap.iterValue(it, v);
+}
+void ZFTextTemplateParam::indexDataIterRemove(ZF_IN_OUT zfiter &it) {
+    d->indexDataMap.iterRemove(it);
 }
 
 // ============================================================
@@ -380,11 +395,11 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         else {ret += ", ";}
 
         ret += "replace: [";
-        for(zfindex i = 0; i < d->replaceDataMap.count(); ++i) {
-            if(i > 0) {
-                ret += ", ";
-            }
-            zfstringAppend(ret, "<%s, %s>", d->replaceDataMap.keyAt(i), d->replaceDataMap.valueAt(i));
+        zfbool first = zftrue;
+        for(zfiter it = this->replaceDataIter(); it; ++it) {
+            if(first) {first = zffalse;}
+            else {ret += ", ";}
+            zfstringAppend(ret, "<%s, %s>", this->replaceDataIterKey(it), this->replaceDataIterValue(it));
         }
         ret += "]";
     }
@@ -394,11 +409,11 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         else {ret += ", ";}
 
         ret += "enable: [";
-        for(zfindex i = 0; i < d->enableDataMap.count(); ++i) {
-            if(i > 0) {
-                ret += ", ";
-            }
-            zfstringAppend(ret, "<%s, %s>", d->enableDataMap.keyAt(i), d->enableDataMap.valueAt(i));
+        zfbool first = zftrue;
+        for(zfiter it = this->enableDataIter(); it; ++it) {
+            if(first) {first = zffalse;}
+            else {ret += ", ";}
+            zfstringAppend(ret, "<%s, %s>", this->enableDataIterKey(it), this->enableDataIterValue(it));
         }
         ret += "]";
     }
@@ -416,15 +431,11 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         else {ret += ", ";}
 
         ret += "index: ";
-        for(zfindex i = 0; i < d->indexDataMap.count(); ++i) {
-            if(i > 0) {
-                ret += ", ";
-            }
-            ret += "<";
-            ret += d->indexDataMap.keyAt(i);
-            ret += ", ";
-            d->indexDataMap.valueAt(i).objectInfoT(ret);
-            ret += ">";
+        zfbool first = zftrue;
+        for(zfiter it = this->indexDataIter(); it; ++it) {
+            if(first) {first = zffalse;}
+            else {ret += ", ";}
+            zfstringAppend(ret, "<%s, %s>", this->indexDataIterKey(it), this->indexDataIterValue(it));
         }
         ret += "]";
     }
@@ -531,12 +542,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 
         if(v.replaceDataCount() > 0) {
             ZFSerializableData nodeData;
-            for(zfindex i = 0; i < v.replaceDataCount(); ++i) {
+            for(zfiter it = v.replaceDataIter(); it; ++it) {
                 ZFSerializableData itemData;
-                if(!zfstringToDataT(itemData, v.replaceDataAt(i), outErrorHint)) {
+                if(!zfstringToDataT(itemData, v.replaceDataIterValue(it), outErrorHint)) {
                     return zffalse;
                 }
-                itemData.propertyName(v.replaceDataNameAt(i));
+                itemData.propertyName(v.replaceDataIterKey(it));
                 nodeData.child(itemData);
             }
 
@@ -547,12 +558,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 
         if(v.enableDataCount() > 0) {
             ZFSerializableData nodeData;
-            for(zfindex i = 0; i < v.enableDataCount(); ++i) {
+            for(zfiter it = v.enableDataIter(); it; ++it) {
                 ZFSerializableData itemData;
-                if(!zfboolToDataT(itemData, v.enableDataAt(i), outErrorHint)) {
+                if(!zfboolToDataT(itemData, v.enableDataIterValue(it), outErrorHint)) {
                     return zffalse;
                 }
-                itemData.propertyName(v.enableDataNameAt(i));
+                itemData.propertyName(v.enableDataIterKey(it));
                 nodeData.child(itemData);
             }
 
@@ -568,12 +579,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 
         if(v.indexDataCount() > 0) {
             ZFSerializableData nodeData;
-            for(zfindex i = 0; i < v.indexDataCount(); ++i) {
+            for(zfiter it = v.indexDataIter(); it; ++it) {
                 ZFSerializableData itemData;
-                if(!ZFTextTemplateIndexDataToDataT(itemData, *(v.indexDataAt(i)), outErrorHint)) {
+                if(!ZFTextTemplateIndexDataToDataT(itemData, v.indexDataIterValue(it), outErrorHint)) {
                     return zffalse;
                 }
-                itemData.propertyName(v.indexDataNameAt(i));
+                itemData.propertyName(v.indexDataIterKey(it));
                 nodeData.child(itemData);
             }
 
@@ -589,6 +600,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 
         return zftrue;
     })
+
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, replaceData
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)
@@ -597,19 +609,25 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring 
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, replaceDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceDataNameAt
-        , ZFMP_IN(zfindex, index)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceDataAt
-        , ZFMP_IN(zfindex, index)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataRemove
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataRemoveAt
-        , ZFMP_IN(zfindex, index)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, void, replaceDataRemoveAll)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfiter, replaceDataIter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceDataIterKey
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceDataIterValue
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, replaceDataIterValue
+        , ZFMP_IN_OUT(zfiter &, it)
+        , ZFMP_IN(const zfstring &, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataIterRemove
+        , ZFMP_IN_OUT(zfiter &, it)
+        )
+
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataDefault
         , ZFMP_IN(zfbool, enableDataDefault)
         )
@@ -625,19 +643,25 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableD
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, enableDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, enableDataNameAt
-        , ZFMP_IN(zfindex, index)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableDataAt
-        , ZFMP_IN(zfindex, index)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataRemove
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataRemoveAt
-        , ZFMP_IN(zfindex, index)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, void, enableDataRemoveAll)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfiter, enableDataIter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, enableDataIterKey
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableDataIterValue
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, enableDataIterValue
+        , ZFMP_IN_OUT(zfiter &, it)
+        , ZFMP_IN(zfbool, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataIterRemove
+        , ZFMP_IN_OUT(zfiter &, it)
+        )
+
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataDefault
         , ZFMP_IN(const ZFTextTemplateIndexData &, indexDataDefault)
         )
@@ -650,19 +674,25 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTem
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, indexDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, indexDataNameAt
-        , ZFMP_IN(zfindex, index)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTemplateIndexData *, indexDataAt
-        , ZFMP_IN(zfindex, index)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataRemove
         , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataRemoveAt
-        , ZFMP_IN(zfindex, index)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, void, indexDataRemoveAll)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfiter, indexDataIter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, indexDataIterKey
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTemplateIndexData &, indexDataIterValue
+        , ZFMP_IN(const zfiter &, it)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, indexDataIterValue
+        , ZFMP_IN_OUT(zfiter &, it)
+        , ZFMP_IN(const ZFTextTemplateIndexData &, v)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataIterRemove
+        , ZFMP_IN_OUT(zfiter &, it)
+        )
+
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, copyFrom
         , ZFMP_IN(const ZFTextTemplateParam &, ref)
         )

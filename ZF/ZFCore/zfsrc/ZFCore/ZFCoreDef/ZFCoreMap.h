@@ -363,18 +363,15 @@ public:
 
     /** @brief see #zfiter */
     const T_Key &iterKey(ZF_IN const zfiter &it) const {
-        ZFCoreAssert(d && it);
         return ((const ImplKey *)d->iterKey(it))->v;
     }
     /** @brief see #zfiter */
     const T_Value &iterValue(ZF_IN const zfiter &it) const {
-        ZFCoreAssert(d && it);
         return ((const ImplValue *)d->iterValue(it))->v;
     }
 
     /** @brief see #zfiter */
     T_Value &iterValue(ZF_IN const zfiter &it) {
-        ZFCoreAssert(d && it);
         return ((ImplValue *)d->iterValue(it))->v;
     }
     /** @brief see #zfiter */
