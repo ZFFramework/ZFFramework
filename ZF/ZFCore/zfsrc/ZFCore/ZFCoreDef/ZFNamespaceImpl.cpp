@@ -53,6 +53,18 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
         return ns;
     }
 }
+zfstring ZFNamespaceSkipGlobal(ZF_IN const zfstring &ns) {
+    const zfchar *t = ZFNamespaceSkipGlobal(ns.cString());
+    if(t == zfnull) {
+        return zfnull;
+    }
+    else if(t == ns.cString()) {
+        return ns;
+    }
+    else {
+        return t;
+    }
+}
 
 zfbool ZFNamespaceSplit(
         ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret

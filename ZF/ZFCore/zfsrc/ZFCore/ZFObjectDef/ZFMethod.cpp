@@ -556,8 +556,7 @@ ZFMethod *ZFMethod::_ZFP_ZFMethodRegister(
             , methodName.cString()
             );
     ZFCoreMutexLocker();
-    const zfchar *methodNamespaceTmp = methodNamespace;
-    methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespaceTmp);
+    zfstring methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
 
     ZFCoreAssert(methodGenericInvoker != zfnull);
     ZFCoreAssert(ownerClass == zfnull || !methodNamespaceTmp);

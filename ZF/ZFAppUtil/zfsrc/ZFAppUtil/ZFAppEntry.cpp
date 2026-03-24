@@ -160,9 +160,7 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, start
 
     { // state
         _ZFP_ZFAppEntry_step(owner, task, zfself::E_OnLoadState(), "ZFAppEntryCustomTask_State");
-        ZFLISTENER_1(loadImpl
-                , zfweakT<zfself>, owner
-                ) {
+        ZFLISTENER(loadImpl) {
             ZFTask *ownerTask = zfargs.sender();
             ZFLISTENER_1(onFinish
                     , zfautoT<ZFTask>, ownerTask

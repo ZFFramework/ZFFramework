@@ -465,7 +465,7 @@ const ZFClass *ZFClass::classForName(
         ZF_IN const zfstring &className
         , ZF_IN const zfstring &classNamespace
         ) {
-    const zfchar *classNamespaceTmp = ZFNamespaceSkipGlobal(classNamespace);
+    zfstring classNamespaceTmp = ZFNamespaceSkipGlobal(classNamespace);
     if(classNamespaceTmp) {
         zfstring classNameFull;
         classNameFull += classNamespaceTmp;
@@ -1446,7 +1446,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         ) {
     _ZFP_ZFClass_invokeTimeLogger("reg: %s", className.cString());
     ZFCoreMutexLocker();
-    const zfchar *classNamespaceTmp = classNamespace;
+    zfstring classNamespaceTmp = classNamespace;
     if(outer != zfnull) {
         classNamespaceTmp = outer->classNameFull();
     }

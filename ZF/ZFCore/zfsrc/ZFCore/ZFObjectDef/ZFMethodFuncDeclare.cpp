@@ -50,10 +50,7 @@ const ZFMethod *ZFMethodFuncForName(
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
-    const zfchar *methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
-    if(methodNamespaceTmp == zfnull) {
-        methodNamespaceTmp = "";
-    }
+    zfstring methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespaceTmp);
     if(itNS == m.end()) {
         return zfnull;
@@ -88,10 +85,7 @@ const ZFMethod *ZFMethodFuncForName(
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
-    const zfchar *methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
-    if(methodNamespaceTmp == zfnull) {
-        methodNamespaceTmp = "";
-    }
+    zfstring methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespaceTmp);
     if(itNS == m.end()) {
         return zfnull;
@@ -127,10 +121,7 @@ void ZFMethodFuncForNameGetAllT(
         ) {
     ZFCoreMutexLocker();
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
-    const zfchar *methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
-    if(methodNamespaceTmp == zfnull) {
-        methodNamespaceTmp = "";
-    }
+    zfstring methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespaceTmp);
     if(itNS == m.end()) {
         return;

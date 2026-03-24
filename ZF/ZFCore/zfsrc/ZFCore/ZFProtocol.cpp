@@ -8,10 +8,10 @@ ZFENUM_DEFINE(ZFProtocolInstanceState)
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFProtocol, ZFProtocol *)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolInstanceState, protocolInstanceState)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, zfstring, protocolName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, zfstring, protocolImplName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevel, protocolImplLevel)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplPlatformHint)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, zfstring, protocolImplPlatformHint)
 
 // ============================================================
 ZF_STATIC_INITIALIZER_INIT(ZFProtocolDataHolder) {
@@ -60,7 +60,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFProtocolImplCleanup_protocolOnDealloc)
 
 // ============================================================
 _ZFP_PrtDT &_ZFP_ZFProtocolImplDataRegister(
-        ZF_IN const zfchar *protocolName
+        ZF_IN const zfstring &protocolName
         , ZF_IN _ZFP_ZFProtocolTryAccessCallback implTryAccessCallback
         , ZF_IN zfbool protocolOptional
         ) {
@@ -77,7 +77,7 @@ _ZFP_PrtDT &_ZFP_ZFProtocolImplDataRegister(
     }
     return *dataHolder;
 }
-void _ZFP_ZFProtocolImplDataUnregister(const zfchar *protocolName) {
+void _ZFP_ZFProtocolImplDataUnregister(const zfstring &protocolName) {
 }
 void _ZFP_ZFProtocolImplAccess(void) {
     // access to ensure init order
@@ -89,10 +89,10 @@ void _ZFP_ZFProtocolImplAccess(void) {
     }
 }
 void _ZFP_ZFProtocolImplFail(
-        ZF_IN const zfchar *protocolName
-        , ZF_IN const zfchar *protocolImplName
-        , ZF_IN const zfchar *mismatchProtocolName
-        , ZF_IN const zfchar *desiredImplPlatformHint
+        ZF_IN const zfstring &protocolName
+        , ZF_IN const zfstring &protocolImplName
+        , ZF_IN const zfstring &mismatchProtocolName
+        , ZF_IN const zfstring &desiredImplPlatformHint
         , ZF_IN ZFProtocol *mismatchImpl
         ) {
     zfstring err;
@@ -115,8 +115,8 @@ void _ZFP_ZFProtocolImplFail(
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolTryAccess
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
+        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN_OPT(const zfstring &, desiredImpl, zfnull)
         ) {
     ZFCoreMutexLocker();
     _ZFP_PrtDT *data = _ZFP_ZFProtocolDataMap.get(name);
@@ -133,8 +133,8 @@ ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolTryAccess
     return zfnull;
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolAccess
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
+        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN_OPT(const zfstring &, desiredImpl, zfnull)
         ) {
     ZFProtocol *ret = ZFProtocolTryAccess(name, desiredImpl);
     if(ret == zfnull) {
@@ -156,8 +156,8 @@ ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolAccess
     return ret;
 }
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFProtocolIsAvailable
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull)
+        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN_OPT(const zfstring &, desiredImpl, zfnull)
         ) {
     return (ZFProtocolTryAccess(name, desiredImpl) != zfnull);
 }

@@ -23,6 +23,23 @@ public:
 
 public:
     /**
+     * @brief prepare instance to make it able to be shared between each copy
+     */
+    void refPrepare(void) {if(d == zfnull) {d = zfpoolNew(D);}}
+    /**
+     * @brief delete reference
+     */
+    void refDelete(void) {
+        if(d) {
+            D *dTmp = d;
+            d = zfnull;
+            if(--(dTmp->refCount) == 0) {
+                zfpoolDelete(dTmp);
+            }
+        }
+    }
+
+    /**
      * @brief whether the value has been initialized
      */
     zfbool valid(void) const {
@@ -58,15 +75,6 @@ public:
             d = zfpoolNew(D, v);
         }
         return *this;
-    }
-    void removeAll(void) {
-        if(d) {
-            D *dTmp = d;
-            d = zfnull;
-            if(--(dTmp->refCount) == 0) {
-                zfpoolDelete(dTmp);
-            }
-        }
     }
 
 public:

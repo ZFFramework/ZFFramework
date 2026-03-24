@@ -163,6 +163,10 @@ zfclassLikePOD ZFLIB_ZFCore ZFCoreArrayBase {
 public:
     virtual ~ZFCoreArrayBase(void) {}
     /**
+     * @brief prepare instance to make it able to be shared between each copy
+     */
+    virtual void refPrepare(void) zfpurevirtual;
+    /**
      * @brief new reference
      */
     virtual ZFCoreArrayBase *refNew(void) const zfpurevirtual;
@@ -371,6 +375,8 @@ public:
             }
         }
     }
+    zfoverride
+    virtual void refPrepare(void) {if(d == zfnull) {d = zfpoolNew(_ZFP_ZFCoreArrayPrivate<T_Element>);}}
     zfoverride
     virtual ZFCoreArrayBase *refNew(void) const {return zfpoolNew(ZFCoreArray<T_Element>, *this);}
     zfoverride

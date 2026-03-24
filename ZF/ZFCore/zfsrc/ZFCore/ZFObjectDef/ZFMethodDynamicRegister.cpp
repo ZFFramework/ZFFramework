@@ -214,7 +214,7 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         ret += "::";
     }
     else {
-        const zfchar *ns = ZFNamespaceSkipGlobal(this->methodNamespace());
+        zfstring ns = ZFNamespaceSkipGlobal(this->methodNamespace());
         if(ns) {
             ret += ns;
             ret += "::";

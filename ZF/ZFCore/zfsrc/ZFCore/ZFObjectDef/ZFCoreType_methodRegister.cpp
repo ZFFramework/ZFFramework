@@ -410,8 +410,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringRepeat
 
 // ============================================================
 // namespace
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(const zfchar *, ZFNamespaceSkipGlobal
-        , ZFMP_IN(const zfchar *, ns)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFNamespaceSkipGlobal
+        , ZFMP_IN(const zfstring &, ns)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFNamespaceSplit
         , ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, ret)

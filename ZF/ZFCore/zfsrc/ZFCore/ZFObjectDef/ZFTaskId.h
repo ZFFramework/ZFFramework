@@ -31,7 +31,7 @@ public:
     virtual inline void stopped(ZF_IN const zfbool &v) {
         _stopped = v;
     }
-    /** @brief see #stopImpl */
+    /** @brief see #stopped */
     virtual inline const zfbool &stopped(void) {
         return _stopped;
     }

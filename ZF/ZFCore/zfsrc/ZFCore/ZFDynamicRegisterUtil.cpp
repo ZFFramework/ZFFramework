@@ -850,7 +850,7 @@ ZFDynamic &ZFDynamic::objectCompareValueImplByProp(void) {
 ZFDynamic &ZFDynamic::NSBegin(ZF_IN const zfstring &methodNamespace) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_NS()) {return *this;}
-    const zfchar *methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
+    zfstring methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
     if(!methodNamespaceTmp) {
         d->error("empty namespace or NSBegin on global namespace");
         return *this;

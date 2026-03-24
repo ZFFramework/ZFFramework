@@ -81,7 +81,7 @@ public:
  * key must support #zftHash and `operator ==`
  */
 template<typename T_Key, typename T_Value>
-zfclassLikePOD ZFLIB_ZFCore ZFCoreOrderMap {
+zfclassLikePOD ZFCoreOrderMap {
 public:
     /**
      * @brief construct an empty map
@@ -120,6 +120,23 @@ public:
     ~ZFCoreOrderMap(void) {
         if(d && (--(d->refCount)) == 0) {
             _ZFP_ZFCoreOrderMap::destroy(d);
+        }
+    }
+
+    /**
+     * @brief prepare instance to make it able to be shared between each copy
+     */
+    void refPrepare(void) {_dInit();}
+    /**
+     * @brief delete reference
+     */
+    void refDelete(void) {
+        if(d) {
+            _ZFP_ZFCoreOrderMap *dTmp = d;
+            d = zfnull;
+            if(--(dTmp->refCount) == 0) {
+                zfpoolDelete(dTmp);
+            }
         }
     }
 
