@@ -1,18 +1,18 @@
-#include "ZFValueHolder.h"
+#include "ZFValue.h"
 #include "ZFObjectImpl.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFValueHolder
-ZFOBJECT_REGISTER(ZFValueHolder)
+// ZFValue
+ZFOBJECT_REGISTER(ZFValue)
 
-void ZFValueHolder::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
+void ZFValue::objectInfoImplAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoImplAppend(ret);
     ret += " ";
     zfsFromPointerT(ret, _value);
 }
-ZFCompareResult ZFValueHolder::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
+ZFCompareResult ZFValue::objectCompareValueImpl(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}

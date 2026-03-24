@@ -10,7 +10,7 @@
 #include "ZFIOCallback.h"
 #include "zfauto.h"
 #include "ZFObjectAutoPtr.h"
-#include "ZFValueHolder.h"
+#include "ZFValue.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 typedef void (*_ZFP_zfvAccessFinishDelayCb)(ZF_IN const zfauto &obj);

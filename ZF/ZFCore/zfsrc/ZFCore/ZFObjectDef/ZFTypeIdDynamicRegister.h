@@ -17,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 extern ZFLIB_ZFCore zfbool ZFTypeIdDynamicRegister(
         ZF_IN const zfstring &typeIdName
-        , ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData
+        , ZF_IN ZFValue *typeIdData /* ZFTypeInfo */
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**

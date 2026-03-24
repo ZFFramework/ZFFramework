@@ -67,9 +67,10 @@ public:
             if(!_preparePathInfo(ioImpl, stateFilePathData, tmpFilePathData, lockFilePathData, owner->stateFileFixed())) {return;}
             zfautoT<ZFIOToken> ioLock = _stateFileLocker(zfargs, ioImpl, lockFilePathData);
             if(ioLock) {
-                zfobj<ZFValueHolder> holder;
+                zfobj<ZFValue> holder;
+                holder->value(ZFCoreMap<zfstring, _ZFP_ZFStateData>());
                 _loadImpl(
-                        holder->create<ZFCoreMap<zfstring, _ZFP_ZFStateData> >()
+                        holder->value<ZFCoreMap<zfstring, _ZFP_ZFStateData> >()
                         , zfargs
                         , ioImpl
                         , stateFilePathData
@@ -85,9 +86,9 @@ public:
             d->taskId = zfnull;
             {
                 ZFObjectLocker(owner);
-                ZFValueHolder *holder = zfargs.param0();
+                ZFValue *holder = zfargs.param0();
                 if(holder) {
-                    d->m.swap(holder->valueRef<ZFCoreMap<zfstring, _ZFP_ZFStateData> &>());
+                    d->m.swap(holder->value<ZFCoreMap<zfstring, _ZFP_ZFStateData> >());
                 }
             }
             d->_resolvePending(owner);

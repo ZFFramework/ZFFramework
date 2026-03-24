@@ -112,6 +112,18 @@ inline ZFCompareResult _ZFP_ZFComparerForPOD(
 #define ZFComparerForPOD _ZFP_ZFComparerForPOD
 
 template<typename T_Comparable>
+inline ZFCompareResult _ZFP_ZFComparerForEqual(
+        ZF_IN T_Comparable const &v0
+        , ZF_IN T_Comparable const &v1
+        ) {
+    return v0 == v1 ? ZFCompareEqual : ZFCompareUncomparable;
+}
+/**
+ * @brief comparer explicitly use `operator == ()`
+ */
+#define ZFComparerForEqual _ZFP_ZFComparerForEqual
+
+template<typename T_Comparable>
 inline ZFCompareResult _ZFP_ZFComparerDummy(
         ZF_IN T_Comparable const &v0
         , ZF_IN T_Comparable const &v1

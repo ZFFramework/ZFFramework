@@ -12,13 +12,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
-        zfobjRetain(p);
-    }, {
-        zfobjRelease(p);
-    })
-
-// ============================================================
 zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfobjReleaseInScopeContainer {
 public:
     template<typename T_ZFObject>

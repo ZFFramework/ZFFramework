@@ -71,7 +71,7 @@ public:
     /** @brief type info for element */
     const ZFTypeInfo *elementType;
 private:
-    const ZFCorePointer *_ZFP_elementTypeHolder;
+    zfautoT<ZFValue> _ZFP_elementTypeHolder; // ZFTypeInfo
 
 public:
     /** @brief init element type */
@@ -84,9 +84,8 @@ protected:
     template<typename T_Type>
     void objectOnInit(ZF_IN const ZFCoreArray<T_Type> &v) {
         this->zfv = v.refNew();
-        ZFTypeInfo *t = zfpoolNew(ZFTypeId<T_Type>);
-        this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
-        this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
+        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<T_Type>), ZFValueTypeObject(ZFTypeInfo));
+        this->elementType = this->_ZFP_elementTypeHolder->valuePtr<ZFTypeInfo>();
     }
 
     /** @brief init with #elementTypeInit */
@@ -145,13 +144,11 @@ public:
             return;
         }
         ZFCoreArrayBase *zfvOld = this->zfv;
-        const ZFCorePointer *holderOld = this->_ZFP_elementTypeHolder;
+        zfautoT<ZFValue> holderOld = this->_ZFP_elementTypeHolder;
         if(t != zfnull && t->zfv != zfnull) {
             this->zfv = t->zfv->refNew();
             this->elementType = t->elementType;
-            if(t->_ZFP_elementTypeHolder) {
-                this->_ZFP_elementTypeHolder = t->_ZFP_elementTypeHolder->refNew();
-            }
+            this->_ZFP_elementTypeHolder = t->_ZFP_elementTypeHolder;
         }
         else {
             this->zfv = zfnull;
@@ -160,9 +157,6 @@ public:
         }
         if(zfvOld != zfnull) {
             zfvOld->refDelete();
-        }
-        if(holderOld != zfnull) {
-            holderOld->refDelete();
         }
     }
     zfoverride
@@ -190,16 +184,12 @@ public:
     template<typename T_Type>
     void wrappedValue(ZF_IN const ZFCoreArray<T_Type> &v) {
         ZFCoreArrayBase *zfvOld = this->zfv;
-        const ZFCorePointer *holderOld = this->_ZFP_elementTypeHolder;
+        zfautoT<ZFValue> holderOld = this->_ZFP_elementTypeHolder;
         this->zfv = v.refNew();
-        ZFTypeInfo *t = zfpoolNew(ZFTypeId<T_Type>);
-        this->_ZFP_elementTypeHolder = zfpoolNew(ZFCorePointerForPoolObject<ZFTypeInfo *>, t);
-        this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
+        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<T_Type>), ZFValueTypeObject(ZFTypeInfo));
+        this->elementType = this->_ZFP_elementTypeHolder->valuePtr<ZFTypeInfo>();
         if(zfvOld) {
             zfvOld->refDelete();
-        }
-        if(holderOld) {
-            holderOld->refDelete();
         }
     }
     zfoverride
@@ -212,14 +202,11 @@ public:
     virtual void zfvReset(void) {
         if(this->zfv) {
             ZFCoreArrayBase *zfvOld = this->zfv;
-            const ZFCorePointer *holderOld = this->_ZFP_elementTypeHolder;
+            zfautoT<ZFValue> holderOld = this->_ZFP_elementTypeHolder;
             this->zfv = zfnull;
             this->elementType = zfnull;
             this->_ZFP_elementTypeHolder = zfnull;
             zfvOld->refDelete();
-            if(holderOld) {
-                holderOld->refDelete();
-            }
         }
     }
     zfoverride

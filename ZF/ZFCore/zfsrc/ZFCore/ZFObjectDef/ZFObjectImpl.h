@@ -26,7 +26,7 @@
 #include "ZFPropertySerializable.h"
 #include "ZFSerializable.h"
 #include "ZFTypeId.h"
-#include "ZFValueHolder.h"
+#include "ZFValue.h"
 #include "zfweak.h"
 #include "zfwrap.h"
 

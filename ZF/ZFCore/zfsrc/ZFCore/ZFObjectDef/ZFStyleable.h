@@ -152,7 +152,7 @@ private:
         static zfanyT<YourStyle> DefaultStyle(void); \
     private: \
         static void _ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance); \
-        static const ZFCorePointer *&_ZFP_ZFStyleableDefaultCleaner(void); \
+        static zfauto &_ZFP_ZFStyleableDefaultCleaner(void); \
         static void _ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance); \
     public:
 #define _ZFP_ZFSTYLE_DEFAULT_DEFINE(YourStyle) \
@@ -191,25 +191,21 @@ private:
         if(*holder == (void *)newInstance) { \
             return; \
         } \
-        const ZFCorePointer *&cleanerRef = _ZFP_ZFStyleableDefaultCleaner(); \
-        const ZFCorePointer *cleanerOld = cleanerRef; \
-        const ZFCorePointer *cleanerNew = zfnull; \
+        zfauto &cleanerRef = _ZFP_ZFStyleableDefaultCleaner(); \
+        zfauto cleanerOld = cleanerRef; \
         cleanerRef = zfnull; \
         if(newInstance != zfnull) { \
             *holder = (void *)zfobjRetain(newInstance); \
-            cleanerNew = ZFObjectGlobalInstanceAdd(ZFCorePointerForObject<_ZFP_ZFStyleableDefaultDeleteCallbackHolder *>( \
-                zfnew(_ZFP_ZFStyleableDefaultDeleteCallbackHolder, YourStyle::_ZFP_ZFStyleableDefaultOnDelete, *holder)), \
-                _ZFP_ZFStyleableDefault_level); \
-            cleanerRef = cleanerNew; \
+            cleanerRef = zfobj<ZFValue>(*holder, YourStyle::_ZFP_ZFStyleableDefaultOnDelete); \
+            ZFObjectGlobalInstanceAdd(cleanerRef, _ZFP_ZFStyleableDefault_level); \
         } \
         if(cleanerOld != zfnull) { \
             ZFObjectGlobalInstanceRemove(cleanerOld, _ZFP_ZFStyleableDefault_level); \
             *holder = (void *)newInstance; \
-            cleanerRef = cleanerNew; \
         } \
     } \
-    const ZFCorePointer *&YourStyle::_ZFP_ZFStyleableDefaultCleaner(void) { \
-        static const ZFCorePointer *_cleaner = zfnull; \
+    zfauto &YourStyle::_ZFP_ZFStyleableDefaultCleaner(void) { \
+        static zfauto _cleaner; \
         return _cleaner; \
     } \
     void YourStyle::_ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance) { \

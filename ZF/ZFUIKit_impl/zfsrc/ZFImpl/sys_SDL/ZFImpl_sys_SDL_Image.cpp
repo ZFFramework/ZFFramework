@@ -23,7 +23,7 @@ public:
 
         SurfaceSubMap::iterator surfaceSubIt = surfaceIt->second.find(owner);
         if(surfaceSubIt != surfaceIt->second.end()) {
-            Cache *cache = surfaceSubIt->second.pointerValue();
+            Cache *cache = surfaceSubIt->second->valuePtr<Cache>();
             l.erase(cache->cacheIt);
             l.push_back(cache);
             --(cache->cacheIt = l.end());
@@ -34,7 +34,10 @@ public:
         cache->sdlTexture = SDL_CreateTextureFromSurface(owner, sdlSurface);
         SDL_SetTextureBlendMode(cache->sdlTexture, SDL_BLENDMODE_BLEND);
         cache->surfaceIt = surfaceIt;
-        cache->surfaceSubIt = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, CacheHolder>(owner, CacheHolder(cache))).first;
+        cache->surfaceSubIt = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, zfautoT<ZFValue> >(
+                    owner
+                    , zfobj<ZFValue>(cache, ZFValueTypePoolObject(Cache))
+                    )).first;
         cache->rendererIt = r.find(owner);
         if(cache->rendererIt == r.end()) {
             cache->rendererIt = r.insert(zfstlpair<SDL_Renderer *, CacheList>(owner, CacheList())).first;
@@ -72,7 +75,7 @@ public:
             return;
         }
         while(!surfaceIt->second.empty()) {
-            Cache *cache = surfaceIt->second.begin()->second.pointerValue();
+            Cache *cache = surfaceIt->second.begin()->second->valuePtr<Cache>();
             l.erase(cache->cacheIt);
             cache->rendererIt->second.erase(cache->rendererCacheIt);
             if(cache->rendererIt->second.empty()) {
@@ -92,10 +95,8 @@ private:
         MaxCount = 64,
     };
     zfclassFwd Cache;
-    typedef ZFCorePointerForPoolObject<Cache *> CacheHolder;
-
     typedef zfstllist<Cache *> CacheList;
-    typedef zfstlhashmap<SDL_Renderer *, CacheHolder> SurfaceSubMap;
+    typedef zfstlhashmap<SDL_Renderer *, zfautoT<ZFValue> > SurfaceSubMap;
     typedef zfstlhashmap<SDL_Surface *, SurfaceSubMap> SurfaceMap;
     typedef zfstlhashmap<SDL_Renderer *, CacheList> RendererMap;
 

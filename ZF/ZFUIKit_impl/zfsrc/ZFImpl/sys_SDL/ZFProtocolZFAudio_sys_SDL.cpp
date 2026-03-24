@@ -29,7 +29,7 @@ private:
     zfclassNotPOD NativeAudio {
     public:
         MIX_Track *implTrack;
-        zfautoT<ZFValueHolder> implAudio; // MIX_Audio
+        zfautoT<ZFValue> implAudio; // MIX_Audio
         zfautoT<ZFTaskId> loadTaskId;
     public:
         NativeAudio(void)
@@ -85,7 +85,7 @@ public:
                 zfargs.result(zfobj<v_zfstring>(SDL_GetError()));
                 return;
             }
-            zfargs.result(zfobj<ZFValueHolder>(implAudio, _implAudioOnDealloc));
+            zfargs.result(zfobj<ZFValue>(implAudio, _implAudioOnDealloc));
         } ZFLISTENER_END()
 
         ZFLISTENER_2(onLoadFinish
@@ -108,7 +108,7 @@ public:
                 return;
             }
 
-            if(!MIX_SetTrackAudio(nativeAudio->implTrack, (MIX_Audio *)nativeAudio->implAudio->value())) {
+            if(!MIX_SetTrackAudio(nativeAudio->implTrack, nativeAudio->implAudio->valuePtr<MIX_Audio>())) {
                 zfstring errorHint = SDL_GetError();
                 MIX_SetTrackAudio(nativeAudio->implTrack, zfnull);
                 owner->notifyAudioOnLoad(audio, zffalse, zfobj<v_zfstring>(errorHint));

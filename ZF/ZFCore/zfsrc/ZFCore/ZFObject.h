@@ -62,7 +62,7 @@
 #include "ZFObjectDef/ZFTaskId.h"
 #include "ZFObjectDef/ZFTypeId.h"
 #include "ZFObjectDef/ZFTypeIdDynamicRegister.h"
-#include "ZFObjectDef/ZFValueHolder.h"
+#include "ZFObjectDef/ZFValue.h"
 #include "ZFObjectDef/zfany.h"
 #include "ZFObjectDef/zfauto.h"
 #include "ZFObjectDef/zfautoFwd.h"

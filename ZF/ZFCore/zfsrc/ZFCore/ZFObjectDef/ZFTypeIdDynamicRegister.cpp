@@ -5,7 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlhashmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > _ZFP_ZFTypeIdDynamicMapType;
+typedef zfstlhashmap<zfstring, zfautoT<ZFValue> > _ZFP_ZFTypeIdDynamicMapType; // <typeIdName, ZFTypeInfo>
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTypeIdDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
@@ -36,14 +36,14 @@ static void _ZFP_ZFTypeIdGI(ZF_IN_OUT const ZFArgs &zfargs) {
 }
 zfbool ZFTypeIdDynamicRegister(
         ZF_IN const zfstring &typeIdName
-        , ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData
+        , ZF_IN ZFValue *typeIdData /* ZFTypeInfo */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(!typeIdName) {
         zfstringAppend(errorHint, "empty typeIdName");
         return zffalse;
     }
-    if(typeIdData == zfnull) {
+    if(typeIdData == zfnull || typeIdData->valuePtr() == zfnull) {
         zfstringAppend(errorHint, "null typeIdData");
         return zffalse;
     }
@@ -81,7 +81,7 @@ zfbool ZFTypeIdDynamicRegister(
     }
 
     d->m[typeIdName] = typeIdData;
-    _ZFP_ZFTypeInfoRegister(typeIdName, typeIdData);
+    _ZFP_ZFTypeInfoRegister(typeIdName, typeIdData->valuePtr<ZFTypeInfo>());
     return zftrue;
 }
 void ZFTypeIdDynamicUnregister(ZF_IN const zfstring &typeIdName) {
