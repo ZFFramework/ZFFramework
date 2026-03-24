@@ -269,11 +269,33 @@ ZFMETHOD_DEFINE_1(ZFMap, void, iterRemove
     zfobjRelease(value);
 }
 
-ZFMETHOD_DEFINE_2(ZFMap, void, iterAdd
+ZFMETHOD_DEFINE_2(ZFMap, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, key)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    this->set(key, value);
+    if(key == zfnull || value == zfnull) {
+        return zfnull;
+    }
+    zfiter it = d->data.iterFind(key);
+    if(it) {
+        ZFObject *valueOld = d->data.iterValue(it);
+        zfobjRetain(valueOld);
+        zfobjRetain(value);
+        d->data.iterValue(it, value);
+        this->contentOnRemove(key, valueOld);
+        this->contentOnAdd(key, value);
+        this->contentOnUpdate();
+        zfobjRelease(valueOld);
+        return it;
+    }
+    else {
+        zfobjRetain(key);
+        zfobjRetain(value);
+        zfiter it = d->data.iterAdd(key, value);
+        this->contentOnAdd(key, value);
+        this->contentOnUpdate();
+        return it;
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

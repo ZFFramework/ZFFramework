@@ -11,23 +11,14 @@
 #define CPPHTTPLIB_NO_EXCEPTIONS
 #include "../../../zf3rd/_repo/cpp-httplib/httplib.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFHttpServerImpl_default_TaskQueue : zfextend httplib::TaskQueue {
 public:
     zfweakT<ZFHttpServer> owner;
 private:
-    zfclassNotPOD KeyHash {
-    public:
-        inline zfstlsize operator () (zfauto const &v) const {
-            return (zfstlsize)zfidentityCalc(v.toObject());
-        }
-    };
-    typedef zfstlhashmap<zfauto, zfbool, KeyHash> TaskMapType;
-    TaskMapType taskMap; // <ZFTaskId, dummy>
-    TaskMapType semaMap; // <ZFSemaphore, dummy>
+    zfobj<ZFSet> taskMap; // ZFTaskId
+    zfobj<ZFSet> semaMap; // ZFSemaphore
 public:
     virtual bool enqueue(std::function<void()> fn) override {
         _ZFP_ZFHttpServerImpl_default_TaskQueue *taskQueue = this;
@@ -41,37 +32,38 @@ public:
 
             ZFCoreMutexLock();
             zfobj<ZFSemaphore> sema;
-            taskQueue->semaMap[sema] = zftrue;
+            taskQueue->semaMap->add(sema);
             ZFCoreMutexUnlock();
 
             fn();
 
             ZFCoreMutexLock();
-            taskQueue->semaMap.erase(sema);
-            taskQueue->taskMap.erase(zfargs.sender());
+            taskQueue->semaMap->remove(sema);
+            taskQueue->taskMap->remove(zfargs.sender());
             ZFCoreMutexUnlock();
             sema->lockAndBroadcast();
         } ZFLISTENER_END()
 
         ZFCoreMutexLock();
         zfauto taskId = ZFHttpServerThreadPool::instance()->start(impl, zfnull);
-        this->taskMap[taskId] = zftrue;
+        this->taskMap->add(taskId);
         ZFCoreMutexUnlock();
         return zftrue;
     }
 
     virtual void shutdown() override {
         ZFCoreMutexLock();
-        for(auto it = this->taskMap.begin(); it != this->taskMap.end(); ++it) {
-            ZFTaskId *t = it->first;
+        for(zfiter it = this->taskMap->iter(); it; ++it) {
+            ZFTaskId *t = this->taskMap->iterValue(it);
             t->stop();
         }
         ZFCoreMutexUnlock();
 
-        while(!this->semaMap.empty()) {
+        while(!this->semaMap->isEmpty()) {
             ZFCoreMutexLock();
-            zfautoT<ZFSemaphore> sema = this->semaMap.begin()->first;
-            this->semaMap.erase(this->semaMap.begin());
+            zfiter it = this->semaMap->iter();
+            zfautoT<ZFSemaphore> sema = this->semaMap->iterValue(it);
+            this->semaMap->iterRemove(it);
             ZFCoreMutexUnlock();
 
             sema->lockAndWait();
@@ -89,26 +81,27 @@ public:
     const httplib::ContentReader *content_reader;
 
 private:
-    zfstlhashmap<zfstring, zfstring> _recvHeaderCache;
-    zfstlhashmap<zfstring, zfstring> _recvParamCache;
+    ZFCoreMap<zfstring, zfstring> _recvHeaderCache;
+    ZFCoreMap<zfstring, zfstring> _recvParamCache;
     ZFHttpMethod _recvMethodCache;
     zfstring *_recvBodyCache;
 
-    zfstlhashmap<zfstring, zfstring> _respHeaderCache;
+    ZFCoreMap<zfstring, zfstring> _respHeaderCache;
 
 private:
     template<typename T_Multimap>
-    void _headersCacheUpdate(ZF_OUT zfstlhashmap<zfstring, zfstring> &dst, ZF_IN const T_Multimap &src) {
-        if(dst.empty() && !src.empty()) {
+    void _headersCacheUpdate(ZF_OUT ZFCoreMap<zfstring, zfstring> &dst, ZF_IN const T_Multimap &src) {
+        if(dst.isEmpty() && !src.empty()) {
             for(auto srcIt = src.begin(); srcIt != src.end(); ++srcIt) {
                 zfstring key = srcIt->first.c_str();
-                auto dstIt = dst.find(key);
-                if(dstIt == dst.end()) {
-                    dst.insert(zfstlpair<zfstring, zfstring>(key, srcIt->second.c_str()));
+                zfiter dstIt = dst.iterFind(key);
+                if(dstIt) {
+                    zfstring &value = dst.iterValue(dstIt);
+                    value += ", ";
+                    value += srcIt->second.c_str();
                 }
                 else {
-                    dstIt->second += ", ";
-                    dstIt->second += srcIt->second.c_str();
+                    dst.set(key, srcIt->second.c_str());
                 }
             }
         }
@@ -162,47 +155,15 @@ public:
         return *(this->_recvBodyCache);
     }
 
-private:
-    zfclassNotPOD _Iter : zfextend zfiter::Impl {
-    public:
-        zfstlhashmap<zfstring, zfstring>::iterator it;
-        zfstlhashmap<zfstring, zfstring>::iterator end;
-    public:
-        zfoverride
-        virtual zfbool valid(void) {
-            return it != end;
-        }
-        zfoverride
-        virtual void next(void) {
-            ++it;
-        }
-        zfoverride
-        virtual Impl *copy(void) {
-            _Iter *ret = zfpoolNew(_Iter);
-            ret->it = it;
-            ret->end = end;
-            return ret;
-        }
-        zfoverride
-        virtual void destroy(void) {
-            zfpoolDelete(this);
-        }
-        zfoverride
-        virtual zfbool isEqual(ZF_IN Impl *d) {
-            _Iter *t = (_Iter *)d;
-            return it == t->it;
-        }
-    };
-
 public:
     zfoverride
     virtual zfindex recvHeaderCount(void) {
         _recvHeaderCacheUpdate();
-        return (zfindex)_recvHeaderCache.size();
+        return _recvHeaderCache.count();
     }
     zfoverride
     virtual zfstring recvHeader(ZF_IN const zfstring &key) {
-        if(_recvHeaderCache.empty()) {
+        if(_recvHeaderCache.isEmpty()) {
             auto range = this->req->headers.equal_range(key.cString());
             zfstring ret;
             for(auto it = range.first; it != range.second; ++it) {
@@ -214,9 +175,9 @@ public:
             return ret;
         }
         else {
-            auto it = _recvHeaderCache.find(key);
-            if(it != _recvHeaderCache.end()) {
-                return it->second;
+            zfiter it = _recvHeaderCache.iterFind(key);
+            if(it) {
+                return _recvHeaderCache.iterValue(it);
             }
             else {
                 return zfnull;
@@ -227,29 +188,26 @@ public:
     zfoverride
     virtual zfiter recvHeaderIter(void) {
         _recvHeaderCacheUpdate();
-        _Iter *impl = zfpoolNew(_Iter);
-        impl->it = _recvHeaderCache.begin();
-        impl->end = _recvHeaderCache.end();
-        return zfiter(impl);
+        return _recvHeaderCache.iter();
     }
     zfoverride
     virtual zfstring recvHeaderIterKey(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->first;
+        return _recvHeaderCache.iterKey(it);
     }
     zfoverride
     virtual zfstring recvHeaderIterValue(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->second;
+        return _recvHeaderCache.iterValue(it);
     }
 
 public:
     zfoverride
     virtual zfindex recvParamCount(void) {
         _recvParamCacheUpdate();
-        return _recvParamCache.size();
+        return _recvParamCache.count();
     }
     zfoverride
     virtual zfstring recvParam(ZF_IN const zfstring &key) {
-        if(_recvParamCache.empty()) {
+        if(_recvParamCache.isEmpty()) {
             auto range = this->req->params.equal_range(key.cString());
             zfstring ret;
             for(auto it = range.first; it != range.second; ++it) {
@@ -261,9 +219,9 @@ public:
             return ret;
         }
         else {
-            auto it = _recvParamCache.find(key);
-            if(it != _recvParamCache.end()) {
-                return it->second;
+            zfiter it = _recvParamCache.iterFind(key);
+            if(it) {
+                return _recvParamCache.iterValue(it);
             }
             else {
                 return zfnull;
@@ -274,18 +232,15 @@ public:
     zfoverride
     virtual zfiter recvParamIter(void) {
         _recvParamCacheUpdate();
-        _Iter *impl = zfpoolNew(_Iter);
-        impl->it = _recvParamCache.begin();
-        impl->end = _recvParamCache.end();
-        return zfiter(impl);
+        return _recvParamCache.iter();
     }
     zfoverride
     virtual zfstring recvParamIterKey(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->first;
+        return _recvParamCache.iterKey(it);
     }
     zfoverride
     virtual zfstring recvParamIterValue(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->second;
+        return _recvParamCache.iterValue(it);
     }
 
 public:
@@ -391,11 +346,11 @@ public:
     zfoverride
     virtual zfindex respHeaderCount(void) {
         _respHeaderCacheUpdate();
-        return (zfindex)_respHeaderCache.size();
+        return _respHeaderCache.count();
     }
     zfoverride
     virtual zfstring respHeader(ZF_IN const zfstring &key) {
-        if(_respHeaderCache.empty()) {
+        if(_respHeaderCache.isEmpty()) {
             auto range = this->res->headers.equal_range(key.cString());
             zfstring ret;
             for(auto it = range.first; it != range.second; ++it) {
@@ -407,9 +362,9 @@ public:
             return ret;
         }
         else {
-            auto it = _respHeaderCache.find(key);
-            if(it != _respHeaderCache.end()) {
-                return it->second;
+            zfiter it = _respHeaderCache.iterFind(key);
+            if(it) {
+                return _respHeaderCache.iterValue(it);
             }
             else {
                 return zfnull;
@@ -420,18 +375,15 @@ public:
     zfoverride
     virtual zfiter respHeaderIter(void) {
         _respHeaderCacheUpdate();
-        _Iter *impl = zfpoolNew(_Iter);
-        impl->it = _respHeaderCache.begin();
-        impl->end = _respHeaderCache.end();
-        return zfiter(impl);
+        return _respHeaderCache.iter();
     }
     zfoverride
     virtual zfstring respHeaderIterKey(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->first;
+        return _respHeaderCache.iterKey(it);
     }
     zfoverride
     virtual zfstring respHeaderIterValue(ZF_IN const zfiter &it) {
-        return it.impl<_Iter *>()->it->second;
+        return _respHeaderCache.iterValue(it);
     }
 
     zfoverride
@@ -439,33 +391,28 @@ public:
         std::string keyTmp = key.cString();
         this->res->headers.erase(keyTmp);
         this->res->headers.insert(std::pair<std::string, std::string>(keyTmp, value.cString()));
-        _respHeaderCache.clear();
+        _respHeaderCache.removeAll();
     }
     zfoverride
     virtual void respHeaderRemove(ZF_IN const zfstring &key) {
         this->res->headers.erase(key.cString());
-        _respHeaderCache.clear();
+        _respHeaderCache.removeAll();
     }
     zfoverride
     virtual zfiter respHeaderIterFind(ZF_IN const zfstring &key) {
         _respHeaderCacheUpdate();
-        _Iter *impl = zfpoolNew(_Iter);
-        impl->it = _respHeaderCache.find(key.cString());
-        impl->end = _respHeaderCache.end();
-        return zfiter(impl);
+        return _respHeaderCache.iterFind(key);
     }
-    virtual void respHeaderIterValue(ZF_IN const zfiter &it, ZF_IN const zfstring &value) {
-        _Iter *impl = it.impl<_Iter *>();
-        std::string key = impl->it->first.cString();
+    virtual void respHeaderIterValue(ZF_IN_OUT zfiter &it, ZF_IN const zfstring &value) {
+        std::string key = _respHeaderCache.iterKey(it).cString();
         this->res->headers.erase(key);
         this->res->headers.insert(std::pair<std::string, std::string>(key, value.cString()));
-        impl->it->second = value;
+        _respHeaderCache.iterValue(it, value);
     }
     zfoverride
-    virtual void respHeaderIterRemove(ZF_IN const zfiter &it) {
-        _Iter *impl = it.impl<_Iter *>();
-        this->res->headers.erase(impl->it->first.cString());
-        _respHeaderCache.erase((impl->it)++);
+    virtual void respHeaderIterRemove(ZF_IN_OUT zfiter &it) {
+        this->res->headers.erase(_respHeaderCache.iterKey(it).cString());
+        _respHeaderCache.iterRemove(it);
     }
 };
 

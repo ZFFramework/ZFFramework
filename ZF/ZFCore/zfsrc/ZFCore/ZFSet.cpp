@@ -144,16 +144,25 @@ ZFMETHOD_DEFINE_1(ZFSet, void, iterRemove
         this->contentOnUpdate();
     }
 }
-ZFMETHOD_DEFINE_1(ZFSet, void, iterAdd
+ZFMETHOD_DEFINE_1(ZFSet, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)
         ) {
-    this->add(value);
+    zfiter it = d->iterFind(value);
+    if(it) {
+        return it;
+    }
+    else {
+        it = d->iterAdd(value, ZFNull());
+        this->contentOnAdd(value);
+        this->contentOnUpdate();
+        return it;
+    }
 }
-ZFMETHOD_DEFINE_2(ZFSet, void, iterAdd
+ZFMETHOD_DEFINE_2(ZFSet, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, value)
         , ZFMP_IN_OUT(zfiter &, it)
         ) {
-    this->add(value);
+    return this->iterAdd(value);
 }
 
 ZF_NAMESPACE_GLOBAL_END

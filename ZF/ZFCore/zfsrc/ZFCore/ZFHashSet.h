@@ -95,11 +95,11 @@ public:
             )
 
     /** @brief see #zfiter */
-    ZFMETHOD_DECLARE_1(void, iterAdd
+    ZFMETHOD_DECLARE_1(zfiter, iterAdd
             , ZFMP_IN(ZFObject *, value)
             )
     /** @brief see #zfiter */
-    ZFMETHOD_DECLARE_2(void, iterAdd
+    ZFMETHOD_DECLARE_2(zfiter, iterAdd
             , ZFMP_IN(ZFObject *, value)
             , ZFMP_IN_OUT(zfiter &, it)
             )

@@ -5,8 +5,8 @@
  * -  all other C++ containers, such as std::vector,
  *   can be used directly,
  *   but must not be exported in header
- * -  ZFCoreArray\n
- *   C++-style container similar to std::vector,
+ * -  ZFCoreArray/ZFCoreMap\n
+ *   C++-style container similar to std::vector/std::map,
  *   may not so efficient compared to STL containers,
  *   used to reduce dependency,
  *   use only if necessary

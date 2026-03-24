@@ -101,11 +101,14 @@ public:
         this->erase((it.impl<_Iter *>()->it)++);
     }
 
-    zffinal inline void iterAdd(
+    zffinal inline zfiter iterAdd(
             ZF_IN T_Key const &key
             , ZF_IN T_Value const &value
             ) {
-        this->insert(zfstlpair<T_Key, T_Value>(key, value));
+        _Iter *impl = zfpoolNew(_Iter);
+        impl->it = this->insert(zfstlpair<T_Key, T_Value>(key, value)).first;
+        impl->end = this->end();
+        return zfiter(impl);
     }
 };
 /** @endcond */

@@ -213,6 +213,20 @@ public:
         key->implDestroy();
         value->implDestroy();
     }
+    zfoverride
+    virtual zfiter iterAdd(ZF_IN _ZFP_ZFCoreMap::BaseKey *key, ZF_IN _ZFP_ZFCoreMap::BaseValue *value) {
+        zfiter it = m.iterFind(key);
+        if(it) {
+            _ZFP_ZFCoreMap::BaseValue *tmp = m.iterValue(it);
+            m.iterValue(it, value);
+            key->implDestroy();
+            tmp->implDestroy();
+            return it;
+        }
+        else {
+            return m.iterAdd(key, value);
+        }
+    }
 };
 
 // ============================================================

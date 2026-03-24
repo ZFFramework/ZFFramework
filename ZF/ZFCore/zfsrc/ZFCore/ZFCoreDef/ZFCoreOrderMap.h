@@ -6,11 +6,7 @@
 #ifndef _ZFI_ZFCoreOrderMap_h_
 #define _ZFI_ZFCoreOrderMap_h_
 
-#include "ZFMemPool.h"
-#include "ZFCoreArray.h"
-#include "zfiter.h"
-#include "ZFToken.h"
-#include "ZFCoreUtilMacro.h"
+#include "ZFCoreMap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -69,6 +65,7 @@ public:
     virtual BaseValue *iterValue(ZF_IN const zfiter &it) zfpurevirtual;
     virtual void iterValue(ZF_IN_OUT zfiter &it, ZF_IN BaseValue *value) zfpurevirtual;
     virtual void iterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
+    virtual zfiter iterAdd(ZF_IN BaseKey *key, ZF_IN BaseValue *value) zfpurevirtual;
 public:
     // ============================================================
     // order map spec
@@ -80,7 +77,7 @@ public:
  * used to reduce dependency of stl\n
  * key must support #zftHash and `operator ==`
  */
-template<typename T_Key, typename T_Value>
+template<typename T_Key, typename T_Value, typename T_Hash = ZFCoreMapKeyHash<T_Key>, typename T_Equal = ZFCoreMapKeyEqual<T_Key> >
 zfclassLikePOD ZFCoreOrderMap {
 public:
     /**
@@ -412,11 +409,12 @@ public:
     }
 
     /** @brief see #zfiter */
-    void iterAdd(
+    zfiter iterAdd(
             ZF_IN const T_Key &key
             , ZF_IN const T_Value &value
             ) {
-        this->set(key, value);
+        _dInit();
+        return d->iterAdd(_KeyCreate(key), _ValueCreate(value));
     }
 
     // ============================================================
@@ -438,8 +436,8 @@ private:
         T_Key v;
         ImplKey(ZF_IN T_Key const &v) : v(v) {}
     public:
-        virtual zfidentity implHash(void) const {return zfhash(v);}
-        virtual zfbool implEqual(ZF_IN const BaseKey *ref) const {return ZFComparerDefault(v, ((ImplKey *)ref)->v) == ZFCompareEqual;}
+        virtual zfidentity implHash(void) const {return T_Hash()(v);}
+        virtual zfbool implEqual(ZF_IN const BaseKey *ref) const {return T_Equal()(v, ((ImplKey *)ref)->v);}
         virtual void implInfo(ZF_IN_OUT zfstring &ret) const {return zftToStringT(ret, v);}
         virtual BaseKey *implCopy(void) const {return zfpoolNew(ImplKey, v);}
         virtual void implDestroy(void) {zfpoolDelete(this);}

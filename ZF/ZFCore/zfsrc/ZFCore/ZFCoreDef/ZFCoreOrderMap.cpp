@@ -213,6 +213,20 @@ public:
         key->implDestroy();
         value->implDestroy();
     }
+    zfoverride
+    virtual zfiter iterAdd(ZF_IN _ZFP_ZFCoreOrderMap::BaseKey *key, ZF_IN _ZFP_ZFCoreOrderMap::BaseValue *value) {
+        zfiter it = m.iterFind(key);
+        if(it) {
+            _ZFP_ZFCoreOrderMap::BaseValue *tmp = m.iterValue(it);
+            m.iterValue(it, value);
+            key->implDestroy();
+            tmp->implDestroy();
+            return it;
+        }
+        else {
+            return m.iterAdd(key, value);
+        }
+    }
 
     // ============================================================
     // order map spec

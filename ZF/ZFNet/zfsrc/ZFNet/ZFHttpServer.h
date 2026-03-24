@@ -92,9 +92,9 @@ public:
     /** @brief resp header modify */
     virtual zfiter respHeaderIterFind(ZF_IN const zfstring &key) zfpurevirtual;
     /** @brief resp header modify */
-    virtual void respHeaderIterValue(ZF_IN const zfiter &it, ZF_IN const zfstring &value) zfpurevirtual;
+    virtual void respHeaderIterValue(ZF_IN_OUT zfiter &it, ZF_IN const zfstring &value) zfpurevirtual;
     /** @brief resp header modify */
-    virtual void respHeaderIterRemove(ZF_IN const zfiter &it) zfpurevirtual;
+    virtual void respHeaderIterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
 
     // ============================================================
     // util

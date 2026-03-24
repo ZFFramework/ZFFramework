@@ -134,7 +134,7 @@ public:
             )
 
     /** @brief see #zfiter */
-    ZFMETHOD_DECLARE_2(void, iterAdd
+    ZFMETHOD_DECLARE_2(zfiter, iterAdd
             , ZFMP_IN(ZFObject *, key)
             , ZFMP_IN(ZFObject *, value)
             )

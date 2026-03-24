@@ -131,11 +131,11 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, zfiter, respHeaderI
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFHttpServerTask, void, respHeaderIterValue
-        , ZFMP_IN(const zfiter &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         , ZFMP_IN(const zfstring &, value)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFHttpServerTask, void, respHeaderIterRemove
-        , ZFMP_IN(const zfiter &, it)
+        , ZFMP_IN_OUT(zfiter &, it)
         )
 
 // ============================================================

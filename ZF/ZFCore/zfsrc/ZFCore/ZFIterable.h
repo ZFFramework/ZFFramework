@@ -58,12 +58,12 @@ public:
     /**
      * @brief add value to tail
      */
-    virtual void iterAdd(ZF_IN ZFObject *value) zfpurevirtual;
+    virtual zfiter iterAdd(ZF_IN ZFObject *value) zfpurevirtual;
     /**
      * @brief add value before iter,
      *   see #zfiter
      */
-    virtual void iterAdd(
+    virtual zfiter iterAdd(
             ZF_IN ZFObject *value
             , ZF_IN_OUT zfiter &it
             ) zfpurevirtual;
@@ -89,7 +89,7 @@ public:
      * for most key value container,
      * this is same as set key with value
      */
-    virtual void iterAdd(
+    virtual zfiter iterAdd(
             ZF_IN ZFObject *key
             , ZF_IN ZFObject *value
             ) zfpurevirtual;

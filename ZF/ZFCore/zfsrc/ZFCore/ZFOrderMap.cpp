@@ -275,11 +275,11 @@ ZFMETHOD_DEFINE_1(ZFOrderMap, void, iterRemove
     zfobjRelease(value);
 }
 
-ZFMETHOD_DEFINE_2(ZFOrderMap, void, iterAdd
+ZFMETHOD_DEFINE_2(ZFOrderMap, zfiter, iterAdd
         , ZFMP_IN(ZFObject *, key)
         , ZFMP_IN(ZFObject *, value)
         ) {
-    this->set(key, value);
+    return d->data.iterAdd(key, value);
 }
 
 // ============================================================
