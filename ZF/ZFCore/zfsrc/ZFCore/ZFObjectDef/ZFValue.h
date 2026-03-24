@@ -80,7 +80,7 @@ private:
 
 protected:
     /**
-     * @brief init with object
+     * @brief init with value and type
      */
     virtual void objectOnInit(
         ZF_IN void *value
@@ -89,6 +89,9 @@ protected:
         _value = value;
         _type = type;
     }
+    /**
+     * @brief init and copy value
+     */
     template<typename T_Value>
     void objectOnInit(ZF_IN T_Value const &value) {
         _value = zfpoolNew(T_Value, value);
