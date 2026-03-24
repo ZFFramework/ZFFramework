@@ -9,6 +9,7 @@ public:
     ZFObject **cache;
     zfindex *cacheCount;
 };
+ZFCORE_POD_DECLARE_NO_COMPARER(_ZFP_zfobjAllocCacheData)
 static ZFCoreArray<_ZFP_zfobjAllocCacheData> &_ZFP_zfobjAllocCacheDataList(void) {
     static ZFCoreArray<_ZFP_zfobjAllocCacheData> d;
     return d;

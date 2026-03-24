@@ -22,7 +22,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreePrintAfterDelay
 }
 
 // ============================================================
-zfclassPOD _ZFP_ZFUIViewTreePrintData {
+zfclassLikePOD _ZFP_ZFUIViewTreePrintData {
 public:
     const ZFClass *viewClass;
     ZFListener viewInfoGetter;

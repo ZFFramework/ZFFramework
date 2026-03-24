@@ -57,6 +57,7 @@ public:
     ZFUIView *view;
     ZFUIPoint center;
 };
+ZFCORE_POD_DECLARE_NO_COMPARER(_ZFP_ZFUIViewFocusData)
 ZFOUTPUT_TYPE(_ZFP_ZFUIViewFocusData, {
     ZFUIPointToStringT(s, v.center);
     s += " ";

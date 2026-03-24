@@ -187,6 +187,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFENUM_TYPEID_REG(ZFLIB_, EnumName, __VA_ARGS__ ::)
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_REG_FLAGS(ZFLIB_, EnumName, EnumFlagsName, ...) \
+    ZFCORE_POD_DECLARE_NO_COMPARER(__VA_ARGS__ :: EnumFlagsName) \
     _ZFP_ZFENUM_TYPEID_REG(ZFLIB_, EnumName, __VA_ARGS__ ::) \
     _ZFP_ZFENUM_FLAGS_TYPEID_REG(ZFLIB_, EnumName, EnumFlagsName, __VA_ARGS__ ::)
 

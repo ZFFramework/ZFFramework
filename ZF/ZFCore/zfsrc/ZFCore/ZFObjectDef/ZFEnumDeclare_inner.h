@@ -54,6 +54,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFENUM_INNER_TYPEID_REG(OuterClass, EnumName)
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_INNER_REG_FLAGS(OuterClass, EnumName, EnumFlagsName) \
+    ZFCORE_POD_DECLARE_NO_COMPARER(OuterClass::EnumFlagsName) \
     _ZFP_ZFENUM_INNER_TYPEID_REG(OuterClass, EnumName) \
     _ZFP_ZFENUM_INNER_FLAGS_TYPEID_REG(OuterClass, EnumName, EnumFlagsName)
 
