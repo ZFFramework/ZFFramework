@@ -92,6 +92,9 @@ static void _ZFP_GI_instanceDealloc(_ZFP_GI_DataMap &m) {
                     _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("destroy %s", data.name.cString());
                     data.destructor(tmp);
                 }
+                if(it == m.begin()) {
+                    break;
+                }
             }
         }
     } while(hasDataToClean);
