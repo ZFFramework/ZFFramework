@@ -146,18 +146,18 @@ private:
 
 #define _ZFP_ZFSTYLE_DEFAULT_DECLARE(YourStyle) \
     public: \
-        zfclass _ZFP_ZFStyleableDefault_##YourStyle; \
+        zfclass _ZFP_StyleDef_##YourStyle; \
     public: \
         /** \n default style for @ref YourStyle */ \
         static zfanyT<YourStyle> DefaultStyle(void); \
     private: \
-        static void _ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance); \
-        static zfauto &_ZFP_ZFStyleableDefaultCleaner(void); \
-        static void _ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance); \
+        static void _ZFP_StyleDefU(ZF_IN YourStyle *newInstance); \
+        static ZFObject *&_ZFP_StyleDefC(void); /* cleaner */ \
+        static void _ZFP_StyleDefD(ZF_IN void *instance); /* onDelete */ \
     public:
 #define _ZFP_ZFSTYLE_DEFAULT_DEFINE(YourStyle) \
-    zfclass YourStyle::_ZFP_ZFStyleableDefault_##YourStyle : zfextend YourStyle { \
-        ZFOBJECT_DECLARE(_ZFP_ZFStyleableDefault_##YourStyle, YourStyle) \
+    zfclass YourStyle::_ZFP_StyleDef_##YourStyle : zfextend YourStyle { \
+        ZFOBJECT_DECLARE(_ZFP_StyleDef_##YourStyle, YourStyle) \
     public: \
         zfoverride \
         virtual zfbool styleableIsDefaultStyle(void) { \
@@ -171,9 +171,9 @@ private:
             if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
                 return zfnull; \
             } \
-            zfauto obj = _ZFP_ZFStyleableDefault_##YourStyle::ClassData()->newInstance(); \
+            zfauto obj = _ZFP_StyleDef_##YourStyle::ClassData()->newInstance(); \
             if(obj != zfnull) { \
-                zfself::_ZFP_ZFStyleablEnumDefaultStyle(obj.to<YourStyle *>()); \
+                zfself::_ZFP_StyleDefU(obj.to<YourStyle *>()); \
             } \
         } \
         return (YourStyle *)(*holder); \
@@ -183,7 +183,7 @@ private:
         zfanyT<YourStyle>, DefaultStyle) { \
         return YourStyle::DefaultStyle(); \
     } \
-    void YourStyle::_ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance) { \
+    void YourStyle::_ZFP_StyleDefU(ZF_IN YourStyle *newInstance) { \
         if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
             return; \
         } \
@@ -191,12 +191,13 @@ private:
         if(*holder == (void *)newInstance) { \
             return; \
         } \
-        zfauto &cleanerRef = _ZFP_ZFStyleableDefaultCleaner(); \
+        ZFObject *&cleanerRef = _ZFP_StyleDefC(); \
         zfauto cleanerOld = cleanerRef; \
         cleanerRef = zfnull; \
         if(newInstance != zfnull) { \
             *holder = (void *)zfobjRetain(newInstance); \
-            cleanerRef = zfobj<ZFValue>(*holder, YourStyle::_ZFP_ZFStyleableDefaultOnDelete); \
+            zfobj<ZFValue> cleanerRefTmp(*holder, YourStyle::_ZFP_StyleDefD); \
+            cleanerRef = cleanerRefTmp; \
             ZFObjectGlobalInstanceAdd(cleanerRef, _ZFP_ZFStyleableDefault_level); \
         } \
         if(cleanerOld != zfnull) { \
@@ -204,12 +205,12 @@ private:
             *holder = (void *)newInstance; \
         } \
     } \
-    zfauto &YourStyle::_ZFP_ZFStyleableDefaultCleaner(void) { \
-        static zfauto _cleaner; \
+    ZFObject *&YourStyle::_ZFP_StyleDefC(void) { \
+        static ZFObject *_cleaner = zfnull; \
         return _cleaner; \
     } \
-    void YourStyle::_ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance) { \
-        YourStyle::_ZFP_ZFStyleableDefaultCleaner() = zfnull; \
+    void YourStyle::_ZFP_StyleDefD(ZF_IN void *instance) { \
+        YourStyle::_ZFP_StyleDefC() = zfnull; \
         void **holder = _ZFP_ZFStyleableDefaultRefAccess(#YourStyle); \
         *holder = zfnull; \
         zfobjRelease((YourStyle *)instance); \

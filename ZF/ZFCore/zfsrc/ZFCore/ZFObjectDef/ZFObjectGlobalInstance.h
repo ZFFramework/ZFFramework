@@ -65,9 +65,9 @@ public:
     SetterAccessType: \
         /** @brief see @ref accessMethodName */ \
         static void accessMethodName(ZF_IN AccessTypeName *newInstance); \
-    public: \
-        static zfauto &_ZFP_ZFClassSingletonCleaner_##accessMethodName(void); \
-        static void _ZFP_ZFClassSingletonOnDelete_##accessMethodName(ZF_IN void *instance); \
+    private: \
+        static ZFObject *&_ZFP_ClsSIC_##accessMethodName(void); /* ClassSingletonCleaner */ \
+        static void _ZFP_ClsSID_##accessMethodName(ZF_IN void *instance); /* ClassSingletonOnDelete */ \
     public:
 #define _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, AccessTypeName, ObjectTypeName, sig, accessMethodName, \
                                       ZFLevel_, \
@@ -93,14 +93,15 @@ public:
             return; \
         } \
         ZFCoreMutexLocker(); \
-        zfauto &cleanerRef = OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(); \
+        ZFObject *&cleanerRef = OwnerClass::_ZFP_ClsSIC_##accessMethodName(); \
         zfauto cleanerOld = cleanerRef; \
         cleanerRef = zfnull; \
         AccessTypeName *newInstanceValue = zfnull; \
         if(newInstance != zfnull) { \
             newInstanceValue = retainAction(newInstance); \
             *holder = (void *)newInstanceValue; \
-            cleanerRef = zfobj<ZFValue>(*holder, OwnerClass::_ZFP_ZFClassSingletonOnDelete_##accessMethodName); \
+            zfobj<ZFValue> cleanerRefTmp(*holder, OwnerClass::_ZFP_ClsSID_##accessMethodName); \
+            cleanerRef = cleanerRefTmp; \
             ZFObjectGlobalInstanceAdd(cleanerRef, ZFLevel_); \
         } \
         if(cleanerOld != zfnull) { \
@@ -108,12 +109,12 @@ public:
             *holder = (void *)newInstanceValue; \
         } \
     } \
-    zfauto &OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(void) { \
-        static zfauto _cleaner; \
+    ZFObject *&OwnerClass::_ZFP_ClsSIC_##accessMethodName(void) { \
+        static ZFObject *_cleaner = zfnull; \
         return _cleaner; \
     } \
-    void OwnerClass::_ZFP_ZFClassSingletonOnDelete_##accessMethodName(ZF_IN void *instance) { \
-        OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName() = zfnull; \
+    void OwnerClass::_ZFP_ClsSID_##accessMethodName(ZF_IN void *instance) { \
+        OwnerClass::_ZFP_ClsSIC_##accessMethodName() = zfnull; \
         void **holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
         *holder = zfnull; \
         releaseAction((AccessTypeName *)instance); \
