@@ -8,26 +8,31 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.DisplayCutout;
 import android.view.KeyEvent;
+import android.view.PixelCopy;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.NativeUtil.ZFAndroidPost;
 import com.ZFFramework.NativeUtil.ZFObject;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * @brief window as a Activity in Android
@@ -72,20 +77,6 @@ public final class ZFUIRootWindow extends Activity {
         }
     }
 
-    public static void windowColorUpdate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && _windowColorUpdateTaskId == -1) {
-            _windowColorUpdateTaskId = ZFAndroidPost.run(new Runnable() {
-                @Override
-                public void run() {
-                    _windowColorUpdateTaskId = -1;
-                    for (_RootContainer v : _windowColorHolders) {
-                        v._windowColorUpdateAction();
-                    }
-                }
-            });
-        }
-    }
-
     // ============================================================
     public FrameLayout rootContainer() {
         return _rootContainer;
@@ -101,11 +92,14 @@ public final class ZFUIRootWindow extends Activity {
     private boolean _isMainWindow = false;
     private long _zfjniPointerOwnerZFUIRootWindow = 0;
     private _RootContainer _rootContainer = null;
-    private MainLayout _mainContainer = null;
+    private MainContainer _mainContainer = null;
     private int _windowOrientation = ZFUIOrientation.e_Top;
-    private boolean _preferFullscreen = false;
     private int _windowColorTopDetected = 0;
     private int _windowColorBottomDetected = 0;
+    private int _safeAreaLeft = 0;
+    private int _safeAreaTop = 0;
+    private int _safeAreaRight = 0;
+    private int _safeAreaBottom = 0;
 
     // ============================================================
     public static void native_nativeMainWindowCreate(long zfjniPointerOwnerZFUIRootWindow) {
@@ -137,7 +131,6 @@ public final class ZFUIRootWindow extends Activity {
 
     public static void native_layoutParamOnUpdate(Object nativeWindow, boolean preferFullscreen) {
         ZFUIRootWindow nativeWindowTmp = (ZFUIRootWindow) nativeWindow;
-        nativeWindowTmp._preferFullscreen = preferFullscreen;
         nativeWindowTmp._mainContainer.requestLayout();
 
         nativeWindowTmp.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, preferFullscreen ? WindowManager.LayoutParams.FLAG_FULLSCREEN : 0);
@@ -145,13 +138,16 @@ public final class ZFUIRootWindow extends Activity {
         nativeWindowTmp.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         {
             int uiFlags = nativeWindowTmp.getWindow().getDecorView().getSystemUiVisibility();
+            uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
             if (preferFullscreen) {
-                uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
                 uiFlags |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+                uiFlags |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
                 uiFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             } else {
-                uiFlags &= ~View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
                 uiFlags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
+                uiFlags &= ~View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
                 uiFlags &= ~View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             }
             nativeWindowTmp.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
@@ -159,10 +155,7 @@ public final class ZFUIRootWindow extends Activity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowManager.LayoutParams lp = nativeWindowTmp.getWindow().getAttributes();
-            lp.layoutInDisplayCutoutMode = preferFullscreen
-                    ? WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
-                    : WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT
-            ;
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
             nativeWindowTmp.getWindow().setAttributes(lp);
         }
     }
@@ -248,16 +241,51 @@ public final class ZFUIRootWindow extends Activity {
     public static native boolean native_notifyKeyEvent(long zfjniPointerOwnerZFUIRootWindow, int keyId, int keyAction, int keyCode, int keyCodeRaw);
 
     // ============================================================
-    private static class MainLayout extends FrameLayout {
+    private static class MainContainer extends FrameLayout {
         public ZFUIRootWindow _owner = null;
         public int _left = 0;
         public int _top = 0;
         public int _right = 0;
         public int _bottom = 0;
 
-        public MainLayout(ZFUIRootWindow owner) {
+        public MainContainer(ZFUIRootWindow owner) {
             super(owner);
             _owner = owner;
+            setOnApplyWindowInsetsListener(new OnApplyWindowInsetsListener() {
+                @Override
+                public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                    if (_owner == null) {
+                        return insets;
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        _owner._safeAreaTop = insets.getInsets(WindowInsets.Type.statusBars()).top;
+                        _owner._safeAreaBottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
+                    } else {
+                        _owner._safeAreaTop = insets.getSystemWindowInsetTop();
+                        _owner._safeAreaBottom = insets.getSystemWindowInsetBottom();
+                    }
+                    _owner._safeAreaLeft = 0;
+                    _owner._safeAreaRight = 0;
+
+                    WindowInsets tmp = _owner.getWindow().getDecorView().getRootWindowInsets();
+                    if (tmp != null) {
+                        DisplayCutout cutout = null;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            cutout = tmp.getDisplayCutout();
+                            if (cutout != null) {
+                                _owner._safeAreaLeft = Math.max(_owner._safeAreaLeft, cutout.getSafeInsetLeft());
+                                _owner._safeAreaTop = Math.max(_owner._safeAreaTop, cutout.getSafeInsetTop());
+                                _owner._safeAreaRight = Math.max(_owner._safeAreaRight, cutout.getSafeInsetRight());
+                                _owner._safeAreaBottom = Math.max(_owner._safeAreaBottom, cutout.getSafeInsetBottom());
+                            }
+                        }
+                    }
+
+                    requestLayout();
+                    return insets;
+                }
+            });
+            setFitsSystemWindows(true);
         }
 
         private static final int[] _rectCache = new int[4];
@@ -273,26 +301,12 @@ public final class ZFUIRootWindow extends Activity {
             height += keyboardHeight;
 
             if (_owner != null && _owner._zfjniPointerOwnerZFUIRootWindow != 0) {
-                int safeAreaLeft = 0;
-                int safeAreaTop = 0;
-                int safeAreaRight = 0;
-                int safeAreaBottom = 0;
-                if (_owner._preferFullscreen) {
-                    WindowInsets insets = _owner.getWindow().getDecorView().getRootWindowInsets();
-                    if (insets != null) {
-                        DisplayCutout cutout = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            cutout = insets.getDisplayCutout();
-                            if (cutout != null) {
-                                safeAreaLeft = cutout.getSafeInsetLeft();
-                                safeAreaTop = cutout.getSafeInsetTop();
-                                safeAreaRight = cutout.getSafeInsetRight();
-                                safeAreaBottom = cutout.getSafeInsetBottom();
-                            }
-                        }
-                    }
-                }
-                ZFUIRootWindow.native_notifyMeasureWindow(_owner._zfjniPointerOwnerZFUIRootWindow, width, height, safeAreaLeft, safeAreaTop, safeAreaRight, safeAreaBottom, _rectCache);
+                ZFUIRootWindow.native_notifyMeasureWindow(
+                        _owner._zfjniPointerOwnerZFUIRootWindow
+                        , width, height
+                        , _owner._safeAreaLeft, _owner._safeAreaTop, _owner._safeAreaRight, _owner._safeAreaBottom
+                        , _rectCache
+                );
                 _left = _rectCache[0];
                 _top = _rectCache[1];
                 _right = _rectCache[0] + _rectCache[2];
@@ -338,7 +352,7 @@ public final class ZFUIRootWindow extends Activity {
         _rootContainer = new _RootContainer(this);
         this.setContentView(_rootContainer);
 
-        _mainContainer = new MainLayout(this);
+        _mainContainer = new MainContainer(this);
         _rootContainer.addView(_mainContainer, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         ZFUIRootWindow.native_notifyOnCreate(_zfjniPointerOwnerZFUIRootWindow, this);
     }
@@ -365,13 +379,10 @@ public final class ZFUIRootWindow extends Activity {
     protected void onResume() {
         super.onResume();
         ZFUIRootWindow.native_notifyOnResume(_zfjniPointerOwnerZFUIRootWindow);
-        _windowColorHolders.add(_rootContainer);
-        windowColorUpdate();
     }
 
     @Override
     protected void onPause() {
-        _windowColorHolders.remove(_rootContainer);
         _keyEventImpl.onKeyCancel();
         ZFUIRootWindow.native_notifyOnPause(_zfjniPointerOwnerZFUIRootWindow);
         super.onPause();
@@ -455,41 +466,75 @@ public final class ZFUIRootWindow extends Activity {
     }
 
     // ============================================================
-    private static final List<_RootContainer> _windowColorHolders = new ArrayList<>();
-    private static int _windowColorUpdateTaskId = -1;
-
     private class _RootContainer extends FrameLayout {
         public _RootContainer(Context context) {
             super(context);
-            _bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-            _canvas = new Canvas(_bmp);
             this.setBackgroundColor(Color.BLACK);
         }
 
-        private final Bitmap _bmp;
-        private final Canvas _canvas;
-        private int _drawOverride = 0;
+        private final Paint _paintCacheTop = new Paint();
+        private final Paint _paintCacheBottom = new Paint();
 
         @Override
-        protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-            super.onLayout(changed, left, top, right, bottom);
-            windowColorUpdate();
-        }
-
-        @Override
-        protected void dispatchDraw(Canvas canvas) {
-            super.dispatchDraw(canvas);
+        protected void onDraw(@NonNull Canvas canvas) {
+            super.onDraw(canvas);
             if (_drawOverride == 0) {
-                windowColorUpdate();
+                _paintCacheTop.setColor(_windowColorTopDetected);
+                canvas.drawRect(0, 0, getWidth(), _safeAreaTop, _paintCacheTop);
+
+                _paintCacheBottom.setColor(_windowColorBottomDetected);
+                canvas.drawRect(0, getHeight() - _safeAreaBottom, getWidth(), getHeight(), _paintCacheBottom);
             }
         }
 
+        private final ViewTreeObserver.OnDrawListener _onDrawListener = new ViewTreeObserver.OnDrawListener() {
+            @Override
+            public void onDraw() {
+                if (_drawOverride == 0 && _windowColorUpdateTaskId == -1) {
+                    _windowColorUpdateTaskId = ZFAndroidPost.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            _windowColorUpdateTaskId = -1;
+                            _windowColorUpdateAction();
+                            _windowColorTopChecker.check(getWindow());
+                            _windowColorBottomChecker.check(getWindow());
+                        }
+                    });
+                }
+            }
+        };
+
+        @Override
+        protected void onAttachedToWindow() {
+            super.onAttachedToWindow();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getViewTreeObserver().addOnDrawListener(_onDrawListener);
+            }
+        }
+
+        @Override
+        protected void onDetachedFromWindow() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getViewTreeObserver().removeOnDrawListener(_onDrawListener);
+            }
+            super.onDetachedFromWindow();
+        }
+
+        private int _windowColorUpdateTaskId = -1;
+        private final Bitmap _bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        private final Canvas _canvas = new Canvas(_bmp);
+        private int _drawOverride = 0;
+
         private void _windowColorUpdateAction() {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                return;
+            }
             boolean changed = false;
 
             _bmp.eraseColor(Color.TRANSPARENT);
             _canvas.save();
             ++_drawOverride;
+            _canvas.translate(-getWidth() / 2, -_safeAreaTop);
             this.draw(_canvas);
             --_drawOverride;
             _canvas.restore();
@@ -501,7 +546,7 @@ public final class ZFUIRootWindow extends Activity {
 
             _bmp.eraseColor(Color.TRANSPARENT);
             _canvas.save();
-            _canvas.translate(0, -(getHeight() - _bmp.getHeight()));
+            _canvas.translate(0, -(getHeight() - _bmp.getHeight() - _safeAreaBottom));
             ++_drawOverride;
             this.draw(_canvas);
             --_drawOverride;
@@ -513,34 +558,90 @@ public final class ZFUIRootWindow extends Activity {
             }
 
             if (changed) {
-                _windowColorImplUpdate();
+                invalidate();
             }
+        }
+
+        private final _WindowColorChecker _windowColorTopChecker = new _WindowColorChecker(new _WindowColorChecker.Callback() {
+            @Override
+            public void onResult(int color) {
+                boolean isDarkBg = _isDarkBg(color);
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+                int uiFlags = getWindow().getDecorView().getSystemUiVisibility();
+                if (!isDarkBg) {
+                    uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                } else {
+                    uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                }
+                getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+            }
+        }, true);
+        private final _WindowColorChecker _windowColorBottomChecker = new _WindowColorChecker(new _WindowColorChecker.Callback() {
+            @Override
+            public void onResult(int color) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    return;
+                }
+                boolean isDarkBg = _isDarkBg(color);
+                getWindow().setNavigationBarColor(Color.argb(1, 0, 0, 0));
+                int uiFlags = getWindow().getDecorView().getSystemUiVisibility();
+                if (!isDarkBg) {
+                    uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                } else {
+                    uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                }
+                getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+            }
+        }, false);
+
+        private boolean _isDarkBg(int color) {
+//            return ColorUtils.calculateLuminance(color) <= 0.5;
+            return ((int) (Color.red(color) * 0.299) + (int) (Color.green(color) * 0.587f) + (int) (Color.blue(color) * 0.114f)) < 186;
         }
     }
 
-    private void _windowColorImplUpdate() {
-        boolean isDarkBgTop = (Color.red(_windowColorTopDetected) < 32 && Color.green(_windowColorTopDetected) < 32 && Color.blue(_windowColorTopDetected) < 32);
-
-        {
-            this.getWindow().setStatusBarColor(_windowColorTopDetected);
-            int uiFlags = this.getWindow().getDecorView().getSystemUiVisibility();
-            if (!isDarkBgTop) {
-                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            } else {
-                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            }
-            this.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+    private static class _WindowColorChecker {
+        public static interface Callback {
+            public void onResult(int color);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.getWindow().setNavigationBarColor(_windowColorBottomDetected);
-            int uiFlags = this.getWindow().getDecorView().getSystemUiVisibility();
-            if (!isDarkBgTop) {
-                uiFlags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-            } else {
-                uiFlags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        public _WindowColorChecker(Callback callback, boolean isTop) {
+            _callback = callback;
+            _isTop = isTop;
+        }
+
+        private final Callback _callback;
+        private final boolean _isTop;
+        private boolean _running = false;
+        private final Bitmap _bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        private final Rect _rectCache = new Rect();
+        private static final Handler _handler = new Handler(Looper.getMainLooper());
+
+        public void check(Window window) {
+            if (_running || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                return;
             }
-            this.getWindow().getDecorView().setSystemUiVisibility(uiFlags);
+            int w = window.getDecorView().getWidth();
+            int h = window.getDecorView().getHeight();
+            if (w <= 0 || h <= 0) {
+                return;
+            }
+            _running = true;
+            if (_isTop) {
+                _rectCache.set(w / 2, 0, w / 2 + 1, 1);
+            } else {
+                _rectCache.set(w / 2, h - 1, w / 2 + 1, h);
+            }
+            PixelCopy.request(window, _rectCache, _bmp, new PixelCopy.OnPixelCopyFinishedListener() {
+                @Override
+                public void onPixelCopyFinished(int copyResult) {
+                    _running = false;
+                    if (copyResult == PixelCopy.SUCCESS) {
+                        int color = _bmp.getPixel(0, 0);
+                        _callback.onResult(color);
+                    }
+                }
+            }, _handler);
         }
     }
 

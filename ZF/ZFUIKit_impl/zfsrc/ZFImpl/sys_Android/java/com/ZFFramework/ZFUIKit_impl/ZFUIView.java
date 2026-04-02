@@ -98,12 +98,10 @@ public class ZFUIView extends ViewGroup {
 
     public static void native_visible(Object nativeView, boolean visible) {
         ((ZFUIView) nativeView).setVisibility(visible ? View.VISIBLE : View.GONE);
-        ZFUIRootWindow.windowColorUpdate();
     }
 
     public static void native_alpha(Object nativeView, float alpha) {
         ((ZFUIView) nativeView).setAlpha(alpha);
-        ZFUIRootWindow.windowColorUpdate();
     }
 
     public static void native_viewUIEnable(Object nativeView, boolean viewUIEnable) {
@@ -118,7 +116,6 @@ public class ZFUIView extends ViewGroup {
 
     public static void native_bgColor(Object nativeView, int bgColor) {
         ((ZFUIView) nativeView).setBackgroundColor(bgColor);
-        ZFUIRootWindow.windowColorUpdate();
     }
 
     public static void native_child(
@@ -355,7 +352,6 @@ public class ZFUIView extends ViewGroup {
                     0,
                     width,
                     height);
-            ZFUIRootWindow.windowColorUpdate();
         }
         this.setMeasuredDimension(this.viewFrame_width, this.viewFrame_height);
     }
@@ -373,7 +369,6 @@ public class ZFUIView extends ViewGroup {
                     t,
                     width,
                     height);
-            ZFUIRootWindow.windowColorUpdate();
         }
         for (int i = 0; i < this.getChildCount(); ++i) {
             View child = this.getChildAt(i);
