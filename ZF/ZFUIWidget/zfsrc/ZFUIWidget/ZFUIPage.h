@@ -433,12 +433,21 @@ public:
      * -# automatically call #managerCreate series according to window's life cycle
      * -# when you want to destroy the manager,
      *   simply call #managerDestroy
+     *
+     * the owner window can be changed by #managerWindow
      */
-    ZFMETHOD_DECLARE_1(ZFUIWindow *, managerCreateForWindow
+    ZFMETHOD_DECLARE_1(void, managerCreateForWindow
             , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
             )
     /** @brief valid only for #managerCreateForWindow */
-    ZFMETHOD_DECLARE_0(ZFUIWindow *, managerOwnerWindow)
+    ZFMETHOD_DECLARE_0(ZFUIWindow *, managerWindow)
+    /**
+     * @brief explicitly set or change the owner window, see #managerCreateForWindow
+     */
+    ZFMETHOD_DECLARE_2(void, managerWindow
+            , ZFMP_IN(ZFUIWindow *, window)
+            , ZFMP_IN_OPT(zfbool, autoHidePrev, zftrue)
+            )
 
     // ============================================================
     // container

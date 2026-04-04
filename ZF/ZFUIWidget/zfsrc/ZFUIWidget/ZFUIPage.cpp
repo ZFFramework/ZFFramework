@@ -92,7 +92,8 @@ void ZFUIPage::pageOnCreate(void) {
             p->pageManager()->observerNotifyWithSender(p, ZFUIPageManager::E_PageOrientationOnUpdate());
         }
     } ZFLISTENER_END()
-    ZFObserverGroup(this, pageView).observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), impl);
+    ZFObserverGroup(this, pageView) // group_pageLifeCycle
+        .observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), impl);
 }
 void ZFUIPage::pageOnResume(ZF_IN ZFUIPageResumeReason reason) {
     this->_ZFP_ZFUIPage_pageResumed = zftrue;
@@ -101,7 +102,7 @@ void ZFUIPage::pageOnPause(ZF_IN ZFUIPagePauseReason reason) {
     this->_ZFP_ZFUIPage_pageResumed = zffalse;
 }
 void ZFUIPage::pageOnDestroy(void) {
-    ZFObserverGroupRemove(this);
+    ZFObserverGroupRemove(this); // group_pageLifeCycle
     zfobjRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
     zfobjRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
     this->_ZFP_ZFUIPage_pageManager = zfnull;
@@ -147,7 +148,7 @@ public:
 };
 zfclassNotPOD _ZFP_ZFUIPageManagerPrivate {
 public:
-    ZFUIWindow *managerOwnerWindow; // no auto retain
+    ZFUIWindow *managerWindow; // no auto retain
     zfbool managerCreated;
     zfbool managerResumed;
     zfbool managerDestroyRunning;
@@ -167,7 +168,7 @@ public:
     zfint pageMoveFlag;
 public:
     _ZFP_ZFUIPageManagerPrivate(void)
-    : managerOwnerWindow(zfnull)
+    : managerWindow(zfnull)
     , managerCreated(zffalse)
     , managerResumed(zffalse)
     , managerDestroyRunning(zffalse)
@@ -585,10 +586,11 @@ void ZFUIPageManager::managerOnCreate(void) {
             p->observerNotify(ZFUIPageManager::E_ManagerOrientationOnUpdate());
         }
     } ZFLISTENER_END()
-    ZFObserverGroup(this, d->managerContainer).observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), impl);
+    ZFObserverGroup(this, d->managerContainer) // group_managerLifeCycle
+        .observerAdd(ZFUIView::E_ViewLayoutOnLayoutPrepare(), impl);
 }
 void ZFUIPageManager::managerOnDestroy(void) {
-    ZFObserverGroupRemove(this);
+    ZFObserverGroupRemove(this); // group_managerLifeCycle
     zfobjRetainChange(d->pageContainer, zfnull);
     zfobjRetainChange(d->managerContainer, zfnull);
 }
@@ -652,12 +654,12 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy) {
     }
     d->pageRequestResolve(this);
 
-    if(d->managerOwnerWindow != zfnull) {
-        ZFUIWindow *managerOwnerWindowTmp = d->managerOwnerWindow;
-        d->managerOwnerWindow = zfnull;
-        ZFObserverGroupRemove(this);
-        if(managerOwnerWindowTmp->showing()) {
-            managerOwnerWindowTmp->hide();
+    if(d->managerWindow != zfnull) {
+        ZFUIWindow *managerWindowTmp = d->managerWindow;
+        d->managerWindow = zfnull;
+        ZFObserverGroupRemove(d->managerContainer); // group_managerWindow
+        if(managerWindowTmp->showing()) {
+            managerWindowTmp->hide();
         }
     }
 
@@ -685,13 +687,31 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, isLandscape) {
     return d->managerOrientation == (zfbyte)1;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
+ZFMETHOD_DEFINE_1(ZFUIPageManager, void, managerCreateForWindow
         , ZFMP_IN_OPT(ZFUIRootWindow *, rootWindow, zfnull)
         ) {
-    zfobj<ZFUIWindow> window(rootWindow);
-    d->managerOwnerWindow = window;
+    this->managerWindow(zfobj<ZFUIWindow>(rootWindow));
+}
+ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFUIWindow *, managerWindow) {
+    return d->managerWindow;
+}
+ZFMETHOD_DEFINE_2(ZFUIPageManager, void, managerWindow
+        , ZFMP_IN(ZFUIWindow *, window)
+        , ZFMP_IN_OPT(zfbool, autoHidePrev, zftrue)
+        ) {
+    if(d->managerWindow == window) {
+        return;
+    }
+    ZFUIWindow *prev = d->managerWindow;
+    if(prev) {
+        ZFObserverGroupRemove(d->managerContainer); // group_managerWindow
+    }
+    d->managerWindow = window;
 
-    this->managerCreate();
+    if(!this->managerCreated()) {
+        this->managerCreate();
+    }
+    this->managerContainer()->removeFromParent();
     window->child(this->managerContainer())->c_sizeFill();
 
     ZFUIPageManager *owner = this;
@@ -718,40 +738,17 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
         owner->managerDestroy();
     } ZFLISTENER_END()
 
-    ZFObserverGroup(this, window)
+    ZFObserverGroup(d->managerContainer, window) // group_managerWindow
         .observerAdd(ZFUIWindow::E_ViewTreeVisibleOnUpdate(), viewTreeVisibleOnUpdate)
         .observerAdd(ZFUIWindow::E_ObjectBeforeDealloc(), onDestroy)
         ;
 
-    ZFLISTENER_1(rootWindowOnPause
-            , ZFUIPageManager *, owner
-            ) {
-        if(owner->managerResumed()) {
-            owner->managerPause();
-        }
-    } ZFLISTENER_END()
-    ZFLISTENER_1(rootWindowOnResume
-            , ZFUIPageManager *, owner
-            ) {
-        if(owner->managerCreated() && !owner->managerResumed()) {
-            owner->managerResume();
-        }
-    } ZFLISTENER_END()
-    ZFObserverGroup(this, window->rootWindow())
-        .observerAdd(ZFUIRootWindow::E_WindowOnPause(), rootWindowOnPause)
-        .observerAdd(ZFUIRootWindow::E_WindowOnResume(), rootWindowOnResume)
-        ;
-
     window->show();
-    if(window->rootWindow()->windowResumed()
-            && !this->managerResumed()
-            ) {
-        this->managerResume();
+    viewTreeVisibleOnUpdate.execute();
+
+    if(autoHidePrev && prev) {
+        prev->hide();
     }
-    return d->managerOwnerWindow;
-}
-ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFUIWindow *, managerOwnerWindow) {
-    return d->managerOwnerWindow;
 }
 
 // ============================================================
