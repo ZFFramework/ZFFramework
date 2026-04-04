@@ -27,8 +27,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
-
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.NativeUtil.ZFAndroidPost;
 import com.ZFFramework.NativeUtil.ZFObject;
@@ -476,7 +474,7 @@ public final class ZFUIRootWindow extends Activity {
         private final Paint _paintCacheBottom = new Paint();
 
         @Override
-        protected void onDraw(@NonNull Canvas canvas) {
+        protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (_drawOverride == 0) {
                 _paintCacheTop.setColor(_windowColorTopDetected);

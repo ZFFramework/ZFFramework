@@ -2,9 +2,6 @@ package com.ZFFramework.ZFNet_impl;
 
 import com.ZFFramework.ZF_impl.ZFResultType;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +31,7 @@ public final class ZFWebSocket {
                     private final int _wsTaskIdSaved = ws.wsTaskId;
 
                     @Override
-                    public void onOpen(@NotNull WebSocket webSocket, @NotNull Response response) {
+                    public void onOpen(WebSocket webSocket, Response response) {
                         super.onOpen(webSocket, response);
                         if (_wsTaskIdSaved == ws.wsTaskId) {
                             native_notifyOnOpen(ws.zfjniPointerOwnerZFWebSocket);
@@ -46,7 +43,7 @@ public final class ZFWebSocket {
                     }
 
                     @Override
-                    public void onClosed(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
+                    public void onClosed(WebSocket webSocket, int code, String reason) {
                         super.onClosed(webSocket, code, reason);
                         if (_wsTaskIdSaved == ws.wsTaskId) {
                             ++ws.wsTaskId;
@@ -55,12 +52,12 @@ public final class ZFWebSocket {
                     }
 
                     @Override
-                    public void onClosing(@NotNull WebSocket webSocket, int code, @NotNull String reason) {
+                    public void onClosing(WebSocket webSocket, int code, String reason) {
                         super.onClosing(webSocket, code, reason);
                     }
 
                     @Override
-                    public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, @Nullable Response response) {
+                    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                         super.onFailure(webSocket, t, response);
                         if (_wsTaskIdSaved == ws.wsTaskId) {
                             ++ws.wsTaskId;
@@ -73,7 +70,7 @@ public final class ZFWebSocket {
                     }
 
                     @Override
-                    public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
+                    public void onMessage(WebSocket webSocket, String text) {
                         super.onMessage(webSocket, text);
                         if (_wsTaskIdSaved == ws.wsTaskId) {
                             native_notifyOnRecv(ws.zfjniPointerOwnerZFWebSocket, text.getBytes());
@@ -81,7 +78,7 @@ public final class ZFWebSocket {
                     }
 
                     @Override
-                    public void onMessage(@NotNull WebSocket webSocket, @NotNull ByteString bytes) {
+                    public void onMessage(WebSocket webSocket, ByteString bytes) {
                         super.onMessage(webSocket, bytes);
                         if (_wsTaskIdSaved == ws.wsTaskId) {
                             native_notifyOnRecvBin(ws.zfjniPointerOwnerZFWebSocket, bytes.toByteArray());
