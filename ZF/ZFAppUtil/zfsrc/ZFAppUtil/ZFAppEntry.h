@@ -100,6 +100,13 @@ public:
     // ============================================================
 public:
     /**
+     * @brief util to set #ZFState::stateFile to ecrypted, by #ZFPathInfoForEncrypt
+     */
+    ZFMETHOD_DECLARE_1(void, stateEncrypt
+            , ZFMP_IN(const zfstring &, encryptKey)
+            )
+
+    /**
      * @brief add additional res by #ZFResExtPathAdd
      */
     ZFMETHOD_DECLARE_1(void, res
@@ -137,18 +144,6 @@ public:
             , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
             )
 };
-
-/**
- * @brief util to set #ZFState::stateFile to an ecrypted file, with specified encryptKey
- */
-#define ZFSTATE_ENCRYPT(encryptKey) \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStateEncrypt, ZFLevelZFFrameworkEssential) { \
-        zfstring key(encryptKey); \
-        if(key) { \
-            ZFState::instance()->stateFile(ZFPathInfoForEncrypt(ZFState::stateFileDefault(), key)); \
-        } \
-    } \
-    ZF_GLOBAL_INITIALIZER_END(ZFStateEncrypt)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFAppEntry_h_

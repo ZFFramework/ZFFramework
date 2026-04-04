@@ -88,6 +88,14 @@ ZFMETHOD_DEFINE_1(ZFAppEntry, void, onLoadStop
 }
 
 // ============================================================
+ZFMETHOD_DEFINE_1(ZFAppEntry, void, stateEncrypt
+        , ZFMP_IN(const zfstring &, encryptKey)
+        ) {
+    if(encryptKey) {
+        ZFState::instance()->stateFile(ZFPathInfoForEncrypt(ZFState::stateFileDefault(), encryptKey));
+    }
+}
+
 ZFMETHOD_DEFINE_1(ZFAppEntry, void, res
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         ) {
