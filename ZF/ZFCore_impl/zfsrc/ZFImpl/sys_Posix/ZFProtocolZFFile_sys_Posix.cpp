@@ -500,7 +500,7 @@ public:
 
                 if(!ZFBitTest(flags, v_ZFIOOpenOption::e_Modify)) {
                     close(fd);
-                    int fd = open(
+                    fd = open(
                             filePath
                             , O_RDWR | O_CREAT | O_TRUNC
                             , 0644
