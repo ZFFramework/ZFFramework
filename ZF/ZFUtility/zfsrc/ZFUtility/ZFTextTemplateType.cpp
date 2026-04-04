@@ -184,7 +184,7 @@ void ZFTextTemplateParam::replaceData(
         }
     }
     else {
-        if(!value) {
+        if(value) {
             d->replaceDataMap.set(key, value);
         }
     }
