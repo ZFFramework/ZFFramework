@@ -3,6 +3,7 @@ project({ZFTT_R_proj_name})
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 function(ZFAddSrc ZF_SRC_FILES_ PROJ_PATH_)
     file(GLOB_RECURSE ZF_SRC_FILES_TMP RELATIVE "${PROJECT_SOURCE_DIR}"

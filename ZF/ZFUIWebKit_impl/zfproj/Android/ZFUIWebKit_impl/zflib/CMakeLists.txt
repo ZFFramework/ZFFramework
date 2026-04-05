@@ -3,6 +3,7 @@ project(ZFUIWebKit_impl)
 
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.c"

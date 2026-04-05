@@ -41,7 +41,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFCoreCritical(
  * do nothing if exp is zftrue, otherwise,
  * print a critical error message,
  * then terminate app by #ZFCoreCriticalError
- * @note unlike zfassert, this function is always active, even if ZF_ENV_DEBUG is zftrue
+ * @note unlike zfassert, this function is always active, even if ZF_ENV_DEBUG is false
  * @see zfassert
  */
 #define ZFCoreAssert(exp) ZFCoreAssertWithMessage(exp, "assert failed for \"%s\"", #exp)
