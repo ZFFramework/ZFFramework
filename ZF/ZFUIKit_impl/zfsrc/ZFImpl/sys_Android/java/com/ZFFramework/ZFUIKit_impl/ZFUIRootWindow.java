@@ -621,7 +621,7 @@ public final class ZFUIRootWindow extends Activity {
             }
             int w = window.getDecorView().getWidth();
             int h = window.getDecorView().getHeight();
-            if (w <= 0 || h <= 0) {
+            if (w <= 0 || h <= 0 || !window.getDecorView().isAttachedToWindow()) {
                 return;
             }
             _running = true;
@@ -630,16 +630,20 @@ public final class ZFUIRootWindow extends Activity {
             } else {
                 _rectCache.set(w / 2, h - 1, w / 2 + 1, h);
             }
-            PixelCopy.request(window, _rectCache, _bmp, new PixelCopy.OnPixelCopyFinishedListener() {
-                @Override
-                public void onPixelCopyFinished(int copyResult) {
-                    _running = false;
-                    if (copyResult == PixelCopy.SUCCESS) {
-                        int color = _bmp.getPixel(0, 0);
-                        _callback.onResult(color);
+            try {
+                PixelCopy.request(window, _rectCache, _bmp, new PixelCopy.OnPixelCopyFinishedListener() {
+                    @Override
+                    public void onPixelCopyFinished(int copyResult) {
+                        _running = false;
+                        if (copyResult == PixelCopy.SUCCESS) {
+                            int color = _bmp.getPixel(0, 0);
+                            _callback.onResult(color);
+                        }
                     }
-                }
-            }, _handler);
+                }, _handler);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -258,10 +258,10 @@ void ZFUIWindow::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     const ZFUIMargin &safeAreaOrig = this->rootWindow()->safeArea();
     const ZFUIRect &viewFrame = this->viewFrame();
     ZFUIMargin safeAreaFixed;
-    safeAreaFixed.left = safeAreaOrig.left - viewFrame.x;
-    safeAreaFixed.top = safeAreaOrig.top - viewFrame.y;
-    safeAreaFixed.right = safeAreaOrig.right - (this->parent()->width() - ZFUIRectGetRight(viewFrame));
-    safeAreaFixed.bottom = safeAreaOrig.bottom - (this->parent()->height() - ZFUIRectGetBottom(viewFrame));
+    safeAreaFixed.left = zfmMax<zffloat>(0, safeAreaOrig.left - viewFrame.x);
+    safeAreaFixed.top = zfmMax<zffloat>(0, safeAreaOrig.top - viewFrame.y);
+    safeAreaFixed.right = zfmMax<zffloat>(0, safeAreaOrig.right - (this->parent()->width() - ZFUIRectGetRight(viewFrame)));
+    safeAreaFixed.bottom = zfmMax<zffloat>(0, safeAreaOrig.bottom - (this->parent()->height() - ZFUIRectGetBottom(viewFrame)));
     for(zfindex i = 0; i < this->childCount(); ++i) {
         ZFUIView *child = this->childAt(i);
         ZFUIWindowLayoutParam *lp = child->layoutParam();
