@@ -382,7 +382,7 @@ private:
         int fd = open(
                 srcPath
                 , O_RDWR
-                , 0644
+                , 0
                 );
         if(fd == -1) {
             return zftrue;
