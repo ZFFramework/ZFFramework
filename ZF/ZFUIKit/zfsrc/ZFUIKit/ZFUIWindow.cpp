@@ -277,7 +277,7 @@ void ZFUIWindow::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
             ZFUIAlignApplyT(
                     childFrame
                     , lp->align()
-                    , ZFUIRectApplyMargin(bounds, safeAreaFixed)
+                    , ZFUIRectApplyMargin(ZFUIRectApplyMargin(bounds, safeAreaFixed), lp->margin())
                     , child->layoutMeasuredSize()
                     );
         }
