@@ -216,7 +216,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     local ZF_APP_VERSION_CODE = zfuint(0)
     for i,e in zfl_iter(zfstringSplit(param:replaceData('app_version'), '.')) do
         local t = zfuint(e)
-        ZF_APP_VERSION_CODE = ZF_APP_VERSION_CODE * 100 + t
+        ZF_APP_VERSION_CODE = ZF_APP_VERSION_CODE * 1000 + t
     end
     param:replaceData('app_version_code', zfstring(ZF_APP_VERSION_CODE))
 

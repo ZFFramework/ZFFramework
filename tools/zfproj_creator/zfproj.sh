@@ -256,7 +256,7 @@ fi
 IFS='.' read -ra _ZF_APP_VERSION_PARTS <<< "$ZFTT_R_app_version"
 ZF_APP_VERSION_CODE=0
 for part in "${_ZF_APP_VERSION_PARTS[@]}"; do
-    ZF_APP_VERSION_CODE=$((ZF_APP_VERSION_CODE * 100 + part))
+    ZF_APP_VERSION_CODE=$((ZF_APP_VERSION_CODE * 1000 + part))
 done
 export ZFTT_R_app_version_code=$ZF_APP_VERSION_CODE
 
