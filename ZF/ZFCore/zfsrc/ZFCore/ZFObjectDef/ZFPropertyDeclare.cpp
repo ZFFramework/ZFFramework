@@ -122,7 +122,7 @@ void _ZFP_ZFPropertyLifeCycleCall_init_retain(
         , ZF_IN ZFObject *value
         , ZF_IN zfbool notifyOwnerAttach
         , ZF_IN void (*rawValueStoreCallback)(
-            ZF_IN void *rawValueStoreToken
+            ZF_IN_OUT void *rawValueStoreToken
             , ZF_IN ZFObject *value
             )
         , ZF_IN void *rawValueStoreToken
@@ -221,7 +221,7 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
         , ZF_IN ZFObject *propertyValueOld
         , ZF_IN ZFObject *propertyValueNew
         , ZF_IN void (*rawValueStoreCallback)(
-            ZF_IN void *rawValueStoreToken
+            ZF_IN_OUT void *rawValueStoreToken
             , ZF_IN ZFObject *value)
         , ZF_IN void *rawValueStoreToken
         ) {
@@ -266,7 +266,7 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_assign(
         , ZF_IN void *propertyValueOld
         , ZF_IN const void *propertyValueNew
         , ZF_IN void *(*rawValueStoreCallback)(
-            ZF_IN void *rawValueStoreToken
+            ZF_IN_OUT void *rawValueStoreToken
             , ZF_IN const void *value)
         , ZF_IN void *rawValueStoreToken
         , ZF_IN ZFObject *weakPropOld
