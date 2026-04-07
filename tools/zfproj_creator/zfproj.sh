@@ -518,7 +518,7 @@ printf "\r%s" $(tput el)
 
 # xUnique if necessary
 if ! test "x-$_PY" = "x-" ; then
-    echo "unique iOS project..."
+    echo "unique iOS project recursive: ${_TMP_DIR}"
     sh "$ZF_ROOT_PATH/tools/spec/iOS/unique_proj_recursive.sh" "$_TMP_DIR"
 fi
 

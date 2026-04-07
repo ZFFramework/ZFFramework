@@ -437,7 +437,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
     -- xUnique if necessary
     if not zfl_eq(config:get('ZF_TYPE'), 'app') then
         if not zfstringIsEmpty(_PY) then
-            ZFLogTrim('unique iOS project...')
+            ZFLogTrim('unique iOS project recursive: %s', _TMP_DIR)
             os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj_recursive.sh" "' .. _TMP_DIR .. '"')
         end
     end
