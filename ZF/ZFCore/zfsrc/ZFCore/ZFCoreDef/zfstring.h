@@ -68,8 +68,12 @@ public:
     } d;
 public:
     _ZFP_zfstringD(void) : refCount(1), capacity(0), length(0), d() {
+        d.ptr = Empty();
+    }
+public:
+    static const T_Char *Empty(void) {
         static T_Char buf[1] = {0};
-        d.ptr = buf;
+        return buf;
     }
 };
 template<typename T_Char>
@@ -531,7 +535,7 @@ public:
                     d->length = 0;
                 }
                 else {
-                    d->d.ptr = "";
+                    d->d.ptr = _ZFP_zfstringD<T_Char>::Empty();
                     d->length = 0;
                 }
             }
