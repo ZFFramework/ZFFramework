@@ -23,6 +23,17 @@ public:
      * @brief see #ZFFileIsDir
      */
     virtual zfbool isDir(ZF_IN const zfstring &path) zfpurevirtual;
+    /**
+     * @brief see #ZFFileIsSymlink
+     */
+    virtual zfbool isSymlink(ZF_IN const zfstring &path) zfpurevirtual;
+    /**
+     * @brief see #ZFFileReadSymlink
+     */
+    virtual zfbool readSymlink(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfstring &path
+            ) zfpurevirtual;
 
     /**
      * @brief see #ZFFilePathCreate

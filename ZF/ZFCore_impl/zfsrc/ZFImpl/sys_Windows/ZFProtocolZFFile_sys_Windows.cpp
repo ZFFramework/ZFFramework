@@ -23,6 +23,17 @@ public:
         return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
                     & FILE_ATTRIBUTE_DIRECTORY) != 0);
     }
+    zfoverride
+    virtual zfbool isSymlink(ZF_IN const zfstring &path) {
+        return zffalse;
+    }
+    zfoverride
+    virtual zfbool readSymlink(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfstring &path
+            ) {
+        return zffalse;
+    }
 
     zfoverride
     virtual zfbool filePathCreate(

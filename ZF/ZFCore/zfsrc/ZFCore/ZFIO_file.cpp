@@ -116,6 +116,36 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsDir
     return ZFPROTOCOL_ACCESS(ZFFile)->isDir(path);
 }
 
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsSymlink
+        , ZFMP_IN(const zfstring &, path)
+        ) {
+    if(path == zfnull) {
+        return zffalse;
+    }
+    return ZFPROTOCOL_ACCESS(ZFFile)->isSymlink(path);
+}
+
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileReadSymlinkT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, path)
+        ) {
+    if(path == zfnull) {
+        return zffalse;
+    }
+    return ZFPROTOCOL_ACCESS(ZFFile)->readSymlink(ret, path);
+}
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileReadSymlinkT
+        , ZFMP_IN(const zfstring &, path)
+        ) {
+    zfstring ret;
+    if(path && ZFPROTOCOL_ACCESS(ZFFile)->readSymlink(ret, path)) {
+        return ret;
+    }
+    else {
+        return path;
+    }
+}
+
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathCreate
         , ZFMP_IN(const zfstring &, path)
         , ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue)

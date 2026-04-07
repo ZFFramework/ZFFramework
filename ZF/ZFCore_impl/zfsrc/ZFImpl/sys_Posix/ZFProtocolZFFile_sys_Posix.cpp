@@ -32,6 +32,42 @@ public:
         if(lstat(tmp.cString(), &statbuf) < 0) {return zffalse;}
         return S_ISDIR(statbuf.st_mode);
     }
+    zfoverride
+    virtual zfbool isSymlink(ZF_IN const zfstring &path) {
+        struct stat statbuf;
+        if(lstat(path.cString(), &statbuf) < 0) {return zffalse;}
+        return S_ISLNK(statbuf.st_mode);
+    }
+    zfoverride
+    virtual zfbool readSymlink(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const zfstring &path
+            ) {
+        if(!path) {
+            return zffalse;
+        }
+
+        // prevent issue if &ret == &path
+        zfstring pathTmp = path;
+
+        zfindex bufLen = path.length();
+        do {
+            if(!ret.capacity(ret.length() + bufLen)) {
+                break;
+            }
+            ssize_t len = readlink(pathTmp.cString(), ret.zfunsafe_buffer() + ret.length(), bufLen);
+            if(len < 0) {
+                break;
+            }
+            if(len < bufLen) {
+                ret.zfunsafe_buffer()[ret.length() + len] = '\0';
+                ret.zfunsafe_length(ret.length() + len);
+                return zftrue;
+            }
+        } while(zftrue);
+        ret.zfunsafe_buffer()[ret.length()] = '\0';
+        return zffalse;
+    }
 
     zfoverride
     virtual zfbool filePathCreate(

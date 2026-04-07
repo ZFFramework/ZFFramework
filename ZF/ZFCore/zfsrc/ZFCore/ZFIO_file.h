@@ -57,17 +57,41 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile
 
 // ============================================================
 /**
- * @brief return true if file specified by path is exist
+ * @brief return true if path is exist
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileIsExist
         , ZFMP_IN(const zfstring &, path)
         )
 /**
- * @brief return true if file specified by path is a directory
+ * @brief return true if path is a directory
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileIsDir
+        , ZFMP_IN(const zfstring &, path)
+        )
+/**
+ * @brief return true if path is a symbolic link
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileIsSymlink
+        , ZFMP_IN(const zfstring &, path)
+        )
+/**
+ * @brief read symbolic link's original path,
+ *   do nothing and return false if not symlink or failed
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileReadSymlinkT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfstring &, path)
+        )
+/**
+ * @brief read symbolic link's original path,
+ *   return path passed from param if not symlink or failed
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileReadSymlink
         , ZFMP_IN(const zfstring &, path)
         )
 
