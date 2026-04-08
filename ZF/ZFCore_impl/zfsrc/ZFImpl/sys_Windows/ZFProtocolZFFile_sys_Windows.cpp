@@ -25,14 +25,76 @@ public:
     }
     zfoverride
     virtual zfbool isSymlink(ZF_IN const zfstring &path) {
-        return zffalse;
+        return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
+                    & FILE_ATTRIBUTE_REPARSE_POINT) != 0);
     }
     zfoverride
     virtual zfbool readSymlink(
             ZF_IN_OUT zfstring &ret
             , ZF_IN const zfstring &path
             ) {
-        return zffalse;
+        HANDLE h = CreateFileW(
+                zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()
+                , GENERIC_READ
+                , FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE
+                , NULL
+                , OPEN_EXISTING
+                , FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_BACKUP_SEMANTICS
+                , NULL
+                );
+        if(h == INVALID_HANDLE_VALUE) {
+            return zffalse;
+        }
+        BYTE buffer[MAXIMUM_REPARSE_DATA_BUFFER_SIZE];
+        DWORD returned = 0;
+        BOOL ok = DeviceIoControl(
+                h
+                , FSCTL_GET_REPARSE_POINT
+                , NULL
+                , 0
+                , buffer
+                , sizeof(buffer)
+                , &returned
+                , NULL
+                );
+        CloseHandle(h);
+        if(!ok) {
+            return zffalse;
+        }
+
+        typedef struct _REPARSE_DATA_BUFFER {
+            ULONG  ReparseTag;
+            USHORT ReparseDataLength;
+            USHORT Reserved;
+            union {
+                struct {
+                    USHORT SubstituteNameOffset;
+                    USHORT SubstituteNameLength;
+                    USHORT PrintNameOffset;
+                    USHORT PrintNameLength;
+                    ULONG  Flags;
+                    WCHAR  PathBuffer[1];
+                } SymbolicLinkReparseBuffer;
+                struct {
+                    USHORT SubstituteNameOffset;
+                    USHORT SubstituteNameLength;
+                    USHORT PrintNameOffset;
+                    USHORT PrintNameLength;
+                    WCHAR  PathBuffer[1];
+                } MountPointReparseBuffer;
+                struct {
+                    UCHAR DataBuffer[1];
+                } GenericReparseBuffer;
+            } DUMMYUNIONNAME;
+        } REPARSE_DATA_BUFFER, * PREPARSE_DATA_BUFFER;
+        REPARSE_DATA_BUFFER *rdb = (REPARSE_DATA_BUFFER *)buffer;
+        if(rdb->ReparseTag != IO_REPARSE_TAG_SYMLINK) {
+            return zffalse;
+        }
+        USHORT offset = rdb->SymbolicLinkReparseBuffer.PrintNameOffset / sizeof(WCHAR);
+        USHORT length = rdb->SymbolicLinkReparseBuffer.PrintNameLength / sizeof(WCHAR);
+        zfstringToUTF8(ret, zfstringW(rdb->SymbolicLinkReparseBuffer.PathBuffer + offset, length).cString(), v_ZFStringEncoding::e_UTF16);
+        return zftrue;
     }
 
     zfoverride

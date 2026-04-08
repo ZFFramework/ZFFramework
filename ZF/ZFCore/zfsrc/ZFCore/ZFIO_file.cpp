@@ -134,7 +134,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileReadSymlinkT
     }
     return ZFPROTOCOL_ACCESS(ZFFile)->readSymlink(ret, path);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileReadSymlinkT
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileReadSymlink
         , ZFMP_IN(const zfstring &, path)
         ) {
     zfstring ret;
