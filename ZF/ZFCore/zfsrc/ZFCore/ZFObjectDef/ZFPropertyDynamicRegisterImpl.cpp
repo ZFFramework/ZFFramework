@@ -71,9 +71,18 @@ public:
     zfstring tagKey_propertyValue;
 public:
     void objectAttach(ZF_IN ZFObject *obj) {
-        if(this->_objAttached.find(obj) == this->_objAttached.end()) {
-            obj->observerAdd(ZFObject::E_ObjectBeforeDealloc(), this->_objOnDeallocListener);
-        }
+        ZFCoreAssert(this->_objAttached.find(obj) == this->_objAttached.end());
+        ZFCoreAssert(obj
+                && !obj->objectInstanceStateCheck(ZFObjectInstanceStateOnDeallocPrepare)
+                && !obj->objectInstanceStateCheck(ZFObjectInstanceStateOnDealloc)
+                );
+        // must be called at last (as highest level),
+        // since property may be accessed by subclass to achieve custom dealloc action
+        obj->observerAdd(
+                ZFObject::E_ObjectBeforeDealloc()
+                , this->_objOnDeallocListener
+                , ZFLevelZFFrameworkStatic
+                );
         this->_objAttached[obj] = zftrue;
     }
     void objectDetach(ZF_IN ZFObject *obj) {

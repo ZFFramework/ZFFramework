@@ -543,11 +543,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFInputForLocalT
     return zftrue;
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeType_ZFInputForLocal) {
-    ZFPathInfo pathInfo;
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFIO_pathInfo, ZFPathInfo, pathInfo, {
-                return zffalse;
-            });
+    ZFPathInfo pathInfo = serializableData.pathInfoCheck();
+    if(!pathInfo) {
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            "no local path info");
+        return zffalse;
+    }
 
     zfstring localPath;
     ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
@@ -620,11 +621,12 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT
     return zftrue;
 }
 ZFCALLBACK_SERIALIZE_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeType_ZFOutputForLocal) {
-    ZFPathInfo pathInfo;
-    ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFIO_pathInfo, ZFPathInfo, pathInfo, {
-                return zffalse;
-            });
+    ZFPathInfo pathInfo = serializableData.pathInfoCheck();
+    if(!pathInfo) {
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            "no local path info");
+        return zffalse;
+    }
 
     zfstring localPath;
     ZFSerializableUtilSerializeAttrFromData(serializableData, outErrorHint, outErrorPos,
