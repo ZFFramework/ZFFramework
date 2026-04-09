@@ -536,11 +536,16 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         local pathInfo = zfargs:param0()
         local filtered = (not zfstringIsEqual(fd:name(), 'zfautoscript_zfproj.txt'))
         if fd:isDir() then
-            for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
-                if zfstringIsEqual(fd:name(), ZF_EXCLUDE_FILE_TMP:get(i)) then
-                    filtered = zftrue
-                    zfargs:param0(zfnull)
-                    break
+            if ZFFileIsSymlink(pathInfo:pathData()) then
+                filtered = zftrue
+                zfargs:param0(zfnull)
+            else
+                for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do
+                    if zfstringIsEqual(fd:name(), ZF_EXCLUDE_FILE_TMP:get(i)) then
+                        filtered = zftrue
+                        zfargs:param0(zfnull)
+                        break
+                    end
                 end
             end
         else
