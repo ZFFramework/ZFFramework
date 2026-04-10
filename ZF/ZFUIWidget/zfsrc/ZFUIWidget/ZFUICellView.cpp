@@ -10,15 +10,15 @@ void ZFUICellView::objectOnInitFinish(void) {
 
     zffloat itemMargin = ZFUIGlobalStyle::DefaultStyle()->itemMargin();
 
-    this->internalBgViewAdd(this->cellIconContainer());
+    this->internalBgView(this->cellIconContainer());
     this->cellIconContainer()->layoutParam()->align(v_ZFUIAlign::e_Center);
     this->cellIconContainer()->layoutParam()->margin(ZFUIMarginCreate(itemMargin, itemMargin, 0, itemMargin));
 
-    this->internalBgViewAdd(this->cellCenterContainer());
+    this->internalBgView(this->cellCenterContainer());
     this->cellCenterContainer()->layoutParam()->align(v_ZFUIAlign::e_Center);
     this->cellCenterContainer()->layoutParam()->margin(ZFUIMarginCreate(itemMargin));
 
-    this->internalBgViewAdd(this->cellAccessoryContainer());
+    this->internalBgView(this->cellAccessoryContainer());
     this->cellAccessoryContainer()->layoutParam()->align(v_ZFUIAlign::e_Center);
     this->cellAccessoryContainer()->layoutParam()->margin(ZFUIMarginCreate(0, itemMargin, itemMargin, itemMargin));
 }

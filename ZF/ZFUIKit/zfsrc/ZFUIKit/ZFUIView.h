@@ -582,7 +582,7 @@ public:
      * for example, a ImageView's implementation may use native view
      * and set it as internalNativeView\n
      * subclass must not override parent,
-     * if really necessary, use #internalBgViewAdd\n
+     * if really necessary, use #internalBgView\n
      * use with caution
      * @see nativeView
      */
@@ -1131,17 +1131,17 @@ protected:
     // ============================================================
     // internal views
 public:
-    /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalImplViewAdd
+    /** @brief see #internalBgView */
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalImplView
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
             , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
             )
-    /** @brief see #internalBgViewAdd */
+    /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_1(void, internalImplViewRemove
             , ZFMP_IN(ZFUIView *, view)
             )
-    /** @brief see #internalBgViewAdd */
+    /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, internalImplViewArray)
 
 public:
@@ -1157,17 +1157,17 @@ public:
      * each layer is independent and has the same interface to add or remove view\n
      * to make the interfaces cleaner, the internal ones are named with
      * "internalBgView" and "internalFgView" as pre-fix,
-     * such as #internalBgViewAdd and #internalBgViewRemove
+     * such as #internalBgView and #internalBgViewRemove
      * (considering the #child and #childRemove)\n
      * \n
      * internal views has no measure steps, its size always depends on parent's size
      */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalBgViewAdd
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalBgView
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
             , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
             )
-    /** @brief see #internalBgViewAdd */
+    /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_1(void, internalBgViewRemove
             , ZFMP_IN(ZFUIView *, view)
             )
@@ -1177,17 +1177,17 @@ public:
     ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, internalBgViewArray)
 
 public:
-    /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalFgViewAdd
+    /** @brief see #internalBgView */
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalFgView
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
             , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
             )
-    /** @brief see #internalBgViewAdd */
+    /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_1(void, internalFgViewRemove
             , ZFMP_IN(ZFUIView *, view)
             )
-    /** @brief see #internalBgViewAdd */
+    /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, internalFgViewArray)
 
     // ============================================================
@@ -1228,7 +1228,7 @@ protected:
     virtual inline zfbool internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
         return zftrue;
     }
-    /** @brief see #internalBgViewAdd */
+    /** @brief see #internalBgView */
     virtual void internalViewOnLayout(ZF_IN const ZFUIRect &bounds);
 
     // ============================================================

@@ -193,7 +193,7 @@ public final class ZFUIRootWindow extends Activity {
             ++count;
         }
         if (count > 1) {
-            nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         } else if (top) {
             nativeWindowTmp.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (left) {

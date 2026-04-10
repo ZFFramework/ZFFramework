@@ -417,10 +417,10 @@ void ZFUIDialog::objectOnInit(void) {
     d->pimplOwner = this;
 
     d->windowBg = zfobjAlloc(ZFUIView);
-    d->internalBgViewAdd(d->windowBg)->c_sizeFill();
+    d->internalBgView(d->windowBg)->c_sizeFill();
 
     d->dialogClickMask = zfobjAlloc(_ZFP_I_ZFUIDialog_DialogClickMask);
-    d->internalBgViewAdd(d->dialogClickMask)->c_sizeFill();
+    d->internalBgView(d->dialogClickMask)->c_sizeFill();
     d->dialogClickMask->observerAdd(ZFUIButton::E_ButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
 

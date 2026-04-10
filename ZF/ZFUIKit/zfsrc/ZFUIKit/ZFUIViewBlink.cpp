@@ -88,7 +88,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
 
     {
         zfobj<_ZFP_ZFUIViewBlinkView> t;
-        view->internalFgViewAdd(t);
+        view->internalFgView(t);
         view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkView, t);
         t->layoutParam()->sizeParam(ZFUISizeParamFillFill());
         blinkView = t;

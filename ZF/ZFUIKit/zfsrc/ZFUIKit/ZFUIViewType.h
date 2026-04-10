@@ -452,6 +452,21 @@ public:
             ZF_IN const zfany &view
             , ZF_IN_OPT zfindex atIndex = zfindexMax()
             );
+    /** @brief see #child */
+    zffinal zfanyT<ZFUILayoutParam> internalImplView(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            );
+    /** @brief see #child */
+    zffinal zfanyT<ZFUILayoutParam> internalBgView(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            );
+    /** @brief see #child */
+    zffinal zfanyT<ZFUILayoutParam> internalFgView(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            );
 
 public:
     zfoverride
@@ -498,9 +513,9 @@ protected:
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
     ZFENUM_VALUE(Normal) /**< @brief added by #ZFUIView::child */
-    ZFENUM_VALUE(InternalImpl) /**< @brief added by #ZFUIView::internalImplViewAdd */
-    ZFENUM_VALUE(InternalBg) /**< @brief added by #ZFUIView::internalBgViewAdd */
-    ZFENUM_VALUE(InternalFg) /**< @brief added by #ZFUIView::internalFgViewAdd */
+    ZFENUM_VALUE(InternalImpl) /**< @brief added by #ZFUIView::internalImplView */
+    ZFENUM_VALUE(InternalBg) /**< @brief added by #ZFUIView::internalBgView */
+    ZFENUM_VALUE(InternalFg) /**< @brief added by #ZFUIView::internalFgView */
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(InternalImpl)

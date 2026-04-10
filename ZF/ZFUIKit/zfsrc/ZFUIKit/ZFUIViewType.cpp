@@ -462,12 +462,87 @@ zfanyT<ZFUILayoutParam> ZFUILayoutParam::child(
             );
     return _ZFP_LP_owner->parent()->child(tmp, atIndex);
 }
+zfanyT<ZFUILayoutParam> ZFUILayoutParam::internalImplView(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
+            ) {
+    ZFCoreAssertWithMessageTrim(_ZFP_LP_owner
+            , "layout param not attached to view: %s"
+            , this
+            );
+    ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
+        ? zfcast(ZFUILayoutParam *, view)->ownerLayout()
+        : zfcast(ZFUIView *, view);
+    ZFCoreAssertWithMessageTrim(tmp
+            , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
+            , view
+            );
+    return _ZFP_LP_owner->parent()->internalImplView(tmp, atIndex);
+}
+zfanyT<ZFUILayoutParam> ZFUILayoutParam::internalBgView(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
+            ) {
+    ZFCoreAssertWithMessageTrim(_ZFP_LP_owner
+            , "layout param not attached to view: %s"
+            , this
+            );
+    ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
+        ? zfcast(ZFUILayoutParam *, view)->ownerLayout()
+        : zfcast(ZFUIView *, view);
+    ZFCoreAssertWithMessageTrim(tmp
+            , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
+            , view
+            );
+    return _ZFP_LP_owner->parent()->internalBgView(tmp, atIndex);
+}
+zfanyT<ZFUILayoutParam> ZFUILayoutParam::internalFgView(
+            ZF_IN const zfany &view
+            , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
+            ) {
+    ZFCoreAssertWithMessageTrim(_ZFP_LP_owner
+            , "layout param not attached to view: %s"
+            , this
+            );
+    ZFUIView *tmp = view->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())
+        ? zfcast(ZFUILayoutParam *, view)->ownerLayout()
+        : zfcast(ZFUIView *, view);
+    ZFCoreAssertWithMessageTrim(tmp
+            , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
+            , view
+            );
+    return _ZFP_LP_owner->parent()->internalFgView(tmp, atIndex);
+}
 /* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, child
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, child
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, internalImplView
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, internalImplView
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, internalBgView
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, internalBgView
+        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, internalFgView
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutParam>, internalFgView
         , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )

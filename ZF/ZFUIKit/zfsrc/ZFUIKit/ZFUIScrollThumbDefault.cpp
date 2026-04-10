@@ -124,7 +124,7 @@ void ZFUIScrollThumbDefault::scrollThumbInit(void) {
     d->lastPos = 0;
     d->lastSize = 0;
 
-    this->scrollView()->internalFgViewAdd(d->thumbView);
+    this->scrollView()->internalFgView(d->thumbView);
 
     if(this->scrollThumbHorizontal()) {
         d->thumbView->layoutParam()->align(v_ZFUIAlign::e_Left | v_ZFUIAlign::e_Bottom);

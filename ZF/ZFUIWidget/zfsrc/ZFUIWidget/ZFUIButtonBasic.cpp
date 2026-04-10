@@ -40,18 +40,18 @@ public:
         if(this->labelView == zfnull) {
             this->labelView = zfobjRetain(this->pimplOwner->labelViewClass()->newInstance());
             ZFCoreAssert(this->labelView != zfnull);
-            this->pimplOwner->internalBgViewAdd(this->labelView);
+            this->pimplOwner->internalBgView(this->labelView);
         }
     }
     void iconViewPrepare(void) {
         if(this->iconView == zfnull) {
             this->iconView = zfobjRetain(this->pimplOwner->iconViewClass()->newInstance());
             ZFCoreAssert(this->iconView != zfnull);
-            this->pimplOwner->internalBgViewAdd(this->iconView);
+            this->pimplOwner->internalBgView(this->iconView);
 
             if(this->labelView != zfnull) {
                 this->pimplOwner->internalBgViewRemove(this->labelView);
-                this->pimplOwner->internalBgViewAdd(this->labelView);
+                this->pimplOwner->internalBgView(this->labelView);
             }
         }
     }
@@ -59,15 +59,15 @@ public:
         if(this->bgView == zfnull) {
             this->bgView = zfobjRetain(this->pimplOwner->bgViewClass()->newInstance());
             ZFCoreAssert(this->bgView != zfnull);
-            this->pimplOwner->internalBgViewAdd(this->bgView);
+            this->pimplOwner->internalBgView(this->bgView);
 
             if(this->iconView != zfnull) {
                 this->pimplOwner->internalBgViewRemove(this->iconView);
-                this->pimplOwner->internalBgViewAdd(this->iconView);
+                this->pimplOwner->internalBgView(this->iconView);
             }
             if(this->labelView != zfnull) {
                 this->pimplOwner->internalBgViewRemove(this->labelView);
-                this->pimplOwner->internalBgViewAdd(this->labelView);
+                this->pimplOwner->internalBgView(this->labelView);
             }
         }
     }

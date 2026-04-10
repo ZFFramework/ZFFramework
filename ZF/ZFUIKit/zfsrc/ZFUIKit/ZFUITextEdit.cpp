@@ -181,7 +181,7 @@ void ZFUITextEdit::objectOnInit(void) {
         }
         return;
     }
-    this->internalImplViewAdd(placeholderTmp);
+    this->internalImplView(placeholderTmp);
     placeholderTmp->layoutParam()->sizeParam(ZFUISizeParamFillFill());
     placeholderTmp->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
 }
