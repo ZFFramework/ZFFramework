@@ -50,7 +50,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   zfstring str = s;
  *
  *   // for Windows API, convert to zfcharW and use WCS versions:
- *   WindowsWAPI(zfstringToUTF16(s, v_ZFStringEncoding::e_UTF8));
+ *   WindowsWAPI(zfstringToUTF16(v_ZFStringEncoding::e_UTF8, s));
  * @endcode
  *
  * for more advanced string encoding operation,
@@ -77,55 +77,86 @@ ZFENUM_REG(ZFLIB_ZFCore, ZFStringEncoding)
  * result would be appended to tail without clear
  */
 extern ZFLIB_ZFCore zfbool zfstringToUTF8(
-        ZF_OUT zfstring &result
-        , ZF_IN const void *s
+        ZF_IN_OUT zfstring &result
         , ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         );
 /** @brief see #zfstringToUTF8 */
 inline zfstring zfstringToUTF8(
-        ZF_IN const void *s
-        , ZF_IN ZFStringEncoding srcEncoding
+        ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfbool *success = zfnull
         ) {
     zfstring ret;
-    zfbool t = zfstringToUTF8(ret, s, srcEncoding);
+    zfbool t = zfstringToUTF8(ret, srcEncoding, src, srcLen);
     if(success != zfnull) {*success = t;}
     return ret;
 }
 
 /** @brief see #zfstringToUTF8 */
 extern ZFLIB_ZFCore zfbool zfstringToUTF16(
-        ZF_OUT zfstringW &result
-        , ZF_IN const void *s
+        ZF_IN_OUT zfstringW &result
         , ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         );
 /** @brief see #zfstringToUTF8 */
 inline zfstringW zfstringToUTF16(
-        ZF_IN const void *s
-        , ZF_IN ZFStringEncoding srcEncoding
+        ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfbool *success = zfnull
         ) {
     zfstringW ret;
-    zfbool t = zfstringToUTF16(ret, s, srcEncoding);
+    zfbool t = zfstringToUTF16(ret, srcEncoding, src, srcLen);
     if(success != zfnull) {*success = t;}
     return ret;
 }
 /** @brief see #zfstringToUTF8 */
 extern ZFLIB_ZFCore zfbool zfstringToUTF16BE(
-        ZF_OUT zfstringW &result
-        , ZF_IN const void *s
+        ZF_IN_OUT zfstringW &result
         , ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         );
 /** @brief see #zfstringToUTF8 */
 inline zfstringW zfstringToUTF16BE(
-        ZF_IN const void *s
-        , ZF_IN ZFStringEncoding srcEncoding
+        ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfbool *success = zfnull
         ) {
     zfstringW ret;
-    zfbool t = zfstringToUTF16BE(ret, s, srcEncoding);
+    zfbool t = zfstringToUTF16BE(ret, srcEncoding, src, srcLen);
     if(success != zfnull) {*success = t;}
     return ret;
+}
+
+// ============================================================
+/** @brief see #zfstringToUTF8 */
+inline zfbool zfstringToUTF16(
+        ZF_IN_OUT zfstringW &result
+        , ZF_IN const zfstring &src
+        ) {
+    return zfstringToUTF16(result, v_ZFStringEncoding::e_UTF8, src.cString(), src.length());
+}
+/** @brief see #zfstringToUTF8 */
+inline zfstringW zfstringToUTF16(ZF_IN const zfstring &src) {
+    return zfstringToUTF16(v_ZFStringEncoding::e_UTF8, src.cString(), src.length());
+}
+
+/** @brief see #zfstringToUTF8 */
+inline zfbool zfstringToUTF8(
+        ZF_IN_OUT zfstring &result
+        , ZF_IN const zfstringW &src
+        ) {
+    return zfstringToUTF8(result, v_ZFStringEncoding::e_UTF16, src.cString(), src.length());
+}
+/** @brief see #zfstringToUTF8 */
+inline zfstring zfstringToUTF8(ZF_IN const zfstringW &src) {
+    return zfstringToUTF8(v_ZFStringEncoding::e_UTF16, src.cString(), src.length());
 }
 
 ZF_NAMESPACE_GLOBAL_END

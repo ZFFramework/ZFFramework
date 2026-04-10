@@ -57,7 +57,7 @@ public:
                     zfstring tmp;
                     zfcharW buf[1024] = {0};
                     GetModuleFileNameW(zfnull, buf, 1024);
-                    zfstringToUTF8(tmp, buf, v_ZFStringEncoding::e_UTF16);
+                    zfstringToUTF8(tmp, v_ZFStringEncoding::e_UTF16, buf);
                 #else // #if ZF_ENV_sys_Windows
                     zfchar tmp[1024] = {0};
                     zfint len = (zfint)readlink("/proc/self/exe", tmp, 1024);

@@ -16,16 +16,16 @@ public:
     zfoverride
     virtual zfbool fileIsExist(ZF_IN const zfstring &path) {
         if(path == zfnull) {return zffalse;}
-        return (GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
+        return (GetFileAttributesW(zfstringToUTF16(path).cString()) != 0xFFFFFFFF);
     }
     zfoverride
     virtual zfbool isDir(ZF_IN const zfstring &path) {
-        return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
+        return ((GetFileAttributesW(zfstringToUTF16(path).cString())
                     & FILE_ATTRIBUTE_DIRECTORY) != 0);
     }
     zfoverride
     virtual zfbool isSymlink(ZF_IN const zfstring &path) {
-        return ((GetFileAttributesW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString())
+        return ((GetFileAttributesW(zfstringToUTF16(path).cString())
                     & FILE_ATTRIBUTE_REPARSE_POINT) != 0);
     }
     zfoverride
@@ -34,7 +34,7 @@ public:
             , ZF_IN const zfstring &path
             ) {
         HANDLE h = CreateFileW(
-                zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()
+                zfstringToUTF16(path).cString()
                 , GENERIC_READ
                 , FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE
                 , NULL
@@ -93,7 +93,7 @@ public:
         }
         USHORT offset = rdb->SymbolicLinkReparseBuffer.PrintNameOffset / sizeof(WCHAR);
         USHORT length = rdb->SymbolicLinkReparseBuffer.PrintNameLength / sizeof(WCHAR);
-        zfstringToUTF8(ret, zfstringW(rdb->SymbolicLinkReparseBuffer.PathBuffer + offset, length).cString(), v_ZFStringEncoding::e_UTF16);
+        zfstringToUTF8(ret, zfstringW(rdb->SymbolicLinkReparseBuffer.PathBuffer + offset, length));
         return zftrue;
     }
 
@@ -188,7 +188,7 @@ public:
     zfoverride
     virtual zftimet fileModTime(ZF_IN const zfstring &path) {
         WIN32_FILE_ATTRIBUTE_DATA fileInfo;
-        if(!GetFileAttributesExW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString(), GetFileExInfoStandard, &fileInfo)) {
+        if(!GetFileAttributesExW(zfstringToUTF16(path).cString(), GetFileExInfoStandard, &fileInfo)) {
             return zftimetInvalid();
         }
         ULARGE_INTEGER uli;
@@ -199,7 +199,7 @@ public:
     zfoverride
     virtual zfbool fileModTime(ZF_IN const zfstring &path, ZF_IN zftimet time) {
         HANDLE hFile = CreateFileW(
-                zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString()
+                zfstringToUTF16(path).cString()
                 , GENERIC_WRITE
                 , FILE_SHARE_READ | FILE_SHARE_WRITE
                 , NULL
@@ -236,7 +236,7 @@ private:
         HANDLE hFind;
         void setup(ZFIOFindData::Impl &zfd) {
             zfd.name.removeAll();
-            zfstringToUTF8(zfd.name, fd.cFileName, v_ZFStringEncoding::e_UTF16);
+            zfstringToUTF8(zfd.name, v_ZFStringEncoding::e_UTF16, fd.cFileName);
 
             zfstring filePath = this->parentPath;
             filePath += '/';
@@ -262,7 +262,7 @@ private:
             tmp += path;
             tmp += "/*";
             nativeFd->hFind = FindFirstFileW(
-                zfstringToUTF16(tmp, v_ZFStringEncoding::e_UTF8).cString(),
+                zfstringToUTF16(tmp).cString(),
                 &(nativeFd->fd));
             if(nativeFd->hFind == INVALID_HANDLE_VALUE) {break;}
 
@@ -317,7 +317,7 @@ private:
             }
             return zftrue;
         }
-        if(!CreateDirectoryW(zfstringToUTF16(path, v_ZFStringEncoding::e_UTF8).cString(), zfnull)) {
+        if(!CreateDirectoryW(zfstringToUTF16(path).cString(), zfnull)) {
             return zffalse;
         }
         return zftrue;
@@ -377,8 +377,8 @@ private:
             this->removeFile(dstPath, isForce);
         }
         if(CopyFileW(
-                    zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
-                    zfstringToUTF16(dstPath, v_ZFStringEncoding::e_UTF8).cString(),
+                    zfstringToUTF16(srcPath).cString(),
+                    zfstringToUTF16(dstPath).cString(),
                     !isForce
                     ) != TRUE) {
             return zffalse;
@@ -390,8 +390,8 @@ private:
             , ZF_IN const zfstring &dstPath
             ) {
         if(MoveFileW(
-                    zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
-                    zfstringToUTF16(dstPath, v_ZFStringEncoding::e_UTF8).cString()
+                    zfstringToUTF16(srcPath).cString(),
+                    zfstringToUTF16(dstPath).cString()
                     ) != TRUE) {
             return zffalse;
         }
@@ -456,10 +456,10 @@ private:
             ) {
         if(isForce) {
             SetFileAttributesW(
-                    zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString(),
+                    zfstringToUTF16(srcPath).cString(),
                     FILE_ATTRIBUTE_NORMAL);
         }
-        if(DeleteFileW(zfstringToUTF16(srcPath, v_ZFStringEncoding::e_UTF8).cString()) != TRUE) {
+        if(DeleteFileW(zfstringToUTF16(srcPath).cString()) != TRUE) {
             return zffalse;
         }
         return zftrue;
@@ -479,7 +479,7 @@ private:
 
             if(isForce) {
                 SetFileAttributesW(
-                        zfstringToUTF16(dirPath, v_ZFStringEncoding::e_UTF8).cString(),
+                        zfstringToUTF16(dirPath).cString(),
                         FILE_ATTRIBUTE_NORMAL);
             }
 
@@ -506,7 +506,7 @@ private:
         // delete all empty dir
         while(emptyDirsToDel.count() > 0) {
             zfstring pathTmp = emptyDirsToDel.removeLastAndGet();
-            if(RemoveDirectoryW(zfstringToUTF16(pathTmp, v_ZFStringEncoding::e_UTF8).cString()) == 0) {
+            if(RemoveDirectoryW(zfstringToUTF16(pathTmp).cString()) == 0) {
                 return zffalse;
             }
         } // while(!stacksDirToDel.empty())
@@ -527,7 +527,7 @@ public:
             , ZF_IN ZFIOOpenOptionFlags flags
             ) {
         zfstringW filePathTmp;
-        zfstringToUTF16(filePathTmp, filePath, v_ZFStringEncoding::e_UTF8);
+        zfstringToUTF16(filePathTmp, filePath);
 
         _FileToken token;
         zfmemset(&token, 0, sizeof(_FileToken));

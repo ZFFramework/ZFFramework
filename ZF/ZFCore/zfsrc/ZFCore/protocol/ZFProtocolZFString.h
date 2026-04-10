@@ -20,24 +20,27 @@ public:
      */
     virtual zfbool toUTF8(
             ZF_OUT zfstring &result
-            , ZF_IN const void *s
             , ZF_IN ZFStringEncoding srcEncoding
+            , ZF_IN const void *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
             ) zfpurevirtual;
     /**
      * @brief see #zfstringToUTF16
      */
     virtual zfbool toUTF16(
             ZF_OUT zfstringW &result
-            , ZF_IN const void *s
             , ZF_IN ZFStringEncoding srcEncoding
+            , ZF_IN const void *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
             ) zfpurevirtual;
     /**
      * @brief see #zfstringToUTF16BE
      */
     virtual zfbool toUTF16BE(
             ZF_OUT zfstringW &result
-            , ZF_IN const void *s
             , ZF_IN ZFStringEncoding srcEncoding
+            , ZF_IN const void *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
             ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFString)
 

@@ -8,29 +8,32 @@ ZFENUM_DEFINE(ZFStringEncoding)
 // ============================================================
 // conversion
 zfbool zfstringToUTF8(
-        ZF_OUT zfstring &result
-        , ZF_IN const void *s
+        ZF_IN_OUT zfstring &result
         , ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         ) {
-    if(s == zfnull) {return zftrue;}
-    return ZFPROTOCOL_ACCESS(ZFString)->toUTF8(result, s, srcEncoding);
+    if(src == zfnull) {return zftrue;}
+    return ZFPROTOCOL_ACCESS(ZFString)->toUTF8(result, srcEncoding, src, srcLen);
 }
 
 zfbool zfstringToUTF16(
-        ZF_OUT zfstringW &result
-        , ZF_IN const void *s
+        ZF_IN_OUT zfstringW &result
         , ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         ) {
-    if(s == zfnull) {return zftrue;}
-    return ZFPROTOCOL_ACCESS(ZFString)->toUTF16(result, s, srcEncoding);
+    if(src == zfnull) {return zftrue;}
+    return ZFPROTOCOL_ACCESS(ZFString)->toUTF16(result, srcEncoding, src, srcLen);
 }
 zfbool zfstringToUTF16BE(
-        ZF_OUT zfstringW &result
-        , ZF_IN const void *s
+        ZF_IN_OUT zfstringW &result
         , ZF_IN ZFStringEncoding srcEncoding
+        , ZF_IN const void *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         ) {
-    if(s == zfnull) {return zftrue;}
-    return ZFPROTOCOL_ACCESS(ZFString)->toUTF16BE(result, s, srcEncoding);
+    if(src == zfnull) {return zftrue;}
+    return ZFPROTOCOL_ACCESS(ZFString)->toUTF16BE(result, srcEncoding, src, srcLen);
 }
 
 ZF_NAMESPACE_GLOBAL_END
