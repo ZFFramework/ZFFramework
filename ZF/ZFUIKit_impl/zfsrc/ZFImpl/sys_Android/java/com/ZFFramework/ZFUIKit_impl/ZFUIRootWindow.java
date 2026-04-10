@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Insets;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
@@ -256,20 +257,21 @@ public final class ZFUIRootWindow extends Activity {
                         return insets;
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        _owner._safeAreaTop = insets.getInsets(WindowInsets.Type.statusBars()).top;
-                        _owner._safeAreaBottom = insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
+                        Insets tmp = insets.getInsets(WindowInsets.Type.systemBars());
+                        _owner._safeAreaLeft = tmp.left;
+                        _owner._safeAreaTop = tmp.top;
+                        _owner._safeAreaRight = tmp.right;
+                        _owner._safeAreaBottom = tmp.bottom;
                     } else {
+                        _owner._safeAreaLeft = insets.getSystemWindowInsetLeft();
                         _owner._safeAreaTop = insets.getSystemWindowInsetTop();
+                        _owner._safeAreaRight = insets.getSystemWindowInsetRight();
                         _owner._safeAreaBottom = insets.getSystemWindowInsetBottom();
                     }
-                    _owner._safeAreaLeft = 0;
-                    _owner._safeAreaRight = 0;
-
-                    WindowInsets tmp = _owner.getWindow().getDecorView().getRootWindowInsets();
-                    if (tmp != null) {
-                        DisplayCutout cutout = null;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            cutout = tmp.getDisplayCutout();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        WindowInsets tmp = _owner.getWindow().getDecorView().getRootWindowInsets();
+                        if (tmp != null) {
+                            DisplayCutout cutout = tmp.getDisplayCutout();
                             if (cutout != null) {
                                 _owner._safeAreaLeft = Math.max(_owner._safeAreaLeft, cutout.getSafeInsetLeft());
                                 _owner._safeAreaTop = Math.max(_owner._safeAreaTop, cutout.getSafeInsetTop());
@@ -278,7 +280,6 @@ public final class ZFUIRootWindow extends Activity {
                             }
                         }
                     }
-
                     requestLayout();
                     return insets;
                 }

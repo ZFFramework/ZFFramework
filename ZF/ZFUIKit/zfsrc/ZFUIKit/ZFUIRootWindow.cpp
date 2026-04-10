@@ -167,6 +167,10 @@ void ZFUIRootWindow::_ZFP_ZFUIRootWindow_safeArea(ZF_IN const ZFUIMargin &safeAr
     ZFUIMarginApplyScaleReverselyT(d->safeArea, safeArea, this->rootView()->UIScaleFixed());
     if(d->safeArea != safeAreaOld) {
         this->rootView()->layoutRequest();
+        const ZFCoreArray<zfautoT<ZFUIWindow> > &windowList = this->rootView()->windowList();
+        for(zfindex i = 0; i < windowList.count(); ++i) {
+            windowList[i]->layoutRequest();
+        }
         this->safeAreaOnUpdate(safeAreaOld);
     }
 }
