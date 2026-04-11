@@ -35,7 +35,7 @@ void ZFUITextEditWidget::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     ZFUIImageView *bgView = this->bgView();
-    this->internalImplView(bgView, zfnull, zffalse);
+    this->internalImplView(bgView, 0);
     bgView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
     bgView->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
 
@@ -78,10 +78,9 @@ void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &na
     }
 }
 zfbool ZFUITextEditWidget::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
-    if(internalView == this->clearButton()) {
-        return zffalse;
-    }
-    return zfsuper::internalViewShouldLayout(internalView);
+    return zftrue
+        && internalView != this->clearButton()
+        && zfsuper::internalViewShouldLayout(internalView);
 }
 void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);

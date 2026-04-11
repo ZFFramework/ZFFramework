@@ -95,15 +95,11 @@ void ZFUICellView::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
                 ));
 }
 zfbool ZFUICellView::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
-    if(internalView == this->cellIconContainer()
-            || internalView == this->cellCenterContainer()
-            || internalView == this->cellAccessoryContainer()
-            ) {
-        return zffalse;
-    }
-    else {
-        return zfsuper::internalViewShouldLayout(internalView);
-    }
+    return zftrue
+        && internalView != this->cellIconContainer()
+        && internalView != this->cellCenterContainer()
+        && internalView != this->cellAccessoryContainer()
+        && zfsuper::internalViewShouldLayout(internalView);
 }
 
 ZF_NAMESPACE_GLOBAL_END

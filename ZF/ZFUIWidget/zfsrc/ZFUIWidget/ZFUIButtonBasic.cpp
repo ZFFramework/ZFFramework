@@ -760,13 +760,11 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
 }
 
 zfbool ZFUIButtonBasic::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
-    if((d->labelView != zfnull && d->labelView->toObject() == internalView)
-            || (d->iconView != zfnull && d->iconView->toObject() == internalView)
-            || (d->bgView != zfnull && d->bgView->toObject() == internalView)
-            ) {
-        return zffalse;
-    }
-    return zfsuper::internalViewShouldLayout(internalView);
+    return zftrue
+        && internalView != d->labelView
+        && internalView != d->iconView
+        && internalView != d->bgView
+        && zfsuper::internalViewShouldLayout(internalView);
 }
 
 void ZFUIButtonBasic::buttonStateOnUpdate(void) {

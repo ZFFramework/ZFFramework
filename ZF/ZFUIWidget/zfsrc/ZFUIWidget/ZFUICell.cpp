@@ -8,7 +8,8 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUICell)
 ZFOBJECT_REGISTER(ZFUICell)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUICell, zfanyT<ZFUIView>, cellView) {
     if(this->cellView() != zfnull) {
-        this->internalFgView(this->cellView(), this->cellViewLayoutParam());
+        this->cellView()->layoutParam(this->cellViewLayoutParam());
+        this->internalFgView(this->cellView());
     }
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUICell, zfanyT<ZFUIView>, cellView) {

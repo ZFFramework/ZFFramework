@@ -411,12 +411,9 @@ void ZFUITextEdit::focusOnUpdate(void) {
 }
 
 zfbool ZFUITextEdit::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
-    if(internalView == this->placeholder()) {
-        return zffalse;
-    }
-    else {
-        return zfsuper::internalViewShouldLayout(internalView);
-    }
+    return zftrue
+        && internalView != this->placeholder()
+        && zfsuper::internalViewShouldLayout(internalView);
 }
 void ZFUITextEdit::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);

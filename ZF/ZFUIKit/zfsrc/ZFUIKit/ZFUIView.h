@@ -60,13 +60,11 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * @code
  *   <ViewClass>
  *       // optional, see #internalViewAutoSerializeTagAdd
- *       <ChildClass category="internalImplView" >
+ *       <ChildClass category="internalImplView" />
  *       // optional, see #internalViewAutoSerializeTagAdd
- *       <ChildClass category="internalBgView" >
- *       </ChildClass>
+ *       <ChildClass category="internalBgView" />
  *       // optional, see #internalViewAutoSerializeTagAdd
- *       <ChildClass category="internalFgView" >
- *       </ChildClass>
+ *       <ChildClass category="internalFgView" />
  *
  *       <ChildClass category="child" >
  *           // layout param for parent, optional
@@ -1008,20 +1006,10 @@ public:
 
 public:
     /**
-     * @brief add view with layout param, param must be created by #layoutParamCreate
+     * @brief add child and return child's #layoutParam
      *
-     * if layoutParam is null (by default), create new one by #layoutParamCreate\n
-     * if layoutParam is type of #layoutParamClass and not null, it would be used directly,
-     * otherwise, a new layout param would be created
-     * and source layout param would be copied to the newly created layout param
-     */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, childWithParam
-            , ZFMP_IN(ZFUIView *, view)
-            , ZFMP_IN(ZFUILayoutParam *, layoutParam)
-            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-            )
-    /**
-     * @brief add child and return child's #layoutParam, see #childWithParam
+     * you may change child's #layoutParam before adding,
+     * or a new one would be automatically created by #layoutParamCreate
      */
     zffinal zfanyT<ZFUILayoutParam> child(
             ZF_IN const zfany &view
@@ -1132,10 +1120,9 @@ protected:
     // internal views
 public:
     /** @brief see #internalBgView */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalImplView
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUILayoutParam>, internalImplView
             , ZFMP_IN(ZFUIView *, view)
-            , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
-            , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
     /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_1(void, internalImplViewRemove
@@ -1154,18 +1141,13 @@ public:
      * -  normal view
      * -  internal foreground view
      *
-     * each layer is independent and has the same interface to add or remove view\n
-     * to make the interfaces cleaner, the internal ones are named with
-     * "internalBgView" and "internalFgView" as pre-fix,
-     * such as #internalBgView and #internalBgViewRemove
-     * (considering the #child and #childRemove)\n
+     * each layer is independent and has similar interface to add or remove view\n
      * \n
      * internal views has no measure steps, its size always depends on parent's size
      */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalBgView
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUILayoutParam>, internalBgView
             , ZFMP_IN(ZFUIView *, view)
-            , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
-            , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
     /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_1(void, internalBgViewRemove
@@ -1178,10 +1160,9 @@ public:
 
 public:
     /** @brief see #internalBgView */
-    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalFgView
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUILayoutParam>, internalFgView
             , ZFMP_IN(ZFUIView *, view)
-            , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
-            , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
     /** @brief see #internalBgView */
     ZFMETHOD_DECLARE_1(void, internalFgViewRemove

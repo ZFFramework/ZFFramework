@@ -140,7 +140,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, show) {
             }
         }
     }
-    this->rootWindow()->rootView()->childWithParam(this, this->layoutParam(), addToIndex);
+    this->rootWindow()->rootView()->child(this, addToIndex);
     this->rootWindow()->rootView()->_ZFP_ZFUIRootView_windowList.add(this, windowIndex);
 }
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, hide) {

@@ -427,7 +427,6 @@ public:
             , ZF_IN ZFUIViewChildLayer childLayer
             , ZF_IN ZFCoreArray<zfautoT<ZFUIView> > &layer
             , ZF_IN ZFUIView *child
-            , ZF_IN ZFUILayoutParam *layoutParam
             , ZF_IN zfindex atIndex
             ) {
         ZFCoreAssertWithMessageTrim(!owner->objectDeallocRunning(),
@@ -441,20 +440,15 @@ public:
         }
         child->serializableRefLayoutParam(this->serializableRefLayoutParamCache);
 
-        if(layoutParam == zfnull) {
-            layoutParam = child->layoutParam();
-        }
-        zfautoT<ZFUILayoutParam> layoutParamTmp = layoutParam;
-        if(layoutParamTmp == zfnull) {
-            layoutParamTmp = owner->layoutParamCreate();
-            layoutParam = layoutParamTmp;
+        zfautoT<ZFUILayoutParam> layoutParam = child->layoutParam();
+        if(layoutParam) {
+            if(!layoutParam->classData()->classIsTypeOf(owner->layoutParamClass())) {
+                layoutParam = owner->layoutParamCreate();
+                layoutParam->styleableCopyFrom(child->layoutParam());
+            }
         }
         else {
-            if(!layoutParam->classData()->classIsTypeOf(owner->layoutParamClass())) {
-                layoutParamTmp = owner->layoutParamCreate();
-                layoutParamTmp->styleableCopyFrom(layoutParam);
-                layoutParam = layoutParamTmp;
-            }
+            layoutParam = owner->layoutParamCreate();
         }
 
         child->_ZFP_ZFUIView_parentOnUpdate(owner, layoutParam, childLayer);
@@ -944,7 +938,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
                 return zffalse;
             }
             ZFUIView *child = element;
-            this->childWithParam(child, child->layoutParam());
+            this->child(child);
 
             categoryData.resolveMark();
         }
@@ -2074,14 +2068,6 @@ ZFMETHOD_DEFINE_3(ZFUIView, zfauto, childForEach
     return zfargs.result();
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childWithParam
-        , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN(ZFUILayoutParam *, layoutParam)
-        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
-        ) {
-    return d->child(this, v_ZFUIViewChildLayer::e_Normal, d->layerNormal, view, layoutParam, atIndex);
-}
-
 zfanyT<ZFUILayoutParam> ZFUIView::child(
         ZF_IN const zfany &view
         , ZF_IN_OPT zfindex atIndex /* = zfindexMax() */
@@ -2093,7 +2079,7 @@ zfanyT<ZFUILayoutParam> ZFUIView::child(
             , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
             , view
             );
-    return this->childWithParam(tmp, zfnull, atIndex);
+    return d->child(tmp, v_ZFUIViewChildLayer::e_Normal, d->layerNormal, view, atIndex);
 }
 /* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, child
@@ -2233,12 +2219,11 @@ void ZFUIView::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
 
 // ============================================================
 // internal views
-ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalImplView
+ZFMETHOD_DEFINE_2(ZFUIView, zfanyT<ZFUILayoutParam>, internalImplView
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
-        , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return d->child(this, v_ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->child(this, v_ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view, atIndex);
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalImplViewRemove
         , ZFMP_IN(ZFUIView *, view)
@@ -2249,12 +2234,11 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, internalImplViewArr
     return d->layerInternalImpl;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalBgView
+ZFMETHOD_DEFINE_2(ZFUIView, zfanyT<ZFUILayoutParam>, internalBgView
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
-        , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return d->child(this, v_ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->child(this, v_ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view, atIndex);
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalBgViewRemove
         , ZFMP_IN(ZFUIView *, view)
@@ -2265,12 +2249,11 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, internalBgViewArray
     return d->layerInternalBg;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalFgView
+ZFMETHOD_DEFINE_2(ZFUIView, zfanyT<ZFUILayoutParam>, internalFgView
         , ZFMP_IN(ZFUIView *, view)
-        , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
-        , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return d->child(this, v_ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->child(this, v_ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view, atIndex);
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalFgViewRemove
         , ZFMP_IN(ZFUIView *, view)
@@ -2420,7 +2403,8 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     for(zfindex i = 0; i < ref->childCount(); ++i) {
         zfautoT<ZFUIView> child = ref->childAt(i)->copy();
         zfautoT<ZFUILayoutParam> childLayoutParam = ref->childAt(i)->layoutParam()->copy();
-        this->childWithParam(child, childLayoutParam);
+        child->layoutParam(childLayoutParam);
+        this->child(child);
     }
 }
 
