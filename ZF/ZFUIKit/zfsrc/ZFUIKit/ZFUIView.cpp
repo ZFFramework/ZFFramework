@@ -2058,7 +2058,7 @@ zfanyT<ZFUILayoutParam> ZFUIView::child(
             , "invalid view: %s, must be type of ZFUIView or ZFUILayoutParam"
             , view
             );
-    return d->child(tmp, v_ZFUIViewChildLayer::e_Normal, d->layerNormal, view, atIndex);
+    return d->child(this, v_ZFUIViewChildLayer::e_Normal, d->layerNormal, tmp, atIndex);
 }
 /* ZFTAG_TRICKS: util for chained call to build view tree */
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, child
