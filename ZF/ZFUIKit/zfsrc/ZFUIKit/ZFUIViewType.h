@@ -497,9 +497,7 @@ protected:
     }
 protected:
     /** @brief see #E_LayoutParamOnUpdate */
-    virtual inline void layoutParamOnUpdate(void) {
-        this->observerNotify(ZFUILayoutParam::E_LayoutParamOnUpdate());
-    }
+    virtual void layoutParamOnUpdate(void);
 
 public:
     ZFUIView *_ZFP_LP_owner;

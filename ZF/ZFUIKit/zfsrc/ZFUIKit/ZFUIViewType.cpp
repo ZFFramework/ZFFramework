@@ -547,6 +547,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUILayoutParam, zfanyT<ZFUILayoutPar
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         )
 
+void ZFUILayoutParam::layoutParamOnUpdate(void) {
+    if(this->ownerView()) {
+        this->ownerView()->layoutRequest();
+    }
+    this->observerNotify(ZFUILayoutParam::E_LayoutParamOnUpdate());
+}
+
 // ============================================================
 ZFENUM_DEFINE(ZFUIViewChildLayer)
 

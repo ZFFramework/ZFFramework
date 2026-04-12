@@ -27,13 +27,8 @@ public:
     ZFUIViewChildLayer viewLayer;
     zfautoT<ZFUILayoutParam> layoutParam;
     zfautoT<ZFUILayoutParam> serializableRefLayoutParam;
-    zfautoT<ZFUILayoutParam> serializableRefLayoutParamCache;
 
     _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType internalViewAutoSerializeTags;
-
-    zffloat UIScaleInherited;
-    zffloat UIScaleForImpl;
-    zffloat UIScaleFixed;
 
     zfautoT<ZFUIViewMeasureResult> measureResult;
     ZFUIRect viewFrame;
@@ -46,7 +41,6 @@ public:
     ZFCoreArray<zfautoT<ZFUIView> > layerInternalBg;
     ZFCoreArray<zfautoT<ZFUIView> > layerNormal;
     ZFCoreArray<zfautoT<ZFUIView> > layerInternalFg;
-    ZFListener layoutParamOnUpdate;
 
     enum {
         stateFlag_layoutRequested = 1 << 0,
@@ -90,6 +84,10 @@ public:
     };
     zfuint stateFlag;
 
+    zffloat UIScaleInherited;
+    zffloat UIScaleForImpl;
+    zffloat UIScaleFixed;
+
 public:
     _ZFP_ZFUIViewPrivate(void)
     : nativeView(zfnull)
@@ -100,11 +98,7 @@ public:
     , viewLayer(v_ZFUIViewChildLayer::e_Normal)
     , layoutParam(zfnull)
     , serializableRefLayoutParam(zfnull)
-    , serializableRefLayoutParamCache()
     , internalViewAutoSerializeTags()
-    , UIScaleInherited(1)
-    , UIScaleForImpl(1)
-    , UIScaleFixed(1)
     , measureResult(zfnull)
     , viewFrame(ZFUIRectZero())
     , viewFramePrev(ZFUIRectZero())
@@ -113,8 +107,10 @@ public:
     , layerInternalBg()
     , layerNormal()
     , layerInternalFg()
-    , layoutParamOnUpdate()
     , stateFlag(0)
+    , UIScaleInherited(1)
+    , UIScaleForImpl(1)
+    , UIScaleFixed(1)
     {
         ZFBitSet(this->stateFlag, 0
                 | _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested
@@ -271,15 +267,6 @@ public:
             ZF_IN ZFUIView *owner
             , ZF_IN ZFUILayoutParam *newLayoutParam
             ) {
-        if(!owner->d->layoutParamOnUpdate) {
-            ZFLISTENER_1(layoutParamOnUpdate
-                    , ZFUIView *, owner
-                    ) {
-                owner->layoutRequest();
-            } ZFLISTENER_END()
-            owner->d->layoutParamOnUpdate = layoutParamOnUpdate;
-        }
-
         if(this->layoutParam) {
             this->layoutParam->_ZFP_LP_owner = zfnull;
         }
@@ -291,12 +278,6 @@ public:
                     , newLayoutParam->_ZFP_LP_owner
                     );
             newLayoutParam->_ZFP_LP_owner = owner;
-            newLayoutParam->observerAdd(
-                ZFUILayoutParam::E_LayoutParamOnUpdate(),
-                owner->d->layoutParamOnUpdate);
-        }
-        if(this->layoutParam) {
-            this->layoutParam->observerRemove(ZFUILayoutParam::E_LayoutParamOnUpdate(), owner->d->layoutParamOnUpdate);
         }
         this->layoutParam = newLayoutParam;
     }
@@ -435,10 +416,7 @@ public:
         ZFCoreAssertWithMessageTrim(child->parent() == zfnull, "[ZFUIView] add child which already has parent, you should remove it first");
         zfobjReleaseInScope(zfobjRetain(child));
 
-        if(this->serializableRefLayoutParamCache == zfnull) {
-            this->serializableRefLayoutParamCache = owner->layoutParamCreate();
-        }
-        child->serializableRefLayoutParam(this->serializableRefLayoutParamCache);
+        child->serializableRefLayoutParam(zfnull);
 
         zfautoT<ZFUILayoutParam> layoutParam = child->layoutParam();
         if(layoutParam) {
@@ -1004,9 +982,14 @@ zfbool ZFUIView::serializableOnSerializeToData(
 
     // layoutParam
     if(d->layoutParam != zfnull && this->parent() != zfnull) {
-        ZFUILayoutParam *refLayoutParam = ((ref == zfnull) ? zfnull : ref->d->layoutParam);
+        zfautoT<ZFUILayoutParam> refLayoutParam = ((ref == zfnull) ? zfnull : ref->d->layoutParam);
         if(refLayoutParam == zfnull) {
-            refLayoutParam = d->serializableRefLayoutParam;
+            if(d->serializableRefLayoutParam) {
+                refLayoutParam = d->serializableRefLayoutParam;
+            }
+            else {
+                refLayoutParam = this->parent()->layoutParamCreate();
+            }
         }
         if(refLayoutParam != zfnull) {
             ZFSerializableData categoryData;
@@ -1502,10 +1485,6 @@ void ZFUIView::_ZFP_ZFUIView_parentOnUpdate(
     }
 
     d->layoutParamUpdate(this, layoutParam);
-    if(layoutParam == zfnull) {
-        this->serializableRefLayoutParam(zfnull);
-    }
-
     d->viewLayer = viewLayer;
 
     if(parent) {
