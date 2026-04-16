@@ -37,12 +37,12 @@ void ZFUITextEditWidget::objectOnInit(void) {
     ZFUIImageView *bgView = this->bgView();
     this->internalImplView(bgView, 0);
     bgView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-    bgView->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
+    bgView->serializableRefLayoutParamCheckInit()->sizeParam(ZFUISizeParamFillFill());
 
     ZFUIButtonBasic *clearButton = this->clearButton();
     this->internalBgView(clearButton);
     clearButton->layoutParam()->align(v_ZFUIAlign::e_Right);
-    clearButton->serializableRefLayoutParam()->align(v_ZFUIAlign::e_Right);
+    clearButton->serializableRefLayoutParamCheckInit()->align(v_ZFUIAlign::e_Right);
 
     _ZFP_ZFUITextEditWidget_updateClearButton(this);
 }

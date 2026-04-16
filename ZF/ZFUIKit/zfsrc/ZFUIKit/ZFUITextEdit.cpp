@@ -183,7 +183,7 @@ void ZFUITextEdit::objectOnInit(void) {
     }
     this->internalImplView(placeholderTmp);
     placeholderTmp->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-    placeholderTmp->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
+    placeholderTmp->serializableRefLayoutParamCheckInit()->sizeParam(ZFUISizeParamFillFill());
 }
 void ZFUITextEdit::objectOnDealloc(void) {
     zfpoolDelete(d);
