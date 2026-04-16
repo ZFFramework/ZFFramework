@@ -196,11 +196,25 @@ public class ZFUIScrollView extends ZFUIView {
 
         public JavaImpl(ZFUIScrollView owner) {
             this.owner = new WeakReference<ZFUIScrollView>(owner);
+            _dragTolerance = (int) (CONFIG_dragTolerance * ZFAndroidUI.screenDensity(owner.getDisplay()));
+            owner.addOnAttachStateChangeListener(new OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View v) {
+                    if (v.getDisplay() != null) {
+                        _dragTolerance = (int) (CONFIG_dragTolerance * ZFAndroidUI.screenDensity(v.getDisplay()));
+                    }
+                }
+
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                }
+            });
         }
 
         // ============================================================
         // global state
-        private static final int _dragTolerance = (int) (4 * ZFAndroidUI.screenDensity(ZFMainEntry.appContext()));
+        private static final int CONFIG_dragTolerance = 4;
+        private int _dragTolerance;
 
         private static enum _DragState {
             /**

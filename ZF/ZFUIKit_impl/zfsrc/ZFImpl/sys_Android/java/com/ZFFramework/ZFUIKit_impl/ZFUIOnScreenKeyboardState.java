@@ -128,7 +128,7 @@ public class ZFUIOnScreenKeyboardState {
             _activityRootView.get().getWindowVisibleDisplayFrame(r);
 
             int heightDiff = _activityRootView.get().getRootView().getHeight() - (r.bottom - r.top);
-            ZFAndroidSize screenSize = ZFAndroidUI.screenSize(ZFMainEntry.appContext());
+            ZFAndroidSize screenSize = ZFAndroidUI.screenSize(window.getDecorView().getDisplay());
             if ((heightDiff >= screenSize.height / 5) != (_heightDiffOld >= screenSize.height / 5)) {
                 _heightDiffOld = heightDiff;
                 _keyboardStateUpdater.sendMessage(Message.obtain(_keyboardStateUpdater, 0, window));
@@ -136,11 +136,9 @@ public class ZFUIOnScreenKeyboardState {
         }
     }
 
-    ;
-
     public static void keyboardStateRegister(Activity activity) {
         keyboardStateUnregister(activity);
-        View activityRootView = ZFAndroidUI.activityRootView(activity);
+        View activityRootView = activity.getWindow().getDecorView();
         _OnGlobalLayoutListener listener = new _OnGlobalLayoutListener(activity, activityRootView);
         _keyboardStateRegisterFlag.put(activity, new _RegisterFlagData(activityRootView, listener));
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(listener);
@@ -148,7 +146,7 @@ public class ZFUIOnScreenKeyboardState {
     }
 
     public static void keyboardStateUnregister(Activity activity) {
-        View activityRootView = ZFAndroidUI.activityRootView(activity);
+        View activityRootView = activity.getWindow().getDecorView();
         _RegisterFlagData flagData = _keyboardStateRegisterFlag.remove(activity);
         if (flagData != null) {
             activityRootView.getViewTreeObserver().removeOnGlobalLayoutListener(flagData.globalLayoutListener);
@@ -200,11 +198,14 @@ public class ZFUIOnScreenKeyboardState {
     public static void keyboardFrameUpdate(Window window, int[] outKeyboardFrame) {
         Rect rect = new Rect();
         window.getDecorView().getWindowVisibleDisplayFrame(rect);
-        ZFAndroidSize screenSize = ZFAndroidUI.screenSize(ZFMainEntry.appContext());
+        ZFAndroidSize screenSize = ZFAndroidUI.screenSize(window.getDecorView().getDisplay());
         outKeyboardFrame[0] = 0;
         outKeyboardFrame[1] = rect.bottom;
         outKeyboardFrame[2] = screenSize.width;
         outKeyboardFrame[3] = Math.max(0, screenSize.height - rect.bottom);
+        if (outKeyboardFrame[3] < 50 * ZFAndroidUI.screenDensity(window.getDecorView().getDisplay())) {
+            outKeyboardFrame[3] = 0;
+        }
     }
 
     public static native void native_notifyKeyboardStateOnUpdate();

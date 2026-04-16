@@ -177,7 +177,7 @@ public final class ZFUITextEdit extends EditText {
                         ? MeasureSpec.makeMeasureSpec(maxHeightOrNegative, MeasureSpec.AT_MOST)
                         : MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
-        int padding = (int) (2 * ZFAndroidUI.screenDensity(nativeTextEditTmp.getContext()));
+        int padding = (int) (2 * ZFAndroidUI.screenDensity(nativeTextEditTmp.getDisplay()));
         _native_measureNativeTextEdit_sizeCache[0] = nativeTextEditTmp.getMeasuredWidth() + padding;
         _native_measureNativeTextEdit_sizeCache[1] = nativeTextEditTmp.getMeasuredHeight() + padding;
         nativeTextEditTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, savedTextSize);

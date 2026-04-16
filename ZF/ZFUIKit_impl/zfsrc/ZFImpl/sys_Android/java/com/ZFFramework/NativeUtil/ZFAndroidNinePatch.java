@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.ZFFramework.ZF_impl.ZFMainEntry;
-
 public class ZFAndroidNinePatch {
     private static final Rect _srcRectCache = new Rect();
     private static final Rect _dstRectCache = new Rect();
@@ -21,13 +19,12 @@ public class ZFAndroidNinePatch {
             , int dstWidth
             , int dstHeight
     ) {
-        float uiScale = ZFAndroidUI.screenDensity(ZFMainEntry.appContext());
-        int srcLeft = (int) (srcNinePatchLeft / imageScale);
-        int srcTop = (int) (srcNinePatchTop / imageScale);
-        int srcRight = (int) (srcNinePatchRight / imageScale);
-        int srcBottom = (int) (srcNinePatchBottom / imageScale);
-        int srcWidth = (int) (src.getWidth() / imageScale);
-        int srcHeight = (int) (src.getHeight() / imageScale);
+        int srcLeft = srcNinePatchLeft;
+        int srcTop = srcNinePatchTop;
+        int srcRight = srcNinePatchRight;
+        int srcBottom = srcNinePatchBottom;
+        int srcWidth = src.getWidth();
+        int srcHeight = src.getHeight();
         if (srcWidth <= 0 || srcHeight <= 0 || dstWidth <= 0 || dstHeight <= 0) {
             return;
         }
@@ -46,10 +43,10 @@ public class ZFAndroidNinePatch {
             return;
         }
 
-        int leftDst = (int) (srcLeft * uiScale);
-        int topDst = (int) (srcTop * uiScale);
-        int rightDst = (int) (srcRight * uiScale);
-        int bottomDst = (int) (srcBottom * uiScale);
+        int leftDst = srcLeft;
+        int topDst = srcTop;
+        int rightDst = srcRight;
+        int bottomDst = srcBottom;
         if (leftDst + rightDst > dstWidth) {
             leftDst = dstWidth * leftDst / srcWidth;
             rightDst = dstWidth * rightDst / srcWidth;

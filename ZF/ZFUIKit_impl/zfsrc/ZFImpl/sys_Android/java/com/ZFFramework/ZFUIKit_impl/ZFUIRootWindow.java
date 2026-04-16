@@ -291,13 +291,9 @@ public final class ZFUIRootWindow extends Activity {
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            ZFUIOnScreenKeyboardState.keyboardFrameUpdate(((Activity) getContext()).getWindow(), _rectCache);
-            int keyboardHeight = _rectCache[3];
-
             int width = MeasureSpec.getSize(widthMeasureSpec);
             int height = MeasureSpec.getSize(heightMeasureSpec);
             this.setMeasuredDimension(width, height);
-            height += keyboardHeight;
 
             if (_owner != null && _owner._zfjniPointerOwnerZFUIRootWindow != 0) {
                 ZFUIRootWindow.native_notifyMeasureWindow(
@@ -392,7 +388,7 @@ public final class ZFUIRootWindow extends Activity {
         super.onConfigurationChanged(newConfig);
 
         int windowOrientationOld = _windowOrientation;
-        switch (((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation()) {
+        switch (getWindow().getDecorView().getDisplay().getRotation()) {
             case Surface.ROTATION_0:
                 _windowOrientation = ZFUIOrientation.e_Top;
                 break;

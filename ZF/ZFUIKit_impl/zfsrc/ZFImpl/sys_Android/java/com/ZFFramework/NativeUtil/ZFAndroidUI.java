@@ -1,7 +1,6 @@
 package com.ZFFramework.NativeUtil;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -11,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,24 +19,31 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.ZFFramework.ZF_impl.ZFMainEntry;
+
 @SuppressLint("DefaultLocale")
 public class ZFAndroidUI {
     // screen info
-    private static DisplayMetrics _displayMetricsCache = new DisplayMetrics();
+    private static final DisplayMetrics _displayMetricsCache = new DisplayMetrics();
 
-    public static ZFAndroidSize screenSize(Context context) {
-        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(_displayMetricsCache);
-        return new ZFAndroidSize(_displayMetricsCache.widthPixels, _displayMetricsCache.heightPixels);
+    public static ZFAndroidSize screenSize(Display display) {
+        if (display == null) {
+            ((WindowManager) ZFMainEntry.appContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(_displayMetricsCache);
+            return new ZFAndroidSize(_displayMetricsCache.widthPixels, _displayMetricsCache.heightPixels);
+        } else {
+            display.getMetrics(_displayMetricsCache);
+            return new ZFAndroidSize(_displayMetricsCache.widthPixels, _displayMetricsCache.heightPixels);
+        }
     }
 
-    public static float screenDensity(Context context) {
-        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(_displayMetricsCache);
-        return _displayMetricsCache.density;
-    }
-
-    // activity view info
-    public static View activityRootView(Activity activity) {
-        return activity.getWindow().getDecorView();
+    public static float screenDensity(Display display) {
+        if (display == null) {
+            ((WindowManager) ZFMainEntry.appContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(_displayMetricsCache);
+            return _displayMetricsCache.density;
+        } else {
+            display.getMetrics(_displayMetricsCache);
+            return _displayMetricsCache.density;
+        }
     }
 
     // view tree

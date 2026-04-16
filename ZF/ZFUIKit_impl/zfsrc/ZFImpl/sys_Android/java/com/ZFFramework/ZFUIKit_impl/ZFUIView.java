@@ -93,7 +93,7 @@ public class ZFUIView extends ViewGroup {
     }
 
     public static float native_UIScaleForPixel(Object nativeView) {
-        return ZFAndroidUI.screenDensity(((View) nativeView).getContext());
+        return ZFAndroidUI.screenDensity(((View) nativeView).getDisplay());
     }
 
     public static void native_visible(Object nativeView, boolean visible) {

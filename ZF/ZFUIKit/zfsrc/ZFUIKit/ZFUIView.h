@@ -215,17 +215,22 @@ public:
     // serialize
 public:
     /**
-     * @brief store ref layout param for this view for reducing serialization output size
+     * @brief store ref layout param for this view for reducing serialization output size,
+     *   null by default
      *
      * if set, while serializing this view's layout param,
      * the ref one would be used as reference object to filter out contents that didn't change
      * (see #ZFSerializable::serializeToData)\n
-     * by default, all children would have it's parent's default layout param (#layoutParamCreate)
-     * as the ref layout param, during adding to parent
+     * if not set, parent's #layoutParamCreate would be called to create one as default ref param\n
+     * \n
+     * serializableRefLayoutParamCheckInit can be used to init with parent's #layoutParamCreate
+     * (may still be null if not added to parent)
      */
     virtual void serializableRefLayoutParam(ZF_IN ZFUILayoutParam *serializableRefLayoutParam);
     /** @brief see #serializableRefLayoutParam */
     virtual ZFUILayoutParam *serializableRefLayoutParam(void);
+    /** @brief see #serializableRefLayoutParam */
+    virtual ZFUILayoutParam *serializableRefLayoutParamCheckInit(void);
 protected:
     zfoverride
     virtual zfbool serializableOnSerializeFromData(

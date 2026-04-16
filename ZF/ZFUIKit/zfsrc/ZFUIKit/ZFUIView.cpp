@@ -880,6 +880,17 @@ void ZFUIView::serializableRefLayoutParam(ZF_IN ZFUILayoutParam *serializableRef
 ZFUILayoutParam *ZFUIView::serializableRefLayoutParam(void) {
     return d->serializableRefLayoutParam;
 }
+ZFUILayoutParam *ZFUIView::serializableRefLayoutParamCheckInit(void) {
+    if(!d->serializableRefLayoutParam && d->parent) {
+        d->serializableRefLayoutParam = d->parent->layoutParamCreate();
+    }
+    return d->serializableRefLayoutParam;
+}
+ZFMETHOD_USER_REGISTER_1(ZFUIView, void, serializableRefLayoutParam
+        , ZFMP_IN(ZFUILayoutParam *, serializableRefLayoutParam)
+        )
+ZFMETHOD_USER_REGISTER_0(ZFUIView, ZFUILayoutParam *, serializableRefLayoutParam)
+ZFMETHOD_USER_REGISTER_0(ZFUIView, ZFUILayoutParam *, serializableRefLayoutParamCheckInit)
 
 zfbool ZFUIView::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
