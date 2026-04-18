@@ -43,7 +43,7 @@ public:
                 ZFUIOnScreenKeyboardState::E_KeyboardStateOnUpdate(),
                 this->onScreenKeyboardStateOnUpdateListener);
 
-            this->pimplOwner->scrollContentFrame(ZFUIRectGetBounds(this->pimplOwner->viewFrame()));
+            this->scrollContentFrameUpdate(this->pimplOwner->viewFrame().width, this->pimplOwner->viewFrame().height);
             if(this->autoFitMargin == ZFUIMarginZero() || this->pimplOwner->layoutParam() == zfnull) {
                 return;
             }
@@ -121,6 +121,12 @@ public:
             ret = ZFUIMarginZero();
         }
     }
+    void scrollContentFrameUpdate(ZF_IN zffloat width, ZF_IN zffloat height) {
+        ZFUIRect v = this->pimplOwner->scrollContentFrame();
+        v.width = width;
+        v.height = height;
+        this->pimplOwner->scrollContentFrameUpdate(v);
+    }
 
 public:
     static void onScreenKeyboardStateOnUpdate(
@@ -143,7 +149,7 @@ public:
                 ZFLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin reset to " << layout->d->autoFitMargin;
             #endif
             layout->nativeImplViewMarginUpdate();
-            layout->scrollContentFrame(ZFUIRectGetBounds(layout->viewFrame()));
+            layout->d->scrollContentFrameUpdate(layout->viewFrame().width, layout->viewFrame().height);
         }
         layout->layoutRequest();
     }
@@ -262,7 +268,6 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnMeasure(
     }
 }
 void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
-    zfsuper::layoutOnLayoutPrepare(bounds);
     if(!this->autoFitEnable()
             || (this->viewFrame().width == 0 && this->viewFrame().height == 0)
             || this->viewFrame().width != bounds.width || this->viewFrame().height != bounds.height
@@ -271,10 +276,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
         this->scrollContentFrame(bounds);
     }
     else {
-        ZFUIRect scrollContentFrame = this->scrollContentFrame();
-        scrollContentFrame.width = bounds.width;
-        scrollContentFrame.height = bounds.height;
-        this->scrollContentFrameUpdate(scrollContentFrame);
+        d->scrollContentFrameUpdate(bounds.width, bounds.height);
         d->autoFitUpdateFrame();
         if(d->autoFitFocusedViewNeedUpdate) {
             d->autoFitFocusedViewNeedUpdate = zffalse;
@@ -293,6 +295,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
             zfpost(scrollFocusedViewToVisibleDelay);
         }
     }
+    zfsuper::layoutOnLayoutPrepare(bounds);
 }
 void ZFUIOnScreenKeyboardAutoFitLayout::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin) {
     zfsuper::nativeImplViewMarginImplUpdate(nativeImplViewMargin);
