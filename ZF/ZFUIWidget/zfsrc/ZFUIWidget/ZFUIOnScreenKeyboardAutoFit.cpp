@@ -88,8 +88,8 @@ public:
         }
 
         ZFUIRect origRect = ZFUIViewPositionOnScreen(this->pimplOwner);
-        if(origRect.width != this->pimplOwner->viewFrame().width
-                || origRect.height != this->pimplOwner->viewFrame().height
+        if(zfmAbs(origRect.width - this->pimplOwner->viewFrame().width) > 2 * this->pimplOwner->UIScaleFixed()
+                || zfmAbs(origRect.height - this->pimplOwner->viewFrame().height) > 2 * this->pimplOwner->UIScaleFixed()
                 ) {
             return;
         }
@@ -109,21 +109,23 @@ public:
             , ZF_IN const ZFUIRect &origRect
             , ZF_IN ZFUIOnScreenKeyboardState *keyboardState
             ) {
-        ret = ZFUIMarginZero();
         if(keyboardState->keyboardShowing()) {
             ZFUIRect clientFrame = keyboardState->keyboardFixClientFrame();
             if(ZFUIRectGetLeft(clientFrame) > ZFUIRectGetLeft(origRect)) {
-                ret.left += ZFUIRectGetLeft(clientFrame) - ZFUIRectGetLeft(origRect);
+                ret.left = ZFUIRectGetLeft(clientFrame) - ZFUIRectGetLeft(origRect);
             }
             if(ZFUIRectGetTop(clientFrame) > ZFUIRectGetTop(origRect)) {
-                ret.top += ZFUIRectGetTop(clientFrame) - ZFUIRectGetTop(origRect);
+                ret.top = ZFUIRectGetTop(clientFrame) - ZFUIRectGetTop(origRect);
             }
             if(ZFUIRectGetRight(clientFrame) < ZFUIRectGetRight(origRect)) {
-                ret.right += ZFUIRectGetRight(origRect) - ZFUIRectGetRight(clientFrame);
+                ret.right = ZFUIRectGetRight(origRect) - ZFUIRectGetRight(clientFrame);
             }
             if(ZFUIRectGetBottom(clientFrame) < ZFUIRectGetBottom(origRect)) {
-                ret.bottom += ZFUIRectGetBottom(origRect) - ZFUIRectGetBottom(clientFrame);
+                ret.bottom = ZFUIRectGetBottom(origRect) - ZFUIRectGetBottom(clientFrame);
             }
+        }
+        else {
+            ret = ZFUIMarginZero();
         }
     }
 
@@ -139,7 +141,6 @@ public:
             }
             layout->d->scrollEnableFlag = zftrue;
             layout->scrollEnable(layout->d->scrollEnableFlag && layout->autoFitScrollEnable());
-            layout->layoutRequest();
         }
         else {
             layout->d->scrollEnableFlag = zffalse;
@@ -151,6 +152,7 @@ public:
             layout->layoutParam()->margin(layout->d->autoFitMargin);
             layout->scrollContentFrame(ZFUIRectGetBounds(layout->viewFrame()));
         }
+        layout->layoutRequest();
     }
     static void focusOnUpdate(
             ZF_IN const ZFArgs &zfargs
