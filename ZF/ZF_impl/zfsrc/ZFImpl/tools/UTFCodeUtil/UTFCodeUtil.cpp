@@ -8,7 +8,7 @@ size_t UTF8GetWordCount(const char *src, size_t len) {
     size_t count = 0;
     const unsigned char *p = (const unsigned char *)src;
     const unsigned char *pEnd = (const unsigned char *)src + len;
-    while(*p) {
+    while(p < pEnd) {
         if((*p & 0x80) == 0x00) {
             // 1-byte: 0xxxxxxx
             p += 1;

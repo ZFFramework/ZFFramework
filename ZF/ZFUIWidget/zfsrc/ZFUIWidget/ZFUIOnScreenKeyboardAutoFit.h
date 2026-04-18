@@ -65,6 +65,8 @@ protected:
             );
     zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds);
+    zfoverride
+    virtual void nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin);
 
 protected:
     // disable scroll thumb
