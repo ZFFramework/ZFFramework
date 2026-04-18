@@ -3,7 +3,7 @@
 #include "ZFUIScrollThumb.h"
 #include "protocol/ZFProtocolZFUIScrollView.h"
 
-#include "ZFUIViewPositionOnScreen.h"
+#include "ZFUIViewUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -903,8 +903,8 @@ ZFMETHOD_DEFINE_3(ZFUIScrollView, void, scrollChildToVisible
     zffloat offsetX = 0;
     zffloat offsetY = 0;
 
-    ZFUIRect selfRect = ZFUIViewPositionOnScreen(this);
-    ZFUIRect childRect = ZFUIViewPositionOnScreen(child);
+    ZFUIRect selfRect = this->scrollArea();
+    ZFUIRect childRect = ZFUIViewUtil::viewRectToParent(child, this);
     const ZFUIRect &contentFrame = this->scrollContentFrame();
     _ZFP_ZFUIScrollView_scrollChildToVisible(
         offsetX,

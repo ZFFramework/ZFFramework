@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -19,10 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ZFFramework.NativeUtil.ZFAndroidLog;
+import com.ZFFramework.NativeUtil.ZFAndroidPost;
 import com.ZFFramework.NativeUtil.ZFAndroidUI;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressLint("RtlHardcoded")
 public final class ZFUITextEdit extends EditText {
@@ -235,14 +239,31 @@ public final class ZFUITextEdit extends EditText {
         }
     }
 
+    private static final Map<IBinder, Integer> _imeHideDelay = new HashMap<>();
+
     @Override
     protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+        IBinder windowToken = this.getWindowToken();
         if (gainFocus) {
+            Integer delayId = _imeHideDelay.remove(windowToken);
+            if (delayId != null) {
+                ZFAndroidPost.cancel(delayId);
+            }
+            InputMethodManager imm = (InputMethodManager) ZFMainEntry.appContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
             ZFUITextEdit.native_notifyTextEditBegin(this.zfjniPointerOwnerZFUITextEdit);
         } else {
-            InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+            if (windowToken != null && !_imeHideDelay.containsKey(windowToken)) {
+                _imeHideDelay.put(windowToken, ZFAndroidPost.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        _imeHideDelay.remove(windowToken);
+                        InputMethodManager imm = (InputMethodManager) ZFMainEntry.appContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(windowToken, 0);
+                    }
+                }, 200));
+            }
             ZFUITextEdit.native_notifyTextEditEnd(this.zfjniPointerOwnerZFUITextEdit);
         }
     }

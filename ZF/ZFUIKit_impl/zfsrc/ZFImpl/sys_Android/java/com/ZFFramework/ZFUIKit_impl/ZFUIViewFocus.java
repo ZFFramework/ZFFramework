@@ -1,11 +1,8 @@
 package com.ZFFramework.ZFUIKit_impl;
 
-import android.content.Context;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewParent;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import java.lang.ref.WeakReference;
 
@@ -19,10 +16,6 @@ public class ZFUIViewFocus {
     private static OnFocusChangeListener _onFocusChangeListener = new OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus && (v instanceof EditText)) {
-                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
-            }
             ZFUIView tmp = null;
             if (v instanceof ZFUIView) {
                 tmp = (ZFUIView) v;

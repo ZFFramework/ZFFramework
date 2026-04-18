@@ -28,10 +28,10 @@ public class ZFAndroidUI {
 
     public static ZFAndroidSize screenSize(Display display) {
         if (display == null) {
-            ((WindowManager) ZFMainEntry.appContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(_displayMetricsCache);
+            ((WindowManager) ZFMainEntry.appContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRealMetrics(_displayMetricsCache);
             return new ZFAndroidSize(_displayMetricsCache.widthPixels, _displayMetricsCache.heightPixels);
         } else {
-            display.getMetrics(_displayMetricsCache);
+            display.getRealMetrics(_displayMetricsCache);
             return new ZFAndroidSize(_displayMetricsCache.widthPixels, _displayMetricsCache.heightPixels);
         }
     }
