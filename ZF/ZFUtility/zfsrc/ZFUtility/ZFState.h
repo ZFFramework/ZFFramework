@@ -69,6 +69,12 @@ public:
             , ZFMP_IN(const ZFListener &, callback)
             )
     /**
+     * @brief similar to #load, but do not start loading
+     */
+    ZFMETHOD_DECLARE_1(zfautoT<ZFTaskId>, onLoad
+            , ZFMP_IN(const ZFListener &, callback)
+            )
+    /**
      * @brief save and call callback when save complete
      */
     ZFMETHOD_DECLARE_1(zfautoT<ZFTaskId>, save

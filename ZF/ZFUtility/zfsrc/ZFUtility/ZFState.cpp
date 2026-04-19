@@ -525,6 +525,30 @@ ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, load
     d->loadCheck(this);
     return taskId;
 }
+ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, onLoad
+        , ZFMP_IN(const ZFListener &, callback)
+        ) {
+    if(!callback) {
+        return zfnull;
+    }
+    else if(this->ready()) {
+        callback.execute();
+        return zfnull;
+    }
+
+    zfobj<_ZFP_I_ZFStateLoadTaskId> taskId;
+    taskId->callback = callback;
+    ZFLISTENER_1(callbackWrap
+            , zfautoT<_ZFP_I_ZFStateLoadTaskId>, taskId
+            ) {
+        if(taskId->callback) {
+            taskId->callback.execute();
+            taskId->callback = zfnull;
+        }
+    } ZFLISTENER_END()
+    d->loadQueue->add(callbackWrap);
+    return taskId;
+}
 
 ZFMETHOD_DEFINE_1(ZFState, zfautoT<ZFTaskId>, save
         , ZFMP_IN(const ZFListener &, callback)
