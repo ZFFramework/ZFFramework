@@ -354,6 +354,7 @@ static zfstring _ZFP_ZFDI_cacheKey(
         , ZF_IN zfbool convStr
         ) {
     zfstring ret;
+    ret.capacity(methodName.length() + 12);
     if(obj) {
         zfidentityToStringT(ret, obj->classData()->classId());
     }
