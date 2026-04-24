@@ -178,7 +178,7 @@ inline zfbool zfstringIsEqual(
     else if(!s1 || s1Len == 0) {
         return (s2Len == 0 || *s2 == '\0');
     }
-    else if(!s2) {
+    else if(!s2 || s2Len == 0) {
         return (s1Len == 0 || *s1 == '\0');
     }
     else {

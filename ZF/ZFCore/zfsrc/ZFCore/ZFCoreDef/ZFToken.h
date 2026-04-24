@@ -51,12 +51,12 @@ public:
     {
     }
     zfbool operator == (ZF_IN const ZFTokenForContainer &ref) const {
-        return (this->tokenLeft.compare(ref.tokenLeft) == 0
-                && this->tokenRight.compare(ref.tokenRight) == 0
-                && this->tokenSeparator.compare(ref.tokenSeparator) == 0
-                && this->tokenValueLeft.compare(ref.tokenValueLeft) == 0
-                && this->tokenValueRight.compare(ref.tokenValueRight) == 0
-                && this->tokenEtc.compare(ref.tokenEtc) == 0
+        return (this->tokenLeft == ref.tokenLeft
+                && this->tokenRight == ref.tokenRight
+                && this->tokenSeparator == ref.tokenSeparator
+                && this->tokenValueLeft == ref.tokenValueLeft
+                && this->tokenValueRight == ref.tokenValueRight
+                && this->tokenEtc == ref.tokenEtc
             );
     }
     inline zfbool operator != (ZF_IN const ZFTokenForContainer &ref) const {return !(this->operator == (ref));}
@@ -167,17 +167,17 @@ public:
     {
     }
     zfbool operator == (ZF_IN const ZFTokenForKeyValueContainer &ref) const {
-        return (this->tokenLeft.compare(ref.tokenLeft) == 0
-                && this->tokenRight.compare(ref.tokenRight) == 0
-                && this->tokenSeparator.compare(ref.tokenSeparator) == 0
-                && this->tokenPairLeft.compare(ref.tokenPairLeft) == 0
-                && this->tokenPairRight.compare(ref.tokenPairRight) == 0
-                && this->tokenPairSeparator.compare(ref.tokenPairSeparator) == 0
-                && this->tokenKeyLeft.compare(ref.tokenKeyLeft) == 0
-                && this->tokenKeyRight.compare(ref.tokenKeyRight) == 0
-                && this->tokenValueLeft.compare(ref.tokenValueLeft) == 0
-                && this->tokenValueRight.compare(ref.tokenValueRight) == 0
-                && this->tokenEtc.compare(ref.tokenEtc) == 0
+        return (this->tokenLeft == ref.tokenLeft
+                && this->tokenRight == ref.tokenRight
+                && this->tokenSeparator == ref.tokenSeparator
+                && this->tokenPairLeft == ref.tokenPairLeft
+                && this->tokenPairRight == ref.tokenPairRight
+                && this->tokenPairSeparator == ref.tokenPairSeparator
+                && this->tokenKeyLeft == ref.tokenKeyLeft
+                && this->tokenKeyRight == ref.tokenKeyRight
+                && this->tokenValueLeft == ref.tokenValueLeft
+                && this->tokenValueRight == ref.tokenValueRight
+                && this->tokenEtc == ref.tokenEtc
             );
     }
     inline zfbool operator != (ZF_IN const ZFTokenForKeyValueContainer &ref) const {return !(this->operator == (ref));}

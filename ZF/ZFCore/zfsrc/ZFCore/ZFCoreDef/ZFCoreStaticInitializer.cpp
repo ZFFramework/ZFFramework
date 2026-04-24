@@ -58,7 +58,7 @@ public:
         _ZFP_ZFCoreStaticInitializer_invokeTimeLogger("create: %s", name.cString());
         ZFCoreMutexLocker();
         for(zfindex i = 0; i < this->datas.count(); ++i) {
-            if(this->datas[i]->name.compare(name) == 0) {
+            if(this->datas[i]->name == name) {
                 ++(this->datas[i]->refCount);
                 return this->datas[i]->instance;
             }

@@ -275,7 +275,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
         if(ref != zfnull) {
             zfstring imageBinRef;
             ZFUIImageToBase64(ZFOutputForString(imageBinRef), ref);
-            if(imageBin.compare(imageBinRef) == 0) {
+            if(imageBin == imageBinRef) {
                 return zftrue;
             }
         }

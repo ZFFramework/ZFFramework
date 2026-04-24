@@ -36,6 +36,18 @@ public:
 public:
     /** @brief whether empty */
     zfbool isEmpty(void) const;
+    /** @brief whether equal */
+    zfbool isEqual(ZF_IN const ZFSigName &ref) const {
+        return ((const zfstring &)(*this)).isEqual((const zfstring &)ref);
+    }
+    /** @brief whether equal */
+    zfbool isEqual(ZF_IN const zfstring &s) const {
+        return ((const zfstring &)(*this)).isEqual(s);
+    }
+    /** @brief whether equal */
+    zfbool isEqual(ZF_IN const zfchar *s) const {
+        return ((const zfstring &)(*this)).isEqual(s);
+    }
 
     /** @brief access string value, return empty string if empty */
     const zfchar *cString(void) const;
@@ -50,11 +62,11 @@ public:
     zfint compare(ZF_IN const zfstring &s) const {
         return ((const zfstring &)(*this)).compare(s);
     }
-
     /** @brief string comparation */
     zfint compare(ZF_IN const zfchar *s) const {
         return zfscmp(this->cString(), s ? s : "");
     }
+
     /** @cond ZFPrivateDoc */
 public:
     operator const zfchar * (void) const {return this->cString();}
@@ -65,12 +77,12 @@ public:
     ZFSigName &operator = (ZF_IN const zfchar *s);
     ZFSigName &operator = (ZF_IN const zfnullT &dummy);
 public:
-    zfbool operator == (ZF_IN const ZFSigName &ref) const {return this->compare(ref) == 0;}
-    zfbool operator != (ZF_IN const ZFSigName &ref) const {return this->compare(ref) != 0;}
-    zfbool operator == (ZF_IN const zfstring &s) const {return this->compare(s) == 0;}
-    zfbool operator != (ZF_IN const zfstring &s) const {return this->compare(s) != 0;}
-    zfbool operator == (ZF_IN const zfchar *s) const {return this->compare(s) == 0;}
-    zfbool operator != (ZF_IN const zfchar *s) const {return this->compare(s) != 0;}
+    zfbool operator == (ZF_IN const ZFSigName &ref) const {return this->isEqual(ref);}
+    zfbool operator != (ZF_IN const ZFSigName &ref) const {return !this->isEqual(ref);}
+    zfbool operator == (ZF_IN const zfstring &s) const {return this->isEqual(s);}
+    zfbool operator != (ZF_IN const zfstring &s) const {return !this->isEqual(s);}
+    zfbool operator == (ZF_IN const zfchar *s) const {return this->isEqual(s);}
+    zfbool operator != (ZF_IN const zfchar *s) const {return !this->isEqual(s);}
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return this->isEmpty();}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->isEmpty();}
 public:

@@ -20,40 +20,33 @@ zfindex _ZFP_zfstring_len(ZF_IN const T_Char *s) {
     while(*p) {++p;}
     return p - s;
 }
-template<typename T_Char>
-zfint _ZFP_zfstring_cmp(
-        ZF_IN const T_Char *s1
-        , ZF_IN const T_Char *s2
-        ) {
-    while(*s1 && *s2 && *s1 == *s2) {++s1, ++s2;}
-    return *s1 - *s2;
-}
-template<typename T_Char>
-zfint _ZFP_zfstring_ncmp(
-        ZF_IN const T_Char *s1
-        , ZF_IN const T_Char *s2
-        , ZF_IN zfindex len
-        ) {
-    while(--len && *s1 && *s2 && *s1 == *s2) {++s1, ++s2;}
-    return *s1 - *s2;
-}
-
-// ============================================================
 inline zfindex _ZFP_zfstring_len(ZF_IN const zfchar *s) {
     return zfslen(s);
 }
-inline zfint _ZFP_zfstring_cmp(
-        ZF_IN const zfchar *s1
-        , ZF_IN const zfchar *s2
+template<typename T_Char>
+zfint _ZFP_zfstring_cmp(
+        ZF_IN const T_Char *s1
+        , ZF_IN const T_Char *s1End
+        , ZF_IN const T_Char *s2
+        , ZF_IN const T_Char *s2End
         ) {
-    return zfscmp(s1, s2);
-}
-inline zfint _ZFP_zfstring_ncmp(
-        ZF_IN const zfchar *s1
-        , ZF_IN const zfchar *s2
-        , ZF_IN zfindex len
-        ) {
-    return zfsncmp(s1, s2, len);
+    while(s1 < s1End && s2 < s2End && *s1 == *s2) {++s1, ++s2;}
+    if(s1 == s1End) {
+        if(s2 == s2End) {
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    }
+    else {
+        if(s2 == s2End) {
+            return 1;
+        }
+        else {
+            return *s1 - *s2;
+        }
+    }
 }
 
 template<typename T_Char>
@@ -201,10 +194,10 @@ public:
     }
     inline zft_zfstring<T_Char> &operator = (ZF_IN const T_Char *s) {return this->assign(s);}
     inline zft_zfstring<T_Char> &operator = (ZF_IN zfnullT const &dummy) {return this->assign(dummy);}
-    zfbool operator == (ZF_IN const zft_zfstring<T_Char> &ref) const {return (this->compare(ref) == 0);}
-    zfbool operator != (ZF_IN const zft_zfstring<T_Char> &ref) const {return (this->compare(ref) != 0);}
-    zfbool operator == (ZF_IN const T_Char *ref) const {return (this->compare(ref) == 0);}
-    zfbool operator != (ZF_IN const T_Char *ref) const {return (this->compare(ref) != 0);}
+    zfbool operator == (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->isEqual(ref);}
+    zfbool operator != (ZF_IN const zft_zfstring<T_Char> &ref) const {return !this->isEqual(ref);}
+    zfbool operator == (ZF_IN const T_Char *ref) const {return this->isEqual(ref);}
+    zfbool operator != (ZF_IN const T_Char *ref) const {return !this->isEqual(ref);}
     zfbool operator == (ZF_IN zfnullT const &dummy) const {return this->isEmpty();}
     zfbool operator != (ZF_IN zfnullT const &dummy) const {return !this->isEmpty();}
 public:
@@ -480,6 +473,14 @@ public:
     inline zfbool isEmpty(void) const {
         return d->length == 0;
     }
+    /** @brief true if equal */
+    inline zfbool isEqual(ZF_IN const zft_zfstring<T_Char> &ref) const {
+        return d == ref.d || (this->length() == ref.length() && this->compare(ref) == 0);
+    }
+    /** @brief true if equal */
+    inline zfbool isEqual(ZF_IN const T_Char *s) const {
+        return 0 == _ZFP_zfstring_cmp(this->cString(), this->cString() + this->length(), s, s + (s ? _ZFP_zfstring_len(s) : 0));
+    }
 
 public:
     /** @brief ensure the string's capacity (including tail '\0'), note the result capacity is not ensured same as requested one */
@@ -550,7 +551,7 @@ public:
 public:
     /** @brief compare with another string */
     inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {
-        return d == s.d ? 0 : _ZFP_zfstring_cmp(this->cString(), s.cString());
+        return d == s.d ? 0 : _ZFP_zfstring_cmp(this->cString(), this->cString() + this->length(), s.cString(), s.cString() + s.length());
     }
     /** @brief compare with another string */
     zfint compare(
@@ -560,15 +561,7 @@ public:
         if(len == zfindexMax()) {
             len = s ? _ZFP_zfstring_len(s) : 0;
         }
-        if(this->length() < len) {
-            return -1;
-        }
-        else if(this->length() > len) {
-            return 1;
-        }
-        else {
-            return _ZFP_zfstring_ncmp(this->cString(), s, len);
-        }
+        return _ZFP_zfstring_cmp(this->cString(), this->cString() + this->length(), s, s + (s ? _ZFP_zfstring_len(s) : 0));
     }
 
 public:

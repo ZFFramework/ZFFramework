@@ -682,7 +682,7 @@ public:
         }
         for(zfindex i = views->count() - 1; i != zfindexMax(); --i) {
             ZFUIView *tmp = views->get(i);
-            if(tmp->viewId().compare(internalViewTmp->viewId()) == 0) {
+            if(tmp->viewId() == internalViewTmp->viewId()) {
                 exist = tmp;
                 break;
             }
@@ -776,7 +776,7 @@ public:
                 }
                 zfbool exist = zffalse;
                 for(zfindex iRef = viewsRef->count() - 1; iRef != zfindexMax(); --iRef) {
-                    if(viewsRef->get(iRef)->viewId().compare(tmp->viewId()) == 0) {
+                    if(viewsRef->get(iRef)->viewId() == tmp->viewId()) {
                         exist = zftrue;
                         break;
                     }

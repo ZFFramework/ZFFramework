@@ -117,7 +117,7 @@ protected:
 
                     ZFCoreArray<ZFUIPage *> pageToDestroy;
                     for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i) {
-                        if(pageManager->pageAt(i)->pageGroupId().compare(pageGroupId->zfv) == 0) {
+                        if(pageManager->pageAt(i)->pageGroupId() == pageGroupId->zfv) {
                             pageToDestroy.add(pageManager->pageAt(i));
                         }
                     }

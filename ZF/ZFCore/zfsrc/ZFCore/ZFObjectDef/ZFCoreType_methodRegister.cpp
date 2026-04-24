@@ -193,10 +193,12 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, invokeCountGet
 ZF_NAMESPACE_END(ZFCoreStatistic)
 
 // ============================================================
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, zfstringIsEqual
-        , ZFMP_IN(const zfchar *, s1)
-        , ZFMP_IN(const zfchar *, s2)
-        )
+ZFMETHOD_FUNC_USER_REGISTER_2(zfbool, zfstringIsEqual
+        , ZFMP_IN(const zfstring &, s1)
+        , ZFMP_IN(const zfstring &, s2)
+        ) {
+    return s1 == s2;
+}
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, zfstringIsEqual
         , ZFMP_IN(const zfchar *, s1)
         , ZFMP_IN(zfindex, s1Len)

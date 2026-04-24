@@ -128,7 +128,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
     else {
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->text(this, this->text());
     }
-    if(propertyValueOld.compare(this->text()) != 0) {
+    if(propertyValueOld != this->text()) {
         this->placeholder()->visible(this->text().isEmpty());
         this->layoutRequest();
     }

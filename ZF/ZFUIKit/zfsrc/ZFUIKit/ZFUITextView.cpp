@@ -25,7 +25,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUITextView, zfbool, viewUIEnableTree) {
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zfstring, text) {
     ZFPROTOCOL_ACCESS(ZFUITextView)->text(this, this->text());
-    if(propertyValueOld.compare(this->text()) != 0) {
+    if(propertyValueOld != this->text()) {
         this->layoutRequest();
     }
 }

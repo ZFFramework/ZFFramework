@@ -80,7 +80,7 @@
         text = ZFImpl_sys_iOS_zfstringFromNSString(s);
     }
 
-    if(self.lastText.compare(text) == 0) {
+    if(self.lastText == text) {
         return;
     }
 

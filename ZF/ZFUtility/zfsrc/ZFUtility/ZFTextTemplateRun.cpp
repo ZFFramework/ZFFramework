@@ -67,7 +67,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     ioImpl->ioToFileName(fileName, path);
     zfstring fileNameNew;
     ZFTextTemplateApply(textTemplateParam, ZFOutputForString(fileNameNew), fileName);
-    if(fileName.compare(fileNameNew) == 0) {
+    if(fileName == fileNameNew) {
         return zftrue;
     }
     if(fileNameNew.isEmpty()) {

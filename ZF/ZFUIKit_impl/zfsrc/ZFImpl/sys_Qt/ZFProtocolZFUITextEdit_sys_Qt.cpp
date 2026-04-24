@@ -71,7 +71,7 @@ public:
         }
     }
     void _ZFP_text(const zfstring &text, zfbool needNotify) {
-        if(this->textEditTextSaved.compare(text) == 0) {
+        if(this->textEditTextSaved == text) {
             return;
         }
         int cursor = this->cursorPosition();
