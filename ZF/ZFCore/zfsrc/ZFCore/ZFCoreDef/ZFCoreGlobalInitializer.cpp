@@ -1,7 +1,6 @@
 #include "ZFCoreGlobalInitializer.h"
 #include "ZFCoreMutex.h"
 #include "ZFCoreArray.h"
-#include "ZFCoreValue.h"
 #include "zfstr.h"
 
 #include "../ZFSTLWrapper/zfstlordermap.h"
@@ -61,17 +60,17 @@ public:
         }
     }
 };
-typedef zfstlordermap<zfstring, ZFCoreValue<_ZFP_GI_Data> > _ZFP_GI_DataMap;
+typedef zfstlordermap<zfstring, _ZFP_GI_Data *> _ZFP_GI_DataMap;
 
 static void _ZFP_GI_instanceInit(_ZFP_GI_DataMap &m) {
     if(!m.empty()) {
         // array may be changed during init step, copy it first
         _ZFP_GI_DataMap tmp = m;
         for(_ZFP_GI_DataMap::iterator it = tmp.begin(); it != tmp.end(); ++it) {
-            _ZFP_GI_Data &data = it->second.value();
-            if(data.instance == zfnull) {
-                _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data.name.cString());
-                data.instance = data.constructor();
+            _ZFP_GI_Data *data = it->second;
+            if(data->instance == zfnull) {
+                _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data->name.cString());
+                data->instance = data->constructor();
             }
         }
     }
@@ -84,13 +83,13 @@ static void _ZFP_GI_instanceDealloc(_ZFP_GI_DataMap &m) {
             _ZFP_GI_DataMap::iterator it = m.end();
             --it;
             for( ; it != m.end(); --it) {
-                _ZFP_GI_Data &data = it->second.value();
-                if(data.instance != zfnull) {
+                _ZFP_GI_Data *data = it->second;
+                if(data->instance != zfnull) {
                     hasDataToClean = zftrue;
-                    void *tmp = data.instance;
-                    data.instance = zfnull;
-                    _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("destroy %s", data.name.cString());
-                    data.destructor(tmp);
+                    void *tmp = data->instance;
+                    data->instance = zfnull;
+                    _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("destroy %s", data->name.cString());
+                    data->destructor(tmp);
                 }
                 if(it == m.begin()) {
                     break;
@@ -506,12 +505,13 @@ static void _ZFP_GI_dataRegister(
     {
         _ZFP_GI_DataMap::iterator it = dataMap.find(name);
         if(it != dataMap.end()) {
-            data = &(it->second.value());
+            data = it->second;
             ZFCoreAssert(level == data->level);
             ++(data->refCount);
         }
         else {
-            data = &(dataMap[name].value());
+            data = zfpoolNew(_ZFP_GI_Data);
+            dataMap[name] = data;
             data->name = name;
             data->level = level;
             data->constructor = constructor;
@@ -558,10 +558,11 @@ static void _ZFP_GI_dataUnregister(
         ZFCoreCriticalShouldNotGoHere();
         return;
     }
-    _ZFP_GI_Data &data = it->second.value();
-    --(data.refCount);
-    if(data.refCount == 0) {
+    _ZFP_GI_Data *data = it->second;
+    --(data->refCount);
+    if(data->refCount == 0) {
         dataMap.erase(it);
+        zfpoolDelete(data);
     }
 }
 
@@ -590,20 +591,20 @@ static void **_ZFP_GI_instanceAccess(
         return &dummy;
     }
 
-    _ZFP_GI_Data &data = it->second.value();
-    if(data.instance == zfnull) {
-        _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data.name.cString());
-        data.instance = data.constructor();
-        _ZFP_GI_notifyInstanceCreated(data);
+    _ZFP_GI_Data *data = it->second;
+    if(data->instance == zfnull) {
+        _ZFP_ZFCoreGlobalInitializer_invokeTimeLogger("create %s", data->name.cString());
+        data->instance = data->constructor();
+        _ZFP_GI_notifyInstanceCreated(*data);
     }
 
-    return &(data.instance);
+    return &(data->instance);
 }
 
 static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(_ZFP_GI_DataMap &data) {
     for(_ZFP_GI_DataMap::iterator it = data.begin(); it != data.end(); ++it) {
-        if(it->second.value().instance == zfnull) {
-            return &(it->second.value());
+        if(it->second->instance == zfnull) {
+            return it->second;
         }
     }
     return zfnull;
@@ -678,13 +679,13 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data &data) {
     _ZFP_GI_DataMap::iterator prevNull = dataMap.end();
     _ZFP_GI_DataMap::iterator selfPos = dataMap.end();
     for(_ZFP_GI_DataMap::iterator it = dataMap.begin(); it != dataMap.end(); ++it) {
-        if(&(it->second.value()) == &data) {
+        if(it->second == &data) {
             selfPos = it;
             if(prevNull != dataMap.end()) {
                 break;
             }
         }
-        else if(prevNull == dataMap.end() && it->second.value().instance == zfnull) {
+        else if(prevNull == dataMap.end() && it->second->instance == zfnull) {
             if(selfPos != dataMap.end()) {
                 break;
             }

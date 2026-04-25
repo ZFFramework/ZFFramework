@@ -10,8 +10,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassLikePOD _ZFP_ZFSigNamePrivate {
 public:
     zfuint refCount;
-    zfstring s;
     zfidentity sigId;
+    zfstring s;
 };
 
 typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;

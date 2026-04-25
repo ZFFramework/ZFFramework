@@ -694,6 +694,7 @@ public:
     ZFClass(void);
     ~ZFClass(void);
     /** @endcond */
+    void _ZFP_ZFClass_release(void);
     void _ZFP_ZFClass_autoRegister(void) const;
     inline zfbool _ZFP_ZFClass_interfaceHasRegisterCk(void) const {
         return ZFBitTest(_stateFlags, _stateFlags_interfaceHasRegisterCk);
