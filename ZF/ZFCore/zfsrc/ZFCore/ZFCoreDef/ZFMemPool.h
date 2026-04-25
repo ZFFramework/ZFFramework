@@ -41,7 +41,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #else
     #define zfpoolNew(T_Type, ...) zfnew(T_Type, ##__VA_ARGS__)
     #define zfpoolDelete(obj) zfdelete(obj)
-    #define zfpoolDeclareFriend()
+    #define zfpoolDeclareFriend() zfmemDeclareFriend()
 #endif
 
 #if ZF_ENV_ZFMEMPOOL_ENABLE

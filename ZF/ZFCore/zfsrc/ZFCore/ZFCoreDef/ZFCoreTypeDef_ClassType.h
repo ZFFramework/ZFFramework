@@ -115,6 +115,13 @@ template<typename Type> inline void _ZFP_zfdeletePlacement(Type *obj) {obj->~Typ
 /** @brief placement delete (instance->~Type()) defined for future use */
 #define zfdeletePlacement(instance) _ZFP_zfdeletePlacement(instance)
 
+/** @brief use to declare friend if your type has non-public constructors */
+#define zfmemDeclareFriend() \
+    template<typename Type> \
+    friend void ZF_NAMESPACE_GLOBAL::_ZFP_zfdelete(Type *obj); \
+    template<typename Type> \
+    friend void ZF_NAMESPACE_GLOBAL::_ZFP_zfdeletePlacement(Type *obj);
+
 #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
     inline void *_ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(void *p, zfindex size) {
         _ZFP_ZFMEM_LOG_LARGE_OBJECT_action(size);
