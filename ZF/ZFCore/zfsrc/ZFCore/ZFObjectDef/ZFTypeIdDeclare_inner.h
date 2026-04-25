@@ -117,9 +117,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     /** @brief type wrapper for #ZFTypeId::Value */ \
     zfclass v_##TypeName : zfextend ZFTypeIdWrapper { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper, OuterClass) \
-        ZFOBJECT_CACHE_RELEASE({ \
-            cache->zfvReset(); \
-        }) \
     public: \
         typedef _ZFP_PropTypeW_##TypeName _ZFP_PropType; \
         /** @brief the value, see #ZFTypeId::Value */ \

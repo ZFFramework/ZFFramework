@@ -58,9 +58,6 @@ public:
 protected:
     ZFValue(void) : _value(zfnull), _type(zfnull) {}
 
-    ZFOBJECT_CACHE_RELEASE({
-        cache->_cleanup();
-    })
 private:
     void *_value;
     ZFValueType _type;

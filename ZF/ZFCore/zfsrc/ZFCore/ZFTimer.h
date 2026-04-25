@@ -23,10 +23,6 @@ zfclassFwd _ZFP_ZFTimerPrivate;
 zfclass ZFLIB_ZFCore ZFTimer : zfextend ZFObject, zfimplement ZFTaskId {
     ZFOBJECT_DECLARE(ZFTimer, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFTaskId)
-    ZFOBJECT_CACHE_RELEASE({
-            cache->stop();
-            cache->interval(1000);
-        })
 
     // ============================================================
     // observer events

@@ -12,9 +12,6 @@ ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidInput, ZFImpl
 #define _ZFP_ZFAndroidInputBufSize 4096
 zfclass _ZFP_I_ZFAndroidInput : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidInput, ZFObject)
-    ZFOBJECT_CACHE_RELEASE({
-            cache->removeAll();
-        })
 
 public:
     jobject nativeInputWrapper;

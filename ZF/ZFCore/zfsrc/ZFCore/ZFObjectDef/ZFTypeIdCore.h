@@ -34,9 +34,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyle, zfimplement ZFProgressable {
     ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyle)
     ZFIMPLEMENT_DECLARE(ZFProgressable)
-    ZFOBJECT_CACHE_RELEASE_ABSTRACT({
-        cache->zfvReset();
-    })
 
 public:
     /**

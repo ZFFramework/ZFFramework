@@ -54,7 +54,6 @@ public:
         stateFlag_ZFObjectInstanceStateOnDealloc = 1 << 11,
     };
     ZFObserver *observerHolder;
-    _ZFP_zfobjAllocCacheReleaseCallback zfobjAllocCacheRelease;
     ZFObject *ZFImplementDynamicOwner;
     zfstlhashmap<const ZFClass *, ZFObject *> ZFImplementDynamicHolder; // manual retain
 
@@ -65,7 +64,6 @@ public:
     , objectTagMap(zfnull)
     , propertyAccessed()
     , observerHolder(zfnull)
-    , zfobjAllocCacheRelease(zfnull)
     , ZFImplementDynamicOwner(zfnull)
     , ZFImplementDynamicHolder()
     {
@@ -634,12 +632,6 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
         }
     }
 
-    if(d && d->zfobjAllocCacheRelease && _objectRetainCount == 1) { // check to save cache
-        this->observerRemoveAll();
-        d->zfobjAllocCacheRelease(this);
-        return;
-    }
-
     this->objectOnRelease();
     if(_objectRetainCount > 0) {
         return;
@@ -833,16 +825,6 @@ void ZFObject::objectPropertyValueOnReset(
 }
 
 // ============================================================
-void ZFObject::_ZFP_ZFObject_zfobjAllocCacheRelease(ZF_IN _ZFP_zfobjAllocCacheReleaseCallback callback) {
-    if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFObjectPrivate);
-    }
-    d->zfobjAllocCacheRelease = callback;
-}
-_ZFP_zfobjAllocCacheReleaseCallback ZFObject::_ZFP_ZFObject_zfobjAllocCacheRelease(void) {
-    return d ? d->zfobjAllocCacheRelease : zfnull;
-}
-
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
     return d && d->ZFImplementDynamicOwner ? d->ZFImplementDynamicOwner : this;
 }

@@ -30,10 +30,6 @@ public:
     zfindex savedPos;
     zfindex curPos; // ensured init with start
 
-    ZFOBJECT_CACHE_RELEASE({
-        cache->_cleanup();
-        cache->src = zfnull;
-    })
 private:
     void _cleanup(void) {
         if(autoRestorePos) {
@@ -226,12 +222,6 @@ public:
     const zfbyte *pStart;
     const zfbyte *pEnd; // ensured valid
     const zfbyte *p;
-
-    ZFOBJECT_CACHE_RELEASE({
-        cache->pStart = zfnull;
-        cache->pEnd = zfnull;
-        cache->p = zfnull;
-    })
 
 public:
     ZFMETHOD_DECLARE_2(zfindex, onInput

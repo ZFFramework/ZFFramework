@@ -16,20 +16,6 @@ public:
     ZFOutputFormat *format;
     ZFOutputFormatStep outputStep;
 
-public:
-    ZFOBJECT_CACHE_RELEASE({
-        if(cache->format != zfnull) {
-            cache->outputEnd();
-        }
-
-        cache->output = zfnull;
-        if(cache->format != zfnull) {
-            zfobjRelease(cache->format);
-            cache->format = zfnull;
-        }
-        cache->outputStep = v_ZFOutputFormatStep::e_OnInit;
-    })
-
 protected:
     _ZFP_I_ZFOutputForFormatOwner(void)
     : output()

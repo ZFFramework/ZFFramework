@@ -548,9 +548,6 @@ public:
 // ============================================================
 zfclass _ZFP_I_ZFCallbackForLuaCallback : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFCallbackForLuaCallback, ZFObject)
-    ZFOBJECT_CACHE_RELEASE({
-        cache->_cleanup();
-    })
 
 private:
     ZFListener luaStateOnDetachListener;

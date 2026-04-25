@@ -171,9 +171,6 @@ public:
      * @code
      *   zfclass v_YourType : zfextend ZFTypeIdWrapper {
      *       ZFOBJECT_DECLARE(v_YourType, ZFTypeIdWrapper)
-     *       ZFOBJECT_CACHE_RELEASE({
-     *           cache->zfvReset();
-     *       })
      *   public:
      *       YourType zfv;
      *   };

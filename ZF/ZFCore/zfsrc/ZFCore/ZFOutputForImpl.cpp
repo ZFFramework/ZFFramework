@@ -6,13 +6,6 @@ zfclass _ZFP_I_ZFOutputForImplOwner : zfextend ZFObject {
 public:
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForImplOwner, ZFObject)
 
-    ZFOBJECT_CACHE_RELEASE({
-        cache->_srcCache->zfv.removeAll();
-        cache->_countCache->zfv = 0;
-        cache->_resultCache->zfv = 0;
-        cache->impl = zfnull;
-    })
-
 public:
     ZFListener impl;
 

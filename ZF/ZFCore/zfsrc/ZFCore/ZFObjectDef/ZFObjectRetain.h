@@ -97,9 +97,6 @@ zfclassNotPOD _ZFP_ObjACk<T_ZFObject, 0> {
     _ZFP_ObjACk<T_ZFObject, T_ZFObject::_ZFP_ZFObjectCanAlloc && T_ZFObject::_ZFP_ZFObjectCanAllocPublic>::CanAlloc(__VA_ARGS__)
 /**
  * @brief alloc an object, see #ZFObject
- *
- * if your class has declared #ZFOBJECT_CACHE_RELEASE,
- * then zfobjAlloc would automatically has cache logic
  */
 #define zfobjAlloc(T_ZFObject, ...) \
     zfunsafe_zfobjAlloc(T_ZFObject, ##__VA_ARGS__)
@@ -151,143 +148,9 @@ inline void _ZFP_zfobjRelease(ZF_IN T_ZFObject const &obj) {
 #define zfunsafe_zfobjRelease(obj) \
     _ZFP_zfobjRelease(obj)
 
-// ============================================================
-// ZFOBJECT_CACHE_RELEASE
-/**
- * @brief mark class that it should apply cache logic when alloc
- *
- * usage:
- * @code
- *   zfclass YourObject : zfextend SomeParent {
- *       ZFOBJECT_DECLARE(YourObject, SomeParent)
- *       ZFOBJECT_CACHE_RELEASE({
- *           cache->yourCacheCleanupAction();
- *       })
- *   };
- * @endcode
- *
- * once declared, when you alloc object with no extra param,
- * the cache logic would automatically take effect:
- * @code
- *   ZFObject *obj = zfobjAlloc(YourObject); // first time alloc
- *   zfobjRelease(obj); // release, and the object would be cached
- *
- *   obj = zfobjAlloc(YourObject); // second time alloc, the previously cached object would be returned
- *   zfobjRelease(obj);
- *
- *   obj = zfobjAlloc(YourObject, someParam); // alloc with extra param, no cache logic would be applied
- *   zfobjRelease(obj);
- * @endcode
- *
- * note the alloc cache logic is explicitly attached to class,
- * parent class' #ZFOBJECT_CACHE_RELEASE does not make child class cacheable,
- * the child class must also explicitly declare #ZFOBJECT_CACHE_RELEASE to enable cache logic
- */
-#define ZFOBJECT_CACHE_RELEASE(action) \
-    public: \
-        /** @cond ZFPrivateDoc */ \
-        static ZFObject *_ZFP_ObjACIvk(void) { \
-            return _ZFP_ObjAC<zfself>::A(); \
-        } \
-        static void _ZFP_ObjACR(ZF_IN ZFObject *_obj) { \
-            zfsuper::_ZFP_ObjACR(_obj); \
-            zfself *cache = zfcast(zfself *, _obj); \
-            ZFUNUSED(cache); \
-            action \
-        } \
-        /** @endcond */
-
-/** @brief #ZFOBJECT_CACHE_RELEASE for abstract class */
-#define ZFOBJECT_CACHE_RELEASE_ABSTRACT(action) \
-    public: \
-        /** @cond ZFPrivateDoc */ \
-        static void _ZFP_ObjACR(ZF_IN ZFObject *_obj) { \
-            zfsuper::_ZFP_ObjACR(_obj); \
-            zfself *cache = zfcast(zfself *, _obj); \
-            ZFUNUSED(cache); \
-            action \
-        } \
-        /** @endcond */
-
-/**
- * @brief remove all object cache, see #ZFOBJECT_CACHE_RELEASE
- */
-extern ZFLIB_ZFCore void zfobjAllocCacheRemoveAll(void);
-
-extern ZFLIB_ZFCore void _ZFP_zfobjAllocCacheImplRegister(
-        ZF_IN_OUT zfbool &enableFlag
-        , ZF_IN_OUT ZFObject **cache
-        , ZF_IN_OUT zfindex &cacheCount
-        );
-extern ZFLIB_ZFCore void _ZFP_zfobjAllocCacheImplUnregister(ZF_IN_OUT zfbool &enableFlag);
-template<typename T_ZFObject, int T_MaxCache = 16>
-zfclassNotPOD _ZFP_ObjAC { // alloc cache
-private:
-    typedef _ZFP_ObjAC<T_ZFObject, T_MaxCache> zfself;
-public:
-    static T_ZFObject *A(void) {
-        static RegH r;
-        ZFUNUSED(r);
-        if(enableFlag()) {
-            if(cacheCount() > 0) {
-                ZFObject *ret = cache()[--(cacheCount())];
-                ret->_ZFP_ZFObject_zfobjAllocCacheRelease(zfself::_ZFP_ObjACR);
-                ret->_ZFP_ZFObject_objectOnInitFromCache();
-                return zfcast(T_ZFObject *, ret);
-            }
-            else {
-                T_ZFObject *ret = _ZFP_zfobjAllocInternal(T_ZFObject);
-                ret->_ZFP_ZFObject_zfobjAllocCacheRelease(zfself::_ZFP_ObjACR);
-                return ret;
-            }
-        }
-        else {
-            return _ZFP_zfobjAllocInternal(T_ZFObject);
-        }
-    }
-    static void _ZFP_ObjACR(ZF_IN ZFObject *obj) {
-        obj->_ZFP_ZFObject_zfobjAllocCacheRelease(zfnull);
-        if(enableFlag() && cacheCount() < T_MaxCache) {
-            T_ZFObject::_ZFP_ObjACR(obj);
-            cache()[cacheCount()++] = obj;
-        }
-        else {
-            zfunsafe_zfobjRelease(obj);
-        }
-    }
-private:
-    static zfbool &enableFlag(void) {
-        static zfbool E = zffalse;
-        return E;
-    }
-    static ZFObject **cache(void) {
-        static ZFObject *cache[T_MaxCache];
-        return cache;
-    }
-    static zfindex &cacheCount(void) {
-        static zfindex cacheCount = 0;
-        return cacheCount;
-    }
-private:
-    zfclassNotPOD RegH {
-    public:
-        RegH(void) {
-            _ZFP_zfobjAllocCacheImplRegister(enableFlag(), cache(), cacheCount());
-        }
-        ~RegH(void) {
-            _ZFP_zfobjAllocCacheImplUnregister(enableFlag());
-        }
-    };
-};
-
 template<typename T_ZFObject>
 T_ZFObject *_ZFP_ObjACk<T_ZFObject, 1>::CanAlloc(void) {
-    if(&T_ZFObject::_ZFP_ObjACIvk != T_ZFObject::zfsuper::_ZFP_ObjACIvk) {
-        return _ZFP_ObjAC<T_ZFObject>::A();
-    }
-    else {
-        return _ZFP_ObjACk<T_ZFObject, 1>::A();
-    }
+    return _ZFP_ObjACk<T_ZFObject, 1>::A();
 }
 
 // ============================================================

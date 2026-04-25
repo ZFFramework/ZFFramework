@@ -78,7 +78,6 @@ zfclassNotPOD _ZFP_ZFClassPrivate {
 public:
     zfauto classDynamicRegisterUserData;
     zfstlhashmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
-    _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback;
     _ZFP_ZFObjectConstructor constructor;
     _ZFP_ZFObjectDestructor destructor;
 
@@ -662,10 +661,7 @@ zfany ZFClass::classDynamicRegisterUserData(void) const {
 zfauto ZFClass::newInstance(void) const {
     ZFCoreMutexLock();
     ZFObject *obj = zfnull;
-    if(d->objectAllocWithCacheCallback) {
-        obj = d->objectAllocWithCacheCallback();
-    }
-    else {
+    {
         obj = d->objectConstruct(this);
         if(obj != zfnull) {
             ZFCoreMutexUnlock();
@@ -683,10 +679,7 @@ zfauto ZFClass::newInstance(void) const {
 zfauto ZFClass::_ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const {
     ZFCoreMutexLock();
     ZFObject *obj = zfnull;
-    if(d->objectAllocWithCacheCallback) {
-        obj = d->objectAllocWithCacheCallback();
-    }
-    else {
+    {
         obj = d->objectConstruct(this);
         if(obj != zfnull) {
             obj->d = dObj;
@@ -1441,7 +1434,6 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
-        , ZF_IN _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback
         , ZF_IN _ZFP_ZFObjectConstructor constructor
         , ZF_IN _ZFP_ZFObjectDestructor destructor
         , ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback
@@ -1496,12 +1488,6 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
             ZFBitSet(cls->_stateFlags, _stateFlags_classIsDynamicRegister);
         }
         cls->d->classDynamicRegisterUserData = classDynamicRegisterUserData;
-        if(objectAllocWithCacheCallback == ZFObject::_ZFP_ObjACIvk) {
-            cls->d->objectAllocWithCacheCallback = zfnull;
-        }
-        else {
-            cls->d->objectAllocWithCacheCallback = objectAllocWithCacheCallback;
-        }
         cls->d->constructor = constructor;
         cls->d->destructor = destructor;
 
@@ -1816,9 +1802,6 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
     }
 }
 
-_ZFP_zfobjAllocCacheCallback ZFClass::_ZFP_objectAllocWithCacheCallback(void) const {
-    return d->objectAllocWithCacheCallback;
-}
 _ZFP_ZFObjectConstructor ZFClass::_ZFP_objectConstructor(void) const {
     return d->constructor;
 }
@@ -1836,7 +1819,6 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
-        , ZF_IN _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback
         , ZF_IN _ZFP_ZFObjectConstructor constructor
         , ZF_IN _ZFP_ZFObjectDestructor destructor
         , ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback
@@ -1852,7 +1834,6 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
             , parent
             , outer
             , classCanAllocPublic
-            , objectAllocWithCacheCallback
             , constructor
             , destructor
             , checkInitImplListCallback

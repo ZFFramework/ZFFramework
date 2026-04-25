@@ -57,7 +57,6 @@ public:
         return zfnull;
     }
     static void _ZFP_ObjI_reg(ZFClass *cls) {}
-    static ZFObject *_ZFP_ObjACIvk(void) {return zfnull;}
 };
 template<typename T_ZFObject, int valid>
 zfclassNotPOD _ZFP_ObjACk;
@@ -201,8 +200,6 @@ public:
     /** @cond ZFPrivateDoc */
     enum {_ZFP_ZFObjectCanAllocPublic = 1};
     static void _ZFP_ObjI_reg(ZFClass *cls) {} // interface reg
-    static ZFObject *_ZFP_ObjACIvk(void) {return zfnull;} // alloc cache invoker
-    static inline void _ZFP_ObjACR(ZF_IN ZFObject *_obj) {} // alloc cache release
     virtual inline void _ZFP_ObjI_ctor(void) {} // onInit
     virtual inline void _ZFP_ObjI_dtor(void) {} // onDealloc
     /** @endcond */
@@ -839,8 +836,6 @@ protected:
 
     // ============================================================
 public:
-    zffinal void _ZFP_ZFObject_zfobjAllocCacheRelease(ZF_IN _ZFP_zfobjAllocCacheReleaseCallback callback);
-    zffinal _ZFP_zfobjAllocCacheReleaseCallback _ZFP_ZFObject_zfobjAllocCacheRelease(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement);
 

@@ -62,9 +62,6 @@ inline const zfstring &ZFTypeId_ZFCoreArray(void) {
 /** @brief type wrapper for #ZFTypeId::Value */
 zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextend ZFTypeIdWrapper {
     ZFOBJECT_DECLARE(v_ZFCoreArray, ZFTypeIdWrapper)
-    ZFOBJECT_CACHE_RELEASE({
-        cache->zfvReset();
-    })
 public:
     /** @brief the value, see #ZFTypeId::Value */
     ZFCoreArrayBase *zfv;

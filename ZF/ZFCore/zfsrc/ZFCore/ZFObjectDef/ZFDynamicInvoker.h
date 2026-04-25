@@ -16,9 +16,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextend ZFObject {
     ZFOBJECT_DECLARE_ABSTRACT(ZFDI_WrapperBase, ZFObject)
-    ZFOBJECT_CACHE_RELEASE_ABSTRACT({
-        cache->zfv(zfnull);
-    })
 
 public:
     /**

@@ -20,9 +20,6 @@ typedef void (*_ZFP_ZFObjectDestructor)(ZF_IN ZFObject *obj);
 typedef void (*_ZFP_ZFObjectCheckInitImplementationListCallback)(ZF_IN_OUT ZFClass *cls);
 typedef ZFInterface * (*_ZFP_ZFObjectToInterfaceCastCallback)(ZF_IN ZFObject *obj);
 
-typedef ZFObject *(*_ZFP_zfobjAllocCacheCallback)(void);
-typedef void (*_ZFP_zfobjAllocCacheReleaseCallback)(ZF_IN ZFObject *obj);
-
 // ============================================================
 /** @brief see #ZFClass::instanceObserverAdd */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFClassInstanceObserverAddParam {
@@ -681,7 +678,6 @@ public:
             , ZF_IN const ZFClass *parent
             , ZF_IN const ZFClass *outer
             , ZF_IN zfbool classCanAllocPublic
-            , ZF_IN _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback
             , ZF_IN _ZFP_ZFObjectConstructor constructor
             , ZF_IN _ZFP_ZFObjectDestructor destructor
             , ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback
@@ -741,7 +737,6 @@ public:
     void _ZFP_ZFClass_propertyAutoInitAction(ZF_IN ZFObject *owner) const;
     void _ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *property) const;
 
-    _ZFP_zfobjAllocCacheCallback _ZFP_objectAllocWithCacheCallback(void) const;
     _ZFP_ZFObjectConstructor _ZFP_objectConstructor(void) const;
     _ZFP_ZFObjectDestructor _ZFP_objectDestructor(void) const;
     void _ZFP_classDynamicRegisterObjectInstanceDetach(ZF_IN ZFObject *obj) const;
@@ -802,7 +797,6 @@ public:
             , ZF_IN const ZFClass *parent
             , ZF_IN const ZFClass *outer
             , ZF_IN zfbool classCanAllocPublic
-            , ZF_IN _ZFP_zfobjAllocCacheCallback objectAllocWithCacheCallback
             , ZF_IN _ZFP_ZFObjectConstructor constructor
             , ZF_IN _ZFP_ZFObjectDestructor destructor
             , ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback

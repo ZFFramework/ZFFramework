@@ -23,9 +23,6 @@ ZFOutput ZFOutputDummy(void) {
 zfclass _ZFP_I_ZFOutputForStringOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForStringOwner, ZFObject)
 
-    ZFOBJECT_CACHE_RELEASE({
-    })
-
 public:
     zfstring *pString;
     zfindex savedLength;
@@ -81,9 +78,6 @@ ZFOutput ZFOutputForString(ZF_IN zfstring &s) {
 // ZFOutputForBufferUnsafe
 zfclass _ZFP_I_ZFOutputForBufferUnsafeOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForBufferUnsafeOwner, ZFObject)
-
-    ZFOBJECT_CACHE_RELEASE({
-    })
 
 public:
     zfbool autoAppendNullToken;

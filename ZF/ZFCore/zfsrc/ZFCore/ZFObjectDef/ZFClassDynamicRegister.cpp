@@ -60,7 +60,6 @@ const ZFClass *ZFClassDynamicRegister(
         parent,
         zfnull,
         zftrue,
-        parent->_ZFP_objectAllocWithCacheCallback(),
         parent->_ZFP_objectConstructor(),
         parent->_ZFP_objectDestructor(),
         zfnull,

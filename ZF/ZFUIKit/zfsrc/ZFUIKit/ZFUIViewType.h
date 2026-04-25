@@ -540,12 +540,6 @@ public:
     /** @brief see #ZFUIViewMeasureResult */
     ZFUISize measuredSize;
 
-    ZFOBJECT_CACHE_RELEASE({
-        cache->sizeHint = ZFUISizeZero();
-        cache->sizeParam = ZFUISizeParamZero();
-        cache->measuredSize = ZFUISizeZero();
-    })
-
 protected:
     zfoverride
     virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret);

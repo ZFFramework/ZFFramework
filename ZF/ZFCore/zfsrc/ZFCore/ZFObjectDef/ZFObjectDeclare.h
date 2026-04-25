@@ -89,9 +89,6 @@ public:
                     zfsuper::ClassData(), \
                     OuterClass::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
-                    (&zfself::_ZFP_ObjACIvk != &zfsuper::_ZFP_ObjACIvk) \
-                        ? &zfself::_ZFP_ObjACIvk \
-                        : zfnull, \
                     &zfself::_ZFP_Obj_ctor, \
                     &zfself::_ZFP_Obj_dtor, \
                     &zfself::_ZFP_ObjI_regCk \
