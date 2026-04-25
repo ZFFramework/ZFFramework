@@ -1,7 +1,6 @@
 #include "ZFCoreUtilMath.h"
 #include "ZFCoreStaticRegister.h"
 #include <ctime>
-#include <cstdlib>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

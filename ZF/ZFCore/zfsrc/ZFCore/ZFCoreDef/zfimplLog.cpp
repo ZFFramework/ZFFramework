@@ -1,5 +1,7 @@
 #include "zfimplLog.h"
 #include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
 
 // ============================================================
 #include <ctime>
@@ -29,7 +31,6 @@ long long _ZFP_zfimplTimestamp(void) {
     #endif
 }
 
-#include <stdio.h>
 _ZFP_zfimplInvokeTimeLogger::_ZFP_zfimplInvokeTimeLogger(int cond, const char *hint, ...)
 : _cond(cond)
 {
@@ -49,8 +50,6 @@ _ZFP_zfimplInvokeTimeLogger::~_ZFP_zfimplInvokeTimeLogger(void) {
 
 // ============================================================
 #include <ctime>
-#include <cstdio>
-#include <cstdlib>
 #if defined(_WIN32) || defined(WIN32)
     #include <Windows.h>
 #elif __APPLE__
