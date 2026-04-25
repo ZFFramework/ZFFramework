@@ -6,7 +6,6 @@
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 // #define _ZFP_ZFObjectPrivate_DEBUG 1
-#define _ZFP_ZFObjectPrivate_DEBUG 1 // zfzfzf
 
 #if _ZFP_ZFObjectPrivate_DEBUG
 #include "ZFCore/ZFTimer.h"
