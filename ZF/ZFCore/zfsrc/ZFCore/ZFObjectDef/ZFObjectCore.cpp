@@ -6,6 +6,7 @@
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 // #define _ZFP_ZFObjectPrivate_DEBUG 1
+#define _ZFP_ZFObjectPrivate_DEBUG 1 // zfzfzf
 
 #if _ZFP_ZFObjectPrivate_DEBUG
 #include "ZFCore/ZFTimer.h"
@@ -685,8 +686,8 @@ void ZFObject::objectOnDealloc(void) {
 #if _ZFP_ZFObjectPrivate_DEBUG
         --_ZFP_ZFObjectCount;
 #endif
-    if(classDynamic()) {
-        classDynamic()->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
+    if(this->classDynamic()) {
+        this->classDynamic()->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
     }
 
     if(d) {
