@@ -7,7 +7,6 @@
 #define _ZFI_ZFContainer_h_
 
 #include "ZFObject.h"
-#include "ZFIterable.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -39,9 +38,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note a container would have special serializing step with ref or style logic,
  *   see #serializableOnSerializeToData for more info
  */
-zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable, zfimplement ZFIterable {
+zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
     ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable, ZFIterable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
 
 public:
     // ============================================================
@@ -66,6 +65,58 @@ public:
      * param0 is the element removed from this container
      */
     ZFEVENT(ContentOnRemove)
+
+public:
+    /**
+     * @brief return total count of this iterable
+     */
+    virtual zfindex count(void) zfpurevirtual;
+    /**
+     * @brief return a iter, see #zfiter
+     */
+    virtual zfiter iter(void) zfpurevirtual;
+
+    /**
+     * @brief find element
+     */
+    virtual zfiter iterFind(ZF_IN ZFObject *element) zfpurevirtual;
+
+    /**
+     * @brief get value by iter, see #zfiter
+     *
+     * iter must be valid
+     */
+    virtual zfany iterValue(ZF_IN const zfiter &it) zfpurevirtual;
+
+public:
+    /**
+     * @brief set value at iter, see #zfiter
+     */
+    virtual void iterValue(
+            ZF_IN_OUT zfiter &it
+            , ZF_IN ZFObject *value
+            ) zfpurevirtual;
+    /**
+     * @brief remove value at iter, see #zfiter
+     */
+    virtual void iterRemove(ZF_IN_OUT zfiter &it) zfpurevirtual;
+    /**
+     * @brief remove all contents of this iterable
+     */
+    virtual void removeAll(void) zfpurevirtual;
+
+    /**
+     * @brief add value to tail
+     */
+    virtual zfiter iterAdd(ZF_IN ZFObject *value) zfpurevirtual;
+    /**
+     * @brief add value before iter,
+     *   see #zfiter
+     */
+    virtual zfiter iterAdd(
+            ZF_IN ZFObject *value
+            , ZF_IN_OUT zfiter &it
+            ) zfpurevirtual;
 
 public:
     /**
@@ -142,8 +193,6 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj);
 
-public:
-    /** @brief see #ZFObject::objectOnDeallocPrepare, remove all contents before dealloc */
     zfoverride
     virtual void objectOnDeallocPrepare(void);
 

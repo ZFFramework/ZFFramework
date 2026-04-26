@@ -26,7 +26,6 @@
 #include "ZFCore/ZFIO_res.h"
 #include "ZFCore/ZFIO_res_raw.h"
 #include "ZFCore/ZFInputForImpl.h"
-#include "ZFCore/ZFIterable.h"
 #include "ZFCore/ZFKeyValueContainer.h"
 #include "ZFCore/ZFLog.h"
 #include "ZFCore/ZFLogLevel.h"

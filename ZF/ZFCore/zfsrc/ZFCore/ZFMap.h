@@ -102,7 +102,6 @@ public:
     ZFMETHOD_DECLARE_0(void, removeAll)
 
     // ============================================================
-    // ZFIterable
 public:
     /** @brief see #zfiter */
     ZFMETHOD_DECLARE_0(zfiter, iter)

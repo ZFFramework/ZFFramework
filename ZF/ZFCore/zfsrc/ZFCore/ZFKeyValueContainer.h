@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFKeyValueContainer_h_
 #define _ZFI_ZFKeyValueContainer_h_
 
-#include "ZFIterable.h"
+#include "ZFContainer.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
@@ -50,9 +50,8 @@ zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
  *   </ContainerClass>
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable, zfimplement ZFIterable, zfimplement ZFIterableKeyValue {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFKeyValueContainer, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable, ZFIterable, ZFIterableKeyValue)
+zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextend ZFContainer {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFKeyValueContainer, ZFContainer)
 
 public:
     // ============================================================
@@ -82,15 +81,36 @@ public:
 
 public:
     /**
+     * @brief get key value pair with iter, see #zfiter
+     */
+    virtual zfany iterKey(ZF_IN const zfiter &it) zfpurevirtual;
+
+public:
+    /**
+     * @brief add key value to tail, see #zfiter
+     *
+     * for most key value container,
+     * this is same as set key with value
+     */
+    virtual zfiter iterAdd(
+            ZF_IN ZFObject *key
+            , ZF_IN ZFObject *value
+            ) zfpurevirtual;
+
+public:
+    /**
      * @brief add data from another container
      */
     virtual void addFrom(ZF_IN ZFKeyValueContainer *another) zfpurevirtual;
 
+private:
     /** @cond ZFPrivateDoc */
+    zfoverride
     virtual zfiter iterAdd(ZF_IN ZFObject *value) {
         ZFCoreCriticalNotSupported();
         return zfnull;
     }
+    zfoverride
     virtual zfiter iterAdd(
             ZF_IN ZFObject *value
             , ZF_IN_OUT zfiter &it
@@ -98,10 +118,17 @@ public:
         ZFCoreCriticalNotSupported();
         return zfnull;
     }
-    virtual zfiter iterAdd(
-            ZF_IN ZFObject *key
-            , ZF_IN ZFObject *value
-            ) zfpurevirtual;
+    zfoverride
+    virtual void addFrom(ZF_IN ZFContainer *another) {
+        if(another != zfnull) {
+            zfself *tmp = zfcast(zfself *, another);
+            if(tmp == zfnull) {
+                ZFCoreCriticalNotSupported();
+                return;
+            }
+            this->addFrom(tmp);
+        }
+    }
     /** @endcond */
 
 public:

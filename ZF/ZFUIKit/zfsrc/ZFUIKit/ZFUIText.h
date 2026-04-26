@@ -12,8 +12,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief base UI text interface
  */
-zfinterface ZFLIB_ZFUIKit ZFUIText : zfextend ZFInterface {
-    ZFINTERFACE_DECLARE(ZFUIText, ZFInterface)
+zfabstract ZFLIB_ZFUIKit ZFUIText : zfextend ZFUIView {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFUIText, ZFUIView)
 
 public:
     /**
@@ -49,9 +49,8 @@ public:
 /**
  * @brief text config
  */
-zfclass ZFLIB_ZFUIKit ZFUITextConfig : zfextend ZFStyle, zfimplement ZFUIText {
-    ZFOBJECT_DECLARE(ZFUITextConfig, ZFStyle)
-    ZFIMPLEMENT_DECLARE(ZFUIText)
+zfclass ZFLIB_ZFUIKit ZFUITextConfig : zfextend ZFUIText {
+    ZFOBJECT_DECLARE(ZFUITextConfig, ZFUIText)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextConfig)
 };
 

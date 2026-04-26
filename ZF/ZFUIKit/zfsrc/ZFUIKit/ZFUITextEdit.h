@@ -87,9 +87,8 @@ zfclassFwd _ZFP_ZFUITextEditPrivate;
  * @note this view supply quite simple text edit logic,
  *   designed to be lightweighted and able to be embeded to other complex views
  */
-zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextend ZFUIView, zfimplement ZFUIText {
-    ZFOBJECT_DECLARE(ZFUITextEdit, ZFUIView)
-    ZFIMPLEMENT_DECLARE(ZFUIText)
+zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextend ZFUIText {
+    ZFOBJECT_DECLARE(ZFUITextEdit, ZFUIText)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextEdit)
 
 public:

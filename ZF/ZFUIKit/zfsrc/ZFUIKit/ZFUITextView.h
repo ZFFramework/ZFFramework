@@ -18,9 +18,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * for rich text, you should supply you own native view,
  * or use web view with html strings
  */
-zfclass ZFLIB_ZFUIKit ZFUITextView : zfextend ZFUIView, zfimplement ZFUIText {
-    ZFOBJECT_DECLARE(ZFUITextView, ZFUIView)
-    ZFIMPLEMENT_DECLARE(ZFUIText)
+zfclass ZFLIB_ZFUIKit ZFUITextView : zfextend ZFUIText {
+    ZFOBJECT_DECLARE(ZFUITextView, ZFUIText)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextView)
 
 public:
