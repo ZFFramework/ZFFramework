@@ -35,6 +35,12 @@ typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
 
 zfclassNotPOD _ZFP_ZFObjectPrivate {
 public:
+    zfclassNotPOD ZFImplementDynamicDataHolder {
+    public:
+        ZFObject *owner;
+        zfstlhashmap<const ZFClass *, ZFObject *> holder; // manual retain
+    };
+public:
     _ZFP_I_zfweak *weakHolder;
     void *mutexImpl;
     _ZFP_ZFObjectTagMapType *objectTagMap;
@@ -54,8 +60,7 @@ public:
         stateFlag_ZFObjectInstanceStateOnDealloc = 1 << 11,
     };
     ZFObserver *observerHolder;
-    ZFObject *ZFImplementDynamicOwner;
-    zfstlhashmap<const ZFClass *, ZFObject *> ZFImplementDynamicHolder; // manual retain
+    ZFImplementDynamicDataHolder *ZFImplementDynamicData;
 
 public:
     _ZFP_ZFObjectPrivate(void)
@@ -64,19 +69,21 @@ public:
     , objectTagMap(zfnull)
     , propertyAccessed()
     , observerHolder(zfnull)
-    , ZFImplementDynamicOwner(zfnull)
-    , ZFImplementDynamicHolder()
+    , ZFImplementDynamicData(zfnull)
     {
 #if _ZFP_ZFObjectPrivate_DEBUG
         ++_ZFP_ZFObjectPrivateAllocCount;
         ++_ZFP_ZFObjectPrivateCount;
 #endif
     }
-#if _ZFP_ZFObjectPrivate_DEBUG
     ~_ZFP_ZFObjectPrivate(void) {
+#if _ZFP_ZFObjectPrivate_DEBUG
         --_ZFP_ZFObjectPrivateCount;
-    }
 #endif
+        if(this->ZFImplementDynamicData) {
+            zfpoolDelete(this->ZFImplementDynamicData);
+        }
+    }
 };
 
 // ============================================================
@@ -689,12 +696,17 @@ void ZFObject::objectOnDealloc(void) {
 
         if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
             if(d->objectTagMap) {
-                for(zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicHolder.begin(); it != d->ZFImplementDynamicHolder.end(); ++it) {
-                    it->second->d->objectTagMap = zfnull;
+                if(d->ZFImplementDynamicData) {
+                    for(zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.begin();
+                            it != d->ZFImplementDynamicData->holder.end();
+                            ++it
+                            ) {
+                        it->second->d->objectTagMap = zfnull;
 
-                    // release, but keep pointer instance,
-                    // since it's possible to access zfcast during the dyn object being deallocate
-                    zfobjRelease(it->second);
+                        // release, but keep pointer instance,
+                        // since it's possible to access zfcast during the dyn object being deallocate
+                        zfobjRelease(it->second);
+                    }
                 }
                 zfpoolDelete(d->objectTagMap);
             }
@@ -826,19 +838,23 @@ void ZFObject::objectPropertyValueOnReset(
 
 // ============================================================
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
-    return d && d->ZFImplementDynamicOwner ? d->ZFImplementDynamicOwner : this;
+    return d && d->ZFImplementDynamicData && d->ZFImplementDynamicData->owner ? d->ZFImplementDynamicData->owner : this;
 }
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement) {
     if(d == zfnull) {
         d = zfpoolNew(_ZFP_ZFObjectPrivate);
     }
-    zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicHolder.find(clsToImplement);
-    if(it != d->ZFImplementDynamicHolder.end()) {
+    if(d->ZFImplementDynamicData == zfnull) {
+        d->ZFImplementDynamicData = zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
+    }
+    zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
+    if(it != d->ZFImplementDynamicData->holder.end()) {
         return it->second;
     }
     else {
         _ZFP_ZFObjectPrivate *dObj = zfpoolNew(_ZFP_ZFObjectPrivate);
-        dObj->ZFImplementDynamicOwner = this;
+        dObj->ZFImplementDynamicData = zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
+        dObj->ZFImplementDynamicData->owner = this;
 
         // alias internal data to owner
         dObj->weakHolder = zfobjRetain(this->_ZFP_ZFObject_weakHolder());
@@ -859,7 +875,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
         }
 
         zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
-        d->ZFImplementDynamicHolder[clsToImplement] = zfobjRetain(holder);
+        d->ZFImplementDynamicData->holder[clsToImplement] = zfobjRetain(holder);
         return holder;
     }
 }
