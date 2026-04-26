@@ -646,11 +646,15 @@ private:
         else if(capacity < 64) {
             capacity = ((capacity / 32) + 1) * 32;
         }
-        else if(capacity < 1024) {
-            capacity = ((capacity / 128) + 1) * 128;
-        }
         else {
-            capacity = ((capacity / 1024) + 1) * 1024;
+            capacity >>= 4;
+            capacity |= capacity >> 1;
+            capacity |= capacity >> 2;
+            capacity |= capacity >> 4;
+            capacity |= capacity >> 8;
+            capacity |= capacity >> 16;
+            ++capacity;
+            capacity <<= 4;
         }
     }
     // capacity: excluding tail '\0'

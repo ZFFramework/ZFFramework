@@ -18,6 +18,20 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTaskId>, zfpost
         , ZFMP_IN_OPT(ZFThread *, target, zfnull)
         )
 
+/**
+ * @brief util to run code in specified thread
+ *   (or #ZFThread::mainThread if not specified) after delay
+ *
+ * assert fail if any of these not available:
+ * -  #ZFTimer
+ * -  #ZFThread::taskQueueAvailable
+ */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoT<ZFTaskId>, zfpostDelayed
+        , ZFMP_IN(zftimet, delay)
+        , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN_OPT(ZFThread *, target, zfnull)
+        )
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFThread_zfpost_h_
 

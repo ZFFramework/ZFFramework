@@ -1,4 +1,5 @@
 #include "ZFThread_zfpost.h"
+#include "ZFTimer.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -34,6 +35,40 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTaskId>, zfpost
     taskId->callback = callback;
     target->taskQueueAdd(callback);
     return taskId;
+}
+
+// ============================================================
+ZFMETHOD_FUNC_DEFINE_3(zfautoT<ZFTaskId>, zfpostDelayed
+        , ZFMP_IN(zftimet, delay)
+        , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN_OPT(ZFThread *, target, zfnull)
+        ) {
+    if(delay <= 0) {
+        return zfpost(callback, target);
+    }
+    if(target == zfnull) {
+        target = ZFThread::mainThread();
+        if(target == zfnull) {
+            return zfnull;
+        }
+    }
+    ZFCoreAssert(target->taskQueueAvailable());
+
+    zfobj<ZFTaskIdWrapper> wrap;
+
+    ZFLISTENER_3(onDelay
+            , zfautoT<ZFTaskIdWrapper>, wrap
+            , zfweakT<ZFThread>, target
+            , ZFListener, callback
+            ) {
+        if(target == zfnull) {
+            ZFCoreCriticalMessageTrim("[zfpostDelayed] target thread has been destroyed, callback: %s", callback);
+            return;
+        }
+        wrap->impl(zfpost(callback, target));
+    } ZFLISTENER_END()
+    wrap->impl(ZFTimerOnce(delay, onDelay));
+    return wrap;
 }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -4,6 +4,16 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 
+// #define _ZFP_ZFLuaGC_DEBUG 1
+
+#if _ZFP_ZFLuaGC_DEBUG
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFLuaGC_log(fmt, ...) \
+        zfimplLog("%s [ZFLuaGC] %s", zfimplTime(), zfstr(fmt, ##__VA_ARGS__).cString())
+#else
+    #define _ZFP_ZFLuaGC_log(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -16,48 +26,33 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGCImmediately
             return;
         }
     }
+    _ZFP_ZFLuaGC_log("%s run begin", L);
     ZFPROTOCOL_ACCESS(ZFLua)->luaGC(L);
+    _ZFP_ZFLuaGC_log("%s run end", L);
 }
 
 // ============================================================
+typedef zfstlhashmap<void *, zfautoT<ZFTaskId> > _ZFP_ZFLuaGCMap;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCHolder, ZFLevelZFFrameworkHigh) {
     ZFGlobalObserver().observerAdd(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
-    for(zfstlhashmap<void *, zfbool>::iterator it = m.begin(); it != m.end(); ++it) {
+    ZFCoreMutexLocker();
+    for(_ZFP_ZFLuaGCMap::iterator it = m.begin(); it != m.end(); ++it) {
+        it->second->stop();
+        _ZFP_ZFLuaGC_log("%s run on destroy", L);
         ZFLuaGCImmediately(it->first);
     }
     ZFGlobalObserver().observerRemove(ZFGlobalEvent::E_LuaStateOnDetach(), ZFCallbackForFunc(luaStateOnDetach));
-    if(this->gcTask != zfnull) {
-        this->gcTask->stop();
-        this->gcTask = zfnull;
-    }
 }
-zfautoT<ZFTimer> gcTask;
-zfstlhashmap<void *, zfbool> m;
+_ZFP_ZFLuaGCMap m;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
     ZFCoreMutexLocker();
-    zfstlhashmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
+    _ZFP_ZFLuaGCMap &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
     m.erase(const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv));
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 
-static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFArgs &zfargs) {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
-    zfstlhashmap<void *, zfbool> &m = d->m;
-    ZFCoreMutexLock();
-    d->gcTask = zfnull;
-    while(!m.empty()) {
-        zfstlhashmap<void *, zfbool>::iterator it = m.begin();
-        void *L = it->first;
-        m.erase(it);
-
-        ZFCoreMutexUnlock();
-        ZFLuaGCImmediately(L);
-        ZFCoreMutexLock();
-    }
-    ZFCoreMutexUnlock();
-}
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
         , ZFMP_IN_OPT(void *, L, zfnull)
         ) {
@@ -67,19 +62,31 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC
             return;
         }
     }
-    if(!ZFThread::implMainThreadTaskAvailable()) {
-        ZFLuaGCImmediately(L);
-        return;
-    }
 
     ZFCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
-    zfstlhashmap<void *, zfbool> &m = d->m;
+    _ZFP_ZFLuaGCMap &m = d->m;
     if(m.find(L) == m.end()) {
-        m[L] = zftrue;
-        if(d->gcTask == zfnull) {
-            d->gcTask = ZFTimerOnce(1000, ZFCallbackForFunc(_ZFP_ZFLuaGCResolve));
+        ZFThread *gcThread = ZFThread::currentThread();
+        if(gcThread == zfnull) {
+            _ZFP_ZFLuaGC_log("%s run with no task available", L);
+            return;
         }
+        ZFLISTENER_1(gcAction
+                , void *, L
+                ) {
+            if(ZFLuaStateCheck() != zfnull) {
+                _ZFP_ZFLuaGC_log("%s run after delayed", L);
+                ZFLuaGCImmediately(L);
+            }
+            else {
+                _ZFP_ZFLuaGC_log("%s run after delayed, but no lua state", L);
+            }
+            ZFCoreMutexLocker();
+            ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
+            d->m.erase(L);
+        } ZFLISTENER_END()
+        m[L] = zfpostDelayed(1000, gcAction, gcThread);
     }
 }
 
@@ -91,16 +98,14 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFLuaGCForAllThread) {
             ) {
         void *L = ZFLuaStateCheck();
         if(L) {
-            ZFCoreLogTrim("[ZFLuaGCForAllThread] begin: %s", ZFThread::currentThread());
+            _ZFP_ZFLuaGC_log("%s run on thread: %s", L, ZFThread::currentThread());
             ZFLuaGCImmediately(L);
-            ZFCoreLogTrim("[ZFLuaGCForAllThread]  end : %s", ZFThread::currentThread());
         }
         else {
-            ZFCoreLogTrim("[ZFLuaGCForAllThread] no lua state for thread: %s", ZFThread::currentThread());
+            _ZFP_ZFLuaGC_log("%s run on thread: %s, but no lua state", L, ZFThread::currentThread());
         }
     } ZFLISTENER_END()
     for(zfindex i = 0; i < threadList.count(); ++i) {
-        ZFCoreLogTrim("[ZFLuaGCForAllThread] post: %s", threadList[i]);
         zfpost(action, threadList[i]);
     }
 }

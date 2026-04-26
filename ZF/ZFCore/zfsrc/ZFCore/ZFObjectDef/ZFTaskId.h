@@ -77,6 +77,43 @@ private:
     ZFListener _stopImpl;
 };
 
+/**
+ * @brief basic task id for impl
+ */
+zfclass ZFLIB_ZFCore ZFTaskIdWrapper : zfextend ZFObject, zfimplement ZFTaskId {
+    ZFOBJECT_DECLARE(ZFTaskIdWrapper, ZFObject)
+    ZFIMPLEMENT_DECLARE(ZFTaskId)
+public:
+    /** @brief for impl to implement #ZFTaskId::stop */
+    virtual inline void impl(ZF_IN const zfautoT<ZFTaskId> &v) {
+        _impl = v;
+    }
+    /** @brief see #impl */
+    virtual inline const zfautoT<ZFTaskId> &impl(void) {
+        return _impl;
+    }
+public:
+    zfoverride
+    virtual void stop(void) {
+        if(_impl) {
+            zfautoT<ZFTaskId> tmp = _impl;
+            _impl = zfnull;
+            tmp->stop();
+        }
+    }
+protected:
+    zfoverride
+    virtual inline void objectOnInit(void) {
+        zfsuper::objectOnInit();
+    }
+    /** @brief init with impl */
+    virtual inline void objectOnInit(ZF_IN const zfautoT<ZFTaskId> &impl) {
+        this->impl(impl);
+    }
+private:
+    zfautoT<ZFTaskId> _impl;
+};
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTaskId_h_
 

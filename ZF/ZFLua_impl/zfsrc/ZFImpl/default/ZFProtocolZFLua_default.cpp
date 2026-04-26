@@ -8,7 +8,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLua_impl, ZFLua, v_ZFProtocolLevel::e_Default)
 public:
     virtual void *luaStateOpen(void) {
-        return ZFImpl_ZFLua_luaStateOpen();
+        lua_State *L = (lua_State *)ZFImpl_ZFLua_luaStateOpen();
+#if LUA_VERSION_NUM >= 504
+        if(L) {
+            lua_gc(L, LUA_GCGEN, 0, 0);
+        }
+#endif
+        return L;
     }
     virtual void luaStateClose(ZF_IN void *L) {
         ZFImpl_ZFLua_luaStateClose((lua_State *)L);
@@ -56,7 +62,11 @@ public:
     }
 
     virtual void luaGC(ZF_IN void *L) {
+#if LUA_VERSION_NUM >= 504
+        lua_gc((lua_State *)L, LUA_GCSTEP, 0);
+#else
         lua_gc((lua_State *)L, LUA_GCCOLLECT, 0);
+#endif
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFLua_impl)
 
