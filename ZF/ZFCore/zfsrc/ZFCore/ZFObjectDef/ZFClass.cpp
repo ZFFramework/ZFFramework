@@ -186,7 +186,7 @@ public:
         if(this->constructor) {
             ZFObject *obj = this->constructor();
             if(cls->classIsDynamicRegister()) {
-                obj->_classDynamic = cls;
+                obj->_ZFP_ZFObject_classDynamic(cls);
                 this->classDynamicRegisterObjectInstanceMap[obj] = zftrue;
             }
             return obj;
@@ -1553,7 +1553,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN const ZFClass *cls) {
         // remove all dynamic registered class info,
         // the existing object instance would fallback to parent class
         for(zfstlhashmap<ZFObject *, zfbool>::iterator it = cls->d->classDynamicRegisterObjectInstanceMap.begin(); it != cls->d->classDynamicRegisterObjectInstanceMap.end(); ++it) {
-            it->first->_classDynamic = zfnull;
+            it->first->_ZFP_ZFObject_classDynamic(zfnull);
         }
         cls->d->classDynamicRegisterObjectInstanceMap.clear();
     }

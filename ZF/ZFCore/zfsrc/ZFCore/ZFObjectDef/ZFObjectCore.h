@@ -259,16 +259,14 @@ public:
     /**
      * @brief dynamic class of this object, see #ZFClassDynamicRegister
      */
-    zffinal inline const ZFClass *classDynamic(void) {
-        return _classDynamic;
-    }
+    zffinal const ZFClass *classDynamic(void);
 
     /**
      * @brief return the object's retain count
      * @see zfobjRetain, zfobjRelease
      */
     zffinal inline zfindex objectRetainCount(void) {
-        return _objectRetainCount;
+        return (zfindex)_refCount;
     }
 
     zffinal _ZFP_I_zfweak *_ZFP_ZFObject_weakHolder(void);
@@ -764,9 +762,8 @@ protected:
      * usually you should not override this method
      */
     virtual inline void objectOnRetain(void) {
-        ZFCoreAssertWithMessageTrim(_objectRetainCount > 0 || !this->objectInstanceStateCheck(ZFObjectInstanceStateOnDealloc),
+        ZFCoreAssertWithMessageTrim((++_refCount) > 1 || !this->objectInstanceStateCheck(ZFObjectInstanceStateOnDealloc),
             "[ZFObject] retain an object while objectOnDealloc running: %s", this->objectInfoOfInstance());
-        ++_objectRetainCount;
     }
     /**
      * @brief called to release object
@@ -775,7 +772,7 @@ protected:
      * usually you should not override this method
      */
     virtual inline void objectOnRelease(void) {
-        --_objectRetainCount;
+        --_refCount;
     }
 
 public:
@@ -838,6 +835,8 @@ protected:
 public:
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement);
+private:
+    zffinal void _ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *cls);
 
 private:
     friend zfclassFwd ZFClass;
@@ -849,16 +848,14 @@ private:
     friend void _ZFP_zfobjRetainAction(ZF_IN ZFObject *obj);
     friend void _ZFP_zfobjReleaseAction(ZF_IN ZFObject *obj);
 private:
-    const ZFClass *_classDynamic;
     _ZFP_ZFObjectPrivate *d;
-    zfuint _objectRetainCount;
+    zfuint _refCount;
     zfuint _stateFlags;
 protected:
     /** @cond ZFPrivateDoc */
     ZFObject(void)
-    : _classDynamic(zfnull)
-    , d(zfnull)
-    , _objectRetainCount(1)
+    : d(zfnull)
+    , _refCount(1)
     , _stateFlags(0)
     {
     }

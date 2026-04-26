@@ -63,6 +63,11 @@ public:
     _ZFP_zfstringD(void) : refCount(1), capacity(0), length(0), d() {
         d.ptr = Empty();
     }
+    ~_ZFP_zfstringD(void) {
+        if(this->capacity) {
+            zffree(this->d.buf);
+        }
+    }
 public:
     static const T_Char *Empty(void) {
         static T_Char buf[1] = {0};
@@ -159,14 +164,8 @@ public:
     }
     ~zft_zfstring(void) {
         ZFCoreMutexLocker();
-        if(d->refCount == 1) {
-            if(d->capacity) {
-                zffree(d->d.buf);
-            }
+        if(--(d->refCount) == 0) {
             zfpoolDelete(d);
-        }
-        else {
-            --(d->refCount);
         }
     }
 
@@ -181,14 +180,8 @@ public:
         _ZFP_zfstringD<T_Char> *dTmp = d;
         d = s.d;
         ++(d->refCount);
-        if(dTmp->refCount == 1) {
-            if(dTmp->capacity) {
-                zffree(dTmp->d.buf);
-            }
+        if(--(dTmp->refCount) == 0) {
             zfpoolDelete(dTmp);
-        }
-        else {
-            --(dTmp->refCount);
         }
         return *this;
     }
@@ -526,8 +519,9 @@ public:
             ZFCoreMutexLocker();
             if(d->refCount == 1) {
                 if(d->capacity >= 128) {
-                    zffree(d->d.buf);
-                    zfpoolDelete(d);
+                    if(--(d->refCount) == 0) {
+                        zfpoolDelete(d);
+                    }
                     d = _ZFP_Empty();
                     ++(d->refCount);
                 }
@@ -541,7 +535,9 @@ public:
                 }
             }
             else {
-                --(d->refCount);
+                if(--(d->refCount) == 0) {
+                    zfpoolDelete(d);
+                }
                 d = _ZFP_Empty();
                 ++(d->refCount);
             }

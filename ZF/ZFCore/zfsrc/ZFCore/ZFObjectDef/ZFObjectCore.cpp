@@ -41,6 +41,7 @@ public:
         zfstlhashmap<const ZFClass *, ZFObject *> holder; // manual retain
     };
 public:
+    const ZFClass *classDynamic;
     _ZFP_I_zfweak *weakHolder;
     void *mutexImpl;
     _ZFP_ZFObjectTagMapType *objectTagMap;
@@ -64,7 +65,8 @@ public:
 
 public:
     _ZFP_ZFObjectPrivate(void)
-    : weakHolder(zfnull)
+    : classDynamic(zfnull)
+    , weakHolder(zfnull)
     , mutexImpl(zfnull)
     , objectTagMap(zfnull)
     , propertyAccessed()
@@ -113,6 +115,10 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFObject_stateFlags) {
     ZFGlobalObserver().observerHasAddStateDetach(ZFObject::E_ObjectPropertyValueOnReset(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnReset);
 }
 ZF_GLOBAL_INITIALIZER_END(ZFObject_stateFlags)
+
+const ZFClass *ZFObject::classDynamic(void) {
+    return d ? d->classDynamic : zfnull;
+}
 
 _ZFP_I_zfweak *ZFObject::_ZFP_ZFObject_weakHolder(void) {
     ZFCoreMutexLocker();
@@ -629,9 +635,9 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     else if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             ) {
-        if(_objectRetainCount == 1) {
+        if(_refCount == 1) {
             this->observerNotifyReversely(ZFObject::E_ObjectBeforeDealloc());
-            if(_objectRetainCount > 1) {
+            if(_refCount > 1) {
                 this->objectOnRelease();
                 this->observerRemoveAll(ZFObject::E_ObjectBeforeDealloc());
                 return;
@@ -640,14 +646,14 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
     }
 
     this->objectOnRelease();
-    if(_objectRetainCount > 0) {
+    if(_refCount > 0) {
         return;
     }
 
     ZFBitUnset(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateIdle);
     ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDeallocPrepare);
     this->objectOnDeallocPrepare();
-    if(_objectRetainCount > 0) {
+    if(_refCount > 0) {
         ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateIdle);
         ZFBitUnset(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_ZFObjectInstanceStateOnDeallocPrepare);
         return;
@@ -877,6 +883,19 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
         zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
         d->ZFImplementDynamicData->holder[clsToImplement] = zfobjRetain(holder);
         return holder;
+    }
+}
+void ZFObject::_ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *cls) {
+    if(cls) {
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        }
+        d->classDynamic = cls;
+    }
+    else {
+        if(d) {
+            d->classDynamic = zfnull;
+        }
     }
 }
 
