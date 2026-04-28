@@ -157,9 +157,9 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
     return zftrue;
 }
 
-void ZFContainer::copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
-    zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-    zfself *another = zfcast(zfself *, anotherObj);
+void ZFContainer::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+    zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
+    zfself *another = zfcast(zfself *, anotherStyleable);
     if(another != zfnull && this != another) {
         this->removeAll();
         this->addFrom(another);

@@ -141,9 +141,8 @@ zfclassFwd _ZFP_ZFRegExpPrivate;
  *   />
  * @endcode
  */
-zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE(ZFRegExp, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
+zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFRegExp, ZFStyle)
 
 protected:
     zfoverride
@@ -172,9 +171,9 @@ protected:
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
-        zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        ZFRegExp *another = zfcast(zfself *, anotherObj);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+        zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
+        ZFRegExp *another = zfcast(zfself *, anotherStyleable);
         this->pattern(another->pattern(), another->options());
     }
 

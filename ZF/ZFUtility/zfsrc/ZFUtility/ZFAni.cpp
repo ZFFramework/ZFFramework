@@ -36,7 +36,7 @@ private:
     const ZFMethod *_setterMethod;
     const ZFMethod *_getterMethod;
     zfauto _valueSaved;
-    zfautoT<ZFProgressable> _valueHolder;
+    zfautoT<ZFStyleable> _valueHolder;
     zfauto _from;
     zfauto _to;
     const ZFTypeInfo *_typeInfo; // null for retain property, non-null for assignable property
@@ -87,8 +87,8 @@ public:
             if(_from == zfnull) {
                 return;
             }
-            if(_from->classData()->classIsTypeOf(ZFCopyable::ClassData())) {
-                _from = _from.to<ZFCopyable *>()->copy();
+            if(_from->classData()->classIsTypeOf(ZFStyleable::ClassData())) {
+                _from = _from.to<ZFStyleable *>()->copy();
             }
         }
         if(_to == zfnull) {
@@ -96,8 +96,8 @@ public:
             if(_to == zfnull) {
                 return;
             }
-            if(_to->classData()->classIsTypeOf(ZFCopyable::ClassData())) {
-                _to = _to.to<ZFCopyable *>()->copy();
+            if(_to->classData()->classIsTypeOf(ZFStyleable::ClassData())) {
+                _to = _to.to<ZFStyleable *>()->copy();
             }
         }
 
@@ -108,7 +108,7 @@ public:
         }
         else {
             zfauto valueHolder = _getterMethod->methodInvoke(_target);
-            ZFProgressable *value = valueHolder;
+            ZFStyleable *value = valueHolder;
             if(value != zfnull) {
                 value->progressUpdate(_from, _to, progress);
             }
@@ -206,7 +206,7 @@ private:
 
         if(_setterMethod == zfnull) { // ani by getter only
             if(ZFClass::classForName(_getterMethod->returnTypeId()) == zfnull
-                    || zfcast(ZFProgressable *, _getterMethod->methodInvoke(_target)) == zfnull
+                    || zfcast(ZFStyleable *, _getterMethod->methodInvoke(_target)) == zfnull
                     ) { // ani by getter only valid for retain property
                 return zffalse;
             }
@@ -216,7 +216,7 @@ private:
             if(_typeInfo == zfnull
                 || _typeInfo->typeIdClass() == zfnull
                 || _typeInfo->typeIdClass()->classIsAbstract()
-                || !_typeInfo->typeIdClass()->classIsTypeOf(ZFProgressable::ClassData())
+                || !_typeInfo->typeIdClass()->classIsTypeOf(ZFStyleable::ClassData())
             ) {
                 return zffalse;
             }

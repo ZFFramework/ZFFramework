@@ -15,9 +15,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may supply a subclass to achieve custom curve,
  * but must make sure it is serializable and copyable
  */
-zfabstract ZFLIB_ZFCore ZFCurve : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFCurve, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
+zfabstract ZFLIB_ZFCore ZFCurve : zfextend ZFStyle {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFCurve, ZFStyle)
 
 public:
     /**

@@ -34,9 +34,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   --                 value1
  * @endcode
  */
-zfclass ZFLIB_ZFCore ZFStruct : zfextend ZFStyle, zfimplement ZFProgressable {
+zfclass ZFLIB_ZFCore ZFStruct : zfextend ZFStyle {
     ZFOBJECT_DECLARE(ZFStruct, ZFStyle)
-    ZFIMPLEMENT_DECLARE(ZFProgressable)
 
     /** @brief construct from string, see #ZFStruct */
     ZFOBJECT_ON_INIT_DECLARE_2(
@@ -64,6 +63,13 @@ protected:
     virtual zfbool serializableOnSerializeToString(
             ZF_IN_OUT zfstring &ret
             , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
+
+    zfoverride
+    virtual zfbool progressOnUpdate(
+            ZF_IN ZFStyleable *from
+            , ZF_IN ZFStyleable *to
+            , ZF_IN zffloat progress
             );
 };
 

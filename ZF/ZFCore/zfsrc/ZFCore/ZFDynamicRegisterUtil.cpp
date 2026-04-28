@@ -1156,14 +1156,14 @@ ZFDynamic &ZFDynamic::singleton(ZF_IN_OPT const zfstring &methodName /* = zftext
 
 // ============================================================
 static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
-    ZFCopyable *copyable = property->dynamicRegisterUserData();
+    ZFStyleable *copyable = property->dynamicRegisterUserData();
     if(copyable != zfnull) {
         return copyable->copy();
     }
     ZFStyleable *styleable = property->dynamicRegisterUserData();
     if(styleable != zfnull) {
         zfauto ret = styleable->classData()->newInstance();
-        ret.to<ZFStyleable *>()->styleableCopyFrom(styleable->toObject());
+        ret.to<ZFStyleable *>()->copyFrom(styleable->toObject());
         return ret;
     }
     return property->dynamicRegisterUserData();

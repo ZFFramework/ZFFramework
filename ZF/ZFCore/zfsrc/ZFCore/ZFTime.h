@@ -304,9 +304,8 @@ zfclassFwd _ZFP_ZFTimePrivate;
  *   />
  * @endcode
  */
-zfclass ZFLIB_ZFCore ZFTime : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE(ZFTime, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
+zfclass ZFLIB_ZFCore ZFTime : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFTime, ZFStyle)
 
 protected:
     zfoverride
@@ -324,10 +323,10 @@ protected:
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
-        zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->timeValue(zfcast(zfself *, anotherObj)->timeValue());
-        this->timeZone(zfcast(zfself *, anotherObj)->timeZone());
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+        zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
+        this->timeValue(zfcast(zfself *, anotherStyleable)->timeValue());
+        this->timeZone(zfcast(zfself *, anotherStyleable)->timeZone());
     }
 
 public:

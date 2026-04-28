@@ -59,9 +59,9 @@ protected:
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
-        zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->enumValue(zfcast(zfself *, anotherObj)->enumValue());
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
+        zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
+        this->enumValue(zfcast(zfself *, anotherStyleable)->enumValue());
     }
 
 protected:

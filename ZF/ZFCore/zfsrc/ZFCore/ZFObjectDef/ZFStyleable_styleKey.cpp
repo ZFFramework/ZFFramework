@@ -51,7 +51,7 @@ void _ZFP_ZFStyleKeyHolder::styleOnUpdate(
             owner->toObject()->objectInfoOfInstance(),
             style->objectInfoOfInstance());
 
-        owner->styleableCopyFrom(style);
+        owner->copyFrom(style);
     }
 }
 void ZFStyleable::styleKey(ZF_IN const zfstring &styleKey) {
@@ -124,7 +124,7 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         if(styleable == zfnull) {
             return zffalse;
         }
-        styleable->styleableCopyFrom(styleValue);
+        styleable->copyFrom(styleValue);
         return zftrue;
     }
     else {

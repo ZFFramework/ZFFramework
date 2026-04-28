@@ -7,7 +7,6 @@
 #define _ZFI_ZFTypeIdCore_h_
 
 #include "ZFStyleable.h"
-#include "ZFProgressable.h"
 #include "ZFMethodUserRegister.h"
 #include "ZFMethodFuncUserRegister.h"
 #include "ZFMethodFuncDeclare.h"
@@ -31,9 +30,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   />
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyle, zfimplement ZFProgressable {
+zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyle {
     ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyle)
-    ZFIMPLEMENT_DECLARE(ZFProgressable)
 
 public:
     /**
@@ -221,7 +219,7 @@ protected:
  *           , ZF_IN zffloat progress
  *           );
  * @endcode
- * then use them by #ZFProgressable::progressUpdate\n
+ * then use them by #ZFStyleable::progressUpdate\n
  * \n
  * to register:
  * @code
@@ -236,9 +234,9 @@ protected:
         v_##TypeName::_ZFP_ZFTypeId_progressUpdate() = zfself::I; \
     } \
     static zfbool I( \
-            ZF_IN_OUT ZFProgressable *_ret \
-            , ZF_IN ZFProgressable *_from \
-            , ZF_IN ZFProgressable *_to \
+            ZF_IN_OUT ZFStyleable *_ret \
+            , ZF_IN ZFStyleable *_from \
+            , ZF_IN ZFStyleable *_to \
             , ZF_IN zffloat progress \
             ) { \
         v_##TypeName *_retH = zfcast(v_##TypeName *, _ret); \

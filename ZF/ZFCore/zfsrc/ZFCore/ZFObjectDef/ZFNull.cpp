@@ -1,13 +1,11 @@
 #include "ZFNull.h"
 #include "ZFObjectImpl.h"
-#include "ZFCopyable.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFNull */
-zfclass ZFNullObject : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE(ZFNullObject, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
+zfclass ZFNullObject : zfextend ZFStyle {
+    ZFOBJECT_DECLARE(ZFNullObject, ZFStyle)
 
 public:
     zfoverride
@@ -38,8 +36,11 @@ private:
 
 public:
     zfoverride
-    virtual zfauto copy(void) {
+    virtual zfautoT<ZFStyleable> copy(void) {
         return ZFNull();
+    }
+    zfoverride
+    virtual void copyFrom(ZF_IN ZFObject *anotherStyleable) {
     }
 };
 

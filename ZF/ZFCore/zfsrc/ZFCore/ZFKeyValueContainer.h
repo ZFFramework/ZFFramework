@@ -204,10 +204,6 @@ protected:
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj);
-
-protected:
-    zfoverride
     virtual void objectOnDeallocPrepare(void);
 
 public:

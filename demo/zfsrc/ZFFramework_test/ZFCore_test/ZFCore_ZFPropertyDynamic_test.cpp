@@ -70,7 +70,7 @@ private:
         }
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = zfargs.sender();
         obj->myProp(zfargs.param0()->to<v_zfint *>()->zfv);
-        obj->objectTag(_valueKey(), zfargs.param0()->to<ZFCopyable *>()->copy());
+        obj->objectTag(_valueKey(), zfargs.param0()->to<ZFStyleable *>()->copy());
     }
     static void _getterGI(ZF_IN_OUT const ZFArgs &zfargs) {
         if(!ZFMethodGenericInvokerParamsCheck(zfargs)) {

@@ -184,8 +184,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         static _ZFP_ZFTypeIdProgressUpdate &_ZFP_ZFTypeId_progressUpdate(void); \
         zfoverride \
         virtual zfbool progressOnUpdate( \
-                ZF_IN ZFProgressable *from \
-                , ZF_IN ZFProgressable *to \
+                ZF_IN ZFStyleable *from \
+                , ZF_IN ZFStyleable *to \
                 , ZF_IN zffloat progress \
                 ) { \
             if(zfself::_ZFP_ZFTypeId_progressUpdate()) { \

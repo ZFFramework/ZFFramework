@@ -6,6 +6,19 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfautoT<ZFStyleable> ZFStyleable::copy(void) {
+    zfautoT<ZFStyleable> ret = this->classData()->newInstance();
+    if(ret != zfnull) {
+        zfcast(zfself *, ret)->copyFrom(this->toObject());
+    }
+    return ret;
+}
+void ZFStyleable::copyFrom(ZF_IN ZFObject *anotherStyleable) {
+    if(anotherStyleable != zfnull && anotherStyleable != this->toObject()) {
+        this->styleableOnCopyFrom(anotherStyleable);
+    }
+}
+
 zfanyT<ZFStyleable> ZFStyleable::defaultStyle(void) {
     const ZFMethod *method = this->classData()->methodForName("DefaultStyle");
     if(method != zfnull) {
@@ -32,11 +45,8 @@ static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFC
         }
         else if(!prop->setterMethod()->isPublic() && !(
                     prop->isRetainProperty()
-                    && (zffalse
-                        || prop->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())
-                        || prop->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())
-                        )
-                        )) {
+                    && prop->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())
+                    )) {
             ret.remove(i);
         }
     }
@@ -46,11 +56,6 @@ static ZFCoreArray<const ZFProperty *> _ZFP_ZFStyleable_propList(ZF_IN const ZFC
 }
 
 // ============================================================
-void ZFStyleable::styleableCopyFrom(ZF_IN ZFObject *anotherStyleable) {
-    if(anotherStyleable != zfnull && anotherStyleable != this->toObject()) {
-        this->styleableOnCopyFrom(anotherStyleable);
-    }
-}
 void ZFStyleable::styleablePropertyGetAllT(
         ZF_OUT ZFCoreArray<const ZFProperty *> &ret
         ) {
@@ -78,25 +83,6 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
                 ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
                 if(v0) {
                     if(v1) {
-                        v0->styleableCopyFrom(v1);
-                    }
-                    else {
-                        property->setterMethod()->methodInvoke(this->toObject(), zfnull);
-                    }
-                }
-                else {
-                    if(v1) {
-                        zfautoT<ZFStyleable> v0Tmp = v1->classData()->newInstance();
-                        v0Tmp->styleableCopyFrom(v1);
-                    }
-                }
-            }
-            else if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())) {
-                copied = zftrue;
-                ZFCopyable *v0 = property->getterMethod()->methodInvoke(this->toObject());
-                ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
-                if(v0) {
-                    if(v1) {
                         v0->copyFrom(v1);
                     }
                     else {
@@ -105,7 +91,8 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
                 }
                 else {
                     if(v1) {
-                        property->setterMethod()->methodInvoke(this->toObject(), zfcast(ZFCopyable *, v1)->copy());
+                        zfautoT<ZFStyleable> v0Tmp = v1->classData()->newInstance();
+                        v0Tmp->copyFrom(v1);
                     }
                 }
             }
@@ -117,13 +104,6 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
     else if(property->isRetainProperty()) {
         if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())) {
             ZFStyleable *v0 = property->getterMethod()->methodInvoke(this->toObject());
-            ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
-            if(v0 && v1) {
-                v0->styleableCopyFrom(v1);
-            }
-        }
-        else if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData())) {
-            ZFCopyable *v0 = property->getterMethod()->methodInvoke(this->toObject());
             ZFObject *v1 = property->getterMethod()->methodInvoke(anotherStyleable);
             if(v0 && v1) {
                 v0->copyFrom(v1);
@@ -155,6 +135,24 @@ void ZFStyleable::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
             this->styleableOnCopyPropertyFrom(anotherStyleable, property);
         }
     }
+}
+
+// ============================================================
+zfbool ZFStyleable::progressUpdate(
+        ZF_IN ZFStyleable *from
+        , ZF_IN ZFStyleable *to
+        , ZF_IN zffloat progress
+        ) {
+    const ZFMethod *m = this->classData()->methodForName("progressOnUpdate");
+    if(m) {
+        return m->methodInvoke(
+                this->toObject()
+                , zfcast(ZFObject *, from)
+                , zfcast(ZFObject *, to)
+                , zfobj<v_zffloat>(progress)
+                ).to<v_zfbool *>()->zfv;
+    }
+    return this->progressOnUpdate(from, to, progress);
 }
 
 // ============================================================
@@ -390,10 +388,11 @@ ZFEVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfanyT<ZFStyleable>, defaultStyle)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfautoT<ZFStyleable>, copy)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, copyFrom
         , ZFMP_IN(ZFObject *, anotherStyleable)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfanyT<ZFStyleable>, defaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfbool, styleableIsDefaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleablePropertyGetAllT
         , ZFMP_OUT(ZFCoreArray<const ZFProperty *> &, ret)
@@ -409,6 +408,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFStyleable, void, propStyle
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, propStyle
         , ZFMP_IN(const zfstring &, propertyName)
+        )
+
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFStyleable, zfbool, progressUpdate
+        , ZFMP_IN(ZFStyleable *, from)
+        , ZFMP_IN(ZFStyleable *, to)
+        , ZFMP_IN(zffloat, progress)
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFStyleDefaultApplyAutoCopy

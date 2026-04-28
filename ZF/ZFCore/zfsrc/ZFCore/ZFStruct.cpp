@@ -109,5 +109,42 @@ zfbool ZFStruct::serializableOnSerializeToString(
     return zftrue;
 }
 
+zfbool ZFStruct::progressOnUpdate(
+        ZF_IN ZFStyleable *from
+        , ZF_IN ZFStyleable *to
+        , ZF_IN zffloat progress
+        ) {
+    const ZFClass *cls = this->classData();
+    if(zffalse
+            || from == zfnull
+            || !from->classData()->classIsTypeOf(cls)
+            || to == zfnull
+            || !to->classData()->classIsTypeOf(cls)
+            ) {
+        return zffalse;
+    }
+    for(zfiter it = cls->propertyIter(); it; ++it) {
+        const ZFProperty *prop = cls->propertyIterValue(it);
+        if(prop->isInternal()
+                || prop->getterMethod()->methodAccessType() != ZFMethodAccessTypePublic
+                || (ZFPropertyIsInitValue(prop, from) && ZFPropertyIsInitValue(prop, to))
+                ) {
+            continue;
+        }
+        const ZFMethod *m = prop->getterMethod();
+        zfauto v = m->methodInvoke(this);
+        ZFStyleable *t = v;
+        if(t == zfnull
+                || !t->progressUpdate(m->methodInvoke(from->toObject()), m->methodInvoke(to->toObject()), progress)
+                ) {
+            return zffalse;
+        }
+        if(prop->setterMethod()->methodAccessType() == ZFMethodAccessTypePublic) {
+            prop->setterMethod()->methodInvoke(this, t->toObject());
+        }
+    }
+    return zftrue;
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

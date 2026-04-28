@@ -222,15 +222,6 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
     return zftrue;
 }
 
-void ZFKeyValueContainer::copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
-    zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-    zfself *another = zfcast(zfself *, anotherObj);
-    if(another != zfnull && this != another) {
-        this->removeAll();
-        this->addFrom(another);
-    }
-}
-
 void ZFKeyValueContainer::objectOnDeallocPrepare(void) {
     this->removeAll();
     zfsuper::objectOnDeallocPrepare();

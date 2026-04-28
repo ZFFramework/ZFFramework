@@ -16,7 +16,7 @@
  *
  * once declared, object's style can be copied as styleable easily:
  * @code
- *   obj->styleableCopyFrom(anotherStyleableObject);
+ *   obj->copyFrom(anotherStyleableObject);
  * @endcode
  *
  * and you can access default style by the macro generated method:
@@ -59,7 +59,7 @@
  *       obj->myProperty(xxx);
  *
  *       // or apply style copy (consume more CPU)
- *       obj->styleableCopyFrom(yyy);
+ *       obj->copyFrom(yyy);
  *   } ZFLISTENER_END()
  *   MyStyleableObject::ClassData()->instanceObserverAdd(myObjCreated);
  * @endcode

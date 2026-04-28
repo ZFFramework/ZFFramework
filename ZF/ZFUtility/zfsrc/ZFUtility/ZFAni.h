@@ -43,7 +43,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
  *     similar to #ZFProperty
  * -  from and to value can be:
  *   -  proper #ZFObject value for retain property,
- *     and the property value should be #ZFProgressable
+ *     and the property value should be #ZFStyleable
  *   -  proper #ZFTypeIdWrapper for assign property,
  *     and the type of the property must be registered by
  *     #ZFTYPEID_PROGRESS_DEFINE

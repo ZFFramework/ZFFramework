@@ -422,7 +422,7 @@ public:
         if(layoutParam) {
             if(!layoutParam->classData()->classIsTypeOf(owner->layoutParamClass())) {
                 layoutParam = owner->layoutParamCreate();
-                layoutParam->styleableCopyFrom(child->layoutParam());
+                layoutParam->copyFrom(child->layoutParam());
             }
         }
         else {
@@ -708,7 +708,7 @@ public:
             }
         }
         else {
-            exist->styleableCopyFrom(internalViewTmp);
+            exist->copyFrom(internalViewTmp);
         }
         return zftrue;
     }
@@ -1640,7 +1640,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, layoutParam
         ) {
     if(this->parent() != zfnull && layoutParam != zfnull && !layoutParam->classData()->classIsTypeOf(this->layoutParamClass())) {
         zfautoT<ZFUILayoutParam> layoutParamTmp = this->layoutParamCreate();
-        layoutParamTmp->styleableCopyFrom(layoutParam);
+        layoutParamTmp->copyFrom(layoutParam);
         d->layoutParamUpdate(this, layoutParamTmp);
     }
     else {

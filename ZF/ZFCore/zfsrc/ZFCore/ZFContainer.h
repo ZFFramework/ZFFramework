@@ -38,9 +38,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note a container would have special serializing step with ref or style logic,
  *   see #serializableOnSerializeToData for more info
  */
-zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
+zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFStyle {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFStyle)
 
 public:
     // ============================================================
@@ -191,7 +190,7 @@ protected:
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj);
+    virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
 
     zfoverride
     virtual void objectOnDeallocPrepare(void);

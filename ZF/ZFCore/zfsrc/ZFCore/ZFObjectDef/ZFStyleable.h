@@ -7,7 +7,6 @@
 #define _ZFI_ZFStyleable_h_
 
 #include "ZFSerializable.h"
-#include "ZFCopyable.h"
 #include "ZFObjectObserver.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -24,11 +23,23 @@ zfclassFwd _ZFP_ZFStyleKeyHolder;
  * to use styleable, simply implement from #ZFStyleable,
  * if all of your properties are declared as #ZFProperty,
  * then every thing's done,
- * and style can be copied by #ZFStyleable::styleableCopyFrom\n
+ * and style can be copied by #ZFStyleable::copyFrom\n
  * for how styleable would be copied, see #styleableOnCopyPropertyFrom
  */
 zfinterface ZFLIB_ZFCore ZFStyleable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFStyleable, ZFInterface)
+
+public:
+    /**
+     * @brief return a copy of this object
+     */
+    virtual zfautoT<ZFStyleable> copy(void);
+    /**
+     * @brief copy from another object
+     *
+     * do nothing if type mismatch
+     */
+    virtual void copyFrom(ZF_IN ZFObject *anotherStyleable);
 
 public:
     /**
@@ -39,17 +50,6 @@ public:
      * cache it first if necessary
      */
     virtual zfanyT<ZFStyleable> defaultStyle(void);
-
-public:
-    /**
-     * @brief copy style from another styleable, see #ZFStyleable
-     *
-     * usually you should not override this method,
-     * override #styleableOnCopyFrom instead
-     */
-    zffinal void styleableCopyFrom(ZF_IN ZFObject *anotherStyleable);
-
-public:
     /**
      * @brief true if this object is #defaultStyle
      */
@@ -78,7 +78,7 @@ protected:
             );
     /**
      * @brief for subclass to achieve custom style copy step,
-     *   called by #styleableCopyFrom, see #ZFStyleable
+     *   called by #copyFrom, see #ZFStyleable
      */
     virtual void styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable);
 
@@ -96,6 +96,30 @@ public:
     zffinal const zfstring &propStyle(ZF_IN const zfstring &propertyName);
 private:
     friend zfclassFwd _ZFP_ZFStyleKeyHolder;
+
+    // ============================================================
+public:
+    /**
+     * @brief update object according to progress
+     *
+     * progress usually ranged in [0.0, 1.0],
+     * but may exceed range such as bouncing
+     */
+    zffinal zfbool progressUpdate(
+            ZF_IN ZFStyleable *from
+            , ZF_IN ZFStyleable *to
+            , ZF_IN zffloat progress
+            );
+
+protected:
+    /** @brief see #progressUpdate */
+    virtual inline zfbool progressOnUpdate(
+            ZF_IN ZFStyleable *from
+            , ZF_IN ZFStyleable *to
+            , ZF_IN zffloat progress
+            ) {
+        return zffalse;
+    }
 };
 
 // ============================================================
@@ -103,20 +127,13 @@ private:
 /**
  * @brief common styleable object
  *
- * implement #ZFStyleable, #ZFSerializable, #ZFCopyable\n
+ * implement #ZFStyleable, #ZFSerializable\n
  * every style, serialize and copy logic has been done by reflect,
  * if all of your properties are declared as #ZFProperty
  */
-zfclass ZFLIB_ZFCore ZFStyle : zfextend ZFObject, zfimplement ZFStyleable, zfimplement ZFSerializable, zfimplement ZFCopyable {
+zfclass ZFLIB_ZFCore ZFStyle : zfextend ZFObject, zfimplement ZFStyleable, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(ZFStyle, ZFObject)
-    ZFIMPLEMENT_DECLARE(ZFStyleable, ZFSerializable, ZFCopyable)
-
-protected:
-    zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
-        zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->styleableCopyFrom(zfcast(zfself *, anotherObj));
-    }
+    ZFIMPLEMENT_DECLARE(ZFStyleable, ZFSerializable)
 };
 
 // ============================================================
@@ -276,7 +293,7 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
         if(!this->styleableIsDefaultStyle()) { \
             zfanyT<ZFStyleable> defaultStyle = this->defaultStyle(); \
             if(defaultStyle != zfnull) { \
-                this->styleableCopyFrom(defaultStyle); \
+                this->copyFrom(defaultStyle); \
                 ZFStyleDefaultApplyAutoCopy(this); \
             } \
         } \
@@ -377,7 +394,7 @@ extern ZFLIB_ZFCore void ZFStyleSet(
  * @brief see #ZFStyleSet
  *
  * @note the returned object is the original object set by #ZFStyleSet,
- *   use #ZFStyleable::styleableCopyFrom or #ZFCopyable::copy
+ *   use #ZFStyleable::copyFrom or #ZFStyleable::copy
  *   to create new one if necessary,
  *   you should not modify the original object
  */

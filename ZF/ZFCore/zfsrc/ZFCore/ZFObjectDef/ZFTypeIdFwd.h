@@ -226,11 +226,11 @@ public:
 };
 
 // ============================================================
-zfclassFwd ZFProgressable;
+zfclassFwd ZFStyleable;
 typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
-        ZF_IN_OUT ZFProgressable *ret
-        , ZF_IN ZFProgressable *from
-        , ZF_IN ZFProgressable *to
+        ZF_IN_OUT ZFStyleable *ret
+        , ZF_IN ZFStyleable *from
+        , ZF_IN ZFStyleable *to
         , ZF_IN zffloat progress
         );
 
