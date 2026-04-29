@@ -86,11 +86,12 @@ private:
             return zfnull;
         }
         ZFCoreMutexLocker();
-        CacheData *t = zfpoolNew(CacheData);
-        t->refPathInfo = refPathInfo;
-        t->compressToken = ret;
-        t->lastAccessed = ZFTime::currentTime();
-        _cache.add(zfobj<ZFValue>(t, ZFValueTypePoolObject(CacheData)));
+        zfobj<ZFValue> cacheHolder;
+        CacheData &cache = cacheHolder->valueCreate<CacheData>();
+        cache.refPathInfo = refPathInfo;
+        cache.compressToken = ret;
+        cache.lastAccessed = ZFTime::currentTime();
+        _cache.add(cacheHolder);
         ZFLISTENER(onClose
                 ) {
             zfautoT<ZFCompressToken> token = zfargs.sender();
@@ -99,7 +100,7 @@ private:
             }
         } ZFLISTENER_END()
         ret->observerAddForOnce(ZFIOToken::E_IOCloseOnPrepare(), onClose);
-        _cacheTrim(t->lastAccessed);
+        _cacheTrim(cache.lastAccessed);
         return ret;
     }
     void _cacheTrim(ZF_IN zftimet curTime) {

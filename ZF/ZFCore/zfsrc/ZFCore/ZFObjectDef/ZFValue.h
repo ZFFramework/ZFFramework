@@ -12,26 +12,26 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueType {
 public:
-    static void TypePOD(ZF_IN void *value) {
+    static void Type_zffree(ZF_IN void *value) {
         zffree(value);
     }
     template<typename T_Object>
-    static void TypeObject(ZF_IN void *value) {
+    static void Type_zfdelete(ZF_IN void *value) {
         zfdelete((T_Object *)value);
     }
     template<typename T_Object>
-    static void TypePoolObject(ZF_IN void *value) {
+    static void Type_zfpoolDelete(ZF_IN void *value) {
         zfpoolDelete((T_Object *)value);
     }
 };
 /** @brief see #ZFValueType */
-#define ZFValueTypePointerRef() zfnull
+#define ZFValueType_none() zfnull
 /** @brief see #ZFValueType */
-#define ZFValueTypePOD() _ZFP_ZFValueType::TypePOD
+#define ZFValueType_zffree() _ZFP_ZFValueType::Type_zffree
 /** @brief see #ZFValueType */
-#define ZFValueTypeObject(T_Object) _ZFP_ZFValueType::TypeObject<T_Object >
+#define ZFValueType_zfdelete(T_Object) _ZFP_ZFValueType::Type_zfdelete<T_Object >
 /** @brief see #ZFValueType */
-#define ZFValueTypePoolObject(T_Object) _ZFP_ZFValueType::TypePoolObject<T_Object >
+#define ZFValueType_zfpoolDelete(T_Object) _ZFP_ZFValueType::Type_zfpoolDelete<T_Object >
 
 // ============================================================
 // ZFValue
@@ -92,7 +92,7 @@ protected:
     template<typename T_Value>
     void objectOnInit(ZF_IN T_Value const &value) {
         _value = zfpoolNew(T_Value, value);
-        _type = ZFValueTypePoolObject(T_Value);
+        _type = ZFValueType_zfpoolDelete(T_Value);
     }
     zfoverride
     virtual void objectOnInit(void) {
@@ -131,14 +131,32 @@ public:
             void *valueOld = _value;
             ZFValueType typeOld = _type;
             _value = zfpoolNew(T_Value, value);
-            _type = ZFValueTypePoolObject(T_Value);
+            _type = ZFValueType_zfpoolDelete(T_Value);
             typeOld(valueOld);
         }
         else {
             _value = zfpoolNew(T_Value, value);
-            _type = ZFValueTypePoolObject(T_Value);
+            _type = ZFValueType_zfpoolDelete(T_Value);
         }
         return this;
+    }
+    /**
+     * @brief change the value
+     */
+    template<typename T_Value>
+    T_Value &valueCreate(void) {
+        if(_value && _type) {
+            void *valueOld = _value;
+            ZFValueType typeOld = _type;
+            _value = zfpoolNew(T_Value);
+            _type = ZFValueType_zfpoolDelete(T_Value);
+            typeOld(valueOld);
+        }
+        else {
+            _value = zfpoolNew(T_Value);
+            _type = ZFValueType_zfpoolDelete(T_Value);
+        }
+        return *(T_Value *)_value;
     }
 
 public:

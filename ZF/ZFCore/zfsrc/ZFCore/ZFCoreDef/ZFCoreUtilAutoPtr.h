@@ -11,32 +11,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// zffreeInScope
-zfclassLikePOD ZFLIB_ZFCore _ZFP_zffreeInScopeContainer {
-public:
-    _ZFP_zffreeInScopeContainer(ZF_IN void *p) : p(p) {}
-    ~_ZFP_zffreeInScopeContainer(void) {
-        zffree(this->p);
-    }
-private:
-    void *p;
-};
-/**
- * @brief util macro to make a POD object automatically deleted
- *   after code block, using #zffree
- *
- * usage:
- * @code
- *   { // code block
- *       zfbyte *buf = (zfbyte *)zfmalloc(size);
- *       zffreeInScope(buf); // must be placed in single line
- *   } // buf would be released by #zffree after code block
- * @endcode
- */
-#define zffreeInScope(obj) \
-    _ZFP_zffreeInScopeContainer ZFUniqueName(zffreeInScope_)(obj)
-
-// ============================================================
 // zfcleanupInScope
 /**
  * @brief util to perform custom cleanup action after code block

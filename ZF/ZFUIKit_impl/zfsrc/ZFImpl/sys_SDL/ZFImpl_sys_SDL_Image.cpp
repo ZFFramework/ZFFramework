@@ -30,24 +30,22 @@ public:
             return cache->sdlTexture;
         }
 
-        Cache *cache = zfpoolNew(Cache);
-        cache->sdlTexture = SDL_CreateTextureFromSurface(owner, sdlSurface);
-        SDL_SetTextureBlendMode(cache->sdlTexture, SDL_BLENDMODE_BLEND);
-        cache->surfaceIt = surfaceIt;
-        cache->surfaceSubIt = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, zfautoT<ZFValue> >(
-                    owner
-                    , zfobj<ZFValue>(cache, ZFValueTypePoolObject(Cache))
-                    )).first;
-        cache->rendererIt = r.find(owner);
-        if(cache->rendererIt == r.end()) {
-            cache->rendererIt = r.insert(zfstlpair<SDL_Renderer *, CacheList>(owner, CacheList())).first;
+        zfobj<ZFValue> cacheHolder;
+        Cache &cache = cacheHolder->valueCreate<Cache>();
+        cache.sdlTexture = SDL_CreateTextureFromSurface(owner, sdlSurface);
+        SDL_SetTextureBlendMode(cache.sdlTexture, SDL_BLENDMODE_BLEND);
+        cache.surfaceIt = surfaceIt;
+        cache.surfaceSubIt = surfaceIt->second.insert(zfstlpair<SDL_Renderer *, zfautoT<ZFValue> >(owner, cacheHolder)).first;
+        cache.rendererIt = r.find(owner);
+        if(cache.rendererIt == r.end()) {
+            cache.rendererIt = r.insert(zfstlpair<SDL_Renderer *, CacheList>(owner, CacheList())).first;
         }
-        cache->rendererIt->second.push_back(cache);
-        --(cache->rendererCacheIt = cache->rendererIt->second.end());
-        l.push_back(cache);
-        --(cache->cacheIt = l.end());
+        cache.rendererIt->second.push_back(&cache);
+        --(cache.rendererCacheIt = cache.rendererIt->second.end());
+        l.push_back(&cache);
+        --(cache.cacheIt = l.end());
 
-        return cache->sdlTexture;
+        return cache.sdlTexture;
     }
     void implOwnerDestroyed(ZF_IN SDL_Renderer *owner) {
         ZFCoreAssert(owner != zfnull);

@@ -618,7 +618,7 @@ public:
             }
         }
 
-        _FileToken *impl = (_FileToken *)zfmalloc(sizeof(_FileToken));
+        _FileToken *impl = (_FileToken *)zfpoolMalloc(sizeof(_FileToken));
         zfmemcpy(impl, &token, sizeof(_FileToken));
         return impl;
     }
@@ -641,7 +641,7 @@ public:
                     );
         }
         ret = ret && CloseHandle(impl->h);
-        zffree(impl);
+        zfpoolFree(impl);
         return ret;
     }
 

@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Posix {
 public:
     static void *implInit(void) {
-        pthread_mutex_t *mutex = (pthread_mutex_t *)zfmalloc(sizeof(pthread_mutex_t));
+        pthread_mutex_t *mutex = (pthread_mutex_t *)zfpoolMalloc(sizeof(pthread_mutex_t));
         pthread_mutexattr_t Attr;
         pthread_mutexattr_init(&Attr);
         pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
@@ -21,7 +21,7 @@ public:
     static void implDealloc(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
         pthread_mutex_destroy(mutex);
-        zffree(mutex);
+        zfpoolFree(mutex);
     }
     static void implLock(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;

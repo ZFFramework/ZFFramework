@@ -182,11 +182,12 @@ const ZFClass *ZFEnumDynamicRegister(
     d->d->enumIsFlags = enumIsFlags;
 
     // typeid
-    _ZFP_ZFEnumTypeId *typeIdData = zfnew(_ZFP_ZFEnumTypeId);
-    typeIdData->enumClass = enumClass;
+    zfobj<ZFValue> typeIdDataHolder;
+    _ZFP_ZFEnumTypeId &typeIdData = typeIdDataHolder->valueCreate<_ZFP_ZFEnumTypeId>();
+    typeIdData.enumClass = enumClass;
     if(!ZFTypeIdDynamicRegister(
                 enumClassName
-                , zfobj<ZFValue>(typeIdData, ZFValueTypeObject(_ZFP_ZFEnumTypeId))
+                , typeIdDataHolder
                 , errorHint
                 )) {
         ZFClassDynamicUnregister(enumClass);

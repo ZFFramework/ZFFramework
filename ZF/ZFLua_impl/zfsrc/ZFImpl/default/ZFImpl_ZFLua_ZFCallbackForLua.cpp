@@ -218,7 +218,7 @@ public:
                 zfobjRelease(v.v.objectValue);
                 break;
             case ValueType_localFunc:
-                zffree(v.v.localFuncName);
+                zfpoolFree(v.v.localFuncName);
                 break;
             case ValueType_bool:
                 break;
@@ -227,7 +227,7 @@ public:
             case ValueType_number:
                 break;
             case ValueType_string:
-                zffree(v.v.stringValue);
+                zfpoolFree(v.v.stringValue);
                 break;
             default:
                 ZFCoreCriticalShouldNotGoHere();
@@ -339,7 +339,7 @@ private:
         else if(lua_isstring(L, -1)) {
             const zfchar *s = lua_tostring(L, -1);
             zfindex len = zfslen(s);
-            ret.v.stringValue = (zfchar *)zfmalloc((len + 1) * sizeof(zfchar));
+            ret.v.stringValue = (zfchar *)zfpoolMalloc((len + 1) * sizeof(zfchar));
             zfmemcpy(ret.v.stringValue, s, (len + 1) * sizeof(zfchar));
             ret.valueType = ValueType_string;
         }
@@ -357,7 +357,7 @@ private:
             }
             const zfchar *s = name;
             zfindex len = zfslen(s);
-            ret.v.localFuncName = (zfchar *)zfmalloc((len + 1) * sizeof(zfchar));
+            ret.v.localFuncName = (zfchar *)zfpoolMalloc((len + 1) * sizeof(zfchar));
             zfmemcpy(ret.v.localFuncName, s, (len + 1) * sizeof(zfchar));
             ret.valueType = ValueType_localFunc;
         }

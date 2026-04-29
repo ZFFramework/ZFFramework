@@ -128,7 +128,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
 
     // store param data
     if(mp.paramCount > 0) {
-        _paramBuf = (ZFSigName *)zfmalloc((ZFMETHOD_MAX_PARAM + mp.paramCount) * sizeof(ZFSigName));
+        _paramBuf = (ZFSigName *)zfpoolMalloc((ZFMETHOD_MAX_PARAM + mp.paramCount) * sizeof(ZFSigName));
 
         ZFSigName *paramTypeIdList = _paramBuf;
         ZFSigName *paramNameList = paramTypeIdList + ZFMETHOD_MAX_PARAM;
@@ -141,7 +141,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
             zfnewPlacement(paramTypeIdList + i, ZFSigName);
         }
 
-        _paramDefaultValueCallbackList = (ZFListener *)zfmalloc(sizeof(ZFListener) * mp.paramCount);
+        _paramDefaultValueCallbackList = (ZFListener *)zfpoolMalloc(sizeof(ZFListener) * mp.paramCount);
         for(zfindex i = 0; i < mp.paramCount; ++i) {
             zfnewPlacement(_paramDefaultValueCallbackList + i, ZFListener, *(mp.paramDefaultValueCallback[i]));
         }
@@ -210,14 +210,14 @@ ZFMethod::~ZFMethod(void) {
         for(zfindex i = 0, count = ZFMETHOD_MAX_PARAM + paramCount(); i < count; ++i) {
             zfdeletePlacement(_paramBuf + i);
         }
-        zffree(_paramBuf);
+        zfpoolFree(_paramBuf);
     }
 
     if(_paramCount > 0) {
         for(zfindex i = 0; i < (zfindex)_paramCount; ++i) {
             zfdeletePlacement(_paramDefaultValueCallbackList + i);
         }
-        zffree(_paramDefaultValueCallbackList);
+        zfpoolFree(_paramDefaultValueCallbackList);
     }
 }
 

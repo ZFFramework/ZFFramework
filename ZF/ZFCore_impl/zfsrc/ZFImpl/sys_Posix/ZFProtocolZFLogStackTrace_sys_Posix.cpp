@@ -25,7 +25,7 @@ public:
             maxLevel = 200;
         }
 
-        void **array = (void **)zfmalloc(sizeof(void *) * (maxLevel + 1));
+        void **array = (void **)zfpoolMalloc(sizeof(void *) * (maxLevel + 1));
         zfindex size = backtrace(array, (int)(maxLevel + 1));
         zfchar **strings = backtrace_symbols(array, (int)size);
 
@@ -40,22 +40,22 @@ public:
         ret += fixedPrefix;
         ret += "------------------------ stack trace -----------------------";
 
-        zffree(strings);
-        zffree(array);
+        free(strings);
+        zfpoolFree(array);
     }
     virtual void callerInfo(
             ZF_IN_OUT zfstring &ret
             , ZF_IN_OPT zfindex ignoreLevel = 0
             ) {
         static const zfindex dummyLevel = 0;
-        void **array = (void **)zfmalloc(sizeof(void *) * (dummyLevel + ignoreLevel + 1));
+        void **array = (void **)zfpoolMalloc(sizeof(void *) * (dummyLevel + ignoreLevel + 1));
         zfindex size = backtrace(array, 3);
         zfchar **strings = backtrace_symbols(array, (int)size);
 
         ret += strings[dummyLevel + ignoreLevel];
 
-        zffree(strings);
-        zffree(array);
+        free(strings);
+        zfpoolFree(array);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFLogStackTraceImpl_sys_Posix)
 

@@ -47,14 +47,14 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_Qt, ZFTimer, v_ZFProtocolLevel::
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QTimer")
 public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {
-        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = zfnew(_ZFP_ZFTimerImpl_sys_Qt_Timer);
+        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = zfpoolNew(_ZFP_ZFTimerImpl_sys_Qt_Timer);
         nativeTimer->impl = this;
         nativeTimer->ownerZFTimer = timer;
         return nativeTimer;
     }
     virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer) {
         _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
-        zfdelete(nativeTimer);
+        zfpoolDelete(nativeTimer);
     }
     virtual void start(
             ZF_IN ZFTimer *timer

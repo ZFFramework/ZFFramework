@@ -173,8 +173,10 @@ zfindex ZFInputCheckMatch(
         for(zfindex i = 0; i < tokenCount; ++i) {
             maxLen = zfmMax(maxLen, zfslen(tokens[i]));
         }
-        zfchar *buf = (zfchar *)zfmalloc(maxLen + 1);
-        zffreeInScope(buf);
+        zfchar *buf = (zfchar *)zfpoolMalloc(maxLen + 1);
+        zfcleanupInScope_1({
+            zfpoolFree(buf);
+        }, zfchar *, buf);
 
         zfbool matched = zffalse;
         zfindex firstCharLen = ZFInputSkipChars(buf, input);

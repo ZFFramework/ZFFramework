@@ -81,7 +81,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Android, ZFThread, v_ZFProtocol
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
         ZFCoreMutexLocker();
-        _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType);
+        _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *token = zfpoolNew(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_sys_Android_getNativeThreadId();
         ZFCoreAssertWithMessage(_ZFP_ZFThreadImpl_sys_Android_threadMap.find(*token) == _ZFP_ZFThreadImpl_sys_Android_threadMap.end(),
             "thread already registered: %s", ownerZFThread);
@@ -92,7 +92,7 @@ public:
         ZFCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *threadId = (_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token;
         _ZFP_ZFThreadImpl_sys_Android_threadMap.erase(*threadId);
-        zfdelete((_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token);
+        zfpoolDelete((_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token);
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
         ZFCoreMutexLocker();
@@ -120,7 +120,7 @@ public:
 
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
         ZFCoreMutexLock();
-        _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
+        _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfpoolNew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
             runnable,
             zfnull);
         _ZFP_ZFThreadImpl_sys_Android_updateExecuteId();
@@ -159,7 +159,7 @@ public:
             , ZF_IN const ZFListener &runnableCleanup
             ) {
         ZFCoreMutexLock();
-        _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
+        _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfpoolNew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
             runnable,
             runnableCleanup);
         _ZFP_ZFThreadImpl_sys_Android_updateExecuteId();
@@ -214,7 +214,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread
         ) {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
     d->runnable.execute();
-    zfdelete(d);
+    zfpoolDelete(d);
 }
 JNI_METHOD_DECLARE_END()
 
@@ -226,7 +226,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
     d->runnable.execute();
     d->runnableCleanup.execute();
-    zfdelete(d);
+    zfpoolDelete(d);
 }
 JNI_METHOD_DECLARE_END()
 

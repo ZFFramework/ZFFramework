@@ -21,14 +21,14 @@ public:
 public:
     static void *implInit(void) {
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-        return zfnew(QMutex, QMutex::Recursive);
+        return zfpoolNew(QMutex, QMutex::Recursive);
 #else
-        return zfnew(QRecursiveMutex);
+        return zfpoolNew(QRecursiveMutex);
 #endif
     }
     static void implDealloc(ZF_IN void *implObject) {
         Mutex *mutex = (Mutex *)implObject;
-        zfdelete(mutex);
+        zfpoolDelete(mutex);
     }
     static void implLock(ZF_IN void *implObject) {
         Mutex *mutex = (Mutex *)implObject;

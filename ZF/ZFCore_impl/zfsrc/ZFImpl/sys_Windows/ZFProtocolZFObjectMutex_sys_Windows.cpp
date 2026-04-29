@@ -20,7 +20,7 @@ public:
 
 public:
     static void *implInit(void) {
-        _Mutex *mutex = zfnew(_Mutex);
+        _Mutex *mutex = zfpoolNew(_Mutex);
         mutex->INVALID_THREAD_ID = (DWORD)-1;
         InitializeCriticalSection(&(mutex->mutex));
         InitializeCriticalSection(&(mutex->mutexParamLocker));
@@ -31,7 +31,7 @@ public:
         _Mutex *mutex = (_Mutex *)implObject;
         DeleteCriticalSection(&(mutex->mutex));
         DeleteCriticalSection(&(mutex->mutexParamLocker));
-        zfdelete(mutex);
+        zfpoolDelete(mutex);
     }
     static void implLock(ZF_IN void *implObject) {
         _Mutex *mutex = (_Mutex *)implObject;

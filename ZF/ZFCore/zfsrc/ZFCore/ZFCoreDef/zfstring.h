@@ -65,7 +65,7 @@ public:
     }
     ~_ZFP_zfstringD(void) {
         if(this->capacity) {
-            zffree(this->d.buf);
+            zfpoolFree(this->d.buf);
         }
     }
 public:
@@ -590,7 +590,7 @@ public:
      * @brief free buffer returned by #zfunsafe_bufferGiveUp
      */
     static void zfunsafe_bufferFree(ZF_IN void *buf) {
-        zffree(buf);
+        zfpoolFree(buf);
     }
 
     /**
@@ -664,7 +664,7 @@ private:
         ZFCoreMutexLocker();
         if(d->refCount == 1) {
             if(d->capacity > 0) {
-                T_Char *buf = (T_Char *)zfrealloc(d->d.buf, capacity * sizeof(T_Char));
+                T_Char *buf = (T_Char *)zfpoolRealloc(d->d.buf, capacity * sizeof(T_Char));
                 if(buf == zfnull) {
                     return zffalse;
                 }
@@ -672,7 +672,7 @@ private:
             }
             else {
                 const T_Char *ptr = d->d.ptr;
-                T_Char *buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
+                T_Char *buf = (T_Char *)zfpoolMalloc(capacity * sizeof(T_Char));
                 if(buf == zfnull) {
                     return zffalse;
                 }
@@ -686,7 +686,7 @@ private:
             }
         }
         else {
-            T_Char *buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
+            T_Char *buf = (T_Char *)zfpoolMalloc(capacity * sizeof(T_Char));
             if(buf == zfnull) {
                 return zffalse;
             }

@@ -144,7 +144,7 @@ public:
     }
 
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
-        _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = zfnew(_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder);
+        _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = zfpoolNew(_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder);
         listenerHolder->runnable = runnable;
         this->_mainThreadHolder.executeInMainThread(listenerHolder);
         return listenerHolder;
@@ -152,7 +152,7 @@ public:
     virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken, ZF_IN zfbool needCancel) {
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = (_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *)nativeToken;
         listenerHolder->runnable = zfnull;
-        zfdelete(listenerHolder);
+        zfpoolDelete(listenerHolder);
     }
 
     virtual void *executeInNewThread(

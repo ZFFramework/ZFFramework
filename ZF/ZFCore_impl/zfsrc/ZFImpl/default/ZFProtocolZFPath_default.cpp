@@ -46,10 +46,11 @@ public:
                 {
                     int len = wai_getExecutablePath(NULL, 0, NULL);
                     if(len > 0) {
-                        char *buf = (char *)zfmalloc(len + 1);
+                        char *buf = (char *)zfpoolMalloc(len + 1);
                         wai_getExecutablePath(buf, len, NULL);
                         buf[len] = '\0';
                         tmp += buf;
+                        zfpoolFree(buf);
                     }
                 }
             #else

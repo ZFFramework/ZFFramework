@@ -20,8 +20,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #endif
 #endif
 
-// #define _ZFP_ZFMEMPOOL_DEBUG 1
-
 // ============================================================
 /**
  * @def zfpoolNew
@@ -44,28 +42,46 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #define zfpoolDeclareFriend() zfmemDeclareFriend()
 #endif
 
+/**
+ * @def zfpoolMalloc
+ * @brief internal use only, for allocating internal types for performance
+ *
+ * @def zfpoolRealloc
+ * @brief see #zfpoolMalloc
+ *
+ * @def zfpoolFree
+ * @brief see #zfpoolMalloc
+ */
 #if ZF_ENV_ZFMEMPOOL_ENABLE
-// ============================================================
-// impl
+    #define zfpoolMalloc(size) _ZFP_MP_malloc(size)
+    #define zfpoolRealloc(p, size) _ZFP_MP_realloc((p), (size))
+    #define zfpoolFree(p) _ZFP_MP_free(p)
+#else
+    #define zfpoolMalloc(size) zfmalloc(size)
+    #define zfpoolRealloc(p, size) zfrealloc((p), (size))
+    #define zfpoolFree(p) zffree(p)
+#endif
+
+#if ZF_ENV_ZFMEMPOOL_ENABLE
 template<int N>
 zfclassNotPOD _ZFP_MP_SA { // Size Align
 public:
     enum {
-        _A = (N <= sizeof(const void *) * 4
-                ? sizeof(const void *)
-                : N <= sizeof(const void *) * 32
-                    ? sizeof(const void *) * 4
-                    : sizeof(const void *) * 32
+        _A = (N <= sizeof(void *) * 4
+                ? sizeof(void *) * 2
+                : N <= sizeof(void *) * 32
+                    ? sizeof(void *) * 4
+                    : sizeof(void *) * 32
             ),
         V = ((N % _A) == 0 ? N : ((N / _A) + 1) * _A),
-        M = (N <= sizeof(const void *) * 4
-                ? 8
-                : N <= sizeof(const void *) * 8
-                    ? 4
-                    : N <= sizeof(const void *) * 32
-                        ? 2
-                        : N <= sizeof(const void *) * 256
-                            ? 1
+        M = (N <= sizeof(void *) * 4
+                ? 32
+                : N <= sizeof(void *) * 8
+                    ? 16
+                    : N <= sizeof(void *) * 32
+                        ? 8
+                        : N <= sizeof(void *) * 256
+                            ? 4
                             : 0
             ),
     };
@@ -133,6 +149,7 @@ public:
         return _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pNew();
     }
     static void pDel(ZF_IN T_Type *obj) {
+        ZFCoreMutexLocker();
         obj->~T_Type();
         _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pDel(obj);
     }
@@ -140,135 +157,128 @@ public:
 template<typename T_Type>
 inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
     if(obj) {
-        ZFCoreMutexLock();
         _ZFP_MP_Obj<T_Type>::pDel(obj);
-        ZFCoreMutexUnlock();
     }
 }
 
 // ============================================================
-#if _ZFP_ZFMEMPOOL_DEBUG
-    zfclassNotPOD _ZFP_MP_State {
-    public:
-        typedef zfindex (*Fn)(void);
-        const char *name;
-        Fn sizeGetter;
-        Fn countGetter;
-    public:
-        static _ZFP_MP_State *&d(void) {
-            static _ZFP_MP_State *d = zfnull;
-            return d;
-        }
-        static zfindex &c(void) {
-            static zfindex c = 0;
-            return c;
-        }
+template<int N>
+zfclassNotPOD _ZFP_MP_mallocSA {
+public:
+    enum {
+        V = _ZFP_MP_SA<_ZFP_MP_mallocSA<N - 1>::V + 1>::V,
     };
-    template<typename T_Type>
-    zfclassNotPOD _ZFP_MP_ObjDebug {
-    public:
-        static zfbool reg(const char *name) {
-            static zfbool flag = zffalse;
-            if(!flag) {
-                ZFCoreMutexLocker();
-                if(!flag) {
-                    flag = zftrue;
-                    _ZFP_MP_State *&d = _ZFP_MP_State::d();
-                    zfindex &c = _ZFP_MP_State::c();
-                    ++c;
-                    d = (_ZFP_MP_State *)zfrealloc(d, sizeof(_ZFP_MP_State) * c);
-                    _ZFP_MP_State &p = d[c - 1];
-                    p.name = name;
-                    p.countGetter = countGetter;
-                    p.sizeGetter = sizeGetter;
-                }
-            }
-            return zftrue;
-        }
-        static T_Type *a(T_Type *obj) {
-            if(obj) {
-                ZFCoreMutexLocker();
-                Item *&p_ = p();
-                Item *&pEnd_ = pEnd();
-                Item *&cEnd_ = cEnd();
-                if(pEnd_ == cEnd_) {
-                    zfindex count = pEnd_ - p_;
-                    zfindex capacity = count ? count * 2 : 8;
-                    p_ = (Item *)zfrealloc(p_, capacity * sizeof(Item));
-                    pEnd_ = p_ + count;
-                    cEnd_ = p_ + capacity;
-                }
-                *pEnd_ = obj;
-                ++pEnd_;
-            }
-            return obj;
-        }
-        static T_Type *d(T_Type *obj) {
-            if(obj) {
-                Item *&p_ = p();
-                Item *&pEnd_ = pEnd();
-                for(Item *t = p_; t != pEnd_; ++t) {
-                    if(*t == obj) {
-                        zfmemmove(t, t + 1, (pEnd_ - (t + 1)) * sizeof(Item));
-                        --pEnd_;
-                        break;
-                    }
-                }
-            }
-            return obj;
-        }
-    public:
-        typedef T_Type *Item;
-        static Item *&p(void) {
-            static Item *d = zfnull;
-            return d;
-        }
-        static Item *&pEnd(void) {
-            static Item *d = zfnull;
-            return d;
-        }
-        static Item *&cEnd(void) {
-            static Item *d = zfnull;
-            return d;
-        }
-    private:
-        static zfindex sizeGetter(void) {
-            return (zfindex)sizeof(T_Type);
-        }
-        static zfindex countGetter(void) {
-            return pEnd() - p();
-        }
+};
+template<>
+zfclassNotPOD _ZFP_MP_mallocSA<1> {
+public:
+    enum {
+        V = _ZFP_MP_SA<1>::V,
     };
-    template<typename T_Type>
-    inline void _ZFP_MP_ObjDebugDelete(ZF_IN T_Type *obj) {
-        if(obj) {
-            ZFCoreMutexLock();
-            _ZFP_MP_ObjDebug<T_Type>::d(obj);
-            _ZFP_MP_Obj<T_Type>::pDel(obj);
-            ZFCoreMutexUnlock();
+};
+
+inline void *_ZFP_MP_mallocFix(ZF_IN void *p, ZF_IN zfindex size) {
+    if(p) {
+        *(zfindex *)p = size;
+        return (((zfbyte *)p) + sizeof(void *));
+    }
+    else {
+        return zfnull;
+    }
+}
+inline void *_ZFP_MP_malloc(ZF_IN zfindex size) {
+    ZFCoreMutexLocker();
+    if(zffalse){
+    }
+    else if(size <= _ZFP_MP_mallocSA<1>::V - sizeof(void *)) {
+        return _ZFP_MP_mallocFix(_ZFP_MP_H<_ZFP_MP_mallocSA<1>::V>::pNew(), size);
+    }
+    else if(size <= _ZFP_MP_mallocSA<2>::V - sizeof(void *)) {
+        return _ZFP_MP_mallocFix(_ZFP_MP_H<_ZFP_MP_mallocSA<2>::V>::pNew(), size);
+    }
+    else if(size <= _ZFP_MP_mallocSA<3>::V - sizeof(void *)) {
+        return _ZFP_MP_mallocFix(_ZFP_MP_H<_ZFP_MP_mallocSA<3>::V>::pNew(), size);
+    }
+    else if(size <= _ZFP_MP_mallocSA<4>::V - sizeof(void *)) {
+        return _ZFP_MP_mallocFix(_ZFP_MP_H<_ZFP_MP_mallocSA<4>::V>::pNew(), size);
+    }
+    else if(size <= _ZFP_MP_mallocSA<5>::V - sizeof(void *)) {
+        return _ZFP_MP_mallocFix(_ZFP_MP_H<_ZFP_MP_mallocSA<5>::V>::pNew(), size);
+    }
+    else {
+        return _ZFP_MP_mallocFix(zfmalloc(size + sizeof(void *)), size);
+    }
+}
+inline void _ZFP_MP_free(ZF_IN void *p) {
+    ZFCoreMutexLocker();
+    if(p == zfnull) {
+        return;
+    }
+    p = ((zfbyte *)p) - sizeof(void *);
+    zfindex size = *(zfindex *)p;
+    if(zffalse){
+    }
+    else if(size <= _ZFP_MP_mallocSA<1>::V - sizeof(void *)) {
+        _ZFP_MP_H<_ZFP_MP_mallocSA<1>::V>::pDel(p);
+    }
+    else if(size <= _ZFP_MP_mallocSA<2>::V - sizeof(void *)) {
+        _ZFP_MP_H<_ZFP_MP_mallocSA<2>::V>::pDel(p);
+    }
+    else if(size <= _ZFP_MP_mallocSA<3>::V - sizeof(void *)) {
+        _ZFP_MP_H<_ZFP_MP_mallocSA<3>::V>::pDel(p);
+    }
+    else if(size <= _ZFP_MP_mallocSA<4>::V - sizeof(void *)) {
+        _ZFP_MP_H<_ZFP_MP_mallocSA<4>::V>::pDel(p);
+    }
+    else if(size <= _ZFP_MP_mallocSA<5>::V - sizeof(void *)) {
+        _ZFP_MP_H<_ZFP_MP_mallocSA<5>::V>::pDel(p);
+    }
+    else {
+        zffree(p);
+    }
+}
+inline void *_ZFP_MP_realloc(ZF_IN void *p, ZF_IN zfindex size) {
+    ZFCoreMutexLocker();
+    if(p == zfnull) {
+        return _ZFP_MP_malloc(size);
+    }
+    zfindex sizeOld = *(zfindex *)(((zfbyte *)p) - sizeof(void *));
+    if(size <= sizeOld) {
+        return p;
+    }
+    else if(sizeOld <= _ZFP_MP_mallocSA<1>::V - sizeof(void *)) {
+        if(size <= _ZFP_MP_mallocSA<1>::V - sizeof(void *)) {
+            return p;
         }
     }
-
-    #undef zfpoolNew
-    #undef zfpoolDelete
-    #define zfpoolNew(T_Type, ...) _ZFP_MP_ObjDebug<T_Type >::a(( \
-            _ZFP_MP_ObjDebug<T_Type>::reg(#T_Type) \
-            , zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__) \
-            ))
-    #define zfpoolDelete(obj) _ZFP_MP_ObjDebugDelete(obj)
-
-    inline void _ZFP_MP_statePrint(void) {
-        _ZFP_MP_State *d = _ZFP_MP_State::d();
-        _ZFP_MP_State *dEnd = d + _ZFP_MP_State::c();
-        for( ; d < dEnd; ++d) {
-            printf("%4d %4d %s\n"
-                    , (int)d->sizeGetter()
-                    , (int)d->countGetter()
-                    , d->name
-                    );
+    else if(sizeOld <= _ZFP_MP_mallocSA<2>::V - sizeof(void *)) {
+        if(size <= _ZFP_MP_mallocSA<2>::V - sizeof(void *)) {
+            return p;
         }
     }
-#endif // #if _ZFP_ZFMEMPOOL_DEBUG
+    else if(sizeOld <= _ZFP_MP_mallocSA<3>::V - sizeof(void *)) {
+        if(size <= _ZFP_MP_mallocSA<3>::V - sizeof(void *)) {
+            return p;
+        }
+    }
+    else if(sizeOld <= _ZFP_MP_mallocSA<4>::V - sizeof(void *)) {
+        if(size <= _ZFP_MP_mallocSA<4>::V - sizeof(void *)) {
+            return p;
+        }
+    }
+    else if(sizeOld <= _ZFP_MP_mallocSA<5>::V - sizeof(void *)) {
+        if(size <= _ZFP_MP_mallocSA<5>::V - sizeof(void *)) {
+            return p;
+        }
+    }
+    void *pNew = _ZFP_MP_malloc(size);
+    if(pNew == zfnull) {
+        return zfnull;
+    }
+    zfmemcpy(pNew, p, sizeOld);
+    _ZFP_MP_free(p);
+    return pNew;
+}
 #endif // #if ZF_ENV_ZFMEMPOOL_ENABLE
 
 ZF_NAMESPACE_GLOBAL_END

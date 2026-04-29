@@ -21,10 +21,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Qt, ZFSemaphore, v_ZFProtoco
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QWaitCondition")
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
-        return zfnew(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore);
+        return zfpoolNew(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore);
     }
     virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore) {
-        zfdelete((_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore());
+        zfpoolDelete((_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore());
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {

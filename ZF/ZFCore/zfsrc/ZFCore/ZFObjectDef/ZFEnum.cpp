@@ -235,7 +235,7 @@ public:
             ret->enumCount = enumCountMethod->methodInvoke().to<v_zfindex *>()->zfv;
             ZFCoreAssert(ret->enumCount > 0);
 
-            zfbyte *buf = (zfbyte *)zfmalloc((0
+            zfbyte *buf = (zfbyte *)zfpoolMalloc((0
                         + sizeof(zfflags)
                         + sizeof(zfstring)
                         + sizeof(const zfchar *)
@@ -265,7 +265,7 @@ protected:
         for(zfindex i = 0; i < this->enumCount; ++i) {
             zfdeletePlacement(this->nameListHolder + i);
         }
-        zffree((zfbyte *)this->flagList);
+        zfpoolFree((zfbyte *)this->flagList);
         zfsuper::objectOnDealloc();
     }
 };

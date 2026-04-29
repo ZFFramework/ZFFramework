@@ -16,7 +16,7 @@ public:
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Windows, ZFSemaphore, v_ZFProtocolLevel::e_SystemLow)
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = zfnew(_ZFP_ZFSemaphoreImpl_sys_Windows_Token);
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = zfpoolNew(_ZFP_ZFSemaphoreImpl_sys_Windows_Token);
         semaphoreToken->waiterCount = 0;
         semaphoreToken->sema = CreateSemaphore(zfnull, 0, MAXLONG, zfnull);
         InitializeCriticalSection(&(semaphoreToken->semaMutex));
@@ -26,7 +26,7 @@ public:
         _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
         CloseHandle(semaphoreToken->sema);
         DeleteCriticalSection(&(semaphoreToken->semaMutex));
-        zfdelete(semaphoreToken);
+        zfpoolDelete(semaphoreToken);
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {

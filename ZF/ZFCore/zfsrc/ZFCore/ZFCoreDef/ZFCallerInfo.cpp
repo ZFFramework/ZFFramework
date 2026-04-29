@@ -34,7 +34,7 @@ const ZFCallerInfo &_ZFP_ZFCallerInfoEmpty(void) {
 // ============================================================
 static zfchar *_ZFP_ZFCallerInfo_copy(ZF_IN const zfchar *s) {
     zfindex len = zfslen(s);
-    zfchar *ret = (zfchar *)zfmalloc(sizeof(zfchar) * (len + 1));
+    zfchar *ret = (zfchar *)zfpoolMalloc(sizeof(zfchar) * (len + 1));
     zfmemcpy(ret, s, sizeof(zfchar) * (len + 1));
     return ret;
 }
@@ -82,15 +82,15 @@ ZFCallerInfo::ZFCallerInfo(ZF_IN const ZFCallerInfo &ref)
 }
 ZFCallerInfo::~ZFCallerInfo(void) {
     if(_needFree) {
-        zffree(const_cast<zfchar *>(_callerFile));
-        zffree(const_cast<zfchar *>(_callerFunc));
+        zfpoolFree(const_cast<zfchar *>(_callerFile));
+        zfpoolFree(const_cast<zfchar *>(_callerFunc));
     }
 }
 ZFCallerInfo &ZFCallerInfo::operator = (ZF_IN const ZFCallerInfo &ref) {
     if(this != &ref) {
         if(_needFree) {
-            zffree(const_cast<zfchar *>(_callerFile));
-            zffree(const_cast<zfchar *>(_callerFunc));
+            zfpoolFree(const_cast<zfchar *>(_callerFile));
+            zfpoolFree(const_cast<zfchar *>(_callerFunc));
         }
         if(ref._needFree) {
             _callerFile = _ZFP_ZFCallerInfo_copy(ref._callerFile);
@@ -119,8 +119,8 @@ void ZFCallerInfo::callerInfo(
         , ZF_IN zfuint callerLine
         ) {
     if(_needFree) {
-        zffree(const_cast<zfchar *>(_callerFile));
-        zffree(const_cast<zfchar *>(_callerFunc));
+        zfpoolFree(const_cast<zfchar *>(_callerFile));
+        zfpoolFree(const_cast<zfchar *>(_callerFunc));
     }
     _callerFile = _ZFP_ZFCallerInfo_copy(callerFile);
     _callerFunc = _ZFP_ZFCallerInfo_copy(callerFunc);

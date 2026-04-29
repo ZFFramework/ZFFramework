@@ -99,7 +99,7 @@ public:
     }
     ~_ZFP_ZFCoreArrayPrivate(void) {
         _ZFP_ZFCoreArrayW<T_Element>::objDestroy(this->buf, this->buf + this->count);
-        zffree(this->buf);
+        zfpoolFree(this->buf);
     }
 };
 
@@ -1037,7 +1037,7 @@ private:
         if(capacity == 0) {
             if(d) {
                 _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
-                zffree(d->buf);
+                zfpoolFree(d->buf);
                 d->buf = zfnull;
                 d->capacity = 0;
                 d->count = 0;
@@ -1051,7 +1051,7 @@ private:
             T_Element *oldBuf = d->buf;
             zfuint oldCount = d->count;
 
-            T_Element *newBuf = (T_Element *)zfmalloc(capacity * sizeof(T_Element));
+            T_Element *newBuf = (T_Element *)zfpoolMalloc(capacity * sizeof(T_Element));
             _ZFP_ZFCoreArrayW<T_Element>::objCreate(newBuf, newBuf + oldCount, oldBuf);
 
             d->buf = newBuf;
@@ -1059,7 +1059,7 @@ private:
             d->count = oldCount;
 
             _ZFP_ZFCoreArrayW<T_Element>::objDestroy(oldBuf, oldBuf + oldCount);
-            zffree(oldBuf);
+            zfpoolFree(oldBuf);
         }
     }
 };

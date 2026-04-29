@@ -81,7 +81,7 @@ protected:
     template<typename T_Type>
     void objectOnInit(ZF_IN const ZFCoreArray<T_Type> &v) {
         this->zfv = v.refNew();
-        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<T_Type>), ZFValueTypeObject(ZFTypeInfo));
+        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<T_Type>), ZFValueType_zfdelete(ZFTypeInfo));
         this->elementType = this->_ZFP_elementTypeHolder->valuePtr<ZFTypeInfo>();
     }
 
@@ -183,7 +183,7 @@ public:
         ZFCoreArrayBase *zfvOld = this->zfv;
         zfautoT<ZFValue> holderOld = this->_ZFP_elementTypeHolder;
         this->zfv = v.refNew();
-        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<T_Type>), ZFValueTypeObject(ZFTypeInfo));
+        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<T_Type>), ZFValueType_zfdelete(ZFTypeInfo));
         this->elementType = this->_ZFP_elementTypeHolder->valuePtr<ZFTypeInfo>();
         if(zfvOld) {
             zfvOld->refDelete();

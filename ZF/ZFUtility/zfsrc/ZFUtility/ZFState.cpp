@@ -68,7 +68,7 @@ public:
             zfautoT<ZFIOToken> ioLock = _stateFileLocker(zfargs, ioImpl, lockFilePathData);
             if(ioLock) {
                 zfobj<ZFValue> holder;
-                holder->value(ZFCoreMap<zfstring, _ZFP_ZFStateData>());
+                holder->valueCreate<ZFCoreMap<zfstring, _ZFP_ZFStateData> >();
                 _loadImpl(
                         holder->value<ZFCoreMap<zfstring, _ZFP_ZFStateData> >()
                         , zfargs

@@ -17,7 +17,7 @@ public:
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFSemaphoreImpl_sys_Posix, ZFSemaphore, v_ZFProtocolLevel::e_SystemLow)
 public:
     virtual void *nativeSemaphoreCreate(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = zfnew(_ZFP_ZFSemaphoreImpl_sys_Posix_Token);
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = zfpoolNew(_ZFP_ZFSemaphoreImpl_sys_Posix_Token);
         semaphoreToken->waiterCount = 0;
         pthread_cond_init(&(semaphoreToken->sema), zfnull);
         pthread_mutex_init(&(semaphoreToken->semaLocker), zfnull);
@@ -27,7 +27,7 @@ public:
         _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
         pthread_cond_destroy(&(semaphoreToken->sema));
         pthread_mutex_destroy(&(semaphoreToken->semaLocker));
-        zfdelete(semaphoreToken);
+        zfpoolDelete(semaphoreToken);
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {

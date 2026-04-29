@@ -82,14 +82,14 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_default_DataHolder)
 void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data) {
     data->runnable.execute();
     data->runnableCleanup.execute();
-    zfdelete(data);
+    zfpoolDelete(data);
 }
 
 // ============================================================
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_default, ZFThread, v_ZFProtocolLevel::e_Default)
 public:
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
-        _ZFP_ZFThreadImpl_default_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_default_NativeThreadIdType);
+        _ZFP_ZFThreadImpl_default_NativeThreadIdType *token = zfpoolNew(_ZFP_ZFThreadImpl_default_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_default_getNativeThreadId();
         ZFCoreAssertWithMessage(_ZFP_ZFThreadImpl_default_threadMap.find(*token) == _ZFP_ZFThreadImpl_default_threadMap.end(),
             "thread already registered: %s", ownerZFThread);
@@ -98,7 +98,7 @@ public:
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
         _ZFP_ZFThreadImpl_default_threadMap.erase(_ZFP_ZFThreadImpl_default_getNativeThreadId());
-        zfdelete((_ZFP_ZFThreadImpl_default_NativeThreadIdType *)token);
+        zfpoolDelete((_ZFP_ZFThreadImpl_default_NativeThreadIdType *)token);
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
         _ZFP_ZFThreadImpl_default_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_default_threadMap.find(
@@ -142,7 +142,7 @@ public:
             ZF_IN const ZFListener &runnable
             , ZF_IN const ZFListener &runnableCleanup
             ) {
-        _ZFP_ZFThreadImpl_default_ExecuteData *data = zfnew(_ZFP_ZFThreadImpl_default_ExecuteData
+        _ZFP_ZFThreadImpl_default_ExecuteData *data = zfpoolNew(_ZFP_ZFThreadImpl_default_ExecuteData
                 , runnable
                 , runnableCleanup
             );

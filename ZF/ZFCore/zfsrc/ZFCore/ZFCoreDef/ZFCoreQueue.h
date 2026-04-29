@@ -35,7 +35,7 @@ public:
     }
     virtual ~ZFCoreQueuePOD(void) {
         if(_bufHead != _bufBuiltin) {
-            zffree(_bufHead);
+            zfpoolFree(_bufHead);
         }
     }
 private:
@@ -128,7 +128,7 @@ public:
     void capacity(ZF_IN zfindex capacity) {
         if(capacity > this->capacity()) {
             _capacityOptimize(capacity);
-            T_POD *bufHeadNew = (T_POD *)zfmalloc((capacity + 1) * sizeof(T_POD));
+            T_POD *bufHeadNew = (T_POD *)zfpoolMalloc((capacity + 1) * sizeof(T_POD));
             _bufChange(bufHeadNew, bufHeadNew + capacity + 1);
         }
     }
@@ -145,7 +145,7 @@ public:
         else {
             _capacityOptimize(capacity);
             if(capacity != this->capacity()) {
-                T_POD *bufHeadNew = (T_POD *)zfmalloc((capacity + 1) * sizeof(T_POD));
+                T_POD *bufHeadNew = (T_POD *)zfpoolMalloc((capacity + 1) * sizeof(T_POD));
                 _bufChange(bufHeadNew, bufHeadNew + capacity + 1);
             }
         }
@@ -309,7 +309,7 @@ private:
         }
 
         if(_bufHead != _bufBuiltin) {
-            zffree(_bufHead);
+            zfpoolFree(_bufHead);
         }
         _bufHead = bufHeadNew;
         _bufTail = bufTailNew;

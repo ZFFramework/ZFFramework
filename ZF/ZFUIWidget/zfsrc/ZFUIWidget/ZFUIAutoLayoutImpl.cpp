@@ -41,7 +41,7 @@ public:
     {
     }
     ~_ZFP_ZFUIAutoLayoutPrivate(void) {
-        zffree(_childState);
+        zfpoolFree(_childState);
     }
 public:
     ZFUIRect &_childFrame(ZF_IN zfindex i) {
@@ -146,7 +146,7 @@ public:
                 ) * _childCount;
         if(_childStateCount < _childCount) {
             _childStateCount = _childCount;
-            _childState = (zfbyte *)zfrealloc(_childState, size);
+            _childState = (zfbyte *)zfpoolRealloc(_childState, size);
         }
         zfmemset(_childState, 0, size);
 
@@ -590,8 +590,10 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(
     this->calcChildTail(parent, ruleStack, level, parentWidth, parentHeight, parent->childAt(chain.getLast()), posTail, tail, measureMode, xAxis);
 
     zffloat fixedSize = 0;
-    zffloat *childSizeCache = (zffloat *)zfmalloc(sizeof(zffloat) * parent->childCount());
-    zffreeInScope(childSizeCache);
+    zffloat *childSizeCache = (zffloat *)zfpoolMalloc(sizeof(zffloat) * parent->childCount());
+    zfcleanupInScope_1({
+        zfpoolFree(childSizeCache);
+    }, zffloat *, childSizeCache);
     for(zfindex i = chain.count() - 1; i != zfindexMax(); --i) {
         zfindex childIndex = chain[i];
         ZFUIAutoLayoutRule *ruleList = parent->childAt(childIndex)->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;

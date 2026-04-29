@@ -301,7 +301,7 @@ zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfstring &elementTypeId) {
     }
     else if(ZFClass::classForName(elementTypeId) != zfnull) {
         this->zfv = ZFCoreArray<zfauto>().refNew();
-        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<zfauto>), ZFValueTypeObject(ZFTypeInfo));
+        this->_ZFP_elementTypeHolder = zfobj<ZFValue>((ZFTypeInfo *)zfnew(ZFTypeId<zfauto>), ZFValueType_zfdelete(ZFTypeInfo));
         this->elementType = this->_ZFP_elementTypeHolder->valuePtr<ZFTypeInfo>();
         return zftrue;
     }
