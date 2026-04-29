@@ -577,7 +577,12 @@ public:
         _prepareWrite(this->length());
         ret = (void *)d->d.buf;
         length = d->length;
+
+        d->capacity = 0;
+        d->length = 0;
+        d->d.ptr = _ZFP_zfstringD<T_Char>::Empty();
         zfpoolDelete(d);
+
         d = _ZFP_Empty();
         ++(d->refCount);
     }
