@@ -337,7 +337,10 @@ private:
             ret.valueType = ValueType_number;
         }
         else if(lua_isstring(L, -1)) {
-            ret.v.stringValue = zfsCopy(lua_tostring(L, -1));
+            const zfchar *s = lua_tostring(L, -1);
+            zfindex len = zfslen(s);
+            ret.v.stringValue = (zfchar *)zfmalloc((len + 1) * sizeof(zfchar));
+            zfmemcpy(ret.v.stringValue, s, (len + 1) * sizeof(zfchar));
             ret.valueType = ValueType_string;
         }
         else if(lua_isuserdata(L, -1)) {
@@ -352,7 +355,10 @@ private:
             if(!ZFImpl_ZFLua_implPathInfoExist(name)) {
                 return zffalse;
             }
-            ret.v.localFuncName = zfsCopy(name);
+            const zfchar *s = name;
+            zfindex len = zfslen(s);
+            ret.v.localFuncName = (zfchar *)zfmalloc((len + 1) * sizeof(zfchar));
+            zfmemcpy(ret.v.localFuncName, s, (len + 1) * sizeof(zfchar));
             ret.valueType = ValueType_localFunc;
         }
         else if(strcmp(name, "_ENV") == 0) {

@@ -124,11 +124,10 @@ public:
     }
 
 private:
-    zfchar *_callerFileH;
-    zfchar *_callerFuncH;
     const zfchar *_callerFile;
     const zfchar *_callerFunc;
     zfuint _callerLine;
+    zfbool _needFree;
 public:
     ZFCallerInfo &_ZFP_callerInfo(
             ZF_IN const zfchar *callerFile
