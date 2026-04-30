@@ -6,22 +6,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 void *_ZFP_zfmalloc(zfindex size) {
     return malloc((size_t)size);
 }
-void *_ZFP_zfmallocZero(zfindex size) {
-    void *ret = malloc((size_t)size);
-    if(ret) {
-        memset(ret, 0, (size_t)size);
-    }
-    return ret;
-}
 void *_ZFP_zfrealloc(void *oldPtr, zfindex newSize) {
     return realloc(oldPtr, (size_t)newSize);
-}
-void *_ZFP_zfreallocZero(void *oldPtr, zfindex newSize, zfindex oldSize) {
-    void *ret = realloc(oldPtr, (size_t)newSize);
-    if(ret && newSize > oldSize) {
-        memset(((zfbyte *)ret) + oldSize, 0, (size_t)(newSize - oldSize));
-    }
-    return ret;
 }
 void _ZFP_zffree(void *ptr) {
     free(ptr);
