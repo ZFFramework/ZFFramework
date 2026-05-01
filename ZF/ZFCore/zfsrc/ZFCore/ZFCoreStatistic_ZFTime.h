@@ -60,7 +60,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFTimeValue, invokeTimeGetTotalTime
         )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, invokeTimeGetSummaryT
-        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfstring &, key)
         )
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
@@ -70,6 +70,13 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, invokeTimeGetSummary
 
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<zfstring>, invokeTimeGetAllKey)
+
+/** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, invokeTimeGetAllSummaryT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        )
+/** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, invokeTimeGetAllSummary)
 
 // ============================================================
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLogger {

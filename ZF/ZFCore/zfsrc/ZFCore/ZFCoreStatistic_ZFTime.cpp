@@ -19,6 +19,7 @@ static ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &_ZFP_ZFCoreStati
 ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogBegin
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
     if(data == zfnull) {
@@ -39,6 +40,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogBegin
 ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogEnd
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
     if(data != zfnull) {
@@ -54,16 +56,19 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogEnd
 ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeRemove
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     m.remove(key);
 }
 ZFMETHOD_FUNC_DEFINE_0(void, invokeTimeRemoveAll) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     m.removeAll();
 }
 ZFMETHOD_FUNC_DEFINE_1(zfindex, invokeTimeGetInvokeCount
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
     if(data != zfnull) {
@@ -74,6 +79,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, invokeTimeGetInvokeCount
 ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetAverageTime
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
     if(data != zfnull && data->invokeCount > 0) {
@@ -84,6 +90,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetAverageTime
 ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetTotalTime
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
     if(data != zfnull) {
@@ -92,9 +99,10 @@ ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetTotalTime
     return ZFTimeValueZero();
 }
 ZFMETHOD_FUNC_DEFINE_2(void, invokeTimeGetSummaryT
-        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
     _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
     zfindex invokeCount = ((data == zfnull) ? 0 : data->invokeCount);
@@ -116,13 +124,32 @@ ZFMETHOD_FUNC_DEFINE_2(void, invokeTimeGetSummaryT
 ZFMETHOD_FUNC_DEFINE_1(zfstring, invokeTimeGetSummary
         , ZFMP_IN(const zfstring &, key)
         ) {
+    ZFCoreMutexLocker();
     zfstring ret;
     invokeTimeGetSummaryT(ret, key);
     return ret;
 }
 
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<zfstring>, invokeTimeGetAllKey) {
+    ZFCoreMutexLocker();
     return _ZFP_ZFCoreStatisticInvokeTimeDataMap().allKey();
+}
+
+ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeGetAllSummaryT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        ) {
+    ZFCoreMutexLocker();
+    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    for(zfiter it = m.iter(); it; ++it) {
+        zfstring key = m.iterKey(it);
+        invokeTimeGetSummaryT(ret, key);
+        ret += "\n";
+    }
+}
+ZFMETHOD_FUNC_DEFINE_0(zfstring, invokeTimeGetAllSummary) {
+    zfstring ret;
+    invokeTimeGetAllSummaryT(ret);
+    return ret;
 }
 
 ZF_NAMESPACE_END(ZFCoreStatistic)
