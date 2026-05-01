@@ -25,7 +25,7 @@
         zft_deque(zfself const &ref) : zfsuper(ref) {}
         template<typename Iter>
         zft_deque(Iter first, Iter last) : zfsuper(first, last) {}
-        zft_deque(zfself::size_type n, const zfself::value_type &v = zfself::value_type()) : zfsuper(n, v) {}
+        zft_deque(zfstlsize n, T const &v = T()) : zfsuper(n, v) {}
     };
     /** @endcond */
 #endif

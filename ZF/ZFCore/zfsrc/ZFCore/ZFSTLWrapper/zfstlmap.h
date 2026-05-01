@@ -30,7 +30,7 @@
         zft_map(zfself const &ref) : zfsuper(ref) {}
         template<typename Iter>
         zft_map(Iter first, Iter last) : zfsuper(first, last) {}
-        zft_map(zfself::size_type n) : zfsuper(n) {}
+        zft_map(zfstlsize n) : zfsuper(n) {}
     };
     /** @endcond */
 #endif

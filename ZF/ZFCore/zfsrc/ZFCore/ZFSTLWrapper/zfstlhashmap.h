@@ -43,7 +43,7 @@
         zft_hashmap(zfself const &ref) : zfsuper(ref) {}
         template<typename Iter>
         zft_hashmap(Iter first, Iter last) : zfsuper(first, last) {}
-        zft_hashmap(zfself::size_type n) : zfsuper(n) {}
+        zft_hashmap(zfstlsize n) : zfsuper(n) {}
     };
     /** @endcond */
 #endif
