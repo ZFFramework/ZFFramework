@@ -92,5 +92,57 @@ public:
 };
 /** @endcond */
 
+// ============================================================
+/** @cond ZFPrivateDoc */
+template<typename T>
+zfclassNotPOD zfstlallocator {
+public:
+    typedef T value_type;
+    typedef T * pointer;
+    typedef const T * const_pointer;
+    typedef T & reference;
+    typedef const T & const_reference;
+    typedef zfstlsize size_type;
+    typedef zfstlsize difference_type;
+
+    template<typename U>
+    struct rebind {
+        typedef zfstlallocator<U> other;
+    };
+
+    zfstlallocator() {}
+    template<typename U>
+    zfstlallocator(const zfstlallocator<U> &) {}
+
+    pointer allocate(size_type n, const void* hint = 0) {
+        return (pointer)zfpoolMalloc(n * sizeof(T));
+    }
+
+    void deallocate(pointer p, size_type) {
+        zfpoolFree(p);
+    }
+
+    void construct(pointer p, const T &val) {
+        zfnewPlacement(p, T, val);
+    }
+
+    void destroy(pointer p) {
+        zfdeletePlacement(p);
+    }
+
+    size_type max_size() const {
+        return size_type(-1) / sizeof(T);
+    }
+};
+template<typename T, typename U>
+zfbool operator == (const zfstlallocator<T> &, const zfstlallocator<U> &) {
+    return zftrue;
+}
+template<typename T, typename U>
+zfbool operator != (const zfstlallocator<T> &, const zfstlallocator<U> &) {
+    return zffalse;
+}
+/** @endcond */
+
 #endif // #ifndef _ZFI_zfstl_define_h_
 

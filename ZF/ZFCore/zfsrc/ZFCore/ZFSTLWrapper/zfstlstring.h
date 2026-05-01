@@ -15,16 +15,5 @@
     #define zfstlstring std::string
 #endif
 
-/** @brief stl wrapper */
-#ifndef zfstlbasicstring
-    #define zfstlbasicstring std::basic_string
-#endif
-
-// ============================================================
-/** @brief zfchar version of stl string */
-#ifndef zfstlstringZ
-    #define zfstlstringZ zfstlbasicstring<zfchar>
-#endif
-
 #endif // #ifndef _ZFI_zfstlstring_h_
 

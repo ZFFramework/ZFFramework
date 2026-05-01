@@ -11,22 +11,36 @@
 
 // ============================================================
 /** @brief stl wrapper */
-#ifndef zfstlmap
-    #define zfstlmap std::map
-#endif
-
-/** @brief stl wrapper */
 #ifndef zfstlless
     #define zfstlless std::less
 #endif
 
+/** @brief stl wrapper */
+#ifndef zfstlmap
+    #define zfstlmap zft_map
+
+    /** @cond ZFPrivateDoc */
+    template<typename T_Key, typename T_Value, typename T_Compare = zfstlless<T_Key>>
+    zfclassLikePOD zft_map : zfextend std::map<T_Key, T_Value, T_Compare, zfstlallocator<zfstlpair<const T_Key, T_Value> > > {
+    protected:
+        typedef zft_map<T_Key, T_Value, T_Compare> zfself;
+        typedef std::map<T_Key, T_Value, T_Compare, zfstlallocator<zfstlpair<const T_Key, T_Value> > > zfsuper;
+    public:
+        zft_map(void) : zfsuper() {}
+        zft_map(zfself const &ref) : zfsuper(ref) {}
+        template<typename Iter>
+        zft_map(Iter first, Iter last) : zfsuper(first, last) {}
+        zft_map(zfself::size_type n) : zfsuper(n) {}
+    };
+    /** @endcond */
+#endif
 
 // ============================================================
 /** @cond ZFPrivateDoc */
 template<typename T_Key, typename T_Value, typename T_Compare = zfstlless<T_Key> >
-class zfimplmap : public zfstlmap<T_Key, T_Value, T_Compare> {
+zfclassLikePOD zfimplmap : zfextend zfstlmap<T_Key, T_Value, T_Compare> {
 private:
-    zfclassNotPOD _Iter : zfextend zfiter::Impl {
+    zfclassLikePOD _Iter : zfextend zfiter::Impl {
     public:
         typename zfimplmap<T_Key, T_Value, T_Compare>::iterator it;
         typename zfimplmap<T_Key, T_Value, T_Compare>::iterator end;

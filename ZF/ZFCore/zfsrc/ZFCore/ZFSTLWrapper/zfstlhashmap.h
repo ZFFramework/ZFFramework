@@ -10,12 +10,6 @@
 
 // ============================================================
 /** @brief stl wrapper */
-#ifndef zfstlhashmap
-    #define zfstlhashmap std::unordered_map
-    #include "zfstl_impl/unordered_map.hpp"
-#endif
-
-/** @brief stl wrapper */
 #ifndef zfstlhash
     #ifdef _ZFT_zfstlhash
         #define zfstlhash _ZFT_zfstlhash
@@ -33,13 +27,33 @@
     #endif
 #endif
 
+/** @brief stl wrapper */
+#ifndef zfstlhashmap
+    #define zfstlhashmap zft_hashmap
+    #include "zfstl_impl/unordered_map.hpp"
+
+    /** @cond ZFPrivateDoc */
+    template<typename T_Key, typename T_Value, typename T_Hash = zfstlhash<T_Key>, typename T_Equal = zfstlequalto<T_Key> >
+    zfclassLikePOD zft_hashmap : zfextend std::unordered_map<T_Key, T_Value, T_Hash, T_Equal, zfstlallocator<zfstlpair<const T_Key, T_Value> > > {
+    protected:
+        typedef zft_hashmap<T_Key, T_Value, T_Hash, T_Equal> zfself;
+        typedef std::unordered_map<T_Key, T_Value, T_Hash, T_Equal, zfstlallocator<zfstlpair<const T_Key, T_Value> > > zfsuper;
+    public:
+        zft_hashmap(void) : zfsuper() {}
+        zft_hashmap(zfself const &ref) : zfsuper(ref) {}
+        template<typename Iter>
+        zft_hashmap(Iter first, Iter last) : zfsuper(first, last) {}
+        zft_hashmap(zfself::size_type n) : zfsuper(n) {}
+    };
+    /** @endcond */
+#endif
 
 // ============================================================
 /** @cond ZFPrivateDoc */
 template<typename T_Key, typename T_Value, typename T_Hash = zfstlhash<T_Key>, typename T_Equal = zfstlequalto<T_Key> >
-class zfimplhashmap : public zfstlhashmap<T_Key, T_Value, T_Hash, T_Equal> {
+zfclassLikePOD zfimplhashmap : zfextend zfstlhashmap<T_Key, T_Value, T_Hash, T_Equal> {
 private:
-    zfclassNotPOD _Iter : zfextend zfiter::Impl {
+    zfclassLikePOD _Iter : zfextend zfiter::Impl {
     public:
         typename zfimplhashmap<T_Key, T_Value, T_Hash, T_Equal>::iterator it;
         typename zfimplhashmap<T_Key, T_Value, T_Hash, T_Equal>::iterator end;
