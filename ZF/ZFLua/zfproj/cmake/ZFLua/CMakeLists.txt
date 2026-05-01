@@ -28,7 +28,6 @@ target_include_directories(ZFLua PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc")
 
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(ZFLua PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
-
     target_link_directories(ZFLua PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
     target_link_libraries(ZFLua PRIVATE ${ZF_LIB_NAME_})
 endfunction()
@@ -46,11 +45,11 @@ install(
     TARGETS ZFLua
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/lib"
     )
-if(WIN32)
-    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\ZFLua\\zfres")
-else()
-    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/zfres")
-endif()
+install(
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
+    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/zfres"
+    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
+    )
 
 install(
     DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/ZFLua/"

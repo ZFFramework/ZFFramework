@@ -28,7 +28,6 @@ target_include_directories(ZFUIExt PRIVATE "${PROJECT_SOURCE_DIR}/../../../zfsrc
 
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(ZFUIExt PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
-
     target_link_directories(ZFUIExt PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
     target_link_libraries(ZFUIExt PRIVATE ${ZF_LIB_NAME_})
 endfunction()
@@ -51,11 +50,11 @@ install(
     TARGETS ZFUIExt
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/lib"
     )
-if(WIN32)
-    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\ZFUIExt\\zfres")
-else()
-    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/zfres")
-endif()
+install(
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
+    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/zfres"
+    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
+    )
 
 install(
     DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIExt/"

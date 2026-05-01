@@ -28,7 +28,6 @@ target_include_directories(ZFUIWidget PRIVATE "${PROJECT_SOURCE_DIR}/../../../zf
 
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories(ZFUIWidget PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
-
     target_link_directories(ZFUIWidget PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
     target_link_libraries(ZFUIWidget PRIVATE ${ZF_LIB_NAME_})
 endfunction()
@@ -49,11 +48,11 @@ install(
     TARGETS ZFUIWidget
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/lib"
     )
-if(WIN32)
-    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\ZFUIWidget\\zfres")
-else()
-    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/zfres")
-endif()
+install(
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
+    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/zfres"
+    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
+    )
 
 install(
     DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/"

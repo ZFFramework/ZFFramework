@@ -3,15 +3,12 @@ project({ZFTT_R_proj_name})
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
-
-include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-
 if(WIN32)
     set(CMAKE_WIN32_EXECUTABLE TRUE)
-    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\release\\release_cmake.bat" 1)
-else()
-    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 endif()
+
+zfprojExec("${ZF_ROOT_PATH}/tools/release/release_cmake" 1)
+include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 zfprojSrcFiles(
     ZF_SRC_FILES
@@ -44,11 +41,11 @@ function(ZFAddLib ZF_LIB_NAME_)
         DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
         PATTERN "*.lib" EXCLUDE
         )
-    if(WIN32)
-        execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\${ZF_LIB_NAME_}\\zfres\\" "${PROJECT_BINARY_DIR}\\zfdist\\zfres")
-    else()
-        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/zfdist/zfres")
-    endif()
+    install(
+        DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/"
+        DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres"
+        PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
+        )
 endfunction()
 {ZFTT_C_lib_require_0}
 ZFAddLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}

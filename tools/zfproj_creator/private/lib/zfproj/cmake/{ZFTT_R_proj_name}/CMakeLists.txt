@@ -28,7 +28,6 @@ target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJECT_SOURCE_DIR}/../
 
 function(ZFAddLib ZF_LIB_NAME_)
     target_include_directories({ZFTT_R_proj_name} PRIVATE "${ZF_ROOT_PATH}/_release/cmake/all/include")
-
     target_link_directories({ZFTT_R_proj_name} PUBLIC "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib")
     target_link_libraries({ZFTT_R_proj_name} PRIVATE ${ZF_LIB_NAME_})
 endfunction()
@@ -173,11 +172,11 @@ install(
     TARGETS {ZFTT_R_proj_name}
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib"
     )
-if(WIN32)
-    execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\util\\copy_res.bat" "${PROJECT_SOURCE_DIR}\\..\\..\\..\\zfres\\" "${ZF_ROOT_PATH}\\_release\\cmake\\module\\{ZFTT_R_proj_name}\\zfres")
-else()
-    execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/zfres")
-endif()
+install(
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
+    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/zfres"
+    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
+    )
 
 install(
     DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/"
