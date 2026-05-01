@@ -84,15 +84,15 @@ public:
         /** @brief get class info */ \
         static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder h( \
-                    ZF_NAMESPACE_CURRENT(), \
-                    zftext(#ChildClass), \
-                    zfsuper::ClassData(), \
-                    OuterClass::ClassData(), \
-                    (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
-                    &zfself::_ZFP_Obj_ctor, \
-                    &zfself::_ZFP_Obj_dtor, \
-                    &zfself::_ZFP_ObjI_regCk \
-                ); \
+                    ZF_NAMESPACE_CURRENT() \
+                    , zftext(#ChildClass) \
+                    , zfsuper::ClassData() \
+                    , OuterClass::ClassData() \
+                    , (zfself::_ZFP_ZFObjectCanAllocPublic != 0) \
+                    , &zfself::_ZFP_Obj_ctor \
+                    , &zfself::_ZFP_Obj_dtor \
+                    , &zfself::_ZFP_ObjI_regCk \
+                    ); \
             return h.cls; \
         }
 #define _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, OuterClass, ...) \
@@ -102,16 +102,15 @@ public:
         /** @brief get class info */ \
         static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder h( \
-                    ZF_NAMESPACE_CURRENT(), \
-                    zftext(#ChildClass), \
-                    zfsuper::ClassData(), \
-                    OuterClass::ClassData(), \
-                    (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
-                    zfnull, \
-                    zfnull, \
-                    zfnull, \
-                    &zfself::_ZFP_ObjI_regCk \
-                ); \
+                    ZF_NAMESPACE_CURRENT() \
+                    , zftext(#ChildClass) \
+                    , zfsuper::ClassData() \
+                    , OuterClass::ClassData() \
+                    , (zfself::_ZFP_ZFObjectCanAllocPublic != 0) \
+                    , zfnull \
+                    , zfnull \
+                    , &zfself::_ZFP_ObjI_regCk \
+                    ); \
             return h.cls; \
         }
 /**

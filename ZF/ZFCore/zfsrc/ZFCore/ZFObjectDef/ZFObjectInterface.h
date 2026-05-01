@@ -58,17 +58,16 @@ public:
         /** @brief get class info */ \
         static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder h( \
-                    ZF_NAMESPACE_CURRENT(), \
-                    zftext(#InterfaceName), \
-                    ParentInterface::ClassData(), \
-                    OuterClass::ClassData(), \
-                    zftrue, \
-                    zfnull, \
-                    zfnull, \
-                    zfnull, \
-                    &zfself::_ZFP_ObjI_regCk, \
-                    zftrue \
-                ); \
+                    ZF_NAMESPACE_CURRENT() \
+                    , zftext(#InterfaceName) \
+                    , ParentInterface::ClassData() \
+                    , OuterClass::ClassData() \
+                    , zftrue \
+                    , zfnull \
+                    , zfnull \
+                    , &zfself::_ZFP_ObjI_regCk \
+                    , zftrue \
+                    ); \
             return h.cls; \
         } \
     protected: \

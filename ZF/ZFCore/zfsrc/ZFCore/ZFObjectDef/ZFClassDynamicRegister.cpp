@@ -55,17 +55,18 @@ const ZFClass *ZFClassDynamicRegister(
     }
     zfindex dotPos = zfstringFindReversely(classNameFull, ".");
     cls = ZFClass::_ZFP_ZFClassRegister(
-        dotPos == zfindexMax() ? zfnull : zfstring(classNameFull, dotPos).cString(),
-        dotPos == zfindexMax() ? classNameFull : zfstring(classNameFull + dotPos + 1),
-        parent,
-        zfnull,
-        zftrue,
-        parent->_ZFP_objectConstructor(),
-        parent->_ZFP_objectDestructor(),
-        zfnull,
-        zffalse,
-        zftrue,
-        classDynamicRegisterUserData);
+            dotPos == zfindexMax() ? zfnull : zfstring(classNameFull, dotPos).cString()
+            , dotPos == zfindexMax() ? classNameFull : zfstring(classNameFull + dotPos + 1)
+            , parent
+            , zfnull
+            , zftrue
+            , parent->_ZFP_objectConstructor()
+            , parent->_ZFP_objectDestructor()
+            , zfnull
+            , zffalse
+            , zftrue
+            , classDynamicRegisterUserData
+            );
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
     zfstring classNamespace = ZFNamespaceSkipGlobal(cls->classNamespace());
     if(classNamespace && ZFClass::classForName(classNamespace) == zfnull) {
