@@ -11,9 +11,13 @@ zfprojExec("${PROJECT_SOURCE_DIR}/../../../../zfsetup")
 
 set(ZF_SRC_FILES ${ZF_SRC_FILES} "${PROJECT_SOURCE_DIR}/cmake_main.cpp")
 
-function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
+function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_ PROJ_CONFIG_PATH_)
     set(${ZF_LIB_NAMES_} ${${ZF_LIB_NAMES_}} ${LIB_NAME_} PARENT_SCOPE)
-    include("${PROJ_PATH_}/zfproj/cmake/${LIB_NAME_}/zfprojConfig.cmake" OPTIONAL)
+    if(NOT PROJ_CONFIG_PATH_)
+        include("${PROJ_CONFIG_PATH_}/zfprojConfig.cmake" OPTIONAL)
+    else()
+        include("${PROJ_PATH_}/zfproj/cmake/${LIB_NAME_}/zfprojConfig.cmake" OPTIONAL)
+    endif()
     zfprojSrcFiles(
         ZF_SRC_FILES_TMP
         "${CMAKE_BINARY_DIR}/zfgensrc_${LIB_NAME_}.cpp"
@@ -30,7 +34,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         )
 endfunction()
 
-ZFAddSrc(ZF_LIB_NAMES ZFFramework_test ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../..)
+ZFAddSrc(ZF_LIB_NAMES ZFFramework_test ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../.. ${PROJECT_SOURCE_DIR})
 
 ZFAddSrc(ZF_LIB_NAMES ZFCore ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFCore)
 ZFAddSrc(ZF_LIB_NAMES ZFAlgorithm ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFAlgorithm)

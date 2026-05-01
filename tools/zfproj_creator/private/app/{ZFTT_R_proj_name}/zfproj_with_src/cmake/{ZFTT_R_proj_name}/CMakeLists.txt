@@ -11,9 +11,13 @@ zfprojExec("${PROJECT_SOURCE_DIR}/../../../../zfsetup")
 
 set(ZF_SRC_FILES ${ZF_SRC_FILES} "${PROJECT_SOURCE_DIR}/cmake_main.cpp")
 
-function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
+function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_ PROJ_CONFIG_PATH_)
     set(${ZF_LIB_NAMES_} ${${ZF_LIB_NAMES_}} ${LIB_NAME_} PARENT_SCOPE)
-    include("${PROJ_PATH_}/zfproj/cmake/${LIB_NAME_}/zfprojConfig.cmake" OPTIONAL)
+    if(NOT PROJ_CONFIG_PATH_)
+        include("${PROJ_CONFIG_PATH_}/zfprojConfig.cmake" OPTIONAL)
+    else()
+        include("${PROJ_PATH_}/zfproj/cmake/${LIB_NAME_}/zfprojConfig.cmake" OPTIONAL)
+    endif()
     zfprojSrcFiles(
         ZF_SRC_FILES_TMP
         "${CMAKE_BINARY_DIR}/zfgensrc_${LIB_NAME_}.cpp"
@@ -30,7 +34,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         )
 endfunction()
 
-ZFAddSrc(ZF_LIB_NAMES {ZFTT_R_proj_name} ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../..)
+ZFAddSrc(ZF_LIB_NAMES {ZFTT_R_proj_name} ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../.. ${PROJECT_SOURCE_DIR})
 {ZFTT_C_lib_require_0}
 ZFAddSrc(ZF_LIB_NAMES {ZFTT_R_lib_name_0} ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/{ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}
 ZFAddSrc(ZF_LIB_NAMES {ZFTT_R_lib_name_1} ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/{ZFTT_R_lib_name_1}){ZFTT_CE}{ZFTT_C_lib_require_2}
