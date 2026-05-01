@@ -356,7 +356,8 @@ static zfstring _ZFP_ZFDI_cacheKey(
     zfstring ret;
     ret.capacity(methodName.length() + 12);
     if(obj) {
-        zfidentityToStringT(ret, obj->classData()->classId());
+        zfidentity v = obj->classData()->classId();
+        ret.append(&v, sizeof(v));
     }
     ret += '.';
     ret += methodName;
@@ -367,7 +368,8 @@ static zfstring _ZFP_ZFDI_cacheKey(
         }
         ret += ':';
         if(param) {
-            zfidentityToStringT(ret, param->classData()->classId());
+            zfidentity v = param->classData()->classId();
+            ret.append(&v, sizeof(v));
         }
     }
     if(!convStr) {

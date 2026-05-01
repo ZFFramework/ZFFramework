@@ -670,8 +670,9 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
             }
         }
     }
+    const ZFClass *cls = this->classData();
     this->objectOnDealloc();
-    this->classData()->_ZFP_ZFClass_objectDesctuct(this);
+    cls->_ZFP_ZFClass_objectDesctuct(this);
 }
 
 void ZFObject::objectOnInit(void) {
