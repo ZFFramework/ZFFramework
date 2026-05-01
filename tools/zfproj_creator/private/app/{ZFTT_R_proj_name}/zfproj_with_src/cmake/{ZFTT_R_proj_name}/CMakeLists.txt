@@ -11,10 +11,10 @@ zfprojExec("${PROJECT_SOURCE_DIR}/../../../../zfsetup")
 
 set(ZF_SRC_FILES ${ZF_SRC_FILES} "${PROJECT_SOURCE_DIR}/cmake_main.cpp")
 
-function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_ PROJ_CONFIG_PATH_)
+function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
     set(${ZF_LIB_NAMES_} ${${ZF_LIB_NAMES_}} ${LIB_NAME_} PARENT_SCOPE)
-    if(NOT PROJ_CONFIG_PATH_)
-        include("${PROJ_CONFIG_PATH_}/zfprojConfig.cmake" OPTIONAL)
+    if(NOT "${ARGV4}" STREQUAL "")
+        include("${ARGV4}/zfprojConfig.cmake" OPTIONAL)
     else()
         include("${PROJ_PATH_}/zfproj/cmake/${LIB_NAME_}/zfprojConfig.cmake" OPTIONAL)
     endif()
