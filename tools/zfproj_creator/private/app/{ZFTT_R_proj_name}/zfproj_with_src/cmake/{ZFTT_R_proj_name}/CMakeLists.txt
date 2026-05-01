@@ -22,7 +22,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         "${PROJ_PATH_}"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
-    target_include_directories({ZFTT_R_proj_name} PRIVATE "${PROJ_PATH_}/zfsrc")
+    include_directories("${PROJ_PATH_}/zfsrc")
     install(
         DIRECTORY "${PROJ_PATH_}/zfres/"
         DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres"
