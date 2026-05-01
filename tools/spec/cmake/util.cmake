@@ -29,7 +29,9 @@ function(zfprojExec cmd)
 endfunction()
 
 function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH relDir zfsrcBaseDir)
-    if("$ENV{ZF_UNITY_BUILD}" STREQUAL "0")
+    if("$ENV{ZF_UNITY_BUILD}" STREQUAL "0"
+            OR WIN32
+            )
         file(GLOB_RECURSE resultTmp RELATIVE "${relDir}"
             "${zfsrcBaseDir}/zfsrc/*.c"
             "${zfsrcBaseDir}/zfsrc/*.cpp"

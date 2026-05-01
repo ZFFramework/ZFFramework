@@ -29,6 +29,11 @@
     #define zfstlsize size_t
 #endif
 
+/** @brief stl type wrapper */
+#ifndef zfstlptrdiff_t
+    #define zfstlptrdiff_t std::ptrdiff_t
+#endif
+
 // ============================================================
 /** @cond ZFPrivateDoc */
 zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlLess {
@@ -103,10 +108,11 @@ public:
     typedef T & reference;
     typedef const T & const_reference;
     typedef zfstlsize size_type;
-    typedef zfstlsize difference_type;
+    typedef zfstlptrdiff_t difference_type;
 
     template<typename U>
-    struct rebind {
+    zfclassNotPOD rebind {
+    public:
         typedef zfstlallocator<U> other;
     };
 
