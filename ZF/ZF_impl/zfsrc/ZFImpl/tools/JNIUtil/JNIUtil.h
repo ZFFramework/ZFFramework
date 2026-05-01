@@ -9,11 +9,7 @@
 // ============================================================
 /** @brief used to export symbols */
 #ifndef _JNI_EXPORT
-    #ifdef _WIN32
-        #define _JNI_EXPORT __declspec(dllimport)
-    #else
-        #define _JNI_EXPORT __attribute__((visibility("default")))
-    #endif
+    #define _JNI_EXPORT ZFLIB_ZF_impl
 #endif
 
 // ============================================================

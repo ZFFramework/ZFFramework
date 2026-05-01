@@ -7,11 +7,7 @@ import android.view.Window;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
 import com.ZFFramework.ZFFramework_test.BuildConfig;
 
-public class Loader extends Activity {
-    static {
-        System.loadLibrary("ZFFramework_test");
-    }
-
+public class ZFLoader extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);

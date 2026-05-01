@@ -1,11 +1,3 @@
-
-#undef _JNI_EXPORT
-#ifdef _WIN32
-    #define _JNI_EXPORT __declspec(dllexport)
-#else
-    #define _JNI_EXPORT __attribute__((visibility("default")))
-#endif
-
 #include "JNIUtil.h"
 #include <cassert>
 #include <string>
@@ -357,6 +349,4 @@ void *_JNIConvertPointerFromJNITypeAction(JNIEnv *jniEnv, jbyteArray d) {
 
 } // namespace JNIUtil
 #endif // #if NEED_JNIUTIL
-
-#undef _JNI_EXPORT
 

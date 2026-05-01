@@ -27,7 +27,7 @@
  *     <activity
  *         android:name="com.ZFFramework.ZF_impl.ZFMainEntry"
  *         android:label="ZFFramework"
- *         android:usesCleartextTraffic="true">
+ *         android:launchMode="singleTask">
  *     </activity>
  *     <activity
  *         android:name="com.ZFFramework.ZFUIKit_impl.ZFUIRootWindow"
@@ -40,22 +40,24 @@
  *   @code
  *     <uses-permission android:name="android.permission.INTERNET" />
  *   @endcode
- * -# in your Android project,
- *   create a loader activity that,
- *   load necessary libraries,
- *   and start ZFMainEntry then finish itself:
+ * -# in your Application,
+ *   load so library
  *   @code
  *     static {
- *         System.loadLibrary("ZFCore");
- *         // all other ZF libs here
  *         System.loadLibrary("your_app_lib_name");
  *     }
- *
+ *   @endcode
+ * -# create a loader activity,
+ *   start ZFMainEntry then finish itself:
+ *   @code
  *     @Override
  *     protected void onCreate(Bundle savedInstanceState) {
- *         Intent intent = new Intent(Loader.this, ZFMainEntry.class);
- *         startActivity(intent);
- *         this.finish();
+ *         requestWindowFeature(Window.FEATURE_NO_TITLE);
+ *         super.onCreate(savedInstanceState);
+ *         if (BuildConfig.DEBUG) {
+ *             ZFMainEntry.debugMode(true);
+ *         }
+ *         ZFMainEntry.mainEntryFromLoader(this);
  *     }
  *   @endcode
  * -# ensure all of your resource files put in "src/main/assets/zfres" directory of your Android project,

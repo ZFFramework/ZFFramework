@@ -7,11 +7,7 @@ import android.view.Window;
 import com.ZFFramework.ZF_impl.ZFMainEntry;
 import {ZFTT_R_app_package}.BuildConfig;
 
-public class Loader extends Activity {
-    static {
-        System.loadLibrary("{ZFTT_R_proj_name}");
-    }
-
+public class ZFLoader extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
