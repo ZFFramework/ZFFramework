@@ -8,6 +8,28 @@ function(zfprojCxxStandard target stdCfg)
     endif()
 endfunction()
 
+function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH relDir zfsrcBaseDir)
+    if("$ENV{ZF_UNITY_BUILD}" STREQUAL "0")
+        file(GLOB_RECURSE resultTmp RELATIVE "${relDir}"
+            "${zfsrcBaseDir}/zfsrc/*.c"
+            "${zfsrcBaseDir}/zfsrc/*.cpp"
+            )
+    else()
+        if(WIN32)
+            execute_process(COMMAND "${ZF_ROOT_PATH}\\tools\\common\\unity_build.bat" "${unityBuildFile}" "${zfsrcBaseDir}\\zfsrc")
+        else()
+            execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/unity_build.sh" "${unityBuildFile}" "${zfsrcBaseDir}/zfsrc")
+        endif()
+        set(resultTmp ${unityBuildFile})
+    endif()
+    file(GLOB_RECURSE resultExt RELATIVE "${relDir}"
+        "${zfsrcBaseDir}/zfsrc_ext/*.c"
+        "${zfsrcBaseDir}/zfsrc_ext/*.cpp"
+        )
+    list(APPEND resultTmp ${resultExt})
+    set(${result} ${resultTmp} PARENT_SCOPE)
+endfunction()
+
 function(zfprojStripFILE targetName)
     if(WIN32)
         target_compile_options(${targetName} PUBLIC "/wd4117;")

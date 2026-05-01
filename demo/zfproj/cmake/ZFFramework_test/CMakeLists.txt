@@ -13,13 +13,14 @@ else()
     execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 endif()
 
-file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
-    "${PROJECT_SOURCE_DIR}/cmake_main.cpp"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp"
+zfprojSrcFiles(
+    ZF_SRC_FILES
+    "${CMAKE_BINARY_DIR}/zfgensrc_ZFFramework_test.cpp"
+    "${ZF_ROOT_PATH}"
+    "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/../../.."
     )
+list(APPEND ZF_SRC_FILES "${PROJECT_SOURCE_DIR}/cmake_main.cpp")
 if(COMMAND zfprojConfigBefore_ZFFramework_test)
     zfprojConfigBefore_ZFFramework_test(ZFFramework_test ZF_SRC_FILES)
 endif()

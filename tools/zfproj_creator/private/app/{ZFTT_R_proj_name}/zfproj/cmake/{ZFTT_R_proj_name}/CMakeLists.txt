@@ -13,13 +13,14 @@ else()
     execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 endif()
 
-file(GLOB_RECURSE ZF_SRC_FILES RELATIVE "${PROJECT_SOURCE_DIR}"
-    "${PROJECT_SOURCE_DIR}/cmake_main.cpp"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c"
-    "${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp"
+zfprojSrcFiles(
+    ZF_SRC_FILES
+    "${CMAKE_BINARY_DIR}/zfgensrc_{ZFTT_R_proj_name}.cpp"
+    "${ZF_ROOT_PATH}"
+    "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/../../.."
     )
+list(APPEND ZF_SRC_FILES "${PROJECT_SOURCE_DIR}/cmake_main.cpp")
 if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
     zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} ZF_SRC_FILES)
 endif()

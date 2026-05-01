@@ -20,12 +20,12 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
     if(NOT "${zfprojConfigPath}" STREQUAL "")
         include("${zfprojConfigPath}")
     endif()
-
-    file(GLOB_RECURSE ZF_SRC_FILES_TMP RELATIVE "${PROJECT_SOURCE_DIR}"
-        "${PROJ_PATH_}/zfsrc/*.c"
-        "${PROJ_PATH_}/zfsrc/*.cpp"
-        "${PROJ_PATH_}/zfsrc_ext/*.c"
-        "${PROJ_PATH_}/zfsrc_ext/*.cpp"
+    zfprojSrcFiles(
+        ZF_SRC_FILES_TMP
+        "${CMAKE_BINARY_DIR}/zfgensrc_${LIB_NAME_}.cpp"
+        "${ZF_ROOT_PATH}"
+        "${PROJECT_SOURCE_DIR}"
+        "${PROJ_PATH_}"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
     include_directories("${PROJ_PATH_}/zfsrc")
