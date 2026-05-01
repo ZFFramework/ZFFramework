@@ -25,9 +25,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @def zfpoolNew
  * @brief internal use only, for allocating internal types for performance
  *
- * @warning pointers passed to zfpoolDelete must be the same with the type you create
  * @def zfpoolDelete
- * @brief see #zfpoolNew
+ * @brief see #zfpoolNew, see #zfnew for for limitation info
+ *
  * @def zfpoolDeclareFriend
  * @brief use to declare friend if your type has non-public constructors
  */

@@ -86,27 +86,42 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 extern ZFLIB_ZFCore void *_ZFP_zfmalloc(zfindex size);
-/** @brief same as malloc defined for future use */
+/** @brief same as malloc defined for future use, see #zfnew for more info */
 #define zfmalloc(size) _ZFP_zfmalloc(size)
 
 extern ZFLIB_ZFCore void *_ZFP_zfrealloc(void *oldPtr, zfindex newSize);
-/** @brief same as realloc defined for future use */
+/** @brief same as realloc defined for future use, see #zfnew for more info */
 #define zfrealloc(oldPtr, newSize) _ZFP_zfrealloc((oldPtr), (newSize))
 
 extern ZFLIB_ZFCore void _ZFP_zffree(void *ptr);
-/** @brief same as free defined for future use, do nothing if ptr is NULL */
+/** @brief same as free defined for future use, see #zfnew for more info */
 #define zffree(ptr) _ZFP_zffree(ptr)
 
-/** @brief same as new defined for future use */
+/**
+ * @brief memory management in ZFFramework
+ *
+ * we have these memory functions, similar to original C++ world:
+ * -  zfmalloc/zfrealloc/zffree, zfnew/zfdelete, zfnewPlacement/zfdeletePlacement
+ * -  zfpoolMalloc/zfpoolRealloc/zfpoolFree, zfpoolNew/zfpoolDelete
+ *
+ * (ZFTAG_LIMITATION) but there are some rules you must follow:
+ * -  if your object has private destructor,
+ *   you must declare #zfpoolDeclareFriend
+ * -  if you pass base class pointer to zfdelete or zfpoolDelete,
+ *   you must make sure it suits all of these conditions:
+ *   -  pointer addr value is exactly same as the one returned from zfnew/zfpoolNew
+ *   -  pointer type is exactly same as the one returned from zfnew/zfpoolNew,
+ *     or base class has virtual destructor
+ */
 #define zfnew(Type, ...) (new (_ZFP_zfmalloc(sizeof(Type))) Type(__VA_ARGS__))
 template<typename Type> inline void _ZFP_zfdelete(Type *obj) {obj->~Type(); _ZFP_zffree((void *)obj);}
-/** @brief same as delete defined for future use */
+/** @brief see #zfnew */
 #define zfdelete(instance) _ZFP_zfdelete(instance)
 
-/** @brief placement new defined for future use */
+/** @brief placement new defined for future use, see #zfnew for more info */
 #define zfnewPlacement(buf, Type, ...) (new (buf) Type(__VA_ARGS__))
 template<typename Type> inline void _ZFP_zfdeletePlacement(Type *obj) {obj->~Type();}
-/** @brief placement delete (instance->~Type()) defined for future use */
+/** @brief placement delete (instance->~Type()) defined for future use, see #zfnew for more info */
 #define zfdeletePlacement(instance) _ZFP_zfdeletePlacement(instance)
 
 /** @brief use to declare friend if your type has non-public constructors */
