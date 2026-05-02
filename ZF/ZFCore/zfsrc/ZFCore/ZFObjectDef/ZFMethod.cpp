@@ -128,7 +128,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
 
     // store param data
     if(mp.paramCount > 0) {
-        _paramBuf = (ZFSigName *)zfpoolMalloc((ZFMETHOD_MAX_PARAM + mp.paramCount) * sizeof(ZFSigName));
+        _paramBuf = (ZFSigName *)zfunsafe_zfpoolMalloc((ZFMETHOD_MAX_PARAM + mp.paramCount) * sizeof(ZFSigName));
 
         ZFSigName *paramTypeIdList = _paramBuf;
         ZFSigName *paramNameList = paramTypeIdList + ZFMETHOD_MAX_PARAM;
@@ -141,7 +141,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
             zfnewPlacement(paramTypeIdList + i, ZFSigName);
         }
 
-        _paramDefaultValueCallbackList = (ZFListener *)zfpoolMalloc(sizeof(ZFListener) * mp.paramCount);
+        _paramDefaultValueCallbackList = (ZFListener *)zfunsafe_zfpoolMalloc(sizeof(ZFListener) * mp.paramCount);
         for(zfindex i = 0; i < mp.paramCount; ++i) {
             zfnewPlacement(_paramDefaultValueCallbackList + i, ZFListener, *(mp.paramDefaultValueCallback[i]));
         }
@@ -201,7 +201,7 @@ ZFMethod::~ZFMethod(void) {
     zfobjRelease(this->_methodUserData);
 
     if(_ext) {
-        zfpoolDelete(_ext);
+        zfunsafe_zfpoolDelete(_ext);
     }
 
     // paramTypeIdList : ZFMETHOD_MAX_PARAM, fixed length for performance
@@ -210,14 +210,14 @@ ZFMethod::~ZFMethod(void) {
         for(zfindex i = 0, count = ZFMETHOD_MAX_PARAM + paramCount(); i < count; ++i) {
             zfdeletePlacement(_paramBuf + i);
         }
-        zfpoolFree(_paramBuf);
+        zfunsafe_zfpoolFree(_paramBuf);
     }
 
     if(_paramCount > 0) {
         for(zfindex i = 0; i < (zfindex)_paramCount; ++i) {
             zfdeletePlacement(_paramDefaultValueCallbackList + i);
         }
-        zfpoolFree(_paramDefaultValueCallbackList);
+        zfunsafe_zfpoolFree(_paramDefaultValueCallbackList);
     }
 }
 
@@ -743,7 +743,7 @@ _ZFP_ZFMethodRegisterHolder::~_ZFP_ZFMethodRegisterHolder(void) {
 // ============================================================
 _ZFP_ZFMethodPrivate *ZFMethod::_ZFP_ZFMethod_extInit(void) {
     if(_ext == zfnull) {
-        _ext = zfpoolNew(_ZFP_ZFMethodPrivate);
+        _ext = zfunsafe_zfpoolNew(_ZFP_ZFMethodPrivate);
     }
     return _ext;
 }

@@ -65,7 +65,7 @@ public:
     }
     ~_ZFP_zfstringD(void) {
         if(this->capacity) {
-            zfpoolFree(this->d.buf);
+            zfunsafe_zfpoolFree(this->d.buf);
         }
     }
 public:
@@ -165,7 +165,7 @@ public:
     ~zft_zfstring(void) {
         ZFCoreMutexLocker();
         if(--(d->refCount) == 0) {
-            zfpoolDelete(d);
+            zfunsafe_zfpoolDelete(d);
         }
     }
 
@@ -181,7 +181,7 @@ public:
         d = s.d;
         ++(d->refCount);
         if(--(dTmp->refCount) == 0) {
-            zfpoolDelete(dTmp);
+            zfunsafe_zfpoolDelete(dTmp);
         }
         return *this;
     }
@@ -520,7 +520,7 @@ public:
             if(d->refCount == 1) {
                 if(d->capacity >= 128) {
                     if(--(d->refCount) == 0) {
-                        zfpoolDelete(d);
+                        zfunsafe_zfpoolDelete(d);
                     }
                     d = _ZFP_Empty();
                     ++(d->refCount);
@@ -536,7 +536,7 @@ public:
             }
             else {
                 if(--(d->refCount) == 0) {
-                    zfpoolDelete(d);
+                    zfunsafe_zfpoolDelete(d);
                 }
                 d = _ZFP_Empty();
                 ++(d->refCount);
@@ -581,7 +581,7 @@ public:
         d->capacity = 0;
         d->length = 0;
         d->d.ptr = _ZFP_zfstringD<T_Char>::Empty();
-        zfpoolDelete(d);
+        zfunsafe_zfpoolDelete(d);
 
         d = _ZFP_Empty();
         ++(d->refCount);
@@ -664,7 +664,7 @@ private:
         ZFCoreMutexLocker();
         if(d->refCount == 1) {
             if(d->capacity > 0) {
-                T_Char *buf = (T_Char *)zfpoolRealloc(d->d.buf, capacity * sizeof(T_Char));
+                T_Char *buf = (T_Char *)zfunsafe_zfpoolRealloc(d->d.buf, capacity * sizeof(T_Char));
                 if(buf == zfnull) {
                     return zffalse;
                 }
@@ -672,7 +672,7 @@ private:
             }
             else {
                 const T_Char *ptr = d->d.ptr;
-                T_Char *buf = (T_Char *)zfpoolMalloc(capacity * sizeof(T_Char));
+                T_Char *buf = (T_Char *)zfunsafe_zfpoolMalloc(capacity * sizeof(T_Char));
                 if(buf == zfnull) {
                     return zffalse;
                 }
@@ -686,12 +686,12 @@ private:
             }
         }
         else {
-            T_Char *buf = (T_Char *)zfpoolMalloc(capacity * sizeof(T_Char));
+            T_Char *buf = (T_Char *)zfunsafe_zfpoolMalloc(capacity * sizeof(T_Char));
             if(buf == zfnull) {
                 return zffalse;
             }
             _ZFP_zfstringD<T_Char> *dTmp = d;
-            d = zfpoolNew(_ZFP_zfstringD<T_Char>);
+            d = zfunsafe_zfpoolNew(_ZFP_zfstringD<T_Char>);
             d->length = dTmp->length;
             d->d.buf = buf;
             if(dTmp->length > 0 && keepContents) {

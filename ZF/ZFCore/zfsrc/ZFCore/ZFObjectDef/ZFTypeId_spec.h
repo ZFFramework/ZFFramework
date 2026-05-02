@@ -24,12 +24,12 @@ inline const zfauto &_ZFP_zfvAccessFinishDelay(ZF_IN const zfauto &obj) {
 
 template<typename T_PropType>
 void *_ZFP_genericAccessWrap(T_PropType const &v) {
-    return (void *)zfpoolNew(T_PropType, v);
+    return (void *)zfunsafe_zfpoolNew(T_PropType, v);
 }
 
 template<typename T_PropType>
 void _ZFP_genericAccessFinish(ZF_IN void *p) {
-    zfpoolDelete((T_PropType *)p);
+    zfunsafe_zfpoolDelete((T_PropType *)p);
 }
 extern ZFLIB_ZFCore zfauto _ZFP_genericAccessFinishWrap(ZF_IN const zfauto &ret, ZF_IN void *v, ZF_IN void (*type)(ZF_IN void *));
 
@@ -211,7 +211,7 @@ public:
                 static T_Type _d = zfnull;
                 return _d;
             }
-            T_Type *holder = zfpoolNew(T_Type, zfcast(T_Type, obj));
+            T_Type *holder = zfunsafe_zfpoolNew(T_Type, zfcast(T_Type, obj));
             _ZFP_PropAliasAttach(obj, holder,
                 zfstr("_ZFP_PropAlias:%s:%s",
                     zftTraits<T_Type>::TrType::ClassData()->classNameFull(),
@@ -237,7 +237,7 @@ public:
                 , ZF_IN void *v
                 ) {
             T_Type *vTmp = (T_Type *)v;
-            zfpoolDelete(vTmp);
+            zfunsafe_zfpoolDelete(vTmp);
         }
     };
     template<typename T_Access>
@@ -252,7 +252,7 @@ public:
             if(obj == zfnull) {
                 return zfnull;
             }
-            _TrNoRef *holder = zfpoolNew(_TrNoRef);
+            _TrNoRef *holder = zfunsafe_zfpoolNew(_TrNoRef);
             *holder = zfcast(T_Type, obj);
             _ZFP_PropAliasAttach(obj, holder,
                 zfstr("_ZFP_PropAlias:%s:%s",
@@ -279,7 +279,7 @@ public:
                 , ZF_IN void *v
                 ) {
             _TrNoRef *vTmp = (_TrNoRef *)v;
-            zfpoolDelete(vTmp);
+            zfunsafe_zfpoolDelete(vTmp);
         }
     };
     template<typename T_Access>

@@ -22,46 +22,89 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @def zfpoolNew
- * @brief internal use only, for allocating internal types for performance
- *
- * @def zfpoolDelete
- * @brief see #zfpoolNew, see #zfnew for for limitation info
- *
  * @def zfpoolDeclareFriend
- * @brief use to declare friend if your type has non-public constructors
+ * @brief see #zfnew
  */
 #if ZF_ENV_ZFMEMPOOL_ENABLE
-    #define zfpoolNew(T_Type, ...) zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__)
-    #define zfpoolDelete(obj) _ZFP_zfpoolDelete(obj)
     #define zfpoolDeclareFriend() \
         friend zfclassFwd _ZFP_MP_Obj<zfself>;
 #else
+    #define zfpoolDeclareFriend() zfmemDeclareFriend()
+#endif
+
+// ============================================================
+/**
+ * @def zfunsafe_zfpoolNew
+ * @brief see #zfnew
+ *
+ * @def zfunsafe_zfpoolDelete
+ * @brief see #zfnew
+ */
+#if ZF_ENV_ZFMEMPOOL_ENABLE
+    #define zfunsafe_zfpoolNew(T_Type, ...) zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__)
+    #define zfunsafe_zfpoolDelete(obj) _ZFP_zfpoolDelete(obj)
+#else
+    #define zfunsafe_zfpoolNew(T_Type, ...) zfnew(T_Type, ##__VA_ARGS__)
+    #define zfunsafe_zfpoolDelete(obj) zfdelete(obj)
+#endif
+
+/**
+ * @def zfunsafe_zfpoolMalloc
+ * @brief see #zfnew
+ *
+ * @def zfunsafe_zfpoolRealloc
+ * @brief see #zfnew
+ *
+ * @def zfunsafe_zfpoolFree
+ * @brief see #zfnew
+ */
+#if ZF_ENV_ZFMEMPOOL_ENABLE
+    #define zfunsafe_zfpoolMalloc(size) _ZFP_MP_malloc(size)
+    #define zfunsafe_zfpoolRealloc(p, size) _ZFP_MP_realloc((p), (size))
+    #define zfunsafe_zfpoolFree(p) _ZFP_MP_free(p)
+#else
+    #define zfunsafe_zfpoolMalloc(size) zfmalloc(size)
+    #define zfunsafe_zfpoolRealloc(p, size) zfrealloc((p), (size))
+    #define zfunsafe_zfpoolFree(p) zffree(p)
+#endif
+
+// ============================================================
+/**
+ * @def zfpoolNew
+ * @brief see #zfnew
+ *
+ * @def zfpoolDelete
+ * @brief see #zfnew
+ */
+#if ZF_ENV_ZFMEMPOOL_ENABLE
+    #define zfpoolNew(T_Type, ...) (ZFCoreMutexLockerHolder(), zfunsafe_zfpoolNew(T_Type, ##__VA_ARGS__))
+    #define zfpoolDelete(obj) (ZFCoreMutexLockerHolder(), zfunsafe_zfpoolDelete(obj))
+#else
     #define zfpoolNew(T_Type, ...) zfnew(T_Type, ##__VA_ARGS__)
     #define zfpoolDelete(obj) zfdelete(obj)
-    #define zfpoolDeclareFriend() zfmemDeclareFriend()
 #endif
 
 /**
  * @def zfpoolMalloc
- * @brief internal use only, for allocating internal types for performance
+ * @brief see #zfnew
  *
  * @def zfpoolRealloc
- * @brief see #zfpoolMalloc
+ * @brief see #zfnew
  *
  * @def zfpoolFree
- * @brief see #zfpoolMalloc
+ * @brief see #zfnew
  */
 #if ZF_ENV_ZFMEMPOOL_ENABLE
-    #define zfpoolMalloc(size) _ZFP_MP_malloc(size)
-    #define zfpoolRealloc(p, size) _ZFP_MP_realloc((p), (size))
-    #define zfpoolFree(p) _ZFP_MP_free(p)
+    #define zfpoolMalloc(size) (ZFCoreMutexLockerHolder(), zfunsafe_zfpoolMalloc(size))
+    #define zfpoolRealloc(p, size) (ZFCoreMutexLockerHolder(), zfunsafe_zfpoolRealloc((p), (size)))
+    #define zfpoolFree(p) (ZFCoreMutexLockerHolder(), zfunsafe_zfpoolFree(p))
 #else
     #define zfpoolMalloc(size) zfmalloc(size)
     #define zfpoolRealloc(p, size) zfrealloc((p), (size))
     #define zfpoolFree(p) zffree(p)
 #endif
 
+// ============================================================
 #if ZF_ENV_ZFMEMPOOL_ENABLE
 template<int N>
 zfclassNotPOD _ZFP_MP_SA { // Size Align
@@ -145,11 +188,9 @@ template<typename T_Type>
 zfclassNotPOD _ZFP_MP_Obj {
 public:
     static void *pNew(void) {
-        ZFCoreMutexLocker();
         return _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pNew();
     }
     static void pDel(ZF_IN T_Type *obj) {
-        ZFCoreMutexLocker();
         obj->~T_Type();
         _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pDel(obj);
     }
@@ -187,7 +228,6 @@ inline void *_ZFP_MP_mallocFix(ZF_IN void *p, ZF_IN zfindex size) {
     }
 }
 inline void *_ZFP_MP_malloc(ZF_IN zfindex size) {
-    ZFCoreMutexLocker();
     if(zffalse){
     }
     else if(size <= _ZFP_MP_mallocSA<1>::V - sizeof(void *)) {
@@ -210,7 +250,6 @@ inline void *_ZFP_MP_malloc(ZF_IN zfindex size) {
     }
 }
 inline void _ZFP_MP_free(ZF_IN void *p) {
-    ZFCoreMutexLocker();
     if(p == zfnull) {
         return;
     }
@@ -238,7 +277,6 @@ inline void _ZFP_MP_free(ZF_IN void *p) {
     }
 }
 inline void *_ZFP_MP_realloc(ZF_IN void *p, ZF_IN zfindex size) {
-    ZFCoreMutexLocker();
     if(p == zfnull) {
         return _ZFP_MP_malloc(size);
     }

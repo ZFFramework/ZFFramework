@@ -795,7 +795,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
             static T_Access zfvAccess(ZF_IN const zfauto &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
-                _ZFP_PropType *v = zfpoolNew(_ZFP_PropType); \
+                _ZFP_PropType *v = zfunsafe_zfpoolNew(_ZFP_PropType); \
                 *v = (_ZFP_PropType)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
@@ -826,7 +826,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     aliasValue = (AliasToType)*vTmp; \
                     ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessFinish(objTmp); \
                 } \
-                zfpoolDelete(vTmp); \
+                zfunsafe_zfpoolDelete(vTmp); \
             } \
         }; \
         template<typename T_Access> \
@@ -839,9 +839,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             } \
             static _TrNoRef zfvAccess(ZF_IN const zfauto &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
-                _ZFP_PropType *v = zfpoolNew(_ZFP_PropType); \
+                _ZFP_PropType *v = zfunsafe_zfpoolNew(_ZFP_PropType); \
                 *v = (_ZFP_PropType)aliasValue; \
-                _TrNoRef *p = zfpoolNew(_TrNoRef); \
+                _TrNoRef *p = zfunsafe_zfpoolNew(_TrNoRef); \
                 *p = v; \
                 _ZFP_PropAliasAttach(obj, p \
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
@@ -873,8 +873,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     aliasValue = (AliasToType)*vTmp; \
                     ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessFinish(objTmp); \
                 } \
-                zfpoolDelete(vTmp); \
-                zfpoolDelete(p); \
+                zfunsafe_zfpoolDelete(vTmp); \
+                zfunsafe_zfpoolDelete(p); \
             } \
         }; \
         template<typename T_Access> \
@@ -888,7 +888,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     return zfnull; \
                 } \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
-                _ZFP_PropType *v = zfpoolNew(_ZFP_PropType); \
+                _ZFP_PropType *v = zfunsafe_zfpoolNew(_ZFP_PropType); \
                 *v = (_ZFP_PropType)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
                     , zfstr("_ZFP_PropAlias:%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
@@ -919,7 +919,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     aliasValue = (AliasToType)*vTmp; \
                     ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessFinish(objTmp); \
                 } \
-                zfpoolDelete(vTmp); \
+                zfunsafe_zfpoolDelete(vTmp); \
             } \
         };
 

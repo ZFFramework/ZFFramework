@@ -99,7 +99,7 @@ zfclassNotPOD _ZFP_ObjACk<T_ZFObject, 0> {
  * @brief alloc an object, see #ZFObject
  */
 #define zfobjAlloc(T_ZFObject, ...) \
-    zfunsafe_zfobjAlloc(T_ZFObject, ##__VA_ARGS__)
+    (ZFCoreMutexLockerHolder(), zfunsafe_zfobjAlloc(T_ZFObject, ##__VA_ARGS__))
 /** @brief no lock version of #zfobjAlloc, use with caution */
 #define zfunsafe_zfobjAlloc(T_ZFObject, ...) \
     _ZFP_zfobjAlloc(T_ZFObject, ##__VA_ARGS__)

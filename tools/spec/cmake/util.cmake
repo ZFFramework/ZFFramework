@@ -29,9 +29,7 @@ function(zfprojExec cmd)
 endfunction()
 
 function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH relDir zfsrcBaseDir)
-    if("$ENV{ZF_UNITY_BUILD}" STREQUAL "0"
-            OR WIN32
-            )
+    if("$ENV{ZF_UNITY_BUILD}" STREQUAL "0")
         file(GLOB_RECURSE resultTmp RELATIVE "${relDir}"
             "${zfsrcBaseDir}/zfsrc/*.c"
             "${zfsrcBaseDir}/zfsrc/*.cpp"
@@ -39,6 +37,9 @@ function(zfprojSrcFiles result unityBuildFile ZF_ROOT_PATH relDir zfsrcBaseDir)
     else()
         zfprojExec("${ZF_ROOT_PATH}/tools/common/unity_build" "${unityBuildFile}" "${zfsrcBaseDir}/zfsrc")
         set(resultTmp ${unityBuildFile})
+        if(WIN32)
+            set_source_files_properties("${unityBuildFile}" PROPERTIES COMPILE_OPTIONS "/bigobj")
+        endif()
     endif()
     file(GLOB_RECURSE resultExt RELATIVE "${relDir}"
         "${zfsrcBaseDir}/zfsrc_ext/*.c"

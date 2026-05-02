@@ -83,7 +83,7 @@ public:
         --_ZFP_ZFObjectPrivateCount;
 #endif
         if(this->ZFImplementDynamicData) {
-            zfpoolDelete(this->ZFImplementDynamicData);
+            zfunsafe_zfpoolDelete(this->ZFImplementDynamicData);
         }
     }
 };
@@ -123,7 +123,7 @@ const ZFClass *ZFObject::classDynamic(void) {
 _ZFP_I_zfweak *ZFObject::_ZFP_ZFObject_weakHolder(void) {
     ZFCoreMutexLocker();
     if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
     }
     if(d->weakHolder == zfnull) {
         d->weakHolder = zfunsafe_zfobjAlloc(_ZFP_I_zfweak, this);
@@ -299,10 +299,10 @@ void ZFObject::objectTag(
     }
 
     if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
     }
     if(d->objectTagMap == zfnull) {
-        d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
+        d->objectTagMap = zfunsafe_zfpoolNew(_ZFP_ZFObjectTagMapType);
     }
     _ZFP_ZFObjectTagMapType &m = *(d->objectTagMap);
     _ZFP_ZFObjectTagMapType::iterator it = m.find(key);
@@ -477,11 +477,12 @@ void ZFObject::observerNotifyReverselyWithSender(
     }
 }
 ZFObserver &ZFObject::observerHolder(void) {
+    ZFCoreMutexLocker();
     if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
     }
     if(d->observerHolder == zfnull) {
-        d->observerHolder = zfpoolNew(ZFObserver);
+        d->observerHolder = zfunsafe_zfpoolNew(ZFObserver);
         d->observerHolder->_ZFP_ZFObserver_observerOwner(this);
     }
     return *d->observerHolder;
@@ -547,7 +548,7 @@ void ZFObject::_ZFP_ZFObjectLock(void) {
     else {
         ZFCoreMutexLock();
         if(d == zfnull) {
-            d = zfpoolNew(_ZFP_ZFObjectPrivate);
+            d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
         }
         if(_ZFP_ZFObjectMutexImplInit) {
             if(d->mutexImpl == zfnull) {
@@ -715,10 +716,10 @@ void ZFObject::objectOnDealloc(void) {
                         zfobjRelease(it->second);
                     }
                 }
-                zfpoolDelete(d->objectTagMap);
+                zfunsafe_zfpoolDelete(d->objectTagMap);
             }
             if(d->observerHolder) {
-                zfpoolDelete(d->observerHolder);
+                zfunsafe_zfpoolDelete(d->observerHolder);
             }
             if(d->weakHolder) {
                 d->weakHolder->set(zfnull);
@@ -727,14 +728,14 @@ void ZFObject::objectOnDealloc(void) {
         }
         else {
             if(d->observerHolder) {
-                zfpoolDelete(d->observerHolder);
+                zfunsafe_zfpoolDelete(d->observerHolder);
             }
             if(d->weakHolder) {
                 zfobjRelease(d->weakHolder);
             }
         }
 
-        zfpoolDelete(d);
+        zfunsafe_zfpoolDelete(d);
     }
 }
 
@@ -780,7 +781,7 @@ void ZFObject::_ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *p
                 );
     }
     if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
     }
     d->propertyAccessed.push_back(property);
 }
@@ -849,25 +850,25 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
 }
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement) {
     if(d == zfnull) {
-        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
     }
     if(d->ZFImplementDynamicData == zfnull) {
-        d->ZFImplementDynamicData = zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
+        d->ZFImplementDynamicData = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
     }
     zfstlhashmap<const ZFClass *, ZFObject *>::iterator it = d->ZFImplementDynamicData->holder.find(clsToImplement);
     if(it != d->ZFImplementDynamicData->holder.end()) {
         return it->second;
     }
     else {
-        _ZFP_ZFObjectPrivate *dObj = zfpoolNew(_ZFP_ZFObjectPrivate);
-        dObj->ZFImplementDynamicData = zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
+        _ZFP_ZFObjectPrivate *dObj = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
+        dObj->ZFImplementDynamicData = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate::ZFImplementDynamicDataHolder);
         dObj->ZFImplementDynamicData->owner = this;
 
         // alias internal data to owner
         dObj->weakHolder = zfobjRetain(this->_ZFP_ZFObject_weakHolder());
-        dObj->observerHolder = zfpoolNew(ZFObserver, this->observerHolder());
+        dObj->observerHolder = zfunsafe_zfpoolNew(ZFObserver, this->observerHolder());
         if(d->objectTagMap == zfnull) {
-            d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
+            d->objectTagMap = zfunsafe_zfpoolNew(_ZFP_ZFObjectTagMapType);
         }
         if(dObj->objectTagMap != zfnull) {
             for(_ZFP_ZFObjectTagMapType::iterator it = dObj->objectTagMap->begin(); it != dObj->objectTagMap->end(); ++it) {
@@ -875,7 +876,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
             }
             _ZFP_ZFObjectTagMapType *tmp = dObj->objectTagMap;
             dObj->objectTagMap = d->objectTagMap;
-            zfpoolDelete(tmp);
+            zfunsafe_zfpoolDelete(tmp);
         }
         else {
             dObj->objectTagMap = d->objectTagMap;
@@ -889,7 +890,7 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
 void ZFObject::_ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *cls) {
     if(cls) {
         if(d == zfnull) {
-            d = zfpoolNew(_ZFP_ZFObjectPrivate);
+            d = zfunsafe_zfpoolNew(_ZFP_ZFObjectPrivate);
         }
         d->classDynamic = cls;
     }

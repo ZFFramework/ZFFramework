@@ -121,11 +121,11 @@ public:
     zfstlallocator(const zfstlallocator<U> &) {}
 
     pointer allocate(size_type n, const void* hint = 0) {
-        return (pointer)zfpoolMalloc(n * sizeof(T));
+        return (pointer)zfunsafe_zfpoolMalloc(n * sizeof(T));
     }
 
     void deallocate(pointer p, size_type) {
-        zfpoolFree(p);
+        zfunsafe_zfpoolFree(p);
     }
 
     void construct(pointer p, const T &val) {
