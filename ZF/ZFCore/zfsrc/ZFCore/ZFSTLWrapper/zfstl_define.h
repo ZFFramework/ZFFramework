@@ -9,6 +9,13 @@
 #include "../ZFCoreDef.h"
 
 /**
+ * @brief whether enable custom allocator
+ */
+#ifndef ZF_ENV_ZFSTL_ALLOCATOR_ENABLE
+    #define ZF_ENV_ZFSTL_ALLOCATOR_ENABLE ZF_ENV_ZFMEMPOOL_ENABLE
+#endif
+
+/**
  * @brief size_t wrapper
  *
  * take good care of that, zfindex is not ensured same as size_t,

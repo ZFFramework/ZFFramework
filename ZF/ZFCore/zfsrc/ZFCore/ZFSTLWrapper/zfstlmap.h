@@ -17,22 +17,26 @@
 
 /** @brief stl wrapper */
 #ifndef zfstlmap
-    #define zfstlmap zft_map
+    #if ZF_ENV_ZFSTL_ALLOCATOR_ENABLE
+        #define zfstlmap zft_map
 
-    /** @cond ZFPrivateDoc */
-    template<typename T_Key, typename T_Value, typename T_Compare = zfstlless<T_Key>>
-    zfclassLikePOD zft_map : zfextend std::map<T_Key, T_Value, T_Compare, zfstlallocator<zfstlpair<const T_Key, T_Value> > > {
-    protected:
-        typedef zft_map<T_Key, T_Value, T_Compare> zfself;
-        typedef std::map<T_Key, T_Value, T_Compare, zfstlallocator<zfstlpair<const T_Key, T_Value> > > zfsuper;
-    public:
-        zft_map(void) : zfsuper() {}
-        zft_map(zfself const &ref) : zfsuper(ref) {}
-        template<typename Iter>
-        zft_map(Iter first, Iter last) : zfsuper(first, last) {}
-        zft_map(zfstlsize n) : zfsuper(n) {}
-    };
-    /** @endcond */
+        /** @cond ZFPrivateDoc */
+        template<typename T_Key, typename T_Value, typename T_Compare = zfstlless<T_Key>>
+        zfclassLikePOD zft_map : zfextend std::map<T_Key, T_Value, T_Compare, zfstlallocator<zfstlpair<const T_Key, T_Value> > > {
+        protected:
+            typedef zft_map<T_Key, T_Value, T_Compare> zfself;
+            typedef std::map<T_Key, T_Value, T_Compare, zfstlallocator<zfstlpair<const T_Key, T_Value> > > zfsuper;
+        public:
+            zft_map(void) : zfsuper() {}
+            zft_map(zfself const &ref) : zfsuper(ref) {}
+            template<typename Iter>
+            zft_map(Iter first, Iter last) : zfsuper(first, last) {}
+            zft_map(zfstlsize n) : zfsuper(n) {}
+        };
+        /** @endcond */
+    #else
+        #define zfstlmap std::map
+    #endif
 #endif
 
 // ============================================================

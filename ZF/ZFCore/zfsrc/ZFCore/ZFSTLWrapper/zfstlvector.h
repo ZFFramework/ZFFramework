@@ -12,22 +12,26 @@
 // ============================================================
 /** @brief stl wrapper */
 #ifndef zfstlvector
-    #define zfstlvector zft_vector
+    #if ZF_ENV_ZFSTL_ALLOCATOR_ENABLE
+        #define zfstlvector zft_vector
 
-    /** @cond ZFPrivateDoc */
-    template<typename T>
-    zfclassLikePOD zft_vector : zfextend std::vector<T, zfstlallocator<T> > {
-    protected:
-        typedef zft_vector<T> zfself;
-        typedef std::vector<T, zfstlallocator<T> > zfsuper;
-    public:
-        zft_vector(void) : zfsuper() {}
-        zft_vector(zfself const &ref) : zfsuper(ref) {}
-        template<typename Iter>
-        zft_vector(Iter first, Iter last) : zfsuper(first, last) {}
-        zft_vector(zfstlsize n, T const &v = T()) : zfsuper(n, v) {}
-    };
-    /** @endcond */
+        /** @cond ZFPrivateDoc */
+        template<typename T>
+        zfclassLikePOD zft_vector : zfextend std::vector<T, zfstlallocator<T> > {
+        protected:
+            typedef zft_vector<T> zfself;
+            typedef std::vector<T, zfstlallocator<T> > zfsuper;
+        public:
+            zft_vector(void) : zfsuper() {}
+            zft_vector(zfself const &ref) : zfsuper(ref) {}
+            template<typename Iter>
+            zft_vector(Iter first, Iter last) : zfsuper(first, last) {}
+            zft_vector(zfstlsize n, T const &v = T()) : zfsuper(n, v) {}
+        };
+        /** @endcond */
+    #else
+        #define zfstlvector std::vector
+    #endif
 #endif
 
 #endif // #ifndef _ZFI_zfstlvector_h_
