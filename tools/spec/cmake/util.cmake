@@ -10,7 +10,7 @@ endfunction()
 
 # zfprojExec("${ZF_ROOT_PATH}/tools/common/copy_check" "xxx" "xxx")
 function(zfprojExec cmd)
-    if(WIN32)
+    if(CMAKE_HOST_WIN32)
         file(TO_NATIVE_PATH "${cmd}" cmd)
         list(APPEND params "${cmd}.bat")
     else()

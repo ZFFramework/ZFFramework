@@ -55,7 +55,8 @@ ZFMETHOD_DEFINE_2(ZFKeyValueContainer, zfstring, objectInfoOfContent
 }
 
 zfbool ZFKeyValueContainer::serializableOnCheck(void) {
-    if(!zfsuperI(ZFSerializable)::serializableOnCheck()) {return zffalse;}
+    // completely override ZFContainer's version
+    // if(!zfsuperI(ZFSerializable)::serializableOnCheck()) {return zffalse;}
 
     for(zfiter it = this->iter(); it; ++it) {
         if(!ZFObjectIsSerializable(this->iterKey(it))
@@ -72,7 +73,8 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+    // completely override ZFContainer's version
+    // if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     this->removeAll();
 
@@ -114,7 +116,8 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_IN_OPT ZFSerializable *refOwner /* = zfnull */
         ) {
-    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
+    // completely override ZFContainer's version
+    // if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, refOwner)) {return zffalse;}
     zfself *ref = zfcast(zfself *, refOwner);
 
     if(ref == zfnull) {
