@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.ZFFramework.ZF_impl.ZFMainEntry;
-import com.ZFFramework.ZFFramework_test.BuildConfig;
 
 public class ZFLoader extends Activity {
     @Override
