@@ -9,124 +9,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Windows {
 public:
-    zfclassNotPOD _Mutex {
-    public:
-        CRITICAL_SECTION mutex;
-        CRITICAL_SECTION mutexParamLocker;
-        zfstlhashmap<DWORD, zfindex> lockedThreadCountMap;
-        DWORD runningThreadId;
-        DWORD INVALID_THREAD_ID;
-    };
-
-public:
     static void *implInit(void) {
-        _Mutex *mutex = zfpoolNew(_Mutex);
-        mutex->INVALID_THREAD_ID = (DWORD)-1;
-        InitializeCriticalSection(&(mutex->mutex));
-        InitializeCriticalSection(&(mutex->mutexParamLocker));
-        mutex->runningThreadId = mutex->INVALID_THREAD_ID;
+        CRITICAL_SECTION *mutex = (CRITICAL_SECTION *)zfmalloc(sizeof(CRITICAL_SECTION));
+        InitializeCriticalSection(mutex);
         return mutex;
     }
     static void implDealloc(ZF_IN void *implObject) {
-        _Mutex *mutex = (_Mutex *)implObject;
-        DeleteCriticalSection(&(mutex->mutex));
-        DeleteCriticalSection(&(mutex->mutexParamLocker));
-        zfpoolDelete(mutex);
+        zffree(implObject);
     }
     static void implLock(ZF_IN void *implObject) {
-        _Mutex *mutex = (_Mutex *)implObject;
-
-        EnterCriticalSection(&(mutex->mutexParamLocker));
-        DWORD curThreadId = GetCurrentThreadId();
-        if(mutex->runningThreadId == mutex->INVALID_THREAD_ID) {
-            mutex->lockedThreadCountMap[curThreadId] = 1;
-            LeaveCriticalSection(&(mutex->mutexParamLocker));
-            // first time to lock the object
-            EnterCriticalSection(&(mutex->mutex));
-
-            // now we owned the lock
-            mutex->runningThreadId = curThreadId;
-        }
-        else {
-            zfstlhashmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
-            if(curThreadId == mutex->runningThreadId) {
-                ++(it->second);
-                LeaveCriticalSection(&(mutex->mutexParamLocker));
-                // lock the same thread more than one time, no need to lock again
-            }
-            else {
-                if(it == mutex->lockedThreadCountMap.end()) {
-                    mutex->lockedThreadCountMap[curThreadId] = 1;
-                }
-                else {
-                    ++(it->second);
-                }
-                LeaveCriticalSection(&(mutex->mutexParamLocker));
-                // lock while another thread acquiring the lock,
-                // should be locked here until another thread release the lock
-                EnterCriticalSection(&(mutex->mutex));
-
-                // now we owned the lock
-                mutex->runningThreadId = curThreadId;
-            }
-        }
+        CRITICAL_SECTION *mutex = (CRITICAL_SECTION *)implObject;
+        EnterCriticalSection(mutex);
     }
     static void implUnlock(ZF_IN void *implObject) {
-        _Mutex *mutex = (_Mutex *)implObject;
-
-        EnterCriticalSection(&(mutex->mutexParamLocker));
-        DWORD curThreadId = GetCurrentThreadId();
-        zfstlhashmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
-        if(curThreadId == mutex->runningThreadId) {
-            --(it->second);
-            if(it->second == 0) {
-                mutex->lockedThreadCountMap.erase(it);
-                mutex->runningThreadId = mutex->INVALID_THREAD_ID;
-                LeaveCriticalSection(&(mutex->mutexParamLocker));
-                // all locks locked by current thread are relesed, unlock
-                LeaveCriticalSection(&(mutex->mutex));
-            }
-            else {
-                LeaveCriticalSection(&(mutex->mutexParamLocker));
-                // current thread still hold some locks, just return
-            }
-        }
-        else {
-            LeaveCriticalSection(&(mutex->mutexParamLocker));
-
-            // current thread doesn't lock, it's a error state
-            ZFCoreCriticalShouldNotGoHere();
-            return;
-        }
+        CRITICAL_SECTION *mutex = (CRITICAL_SECTION *)implObject;
+        LeaveCriticalSection(mutex);
     }
     static zfbool implTryLock(ZF_IN void *implObject) {
-        _Mutex *mutex = (_Mutex *)implObject;
-
-        EnterCriticalSection(&(mutex->mutexParamLocker));
-        DWORD curThreadId = GetCurrentThreadId();
-        if(mutex->runningThreadId == mutex->INVALID_THREAD_ID) {
-            mutex->runningThreadId = curThreadId;
-            mutex->lockedThreadCountMap[mutex->runningThreadId] = 1;
-            LeaveCriticalSection(&(mutex->mutexParamLocker));
-            // first time to lock the object
-            EnterCriticalSection(&(mutex->mutex));
-            return zftrue;
-        }
-        else {
-            zfstlhashmap<DWORD, zfindex>::iterator it = mutex->lockedThreadCountMap.find(curThreadId);
-            if(curThreadId == mutex->runningThreadId) {
-                ++(it->second);
-                LeaveCriticalSection(&(mutex->mutexParamLocker));
-                // lock the same thread more than one time, no need to lock again
-                return zftrue;
-            }
-            else {
-                LeaveCriticalSection(&(mutex->mutexParamLocker));
-                // lock while another thread acquiring the lock,
-                // just return false
-                return zffalse;
-            }
-        }
+        CRITICAL_SECTION *mutex = (CRITICAL_SECTION *)implObject;
+        return (zfbool)TryEnterCriticalSection(mutex);
     }
 };
 ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Windows, v_ZFProtocolLevel::e_SystemLow, {
