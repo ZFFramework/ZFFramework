@@ -9,13 +9,6 @@
 #include "../ZFCoreDef.h"
 
 /**
- * @brief whether enable custom allocator
- */
-#ifndef ZF_ENV_ZFSTL_ALLOCATOR_ENABLE
-    #define ZF_ENV_ZFSTL_ALLOCATOR_ENABLE ZF_ENV_ZFMEMPOOL_ENABLE
-#endif
-
-/**
  * @brief size_t wrapper
  *
  * take good care of that, zfindex is not ensured same as size_t,
@@ -102,59 +95,6 @@ public:
         return zfcmpPOD(k1, k2) == 0;
     }
 };
-/** @endcond */
-
-// ============================================================
-/** @cond ZFPrivateDoc */
-template<typename T>
-zfclassNotPOD zfstlallocator {
-public:
-    typedef T value_type;
-    typedef T * pointer;
-    typedef const T * const_pointer;
-    typedef T & reference;
-    typedef const T & const_reference;
-    typedef zfstlsize size_type;
-    typedef zfstlptrdiff_t difference_type;
-
-    template<typename U>
-    zfclassNotPOD rebind {
-    public:
-        typedef zfstlallocator<U> other;
-    };
-
-    zfstlallocator() {}
-    template<typename U>
-    zfstlallocator(const zfstlallocator<U> &) {}
-
-    pointer allocate(size_type n, const void* hint = 0) {
-        return (pointer)zfunsafe_zfpoolMalloc(n * sizeof(T));
-    }
-
-    void deallocate(pointer p, size_type) {
-        zfunsafe_zfpoolFree(p);
-    }
-
-    void construct(pointer p, const T &val) {
-        zfnewPlacement(p, T, val);
-    }
-
-    void destroy(pointer p) {
-        zfdeletePlacement(p);
-    }
-
-    size_type max_size() const {
-        return size_type(-1) / sizeof(T);
-    }
-};
-template<typename T, typename U>
-zfbool operator == (const zfstlallocator<T> &, const zfstlallocator<U> &) {
-    return zftrue;
-}
-template<typename T, typename U>
-zfbool operator != (const zfstlallocator<T> &, const zfstlallocator<U> &) {
-    return zffalse;
-}
 /** @endcond */
 
 #endif // #ifndef _ZFI_zfstl_define_h_
