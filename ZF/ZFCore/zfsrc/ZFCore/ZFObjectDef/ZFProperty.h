@@ -191,6 +191,8 @@ public:
     static ZFProperty *_ZFP_ZFPropertyRegister(
             ZF_IN zfbool isUserRegister
             , ZF_IN zfbool isDynamicRegister
+            , ZF_IN zfbool setterMethodAutoUnregister
+            , ZF_IN zfbool getterMethodAutoUnregister
             , ZF_IN ZFObject *dynamicRegisterUserData
             , ZF_IN const ZFClass *ownerClass
             , ZF_IN const zfstring &name
@@ -212,6 +214,8 @@ public:
     void _ZFP_ZFPropertyInit(
             ZF_IN zfbool isUserRegister
             , ZF_IN zfbool isDynamicRegister
+            , ZF_IN zfbool setterMethodAutoUnregister
+            , ZF_IN zfbool getterMethodAutoUnregister
             , ZF_IN ZFObject *dynamicRegisterUserData
             , ZF_IN const ZFClass *ownerClass
             , ZF_IN const zfstring &name
@@ -242,6 +246,8 @@ private:
         _stateFlags_isInternalPrivate = 1 << 1,
         _stateFlags_isUserRegister = 1 << 2,
         _stateFlags_isDynamicRegister = 1 << 3,
+        _stateFlags_setterMethodAutoUnregister = 1 << 4,
+        _stateFlags_getterMethodAutoUnregister = 1 << 5,
     };
 private:
     zfuint _refCount;
@@ -283,6 +289,8 @@ public:
     _ZFP_ZFPropertyRegisterHolder(
             ZF_IN zfbool isUserRegister
             , ZF_IN zfbool isDynamicRegister
+            , ZF_IN zfbool setterMethodAutoUnregister
+            , ZF_IN zfbool getterMethodAutoUnregister
             , ZF_IN ZFObject *dynamicRegisterUserData
             , ZF_IN const ZFClass *ownerClass
             , ZF_IN const zfstring &name
@@ -302,6 +310,8 @@ public:
     : propertyInfo(ZFProperty::_ZFP_ZFPropertyRegister(
         isUserRegister
         , isDynamicRegister
+        , setterMethodAutoUnregister
+        , getterMethodAutoUnregister
         , dynamicRegisterUserData
         , ownerClass
         , name

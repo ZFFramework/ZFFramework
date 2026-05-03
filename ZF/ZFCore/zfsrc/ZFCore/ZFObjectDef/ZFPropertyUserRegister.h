@@ -305,6 +305,8 @@ public:
     ( \
         zftrue \
         , zffalse \
+        , zftrue \
+        , zftrue \
         , zfnull \
         , ownerClass \
         , propertyNameString \
@@ -336,6 +338,8 @@ public:
     ( \
         zftrue \
         , zffalse \
+        , zftrue \
+        , zftrue \
         , zfnull \
         , ownerClass \
         , propertyNameString \

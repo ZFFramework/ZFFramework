@@ -515,6 +515,8 @@ const ZFProperty *ZFPropertyDynamicRegister(
         }
         property = ZFProperty::_ZFP_ZFPropertyRegister(zffalse
             , zftrue
+            , zffalse
+            , zffalse
             , param.dynamicRegisterUserData()
             , param.ownerClass()
             , param.propertyName()
@@ -568,6 +570,8 @@ const ZFProperty *ZFPropertyDynamicRegister(
         }
 
         property = ZFProperty::_ZFP_ZFPropertyRegister(zffalse
+            , zftrue
+            , zftrue
             , zftrue
             , param.dynamicRegisterUserData()
             , param.ownerClass()

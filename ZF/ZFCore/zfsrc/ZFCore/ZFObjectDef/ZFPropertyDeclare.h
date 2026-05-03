@@ -390,6 +390,8 @@ public:
         static ZFProperty *_ZFP_Prop_##Name(void) { \
             static _ZFP_ZFPropertyRegisterHolder _propertyInfoHolder(zffalse \
                     , zffalse \
+                    , zftrue \
+                    , zftrue \
                     , zfnull \
                     , zfself::ClassData() \
                     , zftext(#Name) \
@@ -415,6 +417,8 @@ public:
         static ZFProperty *_ZFP_Prop_##Name(void) { \
             static _ZFP_ZFPropertyRegisterHolder _propertyInfoHolder(zffalse \
                     , zffalse \
+                    , zftrue \
+                    , zftrue \
                     , zfnull \
                     , zfself::ClassData() \
                     , zftext(#Name) \

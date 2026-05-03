@@ -44,7 +44,7 @@ protected:
         ZFLogTrim() << ZFTypeId<zfstring>::Value<const zfstring * const &>::zfvAccess(v);
 
         // zfwrap can be accessed as modifiable value
-        zfobj<v_zfstring> test_zfwrap("zfwrap");
+        zfobj<v_zfwrap> test_zfwrap(zfobj<v_zfstring>("zfwrap"));
         v = test_zfwrap;
         ZFLogTrim() << "============================================================";
         ZFLogTrim() << "zfwrap";

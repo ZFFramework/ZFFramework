@@ -73,6 +73,8 @@ ZFProperty::~ZFProperty(void) {
 void ZFProperty::_ZFP_ZFPropertyInit(
         ZF_IN zfbool isUserRegister
         , ZF_IN zfbool isDynamicRegister
+        , ZF_IN zfbool setterMethodAutoUnregister
+        , ZF_IN zfbool getterMethodAutoUnregister
         , ZF_IN ZFObject *dynamicRegisterUserData
         , ZF_IN const ZFClass *ownerClass
         , ZF_IN const zfstring &name
@@ -94,6 +96,12 @@ void ZFProperty::_ZFP_ZFPropertyInit(
     }
     if(isDynamicRegister) {
         ZFBitSet(_stateFlags, _stateFlags_isDynamicRegister);
+    }
+    if(setterMethodAutoUnregister) {
+        ZFBitSet(_stateFlags, _stateFlags_setterMethodAutoUnregister);
+    }
+    if(getterMethodAutoUnregister) {
+        ZFBitSet(_stateFlags, _stateFlags_getterMethodAutoUnregister);
     }
     _dynamicRegisterUserData = zfobjRetain(dynamicRegisterUserData);
     _ownerClass = ownerClass;
@@ -157,6 +165,8 @@ static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfstring &propertyId)
 ZFProperty *ZFProperty::_ZFP_ZFPropertyRegister(
         ZF_IN zfbool isUserRegister
         , ZF_IN zfbool isDynamicRegister
+        , ZF_IN zfbool setterMethodAutoUnregister
+        , ZF_IN zfbool getterMethodAutoUnregister
         , ZF_IN ZFObject *dynamicRegisterUserData
         , ZF_IN const ZFClass *ownerClass
         , ZF_IN const zfstring &name
@@ -224,6 +234,8 @@ ZFProperty *ZFProperty::_ZFP_ZFPropertyRegister(
         propertyInfo->_ZFP_ZFPropertyInit(
                 isUserRegister
                 , isDynamicRegister
+                , setterMethodAutoUnregister
+                , getterMethodAutoUnregister
                 , dynamicRegisterUserData
                 , ownerClass
                 , name
@@ -263,8 +275,11 @@ void ZFProperty::_ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
     }
     m.erase(it);
 
-    if(v->setterMethod()->aliasFrom() == zfnull) {
-        if(v->setterMethod()->isUserRegister()) {
+    if(ZFBitTest(v->_stateFlags, _stateFlags_setterMethodAutoUnregister)) {
+        if(v->setterMethod()->aliasFrom() != zfnull) {
+            ZFMethodAliasRemove(v->setterMethod());
+        }
+        else if(v->setterMethod()->isUserRegister()) {
             ZFMethodUserUnregister(v->setterMethod());
         }
         else if(v->setterMethod()->isDynamicRegister()) {
@@ -272,8 +287,11 @@ void ZFProperty::_ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
         }
     }
 
-    if(v->getterMethod()->aliasFrom() == zfnull) {
-        if(v->getterMethod()->isUserRegister()) {
+    if(ZFBitTest(v->_stateFlags, _stateFlags_getterMethodAutoUnregister)) {
+        if(v->getterMethod()->aliasFrom() == zfnull) {
+            ZFMethodAliasRemove(v->getterMethod());
+        }
+        else if(v->getterMethod()->isUserRegister()) {
             ZFMethodUserUnregister(v->getterMethod());
         }
         else if(v->getterMethod()->isDynamicRegister()) {
