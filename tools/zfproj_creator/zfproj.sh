@@ -390,6 +390,7 @@ if ! test "x-$ZF_INPLACE" = "x-" ; then
     if test -e "$DST_PATH/.gitignore" || test -e "$DST_PATH/zfres" || test -e "$DST_PATH/zfsrc" ; then
         _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"zfsrc\""
         _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"zfres\""
+        _SYNC_EXCLUDE="$_SYNC_EXCLUDE --exclude=\"${ZFTT_R_proj_name}_zfprojConfig.xcodeproj\""
     fi
 fi
 eval "rsync $_SYNC_EXCLUDE -r \"$_TMP_DIR_SRC\" \"$_TMP_DIR_DST\" >/dev/null 2>&1"

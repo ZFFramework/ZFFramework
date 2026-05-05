@@ -402,6 +402,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
             then
             _SYNC_EXCLUDE:add('zfsrc')
             _SYNC_EXCLUDE:add('zfres')
+            _SYNC_EXCLUDE:add(zfstr('%s_zfprojConfig.xcodeproj', param:replaceData('proj_name')))
         end
     end
 
@@ -477,7 +478,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         end
     end)
 
-    -- xUnique if necessary, with pod install
+    -- xUnique if necessary
     if zfl_eq(config:get('ZF_TYPE'), 'app') and not zfstringIsEmpty(_PY) then
         ZFIOForEach(ZFPathInfo(ZFPathType_file(), _TMP_DIR_FORMATED), function(zfargs)
             ---@type ZFIOFindData
@@ -498,7 +499,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
                 local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
                 if zfstringEndWith(relPath, 'project.pbxproj') then
                     ZFLogTrim('unique iOS project: %s', relPath)
-                    os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj.sh" "' .. DST_PATH .. relPath .. '" 1')
+                    os.execute('sh "' .. ZF_ROOT_PATH .. '/tools/spec/iOS/unique_proj.sh" "' .. DST_PATH .. relPath .. '"')
                 end
             end
         end)

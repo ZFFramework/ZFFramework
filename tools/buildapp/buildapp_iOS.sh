@@ -11,7 +11,6 @@ ZF_ROOT_PATH=$WORK_DIR/../..
 
 _OLD_DIR=$(pwd)
 cd "$PROJ_PATH/iOS/$PROJ_NAME"
-pod install
 _RESULT="$?"
 if test ! "$_RESULT" = "0" ; then
     cd "$_OLD_DIR"

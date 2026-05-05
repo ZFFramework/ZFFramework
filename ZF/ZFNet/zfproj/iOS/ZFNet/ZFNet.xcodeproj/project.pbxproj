@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2FC98C76B9CD5F0646E654FC8947183C /* Pods_ZFNet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86116C7C9269F862B8B30EC9335558E2 /* Pods_ZFNet.framework */; };
+		9399D0A76C99FA3193C22EE667DBF6C6 /* ZFNet_zfprojConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C3495E113C8152466E8477B91E29035 /* ZFNet_zfprojConfig.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BC268D6D7DD48F34E7573407A3B8CEF1 /* zfgensrc_ZFNet.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6CF2F443DEF3F9335B5F747F4B5D2A40 /* zfgensrc_ZFNet.mm */; };
 		BEDFD6305BD05D7FAD856CB85081A8E6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E66CDD44E068254C81AEB6D59844CBB5 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -26,13 +26,15 @@
 
 /* Begin PBXFileReference section */
 		100CDFB1E76252E1A37AFD3D3F955533 /* libZFNet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFNet.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F0D1F420D3C64846DEBA8D2AF94FCCE /* Pods-ZFNet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFNet.debug.xcconfig"; path = "Target Support Files/Pods-ZFNet/Pods-ZFNet.debug.xcconfig"; sourceTree = "<group>"; };
+		6C3495E113C8152466E8477B91E29035 /* ZFNet_zfprojConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZFNet_zfprojConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CF2F443DEF3F9335B5F747F4B5D2A40 /* zfgensrc_ZFNet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFNet.mm; sourceTree = "<group>"; };
-		86116C7C9269F862B8B30EC9335558E2 /* Pods_ZFNet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFNet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A8967784AA6A46BCA759CF6664C8073 /* Pods-ZFNet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFNet.release.xcconfig"; path = "Target Support Files/Pods-ZFNet/Pods-ZFNet.release.xcconfig"; sourceTree = "<group>"; };
 		ADE526830CF8D3C9AF7F30A7ACF4BBB8 /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
 		E66CDD44E068254C81AEB6D59844CBB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		5AE24770304C96E1EB6273B657AE1D84 /* zfsrc_ext */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); name = zfsrc_ext; path = ../../../zfsrc_ext; sourceTree = SOURCE_ROOT; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		36CD2277D1E3D087C9AD02D63AD0EA89 /* Frameworks */ = {
@@ -40,56 +42,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEDFD6305BD05D7FAD856CB85081A8E6 /* Foundation.framework in Frameworks */,
-				2FC98C76B9CD5F0646E654FC8947183C /* Pods_ZFNet.framework in Frameworks */,
+				9399D0A76C99FA3193C22EE667DBF6C6 /* ZFNet_zfprojConfig.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5D12F20C5C8533D04EF1606B3D389AB7 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E66CDD44E068254C81AEB6D59844CBB5 /* Foundation.framework */,
-				86116C7C9269F862B8B30EC9335558E2 /* Pods_ZFNet.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		8C6ABAAFC264FA7493F8E5ADA622F490 = {
-			isa = PBXGroup;
-			children = (
-				5D12F20C5C8533D04EF1606B3D389AB7 /* Frameworks */,
-				A77EA6E9DF0D079600E6FB702DCD8287 /* Pods */,
-				B913625372C2EE829666C60182BD7E31 /* Products */,
-				F35A2FB912B2F01D27891DB3521D5891 /* ProjectFiles */,
-				9415AC3F052F78D084F6BA05C6C6CB0B /* ZFNet */,
-			);
-			sourceTree = "<group>";
-		};
 		9415AC3F052F78D084F6BA05C6C6CB0B /* ZFNet */ = {
 			isa = PBXGroup;
 			children = (
 				ADE526830CF8D3C9AF7F30A7ACF4BBB8 /* zfsrc */,
+				5AE24770304C96E1EB6273B657AE1D84 /* zfsrc_ext */,
 			);
 			name = ZFNet;
-			sourceTree = "<group>";
-		};
-		A77EA6E9DF0D079600E6FB702DCD8287 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1F0D1F420D3C64846DEBA8D2AF94FCCE /* Pods-ZFNet.debug.xcconfig */,
-				8A8967784AA6A46BCA759CF6664C8073 /* Pods-ZFNet.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		B913625372C2EE829666C60182BD7E31 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				100CDFB1E76252E1A37AFD3D3F955533 /* libZFNet.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		F35A2FB912B2F01D27891DB3521D5891 /* ProjectFiles */ = {
@@ -100,6 +66,33 @@
 			path = ProjectFiles;
 			sourceTree = "<group>";
 		};
+		B913625372C2EE829666C60182BD7E31 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				100CDFB1E76252E1A37AFD3D3F955533 /* libZFNet.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5D12F20C5C8533D04EF1606B3D389AB7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E66CDD44E068254C81AEB6D59844CBB5 /* Foundation.framework */,
+				6C3495E113C8152466E8477B91E29035 /* ZFNet_zfprojConfig.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8C6ABAAFC264FA7493F8E5ADA622F490 = {
+			isa = PBXGroup;
+			children = (
+				5D12F20C5C8533D04EF1606B3D389AB7 /* Frameworks */,
+				B913625372C2EE829666C60182BD7E31 /* Products */,
+				F35A2FB912B2F01D27891DB3521D5891 /* ProjectFiles */,
+				9415AC3F052F78D084F6BA05C6C6CB0B /* ZFNet */,
+			);
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -107,16 +100,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 912020EE1001F7241006686A5D6407C6 /* Build configuration list for PBXNativeTarget "ZFNet" */;
 			buildPhases = (
-				1474B61AC597B2B3DC028B6CCDBC5B1E /* [CP] Check Pods Manifest.lock */,
-				527DF62ACCBCC05A7E18C406BCD65B62 /* ZFCompileSource */,
+				395A6EE9E39116B1628DD0A06BFC9667 /* ZFCompileSource */,
 				C06920D76CB1A1CB4CDEFE518F38893F /* Sources */,
 				36CD2277D1E3D087C9AD02D63AD0EA89 /* Frameworks */,
 				584A66B00E9588F7460CFB9F4A90CFB2 /* CopyFiles */,
-				023B77ADA01E372DD7F659DB9194A41F /* ZFUniqueProj */,
+				6052F6C17B2E5FB4DBC2D2CAE6A2E1F6 /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5AE24770304C96E1EB6273B657AE1D84 /* zfsrc_ext */,
 			);
 			name = ZFNet;
 			productName = ZFNet;
@@ -158,44 +153,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		023B77ADA01E372DD7F659DB9194A41F /* ZFUniqueProj */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = ZFUniqueProj;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
-		};
-		1474B61AC597B2B3DC028B6CCDBC5B1E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ZFNet-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		527DF62ACCBCC05A7E18C406BCD65B62 /* ZFCompileSource */ = {
+		395A6EE9E39116B1628DD0A06BFC9667 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -209,7 +167,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFNet.mm\" \"${SRCROOT}/../../../zfsrc\"";
+			shellScript = "sh \"${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh\" \"${SRCROOT}/ProjectFiles/zfgensrc_ZFNet.mm\" \"${SRCROOT}/../../../zfsrc\"";
+		};
+		6052F6C17B2E5FB4DBC2D2CAE6A2E1F6 /* ZFUniqueProj */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = ZFUniqueProj;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh \"${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh\" \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -227,7 +200,6 @@
 /* Begin XCBuildConfiguration section */
 		AB3090839258F04F4CC1E974DD63B3DE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F0D1F420D3C64846DEBA8D2AF94FCCE /* Pods-ZFNet.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -254,7 +226,6 @@
 		};
 		B022E20C766F88BC93AA659B111CEE90 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A8967784AA6A46BCA759CF6664C8073 /* Pods-ZFNet.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -388,20 +359,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0A66A17B5B96408DBC0F6C3D0EC0630A /* Build configuration list for PBXProject "ZFNet" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D2373392EB8D6BE819CC9B39C87E2495 /* Debug */,
-				D524375548534ECFFBD6622FA2C62713 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		912020EE1001F7241006686A5D6407C6 /* Build configuration list for PBXNativeTarget "ZFNet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AB3090839258F04F4CC1E974DD63B3DE /* Debug */,
 				B022E20C766F88BC93AA659B111CEE90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A66A17B5B96408DBC0F6C3D0EC0630A /* Build configuration list for PBXProject "ZFNet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2373392EB8D6BE819CC9B39C87E2495 /* Debug */,
+				D524375548534ECFFBD6622FA2C62713 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

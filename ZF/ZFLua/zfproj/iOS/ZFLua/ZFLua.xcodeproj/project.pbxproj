@@ -3,13 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		38FF8358F7034783AD3D5757E5D493CD /* Pods_ZFLua.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7190BA0E6CF1413C1390B4DCF85300D4 /* Pods_ZFLua.framework */; };
 		C8FBC6AB8DCA78BF0675E7019972D8F2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105200DFD55008C00F8FC6F1455F2617 /* Foundation.framework */; };
 		DE87D41AD9BECFF53C324B6C5C8D0553 /* zfgensrc_ZFLua.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE7DE98E1375580A898741B906093A0E /* zfgensrc_ZFLua.mm */; };
+		FF815276720987E94CC78A5B6646B388 /* ZFLua_zfprojConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A006EC0F907669B558E83100882DEC0F /* ZFLua_zfprojConfig.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,13 +26,15 @@
 
 /* Begin PBXFileReference section */
 		105200DFD55008C00F8FC6F1455F2617 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		2630D5357DE2C31C1FDDCF40ADCF5A91 /* Pods-ZFLua.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFLua.release.xcconfig"; path = "Target Support Files/Pods-ZFLua/Pods-ZFLua.release.xcconfig"; sourceTree = "<group>"; };
 		314D3BFB8782A36A419B9E79ED3FE185 /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
 		4870E59529676AF05EC1B5C65C8E3EAC /* libZFLua.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFLua.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		60CD526110348CD30C93C50A673AA52E /* Pods-ZFLua.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFLua.debug.xcconfig"; path = "Target Support Files/Pods-ZFLua/Pods-ZFLua.debug.xcconfig"; sourceTree = "<group>"; };
-		7190BA0E6CF1413C1390B4DCF85300D4 /* Pods_ZFLua.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFLua.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A006EC0F907669B558E83100882DEC0F /* ZFLua_zfprojConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZFLua_zfprojConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE7DE98E1375580A898741B906093A0E /* zfgensrc_ZFLua.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFLua.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		93FADF8177F6EB24595F1AFA5F86BE10 /* zfsrc_ext */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); name = zfsrc_ext; path = ../../../zfsrc_ext; sourceTree = SOURCE_ROOT; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D86C4ED9DC40E62B3E5E1AB962ABDD21 /* Frameworks */ = {
@@ -40,13 +42,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8FBC6AB8DCA78BF0675E7019972D8F2 /* Foundation.framework in Frameworks */,
-				38FF8358F7034783AD3D5757E5D493CD /* Pods_ZFLua.framework in Frameworks */,
+				FF815276720987E94CC78A5B6646B388 /* ZFLua_zfprojConfig.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FD4D412E52ACA2CAB946D48D7B0BAF9F /* ZFLua */ = {
+			isa = PBXGroup;
+			children = (
+				314D3BFB8782A36A419B9E79ED3FE185 /* zfsrc */,
+				93FADF8177F6EB24595F1AFA5F86BE10 /* zfsrc_ext */,
+			);
+			name = ZFLua;
+			sourceTree = "<group>";
+		};
+		DDE5465E35102DB1E3C162A4EB01A61B /* ProjectFiles */ = {
+			isa = PBXGroup;
+			children = (
+				FE7DE98E1375580A898741B906093A0E /* zfgensrc_ZFLua.mm */,
+			);
+			path = ProjectFiles;
+			sourceTree = "<group>";
+		};
 		290BF1972315DB6420F64B6A0C195471 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -59,7 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				105200DFD55008C00F8FC6F1455F2617 /* Foundation.framework */,
-				7190BA0E6CF1413C1390B4DCF85300D4 /* Pods_ZFLua.framework */,
+				A006EC0F907669B558E83100882DEC0F /* ZFLua_zfprojConfig.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -68,36 +87,10 @@
 			isa = PBXGroup;
 			children = (
 				50B6A6CB4A1FCA7BC41E032BB4817CAA /* Frameworks */,
-				FE0B9A7514ACEA5D156826CC42430AB2 /* Pods */,
 				290BF1972315DB6420F64B6A0C195471 /* Products */,
 				DDE5465E35102DB1E3C162A4EB01A61B /* ProjectFiles */,
 				FD4D412E52ACA2CAB946D48D7B0BAF9F /* ZFLua */,
 			);
-			sourceTree = "<group>";
-		};
-		DDE5465E35102DB1E3C162A4EB01A61B /* ProjectFiles */ = {
-			isa = PBXGroup;
-			children = (
-				FE7DE98E1375580A898741B906093A0E /* zfgensrc_ZFLua.mm */,
-			);
-			path = ProjectFiles;
-			sourceTree = "<group>";
-		};
-		FD4D412E52ACA2CAB946D48D7B0BAF9F /* ZFLua */ = {
-			isa = PBXGroup;
-			children = (
-				314D3BFB8782A36A419B9E79ED3FE185 /* zfsrc */,
-			);
-			name = ZFLua;
-			sourceTree = "<group>";
-		};
-		FE0B9A7514ACEA5D156826CC42430AB2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				60CD526110348CD30C93C50A673AA52E /* Pods-ZFLua.debug.xcconfig */,
-				2630D5357DE2C31C1FDDCF40ADCF5A91 /* Pods-ZFLua.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,16 +100,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6E2DD4FE05681796443DA34CDAF6D8CC /* Build configuration list for PBXNativeTarget "ZFLua" */;
 			buildPhases = (
-				F17BCF26FFE006C735F04DC2EB27840C /* [CP] Check Pods Manifest.lock */,
-				656DDFDE8C4317818784270564867FD6 /* ZFCompileSource */,
+				165FAEDF3D4F903E4FD0677BC4467627 /* ZFCompileSource */,
 				35E82739B019DA5374A231875CF830FA /* Sources */,
 				D86C4ED9DC40E62B3E5E1AB962ABDD21 /* Frameworks */,
 				1CA2DDFF8EC9BF1BE9D6B93718E86C53 /* CopyFiles */,
-				5B4C02B05D2FEEFC1B1B4EB5DC49E402 /* ZFUniqueProj */,
+				DEB1B3D8DE7172419547BC1E52DBCBB4 /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				93FADF8177F6EB24595F1AFA5F86BE10 /* zfsrc_ext */,
 			);
 			name = ZFLua;
 			productName = ZFLua;
@@ -158,22 +153,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5B4C02B05D2FEEFC1B1B4EB5DC49E402 /* ZFUniqueProj */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = ZFUniqueProj;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
-		};
-		656DDFDE8C4317818784270564867FD6 /* ZFCompileSource */ = {
+		165FAEDF3D4F903E4FD0677BC4467627 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -187,29 +167,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFLua.mm\" \"${SRCROOT}/../../../zfsrc\"";
+			shellScript = "sh \"${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh\" \"${SRCROOT}/ProjectFiles/zfgensrc_ZFLua.mm\" \"${SRCROOT}/../../../zfsrc\"";
 		};
-		F17BCF26FFE006C735F04DC2EB27840C /* [CP] Check Pods Manifest.lock */ = {
+		DEB1B3D8DE7172419547BC1E52DBCBB4 /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = ZFUniqueProj;
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ZFLua-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "sh \"${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh\" \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -225,9 +198,34 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		D80AC95560189A958FCE547B9B5C26E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Objc",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SRCROOT}/../../../zfsrc",
+					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
+				);
+				WARNING_CFLAGS = "-Wpartial-availability";
+			};
+			name = Debug;
+		};
 		1CC0FC4084139601245755CDFC984676 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2630D5357DE2C31C1FDDCF40ADCF5A91 /* Pods-ZFLua.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -357,33 +355,6 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		D80AC95560189A958FCE547B9B5C26E6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 60CD526110348CD30C93C50A673AA52E /* Pods-ZFLua.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_BITCODE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Objc",
-					"-all_load",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SRCROOT}/../../../zfsrc",
-					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
-				);
-				WARNING_CFLAGS = "-Wpartial-availability";
-			};
-			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 

@@ -7,22 +7,6 @@
  * -  have XCode installed
  *
  * once prepared, it's recommended to follow @ref DocTag_Setup_QuickSetup for quick setup your project files
- *
- * @section DocTag_Setup_iOS_Cocoapods Using as Cocoapods
- *
- * you may also use ZFFramework as [Cocoapods](https://cocoapods.org) for convenient
- * @code
- *   pod 'ZFFramework'
- *   // or, if you only want specified sub module
- *   // pod 'ZFFramework/ZFCore'
- * @endcode
- * if you want to keep update with the development version,
- * you may clone the [development repo](https://github.com/ZFFramework/ZFFramework)
- * to the same dir of your project, and use:
- * @code
- *   pod 'ZFFramework',:path => '../ZFFramework'
- * @endcode
- * \n
  * \n
  * specially, when adding resource files,
  * you must ensure they are placed under `YourApp.app/zfres/`,

@@ -5,6 +5,57 @@
       location = "group:ZFFramework_test.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
+      location = "group:ZFFramework_test_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFCore/zfproj/iOS/ZFCore/ZFCore_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFAlgorithm/zfproj/iOS/ZFAlgorithm/ZFAlgorithm_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUtility/zfproj/iOS/ZFUtility/ZFUtility_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUIKit/zfproj/iOS/ZFUIKit/ZFUIKit_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUIWidget/zfproj/iOS/ZFUIWidget/ZFUIWidget_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUIExt/zfproj/iOS/ZFUIExt/ZFUIExt_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFLua/zfproj/iOS/ZFLua/ZFLua_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUIWebKit/zfproj/iOS/ZFUIWebKit/ZFUIWebKit_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFNet/zfproj/iOS/ZFNet/ZFNet_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFAppUtil/zfproj/iOS/ZFAppUtil/ZFAppUtil_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZF_impl/zfproj/iOS/ZF_impl/ZF_impl_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFCore_impl/zfproj/iOS/ZFCore_impl/ZFCore_impl_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFAlgorithm_impl/zfproj/iOS/ZFAlgorithm_impl/ZFAlgorithm_impl_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUIKit_impl/zfproj/iOS/ZFUIKit_impl/ZFUIKit_impl_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFLua_impl/zfproj/iOS/ZFLua_impl/ZFLua_impl_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFUIWebKit_impl/zfproj/iOS/ZFUIWebKit_impl/ZFUIWebKit_impl_zfprojConfig.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../../../../ZFFramework/ZF/ZFNet_impl/zfproj/iOS/ZFNet_impl/ZFNet_impl_zfprojConfig.xcodeproj">
    </FileRef>
 </Workspace>

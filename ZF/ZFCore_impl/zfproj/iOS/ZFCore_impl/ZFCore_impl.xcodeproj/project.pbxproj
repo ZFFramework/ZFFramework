@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9161C75AF3BC0802BC876002153F2D59 /* Pods_ZFCore_impl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00D3F9DC771ADC44F33C6DF3E271D0 /* Pods_ZFCore_impl.framework */; };
+		0CF385C109FD6D194A0C04788AD32E22 /* ZFCore_impl_zfprojConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C93CE80EF5D825663C01540A2F851DD /* ZFCore_impl_zfprojConfig.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BA7B63B6CAC586DBE419633E1FC1120D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */; };
 		FD849548C293C56862381085CD4A8748 /* zfgensrc_ZFCore_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0FC8E8CBE299CB03361B41AE2F4B92F6 /* zfgensrc_ZFCore_impl.mm */; };
 /* End PBXBuildFile section */
@@ -26,13 +26,15 @@
 
 /* Begin PBXFileReference section */
 		0FC8E8CBE299CB03361B41AE2F4B92F6 /* zfgensrc_ZFCore_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFCore_impl.mm; sourceTree = "<group>"; };
-		36FD7DA07D926FE508B333DEB9BDBED5 /* Pods-ZFCore_impl.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFCore_impl.debug.xcconfig"; path = "Target Support Files/Pods-ZFCore_impl/Pods-ZFCore_impl.debug.xcconfig"; sourceTree = "<group>"; };
 		49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7682ECA540538D7967E1EDCAEFB2724C /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
+		8C93CE80EF5D825663C01540A2F851DD /* ZFCore_impl_zfprojConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZFCore_impl_zfprojConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		91E75A039BFDF2634D48C617012E0DC9 /* libZFCore_impl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFCore_impl.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE00D3F9DC771ADC44F33C6DF3E271D0 /* Pods_ZFCore_impl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZFCore_impl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9C886E60019933A2D5F44A5A1A8F556 /* Pods-ZFCore_impl.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZFCore_impl.release.xcconfig"; path = "Target Support Files/Pods-ZFCore_impl/Pods-ZFCore_impl.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		06DB4CA50FAF0F15EE3EDF0628596F3B /* zfsrc_ext */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); name = zfsrc_ext; path = ../../../zfsrc_ext; sourceTree = SOURCE_ROOT; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		E57AE03DA31272B3C772934ED459EB9E /* Frameworks */ = {
@@ -40,28 +42,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA7B63B6CAC586DBE419633E1FC1120D /* Foundation.framework in Frameworks */,
-				9161C75AF3BC0802BC876002153F2D59 /* Pods_ZFCore_impl.framework in Frameworks */,
+				0CF385C109FD6D194A0C04788AD32E22 /* ZFCore_impl_zfprojConfig.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		16D87A7EB3A9BB416F0F485A1FE4A2D1 /* Frameworks */ = {
+		A92D436CE64D1570A88F4547D21C693E /* ZFCore_impl */ = {
 			isa = PBXGroup;
 			children = (
-				49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */,
-				AE00D3F9DC771ADC44F33C6DF3E271D0 /* Pods_ZFCore_impl.framework */,
+				7682ECA540538D7967E1EDCAEFB2724C /* zfsrc */,
+				06DB4CA50FAF0F15EE3EDF0628596F3B /* zfsrc_ext */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		2979503BFE0925D31B473A28BBD9D9C7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				91E75A039BFDF2634D48C617012E0DC9 /* libZFCore_impl.a */,
-			);
-			name = Products;
+			name = ZFCore_impl;
 			sourceTree = "<group>";
 		};
 		37414DFF69CCD81AA378DB31BF37DB41 /* ProjectFiles */ = {
@@ -72,32 +66,31 @@
 			path = ProjectFiles;
 			sourceTree = "<group>";
 		};
-		413ED22A9A603CC2DA3FDEAE5A945E48 /* Pods */ = {
+		2979503BFE0925D31B473A28BBD9D9C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				36FD7DA07D926FE508B333DEB9BDBED5 /* Pods-ZFCore_impl.debug.xcconfig */,
-				F9C886E60019933A2D5F44A5A1A8F556 /* Pods-ZFCore_impl.release.xcconfig */,
+				91E75A039BFDF2634D48C617012E0DC9 /* libZFCore_impl.a */,
 			);
-			path = Pods;
+			name = Products;
+			sourceTree = "<group>";
+		};
+		16D87A7EB3A9BB416F0F485A1FE4A2D1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				49461D2F28C7AE9D05E7DDB96C2E124B /* Foundation.framework */,
+				8C93CE80EF5D825663C01540A2F851DD /* ZFCore_impl_zfprojConfig.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		4C486DEE241A0B967570B263E17C4498 = {
 			isa = PBXGroup;
 			children = (
 				16D87A7EB3A9BB416F0F485A1FE4A2D1 /* Frameworks */,
-				413ED22A9A603CC2DA3FDEAE5A945E48 /* Pods */,
 				2979503BFE0925D31B473A28BBD9D9C7 /* Products */,
 				37414DFF69CCD81AA378DB31BF37DB41 /* ProjectFiles */,
 				A92D436CE64D1570A88F4547D21C693E /* ZFCore_impl */,
 			);
-			sourceTree = "<group>";
-		};
-		A92D436CE64D1570A88F4547D21C693E /* ZFCore_impl */ = {
-			isa = PBXGroup;
-			children = (
-				7682ECA540538D7967E1EDCAEFB2724C /* zfsrc */,
-			);
-			name = ZFCore_impl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,16 +100,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 19AD24E840B17D409C3C02D394D0CADC /* Build configuration list for PBXNativeTarget "ZFCore_impl" */;
 			buildPhases = (
-				2C4FE478CD41E5C6050D810A6C3C6CD8 /* [CP] Check Pods Manifest.lock */,
-				54E0D2B51BE483FFE934BA757306AE04 /* ZFCompileSource */,
+				F54F138B470FA879FE6912D5FEEE9596 /* ZFCompileSource */,
 				307D6D7DAA20A2EAA298C38D4FA913D7 /* Sources */,
 				E57AE03DA31272B3C772934ED459EB9E /* Frameworks */,
 				CA2791D3B8B1008439F37D04A653E531 /* CopyFiles */,
-				A06988102698F5093EAE75C17F048683 /* ZFUniqueProj */,
+				D99875A97B095E8DCBEA529686F5903D /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				06DB4CA50FAF0F15EE3EDF0628596F3B /* zfsrc_ext */,
 			);
 			name = ZFCore_impl;
 			productName = ZFCore_impl;
@@ -158,29 +153,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2C4FE478CD41E5C6050D810A6C3C6CD8 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ZFCore_impl-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		54E0D2B51BE483FFE934BA757306AE04 /* ZFCompileSource */ = {
+		F54F138B470FA879FE6912D5FEEE9596 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -194,9 +167,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFCore_impl.mm\" \"${SRCROOT}/../../../zfsrc\"";
+			shellScript = "sh \"${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh\" \"${SRCROOT}/ProjectFiles/zfgensrc_ZFCore_impl.mm\" \"${SRCROOT}/../../../zfsrc\"";
 		};
-		A06988102698F5093EAE75C17F048683 /* ZFUniqueProj */ = {
+		D99875A97B095E8DCBEA529686F5903D /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -209,7 +182,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
+			shellScript = "sh \"${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh\" \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -225,86 +198,8 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		238A0D3F47CDD2C591AD242CC33519BC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9C886E60019933A2D5F44A5A1A8F556 /* Pods-ZFCore_impl.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_BITCODE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Objc",
-					"-all_load",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SRCROOT}/../../../zfsrc",
-					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
-				);
-				WARNING_CFLAGS = "-Wpartial-availability";
-			};
-			name = Release;
-		};
-		318F40E7F8B593A801D66C26CAFD1F84 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		5AA90D3CCF3B07F4E8114A0690F4A940 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36FD7DA07D926FE508B333DEB9BDBED5 /* Pods-ZFCore_impl.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -328,6 +223,32 @@
 				WARNING_CFLAGS = "-Wpartial-availability";
 			};
 			name = Debug;
+		};
+		238A0D3F47CDD2C591AD242CC33519BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Objc",
+					"-all_load",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SRCROOT}/../../../zfsrc",
+					"${SRCROOT}/../../../../../../ZFFramework/_release/iOS/all/include",
+				);
+				WARNING_CFLAGS = "-Wpartial-availability";
+			};
+			name = Release;
 		};
 		83AAF1C1BB73F0727B14468E5B841930 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -384,6 +305,56 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 			};
 			name = Debug;
+		};
+		318F40E7F8B593A801D66C26CAFD1F84 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
