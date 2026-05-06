@@ -86,6 +86,16 @@ typedef void (*ZFPropertyCallbackUserRegisterInitValueSetup)(
 typedef zfauto (*ZFPropertyCallbackDynamicRegisterInitValueGetter)(ZF_IN const ZFProperty *property);
 
 // ============================================================
+/**
+ * @brief property life cycle, see #ZFPROPERTY_ON_INIT_DECLARE
+ */
+typedef enum {
+    ZFPropertyLifeCycleOnInit, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
+    ZFPropertyLifeCycleOnUpdate, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
+    ZFPropertyLifeCycleOnAttach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
+    ZFPropertyLifeCycleOnDetach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
+} ZFPropertyLifeCycle;
+
 typedef void (*_ZFP_PropLifeCycleWrapper)(
         ZF_IN ZFObject *propertyOwnerObject
         , ZF_IN const ZFProperty *property
@@ -93,11 +103,11 @@ typedef void (*_ZFP_PropLifeCycleWrapper)(
         , ZF_IN const void *propertyValueOld
         , ZF_IN ZFObject *propertyLifeCycleUserData
         );
-zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData {
+zfclassPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData {
 public:
     const ZFClass *ownerClass;
     _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper;
-    zfauto propertyLifeCycleUserData;
+    ZFObject *propertyLifeCycleUserData;
 };
 
 ZF_NAMESPACE_GLOBAL_END

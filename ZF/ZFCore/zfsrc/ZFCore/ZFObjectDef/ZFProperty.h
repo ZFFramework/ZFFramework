@@ -239,6 +239,22 @@ public:
     _ZFP_ZFPropertyCallbackDealloc _ZFP_ZFProperty_callbackDealloc(void) const {
         return _callbackDealloc;
     }
+    zfbool _ZFP_ZFPropertyLifeCycleRegister(
+            ZF_IN ZFPropertyLifeCycle lifeCycle
+            , ZF_IN const ZFClass *ownerClass
+            , ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper
+            , ZF_IN ZFObject *propertyLifeCycleUserData
+            );
+    zfbool _ZFP_ZFPropertyLifeCycleUnregister(
+            ZF_IN ZFPropertyLifeCycle lifeCycle
+            , ZF_IN const ZFClass *ownerClass
+            );
+    void _ZFP_ZFPropertyLifeCycleInvoke(
+            ZF_IN ZFPropertyLifeCycle lifeCycle
+            , ZF_IN ZFObject *ownerObject
+            , ZF_IN void *propertyValue
+            , ZF_IN const void *propertyValueOld
+            ) const;
 
 private:
     enum {
@@ -264,11 +280,10 @@ private:
     const ZFClass *_propertyClassOfRetainProperty;
     _ZFP_ZFPropertyCallbackEnsureInit _callbackEnsureInit;
     _ZFP_ZFPropertyCallbackDealloc _callbackDealloc;
-public:
-    ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnInit; // ordered from parent to child
-    ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnUpdate;
-    ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnAttach;
-    ZFCoreArray<_ZFP_PropLifeCycleData> _ZFP_ZFPropertyLifeCycle_OnDetach;
+    // vector<_ZFP_PropLifeCycleData>[ZFPropertyLifeCycleOnInit/OnUpdate/OnAttach/OnDetach]
+    // ordered from parent to child (and dynamic)
+    // except for ZFPropertyLifeCycleOnDetach, ordered from child to parent
+    void *_ZFP_ZFPropertyLifeCycleMap[4];
 };
 
 // ============================================================

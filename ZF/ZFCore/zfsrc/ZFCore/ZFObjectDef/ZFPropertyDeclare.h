@@ -736,11 +736,11 @@ public:
                 static zfbool needInit = zftrue; \
                 if(needInit) { \
                     needInit = zffalse; \
-                    _ZFP_ZFPropertyLifeCycleRegister( \
-                            zftext(#lifeCycleName) \
-                            , zfself::_ZFP_Prop_##Name() \
+                    zfself::_ZFP_Prop_##Name()->_ZFP_ZFPropertyLifeCycleRegister( \
+                            ZFPropertyLifeCycle##lifeCycleName \
                             , zfself::ClassData() \
                             , zfself::_ZFP_propLI_##lifeCycleName##_##Name \
+                            , zfnull \
                             ); \
                     extraRegStep \
                 } \
@@ -772,11 +772,11 @@ public:
                 );
 #define _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DEFINE(OwnerClass, Type, Name, lifeCycleName, constFix, extraRegStep) \
     ZF_STATIC_REGISTER_INIT(propL_##OwnerClass##_##lifeCycleName##_##Name) { \
-        _ZFP_ZFPropertyLifeCycleRegister( \
-                zftext(#lifeCycleName) \
-                , OwnerClass::_ZFP_Prop_##Name() \
+        OwnerClass::_ZFP_Prop_##Name()->_ZFP_ZFPropertyLifeCycleRegister( \
+                ZFPropertyLifeCycle##lifeCycleName \
                 , OwnerClass::ClassData() \
                 , a \
+                , zfnull \
                 ); \
         extraRegStep \
     } \
@@ -799,17 +799,6 @@ public:
             , ZF_IN zfself::_ZFP_PropHT_##Name const &propertyValueOld \
             )
 
-extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleRegister(
-        ZF_IN const zfchar *lifeCycleName
-        , ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *ownerClass
-        , ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper
-        );
-extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleUnregister(
-        ZF_IN const zfchar *lifeCycleName
-        , ZF_IN const ZFProperty *property
-        , ZF_IN const ZFClass *ownerClass
-        );
 extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_init_retain(
         ZF_IN const ZFProperty *property
         , ZF_IN ZFObject *propertyOwnerObject

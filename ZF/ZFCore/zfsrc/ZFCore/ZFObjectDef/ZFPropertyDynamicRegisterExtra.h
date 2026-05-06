@@ -14,16 +14,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd ZFListener;
 
 /**
- * @brief property life cycle, see #ZFPROPERTY_ON_INIT_DECLARE
- */
-typedef enum {
-    ZFPropertyLifeCycleOnInit, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-    ZFPropertyLifeCycleOnUpdate, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-    ZFPropertyLifeCycleOnAttach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-    ZFPropertyLifeCycleOnDetach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
-} ZFPropertyLifeCycle;
-
-/**
  * @brief dynamic version of #ZFPROPERTY_ON_INIT_DECLARE
  *
  * can not be registered if the property already has custom life cycle for ownerClass

@@ -2,6 +2,7 @@
 #include "ZFObjectImpl.h"
 
 #include "../ZFSTLWrapper/zfstlhashmap.h"
+#include "../ZFSTLWrapper/zfstlvector.h"
 
 // #define _ZFP_ZFProperty_DEBUG 1
 
@@ -62,13 +63,22 @@ ZFProperty::ZFProperty(void)
 , _propertyClassOfRetainProperty(zfnull)
 , _callbackEnsureInit(zfnull)
 , _callbackDealloc(zfnull)
-, _ZFP_ZFPropertyLifeCycle_OnInit()
-, _ZFP_ZFPropertyLifeCycle_OnUpdate()
-, _ZFP_ZFPropertyLifeCycle_OnAttach()
-, _ZFP_ZFPropertyLifeCycle_OnDetach()
+, _ZFP_ZFPropertyLifeCycleMap()
 {
 }
 ZFProperty::~ZFProperty(void) {
+    ZFCoreArray<zfauto> toRelease;
+    for(zfindex i = 0; i < sizeof(_ZFP_ZFPropertyLifeCycleMap); ++i) {
+        if(_ZFP_ZFPropertyLifeCycleMap[i] != zfnull) {
+            zfstlvector<_ZFP_PropLifeCycleData> &t = *(zfstlvector<_ZFP_PropLifeCycleData> *)_ZFP_ZFPropertyLifeCycleMap[i];
+            for(zfstlsize j = 0; j < t.size(); ++j) {
+                if(t[j].propertyLifeCycleUserData) {
+                    toRelease.add(t[j].propertyLifeCycleUserData);
+                }
+            }
+            zfpoolDelete((zfstlvector<_ZFP_PropLifeCycleData> *)_ZFP_ZFPropertyLifeCycleMap[i]);
+        }
+    }
 }
 void ZFProperty::_ZFP_ZFPropertyInit(
         ZF_IN zfbool isUserRegister
@@ -117,6 +127,92 @@ void ZFProperty::_ZFP_ZFPropertyInit(
 
 void ZFProperty::_ZFP_ZFProperty_dynamicRegisterUserDataWrapper(ZF_IN ZFObject *v) const {
     zfobjRetainChange(_ZFP_ZFProperty_removeConst()->_dynamicRegisterUserDataWrapper, v);
+}
+
+zfbool ZFProperty::_ZFP_ZFPropertyLifeCycleRegister(
+        ZF_IN ZFPropertyLifeCycle lifeCycle
+        , ZF_IN const ZFClass *ownerClass
+        , ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper
+        , ZF_IN ZFObject *propertyLifeCycleUserData
+        ) {
+    if(_ZFP_ZFPropertyLifeCycleMap[lifeCycle] == zfnull) {
+        _ZFP_ZFPropertyLifeCycleMap[lifeCycle] = zfpoolNew(zfstlvector<_ZFP_PropLifeCycleData>);
+    }
+    zfstlvector<_ZFP_PropLifeCycleData> &d = *(zfstlvector<_ZFP_PropLifeCycleData> *)_ZFP_ZFPropertyLifeCycleMap[lifeCycle];
+    zfstlsize index = d.size();
+    if(lifeCycle != ZFPropertyLifeCycleOnDetach) {
+        // parent at head
+        for(zfstlsize i = 0; i < d.size(); ++i) {
+            const ZFClass *exists = d[i].ownerClass;
+            if(exists == ownerClass) {
+                return zffalse;
+            }
+            else if(exists->classIsTypeOf(ownerClass)) {
+                index = i;
+                break;
+            }
+            else if(ownerClass->classIsTypeOf(exists)) {
+                index = i + 1;
+            }
+        }
+    }
+    else {
+        // child at head
+        for(zfstlsize i = d.size() - 1; i != (zfstlsize)-1; --i) {
+            const ZFClass *exists = d[i].ownerClass;
+            if(exists == ownerClass) {
+                return zffalse;
+            }
+            else if(exists->classIsTypeOf(ownerClass)) {
+                index = i;
+            }
+            else if(ownerClass->classIsTypeOf(exists)) {
+                index = i + 1;
+                break;
+            }
+        }
+    }
+    _ZFP_PropLifeCycleData data;
+    data.ownerClass = ownerClass;
+    data.propertyLifeCycleWrapper = propertyLifeCycleWrapper;
+    data.propertyLifeCycleUserData = zfobjRetain(propertyLifeCycleUserData);
+    d.insert(d.begin() + index, data);
+    return zftrue;
+}
+zfbool ZFProperty::_ZFP_ZFPropertyLifeCycleUnregister(
+        ZF_IN ZFPropertyLifeCycle lifeCycle
+        , ZF_IN const ZFClass *ownerClass
+        ) {
+    if(_ZFP_ZFPropertyLifeCycleMap[lifeCycle] == zfnull) {
+        return zffalse;
+    }
+    zfstlvector<_ZFP_PropLifeCycleData> &d = *(zfstlvector<_ZFP_PropLifeCycleData> *)_ZFP_ZFPropertyLifeCycleMap[lifeCycle];
+    for(zfstlsize i = 0; i < d.size(); ++i) {
+        if(d[i].ownerClass == ownerClass) {
+            ZFObject *toRelease = d[i].propertyLifeCycleUserData;
+            d.erase(d.begin() + i);
+            zfobjRelease(toRelease);
+            return zftrue;
+        }
+    }
+    return zffalse;
+}
+void ZFProperty::_ZFP_ZFPropertyLifeCycleInvoke(
+        ZF_IN ZFPropertyLifeCycle lifeCycle
+        , ZF_IN ZFObject *ownerObject
+        , ZF_IN void *propertyValue
+        , ZF_IN const void *propertyValueOld
+        ) const {
+    if(_ZFP_ZFPropertyLifeCycleMap[lifeCycle] == zfnull) {
+        return;
+    }
+    zfstlvector<_ZFP_PropLifeCycleData> &d = *(zfstlvector<_ZFP_PropLifeCycleData> *)_ZFP_ZFPropertyLifeCycleMap[lifeCycle];
+    for(zfstlsize i = 0; i < d.size(); ++i) {
+        const _ZFP_PropLifeCycleData &p = d[i];
+        if(ownerObject->classData()->classIsTypeOf(p.ownerClass)) {
+            p.propertyLifeCycleWrapper(ownerObject, this, propertyValue, propertyValueOld, p.propertyLifeCycleUserData);
+        }
+    }
 }
 
 // ============================================================

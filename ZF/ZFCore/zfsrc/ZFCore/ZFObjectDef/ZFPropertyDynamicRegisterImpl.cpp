@@ -33,24 +33,6 @@ static zfbool _ZFP_ZFPropertyLifeCycleIsReadonly(ZF_IN ZFPropertyLifeCycle lifeC
             return zftrue;
     }
 }
-static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
-        ZF_IN ZFPropertyLifeCycle lifeCycle
-        , ZF_IN const ZFProperty *property
-        ) {
-    switch(lifeCycle) {
-        case ZFPropertyLifeCycleOnInit:
-            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
-        case ZFPropertyLifeCycleOnUpdate:
-            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnUpdate;
-        case ZFPropertyLifeCycleOnAttach:
-            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnAttach;
-        case ZFPropertyLifeCycleOnDetach:
-            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnDetach;
-        default:
-            ZFCoreCriticalShouldNotGoHere();
-            return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
-    }
-}
 
 zfclass _ZFP_I_PropDynRetainHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRetainHolder, ZFObject)
@@ -195,23 +177,7 @@ public:
             propertyValueOld = propertyValueOldHolder->to<ZFTypeIdWrapper *>()->wrappedValue();
         }
 
-        ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
-        if(lifeCycle == ZFPropertyLifeCycleOnDetach) {
-            for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
-                const _ZFP_PropLifeCycleData &p = d[i];
-                if(propertyOwnerObject->classData()->classIsTypeOf(p.ownerClass)) {
-                    p.propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p.propertyLifeCycleUserData);
-                }
-            }
-        }
-        else {
-            for(zfindex i = 0, iEnd = d.count(); i < iEnd; ++i) {
-                const _ZFP_PropLifeCycleData &p = d[i];
-                if(propertyOwnerObject->classData()->classIsTypeOf(p.ownerClass)) {
-                    p.propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p.propertyLifeCycleUserData);
-                }
-            }
-        }
+        property->_ZFP_ZFPropertyLifeCycleInvoke(lifeCycle, propertyOwnerObject, propertyValue, propertyValueOld);
     }
 private:
     zfstlhashmap<ZFObject *, zfbool> _objAttached;
@@ -767,25 +733,22 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(
             return zffalse;
         }
     }
-    ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
-    for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
-        if(d[i].ownerClass == ownerClassOrNull) {
-            if(errorHint != zfnull) {
-                zfstringAppend(errorHint, "property already has a custom life cycle handler: %s",
-                    property);
-            }
-            return zffalse;
-        }
-    }
-
-    _ZFP_PropLifeCycleData data;
-    data.ownerClass = ownerClassOrNull;
-    data.propertyLifeCycleWrapper = _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper;
     zfobj<_ZFP_I_PropDynRegLifeCycleData> implUserData;
     implUserData->lifeCycle = lifeCycle;
     implUserData->callback = callback;
-    data.propertyLifeCycleUserData = implUserData;
-    d.add(data);
+    if(!property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycleRegister(
+            lifeCycle
+            , ownerClassOrNull
+            , _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper
+            , implUserData
+            )) {
+        if(errorHint != zfnull) {
+            zfstringAppend(errorHint, "property already has a custom life cycle handler: %s"
+                    , property
+                    );
+        }
+        return zffalse;
+    }
     return zftrue;
 }
 zfbool ZFPropertyDynamicUnregisterLifeCycle(
@@ -799,15 +762,7 @@ zfbool ZFPropertyDynamicUnregisterLifeCycle(
     if(ownerClassOrNull == zfnull) {
         ownerClassOrNull = property->ownerClass();
     }
-    ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
-    for(zfindex i = 0; i < d.count(); ++i) {
-        _ZFP_I_PropDynRegLifeCycleData *implUserData = d[i].propertyLifeCycleUserData;
-        if(d[i].ownerClass == ownerClassOrNull && implUserData != zfnull) {
-            d.remove(i);
-            return zftrue;
-        }
-    }
-    return zffalse;
+    return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycleUnregister(lifeCycle, ownerClassOrNull);
 }
 
 ZF_NAMESPACE_GLOBAL_END
