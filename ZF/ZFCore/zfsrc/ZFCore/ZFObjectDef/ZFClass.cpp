@@ -71,8 +71,8 @@ static _ZFP_ZFClassDataHolder &_ZFP_ZFClassData(void) {
 typedef zfstlhashmap<zfstring, zfauto> _ZFP_ZFClassTagMapType;
 typedef zfstlhashmap<const ZFProperty *, zfstlhashmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
-typedef zfimplhashmap<ZFSigName, zfstlvector<const ZFMethod *> > _ZFP_ZFClassMethodMapType;
-typedef zfimplordermap<ZFSigName, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
+typedef zfimplhashmap<zfstring, zfstlvector<const ZFMethod *> > _ZFP_ZFClassMethodMapType;
+typedef zfimplordermap<zfstring, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
 
 zfclassNotPOD _ZFP_ZFClassPrivate {
 public:
@@ -391,7 +391,7 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
             }
         }
         for(_ZFP_ZFClassPropertyMapType::iterator it = t->d->propertyMap.begin(); it != t->d->propertyMap.end(); ++it) {
-            propertyMapCache.insert(zfstlpair<ZFSigName, const ZFProperty *>(it->first, it->second));
+            propertyMapCache.insert(zfstlpair<zfstring, const ZFProperty *>(it->first, it->second));
         }
     } while(!toCheck.isEmpty());
 }
@@ -1760,7 +1760,7 @@ void ZFClass::_ZFP_ZFClass_methodUnregister(ZF_IN const ZFMethod *method) const 
 }
 
 void ZFClass::_ZFP_ZFClass_propertyRegister(ZF_IN const ZFProperty *zfproperty) const {
-    d->propertyMap.insert(zfstlpair<ZFSigName, const ZFProperty *>(zfproperty->propertyName(), zfproperty));
+    d->propertyMap.insert(zfstlpair<zfstring, const ZFProperty *>(zfproperty->propertyName(), zfproperty));
 }
 void ZFClass::_ZFP_ZFClass_propertyUnregister(ZF_IN const ZFProperty *zfproperty) const {
     d->propertyMap.erase(zfproperty->propertyName());

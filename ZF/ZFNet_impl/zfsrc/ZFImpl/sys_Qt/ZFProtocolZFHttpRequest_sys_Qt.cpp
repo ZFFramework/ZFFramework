@@ -273,7 +273,7 @@ public:
     }
     virtual zfstring body(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        return zfstring::shared((const zfchar *)task->body.data(), (zfindex)task->body.size());
+        return zfstring((const zfchar *)task->body.data(), (zfindex)task->body.size());
     }
 
     virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) {

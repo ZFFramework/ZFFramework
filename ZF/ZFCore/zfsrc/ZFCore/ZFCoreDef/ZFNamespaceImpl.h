@@ -44,8 +44,12 @@ extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns);
  *
  * return null if everything are skipped
  */
-extern ZFLIB_ZFCore const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns);
-/** @brief see #ZFNamespaceSkipGlobal */
+extern ZFLIB_ZFCore const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns, ZF_IN_OPT zfindex len = zfindexMax());
+/**
+ * @brief see #ZFNamespaceSkipGlobal
+ *
+ * return ns or #zfstring::shared of ns, use #zfstring::sharedCopy if necessary
+ */
 extern ZFLIB_ZFCore zfstring ZFNamespaceSkipGlobal(ZF_IN const zfstring &ns);
 /**
  * @brief util to split namespace components, similar to #ZFCoreDataPairSplitString

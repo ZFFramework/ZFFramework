@@ -63,7 +63,7 @@ inline zfstring zfstr(
         return zfstring();
     }
     else {
-        return zftext(fmt);
+        return fmt;
     }
 }
 

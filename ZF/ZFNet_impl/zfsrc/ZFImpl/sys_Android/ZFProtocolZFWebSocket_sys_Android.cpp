@@ -118,7 +118,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFWebSocket
     ZFWebSocket *owner = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFWebSocket);
     jbyte *nativeData = JNIUtilGetByteArrayElements(jniEnv, (jbyteArray)data, NULL);
     ZFPROTOCOL_ACCESS(ZFWebSocket)->notifyOnRecv(owner
-            , zfstring::shared((const zfchar *)nativeData, (zfindex)JNIUtilGetArrayLength(jniEnv, (jbyteArray)data))
+            , zfstring((const zfchar *)nativeData, (zfindex)JNIUtilGetArrayLength(jniEnv, (jbyteArray)data))
             );
     JNIUtilReleaseByteArrayElements(jniEnv, (jbyteArray)data, nativeData, 0);
 }
@@ -132,7 +132,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFWebSocket
     ZFWebSocket *owner = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFWebSocket);
     jbyte *nativeData = JNIUtilGetByteArrayElements(jniEnv, (jbyteArray)data, NULL);
     ZFPROTOCOL_ACCESS(ZFWebSocket)->notifyOnRecvBin(owner
-            , zfstring::shared((const zfchar *)nativeData, (zfindex)JNIUtilGetArrayLength(jniEnv, (jbyteArray)data))
+            , zfstring((const zfchar *)nativeData, (zfindex)JNIUtilGetArrayLength(jniEnv, (jbyteArray)data))
             );
     JNIUtilReleaseByteArrayElements(jniEnv, (jbyteArray)data, nativeData, 0);
 }

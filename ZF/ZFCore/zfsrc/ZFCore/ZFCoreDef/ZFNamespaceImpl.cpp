@@ -11,18 +11,21 @@ _ZFP_ZFNamespaceHolder::~_ZFP_ZFNamespaceHolder(void) {
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
+const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns, ZF_IN_OPT zfindex len /* = zfindexMax() */) {
     static zfstring namePrefix = zftext(ZF_NAMESPACE_GLOBAL_NAME);
     static zfstring abbrNamePrefix = zftext(ZF_NAMESPACE_GLOBAL_ABBR_NAME);
-    if(zfstringIsEmpty(ns)) {
+    if(len == zfindexMax()) {
+        len = zfslen(ns);
+    }
+    if(zfstringIsEmpty(ns, len)) {
         return zfnull;
     }
-    else if(zfstringBeginWith(ns, namePrefix)) {
-        if(ns[namePrefix.length()] == '\0') {
+    else if(zfstringBeginWith(ns, len, namePrefix)) {
+        if(namePrefix.length() == len || ns[namePrefix.length()] == '\0') {
             return zfnull;
         }
         else if(ns[namePrefix.length()] == '.') {
-            if(ns[namePrefix.length() + 1] == '\0') {
+            if(namePrefix.length() + 1 == len || ns[namePrefix.length() + 1] == '\0') {
                 return zfnull;
             }
             else {
@@ -33,12 +36,12 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
             return ns;
         }
     }
-    else if(zfstringBeginWith(ns, abbrNamePrefix)) {
-        if(ns[abbrNamePrefix.length()] == '\0') {
+    else if(zfstringBeginWith(ns, len, abbrNamePrefix)) {
+        if(abbrNamePrefix.length() == len || ns[abbrNamePrefix.length()] == '\0') {
             return zfnull;
         }
         else if(ns[abbrNamePrefix.length()] == '.') {
-            if(ns[abbrNamePrefix.length() + 1] == '\0') {
+            if(abbrNamePrefix.length() + 1 == len || ns[abbrNamePrefix.length() + 1] == '\0') {
                 return zfnull;
             }
             else {
@@ -54,15 +57,15 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
     }
 }
 zfstring ZFNamespaceSkipGlobal(ZF_IN const zfstring &ns) {
-    const zfchar *t = ZFNamespaceSkipGlobal(ns.cString());
+    const zfchar *t = ZFNamespaceSkipGlobal(ns.rawString(), ns.length());
     if(t == zfnull) {
         return zfnull;
     }
-    else if(t == ns.cString()) {
+    else if(t == ns.rawString()) {
         return ns;
     }
     else {
-        return t;
+        return zfstring(t, ns.length() - (t - ns.rawString()));
     }
 }
 

@@ -53,18 +53,23 @@ template<typename T_Char>
 zfclassNotPOD _ZFP_zfstringD {
 public:
     zfuint refCount;
-    zfuint capacity; // capacity including tail '\0'
+    // capacity: including tail '\0'
+    // possible values:
+    // * _ZFP_ST_Shared and length > 0 : shared string and null terminated
+    // * _ZFP_ST_Slice and length > 0 : shared string and not null terminated
+    // * >= _ZFP_ST_Normal : normal allocated string
+    zfuint capacity;
     zfuint length;
     union {
-        T_Char *buf; // capacity != 0
-        const T_Char *ptr; // capacity = 0
+        T_Char *buf; // capacity >= _ZFP_ST_Normal
+        const T_Char *ptr; // capacity = _ZFP_ST_Shared or _ZFP_ST_Slice
     } d;
 public:
     _ZFP_zfstringD(void) : refCount(1), capacity(0), length(0), d() {
         d.ptr = Empty();
     }
     ~_ZFP_zfstringD(void) {
-        if(this->capacity) {
+        if(this->capacity >= 2 /* _ZFP_ST_Normal */) {
             zfunsafe_zfpoolFree(this->d.buf);
         }
     }
@@ -110,7 +115,7 @@ public:
         ZFCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
-        this->assign(s.cString(), len);
+        this->assign(s.rawString(), len);
     }
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, ZF_IN zfindex pos, ZF_IN zfindex len)
@@ -122,7 +127,7 @@ public:
             if(len > s.length() - pos) {
                 len = s.length() - pos;
             }
-            this->assign(s.cString() + pos, len);
+            this->assign(s.rawString() + pos, len);
         }
     }
     /** @brief copy content from another string */
@@ -174,14 +179,19 @@ public:
     inline operator const T_Char * (void) const {
         return this->isEmpty() ? zfnull : this->cString();
     }
+    inline operator zfbool (void) const {
+        return !this->isEmpty();
+    }
 public:
     inline zft_zfstring<T_Char> &operator = (ZF_IN const zft_zfstring<T_Char> &s) {
-        ZFCoreMutexLocker();
-        _ZFP_zfstringD<T_Char> *dTmp = d;
-        d = s.d;
-        ++(d->refCount);
-        if(--(dTmp->refCount) == 0) {
-            zfunsafe_zfpoolDelete(dTmp);
+        if(d != s.d) {
+            ZFCoreMutexLocker();
+            _ZFP_zfstringD<T_Char> *dTmp = d;
+            d = s.d;
+            ++(d->refCount);
+            if(--(dTmp->refCount) == 0) {
+                zfunsafe_zfpoolDelete(dTmp);
+            }
         }
         return *this;
     }
@@ -261,7 +271,7 @@ public:
     /** @brief append string */
     inline zft_zfstring<T_Char> &append(ZF_IN const zft_zfstring<T_Char> &s) {
         if(s) {
-            _appendImpl(s.cString(), s.length());
+            _appendImpl(s.rawString(), s.length());
         }
         return *this;
     }
@@ -272,7 +282,7 @@ public:
             ) {
         len = (len <= s.length() ? len : s.length());
         if(len > 0) {
-            _appendImpl(s.cString(), len);
+            _appendImpl(s.rawString(), len);
         }
         return *this;
     }
@@ -289,7 +299,7 @@ public:
             len = s.length() - offset;
         }
         if(len > 0) {
-            _appendImpl(s.cString() + offset, len);
+            _appendImpl(s.rawString() + offset, len);
         }
         return *this;
     }
@@ -329,7 +339,7 @@ public:
             ZF_IN const zft_zfstring<T_Char> &s
             , ZF_IN zfindex len
             ) {
-        return this->assign(s.cString(), len <= s.length() ? len : s.length());
+        return this->assign(s.rawString(), len <= s.length() ? len : s.length());
     }
     /** @brief replace all content of the string */
     inline zft_zfstring<T_Char> &assign(
@@ -343,7 +353,7 @@ public:
         if(len > s.length() - offset) {
             len = s.length() - offset;
         }
-        return this->assign(s.cString() + offset, len);
+        return this->assign(s.rawString() + offset, len);
     }
     /** @brief replace all content of the string */
     zft_zfstring<T_Char> &assign(
@@ -385,7 +395,7 @@ public:
             ZF_IN zfindex insertAt
             , ZF_IN const zft_zfstring<T_Char> &s
             ) {
-        return this->insert(insertAt, s.cString(), s.length());
+        return this->insert(insertAt, s.rawString(), s.length());
     }
     /** @brief insert string */
     zft_zfstring<T_Char> &insert(
@@ -419,7 +429,7 @@ public:
             , ZF_IN zfindex replaceLen
             , ZF_IN const zft_zfstring<T_Char> &s
             ) {
-        return this->replace(replacePos, replaceLen, s.cString(), s.length());
+        return this->replace(replacePos, replaceLen, s.rawString(), s.length());
     }
     /** @brief replace string in range */
     zft_zfstring<T_Char> &replace(
@@ -454,13 +464,31 @@ public:
     }
 
 public:
-    /** @brief access string value */
+    /**
+     * @brief access raw string pointer
+     *
+     * note it's not ensured null-terminated,
+     * see #shared
+     */
+    inline const T_Char *rawString(void) const {
+        return d->d.ptr;
+    }
+    /**
+     * @brief access string value, see #shared
+     */
     inline const T_Char *cString(void) const {
+        if(d->capacity == _ZFP_ST_Slice) {
+            this->sharedCopy();
+        }
         return d->d.ptr;
     }
     /** @brief length of the string */
     inline zfindex length(void) const {
         return (zfindex)d->length;
+    }
+    /** @brief whether this string is created from #shared */
+    inline zfbool isShared(void) const {
+        return d->capacity < _ZFP_ST_Normal && d->length > 0;
     }
     /** @brief true if empty */
     inline zfbool isEmpty(void) const {
@@ -472,7 +500,7 @@ public:
     }
     /** @brief true if equal */
     inline zfbool isEqual(ZF_IN const T_Char *s) const {
-        return 0 == _ZFP_zfstring_cmp(this->cString(), this->cString() + this->length(), s, s + (s ? _ZFP_zfstring_len(s) : 0));
+        return 0 == _ZFP_zfstring_cmp(this->rawString(), this->rawString() + this->length(), s, s + (s ? _ZFP_zfstring_len(s) : 0));
     }
 
 public:
@@ -487,7 +515,12 @@ public:
     }
     /** @brief get current capacity (including tail '\0') */
     inline zfindex capacity(void) const {
-        return (zfindex)d->capacity;
+        if(d->capacity >= _ZFP_ST_Normal) {
+            return (zfindex)d->capacity;
+        }
+        else {
+            return 0;
+        }
     }
     /** @brief trim to a proper capacity to save memory */
     inline void capacityTrim(void) {
@@ -525,7 +558,7 @@ public:
                     d = _ZFP_Empty();
                     ++(d->refCount);
                 }
-                else if(d->capacity > 0) {
+                else if(d->capacity >= _ZFP_ST_Normal) {
                     d->d.buf[0] = '\0';
                     d->length = 0;
                 }
@@ -547,7 +580,7 @@ public:
 public:
     /** @brief compare with another string */
     inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {
-        return d == s.d ? 0 : _ZFP_zfstring_cmp(this->cString(), this->cString() + this->length(), s.cString(), s.cString() + s.length());
+        return d == s.d ? 0 : _ZFP_zfstring_cmp(this->rawString(), this->rawString() + this->length(), s.rawString(), s.rawString() + s.length());
     }
     /** @brief compare with another string */
     zfint compare(
@@ -557,7 +590,7 @@ public:
         if(len == zfindexMax()) {
             len = s ? _ZFP_zfstring_len(s) : 0;
         }
-        return _ZFP_zfstring_cmp(this->cString(), this->cString() + this->length(), s, s + (s ? _ZFP_zfstring_len(s) : 0));
+        return _ZFP_zfstring_cmp(this->rawString(), this->rawString() + this->length(), s, s + (s ? _ZFP_zfstring_len(s) : 0));
     }
 
 public:
@@ -609,6 +642,12 @@ public:
     }
 
 private:
+    enum { // string type
+        _ZFP_ST_Shared = 0, // shared and null terminated
+        _ZFP_ST_Slice = 1, // shared and not null terminated
+        _ZFP_ST_Normal = 2, // normal allocated
+    };
+private:
     _ZFP_zfstringD<T_Char> *d;
 public:
     /** @brief global null string ref for impl */
@@ -618,17 +657,55 @@ public:
     }
 public:
     /**
-     * @brief explicitly create from literal string,
-     *   you must ensure the literal's life exceeds the returned string
+     * @brief explicitly create from literal string
+     *
+     * note:
+     * -  you must ensure the literal's life exceeds the returned string
+     * -  zfstring use reference count to manage object,
+     *   you must also ensure the literal's life acrossing all of the references
+     *
+     * a shared string may not be null-terminated,
+     * for safety, #sharedCopy would be called to deeply copy internal string data if:
+     * -  the shared string is not null-terminated,
+     *   and #cString explicitly or implicitly called
+     *   (such as implicitly cast to raw string type,
+     *   or perform `operator +` to access raw string offset)
+     *
+     * #isShared can be used to check whether it's shared,
+     * #sharedCopy can be manually called to explicitly copy from shared
      */
     static zft_zfstring<T_Char> shared(
             ZF_IN const void *sLiteral
             , ZF_IN_OPT zfindex length = zfindexMax()
             ) {
-        _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
+        ZFCoreMutexLocker();
+        _ZFP_zfstringD<T_Char> *d = zfunsafe_zfpoolNew(_ZFP_zfstringD<T_Char>);
         d->d.ptr = (const T_Char *)sLiteral;
-        d->length = (zfuint)(length == zfindexMax() ? _ZFP_zfstring_len((const T_Char *)sLiteral) : length);
+        if(length != zfindexMax()) {
+            d->length = (zfuint)length;
+            d->capacity = _ZFP_ST_Slice;
+        }
+        else {
+            d->length = (zfuint)_ZFP_zfstring_len((const T_Char *)sLiteral);
+            d->capacity = _ZFP_ST_Shared;
+        }
         return zft_zfstring<T_Char>(d);
+    }
+    /** @brief see #shared */
+    const zft_zfstring<T_Char> &sharedCopy(void) const {
+        if(this->isShared()) {
+            ZFCoreMutexLocker();
+            const T_Char *ptr = d->d.ptr;
+            {
+                zfindex capacity = d->length;
+                _capacityOptimize(capacity);
+                d->capacity = (zfuint)capacity;
+            }
+            d->d.buf = (T_Char *)zfunsafe_zfpoolMalloc(d->capacity);
+            zfmemcpy(d->d.buf, ptr, d->length);
+            d->d.buf[d->length] = '\0';
+        }
+        return *this;
     }
 private:
     explicit zft_zfstring(ZF_IN _ZFP_zfstringD<T_Char> *d)
@@ -663,7 +740,7 @@ private:
         _capacityOptimize(capacity);
         ZFCoreMutexLocker();
         if(d->refCount == 1) {
-            if(d->capacity > 0) {
+            if(d->capacity >= _ZFP_ST_Normal) {
                 T_Char *buf = (T_Char *)zfunsafe_zfpoolRealloc(d->d.buf, capacity * sizeof(T_Char));
                 if(buf == zfnull) {
                     return zffalse;
@@ -719,7 +796,7 @@ private:
  * @brief util macro for zfstring::shared
  */
 #ifndef zftext
-    #define zftext(s) zfstring::shared(s)
+    #define zftext(s, ...) zfstring::shared(s, ##__VA_ARGS__)
 #endif
 
 ZF_NAMESPACE_GLOBAL_END

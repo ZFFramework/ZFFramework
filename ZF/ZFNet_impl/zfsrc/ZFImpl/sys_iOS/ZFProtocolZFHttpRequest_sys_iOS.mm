@@ -140,7 +140,7 @@ public:
     }
     virtual zfstring body(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        return zfstring::shared(task.requestBody.mutableBytes, (zfindex)task.requestBody.length);
+        return zfstring(task.requestBody.mutableBytes, (zfindex)task.requestBody.length);
     }
 
     virtual void request(ZF_IN void *nativeTask, ZF_IN ZFHttpResponse *response) {
@@ -169,7 +169,7 @@ public:
             weakTask.response = (NSHTTPURLResponse *)response;
             if(data != nil) {
                 weakTask.responseData = data;
-                weakTask.ownerResponse->body(zfstring::shared(data.bytes, data.length));
+                weakTask.ownerResponse->body(zfstring(data.bytes, data.length));
             }
             ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(weakTask.ownerRequest, weakTask.ownerResponse);
         }];

@@ -252,7 +252,7 @@ ZFMETHOD_DEFINE_3(ZFUdp, zfstring, recv
         ) {
     if(!this->valid()) {
         ZFLog("calling recv() before open() successfully");
-        return 0;
+        return zfnull;
     }
     void *addrImpl = zfnull;
     zfuint portTmp = 0;

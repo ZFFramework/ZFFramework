@@ -692,7 +692,7 @@ void ZFDI_invoke(
             }
         }
 
-        zfstring scopeTmp(name, dotPos);
+        zfstring scopeTmp = zftext(name, dotPos);
         const zfchar *nameTmp = name + dotPos + 1;
 
         // NS.ClassName.methodName()
