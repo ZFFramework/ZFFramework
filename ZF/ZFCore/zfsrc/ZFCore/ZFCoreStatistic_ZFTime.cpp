@@ -1,5 +1,7 @@
 #include "ZFCoreStatistic_ZFTime.h"
 
+#include "ZFSTLWrapper/zfstlhashmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
 
@@ -11,8 +13,8 @@ public:
     zfindex reentrantCount;
 };
 
-static ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &_ZFP_ZFCoreStatisticInvokeTimeDataMap(void) {
-    static ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> m;
+static zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &_ZFP_ZFCoreStatisticInvokeTimeDataMap(void) {
+    static zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> m;
     return m;
 }
 
@@ -20,36 +22,30 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogBegin
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
-    if(data == zfnull) {
-        data = &(m.access(key));
-        ++(data->invokeCount);
-        data->invokeStartTime = ZFTime::currentTimeValue();
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    _ZFP_ZFCoreStatisticInvokeTimeData &data = m[key];
+    ++(data.invokeCount);
+    if(data.invokeStartTime != ZFTimeValueZero()) {
+        ++(data.reentrantCount);
     }
     else {
-        ++(data->invokeCount);
-        if(data->invokeStartTime != ZFTimeValueZero()) {
-            ++(data->reentrantCount);
-        }
-        else {
-            data->invokeStartTime = ZFTime::currentTimeValue();
-        }
+        data.invokeStartTime = ZFTime::currentTimeValue();
     }
 }
 ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeLogEnd
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
-    if(data != zfnull) {
-        if(data->reentrantCount > 0) {
-            --(data->reentrantCount);
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    if(it != m.end()) {
+        _ZFP_ZFCoreStatisticInvokeTimeData &data = it->second;
+        if(data.reentrantCount > 0) {
+            --(data.reentrantCount);
         }
         else {
-            data->invokeTotalTime += ZFTime::currentTimeValue() - data->invokeStartTime;
-            data->invokeStartTime = ZFTimeValueZero();
+            data.invokeTotalTime += ZFTime::currentTimeValue() - data.invokeStartTime;
+            data.invokeStartTime = ZFTimeValueZero();
         }
     }
 }
@@ -57,56 +53,60 @@ ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeRemove
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    m.remove(key);
+    _ZFP_ZFCoreStatisticInvokeTimeDataMap().erase(key);
 }
 ZFMETHOD_FUNC_DEFINE_0(void, invokeTimeRemoveAll) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    m.removeAll();
+    _ZFP_ZFCoreStatisticInvokeTimeDataMap().clear();
 }
 ZFMETHOD_FUNC_DEFINE_1(zfindex, invokeTimeGetInvokeCount
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
-    if(data != zfnull) {
-        return data->invokeCount;
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    if(it != m.end()) {
+        return it->second.invokeCount;
     }
-    return 0;
+    else {
+        return 0;
+    }
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetAverageTime
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
-    if(data != zfnull && data->invokeCount > 0) {
-        return data->invokeTotalTime / data->invokeCount;
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    if(it != m.end()) {
+        return it->second.invokeTotalTime / it->second.invokeCount;
     }
-    return ZFTimeValueZero();
+    else {
+        return ZFTimeValueZero();
+    }
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFTimeValue, invokeTimeGetTotalTime
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
-    if(data != zfnull) {
-        return data->invokeTotalTime;
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    if(it != m.end()) {
+        return it->second.invokeTotalTime;
     }
-    return ZFTimeValueZero();
+    else {
+        return ZFTimeValueZero();
+    }
 }
 ZFMETHOD_FUNC_DEFINE_2(void, invokeTimeGetSummaryT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfstring &, key)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    _ZFP_ZFCoreStatisticInvokeTimeData *data = m.get(key);
-    zfindex invokeCount = ((data == zfnull) ? 0 : data->invokeCount);
-    ZFTimeValue invokeTotalTime = ((data == zfnull) ? ZFTimeValueZero() : data->invokeTotalTime);
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.find(key);
+    zfindex invokeCount = ((it != m.end()) ? it->second.invokeCount : 0);
+    ZFTimeValue invokeTotalTime = ((it != m.end()) ? it->second.invokeTotalTime : ZFTimeValueZero());
     if(invokeCount > 1) {
         ZFTimeValue invokeAverageTime = ((invokeCount == 0) ? ZFTimeValueZero() : invokeTotalTime / invokeCount);
         zfstringAppend(ret, "[%s] invoke count: %s, total: %s, average: %s",
@@ -132,17 +132,21 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, invokeTimeGetSummary
 
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<zfstring>, invokeTimeGetAllKey) {
     ZFCoreMutexLocker();
-    return _ZFP_ZFCoreStatisticInvokeTimeDataMap().allKey();
+    ZFCoreArray<zfstring> ret;
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    for(zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.begin(); it != m.end(); ++it) {
+        ret.add(it->first);
+    }
+    return ret;
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, invokeTimeGetAllSummaryT
         , ZFMP_IN_OUT(zfstring &, ret)
         ) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
-    for(zfiter it = m.iter(); it; ++it) {
-        zfstring key = m.iterKey(it);
-        invokeTimeGetSummaryT(ret, key);
+    zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData> &m = _ZFP_ZFCoreStatisticInvokeTimeDataMap();
+    for(zfstlhashmap<zfstring, _ZFP_ZFCoreStatisticInvokeTimeData>::iterator it = m.begin(); it != m.end(); ++it) {
+        invokeTimeGetSummaryT(ret, it->first);
         ret += "\n";
     }
 }

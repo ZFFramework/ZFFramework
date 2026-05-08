@@ -103,58 +103,6 @@ public:
     }
 };
 
-template<int sizeFix>
-zfclassNotPOD _ZFP_ZFCoreArrayCapacity {
-public:
-    // for size <= sizeof(void *)
-    static void capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        if(capacity == 0) {
-        }
-        else if(capacity < 64) {
-            capacity = ((capacity / 16) + 1) * 16;
-        }
-        else if(capacity < 256) {
-            capacity = ((capacity / 64) + 1) * 64;
-        }
-        else {
-            capacity = ((capacity / 256) + 1) * 256;
-        }
-    }
-};
-template<>
-zfclassNotPOD _ZFP_ZFCoreArrayCapacity<1> {
-public:
-    // for size <= 4 * sizeof(void *)
-    static void capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        if(capacity == 0) {
-        }
-        else if(capacity < 32) {
-            capacity = ((capacity / 8) + 1) * 8;
-        }
-        else if(capacity < 128) {
-            capacity = ((capacity / 32) + 1) * 32;
-        }
-        else {
-            capacity = ((capacity / 64) + 1) * 64;
-        }
-    }
-};
-template<>
-zfclassNotPOD _ZFP_ZFCoreArrayCapacity<2> {
-public:
-    // for size > 4 * sizeof(void *)
-    static void capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        if(capacity == 0) {
-        }
-        else if(capacity < 32) {
-            capacity = ((capacity / 4) + 1) * 4;
-        }
-        else {
-            capacity = ((capacity / 8) + 1) * 8;
-        }
-    }
-};
-
 // ============================================================
 /**
  * @brief dummy base for #ZFCoreArray
@@ -1018,14 +966,7 @@ private:
     _ZFP_ZFCoreArrayPrivate<T_Element> *d;
 private:
     inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        _ZFP_ZFCoreArrayCapacity<
-                sizeof(T_Element) <= sizeof(void *)
-                ? 0
-                : (sizeof(T_Element) <= 4 * sizeof(void *)
-                    ? 1
-                    : 2
-                )
-            >::capacityOptimize(capacity);
+        ZFCoreCapacityOptimize<sizeof(T_Element) <= 16 * sizeof(void *) ? 3 : 2>(capacity);
     }
     inline void _capacityRequire(ZF_IN zfindex capacity) {
         _capacityOptimize(capacity);

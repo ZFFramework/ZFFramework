@@ -1,42 +1,48 @@
 #include "ZFCoreStatistic.h"
-#include "ZFCoreMap.h"
+
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
 
-static ZFCoreMap<zfstring, zfindex> &_ZFP_ZFCoreStatisticDataMap(void) {
-    static ZFCoreMap<zfstring, zfindex> d;
+static zfstlhashmap<zfstring, zfindex> &_ZFP_ZFCoreStatisticDataMap(void) {
+    static zfstlhashmap<zfstring, zfindex> d;
     return d;
 }
 
 void invokeCountLog(ZF_IN const zfstring &key) {
     ZFCoreMutexLocker();
-    ZFCoreMap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
-    zfindex *count = m.get(key);
-    if(count != zfnull) {
-        ++(*count);
-    }
-    else {
-        m.set(key, 1);
-    }
+    zfstlhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
+    ++(m[key]);
 }
 void invokeCountRemove(ZF_IN const zfstring &key) {
     ZFCoreMutexLocker();
-    _ZFP_ZFCoreStatisticDataMap().remove(key);
+    _ZFP_ZFCoreStatisticDataMap().erase(key);
 }
 void invokeCountRemoveAll(void) {
     ZFCoreMutexLocker();
-    _ZFP_ZFCoreStatisticDataMap().removeAll();
+    _ZFP_ZFCoreStatisticDataMap().clear();
 }
 zfindex invokeCountGet(ZF_IN const zfstring &key) {
     ZFCoreMutexLocker();
-    zfindex *count = _ZFP_ZFCoreStatisticDataMap().get(key);
-    return ((count != zfnull) ? *count : 0);
+    zfstlhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
+    zfstlhashmap<zfstring, zfindex>::iterator it = m.find(key);
+    if(it != m.end()) {
+        return it->second;
+    }
+    else {
+        return 0;
+    }
 }
 
 ZFCoreArray<zfstring> invokeCountGetAllKey(void) {
     ZFCoreMutexLocker();
-    return _ZFP_ZFCoreStatisticDataMap().allKey();
+    ZFCoreArray<zfstring> ret;
+    zfstlhashmap<zfstring, zfindex> &m = _ZFP_ZFCoreStatisticDataMap();
+    for(zfstlhashmap<zfstring, zfindex>::iterator it = m.begin(); it != m.end(); ++it) {
+        ret.add(it->first);
+    }
+    return ret;
 }
 
 ZF_NAMESPACE_END(ZFCoreStatistic)

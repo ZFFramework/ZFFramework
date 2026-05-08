@@ -13,6 +13,21 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/**
+ * @brief util to optimize capacity
+ */
+template<int minCapacityRadix>
+inline void ZFCoreCapacityOptimize(ZF_IN_OUT zfindex &capacity) {
+    capacity >>= minCapacityRadix;
+    capacity |= capacity >> 1;
+    capacity |= capacity >> 2;
+    capacity |= capacity >> 4;
+    capacity |= capacity >> 8;
+    capacity |= capacity >> 16;
+    ++capacity;
+    capacity <<= minCapacityRadix;
+}
+
 // ============================================================
 template<typename T_Char>
 zfindex _ZFP_zfstring_len(ZF_IN const T_Char *s) {
@@ -718,22 +733,7 @@ private:
         return d.d;
     }
     static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        if(capacity < 32) {
-            capacity = ((capacity / 16) + 1) * 16;
-        }
-        else if(capacity < 64) {
-            capacity = ((capacity / 32) + 1) * 32;
-        }
-        else {
-            capacity >>= 4;
-            capacity |= capacity >> 1;
-            capacity |= capacity >> 2;
-            capacity |= capacity >> 4;
-            capacity |= capacity >> 8;
-            capacity |= capacity >> 16;
-            ++capacity;
-            capacity <<= 4;
-        }
+        ZFCoreCapacityOptimize<4>(capacity);
     }
     // capacity: excluding tail '\0'
     zfbool _capacityChange(ZF_IN zfindex capacity, zfbool keepContents) {

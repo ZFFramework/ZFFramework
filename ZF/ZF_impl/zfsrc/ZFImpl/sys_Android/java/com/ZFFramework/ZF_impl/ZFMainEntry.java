@@ -2,9 +2,11 @@ package com.ZFFramework.ZF_impl;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Window;
 
@@ -133,12 +135,29 @@ public final class ZFMainEntry extends Activity {
     }
 
     public static void mainEntryActivity(Activity activity) {
+        if (_mainEntryActivity != null && _mainEntryActivity.get() != null) {
+            _mainEntryActivity.get().unregisterComponentCallbacks(_mainEntryComponentCallback);
+        }
         if (activity == null) {
             _mainEntryActivity = null;
         } else {
             _mainEntryActivity = new WeakReference<Activity>(activity);
+            activity.registerComponentCallbacks(_mainEntryComponentCallback);
         }
     }
+
+    private static final ComponentCallbacks _mainEntryComponentCallback = new ComponentCallbacks() {
+        @Override
+        public void onConfigurationChanged(Configuration newConfig) {
+        }
+
+        @Override
+        public void onLowMemory() {
+            native_notifyAppOnMemoryLow();
+        }
+    };
+
+    public native static void native_notifyAppOnMemoryLow();
 
     // ============================================================
     // native

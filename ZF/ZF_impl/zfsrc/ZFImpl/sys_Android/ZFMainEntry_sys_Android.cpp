@@ -108,5 +108,12 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFMainEntry
 }
 JNI_METHOD_DECLARE_END()
 
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFMainEntry
+        , void, native_1notifyAppOnMemoryLow
+        ) {
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::E_AppOnMemoryLow());
+}
+JNI_METHOD_DECLARE_END()
+
 #endif // #if ZF_ENV_sys_Android
 

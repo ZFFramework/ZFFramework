@@ -101,17 +101,7 @@ public:
 
 private:
     static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        if(capacity == 0) {
-        }
-        else if(capacity < 64) {
-            capacity = ((capacity / 16) + 1) * 16 - 1;
-        }
-        else if(capacity < 256) {
-            capacity = ((capacity / 64) + 1) * 64 - 1;
-        }
-        else {
-            capacity = ((capacity / 256) + 1) * 256 - 1;
-        }
+        ZFCoreCapacityOptimize<4>(capacity);
     }
 public:
     /**
