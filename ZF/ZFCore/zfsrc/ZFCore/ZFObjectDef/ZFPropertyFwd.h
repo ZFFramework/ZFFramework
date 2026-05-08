@@ -94,6 +94,7 @@ typedef enum {
     ZFPropertyLifeCycleOnUpdate, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
     ZFPropertyLifeCycleOnAttach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
     ZFPropertyLifeCycleOnDetach, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
+    _ZFP_ZFPropertyLifeCycleCount, /**< @brief see #ZFPROPERTY_ON_INIT_DECLARE */
 } ZFPropertyLifeCycle;
 
 typedef void (*_ZFP_PropLifeCycleWrapper)(

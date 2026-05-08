@@ -68,7 +68,7 @@ ZFProperty::ZFProperty(void)
 }
 ZFProperty::~ZFProperty(void) {
     ZFCoreArray<zfauto> toRelease;
-    for(zfindex i = 0; i < sizeof(_ZFP_ZFPropertyLifeCycleMap); ++i) {
+    for(zfindex i = 0; i < _ZFP_ZFPropertyLifeCycleCount; ++i) {
         if(_ZFP_ZFPropertyLifeCycleMap[i] != zfnull) {
             zfstlvector<_ZFP_PropLifeCycleData> &t = *(zfstlvector<_ZFP_PropLifeCycleData> *)_ZFP_ZFPropertyLifeCycleMap[i];
             for(zfstlsize j = 0; j < t.size(); ++j) {

@@ -283,7 +283,7 @@ private:
     // vector<_ZFP_PropLifeCycleData>[ZFPropertyLifeCycleOnInit/OnUpdate/OnAttach/OnDetach]
     // ordered from parent to child (and dynamic)
     // except for ZFPropertyLifeCycleOnDetach, ordered from child to parent
-    void *_ZFP_ZFPropertyLifeCycleMap[4];
+    void *_ZFP_ZFPropertyLifeCycleMap[_ZFP_ZFPropertyLifeCycleCount];
 };
 
 // ============================================================
