@@ -56,11 +56,11 @@ sh "$ZF_ROOT_PATH/tools/util/copy_header.sh" "$PROJ_PATH/../zfsrc" "$RELEASE_PAT
 sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$PROJ_PATH/../zfres" "$RELEASE_PATH/module/$PROJ_NAME/zfres"
 
 # copy zfprojConfig
-sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$PROJ_PATH/iOS/$PROJ_NAME/${PROJ_NAME}_zfprojConfig.xcodeproj/." "$RELEASE_PATH/module/$PROJ_NAME/${PROJ_NAME}_zfprojConfig.xcodeproj/"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$PROJ_PATH/iOS/$PROJ_NAME/${PROJ_NAME}_zfprojConfig.xcodeproj" "$RELEASE_PATH/module/$PROJ_NAME/${PROJ_NAME}_zfprojConfig.xcodeproj"
 rm -rf "$RELEASE_PATH/module/$PROJ_NAME/${PROJ_NAME}_zfprojConfig.xcodeproj/xcuserdata"
 
 # install
-sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$RELEASE_PATH/module/$PROJ_NAME/." "$RELEASE_PATH/all/"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$RELEASE_PATH/module/$PROJ_NAME" "$RELEASE_PATH/all"
 
 exit 0
 

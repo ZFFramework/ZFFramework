@@ -22,6 +22,7 @@ if "%CMAKE_BUILD_TYPE%" == "" (
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 set _TMP_PATH=%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\%_CONFIG%
+set _INSTALL_PATH=%_TMP_PATH%\zfdist
 
 set _OLD_DIR=%cd%
 cd /d "%PROJ_PATH%/cmake/%PROJ_NAME%"
@@ -32,16 +33,24 @@ set _OLD_DIR=%cd%
 mkdir "%_TMP_PATH%" >nul 2>&1
 cd /d "%_TMP_PATH%"
 if "%CMAKE_CXX_FLAGS%" == "" (
-    cmake -G "Ninja" "%_PROJ_PATH%" -DCMAKE_BUILD_TYPE=%_CONFIG%
+    cmake -G "Ninja" ^
+        -DCMAKE_BUILD_TYPE=%_CONFIG% ^
+        -DCMAKE_INSTALL_PREFIX=%_INSTALL_PATH% ^
+        "%_PROJ_PATH%"
 ) else (
-    cmake -G "Ninja" "%_PROJ_PATH%" -DCMAKE_BUILD_TYPE=%_CONFIG% -DCMAKE_CXX_FLAGS=%CMAKE_CXX_FLAGS%
+    cmake -G "Ninja" ^
+        -DCMAKE_BUILD_TYPE=%_CONFIG% ^
+        -DCMAKE_INSTALL_PREFIX=%_INSTALL_PATH% ^
+        -DCMAKE_CXX_FLAGS=%CMAKE_CXX_FLAGS% ^
+        "%_PROJ_PATH%"
 )
 ninja
 ninja install
 set _RESULT=%ERRORLEVEL%
 cd /d "%_OLD_DIR%"
 
-call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_TMP_PATH%\zfdist" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\bin" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\lib" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
 
 exit /b %_RESULT%
 

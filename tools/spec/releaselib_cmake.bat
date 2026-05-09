@@ -25,12 +25,24 @@ set _OLD_DIR=%cd%
 
 mkdir "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\build" >nul 2>&1
 cd /d "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\build"
-cmake -G "Ninja" "%PROJ_PATH%\cmake\%PROJ_NAME%" -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake -G "Ninja" "%PROJ_PATH%\cmake\%PROJ_NAME%" -DCMAKE_BUILD_TYPE=RelWithDebInfo ^
+    -DCMAKE_INSTALL_PREFIX="%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist"
 ninja
 ninja install
 set RESULT=%ERRORLEVEL%
 
 cd /d "%_OLD_DIR%"
 
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\include\SDL*"
+
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\lib\cmake"
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\lib\pkgconfig"
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\lib\*SDL*_test.*"
+
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\include" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\include"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\lib" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\lib"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%ZF_ROOT_PATH%\_tmp\cmake\%PROJ_NAME%\zfdist\bin\zfres" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%\zfres"
+
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%ZF_ROOT_PATH%\_release\cmake\module\%PROJ_NAME%" "%ZF_ROOT_PATH%\_release\cmake\all"
 exit /b %RESULT%
 

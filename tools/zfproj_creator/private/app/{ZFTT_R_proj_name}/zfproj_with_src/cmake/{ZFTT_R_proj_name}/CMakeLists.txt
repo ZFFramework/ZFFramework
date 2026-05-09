@@ -20,18 +20,14 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
     endif()
     zfprojSrcFiles(
         ZF_SRC_FILES_TMP
-        "${CMAKE_BINARY_DIR}/zfgensrc_${LIB_NAME_}.cpp"
+        "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_${LIB_NAME_}.cpp"
         "${ZF_ROOT_PATH}"
         "${PROJECT_SOURCE_DIR}"
         "${PROJ_PATH_}"
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
     include_directories("${PROJ_PATH_}/zfsrc")
-    install(
-        DIRECTORY "${PROJ_PATH_}/zfres/"
-        DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres"
-        PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
-        )
+    zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJ_PATH_}/zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
 endfunction()
 
 ZFAddSrc(ZF_LIB_NAMES {ZFTT_R_proj_name} ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../.. ${PROJECT_SOURCE_DIR})
@@ -200,29 +196,11 @@ endif()
 
 install(
     TARGETS {ZFTT_R_proj_name}
-    DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
     )
 
 file(GLOB AppIconPath "${PROJECT_SOURCE_DIR}/AppIcon.png")
 if(NOT "${AppIconPath}" STREQUAL "")
-    install(FILES ${AppIconPath} DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres/ZFUIKit_impl/sys_SDL")
+    install(FILES ${AppIconPath} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/zfres/ZFUIKit_impl/sys_SDL")
 endif()
-
-file(GLOB_RECURSE SDL_LIBS_
-    "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL3*.*"
-    )
-foreach(SDL_LIB_ ${SDL_LIBS_})
-    if(NOT (SDL_LIB_ MATCHES "_release/cmake/SDL/lib/cmake|_release/cmake/SDL/lib/pkgconfig"))
-        if(NOT (SDL_LIB_ MATCHES "SDL3[^/]*\\.a|SDL3[^/]*\\.lib"))
-            install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
-        endif()
-    endif()
-endforeach()
-
-file(GLOB_RECURSE SDL_LIBS_
-    "${ZF_ROOT_PATH}/_release/cmake/SDL/bin/*.dll"
-    )
-foreach(SDL_LIB_ ${SDL_LIBS_})
-    install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
-endforeach()
 

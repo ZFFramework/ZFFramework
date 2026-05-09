@@ -8,7 +8,7 @@ include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 zfprojSrcFiles(
     ZF_SRC_FILES
-    "${CMAKE_BINARY_DIR}/zfgensrc_ZFAlgorithm.cpp"
+    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_ZFAlgorithm.cpp"
     "${ZF_ROOT_PATH}"
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../../.."

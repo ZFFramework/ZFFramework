@@ -12,7 +12,7 @@ include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 zfprojSrcFiles(
     ZF_SRC_FILES
-    "${CMAKE_BINARY_DIR}/zfgensrc_ZFFramework_test.cpp"
+    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_ZFFramework_test.cpp"
     "${ZF_ROOT_PATH}"
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../.."
@@ -38,14 +38,10 @@ function(ZFAddLib ZF_LIB_NAME_)
 
     install(
         DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/"
-        DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
         PATTERN "*.lib" EXCLUDE
         )
-    install(
-        DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/"
-        DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres"
-        PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
-        )
+    zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
 endfunction()
 
 ZFAddLib(ZFCore)
@@ -75,29 +71,11 @@ endif()
 
 install(
     TARGETS ZFFramework_test
-    DESTINATION "${PROJECT_BINARY_DIR}/zfdist"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
     )
 
 file(GLOB AppIconPath "${PROJECT_SOURCE_DIR}/AppIcon.png")
 if(NOT "${AppIconPath}" STREQUAL "")
-    install(FILES ${AppIconPath} DESTINATION "${PROJECT_BINARY_DIR}/zfdist/zfres/ZFUIKit_impl/sys_SDL")
+    install(FILES ${AppIconPath} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/zfres/ZFUIKit_impl/sys_SDL")
 endif()
-
-file(GLOB_RECURSE SDL_LIBS_
-    "${ZF_ROOT_PATH}/_release/cmake/SDL/lib/*SDL3*.*"
-    )
-foreach(SDL_LIB_ ${SDL_LIBS_})
-    if(NOT (SDL_LIB_ MATCHES "_release/cmake/SDL/lib/cmake|_release/cmake/SDL/lib/pkgconfig"))
-        if(NOT (SDL_LIB_ MATCHES "SDL3[^/]*\\.a|SDL3[^/]*\\.lib"))
-            install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
-        endif()
-    endif()
-endforeach()
-
-file(GLOB_RECURSE SDL_LIBS_
-    "${ZF_ROOT_PATH}/_release/cmake/SDL/bin/*.dll"
-    )
-foreach(SDL_LIB_ ${SDL_LIBS_})
-    install(FILES ${SDL_LIB_} DESTINATION "${PROJECT_BINARY_DIR}/zfdist")
-endforeach()
 

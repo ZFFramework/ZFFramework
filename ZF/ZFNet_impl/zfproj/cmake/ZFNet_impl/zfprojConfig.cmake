@@ -25,12 +25,15 @@ function(zfprojConfigAfter_ZFNet_impl projName)
     target_compile_definitions(${projName} PUBLIC ZF_ENV_FORCE_sys_SDL=1)
 
     if(NOT TARGET SDL3::SDL3)
-        find_package(SDL3 REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
+        set(SDL_INSTALL ON CACHE BOOL "ZFSDL" FORCE)
+        set(SDL_UNIX_CONSOLE_BUILD ON CACHE BOOL "ZFSDL" FORCE)
+        add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL" ${CMAKE_BINARY_DIR}/SDL)
         target_link_libraries(${projName} PRIVATE SDL3::SDL3)
     endif()
 
     if(NOT TARGET SDL3_net::SDL3_net)
-        find_package(SDL3_net REQUIRED CONFIG HINTS "${ZF_ROOT_PATH}/_release/cmake/SDL" NO_DEFAULT_PATH)
+        set(SDLNET_INSTALL ON CACHE BOOL "ZFSDL" FORCE)
+        add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_net" ${CMAKE_BINARY_DIR}/SDL_net)
         target_link_libraries(${projName} PRIVATE SDL3_net::SDL3_net)
     endif()
 

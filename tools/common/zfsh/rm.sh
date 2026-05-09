@@ -6,5 +6,7 @@ if test "x-$TARGET_PATH" = "x-" ; then
     exit 1
 fi
 
-rm -rf "$TARGET_PATH" >/dev/null 2>&1
+_TARGET_PARENT=$(dirname "$TARGET_PATH")
+_TARGET_NAME=$(basename "$TARGET_PATH")
+rm -rf "$_TARGET_PARENT"/$_TARGET_NAME >/dev/null 2>&1
 

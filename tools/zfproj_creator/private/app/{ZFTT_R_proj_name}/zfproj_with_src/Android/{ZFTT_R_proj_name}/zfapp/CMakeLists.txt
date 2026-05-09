@@ -13,7 +13,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
     endif()
     zfprojSrcFiles(
         ZF_SRC_FILES_TMP
-        "${CMAKE_BINARY_DIR}/zfgensrc_${LIB_NAME_}.cpp"
+        "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_${LIB_NAME_}.cpp"
         "${ZF_ROOT_PATH}"
         "${PROJECT_SOURCE_DIR}"
         "${PROJ_PATH_}"

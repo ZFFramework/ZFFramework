@@ -13,6 +13,6 @@ exit /b 1
 :run
 
 del /f/s/q "%TARGET_PATH%" >nul 2>&1
-rmdir /s/q "%TARGET_PATH%" >nul 2>&1
+for /d %%i in ("%TARGET_PATH%") do rmdir /s/q "%%i" >nul 2>&1
 exit /b 0
 

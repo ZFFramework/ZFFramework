@@ -8,7 +8,7 @@ include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 
 zfprojSrcFiles(
     ZF_SRC_FILES
-    "${CMAKE_BINARY_DIR}/zfgensrc_ZFCore_impl.cpp"
+    "${CMAKE_BINARY_DIR}/zfgensrc/zfgensrc_ZFCore_impl.cpp"
     "${ZF_ROOT_PATH}"
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/../../.."
@@ -37,23 +37,14 @@ ZFAddLib(ZF_impl)
 
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
-    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/include"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/include"
     FILES_MATCHING
         PATTERN "*.h"
         PATTERN "*.hpp"
     )
 install(
     TARGETS ZFCore_impl
-    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/lib"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
     )
-install(
-    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
-    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/zfres"
-    PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
-    )
-
-install(
-    DIRECTORY "${ZF_ROOT_PATH}/_release/cmake/module/ZFCore_impl/"
-    DESTINATION "${ZF_ROOT_PATH}/_release/cmake/all"
-    )
+zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
 
