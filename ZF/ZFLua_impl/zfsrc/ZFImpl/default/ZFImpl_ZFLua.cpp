@@ -579,16 +579,16 @@ zfbool ZFImpl_ZFLua_toGeneric(
     if(lua_isnumber(L, luaStackOffset)) {
         lua_Number n = lua_tonumber(L, luaStackOffset);
         if(zfmAbs(n - (long)n) < zffloatEpsilon) {
-            wrapper->zfv(zfsFromInt((long)n));
+            zfsFromIntT(wrapper->zfv, (long)n);
         }
         else {
-            wrapper->zfv(zfsFromFloat(n));
+            zfsFromFloatT(wrapper->zfv, n);
         }
         param = wrapper;
         return zftrue;
     }
     if(lua_isstring(L, luaStackOffset)) {
-        wrapper->zfv(lua_tostring(L, luaStackOffset));
+        wrapper->zfv = zftext(lua_tostring(L, luaStackOffset));
         param = wrapper;
         return zftrue;
     }
@@ -640,10 +640,20 @@ zfbool ZFImpl_ZFLua_toStringT(
     if(holderCls != zfnull) {*holderCls = zfnull;}
     if(lua_isboolean(L, luaStackOffset)) {
         if((zfbool)lua_toboolean(L, luaStackOffset)) {
-            s += ZFTOKEN_zfbool_zftrue;
+            if(s.capacity() > 0) {
+                s += ZFTOKEN_zfbool_zftrue;
+            }
+            else {
+                s = zftext(ZFTOKEN_zfbool_zftrue);
+            }
         }
         else {
-            s += ZFTOKEN_zfbool_zffalse;
+            if(s.capacity() > 0) {
+                s += ZFTOKEN_zfbool_zffalse;
+            }
+            else {
+                s = zftext(ZFTOKEN_zfbool_zffalse);
+            }
         }
         return zftrue;
     }
@@ -653,7 +663,12 @@ zfbool ZFImpl_ZFLua_toStringT(
         return zftrue;
     }
     if(lua_isstring(L, luaStackOffset)) {
-        s += lua_tostring(L, luaStackOffset);
+        if(s.capacity() > 0) {
+            s += lua_tostring(L, luaStackOffset);
+        }
+        else {
+            s = zftext(lua_tostring(L, luaStackOffset));
+        }
         return zftrue;
     }
     if(!lua_isuserdata(L, luaStackOffset)) {
@@ -683,9 +698,9 @@ zfbool ZFImpl_ZFLua_toStringT(
         s += obj->to<v_zfstring *>()->zfv;
         return zftrue;
     }
-    else if(cls->classIsTypeOf(ZFDI_WrapperBase::ClassData())) {
-        if(holderCls != zfnull) {*holderCls = ZFDI_WrapperBase::ClassData();}
-        s += obj->to<ZFDI_WrapperBase *>()->zfv();
+    else if(cls->classIsTypeOf(ZFDI_Wrapper::ClassData())) {
+        if(holderCls != zfnull) {*holderCls = ZFDI_Wrapper::ClassData();}
+        s += obj->to<ZFDI_Wrapper *>()->zfv;
         return zftrue;
     }
     else {

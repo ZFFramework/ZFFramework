@@ -286,7 +286,12 @@ public:
     /** @brief append string */
     inline zft_zfstring<T_Char> &append(ZF_IN const zft_zfstring<T_Char> &s) {
         if(s) {
-            _appendImpl(s.rawString(), s.length());
+            if(this->capacity() != 0) {
+                _appendImpl(s.rawString(), s.length());
+            }
+            else {
+                this->operator = (s);
+            }
         }
         return *this;
     }

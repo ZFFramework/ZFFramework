@@ -111,8 +111,8 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
         , jstring, toString
         , JNIPointer zfjniPointer
         ) {
-    const zfchar *s = ZFDI_toString(JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer));
-    return JNIUtilNewStringUTF(jniEnv, s);
+    zfstring s = ZFDI_toString(JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer));
+    return JNIUtilNewStringUTF(jniEnv, s.cString());
 }
 JNI_METHOD_DECLARE_END()
 

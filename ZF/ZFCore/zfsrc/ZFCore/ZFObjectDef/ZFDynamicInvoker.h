@@ -13,30 +13,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 /**
  * @brief wrapper for unknown types for #ZFDI_invoke
+ *
+ * note, for internal use only, you should not store this object
+ * for further use
  */
-zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextend ZFObject {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFDI_WrapperBase, ZFObject)
+zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextend ZFObject {
+    ZFOBJECT_DECLARE(ZFDI_Wrapper, ZFObject)
 
 public:
     /**
-     * @brief the data
-     *
-     * the data must store strings that can be converted by #ZFDI_objectFromString
+     * @brief the data, may be #zfstring::shared
      */
-    virtual void zfv(ZF_IN const zfchar *zfv) zfpurevirtual;
-    /** @brief see #zfv */
-    virtual const zfchar *zfv(void) zfpurevirtual;
+    zfstring zfv;
 
 public:
     zfoverride
     virtual zfidentity objectHashImpl(void) {
-        return zfidentityCalcString(this->zfv());
+        return zfidentityCalcString(this->zfv.rawString(), this->zfv.length());
     }
     zfoverride
     virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         zfself *ref = zfcast(zfself *, anotherObj);
         if(ref != zfnull) {
-            return ZFComparerDefault(this->zfv(), ref->zfv());
+            return ZFComparerDefault(this->zfv, ref->zfv);
         }
         else {
             return ZFCompareUncomparable;
@@ -48,46 +47,13 @@ public:
     virtual inline zfbool objectIsInternalPrivate(void) {return zftrue;}
     zfoverride
     virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
-        ret += this->zfv();
+        ret += this->zfv;
     }
 protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
     /** @brief init with value */
-    virtual void objectOnInit(ZF_IN const zfchar *zfv) {this->zfv(zfv);}
-};
-/** @brief see #ZFDI_WrapperBase */
-zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextend ZFDI_WrapperBase {
-    ZFOBJECT_DECLARE(ZFDI_Wrapper, ZFDI_WrapperBase)
-public:
-    zfoverride
-    virtual void zfv(ZF_IN const zfchar *zfv) {
-        this->_ZFP_zfv = zfv;
-    }
-    zfoverride
-    virtual const zfchar *zfv(void) {return this->_ZFP_zfv;}
-private:
-    zfstring _ZFP_zfv;
-};
-/** @brief see #ZFDI_WrapperBase */
-zfclass ZFLIB_ZFCore ZFDI_WrapperRaw : zfextend ZFDI_WrapperBase {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDI_WrapperRaw, ZFDI_WrapperBase)
-public:
-    zfoverride
-    virtual void zfv(ZF_IN const zfchar *zfv) {
-        if(zfv) {
-            this->_ZFP_zfv = zfv;
-        }
-        else {
-            this->_ZFP_zfv = "";
-        }
-    }
-    zfoverride
-    virtual const zfchar *zfv(void) {return this->_ZFP_zfv;}
-private:
-    const zfchar *_ZFP_zfv;
-protected:
-    ZFDI_WrapperRaw(void) : _ZFP_zfv("") {}
+    virtual void objectOnInit(ZF_IN const zfstring &zfv) {this->zfv = zfv;}
 };
 
 // ============================================================
@@ -96,9 +62,11 @@ protected:
  *
  * support these types:
  * -  #v_zfstring
- * -  #ZFDI_WrapperBase
+ * -  #ZFDI_Wrapper
+ *
+ * note, returned string may be #zfstring::shared
  */
-extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfstring ZFDI_toString(ZF_IN ZFObject *obj);
 
 /**
  * @brief util method to convert to string
@@ -181,7 +149,7 @@ inline zfindex ZFDI_paramCount(ZF_IN const ZFArgs &zfargs) {
  * -  #ZFObject type for ZFObject type
  * -  #ZFTypeIdWrapper for non-ZFObject type
  * -  #ZFMP_DEF for default param
- * -  #ZFDI_WrapperBase (or #v_zfstring when convStr=true), we will try to convert to desired type if possible
+ * -  #ZFDI_Wrapper (or #v_zfstring when convStr=true), we will try to convert to desired type if possible
  *
  * note: null param is also a valid param, you must fill #ZFMP_DEF to indicate param end
  *

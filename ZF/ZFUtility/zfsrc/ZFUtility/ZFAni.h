@@ -47,7 +47,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
  *   -  proper #ZFTypeIdWrapper for assign property,
  *     and the type of the property must be registered by
  *     #ZFTYPEID_PROGRESS_DEFINE
- *   -  v_zfstring or ZFDI_WrapperBase that can be serialized by #ZFSerializable::serializeFromString
+ *   -  v_zfstring or ZFDI_Wrapper that can be serialized by #ZFSerializable::serializeFromString
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoT<ZFAniForTimer>, ZFAni
         , ZFMP_IN(const zfstring &, propertyName)

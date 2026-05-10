@@ -31,8 +31,9 @@ static zfuint _ZFP_ZFBitCast(ZF_IN ZFObject *v) {
         zfcast(ZFTypeIdWrapper *, v)->zfvToString(tmp);
         return zfuintFromString(tmp);
     }
-    else if(cls->classIsTypeOf(ZFDI_WrapperBase::ClassData())) {
-        return zfuintFromString(zfcast(ZFDI_WrapperBase *, v)->zfv());
+    else if(cls->classIsTypeOf(ZFDI_Wrapper::ClassData())) {
+        zfstring &s = zfcast(ZFDI_Wrapper *, v)->zfv;
+        return zfuintFromString(s.rawString(), s.length());
     }
     else {
         return 0;

@@ -251,7 +251,7 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toObject(
  * -  zfauto
  * -  any types that can be converted by #ZFImpl_ZFLua_toCallback
  * -  any type that can be converted to string by #ZFImpl_ZFLua_toString,
- *   result would be stored as #ZFDI_WrapperBase,
+ *   result would be stored as #ZFDI_Wrapper,
  *   and would be converted to #ZFTypeIdWrapper during function call
  * -  #ZFImpl_ZFLuaValue
  */

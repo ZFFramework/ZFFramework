@@ -165,30 +165,32 @@ private:
             dst = src;
             return zftrue;
         }
-        const zfchar *s = zfnull;
-        v_zfstring *tmp = zfcast(v_zfstring *, src);
-        if(tmp != zfnull) {
-            s = tmp->zfv;
-        }
-        else {
-            ZFDI_Wrapper *tmp2 = zfcast(ZFDI_Wrapper *, src);
-            if(tmp2 != zfnull) {
-                s = tmp2->zfv();
+        zfstring s;
+        {
+            v_zfstring *tmp = zfcast(v_zfstring *, src);
+            if(tmp != zfnull) {
+                s = tmp->zfv;
+            }
+            else {
+                ZFDI_Wrapper *tmp2 = zfcast(ZFDI_Wrapper *, src);
+                if(tmp2 != zfnull) {
+                    s = tmp2->zfv;
+                }
+                else {
+                    return zffalse;
+                }
             }
         }
-        if(s == zfnull) {
-            return zffalse;
-        }
         dst = typeClass->newInstance();
-        if(!zfstringIsEmpty(s)) {
+        if(s) {
             if(typeClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-                if(!dst.to<ZFTypeIdWrapper *>()->zfvFromString(s)) {
+                if(!dst.to<ZFTypeIdWrapper *>()->zfvFromString(s.rawString(), s.length())) {
                     return zffalse;
                 }
             }
             else {
                 if(!typeClass->classIsTypeOf(ZFSerializable::ClassData())
-                        || !dst.to<ZFSerializable *>()->serializeFromString(s)
+                        || !dst.to<ZFSerializable *>()->serializeFromString(s.rawString(), s.length())
                         ) {
                     return zffalse;
                 }

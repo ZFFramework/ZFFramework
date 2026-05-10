@@ -931,7 +931,7 @@ extern ZFLIB_ZFCore void ZFClassAliasRemove(
  *   ZFCONV_REG(v_zfptr, v_zfstring) {
  *       ret = zfobj<v_zfptr>(obj->zfv.cString());
  *
- *       // usually, the result object should retain the obj,
+ *       // optionally, the result object can retain the obj,
  *       // to prevent unsafe pointer reference
  *       ret->objectTag("zfconv", obj);
  *

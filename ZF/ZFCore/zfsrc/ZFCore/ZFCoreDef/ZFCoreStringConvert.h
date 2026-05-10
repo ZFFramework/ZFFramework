@@ -30,7 +30,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 template<typename T_Int>
 zfbool zfsFromIntT(
-        ZF_OUT zfstring &s
+        ZF_IN_OUT zfstring &s
         , ZF_IN T_Int n
         , ZF_IN_OPT zfindex radix = 10
         , ZF_IN_OPT zfbool useUpperCase = zftrue
@@ -173,7 +173,7 @@ inline zfint zfsToInt(
  */
 template<typename T_Float>
 zfbool zfsFromFloatT(
-        ZF_OUT zfstring &s
+        ZF_IN_OUT zfstring &s
         , ZF_IN T_Float n
         ) {
     zfchar buf[64] = {0};
@@ -329,7 +329,7 @@ inline zffloat zfsToFloat(
  * @brief convert pointer value to string
  */
 inline zfbool zfsFromPointerT(
-        ZF_OUT zfstring &s
+        ZF_IN_OUT zfstring &s
         , ZF_IN const void *p
         ) {
     zfchar buf[32] = {0};
