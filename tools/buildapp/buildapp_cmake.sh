@@ -42,6 +42,10 @@ make install
 _RESULT="$?"
 cd "$_OLD_DIR"
 
+sh "$ZF_ROOT_PATH/tools/common/zfsh/rm.sh" "$_INSTALL_PATH/lib/cmake"
+sh "$ZF_ROOT_PATH/tools/common/zfsh/rm.sh" "$_INSTALL_PATH/lib/pkgconfig"
+sh "$ZF_ROOT_PATH/tools/common/zfsh/rm.sh" "$_INSTALL_PATH/lib/*SDL*_test.*"
+
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/bin" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app"
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/lib" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app"
 

@@ -26,17 +26,16 @@ static zfuint _ZFP_ZFBitCast(ZF_IN ZFObject *v) {
     else if(cls->classIsTypeOf(v_zfflags::ClassData())) {
         return (zfuint)zfcast(v_zfflags *, v)->zfv;
     }
-    else if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-        zfstring tmp;
-        zfcast(ZFTypeIdWrapper *, v)->zfvToString(tmp);
-        return zfuintFromString(tmp);
-    }
-    else if(cls->classIsTypeOf(ZFDI_Wrapper::ClassData())) {
-        zfstring &s = zfcast(ZFDI_Wrapper *, v)->zfv;
-        return zfuintFromString(s.rawString(), s.length());
-    }
     else {
-        return 0;
+        zfautoT<v_zfuint> tmp = zfconv(v_zfuint::ClassData(), v);
+        if(tmp) {
+            return tmp->zfv;
+        }
+        else {
+            zfstring tmp;
+            zfcast(ZFTypeIdWrapper *, v)->zfvToString(tmp);
+            return zfuintFromString(tmp);
+        }
     }
 }
 static void _ZFP_ZFBitStore(ZF_IN ZFTypeIdWrapper *v, ZF_IN zfuint t) {
@@ -165,9 +164,12 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, ZFCoreDataPairSplitFloat
 
 // ============================================================
 // ZFIdentityGenerator
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalcString
+        , ZFMP_IN(const zfstring &, src)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcString
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN(zfindex, srcLen)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcBuf
         , ZFMP_IN(const void *, src)

@@ -49,6 +49,10 @@ ninja install
 set _RESULT=%ERRORLEVEL%
 cd /d "%_OLD_DIR%"
 
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%_INSTALL_PATH%\lib\cmake"
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%_INSTALL_PATH%\lib\pkgconfig"
+call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%_INSTALL_PATH%\lib\*SDL*_test.*"
+
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\bin" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\lib" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
 

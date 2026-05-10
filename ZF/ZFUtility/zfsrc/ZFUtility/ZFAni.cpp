@@ -165,6 +165,9 @@ private:
             dst = src;
             return zftrue;
         }
+        if(zfconvT(dst, typeClass, src)) {
+            return zftrue;
+        }
         zfstring s;
         {
             v_zfstring *tmp = zfcast(v_zfstring *, src);
@@ -172,25 +175,19 @@ private:
                 s = tmp->zfv;
             }
             else {
-                ZFDI_Wrapper *tmp2 = zfcast(ZFDI_Wrapper *, src);
-                if(tmp2 != zfnull) {
-                    s = tmp2->zfv;
-                }
-                else {
-                    return zffalse;
-                }
+                return zffalse;
             }
         }
         dst = typeClass->newInstance();
         if(s) {
             if(typeClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-                if(!dst.to<ZFTypeIdWrapper *>()->zfvFromString(s.rawString(), s.length())) {
+                if(!dst.to<ZFTypeIdWrapper *>()->zfvFromString(s, s.length())) {
                     return zffalse;
                 }
             }
             else {
                 if(!typeClass->classIsTypeOf(ZFSerializable::ClassData())
-                        || !dst.to<ZFSerializable *>()->serializeFromString(s.rawString(), s.length())
+                        || !dst.to<ZFSerializable *>()->serializeFromString(s, s.length())
                         ) {
                     return zffalse;
                 }

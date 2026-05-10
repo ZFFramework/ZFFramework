@@ -8,8 +8,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFAndroid_JNIGlobalRef, JNIGlobalRef)
 ZFTYPEID_ALIAS_DEFINE(ZFAndroid_JNIGlobalRef, JNIGlobalRef, ZFAndroid_jobject, jobject)
 
-ZFCONV_REG(v_ZFAndroid_JNIGlobalRef, v_zfptr) {
-    ret = zfobj<v_ZFAndroid_JNIGlobalRef>((jobject)obj->to<v_zfptr *>()->zfv);
+ZFCONV_REGISTER(v_ZFAndroid_JNIGlobalRef, v_zfptr) {
+    ret = zfobj<v_ZFAndroid_JNIGlobalRef>((jobject)(obj.to<v_zfptr *>()->zfv));
     return zftrue;
 }
 

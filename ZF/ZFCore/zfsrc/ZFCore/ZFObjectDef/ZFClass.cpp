@@ -1963,37 +1963,10 @@ void ZFClassAliasRemove(
 }
 
 // ============================================================
-zfauto zfconv(
-        ZF_IN const zfstring &cls
-        , ZF_IN ZFObject *obj
-        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
-        ) {
-    zfauto ret;
-    zfconvT(ret, ZFClass::classForName(cls), obj, implicitConv);
-    return ret;
-}
-zfauto zfconv(
-        ZF_IN const ZFClass *cls
-        , ZF_IN ZFObject *obj
-        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
-        ) {
-    zfauto ret;
-    zfconvT(ret, cls, obj, implicitConv);
-    return ret;
-}
-
-zfbool zfconvT(
-        ZF_OUT zfauto &ret
-        , ZF_IN const zfstring &cls
-        , ZF_IN ZFObject *obj
-        , ZF_IN_OPT zfbool implicitConv /* = zftrue */
-        ) {
-    return zfconvT(ret, ZFClass::classForName(cls), obj, implicitConv);
-}
 zfbool zfconvT(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFClass *cls
-        , ZF_IN ZFObject *obj
+        , ZF_IN const zfany &obj
         , ZF_IN_OPT zfbool implicitConv /* = zftrue */
         ) {
     if(cls == zfnull) {
@@ -2009,12 +1982,14 @@ zfbool zfconvT(
             return zftrue;
         }
     }
-    else if(obj->classData()->classIsTypeOf(cls)) {
+    else if(obj->classData()->classIsTypeOf(cls)
+            && !obj->classData()->classIsTypeOf(ZFDI_Wrapper::ClassData())
+            ) {
         ret = obj;
         return zftrue;
     }
 
-    // try ZFCONV_REG
+    // try ZFCONV_REGISTER
     zfconvImpl impl = obj->classData()->zfconvCheck(cls);
     if(impl && impl(ret, obj)) {
         return zftrue;
@@ -2039,7 +2014,7 @@ zfbool zfconvT(
 
     // try serialize from string
     v_zfstring *s = zfcast(v_zfstring *, obj);
-    if(s && ZFDI_objectFromString(ret, cls->classNameFull(), s->zfv)) {
+    if(s && ZFDI_objectFromString(ret, cls, s->zfv, s->zfv.length())) {
         return zftrue;
     }
 

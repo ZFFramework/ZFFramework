@@ -21,21 +21,167 @@ zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFDI_Wrapper, ZFObject)
 
 public:
+    /** @brief value type */
+    typedef enum {
+        TypeString, /**< @brief string type */
+        TypeInt, /**< @brief int type */
+        TypeFloat, /**< @brief float type */
+    } ValueType;
+private:
+    zfstring _zfvString;
+    ValueType _zfvType;
+    zfflags _zfvValid;
+    zflong _zfvInt;
+    zfdouble _zfvFloat;
+
+public:
+    /** @brief valueType */
+    ValueType valueType(void) {return _zfvType;}
+public:
     /**
-     * @brief the data, may be #zfstring::shared
+     * @brief access string value
+     *
+     * note the returned string may be #zfstring::shared,
+     * use #zfstring::sharedCopy if necessary
      */
-    zfstring zfv;
+    const zfstring &valueString(void) {
+        switch(_zfvType) {
+            case TypeString:
+                return _zfvString;
+            case TypeInt:
+                if(!_zfvString) {
+                    zfsFromIntT(_zfvString, _zfvInt);
+                }
+                return _zfvString;
+            case TypeFloat:
+                if(!_zfvString) {
+                    zfsFromFloatT(_zfvString, _zfvFloat);
+                }
+                return _zfvString;
+            default:
+                ZFCoreCriticalShouldNotGoHere();
+                return _zfvString;
+        }
+    }
+    /** @brief helper method */
+    zfbool valueIntT(ZF_OUT zflong &ret) {
+        switch(_zfvType) {
+            case TypeString:
+                if(!ZFBitTest(_zfvValid, 1 << TypeInt)) {
+                    if(!zfsToIntT(_zfvInt, _zfvString, _zfvString.length())) {
+                        return zffalse;
+                    }
+                    ZFBitSet(_zfvValid, 1 << TypeInt);
+                }
+                ret = _zfvInt;
+                return zftrue;
+            case TypeInt:
+                ret = _zfvInt;
+                return zftrue;
+            case TypeFloat:
+                if(!ZFBitTest(_zfvValid, 1 << TypeInt)) {
+                    if(!zffloatIsInt(_zfvFloat)) {
+                        return zffalse;
+                    }
+                    _zfvInt = (zflong)_zfvFloat;
+                    ZFBitSet(_zfvValid, 1 << TypeInt);
+                }
+                ret = _zfvInt;
+                return zftrue;
+            default:
+                ZFCoreCriticalShouldNotGoHere();
+                return zffalse;
+        }
+    }
+    /** @brief helper method */
+    zflong valueInt(void) {
+        zflong ret = 0;
+        this->valueIntT(ret);
+        return ret;
+    }
+    /** @brief helper method */
+    zfbool valueFloatT(ZF_OUT zfdouble &ret) {
+        switch(_zfvType) {
+            case TypeString:
+                if(!ZFBitTest(_zfvValid, 1 << TypeFloat)) {
+                    if(!zfsToFloatT(_zfvFloat, _zfvString, _zfvString.length())) {
+                        return zffalse;
+                    }
+                    ZFBitSet(_zfvValid, 1 << TypeFloat);
+                }
+                ret = _zfvFloat;
+                return zftrue;
+            case TypeInt:
+                if(!ZFBitTest(_zfvValid, 1 << TypeFloat)) {
+                    _zfvFloat = (zfdouble)_zfvInt;
+                    ZFBitSet(_zfvValid, 1 << TypeFloat);
+                }
+                ret = _zfvFloat;
+                return zftrue;
+            case TypeFloat:
+                ret = _zfvFloat;
+                return zftrue;
+            default:
+                ZFCoreCriticalShouldNotGoHere();
+                return zffalse;
+        }
+    }
+    /** @brief helper method */
+    zfdouble valueFloat(void) {
+        zfdouble ret = 0;
+        this->valueFloatT(ret);
+        return ret;
+    }
+public:
+    /** @brief change value */
+    void value(ZF_IN const zfstring &v) {
+        _zfvType = TypeString;
+        _zfvString = v;
+        _zfvValid = 0;
+    }
+    /** @brief change value */
+    void value(ZF_IN const zflong &v) {
+        _zfvType = TypeInt;
+        _zfvInt = v;
+        _zfvValid = 0;
+    }
+    /** @brief change value */
+    void value(ZF_IN const zfdouble &v) {
+        _zfvType = TypeFloat;
+        _zfvFloat = v;
+        _zfvValid = 0;
+    }
 
 public:
     zfoverride
     virtual zfidentity objectHashImpl(void) {
-        return zfidentityCalcString(this->zfv.rawString(), this->zfv.length());
+        switch(_zfvType) {
+            case TypeString:
+                return zfidentityHash((zfidentity)_zfvType, zfidentityCalcString(_zfvString));
+            case TypeInt:
+                return zfidentityHash((zfidentity)_zfvType, zfidentityCalc(_zfvInt));
+            case TypeFloat:
+                return zfidentityHash((zfidentity)_zfvType, zfidentityCalc(_zfvFloat));
+            default:
+                ZFCoreCriticalShouldNotGoHere();
+                return zfidentityInvalid();
+        }
     }
     zfoverride
     virtual ZFCompareResult objectCompareImpl(ZF_IN ZFObject *anotherObj) {
         zfself *ref = zfcast(zfself *, anotherObj);
-        if(ref != zfnull) {
-            return ZFComparerDefault(this->zfv, ref->zfv);
+        if(ref != zfnull && _zfvType == ref->_zfvType) {
+            switch(_zfvType) {
+                case TypeString:
+                    return _zfvString == ref->_zfvString ? ZFCompareEqual : ZFCompareUncomparable;
+                case TypeInt:
+                    return _zfvInt == ref->_zfvInt ? ZFCompareEqual : ZFCompareUncomparable;
+                case TypeFloat:
+                    return _zfvFloat == ref->_zfvFloat ? ZFCompareEqual : ZFCompareUncomparable;
+                default:
+                    ZFCoreCriticalShouldNotGoHere();
+                    return ZFCompareUncomparable;
+            }
         }
         else {
             return ZFCompareUncomparable;
@@ -47,13 +193,22 @@ public:
     virtual inline zfbool objectIsInternalPrivate(void) {return zftrue;}
     zfoverride
     virtual void objectInfoImpl(ZF_IN_OUT zfstring &ret) {
-        ret += this->zfv;
+        if(ret.capacity() != 0) {
+            ret += this->valueString();
+        }
+        else {
+            ret = this->valueString().sharedCopy();
+        }
     }
 protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
     /** @brief init with value */
-    virtual void objectOnInit(ZF_IN const zfstring &zfv) {this->zfv = zfv;}
+    virtual void objectOnInit(ZF_IN const zfstring &v) {this->value(v);}
+    /** @brief init with value */
+    virtual void objectOnInit(ZF_IN const zflong &v) {this->value(v);}
+    /** @brief init with value */
+    virtual void objectOnInit(ZF_IN const zfdouble &v) {this->value(v);}
 };
 
 // ============================================================
@@ -63,13 +218,11 @@ protected:
  * support these types:
  * -  #v_zfstring
  * -  #ZFDI_Wrapper
- *
- * note, returned string may be #zfstring::shared
  */
 extern ZFLIB_ZFCore zfstring ZFDI_toString(ZF_IN ZFObject *obj);
 
 /**
- * @brief util method to convert to string
+ * @brief util method to convert to number
  *
  * support these types:
  * -  #v_zfbool
@@ -86,7 +239,8 @@ extern ZFLIB_ZFCore zfstring ZFDI_toString(ZF_IN ZFObject *obj);
  * -  #v_zfflags
  * -  #v_zfidentity
  * -  all #ZFEnum types
- * -  ZFDI_toString : try to convert to zfdouble from string
+ * -  #v_zfstring
+ * -  #ZFDI_Wrapper
  *
  * note, for all unsigned type (zfuint for example),
  * ensured converted as `-1` for max unsigned value for compatibility
@@ -177,6 +331,16 @@ extern ZFLIB_ZFCore void ZFDI_alloc(
         );
 
 // ============================================================
+/**
+ * @brief util to convert object from string
+ */
+extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
+        ZF_OUT zfauto &ret
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /**
  * @brief util to convert object from string
  */

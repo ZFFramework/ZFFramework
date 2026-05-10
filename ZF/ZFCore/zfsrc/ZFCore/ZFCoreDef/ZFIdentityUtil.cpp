@@ -100,21 +100,6 @@ zfidentity zfidentityCalcString(
     }
     return hash;
 }
-zfidentity zfidentityCalcBuf(
-        ZF_IN const void *src
-        , ZF_IN zfindex srcLen
-        ) {
-    const zfbyte *p = (const zfbyte *)src;
-    const zfbyte *pEnd = p + srcLen;
-    zft_zfidentity hash = 0x811c9dc5;
-    if(p) {
-        while(p < pEnd) {
-            hash = (hash ^ *p) * 0x01000193;
-            ++p;
-        }
-    }
-    return hash;
-}
 
 ZF_NAMESPACE_GLOBAL_END
 

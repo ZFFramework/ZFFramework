@@ -43,28 +43,29 @@ static int _ZFP_ZFImpl_ZFLua_zfl_alloc(ZF_IN lua_State *L) {
     static const int luaParamOffset = 2;
     int count = (int)lua_gettop(L);
     if(count < luaParamOffset - 1) {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfl_alloc] takes at least one param");
+        return ZFImpl_ZFLua_luaError(L, "[zfl_alloc] takes at least one param");
     }
     int paramCount = (count - (luaParamOffset - 1));
 
     zfstring clsName;
-    if(!ZFImpl_ZFLua_toStringT(clsName, L, 1) || zfstringIsEmpty(clsName)) {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfl_alloc] unable to access class name");
+    if(!lua_isstring(L, 1)
+            || (clsName = zftext(lua_tostring(L, 1))).isEmpty()
+            ) {
+        return ZFImpl_ZFLua_luaError(L, "[zfl_alloc] unable to access class name");
     }
     const ZFClass *cls = ZFClass::classForName(clsName, zfnull);
     if(cls == zfnull) {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfl_alloc] unable to find class: %s", clsName);
+        return ZFImpl_ZFLua_luaError(L, "[zfl_alloc] unable to find class: %s", clsName);
     }
 
     ZFArgs zfargs;
     zfargs.paramInit();
     for(int i = 0; i < paramCount; ++i) {
         if(!ZFImpl_ZFLua_toGeneric(zfargs.paramAt(i), L, luaParamOffset + i)) {
-            return ZFImpl_ZFLua_luaError(L,
-                "[zfl_alloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i));
+            return ZFImpl_ZFLua_luaError(L
+                    , "[zfl_alloc] invalid param: %s"
+                    , ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i)
+                    );
         }
     }
 

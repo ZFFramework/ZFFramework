@@ -171,7 +171,7 @@ template<>
 zfclassNotPOD zfstlhash<zfstring> {
 public:
     zfstlsize operator () (zfstring const &v) const {
-        return (zfstlsize)zfidentityCalcString(v.rawString(), v.length());
+        return (zfstlsize)zfidentityCalcString(v);
     }
 };
 template<>

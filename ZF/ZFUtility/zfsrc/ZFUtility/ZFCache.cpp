@@ -221,11 +221,8 @@ ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
 
 ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
     ZFObjectLocker(this);
-    if(d->cacheList.empty()) {
-        return;
-    }
-    do {
-        for(_ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.begin(); cacheMapIt != d->cacheMap.end(); ++cacheMapIt) {
+    while(!d->cacheMap.empty()) {
+        for(_ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.begin(); cacheMapIt != d->cacheMap.end(); ) {
             while(!cacheMapIt->second.empty()) {
                 _ZFP_ZFCacheList &cacheList = cacheMapIt->second;
                 _ZFP_ZFCacheData *cacheData = *(cacheList.begin());
@@ -244,8 +241,9 @@ ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
                 this->cacheOnRemove(cacheData->cacheValue);
                 zfpoolDelete(cacheData);
             }
+            d->cacheMap.erase(cacheMapIt++);
         }
-    } while(!d->cacheList.empty());
+    }
 }
 
 ZFMETHOD_DEFINE_1(ZFCache, void, cacheTrim

@@ -199,8 +199,8 @@ zfclassNotPOD _ZFP_ZFResExtKeyHash {
 public:
     inline zfstlsize operator () (ZFPathInfo const &v) const {
         return (zfstlsize)zfidentityHash(
-                zfidentityCalcString(v.pathType(), v.pathType().length())
-                , zfidentityCalcString(v.pathData(), v.pathData().length())
+                zfidentityCalcString(v.pathType())
+                , zfidentityCalcString(v.pathData())
                 );
     }
 };

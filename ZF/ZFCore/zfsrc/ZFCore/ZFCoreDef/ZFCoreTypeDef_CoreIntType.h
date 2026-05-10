@@ -174,6 +174,16 @@ int zffloatCmp(T_zffloat const &v0, T_zffloat const &v1) {
     }
 }
 
+/** @brief whether the float type holds int value */
+template<typename T_zffloat>
+bool zffloatIsInt(T_zffloat const &v) {
+    T_zffloat t = (v - (long)v);
+    return false
+        || (t >= 0 && t < zffloatEpsilonT<T_zffloat>::v())
+        || (t < 0 && t > zffloatEpsilonT<T_zffloat>::v())
+        ;
+}
+
 // ============================================================
 /**
  * @brief declare a strong wrapper type for float types, similar to boost's BOOST_STRONG_TYPEDEF

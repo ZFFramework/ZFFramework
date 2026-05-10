@@ -23,14 +23,6 @@ typedef zfstlhashmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFDI_Wrapper)
-ZFMETHOD_USER_REGISTER_1(ZFDI_Wrapper, void, zfv
-        , ZFMP_IN(const zfstring &, v)
-        ) {
-    invokerObject->to<ZFDI_Wrapper *>()->zfv = v;
-}
-ZFMETHOD_USER_REGISTER_0(ZFDI_Wrapper, zfstring, zfv) {
-    return invokerObject->to<ZFDI_Wrapper *>()->zfv.sharedCopy();
-}
 
 // ============================================================
 ZFCoreArray<ZFOutput> &ZFDI_errorCallbacks(void) {
@@ -65,7 +57,7 @@ zfstring ZFDI_toString(ZF_IN ZFObject *obj) {
     {
         ZFDI_Wrapper *t = zfcast(ZFDI_Wrapper *, obj);
         if(t != zfnull) {
-            return t->zfv;
+            return t->valueString().sharedCopy();
         }
     }
     return zfnull;
@@ -85,6 +77,10 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_toNumber_DataHolder, ZFLevelZFFramewo
     m[v_zftimet::ClassData()] = _conv_zftimet;
     m[v_zfflags::ClassData()] = _conv_zfflags;
     m[v_zfidentity::ClassData()] = _conv_zfidentity;
+
+    m[v_zfboolHolder::ClassData()] = _conv_zfbool;
+    m[v_zfstring::ClassData()] = _conv_zfstring;
+    m[ZFDI_Wrapper::ClassData()] = _conv_ZFDI_Wrapper;
 }
 public:
     _ZFP_ZFDI_toNumberConv check(ZF_IN const ZFClass *cls) {
@@ -151,6 +147,15 @@ private:
         ret = t->zfv == zfidentityInvalid() ? (zft_zfdouble)-1 : (zft_zfdouble)t->zfv;
         return zftrue;
     }
+
+    static zfbool _conv_zfstring(ZF_OUT zfdouble &ret, ZF_IN ZFObject *obj) {
+        v_zfstring *t = zfcast(v_zfstring *, obj);
+        return zfdoubleFromStringT(ret, t->zfv, t->zfv.length());
+    }
+    static zfbool _conv_ZFDI_Wrapper(ZF_OUT zfdouble &ret, ZF_IN ZFObject *obj) {
+        ZFDI_Wrapper *t = zfcast(ZFDI_Wrapper *, obj);
+        return t->valueFloatT(ret);
+    }
 ZF_GLOBAL_INITIALIZER_END(ZFDI_toNumber_DataHolder)
 
 zfbool ZFDI_toNumberT(ZF_OUT zfdouble &ret, ZF_IN ZFObject *obj) {
@@ -164,11 +169,9 @@ zfbool ZFDI_toNumberT(ZF_OUT zfdouble &ret, ZF_IN ZFObject *obj) {
         ret = t->enumValue() == ZFEnumInvalid() ? (zft_zfdouble)-1 : (zft_zfdouble)t->enumValue();
         return zftrue;
     }
-    zfstring s = ZFDI_toString(obj);
-    if(s == zfnull) {
+    else {
         return zffalse;
     }
-    return zfdoubleFromStringT(ret, s.rawString(), s.length());
 }
 
 static void _ZFP_ZFDI_paramInfo(
@@ -234,14 +237,14 @@ static zfbool _ZFP_ZFDI_paramConvert(
             return zffalse;
         }
 
-        ZFDI_Wrapper *wrapper = zfcast(ZFDI_Wrapper *, param);
+        const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(iParam));
 
         // zfconv
-        if(wrapper == zfnull) {
+        {
             zfauto paramTmp;
             if(zfconvT(
                         paramTmp
-                        , method->paramTypeIdAt(iParam)
+                        , cls
                         , param
                         , zffalse // must not perform implicitConv, may cause recursive construct
                         )) {
@@ -253,14 +256,14 @@ static zfbool _ZFP_ZFDI_paramConvert(
 
         // string/native conversion
         zfstring s;
+        ZFDI_Wrapper *wrapper = zfcast(ZFDI_Wrapper *, param);
         if(wrapper != zfnull) {
-            s = wrapper->zfv;
+            s = wrapper->valueString();
         }
         else {
             if(convStr) {
                 v_zfstring *holder = zfcast(v_zfstring *, param);
                 if(holder) {
-                    const ZFClass *cls = ZFClass::classForName(method->paramTypeIdAt(iParam));
                     if(cls != ZFObject::ClassData()
                             && !v_zfstring::ClassData()->classIsTypeOf(cls)
                             ) {
@@ -279,9 +282,7 @@ static zfbool _ZFP_ZFDI_paramConvert(
             }
         }
         zfauto paramTmp;
-        if(!ZFDI_objectFromString(
-                    paramTmp, method->paramTypeIdAt(iParam), s.rawString(), s.length(), errorHint)
-                    ) {
+        if(!ZFDI_objectFromString(paramTmp, cls, s, s.length(), errorHint)) {
             return zffalse;
         }
         paramBackup[iParam] = param;
@@ -894,6 +895,33 @@ void ZFDI_alloc(
 
 zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(cls == zfnull) {
+        zfstringAppend(errorHint, "null class");
+        return zffalse;
+    }
+    else if(cls == ZFObject::ClassData()) {
+        ret = zfobj<v_zfstring>(zfstring(src, srcLen));
+        return zftrue;
+    }
+    else if(cls->classIsAbstract()) {
+        zfstringAppend(errorHint, "class is abstract: \"%s\"", cls);
+        return zffalse;
+    }
+    else if(!cls->classCanAllocPublic()) {
+        zfstringAppend(errorHint, "class can only create by reflection: \"%s\"", cls);
+        return zffalse;
+    }
+    else {
+        return ZFObjectFromStringT(ret, cls, src, srcLen, errorHint);
+    }
+}
+zfbool ZFDI_objectFromString(
+        ZF_OUT zfauto &ret
         , ZF_IN const zfstring &typeId
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
@@ -905,13 +933,15 @@ zfbool ZFDI_objectFromString(
         return zffalse;
     }
     else if(cls == ZFObject::ClassData()) {
-        zfobj<v_zfstring> tmp;
-        tmp->zfv.assign(src, srcLen);
-        ret = tmp;
+        ret = zfobj<v_zfstring>(zfstring(src, srcLen));
         return zftrue;
     }
     else if(cls->classIsAbstract()) {
         zfstringAppend(errorHint, "class is abstract: \"%s\"", typeId);
+        return zffalse;
+    }
+    else if(!cls->classCanAllocPublic()) {
+        zfstringAppend(errorHint, "class can only create by reflection: \"%s\"", typeId);
         return zffalse;
     }
     else {

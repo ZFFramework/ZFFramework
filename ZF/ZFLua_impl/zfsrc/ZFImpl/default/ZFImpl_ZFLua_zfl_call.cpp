@@ -79,8 +79,10 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         }
     }
 
+    // try invoke without errorHint
     zfargs
         .sender(obj)
+        .ignoreError(zftrue)
         .ignoreErrorEvent(zftrue)
         ;
     ZFDI_invoke(zfargs, name, zftrue);
@@ -93,6 +95,11 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         }
         return 1;
     }
+
+    // invoke failed, try again to obtain errorHint
+    zfargs.result(zfnull);
+    zfargs.ignoreError(zffalse);
+    ZFDI_invoke(zfargs, name, zftrue);
 
     zfstring errorHint;
     if(zfargs.errorHint()) {

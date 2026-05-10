@@ -276,9 +276,8 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
             }
             else {
                 zfauto v2;
-                zfstring s2;
-                if(!ZFImpl_ZFLua_toStringT(s2, L, 2)
-                        || !zfconvT(v2, v1->classData()->classNameFull(), zfobj<ZFDI_Wrapper>(s2))
+                if(!ZFImpl_ZFLua_toGeneric(v2, L, 2)
+                        || !zfconvT(v2, v1->classData()->classNameFull(), v2)
                         ) {
                     break;
                 }
@@ -306,9 +305,8 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
             }
             else {
                 zfauto v1;
-                zfstring s1;
-                if(!ZFImpl_ZFLua_toStringT(s1, L, 1)
-                        || !zfconvT(v1, v2->classData()->classNameFull(), zfobj<ZFDI_Wrapper>(s1))
+                if(!ZFImpl_ZFLua_toGeneric(v1, L, 1)
+                        || !zfconvT(v1, v2->classData()->classNameFull(), v1)
                         ) {
                     break;
                 }

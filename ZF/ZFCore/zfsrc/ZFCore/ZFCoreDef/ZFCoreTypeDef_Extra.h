@@ -29,7 +29,7 @@ ZFCORE_POD_DECLARE_NO_COMPARER(ZFCompareResult)
 ZFCORE_POD_DECLARE_NO_COMPARER(ZFSeekPos)
 ZFCORE_POD_DECLARE(ZFIndexRange)
 
-ZFHASH_DECLARE(zfstring, {return zfidentityCalcString(v, v.length());})
+ZFHASH_DECLARE(zfstring, {return zfidentityCalcString(v);})
 
 ZF_NAMESPACE_GLOBAL_END
 

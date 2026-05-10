@@ -57,15 +57,15 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns, ZF_IN_OPT zfindex le
     }
 }
 zfstring ZFNamespaceSkipGlobal(ZF_IN const zfstring &ns) {
-    const zfchar *t = ZFNamespaceSkipGlobal(ns.rawString(), ns.length());
+    const zfchar *t = ZFNamespaceSkipGlobal(ns, ns.length());
     if(t == zfnull) {
         return zfnull;
     }
-    else if(t == ns.rawString()) {
+    else if(t == ns.cString()) {
         return ns;
     }
     else {
-        return zfstring(t, ns.length() - (t - ns.rawString()));
+        return zfstring(t, ns.length() - (t - ns.cString()));
     }
 }
 

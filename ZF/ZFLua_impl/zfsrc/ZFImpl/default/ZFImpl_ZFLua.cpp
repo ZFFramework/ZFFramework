@@ -575,26 +575,33 @@ zfbool ZFImpl_ZFLua_toGeneric(
         return zftrue;
     }
 
-    zfobj<ZFDI_Wrapper> wrapper;
-    if(lua_isnumber(L, luaStackOffset)) {
-        lua_Number n = lua_tonumber(L, luaStackOffset);
-        if(zfmAbs(n - (long)n) < zffloatEpsilon) {
-            zfsFromIntT(wrapper->zfv, (long)n);
+    {
+        zfobj<ZFDI_Wrapper> wrapper;
+        if(lua_isinteger(L, luaStackOffset)) {
+            wrapper->value((zflong)lua_tointeger(L, luaStackOffset));
+            param = wrapper;
+            return zftrue;
         }
-        else {
-            zfsFromFloatT(wrapper->zfv, n);
+        if(lua_isnumber(L, luaStackOffset)) {
+            lua_Number n = lua_tonumber(L, luaStackOffset);
+            if(zffloatIsInt(n)) {
+                wrapper->value((zflong)n);
+            }
+            else {
+                wrapper->value((zfdouble)n);
+            }
+            param = wrapper;
+            return zftrue;
         }
-        param = wrapper;
-        return zftrue;
-    }
-    if(lua_isstring(L, luaStackOffset)) {
-        wrapper->zfv = zftext(lua_tostring(L, luaStackOffset));
-        param = wrapper;
-        return zftrue;
-    }
-    if(lua_isnil(L, luaStackOffset)) {
-        param = wrapper;
-        return zftrue;
+        if(lua_isstring(L, luaStackOffset)) {
+            wrapper->value(zfstring(lua_tostring(L, luaStackOffset)));
+            param = wrapper;
+            return zftrue;
+        }
+        if(lua_isnil(L, luaStackOffset)) {
+            param = wrapper;
+            return zftrue;
+        }
     }
 
     zfobj<ZFImpl_ZFLuaValue> holder;
@@ -663,12 +670,7 @@ zfbool ZFImpl_ZFLua_toStringT(
         return zftrue;
     }
     if(lua_isstring(L, luaStackOffset)) {
-        if(s.capacity() > 0) {
-            s += lua_tostring(L, luaStackOffset);
-        }
-        else {
-            s = zftext(lua_tostring(L, luaStackOffset));
-        }
+        s += lua_tostring(L, luaStackOffset);
         return zftrue;
     }
     if(!lua_isuserdata(L, luaStackOffset)) {
@@ -700,7 +702,12 @@ zfbool ZFImpl_ZFLua_toStringT(
     }
     else if(cls->classIsTypeOf(ZFDI_Wrapper::ClassData())) {
         if(holderCls != zfnull) {*holderCls = ZFDI_Wrapper::ClassData();}
-        s += obj->to<ZFDI_Wrapper *>()->zfv;
+        if(s.capacity() != 0) {
+            s += obj->to<ZFDI_Wrapper *>()->valueString();
+        }
+        else {
+            s = obj->to<ZFDI_Wrapper *>()->valueString().sharedCopy();
+        }
         return zftrue;
     }
     else {

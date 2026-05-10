@@ -76,21 +76,35 @@ ZFOUTPUT_TYPE(ZFIdentityGenerator, {v.objectInfoT(s);})
  */
 extern ZFLIB_ZFCore zfidentity zfidentityCalcString(
         ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN zfindex srcLen
         );
+/**
+ * @brief calculate identity from string
+ */
+inline zfidentity zfidentityCalcString(ZF_IN const zfstring &src) {
+    return zfidentityCalcString(src, src.length());
+}
 /**
  * @brief calculate identity from raw buffer
  */
-extern ZFLIB_ZFCore zfidentity zfidentityCalcBuf(
+inline zfidentity zfidentityCalcBuf(
         ZF_IN const void *src
         , ZF_IN zfindex srcLen
-        );
+        ) {
+    return zfidentityCalcString((const zfchar *)src, srcLen);
+}
 /**
  * @brief calculate identity from POD object
  */
 template<typename T_Type>
 zfidentity zfidentityCalc(ZF_IN T_Type const &v) {
     return zfidentityCalcBuf(&v, sizeof(T_Type));
+}
+/**
+ * @brief calculate identity from string
+ */
+inline zfidentity zfidentityCalc(ZF_IN const zfstring &src) {
+    return zfidentityCalcString(src);
 }
 
 ZF_NAMESPACE_GLOBAL_END
