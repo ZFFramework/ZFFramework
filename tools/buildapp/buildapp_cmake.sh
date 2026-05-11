@@ -14,16 +14,22 @@ else
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../..
-_TMP_PATH=$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/$_CONFIG
-_INSTALL_PATH=$_TMP_PATH/zfdist
-
 _OLD_DIR=$(pwd)
+
 cd "$PROJ_PATH/cmake/$PROJ_NAME"
 _PROJ_PATH=$(pwd)
 cd "$_OLD_DIR"
 
-_OLD_DIR=$(pwd)
-mkdir -p "$_TMP_PATH" >/dev/null 2>&1
+mkdir -p "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/$_CONFIG" >/dev/null 2>&1
+cd "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/$_CONFIG"
+_TMP_PATH=$(pwd)
+cd "$_OLD_DIR"
+
+mkdir -p "$_TMP_PATH/zfdist" >/dev/null 2>&1
+cd "$_TMP_PATH/zfdist"
+_INSTALL_PATH=$(pwd)
+cd "$_OLD_DIR"
+
 cd "$_TMP_PATH"
 if test "x-$CMAKE_CXX_FLAGS" = "x-" ; then
     cmake \
@@ -48,6 +54,7 @@ sh "$ZF_ROOT_PATH/tools/common/zfsh/rm.sh" "$_INSTALL_PATH/lib/*SDL*_test.*"
 
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/bin" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app"
 sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/lib" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_INSTALL_PATH/zfres" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app/zfres"
 
 exit $_RESULT
 

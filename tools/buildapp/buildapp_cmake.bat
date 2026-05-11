@@ -21,16 +21,22 @@ if "%CMAKE_BUILD_TYPE%" == "" (
 )
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set _TMP_PATH=%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\%_CONFIG%
-set _INSTALL_PATH=%_TMP_PATH%\zfdist
-
 set _OLD_DIR=%cd%
+
 cd /d "%PROJ_PATH%/cmake/%PROJ_NAME%"
 set _PROJ_PATH=%cd%
 cd /d "%_OLD_DIR%"
 
-set _OLD_DIR=%cd%
-mkdir "%_TMP_PATH%" >nul 2>&1
+mkdir "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\%_CONFIG%" >nul 2>&1
+cd /d "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\%_CONFIG%"
+set _TMP_PATH=%cd%
+cd /d "%_OLD_DIR%"
+
+mkdir "%_TMP_PATH%\zfdist" >nul 2>&1
+cd /d "%_TMP_PATH%\zfdist"
+set _INSTALL_PATH=%cd%
+cd /d "%_OLD_DIR%"
+
 cd /d "%_TMP_PATH%"
 if "%CMAKE_CXX_FLAGS%" == "" (
     cmake -G "Ninja" ^
@@ -55,6 +61,7 @@ call "%ZF_ROOT_PATH%\tools\common\zfsh\rm.bat" "%_INSTALL_PATH%\lib\*SDL*_test.*
 
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\bin" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
 call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\lib" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app"
+call "%ZF_ROOT_PATH%\tools\common\copy_check.bat" "%_INSTALL_PATH%\zfres" "%PROJ_PATH%\..\..\_tmp\cmake\%PROJ_NAME%\app\zfres"
 
 exit /b %_RESULT%
 

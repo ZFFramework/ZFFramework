@@ -46,5 +46,5 @@ install(
     TARGETS ZFCore_impl
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib"
     )
-zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
+zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJECT_SOURCE_DIR}/../../../zfres/" "${CMAKE_INSTALL_PREFIX}/zfres")
 

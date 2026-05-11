@@ -26,7 +26,7 @@ function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
         )
     set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
     include_directories("${PROJ_PATH_}/zfsrc")
-    zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJ_PATH_}/zfres/" "${CMAKE_INSTALL_PREFIX}/bin/zfres")
+    zfprojExec("${ZF_ROOT_PATH}/tools/util/copy_res" "${PROJ_PATH_}/zfres/" "${CMAKE_INSTALL_PREFIX}/zfres")
 endfunction()
 
 ZFAddSrc(ZF_LIB_NAMES {ZFTT_R_proj_name} ZF_SRC_FILES ${PROJECT_SOURCE_DIR}/../../.. ${PROJECT_SOURCE_DIR})
@@ -201,6 +201,6 @@ install(
 
 file(GLOB AppIconPath "${PROJECT_SOURCE_DIR}/AppIcon.png")
 if(NOT "${AppIconPath}" STREQUAL "")
-    install(FILES ${AppIconPath} DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/zfres/ZFUIKit_impl/sys_SDL")
+    install(FILES ${AppIconPath} DESTINATION "${CMAKE_INSTALL_PREFIX}/zfres/ZFUIKit_impl/sys_SDL")
 endif()
 
