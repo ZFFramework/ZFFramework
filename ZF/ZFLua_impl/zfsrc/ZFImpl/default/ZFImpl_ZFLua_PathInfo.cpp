@@ -77,7 +77,7 @@ void ZFImpl_ZFLua_implPathInfoSetup(
             cmd += "    ;";
             cmd += "end;";
         }
-        ZFImpl_ZFLua_execute(L, cmd);
+        ZFImpl_ZFLua_execute(L, cmd, cmd.length(), zfnull, zfnull, zfnull, zfnull, "");
     }
 
     // no endl, to prevent native lua error from having wrong line number

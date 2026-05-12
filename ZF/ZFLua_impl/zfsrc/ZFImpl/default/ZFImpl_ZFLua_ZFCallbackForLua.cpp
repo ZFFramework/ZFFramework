@@ -597,7 +597,6 @@ public:
                     lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
                     lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
                     lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
-                    ZFLuaGC(L);
                     zfauto pathInfoHolder;
                     ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
                     lua_pop(L, 2); // []
@@ -613,7 +612,6 @@ public:
                 }
                 else if(strcmp(varName, "ZFLocalPathInfo") == 0) {
                     int error = lua_pcall(L, 0, 1, 0); // [pathInfoObj]
-                    ZFLuaGC(L);
                     if(error != 0) {
                         lua_pop(L, 1);
                         zfstringAppend(errorHint,

@@ -233,7 +233,7 @@ static const zfchar *_ZFP_ZFImpl_ZFLua_sourceInfo(
         , ZF_IN_OPT const zfchar *chunkInfo
         , ZF_IN_OPT const zfchar *srcInfo
         ) {
-    if(srcInfo) {
+    if(srcInfo != zfnull) {
         return srcInfo;
     }
     else if(ZFLogD() && chunkInfo) {
