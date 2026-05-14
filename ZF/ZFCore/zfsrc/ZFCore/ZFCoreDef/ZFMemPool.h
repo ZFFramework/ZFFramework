@@ -105,6 +105,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #endif
 
 // ============================================================
+zfclassPOD ZFLIB_ZFCore _ZFP_MP_D {
+public:
+    void *available;
+    zfuint count;
+};
+extern ZFLIB_ZFCore _ZFP_MP_D &_ZFP_MP_A(ZF_IN zfuint size);
 #if ZF_ENV_ZFMEMPOOL_ENABLE
 template<int N>
 zfclassNotPOD _ZFP_MP_SA { // Size Align
@@ -139,10 +145,10 @@ template<int N>
 zfclassNotPOD _ZFP_MP_H { // Holder
 public:
     static void *pNew(void) {
-        _ZFP_MP_H<N> &d = _instance();
+        _ZFP_MP_D &d = _instance();
         if(d.available) {
-            _ZFP_MP_B<N> *t = d.available;
-            d.available = d.available->next;
+            _ZFP_MP_B<N> *t = (_ZFP_MP_B<N> *)d.available;
+            d.available = t->next;
             --d.count;
             return t;
         }
@@ -151,37 +157,22 @@ public:
         }
     }
     static void pDel(ZF_IN void *obj) {
-        _ZFP_MP_H<N> &d = _instance();
+        _ZFP_MP_D &d = _instance();
         if(d.count >= _ZFP_MP_SA<N>::M) {
             zffree(obj);
         }
         else {
             ++d.count;
             _ZFP_MP_B<N> *t = (_ZFP_MP_B<N> *)obj;
-            t->next = d.available;
+            t->next = (_ZFP_MP_B<N> *)d.available;
             d.available = t;
         }
     }
 private:
-    _ZFP_MP_H(void)
-    : available(zfnull)
-    , count(0)
-    {
-    }
-    ~_ZFP_MP_H(void) {
-        while(available) {
-            _ZFP_MP_B<N> *t = available;
-            available = available->next;
-            zffree(t);
-        }
-    }
-    static _ZFP_MP_H<N> &_instance(void) {
-        static _ZFP_MP_H<N> d;
+    static _ZFP_MP_D &_instance(void) {
+        static _ZFP_MP_D &d = _ZFP_MP_A(N);
         return d;
     }
-private:
-    _ZFP_MP_B<N> *available;
-    zfuint count;
 };
 
 template<typename T_Type>
