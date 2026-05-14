@@ -2,15 +2,10 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassPOD _ZFP_ZFAutoReleasePoolData {
-public:
-    ZFObject *obj;
-};
-
 zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate {
 public:
     zfindex maxSize;
-    ZFCoreArray<_ZFP_ZFAutoReleasePoolData> array;
+    ZFCoreArray<ZFObject *> array;
 public:
     _ZFP_ZFAutoReleasePoolPrivate(void)
     : maxSize(zfindexMax())
@@ -56,24 +51,22 @@ void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj) {
     if(obj != zfnull) {
         if(d->array.count() >= d->maxSize) {
             ZFCoreLogTrim("warning, auto release pool full, trying to release old object");
-            _ZFP_ZFAutoReleasePoolData data = d->array.get(0);
+            ZFObject *data = d->array.get(0);
             d->array.remove(0);
-            zfobjRelease(data.obj);
+            zfobjRelease(data);
         }
-        _ZFP_ZFAutoReleasePoolData data;
-        data.obj = obj;
-        d->array.add(data);
+        d->array.add(obj);
     }
 }
 void ZFAutoReleasePool::poolDrain() {
     if(!d->array.isEmpty()) {
         ZFCoreMutexLock();
-        ZFCoreArray<_ZFP_ZFAutoReleasePoolData> tmp;
+        ZFCoreArray<ZFObject *> tmp;
         tmp.swap(d->array);
         ZFCoreMutexUnlock();
 
         for(zfindex i = 0; i < tmp.count(); ++i) {
-            zfobjRelease(tmp[i].obj);
+            zfobjRelease(tmp[i]);
         }
     }
 }

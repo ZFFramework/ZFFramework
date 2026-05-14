@@ -18,12 +18,14 @@ public:
     const ZFClass *cls;
     const ZFClass *clsToImplement;
 };
+ZFCORE_POD_DECLARE_NO_COMPARER(_ZFP_ZFDynamicImplement)
 zfclassPOD _ZFP_ZFDynamicPropLifeCycle {
 public:
     const ZFProperty *property;
     const ZFClass *ownerClassOrNull;
     ZFPropertyLifeCycle lifeCycle;
 };
+ZFCORE_POD_DECLARE_NO_COMPARER(_ZFP_ZFDynamicPropLifeCycle)
 zfclassLikePOD _ZFP_ZFDynamicRegScopeInfo {
 public:
     typedef enum {

@@ -15,7 +15,7 @@ public:
     _ZFP_ZFUIAutoLayoutRuleType ruleType;
     zfindex childIndex;
 };
-ZFCORE_POD_DECLARE(_ZFP_ZFUIAutoLayoutRuleStackData)
+ZFCORE_POD_DECLARE_NO_COMPARER(_ZFP_ZFUIAutoLayoutRuleStackData)
 
 zfclassNotPOD _ZFP_ZFUIAutoLayoutPrivate {
 public:

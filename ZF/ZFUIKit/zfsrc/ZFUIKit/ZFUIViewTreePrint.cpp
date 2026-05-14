@@ -43,6 +43,7 @@ public:
     zfindex siblingIndex;
     ZFUIViewChildLayer layer;
 };
+ZFCORE_POD_DECLARE_NO_COMPARER(_ZFP_ZFUIViewTreePrintPrintData)
 
 ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         , ZFMP_IN(ZFUIView *, view)

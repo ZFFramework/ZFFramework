@@ -75,14 +75,12 @@ protected:
 
 public:
     ZFPathInfo ownerPathInfo;
-    zfweakT<ZFThread> ownerThread;
     lua_State *ownerL;
     int luaFunc;
 
 public:
     _ZFP_ZFCallbackForLua_SyncMode(void)
-    : ownerThread()
-    , ownerL(zfnull)
+    : ownerL(zfnull)
     , luaFunc(0)
     {
     }
@@ -124,10 +122,6 @@ public:
         this->ownerL = L;
         lua_pushvalue(this->ownerL, luaStackOffset);
         this->luaFunc = luaL_ref(this->ownerL, LUA_REGISTRYINDEX);
-        if(ZFLogD() && ZFThread::implAvailable()) {
-            ZFCoreMutexLocker();
-            this->ownerThread = ZFThread::currentThread();
-        }
         return zftrue;
     }
     void invoke(
@@ -137,20 +131,6 @@ public:
         ZFImpl_ZFLua_luaErrorPrepare(L);
         if(this->ownerL == zfnull) {
             return;
-        }
-
-        if(ZFLogD() && ZFThread::implAvailable()) {
-            ZFCoreMutexLocker();
-            if(this->ownerThread) {
-                ZFThread *curThread = ZFThread::currentThread();
-                if(curThread != zfnull && curThread != this->ownerThread) {
-                    ZFCoreCriticalMessageTrim(
-                        "[%s] can not execute in different thread"
-                        , this->logTag()
-                        );
-                    return;
-                }
-            }
         }
 
         lua_rawgeti(this->ownerL, LUA_REGISTRYINDEX, luaFunc);
@@ -583,7 +563,7 @@ public:
             ) {
         this->ownerPathInfo.removeAll();
         lua_Debug ar;
-        for(int iStack = 1; !this->ownerPathInfo; ++iStack) {
+        for(int iStack = 2; !this->ownerPathInfo; ++iStack) {
             int success = lua_getstack(L, iStack, &ar);
             if(!success) {
                 break;
@@ -593,24 +573,7 @@ public:
                 if(varName == NULL) {
                     break;
                 }
-                if(strcmp(varName, "_ENV") == 0) {
-                    lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
-                    lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
-                    lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
-                    zfauto pathInfoHolder;
-                    ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
-                    lua_pop(L, 2); // []
-
-                    v_ZFPathInfo *pathInfo = pathInfoHolder;
-                    if(pathInfo != zfnull) {
-                        this->ownerPathInfo = pathInfo->zfv;
-                        break;
-                    }
-                    else {
-                        continue;
-                    }
-                }
-                else if(strcmp(varName, "ZFLocalPathInfo") == 0) {
+                if(strcmp(varName, "ZFLocalPathInfo") == 0) {
                     int error = lua_pcall(L, 0, 1, 0); // [pathInfoObj]
                     if(error != 0) {
                         lua_pop(L, 1);
@@ -635,6 +598,23 @@ public:
                     }
                     lua_pop(L, 1);
                     break;
+                }
+                else if(strcmp(varName, "_ENV") == 0) {
+                    lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
+                    lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
+                    lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
+                    zfauto pathInfoHolder;
+                    ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
+                    lua_pop(L, 2); // []
+
+                    v_ZFPathInfo *pathInfo = pathInfoHolder;
+                    if(pathInfo != zfnull) {
+                        this->ownerPathInfo = pathInfo->zfv;
+                        break;
+                    }
+                    else {
+                        continue;
+                    }
                 }
                 else {
                     lua_pop(L, 1);
@@ -739,12 +719,6 @@ static int _ZFP_ZFCallbackForLua(ZF_IN lua_State *L) {
         return ZFImpl_ZFLua_luaError(L
                 , "[ZFCallbackForLua] expect one param, got %s param"
                 , (zfindex)count
-                );
-    }
-    if(!lua_isfunction(L, 1)) {
-        return ZFImpl_ZFLua_luaError(L
-                , "[ZFCallbackForLua] takes function(zfargs) as param, got: %s"
-                , ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue)
                 );
     }
 

@@ -8,7 +8,7 @@ ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLocalPathInfo,
         "    if #arg > 0 then return ZFPathInfoForLocal(zfl_l or zfnull, arg[1]) "
         "    else return zfl_l or zfnull end "
         "end"
-    )
+    , zftrue)
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFInputForLocal,
         "function (l, ...)"
         "    local arg={...};"
