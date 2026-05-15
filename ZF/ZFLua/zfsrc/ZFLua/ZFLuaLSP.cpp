@@ -9,21 +9,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFLuaLSP_supportTypeWithDot 1
 #define _ZFP_ZFLuaLSP_supportParamCandidate 1
 
-ZFEXPORT_VAR_DEFINE(ZFCoreArray<zfstring>, ZFLuaLSPGenSourceRootList, zfnull)
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<zfstring> &, ZFLuaLSPGenSourceRootList) {
+    static ZFCoreArray<zfstring> ret(ZFCoreArray<zfstring>().refPrepare());
+    return ret;
+}
 ZFEXPORT_VAR_DEFINE(zfbool, ZFLuaLSPGenSourceRootCheckExist, zftrue)
 
 static void _ZFP_ZFLuaLSPGen_sourceInfo(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const ZFCoreArray<ZFSourceCodeMap::Info> &infoList
         ) {
-    for(zfindex i = 0; i < infoList.count(); ++i) {
+    for(zfindex iInfo = 0; iInfo < infoList.count(); ++iInfo) {
         zfstring path;
         {
-            const ZFPathInfo &pathInfo = infoList[i].pathInfo;
+            const ZFPathInfo &pathInfo = infoList[iInfo].pathInfo;
             if(pathInfo.pathType() != ZFPathType_file()) {
                 const ZFCoreArray<zfstring> &l = ZFLuaLSPGenSourceRootList();
-                for(zfindex j = 0; j < l.count(); ++j) {
-                    zfstring pathTmp = zfstr("%s/%s", l[i], pathInfo.pathData());
+                for(zfindex iSrcMap = 0; iSrcMap < l.count(); ++iSrcMap) {
+                    zfstring pathTmp = zfstr("%s/%s", l[iSrcMap], pathInfo.pathData());
                     if(ZFLuaLSPGenSourceRootCheckExist()
                             && !ZFFileIsExist(pathTmp)
                             ) {
@@ -41,7 +44,7 @@ static void _ZFP_ZFLuaLSPGen_sourceInfo(
         }
         zfstringAppend(ret, "---@source %s:%s\n"
                 , path
-                , infoList[i].line
+                , infoList[iInfo].line
                 );
     }
 }

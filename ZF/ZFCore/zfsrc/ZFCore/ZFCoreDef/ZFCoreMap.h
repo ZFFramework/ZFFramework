@@ -99,6 +99,9 @@ public:
  */
 template<typename T_Key, typename T_Value, typename T_Hash = ZFCoreMapKeyHash<T_Key>, typename T_Equal = ZFCoreMapKeyEqual<T_Key> >
 zfclassLikePOD ZFCoreMap {
+protected:
+    /** @brief typedef for self */
+    typedef ZFCoreMap<T_Key, T_Value, T_Hash, T_Equal> zfself;
 public:
     /**
      * @brief construct an empty map
@@ -107,7 +110,7 @@ public:
     /**
      * @brief retain the ref, to copy, use #copyFrom
      */
-    ZFCoreMap(ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) : d(ref.d) {
+    ZFCoreMap(ZF_IN const zfself &ref) : d(ref.d) {
         if(d) {
             ++(d->refCount);
         }
@@ -115,7 +118,7 @@ public:
     /**
      * @brief retain the ref, to copy, use #copyFrom
      */
-    ZFCoreMap &operator = (ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) {
+    ZFCoreMap &operator = (ZF_IN const zfself &ref) {
         _ZFP_ZFCoreMap *dTmp = d;
         d = ref.d;
         if(d) {
@@ -129,11 +132,11 @@ public:
     /**
      * @brief true if same ref
      */
-    zfbool operator == (ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) const {return d == ref.d;}
+    zfbool operator == (ZF_IN const zfself &ref) const {return d == ref.d;}
     /**
      * @brief true if not same ref
      */
-    zfbool operator != (ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) const {return d != ref.d;}
+    zfbool operator != (ZF_IN const zfself &ref) const {return d != ref.d;}
     ~ZFCoreMap(void) {
         if(d && (--(d->refCount)) == 0) {
             _ZFP_ZFCoreMap::destroy(d);
@@ -143,7 +146,7 @@ public:
     /**
      * @brief prepare instance to make it able to be shared between each copy
      */
-    void refPrepare(void) {_dInit();}
+    zfself &refPrepare(void) {_dInit(); return *this;}
     /**
      * @brief delete reference
      */
@@ -169,11 +172,11 @@ public:
         return ret;
     }
     /** @brief compare by instance */
-    ZFCompareResult objectCompare(ZF_IN ZFCoreMap<T_Key, T_Value> const &ref) const {
+    ZFCompareResult objectCompare(ZF_IN zfself const &ref) const {
         return d == ref.d ? ZFCompareEqual : ZFCompareUncomparable;
     }
     /** @brief compare by instance */
-    ZFCompareResult objectCompareValue(ZF_IN ZFCoreMap<T_Key, T_Value> const &ref) const {
+    ZFCompareResult objectCompareValue(ZF_IN zfself const &ref) const {
         if(d) {
             if(ref.d) {
                 return d->objectCompareValue(ref.d);
@@ -219,7 +222,7 @@ public:
     /**
      * @brief swap internal data
      */
-    void swap(ZF_IN_OUT ZFCoreMap<T_Key, T_Value> &ref) {
+    void swap(ZF_IN_OUT zfself &ref) {
         if(d != ref.d) {
             _ZFP_ZFCoreMap *dTmp = d;
             d = ref.d;
@@ -231,7 +234,7 @@ public:
     /**
      * @brief copy all contents from ref, remove all before copy
      */
-    void copyFrom(ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) {
+    void copyFrom(ZF_IN const zfself &ref) {
         if(d != ref.d) {
             if(d) {
                 if(ref.d) {
@@ -275,7 +278,7 @@ public:
     /**
      * @brief add elements from ref
      */
-    void addFrom(ZF_IN const ZFCoreMap<T_Key, T_Value> &ref) {
+    void addFrom(ZF_IN const zfself &ref) {
         if(d != ref.d) {
             if(d) {
                 if(ref.d) {

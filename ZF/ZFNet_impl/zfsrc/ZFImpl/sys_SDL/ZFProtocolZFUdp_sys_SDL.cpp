@@ -24,7 +24,7 @@ public:
             ZF_IN ZFUdp *owner
             , ZF_IN zfuint port
             ) {
-        return NET_CreateDatagramSocket(zfnull, (Uint16)port);
+        return NET_CreateDatagramSocket(zfnull, (Uint16)port, 0);
     }
     virtual void close(
             ZF_IN ZFUdp *owner

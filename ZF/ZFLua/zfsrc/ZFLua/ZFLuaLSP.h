@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * #ZFSourceCodeMap::Enable must be set to use
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFLua, ZFCoreArray<zfstring>, ZFLuaLSPGenSourceRootList)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArray<zfstring> &, ZFLuaLSPGenSourceRootList)
 /**
  * @brief when use #ZFLuaLSPGenSourceRootList to map, whether to check file exists
  */

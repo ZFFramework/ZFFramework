@@ -47,7 +47,7 @@ public:
             , ZF_IN zftimet timeout
             ) {
         if(!host) {
-            NET_Server *impl = NET_CreateServer(zfnull, (Uint16)port);
+            NET_Server *impl = NET_CreateServer(zfnull, (Uint16)port, 0);
             if(impl == zfnull) {
                 return zfnull;
             }
@@ -63,7 +63,7 @@ public:
                 return zfnull;
             }
             NET_WaitUntilResolved(addr, timeout > 0 ? (Sint32)timeout : (Sint32)-1);
-            NET_StreamSocket *impl = NET_CreateClient(addr, (Uint16)port);
+            NET_StreamSocket *impl = NET_CreateClient(addr, (Uint16)port, 0);
             if(impl == zfnull) {
                 NET_UnrefAddress(addr);
                 return zfnull;
