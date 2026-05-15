@@ -156,10 +156,16 @@ public:
     zfindex paramCount(void) const;
     /** @brief see #ZFMethodDynamicRegister */
     const zfstring &paramTypeIdAt(ZF_IN zfindex index) const;
-    /** @brief see #ZFMethodDynamicRegister */
+    /** @brief see #ZFMethodDynamicRegister, may be null if not specified */
     const zfstring &paramNameAt(ZF_IN zfindex index) const;
+    /** @brief see #paramNameAt, use `pN` if not specified */
+    zfstring paramNameFixedAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
     const ZFListener &paramDefaultValueCallbackAt(ZF_IN zfindex index) const;
+
+public:
+    /** @brief access param info */
+    const ZFMP &getMP(void) const;
 
 public:
     /** @brief see #ZFMethodDynamicRegister */
@@ -219,8 +225,10 @@ public:
     zfindex paramCount(void) const;
     /** @brief util for #ZFDynamic::method */
     const zfstring &paramTypeIdAt(ZF_IN zfindex index) const;
-    /** @brief util for #ZFDynamic::method */
+    /** @brief util for #ZFDynamic::method, may be null if not specified */
     const zfstring &paramNameAt(ZF_IN zfindex index) const;
+    /** @brief see #paramNameAt, use `pN` if not specified */
+    zfstring paramNameFixedAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
     const ZFListener &paramDefaultValueCallbackAt(ZF_IN zfindex index) const;
 

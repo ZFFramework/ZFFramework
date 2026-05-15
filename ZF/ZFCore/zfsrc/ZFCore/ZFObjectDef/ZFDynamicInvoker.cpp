@@ -312,10 +312,10 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_cache) {
 }
 private:
     static void classOnUpdate(ZF_IN const ZFArgs &zfargs) {
-        v_ZFClassDataUpdateData *info = zfargs.param0();
-        if(info->zfv.changeType == ZFClassDataUpdateTypeDetach) {
-            const ZFMethod *m = info->zfv.changedMethod;
-            const ZFClass *cls = info->zfv.changedClass;
+        ZFClassDataUpdateData const &info = zfargs.param0().to<v_ZFClassDataUpdateData *>()->zfv;
+        if(info.changeType == ZFClassDataUpdateTypeDetach) {
+            const ZFMethod *m = info.changedMethod;
+            const ZFClass *cls = info.changedClass;
             if(m) {
                 if(cls) {
                     for(_ZFP_ZFDI_CacheMapType::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
@@ -333,6 +333,14 @@ private:
                     for(_ZFP_ZFDI_CacheMapType::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
                         if(it->second.cls == cls) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
                     }
+                }
+            }
+        }
+        else if(info.changeType == ZFClassDataUpdateTypeClassAliasDetach) {
+            const ZFClass *cls = info.changedClass;
+            if(cls) {
+                for(_ZFP_ZFDI_CacheMapType::iterator it = _ZFP_ZFDI_cacheMap.begin(); it != _ZFP_ZFDI_cacheMap.end();) {
+                    if(it->second.cls == cls) {_ZFP_ZFDI_cacheMap.erase(it++);} else {++it;}
                 }
             }
         }

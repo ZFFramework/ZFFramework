@@ -52,7 +52,7 @@ public:
     ScopeType scopeType;
     D d;
 public:
-    const zfchar *scopeNS(void) {
+    zfstring scopeNS(void) {
         switch(this->scopeType) {
             case ScopeType_NS:
                 return *(d.NS);
@@ -537,7 +537,7 @@ ZFDynamic &ZFDynamic::classBegin(
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_class()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
-    const ZFClass *cls = ZFClass::classForName(className, scopePrev ? scopePrev->scopeNS() : zfnull);
+    const ZFClass *cls = ZFClass::classForName(className, scopePrev ? scopePrev->scopeNS() : zfstring());
     if(cls != zfnull) {
         _ZFP_ZFDynamicRegScopeInfo *scope = zfpoolNew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
         d->scopeList.add(scope);
@@ -1438,7 +1438,7 @@ ZFDynamic &ZFDynamic::staticProperty(
     zfstring propertyTypeIdFix = d->typeIdFix(propertyTypeId);
     const ZFClass *cls = ZFClass::classForName(propertyTypeIdFix);
     if(cls == zfnull) {
-        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeIdFix, scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeIdFix, scope ? scope->scopeNS() : zfstring(), propertyName));
         return *this;
     }
     return this->staticProperty(cls, propertyName, propertyInitValue, setterAccessType, getterAccessType);
@@ -1457,7 +1457,7 @@ ZFDynamic &ZFDynamic::staticProperty(
         return *this;
     }
     if(propertyClassOfRetainProperty == zfnull) {
-        d->error(zfstr("type not set when register property %s::%s", scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("type not set when register property %s::%s", scope ? scope->scopeNS() : zfstring(), propertyName));
         return *this;
     }
 
@@ -1481,7 +1481,7 @@ ZFDynamic &ZFDynamic::staticProperty(
                         , propertyInitValue->classData()->classNameFull()
                         , propertyInitValue
                         , propertyTypeId
-                        , scope ? scope->scopeNS() : ""
+                        , scope ? scope->scopeNS() : zfstring()
                         , propertyName
                         ));
             return *this;
@@ -1498,7 +1498,7 @@ ZFDynamic &ZFDynamic::staticProperty(
             .methodAccessType(getterAccessType)
             );
     if(getterMethod == zfnull) {
-        d->error(zfstr("unable to register staticProperty getter: %s::%s", scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("unable to register staticProperty getter: %s::%s", scope ? scope->scopeNS() : zfstring(), propertyName));
         return *this;
     }
     if(setterAccessType == ZFMethodAccessTypePublic) {
@@ -1514,7 +1514,7 @@ ZFDynamic &ZFDynamic::staticProperty(
                 );
         if(setterMethod == zfnull) {
             ZFMethodDynamicUnregister(getterMethod);
-            d->error(zfstr("unable to register staticProperty setter: %s::%s", scope ? scope->scopeNS() : "", propertyName));
+            d->error(zfstr("unable to register staticProperty setter: %s::%s", scope ? scope->scopeNS() : zfstring(), propertyName));
             return *this;
         }
         d->allMethod.add(setterMethod);
@@ -1568,7 +1568,7 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
     zfstring propertyTypeIdFix = d->typeIdFix(propertyTypeId);
     const ZFClass *cls = ZFClass::classForName(propertyTypeIdFix);
     if(cls == zfnull) {
-        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeIdFix, scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("unknown type \"%s\" for staticProperty: %s::%s", propertyTypeIdFix, scope ? scope->scopeNS() : zfstring(), propertyName));
         return *this;
     }
     return this->staticPropertyWithInit(cls, propertyName, propertyInitValue, setterAccessType, getterAccessType);
@@ -1587,7 +1587,7 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
         return *this;
     }
     if(propertyClassOfRetainProperty == zfnull) {
-        d->error(zfstr("type not set when register property %s::%s", scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("type not set when register property %s::%s", scope ? scope->scopeNS() : zfstring(), propertyName));
         return *this;
     }
 
@@ -1621,7 +1621,7 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
             .methodAccessType(getterAccessType)
             );
     if(getterMethod == zfnull) {
-        d->error(zfstr("unable to register staticProperty getter: %s::%s", scope ? scope->scopeNS() : "", propertyName));
+        d->error(zfstr("unable to register staticProperty getter: %s::%s", scope ? scope->scopeNS() : zfstring(), propertyName));
         return *this;
     }
     if(setterAccessType == ZFMethodAccessTypePublic
@@ -1639,13 +1639,22 @@ ZFDynamic &ZFDynamic::staticPropertyWithInit(
                 );
         if(setterMethod == zfnull) {
             ZFMethodDynamicUnregister(getterMethod);
-            d->error(zfstr("unable to register staticProperty setter: %s::%s", scope ? scope->scopeNS() : "", propertyName));
+            d->error(zfstr("unable to register staticProperty setter: %s::%s", scope ? scope->scopeNS() : zfstring(), propertyName));
             return *this;
         }
         d->allMethod.add(setterMethod);
     }
     d->allMethod.add(getterMethod);
     return *this;
+}
+
+zfstring ZFDynamic::currentScope(void) const {
+    if(!d->scopeList.isEmpty()) {
+        return d->scopeList.getLast()->scopeNS();
+    }
+    else {
+        return zfnull;
+    }
 }
 
 // ============================================================
@@ -1896,6 +1905,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, staticProper
         , ZFMP_IN_OPT(ZFMethodAccessType, setterAccessType, ZFMethodAccessTypePublic)
         , ZFMP_IN_OPT(ZFMethodAccessType, getterAccessType, ZFMethodAccessTypePublic)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, zfstring, currentScope)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFCoreArray<ZFOutput> &, errorCallbacks)
 
 ZF_NAMESPACE_GLOBAL_END

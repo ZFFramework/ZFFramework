@@ -9,6 +9,64 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFLuaLSP_supportTypeWithDot 1
 #define _ZFP_ZFLuaLSP_supportParamCandidate 1
 
+ZFEXPORT_VAR_DEFINE(ZFCoreArray<zfstring>, ZFLuaLSPGenSourceRootList, zfnull)
+ZFEXPORT_VAR_DEFINE(zfbool, ZFLuaLSPGenSourceRootCheckExist, zftrue)
+
+static void _ZFP_ZFLuaLSPGen_sourceInfo(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const ZFCoreArray<ZFSourceCodeMap::Info> &infoList
+        ) {
+    for(zfindex i = 0; i < infoList.count(); ++i) {
+        zfstring path;
+        {
+            const ZFPathInfo &pathInfo = infoList[i].pathInfo;
+            if(pathInfo.pathType() != ZFPathType_file()) {
+                const ZFCoreArray<zfstring> &l = ZFLuaLSPGenSourceRootList();
+                for(zfindex j = 0; j < l.count(); ++j) {
+                    zfstring pathTmp = zfstr("%s/%s", l[i], pathInfo.pathData());
+                    if(ZFLuaLSPGenSourceRootCheckExist()
+                            && !ZFFileIsExist(pathTmp)
+                            ) {
+                        continue;
+                    }
+                    path = pathTmp;
+                }
+            }
+            else {
+                path = pathInfo.pathData();
+            }
+        }
+        if(!path) {
+            continue;
+        }
+        zfstringAppend(ret, "---@source %s:%s\n"
+                , path
+                , infoList[i].line
+                );
+    }
+}
+static zfstring _ZFP_ZFLuaLSPGen_sourceInfoForNamespace(ZF_IN const zfstring &v) {
+    zfstring ret;
+    if(ZFSourceCodeMap::Enable()) {
+        _ZFP_ZFLuaLSPGen_sourceInfo(ret, ZFSourceCodeMap::checkNamespace(v));
+    }
+    return ret;
+}
+static zfstring _ZFP_ZFLuaLSPGen_sourceInfoForClass(ZF_IN const ZFClass *v) {
+    zfstring ret;
+    if(ZFSourceCodeMap::Enable()) {
+        _ZFP_ZFLuaLSPGen_sourceInfo(ret, ZFSourceCodeMap::checkClass(v));
+    }
+    return ret;
+}
+static zfstring _ZFP_ZFLuaLSPGen_sourceInfoForMethod(ZF_IN const ZFMethod *v) {
+    zfstring ret;
+    if(ZFSourceCodeMap::Enable()) {
+        _ZFP_ZFLuaLSPGen_sourceInfo(ret, ZFSourceCodeMap::checkMethod(v));
+    }
+    return ret;
+}
+
 static void _ZFP_ZFLuaLSPGen_paramCandidate(
         ZF_IN_OUT zfstring &paramSig
         , ZF_IN const zfstring &typeId
@@ -209,9 +267,9 @@ static void _ZFP_ZFLuaLSPGen_method_overloadAnnotation(
                 output << ", ";
             }
             output
-                << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i))
+                << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameFixedAt(i))
                 << ":"
-                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i), m->paramNameAt(i))
+                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i), m->paramNameFixedAt(i))
                 ;
         }
         output << ")";
@@ -264,12 +322,12 @@ static void _ZFP_ZFLuaLSPGen_method(
 
         for(zfindex i = 0; i < paramCount; ++i) {
             output
-                << "---@param " << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i))
+                << "---@param " << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameFixedAt(i))
 #if _ZFP_ZFLuaLSP_supportOptionalParam
                 << (i >= m->paramCountMin() ? "?" : "")
 #endif
                 << " "
-                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i), m->paramNameAt(i))
+                << _ZFP_ZFLuaLSPGen_paramSig(m->paramTypeIdAt(i), m->paramNameFixedAt(i))
                 << "\n"
                 ;
         }
@@ -283,6 +341,7 @@ static void _ZFP_ZFLuaLSPGen_method(
             }
         }
 
+        output << _ZFP_ZFLuaLSPGen_sourceInfoForMethod(m);
         output << "function ";
         if(ctorCls) {
             output << retSig;
@@ -307,7 +366,7 @@ static void _ZFP_ZFLuaLSPGen_method(
             if(i != 0) {
                 output << ", ";
             }
-            output << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameAt(i));
+            output << _ZFP_ZFLuaLSPGen_luaKeywordsEscape(luaKeywords, m->paramNameFixedAt(i));
         }
         output << ") end\n";
 
@@ -348,6 +407,7 @@ static void _ZFP_ZFLuaLSPGen_NS(
         NS0.NS1 = {}
      */
     output << "---@class " << NS << "\n";
+    output << _ZFP_ZFLuaLSPGen_sourceInfoForNamespace(NS);
     output << NS << " = {}\n";
     NSMap[NS] = zftrue;
 }
@@ -380,9 +440,12 @@ static void _ZFP_ZFLuaLSPGen_class(
 
     zfstring classSig = _ZFP_ZFLuaLSPGen_typeIdToSig(cls);
     ZFCoreArray<zfstring> aliasNames;
+    ZFCoreArray<const ZFClass *> classList;
     aliasNames.add(classSig);
+    classList.add(cls);
     for(zfindex i = 0; i < cls->classAliasTo().count(); ++i) {
         aliasNames.add(cls->classAliasTo()[i]);
+        classList.add(cls);
     }
 
     /* class and constructor
@@ -414,6 +477,7 @@ static void _ZFP_ZFLuaLSPGen_class(
 #endif
         output
             << "---@class " << aliasName << (!classParentSig.isEmpty() ? ":" : "") << classParentSig << "\n"
+            << _ZFP_ZFLuaLSPGen_sourceInfoForClass(classList[i])
             << "---@overload fun():" << classSig << "\n"
             ;
         ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
@@ -425,6 +489,7 @@ static void _ZFP_ZFLuaLSPGen_class(
             _ZFP_ZFLuaLSPGen_method_overloadAnnotation(output, luaKeywords, m, classSig);
         }
         output
+            << _ZFP_ZFLuaLSPGen_sourceInfoForClass(classList[i])
             << aliasName << " = {}\n"
             ;
     }

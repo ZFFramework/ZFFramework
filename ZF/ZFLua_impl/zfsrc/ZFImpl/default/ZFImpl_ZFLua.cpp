@@ -197,6 +197,64 @@ void ZFImpl_ZFLua_classDataUpdate(
     }
 }
 
+ZFPathInfo ZFImpl_ZFLua_localPathInfoDetect(
+        ZF_IN lua_State *L
+        ) {
+    ZFPathInfo pathInfo;
+    lua_Debug ar;
+    for(int iStack = 2; !pathInfo; ++iStack) {
+        int success = lua_getstack(L, iStack, &ar);
+        if(!success) {
+            break;
+        }
+        for(int iLocal = 1; ; ++iLocal) {
+            const char *varName = lua_getlocal(L, &ar, iLocal); // [var]
+            if(varName == NULL) {
+                break;
+            }
+            if(strcmp(varName, "ZFLocalPathInfo") == 0) {
+                int error = lua_pcall(L, 0, 1, 0); // [pathInfoObj]
+                if(error != 0) {
+                    lua_pop(L, 1);
+                    return zfnull;
+                }
+                zfauto pathInfoHolder;
+                if(!ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1)) {
+                    lua_pop(L, 1);
+                    return zfnull;
+                }
+                v_ZFPathInfo *tmp = pathInfoHolder;
+                if(tmp != zfnull) {
+                    pathInfo = tmp->zfv;
+                }
+                lua_pop(L, 1);
+                break;
+            }
+            else if(strcmp(varName, "_ENV") == 0) {
+                lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
+                lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
+                lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
+                zfauto pathInfoHolder;
+                ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
+                lua_pop(L, 2); // []
+
+                v_ZFPathInfo *tmp = pathInfoHolder;
+                if(tmp != zfnull) {
+                    pathInfo = tmp->zfv;
+                    break;
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
+                lua_pop(L, 1);
+            }
+        }
+    }
+    return pathInfo;
+}
+
 // ============================================================
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupAttach setupAttachCallback

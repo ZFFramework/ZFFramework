@@ -1,4 +1,5 @@
 #include "ZFImpl_ZFLua.h"
+#include "ZFImpl_ZFLua_ZFSourceCodeMap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -87,6 +88,10 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         ;
     ZFDI_invoke(zfargs, name, zftrue);
     if(zfargs.success()) {
+        if(ZFSourceCodeMap::Enable()) {
+            ZFImpl_ZFLua_ZFSourceCodeMapUpdate(L, zfargs, name);
+        }
+
         if(zfargs.result()) {
             ZFImpl_ZFLua_luaPush(L, zfargs.result());
         }

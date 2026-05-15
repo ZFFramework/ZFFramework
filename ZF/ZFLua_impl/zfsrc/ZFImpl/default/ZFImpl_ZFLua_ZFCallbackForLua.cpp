@@ -561,65 +561,13 @@ public:
             ZF_IN lua_State *L
             , ZF_OUT_OPT zfstring *errorHint
             ) {
-        this->ownerPathInfo.removeAll();
-        lua_Debug ar;
-        for(int iStack = 2; !this->ownerPathInfo; ++iStack) {
-            int success = lua_getstack(L, iStack, &ar);
-            if(!success) {
-                break;
-            }
-            for(int iLocal = 1; ; ++iLocal) {
-                const char *varName = lua_getlocal(L, &ar, iLocal); // [var]
-                if(varName == NULL) {
-                    break;
-                }
-                if(strcmp(varName, "ZFLocalPathInfo") == 0) {
-                    int error = lua_pcall(L, 0, 1, 0); // [pathInfoObj]
-                    if(error != 0) {
-                        lua_pop(L, 1);
-                        zfstringAppend(errorHint,
-                                "[%s] unable to obtain path info, invoke fail"
-                                , this->logTag()
-                                );
-                        return zffalse;
-                    }
-                    zfauto pathInfoHolder;
-                    if(!ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1)) {
-                        lua_pop(L, 1);
-                        zfstringAppend(errorHint,
-                                "[%s] unable to obtain path info"
-                                , this->logTag()
-                                );
-                        return zffalse;
-                    }
-                    v_ZFPathInfo *pathInfo = pathInfoHolder;
-                    if(pathInfo != zfnull) {
-                        this->ownerPathInfo = pathInfo->zfv;
-                    }
-                    lua_pop(L, 1);
-                    break;
-                }
-                else if(strcmp(varName, "_ENV") == 0) {
-                    lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
-                    lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
-                    lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
-                    zfauto pathInfoHolder;
-                    ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
-                    lua_pop(L, 2); // []
-
-                    v_ZFPathInfo *pathInfo = pathInfoHolder;
-                    if(pathInfo != zfnull) {
-                        this->ownerPathInfo = pathInfo->zfv;
-                        break;
-                    }
-                    else {
-                        continue;
-                    }
-                }
-                else {
-                    lua_pop(L, 1);
-                }
-            }
+        this->ownerPathInfo = ZFImpl_ZFLua_localPathInfoDetect(L);
+        if(!this->ownerPathInfo) {
+            zfstringAppend(errorHint,
+                    "[%s] unable to obtain path info, invoke fail"
+                    , this->logTag()
+                    );
+            return zffalse;
         }
         return zftrue;
     }

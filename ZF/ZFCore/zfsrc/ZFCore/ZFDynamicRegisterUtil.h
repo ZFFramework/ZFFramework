@@ -387,6 +387,11 @@ public:
             , ZF_IN_OPT ZFMethodAccessType getterAccessType = ZFMethodAccessTypePublic
             );
 
+    /**
+     * @brief return fully namespace or class names for current scope
+     */
+    zfstring currentScope(void) const;
+
 public:
     /**
      * @brief callbacks which would be called when error occurred

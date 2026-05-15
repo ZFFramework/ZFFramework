@@ -42,6 +42,7 @@
 #include "ZFCore/ZFResultType.h"
 #include "ZFCore/ZFSemaphore.h"
 #include "ZFCore/ZFSet.h"
+#include "ZFCore/ZFSourceCodeMap.h"
 #include "ZFCore/ZFStruct.h"
 #include "ZFCore/ZFStyleLoad.h"
 #include "ZFCore/ZFTask.h"

@@ -18,10 +18,7 @@ public:
     ZFMethodAccessType methodAccessType;
     zfstring methodName;
     zfstring returnTypeId;
-    zfindex paramCount;
-    zfstring paramTypeId[ZFMETHOD_MAX_PARAM];
-    zfstring paramName[ZFMETHOD_MAX_PARAM];
-    ZFListener paramDefaultValueCallback[ZFMETHOD_MAX_PARAM];
+    ZFMP mp;
 
 public:
     _ZFP_ZFMethodDynamicRegisterParamPrivate(void)
@@ -36,10 +33,7 @@ public:
     , methodAccessType(ZFMethodAccessTypePublic)
     , methodName()
     , returnTypeId(ZFTypeId_void())
-    , paramCount(0)
-    , paramTypeId()
-    , paramName()
-    , paramDefaultValueCallback()
+    , mp()
     {
     }
 };
@@ -122,31 +116,33 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParam(
         , ZF_IN_OPT const zfstring &paramName /* = zfnull */
         , ZF_IN_OPT const ZFListener &paramDefaultValueCallback /* = _ZFP_ZFMethod_paramDefaultValueCallbackDummy() */
         ) {
-    ZFCoreAssert(d->paramCount < ZFMETHOD_MAX_PARAM);
     if(paramTypeId != zfnull) {
-        d->paramTypeId[d->paramCount] = paramTypeId;
-        if(paramName) {
-            d->paramName[d->paramCount] = paramName;
-        }
-        else {
-            d->paramName[d->paramCount] = zfstr("p%s", d->paramCount);
-        }
-        d->paramDefaultValueCallback[d->paramCount] = paramDefaultValueCallback;
-        ++(d->paramCount);
+        d->mp.mpWithInit(paramTypeId, paramName, paramDefaultValueCallback);
     }
     return *this;
 }
 zfindex ZFMethodDynamicRegisterParam::paramCount(void) const {
-    return d->paramCount;
+    return d->mp.paramCount();
 }
 const zfstring &ZFMethodDynamicRegisterParam::paramTypeIdAt(ZF_IN zfindex index) const {
-    return (index < d->paramCount ? d->paramTypeId[index] : zfstring::Empty());
+    return d->mp.paramTypeIdAt(index);
 }
 const zfstring &ZFMethodDynamicRegisterParam::paramNameAt(ZF_IN zfindex index) const {
-    return (index < d->paramCount ? d->paramName[index] : zfstring::Empty());
+    return d->mp.paramNameAt(index);
+}
+zfstring ZFMethodDynamicRegisterParam::paramNameFixedAt(ZF_IN zfindex index) const {
+    zfstring ret = d->mp.paramNameAt(index);
+    if(!ret) {
+        ret = zfstr("p%s", index);
+    }
+    return ret;
 }
 const ZFListener &ZFMethodDynamicRegisterParam::paramDefaultValueCallbackAt(ZF_IN zfindex index) const {
-    return (index < d->paramCount ? d->paramDefaultValueCallback[index] : _ZFP_ZFMethod_paramDefaultValueCallbackDummy());
+    return d->mp.paramDefaultValueCallbackAt(index);
+}
+
+const ZFMP &ZFMethodDynamicRegisterParam::getMP(void) const {
+    return d->mp;
 }
 
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::zfunsafe_disableChecker(ZF_IN zfbool disableChecker) {
@@ -236,7 +232,7 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
                 ret += " ";
             }
 
-            ret += this->paramNameAt(i);
+            ret += this->paramNameFixedAt(i);
 
             if(this->paramDefaultValueCallbackAt(i) != zfnull) {
                 ZFArgs zfargs;
@@ -323,6 +319,13 @@ const zfstring &ZFMP::paramTypeIdAt(ZF_IN zfindex index) const {
 }
 const zfstring &ZFMP::paramNameAt(ZF_IN zfindex index) const {
     return d->paramName[index];
+}
+zfstring ZFMP::paramNameFixedAt(ZF_IN zfindex index) const {
+    zfstring ret = d->paramName[index];
+    if(!ret) {
+        ret = zfstr("p%s", index);
+    }
+    return ret;
 }
 const ZFListener &ZFMP::paramDefaultValueCallbackAt(ZF_IN zfindex index) const {
     return d->paramDefaultValueCallback[index];

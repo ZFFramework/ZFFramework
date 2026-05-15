@@ -61,6 +61,13 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataUpdate(
         , ZF_IN const ZFClassDataUpdateData &data
         );
 
+/**
+ * @brief try to detect local path info for current context
+ */
+extern ZFLIB_ZFLua_impl ZFPathInfo ZFImpl_ZFLua_localPathInfoDetect(
+        ZF_IN lua_State *L
+        );
+
 // ============================================================
 /** @brief see #ZFImpl_ZFLua_luaStateOpen */
 zfclassLikePOD ZFLIB_ZFLua_impl ZFImpl_ZFLua_ImplSetupHelper {

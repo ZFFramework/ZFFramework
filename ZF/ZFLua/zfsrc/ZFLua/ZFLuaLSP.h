@@ -9,6 +9,17 @@
 #include "ZFLuaDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/**
+ * @brief a list of local path to map
+ *
+ * #ZFSourceCodeMap::Enable must be set to use
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFLua, ZFCoreArray<zfstring>, ZFLuaLSPGenSourceRootList)
+/**
+ * @brief when use #ZFLuaLSPGenSourceRootList to map, whether to check file exists
+ */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFLua, zfbool, ZFLuaLSPGenSourceRootCheckExist)
+
 // ============================================================
 /**
  * @brief util to export a lua file for LSP (Language Server Protocol)

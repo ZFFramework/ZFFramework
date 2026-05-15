@@ -306,6 +306,10 @@ public:
      */
     ZFCoreArray(void) : d(zfnull) {}
     /**
+     * @brief dummy constructor
+     */
+    ZFCoreArray(ZF_IN const zfnullT &dummy) : d(zfnull) {}
+    /**
      * @brief construct from another array
      */
     ZFCoreArray(ZF_IN const ZFCoreArray<T_Element> &ref)
@@ -347,6 +351,12 @@ public:
         return *this;
     }
     /** @cond ZFPrivateDoc */
+    ZFCoreArray<T_Element> &operator = (ZF_IN const zfnullT &dummy) {
+        this->removeAll();
+        return *this;
+    }
+    zfbool operator == (ZF_IN const zfnullT &dummy) const {return this->isEmpty();}
+    zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->isEmpty();}
     zfbool operator == (ZF_IN const ZFCoreArray<T_Element> &ref) const {return (d == ref.d);}
     zfbool operator != (ZF_IN const ZFCoreArray<T_Element> &ref) const {return (d != ref.d);}
     zfoverride

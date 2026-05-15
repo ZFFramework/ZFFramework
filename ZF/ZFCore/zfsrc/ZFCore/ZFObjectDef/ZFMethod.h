@@ -390,11 +390,18 @@ public:
         return this->_ZFP_ZFMethod_paramTypeIdList()[index];
     }
     /**
-     * @brief get the method's param name at index, usually for debug use
+     * @brief get the method's param name at index, may be null if not specified, usually for debug use
      */
     inline const zfstring &paramNameAt(ZF_IN zfindex index) const {
         ZFCoreAssert(index < this->paramCount());
         return this->_ZFP_ZFMethod_paramNameList()[index];
+    }
+    inline zfstring paramNameFixedAt(ZF_IN zfindex index) const {
+        zfstring ret = this->paramNameAt(index);
+        if(!ret) {
+            ret = zfstr("p%s", index);
+        }
+        return ret;
     }
     /**
      * @brief get the method param's default value access callback
