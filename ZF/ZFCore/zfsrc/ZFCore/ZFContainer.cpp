@@ -157,6 +157,81 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
     return zftrue;
 }
 
+zfbool ZFContainer::serializableOnSerializeFromString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(!this->classData()->classContainDynamicRegister()) {
+        return zffalse;
+    }
+    const ZFMethod *m = this->classData()->methodForName("elementClass");
+    if(m == zfnull) {
+        return zffalse;
+    }
+    zfauto clsHolder = m->methodInvoke(this);
+    if(zfcast(v_ZFClass *, clsHolder) == zfnull) {
+        return zffalse;
+    }
+    const ZFClass *cls = clsHolder.to<v_ZFClass *>()->zfv;
+    ZFCoreArray<ZFIndexRange> pos;
+    if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
+        return zffalse;
+    }
+    this->removeAll();
+    for(zfindex i = 0; i < pos.count(); ++i) {
+        zfauto element;
+        zfstring tmp;
+        ZFCoreDataDecode(tmp, src + pos[i].start, pos[i].count);
+        if(!ZFObjectFromStringOrDataT(element, cls, tmp, tmp.length(), errorHint)) {
+            return zffalse;
+        }
+        this->iterAdd(element);
+    }
+    return zftrue;
+}
+zfbool ZFContainer::serializableOnSerializeToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(!this->classData()->classContainDynamicRegister()) {
+        return zffalse;
+    }
+    const ZFMethod *m = this->classData()->methodForName("elementClass");
+    if(m == zfnull) {
+        return zffalse;
+    }
+    zfauto clsHolder = m->methodInvoke(this);
+    if(zfcast(v_ZFClass *, clsHolder) == zfnull) {
+        return zffalse;
+    }
+    const ZFClass *cls = clsHolder.to<v_ZFClass *>()->zfv;
+    zfstring charMap = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapAllPrintable()
+            , -'%'
+            , -'['
+            , -']'
+            , -','
+            );
+
+    ret += "[";
+    zfbool first = zftrue;
+    for(zfiter it = this->iter(); it; ++it) {
+        if(first) {
+            first = zffalse;
+        }
+        else {
+            ret += ",";
+        }
+        zfstring tmp;
+        if(!ZFObjectToStringOrDataT(tmp, this->iterValue(it), errorHint)) {
+            return zffalse;
+        }
+        ZFCoreDataEncode(ret, tmp, tmp.length(), charMap);
+    }
+    ret += "]";
+    return zftrue;
+}
+
 void ZFContainer::styleableOnCopyFrom(ZF_IN ZFObject *anotherStyleable) {
     zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
     zfself *another = zfcast(zfself *, anotherStyleable);

@@ -359,7 +359,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfstring, ZFPathInfoChainEncode
         , ZFMP_IN(const zfchar *, pathData)
         )
 
-extern ZFLIB_ZFCore const zfchar _ZFP_ZFPathInfoChainCharMap[256];
 /**
  * @brief see #ZFPathInfoChainDecode
  *
@@ -367,7 +366,7 @@ extern ZFLIB_ZFCore const zfchar _ZFP_ZFPathInfoChainCharMap[256];
  * -  `%`
  * -  `|`
  */
-#define ZFPathInfoChainCharMap() _ZFP_ZFPathInfoChainCharMap
+extern ZFLIB_ZFCore zfstring ZFPathInfoChainCharMap(void);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIODef_pathInfo_h_

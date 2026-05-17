@@ -702,40 +702,13 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFOutputMarkSerializable
 // all printable chars (0x20 ~ 0x7E) except:
 //   '%' : 0x25
 //   '|' : 0x7C
-const zfchar _ZFP_ZFPathInfoChainCharMap[256] = {
-    /* 0x00 ~ 0x0F */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0x10 ~ 0x1F */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0x20 ~ 0x2F */
-    1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    /* 0x30 ~ 0x3F */
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    /* 0x40 ~ 0x4F */
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    /* 0x50 ~ 0x5F */
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    /* 0x60 ~ 0x6F */
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    /* 0x70 ~ 0x7F */
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
-    /* 0x80 ~ 0x8F */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0x90 ~ 0x9F */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0xA0 ~ 0xAF */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0xB0 ~ 0xBF */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0xC0 ~ 0xCF */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0xD0 ~ 0xDF */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0xE0 ~ 0xEF */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    /* 0xF0 ~ 0xFF */
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-};
+zfstring ZFPathInfoChainCharMap(void) {
+    static zfstring d = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapAllPrintable()
+            , -'%'
+            , -'|'
+            );
+    return d;
+}
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoChainDecode
         , ZFMP_OUT(ZFPathInfo &, chainPathInfo)

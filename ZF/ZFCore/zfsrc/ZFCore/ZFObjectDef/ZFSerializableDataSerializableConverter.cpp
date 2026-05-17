@@ -65,40 +65,13 @@ void ZFSDOutputTokenDetail(ZF_IN const ZFSDOutputToken &v) {
 //   a-z
 //   A-Z
 //   @_
-#define _ZFP_ZFSerializableEscapeCharMap() const zfchar charMap[256] = { \
-        /* 0x00 ~ 0x0F */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0x10 ~ 0x1F */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0x20 ~ 0x2F */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0x30 ~ 0x3F */ \
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, \
-        /* 0x40 ~ 0x4F */ \
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
-        /* 0x50 ~ 0x5F */ \
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, \
-        /* 0x60 ~ 0x6F */ \
-        0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, \
-        /* 0x70 ~ 0x7F */ \
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, \
-        /* 0x80 ~ 0x8F */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0x90 ~ 0x9F */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0xA0 ~ 0xAF */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0xB0 ~ 0xBF */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0xC0 ~ 0xCF */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0xD0 ~ 0xDF */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0xE0 ~ 0xEF */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-        /* 0xF0 ~ 0xFF */ \
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
-    }
+static zfstring _ZFP_ZFSerializableEscapeCharMap(void) {
+    static zfstring d = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapDefault()
+            , '@'
+            , '_'
+            );
+    return d;
+}
 
 // ============================================================
 zfbool ZFSerializableDataFromZFSD(
@@ -428,8 +401,7 @@ zfbool ZFSerializableDataToZFSD(
     if(token.prettyPrint) {
         return _ZFP_ZFSerializableDataToZFSDPretty(result, serializableData, outErrorHint, 0);
     }
-
-    _ZFP_ZFSerializableEscapeCharMap();
+    zfstring charMap = _ZFP_ZFSerializableEscapeCharMap();
 
     result += _ZFP_ZFSD_ObjBegin;
 
@@ -482,7 +454,7 @@ static zfbool _ZFP_ZFSerializableDataToZFSDPretty(
         , ZF_OUT zfstring *outErrorHint
         , ZF_IN zfindex indentLevel
         ) {
-    _ZFP_ZFSerializableEscapeCharMap();
+    zfstring charMap = _ZFP_ZFSerializableEscapeCharMap();
 
     zfstringRepeatT(result, "    ", indentLevel);
     result += _ZFP_ZFSD_ObjBegin;

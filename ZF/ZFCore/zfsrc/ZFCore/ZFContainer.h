@@ -37,6 +37,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * @note a container would have special serializing step with ref or style logic,
  *   see #serializableOnSerializeToData for more info
+ * @note by default, container would serialize using #ZFSerializableData to holds
+ *   necessary type info, which would make the serialize result quite verbose,
+ *   to make it able to serialize from and to string, you may:
+ *   -  declare your own dynamic subclass of container (typically by #ZFDynamic::classBegin)
+ *   -  declare a dynamic method named `elementClass`, and return the element's class
+ *   -  serializing your dynamic subclass by #ZFObjectFromString/#ZFObjectToString
  */
 zfabstract ZFLIB_ZFCore ZFContainer : zfextend ZFStyle {
     ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFStyle)
@@ -186,6 +192,19 @@ protected:
             ZF_IN_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_IN_OPT ZFSerializable *refOwner = zfnull
+            );
+
+protected:
+    zfoverride
+    virtual zfbool serializableOnSerializeFromString(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
+    zfoverride
+    virtual zfbool serializableOnSerializeToString(
+            ZF_IN_OUT zfstring &ret
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
 
 protected:

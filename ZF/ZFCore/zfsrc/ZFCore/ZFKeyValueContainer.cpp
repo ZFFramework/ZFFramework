@@ -225,6 +225,123 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
     return zftrue;
 }
 
+zfbool ZFKeyValueContainer::serializableOnSerializeFromString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(!this->classData()->classContainDynamicRegister()) {
+        return zffalse;
+    }
+    const ZFMethod *keyM = this->classData()->methodForName("keyClass");
+    if(keyM == zfnull) {
+        return zffalse;
+    }
+    const ZFMethod *valueM = this->classData()->methodForName("valueClass");
+    if(valueM == zfnull) {
+        return zffalse;
+    }
+    zfauto keyClsHolder = keyM->methodInvoke(this);
+    if(zfcast(v_ZFClass *, keyClsHolder) == zfnull) {
+        return zffalse;
+    }
+    zfauto valueClsHolder = valueM->methodInvoke(this);
+    if(zfcast(v_ZFClass *, valueClsHolder) == zfnull) {
+        return zffalse;
+    }
+    const ZFClass *keyCls = keyClsHolder.to<v_ZFClass *>()->zfv;
+    const ZFClass *valueCls = valueClsHolder.to<v_ZFClass *>()->zfv;
+
+    ZFCoreArray<ZFIndexRange> pos;
+    if(!ZFCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "{", "}")) {
+        return zffalse;
+    }
+    this->removeAll();
+    for(zfindex i = 0; i < pos.count(); ++i) {
+        zfindex tokenPos = zfstringFind(src + pos[i].start, pos[i].count, "=");
+        if(tokenPos == zfindexMax()) {
+            return zffalse;
+        }
+
+        zfstring tmp;
+        ZFCoreDataDecode(tmp, src + pos[i].start, tokenPos);
+        zfauto key;
+        if(!ZFObjectFromStringOrDataT(key, keyCls, tmp, tmp.length(), errorHint)) {
+            return zffalse;
+        }
+
+        tmp.removeAll();
+        ZFCoreDataDecode(tmp, src + pos[i].start + tokenPos + 1, pos[i].count - tokenPos - 1);
+        zfauto value;
+        if(!ZFObjectFromStringT(value, valueCls, tmp, tmp.length(), errorHint)) {
+            return zffalse;
+        }
+
+        this->iterAdd(key, value);
+    }
+    return zftrue;
+}
+zfbool ZFKeyValueContainer::serializableOnSerializeToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(!this->classData()->classContainDynamicRegister()) {
+        return zffalse;
+    }
+    const ZFMethod *keyM = this->classData()->methodForName("keyClass");
+    if(keyM == zfnull) {
+        return zffalse;
+    }
+    const ZFMethod *valueM = this->classData()->methodForName("valueClass");
+    if(valueM == zfnull) {
+        return zffalse;
+    }
+    zfauto keyClsHolder = keyM->methodInvoke(this);
+    if(zfcast(v_ZFClass *, keyClsHolder) == zfnull) {
+        return zffalse;
+    }
+    zfauto valueClsHolder = valueM->methodInvoke(this);
+    if(zfcast(v_ZFClass *, valueClsHolder) == zfnull) {
+        return zffalse;
+    }
+    const ZFClass *keyCls = keyClsHolder.to<v_ZFClass *>()->zfv;
+    const ZFClass *valueCls = valueClsHolder.to<v_ZFClass *>()->zfv;
+    zfstring charMap = ZFCoreDataEncodeCharMapCreate(ZFCoreDataEncodeCharMapAllPrintable()
+            , -'%'
+            , -'{'
+            , -'}'
+            , -','
+            , -'='
+            );
+
+    ret += "{";
+    zfbool first = zftrue;
+    for(zfiter it = this->iter(); it; ++it) {
+        if(first) {
+            first = zffalse;
+        }
+        else {
+            ret += ",";
+        }
+
+        zfstring tmp;
+        if(!ZFObjectToStringOrDataT(tmp, this->iterKey(it), errorHint)) {
+            return zffalse;
+        }
+        ZFCoreDataEncode(ret, tmp, tmp.length());
+
+        ret += "=";
+
+        tmp.removeAll();
+        if(!ZFObjectToStringOrDataT(tmp, this->iterValue(it), errorHint)) {
+            return zffalse;
+        }
+        ZFCoreDataEncode(ret, tmp, tmp.length());
+    }
+    ret += "}";
+    return zftrue;
+}
+
 void ZFKeyValueContainer::objectOnDeallocPrepare(void) {
     this->removeAll();
     zfsuper::objectOnDeallocPrepare();
